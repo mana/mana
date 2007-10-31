@@ -1,4 +1,12 @@
-﻿2007-19-26  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-10-31  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/items.xml, data/graphics/sprites/leg-skirt.png,
+	data/graphics/sprites/leg-skirt.xml,
+	data/graphics/items/armor-leg-skirt.png: Added skirt by Saphy.
+	ViewID is 26, item ID is 632, item properties are c&p from jeans
+	shorts.
+
+2007-10-26  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/item_ammount.cpp: Item amount dialog is now skipped
 	when there is only one item on the stack.
