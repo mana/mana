@@ -1,4 +1,12 @@
-﻿2007-10-31  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-11-1  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/particles/aniblaze.png,
+	data/graphics/particles/cookingfire.particle.xml,
+	data/graphics/particles/fireplace.particle.xml,
+	data/graphics/particles/flame.particle.xml: Improved fire particle
+	effects by using animated particles.
+
+2007-10-31  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/items.xml, data/graphics/sprites/leg-skirt.png,
 	data/graphics/sprites/leg-skirt.xml,
