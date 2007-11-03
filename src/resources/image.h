@@ -40,6 +40,8 @@
 
 #include "resource.h"
 
+class Dye;
+
 /**
  * Defines a class for loading and storing images.
  */
@@ -63,10 +65,22 @@ class Image : public Resource
          * @param buffer     The memory buffer containing the image data.
          * @param bufferSize The size of the memory buffer in bytes.
          *
-         * @return <code>NULL</code> if the an error occurred, a valid pointer
+         * @return <code>NULL</code> if an error occurred, a valid pointer
          *         otherwise.
          */
         static Resource *load(void *buffer, unsigned bufferSize);
+
+        /**
+         * Loads an image from a buffer in memory and recolors it.
+         *
+         * @param buffer     The memory buffer containing the image data.
+         * @param bufferSize The size of the memory buffer in bytes.
+         * @param dye        The dye used to recolor the image.
+         *
+         * @return <code>NULL</code> if an error occurred, a valid pointer
+         *         otherwise.
+         */
+        static Resource *load(void *buffer, unsigned bufferSize, Dye const &dye);
 
         /**
          * Loads an image from an SDL surface.

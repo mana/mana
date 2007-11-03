@@ -204,6 +204,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/ambientoverlay.h \
 	      resources/animation.cpp \
 	      resources/animation.h \
+	      resources/dye.cpp \
+	      resources/dye.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imageloader.cpp \

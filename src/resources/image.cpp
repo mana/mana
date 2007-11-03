@@ -21,9 +21,11 @@
  *  $Id$
  */
 
+#include <SDL_image.h>
+
 #include "image.h"
 
-#include <SDL_image.h>
+#include "dye.h"
 
 #include "../log.h"
 
@@ -82,6 +84,49 @@ Resource *Image::load(void *buffer, unsigned bufferSize)
     Image *image = load(tmpImage);
 
     SDL_FreeSurface(tmpImage);
+    return image;
+}
+
+Resource *Image::load(void *buffer, unsigned bufferSize, Dye const &dye)
+{
+    SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
+    SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
+
+    if (!tmpImage)
+    {
+        logger->log("Error, image load failed: %s", IMG_GetError());
+        return NULL;
+    }
+
+    SDL_PixelFormat rgba;
+    rgba.palette = NULL;
+    rgba.BitsPerPixel = 32;
+    rgba.BytesPerPixel = 4;
+    rgba.Rmask = 0xFF000000; rgba.Rloss = 0; rgba.Rshift = 24;
+    rgba.Gmask = 0x00FF0000; rgba.Gloss = 0; rgba.Gshift = 16;
+    rgba.Bmask = 0x0000FF00; rgba.Bloss = 0; rgba.Bshift = 8;
+    rgba.Amask = 0x000000FF; rgba.Aloss = 0; rgba.Ashift = 0;
+    rgba.colorkey = 0;
+    rgba.alpha = 255;
+
+    SDL_Surface *surf = SDL_ConvertSurface(tmpImage, &rgba, SDL_SWSURFACE);
+    SDL_FreeSurface(tmpImage);
+
+    Uint32 *pixels = static_cast< Uint32 * >(surf->pixels);
+    for (int i = 0, i_end = surf->w * surf->h; i != i_end; ++i)
+    {
+        int v[4];
+        v[0] = (*pixels >> 24) & 255;
+        v[1] = (*pixels >> 16) & 255;
+        v[2] = (*pixels >> 8 ) & 255;
+        v[3] = (*pixels      ) & 255;
+        dye.update(v);
+        *pixels = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
+        ++pixels;
+    }
+
+    Image *image = load(surf);
+    SDL_FreeSurface(surf);
     return image;
 }
 

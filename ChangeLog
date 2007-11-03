@@ -3,6 +3,12 @@
 	* src/player.cpp, src/player.h, src/gui/char_select.cpp: Factored code.
 	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp: Fixed double
 	load of hair graphics.
+	* src/Makefile.am, src/resources/dye.cpp, src/resources/dye.h: Added
+	palette holder and linear interpolator of colors.
+	* src/resources/image.h, src/resources/image.cpp: Added palette-based
+	recoloring of images.
+	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp:
+	Added automatic recoloring of images depending on their names.
 
 2007-10-28  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
