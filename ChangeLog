@@ -9,6 +9,13 @@
 	recoloring of images.
 	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp:
 	Added automatic recoloring of images depending on their names.
+	* data/graphics/sprites/monster-scorpion.png: Flattened colors.
+	* data/graphics/sprites/monster-scorpion-black.png,
+	data/graphics/sprites/monster-scorpion-red.png: Removed obsolete files.
+	* data/graphics/sprites/monster-scorpion.xml,
+	data/graphics/sprites/monster-scorpion-black.xml,
+	data/graphics/sprites/monster-scorpion-red.xml: Added automatic
+	recoloring of scorpions.
 
 2007-10-28  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
