@@ -60,20 +60,15 @@ class Player : public Being
         { return mHairColor; }
 
         /**
-         * Sets the hair color for this player.
-         */
-        void setHairColor(int color);
-
-        /**
          * Gets the hair style for this player.
          */
         int getHairStyle() const
         { return mHairStyle; }
 
         /**
-         * Sets the hair style for this player.
+         * Sets the hair style and color for this player.
          */
-        void setHairStyle(int style);
+        void setHairStyle(int style, int color);
 
         /**
          * Sets visible equipments for this player.

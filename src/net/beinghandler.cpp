@@ -472,8 +472,8 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
                 being->setName(name);
             }
             Player *p = static_cast< Player * >(being);
-            p->setHairStyle(msg.readByte());
-            p->setHairColor(msg.readByte());
+            int hs = msg.readByte(), hc = msg.readByte();
+            p->setHairStyle(hs, hc);
             p->setGender(msg.readByte());
             handleLooks(p, msg);
         } break;

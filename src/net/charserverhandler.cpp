@@ -217,8 +217,8 @@ CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     slot = msg.readByte(); // character slot
     tempPlayer->mName = msg.readString();
     tempPlayer->setGender(msg.readByte());
-    tempPlayer->setHairStyle(msg.readByte());
-    tempPlayer->setHairColor(msg.readByte());
+    int hs = msg.readByte(), hc = msg.readByte();
+    tempPlayer->setHairStyle(hs, hc);
     tempPlayer->setLevel(msg.readByte());
     tempPlayer->setMoney(msg.readLong());
 

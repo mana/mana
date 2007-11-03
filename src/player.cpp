@@ -31,7 +31,7 @@
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
-#include "utils/tostring.h"
+#include "utils/strprintf.h"
 
 #include "gui/gui.h"
 
@@ -103,42 +103,25 @@ void Player::setGender(int sex)
     }
 }
 
-void Player::setHairColor(int color)
+void Player::setHairStyle(int style, int color)
 {
-    if (color != mHairColor)
-    {
-        mHairColor = color < NR_HAIR_COLORS ? color : 0;
+    style = style < 0 ? mHairStyle : style % NR_HAIR_STYLES;
+    color = color < 0 ? mHairColor : color % NR_HAIR_COLORS;
+    if (style == mHairStyle && color == mHairColor) return;
 
-        AnimatedSprite *newHairSprite = AnimatedSprite::load(
-                "graphics/sprites/hairstyle" + toString(getHairStyle()) + ".xml",
-                mHairColor);
-        if (newHairSprite)
-            newHairSprite->setDirection(getSpriteDirection());
+    mHairStyle = style;
+    mHairColor = color;
 
-        delete mSprites[HAIR_SPRITE];
-        mSprites[HAIR_SPRITE] = newHairSprite;
+    AnimatedSprite *newHairSprite = AnimatedSprite::load
+        (strprintf("graphics/sprites/hairstyle%d.xml", style), color);
 
-        setAction(mAction);
-    }
-}
+    if (newHairSprite)
+        newHairSprite->setDirection(getSpriteDirection());
 
-void Player::setHairStyle(int style)
-{
-    if (style != mHairStyle)
-    {
-        mHairStyle = style < NR_HAIR_STYLES ? style : 0;
+    delete mSprites[HAIR_SPRITE];
+    mSprites[HAIR_SPRITE] = newHairSprite;
 
-        AnimatedSprite *newHairSprite = AnimatedSprite::load(
-                "graphics/sprites/hairstyle" + toString(getHairStyle()) + ".xml",
-                mHairColor);
-        if (newHairSprite)
-            newHairSprite->setDirection(getSpriteDirection());
-
-        delete mSprites[HAIR_SPRITE];
-        mSprites[HAIR_SPRITE] = newHairSprite;
-
-        setAction(mAction);
-    }
+    setAction(mAction);
 }
 
 void Player::setVisibleEquipment(int slot, int id)

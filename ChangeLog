@@ -1,3 +1,9 @@
+2007-11-03  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/player.cpp, src/player.h, src/gui/char_select.cpp: Factored code.
+	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp: Fixed double
+	load of hair graphics.
+
 2007-10-28  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
 	* po/de.po: Updated german translation.
