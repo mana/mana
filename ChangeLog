@@ -1,3 +1,11 @@
+2007-11-04  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/resources/dye.cpp, src/resources/resourcemanager.cpp: Moved
+	palette qualifiers to the right as the code appends things on the left.
+	* src/resources/spritedef.cpp, src/resources/spritedef.h,
+	src/resources/resourcemanager.h: Added propagation of palettes through
+	sprite resource names.
+
 2007-11-03  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/player.cpp, src/player.h, src/gui/char_select.cpp: Factored code.

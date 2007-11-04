@@ -95,8 +95,7 @@ class SpriteDef : public Resource
         /**
          * Loads an imageset element.
          */
-        void
-        loadImageSet(xmlNodePtr node);
+        void loadImageSet(xmlNodePtr node, std::string const &palettes);
 
         /**
          * Loads an action element.

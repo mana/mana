@@ -151,8 +151,7 @@ class ResourceManager
          * Creates a sprite definition based on a given path and the supplied
          * variant.
          */
-        SpriteDef *getSprite(std::string const &path, int variant = 0,
-                             std::string const &palettes = std::string());
+        SpriteDef *getSprite(std::string const &path, int variant = 0);
 
         /**
          * Releases a resource, removing it from the set of loaded resources.

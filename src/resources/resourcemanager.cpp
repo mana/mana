@@ -225,12 +225,12 @@ struct DyedImageLoader
     {
         DyedImageLoader *l = static_cast< DyedImageLoader * >(v);
         std::string path = l->path;
-        std::string::size_type p = path.find('>');
+        std::string::size_type p = path.find('|');
         Dye *d = NULL;
         if (p != std::string::npos)
         {
-            d = new Dye(path.substr(0, p));
-            path = path.substr(p + 1);
+            d = new Dye(path.substr(p + 1));
+            path = path.substr(0, p);
         }
         int fileSize;
         void *buffer = l->manager->loadFile(path, fileSize);
@@ -276,19 +276,19 @@ ResourceManager::getImageSet(const std::string &imagePath, int w, int h)
 
 struct SpriteDefLoader
 {
-    std::string path, palettes;
+    std::string path;
     int variant;
     static Resource *load(void *v)
     {
         SpriteDefLoader *l = static_cast< SpriteDefLoader * >(v);
-        return SpriteDef::load(l->path, l->variant /*, l->palettes*/);
+        return SpriteDef::load(l->path, l->variant);
     }
 };
 
 SpriteDef *ResourceManager::getSprite
-    (std::string const &path, int variant, std::string const &palettes)
+    (std::string const &path, int variant)
 {
-    SpriteDefLoader l = { path, palettes, variant };
+    SpriteDefLoader l = { path, variant };
     std::stringstream ss;
     ss << path << "[" << variant << "]";
     return static_cast<SpriteDef*>(get(ss.str(), SpriteDefLoader::load, &l));
