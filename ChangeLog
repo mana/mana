@@ -9,6 +9,10 @@
 	palettes on sprite names.
 	* data/graphics/sprites/monster-scorpion-black.xml,
 	data/graphics/sprites/monster-scorpion-red.xml: Removed obsolete files.
+	* src/player.cpp: Added hair colors.
+	* data/graphics/sprites/hairstyle*.xml: Removed sprite variants. Set
+	replaceable color.
+	* data/graphics/sprites/hairstyle*.png: Reduced image sizes.
 
 2007-11-03  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
