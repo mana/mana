@@ -13,6 +13,11 @@
 	* data/graphics/sprites/hairstyle*.xml: Removed sprite variants. Set
 	replaceable color.
 	* data/graphics/sprites/hairstyle*.png: Reduced image sizes.
+	* data/monsters.xml, data/graphics/sprites/monster-slime.xml,
+	data/graphics/sprites/monster-slime.png: Added generic slime.
+	* data/graphics/sprites/monster-slime-{green,red,yellow}.png,
+	data/graphics/sprites/monster-slime-{green,red,yellow}.xml: Removed
+	obsolete files.
 
 2007-11-03  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
