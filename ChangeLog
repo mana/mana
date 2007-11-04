@@ -5,6 +5,10 @@
 	* src/resources/spritedef.cpp, src/resources/spritedef.h,
 	src/resources/resourcemanager.h: Added propagation of palettes through
 	sprite resource names.
+	* data/monsters.xml, data/graphics/sprites/monster-scorpion.xml: Used
+	palettes on sprite names.
+	* data/graphics/sprites/monster-scorpion-black.xml,
+	data/graphics/sprites/monster-scorpion-red.xml: Removed obsolete files.
 
 2007-11-03  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
