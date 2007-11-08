@@ -1,3 +1,7 @@
+2007-11-08  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/equipmentwindow.cpp: Ensured "unequip" button is visible.
+
 2007-11-04  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/resources/dye.cpp, src/resources/resourcemanager.cpp: Moved

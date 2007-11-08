@@ -64,7 +64,9 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     loadWindowState("Equipment");
 
     mUnequip = new Button(_("Unequip"), "unequip", this);
-    mUnequip->setPosition(150,235);
+    gcn::Rectangle const &area = getChildrenArea();
+    mUnequip->setPosition(area.width  - mUnequip->getWidth() - 5,
+                          area.height - mUnequip->getHeight() - 5);
     add(mUnequip);
 
     for (int i = 0; i < EQUIPMENT_SIZE; i++)
