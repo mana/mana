@@ -1,4 +1,18 @@
-﻿2007-11-1  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-11-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/chest-chainmail-male,
+	data/graphics/sprites/chest-chainmail-female,
+	data/graphics/sprites/chest-cotton-male,
+	data/graphics/sprites/chest-cotton-female,
+	data/graphics/sprites/chest-leather-male,
+	data/graphics/sprites/chest-leather-female,
+	data/graphics/sprites/chest-tnecksweater-male,
+	data/graphics/sprites/chest-tnecksweater-female,
+	data/graphics/sprites/chest-vnecksweater-male,
+	data/graphics/sprites/chest-vnecksweater-female:
+	Modifications at the back shading of shirt sprites by Pauan.
+
+2007-11-01  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/particles/aniblaze.png,
 	data/graphics/particles/cookingfire.particle.xml,
