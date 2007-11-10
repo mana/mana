@@ -94,7 +94,7 @@
 	* src/gui/char_select.cpp: Replaced flushed-layout hack with a tree.
 	* src/gui/serverdialog.cpp, src/gui/buy.cpp: Simplified layouts.
 
-﻿2007-10-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2007-10-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* po/nl.po: Completed Dutch translation.
 	* po/de.po: Some small fixes.
@@ -291,6 +291,19 @@
 	* src/gui/gui.cpp, src/gui/gui.h, src/game.cpp, src/main.cpp: Changed
 	the input handler. Moved away from image font so that non-latin
 	characters are supported.
+
+2007-09-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/equipment.xml, data/graphics/items/armor-head-funkyhat.png,
+	data/graphics/items/armor-head-mushroomhat.png,
+	data/graphics/items/armor-head-shroomhat.png,
+	data/graphics/items/armor-head-tophat.png,
+	data/graphics/sprites/item019.png, data/graphics/sprites/item019.xml,
+	data/graphics/sprites/item020.png, data/graphics/sprites/item020.xml,
+	data/graphics/sprites/item021.png, data/graphics/sprites/item021.xml,
+	data/graphics/sprites/item022.png, data/graphics/sprites/item022.xml,
+	data/items.xml, data/maps/new_21-1.tmx: Added 4 new items and a new ice
+	cave map.
 
 2007-09-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
