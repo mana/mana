@@ -35,14 +35,6 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Window("Select amount of items to drop.", true, parent),
     mItem(item)
 {
-    //when there is only one item on the stack skip the dialog
-    if (mItem->getQuantity() == 1)
-    {
-        player_node->dropItem(mItem, 1);
-        scheduleDelete();
-        return;
-    };
-
     // New labels
     mItemAmountTextBox = new IntTextBox(1);
 

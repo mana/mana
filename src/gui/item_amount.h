@@ -39,7 +39,7 @@ class Item;
 #define AMOUNT_ITEM_DROP 2
 
 /**
- * Window used for selecting the amount of items to drop.
+ * Window used for selecting the amount of items to drop or trade.
  *
  * \ingroup Interface
  */

@@ -1,4 +1,10 @@
-﻿2007-11-09  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-11-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/item_amount.cpp, src/gui/item_amount.h,
+	src/gui/inventorywindow.cpp: Moved check on dropping 1 item to the
+	inventory dialog.
+
+2007-11-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/chest-chainmail-male,
 	data/graphics/sprites/chest-chainmail-female,

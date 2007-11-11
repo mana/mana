@@ -122,8 +122,13 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "drop")
     {
-        // Choose amount of items to drop
-        new ItemAmountWindow(AMOUNT_ITEM_DROP, this, item);
+        if (item->getQuantity() == 1) {
+            player_node->dropItem(item, 1);
+        }
+        else {
+            // Choose amount of items to drop
+            new ItemAmountWindow(AMOUNT_ITEM_DROP, this, item);
+        }
     }
 }
 
