@@ -1,3 +1,7 @@
+2007-11-11  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* data/items.xml: Fixed types of equipable items.
+
 2007-11-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/chest-chainmail-male,
