@@ -1,3 +1,14 @@
+2007-11-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/maps/new_1-1.tmx, data/maps/new_10-1.tmx, 
+	data/maps/new_11-1.tmx, data/maps/new_12-1.tmx, data/maps/new_13-1.tmx,
+	data/maps/new_14-1.tmx, data/maps/new_15-1.tmx, data/maps/new_16-1.tmx,
+	data/maps/new_17-1.tmx, data/maps/new_18-1.tmx, data/maps/new_19-1.tmx,
+	data/maps/new_2-1.tmx, data/maps/new_3-1.tmx, data/maps/new_4-1.tmx,
+	data/maps/new_5-1.tmx, data/maps/new_6-1.tmx, data/maps/new_7-1.tmx,
+	data/maps/new_8-1.tmx, data/maps/new_9-1.tmx, tmw.cbp:
+	Started porting warps to the new server, updated project file.
+
 2007-11-11  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* data/items.xml: Fixed types of equipable items.
