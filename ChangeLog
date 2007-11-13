@@ -9,6 +9,8 @@
 	data/maps/new_8-1.tmx, data/maps/new_9-1.tmx, tmw.cbp:
 	Started porting warps to the new server, updated project file.
 	* data/maps/new_1-1.tmx: Fixed object type and added npcs.
+	* data/maps/new_1-1.tmx, data/maps/new_2-1.tmx: Fixed shop on map 1 and
+	added npcs on map 2.
 
 2007-11-11  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
