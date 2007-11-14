@@ -25,19 +25,19 @@
 #include <sstream>
 
 #include <guichan/focushandler.hpp>
-#include <guichan/key.hpp>
 
 #include "chat.h"
 
 #include "browserbox.h"
-#include "../channelmanager.h"
-#include "../channel.h"
 #include "chatinput.h"
 #include "gccontainer.h"
 #include "scrollarea.h"
+#include "sdlinput.h"
 #include "tabbedcontainer.h"
 #include "windowcontainer.h"
 
+#include "../channelmanager.h"
+#include "../channel.h"
 #include "../game.h"
 #include "../localplayer.h"
 
@@ -507,7 +507,7 @@ ChatWindow::sendToChannel(short channelId, std::string user, std::string msg)
 void
 ChatWindow::keyPressed(gcn::KeyEvent &event)
 {
-    if (event.getKey().getValue() == gcn::Key::DOWN &&
+    if (event.getKey().getValue() == Key::DOWN &&
             mCurHist != mHistory.end())
     {
         // Move forward through the history
@@ -520,7 +520,7 @@ ChatWindow::keyPressed(gcn::KeyEvent &event)
             mCurHist = prevHist;
         }
     }
-    else if (event.getKey().getValue() == gcn::Key::UP &&
+    else if (event.getKey().getValue() == Key::UP &&
             mCurHist != mHistory.begin() && mHistory.size() > 0)
     {
         // Move backward through the history

@@ -1,3 +1,7 @@
+2007-11-14  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/chat.cpp: Fixed up and down arrows in chat box.
+
 2007-11-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_1-1.tmx, data/maps/new_10-1.tmx, 
