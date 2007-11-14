@@ -19,9 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/key.hpp>
-
 #include "inttextbox.h"
+#include "sdlinput.h"
 
 #include "../utils/tostring.h"
 
@@ -35,17 +34,20 @@ IntTextBox::keyPressed(gcn::KeyEvent &event)
 {
     const gcn::Key &key = event.getKey();
 
-    if (key.isNumber() || key.getValue() == gcn::Key::BACKSPACE
-        || key.getValue() == gcn::Key::DELETE)
+    if (key.getValue() == Key::BACKSPACE ||
+        key.getValue() == Key::DELETE)
     {
-        gcn::TextBox::keyPressed(event);
+        setText(std::string());
+        event.consume();
     }
 
-    std::stringstream s(gcn::TextBox::getText());
+    if (!key.isNumber()) return;
+    TextField::keyPressed(event);
+
+    std::istringstream s(getText());
     int i;
     s >> i;
-    if (gcn::TextBox::getText() != "")
-        setInt(i);
+    setInt(i);
 }
 
 void IntTextBox::setRange(int min, int max)
@@ -56,9 +58,7 @@ void IntTextBox::setRange(int min, int max)
 
 int IntTextBox::getInt()
 {
-    if (gcn::TextBox::getText() == "")
-        return 0;
-    return mValue;
+    return getText().empty() ? mMin : mValue;
 }
 
 void IntTextBox::setInt(int i)

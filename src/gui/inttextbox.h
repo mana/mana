@@ -22,14 +22,14 @@
 #ifndef INTTEXTBOX_H
 #define INTTEXTBOX_H
 
-#include "textbox.h"
+#include "textfield.h"
 
 #include "../guichanfwd.h"
 
 /**
  * TextBox which only accepts numbers as input.
  */
-class IntTextBox : public TextBox
+class IntTextBox : public TextField
 {
     public:
         /**
