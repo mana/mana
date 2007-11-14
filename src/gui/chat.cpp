@@ -23,12 +23,12 @@
 #include <fstream>
 
 #include <guichan/focushandler.hpp>
-#include <guichan/key.hpp>
 
 #include "browserbox.h"
 #include "chat.h"
 #include "chatinput.h"
 #include "scrollarea.h"
+#include "sdlinput.h"
 #include "windowcontainer.h"
 
 #include "../beingmanager.h"
@@ -584,8 +584,10 @@ void ChatWindow::scroll(int amount)
 
 void ChatWindow::keyPressed(gcn::KeyEvent & event)
 {
-    if (event.getKey().getValue() == gcn::Key::DOWN &&
-        mCurHist != mHistory.end()) {
+
+    if (event.getKey().getValue() == Key::DOWN &&
+            mCurHist != mHistory.end())
+    {
         // Move forward through the history
         HistoryIterator prevHist = mCurHist++;
         if (mCurHist != mHistory.end()) {
@@ -594,8 +596,10 @@ void ChatWindow::keyPressed(gcn::KeyEvent & event)
         } else {
             mCurHist = prevHist;
         }
-    } else if (event.getKey().getValue() == gcn::Key::UP &&
-               mCurHist != mHistory.begin() && mHistory.size() > 0) {
+    }
+    else if (event.getKey().getValue() == Key::UP &&
+            mCurHist != mHistory.begin() && mHistory.size() > 0)
+    {
         // Move backward through the history
         mCurHist--;
         mChatInput->setText(*mCurHist);
