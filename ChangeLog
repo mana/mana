@@ -1,6 +1,9 @@
 2007-11-14  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/chat.cpp: Fixed up and down arrows in chat box.
+	* src/gui/inttextbox.h, src/gui/inttextbox.cpp: Changed to textfield so
+	that it is visibly editable.
+	* src/gui/item_amount.cpp: Converted to layout handler.
 
 2007-11-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
