@@ -357,10 +357,6 @@ Viewport::mousePressed(gcn::MouseEvent &event)
     if (!mMap || !player_node || player_node->mAction == Being::DEAD)
         return;
 
-    // Check if we are busy
-    if (current_npc)
-        return;
-
     mPlayerFollowMouse = false;
 
     int tilex = (event.getX() + mCameraX) / 32;

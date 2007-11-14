@@ -123,8 +123,7 @@ void PopupMenu::handleLink(const std::string& link)
     // Talk To action
     if (link == "talk" &&
         mBeing != NULL &&
-        mBeing->getType() == Being::NPC &&
-        current_npc == 0)
+        mBeing->getType() == Being::NPC)
     {
         static_cast<NPC*>(mBeing)->talk();
     }

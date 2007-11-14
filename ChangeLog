@@ -4,6 +4,8 @@
 	* src/gui/inttextbox.h, src/gui/inttextbox.cpp: Changed to textfield so
 	that it is visibly editable.
 	* src/gui/item_amount.cpp: Converted to layout handler.
+	* src/game.cpp, src/gui/viewport.cpp, src/gui/popupmenu.cpp: Removed
+	tests on current_npc.
 
 2007-11-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
