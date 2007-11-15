@@ -833,7 +833,8 @@ int main(int argc, char *argv[])
                 // Load updates after exiting the update state
                 if (oldstate == STATE_UPDATE)
                 {
-                    loadUpdates();
+                    // TODO: Revive later
+                    //loadUpdates();
                     // Reload the wallpaper in case that it was updated
                     login_wallpaper->decRef();
                     login_wallpaper = ResourceManager::getInstance()->
