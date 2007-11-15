@@ -2,6 +2,8 @@
 
 	* data/maps/new_4-1.tmx: Added npc.
 	* data/maps/new_5-1.tmx: Added npcs.
+	* data/maps/new_5-1.tmx, data/maps/new_6-1.tmx: Added monsters on map 5
+	and some fixes, added npcs to map 6.
 
 2007-11-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
