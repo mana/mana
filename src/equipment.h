@@ -26,14 +26,20 @@
 
 #define EQUIPMENT_SIZE 11
 
+class Item;
+
 class Equipment
 {
     public:
         /**
          * Constructor.
          */
-        Equipment()
-        { clear(); }
+        Equipment();
+
+        /**
+         * Destructor.
+         */
+        ~Equipment();
 
         /**
          * Clears equipment.
@@ -43,17 +49,16 @@ class Equipment
         /**
          * Get equipment at the given slot.
          */
-        int getEquipment(int index)
+        Item* getEquipment(int index)
         { return mEquipment[index]; }
 
         /**
          * Set equipment at the given slot.
          */
-        void setEquipment(int index, int id)
-        { mEquipment[index] = id; }
+        void setEquipment(int index, int id);
 
     private:
-        int mEquipment[EQUIPMENT_SIZE];
+        Item* mEquipment[EQUIPMENT_SIZE];
 };
 
 #endif

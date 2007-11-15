@@ -30,8 +30,6 @@
 
 #include "spritedef.h"
 
-class Image;
-
 enum EquipmentSoundEvent
 {
     EQUIP_EVENT_STRIKE,
@@ -49,7 +47,6 @@ class ItemInfo
          * Constructor.
          */
         ItemInfo():
-            mImage(NULL),
             mType(0),
             mWeight(0),
             mView(0),
@@ -57,21 +54,17 @@ class ItemInfo
         {
         }
 
-        /**
-         * Destructor.
-         */
-        ~ItemInfo();
-
         void setName(const std::string &name)
         { mName = name; }
 
         const std::string& getName() const
         { return mName; }
 
-        void setImage(const std::string &image);
+        void setImageName(const std::string &imageName)
+        { mImageName = imageName; }
 
-        Image* getImage() const
-        { return mImage; }
+        const std::string& getImageName() const
+        { return mImageName; }
 
         void setDescription(const std::string &description)
         { mDescription = description; }
@@ -116,13 +109,6 @@ class ItemInfo
 
     protected:
         std::string mImageName;        /**< The filename of the icon image. */
-
-        /* TODO (BL): I do not think the item info should keep a reference to
-         * the item icon. It would probably be better if this was kept in the
-         * Item class, so that the images can be lazily instantiated and also
-         * unloaded when no longer used.
-         */
-        Image *mImage;                 /**< The loaded icon image. */
         std::string mName;
         std::string mDescription;      /**< Short description. */
         std::string mEffect;           /**< Description of effects. */

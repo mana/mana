@@ -102,11 +102,11 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
     for (int i = 0; i < EQUIPMENT_SIZE; i++)
     {
-        int itemId = mEquipment->getEquipment(i);
-        if (itemId)
+        Item *item = mEquipment->getEquipment(i);
+        if (item)
         {
             // Draw Item.
-            Image *image = Item(itemId).getInfo().getImage();
+            Image *image = item->getImage();
             g->drawImage(image, mEquipBox[i].posX, mEquipBox[i].posY);
         }
 
@@ -149,8 +149,7 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
                              BOX_WIDTH, BOX_HEIGHT);
         if (tRect.isPointInRect(x, y))
         {
-            int itemId = mEquipment->getEquipment(i);
-            if (itemId)
+            if (mEquipment->getEquipment(i))
             {
                 mSelected = i;
             }

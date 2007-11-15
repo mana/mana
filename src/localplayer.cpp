@@ -101,9 +101,9 @@ void LocalPlayer::clearInventory()
     mInventory->clear();
 }
 
-Item* LocalPlayer::getInvItem(int index)
+void LocalPlayer::setInvItem(int index, int id, int amount)
 {
-    return mInventory->getItem(index);
+    mInventory->setItem(index, id, amount);
 }
 
 void
@@ -137,7 +137,7 @@ void LocalPlayer::unequipItem(int slot)
 {
     Net::GameServer::Player::unequip(slot);
 
-    // Tidy equipment directly to avoid weapon still shown bug, by instance
+    // Tidy equipment directly to avoid weapon still shown bug, for instance
     mEquipment->setEquipment(slot, 0);
 }
 

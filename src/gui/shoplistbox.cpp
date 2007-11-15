@@ -79,7 +79,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
             backgroundColor = gcn::Color(110, 160, 255);
         }
         else if (mShopItems &&
-                mPlayerMoney < mShopItems->at(i).price && mPriceCheck)
+                mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
         {
             backgroundColor = gcn::Color(0x919191);
         }
@@ -89,7 +89,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 
         if (mShopItems)
         {
-            Image *icon = mShopItems->at(i).image;
+            Image *icon = mShopItems->at(i)->getImage();
             if (icon)
             {
                 graphics->drawImage(icon, 1, y);

@@ -25,23 +25,18 @@
 
 #include "map.h"
 
-#include "resources/itemdb.h"
-#include "resources/iteminfo.h"
-
-
 FloorItem::FloorItem(unsigned int id,
                      unsigned int itemId,
                      unsigned short x,
                      unsigned short y,
                      Map *map):
     mId(id),
-    mItemId(itemId),
     mX(x),
     mY(y),
     mMap(map)
 {
-    // Retrieve item image from item info
-    mImage = ItemDB::get(itemId).getImage();
+    // Create a corresponding item instance
+    mItem = new Item(itemId);
 
     // Add ourselves to the map
     mSpriteIterator = mMap->addSprite(this);
@@ -51,4 +46,6 @@ FloorItem::~FloorItem()
 {
     // Remove ourselves from the map
     mMap->removeSprite(mSpriteIterator);
+
+    delete mItem;
 }

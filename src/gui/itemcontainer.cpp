@@ -104,11 +104,10 @@ ItemContainer::draw(gcn::Graphics *graphics)
 
             Item *item = mInventory->getItem((j * mGridColumns) + i);
 
-            if (!item)
-                return;
-            if (item->getId() == 0)
+            if (!item || item->getId() == 0)
                 continue;
-            Image *image = item->getInfo().getImage();
+
+            Image *image = item->getImage();
             if (image)
             {
                 if (item == mSelectedItem)
@@ -232,7 +231,7 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         {
             mSelectionStatus = SEL_DESELECTING;
         }
-        else if (item->getId())
+        else if (item && item->getId())
         {
             setSelectedItem(item);
             mSelectionStatus = SEL_SELECTING;

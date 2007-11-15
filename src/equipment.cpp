@@ -24,9 +24,31 @@
 #include <algorithm>
 
 #include "equipment.h"
+#include "item.h"
+
+Equipment::Equipment()
+{
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
+}
+
+Equipment::~Equipment()
+{
+    clear();
+}
 
 void Equipment::clear()
 {
-    std::fill_n(mEquipment, EQUIPMENT_SIZE, 0);
+    for (int i = 0; i < EQUIPMENT_SIZE; ++i)
+        delete mEquipment[i];
+
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
 }
 
+void Equipment::setEquipment(int index, int id)
+{
+    if (mEquipment[index] && mEquipment[index]->getId() == id)
+        return;
+
+    delete mEquipment[index];
+    mEquipment[index] = (id > 0) ? new Item(id) : 0;
+}

@@ -358,6 +358,8 @@ SET(SRCS
     player.h
     properties.h
     serverinfo.h
+    shopitem.cpp
+    shopitem.h
     simpleanimation.cpp
     simpleanimation.h
     sound.cpp

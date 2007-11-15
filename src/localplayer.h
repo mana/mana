@@ -142,7 +142,7 @@ class LocalPlayer : public Player
         drawName(Graphics *, int, int) {};
 
         void clearInventory();
-        Item* getInvItem(int index);
+        void setInvItem(int index, int id, int amount);
 
         /**
          * Move the Inventory item from the old slot to the new slot.

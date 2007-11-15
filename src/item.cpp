@@ -23,16 +23,38 @@
 
 #include "item.h"
 
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
 Item::Item(int id, int quantity) :
+    mImage(0),
     mQuantity(quantity)
 {
     setId(id);
 }
 
+Item::~Item()
+{
+    if (mImage)
+        mImage->decRef();
+}
+
 void Item::setId(int id)
 {
     mId = id;
+
     // Types 0 and 1 are not equippable items.
     mEquipment = id && getInfo().getType() >= 2;
+
+    // Load the associated image
+    if (mImage)
+        mImage->decRef();
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    std::string imagePath = "graphics/items/" + getInfo().getImageName();
+    mImage = resman->getImage(imagePath);
+
+    if (!mImage)
+        mImage = resman->getImage("graphics/gui/unknown-item.png");
 }
 

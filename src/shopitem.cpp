@@ -21,47 +21,13 @@
  *  $Id$
  */
 
-#include "shop.h"
+#include "shopitem.h"
 
-#include "../utils/dtor.h"
+#include "utils/tostring.h"
 
-ShopItems::~ShopItems()
+ShopItem::ShopItem(int id, int quantity, int price):
+    Item(id, quantity),
+    mPrice(price)
 {
-    clear();
-}
-
-int ShopItems::getNumberOfElements()
-{
-    return mShopItems.size();
-}
-
-std::string ShopItems::getElementAt(int i)
-{
-    return mShopItems.at(i)->getDisplayName();
-}
-
-void ShopItems::addItem(int id, int amount, int price)
-{
-    mShopItems.push_back(new ShopItem(id, amount, price));
-}
-
-void ShopItems::addItem(ShopItem* shopItem)
-{
-    mShopItems.push_back(shopItem);
-}
-
-ShopItem* ShopItems::at(int i)
-{
-    return mShopItems.at(i);
-}
-
-void ShopItems::clear()
-{
-    std::for_each(mShopItems.begin(), mShopItems.end(), make_dtor(mShopItems));
-    mShopItems.clear();
-}
-
-std::vector<ShopItem*>* ShopItems::getShop()
-{
-    return &mShopItems;
+    mDisplayName = getInfo().getName() + " (" + toString(mPrice) + " GP)";
 }

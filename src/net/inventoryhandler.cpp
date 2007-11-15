@@ -73,9 +73,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 else if (slot >= 32 && slot < 32 + INVENTORY_SIZE)
                 {
                     int amount = id ? msg.readByte() : 0;
-                    Item *it = player_node->getInvItem(slot - 32);
-                    it->setId(id);
-                    it->setQuantity(amount);
+                    player_node->setInvItem(slot - 32, id, amount);
                 }
             };
             itemShortcut->load();

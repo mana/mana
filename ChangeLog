@@ -1,3 +1,18 @@
+2007-11-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/floor_item.cpp, src/localplayer.cpp, src/item.cpp,
+	src/inventory.h, src/gui/sell.cpp, src/gui/equipmentwindow.cpp,
+	src/gui/shop.cpp, src/gui/shoplistbox.cpp, src/gui/shop.h,
+	src/gui/itemshortcutcontainer.cpp, src/gui/buy.cpp,
+	src/gui/itemcontainer.cpp, src/inventory.cpp, src/item.h,
+	src/equipment.h, src/shopitem.cpp, src/CMakeLists.txt,
+	src/floor_item.h, src/net/inventoryhandler.cpp, src/equipment.cpp,
+	src/localplayer.h, src/Makefile.am, src/resources/iteminfo.h,
+	src/resources/itemdb.cpp, src/resources/iteminfo.cpp, src/shopitem.h:
+	Moved item icon from ItemInfo class to the Item class, so that it can
+	be loaded on demand. Results in faster startup time and reduced memory
+	usage.
+
 2007-11-15  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/main.cpp: Disabled update loading.

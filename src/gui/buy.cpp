@@ -35,7 +35,6 @@
 
 #include "../npc.h"
 #include "../net/gameserver/player.h"
-#include "../resources/itemdb.h"
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
@@ -165,7 +164,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
                 mAmountItems <= mMaxItems)
     {
         Net::GameServer::Player::tradeWithNPC
-            (mShopItems->at(selectedItem).id, mAmountItems);
+            (mShopItems->at(selectedItem)->getId(), mAmountItems);
 
         // Reset selection
         mAmountItems = 1;
@@ -174,7 +173,8 @@ void BuyDialog::action(const gcn::ActionEvent &event)
 
         // Update money and adjust the max number of items that can be bought
         mMaxItems -= mAmountItems;
-        setMoney(mMoney - mAmountItems * mShopItems->at(selectedItem).price);
+        setMoney(mMoney -
+                mAmountItems * mShopItems->at(selectedItem)->getPrice());
     }
 }
 
@@ -197,22 +197,24 @@ BuyDialog::updateButtonsAndLabels()
 
     if (selectedItem > -1)
     {
-        const ItemInfo &info = ItemDB::get(mShopItems->at(selectedItem).id);
+        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
 
         mItemDescLabel->setCaption
             (strprintf(_("Description: %s"), info.getDescription().c_str()));
         mItemEffectLabel->setCaption
             (strprintf(_("Effect: %s"), info.getEffect().c_str()));
 
+        int itemPrice = mShopItems->at(selectedItem)->getPrice();
+
         // Calculate how many the player can afford
-        mMaxItems = mMoney / mShopItems->at(selectedItem).price;
+        mMaxItems = mMoney / itemPrice;
         if (mAmountItems > mMaxItems)
         {
             mAmountItems = mMaxItems;
         }
 
         // Calculate price of pending purchase
-        price = mAmountItems * mShopItems->at(selectedItem).price;
+        price = mAmountItems * itemPrice;
     }
     else
     {

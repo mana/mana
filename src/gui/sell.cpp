@@ -38,7 +38,6 @@
 #include "../item.h"
 #include "../npc.h"
 #include "../net/gameserver/player.h"
-#include "../resources/itemdb.h"
 #include "../resources/iteminfo.h"
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
@@ -158,11 +157,12 @@ void SellDialog::action(const gcn::ActionEvent &event)
             && mAmountItems <= mMaxItems)
     {
         Net::GameServer::Player::tradeWithNPC
-            (mShopItems->at(selectedItem).id, mAmountItems);
+            (mShopItems->at(selectedItem)->getId(), mAmountItems);
 
         mMaxItems -= mAmountItems;
-        mShopItems->getShop()->at(selectedItem).quantity = mMaxItems;
-        mPlayerMoney += (mAmountItems * mShopItems->at(selectedItem).price);
+        mShopItems->getShop()->at(selectedItem)->setQuantity(mMaxItems);
+        mPlayerMoney +=
+            mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mAmountItems = 1;
 
         if (!mMaxItems)
@@ -206,20 +206,20 @@ SellDialog::updateButtonsAndLabels()
 
     if (selectedItem > -1)
     {
-        const ItemInfo &info = ItemDB::get(mShopItems->at(selectedItem).id);
+        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
 
         mItemDescLabel->setCaption
             (strprintf(_("Description: %s"), info.getDescription().c_str()));
         mItemEffectLabel->setCaption
             (strprintf(_("Effect: %s"), info.getEffect().c_str()));
 
-        mMaxItems = mShopItems->at(selectedItem).quantity;
+        mMaxItems = mShopItems->at(selectedItem)->getQuantity();
         if (mAmountItems > mMaxItems)
         {
             mAmountItems = mMaxItems;
         }
 
-        income = mAmountItems * mShopItems->at(selectedItem).price;
+        income = mAmountItems * mShopItems->at(selectedItem)->getPrice();
     }
     else
     {

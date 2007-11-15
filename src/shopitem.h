@@ -21,47 +21,38 @@
  *  $Id$
  */
 
-#include "shop.h"
+#ifndef _SHOPITEM_H_
+#define _SHOPITEM_H_
 
-#include "../utils/dtor.h"
+#include "item.h"
 
-ShopItems::~ShopItems()
+/**
+ * Represents an item in a shop inventory.
+ */
+class ShopItem : public Item
 {
-    clear();
-}
+    public:
+        /**
+         * Constructor.
+         */
+        ShopItem(int id, int quantity, int price);
 
-int ShopItems::getNumberOfElements()
-{
-    return mShopItems.size();
-}
+        /**
+         * Gets the price of the item.
+         */
+        int getPrice() const
+        { return mPrice; }
 
-std::string ShopItems::getElementAt(int i)
-{
-    return mShopItems.at(i)->getDisplayName();
-}
+        /**
+         * Gets the display name for in the shop list.
+         */
+        const std::string& getDisplayName() const
+        { return mDisplayName; }
 
-void ShopItems::addItem(int id, int amount, int price)
-{
-    mShopItems.push_back(new ShopItem(id, amount, price));
-}
+    protected:
+        int mPrice;
+        int mIndex;
+        std::string mDisplayName;
+};
 
-void ShopItems::addItem(ShopItem* shopItem)
-{
-    mShopItems.push_back(shopItem);
-}
-
-ShopItem* ShopItems::at(int i)
-{
-    return mShopItems.at(i);
-}
-
-void ShopItems::clear()
-{
-    std::for_each(mShopItems.begin(), mShopItems.end(), make_dtor(mShopItems));
-    mShopItems.clear();
-}
-
-std::vector<ShopItem*>* ShopItems::getShop()
-{
-    return &mShopItems;
-}
+#endif

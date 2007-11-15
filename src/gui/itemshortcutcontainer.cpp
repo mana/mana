@@ -88,7 +88,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
         Item *item = itemShortcut->getItem(i);
         if (item) {
             // Draw item icon.
-            Image* image = item->getInfo().getImage();
+            Image* image = item->getImage();
             if (image) {
                 g->drawImage(image, itemX, itemY);
                 g->drawText(
@@ -102,7 +102,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
     if (mItemMoved)
     {
         // Draw the item image being dragged by the cursor.
-        Image* image = mItemMoved->getInfo().getImage();
+        Image* image = mItemMoved->getImage();
         if (image)
         {
             const int tPosX = mCursorPosX - (image->getWidth() / 2);

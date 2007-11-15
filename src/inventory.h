@@ -44,7 +44,7 @@ class Inventory
         /**
          * Returns the item at the specified index.
          */
-        Item* getItem(int index);
+        Item* getItem(int index) const;
 
         /**
          * Adds a new item in a free slot.
@@ -52,9 +52,9 @@ class Inventory
         void addItem(int id, int quantity);
 
         /**
-         * Adds a new item at a given position.
+         * Sets the item at the given position.
          */
-        void addItem(int index, int id, int quantity);
+        void setItem(int index, int id, int quantity);
 
         /**
          * Remove a item from the inventory.
@@ -93,7 +93,7 @@ class Inventory
 
         static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
     protected:
-        Item *mItems;  /**< The holder of items */
+        Item **mItems;  /**< The holder of items */
 };
 
 #endif
