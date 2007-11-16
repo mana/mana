@@ -1,3 +1,8 @@
+2007-11-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/log.cpp, src/utils/wingettimeofday.h: Removed useless win32
+	implementation of gettimeofday.
+
 2007-11-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/floor_item.cpp, src/localplayer.cpp, src/item.cpp,
