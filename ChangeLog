@@ -3,6 +3,8 @@
 	* src/resources/resourcemanager.h, src/resources/resource.h,
 	src/resources/resourcemanager.cpp, src/resources/resource.cpp: Delayed
 	resource deletion by 30 seconds.
+	* src/net/connection.cpp, src/resources/mapreader.cpp,
+	src/net/network.cpp: Reduced noise in log file.
 
 2007-11-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

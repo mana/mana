@@ -124,8 +124,8 @@ namespace
             MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
             if (iter != mMessageHandlers.end()) {
-                logger->log("Received packet %x (%i B)",
-                        msg.getId(), msg.getLength());
+                //logger->log("Received packet %x (%i B)",
+                //        msg.getId(), msg.getLength());
                 iter->second->handleMessage(msg);
             }
             else {

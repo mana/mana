@@ -248,8 +248,16 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
             {
                 if (xmlStrEqual(objectNode->name, BAD_CAST "object"))
                 {
-                    std::string objName = XML::getProperty(objectNode, "name", "");
                     std::string objType = XML::getProperty(objectNode, "type", "");
+
+                    if (objType == "WARP" || objType == "NPC" ||
+                        objType == "SCRIPT" || objType == "SPAWN")
+                    {
+                        // Silently skip server-side objects.
+                        continue;
+                    }
+
+                    std::string objName = XML::getProperty(objectNode, "name", "");
                     int objX = XML::getProperty(objectNode, "x", 0);
                     int objY = XML::getProperty(objectNode, "y", 0);
 

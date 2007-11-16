@@ -96,7 +96,7 @@ void Net::Connection::send(const MessageOut &msg)
         return;
     }
 
-    logger->log("Sending message of size %d...", msg.getDataSize());
+    //logger->log("Sending message of size %d...", msg.getDataSize());
 
     ENetPacket *packet = enet_packet_create(msg.getData(),
                                             msg.getDataSize(),
