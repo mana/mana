@@ -24,6 +24,7 @@
 #ifndef _TMW_RESOURCE_MANAGER_H
 #define _TMW_RESOURCE_MANAGER_H
 
+#include <ctime>
 #include <map>
 #include <string>
 #include <vector>
@@ -41,7 +42,11 @@ struct SDL_Surface;
  */
 class ResourceManager
 {
+
+    friend class Resource;
+
     public:
+
         typedef Resource *(*loader)(void *, unsigned);
         typedef Resource *(*generator)(void *);
 
@@ -154,10 +159,9 @@ class ResourceManager
         SpriteDef *getSprite(std::string const &path, int variant = 0);
 
         /**
-         * Releases a resource, removing it from the set of loaded resources.
+         * Releases a resource, placing it in the set of orphaned resources.
          */
-        void
-        release(const std::string &idPath);
+        void release(Resource *);
 
         /**
          * Allocates data into a buffer pointer for raw data loading. The
@@ -205,10 +209,14 @@ class ResourceManager
         static void
         cleanUp(Resource *resource);
 
+        void cleanOrphans();
+
         static ResourceManager *instance;
         typedef std::map<std::string, Resource*> Resources;
         typedef Resources::iterator ResourceIterator;
         Resources mResources;
+        Resources mOrphanedResources;
+        time_t mOldestOrphan;
 };
 
 #endif

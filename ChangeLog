@@ -1,3 +1,9 @@
+2007-11-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/resources/resourcemanager.h, src/resources/resource.h,
+	src/resources/resourcemanager.cpp, src/resources/resource.cpp: Delayed
+	resource deletion by 30 seconds.
+
 2007-11-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/log.cpp, src/utils/wingettimeofday.h: Removed useless win32

@@ -24,6 +24,7 @@
 #ifndef _TMW_RESOURCE_H
 #define _TMW_RESOURCE_H
 
+#include <ctime>
 #include <string>
 
 /**
@@ -69,8 +70,9 @@ class Resource
         ~Resource();
 
     private:
-        unsigned int mRefCount;    /**< Reference count */
-        std::string mIdPath;       /**< Path identifying this resource */
+        std::string mIdPath; /**< Path identifying this resource. */
+        time_t mTimeStamp;   /**< Time at which the resource was orphaned. */
+        unsigned mRefCount;  /**< Reference count. */
 };
 
 #endif

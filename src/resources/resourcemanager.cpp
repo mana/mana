@@ -21,12 +21,14 @@
  *  $Id$
  */
 
-#include "resourcemanager.h"
-
 #include <cassert>
 #include <sstream>
+#include <sys/time.h>
+
 #include <physfs.h>
 #include <SDL_image.h>
+
+#include "resourcemanager.h"
 
 #include "dye.h"
 #include "image.h"
@@ -41,12 +43,15 @@
 ResourceManager *ResourceManager::instance = NULL;
 
 ResourceManager::ResourceManager()
+  : mOldestOrphan(0)
 {
     logger->log("Initializing resource manager...");
 }
 
 ResourceManager::~ResourceManager()
 {
+    mResources.insert(mOrphanedResources.begin(), mOrphanedResources.end());
+
     // Release any remaining spritedefs first because they depend on image sets
     ResourceIterator iter = mResources.begin();
     while (iter != mResources.end())
@@ -82,10 +87,11 @@ ResourceManager::~ResourceManager()
     }
 
     // Release remaining resources, logging the number of dangling references.
-    while (!mResources.empty())
+    iter = mResources.begin();
+    while (iter != mResources.end())
     {
-        cleanUp(mResources.begin()->second);
-        mResources.erase(mResources.begin());
+        cleanUp(iter->second);
+        ++iter;
     }
 }
 
@@ -98,6 +104,38 @@ ResourceManager::cleanUp(Resource *res)
                 (res->mRefCount == 1) ? "" : "s",
                 res->mIdPath.c_str());
     delete res;
+}
+
+void ResourceManager::cleanOrphans()
+{
+    timeval tv;
+    gettimeofday(&tv, NULL);
+    // Delete orphaned resources after 30 seconds.
+    time_t oldest = tv.tv_sec, threshold = oldest - 30;
+
+    if (mOrphanedResources.empty() || mOldestOrphan >= threshold) return;
+
+    ResourceIterator iter = mOrphanedResources.begin();
+    while (iter != mOrphanedResources.end())
+    {
+        Resource *res = iter->second;
+        time_t t = res->mTimeStamp;
+        if (t >= threshold)
+        {
+            if (t < oldest) oldest = t;
+            ++iter;
+        }
+        else
+        {
+            logger->log("ResourceManager::release(%s)", res->mIdPath.c_str());
+            delete res;
+            ResourceIterator toErase = iter;
+            ++iter;
+            mOrphanedResources.erase(toErase);
+        }
+    }
+
+    mOldestOrphan = oldest;
 }
 
 bool
@@ -162,11 +200,20 @@ Resource *ResourceManager::get(std::string const &idPath, generator fun, void *d
 {
     // Check if the id exists, and return the value if it does.
     ResourceIterator resIter = mResources.find(idPath);
-
     if (resIter != mResources.end())
     {
         resIter->second->incRef();
         return resIter->second;
+    }
+
+    resIter = mOrphanedResources.find(idPath);
+    if (resIter != mOrphanedResources.end())
+    {
+        Resource *res = resIter->second;
+        mResources.insert(*resIter);
+        mOrphanedResources.erase(resIter);
+        res->incRef();
+        return res;
     }
 
     Resource *resource = fun(data);
@@ -176,6 +223,7 @@ Resource *ResourceManager::get(std::string const &idPath, generator fun, void *d
         resource->incRef();
         resource->mIdPath = idPath;
         mResources[idPath] = resource;
+        cleanOrphans();
     }
 
     // Returns NULL if the object could not be created.
@@ -294,17 +342,22 @@ SpriteDef *ResourceManager::getSprite
     return static_cast<SpriteDef*>(get(ss.str(), SpriteDefLoader::load, &l));
 }
 
-void
-ResourceManager::release(const std::string &idPath)
+void ResourceManager::release(Resource *res)
 {
-    logger->log("ResourceManager::release(%s)", idPath.c_str());
-
-    ResourceIterator resIter = mResources.find(idPath);
+    ResourceIterator resIter = mResources.find(res->mIdPath);
 
     // The resource has to exist
-    assert(resIter != mResources.end() && resIter->second);
+    assert(resIter != mResources.end() && resIter->second == res);
 
-    mResources.erase(idPath);
+    timeval tv;
+    gettimeofday(&tv, NULL);
+    time_t timestamp = tv.tv_sec;
+
+    res->mTimeStamp = timestamp;
+    if (mOrphanedResources.empty()) mOldestOrphan = timestamp;
+
+    mOrphanedResources.insert(*resIter);
+    mResources.erase(resIter);
 }
 
 ResourceManager*
