@@ -11,6 +11,7 @@
 
 	* src/log.cpp, src/utils/wingettimeofday.h: Removed useless win32
 	implementation of gettimeofday.
+	* src/log.cpp, tmw.cbp: Fixed minor issues.
 
 2007-11-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

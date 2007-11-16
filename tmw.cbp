@@ -35,7 +35,7 @@
 					<Add library="SDL.dll"/>
 					<Add library="xml2.dll"/>
 					<Add library="opengl32"/>
-					<Add library="png.dll"/>
+					<Add library="png12.dll"/>
 					<Add library="z.dll"/>
 					<Add library="physfs"/>
 					<Add library="curl.dll"/>
@@ -1506,6 +1506,16 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\serverinfo.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\shopitem.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\shopitem.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
