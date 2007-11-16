@@ -5,6 +5,7 @@
 	resource deletion by 30 seconds.
 	* src/net/connection.cpp, src/resources/mapreader.cpp,
 	src/net/network.cpp: Reduced noise in log file.
+	* src/resources/image.cpp: Sped up recoloring of transparent pixels.
 
 2007-11-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

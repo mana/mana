@@ -113,16 +113,16 @@ Resource *Image::load(void *buffer, unsigned bufferSize, Dye const &dye)
     SDL_FreeSurface(tmpImage);
 
     Uint32 *pixels = static_cast< Uint32 * >(surf->pixels);
-    for (int i = 0, i_end = surf->w * surf->h; i != i_end; ++i)
+    for (Uint32 *p_end = pixels + surf->w * surf->h; pixels != p_end; ++pixels)
     {
-        int v[4];
+        int alpha = *pixels & 255;
+        if (!alpha) continue;
+        int v[3];
         v[0] = (*pixels >> 24) & 255;
         v[1] = (*pixels >> 16) & 255;
         v[2] = (*pixels >> 8 ) & 255;
-        v[3] = (*pixels      ) & 255;
         dye.update(v);
-        *pixels = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | v[3];
-        ++pixels;
+        *pixels = (v[0] << 24) | (v[1] << 16) | (v[2] << 8) | alpha;
     }
 
     Image *image = load(surf);
