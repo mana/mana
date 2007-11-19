@@ -1,4 +1,10 @@
-﻿2007-11-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2007-11-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/log.cpp, src/utils/wingettimeofday.h: Removed useless win32
+	implementation of gettimeofday.
+	* src/log.cpp, tmw.cbp: Fixed minor issues.
+
+2007-11-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/item_amount.cpp, src/gui/item_amount.h,
 	src/gui/inventorywindow.cpp: Moved check on dropping 1 item to the

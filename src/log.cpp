@@ -21,13 +21,11 @@
 
 #include "log.h"
 
-#ifdef WIN32
-#include "utils/wingettimeofday.h"
-#else
 #include <sys/time.h>
-#endif
 
-#ifdef __APPLE__
+#ifdef WIN32
+#include <windows.h>
+#elif __APPLE__
 #include <Carbon/Carbon.h>
 #endif
 
