@@ -1,3 +1,10 @@
+2007-11-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/maps/new_1-1.tmx,
+	data/graphics/maps/new_3-1.tmx,
+	data/graphics/maps/new_15-1.tmx: Updated desert maps with new
+	tiles by Len.
+
 2007-11-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/log.cpp, src/utils/wingettimeofday.h: Removed useless win32
