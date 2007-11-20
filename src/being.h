@@ -68,12 +68,14 @@ class Being : public Sprite
     public:
         enum Type {
             UNKNOWN,
-            LOCALPLAYER,
             PLAYER,
             NPC,
             MONSTER
         };
 
+        /**
+         * Action the being is currently performing.
+         */
         enum Action {
             STAND,
             WALK,
@@ -123,7 +125,7 @@ class Being : public Sprite
         /**
          * Constructor.
          */
-        Being(Uint32 id, Uint16 job, Map *map);
+        Being(int id, int job, Map *map);
 
         /**
          * Destructor.
@@ -175,7 +177,7 @@ class Being : public Sprite
         /**
          * Sets the name for the being.
          *
-         * @param text The name that should appear.
+         * @param name The name that should appear.
          */
         void
         setName(const std::string &name) { mName = name; }
@@ -208,19 +210,19 @@ class Being : public Sprite
          * Sets visible equipments for this being.
          */
         virtual void
-        setVisibleEquipment(Uint8 slot, int id);
+        setVisibleEquipment(int slot, int id);
 
         /**
-         * Sets the sex for this being.
+         * Sets the gender of this being.
          */
         virtual void
-        setSex(Uint8 sex) { mSex = sex; }
+        setGender(int gender) { mGender = gender; }
 
         /**
-         * Gets the sex for this being.
+         * Gets the gender of this being.
          */
-        Uint8
-        getSex() const { return mSex; }
+        int
+        getGender() const { return mGender; }
 
         /**
          * Makes this being take the next step of his path.
@@ -308,7 +310,7 @@ class Being : public Sprite
          * @see Sprite::draw(Graphics, int, int)
          */
         virtual void
-        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) const;
+        draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
          * Returns the pixel X coordinate.
@@ -354,24 +356,18 @@ class Being : public Sprite
         virtual Being::TargetCursorSize getTargetCursorSize() const
         { return TC_MEDIUM; }
 
-        std::auto_ptr<Equipment> mEquipment;
-
         /**
          * Take control of a particle.
          */
         void controlParticle(Particle *particle);
+
+        std::auto_ptr<Equipment> mEquipment;
 
     protected:
         /**
          * Sets the new path for this being.
          */
         void setPath(const Path &path);
-
-        /**
-         * Calculates the offset in the given directions.
-         * If walking in direction 'neg' the value is negated.
-         */
-        int getOffset(char pos, char neg) const;
 
         /**
          * Returns the sprite direction of this being.
@@ -391,7 +387,7 @@ class Being : public Sprite
         Path mPath;
         std::string mSpeech;
         Uint16 mHairStyle, mHairColor;
-        Uint8 mSex;
+        Uint8 mGender;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
@@ -400,6 +396,12 @@ class Being : public Sprite
         std::list<Particle *> mChildParticleEffects;
 
     private:
+        /**
+         * Calculates the offset in the given directions.
+         * If walking in direction 'neg' the value is negated.
+         */
+        int getOffset(char pos, char neg) const;
+
         static int instances;           /**< Number of Being instances */
         static ImageSet *emotionSet;    /**< Emoticons used by beings */
 };

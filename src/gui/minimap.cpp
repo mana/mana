@@ -26,6 +26,7 @@
 #include "../being.h"
 #include "../beingmanager.h"
 #include "../graphics.h"
+#include "../localplayer.h"
 
 #include "../resources/image.h"
 
@@ -82,15 +83,16 @@ void Minimap::draw(gcn::Graphics *graphics)
     for (bi = beings.begin(); bi != beings.end(); bi++)
     {
         Being *being = (*bi);
-        int dotSize = 1;
+        int dotSize = 2;
 
         switch (being->getType()) {
-            case Being::LOCALPLAYER:
-                dotSize = 3;
-                graphics->setColor(gcn::Color(209, 52, 61));
-                break;
-
             case Being::PLAYER:
+                if (being == player_node)
+                {
+                    dotSize = 3;
+                    graphics->setColor(gcn::Color(61, 209, 52));
+                    break;
+                }
                 graphics->setColor(gcn::Color(61, 52, 209));
                 break;
 

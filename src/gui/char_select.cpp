@@ -76,9 +76,9 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 
 CharSelectDialog::CharSelectDialog(Network *network,
                                    LockedArray<LocalPlayer*> *charInfo,
-                                   unsigned char sex):
+                                   unsigned char gender):
     Window("Select Character"), mNetwork(network),
-    mCharInfo(charInfo), mSex(sex), mCharSelected(false)
+    mCharInfo(charInfo), mGender(gender), mCharSelected(false)
 {
     mSelectButton = new Button("Ok", "ok", this);
     mCancelButton = new Button("Cancel", "cancel", this);
@@ -153,7 +153,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     {
         // Start new character dialog
         CharCreateDialog *charCreateDialog =
-            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mSex);
+            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mGender);
         charServerHandler.setCharCreateDialog(charCreateDialog);
     }
     else if (event.getId() == "delete")
@@ -251,11 +251,11 @@ bool CharSelectDialog::selectByName(const std::string &name)
 }
 
 CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
-                                   unsigned char sex):
+                                   unsigned char gender):
     Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
 {
     mPlayer = new Player(0, 0, NULL);
-    mPlayer->setSex(sex);
+    mPlayer->setGender(gender);
     mPlayer->setHairStyle(rand() % NR_HAIR_STYLES + 1);
     mPlayer->setHairColor(rand() % NR_HAIR_COLORS + 1);
 

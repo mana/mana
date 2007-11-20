@@ -106,7 +106,7 @@ void ItemDB::load()
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
         std::string effect = XML::getProperty(node, "effect", "");
-        std::string attackType = XML::getProperty(node, "attacktype", "");
+        int weaponType = XML::getProperty(node, "weapon_type", 0);
 
         if (id)
         {
@@ -118,7 +118,7 @@ void ItemDB::load()
             itemInfo->setType(type);
             itemInfo->setView(view);
             itemInfo->setWeight(weight);
-            itemInfo->setAttackType(attackType);
+            itemInfo->setWeaponType(weaponType);
 
             for_each_xml_child_node(itemChild, node)
             {

@@ -46,13 +46,13 @@ class AnimatedSprite
         AnimatedSprite(SpriteDef *sprite);
 
         /**
-         * A convenience constructor, which will request the sprite to animate
+         * An helper function, which will request the sprite to animate
          * from the resource manager.
          *
          * @param filename the file of the sprite to animate
          * @param variant  the sprite variant
          */
-        AnimatedSprite(const std::string& filename, int variant = 0);
+        static AnimatedSprite *load(std::string const &filename, int variant = 0);
 
         /**
          * Destructor.

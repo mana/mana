@@ -105,7 +105,7 @@ class ItemInfo
 
         const std::string& getSprite(int gender) const;
 
-        void setAttackType(const std::string &attackType);
+        void setWeaponType(int);
 
         const SpriteAction getAttackType() const
         { return mAttackType; }

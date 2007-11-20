@@ -75,13 +75,13 @@ SpriteDef::load(const std::string &animationFile, int variant)
 
     if (!doc) {
         logger->error(
-                "Animation: Error while parsing animation definition file!");
+                "Animation: Error while parsing " + animationFile + " file!");
     }
 
     xmlNodePtr rootNode = xmlDocGetRootElement(doc);
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "sprite")) {
         logger->error(
-                "Animation: this is not a valid animation definition file!");
+                "Animation: this is not a valid " + animationFile + " file!");
     }
 
     // Get the variant

@@ -275,6 +275,13 @@ ResourceManager::getSprite(const std::string &path, int variant)
         return dynamic_cast<SpriteDef*>(resIter->second);
     }
 
+    // FIXME: modify SpriteDef so that it gracefully fails on missing sprite.
+    if (!exists(path) || isDirectory(path))
+    {
+        logger->log("Failed to load file: %s", path.c_str());
+        return NULL;
+    }
+
     SpriteDef *sprite = new SpriteDef(idPath, path, variant);
     sprite->incRef();
     mResources[idPath] = sprite;

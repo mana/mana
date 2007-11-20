@@ -44,7 +44,7 @@ LocalPlayer *player_node = NULL;
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
     mAttackRange(0),
-    mInventory(new Inventory()),
+    mInventory(new Inventory),
     mXp(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mLastAction(-1)
@@ -104,11 +104,6 @@ void LocalPlayer::nextStep()
     }
 
     Player::nextStep();
-}
-
-Being::Type LocalPlayer::getType() const
-{
-    return LOCALPLAYER;
 }
 
 void LocalPlayer::clearInventory()

@@ -50,7 +50,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
          */
         CharSelectDialog(Network *network,
                          LockedArray<LocalPlayer*> *charInfo,
-                         unsigned char sex);
+                         unsigned char gender);
 
         void action(const gcn::ActionEvent &event);
 
@@ -78,7 +78,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         PlayerBox *mPlayerBox;
 
-        unsigned char mSex;
+        unsigned char mGender;
         bool mCharSelected;
 
         /**
@@ -104,7 +104,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          * Constructor.
          */
         CharCreateDialog(Window *parent, int slot, Network *network,
-                         unsigned char sex);
+                         unsigned char gender);
 
         /**
          * Destructor.

@@ -71,32 +71,29 @@ ItemInfo::getSprite(int gender) const
     }
 }
 
-void
-ItemInfo::setAttackType(const std::string &attackType)
+void ItemInfo::setWeaponType(int type)
 {
-    if (attackType == "swing")
+    // See server item.hpp file for type values.
+    switch (type)
     {
-        mAttackType = ACTION_ATTACK_SWING;
-    }
-    else if (attackType == "stab")
-    {
-        mAttackType = ACTION_ATTACK_STAB;
-    }
-    else if (attackType == "bow")
-    {
-        mAttackType = ACTION_ATTACK_BOW;
-    }
-    else if (attackType == "throw")
-    {
-        mAttackType = ACTION_ATTACK_THROW;
-    }
-    else if (attackType == "none")
-    {
-        mAttackType = ACTION_DEFAULT;
-    }
-    else
-    {
-        mAttackType = ACTION_ATTACK;
+        case 0:     // none
+            mAttackType = ACTION_DEFAULT;
+            break;
+        case 1:     // knife
+        case 2:     // sword
+            mAttackType = ACTION_ATTACK_STAB;
+            break;
+        case 8:     // projectile
+            mAttackType = ACTION_ATTACK_THROW;
+            break;
+        case 10:    // bow
+            mAttackType = ACTION_ATTACK_BOW;
+            break;
+        case 11:    // sickle
+            mAttackType = ACTION_ATTACK_SWING;
+            break;
+        default:
+            mAttackType = ACTION_ATTACK;
     }
 }
 

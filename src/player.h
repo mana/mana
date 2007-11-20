@@ -37,7 +37,7 @@ class Map;
 class Player : public Being
 {
     public:
-        Player(Uint32 id, Uint16 job, Map *map);
+        Player(int id, int job, Map *map);
 
         virtual void
         logic();
@@ -49,16 +49,16 @@ class Player : public Being
         drawName(Graphics *graphics, int offsetX, int offsetY);
 
         virtual void
-        setSex(Uint8 sex);
+        setGender(int gender);
 
         virtual void
-        setHairColor(Uint16 color);
+        setHairColor(int color);
 
         virtual void
-        setHairStyle(Uint16 style);
+        setHairStyle(int style);
 
         virtual void
-        setVisibleEquipment(Uint8 slot, int id);
+        setVisibleEquipment(int slot, int id);
 };
 
 #endif

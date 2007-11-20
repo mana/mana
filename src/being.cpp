@@ -44,7 +44,7 @@
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
 
-Being::Being(Uint32 id, Uint16 job, Map *map):
+Being::Being(int id, int job, Map *map):
     mJob(job),
     mX(0), mY(0),
     mAction(0),
@@ -58,7 +58,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mMap(NULL),
     mEquippedWeapon(NULL),
     mHairStyle(0), mHairColor(0),
-    mSex(2),
+    mGender(2),
     mSpeechTime(0),
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
@@ -147,7 +147,7 @@ Being::setHairStyle(Uint16 style)
 }
 
 void
-Being::setVisibleEquipment(Uint8 slot, int id)
+Being::setVisibleEquipment(int slot, int id)
 {
     mEquipmentSpriteIDs[slot] = id;
 }

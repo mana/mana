@@ -72,8 +72,6 @@ class LocalPlayer : public Player
         virtual void
         drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
 
-        virtual Type getType() const;
-
         void clearInventory();
         void addInvItem(int id, int quantity, bool equipment);
         void addInvItem(int index, int id, int quantity, bool equipment);

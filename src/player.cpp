@@ -26,6 +26,7 @@
 #include "animatedsprite.h"
 #include "game.h"
 #include "graphics.h"
+#include "log.h"
 
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
@@ -34,7 +35,7 @@
 
 #include "gui/gui.h"
 
-Player::Player(Uint32 id, Uint16 job, Map *map):
+Player::Player(int id, int job, Map *map):
     Being(id, job, map)
 {
 }
@@ -84,23 +85,30 @@ Player::drawName(Graphics *graphics, int offsetX, int offsetY)
     graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
 }
 
-void
-Player::setSex(Uint8 sex)
+void Player::setGender(int gender)
 {
-    if (sex != mSex)
+    // Players can only be male or female
+    if (gender > 1)
+    {
+        logger->log("Warning: unsupported gender %i, assuming male.", gender);
+        gender = 0;
+    }
+
+    if (gender != mGender)
     {
         // Reload base sprite
         AnimatedSprite *newBaseSprite;
-        if (sex == 0)
+        if (gender == 0)
         {
-            newBaseSprite = new AnimatedSprite(
+            newBaseSprite = AnimatedSprite::load(
                     "graphics/sprites/player_male_base.xml");
         }
         else
         {
-            newBaseSprite = new AnimatedSprite(
+            newBaseSprite = AnimatedSprite::load(
                     "graphics/sprites/player_female_base.xml");
         }
+
         delete mSprites[BASE_SPRITE];
         mSprites[BASE_SPRITE] = newBaseSprite;
 
@@ -109,34 +117,30 @@ Player::setSex(Uint8 sex)
         {
             if (i != HAIR_SPRITE && mEquipmentSpriteIDs.at(i) != 0)
             {
-                AnimatedSprite *newEqSprite = new AnimatedSprite(
+                AnimatedSprite *newEqSprite = AnimatedSprite::load(
                         "graphics/sprites/" + ItemDB::get(
-                            mEquipmentSpriteIDs.at(i)).getSprite(sex));
+                            mEquipmentSpriteIDs.at(i)).getSprite(gender));
                 delete mSprites[i];
                 mSprites[i] = newEqSprite;
             }
         }
     }
 
-    Being::setSex(sex);
+    Being::setGender(gender);
 }
 
-void
-Player::setHairColor(Uint16 color)
+void Player::setHairColor(int color)
 {
     if (color != mHairColor && mHairStyle > 0)
     {
-        std::string sex;
-        if (mSex == 0)
-        {
-            sex = "-male";
-        } else{
-            sex = "-female";
-        }
-        AnimatedSprite *newHairSprite = new AnimatedSprite(
-            "graphics/sprites/hairstyle" + toString(mHairStyle) + sex + ".xml",
-            color - 1);
-        newHairSprite->setDirection(getSpriteDirection());
+        const std::string hairStyle = toString(getHairStyle());
+        const std::string gender = (mGender == 0) ? "-male" : "-female";
+
+        AnimatedSprite *newHairSprite = AnimatedSprite::load(
+                "graphics/sprites/hairstyle" + hairStyle + gender + ".xml",
+                color - 1);
+        if (newHairSprite)
+            newHairSprite->setDirection(getSpriteDirection());
 
         delete mSprites[HAIR_SPRITE];
         mSprites[HAIR_SPRITE] = newHairSprite;
@@ -147,22 +151,18 @@ Player::setHairColor(Uint16 color)
     Being::setHairColor(color);
 }
 
-void
-Player::setHairStyle(Uint16 style)
+void Player::setHairStyle(int style)
 {
     if (style != mHairStyle && mHairColor > 0)
     {
-        std::string sex;
-        if (mSex == 0)
-        {
-            sex = "-male";
-        } else{
-            sex = "-female";
-        }
-        AnimatedSprite *newHairSprite = new AnimatedSprite(
-            "graphics/sprites/hairstyle" + toString(style) + sex + ".xml",
-            mHairColor - 1);
-        newHairSprite->setDirection(getSpriteDirection());
+        const std::string hairStyle = toString(style);
+        const std::string gender = (mGender == 0) ? "-male" : "-female";
+
+        AnimatedSprite *newHairSprite = AnimatedSprite::load(
+                "graphics/sprites/hairstyle" + hairStyle + gender + ".xml",
+                mHairColor - 1);
+        if (newHairSprite)
+            newHairSprite->setDirection(getSpriteDirection());
 
         delete mSprites[HAIR_SPRITE];
         mSprites[HAIR_SPRITE] = newHairSprite;
@@ -173,8 +173,7 @@ Player::setHairStyle(Uint16 style)
     Being::setHairStyle(style);
 }
 
-void
-Player::setVisibleEquipment(Uint8 slot, int id)
+void Player::setVisibleEquipment(int slot, int id)
 {
     // id = 0 means unequip
     if (id == 0)
@@ -184,19 +183,11 @@ Player::setVisibleEquipment(Uint8 slot, int id)
     }
     else
     {
-        AnimatedSprite *equipmentSprite;
+        AnimatedSprite *equipmentSprite = AnimatedSprite::load(
+            "graphics/sprites/" + ItemDB::get(id).getSprite(mGender));
 
-        if (mSex == 0)
-        {
-            equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + ItemDB::get(id).getSprite(0));
-        }
-        else {
-            equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + ItemDB::get(id).getSprite(1));
-        }
-
-        equipmentSprite->setDirection(getSpriteDirection());
+        if (equipmentSprite)
+            equipmentSprite->setDirection(getSpriteDirection());
 
         delete mSprites[slot];
         mSprites[slot] = equipmentSprite;

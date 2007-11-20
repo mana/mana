@@ -99,11 +99,22 @@
 
 	* src/resources/iteminfo.h, src/resources/itemdb.cpp: Removed unused
 	slot field.
+	* src/localplayer.cpp, src/localplayer.h: Removed specific type.
+	* src/gui/viewport.cpp, src/gui/minimap.cpp: Changed identification of
+	local player to a check of player_node.
+	* src/animatedsprite.cpp, src/animatedsprite.h, src/npc.cpp,
+	src/player.cpp, src/monster.cpp, src/resources/resourcemanager.cpp:
+	Prevented client from exiting on missing sprites.
+	* src/resources/spritedef.cpp: Added filename to fatal error messages.
+	* src/resources/iteminfo.cpp, src/resources/iteminfo.h,
+	src/resources/itemdb.cpp, data/items.xml: Merged weapon_type and
+	attacktype field.
 
 2007-10-18  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/hairstyle7-male.png,
-	data/graphics/sprites/hairstyle7-female.png; Readded hairstyle number 7.
+	data/graphics/sprites/hairstyle7-female.png: Readded hairstyle number
+	7.
 
 2007-10-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
