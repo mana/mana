@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "beingmanager.h"
 
 #include "localplayer.h"

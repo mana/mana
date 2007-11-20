@@ -47,6 +47,23 @@
 	ViewID is 26, item ID is 632, item properties are c&p from jeans
 	shorts.
 
+2007-10-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/properties.h, src/game.cpp, src/channel.h, src/log.cpp,
+	src/gui/window.cpp, src/gui/setup.cpp, src/gui/button.cpp,
+	src/gui/chat.h, src/gui/widgets/dropdown.cpp, src/gui/chat.cpp,
+	src/gui/tabbedcontainer.cpp, src/gui/windowcontainer.cpp,
+	src/gui/skill.cpp, src/gui/serverdialog.cpp, src/gui/textfield.cpp,
+	src/gui/playerbox.cpp, src/gui/scrollarea.cpp, src/beingmanager.cpp,
+	src/flooritemmanager.cpp, src/channelmanager.cpp, src/main.cpp,
+	src/particle.cpp, src/net/messageout.cpp, src/channel.cpp,
+	src/localplayer.h, src/resources/imageset.cpp,
+	src/resources/buddylist.cpp, src/resources/monsterinfo.h,
+	src/resources/iteminfo.h, src/resources/monsterdb.cpp,
+	src/resources/monsterinfo.cpp, src/resources/itemdb.cpp: Fixed missing
+	dependencies, spurious const qualifiers, and weak brackets, so that it
+	compiles with GCC 4.3.
+
 2007-10-26  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/item_ammount.cpp: Item amount dialog is now skipped

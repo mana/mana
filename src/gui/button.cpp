@@ -21,11 +21,13 @@
  *  $Id$
  */
 
-#include "button.h"
+#include <algorithm>
 
 #include <guichan/exception.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/imagefont.hpp>
+
+#include "button.h"
 
 #include "../graphics.h"
 

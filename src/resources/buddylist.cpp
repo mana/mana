@@ -21,11 +21,15 @@
  *  $Id$
  */
 
-#include "buddylist.h"
-#include "../main.h"
-#include "../configuration.h"
+#include <algorithm>
+#include <cstring>
 #include <iostream>
 #include <fstream>
+
+#include "buddylist.h"
+
+#include "../main.h"
+#include "../configuration.h"
 
 BuddyList::BuddyList()
 {

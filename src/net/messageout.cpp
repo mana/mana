@@ -21,13 +21,14 @@
  *  $Id$
  */
 
-#include "messageout.h"
-
+#include <cstring>
 #include <string>
 #include <SDL.h>
 #include <SDL_endian.h>
 
 #include "network.h"
+
+#include "messageout.h"
 
 MessageOut::MessageOut(Network *network):
     mNetwork(network),

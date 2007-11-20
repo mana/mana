@@ -21,9 +21,11 @@
  *  $Id$
  */
 
-#include "skill.h"
+#include <algorithm>
 
 #include <guichan/widgets/label.hpp>
+
+#include "skill.h"
 
 #include "button.h"
 #include "listbox.h"

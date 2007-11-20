@@ -195,7 +195,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         bool mTmpVisible;
 
         /** One item in the chat log */
-        typedef struct CHATLOG
+        struct CHATLOG
         {
             std::string nick;
             std::string text;

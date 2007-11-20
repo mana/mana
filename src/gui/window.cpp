@@ -21,10 +21,13 @@
  *  $Id$
  */
 
-#include "window.h"
+#include <algorithm>
+#include <climits>
 
 #include <guichan/exception.hpp>
 #include <guichan/widgets/icon.hpp>
+
+#include "window.h"
 
 #include "gui.h"
 #include "gccontainer.h"

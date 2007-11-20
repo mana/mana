@@ -19,7 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "log.h"
+#include <cstdarg>
+#include <cstdlib>
+#include <iostream>
+#include <sstream>
 
 #include <sys/time.h>
 
@@ -29,9 +32,7 @@
 #include <Carbon/Carbon.h>
 #endif
 
-#include <cstdarg>
-#include <iostream>
-#include <sstream>
+#include "log.h"
 
 Logger::Logger():
     mLogToStandardOut(false)

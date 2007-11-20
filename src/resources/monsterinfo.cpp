@@ -21,6 +21,8 @@
  *  $Id: monsterinfo.cpp 2650 2006-09-03 15:00:47Z b_lindeijer $
  */
 
+#include <algorithm>
+
 #include "monsterinfo.h"
 
 #include "../utils/dtor.h"

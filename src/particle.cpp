@@ -21,9 +21,10 @@
  *  $Id$
  */
 
-#include "particle.h"
-
+#include <algorithm>
 #include <cmath>
+
+#include "particle.h"
 
 #include "animationparticle.h"
 #include "configuration.h"

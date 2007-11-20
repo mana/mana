@@ -21,9 +21,11 @@
  *  $Id$
  */
 
-#include "textfield.h"
+#include <algorithm>
 
 #include <guichan/font.hpp>
+
+#include "textfield.h"
 
 #include "../graphics.h"
 

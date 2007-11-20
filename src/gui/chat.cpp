@@ -21,12 +21,13 @@
  *  $Id$
  */
 
-#include "chat.h"
-
+#include <algorithm>
 #include <sstream>
 
 #include <guichan/focushandler.hpp>
 #include <guichan/key.hpp>
+
+#include "chat.h"
 
 #include "browserbox.h"
 #include "chatinput.h"

@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "scrollarea.h"
 
 #include "../graphics.h"

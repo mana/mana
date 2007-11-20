@@ -693,24 +693,24 @@ void Game::handleInput()
         unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction
-        if ( keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
-                joystick && joystick->isUp())
+        if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
+            (joystick && joystick->isUp()))
         {
             direction |= Being::UP;
         }
-        else if ( keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
-                joystick && joystick->isDown())
+        else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
+                 (joystick && joystick->isDown()))
         {
             direction |= Being::DOWN;
         }
 
-        if ( keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
-                joystick && joystick->isLeft())
+        if (keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
+            (joystick && joystick->isLeft()))
         {
             direction |= Being::LEFT;
         }
-        else if ( keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
-                joystick && joystick->isRight())
+        else if (keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
+                 (joystick && joystick->isRight()))
         {
             direction |= Being::RIGHT;
         }
