@@ -526,16 +526,20 @@ Window::loadWindowState()
 {
     const std::string &name = mWindowName;
 
-    setPosition((int) config.getValue(name + "WinX", getX()),
-                (int) config.getValue(name + "WinY", getY()));
+    setPosition((int) config.getValue(name + "WinX", mDefaultX),
+                (int) config.getValue(name + "WinY", mDefaultY));
 
     if (mGrip)
     {
-        setSize((int) config.getValue(name + "WinWidth", getWidth()),
-                (int) config.getValue(name + "WinHeight", getHeight()));
+        setSize((int) config.getValue(name + "WinWidth", mDefaultWidth),
+                (int) config.getValue(name + "WinHeight", mDefaultHeight));
 
         const gcn::Rectangle area = getChildrenArea();
         mChrome->setSize(area.width, area.height);
+    }
+    else
+    {
+        setContentSize(mDefaultWidth, mDefaultHeight);
     }
 }
 
@@ -546,9 +550,6 @@ void Window::setDefaultSize(int defaultX, int defaultY,
     mDefaultY = defaultY;
     mDefaultWidth = defaultWidth;
     mDefaultHeight = defaultHeight;
-
-    setPosition(mDefaultX, mDefaultY);
-    setContentSize(mDefaultWidth, mDefaultHeight);
 }
 
 void Window::resetToDefaultSize()

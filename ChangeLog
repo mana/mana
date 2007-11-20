@@ -85,10 +85,30 @@
 	* src/resources/monsterdb.cpp: Plugged memory leak in database reader.
 	* src/engine.cpp, src/engine.h, src/game.cpp: Fixed current map not
 	deleted on server change.
+	* src/gui/trade.cpp: Added persistent positioning.
+	* src/gui/menuwindow.cpp: Fixed missing pixels at bottom and right.
+	* src/gui/window.cpp, src/gui/window.h: Changed to use default values
+	when restoring missing settings.
+	* src/gui/shoplistbox.cpp, src/gui/listbox.cpp: Fixed invisible text.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/playerbox.cpp: Centered sprite inside selection box.
+
+2007-10-19  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/resources/resource.cpp, src/resources/resource.h,
+	src/resources/imageset.cpp, src/resources/imageset.h: Removed mandatory
+	identifier path.
+	* src/resources/resourcemanager.cpp, src/resources/resourcemanager.h:
+	Factored code between resource handlers.
+	* src/resources/soundeffect.h, src/resources/soundeffect.cpp,
+	src/resources/music.h, src/resources/music.cpp, src/resources/image.h,
+	src/resources/image.cpp: Reworked resource loaders.
+	* src/resources/spritedef.h, src/resources/spritedef.cpp: Implemented
+	a failure-friendly loader.
+	* src/gui/truetypefont.cpp, src/resources/imageloader.cpp,
+	src/tileset.h: Removed dummy parameter.
 
 2007-10-19  Philipp Sehmisch  <tmw@crushnet.org>
 

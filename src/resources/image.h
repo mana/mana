@@ -62,18 +62,16 @@ class Image : public Resource
          *
          * @param buffer     The memory buffer containing the image data.
          * @param bufferSize The size of the memory buffer in bytes.
-         * @param idPath     The path identifying the resource.
          *
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static Image*
-        load(void* buffer, unsigned int bufferSize, const std::string &idPath);
+        static Resource *load(void *buffer, unsigned bufferSize);
 
         /**
          * Loads an image from an SDL surface.
          */
-        static Image *load(SDL_Surface *, std::string const &idPath);
+        static Image *load(SDL_Surface *);
 
         /**
          * Frees the resources created by SDL.
@@ -129,8 +127,8 @@ class Image : public Resource
          * Constructor.
          */
 #ifdef USE_OPENGL
-        Image(const std::string &idPath, GLuint glimage, int width, int height,
-                int texWidth, int texHeight);
+        Image(GLuint glimage, int width, int height,
+              int texWidth, int texHeight);
 
         /**
          * Returns the first power of two equal or bigger than the input.
@@ -138,7 +136,7 @@ class Image : public Resource
         static int
         powerOfTwo(int input);
 #endif
-        Image(const std::string &idPath, SDL_Surface *image);
+        Image(SDL_Surface *image);
 
         SDL_Rect mBounds;
         bool mLoaded;

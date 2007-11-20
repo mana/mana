@@ -52,6 +52,7 @@ void ListBox::draw(gcn::Graphics *graphics)
     }
 
     // Draw the list elements
+    graphics->setColor(gcn::Color(0, 0, 0));
     for (int i = 0, y = 0;
          i < mListModel->getNumberOfElements();
          ++i, y += fontHeight)

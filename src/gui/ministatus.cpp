@@ -78,6 +78,7 @@ MiniStatusWindow::MiniStatusWindow():
 
     setDefaultSize(0, 0, mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
+    loadWindowState();
 }
 
 void MiniStatusWindow::update()

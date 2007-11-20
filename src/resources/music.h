@@ -40,17 +40,15 @@ class Music : public Resource
         virtual ~Music();
 
         /**
-         * Loads an image from a buffer in memory.
+         * Loads a music from a buffer in memory.
          *
          * @param buffer     The memory buffer containing the music data.
          * @param bufferSize The size of the memory buffer in bytes.
-         * @param idPath     The path identifying the resource.
          *
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static Music*
-        load(void* buffer, unsigned int bufferSize, const std::string &idPath);
+        static Resource *load(void *buffer, unsigned bufferSize);
 
         /**
          * Plays the music.
@@ -73,7 +71,7 @@ class Music : public Resource
         /**
          * Constructor.
          */
-        Music(const std::string &idPath, Mix_Chunk *music);
+        Music(Mix_Chunk *music);
 
         //Mix_Music *music;
         Mix_Chunk *mChunk;

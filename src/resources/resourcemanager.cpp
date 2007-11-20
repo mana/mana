@@ -157,56 +157,23 @@ ResourceManager::isDirectory(const std::string &path)
     return PHYSFS_isDirectory(path.c_str());
 }
 
-Resource*
-ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
+Resource *ResourceManager::get(std::string const &idPath, generator fun, void *data)
 {
     // Check if the id exists, and return the value if it does.
     ResourceIterator resIter = mResources.find(idPath);
 
-    if (resIter != mResources.end() && resIter->second) {
+    if (resIter != mResources.end())
+    {
         resIter->second->incRef();
         return resIter->second;
     }
 
-    int fileSize;
-    void *buffer = loadFile(idPath, fileSize);
-    if (!buffer) {
-        return NULL;
-    }
-
-    Resource *resource = NULL;
-
-    // Create an object of the specified type.
-    switch (type)
-    {
-        case MUSIC:
-            {
-                // Let the music class load it
-                resource = Music::load(buffer, fileSize, idPath);
-            }
-            break;
-        case IMAGE:
-            {
-                // Let the image class load it
-                resource = Image::load(buffer, fileSize, idPath);
-            }
-            break;
-        case SOUND_EFFECT:
-            {
-                // Let the sound effect class load it
-                resource = SoundEffect::load(buffer, fileSize, idPath);
-            }
-            break;
-        default:
-            /* Nothing to do here, just avoid compiler warnings... */
-            break;
-    }
-
-    free(buffer);
+    Resource *resource = fun(data);
 
     if (resource)
     {
         resource->incRef();
+        resource->mIdPath = idPath;
         mResources[idPath] = resource;
     }
 
@@ -214,79 +181,90 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
     return resource;
 }
 
+struct ResourceLoader
+{
+    ResourceManager *manager;
+    std::string path;
+    ResourceManager::loader fun;
+    static Resource *load(void *v)
+    {
+        ResourceLoader *l = static_cast< ResourceLoader * >(v);
+        int fileSize;
+        void *buffer = l->manager->loadFile(l->path, fileSize);
+        if (!buffer) return NULL;
+        Resource *res = l->fun(buffer, fileSize);
+        free(buffer);
+        return res;
+    }
+};
+
+Resource *ResourceManager::load(std::string const &path, loader fun)
+{
+    ResourceLoader l = { this, path, fun };
+    return get(path, ResourceLoader::load, &l);
+}
+
 Image*
 ResourceManager::getImage(const std::string &idPath)
 {
-    return dynamic_cast<Image*>(get(IMAGE, idPath));
+    return static_cast<Image*>(load(idPath, Image::load));
 }
 
 Music*
 ResourceManager::getMusic(const std::string &idPath)
 {
-    return dynamic_cast<Music*>(get(MUSIC, idPath));
+    return static_cast<Music*>(load(idPath, Music::load));
 }
 
 SoundEffect*
 ResourceManager::getSoundEffect(const std::string &idPath)
 {
-    return dynamic_cast<SoundEffect*>(get(SOUND_EFFECT, idPath));
+    return static_cast<SoundEffect*>(load(idPath, SoundEffect::load));
 }
+
+struct ImageSetLoader
+{
+    ResourceManager *manager;
+    std::string path;
+    int w, h;
+    static Resource *load(void *v)
+    {
+        ImageSetLoader *l = static_cast< ImageSetLoader * >(v);
+        Image *img = l->manager->getImage(l->path);
+        if (!img) return NULL;
+        ImageSet *res = new ImageSet(img, l->w, l->h);
+        img->decRef();
+        return res;
+    }
+};
 
 ImageSet*
 ResourceManager::getImageSet(const std::string &imagePath, int w, int h)
 {
+    ImageSetLoader l = { this, imagePath, w, h };
     std::stringstream ss;
     ss << imagePath << "[" << w << "x" << h << "]";
-    const std::string idPath = ss.str();
-
-    ResourceIterator resIter = mResources.find(idPath);
-
-    if (resIter != mResources.end()) {
-        resIter->second->incRef();
-        return dynamic_cast<ImageSet*>(resIter->second);
-    }
-
-    Image *img = getImage(imagePath);
-
-    if (!img) {
-        return NULL;
-    }
-
-    ImageSet *imageSet = new ImageSet(idPath, img, w, h);
-    imageSet->incRef();
-    mResources[idPath] = imageSet;
-
-    img->decRef();
-
-    return imageSet;
+    return static_cast<ImageSet*>(get(ss.str(), ImageSetLoader::load, &l));
 }
+
+struct SpriteDefLoader
+{
+    std::string path;
+    int variant;
+    static Resource *load(void *v)
+    {
+        SpriteDefLoader *l = static_cast< SpriteDefLoader * >(v);
+        return SpriteDef::load(l->path, l->variant);
+    }
+};
 
 SpriteDef*
 ResourceManager::getSprite(const std::string &path, int variant)
 {
+    SpriteDefLoader l = { path, variant };
     std::stringstream ss;
     ss << path << "[" << variant << "]";
-    const std::string idPath = ss.str();
-
-    ResourceIterator resIter = mResources.find(idPath);
-
-    if (resIter != mResources.end()) {
-        resIter->second->incRef();
-        return dynamic_cast<SpriteDef*>(resIter->second);
-    }
-
-    // FIXME: modify SpriteDef so that it gracefully fails on missing sprite.
-    if (!exists(path) || isDirectory(path))
-    {
-        logger->log("Failed to load file: %s", path.c_str());
-        return NULL;
-    }
-
-    SpriteDef *sprite = new SpriteDef(idPath, path, variant);
-    sprite->incRef();
-    mResources[idPath] = sprite;
-
-    return sprite;
+    return static_cast<SpriteDef*>(get(ss.str(), SpriteDefLoader::load, &l));
 }
 
 void

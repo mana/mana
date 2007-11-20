@@ -33,8 +33,7 @@ int Image::mTextureType = 0;
 int Image::mTextureSize = 0;
 #endif
 
-Image::Image(const std::string &idPath, SDL_Surface *image):
-    Resource(idPath),
+Image::Image(SDL_Surface *image):
 #ifdef USE_OPENGL
     mGLImage(0),
 #endif
@@ -48,9 +47,8 @@ Image::Image(const std::string &idPath, SDL_Surface *image):
 }
 
 #ifdef USE_OPENGL
-Image::Image(const std::string &idPath, GLuint glimage, int width, int height,
+Image::Image(GLuint glimage, int width, int height,
              int texWidth, int texHeight):
-    Resource(idPath),
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight),
@@ -69,36 +67,25 @@ Image::~Image()
     unload();
 }
 
-Image* Image::load(void *buffer, unsigned int bufferSize,
-                   const std::string &idPath)
+Resource *Image::load(void *buffer, unsigned bufferSize)
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
-    SDL_Surface *tmpImage;
+    SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
 
-    // Use SDL_Image to load the raw image data and have it free the data
-    if (!idPath.compare(idPath.length() - 4, 4, ".tga"))
+    if (!tmpImage)
     {
-        tmpImage = IMG_LoadTyped_RW(rw, 1, const_cast<char*>("TGA"));
-    }
-    else
-    {
-        tmpImage = IMG_Load_RW(rw, 1);
-    }
-
-    if (!tmpImage) {
         logger->log("Error, image load failed: %s", IMG_GetError());
         return NULL;
     }
 
-    Image *image = load(tmpImage, idPath);
+    Image *image = load(tmpImage);
 
     SDL_FreeSurface(tmpImage);
-
     return image;
 }
 
-Image *Image::load(SDL_Surface *tmpImage, std::string const &idPath)
+Image *Image::load(SDL_Surface *tmpImage)
 {
 #ifdef USE_OPENGL
     if (mUseOpenGL)
@@ -198,7 +185,7 @@ Image *Image::load(SDL_Surface *tmpImage, std::string const &idPath)
             return NULL;
         }
 
-        return new Image(idPath, texture, width, height, realWidth, realHeight);
+        return new Image(texture, width, height, realWidth, realHeight);
     }
 #endif
 
@@ -238,7 +225,7 @@ Image *Image::load(SDL_Surface *tmpImage, std::string const &idPath)
         return NULL;
     }
 
-    return new Image(idPath, image);
+    return new Image(image);
 }
 
 void Image::unload()
@@ -324,7 +311,7 @@ Image::powerOfTwo(int input)
 
 SubImage::SubImage(Image *parent, SDL_Surface *image,
         int x, int y, int width, int height):
-    Image("", image), mParent(parent)
+    Image(image), mParent(parent)
 {
     mParent->incRef();
 
@@ -339,7 +326,7 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
 SubImage::SubImage(Image *parent, GLuint image,
                    int x, int y, int width, int height,
                    int texWidth, int texHeight):
-    Image("", image, width, height, texWidth, texHeight), mParent(parent)
+    Image(image, width, height, texWidth, texHeight), mParent(parent)
 {
     mParent->incRef();
 

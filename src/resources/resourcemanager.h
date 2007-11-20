@@ -42,18 +42,8 @@ class SpriteDef;
 class ResourceManager
 {
     public:
-        /**
-         * An enumeration of resource types.
-         */
-        enum E_RESOURCE_TYPE
-        {
-            //MAP,
-            MUSIC,
-            IMAGE,
-            //SCRIPT,
-            //TILESET,
-            SOUND_EFFECT
-        };
+        typedef Resource *(*loader)(void *, unsigned);
+        typedef Resource *(*generator)(void *);
 
         /**
          * Constructor.
@@ -109,17 +99,25 @@ class ResourceManager
         isDirectory(const std::string &path);
 
         /**
-         * Creates a resource and adds it to the resource map. The idPath is
-         * converted into the appropriate path for the current operating system
-         * and the resource is loaded.
+         * Creates a resource and adds it to the resource map.
          *
-         * @param type   The type of resource to load.
          * @param idPath The resource identifier path.
+         * @param fun    A function for generating the resource.
+         * @param data   Extra parameters for the generator.
+         * @return A valid resource or <code>NULL</code> if the resource could
+         *         not be generated.
+         */
+        Resource *get(std::string const &idPath, generator fun, void *data);
+
+        /**
+         * Loads a resource from a file and adds it to the resource map.
+         *
+         * @param path The file name.
+         * @param fun  A function for parsing the file.
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be loaded.
          */
-        Resource*
-        get(const E_RESOURCE_TYPE &type, const std::string &idPath);
+        Resource *load(std::string const &path, loader fun);
 
         /**
          * Convenience wrapper around ResourceManager::get for loading

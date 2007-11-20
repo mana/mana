@@ -95,6 +95,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
                 graphics->drawImage(icon, 1, y);
             }
         }
+        graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawText(mListModel->getElementAt(i), ITEM_ICON_SIZE + 5,
                 y + (ITEM_ICON_SIZE - getFont()->getHeight()) / 2);
     }
