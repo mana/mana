@@ -236,7 +236,7 @@ class Being : public Sprite
         setWalkSpeed(Uint16 speed) { mWalkSpeed = speed; }
 
         /**
-         * Gets the sprite id.
+         * Gets the being id.
          */
         Uint16
         getId() const { return mId; }

@@ -1,3 +1,8 @@
+2007-11-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/properties.h, src/net/charserverhandler.cpp, src/being.h: Small
+	lingering changes made while merging to 0.0.
+
 2007-11-21  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/being.cpp: Added interpolation of tile offset for intermediate

@@ -24,8 +24,8 @@
 #include "charserverhandler.h"
 
 #include "connection.h"
-#include "protocol.h"
 #include "messagein.h"
+#include "protocol.h"
 
 #include "../game.h"
 #include "../localplayer.h"
@@ -52,8 +52,7 @@ CharServerHandler::CharServerHandler():
     handledMessages = _messages;
 }
 
-void
-CharServerHandler::handleMessage(MessageIn &msg)
+void CharServerHandler::handleMessage(MessageIn &msg)
 {
     int slot;
     LocalPlayer *tempPlayer;
@@ -116,8 +115,7 @@ CharServerHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void
-CharServerHandler::handleCharCreateResponse(MessageIn &msg)
+void CharServerHandler::handleCharCreateResponse(MessageIn &msg)
 {
     int errMsg = msg.readByte();
 
@@ -168,8 +166,7 @@ CharServerHandler::handleCharCreateResponse(MessageIn &msg)
         mCharCreateDialog->unlock();
 }
 
-void
-CharServerHandler::handleCharSelectResponse(MessageIn &msg)
+void CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 {
     int errMsg = msg.readByte();
 
@@ -210,8 +207,7 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
     }
 }
 
-LocalPlayer*
-CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
+LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer;
     slot = msg.readByte(); // character slot
