@@ -53,7 +53,7 @@ BuySellHandler::BuySellHandler()
 
 void BuySellHandler::handleMessage(MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readShort());
+    Being *being = beingManager->findBeing(msg.readInt16());
     if (!being || being->getType() != Being::NPC)
     {
         return;
@@ -70,7 +70,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             sellDialog->setVisible(false);
             sellDialog->reset();
             buySellDialog->setVisible(true);
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg.readLong()));
+            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg.readInt32()));
             break;
 #endif
 
@@ -81,9 +81,9 @@ void BuySellHandler::handleMessage(MessageIn &msg)
 
             while (msg.getUnreadLength())
             {
-                int itemId = msg.readShort();
-                int amount = msg.readShort();
-                int value = msg.readShort();
+                int itemId = msg.readInt16();
+                int amount = msg.readInt16();
+                int value = msg.readInt16();
                 buyDialog->addItem(itemId, amount, value);
             }
             break;
@@ -95,9 +95,9 @@ void BuySellHandler::handleMessage(MessageIn &msg)
 
             while (msg.getUnreadLength())
             {
-                int itemId = msg.readShort();
-                int amount = msg.readShort();
-                int value = msg.readShort();
+                int itemId = msg.readInt16();
+                int amount = msg.readInt16();
+                int value = msg.readInt16();
                 sellDialog->addItem(itemId, amount, value);
             }
             break;

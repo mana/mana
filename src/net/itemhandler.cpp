@@ -48,9 +48,9 @@ void ItemHandler::handleMessage(MessageIn &msg)
         {
             while (msg.getUnreadLength())
             {
-                int itemId = msg.readShort();
-                int x = msg.readShort();
-                int y = msg.readShort();
+                int itemId = msg.readInt16();
+                int x = msg.readInt16();
+                int y = msg.readInt16();
                 int id = (x << 16) | y; // dummy id
 
                 if (itemId)

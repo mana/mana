@@ -286,7 +286,7 @@ void LocalPlayer::emote(Uint8 emotion)
     // XXX Convert for new server
     /*
     MessageOut outMsg(0x00bf);
-    outMsg.writeByte(emotion);
+    outMsg.writeInt8(emotion);
     */
 }
 
@@ -340,7 +340,7 @@ void LocalPlayer::revive()
     // XXX Convert for new server
     /*
     MessageOut outMsg(0x00b2);
-    outMsg.writeByte(0);
+    outMsg.writeInt8(0);
     */
 }
 

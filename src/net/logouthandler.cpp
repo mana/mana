@@ -48,7 +48,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
     {
         case APMSG_LOGOUT_RESPONSE:
         {
-            int errMsg = msg.readByte();
+            int errMsg = msg.readInt8();
 
             // Successful logout
             if (errMsg == ERRMSG_OK)
@@ -86,7 +86,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
             break;
         case APMSG_UNREGISTER_RESPONSE:
         {
-            int errMsg = msg.readByte();
+            int errMsg = msg.readInt8();
             // Successful unregistration
             if (errMsg == ERRMSG_OK)
             {
@@ -110,7 +110,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
             break;
         case GPMSG_DISCONNECT_RESPONSE:
         {
-            int errMsg = msg.readByte();
+            int errMsg = msg.readInt8();
             // Successful logout
             if (errMsg == ERRMSG_OK)
             {
@@ -156,7 +156,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
             break;
         case CPMSG_DISCONNECT_RESPONSE:
         {
-            int errMsg = msg.readByte();
+            int errMsg = msg.readInt8();
             // Successful logout
             if (errMsg == ERRMSG_OK)
             {

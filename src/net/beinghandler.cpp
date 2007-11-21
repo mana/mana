@@ -105,12 +105,12 @@ void BeingHandler::handleMessage(MessageIn &msg)
         case SMSG_BEING_VISIBLE:
         case SMSG_BEING_MOVE:
             // Information about a being in range
-            id = msg.readLong();
-            speed = msg.readShort();
-            msg.readShort();  // unknown
-            msg.readShort();  // unknown
-            msg.readShort();  // option
-            job = msg.readShort();  // class
+            id = msg.readInt32();
+            speed = msg.readInt16();
+            msg.readInt16();  // unknown
+            msg.readInt16();  // unknown
+            msg.readInt16();  // option
+            job = msg.readInt16();  // class
 
             dstBeing = beingManager->findBeing(id);
 
@@ -138,32 +138,32 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
-            dstBeing->setHairStyle(msg->readShort());
+            dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setVisibleEquipment(
-                    Being::WEAPON_SPRITE, msg->readShort());
+                    Being::WEAPON_SPRITE, msg->readInt16());
             dstBeing->setVisibleEquipment(
-                    Being::BOTTOMCLOTHES_SPRITE, msg->readShort());
+                    Being::BOTTOMCLOTHES_SPRITE, msg->readInt16());
 
             if (msg.getId() == SMSG_BEING_MOVE)
             {
-                msg.readLong(); // server tick
+                msg.readInt32(); // server tick
             }
 
-            msg->readShort();  // shield
-            headTop = msg->readShort();
-            headMid = msg->readShort();
+            msg->readInt16();  // shield
+            headTop = msg->readInt16();
+            headMid = msg->readInt16();
             dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
             dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
-            dstBeing->setHairColor(msg->readShort());
-            msg->readShort();  // unknown
-            msg->readShort();  // head dir
-            msg->readShort();  // guild
-            msg->readShort();  // unknown
-            msg->readShort();  // unknown
-            msg->readShort();  // manner
-            msg->readShort();  // karma
-            msg->readByte();   // unknown
-            dstBeing->setSex(1 - msg->readByte());   // sex
+            dstBeing->setHairColor(msg->readInt16());
+            msg->readInt16();  // unknown
+            msg->readInt16();  // head dir
+            msg->readInt16();  // guild
+            msg->readInt16();  // unknown
+            msg->readInt16();  // unknown
+            msg->readInt16();  // manner
+            msg->readInt16();  // karma
+            msg->readInt8();   // unknown
+            dstBeing->setSex(1 - msg->readInt8());   // sex
 
             if (msg.getId() == SMSG_BEING_MOVE)
             {
@@ -181,19 +181,19 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 //dstBeing->setDirection(dir);
             }
 
-            msg.readByte();   // unknown
-            msg.readByte();   // unknown
-            msg.readByte();   // unknown / sit
+            msg.readInt8();   // unknown
+            msg.readInt8();   // unknown
+            msg.readInt8();   // unknown / sit
             break;
 
         case SMSG_BEING_REMOVE:
             // A being should be removed or has died
-            dstBeing = beingManager->findBeing(msg.readLong());
+            dstBeing = beingManager->findBeing(msg.readInt32());
 
             if (!dstBeing)
                 break;
 
-            if (msg.readByte() == 1)
+            if (msg.readInt8() == 1)
             {
                 dstBeing->setAction(Being::DEAD);
             }
@@ -209,15 +209,15 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_BEING_ACTION:
-            srcBeing = beingManager->findBeing(msg.readLong());
-            dstBeing = beingManager->findBeing(msg.readLong());
-            msg.readLong();   // server tick
-            msg.readLong();   // src speed
-            msg.readLong();   // dst speed
-            param1 = msg.readShort();
-            msg.readShort();  // param 2
-            type = msg.readByte();
-            msg.readShort();  // param 3
+            srcBeing = beingManager->findBeing(msg.readInt32());
+            dstBeing = beingManager->findBeing(msg.readInt32());
+            msg.readInt32();   // server tick
+            msg.readInt32();   // src speed
+            msg.readInt32();   // dst speed
+            param1 = msg.readInt16();
+            msg.readInt16();  // param 2
+            type = msg.readInt8();
+            msg.readInt16();  // param 3
 
             switch (type)
             {
@@ -247,7 +247,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_BEING_LEVELUP:
-            id = (Uint32) msg->readLong();
+            id = (Uint32) msg->readInt32();
 
             if (id == player_node->getId()) {
                 logger->log("Level up");
@@ -257,7 +257,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 logger->log("Someone else went level up");
             }
             Particle *levelupFX;
-            if (msg->readLong() == 0) { // type
+            if (msg->readInt32() == 0) { // type
                 levelupFX = particleEngine->addEffect(
                         "graphics/particles/levelup.particle.xml", 0, 0);
             }
@@ -269,24 +269,24 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_BEING_EMOTION:
-            if (!(dstBeing = beingManager->findBeing(msg.readLong())))
+            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
             {
                 break;
             }
 
-            dstBeing->mEmotion = msg.readByte();
+            dstBeing->mEmotion = msg.readInt8();
             dstBeing->mEmotionTime = EMOTION_TIME;
             break;
 
         case SMSG_BEING_CHANGE_LOOKS:
         {
-            if (!(dstBeing = beingManager->findBeing(msg.readLong())))
+            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
             {
                 break;
             }
 
-            int type = msg.readByte();
-            int id = msg.readByte();
+            int type = msg.readInt8();
+            int id = msg.readInt8();
 
             switch (type) {
                 case 1:
@@ -319,7 +319,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_BEING_NAME_RESPONSE:
-            if ((dstBeing = beingManager->findBeing(msg.readLong())))
+            if ((dstBeing = beingManager->findBeing(msg.readInt32())))
             {
                 dstBeing->setName(msg.readString(24));
             }
@@ -329,12 +329,12 @@ void BeingHandler::handleMessage(MessageIn &msg)
         case SMSG_PLAYER_UPDATE_2:
         case SMSG_PLAYER_MOVE:
             // An update about a player, potentially including movement.
-            id = msg.readLong();
-            speed = msg.readShort();
-            msg.readShort();  // option 1
-            msg.readShort();  // option 2
-            msg.readShort();  // option
-            job = msg.readShort();
+            id = msg.readInt32();
+            speed = msg.readInt16();
+            msg.readInt16();  // option 1
+            msg.readInt16();  // option 2
+            msg.readInt16();  // option
+            job = msg.readInt16();
 
             dstBeing = beingManager->findBeing(id);
 
@@ -345,27 +345,27 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
-            dstBeing->setHairStyle(msg->readShort());
+            dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setVisibleEquipment(
-                    Being::WEAPON_SPRITE, msg->readShort());
-            msg->readShort();  // item id 2
-            headBottom = msg->readShort();
+                    Being::WEAPON_SPRITE, msg->readInt16());
+            msg->readInt16();  // item id 2
+            headBottom = msg->readInt16();
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {
-                msg.readLong(); // server tick
+                msg.readInt32(); // server tick
             }
 
-            headTop = msg.readShort();
-            headMid = msg.readShort();
-            dstBeing->setHairColor(msg.readShort());
-            msg.readShort();  // unknown
-            msg.readShort();  // head dir
-            msg.readLong();  // guild
-            msg.readLong();  // emblem
-            msg.readShort();  // manner
-            msg.readByte();   // karma
-            dstBeing->setSex(1 - msg.readByte());   // sex
+            headTop = msg.readInt16();
+            headMid = msg.readInt16();
+            dstBeing->setHairColor(msg.readInt16());
+            msg.readInt16();  // unknown
+            msg.readInt16();  // head dir
+            msg.readInt32();  // guild
+            msg.readInt32();  // emblem
+            msg.readInt16();  // manner
+            msg.readInt8();   // karma
+            dstBeing->setSex(1 - msg.readInt8());   // sex
             dstBeing->setVisibleEquipment(
                     Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
@@ -386,23 +386,23 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 //dstBeing->setDirection(dir);
             }
 
-            msg.readByte();   // unknown
-            msg.readByte();   // unknown
+            msg.readInt8();   // unknown
+            msg.readInt8();   // unknown
 
             if (msg.getId() == SMSG_PLAYER_UPDATE_1)
             {
-                if (msg.readByte() == 2)
+                if (msg.readInt8() == 2)
                 {
                     dstBeing->setAction(Being::SIT);
                 }
             }
             else if (msg.getId() == SMSG_PLAYER_MOVE)
             {
-                msg.readByte(); // unknown
+                msg.readInt8(); // unknown
             }
 
-            msg.readByte();   // Lv
-            msg.readByte();   // unknown
+            msg.readInt8();   // Lv
+            msg.readInt8();   // unknown
 
             dstBeing->mWalkTime = tick_time;
             dstBeing->mFrame = 0;
@@ -410,9 +410,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
         case 0x0119:
             // Change in players look
-            logger->log("0x0119 %i %i %i %x %i", msg->readLong(),
-                    msg->readShort(), msg->readShort(), msg->readShort(),
-                    msg->readByte());
+            logger->log("0x0119 %i %i %i %x %i", msg->readInt32(),
+                    msg->readInt16(), msg->readInt16(), msg->readInt16(),
+                    msg->readInt8());
             break;
         */
     }
@@ -426,7 +426,7 @@ static void handleLooks(Player *being, MessageIn &msg)
         { Being::WEAPON_SPRITE, Being::HAT_SPRITE, Being::TOPCLOTHES_SPRITE,
           Being::BOTTOMCLOTHES_SPRITE };
 
-    int mask = msg.readByte();
+    int mask = msg.readInt8();
 
     if (mask & (1 << 7))
     {
@@ -441,7 +441,7 @@ static void handleLooks(Player *being, MessageIn &msg)
     for (int i = 0; i < nb_slots; ++i)
     {
         if (!(mask & (1 << i))) continue;
-        int id = msg.readShort();
+        int id = msg.readInt16();
         being->setVisibleEquipment(slots[i], id);
     }
 }
@@ -449,11 +449,11 @@ static void handleLooks(Player *being, MessageIn &msg)
 void
 BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
-    int type = msg.readByte();
-    int id = msg.readShort();
-    Being::Action action = (Being::Action)msg.readByte();
-    int px = msg.readShort();
-    int py = msg.readShort();
+    int type = msg.readInt8();
+    int id = msg.readInt16();
+    Being::Action action = (Being::Action)msg.readInt8();
+    int px = msg.readInt16();
+    int py = msg.readInt16();
     Being *being;
 
     switch (type)
@@ -472,16 +472,16 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
                 being->setName(name);
             }
             Player *p = static_cast< Player * >(being);
-            int hs = msg.readByte(), hc = msg.readByte();
+            int hs = msg.readInt8(), hc = msg.readInt8();
             p->setHairStyle(hs, hc);
-            p->setGender(msg.readByte());
+            p->setGender(msg.readInt8());
             handleLooks(p, msg);
         } break;
 
         case OBJECT_MONSTER:
         case OBJECT_NPC:
         {
-            int subtype = msg.readShort();
+            int subtype = msg.readInt16();
             being = beingManager->createBeing(id, type, subtype);
         } break;
 
@@ -497,7 +497,7 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 
 void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readShort());
+    Being *being = beingManager->findBeing(msg.readInt16());
     if (!being) return;
 
     beingManager->destroyBeing(being);
@@ -507,8 +507,8 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
-        int id = msg.readShort();
-        int flags = msg.readByte();
+        int id = msg.readInt16();
+        int flags = msg.readInt8();
         Being *being = beingManager->findBeing(id);
         int sx = 0, sy = 0, dx = 0, dy = 0, speed = 0;
         if (flags & MOVING_POSITION)
@@ -517,12 +517,12 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
             msg.readCoordinates(sx2, sy2);
             sx = sx2 * 32 + 16;
             sy = sy2 * 32 + 16;
-            speed = msg.readByte();
+            speed = msg.readInt8();
         }
         if (flags & MOVING_DESTINATION)
         {
-            dx = msg.readShort();
-            dy = msg.readShort();
+            dx = msg.readInt16();
+            dy = msg.readInt16();
             if (!(flags & MOVING_POSITION))
             {
                 sx = dx;
@@ -561,19 +561,19 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 
 void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readShort());
+    Being *being = beingManager->findBeing(msg.readInt16());
     if (!being) return;
 
     being->setAction(Being::ATTACK);
-    being->setDirection(msg.readByte());
+    being->setDirection(msg.readInt8());
 }
 
 void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
-        Being *being = beingManager->findBeing(msg.readShort());
-        int damage = msg.readShort();
+        Being *being = beingManager->findBeing(msg.readInt16());
+        int damage = msg.readInt16();
         if (being)
         {
             being->takeDamage(damage);
@@ -583,15 +583,15 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
 
 void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 {
-    Being* being = beingManager->findBeing(msg.readShort());
+    Being* being = beingManager->findBeing(msg.readInt16());
     if (!being) return;
 
-    being->setAction((Being::Action) msg.readByte());
+    being->setAction((Being::Action) msg.readInt8());
 }
 
 void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readShort());
+    Being *being = beingManager->findBeing(msg.readInt16());
     if (!being || being->getType() != Being::PLAYER) return;
     handleLooks(static_cast< Player * >(being), msg);
 }

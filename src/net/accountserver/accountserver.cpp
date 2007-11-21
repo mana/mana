@@ -36,7 +36,7 @@ void Net::AccountServer::login(Net::Connection *connection, int version,
 
     MessageOut msg(PAMSG_LOGIN);
 
-    msg.writeLong(version);
+    msg.writeInt32(version);
     msg.writeString(username);
     msg.writeString(password);
 
@@ -51,7 +51,7 @@ void Net::AccountServer::registerAccount(Net::Connection *connection,
 
     MessageOut msg(PAMSG_REGISTER);
 
-    msg.writeLong(version); // client version
+    msg.writeInt32(version); // client version
     msg.writeString(username);
     msg.writeString(password);
     msg.writeString(email);

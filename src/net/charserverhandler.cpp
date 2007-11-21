@@ -65,7 +65,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
         case APMSG_CHAR_DELETE_RESPONSE:
         {
-            int errMsg = msg.readByte();
+            int errMsg = msg.readInt8();
             // Character deletion successful
             if (errMsg == ERRMSG_OK)
             {
@@ -117,7 +117,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
 void CharServerHandler::handleCharCreateResponse(MessageIn &msg)
 {
-    int errMsg = msg.readByte();
+    int errMsg = msg.readInt8();
 
     // Character creation failed
     if (errMsg != ERRMSG_OK)
@@ -168,15 +168,15 @@ void CharServerHandler::handleCharCreateResponse(MessageIn &msg)
 
 void CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 {
-    int errMsg = msg.readByte();
+    int errMsg = msg.readInt8();
 
     if (errMsg == ERRMSG_OK)
     {
         token = msg.readString(32);
         std::string gameServer = msg.readString();
-        unsigned short gameServerPort = msg.readShort();
+        unsigned short gameServerPort = msg.readInt16();
         std::string chatServer = msg.readString();
-        unsigned short chatServerPort = msg.readShort();
+        unsigned short chatServerPort = msg.readInt16();
 
         logger->log("Game server: %s:%d", gameServer.c_str(), gameServerPort);
         logger->log("Chat server: %s:%d", chatServer.c_str(), chatServerPort);
@@ -210,17 +210,17 @@ void CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer;
-    slot = msg.readByte(); // character slot
+    slot = msg.readInt8(); // character slot
     tempPlayer->mName = msg.readString();
-    tempPlayer->setGender(msg.readByte());
-    int hs = msg.readByte(), hc = msg.readByte();
+    tempPlayer->setGender(msg.readInt8());
+    int hs = msg.readInt8(), hc = msg.readInt8();
     tempPlayer->setHairStyle(hs, hc);
-    tempPlayer->setLevel(msg.readByte());
-    tempPlayer->setMoney(msg.readLong());
+    tempPlayer->setLevel(msg.readInt8());
+    tempPlayer->setMoney(msg.readInt32());
 
     for (int i = 0; i < 7; i++)
     {
-        tempPlayer->setAttributeBase(i, msg.readByte());
+        tempPlayer->setAttributeBase(i, msg.readInt8());
     }
 
     return tempPlayer;

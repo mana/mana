@@ -37,16 +37,16 @@ void Net::AccountServer::Account::createCharacter(
     MessageOut msg(PAMSG_CHAR_CREATE);
 
     msg.writeString(name);
-    msg.writeByte(hairStyle);
-    msg.writeByte(hairColor);
-    msg.writeByte(gender);
-    msg.writeShort(strength);
-    msg.writeShort(agility);
-    msg.writeShort(vitality);
-    msg.writeShort(intelligence);
-    msg.writeShort(dexterity);
-    msg.writeShort(willpower);
-    msg.writeShort(charisma);
+    msg.writeInt8(hairStyle);
+    msg.writeInt8(hairColor);
+    msg.writeInt8(gender);
+    msg.writeInt16(strength);
+    msg.writeInt16(agility);
+    msg.writeInt16(vitality);
+    msg.writeInt16(intelligence);
+    msg.writeInt16(dexterity);
+    msg.writeInt16(willpower);
+    msg.writeInt16(charisma);
 
     Net::AccountServer::connection->send(msg);
 }
@@ -55,7 +55,7 @@ void Net::AccountServer::Account::deleteCharacter(char slot)
 {
     MessageOut msg(PAMSG_CHAR_DELETE);
 
-    msg.writeByte(slot);
+    msg.writeInt8(slot);
 
     Net::AccountServer::connection->send(msg);
 }
@@ -64,7 +64,7 @@ void Net::AccountServer::Account::selectCharacter(char slot)
 {
     MessageOut msg(PAMSG_CHAR_SELECT);
 
-    msg.writeByte(slot);
+    msg.writeInt8(slot);
 
     Net::AccountServer::connection->send(msg);
 }

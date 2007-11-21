@@ -76,7 +76,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
     {
         case GPMSG_TRADE_REQUEST:
         {
-            Being *being = beingManager->findBeing(msg.readShort());
+            Being *being = beingManager->findBeing(msg.readInt16());
             if (!being)
             {
                 Net::GameServer::Player::acceptTrade(false);
@@ -92,13 +92,13 @@ void TradeHandler::handleMessage(MessageIn &msg)
 
         case GPMSG_TRADE_ADD_ITEM:
         {
-            int type = msg.readShort();
-            int amount = msg.readByte();
+            int type = msg.readInt16();
+            int amount = msg.readInt8();
             tradeWindow->addItem(type, false, amount);
         }   break;
 
         case GPMSG_TRADE_SET_MONEY:
-            tradeWindow->setMoney(msg.readLong());
+            tradeWindow->setMoney(msg.readInt32());
             break;
 
         case GPMSG_TRADE_START:

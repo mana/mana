@@ -33,10 +33,10 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mPos(0)
 {
     // Read the message ID
-    mId = readShort();
+    mId = readInt16();
 }
 
-int MessageIn::readByte()
+int MessageIn::readInt8()
 {
     int value = -1;
     if (mPos < mLength)
@@ -47,7 +47,7 @@ int MessageIn::readByte()
     return value;
 }
 
-int MessageIn::readShort()
+int MessageIn::readInt16()
 {
     int value = -1;
     if (mPos + 2 <= mLength)
@@ -60,7 +60,7 @@ int MessageIn::readShort()
     return value;
 }
 
-int MessageIn::readLong()
+int MessageIn::readInt32()
 {
     int value = -1;
     if (mPos + 4 <= mLength)
@@ -88,7 +88,7 @@ std::string MessageIn::readString(int length)
 {
     // Get string length
     if (length < 0) {
-        length = readShort();
+        length = readInt16();
     }
 
     // Make sure the string isn't erroneus

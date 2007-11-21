@@ -43,9 +43,9 @@ class MessageIn
 
         int getId() { return mId; } /**< Returns the message ID. */
 
-        int readByte();              /**< Reads a byte. */
-        int readShort();            /**< Reads a short. */
-        int readLong();              /**< Reads a long. */
+        int readInt8();             /**< Reads a byte. */
+        int readInt16();            /**< Reads a short. */
+        int readInt32();            /**< Reads a long. */
 
         /**
          * Reads a 3-byte block containing tile-based coordinates.

@@ -58,21 +58,21 @@ void InventoryHandler::handleMessage(MessageIn &msg)
         case GPMSG_INVENTORY:
             while (msg.getUnreadLength())
             {
-                int slot = msg.readByte();
+                int slot = msg.readInt8();
                 if (slot == 255)
                 {
-                    player_node->setMoney(msg.readLong());
+                    player_node->setMoney(msg.readInt32());
                     continue;
                 }
 
-                int id = msg.readShort();
+                int id = msg.readInt16();
                 if (slot < EQUIPMENT_SIZE)
                 {
                     player_node->mEquipment->setEquipment(slot, id);
                 }
                 else if (slot >= 32 && slot < 32 + INVENTORY_SIZE)
                 {
-                    int amount = id ? msg.readByte() : 0;
+                    int amount = id ? msg.readInt8() : 0;
                     player_node->setInvItem(slot - 32, id, amount);
                 }
             };

@@ -55,7 +55,7 @@ void Net::ChatServer::chat(short channel, const std::string &text)
     MessageOut msg(PCMSG_CHAT);
 
     msg.writeString(text);
-    msg.writeShort(channel);
+    msg.writeInt16(channel);
 
     connection->send(msg);
 }
@@ -86,7 +86,7 @@ void Net::ChatServer::registerChannel(const std::string &name,
 {
     MessageOut msg(PCMSG_REGISTER_CHANNEL);
 
-    msg.writeByte(isPrivate);
+    msg.writeInt8(isPrivate);
     msg.writeString(name);
     msg.writeString(announcement);
     msg.writeString(password);
@@ -98,7 +98,7 @@ void Net::ChatServer::unregisterChannel(short channel)
 {
     MessageOut msg(PCMSG_UNREGISTER_CHANNEL);
 
-    msg.writeShort(channel);
+    msg.writeInt16(channel);
 
     connection->send(msg);
 }
@@ -117,7 +117,7 @@ void Net::ChatServer::quitChannel(short channel)
 {
     MessageOut msg(PCMSG_QUIT_CHANNEL);
 
-    msg.writeShort(channel);
+    msg.writeInt16(channel);
 
     connection->send(msg);
 }

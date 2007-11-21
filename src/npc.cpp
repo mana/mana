@@ -85,8 +85,8 @@ NPC::buy()
     // XXX Convert for new server
     /*
     MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeLong(mId);
-    outMsg.writeByte(0);
+    outMsg.writeInt32(mId);
+    outMsg.writeInt8(0);
     */
 }
 
@@ -96,7 +96,7 @@ NPC::sell()
     // XXX Convert for new server
     /*
     MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeLong(mId);
-    outMsg.writeByte(1);
+    outMsg.writeInt32(mId);
+    outMsg.writeInt8(1);
     */
 }

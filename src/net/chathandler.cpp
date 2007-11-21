@@ -73,7 +73,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
     switch (msg.getId())
     {
         case GPMSG_SAY:
-            being = beingManager->findBeing(msg.readShort());
+            being = beingManager->findBeing(msg.readInt16());
             chatMsg = msg.readString();
             if (being)
             {
@@ -86,9 +86,9 @@ void ChatHandler::handleMessage(MessageIn &msg)
             }
             break;
         case CPMSG_REGISTER_CHANNEL_RESPONSE:
-            if(msg.readByte() == ERRMSG_OK)
+            if(msg.readInt8() == ERRMSG_OK)
             {
-                channelId = msg.readShort();
+                channelId = msg.readInt16();
                 std::string channelName = msg.readString();
                 chatWindow->chatLog("Registered Channel " + channelName, BY_SERVER);
                 chatWindow->addChannel(channelId, channelName);
@@ -100,9 +100,9 @@ void ChatHandler::handleMessage(MessageIn &msg)
             }
             break;
         case CPMSG_ENTER_CHANNEL_RESPONSE:
-            if(msg.readByte() == ERRMSG_OK)
+            if(msg.readInt8() == ERRMSG_OK)
             {
-                channelId = msg.readShort();
+                channelId = msg.readInt16();
                 channelName = msg.readString();
                 std::string announcement = msg.readString();
                 std::vector<std::string> userList;
@@ -126,7 +126,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             {
                 channelName = msg.readString();
                 std::ostringstream numUsers;
-                numUsers << msg.readShort();
+                numUsers << msg.readInt16();
                 if(channelName != "")
                 {
                     channelName += " - ";
@@ -138,7 +138,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             break;
 
         case CPMSG_PUBMSG:
-            channelId = msg.readShort();
+            channelId = msg.readInt16();
             userNick = msg.readString();
             chatMsg = msg.readString();
 
@@ -146,9 +146,9 @@ void ChatHandler::handleMessage(MessageIn &msg)
             break;
 
         case CPMSG_QUIT_CHANNEL_RESPONSE:
-            if(msg.readByte() == ERRMSG_OK)
+            if(msg.readInt8() == ERRMSG_OK)
             {
-                channelId = msg.readShort();
+                channelId = msg.readInt16();
                 // remove the chat tab
                 chatWindow->removeChannel(channelId);
             }
@@ -156,8 +156,8 @@ void ChatHandler::handleMessage(MessageIn &msg)
         /*
         // Received speech from being
         case SMSG_BEING_CHAT:
-            chatMsgLength = msg.readShort() - 8;
-            being = beingManager->findBeing(msg.readLong());
+            chatMsgLength = msg.readInt16() - 8;
+            being = beingManager->findBeing(msg.readInt32());
 
             if (!being || chatMsgLength <= 0)
             {
@@ -173,7 +173,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
         case SMSG_PLAYER_CHAT:
         case SMSG_GM_CHAT:
-            chatMsgLength = msg.readShort() - 4;
+            chatMsgLength = msg.readInt16() - 4;
 
             if (chatMsgLength <= 0)
             {
@@ -200,13 +200,13 @@ void ChatHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_WHO_ANSWER:
-            chatWindow->chatLog("Online users: " + toString(msg.readLong()),
+            chatWindow->chatLog("Online users: " + toString(msg.readInt32()),
                     BY_SERVER);
             break;
 
         case 0x010c:
             // Display MVP player
-            msg.readLong(); // id
+            msg.readInt32(); // id
             chatWindow->chatLog("MVP player", BY_SERVER);
             break;
         */

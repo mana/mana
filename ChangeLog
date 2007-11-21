@@ -2,6 +2,21 @@
 
 	* src/properties.h, src/net/charserverhandler.cpp, src/being.h: Small
 	lingering changes made while merging to 0.0.
+	* src/localplayer.cpp, src/npc.cpp,
+	src/net/accountserver/accountserver.cpp,
+	src/net/accountserver/account.cpp, src/net/loginhandler.cpp,
+	src/net/messageout.cpp, src/net/buysellhandler.cpp,
+	src/net/messagein.h, src/net/beinghandler.cpp,
+	src/net/inventoryhandler.cpp, src/net/itemhandler.cpp,
+	src/net/tradehandler.cpp, src/net/charserverhandler.cpp,
+	src/net/logouthandler.cpp, src/net/messagein.cpp,
+	src/net/skillhandler.cpp, src/net/chathandler.cpp,
+	src/net/npchandler.cpp, src/net/gameserver/gameserver.cpp,
+	src/net/gameserver/player.cpp, src/net/messageout.h,
+	src/net/chatserver/chatserver.cpp, src/net/playerhandler.cpp: Renamed
+	{read,write}{Byte,Short,Long} to {read,write}{Int8,Int16,Int32}. This
+	is less confusing in 64-bit context and less conflicting with the 0.0
+	client.
 
 2007-11-21  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

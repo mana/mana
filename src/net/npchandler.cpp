@@ -47,7 +47,7 @@ NPCHandler::NPCHandler()
 
 void NPCHandler::handleMessage(MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readShort());
+    Being *being = beingManager->findBeing(msg.readInt16());
     if (!being || being->getType() != Being::NPC)
     {
         return;

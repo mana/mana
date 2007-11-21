@@ -33,7 +33,7 @@ MessageOut::MessageOut(short id):
     mDataSize(0),
     mPos(0)
 {
-    writeShort(id);
+    writeInt16(id);
 }
 
 MessageOut::~MessageOut()
@@ -51,14 +51,14 @@ MessageOut::expand(size_t bytes)
 }
 
 void
-MessageOut::writeByte(char value)
+MessageOut::writeInt8(char value)
 {
     expand(mPos + 1);
     mData[mPos] = value;
     mPos += 1;
 }
 
-void MessageOut::writeShort(short value)
+void MessageOut::writeInt16(short value)
 {
     expand(mPos + 2);
     uint16_t t = ENET_HOST_TO_NET_16(value);
@@ -67,7 +67,7 @@ void MessageOut::writeShort(short value)
 }
 
 void
-MessageOut::writeLong(long value)
+MessageOut::writeInt32(long value)
 {
     expand(mPos + 4);
     uint32_t t = ENET_HOST_TO_NET_32(value);
@@ -82,7 +82,7 @@ MessageOut::writeString(const std::string &string, int length)
     if (length < 0)
     {
         // Write the length at the start if not fixed
-        writeShort(stringLength);
+        writeInt16(stringLength);
         length = stringLength;
     }
     else if (length < stringLength)

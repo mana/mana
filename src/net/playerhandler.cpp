@@ -107,7 +107,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         {   // TODO: Implement reconnecting to another game server
             std::string token = msg.readString(32);
             std::string address = msg.readString();
-            int port = msg.readShort();
+            int port = msg.readInt16();
             logger->log("Changing server to %s:%d", address.c_str(), port);
         } break;
 
@@ -116,9 +116,9 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             logger->log("ATTRIBUTE UPDATE:");
             while (msg.getUnreadLength())
             {
-                int stat = msg.readByte();
-                int base = msg.readShort();
-                int value = msg.readShort();
+                int stat = msg.readInt8();
+                int base = msg.readInt16();
+                int value = msg.readInt16();
                 logger->log("%d set to %d %d", stat, base, value);
 
                 if (stat == BASE_ATTR_HP)
@@ -141,7 +141,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         /*
         case SMSG_PLAYER_ARROW_MESSAGE:
             {
-                Sint16 type = msg.readShort();
+                Sint16 type = msg.readInt16();
 
                 switch (type) {
                     case 0:
@@ -162,8 +162,8 @@ void
 PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 {
     std::string mapName = msg.readString();
-    unsigned short x = msg.readShort();
-    unsigned short y = msg.readShort();
+    unsigned short x = msg.readInt16();
+    unsigned short y = msg.readInt16();
 
     logger->log("Changing map to %s (%d, %d)", mapName.c_str(), x, y);
 

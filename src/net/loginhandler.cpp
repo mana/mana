@@ -45,7 +45,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
     {
         case APMSG_LOGIN_RESPONSE:
         {
-            int errMsg = msg.readByte();
+            int errMsg = msg.readInt8();
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
@@ -77,7 +77,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             break;
         case APMSG_REGISTER_RESPONSE:
         {
-            int errMsg = msg.readByte();
+            int errMsg = msg.readInt8();
             // Successful registration
             if (errMsg == ERRMSG_OK)
             {
@@ -109,7 +109,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             break;
         case APMSG_RECONNECT_RESPONSE:
         {
-            int errMsg = msg.readByte();
+            int errMsg = msg.readInt8();
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
