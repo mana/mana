@@ -149,9 +149,9 @@ void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
             {
                 onPath = j;
             }
-            // Set intermediate steps to tile centers.
-            i->x = i->x * 32 + 16;
-            i->y = i->y * 32 + 16;
+            // Do not set any offset for intermediate steps.
+            i->x = i->x * 32;
+            i->y = i->y * 32;
             ++j;
         }
         p1_length = mMap->getMetaTile(dstX / 32, dstY / 32)->Gcost;
@@ -218,8 +218,8 @@ void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
     bestPath.pop_back();
     for (Path::iterator i = bestPath.begin(), i_end = bestPath.end(); i != i_end; ++i)
     {
-        i->x = i->x * 32 + 16;
-        i->y = i->y * 32 + 16;
+        i->x = i->x * 32;
+        i->y = i->y * 32;
     }
 
     // Concatenate paths.
@@ -259,6 +259,23 @@ Being::setPath(const Path &path, int mod)
 {
     mPath = path;
     mSpeedModifier = mod >= 512 ? (mod <= 2048 ? mod : 2048) : 512; // TODO: tune bounds
+
+    int sz = mPath.size();
+    if (sz > 1)
+    {
+        // The path contains intermediate steps, so avoid going through tile
+        // centers for them. Instead, interpolate the tile offset.
+        int sx = mX & 31, sy = mY & 31;
+        int dx = (mPath.back().x & 31) - sx;
+        int dy = (mPath.back().y & 31) - sy;
+        Path::iterator j = mPath.begin();
+        for (int i = 0; i < sz - 1; ++i)
+        {
+            j->x |= sx + dx * (i + 1) / (sz - 1);
+            j->y |= sy + dy * (i + 1) / (sz - 1);
+            ++j;
+        }
+    }
 
     if (mAction != WALK && mAction != DEAD)
     {

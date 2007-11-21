@@ -1,3 +1,8 @@
+2007-11-21  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/being.cpp: Added interpolation of tile offset for intermediate
+	steps in long moves.
+
 2007-11-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/resources/resourcemanager.h, src/resources/resource.h,
