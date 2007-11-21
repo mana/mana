@@ -51,12 +51,14 @@ class Player : public Being
         virtual void
         setGender(int gender);
 
-        virtual void
-        setHairColor(int color);
+        /**
+         * Sets the hair style and color for this player.
+         */
+        void setHairStyle(int style, int color);
 
-        virtual void
-        setHairStyle(int style);
-
+        /**
+         * Sets visible equipments for this player.
+         */
         virtual void
         setVisibleEquipment(int slot, int id);
 };

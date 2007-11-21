@@ -256,8 +256,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
 {
     mPlayer = new Player(0, 0, NULL);
     mPlayer->setGender(gender);
-    mPlayer->setHairStyle(rand() % NR_HAIR_STYLES + 1);
-    mPlayer->setHairColor(rand() % NR_HAIR_COLORS + 1);
+    mPlayer->setHairStyle(rand() % NR_HAIR_STYLES, rand() % NR_HAIR_COLORS);
 
     mNameField = new TextField("");
     mNameLabel = new gcn::Label("Name:");
@@ -338,18 +337,16 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
         scheduleDelete();
     }
     else if (event.getId() == "nextcolor") {
-        mPlayer->setHairColor(mPlayer->getHairColor() % NR_HAIR_COLORS + 1);
+        mPlayer->setHairStyle(-1, mPlayer->getHairColor() + 1);
     }
     else if (event.getId() == "prevcolor") {
-        int prevColor = mPlayer->getHairColor() + NR_HAIR_COLORS - 2;
-        mPlayer->setHairColor(prevColor % NR_HAIR_COLORS + 1);
+        mPlayer->setHairStyle(-1, mPlayer->getHairColor() + NR_HAIR_COLORS - 1);
     }
     else if (event.getId() == "nextstyle") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle() % NR_HAIR_STYLES + 1);
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, -1);
     }
     else if (event.getId() == "prevstyle") {
-        int prevStyle = mPlayer->getHairStyle() + NR_HAIR_STYLES - 2;
-        mPlayer->setHairStyle(prevStyle % NR_HAIR_STYLES + 1);
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + NR_HAIR_STYLES - 1, -1);
     }
 }
 

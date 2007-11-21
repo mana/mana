@@ -202,7 +202,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->mMaxMp = msg.readInt16();
     msg.readInt16();                       // speed
     msg.readInt16();                       // class
-    tempPlayer->setHairStyle(msg.readInt16());
+    int hairStyle = msg.readInt16();
     Uint16 weapon = msg.readInt16();
     tempPlayer->setVisibleEquipment(Being::WEAPON_SPRITE, weapon);
     tempPlayer->mLevel = msg.readInt16();
@@ -211,7 +211,8 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     msg.readInt16();                       // shield
     tempPlayer->setVisibleEquipment(Being::HAT_SPRITE, msg.readInt16()); // head option top
     tempPlayer->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
-    tempPlayer->setHairColor(msg.readInt16());
+    int hairColor = msg.readInt16();
+    tempPlayer->setHairStyle(hairStyle, hairColor);
     msg.readInt16();                       // unknown
     tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++) {

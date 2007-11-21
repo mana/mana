@@ -5,6 +5,10 @@
 	data/graphics/maps/new_15-1.tmx: Updated desert maps with new
 	tiles by Len.
 
+2007-11-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/resources/image.cpp: Sped up recoloring of transparent pixels.
+
 2007-11-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/log.cpp, src/utils/wingettimeofday.h: Removed useless win32
@@ -30,6 +34,46 @@
 	data/graphics/sprites/chest-vnecksweater-male,
 	data/graphics/sprites/chest-vnecksweater-female:
 	Modifications at the back shading of shirt sprites by Pauan.
+
+2007-11-04  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/resources/dye.cpp, src/resources/resourcemanager.cpp: Moved
+	palette qualifiers to the right as the code appends things on the left.
+	* src/resources/spritedef.cpp, src/resources/spritedef.h,
+	src/resources/resourcemanager.h: Added propagation of palettes through
+	sprite resource names.
+	* data/monsters.xml, data/graphics/sprites/monster-scorpion.xml: Used
+	palettes on sprite names.
+	* data/graphics/sprites/monster-scorpion-black.xml,
+	data/graphics/sprites/monster-scorpion-red.xml: Removed obsolete files.
+	* src/player.cpp: Added hair colors.
+	* data/graphics/sprites/hairstyle*.xml: Removed sprite variants. Set
+	replaceable color.
+	* data/graphics/sprites/hairstyle*.png: Reduced image sizes.
+	* data/monsters.xml, data/graphics/sprites/monster-slime.xml,
+	data/graphics/sprites/monster-slime.png: Added generic slime.
+	* data/graphics/sprites/monster-slime-{green,red,yellow}.png,
+	data/graphics/sprites/monster-slime-{green,red,yellow}.xml: Removed
+	obsolete files.
+
+2007-11-03  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/player.cpp, src/player.h, src/gui/char_select.cpp: Factored code.
+	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp: Fixed double
+	load of hair graphics.
+	* src/Makefile.am, src/resources/dye.cpp, src/resources/dye.h: Added
+	palette holder and linear interpolator of colors.
+	* src/resources/image.h, src/resources/image.cpp: Added palette-based
+	recoloring of images.
+	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp:
+	Added automatic recoloring of images depending on their names.
+	* data/graphics/sprites/monster-scorpion.png: Flattened colors.
+	* data/graphics/sprites/monster-scorpion-black.png,
+	data/graphics/sprites/monster-scorpion-red.png: Removed obsolete files.
+	* data/graphics/sprites/monster-scorpion.xml,
+	data/graphics/sprites/monster-scorpion-black.xml,
+	data/graphics/sprites/monster-scorpion-red.xml: Added automatic
+	recoloring of scorpions.
 
 2007-11-01  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -464,6 +508,12 @@
 	* data/maps/new_20-1.tmx.gz: Corrected a few mapping errors in the
 	new woodland village.
 	* data/items.xml: Tweaked description and values of the scythe.
+
+2007-08-06  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/Makefile.am, src/utils/strprintf.h, src/utils/strprintf.cpp:
+	Added a helper function for printf-formatting a (gettext) C string
+	into a dynamically-sized C++ string.
 
 2007-08-05  Philipp Sehmisch  <tmw@crushnet.org>
 

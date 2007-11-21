@@ -258,6 +258,8 @@ SET(SRCS
     utils/dtor.h
     utils/fastsqrt.h
     utils/minmax.h
+    utils/strprintf.cpp
+    utils/strprintf.h
     utils/tostring.h
     utils/trim.h
     utils/xml.cpp

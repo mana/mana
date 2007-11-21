@@ -24,10 +24,9 @@
 #ifndef _TMW_RESOURCE_MANAGER_H
 #define _TMW_RESOURCE_MANAGER_H
 
-#include <iosfwd>
 #include <map>
+#include <string>
 #include <vector>
-#include <SDL.h>
 
 class Resource;
 class Image;
@@ -35,6 +34,7 @@ class Music;
 class SoundEffect;
 class ImageSet;
 class SpriteDef;
+struct SDL_Surface;
 
 /**
  * A class for loading and managing resources.
@@ -151,8 +151,7 @@ class ResourceManager
          * Creates a sprite definition based on a given path and the supplied
          * variant.
          */
-        SpriteDef*
-        getSprite(const std::string &path, int variant = 0);
+        SpriteDef *getSprite(std::string const &path, int variant = 0);
 
         /**
          * Releases a resource, removing it from the set of loaded resources.

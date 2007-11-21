@@ -67,6 +67,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
     Sint16 param1;
     Sint8 type;
     Being *srcBeing, *dstBeing;
+    int hairStyle, hairColor;
 
     switch (msg->getId())
     {
@@ -106,7 +107,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
-            dstBeing->setHairStyle(msg->readInt16());
+            hairStyle = msg->readInt16();
             dstBeing->setVisibleEquipment(
                     Being::WEAPON_SPRITE, msg->readInt16());
             dstBeing->setVisibleEquipment(
@@ -122,7 +123,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headMid = msg->readInt16();
             dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
             dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
-            dstBeing->setHairColor(msg->readInt16());
+            hairColor = msg->readInt16();
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
             msg->readInt16();  // guild
@@ -132,6 +133,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // karma
             msg->readInt8();   // unknown
             dstBeing->setGender(1 - msg->readInt8());   // gender
+            dstBeing->setHairStyle(hairStyle, hairColor);
 
             if (msg->getId() == SMSG_BEING_MOVE)
             {
@@ -258,7 +260,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             switch (type) {
                 case 1:
-                    dstBeing->setHairStyle(id);
+                    dstBeing->setHairStyle(id, -1);
                     break;
                 case 2:
                     dstBeing->setVisibleEquipment(Being::WEAPON_SPRITE, id);
@@ -276,7 +278,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                             Being::TOPCLOTHES_SPRITE, id);
                     break;
                 case 6:
-                    dstBeing->setHairColor(id);
+                    dstBeing->setHairStyle(-1, id);
                     break;
                 default:
                     logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
@@ -313,7 +315,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
-            dstBeing->setHairStyle(msg->readInt16());
+            hairStyle = msg->readInt16();
             dstBeing->setVisibleEquipment(
                     Being::WEAPON_SPRITE, msg->readInt16());
             msg->readInt16();  // item id 2
@@ -326,7 +328,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             headTop = msg->readInt16();
             headMid = msg->readInt16();
-            dstBeing->setHairColor(msg->readInt16());
+            hairColor = msg->readInt16();
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
             msg->readInt32();  // guild
@@ -334,6 +336,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // manner
             msg->readInt8();   // karma
             dstBeing->setGender(1 - msg->readInt8());   // gender
+            dstBeing->setHairStyle(hairStyle, hairColor);
             dstBeing->setVisibleEquipment(
                     Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);

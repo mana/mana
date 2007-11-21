@@ -28,6 +28,7 @@
 #include <physfs.h>
 #include <SDL_image.h>
 
+#include "dye.h"
 #include "image.h"
 #include "music.h"
 #include "soundeffect.h"
@@ -204,12 +205,6 @@ Resource *ResourceManager::load(std::string const &path, loader fun)
     return get(path, ResourceLoader::load, &l);
 }
 
-Image*
-ResourceManager::getImage(const std::string &idPath)
-{
-    return static_cast<Image*>(load(idPath, Image::load));
-}
-
 Music*
 ResourceManager::getMusic(const std::string &idPath)
 {
@@ -220,6 +215,38 @@ SoundEffect*
 ResourceManager::getSoundEffect(const std::string &idPath)
 {
     return static_cast<SoundEffect*>(load(idPath, SoundEffect::load));
+}
+
+struct DyedImageLoader
+{
+    ResourceManager *manager;
+    std::string path;
+    static Resource *load(void *v)
+    {
+        DyedImageLoader *l = static_cast< DyedImageLoader * >(v);
+        std::string path = l->path;
+        std::string::size_type p = path.find('|');
+        Dye *d = NULL;
+        if (p != std::string::npos)
+        {
+            d = new Dye(path.substr(p + 1));
+            path = path.substr(0, p);
+        }
+        int fileSize;
+        void *buffer = l->manager->loadFile(path, fileSize);
+        if (!buffer) return NULL;
+        Resource *res = d ? Image::load(buffer, fileSize, *d)
+                          : Image::load(buffer, fileSize);
+        free(buffer);
+        delete d;
+        return res;
+    }
+};
+
+Image *ResourceManager::getImage(std::string const &idPath)
+{
+    DyedImageLoader l = { this, idPath };
+    return static_cast<Image*>(get(idPath, DyedImageLoader::load, &l));
 }
 
 struct ImageSetLoader
@@ -258,8 +285,8 @@ struct SpriteDefLoader
     }
 };
 
-SpriteDef*
-ResourceManager::getSprite(const std::string &path, int variant)
+SpriteDef *ResourceManager::getSprite
+    (std::string const &path, int variant)
 {
     SpriteDefLoader l = { path, variant };
     std::stringstream ss;

@@ -33,7 +33,7 @@
 #include "map.h"
 #include "animatedsprite.h"
 
-#define NR_HAIR_STYLES 7
+#define NR_HAIR_STYLES 8
 #define NR_HAIR_COLORS 10
 
 class AnimatedSprite;
@@ -183,28 +183,22 @@ class Being : public Sprite
         setName(const std::string &name) { mName = name; }
 
         /**
-         * Sets the hair color for this being.
-         */
-        virtual void
-        setHairColor(Uint16 color);
-
-        /**
          * Gets the hair color for this being.
          */
-        Uint16
-        getHairColor() const { return mHairColor; }
-
-        /**
-         * Sets the hair style for this being.
-         */
-        virtual void
-        setHairStyle(Uint16 style);
+        int getHairColor() const
+        { return mHairColor; }
 
         /**
          * Gets the hair style for this being.
          */
-        Uint16
-        getHairStyle() const { return mHairStyle; }
+        int getHairStyle() const
+        { return mHairStyle; }
+
+        /**
+         * Sets the hair style and color for this being.
+         */
+        virtual void
+        setHairStyle(int style, int color);
 
         /**
          * Sets visible equipments for this being.

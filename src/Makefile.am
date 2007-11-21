@@ -173,6 +173,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      resources/ambientoverlay.h \
 	      resources/animation.cpp \
 	      resources/animation.h \
+	      resources/dye.cpp \
+	      resources/dye.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imageloader.cpp \
@@ -208,6 +210,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      utils/dtor.h \
 	      utils/fastsqrt.h \
 	      utils/minmax.h \
+	      utils/strprintf.cpp \
+	      utils/strprintf.h \
 	      utils/tostring.h \
 	      utils/trim.h \
 	      utils/xml.cpp \

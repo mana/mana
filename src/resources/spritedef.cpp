@@ -25,14 +25,14 @@
 
 #include "spritedef.h"
 
-#include "../log.h"
-
-#include "animation.h"
 #include "action.h"
-#include "resourcemanager.h"
-#include "imageset.h"
+#include "animation.h"
+#include "dye.h"
 #include "image.h"
+#include "imageset.h"
+#include "resourcemanager.h"
 
+#include "../log.h"
 #include "../utils/xml.h"
 
 Action*
@@ -53,7 +53,14 @@ SpriteDef *SpriteDef::load(std::string const &animationFile, int variant)
 {
     int size;
     ResourceManager *resman = ResourceManager::getInstance();
-    char *data = (char*) resman->loadFile(animationFile.c_str(), size);
+
+    std::string::size_type pos = animationFile.find('|');
+    std::string palettes;
+    if (pos != std::string::npos)
+        palettes = animationFile.substr(pos + 1);
+
+    char *data = (char*) resman->loadFile
+        (animationFile.substr(0, pos).c_str(), size);
 
     if (!data) return NULL;
 
@@ -89,7 +96,7 @@ SpriteDef *SpriteDef::load(std::string const &animationFile, int variant)
     {
         if (xmlStrEqual(node->name, BAD_CAST "imageset"))
         {
-            def->loadImageSet(node);
+            def->loadImageSet(node, palettes);
         }
         else if (xmlStrEqual(node->name, BAD_CAST "action"))
         {
@@ -125,13 +132,13 @@ void SpriteDef::substituteActions()
     substituteAction(ACTION_DEAD, ACTION_HURT);
 }
 
-void
-SpriteDef::loadImageSet(xmlNodePtr node)
+void SpriteDef::loadImageSet(xmlNodePtr node, std::string const &palettes)
 {
     int width = XML::getProperty(node, "width", 0);
     int height = XML::getProperty(node, "height", 0);
     std::string name = XML::getProperty(node, "name", "");
     std::string imageSrc = XML::getProperty(node, "src", "");
+    Dye::instantiate(imageSrc, palettes);
 
     ResourceManager *resman = ResourceManager::getInstance();
     ImageSet *imageSet = resman->getImageSet(imageSrc, width, height);

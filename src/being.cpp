@@ -127,23 +127,10 @@ Being::setPath(const Path &path)
 }
 
 void
-Being::setHairColor(Uint16 color)
+Being::setHairStyle(int style, int color)
 {
-    mHairColor = color;
-    if (mHairColor < 1 || mHairColor > NR_HAIR_COLORS + 1)
-    {
-        mHairColor = 1;
-    }
-}
-
-void
-Being::setHairStyle(Uint16 style)
-{
-    mHairStyle = style;
-    if (mHairStyle < 1 || mHairStyle > NR_HAIR_STYLES)
-    {
-        mHairStyle = 1;
-    }
+    mHairStyle = style < 0 ? mHairStyle : style % NR_HAIR_STYLES;
+    mHairColor = color < 0 ? mHairColor : color % NR_HAIR_COLORS;
 }
 
 void
