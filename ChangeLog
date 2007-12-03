@@ -1,3 +1,21 @@
+2007-12-04  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/head-funkywinter.png,
+	data/graphics/sprites/head-funkywinter.xml,
+	data/graphics/sprites/head-mask.png,
+	data/graphics/sprites/head-mask.xml,
+	data/graphics/sprites/head-mushroom.png,
+	data/graphics/sprites/head-mushroom.xml,
+	data/graphics/sprites/head-shroom.png,
+	data/graphics/sprites/head-shroom.xml,
+	data/graphics/sprites/head-tophat.png,
+	data/graphics/sprites/head-tophead.xml,
+	data/graphics/sprites/head-xmaself.png,
+	data/graphics/sprites/head-xmaself.xml,
+	data/graphics/items/armor-head-xmaself.png,
+	data/graphics/items/armor-head-mask.png,
+	data/items.xml: Added/renamed some headgears for the christmas event.
+
 2007-11-20  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/maps/new_1-1.tmx,
