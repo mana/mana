@@ -1,3 +1,11 @@
+2007-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/map.h: Fix drawing of very high fringe tiles by
+	keeping track of the maximum tile height.
+	* src/itemshortcut.h, src/gui/itemshortcutcontainer.h,
+	src/gui/itemshortcutcontainer.cpp, src/gui/itemshortcutwindow.cpp,
+	src/gui/itemshortcutwindow.h, src/itemshortcut.cpp: Random cleanups.
+
 2007-12-04  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/head-funkywinter.png,

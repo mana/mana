@@ -39,7 +39,6 @@ class Tileset;
 struct PATH_NODE;
 
 typedef std::vector<Tileset*> Tilesets;
-typedef Tilesets::iterator TilesetIterator;
 typedef std::list<Sprite*> Sprites;
 typedef Sprites::iterator SpriteIterator;
 
@@ -202,14 +201,12 @@ class Map : public Properties
          * Converts a global tile id to the Image* pointing to the associated
          * tile image.
          */
-        Image*
-        getTileWithGid(int gid);
+        Image* getTileWithGid(int gid) const;
 
         /**
          * Finds the tile set that a tile with the given global id is part of.
          */
-        Tileset*
-        getTilesetWithGid(int gid);
+        Tileset* getTilesetWithGid(int gid) const;
 
         /**
          * Tells whether a tile is occupied by a being.
@@ -223,6 +220,7 @@ class Map : public Properties
 
         int mWidth, mHeight;
         int mTileWidth, mTileHeight;
+        int mMaxTileHeight;
         MetaTile *mMetaTiles;
         Image **mTiles;
 

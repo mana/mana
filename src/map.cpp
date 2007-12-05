@@ -65,6 +65,7 @@ struct Location
 Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),
     mTileWidth(tileWidth), mTileHeight(tileHeight),
+    mMaxTileHeight(height),
     mOnClosedList(1), mOnOpenList(2),
     mLastScrollX(0.0f), mLastScrollY(0.0f)
 {
@@ -87,8 +88,7 @@ Map::~Map()
     for_each(mOverlays.begin(), mOverlays.end(), make_dtor(mOverlays));
 }
 
-void
-Map::initializeOverlays()
+void Map::initializeOverlays()
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -114,10 +114,12 @@ Map::initializeOverlays()
     }
 }
 
-void
-Map::addTileset(Tileset *tileset)
+void Map::addTileset(Tileset *tileset)
 {
     mTilesets.push_back(tileset);
+
+    if (tileset->getHeight() > mMaxTileHeight)
+        mMaxTileHeight = tileset->getHeight();
 }
 
 bool spriteCompare(const Sprite *a, const Sprite *b)
@@ -125,13 +127,9 @@ bool spriteCompare(const Sprite *a, const Sprite *b)
     return a->getPixelY() < b->getPixelY();
 }
 
-void
-Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
+void Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 {
-    int startX = scrollX / 32;
-    int startY = scrollY / 32;
-    int endX = (graphics->getWidth() + scrollX + 31) / 32;
-    int endY = (graphics->getHeight() + scrollY + 31) / 32;
+    int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
 
     // If drawing the fringe layer, make sure sprites are sorted
     SpriteIterator si;
@@ -139,12 +137,13 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
     {
         mSprites.sort(spriteCompare);
         si = mSprites.begin();
-
-        // Increase endY to account for high fringe tiles
-        // TODO: Improve this hack so that it'll dynamically account for the
-        //       highest tile.
-        endY += 2;
+        endPixelY += mMaxTileHeight - mTileHeight;
     }
+
+    int startX = scrollX / mTileWidth;
+    int startY = scrollY / mTileHeight;
+    int endX = (graphics->getWidth() + scrollX + mTileWidth - 1) / mTileWidth;
+    int endY = endPixelY / mTileHeight;
 
     if (startX < 0) startX = 0;
     if (startY < 0) startY = 0;
@@ -169,8 +168,9 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
             Image *img = getTile(x, y, layer);
             if (img) {
                 graphics->drawImage(img,
-                                    x * 32 - scrollX,
-                                    y * 32 - scrollY + 32 - img->getHeight());
+                        x * mTileWidth - scrollX,
+                        y * mTileHeight - scrollY +
+                            mTileHeight - img->getHeight());
             }
         }
     }
@@ -186,8 +186,8 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
     }
 }
 
-void
-Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail)
+void Map::drawOverlay(Graphics *graphics,
+                      float scrollX, float scrollY, int detail)
 {
     static int lastTick = tick_time;
 
@@ -226,8 +226,7 @@ Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail)
     };
 }
 
-void
-Map::setTileWithGid(int x, int y, int layer, int gid)
+void Map::setTileWithGid(int x, int y, int layer, int gid)
 {
     if (layer == 3)
     {
@@ -251,19 +250,17 @@ class ContainsGidFunctor
         int gid;
 } containsGid;
 
-Tileset*
-Map::getTilesetWithGid(int gid)
+Tileset* Map::getTilesetWithGid(int gid) const
 {
     containsGid.gid = gid;
 
-    TilesetIterator i = find_if(mTilesets.begin(), mTilesets.end(),
+    Tilesets::const_iterator i = find_if(mTilesets.begin(), mTilesets.end(),
             containsGid);
 
     return (i == mTilesets.end()) ? NULL : *i;
 }
 
-Image*
-Map::getTileWithGid(int gid)
+Image* Map::getTileWithGid(int gid) const
 {
     Tileset *set = getTilesetWithGid(gid);
 
@@ -274,20 +271,17 @@ Map::getTileWithGid(int gid)
     return NULL;
 }
 
-void
-Map::setWalk(int x, int y, bool walkable)
+void Map::setWalk(int x, int y, bool walkable)
 {
     mMetaTiles[x + y * mWidth].walkable = walkable;
 }
 
-bool
-Map::getWalk(int x, int y) const
+bool Map::getWalk(int x, int y) const
 {
     return !tileCollides(x, y) && !occupied(x, y);
 }
 
-bool
-Map::occupied(int x, int y) const
+bool Map::occupied(int x, int y) const
 {
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
@@ -302,51 +296,43 @@ Map::occupied(int x, int y) const
     return false;
 }
 
-bool
-Map::tileCollides(int x, int y) const
+bool Map::tileCollides(int x, int y) const
 {
     return !(contains(x, y) && mMetaTiles[x + y * mWidth].walkable);
 }
 
-bool
-Map::contains(int x, int y) const
+bool Map::contains(int x, int y) const
 {
     return x >= 0 && y >= 0 && x < mWidth && y < mHeight;
 }
 
-void
-Map::setTile(int x, int y, int layer, Image *img)
+void Map::setTile(int x, int y, int layer, Image *img)
 {
     mTiles[x + y * mWidth + layer * (mWidth * mHeight)] = img;
 }
 
-Image*
-Map::getTile(int x, int y, int layer)
+Image* Map::getTile(int x, int y, int layer)
 {
     return mTiles[x + y * mWidth + layer * (mWidth * mHeight)];
 }
 
-MetaTile*
-Map::getMetaTile(int x, int y)
+MetaTile* Map::getMetaTile(int x, int y)
 {
     return &mMetaTiles[x + y * mWidth];
 }
 
-SpriteIterator
-Map::addSprite(Sprite *sprite)
+SpriteIterator Map::addSprite(Sprite *sprite)
 {
     mSprites.push_front(sprite);
     return mSprites.begin();
 }
 
-void
-Map::removeSprite(SpriteIterator iterator)
+void Map::removeSprite(SpriteIterator iterator)
 {
     mSprites.erase(iterator);
 }
 
-Path
-Map::findPath(int startX, int startY, int destX, int destY)
+Path Map::findPath(int startX, int startY, int destX, int destY)
 {
     // Path to be built up (empty by default)
     Path path;
@@ -510,8 +496,7 @@ Map::findPath(int startX, int startY, int destX, int destY)
     return path;
 }
 
-void
-Map::addParticleEffect (std::string effectFile, int x, int y)
+void Map::addParticleEffect (std::string effectFile, int x, int y)
 {
     ParticleEffectData newEffect;
     newEffect.file = effectFile;
@@ -520,8 +505,7 @@ Map::addParticleEffect (std::string effectFile, int x, int y)
     particleEffects.push_back(newEffect);
 }
 
-void
-Map::initializeParticleEffects(Particle* particleEngine)
+void Map::initializeParticleEffects(Particle* particleEngine)
 {
     for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
          i != particleEffects.end();
