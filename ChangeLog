@@ -1,3 +1,8 @@
+2007-12-04  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/items/generic-santacookie.png,
+	data/items.xml: Added a new drop item for the christmas event.
+
 2007-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/map.h: Fix drawing of very high fringe tiles by
