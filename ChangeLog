@@ -1,3 +1,11 @@
+2007-12-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/head-funkywinter.png,
+	data/graphics/sprites/head-funkywinter.xml,
+	data/graphics/sprites/head-xmaself.png,
+	data/graphics/sprites/head-xmaself.xml: New versions of funky hat
+	and elf hat by QOAL.
+	
 2007-12-04  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/items/generic-santacookie.png,
