@@ -1,3 +1,7 @@
+2007-12-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/CMakeLists.txt: Add missing source files.
+
 2007-11-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/properties.h, src/net/charserverhandler.cpp, src/being.h: Small

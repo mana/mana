@@ -254,6 +254,8 @@ SET(SRCS
     resources/animation.h
     resources/buddylist.cpp
     resources/buddylist.h
+    resources/dye.cpp
+    resources/dye.h
     resources/image.cpp
     resources/image.h
     resources/imageloader.cpp
