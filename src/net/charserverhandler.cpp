@@ -204,13 +204,13 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     msg.readInt16();                       // class
     int hairStyle = msg.readInt16();
     Uint16 weapon = msg.readInt16();
-    tempPlayer->setVisibleEquipment(Being::WEAPON_SPRITE, weapon);
+    tempPlayer->setSprite(Being::WEAPON_SPRITE, weapon);
     tempPlayer->mLevel = msg.readInt16();
     msg.readInt16();                       // skill point
-    tempPlayer->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
+    tempPlayer->setSprite(Being::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
     msg.readInt16();                       // shield
-    tempPlayer->setVisibleEquipment(Being::HAT_SPRITE, msg.readInt16()); // head option top
-    tempPlayer->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
+    tempPlayer->setSprite(Being::HAT_SPRITE, msg.readInt16()); // head option top
+    tempPlayer->setSprite(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
     int hairColor = msg.readInt16();
     tempPlayer->setHairStyle(hairStyle, hairColor);
     msg.readInt16();                       // unknown

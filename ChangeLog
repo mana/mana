@@ -1,3 +1,11 @@
+2007-12-10  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp, src/being.h, src/net/beinghandler.cpp,
+	src/net/charserverhandler.cpp, src/net/equipmenthandler.cpp,
+	src/player.cpp, src/player.h, data/items.xml: Simplified player
+	subsprite handling by treating equipment, hairstyle and base
+	sprites alike. This also enables gender-specific hairstyles.
+
 2007-12-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/head-funkywinter.png,

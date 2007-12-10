@@ -141,7 +141,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             if (!being)
                 break;
 
-            being->setVisibleEquipment(Being::WEAPON_SPRITE, itemId);
+            being->setSprite(Being::WEAPON_SPRITE, itemId);
             break;
 
         case SMSG_PLAYER_UNEQUIP:
@@ -184,7 +184,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 case 536:
                 case 1200:
                 case 1201:
-                    player_node->setVisibleEquipment(Being::WEAPON_SPRITE, 0);
+                    player_node->setSprite(Being::WEAPON_SPRITE, 0);
                     // TODO: Why this break? Shouldn't a weapon be
                     //       unequipped in inventory too?
                     break;

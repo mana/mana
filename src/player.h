@@ -53,6 +53,13 @@ class Player : public Being
 
         /**
          * Sets the hair style and color for this player.
+         *
+         * Only for convenience in 0.0 client. When porting
+         * this to the trunk remove this function and
+         * call setSprite directly instead. The server should
+         * provide the hair ID and coloring in the same way
+         * it does for other equipment pieces.
+         *
          */
         void setHairStyle(int style, int color);
 
@@ -60,7 +67,7 @@ class Player : public Being
          * Sets visible equipments for this player.
          */
         virtual void
-        setVisibleEquipment(int slot, int id);
+        setSprite(int slot, int id, std::string color = "");
 };
 
 #endif

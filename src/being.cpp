@@ -57,12 +57,13 @@ Being::Being(int id, int job, Map *map):
     mDirection(DOWN),
     mMap(NULL),
     mEquippedWeapon(NULL),
-    mHairStyle(0), mHairColor(0),
+    mHairStyle(1), mHairColor(0),
     mGender(2),
     mSpeechTime(0),
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
-    mEquipmentSpriteIDs(VECTOREND_SPRITE, 0)
+    mSpriteIDs(VECTOREND_SPRITE, 0),
+    mSpriteColors(VECTOREND_SPRITE, "")
 {
     setMap(map);
 
@@ -134,9 +135,11 @@ Being::setHairStyle(int style, int color)
 }
 
 void
-Being::setVisibleEquipment(int slot, int id)
+Being::setSprite(int slot, int id, std::string color)
 {
-    mEquipmentSpriteIDs[slot] = id;
+    assert (slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
+    mSpriteIDs[slot] = id;
+    mSpriteColors[slot] = color;
 }
 
 void

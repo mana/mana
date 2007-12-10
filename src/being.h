@@ -204,7 +204,7 @@ class Being : public Sprite
          * Sets visible equipments for this being.
          */
         virtual void
-        setVisibleEquipment(int slot, int id);
+        setSprite(int slot, int id, std::string color = "");
 
         /**
          * Sets the gender of this being.
@@ -386,7 +386,8 @@ class Being : public Sprite
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
-        std::vector<int> mEquipmentSpriteIDs;
+        std::vector<int> mSpriteIDs;
+        std::vector<std::string> mSpriteColors;
         std::list<Particle *> mChildParticleEffects;
 
     private:
