@@ -46,6 +46,8 @@ class ScrollArea;
 #define ACT_WHISPER   4   // getting whispered at
 #define ACT_IS        5   // equivalent to "/me" in irc
 
+#define BY_LOGGER     6
+
 #define IS_ANNOUNCE         "/announce "
 #define IS_ANNOUNCE_LENGTH  10
 #define IS_HELP             "/help"

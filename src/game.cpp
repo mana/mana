@@ -212,6 +212,11 @@ void createGuiWindows(Network *network)
     miniStatusWindow->setVisible(true);
     menuWindow->setVisible(true);
     itemShortcutWindow->setVisible(true);
+
+    if (config.getValue("logToChat", 0))
+    {
+        logger->setChatWindow(chatWindow);
+    }
 }
 
 /**

@@ -5,6 +5,8 @@
 	src/player.cpp, src/player.h, data/items.xml: Simplified player
 	subsprite handling by treating equipment, hairstyle and base
 	sprites alike. This also enables gender-specific hairstyles.
+	* src/game.cpp, src/gui/chat.cpp, src/gui/chat.h, src/log.cpp,
+	src/log.h: Added an option to show log messages in the chat console.
 
 2007-12-09  Philipp Sehmisch  <tmw@crushnet.org>
 

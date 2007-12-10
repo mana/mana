@@ -143,6 +143,9 @@ ChatWindow::chatLog(std::string line, int own)
             tmp.nick += CAT_IS;
             lineColor = "##5"; // Equiv. to BrowserBox::YELLOW
             break;
+        case BY_LOGGER:
+            lineColor = "##8"; // Equiv. to BrowserBox::GREY
+            break;
     }
 
     // Get the current system time
