@@ -23,6 +23,7 @@
 #include "being.h"
 
 #include <algorithm>
+#include <cassert>
 
 #include "animatedsprite.h"
 #include "equipment.h"
@@ -137,7 +138,7 @@ Being::setHairStyle(int style, int color)
 void
 Being::setSprite(int slot, int id, std::string color)
 {
-    assert (slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
+    assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
     mSpriteIDs[slot] = id;
     mSpriteColors[slot] = color;
 }

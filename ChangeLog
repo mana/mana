@@ -1,3 +1,7 @@
+2007-12-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp: Include cassert header.
+
 2007-12-10  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/being.cpp, src/being.h, src/net/beinghandler.cpp,
