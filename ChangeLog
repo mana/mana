@@ -1,3 +1,8 @@
+2007-12-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/tiles/cave.png, data/graphics/tiles/cave_x2.png,
+	data/maps/new_4-1.tmx: Added two new cave tiles by yosuhara.
+
 2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* tools/tmxcopy/base64.cpp,
