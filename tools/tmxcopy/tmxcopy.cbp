@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="tmxcopy"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option active_target="0"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="default">
+				<Option output="tmxcopy.exe"/>
+				<Option working_dir="."/>
+				<Option object_output=".objs"/>
+				<Option deps_output=".deps"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+			</Target>
+		</Build>
+		<Linker>
+			<Add library="libxml2"/>
+			<Add library="libz"/>
+		</Linker>
+		<Unit filename="base64.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="base64.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="map.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="map.hpp">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="tostring.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="xmlutils.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="xmlutils.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="zlibutils.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+		<Unit filename="zlibutils.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+			<Option target="release"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

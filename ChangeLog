@@ -1,3 +1,14 @@
+2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* tools/tmxcopy/base64.cpp,
+	tools/tmxcopy/base64.h, tools/tmxcopy/main.cpp,
+	tools/tmxcopy/map.cpp, tools/tmxcopy/map.hpp,
+	tools/tmxcopy/readme.txt, tools/tmxcopy/tmxcopy.cbp,
+	tools/tmxcopy/tostring.h, tools/tmxcopy/xmlutils.cpp,
+	tools/tmxcopy/xmlutils.h, tools/tmxcopy/zlibutils.cpp,
+	tools/tmxcopy/zlibutils.h: Added my tmxcopy tool for copying
+	parts of maps to other maps.
+
 2007-12-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp: Include cassert header.
