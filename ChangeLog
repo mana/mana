@@ -1,3 +1,8 @@
+2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/cave.png, data/graphics/tiles/cave_x2.png:
+	Fixed the blurred outlines of the new tiles.
+
 2007-12-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/tiles/cave.png, data/graphics/tiles/cave_x2.png,
