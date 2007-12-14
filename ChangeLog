@@ -1,7 +1,10 @@
-2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+2007-12-14  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/items.xml: Fixed some errors with the filenames of the new
-	items.
+	* data/graphics/sprites/head-mask.png,
+	data/graphics/sprites/head-mask.xml,
+	data/graphics/sprites/head-mushroom.xml,
+	data/graphics/sprites/head-shroom.xml,
+	data/items.xml: Fixed some problems with the new items.
 
 2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
 
