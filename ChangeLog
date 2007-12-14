@@ -4,7 +4,8 @@
 	data/graphics/sprites/head-mask.xml,
 	data/graphics/sprites/head-mushroom.xml,
 	data/graphics/sprites/head-shroom.xml,
-	data/items.xml: Fixed some problems with the new items.
+	data/items.xml, data/equipment.xml:
+	Fixed some problems with the new items.
 
 2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
 
