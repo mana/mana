@@ -1,5 +1,10 @@
 2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* data/items.xml: Fixed some errors with the filenames of the new
+	items.
+
+2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/graphics/tiles/cave.png, data/graphics/tiles/cave_x2.png:
 	Fixed the blurred outlines of the new tiles.
 
