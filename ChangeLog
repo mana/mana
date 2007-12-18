@@ -1,3 +1,12 @@
+2007-12-18  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/status.cpp, src/gui/status.h, src/localplayer.h,
+	src/net/accountserver/account.cpp,
+	src/net/accountserver/account.h, src/net/beinghandler.cpp:
+	Updated attribute system to the latest design decisions
+	(removed charisma, kept agility in)
+
 2007-12-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/CMakeLists.txt: Add missing source files.

@@ -101,6 +101,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             handleBeingLooksChangeMessage(msg);
             break;
 
+
         /*
         case SMSG_BEING_VISIBLE:
         case SMSG_BEING_MOVE:

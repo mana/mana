@@ -35,7 +35,7 @@ namespace Net
             void createCharacter(const std::string &name,
                     char hairStyle, char hairColor, char gender,
                     short strength, short agility, short vitality,
-                    short intelligence, short dexterity, short willpower, short charisma);
+                    short intelligence, short dexterity, short willpower);
 
             void deleteCharacter(char slot);
 

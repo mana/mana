@@ -108,7 +108,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsReflexPoints = new gcn::Label("% Reflex:");
 */
     // New labels
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 6; i++) {
         mStatsLabel[i] = new gcn::Label();
         mStatsDisplayLabel[i] = new gcn::Label();
         mPointsLabel[i] = new gcn::Label("0");
@@ -131,7 +131,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     int totalLabelY = mStatsTotalLabel->getY();
     mStatsCostLabel->setPosition(170, totalLabelY);
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
         mStatsLabel[i]->setPosition(5,
                                     mStatsTotalLabel->getY() + (i * 23) + 15);
@@ -163,7 +163,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     add(mStatsTitleLabel);
     add(mStatsTotalLabel);
     add(mStatsCostLabel);
-    for(int i = 0; i < 7; i++)
+    for(int i = 0; i < 6; i++)
     {
         add(mStatsLabel[i]);
         add(mStatsDisplayLabel[i]);
@@ -224,19 +224,18 @@ void StatusWindow::update()
 
     // Stats Part
     // ----------
-    const std::string attrNames[7] = {
+    const std::string attrNames[6] = {
         "Strength",
         "Agility",
         "Dexterity",
         "Vitality",
         "Intelligence",
-        "Willpower",
-        "Charisma"
+        "Willpower"
     };
     int statusPoints = mPlayer->getAttributeIncreasePoints();
 
     // Update labels
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
         mStatsLabel[i]->setCaption(attrNames[i]);
         mStatsDisplayLabel[i]->setCaption(
@@ -330,10 +329,6 @@ void StatusWindow::action(const gcn::ActionEvent &event)
         else if (eventId == "WIL")
         {
             mPlayer->raiseAttribute(LocalPlayer::WIL);
-        }
-        else if (eventId == "CHR")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::CHR);
         }
     }
 }

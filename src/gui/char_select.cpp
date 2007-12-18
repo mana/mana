@@ -264,8 +264,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mAttributeLabel[3] = new gcn::Label(_("Vitality:"));
     mAttributeLabel[4] = new gcn::Label(_("Intelligence:"));
     mAttributeLabel[5] = new gcn::Label(_("Willpower:"));
-    mAttributeLabel[6] = new gcn::Label(_("Charisma:"));
-    for (int i=0; i<7; i++)
+    for (int i=0; i<6; i++)
     {
         mAttributeLabel[i]->setWidth(70);
         mAttributeSlider[i] = new Slider(1, 20);
@@ -289,7 +288,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mPrevHairStyleButton->setPosition(90, 64);
     mNextHairStyleButton->setPosition(165, 64);
     mHairStyleLabel->setPosition(5, 70);
-    for (int i=0; i<7; i++)
+    for (int i=0; i<6; i++)
     {
         mAttributeSlider[i]->setValue(10);
         mAttributeSlider[i]->setDimension(gcn::Rectangle(   75, 140 + i*20,
@@ -319,7 +318,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     add(mNextHairStyleButton);
     add(mPrevHairStyleButton);
     add(mHairStyleLabel);
-    for (int i=0; i<7; i++)
+    for (int i=0; i<6; i++)
     {
         add(mAttributeSlider[i]);
         add(mAttributeValue[i]);
@@ -359,8 +358,7 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
                     (int) mAttributeSlider[2]->getValue(),  // DEX
                     (int) mAttributeSlider[3]->getValue(),  // VIT
                     (int) mAttributeSlider[4]->getValue(),  // INT
-                    (int) mAttributeSlider[5]->getValue(),  // WILL
-                    (int) mAttributeSlider[6]->getValue()   // CHAR
+                    (int) mAttributeSlider[5]->getValue()  // WILL
             );
         }
         else {
@@ -398,7 +396,7 @@ CharCreateDialog::getName()
 
 void CharCreateDialog::UpdateSliders()
 {
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
         // Update captions
         mAttributeValue[i]->setCaption(
@@ -407,7 +405,7 @@ void CharCreateDialog::UpdateSliders()
     }
 
     // Update distributed points
-    int pointsLeft = 70 - getDistributedPoints();
+    int pointsLeft = 60 - getDistributedPoints();
     if (pointsLeft == 0)
     {
         mAttributesLeft->setCaption(_("Character stats OK"));
@@ -439,7 +437,7 @@ int CharCreateDialog::getDistributedPoints()
 {
     int points = 0;
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 6; i++)
     {
         points += (int) mAttributeSlider[i]->getValue();
     }

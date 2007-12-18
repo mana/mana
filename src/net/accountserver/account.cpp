@@ -32,7 +32,7 @@
 void Net::AccountServer::Account::createCharacter(
         const std::string &name, char hairStyle, char hairColor, char gender,
         short strength, short agility, short vitality,
-        short intelligence, short dexterity, short willpower, short charisma)
+        short intelligence, short dexterity, short willpower)
 {
     MessageOut msg(PAMSG_CHAR_CREATE);
 
@@ -46,7 +46,6 @@ void Net::AccountServer::Account::createCharacter(
     msg.writeInt16(intelligence);
     msg.writeInt16(dexterity);
     msg.writeInt16(willpower);
-    msg.writeInt16(charisma);
 
     Net::AccountServer::connection->send(msg);
 }

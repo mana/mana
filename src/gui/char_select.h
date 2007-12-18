@@ -140,9 +140,9 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Button *mPrevHairStyleButton;
         gcn::Label *mHairStyleLabel;
 
-        gcn::Slider *mAttributeSlider[7];
-        gcn::Label *mAttributeLabel[7];
-        gcn::Label *mAttributeValue[7];
+        gcn::Slider *mAttributeSlider[6];
+        gcn::Label *mAttributeLabel[6];
+        gcn::Label *mAttributeValue[6];
         gcn::Label *mAttributesLeft;
 
         gcn::Button *mCreateButton;
@@ -153,7 +153,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 
         int mSlot;
 
-        static const int mMaxPoints = 70;
+        static const int mMaxPoints = 60;
         int mUsedPoints;
 };
 
