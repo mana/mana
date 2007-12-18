@@ -1,3 +1,8 @@
+2007-12-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Remember to delete the progressbar and label also when
+	the game was not started.
+
 2007-12-14  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/head-mask.png,

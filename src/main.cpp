@@ -853,6 +853,8 @@ int main(int argc, char *argv[])
 #ifdef PACKAGE_VERSION
     delete versionLabel;
 #endif
+    delete progressBar;
+    delete progressLabel;
 
     delete network;
     SDLNet_Quit();
