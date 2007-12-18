@@ -2,6 +2,8 @@
 
 	* src/main.cpp: Remember to delete the progressbar and label also when
 	the game was not started.
+	* tools/upalyzer/analyse.php: Added initial version of the update
+	analysis tool upalyzer.
 
 2007-12-14  Philipp Sehmisch  <tmw@crushnet.org>
 
