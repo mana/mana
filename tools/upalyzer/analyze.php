@@ -32,6 +32,7 @@ $update_file_maxlen = 0;
 $data_size = 0;
 $data_uncompressed_size = 0;
 $data_used_size = 0;
+$data_overhead_size = 0;
 
 foreach ($update_file as $update_line)
 {
@@ -40,7 +41,8 @@ foreach ($update_file as $update_line)
   $update = array(
     'file' => $file,
     'adler32' => trim($splitted[1]),
-    'filesize' => filesize($file));
+    'filesize' => filesize($file),
+    'size' => 0);
   $update_file_maxlen = max($update_file_maxlen, strlen($file));
 
   $uncompressed_size = 0;
@@ -49,9 +51,11 @@ foreach ($update_file as $update_line)
   if ($zip) {
     while ($zip_entry = zip_read($zip)) {
       $uncompressed_size = $uncompressed_size + zip_entry_filesize($zip_entry);
+      $entry_size = zip_entry_compressedsize($zip_entry);
       $entries[zip_entry_name($zip_entry)] = array(
         'name' => zip_entry_name($zip_entry),
-        'size' => zip_entry_compressedsize($zip_entry));
+        'size' => $entry_size);
+      $update['size'] += $entry_size;
     }
     zip_close($zip);
   }
@@ -59,8 +63,9 @@ foreach ($update_file as $update_line)
   $update['uncompressed_size'] = $uncompressed_size;
   $updates[] = $update;
 
-  $data_size += $update['filesize'];
+  $data_size += $update['size'];
   $data_uncompressed_size += $uncompressed_size;
+  $data_overhead_size += $update['filesize'] - $update['size'];
 }
 
 function get_update_for_file($file)
@@ -93,7 +98,7 @@ foreach ($updates as &$update)
 
   $update['used_entry_count'] = $used_entry_count;
   $update['used_size'] = $used_entry_size;
-  $update['used_percentage'] = $used_entry_size / $update['filesize'];
+  $update['used_percentage'] = $used_entry_size / $update['size'];
 
   $data_used_size += $update['used_size'];
 }
@@ -112,7 +117,9 @@ foreach ($updates as &$update)
 }
 
 printf("\n");
-printf("Amount of data: %4d kb\n", $data_size / 1024);
+printf("Amount of data: %4d kb (+%d kb zip file overhead)\n",
+    $data_size / 1024,
+    $data_overhead_size / 1024);
 printf("Uncompressed:   %4d kb\n", $data_uncompressed_size / 1024);
 printf("Obsoleted data: %4d kb (%d%%)\n",
     ($data_size - $data_used_size) / 1024,
