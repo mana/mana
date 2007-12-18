@@ -116,7 +116,7 @@ printf("Amount of data: %4d kb\n", $data_size / 1024);
 printf("Uncompressed:   %4d kb\n", $data_uncompressed_size / 1024);
 printf("Obsoleted data: %4d kb (%d%%)\n",
     ($data_size - $data_used_size) / 1024,
-    ($data_used_size / $data_size) * 100);
+    100 - ($data_used_size / $data_size) * 100);
 
 /*
 if ($dh = opendir('.')) {
