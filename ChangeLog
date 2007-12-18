@@ -4,6 +4,9 @@
 	the game was not started.
 	* tools/upalyzer/analyse.php: Added initial version of the update
 	analysis tool upalyzer.
+	* tools/upalyzer/analyse.php: Optimized with single loop approach and
+	nicer printing calls, inspired by doener's version. Also added list of
+	update entries and their respective update.
 
 2007-12-14  Philipp Sehmisch  <tmw@crushnet.org>
 
