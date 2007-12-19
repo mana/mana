@@ -56,9 +56,9 @@ foreach ($update_file as $update_line)
   $update_file_maxlen = max($update_file_maxlen, strlen($file));
 
   $entries = array();
-  $zip = zip_open($file);
+  $zip = zip_open(realpath($file));
 
-  if ($zip) {
+  if ($zip && !is_int($zip)) {
     while ($zip_entry = zip_read($zip)) {
       $update['uncompressed_size'] += zip_entry_filesize($zip_entry);
       $entry_name = zip_entry_name($zip_entry);
@@ -81,7 +81,7 @@ foreach ($update_file as $update_line)
     zip_close($zip);
   }
   else {
-    $update['zip_error'] = true;
+    $update['zip_error'] = $zip or true;
   }
 
   ksort($entries);
@@ -116,7 +116,9 @@ foreach (array_reverse($updates) as $update)
                                          $update['used_entry_count'],
                                          count($update['entries']));
   } else {
-    printf("  Error!");
+    printf("  Error! ");
+    if (is_int($update['zip_error']))
+      echo $update['zip_error'];
   }
   echo "\n";
 }
