@@ -1,3 +1,10 @@
+2007-12-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* tools/upalyzer/analyse.php: Fixed association of entries to update,
+	added no-cache headers, added a bit of error reporting in case of
+	invalid zip files, kept original ordering of the update list and
+	sorted the list of entries on their filename.
+
 2007-12-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Remember to delete the progressbar and label also when

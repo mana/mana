@@ -18,6 +18,11 @@
  *  along with upalyzer; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+header("Content-type: text/html");
+header("Cache-Control: no-store, no-cache, must-revalidate"); 
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 ?>
 <html>
 <head><title>Update analysis</title></head>
@@ -66,14 +71,17 @@ foreach ($update_file as $update_line)
       $update['size'] += $entry_size;
 
       if ($entry_used) {
+        $update_entries[$entry_name] = $update['file'];
         $update['used_entry_count']++;
         $update['used_size'] += $entry_size;
       }
 
-      $update_entries[$entry_name] = $update['file'];
       $update_entry_maxlen = max($update_entry_maxlen, strlen($entry_name));
     }
     zip_close($zip);
+  }
+  else {
+    $update['zip_error'] = true;
   }
 
   $update['entries'] = $entries;
@@ -86,15 +94,19 @@ foreach ($update_file as $update_line)
   $data_overhead_size += $update['filesize'] - $update['size'];
 }
 
-foreach ($updates as &$update)
+foreach (array_reverse($updates) as $update)
 {
   printf("%-{$update_file_maxlen}s  ", $update['file']);
   echo $update['adler32'];
   printf("  %4d kb", $update['filesize'] / 1024);
-  printf("  %4d kb", $update['uncompressed_size'] / 1024);
-  printf("  %3d%% used (%d/%d files)", $update['used_percentage'] * 100,
-                                       $update['used_entry_count'],
-                                       count($update['entries']));
+  if (!$update['zip_error']) {
+    printf("  %4d kb", $update['uncompressed_size'] / 1024);
+    printf("  %3d%% used (%d/%d files)", $update['used_percentage'] * 100,
+                                         $update['used_entry_count'],
+                                         count($update['entries']));
+  } else {
+    printf("  Error!");
+  }
   echo "\n";
 }
 
@@ -108,6 +120,8 @@ printf("Obsoleted data: %4d kb (%d%%)\n",
     100 - ($data_used_size / $data_size) * 100);
 
 printf("\n");
+
+ksort($update_entries);
 
 foreach ($update_entries as $entry => $update)
 {
