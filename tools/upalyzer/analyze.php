@@ -64,16 +64,16 @@ foreach ($update_file as $update_line)
       $entry_name = zip_entry_name($zip_entry);
       $entry_size = zip_entry_compressedsize($zip_entry);
       $entry_used = !array_key_exists($entry_name, $update_entries);
-      $entries[zip_entry_name($zip_entry)] = array(
+      $entries[$entry_name] = array(
         'name' => $entry_name,
         'size' => $entry_size,
         'used' => $entry_used);
       $update['size'] += $entry_size;
 
       if ($entry_used) {
-        $update_entries[$entry_name] = $update['file'];
         $update['used_entry_count']++;
         $update['used_size'] += $entry_size;
+        $update_entries[$entry_name] = $update;
       }
 
       $update_entry_maxlen = max($update_entry_maxlen, strlen($entry_name));
@@ -84,6 +84,7 @@ foreach ($update_file as $update_line)
     $update['zip_error'] = true;
   }
 
+  ksort($entries);
   $update['entries'] = $entries;
   $update['used_percentage'] = $update['used_size'] / $update['size'];
   $updates[] = $update;
@@ -94,10 +95,20 @@ foreach ($update_file as $update_line)
   $data_overhead_size += $update['filesize'] - $update['size'];
 }
 
+function print_update_name($update, $pad = true)
+{
+  global $update_file_maxlen;
+  printf("<a href=\"#%s\">%s</a>", $update['file'], $update['file']);
+  if ($pad)
+    echo str_repeat(' ', $update_file_maxlen - strlen($update['file']));
+}
+
+// Print overall statistics
+
 foreach (array_reverse($updates) as $update)
 {
-  printf("%-{$update_file_maxlen}s  ", $update['file']);
-  echo $update['adler32'];
+  print_update_name($update);
+  echo '  '. $update['adler32'];
   printf("  %4d kb", $update['filesize'] / 1024);
   if (!$update['zip_error']) {
     printf("  %4d kb", $update['uncompressed_size'] / 1024);
@@ -121,11 +132,35 @@ printf("Obsoleted data: %4d kb (%d%%)\n",
 
 printf("\n");
 
+
+// Print list of update entries and the update they are loaded from
+
 ksort($update_entries);
 
 foreach ($update_entries as $entry => $update)
 {
-  printf("%-{$update_entry_maxlen}s  %s\n", $entry, $update);
+  printf("%-{$update_entry_maxlen}s  ", $entry);
+  print_update_name($update, false);
+  echo "\n";
+}
+
+
+// For each update, print its list of files and indicate whether they are used
+
+foreach (array_reverse($updates) as $update)
+{
+  print "\n<a name=\"".$update['file']."\"/><b>".$update['file']."</b>\n";
+
+  foreach ($update['entries'] as $entry_name => $entry) {
+    printf("%-{$update_entry_maxlen}s", $entry_name);
+    if ($entry['used']) {
+      echo '  *';
+    } else {
+      echo '  ';
+      print_update_name($update_entries[$entry_name], false);
+    }
+    echo "\n";
+  }
 }
 
 /*

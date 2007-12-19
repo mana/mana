@@ -4,6 +4,8 @@
 	added no-cache headers, added a bit of error reporting in case of
 	invalid zip files, kept original ordering of the update list and
 	sorted the list of entries on their filename.
+	* tools/upalyzer/analyse.php: Added list of files in each update with
+	indication on whether they are still used.
 
 2007-12-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
