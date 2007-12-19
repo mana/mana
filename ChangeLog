@@ -1,3 +1,8 @@
+2007-12-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_18-1.tmx: Fixed a map bug (monster trap) on
+	map 18 (woodland village surrounding)
+
 2007-12-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* tools/upalyzer/analyse.php: Fixed association of entries to update,
