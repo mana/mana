@@ -43,11 +43,10 @@ $update_entry_maxlen = 0;
 
 foreach ($update_file as $update_line)
 {
-  $splitted = split(' ', $update_line, 2);
-  $file = $splitted[0];
+  list($file, $hash) = explode(' ', trim($update_line), 2);
   $update = array(
     'file' => $file,
-    'adler32' => trim($splitted[1]),
+    'adler32' => $hash,
     'filesize' => filesize($file),
     'size' => 0,
     'used_entry_count' => 0,
