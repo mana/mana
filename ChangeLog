@@ -4,6 +4,10 @@
 	the selection is removed.
 	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp:
 	Added logging of error on PHYSFS_addToSearchPath.
+	* src/localplayer.cpp, src/inventory.h, src/gui/inventorywindow.cpp,
+	src/inventory.cpp, src/localplayer.h: Fixed inventory size not
+	matching the size assumed by eAthena, and related memory corruption.
+	* src/main.cpp: Increased default chat log length.
 
 2007-12-19  Philipp Sehmisch  <tmw@crushnet.org>
 

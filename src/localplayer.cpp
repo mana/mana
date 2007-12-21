@@ -53,6 +53,7 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
 
 LocalPlayer::~LocalPlayer()
 {
+    delete mInventory;
 }
 
 void LocalPlayer::logic()

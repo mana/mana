@@ -26,7 +26,7 @@
 
 class Item;
 
-#define INVENTORY_SIZE 100
+#define INVENTORY_SIZE 102
 
 class Inventory
 {
