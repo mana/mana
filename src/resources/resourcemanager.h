@@ -68,8 +68,10 @@ class ResourceManager
          * Adds a directory or archive to the search path. If append is true
          * then the directory is added to the end of the search path, otherwise
          * it is added at the front.
+         *
+         * @return <code>true</code> on success, <code>false</code> otherwise.
          */
-        void
+        bool
         addToSearchPath(const std::string &path, bool append);
 
         /**

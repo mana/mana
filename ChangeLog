@@ -2,6 +2,8 @@
 
 	* src/gui/shoplistbox.cpp: Fixed shop list box not to scroll up when
 	the selection is removed.
+	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp:
+	Added logging of error on PHYSFS_addToSearchPath.
 
 2007-12-19  Philipp Sehmisch  <tmw@crushnet.org>
 

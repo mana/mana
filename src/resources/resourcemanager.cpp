@@ -106,11 +106,15 @@ ResourceManager::setWriteDir(const std::string &path)
     return (bool) PHYSFS_setWriteDir(path.c_str());
 }
 
-void
+bool
 ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
     logger->log("Adding to PhysicsFS: %s", path.c_str());
-    PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0);
+    if (!PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0)) {
+        logger->log("Error: %s", PHYSFS_getLastError());
+        return false;
+    }
+    return true;
 }
 
 void
