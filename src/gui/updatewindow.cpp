@@ -307,17 +307,20 @@ int UpdaterWindow::downloadThread(void *ptr)
                 switch (res)
                 {
                 case CURLE_COULDNT_CONNECT:
-                    // give more debug info on that error
-                    std::cerr << "curl error " << res << ": "
-                              << uw->mCurlError << " " << url.c_str()
-                              << std::endl;
-                    break;
-
                 default:
                     std::cerr << "curl error " << res << ": "
                               << uw->mCurlError << " host: " << url.c_str()
                               << std::endl;
+                    break;
                 }
+
+                if (!uw->mStoreInMemory)
+                {
+                    fclose(outfile);
+                    ::remove(outFilename.c_str());
+                }
+                attempts++;
+                continue;
             }
 
             curl_easy_cleanup(curl);

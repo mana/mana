@@ -1,4 +1,10 @@
-2007-12-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2007-12-21  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/gui/updatewindow.cpp: Attempted to fix client 
+	freeze when unable to connect to update host, and added exit dialog
+	when client loses connection.
+
+2007-12-21  Bjørn Lindeijer <bjorn@lindeijer.nl>
 
 	* src/gui/shoplistbox.cpp: Fixed shop list box not to scroll up when
 	the selection is removed.

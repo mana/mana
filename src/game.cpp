@@ -417,6 +417,19 @@ void Game::logic()
         // Handle network stuff
         mNetwork->flush();
         mNetwork->dispatchMessages();
+
+        if (!mNetwork->isConnected())
+        {
+            if (!exitConfirm)
+            {
+                exitConfirm = new
+                    ConfirmDialog("Network Error",
+                    "There was a network error, the program will now quit");
+                exitConfirm->addActionListener(&exitListener);
+            }
+
+            exitConfirm->requestMoveToTop();
+        }
     }
 }
 
