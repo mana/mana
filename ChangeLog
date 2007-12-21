@@ -1,3 +1,8 @@
+2007-12-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/shoplistbox.cpp: Fixed shop list box not to scroll up when
+	the selection is removed.
+
 2007-12-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_18-1.tmx: Fixed a map bug (monster trap) on

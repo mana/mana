@@ -114,10 +114,10 @@ void ShopListBox::setSelected(int selected)
                              std::max(-1, selected));
 
         gcn::Widget *parent = getParent();
-        if (parent)
+        if (parent && mSelected >= 0)
         {
             gcn::Rectangle scroll;
-            scroll.y = (mSelected < 0) ? 0 : mRowHeight * mSelected;
+            scroll.y = mRowHeight * mSelected;
             scroll.height = mRowHeight;
             parent->showWidgetPart(this, scroll);
         }
