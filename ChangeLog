@@ -1,6 +1,11 @@
+2007-12-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/winver.h, README, configure.ac, INSTALL, data/help/header.txt,
+	NEWS, CMakeLists.txt: Updated version to 0.0.24.
+
 2007-12-21  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp, src/gui/updatewindow.cpp: Attempted to fix client 
+	* src/game.cpp, src/gui/updatewindow.cpp: Attempted to fix client
 	freeze when unable to connect to update host, and added exit dialog
 	when client loses connection.
 
