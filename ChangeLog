@@ -2,6 +2,8 @@
 
 	* src/winver.h, README, configure.ac, INSTALL, data/help/header.txt,
 	NEWS, CMakeLists.txt: Updated version to 0.0.24.
+	* src/net/chathandler.cpp, NEWS: Make sure chat messages are also
+	trimmed for the local player.
 
 2007-12-21  David Athay  <ko2fan@gmail.com>
 

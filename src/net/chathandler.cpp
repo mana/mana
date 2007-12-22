@@ -98,6 +98,7 @@ void ChatHandler::handleMessage(MessageIn *msg)
                 {
                     chatMsg.erase(0, pos + 3);
                 }
+                trim(chatMsg);
                 player_node->setSpeech(chatMsg, SPEECH_TIME);
             }
             else

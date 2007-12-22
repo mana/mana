@@ -13,6 +13,7 @@
 - Made buy and sell dialogs resizable
 - Merged equipment database with items database
 - Chat window log no longer goes back forever
+- Chat messages are trimmed (spaces are removed on both sides)
 - Fixed segmentation fault with some OpenGL drivers
 - Fixed updating of defense when increasing vitality
 - Fixed a bug that prevented being-controlled particles from being deleted
