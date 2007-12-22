@@ -21,9 +21,9 @@
  *  $Id$
  */
 
-#include "resource.h"
-
 #include <cassert>
+
+#include "resource.h"
 
 #include "resourcemanager.h"
 
@@ -45,10 +45,10 @@ Resource::decRef()
 
     mRefCount--;
 
-    if (mRefCount == 0) {
-        // Make sure resource manager won't refer to deleted resource
+    if (mRefCount == 0)
+    {
+        // Warn the manager that this resource is no longer used.
         ResourceManager *resman = ResourceManager::getInstance();
-        resman->release(mIdPath);
-        delete this;
+        resman->release(this);
     }
 }

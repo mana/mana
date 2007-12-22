@@ -182,6 +182,9 @@
 
 2007-11-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
+	* src/resources/resourcemanager.h, src/resources/resource.h,
+	src/resources/resourcemanager.cpp, src/resources/resource.cpp: Delayed
+	resource deletion by 30 seconds.
 	* src/resources/image.cpp: Sped up recoloring of transparent pixels.
 
 2007-11-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
