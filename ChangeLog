@@ -1,3 +1,14 @@
+2007-12-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particleemitter.cpp, src/particleemitter.h: Particle images
+	are now reference-counted properly.
+	* src/resources/spritedef.cpp: Error placeholder is now used when attempting
+	to load a sprite definition file that doesn't exist.
+	* src/monster.cpp, src/player.cpp: Avoided attempts to load "data/graphics/"
+	when a monster or equipment piece has no sprite.
+	* data/graphics/particles/cookingfire.particle.xml: Removed some particle
+	properties that did nothing because they were misspelled.
+
 2007-12-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/winver.h, README, configure.ac, INSTALL, data/help/header.txt,

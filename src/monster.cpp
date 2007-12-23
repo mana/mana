@@ -35,8 +35,16 @@
 Monster::Monster(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    mSprites[BASE_SPRITE] = AnimatedSprite::load(
-            "graphics/sprites/" + MonsterDB::get(job - 1002).getSprite());
+    std::string filename = MonsterDB::get(job - 1002).getSprite();
+    if (filename != "")
+    {
+        mSprites[BASE_SPRITE] = AnimatedSprite::load(
+            "graphics/sprites/" + filename);
+    }
+    else
+    {
+        mSprites[BASE_SPRITE] = AnimatedSprite::load("graphics/sprites/error.xml");
+    }
 }
 
 void

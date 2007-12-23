@@ -237,9 +237,42 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     }
 }
 
+ParticleEmitter::ParticleEmitter(const ParticleEmitter &o)
+{
+    *this = o;
+}
+
+ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
+{
+    mParticlePosX = o.mParticlePosX;
+    mParticlePosY = o.mParticlePosY;
+    mParticlePosZ = o.mParticlePosZ;
+    mParticleAngleHorizontal = o.mParticleAngleHorizontal;
+    mParticleAngleVertical = o.mParticleAngleVertical;
+    mParticlePower = o.mParticlePower;
+    mParticleGravity = o.mParticleGravity;
+    mParticleRandomnes = o.mParticleRandomnes;
+    mParticleBounce = o.mParticleBounce;
+    mParticleTarget = o.mParticleTarget;
+    mParticleAcceleration = o.mParticleAcceleration;
+    mParticleDieDistance = o.mParticleDieDistance;
+    mParticleMomentum = o.mParticleMomentum;
+    mParticleLifetime = o.mParticleLifetime;
+    mParticleFadeOut = o.mParticleFadeOut;
+    mParticleFadeIn = o.mParticleFadeIn;
+    mMap = o.mMap;
+    mOutput = o.mOutput;
+    mParticleImage = o.mParticleImage;
+    mParticleAnimation = o.mParticleAnimation;
+    mParticleChildEmitters = o.mParticleChildEmitters;
+
+    if (mParticleImage) mParticleImage->incRef();
+}
+
 
 ParticleEmitter::~ParticleEmitter()
 {
+    if (mParticleImage) mParticleImage->decRef();
 }
 
 
