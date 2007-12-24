@@ -1,4 +1,9 @@
-2007-12-13  Philipp Sehmisch  <tmw@crushnet.org>
+2007-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* README, data/help/changes.txt, data/help/header.txt, NEWS: Updated
+	release date.
+
+2007-12-23  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particleemitter.cpp, src/particleemitter.h: Particle images
 	are now reference-counted properly.
