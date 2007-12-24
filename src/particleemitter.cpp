@@ -267,6 +267,8 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleChildEmitters = o.mParticleChildEmitters;
 
     if (mParticleImage) mParticleImage->incRef();
+
+    return *this;
 }
 
 

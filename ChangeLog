@@ -11,6 +11,7 @@
 	* src/game.cpp, src/gui/menuwindow.cpp, src/gui/itemcontainer.cpp,
 	src/main.cpp, src/CMakeLists.txt, src/net/inventoryhandler.cpp,
 	src/Makefile.am: Disabled non-functional item shortcut window.
+	* src/particleemitter.cpp: Fix compile warning.
 
 2007-12-23  Philipp Sehmisch  <tmw@crushnet.org>
 
