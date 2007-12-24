@@ -48,7 +48,7 @@
 #include "keyboardconfig.h"
 #include "game.h"
 #include "graphics.h"
-#include "itemshortcut.h"
+//#include "itemshortcut.h"
 #include "lockedarray.h"
 #include "localplayer.h"
 #include "log.h"
@@ -308,7 +308,7 @@ void init_engine(const Options &options)
     graphics->_beginDraw();
 
     // Initialize the item shortcuts.
-    itemShortcut = new ItemShortcut();
+    //itemShortcut = new ItemShortcut();
 
     gui = new Gui(graphics);
     state = UPDATE_STATE; /**< Initial game state */
@@ -337,7 +337,7 @@ void init_engine(const Options &options)
 void exit_engine()
 {
     // Before config.write() since it writes the shortcuts to the config
-    delete itemShortcut;
+    //delete itemShortcut;
 
     config.write();
 
