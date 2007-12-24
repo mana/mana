@@ -1,3 +1,9 @@
+2007-12-24  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp: Fixed dialog for disconnections, so it says Ok, not
+	yes/no.
+	* src/openglgraphics.cpp: Changed type so it would compile on Leopard.
+
 2007-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* README, data/help/changes.txt, data/help/header.txt, NEWS: Updated

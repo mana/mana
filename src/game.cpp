@@ -60,6 +60,7 @@
 #include "gui/ministatus.h"
 #include "gui/npclistdialog.h"
 #include "gui/npc_text.h"
+#include "gui/ok_dialog.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/skill.h"
@@ -97,6 +98,7 @@ Joystick *joystick = NULL;
 extern Window *weightNotice;
 extern Window *deathNotice;
 ConfirmDialog *exitConfirm = NULL;
+OkDialog *disconnectedDialog = NULL;
 
 ChatWindow *chatWindow;
 MenuWindow *menuWindow;
@@ -134,7 +136,7 @@ namespace {
     {
         void action(const gcn::ActionEvent &event)
         {
-            if (event.getId() == "yes") {
+            if (event.getId() == "yes" || event.getId() == "ok") {
                 done = true;
             }
             exitConfirm = NULL;
@@ -420,15 +422,15 @@ void Game::logic()
 
         if (!mNetwork->isConnected())
         {
-            if (!exitConfirm)
+            if (!disconnectedDialog)
             {
-                exitConfirm = new
-                    ConfirmDialog("Network Error",
-                    "There was a network error, the program will now quit");
-                exitConfirm->addActionListener(&exitListener);
+                disconnectedDialog = new
+                    OkDialog("Network Error",
+                    "The connection to the server was lost, the program will now quit");
+                disconnectedDialog->addActionListener(&exitListener);
             }
 
-            exitConfirm->requestMoveToTop();
+            disconnectedDialog->requestMoveToTop();
         }
     }
 }
