@@ -1,5 +1,5 @@
-src/tmw                     usr/games
-debian/tmw.desktop          usr/share/applications
-data/icons/tmw-icon.png     usr/share/games/tmw/data/icons
-data/icons/tmw-icon.png     usr/share/pixmaps
-data/icons/tmw-icon.xpm     usr/share/pixmaps
+debian/tmw.desktop usr/share/applications
+debian/tmw.xpm usr/share/pixmaps
+data/icons/tmw.png usr/share/icons
+docs/tmw.6 usr/share/man/man6
+src/tmw usr/games

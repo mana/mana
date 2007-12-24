@@ -1,7 +1,4 @@
-?package(tmw): \
- needs="X11" \
- section="Games/Arcade" \
- title="The Mana World" \
- longtitle="The Mana World is an Online Fantasy arcade game." \
- command="/usr/games/tmw" \
- icon="tmw-icon.xpm"
+?package(tmw):needs="X11" section="Games/Adventure"\
+ title="The Mana World"\
+ description="The Mana World is an Online Fantasy adventure game."\
+ command="/usr/games/tmw" icon="/usr/share/pixmaps/tmw.xpm"

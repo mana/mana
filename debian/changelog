@@ -1,132 +1,77 @@
-tmw (0.0.21.1-1) unstable; urgency=low
+tmw (0.0.24-1) unstable; urgency=low
 
-  * Bugfixes release.
+  * New upstream release.
+  * Wrapped configure script options line to a more human readable
+    format.
+  * Bumped Standards-Version to 3.7.3.
+  * Changed description in debian/tmw.menu, it is now called as an
+    adventure instead of an arcade game.
+  * Removed the ugly hyphen in the description of debian/tmw.desktop.
+  * Removed debian/tmw.6 manpage, because it is in upstream now.
+  * Removed 01-set-gl-texture-zero and 02-guichan_0.7 patches,
+    because they are fixed in the current upstream release.
+  * Removed now useless calls of dh_link and dh_installman in
+    debian/rules.
+  * Removed debian/tmw-data.docs, because the NEWS and AUTHORS file
+    is already in the tmw package.
+  * Removed deprecated encoding flag from debian/tmw.desktop.
+  * Added debian/watch file.
+  * Added homepage field to debian/control and removed the one from
+    the long descriptions.
+  * Added a break to the long description of tmw-data. It looks now
+    realy better.
+  * Added the tmw-dbg package, which provides the debugging symbols.
 
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 30 Oct 2006 22:32:00 +0200
+ -- Patrick Matthäi <patrick.matthaei@web.de>  Mon, 24 Dec 2007 17:10:00 +0100
 
-tmw (0.0.21-2) unstable; urgency=low
+tmw (0.0.23-3) unstable; urgency=low
 
-  * Readded Music Files in ogg format.
-  * Added the forgotten data/graphics/items folder to avoid a crash.
+  * Added missing files data/graphics/images/ambient/*.png to
+    release.
+    Closes: #439861
+  * Added guichan_0.7 patch to build tmw against guichan 0.7.1.
+  * debian/control: Changed guichan version to libguichan2 and
+    changed build dependencie from libcurl3-dev to libcurl4-gnutls-dev.
+  * debian/tmw.menu: Corrected menu entry categorie to Games/Adventure.
+    Thanks lintian.
+  * Fixed clean rule. Thanks lintian.
 
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 16 Oct 2006 15:52:00 +0200
+ -- Patrick Matthäi <patrick.matthaei@web.de>  Thu,  6 Sep 2007 18:36:00 +0100
 
-tmw (0.0.21-1) unstable; urgency=low
+tmw (0.0.23-2) unstable; urgency=low
 
-  * New upstream release:
-  * Now linked against libguichan-0.5.0.
-  * Readded the correct music package.
+  * Added set-gl-texture-zero patch to set GL texture index
+    to zero when an image uses the SDL backend.
+    Closes: #427915
+  * debian/control: Removed dependencie of tmw-data to tmw.
+    Closes: #427920
+  * debian/control: Set tmw as recommends to tmw-data.
+  * debian/control: Added dpatch to the build dependencies.
+  * debian/control: Changed guichan version to libguichan1.
+    Closes: #435065
+  * debian/tmw.docs: Added upstream ChangeLog to package.
+  * debian/rules: Removed now unneeded '--with-opengl'
+    configure flag.
 
- -- FERREIRA Yohann <bertram@cegetel.net>  Wed, 27 Sep 2006 21:40:33 +0200
+ -- Patrick Matthäi <patrick.matthaei@web.de>  Wed,  20 Jun 2007 08:55:12 +0100
 
-tmw (0.0.20-1) unstable; urgency=low
+tmw (0.0.23-1) unstable; urgency=low
 
-  * Make use of a own desktop file for the Debian Package. Close the missing icon bug.
-  * Changed dependency from xlibmesa-dev to libgl1-mesa-dev to cope with new X server.
+  * Uploaded tmw to unstable.
+    Closes: #418725, #423275
+  * New upstream release.
+  * debian/rules: No longer needed the tmw-icon rename
+    hack. Upstream renamed the icon files.
+  * debian/tmw.xpm: Added xpm icon file, because upstream
+    has forgotten it in the newest release.
 
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 29 May 2006 03:55:33 +0200
+ -- Patrick Matthäi <patrick.matthaei@web.de>  Mon,  5 Jun 2007 21:05:36 +0100
 
-tmw (0.0.19-1) unstable; urgency=low
+tmw (0.0.22.2-1) experimental; urgency=low
 
-  * New Playerset Build.
+  * Initial release.
+  * Uploading to experimental because we need libguichan0-dev (>= 0.6.1).
+  * src/main.cpp:
+     Moved tmw-icon.png to /usr/share/icons/tmw.png.
 
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 07 Mar 2006 21:02:33 +0200
-
-tmw (0.0.18.1-1) unstable; urgency=low
-
-  * Santa's Build. Merry Christmas.
-  * Now removes old build dirs.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 25 Dec 2005 11:30:33 +0200
-
-tmw (0.0.17-2) unstable; urgency=low
-
-  * Corrected libcurl3 dependencies problem.
-  * Corrected debhelper's compatibility, simplified rules,
-    made dependencies calculated more dynamically.
-    (Thanks to Mickael Koch for advice.)
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 17 Oct 2005 23:40:33 +0200
-
-tmw (0.0.17-1) unstable; urgency=low
-
-  * Ninth Release, fully working with OpenGL now.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 10 Oct 2005 20:16:33 +0200
-
-tmw (0.0.16-2) unstable; urgency=low
-
-  * Close the missing icon bug.
-  * Made it compilable in amd64.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 26 Sep 2005 00:22:33 +0200
-
-tmw (0.0.16-1) unstable; urgency=low
-
-  * Eighth Release
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Tue, 6 Sep 2005 00:14:33 +0200
-
-tmw (0.0.15-1) unstable; urgency=low
-
-  * Seventh Release
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Tue, 2 Aug 2005 00:04:20 +0200
-
-tmw (0.0.14.1-1) unstable; urgency=low
-
-  * Bug Fix Release
-  * Adding the two missing maps
-  * Fixed a potential crash
-  * Now compiled against gcc-4.0.0-1
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Thu, 7 Jul 2005 20:08:20 +0200
-
-tmw (0.0.14-1) unstable; urgency=low
-
-  * Sixth Release.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 4 Jul 2005 23:07:19 +0200
-
-tmw (0.0.13-3) unstable; urgency=low
-
-  * Adding Three monsters and a map that were forgotten.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 6 Jun 2005 20:07:19 +0200
-
-tmw (0.0.13-2) unstable; urgency=low
-
-  * Fifth Release, plus bug fixes.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Sun, 5 Jun 2005 23:41:14 +0200
-
-tmw (0.0.13-1) unstable; urgency=low
-
-  * Fifth Release.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Thu, 3 Jun 2005 18:38:14 +0200
-
-tmw (0.0.12-1) unstable; urgency=low
-
-  * Fourth Release.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Thu, 5 May 2005 13:37:17 +0200
-
-tmw (0.0.11.3-1) unstable; urgency=low
-
-  * Third Release.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Sun, 10 Apr 2005 02:42:17 +0200
-
-tmw (0.0.11.2-1) unstable; urgency=low
-
-  * Second Release.
-  * Bug fixes to first.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Fri, 9 Apr 2005 02:42:17 +0200
-
-tmw (0.0.11.1-1) unstable; urgency=low
-
-  * Initial Release.
-
- -- FERREIRA Yohann <bertram@cegetel.net>  Wed, 7 Apr 2005 02:42:17 +0200
+ -- Patrick Matthäi <patrick.matthaei@web.de>  Tue,  6 Mar 2007 09:08:21 +0100
