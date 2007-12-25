@@ -1,3 +1,7 @@
+2007-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/help/header.txt: Fixed year. :)
+
 2007-12-24  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Fixed dialog for disconnections, so it says Ok, not
