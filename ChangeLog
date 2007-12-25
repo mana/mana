@@ -2,6 +2,7 @@
 
 	* data/help/header.txt: Fixed year. :)
 	* debian/rules: Fixed missing backslash.
+	* src/CMakeLists.txt: Updated CMake file.
 
 2007-12-24  David Athay  <ko2fan@gmail.com>
 
