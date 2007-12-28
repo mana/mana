@@ -26,6 +26,7 @@
 #include "animatedsprite.h"
 #include "game.h"
 #include "sound.h"
+#include "particle.h"
 
 #include "resources/monsterdb.h"
 
@@ -35,7 +36,9 @@
 Monster::Monster(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    std::string filename = MonsterDB::get(job - 1002).getSprite();
+    const MonsterInfo&  info = MonsterDB::get(job - 1002);
+
+    std::string filename = info.getSprite();
     if (filename != "")
     {
         mSprites[BASE_SPRITE] = AnimatedSprite::load(
@@ -44,6 +47,15 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     else
     {
         mSprites[BASE_SPRITE] = AnimatedSprite::load("graphics/sprites/error.xml");
+    }
+
+    const std::list<std::string> &particleEffects = info.getParticleEffects();
+    for (   std::list<std::string>::const_iterator i = particleEffects.begin();
+            i != particleEffects.end();
+            i++
+        )
+    {
+        controlParticle(particleEngine->addEffect((*i), 0, 0));
     }
 }
 

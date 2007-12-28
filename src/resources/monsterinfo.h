@@ -27,6 +27,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "../being.h"
 
@@ -71,6 +72,9 @@ class MonsterInfo
         void
         addSound(MonsterSoundEvent event, std::string filename);
 
+        void
+        addParticleEffect(std::string filename);
+
         const std::string&
         getName() const { return mName; }
 
@@ -83,11 +87,15 @@ class MonsterInfo
         std::string
         getSound(MonsterSoundEvent event) const;
 
+        const std::list<std::string>&
+        getParticleEffects() const { return mParticleEffects; }
+
     private:
         std::string mName;
         std::string mSprite;
         Being::TargetCursorSize mTargetCursorSize;
         std::map<MonsterSoundEvent, std::vector<std::string>* > mSounds;
+        std::list<std::string> mParticleEffects;
 };
 
 #endif

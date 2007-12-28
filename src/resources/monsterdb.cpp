@@ -142,6 +142,12 @@ MonsterDB::load()
                                 filename, event.c_str(), currentInfo->getName().c_str());
                 }
             }
+
+            if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
+            {
+                currentInfo->addParticleEffect(
+                    (const char*) spriteNode->xmlChildrenNode->content);
+            }
         }
         mMonsterInfos[XML::getProperty(monsterNode, "id", 0)] = currentInfo;
     }

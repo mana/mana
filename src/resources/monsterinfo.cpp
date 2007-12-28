@@ -70,3 +70,8 @@ MonsterInfo::getSound(MonsterSoundEvent event) const
         return i->second->at(rand()%i->second->size());
     }
 }
+
+void MonsterInfo::addParticleEffect(std::string filename)
+{
+    mParticleEffects.push_back(filename);
+}
