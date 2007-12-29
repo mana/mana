@@ -1,5 +1,10 @@
 2007-12-28  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* data/maps/new_7-1.tmx, data/maps/new_22-1.tmx: Added new map by 5t3v3
+	(east desert cave) and enhanced version of eastern desert by Len.
+
+2007-12-28  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/maps/new_3-1.tmx: Some mapping errors fixed by Zipon.
 	* src/being.cpp, src/monster.cpp, src/resources/monsterinfo.cpp, 
 	src/resources/monsterinfo.h: Added the possibility to assign particle
