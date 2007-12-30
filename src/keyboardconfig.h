@@ -153,6 +153,7 @@ class KeyboardConfig
             KEY_ATTACK,
             KEY_TARGET,
             KEY_TARGET_CLOSEST,
+            KEY_TARGET_PLAYER,
             KEY_PICKUP,
             KEY_HIDE_WINDOWS,
             KEY_SIT,

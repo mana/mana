@@ -78,6 +78,15 @@ class BeingManager
                                       Being::Type type = Being::UNKNOWN);
 
         /**
+         * Return a being nearest to another being.
+         *
+         * \param maxdist maximal distance. If minimal distance is larger,
+         *                no being is returned
+         */
+        Being* findNearestLivingBeing(Being *aroundBeing, int maxdist,
+                                      Being::Type type = Being::UNKNOWN);
+
+        /**
          * Returns the whole list of beings
          */
         Beings& getAll();
