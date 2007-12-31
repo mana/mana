@@ -125,11 +125,18 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
                 current_npc = 0;
 
+                float scrollOffsetX = (x - player_node->mX) * 32;
+                float scrollOffsetY = (y - player_node->mY) * 32;
+
                 player_node->setAction(Being::STAND);
                 player_node->stopAttack();
                 player_node->mFrame = 0;
                 player_node->mX = x;
                 player_node->mY = y;
+
+                logger->log("Adjust scrolling by %d:%d", (int)scrollOffsetX, (int)scrollOffsetY);
+
+                engine->scrollBy(scrollOffsetX, scrollOffsetY);
             }
             break;
 

@@ -1,5 +1,12 @@
 2007-12-30  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* src/gui/viewport.cpp: Added config options to set the scroll center.
+	* src/engine.cpp, src/engine.h, src/gui/viewport.h,
+	src/net/playerhandler.cpp: Retained scroll offset during map change for
+	smoother map transitions.
+
+2007-12-30  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/maps/new_22-1.tmx: Some mapping fixes at snake dungeon map.
 	* src/game.cpp, src/beingmanager.cpp, src/beingmanager.h,
 	src/keyboardconfig.cpp, src/keyboardconfig.h: Added a key for targeting

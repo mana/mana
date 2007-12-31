@@ -50,10 +50,10 @@
 
 Viewport::Viewport():
     mMap(0),
-    mViewX(0.0f),
-    mViewY(0.0f),
-    mCameraX(0),
-    mCameraY(0),
+    mPixelViewX(0.0f),
+    mPixelViewY(0.0f),
+    mTileViewX(0),
+    mTileViewY(0),
     mShowDebugPath(false),
     mPlayerFollowMouse(false)
 {
@@ -62,6 +62,8 @@ Viewport::Viewport():
 
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
+    mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
+    mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
 
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
@@ -150,8 +152,8 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     // Calculate viewpoint
-    int midTileX = graphics->getWidth() / 32 / 2;
-    int midTileY = graphics->getHeight() / 32 / 2;
+    int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 32 / 2;
+    int midTileY = (graphics->getHeight() + mScrollCenterOffsetY) / 32 / 2;
 
     int player_x = (player_node->mX - midTileX) * 32 +
                     player_node->getXOffset();
@@ -164,34 +166,34 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     // Apply lazy scrolling
     while (lastTick < tick_time)
     {
-        if (player_x > mViewX + mScrollRadius)
+        if (player_x > mPixelViewX + mScrollRadius)
         {
-            mViewX += (player_x - mViewX - mScrollRadius) / mScrollLaziness;
+            mPixelViewX += (player_x - mPixelViewX - mScrollRadius) / mScrollLaziness;
         }
-        if (player_x < mViewX - mScrollRadius)
+        if (player_x < mPixelViewX - mScrollRadius)
         {
-            mViewX += (player_x - mViewX + mScrollRadius) / mScrollLaziness;
+            mPixelViewX += (player_x - mPixelViewX + mScrollRadius) / mScrollLaziness;
         }
-        if (player_y > mViewY + mScrollRadius)
+        if (player_y > mPixelViewY + mScrollRadius)
         {
-            mViewY += (player_y - mViewY - mScrollRadius) / mScrollLaziness;
+            mPixelViewY += (player_y - mPixelViewY - mScrollRadius) / mScrollLaziness;
         }
-        if (player_y < mViewY - mScrollRadius)
+        if (player_y < mPixelViewY - mScrollRadius)
         {
-            mViewY += (player_y - mViewY + mScrollRadius) / mScrollLaziness;
+            mPixelViewY += (player_y - mPixelViewY + mScrollRadius) / mScrollLaziness;
         }
         lastTick++;
     }
 
     // Auto center when player is off screen
-    if (        player_x - mViewX > graphics->getWidth() / 2
-            ||  mViewX - player_x > graphics->getWidth() / 2
-            ||  mViewY - player_y > graphics->getHeight() / 2
-            ||  player_y - mViewY > graphics->getHeight() / 2
+    if (        player_x - mPixelViewX > graphics->getWidth() / 2
+            ||  mPixelViewX - player_x > graphics->getWidth() / 2
+            ||  mPixelViewY - player_y > graphics->getHeight() / 2
+            ||  player_y - mPixelViewY > graphics->getHeight() / 2
         )
     {
-        mViewX = player_x;
-        mViewY = player_y;
+        mPixelViewX = player_x;
+        mPixelViewY = player_y;
     };
 
     // Don't move camera so that the end of the map is on screen
@@ -199,31 +201,31 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     int viewYmax = (mMap->getHeight() * 32) - graphics->getHeight();
     if (mMap)
     {
-        if (mViewX < 0) {
-            mViewX = 0;
+        if (mPixelViewX < 0) {
+            mPixelViewX = 0;
         }
-        if (mViewY < 0) {
-            mViewY = 0;
+        if (mPixelViewY < 0) {
+            mPixelViewY = 0;
         }
-        if (mViewX > viewXmax) {
-            mViewX = viewXmax;
+        if (mPixelViewX > viewXmax) {
+            mPixelViewX = viewXmax;
         }
-        if (mViewY > viewYmax) {
-            mViewY = viewYmax;
+        if (mPixelViewY > viewYmax) {
+            mPixelViewY = viewYmax;
         }
     }
 
-    mCameraX = (int) (mViewX + 16) / 32;
-    mCameraY = (int) (mViewY + 16) / 32;
+    mTileViewX = (int) (mPixelViewX + 16) / 32;
+    mTileViewY = (int) (mPixelViewY + 16) / 32;
 
     // Draw tiles and sprites
     if (mMap)
     {
-        mMap->draw(graphics, (int) mViewX, (int) mViewY, 0);
+        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 0);
         drawTargetCursor(graphics);
-        mMap->draw(graphics, (int) mViewX, (int) mViewY, 1);
-        mMap->draw(graphics, (int) mViewX, (int) mViewY, 2);
-        mMap->drawOverlay(graphics, mViewX, mViewY,
+        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 1);
+        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 2);
+        mMap->drawOverlay(graphics, mPixelViewX, mPixelViewY,
                 (int) config.getValue("OverlayDetail", 2));
         drawTargetName(graphics);
     }
@@ -236,8 +238,8 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        int mouseTileX = mouseX / 32 + mCameraX;
-        int mouseTileY = mouseY / 32 + mCameraY;
+        int mouseTileX = mouseX / 32 + mTileViewX;
+        int mouseTileY = mouseY / 32 + mTileViewY;
 
         Path debugPath = mMap->findPath(
                 player_node->mX, player_node->mY,
@@ -246,8 +248,8 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         graphics->setColor(gcn::Color(255, 0, 0));
         for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
         {
-            int squareX = i->x * 32 - (int) mViewX + 12;
-            int squareY = i->y * 32 - (int) mViewY + 12;
+            int squareX = i->x * 32 - (int) mPixelViewX + 12;
+            int squareY = i->y * 32 - (int) mPixelViewY + 12;
 
             graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
             graphics->drawText(
@@ -260,9 +262,9 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
-        (*i)->drawSpeech(graphics, -(int) mViewX, -(int) mViewY);
-        (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
-        (*i)->drawEmotion(graphics, -(int) mViewX, -(int) mViewY);
+        (*i)->drawSpeech(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
+        (*i)->drawName(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
+        (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
     }
 
     // Draw contained widgets
@@ -283,8 +285,8 @@ Viewport::logic()
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
             mWalkTime != player_node->mWalkTime)
     {
-        player_node->setDestination(mouseX / 32 + mCameraX,
-                                    mouseY / 32 + mCameraY);
+        player_node->setDestination(mouseX / 32 + mTileViewX,
+                                    mouseY / 32 + mTileViewY);
         mWalkTime = player_node->mWalkTime;
     }
 
@@ -321,8 +323,8 @@ Viewport::drawTargetCursor(Graphics *graphics)
         }
 
         // Draw the target cursor at the correct position
-        int posX = target->getPixelX() + 16 - targetCursor->getWidth() / 2 - (int) mViewX;
-        int posY = target->getPixelY() + 16 - targetCursor->getHeight() / 2 - (int) mViewY;
+        int posX = target->getPixelX() + 16 - targetCursor->getWidth() / 2 - (int) mPixelViewX;
+        int posY = target->getPixelY() + 16 - targetCursor->getHeight() / 2 - (int) mPixelViewY;
 
         graphics->drawImage(targetCursor, posX, posY);
     }
@@ -339,8 +341,8 @@ Viewport::drawTargetName(Graphics *graphics)
         graphics->setColor(gcn::Color(255, 32, 32));
 
         const MonsterInfo &mi = static_cast<Monster*>(target)->getInfo();
-        int posX = target->getPixelX() + 16 - (int)mViewX;
-        int posY = target->getPixelY() + 16 - target->getHeight() - (int)mViewY;
+        int posX = target->getPixelX() + 16 - (int)mPixelViewX;
+        int posY = target->getPixelY() + 16 - target->getHeight() - (int)mPixelViewY;
 
         graphics->drawText(mi.getName(), posX, posY, gcn::Graphics::CENTER);
     }
@@ -359,8 +361,8 @@ Viewport::mousePressed(gcn::MouseEvent &event)
 
     mPlayerFollowMouse = false;
 
-    int tilex = event.getX() / 32 + mCameraX;
-    int tiley = event.getY() / 32 + mCameraY;
+    int tilex = event.getX() / 32 + mTileViewX;
+    int tiley = event.getY() / 32 + mTileViewY;
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
@@ -455,8 +457,8 @@ Viewport::mouseDragged(gcn::MouseEvent &event)
 
     if (mPlayerFollowMouse && mWalkTime == player_node->mWalkTime)
     {
-        int destX = event.getX() / 32 + mCameraX;
-        int destY = event.getY() / 32 + mCameraY;
+        int destX = event.getX() / 32 + mTileViewX;
+        int destY = event.getY() / 32 + mTileViewY;
         player_node->setDestination(destX, destY);
     }
 }
