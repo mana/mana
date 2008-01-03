@@ -1,3 +1,8 @@
+2008-01-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_1-1.tmx, data/maps/new_3-1.tmx: Some map bugs reported
+	by Strump, fixed by Zipon.
+
 2007-12-30  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/viewport.cpp: Added config options to set the scroll center.
