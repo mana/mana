@@ -42,6 +42,7 @@
 					<Add library="winmm"/>
 					<Add library="intl.dll"/>
 					<Add library="SDL_ttf"/>
+					<Add library="intl"/>
 				</Linker>
 			</Target>
 		</Build>

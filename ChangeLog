@@ -1,3 +1,20 @@
+2007-01-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/localplayer.h: Implemented new attribute enumerations of
+	last server update.
+	* data/items.xml: Added item types and attribute modifiers to
+	items for troubleshooting the equipment system. Reformated the
+	file for easier editing.
+	* data/graphics/items/armor-ring-agility-rough.png,
+	data/graphics/items/armor-ring-dexterity-rough.png,
+	data/graphics/items/armor-ring-intelligence-rough.png,
+	data/graphics/items/armor-ring-strength-rough.png,
+	data/graphics/items/armor-ring-willpower-rough.png,
+	data/graphics/items/armor-ring-vitality-rough.png:
+	Added basic attribute-enhancing rings for troubleshooting
+	basic attribute modifiers.
+	* tmw.cbp: Updated Code::Blocks project file to include libintl.
+
 2007-12-18  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/char_select.cpp, src/gui/char_select.h,

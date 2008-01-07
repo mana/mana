@@ -40,13 +40,16 @@ class Item;
  */
 enum
 {
-    BASE_ATTR_BEGIN = 0,
-    BASE_ATTR_PHY_ATK = BASE_ATTR_BEGIN,
-    BASE_ATTR_MAG_ATK,
-    BASE_ATTR_PHY_RES,
-    BASE_ATTR_MAG_RES,
-    BASE_ATTR_EVADE,
-    BASE_ATTR_HP,
+BASE_ATTR_BEGIN = 0,
+    BASE_ATTR_PHY_ATK_MIN = BASE_ATTR_BEGIN,
+    BASE_ATTR_PHY_ATK_DELTA,
+                       /**< Physical attack power. */
+    BASE_ATTR_MAG_ATK, /**< Magical attack power. */
+    BASE_ATTR_PHY_RES, /**< Resistance to physical damage. */
+    BASE_ATTR_MAG_RES, /**< Resistance to magical damage. */
+    BASE_ATTR_EVADE,   /**< Ability to avoid hits. */
+    BASE_ATTR_HIT,     /**< Ability to hit stuff. */
+    BASE_ATTR_HP,      /**< Hit Points (Base value: maximum, Modded value: current) */
     BASE_ATTR_END,
     BASE_ATTR_NB = BASE_ATTR_END - BASE_ATTR_BEGIN,
 
