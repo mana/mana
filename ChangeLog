@@ -1,3 +1,8 @@
+2007-01-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/items.xml: Added weapon_type properties to weapons so that
+	attack animations are displayed properly.
+
 2007-01-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/localplayer.h: Implemented new attribute enumerations of
