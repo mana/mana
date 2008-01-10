@@ -1,3 +1,13 @@
+2007-01-10  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/resources/itemdb.cpp, src/resources/iteminfo.cpp,
+	src/resources/iteminfo.h: Item types and weapon types are now
+	identified by name instead of numbers in the items.xml.
+	* data/items.xml: Removed entries for eAthena compatiblity (the
+	database isn't eAthena compatible anymore), added item type and
+	weapon-type properties to all items. All healing items now have a
+	healing effect.
+
 2007-01-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/items.xml: Added weapon_type properties to weapons so that

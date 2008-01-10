@@ -45,23 +45,22 @@ ItemInfo::getSprite(int gender) const
 
 void ItemInfo::setWeaponType(int type)
 {
-    // See server item.hpp file for type values.
     switch (type)
     {
-        case 0:     // none
+        case WPNTYPE_NONE:
             mAttackType = ACTION_DEFAULT;
             break;
-        case 1:     // knife
-        case 2:     // sword
+        case WPNTYPE_KNIFE:
+        case WPNTYPE_SWORD:
             mAttackType = ACTION_ATTACK_STAB;
             break;
-        case 8:     // projectile
+        case WPNTYPE_THROWN:
             mAttackType = ACTION_ATTACK_THROW;
             break;
-        case 10:    // bow
+        case WPNTYPE_BOW:
             mAttackType = ACTION_ATTACK_BOW;
             break;
-        case 11:    // sickle
+        case WPNTYPE_SICKLE:
             mAttackType = ACTION_ATTACK_SWING;
             break;
         default:

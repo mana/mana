@@ -37,6 +37,47 @@ enum EquipmentSoundEvent
 };
 
 /**
+ * Enumeration of available Item types.
+ */
+enum ItemType
+{
+    ITEM_UNUSABLE = 0,
+    ITEM_USABLE, //                     1
+    ITEM_EQUIPMENT_ONE_HAND_WEAPON, //  2
+    ITEM_EQUIPMENT_TWO_HANDS_WEAPON,//  3
+    ITEM_EQUIPMENT_TORSO,//             4
+    ITEM_EQUIPMENT_ARMS,//              5
+    ITEM_EQUIPMENT_HEAD,//              6
+    ITEM_EQUIPMENT_LEGS,//              7
+    ITEM_EQUIPMENT_SHIELD,//            8
+    ITEM_EQUIPMENT_RING,//              9
+    ITEM_EQUIPMENT_NECKLACE,//         10
+    ITEM_EQUIPMENT_FEET,//             11
+    ITEM_EQUIPMENT_AMMO//              12
+};
+
+/**
+ * Enumeration of available weapon's types.
+ */
+enum WeaponType
+{
+    WPNTYPE_NONE = 0,
+    WPNTYPE_KNIFE,//        1
+    WPNTYPE_SWORD,//        2
+    WPNTYPE_POLEARM,//      3
+    WPNTYPE_JAVELIN,//      4
+    WPNTYPE_STAFF,//        5
+    WPNTYPE_WHIP,//         6
+    WPNTYPE_BOOMERANG,//    7
+    WPNTYPE_BOW,//          8
+    WPNTYPE_SICKLE,//       9
+    WPNTYPE_CROSSBOW,//    10
+    WPNTYPE_MACE,//        11
+    WPNTYPE_AXE,//         12
+    WPNTYPE_THROWN//       13
+};
+
+/**
  * Defines a class for storing item infos. This includes information used when
  * the item is equipped.
  */
@@ -47,7 +88,7 @@ class ItemInfo
          * Constructor.
          */
         ItemInfo():
-            mType(0),
+            mType(ITEM_UNUSABLE),
             mWeight(0),
             mView(0),
             mAttackType(ACTION_DEFAULT)

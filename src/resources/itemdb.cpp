@@ -56,6 +56,42 @@ static char const *const fields[][2] =
     { "mp",        N_("MP %+d")        }
 };
 
+ItemType itemTypeFromString (std::string name, int id = 0)
+{
+    if      (name=="generic")           return ITEM_UNUSABLE;
+    else if (name=="usable")            return ITEM_USABLE;
+    else if (name=="equip-1hand")       return ITEM_EQUIPMENT_ONE_HAND_WEAPON;
+    else if (name=="equip-2hand")       return ITEM_EQUIPMENT_TWO_HANDS_WEAPON;
+    else if (name=="equip-torso")       return ITEM_EQUIPMENT_TORSO;
+    else if (name=="equip-arms")        return ITEM_EQUIPMENT_ARMS;
+    else if (name=="equip-head")        return ITEM_EQUIPMENT_HEAD;
+    else if (name=="equip-legs")        return ITEM_EQUIPMENT_LEGS;
+    else if (name=="equip-shield")      return ITEM_EQUIPMENT_SHIELD;
+    else if (name=="equip-ring")        return ITEM_EQUIPMENT_RING;
+    else if (name=="equip-necklace")    return ITEM_EQUIPMENT_NECKLACE;
+    else if (name=="equip-feet")        return ITEM_EQUIPMENT_FEET;
+    else if (name=="equip-ammo")        return ITEM_EQUIPMENT_AMMO;
+    else return ITEM_UNUSABLE;
+}
+
+WeaponType weaponTypeFromString (std::string name, int id = 0)
+{
+    if      (name=="knife")      return WPNTYPE_KNIFE;
+    else if (name=="sword")      return WPNTYPE_SWORD;
+    else if (name=="polearm")    return WPNTYPE_POLEARM;
+    else if (name=="javelin")    return WPNTYPE_JAVELIN;
+    else if (name=="staff")      return WPNTYPE_STAFF;
+    else if (name=="whip")       return WPNTYPE_WHIP;
+    else if (name=="boomerang")  return WPNTYPE_BOOMERANG;
+    else if (name=="bow")        return WPNTYPE_BOW;
+    else if (name=="sickle")     return WPNTYPE_SICKLE;
+    else if (name=="crossbow")   return WPNTYPE_CROSSBOW;
+    else if (name=="mace")       return WPNTYPE_MACE;
+    else if (name=="axe")        return WPNTYPE_AXE;
+    else if (name=="thrown")     return WPNTYPE_THROWN;
+    else return WPNTYPE_NONE;
+}
+
 void ItemDB::load()
 {
     if (mLoaded)
@@ -108,14 +144,14 @@ void ItemDB::load()
             logger->log("ItemDB: Redefinition of item ID %d", id);
         }
 
-        int type = XML::getProperty(node, "type", 0);
+        int type = itemTypeFromString(XML::getProperty(node, "type", ""));
         int weight = XML::getProperty(node, "weight", 0);
         int view = XML::getProperty(node, "view", 0);
 
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-        int weaponType = XML::getProperty(node, "weapon_type", 0);
+        int weaponType = itemTypeFromString(XML::getProperty(node, "weapon_type", ""));
 
         ItemInfo *itemInfo = new ItemInfo;
         itemInfo->setImageName(image);
