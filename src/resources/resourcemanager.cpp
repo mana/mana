@@ -200,6 +200,27 @@ ResourceManager::isDirectory(const std::string &path)
     return PHYSFS_isDirectory(path.c_str());
 }
 
+std::string
+ResourceManager::getPath(const std::string &file)
+{
+    // get the real path to the file
+    const char* tmp = PHYSFS_getRealDir(file.c_str());
+    std::string path;
+    
+    // if the file is not in the search path, then its NULL
+    if (tmp)
+    {
+        path = std::string(tmp) + "/" + file;
+    }
+    else
+    {
+        // if not found in search path return the default path
+        path = std::string(TMW_DATADIR) + std::string("data") + "/" + file;
+    }
+    
+    return path;
+}
+
 Resource *ResourceManager::get(std::string const &idPath, generator fun, void *data)
 {
     // Check if the id exists, and return the value if it does.

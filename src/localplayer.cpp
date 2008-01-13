@@ -406,6 +406,7 @@ void LocalPlayer::attack(Being *target, bool keep)
 
     setAction(ATTACK);
     mWalkTime = tick_time;
+
     if (mEquippedWeapon)
     {
         std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);

@@ -104,6 +104,14 @@ class ResourceManager
          */
         bool
         isDirectory(const std::string &path);
+    
+        /**
+         * Returns the real path to a file
+         * 
+         * @param file The file to get the real path to.
+         * @return The real path.
+         */
+        std::string getPath(const std::string &file);
 
         /**
          * Creates a resource and adds it to the resource map.

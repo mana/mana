@@ -1,3 +1,9 @@
+2008-01-13  David Athay  <ko2fan@gmail.com>
+
+	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp,
+	src/main.cpp, src/sound.cpp, src/engine.cpp: Fixed music loading from
+	non-default location.
+
 2008-01-03  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_1-1.tmx, data/maps/new_3-1.tmx: Some map bugs reported

@@ -615,7 +615,7 @@ int main(int argc, char *argv[])
                             progressBar->getY() + 4);
     progressBar->setVisible(false);
 
-    sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
+    sound.playMusic("Magick - Real.ogg");
 
     loginData.username = options.username;
     if (loginData.username.empty()) {

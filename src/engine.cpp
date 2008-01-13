@@ -116,8 +116,7 @@ void Engine::changeMap(const std::string &mapPath)
     std::string newMusic = newMap->getProperty("music");
 
     if (newMusic != oldMusic) {
-        newMusic = std::string(TMW_DATADIR) + "data/music/" + newMusic;
-        sound.playMusic(newMusic.c_str(), -1);
+        sound.playMusic(newMusic, -1);
     }
 
     mCurrentMap = newMap;

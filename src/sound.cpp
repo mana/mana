@@ -126,13 +126,15 @@ void Sound::setSfxVolume(int volume)
     Mix_Volume(-1, volume);
 }
 
-void Sound::playMusic(const std::string &path, int loop)
+void Sound::playMusic(const std::string &filename, int loop)
 {
     if (!mInstalled) return;
 
     if (mMusic != NULL) {
         stopMusic();
     }
+    
+    std::string path = mResourceManager->getPath("music/" + filename);
 
     logger->log("Sound::startMusic() Playing \"%s\" %i times", path.c_str(),
                 loop);
