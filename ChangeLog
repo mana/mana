@@ -1,3 +1,8 @@
+2008-01-14  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Added new versions of
+	snow maps by 5t3v3.
+
 2008-01-13  David Athay  <ko2fan@gmail.com>
 
 	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp,
