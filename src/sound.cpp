@@ -133,8 +133,9 @@ void Sound::playMusic(const std::string &filename, int loop)
     if (mMusic != NULL) {
         stopMusic();
     }
-    
-    std::string path = mResourceManager->getPath("music/" + filename);
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    std::string path = resman->getPath("music/" + filename);
 
     logger->log("Sound::startMusic() Playing \"%s\" %i times", path.c_str(),
                 loop);
