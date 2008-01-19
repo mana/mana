@@ -1,7 +1,13 @@
 2008-01-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Map fixes by 5t3v3 at
-	the new snow maps.
+	the new snow maps. Added hot spring particle effect to pond south of
+	snow village.
+	* data/graphics/particles/bubbles_32px,
+	data/graphics/particles/bubbles_12px,
+	data/graphics/particles/bubbles_8px,
+	data/graphics/particles/whirlpool.particle.xml: Added bubble particle
+	effect.
 
 2008-01-14  Philipp Sehmisch  <tmw@crushnet.org>
 
