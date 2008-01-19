@@ -151,7 +151,7 @@ void ItemDB::load()
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-        int weaponType = itemTypeFromString(XML::getProperty(node, "weapon_type", ""));
+        int weaponType = weaponTypeFromString(XML::getProperty(node, "weapon-type", ""));
 
         ItemInfo *itemInfo = new ItemInfo;
         itemInfo->setImageName(image);
