@@ -1,3 +1,7 @@
+2007-01-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/items.xml: Added max-per-slot property to all items.
+
 2007-01-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/resources/itemdb.cpp: Fixed interpretation of weapon types in
