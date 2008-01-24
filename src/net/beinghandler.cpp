@@ -566,7 +566,14 @@ void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
     if (!being) return;
 
     being->setAction(Being::ATTACK);
-    being->setDirection(msg.readInt8());
+    int direction = msg.readInt8();
+    switch (direction)
+    {
+        case DIRECTION_UP: being->setDirection(Being::UP); break;
+        case DIRECTION_DOWN: being->setDirection(Being::DOWN); break;
+        case DIRECTION_LEFT: being->setDirection(Being::LEFT); break;
+        case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
+    }
 }
 
 void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)

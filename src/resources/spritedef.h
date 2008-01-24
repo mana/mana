@@ -57,8 +57,8 @@ enum SpriteAction
 enum SpriteDirection
 {
     DIRECTION_DEFAULT = 0,
-    DIRECTION_DOWN,
     DIRECTION_UP,
+    DIRECTION_DOWN,
     DIRECTION_LEFT,
     DIRECTION_RIGHT,
     DIRECTION_INVALID

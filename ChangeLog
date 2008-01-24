@@ -1,3 +1,8 @@
+2007-01-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp, src/resources/spritedef.h: Fixed
+	broken communication of attack directions.
+
 2007-01-20  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/items.xml: Added max-per-slot property to all items.
