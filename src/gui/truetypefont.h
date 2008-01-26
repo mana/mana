@@ -33,7 +33,7 @@
 /**
  * A wrapper around SDL_ttf for allowing the use of TrueType fonts.
  *
- * <b>NOTE:</b> This class needs SDL_ttf to be initialized.
+ * <b>NOTE:</b> This class initializes SDL_ttf as necessary.
  */
 class TrueTypeFont : public gcn::Font
 {
