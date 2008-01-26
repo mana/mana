@@ -35,7 +35,7 @@
 class TextChunk
 {
     public:
-        TextChunk(const std::string &text, gcn::Color color) :
+        TextChunk(const std::string &text, const gcn::Color &color) :
             img(NULL), text(text), color(color)
         {
         }
@@ -130,12 +130,12 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
     }
 
     gcn::Color col = g->getColor();
-    float alpha = 1.0f;
-    if (col.a != 255) alpha = col.a / 255.0f;
-    col.a = 255;
-    /* alpha value is ignored at sting generation so it makes no sense to
-     * cache the same text with different alpha values.
+    const float alpha = col.a / 255.0f;
+
+    /* The alpha value is ignored at string generation so avoid caching the
+     * same text with different alpha values.
      */
+    col.a = 255;
 
     TextChunk chunk(text, col);
 
@@ -163,7 +163,7 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
         cache.front().generate(mFont);
     }
 
-    if (alpha != 1.0f) cache.front().img->setAlpha(alpha);
+    cache.front().img->setAlpha(alpha);
     g->drawImage(cache.front().img, x, y);
 }
 
