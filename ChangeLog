@@ -1,3 +1,8 @@
+2007-01-26  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* scr/gui/truetypefont.cpp: Added support for alpha blending to
+	true type font rendering.
+
 2007-01-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/net/beinghandler.cpp, src/resources/spritedef.h: Fixed
