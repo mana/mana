@@ -25,6 +25,7 @@
 #define _TMW_BEING_H
 
 #include <list>
+#include <memory>
 #include <string>
 #include <SDL_types.h>
 #include <vector>
@@ -355,7 +356,7 @@ class Being : public Sprite
          */
         void controlParticle(Particle *particle);
 
-        std::auto_ptr<Equipment> mEquipment;
+        const std::auto_ptr<Equipment> mEquipment;
 
     protected:
         /**

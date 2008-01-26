@@ -1,3 +1,9 @@
+2008-01-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/trade.h, src/game.h, src/being.h: Fixed a GCC 4.3 compile
+	error and constified the usage of auto_ptr, since that's the way in
+	which we are using them.
+
 2008-01-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Map fixes by 5t3v3 at

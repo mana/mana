@@ -117,7 +117,7 @@ class TradeWindow : public Window, gcn::ActionListener, SelectionListener
     private:
         Network *mNetwork;
 
-        typedef std::auto_ptr<Inventory> InventoryPtr;
+        typedef const std::auto_ptr<Inventory> InventoryPtr;
         InventoryPtr mMyInventory;
         InventoryPtr mPartnerInventory;
 
