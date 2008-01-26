@@ -1,23 +1,29 @@
-2007-01-26  Philipp Sehmisch  <tmw@crushnet.org>
+2008-01-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/truetypefont.cpp: Image alpha should also be set to 1, in
+	case it was changed before.
+	* src/gui/truetypefont.h: Corrected documentation.
+
+2008-01-26  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* scr/gui/truetypefont.cpp: Added support for alpha blending to
 	true type font rendering.
 
-2007-01-24  Philipp Sehmisch  <tmw@crushnet.org>
+2008-01-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/net/beinghandler.cpp, src/resources/spritedef.h: Fixed
 	broken communication of attack directions.
 
-2007-01-20  Philipp Sehmisch  <tmw@crushnet.org>
+2008-01-20  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/items.xml: Added max-per-slot property to all items.
 
-2007-01-19  Philipp Sehmisch  <tmw@crushnet.org>
+2008-01-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/resources/itemdb.cpp: Fixed interpretation of weapon types in
 	items.xml.
 
-2007-01-10  Philipp Sehmisch  <tmw@crushnet.org>
+2008-01-10  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/resources/itemdb.cpp, src/resources/iteminfo.cpp,
 	src/resources/iteminfo.h: Item types and weapon types are now
@@ -27,12 +33,12 @@
 	weapon-type properties to all items. All healing items now have a
 	healing effect.
 
-2007-01-09  Philipp Sehmisch  <tmw@crushnet.org>
+2008-01-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/items.xml: Added weapon_type properties to weapons so that
 	attack animations are displayed properly.
 
-2007-01-07  Philipp Sehmisch  <tmw@crushnet.org>
+2008-01-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/localplayer.h: Implemented new attribute enumerations of
 	last server update.
