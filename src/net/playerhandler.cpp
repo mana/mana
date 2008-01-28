@@ -29,6 +29,7 @@
 #include "../engine.h"
 #include "../localplayer.h"
 #include "../log.h"
+#include "../particle.h"
 #include "../npc.h"
 
 #include "../gui/buy.h"
@@ -90,6 +91,11 @@ PlayerHandler::PlayerHandler()
         GPMSG_PLAYER_MAP_CHANGE,
         GPMSG_PLAYER_SERVER_CHANGE,
         GPMSG_PLAYER_ATTRIBUTE_CHANGE,
+        GPMSG_PLAYER_EXP_CHANGE,
+        GPMSG_LEVELUP,
+        GPMSG_LEVEL_PROGRESS,
+        GPMSG_RAISE_ATTRIBUTE_RESPONSE,
+        GPMSG_LOWER_ATTRIBUTE_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -128,6 +134,14 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 }
                 else if (stat < NB_CHARACTER_ATTRIBUTES)
                 {
+                    if (stat >= CHAR_SKILL_BEGIN && stat < CHAR_SKILL_END
+                        && player_node->getAttributeBase(stat) < base
+                        && player_node->getAttributeBase(stat) > -1)
+                    {
+                        Particle* effect = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
+                        player_node->controlParticle(effect);
+                    }
+
                     player_node->setAttributeBase(stat, base);
                     player_node->setAttributeEffective(stat, value);
                 }
@@ -137,6 +151,120 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                                 "attribute %d to %d", stat, value);
                 }
             }
+        } break;
+
+        case GPMSG_PLAYER_EXP_CHANGE:
+        {
+            logger->log("EXP Update");
+            while (msg.getUnreadLength())
+            {
+                int skill = msg.readInt8();
+                int current = msg.readInt32();
+                int next = msg.readInt32();
+
+                if (skill < CHAR_SKILL_NB)
+                {
+                    player_node->setExperience(skill, current, next);
+                }
+                else
+                {
+                    logger->log("Warning: server wants to update experience of unknown "
+                                "skill  %d to %d / %d", skill, current, next);
+                }
+            }
+        } break;
+
+        case GPMSG_LEVELUP:
+        {
+            player_node->setLevel(msg.readInt16());
+            player_node->setCharacterPoints(msg.readInt16());
+            player_node->setCorrectionPoints(msg.readInt16());
+            Particle* effect = particleEngine->addEffect("graphics/particles/levelup.particle.xml", 0, 0);
+            player_node->controlParticle(effect);
+        } break;
+
+
+        case GPMSG_LEVEL_PROGRESS:
+        {
+            logger->log("Level Progress Update");
+            player_node->setLevelProgress(msg.readInt8());
+        } break;
+
+
+        case GPMSG_RAISE_ATTRIBUTE_RESPONSE:
+        {
+            int errCode = msg.readInt8();
+            int attrNum = msg.readInt8() - CHAR_ATTR_BEGIN;
+            switch (errCode)
+            {
+                case ATTRIBMOD_OK:
+                {
+                    // feel(acknowledgment);
+                } break;
+                case ATTRIBMOD_INVALID_ATTRIBUTE:
+                {
+                    logger->log("Warning: Server denied increase of attribute %d (unknown attribute) ", attrNum);
+                } break;
+                case ATTRIBMOD_NO_POINTS_LEFT:
+                {
+                    // when the server says "you got no points" it
+                    // has to be correct. The server is always right!
+                    // undo attribute change and set points to 0
+                    logger->log("Warning: Server denied increase of attribute %d (no points left) ", attrNum);
+                    int attrValue = player_node->getAttributeBase(attrNum) - 1;
+                    player_node->setCharacterPoints(0);
+                    player_node->setAttributeBase(attrNum, attrValue);
+                } break;
+                case ATTRIBMOD_DENIED:
+                {
+                    // undo attribute change
+                    logger->log("Warning: Server denied increase of attribute %d (reason unknown) ", attrNum);
+                    int points = player_node->getCharacterPoints() - 1;
+                    player_node->setCharacterPoints(points);
+                    int attrValue = player_node->getAttributeBase(attrNum) - 1;
+                    player_node->setAttributeBase(attrNum, attrValue);
+                } break;
+            }
+        } break;
+
+        case GPMSG_LOWER_ATTRIBUTE_RESPONSE:
+        {
+            int errCode = msg.readInt8();
+            int attrNum = msg.readInt8() - CHAR_ATTR_BEGIN;
+            switch (errCode)
+            {
+                case ATTRIBMOD_OK:
+                {
+                    // feel(acknowledgment);
+                } break;
+                case ATTRIBMOD_INVALID_ATTRIBUTE:
+                {
+                    logger->log("Warning: Server denied reduction of attribute %d (unknown attribute) ", attrNum);
+                } break;
+                case ATTRIBMOD_NO_POINTS_LEFT:
+                {
+                    // when the server says "you got no points" it
+                    // has to be correct. The server is always right!
+                    // undo attribute change and set points to 0
+                    logger->log("Warning: Server denied reduction of attribute %d (no points left) ", attrNum);
+                    int attrValue = player_node->getAttributeBase(attrNum) + 1;
+                    player_node->setCorrectionPoints(0);
+                    player_node->setAttributeBase(attrNum, attrValue);
+                    break;
+                } break;
+                case ATTRIBMOD_DENIED:
+                {
+                    // undo attribute change
+                    logger->log("Warning: Server denied reduction of attribute %d (reason unknown) ", attrNum);
+                    int charaPoints = player_node->getCharacterPoints() - 1;
+                    player_node->setCharacterPoints(charaPoints);
+                    int correctPoints = player_node->getCharacterPoints() + 1;
+                    player_node->setCorrectionPoints(correctPoints);
+                    int attrValue = player_node->getAttributeBase(attrNum) + 1;
+                    player_node->setAttributeBase(attrNum, attrValue);
+                } break;
+            }
+
         } break;
         /*
         case SMSG_PLAYER_ARROW_MESSAGE:

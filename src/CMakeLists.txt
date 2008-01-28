@@ -226,8 +226,6 @@ SET(SRCS
     net/playerhandler.cpp
     net/playerhandler.h
     net/protocol.h
-    net/skillhandler.cpp
-    net/skillhandler.h
     net/tradehandler.cpp
     net/tradehandler.h
     net/accountserver/account.cpp

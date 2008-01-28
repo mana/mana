@@ -49,7 +49,7 @@ enum {
     APMSG_CHAR_CREATE_RESPONSE     = 0x0021, // B error
     PAMSG_CHAR_DELETE              = 0x0022, // B index
     APMSG_CHAR_DELETE_RESPONSE     = 0x0023, // B error
-    APMSG_CHAR_INFO                = 0x0024, // B index, S name, B gender, B hair style, B hair color, B level, W money, W*6 stats
+    APMSG_CHAR_INFO                = 0x0024, // B index, S name, B gender, B hair style, B hair color, W level, W character points, W correction points, D money, W*6 stats
     PAMSG_CHAR_SELECT              = 0x0026, // B index
     APMSG_CHAR_SELECT_RESPONSE     = 0x0027, // B error, B*32 token, S game address, W game port, S chat address, W chat port
     PAMSG_EMAIL_CHANGE             = 0x0030, // S email
@@ -83,6 +83,13 @@ enum {
     GPMSG_INVENTORY                = 0x0120, // { B slot, W item id [, B amount] }*
     GPMSG_INVENTORY_FULL           = 0x0121, // { B slot, W item id [, B amount] }*
     GPMSG_PLAYER_ATTRIBUTE_CHANGE  = 0x0130, // { B attribute, W base value, W modified value }*
+    GPMSG_PLAYER_EXP_CHANGE        = 0x0140, // { B skill, D exp got, D exp needed }*
+    GPMSG_LEVELUP                  = 0x0150, // W new level
+    GPMSG_LEVEL_PROGRESS           = 0x0151, // B percent completed to next levelup
+    PGMSG_RAISE_ATTRIBUTE          = 0x0160, // B attribute
+    GPMSG_RAISE_ATTRIBUTE_RESPONSE = 0x0161, // B error, B attribute
+    PGMSG_LOWER_ATTRIBUTE          = 0x0170, // B attribute
+    GPMSG_LOWER_ATTRIBUTE_RESPONSE = 0x0171, // B error, B attribute
     GPMSG_BEING_ENTER              = 0x0200, // B type, W being id, B action, W*2 position
                                              // player: S name, B hair style, B hair color, B gender, B item bitmask, { W item id }*
                                              // monster: W type id
@@ -183,6 +190,13 @@ enum {
     CREATE_TOO_MUCH_CHARACTERS
 };
 
+// Character attribute modification specific return value
+enum AttribmodResponseCode {
+    ATTRIBMOD_OK = ERRMSG_OK,
+    ATTRIBMOD_INVALID_ATTRIBUTE = 0x40,
+    ATTRIBMOD_NO_POINTS_LEFT,
+    ATTRIBMOD_DENIED
+};
 // Object type enumeration
 enum {
     // A simple item

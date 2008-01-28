@@ -91,14 +91,15 @@ class StatusWindow : public Window, public gcn::ActionListener
          * Stats captions.
          */
         gcn::Label *mStatsLabel[6];
-        gcn::Label *mPointsLabel[6];
         gcn::Label *mStatsDisplayLabel[6];
-        gcn::Label *mRemainingStatsPointsLabel;
+        gcn::Label *mCharacterPointsLabel;
+        gcn::Label *mCorrectionPointsLabel;
 
         /**
          * Stats buttons.
          */
-        gcn::Button *mStatsButton[6];
+        gcn::Button *mStatsPlus[6];
+        gcn::Button *mStatsMinus[6];
 };
 
 extern StatusWindow *statusWindow;

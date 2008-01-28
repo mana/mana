@@ -154,3 +154,17 @@ void Net::GameServer::Player::tradeWithNPC(int item, int amount)
     msg.writeInt16(amount);
     Net::GameServer::connection->send(msg);
 }
+
+void Net::GameServer::Player::raiseAttribute(int attribute)
+{
+    MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
+    msg.writeInt8(attribute);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::lowerAttribute(int attribute)
+{
+    MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
+    msg.writeInt8(attribute);
+    Net::GameServer::connection->send(msg);
+}

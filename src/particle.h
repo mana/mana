@@ -123,7 +123,9 @@ class Particle : public Sprite
          * Creates a standalone text particle.
          */
         Particle*
-        addTextRiseFadeOutEffect(const std::string &text, gcn::Font *font,
+        addTextRiseFadeOutEffect(const std::string &text,
+                                 int colorR, int colorG, int colorB,
+                                 gcn::Font *font,
                                  int x, int y);
 
         /**

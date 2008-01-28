@@ -329,10 +329,12 @@ Particle::addTextSplashEffect(const std::string &text,
 }
 
 Particle*
-Particle::addTextRiseFadeOutEffect(const std::string &text, gcn::Font *font,
+Particle::addTextRiseFadeOutEffect(const std::string &text,
+                                   int colorR, int colorG, int colorB,
+                                   gcn::Font *font,
                                    int x, int y)
 {
-    Particle *newParticle = new TextParticle(mMap, text, 255, 255, 255, font);
+    Particle *newParticle = new TextParticle(mMap, text, colorR, colorG, colorB, font);
     newParticle->setPosition(x, y, 0);
     newParticle->setVelocity(0.0f, 0.0f, 0.5f);
     newParticle->setGravity(0.0015f);

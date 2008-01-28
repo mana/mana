@@ -60,7 +60,7 @@ void ItemInfo::setWeaponType(int type)
         case WPNTYPE_BOW:
             mAttackType = ACTION_ATTACK_BOW;
             break;
-        case WPNTYPE_SICKLE:
+        case WPNTYPE_POLEARM:
             mAttackType = ACTION_ATTACK_SWING;
             break;
         default:

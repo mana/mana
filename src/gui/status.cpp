@@ -87,7 +87,6 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // Static Labels
     gcn::Label *mStatsTitleLabel = new gcn::Label("Stats");
     gcn::Label *mStatsTotalLabel = new gcn::Label("Total");
-    gcn::Label *mStatsCostLabel = new gcn::Label("Cost");
 
     // Derived Stats
 /*
@@ -111,37 +110,44 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     for (int i = 0; i < 6; i++) {
         mStatsLabel[i] = new gcn::Label();
         mStatsDisplayLabel[i] = new gcn::Label();
-        mPointsLabel[i] = new gcn::Label("0");
     }
-    mRemainingStatsPointsLabel = new gcn::Label();
+    mCharacterPointsLabel = new gcn::Label();
+    mCorrectionPointsLabel = new gcn::Label();
 
     // Set button events Id
-    mStatsButton[0] = new Button("+", "STR", this);
-    mStatsButton[1] = new Button("+", "AGI", this);
-    mStatsButton[2] = new Button("+", "DEX", this);
-    mStatsButton[3] = new Button("+", "VIT", this);
-    mStatsButton[4] = new Button("+", "INT", this);
-    mStatsButton[5] = new Button("+", "WIL", this);
-    mStatsButton[6] = new Button("+", "CHR", this);
+    mStatsPlus[0] = new Button("+", "STR+", this);
+    mStatsPlus[1] = new Button("+", "AGI+", this);
+    mStatsPlus[2] = new Button("+", "DEX+", this);
+    mStatsPlus[3] = new Button("+", "VIT+", this);
+    mStatsPlus[4] = new Button("+", "INT+", this);
+    mStatsPlus[5] = new Button("+", "WIL+", this);
+
+    mStatsMinus[0] = new Button("-", "STR-", this);
+    mStatsMinus[1] = new Button("-", "AGI-", this);
+    mStatsMinus[2] = new Button("-", "DEX-", this);
+    mStatsMinus[3] = new Button("-", "VIT-", this);
+    mStatsMinus[4] = new Button("-", "INT-", this);
+    mStatsMinus[5] = new Button("-", "WIL-", this);
+
 
 
     // Set position
     mStatsTitleLabel->setPosition(mHpLabel->getX(), mHpLabel->getY() + 23 );
     mStatsTotalLabel->setPosition(110, mStatsTitleLabel->getY() + 15);
     int totalLabelY = mStatsTotalLabel->getY();
-    mStatsCostLabel->setPosition(170, totalLabelY);
 
     for (int i = 0; i < 6; i++)
     {
         mStatsLabel[i]->setPosition(5,
                                     mStatsTotalLabel->getY() + (i * 23) + 15);
-        mStatsDisplayLabel[i]->setPosition(85,
+        mStatsMinus[i]->setPosition(85, totalLabelY + (i * 23) + 15);
+        mStatsDisplayLabel[i]->setPosition(125,
                                           totalLabelY + (i * 23) + 15);
-        mStatsButton[i]->setPosition(145, totalLabelY + (i * 23) + 10);
-        mPointsLabel[i]->setPosition(165, totalLabelY + (i * 23) + 15);
+        mStatsPlus[i]->setPosition(185, totalLabelY + (i * 23) + 15);
     }
 
-    mRemainingStatsPointsLabel->setPosition(5, mPointsLabel[6]->getY() + 25);
+    mCharacterPointsLabel->setPosition(5, mStatsDisplayLabel[5]->getY() + 25);
+    mCorrectionPointsLabel->setPosition(5, mStatsDisplayLabel[5]->getY() + 35);
 /*
     mStatsAttackLabel->setPosition(220, mStatsLabel[0]->getY());
     mStatsDefenseLabel->setPosition(220, mStatsLabel[1]->getY());
@@ -162,13 +168,12 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // Assemble
     add(mStatsTitleLabel);
     add(mStatsTotalLabel);
-    add(mStatsCostLabel);
     for(int i = 0; i < 6; i++)
     {
         add(mStatsLabel[i]);
         add(mStatsDisplayLabel[i]);
-        add(mStatsButton[i]);
-        add(mPointsLabel[i]);
+        add(mStatsPlus[i]);
+        add(mStatsMinus[i]);
     }/*
     add(mStatsAttackLabel);
     add(mStatsDefenseLabel);
@@ -186,14 +191,19 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     add(mStatsEvadePoints);
     add(mStatsReflexPoints);*/
 
-    add(mRemainingStatsPointsLabel);
+    add(mCharacterPointsLabel);
+    add(mCorrectionPointsLabel);
 }
 
 void StatusWindow::update()
 {
     // Status Part
     // -----------
-    mLvlLabel->setCaption("Level: " + toString(mPlayer->getLevel()));
+    mLvlLabel->setCaption(  "Level: " +
+                            toString(mPlayer->getLevel()) +
+                            " (" +
+                            toString(mPlayer->getLevelProgress()) +
+                            "%)");
     mLvlLabel->adjustSize();
 
     mMoneyLabel->setCaption("Money: " + toString(mPlayer->getMoney()) + " GP");
@@ -232,8 +242,8 @@ void StatusWindow::update()
         "Intelligence",
         "Willpower"
     };
-    int statusPoints = mPlayer->getAttributeIncreasePoints();
-
+    int characterPoints = mPlayer->getCharacterPoints();
+    int correctionPoints = mPlayer->getCorrectionPoints();
     // Update labels
     for (int i = 0; i < 6; i++)
     {
@@ -246,11 +256,16 @@ void StatusWindow::update()
         mStatsLabel[i]->adjustSize();
         mStatsDisplayLabel[i]->adjustSize();
 
-        mStatsButton[i]->setEnabled(statusPoints);
+        mStatsPlus[i]->setEnabled(characterPoints);
+        mStatsMinus[i]->setEnabled(correctionPoints);
     }
-    mRemainingStatsPointsLabel->setCaption("Remaining Status Points: " +
-            toString(statusPoints));
-    mRemainingStatsPointsLabel->adjustSize();
+    mCharacterPointsLabel->setCaption("Character Points: " +
+            toString(characterPoints));
+    mCharacterPointsLabel->adjustSize();
+
+    mCorrectionPointsLabel->setCaption("Correction Points: " +
+            toString(correctionPoints));
+    mCorrectionPointsLabel->adjustSize();
 /*
     // Derived Stats Points
 
@@ -304,31 +319,53 @@ void StatusWindow::action(const gcn::ActionEvent &event)
     const std::string &eventId = event.getId();
 
     // Stats Part
-    if (eventId.length() == 3)
+    if (eventId == "STR+")
     {
-        if (eventId == "STR")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::STR);
-        }
-        else if (eventId == "AGI")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::AGI);
-        }
-        else if (eventId == "DEX")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::DEX);
-        }
-        else if (eventId == "VIT")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::VIT);
-        }
-        else if (eventId == "INT")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::INT);
-        }
-        else if (eventId == "WIL")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::WIL);
-        }
+        mPlayer->raiseAttribute(LocalPlayer::STR);
+    }
+    else if (eventId == "AGI+")
+    {
+        mPlayer->raiseAttribute(LocalPlayer::AGI);
+    }
+    else if (eventId == "DEX+")
+    {
+        mPlayer->raiseAttribute(LocalPlayer::DEX);
+    }
+    else if (eventId == "VIT+")
+    {
+        mPlayer->raiseAttribute(LocalPlayer::VIT);
+    }
+    else if (eventId == "INT+")
+    {
+        mPlayer->raiseAttribute(LocalPlayer::INT);
+    }
+    else if (eventId == "WIL+")
+    {
+        mPlayer->raiseAttribute(LocalPlayer::WIL);
+    }
+
+    else if (eventId == "STR-")
+    {
+        mPlayer->lowerAttribute(LocalPlayer::STR);
+    }
+    else if (eventId == "AGI-")
+    {
+        mPlayer->lowerAttribute(LocalPlayer::AGI);
+    }
+    else if (eventId == "DEX-")
+    {
+        mPlayer->lowerAttribute(LocalPlayer::DEX);
+    }
+    else if (eventId == "VIT-")
+    {
+        mPlayer->lowerAttribute(LocalPlayer::VIT);
+    }
+    else if (eventId == "INT-")
+    {
+        mPlayer->lowerAttribute(LocalPlayer::INT);
+    }
+    else if (eventId == "WIL-")
+    {
+        mPlayer->lowerAttribute(LocalPlayer::WIL);
     }
 }

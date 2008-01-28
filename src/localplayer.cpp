@@ -49,17 +49,21 @@ LocalPlayer::LocalPlayer():
     mAttackRange(0),
     mInventory(new Inventory),
     mEquipment(new Equipment),
-    mAttributeBase(NB_CHARACTER_ATTRIBUTES, 0),
-    mAttributeEffective(NB_CHARACTER_ATTRIBUTES, 0),
-    mAttributeIncreasePoints(0),
-    mLevel(1), mMoney(0),
+    mAttributeBase(NB_CHARACTER_ATTRIBUTES, -1),
+    mAttributeEffective(NB_CHARACTER_ATTRIBUTES, -1),
+    mExpCurrent(CHAR_SKILL_NB, -1),
+    mExpNext(CHAR_SKILL_NB, -1),
+    mCharacterPoints(-1),
+    mCorrectionPoints(-1),
+    mLevel(1), mLevelProgress(0),
+    mMoney(0),
     mTotalWeight(1), mMaxWeight(1),
     mHP(1), mMaxHP(1),
-    mXp(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false),
     mLastAction(-1), mWalkingDir(0),
-    mDestX(0), mDestY(0)
+    mDestX(0), mDestY(0),
+    mExpMessageTime(0)
 {
 }
 
@@ -72,6 +76,21 @@ void LocalPlayer::logic()
     // Actions are allowed once per second
     if (get_elapsed_time(mLastAction) >= 1000) {
         mLastAction = -1;
+    }
+
+    // Show XP messages
+    if(!mExpMessages.empty())
+    {
+        if (mExpMessageTime == 0)
+        {
+            particleEngine->addTextRiseFadeOutEffect(mExpMessages.front(),
+                                                     0, 128, 255,
+                                                     speechFont,
+                                                     mPx + 16, mPy - 16);
+            mExpMessages.pop_front();
+            mExpMessageTime = 30;
+        }
+        mExpMessageTime--;
     }
 
     Being::logic();
@@ -326,7 +345,6 @@ void LocalPlayer::attack()
     else {
         sound.playSfx("sfx/fist-swish.ogg");
     }
-
     Net::GameServer::Player::attack(getSpriteDirection());
 }
 
@@ -346,19 +364,35 @@ void LocalPlayer::revive()
 
 void LocalPlayer::raiseAttribute(size_t attr)
 {
+    // we assume that the server allows the change. When not we will undo it later.
+    mCharacterPoints--;
     mAttributeBase.at(attr)++;
-    // TODO: Inform the server about our desire to raise the attribute
+    Net::GameServer::Player::raiseAttribute(attr + CHAR_ATTR_BEGIN);
 }
 
-void LocalPlayer::setXp(int xp)
+void LocalPlayer::lowerAttribute(size_t attr)
 {
-    if (mMap && xp > mXp)
-    {
-        const std::string text = toString(xp - mXp) + " xp";
+    // we assume that the server allows the change. When not we will undo it later.
+    mCorrectionPoints--;
+    mCharacterPoints++;
+    mAttributeBase.at(attr)--;
+    Net::GameServer::Player::lowerAttribute(attr + CHAR_ATTR_BEGIN);
+}
 
-        // Show XP number
-        particleEngine->addTextRiseFadeOutEffect(text, hitYellowFont,
-                                                 mPx + 16, mPy - 16);
+void LocalPlayer::setExperience(int skill, int current, int next)
+{
+    int diff = current - mExpCurrent.at(skill);
+    if (mMap && mExpCurrent.at(skill) != -1 && diff > 0)
+    {
+        const std::string text = toString(diff) + " xp skill" + toString(skill);
+        mExpMessages.push_back(text);
     }
-    mXp = xp;
+
+    mExpCurrent.at(skill) = current;
+    mExpNext.at(skill) = next;
+}
+
+std::pair<int, int> LocalPlayer::getExperience(int skill)
+{
+    return std::pair<int, int> (mExpCurrent.at(skill), mExpNext.at(skill));
 }

@@ -77,7 +77,6 @@
 #include "net/network.h"
 #include "net/npchandler.h"
 #include "net/playerhandler.h"
-#include "net/skillhandler.h"
 #include "net/tradehandler.h"
 
 #include "resources/imagewriter.h"
@@ -236,7 +235,6 @@ Game::Game():
     mItemHandler(new ItemHandler()),
     mNpcHandler(new NPCHandler()),
     mPlayerHandler(new PlayerHandler()),
-    mSkillHandler(new SkillHandler()),
     mTradeHandler(new TradeHandler()),
     mLogicCounterId(0), mSecondsCounterId(0)
 {
@@ -279,7 +277,6 @@ Game::Game():
     Net::registerHandler(mItemHandler.get());
     Net::registerHandler(mNpcHandler.get());
     Net::registerHandler(mPlayerHandler.get());
-    Net::registerHandler(mSkillHandler.get());
     Net::registerHandler(mTradeHandler.get());
 }
 

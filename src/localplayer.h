@@ -82,30 +82,39 @@ enum
     CHAR_ATTR_END,
     CHAR_ATTR_NB = CHAR_ATTR_END - CHAR_ATTR_BEGIN,
 
-    CHAR_SKILL_WEAPON_BEGIN = CHAR_ATTR_END,
+    CHAR_SKILL_BEGIN = CHAR_ATTR_END,
+
+    CHAR_SKILL_WEAPON_BEGIN = CHAR_SKILL_BEGIN,
     CHAR_SKILL_WEAPON_NONE = CHAR_SKILL_WEAPON_BEGIN,
     CHAR_SKILL_WEAPON_KNIFE,
     CHAR_SKILL_WEAPON_SWORD,
-    CHAR_SKILL_WEAPON_SPEAR,
-    CHAR_SKILL_WEAPON_JAVELIN,
-    CHAR_SKILL_WEAPON_ROD,
+    CHAR_SKILL_WEAPON_POLEARM,
     CHAR_SKILL_WEAPON_STAFF,
     CHAR_SKILL_WEAPON_WHIP,
-    CHAR_SKILL_WEAPON_PROJECTILE,
-    CHAR_SKILL_WEAPON_BOOMERANG,
     CHAR_SKILL_WEAPON_BOW,
-    CHAR_SKILL_WEAPON_SICKLE,
-    CHAR_SKILL_WEAPON_CROSSBOW,
-    CHAR_SKILL_WEAPON_STICK,
-    CHAR_SKILL_WEAPON_HAMMER,
+    CHAR_SKILL_WEAPON_SHOOTING,
+    CHAR_SKILL_WEAPON_MACE,
     CHAR_SKILL_WEAPON_AXE,
-    CHAR_SKILL_WEAPON_HAND_PROJECTILE,
+    CHAR_SKILL_WEAPON_THROWN,
     CHAR_SKILL_WEAPON_END,
     CHAR_SKILL_WEAPON_NB = CHAR_SKILL_WEAPON_END - CHAR_SKILL_WEAPON_BEGIN,
 
-    // Magic skills should follow.
+    CHAR_SKILL_MAGIC_BEGIN = CHAR_SKILL_WEAPON_END,
+    CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER = CHAR_SKILL_MAGIC_BEGIN,
+    // add magic skills here
+    CHAR_SKILL_MAGIC_END,
+    CHAR_SKILL_MAGIC_NB = CHAR_SKILL_MAGIC_END - CHAR_SKILL_MAGIC_BEGIN,
 
-    NB_CHARACTER_ATTRIBUTES = CHAR_SKILL_WEAPON_END
+    CHAR_SKILL_CRAFT_BEGIN = CHAR_SKILL_MAGIC_END,
+    CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER = CHAR_SKILL_CRAFT_BEGIN,
+    // add crafting skills here
+    CHAR_SKILL_CRAFT_END,
+    CHAR_SKILL_CRAFT_NB = CHAR_SKILL_CRAFT_END - CHAR_SKILL_CRAFT_BEGIN,
+
+    CHAR_SKILL_END = CHAR_SKILL_CRAFT_END,
+    CHAR_SKILL_NB = CHAR_SKILL_END - CHAR_SKILL_BEGIN,
+
+    NB_CHARACTER_ATTRIBUTES = CHAR_SKILL_END
 };
 
 
@@ -235,7 +244,15 @@ class LocalPlayer : public Player
          */
         void setWalkingDir(int dir);
 
+        /**
+         * Uses a character point to raise an attribute
+         */
         void raiseAttribute(size_t attr);
+
+        /**
+         * Uses a correction point to lower an attribute
+         */
+        void lowerAttribute(size_t attr);
 
         void toggleSit();
         void emote(Uint8 emotion);
@@ -244,17 +261,6 @@ class LocalPlayer : public Player
 
         int getHP() const
         { return mHP; }
-
-        /**
-         * Sets the amount of XP. Shows XP gaining effect if the player is on
-         * a map.
-         */
-        void setXp(int xp);
-
-        /**
-         * Returns the amount of experience points.
-         */
-        int getXp() const { return mXp; }
 
         Uint32 mCharId;
 
@@ -274,6 +280,12 @@ class LocalPlayer : public Player
 
         void setLevel(int value)
         { mLevel = value; }
+
+        void setLevelProgress(int percent)
+        { mLevelProgress = percent; }
+
+        int getLevelProgress() const
+        { return mLevelProgress; }
 
         int getMoney() const
         { return mMoney; }
@@ -299,8 +311,21 @@ class LocalPlayer : public Player
         void setAttributeEffective(int num, int value)
         { mAttributeEffective[num] = value; }
 
-        int getAttributeIncreasePoints() const
-        { return mAttributeIncreasePoints; }
+        int getCharacterPoints() const
+        { return mCharacterPoints; }
+
+        void setCharacterPoints(int n)
+        { mCharacterPoints = n; }
+
+        int getCorrectionPoints() const
+        { return mCorrectionPoints; }
+
+        void setCorrectionPoints(int n)
+        { mCorrectionPoints = n; }
+
+        void setExperience(int skill, int current, int next);
+
+        std::pair<int, int> getExperience(int skill);
 
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
@@ -313,14 +338,17 @@ class LocalPlayer : public Player
         // Character status:
         std::vector<int> mAttributeBase;
         std::vector<int> mAttributeEffective;
-        int mAttributeIncreasePoints;
+        std::vector<int> mExpCurrent;
+        std::vector<int> mExpNext;
+        int mCharacterPoints;
+        int mCorrectionPoints;
         int mLevel;
+        int mLevelProgress;
         int mMoney;
         int mTotalWeight;
         int mMaxWeight;
         int mHP;
         int mMaxHP;
-        int mXp;            /**< Experience points. */
 
         Being *mTarget;
         FloorItem *mPickUpTarget;
@@ -330,6 +358,10 @@ class LocalPlayer : public Player
         int mWalkingDir;    /**< The direction the player is walking in. */
         int mDestX;         /**< X coordinate of destination. */
         int mDestY;         /**< Y coordinate of destination. */
+
+        std::list<std::string> mExpMessages; /**< Queued exp messages*/
+        int mExpMessageTime;
+
 };
 
 extern LocalPlayer *player_node;

@@ -24,6 +24,7 @@
 #include <algorithm>
 
 #include <guichan/widgets/label.hpp>
+#include <guichan/widgets/container.hpp>
 
 #include "skill.h"
 
@@ -35,32 +36,8 @@
 #include "../localplayer.h"
 
 #include "../utils/dtor.h"
-
-const char *skill_db[] = {
-    // 0-99
-    "", "Basic", "Sword", "Two hand", "HP regeneration", "Bash", "Provoke", "Magnum", "Endure", "MP regeneration",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "MAX weight", "Discount", "Overcharge", "",
-    "Identify", "", "", "", "", "", "", "", "Double", "Miss",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    // 100-199
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "First aid", "Play as dead", "Moving recovery", "Fatal blow", "Auto berserk", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-};
-
+#include "../utils/toString.h"
+#include "../utils/gettext.h"
 
 SkillDialog::SkillDialog():
     Window("Skills")
@@ -68,25 +45,32 @@ SkillDialog::SkillDialog():
     setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 255, 25, 240, 240);
 
-    mSkillListBox = new ListBox(this);
-    ScrollArea *skillScrollArea = new ScrollArea(mSkillListBox);
+    mSkillNameLabels.resize(CHAR_SKILL_NB);
+    mSkillLevelLabels.resize(CHAR_SKILL_NB);
+    mSkillExpLabels.resize(CHAR_SKILL_NB);
 
-    mSkillListBox->setActionEventId("skill");
+    for (int a=0; a < CHAR_SKILL_NB; a++)
+    {
+        mSkillNameLabels.at(a) = new gcn::Label("");
+        mSkillNameLabels.at(a)->setPosition(1, a*10);
+        add(mSkillNameLabels.at(a));
+        mSkillLevelLabels.at(a) = new gcn::Label("");
+        mSkillLevelLabels.at(a)->setPosition(75, a*10);
+        add(mSkillLevelLabels.at(a));
+        mSkillExpLabels.at(a) = new gcn::Label("");
+        mSkillExpLabels.at(a)->setPosition(150, a*10);
+        add(mSkillExpLabels.at(a));
+    }
 
-    skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
-
-    add(skillScrollArea);
-
-    mSkillListBox->addActionListener(this);
+    update();
 
     setLocationRelativeTo(getParent());
-    loadWindowState("Skills");
+    loadWindowState(_("Skills"));
 }
 
 SkillDialog::~SkillDialog()
 {
-    cleanList();
+
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)
@@ -100,60 +84,29 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     }
 }
 
+void SkillDialog::draw(gcn::Graphics *g)
+{
+    update();
+
+    Window::draw(g);
+}
+
 void SkillDialog::update()
 {
-}
-
-int SkillDialog::getNumberOfElements()
-{
-    return mSkillList.size();
-}
-
-std::string SkillDialog::getElementAt(int i)
-{
-    if (i >= 0 && i < (int)mSkillList.size())
+    for (int a = 0; a < CHAR_SKILL_NB; a++)
     {
-        char tmp[128];
-        sprintf(tmp, "%s    Lv: %i    Sp: %i",
-                skill_db[mSkillList[i]->id],
-                mSkillList[i]->lv,
-                mSkillList[i]->sp);
-        return tmp;
+        int baseLevel = player_node->getAttributeBase(a + CHAR_SKILL_BEGIN);
+        int effLevel = player_node->getAttributeEffective(a + CHAR_SKILL_BEGIN);
+        std::string skillLevel("Lvl:" + toString(effLevel) + " / " + toString(baseLevel));
+
+        std::pair<int, int> exp = player_node->getExperience(a);
+        std::string sExp (toString(exp.first) + " / " + toString(exp.second));
+
+        mSkillNameLabels.at(a)->setCaption("Skill" + toString(a));
+        mSkillNameLabels.at(a)->adjustSize();
+        mSkillLevelLabels.at(a)->setCaption(skillLevel);
+        mSkillLevelLabels.at(a)->adjustSize();
+        mSkillExpLabels.at(a)->setCaption(sExp);
+        mSkillExpLabels.at(a)->adjustSize();
     }
-    return "";
-}
-
-bool SkillDialog::hasSkill(int id)
-{
-    for (unsigned int i = 0; i < mSkillList.size(); i++) {
-        if (mSkillList[i]->id == id) {
-            return true;
-        }
-    }
-    return false;
-}
-
-void SkillDialog::addSkill(int id, int lvl, int mp)
-{
-    SKILL *tmp = new SKILL();
-    tmp->id = id;
-    tmp->lv = lvl;
-    tmp->sp = mp;
-    mSkillList.push_back(tmp);
-}
-
-void SkillDialog::setSkill(int id, int lvl, int mp)
-{
-    for (unsigned int i = 0; i < mSkillList.size(); i++) {
-        if (mSkillList[i]->id == id) {
-            mSkillList[i]->lv = lvl;
-            mSkillList[i]->sp = mp;
-        }
-    }
-}
-
-void SkillDialog::cleanList()
-{
-    for_each(mSkillList.begin(), mSkillList.end(), make_dtor(mSkillList));
-    mSkillList.clear();
 }

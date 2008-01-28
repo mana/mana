@@ -33,18 +33,13 @@
 
 #include "../guichanfwd.h"
 
-struct SKILL {
-    short id;      /**< Index into "skill_db" array */
-    short lv, sp;
-};
 
 /**
  * The skill dialog.
  *
  * \ingroup Interface
  */
-class SkillDialog : public Window, public gcn::ActionListener,
-                    public gcn::ListModel
+class SkillDialog : public Window, public gcn::ActionListener
 {
     public:
         /**
@@ -61,18 +56,14 @@ class SkillDialog : public Window, public gcn::ActionListener,
 
         void update();
 
-        int getNumberOfElements();
-        std::string getElementAt(int);
+        void setExp(int id, int exp);
 
-        bool hasSkill(int id);
-        void addSkill(int id, int lv, int sp);
-        void setSkill(int id, int lv, int sp);
-        void cleanList();
+        void draw(gcn::Graphics *g);
 
     private:
-        gcn::ListBox *mSkillListBox;
-
-        std::vector<SKILL*> mSkillList;
+        std::vector<gcn::Label *> mSkillNameLabels;
+        std::vector<gcn::Label *> mSkillLevelLabels;
+        std::vector<gcn::Label *> mSkillExpLabels;
 };
 
 extern SkillDialog *skillDialog;

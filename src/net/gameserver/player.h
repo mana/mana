@@ -51,6 +51,8 @@ namespace Net
             void tradeItem(int slot, int amount);
             void tradeMoney(int amount);
             void tradeWithNPC(int item, int amount);
+            void raiseAttribute(int attribute);
+            void lowerAttribute(int attribute);
         }
     }
 }

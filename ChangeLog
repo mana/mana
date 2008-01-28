@@ -1,3 +1,22 @@
+2007-01-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/game.cpp, src/game.h, src/net/skillhandler.cpp,
+	src/net/skillhandler.h, src/Makefile.am, src/CMakeLists.txt:
+	Removed skill handler (relict from eAthena)
+	* src/gui/skill.cpp, src/gui/skill.h: Implemented provisorical
+	dialog for viewing skill experience and skill levels.
+	* src/gui/status.cpp, src/gui/status.h: Implemented raising and
+	correcting of attributes in the character status GUI.
+	* src/localplayer.cpp, src/localplayer.h,
+	src/net/charserverhandler.cpp, src/net/gameserver/player.cpp,
+	src/net/gameserver/player.h, src/net/playerhandler.cpp,
+	src/net/protocol.h: Implemented netcode for skill system and
+	attribute increase system.
+	* src/resources/itemdp.cpp, src/resources/iteminfo.cpp,
+	src/resources/iteminfo.h: Updated skill palette to the latest
+	design decisions.
+	* data/items.xml: Fixed a few messed up slot numbers.
+
 2008-01-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/truetypefont.cpp: Image alpha should also be set to 1, in

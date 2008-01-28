@@ -215,7 +215,9 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setGender(msg.readInt8());
     int hs = msg.readInt8(), hc = msg.readInt8();
     tempPlayer->setHairStyle(hs, hc);
-    tempPlayer->setLevel(msg.readInt8());
+    tempPlayer->setLevel(msg.readInt16());
+    tempPlayer->setCharacterPoints(msg.readInt16());
+    tempPlayer->setCorrectionPoints(msg.readInt16());
     tempPlayer->setMoney(msg.readInt32());
 
     for (int i = 0; i < 7; i++)
