@@ -1,3 +1,9 @@
+2008-02-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/monsters.xml: Added attributes to maggot (complete) and
+	scorpion (incomplete) for testing server-sided monster attribute
+	parsing.
+
 2007-01-28  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/game.cpp, src/game.h, src/net/skillhandler.cpp,
