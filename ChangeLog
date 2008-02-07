@@ -1,5 +1,9 @@
 2008-02-07  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* src/gui/skill.cpp: Fixed unix compilation problem.
+
+2008-02-07  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/monsters.xml: Added different behaviors to maggots,
 	scorpions, red scorpions and green slimes.
 

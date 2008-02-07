@@ -36,7 +36,7 @@
 #include "../localplayer.h"
 
 #include "../utils/dtor.h"
-#include "../utils/toString.h"
+#include "../utils/tostring.h"
 #include "../utils/gettext.h"
 
 SkillDialog::SkillDialog():
