@@ -1,3 +1,8 @@
+2008-02-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/monsters.xml: Added different behaviors to maggots,
+	scorpions, red scorpions and green slimes.
+
 2008-02-05  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/monsters.xml: Added attributes to maggot (complete) and
