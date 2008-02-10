@@ -1,7 +1,11 @@
+2008-02-10  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_23-1.tmx: Added Dimonds Cove outdoor map by MerlinX420.
+
 2008-02-08  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_14-1.tmx, data/maps/new_23-1.tmx: Added new maps by
-	MerlinX420.
+	* data/maps/new_14-1.tmx, data/maps/new_22-1.tmx: Added Dimonds Cove
+	outdoor map by MerlinX420. Fixed some map bugs in snake dungeon.
 	* data/items.xml: Added chicken leg meta information.
 
 2008-01-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
