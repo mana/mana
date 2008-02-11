@@ -1,3 +1,7 @@
+2008-02-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/monsters.xml: Added size and speed to the first four monsters.
+
 2008-02-10  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_23-1.tmx: Added Dimonds Cove outdoor map by MerlinX420.
