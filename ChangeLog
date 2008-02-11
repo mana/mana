@@ -1,3 +1,13 @@
+2008-02-10  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_23-1.tmx: Added Dimonds Cove outdoor map by MerlinX420.
+
+2008-02-08  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_14-1.tmx, data/maps/new_22-1.tmx: Added Dimonds Cove
+	outdoor map by MerlinX420. Fixed some map bugs in snake dungeon.
+	* data/items.xml: Added chicken leg meta information.
+
 2008-02-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/skill.cpp: Fixed unix compilation problem.
@@ -13,7 +23,7 @@
 	scorpion (incomplete) for testing server-sided monster attribute
 	parsing.
 
-2007-01-28  Philipp Sehmisch  <tmw@crushnet.org>
+2008-01-28  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/game.cpp, src/game.h, src/net/skillhandler.cpp,
 	src/net/skillhandler.h, src/Makefile.am, src/CMakeLists.txt:
@@ -54,8 +64,21 @@
 
 2008-01-19  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Map fixes by 5t3v3 at
+	the new snow maps. Added hot spring particle effect to pond south of
+	snow village.
+	* data/graphics/particles/bubbles_32px,
+	data/graphics/particles/bubbles_12px,
+	data/graphics/particles/bubbles_8px,
+	data/graphics/particles/whirlpool.particle.xml: Added bubble particle
+	effect.
 	* src/resources/itemdb.cpp: Fixed interpretation of weapon types in
 	items.xml.
+
+2008-01-14  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Added new versions of
+	snow maps by 5t3v3.
 
 2008-01-10  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -89,6 +112,46 @@
 	basic attribute modifiers.
 	* tmw.cbp: Updated Code::Blocks project file to include libintl.
 
+2008-01-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_1-1.tmx, data/maps/new_3-1.tmx: Some map bugs reported
+	by Strump, fixed by Zipon.
+
+2007-12-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_22-1.tmx: Some mapping fixes at snake dungeon map.
+
+2007-12-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_7-1.tmx, data/maps/new_22-1.tmx: Added new map by
+	5t3v3 (east desert cave) and enhanced version of eastern desert by
+	Len.
+	* data/maps/new_3-1.tmx: Some mapping errors fixed by Zipon.
+
+2007-12-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_18-1.tmx: Fixed a map bug (monster trap) on
+	map 18 (woodland village surrounding)
+
+2007-12-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* tools/upalyzer/analyse.php: Fixed association of entries to update,
+	added no-cache headers, added a bit of error reporting in case of
+	invalid zip files, kept original ordering of the update list and
+	sorted the list of entries on their filename.
+	* tools/upalyzer/analyse.php: Added list of files in each update with
+	indication on whether they are still used.
+
+2007-12-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Remember to delete the progressbar and label also when
+	the game was not started.
+	* tools/upalyzer/analyse.php: Added initial version of the update
+	analysis tool upalyzer.
+	* tools/upalyzer/analyse.php: Optimized with single loop approach and
+	nicer printing calls, inspired by doener's version. Also added list of
+	update entries and their respective update.
+
 2007-12-18  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/char_select.cpp, src/gui/char_select.h,
@@ -97,6 +160,27 @@
 	src/net/accountserver/account.h, src/net/beinghandler.cpp:
 	Updated attribute system to the latest design decisions
 	(removed charisma, kept agility in)
+
+2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/cave.png, data/graphics/tiles/cave_x2.png:
+	Fixed the blurred outlines of the new tiles.
+
+2007-12-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/tiles/cave.png, data/graphics/tiles/cave_x2.png,
+	data/maps/new_4-1.tmx: Added two new cave tiles by yosuhara.
+
+2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* tools/tmxcopy/base64.cpp,
+	tools/tmxcopy/base64.h, tools/tmxcopy/main.cpp,
+	tools/tmxcopy/map.cpp, tools/tmxcopy/map.hpp,
+	tools/tmxcopy/readme.txt, tools/tmxcopy/tmxcopy.cbp,
+	tools/tmxcopy/tostring.h, tools/tmxcopy/xmlutils.cpp,
+	tools/tmxcopy/xmlutils.h, tools/tmxcopy/zlibutils.cpp,
+	tools/tmxcopy/zlibutils.h: Added my tmxcopy tool for copying
+	parts of maps to other maps.
 
 2007-12-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -126,6 +210,13 @@
 
 	* src/being.cpp: Added interpolation of tile offset for intermediate
 	steps in long moves.
+
+2007-11-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/maps/new_1-1.tmx,
+	data/graphics/maps/new_3-1.tmx,
+	data/graphics/maps/new_15-1.tmx: Updated desert maps with new
+	tiles by Len.
 
 2007-11-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
