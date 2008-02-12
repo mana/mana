@@ -339,6 +339,12 @@ Being::nextStep()
 
     setDirection(dir);
 
+    if (mMap->tileCollides(node.x, node.y))
+    {
+        setAction(STAND);
+        return;
+    }
+
     mX = node.x;
     mY = node.y;
     setAction(WALK);

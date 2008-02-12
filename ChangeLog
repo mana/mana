@@ -1,3 +1,9 @@
+2008-02-12  Dennis Friis  <peavey@placid.dk>
+	* src/localplayer.cpp, src/map.cpp, src/gui/viewport.cpp, src/being.cpp
+	src/map.h: Made pathfinding not halt on collision destination tile,
+	made moving around with mouse smoother. Added possibility to pass
+	through players with key controls.
+
 2008-02-11  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_22-1.tmx: Added music and overlay to snake dungeon.

@@ -423,7 +423,7 @@ Viewport::mousePressed(gcn::MouseEvent &event)
                 player_node->pickUp(item);
         }
         // Just walk around
-        else if (mMap->getWalk(tilex, tiley))
+        else
         {
             // XXX XXX XXX REALLY UGLY!
             Uint8 *keys = SDL_GetKeyState(NULL);

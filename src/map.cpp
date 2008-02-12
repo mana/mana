@@ -276,11 +276,6 @@ void Map::setWalk(int x, int y, bool walkable)
     mMetaTiles[x + y * mWidth].walkable = walkable;
 }
 
-bool Map::getWalk(int x, int y) const
-{
-    return !tileCollides(x, y) && !occupied(x, y);
-}
-
 bool Map::occupied(int x, int y) const
 {
     Beings &beings = beingManager->getAll();
@@ -340,10 +335,6 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
     // Declare open list, a list with open tiles sorted on F cost
     std::priority_queue<Location> openList;
 
-    // Return empty path when destination collides
-    if (tileCollides(destX, destY))
-        return path;
-
     // Reset starting tile's G cost to 0
     MetaTile *startTile = getMetaTile(startX, startY);
     startTile->Gcost = 0;
@@ -388,8 +379,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
 
                 MetaTile *newTile = getMetaTile(x, y);
 
-                // Skip if the tile is on the closed list or collides
-                if (newTile->whichList == mOnClosedList || tileCollides(x, y))
+                // Skip if the tile is on the closed list or collides unless its the destination tile
+                if (newTile->whichList == mOnClosedList || tileCollides(x, y) && !(x == destX && y == destY))
                 {
                     continue;
                 }

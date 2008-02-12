@@ -223,11 +223,11 @@ void LocalPlayer::walk(unsigned char dir)
         dy = 0;
 
     // Choose a straight direction when diagonal target is blocked
-    if (dx && dy && !mMap->getWalk(mX + dx, mY + dy))
+    if (dx && dy && mMap->tileCollides(mX + dx, mY + dy))
         dx = 0;
 
     // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk(mX + dx, mY + dy))
+    if ((dx || dy) && !mMap->tileCollides(mX + dx, mY + dy))
     {
         setDestination(mX + dx, mY + dy);
     }
