@@ -1,3 +1,7 @@
+2008-02-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/monsters.xml: Converted movement speed to pixels per second.
+
 2008-02-12  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/monsters.xml: Added size and speed to the first four monsters.
