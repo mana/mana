@@ -47,6 +47,13 @@ class Monster : public Being
         virtual void handleAttack();
 
         /**
+         * Puts a damage bubble above this monster and plays the hurt sound
+         *
+         * @param amount The amount of damage.
+         */
+        virtual void takeDamage(int amount);
+
+        /**
          * Returns the MonsterInfo, with static data about this monster.
          */
         const MonsterInfo&

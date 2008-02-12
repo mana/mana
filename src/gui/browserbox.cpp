@@ -32,7 +32,9 @@ BrowserBox::BrowserBox(unsigned int mode):
     gcn::Widget(),
     mMode(mode), mHighMode(UNDERLINE | BACKGROUND),
     mOpaque(true),
-    mUseLinksAndUserColors(true), mSelectedLink(-1)
+    mUseLinksAndUserColors(true),
+    mSelectedLink(-1),
+    mMaxRows(0)
 {
     setFocusable(true);
     addMouseListener(this);
@@ -119,6 +121,12 @@ void BrowserBox::addRow(const std::string &row)
 
     mTextRows.push_back(newRow);
 
+    //discard older rows when a row limit has been set
+    if (mMaxRows > 0)
+    {
+        while (mTextRows.size() > mMaxRows) mTextRows.pop_front();
+    }
+
     // Auto size mode
     if (mMode == AUTO_SIZE)
     {
@@ -134,15 +142,16 @@ void BrowserBox::addRow(const std::string &row)
 
     if (mMode == AUTO_WRAP)
     {
-        unsigned int i, j, y = 0;
+        unsigned int y = 0;
         unsigned int nextChar;
         char const *hyphen = "~";
         int hyphenWidth = font->getWidth(hyphen);
         int x = 0;
-        for (i = 0; i < mTextRows.size(); i++)
+
+        for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
         {
-            std::string row = mTextRows[i];
-            for (j = 0; j < row.size(); j++)
+            std::string row = *i;
+            for (unsigned int j = 0; j < row.size(); j++)
             {
                 std::string character = row.substr(j, 1);
                 x += font->getWidth(character);
@@ -256,17 +265,16 @@ BrowserBox::draw(gcn::Graphics *graphics)
         }
     }
 
-    unsigned int i;
     int x = 0, y = 0;
     int wrappedLines = 0;
     TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     graphics->setColor(BLACK);
-    for (i = 0; i < mTextRows.size(); i++)
+    for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
     {
         int selColor = BLACK;
         int prevColor = selColor;
-        std::string row = mTextRows[i];
+        std::string row = *(i);
         bool wrapped = false;
         x = 0;
 

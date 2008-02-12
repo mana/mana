@@ -74,6 +74,11 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         void setHighlightMode(unsigned int highMode);
 
         /**
+         * Sets the maximum numbers of rows in the browser box. 0 = no limit.
+         */
+        void setMaxRow(int max) {mMaxRows = max; };
+
+        /**
          * Disable links & user defined colors to be used in chat input.
          */
         void disableLinksAndUserColors();
@@ -144,7 +149,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         };
 
     private:
-        typedef std::vector<std::string> TextRows;
+        typedef std::list<std::string> TextRows;
         typedef TextRows::iterator TextRowIterator;
         TextRows mTextRows;
 
@@ -158,6 +163,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         bool mOpaque;
         bool mUseLinksAndUserColors;
         int mSelectedLink;
+        unsigned int mMaxRows;
 };
 
 #endif

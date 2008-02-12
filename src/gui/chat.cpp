@@ -38,6 +38,7 @@
 
 #include "../channelmanager.h"
 #include "../channel.h"
+#include "../configuration.h"
 #include "../game.h"
 #include "../localplayer.h"
 
@@ -51,9 +52,6 @@ ChatWindow::ChatWindow():
     Window(),
     mTmpVisible(false)
 {
-    mItems = 0;
-    mItemsKeep = 20;
-
     setResizable(true);
     setDefaultSize(0, (windowContainer->getHeight() - 123), 600, 100);
     setTitleBarHeight(0);
@@ -66,6 +64,7 @@ ChatWindow::ChatWindow():
     BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     textOutput->setOpaque(false);
     textOutput->disableLinksAndUserColors();
+    textOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
     ScrollArea *scrollArea = new ScrollArea(textOutput);
     scrollArea->setPosition(
             scrollArea->getBorderSize(), scrollArea->getBorderSize());
@@ -126,11 +125,6 @@ ChatWindow::logic()
 void
 ChatWindow::chatLog(std::string line, int own, std::string channelName)
 {
-    // Delete overhead from the end of the list
-    while ((int) mChatlog.size() > mItemsKeep) {
-        mChatlog.pop_back();
-    }
-
     CHATLOG tmp;
     tmp.own  = own;
     tmp.nick = "";

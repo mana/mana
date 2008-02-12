@@ -183,7 +183,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /** Called to add the channel to the channel manager */
         void
         addChannel(short channel, std::string channelName);
-        
+
         /** Called to remove the channel from the channel manager */
         void
         removeChannel(short channel);
@@ -225,8 +225,6 @@ class ChatWindow : public Window, public gcn::ActionListener,
             int own;
         };
 
-        std::list<CHATLOG> mChatlog;
-
 #if 0
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
@@ -250,4 +248,3 @@ class ChatWindow : public Window, public gcn::ActionListener,
 extern ChatWindow *chatWindow;
 
 #endif
-
