@@ -553,6 +553,12 @@
 	strings for item effects.
 	* po/POTFILES.in: Marked effect strings as translatable.
 
+2007-10-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/net/tradehandler.h, src/net/tradehandler.cpp:
+	Implemented automatic denying of trade requests based on a patch
+	submitted by Quiche_on_a_leash.
+
 2007-10-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/viewport.h, src/gui/viewport.cpp: Put drawing of debug path

@@ -55,7 +55,8 @@ namespace {
     } listener;
 }
 
-TradeHandler::TradeHandler()
+TradeHandler::TradeHandler():
+    mAcceptTradeRequests(true)
 {
     static const Uint16 _messages[] = {
         GPMSG_TRADE_REQUEST,
@@ -70,6 +71,16 @@ TradeHandler::TradeHandler()
     handledMessages = _messages;
 }
 
+void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
+{
+    mAcceptTradeRequests = acceptTradeRequests;
+    if (mAcceptTradeRequests) {
+        chatWindow->chatLog("Accepting incoming trade requests", BY_SERVER);
+    } else {
+        chatWindow->chatLog("Ignoring incoming trade requests", BY_SERVER);
+    }
+}
+
 void TradeHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
@@ -77,7 +88,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
         case GPMSG_TRADE_REQUEST:
         {
             Being *being = beingManager->findBeing(msg.readInt16());
-            if (!being)
+            if (!being || !mAcceptTradeRequests)
             {
                 Net::GameServer::Player::acceptTrade(false);
                 break;

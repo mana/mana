@@ -613,6 +613,17 @@ void Game::handleInput()
                         viewport->toggleDebugPath();
                         used = true;
                         break;
+
+                    case SDLK_t:
+                        // Toggle accepting of incoming trade requests
+                        {
+                            TradeHandler *th = static_cast<TradeHandler*>(
+                                    mTradeHandler.get());
+                            th->setAcceptTradeRequests(
+                                    !th->acceptTradeRequests());
+                        }
+                        used = true;
+                        break;
                 }
 
                 // Emotions
