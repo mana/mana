@@ -1,4 +1,22 @@
+2008-02-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/equipment.xml, data/items.xml,
+	data/graphics/items/armor-head-crusaderhelm.png,
+	data/graphics/items/armor-head-infantryhelm.png,
+	data/graphics/items/armor-head-knighthelm.png,
+	data/graphics/items/armor-head-warlordhelm.png,
+	data/graphics/sprites/head-crusaderhelm.png,
+	data/graphics/sprites/head-infantryhelm.png,
+	data/graphics/sprites/head-knighthelm.png,
+	data/graphics/sprites/head-warlordhelm.png,
+	data/graphics/sprites/head-crusaderhelm.xml,
+	data/graphics/sprites/head-infantryhelm.xml,
+	data/graphics/sprites/head-knighthelm.xml,
+	data/graphics/sprites/head-warlordhelm.xml: Added new headgears by
+	Black Don (thanks to QOAL for testing and implementation)
+
 2008-02-12  Dennis Friis  <peavey@placid.dk>
+
 	* src/localplayer.cpp, src/map.cpp, src/gui/viewport.cpp, src/being.cpp
 	src/map.h: Made pathfinding not halt on collision destination tile,
 	made moving around with mouse smoother. Added possibility to pass
