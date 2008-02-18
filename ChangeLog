@@ -1,6 +1,7 @@
 2008-02-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* INSTALL: Added notes about installing gettext and cvs.
+	* INSTALL: Added notes about installing gettext and cvs and updated
+	required ENet version to 1.2.
 
 2008-02-13  Philipp Sehmisch  <tmw@crushnet.org>
 
