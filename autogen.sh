@@ -4,7 +4,6 @@ echo "Generating build information using autopoint, aclocal, autoheader, automak
 echo
 
 # Regerate configuration files
-gettextize -f --no-changelog
 autopoint
 aclocal
 autoheader

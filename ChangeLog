@@ -1,7 +1,3 @@
-2008-02-18  Mateusz Kaduk  <mateusz.kaduk@gmail.com>
-
-	* Makefile.am (EXTRA_DIST): Add config.rpath, m4/ChangeLog.
-
 2008-02-13  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/monsters.xml: Converted movement speed to pixels per second.
