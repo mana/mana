@@ -1,3 +1,7 @@
+2008-02-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* INSTALL: Added notes about installing gettext and cvs.
+
 2008-02-13  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/monsters.xml: Converted movement speed to pixels per second.

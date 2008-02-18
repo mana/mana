@@ -30,6 +30,8 @@ If you checked TMW out from CVS you will also need these tools to compile:
 
 * GNU automake 1.9  http://www.gnu.org/software/automake/
 * GNU autoconf      http://www.gnu.org/software/autoconf/
+* GNU gettext       http://www.gnu.org/software/gettext/
+* CVS               http://www.nongnu.org/cvs/ (needed to run autopoint)
 
 Installing these dependencies is distributions-specific, and we'll leave it to
 you to figure this out.
