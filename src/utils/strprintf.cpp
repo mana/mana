@@ -22,7 +22,7 @@
  */
 
 #ifndef _TMW_UTILS_TOSTRING_H
-#define _TMW_UTISL_TOSTRING_H
+#define _TMW_UTILS_TOSTRING_H
 
 #include <cstdarg>
 

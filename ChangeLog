@@ -1,3 +1,8 @@
+2008-02-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/hairstyle7-female.xml, src/sound.cpp,
+	src/utils/strprintf.cpp, tmw.cbp: Fixed image name.
+
 2008-02-13  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/equipment.xml, data/items.xml,
