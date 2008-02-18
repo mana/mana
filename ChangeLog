@@ -173,6 +173,14 @@
 	Updated attribute system to the latest design decisions
 	(removed charisma, kept agility in)
 
+2007-12-14  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/head-mask.png,
+	data/graphics/sprites/head-mask.xml,
+	data/graphics/sprites/head-mushroom.xml,
+	data/graphics/sprites/head-shroom.xml, data/items.xml,
+	data/equipment.xml: Fixed some problems with the new items.
+
 2007-12-12  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/cave.png, data/graphics/tiles/cave_x2.png:
@@ -194,9 +202,106 @@
 	tools/tmxcopy/zlibutils.h: Added my tmxcopy tool for copying
 	parts of maps to other maps.
 
+2007-12-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp: Include cassert header.
+
+2007-12-10  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp, src/being.h, src/net/beinghandler.cpp,
+	src/net/charserverhandler.cpp, src/net/equipmenthandler.cpp,
+	src/player.cpp, src/player.h, data/items.xml: Simplified player
+	subsprite handling by treating equipment, hairstyle and base
+	sprites alike. This also enables gender-specific hairstyles.
+	* src/game.cpp, src/gui/chat.cpp, src/gui/chat.h, src/log.cpp,
+	src/log.h: Added an option to show log messages in the chat console.
+	* data/items.xml,
+	data/graphics/sprites/hairstyle1.png,
+	data/graphics/sprites/hairstyle1.xml,
+	data/graphics/sprites/hairstyle1-male.png,
+	data/graphics/sprites/hairstyle1-male.xml,
+	data/graphics/sprites/hairstyle1-female.png,
+	data/graphics/sprites/hairstyle1-female.xml,
+	data/graphics/sprites/hairstyle2.png,
+	data/graphics/sprites/hairstyle2.xml,
+	data/graphics/sprites/hairstyle2-male.png,
+	data/graphics/sprites/hairstyle2-male.xml,
+	data/graphics/sprites/hairstyle2-female.png,
+	data/graphics/sprites/hairstyle2-female.xml,
+	data/graphics/sprites/hairstyle3.png,
+	data/graphics/sprites/hairstyle3.xml,
+	data/graphics/sprites/hairstyle3-male.png,
+	data/graphics/sprites/hairstyle3-male.xml,
+	data/graphics/sprites/hairstyle3-female.png,
+	data/graphics/sprites/hairstyle3-female.xml,
+	data/graphics/sprites/hairstyle4.png,
+	data/graphics/sprites/hairstyle4.xml,
+	data/graphics/sprites/hairstyle4-male.png,
+	data/graphics/sprites/hairstyle4-male.xml,
+	data/graphics/sprites/hairstyle4-female.png,
+	data/graphics/sprites/hairstyle4-female.xml,
+	data/graphics/sprites/hairstyle5.png,
+	data/graphics/sprites/hairstyle5.xml,
+	data/graphics/sprites/hairstyle5-male.png,
+	data/graphics/sprites/hairstyle5-male.xml,
+	data/graphics/sprites/hairstyle5-female.png,
+	data/graphics/sprites/hairstyle5-female.xml,
+	data/graphics/sprites/hairstyle6.png,
+	data/graphics/sprites/hairstyle6.xml,
+	data/graphics/sprites/hairstyle6-male.png,
+	data/graphics/sprites/hairstyle6-male.xml,
+	data/graphics/sprites/hairstyle6-female.png,
+	data/graphics/sprites/hairstyle6-female.xml,
+	data/graphics/sprites/hairstyle7.png,
+	data/graphics/sprites/hairstyle7.xml,
+	data/graphics/sprites/hairstyle7-male.png,
+	data/graphics/sprites/hairstyle7-male.xml,
+	data/graphics/sprites/hairstyle7-female.png,
+	data/graphics/sprites/hairstyle7-female.xml:
+	Implemented female hairstyles.
+
+2007-12-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/head-funkywinter.png,
+	data/graphics/sprites/head-funkywinter.xml,
+	data/graphics/sprites/head-xmaself.png,
+	data/graphics/sprites/head-xmaself.xml: New versions of funky hat
+	and elf hat by QOAL.
+
 2007-12-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/CMakeLists.txt: Add missing source files.
+
+2007-12-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/items/generic-santacookie.png,
+	data/items.xml: Added a new drop item for the christmas event.
+
+2007-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/map.h: Fix drawing of very high fringe tiles by
+	keeping track of the maximum tile height.
+	* src/itemshortcut.h, src/gui/itemshortcutcontainer.h,
+	src/gui/itemshortcutcontainer.cpp, src/gui/itemshortcutwindow.cpp,
+	src/gui/itemshortcutwindow.h, src/itemshortcut.cpp: Random cleanups.
+
+2007-12-04  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/head-funkywinter.png,
+	data/graphics/sprites/head-funkywinter.xml,
+	data/graphics/sprites/head-mask.png,
+	data/graphics/sprites/head-mask.xml,
+	data/graphics/sprites/head-mushroom.png,
+	data/graphics/sprites/head-mushroom.xml,
+	data/graphics/sprites/head-shroom.png,
+	data/graphics/sprites/head-shroom.xml,
+	data/graphics/sprites/head-tophat.png,
+	data/graphics/sprites/head-tophat.xml,
+	data/graphics/sprites/head-xmaself.png,
+	data/graphics/sprites/head-xmaself.xml,
+	data/graphics/items/armor-head-xmaself.png,
+	data/graphics/items/armor-head-mask.png,
+	data/items.xml: Added/renamed some headgears for the christmas event.
 
 2007-11-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

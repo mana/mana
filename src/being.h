@@ -189,6 +189,12 @@ class Being : public Sprite
         setName(const std::string &name) { mName = name; }
 
         /**
+         * Sets visible equipments for this being.
+         */
+        virtual void
+        setSprite(int slot, int id, const std::string &color = "");
+
+        /**
          * Makes this being take the next step of his path.
          */
         virtual void
@@ -349,6 +355,8 @@ class Being : public Sprite
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
+        std::vector<int> mSpriteIDs;
+        std::vector<std::string> mSpriteColors;
         std::list<Particle *> mChildParticleEffects;
 
     private:

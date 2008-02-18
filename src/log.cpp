@@ -34,8 +34,11 @@
 
 #include "log.h"
 
+#include "gui/chat.h"
+
 Logger::Logger():
-    mLogToStandardOut(false)
+    mLogToStandardOut(false),
+    mChatWindow(NULL)
 {
 }
 
@@ -98,6 +101,11 @@ void Logger::log(const char *log_text, ...)
     if (mLogToStandardOut)
     {
         std::cout << timeStr.str() << buf << std::endl;
+    }
+
+    if (mChatWindow)
+    {
+        mChatWindow->chatLog(buf, BY_LOGGER);
     }
 
     // Delete temporary buffer

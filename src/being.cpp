@@ -61,7 +61,9 @@ Being::Being(int id, int job, Map *map):
     mEquippedWeapon(NULL),
     mSpeechTime(0),
     mPx(0), mPy(0),
-    mSprites(VECTOREND_SPRITE, NULL)
+    mSprites(VECTOREND_SPRITE, NULL),
+    mSpriteIDs(VECTOREND_SPRITE, 0),
+    mSpriteColors(VECTOREND_SPRITE, "")
 {
     setMap(map);
 
@@ -283,6 +285,14 @@ Being::setPath(const Path &path, int mod)
         mStepTime = 0;
         nextStep();
     }
+}
+
+void
+Being::setSprite(int slot, int id, const std::string &color)
+{
+    assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
+    mSpriteIDs[slot] = id;
+    mSpriteColors[slot] = color;
 }
 
 void

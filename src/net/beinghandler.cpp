@@ -140,9 +140,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
-            dstBeing->setVisibleEquipment(
+            dstBeing->setSprite(
                     Being::WEAPON_SPRITE, msg->readInt16());
-            dstBeing->setVisibleEquipment(
+            dstBeing->setSprite(
                     Being::BOTTOMCLOTHES_SPRITE, msg->readInt16());
 
             if (msg.getId() == SMSG_BEING_MOVE)
@@ -153,8 +153,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg->readInt16();  // shield
             headTop = msg->readInt16();
             headMid = msg->readInt16();
-            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
-            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
+            dstBeing->setSprite(Being::HAT_SPRITE, headTop);
+            dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
@@ -294,18 +294,18 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     dstBeing->setHairStyle(id);
                     break;
                 case 2:
-                    dstBeing->setVisibleEquipment(Being::WEAPON_SPRITE, id);
+                    dstBeing->setSprite(Being::WEAPON_SPRITE, id);
                     break;
                 case 3:     // Change lower headgear for eAthena, pants for us
-                    dstBeing->setVisibleEquipment(
+                    dstBeing->setSprite(
                             Being::BOTTOMCLOTHES_SPRITE, id);
                     break;
                 case 4:     // Change upper headgear for eAthena, hat for us
-                    dstBeing->setVisibleEquipment(
+                    dstBeing->setSprite(
                             Being::HAT_SPRITE, id);
                     break;
                 case 5:     // Change middle headgear for eathena, armor for us
-                     dstBeing->setVisibleEquipment(
+                     dstBeing->setSprite(
                             Being::TOPCLOTHES_SPRITE, id);
                     break;
                 case 6:
@@ -347,7 +347,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
-            dstBeing->setVisibleEquipment(
+            dstBeing->setSprite(
                     Being::WEAPON_SPRITE, msg->readInt16());
             msg->readInt16();  // item id 2
             headBottom = msg->readInt16();
@@ -367,10 +367,10 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readInt16();  // manner
             msg.readInt8();   // karma
             dstBeing->setSex(1 - msg.readInt8());   // sex
-            dstBeing->setVisibleEquipment(
+            dstBeing->setSprite(
                     Being::BOTTOMCLOTHES_SPRITE, headBottom);
-            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
-            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
+            dstBeing->setSprite(Being::HAT_SPRITE, headTop);
+            dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {
@@ -434,7 +434,7 @@ static void handleLooks(Player *being, MessageIn &msg)
         // The equipment has to be cleared first.
         for (int i = 0; i < nb_slots; ++i)
         {
-            being->setVisibleEquipment(slots[i], 0);
+            being->setSprite(slots[i], 0);
         }
     }
 
@@ -443,7 +443,7 @@ static void handleLooks(Player *being, MessageIn &msg)
     {
         if (!(mask & (1 << i))) continue;
         int id = msg.readInt16();
-        being->setVisibleEquipment(slots[i], id);
+        being->setSprite(slots[i], id);
     }
 }
 

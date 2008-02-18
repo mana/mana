@@ -18,20 +18,19 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #ifndef _TMW_ITEMSHORTCUT_H__
 #define _TMW_ITEMSHORTCUT_H__
 
-#include "item.h"
-
 #define SHORTCUT_ITEMS 10
 
-/**
- * The item pointer
- */
-typedef Item* ItemPtr;
+class Item;
 
+/**
+ * The class which keeps track of the item shortcuts.
+ */
 class ItemShortcut
 {
     public:
@@ -55,7 +54,7 @@ class ItemShortcut
          *
          * @param index Index of the shortcut item.
          */
-        ItemPtr getItem(int index) const
+        Item* getItem(int index) const
         { return mItems[index]; }
 
         /**
@@ -67,7 +66,7 @@ class ItemShortcut
         /**
          * Returns the item that is currently selected.
          */
-        ItemPtr getItemSelected() const
+        Item* getItemSelected() const
         { return mItemSelected; }
 
         /**
@@ -92,20 +91,20 @@ class ItemShortcut
          *
          * @param item The item that is to be assigned.
          */
-        void setItemSelected(ItemPtr item)
+        void setItemSelected(Item* item)
         { mItemSelected = item; }
 
         /**
          * A flag to check if the item is selected.
          */
         bool isItemSelected()
-        { return (mItemSelected) ? true : false; }
+        { return mItemSelected; }
 
         /**
          * Remove a item from the shortcut.
          */
         void removeItem(int index)
-        { mItems[index] = NULL; }
+        { mItems[index] = 0; }
 
         /**
          * Try to use the item specified by the index.
@@ -120,8 +119,8 @@ class ItemShortcut
          */
         void save();
 
-        ItemPtr mItems[SHORTCUT_ITEMS]; /**< the items stored */
-        ItemPtr mItemSelected;              /**< the item held by cursor */
+        Item* mItems[SHORTCUT_ITEMS];     /**< The items stored. */
+        Item* mItemSelected;              /**< The item held by cursor. */
 
 };
 

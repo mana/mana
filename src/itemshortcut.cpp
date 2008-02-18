@@ -18,10 +18,12 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #include "itemshortcut.h"
 
+#include "item.h"
 #include "localplayer.h"
 #include "configuration.h"
 
@@ -51,7 +53,7 @@ void ItemShortcut::load()
 
         if (itemId != -1)
         {
-            ItemPtr item = player_node->searchForItem(itemId);
+            Item* item = player_node->searchForItem(itemId);
             if (item)
             {
                 mItems[i] = item;

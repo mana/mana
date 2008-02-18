@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #ifndef _TMW_ITEMSHORTCUTCONTAINER_H__
@@ -25,8 +26,6 @@
 
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
-
-#include <list>
 
 class Image;
 class Item;
@@ -109,7 +108,6 @@ class ItemShortcutContainer : public gcn::Widget, public gcn::MouseListener
         int mGridWidth, mGridHeight;
         bool mItemClicked;
         Item *mItemMoved;
-
 };
 
 #endif

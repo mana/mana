@@ -49,7 +49,7 @@ class Player : public Being
         drawName(Graphics *graphics, int offsetX, int offsetY);
 
         /**
-         * Sets the sex for this player.
+         * Sets the gender for this player.
          */
         void setGender(int);
 
@@ -67,18 +67,24 @@ class Player : public Being
 
         /**
          * Sets the hair style and color for this player.
+         *
+         * NOTE: This method was necessary for convenience in the 0.0 client.
+         * It should be removed here since the server can provide the hair ID
+         * and coloring the same way it does for other equipment pieces. Then
+         * Being::setSprite can be used instead.
          */
         void setHairStyle(int style, int color);
 
         /**
          * Sets visible equipments for this player.
          */
-        void setVisibleEquipment(int slot, int id);
+        virtual void
+        setSprite(int slot, int id, const std::string &color = "");
 
     private:
-
-        std::vector<int> mEquipmentSpriteIDs;
-        Uint8 mGender, mHairStyle, mHairColor;
+        Uint8 mGender;
+        Uint8 mHairStyle;
+        Uint8 mHairColor;
 };
 
 #endif

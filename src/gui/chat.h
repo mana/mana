@@ -45,7 +45,8 @@ enum
     BY_GM     = 0,
     BY_PLAYER = 1,
     BY_OTHER  = 2,
-    BY_SERVER = 3
+    BY_SERVER = 3,
+    BY_LOGGER
 };
 
 #if 0
