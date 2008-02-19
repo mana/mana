@@ -1,3 +1,7 @@
+2008-02-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_22-1.tmx: Map fixes at snake dungeon by QOAL.
+
 2008-02-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/hairstyle7-female.xml, src/sound.cpp,
