@@ -3,6 +3,7 @@
 	* data/items.xml: Gave the hair sprites and the player sprite the
 	item types "hairstyle" and "racesprite". added some missing item
 	types.
+	* data/monsters.xml: Added attack properties to scorpions.
 
 2008-02-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
