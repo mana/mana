@@ -62,7 +62,8 @@ SpriteDef *SpriteDef::load(std::string const &animationFile, int variant)
     char *data = (char*) resman->loadFile
         (animationFile.substr(0, pos).c_str(), size);
 
-    if (!data) return NULL;
+    if (!data && animationFile != "graphics/sprites/error.xml")
+        return load("graphics/sprites/error.xml", 0);
 
     xmlDocPtr doc = xmlParseMemory(data, size);
     free(data);

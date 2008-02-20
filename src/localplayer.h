@@ -24,8 +24,6 @@
 #ifndef _TMW_LOCALPLAYER_H
 #define _TMW_LOCALPLAYER_H
 
-#include <memory>
-
 #include "player.h"
 
 // TODO move into some sane place...
@@ -329,7 +327,7 @@ class LocalPlayer : public Player
 
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
-        std::auto_ptr<Inventory> mInventory;
+        Inventory *mInventory;
         std::auto_ptr<Equipment> mEquipment;
 
     protected:

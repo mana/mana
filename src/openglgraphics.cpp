@@ -89,7 +89,7 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
             (gotDoubleBuffer ? "with" : "without"));
 
     char const *glExtensions = (char const *)glGetString(GL_EXTENSIONS);
-    int texSize;
+    GLint texSize;
     bool rectTex = strstr(glExtensions, "GL_ARB_texture_rectangle");
     if (rectTex)
     {

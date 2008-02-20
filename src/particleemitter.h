@@ -48,6 +48,16 @@ class ParticleEmitter
         ParticleEmitter(xmlNodePtr emitterNode,  Particle *target, Map *map);
 
         /**
+         * Copy Constructor (necessary for reference counting of particle images)
+         */
+        ParticleEmitter(const ParticleEmitter &o);
+
+        /**
+         * Assignment operator that calls the copy constructor
+         */
+        ParticleEmitter & operator=(const ParticleEmitter &o);
+
+        /**
          * Destructor.
          */
         ~ParticleEmitter();

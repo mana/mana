@@ -191,7 +191,7 @@ void initConfiguration(const Options &options)
     config.setValue("fpslimit", 0);
     config.setValue("updatehost", "http://updates.themanaworld.org");
     config.setValue("customcursor", 1);
-    config.setValue("ChatLogLength", 64);
+    config.setValue("ChatLogLength", 128);
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
@@ -1055,7 +1055,6 @@ int main(int argc, char *argv[])
 #ifdef PACKAGE_VERSION
         delete versionLabel;
 #endif
-
     }
     catch (...)
     {

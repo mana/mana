@@ -141,6 +141,50 @@
 	Len.
 	* data/maps/new_3-1.tmx: Some mapping errors fixed by Zipon.
 
+2007-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/help/header.txt: Fixed year. :)
+
+2007-12-24  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp: Fixed dialog for disconnections, so it says Ok, not
+	yes/no.
+	* src/openglgraphics.cpp: Changed type so it would compile on Leopard.
+
+2007-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/particleemitter.cpp: Fix compile warning.
+
+2007-12-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particleemitter.cpp, src/particleemitter.h: Particle images are
+	now reference-counted properly.
+	* src/resources/spritedef.cpp: Error placeholder is now used when
+	attempting to load a sprite definition file that doesn't exist.
+	* src/monster.cpp, src/player.cpp: Avoided attempts to load
+	"data/graphics/" when a monster or equipment piece has no sprite.
+	* data/graphics/particles/cookingfire.particle.xml: Removed some
+	particle properties that did nothing because they were misspelled.
+
+2007-12-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/chathandler.cpp, NEWS: Make sure chat messages are also
+	trimmed for the local player.
+
+2007-12-21  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/gui/updatewindow.cpp: Attempted to fix client
+	freeze when unable to connect to update host, and added exit dialog
+	when client loses connection.
+
+2007-12-21  Bjørn Lindeijer <bjorn@lindeijer.nl>
+
+	* src/gui/shoplistbox.cpp: Fixed shop list box not to scroll up when
+	the selection is removed.
+	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp:
+	Added logging of error on PHYSFS_addToSearchPath.
+	* src/main.cpp: Increased default chat log length.
+
 2007-12-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_18-1.tmx: Fixed a map bug (monster trap) on
@@ -157,8 +201,6 @@
 
 2007-12-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/main.cpp: Remember to delete the progressbar and label also when
-	the game was not started.
 	* tools/upalyzer/analyse.php: Added initial version of the update
 	analysis tool upalyzer.
 	* tools/upalyzer/analyse.php: Optimized with single loop approach and

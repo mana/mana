@@ -26,6 +26,7 @@
 #include <algorithm>
 
 #include "item.h"
+#include "log.h"
 
 struct SlotUsed : public std::unary_function<Item*, bool>
 {
@@ -64,6 +65,11 @@ void Inventory::addItem(int id, int quantity)
 
 void Inventory::setItem(int index, int id, int quantity)
 {
+    if (index < 0 || index >= INVENTORY_SIZE) {
+        logger->log("Warning: invalid inventory index: %d", index);
+        return;
+    }
+
     if (!mItems[index] && id > 0) {
         mItems[index] = new Item(id, quantity);
         mItems[index]->setInvIndex(index);

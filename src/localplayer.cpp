@@ -69,6 +69,7 @@ LocalPlayer::LocalPlayer():
 
 LocalPlayer::~LocalPlayer()
 {
+    delete mInventory;
 }
 
 void LocalPlayer::logic()

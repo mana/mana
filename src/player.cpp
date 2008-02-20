@@ -128,9 +128,16 @@ void Player::setSprite(int slot, int id, const std::string &color)
     }
     else
     {
-        AnimatedSprite *equipmentSprite = AnimatedSprite::load(
-            "graphics/sprites/" + ItemDB::get(id).getSprite(mGender) +
-            "|" + color);
+        std::string filename = ItemDB::get(id).getSprite(mGender);
+        AnimatedSprite *equipmentSprite = NULL;
+
+        if (!filename.empty())
+        {
+            if (!color.empty())
+                filename += "|" + color;
+            equipmentSprite =
+                AnimatedSprite::load("graphics/sprites/" + filename);
+        }
 
         if (equipmentSprite)
             equipmentSprite->setDirection(getSpriteDirection());
@@ -139,9 +146,7 @@ void Player::setSprite(int slot, int id, const std::string &color)
         mSprites[slot] = equipmentSprite;
 
         if (slot == WEAPON_SPRITE)
-        {
             mEquippedWeapon = &ItemDB::get(id);
-        }
 
         setAction(mAction);
     }

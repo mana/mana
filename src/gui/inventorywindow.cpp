@@ -65,7 +65,7 @@ InventoryWindow::InventoryWindow():
     mDropButton = new Button(_("Drop"), "drop", this);
     mSplitButton = new Button(_("Split"), "split", this);
 
-    mItems = new ItemContainer(player_node->mInventory.get(), 10, 5);
+    mItems = new ItemContainer(player_node->mInventory, 10, 5);
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);

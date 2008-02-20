@@ -60,6 +60,7 @@
 #include "gui/ministatus.h"
 #include "gui/npclistdialog.h"
 #include "gui/npc_text.h"
+#include "gui/ok_dialog.h"
 #include "gui/sdlinput.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
@@ -96,6 +97,7 @@ Joystick *joystick = NULL;
 extern Window *weightNotice;
 extern Window *deathNotice;
 QuitDialog *quitDialog = NULL;
+OkDialog *disconnectedDialog = NULL;
 
 ChatWindow *chatWindow;
 MenuWindow *menuWindow;
@@ -126,6 +128,21 @@ ChannelManager *channelManager = NULL;
 Particle *particleEngine = NULL;
 
 const int MAX_TIME = 10000;
+
+/**
+ * Listener used for exitting handling.
+ */
+namespace {
+    struct ExitListener : public gcn::ActionListener
+    {
+        void action(const gcn::ActionEvent &event)
+        {
+            if (event.getId() == "yes" || event.getId() == "ok") {
+                done = true;
+            }
+        }
+    } exitListener;
+}
 
 /**
  * Advances game logic counter.
@@ -407,6 +424,20 @@ void Game::logic()
 
         // Handle network stuff
         Net::flush();
+
+        // TODO: Fix notification when the connection is lost
+        if (false /*!mNetwork->isConnected() */)
+        {
+            if (!disconnectedDialog)
+            {
+                disconnectedDialog = new
+                    OkDialog("Network Error",
+                    "The connection to the server was lost, the program will now quit");
+                disconnectedDialog->addActionListener(&exitListener);
+            }
+
+            disconnectedDialog->requestMoveToTop();
+        }
     }
 }
 

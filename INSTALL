@@ -20,13 +20,14 @@ and some libraries. The required libraries are:
 * SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/
 * SDL_image         http://www.libsdl.org/projects/SDL_image/
 * ENet 1.2          http://enet.bespin.org/
-* Guichan 0.7.0     http://guichan.sourceforge.net/
+* Guichan 0.7.x     http://guichan.sourceforge.net/
 * libxml2           http://www.xmlsoft.org/
 * physfs 1.0.x      http://icculus.org/physfs/
 * zlib 1.2.x        http://www.gzip.org/zlib/
 * libcurl           http://curl.haxx.se/libcurl/
 
-If you checked TMW out from CVS you will also need these tools to compile:
+If you checked TMW out from Subversion you will also need these tools to
+compile:
 
 * GNU automake 1.9  http://www.gnu.org/software/automake/
 * GNU autoconf      http://www.gnu.org/software/autoconf/
@@ -50,11 +51,10 @@ It should have installed The Mana World on your system now, and you can run it
 with "tmw". By default all files are installed to /usr/local, you can pass a
 different prefix to configure as usual.
 
-  NOTE: For those people with modern video cards and fast OpenGL performance,
-  we have been working on OpenGL support. To enable this perform step 3 as
-  follows:
+  NOTE: It is possible to compile TMW without support for OpenGL rendering.
+  To do this perform step 3 as follows:
 
-    "./configure --with-opengl"
+    ./configure --without-opengl
 
   Rebuild the executable from scratch using "make clean" and then "make".
 
