@@ -109,9 +109,7 @@ Gui::Gui(Graphics *graphics):
     }
     catch (gcn::Exception e)
     {
-        logger->log("Unable to load dejavusans.ttf: %s",
-            e.getMessage().c_str());
-        throw;
+        logger->error(std::string("Unable to load dejavusans.ttf: ") + e.getMessage());
     }
 
     // Set speech font
@@ -122,9 +120,7 @@ Gui::Gui(Graphics *graphics):
     }
     catch (gcn::Exception e)
     {
-        logger->log("Unable to load dejavusans.ttf: %s",
-            e.getMessage().c_str());
-        throw;
+        logger->error(std::string("Unable to load dejavusans.ttf: ") + e.getMessage());
     }
 
     gcn::Widget::setGlobalFont(mGuiFont);
