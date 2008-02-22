@@ -29,6 +29,11 @@
 class Graphics;
 class Map;
 
+enum Gender {
+    GENDER_MALE = 0,
+    GENDER_FEMALE = 1
+};
+
 /**
  * A player being. Players have their name drawn beneath them. This class also
  * implements player-specific loading of base sprite, hair sprite and equipment

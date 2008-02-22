@@ -3,6 +3,8 @@
 	* src/gui/skill.cpp, src/localplayer.cpp, src/localplayer.h:
 	Implemented skill name display in skill dialog and xp messages (based
 	on a patch by rodge)
+	* src/gui/char_select.cpp, src/gui/char_select.h, src/player.h:	Merged
+	creation of female characters from Legend of Mazzeroth.
 
 2008-02-21  Philipp Sehmisch  <tmw@crushnet.org>
 

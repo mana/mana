@@ -28,6 +28,7 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "radiobutton.h"
 #include "confirm_dialog.h"
 #include "ok_dialog.h"
 #include "playerbox.h"
@@ -68,7 +69,7 @@ class CharDeleteConfirm : public ConfirmDialog
 };
 
 CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
-    ConfirmDialog(_("Confirm"),
+    ConfirmDialog(_("Confirm Character Delete"),
                   _("Are you sure you want to delete this character?"), m),
     master(m)
 {
@@ -95,11 +96,13 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     mDelCharButton = new Button(_("Delete"), "delete", this);
     mPreviousButton = new Button(_("Previous"), "previous", this);
     mNextButton = new Button(_("Next"), "next", this);
-    mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
+    mUnRegisterButton = new Button(_("Delete"), "unregister", this);
 
     mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
     mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
+
+    // Control that shows the Player
     mPlayerBox = new PlayerBox;
     mPlayerBox->setWidth(74);
 
@@ -241,11 +244,13 @@ bool CharSelectDialog::selectByName(const std::string &name)
     return false;
 }
 
+
 CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     Window(_("Create Character"), true, parent), mSlot(slot)
 {
     mPlayer = new Player(0, 0, NULL);
     mPlayer->setHairStyle(rand() % NR_HAIR_STYLES, rand() % NR_HAIR_COLORS);
+    mPlayer->setGender(GENDER_MALE);
 
     mNameField = new TextField("");
     mNameLabel = new gcn::Label(_("Name:"));
@@ -257,7 +262,12 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mHairStyleLabel = new gcn::Label(_("Hair Style:"));
     mCreateButton = new Button(_("Create"), "create", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
+
+    mMale = new RadioButton(_("Male"), "gender");
+    mFemale = new RadioButton(_("Female"), "gender");
+
     mPlayerBox = new PlayerBox(mPlayer);
+
     mAttributeLabel[0] = new gcn::Label(_("Strength:"));
     mAttributeLabel[1] = new gcn::Label(_("Agility:"));
     mAttributeLabel[2] = new gcn::Label(_("Dexterity:"));
@@ -309,6 +319,18 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
 
     mNameField->addActionListener(this);
 
+    mMale->setPosition( 30, 120 );
+    mFemale->setPosition( 100, 120 );
+
+    // Default to a Male character
+    mMale->setMarked(true);
+
+    mMale->setActionEventId("gender");
+    mFemale->setActionEventId("gender");
+
+    mMale->addActionListener(this);
+    mFemale->addActionListener(this);
+
     add(mPlayerBox);
     add(mNameField);
     add(mNameLabel);
@@ -327,6 +349,9 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     add(mAttributesLeft);
     add(mCreateButton);
     add(mCancelButton);
+
+    add(mMale);
+    add(mFemale);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -348,11 +373,20 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
         if (getName().length() >= 4) {
             // Attempt to create the character
             mCreateButton->setEnabled(false);
+
+            unsigned int genderSelected;
+            if( mMale->isMarked() ){
+                genderSelected = GENDER_MALE;
+            } else {
+                genderSelected = GENDER_FEMALE;
+            }
+
+
             Net::AccountServer::Account::createCharacter(
                     getName(),
                     mPlayer->getHairStyle(),
                     mPlayer->getHairColor(),
-                    0,   // gender
+                    genderSelected,   // gender
                     (int) mAttributeSlider[0]->getValue(),  // STR
                     (int) mAttributeSlider[1]->getValue(),  // AGI
                     (int) mAttributeSlider[2]->getValue(),  // DEX
@@ -362,8 +396,7 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
             );
         }
         else {
-            new OkDialog(_("Error"),
-                    _("Your name needs to be at least 4 characters."), this);
+            new OkDialog(_("Error"),_("Your name needs to be at least 4 characters."), this);
         }
     }
     else if (event.getId() == "cancel") {
@@ -383,6 +416,13 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "statslider") {
         UpdateSliders();
+    }
+    else if (event.getId() == "gender"){
+        if( mMale->isMarked() ) {
+            mPlayer->setGender(GENDER_MALE);
+        } else {
+            mPlayer->setGender(GENDER_FEMALE);
+        }
     }
 }
 

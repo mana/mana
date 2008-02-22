@@ -140,6 +140,9 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Button *mPrevHairStyleButton;
         gcn::Label *mHairStyleLabel;
 
+        gcn::RadioButton *mMale;
+        gcn::RadioButton *mFemale;
+
         gcn::Slider *mAttributeSlider[6];
         gcn::Label *mAttributeLabel[6];
         gcn::Label *mAttributeValue[6];
