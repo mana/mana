@@ -1,3 +1,8 @@
+2008-02-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/monsters.xml: Added a 2nd attack to the scorpion to test new
+	monster AI.
+
 2008-02-22  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/skill.cpp, src/localplayer.cpp, src/localplayer.h:
