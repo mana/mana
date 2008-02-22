@@ -1,15 +1,12 @@
 2008-02-21  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/gui/gui.cpp: Showing a visible error message to the user when
-	the font file can't be found.
-
-2008-02-21  Philipp Sehmisch  <tmw@crushnet.org>
-
 	* data/items.xml: Gave the hair sprites and the player sprite the
 	item types "hairstyle" and "racesprite". added some missing item
 	types.
 	* data/monsters.xml: Added attack properties to scorpions.
-
+	* src/gui/gui.cpp: Showing a visible error message to the user when
+	the font file can't be found.
+	
 2008-02-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* INSTALL: Added notes about installing gettext and cvs and updated
