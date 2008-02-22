@@ -1,3 +1,9 @@
+2008-02-22  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/skill.cpp, src/localplayer.cpp, src/localplayer.h:
+	Implemented skill name display in skill dialog and xp messages (based
+	on a patch by rodge)
+
 2008-02-21  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/items.xml: Gave the hair sprites and the player sprite the

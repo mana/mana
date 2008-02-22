@@ -380,12 +380,42 @@ void LocalPlayer::lowerAttribute(size_t attr)
     Net::GameServer::Player::lowerAttribute(attr + CHAR_ATTR_BEGIN);
 }
 
+const std::string& LocalPlayer::getSkillName(int skill)
+{
+    static const std::string skills[CHAR_SKILL_NB + 1] =
+    {   "Unarmed",  // CHAR_SKILL_WEAPON_NONE
+        "Knife",    // CHAR_SKILL_WEAPON_KNIFE
+        "Sword",    // CHAR_SKILL_WEAPON_SWORD
+        "Polearm",  // CHAR_SKILL_WEAPON_POLEARM
+        "Staff",    // CHAR_SKILL_WEAPON_STAFF
+        "Whip",     // CHAR_SKILL_WEAPON_WHIP
+        "Bow",      // CHAR_SKILL_WEAPON_BOW
+        "Shooting", // CHAR_SKILL_WEAPON_SHOOTING
+        "Mace",     // CHAR_SKILL_WEAPON_MACE
+        "Axe",      // CHAR_SKILL_WEAPON_AXE
+        "Thrown",   // CHAR_SKILL_WEAPON_THROWN
+        "Magic",    // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
+        "Craft",    // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
+        "Unknown Skill"
+    };
+
+    if ((skill < 0) || (skill > CHAR_SKILL_NB))
+    {
+        return skills[CHAR_SKILL_NB];
+    }
+    else
+    {
+        return skills[skill];
+    }
+
+}
+
 void LocalPlayer::setExperience(int skill, int current, int next)
 {
     int diff = current - mExpCurrent.at(skill);
     if (mMap && mExpCurrent.at(skill) != -1 && diff > 0)
     {
-        const std::string text = toString(diff) + " xp skill" + toString(skill);
+        const std::string text = toString(diff) + " " + getSkillName(skill) + " xp";
         mExpMessages.push_back(text);
     }
 

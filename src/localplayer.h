@@ -323,6 +323,8 @@ class LocalPlayer : public Player
 
         void setExperience(int skill, int current, int next);
 
+        static const std::string& getSkillName(int skill);
+
         std::pair<int, int> getExperience(int skill);
 
         float mLastAttackTime; /**< Used to synchronize the charge dialog */

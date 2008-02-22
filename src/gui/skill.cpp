@@ -102,7 +102,8 @@ void SkillDialog::update()
         std::pair<int, int> exp = player_node->getExperience(a);
         std::string sExp (toString(exp.first) + " / " + toString(exp.second));
 
-        mSkillNameLabels.at(a)->setCaption("Skill" + toString(a));
+        
+        mSkillNameLabels.at(a)->setCaption(LocalPlayer::getSkillName(a));
         mSkillNameLabels.at(a)->adjustSize();
         mSkillLevelLabels.at(a)->setCaption(skillLevel);
         mSkillLevelLabels.at(a)->adjustSize();
