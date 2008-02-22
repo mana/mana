@@ -70,7 +70,7 @@ Being::Being(int id, int job, Map *map):
     mMap(NULL),
     mEquippedWeapon(NULL),
     mHairStyle(1), mHairColor(0),
-    mGender(2),
+    mGender(GENDER_UNSPECIFIED),
     mSpeechTime(0),
     mPx(0), mPy(0),
     mStunMode(0),
@@ -669,9 +669,10 @@ static void initializeHair()
     if (hairInitialized)
         return;
 
-    // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
+    // Hairstyles are encoded as negative numbers. Count how far negative we
+    // can go.
     int hairstylesCtr = -1;
-    while (ItemDB::get(hairstylesCtr).getSprite(0) != "error.xml")
+    while (ItemDB::get(hairstylesCtr).getSprite(GENDER_MALE) != "error.xml")
         --hairstylesCtr;
 
     hairStylesNr = -hairstylesCtr; // done.

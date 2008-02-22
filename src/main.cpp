@@ -34,6 +34,9 @@
 
 #include <libxml/parser.h>
 
+#ifdef WIN32
+#include <SDL_syswm.h>
+#endif
 #ifndef WIN32
 #include <cerrno>
 #include <sys/stat.h>
@@ -82,10 +85,6 @@
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
-
-#ifdef WIN32
-#include <SDL_syswm.h>
-#endif
 
 namespace {
     Window *setupWindow = 0;
@@ -874,7 +873,8 @@ int main(int argc, char *argv[])
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
-                                                         1 - loginData.sex);
+                            (loginData.sex == 0) ?
+                            GENDER_FEMALE : GENDER_MALE);
 
                     if (((CharSelectDialog*) currentDialog)->
                             selectByName(options.playername))

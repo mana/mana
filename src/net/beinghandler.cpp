@@ -141,7 +141,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // manner
             dstBeing->setStatusEffectBlock(32, msg->readInt16());  // opt3
             msg->readInt8();   // karma
-            dstBeing->setGender(1 - msg->readInt8());   // gender
+            dstBeing->setGender(
+                    (msg->readInt8() == 0) ? GENDER_FEMALE : GENDER_MALE);
 
             // Set these after the gender, as the sprites may be gender-specific
             dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
@@ -420,7 +421,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // manner
             dstBeing->setStatusEffectBlock(32, msg->readInt16());  // opt3
             msg->readInt8();   // karma
-            dstBeing->setGender(1 - msg->readInt8());   // gender
+            dstBeing->setGender(
+                    (msg->readInt8() == 0) ? GENDER_FEMALE : GENDER_MALE);
 
             // Set these after the gender, as the sprites may be gender-specific
             dstBeing->setSprite(Being::WEAPON_SPRITE, weapon);

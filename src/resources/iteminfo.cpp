@@ -24,7 +24,7 @@
 #include "itemdb.h"
 
 const std::string&
-ItemInfo::getSprite(int gender) const
+ItemInfo::getSprite(Gender gender) const
 {
     if (mView)
     {
