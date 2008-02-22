@@ -5,6 +5,10 @@
 	on a patch by rodge)
 	* src/gui/char_select.cpp, src/gui/char_select.h, src/player.h:	Merged
 	creation of female characters from Legend of Mazzeroth.
+	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp,
+	src/player.cpp, src/player.h, src/resources/itemdb.cpp,
+	src/resources/iteminfo.cpp, src/resources/iteminfo.h: Handling gender
+	with an enum everywhere.
 
 2008-02-21  Philipp Sehmisch  <tmw@crushnet.org>
 

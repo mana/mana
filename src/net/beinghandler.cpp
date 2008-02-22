@@ -475,7 +475,7 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
             Player *p = static_cast< Player * >(being);
             int hs = msg.readInt8(), hc = msg.readInt8();
             p->setHairStyle(hs, hc);
-            p->setGender(msg.readInt8());
+            p->setGender(msg.readInt8() == GENDER_MALE ? GENDER_MALE : GENDER_FEMALE);
             handleLooks(p, msg);
         } break;
 

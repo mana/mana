@@ -31,7 +31,8 @@ class Map;
 
 enum Gender {
     GENDER_MALE = 0,
-    GENDER_FEMALE = 1
+    GENDER_FEMALE = 1,
+    GENDER_UNSPECIFIED = 2
 };
 
 /**
@@ -56,7 +57,7 @@ class Player : public Being
         /**
          * Sets the gender for this player.
          */
-        void setGender(int);
+        void setGender(Gender);
 
         /**
          * Gets the hair color for this player.
@@ -87,7 +88,7 @@ class Player : public Being
         setSprite(int slot, int id, const std::string &color = "");
 
     private:
-        Uint8 mGender;
+        Gender mGender;
         Uint8 mHairStyle;
         Uint8 mHairColor;
 };

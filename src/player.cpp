@@ -37,7 +37,7 @@
 
 Player::Player(int id, int job, Map *map):
     Being(id, job, map),
-    mGender(2),
+    mGender(GENDER_UNSPECIFIED),
     mHairStyle(0),
     mHairColor(0)
 {
@@ -60,15 +60,8 @@ Player::drawName(Graphics *graphics, int offsetX, int offsetY)
     graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
 }
 
-void Player::setGender(int gender)
+void Player::setGender(Gender gender)
 {
-    // Players can only be male or female
-    if (gender > 1)
-    {
-        logger->log("Warning: unsupported gender %i, assuming male.", gender);
-        gender = 0;
-    }
-
     if (gender != mGender)
     {
         mGender = gender;

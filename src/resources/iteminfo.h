@@ -30,6 +30,8 @@
 
 #include "spritedef.h"
 
+#include "../player.h"
+
 enum EquipmentSoundEvent
 {
     EQUIP_EVENT_STRIKE,
@@ -131,10 +133,10 @@ class ItemInfo
         void setView(int view)
         { mView = view; }
 
-        void setSprite(const std::string &animationFile, int gender)
+        void setSprite(const std::string &animationFile, Gender gender)
         { mAnimationFiles[gender] = animationFile; }
 
-        const std::string& getSprite(int gender) const;
+        const std::string& getSprite(Gender gender) const;
 
         void setWeaponType(int);
 
