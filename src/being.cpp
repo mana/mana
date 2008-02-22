@@ -73,7 +73,7 @@ Being::Being(int id, int job, Map *map):
     mParticleEffects(config.getValue("particleeffects", 1)),
     mEquippedWeapon(NULL),
     mHairStyle(1), mHairColor(0),
-    mGender(2),
+    mGender(GENDER_UNSPECIFIED),
     mSpeechTime(0),
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
@@ -95,7 +95,7 @@ Being::Being(int id, int job, Map *map):
 
         // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
         int hairstyles = 1;
-        while (ItemDB::get(-hairstyles).getSprite(0) != "error.xml")
+        while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
         {
             hairstyles++;
         }

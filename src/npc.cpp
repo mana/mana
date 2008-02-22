@@ -94,7 +94,7 @@ void NPC::setName(const std::string &name)
     Being::setName(displayName + " (NPC)");
 }
 
-void NPC::setGender(int gender)
+void NPC::setGender(Gender gender)
 {
     Being::setGender(gender);
 }

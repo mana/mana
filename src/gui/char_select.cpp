@@ -73,7 +73,7 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 
 CharSelectDialog::CharSelectDialog(Network *network,
                                    LockedArray<LocalPlayer*> *charInfo,
-                                   unsigned char gender):
+                                   Gender gender):
     Window("Select Character"), mNetwork(network),
     mCharInfo(charInfo), mGender(gender), mCharSelected(false)
 {
@@ -248,7 +248,7 @@ bool CharSelectDialog::selectByName(const std::string &name)
 }
 
 CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
-                                   unsigned char gender):
+                                   Gender gender):
     Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
 {
     mPlayer = new Player(0, 0, NULL);

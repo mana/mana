@@ -53,7 +53,7 @@ class Player : public Being
         getType() const;
 
         virtual void
-        setGender(int gender);
+        setGender(Gender gender);
 
         /**
          * Sets the hair style and color for this player.

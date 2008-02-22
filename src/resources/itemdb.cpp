@@ -53,8 +53,8 @@ void ItemDB::load()
     mUnknown = new ItemInfo();
     mUnknown->setName("Unknown item");
     mUnknown->setImageName("");
-    mUnknown->setSprite("error.xml", 0);
-    mUnknown->setSprite("error.xml", 1);
+    mUnknown->setSprite("error.xml", GENDER_MALE);
+    mUnknown->setSprite("error.xml", GENDER_FEMALE);
 
     XML::Document doc("items.xml");
     xmlNodePtr rootNode = doc.rootNode();
@@ -172,11 +172,11 @@ void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
 
     if (gender == "male" || gender == "unisex")
     {
-        itemInfo->setSprite(filename, 0);
+        itemInfo->setSprite(filename, GENDER_MALE);
     }
     if (gender == "female" || gender == "unisex")
     {
-        itemInfo->setSprite(filename, 1);
+        itemInfo->setSprite(filename, GENDER_FEMALE);
     }
 }
 

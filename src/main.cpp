@@ -937,8 +937,10 @@ int main(int argc, char *argv[])
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
-                                                         1 - loginData.sex);
+                                                        (loginData.sex == 0) ?
+                                                         GENDER_FEMALE : GENDER_MALE);
                     positionDialog(currentDialog, screenWidth, screenHeight);
+
                     if (((CharSelectDialog*) currentDialog)->
                             selectByName(options.playername))
                         options.chooseDefault = true;

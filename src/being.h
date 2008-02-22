@@ -70,6 +70,12 @@ struct PATH_NODE
 typedef std::list<PATH_NODE> Path;
 typedef Path::iterator PathIterator;
 
+enum Gender {
+    GENDER_MALE = 0,
+    GENDER_FEMALE = 1,
+    GENDER_UNSPECIFIED = 2
+};
+
 class Being : public Sprite
 {
     public:
@@ -222,12 +228,12 @@ class Being : public Sprite
         /**
          * Sets the gender of this being.
          */
-        virtual void setGender(int gender) { mGender = gender; }
+        virtual void setGender(Gender gender) { mGender = gender; }
 
         /**
          * Gets the gender of this being.
          */
-        int getGender() const { return mGender; }
+        Gender getGender() const { return mGender; }
 
         /**
          * Makes this being take the next step of his path.
@@ -419,7 +425,7 @@ class Being : public Sprite
         std::string mSpeech;
         Text *mText;
         Uint16 mHairStyle, mHairColor;
-        Uint8 mGender;
+        Gender mGender;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
         Uint16 mStunMode;		/**< Stun mode; zero if not stunned */

@@ -187,10 +187,11 @@ void CharServerHandler::handleMessage(MessageIn *msg)
     }
 }
 
-LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
+LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
-    tempPlayer->setGender(1 - mLoginData->sex);
+    tempPlayer->setGender(
+            (mLoginData->sex == 0) ? GENDER_FEMALE : GENDER_MALE);
 
     tempPlayer->mCharId = msg.readInt32();
     tempPlayer->setXp(msg.readInt32());

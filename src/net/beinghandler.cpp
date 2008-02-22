@@ -137,7 +137,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // manner
             msg->readInt16();  // karma
             msg->readInt8();   // unknown
-            dstBeing->setGender(1 - msg->readInt8());   // gender
+            dstBeing->setGender(
+                    (msg->readInt8() == 0) ? GENDER_FEMALE : GENDER_MALE);
 
             // Set these after the gender, as the sprites may be gender-specific
             dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
@@ -404,7 +405,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt32();  // emblem
             msg->readInt16();  // manner
             msg->readInt8();   // karma
-            dstBeing->setGender(1 - msg->readInt8());   // gender
+            dstBeing->setGender(
+                    (msg->readInt8() == 0) ? GENDER_FEMALE : GENDER_MALE);
 
             // Set these after the gender, as the sprites may be gender-specific
             dstBeing->setSprite(Being::WEAPON_SPRITE, weapon);
