@@ -2,6 +2,8 @@
 
 	* src/gui/skill.cpp, src/gui/skill.h: Optical enhancements based on
 	a patch by rodge.
+	* src/net/playerhandler.cpp: Fixed a bug which caused an incorrect
+	display of character correction points in some situations.
 
 2008-02-23  Philipp Sehmisch  <tmw@crushnet.org>
 

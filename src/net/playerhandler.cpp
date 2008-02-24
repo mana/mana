@@ -258,7 +258,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                     logger->log("Warning: Server denied reduction of attribute %d (reason unknown) ", attrNum);
                     int charaPoints = player_node->getCharacterPoints() - 1;
                     player_node->setCharacterPoints(charaPoints);
-                    int correctPoints = player_node->getCharacterPoints() + 1;
+                    int correctPoints = player_node->getCorrectionPoints() + 1;
                     player_node->setCorrectionPoints(correctPoints);
                     int attrValue = player_node->getAttributeBase(attrNum) + 1;
                     player_node->setAttributeBase(attrNum, attrValue);
