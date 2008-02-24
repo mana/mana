@@ -1,3 +1,8 @@
+2008-02-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/skill.cpp, src/gui/skill.h: Optical enhancements based on
+	a patch by rodge.
+
 2008-02-23  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/monsters.xml: Added a 2nd attack to the scorpion to test new

@@ -32,6 +32,7 @@
 #include "listbox.h"
 #include "scrollarea.h"
 #include "windowcontainer.h"
+#include "progressbar.h"
 
 #include "../localplayer.h"
 
@@ -43,23 +44,33 @@ SkillDialog::SkillDialog():
     Window("Skills")
 {
     setCloseButton(true);
-    setDefaultSize(windowContainer->getWidth() - 255, 25, 240, 240);
+    setDefaultSize(windowContainer->getWidth() - 255, 25, 300, 300);
+    setMinWidth(300);
+    setMinHeight(300);
 
     mSkillNameLabels.resize(CHAR_SKILL_NB);
     mSkillLevelLabels.resize(CHAR_SKILL_NB);
     mSkillExpLabels.resize(CHAR_SKILL_NB);
+    mSkillProgress.resize(CHAR_SKILL_NB);
 
     for (int a=0; a < CHAR_SKILL_NB; a++)
     {
         mSkillNameLabels.at(a) = new gcn::Label("");
-        mSkillNameLabels.at(a)->setPosition(1, a*10);
+        mSkillNameLabels.at(a)->setPosition(1, a*20);
         add(mSkillNameLabels.at(a));
-        mSkillLevelLabels.at(a) = new gcn::Label("");
-        mSkillLevelLabels.at(a)->setPosition(75, a*10);
-        add(mSkillLevelLabels.at(a));
+
+        mSkillProgress.at(a) = new ProgressBar(0.0f, 80, 15, 150, 150, 150);
+        mSkillProgress.at(a)->setPosition(75, a*20);
+        add(mSkillProgress.at(a));
+
         mSkillExpLabels.at(a) = new gcn::Label("");
-        mSkillExpLabels.at(a)->setPosition(150, a*10);
+        mSkillExpLabels.at(a)->setPosition(170, a*20);
         add(mSkillExpLabels.at(a));
+
+        mSkillLevelLabels.at(a) = new gcn::Label("");
+        mSkillLevelLabels.at(a)->setPosition(245, a*20);
+        add(mSkillLevelLabels.at(a));
+
     }
 
     update();
@@ -97,17 +108,31 @@ void SkillDialog::update()
     {
         int baseLevel = player_node->getAttributeBase(a + CHAR_SKILL_BEGIN);
         int effLevel = player_node->getAttributeEffective(a + CHAR_SKILL_BEGIN);
-        std::string skillLevel("Lvl:" + toString(effLevel) + " / " + toString(baseLevel));
+
+        std::string skillLevel("Lvl: " + toString(baseLevel));
+        if (effLevel < baseLevel)
+        {
+            skillLevel.append(" - " + toString(baseLevel - effLevel));
+        }
+        else if (effLevel > baseLevel)
+        {
+            skillLevel.append(" + " + toString(effLevel - baseLevel));
+        }
+        mSkillLevelLabels.at(a)->setCaption(skillLevel);
 
         std::pair<int, int> exp = player_node->getExperience(a);
         std::string sExp (toString(exp.first) + " / " + toString(exp.second));
 
-        
+
         mSkillNameLabels.at(a)->setCaption(LocalPlayer::getSkillName(a));
         mSkillNameLabels.at(a)->adjustSize();
-        mSkillLevelLabels.at(a)->setCaption(skillLevel);
         mSkillLevelLabels.at(a)->adjustSize();
         mSkillExpLabels.at(a)->setCaption(sExp);
         mSkillExpLabels.at(a)->adjustSize();
+
+        // more intense red as exp grows
+        int color = 150 - (150 * exp.first / exp.second);
+        mSkillProgress.at(a)->setColor(244, color, color);
+        mSkillProgress.at(a)->setProgress((float) exp.first / exp.second);
     }
 }

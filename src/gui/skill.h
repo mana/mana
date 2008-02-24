@@ -33,6 +33,7 @@
 
 #include "../guichanfwd.h"
 
+class ProgressBar;
 
 /**
  * The skill dialog.
@@ -64,6 +65,7 @@ class SkillDialog : public Window, public gcn::ActionListener
         std::vector<gcn::Label *> mSkillNameLabels;
         std::vector<gcn::Label *> mSkillLevelLabels;
         std::vector<gcn::Label *> mSkillExpLabels;
+        std::vector<ProgressBar *> mSkillProgress;
 };
 
 extern SkillDialog *skillDialog;
