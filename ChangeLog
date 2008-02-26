@@ -1,3 +1,8 @@
+2008-02-26  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* src/gui/minimap.cpp: Keep minimap status. Based on a patch by Knivey.
+
+
 2008-02-26  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/maps/new_14-1.tmx: Fixed some monster traps on
