@@ -1,7 +1,8 @@
 2008-02-26  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 
 	* src/gui/minimap.cpp: Keep minimap status. Based on a patch by Knivey.
-
+	* data/graphics/tiles/tulimshar1.png, data/maps/new_3-1.tmx: Added
+	Modanung's mud tileset and applyed to some houses in Tulimshar.
 
 2008-02-26  Philipp Sehmisch  <tmw@crushnet.org>
 
