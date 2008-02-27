@@ -620,7 +620,7 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 
         };
         std::string message(deadMsg[rand()%10]);
-        message.append(" Press OK to respawn");
+        message.append(_(" Press OK to respawn"));
         OkDialog *dlg = new OkDialog(_("You died"), message);
         dlg->addActionListener(&(Net::GameServer::Player::respawnListener));
     }
