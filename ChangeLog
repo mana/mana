@@ -1,12 +1,15 @@
+2008-02-27  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp, src/net/gamehandler/player.cpp,
+	src/net/gamehandler/player.h, src/net/protocol.h: Implemented player
+	respawn.
+
 2008-02-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* po/da.po, po/pt.po, po/ru.po, po/sv.po, po/tmw-da.po,
 	po/tmw-pt.po, po/tmw-ru.po, po/tmw-sv.po, tmw.cbp: Fixed translation
 	file names.
 	* po/it.po: Some fixes by Shaili.
-	* src/net/beinghandler.cpp, src/net/gamehandler/player.cpp,
-	src/net/gamehandler/player.h, src/net/protocol.h: Implemented player
-	respawn.
 
 2008-02-24  Philipp Sehmisch  <tmw@crushnet.org>
 
