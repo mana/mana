@@ -1,3 +1,10 @@
+2008-02-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* po/da.po, po/pt.po, po/ru.po, po/sv.po, po/tmw-da.po,
+	po/tmw-pt.po, po/tmw-ru.po, po/tmw-sv.po, tmw.cbp: Fixed translation
+	file names.
+	* po/it.po: Some fixes by Shaili.
+
 2008-02-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/skill.cpp, src/gui/skill.h: Optical enhancements based on

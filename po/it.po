@@ -99,7 +99,7 @@ msgstr "Ok"
 #: src/gui/setup.cpp:55
 #: src/gui/trade.cpp:62
 msgid "Cancel"
-msgstr "Cancella"
+msgstr "Annulla"
 
 #: src/gui/char_select.cpp:94
 msgid "New"
@@ -144,7 +144,7 @@ msgstr "Livello: %d"
 #: src/gui/char_select.cpp:202
 #, c-format
 msgid "Money: %d"
-msgstr "Monete: %d"
+msgstr "Denaro: %d"
 
 #: src/gui/char_select.cpp:245
 msgid "Create Character"
@@ -162,11 +162,11 @@ msgstr "Colore Capelli"
 
 #: src/gui/char_select.cpp:258
 msgid "Hair Style:"
-msgstr "Stile Capelli:"
+msgstr "Taglio Capelli:"
 
 #: src/gui/char_select.cpp:259
 msgid "Create"
-msgstr "Create"
+msgstr "Crea"
 
 #: src/gui/char_select.cpp:262
 msgid "Strength:"
@@ -200,7 +200,7 @@ msgstr "Carisma:"
 #: src/gui/char_select.cpp:424
 #, c-format
 msgid "Please distribute %d points"
-msgstr "Prego distribuisci %d points"
+msgstr "Prego distribuisci %d punti"
 
 #: src/gui/char_select.cpp:368
 #: src/gui/register.cpp:220
@@ -293,7 +293,7 @@ msgstr "Password:"
 
 #: src/gui/login.cpp:50
 msgid "Keep"
-msgstr "Mantieni"
+msgstr "Ricorda"
 
 #: src/gui/login.cpp:53
 #: src/gui/register.cpp:63
@@ -325,7 +325,7 @@ msgstr "Mini mappa"
 #: src/gui/npclistdialog.cpp:37
 #: src/gui/npc_text.cpp:37
 msgid "NPC"
-msgstr "NPC"
+msgstr "PNG"
 
 #: src/gui/popupmenu.cpp:79
 #, c-format
@@ -505,7 +505,7 @@ msgstr "Limita FPS:"
 
 #: src/gui/setup_video.cpp:133
 msgid "Gui opacity"
-msgstr "Opacità IU"
+msgstr "Opacità Interfaccia Grafica"
 
 #: src/gui/setup_video.cpp:186
 msgid "Scroll radius"
@@ -548,7 +548,7 @@ msgstr "Modifica OpenGL"
 
 #: src/gui/setup_video.cpp:281
 msgid "Applying change to OpenGL requires restart."
-msgstr "Applicare le modifiche ad OpenGL richiede il riavvio."
+msgstr "Riavvia per rendere effettive le modifche OpenGL."
 
 #: src/gui/trade.cpp:61
 msgid "Add"
