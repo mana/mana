@@ -37,6 +37,12 @@
 #include "../particle.h"
 #include "../sound.h"
 
+#include "../gui/ok_dialog.h"
+
+#include "../utils/gettext.h"
+
+#include "gameserver/player.h"
+
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
 BeingHandler::BeingHandler()
@@ -592,9 +598,32 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
 void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 {
     Being* being = beingManager->findBeing(msg.readInt16());
+    Being::Action action = (Being::Action) msg.readInt8();
     if (!being) return;
 
-    being->setAction((Being::Action) msg.readInt8());
+    being->setAction(action);
+
+    if (action == Being::DEAD && being==player_node)
+    {
+        static char const *const deadMsg[] =
+        {
+            _("You are dead."),
+            _("We regret to inform you that your character was killed in battle."),
+            _("You are not that alive anymore."),
+            _("The cold hands of the grim reaper are grabbing for your soul."),
+            _("Game Over!"),
+            _("No, kids. Your character did not really die. It... err... went to a better place."),
+            _("Your plan of breaking your enemies weapon by bashing it with your throat failed."),
+            _("I guess this did not run too well."),
+            _("Do you want your possessions identified?"), // Nethack reference
+            _("Sadly, no trace of you was ever found..."), // Secret of Mana reference
+
+        };
+        std::string message(deadMsg[rand()%10]);
+        message.append(" Press OK to respawn");
+        OkDialog *dlg = new OkDialog(_("You died"), message);
+        dlg->addActionListener(&(Net::GameServer::Player::respawnListener));
+    }
 }
 
 void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)

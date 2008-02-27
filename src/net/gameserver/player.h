@@ -26,7 +26,15 @@
 
 #include "../../being.h"
 
+#include <guichan/actionlistener.hpp>
+
 #include <iosfwd>
+
+
+struct RespawnRequestListener : public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent &event);
+};
 
 namespace Net
 {
@@ -53,6 +61,8 @@ namespace Net
             void tradeWithNPC(int item, int amount);
             void raiseAttribute(int attribute);
             void lowerAttribute(int attribute);
+            void respawn();
+            static RespawnRequestListener respawnListener;
         }
     }
 }

@@ -29,6 +29,11 @@
 #include "../messageout.h"
 #include "../protocol.h"
 
+void RespawnRequestListener::action(const gcn::ActionEvent &event)
+{
+    Net::GameServer::Player::respawn();
+}
+
 void Net::GameServer::Player::say(const std::string &text)
 {
     MessageOut msg(PGMSG_SAY);
@@ -166,5 +171,11 @@ void Net::GameServer::Player::lowerAttribute(int attribute)
 {
     MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
     msg.writeInt8(attribute);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::respawn()
+{
+    MessageOut msg(PGMSG_RESPAWN);
     Net::GameServer::connection->send(msg);
 }
