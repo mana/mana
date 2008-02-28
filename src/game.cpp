@@ -509,6 +509,10 @@ void Game::handleInput()
                     {
                         break;
                     }
+		    
+                    // Don not focus chat input when quit dialog is active
+		    if(quitDialog != NULL && quitDialog->isVisible())
+			break;
 
                     // Close the Browser if opened
                     if (helpWindow->isVisible())
