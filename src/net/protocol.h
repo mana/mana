@@ -131,6 +131,21 @@ enum {
     GPMSG_USE_RESPONSE             = 0x0301, // B error
     GPMSG_BEINGS_DAMAGE            = 0x0310, // { W being id, W amount }*
 
+    // Guild
+    PCMSG_GUILD_CREATE                  = 0x0350, // S name
+    CPMSG_GUILD_CREATE_RESPONSE         = 0x0351, // B error, W id, S name
+    PCMSG_GUILD_INVITE                  = 0x0352, // W id, S name
+    CPMSG_GUILD_INVITE_RESPONSE         = 0x0353, // B error
+    PCMSG_GUILD_ACCEPT                  = 0x0354, // W id
+    CPMSG_GUILD_ACCEPT_RESPONSE         = 0x0355, // B error, W id, S name, W leader
+    PCMSG_GUILD_GET_MEMBERS             = 0x0356, // W id
+    CPMSG_GUILD_GET_MEMBERS_RESPONSE    = 0x0357, // S names
+    PCMSG_GUILD_QUIT                    = 0x0360, // W id
+    CPMSG_GUILD_QUIT_RESPONSE           = 0x0361, // B error
+    
+    CPMSG_GUILD_INVITED                 = 0x0370, // S name, S name
+    CPMSG_GUILD_REJOIN                  = 0x0371, // S name, W id, W rights
+    
     // Chat
     CPMSG_ERROR                    = 0x0401, // B error
     CPMSG_ANNOUNCEMENT             = 0x0402, // S text
@@ -140,17 +155,22 @@ enum {
     PCMSG_ANNOUNCE                 = 0x0411, // S text
     PCMSG_PRIVMSG                  = 0x0412, // S user, S text
     // -- Channeling
-    PCMSG_REGISTER_CHANNEL            = 0x0413, // B pub/priv, S name, S announcement, S password
-    CPMSG_REGISTER_CHANNEL_RESPONSE   = 0x0414, // B error, W channel, S channel
-    PCMSG_UNREGISTER_CHANNEL          = 0x0415, // W channel
-    CPMSG_UNREGISTER_CHANNEL_RESPONSE = 0x0416, // B error
-    CPMSG_CHANNEL_EVENT               = 0x0418, // W channel, B event, S user
-    PCMSG_ENTER_CHANNEL               = 0x0419, // W channel, S password
-    CPMSG_ENTER_CHANNEL_RESPONSE      = 0x0420, // B error, W channel, S channel
-    PCMSG_QUIT_CHANNEL                = 0x0421, // W channel
-    CPMSG_QUIT_CHANNEL_RESPONSE       = 0x0422, // B error
-    PCMSG_LIST_CHANNELS               = 0x0423, // -
-    CPMSG_LIST_CHANNELS_RESPONSE      = 0x0424, // W number of channels, S channels
+    PCMSG_REGISTER_CHANNEL            = 0x0420, // B pub/priv, S name, S announcement, S password
+    CPMSG_REGISTER_CHANNEL_RESPONSE   = 0x0421, // B error, W channel, S channel
+    PCMSG_UNREGISTER_CHANNEL          = 0x0422, // W channel
+    CPMSG_UNREGISTER_CHANNEL_RESPONSE = 0x0423, // B error
+    CPMSG_CHANNEL_EVENT               = 0x0430, // W channel, B event, S user
+    PCMSG_ENTER_CHANNEL               = 0x0440, // W channel, S password
+    CPMSG_ENTER_CHANNEL_RESPONSE      = 0x0441, // B error, W channel, S channel
+    CPMSG_JOINED_CHANNEL              = 0x0442, // S channel, W channel id
+    PCMSG_QUIT_CHANNEL                = 0x0443, // W channel
+    CPMSG_QUIT_CHANNEL_RESPONSE       = 0x0444, // B error
+    PCMSG_LIST_CHANNELS               = 0x0445, // -
+    CPMSG_LIST_CHANNELS_RESPONSE      = 0x0446, // W number of channels, S channels
+    CPMSG_USERJOINED                  = 0x0450, // W channel, S name
+    CPMSG_USERLEFT                    = 0x0451, // W channel, S name
+    PCMSG_LIST_CHANNELUSERS           = 0x0460, // S channel
+    CPMSG_LIST_CHANNELUSERS_RESPONSE  = 0x0461, // S users
 
     XXMSG_INVALID = 0x7FFF
 };

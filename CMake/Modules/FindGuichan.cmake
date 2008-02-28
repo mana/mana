@@ -17,7 +17,6 @@ IF (Guichan_INCLUDE_DIR AND Guichan_LIBRARY)
     SET(Guichan_QUIET TRUE)
 ENDIF (Guichan_INCLUDE_DIR AND Guichan_LIBRARY)
 
-
 FIND_PATH(Guichan_INCLUDE_DIR
     NAMES guichan.hpp
     PATHS /usr/include /usr/local/include
@@ -53,15 +52,25 @@ FOREACH (COMPONENT ${Guichan_FIND_COMPONENTS})
 
     IF (COMPONENT STREQUAL "SDL")
         SET(COMPONENT_FOUND TRUE)
-        SET(Guichan_HEADER "guichan/sdl.hpp")
-        SET(Guichan_LIBRARY "guichan_sdl")
+	IF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		SET(Guichan_HEADER "sdl.hpp")
+		SET(Guichan_LIBRARY_${COMPONENT} TRUE)
+	ELSE (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		SET(Guichan_HEADER "guichan/sdl.hpp")
+        	SET(Guichan_LIBRARY "guichan_sdl")
+	ENDIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     ENDIF (COMPONENT STREQUAL "SDL")
 
     IF (COMPONENT STREQUAL "OpenGL")
         SET(COMPONENT_FOUND TRUE)
-        SET(Guichan_HEADER "guichan/opengl.hpp")
-        SET(Guichan_LIBRARY "guichan_opengl")
-    ENDIF (COMPONENT STREQUAL "OpenGL")
+	IF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		SET(Guichan_HEADER "opengl.hpp")
+		SET(Guichan_LIBRARY_${COMPONENT} TRUE)
+	ELSE (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		SET(Guichan_HEADER "guichan/opengl.hpp")
+        	SET(Guichan_LIBRARY "guichan_opengl")
+	ENDIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+   ENDIF (COMPONENT STREQUAL "OpenGL")
 
     IF (NOT COMPONENT_FOUND)
         MESSAGE(FATAL_ERROR "Invalid Guichan component: ${COMPONENT}")

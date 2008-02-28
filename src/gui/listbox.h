@@ -42,6 +42,7 @@ class ListBox : public gcn::ListBox
          * Constructor.
          */
         ListBox(gcn::ListModel *listModel);
+        ListBox();
 
         /**
          * Draws the list box.

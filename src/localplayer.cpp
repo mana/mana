@@ -115,6 +115,68 @@ void LocalPlayer::nextStep()
     Player::nextStep();
 }
 
+void LocalPlayer::addGuild(short guildId, bool inviteRights)
+{
+    Guild *guild = new Guild(guildId, inviteRights);
+    mGuilds.push_back(guild);
+}
+
+void LocalPlayer::removeGuild(short guildId)
+{
+    std::vector<Guild*>::iterator itr;
+    for (itr = mGuilds.begin(); itr != mGuilds.end(); ++itr)
+    {
+        Guild *guild = (*itr);
+        if (guild->getId() == guildId)
+        {
+            delete guild;
+            mGuilds.erase(itr);
+            return;
+        }
+    }
+}
+
+Guild* LocalPlayer::findGuildById(short guildId)
+{
+    for (unsigned int i = 0; i < mGuilds.size(); ++i)
+    {
+        if (mGuilds[i]->getId() == guildId)
+        {
+            return mGuilds[i];
+        }
+    }
+    
+    // not found return NULL
+    return NULL;
+}
+
+Guild* LocalPlayer::findGuildByName(const std::string &guildName)
+{
+    for (unsigned int i = 0; i < mGuilds.size(); ++i)
+    {
+        if(mGuilds[i]->getName() == guildName)
+        {
+            return mGuilds[i];
+        }
+    }
+    
+    // Not found, so return NULL
+    return NULL;
+}
+
+short LocalPlayer::getNumberOfGuilds()
+{
+    return mGuilds.size();
+}
+
+bool LocalPlayer::checkInviteRights(const std::string &guildName)
+{
+    Guild *guild = findGuildByName(guildName);
+    if(guild)
+        return guild->getInviteRights();
+    return false;
+}
+
 void LocalPlayer::clearInventory()
 {
     mEquipment->clear();

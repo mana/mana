@@ -24,6 +24,7 @@
 #ifndef _TMW_LOCALPLAYER_H
 #define _TMW_LOCALPLAYER_H
 
+#include "guild.h"
 #include "player.h"
 
 // TODO move into some sane place...
@@ -149,6 +150,38 @@ class LocalPlayer : public Player
          */
         virtual void
         drawName(Graphics *, int, int) {};
+    
+        /**
+         * Adds a guild to the local player.
+         */
+        void addGuild(short guildId, bool inviteRights);
+    
+        /**
+         * Removers a guild from the local player.
+         */
+        void removeGuild(short guildId);
+    
+        /**
+         * Finds a guild the local player belongs to, by the guildId
+         * @return returns the guild associated with the guildId
+         */
+        Guild* findGuildById(short guildId);
+    
+        /**
+         * Finds a guild the local player belongs to, by the guild's name.
+         * @return returns the guild with that name
+         */
+        Guild* findGuildByName(const std::string &guildName);
+    
+        /**
+         * Get number of guilds the player belongs to
+         */
+        short getNumberOfGuilds();
+    
+        /**
+         * Check the player has permission to invite users
+         */
+        bool checkInviteRights(const std::string &guildName);
 
         void clearInventory();
         void setInvItem(int index, int id, int amount);
@@ -334,6 +367,9 @@ class LocalPlayer : public Player
 
     protected:
         void walk(unsigned char dir);
+    
+        // Character guild information
+        std::vector<Guild*> mGuilds;
 
         // Character status:
         std::vector<int> mAttributeBase;

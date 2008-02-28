@@ -28,7 +28,11 @@
 
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
+#ifdef __APPLE__
+#include <SDL_ttf/SDL_ttf.h>
+#else
 #include <SDL/SDL_ttf.h>
+#endif
 
 /**
  * A wrapper around SDL_ttf for allowing the use of TrueType fonts.

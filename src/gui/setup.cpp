@@ -42,6 +42,7 @@ extern Window *inventoryWindow;
 extern Window *equipmentWindow;
 extern Window *helpWindow;
 extern Window *skillDialog;
+extern Window *guildWindow;
 
 Setup::Setup():
     Window(_("Setup"))
@@ -115,5 +116,6 @@ void Setup::action(const gcn::ActionEvent &event)
         equipmentWindow->resetToDefaultSize();
         helpWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
+        guildWindow->resetToDefaultSize();
     }
 }

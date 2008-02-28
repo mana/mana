@@ -52,6 +52,7 @@
 #include "gui/debugwindow.h"
 #include "gui/equipmentwindow.h"
 #include "gui/gui.h"
+#include "gui/guildwindow.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
 #include "gui/itemshortcutwindow.h"
@@ -73,6 +74,7 @@
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
 #include "net/chathandler.h"
+#include "net/guildhandler.h"
 #include "net/inventoryhandler.h"
 #include "net/itemhandler.h"
 #include "net/network.h"
@@ -117,6 +119,7 @@ EquipmentWindow *equipmentWindow;
 //ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 //BuddyWindow *buddyWindow;
+GuildWindow *guildWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 ItemShortcutWindow *itemShortcutWindow;
@@ -198,6 +201,7 @@ void createGuiWindows()
     //chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow;
     //buddyWindow = new BuddyWindow();
+    guildWindow = new GuildWindow(player_node);
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
     itemShortcutWindow = new ItemShortcutWindow();
@@ -244,6 +248,7 @@ void destroyGuiWindows()
     //delete newSkillWindow;
     delete tradeWindow;
     //delete buddyWindow;
+    delete guildWindow;
     delete helpWindow;
     delete debugWindow;
     delete itemShortcutWindow;
@@ -253,6 +258,7 @@ Game::Game():
     mBeingHandler(new BeingHandler()),
     mBuySellHandler(new BuySellHandler()),
     mChatHandler(new ChatHandler()),
+    mGuildHandler(new GuildHandler()),
     mInventoryHandler(new InventoryHandler()),
     mItemHandler(new ItemHandler()),
     mNpcHandler(new NPCHandler()),
@@ -295,6 +301,7 @@ Game::Game():
     Net::registerHandler(mBeingHandler.get());
     Net::registerHandler(mBuySellHandler.get());
     Net::registerHandler(mChatHandler.get());
+    Net::registerHandler(mGuildHandler.get());
     Net::registerHandler(mInventoryHandler.get());
     Net::registerHandler(mItemHandler.get());
     Net::registerHandler(mNpcHandler.get());
@@ -338,7 +345,7 @@ bool saveScreenshot(SDL_Surface *screenshot)
     do {
         screenshotCount++;
         filename.str("");
-#if (defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
+#if (defined __USE_UNIX98 || defined __FreeBSD__)
         filename << PHYSFS_getUserDir() << ".tmw/";
 #elif defined __APPLE__
         filename << PHYSFS_getUserDir() << "Desktop/";
@@ -606,6 +613,7 @@ void Game::handleInput()
                             equipmentWindow->setVisible(false);
                             helpWindow->setVisible(false);
                             debugWindow->setVisible(false);
+                            guildWindow->setVisible(false);
                         }
                         break;
                 }

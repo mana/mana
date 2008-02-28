@@ -21,44 +21,37 @@
  *  $Id$
  */
 
-#include "listbox.h"
+#include "guildlistbox.h"
 
-#include "selectionlistener.h"
+#include "../graphics.h"
 
 #include <guichan/font.hpp>
-#include <guichan/graphics.hpp>
-#include <guichan/listmodel.hpp>
-#include <guichan/mouseinput.hpp>
 
-ListBox::ListBox(gcn::ListModel *listModel):
-    gcn::ListBox(listModel)
+GuildListBox::GuildListBox():
+    ListBox(NULL)
 {
+        
 }
 
-ListBox::ListBox():
-    gcn::ListBox()
-{
-    
-}
-
-void ListBox::draw(gcn::Graphics *graphics)
+void GuildListBox::draw(gcn::Graphics *graphics)
 {
     if (!mListModel)
         return;
-
+    
     graphics->setColor(gcn::Color(110, 160, 255));
     graphics->setFont(getFont());
-
+    
     int fontHeight = getFont()->getHeight();
-
+    
     // Draw rectangle below the selected list element
     if (mSelected >= 0) {
         graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
                                                getWidth(), fontHeight));
     }
-
+    
+    // TODO: Add online status image
+    
     // Draw the list elements
-    graphics->setColor(gcn::Color(0, 0, 0));
     for (int i = 0, y = 0;
          i < mListModel->getNumberOfElements();
          ++i, y += fontHeight)
@@ -67,29 +60,39 @@ void ListBox::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-ListBox::setSelected(int selected)
+void GuildListBox::setSelected(int selected)
 {
-    gcn::ListBox::setSelected(selected);
+    if (!mListModel)
+    {
+        mSelected = -1;
+    }
+    else
+    {
+        // Update mSelected with bounds checking
+        mSelected = std::min(mListModel->getNumberOfElements() - 1,
+                             std::max(-1, selected));
+        
+        gcn::Widget *parent;
+        parent = (gcn::Widget*)getParent();
+        if (parent)
+        {
+            gcn::Rectangle scroll;
+            scroll.y = (mSelected < 0) ? 0 : getFont()->getHeight() * mSelected;
+            scroll.height = getFont()->getHeight();
+            parent->showWidgetPart(this, scroll);
+        }
+    }
+    
     fireSelectionChangedEvent();
 }
 
-void
-ListBox::mouseDragged(gcn::MouseEvent &event)
+void GuildListBox::mousePressed(gcn::MouseEvent &event)
 {
-    // Pretend mouse is pressed continuously while dragged. Causes list
-    // selection to be updated as is default in many GUIs.
-    mousePressed(event);
-}
-
-void ListBox::fireSelectionChangedEvent()
-{
-    SelectionEvent event(this);
-    SelectionListeners::iterator i_end = mListeners.end();
-    SelectionListeners::iterator i;
-
-    for (i = mListeners.begin(); i != i_end; ++i)
+    if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        (*i)->selectionChanged(event);
+        // TODO: Add guild functions, ie private messaging
+        int y = event.getY();
+        setSelected(y / getFont()->getHeight());
+        generateAction();
     }
 }
