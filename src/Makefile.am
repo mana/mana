@@ -43,6 +43,10 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/gccontainer.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
+	      gui/guildwindow.cpp \
+	      gui/guildwindow.h \
+	      gui/guildlistbox.cpp \
+	      gui/guildlistbox.h \
 	      gui/hbox.h \
 	      gui/hbox.cpp \
 	      gui/help.cpp \
@@ -155,6 +159,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/chathandler.cpp \
 	      net/connection.h \
 	      net/connection.cpp \
+	      net/guildhandler.cpp \
+	      net/guildhandler.h \
 	      net/internal.h \
 	      net/internal.cpp \
 	      net/inventoryhandler.h \
