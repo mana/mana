@@ -132,6 +132,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/tabbedcontainer.h \
 	      gui/textbox.cpp \
 	      gui/textbox.h \
+	      gui/textdialog.cpp \
+	      gui/textdialog.h \
 	      gui/textfield.cpp \
 	      gui/textfield.h \
 	      gui/trade.cpp \
@@ -153,6 +155,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/beinghandler.cpp \
 	      net/buysellhandler.h \
 	      net/buysellhandler.cpp \
+	      net/chatserver/guild.cpp \
+	      net/chatserver/guild.h \
 	      net/charserverhandler.h \
 	      net/charserverhandler.cpp \
 	      net/chathandler.h \
@@ -279,6 +283,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      game.h \
 	      graphics.cpp \
 	      graphics.h \
+	      guild.cpp \
+	      guild.h \
 	      guichanfwd.h \
 	      imageparticle.cpp \
 	      imageparticle.h \

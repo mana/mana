@@ -145,7 +145,9 @@ enum {
     
     CPMSG_GUILD_INVITED                 = 0x0370, // S name, S name
     CPMSG_GUILD_REJOIN                  = 0x0371, // S name, W id, W rights
-    
+    CPMSG_GUILD_JOINED                  = 0x90,
+    CPMSG_GUILD_LEFT                    = 0x90,
+
     // Chat
     CPMSG_ERROR                    = 0x0401, // B error
     CPMSG_ANNOUNCEMENT             = 0x0402, // S text
