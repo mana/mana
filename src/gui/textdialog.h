@@ -26,6 +26,8 @@
 
 #include <guichan/actionlistener.hpp>
 
+#include "textfield.h"
+
 #include "window.h"
 
 
@@ -43,24 +45,24 @@ public:
      */
     TextDialog(const std::string &title, const std::string &msg,
                   Window *parent = NULL);
-    
+
     /**
      * Called when receiving actions from the widgets.
      */
     void action(const gcn::ActionEvent &event);
-    
+
     /**
      * Get the text in the textfield
      */
     const std::string& getText() const;
-    
+
     /**
      * Set the OK button action id
      */
     void setOKButtonActionId(const std::string &name);
-    
+
 private:
-    gcn::TextField *textField;
+    TextField *textField;
     gcn::Button *okButton;
 };
 

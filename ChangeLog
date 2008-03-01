@@ -1,3 +1,8 @@
+2008-03-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/textdialog.cpp, src/gui/textdialog.h: Replaced the basic
+	guichan text field class with our derivate class.
+	
 2008-02-27  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/net/beinghandler.cpp, src/net/gamehandler/player.cpp,

@@ -31,20 +31,20 @@
 TextDialog::TextDialog(const std::string &title, const std::string &msg,
                              Window *parent):
     Window(title, true, parent),
-    textField(new gcn::TextField(""))
+    textField(new TextField(""))
 {
     gcn::Label *textLabel = new gcn::Label(msg);
     okButton = new Button("OK", "OK", this);
     gcn::Button *cancelButton = new Button("Cancel", "CANCEL", this);
-    
+
     int w = textLabel->getWidth() + 20;
     int inWidth = okButton->getWidth() + cancelButton->getWidth() + 5;
     int h = textLabel->getHeight() + 25 + okButton->getHeight() + textField->getHeight();
-    
+
     if (w < inWidth + 10) {
         w = inWidth + 10;
     }
-    
+
     setContentSize(w, h);
     textLabel->setPosition(10, 10);
     textField->setWidth(85);
@@ -53,12 +53,12 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
                            h - 5 - cancelButton->getHeight());
     cancelButton->setPosition(okButton->getX() + okButton->getWidth() + 5,
                           h - 5 - cancelButton->getHeight());
-    
+
     add(textLabel);
     add(textField);
     add(okButton);
     add(cancelButton);
-    
+
     if (getParent()) {
         setLocationRelativeTo(getParent());
         getParent()->moveToTop(this);
@@ -75,7 +75,7 @@ void TextDialog::action(const gcn::ActionEvent &event)
     {
         (*i)->action(event);
     }
-    
+
     if(event.getId() == "CANCEL" || event.getId() == "OK")
     {
         scheduleDelete();
