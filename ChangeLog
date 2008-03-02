@@ -1,3 +1,7 @@
+2008-03-02  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* tmw.cbp: Upgraded project file to latest C::B release.
+
 2008-03-02  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/leg-jeans-female.png: fixed transparency issue.
