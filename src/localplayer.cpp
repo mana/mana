@@ -41,6 +41,7 @@
 #include "net/protocol.h"
 
 #include "utils/tostring.h"
+#include "utils/gettext.h"
 
 LocalPlayer *player_node = NULL;
 
@@ -445,20 +446,21 @@ void LocalPlayer::lowerAttribute(size_t attr)
 const std::string& LocalPlayer::getSkillName(int skill)
 {
     static const std::string skills[CHAR_SKILL_NB + 1] =
-    {   "Unarmed",  // CHAR_SKILL_WEAPON_NONE
-        "Knife",    // CHAR_SKILL_WEAPON_KNIFE
-        "Sword",    // CHAR_SKILL_WEAPON_SWORD
-        "Polearm",  // CHAR_SKILL_WEAPON_POLEARM
-        "Staff",    // CHAR_SKILL_WEAPON_STAFF
-        "Whip",     // CHAR_SKILL_WEAPON_WHIP
-        "Bow",      // CHAR_SKILL_WEAPON_BOW
-        "Shooting", // CHAR_SKILL_WEAPON_SHOOTING
-        "Mace",     // CHAR_SKILL_WEAPON_MACE
-        "Axe",      // CHAR_SKILL_WEAPON_AXE
-        "Thrown",   // CHAR_SKILL_WEAPON_THROWN
-        "Magic",    // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
-        "Craft",    // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
-        "Unknown Skill"
+    {   
+        _("Unarmed"),  // CHAR_SKILL_WEAPON_NONE
+        _("Knife"),    // CHAR_SKILL_WEAPON_KNIFE
+        _("Sword"),    // CHAR_SKILL_WEAPON_SWORD
+        _("Polearm"),  // CHAR_SKILL_WEAPON_POLEARM
+        _("Staff"),    // CHAR_SKILL_WEAPON_STAFF
+        _("Whip"),     // CHAR_SKILL_WEAPON_WHIP
+        _("Bow"),      // CHAR_SKILL_WEAPON_BOW
+        _("Shooting"), // CHAR_SKILL_WEAPON_SHOOTING
+        _("Mace"),     // CHAR_SKILL_WEAPON_MACE
+        _("Axe"),      // CHAR_SKILL_WEAPON_AXE
+        _("Thrown"),   // CHAR_SKILL_WEAPON_THROWN
+        _("Magic"),    // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
+        _("Craft"),    // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
+        _("Unknown Skill")
     };
 
     if ((skill < 0) || (skill > CHAR_SKILL_NB))

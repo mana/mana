@@ -25,15 +25,34 @@
 #define _TMW_SKILL_H
 
 #include <vector>
+#include <list>
 
 #include <guichan/listmodel.hpp>
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
+#include "gccontainer.h"
 
 #include "../guichanfwd.h"
 
 class ProgressBar;
+
+class Skill_Tab : public GCContainer, public gcn::ActionListener
+{
+    public:
+        const std::string type;
+        Skill_Tab(std::string type);
+        void update();
+        void action(const gcn::ActionEvent &event) {}
+        
+    protected:
+    
+        std::vector<gcn::Label *> mSkillNameLabels;
+        std::vector<gcn::Label *> mSkillLevelLabels;
+        std::vector<gcn::Label *> mSkillExpLabels;
+        std::vector<ProgressBar *> mSkillProgress;
+};     
+        
 
 /**
  * The skill dialog.
@@ -62,11 +81,13 @@ class SkillDialog : public Window, public gcn::ActionListener
         void draw(gcn::Graphics *g);
 
     private:
-        std::vector<gcn::Label *> mSkillNameLabels;
-        std::vector<gcn::Label *> mSkillLevelLabels;
-        std::vector<gcn::Label *> mSkillExpLabels;
-        std::vector<ProgressBar *> mSkillProgress;
+    
+        std::list<Skill_Tab*> mTabs;
+        
 };
+
+
+
 
 extern SkillDialog *skillDialog;
 

@@ -1,3 +1,11 @@
+2008-03-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/skill.cpp, src/gui/skill.h: Skill gui beautifications by
+	roderic.
+	* src/localplayer.cpp: Made skill names translateable.
+	* data/graphics/sprites/monster-maggot.xml: Made maggot attack animation
+	finite.
+
 2008-03-01  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/textdialog.cpp, src/gui/textdialog.h: Replaced the basic
