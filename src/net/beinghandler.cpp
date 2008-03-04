@@ -617,9 +617,12 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
             _("I guess this did not run too well."),
             _("Do you want your possessions identified?"), // Nethack reference
             _("Sadly, no trace of you was ever found..."), // Secret of Mana reference
+            _("Annihilated."), // Final Fantasy VI reference
+            _("Looks like you got your head handed to you."), //Earthbound reference
+            _("You screwed up again, dump your body down the tubes and get you another one.") // Leisure Suit Larry 1 Reference
 
         };
-        std::string message(deadMsg[rand()%10]);
+        std::string message(deadMsg[rand()%13]);
         message.append(_(" Press OK to respawn"));
         OkDialog *dlg = new OkDialog(_("You died"), message);
         dlg->addActionListener(&(Net::GameServer::Player::respawnListener));

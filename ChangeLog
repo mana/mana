@@ -1,5 +1,11 @@
 2008-03-03  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* src/localplayer.h: Added natural HP regeneration
+	* src/net/beinghandler.cpp: Added 3 new death messages which were
+	suggested by dabe and blueberry on the forum.
+
+2008-03-03  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* src/gui/skill.cpp, src/gui/skill.h: Skill gui beautifications by
 	roderic.
 	* src/localplayer.cpp: Made skill names translateable.
