@@ -91,6 +91,10 @@ SET(SRCS
     gui/gccontainer.h
     gui/gui.cpp
     gui/gui.h
+    gui/guildlistbox.cpp
+    gui/guildlistbox.h
+    gui/guildwindow.cpp
+    gui/guildwindow.h
     gui/hbox.cpp
     gui/hbox.h
     gui/help.cpp
@@ -174,6 +178,8 @@ SET(SRCS
     gui/tabbedcontainer.h
     gui/textbox.cpp
     gui/textbox.h
+    gui/textdialog.cpp
+    gui/textdialog.h
     gui/textfield.cpp
     gui/textfield.h
     gui/trade.cpp
@@ -203,6 +209,8 @@ SET(SRCS
     net/chathandler.h
     net/connection.cpp
     net/connection.h
+    net/guildhandler.cpp
+    net/guildhandler.h
     net/internal.cpp
     net/internal.h
     net/inventoryhandler.cpp
@@ -236,6 +244,8 @@ SET(SRCS
     net/accountserver/internal.h
     net/chatserver/chatserver.cpp
     net/chatserver/chatserver.h
+    net/chatserver/guild.cpp
+    net/chatserver/guild.h
     net/chatserver/internal.cpp
     net/chatserver/internal.h
     net/gameserver/gameserver.cpp
@@ -322,6 +332,8 @@ SET(SRCS
     graphics.cpp
     graphics.h
     guichanfwd.h
+    guild.cpp
+    guild.h
     imageparticle.cpp
     imageparticle.h
     inventory.cpp

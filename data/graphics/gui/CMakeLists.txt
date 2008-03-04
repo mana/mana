@@ -9,6 +9,7 @@ SET (FILES
     checkbox.png
     close_button.png
     deepbox.png
+    equip_bg.png
     fixedfont.png
     hits_blue.png
     hits_red.png
@@ -20,7 +21,6 @@ SET (FILES
     hscroll_right_highlight.png
     hscroll_right_pressed.png
     item_shortcut_bgr.png
-    mouse.png
     menuitemD.png
     menuitemF.png
     menuitemN.png

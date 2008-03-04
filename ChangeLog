@@ -1,3 +1,9 @@
+2008-03-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
+	data/fonts/CMakeLists.txt, data/CMakeLists.txt: Accepted patch by
+	roderic to fix building/installing with CMake.
+
 2008-03-03  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/localplayer.h: Added natural HP regeneration
