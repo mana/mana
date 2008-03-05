@@ -509,7 +509,7 @@ void Game::handleInput()
                     {
                         break;
                     }
-		    
+
                     // Don not focus chat input when quit dialog is active
 		    if(quitDialog != NULL && quitDialog->isVisible())
 			break;
@@ -523,6 +523,10 @@ void Game::handleInput()
                     else if (setupWindow->isVisible())
                     {
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
+                    }
+                    else if (guildWindow->isVisible())
+                    {
+                        // TODO: Check if a dialog is open and close it if so
                     }
                     // Else, open the chat edit box
                     else
@@ -547,7 +551,7 @@ void Game::handleInput()
                     break;
             }
 
-            if (keyboard.isEnabled() && !chatWindow->isFocused())
+            if (keyboard.isEnabled() && !chatWindow->isFocused() && !guildWindow->isFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
                 // Checks if any item shortcut is pressed.
