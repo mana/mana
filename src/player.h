@@ -28,6 +28,7 @@
 
 class Graphics;
 class Map;
+class Guild;
 
 enum Gender {
     GENDER_MALE = 0,
@@ -86,6 +87,35 @@ class Player : public Being
          */
         virtual void
         setSprite(int slot, int id, const std::string &color = "");
+
+        /**
+         * Adds a guild to the player.
+         */
+        Guild* addGuild(short guildId, bool inviteRights);
+
+        /**
+         * Removers a guild from the player.
+         */
+        void removeGuild(int id);
+
+        /**
+         * Returns a pointer to the specified guild
+         */
+        Guild* getGuild(const std::string &guildName);
+
+        /**
+         * Returns a pointer to the guild with matching id
+         */
+        Guild* getGuild(int id);
+
+        /**
+         * Get number of guilds the player belongs to
+         */
+        short getNumberOfGuilds();
+
+    protected:
+        // Character guild information
+        std::map<int, Guild*> mGuilds;
 
     private:
         Gender mGender;

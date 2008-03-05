@@ -3,7 +3,7 @@
  *  A file part of The Mana World
  *
  *  Created by David Athay on 01/03/2007.
- *  
+ *
  * Copyright (c) 2007, The Mana World Development Team
  * All rights reserved.
  *
@@ -27,7 +27,7 @@
  *
  * $Id$
  */
-
+#include <iostream>
 #include "guildhandler.h"
 
 #include "protocol.h"
@@ -55,7 +55,7 @@ GuildHandler::GuildHandler()
         0
     };
     handledMessages = _messages;
-    
+
 }
 
 void GuildHandler::handleMessage(MessageIn &msg)
@@ -73,7 +73,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 joinedGuild(guildId, guildName, true);
             }
         } break;
-            
+
         case CPMSG_GUILD_INVITE_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_INVITE_RESPONSE");
@@ -82,7 +82,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 // TODO - Acknowledge invite was sent
             }
         } break;
-            
+
         case CPMSG_GUILD_ACCEPT_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_ACCEPT_RESPONSE");
@@ -94,7 +94,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 joinedGuild(guildId, guildName, false);
             }
         } break;
-            
+
         case CPMSG_GUILD_GET_MEMBERS_RESPONSE:
         {
             logger->log("Received CPMSG_GUILD_GET_MEMBERS_RESPONSE");
@@ -103,7 +103,9 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 std::string guildMember;
                 Guild *guild;
                 short guildId = msg.readInt16();
-                guild = player_node->findGuildById(guildId);
+                guild = player_node->getGuild(guildId);
+                if (!guild)
+                    return;
                 while(msg.getUnreadLength())
                 {
                     guildMember = msg.readString();
@@ -115,24 +117,24 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 guildWindow->updateTab();
             }
         } break;
-            
+
         case CPMSG_GUILD_INVITED:
         {
             logger->log("Received CPMSG_GUILD_INVITED");
             std::string inviterName = msg.readString();
             std::string guildName = msg.readString();
-            
+
             // Open a dialog asking if the player accepts joining the guild.
             guildWindow->openAcceptDialog(inviterName, guildName);
         } break;
-            
+
         case CPMSG_GUILD_REJOIN:
         {
             logger->log("Received CPMSG_GUILD_REJOIN");
             std::string guildName = msg.readString();
             short guildId = msg.readInt16();
             bool leader = msg.readInt8();
-            
+
             joinedGuild(guildId, guildName, leader);
         } break;
     }
@@ -141,10 +143,8 @@ void GuildHandler::handleMessage(MessageIn &msg)
 void GuildHandler::joinedGuild(short guildId, const std::string &guildName, bool leader)
 {
     // Add guild to player and create new guild tab
-    player_node->addGuild(guildId, leader);
-    Guild *guild = player_node->findGuildById(guildId);
+    Guild *guild = player_node->addGuild(guildId, leader);
     guild->setName(guildName);
     guildWindow->newGuildTab(guildName);
-    
     guildWindow->requestMemberList(guildId);
 }

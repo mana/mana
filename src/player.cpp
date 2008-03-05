@@ -26,6 +26,7 @@
 #include "animatedsprite.h"
 #include "game.h"
 #include "graphics.h"
+#include "guild.h"
 #include "log.h"
 
 #include "resources/itemdb.h"
@@ -145,4 +146,48 @@ void Player::setSprite(int slot, int id, const std::string &color)
     }
 
     Being::setSprite(slot, id, color);
+}
+
+Guild* Player::addGuild(short guildId, bool inviteRights)
+{
+    Guild *guild = new Guild(guildId, inviteRights);
+    mGuilds.insert(std::pair<int, Guild*>(guildId, guild));
+    return guild;
+}
+
+void Player::removeGuild(int id)
+{
+    mGuilds.erase(id);
+}
+
+Guild* Player::getGuild(const std::string &guildName)
+{
+    std::map<int, Guild*>::iterator itr, itr_end = mGuilds.end();
+    for (itr = mGuilds.begin(); itr != itr_end; ++itr)
+    {
+        Guild *guild = itr->second;
+        if (guild->getName() == guildName)
+        {
+            return guild;
+        }
+    }
+
+    return NULL;
+}
+
+Guild* Player::getGuild(int id)
+{
+    std::map<int, Guild*>::iterator itr;
+    itr = mGuilds.find(id);
+    if (itr != mGuilds.end())
+    {
+        return itr->second;
+    }
+
+    return NULL;
+}
+
+short Player::getNumberOfGuilds()
+{
+    return mGuilds.size();
 }

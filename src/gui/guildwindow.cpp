@@ -153,7 +153,7 @@ void GuildWindow::newGuildTab(const std::string &guildName)
     tab->setHeight(getHeight() - 2 * tab->getBorderSize());
     tab->setOpaque(false);
     ListBox *list = new ListBox();
-    list->setListModel(player_node->findGuildByName(guildName));
+    list->setListModel(player_node->getGuild(guildName));
     ScrollArea *sa = new ScrollArea(list);
     sa->setDimension(gcn::Rectangle(5, 5, 135, 250));
     tab->add(sa);
@@ -192,7 +192,7 @@ bool GuildWindow::isFocused()
 
 short GuildWindow::getSelectedGuild()
 {
-    return mPlayer->findGuildByName(mGuildsContainer->getActiveWidget())->getId();
+    return mPlayer->getGuild(mGuildsContainer->getActiveWidget())->getId();
 }
 
 void GuildWindow::openAcceptDialog(const std::string &inviterName, const std::string &guildName)

@@ -2,6 +2,9 @@
 
 	* src/game.cpp, src/gui/guildwindow.cpp: Fixed key presses during
 	text dialog in guild window and changed license to standard GPL.
+	* src/localplayer.cpp, src/localplayer.h, src/player.cpp,
+	src/player.h, src/gui/guildwindow.cpp, src/net/guildhandler.cpp:
+	Fixed guild creation.
 
 2008-03-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
