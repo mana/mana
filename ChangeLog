@@ -1,3 +1,8 @@
+2008-03-06  David Athay  <ko2fan@gmail.com>
+
+	* src/net/guildhandler.cpp, src/net/guildhandler.hpp: Fixed
+	rejoining guilds after quitting.
+
 2008-03-05  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp, src/gui/guildwindow.cpp: Fixed key presses during

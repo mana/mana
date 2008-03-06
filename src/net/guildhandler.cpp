@@ -37,6 +37,7 @@
 #include "chatserver/guild.h"
 
 #include "../gui/guildwindow.h"
+#include "../gui/chat.h"
 #include "../guild.h"
 #include "../log.h"
 #include "../localplayer.h"
@@ -67,10 +68,8 @@ void GuildHandler::handleMessage(MessageIn &msg)
             logger->log("Received CPMSG_GUILD_CREATE_RESPONSE");
             if(msg.readInt8() == ERRMSG_OK)
             {
-                short guildId = msg.readInt16();
-                std::string guildName = msg.readString();
                 // TODO - Acknowledge guild was created
-                joinedGuild(guildId, guildName, true);
+                joinedGuild(msg);
             }
         } break;
 
@@ -89,9 +88,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge accepted into guild
-                short guildId = msg.readInt16();
-                std::string guildName = msg.readString();
-                joinedGuild(guildId, guildName, false);
+                joinedGuild(msg);
             }
         } break;
 
@@ -131,20 +128,28 @@ void GuildHandler::handleMessage(MessageIn &msg)
         case CPMSG_GUILD_REJOIN:
         {
             logger->log("Received CPMSG_GUILD_REJOIN");
-            std::string guildName = msg.readString();
-            short guildId = msg.readInt16();
-            bool leader = msg.readInt8();
 
-            joinedGuild(guildId, guildName, leader);
+            joinedGuild(msg);
         } break;
     }
 }
 
-void GuildHandler::joinedGuild(short guildId, const std::string &guildName, bool leader)
+void GuildHandler::joinedGuild(MessageIn &msg)
 {
+    std::string guildName = msg.readString();
+    short guildId = msg.readInt16();
+    bool leader = msg.readInt8();
+    short channelId = msg.readInt16();
+
     // Add guild to player and create new guild tab
     Guild *guild = player_node->addGuild(guildId, leader);
     guild->setName(guildName);
     guildWindow->newGuildTab(guildName);
     guildWindow->requestMemberList(guildId);
+
+    // Automatically create the guild channel
+    // COMMENT: Should this go here??
+    chatWindow->addChannel(channelId, guildName);
+    chatWindow->createNewChannelTab(guildName);
+    chatWindow->chatLog("Guild Channel", BY_SERVER, guildName);
 }

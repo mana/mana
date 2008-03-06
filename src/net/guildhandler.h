@@ -3,7 +3,7 @@
  *  A file part of The Mana World
  *
  *  Created by David Athay on 01/03/2007.
- *  
+ *
  * Copyright (c) 2007, The Mana World Development Team
  * All rights reserved.
  *
@@ -39,11 +39,11 @@ class GuildHandler : public MessageHandler
 {
 public:
     GuildHandler();
-    
+
     void handleMessage(MessageIn &msg);
-    
+
 protected:
-    void joinedGuild(short guildId, const std::string &guildName, bool leader);
+    void joinedGuild(MessageIn &msg);
 };
 
 #endif
