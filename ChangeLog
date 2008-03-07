@@ -16,6 +16,8 @@
 	data/graphics/sprites/monster-snake.xml,
 	data/graphics/sprites/npcs.png, data/items.xml, data/monsters.xml:
 	Added new items by Black Don, new xml definitions by Peavey.
+	* data/graphics/items/armor-head-cowboyblack.png,
+	data/graphics/items/armor-head-cowboywhite.png: Corrected names.
 
 2008-03-02  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 
