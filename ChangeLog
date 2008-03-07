@@ -1,3 +1,22 @@
+2008-03-07  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* data/equipment.xml, data/graphics/items/armor-legs-chaps.png,
+	data/graphics/items/armour-head-cowboyblack.png,
+	data/graphics/items/armour-head-cowboywhite.png,
+	data/graphics/items/generic-snakeskin.png,
+	data/graphics/sprites/head-cowboyblack.png,
+	data/graphics/sprites/head-cowboyblack.xml,
+	data/graphics/sprites/head-cowboywhite.png,
+	data/graphics/sprites/head-cowboywhite.xml,
+	data/graphics/sprites/leg-chaps-female.png,
+	data/graphics/sprites/leg-chaps-female.xml,
+	data/graphics/sprites/leg-chaps-male.png,
+	data/graphics/sprites/leg-chaps-male.xml,
+	data/graphics/sprites/monster-snake.png,
+	data/graphics/sprites/monster-snake.xml,
+	data/graphics/sprites/npcs.png, data/items.xml, data/monsters.xml:
+	Added new items by Black Don, new xml definitions by Peavey.
+
 2008-03-02  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 
 	* tmw.cbp: Upgraded project file to latest C::B release.
