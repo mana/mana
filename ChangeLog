@@ -1,3 +1,9 @@
+2008-03-08  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* tools/tmxcopy/main.cpp, tools/tmxcopy/main.map.cpp,
+	tools/tmxcopy/plibutils.cpp
+	Fixed some width/height mixups in TMXCopy.
+
 2008-03-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/*: Moved dynamically released data to its own module (tmwdata).
