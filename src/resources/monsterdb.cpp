@@ -26,6 +26,7 @@
 #include "monsterdb.h"
 
 #include "resourcemanager.h"
+#include "spritedef.h"
 
 #include "../log.h"
 
@@ -113,8 +114,7 @@ MonsterDB::load()
             {
                 currentInfo->setSprite((const char*) spriteNode->xmlChildrenNode->content);
             }
-
-            if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
+            else if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
             {
                 std::string event = XML::getProperty(spriteNode, "event", "");
                 const char *filename;
@@ -141,6 +141,13 @@ MonsterDB::load()
                     logger->log("MonsterDB: Warning, sound effect %s for unknown event %s of monster %s",
                                 filename, event.c_str(), currentInfo->getName().c_str());
                 }
+            }
+            else if (xmlStrEqual(spriteNode->name, BAD_CAST "attack"))
+            {
+                int id = XML::getProperty(spriteNode, "id", 0);
+                std::string particleEffect = XML::getProperty(spriteNode, "particle-effect", "");
+                SpriteAction spriteAction = SpriteDef::makeSpriteAction(XML::getProperty(spriteNode, "action", "attack"));
+                currentInfo->addMonsterAttack(id, particleEffect, spriteAction);
             }
         }
         mMonsterInfos[XML::getProperty(monsterNode, "id", 0)] = currentInfo;

@@ -45,6 +45,16 @@ enum SpriteAction
     ACTION_ATTACK_STAB,
     ACTION_ATTACK_BOW,
     ACTION_ATTACK_THROW,
+    ACTION_SPECIAL_0,
+    ACTION_SPECIAL_1,
+    ACTION_SPECIAL_2,
+    ACTION_SPECIAL_3,
+    ACTION_SPECIAL_4,
+    ACTION_SPECIAL_5,
+    ACTION_SPECIAL_6,
+    ACTION_SPECIAL_7,
+    ACTION_SPECIAL_8,
+    ACTION_SPECIAL_9,
     ACTION_CAST_MAGIC,
     ACTION_USE_ITEM,
     ACTION_SIT,
@@ -79,6 +89,12 @@ class SpriteDef : public Resource
          * Returns the specified action.
          */
         Action *getAction(SpriteAction action) const;
+
+        /**
+         * Converts a string into a SpriteAction enum.
+         */
+        static SpriteAction
+        makeSpriteAction(const std::string &action);
 
     private:
 
@@ -128,12 +144,6 @@ class SpriteDef : public Resource
          */
         void
         substituteAction(SpriteAction complete, SpriteAction with);
-
-        /**
-         * Converts a string into a SpriteAction enum.
-         */
-        static SpriteAction
-        makeSpriteAction(const std::string &action);
 
         /**
          * Converts a string into a SpriteDirection enum.

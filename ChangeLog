@@ -7,8 +7,15 @@
 	src/net/beinghandler.cpp, src/resources/monsterinfo.cpp,
 	src/resources/monsterinfo.h: Implemented interpretation of the
 	attacktype parameter of attack messages and visualize monster attacks
-	other than id 1 with a particle effect. Prepared to get attack particle
-	effects and animation types from the monster database.
+	other than id 1 with a particle effect. Prepared to get attack
+	particle effects and animation types from the monster database.
+	* src/resources/monsterdb.cpp, src/resources/monsterinfo.cpp,
+	src/resources/monsterinfo.h, src/resources/spritedef.h: Actions and
+	particle effect for monster attacks are now obtained from the monster
+	database.
+	* data/monsters.xml, data/graphics/sprites/scorpion.cpp,
+	data/graphics/sprites/scorpion.xml: Gave the tail attack of the
+	scorpion a custom animation and a particle effect.
 
 2008-03-06  David Athay  <ko2fan@gmail.com>
 

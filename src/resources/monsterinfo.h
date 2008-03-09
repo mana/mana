@@ -39,6 +39,12 @@ enum MonsterSoundEvent
     MONSTER_EVENT_DIE
 };
 
+struct MonsterAttack
+{
+    std::string particleEffect;
+    SpriteAction action;
+};
+
 /**
  * Holds information about a certain type of monster. This includes the name
  * of the monster, the sprite to display and the sounds the monster makes.
@@ -80,10 +86,12 @@ class MonsterInfo
         Being::TargetCursorSize
         getTargetCursorSize() const { return mTargetCursorSize; }
 
-        std::string
+        const std::string&
         getSound(MonsterSoundEvent event) const;
 
-        const std::string &
+        void addMonsterAttack (int id, const std::string &particleEffect, SpriteAction action);
+
+        const std::string&
         getAttackParticleEffect(int attackType) const;
 
         SpriteAction
@@ -96,6 +104,7 @@ class MonsterInfo
         std::string mSprite;
         Being::TargetCursorSize mTargetCursorSize;
         std::map<MonsterSoundEvent, std::vector<std::string>* > mSounds;
+        std::map<int, MonsterAttack*> mMonsterAttacks;
 };
 
 #endif
