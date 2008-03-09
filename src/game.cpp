@@ -525,8 +525,12 @@ void Game::handleInput()
                         exitConfirm = new ConfirmDialog(
                                 "Quit", "Are you sure you want to quit?");
                         exitConfirm->addActionListener(&exitListener);
+                        exitConfirm->requestMoveToTop();
                     }
-                    exitConfirm->requestMoveToTop();
+                    else
+                    {
+                        exitConfirm->action(gcn::ActionEvent(NULL, "no"));
+                    }
                     break;
 
                 default:

@@ -97,10 +97,13 @@ ChatWindow::logic()
 void
 ChatWindow::chatLog(std::string line, int own)
 {
+    // Trim whitespace
+    trim(line);
 
     CHATLOG tmp;
     tmp.own  = own;
     tmp.nick = "";
+    tmp.text = line;
 
     // Fix the owner of welcome message.
     if (line.substr(0, 7) == "Welcome")
@@ -111,11 +114,8 @@ ChatWindow::chatLog(std::string line, int own)
     std::string::size_type pos = line.find(" : ");
     if (pos != std::string::npos) {
         tmp.nick = line.substr(0, pos);
-        line.erase(0, pos + 3);
+        tmp.text = line.substr(pos + 3);
     }
-
-    // Trim whitespace
-    trim(line);
 
     std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
     switch (own) {
@@ -132,7 +132,8 @@ ChatWindow::chatLog(std::string line, int own)
             lineColor = "##0"; // Equiv. to BrowserBox::BLACK
             break;
         case BY_SERVER:
-            tmp.nick += std::string("Server: ");
+            tmp.nick = "Server: ";
+            tmp.text = line;
             lineColor = "##7"; // Equiv. to BrowserBox::PINK
             break;
         case ACT_WHISPER:
@@ -144,6 +145,8 @@ ChatWindow::chatLog(std::string line, int own)
             lineColor = "##5"; // Equiv. to BrowserBox::YELLOW
             break;
         case BY_LOGGER:
+            tmp.nick = "";
+            tmp.text = line;
             lineColor = "##8"; // Equiv. to BrowserBox::GREY
             break;
     }
@@ -162,7 +165,7 @@ ChatWindow::chatLog(std::string line, int own)
             << (int)((t / 60) % 60)
             << "] ";
 
-    line = lineColor + timeStr.str() + tmp.nick + line;
+    line = lineColor + timeStr.str() + tmp.nick + tmp.text;
 
     // We look if the Vertical Scroll Bar is set at the max before
     // adding a row, otherwise the max will always be a row higher
@@ -277,6 +280,7 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         chatLog("/announce : Global announcement (GM only)", BY_SERVER);
         chatLog("/where : Display map name", BY_SERVER);
         chatLog("/who : Display number of online users", BY_SERVER);
+        chatLog("/clear : Clears this window", BY_SERVER);
     }
     else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
     {
@@ -286,6 +290,10 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(0x00c1);
+    }
+    else if (msg.substr(0, IS_CLEAR_LENGTH) == IS_CLEAR)
+    {
+        mTextOutput->clearRows();
     }
     else
     {

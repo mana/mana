@@ -56,6 +56,8 @@ class ScrollArea;
 #define IS_WHERE_LENGTH     6
 #define IS_WHO              "/who"
 #define IS_WHO_LENGTH       4
+#define IS_CLEAR            "/clear"
+#define IS_CLEAR_LENGTH     6
 
 /**
  * gets in between usernick and message text depending on

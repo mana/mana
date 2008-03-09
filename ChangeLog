@@ -1,7 +1,16 @@
+2008-03-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/game.cpp: Pressing escape in the quit dialog closes the dialog.
+	(patch by peavey)
+	* src/gui/chat.cpp, src/gui/chat.h: Fixed a bug with chat messages
+	without a sender which include semicolons (patch by peavey).
+	* src/chat.cpp: Added "/clear" command to clear chat window
+	(patch by peavey).
+
 2008-03-08  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* tools/tmxcopy/main.cpp, tools/tmxcopy/main.map.cpp,
-	tools/tmxcopy/plibutils.cpp: Fixed some width/height mixups in
+	tools/tmxcopy/zlibutils.cpp: Fixed some width/height mixups in
 	TMXCopy.
 
 2008-03-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
