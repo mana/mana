@@ -262,7 +262,7 @@ class Being : public Sprite
          * Sets the current action.
          */
         virtual void
-        setAction(Action action);
+        setAction(Action action, int attackType = 0);
 
         /**
          * Returns the direction the being is facing.

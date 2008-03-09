@@ -70,3 +70,18 @@ MonsterInfo::getSound(MonsterSoundEvent event) const
         return i->second->at(rand()%i->second->size());
     }
 }
+
+const std::string &
+MonsterInfo::getAttackParticleEffect(int attackType) const
+{
+    static std::string something("graphics/particles/attack.particle.xml");
+    static std::string nothing("");
+
+    if (attackType > 1) return something; else return nothing;
+}
+
+SpriteAction
+MonsterInfo::getAttackAction(int attackType) const
+{
+    return ACTION_ATTACK;
+}

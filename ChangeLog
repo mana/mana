@@ -1,3 +1,15 @@
+2008-03-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h, src/utils/minmax.h: Implemented possibility
+	to rotate particle emitters.
+	* src/being.cpp, src/being.h, src/monster.cpp, src/monster.h,
+	src/net/beinghandler.cpp, src/resources/monsterinfo.cpp,
+	src/resources/monsterinfo.h: Implemented interpretation of the
+	attacktype parameter of attack messages and visualize monster attacks
+	other than id 1 with a particle effect. Prepared to get attack particle
+	effects and animation types from the monster database.
+
 2008-03-06  David Athay  <ko2fan@gmail.com>
 
 	* src/net/guildhandler.cpp, src/net/guildhandler.hpp: Fixed

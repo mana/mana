@@ -25,6 +25,7 @@
 
 #include "animatedsprite.h"
 #include "game.h"
+#include "particle.h"
 #include "sound.h"
 
 #include "resources/monsterdb.h"
@@ -50,9 +51,11 @@ Monster::getType() const
 }
 
 void
-Monster::setAction(Action action)
+Monster::setAction(Action action, int attackType)
 {
     SpriteAction currentAction = ACTION_INVALID;
+    int rotation = 0;
+    std::string particleEffect;
 
     switch (action)
     {
@@ -64,8 +67,26 @@ Monster::setAction(Action action)
             sound.playSfx(getInfo().getSound(MONSTER_EVENT_DIE));
             break;
         case ATTACK:
-            currentAction = ACTION_ATTACK;
-            mSprites[BASE_SPRITE]->reset();
+            currentAction = getInfo().getAttackAction(attackType);
+
+            //attack particle effect
+            particleEffect = getInfo().getAttackParticleEffect(attackType);
+            if (particleEffect != "")
+            {
+                switch (mDirection)
+                {
+                    case DOWN: rotation = 0; break;
+                    case LEFT: rotation = 90; break;
+                    case UP: rotation = 180; break;
+                    case RIGHT: rotation = 270; break;
+                    default: break;
+                }
+                mSprites[BASE_SPRITE]->reset();
+                    Particle *p;
+                    p = particleEngine->addEffect(
+                                    particleEffect, 0, 0, rotation);
+                    controlParticle(p);
+            }
             break;
         case STAND:
             currentAction = ACTION_STAND;

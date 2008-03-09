@@ -45,7 +45,7 @@ class ParticleEmitter
         /**
          * Constructor.
          */
-        ParticleEmitter(xmlNodePtr emitterNode,  Particle *target, Map *map);
+        ParticleEmitter(xmlNodePtr emitterNode,  Particle *target, Map *map, int rotation = 0);
 
         /**
          * Copy Constructor (necessary for reference counting of particle images)

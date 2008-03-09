@@ -373,7 +373,7 @@ Being::controlParticle(Particle *particle)
 }
 
 void
-Being::setAction(Action action)
+Being::setAction(Action action, int attackType)
 {
     SpriteAction currentAction = ACTION_INVALID;
     switch (action)

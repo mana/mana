@@ -33,7 +33,7 @@ class Monster : public Being
     public:
         Monster(Uint16 id, Uint16 job, Map *map);
 
-        virtual void setAction(Action action);
+        virtual void setAction(Action action, int attackType);
 
         virtual Type getType() const;
 

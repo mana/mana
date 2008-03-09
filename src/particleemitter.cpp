@@ -38,7 +38,7 @@
 #define SIN45 0.707106781f
 #define DEG_RAD_FACTOR 0.017453293f
 
-ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map):
+ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map, int rotation):
     mParticleImage(0)
 {
     mMap = map;
@@ -98,14 +98,13 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             else if (name == "horizontal-angle")
             {
                 mParticleAngleHorizontal = readMinMax(propertyNode, 0.0f);
-                mParticleAngleHorizontal.minVal *= DEG_RAD_FACTOR;
-                mParticleAngleHorizontal.maxVal *= DEG_RAD_FACTOR;
+                mParticleAngleHorizontal += rotation;
+                mParticleAngleHorizontal *= DEG_RAD_FACTOR;
             }
             else if (name == "vertical-angle")
             {
                 mParticleAngleVertical = readMinMax(propertyNode, 0.0f);
-                mParticleAngleVertical.minVal *= DEG_RAD_FACTOR;
-                mParticleAngleVertical.maxVal *= DEG_RAD_FACTOR;
+                mParticleAngleVertical *= DEG_RAD_FACTOR;
             }
             else if (name == "power")
             {

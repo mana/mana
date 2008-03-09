@@ -40,6 +40,27 @@ template <typename T> struct MinMax
         set(val, val);
     }
 
+    bool operator+= (T arg)
+    {
+        minVal += arg;
+        maxVal += arg;
+        return true;
+    }
+
+    bool operator-= (T arg)
+    {
+        minVal -= arg;
+        maxVal -= arg;
+        return true;
+    }
+
+    bool operator*= (T arg)
+    {
+        minVal *= arg;
+        maxVal *= arg;
+        return true;
+    }
+
     T value()
     {
         return (T)(minVal + (maxVal - minVal) * (rand() / ((double) RAND_MAX + 1)));

@@ -83,6 +83,14 @@ class MonsterInfo
         std::string
         getSound(MonsterSoundEvent event) const;
 
+        const std::string &
+        getAttackParticleEffect(int attackType) const;
+
+        SpriteAction
+        getAttackAction(int attackType) const;
+
+
+
     private:
         std::string mName;
         std::string mSprite;
