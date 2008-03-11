@@ -1,3 +1,8 @@
+2008-03-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
+	Removed unused image here too.
+
 2008-03-11  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 
 	* data/graphics/gui/attack_target.png: Removed unused image.

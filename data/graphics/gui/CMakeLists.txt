@@ -1,5 +1,4 @@
 SET (FILES
-    attack_target.png
     bg_quad_dis.png
     browserfont.png
     button.png
