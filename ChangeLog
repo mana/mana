@@ -1,3 +1,7 @@
+2008-03-11  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* data/graphics/gui/attack_target.png: Removed unused image.
+
 2008-03-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/game.cpp: Pressing escape in the quit dialog closes the dialog.
