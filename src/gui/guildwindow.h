@@ -3,7 +3,7 @@
  *  A file part of The Mana World
  *
  *  Created by David Athay on 06/03/2007.
- *  
+ *
  * Copyright (c) 2007, The Mana World Development Team
  * All rights reserved.
  *
@@ -56,7 +56,7 @@ public:
      * Constructor.
      */
     GuildWindow(LocalPlayer *player);
-    
+
     /**
      * Destructor.
      */
@@ -76,47 +76,52 @@ public:
      * Updates this dialog.
      */
     void update();
-    
+
     /**
      * Create a new tab for a guild list.
      */
     void newGuildTab(const std::string &guildName);
-    
+
     /**
      * Display guild's member list to active tab
      */
     void setTab(const std::string &guildName);
-    
+
     /**
      * Update the contents of the active tab
      */
     void updateTab();
-    
+
     /**
      * Check if the window is in focus
      */
     bool isFocused();
-    
+
     /**
      * Create a dialog for accepting an invite
      */
     void openAcceptDialog(const std::string &inviterName, const std::string &guildName);
-    
+
     /**
      * Request member list
      */
     void requestMemberList(short guildId);
-    
+
+    /**
+     * Removes the selected tab
+     */
+    void removeTab();
+
 protected:
     /**
      * Get selected guild tab
      * @return Returns selected guild
      */
     short getSelectedGuild();
-    
+
 private:
     LocalPlayer *mPlayer;
-    gcn::Button *mGuildButton[2];
+    gcn::Button *mGuildButton[3];
     TextDialog *guildDialog;
     TextDialog *inviteDialog;
     ConfirmDialog *acceptDialog;

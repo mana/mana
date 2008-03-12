@@ -33,12 +33,15 @@
 #include "textdialog.h"
 #include "windowcontainer.h"
 
+#include "widgets/layout.h"
+
 #include "../guild.h"
 #include "../log.h"
 #include "../localplayer.h"
 
 #include "../net/chatserver/guild.h"
 #include "../utils/dtor.h"
+#include "../utils/gettext.h"
 
 GuildWindow::GuildWindow(LocalPlayer *player):
     Window(player->getName()),
@@ -53,19 +56,23 @@ GuildWindow::GuildWindow(LocalPlayer *player):
     setDefaultSize(124, 41, 288, 330);
 
     // Set button events Id
-    mGuildButton[0] = new Button("Create Guild", "CREATE_GUILD", this);
-    mGuildButton[1] = new Button("Invite User", "INVITE_USER", this);
-    mGuildButton[0]->setPosition(15,10);
-    mGuildButton[1]->setPosition(115,10);
+    mGuildButton[0] = new Button(_("Create Guild"), "CREATE_GUILD", this);
+    mGuildButton[1] = new Button(_("Invite User"), "INVITE_USER", this);
+    mGuildButton[2] = new Button(_("Quit Guild"), "QUIT_GUILD", this);
     mGuildButton[1]->setEnabled(false);
+    mGuildButton[2]->setEnabled(false);
 
     mGuildsContainer  = new TabbedContainer();
 
     mGuildsContainer->setOpaque(false);
 
-    add(mGuildButton[0]);
-    add(mGuildButton[1]);
-    add(mGuildsContainer);
+    place(0, 0, mGuildButton[0]);
+    place(1, 0, mGuildButton[1]);
+    place(2, 0, mGuildButton[2]);
+    place(0, 1, mGuildsContainer);
+    Layout &layout = getLayout();
+    layout.setColWidth(0, 48);
+    layout.setColWidth(1, 65);
 
     loadWindowState(player->getName());
 }
@@ -94,6 +101,13 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     // Stats Part
     if (eventId == "CREATE_GUILD")
     {
+        if (mGuildsContainer->getNumberOfTabs() > 1)
+        {
+            // This is just to limit the number of guild tabs that are created
+            // TODO: Either limit this server side, or fix the interface issue
+            chatWindow->chatLog("Current maximum number of guilds ownable is 2", BY_SERVER);
+            return;
+        }
         // Set focus so that guild name to be created can be typed.
         mFocus = true;
         guildDialog = new TextDialog("Guild Name", "Choose your guild's name", this);
@@ -107,6 +121,15 @@ void GuildWindow::action(const gcn::ActionEvent &event)
         inviteDialog = new TextDialog("Member Invite", "Who would you like to invite?", this);
         inviteDialog->setOKButtonActionId("INVITE_USER_OK");
         inviteDialog->addActionListener(this);
+    }
+    else if (eventId == "QUIT_GUILD")
+    {
+        short guild = getSelectedGuild();
+        if (guild)
+        {
+            Net::ChatServer::Guild::quitGuild(guild);
+            chatWindow->chatLog("Guild " + mGuildsContainer->getActiveWidget() + " quit", BY_SERVER);
+        }
     }
     else if (eventId == "CREATE_GUILD_OK")
     {
@@ -153,7 +176,7 @@ void GuildWindow::newGuildTab(const std::string &guildName)
     tab->setHeight(getHeight() - 2 * tab->getBorderSize());
     tab->setOpaque(false);
     ListBox *list = new ListBox();
-    list->setListModel(player_node->getGuild(guildName));
+    list->setListModel(mPlayer->getGuild(guildName));
     ScrollArea *sa = new ScrollArea(list);
     sa->setDimension(gcn::Rectangle(5, 5, 135, 250));
     tab->add(sa);
@@ -173,7 +196,6 @@ void GuildWindow::updateTab()
 
 void GuildWindow::setTab(const std::string &guildName)
 {
-
     // Only enable invite button if user has rights
     if(mPlayer->checkInviteRights(guildName))
     {
@@ -183,6 +205,8 @@ void GuildWindow::setTab(const std::string &guildName)
     {
         mGuildButton[1]->setEnabled(false);
     }
+
+    mGuildButton[2]->setEnabled(true);
 }
 
 bool GuildWindow::isFocused()
@@ -192,7 +216,13 @@ bool GuildWindow::isFocused()
 
 short GuildWindow::getSelectedGuild()
 {
-    return mPlayer->getGuild(mGuildsContainer->getActiveWidget())->getId();
+    Guild *guild = mPlayer->getGuild(mGuildsContainer->getActiveWidget());
+    if (guild)
+    {
+        return guild->getId();
+    }
+
+    return 0;
 }
 
 void GuildWindow::openAcceptDialog(const std::string &inviterName, const std::string &guildName)
@@ -210,4 +240,10 @@ void GuildWindow::requestMemberList(short guildId)
 {
     // Get the list of members for displaying in the guild window.
     Net::ChatServer::Guild::getGuildMembers(guildId);
+}
+
+void GuildWindow::removeTab()
+{
+    mGuildsContainer->removeTab(mGuildsContainer->getActiveWidget());
+    mGuildsContainer->logic();
 }

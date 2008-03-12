@@ -36,9 +36,9 @@ void Net::ChatServer::Guild::createGuild(const std::string &name)
 {
     logger->log("Sending PCMSG_GUILD_CREATE");
     MessageOut msg(PCMSG_GUILD_CREATE);
-    
+
     msg.writeString(name);
-    
+
     Net::ChatServer::connection->send(msg);
 }
 
@@ -46,10 +46,10 @@ void Net::ChatServer::Guild::invitePlayer(const std::string &name, short guildId
 {
     logger->log("Sending PCMSG_GUILD_INVITE");
     MessageOut msg(PCMSG_GUILD_INVITE);
-    
+
     msg.writeInt16(guildId);
     msg.writeString(name);
-    
+
     Net::ChatServer::connection->send(msg);
 }
 
@@ -57,9 +57,9 @@ void Net::ChatServer::Guild::acceptInvite(const std::string &name)
 {
     logger->log("Sending PCMSG_GUILD_ACCEPT");
     MessageOut msg(PCMSG_GUILD_ACCEPT);
-    
+
     msg.writeString(name);
-    
+
     Net::ChatServer::connection->send(msg);
 }
 
@@ -67,8 +67,18 @@ void Net::ChatServer::Guild::getGuildMembers(short guildId)
 {
     logger->log("Sending PCMSG_GUILD_GET_MEMBERS");
     MessageOut msg(PCMSG_GUILD_GET_MEMBERS);
-    
+
     msg.writeInt16(guildId);
-    
+
+    Net::ChatServer::connection->send(msg);
+}
+
+void Net::ChatServer::Guild::quitGuild(short guildId)
+{
+    logger->log("Sending PCMSG_GUILD_QUIT");
+    MessageOut msg(PCMSG_GUILD_QUIT);
+
+    msg.writeInt16(guildId);
+
     Net::ChatServer::connection->send(msg);
 }

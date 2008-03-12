@@ -37,21 +37,26 @@ namespace Net
              * Create guild.
              */
             void createGuild(const std::string &name);
-            
+
             /**
              * Invite a player to your guild.
              */
             void invitePlayer(const std::string &name, short guildId);
-            
+
             /**
              * Accept an invite another player has sent to join their guild.
              */
             void acceptInvite(const std::string &name);
-            
+
             /**
              * Get a list of members in a guild.
              */
             void getGuildMembers(short guildId);
+
+            /**
+             * Quit guild.
+             */
+            void quitGuild(short guildId);
         }
     }
 }

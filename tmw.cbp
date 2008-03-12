@@ -1,1617 +1,372 @@
-<?xml version="1.0"?>
-<!DOCTYPE CodeBlocks_project_file>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_project_file>
-	<FileVersion major="1" minor="1"/>
+	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="The Mana World"/>
-		<Option makefile="Makefile"/>
-		<Option makefile_is_custom="0"/>
-		<Option compiler="0"/>
+		<Option title="The Mana World" />
+		<Option pch_mode="0" />
+		<Option compiler="gcc" />
 		<Build>
 			<Target title="default">
-				<Option output="tmw.exe"/>
-				<Option working_dir="."/>
-				<Option object_output=".objs"/>
-				<Option deps_output=".deps"/>
-				<Option type="0"/>
-				<Option compiler="0"/>
-				<Option projectResourceIncludeDirsRelation="0"/>
+				<Option output="bin/tmw" prefix_auto="0" extension_auto="1" />
+				<Option working_dir="bin" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
-					<Add option="-Wall"/>
-					<Add option="-DUSE_OPENGL"/>
-					<Add option="-DNOGDI"/>
-					<Add option="-DENABLE_NLS"/>
-					<Add option="-DLOCALEDIR=\&quot;locale\&quot;"/>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="`sdl-config --cflags`" />
+					<Add option="-DUSE_OPENGL" />
 				</Compiler>
 				<Linker>
-					<Add library="enet"/>
-					<Add library="guichan"/>
-					<Add library="guichan_sdl"/>
-					<Add library="ws2_32"/>
-					<Add library="SDL_image"/>
-					<Add library="SDL_mixer"/>
-					<Add library="mingw32"/>
-					<Add library="SDLmain"/>
-					<Add library="SDL.dll"/>
-					<Add library="xml2.dll"/>
-					<Add library="opengl32"/>
-					<Add library="png12.dll"/>
-					<Add library="z.dll"/>
-					<Add library="physfs"/>
-					<Add library="curl.dll"/>
-					<Add library="winmm"/>
-					<Add library="intl.dll"/>
-					<Add library="SDL_ttf"/>
-					<Add library="intl"/>
+					<Add option="`sdl-config --libs`" />
+					<Add library="enet" />
+					<Add library="guichan" />
+					<Add library="guichan_sdl" />
+					<Add library="SDL_image" />
+					<Add library="SDL_mixer" />
+					<Add library="GL" />
+					<Add library="physfs" />
+					<Add library="SDL_ttf" />
+					<Add library="xml2" />
+					<Add library="png" />
+					<Add library="curl" />
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="src\animatedsprite.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\animatedsprite.h">
-			<Option compilerVar="CPP"/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\animationparticle.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\animationparticle.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\being.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\being.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\beingmanager.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\beingmanager.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\channel.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\channel.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\channelmanager.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\channelmanager.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\configlistener.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\configuration.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\configuration.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\defines.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\engine.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\engine.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\equipment.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\equipment.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\floor_item.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\floor_item.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\flooritemmanager.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\flooritemmanager.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\game.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\game.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\graphics.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\graphics.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\box.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\box.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\browserbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\browserbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\button.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\button.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\buy.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\buy.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\buysell.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\buysell.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\char_select.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\char_select.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\chat.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\chat.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\chatinput.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\chatinput.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\checkbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\checkbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\confirm_dialog.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\confirm_dialog.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\connection.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\connection.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\debugwindow.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\debugwindow.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\equipmentwindow.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\equipmentwindow.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\focushandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\focushandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\gccontainer.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\gccontainer.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\gui.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\gui.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\hbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\hbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\help.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\help.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\inttextbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\inttextbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\inventorywindow.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\inventorywindow.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\item_amount.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\item_amount.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\itemcontainer.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\itemcontainer.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\itemshortcutcontainer.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\itemshortcutcontainer.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\itemshortcutwindow.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\itemshortcutwindow.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\linkhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\listbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\listbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\login.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\login.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\menuwindow.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\menuwindow.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\minimap.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\minimap.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\ministatus.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\ministatus.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\npc_text.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\npc_text.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\npclistdialog.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\npclistdialog.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\ok_dialog.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\ok_dialog.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\passwordfield.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\passwordfield.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\playerbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\playerbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\popupmenu.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\popupmenu.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\progressbar.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\progressbar.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\quitdialog.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\quitdialog.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\radiobutton.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\radiobutton.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\register.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\register.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\scrollarea.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\scrollarea.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\sdlinput.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\sdlinput.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\selectionlistener.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\sell.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\sell.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\serverdialog.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\serverdialog.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup_audio.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup_audio.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup_joystick.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup_joystick.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup_keyboard.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup_keyboard.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup_video.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setup_video.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\setuptab.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\shop.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\shop.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\shoplistbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\shoplistbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\skill.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\skill.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\slider.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\slider.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\status.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\status.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\tabbedcontainer.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\tabbedcontainer.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\textbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\textbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\textfield.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\textfield.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\trade.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\trade.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\truetypefont.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\truetypefont.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\unregisterdialog.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\unregisterdialog.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\updatewindow.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\updatewindow.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\vbox.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\vbox.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\viewport.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\viewport.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\widgets\dropdown.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\widgets\dropdown.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\widgets\layout.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\widgets\layout.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\widgets\resizegrip.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\widgets\resizegrip.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\window.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\window.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\windowcontainer.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\windowcontainer.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\guichanfwd.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\imageparticle.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\imageparticle.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\inventory.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\inventory.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\item.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\item.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\itemshortcut.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\itemshortcut.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\joystick.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\joystick.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\keyboardconfig.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\keyboardconfig.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\localplayer.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\localplayer.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\lockedarray.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\log.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\log.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\logindata.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\main.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\main.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\map.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\map.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\monster.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\monster.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\accountserver\account.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\accountserver\account.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\accountserver\accountserver.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\accountserver\accountserver.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\accountserver\internal.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\accountserver\internal.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\beinghandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\beinghandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\buysellhandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\buysellhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\charserverhandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\charserverhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\chathandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\chathandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\chatserver\chatserver.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\chatserver\chatserver.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\chatserver\internal.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\chatserver\internal.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\connection.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\connection.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\gameserver\gameserver.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\gameserver\gameserver.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\gameserver\internal.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\gameserver\internal.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\gameserver\player.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\gameserver\player.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\internal.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\internal.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\inventoryhandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\inventoryhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\itemhandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\itemhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\loginhandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\loginhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\logouthandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\logouthandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\messagehandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\messagehandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\messagein.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\messagein.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\messageout.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\messageout.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\network.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\network.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\npchandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\npchandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\playerhandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\playerhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\protocol.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\tradehandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\tradehandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\npc.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\npc.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\openglgraphics.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\openglgraphics.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\particle.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\particle.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\particleemitter.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\particleemitter.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\player.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\player.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\properties.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\action.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\action.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\ambientoverlay.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\ambientoverlay.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\animation.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\animation.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\dye.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\dye.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\image.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\image.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\imageloader.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\imageloader.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\imageset.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\imageset.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\imagewriter.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\imagewriter.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\itemdb.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\itemdb.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\iteminfo.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\iteminfo.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\mapreader.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\mapreader.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\monsterdb.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\monsterdb.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\monsterinfo.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\monsterinfo.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\music.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\music.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\resource.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\resource.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\resourcemanager.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\resourcemanager.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\soundeffect.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\soundeffect.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\spritedef.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\spritedef.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\serverinfo.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\shopitem.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\shopitem.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\simpleanimation.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\simpleanimation.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\sound.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\sound.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\sprite.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\textparticle.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\textparticle.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\tileset.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\tmw.rc">
-			<Option compilerVar="WINDRES"/>
-			<Option objectName="src\tmw.res"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\base64.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\base64.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\dtor.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\gettext.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\strprintf.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\strprintf.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\tostring.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\xml.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\utils\xml.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\winver.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
+		<VirtualTargets>
+			<Add alias="All" targets="default;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add directory="/usr/local/include/libxml2" />
+		</Compiler>
+		<Unit filename="src/animatedsprite.cpp" />
+		<Unit filename="src/animatedsprite.h" />
+		<Unit filename="src/animationparticle.cpp" />
+		<Unit filename="src/animationparticle.h" />
+		<Unit filename="src/being.cpp" />
+		<Unit filename="src/being.h" />
+		<Unit filename="src/beingmanager.cpp" />
+		<Unit filename="src/beingmanager.h" />
+		<Unit filename="src/channel.cpp" />
+		<Unit filename="src/channel.h" />
+		<Unit filename="src/channelmanager.cpp" />
+		<Unit filename="src/channelmanager.h" />
+		<Unit filename="src/configlistener.h" />
+		<Unit filename="src/configuration.cpp" />
+		<Unit filename="src/configuration.h" />
+		<Unit filename="src/engine.cpp" />
+		<Unit filename="src/engine.h" />
+		<Unit filename="src/equipment.cpp" />
+		<Unit filename="src/equipment.h" />
+		<Unit filename="src/floor_item.cpp" />
+		<Unit filename="src/floor_item.h" />
+		<Unit filename="src/flooritemmanager.cpp" />
+		<Unit filename="src/flooritemmanager.h" />
+		<Unit filename="src/game.cpp" />
+		<Unit filename="src/game.h" />
+		<Unit filename="src/graphics.cpp" />
+		<Unit filename="src/graphics.h" />
+		<Unit filename="src/gui/box.cpp" />
+		<Unit filename="src/gui/box.h" />
+		<Unit filename="src/gui/browserbox.cpp" />
+		<Unit filename="src/gui/browserbox.h" />
+		<Unit filename="src/gui/button.cpp" />
+		<Unit filename="src/gui/button.h" />
+		<Unit filename="src/gui/buy.cpp" />
+		<Unit filename="src/gui/buy.h" />
+		<Unit filename="src/gui/buysell.cpp" />
+		<Unit filename="src/gui/buysell.h" />
+		<Unit filename="src/gui/char_select.cpp" />
+		<Unit filename="src/gui/char_select.h" />
+		<Unit filename="src/gui/chat.cpp" />
+		<Unit filename="src/gui/chat.h" />
+		<Unit filename="src/gui/chatinput.cpp" />
+		<Unit filename="src/gui/chatinput.h" />
+		<Unit filename="src/gui/checkbox.cpp" />
+		<Unit filename="src/gui/checkbox.h" />
+		<Unit filename="src/gui/confirm_dialog.cpp" />
+		<Unit filename="src/gui/confirm_dialog.h" />
+		<Unit filename="src/gui/connection.cpp" />
+		<Unit filename="src/gui/connection.h" />
+		<Unit filename="src/gui/debugwindow.cpp" />
+		<Unit filename="src/gui/debugwindow.h" />
+		<Unit filename="src/gui/equipmentwindow.cpp" />
+		<Unit filename="src/gui/equipmentwindow.h" />
+		<Unit filename="src/gui/focushandler.cpp" />
+		<Unit filename="src/gui/focushandler.h" />
+		<Unit filename="src/gui/gccontainer.cpp" />
+		<Unit filename="src/gui/gccontainer.h" />
+		<Unit filename="src/gui/gui.cpp" />
+		<Unit filename="src/gui/gui.h" />
+		<Unit filename="src/gui/guildlistbox.cpp" />
+		<Unit filename="src/gui/guildlistbox.h" />
+		<Unit filename="src/gui/guildwindow.cpp" />
+		<Unit filename="src/gui/guildwindow.h" />
+		<Unit filename="src/gui/hbox.cpp" />
+		<Unit filename="src/gui/hbox.h" />
+		<Unit filename="src/gui/help.cpp" />
+		<Unit filename="src/gui/help.h" />
+		<Unit filename="src/gui/inttextbox.cpp" />
+		<Unit filename="src/gui/inttextbox.h" />
+		<Unit filename="src/gui/inventorywindow.cpp" />
+		<Unit filename="src/gui/inventorywindow.h" />
+		<Unit filename="src/gui/item_amount.cpp" />
+		<Unit filename="src/gui/item_amount.h" />
+		<Unit filename="src/gui/itemcontainer.cpp" />
+		<Unit filename="src/gui/itemcontainer.h" />
+		<Unit filename="src/gui/itemshortcutcontainer.cpp" />
+		<Unit filename="src/gui/itemshortcutcontainer.h" />
+		<Unit filename="src/gui/itemshortcutwindow.cpp" />
+		<Unit filename="src/gui/itemshortcutwindow.h" />
+		<Unit filename="src/gui/linkhandler.h" />
+		<Unit filename="src/gui/listbox.cpp" />
+		<Unit filename="src/gui/listbox.h" />
+		<Unit filename="src/gui/login.cpp" />
+		<Unit filename="src/gui/login.h" />
+		<Unit filename="src/gui/menuwindow.cpp" />
+		<Unit filename="src/gui/menuwindow.h" />
+		<Unit filename="src/gui/minimap.cpp" />
+		<Unit filename="src/gui/minimap.h" />
+		<Unit filename="src/gui/ministatus.cpp" />
+		<Unit filename="src/gui/ministatus.h" />
+		<Unit filename="src/gui/npc_text.cpp" />
+		<Unit filename="src/gui/npc_text.h" />
+		<Unit filename="src/gui/npclistdialog.cpp" />
+		<Unit filename="src/gui/npclistdialog.h" />
+		<Unit filename="src/gui/ok_dialog.cpp" />
+		<Unit filename="src/gui/ok_dialog.h" />
+		<Unit filename="src/gui/passwordfield.cpp" />
+		<Unit filename="src/gui/passwordfield.h" />
+		<Unit filename="src/gui/playerbox.cpp" />
+		<Unit filename="src/gui/playerbox.h" />
+		<Unit filename="src/gui/popupmenu.cpp" />
+		<Unit filename="src/gui/popupmenu.h" />
+		<Unit filename="src/gui/progressbar.cpp" />
+		<Unit filename="src/gui/progressbar.h" />
+		<Unit filename="src/gui/quitdialog.cpp" />
+		<Unit filename="src/gui/quitdialog.h" />
+		<Unit filename="src/gui/radiobutton.cpp" />
+		<Unit filename="src/gui/radiobutton.h" />
+		<Unit filename="src/gui/register.cpp" />
+		<Unit filename="src/gui/register.h" />
+		<Unit filename="src/gui/scrollarea.cpp" />
+		<Unit filename="src/gui/scrollarea.h" />
+		<Unit filename="src/gui/sdlinput.cpp" />
+		<Unit filename="src/gui/sdlinput.h" />
+		<Unit filename="src/gui/selectionlistener.h" />
+		<Unit filename="src/gui/sell.cpp" />
+		<Unit filename="src/gui/sell.h" />
+		<Unit filename="src/gui/serverdialog.cpp" />
+		<Unit filename="src/gui/serverdialog.h" />
+		<Unit filename="src/gui/setup.cpp" />
+		<Unit filename="src/gui/setup.h" />
+		<Unit filename="src/gui/setup_audio.cpp" />
+		<Unit filename="src/gui/setup_audio.h" />
+		<Unit filename="src/gui/setup_joystick.cpp" />
+		<Unit filename="src/gui/setup_joystick.h" />
+		<Unit filename="src/gui/setup_keyboard.cpp" />
+		<Unit filename="src/gui/setup_keyboard.h" />
+		<Unit filename="src/gui/setup_video.cpp" />
+		<Unit filename="src/gui/setup_video.h" />
+		<Unit filename="src/gui/setuptab.h" />
+		<Unit filename="src/gui/shop.cpp" />
+		<Unit filename="src/gui/shop.h" />
+		<Unit filename="src/gui/shoplistbox.cpp" />
+		<Unit filename="src/gui/shoplistbox.h" />
+		<Unit filename="src/gui/skill.cpp" />
+		<Unit filename="src/gui/skill.h" />
+		<Unit filename="src/gui/slider.cpp" />
+		<Unit filename="src/gui/slider.h" />
+		<Unit filename="src/gui/status.cpp" />
+		<Unit filename="src/gui/status.h" />
+		<Unit filename="src/gui/tabbedcontainer.cpp" />
+		<Unit filename="src/gui/tabbedcontainer.h" />
+		<Unit filename="src/gui/textbox.cpp" />
+		<Unit filename="src/gui/textbox.h" />
+		<Unit filename="src/gui/textdialog.cpp" />
+		<Unit filename="src/gui/textdialog.h" />
+		<Unit filename="src/gui/textfield.cpp" />
+		<Unit filename="src/gui/textfield.h" />
+		<Unit filename="src/gui/trade.cpp" />
+		<Unit filename="src/gui/trade.h" />
+		<Unit filename="src/gui/truetypefont.cpp" />
+		<Unit filename="src/gui/truetypefont.h" />
+		<Unit filename="src/gui/unregisterdialog.cpp" />
+		<Unit filename="src/gui/unregisterdialog.h" />
+		<Unit filename="src/gui/updatewindow.cpp" />
+		<Unit filename="src/gui/updatewindow.h" />
+		<Unit filename="src/gui/vbox.cpp" />
+		<Unit filename="src/gui/vbox.h" />
+		<Unit filename="src/gui/viewport.cpp" />
+		<Unit filename="src/gui/viewport.h" />
+		<Unit filename="src/gui/widgets/dropdown.cpp" />
+		<Unit filename="src/gui/widgets/dropdown.h" />
+		<Unit filename="src/gui/widgets/layout.cpp" />
+		<Unit filename="src/gui/widgets/layout.h" />
+		<Unit filename="src/gui/widgets/resizegrip.cpp" />
+		<Unit filename="src/gui/widgets/resizegrip.h" />
+		<Unit filename="src/gui/window.cpp" />
+		<Unit filename="src/gui/window.h" />
+		<Unit filename="src/gui/windowcontainer.cpp" />
+		<Unit filename="src/gui/windowcontainer.h" />
+		<Unit filename="src/guichanfwd.h" />
+		<Unit filename="src/guild.cpp" />
+		<Unit filename="src/guild.h" />
+		<Unit filename="src/imageparticle.cpp" />
+		<Unit filename="src/imageparticle.h" />
+		<Unit filename="src/inventory.cpp" />
+		<Unit filename="src/inventory.h" />
+		<Unit filename="src/item.cpp" />
+		<Unit filename="src/item.h" />
+		<Unit filename="src/itemshortcut.cpp" />
+		<Unit filename="src/itemshortcut.h" />
+		<Unit filename="src/joystick.cpp" />
+		<Unit filename="src/joystick.h" />
+		<Unit filename="src/keyboardconfig.cpp" />
+		<Unit filename="src/keyboardconfig.h" />
+		<Unit filename="src/localplayer.cpp" />
+		<Unit filename="src/localplayer.h" />
+		<Unit filename="src/lockedarray.h" />
+		<Unit filename="src/log.cpp" />
+		<Unit filename="src/log.h" />
+		<Unit filename="src/logindata.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/main.h" />
+		<Unit filename="src/map.cpp" />
+		<Unit filename="src/map.h" />
+		<Unit filename="src/monster.cpp" />
+		<Unit filename="src/monster.h" />
+		<Unit filename="src/net/accountserver/account.cpp" />
+		<Unit filename="src/net/accountserver/account.h" />
+		<Unit filename="src/net/accountserver/accountserver.cpp" />
+		<Unit filename="src/net/accountserver/accountserver.h" />
+		<Unit filename="src/net/accountserver/internal.cpp" />
+		<Unit filename="src/net/accountserver/internal.h" />
+		<Unit filename="src/net/beinghandler.cpp" />
+		<Unit filename="src/net/beinghandler.h" />
+		<Unit filename="src/net/buysellhandler.cpp" />
+		<Unit filename="src/net/buysellhandler.h" />
+		<Unit filename="src/net/charserverhandler.cpp" />
+		<Unit filename="src/net/charserverhandler.h" />
+		<Unit filename="src/net/chathandler.cpp" />
+		<Unit filename="src/net/chathandler.h" />
+		<Unit filename="src/net/chatserver/chatserver.cpp" />
+		<Unit filename="src/net/chatserver/chatserver.h" />
+		<Unit filename="src/net/chatserver/guild.cpp" />
+		<Unit filename="src/net/chatserver/guild.h" />
+		<Unit filename="src/net/chatserver/internal.cpp" />
+		<Unit filename="src/net/chatserver/internal.h" />
+		<Unit filename="src/net/connection.cpp" />
+		<Unit filename="src/net/connection.h" />
+		<Unit filename="src/net/gameserver/gameserver.cpp" />
+		<Unit filename="src/net/gameserver/gameserver.h" />
+		<Unit filename="src/net/gameserver/internal.cpp" />
+		<Unit filename="src/net/gameserver/internal.h" />
+		<Unit filename="src/net/gameserver/player.cpp" />
+		<Unit filename="src/net/gameserver/player.h" />
+		<Unit filename="src/net/guildhandler.cpp" />
+		<Unit filename="src/net/guildhandler.h" />
+		<Unit filename="src/net/internal.cpp" />
+		<Unit filename="src/net/internal.h" />
+		<Unit filename="src/net/inventoryhandler.cpp" />
+		<Unit filename="src/net/inventoryhandler.h" />
+		<Unit filename="src/net/itemhandler.cpp" />
+		<Unit filename="src/net/itemhandler.h" />
+		<Unit filename="src/net/loginhandler.cpp" />
+		<Unit filename="src/net/loginhandler.h" />
+		<Unit filename="src/net/logouthandler.cpp" />
+		<Unit filename="src/net/logouthandler.h" />
+		<Unit filename="src/net/messagehandler.cpp" />
+		<Unit filename="src/net/messagehandler.h" />
+		<Unit filename="src/net/messagein.cpp" />
+		<Unit filename="src/net/messagein.h" />
+		<Unit filename="src/net/messageout.cpp" />
+		<Unit filename="src/net/messageout.h" />
+		<Unit filename="src/net/network.cpp" />
+		<Unit filename="src/net/network.h" />
+		<Unit filename="src/net/npchandler.cpp" />
+		<Unit filename="src/net/npchandler.h" />
+		<Unit filename="src/net/playerhandler.cpp" />
+		<Unit filename="src/net/playerhandler.h" />
+		<Unit filename="src/net/protocol.h" />
+		<Unit filename="src/net/tradehandler.cpp" />
+		<Unit filename="src/net/tradehandler.h" />
+		<Unit filename="src/npc.cpp" />
+		<Unit filename="src/npc.h" />
+		<Unit filename="src/openglgraphics.cpp" />
+		<Unit filename="src/openglgraphics.h" />
+		<Unit filename="src/particle.cpp" />
+		<Unit filename="src/particle.h" />
+		<Unit filename="src/particleemitter.cpp" />
+		<Unit filename="src/particleemitter.h" />
+		<Unit filename="src/player.cpp" />
+		<Unit filename="src/player.h" />
+		<Unit filename="src/properties.h" />
+		<Unit filename="src/resources/action.cpp" />
+		<Unit filename="src/resources/action.h" />
+		<Unit filename="src/resources/ambientoverlay.cpp" />
+		<Unit filename="src/resources/ambientoverlay.h" />
+		<Unit filename="src/resources/animation.cpp" />
+		<Unit filename="src/resources/animation.h" />
+		<Unit filename="src/resources/dye.cpp" />
+		<Unit filename="src/resources/dye.h" />
+		<Unit filename="src/resources/image.cpp" />
+		<Unit filename="src/resources/image.h" />
+		<Unit filename="src/resources/imageloader.cpp" />
+		<Unit filename="src/resources/imageloader.h" />
+		<Unit filename="src/resources/imageset.cpp" />
+		<Unit filename="src/resources/imageset.h" />
+		<Unit filename="src/resources/imagewriter.cpp" />
+		<Unit filename="src/resources/imagewriter.h" />
+		<Unit filename="src/resources/itemdb.cpp" />
+		<Unit filename="src/resources/itemdb.h" />
+		<Unit filename="src/resources/iteminfo.cpp" />
+		<Unit filename="src/resources/iteminfo.h" />
+		<Unit filename="src/resources/mapreader.cpp" />
+		<Unit filename="src/resources/mapreader.h" />
+		<Unit filename="src/resources/monsterdb.cpp" />
+		<Unit filename="src/resources/monsterdb.h" />
+		<Unit filename="src/resources/monsterinfo.cpp" />
+		<Unit filename="src/resources/monsterinfo.h" />
+		<Unit filename="src/resources/music.cpp" />
+		<Unit filename="src/resources/music.h" />
+		<Unit filename="src/resources/resource.cpp" />
+		<Unit filename="src/resources/resource.h" />
+		<Unit filename="src/resources/resourcemanager.cpp" />
+		<Unit filename="src/resources/resourcemanager.h" />
+		<Unit filename="src/resources/soundeffect.cpp" />
+		<Unit filename="src/resources/soundeffect.h" />
+		<Unit filename="src/resources/spritedef.cpp" />
+		<Unit filename="src/resources/spritedef.h" />
+		<Unit filename="src/serverinfo.h" />
+		<Unit filename="src/shopitem.cpp" />
+		<Unit filename="src/shopitem.h" />
+		<Unit filename="src/simpleanimation.cpp" />
+		<Unit filename="src/simpleanimation.h" />
+		<Unit filename="src/sound.cpp" />
+		<Unit filename="src/sound.h" />
+		<Unit filename="src/sprite.h" />
+		<Unit filename="src/textparticle.cpp" />
+		<Unit filename="src/textparticle.h" />
+		<Unit filename="src/tileset.h" />
+		<Unit filename="src/tmw.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="src/utils/base64.cpp" />
+		<Unit filename="src/utils/base64.h" />
+		<Unit filename="src/utils/dtor.h" />
+		<Unit filename="src/utils/gettext.h" />
+		<Unit filename="src/utils/strprintf.cpp" />
+		<Unit filename="src/utils/strprintf.h" />
+		<Unit filename="src/utils/tostring.h" />
+		<Unit filename="src/utils/xml.cpp" />
+		<Unit filename="src/utils/xml.h" />
+		<Unit filename="src/winver.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

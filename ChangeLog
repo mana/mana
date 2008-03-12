@@ -1,3 +1,10 @@
+2008-03-12  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/guildwindow.cpp, src/gui/guildwindow.h,
+	src/net/guildhandler.cpp, src/net/guildhandler.h,
+	src/net/chatserver.cpp, src/net/chatserver.h: Added ability to 
+	quit guilds.
+
 2008-03-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,

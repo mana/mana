@@ -25,8 +25,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  *
- * $Id$
+ * $Id:$
  */
+
 #include <iostream>
 #include "guildhandler.h"
 
@@ -53,6 +54,7 @@ GuildHandler::GuildHandler()
         CPMSG_GUILD_LEFT,
         CPMSG_GUILD_INVITED,
         CPMSG_GUILD_REJOIN,
+        CPMSG_GUILD_QUIT_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -130,6 +132,16 @@ void GuildHandler::handleMessage(MessageIn &msg)
             logger->log("Received CPMSG_GUILD_REJOIN");
 
             joinedGuild(msg);
+        } break;
+
+        case CPMSG_GUILD_QUIT_RESPONSE:
+        {
+            logger->log("Received CPMSG_GUILD_QUIT_RESPONSE");
+
+            if (msg.readInt8() == ERRMSG_OK)
+            {
+                guildWindow->removeTab();
+            }
         } break;
     }
 }
