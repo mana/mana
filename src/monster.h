@@ -33,6 +33,8 @@ class Monster : public Being
     public:
         Monster(Uint16 id, Uint16 job, Map *map);
 
+        virtual ~Monster();
+
         virtual void setAction(Action action, int attackType);
 
         virtual Type getType() const;
@@ -58,6 +60,19 @@ class Monster : public Being
          */
         const MonsterInfo&
         getInfo() const;
+
+        /**
+         * Gets the way the monster is blocked for other objects
+         */
+        virtual unsigned char getWalkMask() const
+        { return 0x83; } // blocked walls, other monsters and players ( bin 1000 0011)
+
+    protected:
+        /**
+         * Gets the way the monster blocks pathfinding for other objects
+         */
+        virtual Map::BlockType getBlockType() const
+        { return Map::BLOCKTYPE_MONSTER; }
 };
 
 #endif

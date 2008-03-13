@@ -1,3 +1,14 @@
+2008-03-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp, src/being.h, src/gui/viewport.cpp,
+	src/localplayer.cpp, src/map.cpp, src/map.h, src/monster.cpp,
+	src/monster.h, src/net/beinghandler.cpp, src/net/playerhandler.cpp.
+	src/player.cpp, src/player.h: Unified route finding algorithmns
+	with those used by the server to minimize asynchronisation.
+	* src/map.cpp, src/gui/viewport.cpp: Improved path debugging tool
+	by displaying a raster and showing blocked tiles when it is
+	activated (alt+F).
+
 2008-03-12  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/guildwindow.cpp, src/gui/guildwindow.h,

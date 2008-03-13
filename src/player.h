@@ -49,6 +49,8 @@ class Player : public Being
          */
         Player(int id, int job, Map *map);
 
+        virtual ~Player();
+
         virtual Type
         getType() const;
 
@@ -113,10 +115,20 @@ class Player : public Being
          */
         short getNumberOfGuilds();
 
+        /**
+         * Gets the way the character is blocked by other objects
+         */
+        virtual unsigned char getWalkMask() const
+        { return 0x82; } // blocked by walls and monsters ( bin 1000 0010)
+
     protected:
         // Character guild information
         std::map<int, Guild*> mGuilds;
-
+        /**
+         * Gets the way the monster blocks pathfinding for other objects
+         */
+        virtual Map::BlockType getBlockType() const
+        { return Map::BLOCKTYPE_CHARACTER; }
     private:
         Gender mGender;
         Uint8 mHairStyle;

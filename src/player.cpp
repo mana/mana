@@ -44,6 +44,11 @@ Player::Player(int id, int job, Map *map):
 {
 }
 
+Player::~Player()
+{
+    if (mMap) mMap->freeTile(mX / 32, mY / 32, getBlockType());
+}
+
 Being::Type
 Player::getType() const
 {

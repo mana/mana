@@ -221,6 +221,10 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         drawTargetCursor(graphics);
         mMap->draw(graphics, mCameraX, mCameraY, 1);
         mMap->draw(graphics, mCameraX, mCameraY, 2);
+        if (mShowDebugPath)
+        {
+            mMap->drawCollision(graphics, mCameraX, mCameraY);
+        }
         mMap->drawOverlay(graphics, mViewX, mViewY,
                 (int) config.getValue("OverlayDetail", 2));
         drawTargetName(graphics);
@@ -335,7 +339,7 @@ Viewport::drawDebugPath(Graphics *graphics)
 
     Path debugPath = mMap->findPath(
             player_node->mX / 32, player_node->mY / 32,
-            mouseTileX, mouseTileY);
+            mouseTileX, mouseTileY, 0xFF);
 
     graphics->setColor(gcn::Color(255, 0, 0));
     for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
@@ -399,7 +403,7 @@ Viewport::mousePressed(gcn::MouseEvent &event)
                 player_node->pickUp(item);
         }
         // Just walk around
-        else if (mMap->getWalk(tilex, tiley))
+        else if (mMap->getWalk(tilex, tiley, player_node->getWalkMask()))
         {
             // XXX XXX XXX REALLY UGLY!
             Uint8 *keys = SDL_GetKeyState(NULL);

@@ -301,6 +301,5 @@ PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     current_npc = 0;
 
     player_node->setAction(Being::STAND);
-    player_node->mX = x;
-    player_node->mY = y;
+    player_node->setPositionInPixels(x, y);
 }

@@ -72,6 +72,11 @@ Map::Map(int width, int height, int tileWidth, int tileHeight):
     int size = mWidth * mHeight;
 
     mMetaTiles = new MetaTile[size];
+    for (int i=0; i < NB_BLOCKTYPES; i++)
+    {
+        mOccupation[i] = new int[size];
+        memset(mOccupation[i], 0, size * sizeof(int));
+    }
     mTiles = new Image*[size * 3];
     std::fill_n(mTiles, size * 3, (Image*)0);
 }
@@ -81,6 +86,10 @@ Map::~Map()
     // clean up map data
     delete[] mMetaTiles;
     delete[] mTiles;
+    for (int i=0; i < NB_BLOCKTYPES; i++)
+    {
+        delete[] mOccupation[i];
+    }
     // clean up tilesets
     for_each(mTilesets.begin(), mTilesets.end(), make_dtor(mTilesets));
     mTilesets.clear();
@@ -186,6 +195,59 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
     }
 }
 
+void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY)
+{
+    int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
+    int startX = scrollX / mTileWidth;
+    int startY = scrollY / mTileHeight;
+    int endX = (graphics->getWidth() + scrollX + mTileWidth - 1) / mTileWidth;
+    int endY = endPixelY / mTileHeight;
+
+    if (startX < 0) startX = 0;
+    if (startY < 0) startY = 0;
+    if (endX > mWidth) endX = mWidth;
+    if (endY > mHeight) endY = mHeight;
+
+    for (int y = startY; y < endY; y++)
+    {
+        for (int x = startX; x < endX; x++)
+        {
+            graphics->setColor(gcn::Color(0, 0, 0, 64));
+                graphics->drawRectangle(gcn::Rectangle(
+                    x * mTileWidth - scrollX,
+                    y * mTileWidth - scrollY,
+                    33, 33));
+
+            if (!getWalk(x, y, BLOCKMASK_WALL))
+            {
+                graphics->setColor(gcn::Color(0, 0, 200, 64));
+                graphics->fillRectangle(gcn::Rectangle(
+                    x * mTileWidth - scrollX,
+                    y * mTileWidth - scrollY,
+                    32, 32));
+            }
+
+            if (!getWalk(x, y, BLOCKMASK_MONSTER))
+            {
+                graphics->setColor(gcn::Color(200, 0, 0, 64));
+                graphics->fillRectangle(gcn::Rectangle(
+                    x * mTileWidth - scrollX,
+                    y * mTileWidth - scrollY,
+                    32, 32));
+            }
+
+            if (!getWalk(x, y, BLOCKMASK_CHARACTER))
+            {
+                graphics->setColor(gcn::Color(0, 200, 0, 64));
+                graphics->fillRectangle(gcn::Rectangle(
+                    x * mTileWidth - scrollX,
+                    y * mTileWidth - scrollY,
+                    32, 32));
+            }
+        }
+    }
+}
+
 void Map::drawOverlay(Graphics *graphics,
                       float scrollX, float scrollY, int detail)
 {
@@ -231,7 +293,10 @@ void Map::setTileWithGid(int x, int y, int layer, int gid)
     if (layer == 3)
     {
         Tileset *set = getTilesetWithGid(gid);
-        setWalk(x, y, (!set || (gid - set->getFirstGid() == 0)));
+        if (set && (gid - set->getFirstGid() != 0))
+        {
+            blockTile(x, y, BLOCKTYPE_WALL);
+        }
     }
     else if (layer < 3)
     {
@@ -271,34 +336,69 @@ Image* Map::getTileWithGid(int gid) const
     return NULL;
 }
 
-void Map::setWalk(int x, int y, bool walkable)
+void Map::blockTile(int x, int y, BlockType type)
 {
-    mMetaTiles[x + y * mWidth].walkable = walkable;
-}
+    if (type == BLOCKTYPE_NONE) return;
+    int tileNum = x + y * mWidth;
+    assert (tileNum <= mWidth * mHeight);
 
-bool Map::getWalk(int x, int y) const
-{
-    return !tileCollides(x, y) && !occupied(x, y);
-}
-
-bool Map::occupied(int x, int y) const
-{
-    Beings &beings = beingManager->getAll();
-    for (BeingIterator i = beings.begin(); i != beings.end(); i++)
+    if ((++mOccupation[type][tileNum]) > 0)
     {
-        // job 45 is a portal, they don't collide
-        if ((*i)->mX / 32 == x && (*i)->mY / 32 == y && (*i)->mJob != 45)
+        switch (type)
         {
-            return true;
+            case BLOCKTYPE_WALL:
+                mMetaTiles[tileNum].blockmask |= BLOCKMASK_WALL;
+                break;
+            case BLOCKTYPE_CHARACTER:
+                mMetaTiles[tileNum].blockmask |= BLOCKMASK_CHARACTER;
+                break;
+            case BLOCKTYPE_MONSTER:
+                mMetaTiles[tileNum].blockmask |= BLOCKMASK_MONSTER;
+                break;
+            default:
+                // shut up!
+                break;
         }
     }
-
-    return false;
 }
 
-bool Map::tileCollides(int x, int y) const
+void Map::freeTile(int x, int y, BlockType type)
 {
-    return !(contains(x, y) && mMetaTiles[x + y * mWidth].walkable);
+    if (type == BLOCKTYPE_NONE) return;
+
+    int tileNum = x + y * mWidth;
+    assert (tileNum <= mWidth * mHeight);
+
+    if ((--mOccupation[type][tileNum]) <= 0)
+    {
+        switch (type)
+        {
+            case BLOCKTYPE_WALL:
+                mMetaTiles[tileNum].blockmask &= (BLOCKMASK_WALL xor 0xff);
+                break;
+            case BLOCKTYPE_CHARACTER:
+                mMetaTiles[tileNum].blockmask &= (BLOCKMASK_CHARACTER xor 0xff);
+                break;
+            case BLOCKTYPE_MONSTER:
+                mMetaTiles[tileNum].blockmask &= (BLOCKMASK_MONSTER xor 0xff);
+                break;
+            default:
+                // shut up!
+                break;
+        }
+    }
+}
+
+bool Map::getWalk(int x, int y, char walkmask) const
+{
+    // You can't walk outside of the map
+    if (x < 0 || y < 0 || x >= mWidth || y >= mHeight)
+    {
+        return false;
+    }
+
+    // Check if the tile is walkable
+    return !(mMetaTiles[x + y * mWidth].blockmask & walkmask);
 }
 
 bool Map::contains(int x, int y) const
@@ -334,17 +434,16 @@ void Map::removeSprite(SpriteIterator iterator)
 
 static int const basicCost = 100;
 
-Path Map::findPath(int startX, int startY, int destX, int destY)
+Path Map::findPath(int startX, int startY, int destX, int destY, unsigned char walkmask, int maxCost)
 {
     // Path to be built up (empty by default)
-    Path path;
+    std::list<PATH_NODE> path;
 
     // Declare open list, a list with open tiles sorted on F cost
     std::priority_queue<Location> openList;
 
-    // Return empty path when destination collides
-    if (tileCollides(destX, destY))
-        return path;
+    // Return when destination not walkable
+    if (!getWalk(destX, destY, walkmask)) return path;
 
     // Reset starting tile's G cost to 0
     MetaTile *startTile = getMetaTile(startX, startY);
@@ -358,19 +457,20 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
     // Keep trying new open tiles until no more tiles to try or target found
     while (!openList.empty() && !foundPath)
     {
-        // Take the location with the lowest F cost from the open list.
+        // Take the location with the lowest F cost from the open list, and
+        // add it to the closed list.
         Location curr = openList.top();
         openList.pop();
 
         // If the tile is already on the closed list, this means it has already
         // been processed with a shorter path to the start point (lower G cost)
-        if (curr.tile->whichList == mOnClosedList)
+        if (curr.tile->whichList == onClosedList)
         {
             continue;
         }
 
         // Put the current tile on the closed list
-        curr.tile->whichList = mOnClosedList;
+        curr.tile->whichList = onClosedList;
 
         // Check the adjacent tiles
         for (int dy = -1; dy <= 1; dy++)
@@ -383,28 +483,28 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
 
                 // Skip if if we're checking the same tile we're leaving from,
                 // or if the new location falls outside of the map boundaries
-                if ((dx == 0 && dy == 0) || !contains(x, y))
+                if ((dx == 0 && dy == 0) ||
+                        (x < 0 || y < 0 || x >= mWidth || y >= mHeight))
                 {
                     continue;
                 }
 
                 MetaTile *newTile = getMetaTile(x, y);
 
-                // Skip if the tile is on the closed list or collides
-                if (newTile->whichList == mOnClosedList || tileCollides(x, y))
+                // Skip if the tile is on the closed list or is not walkable
+                if (newTile->whichList == onClosedList || newTile->blockmask & walkmask)
                 {
                     continue;
                 }
 
                 // When taking a diagonal step, verify that we can skip the
-                // corner. We allow skipping past beings but not past non-
-                // walkable tiles.
+                // corner.
                 if (dx != 0 && dy != 0)
                 {
                     MetaTile *t1 = getMetaTile(curr.x, curr.y + dy);
                     MetaTile *t2 = getMetaTile(curr.x + dx, curr.y);
 
-                    if (!(t1->walkable && t2->walkable))
+                    if (t1->blockmask & walkmask && !(t2->blockmask & walkmask)) // I hope I didn't fuck this line up
                     {
                         continue;
                     }
@@ -428,21 +528,14 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
                     ++Gcost;
                 }
 
-                // It costs extra to walk through a being (needs to be enough
-                // to make it more attractive to walk around).
-                if (occupied(x, y))
-                {
-                    Gcost += 30;
-                }
-
                 // Skip if Gcost becomes too much
                 // Warning: probably not entirely accurate
-                if (Gcost > 20 * basicCost)
+                if (Gcost > maxCost * basicCost)
                 {
                     continue;
                 }
 
-                if (newTile->whichList != mOnOpenList)
+                if (newTile->whichList != onOpenList)
                 {
                     // Found a new tile (not on open nor on closed list)
 
@@ -464,7 +557,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
 
                     if (x != destX || y != destY) {
                         // Add this tile to the open list
-                        newTile->whichList = mOnOpenList;
+                        newTile->whichList = onOpenList;
                         openList.push(Location(x, y, newTile));
                     }
                     else {
@@ -493,8 +586,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
 
     // Two new values to indicate whether a tile is on the open or closed list,
     // this way we don't have to clear all the values between each pathfinding.
-    mOnClosedList += 2;
-    mOnOpenList += 2;
+    onClosedList += 2;
+    onOpenList += 2;
 
     // If a path has been found, iterate backwards using the parent locations
     // to extract it.

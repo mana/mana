@@ -112,14 +112,13 @@ class Being : public Sprite
         enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
         std::string mName;      /**< Name of character */
-        Uint16 mJob;            /**< Job (player job, npc, monster, ) */
-        Uint16 mX, mY;          /**< Pixel coordinates (tile center) */
-        Action mAction;         /**< Action the being is performing */
-        Uint16 mWalkTime;
+        Uint16 mX, mY;          /**< Pixel coordinates of tile center */
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
-
         Uint16 mAttackSpeed;          /**< Attack speed */
+        Uint16 mWalkTime;
+        Action mAction;                 /**< Action the being is performing */
+        Uint16 mJob;                    /**< Job (player job, npc, monster, ) */
 
         /**
          * Constructor.
@@ -265,6 +264,13 @@ class Being : public Sprite
         setAction(Action action, int attackType = 0);
 
         /**
+         * Gets the current action.
+         */
+        bool isAlive() { return mAction != DEAD; }
+
+        int getWalkTime() { return mWalkTime; }
+
+        /**
          * Returns the direction the being is facing.
          */
         SpriteDirection getSpriteDirection() const
@@ -296,6 +302,17 @@ class Being : public Sprite
          */
         int
         getPixelY() const { return mPy; }
+
+        /**
+         * sets the position in pixels using pixel coordinates
+         */
+        void setPositionInPixels(int x, int y);
+
+        /**
+         * sets the position in pixels using tile coordinates
+         */
+        void setPositionInTiles(int x, int y)
+        { setPositionInPixels(x * 32 + 16, y * 32 + 16); }
 
         /**
          * Get the current X pixel offset.
@@ -332,11 +349,23 @@ class Being : public Sprite
          */
         void controlParticle(Particle *particle);
 
+        /**
+         * Gets the way the object is blocked by other objects
+         */
+        virtual unsigned char getWalkMask() const
+        { return 0x00; } //can walk through everything
+
     protected:
         /**
          * Sets the new path for this being.
          */
         void setPath(const Path &path, int mod = 1024);
+
+        /**
+         * Gets the way the object blocks pathfinding for other objects
+         */
+        virtual Map::BlockType getBlockType() const
+        { return Map::BLOCKTYPE_NONE; }
 
         Uint16 mId;                     /**< Unique being id */
         Uint16 mWalkSpeed;              /**< Walking speed */

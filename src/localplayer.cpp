@@ -233,17 +233,17 @@ void LocalPlayer::walk(unsigned char dir)
         dx += 32;
 
     // Prevent skipping corners over colliding tiles
-    if (dx && mMap->tileCollides((mX + dx) / 32, mY / 32))
+    if (dx && !mMap->getWalk((mX + dx) / 32, mY / 32, getWalkMask()))
         dx = 16 - mX % 32;
-    if (dy && mMap->tileCollides(mX / 32, (mY + dy) / 32))
+    if (dy && !mMap->getWalk(mX / 32, (mY + dy) / 32, getWalkMask()))
         dy = 16 - mY % 32;
 
     // Choose a straight direction when diagonal target is blocked
-    if (dx && dy && !mMap->getWalk((mX + dx) / 32, (mY + dy) / 32))
+    if (dx && dy && !mMap->getWalk((mX + dx) / 32, (mY + dy) / 32, getWalkMask()))
         dx = 16 - mX % 32;
 
     // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk((mX + dx) / 32, (mY + dy) / 32))
+    if ((dx || dy) && mMap->getWalk((mX + dx) / 32, (mY + dy) / 32, getWalkMask()))
     {
         setDestination(mX + dx, mY + dy);
     }
@@ -259,9 +259,9 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     // Fix coordinates so that the player does not seem to dig into walls.
     int tx = x / 32, ty = y / 32, fx = x % 32, fy = y % 32;
-    if (fx != 16 && mMap->tileCollides(tx + fx / 16 * 2 - 1, ty)) fx = 16;
-    if (fy != 16 && mMap->tileCollides(tx, ty + fy / 16 * 2 - 1)) fy = 16;
-    if (fx != 16 && fy != 16 && mMap->tileCollides(tx + fx / 16 * 2 - 1, ty + fy / 16 * 2 - 1)) fx = 16;
+    if (fx != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty, getWalkMask())) fx = 16;
+    if (fy != 16 && !mMap->getWalk(tx, ty + fy / 16 * 2 - 1, getWalkMask())) fy = 16;
+    if (fx != 16 && fy != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty + fy / 16 * 2 - 1, getWalkMask())) fx = 16;
     x = tx * 32 + fx;
     y = ty * 32 + fy;
 

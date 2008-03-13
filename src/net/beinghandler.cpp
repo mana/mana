@@ -496,8 +496,7 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
             return;
     }
 
-    being->mX = px;
-    being->mY = py;
+    being->setPositionInPixels(px, py);
     being->setDestination(px, py);
     being->setAction(action);
 }
@@ -544,11 +543,10 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         {
             being->setWalkSpeed(speed * 10);
         }
-        if (abs(being->mX - sx) + abs(being->mY - sy) > 4 * 32)
+        if (abs(being->getPixelX() - sx) + abs(being->getPixelY() - sy) > 4 * 32)
         {
             // Too large a desynchronization.
-            being->mX = sx;
-            being->mY = sy;
+            being->setPositionInPixels(sx, sy);
             being->setDestination(dx, dy);
         }
         else if (!(flags & MOVING_POSITION))
@@ -581,8 +579,6 @@ void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
         case DIRECTION_LEFT: being->setDirection(Being::LEFT); break;
         case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
     }
-
-    logger->log("Attacktype: %d", attackType);
 
     being->setAction(Being::ATTACK, attackType);
 }

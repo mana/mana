@@ -47,12 +47,12 @@ int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
 
 Being::Being(int id, int job, Map *map):
-    mJob(job),
     mX(0), mY(0),
-    mAction(STAND),
-    mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
+    mWalkTime(0),
+    mAction(STAND),
+    mJob(job),
     mId(id),
     mWalkSpeed(150),
     mSpeedModifier(1024),
@@ -100,6 +100,14 @@ Being::~Being()
     }
 }
 
+void Being::setPositionInPixels(int x, int y)
+{
+    mMap->freeTile(mX / 32, mY / 32, getBlockType());
+    mX = x;
+    mY = y;
+    mMap->blockTile(x / 32, y / 32, getBlockType());
+}
+
 void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
 {
     if (!mMap || (mX == dstX && mY == dstY))
@@ -130,7 +138,7 @@ void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
     }
     else
     {
-        p1 = mMap->findPath(srcX / 32, srcY / 32, dstX / 32, dstY / 32);
+        p1 = mMap->findPath(srcX / 32, srcY / 32, dstX / 32, dstY / 32, getWalkMask());
         if (p1.empty())
         {
             // No path, but don't teleport since it could be user input.
@@ -190,7 +198,7 @@ void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
     for (Path::iterator i = p1.begin(), i_end = p1.end(); i != i_end; ++i)
     {
         // Look if it is worth passing by tile i.
-        Path p2 = mMap->findPath(mX / 32, mY / 32, i->x / 32, i->y / 32);
+        Path p2 = mMap->findPath(mX / 32, mY / 32, i->x / 32, i->y / 32, getWalkMask());
         if (!p2.empty())
         {
             int l1 = mMap->getMetaTile(i->x / 32, i->y / 32)->Gcost;
@@ -343,9 +351,11 @@ Being::handleAttack()
 void
 Being::setMap(Map *map)
 {
+
     // Remove sprite from potential previous map
     if (mMap)
     {
+        mMap->freeTile(mX / 32, mY / 32, getBlockType());
         mMap->removeSprite(mSpriteIterator);
     }
 
@@ -355,6 +365,7 @@ Being::setMap(Map *map)
     if (mMap)
     {
         mSpriteIterator = mMap->addSprite(this);
+        mMap->blockTile(mX / 32, mY / 32, getBlockType());
     }
 
     // Clear particle effect list because child particles became invalid
@@ -488,8 +499,7 @@ Being::nextStep()
 
     setDirection(dir);
 
-    mX = node.x;
-    mY = node.y;
+    setPositionInPixels(node.x, node.y);
     setAction(WALK);
     mWalkTime += mStepTime / 10;
     mStepTime = mWalkSpeed * (int)std::sqrt((double)mStepX * mStepX + (double)mStepY * mStepY) *
