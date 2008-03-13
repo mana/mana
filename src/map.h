@@ -230,9 +230,9 @@ class Map : public Properties
         /**
          * Blockmasks for different entities
          */
-        static const unsigned char BLOCKMASK_WALL = 128;   // = bin 1000 0000
-        static const unsigned char BLOCKMASK_CHARACTER = 1;// = bin 0000 0001
-        static const unsigned char BLOCKMASK_MONSTER = 2;  // = bin 0000 0010
+        static const unsigned char BLOCKMASK_WALL = 0x80;     // = bin 1000 0000
+        static const unsigned char BLOCKMASK_CHARACTER = 0x01;// = bin 0000 0001
+        static const unsigned char BLOCKMASK_MONSTER = 0x02;  // = bin 0000 0010
         int *mOccupation[NB_BLOCKTYPES];
 
         // Pathfinding members
