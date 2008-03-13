@@ -62,10 +62,10 @@ class Monster : public Being
         getInfo() const;
 
         /**
-         * Gets the way the monster is blocked for other objects
+         * Gets the way the monster is blocked by other objects
          */
         virtual unsigned char getWalkMask() const
-        { return 0x83; } // blocked walls, other monsters and players ( bin 1000 0011)
+        { return 0x83; } // blocked by walls, other monsters and players ( bin 1000 0011)
 
     protected:
         /**

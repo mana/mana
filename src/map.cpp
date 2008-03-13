@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <queue>
+#include <cassert>
 
 #include "beingmanager.h"
 #include "game.h"
