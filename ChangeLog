@@ -1,3 +1,8 @@
+2008-03-15  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/map.cpp: Fixed a crash caused by the new blocking system.
+	* data/new_1-1.tmx: Fixed warp to map 15 (patch by peavey).
+	
 2008-03-13  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/being.cpp, src/being.h, src/gui/viewport.cpp,
