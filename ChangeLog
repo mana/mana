@@ -2,6 +2,7 @@
 
 	* src/map.cpp: Fixed a crash caused by the new blocking system.
 	* data/new_1-1.tmx: Fixed warp to map 15 (patch by peavey).
+	* src/npc.hpp: Added pathblocking rules for NPCs.
 	
 2008-03-13  Philipp Sehmisch  <tmw@crushnet.org>
 
