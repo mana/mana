@@ -1,3 +1,7 @@
+2008-03-16  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* The Mana World.dev: Updated Dev-C++ project file. Patch by peavey.
+
 2008-03-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
