@@ -1,3 +1,8 @@
+2008-03-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/skill.cpp, tmw.cbp: Restored previous project file and fixed
+	a warning along the way.
+
 2008-03-15  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/map.cpp: Fixed a crash caused by the new blocking system.

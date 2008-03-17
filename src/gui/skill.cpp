@@ -46,11 +46,11 @@ SkillDialog::SkillDialog():
 {
     setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 255, 25, 230, 425);
-    
+
     TabbedContainer *panel = new TabbedContainer();
     panel->setDimension(gcn::Rectangle(5, 5, 225, 420));
     panel->setOpaque(false);
-    
+
     Skill_Tab* tab;
 
     tab = new Skill_Tab("Weapon");
@@ -64,7 +64,7 @@ SkillDialog::SkillDialog():
     tab = new Skill_Tab("Craft");
     panel->addTab(tab, _("Crafts"));
     mTabs.push_back(tab);
-    
+
     add(panel);
 
     update();
@@ -116,7 +116,7 @@ Skill_Tab::Skill_Tab(std::string type): type(type)
     {
         skillnum = CHAR_SKILL_CRAFT_NB;
     }
-    
+
     mSkillNameLabels.resize(skillnum);
     mSkillLevelLabels.resize(skillnum);
     mSkillExpLabels.resize(skillnum);
@@ -140,9 +140,9 @@ Skill_Tab::Skill_Tab(std::string type): type(type)
         mSkillLevelLabels.at(a)->setPosition(165, a*32);
         add(mSkillLevelLabels.at(a));
     }
-    
+
     update();
-    
+
 }
 
 void Skill_Tab::update()
@@ -165,7 +165,7 @@ void Skill_Tab::update()
         skillnum = CHAR_SKILL_CRAFT_NB;
         skillbegin = CHAR_SKILL_CRAFT_BEGIN - CHAR_SKILL_BEGIN;
     }
-    
+
     for (int a = 0; a < skillnum; a++)
     {
         int baseLevel = player_node->getAttributeBase(a + skillbegin + CHAR_SKILL_BEGIN);
@@ -194,7 +194,7 @@ void Skill_Tab::update()
         mSkillExpLabels.at(a)->setAlignment(gcn::Graphics::RIGHT);
 
         // more intense red as exp grows
-        int color = 150 - (150 * ((float) exp.first / exp.second));
+        int color = 150 - (int)(150 * ((float) exp.first / exp.second));
         mSkillProgress.at(a)->setColor(244, color, color);
         mSkillProgress.at(a)->setProgress((float) exp.first / exp.second);
     }
