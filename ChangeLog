@@ -1,3 +1,7 @@
+2008-03-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* AUTHORS: Updated (but still not complete).
+
 2008-03-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/skill.cpp, tmw.cbp: Restored previous project file and fixed
@@ -553,7 +557,7 @@
 
 2007-11-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* po/it.po: Updated Italian translation.
+	* po/it.po: Updated Italian TRanslation.
 
 2007-11-14  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
