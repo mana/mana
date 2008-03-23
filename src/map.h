@@ -57,13 +57,13 @@ struct MetaTile
     MetaTile():whichList(0), blockmask(0) {};
 
     // Pathfinding members
-    int Fcost;              /**< Estimation of total path cost */
-    int Gcost;              /**< Cost from start to this location */
-    int Hcost;              /**< Estimated cost to goal */
-    int whichList;          /**< No list, open list or closed list */
-    int parentX;            /**< X coordinate of parent tile */
-    int parentY;            /**< Y coordinate of parent tile */
-    unsigned char blockmask;          /**< Can beings walk on this tile */
+    int Fcost;               /**< Estimation of total path cost */
+    int Gcost;               /**< Cost from start to this location */
+    int Hcost;               /**< Estimated cost to goal */
+    int whichList;           /**< No list, open list or closed list */
+    int parentX;             /**< X coordinate of parent tile */
+    int parentY;             /**< Y coordinate of parent tile */
+    unsigned char blockmask; /**< Blocking properties of this tile */
 };
 
 /**
@@ -153,9 +153,10 @@ class Map : public Properties
         void freeTile(int x, int y, BlockType type);
 
         /**
-         * Gets walkability for a tile with a blocking bitmask
+         * Gets walkability for a tile with a blocking bitmask. When called
+         * without walkmask, only blocks against colliding tiles.
          */
-        bool getWalk(int x, int y, char walkmask) const;
+        bool getWalk(int x, int y, char walkmask = BLOCKMASK_WALL) const;
 
         /**
          * Returns the width of this map.

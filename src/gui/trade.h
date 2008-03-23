@@ -92,7 +92,6 @@ class TradeWindow : public Window, gcn::ActionListener, SelectionListener
         void action(const gcn::ActionEvent &event);
 
     private:
-
         enum Status
         {
             PREPARING, /**< Players are adding items. */

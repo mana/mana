@@ -34,11 +34,13 @@
 
 #include "../gui/buy.h"
 #include "../gui/chat.h"
+#include "../gui/gui.h"
 #include "../gui/npclistdialog.h"
 #include "../gui/npc_text.h"
 #include "../gui/ok_dialog.h"
 #include "../gui/sell.h"
 #include "../gui/skill.h"
+#include "../gui/viewport.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
@@ -289,9 +291,9 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 void
 PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 {
-    std::string mapName = msg.readString();
-    unsigned short x = msg.readInt16();
-    unsigned short y = msg.readInt16();
+    const std::string mapName = msg.readString();
+    const unsigned short x = msg.readInt16();
+    const unsigned short y = msg.readInt16();
 
     logger->log("Changing map to %s (%d, %d)", mapName.c_str(), x, y);
 
@@ -300,6 +302,13 @@ PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 
     current_npc = 0;
 
+    const float scrollOffsetX = x - player_node->mX;
+    const float scrollOffsetY = y - player_node->mY;
+
     player_node->setAction(Being::STAND);
     player_node->setPositionInPixels(x, y);
+
+    logger->log("Adjust scrolling by %d,%d", (int) scrollOffsetX,
+                                             (int) scrollOffsetY);
+    viewport->scrollBy(scrollOffsetX, scrollOffsetY);
 }

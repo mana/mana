@@ -117,16 +117,22 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         optionChanged(const std::string &name);
 
         /**
-         * Returns camera x offset in tiles.
+         * Returns camera x offset in pixels.
          */
         int
-        getCameraX() { return mCameraX; }
+        getCameraX() const { return (int) mViewX; }
 
         /**
-         * Returns camera y offset in tiles.
+         * Returns camera y offset in pixels.
          */
         int
-        getCameraY() { return mCameraY; }
+        getCameraY() const { return (int) mViewY; }
+
+        /**
+         * Changes viewpoint by relative pixel coordinates.
+         */
+        void
+        scrollBy(float x, float y) { mViewX += x; mViewY += y; }
 
     private:
         /**
@@ -156,10 +162,10 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
 
         int mScrollRadius;
         int mScrollLaziness;
+        int mScrollCenterOffsetX;
+        int mScrollCenterOffsetY;
         float mViewX;              /**< Current viewpoint in pixels. */
         float mViewY;              /**< Current viewpoint in pixels. */
-        int mCameraX;              /**< Current viewpoint in tiles. */
-        int mCameraY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
 
         /** Images of in range target cursor. */

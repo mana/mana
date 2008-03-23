@@ -134,18 +134,52 @@
 	* src/gui/gui.cpp: Showing a visible error message to the user when
 	the font file can't be found.
 	
+2008-02-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_22-1.tmx: Map fixes at snake dungeon by QOAL.
+
 2008-02-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* INSTALL: Added notes about installing gettext and cvs and updated
 	required ENet version to 1.2.
 
+2008-02-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/hairstyle7-female.xml, src/sound.cpp,
+	src/utils/strprintf.cpp, tmw.cbp: Fixed image name.
+
 2008-02-13  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* data/equipment.xml, data/items.xml,
+	data/graphics/items/armor-head-crusaderhelm.png,
+	data/graphics/items/armor-head-infantryhelm.png,
+	data/graphics/items/armor-head-knighthelm.png,
+	data/graphics/items/armor-head-warlordhelm.png,
+	data/graphics/sprites/head-crusaderhelm.png,
+	data/graphics/sprites/head-infantryhelm.png,
+	data/graphics/sprites/head-knighthelm.png,
+	data/graphics/sprites/head-warlordhelm.png,
+	data/graphics/sprites/head-crusaderhelm.xml,
+	data/graphics/sprites/head-infantryhelm.xml,
+	data/graphics/sprites/head-knighthelm.xml,
+	data/graphics/sprites/head-warlordhelm.xml: Added new headgears by
+	Black Don (thanks to QOAL for testing and implementation)
 	* data/monsters.xml: Converted movement speed to pixels per second.
 
 2008-02-12  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/monsters.xml: Added size and speed to the first four monsters.
+
+2008-02-12  Dennis Friis  <peavey@placid.dk>
+
+	* src/localplayer.cpp, src/map.cpp, src/gui/viewport.cpp, src/being.cpp
+	src/map.h: Made pathfinding not halt on collision destination tile,
+	made moving around with mouse smoother. Added possibility to pass
+	through players with key controls.
+
+2008-02-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_22-1.tmx: Added music and overlay to snake dungeon.
 
 2008-02-10  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -160,9 +194,6 @@
 2008-02-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/skill.cpp: Fixed unix compilation problem.
-
-2008-02-07  Philipp Sehmisch  <tmw@crushnet.org>
-
 	* data/monsters.xml: Added different behaviors to maggots,
 	scorpions, red scorpions and green slimes.
 
@@ -196,6 +227,9 @@
 	* src/gui/truetypefont.cpp: Image alpha should also be set to 1, in
 	case it was changed before.
 	* src/gui/truetypefont.h: Corrected documentation.
+	* src/game.h, src/localplayer.h: Fixed a GCC 4.3 compile error and
+	constified the usage of auto_ptr, since that's the way in which we are
+	using them.
 
 2008-01-26  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -280,6 +314,9 @@
 	* src/game.cpp, src/beingmanager.cpp, src/beingmanager.h,
 	src/keyboardconfig.cpp, src/keyboardconfig.h: Added a key for targeting
 	the nearest player character based on patches by Trinexx.
+	* src/gui/viewport.cpp: Added config options to set the scroll center.
+	* src/gui/viewport.h, src/net/playerhandler.cpp: Retained scroll
+	offset during map change for smoother map transitions.
 
 2007-12-28  Philipp Sehmisch  <tmw@crushnet.org>
 

@@ -96,26 +96,7 @@ Particle::update()
 
     if (mAlive)
     {
-        // Update child emitters
-        if (mLifetimePast%Particle::emitterSkip == 0)
-        {
-            for (   EmitterIterator e = mChildEmitters.begin();
-                    e != mChildEmitters.end();
-                    e++
-                )
-            {
-                Particles newParticles = (*e)->createParticles();
-                for (   ParticleIterator p = newParticles.begin();
-                        p != newParticles.end();
-                        p++
-                    )
-                {
-                    (*p)->moveBy(mPos.x, mPos.y, mPos.z);
-                    mChildParticles.push_back (*p);
-                }
-            }
-        }
-
+        //calculate particle movement
         if (mMomentum != 1.0f)
         {
             mVelocity *= mMomentum;
@@ -185,6 +166,26 @@ Particle::update()
             }
             else {
                 mAlive = false;
+            }
+        }
+
+        // Update child emitters
+        if (mLifetimePast%Particle::emitterSkip == 0)
+        {
+            for (   EmitterIterator e = mChildEmitters.begin();
+                    e != mChildEmitters.end();
+                    e++
+                )
+            {
+                Particles newParticles = (*e)->createParticles();
+                for (   ParticleIterator p = newParticles.begin();
+                        p != newParticles.end();
+                        p++
+                    )
+                {
+                    (*p)->moveBy(mPos.x, mPos.y, mPos.z);
+                    mChildParticles.push_back (*p);
+                }
             }
         }
     }

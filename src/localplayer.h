@@ -26,6 +26,8 @@
 
 #include "player.h"
 
+#include <memory>
+
 // TODO move into some sane place...
 #define MAX_SLOT 2
 
@@ -336,7 +338,7 @@ class LocalPlayer : public Player
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
         Inventory *mInventory;
-        std::auto_ptr<Equipment> mEquipment;
+        const std::auto_ptr<Equipment> mEquipment;
 
     protected:
         void walk(unsigned char dir);

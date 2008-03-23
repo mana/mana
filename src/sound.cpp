@@ -145,7 +145,8 @@ void Sound::playMusic(const std::string &filename, int loop)
         Mix_PlayMusic(mMusic, loop);
     }
     else {
-        logger->log("Sound::startMusic() Warning: error loading file.");
+        logger->log("Sound::startMusic() Warning: error loading file: %s",
+                Mix_GetError());
     }
 }
 

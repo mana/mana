@@ -59,7 +59,7 @@ class Game : public ConfigListener
         /** The minimum frame time (used for frame limiting). */
         int mMinFrameTime;
 
-        typedef std::auto_ptr<MessageHandler> MessageHandlerPtr;
+        typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
         MessageHandlerPtr mBeingHandler;
         MessageHandlerPtr mBuySellHandler;
         MessageHandlerPtr mChatHandler;

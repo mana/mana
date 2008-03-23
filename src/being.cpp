@@ -500,6 +500,12 @@ Being::nextStep()
 
     setDirection(dir);
 
+    if (!mMap->getWalk(node.x / 32, node.y / 32))
+    {
+        setAction(STAND);
+        return;
+    }
+
     setPositionInPixels(node.x, node.y);
     setAction(WALK);
     mWalkTime += mStepTime / 10;

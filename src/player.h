@@ -101,34 +101,36 @@ class Player : public Being
         void removeGuild(int id);
 
         /**
-         * Returns a pointer to the specified guild
+         * Returns a pointer to the specified guild.
          */
         Guild* getGuild(const std::string &guildName);
 
         /**
-         * Returns a pointer to the guild with matching id
+         * Returns a pointer to the guild with matching id.
          */
         Guild* getGuild(int id);
 
         /**
-         * Get number of guilds the player belongs to
+         * Get number of guilds the player belongs to.
          */
         short getNumberOfGuilds();
 
         /**
-         * Gets the way the character is blocked by other objects
+         * Gets the way the character is blocked by other objects.
          */
         virtual unsigned char getWalkMask() const
-        { return 0x82; } // blocked by walls and monsters ( bin 1000 0010)
+        { return 0x82; } // blocked by walls and monsters (bin 1000 0010)
 
     protected:
-        // Character guild information
-        std::map<int, Guild*> mGuilds;
         /**
-         * Gets the way the monster blocks pathfinding for other objects
+         * Gets the way the monster blocks pathfinding for other objects.
          */
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_CHARACTER; }
+
+        // Character guild information
+        std::map<int, Guild*> mGuilds;
+
     private:
         Gender mGender;
         Uint8 mHairStyle;
