@@ -128,6 +128,9 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int
         getCameraY() { return mTileViewY; }
 
+        /**
+         * Changes viewpoint by relative pixel coordinates.
+         */
         void
         scrollBy (float x, float y) { mPixelViewX += x; mPixelViewY += y; }
 

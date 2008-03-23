@@ -126,11 +126,6 @@ void Engine::changeMap(const std::string &mapPath)
     outMsg.writeInt16(CMSG_MAP_LOADED);
 }
 
-void Engine::scrollBy(float scrollX, float scrollY)
-{
-    viewport->scrollBy(scrollX, scrollY);
-}
-
 void Engine::logic()
 {
     beingManager->logic();

@@ -33,11 +33,13 @@
 
 #include "../gui/buy.h"
 #include "../gui/chat.h"
+#include "../gui/gui.h"
 #include "../gui/npclistdialog.h"
 #include "../gui/npc_text.h"
 #include "../gui/ok_dialog.h"
 #include "../gui/sell.h"
 #include "../gui/skill.h"
+#include "../gui/viewport.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
@@ -136,7 +138,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
                 logger->log("Adjust scrolling by %d:%d", (int)scrollOffsetX, (int)scrollOffsetY);
 
-                engine->scrollBy(scrollOffsetX, scrollOffsetY);
+                viewport->scrollBy(scrollOffsetX, scrollOffsetY);
             }
             break;
 

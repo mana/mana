@@ -1,3 +1,8 @@
+2008-03-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/engine.h, src/gui/viewport.h, src/engine.cpp,
+	src/net/playerhandler.cpp: Removed unnecessary forwarding method.
+
 2008-03-16  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 
 	* The Mana World.dev: Updated Dev-C++ project file. Patch by peavey.

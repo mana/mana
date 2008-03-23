@@ -57,11 +57,6 @@ class Engine
         void changeMap(const std::string &mapName);
 
         /**
-         * Changes viewpoint by relative pixel coordinates.
-         */
-        void scrollBy(float scrollX, float scrollY);
-
-        /**
          * Performs engine logic.
          */
         void logic();
