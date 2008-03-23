@@ -27,6 +27,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <list>
 
 #include "../being.h"
 
@@ -65,17 +66,20 @@ class MonsterInfo
         ~MonsterInfo();
 
         void
-        setName(std::string name) { mName = name; }
+        setName(const std::string &name) { mName = name; }
 
         void
-        setSprite(std::string filename) { mSprite = filename; }
+        setSprite(const std::string &filename) { mSprite = filename; }
 
         void
         setTargetCursorSize(Being::TargetCursorSize targetCursorSize)
         { mTargetCursorSize = targetCursorSize; }
 
         void
-        addSound(MonsterSoundEvent event, std::string filename);
+        addSound(MonsterSoundEvent event, const std::string &filename);
+
+        void
+        addParticleEffect(const std::string &filename);
 
         const std::string&
         getName() const { return mName; }
@@ -89,7 +93,9 @@ class MonsterInfo
         const std::string&
         getSound(MonsterSoundEvent event) const;
 
-        void addMonsterAttack (int id, const std::string &particleEffect, SpriteAction action);
+        void addMonsterAttack(int id,
+                              const std::string &particleEffect,
+                              SpriteAction action);
 
         const std::string&
         getAttackParticleEffect(int attackType) const;
@@ -97,7 +103,8 @@ class MonsterInfo
         SpriteAction
         getAttackAction(int attackType) const;
 
-
+        const std::list<std::string>&
+        getParticleEffects() const { return mParticleEffects; }
 
     private:
         std::string mName;
@@ -105,6 +112,7 @@ class MonsterInfo
         Being::TargetCursorSize mTargetCursorSize;
         std::map<MonsterSoundEvent, std::vector<std::string>* > mSounds;
         std::map<int, MonsterAttack*> mMonsterAttacks;
+        std::list<std::string> mParticleEffects;
 };
 
 #endif

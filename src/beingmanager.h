@@ -56,17 +56,17 @@ class BeingManager
         void destroyBeing(Being *being);
 
         /**
-         * Return a specific id Being.
+         * Returns a specific id Being.
          */
         Being* findBeing(Uint16 id);
 
         /**
-         * Return a being at specific coordinates.
+         * Returns a being at specific coordinates.
          */
         Being* findBeing(Uint16 x, Uint16 y, Being::Type type = Being::UNKNOWN);
 
         /**
-         * Return a being nearest to specific coordinates.
+         * Returns a being nearest to specific coordinates.
          *
          * @param x       X coordinate.
          * @param y       Y coordinate.
@@ -75,6 +75,15 @@ class BeingManager
          * @param type    The type of being to look for.
          */
         Being* findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
+                                      Being::Type type = Being::UNKNOWN);
+
+        /**
+         * Returns a being nearest to another being.
+         *
+         * \param maxdist maximal distance. If minimal distance is larger,
+         *                no being is returned
+         */
+        Being* findNearestLivingBeing(Being *aroundBeing, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 
         /**

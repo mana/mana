@@ -767,9 +767,20 @@ void Game::handleInput()
 
         player_node->setWalkingDir(direction);
 
+        // Target the nearest player if 'q' is pressed
+        if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
+        {
+            Being *target =
+                beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
+
+            if (target)
+            {
+                player_node->setTarget(target);
+            }
+        }
+
         // Target the nearest monster if 'a' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) )
-        //if (keys[SDLK_a])
+        if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST))
         {
             Being *target =
                 beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);

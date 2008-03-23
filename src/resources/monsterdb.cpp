@@ -78,13 +78,11 @@ MonsterDB::load()
     for_each_xml_child_node(monsterNode, rootNode)
     {
         if (!xmlStrEqual(monsterNode->name, BAD_CAST "monster"))
-        {
             continue;
-        }
 
         MonsterInfo *currentInfo = new MonsterInfo();
 
-        currentInfo->setName (XML::getProperty(monsterNode, "name", "unnamed"));
+        currentInfo->setName(XML::getProperty(monsterNode, "name", "unnamed"));
 
         std::string targetCursor;
         targetCursor = XML::getProperty(monsterNode, "targetCursor", "medium");
@@ -102,7 +100,8 @@ MonsterDB::load()
         }
         else
         {
-            logger->log("MonsterDB: Unknown target cursor type \"%s\" for %s - using medium sized one",
+            logger->log("MonsterDB: Unknown target cursor type \"%s\" for %s "
+                        "- using medium sized one",
                         targetCursor.c_str(), currentInfo->getName().c_str());
             currentInfo->setTargetCursorSize(Being::TC_MEDIUM);
         }
@@ -138,16 +137,25 @@ MonsterDB::load()
                 }
                 else
                 {
-                    logger->log("MonsterDB: Warning, sound effect %s for unknown event %s of monster %s",
-                                filename, event.c_str(), currentInfo->getName().c_str());
+                    logger->log("MonsterDB: Warning, sound effect %s for "
+                                "unknown event %s of monster %s",
+                                filename, event.c_str(),
+                                currentInfo->getName().c_str());
                 }
             }
             else if (xmlStrEqual(spriteNode->name, BAD_CAST "attack"))
             {
-                int id = XML::getProperty(spriteNode, "id", 0);
-                std::string particleEffect = XML::getProperty(spriteNode, "particle-effect", "");
-                SpriteAction spriteAction = SpriteDef::makeSpriteAction(XML::getProperty(spriteNode, "action", "attack"));
+                const int id = XML::getProperty(spriteNode, "id", 0);
+                const std::string particleEffect = XML::getProperty(
+                        spriteNode, "particle-effect", "");
+                SpriteAction spriteAction = SpriteDef::makeSpriteAction(
+                        XML::getProperty(spriteNode, "action", "attack"));
                 currentInfo->addMonsterAttack(id, particleEffect, spriteAction);
+            }
+            else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
+            {
+                currentInfo->addParticleEffect(
+                    (const char*) spriteNode->xmlChildrenNode->content);
             }
         }
         mMonsterInfos[XML::getProperty(monsterNode, "id", 0)] = currentInfo;

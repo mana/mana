@@ -30,20 +30,17 @@
 MonsterInfo::MonsterInfo():
     mSprite("error.xml")
 {
-
 }
 
 MonsterInfo::~MonsterInfo()
 {
     // kill vectors in mSoundEffects
-    for_each (mSounds.begin(), mSounds.end(),
-              make_dtor(mSounds));
+    for_each(mSounds.begin(), mSounds.end(), make_dtor(mSounds));
     mSounds.clear();
 }
 
-
 void
-MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
+MonsterInfo::addSound(MonsterSoundEvent event, const std::string &filename)
 {
     if (mSounds.find(event) == mSounds.end())
     {
@@ -53,59 +50,45 @@ MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
     mSounds[event]->push_back("sfx/" + filename);
 }
 
-
 const std::string &
 MonsterInfo::getSound(MonsterSoundEvent event) const
 {
-    static std::string nothing("");
-    std::map<MonsterSoundEvent, std::vector<std::string>* >::const_iterator i;
-    i = mSounds.find(event);
-    if (i == mSounds.end())
-    {
-        return nothing;
-    }
-    else
-    {
-        return i->second->at(rand()%i->second->size());
-    }
+    static std::string empty("");
+    std::map<MonsterSoundEvent, std::vector<std::string>* >::const_iterator i =
+        mSounds.find(event);
+    return (i == mSounds.end()) ? empty :
+                                  i->second->at(rand() % i->second->size());
 }
 
 const std::string &
 MonsterInfo::getAttackParticleEffect(int attackType) const
 {
-    static std::string nothing("");
-    std::map<int, MonsterAttack*>::const_iterator i;
-    i = mMonsterAttacks.find(attackType);
-    if (i == mMonsterAttacks.end())
-    {
-        return nothing;
-    }
-    else
-    {
-        return (*i).second->particleEffect;
-    }
+    static std::string empty("");
+    std::map<int, MonsterAttack*>::const_iterator i =
+        mMonsterAttacks.find(attackType);
+    return (i == mMonsterAttacks.end()) ? empty : (*i).second->particleEffect;
 }
 
 SpriteAction
 MonsterInfo::getAttackAction(int attackType) const
 {
-    std::map<int, MonsterAttack*>::const_iterator i;
-    i = mMonsterAttacks.find(attackType);
-    if (i == mMonsterAttacks.end())
-    {
-        return ACTION_ATTACK;
-    }
-    else
-    {
-        return (*i).second->action;
-    }
+    std::map<int, MonsterAttack*>::const_iterator i =
+        mMonsterAttacks.find(attackType);
+    return (i == mMonsterAttacks.end()) ? ACTION_ATTACK : (*i).second->action;
 }
 
 void
-MonsterInfo::addMonsterAttack (int id, const std::string &particleEffect, SpriteAction action)
+MonsterInfo::addMonsterAttack(int id,
+                              const std::string &particleEffect,
+                              SpriteAction action)
 {
-    MonsterAttack* a = new MonsterAttack;
+    MonsterAttack *a = new MonsterAttack;
     a->particleEffect = particleEffect;
     a->action = action;
     mMonsterAttacks[id] = a;
+}
+
+void MonsterInfo::addParticleEffect(const std::string &filename)
+{
+    mParticleEffects.push_back(filename);
 }

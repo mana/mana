@@ -722,7 +722,7 @@ int main(int argc, char *argv[])
         top->add(versionLabel, 2, 2);
 #endif
 
-        sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
+        sound.playMusic("Magick - Real.ogg");
 
         // Server choice
         if (options.serverName.empty()) {

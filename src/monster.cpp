@@ -36,12 +36,21 @@
 Monster::Monster(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    std::string filename = getInfo().getSprite();
+    const MonsterInfo& info = getInfo();
+    std::string filename = info.getSprite();
     if (filename.empty())
         filename = "error.xml";
 
     mSprites[BASE_SPRITE] =
         AnimatedSprite::load("graphics/sprites/" + filename);
+
+    const std::list<std::string> &particleEffects = info.getParticleEffects();
+    for (std::list<std::string>::const_iterator i = particleEffects.begin();
+         i != particleEffects.end();
+         i++)
+    {
+        controlParticle(particleEngine->addEffect((*i), 0, 0));
+    }
 }
 
 Monster::~Monster()

@@ -45,6 +45,7 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyAttack", SDLK_LCTRL, "Attack"},
     {"keyTarget", SDLK_LSHIFT, "Target"},
     {"keyTargetClosest", SDLK_a, "Target Closest"},
+    {"keyTargetPlayer", SDLK_q, "Target Player"},
     {"keyPickup", SDLK_z, "Pickup"},
     {"keyHideWindows", SDLK_h, "Hide Windows"},
     {"keyBeingSit", SDLK_s, "Sit"},

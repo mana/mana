@@ -82,7 +82,6 @@ Being::~Being()
 {
     std::for_each(mSprites.begin(), mSprites.end(), make_dtor(mSprites));
     clearPath();
-    setMap(NULL);
 
     for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
             i != mChildParticleEffects.end();
@@ -90,6 +89,8 @@ Being::~Being()
     {
         (*i)->kill();
     }
+
+    setMap(NULL);
 
     instances--;
 

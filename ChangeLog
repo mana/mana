@@ -228,6 +228,14 @@
 
 	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Added new versions of
 	snow maps by 5t3v3.
+	* src/sound.cpp: Fixed an error in Davids last commit (couldn't compile
+	that way).
+
+2008-01-13  David Athay  <ko2fan@gmail.com>
+
+	* src/resources/resourcemanager.h, src/resources/resourcemanager.cpp,
+	src/main.cpp, src/sound.cpp, src/engine.cpp: Fixed music loading from
+	non-default location.
 
 2008-01-10  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -269,6 +277,9 @@
 2007-12-30  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_22-1.tmx: Some mapping fixes at snake dungeon map.
+	* src/game.cpp, src/beingmanager.cpp, src/beingmanager.h,
+	src/keyboardconfig.cpp, src/keyboardconfig.h: Added a key for targeting
+	the nearest player character based on patches by Trinexx.
 
 2007-12-28  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -276,6 +287,11 @@
 	5t3v3 (east desert cave) and enhanced version of eastern desert by
 	Len.
 	* data/maps/new_3-1.tmx: Some mapping errors fixed by Zipon.
+	* src/being.cpp, src/monster.cpp, src/resources/monsterinfo.cpp, 
+	src/resources/monsterinfo.h: Added the possibility to assign particle
+	effects to monsters in the monster database.
+	* data/monsters.xml: Added flame particle effect to fire goblin as a
+	proof of concept.
 
 2007-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
