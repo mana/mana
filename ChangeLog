@@ -1,3 +1,8 @@
+2008-03-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.h: Updated default account server name.
+	* INSTALL: Added SDL_ttf dependency.
+
 2008-03-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* AUTHORS: Updated (but still not complete).

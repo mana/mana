@@ -113,7 +113,7 @@ const short defaultScreenHeight = 600;
 const short defaultSfxVolume = 100;
 const short defaultMusicVolume = 60;
 // Account Server Name and port
-const std::string defaultAccountServerName = "animesites.de";
+const std::string defaultAccountServerName = "testing.themanaworld.org";
 const short defaultAccountServerPort = 9601;
 
 extern std::string token;
