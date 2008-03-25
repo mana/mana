@@ -1,3 +1,8 @@
+2008-03-26  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/progressbar.cpp, src/localplayer.cpp: Initialized some
+	uninitialized variables (patch by peavey).
+
 2008-03-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.h, src/gui/viewport.h, src/engine.cpp,

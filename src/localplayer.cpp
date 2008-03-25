@@ -43,11 +43,13 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
+    mXpForNextLevel(0),
     mAttackRange(0),
     mInventory(new Inventory),
-    mXp(0),
+    mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
-    mTrading(false), mLastAction(-1)
+    mTrading(false), mLastAction(-1),
+    mWalkingDir(0), mDestX(0), mDestY(0)
 {
 }
 
@@ -247,7 +249,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
         mDestX = x;
         mDestY = y;
 
-        char temp[3];
+        char temp[4] = "";
         MessageOut outMsg(mNetwork);
         set_coordinates(temp, x, y, mDirection);
         outMsg.writeInt16(0x0085);

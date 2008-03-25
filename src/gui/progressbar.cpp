@@ -35,10 +35,9 @@ ProgressBar::ProgressBar(float progress,
                          unsigned int width, unsigned int height,
                          Uint8 red, Uint8 green, Uint8 blue):
     gcn::Widget(),
-    mRed(red), mGreen(green), mBlue(blue),
+    mProgress(progress), mRed(red), mGreen(green), mBlue(blue),
     mRedToGo(red), mGreenToGo(green), mBlueToGo(blue)
 {
-    setProgress(progress);
     setWidth(width);
     setHeight(height);
 
