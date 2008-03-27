@@ -1,16 +1,21 @@
-2008-03-26  Philipp Sehmisch  <tmw@crushnet.org>
+2008-03-27  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/progressbar.cpp, src/gui/scrollarea.cpp: Revert progress bar
+	changes and initialize mWalkTime.
+
+2008-03-26  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/progressbar.cpp, src/localplayer.cpp: Initialized some
-	uninitialized variables (patch by peavey).
+	uninitialized variables.
 
 2008-03-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.h, src/gui/viewport.h, src/engine.cpp,
 	src/net/playerhandler.cpp: Removed unnecessary forwarding method.
 
-2008-03-16  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+2008-03-16  Dennis Friis  <peavey@placid.dk>
 
-	* The Mana World.dev: Updated Dev-C++ project file. Patch by peavey.
+	* The Mana World.dev: Updated Dev-C++ project file.
 
 2008-03-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -21,14 +26,12 @@
 
 	* data/graphics/gui/attack_target.png: Removed unused image.
 
-2008-03-09  Philipp Sehmisch  <tmw@crushnet.org>
+2008-03-09  Dennis Friis  <peavey@placid.dk>
 
 	* src/game.cpp: Pressing escape in the quit dialog closes the dialog.
-	(patch by peavey)
 	* src/gui/chat.cpp, src/gui/chat.h: Fixed a bug with chat messages
-	without a sender which include semicolons (patch by peavey).
-	* src/chat.cpp: Added "/clear" command to clear chat window
-	(patch by peavey).
+	without a sender which include semicolons.
+	* src/chat.cpp: Added "/clear" command to clear chat window.
 
 2008-03-08  Philipp Sehmisch  <tmw@crushnet.org>
 
