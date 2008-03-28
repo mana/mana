@@ -43,6 +43,8 @@
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
 
+#include <algorithm>
+
 GuildWindow::GuildWindow(LocalPlayer *player):
     Window(player->getName()),
     mPlayer(player),

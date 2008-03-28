@@ -25,6 +25,8 @@
 
 #include "../utils/dtor.h"
 
+#include <algorithm>
+
 ShopItems::~ShopItems()
 {
     clear();
