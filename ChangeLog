@@ -1,3 +1,16 @@
+2008-03-31  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/main.cpp, src/npc.cpp, src/npc.h, src/resources/npcdb.h,
+	src/resources/npcdb.cpp, data/npcs.xml: Implemented NPC XML database
+	which maps NPC IDs to one or more animation files and thus enables
+	animated NPCs.
+	* data/graphics/sprites/npc-test.png, data/graphics/sprites/npc-test.xml,
+	data/graphics/sprites/npc-treasurebox.png,
+	data/graphics/sprites/npc-treasurebox.xml: Added some animated NPCs by #
+	for testing purpose.
+	* data/test.lua: Removed the +100 offset of NPC IDs (relict from
+	eAthena)
+
 2008-03-28  David Athay  <ko2fan@gmail.com>
 
 	* tmw.cbp, src/gui/guildwindow.cpp, src/gui/shop.cpp: Updated
