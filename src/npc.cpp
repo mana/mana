@@ -29,14 +29,29 @@
 #include "gui/gui.h"
 #include "net/messageout.h"
 #include "net/gameserver/player.h"
+#include "resources/npcdb.h"
 
 NPC *current_npc = 0;
 
-NPC::NPC(Uint16 id, Uint16 job, Map *map):
-    Being(id, job, map)
+NPC::NPC(Uint16 id, int sprite, Map *map):
+    Being(id, sprite, map)
 {
-    mSprites[BASE_SPRITE] = AnimatedSprite::load("graphics/sprites/npc.xml",
-            job - 100);
+    NPCInfo info = NPCDB::get(sprite);
+    int c = BASE_SPRITE;
+
+    for (NPCInfo::const_iterator i = info.begin();
+         i != info.end();
+         i++)
+    {
+        if (c == VECTOREND_SPRITE) break;
+
+        std::string file = "graphics/sprites/" + (*i)->sprite;
+        int variant = (*i)->variant;
+        mSprites[c] = AnimatedSprite::load(file, variant);
+        c++;
+    }
+
+    mName = "NPC";
 }
 
 Being::Type

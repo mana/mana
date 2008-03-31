@@ -31,7 +31,7 @@ class Graphics;
 class NPC : public Being
 {
     public:
-        NPC(Uint16 id, Uint16 job, Map *map);
+        NPC(Uint16 id, int sprite, Map *map);
 
         virtual Type
         getType() const;
