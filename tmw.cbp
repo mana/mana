@@ -666,6 +666,10 @@
 		<Unit filename="src/resources/music.cpp" />
 		<Unit filename="src/resources/music.h">
 			<Option target="default" />
+		</Unit>	
+		<Unit filename="src/resources/npcdb.cpp" />
+		<Unit filename="src/resources/npcdb.h">
+			<Option target="default" />
 		</Unit>
 		<Unit filename="src/resources/resource.cpp" />
 		<Unit filename="src/resources/resource.h">

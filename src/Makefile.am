@@ -234,6 +234,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/monsterinfo.cpp \
 	      resources/music.h \
 	      resources/music.cpp \
+	      resources/npcdb.h \
+	      resources/npcdb.cpp \
 	      resources/resource.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \

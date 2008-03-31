@@ -1,9 +1,9 @@
 2008-03-31  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/main.cpp, src/npc.cpp, src/npc.h, src/resources/npcdb.h,
-	src/resources/npcdb.cpp, data/npcs.xml: Implemented NPC XML database
-	which maps NPC IDs to one or more animation files and thus enables
-	animated NPCs.
+	src/resources/npcdb.cpp, data/npcs.xml, src/Makefile.am, tmc.cbp:
+	Implemented NPC XML database which maps NPC IDs to one or more
+	animation files and thus enables animated NPCs.
 	* data/graphics/sprites/npc-test.png, data/graphics/sprites/npc-test.xml,
 	data/graphics/sprites/npc-treasurebox.png,
 	data/graphics/sprites/npc-treasurebox.xml: Added some animated NPCs by #
