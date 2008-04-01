@@ -6,8 +6,8 @@
 	animation files and thus enables animated NPCs.
 	* data/graphics/sprites/npc-test.png, data/graphics/sprites/npc-test.xml,
 	data/graphics/sprites/npc-treasurebox.png,
-	data/graphics/sprites/npc-treasurebox.xml: Added some animated NPCs by #
-	for testing purpose.
+	data/graphics/sprites/npc-treasurebox.xml: Added some animated NPCs by
+	lost soul for testing purpose.
 	* data/test.lua: Removed the +100 offset of NPC IDs (relict from
 	eAthena)
 
