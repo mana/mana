@@ -140,7 +140,11 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
             if (msg.readInt8() == ERRMSG_OK)
             {
-                guildWindow->removeTab();
+                // Must remove tab first, as it wont find the guild
+                // name after its removed from the player
+                int guildId = msg.readInt16();
+                guildWindow->removeTab(guildId);
+                player_node->removeGuild(guildId);
             }
         } break;
     }

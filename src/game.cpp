@@ -201,7 +201,7 @@ void createGuiWindows()
     //chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow;
     //buddyWindow = new BuddyWindow();
-    guildWindow = new GuildWindow(player_node);
+    guildWindow = new GuildWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
     itemShortcutWindow = new ItemShortcutWindow();

@@ -1,3 +1,10 @@
+2008-04-01  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/gui/guildwindow.h, src/gui/chat.cpp,
+	src/gui/guildwindow.cpp, src/net/guildhandler.cpp: Fixed up chat 
+	and guilds.
+
+
 2008-03-31  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/main.cpp, src/npc.cpp, src/npc.h, src/resources/npcdb.h,

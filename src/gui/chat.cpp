@@ -286,8 +286,12 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
         }
         else
         {
-            int channelId = channelManager->findByName(channelName)->getId();
-            Net::ChatServer::chat(channelId, msg);
+            Channel *channel = channelManager->findByName(channelName);
+            if (channel)
+            {
+                int channelId = channel->getId();
+                Net::ChatServer::chat(channelId, msg);
+            }
         }
         return;
     }
@@ -497,8 +501,12 @@ ChatWindow::enterChannel(std::string channel, std::string password)
 void
 ChatWindow::sendToChannel(short channelId, std::string user, std::string msg)
 {
-    std::string channelName = channelManager->findById(channelId)->getName();
-    chatLog(user + ": " + msg, user == player_node->getName() ? BY_PLAYER : BY_OTHER, channelName);
+    Channel *channel = channelManager->findById(channelId);
+    if (channel)
+    {
+        std::string channelName = channel->getName();
+        chatLog(user + ": " + msg, user == player_node->getName() ? BY_PLAYER : BY_OTHER, channelName);
+    }
 }
 
 void

@@ -45,9 +45,8 @@
 
 #include <algorithm>
 
-GuildWindow::GuildWindow(LocalPlayer *player):
-    Window(player->getName()),
-    mPlayer(player),
+GuildWindow::GuildWindow():
+    Window(player_node->getName()),
     mFocus(false)
 {
     setCaption("Guild");
@@ -76,7 +75,7 @@ GuildWindow::GuildWindow(LocalPlayer *player):
     layout.setColWidth(0, 48);
     layout.setColWidth(1, 65);
 
-    loadWindowState(player->getName());
+    loadWindowState(player_node->getName());
 }
 
 GuildWindow::~GuildWindow()
@@ -178,7 +177,7 @@ void GuildWindow::newGuildTab(const std::string &guildName)
     tab->setHeight(getHeight() - 2 * tab->getBorderSize());
     tab->setOpaque(false);
     ListBox *list = new ListBox();
-    list->setListModel(mPlayer->getGuild(guildName));
+    list->setListModel(player_node->getGuild(guildName));
     ScrollArea *sa = new ScrollArea(list);
     sa->setDimension(gcn::Rectangle(5, 5, 135, 250));
     tab->add(sa);
@@ -199,7 +198,7 @@ void GuildWindow::updateTab()
 void GuildWindow::setTab(const std::string &guildName)
 {
     // Only enable invite button if user has rights
-    if(mPlayer->checkInviteRights(guildName))
+    if(player_node->checkInviteRights(guildName))
     {
         mGuildButton[1]->setEnabled(true);
     }
@@ -218,7 +217,7 @@ bool GuildWindow::isFocused()
 
 short GuildWindow::getSelectedGuild()
 {
-    Guild *guild = mPlayer->getGuild(mGuildsContainer->getActiveWidget());
+    Guild *guild = player_node->getGuild(mGuildsContainer->getActiveWidget());
     if (guild)
     {
         return guild->getId();
@@ -244,8 +243,12 @@ void GuildWindow::requestMemberList(short guildId)
     Net::ChatServer::Guild::getGuildMembers(guildId);
 }
 
-void GuildWindow::removeTab()
+void GuildWindow::removeTab(int guildId)
 {
-    mGuildsContainer->removeTab(mGuildsContainer->getActiveWidget());
+    Guild* guild = player_node->getGuild(guildId);
+    if (guild)
+    {
+        mGuildsContainer->removeTab(guild->getName());
+    }
     mGuildsContainer->logic();
 }

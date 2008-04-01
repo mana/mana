@@ -55,7 +55,7 @@ public:
     /**
      * Constructor.
      */
-    GuildWindow(LocalPlayer *player);
+    GuildWindow();
 
     /**
      * Destructor.
@@ -110,7 +110,7 @@ public:
     /**
      * Removes the selected tab
      */
-    void removeTab();
+    void removeTab(int guildId);
 
 protected:
     /**
@@ -120,7 +120,6 @@ protected:
     short getSelectedGuild();
 
 private:
-    LocalPlayer *mPlayer;
     gcn::Button *mGuildButton[3];
     TextDialog *guildDialog;
     TextDialog *inviteDialog;
