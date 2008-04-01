@@ -49,12 +49,12 @@
 #include "../utils/trim.h"
 
 ChatWindow::ChatWindow():
-    Window(),
+    Window(""),
     mTmpVisible(false)
 {
     setResizable(true);
     setDefaultSize(0, (windowContainer->getHeight() - 123), 600, 100);
-    setTitleBarHeight(0);
+    setTitleBarHeight(5);
     loadWindowState("Chat");
 
     mChatInput = new ChatInput();

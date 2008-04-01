@@ -3,7 +3,7 @@
 	* src/game.cpp, src/gui/guildwindow.h, src/gui/chat.cpp,
 	src/gui/guildwindow.cpp, src/net/guildhandler.cpp: Fixed up chat 
 	and guilds.
-
+	* src/gui/chat.cpp: Made it possible to move the chat window.
 
 2008-03-31  Philipp Sehmisch  <tmw@crushnet.org>
 
