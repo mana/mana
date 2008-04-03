@@ -140,6 +140,7 @@ namespace {
                 done = true;
             }
             exitConfirm = NULL;
+            disconnectedDialog = NULL;
         }
     } exitListener;
 }
@@ -428,9 +429,8 @@ void Game::logic()
                     OkDialog("Network Error",
                     "The connection to the server was lost, the program will now quit");
                 disconnectedDialog->addActionListener(&exitListener);
+                disconnectedDialog->requestMoveToTop();
             }
-
-            disconnectedDialog->requestMoveToTop();
         }
     }
 }

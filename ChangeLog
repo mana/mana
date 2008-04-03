@@ -1,3 +1,7 @@
+2008-04-03  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp: Tweaked disconnect dialog, hoping to fix a crash bug.
+
 2008-03-30  Dennis Friis  <peavey@placid.dk>
 
 	* configure.ac: Updated for tmwdata split.
