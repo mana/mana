@@ -67,14 +67,6 @@ bool Net::Connection::connect(const std::string &address, short port)
         return false;
     }
 
-    ENetEvent event;
-    if (enet_host_service(mClient, &event, 10000) <= 0 ||
-            event.type != ENET_EVENT_TYPE_CONNECT)
-    {
-        logger->log("Well....");
-        return false;
-    }
-
     return true;
 }
 
