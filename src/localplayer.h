@@ -158,6 +158,11 @@ class LocalPlayer : public Player
          */
         bool checkInviteRights(const std::string &guildName);
 
+        /**
+         * Invite a player to join guild
+         */
+        void invite(Being* being);
+
         void clearInventory();
         void setInvItem(int index, int id, int amount);
 

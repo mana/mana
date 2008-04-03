@@ -81,6 +81,8 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
                 //mBrowserBox->addRow("@@follow|Follow " + name + "@@");
                 //mBrowserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
+                mBrowserBox->addRow(strprintf(_("@@guild|Invite %s@@"), name.c_str()));
+                //mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
             }
             break;
 
@@ -136,6 +138,21 @@ void PopupMenu::handleLink(const std::string& link)
         player_node->trade(mBeing);
         tradePartnerName = mBeing->getName();
     }
+
+    // Guild action
+    else if (link == "guild" &&
+             mBeing != NULL &&
+             mBeing->getType() == Being::PLAYER)
+    {
+        player_node->invite(mBeing);
+    }
+
+    /*
+    // Add player to your party
+    else if (link == "party")
+    {
+    }
+    */
 
     /*
     // Follow Player action

@@ -104,9 +104,6 @@
 		<Unit filename="src/configuration.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/defines.h">
-			<Option target="default" />
-		</Unit>
 		<Unit filename="src/engine.cpp" />
 		<Unit filename="src/engine.h">
 			<Option target="default" />
@@ -666,7 +663,7 @@
 		<Unit filename="src/resources/music.cpp" />
 		<Unit filename="src/resources/music.h">
 			<Option target="default" />
-		</Unit>	
+		</Unit>
 		<Unit filename="src/resources/npcdb.cpp" />
 		<Unit filename="src/resources/npcdb.h">
 			<Option target="default" />

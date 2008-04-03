@@ -35,6 +35,7 @@
 #include "log.h"
 
 #include "net/gameserver/player.h"
+#include "net/chatserver/guild.h"
 
 #include "gui/gui.h"
 
@@ -126,6 +127,22 @@ bool LocalPlayer::checkInviteRights(const std::string &guildName)
     }
 
     return false;
+}
+
+void LocalPlayer::invite(Being *being)
+{
+    // TODO: Allow user to choose which guild to invite being to
+    // For now, just invite to the first guild you have permissions to invite with
+    std::map<int, Guild*>::iterator itr = mGuilds.begin();
+    std::map<int, Guild*>::iterator itr_end = mGuilds.end();
+    for (; itr != itr_end; ++itr)
+    {
+        if (checkInviteRights(itr->second->getName()))
+        {
+            Net::ChatServer::Guild::invitePlayer(being->getName(), itr->second->getId());
+            return;
+        }
+    }
 }
 
 void LocalPlayer::clearInventory()
