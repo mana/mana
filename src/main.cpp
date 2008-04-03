@@ -881,7 +881,7 @@ int main(int argc, char *argv[])
                         logger->log("Trying to connect to account server...");
                         accountServerConnection->connect(loginData.hostname,
                                 loginData.port);
-                        currentDialog = new ConnectionDialog(STATE_CHOOSE_SERVER);
+                        currentDialog = new ConnectionDialog(STATE_SWITCH_ACCOUNTSERVER_ATTEMPT);
                         break;
 
                     case STATE_UPDATE:
@@ -933,6 +933,8 @@ int main(int argc, char *argv[])
                     case STATE_SWITCH_ACCOUNTSERVER_ATTEMPT:
                         logger->log("State: SWITCH_ACCOUNTSERVER_ATTEMPT");
                         switchAccountServer();
+
+                        state = STATE_SWITCH_ACCOUNTSERVER;
                         break;
 
                     case STATE_REGISTER:
@@ -994,7 +996,7 @@ int main(int argc, char *argv[])
 
                     case STATE_CONNECT_GAME:
                         logger->log("State: CONNECT_GAME");
-                        currentDialog = new ConnectionDialog(STATE_CHAR_SELECT);
+                        currentDialog = new ConnectionDialog(STATE_SWITCH_ACCOUNTSERVER_ATTEMPT);
                         break;
 
                     case STATE_GAME:

@@ -29,6 +29,7 @@
 #include "progressbar.h"
 
 #include "../main.h"
+#include "../log.h"
 
 #include "../utils/gettext.h"
 
@@ -55,6 +56,7 @@ ConnectionDialog::ConnectionDialog(int previousState):
 
 void ConnectionDialog::action(gcn::ActionEvent const &)
 {
+    logger->log("Cancel pressed");
     state = mPreviousState;
 }
 

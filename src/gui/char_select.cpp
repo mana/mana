@@ -147,7 +147,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "cancel")
     {
-        state = STATE_EXIT;
+        state = STATE_SWITCH_ACCOUNTSERVER_ATTEMPT;
     }
     else if (event.getId() == "new")
     {

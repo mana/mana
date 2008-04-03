@@ -1,7 +1,10 @@
-2008-04-02  David Athay  <ko2fan@gmail.com>
+2008-04-03  David Athay  <ko2fan@gmail.com>
 
 	* src/localplayer.cpp, src/gui/popupmenu.cpp, src/localplayer.h,
 	tmw.cbp: Added ability to right click a player and invite to guild.
+	* src/gui/connection.cpp, src/gui/login.cpp, 
+	src/gui/char_select.cpp, src/main.cpp: Added patch from 
+	postalworker bug id=117 to fix cancel connecting to a sick server.
 
 2008-04-01  David Athay  <ko2fan@gmail.com>
 

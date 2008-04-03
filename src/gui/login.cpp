@@ -104,7 +104,7 @@ LoginDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "cancel")
     {
-        state = STATE_FORCE_QUIT;
+        state = STATE_SWITCH_ACCOUNTSERVER;
     }
     else if (event.getId() == "register")
     {
