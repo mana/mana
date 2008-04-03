@@ -50,8 +50,7 @@ GuildHandler::GuildHandler()
         CPMSG_GUILD_INVITE_RESPONSE,
         CPMSG_GUILD_ACCEPT_RESPONSE,
         CPMSG_GUILD_GET_MEMBERS_RESPONSE,
-        CPMSG_GUILD_JOINED,
-        CPMSG_GUILD_LEFT,
+        CPMSG_GUILD_UPDATE_LIST,
         CPMSG_GUILD_INVITED,
         CPMSG_GUILD_REJOIN,
         CPMSG_GUILD_QUIT_RESPONSE,
@@ -115,6 +114,20 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 }
                 guildWindow->updateTab();
             }
+        } break;
+
+        case CPMSG_GUILD_UPDATE_LIST:
+        {
+            logger->log("Received CPMSG_GUILD_UPDATE_LIST");
+            short guildId = msg.readInt16();
+            std::string guildMember = msg.readString();
+
+            Guild *guild = player_node->getGuild(guildId);
+            if (guild)
+            {
+                guild->addMember(guildMember);
+            }
+            guildWindow->updateTab();
         } break;
 
         case CPMSG_GUILD_INVITED:
