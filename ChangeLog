@@ -1,3 +1,9 @@
+2008-04-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/localplayer.cpp: Spawning a particle effect whenever the client
+	sends a move message to the server to visualize the extreme flooding
+	of the server with move message when the user moves with the mouse.
+
 2008-04-03  David Athay  <ko2fan@gmail.com>
 
 	* src/localplayer.cpp, src/gui/popupmenu.cpp, src/localplayer.h,

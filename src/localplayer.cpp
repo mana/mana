@@ -289,6 +289,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
         mDestY = y;
 
         Net::GameServer::Player::walk(x, y);
+        particleEngine->addEffect("graphics/particles/hit.particle.xml", x, y);
     }
 
     mPickUpTarget = NULL;
