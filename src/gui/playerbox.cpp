@@ -39,7 +39,7 @@ ImageRect PlayerBox::background;
 PlayerBox::PlayerBox(const Player *player):
     mPlayer(player)
 {
-    setBorderSize(2);
+    setFrameSize(2);
 
     if (instances == 0)
     {
@@ -83,7 +83,7 @@ PlayerBox::draw(gcn::Graphics *graphics)
     {
         // Draw character
         int x, y, bs;
-        bs = getBorderSize();
+        bs = getFrameSize();
         x = getWidth() / 2 - 16 + bs;
         y = getHeight() / 2 + bs;
         mPlayer->draw(static_cast<Graphics*>(graphics), x, y);
@@ -91,10 +91,10 @@ PlayerBox::draw(gcn::Graphics *graphics)
 }
 
 void
-PlayerBox::drawBorder(gcn::Graphics *graphics)
+PlayerBox::drawFrame(gcn::Graphics *graphics)
 {
     int w, h, bs;
-    bs = getBorderSize();
+    bs = getFrameSize();
     w = getWidth() + bs * 2;
     h = getHeight() + bs * 2;
 

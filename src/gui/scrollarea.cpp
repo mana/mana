@@ -153,12 +153,12 @@ void ScrollArea::logic()
         if (getHorizontalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
         {
             content->setWidth(getChildrenArea().width -
-                    2 * content->getBorderSize());
+                    2 * content->getFrameSize());
         }
         if (getVerticalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
         {
             content->setHeight(getChildrenArea().height -
-                    2 * content->getBorderSize());
+                    2 * content->getFrameSize());
         }
     }
 }
@@ -204,15 +204,15 @@ void ScrollArea::draw(gcn::Graphics *graphics)
     {
         graphics->pushClipArea(getChildrenArea());
 
-        if (content->getBorderSize() > 0)
+        if (content->getFrameSize() > 0)
         {
             gcn::Rectangle rec = content->getDimension();
-            rec.x -= content->getBorderSize();
-            rec.y -= content->getBorderSize();
-            rec.width += 2 * content->getBorderSize();
-            rec.height += 2 * content->getBorderSize();
+            rec.x -= content->getFrameSize();
+            rec.y -= content->getFrameSize();
+            rec.width += 2 * content->getFrameSize();
+            rec.height += 2 * content->getFrameSize();
             graphics->pushClipArea(rec);
-            content->drawBorder(graphics);
+            content->drawFrame(graphics);
             graphics->popClipArea();
         }
 
@@ -223,9 +223,9 @@ void ScrollArea::draw(gcn::Graphics *graphics)
     }
 }
 
-void ScrollArea::drawBorder(gcn::Graphics *graphics)
+void ScrollArea::drawFrame(gcn::Graphics *graphics)
 {
-    int bs = getBorderSize();
+    int bs = getFrameSize();
     int w = getWidth() + bs * 2;
     int h = getHeight() + bs * 2;
 
@@ -240,10 +240,10 @@ void ScrollArea::setOpaque(bool opaque)
     mOpaque = opaque;
 
     if (mOpaque) {
-        setBorderSize(2);
+        setFrameSize(2);
     }
     else {
-        setBorderSize(0);
+        setFrameSize(0);
     }
 }
 

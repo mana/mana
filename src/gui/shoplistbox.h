@@ -27,8 +27,6 @@
 #include "listbox.h"
 #include "shop.h"
 
-class SelectionListener;
-
 /**
  * A list box, meant to be used inside a scroll area. Same as the Guichan list
  * box except this one doesn't have a background, instead completely relying
@@ -55,29 +53,6 @@ class ShopListBox : public ListBox
         void draw(gcn::Graphics *graphics);
 
         void mousePressed(gcn::MouseEvent &event);
-
-        /**
-         * Adds a listener to the list that's notified each time a change to
-         * the selection occurs.
-         */
-        void addSelectionListener(SelectionListener *listener)
-        {
-            mListeners.push_back(listener);
-        }
-
-        /**
-         * Removes a listener from the list that's notified each time a change
-         * to the selection occurs.
-         */
-        void removeSelectionListener(SelectionListener *listener)
-        {
-            mListeners.remove(listener);
-        }
-
-        /**
-         * Sets the index of the selected element.
-         */
-        void setSelected(int selected);
 
         /**
          * gives information about the current player's money

@@ -25,7 +25,6 @@
 #define _TMW_ITEMSHORTCUTWINDOW_H
 
 #include "window.h"
-#include "windowlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -36,7 +35,7 @@ class ItemShortcutContainer;
  *
  * \ingroup Interface
  */
-class ItemShortcutWindow : public Window, WindowListener
+class ItemShortcutWindow : public Window
 {
     public:
         /**
@@ -55,9 +54,9 @@ class ItemShortcutWindow : public Window, WindowListener
         void logic();
 
         /**
-         * Called whenever the window is resized.
+         * Called whenever the widget changes size.
          */
-        void windowResized(const WindowEvent &event);
+        void widgetResized(const gcn::Event &event);
 
     private:
         ItemShortcutContainer *mItems;

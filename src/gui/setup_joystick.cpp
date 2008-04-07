@@ -43,7 +43,7 @@ Setup_Joystick::Setup_Joystick():
     mCalibrateButton->setPosition(10, 30 + mCalibrateLabel->getHeight());
 
     mOriginalJoystickEnabled = (int)config.getValue("joystickEnabled", 0) != 0;
-    mJoystickEnabled->setMarked(mOriginalJoystickEnabled);
+    mJoystickEnabled->setSelected(mOriginalJoystickEnabled);
 
     mJoystickEnabled->addActionListener(this);
 
@@ -60,7 +60,7 @@ void Setup_Joystick::action(const gcn::ActionEvent &event)
 
     if (event.getSource() == mJoystickEnabled)
     {
-        joystick->setEnabled(mJoystickEnabled->isMarked());
+        joystick->setEnabled(mJoystickEnabled->isSelected());
     }
     else
     {
@@ -83,7 +83,7 @@ void Setup_Joystick::cancel()
     {
         joystick->setEnabled(mOriginalJoystickEnabled);
     }
-    mJoystickEnabled->setMarked(mOriginalJoystickEnabled);
+    mJoystickEnabled->setSelected(mOriginalJoystickEnabled);
 }
 
 void Setup_Joystick::apply()

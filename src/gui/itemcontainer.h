@@ -32,7 +32,10 @@
 class Image;
 class Inventory;
 class Item;
-class SelectionListener;
+
+namespace gcn {
+    class SelectionListener;
+}
 
 /**
  * An item container. Used to show items in inventory and trade dialog.
@@ -87,7 +90,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
          * Adds a listener to the list that's notified each time a change to
          * the selection occurs.
          */
-        void addSelectionListener(SelectionListener *listener)
+        void addSelectionListener(gcn::SelectionListener *listener)
         {
             mListeners.push_back(listener);
         }
@@ -96,7 +99,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
          * Removes a listener from the list that's notified each time a change
          * to the selection occurs.
          */
-        void removeSelectionListener(SelectionListener *listener)
+        void removeSelectionListener(gcn::SelectionListener *listener)
         {
             mListeners.remove(listener);
         }
@@ -110,7 +113,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         /**
          * Sends out selection events to the list of selection listeners.
          */
-        void fireSelectionChangedEvent();
+        void distributeValueChangedEvent();
 
         Inventory *mInventory;
         Image *mSelImg;
@@ -118,7 +121,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
 
         int mMaxItems;
 
-        std::list<SelectionListener*> mListeners;
+        std::list<gcn::SelectionListener*> mListeners;
 };
 
 #endif

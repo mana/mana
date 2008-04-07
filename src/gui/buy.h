@@ -25,9 +25,9 @@
 #define _TMW_BUY_H
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/selectionlistener.hpp>
 
 #include "window.h"
-#include "selectionlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -41,8 +41,8 @@ class ListBox;
  *
  * \ingroup Interface
  */
-class BuyDialog : public Window, public gcn::ActionListener, SelectionListener,
-    WindowListener
+class BuyDialog : public Window, public gcn::ActionListener,
+    gcn::SelectionListener
 {
     public:
         /**
@@ -84,10 +84,8 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener,
 
         /**
          * Updates the labels according to the selected item.
-         *
-         * @see SelectionListener::selectionChanged
          */
-        void selectionChanged(const SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event);
 
         /**
          * Returns the name of item number i in the shop inventory.
@@ -101,9 +99,9 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener,
         updateButtonsAndLabels();
 
         /**
-         * Called whenever the window is resized.
+         * Called whenever the widget changes size.
          */
-        void windowResized(const WindowEvent &event);
+        void widgetResized(const gcn::Event &event);
 
     private:
         Network *mNetwork;

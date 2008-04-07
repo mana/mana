@@ -134,7 +134,6 @@ SET(SRCS
     gui/register.h
     gui/scrollarea.cpp
     gui/scrollarea.h
-    gui/selectionlistener.h
     gui/sell.cpp
     gui/sell.h
     gui/setup_audio.cpp
@@ -176,7 +175,6 @@ SET(SRCS
     gui/window.h
     gui/windowcontainer.cpp
     gui/windowcontainer.h
-    gui/windowlistener.h
     net/beinghandler.h
     net/beinghandler.cpp
     net/buysellhandler.h

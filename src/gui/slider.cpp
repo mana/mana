@@ -64,7 +64,7 @@ Slider::~Slider()
 void Slider::init()
 {
     int x, y, w, h,o1,o2;
-    setBorderSize(0);
+    setFrameSize(0);
 
     // Load resources
     if (mInstances == 0)

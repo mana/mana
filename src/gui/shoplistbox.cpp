@@ -23,8 +23,6 @@
 
 #include "shoplistbox.h"
 
-#include "selectionlistener.h"
-
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
@@ -101,6 +99,9 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     }
 }
 
+/* TODO:
+ * This method is no longer virtual, needed to be able to change row height...
+ *
 void ShopListBox::setSelected(int selected)
 {
     if (!mListModel)
@@ -123,15 +124,16 @@ void ShopListBox::setSelected(int selected)
         }
     }
 
-    fireSelectionChangedEvent();
+    distributeValueChangedEvent();
 }
+*/
 
 void ShopListBox::mousePressed(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
         setSelected(event.getY() / mRowHeight);
-        generateAction();
+        distributeActionEvent();
     }
 }
 

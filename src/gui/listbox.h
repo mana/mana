@@ -49,37 +49,6 @@ class ListBox : public gcn::ListBox
         void draw(gcn::Graphics *graphics);
 
         void mouseDragged(gcn::MouseEvent &event);
-
-        /**
-         * Adds a listener to the list that's notified each time a change to
-         * the selection occurs.
-         */
-        void addSelectionListener(SelectionListener *listener)
-        {
-            mListeners.push_back(listener);
-        }
-
-        /**
-         * Removes a listener from the list that's notified each time a change
-         * to the selection occurs.
-         */
-        void removeSelectionListener(SelectionListener *listener)
-        {
-            mListeners.remove(listener);
-        }
-
-        /**
-         * Sets the index of the selected element.
-         */
-        virtual void setSelected(int selected);
-
-    protected:
-        /**
-         * Sends out selection events to the list of selection listeners.
-         */
-        void fireSelectionChangedEvent();
-
-        std::list<SelectionListener*> mListeners;
 };
 
 #endif

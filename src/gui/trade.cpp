@@ -225,7 +225,7 @@ void TradeWindow::tradeItem(Item *item, int quantity)
     outMsg.writeInt32(quantity);
 }
 
-void TradeWindow::selectionChanged(const SelectionEvent &event)
+void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
 {
     Item *item;
 

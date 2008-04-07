@@ -34,8 +34,8 @@ Image *CheckBox::checkBoxChecked;
 Image *CheckBox::checkBoxDisabled;
 Image *CheckBox::checkBoxDisabledChecked;
 
-CheckBox::CheckBox(const std::string& caption, bool marked):
-    gcn::CheckBox(caption, marked)
+CheckBox::CheckBox(const std::string& caption, bool selected):
+    gcn::CheckBox(caption, selected)
 {
     if (instances == 0)
     {
@@ -68,7 +68,7 @@ void CheckBox::drawBox(gcn::Graphics* graphics)
 {
     Image *box;
 
-    if (mMarked) {
+    if (isSelected()) {
         if (isEnabled()) {
             box = checkBoxChecked;
         } else {

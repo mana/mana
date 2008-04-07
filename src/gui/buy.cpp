@@ -90,7 +90,6 @@ BuyDialog::BuyDialog(Network *network):
     add(mItemDescLabel);
     add(mItemEffectLabel);
 
-    addWindowListener(this);
     loadWindowState();
     setLocationRelativeTo(getParent());
 }
@@ -184,9 +183,8 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void BuyDialog::selectionChanged(const SelectionEvent &event)
+void BuyDialog::valueChanged(const gcn::SelectionEvent &event)
 {
-
     // Reset amount of items and update labels
     mAmountItems = 1;
     mSlider->setValue(1);
@@ -195,11 +193,13 @@ void BuyDialog::selectionChanged(const SelectionEvent &event)
     mSlider->gcn::Slider::setScale(1, mMaxItems);
 }
 
-void BuyDialog::windowResized(const WindowEvent &event)
+void BuyDialog::widgetResized(const gcn::Event &event)
 {
-    gcn::Rectangle area = getChildrenArea();
-    int width = area.width;
-    int height = area.height;
+    Window::widgetResized(event);
+
+    const gcn::Rectangle &area = getChildrenArea();
+    const int width = area.width;
+    const int height = area.height;
 
     mDecreaseButton->setPosition(8, height - 8 - mDecreaseButton->getHeight());
     mIncreaseButton->setPosition(
@@ -241,7 +241,7 @@ void BuyDialog::windowResized(const WindowEvent &event)
 void
 BuyDialog::updateButtonsAndLabels()
 {
-    int selectedItem = mShopItemList->getSelected();
+    const int selectedItem = mShopItemList->getSelected();
     int price = 0;
 
     if (selectedItem > -1)

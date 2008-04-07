@@ -97,7 +97,6 @@ SellDialog::SellDialog(Network *network):
     add(mSellButton);
     add(mQuitButton);
 
-    addWindowListener(this);
     loadWindowState();
     setLocationRelativeTo(getParent());
 }
@@ -204,7 +203,7 @@ void SellDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void SellDialog::selectionChanged(const SelectionEvent &event)
+void SellDialog::valueChanged(const gcn::SelectionEvent &event)
 {
     // Reset amount of items and update labels
     mAmountItems = 1;
@@ -214,8 +213,10 @@ void SellDialog::selectionChanged(const SelectionEvent &event)
     mSlider->gcn::Slider::setScale(1, mMaxItems);
 }
 
-void SellDialog::windowResized(const WindowEvent &event)
+void SellDialog::widgetResized(const gcn::Event &event)
 {
+    Window::widgetResized(event);
+
     gcn::Rectangle area = getChildrenArea();
     int width = area.width;
     int height = area.height;

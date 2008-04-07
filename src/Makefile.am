@@ -84,7 +84,6 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/register.h \
 	      gui/scrollarea.cpp \
 	      gui/scrollarea.h \
-	      gui/selectionlistener.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
 	      gui/setup_audio.cpp \
@@ -126,7 +125,6 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
-	      gui/windowlistener.h \
 	      net/beinghandler.h \
 	      net/beinghandler.cpp \
 	      net/buysellhandler.h \

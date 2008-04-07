@@ -81,7 +81,6 @@ InventoryWindow::InventoryWindow():
 
     mUseButton->setSize(60, mUseButton->getHeight());
 
-    addWindowListener(this);
     loadWindowState();
 }
 
@@ -132,7 +131,7 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void InventoryWindow::selectionChanged(const SelectionEvent &event)
+void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
     Item *item = mItems->getItem();
 
@@ -169,17 +168,19 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
         /* Convert relative to the window coordinates to absolute screen
          * coordinates.
          */
-        int mx = event.getX() + getX();
-        int my = event.getY() + getY();
+        const int mx = event.getX() + getX();
+        const int my = event.getY() + getY();
         viewport->showPopup(mx, my, item);
     }
 }
 
-void InventoryWindow::windowResized(const WindowEvent &event)
+void InventoryWindow::widgetResized(const gcn::Event &event)
 {
-    gcn::Rectangle area = getChildrenArea();
-    int width = area.width;
-    int height = area.height;
+    Window::widgetResized(event);
+
+    const gcn::Rectangle &area = getChildrenArea();
+    const int width = area.width;
+    const int height = area.height;
     int columns = width / 24;
 
     if (columns < 1)

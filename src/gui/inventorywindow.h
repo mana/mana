@@ -25,10 +25,9 @@
 #define _TMW_INVENTORYWINDOW_H
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/selectionlistener.hpp>
 
-#include "selectionlistener.h"
 #include "window.h"
-#include "windowlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -40,8 +39,8 @@ class ItemContainer;
  *
  * \ingroup Interface
  */
-class InventoryWindow : public Window, gcn::ActionListener, SelectionListener,
-    WindowListener
+class InventoryWindow : public Window, gcn::ActionListener,
+    gcn::SelectionListener
 {
     public:
         /**
@@ -65,15 +64,13 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener,
 
         /**
          * Updates labels to currently selected item.
-         *
-         * @see SelectionListener::selectionChanged.
          */
-        void selectionChanged(const SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event);
 
         /**
-         * Called whenever the window is resized.
+         * Called whenever the widget changes size.
          */
-        void windowResized(const WindowEvent &event);
+        void widgetResized(const gcn::Event &event);
 
     private:
         void updateButtons();    /**< Updates button states. */

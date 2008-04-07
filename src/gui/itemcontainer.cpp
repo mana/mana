@@ -24,8 +24,7 @@
 #include "itemcontainer.h"
 
 #include <guichan/mouseinput.hpp>
-
-#include "selectionlistener.h"
+#include <guichan/selectionlistener.hpp>
 
 #include "../graphics.h"
 #include "../inventory.h"
@@ -167,20 +166,20 @@ ItemContainer::setSelectedItem(Item *item)
     if (mSelectedItem != item)
     {
         mSelectedItem = item;
-        fireSelectionChangedEvent();
+        distributeValueChangedEvent();
     }
 }
 
 void
-ItemContainer::fireSelectionChangedEvent()
+ItemContainer::distributeValueChangedEvent()
 {
-    SelectionEvent event(this);
-    SelectionListeners::iterator i_end = mListeners.end();
-    SelectionListeners::iterator i;
+    gcn::SelectionEvent event(this);
+    std::list<gcn::SelectionListener*>::iterator i_end = mListeners.end();
+    std::list<gcn::SelectionListener*>::iterator i;
 
     for (i = mListeners.begin(); i != i_end; ++i)
     {
-        (*i)->selectionChanged(event);
+        (*i)->valueChanged(event);
     }
 }
 

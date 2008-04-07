@@ -235,7 +235,7 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             mLoginData->port = (short) config.getValue("port", 0);
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
-            mLoginData->username += mFemaleButton->isMarked() ? "_F" : "_M";
+            mLoginData->username += mFemaleButton->isSelected() ? "_F" : "_M";
             mLoginData->registerLogin = true;
 
             state = ACCOUNT_STATE;

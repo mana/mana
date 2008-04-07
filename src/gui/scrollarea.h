@@ -65,7 +65,7 @@ class ScrollArea : public gcn::ScrollArea {
         /**
          * Draws the background and border of the scroll area.
          */
-        void drawBorder(gcn::Graphics *graphics);
+        void drawFrame(gcn::Graphics *graphics);
 
         /**
          * Sets whether the widget should draw its background or not.

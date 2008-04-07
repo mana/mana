@@ -105,7 +105,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     instances++;
 
-    setBorderSize(0);
+    setFrameSize(0);
     setPadding(3);
     setTitleBarHeight(20);
 
@@ -125,6 +125,8 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     // Windows are invisible by default
     setVisible(false);
+
+    addWidgetListener(this);
 }
 
 Window::~Window()
@@ -196,78 +198,11 @@ void Window::draw(gcn::Graphics *graphics)
     drawChildren(graphics);
 }
 
-void Window::setContentWidth(int width)
-{
-    mChrome->setWidth(width);
-    setWidth(width + 2 * getPadding());
-}
-
-void Window::setContentHeight(int height)
-{
-    mChrome->setHeight(height);
-    setHeight(height + getPadding() + getTitleBarHeight());
-}
-
 void Window::setContentSize(int width, int height)
 {
     mChrome->setSize(width, height);
     setSize(width + 2 * getPadding(),
             height + getPadding() + getTitleBarHeight());
-}
-
-void Window::setSize(int width, int height)
-{
-    if (width == mDimension.width && height == mDimension.height) return;
-
-    // No call to ancestor! Infinite loop otherwise.
-    mDimension.width = width;
-    mDimension.height = height;
-
-    if (mGrip)
-    {
-        gcn::Rectangle const &area = getChildrenArea();
-        mGrip->setPosition(width - mGrip->getWidth() - area.x,
-                           height - mGrip->getHeight() - area.y);
-    }
-
-    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
-}
-
-void Window::setWidth(int width)
-{
-    setSize(width, mDimension.height);
-}
-
-void Window::setHeight(int height)
-{
-    setSize(mDimension.width, height);
-}
-
-void Window::setPosition(int x, int y)
-{
-    if (x == mDimension.x && y == mDimension.y) return;
-
-    // No call to ancestor!
-    mDimension.x = x;
-    mDimension.y = y;
-
-    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
-}
-
-void Window::setDimension(const gcn::Rectangle &dimension)
-{
-    setPosition(dimension.x, dimension.y);
-    setSize(dimension.width, dimension.height);
-}
-
-void Window::setX(int x)
-{
-    setPosition(x, mDimension.y);
-}
-
-void Window::setY(int y)
-{
-    setPosition(mDimension.x, y);
 }
 
 void Window::setLocationRelativeTo(gcn::Widget *widget)
@@ -317,6 +252,16 @@ void Window::setResizable(bool r)
     {
         delete mGrip;
         mGrip = 0;
+    }
+}
+
+void Window::widgetResized(const gcn::Event &event)
+{
+    if (mGrip)
+    {
+        gcn::Rectangle const &area = getChildrenArea();
+        mGrip->setPosition(getWidth() - mGrip->getWidth() - area.x,
+                           getHeight() - mGrip->getHeight() - area.y);
     }
 }
 
@@ -406,7 +351,7 @@ void Window::mouseReleased(gcn::MouseEvent &event)
     }
 
     // This should be the responsibility of Guichan (and is from 0.8.0 on)
-    mIsMoving = false;
+    mMoved = false;
 }
 
 void Window::mouseExited(gcn::MouseEvent &event)
@@ -448,7 +393,7 @@ void Window::mouseDragged(gcn::MouseEvent &event)
     gcn::Window::mouseDragged(event);
 
     // Keep guichan window inside screen when it may be moved
-    if (isMovable() && mIsMoving)
+    if (isMovable() && mMoved)
     {
         int newX = std::max(0, getX());
         int newY = std::max(0, getY());
@@ -457,7 +402,7 @@ void Window::mouseDragged(gcn::MouseEvent &event)
         setPosition(newX, newY);
     }
 
-    if (mouseResize && !mIsMoving)
+    if (mouseResize && !mMoved)
     {
         const int dx = event.getX() - mDragOffsetX;
         const int dy = event.getY() - mDragOffsetY;
@@ -588,22 +533,4 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
     }
 
     return resizeHandles;
-}
-
-void Window::fireWindowEvent(const WindowEvent &event)
-{
-    WindowListeners::iterator i_end = mListeners.end();
-    WindowListeners::iterator i = mListeners.begin();
-
-    switch (event.getType())
-    {
-        case WindowEvent::WINDOW_MOVED:
-            for (; i != i_end; ++i)
-            { (*i)->windowMoved(event); }
-            break;
-        case WindowEvent::WINDOW_RESIZED:
-            for (; i != i_end; ++i)
-            { (*i)->windowResized(event); }
-            break;
-    }
 }

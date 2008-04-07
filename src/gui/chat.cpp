@@ -64,7 +64,7 @@ ChatWindow::ChatWindow(Network *network):
     mTextOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
     mScrollArea = new ScrollArea(mTextOutput);
     mScrollArea->setPosition(
-            mScrollArea->getBorderSize(), mScrollArea->getBorderSize());
+            mScrollArea->getFrameSize(), mScrollArea->getFrameSize());
     mScrollArea->setScrollPolicy(
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     mScrollArea->setOpaque(false);
@@ -84,12 +84,12 @@ ChatWindow::logic()
 
     const gcn::Rectangle area = getChildrenArea();
 
-    mChatInput->setPosition(mChatInput->getBorderSize(),
+    mChatInput->setPosition(mChatInput->getFrameSize(),
                             area.height - mChatInput->getHeight() -
-                                mChatInput->getBorderSize());
-    mChatInput->setWidth(area.width - 2 * mChatInput->getBorderSize());
-    mScrollArea->setWidth(area.width - 2 * mScrollArea->getBorderSize());
-    mScrollArea->setHeight(area.height - 2 * mScrollArea->getBorderSize() -
+                                mChatInput->getFrameSize());
+    mChatInput->setWidth(area.width - 2 * mChatInput->getFrameSize());
+    mScrollArea->setWidth(area.width - 2 * mScrollArea->getFrameSize());
+    mScrollArea->setHeight(area.height - 2 * mScrollArea->getFrameSize() -
             mChatInput->getHeight() - 5);
     mScrollArea->logic();
 }

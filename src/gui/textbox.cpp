@@ -32,14 +32,14 @@ TextBox::TextBox():
     gcn::TextBox()
 {
     setOpaque(false);
-    setBorderSize(0);
+    setFrameSize(0);
 }
 
 TextBox::TextBox(const std::string& text):
     gcn::TextBox(text)
 {
     setOpaque(false);
-    setBorderSize(0);
+    setFrameSize(0);
 }
 
 void TextBox::setText(const std::string &text)

@@ -40,7 +40,7 @@ ImageRect TextField::skin;
 TextField::TextField(const std::string& text):
     gcn::TextField(text)
 {
-    setBorderSize(2);
+    setFrameSize(2);
 
     if (instances == 0)
     {
@@ -93,10 +93,10 @@ void TextField::draw(gcn::Graphics *graphics)
     graphics->drawText(mText, 1 - mXScroll, 1);
 }
 
-void TextField::drawBorder(gcn::Graphics *graphics)
+void TextField::drawFrame(gcn::Graphics *graphics)
 {
     int w, h, bs;
-    bs = getBorderSize();
+    bs = getFrameSize();
     w = getWidth() + bs * 2;
     h = getHeight() + bs * 2;
 

@@ -69,7 +69,7 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData):
     mScrollArea->setDimension(gcn::Rectangle(
                 5, 5, 200 - 2 * 5,
                 100 - 3 * 5 - mCancelButton->getHeight() -
-                mScrollArea->getBorderSize()));
+                mScrollArea->getFrameSize()));
 
     mServerList->setActionEventId("ok");
 
