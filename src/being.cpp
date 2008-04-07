@@ -418,10 +418,12 @@ Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     if (!mEmotion)
         return;
 
-    int px = mPx + offsetX + 3;
-    int py = mPy + offsetY - 60;
+    const int px = mPx + offsetX + 3;
+    const int py = mPy + offsetY - 60;
+    const int emotionIndex = mEmotion - 1;
 
-    graphics->drawImage(emotionSet->get(mEmotion - 1), px, py);
+    if (emotionIndex >= 0 && emotionIndex < emotionSet->size())
+        graphics->drawImage(emotionSet->get(emotionIndex), px, py);
 }
 
 void

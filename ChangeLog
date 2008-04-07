@@ -1,3 +1,10 @@
+2008-04-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/winver.h, README, configure.ac, data/help/changes.txt,
+	data/help/header.txt, NEWS, CMakeLists.txt: Updated version, release
+	date and changes.
+	* src/being.cpp: Fixed crash on trying to show out of range emoticon.
+
 2008-04-03  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Tweaked disconnect dialog, hoping to fix a crash bug.
