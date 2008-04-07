@@ -6,6 +6,9 @@
 	src/resources/itemdb.cpp, src/resources/npcdb.cpp,
 	src/resources/spritedef.h: Added XML::Document class which simplifies
 	parsing an XML document and automatically cleans it up again.
+	* src/resources/spritedef.cpp, src/resources/spritedef.h,
+	data/graphics/sprites/item008.xml: Added support for basing one sprite
+	definition on another by including it.
 
 2008-04-03  Philipp Sehmisch  <tmw@crushnet.org>
 
