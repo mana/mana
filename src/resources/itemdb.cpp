@@ -103,26 +103,12 @@ void ItemDB::load()
     mUnknown->setSprite("error.xml", GENDER_MALE);
     mUnknown->setSprite("error.xml", GENDER_FEMALE);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    int size;
-    char *data = (char*) resman->loadFile("items.xml", size);
+    XML::Document doc("items.xml");
+    xmlNodePtr rootNode = doc.rootNode();
 
-    if (!data) {
-        logger->error("ItemDB: Could not find items.xml!");
-    }
-
-    xmlDocPtr doc = xmlParseMemory(data, size);
-    free(data);
-
-    if (!doc)
-    {
-        logger->error("ItemDB: Error while parsing item database (items.xml)!");
-    }
-
-    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
     {
-        logger->error("ItemDB: items.xml is not a valid database file!");
+        logger->error("ItemDB: Error while loading items.xml!");
     }
 
     for_each_xml_child_node(node, rootNode)
@@ -199,8 +185,6 @@ void ItemDB::load()
 
 #undef CHECK_PARAM
     }
-
-    xmlFreeDoc(doc);
 
     mLoaded = true;
 }

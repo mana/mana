@@ -51,27 +51,12 @@ MonsterDB::load()
 
     logger->log("Initializing monster database...");
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    int size;
-    char *data = (char*)resman->loadFile("monsters.xml", size);
+    XML::Document doc("monsters.xml");
+    xmlNodePtr rootNode = doc.rootNode();
 
-    if (!data)
-    {
-        logger->error("Monster Database: Could not find monsters.xml!");
-    }
-
-    xmlDocPtr doc = xmlParseMemory(data, size);
-    free(data);
-
-    if (!doc)
-    {
-        logger->error("Monster Database: Error while parsing monster database (monsters.xml)!");
-    }
-
-    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "monsters"))
     {
-        logger->error("Monster Database: monster.xml is not a valid database file!");
+        logger->error("Monster Database: Error while loading monster.xml!");
     }
 
     //iterate <monster>s
@@ -161,16 +146,14 @@ MonsterDB::load()
         mMonsterInfos[XML::getProperty(monsterNode, "id", 0)] = currentInfo;
     }
 
-    xmlFreeDoc(doc);
-
     mLoaded = true;
 }
 
 void
 MonsterDB::unload()
 {
-    for_each (  mMonsterInfos.begin(), mMonsterInfos.end(),
-                make_dtor(mMonsterInfos));
+    for_each(mMonsterInfos.begin(), mMonsterInfos.end(),
+             make_dtor(mMonsterInfos));
     mMonsterInfos.clear();
 
     mLoaded = false;
@@ -178,7 +161,7 @@ MonsterDB::unload()
 
 
 const MonsterInfo&
-MonsterDB::get (int id)
+MonsterDB::get(int id)
 {
     MonsterInfoIterator i = mMonsterInfos.find(id);
 

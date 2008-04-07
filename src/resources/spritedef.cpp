@@ -51,7 +51,6 @@ SpriteDef::getAction(SpriteAction action) const
 
 SpriteDef *SpriteDef::load(std::string const &animationFile, int variant)
 {
-    int size;
     ResourceManager *resman = ResourceManager::getInstance();
 
     std::string::size_type pos = animationFile.find('|');
@@ -59,27 +58,18 @@ SpriteDef *SpriteDef::load(std::string const &animationFile, int variant)
     if (pos != std::string::npos)
         palettes = animationFile.substr(pos + 1);
 
-    char *data = (char*) resman->loadFile
-        (animationFile.substr(0, pos).c_str(), size);
+    XML::Document doc(animationFile.substr(0, pos));
+    xmlNodePtr rootNode = doc.rootNode();
 
-    if (!data && animationFile != "graphics/sprites/error.xml")
-        return load("graphics/sprites/error.xml", 0);
-
-    xmlDocPtr doc = xmlParseMemory(data, size);
-    free(data);
-
-    if (!doc)
-    {
-        logger->log("Error, failed to parse %s.", animationFile.c_str());
-        return NULL;
-    }
-
-    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "sprite"))
     {
-        logger->log("Error, failed to parse %s.", animationFile.c_str());
-        xmlFreeDoc(doc);
-        return NULL;
+        logger->log("Error, failed to parse %s", animationFile.c_str());
+
+        if (animationFile != "graphics/sprites/error.xml") {
+            return load("graphics/sprites/error.xml", 0);
+        } else {
+            return NULL;
+        }
     }
 
     // Get the variant
@@ -108,8 +98,6 @@ SpriteDef *SpriteDef::load(std::string const &animationFile, int variant)
             def->includeSprite(node);
         }
     }
-
-    xmlFreeDoc(doc);
 
     def->substituteActions();
     return def;
@@ -277,7 +265,7 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
 void
 SpriteDef::includeSprite(xmlNodePtr includeNode)
 {
-    std::string filename = XML::getProperty(includeNode, "file", "");
+    const std::string filename = XML::getProperty(includeNode, "file", "");
     ResourceManager *resman = ResourceManager::getInstance();
     SpriteDef *sprite = resman->getSprite("graphics/sprites/" + filename);
 

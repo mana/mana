@@ -40,7 +40,7 @@ namespace
 void NPCDB::load()
 {
     if (mLoaded)
-    return;
+        return;
 
     NPCsprite *unknownSprite = new NPCsprite;
     unknownSprite->sprite = "error.xml";
@@ -49,27 +49,12 @@ void NPCDB::load()
 
     logger->log("Initializing NPC database...");
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    int size;
-    char *data = (char*)resman->loadFile("npcs.xml", size);
+    XML::Document doc("npcs.xml");
+    xmlNodePtr rootNode = doc.rootNode();
 
-    if (!data)
-    {
-        logger->error("NPC Database: Could not find npcs.xml!");
-    }
-
-    xmlDocPtr doc = xmlParseMemory(data, size);
-    free(data);
-
-    if (!doc)
-    {
-        logger->error("NPC Database: Error while parsing NPC database (npcs.xml)!");
-    }
-
-    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "npcs"))
     {
-        logger->error("NPC Database: npcs.xml is not a valid database file!");
+        logger->error("NPC Database: Error while loading items.xml!");
     }
 
     //iterate <monster>s
@@ -102,8 +87,6 @@ void NPCDB::load()
 
     }
 
-    xmlFreeDoc(doc);
-
     mLoaded = true;
 }
 
@@ -134,7 +117,7 @@ NPCDB::unload()
 }
 
 const NPCInfo&
-NPCDB::get (int id)
+NPCDB::get(int id)
 {
     NPCInfosIterator i = mNPCInfos.find(id);
 

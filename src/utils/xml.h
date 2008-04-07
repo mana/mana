@@ -34,6 +34,43 @@
 namespace XML
 {
     /**
+     * A helper class for parsing an XML document, which also cleans it up
+     * again (RAII).
+     */
+    class Document
+    {
+        public:
+            /**
+             * Constructor that attempts to load the given file through the
+             * resource manager. Logs errors.
+             */
+            Document(const std::string &filename);
+
+            /**
+             * Constructor that attempts to load an XML document from memory.
+             * Does not log errors.
+             *
+             * @param data the string to parse as XML
+             * @param size the length of the string in bytes
+             */
+            Document(const char *data, int size);
+
+            /**
+             * Destructor. Frees the loaded XML file.
+             */
+            ~Document();
+
+            /**
+             * Returns the root node of the document (or NULL if there was a
+             * load error).
+             */
+            xmlNodePtr rootNode();
+
+        private:
+            xmlDocPtr mDoc;
+    };
+
+    /**
      * Gets an integer property from an xmlNodePtr.
      */
     int

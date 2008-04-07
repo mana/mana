@@ -1,3 +1,12 @@
+2008-04-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/particle.cpp, src/utils/xml.cpp, src/utils/xml.h,
+	src/resources/mapreader.cpp, src/resources/spritedef.cpp,
+	src/resources/npcdb.h, src/resources/monsterdb.cpp,
+	src/resources/itemdb.cpp, src/resources/npcdb.cpp,
+	src/resources/spritedef.h: Added XML::Document class which simplifies
+	parsing an XML document and automatically cleans it up again.
+
 2008-04-03  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/localplayer.cpp: Spawning a particle effect whenever the client

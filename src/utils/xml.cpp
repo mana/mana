@@ -22,9 +22,45 @@
  */
 
 #include "xml.h"
+#include "../log.h"
+#include "../resources/resourcemanager.h"
 
 namespace XML
 {
+    Document::Document(const std::string &filename):
+        mDoc(NULL)
+    {
+        int size;
+        ResourceManager *resman = ResourceManager::getInstance();
+        char *data = (char*) resman->loadFile(filename.c_str(), size);
+
+        if (data) {
+            mDoc = xmlParseMemory(data, size);
+            free(data);
+
+            if (!mDoc)
+                logger->log("Error parsing XML file %s", filename.c_str());
+        } else {
+            logger->log("Error loading %s", filename.c_str());
+        }
+    }
+
+    Document::Document(const char *data, int size)
+    {
+        mDoc = xmlParseMemory(data, size);
+    }
+
+    Document::~Document()
+    {
+        if (mDoc)
+            xmlFreeDoc(mDoc);
+    }
+
+    xmlNodePtr Document::rootNode()
+    {
+        return mDoc ? xmlDocGetRootElement(mDoc) : 0;
+    }
+
     int
     getProperty(xmlNodePtr node, const char* name, int def)
     {

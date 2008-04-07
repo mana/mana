@@ -97,11 +97,10 @@ class SpriteDef : public Resource
         makeSpriteAction(const std::string &action);
 
     private:
-
         /**
          * Constructor.
          */
-        SpriteDef(): mAction(NULL), mDirection(DIRECTION_DOWN), mLastTime(0) {}
+        SpriteDef() {}
 
         /**
          * Destructor.
@@ -159,9 +158,6 @@ class SpriteDef : public Resource
 
         ImageSets mImageSets;
         Actions mActions;
-        Action *mAction;
-        SpriteDirection mDirection;
-        int mLastTime;
 };
 
 #endif
