@@ -1,3 +1,13 @@
+2008-04-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/gui/viewport.cpp, src/tileset.h, src/map.h,
+	src/resources/imageset.cpp, src/resources/mapreader.cpp,
+	src/resources/imageset.h, src/resources/mapreader.h,
+	data/maps/new_3-1.tmx, data/maps/new_1-1.tmx: Implemented support for
+	an arbitrary number of map layers. The only layer requirement for map
+	layers are now that the fringe layer is called "Fringe" and that the
+	collision layer is called "Collision".
+
 2008-04-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/particle.cpp, src/utils/xml.cpp, src/utils/xml.h,

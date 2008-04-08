@@ -50,7 +50,7 @@ ImageSet::~ImageSet()
 }
 
 Image*
-ImageSet::get(size_type i)
+ImageSet::get(size_type i) const
 {
     if (i >= mImages.size())
     {
