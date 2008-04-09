@@ -52,6 +52,11 @@ class ShopListBox : public ListBox
          */
         void draw(gcn::Graphics *graphics);
 
+        /**
+         * Returns the height of a row.
+         */
+        unsigned int getRowHeight() const { return mRowHeight; }
+
         void mousePressed(gcn::MouseEvent &event);
 
         /**
@@ -79,7 +84,7 @@ class ShopListBox : public ListBox
          */
         ShopItems *mShopItems;
 
-        int mRowHeight; /**< Row Height */
+        unsigned int mRowHeight; /**< Row Height */
 
         bool mPriceCheck;
 };

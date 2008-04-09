@@ -1,3 +1,8 @@
+2008-04-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/shoplistbox.cpp, src/gui/shoplistbox.h: Fixed problem with
+	row height in shop list box.
+
 2008-04-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/winver.h, README, configure.ac, data/help/changes.txt,

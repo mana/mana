@@ -99,35 +99,6 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     }
 }
 
-/* TODO:
- * This method is no longer virtual, needed to be able to change row height...
- *
-void ShopListBox::setSelected(int selected)
-{
-    if (!mListModel)
-    {
-        mSelected = -1;
-    }
-    else
-    {
-        // Update mSelected with bounds checking
-        mSelected = std::min(mListModel->getNumberOfElements() - 1,
-                             std::max(-1, selected));
-
-        gcn::Widget *parent = getParent();
-        if (parent && mSelected >= 0)
-        {
-            gcn::Rectangle scroll;
-            scroll.y = mRowHeight * mSelected;
-            scroll.height = mRowHeight;
-            parent->showWidgetPart(this, scroll);
-        }
-    }
-
-    distributeValueChangedEvent();
-}
-*/
-
 void ShopListBox::mousePressed(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
