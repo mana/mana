@@ -99,6 +99,10 @@ SET(SRCS
     gui/inventorywindow.h
     gui/itemcontainer.cpp
     gui/itemcontainer.h
+    gui/itemshortcutcontainer.cpp
+    gui/itemshortcutcontainer.h
+    gui/itemshortcutwindow.cpp
+    gui/itemshortcutwindow.h
     gui/item_amount.cpp
     gui/item_amount.h
     gui/linkhandler.h
@@ -290,6 +294,8 @@ SET(SRCS
     inventory.h
     item.cpp
     item.h
+    itemshortcut.cpp
+    itemshortcut.h
     joystick.cpp
     joystick.h
     keyboardconfig.cpp

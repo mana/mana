@@ -2,6 +2,10 @@
 
 	* src/gui/shoplistbox.cpp, src/gui/shoplistbox.h: Fixed problem with
 	row height in shop list box.
+	* src/game.cpp, src/gui/menuwindow.cpp, src/gui/itemcontainer.cpp,
+	src/main.cpp, src/CMakeLists.txt, src/net/inventoryhandler.cpp,
+	src/Makefile.am: Re-enabled non-functional item shortcut window,
+	planned to be fixed for 0.0.25.
 
 2008-04-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

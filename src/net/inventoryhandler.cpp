@@ -30,7 +30,7 @@
 
 #include "../resources/iteminfo.h"
 #include "../item.h"
-//#include "../itemshortcut.h"
+#include "../itemshortcut.h"
 #include "../localplayer.h"
 
 #include "../gui/chat.h"
@@ -80,7 +80,7 @@ void InventoryHandler::handleMessage(MessageIn *msg)
                     player_node->getInvItem(index)->setEquipment(true);
                 }
             }
-            //itemShortcut->load();
+            itemShortcut->load();
             break;
 
         case SMSG_PLAYER_INVENTORY_ADD:

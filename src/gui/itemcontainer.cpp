@@ -29,7 +29,7 @@
 #include "../graphics.h"
 #include "../inventory.h"
 #include "../item.h"
-//#include "../itemshortcut.h"
+#include "../itemshortcut.h"
 #include "../log.h"
 
 #include "../resources/image.h"
@@ -197,7 +197,7 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         int my = event.getY();
         int index = mx / gridWidth + ((my / gridHeight) * columns) + 2;
 
-        //itemShortcut->setItemSelected(NULL);
+        itemShortcut->setItemSelected(NULL);
         // Fix for old server, it should be: if (index >= mMaxItems)
         if (index > mMaxItems + 1)
         {
@@ -206,9 +206,9 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         }
         Item *item = mInventory->getItem(index);
         setSelectedItem(item);
-        //if (!item->isEquipment())
-        //{
-        //    itemShortcut->setItemSelected(item);
-        //}
+        if (!item->isEquipment())
+        {
+            itemShortcut->setItemSelected(item);
+        }
     }
 }

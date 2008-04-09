@@ -36,7 +36,7 @@
 #include "engine.h"
 #include "flooritemmanager.h"
 #include "graphics.h"
-//#include "itemshortcut.h"
+#include "itemshortcut.h"
 #include "joystick.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
@@ -54,7 +54,7 @@
 #include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
-//#include "gui/itemshortcutwindow.h"
+#include "gui/itemshortcutwindow.h"
 #include "gui/menuwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
@@ -120,7 +120,7 @@ TradeWindow *tradeWindow;
 //BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
-//ItemShortcutWindow *itemShortcutWindow;
+ItemShortcutWindow *itemShortcutWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
@@ -201,7 +201,7 @@ void createGuiWindows(Network *network)
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
-    //itemShortcutWindow = new ItemShortcutWindow();
+    itemShortcutWindow = new ItemShortcutWindow();
 
     // Initialize window positions
     //chargeDialog->setPosition(
@@ -214,7 +214,7 @@ void createGuiWindows(Network *network)
     chatWindow->setVisible(true);
     miniStatusWindow->setVisible(true);
     menuWindow->setVisible(true);
-    //itemShortcutWindow->setVisible(true);
+    itemShortcutWindow->setVisible(true);
 
     if (config.getValue("logToChat", 0))
     {
@@ -247,7 +247,7 @@ void destroyGuiWindows()
     //delete buddyWindow;
     delete helpWindow;
     delete debugWindow;
-    //delete itemShortcutWindow;
+    delete itemShortcutWindow;
 }
 
 Game::Game(Network *network):
@@ -541,7 +541,6 @@ void Game::handleInput()
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
                 // Checks if any item shortcut is pressed.
-                /*
                 for (int i = KeyboardConfig::KEY_SHORTCUT_0;
                     i <= KeyboardConfig::KEY_SHORTCUT_9;
                     i++)
@@ -552,7 +551,6 @@ void Game::handleInput()
                         break;
                     }
                 }
-                */
                 switch (tKey) {
                     case KeyboardConfig::KEY_PICKUP:
                         {
