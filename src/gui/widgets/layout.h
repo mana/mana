@@ -311,7 +311,7 @@ class Layout: public LayoutCell
         {
             AUTO_DEF = -42, /**< Default value, behaves like AUTO_ADD. */
             AUTO_SET = -43, /**< Uses the share as the new size. */
-            AUTO_ADD = -44, /**< Adds the share to the current size. */
+            AUTO_ADD = -44  /**< Adds the share to the current size. */
         };
 
     private:

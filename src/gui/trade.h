@@ -96,7 +96,7 @@ class TradeWindow : public Window, gcn::ActionListener, SelectionListener
         {
             PREPARING, /**< Players are adding items. */
             PROPOSING, /**< Local player is proposing a trade. */
-            ACCEPTING, /**< Distant player is proposing a trade. */
+            ACCEPTING  /**< Distant player is proposing a trade. */
         };
 
         /**

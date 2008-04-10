@@ -51,8 +51,6 @@ SpriteDef::getAction(SpriteAction action) const
 
 SpriteDef *SpriteDef::load(std::string const &animationFile, int variant)
 {
-    ResourceManager *resman = ResourceManager::getInstance();
-
     std::string::size_type pos = animationFile.find('|');
     std::string palettes;
     if (pos != std::string::npos)

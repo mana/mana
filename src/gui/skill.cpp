@@ -103,26 +103,27 @@ void SkillDialog::update()
 
 Skill_Tab::Skill_Tab(std::string type): type(type)
 {
-    int skillnum;
+    int skillNum = 0;
+
     if (type == "Weapon")
     {
-        skillnum = CHAR_SKILL_WEAPON_NB;
+        skillNum = CHAR_SKILL_WEAPON_NB;
     }
     else if (type == "Magic")
     {
-        skillnum = CHAR_SKILL_MAGIC_NB;
+        skillNum = CHAR_SKILL_MAGIC_NB;
     }
     else if (type == "Craft")
     {
-        skillnum = CHAR_SKILL_CRAFT_NB;
+        skillNum = CHAR_SKILL_CRAFT_NB;
     }
 
-    mSkillNameLabels.resize(skillnum);
-    mSkillLevelLabels.resize(skillnum);
-    mSkillExpLabels.resize(skillnum);
-    mSkillProgress.resize(skillnum);
+    mSkillNameLabels.resize(skillNum);
+    mSkillLevelLabels.resize(skillNum);
+    mSkillExpLabels.resize(skillNum);
+    mSkillProgress.resize(skillNum);
 
-    for (int a=0; a < skillnum; a++)
+    for (int a=0; a < skillNum; a++)
     {
         mSkillNameLabels.at(a) = new gcn::Label("");
         mSkillNameLabels.at(a)->setPosition(1, a*32 );
@@ -148,28 +149,29 @@ Skill_Tab::Skill_Tab(std::string type): type(type)
 void Skill_Tab::update()
 {
     setOpaque(false);
-    int skillnum;
-    int skillbegin;
+    int skillNum = 0;
+    int skillBegin;
+
     if (type == "Weapon")
     {
-        skillnum = CHAR_SKILL_WEAPON_NB;
-        skillbegin = CHAR_SKILL_WEAPON_BEGIN - CHAR_SKILL_BEGIN;
+        skillNum = CHAR_SKILL_WEAPON_NB;
+        skillBegin = CHAR_SKILL_WEAPON_BEGIN - CHAR_SKILL_BEGIN;
     }
     else if (type == "Magic")
     {
-        skillnum = CHAR_SKILL_MAGIC_NB;
-        skillbegin = CHAR_SKILL_MAGIC_BEGIN - CHAR_SKILL_BEGIN;
+        skillNum = CHAR_SKILL_MAGIC_NB;
+        skillBegin = CHAR_SKILL_MAGIC_BEGIN - CHAR_SKILL_BEGIN;
     }
     else if (type == "Craft")
     {
-        skillnum = CHAR_SKILL_CRAFT_NB;
-        skillbegin = CHAR_SKILL_CRAFT_BEGIN - CHAR_SKILL_BEGIN;
+        skillNum = CHAR_SKILL_CRAFT_NB;
+        skillBegin = CHAR_SKILL_CRAFT_BEGIN - CHAR_SKILL_BEGIN;
     }
 
-    for (int a = 0; a < skillnum; a++)
+    for (int a = 0; a < skillNum; a++)
     {
-        int baseLevel = player_node->getAttributeBase(a + skillbegin + CHAR_SKILL_BEGIN);
-        int effLevel = player_node->getAttributeEffective(a + skillbegin + CHAR_SKILL_BEGIN);
+        int baseLevel = player_node->getAttributeBase(a + skillBegin + CHAR_SKILL_BEGIN);
+        int effLevel = player_node->getAttributeEffective(a + skillBegin + CHAR_SKILL_BEGIN);
 
         std::string skillLevel("Lvl: " + toString(baseLevel));
         if (effLevel < baseLevel)
@@ -182,11 +184,11 @@ void Skill_Tab::update()
         }
         mSkillLevelLabels.at(a)->setCaption(skillLevel);
 
-        std::pair<int, int> exp = player_node->getExperience(a + skillbegin);
+        std::pair<int, int> exp = player_node->getExperience(a + skillBegin);
         std::string sExp (toString(exp.first) + " / " + toString(exp.second));
 
 
-        mSkillNameLabels.at(a)->setCaption(LocalPlayer::getSkillName(a + skillbegin));
+        mSkillNameLabels.at(a)->setCaption(LocalPlayer::getSkillName(a + skillBegin));
         mSkillNameLabels.at(a)->adjustSize();
         mSkillLevelLabels.at(a)->adjustSize();
         mSkillExpLabels.at(a)->setCaption(sExp);

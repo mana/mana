@@ -1,3 +1,10 @@
+2008-04-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/widgets/layout.h, src/gui/skill.cpp, src/gui/trade.h,
+	src/log.h, src/resources/mapreader.cpp, src/resources/spritedef.cpp:
+	Fixed some compiler warnings and don't try to load particle effects
+	when no file is set.
+
 2008-04-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/gui/viewport.cpp, src/tileset.h, src/map.h,

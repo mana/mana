@@ -258,8 +258,14 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
 
                     logger->log("- Loading object name: %s type: %s at %d:%d",
                                 objName.c_str(), objType.c_str(), objX, objY);
+
                     if (objType == "PARTICLE_EFFECT")
                     {
+                        if (objName.empty()) {
+                            logger->log("   Warning: No particle file given");
+                            continue;
+                        }
+
                         map->addParticleEffect(objName, objX, objY);
                     }
                     else
