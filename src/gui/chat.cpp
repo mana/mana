@@ -281,7 +281,7 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         chatLog("/where: Display map name", BY_SERVER);
         chatLog("/who: Display number of online users", BY_SERVER);
         chatLog("/clear: Clears this window", BY_SERVER);
-        chatLog("/whisper: Whisper <nick> <message> - sends a private <message> to <nick>", BY_SERVER);
+        chatLog("/whisper <nick> <message>: Sends a private <message> to <nick>", BY_SERVER);
     }
     else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
     {
