@@ -191,7 +191,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             switch (type)
             {
-                case 0: // Damage
+                case 0x00: // Damage
+                case 0x0a: // Critical Damage
                     if (dstBeing) {
                         dstBeing->takeDamage(param1);
                     }
@@ -200,14 +201,14 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     }
                     break;
 
-                case 2: // Sit
+                case 0x02: // Sit
                     if (srcBeing) {
                         srcBeing->mFrame = 0;
                         srcBeing->setAction(Being::SIT);
                     }
                     break;
 
-                case 3: // Stand up
+                case 0x03: // Stand up
                     if (srcBeing) {
                         srcBeing->mFrame = 0;
                         srcBeing->setAction(Being::STAND);
