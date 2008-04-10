@@ -276,11 +276,12 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     else if (msg.substr(0, IS_HELP_LENGTH) == IS_HELP)
     {
         chatLog("-- Help --", BY_SERVER);
-        chatLog("/help : Display this help.", BY_SERVER);
-        chatLog("/announce : Global announcement (GM only)", BY_SERVER);
-        chatLog("/where : Display map name", BY_SERVER);
-        chatLog("/who : Display number of online users", BY_SERVER);
-        chatLog("/clear : Clears this window", BY_SERVER);
+        chatLog("/help: Display this help.", BY_SERVER);
+        chatLog("/announce: Global announcement (GM only)", BY_SERVER);
+        chatLog("/where: Display map name", BY_SERVER);
+        chatLog("/who: Display number of online users", BY_SERVER);
+        chatLog("/clear: Clears this window", BY_SERVER);
+        chatLog("/whisper: Whisper <nick> <message> - sends a private <message> to <nick>", BY_SERVER);
     }
     else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
     {
@@ -294,6 +295,25 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     else if (msg.substr(0, IS_CLEAR_LENGTH) == IS_CLEAR)
     {
         mTextOutput->clearRows();
+    }
+    else if (msg.substr(0, IS_WHISPER_LENGTH) == IS_WHISPER)
+    {
+        std::string recvnick = "";
+        msg.erase(0, IS_WHISPER_LENGTH + 1);
+
+        const std::string::size_type pos = msg.find(" ");
+        if (pos != std::string::npos) {
+            recvnick = msg.substr(0, pos);
+            msg.erase(0, pos + 1);
+        }
+
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(CMSG_CHAT_WHISPER);
+        outMsg.writeInt16(msg.length() + 28);
+        outMsg.writeString(recvnick, 24);
+        outMsg.writeString(msg, msg.length());
+
+        chatLog("Whispering to " + recvnick + " : " + msg, BY_PLAYER);
     }
     else
     {

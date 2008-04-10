@@ -45,6 +45,8 @@ ChatHandler::ChatHandler()
     static const Uint16 _messages[] = {
         SMSG_BEING_CHAT,
         SMSG_PLAYER_CHAT,
+        SMSG_WHISPER,
+        SMSG_WHISPER_RESPONSE,
         SMSG_GM_CHAT,
         SMSG_WHO_ANSWER,
         0x10c, // MVP
@@ -57,10 +59,42 @@ void ChatHandler::handleMessage(MessageIn *msg)
 {
     Being *being;
     std::string chatMsg;
+    std::string nick;
     Sint16 chatMsgLength;
 
     switch (msg->getId())
     {
+        case SMSG_WHISPER_RESPONSE:
+            switch (msg->readInt8())
+            {
+                case 0x00:
+                    // comment out since we'll local echo in chat.cpp instead, then only report failures
+                    //chatWindow->chatLog("Whisper sent", BY_SERVER);
+                    break;
+                case 0x01:
+                    chatWindow->chatLog("Whisper could not be sent, user is offline", BY_SERVER);
+                    break;
+                case 0x02:
+                    chatWindow->chatLog("Whisper could not be sent, ignored by user", BY_SERVER);
+                    break;
+            }
+            break;
+
+        // Received whisper
+        case SMSG_WHISPER:
+            chatMsgLength = msg->readInt16() - 28;
+            nick = msg->readString(24);
+
+            if (chatMsgLength <= 0)
+                break;
+
+            chatMsg = msg->readString(chatMsgLength);
+            if (nick != "Server")
+                chatMsg = nick + " : " + chatMsg;
+            chatWindow->chatLog(chatMsg, (nick == "Server") ? BY_SERVER : ACT_WHISPER);
+
+            break;
+
         // Received speech from being
         case SMSG_BEING_CHAT:
             chatMsgLength = msg->readInt16() - 8;
