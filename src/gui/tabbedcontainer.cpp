@@ -82,8 +82,8 @@ void TabbedContainer::logic()
 {
     if (mActiveContent) {
         mActiveContent->setSize(
-                getWidth() - 2 * mActiveContent->getBorderSize(),
-                getHeight() - TABHEIGHT - 2 * mActiveContent->getBorderSize());
+                getWidth() - 2 * mActiveContent->getFrameSize(),
+                getHeight() - TABHEIGHT - 2 * mActiveContent->getFrameSize());
     }
 
     Container::logic();

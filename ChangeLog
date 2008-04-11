@@ -5,6 +5,11 @@
 	Fixed some compiler warnings and don't try to load particle effects
 	when no file is set.
 
+2008-04-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/shoplistbox.cpp, src/gui/shoplistbox.h: Fixed problem with
+	row height in shop list box.
+
 2008-04-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/gui/viewport.cpp, src/tileset.h, src/map.h,
@@ -297,6 +302,15 @@
 	design decisions.
 	* data/items.xml: Fixed a few messed up slot numbers.
 
+2008-01-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/sell.cpp, src/gui/window.cpp, src/gui/inventorywindow.h,
+	src/gui/buy.h, src/gui/itemshortcutwindow.cpp,
+	src/gui/inventorywindow.cpp, src/gui/buy.cpp, src/gui/sell.h,
+	src/gui/window.h, src/gui/windowlistener.h,
+	src/gui/itemshortcutwindow.h, src/CMakeLists.txt, src/Makefile.am:
+	Used the gcn::WidgetListener instead of our WindowListener.
+
 2008-01-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/truetypefont.cpp: Image alpha should also be set to 1, in
@@ -315,6 +329,28 @@
 
 	* src/net/beinghandler.cpp, src/resources/spritedef.h: Fixed
 	broken communication of attack directions.
+
+2008-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/char_server.cpp, src/gui/window.cpp, src/gui/checkbox.h,
+	src/gui/playerbox.h, src/gui/button.cpp, src/gui/chat.cpp,
+	src/gui/slider.cpp, src/gui/tabbedcontainer.cpp, src/gui/textfield.h,
+	src/gui/shoplistbox.cpp, src/gui/register.cpp,
+	src/gui/radiobutton.cpp, src/gui/textbox.cpp, src/gui/login.cpp,
+	src/gui/setup_audio.cpp, src/gui/setup_video.cpp,
+	src/gui/textfield.cpp, src/gui/playerbox.cpp,
+	src/gui/setup_joystick.cpp, src/gui/scrollarea.h,
+	src/gui/windowlistener.h, src/gui/checkbox.cpp,
+	src/gui/scrollarea.cpp: Compile against Guichan 0.8.0. Some issues
+	with ShopListBox left and not trying to use their new TabbedArea,
+	SelectionListener and WidgetListener yet. Also needs more testing.
+	* src/gui/trade.cpp, src/gui/sell.cpp, src/gui/inventorywindow.h,
+	src/gui/selectionlistener.h, src/gui/itemcontainer.h,
+	src/gui/shoplistbox.cpp, src/gui/shoplistbox.h, src/gui/listbox.h,
+	src/gui/buy.h, src/gui/inventorywindow.cpp, src/gui/buy.cpp,
+	src/gui/itemcontainer.cpp, src/gui/sell.h, src/gui/trade.h,
+	src/gui/listbox.cpp, src/CMakeLists.txt, src/Makefile.am: Used the
+	gcn::SelectionListener instead of our own.
 
 2008-01-20  Philipp Sehmisch  <tmw@crushnet.org>
 

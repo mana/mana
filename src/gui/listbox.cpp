@@ -23,8 +23,6 @@
 
 #include "listbox.h"
 
-#include "selectionlistener.h"
-
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
@@ -68,28 +66,9 @@ void ListBox::draw(gcn::Graphics *graphics)
 }
 
 void
-ListBox::setSelected(int selected)
-{
-    gcn::ListBox::setSelected(selected);
-    fireSelectionChangedEvent();
-}
-
-void
 ListBox::mouseDragged(gcn::MouseEvent &event)
 {
     // Pretend mouse is pressed continuously while dragged. Causes list
     // selection to be updated as is default in many GUIs.
     mousePressed(event);
-}
-
-void ListBox::fireSelectionChangedEvent()
-{
-    SelectionEvent event(this);
-    SelectionListeners::iterator i_end = mListeners.end();
-    SelectionListeners::iterator i;
-
-    for (i = mListeners.begin(); i != i_end; ++i)
-    {
-        (*i)->selectionChanged(event);
-    }
 }

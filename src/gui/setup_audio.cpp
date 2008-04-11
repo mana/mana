@@ -72,7 +72,7 @@ Setup_Audio::Setup_Audio():
 
 void Setup_Audio::apply()
 {
-    if (mSoundCheckBox->isMarked())
+    if (mSoundCheckBox->isSelected())
     {
         config.setValue("sound", 1);
         try {
@@ -97,7 +97,7 @@ void Setup_Audio::apply()
 
 void Setup_Audio::cancel()
 {
-    mSoundCheckBox->setMarked(mSoundEnabled);
+    mSoundCheckBox->setSelected(mSoundEnabled);
 
     sound.setSfxVolume(mSfxVolume);
     mSfxSlider->setValue(mSfxVolume);

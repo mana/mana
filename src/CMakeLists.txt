@@ -148,7 +148,6 @@ SET(SRCS
     gui/scrollarea.h
     gui/sdlinput.cpp
     gui/sdlinput.h
-    gui/selectionlistener.h
     gui/sell.cpp
     gui/sell.h
     gui/serverdialog.cpp
@@ -198,7 +197,6 @@ SET(SRCS
     gui/window.h
     gui/windowcontainer.cpp
     gui/windowcontainer.h
-    gui/windowlistener.h
     net/beinghandler.cpp
     net/beinghandler.h
     net/buysellhandler.cpp

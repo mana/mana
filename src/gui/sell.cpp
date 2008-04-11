@@ -182,7 +182,7 @@ void SellDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void SellDialog::selectionChanged(const SelectionEvent &event)
+void SellDialog::valueChanged(const gcn::SelectionEvent &event)
 {
     // Reset amount of items and update labels
     mAmountItems = 1;

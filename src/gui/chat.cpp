@@ -67,14 +67,14 @@ ChatWindow::ChatWindow():
     textOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
     ScrollArea *scrollArea = new ScrollArea(textOutput);
     scrollArea->setPosition(
-            scrollArea->getBorderSize(), scrollArea->getBorderSize());
+            scrollArea->getFrameSize(), scrollArea->getFrameSize());
     scrollArea->setScrollPolicy(
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     scrollArea->setOpaque(false);
 
     GCContainer *tab = new GCContainer();
-    tab->setWidth(getWidth() - 2 * tab->getBorderSize());
-    tab->setHeight(getHeight() - 2 * tab->getBorderSize());
+    tab->setWidth(getWidth() - 2 * tab->getFrameSize());
+    tab->setHeight(getHeight() - 2 * tab->getFrameSize());
     tab->setOpaque(false);
     tab->add(scrollArea);
 
@@ -109,15 +109,15 @@ ChatWindow::logic()
 
     const gcn::Rectangle area = getChildrenArea();
 
-    mChatInput->setPosition(mChatInput->getBorderSize(),
+    mChatInput->setPosition(mChatInput->getFrameSize(),
                             area.height - mChatInput->getHeight() -
-                                mChatInput->getBorderSize());
-    mChatInput->setWidth(area.width - 2 * mChatInput->getBorderSize());
-    mContainer->setWidth(area.width - 2 * mContainer->getBorderSize());
-    mContainer->setHeight(area.height - 2 * mContainer->getBorderSize() -
+                                mChatInput->getFrameSize());
+    mChatInput->setWidth(area.width - 2 * mChatInput->getFrameSize());
+    mContainer->setWidth(area.width - 2 * mContainer->getFrameSize());
+    mContainer->setHeight(area.height - 2 * mContainer->getFrameSize() -
                           mChatInput->getHeight() - 5);
-    mScrollArea->setWidth(area.width - 2 * mScrollArea->getBorderSize());
-    mScrollArea->setHeight(area.height - 2 * mScrollArea->getBorderSize() -
+    mScrollArea->setWidth(area.width - 2 * mScrollArea->getFrameSize());
+    mScrollArea->setHeight(area.height - 2 * mScrollArea->getFrameSize() -
             mChatInput->getHeight() - 26);
     Window::logic();
 }
@@ -475,12 +475,12 @@ ChatWindow::createNewChannelTab(std::string channelName)
     textOutput->setOpaque(false);
     textOutput->disableLinksAndUserColors();
     ScrollArea *scrollArea = new ScrollArea(textOutput);
-    scrollArea->setPosition(scrollArea->getBorderSize(), scrollArea->getBorderSize());
+    scrollArea->setPosition(scrollArea->getFrameSize(), scrollArea->getFrameSize());
     scrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     scrollArea->setOpaque(false);
     GCContainer *tab = new GCContainer();
-    tab->setWidth(getWidth() - 2 * tab->getBorderSize());
-    tab->setHeight(getHeight() - 2 * tab->getBorderSize());
+    tab->setWidth(getWidth() - 2 * tab->getFrameSize());
+    tab->setHeight(getHeight() - 2 * tab->getFrameSize());
     tab->add(scrollArea);
     tab->setOpaque(false);
     mContainer->addTab(tab, channelName);

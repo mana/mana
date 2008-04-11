@@ -51,7 +51,7 @@ IntTextBox::keyPressed(gcn::KeyEvent &event)
     int i;
     s >> i;
     setInt(i);
-    generateAction();
+    distributeActionEvent();
 }
 
 void IntTextBox::setRange(int min, int max)

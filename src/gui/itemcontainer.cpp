@@ -24,9 +24,9 @@
 #include "itemcontainer.h"
 
 #include <guichan/mouseinput.hpp>
+#include <guichan/selectionlistener.hpp>
 
 #include "sdlinput.h"
-#include "selectionlistener.h"
 
 #include "../graphics.h"
 #include "../inventory.h"
@@ -159,20 +159,19 @@ void ItemContainer::setSelectedItem(Item *item)
     if (mSelectedItem != item)
     {
         mSelectedItem = item;
-        fireSelectionChangedEvent();
+        distributeValueChangedEvent();
     }
 }
 
-void
-ItemContainer::fireSelectionChangedEvent()
+void ItemContainer::distributeValueChangedEvent()
 {
-    SelectionEvent event(this);
-    SelectionListeners::iterator i_end = mListeners.end();
-    SelectionListeners::iterator i;
+    SelectionListenerIterator iter;
 
-    for (i = mListeners.begin(); i != i_end; ++i)
+    for (iter = mSelectionListeners.begin(); iter != mSelectionListeners.end();
+         ++iter)
     {
-        (*i)->selectionChanged(event);
+        gcn::SelectionEvent event(this);
+        (*iter)->valueChanged(event);
     }
 }
 

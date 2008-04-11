@@ -25,9 +25,9 @@
 #define _TMW_TRADE_H
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/selectionlistener.hpp>
 
 #include "window.h"
-#include "selectionlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -41,7 +41,7 @@ class ScrollArea;
  *
  * \ingroup Interface
  */
-class TradeWindow : public Window, gcn::ActionListener, SelectionListener
+class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
 {
     public:
         /**
@@ -84,7 +84,7 @@ class TradeWindow : public Window, gcn::ActionListener, SelectionListener
          * Updates the labels and makes sure only one item is selected in
          * either my inventory or partner inventory.
          */
-        void selectionChanged(const SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event);
 
         /**
          * Called when receiving actions from the widgets.

@@ -64,7 +64,7 @@ class DropDown : public gcn::DropDown
 
         void draw(gcn::Graphics* graphics);
 
-        void drawBorder(gcn::Graphics* graphics);
+        void drawFrame(gcn::Graphics* graphics);
 
 
     protected:

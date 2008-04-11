@@ -25,10 +25,9 @@
 #define _TMW_SELL_H
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/selectionlistener.hpp>
 
 #include "window.h"
-#include "selectionlistener.h"
-#include "windowlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -41,7 +40,7 @@ class ShopListBox;
  *
  * \ingroup Interface
  */
-class SellDialog : public Window, gcn::ActionListener, SelectionListener
+class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
 {
     public:
         /**
@@ -76,7 +75,7 @@ class SellDialog : public Window, gcn::ActionListener, SelectionListener
          *
          * @see SelectionListener::selectionChanged
          */
-        void selectionChanged(const SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event);
 
         /**
          * Gives Player's Money amount

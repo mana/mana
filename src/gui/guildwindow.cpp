@@ -173,8 +173,8 @@ void GuildWindow::newGuildTab(const std::string &guildName)
 
     // Create new tab
     GCContainer *tab = new GCContainer();
-    tab->setWidth(getWidth() - 2 * tab->getBorderSize());
-    tab->setHeight(getHeight() - 2 * tab->getBorderSize());
+    tab->setWidth(getWidth() - 2 * tab->getFrameSize());
+    tab->setHeight(getHeight() - 2 * tab->getFrameSize());
     tab->setOpaque(false);
     ListBox *list = new ListBox();
     list->setListModel(player_node->getGuild(guildName));

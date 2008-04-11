@@ -157,7 +157,7 @@ Setup_Video::Setup_Video():
     mFpsField->setEnabled(mFps > 0);
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
-    mFpsCheckBox->setMarked(mFps > 0);
+    mFpsCheckBox->setSelected(mFps > 0);
 
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mAlphaSlider->setActionEventId("guialpha");
@@ -245,7 +245,7 @@ Setup_Video::~Setup_Video()
 void Setup_Video::apply()
 {
     // Full screen changes
-    bool fullscreen = mFsCheckBox->isMarked();
+    bool fullscreen = mFsCheckBox->isSelected();
     if (fullscreen != (config.getValue("screen", 0) == 1))
     {
         // checks for opengl usage
@@ -272,9 +272,9 @@ void Setup_Video::apply()
     }
 
     // OpenGL change
-    if (mOpenGLCheckBox->isMarked() != mOpenGLEnabled)
+    if (mOpenGLCheckBox->isSelected() != mOpenGLEnabled)
     {
-        config.setValue("opengl", mOpenGLCheckBox->isMarked() ? 1 : 0);
+        config.setValue("opengl", mOpenGLCheckBox->isSelected() ? 1 : 0);
 
         // OpenGL can currently only be changed by restarting, notify user.
         new OkDialog(_("Changing OpenGL"),
@@ -315,9 +315,9 @@ Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
 
 void Setup_Video::cancel()
 {
-    mFsCheckBox->setMarked(mFullScreenEnabled);
-    mOpenGLCheckBox->setMarked(mOpenGLEnabled);
-    mCustomCursorCheckBox->setMarked(mCustomCursorEnabled);
+    mFsCheckBox->setSelected(mFullScreenEnabled);
+    mOpenGLCheckBox->setSelected(mOpenGLEnabled);
+    mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
     mAlphaSlider->setValue(mOpacity);
     mOverlayDetailSlider->setValue(mOverlayDetail);
 
@@ -341,7 +341,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     else if (event.getId() == "customcursor")
     {
         config.setValue("customcursor",
-                mCustomCursorCheckBox->isMarked() ? 1 : 0);
+                mCustomCursorCheckBox->isSelected() ? 1 : 0);
     }
     else if (event.getId() == "fpslimitslider")
     {
@@ -379,7 +379,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "fpslimitcheckbox")
     {
-        if (mFpsCheckBox->isMarked())
+        if (mFpsCheckBox->isSelected())
         {
             mFps = (int) mFpsSlider->getValue();
         }

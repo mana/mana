@@ -102,7 +102,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/scrollarea.h \
 	      gui/sdlinput.cpp \
 	      gui/sdlinput.h \
-	      gui/selectionlistener.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
 	      gui/serverdialog.cpp \
@@ -150,7 +149,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
-	      gui/windowlistener.h \
 	      net/beinghandler.h \
 	      net/beinghandler.cpp \
 	      net/buysellhandler.h \

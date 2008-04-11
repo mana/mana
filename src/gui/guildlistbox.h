@@ -50,24 +50,6 @@ public:
     void mousePressed(gcn::MouseEvent &event);
 
     /**
-     * Adds a listener to the list that's notified each time a change to
-     * the selection occurs.
-     */
-    void addSelectionListener(SelectionListener *listener)
-    {
-        mListeners.push_back(listener);
-    }
-
-    /**
-     * Removes a listener from the list that's notified each time a change
-     * to the selection occurs.
-     */
-    void removeSelectionListener(SelectionListener *listener)
-    {
-        mListeners.remove(listener);
-    }
-
-    /**
      * Sets the index of the selected element.
      */
     void setSelected(int selected);

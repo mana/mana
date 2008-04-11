@@ -82,7 +82,7 @@ Button::Button(const std::string& caption, const std::string &actionEventId,
 
 void Button::init()
 {
-    setBorderSize(0);
+    setFrameSize(0);
 
     if (mInstances == 0)
     {

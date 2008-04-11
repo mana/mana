@@ -42,7 +42,7 @@ DropDown::DropDown(gcn::ListModel *listModel,
                    gcn::DropDown::DropDown(listModel,
                    scrollArea, listBox)
 {
-    setBorderSize(2);
+    setFrameSize(2);
 
     // Initialize graphics
     if (instances == 0)
@@ -103,7 +103,7 @@ void DropDown::draw(gcn::Graphics* graphics)
 
     if (mDroppedDown)
     {
-        h = mOldH;
+        h = mFoldedUpHeight;
     }
     else
     {
@@ -151,19 +151,18 @@ void DropDown::draw(gcn::Graphics* graphics)
     }
 }
 
-void DropDown::drawBorder(gcn::Graphics *graphics)
+void DropDown::drawFrame(gcn::Graphics *graphics)
 {
-    int w, h, bs;
-    bs = getBorderSize();
-    w = getWidth() + bs * 2;
-    h = getHeight() + bs * 2;
+    const int bs = getFrameSize();
+    const int w = getWidth() + bs * 2;
+    const int h = getHeight() + bs * 2;
 
     static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
 }
 
 void DropDown::drawButton(gcn::Graphics *graphics)
 {
-    int height = mDroppedDown ? mOldH : getHeight();
+    int height = mDroppedDown ? mFoldedUpHeight : getHeight();
 
     static_cast<Graphics*>(graphics)->
         drawImage(buttons[mDroppedDown][mPushed], getWidth() - height, 1);

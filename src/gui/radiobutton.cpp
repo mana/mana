@@ -67,7 +67,7 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
 {
     Image *box = NULL;
 
-    if (mMarked) {
+    if (isSelected()) {
         if (isEnabled()) {
             box = radioChecked;
         } else {

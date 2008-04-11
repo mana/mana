@@ -64,7 +64,7 @@ class PlayerBox : public gcn::ScrollArea
         /**
          * Draws the background and border of the scroll area.
          */
-        void drawBorder(gcn::Graphics *graphics);
+        void drawFrame(gcn::Graphics *graphics);
 
     private:
         const Player *mPlayer;       /**< The character used for display */

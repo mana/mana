@@ -323,7 +323,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mFemale->setPosition( 100, 120 );
 
     // Default to a Male character
-    mMale->setMarked(true);
+    mMale->setSelected(true);
 
     mMale->setActionEventId("gender");
     mFemale->setActionEventId("gender");
@@ -375,12 +375,11 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
             mCreateButton->setEnabled(false);
 
             unsigned int genderSelected;
-            if( mMale->isMarked() ){
+            if (mMale->isSelected()) {
                 genderSelected = GENDER_MALE;
             } else {
                 genderSelected = GENDER_FEMALE;
             }
-
 
             Net::AccountServer::Account::createCharacter(
                     getName(),
@@ -418,7 +417,7 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
         UpdateSliders();
     }
     else if (event.getId() == "gender"){
-        if( mMale->isMarked() ) {
+        if (mMale->isSelected()) {
             mPlayer->setGender(GENDER_MALE);
         } else {
             mPlayer->setGender(GENDER_FEMALE);

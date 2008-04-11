@@ -26,10 +26,9 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
-
+#include <guichan/selectionlistener.hpp>
 #include <guichan/widgets/checkbox.hpp>
 
-#include "selectionlistener.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
@@ -45,7 +44,7 @@ class ItemContainer;
 class InventoryWindow : public Window,
                         public gcn::ActionListener,
                         public gcn::KeyListener,
-                        public SelectionListener
+                        public gcn::SelectionListener
 {
     public:
         /**
@@ -82,10 +81,8 @@ class InventoryWindow : public Window,
 
         /**
          * Updates labels to currently selected item.
-         *
-         * @see SelectionListener::selectionChanged.
          */
-        void selectionChanged(const SelectionEvent &event);
+        void valueChanged(const gcn::SelectionEvent &event);
 
     private:
         void updateButtons();    /**< Updates button states. */

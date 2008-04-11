@@ -30,27 +30,26 @@
 GuildListBox::GuildListBox():
     ListBox(NULL)
 {
-        
 }
 
 void GuildListBox::draw(gcn::Graphics *graphics)
 {
     if (!mListModel)
         return;
-    
+
     graphics->setColor(gcn::Color(110, 160, 255));
     graphics->setFont(getFont());
-    
+
     int fontHeight = getFont()->getHeight();
-    
+
     // Draw rectangle below the selected list element
     if (mSelected >= 0) {
         graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
                                                getWidth(), fontHeight));
     }
-    
+
     // TODO: Add online status image
-    
+
     // Draw the list elements
     for (int i = 0, y = 0;
          i < mListModel->getNumberOfElements();
@@ -71,7 +70,7 @@ void GuildListBox::setSelected(int selected)
         // Update mSelected with bounds checking
         mSelected = std::min(mListModel->getNumberOfElements() - 1,
                              std::max(-1, selected));
-        
+
         gcn::Widget *parent;
         parent = (gcn::Widget*)getParent();
         if (parent)
@@ -82,8 +81,8 @@ void GuildListBox::setSelected(int selected)
             parent->showWidgetPart(this, scroll);
         }
     }
-    
-    fireSelectionChangedEvent();
+
+    distributeValueChangedEvent();
 }
 
 void GuildListBox::mousePressed(gcn::MouseEvent &event)
@@ -93,6 +92,6 @@ void GuildListBox::mousePressed(gcn::MouseEvent &event)
         // TODO: Add guild functions, ie private messaging
         int y = event.getY();
         setSelected(y / getFont()->getHeight());
-        generateAction();
+        distributeActionEvent();
     }
 }

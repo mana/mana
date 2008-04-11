@@ -178,9 +178,8 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void BuyDialog::selectionChanged(const SelectionEvent &event)
+void BuyDialog::valueChanged(const gcn::SelectionEvent &event)
 {
-
     // Reset amount of items and update labels
     mAmountItems = 1;
     mSlider->setValue(1);
@@ -192,7 +191,7 @@ void BuyDialog::selectionChanged(const SelectionEvent &event)
 void
 BuyDialog::updateButtonsAndLabels()
 {
-    int selectedItem = mShopItemList->getSelected();
+    const int selectedItem = mShopItemList->getSelected();
     int price = 0;
 
     if (selectedItem > -1)

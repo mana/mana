@@ -23,8 +23,6 @@
 
 #include "shoplistbox.h"
 
-#include "selectionlistener.h"
-
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
@@ -101,37 +99,12 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     }
 }
 
-void ShopListBox::setSelected(int selected)
-{
-    if (!mListModel)
-    {
-        mSelected = -1;
-    }
-    else
-    {
-        // Update mSelected with bounds checking
-        mSelected = std::min(mListModel->getNumberOfElements() - 1,
-                             std::max(-1, selected));
-
-        gcn::Widget *parent = getParent();
-        if (parent && mSelected >= 0)
-        {
-            gcn::Rectangle scroll;
-            scroll.y = mRowHeight * mSelected;
-            scroll.height = mRowHeight;
-            parent->showWidgetPart(this, scroll);
-        }
-    }
-
-    fireSelectionChangedEvent();
-}
-
 void ShopListBox::mousePressed(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
         setSelected(event.getY() / mRowHeight);
-        generateAction();
+        distributeActionEvent();
     }
 }
 

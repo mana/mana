@@ -53,7 +53,7 @@ class TextField : public gcn::TextField {
         /**
          * Draws the background and border.
          */
-        void drawBorder(gcn::Graphics *graphics);
+        void drawFrame(gcn::Graphics *graphics);
 
         /**
          * Processes one keypress.

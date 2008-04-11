@@ -144,7 +144,7 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void InventoryWindow::selectionChanged(const SelectionEvent &event)
+void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
     Item *item = mItems->getItem();
     ItemInfo const *info = item ? &item->getInfo() : NULL;

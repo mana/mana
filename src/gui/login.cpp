@@ -94,7 +94,7 @@ LoginDialog::action(const gcn::ActionEvent &event)
     {
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
-        mLoginData->remember = mKeepCheck->isMarked();
+        mLoginData->remember = mKeepCheck->isSelected();
         mLoginData->registerLogin = false;
 
         mOkButton->setEnabled(false);

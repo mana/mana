@@ -147,7 +147,7 @@ void TradeWindow::tradeItem(Item *item, int quantity)
     item->increaseQuantity(-quantity);
 }
 
-void TradeWindow::selectionChanged(const SelectionEvent &event)
+void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
 {
     Item *item;
 

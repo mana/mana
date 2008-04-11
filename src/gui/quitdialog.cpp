@@ -65,13 +65,13 @@ QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
         state == STATE_LOGIN_ATTEMPT ||
         state == STATE_UPDATE)
     {
-        mForceQuit->setMarked(true);
+        mForceQuit->setSelected(true);
         add(mForceQuit);
     }
     else
     {
         // Only added if we are connected to an accountserver or gameserver
-        mLogoutQuit->setMarked(true);
+        mLogoutQuit->setSelected(true);
         add(mLogoutQuit);
         add(mSwitchAccountServer);
 
@@ -104,11 +104,11 @@ QuitDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        if (mForceQuit->isMarked())
+        if (mForceQuit->isSelected())
         {
             state = STATE_FORCE_QUIT;
         }
-        else if (mLogoutQuit->isMarked())
+        else if (mLogoutQuit->isSelected())
         {
             if ((state == STATE_GAME) && (mQuitGame))
             {
@@ -116,7 +116,7 @@ QuitDialog::action(const gcn::ActionEvent &event)
             }
             state = STATE_EXIT;
         }
-        else if (mSwitchAccountServer->isMarked())
+        else if (mSwitchAccountServer->isSelected())
         {
             if ((state == STATE_GAME) && (mQuitGame))
             {
@@ -124,7 +124,7 @@ QuitDialog::action(const gcn::ActionEvent &event)
             }
             state = STATE_SWITCH_ACCOUNTSERVER_ATTEMPT;
         }
-        else if (mSwitchCharacter->isMarked())
+        else if (mSwitchCharacter->isSelected())
         {
             if (mQuitGame) *mQuitGame = true;
 
