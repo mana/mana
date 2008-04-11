@@ -49,6 +49,12 @@ class RadioButton : public gcn::RadioButton {
          */
         void drawBox(gcn::Graphics* graphics);
 
+        /**
+         * Implementation of the draw methods.
+         * Thus, avoiding the rhomb around the radio button.
+         */
+        void draw(gcn::Graphics* graphics);
+
     private:
         static int instances;
         static Image *radioNormal;
