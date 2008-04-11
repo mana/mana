@@ -1,4 +1,11 @@
-2008-04-12  Dennis Friis  <peavey@placid.dk>
+2008-04-11  David Athay  <ko2fan@gmail.com>
+
+	* src/localplayer.cpp, src/beingmanager.h, src/gui/viewport.cpp,
+	src/beingmanager.cpp, src/localplayer.h, tmw.cbp: Players now need to
+	click on the monster sprites rather than the tile. Players will now
+	move to the target before attacking it.
+
+2008-04-10  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/chat.h, src/gui/chat.cpp, src/net/protocol.h,
 	src/net/chathandler.cpp: Implemented support for whispering to other

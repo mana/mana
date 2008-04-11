@@ -160,6 +160,16 @@ class LocalPlayer : public Player
          */
         void setWalkingDir(int dir);
 
+        /**
+         * Sets going to being to attack
+         */
+        void setGotoTarget(Being *target);
+
+        /**
+         * Returns whether the target is in range to attack
+         */
+        bool withinAttackRange(Being *target);
+
         void raiseAttribute(Attribute attr);
         void raiseSkill(Uint16 skillId);
 
@@ -215,6 +225,7 @@ class LocalPlayer : public Player
         FloorItem *mPickUpTarget;
 
         bool mTrading;
+        bool mGoingToTarget;
         int mLastAction;    /**< Time stamp of the last action, -1 if none. */
         int mWalkingDir;    /**< The direction the player is walking in. */
         int mDestX;         /**< X coordinate of destination. */

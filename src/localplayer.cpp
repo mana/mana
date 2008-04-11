@@ -48,7 +48,8 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mInventory(new Inventory),
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
-    mTrading(false), mLastAction(-1),
+    mTrading(false), mGoingToTarget(false),
+    mLastAction(-1),
     mWalkingDir(0), mDestX(0), mDestY(0)
 {
 }
@@ -104,6 +105,16 @@ void LocalPlayer::nextStep()
         {
             walk(mWalkingDir);
         }
+
+    }
+
+    if (mGoingToTarget && mTarget && withinAttackRange(mTarget))
+    {
+        mAction = Being::STAND;
+        attack(mTarget, true);
+        mGoingToTarget = false;
+        mPath.clear();
+        return;
     }
 
     Player::nextStep();
@@ -452,4 +463,24 @@ void LocalPlayer::setXp(int xp)
                                                  mPx + 16, mPy - 16);
     }
     mXp = xp;
+}
+
+bool LocalPlayer::withinAttackRange(Being *target)
+{
+    int dist_x = abs(target->mX - mX);
+    int dist_y = abs(target->mY - mY);
+
+    if (dist_x > getAttackRange() || dist_y > getAttackRange())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+void LocalPlayer::setGotoTarget(Being *target)
+{
+    mTarget = target;
+    mGoingToTarget = true;
+    setDestination(target->mX, target->mY);
 }

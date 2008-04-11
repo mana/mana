@@ -398,7 +398,10 @@ Viewport::mousePressed(gcn::MouseEvent &event)
         FloorItem *item;
 
         // Interact with some being
-        if ((being = beingManager->findBeing(tilex, tiley)))
+//      if ((being = beingManager->findBeing(tilex, tiley))
+        int x = event.getX() + mPixelViewX;
+        int y = event.getY() + mPixelViewY;
+        if ((being = beingManager->findBeingByPixel(x, y)))
         {
             switch (being->getType())
             {
@@ -410,8 +413,22 @@ Viewport::mousePressed(gcn::MouseEvent &event)
                 case Being::PLAYER:
                     if (being->mAction == Being::DEAD)
                         break;
+                    if (being == player_node)
+                        break;
 
-                    player_node->attack(being, true);
+                    if (player_node->withinAttackRange(being))
+                    {
+                        player_node->attack(being, true);
+                    }
+                    else
+                    {
+                        Uint8 *keys = SDL_GetKeyState(NULL);
+                        if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
+                        {
+                            player_node->stopAttack();
+                            player_node->setGotoTarget(being);
+                        }
+                    }
                     break;
 
                 default:

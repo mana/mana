@@ -124,6 +124,27 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     return (i == mBeings.end()) ? NULL : *i;
 }
 
+Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
+{
+    BeingIterator itr = mBeings.begin();
+    BeingIterator itr_end = mBeings.end();
+
+    for (; itr != itr_end; ++itr)
+    {
+        Being *being = (*itr);
+        if ((being->mAction != Being::DEAD) &&
+            (being->getPixelX() <= x) &&
+            (being->getPixelX() + being->getWidth() >= x) &&
+            (being->getPixelY() <= y) &&
+            (being->getPixelY() + being->getHeight() >= y))
+        {
+            return being;
+        }
+    }
+
+    return NULL;
+}
+
 Beings& BeingManager::getAll()
 {
     return mBeings;
