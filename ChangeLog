@@ -1,3 +1,7 @@
+2008-04-12  Yohann Ferreira <bertram@cegetel.net>
+
+	* src/CMakeLists.txt: Fixed a compilation error using Cmake.
+
 2008-04-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/widgets/layout.h, src/gui/skill.cpp, src/gui/trade.h,

@@ -282,6 +282,8 @@ SET(SRCS
     resources/monsterinfo.h
     resources/music.cpp
     resources/music.h
+    resources/npcdb.cpp
+    resources/npcdb.h
     resources/resource.cpp
     resources/resource.h
     resources/resourcemanager.cpp
