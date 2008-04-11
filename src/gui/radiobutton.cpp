@@ -83,3 +83,22 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
         static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
     }
 }
+
+void RadioButton::draw(gcn::Graphics* graphics)
+{
+
+    graphics->pushClipArea(gcn::Rectangle(1,
+                                    1,
+                                    getWidth() - 1,
+                                    getHeight() - 1));
+
+    drawBox(graphics);
+
+    graphics->popClipArea();
+
+    graphics->setFont(getFont());
+    graphics->setColor(getForegroundColor());
+
+    int h = getHeight() + getHeight() / 2;
+    graphics->drawText(getCaption(), h - 2, 0);
+}
