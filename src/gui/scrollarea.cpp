@@ -165,14 +165,6 @@ void ScrollArea::logic()
 
 void ScrollArea::draw(gcn::Graphics *graphics)
 {
-    checkPolicies();
-
-    int alpha = getBaseColor().a;
-    gcn::Color highlightColor = getBaseColor() + 0x303030;
-    highlightColor.a = alpha;
-    gcn::Color shadowColor = getBaseColor() - 0x303030;
-    shadowColor.a = alpha;
-
     if (mVBarVisible)
     {
         drawUpButton(graphics);
@@ -198,29 +190,7 @@ void ScrollArea::draw(gcn::Graphics *graphics)
                     mScrollbarWidth));
     }
 
-    gcn::Widget *content = getContent();
-
-    if (content != NULL)
-    {
-        graphics->pushClipArea(getChildrenArea());
-
-        if (content->getFrameSize() > 0)
-        {
-            gcn::Rectangle rec = content->getDimension();
-            rec.x -= content->getFrameSize();
-            rec.y -= content->getFrameSize();
-            rec.width += 2 * content->getFrameSize();
-            rec.height += 2 * content->getFrameSize();
-            graphics->pushClipArea(rec);
-            content->drawFrame(graphics);
-            graphics->popClipArea();
-        }
-
-        graphics->pushClipArea(content->getDimension());
-        content->draw(graphics);
-        graphics->popClipArea();
-        graphics->popClipArea();
-    }
+    drawChildren(graphics);
 }
 
 void ScrollArea::drawFrame(gcn::Graphics *graphics)

@@ -26,12 +26,11 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 class ItemShortcutContainer;
+class ScrollArea;
 
 /**
- * Inventory dialog.
+ * A window around the ItemShortcutContainer.
  *
  * \ingroup Interface
  */
@@ -49,11 +48,6 @@ class ItemShortcutWindow : public Window
         ~ItemShortcutWindow();
 
         /**
-         * Logic (updates buttons and weight information).
-         */
-        void logic();
-
-        /**
          * Called whenever the widget changes size.
          */
         void widgetResized(const gcn::Event &event);
@@ -61,7 +55,7 @@ class ItemShortcutWindow : public Window
     private:
         ItemShortcutContainer *mItems;
 
-        gcn::ScrollArea *mInvenScroll;
+        ScrollArea *mScrollArea;
 };
 
 extern ItemShortcutWindow *itemShortcutWindow;

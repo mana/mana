@@ -34,7 +34,8 @@ class ImageRect;
  *
  * \ingroup GUI
  */
-class ScrollArea : public gcn::ScrollArea {
+class ScrollArea : public gcn::ScrollArea
+{
     public:
         /**
          * Constructor.

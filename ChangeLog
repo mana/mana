@@ -1,3 +1,10 @@
+2008-04-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/itemshortcutcontainer.h, src/gui/itemshortcutcontainer.cpp,
+	src/gui/itemshortcutwindow.cpp, src/gui/scrollarea.h,
+	src/gui/scrollarea.cpp, src/gui/itemshortcutwindow.h: Fixed display of
+	item shortcut container. gcn::Widget::setWidth is no longer virtual.
+
 2008-04-11  David Athay  <ko2fan@gmail.com>
 
 	* src/localplayer.cpp, src/beingmanager.h, src/gui/viewport.cpp,

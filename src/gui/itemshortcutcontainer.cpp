@@ -40,6 +40,7 @@ ItemShortcutContainer::ItemShortcutContainer():
     mItemMoved(NULL)
 {
     addMouseListener(this);
+    addWidgetListener(this);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -119,11 +120,8 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-ItemShortcutContainer::setWidth(int width)
+void ItemShortcutContainer::widgetResized(const gcn::Event &event)
 {
-    gcn::Widget::setWidth(width);
-
     mGridWidth = getWidth() / mBoxWidth;
     if (mGridWidth < 1) {
         mGridWidth = 1;

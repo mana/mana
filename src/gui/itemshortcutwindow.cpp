@@ -45,11 +45,12 @@ ItemShortcutWindow::ItemShortcutWindow()
     setMaxWidth(mItems->getBoxWidth() * mItems->getMaxItems() + border);
     setMaxHeight(mItems->getBoxHeight() * mItems->getMaxItems() + border);
 
-    mInvenScroll = new ScrollArea(mItems);
-    mInvenScroll->setPosition(SCROLL_PADDING, SCROLL_PADDING);
-    mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mScrollArea = new ScrollArea(mItems);
+    mScrollArea->setPosition(SCROLL_PADDING, SCROLL_PADDING);
+    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mScrollArea->setOpaque(false);
 
-    add(mInvenScroll);
+    add(mScrollArea);
 
     loadWindowState();
 }
@@ -57,12 +58,7 @@ ItemShortcutWindow::ItemShortcutWindow()
 ItemShortcutWindow::~ItemShortcutWindow()
 {
     delete mItems;
-    delete mInvenScroll;
-}
-
-void ItemShortcutWindow::logic()
-{
-    Window::logic();
+    delete mScrollArea;
 }
 
 void ItemShortcutWindow::widgetResized(const gcn::Event &event)
@@ -71,7 +67,7 @@ void ItemShortcutWindow::widgetResized(const gcn::Event &event)
 
     const gcn::Rectangle &area = getChildrenArea();
 
-    mInvenScroll->setSize(
+    mScrollArea->setSize(
             area.width - SCROLL_PADDING,
             area.height - SCROLL_PADDING);
 }
