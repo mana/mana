@@ -1,4 +1,4 @@
-2008-04-12  Yohann Ferreira <bertram@cegetel.net>
+2008-04-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/CMakeLists.txt: Fixed a compilation error using Cmake.
 
@@ -134,6 +134,27 @@
 	data/graphics/sprites/scorpion.xml: Gave the tail attack of the
 	scorpion a custom animation and a particle effect.
 
+2008-03-07  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* data/equipment.xml, data/graphics/items/armor-legs-chaps.png,
+	data/graphics/items/armour-head-cowboyblack.png,
+	data/graphics/items/armour-head-cowboywhite.png,
+	data/graphics/items/generic-snakeskin.png,
+	data/graphics/sprites/head-cowboyblack.png,
+	data/graphics/sprites/head-cowboyblack.xml,
+	data/graphics/sprites/head-cowboywhite.png,
+	data/graphics/sprites/head-cowboywhite.xml,
+	data/graphics/sprites/leg-chaps-female.png,
+	data/graphics/sprites/leg-chaps-female.xml,
+	data/graphics/sprites/leg-chaps-male.png,
+	data/graphics/sprites/leg-chaps-male.xml,
+	data/graphics/sprites/monster-snake.png,
+	data/graphics/sprites/monster-snake.xml,
+	data/graphics/sprites/npcs.png, data/items.xml, data/monsters.xml:
+	Added new items by Black Don, new xml definitions by Peavey.
+	* data/graphics/items/armor-head-cowboyblack.png,
+	data/graphics/items/armor-head-cowboywhite.png: Corrected names.
+
 2008-03-06  David Athay  <ko2fan@gmail.com>
 
 	* src/net/guildhandler.cpp, src/net/guildhandler.hpp: Fixed
@@ -141,11 +162,11 @@
 
 2008-03-05  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp, src/gui/guildwindow.cpp: Fixed key presses during
-	text dialog in guild window and changed license to standard GPL.
+	* src/game.cpp, src/gui/guildwindow.cpp: Fixed key presses during text
+	dialog in guild window and changed license to standard GPL.
 	* src/localplayer.cpp, src/localplayer.h, src/player.cpp,
-	src/player.h, src/gui/guildwindow.cpp, src/net/guildhandler.cpp:
-	Fixed guild creation.
+	src/player.h, src/gui/guildwindow.cpp, src/net/guildhandler.cpp: Fixed
+	guild creation.
 
 2008-03-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -164,8 +185,13 @@
 	* src/gui/skill.cpp, src/gui/skill.h: Skill gui beautifications by
 	roderic.
 	* src/localplayer.cpp: Made skill names translateable.
-	* data/graphics/sprites/monster-maggot.xml: Made maggot attack animation
-	finite.
+	* data/graphics/sprites/monster-maggot.xml: Made maggot attack
+	animation finite.
+
+2008-03-02  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/leg-jeans-female.png: Fixed transparency
+	issue.
 
 2008-03-01  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -185,6 +211,17 @@
 	file names.
 	* po/it.po: Some fixes by Shaili.
 
+2008-02-26  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* src/gui/minimap.cpp: Keep minimap status. Based on a patch by Knivey.
+	* data/graphics/tiles/tulimshar1.png, data/maps/new_3-1.tmx: Added
+	Modanung's mud tileset and applied to some houses in Tulimshar.
+
+2008-02-26  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/maps/new_14-1.tmx: Fixed some monster traps on
+	southwest woodland.
+
 2008-02-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/skill.cpp, src/gui/skill.h: Optical enhancements based on
@@ -194,6 +231,14 @@
 
 2008-02-23  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* data/graphics/items/generic-ironore.png, data/items.xml:
+	Implemented iron ore item.
+	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx,
+	data/maps/new_12-1.tmx, data/maps/new_21-1.tmx: Map fixes by
+	QOAL.
+	* data/graphics/sprites/head-mask.xml,
+	data/graphics/sprites/head-warlordhelm.xml:
+	Animaton fixes by QOAL.
 	* data/monsters.xml: Added a 2nd attack to the scorpion to test new
 	monster AI.
 
@@ -217,7 +262,7 @@
 	* data/monsters.xml: Added attack properties to scorpions.
 	* src/gui/gui.cpp: Showing a visible error message to the user when
 	the font file can't be found.
-	
+
 2008-02-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_22-1.tmx: Map fixes at snake dungeon by QOAL.

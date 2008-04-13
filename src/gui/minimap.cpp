@@ -59,12 +59,7 @@ void Minimap::setMapImage(Image *img)
 
     if (mMapImage)
     {
-        setVisible(true);
         mMapImage->setAlpha(0.7);
-    }
-    else
-    {
-        setVisible(false);
     }
 }
 
