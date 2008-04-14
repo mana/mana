@@ -6,6 +6,8 @@
 2008-04-14  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/resources/dye.cpp: Fixed multi-channel dyeing (patch by fate)
+	* src/gui/chat.h: Changed prefix of received whisper messages from
+	"says:" to "whispers:"
 
 2008-04-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

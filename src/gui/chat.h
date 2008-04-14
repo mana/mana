@@ -67,7 +67,7 @@ class ScrollArea;
  */
 #define CAT_NORMAL        ": "
 #define CAT_IS            ""
-#define CAT_WHISPER       " says: "
+#define CAT_WHISPER       " whispers: "
 
 /** job dependend identifiers (?)  */
 #define SKILL_BASIC       0x0001
