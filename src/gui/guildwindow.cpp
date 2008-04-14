@@ -26,14 +26,13 @@
 #include "button.h"
 #include "chat.h"
 #include "confirm_dialog.h"
-#include "gccontainer.h"
 #include "guildlistbox.h"
 #include "scrollarea.h"
-#include "tabbedcontainer.h"
 #include "textdialog.h"
 #include "windowcontainer.h"
 
 #include "widgets/layout.h"
+#include "widgets/tabbedarea.h"
 
 #include "../guild.h"
 #include "../log.h"
@@ -45,12 +44,14 @@
 
 #include <algorithm>
 
+#include <guichan/widgets/tab.hpp>
+
 GuildWindow::GuildWindow():
     Window(player_node->getName()),
     mFocus(false)
 {
     setCaption("Guild");
-    setResizable(true);
+    setResizable(false);
     setCloseButton(true);
     setMinWidth(200);
     setMinHeight(280);
@@ -63,14 +64,12 @@ GuildWindow::GuildWindow():
     mGuildButton[1]->setEnabled(false);
     mGuildButton[2]->setEnabled(false);
 
-    mGuildsContainer  = new TabbedContainer();
-
-    mGuildsContainer->setOpaque(false);
+    mGuildTabs = new TabbedArea();
 
     place(0, 0, mGuildButton[0]);
     place(1, 0, mGuildButton[1]);
     place(2, 0, mGuildButton[2]);
-    place(0, 1, mGuildsContainer);
+    place(0, 1, mGuildTabs);
     Layout &layout = getLayout();
     layout.setColWidth(0, 48);
     layout.setColWidth(1, 65);
@@ -80,7 +79,7 @@ GuildWindow::GuildWindow():
 
 GuildWindow::~GuildWindow()
 {
-    for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
+    delete mGuildTabs;
 }
 
 void GuildWindow::update()
@@ -102,13 +101,14 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     // Stats Part
     if (eventId == "CREATE_GUILD")
     {
-        if (mGuildsContainer->getNumberOfTabs() > 1)
+        if (mGuildTabs->getNumberOfTabs() > 1)
         {
             // This is just to limit the number of guild tabs that are created
             // TODO: Either limit this server side, or fix the interface issue
             chatWindow->chatLog("Current maximum number of guilds ownable is 2", BY_SERVER);
             return;
         }
+
         // Set focus so that guild name to be created can be typed.
         mFocus = true;
         guildDialog = new TextDialog("Guild Name", "Choose your guild's name", this);
@@ -129,7 +129,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
         if (guild)
         {
             Net::ChatServer::Guild::quitGuild(guild);
-            chatWindow->chatLog("Guild " + mGuildsContainer->getActiveWidget() + " quit", BY_SERVER);
+            chatWindow->chatLog("Guild " + mGuildTabs->getSelectedTab()->getCaption() + " quit", BY_SERVER);
         }
     }
     else if (eventId == "CREATE_GUILD_OK")
@@ -172,27 +172,25 @@ void GuildWindow::newGuildTab(const std::string &guildName)
 {
 
     // Create new tab
-    GCContainer *tab = new GCContainer();
-    tab->setWidth(getWidth() - 2 * tab->getFrameSize());
-    tab->setHeight(getHeight() - 2 * tab->getFrameSize());
-    tab->setOpaque(false);
     ListBox *list = new ListBox();
     list->setListModel(player_node->getGuild(guildName));
     ScrollArea *sa = new ScrollArea(list);
     sa->setDimension(gcn::Rectangle(5, 5, 135, 250));
-    tab->add(sa);
 
-    mGuildsContainer->addTab(tab, guildName);
-    mGuildsContainer->setDimension(gcn::Rectangle(28,35,280,250));
-
-    mTabs.push_back(tab);
+    mGuildTabs->addTab(guildName, sa);
+    mGuildTabs->setDimension(gcn::Rectangle(28,35,140,250));
 
     updateTab();
 }
 
 void GuildWindow::updateTab()
 {
-    setTab(mGuildsContainer->getActiveWidget());
+    gcn::Tab *tab = mGuildTabs->getSelectedTab();
+    if (tab)
+    {
+        setTab(tab->getCaption());
+    }
+    mGuildTabs->logic();
 }
 
 void GuildWindow::setTab(const std::string &guildName)
@@ -217,7 +215,7 @@ bool GuildWindow::isFocused()
 
 short GuildWindow::getSelectedGuild()
 {
-    Guild *guild = player_node->getGuild(mGuildsContainer->getActiveWidget());
+    Guild *guild = player_node->getGuild(mGuildTabs->getSelectedTab()->getCaption());
     if (guild)
     {
         return guild->getId();
@@ -248,7 +246,8 @@ void GuildWindow::removeTab(int guildId)
     Guild* guild = player_node->getGuild(guildId);
     if (guild)
     {
-        mGuildsContainer->removeTab(guild->getName());
+        gcn::Tab *tab = mGuildTabs->getTab(guild->getName());
+        mGuildTabs->removeTab(tab);
     }
-    mGuildsContainer->logic();
+    mGuildTabs->logic();
 }

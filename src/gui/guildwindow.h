@@ -45,9 +45,9 @@ class LocalPlayer;
 class TextDialog;
 class ConfirmDialog;
 class GuildListBox;
-class TabbedContainer;
 class ScrollArea;
 class GCContainer;
+class TabbedArea;
 
 class GuildWindow : public Window, public gcn::ActionListener
 {
@@ -124,10 +124,9 @@ private:
     TextDialog *guildDialog;
     TextDialog *inviteDialog;
     ConfirmDialog *acceptDialog;
-    TabbedContainer *mGuildsContainer;
+    TabbedArea *mGuildTabs;
     GuildListBox *mGuildMembersList;
     ScrollArea *mScrollArea;
-    std::vector<GCContainer*> mTabs;
     bool mFocus;
     std::string invitedGuild;
 };

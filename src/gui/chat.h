@@ -37,8 +37,9 @@
 
 class BrowserBox;
 class ScrollArea;
-class TabbedContainer;
-class GCContainer;
+//class TabbedContainer;
+//class GCContainer;
+class TabbedArea;
 
 enum
 {
@@ -213,6 +214,10 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void
         setVisible(bool visible);
 
+        /** Check if tab with that name already exists */
+        bool
+        tabExists(const std::string &tabName);
+
     private:
         bool mTmpVisible;
 
@@ -229,11 +234,12 @@ class ChatWindow : public Window, public gcn::ActionListener,
 #if 0
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
-#endif
-
         std::map<std::string, GCContainer*> mTabs;
         TabbedContainer *mContainer; /**< Tabbed container for tabbing between channels */
         GCContainer *mTab; /**< Tabs */
+#endif
+
+        TabbedArea *mChatTabs; /** < Chat Tabbed area for holding each channel */
         gcn::TextField *mChatInput; /**< Input box for typing chat messages */
         std::map<std::string, BrowserBox*> mChannelOutput; /**< Map each TextOutput to a tab */
         std::map<std::string, ScrollArea*> mChannelScroll; /**< Map each ScrollArea to a tab */

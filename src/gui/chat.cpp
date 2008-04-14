@@ -30,11 +30,11 @@
 
 #include "browserbox.h"
 #include "chatinput.h"
-#include "gccontainer.h"
 #include "scrollarea.h"
 #include "sdlinput.h"
-#include "tabbedcontainer.h"
 #include "windowcontainer.h"
+
+#include "widgets/tabbedarea.h"
 
 #include "../channelmanager.h"
 #include "../channel.h"
@@ -53,7 +53,7 @@ ChatWindow::ChatWindow():
     mTmpVisible(false)
 {
     setResizable(true);
-    setDefaultSize(0, (windowContainer->getHeight() - 123), 600, 100);
+    setDefaultSize(0, (windowContainer->getHeight() - 105), 600, 100);
     setTitleBarHeight(5);
     loadWindowState("Chat");
 
@@ -72,24 +72,18 @@ ChatWindow::ChatWindow():
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     scrollArea->setOpaque(false);
 
-    GCContainer *tab = new GCContainer();
-    tab->setWidth(getWidth() - 2 * tab->getFrameSize());
-    tab->setHeight(getHeight() - 2 * tab->getFrameSize());
-    tab->setOpaque(false);
-    tab->add(scrollArea);
+    mChatTabs = new TabbedArea();
+    mChatTabs->addTab("General", scrollArea);
+    mChatTabs->setWidth(getWidth());
+    mChatTabs->setHeight(getHeight());
 
-    mContainer = new TabbedContainer();
-    mContainer->addTab(tab, "General");
-    mContainer->setOpaque(false);
     mChannelOutput["General"] = textOutput;
     mChannelScroll["General"] = scrollArea;
-
-    mTabs["General"] = tab;
 
     mTextOutput = textOutput;
     mScrollArea = scrollArea;
 
-    add(mContainer);
+    add(mChatTabs);
     add(mChatInput);
 
     // Add key listener to chat input to be able to respond to up/down
@@ -99,23 +93,20 @@ ChatWindow::ChatWindow():
 
 ChatWindow::~ChatWindow()
 {
-    for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
+    delete mChatTabs;
 }
 
 void
 ChatWindow::logic()
 {
     // todo: only do this when the size changes (updateWidgets?)
-
     const gcn::Rectangle area = getChildrenArea();
 
     mChatInput->setPosition(mChatInput->getFrameSize(),
                             area.height - mChatInput->getHeight() -
                                 mChatInput->getFrameSize());
     mChatInput->setWidth(area.width - 2 * mChatInput->getFrameSize());
-    mContainer->setWidth(area.width - 2 * mContainer->getFrameSize());
-    mContainer->setHeight(area.height - 2 * mContainer->getFrameSize() -
-                          mChatInput->getHeight() - 5);
+
     mScrollArea->setWidth(area.width - 2 * mScrollArea->getFrameSize());
     mScrollArea->setHeight(area.height - 2 * mScrollArea->getFrameSize() -
             mChatInput->getHeight() - 26);
@@ -225,7 +216,8 @@ ChatWindow::action(const gcn::ActionEvent &event)
             mCurHist = mHistory.end();
 
             // Send the message to the server
-            chatSend(player_node->getName(), message, mContainer->getActiveWidget());
+            gcn::Tab *tab = mChatTabs->getSelectedTab();
+            chatSend(player_node->getName(), message, tab->getCaption());
 
             // Clear the text from the chat input
             mChatInput->setText("");
@@ -280,7 +272,8 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
 
     // Prepare ordinary message
     if (msg[0] != '/') {
-        if (mContainer->getActiveWidget() == "General")
+        gcn::Tab *tab = mChatTabs->getSelectedTab();
+        if (tab->getCaption() == "General")
         {
             Net::GameServer::Player::say(msg);
         }
@@ -311,6 +304,7 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
         chatLog("/announce > Global announcement (GM only)", BY_SERVER, channelName);
         chatLog("/where > Display map name", BY_SERVER, channelName);
         chatLog("/who > Display number of online users", BY_SERVER, channelName);
+        chatLog("/msg > Send a private message to a user", BY_SERVER, channelName);
         chatLog("/list > Display all public channels", BY_SERVER, channelName);
         chatLog("/register > Register a new channel", BY_SERVER, channelName);
         chatLog("/join > Join an already registered channel", BY_SERVER, channelName);
@@ -327,6 +321,14 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
         /*
         MessageOut outMsg(0x00c1);
         */
+    }
+    else if (command == "msg")
+    {
+        std::string::size_type pos = arg.find(' ', 1);
+        std::string recipient(arg, 0, pos-1);
+        std::string text(arg, pos+1);
+        chatLog("* " + text, BY_SERVER);
+        Net::ChatServer::privMsg(recipient, text);
     }
     else if (command == "register")
     {
@@ -458,8 +460,10 @@ ChatWindow::removeChannel(short channelId)
     Channel* channel = channelManager->findById(channelId);
     if(channel)
     {
-        mContainer->removeTab(channel->getName());
-        mTabs.erase(channel->getName());
+        gcn::Tab *tab = mChatTabs->getTab(channel->getName());
+        if (!tab)
+            return;
+        mChatTabs->removeTab(tab);
         mChannelOutput.erase(channel->getName());
         mChannelScroll.erase(channel->getName());
         channelManager->removeChannel(channel);
@@ -478,13 +482,8 @@ ChatWindow::createNewChannelTab(std::string channelName)
     scrollArea->setPosition(scrollArea->getFrameSize(), scrollArea->getFrameSize());
     scrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     scrollArea->setOpaque(false);
-    GCContainer *tab = new GCContainer();
-    tab->setWidth(getWidth() - 2 * tab->getFrameSize());
-    tab->setHeight(getHeight() - 2 * tab->getFrameSize());
-    tab->add(scrollArea);
-    tab->setOpaque(false);
-    mContainer->addTab(tab, channelName);
-    mTabs[channelName] = tab;
+
+    mChatTabs->addTab(channelName, scrollArea);
     mChannelOutput[channelName] = textOutput;
     mChannelScroll[channelName] = scrollArea;
     mScrollArea = scrollArea;
@@ -552,4 +551,13 @@ ChatWindow::setVisible(bool isVisible)
       * should be disabled.
       */
      mTmpVisible = false;
+}
+
+bool
+ChatWindow::tabExists(const std::string &tabName)
+{
+    gcn::Tab *tab = mChatTabs->getTab(tabName);
+    if (tab)
+        return true;
+    return false;
 }

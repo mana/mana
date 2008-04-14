@@ -1,3 +1,11 @@
+2008-04-14  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/guildwindow.cpp, src/gui/chat.cpp, 
+	src/gui/widgets/tabbedarea.h, src/gui/widgets/tabbedarea.cpp,
+	src/gui/chat.h, src/gui/guildwindow.h, src/net/chathandler.cpp:
+	Added new TabbedArea which extends gui::TabbedArea. Changed Guild and
+	Chat windows to use new TabbedArea. Added private messaging.
+
 2008-04-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/CMakeLists.txt: Fixed a compilation error using Cmake.

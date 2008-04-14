@@ -137,6 +137,17 @@ void ChatHandler::handleMessage(MessageIn &msg)
             chatWindow->chatLog("End of channel list", BY_SERVER);
             break;
 
+        case CPMSG_PRIVMSG:
+            userNick = msg.readString();
+            chatMsg = msg.readString();
+
+            if (!chatWindow->tabExists(userNick))
+            {
+                chatWindow->createNewChannelTab(userNick);
+                chatWindow->chatLog(userNick + ": " + chatMsg, BY_OTHER, userNick);
+            }
+            break;
+
         case CPMSG_PUBMSG:
             channelId = msg.readInt16();
             userNick = msg.readString();
