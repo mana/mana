@@ -301,10 +301,21 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         std::string recvnick = "";
         msg.erase(0, IS_WHISPER_LENGTH + 1);
 
-        const std::string::size_type pos = msg.find(" ");
-        if (pos != std::string::npos) {
-            recvnick = msg.substr(0, pos);
-            msg.erase(0, pos + 1);
+        if (msg.substr(0,1) == "\"")
+        {
+            const std::string::size_type pos = msg.find('"', 1);
+            if (pos != std::string::npos) {
+                recvnick = msg.substr(1, pos - 1);
+                msg.erase(0, pos + 2);
+            }
+        }
+        else
+        {
+            const std::string::size_type pos = msg.find(" ");
+            if (pos != std::string::npos) {
+                recvnick = msg.substr(0, pos);
+                msg.erase(0, pos + 1);
+            }
         }
 
         MessageOut outMsg(mNetwork);
