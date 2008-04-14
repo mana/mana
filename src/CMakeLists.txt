@@ -55,6 +55,8 @@ SET(SRCS
     gui/widgets/resizegrip.h
     gui/widgets/layout.cpp
     gui/widgets/layout.h
+    gui/widgets/tabbedarea.cpp
+    gui/widgets/tabbedarea.h
     gui/box.cpp
     gui/box.h
     gui/browserbox.cpp

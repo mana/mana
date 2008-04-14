@@ -1,3 +1,7 @@
+2008-04-14 Yohann Ferreira <bertram@cegetel.net>
+
+	* src/CMakeLists.txt: Fixed (again) a compilation error using CMake.
+
 2008-04-14  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/guildwindow.cpp, src/gui/chat.cpp, 
@@ -9,6 +13,8 @@
 2008-04-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/CMakeLists.txt: Fixed a compilation error using Cmake.
+	* src/gui/radiobutton.h, src/gui/radiobutton.cpp: Remove the rhomb
+	around the radio buttons.
 
 2008-04-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
