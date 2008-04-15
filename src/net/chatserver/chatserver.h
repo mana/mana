@@ -54,6 +54,8 @@ namespace Net
 
         void getChannelList();
 
+        void getUserList(const std::string &channel);
+
     }
 }
 

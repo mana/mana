@@ -24,6 +24,7 @@
 #ifndef _TMW_TABBEDAREA_H
 #define _TMW_TABBEDAREA_H
 
+#include <guichan/widget.hpp>
 #include <guichan/widgets/tab.hpp>
 #include <guichan/widgets/tabbedarea.hpp>
 
@@ -54,6 +55,11 @@ class TabbedArea : public gcn::TabbedArea
          * Return tab with specified name as caption
          */
         gcn::Tab* getTab(const std::string &name);
+
+        /**
+         * Return selected tab's widget
+         */
+        gcn::Widget* getWidget(const std::string &name);
 };
 
 #endif

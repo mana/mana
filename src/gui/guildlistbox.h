@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2008 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -18,16 +18,19 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id $
  */
 
 #ifndef _TMW_GUI_GUILDLISTBOX_H
 #define _TMW_GUI_GUILDLISTBOX_H
 
+#include <map>
 #include <string>
 #include <vector>
 
 #include "listbox.h"
+
+class Image;
 
 class GuildListBox : public ListBox
 {
@@ -38,21 +41,26 @@ public:
     GuildListBox();
 
     /**
-     * Set ListModel
-     */
-    void setList(gcn::ListModel *listModel);
-
-    /**
      * Draws the list box.
      */
-    void draw(gcn::Graphics *graphics);
+    void draw(gcn::Graphics *gcnGraphics);
 
     void mousePressed(gcn::MouseEvent &event);
 
     /**
      * Sets the index of the selected element.
      */
-    void setSelected(int selected);
+//    void setSelected(int selected);
+
+    /**
+     * Set whether a member is online or offline
+     */
+    void setOnlineStatus(const std::string &user, bool online);
+
+private:
+    Image *onlineIcon;
+    Image *offlineIcon;
+    std::map<std::string, bool> mUsers;
 };
 
 #endif

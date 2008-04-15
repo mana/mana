@@ -112,6 +112,12 @@ public:
      */
     void removeTab(int guildId);
 
+    /**
+     * Set guild member status in userlist
+     */
+    void setOnline(const std::string &guildName, const std::string &member,
+                   bool online);
+
 protected:
     /**
      * Get selected guild tab
@@ -125,7 +131,6 @@ private:
     TextDialog *inviteDialog;
     ConfirmDialog *acceptDialog;
     TabbedArea *mGuildTabs;
-    GuildListBox *mGuildMembersList;
     ScrollArea *mScrollArea;
     bool mFocus;
     std::string invitedGuild;

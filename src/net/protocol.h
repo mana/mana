@@ -171,7 +171,7 @@ enum {
     CPMSG_USERJOINED                  = 0x0450, // W channel, S name
     CPMSG_USERLEFT                    = 0x0451, // W channel, S name
     PCMSG_LIST_CHANNELUSERS           = 0x0460, // S channel
-    CPMSG_LIST_CHANNELUSERS_RESPONSE  = 0x0461, // S users
+    CPMSG_LIST_CHANNELUSERS_RESPONSE  = 0x0461, // S channel, S users
 
     XXMSG_INVALID = 0x7FFF
 };

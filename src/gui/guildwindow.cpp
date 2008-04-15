@@ -84,7 +84,7 @@ GuildWindow::~GuildWindow()
 
 void GuildWindow::update()
 {
-
+    updateTab();
 }
 
 void GuildWindow::draw(gcn::Graphics *g)
@@ -172,7 +172,7 @@ void GuildWindow::newGuildTab(const std::string &guildName)
 {
 
     // Create new tab
-    ListBox *list = new ListBox();
+    GuildListBox *list = new GuildListBox();
     list->setListModel(player_node->getGuild(guildName));
     ScrollArea *sa = new ScrollArea(list);
     sa->setDimension(gcn::Rectangle(5, 5, 135, 250));
@@ -224,7 +224,8 @@ short GuildWindow::getSelectedGuild()
     return 0;
 }
 
-void GuildWindow::openAcceptDialog(const std::string &inviterName, const std::string &guildName)
+void GuildWindow::openAcceptDialog(const std::string &inviterName,
+                                   const std::string &guildName)
 {
     std::string msg = inviterName + " has invited you to join the guild " + guildName;
     chatWindow->chatLog(msg, BY_SERVER);
@@ -248,6 +249,17 @@ void GuildWindow::removeTab(int guildId)
     {
         gcn::Tab *tab = mGuildTabs->getTab(guild->getName());
         mGuildTabs->removeTab(tab);
+        updateTab();
     }
     mGuildTabs->logic();
+}
+
+void GuildWindow::setOnline(const std::string &guildName, const std::string &member,
+                            bool online)
+{
+    GuildListBox *box = dynamic_cast<GuildListBox*>(mGuildTabs->getWidget(guildName));
+    if (box)
+    {
+        box->setOnlineStatus(member, online);
+    }
 }

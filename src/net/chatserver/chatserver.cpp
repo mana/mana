@@ -128,3 +128,12 @@ void Net::ChatServer::getChannelList()
 
     connection->send(msg);
 }
+
+void Net::ChatServer::getUserList(const std::string &channel)
+{
+    MessageOut msg(PCMSG_LIST_CHANNELUSERS);
+
+    msg.writeString(channel);
+
+    connection->send(msg);
+}

@@ -99,20 +99,30 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 std::string guildMember;
+                std::string guildName;
                 Guild *guild;
+
                 short guildId = msg.readInt16();
                 guild = player_node->getGuild(guildId);
+
                 if (!guild)
                     return;
+
+                guildName = guild->getName();
+
                 while(msg.getUnreadLength())
                 {
                     guildMember = msg.readString();
                     if(guildMember != "")
                     {
                         guild->addMember(guildMember);
+                        guildWindow->setOnline(guildName, guildMember, false);
                     }
                 }
+
                 guildWindow->updateTab();
+
+                Net::ChatServer::getUserList(guildName);
             }
         } break;
 
@@ -126,6 +136,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if (guild)
             {
                 guild->addMember(guildMember);
+                guildWindow->setOnline(guild->getName(), guildMember, false);
             }
             guildWindow->updateTab();
         } break;

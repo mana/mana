@@ -303,9 +303,6 @@
 		<Unit filename="src/gui/sdlinput.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/selectionlistener.h">
-			<Option target="default" />
-		</Unit>
 		<Unit filename="src/gui/sell.cpp" />
 		<Unit filename="src/gui/sell.h">
 			<Option target="default" />
@@ -409,6 +406,8 @@
 		<Unit filename="src/gui/widgets/resizegrip.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/widgets/tabbedarea.cpp" />
+		<Unit filename="src/gui/widgets/tabbedarea.h" />
 		<Unit filename="src/gui/window.cpp" />
 		<Unit filename="src/gui/window.h">
 			<Option target="default" />

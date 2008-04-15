@@ -35,6 +35,7 @@
 #include "../game.h"
 
 #include "../gui/chat.h"
+#include "../gui/guildwindow.h"
 
 #include "../utils/tostring.h"
 
@@ -49,6 +50,7 @@ ChatHandler::ChatHandler()
         CPMSG_LIST_CHANNELS_RESPONSE,
         CPMSG_PUBMSG,
         CPMSG_QUIT_CHANNEL_RESPONSE,
+        CPMSG_LIST_CHANNELUSERS_RESPONSE,
         /*
         SMSG_BEING_CHAT,
         SMSG_PLAYER_CHAT,
@@ -106,9 +108,13 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 channelName = msg.readString();
                 std::string announcement = msg.readString();
                 std::vector<std::string> userList;
+                std::string user;
                 while(msg.getUnreadLength())
                 {
-                    userList.push_back(msg.readString());
+                    user = msg.readString();
+                    if (user == "")
+                        break;
+                    userList.push_back(user);
                 }
                 chatWindow->addChannel(channelId, channelName);
                 chatWindow->createNewChannelTab(channelName);
@@ -125,6 +131,8 @@ void ChatHandler::handleMessage(MessageIn &msg)
             while(msg.getUnreadLength())
             {
                 channelName = msg.readString();
+                if (channelName == "")
+                    break;
                 std::ostringstream numUsers;
                 numUsers << msg.readInt16();
                 if(channelName != "")
@@ -162,6 +170,19 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 channelId = msg.readInt16();
                 // remove the chat tab
                 chatWindow->removeChannel(channelId);
+            }
+            break;
+
+        case CPMSG_LIST_CHANNELUSERS_RESPONSE:
+            channelName = msg.readString();
+            while(msg.getUnreadLength())
+            {
+                userNick = msg.readString();
+                if (userNick == "")
+                {
+                    break;
+                }
+                guildWindow->setOnline(channelName, userNick, true);
             }
             break;
         /*
