@@ -1,3 +1,8 @@
+2008-04-15  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/viewport.cpp, src/beingmanager.cpp, tmw.cbp: Fixed clicking
+	near player.
+
 2008-04-14  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/chat.cpp: Tweaked /whisper command to allow quoting of nicks

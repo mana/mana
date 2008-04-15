@@ -334,7 +334,7 @@
 		<Unit filename="src/tileset.h" />
 		<Unit filename="src/tmw.rc">
 			<Option compilerVar="WINDRES" />
-			<Option target="unix" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="src/utils/base64.cpp" />
 		<Unit filename="src/utils/base64.h" />

@@ -413,8 +413,6 @@ Viewport::mousePressed(gcn::MouseEvent &event)
                 case Being::PLAYER:
                     if (being->mAction == Being::DEAD)
                         break;
-                    if (being == player_node)
-                        break;
 
                     if (player_node->withinAttackRange(being))
                     {
