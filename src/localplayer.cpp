@@ -116,6 +116,11 @@ void LocalPlayer::nextStep()
         mPath.clear();
         return;
     }
+    else if (mGoingToTarget && !mTarget)
+    {
+        mGoingToTarget = false;
+        mPath.clear();
+    }
 
     Player::nextStep();
 }
