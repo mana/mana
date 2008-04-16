@@ -1,7 +1,8 @@
 2008-04-16  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/browserbox.cpp: Fix a basic_string::at sometimes being out
-	of range in BrowserBox::draw when checking for line separators.
+	of range in BrowserBox::draw when checking for line separators and
+	color codes.
 
 2008-04-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

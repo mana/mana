@@ -314,7 +314,8 @@ BrowserBox::draw(gcn::Graphics *graphics)
 
         for (j = 0; j < row.size(); j++)
         {
-            if (mUseLinksAndUserColors || (!mUseLinksAndUserColors && (j == 0)))
+            if ( (mUseLinksAndUserColors && (j + 3) <= row.size()) ||
+                    (!mUseLinksAndUserColors && (j == 0)) )
             {
                 // Check for color change in format "##x", x = [L,P,0..9]
                 if ((row.at(j) == '#') && (row.at(j + 1) == '#'))
