@@ -81,12 +81,9 @@ void Net::ChatServer::privMsg(const std::string &recipient,
 }
 
 void Net::ChatServer::registerChannel(const std::string &name,
-        const std::string &announcement, const std::string &password,
-        char isPrivate)
+        const std::string &announcement, const std::string &password)
 {
     MessageOut msg(PCMSG_REGISTER_CHANNEL);
-
-    msg.writeInt8(isPrivate);
     msg.writeString(name);
     msg.writeString(announcement);
     msg.writeString(password);

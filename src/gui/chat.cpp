@@ -333,7 +333,7 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
     else if (command == "register")
     {
         chatLog("Requesting to register channel " + arg, BY_SERVER);
-        Net::ChatServer::registerChannel(arg, "", "", false);
+        Net::ChatServer::registerChannel(arg, "", "");
     }
     else if (command == "join")
     {

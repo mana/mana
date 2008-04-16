@@ -5,6 +5,8 @@
 	src/gui/guildlistbox.h, src/gui/guildwindow.cpp, src/guild.cpp,
 	src/guild.h, src/net/guildhandler.cpp: Fixed online status so that 
 	users are shown as online.
+	* src/gui/chat.cpp, src/net/protocol.h, 
+	src/net/chatserver/chatserver.cpp: Remove private channels.
 
 2008-04-15  David Athay  <ko2fan@gmail.com>
 
