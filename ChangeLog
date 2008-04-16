@@ -1,7 +1,7 @@
 2008-04-16  Dennis Friis  <peavey@placid.dk>
 
-	* src/gui/browserbox.cpp: Fix a basic_string::at sometimes being out of range
-	in BrowserBox::draw when checking for line separators.
+	* src/gui/browserbox.cpp: Fix a basic_string::at sometimes being out
+	of range in BrowserBox::draw when checking for line separators.
 
 2008-04-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -9,6 +9,7 @@
 	src/gui/scrollarea.h, src/gui/textbox.h: Restored the text wrapping in
 	TextBox, since it was based on overriding a method that is no longer
 	virtual in Guichan 0.8.0.
+	* src/gui/viewport.cpp: Fixed compilation warning.
 
 2008-04-15  David Athay  <ko2fan@gmail.com>
 

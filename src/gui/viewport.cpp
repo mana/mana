@@ -399,8 +399,8 @@ Viewport::mousePressed(gcn::MouseEvent &event)
 
         // Interact with some being
 //      if ((being = beingManager->findBeing(tilex, tiley))
-        int x = event.getX() + mPixelViewX;
-        int y = event.getY() + mPixelViewY;
+        int x = (int)((float) event.getX() + mPixelViewX);
+        int y = (int)((float) event.getY() + mPixelViewY);
         if ((being = beingManager->findBeingByPixel(x, y)))
         {
             switch (being->getType())
