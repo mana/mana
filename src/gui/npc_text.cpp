@@ -34,7 +34,7 @@
 NpcTextDialog::NpcTextDialog():
     Window("NPC")
 {
-    mTextBox = new TextBox();
+    mTextBox = new TextBox;
     mTextBox->setEditable(false);
     gcn::ScrollArea *scrollArea = new ScrollArea(mTextBox);
     Button *okButton = new Button("OK", "ok", this);
@@ -55,15 +55,15 @@ NpcTextDialog::NpcTextDialog():
 }
 
 void
-NpcTextDialog::setText(const char *text)
+NpcTextDialog::setText(const std::string &text)
 {
-    mTextBox->setText(text);
+    mTextBox->setTextWrapped(text);
 }
 
 void
 NpcTextDialog::addText(const std::string &text)
 {
-    mTextBox->setText(mTextBox->getText() + text + "\n");
+    mTextBox->setTextWrapped(mTextBox->getText() + text + "\n");
 }
 
 void

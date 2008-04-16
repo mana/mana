@@ -40,12 +40,12 @@ class ScrollArea : public gcn::ScrollArea
         /**
          * Constructor.
          */
-        ScrollArea(bool gc=true);
+        ScrollArea(bool gc = true);
 
         /**
          * Constructor.
          */
-        ScrollArea(gcn::Widget *content, bool gc=true);
+        ScrollArea(gcn::Widget *content, bool gc = true);
 
         /**
          * Destructor.
@@ -71,14 +71,12 @@ class ScrollArea : public gcn::ScrollArea
         /**
          * Sets whether the widget should draw its background or not.
          */
-        void
-        setOpaque(bool opaque);
+        void setOpaque(bool opaque);
 
         /**
          * Returns whether the widget draws its background or not.
          */
-        bool
-        isOpaque() { return mOpaque; }
+        bool isOpaque() const { return mOpaque; }
 
     protected:
         enum BUTTON_DIR {
