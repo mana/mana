@@ -1,3 +1,8 @@
+2008-04-16  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/browserbox.cpp: Fix a basic_string::at sometimes being out of range
+	in BrowserBox::draw when checking for line separators.
+
 2008-04-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/npc_text.h, src/gui/textbox.cpp, src/gui/npc_text.cpp,

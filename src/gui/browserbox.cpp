@@ -380,8 +380,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
             }
 
             // Check for line separators in format "---"
-            if ((j <= 3) && (row.at(j) == '-') && (row.at(j + 1) == '-') &&
-                    (row.at(j + 2) == '-'))
+            if (row == "---")
             {
                 for (x = 0; x < getWidth(); x++)
                 {
