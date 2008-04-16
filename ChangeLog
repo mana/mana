@@ -1,3 +1,8 @@
+2008-04-17  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/sell.cpp: Fix shop list not to scroll to top when selling.
+	Redo of revision 3801 due to changes in guichan 0.8.0.
+
 2008-04-16  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/browserbox.cpp: Fix a basic_string::at sometimes being out
