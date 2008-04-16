@@ -137,8 +137,11 @@ void GuildHandler::handleMessage(MessageIn &msg)
             {
                 guild->addMember(guildMember);
                 guildWindow->setOnline(guild->getName(), guildMember, false);
+                Net::ChatServer::getUserList(guild->getName());
             }
             guildWindow->updateTab();
+
+
         } break;
 
         case CPMSG_GUILD_INVITED:

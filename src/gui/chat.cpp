@@ -475,6 +475,7 @@ ChatWindow::removeChannel(short channelId)
 void
 ChatWindow::createNewChannelTab(std::string channelName)
 {
+    // Create new channel
     BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     textOutput->setOpaque(false);
     textOutput->disableLinksAndUserColors();
@@ -483,11 +484,17 @@ ChatWindow::createNewChannelTab(std::string channelName)
     scrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     scrollArea->setOpaque(false);
 
+    // Add channel to the tabbed area
     mChatTabs->addTab(channelName, scrollArea);
     mChannelOutput[channelName] = textOutput;
     mChannelScroll[channelName] = scrollArea;
     mScrollArea = scrollArea;
     mTextOutput = textOutput;
+
+    // Ask for channel users
+    Net::ChatServer::getUserList(channelName);
+
+    // Update UI
     logic();
 }
 

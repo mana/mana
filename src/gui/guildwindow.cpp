@@ -170,12 +170,14 @@ void GuildWindow::action(const gcn::ActionEvent &event)
 
 void GuildWindow::newGuildTab(const std::string &guildName)
 {
-
     // Create new tab
     GuildListBox *list = new GuildListBox();
     list->setListModel(player_node->getGuild(guildName));
     ScrollArea *sa = new ScrollArea(list);
     sa->setDimension(gcn::Rectangle(5, 5, 135, 250));
+
+    // Add the listbox to the map
+    mGuildLists.insert(std::pair<std::string, GuildListBox*>(guildName, list));
 
     mGuildTabs->addTab(guildName, sa);
     mGuildTabs->setDimension(gcn::Rectangle(28,35,140,250));
@@ -257,9 +259,9 @@ void GuildWindow::removeTab(int guildId)
 void GuildWindow::setOnline(const std::string &guildName, const std::string &member,
                             bool online)
 {
-    GuildListBox *box = dynamic_cast<GuildListBox*>(mGuildTabs->getWidget(guildName));
-    if (box)
+    GuildListMap::iterator itr = mGuildLists.find(guildName);
+    if (itr != mGuildLists.end())
     {
-        box->setOnlineStatus(member, online);
+        itr->second->setOnlineStatus(member, online);
     }
 }

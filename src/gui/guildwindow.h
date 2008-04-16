@@ -32,6 +32,7 @@
 #define _TMW_GUI_GUILDWINDOW_H
 
 #include <iosfwd>
+#include <map>
 #include <vector>
 
 #include <guichan/actionlistener.hpp>
@@ -134,6 +135,8 @@ private:
     ScrollArea *mScrollArea;
     bool mFocus;
     std::string invitedGuild;
+    typedef std::map<std::string, GuildListBox*> GuildListMap;
+    GuildListMap mGuildLists;
 };
 
 extern GuildWindow *guildWindow;

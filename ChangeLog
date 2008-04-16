@@ -1,12 +1,20 @@
+2008-04-16  David Athay  <ko2fan@gmail.com>
+
+	*  src/gui/guildlistbox.cpp, src/gui/guildwindow.h,
+	src/gui/widgets/tabbedarea.cpp, src/gui/chat.cpp,
+	src/gui/guildlistbox.h, src/gui/guildwindow.cpp, src/guild.cpp,
+	src/guild.h, src/net/guildhandler.cpp: Fixed online status so that 
+	users are shown as online.
+
 2008-04-15  David Athay  <ko2fan@gmail.com>
 
 	*  src/gui/guildlistbox.cpp, src/gui/guildwindow.h
-       	src/gui/widgets/tabbedarea.h, src/gui/widgets/tabbedarea.cpp,
-       	src/gui/guildlistbox.h, src/gui/guildwindow.cpp,
+	src/gui/widgets/tabbedarea.h, src/gui/widgets/tabbedarea.cpp,
+	src/gui/guildlistbox.h, src/gui/guildwindow.cpp,
 	src/net/guildhandler.cpp, src/net/protocol.h, src/net/chathandler.cpp,
 	src/net/chatserver/chatserver.cpp, src/net/chatserver/chatserver.h,
 	src/Makefile.am, data/graphics/gui/circle-green.png
-      	data/graphics/gui/circle-gray.png, tmw.cbp: Added online status of 
+	data/graphics/gui/circle-gray.png, tmw.cbp: Added online status of 
 	guild members.
 
 2008-04-14 Yohann Ferreira <bertram@cegetel.net>

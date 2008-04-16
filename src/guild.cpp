@@ -28,25 +28,43 @@ Guild::Guild(short id, bool inviteRights) :
 mId(id),
 mCanInviteUsers(inviteRights)
 {
-    
+
 }
 
 void Guild::addMember(const std::string &name)
 {
-    mMembers.push_back(name);
+    if (!isMember(name))
+    {
+        mMembers.push_back(name);
+    }
 }
 
 void Guild::removeMember(const std::string &name)
 {
-    for(std::vector<std::string>::iterator itr = mMembers.begin();
-        itr != mMembers.end();
-        ++itr)
+    std::vector<std::string>::iterator itr = mMembers.begin(),
+                                       itr_end = mMembers.end();
+    while(itr != itr_end)
     {
-        std::string member = (*itr);
-        if(member == name)
+        if((*itr) == name)
         {
             mMembers.erase(itr);
         }
+        ++itr;
     }
-    
+}
+
+bool Guild::isMember(const std::string &name)
+{
+    std::vector<std::string>::iterator itr = mMembers.begin(),
+                                       itr_end = mMembers.end();
+    while(itr != itr_end)
+    {
+        if((*itr) == name)
+        {
+            return true;
+        }
+        ++itr;
+    }
+
+    return false;
 }

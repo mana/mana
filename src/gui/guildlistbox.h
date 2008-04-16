@@ -60,7 +60,8 @@ public:
 private:
     Image *onlineIcon;
     Image *offlineIcon;
-    std::map<std::string, bool> mUsers;
+    typedef std::map<std::string, bool> UserMap;
+    UserMap mUsers;
 };
 
 #endif

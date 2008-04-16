@@ -61,7 +61,12 @@ void GuildListBox::draw(gcn::Graphics *gcnGraphics)
          ++i, y += fontHeight)
     {
         // Draw online status
-        bool online = mUsers[mListModel->getElementAt(i)];
+        bool online = false;
+        UserMap::iterator itr = mUsers.find(mListModel->getElementAt(i));
+        if (itr != mUsers.end())
+        {
+            online = itr->second;
+        }
         Image *icon = online ? onlineIcon : offlineIcon;
         if (icon)
             graphics->drawImage(icon, 1, y);
@@ -110,5 +115,13 @@ void GuildListBox::mousePressed(gcn::MouseEvent &event)
 
 void GuildListBox::setOnlineStatus(const std::string &user, bool online)
 {
-    mUsers[user] = online;
+    UserMap::iterator itr = mUsers.find(user);
+    if (itr == mUsers.end())
+    {
+        mUsers.insert(std::pair<std::string, bool>(user, online));
+    }
+    else
+    {
+        itr->second = online;
+    }
 }

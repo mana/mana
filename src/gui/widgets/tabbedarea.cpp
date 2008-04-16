@@ -73,13 +73,15 @@ void TabbedArea::draw(gcn::Graphics *graphics)
 
 gcn::Widget* TabbedArea::getWidget(const std::string &name)
 {
-    unsigned int i;
-    for (i = 0; i < mTabs.size(); i++)
+    std::vector< std::pair<gcn::Tab*, gcn::Widget*> >::iterator itr = mTabs.begin(),
+                                                        itr_end = mTabs.end();
+    while (itr != itr_end)
     {
-        if (mTabs[i].first->getCaption() == name)
+        if ((*itr).first->getCaption() == name)
         {
-            return mTabs[i].second;
+            return (*itr).second;
         }
+        ++itr;
     }
 
     return NULL;
