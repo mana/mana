@@ -2,6 +2,8 @@
 
 	* src/gui/sell.cpp: Fix shop list not to scroll to top when selling.
 	Redo of revision 3801 due to changes in guichan 0.8.0.
+	* src/gui/minimap.cpp: Draw NPCs in yellow on minimap and skip drawing
+	of warps. Based on idea by leeor_net.
 
 2008-04-16  Dennis Friis  <peavey@placid.dk>
 

@@ -95,8 +95,12 @@ void Minimap::draw(gcn::Graphics *graphics)
                 graphics->setColor(gcn::Color(209, 52, 61));
                 break;
 
-            default:
+            case Being::NPC:
+                graphics->setColor(gcn::Color(255, 255, 0));
                 break;
+
+            default:
+                continue;
         }
 
         int offset = (dotSize - 1) / 2;
