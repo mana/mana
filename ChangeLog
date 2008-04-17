@@ -1,3 +1,8 @@
+2008-04-17  Yohann Ferreira <bertram@cegetel.net>
+
+	* src/gui/progressbar.h, src/gui/progressbar.cpp: Added smooth
+	changes in progressbar.
+
 2008-04-16  David Athay  <ko2fan@gmail.com>
 
 	*  src/gui/guildlistbox.cpp, src/gui/guildwindow.h,

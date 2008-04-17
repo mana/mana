@@ -99,7 +99,7 @@ class ProgressBar : public gcn::Widget {
         getBlue() { return mBlue; }
 
     private:
-        float mProgress;
+        float mProgress, mProgressToGo;
         Uint8 mRed, mGreen, mBlue;
         Uint8 mRedToGo, mGreenToGo, mBlueToGo;
 
