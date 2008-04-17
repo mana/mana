@@ -116,6 +116,9 @@ const short defaultMusicVolume = 60;
 const std::string defaultAccountServerName = "testing.themanaworld.org";
 const short defaultAccountServerPort = 9601;
 
+// Defines the number of usable player slots
+const short maxSlot = 2;
+
 extern std::string token;
 extern unsigned char state;
 extern std::string errorMessage;

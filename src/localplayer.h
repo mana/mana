@@ -28,9 +28,6 @@
 
 #include <memory>
 
-// TODO move into some sane place...
-#define MAX_SLOT 2
-
 class FloorItem;
 class Inventory;
 class Item;
@@ -116,6 +113,10 @@ enum
     CHAR_SKILL_NB = CHAR_SKILL_END - CHAR_SKILL_BEGIN,
 
     NB_CHARACTER_ATTRIBUTES = CHAR_SKILL_END
+};
+
+enum InputType {
+    BY_MOUSE = 0, BY_KEYBOARD, BY_SYSTEM
 };
 
 
@@ -248,7 +249,7 @@ class LocalPlayer : public Player
         /**
          * Sets a new destination for this being to walk to.
          */
-        void setDestination(Uint16 x, Uint16 y);
+        void setDestination(Uint16 x, Uint16 y, InputType inputType);
 
         /**
          * Sets a new direction to keep walking in.
@@ -371,6 +372,8 @@ class LocalPlayer : public Player
         int mWalkingDir;    /**< The direction the player is walking in. */
         int mDestX;         /**< X coordinate of destination. */
         int mDestY;         /**< Y coordinate of destination. */
+        int mLocalWalkTime;    /**< Time in millisecs before the next walk
+                                    can be sent when using mouse. */
 
         std::list<std::string> mExpMessages; /**< Queued exp messages*/
         int mExpMessageTime;

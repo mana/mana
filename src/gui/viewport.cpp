@@ -253,9 +253,10 @@ Viewport::logic()
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
             mWalkTime != player_node->mWalkTime)
     {
-        player_node->setDestination(mouseX + (int) mViewX,
-                                    mouseY + (int) mViewY);
-        mWalkTime = player_node->mWalkTime;
+            player_node->setDestination(mouseX + (int) mViewX,
+                                        mouseY + (int) mViewY,
+                                        BY_MOUSE);
+            mWalkTime = player_node->mWalkTime;
     }
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
@@ -396,12 +397,14 @@ Viewport::mousePressed(gcn::MouseEvent &event)
         // Just walk around
         else
         {
-            // XXX XXX XXX REALLY UGLY!
+            // FIXME: REALLY UGLY!
             Uint8 *keys = SDL_GetKeyState(NULL);
             if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
             {
+
                 player_node->setDestination(event.getX() + (int) mViewX,
-                                            event.getY() + (int) mViewY);
+                                            event.getY() + (int) mViewY,
+                                            BY_MOUSE);
             }
             mPlayerFollowMouse = true;
         }
@@ -429,7 +432,8 @@ Viewport::mouseDragged(gcn::MouseEvent &event)
     if (mPlayerFollowMouse && mWalkTime == player_node->mWalkTime)
     {
         player_node->setDestination(event.getX() + (int) mViewX,
-                                    event.getY() + (int) mViewY);
+                                    event.getY() + (int) mViewY,
+                                    BY_MOUSE);
     }
 }
 

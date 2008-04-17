@@ -6,13 +6,16 @@
 	src/net/chatserver/party.h, src/localplayer.h: Added basic party 
 	support.
 
-
 2008-04-17  Yohann Ferreira <bertram@cegetel.net>
 
 	* src/gui/progressbar.h, src/gui/progressbar.cpp: Added smooth
 	changes in progressbar.
 	* src/net/chatserver/chatserver.h: One file was forgotten into the
 	private channels removal.
+	* src/localplayer.h, src/localplayer.cpp, src/gui/viewport.cpp,
+	src/main.h: Added input type parameter to the 
+	LocalPlayer::SetDestination methods in order to keep control over
+	message flooding to the server with mouse dragging.
 
 2008-04-16  David Athay  <ko2fan@gmail.com>
 
