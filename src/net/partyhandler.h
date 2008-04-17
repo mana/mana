@@ -1,8 +1,7 @@
 /*
- *  guildhandler.h
- *  A file part of The Mana World
+ *  This file is part of The Mana World
  *
- * Copyright (c) 2007, The Mana World Development Team
+ * Copyright (c) 2008, The Mana World Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,25 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  *
- * $Id:$
+ * $Id: $
  */
 
-#ifndef _TMW_NET_GUILDHANDLER_H
-#define _TMW_NET_GUILDHANDLER_H
+#ifndef _TMW_NET_PARTYHANDLER_H
+#define _TMW_NET_PARTYHANDLER_H
 
 #include "messagehandler.h"
 
 #include <string>
 
-class GuildHandler : public MessageHandler
+class PartyHandler : public MessageHandler
 {
 public:
-    GuildHandler();
+    PartyHandler();
 
     void handleMessage(MessageIn &msg);
 
 protected:
-    void joinedGuild(MessageIn &msg);
+
 };
 
 #endif
+

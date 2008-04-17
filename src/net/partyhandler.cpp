@@ -1,8 +1,7 @@
 /*
- *  guildhandler.h
- *  A file part of The Mana World
+ *  This file is part of The Mana World
  *
- * Copyright (c) 2007, The Mana World Development Team
+ * Copyright (c) 2008, The Mana World Development Team
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,25 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
  *
- * $Id:$
+ * $Id: $
  */
 
-#ifndef _TMW_NET_GUILDHANDLER_H
-#define _TMW_NET_GUILDHANDLER_H
+#include <iostream>
+#include "partyhandler.h"
 
-#include "messagehandler.h"
+#include "protocol.h"
+#include "messagein.h"
 
-#include <string>
+#include "chatserver/chatserver.h"
 
-class GuildHandler : public MessageHandler
+#include "../gui/chat.h"
+#include "../log.h"
+#include "../localplayer.h"
+
+PartyHandler::PartyHandler()
 {
-public:
-    GuildHandler();
+    static const Uint16 _messages[] = {
+        CPMSG_PARTY_CREATE_RESPONSE,
+        CPMSG_PARTY_QUIT_RESPONSE,
+        0
+    };
+    handledMessages = _messages;
 
-    void handleMessage(MessageIn &msg);
+}
 
-protected:
-    void joinedGuild(MessageIn &msg);
-};
+void PartyHandler::handleMessage(MessageIn &msg)
+{
+    switch (msg.getId())
+    {
+        case CPMSG_PARTY_CREATE_RESPONSE:
+        {
+            if (msg.readInt8() == ERRMSG_OK)
+            {
+                player_node->setInParty(true);
+            }
+        } break;
 
-#endif
+        case CPMSG_PARTY_QUIT_RESPONSE:
+        {
+            if (msg.readInt8() == ERRMSG_OK)
+            {
+                player_node->setInParty(false);
+            }
+        } break;
+    }
+}

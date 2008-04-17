@@ -116,6 +116,16 @@ class Player : public Being
         short getNumberOfGuilds();
 
         /**
+         * Set the player in party
+         */
+        void setInParty(bool value);
+
+        /**
+         * Returns whether player is in the party
+         */
+        bool getInParty() const { return mInParty; }
+
+        /**
          * Gets the way the character is blocked by other objects.
          */
         virtual unsigned char getWalkMask() const
@@ -135,6 +145,7 @@ class Player : public Being
         Gender mGender;
         Uint8 mHairStyle;
         Uint8 mHairColor;
+        bool mInParty;
 };
 
 #endif

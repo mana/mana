@@ -154,7 +154,7 @@ class LocalPlayer : public Player
         drawName(Graphics *, int, int) {};
 
         /**
-         * Check the player has permission to invite users
+         * Check the player has permission to invite users to specific guild
          */
         bool checkInviteRights(const std::string &guildName);
 

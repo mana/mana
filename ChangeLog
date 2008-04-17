@@ -1,3 +1,12 @@
+2008-04-17  David Athay  <ko2fan@gmail.com>
+
+	* src/player.cpp, src/player.h, src/net/partyhandler.h,
+	src/net/guildhandler.h, src/net/partyhandler.cpp,
+	src/net/guildhandler.cpp, src/net/chatserver/party.cpp,
+	src/net/chatserver/party.h, src/localplayer.h: Added basic party 
+	support.
+
+
 2008-04-17  Yohann Ferreira <bertram@cegetel.net>
 
 	* src/gui/progressbar.h, src/gui/progressbar.cpp: Added smooth

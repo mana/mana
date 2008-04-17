@@ -2,8 +2,6 @@
  *  guildhandler.cpp
  *  A file part of The Mana World
  *
- *  Created by David Athay on 01/03/2007.
- *
  * Copyright (c) 2007, The Mana World Development Team
  * All rights reserved.
  *
