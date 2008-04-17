@@ -2,6 +2,8 @@
 
 	* src/gui/progressbar.h, src/gui/progressbar.cpp: Added smooth
 	changes in progressbar.
+	* src/net/chatserver/chatserver.h: One file was forgotten into the
+	private channels removal.
 
 2008-04-16  David Athay  <ko2fan@gmail.com>
 

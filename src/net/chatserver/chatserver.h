@@ -43,8 +43,7 @@ namespace Net
         void privMsg(const std::string &recipient, const std::string &text);
 
         void registerChannel(const std::string &name,
-                const std::string &announcement, const std::string &password,
-                char isPrivate);
+                const std::string &announcement, const std::string &password);
 
         void unregisterChannel(short channel);
 
