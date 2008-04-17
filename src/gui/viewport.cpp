@@ -49,13 +49,15 @@
 #include <cassert>
 
 extern volatile int tick_time;
+extern int get_elapsed_time(int start_time);
 
 Viewport::Viewport():
     mMap(0),
     mViewX(0.0f),
     mViewY(0.0f),
     mShowDebugPath(false),
-    mPlayerFollowMouse(false)
+    mPlayerFollowMouse(false),
+    mLocalWalkTime(-1)
 {
     setOpaque(false);
     addMouseListener(this);
@@ -251,11 +253,12 @@ Viewport::logic()
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
 
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
-            mWalkTime != player_node->mWalkTime)
+            mWalkTime != player_node->mWalkTime && 
+            get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
     {
+            mLocalWalkTime = tick_time;
             player_node->setDestination(mouseX + (int) mViewX,
-                                        mouseY + (int) mViewY,
-                                        BY_MOUSE);
+                                        mouseY + (int) mViewY);
             mWalkTime = player_node->mWalkTime;
     }
 
@@ -399,12 +402,12 @@ Viewport::mousePressed(gcn::MouseEvent &event)
         {
             // FIXME: REALLY UGLY!
             Uint8 *keys = SDL_GetKeyState(NULL);
-            if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
+            if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) &&
+                get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
             {
-
+                mLocalWalkTime = tick_time;
                 player_node->setDestination(event.getX() + (int) mViewX,
-                                            event.getY() + (int) mViewY,
-                                            BY_MOUSE);
+                                            event.getY() + (int) mViewY);
             }
             mPlayerFollowMouse = true;
         }
@@ -429,11 +432,12 @@ Viewport::mouseDragged(gcn::MouseEvent &event)
     if (!mMap || !player_node)
         return;
 
-    if (mPlayerFollowMouse && mWalkTime == player_node->mWalkTime)
+    if (mPlayerFollowMouse && mWalkTime == player_node->mWalkTime
+        && get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
     {
+        mLocalWalkTime = tick_time;
         player_node->setDestination(event.getX() + (int) mViewX,
-                                    event.getY() + (int) mViewY,
-                                    BY_MOUSE);
+                                    event.getY() + (int) mViewY);
     }
 }
 

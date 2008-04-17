@@ -39,6 +39,9 @@ class PopupMenu;
 class Graphics;
 class SimpleAnimation;
 
+/** Delay between two mouse calls when dragging mouse and move the player */
+const int walkingMouseDelay = 500;
+
 /**
  * The viewport on the map. Displays the current map and handles mouse input
  * and the popup menu.
@@ -182,6 +185,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
 
         bool mPlayerFollowMouse;
         int mWalkTime;
+        int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
 
         PopupMenu *mPopupMenu;     /**< Popup menu. */
 };

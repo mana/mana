@@ -115,11 +115,6 @@ enum
     NB_CHARACTER_ATTRIBUTES = CHAR_SKILL_END
 };
 
-enum InputType {
-    BY_MOUSE = 0, BY_KEYBOARD, BY_SYSTEM
-};
-
-
 /**
  * The local player character.
  */
@@ -249,7 +244,7 @@ class LocalPlayer : public Player
         /**
          * Sets a new destination for this being to walk to.
          */
-        void setDestination(Uint16 x, Uint16 y, InputType inputType);
+        void setDestination(Uint16 x, Uint16 y);
 
         /**
          * Sets a new direction to keep walking in.
@@ -372,8 +367,6 @@ class LocalPlayer : public Player
         int mWalkingDir;    /**< The direction the player is walking in. */
         int mDestX;         /**< X coordinate of destination. */
         int mDestY;         /**< Y coordinate of destination. */
-        int mLocalWalkTime;    /**< Time in millisecs before the next walk
-                                    can be sent when using mouse. */
 
         std::list<std::string> mExpMessages; /**< Queued exp messages*/
         int mExpMessageTime;

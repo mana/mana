@@ -66,7 +66,6 @@ LocalPlayer::LocalPlayer():
     mTrading(false),
     mLastAction(-1), mWalkingDir(0),
     mDestX(0), mDestY(0),
-    mLocalWalkTime(-1),
     mExpMessageTime(0)
 {
 }
@@ -223,8 +222,7 @@ void LocalPlayer::pickUp(FloorItem *item)
         Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
         mPickUpTarget = NULL;
     } else {
-        setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16,
-                       BY_SYSTEM);
+        setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
         mPickUpTarget = item;
     }
 }
@@ -264,7 +262,7 @@ void LocalPlayer::walk(unsigned char dir)
     // Walk to where the player can actually go
     if ((dx || dy) && mMap->getWalk((mX + dx) / 32, (mY + dy) / 32, getWalkMask()))
     {
-        setDestination(mX + dx, mY + dy, BY_SYSTEM);
+        setDestination(mX + dx, mY + dy);
     }
     else if (dir)
     {
@@ -274,7 +272,7 @@ void LocalPlayer::walk(unsigned char dir)
     }
 }
 
-void LocalPlayer::setDestination(Uint16 x, Uint16 y, InputType inputType)
+void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     // Fix coordinates so that the player does not seem to dig into walls.
     int tx = x / 32, ty = y / 32, fx = x % 32, fy = y % 32;
@@ -287,14 +285,6 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y, InputType inputType)
     // Only send a new message to the server when destination changes
     if (x != mDestX || y != mDestY)
     {
-        // Using mouse, Walkings are allowed twice per second
-        if (inputType == BY_MOUSE && get_elapsed_time(mLocalWalkTime) < 500) return;
-
-        // Using keyboard, Walkings are allowed ten times per second
-        if (inputType == BY_KEYBOARD && get_elapsed_time(mLocalWalkTime) < 100) return;
-
-        mLocalWalkTime = tick_time;
-
         mDestX = x;
         mDestY = y;
 
@@ -302,8 +292,8 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y, InputType inputType)
         particleEngine->addEffect("graphics/particles/hit.particle.xml", x, y);
     }
 
-    Being::setDestination(x, y);
     mPickUpTarget = NULL;
+    Being::setDestination(x, y);
 }
 
 void LocalPlayer::setWalkingDir(int dir)
