@@ -13,7 +13,7 @@
 	* src/net/chatserver/chatserver.h: One file was forgotten into the
 	private channels removal.
 	* src/localplayer.h, src/localplayer.cpp, src/gui/viewport.cpp,
-	src/main.h: Added input type parameter to the 
+	src/main.h, src/main.cpp: Added input type parameter to the 
 	LocalPlayer::SetDestination methods in order to keep control over
 	message flooding to the server with mouse dragging.
 

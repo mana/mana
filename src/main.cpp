@@ -484,7 +484,7 @@ CharServerHandler charServerHandler;
 LoginData loginData;
 LoginHandler loginHandler;
 LogoutHandler logoutHandler;
-LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
+LockedArray<LocalPlayer*> charInfo(maxSlot + 1);
 
 namespace {
     struct ErrorListener : public gcn::ActionListener
