@@ -194,7 +194,8 @@ void SellDialog::action(const gcn::ActionEvent &event)
                     mShopItems->getShop()->begin() + selectedItem);
 
             gcn::Rectangle scroll;
-            scroll.y = mShopItemList->getRowHeight() * selectedItem;
+            scroll.y = mShopItemList->getRowHeight() * (selectedItem + 1);
+            scroll.height = mShopItemList->getRowHeight();
             mShopItemList->showPart(scroll);
         }
         else
