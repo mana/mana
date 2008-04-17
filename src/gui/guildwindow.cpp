@@ -85,6 +85,12 @@ GuildWindow::~GuildWindow()
 void GuildWindow::update()
 {
     updateTab();
+
+    if (mGuildButton[2]->isEnabled()&& mGuildTabs->getNumberOfTabs() <= 0)
+    {
+        mGuildButton[2]->setEnabled(false);
+        mGuildButton[1]->setEnabled(false);
+    }
 }
 
 void GuildWindow::draw(gcn::Graphics *g)
@@ -217,10 +223,15 @@ bool GuildWindow::isFocused()
 
 short GuildWindow::getSelectedGuild()
 {
-    Guild *guild = player_node->getGuild(mGuildTabs->getSelectedTab()->getCaption());
-    if (guild)
+    if (mGuildTabs->getNumberOfTabs() > 0)
     {
-        return guild->getId();
+
+        Guild *guild = player_node->getGuild(mGuildTabs->getSelectedTab()->getCaption());
+
+        if (guild)
+        {
+            return guild->getId();
+        }
     }
 
     return 0;

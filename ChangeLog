@@ -15,7 +15,11 @@
 	* src/localplayer.h, src/localplayer.cpp, src/gui/viewport.cpp,
 	src/main.h, src/main.cpp: Added input type parameter to the 
 	LocalPlayer::SetDestination methods in order to keep control over
-	message flooding to the server with mouse dragging.
+	message flooding to the server with mouse dragging. Moved Mouse calls
+	flooding control into viewport to avoid calling setDestination
+	unecessarily.
+	* Fixed a crash when clicking on 'Quit Guild' Button. Also disabled
+	the 'Invite user' and 'Quit Guild' buttons when no Guild is created.
 
 2008-04-16  David Athay  <ko2fan@gmail.com>
 

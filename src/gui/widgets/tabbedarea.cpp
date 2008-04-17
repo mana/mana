@@ -47,6 +47,7 @@ gcn::Tab* TabbedArea::getTab(const std::string &name)
         }
         ++itr;
     }
+    return NULL;
 }
 
 void TabbedArea::draw(gcn::Graphics *graphics)
