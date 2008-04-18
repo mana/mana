@@ -76,8 +76,8 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     }
 
 #ifdef __APPLE__
-    long VBL = 1;
-    CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
+//    long VBL = 1;
+//    CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
 #endif
 
     // Setup OpenGL

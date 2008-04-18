@@ -1,3 +1,9 @@
+2008-04-18  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/openglgraphics.cpp: Mac now uses Apple key for
+	emoticons, so alt can be used for alternate characters. Disable vsync
+	on mac.
+
 2008-04-17  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/sell.cpp: Fix shop list not to scroll to top when selling.
