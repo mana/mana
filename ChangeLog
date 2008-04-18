@@ -8,6 +8,10 @@
 	be reworked.
 	* src/localplayer.h, src/localplayer.cpp: limited keyboard walk message
 	flooding to one every 1/10 sec.
+	* src/main.h, src/main.cpp, src/net/loginhandler.cpp,
+	src/net/logouthandler.cpp, src/gui/unregisterdialog.cpp,
+	src/gui/changepassworddialog.cpp: Made Unregister and change password
+	functionnal, at least client-side.
 
 2008-04-18  David Athay  <ko2fan@gmail.com>
 

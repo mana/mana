@@ -494,6 +494,14 @@ namespace {
             state = STATE_CHOOSE_SERVER;
         }
     } errorListener;
+
+    struct AccountListener : public gcn::ActionListener
+    {
+        void action(const gcn::ActionEvent &event)
+        {
+            state = STATE_CHAR_SELECT;
+        }
+    } accountListener;
 }
 
 // TODO Find some nice place for these functions
@@ -984,15 +992,15 @@ int main(int argc, char *argv[])
                         logger->log("State: CHANGE PASSWORD");
                         currentDialog = new OkDialog("Password change",
                                             "Password changed successfully!");
+                        currentDialog->addActionListener(&accountListener);
+                        currentDialog = NULL; // OkDialog deletes itself
                         loginData.password = loginData.newPassword;
                         loginData.newPassword = "";
-                        state = STATE_LOGIN;
                         break;
 
                     case STATE_UNREGISTER_ATTEMPT:
                         logger->log("State: UNREGISTER ATTEMPT");
                         accountUnRegister(&loginData);
-                        loginData.clear();
                         break;
 
                     case STATE_UNREGISTER:
@@ -1000,11 +1008,19 @@ int main(int argc, char *argv[])
                         accountServerConnection->disconnect();
                         currentDialog = new OkDialog("Unregister successful",
                                              "Farewell, come back any time ....");
-
+                        loginData.clear();
                         //The errorlistener sets the state to STATE_CHOOSE_SERVER
                         currentDialog->addActionListener(&errorListener);
                         currentDialog = NULL; // OkDialog deletes itself
                         break;
+
+                    case STATE_ACCOUNTCHANGE_ERROR:
+                        logger->log("State: ACCOUNT CHANGE ERROR");
+                        currentDialog = new OkDialog("Error ", errorMessage);
+                        currentDialog->addActionListener(&accountListener);
+                        currentDialog = NULL; // OkDialog deletes itself
+                        break;
+
 
                     case STATE_ERROR:
                         logger->log("State: ERROR");

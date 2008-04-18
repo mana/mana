@@ -81,6 +81,7 @@ UnRegisterDialog::UnRegisterDialog(Window *parent, LoginData *loginData):
     setLocationRelativeTo(getParent());
     setVisible(true);
     mPasswordField->requestFocus();
+    mPasswordField->setActionEventId("cancel");
 }
 
 UnRegisterDialog::~UnRegisterDialog()

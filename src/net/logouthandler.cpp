@@ -104,7 +104,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
                         errorMessage = "Accountserver: Unknown error";
                         break;
                 }
-                state = STATE_ERROR;
+                state = STATE_ACCOUNTCHANGE_ERROR;
             }
         }
             break;

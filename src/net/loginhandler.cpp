@@ -34,6 +34,7 @@ LoginHandler::LoginHandler()
         APMSG_LOGIN_RESPONSE,
         APMSG_REGISTER_RESPONSE,
         APMSG_RECONNECT_RESPONSE,
+        APMSG_PASSWORD_CHANGE_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -133,6 +134,36 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         break;
                 }
                 state = STATE_ERROR;
+            }
+        }
+            break;
+
+        case APMSG_PASSWORD_CHANGE_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
+            // Successful pass change
+            if (errMsg == ERRMSG_OK)
+            {
+                state = STATE_CHANGEPASSWORD;
+            }
+            // pass change failed
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_INVALID_ARGUMENT:
+                        errorMessage = "New password incorrect";
+                        break;
+                    case ERRMSG_FAILURE:
+                        errorMessage = "Old password incorrect";
+                        break;
+                    case ERRMSG_NO_LOGIN:
+                        errorMessage = "Account not connected. Please login first.";
+                        break;
+                    default:
+                        errorMessage = "Unknown error";
+                        break;
+                }
+                state = STATE_ACCOUNTCHANGE_ERROR;
             }
         }
             break;

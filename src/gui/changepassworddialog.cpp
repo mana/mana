@@ -101,7 +101,11 @@ ChangePasswordDialog::ChangePasswordDialog(Window *parent, LoginData *loginData)
 
     setLocationRelativeTo(getParent());
     setVisible(true);
-    mFirstPassField->requestFocus();
+    mOldPassField->requestFocus();
+
+    mOldPassField->setActionEventId("change_password");
+    mFirstPassField->setActionEventId("change_password");
+    mSecondPassField->setActionEventId("change_password");
 }
 
 ChangePasswordDialog::~ChangePasswordDialog()
