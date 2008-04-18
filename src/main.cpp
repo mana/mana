@@ -502,6 +502,14 @@ namespace {
             state = STATE_CHAR_SELECT;
         }
     } accountListener;
+
+    struct LoginListener : public gcn::ActionListener
+    {
+        void action(const gcn::ActionEvent &event)
+        {
+            state = STATE_LOGIN;
+        }
+    } loginListener;
 }
 
 // TODO Find some nice place for these functions
@@ -520,13 +528,6 @@ void accountLogin(LoginData *loginData)
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
-
-    // Remove _M or _F from username after a login for registration purpose
-    if (loginData->registerLogin)
-    {
-        loginData->username =
-            loginData->username.substr(0, loginData->username.length() - 2);
-    }
 
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
@@ -934,6 +935,13 @@ int main(int argc, char *argv[])
 
                     case STATE_LOGIN_ATTEMPT:
                         accountLogin(&loginData);
+                        break;
+
+                    case STATE_LOGIN_ERROR:
+                        logger->log("State: LOGIN ERROR");
+                        currentDialog = new OkDialog("Error ", errorMessage);
+                        currentDialog->addActionListener(&loginListener);
+                        currentDialog = NULL; // OkDialog deletes itself
                         break;
 
                     case STATE_SWITCH_ACCOUNTSERVER:

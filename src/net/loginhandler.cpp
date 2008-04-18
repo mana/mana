@@ -72,7 +72,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = "Unknown error";
                         break;
                 }
-                state = STATE_ERROR;
+                state = STATE_LOGIN_ERROR;
             }
         }
             break;
@@ -104,7 +104,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = "Unknown error";
                         break;
                 }
-                state = STATE_ERROR;
+                state = STATE_LOGIN_ERROR;
             }
         }
             break;

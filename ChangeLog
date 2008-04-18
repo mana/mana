@@ -1,3 +1,8 @@
+2008-04-19  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/main.h, src/main.cpp, src/net/loginhandler.cpp: Made mislogins
+	and misregistrations a little bit less annoying for the user.
+
 2008-04-18  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/gui/char_select.h, src/gui/char_select.cpp,
