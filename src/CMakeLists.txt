@@ -69,6 +69,8 @@ SET(SRCS
     gui/buy.h
     gui/buysell.cpp
     gui/buysell.h
+    gui/changepassworddialog.cpp
+    gui/changepassworddialog.h
     gui/chargedialog.cpp
     gui/chargedialog.h
     gui/char_select.cpp

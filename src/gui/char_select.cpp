@@ -36,6 +36,7 @@
 #include "textfield.h"
 
 #include "unregisterdialog.h"
+#include "changepassworddialog.h"
 
 #include "widgets/layout.h"
 
@@ -86,7 +87,7 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 
 CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    LoginData *loginData):
-    Window(_("Select Character")),
+    Window(_("Account and Character Management")),
     mCharInfo(charInfo), mCharSelected(false), mLoginData(loginData)
 {
 
@@ -96,8 +97,10 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     mDelCharButton = new Button(_("Delete"), "delete", this);
     mPreviousButton = new Button(_("Previous"), "previous", this);
     mNextButton = new Button(_("Next"), "next", this);
-    mUnRegisterButton = new Button(_("Delete"), "unregister", this);
+    mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
+    mChangePasswordButton = new Button(_("Change Password"), "change_password", this);
 
+    mAccountNameLabel = new gcn::Label(strprintf(_("Account: %s"), mLoginData->username.c_str()));
     mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
     mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
@@ -108,20 +111,22 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
     ContainerPlacer place;
     place = getPlacer(0, 0);
-    place(0, 0, mPlayerBox, 1, 5).setPadding(3);
-    place(1, 0, mNameLabel, 3);
-    place(1, 1, mLevelLabel, 3);
-    place(1, 2, mMoneyLabel, 3);
-    place(1, 3, mPreviousButton);
-    place(2, 3, mNextButton);
-    place(1, 4, mNewCharButton);
-    place(2, 4, mDelCharButton);
+    place(0, 0, mAccountNameLabel);
+    place(0, 1, mUnRegisterButton);
+    place(1, 1, mChangePasswordButton);
+    place(0, 2, mPlayerBox, 1, 5).setPadding(3);
+    place(1, 2, mNameLabel, 3);
+    place(1, 3, mLevelLabel, 3);
+    place(1, 4, mMoneyLabel, 3);
+    place(1, 5, mPreviousButton);
+    place(2, 5, mNextButton);
+    place(1, 6, mNewCharButton);
+    place(2, 6, mDelCharButton);
     place.getCell().matchColWidth(1, 2);
     place = getPlacer(0, 1);
-    place(0, 0, mUnRegisterButton);
-    place(2, 0, mSelectButton);
-    place(3, 0, mCancelButton);
-    reflowLayout(250, 0);
+    place(0, 0, mSelectButton);
+    place(1, 0, mCancelButton);
+    reflowLayout(350, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -180,6 +185,10 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "unregister")
     {
         new UnRegisterDialog(this, mLoginData);
+    }
+    else if (event.getId() == "change_password")
+    {
+        new ChangePasswordDialog(this, mLoginData);
     }
 }
 

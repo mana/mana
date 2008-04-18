@@ -30,6 +30,7 @@ struct LoginData
 {
     std::string username;
     std::string password;
+    std::string newPassword;
     std::string hostname;
     std::string email;
     short port;
@@ -41,6 +42,7 @@ struct LoginData
     {
         username = "";
         password = "";
+        newPassword = "";
         hostname = "";
         email = "";
         port = 0;

@@ -18,11 +18,11 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: $
  */
 
-#ifndef _TMW_UNREGISTERDIALOG_H
-#define _TMW_UNREGISTERDIALOG_H
+#ifndef _TMW_CHANGEPASSWORDDIALOG_H
+#define _TMW_CHANGEPASSWORDDIALOG_H
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
@@ -35,23 +35,23 @@ class OkDialog;
 class WrongDataNoticeListener;
 
 /**
- * The Unregister dialog.
+ * The Change password dialog.
  *
  * \ingroup Interface
  */
-class UnRegisterDialog : public Window, public gcn::ActionListener {
+class ChangePasswordDialog : public Window, public gcn::ActionListener {
     public:
         /**
          * Constructor
          *
          * @see Window::Window
          */
-        UnRegisterDialog(Window *parent,LoginData *loginData);
+        ChangePasswordDialog(Window *parent,LoginData *loginData);
 
         /**
          * Destructor
          */
-        ~UnRegisterDialog();
+        ~ChangePasswordDialog();
 
         /**
          * Called when receiving actions from the widgets.
@@ -59,9 +59,11 @@ class UnRegisterDialog : public Window, public gcn::ActionListener {
         void action(const gcn::ActionEvent &event);
 
     private:
-        gcn::TextField *mPasswordField;
+        gcn::TextField *mOldPassField;
+        gcn::TextField *mFirstPassField;
+        gcn::TextField *mSecondPassField;
 
-        gcn::Button *mUnRegisterButton;
+        gcn::Button *mChangePassButton;
         gcn::Button *mCancelButton;
 
         WrongDataNoticeListener *mWrongDataNoticeListener;

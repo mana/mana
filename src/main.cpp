@@ -552,6 +552,14 @@ void accountUnRegister(LoginData *loginData)
 
 }
 
+void accountChangePassword(LoginData *loginData)
+{
+    Net::registerHandler(&loginHandler);
+
+    Net::AccountServer::Account::changePassword(loginData->password,
+                                                loginData->newPassword);
+}
+
 void switchCharacter(std::string* passToken)
 {
     Net::registerHandler(&logoutHandler);
@@ -721,7 +729,7 @@ int main(int argc, char *argv[])
         gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
         gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
-        top->add(versionLabel, 2, 2);
+        top->add(versionLabel, 25, 2);
 #endif
 
         sound.playMusic("Magick - Real.ogg");
@@ -967,6 +975,20 @@ int main(int argc, char *argv[])
 
                         break;
 
+                    case STATE_CHANGEPASSWORD_ATTEMPT:
+                        logger->log("State: CHANGE PASSWORD ATTEMPT");
+                        accountChangePassword(&loginData);
+                        break;
+
+                    case STATE_CHANGEPASSWORD:
+                        logger->log("State: CHANGE PASSWORD");
+                        currentDialog = new OkDialog("Password change",
+                                            "Password changed successfully!");
+                        loginData.password = loginData.newPassword;
+                        loginData.newPassword = "";
+                        state = STATE_LOGIN;
+                        break;
+
                     case STATE_UNREGISTER_ATTEMPT:
                         logger->log("State: UNREGISTER ATTEMPT");
                         accountUnRegister(&loginData);
@@ -976,7 +998,7 @@ int main(int argc, char *argv[])
                     case STATE_UNREGISTER:
                         logger->log("State: UNREGISTER");
                         accountServerConnection->disconnect();
-                        currentDialog = new OkDialog("Unregister succesfull",
+                        currentDialog = new OkDialog("Unregister successful",
                                              "Farewell, come back any time ....");
 
                         //The errorlistener sets the state to STATE_CHOOSE_SERVER

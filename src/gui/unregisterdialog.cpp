@@ -39,29 +39,30 @@
 #include "textfield.h"
 #include "ok_dialog.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
+
 UnRegisterDialog::UnRegisterDialog(Window *parent, LoginData *loginData):
     Window("Unregister", true, parent),
     mWrongDataNoticeListener(new WrongDataNoticeListener()),
     mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label("Name:");
-    gcn::Label *passwordLabel = new gcn::Label("Password:");
-    mUserField = new TextField(mLoginData->username);
+    gcn::Label *userLabel = new gcn::Label(strprintf(_("Name: %s"), mLoginData->username.c_str()));
+    gcn::Label *passwordLabel = new gcn::Label(_("Password:"));
     mPasswordField = new PasswordField(mLoginData->password);
-    mUnRegisterButton = new Button("Unregister", "unregister", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
+    mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
 
-    const int width = 200;
-    const int height = 70;
+    const int width = 210;
+    const int height = 80;
     setContentSize(width, height);
 
-    mUserField->setPosition(65, 5);
-    mUserField->setWidth(130);
+    userLabel->setPosition(5, 5);
+    userLabel->setWidth(width - 5);
     mPasswordField->setPosition(
-            65, mUserField->getY() + mUserField->getHeight() + 7);
+            68, userLabel->getY() + userLabel->getHeight() + 7);
     mPasswordField->setWidth(130);
 
-    userLabel->setPosition(5, mUserField->getY() + 1);
     passwordLabel->setPosition(5, mPasswordField->getY() + 1);
 
     mCancelButton->setPosition(
@@ -73,7 +74,6 @@ UnRegisterDialog::UnRegisterDialog(Window *parent, LoginData *loginData):
 
     add(userLabel);
     add(passwordLabel);
-    add(mUserField);
     add(mPasswordField);
     add(mUnRegisterButton);
     add(mCancelButton);
@@ -97,44 +97,22 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "unregister")
     {
-        const std::string username = mUserField->getText();
+        const std::string username = mLoginData->username.c_str();
         const std::string password = mPasswordField->getText();
         logger->log("UnregisterDialog::unregistered, Username is %s",
                      username.c_str());
 
         std::stringstream errorMsg;
-        int error = 0;
+        bool error = false;
 
-        // Check login
-        if (username.empty())
-        {
-            // No username
-            errorMsg << "Enter your username first.";
-            error = 1;
-        }
-        else if (username.length() < LEN_MIN_USERNAME)
-        {
-            // Name too short
-            errorMsg << "The username needs to be at least "
-                     << LEN_MIN_USERNAME
-                     << " characters long.";
-            error = 1;
-        }
-        else if (username.length() > LEN_MAX_USERNAME - 1 )
-        {
-            // Name too long
-            errorMsg << "The username needs to be less than "
-                     << LEN_MAX_USERNAME
-                     << " characters long.";
-            error = 1;
-        }
-        else if (password.length() < LEN_MIN_PASSWORD)
+        // Check password
+        if (password.length() < LEN_MIN_PASSWORD)
         {
             // Pass too short
             errorMsg << "The password needs to be at least "
                      << LEN_MIN_PASSWORD
                      << " characters long.";
-            error = 2;
+            error = true;
         }
         else if (password.length() > LEN_MAX_PASSWORD - 1 )
         {
@@ -142,19 +120,12 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
             errorMsg << "The password needs to be less than "
                      << LEN_MAX_PASSWORD
                      << " characters long.";
-            error = 2;
+            error = true;
         }
 
-        if (error > 0)
+        if (error)
         {
-            if (error == 1)
-            {
-                mWrongDataNoticeListener->setTarget(this->mUserField);
-            }
-            else if (error == 2)
-            {
-                mWrongDataNoticeListener->setTarget(this->mPasswordField);
-            }
+            mWrongDataNoticeListener->setTarget(this->mPasswordField);
 
             OkDialog *dlg = new OkDialog("Error", errorMsg.str());
             dlg->addActionListener(mWrongDataNoticeListener);
@@ -163,7 +134,6 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
         {
             // No errors detected, unregister the new user.
             mUnRegisterButton->setEnabled(false);
-            mLoginData->username = username;
             mLoginData->password = password;
             state = STATE_UNREGISTER_ATTEMPT;
             scheduleDelete();

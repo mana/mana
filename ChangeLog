@@ -1,6 +1,15 @@
+2008-04-18  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/gui/char_select.h, src/gui/char_select.cpp,
+	src/gui/unregisterdialog.h, src/gui/unregisterdialog.cpp,
+	src/main.cpp, src/main.h, src/logindata.h,
+	src/gui/changepassworddialog.h, src/gui/changepassworddialog.cpp,
+	src/CMakeLists.txt: Added a change password dialog. State code is to
+	be reworked.
+
 2008-04-18  David Athay  <ko2fan@gmail.com>
 
-	*  src/gui/chat.h, src/gui/widgets/tabbedarea.h, 
+	* src/gui/chat.h, src/gui/widgets/tabbedarea.h, 
 	src/gui/widgets/tabbedarea.cpp, src/gui/chat.cpp, 
 	src/gui/guildwindow.cpp, src/gui/gui.cpp, src/CMakeLists.txt,
 	src/net/guildhandler.cpp, src/net/chathandler.cpp, src/Makefile.am,
@@ -32,7 +41,7 @@
 
 2008-04-16  David Athay  <ko2fan@gmail.com>
 
-	*  src/gui/guildlistbox.cpp, src/gui/guildwindow.h,
+	* src/gui/guildlistbox.cpp, src/gui/guildwindow.h,
 	src/gui/widgets/tabbedarea.cpp, src/gui/chat.cpp,
 	src/gui/guildlistbox.h, src/gui/guildwindow.cpp, src/guild.cpp,
 	src/guild.h, src/net/guildhandler.cpp: Fixed online status so that 
@@ -42,7 +51,7 @@
 
 2008-04-15  David Athay  <ko2fan@gmail.com>
 
-	*  src/gui/guildlistbox.cpp, src/gui/guildwindow.h
+	* src/gui/guildlistbox.cpp, src/gui/guildwindow.h
 	src/gui/widgets/tabbedarea.h, src/gui/widgets/tabbedarea.cpp,
 	src/gui/guildlistbox.h, src/gui/guildwindow.cpp,
 	src/net/guildhandler.cpp, src/net/protocol.h, src/net/chathandler.cpp,
