@@ -86,7 +86,7 @@ void GuildWindow::update()
 {
     updateTab();
 
-    if (mGuildButton[2]->isEnabled()&& mGuildTabs->getNumberOfTabs() <= 0)
+    if (mGuildButton[2]->isEnabled() && mGuildTabs->getNumberOfTabs() <= 0)
     {
         mGuildButton[2]->setEnabled(false);
         mGuildButton[1]->setEnabled(false);
@@ -107,14 +107,6 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     // Stats Part
     if (eventId == "CREATE_GUILD")
     {
-        if (mGuildTabs->getNumberOfTabs() > 1)
-        {
-            // This is just to limit the number of guild tabs that are created
-            // TODO: Either limit this server side, or fix the interface issue
-            chatWindow->chatLog("Current maximum number of guilds ownable is 2", BY_SERVER);
-            return;
-        }
-
         // Set focus so that guild name to be created can be typed.
         mFocus = true;
         guildDialog = new TextDialog("Guild Name", "Choose your guild's name", this);
@@ -123,7 +115,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     }
     else if (eventId == "INVITE_USER")
     {
-        // TODO - Process Invite User button clicked
+        // TODO - Give feedback on whether the invite succeeded
         mFocus = true;
         inviteDialog = new TextDialog("Member Invite", "Who would you like to invite?", this);
         inviteDialog->setOKButtonActionId("INVITE_USER_OK");
@@ -261,7 +253,10 @@ void GuildWindow::removeTab(int guildId)
     if (guild)
     {
         gcn::Tab *tab = mGuildTabs->getTab(guild->getName());
-        mGuildTabs->removeTab(tab);
+        if (tab)
+        {
+            mGuildTabs->removeTab(tab);
+        }
         updateTab();
     }
     mGuildTabs->logic();

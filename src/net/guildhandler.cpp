@@ -168,8 +168,13 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 // Must remove tab first, as it wont find the guild
                 // name after its removed from the player
                 int guildId = msg.readInt16();
-                guildWindow->removeTab(guildId);
-                player_node->removeGuild(guildId);
+                Guild *guild = player_node->getGuild(guildId);
+                if (guild)
+                {
+                    chatWindow->removeChannel(guild->getName());
+                    guildWindow->removeTab(guildId);
+                    player_node->removeGuild(guildId);
+                }
             }
         } break;
     }

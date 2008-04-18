@@ -87,3 +87,58 @@ gcn::Widget* TabbedArea::getWidget(const std::string &name)
 
     return NULL;
 }
+
+void TabbedArea::removeTab(gcn::Tab *tab)
+{
+    int tabIndexToBeSelected = 0;
+
+    if (tab == mSelectedTab)
+    {
+        int index = getSelectedTabIndex();
+
+        if (index == (int)mTabs.size() - 1
+                 && mTabs.size() == 1)
+        {
+            tabIndexToBeSelected = -1;
+        }
+        else
+        {
+            tabIndexToBeSelected = index - 1;
+        }
+    }
+
+    std::vector<std::pair<gcn::Tab*, gcn::Widget*> >::iterator iter;
+    for (iter = mTabs.begin(); iter != mTabs.end(); iter++)
+    {
+        if (iter->first == tab)
+        {
+            mTabContainer->remove(tab);
+            mTabs.erase(iter);
+            break;
+        }
+    }
+
+    std::vector<gcn::Tab*>::iterator iter2;
+    for (iter2 = mTabsToDelete.begin(); iter2 != mTabsToDelete.end(); iter2++)
+    {
+        if (*iter2 == tab)
+        {
+            mTabsToDelete.erase(iter2);
+            delete tab;
+            break;
+        }
+    }
+
+    if (tabIndexToBeSelected == -1)
+    {
+        mSelectedTab = NULL;
+        mWidgetContainer->clear();
+    }
+    else
+    {
+        setSelectedTab(tabIndexToBeSelected);
+    }
+
+    adjustSize();
+    adjustTabPositions();
+}

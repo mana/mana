@@ -1,3 +1,12 @@
+2008-04-18  David Athay  <ko2fan@gmail.com>
+
+	*  src/gui/chat.h, src/gui/widgets/tabbedarea.h, 
+	src/gui/widgets/tabbedarea.cpp, src/gui/chat.cpp, 
+	src/gui/guildwindow.cpp, src/gui/gui.cpp, src/CMakeLists.txt,
+	src/net/guildhandler.cpp, src/net/chathandler.cpp, src/Makefile.am,
+	tmw.cbp: Fixed numerous crashes with chat and guild windows using new
+	tabbed area.
+
 2008-04-17  David Athay  <ko2fan@gmail.com>
 
 	* src/player.cpp, src/player.h, src/net/partyhandler.h,

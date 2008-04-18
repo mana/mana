@@ -513,6 +513,8 @@
 		<Unit filename="src/net/chatserver/internal.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/net/chatserver/party.cpp" />
+		<Unit filename="src/net/chatserver/party.h" />
 		<Unit filename="src/net/connection.cpp" />
 		<Unit filename="src/net/connection.h">
 			<Option target="default" />
@@ -573,6 +575,8 @@
 		<Unit filename="src/net/npchandler.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/net/partyhandler.cpp" />
+		<Unit filename="src/net/partyhandler.h" />
 		<Unit filename="src/net/playerhandler.cpp" />
 		<Unit filename="src/net/playerhandler.h">
 			<Option target="default" />

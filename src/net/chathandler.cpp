@@ -70,7 +70,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
     short channelId;
     std::string userNick;
     std::string channelName;
-    //Sint16 chatMsgLength;
+    short error = -1;
 
     switch (msg.getId())
     {
@@ -88,7 +88,8 @@ void ChatHandler::handleMessage(MessageIn &msg)
             }
             break;
         case CPMSG_REGISTER_CHANNEL_RESPONSE:
-            if(msg.readInt8() == ERRMSG_OK)
+            error = msg.readInt8();
+            if(error == ERRMSG_OK)
             {
                 channelId = msg.readInt16();
                 std::string channelName = msg.readString();
@@ -98,7 +99,14 @@ void ChatHandler::handleMessage(MessageIn &msg)
             }
             else
             {
-                chatWindow->chatLog("Error registering channel", BY_SERVER);
+                if (error == ERRMSG_INVALID_ARGUMENT)
+                {
+                    chatWindow->chatLog("Error registering channel - Invalid Channel Name given", BY_SERVER);
+                }
+                else
+                {
+                    chatWindow->chatLog("Error registering channel", BY_SERVER);
+                }
             }
             break;
         case CPMSG_ENTER_CHANNEL_RESPONSE:

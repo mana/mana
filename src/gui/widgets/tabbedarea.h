@@ -57,9 +57,14 @@ class TabbedArea : public gcn::TabbedArea
         gcn::Tab* getTab(const std::string &name);
 
         /**
-         * Return selected tab's widget
+         * Returns the widget with the tab that has specified caption
          */
         gcn::Widget* getWidget(const std::string &name);
+
+        /**
+         * Overload the remove tab function as its broken in guichan 0.8
+         */
+        void removeTab(gcn::Tab *tab);
 };
 
 #endif

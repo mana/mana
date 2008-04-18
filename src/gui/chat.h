@@ -37,9 +37,8 @@
 
 class BrowserBox;
 class ScrollArea;
-//class TabbedContainer;
-//class GCContainer;
 class TabbedArea;
+class Channel;
 
 enum
 {
@@ -131,7 +130,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * @param line Text message.
          * @parem own  Type of message (usually the owner-type).
          */
-        void chatLog(std::string line, int own, std::string channelName = "General");
+        void chatLog(std::string line, int own, const std::string &channelName = "General");
 
 #if 0
         /*
@@ -184,23 +183,27 @@ class ChatWindow : public Window, public gcn::ActionListener,
 
         /** Called to add the channel to the channel manager */
         void
-        addChannel(short channel, std::string channelName);
+        addChannel(short channel, const std::string &channelName);
 
         /** Called to remove the channel from the channel manager */
         void
-        removeChannel(short channel);
+        removeChannel(short channelId);
+        void
+        removeChannel(const std::string &channelName);
+        void
+        removeChannel(Channel *channel);
 
         /** Called to create a new channel tab */
         void
-        createNewChannelTab(std::string channelName);
+        createNewChannelTab(const std::string &channelName);
 
         /** Called to join channel */
         void
-        enterChannel(std::string channel, std::string password = "None");
+        enterChannel(const std::string &channel, const std::string &password = "None");
 
         /** Called to output text to a specific channel */
         void
-        sendToChannel(short channel, std::string user, std::string msg);
+        sendToChannel(short channel, const std::string &user, const std::string &msg);
 
         /** Called when key is pressed */
         void
@@ -233,18 +236,13 @@ class ChatWindow : public Window, public gcn::ActionListener,
 
 #if 0
         /** Constructs failed messages for actions */
-        std::string const_msg(CHATSKILL);
-        std::map<std::string, GCContainer*> mTabs;
-        TabbedContainer *mContainer; /**< Tabbed container for tabbing between channels */
-        GCContainer *mTab; /**< Tabs */
+        std::string const_msg(CHATSKILL);*/
 #endif
 
         TabbedArea *mChatTabs; /** < Chat Tabbed area for holding each channel */
         gcn::TextField *mChatInput; /**< Input box for typing chat messages */
         std::map<std::string, BrowserBox*> mChannelOutput; /**< Map each TextOutput to a tab */
         std::map<std::string, ScrollArea*> mChannelScroll; /**< Map each ScrollArea to a tab */
-        BrowserBox *mTextOutput;    /**< Text box for displaying chat history */
-        ScrollArea *mScrollArea;    /**< Scroll area around text output */
 
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;

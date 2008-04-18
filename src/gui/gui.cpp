@@ -107,24 +107,20 @@ Gui::Gui(Graphics *graphics):
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
+    ResourceManager *resman = ResourceManager::getInstance();
+
     // Set global font
-    try {
-        mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 11);
-    }
-    catch (gcn::Exception e)
+    std::string path = resman->getPath("fonts/dejavusans.ttf");
+    if (path != "")
     {
-        logger->error(std::string("Unable to load dejavusans.ttf: ") + e.getMessage());
+        mGuiFont = new TrueTypeFont(path.c_str(), 11);
     }
 
     // Set speech font
-    try
+    path = resman->getPath("fonts/dejavusans.ttf");
+    if (path != "")
     {
-        // FIXME: use another font?
-        speechFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 11);
-    }
-    catch (gcn::Exception e)
-    {
-        logger->error(std::string("Unable to load dejavusans.ttf: ") + e.getMessage());
+        speechFont = new TrueTypeFont(path.c_str(), 11);
     }
 
     gcn::Widget::setGlobalFont(mGuiFont);

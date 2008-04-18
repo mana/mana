@@ -200,6 +200,10 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/chatserver/chatserver.h \
 	      net/chatserver/internal.cpp \
 	      net/chatserver/internal.h \
+              net/chatserver/guild.cpp \
+              net/chatserver/guild.h \
+              net/chatserver/party.cpp \
+              net/chatserver/party.h \
 	      net/gameserver/gameserver.cpp \
 	      net/gameserver/gameserver.h \
 	      net/gameserver/internal.cpp \

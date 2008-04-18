@@ -74,14 +74,10 @@ ChatWindow::ChatWindow():
 
     mChatTabs = new TabbedArea();
     mChatTabs->addTab("General", scrollArea);
-    mChatTabs->setWidth(getWidth());
-    mChatTabs->setHeight(getHeight());
+    mChatTabs->setPosition(mChatTabs->getFrameSize(), mChatTabs->getFrameSize());
 
     mChannelOutput["General"] = textOutput;
     mChannelScroll["General"] = scrollArea;
-
-    mTextOutput = textOutput;
-    mScrollArea = scrollArea;
 
     add(mChatTabs);
     add(mChatInput);
@@ -93,6 +89,7 @@ ChatWindow::ChatWindow():
 
 ChatWindow::~ChatWindow()
 {
+    delete mChatInput;
     delete mChatTabs;
 }
 
@@ -102,26 +99,33 @@ ChatWindow::logic()
     // todo: only do this when the size changes (updateWidgets?)
     const gcn::Rectangle area = getChildrenArea();
 
+    std::string channelName = mChatTabs->getSelectedTab()->getCaption();
+    ScrollArea *scroll = mChannelScroll[channelName];
+
     mChatInput->setPosition(mChatInput->getFrameSize(),
                             area.height - mChatInput->getHeight() -
                                 mChatInput->getFrameSize());
     mChatInput->setWidth(area.width - 2 * mChatInput->getFrameSize());
 
-    mScrollArea->setWidth(area.width - 2 * mScrollArea->getFrameSize());
-    mScrollArea->setHeight(area.height - 2 * mScrollArea->getFrameSize() -
+    mChatTabs->setWidth(area.width - 2 * mChatTabs->getFrameSize());
+    mChatTabs->setHeight(area.height - 2 * mChatTabs->getFrameSize());
+
+    scroll->setWidth(area.width - 2 * scroll->getFrameSize());
+    scroll->setHeight(area.height - 2 * scroll->getFrameSize() -
             mChatInput->getHeight() - 26);
+
     Window::logic();
 }
 
 void
-ChatWindow::chatLog(std::string line, int own, std::string channelName)
+ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
 {
     CHATLOG tmp;
     tmp.own  = own;
     tmp.nick = "";
 
-    mTextOutput = mChannelOutput[channelName];
-    mScrollArea = mChannelScroll[channelName];
+    BrowserBox *output = mChannelOutput[channelName];
+    ScrollArea *scroll = mChannelScroll[channelName];
 
     // Fix the owner of welcome message.
     if (line.substr(0, 7) == "Welcome")
@@ -146,7 +150,7 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
             break;
         case BY_PLAYER:
             tmp.nick += ": ";
-            lineColor = "##2"; // Equiv. to BrowserBox::GREEN
+            lineColor = "##5"; // Equiv. to BrowserBox::YELLOW
             break;
         case BY_OTHER:
             tmp.nick += ": ";
@@ -180,14 +184,14 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
     // We look if the Vertical Scroll Bar is set at the max before
     // adding a row, otherwise the max will always be a row higher
     // at comparison.
-    if (mScrollArea->getVerticalScrollAmount() == mScrollArea->getVerticalMaxScroll())
+    if (scroll->getVerticalScrollAmount() == scroll->getVerticalMaxScroll())
     {
-        mTextOutput->addRow(line);
-        mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
+        output->addRow(line);
+        scroll->setVerticalScrollAmount(scroll->getVerticalMaxScroll());
     }
     else
     {
-        mTextOutput->addRow(line);
+        output->addRow(line);
     }
 }
 
@@ -332,6 +336,7 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
     }
     else if (command == "register")
     {
+        // TODO: Parse the announcement and password
         chatLog("Requesting to register channel " + arg, BY_SERVER);
         Net::ChatServer::registerChannel(arg, "", "");
     }
@@ -447,9 +452,9 @@ ChatWindow::const_msg(CHATSKILL act)
 #endif
 
 void
-ChatWindow::addChannel(short channelId, std::string channelName)
+ChatWindow::addChannel(short channelId, const std::string &channelName)
 {
-    Channel* channel = new Channel(channelId);
+    Channel *channel = new Channel(channelId);
     channel->setName(channelName);
     channelManager->addChannel(channel);
 }
@@ -457,7 +462,18 @@ ChatWindow::addChannel(short channelId, std::string channelName)
 void
 ChatWindow::removeChannel(short channelId)
 {
-    Channel* channel = channelManager->findById(channelId);
+    removeChannel(channelManager->findById(channelId));
+}
+
+void
+ChatWindow::removeChannel(const std::string &channelName)
+{
+    removeChannel(channelManager->findByName(channelName));
+}
+
+void
+ChatWindow::removeChannel(Channel *channel)
+{
     if(channel)
     {
         gcn::Tab *tab = mChatTabs->getTab(channel->getName());
@@ -467,13 +483,13 @@ ChatWindow::removeChannel(short channelId)
         mChannelOutput.erase(channel->getName());
         mChannelScroll.erase(channel->getName());
         channelManager->removeChannel(channel);
-        mTextOutput = mChannelOutput["General"];
-        mScrollArea = mChannelScroll["General"];
+
+        logic();
     }
 }
 
 void
-ChatWindow::createNewChannelTab(std::string channelName)
+ChatWindow::createNewChannelTab(const std::string &channelName)
 {
     // Create new channel
     BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
@@ -488,8 +504,6 @@ ChatWindow::createNewChannelTab(std::string channelName)
     mChatTabs->addTab(channelName, scrollArea);
     mChannelOutput[channelName] = textOutput;
     mChannelScroll[channelName] = scrollArea;
-    mScrollArea = scrollArea;
-    mTextOutput = textOutput;
 
     // Ask for channel users
     Net::ChatServer::getUserList(channelName);
@@ -499,13 +513,13 @@ ChatWindow::createNewChannelTab(std::string channelName)
 }
 
 void
-ChatWindow::enterChannel(std::string channel, std::string password)
+ChatWindow::enterChannel(const std::string &channel, const std::string &password)
 {
     Net::ChatServer::enterChannel(channel, password);
 }
 
 void
-ChatWindow::sendToChannel(short channelId, std::string user, std::string msg)
+ChatWindow::sendToChannel(short channelId, const std::string &user, const std::string &msg)
 {
     Channel *channel = channelManager->findById(channelId);
     if (channel)
