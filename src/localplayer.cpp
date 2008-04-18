@@ -45,6 +45,8 @@
 #include "utils/tostring.h"
 #include "utils/gettext.h"
 
+const short walkingKeyboardDelay = 100;
+
 LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer():
@@ -66,6 +68,7 @@ LocalPlayer::LocalPlayer():
     mTrading(false),
     mLastAction(-1), mWalkingDir(0),
     mDestX(0), mDestY(0),
+    mLocalWalkTime(-1),
     mExpMessageTime(0)
 {
 }
@@ -304,7 +307,8 @@ void LocalPlayer::setWalkingDir(int dir)
     }
 
     // If we're not already walking, start walking.
-    if (mAction != WALK && dir)
+    if (mAction != WALK && dir
+        && get_elapsed_time(mLocalWalkTime) >= walkingKeyboardDelay)
     {
         walk(dir);
     }

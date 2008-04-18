@@ -6,6 +6,8 @@
 	src/gui/changepassworddialog.h, src/gui/changepassworddialog.cpp,
 	src/CMakeLists.txt: Added a change password dialog. State code is to
 	be reworked.
+	* src/localplayer.h, src/localplayer.cpp: limited keyboard walk message
+	flooding to one every 1/10 sec.
 
 2008-04-18  David Athay  <ko2fan@gmail.com>
 

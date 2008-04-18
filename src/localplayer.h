@@ -367,6 +367,8 @@ class LocalPlayer : public Player
         int mWalkingDir;    /**< The direction the player is walking in. */
         int mDestX;         /**< X coordinate of destination. */
         int mDestY;         /**< Y coordinate of destination. */
+        int mLocalWalkTime;  /**< Timestamp used to control keyboard walk
+                                 messages flooding */
 
         std::list<std::string> mExpMessages; /**< Queued exp messages*/
         int mExpMessageTime;
