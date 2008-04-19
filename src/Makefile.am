@@ -7,8 +7,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/widgets/layout.h \
 	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
-              gui/widgets/tabbedarea.cpp \
-              gui/widgets/tabbedarea.h \
+	      gui/widgets/tabbedarea.cpp \
+	      gui/widgets/tabbedarea.h \
 	      gui/box.h \
 	      gui/box.cpp \
 	      gui/browserbox.cpp \
@@ -21,6 +21,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
 	      gui/buysell.h \
+	      gui/changepassworddialog.cpp \
+	      gui/changepassworddialog.h \
 	      gui/chargedialog.cpp \
 	      gui/chargedialog.h \
 	      gui/char_select.cpp \
@@ -155,8 +157,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/beinghandler.cpp \
 	      net/buysellhandler.h \
 	      net/buysellhandler.cpp \
-	      net/chatserver/guild.cpp \
-	      net/chatserver/guild.h \
 	      net/charserverhandler.h \
 	      net/charserverhandler.cpp \
 	      net/chathandler.h \
@@ -185,6 +185,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/network.h \
 	      net/npchandler.cpp \
 	      net/npchandler.h \
+	      net/partyhandler.cpp \
+	      net/partyhandler.h \
 	      net/playerhandler.cpp \
 	      net/playerhandler.h \
 	      net/protocol.h \
@@ -200,10 +202,10 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/chatserver/chatserver.h \
 	      net/chatserver/internal.cpp \
 	      net/chatserver/internal.h \
-              net/chatserver/guild.cpp \
-              net/chatserver/guild.h \
-              net/chatserver/party.cpp \
-              net/chatserver/party.h \
+	      net/chatserver/guild.cpp \
+	      net/chatserver/guild.h \
+	      net/chatserver/party.cpp \
+	      net/chatserver/party.h \
 	      net/gameserver/gameserver.cpp \
 	      net/gameserver/gameserver.h \
 	      net/gameserver/internal.cpp \

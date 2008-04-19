@@ -1,3 +1,7 @@
+2008-04-19  Dennis Friis  <peavey@placid.dk>
+
+	* src/Makefile.am: Fix a double entry and add missing files.
+
 2008-04-19  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/main.h, src/main.cpp, src/net/loginhandler.cpp: Made mislogins
