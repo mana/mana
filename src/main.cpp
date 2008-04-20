@@ -1120,9 +1120,12 @@ int main(int argc, char *argv[])
         logger->log("Exception");
     }
 
-    accountServerConnection->disconnect();
-    gameServerConnection->disconnect();
-    chatServerConnection->disconnect();
+    if (accountServerConnection)
+        accountServerConnection->disconnect();
+    if (gameServerConnection)
+        gameServerConnection->disconnect();
+    if (chatServerConnection)
+        chatServerConnection->disconnect();
 
     delete accountServerConnection;
     delete gameServerConnection;

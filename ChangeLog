@@ -6,6 +6,9 @@
 	installing of dejavusans.ttf font.
 	* src/gui/chat.h, src/gui/chat.cpp: Merged two maps into one, avoid
 	non-const operator[] and check whether channel was found.
+	* src/main.cpp, src/net/network.h: Since the connection objects might
+	not have been created yet when an exception is thrown, check them for
+	0 before calling disconnect on them.
 
 2008-04-19  Yohann Ferreira  <bertram@cegetel.net>
 

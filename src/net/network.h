@@ -50,6 +50,9 @@ namespace Net
      */
     void finalize();
 
+    /**
+     * Returns a new Connection object. Should be deleted by the caller.
+     */
     Connection *getConnection();
 
     /**
