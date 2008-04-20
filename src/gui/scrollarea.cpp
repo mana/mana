@@ -86,8 +86,8 @@ void ScrollArea::init()
         // Load the background skin
         ResourceManager *resman = ResourceManager::getInstance();
         Image *textbox = resman->getImage("graphics/gui/deepbox.png");
-        int bggridx[4] = {0, 3, 28, 31};
-        int bggridy[4] = {0, 3, 28, 31};
+        const int bggridx[4] = {0, 3, 28, 31};
+        const int bggridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
 
         for (y = 0; y < 3; y++) {

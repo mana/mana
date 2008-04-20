@@ -113,8 +113,6 @@ data/Makefile
 data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile
-data/graphics/images/ambient/Makefile
-data/graphics/tiles/Makefile
 data/help/Makefile
 data/icons/Makefile
 docs/Makefile

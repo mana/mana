@@ -119,3 +119,4 @@ compressMemory(unsigned char *in, unsigned int inLength,
 
     assert (ret == Z_OK);
 }
+*/

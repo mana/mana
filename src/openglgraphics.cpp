@@ -354,7 +354,7 @@ void OpenGLGraphics::setTexturingAndBlending(bool enable)
 
 void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect, bool filled)
 {
-    float offset = filled ? 0 : 0.5f;
+    const float offset = filled ? 0 : 0.5f;
 
     setTexturingAndBlending(false);
 

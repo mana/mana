@@ -57,6 +57,7 @@ Viewport::Viewport():
     mViewY(0.0f),
     mShowDebugPath(false),
     mPlayerFollowMouse(false),
+    mWalkTime(0),
     mLocalWalkTime(-1)
 {
     setOpaque(false);

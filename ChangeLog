@@ -1,7 +1,7 @@
 2008-04-19  Yohann Ferreira  <bertram@cegetel.net>
 
-	* src/gui/char_select.cpp: Made the client clean characters information
-	to avoid a freeze at relogin with another account.
+	* src/gui/char_select.cpp: Made the client clean characters
+	information to avoid a freeze at relogin with another account.
 
 2008-04-19  Dennis Friis  <peavey@placid.dk>
 
@@ -168,10 +168,24 @@
 	* data/test.lua: Removed the +100 offset of NPC IDs (relict from
 	eAthena)
 
+2008-03-30  Dennis Friis  <peavey@placid.dk>
+
+	* configure.ac: Updated for tmwdata split.
+
 2008-03-28  David Athay  <ko2fan@gmail.com>
 
 	* tmw.cbp, src/gui/guildwindow.cpp, src/gui/shop.cpp: Updated
 	project file and added some headers to help compiling on gcc 4.3.
+
+2008-03-27  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/progressbar.cpp, src/gui/scrollarea.cpp: Revert progress bar
+	changes and initialize mWalkTime.
+
+2008-03-26  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/progressbar.cpp, src/localplayer.cpp: Initialized some
+	uninitialized variables.
 
 2008-03-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -211,6 +225,15 @@
 	src/net/chatserver.cpp, src/net/chatserver.h: Added ability to 
 	quit guilds.
 
+2008-03-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
+	Removed unused image here too.
+
+2008-03-11  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* data/graphics/gui/attack_target.png: Removed unused image.
+
 2008-03-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
@@ -230,10 +253,17 @@
 	data/graphics/sprites/scorpion.xml: Gave the tail attack of the
 	scorpion a custom animation and a particle effect.
 
+2008-03-09  Dennis Friis  <peavey@placid.dk>
+
+	* src/game.cpp: Pressing escape in the quit dialog closes the dialog.
+	* src/gui/chat.cpp, src/gui/chat.h: Fixed a bug with chat messages
+	without a sender which include semicolons.
+	* src/chat.cpp: Added "/clear" command to clear chat window.
+
 2008-03-08  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* tools/tmxcopy/main.cpp, tools/tmxcopy/main.map.cpp,
-	tools/tmxcopy/plibutils.cpp: Fixed some width/height mixups in
+	tools/tmxcopy/zlibutils.cpp: Fixed some width/height mixups in
 	TMXCopy.
 
 2008-03-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -1004,7 +1034,7 @@
 
 	* src/gui/textfield.cpp: Fixed a windows compilation problem
 	caused by a define macro of the Windows API that conflicts
-	with a guichan identifier. 
+	with a guichan identifier.
 
 2007-10-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -2289,7 +2319,7 @@
 2007-03-16  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/char_select.cpp, src/net/accountserver/account.cpp,
-	src/net/accountserver/account.hpp: Implemented 7 atribute system
+	src/net/accountserver/account.hpp: Implemented 7 attribute system
 	in character creation.
 
 2007-03-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>

@@ -540,10 +540,11 @@ void Game::handleInput()
                     if (!quitDialog)
                     {
                         quitDialog = new QuitDialog(&done, &quitDialog);
+                        quitDialog->requestMoveToTop();
                     }
                     else
                     {
-                        quitDialog->requestMoveToTop();
+                        quitDialog->action(gcn::ActionEvent(NULL, "cancel"));
                     }
                     break;
 

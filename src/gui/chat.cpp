@@ -120,9 +120,13 @@ ChatWindow::logic()
 void
 ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
 {
+    // Trim whitespace
+    trim(line);
+
     CHATLOG tmp;
     tmp.own  = own;
     tmp.nick = "";
+    tmp.text = line;
 
     BrowserBox *output = mChannelOutput[channelName];
     ScrollArea *scroll = mChannelScroll[channelName];
@@ -136,11 +140,8 @@ ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
     std::string::size_type pos = line.find(" : ");
     if (pos != std::string::npos) {
         tmp.nick = line.substr(0, pos);
-        line.erase(0, pos + 3);
+        tmp.text = line.substr(pos + 3);
     }
-
-    // Trim whitespace
-    trim(line);
 
     std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
     switch (own) {
@@ -157,10 +158,13 @@ ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
             lineColor = "##0"; // Equiv. to BrowserBox::BLACK
             break;
         case BY_SERVER:
-            tmp.nick += "Server: ";
+            tmp.nick = "Server: ";
+            tmp.text = line;
             lineColor = "##7"; // Equiv. to BrowserBox::PINK
             break;
         case BY_LOGGER:
+            tmp.nick = "";
+            tmp.text = line;
             lineColor = "##8"; // Equiv. to BrowserBox::GREY
             break;
     }
@@ -179,7 +183,7 @@ ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
             << (int)((t / 60) % 60)
             << "] ";
 
-    line = lineColor + timeStr.str() + tmp.nick + line;
+    line = lineColor + timeStr.str() + tmp.nick + tmp.text;
 
     // We look if the Vertical Scroll Bar is set at the max before
     // adding a row, otherwise the max will always be a row higher
@@ -314,6 +318,7 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
         chatLog("/join > Join an already registered channel", BY_SERVER, channelName);
         chatLog("/quit > Leave a channel", BY_SERVER, channelName);
         chatLog("/admin > Send a command to the server (GM only)", BY_SERVER, channelName);
+        chatLog("/clear > Clears this window", BY_SERVER);
     }
     else if (command == "where")
     {
@@ -364,6 +369,12 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
     else if (command == "admin")
     {
         Net::GameServer::Player::say("/" + arg);
+    }
+    else if (command == "clear")
+    {
+        BrowserBox *output = mChannelOutput[channelName];
+        if (output)
+            output->clearRows();
     }
     else
     {
