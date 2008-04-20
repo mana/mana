@@ -234,20 +234,38 @@ class ChatWindow : public Window, public gcn::ActionListener,
             int own;
         };
 
+        /**
+         * A structure combining a BrowserBox with its ScrollArea.
+         */
+        struct ChatArea
+        {
+            ChatArea(BrowserBox *b, ScrollArea *s):
+                browser(b), scroll(s)
+            {}
+
+            BrowserBox *browser;
+            ScrollArea *scroll;
+        };
+
 #if 0
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);*/
 #endif
 
-        TabbedArea *mChatTabs; /** < Chat Tabbed area for holding each channel */
-        gcn::TextField *mChatInput; /**< Input box for typing chat messages */
-        std::map<std::string, BrowserBox*> mChannelOutput; /**< Map each TextOutput to a tab */
-        std::map<std::string, ScrollArea*> mChannelScroll; /**< Map each ScrollArea to a tab */
+        /** Tabbed area for holding each channel. */
+        TabbedArea *mChatTabs;
+
+        /** Input box for typing chat messages. */
+        gcn::TextField *mChatInput;
+
+        typedef std::map<const std::string, ChatArea> ChannelMap;
+        /** Map each tab to its browser and scroll area. */
+        ChannelMap mChannels;
 
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;
-        History mHistory;           /**< Command history */
-        HistoryIterator mCurHist; /**< History iterator */
+        History mHistory;           /**< Command history. */
+        HistoryIterator mCurHist;   /**< History iterator. */
 };
 
 extern ChatWindow *chatWindow;

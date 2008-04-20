@@ -4,6 +4,8 @@
 	get the data from when using --skipupdate.
 	* configure.ac, data/Makefile.am, data/fonts/Makefile.am: Fixed
 	installing of dejavusans.ttf font.
+	* src/gui/chat.h, src/gui/chat.cpp: Merged two maps into one, avoid
+	non-const operator[] and check whether channel was found.
 
 2008-04-19  Yohann Ferreira  <bertram@cegetel.net>
 
