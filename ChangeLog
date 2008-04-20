@@ -2,6 +2,8 @@
 
 	* src/main.cpp: Added --data parameter to be used to specify where to
 	get the data from when using --skipupdate.
+	* configure.ac, data/Makefile.am, data/fonts/Makefile.am: Fixed
+	installing of dejavusans.ttf font.
 
 2008-04-19  Yohann Ferreira  <bertram@cegetel.net>
 

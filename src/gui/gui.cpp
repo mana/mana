@@ -111,14 +111,14 @@ Gui::Gui(Graphics *graphics):
 
     // Set global font
     std::string path = resman->getPath("fonts/dejavusans.ttf");
-    if (path != "")
+    if (!path.empty())
     {
         mGuiFont = new TrueTypeFont(path.c_str(), 11);
     }
 
     // Set speech font
     path = resman->getPath("fonts/dejavusans.ttf");
-    if (path != "")
+    if (!path.empty())
     {
         speechFont = new TrueTypeFont(path.c_str(), 11);
     }
