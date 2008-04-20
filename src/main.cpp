@@ -140,6 +140,7 @@ struct Options
     std::string playername;
     std::string password;
     std::string configPath;
+    std::string dataPath;
 
     std::string serverName;
     short serverPort;
@@ -220,7 +221,7 @@ void initConfiguration(const Options &options)
 /**
  * Do all initialization stuff.
  */
-void initEngine()
+void initEngine(const Options &options)
 {
     // Initialize SDL
     logger->log("Initializing SDL...");
@@ -273,7 +274,10 @@ void initEngine()
         }
     }
 
-    // Add the main data directory to our PhysicsFS search path
+    // Add the main data directories to our PhysicsFS search path
+    if (!options.dataPath.empty()) {
+        resman->addToSearchPath(options.dataPath, true);
+    }
     resman->addToSearchPath("data", true);
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -381,6 +385,7 @@ void printHelp()
         "  -h --help       : Display this help\n"
         "  -v --version    : Display the version\n"
         "  -u --skipupdate : Skip the update process\n"
+        "  -d --data       : Directory to load game data from\n"
         "  -U --username   : Login with this username\n"
         "  -P --password   : Login with this password\n"
         "  -D --default    : Bypass the login process with default settings\n"
@@ -402,12 +407,13 @@ void printVersion()
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvuU:P:Dp:s:o:C:";
+    const char *optstring = "hvud:U:P:Dp:s:o:C:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
         { "version",    no_argument,       0, 'v' },
         { "skipupdate", no_argument,       0, 'u' },
+        { "data",       required_argument, 0, 'd' },
         { "username",   required_argument, 0, 'U' },
         { "password",   required_argument, 0, 'P' },
         { "default",    no_argument,       0, 'D' },
@@ -421,9 +427,8 @@ void parseOptions(int argc, char *argv[], Options &options)
     while (optind < argc) {
         int result = getopt_long(argc, argv, optstring, long_options, NULL);
 
-        if (result == -1) {
+        if (result == -1)
             break;
-        }
 
         switch (result) {
             default: // Unknown option
@@ -435,6 +440,9 @@ void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'u':
                 options.skipUpdate = true;
+                break;
+            case 'd':
+                options.dataPath = optarg;
                 break;
             case 'U':
                 options.playername = optarg;
@@ -728,7 +736,7 @@ int main(int argc, char *argv[])
 
         initXML();
         initConfiguration(options);
-        initEngine();
+        initEngine(options);
 
         Game *game = NULL;
         Window *currentDialog = NULL;

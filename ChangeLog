@@ -1,3 +1,8 @@
+2008-04-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Added --data parameter to be used to specify where to
+	get the data from when using --skipupdate.
+
 2008-04-19  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/gui/char_select.cpp: Made the client clean characters
