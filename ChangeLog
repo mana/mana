@@ -230,6 +230,16 @@
 	data/graphics/sprites/scorpion.xml: Gave the tail attack of the
 	scorpion a custom animation and a particle effect.
 
+2008-03-08  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* tools/tmxcopy/main.cpp, tools/tmxcopy/main.map.cpp,
+	tools/tmxcopy/plibutils.cpp: Fixed some width/height mixups in
+	TMXCopy.
+
+2008-03-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/*: Moved dynamically released data to its own module (tmwdata).
+
 2008-03-07  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 
 	* data/equipment.xml, data/graphics/items/armor-legs-chaps.png,
@@ -248,8 +258,6 @@
 	data/graphics/sprites/monster-snake.xml,
 	data/graphics/sprites/npcs.png, data/items.xml, data/monsters.xml:
 	Added new items by Black Don, new xml definitions by Peavey.
-	* data/graphics/items/armor-head-cowboyblack.png,
-	data/graphics/items/armor-head-cowboywhite.png: Corrected names.
 
 2008-03-06  David Athay  <ko2fan@gmail.com>
 

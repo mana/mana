@@ -1,5 +1,3 @@
-SUBDIRS = ambient
-
 imagesdir = $(pkgdatadir)/data/graphics/images
 
 images_DATA =				\

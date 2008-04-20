@@ -188,19 +188,19 @@ bool Map::overwrite(  Map* srcMap,
     //plausibility check of coordinates
     bool checkPassed = true;
     if (srcX + srcWidth > srcMap->getWidth()) {
-        std::cerr<<"Error: Area exceeds right map border of source map!";
+        std::cerr<<"Error: Area exceeds right map border of source map!"<<std::endl;
         checkPassed = false;
     }
     if (srcY + srcHeight > srcMap->getHeight()) {
-        std::cerr<<"Error: Area exceeds lower map border of source map!";
+        std::cerr<<"Error: Area exceeds lower map border of source map!"<<std::endl;
         checkPassed = false;
     }
     if (destX + srcWidth > mWidth) {
-        std::cerr<<"Error: Area exceeds right map border of target map!";
+        std::cerr<<"Error: Area exceeds right map border of target map!"<<std::endl;
         checkPassed = false;
     }
     if (destY + srcHeight > mHeight) {
-        std::cerr<<"Error: Area exceeds lower map border of target map!";
+        std::cerr<<"Error: Area exceeds lower map border of target map!"<<std::endl;
         checkPassed = false;
     }
     if (!checkPassed) return false;
@@ -235,10 +235,10 @@ bool Map::overwrite(  Map* srcMap,
         Layer* srcLayer = srcMap->getLayer(i);
         Layer* destLayer = mLayers.at(i);
 
-        for (int y=0; y<srcWidth; y++)
+        for (int y=0; y<srcHeight; y++)
         {
 
-            for (int x=0; x<srcHeight; x++)
+            for (int x=0; x<srcWidth; x++)
             {
                 int srcIndex = srcMap->getWidth() * (y + srcY) + (x + srcX);
                 int tgtIndex = mWidth * (y + destY) + (x + destX);
@@ -319,8 +319,7 @@ int Map::save(std::string filename)
         }
 
 
-        // GZIP layer information
-        // Doesn't work yet.
+        //GZIP layer information
         /*
         unsigned char* gzipData = (unsigned char*)malloc((mWidth * mHeight * 4) + 128);
         unsigned int gzipLen;
@@ -365,7 +364,7 @@ int Map::save(std::string filename)
     }
     else
     {
-        std::cout<<"File saved successfully to"<<filename<<std::endl;
+        std::cout<<"File saved successfully to "<<filename<<std::endl;
         return true;
     }
 }

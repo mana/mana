@@ -109,8 +109,6 @@ inflateMemory(unsigned char *in, unsigned int inLength,
 }
 
 /*
- * This function doesn't work like it should. The output is not decompressable.
- */
 int
 compressMemory(unsigned char *in, unsigned int inLength,
               unsigned char *&out, unsigned int &outLength)
