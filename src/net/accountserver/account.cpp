@@ -23,6 +23,9 @@
 
 #include "account.h"
 
+#include <string>
+#include "../../utils/encryption.h"
+
 #include "internal.h"
 
 #include "../connection.h"
@@ -74,34 +77,36 @@ void Net::AccountServer::Account::unregister(const std::string &username,
     MessageOut msg(PAMSG_UNREGISTER);
 
     msg.writeString(username);
-    msg.writeString(password);
+    msg.writeString(Encryption::GetSHA2Hash(
+                    std::string (username + password)));
 
     Net::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::changeEmail(const std::string &email)
+void Net::AccountServer::Account::changeEmail(const std::string &username,
+                                                const std::string &email)
 {
     MessageOut msg(PAMSG_EMAIL_CHANGE);
 
+    // Email is sent clearly so the server can validate the data.
+    // Encryption is assumed server-side.
     msg.writeString(email);
 
     Net::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::getEmail()
-{
-    MessageOut msg(PAMSG_EMAIL_GET);
-
-    Net::AccountServer::connection->send(msg);
-}
-
 void Net::AccountServer::Account::changePassword(
-        const std::string &oldPassword, const std::string &newPassword)
+                            const std::string &username,
+                            const std::string &oldPassword,
+                            const std::string &newPassword)
 {
     MessageOut msg(PAMSG_PASSWORD_CHANGE);
 
-    msg.writeString(oldPassword);
-    msg.writeString(newPassword);
+    // Change password using SHA2 encryption
+    msg.writeString(Encryption::GetSHA2Hash(
+                    std::string (username + oldPassword)));
+    msg.writeString(Encryption::GetSHA2Hash(
+                    std::string (username + newPassword)));
 
     Net::AccountServer::connection->send(msg);
 }

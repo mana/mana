@@ -1,3 +1,11 @@
+2008-04-21 Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/utils/encryption.h, src/utils/encryption.cpp, src/utils/sha2.h,
+	src/utils/sha2.cpp, src/CMakeLists.txt, src/Makefile.am,
+	src/net/accountserver/accountserver.cpp,
+	src/net/accountserver/account.h, src/net/accountserver/account.cpp,
+	src/main.cpp: Added password encryption using SHA256.
+
 2008-04-21  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/chat.cpp, src/gui/widgets/tabbedarea.cpp,

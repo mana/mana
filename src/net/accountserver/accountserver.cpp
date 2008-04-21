@@ -23,6 +23,9 @@
 
 #include "accountserver.h"
 
+#include <string>
+#include "../../utils/encryption.h"
+
 #include "internal.h"
 
 #include "../connection.h"
@@ -38,7 +41,9 @@ void Net::AccountServer::login(Net::Connection *connection, int version,
 
     msg.writeInt32(version);
     msg.writeString(username);
-    msg.writeString(password);
+    // The password is hashed
+    msg.writeString(Encryption::GetSHA2Hash(
+                    std::string (username + password)));
 
     Net::AccountServer::connection->send(msg);
 }
@@ -53,6 +58,9 @@ void Net::AccountServer::registerAccount(Net::Connection *connection,
 
     msg.writeInt32(version); // client version
     msg.writeString(username);
+    // When registering, the password and email hash is assumed by server.
+    // Hence, data can be validated safely server-side.
+    // This is the only time we send a clear password.
     msg.writeString(password);
     msg.writeString(email);
 

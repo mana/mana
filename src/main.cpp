@@ -532,7 +532,7 @@ void accountLogin(LoginData *loginData)
 
     // Send login infos
     Net::AccountServer::login(accountServerConnection, 0,
-            loginData->username, loginData->password);
+                loginData->username,loginData->password);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -565,7 +565,7 @@ void accountUnRegister(LoginData *loginData)
     Net::registerHandler(&logoutHandler);
 
     Net::AccountServer::Account::unregister(loginData->username,
-                                                         loginData->password);
+                                            loginData->password);
 
 }
 
@@ -573,7 +573,8 @@ void accountChangePassword(LoginData *loginData)
 {
     Net::registerHandler(&loginHandler);
 
-    Net::AccountServer::Account::changePassword(loginData->password,
+    Net::AccountServer::Account::changePassword(loginData->username,
+                                                loginData->password,
                                                 loginData->newPassword);
 }
 

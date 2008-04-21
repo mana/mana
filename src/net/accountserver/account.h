@@ -44,12 +44,12 @@ namespace Net
             void unregister(const std::string &username,
                             const std::string &password);
 
-            void changeEmail(const std::string &email);
+            void changeEmail(const std::string &username,
+                             const std::string &email);
 
-            void getEmail();
-
-            void changePassword(const std::string &oldPassword,
-                    const std::string &newPassword);
+            void changePassword(const std::string &username,
+                                const std::string &oldPassword,
+                                const std::string &newPassword);
         }
     }
 }

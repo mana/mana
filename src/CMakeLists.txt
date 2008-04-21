@@ -301,9 +301,13 @@ SET(SRCS
     utils/base64.cpp
     utils/base64.h
     utils/dtor.h
+    utils/encryption.h
+    utils/encryption.cpp
     utils/fastsqrt.h
     utils/gettext.h
     utils/minmax.h
+    utils/sha2.h
+    utils/sha2.cpp
     utils/strprintf.cpp
     utils/strprintf.h
     utils/tostring.h
