@@ -53,7 +53,7 @@ ChatWindow::ChatWindow():
     mTmpVisible(false)
 {
     setResizable(true);
-    setDefaultSize(0, (windowContainer->getHeight() - 105), 600, 100);
+    setDefaultSize(0, (windowContainer->getHeight() - 105), 400, 100);
     setTitleBarHeight(5);
     loadWindowState("Chat");
 
@@ -65,6 +65,7 @@ ChatWindow::ChatWindow():
     textOutput->setOpaque(false);
     textOutput->disableLinksAndUserColors();
     textOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
+
     ScrollArea *scrollArea = new ScrollArea(textOutput);
     scrollArea->setPosition(
             scrollArea->getFrameSize(), scrollArea->getFrameSize());
@@ -113,7 +114,8 @@ ChatWindow::logic()
         ScrollArea *scroll = chan->second.scroll;
         scroll->setWidth(area.width - 2 * scroll->getFrameSize());
         scroll->setHeight(area.height - 2 * scroll->getFrameSize() -
-                mChatInput->getHeight() - 26);
+                mChatInput->getHeight() - 5);
+        scroll->logic();
     }
 
     Window::logic();

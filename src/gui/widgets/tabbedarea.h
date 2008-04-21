@@ -65,6 +65,11 @@ class TabbedArea : public gcn::TabbedArea
          * Overload the remove tab function as its broken in guichan 0.8
          */
         void removeTab(gcn::Tab *tab);
+
+        /**
+         * Overload adjustSize as it seems faulty
+         */
+        void adjustSize();
 };
 
 #endif

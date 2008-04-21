@@ -1,3 +1,8 @@
+2008-04-21  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/chat.cpp, src/gui/widgets/tabbedarea.cpp,
+	src/gui/widgets/tabbedarea.h: Fixed chat window size issue.
+
 2008-04-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Added --data parameter to be used to specify where to
