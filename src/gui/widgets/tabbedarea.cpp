@@ -130,22 +130,3 @@ void TabbedArea::removeTab(gcn::Tab *tab)
     adjustSize();
     adjustTabPositions();
 }
-
-void TabbedArea::adjustSize()
-{
-    int maxTabHeight = 0;
-    unsigned int i;
-    for (i = 0; i < mTabs.size(); i++)
-    {
-        if (mTabs[i].first->getHeight() > maxTabHeight)
-        {
-            maxTabHeight = mTabs[i].first->getHeight();
-        }
-    }
-
-    mTabContainer->setSize(getWidth() - getFrameSize(), maxTabHeight);
-
-    mWidgetContainer->setPosition(1, maxTabHeight + 1);
-    mWidgetContainer->setSize(getWidth() - getFrameSize(),
-                              getHeight() - maxTabHeight - getFrameSize());
-}

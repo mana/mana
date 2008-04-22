@@ -34,11 +34,6 @@ namespace Net
         namespace Party
         {
             /**
-             * Create party
-             */
-            void createParty();
-
-            /**
              * Invite a player to the party.
              */
             void invitePlayer(const std::string &name);

@@ -10,6 +10,11 @@
 
 	* src/gui/chat.cpp, src/gui/widgets/tabbedarea.cpp,
 	src/gui/widgets/tabbedarea.h: Fixed chat window size issue.
+	*  src/localplayer.cpp, src/gui/widgets/tabbedarea.h,
+	src/gui/widgets/tabbedarea.cpp, src/gui/popupmenu.cpp,
+	src/net/partyhandler.cpp, src/net/protocol.h,
+	src/net/chatserver/party.cpp, src/net/chatserver/party.h, 
+	src/localplayer.h: Added more support for parties.
 
 2008-04-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

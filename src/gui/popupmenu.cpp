@@ -82,7 +82,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 //mBrowserBox->addRow("@@follow|Follow " + name + "@@");
                 //mBrowserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
                 mBrowserBox->addRow(strprintf(_("@@guild|Invite %s@@"), name.c_str()));
-                //mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
+                mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
             }
             break;
 
@@ -144,15 +144,14 @@ void PopupMenu::handleLink(const std::string& link)
              mBeing != NULL &&
              mBeing->getType() == Being::PLAYER)
     {
-        player_node->invite(mBeing);
+        player_node->inviteToGuild(mBeing);
     }
 
-    /*
     // Add player to your party
     else if (link == "party")
     {
+        player_node->inviteToParty(mBeing);
     }
-    */
 
     /*
     // Follow Player action

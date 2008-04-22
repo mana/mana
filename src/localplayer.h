@@ -157,7 +157,12 @@ class LocalPlayer : public Player
         /**
          * Invite a player to join guild
          */
-        void invite(Being* being);
+        void inviteToGuild(Being *being);
+
+        /**
+         * Invite a player to join their party
+         */
+        void inviteToParty(Being *being);
 
         void clearInventory();
         void setInvItem(int index, int id, int amount);

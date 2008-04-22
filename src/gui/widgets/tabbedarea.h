@@ -66,10 +66,6 @@ class TabbedArea : public gcn::TabbedArea
          */
         void removeTab(gcn::Tab *tab);
 
-        /**
-         * Overload adjustSize as it seems faulty
-         */
-        void adjustSize();
 };
 
 #endif

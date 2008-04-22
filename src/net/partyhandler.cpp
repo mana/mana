@@ -40,7 +40,9 @@
 PartyHandler::PartyHandler()
 {
     static const Uint16 _messages[] = {
-        CPMSG_PARTY_CREATE_RESPONSE,
+        CPMSG_PARTY_INVITE_RESPONSE,
+        CPMSG_PARTY_INVITED,
+        CPMSG_PARTY_ACCEPT_INVITE_RESPONSE,
         CPMSG_PARTY_QUIT_RESPONSE,
         0
     };
@@ -52,13 +54,28 @@ void PartyHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
-        case CPMSG_PARTY_CREATE_RESPONSE:
+        case CPMSG_PARTY_INVITE_RESPONSE:
+        {
+            if (msg.readInt8() == ERRMSG_OK)
+            {
+                if (!player_node->getInParty())
+                    player_node->setInParty(true);
+            }
+        } break;
+
+        case CPMSG_PARTY_INVITED:
+        {
+            //TODO: Show dialog to player asking to join party
+            std::string inviter = msg.readString();
+        } break;
+
+        case CPMSG_PARTY_ACCEPT_INVITE_RESPONSE:
         {
             if (msg.readInt8() == ERRMSG_OK)
             {
                 player_node->setInParty(true);
             }
-        } break;
+        }
 
         case CPMSG_PARTY_QUIT_RESPONSE:
         {
