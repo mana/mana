@@ -746,8 +746,8 @@ void Game::handleInput()
         player_node->setWalkingDir(direction);
 
         // Attacking monsters
-        if ( keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
-                joystick && joystick->buttonPressed(0))
+        if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
+                (joystick && joystick->buttonPressed(0)))
         {
             Being *target = NULL;
             bool newTarget = keyboard.isKeyActive(keyboard.KEY_TARGET);

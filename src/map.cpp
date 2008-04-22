@@ -380,7 +380,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
                 MetaTile *newTile = getMetaTile(x, y);
 
                 // Skip if the tile is on the closed list or collides unless its the destination tile
-                if (newTile->whichList == mOnClosedList || tileCollides(x, y) && !(x == destX && y == destY))
+                if (newTile->whichList == mOnClosedList ||
+                        (tileCollides(x, y) && !(x == destX && y == destY)))
                 {
                     continue;
                 }
