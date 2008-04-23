@@ -1,3 +1,9 @@
+2008-04-23  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/guildwindow.h, src/net/partyhandler.h,
+	src/net/guildhandler.h, src/net/partyhandler.cpp, 
+	src/net/guildhandler.cpp: Fixed headers to be GPL (BSD rules!)
+
 2008-04-21 Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/utils/encryption.h, src/utils/encryption.cpp, src/utils/sha2.h,
