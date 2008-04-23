@@ -21,14 +21,12 @@
  *  $Id$
  */
 
-
 #include "guild.h"
 
-Guild::Guild(short id, bool inviteRights) :
-mId(id),
-mCanInviteUsers(inviteRights)
+Guild::Guild(short id, bool inviteRights):
+    mId(id),
+    mCanInviteUsers(inviteRights)
 {
-
 }
 
 void Guild::addMember(const std::string &name)
