@@ -24,13 +24,14 @@
 #include "accountserver.h"
 
 #include <string>
-#include "../../utils/encryption.h"
 
 #include "internal.h"
 
 #include "../connection.h"
 #include "../messageout.h"
 #include "../protocol.h"
+
+#include "../../utils/sha256.h"
 
 void Net::AccountServer::login(Net::Connection *connection, int version,
         const std::string &username, const std::string &password)
@@ -41,9 +42,7 @@ void Net::AccountServer::login(Net::Connection *connection, int version,
 
     msg.writeInt32(version);
     msg.writeString(username);
-    // The password is hashed
-    msg.writeString(Encryption::GetSHA2Hash(
-                    std::string (username + password)));
+    msg.writeString(sha256(username + password));
 
     Net::AccountServer::connection->send(msg);
 }

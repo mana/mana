@@ -24,13 +24,14 @@
 #include "account.h"
 
 #include <string>
-#include "../../utils/encryption.h"
 
 #include "internal.h"
 
 #include "../connection.h"
 #include "../messageout.h"
 #include "../protocol.h"
+
+#include "../../utils/sha256.h"
 
 void Net::AccountServer::Account::createCharacter(
         const std::string &name, char hairStyle, char hairColor, char gender,
@@ -77,14 +78,13 @@ void Net::AccountServer::Account::unregister(const std::string &username,
     MessageOut msg(PAMSG_UNREGISTER);
 
     msg.writeString(username);
-    msg.writeString(Encryption::GetSHA2Hash(
-                    std::string (username + password)));
+    msg.writeString(sha256(username + password));
 
     Net::AccountServer::connection->send(msg);
 }
 
 void Net::AccountServer::Account::changeEmail(const std::string &username,
-                                                const std::string &email)
+                                              const std::string &email)
 {
     MessageOut msg(PAMSG_EMAIL_CHANGE);
 
@@ -103,10 +103,8 @@ void Net::AccountServer::Account::changePassword(
     MessageOut msg(PAMSG_PASSWORD_CHANGE);
 
     // Change password using SHA2 encryption
-    msg.writeString(Encryption::GetSHA2Hash(
-                    std::string (username + oldPassword)));
-    msg.writeString(Encryption::GetSHA2Hash(
-                    std::string (username + newPassword)));
+    msg.writeString(sha256(username + oldPassword));
+    msg.writeString(sha256(username + newPassword));
 
     Net::AccountServer::connection->send(msg);
 }
