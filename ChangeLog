@@ -1,3 +1,10 @@
+2008-04-24  Dennis Friis  <peavey@placid.dk>
+
+	* src/itemshortcut.h, src/gui/itemshortcutcontainer.cpp,
+	src/gui/itemcontainer.cpp, src/net/inventoryhandler.cpp,
+	src/itemshortcut.cpp: Make shortcut container ID based instead of slot
+	based. Fixes items shifting around often causing equipment to be lost.
+
 2008-04-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/beingmanager.cpp: Fixed a bug, thanks GCC 4.3!

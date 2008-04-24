@@ -197,7 +197,7 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         int my = event.getY();
         int index = mx / gridWidth + ((my / gridHeight) * columns) + 2;
 
-        itemShortcut->setItemSelected(NULL);
+        itemShortcut->setItemSelected(-1);
         // Fix for old server, it should be: if (index >= mMaxItems)
         if (index > mMaxItems + 1)
         {
@@ -208,7 +208,7 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         setSelectedItem(item);
         if (!item->isEquipment())
         {
-            itemShortcut->setItemSelected(item);
+            itemShortcut->setItemSelected(item->getId());
         }
     }
 }

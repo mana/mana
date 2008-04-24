@@ -50,11 +50,11 @@ class ItemShortcut
         void load();
 
         /**
-         * Returns the shortcut item specified by the index.
+         * Returns the shortcut item ID specified by the index.
          *
          * @param index Index of the shortcut item.
          */
-        Item* getItem(int index) const
+        int getItem(int index) const
         { return mItems[index]; }
 
         /**
@@ -64,13 +64,13 @@ class ItemShortcut
         { return SHORTCUT_ITEMS; }
 
         /**
-         * Returns the item that is currently selected.
+         * Returns the item ID that is currently selected.
          */
-        Item* getItemSelected() const
+        int getItemSelected() const
         { return mItemSelected; }
 
         /**
-         * Adds the selected item to the items specified by the index.
+         * Adds the selected item ID to the items specified by the index.
          *
          * @param index Index of the items.
          */
@@ -80,31 +80,31 @@ class ItemShortcut
         /**
          * Adds an item to the items store specified by the index.
          *
-         * @param index Index of the items.
-         * @param item Item to store.
+         * @param index Index of the item.
+         * @param itemId ID of the item.
          */
-        void setItems(int index, Item *item)
-        { mItems[index] = item; }
+        void setItems(int index, int itemId)
+        { mItems[index] = itemId; }
 
         /**
          * Set the item that is selected.
          *
-         * @param item The item that is to be assigned.
+         * @param itemId The ID of the item that is to be assigned.
          */
-        void setItemSelected(Item* item)
-        { mItemSelected = item; }
+        void setItemSelected(int itemId)
+        { mItemSelected = itemId; }
 
         /**
          * A flag to check if the item is selected.
          */
         bool isItemSelected()
-        { return mItemSelected; }
+        { return mItemSelected > -1; }
 
         /**
          * Remove a item from the shortcut.
          */
         void removeItem(int index)
-        { mItems[index] = 0; }
+        { mItems[index] = -1; }
 
         /**
          * Try to use the item specified by the index.
@@ -119,8 +119,8 @@ class ItemShortcut
          */
         void save();
 
-        Item* mItems[SHORTCUT_ITEMS];     /**< The items stored. */
-        Item* mItemSelected;              /**< The item held by cursor. */
+        int mItems[SHORTCUT_ITEMS];     /**< The items stored. */
+        int mItemSelected;              /**< The item held by cursor. */
 
 };
 

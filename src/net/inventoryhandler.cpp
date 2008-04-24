@@ -80,7 +80,6 @@ void InventoryHandler::handleMessage(MessageIn *msg)
                     player_node->getInvItem(index)->setEquipment(true);
                 }
             }
-            itemShortcut->load();
             break;
 
         case SMSG_PLAYER_INVENTORY_ADD:

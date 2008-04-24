@@ -23,6 +23,7 @@
 
 #include "itemshortcutcontainer.h"
 
+#include "../localplayer.h"
 #include "../graphics.h"
 #include "../item.h"
 #include "../itemshortcut.h"
@@ -87,7 +88,10 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
             (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_0+i));
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 
-        Item *item = itemShortcut->getItem(i);
+        if (itemShortcut->getItem(i) < 0)
+            continue;
+
+        Item *item = player_node->searchForItem(itemShortcut->getItem(i));
         if (item) {
             // Draw item icon.
             Image* image = item->getInfo().getImage();
@@ -145,7 +149,7 @@ ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
             if (index == -1) {
                 return;
             }
-            Item *item = itemShortcut->getItem(index);
+            Item *item = player_node->searchForItem(itemShortcut->getItem(index));
             if (item)
             {
                 mItemMoved = item;
@@ -170,7 +174,7 @@ ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
     // Stores the selected item if theirs one.
     if (itemShortcut->isItemSelected()) {
         itemShortcut->setItem(index);
-        itemShortcut->setItemSelected(NULL);
+        itemShortcut->setItemSelected(-1);
     }
     else if (itemShortcut->getItem(index)) {
         mItemClicked = true;
@@ -184,7 +188,7 @@ ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
     {
         if (itemShortcut->isItemSelected())
         {
-            itemShortcut->setItemSelected(NULL);
+            itemShortcut->setItemSelected(-1);
         }
         const int index = getIndexFromGrid(event.getX(), event.getY());
         if (index == -1) {
@@ -192,7 +196,7 @@ ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
             return;
         }
         if (mItemMoved) {
-            itemShortcut->setItems(index, mItemMoved);
+            itemShortcut->setItems(index, mItemMoved->getId());
             mItemMoved = NULL;
         }
         else if (itemShortcut->getItem(index) && mItemClicked)
