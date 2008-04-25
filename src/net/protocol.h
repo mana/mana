@@ -192,7 +192,10 @@ enum {
     ERRMSG_NO_CHARACTER_SELECTED,       // the user needs a character
     ERRMSG_INSUFFICIENT_RIGHTS,         // the user is not privileged
     ERRMSG_INVALID_ARGUMENT,            // part of the received message was invalid
-    ERRMSG_EMAIL_ALREADY_EXISTS         // The Email Address already exists
+    ERRMSG_EMAIL_ALREADY_EXISTS,        // The Email Address already exists
+    ERRMSG_ALREADY_TAKEN,               // name used was already taken
+    ERRMSG_SERVER_FULL,                 // the server is overloaded
+    ERRMSG_TIME_OUT                     // data failed to arrive in due time
 };
 
 // Login specific return values
