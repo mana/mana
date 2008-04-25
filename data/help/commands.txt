@@ -23,6 +23,7 @@
      ##2Alt + S##P            sit down / stand up
      ##2Alt + F##P            toggle debug pathfinding feature
      ##2Alt + P##P            take screenshot
+     ##2Alt + T##P            toggle ignore of incoming trades
      ##2A##P                  target nearest monster
      ##2H##P                  hide all non-sticky windows
      ##2G or Z##P             pick up item
