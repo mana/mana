@@ -191,7 +191,8 @@ enum {
     ERRMSG_NO_LOGIN,                    // the user is not yet logged
     ERRMSG_NO_CHARACTER_SELECTED,       // the user needs a character
     ERRMSG_INSUFFICIENT_RIGHTS,         // the user is not privileged
-    ERRMSG_INVALID_ARGUMENT             // part of the received message was invalid
+    ERRMSG_INVALID_ARGUMENT,            // part of the received message was invalid
+    ERRMSG_EMAIL_ALREADY_EXISTS         // The Email Address already exists
 };
 
 // Login specific return values

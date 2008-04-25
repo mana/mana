@@ -6,6 +6,8 @@
 	src/net/protocol.h, src/net/loginhandler.cpp, src/logindata.h,
 	src/gui/changepassworddialog.cpp: Added client-side Email address
 	change.
+	* src/net/accountserver/account.h, src/net/accountserver/account.cpp,
+	src/net/protocol.h: Made it work nicely with the server.
 
 2008-04-25  David Athay  <ko2fan@gmail.com>
 

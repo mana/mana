@@ -44,8 +44,7 @@ namespace Net
             void unregister(const std::string &username,
                             const std::string &password);
 
-            void changeEmail(const std::string &username,
-                             const std::string &email);
+            void changeEmail(const std::string &email);
 
             void changePassword(const std::string &username,
                                 const std::string &oldPassword,

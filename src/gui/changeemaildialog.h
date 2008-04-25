@@ -59,7 +59,6 @@ class ChangeEmailDialog : public Window, public gcn::ActionListener {
         void action(const gcn::ActionEvent &event);
 
     private:
-        gcn::TextField *mOldEmailField;
         gcn::TextField *mFirstEmailField;
         gcn::TextField *mSecondEmailField;
 

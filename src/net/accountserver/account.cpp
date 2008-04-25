@@ -83,8 +83,7 @@ void Net::AccountServer::Account::unregister(const std::string &username,
     Net::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::changeEmail(const std::string &username,
-                                              const std::string &email)
+void Net::AccountServer::Account::changeEmail(const std::string &email)
 {
     MessageOut msg(PAMSG_EMAIL_CHANGE);
 

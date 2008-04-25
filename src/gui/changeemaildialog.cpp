@@ -47,31 +47,21 @@ ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
 {
     gcn::Label *accountLabel = new gcn::Label(strprintf(_("Account: %s"),
                                               mLoginData->username.c_str()));
-    gcn::Label *oldEmailLabel = new gcn::Label(_("Current Email:"));
     gcn::Label *newEmailLabel = new gcn::Label(_("Type New Email Address twice:"));
-    mOldEmailField = new TextField();
     mFirstEmailField = new TextField();
     mSecondEmailField = new TextField();
     mChangeEmailButton = new Button(_("Change Email Address"), "change_email", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
     const int width = 200;
-    const int height = 170;
+    const int height = 130;
     setContentSize(width, height);
 
     accountLabel->setPosition(5, 5);
     accountLabel->setWidth(130);
-    oldEmailLabel->setPosition(
-            5, accountLabel->getY() + accountLabel->getHeight() + 7);
-    oldEmailLabel->setWidth(130);
-
-    mOldEmailField->setPosition(
-            5, oldEmailLabel->getY() + oldEmailLabel->getHeight() + 7);
-    mOldEmailField->setWidth(width - 5);
-    mOldEmailField->setWidth(130);
 
     newEmailLabel->setPosition(
-            5, mOldEmailField->getY() + mOldEmailField->getHeight() + 7);
+            5, accountLabel->getY() + accountLabel->getHeight() + 7);
     newEmailLabel->setWidth(width - 5);
 
     mFirstEmailField->setPosition(
@@ -90,8 +80,6 @@ ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
             mCancelButton->getY());
 
     add(accountLabel);
-    add(oldEmailLabel);
-    add(mOldEmailField);
     add(newEmailLabel);
     add(mFirstEmailField);
     add(mSecondEmailField);
@@ -100,9 +88,8 @@ ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
 
     setLocationRelativeTo(getParent());
     setVisible(true);
-    mOldEmailField->requestFocus();
+    mFirstEmailField->requestFocus();
 
-    mOldEmailField->setActionEventId("change_email");
     mFirstEmailField->setActionEventId("change_email");
     mSecondEmailField->setActionEventId("change_email");
 }
@@ -123,7 +110,6 @@ ChangeEmailDialog::action(const gcn::ActionEvent &event)
     {
 
         const std::string username = mLoginData->username.c_str();
-        const std::string oldEmail = mOldEmailField->getText();
         const std::string newFirstEmail = mFirstEmailField->getText();
         const std::string newSecondEmail = mSecondEmailField->getText();
         logger->log("ChangeEmailDialog::Email change, Username is %s",
@@ -132,20 +118,13 @@ ChangeEmailDialog::action(const gcn::ActionEvent &event)
         std::stringstream errorMsg;
         int error = 0;
 
-        // Checking current Email
-        if (oldEmail.empty())
-        {
-            // First email address too short
-            errorMsg << "Please type your Email address.";
-            error = 1;
-        }
-        else if (newFirstEmail.length() < LEN_MIN_PASSWORD)
+        if (newFirstEmail.length() < LEN_MIN_PASSWORD)
         {
             // First email address too short
             errorMsg << "The new email address needs to be at least "
                      << LEN_MIN_PASSWORD
                      << " characters long.";
-            error = 2;
+            error = 1;
         }
         else if (newFirstEmail.length() > LEN_MAX_PASSWORD - 1 )
         {
@@ -153,7 +132,7 @@ ChangeEmailDialog::action(const gcn::ActionEvent &event)
             errorMsg << "The new email address needs to be less than "
                      << LEN_MAX_PASSWORD
                      << " characters long.";
-            error = 2;
+            error = 1;
         }
         else if (newFirstEmail != newSecondEmail)
         {
@@ -166,11 +145,11 @@ ChangeEmailDialog::action(const gcn::ActionEvent &event)
         {
             if (error == 1)
             {
-                mWrongDataNoticeListener->setTarget(this->mOldEmailField);
+                mWrongDataNoticeListener->setTarget(this->mFirstEmailField);
             }
             else if (error == 2)
             {
-                mWrongDataNoticeListener->setTarget(this->mFirstEmailField);
+                mWrongDataNoticeListener->setTarget(this->mSecondEmailField);
             }
 
             OkDialog *dlg = new OkDialog("Error", errorMsg.str());
@@ -181,7 +160,6 @@ ChangeEmailDialog::action(const gcn::ActionEvent &event)
             // No errors detected, change account password.
             mChangeEmailButton->setEnabled(false);
             // Set the new email address
-            mLoginData->email = oldEmail;
             mLoginData->newEmail = newFirstEmail;
             state = STATE_CHANGEEMAIL_ATTEMPT;
             scheduleDelete();

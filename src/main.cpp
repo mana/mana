@@ -582,8 +582,7 @@ void accountChangeEmail(LoginData *loginData)
 {
     Net::registerHandler(&loginHandler);
 
-    Net::AccountServer::Account::changeEmail(loginData->username,
-                                             loginData->newEmail);
+    Net::AccountServer::Account::changeEmail(loginData->newEmail);
 }
 
 void switchCharacter(std::string* passToken)

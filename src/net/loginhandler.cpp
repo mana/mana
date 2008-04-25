@@ -190,6 +190,9 @@ void LoginHandler::handleMessage(MessageIn &msg)
                     case ERRMSG_NO_LOGIN:
                         errorMessage = "Account not connected. Please login first.";
                         break;
+                    case ERRMSG_EMAIL_ALREADY_EXISTS:
+                        errorMessage = "The new Email Address already exists.";
+                        break;
                     default:
                         errorMessage = "Unknown error";
                         break;
