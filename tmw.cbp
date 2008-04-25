@@ -269,6 +269,8 @@
 		<Unit filename="src/gui/ok_dialog.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/partywindow.cpp" />
+		<Unit filename="src/gui/partywindow.h" />
 		<Unit filename="src/gui/passwordfield.cpp" />
 		<Unit filename="src/gui/passwordfield.h">
 			<Option target="default" />
@@ -728,6 +730,8 @@
 		<Unit filename="src/utils/gettext.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/utils/sha256.cpp" />
+		<Unit filename="src/utils/sha256.h" />
 		<Unit filename="src/utils/strprintf.cpp" />
 		<Unit filename="src/utils/strprintf.h">
 			<Option target="default" />

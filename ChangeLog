@@ -1,3 +1,8 @@
+2008-04-25  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/gui/partywindow.h, src/gui/partywindow.cpp,
+	tmw.cbp: Added party window, updated codeblocks project file.
+
 2008-04-23  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/guildwindow.h, src/net/partyhandler.h,

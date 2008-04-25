@@ -62,6 +62,8 @@
 #include "gui/npclistdialog.h"
 #include "gui/npc_text.h"
 #include "gui/ok_dialog.h"
+#include "gui/partywindow.h"
+#include "gui/quitdialog.h"
 #include "gui/sdlinput.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
@@ -69,7 +71,6 @@
 #include "gui/status.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
-#include "gui/quitdialog.h"
 
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
@@ -123,6 +124,7 @@ GuildWindow *guildWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 ItemShortcutWindow *itemShortcutWindow;
+PartyWindow *partyWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
@@ -205,6 +207,7 @@ void createGuiWindows()
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
     itemShortcutWindow = new ItemShortcutWindow();
+    partyWindow = new PartyWindow();
 
     // Initialize window positions
     //chargeDialog->setPosition(
@@ -252,6 +255,7 @@ void destroyGuiWindows()
     delete helpWindow;
     delete debugWindow;
     delete itemShortcutWindow;
+    delete partyWindow;
 }
 
 Game::Game():
