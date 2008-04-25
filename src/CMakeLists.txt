@@ -69,6 +69,8 @@ SET(SRCS
     gui/buy.h
     gui/buysell.cpp
     gui/buysell.h
+    gui/changeemaildialog.cpp
+    gui/changeemaildialog.h
     gui/changepassworddialog.cpp
     gui/changepassworddialog.h
     gui/chargedialog.cpp
@@ -134,6 +136,8 @@ SET(SRCS
     gui/npc_text.h
     gui/ok_dialog.cpp
     gui/ok_dialog.h
+    gui/partywindow.h
+    gui/partywindow.cpp
     gui/passwordfield.cpp
     gui/passwordfield.h
     gui/playerbox.cpp

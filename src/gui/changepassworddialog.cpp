@@ -33,7 +33,6 @@
 #include "../logindata.h"
 
 #include "button.h"
-#include "checkbox.h"
 #include "register.h"
 #include "passwordfield.h"
 #include "textfield.h"
@@ -43,7 +42,7 @@
 #include "../utils/strprintf.h"
 
 ChangePasswordDialog::ChangePasswordDialog(Window *parent, LoginData *loginData):
-    Window("Change Password", true, parent),
+    Window(_("Change Password"), true, parent),
     mWrongDataNoticeListener(new WrongDataNoticeListener()),
     mLoginData(loginData)
 {
@@ -54,8 +53,8 @@ ChangePasswordDialog::ChangePasswordDialog(Window *parent, LoginData *loginData)
     gcn::Label *newPassLabel = new gcn::Label(_("Type New Password twice:"));
     mFirstPassField = new PasswordField();
     mSecondPassField = new PasswordField();
-    mChangePassButton = new Button("Change Password", "change_password", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
+    mChangePassButton = new Button(_("Change Password"), "change_password", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
 
     const int width = 200;
     const int height = 170;

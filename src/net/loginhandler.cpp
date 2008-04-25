@@ -35,6 +35,7 @@ LoginHandler::LoginHandler()
         APMSG_REGISTER_RESPONSE,
         APMSG_RECONNECT_RESPONSE,
         APMSG_PASSWORD_CHANGE_RESPONSE,
+        APMSG_EMAIL_CHANGE_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -167,5 +168,36 @@ void LoginHandler::handleMessage(MessageIn &msg)
             }
         }
             break;
+
+        case APMSG_EMAIL_CHANGE_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
+            // Successful pass change
+            if (errMsg == ERRMSG_OK)
+            {
+                state = STATE_CHANGEEMAIL;
+            }
+            // pass change failed
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_INVALID_ARGUMENT:
+                        errorMessage = "New email address incorrect";
+                        break;
+                    case ERRMSG_FAILURE:
+                        errorMessage = "Old email address incorrect";
+                        break;
+                    case ERRMSG_NO_LOGIN:
+                        errorMessage = "Account not connected. Please login first.";
+                        break;
+                    default:
+                        errorMessage = "Unknown error";
+                        break;
+                }
+                state = STATE_ACCOUNTCHANGE_ERROR;
+            }
+        }
+            break;
+
     }
 }

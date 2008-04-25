@@ -1,3 +1,12 @@
+2008-04-26  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/CMakeLists.txt, src/Makefile.am, src/gui/char_select.h,
+	src/gui/char_select.cpp, src/gui/changeemaildialog.h,
+	src/gui/changeemaildialog.cpp, src/main.h, src/main.cpp,
+	src/net/protocol.h, src/net/loginhandler.cpp, src/logindata.h,
+	src/gui/changepassworddialog.cpp: Added client-side Email address
+	change.
+
 2008-04-25  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp, src/gui/partywindow.h, src/gui/partywindow.cpp,

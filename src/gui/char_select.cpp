@@ -37,6 +37,7 @@
 
 #include "unregisterdialog.h"
 #include "changepassworddialog.h"
+#include "changeemaildialog.h"
 
 #include "widgets/layout.h"
 
@@ -99,6 +100,7 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     mNextButton = new Button(_("Next"), "next", this);
     mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
     mChangePasswordButton = new Button(_("Change Password"), "change_password", this);
+    mChangeEmailButton = new Button(_("Change Email Address"), "change_email", this);
 
     mAccountNameLabel = new gcn::Label(strprintf(_("Account: %s"), mLoginData->username.c_str()));
     mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
@@ -113,25 +115,28 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     place = getPlacer(0, 0);
     place(0, 0, mAccountNameLabel);
     place(0, 1, mUnRegisterButton);
-    place(1, 1, mChangePasswordButton);
-    place(0, 2, mPlayerBox, 1, 5).setPadding(3);
-    place(1, 2, mNameLabel, 3);
-    place(1, 3, mLevelLabel, 3);
-    place(1, 4, mMoneyLabel, 3);
-    place(1, 5, mPreviousButton);
-    place(2, 5, mNextButton);
-    place(1, 6, mNewCharButton);
-    place(2, 6, mDelCharButton);
-    place.getCell().matchColWidth(1, 2);
+    place(0, 2, mChangePasswordButton);
+    place(1, 2, mChangeEmailButton);
     place = getPlacer(0, 1);
+    place(0, 0, mPlayerBox, 1, 5).setPadding(3);
+    place(1, 0, mNameLabel, 3);
+    place(1, 1, mLevelLabel, 3);
+    place(1, 2, mMoneyLabel, 3);
+    place(1, 3, mPreviousButton);
+    place(2, 3, mNextButton);
+    place(1, 4, mNewCharButton);
+    place(2, 4, mDelCharButton);
+    place.getCell().matchColWidth(1, 2);
+    place = getPlacer(0, 2);
     place(0, 0, mSelectButton);
     place(1, 0, mCancelButton);
-    reflowLayout(350, 0);
+    reflowLayout(265, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
     mSelectButton->requestFocus();
     updatePlayerInfo();
+
 }
 
 void CharSelectDialog::action(const gcn::ActionEvent &event)
@@ -190,6 +195,10 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "change_password")
     {
         new ChangePasswordDialog(this, mLoginData);
+    }
+    else if (event.getId() == "change_email")
+    {
+        new ChangeEmailDialog(this, mLoginData);
     }
 }
 

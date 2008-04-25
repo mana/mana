@@ -21,6 +21,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
 	      gui/buysell.h \
+	      gui/changeemaildialog.cpp \
+	      gui/changeemaildialog.h \
 	      gui/changepassworddialog.cpp \
 	      gui/changepassworddialog.h \
 	      gui/chargedialog.cpp \
@@ -88,6 +90,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/ok_dialog.h \
 	      gui/truetypefont.cpp \
 	      gui/truetypefont.h \
+	      gui/partywindow.h \
+	      gui/partywindow.cpp \
 	      gui/passwordfield.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \

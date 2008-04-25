@@ -33,6 +33,7 @@ struct LoginData
     std::string newPassword;
     std::string hostname;
     std::string email;
+    std::string newEmail;
     short port;
 
     bool remember;            /**< Whether to store the username and host. */
@@ -45,6 +46,7 @@ struct LoginData
         newPassword = "";
         hostname = "";
         email = "";
+        newEmail = "";
         port = 0;
     };
 };

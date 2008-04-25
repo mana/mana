@@ -578,6 +578,14 @@ void accountChangePassword(LoginData *loginData)
                                                 loginData->newPassword);
 }
 
+void accountChangeEmail(LoginData *loginData)
+{
+    Net::registerHandler(&loginHandler);
+
+    Net::AccountServer::Account::changeEmail(loginData->username,
+                                             loginData->newEmail);
+}
+
 void switchCharacter(std::string* passToken)
 {
     Net::registerHandler(&logoutHandler);
@@ -998,6 +1006,21 @@ int main(int argc, char *argv[])
                             options.chooseDefault = false;
                         }
 
+                        break;
+
+                    case STATE_CHANGEEMAIL_ATTEMPT:
+                        logger->log("State: CHANGE EMAIL ATTEMPT");
+                        accountChangeEmail(&loginData);
+                        break;
+
+                    case STATE_CHANGEEMAIL:
+                        logger->log("State: CHANGE EMAIL");
+                        currentDialog = new OkDialog("Email Address change",
+                                            "Email Address changed successfully!");
+                        currentDialog->addActionListener(&accountListener);
+                        currentDialog = NULL; // OkDialog deletes itself
+                        loginData.email = loginData.newEmail;
+                        loginData.newEmail = "";
                         break;
 
                     case STATE_CHANGEPASSWORD_ATTEMPT:

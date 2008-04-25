@@ -71,6 +71,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Button *mNextButton;
         gcn::Button *mUnRegisterButton;
         gcn::Button *mChangePasswordButton;
+        gcn::Button *mChangeEmailButton;
 
         gcn::Label *mAccountNameLabel;
         gcn::Label *mNameLabel;
