@@ -72,7 +72,13 @@ void Inventory::addItem(int index, int id, int quantity, bool equipment)
     }
 
     mItems[index].setId(id);
-    mItems[index].increaseQuantity(quantity);
+
+    // Dont stack equipment other than arrows.
+    if (equipment && !(id == 1199 || id == 529))
+        mItems[index].setQuantity(quantity);
+    else
+        mItems[index].increaseQuantity(quantity);
+
     mItems[index].setEquipment(equipment);
 }
 

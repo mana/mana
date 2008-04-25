@@ -1,3 +1,8 @@
+2008-04-26  Dennis Friis  <peavey@placid.dk>
+
+	* src/inventory.cpp: Avoid stacking equipment other than arrows. Based on
+	similar fix in inventoryhandler.
+
 2008-04-24  Dennis Friis  <peavey@placid.dk>
 
 	* src/itemshortcut.h, src/gui/itemshortcutcontainer.cpp,
