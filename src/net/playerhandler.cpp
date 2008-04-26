@@ -30,6 +30,7 @@
 #include "../localplayer.h"
 #include "../log.h"
 #include "../npc.h"
+#include "../utils/tostring.h"
 
 #include "../gui/buy.h"
 #include "../gui/chat.h"
@@ -208,8 +209,14 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 case 0x0002:
                     player_node->mJobXp = msg->readInt32();
                     break;
-                case 0x0014:
-                    player_node->mGp = msg->readInt32();
+                case 0x0014: {
+                        Uint32 curGp = player_node->mGp;
+                        player_node->mGp = msg->readInt32();
+                        if (player_node->mGp > curGp)
+                            chatWindow->chatLog("You picked up " +
+                                toString(player_node->mGp - curGp) + " GP",
+                                BY_SERVER);
+                    }
                     break;
                 case 0x0016:
                     player_node->mXpForNextLevel = msg->readInt32();

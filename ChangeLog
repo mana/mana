@@ -2,6 +2,9 @@
 
 	* src/inventory.cpp: Avoid stacking equipment other than arrows. Based on
 	similar fix in inventoryhandler.
+	* src/gui/trade.cpp: Text fix, z => GP.
+	* src/net/playerhandler.cpp: When picking up GP from trade or quest,
+	tell the user in the chat window like with items.
 
 2008-04-24  Dennis Friis  <peavey@placid.dk>
 
