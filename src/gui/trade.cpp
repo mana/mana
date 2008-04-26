@@ -73,7 +73,7 @@ TradeWindow::TradeWindow(Network *network):
     mPartnerScroll = new ScrollArea(mPartnerItemContainer);
     mPartnerScroll->setPosition(8, 64);
 
-    mMoneyLabel = new gcn::Label("You get: 0z");
+    mMoneyLabel = new gcn::Label("You get: 0 GP");
     mMoneyLabel2 = new gcn::Label("You give:");
     mMoneyField = new TextField();
 
@@ -136,7 +136,7 @@ TradeWindow::~TradeWindow()
 
 void TradeWindow::addMoney(int amount)
 {
-    mMoneyLabel->setCaption("You get: " + toString(amount) + "z");
+    mMoneyLabel->setCaption("You get: " + toString(amount) + " GP");
     mMoneyLabel->adjustSize();
 }
 
@@ -184,7 +184,7 @@ void TradeWindow::reset()
     mOkButton->setEnabled(true);
     mOkOther = false;
     mOkMe = false;
-    mMoneyLabel->setCaption("You get: 0z");
+    mMoneyLabel->setCaption("You get: 0 GP");
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
 }
