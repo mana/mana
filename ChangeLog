@@ -9,6 +9,8 @@
 	* src/net/accountserver/account.h, src/net/accountserver/account.cpp,
 	src/net/protocol.h: Made it work nicely with the server.
 	* src/protocol.h: Generic return values were incomplete client-side.
+	* src/gui/progressbar.h, src/gui/progressbar.cpp: Made smooth color
+	changing and smooth progress optional.
 
 2008-04-25  David Athay  <ko2fan@gmail.com>
 

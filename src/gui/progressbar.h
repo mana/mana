@@ -98,10 +98,28 @@ class ProgressBar : public gcn::Widget {
         Uint8
         getBlue() { return mBlue; }
 
+        /**
+         * Set wether the progress is moved smoothly
+         */
+        void
+        setSmoothProgress(bool smoothProgress)
+        { mSmoothProgress = smoothProgress; }
+
+        /**
+         * Set wether the color changing is made smoothly
+         */
+        void
+        setSmoothColorChange(bool smoothColorChange)
+        { mSmoothColorChange = smoothColorChange; }
+
+
     private:
         float mProgress, mProgressToGo;
+        bool mSmoothProgress;
+
         Uint8 mRed, mGreen, mBlue;
         Uint8 mRedToGo, mGreenToGo, mBlueToGo;
+        bool mSmoothColorChange;
 
         static ImageRect mBorder;
         static int mInstances;
