@@ -296,3 +296,15 @@ void ScrollArea::drawHMarker(gcn::Graphics *graphics)
     static_cast<Graphics*>(graphics)->
         drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarker);
 }
+
+int ScrollArea::getAdjustedWidth() const
+{
+    return ScrollArea::getDimension().width -
+            (mVBarVisible ? ScrollArea::getScrollbarWidth() : 0);
+}
+
+int ScrollArea::getAdjustedHeight() const
+{
+    return ScrollArea::getDimension().height -
+            (mHBarVisible ? ScrollArea::getScrollbarWidth() : 0);
+}

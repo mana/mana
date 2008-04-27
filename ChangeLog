@@ -1,5 +1,10 @@
 2008-04-27  Dennis Friis  <peavey@placid.dk>
 
+	* src/gui/scrollarea.h, src/gui/scrollarea.cpp: Add methods to get
+	width and height adjusted for any visible scrollbars.
+
+2008-04-27  Dennis Friis  <peavey@placid.dk>
+
 	* src/gui/inventorywindow.cpp: Fix ItemContainer not being resized
 	properly when resizing inventory window.
 
