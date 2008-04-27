@@ -1,3 +1,8 @@
+2008-04-27  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/inventorywindow.cpp: Fix ItemContainer not being resized
+	properly when resizing inventory window.
+
 2008-04-26  Dennis Friis  <peavey@placid.dk>
 
 	* src/inventory.cpp: Avoid stacking equipment other than arrows. Based on

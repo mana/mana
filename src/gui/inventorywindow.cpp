@@ -181,12 +181,6 @@ void InventoryWindow::widgetResized(const gcn::Event &event)
     const gcn::Rectangle &area = getChildrenArea();
     const int width = area.width;
     const int height = area.height;
-    int columns = width / 24;
-
-    if (columns < 1)
-    {
-        columns = 1;
-    }
 
     // Adjust widgets
     mUseButton->setPosition(8, height - 8 - mUseButton->getHeight());
@@ -208,6 +202,8 @@ void InventoryWindow::widgetResized(const gcn::Event &event)
 
     mInvenScroll->setSize(width - 16,
             mItemDescriptionLabel->getY() - mWeightLabel->getHeight() - 18);
+
+    mItems->setWidth(width - 16);
 
     mWeightLabel->setWidth(width - 16);
 }
