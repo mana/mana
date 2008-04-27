@@ -2,6 +2,8 @@
 
 	* src/gui/scrollarea.h, src/gui/scrollarea.cpp: Add methods to get
 	width and height adjusted for any visible scrollbars.
+	* src/gui/itemcontainer.cpp: Fix buildup of whitespace by using
+	correct gridHeight and adding just 4px space to bottom.
 
 2008-04-27  Dennis Friis  <peavey@placid.dk>
 

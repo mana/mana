@@ -136,7 +136,7 @@ ItemContainer::setWidth(int width)
     gcn::Widget::setWidth(width);
 
     int gridWidth = 36; //item icon width + 4
-    int gridHeight = 46; //item icon height + 14
+    int gridHeight = 42; //item icon height + 10
     int columns = getWidth() / gridWidth;
 
     if (columns < 1)
@@ -144,7 +144,7 @@ ItemContainer::setWidth(int width)
         columns = 1;
     }
 
-    setHeight(((mMaxItems / columns) +
+    setHeight(4 + ((mMaxItems / columns) +
             (mMaxItems % columns > 0 ? 1 : 0)) * gridHeight);
 }
 
