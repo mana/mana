@@ -33,6 +33,7 @@
 
 class Item;
 class ItemContainer;
+class ScrollArea;
 
 /**
  * Inventory dialog.
@@ -78,7 +79,7 @@ class InventoryWindow : public Window, gcn::ActionListener,
         ItemContainer *mItems;
 
         gcn::Button *mUseButton, *mDropButton;
-        gcn::ScrollArea *mInvenScroll;
+        ScrollArea *mInvenScroll;
         gcn::Label *mItemNameLabel;
         gcn::Label *mItemDescriptionLabel;
         gcn::Label *mItemEffectLabel;

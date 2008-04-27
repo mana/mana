@@ -96,6 +96,8 @@ void InventoryWindow::logic()
     mWeightLabel->setCaption(
             "Total Weight: " + toString(player_node->mTotalWeight) + " - "
             "Maximum Weight: " + toString(player_node->mMaxWeight));
+
+    mItems->setWidth(mInvenScroll->getAdjustedWidth());
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -203,7 +205,7 @@ void InventoryWindow::widgetResized(const gcn::Event &event)
     mInvenScroll->setSize(width - 16,
             mItemDescriptionLabel->getY() - mWeightLabel->getHeight() - 18);
 
-    mItems->setWidth(width - 16);
+    mItems->setWidth(mInvenScroll->getAdjustedWidth());
 
     mWeightLabel->setWidth(width - 16);
 }
