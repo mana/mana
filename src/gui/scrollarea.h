@@ -78,18 +78,6 @@ class ScrollArea : public gcn::ScrollArea
          */
         bool isOpaque() const { return mOpaque; }
 
-        /**
-         * Return the width of the scrollarea adjusting for visible
-         * vertical scrollbar.
-         */
-        int getAdjustedWidth() const;
-
-        /**
-         * Return the height of the scrollarea adjusting for visible
-         * horizontal scrollbar.
-         */
-        int getAdjustedHeight() const;
-
     protected:
         enum BUTTON_DIR {
             UP,

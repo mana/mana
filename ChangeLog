@@ -1,3 +1,11 @@
+2008-04-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/inventorywindow.h, src/gui/itemcontainer.h,
+	src/gui/inventorywindow.cpp, src/gui/scrollarea.h,
+	src/gui/itemcontainer.cpp, src/gui/scrollarea.cpp: Properly fix
+	problems with ItemContainer in InventoryWindow not resizing properly
+	since upgrade to Guichan 0.8.0.
+
 2008-04-28  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/scrollarea.h, src/gui/scrollarea.cpp: Add methods to get

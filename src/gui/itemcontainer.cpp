@@ -38,6 +38,9 @@
 
 #include "../utils/tostring.h"
 
+const int ItemContainer::gridWidth = 36;  // item icon width + 4
+const int ItemContainer::gridHeight = 42; // item icon height + 10
+
 ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory),
     mSelectedItem(NULL)
@@ -50,6 +53,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
     mMaxItems = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
 
     addMouseListener(this);
+    addWidgetListener(this);
 }
 
 ItemContainer::~ItemContainer()
@@ -67,15 +71,13 @@ ItemContainer::logic()
     if (i != mMaxItems)
     {
         mMaxItems = i;
-        setWidth(getWidth());
+        recalculateHeight();
     }
 }
 
 void
 ItemContainer::draw(gcn::Graphics *graphics)
 {
-    int gridWidth = 36; //(item icon width + 4)
-    int gridHeight = 42; //(item icon height + 10)
     int columns = getWidth() / gridWidth;
 
     // Have at least 1 column
@@ -130,22 +132,22 @@ ItemContainer::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-ItemContainer::setWidth(int width)
+void ItemContainer::widgetResized(const gcn::Event &event)
 {
-    gcn::Widget::setWidth(width);
+    recalculateHeight();
+}
 
-    int gridWidth = 36; //item icon width + 4
-    int gridHeight = 42; //item icon height + 10
-    int columns = getWidth() / gridWidth;
+void ItemContainer::recalculateHeight()
+{
+    int cols = getWidth() / gridWidth;
 
-    if (columns < 1)
-    {
-        columns = 1;
-    }
+    if (cols < 1)
+        cols = 1;
 
-    setHeight(4 + ((mMaxItems / columns) +
-            (mMaxItems % columns > 0 ? 1 : 0)) * gridHeight);
+    const int rows = (mMaxItems / cols) + (mMaxItems % cols > 0 ? 1 : 0);
+    const int height = rows * gridHeight + 8;
+    if (height != getHeight())
+        setHeight(height);
 }
 
 Item*
@@ -190,8 +192,6 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
 
     if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
     {
-        int gridWidth = 36; //(item icon width + 4)
-        int gridHeight = 42; //(item icon height + 10)
         int columns = getWidth() / gridWidth;
         int mx = event.getX();
         int my = event.getY();

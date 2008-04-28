@@ -26,6 +26,7 @@
 
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
+#include <guichan/widgetlistener.hpp>
 
 #include <list>
 
@@ -42,7 +43,8 @@ namespace gcn {
  *
  * \ingroup GUI
  */
-class ItemContainer : public gcn::Widget, public gcn::MouseListener
+class ItemContainer : public gcn::Widget, public gcn::MouseListener,
+    public gcn::WidgetListener
 {
     public:
         /**
@@ -66,10 +68,9 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Sets the width of the container. This is used to determine the new
-         * height of the container.
+         * Called whenever the widget changes size.
          */
-        void setWidth(int width);
+        void widgetResized(const gcn::Event &event);
 
         /**
          * Handles mouse click.
@@ -111,6 +112,11 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         void setSelectedItem(Item *item);
 
         /**
+         * Determine and set the height of the container.
+         */
+        void recalculateHeight();
+
+        /**
          * Sends out selection events to the list of selection listeners.
          */
         void distributeValueChangedEvent();
@@ -122,6 +128,9 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         int mMaxItems;
 
         std::list<gcn::SelectionListener*> mListeners;
+
+        static const int gridWidth;
+        static const int gridHeight;
 };
 
 #endif

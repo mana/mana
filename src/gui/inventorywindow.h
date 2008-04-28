@@ -33,7 +33,6 @@
 
 class Item;
 class ItemContainer;
-class ScrollArea;
 
 /**
  * Inventory dialog.
@@ -59,14 +58,14 @@ class InventoryWindow : public Window, gcn::ActionListener,
          */
         void action(const gcn::ActionEvent &event);
 
-        void mouseClicked(gcn::MouseEvent &event);
-
         Item* getItem();
 
         /**
          * Updates labels to currently selected item.
          */
         void valueChanged(const gcn::SelectionEvent &event);
+
+        void mouseClicked(gcn::MouseEvent &event);
 
         /**
          * Called whenever the widget changes size.
@@ -79,7 +78,7 @@ class InventoryWindow : public Window, gcn::ActionListener,
         ItemContainer *mItems;
 
         gcn::Button *mUseButton, *mDropButton;
-        ScrollArea *mInvenScroll;
+        gcn::ScrollArea *mInvenScroll;
         gcn::Label *mItemNameLabel;
         gcn::Label *mItemDescriptionLabel;
         gcn::Label *mItemEffectLabel;
