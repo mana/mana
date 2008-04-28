@@ -9,6 +9,8 @@
 	the grid for itemcontainer.
 	* src/game.cpp: Tweak keyboard input handling a bit. This fixes using
 	emoticons triggering shortcut items to be used.
+	* src/game.cpp: Remove check for KMOD_NONE since this is not working
+	uniformly across systems.
 
 2008-04-27  Dennis Friis  <peavey@placid.dk>
 
