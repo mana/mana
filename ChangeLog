@@ -3,6 +3,8 @@
 	* src/gui/partywindow.h, src/gui/partywindow.cpp, 
 	src/net/partyhandler.cpp, src/net/protocol.h, 
 	src/net/chatserver/party.cpp, tmw.cbp: Added party invite dialog.
+	* src/localplayer.cpp, src/localplayer.h, src/gui/skills.cpp,
+	src/gui/skills.h: Skills patch by roderic, mantis id=209.
 
 2008-04-26  Yohann Ferreira  <bertram@cegetel.net>
 

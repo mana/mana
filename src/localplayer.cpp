@@ -421,24 +421,24 @@ void LocalPlayer::lowerAttribute(size_t attr)
     Net::GameServer::Player::lowerAttribute(attr + CHAR_ATTR_BEGIN);
 }
 
-const std::string& LocalPlayer::getSkillName(int skill)
+const struct LocalPlayer::skillInfo& LocalPlayer::getSkillInfo(int skill)
 {
-    static const std::string skills[CHAR_SKILL_NB + 1] =
+    static const skillInfo skills[CHAR_SKILL_NB + 1] =
     {
-        _("Unarmed"),  // CHAR_SKILL_WEAPON_NONE
-        _("Knife"),    // CHAR_SKILL_WEAPON_KNIFE
-        _("Sword"),    // CHAR_SKILL_WEAPON_SWORD
-        _("Polearm"),  // CHAR_SKILL_WEAPON_POLEARM
-        _("Staff"),    // CHAR_SKILL_WEAPON_STAFF
-        _("Whip"),     // CHAR_SKILL_WEAPON_WHIP
-        _("Bow"),      // CHAR_SKILL_WEAPON_BOW
-        _("Shooting"), // CHAR_SKILL_WEAPON_SHOOTING
-        _("Mace"),     // CHAR_SKILL_WEAPON_MACE
-        _("Axe"),      // CHAR_SKILL_WEAPON_AXE
-        _("Thrown"),   // CHAR_SKILL_WEAPON_THROWN
-        _("Magic"),    // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
-        _("Craft"),    // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
-        _("Unknown Skill")
+        { _("Unarmed"), "graphics/gui/unarmed.png" },   // CHAR_SKILL_WEAPON_NONE
+        { _("Knife"), "graphics/gui/knife.png" },       // CHAR_SKILL_WEAPON_KNIFE
+        { _("Sword"), "graphics/gui/sword.png" },       // CHAR_SKILL_WEAPON_SWORD
+        { _("Polearm"), "graphics/gui/polearm.png" },   // CHAR_SKILL_WEAPON_POLEARM
+        { _("Staff"), "graphics/gui/staff.png" },       // CHAR_SKILL_WEAPON_STAFF
+        { _("Whip"), "graphics/gui/whip.png" },         // CHAR_SKILL_WEAPON_WHIP
+        { _("Bow"), "graphics/gui/bow.png" },           // CHAR_SKILL_WEAPON_BOW
+        { _("Shooting"), "graphics/gui/shooting.png" }, // CHAR_SKILL_WEAPON_SHOOTING
+        { _("Mace"), "graphics/gui/mace.png" },         // CHAR_SKILL_WEAPON_MACE
+        { _("Axe"), "graphics/gui/axe.png" },           // CHAR_SKILL_WEAPON_AXE
+        { _("Thrown"), "graphics/gui/thrown.png" },     // CHAR_SKILL_WEAPON_THROWN
+        { _("Magic"), "graphics/gui/magic.png " },      // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
+        { _("Craft"), "graphics/gui/craft.png" },       // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
+        { _("Unknown Skill"), "graphics/gui/unknown-item.png" }
     };
 
     if ((skill < 0) || (skill > CHAR_SKILL_NB))
@@ -457,7 +457,7 @@ void LocalPlayer::setExperience(int skill, int current, int next)
     int diff = current - mExpCurrent.at(skill);
     if (mMap && mExpCurrent.at(skill) != -1 && diff > 0)
     {
-        const std::string text = toString(diff) + " " + getSkillName(skill) + " xp";
+        const std::string text = toString(diff) + " " + getSkillInfo(skill).name + " xp";
         mExpMessages.push_back(text);
     }
 
