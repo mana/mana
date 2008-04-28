@@ -22,12 +22,27 @@
  */
 
 #include "partywindow.h"
+#include "chat.h"
 
 #include "../utils/gettext.h"
+#include "../net/chatserver/party.h"
 
 PartyWindow::PartyWindow() : Window(_("Party"))
 {
     setVisible(false);
+}
+
+PartyWindow::~PartyWindow()
+{
+    PartyList::iterator itr = mPartyMembers.begin(),
+                        itr_end = mPartyMembers.end();
+
+    while (itr != itr_end)
+    {
+        delete (*itr);
+    }
+
+    mPartyMembers.clear();
 }
 
 void PartyWindow::draw(gcn::Graphics *graphics)
@@ -35,15 +50,23 @@ void PartyWindow::draw(gcn::Graphics *graphics)
 
 }
 
-void PartyWindow::addPartyMember(Player *player)
+void PartyWindow::addPartyMember(const std::string &memberName)
 {
-    PartyList::iterator itr = std::find(mPartyMembers.begin(),
-                                        mPartyMembers.end(),
-                                        player);
-    if (itr == mPartyMembers.end())
+    PartyMember *player = new PartyMember;
+    PartyList::iterator itr = mPartyMembers.begin(),
+                        itr_end = mPartyMembers.end();
+
+    while (itr != itr_end)
     {
-        mPartyMembers.push_back(player);
+        if ((*itr)->name == memberName)
+        {
+            return;
+        }
+        ++itr;
     }
+
+    player->name = memberName;
+    mPartyMembers.push_back(player);
 
     if (mPartyMembers.size() > 1)
     {
@@ -51,14 +74,19 @@ void PartyWindow::addPartyMember(Player *player)
     }
 }
 
-void PartyWindow::removePartyMember(Player *player)
+void PartyWindow::removePartyMember(const std::string &memberName)
 {
-    PartyList::iterator itr = std::find(mPartyMembers.begin(),
-                                        mPartyMembers.end(),
-                                        player);
-    if (itr != mPartyMembers.end())
+    PartyList::iterator itr = mPartyMembers.begin(),
+                        itr_end = mPartyMembers.end();
+
+    while (itr != itr_end)
     {
-        mPartyMembers.erase(itr);
+        if ((*itr)->name == memberName)
+        {
+            mPartyMembers.erase(itr);
+            break;
+        }
+        ++itr;
     }
 
     if (mPartyMembers.size() < 1)
@@ -69,5 +97,34 @@ void PartyWindow::removePartyMember(Player *player)
 
 void PartyWindow::showPartyInvite(const std::string &inviter)
 {
+    if (mPartyInviter != "")
+    {
+        chatWindow->chatLog("Received party request, but one already exists",
+                            BY_SERVER);
+        return;
+    }
+    std::string msg = inviter + " has invited you to join their party";
+    chatWindow->chatLog(msg, BY_SERVER);
 
+    acceptDialog = new ConfirmDialog("Accept Party Invite", msg, this);
+    acceptDialog->addActionListener(this);
+
+    mPartyInviter = inviter;
+}
+
+void PartyWindow::action(const gcn::ActionEvent &event)
+{
+    const std::string &eventId = event.getId();
+
+    if (eventId == "yes")
+    {
+        Net::ChatServer::Party::acceptInvite(mPartyInviter);
+        mPartyInviter = "";
+        delete acceptDialog;
+    }
+    else if (eventId == "no")
+    {
+        mPartyInviter = "";
+        delete acceptDialog;
+    }
 }

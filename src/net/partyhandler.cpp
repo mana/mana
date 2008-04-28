@@ -30,6 +30,7 @@
 #include "chatserver/chatserver.h"
 
 #include "../gui/chat.h"
+#include "../gui/partywindow.h"
 #include "../log.h"
 #include "../localplayer.h"
 
@@ -56,13 +57,15 @@ void PartyHandler::handleMessage(MessageIn &msg)
             {
                 if (!player_node->getInParty())
                     player_node->setInParty(true);
+                std::string memberName = msg.readString();
+                partyWindow->addPartyMember(memberName);
             }
         } break;
 
         case CPMSG_PARTY_INVITED:
         {
-            //TODO: Show dialog to player asking to join party
             std::string inviter = msg.readString();
+            partyWindow->showPartyInvite(inviter);
         } break;
 
         case CPMSG_PARTY_ACCEPT_INVITE_RESPONSE:

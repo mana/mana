@@ -25,24 +25,40 @@
 #define _TMW_PARTYWINDOW_H
 
 #include "window.h"
+#include "confirm_dialog.h"
 
 #include <string>
 #include <vector>
 
-class Player;
+#include <guichan/actionevent.hpp>
+#include <guichan/actionlistener.hpp>
+
+/**
+ * Party Member
+ * Used for storing players in the party
+ */
+struct PartyMember
+{
+    std::string name;
+};
 
 /**
  * Party Window.
  *
  * \ingroup Interface
  */
-class PartyWindow : public Window
+class PartyWindow : public Window, gcn::ActionListener
 {
     public:
         /**
          * Constructor.
          */
         PartyWindow();
+
+        /**
+         * Release all the players created
+         */
+        ~PartyWindow();
 
         /**
          * Draws the party window
@@ -52,21 +68,28 @@ class PartyWindow : public Window
         /**
          * Add party member
          */
-        void addPartyMember(Player *player);
+        void addPartyMember(const std::string &memberName);
 
         /**
          * Remove party member
          */
-        void removePartyMember(Player *player);
+        void removePartyMember(const std::string &memberName);
 
         /**
          * Show party invite
          */
         void showPartyInvite(const std::string &inviter);
 
+        /**
+         * Handle events
+         */
+        void action(const gcn::ActionEvent &event);
+
     private:
-        typedef std::vector<Player*> PartyList;
+        typedef std::vector<PartyMember*> PartyList;
         PartyList mPartyMembers;
+        std::string mPartyInviter;
+        ConfirmDialog *acceptDialog;
 };
 
 extern PartyWindow *partyWindow;

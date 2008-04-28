@@ -44,12 +44,12 @@ void Net::ChatServer::Party::invitePlayer(const std::string &name)
 
 void Net::ChatServer::Party::acceptInvite(const std::string &name)
 {
-    logger->log("Sending PCMSG_PARTY_ACCEPT");
-//    MessageOut msg(PCMSG_GUILD_ACCEPT);
+    logger->log("Sending PCMSG_PARTY_ACCEPT_INVITE");
+    MessageOut msg(PCMSG_PARTY_ACCEPT_INVITE);
 
-//    msg.writeString(name);
+    msg.writeString(name);
 
-//    Net::ChatServer::connection->send(msg);
+    Net::ChatServer::connection->send(msg);
 }
 
 void Net::ChatServer::Party::getPartyMembers()

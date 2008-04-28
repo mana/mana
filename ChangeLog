@@ -1,3 +1,9 @@
+2008-04-28  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/partywindow.h, src/gui/partywindow.cpp, 
+	src/net/partyhandler.cpp, src/net/protocol.h, 
+	src/net/chatserver/party.cpp, tmw.cbp: Added party invite dialog.
+
 2008-04-26  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/CMakeLists.txt, src/Makefile.am, src/gui/char_select.h,

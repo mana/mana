@@ -148,6 +148,8 @@
 		<Unit filename="src/gui/buysell.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/changeemaildialog.cpp" />
+		<Unit filename="src/gui/changeemaildialog.h" />
 		<Unit filename="src/gui/changepassworddialog.cpp" />
 		<Unit filename="src/gui/changepassworddialog.h" />
 		<Unit filename="src/gui/char_select.cpp" />
