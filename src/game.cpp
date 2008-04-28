@@ -461,156 +461,6 @@ void Game::handleInput()
                 keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
                 return;
             }
-            switch (event.key.keysym.sym)
-            {
-                case SDLK_F1:
-                    // In-game Help
-                    if (helpWindow->isVisible())
-                    {
-                        helpWindow->setVisible(false);
-                    }
-                    else
-                    {
-                        helpWindow->loadHelp("index");
-                        helpWindow->requestMoveToTop();
-                    }
-                    used = true;
-                    break;
-
-                case SDLK_F2: requestedWindow = statusWindow; break;
-                case SDLK_F3: requestedWindow = inventoryWindow; break;
-                case SDLK_F4: requestedWindow = equipmentWindow; break;
-                case SDLK_F5: requestedWindow = skillDialog; break;
-                case SDLK_F6: requestedWindow = minimap; break;
-                case SDLK_F7: requestedWindow = chatWindow; break;
-                //case SDLK_F8: requestedWindow = buddyWindow; break;
-                case SDLK_F9: requestedWindow = setupWindow; break;
-                case SDLK_F10: requestedWindow = debugWindow; break;
-                //case SDLK_F11: requestedWindow = newSkillWindow; break;
-
-                case SDLK_RETURN:
-                    // Input chat window
-                    if (chatWindow->isFocused() ||
-                        deathNotice != NULL ||
-                        weightNotice != NULL)
-                    {
-                        break;
-                    }
-
-                    // Quit by pressing Enter if the exit confirm is there
-                    if (exitConfirm)
-                    {
-                        done = true;
-                    }
-                    // Close the Browser if opened
-                    else if (helpWindow->isVisible())
-                    {
-                        helpWindow->setVisible(false);
-                    }
-                    // Close the config window, cancelling changes if opened
-                    else if (setupWindow->isVisible())
-                    {
-                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                    }
-                    // Else, open the chat edit box
-                    else
-                    {
-                        chatWindow->requestChatFocus();
-                        used = true;
-                    }
-                    break;
-                   // Quitting confirmation dialog
-                case SDLK_ESCAPE:
-                    if (!exitConfirm) {
-                        exitConfirm = new ConfirmDialog(
-                                "Quit", "Are you sure you want to quit?");
-                        exitConfirm->addActionListener(&exitListener);
-                        exitConfirm->requestMoveToTop();
-                    }
-                    else
-                    {
-                        exitConfirm->action(gcn::ActionEvent(NULL, "no"));
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-
-            if (keyboard.isEnabled() && !chatWindow->isFocused())
-            {
-                const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-                // Checks if any item shortcut is pressed.
-                for (int i = KeyboardConfig::KEY_SHORTCUT_0;
-                    i <= KeyboardConfig::KEY_SHORTCUT_9;
-                    i++)
-                {
-                    if (tKey == i) {
-                        itemShortcut->useItem(
-                                i - KeyboardConfig::KEY_SHORTCUT_0);
-                        break;
-                    }
-                }
-                switch (tKey) {
-                    case KeyboardConfig::KEY_PICKUP:
-                        {
-                            FloorItem *item = floorItemManager->findByCoordinates(
-                                    player_node->mX, player_node->mY);
-
-                            // If none below the player, try the tile in front of
-                            // the player
-                            if (!item) {
-                                Uint16 x = player_node->mX;
-                                Uint16 y = player_node->mY;
-                                if (player_node->getDirection() & Being::UP)
-                                    y--;
-                                if (player_node->getDirection() & Being::DOWN)
-                                    y++;
-                                if (player_node->getDirection() & Being::LEFT)
-                                    x--;
-                                if (player_node->getDirection() & Being::RIGHT)
-                                    x++;
-
-                                item = floorItemManager->findByCoordinates(x, y);
-                            }
-
-                            if (item)
-                                player_node->pickUp(item);
-
-                            used = true;
-                        }
-                        break;
-                    case KeyboardConfig::KEY_SIT:
-                        // Player sit action
-                        player_node->toggleSit();
-                        used = true;
-                        break;
-                    case KeyboardConfig::KEY_HIDE_WINDOWS:
-                         // Hide certain windows
-                        if (!chatWindow->isFocused())
-                        {
-                            statusWindow->setVisible(false);
-                            inventoryWindow->setVisible(false);
-                            skillDialog->setVisible(false);
-                            setupWindow->setVisible(false);
-                            equipmentWindow->setVisible(false);
-                            helpWindow->setVisible(false);
-                            debugWindow->setVisible(false);
-                        }
-                        break;
-                }
-            }
-
-            if (requestedWindow)
-            {
-                requestedWindow->setVisible(!requestedWindow->isVisible());
-                if (requestedWindow->isVisible())
-                {
-                    requestedWindow->requestMoveToTop();
-                }
-                used = true;
-            }
-
             // Keys pressed together with Alt/Meta
             // Emotions and some internal gui windows
             #ifndef __APPLE__
@@ -680,6 +530,159 @@ void Game::handleInput()
                     used = true;
                 }
             }
+            if (event.key.keysym.mod == KMOD_NONE)
+            {
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_F1:
+                        // In-game Help
+                        if (helpWindow->isVisible())
+                        {
+                            helpWindow->setVisible(false);
+                        }
+                        else
+                        {
+                            helpWindow->loadHelp("index");
+                            helpWindow->requestMoveToTop();
+                        }
+                        used = true;
+                        break;
+    
+                    case SDLK_F2: requestedWindow = statusWindow; break;
+                    case SDLK_F3: requestedWindow = inventoryWindow; break;
+                    case SDLK_F4: requestedWindow = equipmentWindow; break;
+                    case SDLK_F5: requestedWindow = skillDialog; break;
+                    case SDLK_F6: requestedWindow = minimap; break;
+                    case SDLK_F7: requestedWindow = chatWindow; break;
+                    //case SDLK_F8: requestedWindow = buddyWindow; break;
+                    case SDLK_F9: requestedWindow = setupWindow; break;
+                    case SDLK_F10: requestedWindow = debugWindow; break;
+                    //case SDLK_F11: requestedWindow = newSkillWindow; break;
+    
+                    case SDLK_RETURN:
+                        // Input chat window
+                        if (chatWindow->isFocused() ||
+                            deathNotice != NULL ||
+                            weightNotice != NULL)
+                        {
+                            break;
+                        }
+    
+                        // Quit by pressing Enter if the exit confirm is there
+                        if (exitConfirm)
+                        {
+                            done = true;
+                        }
+                        // Close the Browser if opened
+                        else if (helpWindow->isVisible())
+                        {
+                            helpWindow->setVisible(false);
+                        }
+                        // Close the config window, cancelling changes if opened
+                        else if (setupWindow->isVisible())
+                        {
+                            setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
+                        }
+                        // Else, open the chat edit box
+                        else
+                        {
+                            chatWindow->requestChatFocus();
+                            used = true;
+                        }
+                        break;
+                       // Quitting confirmation dialog
+                    case SDLK_ESCAPE:
+                        if (!exitConfirm) {
+                            exitConfirm = new ConfirmDialog(
+                                    "Quit", "Are you sure you want to quit?");
+                            exitConfirm->addActionListener(&exitListener);
+                            exitConfirm->requestMoveToTop();
+                        }
+                        else
+                        {
+                            exitConfirm->action(gcn::ActionEvent(NULL, "no"));
+                        }
+                        break;
+    
+                    default:
+                        break;
+                }
+            }
+    
+            if (keyboard.isEnabled() && !chatWindow->isFocused())
+            {
+                const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+                // Checks if any item shortcut is pressed.
+                for (int i = KeyboardConfig::KEY_SHORTCUT_0;
+                    i <= KeyboardConfig::KEY_SHORTCUT_9;
+                    i++)
+                {
+                    if (tKey == i && !used) {
+                        itemShortcut->useItem(
+                                i - KeyboardConfig::KEY_SHORTCUT_0);
+                        break;
+                    }
+                }
+                switch (tKey) {
+                    case KeyboardConfig::KEY_PICKUP:
+                        {
+                            FloorItem *item = floorItemManager->findByCoordinates(
+                                    player_node->mX, player_node->mY);
+
+                            // If none below the player, try the tile in front of
+                            // the player
+                            if (!item) {
+                                Uint16 x = player_node->mX;
+                                Uint16 y = player_node->mY;
+                                if (player_node->getDirection() & Being::UP)
+                                    y--;
+                                if (player_node->getDirection() & Being::DOWN)
+                                    y++;
+                                if (player_node->getDirection() & Being::LEFT)
+                                    x--;
+                                if (player_node->getDirection() & Being::RIGHT)
+                                    x++;
+
+                                item = floorItemManager->findByCoordinates(x, y);
+                            }
+
+                            if (item)
+                                player_node->pickUp(item);
+
+                            used = true;
+                        }
+                        break;
+                    case KeyboardConfig::KEY_SIT:
+                        // Player sit action
+                        player_node->toggleSit();
+                        used = true;
+                        break;
+                    case KeyboardConfig::KEY_HIDE_WINDOWS:
+                         // Hide certain windows
+                        if (!chatWindow->isFocused())
+                        {
+                            statusWindow->setVisible(false);
+                            inventoryWindow->setVisible(false);
+                            skillDialog->setVisible(false);
+                            setupWindow->setVisible(false);
+                            equipmentWindow->setVisible(false);
+                            helpWindow->setVisible(false);
+                            debugWindow->setVisible(false);
+                        }
+                        break;
+                }
+            }
+
+            if (requestedWindow)
+            {
+                requestedWindow->setVisible(!requestedWindow->isVisible());
+                if (requestedWindow->isVisible())
+                {
+                    requestedWindow->requestMoveToTop();
+                }
+                used = true;
+            }
+
         }
 
         // Quit event

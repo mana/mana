@@ -1,4 +1,4 @@
-2008-04-27  Dennis Friis  <peavey@placid.dk>
+2008-04-28  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/scrollarea.h, src/gui/scrollarea.cpp: Add methods to get
 	width and height adjusted for any visible scrollbars.
@@ -7,6 +7,8 @@
 	* src/gui/inventorywindow.h, src/gui/inventorywindow.cpp: Switch to
 	use our extended ScrollArea and use adjusted width to proper calculate
 	the grid for itemcontainer.
+	* src/game.cpp: Tweak keyboard input handling a bit. This fixes using
+	emoticons triggering shortcut items to be used.
 
 2008-04-27  Dennis Friis  <peavey@placid.dk>
 
