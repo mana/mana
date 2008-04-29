@@ -42,14 +42,14 @@ class WrongDataNoticeListener;
 class ChangeEmailDialog : public Window, public gcn::ActionListener {
     public:
         /**
-         * Constructor
+         * Constructor.
          *
          * @see Window::Window
          */
         ChangeEmailDialog(Window *parent, LoginData *loginData);
 
         /**
-         * Destructor
+         * Destructor.
          */
         ~ChangeEmailDialog();
 

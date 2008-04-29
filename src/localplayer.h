@@ -337,12 +337,12 @@ class LocalPlayer : public Player
 
         void setExperience(int skill, int current, int next);
 
-        struct skillInfo {
+        struct SkillInfo {
             std::string name;
             std::string icon;
         };
 
-        static const struct skillInfo& getSkillInfo(int skill);
+        static const SkillInfo& getSkillInfo(int skill);
 
         std::pair<int, int> getExperience(int skill);
 

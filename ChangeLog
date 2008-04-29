@@ -1,7 +1,12 @@
+2008-04-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/localplayer.cpp, src/gui/changeemaildialog.h, src/localplayer.h:
+	Name structs with capital, just like classes.
+
 2008-04-28  David Athay  <ko2fan@gmail.com>
 
-	* src/gui/partywindow.h, src/gui/partywindow.cpp, 
-	src/net/partyhandler.cpp, src/net/protocol.h, 
+	* src/gui/partywindow.h, src/gui/partywindow.cpp,
+	src/net/partyhandler.cpp, src/net/protocol.h,
 	src/net/chatserver/party.cpp, tmw.cbp: Added party invite dialog.
 	* src/localplayer.cpp, src/localplayer.h, src/gui/skills.cpp,
 	src/gui/skills.h: Skills patch by roderic, mantis id=209.

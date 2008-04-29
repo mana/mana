@@ -421,9 +421,9 @@ void LocalPlayer::lowerAttribute(size_t attr)
     Net::GameServer::Player::lowerAttribute(attr + CHAR_ATTR_BEGIN);
 }
 
-const struct LocalPlayer::skillInfo& LocalPlayer::getSkillInfo(int skill)
+const struct LocalPlayer::SkillInfo& LocalPlayer::getSkillInfo(int skill)
 {
-    static const skillInfo skills[CHAR_SKILL_NB + 1] =
+    static const SkillInfo skills[CHAR_SKILL_NB + 1] =
     {
         { _("Unarmed"), "graphics/gui/unarmed.png" },   // CHAR_SKILL_WEAPON_NONE
         { _("Knife"), "graphics/gui/knife.png" },       // CHAR_SKILL_WEAPON_KNIFE
