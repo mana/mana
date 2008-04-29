@@ -7,6 +7,9 @@
 	* src/gui/window.h, src/gui/window.cpp: Fixed warnings about hiding
 	virtual method, Window now always deletes its children (the option not
 	to do so was never used anyway).
+	* src/gui/gccontainer.h, src/gui/gccontainer.cpp: Removed unused
+	option from GCContainer to not delete a child, fixing warnings about
+	hiding virtual method gcn::Container::add.
 
 2008-04-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
