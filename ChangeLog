@@ -10,6 +10,9 @@
 	* src/gui/gccontainer.h, src/gui/gccontainer.cpp: Removed unused
 	option from GCContainer to not delete a child, fixing warnings about
 	hiding virtual method gcn::Container::add.
+	* src/log.h, src/resources/imageset.cpp: When compiling with GCC, use
+	the printf format attribute for the log method so that the compiler
+	checks the type of its parameters.
 
 2008-04-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

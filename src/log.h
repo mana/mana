@@ -61,7 +61,11 @@ class Logger
         /**
          * Enters a message in the log. The message will be timestamped.
          */
-        void log(const char *log_text, ...);
+        void log(const char *log_text, ...)
+#ifdef __GNUC__
+            __attribute__((__format__(__printf__, 2, 3)))
+#endif
+            ;
 
         /**
          * Log an error and quit. The error will pop-up in Windows and will be
