@@ -155,7 +155,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /**
          * Checks whether ChatWindow is Focused or not.
          */
-        bool isFocused();
+        bool isInputFocused();
 
         /*
          * Determines whether to send a command or an ordinary message, then

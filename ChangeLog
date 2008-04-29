@@ -1,3 +1,13 @@
+2008-04-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/gui/chat.h, src/gui/chat.cpp: Fixed issue with
+	determining whether chat input is focused (method no longer virtual).
+	* src/gui/itemshortcutcontainer.cpp: Fixed sometimes rendering with
+	the wrong font.
+	* src/gui/window.h, src/gui/window.cpp: Fixed warnings about hiding
+	virtual method, Window now always deletes its children (the option not
+	to do so was never used anyway).
+
 2008-04-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/inventorywindow.h, src/gui/itemcontainer.h,

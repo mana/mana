@@ -76,14 +76,16 @@ class Window : public gcn::Window, gcn::WidgetListener
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Adds a widget to the window.
+         * Adds a widget to the window. The widget will be deleted by the
+         * window.
          */
-        void add(gcn::Widget *wi, bool delChild = true);
+        void add(gcn::Widget *w);
 
         /**
-         * Adds a widget to the window and also specifices its position.
+         * Adds a widget to the window and also specifices its position. The
+         * widget will be deleted by the window.
          */
-        void add(gcn::Widget *w, int x, int y, bool delChild = true);
+        void add(gcn::Widget *w, int x, int y);
 
         /**
          * Sets the size of this window.

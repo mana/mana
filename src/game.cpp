@@ -559,7 +559,7 @@ void Game::handleInput()
 
                 case SDLK_RETURN:
                     // Input chat window
-                    if (chatWindow->isFocused() ||
+                    if (chatWindow->isInputFocused() ||
                         deathNotice != NULL ||
                         weightNotice != NULL)
                     {
@@ -605,7 +605,7 @@ void Game::handleInput()
                 default:
                     break;
             }
-            if (keyboard.isEnabled() && !chatWindow->isFocused())
+            if (keyboard.isEnabled() && !chatWindow->isInputFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
                 // Checks if any item shortcut is pressed.
@@ -655,7 +655,7 @@ void Game::handleInput()
                         break;
                     case KeyboardConfig::KEY_HIDE_WINDOWS:
                          // Hide certain windows
-                        if (!chatWindow->isFocused())
+                        if (!chatWindow->isInputFocused())
                         {
                             statusWindow->setVisible(false);
                             inventoryWindow->setVisible(false);
@@ -710,7 +710,7 @@ void Game::handleInput()
     // Moving player around
     if (player_node->mAction != Being::DEAD &&
         current_npc == 0 &&
-        !chatWindow->isFocused())
+        !chatWindow->isInputFocused())
     {
         // Get the state of the keyboard keys
         keyboard.refreshActiveKeys();

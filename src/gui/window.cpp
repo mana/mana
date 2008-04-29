@@ -302,14 +302,14 @@ void Window::scheduleDelete()
     windowContainer->scheduleDelete(this);
 }
 
-void Window::add(gcn::Widget *w, bool delChild)
+void Window::add(gcn::Widget *w)
 {
-    mChrome->add(w, delChild);
+    mChrome->add(w);
 }
 
-void Window::add(gcn::Widget *w, int x, int y, bool delChild)
+void Window::add(gcn::Widget *w, int x, int y)
 {
-    mChrome->add(w, x, y, delChild);
+    mChrome->add(w, x, y);
 }
 
 void Window::mousePressed(gcn::MouseEvent &event)
