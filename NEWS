@@ -1,4 +1,17 @@
 0.0.24.1 (7 April 2008)
+- Added /clear command to clear chat window
+- Added ability to close quit dialog by pressing ESC
+- Added key for targetting nearest player
+- Added the possibility to assign particle effects to monsters
+- Added possibility to pass through players with key controls
+- Fixed crash on exit after connection to server was lost
+- Fixed initialization of some variables
+- Fixed an error with chat messages without a sender that include a colon
+- Fixed minimap to not keep reappearing when hidden
+- Fixed a GCC 4.3 compile error
+- Fixed music loading from non-default location
+- Fixed crash on trying to show out of range emoticon
+- Updated Dev-C++ and Code::Blocks project files
 
 0.0.24 (24 December 2007)
 - Added female specific hair styles

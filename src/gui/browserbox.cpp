@@ -311,7 +311,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
                     (!mUseLinksAndUserColors && (start == 0)))
             {
                 // Check for color change in format "##x", x = [L,P,0..9]
-                if (row.find("##", start) == start)
+                if (row.find("##", start) == start && row.size() > start + 2)
                 {
                     switch (row.at(start + 2))
                     {

@@ -35,14 +35,7 @@ TextBox::TextBox():
     setFrameSize(0);
 }
 
-TextBox::TextBox(const std::string& text):
-    gcn::TextBox(text)
-{
-    setOpaque(false);
-    setFrameSize(0);
-}
-
-void TextBox::setText(const std::string &text)
+void TextBox::setTextWrapped(const std::string &text)
 {
     // Make sure parent scroll area sets width of this widget
     if (getParent())

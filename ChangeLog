@@ -140,10 +140,22 @@
 	* src/gui/guildlistbox.cpp, src/gui/guildwindow.h,
 	src/gui/widgets/tabbedarea.cpp, src/gui/chat.cpp,
 	src/gui/guildlistbox.h, src/gui/guildwindow.cpp, src/guild.cpp,
-	src/guild.h, src/net/guildhandler.cpp: Fixed online status so that 
+	src/guild.h, src/net/guildhandler.cpp: Fixed online status so that
 	users are shown as online.
-	* src/gui/chat.cpp, src/net/protocol.h, 
+	* src/gui/chat.cpp, src/net/protocol.h,
 	src/net/chatserver/chatserver.cpp: Remove private channels.
+
+2008-04-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/npc_text.h, src/gui/textbox.cpp, src/gui/npc_text.cpp,
+	src/gui/scrollarea.h, src/gui/textbox.h: Restored the text wrapping in
+	TextBox, since it was based on overriding a method that is no longer
+	virtual in Guichan 0.8.0.
+
+2008-04-16  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/browserbox.cpp: Fix a basic_string::at sometimes being out
+	of range in BrowserBox::draw when checking for color codes.
 
 2008-04-15  David Athay  <ko2fan@gmail.com>
 
@@ -168,6 +180,10 @@
 	Added new TabbedArea which extends gui::TabbedArea. Changed Guild and
 	Chat windows to use new TabbedArea. Added private messaging.
 
+2008-04-14  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/resources/dye.cpp: Fixed multi-channel dyeing (patch by fate)
+
 2008-04-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/CMakeLists.txt: Fixed a compilation error using Cmake.
@@ -180,6 +196,10 @@
 	src/log.h, src/resources/mapreader.cpp, src/resources/spritedef.cpp:
 	Fixed some compiler warnings and don't try to load particle effects
 	when no file is set.
+	* src/gui/itemshortcutcontainer.h, src/gui/itemshortcutcontainer.cpp,
+	src/gui/itemshortcutwindow.cpp, src/gui/scrollarea.h,
+	src/gui/scrollarea.cpp, src/gui/itemshortcutwindow.h: Fixed display of
+	item shortcut container. gcn::Widget::setWidth is no longer virtual.
 
 2008-04-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -207,6 +227,9 @@
 	* src/resources/spritedef.cpp, src/resources/spritedef.h,
 	data/graphics/sprites/item008.xml: Added support for basing one sprite
 	definition on another by including it.
+	* data/help/changes.txt, data/help/header.txt, NEWS: Updates to news
+	from 0.0.24.1 release.
+	* src/being.cpp: Fixed crash on trying to show out of range emoticon.
 
 2008-04-03  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -216,10 +239,11 @@
 
 2008-04-03  David Athay  <ko2fan@gmail.com>
 
+	* src/game.cpp: Tweaked disconnect dialog, hoping to fix a crash bug.
 	* src/localplayer.cpp, src/gui/popupmenu.cpp, src/localplayer.h,
 	tmw.cbp: Added ability to right click a player and invite to guild.
-	* src/gui/connection.cpp, src/gui/login.cpp, 
-	src/gui/char_select.cpp, src/main.cpp: Added patch from 
+	* src/gui/connection.cpp, src/gui/login.cpp,
+	src/gui/char_select.cpp, src/main.cpp: Added patch from
 	postalworker bug id=117 to fix cancel connecting to a sick server.
 	* src/net/guildhandler.cpp, src/net/protocol.h: Added updating guild
 	member list.
@@ -227,7 +251,7 @@
 2008-04-01  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp, src/gui/guildwindow.h, src/gui/chat.cpp,
-	src/gui/guildwindow.cpp, src/net/guildhandler.cpp: Fixed up chat 
+	src/gui/guildwindow.cpp, src/net/guildhandler.cpp: Fixed up chat
 	and guilds.
 	* src/gui/chat.cpp: Made it possible to move the chat window.
 
@@ -237,7 +261,8 @@
 	src/resources/npcdb.cpp, data/npcs.xml, src/Makefile.am, tmc.cbp:
 	Implemented NPC XML database which maps NPC IDs to one or more
 	animation files and thus enables animated NPCs.
-	* data/graphics/sprites/npc-test.png, data/graphics/sprites/npc-test.xml,
+	* data/graphics/sprites/npc-test.png,
+	data/graphics/sprites/npc-test.xml,
 	data/graphics/sprites/npc-treasurebox.png,
 	data/graphics/sprites/npc-treasurebox.xml: Added some animated NPCs by
 	lost soul for testing purpose.

@@ -191,18 +191,19 @@ void Dye::instantiate(std::string &target, std::string const &palettes)
         std::string::size_type pos = next_pos;
         next_pos = target.find(';', pos);
         if (next_pos == std::string::npos) next_pos = last_pos;
-        if (next_pos == pos + 1)
+        if (next_pos == pos + 1 && pal_pos != std::string::npos)
         {
-            std::string::size_type pal_next_pos = palettes.find(';');
+            std::string::size_type pal_next_pos = palettes.find(';', pal_pos);
             s << target[pos] << ':';
             if (pal_next_pos == std::string::npos)
             {
                 s << palettes.substr(pal_pos);
                 s << target.substr(next_pos);
+                pal_pos = std::string::npos;
                 break;
             }
             s << palettes.substr(pal_pos, pal_next_pos - pal_pos);
-            pal_pos = pal_next_pos;
+            pal_pos = pal_next_pos + 1;
         }
         else if (next_pos > pos + 2)
         {

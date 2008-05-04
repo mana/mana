@@ -28,7 +28,8 @@
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
-#include "../guichanfwd.h"
+
+class TextBox;
 
 /**
  * The npc text dialog.
@@ -57,7 +58,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          * @param string The new text.
          */
         void
-        setText(const char *string);
+        setText(const std::string &string);
 
         /**
          * Adds the text to the text shows in the dialog. Also adds a newline
@@ -69,7 +70,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         addText(const std::string &string);
 
     private:
-        gcn::TextBox *mTextBox;
+        TextBox *mTextBox;
 };
 
 #endif

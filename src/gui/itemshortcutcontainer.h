@@ -26,6 +26,7 @@
 
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
+#include <guichan/widgetlistener.hpp>
 
 class Image;
 class Item;
@@ -35,7 +36,9 @@ class Item;
  *
  * \ingroup GUI
  */
-class ItemShortcutContainer : public gcn::Widget, public gcn::MouseListener
+class ItemShortcutContainer : public gcn::Widget,
+                              public gcn::WidgetListener,
+                              public gcn::MouseListener
 {
     public:
         /**
@@ -59,10 +62,10 @@ class ItemShortcutContainer : public gcn::Widget, public gcn::MouseListener
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Sets the width of the container. This is used to determine the new
-         * height of the container.
+         * Invoked when a widget changes its size. This is used to determine
+         * the new height of the container.
          */
-        void setWidth(int width);
+        void widgetResized(const gcn::Event &event);
 
         /**
          * Handles mouse when dragged.
@@ -78,7 +81,6 @@ class ItemShortcutContainer : public gcn::Widget, public gcn::MouseListener
          * Handles mouse release.
          */
         void mouseReleased(gcn::MouseEvent &event);
-
 
         int getMaxItems()
         { return mMaxItems; }
