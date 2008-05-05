@@ -49,13 +49,11 @@
 #include "../utils/trim.h"
 
 ChatWindow::ChatWindow():
-    Window(""),
+    Window("Chat"),
     mTmpVisible(false)
 {
     setResizable(true);
     setDefaultSize(0, (windowContainer->getHeight() - 105), 400, 100);
-    setTitleBarHeight(5);
-    loadWindowState("Chat");
 
     mChatInput = new ChatInput();
     mChatInput->setActionEventId("chatinput");
@@ -75,7 +73,8 @@ ChatWindow::ChatWindow():
 
     mChatTabs = new TabbedArea();
     mChatTabs->addTab("General", scrollArea);
-    mChatTabs->setPosition(mChatTabs->getFrameSize(), mChatTabs->getFrameSize());
+    mChatTabs->setPosition(mChatTabs->getFrameSize(),
+                           mChatTabs->getFrameSize());
 
     mChannels.insert(
             std::make_pair("General", ChatArea(textOutput, scrollArea)));
@@ -86,6 +85,8 @@ ChatWindow::ChatWindow():
     // Add key listener to chat input to be able to respond to up/down
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
+
+    loadWindowState("Chat");
 }
 
 ChatWindow::~ChatWindow()
@@ -94,10 +95,10 @@ ChatWindow::~ChatWindow()
     delete mChatTabs;
 }
 
-void
-ChatWindow::logic()
+void ChatWindow::widgetResized(const gcn::Event &event)
 {
-    // todo: only do this when the size changes (updateWidgets?)
+    Window::widgetResized(event);
+
     const gcn::Rectangle area = getChildrenArea();
 
     mChatInput->setPosition(mChatInput->getFrameSize(),
@@ -117,8 +118,6 @@ ChatWindow::logic()
                 mChatInput->getHeight() - 5);
         scroll->logic();
     }
-
-    Window::logic();
 }
 
 void

@@ -105,7 +105,8 @@ struct CHATSKILL
  *
  * \ingroup Interface
  */
-class ChatWindow : public Window, public gcn::ActionListener,
+class ChatWindow : public Window,
+                   public gcn::ActionListener,
                    public gcn::KeyListener
 {
     public:
@@ -120,9 +121,10 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ~ChatWindow();
 
         /**
-         * Logic (updates components' size)
+         * Called when the widget changes size. Used for adapting the size of
+         * the tabbed area.
          */
-        void logic();
+        void widgetResized(const gcn::Event &event);
 
         /*
          * Adds a line of text to our message list. Parameters:
@@ -188,8 +190,10 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /** Called to remove the channel from the channel manager */
         void
         removeChannel(short channelId);
+
         void
         removeChannel(const std::string &channelName);
+
         void
         removeChannel(Channel *channel);
 

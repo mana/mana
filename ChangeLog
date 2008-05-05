@@ -1,3 +1,8 @@
+2008-05-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/chat.h, src/gui/chat.cpp: Only update the size of chat
+	window widgets when it is resized.
+
 2008-04-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/localplayer.cpp, src/gui/changeemaildialog.h, src/localplayer.h:
