@@ -1,3 +1,8 @@
+2008-04-28  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/itemshortcutcontainer.cpp: Dont allow dragging of empty
+	placeholders.
+
 2008-04-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/gui/chat.h, src/gui/chat.cpp: Fixed issue with
