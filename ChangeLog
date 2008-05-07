@@ -1,7 +1,8 @@
 2008-05-08  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/net/chathandler.cpp: Made say messages from being ID 0 display as
-	messages from server.
+	messages from server. Made messages from unknown beings display as from
+	"Unknown" instead of "John Doe".
 
 2008-05-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
