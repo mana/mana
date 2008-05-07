@@ -552,7 +552,7 @@ void Game::handleInput()
                 case SDLK_F5: requestedWindow = skillDialog; break;
                 case SDLK_F6: requestedWindow = minimap; break;
                 case SDLK_F7: requestedWindow = chatWindow; break;
-                //case SDLK_F8: requestedWindow = buddyWindow; break;
+                case SDLK_F8: requestedWindow = itemShortcutWindow; break;
                 case SDLK_F9: requestedWindow = setupWindow; break;
                 case SDLK_F10: requestedWindow = debugWindow; break;
                 //case SDLK_F11: requestedWindow = newSkillWindow; break;

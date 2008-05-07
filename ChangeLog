@@ -1,4 +1,9 @@
-2008-04-28  Dennis Friis  <peavey@placid.dk>
+2008-05-08  Dennis Friis  <peavey@placid.dk>
+
+	* src/game.cpp: Make F8 toggle shortcut window as suggested by And1
+	and fate.
+
+2008-05-06  Dennis Friis  <peavey@placid.dk>
 
 	* src/gui/itemshortcutcontainer.cpp: Dont allow dragging of empty
 	placeholders.
