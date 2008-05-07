@@ -75,8 +75,14 @@ void ChatHandler::handleMessage(MessageIn &msg)
     switch (msg.getId())
     {
         case GPMSG_SAY:
-            being = beingManager->findBeing(msg.readInt16());
+            int id = msg.readInt16();
             chatMsg = msg.readString();
+            if (id == 0)
+            {
+                chatWindow->chatLog(chatMsg, BY_SERVER);
+                break;
+            }
+            being = beingManager->findBeing(id);
             if (being)
             {
                 chatWindow->chatLog(being->getName() + " : " + chatMsg, being == player_node ? BY_PLAYER : BY_OTHER);
@@ -84,7 +90,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             }
             else
             {
-                chatWindow->chatLog("John Doe : " + chatMsg, BY_OTHER);
+                chatWindow->chatLog("Unknown : " + chatMsg, BY_OTHER);
             }
             break;
         case CPMSG_REGISTER_CHANNEL_RESPONSE:
