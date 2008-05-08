@@ -1,3 +1,7 @@
+2008-05-08  David Athay  <ko2fan@gmail.com>
+
+	* src/net/chathandler.cpp: Fixed initialisation in case.
+
 2008-05-08  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/net/chathandler.cpp: Made say messages from being ID 0 display as

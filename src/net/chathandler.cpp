@@ -68,6 +68,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
     Being *being;
     std::string chatMsg;
     short channelId;
+    short id;
     std::string userNick;
     std::string channelName;
     short error = -1;
@@ -75,7 +76,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
     switch (msg.getId())
     {
         case GPMSG_SAY:
-            int id = msg.readInt16();
+            id = msg.readInt16();
             chatMsg = msg.readString();
             if (id == 0)
             {
