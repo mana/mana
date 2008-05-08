@@ -532,6 +532,22 @@ void Game::handleInput()
             }
             switch (event.key.keysym.sym)
             {
+                case SDLK_PAGEUP:
+                    if (chatWindow->isVisible())
+                    {
+                        chatWindow->scroll(-DEFAULT_CHAT_WINDOW_SCROLL);
+                        used = true;
+                    }
+                    break;
+
+                case SDLK_PAGEDOWN:
+                    if (chatWindow->isVisible())
+                    {
+                        chatWindow->scroll(DEFAULT_CHAT_WINDOW_SCROLL);
+                        used = true;
+                    }
+                    break;
+
                 case SDLK_F1:
                     // In-game Help
                     if (helpWindow->isVisible())

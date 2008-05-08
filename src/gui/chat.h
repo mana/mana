@@ -44,7 +44,7 @@ class ScrollArea;
 #define BY_SERVER     3
 
 #define ACT_WHISPER   4   // getting whispered at
-#define ACT_IS        5   // equivalent to "/me" in irc
+#define ACT_IS        5   // equivalent to "/me" on IRC
 
 #define BY_LOGGER     6
 
@@ -99,7 +99,9 @@ class ScrollArea;
 #define RFAIL_GENERIC     0x0a
 
 /** should always be zero if failed */
-#define SKILL_FAILED    0x00
+#define SKILL_FAILED      0x00
+
+#define DEFAULT_CHAT_WINDOW_SCROLL 7 // 1 means `1/8th of the window size'.
 
 struct CHATSKILL
 {
@@ -157,7 +159,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
          */
         bool isInputFocused();
 
-        /*
+        /**
          * Determines whether to send a command or an ordinary message, then
          * contructs packets & sends them.
          *
@@ -196,6 +198,16 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void
         setVisible(bool visible);
 
+       /**
+        * Scrolls the chat window
+        *
+        * @param amount direction and amount to scroll.  Negative numbers scroll
+        * up, positive numbers scroll down.  The absolute amount indicates the
+        * amount of 1/8ths of chat window real estate that should be scrolled.
+        */
+        void
+        scroll(int amount);
+
     private:
         Network *mNetwork;
         bool mTmpVisible;
@@ -224,4 +236,3 @@ class ChatWindow : public Window, public gcn::ActionListener,
 extern ChatWindow *chatWindow;
 
 #endif
-

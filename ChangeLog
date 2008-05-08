@@ -2,6 +2,8 @@
 
 	* src/game.cpp: Make F8 toggle shortcut window as suggested by And1
 	and fate.
+	* src/game.cpp, src/gui/chat.h, src/gui/chat.cpp: Allow page up and
+	page down to scroll the chat window, based on patch by fate.
 
 2008-05-06  Dennis Friis  <peavey@placid.dk>
 

@@ -411,6 +411,19 @@ ChatWindow::const_msg(CHATSKILL act)
 }
 
 void
+ChatWindow::scroll(int amount)
+{
+    if (!isVisible())
+        return;
+
+    int range = mScrollArea->getHeight() / 8 * amount;
+    gcn::Rectangle scr;
+    scr.y = mScrollArea->getVerticalScrollAmount() + range;
+    scr.height = abs(range);
+    mTextOutput->showPart(scr);
+}
+
+void
 ChatWindow::keyPressed(gcn::KeyEvent &event)
 {
     if (event.getKey().getValue() == gcn::Key::DOWN &&
@@ -446,11 +459,13 @@ ChatWindow::setInputText(std::string input_str)
 void
 ChatWindow::setVisible(bool isVisible)
 {
-     Window::setVisible(isVisible);
+    Window::setVisible(isVisible);
 
-     /*
-      * For whatever reason, if setVisible is called, the mTmpVisible effect
-      * should be disabled.
-      */
-     mTmpVisible = false;
+    /*
+     * For whatever reason, if setVisible is called, the mTmpVisible effect
+     * should be disabled.
+     */
+
+    mTmpVisible = false;
 }
+
