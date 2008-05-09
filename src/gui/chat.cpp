@@ -152,7 +152,7 @@ ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
             break;
         case BY_PLAYER:
             tmp.nick += ": ";
-            lineColor = "##5"; // Equiv. to BrowserBox::YELLOW
+            lineColor = "##3"; // Equiv. to BrowserBox::BLUE
             break;
         case BY_OTHER:
             tmp.nick += ": ";
@@ -506,10 +506,17 @@ ChatWindow::createNewChannelTab(const std::string &channelName)
     BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     textOutput->setOpaque(false);
     textOutput->disableLinksAndUserColors();
+    textOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
     ScrollArea *scrollArea = new ScrollArea(textOutput);
     scrollArea->setPosition(scrollArea->getFrameSize(), scrollArea->getFrameSize());
     scrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     scrollArea->setOpaque(false);
+    scrollArea->setWidth(getChildrenArea().width - 2 * scrollArea->getFrameSize());
+    scrollArea->setHeight(getChildrenArea().height - 2 * scrollArea->getFrameSize() -
+                mChatInput->getHeight() - 5);
+    scrollArea->logic();
+    textOutput->setWidth(scrollArea->getChildrenArea().width);
+    textOutput->setHeight(scrollArea->getChildrenArea().height);
 
     // Add channel to the tabbed area
     mChatTabs->addTab(channelName, scrollArea);

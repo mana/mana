@@ -30,7 +30,8 @@
 #include "setup_joystick.h"
 #include "setup_video.h"
 #include "setup_keyboard.h"
-#include "tabbedcontainer.h"
+
+#include "widgets/tabbedarea.h"
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
@@ -63,26 +64,25 @@ Setup::Setup():
         add(btn);
     }
 
-    TabbedContainer *panel = new TabbedContainer();
+    TabbedArea *panel = new TabbedArea();
     panel->setDimension(gcn::Rectangle(5, 5, 250, 205));
-    panel->setOpaque(false);
 
     SetupTab *tab;
 
     tab = new Setup_Video();
-    panel->addTab(tab, _("Video"));
+    panel->addTab(_("Video"), tab);
     mTabs.push_back(tab);
 
     tab = new Setup_Audio();
-    panel->addTab(tab, _("Audio"));
+    panel->addTab(_("Audio"), tab);
     mTabs.push_back(tab);
 
     tab = new Setup_Joystick();
-    panel->addTab(tab, _("Joystick"));
+    panel->addTab(_("Joystick"), tab);
     mTabs.push_back(tab);
 
     tab = new Setup_Keyboard();
-    panel->addTab(tab, "Keyboard");
+    panel->addTab(_("Keyboard"), tab);
     mTabs.push_back(tab);
 
     add(panel);

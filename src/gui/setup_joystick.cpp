@@ -40,6 +40,8 @@ Setup_Joystick::Setup_Joystick():
     mJoystickEnabled(new CheckBox(_("Enable joystick")))
 {
     setOpaque(false);
+    setDimension(gcn::Rectangle(0, 0, 250, 200));
+
     mJoystickEnabled->setPosition(10, 10);
     mCalibrateLabel->setPosition(10, 25);
     mCalibrateButton->setPosition(10, 30 + mCalibrateLabel->getHeight());

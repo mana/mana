@@ -57,7 +57,7 @@ void TabbedArea::draw(gcn::Graphics *graphics)
         return;
     }
 
-    gcn::TabbedArea::draw(graphics);
+    drawChildren(graphics);
 }
 
 gcn::Widget* TabbedArea::getWidget(const std::string &name)

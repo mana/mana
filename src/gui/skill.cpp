@@ -33,7 +33,8 @@
 #include "scrollarea.h"
 #include "windowcontainer.h"
 #include "progressbar.h"
-#include "tabbedcontainer.h"
+
+#include "widgets/tabbedarea.h"
 
 #include "../localplayer.h"
 
@@ -47,23 +48,22 @@ SkillDialog::SkillDialog():
     setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 255, 25, 230, 425);
 
-    TabbedContainer *panel = new TabbedContainer();
+    TabbedArea *panel = new TabbedArea();
     panel->setDimension(gcn::Rectangle(5, 5, 225, 420));
-    panel->setOpaque(false);
 
     Skill_Tab* tab;
 
     // Add each type of skill tab to the panel
     tab = new Skill_Tab("Weapon");
-    panel->addTab(tab, _("Weapons"));
+    panel->addTab(_("Weapons"), tab);
     mTabs.push_back(tab);
 
     tab = new Skill_Tab("Magic");
-    panel->addTab(tab, _("Magic"));
+    panel->addTab(_("Magic"), tab);
     mTabs.push_back(tab);
 
     tab = new Skill_Tab("Craft");
-    panel->addTab(tab, _("Crafts"));
+    panel->addTab(_("Crafts"), tab);
     mTabs.push_back(tab);
 
     add(panel);
@@ -105,6 +105,7 @@ void SkillDialog::update()
 Skill_Tab::Skill_Tab(std::string type): type(type)
 {
     setOpaque(false);
+    setDimension(gcn::Rectangle(0, 0, 225, 420));
     int skillNum = getSkillNum();
 
     mSkillNameLabels.resize(skillNum);

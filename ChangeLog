@@ -1,3 +1,14 @@
+2008-05-09  David Athay  <ko2fan@gmail.com>
+
+	*  src/gui/setup_keyboard.cpp, src/gui/setup.cpp,
+	src/gui/widgets/tabbedarea.h, src/gui/widgets/tabbedarea.cpp,
+	src/gui/chat.cpp, src/gui/tabbedcontainer.cpp, src/gui/skill.cpp,
+	src/gui/setup_audio.cpp, src/gui/setup_video.cpp, 
+	src/gui/setup_joystick.cpp, src/gui/tabbedcontainer.h, tmw.cbp: 
+	Changed the tabbedarea to be transparant as before. Changed setup 
+	window and skills dialog to use the new tabbed area. Removed tabbed
+	container as it is no longer used. Fixed a crash with the chat window.
+
 2008-05-08  David Athay  <ko2fan@gmail.com>
 
 	* src/net/chathandler.cpp: Fixed initialisation in case.
