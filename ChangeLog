@@ -1,3 +1,7 @@
+2008-05-12  David Athay  <ko2fan@gmail.com>
+
+	* src/Makefile.am, src/CMakeLists.txt: Fix building on other systems.
+
 2008-05-09  David Athay  <ko2fan@gmail.com>
 
 	*  src/gui/setup_keyboard.cpp, src/gui/setup.cpp,

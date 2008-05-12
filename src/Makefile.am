@@ -135,8 +135,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/slider.h \
 	      gui/status.cpp \
 	      gui/status.h \
-	      gui/tabbedcontainer.cpp \
-	      gui/tabbedcontainer.h \
 	      gui/textbox.cpp \
 	      gui/textbox.h \
 	      gui/textdialog.cpp \
