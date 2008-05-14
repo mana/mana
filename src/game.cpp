@@ -43,6 +43,7 @@
 #include "log.h"
 #include "npc.h"
 #include "particle.h"
+#include "player_relations.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
@@ -496,10 +497,16 @@ void Game::handleInput()
                     case SDLK_t:
                         // Toggle accepting of incoming trade requests
                         {
-                            TradeHandler *th = static_cast<TradeHandler*>(
-                                    mTradeHandler.get());
-                            th->setAcceptTradeRequests(
-                                    !th->acceptTradeRequests());
+                            unsigned int deflt = player_relations.getDefault();
+                            if (deflt & PlayerRelation::TRADE) {
+                                chatWindow->chatLog("Ignoring incoming trade requests", BY_SERVER);
+                                deflt &= ~PlayerRelation::TRADE;
+                            } else {
+                                chatWindow->chatLog("Accepting incoming trade requests", BY_SERVER);
+                                deflt |= PlayerRelation::TRADE;
+                            }
+
+                            player_relations.setDefault(deflt);
                         }
                         used = true;
                         break;

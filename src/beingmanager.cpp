@@ -146,6 +146,21 @@ Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
     return NULL;
 }
 
+Being* BeingManager::findBeingByName(std::string name, Being::Type type)
+{
+    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    {
+        Being *being = (*i);
+        if (being->getName() == name
+            && (type == Being::UNKNOWN
+                || type == being->getType()))
+            return being;
+    }
+    return NULL;
+}
+
+
+
 Beings& BeingManager::getAll()
 {
     return mBeings;

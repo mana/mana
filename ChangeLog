@@ -1,3 +1,21 @@
+2008-05-14  fate  <fate.tmw@googlemail.com>
+
+	* src/configuration.cpp, src/game.cpp, src/player_relations.h,
+	src/beingmanager.h, src/gui/setup_players.cpp, src/gui/setup.cpp,
+	src/gui/table_model.h, src/gui/table_model.cpp, src/gui/popup_box.h,
+	src/gui/popup_box.cpp, src/gui/table.h, src/gui/setup.h,
+	src/gui/table.cpp, src/gui/setup_players.h, src/gui/popupmenu.cpp,
+	src/beingmanager.cpp, src/player.cpp, src/main.cpp, src/being.cpp,
+	src/player.h, src/net/tradehandler.h, src/net/beinghandler.cpp,
+	src/net/tradehandler.cpp, src/net/chathandler.cpp,
+	src/configuration.h, src/player_relations.cpp, src/Makefile.am,
+	src/being.h, data/graphics/gui/emotions.png,
+	data/graphics/gui/Makefile.am, data/help/commands.txt: Added ability
+	to define friends, players you want to ignore or disregard and
+	configure whether trading is allowed. Based on new popup code,
+	configuration improvements to store hierarchical data and a table
+	model.
+
 2008-05-08  Dennis Friis  <peavey@placid.dk>
 
 	* src/game.cpp: Make F8 toggle shortcut window as suggested by And1
@@ -7,7 +25,7 @@
 
 2008-05-06  Dennis Friis  <peavey@placid.dk>
 
-	* src/gui/itemshortcutcontainer.cpp: Dont allow dragging of empty
+	* src/gui/itemshortcutcontainer.cpp: Don't allow dragging of empty
 	placeholders.
 
 2008-04-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>

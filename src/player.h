@@ -29,6 +29,19 @@
 class Graphics;
 class Map;
 
+class Player;
+
+class PlayerNameDrawStrategy
+{
+public:
+    virtual ~PlayerNameDrawStrategy(void) {}
+
+    /**
+     * Draw the player's name
+     */
+    virtual void draw(Player *p, Graphics *graphics, int px, int py) = 0;
+};
+
 /**
  * A player being. Players have their name drawn beneath them. This class also
  * implements player-specific loading of base sprite, hair sprite and equipment
@@ -68,6 +81,21 @@ class Player : public Being
          */
         virtual void
         setSprite(int slot, int id, std::string color = "");
+
+        /**
+         * Sets the strategy responsible for drawing the player's name
+         *
+         * \param draw_strategy A strategy describing how the player's name
+         * should be drawn, or NULL for default
+         */
+        virtual void
+        setNameDrawStrategy(PlayerNameDrawStrategy *draw_strategy);
+
+        virtual PlayerNameDrawStrategy *
+        getNameDrawStrategy(void) const { return mDrawStrategy; }
+
+    private:
+        PlayerNameDrawStrategy *mDrawStrategy;
 };
 
 #endif

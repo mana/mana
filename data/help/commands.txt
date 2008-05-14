@@ -37,3 +37,56 @@
  Left click to execute default action: walk, pick up an item, attack a monster
  and talk to NPCs (be sure to click on their feet). Right click to show up a
  context menu. Holding [Left Shift] prevents from walking when attacking.
+
+
+##2COMMUNICATION:
+
+ Communication is often essential to success in this game. You can communicate
+ in several ways:  By chatting and showing emotions (see above), by trading
+ (with the right-click context menu), and by whispering.
+
+ To whisper, type
+
+ /whisper <name> <message>
+
+ This will send <message> to player <name>, if that player is logged in.
+
+
+##2IGNORING COMMUNICATION
+
+ You may find that not all communication is to your liking.  While most people
+ are nice, some may offend you or try to make your life harder-- since this is
+ an open game, there is nothing the developers can do to prevent this.
+
+ However, you can protect yourself from such players by ignoring them.  Right-
+ click on them to bring up the context menu, then select `Ignore' or
+ `Disregard' (see below).  You can fine-tune your player relations in the
+ `Setup' menu, which lists all the players you have added to it.  To open this
+ menu, select `Setup' in the upper right corner of the screen, then `Players'.
+
+ There you will find a list of all players you are acquainted with, as well as
+ several configuration options:
+
+ - ##2save player list##P: Should your acquaintance list be saved when you
+   quit the game?  If you enable this option, your list will survive when you
+   quit and re-start.
+ - ##2allow trading##P: Do you wish to allow trade requests from arbitrary
+   players?
+ - ##2allow whispers##P: Do you wish to allow arbitrary players to send
+   private messages to you in-game?
+
+##2THE PLAYER LIST
+
+ The player list lists all of your acquaintances.  They are categorised as one
+ of the following:
+
+ - ##2neutral##P:  As far as the game is concerned, this is the same as not
+   having the player listed:  the player may chat with you, but may only trade
+   or whisper if you have this option allowed for everyone.
+ - ##2friend##P:  You consider this player a friend.  The player may chat,
+   message your in private, or trade with you at any point.
+ - ##2disregarded##P:  You wish to disregard this player, meaning that his or
+   her chat messages are not logged and trade requests and whispers are
+   ignored.
+ - ##2ignored##P:  You wish to completely ignore this player.  You will not
+   even see floating text for him or her anymore, nor emotions.

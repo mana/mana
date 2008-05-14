@@ -28,6 +28,7 @@
 
 #include "../item.h"
 #include "../localplayer.h"
+#include "../player_relations.h"
 
 #include "../gui/chat.h"
 #include "../gui/confirm_dialog.h"
@@ -48,8 +49,7 @@ namespace {
     } listener;
 }
 
-TradeHandler::TradeHandler():
-    mAcceptTradeRequests(true)
+TradeHandler::TradeHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_TRADE_REQUEST,
@@ -64,15 +64,6 @@ TradeHandler::TradeHandler():
     handledMessages = _messages;
 }
 
-void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
-{
-    mAcceptTradeRequests = acceptTradeRequests;
-    if (mAcceptTradeRequests) {
-        chatWindow->chatLog("Accepting incoming trade requests", BY_SERVER);
-    } else {
-        chatWindow->chatLog("Ignoring incoming trade requests", BY_SERVER);
-    }
-}
 
 void TradeHandler::handleMessage(MessageIn *msg)
 {
@@ -87,7 +78,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
                 // special message about the player being occupied.
                 tradePartnerName = msg->readString(24);
 
-                if (mAcceptTradeRequests)
+                if (player_relations.hasPermission(tradePartnerName, PlayerRelation::TRADE))
                 {
                     if (!player_node->tradeRequestOk())
                     {

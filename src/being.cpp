@@ -72,7 +72,7 @@ Being::Being(int id, int job, Map *map):
     {
         // Load the emotion set
         ResourceManager *rm = ResourceManager::getInstance();
-        emotionSet = rm->getImageSet("graphics/sprites/emotions.png", 30, 32);
+        emotionSet = rm->getImageSet("graphics/gui/emotions.png", 30, 32);
         if (!emotionSet) logger->error("Unable to load emotions!");
     }
 

@@ -36,7 +36,8 @@
 #include "gui/gui.h"
 
 Player::Player(int id, int job, Map *map):
-    Being(id, job, map)
+    Being(id, job, map),
+    mDrawStrategy(NULL)
 {
 }
 
@@ -74,15 +75,37 @@ Player::getType() const
     return PLAYER;
 }
 
+
+void
+Player::setNameDrawStrategy(PlayerNameDrawStrategy *draw_strategy)
+{
+    if (mDrawStrategy)
+        delete mDrawStrategy;
+    mDrawStrategy = draw_strategy;
+}
+
+class
+DefaultPlayerNameDrawStrategy : public PlayerNameDrawStrategy
+{
+public:
+    virtual void draw(Player *player, Graphics *graphics, int px, int py)
+    {
+        graphics->setFont(speechFont);
+        graphics->setColor(gcn::Color(255, 255, 255));
+        graphics->drawText(player->getName(), px + 15, py + 30, gcn::Graphics::CENTER);
+    }
+};
+
 void
 Player::drawName(Graphics *graphics, int offsetX, int offsetY)
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;
 
-    graphics->setFont(speechFont);
-    graphics->setColor(gcn::Color(255, 255, 255));
-    graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
+    if (mDrawStrategy)
+        mDrawStrategy->draw(this, graphics, px, py);
+    else
+        DefaultPlayerNameDrawStrategy().draw(this, graphics, px, py);
 }
 
 void Player::setGender(int gender)

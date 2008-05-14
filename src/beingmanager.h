@@ -79,6 +79,11 @@ class BeingManager
                                       Being::Type type = Being::UNKNOWN);
 
         /**
+         * Finds a being by name and (optionally) by type.
+         */
+        Being* findBeingByName(std::string name, Being::Type type = Being::UNKNOWN);
+
+        /**
          * Return a being nearest to another being.
          *
          * \param maxdist maximal distance. If minimal distance is larger,

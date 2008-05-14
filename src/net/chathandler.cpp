@@ -32,6 +32,7 @@
 #include "../being.h"
 #include "../beingmanager.h"
 #include "../game.h"
+#include "../player_relations.h"
 
 #include "../gui/chat.h"
 
@@ -39,6 +40,8 @@
 #include "../utils/trim.h"
 
 extern Being *player_node;
+
+#define SERVER_NAME "Server"
 
 ChatHandler::ChatHandler()
 {
@@ -89,14 +92,20 @@ void ChatHandler::handleMessage(MessageIn *msg)
                 break;
 
             chatMsg = msg->readString(chatMsgLength);
-            if (nick != "Server")
+            if (nick != SERVER_NAME)
                 chatMsg = nick + " : " + chatMsg;
-            chatWindow->chatLog(chatMsg, (nick == "Server") ? BY_SERVER : ACT_WHISPER);
+
+            if (nick == SERVER_NAME)
+                chatWindow->chatLog(chatMsg, BY_SERVER);
+            else {
+                if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
+                    chatWindow->chatLog(chatMsg, ACT_WHISPER);
+            }
 
             break;
 
         // Received speech from being
-        case SMSG_BEING_CHAT:
+        case SMSG_BEING_CHAT: {
             chatMsgLength = msg->readInt16() - 8;
             being = beingManager->findBeing(msg->readInt32());
 
@@ -106,14 +115,27 @@ void ChatHandler::handleMessage(MessageIn *msg)
             }
 
             chatMsg = msg->readString(chatMsgLength);
-            chatWindow->chatLog(chatMsg, BY_OTHER);
-            chatMsg.erase(0, chatMsg.find(" : ", 0) + 3);
+
+            std::string::size_type pos = chatMsg.find(" : ", 0);
+            std::string sender_name = ((pos == std::string::npos)
+                                       ? ""
+                                       : chatMsg.substr(0, pos));
+
+            // We use getIgnorePlayer instead of ignoringPlayer here because ignorePlayer' side
+            // effects are triggered right below for Being::IGNORE_SPEECH_FLOAT.
+            if (player_relations.checkPermissionSilently(sender_name, PlayerRelation::SPEECH_LOG))
+                chatWindow->chatLog(chatMsg, BY_OTHER);
+
+            chatMsg.erase(0, pos + 3);
             trim(chatMsg);
-            being->setSpeech(chatMsg, SPEECH_TIME);
+
+            if (player_relations.hasPermission(sender_name, PlayerRelation::SPEECH_FLOAT))
+                being->setSpeech(chatMsg, SPEECH_TIME);
             break;
+        }
 
         case SMSG_PLAYER_CHAT:
-        case SMSG_GM_CHAT:
+        case SMSG_GM_CHAT: {
             chatMsgLength = msg->readInt16() - 4;
 
             if (chatMsgLength <= 0)
@@ -122,17 +144,17 @@ void ChatHandler::handleMessage(MessageIn *msg)
             }
 
             chatMsg = msg->readString(chatMsgLength);
+            std::string::size_type pos = chatMsg.find(" : ", 0);
 
             if (msg->getId() == SMSG_PLAYER_CHAT)
             {
                 chatWindow->chatLog(chatMsg, BY_PLAYER);
 
-                std::string::size_type pos = chatMsg.find(" : ", 0);
                 if (pos != std::string::npos)
-                {
                     chatMsg.erase(0, pos + 3);
-                }
+
                 trim(chatMsg);
+
                 player_node->setSpeech(chatMsg, SPEECH_TIME);
             }
             else
@@ -140,6 +162,7 @@ void ChatHandler::handleMessage(MessageIn *msg)
                 chatWindow->chatLog(chatMsg, BY_GM);
             }
             break;
+        }
 
         case SMSG_WHO_ANSWER:
             chatWindow->chatLog("Online users: " + toString(msg->readInt32()),

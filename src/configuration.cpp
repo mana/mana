@@ -32,6 +32,109 @@
 #include "utils/tostring.h"
 #include "utils/xml.h"
 
+void ConfigurationObject::setValue(const std::string &key, std::string value)
+{
+    mOptions[key] = value;
+}
+
+void ConfigurationObject::setValue(const std::string &key, float value)
+{
+    setValue(key, toString((value == (int)value) ? (int)value : value));
+}
+
+void Configuration::setValue(const std::string &key, float value)
+{
+    setValue(key, toString((value == (int)value) ? (int)value : value));
+}
+
+void Configuration::setValue(const std::string &key, std::string value)
+{
+    ConfigurationObject::setValue(key, value);
+
+    // Notify listeners
+    ListenerMapIterator list = mListenerMap.find(key);
+    if (list != mListenerMap.end()) {
+        Listeners listeners = list->second;
+        for (ListenerIterator i = listeners.begin(); i != listeners.end(); i++)
+        {
+            (*i)->optionChanged(key);
+        }
+    }
+}
+
+std::string ConfigurationObject::getValue(const std::string &key, std::string deflt)
+{
+    OptionIterator iter = mOptions.find(key);
+    return ((iter != mOptions.end()) ? iter->second : deflt);
+}
+
+float ConfigurationObject::getValue(const std::string &key, float deflt)
+{
+    OptionIterator iter = mOptions.find(key);
+    return (iter != mOptions.end()) ? atof(iter->second.c_str()) : deflt;
+}
+
+void
+ConfigurationObject::deleteList(const std::string &name)
+{
+    for (ConfigurationList::const_iterator
+             it = mContainerOptions[name].begin(); it != mContainerOptions[name].end(); it++)
+        delete *it;
+
+    mContainerOptions[name].clear();
+}
+
+void
+ConfigurationObject::clear(void)
+{
+    for (std::map<std::string, ConfigurationList>::const_iterator
+             it = mContainerOptions.begin(); it != mContainerOptions.end(); it++)
+        deleteList(it->first);
+    mOptions.clear();
+}
+
+
+ConfigurationObject::~ConfigurationObject(void)
+{
+    clear();
+}
+
+void
+ConfigurationObject::initFromXML(xmlNodePtr parent_node)
+{
+    clear();
+
+    for_each_xml_child_node(node, parent_node)
+    {
+        if (xmlStrEqual(node->name, BAD_CAST "list")) {
+            // list option handling
+
+            std::string name = XML::getProperty(node, "name", std::string());
+
+            for_each_xml_child_node(subnode, node)
+            {
+                if (xmlStrEqual(subnode->name, BAD_CAST name.c_str())
+                    && subnode->type == XML_ELEMENT_NODE) {
+                    ConfigurationObject *cobj = new ConfigurationObject();
+
+                    cobj->initFromXML(subnode); // recurse
+
+                    mContainerOptions[name].push_back(cobj);
+                }
+            }
+
+        } else if (xmlStrEqual(node->name, BAD_CAST "option")) {
+            // single option handling
+
+            std::string name = XML::getProperty(node, "name", std::string());
+            std::string value = XML::getProperty(node, "value", std::string());
+
+            if (!name.empty() && !value.empty())
+                mOptions[name] = value;
+        } // otherwise ignore
+    }
+}
+
 void Configuration::init(const std::string &filename)
 {
     mConfigPath = filename;
@@ -57,22 +160,44 @@ void Configuration::init(const std::string &filename)
         return;
     }
 
-    for_each_xml_child_node(node, rootNode)
-    {
-        if (!xmlStrEqual(node->name, BAD_CAST "option"))
-            continue;
-
-        std::string name = XML::getProperty(node, "name", std::string());
-        std::string value = XML::getProperty(node, "value", std::string());
-
-        if (!name.empty() && !value.empty())
-        {
-            mOptions[name] = value;
-        }
-    }
+    initFromXML(rootNode);
 
     xmlFreeDoc(doc);
 }
+
+void
+ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
+{
+    for (OptionIterator i = mOptions.begin(); i != mOptions.end(); i++)
+    {
+        xmlTextWriterStartElement(writer, BAD_CAST "option");
+        xmlTextWriterWriteAttribute(writer,
+                BAD_CAST "name", BAD_CAST i->first.c_str());
+        xmlTextWriterWriteAttribute(writer,
+                BAD_CAST "value", BAD_CAST i->second.c_str());
+        xmlTextWriterEndElement(writer);
+    }
+
+    for (std::map<std::string, ConfigurationList>::const_iterator
+             it = mContainerOptions.begin(); it != mContainerOptions.end(); it++) {
+        const char *name = it->first.c_str();
+
+        xmlTextWriterStartElement(writer, BAD_CAST "list");
+        xmlTextWriterWriteAttribute(writer, BAD_CAST "name", BAD_CAST name);
+
+        // recurse on all elements
+        for (ConfigurationList::const_iterator
+                 elt_it = it->second.begin(); elt_it != it->second.end(); elt_it++) {
+
+            xmlTextWriterStartElement(writer, BAD_CAST name);
+            (*elt_it)->writeToXML(writer);
+            xmlTextWriterEndElement(writer);
+        }
+
+        xmlTextWriterEndElement(writer);
+    }
+}
+
 
 void Configuration::write()
 {
@@ -100,50 +225,10 @@ void Configuration::write()
     xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
     xmlTextWriterStartElement(writer, BAD_CAST "configuration");
 
-    for (OptionIterator i = mOptions.begin(); i != mOptions.end(); i++)
-    {
-        xmlTextWriterStartElement(writer, BAD_CAST "option");
-        xmlTextWriterWriteAttribute(writer,
-                BAD_CAST "name", BAD_CAST i->first.c_str());
-        xmlTextWriterWriteAttribute(writer,
-                BAD_CAST "value", BAD_CAST i->second.c_str());
-        xmlTextWriterEndElement(writer);
-    }
+    writeToXML(writer);
 
     xmlTextWriterEndDocument(writer);
     xmlFreeTextWriter(writer);
-}
-
-void Configuration::setValue(const std::string &key, std::string value)
-{
-    mOptions[key] = value;
-
-    // Notify listeners
-    ListenerMapIterator list = mListenerMap.find(key);
-    if (list != mListenerMap.end()) {
-        Listeners listeners = list->second;
-        for (ListenerIterator i = listeners.begin(); i != listeners.end(); i++)
-        {
-            (*i)->optionChanged(key);
-        }
-    }
-}
-
-void Configuration::setValue(const std::string &key, float value)
-{
-    setValue(key, toString((value == (int)value) ? (int)value : value));
-}
-
-std::string Configuration::getValue(const std::string &key, std::string deflt)
-{
-    OptionIterator iter = mOptions.find(key);
-    return ((iter != mOptions.end()) ? iter->second : deflt);
-}
-
-float Configuration::getValue(const std::string &key, float deflt)
-{
-    OptionIterator iter = mOptions.find(key);
-    return (iter != mOptions.end()) ? atof(iter->second.c_str()) : deflt;
 }
 
 void Configuration::addListener(

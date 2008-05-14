@@ -78,6 +78,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
 	      gui/playerbox.h \
+	      gui/popup_box.cpp \
+	      gui/popup_box.h \
 	      gui/popupmenu.cpp \
 	      gui/popupmenu.h \
 	      gui/progressbar.cpp \
@@ -98,6 +100,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/setup_joystick.h \
 	      gui/setup_keyboard.cpp \
 	      gui/setup_keyboard.h \
+	      gui/setup_players.cpp \
+	      gui/setup_players.h \
 	      gui/setuptab.h \
 	      gui/setup_video.cpp \
 	      gui/setup_video.h \
@@ -113,6 +117,10 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/status.h \
 	      gui/tabbedcontainer.cpp \
 	      gui/tabbedcontainer.h \
+	      gui/table.h \
+	      gui/table.cpp \
+	      gui/table_model.h \
+	      gui/table_model.cpp \
 	      gui/textbox.cpp \
 	      gui/textbox.h \
 	      gui/textfield.cpp \
@@ -272,6 +280,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      particleemitter.h \
 	      player.cpp \
 	      player.h \
+	      player_relations.cpp \
+	      player_relations.h \
 	      properties.h \
 	      serverinfo.h \
 	      simpleanimation.cpp \

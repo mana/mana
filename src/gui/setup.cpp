@@ -30,9 +30,11 @@
 #include "setup_joystick.h"
 #include "setup_video.h"
 #include "setup_keyboard.h"
+#include "setup_players.h"
 #include "tabbedcontainer.h"
 
 #include "../utils/dtor.h"
+#include <iostream>
 
 extern Window *statusWindow;
 extern Window *minimap;
@@ -46,7 +48,7 @@ Setup::Setup():
     Window("Setup")
 {
     setCloseButton(true);
-    int width = 250;
+    int width = 310;
     int height = 245;
     setContentSize(width, height);
 
@@ -62,7 +64,7 @@ Setup::Setup():
     }
 
     TabbedContainer *panel = new TabbedContainer();
-    panel->setDimension(gcn::Rectangle(5, 5, 250, 205));
+    panel->setDimension(gcn::Rectangle(5, 5, width, 205));
     panel->setOpaque(false);
 
     SetupTab *tab;
@@ -81,6 +83,10 @@ Setup::Setup():
 
     tab = new Setup_Keyboard();
     panel->addTab(tab, "Keyboard");
+    mTabs.push_back(tab);
+
+    tab = new Setup_Players();
+    panel->addTab(tab, "Players");
     mTabs.push_back(tab);
 
     add(panel);

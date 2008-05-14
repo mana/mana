@@ -46,6 +46,7 @@
 
 #include "configuration.h"
 #include "keyboardconfig.h"
+#include "player_relations.h"
 #include "game.h"
 #include "graphics.h"
 #include "itemshortcut.h"
@@ -331,6 +332,9 @@ void init_engine(const Options &options)
 
     // Initialize keyboard
     keyboard.init();
+
+    // Initialise player relations
+    player_relations.init();
 }
 
 /** Clear the engine */

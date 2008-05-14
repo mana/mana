@@ -38,6 +38,7 @@
 #include "../item.h"
 #include "../localplayer.h"
 #include "../npc.h"
+#include "../player_relations.h"
 
 #include "../resources/iteminfo.h"
 #include "../resources/itemdb.h"
@@ -75,8 +76,29 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 // add as buddy will be options in this menu.
                 const std::string &name = mBeing->getName();
                 mBrowserBox->addRow("@@trade|Trade With " + name + "@@");
-
                 mBrowserBox->addRow("@@attack|Attack " + name + "@@");
+
+                mBrowserBox->addRow("##3---");
+
+                switch (player_relations.getRelation(name)) {
+                case PlayerRelation::NEUTRAL:
+                    mBrowserBox->addRow("@@friend|Befriend " + name + "@@");
+
+                case PlayerRelation::FRIEND:
+                    mBrowserBox->addRow("@@disregard|Disregard " + name + "@@");
+                    mBrowserBox->addRow("@@ignore|Ignore " + name + "@@");
+                    break;
+
+                case PlayerRelation::DISREGARDED:
+                    mBrowserBox->addRow("@@unignore|Un-Ignore " + name + "@@");
+                    mBrowserBox->addRow("@@ignore|Completely ignore " + name + "@@");
+                    break;
+
+                case PlayerRelation::IGNORED:
+                    mBrowserBox->addRow("@@unignore|Un-Ignore " + name + "@@");
+                    break;
+                }
+
                 //mBrowserBox->addRow("@@follow|Follow " + name + "@@");
                 //mBrowserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
             }
@@ -142,6 +164,34 @@ void PopupMenu::handleLink(const std::string& link)
              mBeing->getType() == Being::PLAYER)
     {
         player_node->attack(mBeing, true);
+    }
+
+    else if (link == "unignore" &&
+             mBeing != NULL &&
+             mBeing->getType() == Being::PLAYER)
+    {
+        player_relations.setRelation(mBeing->getName(), PlayerRelation::NEUTRAL);
+    }
+
+    else if (link == "ignore" &&
+             mBeing != NULL &&
+             mBeing->getType() == Being::PLAYER)
+    {
+        player_relations.setRelation(mBeing->getName(), PlayerRelation::IGNORED);
+    }
+
+    else if (link == "disregard" &&
+             mBeing != NULL &&
+             mBeing->getType() == Being::PLAYER)
+    {
+        player_relations.setRelation(mBeing->getName(), PlayerRelation::DISREGARDED);
+    }
+
+    else if (link == "friend" &&
+             mBeing != NULL &&
+             mBeing->getType() == Being::PLAYER)
+    {
+        player_relations.setRelation(mBeing->getName(), PlayerRelation::FRIEND);
     }
 
     /*

@@ -11,6 +11,7 @@ gui_DATA =				\
 	checkbox.png			\
 	close_button.png		\
 	deepbox.png			\
+	emotions.png			\
 	fixedfont.png			\
 	hits_blue.png			\
 	hits_red.png			\

@@ -48,7 +48,7 @@ class Setup : public Window, public gcn::ActionListener
         /**
          * Destructor.
          */
-        ~Setup();
+        virtual ~Setup();
 
         /**
          * Event handling method.

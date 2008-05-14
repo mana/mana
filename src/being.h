@@ -37,6 +37,8 @@
 #define NR_HAIR_STYLES 8
 #define NR_HAIR_COLORS 10
 
+#define FIRST_IGNORE_EMOTE 14
+
 class AnimatedSprite;
 class Equipment;
 class ItemInfo;
@@ -355,6 +357,8 @@ class Being : public Sprite
          * Take control of a particle.
          */
         void controlParticle(Particle *particle);
+
+        void setEmote(Uint8 emotion, Uint8 emote_time) { mEmotion = emotion; mEmotionTime = emote_time; }
 
         const std::auto_ptr<Equipment> mEquipment;
 

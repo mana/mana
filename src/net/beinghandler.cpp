@@ -36,6 +36,7 @@
 #include "../main.h"
 #include "../particle.h"
 #include "../sound.h"
+#include "../player_relations.h"
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
@@ -245,8 +246,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 break;
             }
 
-            dstBeing->mEmotion = msg->readInt8();
-            dstBeing->mEmotionTime = EMOTION_TIME;
+            if (player_relations.hasPermission(dstBeing, PlayerRelation::EMOTE))
+                dstBeing->setEmote(msg->readInt8(), EMOTION_TIME);
+
             break;
 
         case SMSG_BEING_CHANGE_LOOKS:
