@@ -6,6 +6,7 @@
 	src/Makefile.am, data/graphics/gui/tab.png,
 	data/graphics/gui/tabselected.png, tmw.cbp: Added tab with image 
 	based on button.
+	* src/gui/chat.cpp: Fixed chat window scrolling.
 
 2008-05-12  David Athay  <ko2fan@gmail.com>
 

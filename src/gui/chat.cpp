@@ -199,6 +199,8 @@ ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
     {
         output->addRow(line);
     }
+
+    scroll->logic();
 }
 
 #if 0
