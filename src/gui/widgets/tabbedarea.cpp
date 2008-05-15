@@ -22,6 +22,7 @@
  */
 
 #include "tabbedarea.h"
+#include "tab.h"
 
 #include <guichan/widgets/container.hpp>
 
@@ -35,15 +36,14 @@ int TabbedArea::getNumberOfTabs()
     return mTabs.size();
 }
 
-gcn::Tab* TabbedArea::getTab(const std::string &name)
+Tab* TabbedArea::getTab(const std::string &name)
 {
-    std::vector< std::pair<gcn::Tab*, gcn::Widget*> >::iterator itr = mTabs.begin(),
-                                                        itr_end = mTabs.end();
+    TabContainer::iterator itr = mTabs.begin(), itr_end = mTabs.end();
     while (itr != itr_end)
     {
         if ((*itr).first->getCaption() == name)
         {
-            return (*itr).first;
+            return static_cast<Tab*>((*itr).first);
         }
         ++itr;
     }
@@ -62,8 +62,7 @@ void TabbedArea::draw(gcn::Graphics *graphics)
 
 gcn::Widget* TabbedArea::getWidget(const std::string &name)
 {
-    std::vector< std::pair<gcn::Tab*, gcn::Widget*> >::iterator itr = mTabs.begin(),
-                                                        itr_end = mTabs.end();
+    TabContainer::iterator itr = mTabs.begin(), itr_end = mTabs.end();
     while (itr != itr_end)
     {
         if ((*itr).first->getCaption() == name)
@@ -76,7 +75,33 @@ gcn::Widget* TabbedArea::getWidget(const std::string &name)
     return NULL;
 }
 
-void TabbedArea::removeTab(gcn::Tab *tab)
+void TabbedArea::addTab(const std::string &caption, gcn::Widget *widget)
+{
+    Tab* tab = new Tab();
+    tab->setCaption(caption);
+    mTabsToDelete.push_back(tab);
+
+    addTab(tab, widget);
+}
+
+void TabbedArea::addTab(Tab *tab, gcn::Widget *widget)
+{
+    tab->setTabbedArea(this);
+    tab->addActionListener(this);
+
+    mTabContainer->add(tab);
+    mTabs.push_back(std::pair<Tab*, gcn::Widget*>(tab, widget));
+
+    if (mSelectedTab == NULL)
+    {
+        setSelectedTab(tab);
+    }
+
+    adjustTabPositions();
+    adjustSize();
+}
+
+void TabbedArea::removeTab(Tab *tab)
 {
     int tabIndexToBeSelected = 0;
 
@@ -95,7 +120,7 @@ void TabbedArea::removeTab(gcn::Tab *tab)
         }
     }
 
-    std::vector<std::pair<gcn::Tab*, gcn::Widget*> >::iterator iter;
+    TabContainer::iterator iter;
     for (iter = mTabs.begin(); iter != mTabs.end(); iter++)
     {
         if (iter->first == tab)

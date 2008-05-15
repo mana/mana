@@ -411,6 +411,8 @@
 		<Unit filename="src/gui/widgets/resizegrip.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/widgets/tab.cpp" />
+		<Unit filename="src/gui/widgets/tab.h" />
 		<Unit filename="src/gui/widgets/tabbedarea.cpp" />
 		<Unit filename="src/gui/widgets/tabbedarea.h" />
 		<Unit filename="src/gui/window.cpp" />

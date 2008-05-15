@@ -1,3 +1,12 @@
+2008-05-15  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/widgets/tabbedarea.h, src/gui/widgets/tab.cpp,
+	src/gui/widgets/tabbedarea.cpp, src/gui/widgets/tab.h,
+	src/gui/chat.cpp, src/gui/guildwindow.cpp, src/CMakeLists.txt,
+	src/Makefile.am, data/graphics/gui/tab.png,
+	data/graphics/gui/tabselected.png, tmw.cbp: Added tab with image 
+	based on button.
+
 2008-05-12  David Athay  <ko2fan@gmail.com>
 
 	* src/Makefile.am, src/CMakeLists.txt: Fix building on other systems.

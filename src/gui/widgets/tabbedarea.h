@@ -25,10 +25,11 @@
 #define _TMW_TABBEDAREA_H
 
 #include <guichan/widget.hpp>
-#include <guichan/widgets/tab.hpp>
 #include <guichan/widgets/tabbedarea.hpp>
 
 #include <string>
+
+class Tab;
 
 /**
  * A tabbed area, the same as the guichan tabbed area in 0.8, but extended
@@ -54,7 +55,7 @@ class TabbedArea : public gcn::TabbedArea
         /**
          * Return tab with specified name as caption
          */
-        gcn::Tab* getTab(const std::string &name);
+        Tab* getTab(const std::string &name);
 
         /**
          * Returns the widget with the tab that has specified caption
@@ -62,9 +63,26 @@ class TabbedArea : public gcn::TabbedArea
         gcn::Widget* getWidget(const std::string &name);
 
         /**
+         * Add a tab
+         * @param caption The Caption to display
+         * @param widget The widget to show when tab is selected
+         */
+        void addTab(const std::string &caption, gcn::Widget *widget);
+
+        /**
+         * Add a tab
+         * @param tab The tab
+         * @param widget The widget to display
+         */
+        void addTab(Tab *tab, gcn::Widget *widget);
+
+        /**
          * Overload the remove tab function as its broken in guichan 0.8
          */
-        void removeTab(gcn::Tab *tab);
+        void removeTab(Tab *tab);
+
+    private:
+        typedef std::vector< std::pair<gcn::Tab*, gcn::Widget*> > TabContainer;
 };
 
 #endif

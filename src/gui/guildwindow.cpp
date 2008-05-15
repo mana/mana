@@ -252,7 +252,7 @@ void GuildWindow::removeTab(int guildId)
     Guild* guild = player_node->getGuild(guildId);
     if (guild)
     {
-        gcn::Tab *tab = mGuildTabs->getTab(guild->getName());
+        Tab *tab = mGuildTabs->getTab(guild->getName());
         if (tab)
         {
             mGuildTabs->removeTab(tab);

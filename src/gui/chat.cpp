@@ -34,6 +34,7 @@
 #include "sdlinput.h"
 #include "windowcontainer.h"
 
+#include "widgets/tab.h"
 #include "widgets/tabbedarea.h"
 
 #include "../channelmanager.h"
@@ -488,7 +489,7 @@ ChatWindow::removeChannel(Channel *channel)
 {
     if (channel)
     {
-        gcn::Tab *tab = mChatTabs->getTab(channel->getName());
+        Tab *tab = mChatTabs->getTab(channel->getName());
         if (!tab)
             return;
         mChatTabs->removeTab(tab);
@@ -595,7 +596,7 @@ ChatWindow::setVisible(bool isVisible)
 bool
 ChatWindow::tabExists(const std::string &tabName)
 {
-    gcn::Tab *tab = mChatTabs->getTab(tabName);
+    Tab *tab = mChatTabs->getTab(tabName);
     if (tab)
         return true;
     return false;

@@ -7,6 +7,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/widgets/layout.h \
 	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
+              gui/widgets/tab.cpp \
+              gui/widgets/tab.h \
 	      gui/widgets/tabbedarea.cpp \
 	      gui/widgets/tabbedarea.h \
 	      gui/box.h \
