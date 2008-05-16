@@ -1,3 +1,7 @@
+2008-05-16  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/popupmenu.cpp: Applied QOAL's patch to fix popup bug.
+
 2008-05-14  fate  <fate.tmw@googlemail.com>
 
 	* src/configuration.cpp, src/game.cpp, src/player_relations.h,

@@ -293,9 +293,9 @@ void PopupMenu::showPopup(int x, int y)
 {
     setContentSize(mBrowserBox->getWidth() + 8, mBrowserBox->getHeight() + 8);
     if (windowContainer->getWidth() < (x + getWidth() + 5))
-        x -= (getWidth() + 50);
+        x = windowContainer->getWidth() - getWidth();
     if (windowContainer->getHeight() < (y + getHeight() + 5))
-        y -= (getHeight() + 50);
+        y = windowContainer->getHeight() - getHeight();
     setPosition(x, y);
     setVisible(true);
     requestMoveToTop();
