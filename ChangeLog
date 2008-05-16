@@ -1,3 +1,8 @@
+2008-05-16  David Athay  <ko2fan@gmail.com>
+
+	*  src/gui/popupmenu.cpp: Applied QOAL's patch to fix popups at 
+	bottom of the screen.
+
 2008-05-15  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/widgets/tabbedarea.h, src/gui/widgets/tab.cpp,
