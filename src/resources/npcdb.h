@@ -34,7 +34,12 @@ struct NPCsprite
     int variant;
 };
 
-typedef std::list<NPCsprite*> NPCInfo;
+struct NPCInfo
+{
+    std::list<NPCsprite*> sprites;
+    std::list<std::string> particles;
+};
+
 typedef std::map<int, NPCInfo*> NPCInfos;
 
 /**

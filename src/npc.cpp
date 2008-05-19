@@ -25,6 +25,7 @@
 
 #include "animatedsprite.h"
 #include "graphics.h"
+#include "particle.h"
 
 #include "gui/gui.h"
 #include "net/messageout.h"
@@ -37,10 +38,11 @@ NPC::NPC(Uint16 id, int sprite, Map *map):
     Being(id, sprite, map)
 {
     NPCInfo info = NPCDB::get(sprite);
-    int c = BASE_SPRITE;
 
-    for (NPCInfo::const_iterator i = info.begin();
-         i != info.end();
+    //setup NPC sprites
+    int c = BASE_SPRITE;
+    for (std::list<NPCsprite*>::const_iterator i = info.sprites.begin();
+         i != info.sprites.end();
          i++)
     {
         if (c == VECTOREND_SPRITE) break;
@@ -51,7 +53,14 @@ NPC::NPC(Uint16 id, int sprite, Map *map):
         c++;
     }
 
-    mName = "NPC";
+    //setup particle effects
+    for (std::list<std::string>::const_iterator i = info.particles.begin();
+         i != info.particles.end();
+         i++)
+    {
+        Particle *p = particleEngine->addEffect(*i, 0, 0, 0);
+        this->controlParticle(p);
+    }
 }
 
 Being::Type
