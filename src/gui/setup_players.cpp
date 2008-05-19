@@ -24,10 +24,10 @@
 #include "setup_players.h"
 
 #include <vector>
+#include <guichan/widgets/dropdown.hpp>
 #include <guichan/widgets/label.hpp>
-#include "popup_box.h"
-#include "button.h"
 
+#include "button.h"
 #include "checkbox.h"
 #include "ok_dialog.h"
 
@@ -127,7 +127,7 @@ public:
             gcn::Widget *widget = new gcn::Label(name);
             mWidgets.push_back(widget);
 
-            PopupBox *choicebox = new PopupBox(new PlayerRelationListModel());
+            gcn::DropDown *choicebox = new gcn::DropDown(new PlayerRelationListModel());
             choicebox->setSelected(player_relations.getRelation(name));
             mWidgets.push_back(choicebox);
         }
@@ -137,7 +137,7 @@ public:
 
     virtual void updateModelInRow(int row)
     {
-        PopupBox *choicebox = dynamic_cast<PopupBox *>(getElementAt(row, RELATION_CHOICE_COLUMN));
+        gcn::DropDown *choicebox = dynamic_cast<gcn::DropDown *>(getElementAt(row, RELATION_CHOICE_COLUMN));
         player_relations.setRelation(getPlayerAt(row),
                                      static_cast<PlayerRelation::relation>(choicebox->getSelected()));
     }
@@ -207,7 +207,7 @@ Setup_Players::Setup_Players():
     mDefaultTrading(new CheckBox("allow trading", player_relations.getDefault() & PlayerRelation::TRADE)),
     mDefaultWhisper(new CheckBox("allow whispers", player_relations.getDefault() & PlayerRelation:: WHISPER)),
     mDeleteButton(new Button("Delete", ACTION_DELETE, this)),
-    mIgnoreActionChoicesBox(new PopupBox(new IgnoreChoicesListModel()))
+    mIgnoreActionChoicesBox(new gcn::DropDown(new IgnoreChoicesListModel()))
 {
     setOpaque(false);
 

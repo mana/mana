@@ -78,8 +78,6 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
 	      gui/playerbox.h \
-	      gui/popup_box.cpp \
-	      gui/popup_box.h \
 	      gui/popupmenu.cpp \
 	      gui/popupmenu.h \
 	      gui/progressbar.cpp \

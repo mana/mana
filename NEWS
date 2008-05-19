@@ -1,3 +1,5 @@
+- Fixed display of critical hits
+
 0.0.24.1 (7 April 2008)
 - Added /clear command to clear chat window
 - Added ability to close quit dialog by pressing ESC

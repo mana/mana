@@ -27,7 +27,6 @@
 #include "scrollarea.h"
 #include "button.h"
 #include "table.h"
-#include "popup_box.h"
 #include <guichan/actionlistener.hpp>
 
 #include "../guichanfwd.h"
@@ -52,7 +51,6 @@ public:
     virtual void updatedPlayer(const std::string &name);
 
 private:
-
     StaticTableModel *mPlayerTableTitleModel;
     PlayerTableModel *mPlayerTableModel;
     GuiTable *mPlayerTable;
@@ -64,7 +62,7 @@ private:
     gcn::CheckBox *mDefaultWhisper;
 
     Button *mDeleteButton;
-    PopupBox *mIgnoreActionChoicesBox;
+    gcn::DropDown *mIgnoreActionChoicesBox;
 };
 
 #endif

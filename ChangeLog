@@ -1,3 +1,11 @@
+2008-05-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/setup_players.cpp, src/gui/popup_box.h, src/gui/viewport.h,
+	src/gui/popup_box.cpp, src/gui/setup_players.h, src/Makefile.am:
+	Removed the PopupBox class and used gcn::DropDown instead. It has
+	clipping issues, but it would be better to fix those instead of using
+	this complicated workaround.
+
 2008-05-16  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/popupmenu.cpp: Applied QOAL's patch to fix popup bug.
