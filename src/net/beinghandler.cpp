@@ -490,6 +490,8 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
         {
             int subtype = msg.readInt16();
             being = beingManager->createBeing(id, type, subtype);
+            std::string name = msg.readString();
+            if (name.length() > 0) being->setName(name);
         } break;
 
         default:

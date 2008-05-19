@@ -1,3 +1,8 @@
+2008-05-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp: Implemented interpretation of names for
+	NPCs and monsters.
+
 2008-05-16  David Athay  <ko2fan@gmail.com>
 
 	*  src/gui/popupmenu.cpp: Applied QOAL's patch to fix popups at 
