@@ -45,7 +45,7 @@ void NPCDB::load()
     NPCsprite *unknownSprite = new NPCsprite;
     unknownSprite->sprite = "error.xml";
     unknownSprite->variant = 0;
-    mUnknown.push_back(unknownSprite);
+    mUnknown.sprites.push_back(unknownSprite);
 
     logger->log("Initializing NPC database...");
 
@@ -74,17 +74,20 @@ void NPCDB::load()
 
         for_each_xml_child_node(spriteNode, npcNode)
         {
-            if (!xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
-                continue;
-
-            NPCsprite *currentSprite = new NPCsprite;
-            currentSprite->sprite = (const char*)spriteNode->xmlChildrenNode->content;
-            currentSprite->variant = XML::getProperty(spriteNode, "variant", 0);
-            currentInfo->push_back(currentSprite);
+            if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
+            {
+                NPCsprite *currentSprite = new NPCsprite;
+                currentSprite->sprite = (const char*)spriteNode->xmlChildrenNode->content;
+                currentSprite->variant = XML::getProperty(spriteNode, "variant", 0);
+                currentInfo->sprites.push_back(currentSprite);
+            }
+            else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
+            {
+                std::string particlefx = (const char*)spriteNode->xmlChildrenNode->content;
+                currentInfo->particles.push_back(particlefx);
+            }
         }
-
         mNPCInfos[id] = currentInfo;
-
     }
 
     mLoaded = true;
@@ -97,20 +100,20 @@ NPCDB::unload()
             i != mNPCInfos.end();
             i++)
     {
-        while (!i->second->empty())
+        while (!i->second->sprites.empty())
         {
-            delete i->second->front();
-            i->second->pop_front();
+            delete i->second->sprites.front();
+            i->second->sprites.pop_front();
         }
         delete i->second;
     }
 
     mNPCInfos.clear();
 
-    while (!mUnknown.empty())
+    while (!mUnknown.sprites.empty())
     {
-        delete mUnknown.front();
-        mUnknown.pop_front();
+        delete mUnknown.sprites.front();
+        mUnknown.sprites.pop_front();
     }
 
     mLoaded = false;
