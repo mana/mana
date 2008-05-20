@@ -12,9 +12,9 @@ IRC:       irc.freenode.net / #themanaworld
 1. Requirements
 ===============
 
-You are expected to have either checked out TMW from CVS or you have downloaded
-a source release. To get The Mana World to compile, you need a compiler (GCC)
-and some libraries. The required libraries are:
+You are expected to have either checked out TMW from Subversion or you have
+downloaded a source release. To get The Mana World to compile, you need a
+compiler (GCC) and some libraries. The required libraries are:
 
 * SDL               http://www.libsdl.org/
 * SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/

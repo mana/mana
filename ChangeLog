@@ -1,9 +1,13 @@
+2008-05-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* INSTALL: Mention Subversion instead of CVS.
+
 2008-05-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/net/beinghandler.cpp: Implemented interpretation of names for
 	NPCs and monsters.
-	* src/npc.cpp, src/resources/npcdb.cpp, src/resources/npcdb.hpp: Added the
-	possibility to add particle effects to NPCs in npcs.xml.
+	* src/npc.cpp, src/resources/npcdb.cpp, src/resources/npcdb.hpp: Added
+	the possibility to add particle effects to NPCs in npcs.xml.
 
 2008-05-16  David Athay  <ko2fan@gmail.com>
 
@@ -41,9 +45,9 @@
 
 2008-05-08  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/net/chathandler.cpp: Made say messages from being ID 0 display as
-	messages from server. Made messages from unknown beings display as from
-	"Unknown" instead of "John Doe".
+	* src/net/chathandler.cpp: Made say messages from being ID 0 display
+	as messages from server. Made messages from unknown beings display as
+	from "Unknown" instead of "John Doe".
 
 2008-05-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -108,10 +112,10 @@
 
 	* src/gui/chat.cpp, src/gui/widgets/tabbedarea.cpp,
 	src/gui/widgets/tabbedarea.h: Fixed chat window size issue.
-	*  src/localplayer.cpp, src/gui/widgets/tabbedarea.h,
+	* src/localplayer.cpp, src/gui/widgets/tabbedarea.h,
 	src/gui/widgets/tabbedarea.cpp, src/gui/popupmenu.cpp,
 	src/net/partyhandler.cpp, src/net/protocol.h,
-	src/net/chatserver/party.cpp, src/net/chatserver/party.h, 
+	src/net/chatserver/party.cpp, src/net/chatserver/party.h,
 	src/localplayer.h: Added more support for parties.
 
 2008-04-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -179,13 +183,13 @@
 	* src/net/chatserver/chatserver.h: One file was forgotten into the
 	private channels removal.
 	* src/localplayer.h, src/localplayer.cpp, src/gui/viewport.cpp,
-	src/main.h, src/main.cpp: Added input type parameter to the 
-	LocalPlayer::SetDestination methods in order to keep control over
-	message flooding to the server with mouse dragging. Moved Mouse calls
+	src/main.h, src/main.cpp: Added input type parameter to the
+	LocalPlayer::setDestination methods in order to keep control over
+	message flooding to the server with mouse dragging. Moved mouse calls
 	flooding control into viewport to avoid calling setDestination
 	unecessarily.
 	* Fixed a crash when clicking on 'Quit Guild' Button. Also disabled
-	the 'Invite user' and 'Quit Guild' buttons when no Guild is created.
+	the 'Invite user' and 'Quit Guild' buttons when no guild is created.
 
 2008-04-16  David Athay  <ko2fan@gmail.com>
 
