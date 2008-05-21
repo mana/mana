@@ -78,6 +78,7 @@
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
+#include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
@@ -357,6 +358,7 @@ void exit_engine()
     // Unload XML databases
     ItemDB::unload();
     MonsterDB::unload();
+    NPCDB::unload();
 
     ResourceManager::deleteInstance();
     delete logger;
@@ -742,6 +744,7 @@ int main(int argc, char *argv[])
                     // Load XML databases
                     ItemDB::load();
                     MonsterDB::load();
+                    NPCDB::load();
                     state = LOGIN_STATE;
                     break;
 

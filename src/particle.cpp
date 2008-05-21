@@ -217,34 +217,16 @@ Particle::addEffect(const std::string &particleEffectFile,
 {
     Particle *newParticle = NULL;
 
-    // XML parser initialisation stuff
-    int size;
-    ResourceManager *resman = ResourceManager::getInstance();
-    char *data = (char*) resman->loadFile(particleEffectFile.c_str(), size);
+    XML::Document doc(particleEffectFile);
+    xmlNodePtr rootNode = doc.rootNode();
 
-    if (!data) {
-        logger->log("Warning: Particle engine could not find %s !",
-                    particleEffectFile.c_str());
-        return NULL;
-    }
-
-    xmlDocPtr doc = xmlParseMemory(data, size);
-    free(data);
-
-    if (!doc) {
-        logger->log("Warning: Particle engine found syntax error in %s!",
-                    particleEffectFile.c_str());
-        return NULL;
-    }
-
-    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "effect"))
     {
-        logger->log("Warning: %s is not a valid particle effect definition file!",
-                    particleEffectFile.c_str());
-        xmlFreeDoc(doc);
+        logger->log("Error loading particle: %s", particleEffectFile.c_str());
         return NULL;
     }
+
+    ResourceManager *resman = ResourceManager::getInstance();
 
     // Parse particles
     for_each_xml_child_node(effectChildNode, rootNode)
@@ -301,8 +283,6 @@ Particle::addEffect(const std::string &particleEffectFile,
 
         mChildParticles.push_back(newParticle);
     }
-
-    xmlFreeDoc(doc);
 
     return newParticle;
 }

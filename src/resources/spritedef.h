@@ -81,11 +81,10 @@ class SpriteDef : public Resource
         Action *getAction(SpriteAction action) const;
 
     private:
-
         /**
          * Constructor.
          */
-        SpriteDef(): mAction(NULL), mDirection(DIRECTION_DOWN), mLastTime(0) {}
+        SpriteDef() {}
 
         /**
          * Destructor.
@@ -149,9 +148,6 @@ class SpriteDef : public Resource
 
         ImageSets mImageSets;
         Actions mActions;
-        Action *mAction;
-        SpriteDirection mDirection;
-        int mLastTime;
 };
 
 #endif

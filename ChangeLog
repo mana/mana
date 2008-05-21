@@ -6,6 +6,13 @@
 	clipping issues, but it would be better to fix those instead of using
 	this complicated workaround.
 
+2008-05-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp: Implemented interpretation of names for
+	NPCs and monsters.
+	* src/npc.cpp, src/resources/npcdb.cpp, src/resources/npcdb.hpp: Added the
+	possibility to add particle effects to NPCs in npcs.xml.
+
 2008-05-16  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/popupmenu.cpp: Applied QOAL's patch to fix popup bug.
@@ -183,15 +190,28 @@
 
 2008-04-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/particle.cpp, src/utils/xml.cpp, src/utils/xml.h,
+	src/resources/mapreader.cpp, src/resources/spritedef.cpp,
+	src/resources/npcdb.h, src/resources/monsterdb.cpp,
+	src/resources/itemdb.cpp, src/resources/npcdb.cpp,
+	src/resources/spritedef.h: Added XML::Document class which simplifies
+	parsing an XML document and automatically cleans it up again.
+	* src/being.cpp: Fixed crash on trying to show out of range emoticon.
 	* src/winver.h, README, configure.ac, data/help/changes.txt,
 	data/help/header.txt, NEWS, CMakeLists.txt: Updated version, release
 	date and changes.
-	* src/being.cpp: Fixed crash on trying to show out of range emoticon.
-
+	
 2008-04-03  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Tweaked disconnect dialog, hoping to fix a crash bug.
 
+2008-03-31  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/main.cpp, src/npc.cpp, src/npc.h, src/resources/npcdb.h,
+	src/resources/npcdb.cpp, data/npcs.xml, src/Makefile.am, tmc.cbp:
+	Implemented NPC XML database which maps NPC IDs to one or more
+	animation files and thus enables animated NPCs.
+	
 2008-03-30  Dennis Friis  <peavey@placid.dk>
 
 	* configure.ac: Updated for tmwdata split.

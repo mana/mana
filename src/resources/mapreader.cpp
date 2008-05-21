@@ -183,21 +183,19 @@ MapReader::readMap(const std::string &filename)
         inflatedSize = fileSize;
     }
 
-    xmlDocPtr doc = xmlParseMemory((char*) inflated, inflatedSize);
+    XML::Document doc((char*) inflated, inflatedSize);
     free(inflated);
 
-    // Parse the inflated map data
-    if (doc) {
-        xmlNodePtr node = xmlDocGetRootElement(doc);
+    xmlNodePtr node = doc.rootNode();
 
-        if (!node || !xmlStrEqual(node->name, BAD_CAST "map")) {
+    // Parse the inflated map data
+    if (node) {
+        if (!xmlStrEqual(node->name, BAD_CAST "map")) {
             logger->log("Error: Not a map file (%s)!", filename.c_str());
         }
-        else
-        {
+        else {
             map = readMap(node, filename);
         }
-        xmlFreeDoc(doc);
     } else {
         logger->log("Error while parsing map file (%s)!", filename.c_str());
     }

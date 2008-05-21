@@ -25,9 +25,11 @@
 
 #include "animatedsprite.h"
 #include "graphics.h"
+#include "particle.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
+#include "resources/npcdb.h"
 
 #include "gui/gui.h"
 
@@ -36,8 +38,30 @@ NPC *current_npc = 0;
 NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
     Being(id, job, map), mNetwork(network)
 {
-    mSprites[BASE_SPRITE] = AnimatedSprite::load("graphics/sprites/npc.xml",
-            job - 100);
+    NPCInfo info = NPCDB::get(job);
+
+    //setup NPC sprites
+    int c = BASE_SPRITE;
+    for (std::list<NPCsprite*>::const_iterator i = info.sprites.begin();
+         i != info.sprites.end();
+         i++)
+    {
+        if (c == VECTOREND_SPRITE) break;
+
+        std::string file = "graphics/sprites/" + (*i)->sprite;
+        int variant = (*i)->variant;
+        mSprites[c] = AnimatedSprite::load(file, variant);
+        c++;
+    }
+
+    //setup particle effects
+    for (std::list<std::string>::const_iterator i = info.particles.begin();
+         i != info.particles.end();
+         i++)
+    {
+        Particle *p = particleEngine->addEffect(*i, 0, 0);
+        this->controlParticle(p);
+    }
 }
 
 Being::Type
