@@ -1,3 +1,7 @@
+2008-05-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/Makefile.am: Fixed linker error caused by missing module.
+
 2008-05-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/setup_players.cpp, src/gui/popup_box.h, src/gui/viewport.h,
@@ -10,8 +14,8 @@
 
 	* src/net/beinghandler.cpp: Implemented interpretation of names for
 	NPCs and monsters.
-	* src/npc.cpp, src/resources/npcdb.cpp, src/resources/npcdb.hpp: Added the
-	possibility to add particle effects to NPCs in npcs.xml.
+	* src/npc.cpp, src/resources/npcdb.cpp, src/resources/npcdb.hpp: Added
+	the possibility to add particle effects to NPCs in npcs.xml.
 
 2008-05-16  David Athay  <ko2fan@gmail.com>
 

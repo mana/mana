@@ -193,12 +193,14 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      resources/iteminfo.cpp \
 	      resources/mapreader.cpp \
 	      resources/mapreader.h \
-	      resources/monsterdb.h \
 	      resources/monsterdb.cpp \
-	      resources/monsterinfo.h \
+	      resources/monsterdb.h \
 	      resources/monsterinfo.cpp \
-	      resources/music.h \
+	      resources/monsterinfo.h \
 	      resources/music.cpp \
+	      resources/music.h \
+	      resources/npcdb.cpp \
+	      resources/npcdb.h \
 	      resources/resource.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \
