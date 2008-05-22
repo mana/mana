@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "tab.h"
 
 #include "tabbedarea.h"

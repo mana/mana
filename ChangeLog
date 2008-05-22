@@ -1,3 +1,8 @@
+2008-05-22  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/gui/widgets/tab.cpp, src/utils/sha256.cpp: Fix compile errors
+	when compiling with GCC 4.3.
+
 2008-05-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* INSTALL: Mention Subversion instead of CVS.
