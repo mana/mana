@@ -1,6 +1,7 @@
 2008-05-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/Makefile.am: Fixed linker error caused by missing module.
+	* src/Makefile.am, src/CMakeLists.txt: Fixed linker error caused by
+	missing module.
 
 2008-05-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
