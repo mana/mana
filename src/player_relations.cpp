@@ -60,7 +60,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
             return container;
 
         if (!(*container)[name]) {
-            int v = cobj->getValue(RELATION, PlayerRelation::NEUTRAL);
+            int v = (int)cobj->getValue(RELATION, PlayerRelation::NEUTRAL);
             (*container)[name] = new PlayerRelation(static_cast<PlayerRelation::relation>(v));
         }
         // otherwise ignore the duplicate entry
@@ -121,7 +121,7 @@ PlayerRelationsManager::load(void)
     clear();
 
     mPersistIgnores = config.getValue(PERSIST_IGNORE_LIST, 0);
-    mDefaultPermissions = config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
+    mDefaultPermissions = (int)config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
     std::string ignore_strategy_name = config.getValue(PLAYER_IGNORE_STRATEGY, DEFAULT_IGNORE_STRATEGY);
     int ignore_strategy_index = getPlayerIgnoreStrategyIndex(ignore_strategy_name);
     if (ignore_strategy_index >= 0)
