@@ -170,7 +170,7 @@ Particle::update()
         }
 
         // Update child emitters
-        if (mLifetimePast%Particle::emitterSkip == 0)
+        if ((mLifetimePast-1)%Particle::emitterSkip == 0)
         {
             for (   EmitterIterator e = mChildEmitters.begin();
                     e != mChildEmitters.end();

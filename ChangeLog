@@ -1,3 +1,8 @@
+2008-05-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp: Changed the way particle emitter skip is handled to
+	make linear and circular emitters work with particleEmitterSkip enabled.
+
 2008-05-28  Dennis Friis  <peavey@placid.dk>
 
 	* src/being.cpp: Change order of direction to up/down/right/left in
