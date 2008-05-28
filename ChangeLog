@@ -2,6 +2,9 @@
 
 	* src/particle.cpp: Changed the way particle emitter skip is handled to
 	make linear and circular emitters work with particleEmitterSkip enabled.
+	* src/gui/setup.cpp, src/gui/setup_video.cpp, src/gui/setup_video.h: Added
+	slider for controlling particleEmitterSkip (overall quality of particle
+	effects) to video setup menu.
 
 2008-05-28  Dennis Friis  <peavey@placid.dk>
 

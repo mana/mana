@@ -78,6 +78,10 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::Slider *mOverlayDetailSlider;
         gcn::Label *mOverlayDetailField;
 
+        int mParticleDetail;
+        gcn::Slider *mParticleDetailSlider;
+        gcn::Label *mParticleDetailField;
+
         void
         updateSliders(bool originalValues);
 

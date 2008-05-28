@@ -43,6 +43,7 @@
 #include "../graphics.h"
 #include "../log.h"
 #include "../main.h"
+#include "../particle.h"
 
 #include "../utils/tostring.h"
 
@@ -124,7 +125,10 @@ Setup_Video::Setup_Video():
     mScrollRadiusField(new TextField()),
     mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
     mOverlayDetailSlider(new Slider(0, 2)),
-    mOverlayDetailField(new gcn::Label(""))
+    mOverlayDetailField(new gcn::Label("")),
+    mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 0)),
+    mParticleDetailSlider(new Slider(0, 3)),
+    mParticleDetailField(new gcn::Label(""))
 {
     setOpaque(false);
 
@@ -168,6 +172,8 @@ Setup_Video::Setup_Video():
     mScrollLazinessField->setActionEventId("scrolllazinessfield");
     mOverlayDetailSlider->setActionEventId("overlaydetailslider");
     mOverlayDetailField->setActionEventId("overlaydetailfield");
+    mParticleDetailSlider->setActionEventId("particledetailslider");
+    mParticleDetailField->setActionEventId("particledetailfield");
 
     mCustomCursorCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
@@ -180,6 +186,8 @@ Setup_Video::Setup_Video():
     mScrollLazinessField->addKeyListener(this);
     mOverlayDetailSlider->addActionListener(this);
     mOverlayDetailField->addKeyListener(this);
+    mParticleDetailSlider->addActionListener(this);
+    mParticleDetailField->addKeyListener(this);
 
     mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 120, 75, 10));
     gcn::Label *scrollRadiusLabel = new gcn::Label("Scroll radius");
@@ -216,6 +224,28 @@ Setup_Video::Setup_Video():
     }
     mOverlayDetailSlider->setValue(mOverlayDetail);
 
+    mParticleDetailSlider->setDimension(gcn::Rectangle(10, 180, 75, 10));
+    gcn::Label *particleDetailLabel = new gcn::Label("Particle Detail");
+    particleDetailLabel->setPosition(90, 180);
+    mParticleDetailField->setPosition(180, 180);
+    mParticleDetailField->setWidth(60);
+    switch (mParticleDetail)
+    {
+        case 0:
+            mParticleDetailField->setCaption("low");
+            break;
+        case 1:
+            mParticleDetailField->setCaption("medium");
+            break;
+        case 2:
+            mParticleDetailField->setCaption("high");
+            break;
+        case 3:
+            mParticleDetailField->setCaption("max");
+            break;
+    }
+    mParticleDetailSlider->setValue(mParticleDetail);
+
     add(scrollArea);
     add(mFsCheckBox);
     add(mOpenGLCheckBox);
@@ -234,6 +264,9 @@ Setup_Video::Setup_Video():
     add(mOverlayDetailSlider);
     add(overlayDetailLabel);
     add(mOverlayDetailField);
+    add(mParticleDetailSlider);
+    add(particleDetailLabel);
+    add(mParticleDetailField);
 }
 
 Setup_Video::~Setup_Video()
@@ -319,6 +352,7 @@ void Setup_Video::cancel()
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
     mAlphaSlider->setValue(mOpacity);
     mOverlayDetailSlider->setValue(mOverlayDetail);
+    mParticleDetailSlider->setValue(mParticleDetail);
 
     mScrollRadiusField->setText(toString(mOriginalScrollRadius));
     mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
@@ -375,6 +409,27 @@ void Setup_Video::action(const gcn::ActionEvent &event)
                 break;
         }
         config.setValue("OverlayDetail", val);
+    }
+    else if (event.getId() == "particledetailslider")
+    {
+        int val = (int) mParticleDetailSlider->getValue();
+        switch (val)
+        {
+            case 0:
+                mParticleDetailField->setCaption("low");
+                break;
+            case 1:
+                mParticleDetailField->setCaption("medium");
+                break;
+            case 2:
+                mParticleDetailField->setCaption("high");
+                break;
+            case 3:
+                mParticleDetailField->setCaption("max");
+                break;
+        }
+        config.setValue("particleEmitterSkip", 3 - val);
+        Particle::emitterSkip = 4 - val;
     }
     else if (event.getId() == "fpslimitcheckbox")
     {
