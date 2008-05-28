@@ -300,13 +300,13 @@ Being::getSpriteDirection() const
     {
         dir = DIRECTION_UP;
     }
-    else if (mDirection & RIGHT)
-    {
-        dir = DIRECTION_RIGHT;
-    }
     else if (mDirection & DOWN)
     {
         dir = DIRECTION_DOWN;
+    }
+    else if (mDirection & RIGHT)
+    {
+        dir = DIRECTION_RIGHT;
     }
     else {
         dir = DIRECTION_LEFT;

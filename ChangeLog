@@ -1,3 +1,9 @@
+2008-05-28  Dennis Friis  <peavey@placid.dk>
+
+	* src/being.cpp: Change order of direction to up/down/right/left in
+	Being::getSpriteDirection to fix inconsistancy of facing direction
+	when walking diagonally.
+
 2008-05-27  David Athay  <ko2fan@gmail.com>
 
 	* src/main.cpp, src/player_relations.cpp: Changed OSX tmw directory to a
