@@ -49,15 +49,10 @@ ChatHandler::ChatHandler()
         CPMSG_ENTER_CHANNEL_RESPONSE,
         CPMSG_LIST_CHANNELS_RESPONSE,
         CPMSG_PUBMSG,
+        CPMSG_ANNOUNCEMENT,
+        CPMSG_PRIVMSG,
         CPMSG_QUIT_CHANNEL_RESPONSE,
         CPMSG_LIST_CHANNELUSERS_RESPONSE,
-        /*
-        SMSG_BEING_CHAT,
-        SMSG_PLAYER_CHAT,
-        SMSG_GM_CHAT,
-        SMSG_WHO_ANSWER,
-        0x10c, // MVP
-        */
         0
     };
     handledMessages = _messages;
@@ -167,8 +162,14 @@ void ChatHandler::handleMessage(MessageIn &msg)
             if (!chatWindow->tabExists(userNick))
             {
                 chatWindow->createNewChannelTab(userNick);
-                chatWindow->chatLog(userNick + ": " + chatMsg, BY_OTHER, userNick);
+                
             }
+            chatWindow->chatLog(userNick + ": " + chatMsg, BY_OTHER, userNick);
+            break;
+
+        case CPMSG_ANNOUNCEMENT:
+            chatMsg = msg.readString();
+            chatWindow->chatLog(chatMsg, BY_GM);
             break;
 
         case CPMSG_PUBMSG:
@@ -200,63 +201,5 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 guildWindow->setOnline(channelName, userNick, true);
             }
             break;
-        /*
-        // Received speech from being
-        case SMSG_BEING_CHAT:
-            chatMsgLength = msg.readInt16() - 8;
-            being = beingManager->findBeing(msg.readInt32());
-
-            if (!being || chatMsgLength <= 0)
-            {
-                break;
-            }
-
-            chatMsg = msg.readString(chatMsgLength);
-            chatWindow->chatLog(chatMsg, BY_OTHER);
-            chatMsg.erase(0, chatMsg.find(" : ", 0) + 3);
-            trim(chatMsg);
-            being->setSpeech(chatMsg, SPEECH_TIME);
-            break;
-
-        case SMSG_PLAYER_CHAT:
-        case SMSG_GM_CHAT:
-            chatMsgLength = msg.readInt16() - 4;
-
-            if (chatMsgLength <= 0)
-            {
-                break;
-            }
-
-            chatMsg = msg.readString(chatMsgLength);
-
-            if (msg.getId() == SMSG_PLAYER_CHAT)
-            {
-                chatWindow->chatLog(chatMsg, BY_PLAYER);
-
-                std::string::size_type pos = chatMsg.find(" : ", 0);
-                if (pos != std::string::npos)
-                {
-                    chatMsg.erase(0, pos + 3);
-                }
-                trim(chatMsg);
-                player_node->setSpeech(chatMsg, SPEECH_TIME);
-            }
-            else
-            {
-                chatWindow->chatLog(chatMsg, BY_GM);
-            }
-            break;
-
-        case SMSG_WHO_ANSWER:
-            chatWindow->chatLog("Online users: " + toString(msg.readInt32()),
-                    BY_SERVER);
-            break;
-
-        case 0x010c:
-            // Display MVP player
-            msg.readInt32(); // id
-            chatWindow->chatLog("MVP player", BY_SERVER);
-            break;
-        */
     }
 }

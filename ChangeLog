@@ -1,3 +1,9 @@
+2008-05-30  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/gui/chat.cpp, src/net/chathandler.cpp: Fixed handling of
+	announce messages and private messages. Don't cut off the last
+	character from pm recipient's name. Got rid of old eAthena code.
+
 2008-05-22  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/widgets/tab.cpp, src/utils/sha256.cpp: Fix compile errors

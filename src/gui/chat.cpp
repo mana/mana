@@ -338,9 +338,8 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
     else if (command == "msg")
     {
         std::string::size_type pos = arg.find(' ', 1);
-        std::string recipient(arg, 0, pos-1);
+        std::string recipient(arg, 0, pos);
         std::string text(arg, pos+1);
-        chatLog("* " + text, BY_SERVER);
         Net::ChatServer::privMsg(recipient, text);
     }
     else if (command == "register")
