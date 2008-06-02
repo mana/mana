@@ -1,10 +1,17 @@
+2008-05-30  Lloyd Bryant  <lloyd_bryant@netzero.net>
+
+	* src/net/equipmenthandler.cpp, src/net/beinghandler.cpp,
+	src/net/protocol.h, src/being.h: Merged handling for eAthena packets
+	0x00c3 and 0x01d7 and added support for displaying a shield sprite.
+
 2008-05-28  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/particle.cpp: Changed the way particle emitter skip is handled to
-	make linear and circular emitters work with particleEmitterSkip enabled.
-	* src/gui/setup.cpp, src/gui/setup_video.cpp, src/gui/setup_video.h: Added
-	slider for controlling particleEmitterSkip (overall quality of particle
-	effects) to video setup menu.
+	* src/particle.cpp: Changed the way particle emitter skip is handled
+	to make linear and circular emitters work with particleEmitterSkip
+	enabled.
+	* src/gui/setup.cpp, src/gui/setup_video.cpp, src/gui/setup_video.h:
+	Added slider for controlling particleEmitterSkip (overall quality of
+	particle effects) to video setup menu.
 
 2008-05-28  Dennis Friis  <peavey@placid.dk>
 
@@ -14,8 +21,8 @@
 
 2008-05-27  David Athay  <ko2fan@gmail.com>
 
-	* src/main.cpp, src/player_relations.cpp: Changed OSX tmw directory to a
-	more suitable location, and fixed compile error.
+	* src/main.cpp, src/player_relations.cpp: Changed OSX tmw directory to
+	a more suitable location, and fixed compile error.
 
 2008-05-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

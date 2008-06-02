@@ -50,6 +50,7 @@ BeingHandler::BeingHandler()
         SMSG_BEING_LEVELUP,
         SMSG_BEING_EMOTION,
         SMSG_BEING_CHANGE_LOOKS,
+        SMSG_BEING_CHANGE_LOOKS2,
         SMSG_BEING_NAME_RESPONSE,
         SMSG_PLAYER_UPDATE_1,
         SMSG_PLAYER_UPDATE_2,
@@ -64,7 +65,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 {
     Uint32 id;
     Uint16 job, speed;
-    Uint16 headBottom, headTop, headMid;
+    Uint16 headTop, headMid, headBottom;
     Sint16 param1;
     Sint8 type;
     Being *srcBeing, *dstBeing;
@@ -109,23 +110,19 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             hairStyle = msg->readInt16();
-            dstBeing->setSprite(
-                    Being::WEAPON_SPRITE, msg->readInt16());
-            dstBeing->setSprite(
-                    Being::BOTTOMCLOTHES_SPRITE, msg->readInt16());
+            dstBeing->setSprite(Being::WEAPON_SPRITE, msg->readInt16());
+            headBottom = msg->readInt16();
 
             if (msg->getId() == SMSG_BEING_MOVE)
             {
                 msg->readInt32(); // server tick
             }
 
-            msg->readInt16();  // shield
+            dstBeing->setSprite(Being::SHIELD_SPRITE, msg->readInt16());
             headTop = msg->readInt16();
             headMid = msg->readInt16();
-            dstBeing->setSprite(Being::HAT_SPRITE, headTop);
-            dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             hairColor = msg->readInt16();
-            msg->readInt16();  // unknown
+            msg->readInt16();  // clothes color -not used 
             msg->readInt16();  // head dir
             msg->readInt16();  // guild
             msg->readInt16();  // unknown
@@ -134,6 +131,11 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // karma
             msg->readInt8();   // unknown
             dstBeing->setGender(1 - msg->readInt8());   // gender
+
+            // Set these after the gender, as the sprites may be gender-specific
+            dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom); 
+            dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid); 
+            dstBeing->setSprite(Being::HAT_SPRITE, headTop); 
             dstBeing->setHairStyle(hairStyle, hairColor);
 
             if (msg->getId() == SMSG_BEING_MOVE)
@@ -252,36 +254,58 @@ void BeingHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_BEING_CHANGE_LOOKS:
+        case SMSG_BEING_CHANGE_LOOKS2:
         {
+            /*
+             * SMSG_BEING_CHANGE_LOOKS (0x00c3) and 
+             * SMSG_BEING_CHANGE_LOOKS2 (0x01d7) do basically the same
+             * thing.  The difference is that ...LOOKS carries a single
+             * 8 bit value, where ...LOOKS2 carries two 16 bit values.
+             *
+             * If type = 2, then the first 16 bit value is the weapon ID,
+             * and the second 16 bit value is the shield ID.  If no
+             * shield is equipped, or type is not 2, then the second
+             * 16 bit value will be 0.
+             */
+
             if (!(dstBeing = beingManager->findBeing(msg->readInt32())))
             {
                 break;
             }
 
             int type = msg->readInt8();
-            int id = msg->readInt8();
+            int id = 0;
+            int id2 = 0;
+
+            if (msg->getId() == SMSG_BEING_CHANGE_LOOKS) {
+                id = msg->readInt8();
+            } else {        // SMSG_BEING_CHANGE_LOOKS2
+                id = msg->readInt16();
+                id2 = msg->readInt16();
+            }
 
             switch (type) {
-                case 1:
+                case 1:     // eAthena LOOK_HAIR
                     dstBeing->setHairStyle(id, -1);
                     break;
-                case 2:
+                case 2:     // Weapon ID in id, Shield ID in id2 
                     dstBeing->setSprite(Being::WEAPON_SPRITE, id);
+                    dstBeing->setSprite(Being::SHIELD_SPRITE, id2);
                     break;
                 case 3:     // Change lower headgear for eAthena, pants for us
-                    dstBeing->setSprite(
-                            Being::BOTTOMCLOTHES_SPRITE, id);
+                    dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, id);
                     break;
                 case 4:     // Change upper headgear for eAthena, hat for us
-                    dstBeing->setSprite(
-                            Being::HAT_SPRITE, id);
+                    dstBeing->setSprite(Being::HAT_SPRITE, id);
                     break;
                 case 5:     // Change middle headgear for eathena, armor for us
-                     dstBeing->setSprite(
-                            Being::TOPCLOTHES_SPRITE, id);
+                     dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, id);
                     break;
-                case 6:
+                case 6:     // eAthena LOOK_HAIR_COLOR
                     dstBeing->setHairStyle(-1, id);
+                    break;
+                case 9:     // eAthena LOOK_SHOES
+                    dstBeing->setSprite(Being::SHOE_SPRITE, id);
                     break;
                 default:
                     logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
@@ -319,10 +343,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             hairStyle = msg->readInt16();
-            dstBeing->setSprite(
-                    Being::WEAPON_SPRITE, msg->readInt16());
-            msg->readInt16();  // item id 2
-            headBottom = msg->readInt16();
+            dstBeing->setSprite(Being::WEAPON_SPRITE, msg->readInt16());
+            dstBeing->setSprite(Being::SHIELD_SPRITE, msg->readInt16());
+            headBottom = msg->readInt16(); 
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {
@@ -332,18 +355,19 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            msg->readInt16();  // unknown
+            msg->readInt16();  // clothes color - not used 
             msg->readInt16();  // head dir
             msg->readInt32();  // guild
             msg->readInt32();  // emblem
             msg->readInt16();  // manner
             msg->readInt8();   // karma
             dstBeing->setGender(1 - msg->readInt8());   // gender
-            dstBeing->setHairStyle(hairStyle, hairColor);
-            dstBeing->setSprite(
-                    Being::BOTTOMCLOTHES_SPRITE, headBottom);
-            dstBeing->setSprite(Being::HAT_SPRITE, headTop);
+
+            // Set these after the gender, as the sprites may be gender-specific
+            dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom); 
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
+            dstBeing->setSprite(Being::HAT_SPRITE, headTop);
+            dstBeing->setHairStyle(hairStyle, hairColor);
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {

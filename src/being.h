@@ -96,6 +96,7 @@ class Being : public Sprite
             HAIR_SPRITE,
             HAT_SPRITE,
             WEAPON_SPRITE,
+            SHIELD_SPRITE,
             VECTOREND_SPRITE
         };
 

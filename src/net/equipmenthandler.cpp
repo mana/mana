@@ -26,7 +26,6 @@
 #include "messagein.h"
 #include "protocol.h"
 
-#include "../being.h"
 #include "../beingmanager.h"
 #include "../equipment.h"
 #include "../item.h"
@@ -40,7 +39,6 @@ EquipmentHandler::EquipmentHandler()
     static const Uint16 _messages[] = {
         SMSG_PLAYER_EQUIPMENT,
         SMSG_PLAYER_EQUIP,
-        0x01d7,
         SMSG_PLAYER_UNEQUIP,
         SMSG_PLAYER_ARROW_EQUIP,
         SMSG_PLAYER_ATTACK_RANGE,
@@ -55,7 +53,6 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
     Sint16 index, equipPoint, itemId;
     Sint8 type;
     int mask, position;
-    Being *being;
     Item *item;
 
     switch (msg->getId())
@@ -125,23 +122,6 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
 
             item = player_node->getInvItem(index);
             player_node->mEquipment->setEquipment(position, item);
-            break;
-
-        case 0x01d7:
-            // Equipment related. At least confirmed to be required for weapon
-            // changes to appear on the local player.
-            being = beingManager->findBeing(msg->readInt32());
-            msg->readInt8();  // equip point
-            itemId = msg->readInt16();
-            msg->readInt16(); // item id 2
-            logger->log("0x01d7 (%s, itemId = %d)",
-                    (being == player_node) ? "player" : "somebody else",
-                    itemId);
-
-            if (!being)
-                break;
-
-            being->setSprite(Being::WEAPON_SPRITE, itemId);
             break;
 
         case SMSG_PLAYER_UNEQUIP:
