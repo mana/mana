@@ -30,8 +30,62 @@ class ChatHandler : public MessageHandler
 {
     public:
         ChatHandler();
-
+        
+        /**
+         * Handle the given message appropriately.
+         */
         void handleMessage(MessageIn &msg);
+    
+    private:
+        /**
+         * Handle chat messages sent from the game server.
+         */
+        void handleGameChatMessage(MessageIn &msg);
+        
+        /**
+         * Handle channel registration responses.
+         */
+        void handleRegisterChannelResponse(MessageIn &msg);
+        
+        /**
+         * Handle channel entry responses.
+         */
+        void handleEnterChannelResponse(MessageIn &msg);
+        
+        /**
+         * Handle list channels responses.
+         */
+        void handleListChannelsResponse(MessageIn &msg);
+        
+        /**
+         * Handle private messages.
+         */
+        void handlePrivateMessage(MessageIn &msg);
+        
+        /**
+         * Handle announcements.
+         */
+        void handleAnnouncement(MessageIn &msg);
+        
+        /**
+         * Handle chat messages.
+         */
+        void handleChatMessage(MessageIn &msg);
+        
+        /**
+         * Handle quit channel responses.
+         */
+        void handleQuitChannelResponse(MessageIn &msg);
+        
+        /**
+         * Handle list channel users responses.
+         */
+        void handleListChannelUsersResponse(MessageIn &msg);
+        
+        /**
+         * Handle channel events.
+         */
+        void handleChannelEvent(MessageIn &msg);
 };
 
 #endif

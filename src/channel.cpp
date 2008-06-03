@@ -21,35 +21,33 @@
  *  $Id$
  */
 
+#include <algorithm>
 
 #include "channel.h"
 
-Channel::Channel(short id) :
-mID(id)
+Channel::Channel(short id,
+                 const std::string &name, 
+                 const std::string &announcement) :
+    mId(id),
+    mName(name),
+    mAnnouncement(announcement)
 {
 
 }
 
-std::string Channel::getName() const
+void Channel::addUser(const std::string &user)
 {
-    return mName;
+    // Check if the user already exists in the channel
+    ChannelUsers::const_iterator i = mUserList.begin(),
+                                 i_end = mUserList.end();
+    if (std::find(i, i_end, user) != i_end) return;
+    mUserList.push_back(user);
 }
 
-void Channel::setName(const std::string &channelName)
+void Channel::removeUser(const std::string &user)
 {
-    mName = channelName;
-}
-
-int Channel::getUserListSize() const
-{
-    return userList.size();
-}
-
-std::string Channel::getUser(unsigned int id) const
-{
-    if(id <= userList.size())
-    {
-        return userList[id];
-    }
-    return "";
+    ChannelUsers::iterator i_end = mUserList.end(),
+                           i = std::find(mUserList.begin(), i_end, user);
+    if (i == i_end) return;
+    mUserList.erase(i);
 }

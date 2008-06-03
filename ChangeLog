@@ -1,3 +1,14 @@
+2008-06-03  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/gui/chat.cpp, src/gui/chat.h, src/net/guildhandler.cpp: 
+	Get rid of more eAthena related code, get rid of the redundant
+	addChannel method.
+	* src/net/chathandler.cpp, src/net/chathandler.h, src/net/protocol.h,:
+	break up the logic in chathandler with helper methods, add enums
+	for up to now unhandled messages, handle announcements and leave /
+	enter messages for channels.
+	* src/channel.h, src/channel.cpp: handle user lists and announcements.
+
 2008-05-30  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/chat.cpp, src/net/chathandler.cpp: Fixed handling of

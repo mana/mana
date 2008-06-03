@@ -49,57 +49,6 @@ enum
     BY_LOGGER
 };
 
-#if 0
-/**
- * gets in between usernick and message text depending on
- * message type
- */
-#define CAT_NORMAL        ": "
-#define CAT_IS            ""
-#define CAT_WHISPER       " says: "
-
-/** job dependend identifiers (?)  */
-#define SKILL_BASIC       0x0001
-#define SKILL_WARP        0x001b
-#define SKILL_STEAL       0x0032
-#define SKILL_ENVENOM     0x0034
-
-/** basic skills identifiers       */
-#define BSKILL_TRADE      0x0000
-#define BSKILL_EMOTE      0x0001
-#define BSKILL_SIT        0x0002
-#define BSKILL_CREATECHAT 0x0003
-#define BSKILL_JOINPARTY  0x0004
-#define BSKILL_SHOUT      0x0005
-#define BSKILL_PK         0x0006 // ??
-#define BSKILL_SETALLIGN  0x0007 // ??
-
-/** reasons why action failed      */
-#define RFAIL_SKILLDEP    0x00
-#define RFAIL_INSUFHP     0x01
-#define RFAIL_INSUFSP     0x02
-#define RFAIL_NOMEMO      0x03
-#define RFAIL_SKILLDELAY  0x04
-#define RFAIL_ZENY        0x05
-#define RFAIL_WEAPON      0x06
-#define RFAIL_REDGEM      0x07
-#define RFAIL_BLUEGEM     0x08
-#define RFAIL_OVERWEIGHT  0x09
-#define RFAIL_GENERIC     0x0a
-
-/** should always be zero if failed */
-#define SKILL_FAILED    0x00
-
-struct CHATSKILL
-{
-    short skill;
-    short bskill;
-    short unused;
-    char success;
-    char reason;
-};
-#endif
-
 /**
  * The chat window.
  *
@@ -126,20 +75,13 @@ class ChatWindow : public Window,
          */
         void widgetResized(const gcn::Event &event);
 
-        /*
+        /**
          * Adds a line of text to our message list. Parameters:
          *
          * @param line Text message.
          * @parem own  Type of message (usually the owner-type).
          */
         void chatLog(std::string line, int own, const std::string &channelName = "General");
-
-#if 0
-        /*
-         * Calls original chat_log() after processing the packet.
-         */
-        void chatLog(CHATSKILL);
-#endif
 
         /**
          * Performs action.
@@ -156,7 +98,7 @@ class ChatWindow : public Window,
          */
         bool isFocused();
 
-        /*
+        /**
          * Determines whether to send a command or an ordinary message, then
          * contructs packets & sends them.
          *
@@ -182,10 +124,6 @@ class ChatWindow : public Window,
          */
         void chatSend(std::string const &nick, std::string const &msg,
                       std::string const &channelName);
-
-        /** Called to add the channel to the channel manager */
-        void
-        addChannel(short channel, const std::string &channelName);
 
         /** Called to remove the channel from the channel manager */
         void
@@ -250,11 +188,6 @@ class ChatWindow : public Window,
             BrowserBox *browser;
             ScrollArea *scroll;
         };
-
-#if 0
-        /** Constructs failed messages for actions */
-        std::string const_msg(CHATSKILL);*/
-#endif
 
         /** Tabbed area for holding each channel. */
         TabbedArea *mChatTabs;

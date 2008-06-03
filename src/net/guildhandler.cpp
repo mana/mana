@@ -35,6 +35,8 @@
 #include "../guild.h"
 #include "../log.h"
 #include "../localplayer.h"
+#include "../channel.h"
+#include "../channelmanager.h"
 
 GuildHandler::GuildHandler()
 {
@@ -181,6 +183,7 @@ void GuildHandler::joinedGuild(MessageIn &msg)
     short guildId = msg.readInt16();
     bool leader = msg.readInt8();
     short channelId = msg.readInt16();
+    std::string announcement = msg.readString();
 
     // Add guild to player and create new guild tab
     Guild *guild = player_node->addGuild(guildId, leader);
@@ -190,7 +193,8 @@ void GuildHandler::joinedGuild(MessageIn &msg)
 
     // Automatically create the guild channel
     // COMMENT: Should this go here??
-    chatWindow->addChannel(channelId, guildName);
+    Channel *channel = new Channel(channelId, guildName, announcement);
+    channelManager->addChannel(channel);
     chatWindow->createNewChannelTab(guildName);
-    chatWindow->chatLog("Guild Channel", BY_SERVER, guildName);
+    chatWindow->chatLog(announcement, BY_SERVER, guildName);
 }

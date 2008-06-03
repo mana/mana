@@ -252,4 +252,21 @@ enum {
     MOVING_DESTINATION = 2
 };
 
+// Email change specific return values
+enum {
+    EMAILCHG_EXISTS_EMAIL = 0x40
+};
+
+// Chat errors return values
+enum {
+    CHAT_USING_BAD_WORDS = 0x40,
+    CHAT_UNHANDLED_COMMAND
+};
+
+// Chat channels event values
+enum {
+    CHAT_EVENT_NEW_PLAYER = 0,
+    CHAT_EVENT_LEAVING_PLAYER
+};
+
 #endif

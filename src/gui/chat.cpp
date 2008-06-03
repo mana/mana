@@ -203,14 +203,6 @@ ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
     scroll->logic();
 }
 
-#if 0
-void
-ChatWindow::chatLog(CHATSKILL act)
-{
-    chatLog(const_msg(act), BY_SERVER);
-}
-#endif
-
 void
 ChatWindow::action(const gcn::ActionEvent &event)
 {
@@ -383,94 +375,6 @@ void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
     {
         chatLog("Unknown command", BY_SERVER, channelName);
     }
-}
-
-#if 0
-std::string
-ChatWindow::const_msg(CHATSKILL act)
-{
-    std::string msg;
-    if (act.success == SKILL_FAILED && act.skill == SKILL_BASIC) {
-        switch (act.bskill) {
-            case BSKILL_TRADE :
-                msg = "Trade failed!";
-                break;
-            case BSKILL_EMOTE :
-                msg = "Emote failed!";
-                break;
-            case BSKILL_SIT :
-                msg = "Sit failed!";
-                break;
-            case BSKILL_CREATECHAT :
-                msg = "Chat creating failed!";
-                break;
-            case BSKILL_JOINPARTY :
-                msg = "Could not join party!";
-                break;
-            case BSKILL_SHOUT :
-                msg = "Cannot shout!";
-                break;
-        }
-
-        switch (act.reason) {
-            case RFAIL_SKILLDEP :
-                msg += " You have not yet reached a high enough lvl!";
-                break;
-            case RFAIL_INSUFHP :
-                msg += " Insufficient HP!";
-                break;
-            case RFAIL_INSUFSP :
-                msg += " Insufficient SP!";
-                break;
-            case RFAIL_NOMEMO :
-                msg += " You have no memos!";
-                break;
-            case RFAIL_SKILLDELAY :
-                msg += " You cannot do that right now!";
-                break;
-            case RFAIL_ZENY :
-                msg += " Seems you need more Zeny... ;-)";
-                break;
-            case RFAIL_WEAPON :
-                msg += " You cannot use this skill with that kind of weapon!";
-                break;
-            case RFAIL_REDGEM :
-                msg += " You need another red gem!";
-                break;
-            case RFAIL_BLUEGEM :
-                msg += " You need another blue gem!";
-                break;
-            case RFAIL_OVERWEIGHT :
-                msg += " You're carrying to much to do this!";
-                break;
-            default :
-                msg += " Huh? What's that?";
-                break;
-        }
-    } else {
-        switch(act.skill) {
-            case SKILL_WARP :
-                msg = "Warp failed...";
-                break;
-            case SKILL_STEAL :
-                msg = "Could not steal anything...";
-                break;
-            case SKILL_ENVENOM :
-                msg = "Poison had no effect...";
-                break;
-        }
-    }
-
-    return msg;
-}
-#endif
-
-void
-ChatWindow::addChannel(short channelId, const std::string &channelName)
-{
-    Channel *channel = new Channel(channelId);
-    channel->setName(channelName);
-    channelManager->addChannel(channel);
 }
 
 void

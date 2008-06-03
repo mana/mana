@@ -27,15 +27,69 @@
 class Channel
 {
     public:
-        Channel(short id);
-        std::string getName() const;
-        void setName(const std::string &channelName);
-        int getId() const { return mID; }
-        int getUserListSize() const;
-        std::string getUser(unsigned int i) const;
+    
+        typedef std::vector<std::string> ChannelUsers;
+        
+        /**
+         * Constructor.
+         *
+         * @param id           the id associated with the channel.
+         * @param name         the name of the channel.
+         * @param announcement a welcome message.
+         */
+        Channel(short id, 
+                const std::string &name,
+                const std::string &announcement = std::string());
+        
+        /**
+         * Get the id associated witht his channel
+         */
+        int getId() const { return mId; }
+        
+         /**
+         * Get this channel's name
+         */
+        const std::string& getName() const
+        { return mName; }
+        
+        /**
+         * Get the announcement message for this channel
+         */
+        const std::string& getAnnouncement() const
+        { return mAnnouncement; }
+        
+        /**
+         * Get the list of users in this channel
+         */
+        const ChannelUsers& getUserList() const
+        { return mUserList; }
+        
+        /**
+         * Sets the name of the channel.
+         */
+        void setName(const std::string &channelName)
+        { mName = channelName; }
+
+        /**
+         * Sets the announcement string of the channel.
+         */
+        void setAnnouncement(const std::string &channelAnnouncement)
+        { mAnnouncement = channelAnnouncement; }
+        
+        /**
+         * Adds a user to this channel.
+         */
+        void addUser(const std::string &user);
+        
+        /**
+         * Removes a user from the channel.
+         */
+        void removeUser(const std::string &user);
+        
     private:
-        typedef std::vector<std::string> Users;
+        
+        unsigned short mId;
         std::string mName;
-        short mID;
-        Users userList;
+        std::string mAnnouncement;
+        ChannelUsers mUserList;
 };
