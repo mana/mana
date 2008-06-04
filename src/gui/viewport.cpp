@@ -58,7 +58,8 @@ Viewport::Viewport():
     mShowDebugPath(false),
     mPlayerFollowMouse(false),
     mWalkTime(0),
-    mLocalWalkTime(-1)
+    mLocalWalkTime(-1),
+    mVisibleNames(false)
 {
     setOpaque(false);
     addMouseListener(this);
@@ -67,9 +68,11 @@ Viewport::Viewport():
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
     mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
     mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
+    mVisibleNames = (config.getValue("visiblenames", 1) == 1);
 
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
+    config.addListener("visiblenames", this);
 
     mPopupMenu = new PopupMenu();
 
@@ -122,6 +125,8 @@ Viewport::loadTargetCursor(std::string filename, int width, int height,
 Viewport::~Viewport()
 {
     delete mPopupMenu;
+    
+    config.removeListener("visiblenames", this);
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
@@ -234,6 +239,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
         (*i)->drawSpeech(graphics, -(int) mViewX, -(int) mViewY);
+        if(mVisibleNames && (*i) == mSelectedBeing)
         (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
         (*i)->drawEmotion(graphics, -(int) mViewX, -(int) mViewY);
     }
@@ -459,4 +465,22 @@ Viewport::optionChanged(const std::string &name)
 {
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
+
+    if (name == "visiblenames") {
+                mVisibleNames = config.getValue("visiblenames", 1) == 1;     
+    }
 }
+
+void
+Viewport::mouseMoved(gcn::MouseEvent &event)
+{
+    // Check if we are on the map
+    if (!mMap || !player_node)
+        return;
+
+    const int tilex = (event.getX() + (int) mViewX) / 32;
+    const int tiley = (event.getY() + (int) mViewY) / 32;
+
+    mSelectedBeing = beingManager->findBeing(tilex, tiley);
+}
+

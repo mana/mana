@@ -51,6 +51,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
+        bool mVisibleNamesEnabled;
         double mOpacity;
         int mFps;
 
@@ -60,6 +61,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
+        gcn::CheckBox *mVisibleNamesCheckBox;
 
         gcn::Slider *mAlphaSlider;
         gcn::CheckBox *mFpsCheckBox;

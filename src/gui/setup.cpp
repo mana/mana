@@ -49,8 +49,8 @@ Setup::Setup():
     Window(_("Setup"))
 {
     setCloseButton(true);
-    int width = 250;
-    int height = 245;
+    int width = 260;
+    int height = 265;
     setContentSize(width, height);
 
     static char const *buttonNames[] = {
@@ -65,7 +65,7 @@ Setup::Setup():
     }
 
     TabbedArea *panel = new TabbedArea();
-    panel->setDimension(gcn::Rectangle(5, 5, 250, 205));
+    panel->setDimension(gcn::Rectangle(5, 5, 260, 225));
 
     SetupTab *tab;
 

@@ -107,6 +107,12 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         mouseReleased(gcn::MouseEvent &event);
 
         /**
+         * Handles mouse move on map.
+         */
+        void
+        mouseMoved(gcn::MouseEvent &event);
+
+        /**
          * Shows a popup for an item.
          * TODO Find some way to get rid of Item here
          */
@@ -170,6 +176,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         float mViewX;              /**< Current viewpoint in pixels. */
         float mViewY;              /**< Current viewpoint in pixels. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
+        bool mVisibleNames;        /**< Show target names. */
 
         /** Images of in range target cursor. */
         ImageSet *mInRangeImages[Being::NUM_TC];
@@ -188,6 +195,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
 
         PopupMenu *mPopupMenu;     /**< Popup menu. */
+        Being *mSelectedBeing;     /**< Current selected being. */
 };
 
 #endif
