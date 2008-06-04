@@ -208,7 +208,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->mLevel = msg.readInt16();
     msg.readInt16();                       // skill point
     tempPlayer->setSprite(Being::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
-    msg.readInt16();                       // shield
+    tempPlayer->setSprite(Being::SHIELD_SPRITE, msg.readInt16()); 
     tempPlayer->setSprite(Being::HAT_SPRITE, msg.readInt16()); // head option top
     tempPlayer->setSprite(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
     int hairColor = msg.readInt16();

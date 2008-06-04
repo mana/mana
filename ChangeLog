@@ -1,3 +1,8 @@
+2008-06-04  Lloyd Bryant  <lloyd_bryant@netzero.net>
+
+	* src/net/charserverhandler.cpp: Display shield sprite also in
+	character select window.
+
 2008-05-30  Lloyd Bryant  <lloyd_bryant@netzero.net>
 
 	* src/net/equipmenthandler.cpp, src/net/beinghandler.cpp,
