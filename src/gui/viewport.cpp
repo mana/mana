@@ -240,7 +240,9 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     {
         (*i)->drawSpeech(graphics, -(int) mViewX, -(int) mViewY);
         if(mVisibleNames && (*i) == mSelectedBeing)
-        (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
+            (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
+	else if(!mVisibleNames)
+            (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
         (*i)->drawEmotion(graphics, -(int) mViewX, -(int) mViewY);
     }
 
