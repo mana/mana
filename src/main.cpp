@@ -88,8 +88,6 @@
 #include <SDL_syswm.h>
 #endif
 
-std::string homeDir;
-
 // Account infos
 char n_server, n_character;
 
@@ -109,6 +107,21 @@ Music *bgm;
 Configuration config;         /**< XML file configuration reader */
 Logger *logger;               /**< Log object */
 KeyboardConfig keyboard;
+
+CharServerHandler charServerHandler;
+LoginData loginData;
+LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
+
+
+// This anonymous namespace hides whatever is inside from other modules.
+namespace {
+
+std::string homeDir;
+std::string updateHost;
+std::string updatesDir;
+
+LoginHandler loginHandler;
+MapLoginHandler mapLoginHandler;
 
 /**
  * A structure holding the values of various options that can be passed from
@@ -134,6 +147,7 @@ struct Options
     std::string password;
     std::string playername;
     std::string configPath;
+    std::string updateHost;
 };
 
 /**
@@ -195,15 +209,6 @@ void init_engine(const Options &options)
 
     // Add the user's homedir to PhysicsFS search path
     resman->addToSearchPath(homeDir, false);
-    // Creating and checking the updates folder existence and rights.
-    if (!resman->isDirectory("/updates")) {
-        if (!resman->mkdir("/updates")) {
-            std::cout << homeDir << "/updates "
-                      << "can't be made, but it doesn't exist! Exiting."
-                      << std::endl;
-            exit(1);
-        }
-    }
 
     // Add the main data directory to our PhysicsFS search path
     resman->addToSearchPath("data", true);
@@ -248,9 +253,10 @@ void init_engine(const Options &options)
     // default options !
     FILE *tmwFile = 0;
     std::string configPath = options.configPath;
-    if (configPath == "") {
+
+    if (configPath.empty())
         configPath = homeDir + "/config.xml";
-    }
+
     tmwFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
@@ -264,6 +270,44 @@ void init_engine(const Options &options)
     } else {
         fclose(tmwFile);
         config.init(configPath);
+    }
+
+
+    // Take host for updates from config if it wasn't set on the command line
+    if (options.updateHost.empty()) {
+        updateHost =
+            config.getValue("updatehost", "http://updates.thanaworld.org");
+    } else {
+        updateHost = options.updateHost;
+    }
+
+    // Parse out any "http://" or "ftp://", and set the updates directory
+    size_t pos;
+    pos = updateHost.find("//");
+    if (pos != updateHost.npos) {
+        if (pos + 2 < updateHost.length()) {
+            updatesDir =
+                "updates/" + updateHost.substr(pos + 2);
+        } else {
+            std::cout << "The updates host - " << updateHost
+                      << " does not appear to be valid!" << std::endl
+                      << "Please fix the \"updatehost\" in your configuration"
+                      << " file. Exiting." << std::endl;
+            exit(1);
+        }
+    } else {
+        logger->log("Warning: no protocol was specified for the update host");
+        updatesDir = "updates/" + updateHost;
+    }
+
+    // Verify that the updates directory exists. Create if necessary.
+    if (!resman->isDirectory("/" + updatesDir)) {
+        if (!resman->mkdir("/" + updatesDir)) {
+            std::cout << homeDir << "/" << updatesDir
+                      << " can't be made, but it doesn't exist! Exiting."
+                      << std::endl;
+            exit(1);
+        }
     }
 
     SDL_WM_SetCaption("The Mana World", NULL);
@@ -382,8 +426,8 @@ void printHelp()
         << "  -P --password   : Login with this password" << std::endl
         << "  -D --default    : Bypass the login process with default settings" << std::endl
         << "  -p --playername : Login with this player" << std::endl
-        << "  -C --configfile : Configuration file to use"
-        << std::endl;
+        << "  -C --configfile : Configuration file to use" << std::endl
+        << "  -H --updatehost : Use this update host" << std::endl;
 }
 
 void printVersion()
@@ -395,9 +439,10 @@ void printVersion()
              "(local build?, PACKAGE_VERSION is not defined)" << std::endl;
 #endif
 }
+
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvuU:P:Dp:C:";
+    const char *optstring = "hvuU:P:Dp:C:H:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
@@ -408,10 +453,12 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "default",    no_argument,       0, 'D' },
         { "playername", required_argument, 0, 'p' },
         { "configfile", required_argument, 0, 'C' },
+        { "updatehost", required_argument, 0, 'H' },
         { 0 }
     };
 
     while (optind < argc) {
+
         int result = getopt_long(argc, argv, optstring, long_options, NULL);
 
         if (result == -1) {
@@ -444,17 +491,20 @@ void parseOptions(int argc, char *argv[], Options &options)
             case 'C':
                 options.configPath = optarg;
                 break;
+            case 'H':
+                options.updateHost = optarg;
+                break;
         }
     }
 }
 
 /**
- * Reads the file "updates/resources2.txt" and attempts to load each update
- * mentioned in it.
+ * Reads the file "{Updates Directory}/resources2.txt" and attempts to load
+ * each update mentioned in it.
  */
 void loadUpdates()
 {
-    const std::string updatesFile = "updates/resources2.txt";
+    const std::string updatesFile = "/" + updatesDir + "/resources2.txt";
     ResourceManager *resman = ResourceManager::getInstance();
     std::vector<std::string> lines = resman->loadTextFile(updatesFile);
 
@@ -463,25 +513,18 @@ void loadUpdates()
         std::stringstream line(lines[i]);
         std::string filename;
         line >> filename;
-        resman->addToSearchPath(homeDir + "/updates/" + filename, false);
+        resman->addToSearchPath(homeDir + "/" + updatesDir + "/"
+                                + filename, false);
     }
 }
 
-CharServerHandler charServerHandler;
-LoginData loginData;
-LoginHandler loginHandler;
-LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
-MapLoginHandler mapLoginHandler;
-
-namespace {
-    struct ErrorListener : public gcn::ActionListener
+struct ErrorListener : public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent &event)
     {
-        void action(const gcn::ActionEvent &event)
-        {
-            state = loginData.registerLogin ? REGISTER_STATE : LOGIN_STATE;
-        }
-    } errorListener;
-}
+        state = loginData.registerLogin ? REGISTER_STATE : LOGIN_STATE;
+    }
+} errorListener;
 
 // TODO Find some nice place for these functions
 void accountLogin(Network *network, LoginData *loginData)
@@ -566,6 +609,9 @@ void mapLogin(Network *network, LoginData *loginData)
     // We get 4 useless bytes before the real answer comes in
     network->skip(4);
 }
+
+} // namespace
+
 
 /** Main */
 int main(int argc, char *argv[])
@@ -820,7 +866,8 @@ int main(int argc, char *argv[])
 
                 case UPDATE_STATE:
                     logger->log("State: UPDATE");
-                    currentDialog = new UpdaterWindow();
+                    currentDialog = new UpdaterWindow(updateHost,
+                            homeDir + "/" + updatesDir);
                     break;
 
                 case ERROR_STATE:

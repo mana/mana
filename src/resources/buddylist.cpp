@@ -33,8 +33,12 @@
 
 BuddyList::BuddyList()
 {
+    // TODO: A buddy list would have to use the Configuration class to store
+    //       the buddies. Also, there is now a player relationship manager
+    //       which probably makes this buddy list kind of obsolete.
+
     // Find saved buddy list file
-    mFilename = config.getValue("homeDir", "") + "/buddy.txt";
+    //mFilename = homeDir + "/buddy.txt";
 
     // Load buddy from file
     loadFile();

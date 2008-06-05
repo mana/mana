@@ -46,8 +46,6 @@
 
 #include "../resources/resourcemanager.h"
 
-extern std::string homeDir;
-
 /**
  * Calculates the Alder-32 checksum for the given file.
  */
@@ -68,14 +66,38 @@ unsigned long fadler32(FILE *file)
     return adler;
 }
 
-UpdaterWindow::UpdaterWindow():
+/**
+ * Load the given file into a vector of strings.
+ */
+std::vector<std::string>
+loadTextFile(const std::string &fileName)
+{
+    std::vector<std::string> lines;
+    std::ifstream fin(fileName.c_str());
+
+    if (!fin) {
+        logger->log("Couldn't load text file: %s", fileName.c_str());
+        return lines;
+    }
+
+    std::string line;
+
+    while (getline(fin, line))
+        lines.push_back(line);
+
+    return lines;
+}
+
+
+UpdaterWindow::UpdaterWindow(const std::string &updateHost,
+                             const std::string &updatesDir):
     Window("Updating..."),
     mThread(NULL),
     mDownloadStatus(UPDATE_NEWS),
-    mUpdateHost(""),
+    mUpdateHost(updateHost),
+    mUpdatesDir(updatesDir),
     mCurrentFile("news.txt"),
     mCurrentChecksum(0),
-    mBasePath(""),
     mStoreInMemory(true),
     mDownloadComplete(true),
     mUserCancel(false),
@@ -119,10 +141,6 @@ UpdaterWindow::UpdaterWindow():
     setVisible(true);
     mCancelButton->requestFocus();
 
-    mUpdateHost =
-        config.getValue("updatehost", "http://updates.themanaworld.org");
-    mBasePath = homeDir;
-
     // Try to download the updates list
     download();
 }
@@ -141,7 +159,7 @@ UpdaterWindow::~UpdaterWindow()
     }
 
     // Remove possibly leftover temporary download
-    ::remove((mBasePath + "/updates/download.temp").c_str());
+    ::remove((mUpdatesDir + "/download.temp").c_str());
 
     delete[] mCurlError;
 }
@@ -280,9 +298,7 @@ int UpdaterWindow::downloadThread(void *ptr)
             }
             else
             {
-                // Download in the proper folder : ./updates under win,
-                // /home/user/.tmw/updates for unices
-                outFilename =  uw->mBasePath + "/updates/download.temp";
+                outFilename =  uw->mUpdatesDir + "/download.temp";
                 outfile = fopen(outFilename.c_str(), "w+b");
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
             }
@@ -349,8 +365,8 @@ int UpdaterWindow::downloadThread(void *ptr)
                 fclose(outfile);
 
                 // Give the file the proper name
-                std::string newName(uw->mBasePath + "/updates/" +
-                                    uw->mCurrentFile.c_str());
+                const std::string newName =
+                    uw->mUpdatesDir + "/" + uw->mCurrentFile;
 
                 // Any existing file with this name is deleted first, otherwise
                 // the rename will fail on Windows.
@@ -438,8 +454,7 @@ void UpdaterWindow::logic()
         case UPDATE_LIST:
             if (mDownloadComplete)
             {
-                ResourceManager *resman = ResourceManager::getInstance();
-                mLines = resman->loadTextFile("updates/resources2.txt");
+                mLines = loadTextFile(mUpdatesDir + "/resources2.txt");
                 mStoreInMemory = false;
                 mDownloadStatus = UPDATE_RESOURCES;
             }
@@ -463,7 +478,8 @@ void UpdaterWindow::logic()
                     ss >> std::hex >> mCurrentChecksum;
 
                     std::ifstream temp(
-                            (mBasePath + "/updates/" + mCurrentFile).c_str());
+                            (mUpdatesDir + "/" + mCurrentFile).c_str());
+
                     if (!temp.is_open())
                     {
                         temp.close();
