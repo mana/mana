@@ -126,7 +126,7 @@ Setup_Video::Setup_Video():
     mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
     mOverlayDetailSlider(new Slider(0, 2)),
     mOverlayDetailField(new gcn::Label("")),
-    mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 0)),
+    mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new gcn::Label(""))
 {

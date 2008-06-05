@@ -1,3 +1,8 @@
+2008-06-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/gui/setup_video.cpp: Lowered default particle
+    detail level.
+
 2008-06-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp, src/gui/updatewindow.h, src/main.cpp,
