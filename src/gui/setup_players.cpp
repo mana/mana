@@ -320,7 +320,12 @@ Setup_Players::action(const gcn::ActionEvent &event)
         player_relations.addListener(this);
 
     } else if (event.getId() == ACTION_DELETE) {
-        std::string name = mPlayerTableModel->getPlayerAt(mPlayerTable->getSelectedRow());
+        int player_index = mPlayerTable->getSelectedRow();
+
+        if (player_index < 0)
+            return;
+
+        std::string name = mPlayerTableModel->getPlayerAt(player_index);
 
         player_relations.removePlayer(name);
 

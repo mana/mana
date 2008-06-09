@@ -1,7 +1,14 @@
+2008-06-08  Fate  <fate.tmw@googlemail.com>
+
+	* src/gui/table.cpp: Invalidate mTopWidget whenever the model is
+	regenerated to reflect that we have no current valid selection.
+	* src/player_relations.cpp: Proper handling of case where player, to
+	apply ignore strategy to, is NULL.
+
 2008-06-05  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/gui/setup_video.cpp: Lowered default particle
-    detail level.
+	detail level.
 
 2008-06-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

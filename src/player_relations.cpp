@@ -211,9 +211,13 @@ PlayerRelationsManager::hasPermission(const std::string &name, unsigned int flag
 
     if (!permitted) {
         // execute `ignore' strategy, if possible
-        if (mIgnoreStrategy)
-            mIgnoreStrategy->ignore(dynamic_cast<Player *>(beingManager->findBeingByName(name, Being::PLAYER)),
-                                    rejections);
+        if (mIgnoreStrategy) {
+            Player *to_ignore = dynamic_cast<Player *>(beingManager->findBeingByName(name, Being::PLAYER));
+
+            if (to_ignore)
+                mIgnoreStrategy->ignore(to_ignore,
+                                        rejections);
+        }
     }
 
     return permitted;

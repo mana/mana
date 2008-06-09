@@ -109,6 +109,7 @@ GuiTable::setModel(TableModel *new_model)
     recomputeDimensions();
 }
 
+
 void
 GuiTable::recomputeDimensions(void)
 {
@@ -347,8 +348,10 @@ GuiTable::modelUpdated(bool completed)
     if (completed) {
         recomputeDimensions();
         installActionListeners();
-    } else // before the update?
+    } else { // before the update?
+        mTopWidget = NULL; // No longer valid in general
         uninstallActionListeners();
+    }
 }
 
 gcn::Widget *
