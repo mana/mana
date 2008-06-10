@@ -91,15 +91,6 @@ void Net::ChatServer::registerChannel(const std::string &name,
     connection->send(msg);
 }
 
-void Net::ChatServer::unregisterChannel(short channel)
-{
-    MessageOut msg(PCMSG_UNREGISTER_CHANNEL);
-
-    msg.writeInt16(channel);
-
-    connection->send(msg);
-}
-
 void Net::ChatServer::enterChannel(const std::string &channel, const std::string &password)
 {
     MessageOut msg(PCMSG_ENTER_CHANNEL);

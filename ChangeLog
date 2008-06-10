@@ -1,3 +1,9 @@
+2008-06-10  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/net/protocol.h src/net/chatserver/chatserver.h,
+	src/net/chatserver/chatserver.cpp: Update chat packet
+	definitions, get rid of old unused functions.
+
 2008-06-09  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/commandhandler.cpp, src/commandhandler.h,
