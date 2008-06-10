@@ -21,7 +21,6 @@
  *  $Id$
  */
 
-#include <algorithm>
 
 #include "channel.h"
 
@@ -33,21 +32,4 @@ Channel::Channel(short id,
     mAnnouncement(announcement)
 {
 
-}
-
-void Channel::addUser(const std::string &user)
-{
-    // Check if the user already exists in the channel
-    ChannelUsers::const_iterator i = mUserList.begin(),
-                                 i_end = mUserList.end();
-    if (std::find(i, i_end, user) != i_end) return;
-    mUserList.push_back(user);
-}
-
-void Channel::removeUser(const std::string &user)
-{
-    ChannelUsers::iterator i_end = mUserList.end(),
-                           i = std::find(mUserList.begin(), i_end, user);
-    if (i == i_end) return;
-    mUserList.erase(i);
 }

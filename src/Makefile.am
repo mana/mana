@@ -282,6 +282,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      channel.h \
 	      channelmanager.cpp \
 	      channelmanager.h \
+	      commandhandler.cpp \
+	      commandhandler.h \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \

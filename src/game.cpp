@@ -32,6 +32,7 @@
 
 #include "beingmanager.h"
 #include "channelmanager.h"
+#include "commandhandler.h"
 #include "configuration.h"
 #include "engine.h"
 #include "flooritemmanager.h"
@@ -129,6 +130,7 @@ PartyWindow *partyWindow;
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
 ChannelManager *channelManager = NULL;
+CommandHandler *commandHandler = NULL;
 
 Particle *particleEngine = NULL;
 
@@ -279,6 +281,7 @@ Game::Game():
     beingManager = new BeingManager;
     floorItemManager = new FloorItemManager();
     channelManager = new ChannelManager();
+    commandHandler = new CommandHandler();
 
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();
@@ -324,6 +327,7 @@ Game::~Game()
     delete beingManager;
     delete floorItemManager;
     delete channelManager;
+    delete commandHandler;
     delete joystick;
     delete particleEngine;
     delete engine;

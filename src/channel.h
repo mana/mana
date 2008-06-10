@@ -27,8 +27,6 @@
 class Channel
 {
     public:
-    
-        typedef std::vector<std::string> ChannelUsers;
         
         /**
          * Constructor.
@@ -59,12 +57,6 @@ class Channel
         { return mAnnouncement; }
         
         /**
-         * Get the list of users in this channel
-         */
-        const ChannelUsers& getUserList() const
-        { return mUserList; }
-        
-        /**
          * Sets the name of the channel.
          */
         void setName(const std::string &channelName)
@@ -76,20 +68,9 @@ class Channel
         void setAnnouncement(const std::string &channelAnnouncement)
         { mAnnouncement = channelAnnouncement; }
         
-        /**
-         * Adds a user to this channel.
-         */
-        void addUser(const std::string &user);
-        
-        /**
-         * Removes a user from the channel.
-         */
-        void removeUser(const std::string &user);
-        
     private:
         
         unsigned short mId;
         std::string mName;
         std::string mAnnouncement;
-        ChannelUsers mUserList;
 };

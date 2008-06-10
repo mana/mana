@@ -1,0 +1,109 @@
+/*
+ *  The Mana World
+ *  Copyright 2008 The Mana World Development Team
+ *
+ *  This file is part of The Mana World.
+ *
+ *  The Mana World is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  any later version.
+ *
+ *  The Mana World is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with The Mana World; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  $Id$
+ */
+ 
+#ifndef _TMW_COMMANDHANDLER_H
+#define _TMW_COMMANDHANDLER_H
+
+#include <string>
+
+/**
+ * A class to parse and handle user commands
+ */
+class CommandHandler
+{
+    public:
+        /**
+         * Constructor
+         */
+        CommandHandler() {}
+        
+        /**
+         * Destructor
+         */
+        ~CommandHandler() {}
+        
+        /**
+         * Parse and handle the given command.
+         */
+        void handleCommand(const std::string &command);
+    
+    private:
+        /**
+         * Handle an announce command.
+         */
+        void handleAnnounce(const std::string &args);
+        
+        /**
+         * Handle a help command.
+         */
+        void handleHelp();
+        
+        /**
+         * Handle a where command.
+         */
+        void handleWhere();
+        
+        /**
+         * Handle a who command.
+         */
+        void handleWho();
+        
+        /**
+         * Handle a msg command.
+         */
+        void handleMsg(const std::string &args);
+        
+        /**
+         * Handle a channel command.
+         */
+        void handleChannel(const std::string &args);
+        
+        /**
+         * Handle a join command.
+         */
+        void handleJoin(const std::string &args);
+        
+        /**
+         * Handle a listchannels command.
+         */
+        void handleListChannels();
+        
+        /**
+         * Handle a listusers command.
+         */
+        void handleListUsers();
+        
+        /**
+         * Handle a quit command.
+         */
+        void handleQuit();
+        
+        /**
+         * Handle a clear command.
+         */
+        void handleClear();
+};
+
+extern CommandHandler *commandHandler;
+
+#endif //_TMW_COMMANDHANDLER_H

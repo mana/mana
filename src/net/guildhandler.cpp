@@ -117,7 +117,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
 
                 guildWindow->updateTab();
 
-                Net::ChatServer::getUserList(guildName);
+                //Net::ChatServer::getUserList(guildName);
             }
         } break;
 
@@ -131,8 +131,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if (guild)
             {
                 guild->addMember(guildMember);
-                guildWindow->setOnline(guild->getName(), guildMember, false);
-                Net::ChatServer::getUserList(guild->getName());
+                guildWindow->setOnline(guild->getName(), guildMember, true);
             }
             guildWindow->updateTab();
 
@@ -196,5 +195,5 @@ void GuildHandler::joinedGuild(MessageIn &msg)
     Channel *channel = new Channel(channelId, guildName, announcement);
     channelManager->addChannel(channel);
     chatWindow->createNewChannelTab(guildName);
-    chatWindow->chatLog(announcement, BY_SERVER, guildName);
+    chatWindow->chatLog("Announcement: " + announcement, BY_CHANNEL, guildName);
 }

@@ -122,12 +122,12 @@ void ChatHandler::handleGameChatMessage(MessageIn &msg)
     if (being)
     {
         chatWindow->chatLog(being->getName() + " : " + chatMsg,
-                            being == player_node ? BY_PLAYER : BY_OTHER);
+                            being == player_node ? BY_PLAYER : BY_OTHER, "General");
         being->setSpeech(chatMsg, SPEECH_TIME);
     }
     else
     {
-        chatWindow->chatLog("Unknown : " + chatMsg, BY_OTHER);
+        chatWindow->chatLog("Unknown : " + chatMsg, BY_OTHER, "General");
     }
 }
 
@@ -139,7 +139,7 @@ void ChatHandler::handleRegisterChannelResponse(MessageIn &msg)
         short channelId = msg.readInt16();
         std::string channelName = msg.readString();
         std::string channelAnnouncement = msg.readString();
-        chatWindow->chatLog("Registered Channel " + channelName, BY_SERVER);
+        chatWindow->chatLog("Registered Channel " + channelName);
         channelManager->addChannel(new Channel(channelId, 
                                                channelName, 
                                                channelAnnouncement));
@@ -166,17 +166,20 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         std::string channelName = msg.readString();
         std::string announcement = msg.readString();
         Channel *channel = new Channel(channelId, channelName, announcement);
+        channelManager->addChannel(channel);
+        chatWindow->createNewChannelTab(channelName);
+        chatWindow->chatLog("Announcement: " + announcement, BY_CHANNEL, channelName);
+        
         std::string user;
+        chatWindow->chatLog("Players in this channel:", BY_CHANNEL, channelName);
         while(msg.getUnreadLength())
         {
             user = msg.readString();
             if (user == "")
                 return;
-            channel->addUser(user);
+            chatWindow->chatLog(user, BY_CHANNEL, channelName);
         }
-        channelManager->addChannel(channel);
-        chatWindow->createNewChannelTab(channelName);
-        chatWindow->chatLog(announcement, BY_SERVER, channelName);
+        
     }
     else
     {
@@ -194,12 +197,9 @@ void ChatHandler::handleListChannelsResponse(MessageIn &msg)
             return;
         std::ostringstream numUsers;
         numUsers << msg.readInt16();
-        if(channelName != "")
-        {
-            channelName += " - ";
-            channelName += numUsers.str();
-            chatWindow->chatLog(channelName, BY_SERVER);
-        }
+        channelName += " - ";
+        channelName += numUsers.str();
+        chatWindow->chatLog(channelName, BY_SERVER);
     }
     chatWindow->chatLog("End of channel list", BY_SERVER);
 }
@@ -244,8 +244,9 @@ void ChatHandler::handleQuitChannelResponse(MessageIn &msg)
 
 void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
 {
-    std::string channelName = msg.readString();
+    std::string channel = msg.readString();
     std::string userNick;
+    chatWindow->chatLog("Players in this channel:", BY_CHANNEL, channel);
     while(msg.getUnreadLength())
     {
         userNick = msg.readString();
@@ -253,7 +254,7 @@ void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
         {
             break;
         }
-        guildWindow->setOnline(channelName, userNick, true);
+        chatWindow->chatLog(userNick, BY_CHANNEL, channel);
     }
 }
 
@@ -280,7 +281,7 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
                 line = "Unknown channel event.";
         }
     
-        chatWindow->chatLog(line, BY_SERVER, channel->getName());
+        chatWindow->chatLog(line, BY_CHANNEL, channel->getName());
     }
 }
 

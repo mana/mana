@@ -46,6 +46,7 @@ enum
     BY_PLAYER = 1,
     BY_OTHER  = 2,
     BY_SERVER = 3,
+    BY_CHANNEL = 4,
     BY_LOGGER
 };
 
@@ -74,14 +75,27 @@ class ChatWindow : public Window,
          * the tabbed area.
          */
         void widgetResized(const gcn::Event &event);
+        
+        /**
+         * Gets the focused tab's name
+         */
+        const std::string& getFocused() const;
+        
+        /**
+         * Clear the tab with the given name
+         */
+        void clearTab(const std::string &tab);
 
         /**
          * Adds a line of text to our message list. Parameters:
          *
          * @param line Text message.
-         * @parem own  Type of message (usually the owner-type).
+         * @param own  Type of message (usually the owner-type).
+         * @param channelName which channel to send the message to.
          */
-        void chatLog(std::string line, int own, const std::string &channelName = "General");
+        void chatLog(std::string line, 
+                     int own = BY_SERVER, 
+                     std::string channelName = "getFocused\"");
 
         /**
          * Performs action.
@@ -99,31 +113,14 @@ class ChatWindow : public Window,
         bool isFocused();
 
         /**
-         * Determines whether to send a command or an ordinary message, then
-         * contructs packets & sends them.
+         * Determines whether the message is a command or message, then
+         * sends the given message to the game server to be said, or to the
+         * command handler
+         * 
+         * @param msg  The message text which is to be sent.
          *
-         * @param nick The character's name to display in front.
-         * @param msg  The message text which is to be send.
-         *
-         * NOTE:
-         * The nickname is required by the server, if not specified
-         * the message may not be sent unless a command was intended
-         * which requires another packet to be constructed! you can
-         * achieve this by putting a slash ("/") infront of the
-         * message followed by the command name and the message.
-         * of course all slash-commands need implemented handler-
-         * routines. ;-)
-         * remember, a line starting with "@" is not a command that needs
-         * to be parsed rather is sent using the normal chat-packet.
-         *
-         * EXAMPLE:
-         * // for an global announcement   /- command
-         * chatlog.chat_send("", "/announce Hello to all logged in users!");
-         * // for simple message by a user /- message
-         * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
          */
-        void chatSend(std::string const &nick, std::string const &msg,
-                      std::string const &channelName);
+        void chatSend(std::string const &msg);
 
         /** Called to remove the channel from the channel manager */
         void
@@ -138,10 +135,6 @@ class ChatWindow : public Window,
         /** Called to create a new channel tab */
         void
         createNewChannelTab(const std::string &channelName);
-
-        /** Called to join channel */
-        void
-        enterChannel(const std::string &channel, const std::string &password = "None");
 
         /** Called to output text to a specific channel */
         void

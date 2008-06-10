@@ -328,6 +328,8 @@ SET(SRCS
     channel.h
     channelmanager.cpp
     channelmanager.h
+    commandhandler.cpp
+    commandhandler.h
     configlistener.h
     configuration.cpp
     configuration.h

@@ -37,6 +37,7 @@
 #include "widgets/tab.h"
 #include "widgets/tabbedarea.h"
 
+#include "../commandhandler.h"
 #include "../channelmanager.h"
 #include "../channel.h"
 #include "../configuration.h"
@@ -96,6 +97,18 @@ ChatWindow::~ChatWindow()
     delete mChatTabs;
 }
 
+const std::string& ChatWindow::getFocused() const
+{
+    return mChatTabs->getSelectedTab()->getCaption();
+}
+
+void ChatWindow::clearTab(const std::string &tab)
+{
+    ChannelMap::const_iterator chan = mChannels.find(tab);
+    if (chan != mChannels.end())
+    chan->second.browser->clearRows();
+}
+
 void ChatWindow::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
@@ -122,8 +135,11 @@ void ChatWindow::widgetResized(const gcn::Event &event)
 }
 
 void
-ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
+ChatWindow::chatLog(std::string line, int own, std::string channelName)
 {
+    if(channelName == "getFocused\"")
+        channelName = getFocused();
+    
     ChannelMap::const_iterator chan = mChannels.find(channelName);
     if (chan == mChannels.end())
         return;
@@ -163,6 +179,10 @@ ChatWindow::chatLog(std::string line, int own, const std::string &channelName)
             tmp.nick = "Server: ";
             tmp.text = line;
             lineColor = "##7"; // Equiv. to BrowserBox::PINK
+            break;
+        case BY_CHANNEL:
+            tmp.nick = "";
+            lineColor = "##2"; // Equiv. to BrowserBox::GREEN
             break;
         case BY_LOGGER:
             tmp.nick = "";
@@ -220,8 +240,7 @@ ChatWindow::action(const gcn::ActionEvent &event)
             mCurHist = mHistory.end();
 
             // Send the message to the server
-            gcn::Tab *tab = mChatTabs->getSelectedTab();
-            chatSend(player_node->getName(), message, tab->getCaption());
+            chatSend(message);
 
             // Clear the text from the chat input
             mChatInput->setText("");
@@ -265,115 +284,29 @@ ChatWindow::isFocused()
     return mChatInput->isFocused();
 }
 
-void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
-                          std::string const &channelName)
+void ChatWindow::chatSend(std::string const &msg)
 {
-    /* Some messages are managed client side, while others
-     * require server handling by proper packet. Probably
-     * those if elses should be replaced by protocol calls */
-
     if (msg.empty()) return;
 
     // Prepare ordinary message
-    if (msg[0] != '/') {
-        gcn::Tab *tab = mChatTabs->getSelectedTab();
-        if (tab->getCaption() == "General")
+    if (msg[0] != '/') 
+    {
+        if (getFocused() == "General")
         {
             Net::GameServer::Player::say(msg);
         }
         else
         {
-            Channel *channel = channelManager->findByName(channelName);
+            Channel *channel = channelManager->findByName(getFocused());
             if (channel)
             {
-                int channelId = channel->getId();
-                Net::ChatServer::chat(channelId, msg);
+                Net::ChatServer::chat(channel->getId(), msg);
             }
         }
-        return;
-    }
-
-    std::string::size_type pos = msg.find(' ', 1);
-    std::string command(msg, 1, pos == std::string::npos ? pos : pos - 1);
-    std::string arg(msg, pos == std::string::npos ? msg.size() : pos + 1);
-
-    if (command == "announce")
-    {
-        Net::ChatServer::announce(arg);
-    }
-    else if (command == "help")
-    {
-        chatLog("-- Help --", BY_SERVER, channelName);
-        chatLog("/help > Display this help.", BY_SERVER, channelName);
-        chatLog("/announce > Global announcement (GM only)", BY_SERVER, channelName);
-        chatLog("/where > Display map name", BY_SERVER, channelName);
-        chatLog("/who > Display number of online users", BY_SERVER, channelName);
-        chatLog("/msg > Send a private message to a user", BY_SERVER, channelName);
-        chatLog("/list > Display all public channels", BY_SERVER, channelName);
-        chatLog("/register > Register a new channel", BY_SERVER, channelName);
-        chatLog("/join > Join an already registered channel", BY_SERVER, channelName);
-        chatLog("/quit > Leave a channel", BY_SERVER, channelName);
-        chatLog("/admin > Send a command to the server (GM only)", BY_SERVER, channelName);
-        chatLog("/clear > Clears this window", BY_SERVER);
-    }
-    else if (command == "where")
-    {
-        chatLog(map_path, BY_SERVER);
-    }
-    else if (command == "who")
-    {
-        // XXX Convert for new server
-        /*
-        MessageOut outMsg(0x00c1);
-        */
-    }
-    else if (command == "msg")
-    {
-        std::string::size_type pos = arg.find(' ', 1);
-        std::string recipient(arg, 0, pos);
-        std::string text(arg, pos+1);
-        Net::ChatServer::privMsg(recipient, text);
-    }
-    else if (command == "register")
-    {
-        // TODO: Parse the announcement and password
-        chatLog("Requesting to register channel " + arg, BY_SERVER);
-        Net::ChatServer::registerChannel(arg, "", "");
-    }
-    else if (command == "join")
-    {
-        //TODO: have passwords too
-        chatLog("Requesting to join channel " + arg, BY_SERVER);
-        enterChannel(arg, "None");
-    }
-    else if (command == "list")
-    {
-        Net::ChatServer::getChannelList();
-    }
-    else if (command == "quit")
-    {
-        if (Channel *channel = channelManager->findByName(channelName))
-        {
-            Net::ChatServer::quitChannel(channel->getId());
-        }
-        else
-        {
-            chatLog("Unable to quit this channel", BY_SERVER);
-        }
-    }
-    else if (command == "admin")
-    {
-        Net::GameServer::Player::say("/" + arg);
-    }
-    else if (command == "clear")
-    {
-        ChannelMap::const_iterator chan = mChannels.find(channelName);
-        if (chan != mChannels.end())
-            chan->second.browser->clearRows();
     }
     else
     {
-        chatLog("Unknown command", BY_SERVER, channelName);
+        commandHandler->handleCommand(std::string(msg, 1));
     }
 }
 
@@ -429,17 +362,8 @@ ChatWindow::createNewChannelTab(const std::string &channelName)
     mChannels.insert(
             std::make_pair(channelName, ChatArea(textOutput, scrollArea)));
 
-    // Ask for channel users
-    Net::ChatServer::getUserList(channelName);
-
     // Update UI
     logic();
-}
-
-void
-ChatWindow::enterChannel(const std::string &channel, const std::string &password)
-{
-    Net::ChatServer::enterChannel(channel, password);
 }
 
 void

@@ -1,3 +1,15 @@
+2008-06-09  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/commandhandler.cpp, src/commandhandler.h,
+	src/game.cpp, src/CMakeLists.txt, src/Makefile.am:
+	Add a command handler class to handle commands issued by
+	the user.
+	* src/gui/chat.cpp, src/gui/chat.h, src/net/chathandler.cpp,
+	src/net/guildhandler.cpp: Display messages about chats in
+	green, and take command parsing code out of the chat dialog,
+	* src/channel.cpp, src/channel.h: Don't store channel users,
+	its handled with packets.
+
 2008-06-03  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/chat.cpp, src/gui/chat.h, src/net/guildhandler.cpp: 
