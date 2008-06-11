@@ -1,3 +1,8 @@
+2008-06-11  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/guildlistbox.cpp: Fixed displaying guild members in guild 
+	window.
+
 2008-06-10  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/net/protocol.h src/net/chatserver/chatserver.h,
