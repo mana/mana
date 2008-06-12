@@ -227,17 +227,17 @@ void TradeWindow::tradeItem(Item *item, int quantity)
 
 void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
 {
-    Item *item;
+    const Item *item;
 
     /* If an item is selected in one container, make sure no item is selected
      * in the other container.
      */
     if (event.getSource() == mMyItemContainer &&
-            (item = mMyItemContainer->getItem()))
+            (item = mMyItemContainer->getSelectedItem()))
     {
         mPartnerItemContainer->selectNone();
     }
-    else if ((item = mPartnerItemContainer->getItem()))
+    else if ((item = mPartnerItemContainer->getSelectedItem()))
     {
         mMyItemContainer->selectNone();
     }
@@ -262,19 +262,15 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
 
 void TradeWindow::action(const gcn::ActionEvent &event)
 {
-    Item *item = inventoryWindow->getItem();
+    Item *item = inventoryWindow->getSelectedItem();
 
     if (event.getId() == "add")
     {
         if (!item)
-        {
             return;
-        }
 
         if (mMyInventory->getFreeSlot() < 1)
-        {
             return;
-        }
 
         if (mMyInventory->contains(item)) {
             chatWindow->chatLog("Failed adding item. You can not "

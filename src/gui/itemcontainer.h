@@ -80,7 +80,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
         /**
          * Returns the selected item.
          */
-        Item* getItem();
+        Item* getSelectedItem() const;
 
         /**
          * Sets selected item to NULL.

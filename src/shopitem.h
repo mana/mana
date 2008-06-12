@@ -21,59 +21,38 @@
  *  $Id$
  */
 
-#ifndef _TMW_EQUIPMENT_H_
-#define _TMW_EQUIPMENT_H_
+#ifndef _SHOPITEM_H_
+#define _SHOPITEM_H_
 
-class Item;
+#include "item.h"
 
-#define EQUIPMENT_SIZE 10
-
-class Equipment
+/**
+ * Represents an item in a shop inventory.
+ */
+class ShopItem : public Item
 {
     public:
         /**
          * Constructor.
          */
-        Equipment();
+        ShopItem(int id, int quantity, int price);
 
         /**
-         * Get equipment at the given slot.
+         * Gets the price of the item.
          */
-        Item* getEquipment(int index) const
-        { return mEquipment[index]; }
+        int getPrice() const
+        { return mPrice; }
 
         /**
-         * Set equipment at the given slot.
+         * Gets the display name for in the shop list.
          */
-        void
-        setEquipment(int index, Item *item);
+        const std::string& getDisplayName() const
+        { return mDisplayName; }
 
-        /**
-         * Remove equipment from the given slot.
-         */
-        void
-        removeEquipment(int index) { mEquipment[index] = 0; }
-
-        /**
-         * Remove the given item from equipment.
-         */
-        void removeEquipment(Item *item);
-
-        /**
-         * Get the item used in the arrow slot.
-         */
-        Item*
-        getArrows() { return mArrows; }
-
-        /**
-         * Set the item used in the arrow slot.
-         */
-        void
-        setArrows(Item *arrows) { mArrows = arrows; }
-
-    private:
-        Item *mEquipment[EQUIPMENT_SIZE];
-        Item *mArrows;
+    protected:
+        int mPrice;
+        int mIndex;
+        std::string mDisplayName;
 };
 
 #endif

@@ -21,3 +21,38 @@
  *  $Id$
  */
 
+#include "item.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
+Item::Item(int id, int quantity, bool equipment, bool equipped):
+    mImage(0),
+    mQuantity(quantity),
+    mEquipment(equipment),
+    mEquipped(equipped)
+{
+    setId(id);
+}
+
+Item::~Item()
+{
+    if (mImage)
+        mImage->decRef();
+}
+
+void Item::setId(int id)
+{
+    mId = id;
+
+    // Load the associated image
+    if (mImage)
+        mImage->decRef();
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    std::string imagePath = "graphics/items/" + getInfo().getImageName();
+    mImage = resman->getImage(imagePath);
+
+    if (!mImage)
+        mImage = resman->getImage("graphics/gui/unknown-item.png");
+}

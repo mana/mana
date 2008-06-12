@@ -45,12 +45,12 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
     mXpForNextLevel(0),
     mAttackRange(0),
-    mInventory(new Inventory),
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false),
     mLastAction(-1),
-    mWalkingDir(0), mDestX(0), mDestY(0)
+    mWalkingDir(0), mDestX(0), mDestY(0),
+    mInventory(new Inventory)
 {
 }
 
@@ -125,37 +125,6 @@ void LocalPlayer::nextStep()
     Player::nextStep();
 }
 
-void LocalPlayer::clearInventory()
-{
-    mInventory->clear();
-}
-
-void LocalPlayer::addInvItem(int id, int quantity, bool equipment)
-{
-    mInventory->addItem(id, quantity, equipment);
-}
-
-void LocalPlayer::addInvItem(int index, int id, int quantity, bool equipment)
-{
-    mInventory->addItem(index, id, quantity, equipment);
-}
-
-Item* LocalPlayer::getInvItem(int index)
-{
-    return mInventory->getItem(index);
-}
-
-Item* LocalPlayer::searchForItem(int itemId)
-{
-    for (int i = 0; i < INVENTORY_SIZE; i++)
-    {
-        if (itemId == mInventory->getItem(i)->getId()) {
-            return mInventory->getItem(i);
-        }
-    }
-    return NULL;
-}
-
 void LocalPlayer::equipItem(Item *item)
 {
     MessageOut outMsg(mNetwork);
@@ -173,7 +142,7 @@ void LocalPlayer::unequipItem(Item *item)
     outMsg.writeInt16(CMSG_PLAYER_UNEQUIP);
     outMsg.writeInt16(item->getInvIndex());
 
-    // Tidy equipment directly to avoid weapon still shown bug, by instance
+    // Tidy equipment directly to avoid weapon still shown bug, for instance
     mEquipment->removeEquipment(item);
 }
 

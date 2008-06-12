@@ -29,84 +29,104 @@
 #include "item.h"
 #include "log.h"
 
-struct SlotUsed : public std::unary_function<Item, bool>
+struct SlotUsed : public std::unary_function<Item*, bool>
 {
-    bool operator()(const Item &item) const {
-        return (item.getId() != -1 && item.getQuantity() > 0);
+    bool operator()(const Item *item) const {
+        return item && item->getId() != -1 && item->getQuantity() > 0;
     }
 };
 
 Inventory::Inventory()
 {
-    mItems = new Item[INVENTORY_SIZE];
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        mItems[i].setInvIndex(i);
-    }
+    mItems = new Item*[INVENTORY_SIZE];
+    std::fill_n(mItems, INVENTORY_SIZE, (Item*) 0);
 }
 
 Inventory::~Inventory()
 {
+    for (int i = 0; i < INVENTORY_SIZE; i++)
+        delete mItems[i];
+
     delete [] mItems;
 }
 
-Item* Inventory::getItem(int index)
+Item* Inventory::getItem(int index) const
 {
     if (index < 0 || index >= INVENTORY_SIZE)
-    {
         return 0;
-    }
 
-    return &mItems[index];
+    return mItems[index];
+}
+
+Item* Inventory::findItem(int itemId) const
+{
+    for (int i = 0; i < INVENTORY_SIZE; i++)
+    {
+        if (mItems[i] && mItems[i]->getId() == itemId)
+            return mItems[i];
+    }
+    return NULL;
 }
 
 void Inventory::addItem(int id, int quantity, bool equipment)
 {
-    addItem(getFreeSlot(), id, quantity, equipment);
+    setItem(getFreeSlot(), id, quantity, equipment);
 }
 
-void Inventory::addItem(int index, int id, int quantity, bool equipment)
+void Inventory::setItem(int index, int id, int quantity, bool equipment)
 {
     if (index < 0 || index >= INVENTORY_SIZE) {
         logger->log("Warning: invalid inventory index: %d", index);
         return;
     }
 
-    mItems[index].setId(id);
-
+    /* TODO: Check where to reenable this code.
     // Dont stack equipment other than arrows.
     if (equipment && !(id == 1199 || id == 529))
         mItems[index].setQuantity(quantity);
     else
         mItems[index].increaseQuantity(quantity);
+    */
 
-    mItems[index].setEquipment(equipment);
+    if (!mItems[index] && id > 0) {
+        Item *item = new Item(id, quantity, equipment);
+        item->setInvIndex(index);
+        mItems[index] = item;
+    } else if (id > 0) {
+        mItems[index]->setId(id);
+        mItems[index]->setQuantity(quantity);
+        mItems[index]->setEquipment(equipment);
+    } else if (mItems[index]) {
+        removeItemAt(index);
+    }
 }
-
 
 void Inventory::clear()
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        mItems[i].setId(-1);
-        mItems[i].setQuantity(0);
-        mItems[i].setEquipped(false);
+        removeItemAt(i);
     }
 }
 
 void Inventory::removeItem(int id)
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (mItems[i].getId() == id) {
-            mItems[i].setId(-1);
-            mItems[i].setQuantity(0);
-            mItems[i].setEquipped(false);
+        if (mItems[i] && mItems[i]->getId() == id) {
+            removeItemAt(i);
         }
     }
 }
 
-bool Inventory::contains(Item *item)
+void Inventory::removeItemAt(int index)
+{
+    delete mItems[index];
+    mItems[index] = 0;
+}
+
+bool Inventory::contains(Item *item) const
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (mItems[i].getId() == item->getId()) {
+        if (mItems[i] && mItems[i]->getId() == item->getId()) {
             return true;
         }
     }
@@ -116,7 +136,7 @@ bool Inventory::contains(Item *item)
 
 int Inventory::getFreeSlot()
 {
-    Item *i = std::find_if(mItems + 2, mItems + INVENTORY_SIZE,
+    Item **i = std::find_if(mItems + 2, mItems + INVENTORY_SIZE,
             std::not1(SlotUsed()));
     return (i == mItems + INVENTORY_SIZE) ? -1 : (i - mItems);
 }

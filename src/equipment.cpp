@@ -26,18 +26,19 @@
 #include <algorithm>
 
 #include "item.h"
+#include "item.h"
 
 Equipment::Equipment():
     mArrows(0)
 {
-    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*)0);
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
 }
 
 void
 Equipment::removeEquipment(Item *item)
 {
-    Item **i = std::find(mEquipment, mEquipment+EQUIPMENT_SIZE, item);
-    if (i != mEquipment+EQUIPMENT_SIZE) {
+    Item **i = std::find(mEquipment, mEquipment + EQUIPMENT_SIZE, item);
+    if (i != mEquipment + EQUIPMENT_SIZE) {
         *i = 0;
     }
 }

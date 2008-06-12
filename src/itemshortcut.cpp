@@ -23,9 +23,10 @@
 
 #include "itemshortcut.h"
 
+#include "configuration.h"
+#include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
-#include "configuration.h"
 
 #include "utils/tostring.h"
 
@@ -78,9 +79,8 @@ void ItemShortcut::useItem(int index)
 {
     if (mItems[index])
     {
-        Item *item = player_node->searchForItem(mItems[index]);
-        if (item && item->getQuantity()) {
+        Item *item = player_node->getInventory()->findItem(mItems[index]);
+        if (item && item->getQuantity())
             player_node->useItem(item);
-        }
     }
 }

@@ -70,18 +70,10 @@ class LocalPlayer : public Player
         virtual void
         drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
 
-        void clearInventory();
-        void addInvItem(int id, int quantity, bool equipment);
-        void addInvItem(int index, int id, int quantity, bool equipment);
-        Item* getInvItem(int index);
-
         /**
-         * Searches for the specified item by it's identification.
-         *
-         * @param itemId The id of the item to be searched.
-         * @return Item found on success, NULL on failure.
+         * Returns the player's inventory.
          */
-        Item* searchForItem(int itemId);
+        Inventory* getInventory() const { return mInventory; }
 
         /**
          * Equips an item.
@@ -213,8 +205,6 @@ class LocalPlayer : public Player
 
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
-        Inventory *mInventory;
-
     protected:
         void walk(unsigned char dir);
 
@@ -230,6 +220,8 @@ class LocalPlayer : public Player
         int mWalkingDir;    /**< The direction the player is walking in. */
         int mDestX;         /**< X coordinate of destination. */
         int mDestY;         /**< Y coordinate of destination. */
+
+        Inventory *mInventory;
 };
 
 extern LocalPlayer *player_node;

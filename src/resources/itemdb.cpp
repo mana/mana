@@ -55,7 +55,7 @@ void ItemDB::load()
 
     mUnknown = new ItemInfo();
     mUnknown->setName("Unknown item");
-    mUnknown->setImage("");
+    mUnknown->setImageName("");
     mUnknown->setSprite("error.xml", 0);
     mUnknown->setSprite("error.xml", 1);
 
@@ -97,7 +97,7 @@ void ItemDB::load()
         if (id)
         {
             ItemInfo *itemInfo = new ItemInfo();
-            itemInfo->setImage(image);
+            itemInfo->setImageName(image);
             itemInfo->setName((name == "") ? "Unnamed" : name);
             itemInfo->setDescription(description);
             itemInfo->setEffect(effect);

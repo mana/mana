@@ -23,35 +23,7 @@
 
 #include "iteminfo.h"
 
-#include "resourcemanager.h"
-#include "image.h"
 #include "itemdb.h"
-
-ItemInfo::~ItemInfo()
-{
-    if (mImage)
-    {
-        mImage->decRef();
-    }
-}
-
-void
-ItemInfo::setImage(const std::string &image)
-{
-    if (mImage)
-    {
-        mImage->decRef();
-    }
-
-    ResourceManager *resman = ResourceManager::getInstance();
-    mImageName = "graphics/items/" + image;
-    mImage = ResourceManager::getInstance()->getImage(mImageName);
-
-    if (!mImage)
-    {
-        mImage = resman->getImage("graphics/gui/unknown-item.png");
-    }
-}
 
 const std::string&
 ItemInfo::getSprite(int gender) const

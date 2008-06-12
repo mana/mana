@@ -29,6 +29,7 @@
 #include "protocol.h"
 
 #include "../beingmanager.h"
+#include "../inventory.h"
 #include "../item.h"
 #include "../localplayer.h"
 #include "../npc.h"
@@ -99,7 +100,7 @@ void BuySellHandler::handleMessage(MessageIn *msg)
                     Sint32 value = msg->readInt32();
                     msg->readInt32();  // OCvalue
 
-                    Item *item = player_node->getInvItem(index);
+                    Item *item = player_node->getInventory()->getItem(index);
                     if (item && !(item->isEquipped())) {
                         sellDialog->addItem(item, value);
                     }

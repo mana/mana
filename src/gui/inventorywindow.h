@@ -58,7 +58,10 @@ class InventoryWindow : public Window, gcn::ActionListener,
          */
         void action(const gcn::ActionEvent &event);
 
-        Item* getItem();
+        /**
+         * Returns the selected item.
+         */
+        Item* getSelectedItem() const;
 
         /**
          * Updates labels to currently selected item.

@@ -26,6 +26,8 @@
 
 #include "resources/itemdb.h"
 
+class Image;
+
 /**
  * Represents one or more instances of a certain item type.
  */
@@ -36,30 +38,29 @@ class Item
          * Constructor.
          */
         Item(int id = -1, int quantity = 0,
-             bool equipment = false, bool equipped = false):
-            mId(id),
-            mQuantity(quantity),
-            mEquipment(equipment),
-            mEquipped(equipped)
-        {
-        }
+             bool equipment = false, bool equipped = false);
 
         /**
          * Destructor.
          */
-        ~Item() {}
+        ~Item();
 
         /**
          * Sets the item id, identifying the item type.
          */
         void
-        setId(int id) { mId = id; }
+        setId(int id);
 
         /**
          * Returns the item id.
          */
         int
         getId() const { return mId; }
+
+        /**
+         * Returns the item image.
+         */
+        Image* getImage() { return mImage; }
 
         /**
          * Sets the number of items.
@@ -123,6 +124,7 @@ class Item
 
     protected:
         int mId;              /**< Item type id. */
+        Image *mImage;        /**< Item image. */
         int mQuantity;        /**< Number of items. */
         bool mEquipment;      /**< Item is equipment. */
         bool mEquipped;       /**< Item is equipped. */

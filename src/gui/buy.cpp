@@ -33,8 +33,6 @@
 
 #include "../npc.h"
 
-#include "../resources/itemdb.h"
-
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
@@ -170,7 +168,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
         outMsg.writeInt16(8);
         outMsg.writeInt16(mAmountItems);
-        outMsg.writeInt16(mShopItems->at(selectedItem).id);
+        outMsg.writeInt16(mShopItems->at(selectedItem)->getId());
 
         // Reset selection
         mAmountItems = 1;
@@ -179,7 +177,8 @@ void BuyDialog::action(const gcn::ActionEvent &event)
 
         // Update money and adjust the max number of items that can be bought
         mMaxItems -= mAmountItems;
-        setMoney(mMoney - mAmountItems * mShopItems->at(selectedItem).price);
+        setMoney(mMoney -
+                mAmountItems * mShopItems->at(selectedItem)->getPrice());
     }
 }
 
@@ -246,20 +245,22 @@ BuyDialog::updateButtonsAndLabels()
 
     if (selectedItem > -1)
     {
-        const ItemInfo &info = ItemDB::get(mShopItems->at(selectedItem).id);
+        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
 
         mItemDescLabel->setCaption("Description: " + info.getDescription());
         mItemEffectLabel->setCaption("Effect: " + info.getEffect());
 
+        int itemPrice = mShopItems->at(selectedItem)->getPrice();
+
         // Calculate how many the player can afford
-        mMaxItems = mMoney / mShopItems->at(selectedItem).price;
+        mMaxItems = mMoney / itemPrice;
         if (mAmountItems > mMaxItems)
         {
             mAmountItems = mMaxItems;
         }
 
         // Calculate price of pending purchase
-        price = mAmountItems * mShopItems->at(selectedItem).price;
+        price = mAmountItems * itemPrice;
     }
     else
     {

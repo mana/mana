@@ -25,6 +25,7 @@
 #define _TMW_FLOORITEM_H_
 
 #include "graphics.h"
+#include "item.h"
 #include "map.h"
 #include "sprite.h"
 #include "resources/image.h"
@@ -59,7 +60,7 @@ class FloorItem : public Sprite
          * Returns the item id.
          */
         unsigned int
-        getItemId() const { return mItemId; }
+        getItemId() const { return mItem->getId(); }
 
         /**
          * Returns the x coordinate.
@@ -89,16 +90,15 @@ class FloorItem : public Sprite
         void
         draw(Graphics *graphics, int offsetX, int offsetY) const
         {
-            graphics->drawImage(mImage,
+            graphics->drawImage(mItem->getImage(),
                                 mX * 32 + offsetX,
                                 mY * 32 + offsetY);
         }
 
     private:
         unsigned int mId;
-        unsigned int mItemId;
         unsigned short mX, mY;
-        Image *mImage;
+        Item *mItem;
         Sprites::iterator mSpriteIterator;
         Map *mMap;
 };

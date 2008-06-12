@@ -26,6 +26,7 @@
 #include "messagein.h"
 #include "protocol.h"
 
+#include "../inventory.h"
 #include "../item.h"
 #include "../localplayer.h"
 #include "../player_relations.h"
@@ -157,7 +158,8 @@ void TradeHandler::handleMessage(MessageIn *msg)
         case SMSG_TRADE_ITEM_ADD_RESPONSE:
             // Trade: New Item add response (was 0x00ea, now 01b1)
             {
-                Item *item = player_node->getInvItem(msg->readInt16());
+                const int index = msg->readInt16();
+                Item *item = player_node->getInventory()->getItem(index);
                 Sint16 quantity = msg->readInt16();
 
                 switch (msg->readInt8())

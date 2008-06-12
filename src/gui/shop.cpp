@@ -22,8 +22,8 @@
  */
 
 #include "shop.h"
-#include "../utils/tostring.h"
-#include "../resources/itemdb.h"
+
+#include "../utils/dtor.h"
 
 ShopItems::~ShopItems()
 {
@@ -32,43 +32,38 @@ ShopItems::~ShopItems()
 
 int ShopItems::getNumberOfElements()
 {
-    return mItemsShop.size();
+    return mShopItems.size();
 }
 
 std::string ShopItems::getElementAt(int i)
 {
-    return mItemsShop.at(i).name;
+    return mShopItems.at(i)->getDisplayName();
+}
+
+void ShopItems::addItem(int inventoryIndex, short id, int amount, int price)
+{
+    ShopItem *item = new ShopItem(id, amount, price);
+    item->setInvIndex(inventoryIndex);
+    mShopItems.push_back(item);
 }
 
 void ShopItems::addItem(short id, int price)
 {
-    ITEM_SHOP item_shop;
-
-    item_shop.name = ItemDB::get(id).getName()
-                     + " (" + toString(price) + " GP)";
-    item_shop.price = price;
-    item_shop.id = id;
-    item_shop.image = ItemDB::get(id).getImage();
-
-    mItemsShop.push_back(item_shop);
+    mShopItems.push_back(new ShopItem(id, 0, price));
 }
 
-ITEM_SHOP ShopItems::at(int i)
+ShopItem* ShopItems::at(int i) const
 {
-    return mItemsShop.at(i);
-}
-
-void ShopItems::push_back(ITEM_SHOP item_shop)
-{
-    mItemsShop.push_back(item_shop);
+    return mShopItems.at(i);
 }
 
 void ShopItems::clear()
 {
-    mItemsShop.clear();
+    std::for_each(mShopItems.begin(), mShopItems.end(), make_dtor(mShopItems));
+    mShopItems.clear();
 }
 
-std::vector<ITEM_SHOP>* ShopItems::getShop()
+std::vector<ShopItem*>* ShopItems::getShop()
 {
-    return &mItemsShop;
+    return &mShopItems;
 }

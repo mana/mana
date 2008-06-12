@@ -37,7 +37,6 @@
 #include "../npc.h"
 
 #include "../resources/iteminfo.h"
-#include "../resources/itemdb.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
@@ -117,22 +116,15 @@ void SellDialog::reset()
     updateButtonsAndLabels();
 }
 
-void SellDialog::addItem(Item *item, int price)
+void SellDialog::addItem(const Item *item, int price)
 {
     if (!item)
         return;
 
-    ITEM_SHOP item_shop;
+    mShopItems->addItem(
+            item->getInvIndex(), item->getId(),
+            item->getQuantity(), price);
 
-    item_shop.name = item->getInfo().getName()
-        + " (" + toString(price) + " GP)";
-    item_shop.price = price;
-    item_shop.index = item->getInvIndex();
-    item_shop.id = item->getId();
-    item_shop.quantity = item->getQuantity();
-    item_shop.image = item->getInfo().getImage();
-
-    mShopItems->push_back(item_shop);
     mShopItemList->adjustSize();
 }
 
@@ -178,12 +170,13 @@ void SellDialog::action(const gcn::ActionEvent &event)
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
         outMsg.writeInt16(8);
-        outMsg.writeInt16(mShopItems->at(selectedItem).index);
+        outMsg.writeInt16(mShopItems->at(selectedItem)->getInvIndex());
         outMsg.writeInt16(mAmountItems);
 
         mMaxItems -= mAmountItems;
-        mShopItems->getShop()->at(selectedItem).quantity = mMaxItems;
-        mPlayerMoney += (mAmountItems * mShopItems->at(selectedItem).price);
+        mShopItems->getShop()->at(selectedItem)->setQuantity(mMaxItems);
+        mPlayerMoney +=
+            mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mAmountItems = 1;
 
         if (!mMaxItems)
@@ -277,15 +270,15 @@ SellDialog::updateButtonsAndLabels()
 
     if (selectedItem > -1)
     {
-        mMaxItems = mShopItems->at(selectedItem).quantity;
+        mMaxItems = mShopItems->at(selectedItem)->getQuantity();
         if (mAmountItems > mMaxItems)
         {
             mAmountItems = mMaxItems;
         }
 
-        income = mAmountItems * mShopItems->at(selectedItem).price;
+        income = mAmountItems * mShopItems->at(selectedItem)->getPrice();
 
-        const ItemInfo &info = ItemDB::get(mShopItems->at(selectedItem).id);
+        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
         mItemDescLabel->setCaption("Description: " + info.getDescription());
         mItemEffectLabel->setCaption("Effect: " + info.getEffect());
     }

@@ -44,7 +44,15 @@ class Inventory
         /**
          * Returns the item at the specified index.
          */
-        Item* getItem(int index);
+        Item* getItem(int index) const;
+
+        /**
+         * Searches for the specified item by it's id.
+         *
+         * @param itemId The id of the item to be searched.
+         * @return Item found on success, NULL on failure.
+         */
+        Item* findItem(int itemId) const;
 
         /**
          * Adds a new item in a free slot.
@@ -52,9 +60,9 @@ class Inventory
         void addItem(int id, int quantity, bool equipment);
 
         /**
-         * Adds a new item at a given position.
+         * Sets the item at the given position.
          */
-        void addItem(int index, int id, int quantity, bool equipment);
+        void setItem(int index, int id, int quantity, bool equipment);
 
         /**
          * Remove a item from the inventory.
@@ -62,9 +70,14 @@ class Inventory
         void removeItem(int id);
 
         /**
+         * Remove the item at the specified index from the inventory.
+         */
+        void removeItemAt(int index);
+
+        /**
          * Checks if the given item is in the inventory
          */
-        bool contains(Item *item);
+        bool contains(Item *item) const;
 
         /**
          * Returns id of next free slot or -1 if all occupied.
@@ -87,7 +100,7 @@ class Inventory
         int getLastUsedSlot();
 
     protected:
-        Item *mItems;  /**< The holder of items */
+        Item **mItems;  /**< The holder of items */
 };
 
 #endif

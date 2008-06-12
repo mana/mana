@@ -284,6 +284,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      player_relations.h \
 	      properties.h \
 	      serverinfo.h \
+	      shopitem.cpp \
+	      shopitem.h \
 	      simpleanimation.cpp \
 	      simpleanimation.h \
 	      sound.cpp \

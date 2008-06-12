@@ -32,8 +32,12 @@
 #include "../item.h"
 #include "../itemshortcut.h"
 #include "../localplayer.h"
+#include "../log.h"
+#include "../inventory.h"
 
 #include "../gui/chat.h"
+
+#include "../utils/tostring.h"
 
 InventoryHandler::InventoryHandler()
 {
@@ -52,13 +56,14 @@ void InventoryHandler::handleMessage(MessageIn *msg)
 {
     Sint32 number;
     Sint16 index, amount, itemId, equipType;
+    Inventory *inventory = player_node->getInventory();
 
     switch (msg->getId())
     {
         case SMSG_PLAYER_INVENTORY:
             // Only called on map load / warp. First reset all items
             // to not load them twice on map change.
-            player_node->clearInventory();
+            inventory->clear();
             msg->readInt16();  // length
             number = (msg->getLength() - 4) / 18;
 
@@ -72,12 +77,13 @@ void InventoryHandler::handleMessage(MessageIn *msg)
                 msg->skip(2);    // unknown
                 msg->skip(8);    // card (4 shorts)
 
-                player_node->addInvItem(index, itemId, amount, false);
+                inventory->setItem(index, itemId, amount, false);
 
                 // Trick because arrows are not considered equipment
                 if (itemId == 1199 || itemId == 529)
                 {
-                    player_node->getInvItem(index)->setEquipment(true);
+                    if (Item *item = inventory->getItem(index))
+                        item->setEquipment(true);
                 }
             }
             break;
@@ -93,20 +99,32 @@ void InventoryHandler::handleMessage(MessageIn *msg)
             equipType = msg->readInt16();
             msg->readInt8();  // type
 
-            if (msg->readInt8()> 0) {
+            if (msg->readInt8() > 0) {
                 chatWindow->chatLog("Unable to pick up item", BY_SERVER);
             } else {
                 const ItemInfo &itemInfo = ItemDB::get(itemId);
-                chatWindow->chatLog("You picked up a " +
+                const std::string amountStr =
+                    (amount > 1) ? toString(amount) : "a";
+                chatWindow->chatLog("You picked up " + amountStr + " " +
                         itemInfo.getName(), BY_SERVER);
-                player_node->addInvItem(index, itemId, amount, equipType != 0);
+
+                if (Item *item = inventory->getItem(index)) {
+                    item->setId(itemId);
+                    item->increaseQuantity(amount);
+                } else {
+                    inventory->setItem(index, itemId, amount, equipType != 0);
+                }
             }
             break;
 
         case SMSG_PLAYER_INVENTORY_REMOVE:
             index = msg->readInt16();
             amount = msg->readInt16();
-            player_node->getInvItem(index)->increaseQuantity(-amount);
+            if (Item *item = inventory->getItem(index)) {
+                item->increaseQuantity(-amount);
+                if (item->getQuantity() == 0)
+                    inventory->removeItemAt(index);
+            }
             break;
 
         case SMSG_PLAYER_INVENTORY_USE:
@@ -116,7 +134,8 @@ void InventoryHandler::handleMessage(MessageIn *msg)
             amount = msg->readInt16();
             msg->readInt8();  // type
 
-            player_node->getInvItem(index)->setQuantity(amount);
+            if (Item *item = inventory->getItem(index))
+                item->setQuantity(amount);
             break;
 
         case SMSG_ITEM_USE_RESPONSE:
@@ -126,7 +145,8 @@ void InventoryHandler::handleMessage(MessageIn *msg)
             if (msg->readInt8() == 0) {
                 chatWindow->chatLog("Failed to use item", BY_SERVER);
             } else {
-                player_node->getInvItem(index)->setQuantity(amount);
+                if (Item *item = inventory->getItem(index))
+                    item->setQuantity(amount);
             }
             break;
     }

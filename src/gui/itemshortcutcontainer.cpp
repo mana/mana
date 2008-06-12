@@ -25,6 +25,7 @@
 
 #include "../localplayer.h"
 #include "../graphics.h"
+#include "../inventory.h"
 #include "../item.h"
 #include "../itemshortcut.h"
 #include "../keyboardconfig.h"
@@ -93,10 +94,11 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
         if (itemShortcut->getItem(i) < 0)
             continue;
 
-        Item *item = player_node->searchForItem(itemShortcut->getItem(i));
+        Item *item =
+            player_node->getInventory()->findItem(itemShortcut->getItem(i));
         if (item) {
             // Draw item icon.
-            Image* image = item->getInfo().getImage();
+            Image* image = item->getImage();
             if (image) {
                 g->drawImage(image, itemX, itemY);
                 g->drawText(
@@ -110,7 +112,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
     if (mItemMoved)
     {
         // Draw the item image being dragged by the cursor.
-        Image* image = mItemMoved->getInfo().getImage();
+        Image* image = mItemMoved->getImage();
         if (image)
         {
             const int tPosX = mCursorPosX - (image->getWidth() / 2);
@@ -151,9 +153,10 @@ ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
             if (index == -1) {
                 return;
             }
-            if (itemShortcut->getItem(index) < 0)
+            const int itemId = itemShortcut->getItem(index);
+            if (itemId < 0)
                 return;
-            Item *item = player_node->searchForItem(itemShortcut->getItem(index));
+            Item *item = player_node->getInventory()->findItem(itemId);
             if (item)
             {
                 mItemMoved = item;

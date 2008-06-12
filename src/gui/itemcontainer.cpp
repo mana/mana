@@ -101,9 +101,8 @@ ItemContainer::draw(gcn::Graphics *graphics)
     {
         Item *item = mInventory->getItem(i);
 
-        if (item->getQuantity() <= 0) {
+        if (!item || item->getQuantity() <= 0)
             continue;
-        }
 
         int itemX = ((i - 2) % columns) * gridWidth;
         int itemY = ((i - 2) / columns) * gridHeight;
@@ -116,8 +115,8 @@ ItemContainer::draw(gcn::Graphics *graphics)
         }
 
         // Draw item icon
-        Image* image;
-        if ((image = item->getInfo().getImage()) != NULL)
+        Image* image = item->getImage();
+        if (image)
         {
             static_cast<Graphics*>(graphics)->drawImage(
                     image, itemX, itemY);
@@ -151,7 +150,7 @@ void ItemContainer::recalculateHeight()
 }
 
 Item*
-ItemContainer::getItem()
+ItemContainer::getSelectedItem() const
 {
     return mSelectedItem;
 }
@@ -206,7 +205,7 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         }
         Item *item = mInventory->getItem(index);
         setSelectedItem(item);
-        if (!item->isEquipment())
+        if (item && !item->isEquipment())
         {
             itemShortcut->setItemSelected(item->getId());
         }

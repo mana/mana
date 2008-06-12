@@ -57,7 +57,7 @@ InventoryWindow::InventoryWindow():
     mUseButton = new Button("Use", "use", this);
     mDropButton = new Button("Drop", "drop", this);
 
-    mItems = new ItemContainer(player_node->mInventory);
+    mItems = new ItemContainer(player_node->getInventory());
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);
@@ -100,11 +100,10 @@ void InventoryWindow::logic()
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
 {
-    Item *item = mItems->getItem();
+    Item *item = mItems->getSelectedItem();
 
-    if (!item) {
+    if (!item)
         return;
-    }
 
     if (event.getId() == "use") {
         if (item->isEquipment()) {
@@ -133,7 +132,7 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 
 void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
-    Item *item = mItems->getItem();
+    const Item *item = mItems->getSelectedItem();
 
     // Update name, effect and description
     if (!item)
@@ -161,7 +160,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
     if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        Item *item = mItems->getItem();
+        Item *item = mItems->getSelectedItem();
 
         if (!item) return;
 
@@ -208,11 +207,11 @@ void InventoryWindow::widgetResized(const gcn::Event &event)
 
 void InventoryWindow::updateButtons()
 {
-    Item *item;
+    const Item *selectedItem = mItems->getSelectedItem();
 
-    if ((item = mItems->getItem()) && item->isEquipment())
+    if (selectedItem && selectedItem->isEquipment())
     {
-        if (item->isEquipped()) {
+        if (selectedItem->isEquipped()) {
             mUseButton->setCaption("Unequip");
         }
         else {
@@ -220,14 +219,14 @@ void InventoryWindow::updateButtons()
         }
     }
     else {
-        mUseButton ->setCaption("Use");
+        mUseButton->setCaption("Use");
     }
 
-    mUseButton->setEnabled(!!item);
-    mDropButton->setEnabled(!!item);
+    mUseButton->setEnabled(selectedItem != 0);
+    mDropButton->setEnabled(selectedItem != 0);
 }
 
-Item* InventoryWindow::getItem()
+Item* InventoryWindow::getSelectedItem() const
 {
-    return mItems->getItem();
+    return mItems->getSelectedItem();
 }

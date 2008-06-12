@@ -1,3 +1,4 @@
+- Item icons are now loaded on demand and unloaded when no longer used
 - Fixed display of critical hits
 
 0.0.24.1 (7 April 2008)

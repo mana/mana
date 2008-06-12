@@ -21,31 +21,13 @@
  *  $Id$
  */
 
-#include "floor_item.h"
+#include "shopitem.h"
 
-#include "map.h"
+#include "utils/tostring.h"
 
-FloorItem::FloorItem(unsigned int id,
-                     unsigned int itemId,
-                     unsigned short x,
-                     unsigned short y,
-                     Map *map):
-    mId(id),
-    mX(x),
-    mY(y),
-    mMap(map)
+ShopItem::ShopItem(int id, int quantity, int price):
+    Item(id, quantity),
+    mPrice(price)
 {
-    // Create a corresponding item instance
-    mItem = new Item(itemId);
-
-    // Add ourselves to the map
-    mSpriteIterator = mMap->addSprite(this);
-}
-
-FloorItem::~FloorItem()
-{
-    // Remove ourselves from the map
-    mMap->removeSprite(mSpriteIterator);
-
-    delete mItem;
+    mDisplayName = getInfo().getName() + " (" + toString(mPrice) + " GP)";
 }

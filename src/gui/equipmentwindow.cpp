@@ -61,22 +61,20 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
                 36 * (i / 4) + 25, 32, 32));
 
-        if (!(item = mEquipment->getEquipment(i))) {
+        if (!(item = mEquipment->getEquipment(i)))
             continue;
-        }
 
-        image = item->getInfo().getImage();
+        image = item->getImage();
         static_cast<Graphics*>(graphics)->drawImage(
                 image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
     }
 
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
 
-    if (!(item = mEquipment->getArrows())) {
+    if (!(item = mEquipment->getArrows()))
         return;
-    }
 
-    image = item->getInfo().getImage();
+    image = item->getImage();
 
     static_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
     graphics->drawText(toString(item->getQuantity()), 170, 62,

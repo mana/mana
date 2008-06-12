@@ -28,6 +28,7 @@
 
 #include "../beingmanager.h"
 #include "../equipment.h"
+#include "../inventory.h"
 #include "../item.h"
 #include "../localplayer.h"
 #include "../log.h"
@@ -54,6 +55,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
     Sint8 type;
     int mask, position;
     Item *item;
+    Inventory *inventory = player_node->getInventory();
 
     switch (msg->getId())
     {
@@ -73,7 +75,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 msg->readInt8();  // refine
                 msg->skip(8);     // card
 
-                player_node->addInvItem(index, itemId, 1, true);
+                inventory->setItem(index, itemId, 1, true);
 
                 if (equipPoint)
                 {
@@ -84,7 +86,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                         mask <<= 1;
                         position++;
                     }
-                    item = player_node->getInvItem(index);
+                    item = inventory->getItem(index);
                     player_node->mEquipment->setEquipment(position, item);
                 }
             }
@@ -120,7 +122,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 item->setEquipped(false);
             }
 
-            item = player_node->getInvItem(index);
+            item = inventory->getItem(index);
             player_node->mEquipment->setEquipment(position, item);
             break;
 
@@ -146,8 +148,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 position++;
             }
 
-            item = player_node->getInvItem(index);
-
+            item = inventory->getItem(index);
             if (!item)
                 break;
 
@@ -181,18 +182,18 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_ARROW_EQUIP:
-            itemId = msg->readInt16();
+            index = msg->readInt16();
 
-            if (itemId <= 1)
+            if (index <= 1)
                 break;
 
-            item = player_node->getInvItem(itemId);
+            item = inventory->getItem(index);
             if (!item)
                 break;
 
             item->setEquipped(true);
             player_node->mEquipment->setArrows(item);
-            logger->log("Arrows equipped: %i", itemId);
+            logger->log("Arrows equipped: %i", index);
             break;
     }
 }
