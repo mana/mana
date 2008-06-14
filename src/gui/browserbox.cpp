@@ -50,7 +50,7 @@ BrowserBox::BrowserBox(unsigned int mode):
     addMouseListener(this);
 
 #ifdef USE_OPENGL
-    if (config.getValue("opengl", 0)) {
+    if (config.getValue("opengl", 0.0f)) {
         if (instances == 0) {
             browserFont = new gcn::ImageFont(
                     "graphics/gui/browserfont.png",
