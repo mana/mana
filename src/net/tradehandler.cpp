@@ -159,12 +159,12 @@ void TradeHandler::handleMessage(MessageIn *msg)
             // Trade: New Item add response (was 0x00ea, now 01b1)
             {
                 const int index = msg->readInt16();
-                if (index == 0)
+                Item *item = player_node->getInventory()->getItem(index);
+                if (!item)
                 {
                     tradeWindow->receivedOk(true);
                     return;
                 }
-                Item *item = player_node->getInventory()->getItem(index);
                 Sint16 quantity = msg->readInt16();
 
                 switch (msg->readInt8())

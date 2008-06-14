@@ -2,6 +2,7 @@
 
 	* src/gui/shop.cpp, src/gui/browserbox.cpp, src/net/tradehandler.cpp: Fixed 
 	compilation errors. Fixed trade bug (although a little hacky right now).
+	* src/net/tradehandler.cpp: Changed bug fix as requested by Bjørn.
 
 2008-06-08  Fate  <fate.tmw@googlemail.com>
 
