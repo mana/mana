@@ -1,5 +1,3 @@
-ADD_SUBDIRECTORY(ambient)
-
 SET(FILES
     error.png
     login_wallpaper.png

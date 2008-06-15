@@ -1,3 +1,8 @@
+2008-06-14  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/gui/viewport.cpp, data/graphics/images/CMakeLists.txt,
+	data/graphics/CMakeLists.txt: Fix compiler and cmake warnings.
+
 2008-06-11  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/guildlistbox.cpp: Fixed displaying guild members in guild 

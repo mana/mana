@@ -56,10 +56,10 @@ Viewport::Viewport():
     mViewX(0.0f),
     mViewY(0.0f),
     mShowDebugPath(false),
+    mVisibleNames(false),
     mPlayerFollowMouse(false),
     mWalkTime(0),
-    mLocalWalkTime(-1),
-    mVisibleNames(false)
+    mLocalWalkTime(-1)
 {
     setOpaque(false);
     addMouseListener(this);
