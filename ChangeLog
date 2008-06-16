@@ -1,7 +1,12 @@
+2008-06-16  Fate  <fate.tmw@googlemail.com>
+
+	* player_relations.h: Allow whispers by default.
+
 2008-06-14  David Athay  <ko2fan@gmail.com>
 
-	* src/gui/shop.cpp, src/gui/browserbox.cpp, src/net/tradehandler.cpp: Fixed 
-	compilation errors. Fixed trade bug (although a little hacky right now).
+	* src/gui/shop.cpp, src/gui/browserbox.cpp, src/net/tradehandler.cpp:
+	Fixed compilation errors. Fixed trade bug (although a little hacky
+	right now).
 	* src/net/tradehandler.cpp: Changed bug fix as requested by Bjørn.
 
 2008-06-08  Fate  <fate.tmw@googlemail.com>

@@ -205,7 +205,7 @@ Setup_Players::Setup_Players():
     mPlayerScrollArea(new ScrollArea(mPlayerTable)),
     mPersistIgnores(new CheckBox("save player list", player_relations.getPersistIgnores())),
     mDefaultTrading(new CheckBox("allow trading", player_relations.getDefault() & PlayerRelation::TRADE)),
-    mDefaultWhisper(new CheckBox("allow whispers", player_relations.getDefault() & PlayerRelation:: WHISPER)),
+    mDefaultWhisper(new CheckBox("allow whispers", player_relations.getDefault() & PlayerRelation::WHISPER)),
     mDeleteButton(new Button("Delete", ACTION_DELETE, this)),
     mIgnoreActionChoicesBox(new gcn::DropDown(new IgnoreChoicesListModel()))
 {

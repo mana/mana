@@ -44,7 +44,7 @@ struct PlayerRelation
     static const unsigned int DEFAULT = EMOTE
                                       | SPEECH_FLOAT
                                       | SPEECH_LOG
-//                                    | WHISPER      -- only for friends
+                                      | WHISPER
                                       | TRADE;
     enum relation {
         NEUTRAL     = 0,
