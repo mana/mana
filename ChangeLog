@@ -1,3 +1,8 @@
+2008-06-17  Fate  <fate.tmw@googlemail.com>
+
+	* src/net/tradehandler.cpp: bug #333: Suppress `trade with X cancelled' 
+	messages for ignored players.
+
 2008-06-16  Fate  <fate.tmw@googlemail.com>
 
 	* player_relations.h: Allow whispers by default.

@@ -125,8 +125,12 @@ void TradeHandler::handleMessage(MessageIn *msg)
                     tradeWindow->setVisible(true);
                     break;
                 case 4: // Trade cancelled
-                    chatWindow->chatLog("Trade with " + tradePartnerName +
-                            " cancelled", BY_SERVER);
+                    if (player_relations.hasPermission(tradePartnerName,
+                                                       PlayerRelation::SPEECH_LOG))
+                        chatWindow->chatLog("Trade with " + tradePartnerName +
+                                            " cancelled", BY_SERVER);
+                    // otherwise ignore silently
+                                    
                     tradeWindow->setVisible(false);
                     player_node->setTrading(false);
                     break;

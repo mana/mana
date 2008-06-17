@@ -162,6 +162,8 @@
 		<Unit filename="src/gui/passwordfield.h" />
 		<Unit filename="src/gui/playerbox.cpp" />
 		<Unit filename="src/gui/playerbox.h" />
+		<Unit filename="src/gui/popup_box.cpp" />
+		<Unit filename="src/gui/popup_box.h" />
 		<Unit filename="src/gui/popupmenu.cpp" />
 		<Unit filename="src/gui/popupmenu.h" />
 		<Unit filename="src/gui/progressbar.cpp" />
@@ -182,6 +184,8 @@
 		<Unit filename="src/gui/setup_joystick.h" />
 		<Unit filename="src/gui/setup_keyboard.cpp" />
 		<Unit filename="src/gui/setup_keyboard.h" />
+		<Unit filename="src/gui/setup_players.cpp" />
+		<Unit filename="src/gui/setup_players.h" />
 		<Unit filename="src/gui/setup_video.cpp" />
 		<Unit filename="src/gui/setup_video.h" />
 		<Unit filename="src/gui/setuptab.h" />
@@ -197,6 +201,10 @@
 		<Unit filename="src/gui/status.h" />
 		<Unit filename="src/gui/tabbedcontainer.cpp" />
 		<Unit filename="src/gui/tabbedcontainer.h" />
+		<Unit filename="src/gui/table.cpp" />
+		<Unit filename="src/gui/table.h" />
+		<Unit filename="src/gui/table_model.cpp" />
+		<Unit filename="src/gui/table_model.h" />
 		<Unit filename="src/gui/textbox.cpp" />
 		<Unit filename="src/gui/textbox.h" />
 		<Unit filename="src/gui/textfield.cpp" />
@@ -286,6 +294,8 @@
 		<Unit filename="src/particleemitter.h" />
 		<Unit filename="src/player.cpp" />
 		<Unit filename="src/player.h" />
+		<Unit filename="src/player_relations.cpp" />
+		<Unit filename="src/player_relations.h" />
 		<Unit filename="src/properties.h" />
 		<Unit filename="src/resources/action.cpp" />
 		<Unit filename="src/resources/action.h" />
