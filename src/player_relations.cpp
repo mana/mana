@@ -83,7 +83,7 @@ PlayerRelation::PlayerRelation(relation relation)
     mRelation = relation;
 }
 
-PlayerRelationsManager::PlayerRelationsManager(void) :
+PlayerRelationsManager::PlayerRelationsManager() :
     mPersistIgnores(false),
     mDefaultPermissions(PlayerRelation::DEFAULT),
     mIgnoreStrategy(NULL)
@@ -91,7 +91,7 @@ PlayerRelationsManager::PlayerRelationsManager(void) :
 }    
 
 void
-PlayerRelationsManager::clear(void)
+PlayerRelationsManager::clear()
 {
     std::vector<std::string> *names = getPlayers();
     for (std::vector<std::string>::const_iterator
@@ -116,7 +116,7 @@ PlayerRelationsManager::getPlayerIgnoreStrategyIndex(const std::string &name)
 }
 
 void
-PlayerRelationsManager::load(void)
+PlayerRelationsManager::load()
 {
     clear();
 
@@ -134,7 +134,7 @@ PlayerRelationsManager::load(void)
 
 
 void
-PlayerRelationsManager::init(void)
+PlayerRelationsManager::init()
 {
     load();
 
@@ -143,7 +143,7 @@ PlayerRelationsManager::init(void)
 }
 
 void
-PlayerRelationsManager::store(void)
+PlayerRelationsManager::store()
 {
     config.setList<std::map<std::string, PlayerRelation *>::const_iterator,
                    std::pair<std::string, PlayerRelation *>,
@@ -236,7 +236,7 @@ PlayerRelationsManager::setRelation(const std::string &player_name, PlayerRelati
 }
 
 std::vector<std::string> *
-PlayerRelationsManager::getPlayers(void)
+PlayerRelationsManager::getPlayers()
 {
     std::vector<std::string> *retval = new std::vector<std::string>();
 
@@ -274,7 +274,7 @@ PlayerRelationsManager::getRelation(const std::string &name)
 // defaults
 
 unsigned int
-PlayerRelationsManager::getDefault(void) const
+PlayerRelationsManager::getDefault() const
 {
     return mDefaultPermissions;
 }
@@ -388,7 +388,7 @@ private:
 static std::vector<PlayerIgnoreStrategy *> player_ignore_strategies;
 
 std::vector<PlayerIgnoreStrategy *> *
-PlayerRelationsManager::getPlayerIgnoreStrategies(void)
+PlayerRelationsManager::getPlayerIgnoreStrategies()
 {
     if (player_ignore_strategies.size() == 0) {
         // not initialised yet?

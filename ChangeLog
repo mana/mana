@@ -1,3 +1,8 @@
+2008-06-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/player_relations.h: Fixed warning about missing virtual
+	destructor.
+
 2008-06-17  Fate  <fate.tmw@googlemail.com>
 
 	* src/net/tradehandler.cpp: bug #333: Suppress `trade with X cancelled' 

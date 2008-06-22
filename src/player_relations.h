@@ -60,120 +60,130 @@ struct PlayerRelation
 
 
 /**
- * Ignore strategy: describes how we should handle ignores
+ * Ignore strategy: describes how we should handle ignores.
  */
-class
-PlayerIgnoreStrategy
+class PlayerIgnoreStrategy
 {
 public:
     std::string mDescription;
     std::string mShortName;
 
+    virtual ~PlayerIgnoreStrategy() {}
+
     /**
-     * Handle the ignoring of the indicated action by the indicated player
+     * Handle the ignoring of the indicated action by the indicated player.
      */
     virtual void ignore(Player *player, unsigned int flags) = 0;
 };
 
-class
-PlayerRelationsListener
+class PlayerRelationsListener
 {
 public:
-    PlayerRelationsListener(void) { }
-    virtual ~PlayerRelationsListener(void) { }
+    PlayerRelationsListener() { }
+    virtual ~PlayerRelationsListener() { }
 
     virtual void updatedPlayer(const std::string &name) = 0;
 };
 
 /**
- * Player relations class, represents any particular relations and/or preferences the
- * user of the local client has wrt other players (identified by std::string).
+ * Player relations class, represents any particular relations and/or
+ * preferences the user of the local client has wrt other players (identified
+ * by std::string).
  */
-class
-PlayerRelationsManager
+class PlayerRelationsManager
 {
 public:
-    PlayerRelationsManager(void);
+    PlayerRelationsManager();
 
     /**
      * Initialise player relations manager (load config file etc.)
      */
-    void init(void);
+    void init();
 
     /**
-     * Load configuration from our config file, or substitute defaults
+     * Load configuration from our config file, or substitute defaults.
      */
-    void load(void);
+    void load();
 
     /**
-     * Save configuration to our config file
+     * Save configuration to our config file.
      */
-    void store(void);
+    void store();
 
     /**
-     * Determines whether the player in question is being ignored, filtered by the specified flags.
-     *
+     * Determines whether the player in question is being ignored, filtered by
+     * the specified flags.
      */
-    unsigned int checkPermissionSilently(const std::string &player_name, unsigned int flags);
+    unsigned int checkPermissionSilently(const std::string &player_name,
+                                         unsigned int flags);
 
     /**
-     * Tests whether the player in question is being ignored for any of the actions in the specified flags.
-     * If so, trigger appropriate side effects if requested by the player.
+     * Tests whether the player in question is being ignored for any of the
+     * actions in the specified flags. If so, trigger appropriate side effects
+     * if requested by the player.
      */
     bool hasPermission(Being *being, unsigned int flags);
 
     bool hasPermission(const std::string &being, unsigned int flags);
 
     /**
-     * Updates the relationship with this player
+     * Updates the relationship with this player.
      */
-    void setRelation(const std::string &name, PlayerRelation::relation relation);
+    void setRelation(const std::string &name,
+                     PlayerRelation::relation relation);
 
     /**
-     * Updates the relationship with this player
+     * Updates the relationship with this player.
      */
     PlayerRelation::relation getRelation(const std::string &name);
 
     /**
-     * Deletes the information recorded for a player
+     * Deletes the information recorded for a player.
      */
     void removePlayer(const std::string &name);
 
 
-
     /**
-     * Retrieves the default permissions
+     * Retrieves the default permissions.
      */
-    unsigned int getDefault(void) const;
+    unsigned int getDefault() const;
 
     /**
-     * Sets the default permissions
+     * Sets the default permissions.
      */
     void setDefault(unsigned int permissions);
 
 
 
     /**
-     * Retrieves all known player ignore strategies
+     * Retrieves all known player ignore strategies.
      *
-     * The player ignore strategies are allocated statically and must not be deleted.
+     * The player ignore strategies are allocated statically and must not be
+     * deleted.
      */
-    std::vector<PlayerIgnoreStrategy *> *getPlayerIgnoreStrategies(void);
+    std::vector<PlayerIgnoreStrategy *> *getPlayerIgnoreStrategies();
 
     /**
-     * Return the current player ignore strategy
+     * Return the current player ignore strategy.
      *
      * \return A player ignore strategy, or NULL
      */
-    PlayerIgnoreStrategy *getPlayerIgnoreStrategy(void) { return mIgnoreStrategy; }
+    PlayerIgnoreStrategy *getPlayerIgnoreStrategy() const
+    {
+        return mIgnoreStrategy;
+    }
 
     /**
-     * Sets the strategy to call when ignoring players
+     * Sets the strategy to call when ignoring players.
      */
-    void setPlayerIgnoreStrategy(PlayerIgnoreStrategy *strategy) { mIgnoreStrategy = strategy; }
+    void setPlayerIgnoreStrategy(PlayerIgnoreStrategy *strategy)
+    {
+        mIgnoreStrategy = strategy;
+    }
 
     /**
-     * For a given ignore strategy short name, find the appropriate index in the ignore strategies vector
+     * For a given ignore strategy short name, find the appropriate index in
+     * the ignore strategies vector.
      *
      * \param The short name of the ignore strategy to look up
      * \return The appropriate index, or -1
@@ -181,32 +191,37 @@ public:
     int getPlayerIgnoreStrategyIndex(const std::string &shortname);
 
     /**
-     * Retrieves a sorted vector of all players for which we have any relations recorded
+     * Retrieves a sorted vector of all players for which we have any relations
+     * recorded.
      */
-    std::vector<std::string> *getPlayers(void);
+    std::vector<std::string> *getPlayers();
 
     /**
-     * Removes all recorded player info
+     * Removes all recorded player info.
      */
-    void clear(void);
+    void clear();
 
     /**
      * Do we persist our `ignore' setup?
-     *
      */
-    bool
-    getPersistIgnores(void) const { return mPersistIgnores; }
+    bool getPersistIgnores() const { return mPersistIgnores; }
 
     /**
-     * Change the `ignore persist' flag
+     * Change the `ignore persist' flag.
      *
      * @param value Whether to persist ignores
      */
-    void
-    setPersistIgnores(bool value) { mPersistIgnores = value; }
+    void setPersistIgnores(bool value) { mPersistIgnores = value; }
 
-    void addListener(PlayerRelationsListener *listener) { mListeners.push_back(listener); }
-    void removeListener(PlayerRelationsListener *listener) { mListeners.remove(listener); }
+    void addListener(PlayerRelationsListener *listener)
+    {
+        mListeners.push_back(listener);
+    }
+
+    void removeListener(PlayerRelationsListener *listener)
+    {
+        mListeners.remove(listener);
+    }
 
 private:
     void signalUpdate(const std::string &name);
