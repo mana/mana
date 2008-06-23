@@ -119,10 +119,12 @@ class ParticleEmitter
 
         MinMax<int> mOutput;   /**< Number of particles spawned per update */
 
+        /*
+         * Graphical representation of the particle
+         */
         Image *mParticleImage; /**< Particle image, if used */
-
-        /** Filename of particle animation file */
-        Animation mParticleAnimation;
+        Animation mParticleAnimation; /**< Filename of particle animation file */
+        MinMax<float> mParticleAlpha; /**< Opacity of the graphical representation of the particles */
 
         /** List of emitters the spawned particles are equipped with */
         std::list<ParticleEmitter> mParticleChildEmitters;

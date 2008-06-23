@@ -57,6 +57,7 @@ Particle::Particle(Map *map):
     mLifetimePast(0),
     mFadeOut(0),
     mFadeIn(0),
+    mAlpha(1.0f),
     mAutoDelete(true),
     mMap(map),
     mGravity(0.0f),

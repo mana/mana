@@ -61,6 +61,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mParticleFadeOut.set(0);
     mParticleFadeIn.set(0);
     mOutput.set(1);
+    mParticleAlpha.set(1.0f);
 
     for_each_xml_child_node(propertyNode, emitterNode)
     {
@@ -152,6 +153,10 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             else if (name == "fade-in")
             {
                 mParticleFadeIn = readMinMax(propertyNode, 0);
+            }
+            else if (name == "alpha")
+            {
+                mParticleAlpha = readMinMax(propertyNode, 1.0f);
             }
             else
             {
@@ -260,6 +265,7 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleLifetime = o.mParticleLifetime;
     mParticleFadeOut = o.mParticleFadeOut;
     mParticleFadeIn = o.mParticleFadeIn;
+    mParticleAlpha = o.mParticleAlpha;
     mMap = o.mMap;
     mOutput = o.mOutput;
     mParticleImage = o.mParticleImage;
@@ -343,6 +349,7 @@ ParticleEmitter::createParticles()
         newParticle->setLifetime(mParticleLifetime.value());
         newParticle->setFadeOut(mParticleFadeOut.value());
         newParticle->setFadeIn(mParticleFadeIn.value());
+        newParticle->setAlpha(mParticleAlpha.value());
 
         for (std::list<ParticleEmitter>::iterator i = mParticleChildEmitters.begin();
              i != mParticleChildEmitters.end();

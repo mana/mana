@@ -184,6 +184,13 @@ class Particle : public Sprite
         { mFadeIn = fadeIn; }
 
         /**
+         * Sets the alpha value of the particle
+         */
+        void
+        setAlpha(float alpha)
+        { mAlpha = alpha; }
+
+        /**
          * Sets the sprite iterator of the particle on the current map to make
          * it easier to remove the particle from the map when it is destroyed.
          */
@@ -265,6 +272,7 @@ class Particle : public Sprite
         int mLifetimePast;          /**< Age of the particle in game ticks*/
         int mFadeOut;               /**< Lifetime in game ticks left where fading out begins*/
         int mFadeIn;                /**< Age in game ticks where fading in is finished*/
+        float mAlpha;               /**< Opacity of the graphical representation of the particle */
 
     private:
         // generic properties
