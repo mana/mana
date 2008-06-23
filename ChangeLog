@@ -1,3 +1,9 @@
+2008-06-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/imageparticle.cpp, src/particle.cpp, src/particle.h,
+	src/particleemitter.cpp, src/particleemitter.h, src/textparticle.cpp:
+	Implemented "alpha" particle property.
+
 2008-06-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/player_relations.h: Fixed warning about missing virtual
