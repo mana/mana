@@ -1,4 +1,4 @@
-2008-06-23  Philipp Sehmisch  <tmw@crushnet.org>
+2008-06-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
 	src/particleemitter.h: Added particle property "follow-parent" which
