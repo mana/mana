@@ -54,6 +54,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mParticleGravity.set(0.0f);
     mParticleRandomnes.set(0);
     mParticleBounce.set(0.0f);
+    mParticleFollow = false;
     mParticleAcceleration.set(0.0f);
     mParticleDieDistance.set(-1.0f);
     mParticleMomentum.set(1.0f);
@@ -158,6 +159,10 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
                 mParticleAlpha = readMinMax(propertyNode, 1.0f);
             }
+            else if (name == "follow-parent")
+            {
+                mParticleFollow = true;
+            }
             else
             {
                 logger->log("Particle Engine: Warning, unknown emitter property \"%s\"",
@@ -258,6 +263,7 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleGravity = o.mParticleGravity;
     mParticleRandomnes = o.mParticleRandomnes;
     mParticleBounce = o.mParticleBounce;
+    mParticleFollow = o.mParticleFollow;
     mParticleTarget = o.mParticleTarget;
     mParticleAcceleration = o.mParticleAcceleration;
     mParticleDieDistance = o.mParticleDieDistance;
@@ -339,6 +345,7 @@ ParticleEmitter::createParticles()
         newParticle->setRandomnes(mParticleRandomnes.value());
         newParticle->setGravity(mParticleGravity.value());
         newParticle->setBounce(mParticleBounce.value());
+        newParticle->setFollow(mParticleFollow);
 
         newParticle->setDestination(mParticleTarget,
                                     mParticleAcceleration.value(),

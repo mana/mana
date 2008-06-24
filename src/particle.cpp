@@ -63,6 +63,7 @@ Particle::Particle(Map *map):
     mGravity(0.0f),
     mRandomnes(0),
     mBounce(0.0f),
+    mFollow(false),
     mTarget(NULL),
     mAcceleration(0.0f),
     mInvDieDistance(-1.0f),
@@ -94,6 +95,8 @@ Particle::update()
     {
         mAlive = false;
     }
+
+    Vector oldPos = mPos;
 
     if (mAlive)
     {
@@ -191,10 +194,19 @@ Particle::update()
         }
     }
 
+    Vector change = mPos - oldPos;
+
     // Update child particles
+
     for (ParticleIterator p = mChildParticles.begin();
          p != mChildParticles.end();)
     {
+        //move particle with its parent if desired
+        if ((*p)->doesFollow())
+        {
+            (*p)->moveBy(change);
+        }
+        //update particle
         if ((*p)->update())
         {
             p++;

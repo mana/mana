@@ -99,6 +99,7 @@ class ParticleEmitter
         MinMax<float> mParticleGravity;
         MinMax<int> mParticleRandomnes;
         MinMax<float> mParticleBounce;
+        bool mParticleFollow;
 
         /*
          * Properties of targeting particles:

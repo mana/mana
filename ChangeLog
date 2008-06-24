@@ -1,5 +1,11 @@
 2008-06-23  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Added particle property "follow-parent" which
+	makes the particle move when its parent particle is moved.
+
+2008-06-23  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* src/imageparticle.cpp, src/particle.cpp, src/particle.h,
 	src/particleemitter.cpp, src/particleemitter.h, src/textparticle.cpp:
 	Implemented "alpha" particle property.

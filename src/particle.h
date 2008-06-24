@@ -160,6 +160,10 @@ class Particle : public Sprite
         moveBy(float x, float y, float z)
         { mPos.x += x; mPos.y += y; mPos.z += z; }
 
+        void
+        moveBy (Vector change)
+        { mPos += change; }
+
         /**
          * Sets the time in game ticks until the particle is destroyed.
          */
@@ -235,6 +239,20 @@ class Particle : public Sprite
         { mBounce = bouncieness; }
 
         /**
+         * Sets the flag if the particle is supposed to be moved by its parent
+         */
+        void
+        setFollow(bool follow)
+        { mFollow = follow; }
+
+        /**
+         * Gets the flag if the particle is supposed to be moved by its parent
+         */
+        bool
+        doesFollow()
+        { return mFollow; }
+
+        /**
          * Makes the particle move toward another particle with a
          * given acceleration and momentum
          */
@@ -287,6 +305,7 @@ class Particle : public Sprite
         float mGravity;             /**< Downward acceleration in pixels per game-tick. */
         int mRandomnes;             /**< Ammount of random vector change */
         float mBounce;              /**< How much the particle bounces off when hitting the ground */
+        bool mFollow;               /**< is this particle moved when its parent particle moves? */
 
         // follow-point particles
         Particle *mTarget;          /**< The particle that attracts this particle*/
