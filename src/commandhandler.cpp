@@ -76,6 +76,10 @@ void CommandHandler::handleCommand(const std::string &command)
     {
         handleQuit();
     }
+    else if (type == "topic")
+    {
+        handleTopic(args);
+    }
     else if (type == "admin")
     {
         Net::GameServer::Player::say("/" + args);
@@ -107,6 +111,7 @@ void CommandHandler::handleHelp()
     chatWindow->chatLog("/listusers > Lists the users in the current channel");
     chatWindow->chatLog("/channel > Register a new channel");
     chatWindow->chatLog("/join > Join an already registered channel");
+    chatWindow->chatLog("/topic > Set the topic of the current channel");
     chatWindow->chatLog("/quit > Leave a channel");
     chatWindow->chatLog("/admin > Send a command to the server (GM only)");
     chatWindow->chatLog("/clear > Clears this window");
@@ -169,6 +174,18 @@ void CommandHandler::handleListChannels()
 void CommandHandler::handleListUsers()
 {
     Net::ChatServer::getUserList(chatWindow->getFocused());
+}
+
+void CommandHandler::handleTopic(const std::string &args)
+{
+    if (Channel *channel = channelManager->findByName(chatWindow->getFocused()))
+    {
+        Net::ChatServer::setChannelTopic(channel->getId(), args);
+    }
+    else
+    {
+        chatWindow->chatLog("Unable to set this channel's topic", BY_CHANNEL);
+    }
 }
 
 void CommandHandler::handleQuit()

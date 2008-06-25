@@ -94,6 +94,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 std::string guildMember;
+                bool online;
                 std::string guildName;
                 Guild *guild;
 
@@ -108,16 +109,15 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 while(msg.getUnreadLength())
                 {
                     guildMember = msg.readString();
+                    online = msg.readInt8();
                     if(guildMember != "")
                     {
                         guild->addMember(guildMember);
-                        guildWindow->setOnline(guildName, guildMember, false);
+                        guildWindow->setOnline(guildName, guildMember, online);
                     }
                 }
 
                 guildWindow->updateTab();
-
-                //Net::ChatServer::getUserList(guildName);
             }
         } break;
 
@@ -126,12 +126,33 @@ void GuildHandler::handleMessage(MessageIn &msg)
             logger->log("Received CPMSG_GUILD_UPDATE_LIST");
             short guildId = msg.readInt16();
             std::string guildMember = msg.readString();
+            char eventId = msg.readInt8();
 
             Guild *guild = player_node->getGuild(guildId);
             if (guild)
             {
-                guild->addMember(guildMember);
-                guildWindow->setOnline(guild->getName(), guildMember, true);
+                switch(eventId)
+                {
+                    case GUILD_EVENT_NEW_PLAYER:
+                        guild->addMember(guildMember);
+                        guildWindow->setOnline(guild->getName(), guildMember, true);
+                        break;
+                    
+                    case GUILD_EVENT_LEAVING_PLAYER:
+                        guild->removeMember(guildMember);
+                        break;
+                        
+                    case GUILD_EVENT_ONLINE_PLAYER:
+                        guildWindow->setOnline(guild->getName(), guildMember, true);
+                        break;
+                        
+                    case GUILD_EVENT_OFFLINE_PLAYER:
+                        guildWindow->setOnline(guild->getName(), guildMember, false);
+                        break;
+                        
+                    default:
+                        logger->log("Invalid guild event");
+                }
             }
             guildWindow->updateTab();
 
@@ -195,5 +216,5 @@ void GuildHandler::joinedGuild(MessageIn &msg)
     Channel *channel = new Channel(channelId, guildName, announcement);
     channelManager->addChannel(channel);
     chatWindow->createNewChannelTab(guildName);
-    chatWindow->chatLog("Announcement: " + announcement, BY_CHANNEL, guildName);
+    chatWindow->chatLog("Topic: " + announcement, BY_CHANNEL, guildName);
 }

@@ -94,6 +94,11 @@ class CommandHandler
         void handleListUsers();
         
         /**
+         * Handle a topic command.
+         */
+        void handleTopic(const std::string &args);
+
+        /**
          * Handle a quit command.
          */
         void handleQuit();
@@ -102,6 +107,7 @@ class CommandHandler
          * Handle a clear command.
          */
         void handleClear();
+
 };
 
 extern CommandHandler *commandHandler;

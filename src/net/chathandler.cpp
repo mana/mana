@@ -144,6 +144,8 @@ void ChatHandler::handleRegisterChannelResponse(MessageIn &msg)
                                                channelName, 
                                                channelAnnouncement));
         chatWindow->createNewChannelTab(channelName);
+        chatWindow->chatLog("Topic: " + channelAnnouncement, BY_CHANNEL, channelName);
+        
     }
     else
     {
@@ -168,7 +170,7 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         Channel *channel = new Channel(channelId, channelName, announcement);
         channelManager->addChannel(channel);
         chatWindow->createNewChannelTab(channelName);
-        chatWindow->chatLog("Announcement: " + announcement, BY_CHANNEL, channelName);
+        chatWindow->chatLog("Topic: " + announcement, BY_CHANNEL, channelName);
         
         std::string user;
         chatWindow->chatLog("Players in this channel:", BY_CHANNEL, channelName);
@@ -275,6 +277,10 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
         
             case CHAT_EVENT_LEAVING_PLAYER:
                 line += " left the channel.";
+                break;
+
+            case CHAT_EVENT_TOPIC_CHANGE:
+                line = "Topic: " + line;
                 break;
         
             default:

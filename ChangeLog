@@ -1,3 +1,11 @@
+2008-06-25  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/commandhandler.cpp, src/commandhandler.h, src/net/chathandler.cpp,
+	src/net/chatserver/chatserver.cpp, src/net/chatserver/chatserver.h:
+	Handle setting channel topics.
+	* src/net/guildhandler.cpp, src/net/protocol.h: Handle guild list update
+	events, and update protocol definitions.
+
 2008-06-14  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/viewport.cpp, data/graphics/images/CMakeLists.txt,

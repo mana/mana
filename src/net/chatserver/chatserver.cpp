@@ -81,11 +81,11 @@ void Net::ChatServer::privMsg(const std::string &recipient,
 }
 
 void Net::ChatServer::registerChannel(const std::string &name,
-        const std::string &announcement, const std::string &password)
+        const std::string &topic, const std::string &password)
 {
     MessageOut msg(PCMSG_REGISTER_CHANNEL);
     msg.writeString(name);
-    msg.writeString(announcement);
+    msg.writeString(topic);
     msg.writeString(password);
 
     connection->send(msg);
@@ -122,6 +122,16 @@ void Net::ChatServer::getUserList(const std::string &channel)
     MessageOut msg(PCMSG_LIST_CHANNELUSERS);
 
     msg.writeString(channel);
+
+    connection->send(msg);
+}
+
+void Net::ChatServer::setChannelTopic(short channel, const std::string &topic)
+{
+    MessageOut msg(PCMSG_TOPIC_CHANGE);
+
+    msg.writeInt16(channel);
+    msg.writeString(topic);
 
     connection->send(msg);
 }
