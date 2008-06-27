@@ -79,6 +79,12 @@ class Skill_Tab : public GCContainer, public gcn::ActionListener
          */
         int getSkillBegin();
 
+        /**
+         * Get the icon associated with the given index
+         */
+        gcn::Icon* getIcon(int index);
+
+        std::vector<gcn::Icon *> mSkillIcons;
         std::vector<gcn::Label *> mSkillNameLabels;
         std::vector<gcn::Label *> mSkillLevelLabels;
         std::vector<gcn::Label *> mSkillExpLabels;

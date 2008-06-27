@@ -425,20 +425,20 @@ const struct LocalPlayer::SkillInfo& LocalPlayer::getSkillInfo(int skill)
 {
     static const SkillInfo skills[CHAR_SKILL_NB + 1] =
     {
-        { _("Unarmed"), "graphics/gui/unarmed.png" },   // CHAR_SKILL_WEAPON_NONE
-        { _("Knife"), "graphics/gui/knife.png" },       // CHAR_SKILL_WEAPON_KNIFE
-        { _("Sword"), "graphics/gui/sword.png" },       // CHAR_SKILL_WEAPON_SWORD
-        { _("Polearm"), "graphics/gui/polearm.png" },   // CHAR_SKILL_WEAPON_POLEARM
-        { _("Staff"), "graphics/gui/staff.png" },       // CHAR_SKILL_WEAPON_STAFF
-        { _("Whip"), "graphics/gui/whip.png" },         // CHAR_SKILL_WEAPON_WHIP
-        { _("Bow"), "graphics/gui/bow.png" },           // CHAR_SKILL_WEAPON_BOW
-        { _("Shooting"), "graphics/gui/shooting.png" }, // CHAR_SKILL_WEAPON_SHOOTING
-        { _("Mace"), "graphics/gui/mace.png" },         // CHAR_SKILL_WEAPON_MACE
-        { _("Axe"), "graphics/gui/axe.png" },           // CHAR_SKILL_WEAPON_AXE
-        { _("Thrown"), "graphics/gui/thrown.png" },     // CHAR_SKILL_WEAPON_THROWN
-        { _("Magic"), "graphics/gui/magic.png " },      // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
-        { _("Craft"), "graphics/gui/craft.png" },       // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
-        { _("Unknown Skill"), "graphics/gui/unknown-item.png" }
+        { _("Unarmed"), "graphics/images/unarmed.png" },   // CHAR_SKILL_WEAPON_NONE
+        { _("Knife"), "graphics/images/knife.png" },       // CHAR_SKILL_WEAPON_KNIFE
+        { _("Sword"), "graphics/images/sword.png" },       // CHAR_SKILL_WEAPON_SWORD
+        { _("Polearm"), "graphics/images/polearm.png" },   // CHAR_SKILL_WEAPON_POLEARM
+        { _("Staff"), "graphics/images/staff.png" },       // CHAR_SKILL_WEAPON_STAFF
+        { _("Whip"), "graphics/images/whip.png" },         // CHAR_SKILL_WEAPON_WHIP
+        { _("Bow"), "graphics/images/bow.png" },           // CHAR_SKILL_WEAPON_BOW
+        { _("Shooting"), "graphics/images/shooting.png" }, // CHAR_SKILL_WEAPON_SHOOTING
+        { _("Mace"), "graphics/images/mace.png" },         // CHAR_SKILL_WEAPON_MACE
+        { _("Axe"), "graphics/images/axe.png" },           // CHAR_SKILL_WEAPON_AXE
+        { _("Thrown"), "graphics/images/thrown.png" },     // CHAR_SKILL_WEAPON_THROWN
+        { _("Magic"), "graphics/images/magic.png" },       // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
+        { _("Craft"), "graphics/images/craft.png" },       // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
+        { _("Unknown Skill"), "graphics/images/unknown.png" }
     };
 
     if ((skill < 0) || (skill > CHAR_SKILL_NB))

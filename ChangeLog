@@ -1,3 +1,9 @@
+2008-06-27  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/gui/skill.cpp, src/gui/skill.h, src/localplayer.cpp:
+	Add icons to the skill dialog (only works with opengl disabled
+	atm).
+
 2008-06-25  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/commandhandler.cpp, src/commandhandler.h, src/net/chathandler.cpp,
