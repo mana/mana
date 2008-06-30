@@ -1,3 +1,8 @@
+2008-06-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/CMakeLists.txt: Updated CMake file to fix compilation. Patch by
+	darkKnight.
+
 2008-06-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
@@ -108,7 +113,7 @@
 
 	* src/gui/popupmenu.cpp: Applied QOAL's patch to fix popup bug.
 
-2008-05-14  fate  <fate.tmw@googlemail.com>
+2008-05-14  Fate  <fate.tmw@googlemail.com>
 
 	* src/configuration.cpp, src/game.cpp, src/player_relations.h,
 	src/beingmanager.h, src/gui/setup_players.cpp, src/gui/setup.cpp,
@@ -183,8 +188,8 @@
 
 2008-04-26  Dennis Friis  <peavey@placid.dk>
 
-	* src/inventory.cpp: Avoid stacking equipment other than arrows. Based on
-	similar fix in inventoryhandler.
+	* src/inventory.cpp: Avoid stacking equipment other than arrows. Based
+	on similar fix in inventoryhandler.
 	* src/gui/trade.cpp: Text fix, z => GP.
 	* src/net/playerhandler.cpp: When picking up GP from trade or quest,
 	tell the user in the chat window like with items.

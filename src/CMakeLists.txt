@@ -148,6 +148,8 @@ SET(SRCS
     gui/setup_joystick.h
     gui/setup_keyboard.cpp
     gui/setup_keyboard.h
+    gui/setup_players.cpp
+    gui/setup_players.h
     gui/setuptab.h
     gui/setup_video.cpp
     gui/setup_video.h
@@ -163,6 +165,10 @@ SET(SRCS
     gui/status.h
     gui/tabbedcontainer.cpp
     gui/tabbedcontainer.h
+    gui/table.cpp
+    gui/table.h
+    gui/table_model.cpp
+    gui/table_model.h
     gui/textbox.cpp
     gui/textbox.h
     gui/textfield.cpp
@@ -324,6 +330,8 @@ SET(SRCS
     particleemitter.h
     player.cpp
     player.h
+    player_relations.cpp
+    player_relations.h
     properties.h
     serverinfo.h
     shopitem.cpp
