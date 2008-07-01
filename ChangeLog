@@ -12,6 +12,7 @@
 	src/gui/itemcontainer.cpp, src/gui/itemcontainer.h: Item descriptions are now
 	shown in a separate GUI window when the mouse cursor hovers over them
 	(ported from Legend of Mazzeroth).
+        * tmw.cbp, src/Makefile.am, data/graphics/gui/Makefile.am: Updated project files.
 
 2008-06-27  Roderic Morris  <roderic@ccs.neu.edu>
 

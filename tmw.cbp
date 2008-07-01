@@ -74,679 +74,683 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add directory="/usr/local/include/libxml2" />
+			<Add directory="\usr\local\include\libxml2" />
 		</Compiler>
-		<Unit filename="src/animatedsprite.cpp" />
-		<Unit filename="src/animatedsprite.h">
+		<Unit filename="src\animatedsprite.cpp" />
+		<Unit filename="src\animatedsprite.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/animationparticle.cpp" />
-		<Unit filename="src/animationparticle.h">
+		<Unit filename="src\animationparticle.cpp" />
+		<Unit filename="src\animationparticle.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/being.cpp" />
-		<Unit filename="src/being.h">
+		<Unit filename="src\being.cpp" />
+		<Unit filename="src\being.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/beingmanager.cpp" />
-		<Unit filename="src/beingmanager.h">
+		<Unit filename="src\beingmanager.cpp" />
+		<Unit filename="src\beingmanager.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/channel.cpp" />
-		<Unit filename="src/channel.h">
+		<Unit filename="src\channel.cpp" />
+		<Unit filename="src\channel.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/channelmanager.cpp" />
-		<Unit filename="src/channelmanager.h">
+		<Unit filename="src\channelmanager.cpp" />
+		<Unit filename="src\channelmanager.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/configlistener.h">
+		<Unit filename="src\configlistener.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/configuration.cpp" />
-		<Unit filename="src/configuration.h">
+		<Unit filename="src\configuration.cpp" />
+		<Unit filename="src\configuration.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/engine.cpp" />
-		<Unit filename="src/engine.h">
+		<Unit filename="src\engine.cpp" />
+		<Unit filename="src\engine.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/equipment.cpp" />
-		<Unit filename="src/equipment.h">
+		<Unit filename="src\equipment.cpp" />
+		<Unit filename="src\equipment.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/floor_item.cpp" />
-		<Unit filename="src/floor_item.h">
+		<Unit filename="src\floor_item.cpp" />
+		<Unit filename="src\floor_item.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/flooritemmanager.cpp" />
-		<Unit filename="src/flooritemmanager.h">
+		<Unit filename="src\flooritemmanager.cpp" />
+		<Unit filename="src\flooritemmanager.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/game.cpp" />
-		<Unit filename="src/game.h">
+		<Unit filename="src\game.cpp" />
+		<Unit filename="src\game.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/graphics.cpp" />
-		<Unit filename="src/graphics.h">
+		<Unit filename="src\graphics.cpp" />
+		<Unit filename="src\graphics.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/box.cpp" />
-		<Unit filename="src/gui/box.h">
+		<Unit filename="src\gui\box.cpp" />
+		<Unit filename="src\gui\box.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/browserbox.cpp" />
-		<Unit filename="src/gui/browserbox.h">
+		<Unit filename="src\gui\browserbox.cpp" />
+		<Unit filename="src\gui\browserbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/button.cpp" />
-		<Unit filename="src/gui/button.h">
+		<Unit filename="src\gui\button.cpp" />
+		<Unit filename="src\gui\button.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/buy.cpp" />
-		<Unit filename="src/gui/buy.h">
+		<Unit filename="src\gui\buy.cpp" />
+		<Unit filename="src\gui\buy.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/buysell.cpp" />
-		<Unit filename="src/gui/buysell.h">
+		<Unit filename="src\gui\buysell.cpp" />
+		<Unit filename="src\gui\buysell.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/changeemaildialog.cpp" />
-		<Unit filename="src/gui/changeemaildialog.h" />
-		<Unit filename="src/gui/changepassworddialog.cpp" />
-		<Unit filename="src/gui/changepassworddialog.h" />
-		<Unit filename="src/gui/char_select.cpp" />
-		<Unit filename="src/gui/char_select.h">
+		<Unit filename="src\gui\changeemaildialog.cpp" />
+		<Unit filename="src\gui\changeemaildialog.h" />
+		<Unit filename="src\gui\changepassworddialog.cpp" />
+		<Unit filename="src\gui\changepassworddialog.h" />
+		<Unit filename="src\gui\char_select.cpp" />
+		<Unit filename="src\gui\char_select.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/chat.cpp" />
-		<Unit filename="src/gui/chat.h">
+		<Unit filename="src\gui\chat.cpp" />
+		<Unit filename="src\gui\chat.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/chatinput.cpp" />
-		<Unit filename="src/gui/chatinput.h">
+		<Unit filename="src\gui\chatinput.cpp" />
+		<Unit filename="src\gui\chatinput.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/checkbox.cpp" />
-		<Unit filename="src/gui/checkbox.h">
+		<Unit filename="src\gui\checkbox.cpp" />
+		<Unit filename="src\gui\checkbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/confirm_dialog.cpp" />
-		<Unit filename="src/gui/confirm_dialog.h">
+		<Unit filename="src\gui\confirm_dialog.cpp" />
+		<Unit filename="src\gui\confirm_dialog.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/connection.cpp" />
-		<Unit filename="src/gui/connection.h">
+		<Unit filename="src\gui\connection.cpp" />
+		<Unit filename="src\gui\connection.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/debugwindow.cpp" />
-		<Unit filename="src/gui/debugwindow.h">
+		<Unit filename="src\gui\debugwindow.cpp" />
+		<Unit filename="src\gui\debugwindow.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/equipmentwindow.cpp" />
-		<Unit filename="src/gui/equipmentwindow.h">
+		<Unit filename="src\gui\equipmentwindow.cpp" />
+		<Unit filename="src\gui\equipmentwindow.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/focushandler.cpp" />
-		<Unit filename="src/gui/focushandler.h">
+		<Unit filename="src\gui\focushandler.cpp" />
+		<Unit filename="src\gui\focushandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/gccontainer.cpp" />
-		<Unit filename="src/gui/gccontainer.h">
+		<Unit filename="src\gui\gccontainer.cpp" />
+		<Unit filename="src\gui\gccontainer.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/gui.cpp" />
-		<Unit filename="src/gui/gui.h">
+		<Unit filename="src\gui\gui.cpp" />
+		<Unit filename="src\gui\gui.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/guildlistbox.cpp" />
-		<Unit filename="src/gui/guildlistbox.h">
+		<Unit filename="src\gui\guildlistbox.cpp" />
+		<Unit filename="src\gui\guildlistbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/guildwindow.cpp" />
-		<Unit filename="src/gui/guildwindow.h">
+		<Unit filename="src\gui\guildwindow.cpp" />
+		<Unit filename="src\gui\guildwindow.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/hbox.cpp" />
-		<Unit filename="src/gui/hbox.h">
+		<Unit filename="src\gui\hbox.cpp" />
+		<Unit filename="src\gui\hbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/help.cpp" />
-		<Unit filename="src/gui/help.h">
+		<Unit filename="src\gui\help.cpp" />
+		<Unit filename="src\gui\help.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/inttextbox.cpp" />
-		<Unit filename="src/gui/inttextbox.h">
+		<Unit filename="src\gui\inttextbox.cpp" />
+		<Unit filename="src\gui\inttextbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/inventorywindow.cpp" />
-		<Unit filename="src/gui/inventorywindow.h">
+		<Unit filename="src\gui\inventorywindow.cpp" />
+		<Unit filename="src\gui\inventorywindow.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/item_amount.cpp" />
-		<Unit filename="src/gui/item_amount.h">
+		<Unit filename="src\gui\item_amount.cpp" />
+		<Unit filename="src\gui\item_amount.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/itemcontainer.cpp" />
-		<Unit filename="src/gui/itemcontainer.h">
+		<Unit filename="src\gui\itemcontainer.cpp" />
+		<Unit filename="src\gui\itemcontainer.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/itemshortcutcontainer.cpp" />
-		<Unit filename="src/gui/itemshortcutcontainer.h">
+		<Unit filename="src\gui\itempopup.cpp" />
+		<Unit filename="src\gui\itempopup.h" />
+		<Unit filename="src\gui\itemshortcutcontainer.cpp" />
+		<Unit filename="src\gui\itemshortcutcontainer.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/itemshortcutwindow.cpp" />
-		<Unit filename="src/gui/itemshortcutwindow.h">
+		<Unit filename="src\gui\itemshortcutwindow.cpp" />
+		<Unit filename="src\gui\itemshortcutwindow.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/linkhandler.h">
+		<Unit filename="src\gui\linkhandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/listbox.cpp" />
-		<Unit filename="src/gui/listbox.h">
+		<Unit filename="src\gui\listbox.cpp" />
+		<Unit filename="src\gui\listbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/login.cpp" />
-		<Unit filename="src/gui/login.h">
+		<Unit filename="src\gui\login.cpp" />
+		<Unit filename="src\gui\login.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/menuwindow.cpp" />
-		<Unit filename="src/gui/menuwindow.h">
+		<Unit filename="src\gui\menuwindow.cpp" />
+		<Unit filename="src\gui\menuwindow.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/minimap.cpp" />
-		<Unit filename="src/gui/minimap.h">
+		<Unit filename="src\gui\minimap.cpp" />
+		<Unit filename="src\gui\minimap.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/ministatus.cpp" />
-		<Unit filename="src/gui/ministatus.h">
+		<Unit filename="src\gui\ministatus.cpp" />
+		<Unit filename="src\gui\ministatus.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/npc_text.cpp" />
-		<Unit filename="src/gui/npc_text.h">
+		<Unit filename="src\gui\npc_text.cpp" />
+		<Unit filename="src\gui\npc_text.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/npclistdialog.cpp" />
-		<Unit filename="src/gui/npclistdialog.h">
+		<Unit filename="src\gui\npclistdialog.cpp" />
+		<Unit filename="src\gui\npclistdialog.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/ok_dialog.cpp" />
-		<Unit filename="src/gui/ok_dialog.h">
+		<Unit filename="src\gui\ok_dialog.cpp" />
+		<Unit filename="src\gui\ok_dialog.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/partywindow.cpp" />
-		<Unit filename="src/gui/partywindow.h" />
-		<Unit filename="src/gui/passwordfield.cpp" />
-		<Unit filename="src/gui/passwordfield.h">
+		<Unit filename="src\gui\partywindow.cpp" />
+		<Unit filename="src\gui\partywindow.h" />
+		<Unit filename="src\gui\passwordfield.cpp" />
+		<Unit filename="src\gui\passwordfield.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/playerbox.cpp" />
-		<Unit filename="src/gui/playerbox.h">
+		<Unit filename="src\gui\playerbox.cpp" />
+		<Unit filename="src\gui\playerbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/popupmenu.cpp" />
-		<Unit filename="src/gui/popupmenu.h">
+		<Unit filename="src\gui\popupmenu.cpp" />
+		<Unit filename="src\gui\popupmenu.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/progressbar.cpp" />
-		<Unit filename="src/gui/progressbar.h">
+		<Unit filename="src\gui\progressbar.cpp" />
+		<Unit filename="src\gui\progressbar.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/quitdialog.cpp" />
-		<Unit filename="src/gui/quitdialog.h">
+		<Unit filename="src\gui\quitdialog.cpp" />
+		<Unit filename="src\gui\quitdialog.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/radiobutton.cpp" />
-		<Unit filename="src/gui/radiobutton.h">
+		<Unit filename="src\gui\radiobutton.cpp" />
+		<Unit filename="src\gui\radiobutton.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/register.cpp" />
-		<Unit filename="src/gui/register.h">
+		<Unit filename="src\gui\register.cpp" />
+		<Unit filename="src\gui\register.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/scrollarea.cpp" />
-		<Unit filename="src/gui/scrollarea.h">
+		<Unit filename="src\gui\scrollarea.cpp" />
+		<Unit filename="src\gui\scrollarea.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/sdlinput.cpp" />
-		<Unit filename="src/gui/sdlinput.h">
+		<Unit filename="src\gui\sdlinput.cpp" />
+		<Unit filename="src\gui\sdlinput.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/sell.cpp" />
-		<Unit filename="src/gui/sell.h">
+		<Unit filename="src\gui\sell.cpp" />
+		<Unit filename="src\gui\sell.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/serverdialog.cpp" />
-		<Unit filename="src/gui/serverdialog.h">
+		<Unit filename="src\gui\serverdialog.cpp" />
+		<Unit filename="src\gui\serverdialog.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/setup.cpp" />
-		<Unit filename="src/gui/setup.h">
+		<Unit filename="src\gui\setup.cpp" />
+		<Unit filename="src\gui\setup.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/setup_audio.cpp" />
-		<Unit filename="src/gui/setup_audio.h">
+		<Unit filename="src\gui\setup_audio.cpp" />
+		<Unit filename="src\gui\setup_audio.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/setup_joystick.cpp" />
-		<Unit filename="src/gui/setup_joystick.h">
+		<Unit filename="src\gui\setup_joystick.cpp" />
+		<Unit filename="src\gui\setup_joystick.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/setup_keyboard.cpp" />
-		<Unit filename="src/gui/setup_keyboard.h">
+		<Unit filename="src\gui\setup_keyboard.cpp" />
+		<Unit filename="src\gui\setup_keyboard.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/setup_video.cpp" />
-		<Unit filename="src/gui/setup_video.h">
+		<Unit filename="src\gui\setup_video.cpp" />
+		<Unit filename="src\gui\setup_video.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/setuptab.h">
+		<Unit filename="src\gui\setuptab.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/shop.cpp" />
-		<Unit filename="src/gui/shop.h">
+		<Unit filename="src\gui\shop.cpp" />
+		<Unit filename="src\gui\shop.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/shoplistbox.cpp" />
-		<Unit filename="src/gui/shoplistbox.h">
+		<Unit filename="src\gui\shoplistbox.cpp" />
+		<Unit filename="src\gui\shoplistbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/skill.cpp" />
-		<Unit filename="src/gui/skill.h">
+		<Unit filename="src\gui\skill.cpp" />
+		<Unit filename="src\gui\skill.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/slider.cpp" />
-		<Unit filename="src/gui/slider.h">
+		<Unit filename="src\gui\slider.cpp" />
+		<Unit filename="src\gui\slider.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/status.cpp" />
-		<Unit filename="src/gui/status.h">
+		<Unit filename="src\gui\speechbubble.cpp" />
+		<Unit filename="src\gui\speechbubble.h" />
+		<Unit filename="src\gui\status.cpp" />
+		<Unit filename="src\gui\status.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/textbox.cpp" />
-		<Unit filename="src/gui/textbox.h">
+		<Unit filename="src\gui\textbox.cpp" />
+		<Unit filename="src\gui\textbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/textdialog.cpp" />
-		<Unit filename="src/gui/textdialog.h">
+		<Unit filename="src\gui\textdialog.cpp" />
+		<Unit filename="src\gui\textdialog.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/textfield.cpp" />
-		<Unit filename="src/gui/textfield.h">
+		<Unit filename="src\gui\textfield.cpp" />
+		<Unit filename="src\gui\textfield.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/trade.cpp" />
-		<Unit filename="src/gui/trade.h">
+		<Unit filename="src\gui\trade.cpp" />
+		<Unit filename="src\gui\trade.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/truetypefont.cpp" />
-		<Unit filename="src/gui/truetypefont.h">
+		<Unit filename="src\gui\truetypefont.cpp" />
+		<Unit filename="src\gui\truetypefont.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/unregisterdialog.cpp" />
-		<Unit filename="src/gui/unregisterdialog.h">
+		<Unit filename="src\gui\unregisterdialog.cpp" />
+		<Unit filename="src\gui\unregisterdialog.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/updatewindow.cpp" />
-		<Unit filename="src/gui/updatewindow.h">
+		<Unit filename="src\gui\updatewindow.cpp" />
+		<Unit filename="src\gui\updatewindow.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/vbox.cpp" />
-		<Unit filename="src/gui/vbox.h">
+		<Unit filename="src\gui\vbox.cpp" />
+		<Unit filename="src\gui\vbox.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/viewport.cpp" />
-		<Unit filename="src/gui/viewport.h">
+		<Unit filename="src\gui\viewport.cpp" />
+		<Unit filename="src\gui\viewport.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/widgets/dropdown.cpp" />
-		<Unit filename="src/gui/widgets/dropdown.h">
+		<Unit filename="src\gui\widgets\dropdown.cpp" />
+		<Unit filename="src\gui\widgets\dropdown.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/widgets/layout.cpp" />
-		<Unit filename="src/gui/widgets/layout.h">
+		<Unit filename="src\gui\widgets\layout.cpp" />
+		<Unit filename="src\gui\widgets\layout.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/widgets/resizegrip.cpp" />
-		<Unit filename="src/gui/widgets/resizegrip.h">
+		<Unit filename="src\gui\widgets\resizegrip.cpp" />
+		<Unit filename="src\gui\widgets\resizegrip.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/widgets/tab.cpp" />
-		<Unit filename="src/gui/widgets/tab.h" />
-		<Unit filename="src/gui/widgets/tabbedarea.cpp" />
-		<Unit filename="src/gui/widgets/tabbedarea.h" />
-		<Unit filename="src/gui/window.cpp" />
-		<Unit filename="src/gui/window.h">
+		<Unit filename="src\gui\widgets\tab.cpp" />
+		<Unit filename="src\gui\widgets\tab.h" />
+		<Unit filename="src\gui\widgets\tabbedarea.cpp" />
+		<Unit filename="src\gui\widgets\tabbedarea.h" />
+		<Unit filename="src\gui\window.cpp" />
+		<Unit filename="src\gui\window.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/gui/windowcontainer.cpp" />
-		<Unit filename="src/gui/windowcontainer.h">
+		<Unit filename="src\gui\windowcontainer.cpp" />
+		<Unit filename="src\gui\windowcontainer.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/guichanfwd.h">
+		<Unit filename="src\guichanfwd.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/guild.cpp" />
-		<Unit filename="src/guild.h">
+		<Unit filename="src\guild.cpp" />
+		<Unit filename="src\guild.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/imageparticle.cpp" />
-		<Unit filename="src/imageparticle.h">
+		<Unit filename="src\imageparticle.cpp" />
+		<Unit filename="src\imageparticle.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/inventory.cpp" />
-		<Unit filename="src/inventory.h">
+		<Unit filename="src\inventory.cpp" />
+		<Unit filename="src\inventory.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/item.cpp" />
-		<Unit filename="src/item.h">
+		<Unit filename="src\item.cpp" />
+		<Unit filename="src\item.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/itemshortcut.cpp" />
-		<Unit filename="src/itemshortcut.h">
+		<Unit filename="src\itemshortcut.cpp" />
+		<Unit filename="src\itemshortcut.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/joystick.cpp" />
-		<Unit filename="src/joystick.h">
+		<Unit filename="src\joystick.cpp" />
+		<Unit filename="src\joystick.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/keyboardconfig.cpp" />
-		<Unit filename="src/keyboardconfig.h">
+		<Unit filename="src\keyboardconfig.cpp" />
+		<Unit filename="src\keyboardconfig.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/localplayer.cpp" />
-		<Unit filename="src/localplayer.h">
+		<Unit filename="src\localplayer.cpp" />
+		<Unit filename="src\localplayer.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/lockedarray.h">
+		<Unit filename="src\lockedarray.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/log.cpp" />
-		<Unit filename="src/log.h">
+		<Unit filename="src\log.cpp" />
+		<Unit filename="src\log.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/logindata.h">
+		<Unit filename="src\logindata.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/main.cpp" />
-		<Unit filename="src/main.h">
+		<Unit filename="src\main.cpp" />
+		<Unit filename="src\main.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/map.cpp" />
-		<Unit filename="src/map.h">
+		<Unit filename="src\map.cpp" />
+		<Unit filename="src\map.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/monster.cpp" />
-		<Unit filename="src/monster.h">
+		<Unit filename="src\monster.cpp" />
+		<Unit filename="src\monster.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/accountserver/account.cpp" />
-		<Unit filename="src/net/accountserver/account.h">
+		<Unit filename="src\net\accountserver\account.cpp" />
+		<Unit filename="src\net\accountserver\account.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/accountserver/accountserver.cpp" />
-		<Unit filename="src/net/accountserver/accountserver.h">
+		<Unit filename="src\net\accountserver\accountserver.cpp" />
+		<Unit filename="src\net\accountserver\accountserver.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/accountserver/internal.cpp" />
-		<Unit filename="src/net/accountserver/internal.h">
+		<Unit filename="src\net\accountserver\internal.cpp" />
+		<Unit filename="src\net\accountserver\internal.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/beinghandler.cpp" />
-		<Unit filename="src/net/beinghandler.h">
+		<Unit filename="src\net\beinghandler.cpp" />
+		<Unit filename="src\net\beinghandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/buysellhandler.cpp" />
-		<Unit filename="src/net/buysellhandler.h">
+		<Unit filename="src\net\buysellhandler.cpp" />
+		<Unit filename="src\net\buysellhandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/charserverhandler.cpp" />
-		<Unit filename="src/net/charserverhandler.h">
+		<Unit filename="src\net\charserverhandler.cpp" />
+		<Unit filename="src\net\charserverhandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/chathandler.cpp" />
-		<Unit filename="src/net/chathandler.h">
+		<Unit filename="src\net\chathandler.cpp" />
+		<Unit filename="src\net\chathandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/chatserver/chatserver.cpp" />
-		<Unit filename="src/net/chatserver/chatserver.h">
+		<Unit filename="src\net\chatserver\chatserver.cpp" />
+		<Unit filename="src\net\chatserver\chatserver.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/chatserver/guild.cpp" />
-		<Unit filename="src/net/chatserver/guild.h">
+		<Unit filename="src\net\chatserver\guild.cpp" />
+		<Unit filename="src\net\chatserver\guild.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/chatserver/internal.cpp" />
-		<Unit filename="src/net/chatserver/internal.h">
+		<Unit filename="src\net\chatserver\internal.cpp" />
+		<Unit filename="src\net\chatserver\internal.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/chatserver/party.cpp" />
-		<Unit filename="src/net/chatserver/party.h" />
-		<Unit filename="src/net/connection.cpp" />
-		<Unit filename="src/net/connection.h">
+		<Unit filename="src\net\chatserver\party.cpp" />
+		<Unit filename="src\net\chatserver\party.h" />
+		<Unit filename="src\net\connection.cpp" />
+		<Unit filename="src\net\connection.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/gameserver/gameserver.cpp" />
-		<Unit filename="src/net/gameserver/gameserver.h">
+		<Unit filename="src\net\gameserver\gameserver.cpp" />
+		<Unit filename="src\net\gameserver\gameserver.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/gameserver/internal.cpp" />
-		<Unit filename="src/net/gameserver/internal.h">
+		<Unit filename="src\net\gameserver\internal.cpp" />
+		<Unit filename="src\net\gameserver\internal.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/gameserver/player.cpp" />
-		<Unit filename="src/net/gameserver/player.h">
+		<Unit filename="src\net\gameserver\player.cpp" />
+		<Unit filename="src\net\gameserver\player.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/guildhandler.cpp" />
-		<Unit filename="src/net/guildhandler.h">
+		<Unit filename="src\net\guildhandler.cpp" />
+		<Unit filename="src\net\guildhandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/internal.cpp" />
-		<Unit filename="src/net/internal.h">
+		<Unit filename="src\net\internal.cpp" />
+		<Unit filename="src\net\internal.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/inventoryhandler.cpp" />
-		<Unit filename="src/net/inventoryhandler.h">
+		<Unit filename="src\net\inventoryhandler.cpp" />
+		<Unit filename="src\net\inventoryhandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/itemhandler.cpp" />
-		<Unit filename="src/net/itemhandler.h">
+		<Unit filename="src\net\itemhandler.cpp" />
+		<Unit filename="src\net\itemhandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/loginhandler.cpp" />
-		<Unit filename="src/net/loginhandler.h">
+		<Unit filename="src\net\loginhandler.cpp" />
+		<Unit filename="src\net\loginhandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/logouthandler.cpp" />
-		<Unit filename="src/net/logouthandler.h">
+		<Unit filename="src\net\logouthandler.cpp" />
+		<Unit filename="src\net\logouthandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/messagehandler.cpp" />
-		<Unit filename="src/net/messagehandler.h">
+		<Unit filename="src\net\messagehandler.cpp" />
+		<Unit filename="src\net\messagehandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/messagein.cpp" />
-		<Unit filename="src/net/messagein.h">
+		<Unit filename="src\net\messagein.cpp" />
+		<Unit filename="src\net\messagein.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/messageout.cpp" />
-		<Unit filename="src/net/messageout.h">
+		<Unit filename="src\net\messageout.cpp" />
+		<Unit filename="src\net\messageout.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/network.cpp" />
-		<Unit filename="src/net/network.h">
+		<Unit filename="src\net\network.cpp" />
+		<Unit filename="src\net\network.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/npchandler.cpp" />
-		<Unit filename="src/net/npchandler.h">
+		<Unit filename="src\net\npchandler.cpp" />
+		<Unit filename="src\net\npchandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/partyhandler.cpp" />
-		<Unit filename="src/net/partyhandler.h" />
-		<Unit filename="src/net/playerhandler.cpp" />
-		<Unit filename="src/net/playerhandler.h">
+		<Unit filename="src\net\partyhandler.cpp" />
+		<Unit filename="src\net\partyhandler.h" />
+		<Unit filename="src\net\playerhandler.cpp" />
+		<Unit filename="src\net\playerhandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/protocol.h">
+		<Unit filename="src\net\protocol.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/net/tradehandler.cpp" />
-		<Unit filename="src/net/tradehandler.h">
+		<Unit filename="src\net\tradehandler.cpp" />
+		<Unit filename="src\net\tradehandler.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/npc.cpp" />
-		<Unit filename="src/npc.h">
+		<Unit filename="src\npc.cpp" />
+		<Unit filename="src\npc.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/openglgraphics.cpp" />
-		<Unit filename="src/openglgraphics.h">
+		<Unit filename="src\openglgraphics.cpp" />
+		<Unit filename="src\openglgraphics.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/particle.cpp" />
-		<Unit filename="src/particle.h">
+		<Unit filename="src\particle.cpp" />
+		<Unit filename="src\particle.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/particleemitter.cpp" />
-		<Unit filename="src/particleemitter.h">
+		<Unit filename="src\particleemitter.cpp" />
+		<Unit filename="src\particleemitter.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/player.cpp" />
-		<Unit filename="src/player.h">
+		<Unit filename="src\player.cpp" />
+		<Unit filename="src\player.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/properties.h">
+		<Unit filename="src\properties.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/action.cpp" />
-		<Unit filename="src/resources/action.h">
+		<Unit filename="src\resources\action.cpp" />
+		<Unit filename="src\resources\action.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/ambientoverlay.cpp" />
-		<Unit filename="src/resources/ambientoverlay.h">
+		<Unit filename="src\resources\ambientoverlay.cpp" />
+		<Unit filename="src\resources\ambientoverlay.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/animation.cpp" />
-		<Unit filename="src/resources/animation.h">
+		<Unit filename="src\resources\animation.cpp" />
+		<Unit filename="src\resources\animation.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/dye.cpp" />
-		<Unit filename="src/resources/dye.h">
+		<Unit filename="src\resources\dye.cpp" />
+		<Unit filename="src\resources\dye.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/image.cpp" />
-		<Unit filename="src/resources/image.h">
+		<Unit filename="src\resources\image.cpp" />
+		<Unit filename="src\resources\image.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/imageloader.cpp" />
-		<Unit filename="src/resources/imageloader.h">
+		<Unit filename="src\resources\imageloader.cpp" />
+		<Unit filename="src\resources\imageloader.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/imageset.cpp" />
-		<Unit filename="src/resources/imageset.h">
+		<Unit filename="src\resources\imageset.cpp" />
+		<Unit filename="src\resources\imageset.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/imagewriter.cpp" />
-		<Unit filename="src/resources/imagewriter.h">
+		<Unit filename="src\resources\imagewriter.cpp" />
+		<Unit filename="src\resources\imagewriter.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/itemdb.cpp" />
-		<Unit filename="src/resources/itemdb.h">
+		<Unit filename="src\resources\itemdb.cpp" />
+		<Unit filename="src\resources\itemdb.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/iteminfo.cpp" />
-		<Unit filename="src/resources/iteminfo.h">
+		<Unit filename="src\resources\iteminfo.cpp" />
+		<Unit filename="src\resources\iteminfo.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/mapreader.cpp" />
-		<Unit filename="src/resources/mapreader.h">
+		<Unit filename="src\resources\mapreader.cpp" />
+		<Unit filename="src\resources\mapreader.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/monsterdb.cpp" />
-		<Unit filename="src/resources/monsterdb.h">
+		<Unit filename="src\resources\monsterdb.cpp" />
+		<Unit filename="src\resources\monsterdb.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/monsterinfo.cpp" />
-		<Unit filename="src/resources/monsterinfo.h">
+		<Unit filename="src\resources\monsterinfo.cpp" />
+		<Unit filename="src\resources\monsterinfo.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/music.cpp" />
-		<Unit filename="src/resources/music.h">
+		<Unit filename="src\resources\music.cpp" />
+		<Unit filename="src\resources\music.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/npcdb.cpp" />
-		<Unit filename="src/resources/npcdb.h">
+		<Unit filename="src\resources\npcdb.cpp" />
+		<Unit filename="src\resources\npcdb.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/resource.cpp" />
-		<Unit filename="src/resources/resource.h">
+		<Unit filename="src\resources\resource.cpp" />
+		<Unit filename="src\resources\resource.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/resourcemanager.cpp" />
-		<Unit filename="src/resources/resourcemanager.h">
+		<Unit filename="src\resources\resourcemanager.cpp" />
+		<Unit filename="src\resources\resourcemanager.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/soundeffect.cpp" />
-		<Unit filename="src/resources/soundeffect.h">
+		<Unit filename="src\resources\soundeffect.cpp" />
+		<Unit filename="src\resources\soundeffect.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/resources/spritedef.cpp" />
-		<Unit filename="src/resources/spritedef.h">
+		<Unit filename="src\resources\spritedef.cpp" />
+		<Unit filename="src\resources\spritedef.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/serverinfo.h">
+		<Unit filename="src\serverinfo.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/shopitem.cpp" />
-		<Unit filename="src/shopitem.h">
+		<Unit filename="src\shopitem.cpp" />
+		<Unit filename="src\shopitem.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/simpleanimation.cpp" />
-		<Unit filename="src/simpleanimation.h">
+		<Unit filename="src\simpleanimation.cpp" />
+		<Unit filename="src\simpleanimation.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/sound.cpp" />
-		<Unit filename="src/sound.h">
+		<Unit filename="src\sound.cpp" />
+		<Unit filename="src\sound.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/sprite.h">
+		<Unit filename="src\sprite.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/textparticle.cpp" />
-		<Unit filename="src/textparticle.h">
+		<Unit filename="src\textparticle.cpp" />
+		<Unit filename="src\textparticle.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/tileset.h">
+		<Unit filename="src\tileset.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/tmw.rc">
+		<Unit filename="src\tmw.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/utils/base64.cpp" />
-		<Unit filename="src/utils/base64.h">
+		<Unit filename="src\utils\base64.cpp" />
+		<Unit filename="src\utils\base64.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/utils/dtor.h">
+		<Unit filename="src\utils\dtor.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/utils/gettext.h">
+		<Unit filename="src\utils\gettext.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/utils/sha256.cpp" />
-		<Unit filename="src/utils/sha256.h" />
-		<Unit filename="src/utils/strprintf.cpp" />
-		<Unit filename="src/utils/strprintf.h">
+		<Unit filename="src\utils\sha256.cpp" />
+		<Unit filename="src\utils\sha256.h" />
+		<Unit filename="src\utils\strprintf.cpp" />
+		<Unit filename="src\utils\strprintf.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/utils/tostring.h">
+		<Unit filename="src\utils\tostring.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/utils/xml.cpp" />
-		<Unit filename="src/utils/xml.h">
+		<Unit filename="src\utils\xml.cpp" />
+		<Unit filename="src\utils\xml.h">
 			<Option target="default" />
 		</Unit>
-		<Unit filename="src/winver.h">
+		<Unit filename="src\winver.h">
 			<Option target="default" />
 		</Unit>
 		<Extensions>
