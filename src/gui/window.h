@@ -254,7 +254,7 @@ class Window : public gcn::Window, gcn::WidgetListener
 		/**
 		 * Loads a window skin
 		 */
-        void Window::loadSkin(const std::string filename);
+        void loadSkin(const std::string filename);
 
     private:
         /**
