@@ -284,6 +284,23 @@
 	src/Makefile.am: Re-enabled non-functional item shortcut window,
 	planned to be fixed for 0.0.25.
 
+2008-04-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/widgets/layout.h, src/gui/skill.cpp, src/gui/trade.h,
+	src/log.h, src/resources/mapreader.cpp, src/resources/spritedef.cpp:
+	Fixed some compiler warnings and don't try to load particle effects
+	when no file is set.
+
+2008-04-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/gui/viewport.cpp, src/tileset.h, src/map.h,
+	src/resources/imageset.cpp, src/resources/mapreader.cpp,
+	src/resources/imageset.h, src/resources/mapreader.h,
+	data/maps/new_3-1.tmx, data/maps/new_1-1.tmx: Implemented support for
+	an arbitrary number of map layers. The only layer requirement for map
+	layers are now that the fringe layer is called "Fringe" and that the
+	collision layer is called "Collision".
+
 2008-04-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/particle.cpp, src/utils/xml.cpp, src/utils/xml.h,
@@ -292,11 +309,14 @@
 	src/resources/itemdb.cpp, src/resources/npcdb.cpp,
 	src/resources/spritedef.h: Added XML::Document class which simplifies
 	parsing an XML document and automatically cleans it up again.
+	* src/resources/spritedef.cpp, src/resources/spritedef.h,
+	data/graphics/sprites/item008.xml: Added support for basing one sprite
+	definition on another by including it.
 	* src/being.cpp: Fixed crash on trying to show out of range emoticon.
 	* src/winver.h, README, configure.ac, data/help/changes.txt,
 	data/help/header.txt, NEWS, CMakeLists.txt: Updated version, release
 	date and changes.
-	
+
 2008-04-03  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Tweaked disconnect dialog, hoping to fix a crash bug.
@@ -307,7 +327,7 @@
 	src/resources/npcdb.cpp, data/npcs.xml, src/Makefile.am, tmc.cbp:
 	Implemented NPC XML database which maps NPC IDs to one or more
 	animation files and thus enables animated NPCs.
-	
+
 2008-03-30  Dennis Friis  <peavey@placid.dk>
 
 	* configure.ac: Updated for tmwdata split.

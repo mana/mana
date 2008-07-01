@@ -68,8 +68,8 @@ class Logger
             ;
 
         /**
-         * Log an error and quit. The error will pop-up in Windows and will be
-         * printed to standard error everywhere else.
+         * Log an error and quit. The error will pop-up on Windows and Mac, and
+         * will be printed to standard error everywhere else.
          */
         void error(const std::string &error_text);
 

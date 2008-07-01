@@ -48,6 +48,8 @@
 
 #include <cassert>
 
+extern volatile int tick_time;
+
 Viewport::Viewport():
     mMap(0),
     mPixelViewX(0.0f),
@@ -222,12 +224,8 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     // Draw tiles and sprites
     if (mMap)
     {
-        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 0);
-        drawTargetCursor(graphics);
-        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 1);
-        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 2);
-        mMap->drawOverlay(graphics, mPixelViewX, mPixelViewY,
-                (int) config.getValue("OverlayDetail", 2));
+        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
+        drawTargetCursor(graphics); // TODO: Draw the cursor with the sprite
         drawTargetName(graphics);
     }
 
@@ -259,7 +257,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         }
     }
 
-    // Draw player nickname, speech, and emotion sprite as needed
+    // Draw player names, speech, and emotion sprite as needed
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {

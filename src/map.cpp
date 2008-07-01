@@ -27,6 +27,7 @@
 #include <queue>
 
 #include "beingmanager.h"
+#include "configuration.h"
 #include "game.h"
 #include "graphics.h"
 #include "particle.h"
@@ -39,6 +40,8 @@
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
+
+extern volatile int tick_time;
 
 /**
  * A location on a tile map. Used for pathfinding, open list.
@@ -62,6 +65,80 @@ struct Location
     MetaTile *tile;
 };
 
+MapLayer::MapLayer(int x, int y, int width, int height, bool isFringeLayer):
+    mX(x), mY(y),
+    mWidth(width), mHeight(height),
+    mIsFringeLayer(isFringeLayer)
+{
+    const int size = mWidth * mHeight;
+    mTiles = new Image*[size];
+    std::fill_n(mTiles, size, (Image*) 0);
+}
+
+MapLayer::~MapLayer()
+{
+    delete[] mTiles;
+}
+
+void MapLayer::setTile(int x, int y, Image *img)
+{
+    mTiles[x + y * mWidth] = img;
+}
+
+Image* MapLayer::getTile(int x, int y) const
+{
+    return mTiles[x + y * mWidth];
+}
+
+void MapLayer::draw(Graphics *graphics,
+                    int startX, int startY,
+                    int endX, int endY,
+                    int scrollX, int scrollY,
+                    const Sprites &sprites) const
+{
+    startX -= mX;
+    startY -= mY;
+    endX -= mX;
+    endY -= mY;
+
+    if (startX < 0) startX = 0;
+    if (startY < 0) startY = 0;
+    if (endX > mWidth) endX = mWidth;
+    if (endY > mHeight) endY = mHeight;
+
+    Sprites::const_iterator si = sprites.begin();
+
+    for (int y = startY; y < endY; y++)
+    {
+        // If drawing the fringe layer, make sure all sprites above this row of
+        // tiles have been drawn
+        if (mIsFringeLayer) {
+            while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32) {
+                (*si)->draw(graphics, -scrollX, -scrollY);
+                si++;
+            }
+        }
+
+        for (int x = startX; x < endX; x++)
+        {
+            Image *img = getTile(x, y);
+            if (img) {
+                const int px = (x + mX) * 32 - scrollX;
+                const int py = (y + mY) * 32 - scrollY + 32 - img->getHeight();
+                graphics->drawImage(img, px, py);
+            }
+        }
+    }
+
+    // Draw any remaining sprites
+    if (mIsFringeLayer) {
+        while (si != sprites.end()) {
+            (*si)->draw(graphics, -scrollX, -scrollY);
+            si++;
+        }
+    }
+}
+
 Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),
     mTileWidth(tileWidth), mTileHeight(tileHeight),
@@ -69,22 +146,17 @@ Map::Map(int width, int height, int tileWidth, int tileHeight):
     mOnClosedList(1), mOnOpenList(2),
     mLastScrollX(0.0f), mLastScrollY(0.0f)
 {
-    int size = mWidth * mHeight;
+    const int size = mWidth * mHeight;
 
     mMetaTiles = new MetaTile[size];
-    mTiles = new Image*[size * 3];
-    std::fill_n(mTiles, size * 3, (Image*)0);
 }
 
 Map::~Map()
 {
-    // clean up map data
+    // delete metadata, layers, tilesets and overlays
     delete[] mMetaTiles;
-    delete[] mTiles;
-    // clean up tilesets
+    for_each(mLayers.begin(), mLayers.end(), make_dtor(mLayers));
     for_each(mTilesets.begin(), mTilesets.end(), make_dtor(mTilesets));
-    mTilesets.clear();
-    // clean up overlays
     for_each(mOverlays.begin(), mOverlays.end(), make_dtor(mOverlays));
 }
 
@@ -99,9 +171,9 @@ void Map::initializeOverlays()
         const std::string name = "overlay" + toString(i);
 
         Image *img = resman->getImage(getProperty(name + "image"));
-        float speedX = getFloatProperty(name + "scrollX");
-        float speedY = getFloatProperty(name + "scrollY");
-        float parallax = getFloatProperty(name + "parallax");
+        const float speedX = getFloatProperty(name + "scrollX");
+        const float speedY = getFloatProperty(name + "scrollY");
+        const float parallax = getFloatProperty(name + "parallax");
 
         if (img)
         {
@@ -112,6 +184,11 @@ void Map::initializeOverlays()
             img->decRef();
         }
     }
+}
+
+void Map::addLayer(MapLayer *layer)
+{
+    mLayers.push_back(layer);
 }
 
 void Map::addTileset(Tileset *tileset)
@@ -127,63 +204,31 @@ bool spriteCompare(const Sprite *a, const Sprite *b)
     return a->getPixelY() < b->getPixelY();
 }
 
-void Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
+void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 {
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
 
-    // If drawing the fringe layer, make sure sprites are sorted
-    SpriteIterator si;
-    if (layer == 1)
-    {
-        mSprites.sort(spriteCompare);
-        si = mSprites.begin();
-        endPixelY += mMaxTileHeight - mTileHeight;
-    }
+    // TODO: Do this per-layer
+    endPixelY += mMaxTileHeight - mTileHeight;
 
     int startX = scrollX / mTileWidth;
     int startY = scrollY / mTileHeight;
     int endX = (graphics->getWidth() + scrollX + mTileWidth - 1) / mTileWidth;
     int endY = endPixelY / mTileHeight;
 
-    if (startX < 0) startX = 0;
-    if (startY < 0) startY = 0;
-    if (endX > mWidth) endX = mWidth;
-    if (endY > mHeight) endY = mHeight;
+    // Make sure sprites are sorted
+    mSprites.sort(spriteCompare);
 
-    for (int y = startY; y < endY; y++)
-    {
-        // If drawing the fringe layer, make sure all sprites above this row of
-        // tiles have been drawn
-        if (layer == 1)
-        {
-            while (si != mSprites.end() && (*si)->getPixelY() <= y * 32 - 32)
-            {
-                (*si)->draw(graphics, -scrollX, -scrollY);
-                si++;
-            }
-        }
-
-        for (int x = startX; x < endX; x++)
-        {
-            Image *img = getTile(x, y, layer);
-            if (img) {
-                graphics->drawImage(img,
-                        x * mTileWidth - scrollX,
-                        y * mTileHeight - scrollY +
-                            mTileHeight - img->getHeight());
-            }
-        }
+    Layers::const_iterator layeri = mLayers.begin();
+    for (; layeri != mLayers.end(); ++layeri) {
+        (*layeri)->draw(graphics,
+                        startX, startY, endX, endY,
+                        scrollX, scrollY,
+                        mSprites);
     }
 
-    // Draw any remaining sprites
-    if (layer == 1)
-    {
-        while (si != mSprites.end())
-        {
-            (*si)->draw(graphics, -scrollX, -scrollY);
-            si++;
-        }
-    }
+    drawOverlay(graphics, scrollX, scrollY,
+            (int) config.getValue("OverlayDetail", 2));
 }
 
 void Map::drawOverlay(Graphics *graphics,
@@ -226,23 +271,10 @@ void Map::drawOverlay(Graphics *graphics,
     };
 }
 
-void Map::setTileWithGid(int x, int y, int layer, int gid)
-{
-    if (layer == 3)
-    {
-        Tileset *set = getTilesetWithGid(gid);
-        setWalk(x, y, (!set || (gid - set->getFirstGid() == 0)));
-    }
-    else if (layer < 3)
-    {
-        setTile(x, y, layer, getTileWithGid(gid));
-    }
-}
-
 class ContainsGidFunctor
 {
     public:
-        bool operator() (Tileset* set)
+        bool operator() (const Tileset* set) const
         {
             return (set->getFirstGid() <= gid &&
                     gid - set->getFirstGid() < (int)set->size());
@@ -258,17 +290,6 @@ Tileset* Map::getTilesetWithGid(int gid) const
             containsGid);
 
     return (i == mTilesets.end()) ? NULL : *i;
-}
-
-Image* Map::getTileWithGid(int gid) const
-{
-    Tileset *set = getTilesetWithGid(gid);
-
-    if (set) {
-        return set->get(gid - set->getFirstGid());
-    }
-
-    return NULL;
 }
 
 void Map::setWalk(int x, int y, bool walkable)
@@ -299,16 +320,6 @@ bool Map::tileCollides(int x, int y) const
 bool Map::contains(int x, int y) const
 {
     return x >= 0 && y >= 0 && x < mWidth && y < mHeight;
-}
-
-void Map::setTile(int x, int y, int layer, Image *img)
-{
-    mTiles[x + y * mWidth + layer * (mWidth * mHeight)] = img;
-}
-
-Image* Map::getTile(int x, int y, int layer)
-{
-    return mTiles[x + y * mWidth + layer * (mWidth * mHeight)];
 }
 
 MetaTile* Map::getMetaTile(int x, int y)
@@ -367,8 +378,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
             for (int dx = -1; dx <= 1; dx++)
             {
                 // Calculate location of tile to check
-                int x = curr.x + dx;
-                int y = curr.y + dy;
+                const int x = curr.x + dx;
+                const int y = curr.y + dy;
 
                 // Skip if if we're checking the same tile we're leaving from,
                 // or if the new location falls outside of the map boundaries
@@ -379,7 +390,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
 
                 MetaTile *newTile = getMetaTile(x, y);
 
-                // Skip if the tile is on the closed list or collides unless its the destination tile
+                // Skip if the tile is on the closed list or collides unless
+                // its the destination tile
                 if (newTile->whichList == mOnClosedList ||
                         (tileCollides(x, y) && !(x == destX && y == destY)))
                 {
@@ -430,7 +442,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
 
                     // Update Gcost and Fcost of new tile
                     newTile->Gcost = Gcost;
-                    newTile->Fcost = newTile->Gcost + newTile->Hcost;
+                    newTile->Fcost = Gcost + newTile->Hcost;
 
                     if (x != destX || y != destY) {
                         // Add this tile to the open list
@@ -447,7 +459,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
                     // Found a shorter route.
                     // Update Gcost and Fcost of the new tile
                     newTile->Gcost = Gcost;
-                    newTile->Fcost = newTile->Gcost + newTile->Hcost;
+                    newTile->Fcost = Gcost + newTile->Hcost;
 
                     // Set the current tile as the parent of the new tile
                     newTile->parentX = curr.x;
@@ -488,7 +500,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
     return path;
 }
 
-void Map::addParticleEffect (std::string effectFile, int x, int y)
+void Map::addParticleEffect(const std::string &effectFile, int x, int y)
 {
     ParticleEffectData newEffect;
     newEffect.file = effectFile;

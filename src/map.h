@@ -32,6 +32,7 @@
 class AmbientOverlay;
 class Graphics;
 class Image;
+class MapLayer;
 class Particle;
 class Sprite;
 class Tileset;
@@ -41,8 +42,7 @@ struct PATH_NODE;
 typedef std::vector<Tileset*> Tilesets;
 typedef std::list<Sprite*> Sprites;
 typedef Sprites::iterator SpriteIterator;
-
-extern volatile int tick_time;
+typedef std::vector<MapLayer*> Layers;
 
 /**
  * A meta tile stores additional information about a location on a tile map.
@@ -64,6 +64,56 @@ struct MetaTile
     int parentX;            /**< X coordinate of parent tile */
     int parentY;            /**< Y coordinate of parent tile */
     bool walkable;          /**< Can beings walk on this tile */
+};
+
+/**
+ * A map layer. Stores a grid of tiles and their offset, and implements layer
+ * rendering.
+ */
+class MapLayer
+{
+    public:
+        /**
+         * Constructor, taking layer origin, size and whether this layer is the
+         * fringe layer. The fringe layer is the layer that draws the sprites.
+         * There can be only one fringe layer per map.
+         */
+        MapLayer(int x, int y, int width, int height, bool isFringeLayer);
+
+        /**
+         * Destructor.
+         */
+        ~MapLayer();
+
+        /**
+         * Set tile image, with x and y in layer coordinates.
+         */
+        void setTile(int x, int y, Image *img);
+
+        /**
+         * Get tile image, with x and y in layer coordinates.
+         */
+        Image *getTile(int x, int y) const;
+
+        /**
+         * Draws this layer to the given graphics context. The coordinates are
+         * expected to be in map range and will be translated to local layer
+         * coordinates and clipped to the layer's dimensions.
+         *
+         * The given sprites are only drawn when this layer is the fringe
+         * layer.
+         */
+        void draw(Graphics *graphics,
+                  int startX, int startY,
+                  int endX, int endY,
+                  int scrollX, int scrollY,
+                  const Sprites &sprites) const;
+
+    private:
+        int mX, mY;
+        int mWidth, mHeight;
+        bool mIsFringeLayer;    /**< Whether the sprites are drawn. */
+        Image **mTiles;
 };
 
 /**
@@ -89,39 +139,30 @@ class Map : public Properties
         void initializeOverlays();
 
         /**
-         * Draws a map layer to the given graphics output.
+         * Draws the map to the given graphics output. This method draws all
+         * layers, sprites and overlay effects.
+         *
+         * TODO: For efficiency reasons, this method could take into account
+         * the clipping rectangle set on the Graphics object. However,
+         * currently the map is always drawn full-screen.
          */
-        void draw(Graphics *graphics, int scrollX, int scrollY, int layer);
+        void draw(Graphics *graphics, int scrollX, int scrollY);
 
         /**
-         * Draws the overlay graphic to the given graphics output.
+         * Adds a layer to this map. The map takes ownership of the layer.
          */
-        void
-        drawOverlay(Graphics *graphics, float scrollX, float scrollY,
-                    int detail);
+        void addLayer(MapLayer *layer);
 
         /**
-         * Adds a tileset to this map.
+         * Adds a tileset to this map. The map takes ownership of the tileset.
          */
-        void
-        addTileset(Tileset *tileset);
+        void addTileset(Tileset *tileset);
 
         /**
-         * Sets a tile using a global tile id. Used by the layer loading
-         * routine.
+         * Finds the tile set that a tile with the given global id is part of.
          */
-        void
-        setTileWithGid(int x, int y, int layer, int gid);
-
-        /**
-         * Set tile ID.
-         */
-        void setTile(int x, int y, int layer, Image *img);
-
-        /**
-         * Get tile ID.
-         */
-        Image *getTile(int x, int y, int layer);
+        Tileset*
+        getTilesetWithGid(int gid) const;
 
         /**
          * Get tile reference.
@@ -183,7 +224,7 @@ class Map : public Properties
         /**
          * Adds a particle effect
          */
-        void addParticleEffect (std::string effectFile, int x, int y);
+        void addParticleEffect(const std::string &effectFile, int x, int y);
 
         /**
          * Initializes all added particle effects
@@ -193,15 +234,11 @@ class Map : public Properties
 
     private:
         /**
-         * Converts a global tile id to the Image* pointing to the associated
-         * tile image.
+         * Draws the overlay graphic to the given graphics output.
          */
-        Image* getTileWithGid(int gid) const;
-
-        /**
-         * Finds the tile set that a tile with the given global id is part of.
-         */
-        Tileset* getTilesetWithGid(int gid) const;
+        void
+        drawOverlay(Graphics *graphics, float scrollX, float scrollY,
+                    int detail);
 
         /**
          * Tells whether a tile is occupied by a being.
@@ -217,15 +254,14 @@ class Map : public Properties
         int mTileWidth, mTileHeight;
         int mMaxTileHeight;
         MetaTile *mMetaTiles;
-        Image **mTiles;
-
+        Layers mLayers;
         Tilesets mTilesets;
         Sprites mSprites;
 
         // Pathfinding members
         int mOnClosedList, mOnOpenList;
 
-        // Overlay Data
+        // Overlay data
         std::list<AmbientOverlay*> mOverlays;
         float mLastScrollX;
         float mLastScrollY;

@@ -92,6 +92,12 @@ class SpriteDef : public Resource
         ~SpriteDef();
 
         /**
+         * Loads a sprite element.
+         */
+        void loadSprite(xmlNodePtr spriteNode, int variant,
+                        const std::string &palettes = "");
+
+        /**
          * Loads an imageset element.
          */
         void loadImageSet(xmlNodePtr node, std::string const &palettes);

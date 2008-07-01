@@ -206,20 +206,17 @@ MapReader::readMap(const std::string &filename)
 Map*
 MapReader::readMap(xmlNodePtr node, const std::string &path)
 {
-    xmlChar *prop;
-
     // Take the filename off the path
-    std::string pathDir = path.substr(0, path.rfind("/") + 1);
+    const std::string pathDir = path.substr(0, path.rfind("/") + 1);
 
-    prop = xmlGetProp(node, BAD_CAST "version");
-    xmlFree(prop);
+    //xmlChar *prop = xmlGetProp(node, BAD_CAST "version");
+    //xmlFree(prop);
 
-    int w = XML::getProperty(node, "width", 0);
-    int h = XML::getProperty(node, "height", 0);
-    int tilew = XML::getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
-    int tileh = XML::getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
-    int layerNr = 0;
-    Map *map = new Map(w, h, tilew, tileh);
+    const int w = XML::getProperty(node, "width", 0);
+    const int h = XML::getProperty(node, "height", 0);
+    const int tw = XML::getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
+    const int th = XML::getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
+    Map *map = new Map(w, h, tw, th);
 
     for_each_xml_child_node(childNode, node)
     {
@@ -232,9 +229,7 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
         }
         else if (xmlStrEqual(childNode->name, BAD_CAST "layer"))
         {
-            logger->log("- Loading layer %d", layerNr);
-            readLayer(childNode, map, layerNr);
-            layerNr++;
+            readLayer(childNode, map);
         }
         else if (xmlStrEqual(childNode->name, BAD_CAST "properties"))
         {
@@ -246,15 +241,31 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
             {
                 if (xmlStrEqual(objectNode->name, BAD_CAST "object"))
                 {
-                    std::string objName = XML::getProperty(objectNode, "name", "");
-                    std::string objType = XML::getProperty(objectNode, "type", "");
-                    int objX = XML::getProperty(objectNode, "x", 0);
-                    int objY = XML::getProperty(objectNode, "y", 0);
+                    const std::string objType =
+                        XML::getProperty(objectNode, "type", "");
+
+                    if (objType == "WARP" || objType == "NPC" ||
+                        objType == "SCRIPT" || objType == "SPAWN")
+                    {
+                        // Silently skip server-side objects.
+                        continue;
+                    }
+
+                    const std::string objName =
+                        XML::getProperty(objectNode, "name", "");
+                    const int objX = XML::getProperty(objectNode, "x", 0);
+                    const int objY = XML::getProperty(objectNode, "y", 0);
 
                     logger->log("- Loading object name: %s type: %s at %d:%d",
                                 objName.c_str(), objType.c_str(), objX, objY);
+
                     if (objType == "PARTICLE_EFFECT")
                     {
+                        if (objName.empty()) {
+                            logger->log("   Warning: No particle file given");
+                            continue;
+                        }
+
                         map->addParticleEffect(objName, objX, objY);
                     }
                     else
@@ -280,43 +291,66 @@ MapReader::readProperties(xmlNodePtr node, Properties* props)
             continue;
 
         // Example: <property name="name" value="value"/>
-        xmlChar *name = xmlGetProp(childNode, BAD_CAST "name");
-        xmlChar *value = xmlGetProp(childNode, BAD_CAST "value");
+        const std::string name = XML::getProperty(childNode, "name", "");
+        const std::string value = XML::getProperty(childNode, "value", "");
 
-        if (name && value) {
-            props->setProperty((const char*)name, (const char*)value);
-        }
+        if (!name.empty() && !value.empty())
+            props->setProperty(name, value);
+    }
+}
 
-        if (name) xmlFree(name);
-        if (value) xmlFree(value);
+static void setTile(Map *map, MapLayer *layer, int x, int y, int gid)
+{
+    const Tileset * const set = map->getTilesetWithGid(gid);
+    if (layer) {
+        // Set regular tile on a layer
+        Image * const img = set ? set->get(gid - set->getFirstGid()) : 0;
+        layer->setTile(x, y, img);
+    } else {
+        // Set collision tile
+        map->setWalk(x, y, (!set || (gid - set->getFirstGid() == 0)));
     }
 }
 
 void
-MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
+MapReader::readLayer(xmlNodePtr node, Map *map)
 {
-    int h = map->getHeight();
-    int w = map->getWidth();
+    // Layers are not necessarily the same size as the map
+    const int w = XML::getProperty(node, "width", map->getWidth());
+    const int h = XML::getProperty(node, "height", map->getHeight());
+    const int offsetX = XML::getProperty(node, "xoffset", 0);
+    const int offsetY = XML::getProperty(node, "yoffset", 0);
+    const std::string name = XML::getProperty(node, "name", "");
+
+    const bool isFringeLayer = (name == "Fringe");
+    const bool isCollisionLayer = (name == "Collision");
+
+    MapLayer *layer = 0;
+
+    if (!isCollisionLayer) {
+        layer = new MapLayer(offsetX, offsetY, w, h, isFringeLayer);
+        map->addLayer(layer);
+    }
+
+    logger->log("- Loading layer \"%s\"", name.c_str());
     int x = 0;
     int y = 0;
 
-    // Load the tile data. Layers are assumed to be map size, with (0,0) as
-    // origin.
+    // Load the tile data
     for_each_xml_child_node(childNode, node)
     {
         if (!xmlStrEqual(childNode->name, BAD_CAST "data"))
             continue;
 
-        xmlChar *encoding = xmlGetProp(childNode, BAD_CAST "encoding");
-        xmlChar *compression = xmlGetProp(childNode, BAD_CAST "compression");
+        const std::string encoding =
+            XML::getProperty(childNode, "encoding", "");
+        const std::string compression =
+            XML::getProperty(childNode, "compression", "");
 
-        if (encoding && xmlStrEqual(encoding, BAD_CAST "base64"))
+        if (encoding == "base64")
         {
-            xmlFree(encoding);
-
-            if (compression && !xmlStrEqual(compression, BAD_CAST "gzip")) {
+            if (!compression.empty() && compression != "gzip") {
                 logger->log("Warning: only gzip layer compression supported!");
-                xmlFree(compression);
                 return;
             }
 
@@ -348,34 +382,29 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
             delete[] charData;
 
             if (binData) {
-                if (compression) {
-                    if (xmlStrEqual(compression, BAD_CAST "gzip")) {
-                        // Inflate the gzipped layer data
-                        unsigned char *inflated;
-                        unsigned int inflatedSize =
-                            inflateMemory(binData, binLen, inflated);
+                if (compression == "gzip") {
+                    // Inflate the gzipped layer data
+                    unsigned char *inflated;
+                    unsigned int inflatedSize =
+                        inflateMemory(binData, binLen, inflated);
 
-                        free(binData);
-                        binData = inflated;
-                        binLen = inflatedSize;
+                    free(binData);
+                    binData = inflated;
+                    binLen = inflatedSize;
 
-                        if (inflated == NULL)
-                        {
-                            logger->log("Error: Could not decompress layer!");
-                            xmlFree(compression);
-                            return;
-                        }
+                    if (!inflated) {
+                        logger->log("Error: Could not decompress layer!");
+                        return;
                     }
-                    xmlFree(compression);
                 }
 
                 for (int i = 0; i < binLen - 3; i += 4) {
-                    int gid = binData[i] |
+                    const int gid = binData[i] |
                         binData[i + 1] << 8 |
                         binData[i + 2] << 16 |
                         binData[i + 3] << 24;
 
-                    map->setTileWithGid(x, y, layer, gid);
+                    setTile(map, layer, x, y, gid);
 
                     x++;
                     if (x == w) {x = 0; y++;}
@@ -390,8 +419,8 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                 if (!xmlStrEqual(childNode2->name, BAD_CAST "tile"))
                     continue;
 
-                int gid = XML::getProperty(childNode2, "gid", -1);
-                map->setTileWithGid(x, y, layer, gid);
+                const int gid = XML::getProperty(childNode2, "gid", -1);
+                setTile(map, layer, x, y, gid);
 
                 x++;
                 if (x == w) {
@@ -423,20 +452,20 @@ MapReader::readTileset(xmlNodePtr node,
         return NULL;
     }
 
-    int firstGid = XML::getProperty(node, "firstgid", 0);
-    int tw = XML::getProperty(node, "tilewidth", map->getTileWidth());
-    int th = XML::getProperty(node, "tileheight", map->getTileHeight());
+    const int firstGid = XML::getProperty(node, "firstgid", 0);
+    const int tw = XML::getProperty(node, "tilewidth", map->getTileWidth());
+    const int th = XML::getProperty(node, "tileheight", map->getTileHeight());
 
     for_each_xml_child_node(childNode, node)
     {
         if (!xmlStrEqual(childNode->name, BAD_CAST "image"))
             continue;
 
-        xmlChar* source = xmlGetProp(childNode, BAD_CAST "source");
+        const std::string source = XML::getProperty(childNode, "source", "");
 
-        if (source)
+        if (!source.empty())
         {
-            std::string sourceStr = std::string((const char*)source);
+            std::string sourceStr = source;
             sourceStr.erase(0, 3);  // Remove "../"
 
             ResourceManager *resman = ResourceManager::getInstance();
@@ -446,14 +475,15 @@ MapReader::readTileset(xmlNodePtr node,
             {
                 Tileset *set = new Tileset(tilebmp, tw, th, firstGid);
                 tilebmp->decRef();
-                xmlFree(source);
                 return set;
             }
             else {
-                logger->log("Warning: Failed to load tileset (%s)", source);
+                logger->log("Warning: Failed to load tileset (%s)",
+                        source.c_str());
             }
         }
 
+        // Only one image element expected
         break;
     }
 
