@@ -251,6 +251,11 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         ContainerPlacer getPlacer(int x, int y);
 
+		/**
+		 * Loads a window skin
+		 */
+        void Window::loadSkin(const std::string filename);
+
     private:
         /**
          * Determines if the mouse is in a resize area and returns appropriate
@@ -285,7 +290,10 @@ class Window : public gcn::Window, gcn::WidgetListener
 
         static int mouseResize;    /**< Active resize handles */
         static int instances;      /**< Number of Window instances */
-        static ImageRect border;   /**< The window border and background */
+
+        void setGuiAlpha();
+        static bool mAlphaChanged;
+        Image *border[9];
         static Image *closeImage;  /**< Close Button Image */
 
         /**

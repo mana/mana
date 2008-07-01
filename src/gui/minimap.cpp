@@ -36,8 +36,11 @@ Minimap::Minimap():
     Window(_("MiniMap")),
     mMapImage(NULL)
 {
-    setDefaultSize(5, 25, 100, 100);
+    setDefaultSize(0, 0, 100, 100);
     loadWindowState("MiniMap");
+    // LEEOR: The Window class needs to modified to accept
+    // setAlignment calls.
+    setAlignment(gcn::Graphics::CENTER);
 }
 
 Minimap::~Minimap()
@@ -60,7 +63,14 @@ void Minimap::setMapImage(Image *img)
     if (mMapImage)
     {
         mMapImage->setAlpha(0.7);
+        setSize( mMapImage->getWidth() + 6, mMapImage->getHeight() + 23 );
+        setVisible(true);
     }
+    else
+    {
+        setVisible(false);
+    }
+
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
@@ -69,8 +79,7 @@ void Minimap::draw(gcn::Graphics *graphics)
 
     if (mMapImage != NULL)
     {
-        static_cast<Graphics*>(graphics)->
-            drawImage(mMapImage, getPadding(), getTitleBarHeight());
+        static_cast<Graphics*>(graphics)->drawImage(mMapImage, getPadding(), getTitleBarHeight());
     }
 
     Beings &beings = beingManager->getAll();
@@ -90,6 +99,10 @@ void Minimap::draw(gcn::Graphics *graphics)
                     break;
                 }
                 graphics->setColor(gcn::Color(61, 52, 209));
+                break;
+
+            case Being::NPC:
+                graphics->setColor(gcn::Color(255, 255, 0));
                 break;
 
             case Being::MONSTER:

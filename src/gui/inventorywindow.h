@@ -84,6 +84,11 @@ class InventoryWindow : public Window,
          */
         void valueChanged(const gcn::SelectionEvent &event);
 
+		/**
+		 * Tracks when the mouse exits the window
+		 */
+		~InventoryWindow();
+
     private:
         void updateButtons();    /**< Updates button states. */
 
@@ -93,10 +98,6 @@ class InventoryWindow : public Window,
         gcn::Button *mUseButton, *mDropButton, *mSplitButton;
 
         gcn::ScrollArea *mInvenScroll;         /**< Inventory Scroll Area. */
-        gcn::Label *mItemNameLabel;
-        gcn::Label *mItemDescriptionLabel;
-        gcn::Label *mItemEffectLabel;
-        gcn::Label *mWeightLabel;
 
         bool mSplit;
 };

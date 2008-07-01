@@ -65,6 +65,7 @@ ItemContainer::ItemContainer(Inventory *inventory,
     mSelectionStatus(SEL_NONE),
     mSwapItems(false)
 {
+    mItemPopup = new ItemPopup();
     setFocusable(true);
 
     ResourceManager *resman = ResourceManager::getInstance();
@@ -281,14 +282,46 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
     mSelectionStatus = SEL_NONE;
 }
 
-int
-ItemContainer::getSlotIndex(const int posX, const int posY) const
+
+// Show ItemTooltip
+void ItemContainer::mouseMoved(gcn::MouseEvent &event)
+{
+    Item *item = mInventory->getItem( getSlotIndex(event.getX(), event.getY() ) );
+
+    if( item )
+    {
+        mItemPopup->setPosition(getParent()->getParent()->getX() + getParent()->getParent()->getWidth(), getParent()->getParent()->getY());
+
+        mItemPopup->setItem(item);
+
+        mItemPopup->setVisible(true);
+    }
+    else
+    {
+        mItemPopup->setVisible(false);
+    }
+}
+
+
+// Show ItemTooltip
+void ItemContainer::mouseEntered(gcn::MouseEvent &event)
+{
+
+}
+
+
+// Hide ItemTooltip
+void ItemContainer::mouseExited(gcn::MouseEvent &event)
+{
+    mItemPopup->setVisible(false);
+}
+
+int ItemContainer::getSlotIndex(const int posX, const int posY) const
 {
     if (getDimension().isPointInRect(posX, posY))
     {
         // Takes into account, boxes are overlapping each other.
-        return (posY / (BOX_HEIGHT - 1)) * mGridColumns +
-                    (posX / (BOX_WIDTH - 1));
+        return (posY / (BOX_HEIGHT - 1)) * mGridColumns + (posX / (BOX_WIDTH - 1));
     }
     return Inventory::NO_SLOT_INDEX;
 }

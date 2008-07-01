@@ -40,14 +40,13 @@
 
 #include "../utils/gettext.h"
 
-LoginDialog::LoginDialog(LoginData *loginData):
-    Window(_("Login")), mLoginData(loginData)
+LoginDialog::LoginDialog(LoginData *loginData) : Window(_("Login")), mLoginData(loginData)
 {
     gcn::Label *userLabel = new gcn::Label(_("Name:"));
     gcn::Label *passLabel = new gcn::Label(_("Password:"));
     mUserField = new TextField(mLoginData->username);
     mPassField = new PasswordField(mLoginData->password);
-    mKeepCheck = new CheckBox(_("Keep"), mLoginData->remember);
+    mKeepCheck = new CheckBox(_("Remember Username"), mLoginData->remember);
     mOkButton = new Button(_("Ok"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mRegisterButton = new Button(_("Register"), "register", this);
@@ -74,9 +73,12 @@ LoginDialog::LoginDialog(LoginData *loginData):
     setLocationRelativeTo(getParent());
     setVisible(true);
 
-    if (mUserField->getText().empty()) {
+    if (mUserField->getText().empty())
+    {
         mUserField->requestFocus();
-    } else {
+    }
+    else
+    {
         mPassField->requestFocus();
     }
 
@@ -87,8 +89,7 @@ LoginDialog::~LoginDialog()
 {
 }
 
-void
-LoginDialog::action(const gcn::ActionEvent &event)
+void LoginDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok" && canSubmit())
     {
@@ -116,14 +117,12 @@ LoginDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
+void LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
     mOkButton->setEnabled(canSubmit());
 }
 
-bool
-LoginDialog::canSubmit()
+bool LoginDialog::canSubmit()
 {
     return !mUserField->getText().empty() &&
            !mPassField->getText().empty() &&

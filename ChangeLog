@@ -1,3 +1,18 @@
+2008-07-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/gui/window.cpp, data/gui/window.hpp, data/graphics/gui/default.png,
+	data/graphics/gui/gui.xml, data/graphics/gui/speech_bubble.png,
+	data/graphics/gui/speechbubble.xml: Added skinning support to GUI (ported from
+	Legend of Mazzeroth)
+	* src/being.cpp, src/gui/speechbubble.cpp, src/gui/speechbubble.hpp: Speech is
+	now rendered in a speech bubble (ported from Legend of Mazzeroth).
+	* src/engine.cpp: "mapname" property of map files is now used as headline of the
+	minimap window (ported from Legend of Mazzeroth).
+	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.hpp,
+	src/gui/itemcontainer.cpp, src/gui/itemcontainer.h: Item descriptions are now
+	shown in a separate GUI window when the mouse cursor hovers over them
+	(ported from Legend of Mazzeroth).
+
 2008-06-27  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/skill.cpp, src/gui/skill.h, src/localplayer.cpp:

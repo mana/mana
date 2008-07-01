@@ -29,6 +29,8 @@
 
 #include <guichan/widget.hpp>
 
+#include "itempopup.h"
+
 #include <list>
 
 class Image;
@@ -133,6 +135,10 @@ class ItemContainer : public gcn::Widget,
          */
         void keyAction();
 
+        void mouseEntered(gcn::MouseEvent &event);
+        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
+
         /**
          * Moves the highlight in the direction specified.
          *
@@ -166,6 +172,8 @@ class ItemContainer : public gcn::Widget,
         int mSelectionStatus;
         bool mSwapItems;
         int mDragPosX, mDragPosY;
+
+        ItemPopup *mItemPopup;
 
         typedef std::list<gcn::SelectionListener*> SelectionListenerList;
         typedef SelectionListenerList::iterator SelectionListenerIterator;

@@ -29,11 +29,13 @@
 
 #include <guichan/widgets/label.hpp>
 #include <guichan/widgets/checkbox.hpp>
+#include <guichan/widgets/textbox.hpp>
 
 #include "button.h"
 #include "gui.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "itempopup.h"
 #include "scrollarea.h"
 #include "sdlinput.h"
 #include "viewport.h"
@@ -53,12 +55,14 @@ InventoryWindow::InventoryWindow():
     Window(_("Inventory")),
     mSplit(false)
 {
-    setResizable(true);
+    setResizable(false);
     setCloseButton(true);
-    setMinWidth(240);
-    setMinHeight(172);
+    // LEEOR/TODO: Since this window is not resizable, do we really need to set these
+    // values or can we drop them?
+    setMinWidth(375);
+    setMinHeight(283);
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 368, 326);
+    setDefaultSize(115, 25, 375, 283);
     addKeyListener(this);
 
     mUseButton = new Button(_("Use"), "use", this);
@@ -70,28 +74,18 @@ InventoryWindow::InventoryWindow():
 
     mInvenScroll = new ScrollArea(mItems);
 
-    mItemNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
-    mItemDescriptionLabel = new gcn::Label(
-        strprintf(_("Description: %s"), ""));
-    mItemEffectLabel = new gcn::Label(strprintf(_("Effect: %s"), ""));
-    mWeightLabel = new gcn::Label(
-        strprintf(_("Total Weight: %d - Maximum Weight: %d"), 0, 0));
-
-    place(0, 0, mWeightLabel, 4);
-    place(0, 1, mInvenScroll, 4).setPadding(3);
-    place(0, 2, mItemNameLabel, 4);
-    place(0, 3, mItemDescriptionLabel, 4);
-    place(0, 4, mItemEffectLabel, 4);
-    place(0, 5, mUseButton);
-    place(1, 5, mDropButton);
-    place(2, 5, mSplitButton);
+    place(0, 0, mInvenScroll, 100).setPadding(3);
+    place(0, 1, mUseButton);
+    place(1, 1, mDropButton);
+    place(2, 1, mSplitButton);
     Layout &layout = getLayout();
     layout.setColWidth(0, 48);
     layout.setColWidth(1, 48);
     layout.setColWidth(2, 48);
-    layout.setRowHeight(1, Layout::AUTO_SET);
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState("Inventory");
+
 }
 
 void InventoryWindow::logic()
@@ -103,9 +97,7 @@ void InventoryWindow::logic()
     updateButtons();
 
     // Update weight information
-    mWeightLabel->setCaption(
-        strprintf(_("Total Weight: %d - Maximum Weight: %d"),
-        player_node->getTotalWeight(), player_node->getMaxWeight()));
+    // mWeightLabel->setCaption(strprintf(_("Total Weight: %d - Maximum Weight: %d"), player_node->getTotalWeight(), player_node->getMaxWeight()));
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -147,21 +139,13 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
     Item *item = mItems->getItem();
-    ItemInfo const *info = item ? &item->getInfo() : NULL;
-
-    mItemNameLabel->setCaption(strprintf(_("Name: %s"),
-        info ? info->getName().c_str() : ""));
-    mItemEffectLabel->setCaption(strprintf(_("Effect: %s"),
-        info ? info->getEffect().c_str() : ""));
-    mItemDescriptionLabel->setCaption(strprintf(_("Description: %s"),
-        info ? info->getDescription().c_str() : ""));
 
     if (mSplit)
     {
-        if (item && !item->isEquipment() && item->getQuantity() > 1) {
+        if (item && !item->isEquipment() && item->getQuantity() > 1)
+        {
             mSplit = false;
-            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item,
-                (item->getQuantity() - 1));
+            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item, (item->getQuantity() - 1));
         }
     }
 }
@@ -174,9 +158,9 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     {
         Item *item = mItems->getItem();
 
-        if (!item) {
+        if (!item)
             return;
-        }
+
         /* Convert relative to the window coordinates to absolute screen
          * coordinates.
          */
@@ -229,4 +213,8 @@ void InventoryWindow::keyReleased(gcn::KeyEvent &event)
         case Key::RIGHT_SHIFT:
             mSplit = false;
     }
+}
+InventoryWindow::~InventoryWindow()
+{
+
 }

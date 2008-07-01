@@ -44,6 +44,7 @@ class Map;
 class Graphics;
 class ImageSet;
 class Particle;
+class SpeechBubble;
 
 /**
  * A position along a being's path.
@@ -115,10 +116,10 @@ class Being : public Sprite
         Uint16 mX, mY;          /**< Pixel coordinates of tile center */
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
-        Uint16 mAttackSpeed;          /**< Attack speed */
+        Uint16 mAttackSpeed;    /**< Attack speed */
         Uint16 mWalkTime;
-        Action mAction;                 /**< Action the being is performing */
-        Uint16 mJob;                    /**< Job (player job, npc, monster, ) */
+        Action mAction;         /**< Action the being is performing */
+        Uint16 mJob;            /**< Job (player job, npc, monster, creature ) */
 
         /**
          * Constructor.
@@ -209,7 +210,7 @@ class Being : public Sprite
          * Draws the speech text above the being.
          */
         void
-        drawSpeech(Graphics *graphics, int offsetX, int offsetY);
+        drawSpeech(Graphics* graphics, int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.
@@ -389,8 +390,10 @@ class Being : public Sprite
         std::list<Particle *> mChildParticleEffects;
 
     private:
-        int
-        getOffset(int step) const;
+        int getOffset(int step) const;
+
+        // Speech Bubble components
+        SpeechBubble *mSpeechBubble;
 
         Sint16 mStepX, mStepY;
         Uint16 mStepTime;

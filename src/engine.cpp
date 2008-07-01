@@ -91,6 +91,17 @@ void Engine::changeMap(const std::string &mapPath)
     if (newMap->hasProperty("minimap"))
     {
         mapImage = resman->getImage(newMap->getProperty("minimap"));
+
+        // Set the title for the Minimap
+        if (newMap->hasProperty("mapname"))
+        {
+            minimap->setCaption(newMap->getProperty("mapname"));
+        }
+        else
+        {
+            minimap->setCaption("Unknown");
+            logger->log("WARNING: Map file '%s' defines a minimap image but does not define a 'mapname' property", map_path.c_str());
+        }
     }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);

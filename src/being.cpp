@@ -39,6 +39,7 @@
 #include "resources/iteminfo.h"
 
 #include "gui/gui.h"
+#include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -67,12 +68,15 @@ Being::Being(int id, int job, Map *map):
 {
     setMap(map);
 
+    mSpeechBubble = new SpeechBubble();
+
     if (instances == 0)
     {
         // Load the emotion set
         ResourceManager *rm = ResourceManager::getInstance();
         emotionSet = rm->getImageSet("graphics/sprites/emotions.png", 30, 32);
-        if (!emotionSet) logger->error("Unable to load emotions!");
+        if (!emotionSet)
+            logger->error("Unable to load emotions!");
     }
 
     instances++;
@@ -253,20 +257,17 @@ void Being::adjustCourse(Uint16 srcX, Uint16 srcY)
     }
 }
 
-void
-Being::setDestination(Uint16 destX, Uint16 destY)
+void Being::setDestination(Uint16 destX, Uint16 destY)
 {
     adjustCourse(mX, mY, destX, destY);
 }
 
-void
-Being::clearPath()
+void Being::clearPath()
 {
     mPath.clear();
 }
 
-void
-Being::setPath(const Path &path, int mod)
+void Being::setPath(const Path &path, int mod)
 {
     mPath = path;
     mSpeedModifier = mod >= 512 ? (mod <= 2048 ? mod : 2048) : 512; // TODO: tune bounds
@@ -296,23 +297,20 @@ Being::setPath(const Path &path, int mod)
     }
 }
 
-void
-Being::setSprite(int slot, int id, const std::string &color)
+void Being::setSprite(int slot, int id, const std::string &color)
 {
     assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
     mSpriteIDs[slot] = id;
     mSpriteColors[slot] = color;
 }
 
-void
-Being::setSpeech(const std::string &text, Uint32 time)
+void Being::setSpeech(const std::string &text, Uint32 time)
 {
     mSpeech = text;
     mSpeechTime = 500;
 }
 
-void
-Being::takeDamage(int amount)
+void Being::takeDamage(int amount)
 {
     gcn::Font *font;
     std::string damage = amount ? toString(amount) : "miss";
@@ -343,14 +341,12 @@ Being::takeDamage(int amount)
                                         mPx + 16, mPy + 16);
 }
 
-void
-Being::handleAttack()
+void Being::handleAttack()
 {
     setAction(Being::ATTACK);
 }
 
-void
-Being::setMap(Map *map)
+void Being::setMap(Map *map)
 {
 
     // Remove sprite from potential previous map
@@ -373,8 +369,7 @@ Being::setMap(Map *map)
     mChildParticleEffects.clear();
 }
 
-void
-Being::controlParticle(Particle *particle)
+void Being::controlParticle(Particle *particle)
 {
     if (particle)
     {
@@ -384,8 +379,7 @@ Being::controlParticle(Particle *particle)
     }
 }
 
-void
-Being::setAction(Action action, int attackType)
+void Being::setAction(Action action, int attackType)
 {
     SpriteAction currentAction = ACTION_INVALID;
     switch (action)
@@ -439,8 +433,7 @@ Being::setAction(Action action, int attackType)
 }
 
 
-void
-Being::setDirection(Uint8 direction)
+void Being::setDirection(Uint8 direction)
 {
     if (mDirection == direction)
         return;
@@ -477,8 +470,7 @@ Being::setDirection(Uint8 direction)
     }
 }
 
-void
-Being::nextStep()
+void Being::nextStep()
 {
     if (mPath.empty())
     {
@@ -513,8 +505,7 @@ Being::nextStep()
                 mSpeedModifier / (32 * 1024);
 }
 
-void
-Being::logic()
+void Being::logic()
 {
     // Determine whether the being should take another step
     if (mAction == WALK && get_elapsed_time(mWalkTime) >= mStepTime)
@@ -563,8 +554,7 @@ Being::logic()
     }
 }
 
-void
-Being::draw(Graphics *graphics, int offsetX, int offsetY) const
+void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;
@@ -578,8 +568,7 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     }
 }
 
-void
-Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
+void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 {
     if (!mEmotion)
         return;
@@ -588,12 +577,11 @@ Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     const int py = mPy + offsetY - 60;
     const int emotionIndex = mEmotion - 1;
 
-    if (emotionIndex >= 0 && emotionIndex < (int) emotionSet->size())
+    if ( emotionIndex >= 0 && emotionIndex < (int) emotionSet->size() )
         graphics->drawImage(emotionSet->get(emotionIndex), px, py);
 }
 
-void
-Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
+void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;
@@ -601,14 +589,17 @@ Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
     // Draw speech above this being
     if (mSpeechTime > 0)
     {
-        graphics->setFont(speechFont);
-        graphics->setColor(gcn::Color(255, 255, 255));
-        graphics->drawText(mSpeech, px + 18, py - 60, gcn::Graphics::CENTER);
+        mSpeechBubble->setPosition(px - 50, py - 80 - (mSpeechBubble->getNumRows()*14) );
+        mSpeechBubble->setText( mSpeech );
+        mSpeechBubble->setVisible(true);
+    }
+    else if (mSpeechTime == 0)
+    {
+        mSpeechBubble->setVisible(false);
     }
 }
 
-Being::Type
-Being::getType() const
+Being::Type Being::getType() const
 {
     return UNKNOWN;
 }

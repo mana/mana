@@ -28,6 +28,8 @@
 #include <guichan/exception.hpp>
 #include <guichan/widgets/icon.hpp>
 
+#include <libxml/tree.h>
+
 #include "window.h"
 
 #include "gui.h"
@@ -45,20 +47,30 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/xml.h"
+
 ConfigListener *Window::windowConfigListener = 0;
 WindowContainer *Window::windowContainer = 0;
 int Window::instances = 0;
 int Window::mouseResize = 0;
-ImageRect Window::border;
 Image *Window::closeImage = NULL;
+bool mLoaded = false;
+bool Window::mAlphaChanged = false;
 
 class WindowConfigListener : public ConfigListener
 {
+    /*
     void optionChanged(const std::string &)
     {
         for_each(Window::border.grid, Window::border.grid + 9,
                 std::bind2nd(std::mem_fun(&Image::setAlpha),
                     config.getValue("guialpha", 0.8)));
+    }
+    */
+
+    void optionChanged(const std::string &)
+    {
+        Window::mAlphaChanged = true;
     }
 };
 
@@ -77,38 +89,28 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
-    if (!windowContainer) {
-        throw GCN_EXCEPTION("Window::Window. no windowContainer set");
-    }
-
-    if (instances == 0)
+    if (!windowContainer)
     {
-        // Load static resources
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
-        border.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
-        border.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
-        border.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
-        border.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
-        border.grid[4] = resman->getImage("graphics/gui/bg_quad_dis.png");
-        border.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
-        border.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
-        border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
-        border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
-        dBorders->decRef();
-        closeImage = resman->getImage("graphics/gui/close_button.png");
-
-        windowConfigListener = new WindowConfigListener();
-        // Send GUI alpha changed for initialization
-        windowConfigListener->optionChanged("guialpha");
-        config.addListener("guialpha", windowConfigListener);
+        throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
     }
+
+    loadSkin("graphics/gui/gui.xml");
+
+    //if (instances == 0)
+    //{
+        //WindowConfigListener = new WindowConfigListener();
+        // Send GUI alpha changed for initialization
+        //windowConfigListener->optionChanged("guialpha");
+        //config.addListener("guialpha", windowConfigListener);
+    //}
 
     instances++;
 
     setFrameSize(0);
     setPadding(3);
     setTitleBarHeight(20);
+
+    setGuiAlpha();
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -127,7 +129,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
 Window::~Window()
 {
-    logger->log("Window::~Window(\"%s\")", getCaption().c_str());
+    logger->log("UNLOAD: Window::~Window(\"%s\")", getCaption().c_str());
 
     std::string const &name = mConfigName;
     if (!name.empty())
@@ -161,17 +163,15 @@ Window::~Window()
         windowConfigListener = NULL;
 
         // Clean up static resources
-        delete border.grid[0];
-        delete border.grid[1];
-        delete border.grid[2];
-        delete border.grid[3];
-        border.grid[4]->decRef();
-        delete border.grid[5];
-        delete border.grid[6];
-        delete border.grid[7];
-        delete border.grid[8];
         closeImage->decRef();
     }
+
+    // Clean up Border images.
+    for( int i = 0; i < 9; i++ )
+    {
+        border[i] = NULL;
+    }
+    delete border;
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
@@ -181,9 +181,15 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics *graphics)
 {
+    if(mAlphaChanged)
+        setGuiAlpha();
+
+
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    g->drawImageRect(0, 0, getWidth(), getHeight(), border);
+    //g->drawImageRect(0, 0, getWidth(), getHeight(), border);
+
+    g->drawImageRect(0, 0, getWidth(), getHeight(), border[0], border[2], border[6], border[8], border[1], border[5], border[7], border[3], border[4]);
 
     // Draw title
     if (getTitleBarHeight())
@@ -556,4 +562,185 @@ void Window::reflowLayout(int w, int h)
     delete mLayout;
     mLayout = NULL;
     setContentSize(w, h);
+}
+
+void Window::setGuiAlpha()
+{
+    //logger->log("Window::setGuiAlpha: Alpha Value %f", config.getValue("guialpha", 0.8));
+    for(int i = 0; i < 9; i++)
+    {
+        //logger->log("Window::setGuiAlpha: Border Image (%i)", i);
+        border[i]->setAlpha(config.getValue("guialpha", 0.8));
+    }
+
+    mAlphaChanged = false;
+}
+
+void Window::loadSkin(const std::string filename)
+{
+	const std::string windowId = Window::getId();
+
+	ResourceManager *resman = ResourceManager::getInstance();
+
+    logger->log("Loading Window Skin '%s'.", filename.c_str());
+	logger->log("Loading Window ID '%d'.", windowId.c_str());
+
+
+    if(filename == "")
+        logger->error("Window::loadSkin(): Invalid File Name.");
+
+    // TODO:
+    // If there is an error loading the specified file, we should try to revert
+    // to a 'default' skin file. Only if the 'default' skin file can't be loaded
+    // should we have a terminating error.
+    XML::Document doc(filename);
+    xmlNodePtr rootNode = doc.rootNode();
+
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
+    {
+        logger->error("Widget Skinning error");
+    }
+
+    std::string skinSetImage;
+    skinSetImage = XML::getProperty(rootNode, "image", "");
+    Image *dBorders = NULL;
+    if(skinSetImage != "")
+    {
+        logger->log("Window::loadSkin(): <skinset> defines '%s' as a skin image.", skinSetImage.c_str());
+        dBorders = resman->getImage("graphics/gui/" + skinSetImage);//"graphics/gui/speech_bubble.png");
+    }
+    else
+    {
+        logger->error("Window::loadSkin(): Skinset does not define an image!");
+    }
+
+    //iterate <widget>'s
+    for_each_xml_child_node(widgetNode, rootNode)
+    {
+        if (!xmlStrEqual(widgetNode->name, BAD_CAST "widget"))
+            continue;
+
+        std::string widgetType;
+        widgetType = XML::getProperty(widgetNode, "type", "unknown");
+        if (widgetType == "Window")
+        {
+            // Itarate through <part>'s
+            // LEEOR / TODO:
+            // We need to make provisions to load in a CloseButton image. For now it
+            // can just be hard-coded.
+            for_each_xml_child_node(partNode, widgetNode)
+            {
+                if (!xmlStrEqual(partNode->name, BAD_CAST "part"))
+                {
+                    continue;
+                }
+
+                std::string partType;
+                partType = XML::getProperty(partNode, "type", "unknown");
+                // TOP ROW
+                if(partType == "top-left-corner")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[0] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+                else if(partType == "top-edge")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[1] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+                else if(partType == "top-right-corner")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[2] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+
+                // MIDDLE ROW
+                else if(partType == "left-edge")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[3] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+                else if(partType == "bg-quad")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[4] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+                else if(partType == "right-edge")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[5] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+
+                // BOTTOM ROW
+                else if(partType == "bottom-left-corner")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[6] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+                else if(partType == "bottom-edge")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[7] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+                else if(partType == "bottom-right-corner")
+                {
+                    const int xPos = XML::getProperty(partNode, "xpos", 0);
+                    const int yPos = XML::getProperty(partNode, "ypos", 0);
+                    const int width = XML::getProperty(partNode, "width", 1);
+                    const int height = XML::getProperty(partNode, "height", 1);
+
+                    border[8] = dBorders->getSubImage(xPos, yPos, width, height);
+                }
+
+                // Part is of an uknown type.
+                else
+                {
+                    logger->log("Window::loadSkin(): Unknown Part Type '%s'", partType.c_str());
+                }
+            }
+        }
+        // Widget is of an uknown type.
+        else
+        {
+            logger->log("Window::loadSkin(): Unknown Widget Type '%s'", widgetType.c_str());
+        }
+    }
+    dBorders->decRef();
+
+    logger->log("Finished loading Window Skin.");
+
+    // Hard-coded for now until we update the above code to look for window buttons.
+    closeImage = resman->getImage("graphics/gui/close_button.png");
 }
