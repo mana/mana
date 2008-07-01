@@ -1,3 +1,8 @@
+2008-07-01  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* data/graphics/gui/CMakeLists.txt, src/CMakeLists.txt, src/Makefile.am:
+	Add new files to CMakeLists, add missing backslash to Makefile.
+
 2008-07-01  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/gui/window.cpp, data/gui/window.hpp, data/graphics/gui/default.png,

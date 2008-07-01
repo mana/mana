@@ -66,7 +66,7 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/itemcontainer.cpp \
 	      gui/itemcontainer.h \
 	      gui/itempopup.cpp \
-	      gui/itempopup.h
+	      gui/itempopup.h \
 	      gui/itemshortcutcontainer.cpp \
 	      gui/itemshortcutcontainer.h \
 	      gui/itemshortcutwindow.cpp \
