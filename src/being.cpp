@@ -103,6 +103,8 @@ Being::~Being()
         emotionSet->decRef();
         emotionSet = NULL;
     }
+
+    delete mSpeechBubble;
 }
 
 void Being::setPositionInPixels(int x, int y)

@@ -1,3 +1,7 @@
+2008-07-02  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp: Fixed speech bubbles staying on screen during map change bug.
+
 2008-07-01  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* data/graphics/gui/CMakeLists.txt, src/CMakeLists.txt, src/Makefile.am:
