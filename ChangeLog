@@ -1,3 +1,8 @@
+2008-07-03  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/gui/window.cpp: Fix guild window focus and fix crash
+	when typing in account login.
+ 
 2008-07-02  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/being.cpp: Fixed speech bubbles staying on screen during map change bug.

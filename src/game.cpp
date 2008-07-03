@@ -532,10 +532,10 @@ void Game::handleInput()
                     {
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
                     }
-                    else if (guildWindow->isVisible())
+/*                    else if (guildWindow->isVisible())
                     {
                         // TODO: Check if a dialog is open and close it if so
-                    }
+                    }*/
                     // Else, open the chat edit box
                     else
                     {

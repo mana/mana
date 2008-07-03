@@ -169,9 +169,9 @@ Window::~Window()
     // Clean up Border images.
     for( int i = 0; i < 9; i++ )
     {
+        delete border[i];
         border[i] = NULL;
     }
-    delete border;
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
