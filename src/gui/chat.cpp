@@ -71,6 +71,7 @@ ChatWindow::ChatWindow():
             scrollArea->getFrameSize(), scrollArea->getFrameSize());
     scrollArea->setScrollPolicy(
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
+    scrollArea->setScrollAmount(0, 1);
     scrollArea->setOpaque(false);
 
     mChatTabs = new TabbedArea();
@@ -123,7 +124,24 @@ void ChatWindow::widgetResized(const gcn::Event &event)
     mChatTabs->setWidth(area.width - 2 * mChatTabs->getFrameSize());
     mChatTabs->setHeight(area.height - 2 * mChatTabs->getFrameSize());
 
-    const std::string &channelName = mChatTabs->getSelectedTab()->getCaption();
+    const std::string &channelName = getFocused();
+    ChannelMap::const_iterator chan = mChannels.find(channelName);
+    if (chan != mChannels.end()) {
+        ScrollArea *scroll = chan->second.scroll;
+        scroll->setWidth(area.width - 2 * scroll->getFrameSize());
+        scroll->setHeight(area.height - 2 * scroll->getFrameSize() -
+                mChatInput->getHeight() - 5);
+        scroll->logic();
+    }
+}
+
+void ChatWindow::logic()
+{
+    Window::logic();
+
+    const gcn::Rectangle area = getChildrenArea();
+
+    const std::string &channelName = getFocused();
     ChannelMap::const_iterator chan = mChannels.find(channelName);
     if (chan != mChannels.end()) {
         ScrollArea *scroll = chan->second.scroll;
@@ -139,7 +157,7 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
 {
     if(channelName == "getFocused\"")
         channelName = getFocused();
-    
+
     ChannelMap::const_iterator chan = mChannels.find(channelName);
     if (chan == mChannels.end())
         return;
@@ -210,7 +228,7 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
     // We look if the Vertical Scroll Bar is set at the max before
     // adding a row, otherwise the max will always be a row higher
     // at comparison.
-    if (scroll->getVerticalScrollAmount() == scroll->getVerticalMaxScroll())
+    if (scroll->getVerticalScrollAmount() >= scroll->getVerticalMaxScroll())
     {
         output->addRow(line);
         scroll->setVerticalScrollAmount(scroll->getVerticalMaxScroll());
@@ -289,7 +307,7 @@ void ChatWindow::chatSend(std::string const &msg)
     if (msg.empty()) return;
 
     // Prepare ordinary message
-    if (msg[0] != '/') 
+    if (msg[0] != '/')
     {
         if (getFocused() == "General")
         {
@@ -330,6 +348,7 @@ ChatWindow::removeChannel(Channel *channel)
         Tab *tab = mChatTabs->getTab(channel->getName());
         if (!tab)
             return;
+        clearTab(channel->getName());
         mChatTabs->removeTab(tab);
         mChannels.erase(channel->getName());
         channelManager->removeChannel(channel);

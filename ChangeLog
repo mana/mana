@@ -1,3 +1,7 @@
+2008-07-04  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/chat.cpp, src/gui/chat.h: Ugly hack for chat scrolling.
+
 2008-07-03  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp, src/gui/window.cpp: Fix guild window focus and fix crash

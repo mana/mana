@@ -75,12 +75,12 @@ class ChatWindow : public Window,
          * the tabbed area.
          */
         void widgetResized(const gcn::Event &event);
-        
+
         /**
          * Gets the focused tab's name
          */
         const std::string& getFocused() const;
-        
+
         /**
          * Clear the tab with the given name
          */
@@ -93,8 +93,8 @@ class ChatWindow : public Window,
          * @param own  Type of message (usually the owner-type).
          * @param channelName which channel to send the message to.
          */
-        void chatLog(std::string line, 
-                     int own = BY_SERVER, 
+        void chatLog(std::string line,
+                     int own = BY_SERVER,
                      std::string channelName = "getFocused\"");
 
         /**
@@ -116,7 +116,7 @@ class ChatWindow : public Window,
          * Determines whether the message is a command or message, then
          * sends the given message to the game server to be said, or to the
          * command handler
-         * 
+         *
          * @param msg  The message text which is to be sent.
          *
          */
@@ -155,6 +155,8 @@ class ChatWindow : public Window,
         /** Check if tab with that name already exists */
         bool
         tabExists(const std::string &tabName);
+
+        void logic();
 
     private:
         bool mTmpVisible;
