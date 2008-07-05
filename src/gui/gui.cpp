@@ -26,11 +26,6 @@
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
-#ifdef __APPLE__
-#include <SDL_ttf/SDL_ttf.h>
-#else
-#include <SDL/SDL_ttf.h>
-#endif
 
 #include "focushandler.h"
 #include "sdlinput.h"
