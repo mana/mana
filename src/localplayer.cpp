@@ -149,9 +149,9 @@ void LocalPlayer::inviteToGuild(Being *being)
     }
 }
 
-void LocalPlayer::inviteToParty(Being *being)
+void LocalPlayer::inviteToParty(const std::string &name)
 {
-    Net::ChatServer::Party::invitePlayer(being->getName());
+    Net::ChatServer::Party::invitePlayer(name);
 }
 
 void LocalPlayer::clearInventory()

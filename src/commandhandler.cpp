@@ -26,6 +26,7 @@
 #include "channelmanager.h"
 #include "channel.h"
 #include "game.h"
+#include "localplayer.h"
 #include "gui/chat.h"
 #include "net/chatserver/chatserver.h"
 #include "net/gameserver/player.h"
@@ -90,6 +91,10 @@ void CommandHandler::handleCommand(const std::string &command)
     {
         handleClear();
     }
+    else if (type == "party")
+    {
+        handleParty(args);
+    }
     else
     {
         chatWindow->chatLog("Unknown command");
@@ -120,6 +125,7 @@ void CommandHandler::handleHelp(const std::string &args)
         chatWindow->chatLog("/quit > Leave a channel");
         chatWindow->chatLog("/admin > Send a command to the server (GM only)");
         chatWindow->chatLog("/clear > Clears this window");
+        chatWindow->chatLog("/party > Invite a user to party");
         chatWindow->chatLog("For more information, type /help <command>");
     }
     else if (args == "admin")
@@ -161,6 +167,13 @@ void CommandHandler::handleHelp(const std::string &args)
     {
         chatWindow->chatLog("Command: /msg <nick> <message>");
         chatWindow->chatLog("This command sends the text <message> to <nick>.");
+        chatWindow->chatLog("If the <nick> has spaces in it, enclose it in "
+                            "double quotes (\").");
+    }
+    else if (args == "party")
+    {
+        chatWindow->chatLog("Command: /party <nick>");
+        chatWindow->chatLog("This command invites <nick> to party with you.");
         chatWindow->chatLog("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\").");
     }
@@ -278,4 +291,12 @@ void CommandHandler::handleQuit()
 void CommandHandler::handleClear()
 {
     chatWindow->clearTab(chatWindow->getFocused());
+}
+
+void CommandHandler::handleParty(const std::string &args)
+{
+    if (args != "")
+    {
+        player_node->inviteToParty(args);
+    }
 }

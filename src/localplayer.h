@@ -162,7 +162,7 @@ class LocalPlayer : public Player
         /**
          * Invite a player to join their party
          */
-        void inviteToParty(Being *being);
+        void inviteToParty(const std::string &name);
 
         void clearInventory();
         void setInvItem(int index, int id, int amount);

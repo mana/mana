@@ -150,7 +150,7 @@ void PopupMenu::handleLink(const std::string& link)
     // Add player to your party
     else if (link == "party")
     {
-        player_node->inviteToParty(mBeing);
+        player_node->inviteToParty(mBeing->getName());
     }
 
     /*

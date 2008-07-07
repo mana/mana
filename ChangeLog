@@ -2,6 +2,8 @@
 
 	* src/commandhandler.hpp, src/commandhandler.cpp: Added help for each 
 	command based on mantis bug #359, thanks to Scraggy.
+	* src/localplayer.cpp, src/commandhandler.cpp, src/gui/popupmenu.cpp,
+	src/commandhandler.h, src/localplayer.h: Added /party command.
 
 2008-07-05  David Athay  <ko2fan@gmail.com>
 

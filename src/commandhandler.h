@@ -108,6 +108,11 @@ class CommandHandler
          */
         void handleClear();
 
+        /**
+         * Handle a party command.
+         */
+        void handleParty(const std::string &args);
+
 };
 
 extern CommandHandler *commandHandler;
