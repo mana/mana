@@ -20,8 +20,8 @@
  *
  *  $Id$
  */
- 
- 
+
+
 #include "commandhandler.h"
 #include "channelmanager.h"
 #include "channel.h"
@@ -42,7 +42,7 @@ void CommandHandler::handleCommand(const std::string &command)
     }
     else if (type == "help")
     {
-        handleHelp();
+        handleHelp(args);
     }
     else if (type == "where")
     {
@@ -56,19 +56,21 @@ void CommandHandler::handleCommand(const std::string &command)
     {
         handleMsg(args);
     }
+    /*
     else if (type == "channel")
     {
         handleChannel(args);
     }
+    */
     else if (type == "join")
     {
         handleJoin(args);
     }
-    else if (type == "listchannels")
+    else if (type == "list")
     {
         handleListChannels();
     }
-    else if (type == "listusers")
+    else if (type == "users")
     {
         handleListUsers();
     }
@@ -99,22 +101,95 @@ void CommandHandler::handleAnnounce(const std::string &args)
     Net::ChatServer::announce(args);
 }
 
-void CommandHandler::handleHelp()
+void CommandHandler::handleHelp(const std::string &args)
 {
-    chatWindow->chatLog("-- Help --");
-    chatWindow->chatLog("/help > Display this help.");
-    chatWindow->chatLog("/announce > Global announcement (GM only)");
-    chatWindow->chatLog("/where > Display map name");
-    chatWindow->chatLog("/who > Display number of online users");
-    chatWindow->chatLog("/msg > Send a private message to a user");
-    chatWindow->chatLog("/listchannels > Display all public channels");
-    chatWindow->chatLog("/listusers > Lists the users in the current channel");
-    chatWindow->chatLog("/channel > Register a new channel");
-    chatWindow->chatLog("/join > Join an already registered channel");
-    chatWindow->chatLog("/topic > Set the topic of the current channel");
-    chatWindow->chatLog("/quit > Leave a channel");
-    chatWindow->chatLog("/admin > Send a command to the server (GM only)");
-    chatWindow->chatLog("/clear > Clears this window");
+    chatWindow->chatLog("-- Help --", BY_SERVER);
+    if (args == "")
+    {
+        chatWindow->chatLog("-- Help --");
+        chatWindow->chatLog("/help > Display this help.");
+        chatWindow->chatLog("/announce > Global announcement (GM only)");
+        chatWindow->chatLog("/where > Display map name");
+        chatWindow->chatLog("/who > Display number of online users");
+        chatWindow->chatLog("/msg > Send a private message to a user");
+        chatWindow->chatLog("/list > Display all public channels");
+        chatWindow->chatLog("/users > Lists the users in the current channel");
+//        chatWindow->chatLog("/channel > Register a new channel");
+        chatWindow->chatLog("/join > Join an already registered channel");
+        chatWindow->chatLog("/topic > Set the topic of the current channel");
+        chatWindow->chatLog("/quit > Leave a channel");
+        chatWindow->chatLog("/admin > Send a command to the server (GM only)");
+        chatWindow->chatLog("/clear > Clears this window");
+        chatWindow->chatLog("For more information, type /help <command>");
+    }
+    else if (args == "admin")
+    {
+        chatWindow->chatLog("Command: /admin <command>");
+        chatWindow->chatLog("*** only available to a GM ***");
+        chatWindow->chatLog("This command sends an admin command to the server.");
+    }
+    else if (args == "announce")
+    {
+        chatWindow->chatLog("Command: /announce <msg>");
+        chatWindow->chatLog("*** only available to a GM ***");
+        chatWindow->chatLog("This command sends the message <msg> to "
+                            "all players currently online.");
+    }
+    else if (args == "clear")
+    {
+        chatWindow->chatLog("Command: /clear");
+        chatWindow->chatLog("This command clears the chat log of previous chat.");
+    }
+    else if (args == "help")
+    {
+        chatWindow->chatLog("Command: /help");
+        chatWindow->chatLog("This command displays a list of all commands available.");
+        chatWindow->chatLog("Command: /help <command>");
+        chatWindow->chatLog("This command displays help on <command>.");
+    }
+    else if (args == "join")
+    {
+        chatWindow->chatLog("Command: /join <channel>");
+        chatWindow->chatLog("This command makes you enter <channel>.");
+    }
+    else if (args == "list")
+    {
+        chatWindow->chatLog("Command: /list");
+        chatWindow->chatLog("This command shows a list of all channels.");
+    }
+    else if (args == "msg")
+    {
+        chatWindow->chatLog("Command: /msg <nick> <message>");
+        chatWindow->chatLog("This command sends the text <message> to <nick>.");
+        chatWindow->chatLog("If the <nick> has spaces in it, enclose it in "
+                            "double quotes (\").");
+    }
+    else if (args == "topic")
+    {
+        chatWindow->chatLog("Command: /topic <message>");
+        chatWindow->chatLog("This command sets the topic to <message>.");
+    }
+    else if (args == "users")
+    {
+        chatWindow->chatLog("Command: /users <channel>");
+        chatWindow->chatLog("This command shows the users in <channel>.");
+    }
+    else if (args == "where")
+    {
+        chatWindow->chatLog("Command: /where");
+        chatWindow->chatLog("This command displays the name of the current map.");
+    }
+    else if (args == "who")
+    {
+        chatWindow->chatLog("Command: /who");
+        chatWindow->chatLog("This command displays the number of players currently "
+                            "online.");
+    }
+    else
+    {
+        chatWindow->chatLog("Unknown command.");
+        chatWindow->chatLog("Type /help for a list of commands.");
+    }
 }
 
 void CommandHandler::handleWhere()
@@ -124,7 +199,7 @@ void CommandHandler::handleWhere()
 
 void CommandHandler::handleWho()
 {
-    
+
 }
 
 void CommandHandler::handleMsg(const std::string &args)

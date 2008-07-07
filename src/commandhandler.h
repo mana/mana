@@ -20,7 +20,7 @@
  *
  *  $Id$
  */
- 
+
 #ifndef _TMW_COMMANDHANDLER_H
 #define _TMW_COMMANDHANDLER_H
 
@@ -36,63 +36,63 @@ class CommandHandler
          * Constructor
          */
         CommandHandler() {}
-        
+
         /**
          * Destructor
          */
         ~CommandHandler() {}
-        
+
         /**
          * Parse and handle the given command.
          */
         void handleCommand(const std::string &command);
-    
+
     private:
         /**
          * Handle an announce command.
          */
         void handleAnnounce(const std::string &args);
-        
+
         /**
          * Handle a help command.
          */
-        void handleHelp();
-        
+        void handleHelp(const std::string &args);
+
         /**
          * Handle a where command.
          */
         void handleWhere();
-        
+
         /**
          * Handle a who command.
          */
         void handleWho();
-        
+
         /**
          * Handle a msg command.
          */
         void handleMsg(const std::string &args);
-        
+
         /**
          * Handle a channel command.
          */
         void handleChannel(const std::string &args);
-        
+
         /**
          * Handle a join command.
          */
         void handleJoin(const std::string &args);
-        
+
         /**
          * Handle a listchannels command.
          */
         void handleListChannels();
-        
+
         /**
          * Handle a listusers command.
          */
         void handleListUsers();
-        
+
         /**
          * Handle a topic command.
          */
@@ -102,7 +102,7 @@ class CommandHandler
          * Handle a quit command.
          */
         void handleQuit();
-        
+
         /**
          * Handle a clear command.
          */
