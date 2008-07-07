@@ -57,12 +57,6 @@ void CommandHandler::handleCommand(const std::string &command)
     {
         handleMsg(args);
     }
-    /*
-    else if (type == "channel")
-    {
-        handleChannel(args);
-    }
-    */
     else if (type == "join")
     {
         handleJoin(args);
@@ -119,8 +113,7 @@ void CommandHandler::handleHelp(const std::string &args)
         chatWindow->chatLog("/msg > Send a private message to a user");
         chatWindow->chatLog("/list > Display all public channels");
         chatWindow->chatLog("/users > Lists the users in the current channel");
-//        chatWindow->chatLog("/channel > Register a new channel");
-        chatWindow->chatLog("/join > Join an already registered channel");
+        chatWindow->chatLog("/join > Join or create a channel");
         chatWindow->chatLog("/topic > Set the topic of the current channel");
         chatWindow->chatLog("/quit > Leave a channel");
         chatWindow->chatLog("/admin > Send a command to the server (GM only)");
@@ -157,6 +150,7 @@ void CommandHandler::handleHelp(const std::string &args)
     {
         chatWindow->chatLog("Command: /join <channel>");
         chatWindow->chatLog("This command makes you enter <channel>.");
+        chatWindow->chatLog("If <channel> doesn't exist, it's created.");
     }
     else if (args == "list")
     {
@@ -176,6 +170,12 @@ void CommandHandler::handleHelp(const std::string &args)
         chatWindow->chatLog("This command invites <nick> to party with you.");
         chatWindow->chatLog("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\").");
+    }
+    else if (args == "quit")
+    {
+        chatWindow->chatLog("Command: /quit");
+        chatWindow->chatLog("This command leaves the current channel.");
+        chatWindow->chatLog("If you're the last person in the channel, it will be deleted.");
     }
     else if (args == "topic")
     {
@@ -221,28 +221,6 @@ void CommandHandler::handleMsg(const std::string &args)
     std::string recipient(args, 0, pos);
     std::string text(args, pos+1);
     Net::ChatServer::privMsg(recipient, text);
-}
-
-void CommandHandler::handleChannel(const std::string &args)
-{
-    std::string::size_type pos = args.find(" ");
-    std::string name(args, 0, pos);
-    std::string password;
-    std::string announcement;
-    if(pos == std::string::npos)
-    {
-        password = std::string();
-        announcement = std::string();
-    }
-    else
-    {
-        password = std::string(args, pos + 1, args.find(" ", pos + 1) - pos - 1);
-        pos = args.find("\"");
-        announcement = std::string(args, pos == std::string::npos ? args.size() :
-                           pos + 1, args.size() - pos - 2);
-    }
-    chatWindow->chatLog("Requesting to register channel " + name);
-    Net::ChatServer::registerChannel(name, announcement, password);
 }
 
 void CommandHandler::handleJoin(const std::string &args)

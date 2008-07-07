@@ -47,7 +47,6 @@ ChatHandler::ChatHandler()
 {
     static const Uint16 _messages[] = {
         GPMSG_SAY,
-        CPMSG_REGISTER_CHANNEL_RESPONSE,
         CPMSG_ENTER_CHANNEL_RESPONSE,
         CPMSG_LIST_CHANNELS_RESPONSE,
         CPMSG_PUBMSG,
@@ -67,10 +66,6 @@ void ChatHandler::handleMessage(MessageIn &msg)
     {
         case GPMSG_SAY:
             handleGameChatMessage(msg);
-            break;
-            
-        case CPMSG_REGISTER_CHANNEL_RESPONSE:
-            handleRegisterChannelResponse(msg);
             break;
             
         case CPMSG_ENTER_CHANNEL_RESPONSE:
@@ -128,35 +123,6 @@ void ChatHandler::handleGameChatMessage(MessageIn &msg)
     else
     {
         chatWindow->chatLog("Unknown : " + chatMsg, BY_OTHER, "General");
-    }
-}
-
-void ChatHandler::handleRegisterChannelResponse(MessageIn &msg)
-{
-    char error = msg.readInt8();
-    if(error == ERRMSG_OK)
-    {
-        short channelId = msg.readInt16();
-        std::string channelName = msg.readString();
-        std::string channelAnnouncement = msg.readString();
-        chatWindow->chatLog("Registered Channel " + channelName);
-        channelManager->addChannel(new Channel(channelId, 
-                                               channelName, 
-                                               channelAnnouncement));
-        chatWindow->createNewChannelTab(channelName);
-        chatWindow->chatLog("Topic: " + channelAnnouncement, BY_CHANNEL, channelName);
-        
-    }
-    else
-    {
-        if (error == ERRMSG_INVALID_ARGUMENT)
-        {
-            chatWindow->chatLog("Error registering channel - Invalid Channel Name given", BY_SERVER);
-        }
-        else
-        {
-            chatWindow->chatLog("Error registering channel", BY_SERVER);
-        }
     }
 }
 

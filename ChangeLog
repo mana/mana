@@ -1,3 +1,9 @@
+2008-07-07  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/net/chathandler.cpp, src/net/chathandler.h, src/commandhandler.h,
+	src/commandhandler.cpp, src/net/protocol.h, src/net/chatserver/chatserver.cpp,
+	src/net/chatserver/chatserver.h: Get rid of channel registering related code.
+
 2008-07-07  David Athay  <ko2fan@gmail.com>
 
 	* src/commandhandler.hpp, src/commandhandler.cpp: Added help for each 

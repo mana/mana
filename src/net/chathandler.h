@@ -43,11 +43,6 @@ class ChatHandler : public MessageHandler
         void handleGameChatMessage(MessageIn &msg);
         
         /**
-         * Handle channel registration responses.
-         */
-        void handleRegisterChannelResponse(MessageIn &msg);
-        
-        /**
          * Handle channel entry responses.
          */
         void handleEnterChannelResponse(MessageIn &msg);

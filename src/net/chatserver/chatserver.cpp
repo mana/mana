@@ -80,17 +80,6 @@ void Net::ChatServer::privMsg(const std::string &recipient,
     connection->send(msg);
 }
 
-void Net::ChatServer::registerChannel(const std::string &name,
-        const std::string &topic, const std::string &password)
-{
-    MessageOut msg(PCMSG_REGISTER_CHANNEL);
-    msg.writeString(name);
-    msg.writeString(topic);
-    msg.writeString(password);
-
-    connection->send(msg);
-}
-
 void Net::ChatServer::enterChannel(const std::string &channel, const std::string &password)
 {
     MessageOut msg(PCMSG_ENTER_CHANNEL);

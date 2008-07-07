@@ -74,11 +74,6 @@ class CommandHandler
         void handleMsg(const std::string &args);
 
         /**
-         * Handle a channel command.
-         */
-        void handleChannel(const std::string &args);
-
-        /**
          * Handle a join command.
          */
         void handleJoin(const std::string &args);

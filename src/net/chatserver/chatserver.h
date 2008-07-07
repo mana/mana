@@ -42,9 +42,6 @@ namespace Net
 
         void privMsg(const std::string &recipient, const std::string &text);
 
-        void registerChannel(const std::string &name,
-                const std::string &topic, const std::string &password);
-
         void enterChannel(const std::string &channel, const std::string &password);
 
         void quitChannel(short channel);
