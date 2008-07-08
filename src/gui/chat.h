@@ -208,6 +208,15 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void
         scroll(int amount);
 
+        /**
+         * help implements the /help command
+         *
+         * @param msg1 is the command that the player needs help on
+         * @param msg2 is the sub-command relating to the command
+         */
+        void
+        help(const std::string &msg1, const std::string &msg2);
+
     private:
         Network *mNetwork;
         bool mTmpVisible;

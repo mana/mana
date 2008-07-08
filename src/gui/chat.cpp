@@ -275,13 +275,25 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (msg.substr(0, IS_HELP_LENGTH) == IS_HELP)
     {
-        chatLog("-- Help --", BY_SERVER);
-        chatLog("/help: Display this help.", BY_SERVER);
-        chatLog("/announce: Global announcement (GM only)", BY_SERVER);
-        chatLog("/where: Display map name", BY_SERVER);
-        chatLog("/who: Display number of online users", BY_SERVER);
-        chatLog("/clear: Clears this window", BY_SERVER);
-        chatLog("/whisper <nick> <message>: Sends a private <message> to <nick>", BY_SERVER);
+        msg.erase(0, IS_HELP_LENGTH + 1);
+        trim(msg);
+        std::size_t space = msg.find(" ");
+        std::string msg1;
+        if (space == std::string::npos)
+        {
+            msg1 = "";
+        }
+        else
+        {
+            msg1 = msg.substr(space + 1, msg.length());
+            msg = msg.substr(0, space);
+        }
+        if (msg != "" && msg.at(0) == '/')
+        {
+            msg.erase(0, 1);
+        }
+        trim(msg1);
+        help(msg, msg1);
     }
     else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
     {
@@ -469,3 +481,67 @@ ChatWindow::setVisible(bool isVisible)
     mTmpVisible = false;
 }
 
+void ChatWindow::help(const std::string &msg1, const std::string &msg2)
+{
+    chatLog("-- Help --", BY_SERVER);
+    if (msg1 == "")
+    {
+        chatLog("/announce: Global announcement (GM only)", BY_SERVER);
+        chatLog("/clear: Clears this window", BY_SERVER);
+        chatLog("/help: Display this help.", BY_SERVER);
+        chatLog("/where: Display map name", BY_SERVER);
+        chatLog("/whisper <nick> <message>: Sends a private <message>"
+                " to <nick>", BY_SERVER);
+        chatLog("/who: Display number of online users", BY_SERVER);
+        chatLog("For more information, type /help <command>", BY_SERVER);
+        return;
+    }
+    if (msg1 == "announce")
+    {
+        chatLog("Command: /announce <msg>", BY_SERVER);
+        chatLog("*** only available to a GM ***", BY_SERVER);
+        chatLog("This command sends the message <msg> to "
+                "all players currently online.", BY_SERVER);
+        return;
+    }
+    if (msg1 == "clear")
+    {
+        chatLog("Command: /clear", BY_SERVER);
+        chatLog("This command clears the chat log of previous chat.",
+                BY_SERVER);
+        return;
+    }
+    if (msg1 == "help")
+    {
+        chatLog("Command: /help", BY_SERVER);
+        chatLog("This command displays a list of all commands available.",
+                BY_SERVER);
+        chatLog("Command: /help <command>", BY_SERVER);
+        chatLog("This command displays help on <command>.", BY_SERVER);
+        return;
+    }
+    if (msg1 == "where")
+    {
+        chatLog("Command: /where", BY_SERVER);
+        chatLog("This command displays the name of the current map.",
+                BY_SERVER);
+        return;
+    }
+    if (msg1 == "whisper")
+    {
+        chatLog("Command: /whisper <nick> <msg>", BY_SERVER);
+        chatLog("This command sends the message <msg> to <nick.", BY_SERVER);
+        chatLog("If the <nick> has spaces in it, enclose it in "
+                "double quotes (\").", BY_SERVER);
+        return;
+    }
+    if (msg1 == "who")
+    {
+        chatLog("Command: /who", BY_SERVER);
+        chatLog("This command displays the number of players currently "
+                "online.", BY_SERVER);
+        return;
+    }
+    chatLog("Unknown command.", BY_SERVER);
+    chatLog("Type /help for a list of commands.", BY_SERVER);
+}

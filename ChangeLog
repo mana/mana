@@ -1,3 +1,7 @@
+2008-07-08  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/chat.cpp, src/gui/chat.h: Mantis #359 patch by Scraggy.
+ 
 2008-06-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt: Updated CMake file to fix compilation. Patch by

@@ -325,6 +325,8 @@
 		<Unit filename="src/resources/monsterinfo.h" />
 		<Unit filename="src/resources/music.cpp" />
 		<Unit filename="src/resources/music.h" />
+		<Unit filename="src/resources/npcdb.cpp" />
+		<Unit filename="src/resources/npcdb.h" />
 		<Unit filename="src/resources/resource.cpp" />
 		<Unit filename="src/resources/resource.h" />
 		<Unit filename="src/resources/resourcemanager.cpp" />
@@ -334,6 +336,8 @@
 		<Unit filename="src/resources/spritedef.cpp" />
 		<Unit filename="src/resources/spritedef.h" />
 		<Unit filename="src/serverinfo.h" />
+		<Unit filename="src/shopitem.cpp" />
+		<Unit filename="src/shopitem.h" />
 		<Unit filename="src/simpleanimation.cpp" />
 		<Unit filename="src/simpleanimation.h" />
 		<Unit filename="src/sound.cpp" />
