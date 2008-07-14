@@ -95,7 +95,7 @@ class ChatWindow : public Window,
          */
         void chatLog(std::string line,
                      int own = BY_SERVER,
-                     std::string channelName = "getFocused\"");
+                     std::string channelName = "");
 
         /**
          * Performs action.

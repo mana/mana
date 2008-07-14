@@ -241,6 +241,8 @@ SET(SRCS
     net/network.h
     net/npchandler.cpp
     net/npchandler.h
+    net/partyhandler.cpp
+    net/partyhandler.h
     net/playerhandler.cpp
     net/playerhandler.h
     net/protocol.h

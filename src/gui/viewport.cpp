@@ -68,7 +68,7 @@ Viewport::Viewport():
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
     mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
     mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
-    mVisibleNames = (config.getValue("visiblenames", 1) == 1);
+    mVisibleNames = config.getValue("visiblenames", 1);
 
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
@@ -239,9 +239,9 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
         (*i)->drawSpeech(graphics, -(int) mViewX, -(int) mViewY);
-        if(mVisibleNames && (*i) == mSelectedBeing)
+        if(mVisibleNames)
             (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
-	else if(!mVisibleNames)
+	else if((*i) == mSelectedBeing)
             (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
         (*i)->drawEmotion(graphics, -(int) mViewX, -(int) mViewY);
     }
@@ -469,7 +469,7 @@ Viewport::optionChanged(const std::string &name)
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
 
     if (name == "visiblenames") {
-                mVisibleNames = config.getValue("visiblenames", 1) == 1;     
+                mVisibleNames = config.getValue("visiblenames", 1);     
     }
 }
 

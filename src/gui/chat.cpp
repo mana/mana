@@ -155,7 +155,7 @@ void ChatWindow::logic()
 void
 ChatWindow::chatLog(std::string line, int own, std::string channelName)
 {
-    if(channelName == "getFocused\"")
+    if(channelName.empty())
         channelName = getFocused();
 
     ChannelMap::const_iterator chan = mChannels.find(channelName);
