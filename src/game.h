@@ -67,6 +67,7 @@ class Game : public ConfigListener
         MessageHandlerPtr mInventoryHandler;
         MessageHandlerPtr mItemHandler;
         MessageHandlerPtr mNpcHandler;
+        MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mPlayerHandler;
         MessageHandlerPtr mTradeHandler;
 

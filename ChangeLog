@@ -1,3 +1,8 @@
+2008-07-14  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/commandhandler.cpp, src/game.h: Added admin commands
+	to /help. Added registering party handler.
+
 2008-07-07  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/net/chathandler.cpp, src/net/chathandler.h, src/commandhandler.h,

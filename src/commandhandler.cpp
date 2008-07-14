@@ -102,7 +102,6 @@ void CommandHandler::handleAnnounce(const std::string &args)
 
 void CommandHandler::handleHelp(const std::string &args)
 {
-    chatWindow->chatLog("-- Help --", BY_SERVER);
     if (args == "")
     {
         chatWindow->chatLog("-- Help --");
@@ -126,6 +125,16 @@ void CommandHandler::handleHelp(const std::string &args)
         chatWindow->chatLog("Command: /admin <command>");
         chatWindow->chatLog("*** only available to a GM ***");
         chatWindow->chatLog("This command sends an admin command to the server.");
+        chatWindow->chatLog("<command> can be:");
+        chatWindow->chatLog("reload <db>");
+        chatWindow->chatLog("warp <name> <map> <x> <y>");
+        chatWindow->chatLog("item <name> <id> <quantity>");
+        chatWindow->chatLog("drop <id> <quantity>");
+        chatWindow->chatLog("money <name> <quantity>");
+        chatWindow->chatLog("spawn <id> <quantity>");
+        chatWindow->chatLog("goto <name>");
+        chatWindow->chatLog("recall <name>");
+        chatWindow->chatLog("ban <name> <duration>");
     }
     else if (args == "announce")
     {
