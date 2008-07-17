@@ -120,11 +120,9 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     {
         Net::ChatServer::Party::acceptInvite(mPartyInviter);
         mPartyInviter = "";
-        delete acceptDialog;
     }
     else if (eventId == "no")
     {
         mPartyInviter = "";
-        delete acceptDialog;
     }
 }

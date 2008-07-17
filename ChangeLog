@@ -1,3 +1,8 @@
+2008-07-17  David Athay  <ko2fan@gmail.com>
+
+	*  src/gui/partywindow.cpp: Fixed crash bug with accepting
+	party invites.
+
 2008-07-14  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/CMakeLists.txt: Added the partyhandler to the cmake build list.
