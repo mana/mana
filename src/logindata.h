@@ -31,6 +31,7 @@ struct LoginData
     std::string username;
     std::string password;
     std::string hostname;
+    std::string updateHost;
     short port;
 
     int account_ID;

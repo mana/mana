@@ -25,6 +25,7 @@
 #define _TMW_NET_LOGINHANDLER_H
 
 #include "messagehandler.h"
+#include <string>
 
 struct LoginData;
 
@@ -37,8 +38,9 @@ class LoginHandler : public MessageHandler
 
         void setLoginData(LoginData *loginData) { mLoginData = loginData; };
 
-    protected:
+    private:
         LoginData *mLoginData;
+        std::string mUpdateHost;
 };
 
 #endif

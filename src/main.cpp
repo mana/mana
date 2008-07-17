@@ -151,6 +151,48 @@ struct Options
 };
 
 /**
+ * Parse the update host and determine the updates directory
+ * Then verify that the directory exists (creating if needed).
+ */
+void setUpdatesDir()
+{
+    // If updatesHost is currently empty, fill it from config file
+    if (updateHost.empty()) {
+        updateHost =
+            config.getValue("updatehost", "http://updates.thanaworld.org");
+    }
+
+    // Parse out any "http://" or "ftp://", and set the updates directory
+    size_t pos;
+    pos = updateHost.find("://");
+    if (pos != updateHost.npos) {
+        if (pos + 3 < updateHost.length()) {
+            updatesDir =
+                "updates/" + updateHost.substr(pos + 3);
+        } else {
+            logger->log("Error: Invalid update host: %s", updateHost.c_str());
+            errorMessage = "Invalid update host: " + updateHost;
+            state = ERROR_STATE;
+        }
+    } else {
+        logger->log("Warning: no protocol was specified for the update host");
+        updatesDir = "updates/" + updateHost;
+    }
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    // Verify that the updates directory exists. Create if necessary.
+    if (!resman->isDirectory("/" + updatesDir)) {
+        if (!resman->mkdir("/" + updatesDir)) {
+            logger->log("Error: %s/%s can't be made, but doesn't exist!",
+                         homeDir.c_str(), updatesDir.c_str());
+            errorMessage = "Error creating updates directory!";
+            state = ERROR_STATE;
+        }
+    }
+}
+
+/**
  * Do all initialization stuff
  */
 void init_engine(const Options &options)
@@ -272,44 +314,6 @@ void init_engine(const Options &options)
         config.init(configPath);
     }
 
-
-    // Take host for updates from config if it wasn't set on the command line
-    if (options.updateHost.empty()) {
-        updateHost =
-            config.getValue("updatehost", "http://updates.thanaworld.org");
-    } else {
-        updateHost = options.updateHost;
-    }
-
-    // Parse out any "http://" or "ftp://", and set the updates directory
-    size_t pos;
-    pos = updateHost.find("//");
-    if (pos != updateHost.npos) {
-        if (pos + 2 < updateHost.length()) {
-            updatesDir =
-                "updates/" + updateHost.substr(pos + 2);
-        } else {
-            std::cout << "The updates host - " << updateHost
-                      << " does not appear to be valid!" << std::endl
-                      << "Please fix the \"updatehost\" in your configuration"
-                      << " file. Exiting." << std::endl;
-            exit(1);
-        }
-    } else {
-        logger->log("Warning: no protocol was specified for the update host");
-        updatesDir = "updates/" + updateHost;
-    }
-
-    // Verify that the updates directory exists. Create if necessary.
-    if (!resman->isDirectory("/" + updatesDir)) {
-        if (!resman->mkdir("/" + updatesDir)) {
-            std::cout << homeDir << "/" << updatesDir
-                      << " can't be made, but it doesn't exist! Exiting."
-                      << std::endl;
-            exit(1);
-        }
-    }
-
     SDL_WM_SetCaption("The Mana World", NULL);
 #ifdef WIN32
     static SDL_SysWMinfo pInfo;
@@ -363,7 +367,7 @@ void init_engine(const Options &options)
     itemShortcut = new ItemShortcut();
 
     gui = new Gui(graphics);
-    state = UPDATE_STATE; /**< Initial game state */
+    state = LOGIN_STATE; /**< Initial game state */
 
     // Initialize sound engine
     try {
@@ -541,7 +545,14 @@ void accountLogin(Network *network, LoginData *loginData)
     outMsg.writeInt32(0); // client version
     outMsg.writeString(loginData->username, 24);
     outMsg.writeString(loginData->password, 24);
-    outMsg.writeInt8(0); // unknown
+
+    /*
+     * eAthena calls the last byte "client version 2", but it isn't used at
+     * at all. We're retasking it, with bit 0 to indicate whether the client
+     * can handle the 0x63 "update host" packet. Clients prior to 0.0.25 send
+     * 0 here.
+     */
+    outMsg.writeInt8(0x01);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -647,13 +658,6 @@ int main(int argc, char *argv[])
     init_engine(options);
 
     SDL_Event event;
-
-    if (options.skipUpdate && state != ERROR_STATE) {
-        state = LOADDATA_STATE;
-    }
-    else {
-        state = UPDATE_STATE;
-    }
 
     unsigned int oldstate = !state; // We start with a status change.
 
@@ -797,7 +801,7 @@ int main(int argc, char *argv[])
                     ItemDB::load();
                     MonsterDB::load();
                     NPCDB::load();
-                    state = LOGIN_STATE;
+                    state = CHAR_CONNECT_STATE;
                     break;
 
                 case LOGIN_STATE:
@@ -818,7 +822,12 @@ int main(int argc, char *argv[])
 
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
-                    currentDialog = new ServerSelectDialog(&loginData);
+                    {
+                        int nextState = (options.skipUpdate) ?
+                            LOADDATA_STATE : UPDATE_STATE;
+                        currentDialog = new ServerSelectDialog(&loginData,
+                                nextState);
+                    }
                     if (options.chooseDefault || options.playername != "") {
                         ((ServerSelectDialog*) currentDialog)->action(
                             gcn::ActionEvent(NULL, "ok"));
@@ -865,6 +874,13 @@ int main(int argc, char *argv[])
                     break;
 
                 case UPDATE_STATE:
+                    // Determine which source to use for the update host
+                    if (!options.updateHost.empty())
+                        updateHost = options.updateHost;
+                    else
+                        updateHost = loginData.updateHost;
+
+                    setUpdatesDir();
                     logger->log("State: UPDATE");
                     currentDialog = new UpdaterWindow(updateHost,
                             homeDir + "/" + updatesDir);

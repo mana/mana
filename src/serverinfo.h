@@ -32,6 +32,7 @@ struct SERVER_INFO
     short port;
     std::string name;
     short online_users;
+    std::string updateHost;
 };
 
 #endif
