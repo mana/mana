@@ -1,3 +1,8 @@
+2008-07-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Remove possible trailing slash at the end of the
+	update host, since otherwise there'll be two of them.
+
 2008-07-16  Lloyd Bryant  <lloyd_bryant@netzero.net>
 
 	* src/logindata.h, src/gui/char_server.cpp, src/gui/char_server.h,

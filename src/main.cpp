@@ -162,6 +162,10 @@ void setUpdatesDir()
             config.getValue("updatehost", "http://updates.thanaworld.org");
     }
 
+    // Remove any trailing slash at the end of the update host
+    if (updateHost.at(updateHost.size() - 1) == '/')
+        updateHost.resize(updateHost.size() - 1);
+
     // Parse out any "http://" or "ftp://", and set the updates directory
     size_t pos;
     pos = updateHost.find("://");
