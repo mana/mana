@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: playerhandler.h 2112 2006-01-22 13:31:13Z der_doener $
  */
 
 #ifndef _TMW_NET_PLAYERHANDLER_H

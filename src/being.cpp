@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: being.cpp 4301 2008-05-28 16:06:48Z peaveydk $
  */
 #include "being.h"
 
@@ -32,6 +32,7 @@
 #include "log.h"
 #include "map.h"
 #include "particle.h"
+#include "text.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
@@ -44,6 +45,9 @@
 
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
+
+static const int X_SPEECH_OFFSET = 18;
+static const int Y_SPEECH_OFFSET = 60;
 
 Being::Being(int id, int job, Map *map):
     mJob(job),
@@ -77,6 +81,7 @@ Being::Being(int id, int job, Map *map):
     }
 
     instances++;
+    mSpeech = 0;
 }
 
 Being::~Being()
@@ -99,6 +104,10 @@ Being::~Being()
     {
         emotionSet->decRef();
         emotionSet = NULL;
+    }
+    if (mSpeech)
+    {
+        delete mSpeech;
     }
 }
 
@@ -147,7 +156,13 @@ Being::setSprite(int slot, int id, std::string color)
 void
 Being::setSpeech(const std::string &text, Uint32 time)
 {
-    mSpeech = text;
+    if (mSpeech) // don't introduce a memory leak
+    {
+        delete mSpeech;
+    }
+    mSpeech = new Text(text, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
+                       gcn::Graphics::CENTER, speechFont,
+                       gcn::Color(255, 255, 255));
     mSpeechTime = 500;
 }
 
@@ -355,13 +370,28 @@ void
 Being::logic()
 {
     // Reduce the time that speech is still displayed
-    if (mSpeechTime > 0)
-        mSpeechTime--;
+    if (mSpeechTime > 0 && mSpeech)
+    {
+        if (--mSpeechTime == 0)
+        {
+            delete mSpeech;
+            mSpeech = 0;
+        }
+    }
 
+    int oldPx = mPx;
+    int oldPy = mPy;
     // Update pixel coordinates
     mPx = mX * 32 + getXOffset();
     mPy = mY * 32 + getYOffset();
-
+    if (mPx != oldPx || mPy != oldPy)
+    {
+        if (mSpeech)
+        {
+            mSpeech->adviseXY(mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET);
+        }
+        updateCoords();
+    }
     if (mEmotion != 0)
     {
         mEmotionTime--;
@@ -424,21 +454,6 @@ Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 
     if (emotionIndex >= 0 && emotionIndex < (int) emotionSet->size())
         graphics->drawImage(emotionSet->get(emotionIndex), px, py);
-}
-
-void
-Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
-{
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-
-    // Draw speech above this being
-    if (mSpeechTime > 0)
-    {
-        graphics->setFont(speechFont);
-        graphics->setColor(gcn::Color(255, 255, 255));
-        graphics->drawText(mSpeech, px + 18, py - 60, gcn::Graphics::CENTER);
-    }
 }
 
 Being::Type

@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: loginhandler.cpp 3233 2007-03-24 01:57:39Z b_lindeijer $
  */
 
 #include "loginhandler.h"
@@ -37,6 +37,7 @@ extern SERVER_INFO **server_info;
 LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
+        0x0063,
         0x0069,
         0x006a,
         0
@@ -48,6 +49,16 @@ void LoginHandler::handleMessage(MessageIn *msg)
 {
     switch (msg->getId())
     {
+        case 0x0063:
+             int len;
+             
+             len = msg->readInt16() - 4; 
+             mUpdateHost = msg->readString(len);
+
+             logger->log("Received update host \"%s\" from login server", 
+                          mUpdateHost.c_str());
+             break;
+
         case 0x0069:
             // Skip the length word
             msg->skip(2);
@@ -70,6 +81,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
                 server_info[i]->port = msg->readInt16();
                 server_info[i]->name = msg->readString(20);
                 server_info[i]->online_users = msg->readInt32();
+                server_info[i]->updateHost = mUpdateHost;
                 msg->skip(2);                        // unknown
 
                 logger->log("Network: Server: %s (%s:%d)",
@@ -77,7 +89,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
                         iptostring(server_info[i]->address),
                         server_info[i]->port);
             }
-            state = CHAR_SERVER_STATE;
+            state = CHAR_SERVER_STATE; 
             break;
 
         case 0x006a:

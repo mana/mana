@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: npc.cpp 4255 2008-05-21 21:44:27Z crush_tmw $
  */
 
 #include "npc.h"
@@ -26,6 +26,7 @@
 #include "animatedsprite.h"
 #include "graphics.h"
 #include "particle.h"
+#include "text.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
@@ -34,6 +35,9 @@
 #include "gui/gui.h"
 
 NPC *current_npc = 0;
+
+static const int NAME_X_OFFSET = 15;
+static const int NAME_Y_OFFSET = 30;
 
 NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
     Being(id, job, map), mNetwork(network)
@@ -62,23 +66,32 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
         Particle *p = particleEngine->addEffect(*i, 0, 0);
         this->controlParticle(p);
     }
+    mName = 0;
 }
+
+NPC::~NPC()
+{
+    if (mName)
+    {
+        delete mName;
+    }
+}
+
+void NPC::setName(const std::string &name)
+{
+    if (mName)
+    {
+        delete mName;
+    }
+    mName = new Text(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+                     gcn::Graphics::CENTER, speechFont,
+                     gcn::Color(200, 200, 255));
+                 }
 
 Being::Type
 NPC::getType() const
 {
     return Being::NPC;
-}
-
-void
-NPC::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
-{
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-
-    graphics->setFont(speechFont);
-    graphics->setColor(gcn::Color(200, 200, 255));
-    graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
 }
 
 void
@@ -128,4 +141,12 @@ NPC::sell()
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(1);
+}
+
+void NPC::updateCoords()
+{
+    if (mName)
+    {
+        mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
+    }
 }

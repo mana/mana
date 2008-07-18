@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: player.cpp 4237 2008-05-14 18:57:32Z b_lindeijer $
  */
 
 #include "player.h"
@@ -34,11 +34,34 @@
 #include "utils/strprintf.h"
 
 #include "gui/gui.h"
+#include <iostream>
+
+static const int NAME_X_OFFSET = 15;
+static const int NAME_Y_OFFSET = 30;
 
 Player::Player(int id, int job, Map *map):
-    Being(id, job, map),
-    mDrawStrategy(NULL)
+    Being(id, job, map)
 {
+    mName = 0;
+}
+
+Player::~Player()
+{
+    if (mName)
+    {
+        delete mName;
+    }
+}
+
+void Player::setName(const std::string &name)
+{
+    if (mName == 0)
+    {
+        mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+                              gcn::Graphics::CENTER,
+                              speechFont, gcn::Color(255, 255, 255));
+        Being::setName(name);
+    }
 }
 
 void
@@ -75,37 +98,13 @@ Player::getType() const
     return PLAYER;
 }
 
-
 void
-Player::setNameDrawStrategy(PlayerNameDrawStrategy *draw_strategy)
+Player::flash(int time)
 {
-    if (mDrawStrategy)
-        delete mDrawStrategy;
-    mDrawStrategy = draw_strategy;
-}
-
-class
-DefaultPlayerNameDrawStrategy : public PlayerNameDrawStrategy
-{
-public:
-    virtual void draw(Player *player, Graphics *graphics, int px, int py)
+    if (mName)
     {
-        graphics->setFont(speechFont);
-        graphics->setColor(gcn::Color(255, 255, 255));
-        graphics->drawText(player->getName(), px + 15, py + 30, gcn::Graphics::CENTER);
+        mName->flash(time);
     }
-};
-
-void
-Player::drawName(Graphics *graphics, int offsetX, int offsetY)
-{
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-
-    if (mDrawStrategy)
-        mDrawStrategy->draw(this, graphics, px, py);
-    else
-        DefaultPlayerNameDrawStrategy().draw(this, graphics, px, py);
 }
 
 void Player::setGender(int gender)
@@ -201,4 +200,12 @@ void Player::setSprite(int slot, int id, std::string color)
     }
 
     Being::setSprite(slot, id, color);
+}
+
+void Player::updateCoords()
+{
+    if (mName)
+    {
+        mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
+    }
 }

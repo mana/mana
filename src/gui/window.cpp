@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: window.cpp 4207 2008-04-29 09:10:43Z b_lindeijer $
  */
 
 #include <algorithm>

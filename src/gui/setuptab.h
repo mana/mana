@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: setuptab.h 2273 2006-03-19 00:48:10Z der_doener $
  */
 
 #ifndef _TMW_GUI_SETUPTAB_H

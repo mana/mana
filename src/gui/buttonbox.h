@@ -18,41 +18,53 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: buttonbox.h
  */
 
-#ifndef _TMW_BUDDYWINDOW_H
-#define _TMW_BUDDYWINDOW_H
+#ifndef _TMW_BUTTONBOX_H
+#define _TMW_BUTTONBOX_H
+
+#include <string>
 
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
-class BuddyList;
-
-/**
- * Window showing buddy list.
- *
- * \ingroup Interface
- */
-class BuddyWindow : public Window, public gcn::ActionListener
+class ButtonBoxListener
 {
     public:
-        /**
-         * Constructor.
-         */
-        BuddyWindow();
 
-        /**
-         * Performs action.
-         */
-        void action(const gcn::ActionEvent &event);
-
-    private:
-        BuddyList *mBuddyList;
-        gcn::ListBox *mListbox;
+	/*
+	 * function that ButtonBox calls when the button has been pressed
+	 */
+	virtual void buttonBoxRespond() = 0;
 };
 
-#endif /* _TMW_BUDDYWINDOW_H */
+class ButtonBox : public Window, public gcn::ActionListener
+{
+    public:
+
+	/*
+	 * Constructor
+	 *
+	 * @param title is the text that appears at the top of the box
+	 * @param buttonTxt is the text that appears on the button
+	 * @param listener points to the class that should respond to the
+	 *                 button press
+	 */
+	ButtonBox(const std::string &title, const std::string &buttonTxt,
+		  ButtonBoxListener *listener);
+
+	/*
+	 * called when the button is pressed
+	 *
+	 * @param event is the event that is generated
+	 */
+	void
+	action(const gcn::ActionEvent &event);
+
+    private:
+
+	ButtonBoxListener *mListener;
+};
+#endif

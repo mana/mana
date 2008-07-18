@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: menuwindow.cpp 4060 2008-04-09 14:49:07Z b_lindeijer $
  */
 
 #include "menuwindow.h"

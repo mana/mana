@@ -1,4 +1,4 @@
-man6_MANS = tmw.6
+man6_MANS = tme.6
 
 EXTRA_DIST = $(man6_MANS) \
 	     packages.txt \

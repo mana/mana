@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: imageparticle.h 3567 2007-09-07 09:13:17Z b_lindeijer $
  */
 
 #ifndef _IMAGEPARTICLE_H

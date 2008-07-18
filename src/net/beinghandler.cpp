@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: beinghandler.cpp 4321 2008-06-02 11:42:26Z b_lindeijer $
  */
 
 #include "beinghandler.h"
@@ -55,6 +55,8 @@ BeingHandler::BeingHandler()
         SMSG_PLAYER_UPDATE_1,
         SMSG_PLAYER_UPDATE_2,
         SMSG_PLAYER_MOVE,
+        SMSG_PLAYER_STOP,
+        SMSG_PLAYER_MOVE_TO_ATTACK,
         0x0119,
         0
     };
@@ -122,7 +124,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            msg->readInt16();  // clothes color -not used 
+            msg->readInt16();  // clothes color -not used
             msg->readInt16();  // head dir
             msg->readInt16();  // guild
             msg->readInt16();  // unknown
@@ -133,9 +135,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setGender(1 - msg->readInt8());   // gender
 
             // Set these after the gender, as the sprites may be gender-specific
-            dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom); 
-            dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid); 
-            dstBeing->setSprite(Being::HAT_SPRITE, headTop); 
+            dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
+            dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
+            dstBeing->setSprite(Being::HAT_SPRITE, headTop);
             dstBeing->setHairStyle(hairStyle, hairColor);
 
             if (msg->getId() == SMSG_BEING_MOVE)
@@ -257,7 +259,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
         case SMSG_BEING_CHANGE_LOOKS2:
         {
             /*
-             * SMSG_BEING_CHANGE_LOOKS (0x00c3) and 
+             * SMSG_BEING_CHANGE_LOOKS (0x00c3) and
              * SMSG_BEING_CHANGE_LOOKS2 (0x01d7) do basically the same
              * thing.  The difference is that ...LOOKS carries a single
              * 8 bit value, where ...LOOKS2 carries two 16 bit values.
@@ -288,7 +290,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 case 1:     // eAthena LOOK_HAIR
                     dstBeing->setHairStyle(id, -1);
                     break;
-                case 2:     // Weapon ID in id, Shield ID in id2 
+                case 2:     // Weapon ID in id, Shield ID in id2
                     dstBeing->setSprite(Being::WEAPON_SPRITE, id);
                     dstBeing->setSprite(Being::SHIELD_SPRITE, id2);
                     break;
@@ -303,6 +305,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     break;
                 case 6:     // eAthena LOOK_HAIR_COLOR
                     dstBeing->setHairStyle(-1, id);
+                    break;
+                case 8:     // eAthena LOOK_SHIELD
+                    dstBeing->setSprite(Being::SHIELD_SPRITE, id);
                     break;
                 case 9:     // eAthena LOOK_SHOES
                     dstBeing->setSprite(Being::SHOE_SPRITE, id);
@@ -345,7 +350,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             hairStyle = msg->readInt16();
             dstBeing->setSprite(Being::WEAPON_SPRITE, msg->readInt16());
             dstBeing->setSprite(Being::SHIELD_SPRITE, msg->readInt16());
-            headBottom = msg->readInt16(); 
+            headBottom = msg->readInt16();
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {
@@ -355,7 +360,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            msg->readInt16();  // clothes color - not used 
+            msg->readInt16();  // clothes color - not used
             msg->readInt16();  // head dir
             msg->readInt32();  // guild
             msg->readInt32();  // emblem
@@ -364,7 +369,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setGender(1 - msg->readInt8());   // gender
 
             // Set these after the gender, as the sprites may be gender-specific
-            dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom); 
+            dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setSprite(Being::HAT_SPRITE, headTop);
             dstBeing->setHairStyle(hairStyle, hairColor);
@@ -404,6 +409,32 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             dstBeing->mWalkTime = tick_time;
             dstBeing->mFrame = 0;
+            break;
+
+        case SMSG_PLAYER_STOP:
+            // Instruction from server to stop walking at x, y.
+            id = msg->readInt32();
+            dstBeing = beingManager->findBeing(id);
+
+            if (dstBeing) {
+                dstBeing->mX = msg->readInt16();
+                dstBeing->mY = msg->readInt16();
+                if (dstBeing->mAction == Being::WALK) {
+                     dstBeing->mFrame = 0;
+                     dstBeing->setAction(Being::STAND);
+                }
+            } else {
+                logger->log("0x0088: Non-existent being %d", id);
+            }
+            break;
+
+        case SMSG_PLAYER_MOVE_TO_ATTACK:
+            /*
+             * This is an *advisory* message, telling the client that
+             * it needs to move the character before attacking
+             * a target (out of range, obstruction in line of fire).
+             * We can safely ignore this...
+             */
             break;
 
         case 0x0119:

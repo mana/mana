@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: imagewriter.h 1766 2005-09-18 01:31:33Z bertram25 $
  */
 
 #include <iosfwd>

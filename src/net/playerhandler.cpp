@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: playerhandler.cpp 4190 2008-04-26 17:37:03Z peaveydk $
  */
 
 #include "playerhandler.h"
@@ -109,10 +109,16 @@ void PlayerHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case SMSG_WALK_RESPONSE:
-            // It is assumed by the client any request to walk actually
-            // succeeds on the server. The plan is to have a correction
-            // message when the server senses the client has the wrong
-            // idea.
+            /*
+             * This client assumes that all walk messages succeed,
+             * and that the server will send a correction notice
+             * otherwise.
+             *
+             * Note that this packet is also used by eAthena to notify
+             * the client of a server-generated auto-move.  A patch has
+             * been submitted to Mantis to eliminate these auto moves,
+             * since they're inconsistent with the client design.
+             */
             break;
 
         case SMSG_PLAYER_WARP:
@@ -345,18 +351,5 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 }
             }
             break;
-
-        //Stop walking
-        //case 0x0088:  // Disabled because giving some problems
-        //if (being = beingManager->findBeing(readInt32(2))) {
-        //    if (being->getId() != player_node->getId()) {
-        //        being->action = STAND;
-        //        being->mFrame = 0;
-        //        set_coordinates(being->coordinates,
-        //                        readWord(6), readWord(8),
-        //                        get_direction(being->coordinates));
-        //    }
-        //}
-        //break;
     }
 }

@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: status.cpp 3510 2007-08-23 14:14:51Z b_lindeijer $
  */
 
 #include "status.h"

@@ -6,7 +6,7 @@
  *
  * Unfortunately the original creator of this function seems to be unknown.
  *
- * $Id$
+ * $Id: fastsqrt.h 3508 2007-08-22 16:32:52Z b_lindeijer $
  */
 
 float fastInvSqrt(float x)

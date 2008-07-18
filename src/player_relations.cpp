@@ -88,7 +88,7 @@ PlayerRelationsManager::PlayerRelationsManager() :
     mDefaultPermissions(PlayerRelation::DEFAULT),
     mIgnoreStrategy(NULL)
 {
-}    
+}
 
 void
 PlayerRelationsManager::clear()
@@ -325,29 +325,6 @@ public:
 };
 
 
-class
-BlinkPlayerNameDrawStrategy : public PlayerNameDrawStrategy
-{
-public:
-    BlinkPlayerNameDrawStrategy(int count) :
-        mCount(count)
-    {
-    }
-
-    virtual void draw(Player *player, Graphics *graphics, int px, int py)
-    {
-        graphics->setFont(speechFont);
-        if (mCount & 4)
-            graphics->drawText(player->getName(), px + 15, py + 30, gcn::Graphics::CENTER);
-
-        if (mCount-- <= 0)
-            player->setNameDrawStrategy(NULL);
-    }
-private:
-    int mCount; // Number of steps to blink
-};
-
-
 class PIS_blinkname : public PlayerIgnoreStrategy
 {
 public:
@@ -360,7 +337,7 @@ public:
     virtual void
     ignore(Player *player, unsigned int flags)
      {
-         player->setNameDrawStrategy(new BlinkPlayerNameDrawStrategy(200));
+         player->flash(200);
      }
 };
 
@@ -407,4 +384,3 @@ PlayerRelationsManager::getPlayerIgnoreStrategies()
 
 
 PlayerRelationsManager player_relations;
-

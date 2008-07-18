@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: logindata.h 3606 2007-09-27 14:54:09Z b_lindeijer $
  */
 
 #ifndef _TMW_LOGINDATA_H
@@ -31,6 +31,7 @@ struct LoginData
     std::string username;
     std::string password;
     std::string hostname;
+    std::string updateHost;
     short port;
 
     int account_ID;

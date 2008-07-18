@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: npc.h 2883 2006-12-03 17:00:07Z b_lindeijer $
  */
 
 #ifndef _TMW_NPC_H
@@ -28,17 +28,19 @@
 
 class Network;
 class Graphics;
+class Text;
 
 class NPC : public Being
 {
     public:
         NPC(Uint32 id, Uint16 job, Map *map, Network *network);
 
+        ~NPC();
+
+        void setName(const std::string &name);
+
         virtual Type
         getType() const;
-
-        virtual void
-        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
 
         void talk();
         void nextDialog();
@@ -49,6 +51,9 @@ class NPC : public Being
 
     protected:
         Network *mNetwork;
+        void updateCoords();
+    private:
+        Text *mName;
 };
 
 extern NPC *current_npc;

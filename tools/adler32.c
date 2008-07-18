@@ -7,9 +7,9 @@
  *  Usage: adler32 [file]...
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <zlib.h>
-
 /**
  * Calculates the Adler-32 checksum for the given file.
  */

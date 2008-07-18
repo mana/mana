@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: chat.h 4227 2008-05-08 00:39:29Z peaveydk $
  */
 
 #ifndef _TMW_CHAT_H
@@ -26,6 +26,7 @@
 
 #include <list>
 #include <string>
+#include <fstream>
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
@@ -37,29 +38,19 @@
 class BrowserBox;
 class Network;
 class ScrollArea;
+class Recorder;
+class Party;
 
 #define BY_GM         0   // those should be self-explanatory =)
 #define BY_PLAYER     1
 #define BY_OTHER      2
 #define BY_SERVER     3
+#define BY_PARTY      4
 
-#define ACT_WHISPER   4   // getting whispered at
-#define ACT_IS        5   // equivalent to "/me" on IRC
+#define ACT_WHISPER   5   // getting whispered at
+#define ACT_IS        6   // equivalent to "/me" on IRC
 
-#define BY_LOGGER     6
-
-#define IS_ANNOUNCE         "/announce "
-#define IS_ANNOUNCE_LENGTH  10
-#define IS_HELP             "/help"
-#define IS_HELP_LENGTH      5
-#define IS_WHERE            "/where"
-#define IS_WHERE_LENGTH     6
-#define IS_WHO              "/who"
-#define IS_WHO_LENGTH       4
-#define IS_CLEAR            "/clear"
-#define IS_CLEAR_LENGTH     6
-#define IS_WHISPER          "/whisper"
-#define IS_WHISPER_LENGTH   8
+#define BY_LOGGER     7
 
 /**
  * gets in between usernick and message text depending on
@@ -118,121 +109,150 @@ struct CHATSKILL
  * \ingroup Interface
  */
 class ChatWindow : public Window, public gcn::ActionListener,
-                   public gcn::KeyListener
+		   public gcn::KeyListener
 {
     public:
-        /**
-         * Constructor.
-         */
-        ChatWindow(Network *network);
+	/**
+	 * Constructor.
+	 */
+	ChatWindow(Network *network);
 
-        /**
-         * Logic (updates components' size)
-         */
-        void logic();
+	/**
+	 * Destructor: used to write back values to the config file
+	 */
+	~ChatWindow();
 
-        /*
-         * Adds a line of text to our message list. Parameters:
-         *
-         * @param line Text message.
-         * @parem own  Type of message (usually the owner-type).
-         */
-        void chatLog(std::string line, int own);
+	/**
+	 * Logic (updates components' size)
+	 */
+	void logic();
 
-        /*
-         * Calls original chat_log() after processing the packet.
-         */
-        void chatLog(CHATSKILL);
+	/**
+	 * Adds a line of text to our message list. Parameters:
+	 *
+	 * @param line Text message.
+	 * @parem own  Type of message (usually the owner-type).
+	 */
+	void chatLog(std::string line, int own, bool ignoreRecord = false);
 
-        /**
-         * Performs action.
-         */
-        void action(const gcn::ActionEvent &event);
+	/**
+	 * Calls original chat_log() after processing the packet.
+	 */
+	void chatLog(CHATSKILL);
 
-        /**
-         * Request focus for typing chat message.
-         */
-        void requestChatFocus();
+	/**
+	 * Performs action.
+	 */
+	void action(const gcn::ActionEvent &event);
 
-        /**
-         * Checks whether ChatWindow is Focused or not.
-         */
-        bool isInputFocused();
+	/**
+	 * Request focus for typing chat message.
+	 */
+	void requestChatFocus();
 
-        /**
-         * Determines whether to send a command or an ordinary message, then
-         * contructs packets & sends them.
-         *
-         * @param nick The character's name to display in front.
-         * @param msg  The message text which is to be send.
-         *
-         * NOTE:
-         * The nickname is required by the server, if not specified
-         * the message may not be sent unless a command was intended
-         * which requires another packet to be constructed! you can
-         * achieve this by putting a slash ("/") infront of the
-         * message followed by the command name and the message.
-         * of course all slash-commands need implemented handler-
-         * routines. ;-)
-         * remember, a line starting with "@" is not a command that needs
-         * to be parsed rather is sent using the normal chat-packet.
-         *
-         * EXAMPLE:
-         * // for an global announcement   /- command
-         * chatlog.chat_send("", "/announce Hello to all logged in users!");
-         * // for simple message by a user /- message
-         * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
-         */
-        void
-        chatSend(const std::string &nick, std::string msg);
+	/**
+	 * Checks whether ChatWindow is Focused or not.
+	 */
+	bool isInputFocused();
 
-        /** Called when key is pressed */
-        void
-        keyPressed(gcn::KeyEvent &event);
+	/**
+	 * Determines whether to send a command or an ordinary message, then
+	 * contructs packets & sends them.
+	 *
+	 * @param nick The character's name to display in front.
+	 * @param msg  The message text which is to be send.
+	 *
+	 * NOTE:
+	 * The nickname is required by the server, if not specified
+	 * the message may not be sent unless a command was intended
+	 * which requires another packet to be constructed! you can
+	 * achieve this by putting a slash ("/") infront of the
+	 * message followed by the command name and the message.
+	 * of course all slash-commands need implemented handler-
+	 * routines. ;-)
+	 * remember, a line starting with "@" is not a command that needs
+	 * to be parsed rather is sent using the normal chat-packet.
+	 *
+	 * EXAMPLE:
+	 * // for an global announcement   /- command
+	 * chatlog.chat_send("", "/announce Hello to all logged in users!");
+	 * // for simple message by a user /- message
+	 * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
+	 */
+	void
+	chatSend(const std::string &nick, std::string msg);
 
-        /** Called to set current text */
-        void
-        setInputText(std::string input_str);
+	/** Called when key is pressed */
+	void
+	keyPressed(gcn::KeyEvent &event);
 
-        /** Override to reset mTmpVisible */
-        void
-        setVisible(bool visible);
+	/** Called to set current text */
+	void
+	setInputText(std::string input_str);
+
+	/** Override to reset mTmpVisible */
+	void
+	setVisible(bool visible);
 
        /**
-        * Scrolls the chat window
-        *
-        * @param amount direction and amount to scroll.  Negative numbers scroll
-        * up, positive numbers scroll down.  The absolute amount indicates the
-        * amount of 1/8ths of chat window real estate that should be scrolled.
-        */
-        void
-        scroll(int amount);
+	* Scrolls the chat window
+	*
+	* @param amount direction and amount to scroll.  Negative numbers scroll
+	* up, positive numbers scroll down.  The absolute amount indicates the
+	* amount of 1/8ths of chat window real estate that should be scrolled.
+	*/
+	void
+	scroll(int amount);
+
+	/**
+	 * party implements the partying chat commands
+	 *
+	 * @param command is the party command to perform
+	 * @param msg is the remainder of the message
+	 */
+	void
+	party(const std::string &command, const std::string &msg);
+
+	/**
+	 * help implements the /help command
+	 *
+	 * @param msg1 is the command that the player needs help on
+	 * @param msg2 is the sub-command relating to the command
+	 */
+	void
+	help(const std::string &msg1, const std::string &msg2);
 
     private:
-        Network *mNetwork;
-        bool mTmpVisible;
 
-        /** One item in the chat log */
-        struct CHATLOG
-        {
-            std::string nick;
-            std::string text;
-            int own;
-        };
+	Network *mNetwork;
+	bool mTmpVisible;
 
-        /** Constructs failed messages for actions */
-        std::string const_msg(CHATSKILL);
+	/** One item in the chat log */
+	struct CHATLOG
+	{
+	    std::string nick;
+	    std::string text;
+	    int own;
+	};
 
-        gcn::TextField *mChatInput; /**< Input box for typing chat messages */
-        BrowserBox *mTextOutput;    /**< Text box for displaying chat history */
-        ScrollArea *mScrollArea;    /**< Scroll area around text output */
+	/** Constructs failed messages for actions */
+	std::string const_msg(CHATSKILL);
 
-        typedef std::list<std::string> History;
-        typedef History::iterator HistoryIterator;
-        History mHistory;           /**< Command history */
-        HistoryIterator mCurHist; /**< History iterator */
+	gcn::TextField *mChatInput; /**< Input box for typing chat messages */
+	BrowserBox *mTextOutput;    /**< Text box for displaying chat history */
+	ScrollArea *mScrollArea;    /**< Scroll area around text output */
+
+	typedef std::list<std::string> History;
+	typedef History::iterator HistoryIterator;
+	History mHistory;           /**< Command history */
+	HistoryIterator mCurHist; /**< History iterator */
+	Recorder *mRecorder; /**< Recording class */
+	char mPartyPrefix; /**< Messages beginning with the prefix are sent to
+			      the party */
+	bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
+				or not */
+	Party *mParty;
 };
-
 extern ChatWindow *chatWindow;
 
 #endif

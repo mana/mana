@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: ministatus.cpp 3753 2007-11-20 12:27:56Z b_lindeijer $
  */
 
 #include "ministatus.h"

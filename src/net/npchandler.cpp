@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: npchandler.cpp 2883 2006-12-03 17:00:07Z b_lindeijer $
  */
 
 #include "npchandler.h"

@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: monster.h 3690 2007-10-26 12:50:49Z crush_tmw $
  */
 
 #ifndef _TMW_MONSTER_H
@@ -27,11 +27,14 @@
 #include "being.h"
 
 class MonsterInfo;
+class Text;
 
 class Monster : public Being
 {
     public:
         Monster(Uint32 id, Uint16 job, Map *map);
+
+        ~Monster();
 
         virtual void logic();
 
@@ -63,6 +66,19 @@ class Monster : public Being
          */
         const MonsterInfo&
         getInfo() const;
+
+        /**
+         * Determine whether the mob should show it's name
+         */
+        void showName(bool show);
+
+    protected:
+        /**
+         * Update the text when the monster moves
+         */
+        void updateCoords();
+    private:
+        Text *mText; /**< holds a text object when the mod displays it's name, 0 otherwise */
 };
 
 #endif

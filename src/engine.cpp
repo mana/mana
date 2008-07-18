@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: engine.cpp 4000 2008-03-23 11:47:52Z b_lindeijer $
  */
 
 #include "engine.h"

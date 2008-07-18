@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: resource.cpp 3808 2007-12-22 21:33:47Z b_lindeijer $
  */
 
 #include <cassert>

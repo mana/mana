@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: viewport.h 4247 2008-05-19 10:48:18Z b_lindeijer $
  */
 
 #ifndef _TMW_VIEWPORT_H_

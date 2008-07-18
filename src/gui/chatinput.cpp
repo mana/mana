@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: chatinput.cpp 3361 2007-07-07 20:12:58Z b_lindeijer $
  */
 
 #include "chatinput.h"

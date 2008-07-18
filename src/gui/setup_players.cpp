@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: setup_players.cpp 4353 2008-06-16 07:04:46Z b_lindeijer $
  */
 
 #include "setup_players.h"

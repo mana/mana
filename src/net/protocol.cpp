@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: protocol.cpp 2158 2006-02-07 10:37:54Z der_doener $
  */
 
 #include "protocol.h"

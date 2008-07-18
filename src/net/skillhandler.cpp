@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: skillhandler.cpp 2832 2006-11-05 20:57:59Z b_lindeijer $
  */
 
 #include "skillhandler.h"

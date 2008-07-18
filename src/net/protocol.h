@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: protocol.h 4321 2008-06-02 11:42:26Z b_lindeijer $
  */
 
 #ifndef _TMW_PROTOCOL_
@@ -29,6 +29,8 @@
 #define SMSG_PLAYER_UPDATE_1         0x01d8
 #define SMSG_PLAYER_UPDATE_2         0x01d9
 #define SMSG_PLAYER_MOVE             0x01da /**< A nearby player moves */
+#define SMSG_PLAYER_STOP             0x0088 /**< Stop walking, set position */
+#define SMSG_PLAYER_MOVE_TO_ATTACK   0x0139 /**< Move to within attack range */
 #define SMSG_PLAYER_STAT_UPDATE_1    0x00b0
 #define SMSG_PLAYER_STAT_UPDATE_2    0x00b1
 #define SMSG_PLAYER_STAT_UPDATE_3    0x0141
@@ -63,6 +65,7 @@
 #define SMSG_BEING_ACTION            0x008a /**< Attack, sit, stand up, ... */
 #define SMSG_BEING_CHAT              0x008d /**< A being talks */
 #define SMSG_BEING_NAME_RESPONSE     0x0095 /**< Has to be requested */
+
 #define SMSG_NPC_MESSAGE             0x00b4
 #define SMSG_NPC_NEXT                0x00b5
 #define SMSG_NPC_CLOSE               0x00b6
@@ -72,11 +75,13 @@
 #define SMSG_NPC_SELL                0x00c7
 #define SMSG_NPC_BUY_RESPONSE        0x00ca
 #define SMSG_NPC_SELL_RESPONSE       0x00cb
+
 #define SMSG_PLAYER_CHAT             0x008e /**< Player talks */
 #define SMSG_WHISPER                 0x0097 /**< Whisper Recieved */
 #define SMSG_WHISPER_RESPONSE        0x0098
 #define SMSG_GM_CHAT                 0x009a /**< GM announce */
 #define SMSG_WALK_RESPONSE           0x0087
+
 #define SMSG_TRADE_REQUEST           0x00e5 /**< Receiving a request to trade */
 #define SMSG_TRADE_RESPONSE          0x00e7
 #define SMSG_TRADE_ITEM_ADD          0x00e9
@@ -84,6 +89,17 @@
 #define SMSG_TRADE_OK                0x00ec
 #define SMSG_TRADE_CANCEL            0x00ee
 #define SMSG_TRADE_COMPLETE          0x00f0
+
+#define SMSG_PARTY_CREATE            0x00fa
+#define SMSG_PARTY_INFO              0x00fb
+#define SMSG_PARTY_INVITE            0x00fd
+#define SMSG_PARTY_INVITED           0x00fe
+#define SMSG_PARTY_SETTINGS          0x0102
+#define SMSG_PARTY_MEMBER_INFO       0x0104
+#define SMSG_PARTY_LEAVE             0x0105
+#define SMSG_PARTY_UPDATE_HP         0x0106
+#define SMSG_PARTY_UPDATE_COORDS     0x0107
+#define SMSG_PARTY_MESSAGE           0x0109
 
 // Packets from client to server
 #define CMSG_TRADE_RESPONSE          0x00e6
@@ -93,6 +109,8 @@
 #define CMSG_NPC_BUY_SELL_REQUEST    0x00c5
 #define CMSG_CHAT_MESSAGE            0x008c
 #define CMSG_CHAT_WHISPER            0x0096
+#define CMSG_CHAT_ANNOUNCE           0x0099
+#define CMSG_CHAT_WHO                0x00c1
 #define CMSG_NPC_LIST_CHOICE         0x00b8
 #define CMSG_NPC_NEXT_REQUEST        0x00b9
 #define CMSG_NPC_SELL_REQUEST        0x00c9
@@ -108,6 +126,13 @@
 #define CMSG_PLAYER_INVENTORY_DROP   0x00a2
 #define CMSG_PLAYER_EQUIP            0x00a9
 #define CMSG_PLAYER_UNEQUIP          0x00ab
+
+#define CMSG_PARTY_CREATE            0x00f9
+#define CMSG_PARTY_INVITE            0x00fc
+#define CMSG_PARTY_INVITED           0x00ff
+#define CMSG_PARTY_LEAVE             0x0100 /** Undocumented */
+#define CMSG_PARTY_SETTINGS          0x0101
+#define CMSG_PARTY_MESSAGE           0x0108
 
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);

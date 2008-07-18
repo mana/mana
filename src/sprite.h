@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: sprite.h 3292 2007-05-07 16:22:54Z crush_tmw $
  */
 
 #ifndef _TMW_SPRITE_H_

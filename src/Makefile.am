@@ -1,14 +1,16 @@
-bin_PROGRAMS = tmw
-tmw_SOURCES = gui/widgets/resizegrip.cpp \
+bin_PROGRAMS = tme
+tme_SOURCES = gui/widgets/dropdown.cpp \
+              gui/widgets/dropdown.h \
+              gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
 	      gui/box.h \
 	      gui/box.cpp \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
-	      gui/buddywindow.cpp \
-	      gui/buddywindow.h \
 	      gui/button.cpp \
 	      gui/button.h \
+              gui/buttonbox.cpp \
+              gui/buttonbox.h \
 	      gui/buy.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
@@ -163,6 +165,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      net/network.h \
 	      net/npchandler.cpp \
 	      net/npchandler.h \
+              net/partyhandler.cpp \
+              net/partyhandler.h \
 	      net/playerhandler.cpp \
 	      net/playerhandler.h \
 	      net/protocol.cpp \
@@ -278,11 +282,15 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      particle.h \
 	      particleemitter.cpp \
 	      particleemitter.h \
+              party.cpp \
+              party.h \
 	      player.cpp \
 	      player.h \
 	      player_relations.cpp \
 	      player_relations.h \
 	      properties.h \
+              recorder.cpp \
+              recorder.h \
 	      serverinfo.h \
 	      shopitem.cpp \
 	      shopitem.h \
@@ -291,6 +299,10 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      sound.cpp \
 	      sound.h \
 	      sprite.h \
+	      text.cpp \
+	      text.h \
+	      textmanager.cpp \
+	      textmanager.h \
 	      textparticle.cpp \
 	      textparticle.h \
 	      tileset.h \
@@ -302,7 +314,7 @@ INCLUDES =					\
 	-DTMW_DATADIR=\""$(pkgdatadir)/"\"
 
 # the library search path.
-tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
-tmw_CXXFLAGS = -Wall $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(CURL_LIBS)
-tmw_TARGET = tmw
+tme_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
+tme_CXXFLAGS = -Wall $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
+tme_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(CURL_LIBS)
+tme_TARGET = tme

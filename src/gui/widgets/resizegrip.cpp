@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: resizegrip.cpp 3587 2007-09-20 13:24:20Z b_lindeijer $
  */
 
 #include "resizegrip.h"

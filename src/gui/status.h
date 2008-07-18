@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: status.h 3538 2007-08-28 00:01:38Z b_lindeijer $
  */
 
 #ifndef _TMW_STATUS_H

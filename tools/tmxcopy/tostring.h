@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: tostring.h 3773 2007-12-12 15:45:25Z crush_tmw $
  */
 
 #ifndef _TMW_UTILS_TOSTRING_H

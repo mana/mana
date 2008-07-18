@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: game.cpp 4237 2008-05-14 18:57:32Z b_lindeijer $
  */
 
 #include "game.h"
@@ -68,7 +68,6 @@
 #include "gui/status.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
-
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
 #include "net/chathandler.h"
@@ -135,14 +134,14 @@ const int MAX_TIME = 10000;
 namespace {
     struct ExitListener : public gcn::ActionListener
     {
-        void action(const gcn::ActionEvent &event)
-        {
-            if (event.getId() == "yes" || event.getId() == "ok") {
-                done = true;
-            }
-            exitConfirm = NULL;
-            disconnectedDialog = NULL;
-        }
+	void action(const gcn::ActionEvent &event)
+	{
+	    if (event.getId() == "yes" || event.getId() == "ok") {
+		done = true;
+	    }
+	    exitConfirm = NULL;
+	    disconnectedDialog = NULL;
+	}
     } exitListener;
 }
 
@@ -169,10 +168,10 @@ Uint32 nextSecond(Uint32 interval, void *param)
 int get_elapsed_time(int start_time)
 {
     if (start_time <= tick_time) {
-        return (tick_time - start_time) * 10;
+	return (tick_time - start_time) * 10;
     }
     else {
-        return (tick_time + (MAX_TIME - start_time)) * 10;
+	return (tick_time + (MAX_TIME - start_time)) * 10;
     }
 }
 
@@ -219,7 +218,7 @@ void createGuiWindows(Network *network)
 
     if (config.getValue("logToChat", 0))
     {
-        logger->setChatWindow(chatWindow);
+	logger->setChatWindow(chatWindow);
     }
 }
 
@@ -291,7 +290,7 @@ Game::Game(Network *network):
     // Open the first device
     if (Joystick::getNumberOfJoysticks() > 0)
     {
-        joystick = new Joystick(0);
+	joystick = new Joystick(0);
     }
 
     network->registerHandler(mBeingHandler.get());
@@ -332,30 +331,30 @@ bool saveScreenshot(SDL_Surface *screenshot)
     bool found = false;
 
     do {
-        screenshotCount++;
-        filename.str("");
+	screenshotCount++;
+	filename.str("");
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
-        filename << PHYSFS_getUserDir() << ".tmw/";
+	filename << PHYSFS_getUserDir() << ".tme/";
 #elif defined __APPLE__
-        filename << PHYSFS_getUserDir() << "Desktop/";
+	filename << PHYSFS_getUserDir() << "Desktop/";
 #endif
-        filename << "TMW_Screenshot_" << screenshotCount << ".png";
-        testExists.open(filename.str().c_str(), std::ios::in);
-        found = !testExists.is_open();
-        testExists.close();
+	filename << "TMW_Screenshot_" << screenshotCount << ".png";
+	testExists.open(filename.str().c_str(), std::ios::in);
+	found = !testExists.is_open();
+	testExists.close();
     } while (!found);
 
     if (ImageWriter::writePNG(screenshot, filename.str()))
     {
-        std::stringstream chatlogentry;
-        chatlogentry << "Screenshot saved to " << filename.str().c_str();
-        chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
-        return true;
+	std::stringstream chatlogentry;
+	chatlogentry << "Screenshot saved to " << filename.str().c_str();
+	chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
+	return true;
     }
     else
     {
-        chatWindow->chatLog("Saving screenshot failed!", BY_SERVER);
-        return false;
+	chatWindow->chatLog("Saving screenshot failed!", BY_SERVER);
+	return false;
     }
 }
 
@@ -379,60 +378,61 @@ void Game::logic()
 
     while (!done)
     {
-        // Handle all necessary game logic
-        while (get_elapsed_time(gameTime) > 0)
-        {
-            handleInput();
-            engine->logic();
-            gameTime++;
-        }
+	// Handle all necessary game logic
+	while (get_elapsed_time(gameTime) > 0)
+	{
+	    handleInput();
+	    engine->logic();
+	    gameTime++;
+	}
 
-        // This is done because at some point tick_time will wrap.
-        gameTime = tick_time;
+	// This is done because at some point tick_time will wrap.
+	gameTime = tick_time;
 
-        // Update the screen when application is active, delay otherwise.
-        if (SDL_GetAppState() & SDL_APPACTIVE)
-        {
-            // Draw a frame if either frames are not limited or enough time has
-            // passed since the last frame.
-            if (!mMinFrameTime ||
-                    get_elapsed_time(mDrawTime / 10) > mMinFrameTime)
-            {
-                frame++;
-                gui->draw();
-                graphics->updateScreen();
-                mDrawTime += mMinFrameTime;
+	// Update the screen when application is active, delay otherwise.
+	if (SDL_GetAppState() & SDL_APPACTIVE)
+	{
+	    // Draw a frame if either frames are not limited or enough time has
+	    // passed since the last frame.
+	    if (!mMinFrameTime ||
+		    get_elapsed_time(mDrawTime / 10) > mMinFrameTime)
+	    {
+		frame++;
+		gui->draw();
+		graphics->updateScreen();
+		mDrawTime += mMinFrameTime;
 
-                // Make sure to wrap mDrawTime, since tick_time will wrap.
-                if (mDrawTime > MAX_TIME * 10)
-                    mDrawTime -= MAX_TIME * 10;
-            }
-            else
-            {
-                SDL_Delay(10);
-            }
-        }
-        else
-        {
-            SDL_Delay(10);
-            mDrawTime = tick_time * 10;
-        }
+		// Make sure to wrap mDrawTime, since tick_time will wrap.
+		if (mDrawTime > MAX_TIME * 10)
+		    mDrawTime -= MAX_TIME * 10;
+	    }
+	    else
+	    {
+		SDL_Delay(10);
+	    }
+	}
+	else
+	{
+	    SDL_Delay(10);
+	    mDrawTime = tick_time * 10;
+	}
 
-        // Handle network stuff
-        mNetwork->flush();
-        mNetwork->dispatchMessages();
+	// Handle network stuff
+	mNetwork->flush();
+	mNetwork->dispatchMessages();
 
-        if (!mNetwork->isConnected())
-        {
-            if (!disconnectedDialog)
-            {
-                disconnectedDialog = new
-                    OkDialog("Network Error",
-                    "The connection to the server was lost, the program will now quit");
-                disconnectedDialog->addActionListener(&exitListener);
-                disconnectedDialog->requestMoveToTop();
-            }
-        }
+	if (!mNetwork->isConnected())
+	{
+	    if (!disconnectedDialog)
+	    {
+		disconnectedDialog = new
+		    OkDialog("Network Error",
+		             "The connection to the server was lost, the "
+                             "program will now quit");
+		disconnectedDialog->addActionListener(&exitListener);
+		disconnectedDialog->requestMoveToTop();
+	    }
+	}
     }
 }
 
@@ -440,289 +440,296 @@ void Game::handleInput()
 {
     if (joystick != NULL)
     {
-        joystick->update();
+	joystick->update();
     }
 
     // Events
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        bool used = false;
+	bool used = false;
 
-        // Keyboard events (for discontinuous keys)
-        if (event.type == SDL_KEYDOWN)
-        {
-            gcn::Window *requestedWindow = NULL;
+	// Keyboard events (for discontinuous keys)
+	if (event.type == SDL_KEYDOWN)
+	{
+	    gcn::Window *requestedWindow = NULL;
 
-            if (setupWindow->isVisible() &&
-                keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
-            {
-                keyboard.setNewKey((int) event.key.keysym.sym);
-                keyboard.callbackNewKey();
-                keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
-                return;
-            }
-            // Keys pressed together with Alt/Meta
-            // Emotions and some internal gui windows
-            #ifndef __APPLE__
-            if (event.key.keysym.mod & KMOD_ALT)
-            #else
-            if (event.key.keysym.mod & KMOD_LMETA)
-            #endif
-            {
-                switch (event.key.keysym.sym)
-                {
-                    case SDLK_p:
-                        // Screenshot (picture, hence the p)
-                        {
-                            SDL_Surface *screenshot = graphics->getScreenshot();
-                            if (!saveScreenshot(screenshot))
-                            {
-                                logger->log("Error: could not save Screenshot.");
-                            }
-                            SDL_FreeSurface(screenshot);
-                        }
-                        used = true;
-                        break;
+	    if (setupWindow->isVisible() &&
+		keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
+	    {
+		keyboard.setNewKey((int) event.key.keysym.sym);
+		keyboard.callbackNewKey();
+		keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
+		return;
+	    }
+	    // Keys pressed together with Alt/Meta
+	    // Emotions and some internal gui windows
+	    #ifndef __APPLE__
+	    if (event.key.keysym.mod & KMOD_ALT)
+	    #else
+	    if (event.key.keysym.mod & KMOD_LMETA)
+	    #endif
+	    {
+		switch (event.key.keysym.sym)
+		{
+		    case SDLK_p:
+			// Screenshot (picture, hence the p)
+			{
+			    SDL_Surface *screenshot =
+                                graphics->getScreenshot();
+			    if (!saveScreenshot(screenshot))
+			    {
+				logger->
+                                    log("Error: could not save Screenshot.");
+			    }
+			    SDL_FreeSurface(screenshot);
+			}
+			used = true;
+			break;
 
-                    default:
-                        break;
+		    default:
+			break;
 
-                    case SDLK_f:
-                        // Find path to mouse (debug purpose)
-                        viewport->toggleDebugPath();
-                        used = true;
-                        break;
+		    case SDLK_f:
+			// Find path to mouse (debug purpose)
+			viewport->toggleDebugPath();
+			used = true;
+			break;
 
-                    case SDLK_t:
-                        // Toggle accepting of incoming trade requests
-                        {
-                            unsigned int deflt = player_relations.getDefault();
-                            if (deflt & PlayerRelation::TRADE) {
-                                chatWindow->chatLog("Ignoring incoming trade requests", BY_SERVER);
-                                deflt &= ~PlayerRelation::TRADE;
-                            } else {
-                                chatWindow->chatLog("Accepting incoming trade requests", BY_SERVER);
-                                deflt |= PlayerRelation::TRADE;
-                            }
+		    case SDLK_t:
+			// Toggle accepting of incoming trade requests
+			{
+			    unsigned int deflt = player_relations.getDefault();
+			    if (deflt & PlayerRelation::TRADE) {
+				chatWindow->
+                                    chatLog("Ignoring incoming trade requests",
+                                    BY_SERVER);
+				deflt &= ~PlayerRelation::TRADE;
+			    } else {
+				chatWindow->chatLog("Accepting incoming trade "
+                                                    "requests", BY_SERVER);
+				deflt |= PlayerRelation::TRADE;
+			    }
 
-                            player_relations.setDefault(deflt);
-                        }
-                        used = true;
-                        break;
-                }
+			    player_relations.setDefault(deflt);
+			}
+			used = true;
+			break;
+		}
 
-                // Emotions
-                Uint8 emotion;
-                switch (event.key.keysym.sym)
-                {
-                    case SDLK_1: emotion = 1; break;
-                    case SDLK_2: emotion = 2; break;
-                    case SDLK_3: emotion = 3; break;
-                    case SDLK_4: emotion = 4; break;
-                    case SDLK_5: emotion = 5; break;
-                    case SDLK_6: emotion = 6; break;
-                    case SDLK_7: emotion = 7; break;
-                    case SDLK_8: emotion = 8; break;
-                    case SDLK_9: emotion = 9; break;
-                    case SDLK_0: emotion = 10; break;
-                    case SDLK_MINUS: emotion = 11; break;
-                    case SDLK_EQUALS: emotion = 12; break;
-                    default: emotion = 0; break;
-                }
+		// Emotions
+		Uint8 emotion;
+		switch (event.key.keysym.sym)
+		{
+		    case SDLK_1: emotion = 1; break;
+		    case SDLK_2: emotion = 2; break;
+		    case SDLK_3: emotion = 3; break;
+		    case SDLK_4: emotion = 4; break;
+		    case SDLK_5: emotion = 5; break;
+		    case SDLK_6: emotion = 6; break;
+		    case SDLK_7: emotion = 7; break;
+		    case SDLK_8: emotion = 8; break;
+		    case SDLK_9: emotion = 9; break;
+		    case SDLK_0: emotion = 10; break;
+		    case SDLK_MINUS: emotion = 11; break;
+		    case SDLK_EQUALS: emotion = 12; break;
+		    default: emotion = 0; break;
+		}
 
-                if (emotion)
-                {
-                    player_node->emote(emotion);
-                    used = true;
-                }
-            }
-            switch (event.key.keysym.sym)
-            {
-                case SDLK_PAGEUP:
-                    if (chatWindow->isVisible())
-                    {
-                        chatWindow->scroll(-DEFAULT_CHAT_WINDOW_SCROLL);
-                        used = true;
-                    }
-                    break;
+		if (emotion)
+		{
+		    player_node->emote(emotion);
+		    used = true;
+		}
+	    }
+	    switch (event.key.keysym.sym)
+	    {
+		case SDLK_PAGEUP:
+		    if (chatWindow->isVisible())
+		    {
+			chatWindow->scroll(-DEFAULT_CHAT_WINDOW_SCROLL);
+			used = true;
+		    }
+		    break;
 
-                case SDLK_PAGEDOWN:
-                    if (chatWindow->isVisible())
-                    {
-                        chatWindow->scroll(DEFAULT_CHAT_WINDOW_SCROLL);
-                        used = true;
-                    }
-                    break;
+		case SDLK_PAGEDOWN:
+		    if (chatWindow->isVisible())
+		    {
+			chatWindow->scroll(DEFAULT_CHAT_WINDOW_SCROLL);
+			used = true;
+		    }
+		    break;
 
-                case SDLK_F1:
-                    // In-game Help
-                    if (helpWindow->isVisible())
-                    {
-                        helpWindow->setVisible(false);
-                    }
-                    else
-                    {
-                        helpWindow->loadHelp("index");
-                        helpWindow->requestMoveToTop();
-                    }
-                    used = true;
-                    break;
+		case SDLK_F1:
+		    // In-game Help
+		    if (helpWindow->isVisible())
+		    {
+			helpWindow->setVisible(false);
+		    }
+		    else
+		    {
+			helpWindow->loadHelp("index");
+			helpWindow->requestMoveToTop();
+		    }
+		    used = true;
+		    break;
 
-                case SDLK_F2: requestedWindow = statusWindow; break;
-                case SDLK_F3: requestedWindow = inventoryWindow; break;
-                case SDLK_F4: requestedWindow = equipmentWindow; break;
-                case SDLK_F5: requestedWindow = skillDialog; break;
-                case SDLK_F6: requestedWindow = minimap; break;
-                case SDLK_F7: requestedWindow = chatWindow; break;
-                case SDLK_F8: requestedWindow = itemShortcutWindow; break;
-                case SDLK_F9: requestedWindow = setupWindow; break;
-                case SDLK_F10: requestedWindow = debugWindow; break;
-                //case SDLK_F11: requestedWindow = newSkillWindow; break;
+		case SDLK_F2: requestedWindow = statusWindow; break;
+		case SDLK_F3: requestedWindow = inventoryWindow; break;
+		case SDLK_F4: requestedWindow = equipmentWindow; break;
+		case SDLK_F5: requestedWindow = skillDialog; break;
+		case SDLK_F6: requestedWindow = minimap; break;
+		case SDLK_F7: requestedWindow = chatWindow; break;
+		case SDLK_F8: requestedWindow = itemShortcutWindow; break;
+		case SDLK_F9: requestedWindow = setupWindow; break;
+		case SDLK_F10: requestedWindow = debugWindow; break;
+		//case SDLK_F11: requestedWindow = newSkillWindow; break;
 
-                case SDLK_RETURN:
-                    // Input chat window
-                    if (chatWindow->isInputFocused() ||
-                        deathNotice != NULL ||
-                        weightNotice != NULL)
-                    {
-                        break;
-                    }
+		case SDLK_RETURN:
+		    // Input chat window
+		    if (chatWindow->isInputFocused() ||
+			deathNotice != NULL ||
+			weightNotice != NULL)
+		    {
+			break;
+		    }
 
-                    // Quit by pressing Enter if the exit confirm is there
-                    if (exitConfirm)
-                    {
-                        done = true;
-                    }
-                    // Close the Browser if opened
-                    else if (helpWindow->isVisible())
-                    {
-                        helpWindow->setVisible(false);
-                    }
-                    // Close the config window, cancelling changes if opened
-                    else if (setupWindow->isVisible())
-                    {
-                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                    }
-                    // Else, open the chat edit box
-                    else
-                    {
-                        chatWindow->requestChatFocus();
-                        used = true;
-                    }
-                    break;
-                   // Quitting confirmation dialog
-                case SDLK_ESCAPE:
-                    if (!exitConfirm) {
-                        exitConfirm = new ConfirmDialog(
-                                "Quit", "Are you sure you want to quit?");
-                        exitConfirm->addActionListener(&exitListener);
-                        exitConfirm->requestMoveToTop();
-                    }
-                    else
-                    {
-                        exitConfirm->action(gcn::ActionEvent(NULL, "no"));
-                    }
-                    break;
+		    // Quit by pressing Enter if the exit confirm is there
+		    if (exitConfirm)
+		    {
+			done = true;
+		    }
+		    // Close the Browser if opened
+		    else if (helpWindow->isVisible())
+		    {
+			helpWindow->setVisible(false);
+		    }
+		    // Close the config window, cancelling changes if opened
+		    else if (setupWindow->isVisible())
+		    {
+			setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
+		    }
+		    // Else, open the chat edit box
+		    else
+		    {
+			chatWindow->requestChatFocus();
+			used = true;
+		    }
+		    break;
+		   // Quitting confirmation dialog
+		case SDLK_ESCAPE:
+		    if (!exitConfirm) {
+			exitConfirm = new ConfirmDialog(
+				"Quit", "Are you sure you want to quit?");
+			exitConfirm->addActionListener(&exitListener);
+			exitConfirm->requestMoveToTop();
+		    }
+		    else
+		    {
+			exitConfirm->action(gcn::ActionEvent(NULL, "no"));
+		    }
+		    break;
 
-                default:
-                    break;
-            }
-            if (keyboard.isEnabled() && !chatWindow->isInputFocused())
-            {
-                const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-                // Checks if any item shortcut is pressed.
-                for (int i = KeyboardConfig::KEY_SHORTCUT_0;
-                    i <= KeyboardConfig::KEY_SHORTCUT_9;
-                    i++)
-                {
-                    if (tKey == i && !used) {
-                        itemShortcut->useItem(
-                                i - KeyboardConfig::KEY_SHORTCUT_0);
-                        break;
-                    }
-                }
-                switch (tKey) {
-                    case KeyboardConfig::KEY_PICKUP:
-                        {
-                            FloorItem *item = floorItemManager->findByCoordinates(
-                                    player_node->mX, player_node->mY);
+		default:
+		    break;
+	    }
+	    if (keyboard.isEnabled() && !chatWindow->isInputFocused())
+	    {
+		const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+		// Checks if any item shortcut is pressed.
+		for (int i = KeyboardConfig::KEY_SHORTCUT_0;
+		    i <= KeyboardConfig::KEY_SHORTCUT_9;
+		    i++)
+		{
+		    if (tKey == i && !used) {
+			itemShortcut->useItem(
+				i - KeyboardConfig::KEY_SHORTCUT_0);
+			break;
+		    }
+		}
+		switch (tKey) {
+		    case KeyboardConfig::KEY_PICKUP:
+			{
+			    FloorItem *item =
+                                floorItemManager->findByCoordinates(
+				    player_node->mX, player_node->mY);
 
-                            // If none below the player, try the tile in front of
-                            // the player
-                            if (!item) {
-                                Uint16 x = player_node->mX;
-                                Uint16 y = player_node->mY;
-                                if (player_node->getDirection() & Being::UP)
-                                    y--;
-                                if (player_node->getDirection() & Being::DOWN)
-                                    y++;
-                                if (player_node->getDirection() & Being::LEFT)
-                                    x--;
-                                if (player_node->getDirection() & Being::RIGHT)
-                                    x++;
+			    // If none below the player, try the tile in front
+			    // of the player
+			    if (!item) {
+				Uint16 x = player_node->mX;
+				Uint16 y = player_node->mY;
+				if (player_node->getDirection() & Being::UP)
+				    y--;
+				if (player_node->getDirection() & Being::DOWN)
+				    y++;
+				if (player_node->getDirection() & Being::LEFT)
+				    x--;
+				if (player_node->getDirection() & Being::RIGHT)
+				    x++;
 
-                                item = floorItemManager->findByCoordinates(x, y);
-                            }
+				item = floorItemManager->
+                                    findByCoordinates(x, y);
+			    }
 
-                            if (item)
-                                player_node->pickUp(item);
+			    if (item)
+				player_node->pickUp(item);
 
-                            used = true;
-                        }
-                        break;
-                    case KeyboardConfig::KEY_SIT:
-                        // Player sit action
-                        player_node->toggleSit();
-                        used = true;
-                        break;
-                    case KeyboardConfig::KEY_HIDE_WINDOWS:
-                         // Hide certain windows
-                        if (!chatWindow->isInputFocused())
-                        {
-                            statusWindow->setVisible(false);
-                            inventoryWindow->setVisible(false);
-                            skillDialog->setVisible(false);
-                            setupWindow->setVisible(false);
-                            equipmentWindow->setVisible(false);
-                            helpWindow->setVisible(false);
-                            debugWindow->setVisible(false);
-                        }
-                        break;
-                }
-            }
+			    used = true;
+			}
+			break;
+		    case KeyboardConfig::KEY_SIT:
+			// Player sit action
+			player_node->toggleSit();
+			used = true;
+			break;
+		    case KeyboardConfig::KEY_HIDE_WINDOWS:
+			 // Hide certain windows
+			if (!chatWindow->isInputFocused())
+			{
+			    statusWindow->setVisible(false);
+			    inventoryWindow->setVisible(false);
+			    skillDialog->setVisible(false);
+			    setupWindow->setVisible(false);
+			    equipmentWindow->setVisible(false);
+			    helpWindow->setVisible(false);
+			    debugWindow->setVisible(false);
+			}
+			break;
+		}
+	    }
 
-            if (requestedWindow)
-            {
-                requestedWindow->setVisible(!requestedWindow->isVisible());
-                if (requestedWindow->isVisible())
-                {
-                    requestedWindow->requestMoveToTop();
-                }
-                used = true;
-            }
+	    if (requestedWindow)
+	    {
+		requestedWindow->setVisible(!requestedWindow->isVisible());
+		if (requestedWindow->isVisible())
+		{
+		    requestedWindow->requestMoveToTop();
+		}
+		used = true;
+	    }
 
-        }
+	}
 
-        // Quit event
-        else if (event.type == SDL_QUIT)
-        {
-            done = true;
-        }
+	// Quit event
+	else if (event.type == SDL_QUIT)
+	{
+	    done = true;
+	}
 
-        // Push input to GUI when not used
-        if (!used)
-        {
-            try
-            {
-                guiInput->pushInput(event);
-            }
-            catch (gcn::Exception e)
-            {
-                const char* err = e.getMessage().c_str();
-                logger->log("Warning: guichan input exception: %s", err);
-            }
-        }
+	// Push input to GUI when not used
+	if (!used)
+	{
+	    try
+	    {
+		guiInput->pushInput(event);
+	    }
+	    catch (gcn::Exception e)
+	    {
+		const char* err = e.getMessage().c_str();
+		logger->log("Warning: guichan input exception: %s", err);
+	    }
+	}
 
     } // End while
     // If the user is configuring the keys then don't respond.
@@ -732,111 +739,112 @@ void Game::handleInput()
     }
     // Moving player around
     if (player_node->mAction != Being::DEAD &&
-        current_npc == 0 &&
-        !chatWindow->isInputFocused())
+	current_npc == 0 &&
+	!chatWindow->isInputFocused())
     {
-        // Get the state of the keyboard keys
-        keyboard.refreshActiveKeys();
+	// Get the state of the keyboard keys
+	keyboard.refreshActiveKeys();
 
-        const Uint16 x = player_node->mX;
-        const Uint16 y = player_node->mY;
-        unsigned char direction = 0;
+	const Uint16 x = player_node->mX;
+	const Uint16 y = player_node->mY;
+	unsigned char direction = 0;
 
-        // Translate pressed keys to movement and direction
-        if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
-            (joystick && joystick->isUp()))
-        {
-            direction |= Being::UP;
-        }
-        else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
-                 (joystick && joystick->isDown()))
-        {
-            direction |= Being::DOWN;
-        }
+	// Translate pressed keys to movement and direction
+	if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
+	    (joystick && joystick->isUp()))
+	{
+	    direction |= Being::UP;
+	}
+	else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
+		 (joystick && joystick->isDown()))
+	{
+	    direction |= Being::DOWN;
+	}
 
-        if (keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
-            (joystick && joystick->isLeft()))
-        {
-            direction |= Being::LEFT;
-        }
-        else if (keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
-                 (joystick && joystick->isRight()))
-        {
-            direction |= Being::RIGHT;
-        }
+	if (keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
+	    (joystick && joystick->isLeft()))
+	{
+	    direction |= Being::LEFT;
+	}
+	else if (keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
+		 (joystick && joystick->isRight()))
+	{
+	    direction |= Being::RIGHT;
+	}
 
-        player_node->setWalkingDir(direction);
+	player_node->setWalkingDir(direction);
 
-        // Attacking monsters
-        if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
-                (joystick && joystick->buttonPressed(0)))
-        {
-            Being *target = NULL;
-            bool newTarget = keyboard.isKeyActive(keyboard.KEY_TARGET);
-            // A set target has highest priority
-            if (newTarget || !player_node->getTarget())
-            {
-                Uint16 targetX = x, targetY = y;
+	// Attacking monsters
+	if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
+		(joystick && joystick->buttonPressed(0)))
+	{
+	    Being *target = NULL;
+	    bool newTarget = keyboard.isKeyActive(keyboard.KEY_TARGET);
+	    // A set target has highest priority
+	    if (newTarget || !player_node->getTarget())
+	    {
+		Uint16 targetX = x, targetY = y;
 
-                if (player_node->getDirection() & Being::UP)
-                    targetY--;
-                if (player_node->getDirection() & Being::DOWN)
-                    targetY++;
-                if (player_node->getDirection() & Being::LEFT)
-                    targetX--;
-                if (player_node->getDirection() & Being::RIGHT)
-                    targetX++;
+		if (player_node->getDirection() & Being::UP)
+		    targetY--;
+		if (player_node->getDirection() & Being::DOWN)
+		    targetY++;
+		if (player_node->getDirection() & Being::LEFT)
+		    targetX--;
+		if (player_node->getDirection() & Being::RIGHT)
+		    targetX++;
 
-                // Attack priorioty is: Monster, Player, auto target
-                target = beingManager->findBeing(
-                        targetX, targetY, Being::MONSTER);
-                if (!target)
-                    target = beingManager->findBeing(
-                            targetX, targetY, Being::PLAYER);
-            }
+		// Attack priorioty is: Monster, Player, auto target
+		target = beingManager->findBeing(
+			targetX, targetY, Being::MONSTER);
+		if (!target)
+		    target = beingManager->findBeing(
+			    targetX, targetY, Being::PLAYER);
+	    }
 
-            player_node->attack(target, newTarget);
-        }
+	    player_node->attack(target, newTarget);
+	}
 
-        // Target the nearest player if 'q' is pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) )
-        //if (keys[SDLK_q])
-        {
-            Being *target =
-                beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
+	// Target the nearest player if 'q' is pressed
+	if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) )
+	//if (keys[SDLK_q])
+	{
+	    Being *target =
+		beingManager->
+                    findNearestLivingBeing(player_node, 20, Being::PLAYER);
 
-            if (target)
-            {
-                player_node->setTarget(target);
-            }
-        }
+	    if (target)
+	    {
+		player_node->setTarget(target);
+	    }
+	}
 
-        // Target the nearest monster if 'a' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) )
-        //if (keys[SDLK_a])
-        {
-            Being *target =
-                beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
+	// Target the nearest monster if 'a' pressed
+	if ( keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) )
+	//if (keys[SDLK_a])
+	{
+	    Being *target =
+		beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
 
-            if (target)
-            {
-                player_node->setTarget(target);
-            }
-        }
+	    if (target)
+	    {
+		player_node->setTarget(target);
+	    }
+	}
 
-        if (joystick)
-        {
-            if (joystick->buttonPressed(1))
-            {
-                FloorItem *item = floorItemManager->findByCoordinates(x, y);
+	if (joystick)
+	{
+	    if (joystick->buttonPressed(1))
+	    {
+		FloorItem *item = floorItemManager->findByCoordinates(x, y);
 
-                if (item)
-                    player_node->pickUp(item);
-            }
-            else if (joystick->buttonPressed(2))
-            {
-                player_node->toggleSit();
-            }
-        }
+		if (item)
+		    player_node->pickUp(item);
+	    }
+	    else if (joystick->buttonPressed(2))
+	    {
+		player_node->toggleSit();
+	    }
+	}
     }
 }

@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: spritedef.cpp 4332 2008-06-05 07:33:12Z b_lindeijer $
  */
 
 #include <set>

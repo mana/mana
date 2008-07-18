@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: trim.h 3606 2007-09-27 14:54:09Z b_lindeijer $
  */
 
 #ifndef _TMW_UTILS_TRIM_H_

@@ -18,29 +18,17 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: player.h 4237 2008-05-14 18:57:32Z b_lindeijer $
  */
 
 #ifndef _TMW_PLAYER_H
 #define _TMW_PLAYER_H
 
 #include "being.h"
+#include "text.h"
 
 class Graphics;
 class Map;
-
-class Player;
-
-class PlayerNameDrawStrategy
-{
-public:
-    virtual ~PlayerNameDrawStrategy(void) {}
-
-    /**
-     * Draw the player's name
-     */
-    virtual void draw(Player *p, Graphics *graphics, int px, int py) = 0;
-};
 
 /**
  * A player being. Players have their name drawn beneath them. This class also
@@ -52,14 +40,19 @@ class Player : public Being
     public:
         Player(int id, int job, Map *map);
 
+        ~Player();
+
+        /**
+         * Set up mName to be the character's name
+         */
+        virtual void
+        setName(const std::string &name);
+
         virtual void
         logic();
 
         virtual Type
         getType() const;
-
-        virtual void
-        drawName(Graphics *graphics, int offsetX, int offsetY);
 
         virtual void
         setGender(int gender);
@@ -83,19 +76,13 @@ class Player : public Being
         setSprite(int slot, int id, std::string color = "");
 
         /**
-         * Sets the strategy responsible for drawing the player's name
-         *
-         * \param draw_strategy A strategy describing how the player's name
-         * should be drawn, or NULL for default
+         * Flash the player's name
          */
-        virtual void
-        setNameDrawStrategy(PlayerNameDrawStrategy *draw_strategy);
-
-        virtual PlayerNameDrawStrategy *
-        getNameDrawStrategy(void) const { return mDrawStrategy; }
-
+        void flash(int time);
+    protected:
+        void updateCoords();
     private:
-        PlayerNameDrawStrategy *mDrawStrategy;
+        FlashText *mName;
 };
 
 #endif

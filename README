@@ -52,6 +52,7 @@ Use arrow keys to move around. Other keys:
 - Alt + S            sit down / stand up
 - Alt + F            toggle debug pathfinding feature
 - Alt + P            take screenshot
+- Alt + T            turns on anti-trade function 
 - A                  target nearest monster
 - H                  hide all non-sticky windows
 - G or Z             pick up item
@@ -64,6 +65,38 @@ Left click to execute default action: walk, pick up an item, attack a monster
 and talk to NPCs (be sure to click on their feet). Right click to show up a
 context menu. Holding [Left Shift] prevents from walking when attacking.
 
+/Commands:
+
+- /help              Displays the list of commands
+- /announce          broadcasts a global msg(Gm Cammand only)
+- /clear             clears the chat window 
+- /who               shows how many players are online
+- /where             displays the map name your currently on 
+- /whisper           send a private msg to another player
+                        (format: /whisper <charname> <message>)
+                     If the <nick> has spaces in it, enclose it in double
+                        quotes
+- /record            Records the Chat output 
+                     (format: /record <filename to write to> starts the record
+                        session /record again 
+                      stops the session)
+- /party             <command> <params>: Party commands
+ - /party new         creates a new party /party new <party name>
+ - /party create      creates a new party /party create <party name>
+ - /party prefix      This commands sets the party prefix character
+                         /party prefix <prefix-char>
+                      "/party prefix" reports the current party prefix
+                         character
+ - /party leave       This command causes the player to leave the party.
+Type /help party <option> for further help.
+- /present           This command gets a list of players within hearing
+- /toggle            make the chatlog lose focus on a blank line or after
+                       message. (format: /toggle <option>, where option can be
+                       '1', 'y' or 't' to make the chatlog lose focus on a
+                       blank line, and '0', 'n' or 'f' to make the chatlog lose
+                       focus after every message.  /toggle displays the status)
+For more information, type /help <command>
+
 3. Skills
 ---------
 
@@ -72,10 +105,16 @@ point to spend on skills.
 
 BASIC SKILLS:
 
-Level 1: enables the ability to trade with others
-Level 2: enables the ability to express emotions
-Level 3: enables character to sit
-Other level not yet implemented.
+Level 1:  enables the ability to trade with others
+Level 2:  enables the ability to express emotions
+Level 3:  enables character to sit
+Level 4:  enables not used 
+level 5:  enables the ability to join a party 
+level 6:  enables not used 
+level 7:  enables the ability to create a party 
+level 8:  enables not used
+level 9:  enables not used
+level 10: enables not used
 
 4. Support
 ----------
@@ -83,9 +122,9 @@ Other level not yet implemented.
 If you're having troubles, please first of all read the FAQ.
 If you can't find a solution to your problem, feel free to check our
 Bugs/Support section of the forum:
-- http://themanaworld.org/phpBB2/viewforum.php?f=3
+- http://216.139.126.36/forums
 or come visit us on our IRC channel:
-- #themanaworld @ irc.freenode.net
+- #themanaexperiment @ irc.freenode.net
 
 Otherwise check the AUTHORS file to have a list of developers and how to
 contact them.

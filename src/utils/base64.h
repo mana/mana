@@ -26,7 +26,7 @@
    | Author: Jim Winstead (jimw@php.net)                                  |
    +----------------------------------------------------------------------+
  */
-/* $Id$ */
+/* $Id: base64.h 2906 2006-12-12 15:18:30Z b_lindeijer $ */
 
 #ifndef _TMW_BASE64_H
 #define _TMW_BASE64_H

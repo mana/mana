@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: setup_joystick.h 3035 2007-01-14 14:54:39Z b_lindeijer $
  */
 
 #ifndef _TMW_GUI_SETUP_JOYSTICK_H

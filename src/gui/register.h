@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: register.h 3234 2007-03-24 13:05:27Z b_lindeijer $
  */
 
 #ifndef _TMW_REGISTER_H
@@ -87,10 +87,31 @@ class RegisterDialog : public Window, public gcn::ActionListener,
         bool
         canSubmit();
 
+	/**
+	 * Function to decide whether string is an unsigned short or not
+	 *
+	 * @param str the string to parse
+	 *
+	 * @return true if str is an unsigned short, false otherwise
+	 */
+	static bool
+        isUShort(const std::string &str);
+
+	/**
+	 * Converts string to an unsigned short (undefined if invalid)
+	 *
+	 * @param str the string to parse
+	 *
+	 * @return the value str represents
+	 */
+	static unsigned short
+	getUShort(const std::string &str);
+
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;
         gcn::TextField *mServerField;
+	gcn::TextField *mPortField;
 
         gcn::Button *mRegisterButton;
         gcn::Button *mCancelButton;

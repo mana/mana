@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: main.cpp 4332 2008-06-05 07:33:12Z b_lindeijer $
  */
 
 #include "main.h"
@@ -57,6 +57,7 @@
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
+#include "serverinfo.h"
 #include "sound.h"
 
 #include "gui/char_server.h"
@@ -151,22 +152,64 @@ struct Options
 };
 
 /**
+ * Parse the update host and determine the updates directory
+ * Then verify that the directory exists (creating if needed).
+ */
+void setUpdatesDir()
+{
+    // If updatesHost is currently empty, fill it from config file
+    if (updateHost.empty()) {
+        updateHost =
+            config.getValue("updatehost", "http://updates.thanaworld.org");
+    }
+
+    // Parse out any "http://" or "ftp://", and set the updates directory
+    size_t pos;
+    pos = updateHost.find("://");
+    if (pos != updateHost.npos) {
+        if (pos + 3 < updateHost.length()) {
+            updatesDir =
+                "updates/" + updateHost.substr(pos + 3);
+        } else {
+            logger->log("Error: Invalid update host: %s", updateHost.c_str());
+            errorMessage = "Invalid update host: " + updateHost;
+            state = ERROR_STATE;
+        }
+    } else {
+        logger->log("Warning: no protocol was specified for the update host");
+        updatesDir = "updates/" + updateHost;
+    }
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    // Verify that the updates directory exists. Create if necessary.
+    if (!resman->isDirectory("/" + updatesDir)) {
+        if (resman->mkdir("/" + updatesDir)) {
+            logger->log("Error: %s/%s can't be made, but doesn't exist!",
+                         homeDir.c_str(), updatesDir.c_str());
+            errorMessage = "Error creating updates directory!";
+            state = ERROR_STATE;
+        }
+    }
+}
+
+/**
  * Do all initialization stuff
  */
 void init_engine(const Options &options)
 {
-    homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
+    homeDir = std::string(PHYSFS_getUserDir()) + "/.tme";
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
 #elif defined __APPLE__
-    // Use Application Directory instead of .tmw
-    homeDir = std::string(PHYSFS_getUserDir()) + 
+    // Use Application Directory instead of .tme
+    homeDir = std::string(PHYSFS_getUserDir()) +
         "/Library/Application Support/The Mana World";
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
 #else
-    // Checking if /home/user/.tmw folder exists.
+    // Checking if /home/user/.tme folder exists.
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
 #endif
@@ -230,7 +273,7 @@ void init_engine(const Options &options)
 
     // Fill configuration with defaults
     logger->log("Initializing configuration...");
-    config.setValue("host", "server.themanaworld.org");
+    config.setValue("host", "216.139.126.36");
     config.setValue("port", 6901);
     config.setValue("hwaccel", 0);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
@@ -245,7 +288,7 @@ void init_engine(const Options &options)
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 60);
-    config.setValue("updatehost", "http://updates.themanaworld.org");
+    config.setValue("updatehost", "http://216.139.126.36/updates");
     config.setValue("customcursor", 1);
     config.setValue("ChatLogLength", 128);
 
@@ -272,45 +315,7 @@ void init_engine(const Options &options)
         config.init(configPath);
     }
 
-
-    // Take host for updates from config if it wasn't set on the command line
-    if (options.updateHost.empty()) {
-        updateHost =
-            config.getValue("updatehost", "http://updates.thanaworld.org");
-    } else {
-        updateHost = options.updateHost;
-    }
-
-    // Parse out any "http://" or "ftp://", and set the updates directory
-    size_t pos;
-    pos = updateHost.find("//");
-    if (pos != updateHost.npos) {
-        if (pos + 2 < updateHost.length()) {
-            updatesDir =
-                "updates/" + updateHost.substr(pos + 2);
-        } else {
-            std::cout << "The updates host - " << updateHost
-                      << " does not appear to be valid!" << std::endl
-                      << "Please fix the \"updatehost\" in your configuration"
-                      << " file. Exiting." << std::endl;
-            exit(1);
-        }
-    } else {
-        logger->log("Warning: no protocol was specified for the update host");
-        updatesDir = "updates/" + updateHost;
-    }
-
-    // Verify that the updates directory exists. Create if necessary.
-    if (!resman->isDirectory("/" + updatesDir)) {
-        if (!resman->mkdir("/" + updatesDir)) {
-            std::cout << homeDir << "/" << updatesDir
-                      << " can't be made, but it doesn't exist! Exiting."
-                      << std::endl;
-            exit(1);
-        }
-    }
-
-    SDL_WM_SetCaption("The Mana World", NULL);
+    SDL_WM_SetCaption("The Mana Experiment", NULL);
 #ifdef WIN32
     static SDL_SysWMinfo pInfo;
     SDL_GetWMInfo(&pInfo);
@@ -363,7 +368,7 @@ void init_engine(const Options &options)
     itemShortcut = new ItemShortcut();
 
     gui = new Gui(graphics);
-    state = UPDATE_STATE; /**< Initial game state */
+    state = LOGIN_STATE; /**< Initial game state */
 
     // Initialize sound engine
     try {
@@ -424,7 +429,8 @@ void printHelp()
         << "  -u --skipupdate : Skip the update process" << std::endl
         << "  -U --username   : Login with this username" << std::endl
         << "  -P --password   : Login with this password" << std::endl
-        << "  -D --default    : Bypass the login process with default settings" << std::endl
+        << "  -D --default    : Bypass the login process with default "
+                                "settings" << std::endl
         << "  -p --playername : Login with this player" << std::endl
         << "  -C --configfile : Configuration file to use" << std::endl
         << "  -H --updatehost : Use this update host" << std::endl;
@@ -541,7 +547,13 @@ void accountLogin(Network *network, LoginData *loginData)
     outMsg.writeInt32(0); // client version
     outMsg.writeString(loginData->username, 24);
     outMsg.writeString(loginData->password, 24);
-    outMsg.writeInt8(0); // unknown
+
+    /*
+     * eAthena calls the last byte "client version 2", but it isn't
+     * used at all.  We're retasking it, with bit 0  to indicate whether
+     * the client can handle the 0x63 "update host" packet
+     */
+    outMsg.writeInt8(0x01);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -648,13 +660,6 @@ int main(int argc, char *argv[])
 
     SDL_Event event;
 
-    if (options.skipUpdate && state != ERROR_STATE) {
-        state = LOADDATA_STATE;
-    }
-    else {
-        state = UPDATE_STATE;
-    }
-
     unsigned int oldstate = !state; // We start with a status change.
 
     Game *game = NULL;
@@ -684,7 +689,7 @@ int main(int argc, char *argv[])
     if (!options.password.empty()) {
         loginData.password = options.password;
     }
-    loginData.hostname = config.getValue("host", "server.themanaworld.org");
+    loginData.hostname = config.getValue("host", "216.139.126.36");
     loginData.port = (short)config.getValue("port", 0);
     loginData.remember = config.getValue("remember", 0);
     loginData.registerLogin = false;
@@ -751,11 +756,15 @@ int main(int argc, char *argv[])
             switch (oldstate)
             {
                 case UPDATE_STATE:
-                    loadUpdates();
-                    // Reload the wallpaper in case that it was updated
-                    login_wallpaper->decRef();
-                    login_wallpaper = ResourceManager::getInstance()->
-                        getImage("graphics/images/login_wallpaper.png");
+                    if (options.skipUpdate) {
+                        state = LOADDATA_STATE;
+                    } else {
+                        loadUpdates();
+                        // Reload the wallpaper in case that it was updated
+                        login_wallpaper->decRef();
+                        login_wallpaper = ResourceManager::getInstance()->
+                            getImage("graphics/images/login_wallpaper.png");
+                    }
                     break;
 
                     // Those states don't cause a network disconnect
@@ -797,7 +806,7 @@ int main(int argc, char *argv[])
                     ItemDB::load();
                     MonsterDB::load();
                     NPCDB::load();
-                    state = LOGIN_STATE;
+                    state = CHAR_CONNECT_STATE;
                     break;
 
                 case LOGIN_STATE:
@@ -818,13 +827,20 @@ int main(int argc, char *argv[])
 
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
-                    currentDialog = new ServerSelectDialog(&loginData);
-                    if (options.chooseDefault || options.playername != "") {
-                        ((ServerSelectDialog*) currentDialog)->action(
-                            gcn::ActionEvent(NULL, "ok"));
+                    if (n_server == 1) {
+                        SERVER_INFO *si = *server_info;
+                        loginData.hostname = iptostring(si->address);
+                        loginData.port = si->port;
+                        loginData.updateHost = si->updateHost;
+                        state = UPDATE_STATE;
+                    } else {
+                        currentDialog = new ServerSelectDialog(&loginData);
+                        if (options.chooseDefault || options.playername != "") {
+                            ((ServerSelectDialog*) currentDialog)->action(
+                                gcn::ActionEvent(NULL, "ok"));
+                        }
                     }
                     break;
-
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
@@ -865,6 +881,13 @@ int main(int argc, char *argv[])
                     break;
 
                 case UPDATE_STATE:
+                    // Determine which source to use for the update host
+                    if(!options.updateHost.empty())
+                        updateHost = options.updateHost;
+                    else
+                        updateHost = loginData.updateHost;
+
+                    setUpdatesDir();
                     logger->log("State: UPDATE");
                     currentDialog = new UpdaterWindow(updateHost,
                             homeDir + "/" + updatesDir);

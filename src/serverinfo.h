@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: serverinfo.h 1735 2005-09-13 22:56:29Z der_doener $
  */
 
 #ifndef _TMW_SERVERINFO_
@@ -32,6 +32,7 @@ struct SERVER_INFO
     short port;
     std::string name;
     short online_users;
+    std::string updateHost;
 };
 
 #endif

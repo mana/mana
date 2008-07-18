@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: viewport.cpp 4098 2008-04-16 11:36:41Z b_lindeijer $
  */
 
 #include "viewport.h"
@@ -37,6 +37,7 @@
 #include "../map.h"
 #include "../monster.h"
 #include "../npc.h"
+#include "../textmanager.h"
 
 #include "../resources/animation.h"
 #include "../resources/monsterinfo.h"
@@ -228,7 +229,6 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 2);
         mMap->drawOverlay(graphics, mPixelViewX, mPixelViewY,
                 (int) config.getValue("OverlayDetail", 2));
-        drawTargetName(graphics);
     }
 
     // Find a path from the player to the mouse, and draw it. This is for debug
@@ -259,12 +259,16 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         }
     }
 
+    // Draw text
+    if (textManager)
+    {
+        textManager->draw(graphics, mPixelViewX, mPixelViewY);
+    }
+
     // Draw player nickname, speech, and emotion sprite as needed
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
-        (*i)->drawSpeech(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
-        (*i)->drawName(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
         (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
     }
 
@@ -328,24 +332,6 @@ Viewport::drawTargetCursor(Graphics *graphics)
         int posY = target->getPixelY() + 16 - targetCursor->getHeight() / 2 - (int) mPixelViewY;
 
         graphics->drawImage(targetCursor, posX, posY);
-    }
-}
-
-void
-Viewport::drawTargetName(Graphics *graphics)
-{
-    // Draw target marker if needed
-    Being *target = player_node->getTarget();
-    if (target && target->getType() == Being::MONSTER)
-    {
-        graphics->setFont(speechFont);
-        graphics->setColor(gcn::Color(255, 32, 32));
-
-        const MonsterInfo &mi = static_cast<Monster*>(target)->getInfo();
-        int posX = target->getPixelX() + 16 - (int)mPixelViewX;
-        int posY = target->getPixelY() + 16 - target->getHeight() - (int)mPixelViewY;
-
-        graphics->drawText(mi.getName(), posX, posY, gcn::Graphics::CENTER);
     }
 }
 

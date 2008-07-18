@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: sound.cpp 3892 2008-02-18 10:00:45Z umperio $
  */
 
 #include "sound.h"

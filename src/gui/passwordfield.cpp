@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: passwordfield.cpp 2132 2006-02-01 14:53:10Z der_doener $
  */
 
 #include "passwordfield.h"

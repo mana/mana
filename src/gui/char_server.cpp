@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: char_server.cpp 4045 2008-04-07 15:23:07Z b_lindeijer $
  */
 
 #include "char_server.h"
@@ -105,10 +105,11 @@ ServerSelectDialog::action(const gcn::ActionEvent &event)
         const SERVER_INFO *si = server_info[mServerList->getSelected()];
         mLoginData->hostname = iptostring(si->address);
         mLoginData->port = si->port;
-        state = CHAR_CONNECT_STATE;
+        mLoginData->updateHost = si->updateHost;
+        state = UPDATE_STATE; 
     }
     else if (event.getId() == "cancel") {
-        state = LOADDATA_STATE;
+        state = LOGIN_STATE; 
     }
 }
 

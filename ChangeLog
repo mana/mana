@@ -1,3 +1,49 @@
+2008-07-11  Douglas Boffey  <DougABoffey@netscape.net>
+
+	* Added code to avoid collision between different displayed text.
+
+2008-07-08  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+
+	* Added handling for a "Stop Walking" packet.  This will
+	  force the client back into sync during those "can't run
+	  away from a battle" sync error conditions.
+
+2008-07-07  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+
+	* Added support for update host provided by login server
+	* Changed startup sequence to login first, then update
+
+2008-07-05  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+
+	* Applied patch from kraant to convert into a TME branded client
+	* Removed redundant autoconf files
+
+2008-07-01  Douglas Boffey  <DougABoffey@netscape.net>
+
+	* Split ChatWindow into ChatWindow, Recorder and Party.
+	* Added /toggle command.
+
+2008-06-28  Kevin Day  <blame582@gmail.com>
+
+	* Updated configure and configure.ac to reflect tme version info.
+
+2008-06-25  Kevin Day  <blame582@gmail.com>
+
+	* Updated README added /commands and updated skill level listing.
+
+2008-06-25  Douglas Boffey  <DougABoffey@netscape.net>
+
+	* Added a command to display the characters present within hearing
+	distance (/help present for details).
+	* Removed the need to select the map server if only one available.
+	* Added a text entry for the port to the login dialog.
+	* Added the basis of the party subsystem. (/help party for details).
+	* Added the recording subsystem (/help record for details).
+	* Add a dropdown to the login dialog to make it easier to log in
+	on different servers.
+	* Made the chatlog entry sticky (Cancelled by a blank line) -
+	TODO Make an option.
+
 2008-06-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
@@ -17,7 +63,7 @@
 
 2008-06-17  Fate  <fate.tmw@googlemail.com>
 
-	* src/net/tradehandler.cpp: bug #333: Suppress `trade with X cancelled' 
+	* src/net/tradehandler.cpp: bug #333: Suppress `trade with X cancelled'
 	messages for ignored players.
 
 2008-06-16  Fate  <fate.tmw@googlemail.com>
@@ -291,7 +337,7 @@
 	* src/winver.h, README, configure.ac, data/help/changes.txt,
 	data/help/header.txt, NEWS, CMakeLists.txt: Updated version, release
 	date and changes.
-	
+
 2008-04-03  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Tweaked disconnect dialog, hoping to fix a crash bug.
@@ -302,7 +348,7 @@
 	src/resources/npcdb.cpp, data/npcs.xml, src/Makefile.am, tmc.cbp:
 	Implemented NPC XML database which maps NPC IDs to one or more
 	animation files and thus enables animated NPCs.
-	
+
 2008-03-30  Dennis Friis  <peavey@placid.dk>
 
 	* configure.ac: Updated for tmwdata split.
@@ -536,7 +582,7 @@
 2007-12-28  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_3-1.tmx: Some mapping errors fixed by Zipon.
-	* src/being.cpp, src/monster.cpp, src/resources/monsterinfo.cpp, 
+	* src/being.cpp, src/monster.cpp, src/resources/monsterinfo.cpp,
 	src/resources/monsterinfo.h: Added the possibility to assign particle
 	effects to monsters in the monster database.
 	* data/monsters.xml: Added flame particle effect to fire goblin as a
@@ -721,7 +767,7 @@
 	data/graphics/sprites/head-xmaself.png,
 	data/graphics/sprites/head-xmaself.xml: New versions of funky hat
 	and elf hat by QOAL.
-	
+
 2007-12-04  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/items/generic-santacookie.png,
@@ -984,7 +1030,7 @@
 
 	* src/player.cpp, data/graphics/sprites/hairstyle*:
 	Added support for different hairstyles for male and female characters
-	(current female hairstyles are copies of the male ones until the 
+	(current female hairstyles are copies of the male ones until the
 	real female ones are finished)
 
 2007-09-30  Philipp Sehmisch  <tmw@crushnet.org>
@@ -1376,15 +1422,15 @@
 	* src/particle.cpp, src/particleemitter.cpp: Corrected some perspective
 	issues of the particle engine and fixed a crash caused by particles
 	with child emitters that have an image than isn't used elsewhere.
-	* data/maps/new-3-1.tmx.gz: Added a particle effect at the spawn point 
+	* data/maps/new-3-1.tmx.gz: Added a particle effect at the spawn point
 	in Tulimshar.
 
 2007-06-21  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png, 
+	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png,
 	data/graphics/sprites/monster-logmonster.xml: Added logmonster by
 	Enigmatik (Monster ID is 23).
-	* data/items.xml, data/equipment.xml, 
+	* data/items.xml, data/equipment.xml,
 	data/graphics/items/armor-chest-lightplatemail.png,
 	data/graphics/sprites/chest-lightplatemail-male.xml,
 	data/graphics/sprites/chest-lightplatemail-male.png,
