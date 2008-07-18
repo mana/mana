@@ -68,6 +68,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
     Uint32 id;
     Uint16 job, speed;
     Uint16 headTop, headMid, headBottom;
+    Uint16 shoes, gloves;
     Sint16 param1;
     Sint8 type;
     Being *srcBeing, *dstBeing;
@@ -124,8 +125,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            msg->readInt16();  // clothes color -not used
-            msg->readInt16();  // head dir
+            shoes = msg->readInt16();
+            gloves = msg->readInt16();
             msg->readInt16();  // guild
             msg->readInt16();  // unknown
             msg->readInt16();  // unknown
@@ -138,6 +139,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setSprite(Being::HAT_SPRITE, headTop);
+            dstBeing->setSprite(Being::SHOE_SPRITE, shoes);
+            dstBeing->setSprite(Being::GLOVES_SPRITE, gloves);
             dstBeing->setHairStyle(hairStyle, hairColor);
 
             if (msg->getId() == SMSG_BEING_MOVE)
@@ -312,6 +315,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 case 9:     // eAthena LOOK_SHOES
                     dstBeing->setSprite(Being::SHOE_SPRITE, id);
                     break;
+                case 10:   // LOOK_GLOVES
+                    dstBeing->setSprite(Being::GLOVES_SPRITE, id);
+                    break;
                 default:
                     logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
                             "%d, id: %d", type, id);
@@ -360,8 +366,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            msg->readInt16();  // clothes color - not used
-            msg->readInt16();  // head dir
+            shoes = msg->readInt16();
+            gloves = msg->readInt16();
             msg->readInt32();  // guild
             msg->readInt32();  // emblem
             msg->readInt16();  // manner
@@ -372,6 +378,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setSprite(Being::HAT_SPRITE, headTop);
+            dstBeing->setSprite(Being::SHOE_SPRITE, shoes);
+            dstBeing->setSprite(Being::GLOVES_SPRITE, gloves);
             dstBeing->setHairStyle(hairStyle, hairColor);
 
             if (msg->getId() == SMSG_PLAYER_MOVE)

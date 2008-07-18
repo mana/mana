@@ -1,3 +1,7 @@
+2008-07-18  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+
+	* Added code to provide viewable glove and shoe sprites
+
 2008-07-11  Douglas Boffey  <DougABoffey@netscape.net>
 
 	* Added code to avoid collision between different displayed text.

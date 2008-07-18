@@ -191,7 +191,10 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->mGp = msg.readInt32();
     tempPlayer->mJobXp = msg.readInt32();
     tempPlayer->mJobLevel = msg.readInt32();
-    msg.skip(8);                          // unknown
+    tempPlayer->setSprite(Being::SHOE_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(Being::GLOVES_SPRITE, msg.readInt16());
+    msg.readInt16();    // Cape
+    msg.readInt16();    // Misc1
     msg.readInt32();                       // option
     msg.readInt32();                       // karma
     msg.readInt32();                       // manner
@@ -208,7 +211,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->mLevel = msg.readInt16();
     msg.readInt16();                       // skill point
     tempPlayer->setSprite(Being::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
-    tempPlayer->setSprite(Being::SHIELD_SPRITE, msg.readInt16()); 
+    tempPlayer->setSprite(Being::SHIELD_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Being::HAT_SPRITE, msg.readInt16()); // head option top
     tempPlayer->setSprite(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
     int hairColor = msg.readInt16();
