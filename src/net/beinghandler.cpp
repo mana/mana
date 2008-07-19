@@ -427,13 +427,18 @@ void BeingHandler::handleMessage(MessageIn *msg)
             if (dstBeing) {
                 dstBeing->mX = msg->readInt16();
                 dstBeing->mY = msg->readInt16();
+                /*
+                 * I'm deactivating this - players are reporting that
+                 * this makes things *worse*, not better.
                 if (dstBeing->mAction == Being::WALK) {
                      dstBeing->mFrame = 0;
                      dstBeing->setAction(Being::STAND);
                 }
+                */
             } else {
                 logger->log("0x0088: Non-existent being %d", id);
             }
+
             break;
 
         case SMSG_PLAYER_MOVE_TO_ATTACK:
