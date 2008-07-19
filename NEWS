@@ -1,3 +1,21 @@
+0.0.25 (...)
+- Added support for whispering to other players
+- Added ability to ignore other players
+- Added command line argument for specifying the update host (-H)
+- Added support for receiving the update host from the server
+- Added support for displaying a shield sprite
+- Added shortcut window, allowing you to quickly access inventory items
+- Added message when gaining money from trade or quest
+- Added support for an arbitrary number of map layers
+- Added support for basing one sprite definition on another
+- Added the possibility to assign particle effects to NPCs
+- Updated to work with Guichan 0.8.x
+- Improved accuracy of monster targeting with the mouse
+- Page up and page down will now scroll the chat window
+- Item icons are now loaded on demand and unloaded when no longer used
+- Fixed display of critical hits
+- Fixed multi-channel image dyeing
+
 0.0.24.1 (7 April 2008)
 - Added /clear command to clear chat window
 - Added ability to close quit dialog by pressing ESC
