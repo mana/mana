@@ -1,3 +1,7 @@
+2008-07-19  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+
+	* Removed unnecessary check ("weight") from itemdb loader
+
 2008-07-18  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
 
 	* Added code to provide viewable glove and shoe sprites
