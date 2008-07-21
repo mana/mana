@@ -1,3 +1,8 @@
+2008-07-21  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp: Initial attempt at fixing Alt-Gr issue for Rotonen, 
+	this commit is just for him!
+
 2008-07-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Remove possible trailing slash at the end of the
