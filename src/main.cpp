@@ -184,7 +184,7 @@ void setUpdatesDir()
 
     // Verify that the updates directory exists. Create if necessary.
     if (!resman->isDirectory("/" + updatesDir)) {
-        if (resman->mkdir("/" + updatesDir)) {
+        if (!resman->mkdir("/" + updatesDir)) {
             logger->log("Error: %s/%s can't be made, but doesn't exist!",
                          homeDir.c_str(), updatesDir.c_str());
             errorMessage = "Error creating updates directory!";
