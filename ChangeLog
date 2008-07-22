@@ -1,3 +1,7 @@
+2008-07-22  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp: Revert the Alt-Gr fix as it did not work.
+
 2008-07-21  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Initial attempt at fixing Alt-Gr issue for Rotonen, 
