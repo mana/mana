@@ -45,6 +45,7 @@ BeingHandler::BeingHandler()
     static const Uint16 _messages[] = {
         SMSG_BEING_VISIBLE,
         SMSG_BEING_MOVE,
+        SMSG_BEING_MOVE2,
         SMSG_BEING_REMOVE,
         SMSG_BEING_ACTION,
         SMSG_BEING_LEVELUP,
@@ -162,6 +163,33 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt8();   // unknown
             msg->readInt8();   // unknown
             msg->readInt8();   // unknown / sit
+            break;
+
+        case SMSG_BEING_MOVE2:
+            /*
+             * A simplified movement packet, used by the
+             * later versions of eAthena for both mobs and
+             * players
+             */
+            dstBeing = beingManager->findBeing(msg->readInt32());
+
+            Uint16 srcX, srcY, dstX, dstY;
+            msg->readCoordinatePair(srcX, srcY, dstX, dstY);
+            msg->readInt32();  // Server tick
+
+            /*
+             * This packet doesn't have enough info to actually
+             * create a new being, so if the being isn't found,
+             * we'll just pretend the packet didn't happen
+             */
+
+            if (dstBeing) {
+                dstBeing->setAction(Being::STAND);
+                dstBeing->mX = srcX;
+                dstBeing->mY = srcY;
+                dstBeing->setDestination(dstX, dstY);
+            }
+
             break;
 
         case SMSG_BEING_REMOVE:

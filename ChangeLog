@@ -1,3 +1,11 @@
+2008-07-22  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+
+	* Added handler for 0x0086 movement packet (new eAthena).
+	* Changed startup sequence for game.cpp to send a ping packet
+	  to the server after all the handlers have been initialized.
+	  This is required by the new eAthena version.
+	* Added #deines for some "ping" packets.
+
 2008-07-19  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
 
 	* Removed unnecessary check ("weight") from itemdb loader

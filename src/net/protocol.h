@@ -26,6 +26,7 @@
 
 // Packets from server to client
 #define SMSG_LOGIN_SUCCESS           0x0073 /**< Contains starting location */
+#define SMSG_SERVER_PING             0x007f /**< Contains server tick */
 #define SMSG_PLAYER_UPDATE_1         0x01d8
 #define SMSG_PLAYER_UPDATE_2         0x01d9
 #define SMSG_PLAYER_MOVE             0x01da /**< A nearby player moves */
@@ -57,6 +58,8 @@
 #define SMSG_ITEM_REMOVE             0x00a1 /**< An item disappers */
 #define SMSG_BEING_VISIBLE           0x0078
 #define SMSG_BEING_MOVE              0x007b /**< A nearby monster moves */
+#define SMSG_BEING_SPAWN             0x007c /**< A being spawns nearby */
+#define SMSG_BEING_MOVE2             0x0086 /**< New eAthena being moves */
 #define SMSG_BEING_REMOVE            0x0080
 #define SMSG_BEING_CHANGE_LOOKS      0x00c3
 #define SMSG_BEING_CHANGE_LOOKS2     0x01d7 /**< Same as 0x00c3, but 16 bit ID */
@@ -102,6 +105,7 @@
 #define SMSG_PARTY_MESSAGE           0x0109
 
 // Packets from client to server
+#define CMSG_CLIENT_PING             0x007e /**< Send to server with tick */
 #define CMSG_TRADE_RESPONSE          0x00e6
 #define CMSG_ITEM_PICKUP             0x009f
 #define CMSG_MAP_LOADED              0x007d
