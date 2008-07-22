@@ -1,6 +1,8 @@
 2008-07-22  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Revert the Alt-Gr fix as it did not work.
+	* src/game.cpp, src/keyboardconfig.cpp, src/keyboardconfig.h: User can 
+	now configure which modifier key is used for smilies.
 
 2008-07-21  David Athay  <ko2fan@gmail.com>
 

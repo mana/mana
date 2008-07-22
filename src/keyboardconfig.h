@@ -151,6 +151,7 @@ class KeyboardConfig
             KEY_MOVE_LEFT,
             KEY_MOVE_RIGHT,
             KEY_ATTACK,
+            KEY_SMILIE,
             KEY_TARGET,
             KEY_TARGET_CLOSEST,
             KEY_TARGET_PLAYER,

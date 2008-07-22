@@ -511,7 +511,11 @@ void Game::handleInput()
                         used = true;
                         break;
                 }
+            }
 
+            // Smilie
+            if (keyboard.isKeyActive(keyboard.KEY_SMILIE))
+            {
                 // Emotions
                 Uint8 emotion;
                 switch (event.key.keysym.sym)
@@ -535,6 +539,7 @@ void Game::handleInput()
                 {
                     player_node->emote(emotion);
                     used = true;
+                    return;
                 }
             }
             switch (event.key.keysym.sym)
