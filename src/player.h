@@ -93,7 +93,7 @@ class Player : public Being
         /**
          * Adds a guild to the player.
          */
-        Guild* addGuild(short guildId, bool inviteRights);
+        Guild* addGuild(short guildId, short rights);
 
         /**
          * Removers a guild from the player.

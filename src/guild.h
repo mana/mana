@@ -35,7 +35,7 @@ public:
     /**
      * Constructor with guild id passed to it
      */
-    Guild(short id, bool inviteRights);
+    Guild(short id, short rights);
 
     /**
      * Set the guild's name

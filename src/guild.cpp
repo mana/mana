@@ -23,10 +23,13 @@
 
 #include "guild.h"
 
-Guild::Guild(short id, bool inviteRights):
+Guild::Guild(short id, short rights):
     mId(id),
-    mCanInviteUsers(inviteRights)
+    mCanInviteUsers(false)
 {
+    // to invite, rights must be greater than 0
+    if (rights > 0)
+        mCanInviteUsers = true;
 }
 
 void Guild::addMember(const std::string &name)

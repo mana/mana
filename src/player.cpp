@@ -153,9 +153,9 @@ void Player::setSprite(int slot, int id, const std::string &color)
     Being::setSprite(slot, id, color);
 }
 
-Guild* Player::addGuild(short guildId, bool inviteRights)
+Guild* Player::addGuild(short guildId, short rights)
 {
-    Guild *guild = new Guild(guildId, inviteRights);
+    Guild *guild = new Guild(guildId, rights);
     mGuilds.insert(std::pair<int, Guild*>(guildId, guild));
     return guild;
 }

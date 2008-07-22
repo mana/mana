@@ -1,3 +1,9 @@
+2008-07-22  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/guild.cpp, src/player.cpp, src/guild.h, src/player.h,
+	src/net/guildhandler.cpp, src/net/protocol.h: Add permissions to guild
+	members. Alt-Gr fix for Rotonen.
+
 2008-07-17  David Athay  <ko2fan@gmail.com>
 
 	*  src/gui/partywindow.cpp: Fixed crash bug with accepting

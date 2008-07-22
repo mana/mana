@@ -137,19 +137,19 @@ void GuildHandler::handleMessage(MessageIn &msg)
                         guild->addMember(guildMember);
                         guildWindow->setOnline(guild->getName(), guildMember, true);
                         break;
-                    
+
                     case GUILD_EVENT_LEAVING_PLAYER:
                         guild->removeMember(guildMember);
                         break;
-                        
+
                     case GUILD_EVENT_ONLINE_PLAYER:
                         guildWindow->setOnline(guild->getName(), guildMember, true);
                         break;
-                        
+
                     case GUILD_EVENT_OFFLINE_PLAYER:
                         guildWindow->setOnline(guild->getName(), guildMember, false);
                         break;
-                        
+
                     default:
                         logger->log("Invalid guild event");
                 }
@@ -201,12 +201,12 @@ void GuildHandler::joinedGuild(MessageIn &msg)
 {
     std::string guildName = msg.readString();
     short guildId = msg.readInt16();
-    bool leader = msg.readInt8();
+    short permissions = msg.readInt16();
     short channelId = msg.readInt16();
     std::string announcement = msg.readString();
 
     // Add guild to player and create new guild tab
-    Guild *guild = player_node->addGuild(guildId, leader);
+    Guild *guild = player_node->addGuild(guildId, permissions);
     guild->setName(guildName);
     guildWindow->newGuildTab(guildName);
     guildWindow->requestMemberList(guildId);
