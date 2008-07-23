@@ -1,3 +1,9 @@
+2008-07-23  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+
+	* Added "chat" button to open/close chat window
+	* Added support for viewable cape/misc1/misc2 (new eAthena
+	  version ONLY
+
 2008-07-22  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
 
 	* Added handler for 0x0086 movement packet (new eAthena).

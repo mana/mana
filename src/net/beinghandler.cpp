@@ -69,7 +69,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
     Uint32 id;
     Uint16 job, speed;
     Uint16 headTop, headMid, headBottom;
-    Uint16 shoes, gloves;
+    Uint16 shoes, gloves, cape, misc1, misc2;
+    Uint16 weapon, shield;
     Sint16 param1;
     Sint8 type;
     Being *srcBeing, *dstBeing;
@@ -82,8 +83,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             // Information about a being in range
             id = msg->readInt32();
             speed = msg->readInt16();
-            msg->readInt16();  // unknown
-            msg->readInt16();  // unknown
+            msg->readInt16();  // opt1
+            msg->readInt16();  // opt2
             msg->readInt16();  // option
             job = msg->readInt16();  // class
 
@@ -346,6 +347,15 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 case 10:   // LOOK_GLOVES
                     dstBeing->setSprite(Being::GLOVES_SPRITE, id);
                     break;
+                case 11:  // LOOK_CAPE
+                    dstBeing->setSprite(Being::CAPE_SPRITE, id);
+                    break;
+                case 12:
+                    dstBeing->setSprite(Being::MISC1_SPRITE, id);
+                    break;
+                case 13:
+                    dstBeing->setSprite(Being::MISC2_SPRITE, id);
+                    break;
                 default:
                     logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
                             "%d, id: %d", type, id);
@@ -367,9 +377,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             // An update about a player, potentially including movement.
             id = msg->readInt32();
             speed = msg->readInt16();
-            msg->readInt16();  // option 1
-            msg->readInt16();  // option 2
-            msg->readInt16();  // option
+            cape = msg->readInt16();
+            misc1 = msg->readInt16();
+            misc2 = msg->readInt16();
             job = msg->readInt16();
 
             dstBeing = beingManager->findBeing(id);
@@ -382,8 +392,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             hairStyle = msg->readInt16();
-            dstBeing->setSprite(Being::WEAPON_SPRITE, msg->readInt16());
-            dstBeing->setSprite(Being::SHIELD_SPRITE, msg->readInt16());
+            weapon = msg->readInt16();
+            shield = msg->readInt16();
             headBottom = msg->readInt16();
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
@@ -403,11 +413,16 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setGender(1 - msg->readInt8());   // gender
 
             // Set these after the gender, as the sprites may be gender-specific
+            dstBeing->setSprite(Being::WEAPON_SPRITE, weapon);
+            dstBeing->setSprite(Being::SHIELD_SPRITE, shield);
             dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setSprite(Being::HAT_SPRITE, headTop);
             dstBeing->setSprite(Being::SHOE_SPRITE, shoes);
             dstBeing->setSprite(Being::GLOVES_SPRITE, gloves);
+            dstBeing->setSprite(Being::CAPE_SPRITE, cape);
+            dstBeing->setSprite(Being::MISC1_SPRITE, misc1);
+            dstBeing->setSprite(Being::MISC2_SPRITE, misc2);
             dstBeing->setHairStyle(hairStyle, hairColor);
 
             if (msg->getId() == SMSG_PLAYER_MOVE)

@@ -36,6 +36,7 @@ extern Window *equipmentWindow;
 extern Window *skillDialog;
 extern Window *statusWindow;
 extern Window *itemShortcutWindow;
+extern Window *chatWindow;
 
 namespace {
     struct MenuWindowListener : public gcn::ActionListener
@@ -58,6 +59,7 @@ MenuWindow::MenuWindow():
     // Buttons
     const char *buttonNames[] =
     {
+        "Chat",
         "Status",
         "Equipment",
         "Inventory",
@@ -91,7 +93,11 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
 {
     Window *window = NULL;
 
-    if (event.getId() == "Status")
+    if (event.getId() == "Chat")
+    {
+        window = chatWindow;
+    }
+    else if (event.getId() == "Status")
     {
         window = statusWindow;
     }
