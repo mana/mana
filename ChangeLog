@@ -1,3 +1,8 @@
+2008-07-23  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* src/game.cpp, src/gui/buy.cpp, src/gui/itemshortcutwindow.cpp,
+	src/gui/sell.cpp, src/gui/window.cpp: Remember windows visibility.
+
 2008-07-22  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Revert the Alt-Gr fix as it did not work.
