@@ -30,7 +30,7 @@ static const int SCROLL_PADDING = 0;
 
 ItemShortcutWindow::ItemShortcutWindow()
 {
-    setWindowName("itemShortcut");
+    setWindowName("ItemShortcut");
     // no title presented, title bar is padding so window can be moved.
     gcn::Window::setTitleBarHeight(gcn::Window::getPadding());
     setShowTitle(false);

@@ -48,6 +48,7 @@ SellDialog::SellDialog(Network *network):
     mNetwork(network),
     mMaxItems(0), mAmountItems(0)
 {
+    setWindowName("Sell");
     setResizable(true);
     setMinWidth(260);
     setMinHeight(230);
