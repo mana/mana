@@ -221,7 +221,7 @@ void init_engine(const Options &options)
     }
 
     // Set log file
-    logger->setLogFile(homeDir + std::string("/tmw.log"));
+    logger->setLogFile(homeDir + std::string("/tme.log"));
 
     #ifdef PACKAGE_VERSION
         logger->log("Starting The Mana World Version %s", PACKAGE_VERSION);
