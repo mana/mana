@@ -1,3 +1,8 @@
+2008-07-23  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+
+	* Added support for capes/misc1/misc2 into the character
+	  selection display
+
 2008-07-23  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
 
 	* Added "chat" button to open/close chat window

@@ -193,8 +193,8 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->mJobLevel = msg.readInt32();
     tempPlayer->setSprite(Being::SHOE_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Being::GLOVES_SPRITE, msg.readInt16());
-    msg.readInt16();    // Cape
-    msg.readInt16();    // Misc1
+    tempPlayer->setSprite(Being::CAPE_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(Being::MISC1_SPRITE, msg.readInt16());
     msg.readInt32();                       // option
     msg.readInt32();                       // karma
     msg.readInt32();                       // manner
@@ -216,7 +216,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setSprite(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
     int hairColor = msg.readInt16();
     tempPlayer->setHairStyle(hairStyle, hairColor);
-    msg.readInt16();                       // unknown
+    tempPlayer->setSprite(Being::MISC2_SPRITE, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++) {
         tempPlayer->mAttr[i] = msg.readInt8();
