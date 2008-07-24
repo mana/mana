@@ -419,7 +419,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setSprite(Being::HAT_SPRITE, headTop);
             dstBeing->setSprite(Being::SHOE_SPRITE, shoes);
-            dstBeing->setSprite(Being::GLOVES_SPRITE, gloves);
+            // Compensation for the unpatched TMW server
+            if (gloves > 10)
+                dstBeing->setSprite(Being::GLOVES_SPRITE, gloves);
             dstBeing->setSprite(Being::CAPE_SPRITE, cape);
             dstBeing->setSprite(Being::MISC1_SPRITE, misc1);
             dstBeing->setSprite(Being::MISC2_SPRITE, misc2);

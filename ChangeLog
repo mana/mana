@@ -1,3 +1,8 @@
+2008-07-24  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+
+	* Tweak in net/beinghandler.cpp to compensate for a visual
+	  bug when using the TMW server.
+
 2008-07-23  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
 
 	* Added support for capes/misc1/misc2 into the character
