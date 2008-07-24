@@ -217,6 +217,8 @@ void createGuiWindows(Network *network)
     miniStatusWindow->setVisible((bool) config.getValue(
         miniStatusWindow->getWindowName() + "Visible",
         true));
+    buyDialog->setVisible(false);
+    sellDialog->setVisible(false);
     menuWindow->setVisible((bool) config.getValue(
         menuWindow->getWindowName() + "Visible", true));
     itemShortcutWindow->setVisible((bool) config.getValue(

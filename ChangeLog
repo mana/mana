@@ -1,3 +1,7 @@
+2008-07-24  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
+
+	* src/game.cpp: Fixed visibility of buy and sell dialogs.
+
 2008-07-23  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 
 	* src/game.cpp, src/gui/buy.cpp, src/gui/itemshortcutwindow.cpp,
