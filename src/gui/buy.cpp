@@ -171,15 +171,15 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         outMsg.writeInt16(mAmountItems);
         outMsg.writeInt16(mShopItems->at(selectedItem)->getId());
 
-        // Reset selection
-        mAmountItems = 1;
-        mSlider->setValue(1);
-        mSlider->gcn::Slider::setScale(1, mMaxItems);
-
         // Update money and adjust the max number of items that can be bought
         mMaxItems -= mAmountItems;
         setMoney(mMoney -
                 mAmountItems * mShopItems->at(selectedItem)->getPrice());
+
+        // Reset selection
+        mAmountItems = 1;
+        mSlider->setValue(1);
+        mSlider->gcn::Slider::setScale(1, mMaxItems);
     }
 }
 
