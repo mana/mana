@@ -1,3 +1,8 @@
+2008-07-24  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/net/protocol.h, src/net/npchandler.cpp: Reverted 
+	Alt-Gr fix. Added NPC error messages.
+
 2008-07-22  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp, src/guild.cpp, src/player.cpp, src/guild.h, src/player.h,

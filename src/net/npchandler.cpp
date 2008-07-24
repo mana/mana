@@ -40,6 +40,7 @@ NPCHandler::NPCHandler()
     static const Uint16 _messages[] = {
         GPMSG_NPC_CHOICE,
         GPMSG_NPC_MESSAGE,
+        GPMSG_NPC_ERROR,
         0
     };
     handledMessages = _messages;
@@ -66,6 +67,8 @@ void NPCHandler::handleMessage(MessageIn &msg)
             npcListDialog->setVisible(true);
             break;
 
+        case GPMSG_NPC_ERROR:
+            current_npc = NULL;
         case GPMSG_NPC_MESSAGE:
             npcTextDialog->addText(msg.readString(msg.getUnreadLength()));
             npcListDialog->setVisible(false);
