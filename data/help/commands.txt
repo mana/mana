@@ -17,6 +17,7 @@
      ##2F5##P                 toggle skills window
      ##2F6##P                 toggle minimap
      ##2F7##P                 toggle chat window
+     ##2F8##P                 toggle shortcut window
      ##2F9##P                 show setup window
      ##2F10##P                toggle debug window
      ##2Alt + 0-9##P          show emotions

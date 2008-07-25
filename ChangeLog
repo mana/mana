@@ -3,6 +3,8 @@
 	* src/winver.h, README, configure.ac, data/help/changes.txt,
 	data/help/header.txt, NEWS, CMakeLists.txt: Updated the version to
 	0.0.25, release planned this Sunday.
+	* README, data/help/commands.txt: Added documentation for F8 to toggle
+	shortcut window.
 
 2008-07-24  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 

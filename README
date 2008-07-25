@@ -46,6 +46,7 @@ Use arrow keys to move around. Other keys:
 - F5                 toggle skills window
 - F6                 toggle minimap
 - F7                 toggle chat window
+- F8                 toggle shortcut window
 - F9                 show setup window
 - F10                toggle debug window
 - Alt + 0-9          show emotions
