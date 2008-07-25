@@ -1,4 +1,4 @@
-0.0.25 (...)
+0.0.25 (27 July 2008)
 - Added support for whispering to other players
 - Added ability to ignore other players
 - Added command line argument for specifying the update host (-H)
@@ -9,12 +9,14 @@
 - Added support for an arbitrary number of map layers
 - Added support for basing one sprite definition on another
 - Added the possibility to assign particle effects to NPCs
+- Added remembering whether windows are visible or not
 - Updated to work with Guichan 0.8.x
 - Improved accuracy of monster targeting with the mouse
 - Page up and page down will now scroll the chat window
 - Item icons are now loaded on demand and unloaded when no longer used
 - Fixed display of critical hits
 - Fixed multi-channel image dyeing
+- Fixed updating of money display after buying
 
 0.0.24.1 (7 April 2008)
 - Added /clear command to clear chat window
