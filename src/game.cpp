@@ -215,10 +215,15 @@ void createGuiWindows(Network *network)
     //buddyWindow->setPosition(10, minimap->getHeight() + 30);
 
     // Set initial window visibility
-    chatWindow->setVisible(true);
-    miniStatusWindow->setVisible(true);
-    menuWindow->setVisible(true);
-    itemShortcutWindow->setVisible(true);
+    chatWindow->setVisible((bool) config.getValue(
+        chatWindow->getWindowName() + "Visible", true));
+    miniStatusWindow->setVisible((bool) config.getValue(
+        miniStatusWindow->getWindowName() + "Visible",
+        true));
+    menuWindow->setVisible((bool) config.getValue(
+        menuWindow->getWindowName() + "Visible", true));
+    itemShortcutWindow->setVisible((bool) config.getValue(
+        itemShortcutWindow->getWindowName() + "Visible", true));
 
     if (config.getValue("logToChat", 0))
     {

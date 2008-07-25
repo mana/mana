@@ -1,3 +1,8 @@
+2008-07-25  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+
+	* Added feature to remember window locations from one 
+	  session to the next (patch from TMW by ElvenProgrammer)
+
 2008-07-24  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
 
 	* Tweak in net/beinghandler.cpp to compensate for a visual
