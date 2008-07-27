@@ -810,12 +810,11 @@ void Game::handleInput()
             player_node->attack(target, newTarget);
         }
 
-        // Target the nearest player if 'q' is pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) )
-        //if (keys[SDLK_q])
+        // Target the nearest player
+        if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
         {
-            Being *target =
-                beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
+            Being *target = beingManager->findNearestLivingBeing(
+                    player_node, 20, Being::PLAYER);
 
             if (target)
             {
@@ -823,9 +822,9 @@ void Game::handleInput()
             }
         }
 
-        // Target the nearest monster if 'a' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) )
-        //if (keys[SDLK_a])
+        // Target the nearest monster
+        if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST)
+                || (joystick && joystick->buttonPressed(3)))
         {
             Being *target =
                 beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);

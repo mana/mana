@@ -1,3 +1,7 @@
+2008-07-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp: Target the nearest monster on joystick button 3.
+
 2008-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/winver.h, README, configure.ac, data/help/changes.txt,
