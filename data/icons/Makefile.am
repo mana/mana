@@ -1,14 +1,14 @@
 
 iconsdir = $(pkgdatadir)/data/icons
 
-icons_DATA = tmw.png
+icons_DATA = tme.png
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(datadir)/pixmaps
-	$(INSTALL) $(srcdir)/tmw.png $(DESTDIR)$(datadir)/pixmaps/tmw.png
+	$(INSTALL) $(srcdir)/tme.png $(DESTDIR)$(datadir)/pixmaps/tme.png
 
 uninstall-local:
-	rm -f $(DESTDIR)$(datadir)/pixmaps/tmw.png
+	rm -f $(DESTDIR)$(datadir)/pixmaps/tme.png
 
 EXTRA_DIST =		\
 	$(icons_DATA)

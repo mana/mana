@@ -3,8 +3,8 @@ tme_SOURCES = gui/widgets/dropdown.cpp \
               gui/widgets/dropdown.h \
               gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
-	      gui/box.h \
 	      gui/box.cpp \
+	      gui/box.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/button.cpp \
@@ -17,10 +17,10 @@ tme_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/buysell.h \
 	      gui/chargedialog.cpp \
 	      gui/chargedialog.h \
-	      gui/char_server.cpp \
-	      gui/char_server.h \
 	      gui/char_select.cpp \
 	      gui/char_select.h \
+	      gui/char_server.cpp \
+	      gui/char_server.h \
 	      gui/chat.cpp \
 	      gui/chat.h \
 	      gui/chatinput.cpp \
@@ -41,8 +41,8 @@ tme_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/gccontainer.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
-	      gui/hbox.h \
 	      gui/hbox.cpp \
+	      gui/hbox.h \
 	      gui/help.cpp \
 	      gui/help.h \
 	      gui/inttextbox.h \
@@ -117,10 +117,10 @@ tme_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/status.h \
 	      gui/tabbedcontainer.cpp \
 	      gui/tabbedcontainer.h \
-	      gui/table.h \
 	      gui/table.cpp \
-	      gui/table_model.h \
+	      gui/table.h \
 	      gui/table_model.cpp \
+	      gui/table_model.h \
 	      gui/textbox.cpp \
 	      gui/textbox.h \
 	      gui/textfield.cpp \
@@ -181,6 +181,8 @@ tme_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/ambientoverlay.h \
 	      resources/animation.cpp \
 	      resources/animation.h \
+	      resources/buddylist.cpp \
+	      resources/buddylist.h \
 	      resources/dye.cpp \
 	      resources/dye.h \
 	      resources/image.cpp \
@@ -213,8 +215,6 @@ tme_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
-	      resources/buddylist.h \
-	      resources/buddylist.cpp \
 	      utils/base64.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
@@ -311,7 +311,7 @@ tme_SOURCES = gui/widgets/dropdown.cpp \
 # set the include path found by configure
 INCLUDES =					\
 	$(all_includes)				\
-	-DTMW_DATADIR=\""$(pkgdatadir)/"\"
+	-DTME_DATADIR=\""$(pkgdatadir)/"\"
 
 # the library search path.
 tme_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`

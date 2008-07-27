@@ -1,6 +1,6 @@
---------------------------------
-THE MANA WORLD SOUND DEVELOPMENT
---------------------------------
+-------------------------------------
+THE MANA EXPERIMENT SOUND DEVELOPMENT
+-------------------------------------
 
 1. INTRODUCTION
 2. SPECS
@@ -9,7 +9,7 @@ THE MANA WORLD SOUND DEVELOPMENT
 
 1. INTRODUCTION
 
-In The Mana World we plan to have both background music and sound effects
+In The Mana Experiment we plan to have both background music and sound effects
 linked to beings actions.
 
 2. SPECS

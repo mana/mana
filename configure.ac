@@ -79,7 +79,7 @@ else
     with_opengl=yes
     AC_CHECK_LIB([GL], [glBegin], ,
     AC_MSG_ERROR([ *** Unable to find OpenGL library]))
-    AC_DEFINE(USE_OPENGL, 1, [Defines if tmw should use an OpenGL display])
+    AC_DEFINE(USE_OPENGL, 1, [Defines if tme should use an OpenGL display])
 fi
 
 # Search for sdl-config
@@ -92,10 +92,10 @@ if test -n "$LIBSDL_CONFIG"; then
   AC_SUBST(LIBSDL_CFLAGS)
 
   AC_DEFINE_UNQUOTED(HAVE_LIBSDL, 1,
-                     [Defines if your system has the LIBSDL library])
+		     [Defines if your system has the LIBSDL library])
 else
   AC_DEFINE_UNQUOTED(HAVE_LIBSDL, 0,
-                     [Defines if your system has the LIBSDL library])
+		     [Defines if your system has the LIBSDL library])
   AC_MSG_ERROR([Could not find sdl-config, check http://www.libsdl.org])
 fi
 

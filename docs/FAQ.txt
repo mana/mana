@@ -7,10 +7,10 @@ Q: How to get help?
 
 A: The fastest way is to come on our IRC channel. There you can find a lot of
    nice people that will help you until you solve your problem. Server:
-   irc.freenode.net Channel: #themanaworld.
+   irc.freenode.net Channel: #themanaexperiment.
    If you don't like IRC just come to our forums:
-   http://forums.themanaworld.org. Ok, do you think forums are evil? Don't
-   worry, send me an e-mail at elvenprogrammer@gmail.com and you're done.
+   http://tme.onlinegamecore.com/forums. Ok, do you think forums are evil?
+   Don't worry, send me an e-mail at elvenprogrammer@gmail.com and you're done.
    That's not enough? No, I won't give you my phone number! ;P
    
 GAME
@@ -35,15 +35,6 @@ A: Did you read README? Are you really sure? If not go read it and you'll find
    all the known commands. Or just press F1 in game. If you notice the
    README/ingame help is not up to date/wrong, please report it to the
    developers.
-
-Q: I just typed /<command> in the chat window and then I saw "Your account has
-   been banished until ..." and TMW closed. Now when I try to log in nothing
-   happens?
-
-A: That's because /<commands> are not implemented at the moment of writing.
-   Please avoid using such commands (i.e. /help) until they're added.
-   Anyway the ban is temp, just wait some minutes and you should be able to
-   connect again.
 
 Q: I can't recover HP anymore.
 
@@ -77,14 +68,10 @@ A: There are a lot of ways:
    - If you're a programmer, an artist or just willing to help in any way, you
      can become part of the development team. Send an e-mail to
      elvenprogrammer@gmail.com explaining what you want to do, or join our irc
-     channel: #themanaworld @ irc.freenode.net.
+     channel: #themanaexperiment @ irc.freenode.net.
    
-   - You can donate money. Follow the link on the project page:
-	http://sourceforge.net/projects/themanaworld.
+   - You can be a beta tester. Just play with The Mana Experiment and report
+     every error on the forum.
    
-   - You can be a beta tester. Just play with The Mana World and report every
-     error to the tracker. Read for more infos on the project page:
-	http://themanaworld.org.
-   
-   - Play with The Mana World: more players, more fun! Simple as that! ;-)
+   - Play with The Mana Experiment: more players, more fun! Simple as that! ;-)
 

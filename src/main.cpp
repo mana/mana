@@ -205,7 +205,7 @@ void init_engine(const Options &options)
 #elif defined __APPLE__
     // Use Application Directory instead of .tme
     homeDir = std::string(PHYSFS_getUserDir()) +
-        "/Library/Application Support/The Mana World";
+        "/Library/Application Support/The Mana Experiment";
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
 #else
@@ -224,9 +224,9 @@ void init_engine(const Options &options)
     logger->setLogFile(homeDir + std::string("/tme.log"));
 
     #ifdef PACKAGE_VERSION
-        logger->log("Starting The Mana World Version %s", PACKAGE_VERSION);
+        logger->log("Starting The Mana Experiment Version %s", PACKAGE_VERSION);
     #else
-        logger->log("Starting The Mana World - Version not defined");
+        logger->log("Starting The Mana Experiment - Version not defined");
     #endif
 
     // Initialize SDL
@@ -268,7 +268,7 @@ void init_engine(const Options &options)
     strncat(path, "/data", PATH_MAX - 1);
     resman->addToSearchPath(path, true);
 #else
-    resman->addToSearchPath(TMW_DATADIR "data", true);
+    resman->addToSearchPath(TME_DATADIR "data", true);
 #endif
 
     // Fill configuration with defaults
@@ -294,24 +294,24 @@ void init_engine(const Options &options)
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
-    FILE *tmwFile = 0;
+    FILE *tmeFile = 0;
     std::string configPath = options.configPath;
 
     if (configPath.empty())
         configPath = homeDir + "/config.xml";
 
-    tmwFile = fopen(configPath.c_str(), "r");
+    tmeFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
-    if (tmwFile == NULL) {
+    if (tmeFile == NULL) {
         // We reopen the file in write mode and we create it
-        tmwFile = fopen(configPath.c_str(), "wt");
+        tmeFile = fopen(configPath.c_str(), "wt");
     }
-    if (tmwFile == NULL) {
+    if (tmeFile == NULL) {
         std::cout << "Can't create " << configPath << ". "
             "Using Defaults." << std::endl;
     } else {
-        fclose(tmwFile);
+        fclose(tmeFile);
         config.init(configPath);
     }
 
@@ -325,7 +325,7 @@ void init_engine(const Options &options)
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
     }
 #else
-    SDL_Surface *icon = IMG_Load(TMW_DATADIR "data/icons/tmw.png");
+    SDL_Surface *icon = IMG_Load(TME_DATADIR "data/icons/tme.png");
     if (icon)
     {
         SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -422,7 +422,7 @@ void exit_engine()
 void printHelp()
 {
     std::cout
-        << "tmw" << std::endl << std::endl
+        << "tme" << std::endl << std::endl
         << "Options: " << std::endl
         << "  -h --help       : Display this help" << std::endl
         << "  -v --version    : Display the version" << std::endl
@@ -439,9 +439,10 @@ void printHelp()
 void printVersion()
 {
 #ifdef PACKAGE_VERSION
-    std::cout << "The Mana World version " << PACKAGE_VERSION << std::endl;
+    std::cout << "The Mana Experiment version " << PACKAGE_VERSION <<
+        std::endl;
 #else
-    std::cout << "The Mana World version " <<
+    std::cout << "The Mana Experiment version " <<
              "(local build?, PACKAGE_VERSION is not defined)" << std::endl;
 #endif
 }

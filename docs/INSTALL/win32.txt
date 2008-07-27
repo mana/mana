@@ -1,10 +1,10 @@
-How setup Dev-C++ to compile TMW on a Win32 Box
+How setup Dev-C++ to compile TME on a Win32 Box
 ===============================================
 
-The Mana World project
-======================
-Homepage: themanaworld.sourceforge.net
-IRC:      irc.freenode.net / #themanaworld
+The Mana Experiment project
+===========================
+Homepage: http://209.168.213.109
+IRC:      irc.freenode.net / #themanaexperiment
 
 
 0. Index
@@ -12,7 +12,7 @@ IRC:      irc.freenode.net / #themanaworld
 1. Requirements
 2. Installing Dev-C++
 3. Installing the required libraries
-4. Compiling The Mana World
+4. Compiling The Mana Experiment
 
 
 1. Requirements
@@ -23,7 +23,7 @@ free IDE for Win32 built around GCC. Remember, Win32 was not meant for GCC and
 stuff so you will probably run into trouble unless you really know what you're
 doing, so best stick with Dev-C++.
 
-Besides a C++ compiler, TMW depends on the following libraries:
+Besides a C++ compiler, TME depends on the following libraries:
 
 1) SDL
 2) SDL_mixer
@@ -95,36 +95,36 @@ Install them all through the Dev-C++ package manager.
         iconv-1.9.1.win32.zip
 
      From each file, copy the headers to your include directory, the libs to
-     the lib direcotry and the dlls (in bin direcotry) to your tmw directory.
+     the lib direcotry and the dlls (in bin direcotry) to your tme directory.
 
 **) For PhysFS copy the headers to your include directory, the libs to
-    the lib directory and the dlls (in bin direcotry) to your tmw directory.
+    the lib directory and the dlls (in bin direcotry) to your tme directory.
 
 ***) Download developer files and put headers and libs in to include and lib
-     directories of Dev-Cpp. Download binaries and place the dll inside tmw
+     directories of Dev-Cpp. Download binaries and place the dll inside tme
      folder.
 
 ****) Get latest win32 - mingw package and install as usual.
 
-You should now be fully equipped for compiling the latest TMW development
+You should now be fully equipped for compiling the latest TME development
 code!
 
 
-4. Compiling The Mana World
-===========================
+4. Compiling The Mana Experiment
+================================
 
-Check out The Mana World from Subversion using either the command line svn
+Check out The Mana Experiment from Subversion using either the command line svn
 tool or TortoiseSVN, pick what you like to use most and install that. Next,
 check out the following directory from our repository:
 
-  https://svn.sourceforge.net/svnroot/themanaworld/tmw/trunk
+  svn://209.168.213.109/client/trunk
 
-Open "The Mana World.dev" in Dev-C++. From there on you should be able to
-start compilition with Excute -> Compile. A file called tmw.exe should appear
+Open "The Mana Experiment.dev" in Dev-C++. From there on you should be able to
+start compilition with Excute -> Compile. A file called tme.exe should appear
 in the same directory as where you opened the .dev from.
 
 Before you can actually run the executable be sure to copy over the following
-DLLs from your Dev-Cpp/dll directory to the directory containing tmw.exe (or 
+DLLs from your Dev-Cpp/dll directory to the directory containing tme.exe (or 
 alternatively into your c:\windows\system\ for a more universal solution):
 
  SDL.dll
@@ -143,7 +143,7 @@ And also make sure you have:
  zlib1.dll
 
 Additionally don't forget to copy any updated .dll (when libs are updated,
-the dll are usually updated too) to the folder containing tmw.exe (or to the
+the dll are usually updated too) to the folder containing tme.exe (or to the
 c:\windows\system\).
 
-Have fun hacking The Mana World!
+Have fun hacking The Mana Experiment!

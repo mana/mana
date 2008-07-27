@@ -210,7 +210,7 @@ ResourceManager::getPath(const std::string &file)
     // get the real path to the file
     const char* tmp = PHYSFS_getRealDir(file.c_str());
     std::string path;
-    
+
     // if the file is not in the search path, then its NULL
     if (tmp)
     {
@@ -219,9 +219,9 @@ ResourceManager::getPath(const std::string &file)
     else
     {
         // if not found in search path return the default path
-        path = std::string(TMW_DATADIR) + std::string("data") + "/" + file;
+        path = std::string(TME_DATADIR) + std::string("data") + "/" + file;
     }
-    
+
     return path;
 }
 

@@ -1,4 +1,4 @@
 
 SUBDIRS = graphics help icons
 
-tmwdatadir = $(pkgdatadir)/data
+tmedatadir = $(pkgdatadir)/data

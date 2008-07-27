@@ -2,7 +2,7 @@
 
 #include "winver.h"
 
-A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "data/icons/tmw.ico"
+A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "data/icons/tme.ico"
 
 1 VERSIONINFO
 FILEVERSION VER_MAJOR,VER_MINOR,VER_RELEASE,VER_BUILD
@@ -10,12 +10,12 @@ PRODUCTVERSION VER_MAJOR,VER_MINOR,VER_RELEASE,VER_BUILD
 FILETYPE VFT_APP {
     BLOCK "StringFileInfo" {
         BLOCK "040904E4" {
-            VALUE "CompanyName", "The Mana World Development Team"
+            VALUE "CompanyName", "The Mana Experiment Development Team"
             VALUE "FileVersion", PACKAGE_VERSION
-            VALUE "FileDescription", "The Mana World"
-            VALUE "LegalCopyright", "2004-2006 (C)"
-            VALUE "OriginalFilename", "tmw.exe"
-            VALUE "ProductName", "The Mana World MMORPG"
+            VALUE "FileDescription", "The Mana Experiment"
+            VALUE "LegalCopyright", "2008 (C)"
+            VALUE "OriginalFilename", "tme.exe"
+            VALUE "ProductName", "The Mana Experiment MMORPG"
             VALUE "ProductVersion", PACKAGE_VERSION
         }
     }

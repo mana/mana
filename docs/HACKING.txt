@@ -1,6 +1,6 @@
-----------------------------
-The Mana World Hacking Guide
-----------------------------
+---------------------------------
+The Mana Experiment Hacking Guide
+---------------------------------
 
 With multiple coders working on the same source files, there needs to be a
 standard specifying how code is written down. Not doing so can cause quite some

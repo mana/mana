@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="The Mana World" />
+		<Option title="The Mana Experiment" />
 		<Option pch_mode="0" />
 		<Option compiler="gcc" />
 		<Build>
@@ -37,7 +37,7 @@
 			</Target>
 			<Target title="unix">
 				<Option platforms="Unix;" />
-				<Option output="tmw" prefix_auto="1" extension_auto="1" />
+				<Option output="tme" prefix_auto="1" extension_auto="1" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -101,6 +101,8 @@
 		<Unit filename="src/gui/buy.h" />
 		<Unit filename="src/gui/buysell.cpp" />
 		<Unit filename="src/gui/buysell.h" />
+		<Unit filename="src/gui/chargedialog.cpp" />
+		<Unit filename="src/gui/chargedialog.h" />
 		<Unit filename="src/gui/char_select.cpp" />
 		<Unit filename="src/gui/char_select.h" />
 		<Unit filename="src/gui/char_server.cpp" />
@@ -133,14 +135,14 @@
 		<Unit filename="src/gui/inttextbox.h" />
 		<Unit filename="src/gui/inventorywindow.cpp" />
 		<Unit filename="src/gui/inventorywindow.h" />
-		<Unit filename="src/gui/item_amount.cpp" />
-		<Unit filename="src/gui/item_amount.h" />
 		<Unit filename="src/gui/itemcontainer.cpp" />
 		<Unit filename="src/gui/itemcontainer.h" />
 		<Unit filename="src/gui/itemshortcutcontainer.cpp" />
 		<Unit filename="src/gui/itemshortcutcontainer.h" />
 		<Unit filename="src/gui/itemshortcutwindow.cpp" />
 		<Unit filename="src/gui/itemshortcutwindow.h" />
+		<Unit filename="src/gui/item_amount.cpp" />
+		<Unit filename="src/gui/item_amount.h" />
 		<Unit filename="src/gui/linkhandler.h" />
 		<Unit filename="src/gui/listbox.cpp" />
 		<Unit filename="src/gui/listbox.h" />
@@ -162,8 +164,6 @@
 		<Unit filename="src/gui/passwordfield.h" />
 		<Unit filename="src/gui/playerbox.cpp" />
 		<Unit filename="src/gui/playerbox.h" />
-		<Unit filename="src/gui/popup_box.cpp" />
-		<Unit filename="src/gui/popup_box.h" />
 		<Unit filename="src/gui/popupmenu.cpp" />
 		<Unit filename="src/gui/popupmenu.h" />
 		<Unit filename="src/gui/progressbar.cpp" />
@@ -217,6 +217,8 @@
 		<Unit filename="src/gui/vbox.h" />
 		<Unit filename="src/gui/viewport.cpp" />
 		<Unit filename="src/gui/viewport.h" />
+		<Unit filename="src/gui/widgets/dropdown.cpp"/>
+		<Unit filename="src/gui/widgets/dropdown.h" />
 		<Unit filename="src/gui/widgets/resizegrip.cpp" />
 		<Unit filename="src/gui/widgets/resizegrip.h" />
 		<Unit filename="src/gui/window.cpp" />
@@ -276,6 +278,8 @@
 		<Unit filename="src/net/network.h" />
 		<Unit filename="src/net/npchandler.cpp" />
 		<Unit filename="src/net/npchandler.h" />
+		<Unit filename="src/net/partyhandler.cpp"/>
+		<Unit filename="src/net/partyhandler.h" />
 		<Unit filename="src/net/playerhandler.cpp" />
 		<Unit filename="src/net/playerhandler.h" />
 		<Unit filename="src/net/protocol.cpp" />
@@ -292,17 +296,23 @@
 		<Unit filename="src/particle.h" />
 		<Unit filename="src/particleemitter.cpp" />
 		<Unit filename="src/particleemitter.h" />
+                <Unit filename="src/party.cpp" />
+		<Unit filename="src/party.h" />
 		<Unit filename="src/player.cpp" />
 		<Unit filename="src/player.h" />
 		<Unit filename="src/player_relations.cpp" />
 		<Unit filename="src/player_relations.h" />
 		<Unit filename="src/properties.h" />
+		<Unit filename="src/recorder.cpp" />
+		<Unit filename="src/recorder.h" />
 		<Unit filename="src/resources/action.cpp" />
 		<Unit filename="src/resources/action.h" />
 		<Unit filename="src/resources/ambientoverlay.cpp" />
 		<Unit filename="src/resources/ambientoverlay.h" />
 		<Unit filename="src/resources/animation.cpp" />
 		<Unit filename="src/resources/animation.h" />
+		<Unit filename="src/resources/buddylist.cpp"/>
+		<Unit filename="src/resources/buddylist.h" />
 		<Unit filename="src/resources/dye.cpp" />
 		<Unit filename="src/resources/dye.h" />
 		<Unit filename="src/resources/image.cpp" />
@@ -325,6 +335,8 @@
 		<Unit filename="src/resources/monsterinfo.h" />
 		<Unit filename="src/resources/music.cpp" />
 		<Unit filename="src/resources/music.h" />
+		<Unit filename="src/resources/npcdb.cpp" />
+		<Unit filename="src/resources/npcdb.h" />
 		<Unit filename="src/resources/resource.cpp" />
 		<Unit filename="src/resources/resource.h" />
 		<Unit filename="src/resources/resourcemanager.cpp" />
@@ -339,16 +351,23 @@
 		<Unit filename="src/sound.cpp" />
 		<Unit filename="src/sound.h" />
 		<Unit filename="src/sprite.h" />
+		<Unit filename="src/text.cpp" />
+		<Unit filename="src/text.h" />
+		<Unit filename="src/textmanager.cpp" />
+		<Unit filename="src/textmanager.h" />
 		<Unit filename="src/textparticle.cpp" />
 		<Unit filename="src/textparticle.h" />
 		<Unit filename="src/tileset.h" />
-		<Unit filename="src/tmw.rc">
+		<Unit filename="src/tme.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="src/utils/base64.cpp" />
 		<Unit filename="src/utils/base64.h" />
 		<Unit filename="src/utils/dtor.h" />
+		<Unit filename="src/utils/fastsqrt.h" />
+		<Unit filename="src/utils/strprintf.cpp" />
+		<Unit filename="src/utils/strprintf.h" />
 		<Unit filename="src/utils/tostring.h" />
 		<Unit filename="src/utils/xml.cpp" />
 		<Unit filename="src/utils/xml.h" />

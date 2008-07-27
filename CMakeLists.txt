@@ -1,4 +1,4 @@
-PROJECT(TMW)
+PROJECT(TME)
 
 SET(VERSION 0.0.24.1)
 
@@ -18,4 +18,4 @@ ENDIF (WIN32)
 ADD_SUBDIRECTORY(data)
 ADD_SUBDIRECTORY(src)
 
-INSTALL(FILES tmw.desktop DESTINATION share/applications)
+INSTALL(FILES tme.desktop DESTINATION share/applications)

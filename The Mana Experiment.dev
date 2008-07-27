@@ -1,13 +1,13 @@
 [Project]
-FileName=The Mana World.dev
-Name=tmw
+FileName=The Mana Experiment.dev
+Name=tme
 UnitCount=277
 Type=0
 Ver=1
 ObjFiles=
 Includes=
 Libs=
-PrivateResource=The_Mana_World_private.rc
+PrivateResource=The_Mana_Experiment_private.rc
 ResourceIncludes=
 MakeIncludes=
 Compiler=
@@ -18,7 +18,7 @@ Icon=
 ExeOutput=
 ObjectOutput=obj
 OverrideOutput=1
-OverrideOutputName=tmw.exe
+OverrideOutputName=tme.exe
 HostApplication=
 Folders=gui,gui/header,gui/source,header,header/widgets,net,net/header,net/source,resources,utils
 CommandLine=
@@ -71,16 +71,6 @@ BuildCmd=
 FileName=src\main.h
 CompileCpp=1
 Folder=header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit22]
-FileName=src\gui\buddywindow.cpp
-CompileCpp=1
-Folder=gui/source
 Compile=1
 Link=1
 Priority=1000

@@ -1,6 +1,6 @@
---------------------------------------
-THE MANA WORLD WIN32 RELEASE CHECKLIST
---------------------------------------
+-------------------------------------------
+THE MANA EXPERIMENT WIN32 RELEASE CHECKLIST
+-------------------------------------------
 
 Every Win32 releaser should follow this checklist when creating a new package.
 
@@ -11,7 +11,7 @@ Every Win32 releaser should follow this checklist when creating a new package.
     * Eventually Legal Copyright
 - Update README and ChangeLog if not already
 - Compile OpenGL version (Using -DUSE_OPENGL option) and rename the executable
-  from tmw.exe to tmw_opengl.exe
+  from tme.exe to tme_opengl.exe
 - Compile normal version (Do not use special flags as __DEBUG or USE_OPENGL)
 - Check if the dlls were compressed (SDL.dll, SDL_Image.dll, SDL_Mixer.dll)
 - Check config.xml for default values:

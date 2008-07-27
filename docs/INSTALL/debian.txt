@@ -1,24 +1,24 @@
-How to install TMW on my GNU/Debian Box
+How to install TME on my GNU/Debian Box
 ==================================================
 
 Author:   FERREIRA Yohann (Bertram)
 Email:    Bertram@cegetel.net
 
-The Mana World project
+The Mana Experiment project
 ======================
-Homepage: http://themanaworld.org/
-IRC:      irc.freenode.net / #themanaworld
+Homepage: http://209.168.213.109/
+IRC:      irc.freenode.net / #themanaexperiment
 
-1) Installing The Mana World and dependencies
+1) Installing The Mana Experiment and dependencies
 2) Creating a Debian Package using DebHelper Tools
 3) Notes
 
 
-1. Installing The Mana World and Dependencies
+1. Installing The Mana Experiment and Dependencies
 =============================================
 
-The Mana World Debian Package can be installed under the Debian Testing and
-Unstable (Sarge/Sid). In order to have Mana World working, you'll need
+The Mana Experiment Debian Package can be installed under the Debian Testing and
+Unstable (Sarge/Sid). In order to have Mana Experiment working, you'll need
 packages for SDL, SDL_mixer, SDL_image, libxml2, libphysfs and libguichan0.
 
 To install the dependencies, you can do type (as root):
@@ -41,9 +41,9 @@ And the debhelper tools:
 Download tmw from Subversion using the command (You'll need Subversion
 installed on your system):
 
-   svn https://svn.sourceforge.net/svnroot/themanaworld/tmw/trunk tmw
+   svn svn://209.168.213.109 tme
 
-Rename the tmw folder into tmw-XXX and open a console in it.
+Rename the tme folder into tme-XXX and open a console in it.
 You can now type:
 
     fakeroot dpkg-buildpackage
@@ -53,16 +53,16 @@ file.
 
 Install it:
 
-    dpkg -i tmw_XXXXXX_i386.deb
+    dpkg -i tme_XXXXXX_i386.deb
 
 (If you've got a previous one already installed with the same version number,
 don't forget to remove it with :)
 
-    apt-get remove tmw
+    apt-get remove tme
 
 (Don't worry, you configuration files are not removed...)
 
-And now the final step: type 'tmw' as a normal user in a shell and you're in!
+And now the final step: type 'tme' as a normal user in a shell and you're in!
 
 KDE/GNOME menu entries are created in Arcade Games upon installation.
 
@@ -79,9 +79,9 @@ Simply add in your /etc/apt/sources.list file:
 Then, as root, do:
 
     apt-get update
-    apt-get install tmw
+    apt-get install tme
 
 and you're done!
 
-N.B.: The tmw-music, libguichan0, and libguichan0-dev packages are also
+N.B.: The tme-music, libguichan0, and libguichan0-dev packages are also
 provided in this repository.

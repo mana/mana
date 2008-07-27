@@ -32,8 +32,8 @@
 #include "winver.h"
 #endif
 
-#ifndef TMW_DATADIR
-#define TMW_DATADIR ""
+#ifndef TME_DATADIR
+#define TME_DATADIR ""
 #endif
 
 /*

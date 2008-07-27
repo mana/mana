@@ -1,16 +1,16 @@
 Source: tmw
 Section: games
 Priority: optional
-Homepage: http://www.themanaworld.org/
+Homepage: http://209.168.213.109
 Maintainer: Patrick Matthäi <patrick.matthaei@web.de>
 Build-Depends: debhelper (>= 5), dpkg-dev (>= 1.13.19), dpatch, autotools-dev, libcurl4-gnutls-dev, libgl1-mesa-dev, libguichan2-dev (>= 0.7.1), libsdl1.2-dev, libsdl-image1.2-dev, libsdl-net1.2-dev, libsdl-mixer1.2-dev, libphysfs-dev, libpng12-dev, libxml2-dev, zlib1g-dev
 Standards-Version: 3.7.3
 
-Package: tmw
+Package: tme
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, tmw-data (= ${source:Version})
-Recommends: tmw-music
-Description: The Mana World is a great Online Rolegame
+Depends: ${shlibs:Depends}, ${misc:Depends}, tme-data (= ${source:Version})
+Recommends: tme-music
+Description: The Mana Experiment is a great Online Rolegame
  based upon the Seiken Densetsu serie. It has its own universe, and its own
  character management system, which will give you the opportunity to play in a
  2D heroic-fantasy world forever.

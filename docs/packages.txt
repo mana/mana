@@ -1,6 +1,6 @@
------------------------------
-THE MANA WORLD PACKAGE SYSTEM
------------------------------
+----------------------------------
+THE MANA EXPERIMENT PACKAGE SYSTEM
+----------------------------------
 
 1. INTRODUCTION
 2. LOCATION OF DATA
@@ -13,36 +13,38 @@ THE MANA WORLD PACKAGE SYSTEM
 
 1. INTRODUCTION
 
-The Mana World is expected to grow continuously with updates to the game world
-occurring relatively frequently. More often so than for example new releases
-of the game client. To make sure players don't have to update their data
-manually all the time, by for example downloading the latest from the website,
-the TMW client should be able to automatically obtain new data packages from
-the server.
+The Mana Experiment is expected to grow continuously with updates to the game
+world occurring relatively frequently. More often so than for example new
+releases of the game client. To make sure players don't have to update their
+data manually all the time, by for example downloading the latest from the
+website, the TME client should be able to automatically obtain new data
+packages from the server.
 
  Note: To reduce the load on the server (which isn't expected to have huge
  free uploading resources), the idea is that the server will only send a
  torrent file to the client and that the file is subsequently downloaded from
- several locations that have volunteered to spread TMW data files. Ultimately
+ several locations that have volunteered to spread TME data files. Ultimately
  a simple option on the client will even allow players to contribute their
  excess bandwidth to help other players get the updates faster.
 
 
 2. LOCATION OF DATA
 
-There are two locations where TMW can look for game data. The install data
+There are two locations where TME can look for game data. The install data
 directory and the data directory in the user's home directory. The latter one
 doesn't have to be used for Windows users, but is required for dynamic updates
 for UNIX users, who generally won't have write permissions to the install
 data directory. So for UNIX the two locations are:
 
- /usr/local/share/manaworld/data/*
+ /usr/local/share/tme/data/*
 
- ~/.manaworld/data/*
+ ~/.tme/updates/*
+
+ ~/.tme/customdata
 
 While for Windows all the data will be located at:
 
- C:\Program Files\The Mana World\data\*
+ C:\Program Files\The Mana Experiment\data\*
 
 In the UNIX case it doesn't matter in which order the data directories are
 examined.
@@ -83,7 +85,7 @@ package is irrelevant. An example of the contents is given by:
 
 5. INITIALIZING PACKAGE MANAGEMENT
 
-When TMW starts it will scan its data directories for both packages (archives)
+When TME starts it will scan its data directories for both packages (archives)
 and directories. When a directory is found with the same name as a package, the
 directory is the preferred location to load data from as it is assumed to be
 more up to date.
@@ -127,7 +129,7 @@ The resource management technique is critical to the overall success of the
 package management system as a whole.  Resources are loaded at runtime as they
 are needed, and unloaded as they become unused.  In order to ensure the 
 autonomous functioning of this process reference counting is the agreed upon 
-technique for managing loaded resources in TMW.  
+technique for managing loaded resources in TME.  
 
 For those unfamiliar with the practice of reference counting, it involves 
 every resource object having a variable containing the number of references to
