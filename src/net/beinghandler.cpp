@@ -200,6 +200,11 @@ void BeingHandler::handleMessage(MessageIn *msg)
             if (!dstBeing)
                 break;
 
+            if (dstBeing == player_node->getTarget())
+            {
+                player_node->stopAttack();
+            }
+
             if (msg->readInt8() == 1)
             {
                 dstBeing->setAction(Being::DEAD);
@@ -209,10 +214,6 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 beingManager->destroyBeing(dstBeing);
             }
 
-            if (dstBeing == player_node->getTarget())
-            {
-                player_node->stopAttack();
-            }
             break;
 
         case SMSG_BEING_ACTION:
