@@ -168,7 +168,7 @@ void setUpdatesDir()
     // If updatesHost is currently empty, fill it from config file
     if (updateHost.empty()) {
         updateHost =
-            config.getValue("updatehost", "http://updates.thanaworld.org");
+            config.getValue("updatehost", "http://updates.themanaworld.org");
     }
 
     // Remove any trailing slash at the end of the update host
