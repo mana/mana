@@ -1,3 +1,9 @@
+2008-08-05  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/setup_video.cpp, src/net/charserverhandler.cpp: Fixed
+	alignment issue with fps limit field (patch by Scraggy #384. Also
+	fixed small spelling error.
+
 2008-08-04  Dennis Friis  <peavey@placid.dk>
 
 	* src/main.cpp: Fix typo in updatehost reported by Jaxad.
