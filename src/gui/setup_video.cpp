@@ -189,7 +189,7 @@ Setup_Video::Setup_Video():
     mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 140, 75, 10));
     gcn::Label *scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
     scrollRadiusLabel->setPosition(90, 140);
-    mScrollRadiusField->setPosition(180, 140);
+    mScrollRadiusField->setPosition(mFpsField->getX(), 140);
     mScrollRadiusField->setWidth(30);
     mScrollRadiusField->setText(toString(mOriginalScrollRadius));
     mScrollRadiusSlider->setValue(mOriginalScrollRadius);
@@ -197,7 +197,7 @@ Setup_Video::Setup_Video():
     mScrollLazinessSlider->setDimension(gcn::Rectangle(10, 160, 75, 10));
     gcn::Label *scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
     scrollLazinessLabel->setPosition(90, 160);
-    mScrollLazinessField->setPosition(180, 160);
+    mScrollLazinessField->setPosition(mFpsField->getX(), 160);
     mScrollLazinessField->setWidth(30);
     mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
     mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
