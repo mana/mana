@@ -23,6 +23,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cassert>
 
 #include <guichan/exception.hpp>
 #include <guichan/widgets/icon.hpp>
@@ -135,14 +136,15 @@ Window::~Window()
     const std::string &name = mWindowName;
 
     // Saving X, Y and Width and Height for resizables in the config
-    config.setValue(name + "WinX", getX());
-    config.setValue(name + "WinY", getY());
-    config.setValue(name + "Visible", isVisible());
+    if (!name.empty()) {
+        config.setValue(name + "WinX", getX());
+        config.setValue(name + "WinY", getY());
+        config.setValue(name + "Visible", isVisible());
 
-    if (mGrip)
-    {
-        config.setValue(name + "WinWidth", getWidth());
-        config.setValue(name + "WinHeight", getHeight());
+        if (mGrip) {
+            config.setValue(name + "WinWidth", getWidth());
+            config.setValue(name + "WinHeight", getHeight());
+        }
     }
 
     instances--;
@@ -474,6 +476,7 @@ void
 Window::loadWindowState()
 {
     const std::string &name = mWindowName;
+    assert(!name.empty());
 
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
                 (int) config.getValue(name + "WinY", mDefaultY));

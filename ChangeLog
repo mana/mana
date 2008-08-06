@@ -1,3 +1,9 @@
+2008-08-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/window.cpp: Make sure only to save the window state when a
+	window name is set, and fail when loadWindowState() is called without
+	setting a window name.
+
 2008-08-05  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/setup_video.cpp, src/net/charserverhandler.cpp: Fixed
