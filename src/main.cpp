@@ -273,7 +273,7 @@ void init_engine(const Options &options)
 
     // Fill configuration with defaults
     logger->log("Initializing configuration...");
-    config.setValue("host", "216.139.126.36");
+    config.setValue("host", "209.168.213.109");
     config.setValue("port", 6901);
     config.setValue("hwaccel", 0);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
@@ -288,7 +288,7 @@ void init_engine(const Options &options)
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 60);
-    config.setValue("updatehost", "http://216.139.126.36/updates");
+    config.setValue("updatehost", "http://209.168.213.109/updates");
     config.setValue("customcursor", 1);
     config.setValue("ChatLogLength", 128);
 
