@@ -1,14 +1,14 @@
 
 iconsdir = $(pkgdatadir)/data/icons
 
-icons_DATA = tme.png
+icons_DATA = aethyra.png
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(datadir)/pixmaps
-	$(INSTALL) $(srcdir)/tme.png $(DESTDIR)$(datadir)/pixmaps/tme.png
+	$(INSTALL) $(srcdir)/aethyra.png $(DESTDIR)$(datadir)/pixmaps/aethyra.png
 
 uninstall-local:
-	rm -f $(DESTDIR)$(datadir)/pixmaps/tme.png
+	rm -f $(DESTDIR)$(datadir)/pixmaps/aethyra.png
 
 EXTRA_DIST =		\
 	$(icons_DATA)

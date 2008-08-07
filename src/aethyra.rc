@@ -2,7 +2,7 @@
 
 #include "winver.h"
 
-A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "data/icons/tme.ico"
+A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "data/icons/aethyra.ico"
 
 1 VERSIONINFO
 FILEVERSION VER_MAJOR,VER_MINOR,VER_RELEASE,VER_BUILD
@@ -10,12 +10,12 @@ PRODUCTVERSION VER_MAJOR,VER_MINOR,VER_RELEASE,VER_BUILD
 FILETYPE VFT_APP {
     BLOCK "StringFileInfo" {
         BLOCK "040904E4" {
-            VALUE "CompanyName", "The Mana Experiment Development Team"
+            VALUE "CompanyName", "Aethyra Development Team"
             VALUE "FileVersion", PACKAGE_VERSION
-            VALUE "FileDescription", "The Mana Experiment"
+            VALUE "FileDescription", "Aethyra Experiment"
             VALUE "LegalCopyright", "2008 (C)"
-            VALUE "OriginalFilename", "tme.exe"
-            VALUE "ProductName", "The Mana Experiment MMORPG"
+            VALUE "OriginalFilename", "aethyra.exe"
+            VALUE "ProductName", "Aethyra MMORPG"
             VALUE "ProductVersion", PACKAGE_VERSION
         }
     }

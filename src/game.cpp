@@ -357,11 +357,11 @@ bool saveScreenshot(SDL_Surface *screenshot)
     screenshotCount++;
     filename.str("");
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
-    filename << PHYSFS_getUserDir() << ".tme/";
+    filename << PHYSFS_getUserDir() << ".aethyra/";
 #elif defined __APPLE__
     filename << PHYSFS_getUserDir() << "Desktop/";
 #endif
-    filename << "TMW_Screenshot_" << screenshotCount << ".png";
+    filename << "Aethyra_Screenshot_" << screenshotCount << ".png";
     testExists.open(filename.str().c_str(), std::ios::in);
     found = !testExists.is_open();
     testExists.close();

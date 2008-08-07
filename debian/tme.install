@@ -1,5 +1,0 @@
-debian/tme.desktop usr/share/applications
-debian/tme.xpm usr/share/pixmaps
-data/icons/tme.png usr/share/icons
-docs/tme.6 usr/share/man/man6
-src/tme usr/games

@@ -1,5 +1,5 @@
 ---------------------------------
-The Mana Experiment Hacking Guide
+Aethyra Hacking Guide
 ---------------------------------
 
 With multiple coders working on the same source files, there needs to be a

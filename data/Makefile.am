@@ -1,4 +1,4 @@
 
 SUBDIRS = graphics help icons
 
-tmedatadir = $(pkgdatadir)/data
+aethyradatadir = $(pkgdatadir)/data

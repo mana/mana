@@ -56,7 +56,7 @@ binary-arch: build install
 	dh_install -a
 	dh_desktop -a
 	dh_installmenu -a
-	dh_strip -a --dbg-package=tme-dbg
+	dh_strip -a --dbg-package=aethyra-dbg
 	dh_compress -a
 	dh_fixperms -a
 	dh_installdeb -a

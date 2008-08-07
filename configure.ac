@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([The Mana Experiment], [Tme SVN 0.0.25], [blame582@gmail.com], [tme])
+AC_INIT([Aethyra], [Aethyra SVN 0.0.25], [blame582@gmail.com], [aethyra])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
 
@@ -79,7 +79,7 @@ else
     with_opengl=yes
     AC_CHECK_LIB([GL], [glBegin], ,
     AC_MSG_ERROR([ *** Unable to find OpenGL library]))
-    AC_DEFINE(USE_OPENGL, 1, [Defines if tme should use an OpenGL display])
+    AC_DEFINE(USE_OPENGL, 1, [Defines if aethyra should use an OpenGL display])
 fi
 
 # Search for sdl-config

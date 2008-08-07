@@ -1,5 +1,5 @@
 -------------------------------------
-THE MANA EXPERIMENT SOUND DEVELOPMENT
+AETHYRA SOUND DEVELOPMENT
 -------------------------------------
 
 1. INTRODUCTION
@@ -9,7 +9,7 @@ THE MANA EXPERIMENT SOUND DEVELOPMENT
 
 1. INTRODUCTION
 
-In The Mana Experiment we plan to have both background music and sound effects
+In Aethyra we plan to have both background music and sound effects
 linked to beings actions.
 
 2. SPECS

@@ -7,10 +7,10 @@ Q: How to get help?
 
 A: The fastest way is to come on our IRC channel. There you can find a lot of
    nice people that will help you until you solve your problem. Server:
-   irc.freenode.net Channel: #themanaexperiment.
+   irc.freenode.net Channel: #aethyra.
    If you don't like IRC just come to our forums:
-   http://tme.onlinegamecore.com/forums. Ok, do you think forums are evil?
-   Don't worry, send me an e-mail at elvenprogrammer@gmail.com and you're done.
+   http://forums.aethyra.com/ . Ok, do you think forums are evil?
+   Don't worry, send me an e-mail at blame582@gmail.com and you're done.
    That's not enough? No, I won't give you my phone number! ;P
    
 GAME
@@ -21,7 +21,7 @@ A: First of all check that your username is at least 4 characters long. Is the
    first time you login? Have you registered an account? If not use the
    "Register" button in game. If you already succesfully connected before, but
    now you're getting this message, please send an e-mail to
-   elvenprogrammer@gmail.com.
+   blame582@gmail.com.
 
 
 Q: I always get "Wrong password" but I'm sure I typed it right, why?
@@ -52,13 +52,15 @@ A: It's a system where is stored the latest development version. It's not
    is updated quite frequently). If you want to check it out, read this guide
    http://themanaworld.org/svn-tutorial.txt 
 
+(We need our own svn tut -- kraant)
+
 
 DEVELOPMENT
 
 Q: When will the next version be released?
 
 A: We have scheduled releases. Usually a new release is available every month.
-   Check http://wiki.themanaworld.org/index.php/Roadmap for further infos.
+   Check http://www.aethyra.com/ for further info.
 
 
 Q: How can I contribute?
@@ -67,11 +69,11 @@ A: There are a lot of ways:
    
    - If you're a programmer, an artist or just willing to help in any way, you
      can become part of the development team. Send an e-mail to
-     elvenprogrammer@gmail.com explaining what you want to do, or join our irc
-     channel: #themanaexperiment @ irc.freenode.net.
+     blame582@gmail.com explaining what you want to do, or join our irc
+     channel: #aethyra @ irc.freenode.net.
    
-   - You can be a beta tester. Just play with The Mana Experiment and report
+   - You can be a beta tester. Just play with Aethyra and report
      every error on the forum.
    
-   - Play with The Mana Experiment: more players, more fun! Simple as that! ;-)
+   - Play with Aethyra: more players, more fun! Simple as that! ;-)
 

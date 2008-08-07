@@ -1,19 +1,19 @@
-How to compile and run TME on your GNU/Linux Box
+How to compile and run Aethyra on your GNU/Linux Box
 ================================================
 
-Homepage:  http://209.168.213.109/
-IRC:       irc.freenode.net / #themanaexperiment
+Homepage:  http://www.aethyra.com/
+IRC:       irc.freenode.net / #aethyra
 
 1) Requirements
-2) Compiling The Mana Experiment
+2) Compiling Aethyra
 3) Notes
 
 
 1. Requirements
 ===============
 
-You are expected to have either checked out TME from CVS or you have downloaded
-a source release. To get The Mana Experiment to compile, you need a compiler
+You are expected to have either checked out Aethyra from CVS or you have downloaded
+a source release. To get Aethyra to compile, you need a compiler
 (GCC) and some libraries. The required libraries are:
 
 * SDL               http://www.libsdl.org/
@@ -26,7 +26,7 @@ a source release. To get The Mana Experiment to compile, you need a compiler
 * zlib 1.2.x        http://www.gzip.org/zlib/
 * libcurl           http://curl.haxx.se/libcurl/
 
-If you checked TME out from Subversion you will also need these tools to
+If you checked Aethyra out from Subversion you will also need these tools to
 compile:
 
 * GNU automake 1.9  http://www.gnu.org/software/automake/
@@ -36,7 +36,7 @@ Installing these dependencies is distributions-specific, and we'll leave it to
 you to figure this out.
 
 
-2. Compiling And Installing The Mana Experiment
+2. Compiling And Installing Aethyra
 ===============================================
 
 1) Go to the directory you have extracted the source to.
@@ -45,12 +45,12 @@ you to figure this out.
 4) Run "make"
 5) Run "make install" as root
 
-It should have installed The Mana Experiment on your system now, and you can
-run it with "tme". By default all files are installed to /usr/local, you can
+It should have installed Aethyra on your system now, and you can
+run it with "aethyra". By default all files are installed to /usr/local, you can
 pass a different prefix to configure as usual.
 
 
-  NOTE: It is possible to compile TME without support for OpenGL rendering.
+  NOTE: It is possible to compile Aethyra without support for OpenGL rendering.
   To do this perform step 3 as follows:
 
     ./configure --without-opengl

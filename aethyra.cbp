@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="The Mana Experiment" />
+		<Option title="Aethyra" />
 		<Option pch_mode="0" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="default">
-				<Option output="tme.exe" prefix_auto="0" extension_auto="0" />
+				<Option output="aethyra.exe" prefix_auto="0" extension_auto="0" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option projectResourceIncludeDirsRelation="0" />
@@ -37,7 +37,7 @@
 			</Target>
 			<Target title="unix">
 				<Option platforms="Unix;" />
-				<Option output="tme" prefix_auto="1" extension_auto="1" />
+				<Option output="aethyra" prefix_auto="1" extension_auto="1" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -358,7 +358,7 @@
 		<Unit filename="src/textparticle.cpp" />
 		<Unit filename="src/textparticle.h" />
 		<Unit filename="src/tileset.h" />
-		<Unit filename="src/tme.rc">
+		<Unit filename="src/aethyra.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>

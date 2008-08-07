@@ -1,31 +1,43 @@
-How to install TME on my GNU/Debian Box
+How to install Aethyra on my GNU/Debian Box
 ==================================================
 
 Author:   FERREIRA Yohann (Bertram)
 Email:    Bertram@cegetel.net
 
-The Mana Experiment project
-======================
-Homepage: http://209.168.213.109/
-IRC:      irc.freenode.net / #themanaexperiment
+With slight edits by Daniel Thomas (kraant@gmail.com)
+to for Aethyra...
 
-1) Installing The Mana Experiment and dependencies
+WARNING! These instructions are probably outdated!
+
+Check the forums (http://forums.aethyra.com/) where better help can be found.
+
+Aethyra project
+======================
+Homepage: http://www.aethyra.com/
+IRC:      irc.freenode.net / #aethyra
+
+1) Installing Aethyra and dependencies
 2) Creating a Debian Package using DebHelper Tools
 3) Notes
 
 
-1. Installing The Mana Experiment and Dependencies
+1. Installing Aethyra and Dependencies
 =============================================
 
-The Mana Experiment Debian Package can be installed under the Debian Testing and
+Aethyra Debian Package can be installed under the Debian Testing and
 Unstable (Sarge/Sid). In order to have Mana Experiment working, you'll need
 packages for SDL, SDL_mixer, SDL_image, libxml2, libphysfs and libguichan0.
 
 To install the dependencies, you can do type (as root):
 
-    apt-get install libsdl-mixer1.2 libsdl-image1.2 libxml2 libphysfs-1.0-0 libguichan0
+    apt-get install libsdl-mixer1.2 libsdl-image1.2 libxml2 libphysfs-1.0-0
 
-Type tmw as a normal user to play! (Enjoy!)
+(You'll need to compile libguichan from source since we've moved to 8.1
+and there is no package for this as of yet. This could create
+problems, any debian users trying this out and giving us fixes
+would be much appreciated -- kraant)
+
+Type aethyra as a normal user to play! (Enjoy!)
 
 2. Creating a Debian Package using DebHelper Tools
 ==================================================
@@ -41,9 +53,9 @@ And the debhelper tools:
 Download tmw from Subversion using the command (You'll need Subversion
 installed on your system):
 
-   svn svn://209.168.213.109 tme
+   svn co svn://209.168.213.109/client/trunk aethyra
 
-Rename the tme folder into tme-XXX and open a console in it.
+Rename the aethyra folder into aethyra-XXX and open a console in it.
 You can now type:
 
     fakeroot dpkg-buildpackage
@@ -53,16 +65,16 @@ file.
 
 Install it:
 
-    dpkg -i tme_XXXXXX_i386.deb
+    dpkg -i aethyra_XXXXXX_i386.deb
 
 (If you've got a previous one already installed with the same version number,
 don't forget to remove it with :)
 
-    apt-get remove tme
+    apt-get remove aethyra
 
 (Don't worry, you configuration files are not removed...)
 
-And now the final step: type 'tme' as a normal user in a shell and you're in!
+And now the final step: type 'aethyra' as a normal user in a shell and you're in!
 
 KDE/GNOME menu entries are created in Arcade Games upon installation.
 
@@ -70,6 +82,10 @@ KDE/GNOME menu entries are created in Arcade Games upon installation.
 ========
 
 A Debian Repository has been created.
+
+(This repository is for The Mana World not Aethyra, volunteers to make a
+package would be nice, basically if you follow these instructions 
+you won't get aethyra as of now -- kraant)
 
 Simply add in your /etc/apt/sources.list file:
 
@@ -79,9 +95,11 @@ Simply add in your /etc/apt/sources.list file:
 Then, as root, do:
 
     apt-get update
-    apt-get install tme
+    apt-get install aethyra
 
 and you're done!
 
-N.B.: The tme-music, libguichan0, and libguichan0-dev packages are also
+N.B.: The t_me-music, libguichan0, and libguichan0-dev packages are also
 provided in this repository.
+
+(Added '_' to avoid picking this file up in grep, fix this later -- kraant)

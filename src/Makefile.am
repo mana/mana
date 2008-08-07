@@ -1,5 +1,5 @@
-bin_PROGRAMS = tme
-tme_SOURCES = gui/widgets/dropdown.cpp \
+bin_PROGRAMS = aethyra
+aethyra_SOURCES = gui/widgets/dropdown.cpp \
               gui/widgets/dropdown.h \
               gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
@@ -311,10 +311,10 @@ tme_SOURCES = gui/widgets/dropdown.cpp \
 # set the include path found by configure
 INCLUDES =					\
 	$(all_includes)				\
-	-DTME_DATADIR=\""$(pkgdatadir)/"\"
+	-DAETHYRA_DATADIR=\""$(pkgdatadir)/"\"
 
 # the library search path.
-tme_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
-tme_CXXFLAGS = -Wall $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
-tme_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(CURL_LIBS)
-tme_TARGET = tme
+aethyra_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
+aethyra_CXXFLAGS = -Wall $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
+aethyra_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(CURL_LIBS)
+aethyra_TARGET = aethyra

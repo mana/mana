@@ -3,7 +3,7 @@ SUBDIRS = data docs src
 
 desktopdir = $(datadir)/applications
 
-desktop_DATA = tme.desktop
+desktop_DATA = aethyra.desktop
 
 # Extra files to include
 EXTRA_DIST = $(desktop_DATA)

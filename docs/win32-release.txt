@@ -1,5 +1,5 @@
 -------------------------------------------
-THE MANA EXPERIMENT WIN32 RELEASE CHECKLIST
+AETHYRA WIN32 RELEASE CHECKLIST
 -------------------------------------------
 
 Every Win32 releaser should follow this checklist when creating a new package.
@@ -11,7 +11,10 @@ Every Win32 releaser should follow this checklist when creating a new package.
     * Eventually Legal Copyright
 - Update README and ChangeLog if not already
 - Compile OpenGL version (Using -DUSE_OPENGL option) and rename the executable
-  from tme.exe to tme_opengl.exe
+  from aethyra.exe to aethyra_opengl.exe
+ (This isn't actually how it's happening because I'm cross compiling
+  and therefore flying blind. As it is aethyra.exe is the OpenGL version
+  and no sdl version is generated -- kraant)
 - Compile normal version (Do not use special flags as __DEBUG or USE_OPENGL)
 - Check if the dlls were compressed (SDL.dll, SDL_Image.dll, SDL_Mixer.dll)
 - Check config.xml for default values:
@@ -19,7 +22,7 @@ Every Win32 releaser should follow this checklist when creating a new package.
       <configuration>
         <option name="chatlog" value="chatlog.txt"/>
         <option name="guialpha" value="0.8"/>
-        <option name="host" value="server.themanaworld.org"/>
+        <option name="host" value="209.168.213.109"/>
         <option name="hwaccel" value="0"/>
         <option name="port" value="6901"/>
         <option name="remember" value="0"/>

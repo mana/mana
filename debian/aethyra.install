@@ -1,0 +1,5 @@
+debian/aethyra.desktop usr/share/applications
+debian/aethyra.xpm usr/share/pixmaps
+data/icons/aethyra.png usr/share/icons
+docs/aethyra.6 usr/share/man/man6
+src/aethyra usr/games

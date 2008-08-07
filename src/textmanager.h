@@ -19,8 +19,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TME_TEXTMANAGER_H
-#define _TME_TEXTMANAGER_H
+#ifndef _AETHYRA_TEXTMANAGER_H
+#define _AETHYRA_TEXTMANAGER_H
 
 #include <list>
 
