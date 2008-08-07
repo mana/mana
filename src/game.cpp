@@ -361,7 +361,7 @@ bool saveScreenshot(SDL_Surface *screenshot)
 #elif defined __APPLE__
     filename << PHYSFS_getUserDir() << "Desktop/";
 #endif
-    filename << "Aethyra_Screenshot_" << screenshotCount << ".png";
+    filename << "Ae_Screenshot_" << screenshotCount << ".png";
     testExists.open(filename.str().c_str(), std::ios::in);
     found = !testExists.is_open();
     testExists.close();
