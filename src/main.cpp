@@ -426,7 +426,7 @@ void printHelp()
         << "Options: " << std::endl
         << "  -h --help       : Display this help" << std::endl
         << "  -v --version    : Display the version" << std::endl
-        << "  -u --skipupdate : Skip the update process" << std::endl
+        << "  -u --skipupdate : Skip the update downloads" << std::endl
         << "  -U --username   : Login with this username" << std::endl
         << "  -P --password   : Login with this password" << std::endl
         << "  -D --default    : Bypass the login process with default "
@@ -757,15 +757,11 @@ int main(int argc, char *argv[])
             switch (oldstate)
             {
                 case UPDATE_STATE:
-                    if (options.skipUpdate) {
-                        state = LOADDATA_STATE;
-                    } else {
-                        loadUpdates();
-                        // Reload the wallpaper in case that it was updated
-                        login_wallpaper->decRef();
-                        login_wallpaper = ResourceManager::getInstance()->
-                            getImage("graphics/images/login_wallpaper.png");
-                    }
+                    loadUpdates();
+                    // Reload the wallpaper in case that it was updated
+                    login_wallpaper->decRef();
+                    login_wallpaper = ResourceManager::getInstance()->
+                        getImage("graphics/images/login_wallpaper.png");
                     break;
 
                     // Those states don't cause a network disconnect
@@ -890,8 +886,13 @@ int main(int argc, char *argv[])
 
                     setUpdatesDir();
                     logger->log("State: UPDATE");
-                    currentDialog = new UpdaterWindow(updateHost,
-                            homeDir + "/" + updatesDir);
+
+                    if (options.skipUpdate) {
+                        state = LOADDATA_STATE;
+                    } else {
+                        currentDialog = new UpdaterWindow(updateHost,
+                                                homeDir + "/" + updatesDir);
+                    }
                     break;
 
                 case ERROR_STATE:

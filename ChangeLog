@@ -1,3 +1,8 @@
+2008-08-08  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+
+	* Made "--skipupdate" skip the update download process, but
+	  still load whatever updates have been previously downloaded.
+
 2008-07-25  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
 
 	* Added feature to remember window locations from one 
