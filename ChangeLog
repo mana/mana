@@ -1,3 +1,8 @@
+2008-08-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* INSTALL, autogen.sh: Removed autogen.sh and tell people in the
+	INSTALL file to run 'autoreconf -i' instead.
+
 2008-07-24  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp, src/net/protocol.h, src/net/npchandler.cpp: Reverted 

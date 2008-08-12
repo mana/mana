@@ -43,7 +43,8 @@ you to figure this out.
 ==========================================
 
 1) Go to the directory you have extracted the source to.
-2) If you checked out from SVN, run "./autogen.sh" to generate configure.
+2) If you checked out from SVN, run "autoreconf -i" to generate configure and
+   install any missing auxiliary files.
 3) Run "./configure"
 4) Run "make"
 5) Run "make install" as root
