@@ -445,7 +445,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
 
             gmstatus = msg->readInt16();
-            if (gmstatus & 0x01)
+            if (gmstatus & 0x80)
                 dstBeing->setGM();
 
             if (msg->getId() == SMSG_PLAYER_UPDATE_1)
