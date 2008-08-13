@@ -128,5 +128,5 @@ void GuildListBox::setOnlineStatus(const std::string &user, bool online)
     {
         itr->second = online;
     }
-    logic();
+    adjustSize();
 }

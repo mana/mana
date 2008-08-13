@@ -1,11 +1,15 @@
+2008-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/guildlistbox.cpp: Call the more appropriate method.
+
 2008-08-13  David Athay  <ko2fan@gmail.com>
 
-	* src/commandhandler.cpp, src/gui/guildlistbox.cpp, 
+	* src/commandhandler.cpp, src/gui/guildlistbox.cpp,
 	src/commandhandler.h, src/net/guildhandler.cpp, src/net/protocol.h,
 	src/net/chathandler.cpp, src/net/chatserver/guild.cpp,
 	src/net/chatserver/chatserver.cpp, src/net/chatserver/guild.h,
-	src/net/chatserver/chatserver.h: Added permission levels to guilds, and
-	operator permissions to channels. 
+	src/net/chatserver/chatserver.h: Added permission levels to guilds,
+	and operator permissions to channels.
 
 2008-08-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -14,14 +18,14 @@
 
 2008-07-24  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp, src/net/protocol.h, src/net/npchandler.cpp: Reverted 
+	* src/game.cpp, src/net/protocol.h, src/net/npchandler.cpp: Reverted
 	Alt-Gr fix. Added NPC error messages.
 
 2008-07-22  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp, src/guild.cpp, src/player.cpp, src/guild.h, src/player.h,
-	src/net/guildhandler.cpp, src/net/protocol.h: Add permissions to guild
-	members. Alt-Gr fix for Rotonen.
+	* src/game.cpp, src/guild.cpp, src/player.cpp, src/guild.h,
+	src/player.h, src/net/guildhandler.cpp, src/net/protocol.h: Add
+	permissions to guild members. Alt-Gr fix for Rotonen.
 
 2008-07-17  David Athay  <ko2fan@gmail.com>
 
@@ -36,26 +40,27 @@
 
 2008-07-14  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp, src/commandhandler.cpp, src/game.h: Added admin commands
-	to /help. Added registering party handler.
+	* src/game.cpp, src/commandhandler.cpp, src/game.h: Added admin
+	commands to /help. Added registering party handler.
 
 2008-07-07  Roderic Morris  <roderic@ccs.neu.edu>
 
-	* src/net/chathandler.cpp, src/net/chathandler.h, src/commandhandler.h,
-	src/commandhandler.cpp, src/net/protocol.h, src/net/chatserver/chatserver.cpp,
-	src/net/chatserver/chatserver.h: Get rid of channel registering related code.
+	* src/net/chathandler.cpp, src/net/chathandler.h,
+	src/commandhandler.h, src/commandhandler.cpp, src/net/protocol.h,
+	src/net/chatserver/chatserver.cpp, src/net/chatserver/chatserver.h:
+	Get rid of channel registering related code.
 
 2008-07-07  David Athay  <ko2fan@gmail.com>
 
-	* src/commandhandler.hpp, src/commandhandler.cpp: Added help for each 
+	* src/commandhandler.hpp, src/commandhandler.cpp: Added help for each
 	command based on mantis bug #359, thanks to Scraggy.
 	* src/localplayer.cpp, src/commandhandler.cpp, src/gui/popupmenu.cpp,
 	src/commandhandler.h, src/localplayer.h: Added /party command.
 
 2008-07-05  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp, src/gui/gui.cpp: Allow foreign keyboards to use alt key
-	on Mac. Remove includes no longer needed.
+	* src/game.cpp, src/gui/gui.cpp: Allow foreign keyboards to use alt
+	key on Mac. Remove includes no longer needed.
 
 2008-07-04  David Athay  <ko2fan@gmail.com>
 
@@ -63,33 +68,38 @@
 
 2008-07-03  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp, src/gui/window.cpp: Fix guild window focus and fix crash
-	when typing in account login.
+	* src/game.cpp, src/gui/window.cpp: Fix guild window focus and fix
+	crash when typing in account login.
  
 2008-07-02  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/being.cpp: Fixed speech bubbles staying on screen during map change bug.
+	* src/being.cpp: Fixed speech bubbles staying on screen during map
+	change bug.
 
 2008-07-01  Roderic Morris  <roderic@ccs.neu.edu>
 
-	* data/graphics/gui/CMakeLists.txt, src/CMakeLists.txt, src/Makefile.am:
-	Add new files to CMakeLists, add missing backslash to Makefile.
+	* data/graphics/gui/CMakeLists.txt, src/CMakeLists.txt,
+	src/Makefile.am: Add new files to CMakeLists, add missing backslash to
+	Makefile.
 
 2008-07-01  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/gui/window.cpp, data/gui/window.hpp, data/graphics/gui/default.png,
-	data/graphics/gui/gui.xml, data/graphics/gui/speech_bubble.png,
-	data/graphics/gui/speechbubble.xml: Added skinning support to GUI (ported from
-	Legend of Mazzeroth)
-	* src/being.cpp, src/gui/speechbubble.cpp, src/gui/speechbubble.hpp: Speech is
-	now rendered in a speech bubble (ported from Legend of Mazzeroth).
-	* src/engine.cpp: "mapname" property of map files is now used as headline of the
-	minimap window (ported from Legend of Mazzeroth).
+	* data/gui/window.cpp, data/gui/window.hpp,
+	data/graphics/gui/default.png, data/graphics/gui/gui.xml,
+	data/graphics/gui/speech_bubble.png,
+	data/graphics/gui/speechbubble.xml: Added skinning support to GUI
+	(ported from Legend of Mazzeroth)
+	* src/being.cpp, src/gui/speechbubble.cpp, src/gui/speechbubble.hpp:
+	Speech is now rendered in a speech bubble (ported from Legend of
+	Mazzeroth).
+	* src/engine.cpp: "mapname" property of map files is now used as
+	headline of the minimap window (ported from Legend of Mazzeroth).
 	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.hpp,
-	src/gui/itemcontainer.cpp, src/gui/itemcontainer.h: Item descriptions are now
-	shown in a separate GUI window when the mouse cursor hovers over them
-	(ported from Legend of Mazzeroth).
-        * tmw.cbp, src/Makefile.am, data/graphics/gui/Makefile.am: Updated project files.
+	src/gui/itemcontainer.cpp, src/gui/itemcontainer.h: Item descriptions
+	are now shown in a separate GUI window when the mouse cursor hovers
+	over them (ported from Legend of Mazzeroth).
+	* tmw.cbp, src/Makefile.am, data/graphics/gui/Makefile.am: Updated
+	project files.
 
 2008-06-27  Roderic Morris  <roderic@ccs.neu.edu>
 
@@ -99,11 +109,11 @@
 
 2008-06-25  Roderic Morris  <roderic@ccs.neu.edu>
 
-	* src/commandhandler.cpp, src/commandhandler.h, src/net/chathandler.cpp,
-	src/net/chatserver/chatserver.cpp, src/net/chatserver/chatserver.h:
-	Handle setting channel topics.
-	* src/net/guildhandler.cpp, src/net/protocol.h: Handle guild list update
-	events, and update protocol definitions.
+	* src/commandhandler.cpp, src/commandhandler.h,
+	src/net/chathandler.cpp, src/net/chatserver/chatserver.cpp,
+	src/net/chatserver/chatserver.h: Handle setting channel topics.
+	* src/net/guildhandler.cpp, src/net/protocol.h: Handle guild list
+	update events, and update protocol definitions.
 
 2008-06-14  Roderic Morris  <roderic@ccs.neu.edu>
 
@@ -112,7 +122,7 @@
 
 2008-06-11  David Athay  <ko2fan@gmail.com>
 
-	* src/gui/guildlistbox.cpp: Fixed displaying guild members in guild 
+	* src/gui/guildlistbox.cpp: Fixed displaying guild members in guild
 	window.
 
 2008-06-10  Roderic Morris  <roderic@ccs.neu.edu>
@@ -123,23 +133,22 @@
 
 2008-06-09  Roderic Morris  <roderic@ccs.neu.edu>
 
-	* src/commandhandler.cpp, src/commandhandler.h,
-	src/game.cpp, src/CMakeLists.txt, src/Makefile.am:
-	Add a command handler class to handle commands issued by
-	the user.
+	* src/commandhandler.cpp, src/commandhandler.h, src/game.cpp,
+	src/CMakeLists.txt, src/Makefile.am: Add a command handler class to
+	handle commands issued by the user.
 	* src/gui/chat.cpp, src/gui/chat.h, src/net/chathandler.cpp,
-	src/net/guildhandler.cpp: Display messages about chats in
-	green, and take command parsing code out of the chat dialog,
-	* src/channel.cpp, src/channel.h: Don't store channel users,
-	its handled with packets.
+	src/net/guildhandler.cpp: Display messages about chats in green, and
+	take command parsing code out of the chat dialog.
+	* src/channel.cpp, src/channel.h: Don't store channel users, its
+	handled with packets.
 
 2008-06-03  Roderic Morris  <roderic@ccs.neu.edu>
 
-	* src/gui/chat.cpp, src/gui/chat.h, src/net/guildhandler.cpp: 
-	Get rid of more eAthena related code, get rid of the redundant
-	addChannel method.
-	* src/net/chathandler.cpp, src/net/chathandler.h, src/net/protocol.h,:
-	break up the logic in chathandler with helper methods, add enums
+	* src/gui/chat.cpp, src/gui/chat.h, src/net/guildhandler.cpp: Get rid
+	of more eAthena related code, get rid of the redundant addChannel
+	method.
+	* src/net/chathandler.cpp, src/net/chathandler.h, src/net/protocol.h:
+	Break up the logic in chathandler with helper methods, add enums
 	for up to now unhandled messages, handle announcements and leave /
 	enter messages for channels.
 	* src/channel.h, src/channel.cpp: handle user lists and announcements.
@@ -168,7 +177,7 @@
 
 2008-05-16  David Athay  <ko2fan@gmail.com>
 
-	*  src/gui/popupmenu.cpp: Applied QOAL's patch to fix popups at 
+	*  src/gui/popupmenu.cpp: Applied QOAL's patch to fix popups at
 	bottom of the screen.
 
 2008-05-15  David Athay  <ko2fan@gmail.com>
@@ -177,7 +186,7 @@
 	src/gui/widgets/tabbedarea.cpp, src/gui/widgets/tab.h,
 	src/gui/chat.cpp, src/gui/guildwindow.cpp, src/CMakeLists.txt,
 	src/Makefile.am, data/graphics/gui/tab.png,
-	data/graphics/gui/tabselected.png, tmw.cbp: Added tab with image 
+	data/graphics/gui/tabselected.png, tmw.cbp: Added tab with image
 	based on button.
 	* src/gui/chat.cpp: Fixed chat window scrolling.
 
@@ -190,9 +199,9 @@
 	*  src/gui/setup_keyboard.cpp, src/gui/setup.cpp,
 	src/gui/widgets/tabbedarea.h, src/gui/widgets/tabbedarea.cpp,
 	src/gui/chat.cpp, src/gui/tabbedcontainer.cpp, src/gui/skill.cpp,
-	src/gui/setup_audio.cpp, src/gui/setup_video.cpp, 
-	src/gui/setup_joystick.cpp, src/gui/tabbedcontainer.h, tmw.cbp: 
-	Changed the tabbedarea to be transparant as before. Changed setup 
+	src/gui/setup_audio.cpp, src/gui/setup_video.cpp,
+	src/gui/setup_joystick.cpp, src/gui/tabbedcontainer.h, tmw.cbp:
+	Changed the tabbedarea to be transparant as before. Changed setup
 	window and skills dialog to use the new tabbed area. Removed tabbed
 	container as it is no longer used. Fixed a crash with the chat window.
 
@@ -309,8 +318,8 @@
 	src/gui/changepassworddialog.h, src/gui/changepassworddialog.cpp,
 	src/CMakeLists.txt: Added a change password dialog. State code is to
 	be reworked.
-	* src/localplayer.h, src/localplayer.cpp: limited keyboard walk message
-	flooding to one every 1/10 sec.
+	* src/localplayer.h, src/localplayer.cpp: Limited keyboard walk
+	message flooding to one every 1/10 sec.
 	* src/main.h, src/main.cpp, src/net/loginhandler.cpp,
 	src/net/logouthandler.cpp, src/gui/unregisterdialog.cpp,
 	src/gui/changepassworddialog.cpp: Made Unregister and change password
@@ -318,8 +327,8 @@
 
 2008-04-18  David Athay  <ko2fan@gmail.com>
 
-	* src/gui/chat.h, src/gui/widgets/tabbedarea.h, 
-	src/gui/widgets/tabbedarea.cpp, src/gui/chat.cpp, 
+	* src/gui/chat.h, src/gui/widgets/tabbedarea.h,
+	src/gui/widgets/tabbedarea.cpp, src/gui/chat.cpp,
 	src/gui/guildwindow.cpp, src/gui/gui.cpp, src/CMakeLists.txt,
 	src/net/guildhandler.cpp, src/net/chathandler.cpp, src/Makefile.am,
 	tmw.cbp: Fixed numerous crashes with chat and guild windows using new
@@ -330,7 +339,7 @@
 	* src/player.cpp, src/player.h, src/net/partyhandler.h,
 	src/net/guildhandler.h, src/net/partyhandler.cpp,
 	src/net/guildhandler.cpp, src/net/chatserver/party.cpp,
-	src/net/chatserver/party.h, src/localplayer.h: Added basic party 
+	src/net/chatserver/party.h, src/localplayer.h: Added basic party
 	support.
 
 2008-04-17  Yohann Ferreira <bertram@cegetel.net>
@@ -378,7 +387,7 @@
 	src/net/guildhandler.cpp, src/net/protocol.h, src/net/chathandler.cpp,
 	src/net/chatserver/chatserver.cpp, src/net/chatserver/chatserver.h,
 	src/Makefile.am, data/graphics/gui/circle-green.png
-	data/graphics/gui/circle-gray.png, tmw.cbp: Added online status of 
+	data/graphics/gui/circle-gray.png, tmw.cbp: Added online status of
 	guild members.
 
 2008-04-14 Yohann Ferreira <bertram@cegetel.net>
@@ -387,7 +396,7 @@
 
 2008-04-14  David Athay  <ko2fan@gmail.com>
 
-	* src/gui/guildwindow.cpp, src/gui/chat.cpp, 
+	* src/gui/guildwindow.cpp, src/gui/chat.cpp,
 	src/gui/widgets/tabbedarea.h, src/gui/widgets/tabbedarea.cpp,
 	src/gui/chat.h, src/gui/guildwindow.h, src/net/chathandler.cpp:
 	Added new TabbedArea which extends gui::TabbedArea. Changed Guild and
@@ -536,7 +545,7 @@
 
 	* src/gui/guildwindow.cpp, src/gui/guildwindow.h,
 	src/net/guildhandler.cpp, src/net/guildhandler.h,
-	src/net/chatserver.cpp, src/net/chatserver.h: Added ability to 
+	src/net/chatserver.cpp, src/net/chatserver.h: Added ability to
 	quit guilds.
 
 2008-03-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -661,7 +670,8 @@
 
 2008-02-26  Eugenio Favalli  <elvenprogrammer@themanaworld.org>
 
-	* src/gui/minimap.cpp: Keep minimap status. Based on a patch by Knivey.
+	* src/gui/minimap.cpp: Keep minimap status. Based on a patch by
+	Knivey.
 	* data/graphics/tiles/tulimshar1.png, data/maps/new_3-1.tmx: Added
 	Modanung's mud tileset and applied to some houses in Tulimshar.
 
@@ -695,7 +705,7 @@
 	* src/gui/skill.cpp, src/localplayer.cpp, src/localplayer.h:
 	Implemented skill name display in skill dialog and xp messages (based
 	on a patch by rodge)
-	* src/gui/char_select.cpp, src/gui/char_select.h, src/player.h:	Merged
+	* src/gui/char_select.cpp, src/gui/char_select.h, src/player.h: Merged
 	creation of female characters from Legend of Mazzeroth.
 	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp,
 	src/player.cpp, src/player.h, src/resources/itemdb.cpp,
@@ -749,10 +759,10 @@
 
 2008-02-12  Dennis Friis  <peavey@placid.dk>
 
-	* src/localplayer.cpp, src/map.cpp, src/gui/viewport.cpp, src/being.cpp
-	src/map.h: Made pathfinding not halt on collision destination tile,
-	made moving around with mouse smoother. Added possibility to pass
-	through players with key controls.
+	* src/localplayer.cpp, src/map.cpp, src/gui/viewport.cpp,
+	src/being.cpp, src/map.h: Made pathfinding not halt on collision
+	destination tile, made moving around with mouse smoother. Added
+	possibility to pass through players with key controls.
 
 2008-02-11  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -760,7 +770,8 @@
 
 2008-02-10  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_23-1.tmx: Added Dimonds Cove outdoor map by MerlinX420.
+	* data/maps/new_23-1.tmx: Added Dimonds Cove outdoor map by
+	MerlinX420.
 
 2008-02-08  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -855,9 +866,9 @@
 
 2008-01-19  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Map fixes by 5t3v3 at
-	the new snow maps. Added hot spring particle effect to pond south of
-	snow village.
+	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Map fixes by 5t3v3
+	at the new snow maps. Added hot spring particle effect to pond south
+	of snow village.
 	* data/graphics/particles/bubbles_32px,
 	data/graphics/particles/bubbles_12px,
 	data/graphics/particles/bubbles_8px,
@@ -868,10 +879,10 @@
 
 2008-01-14  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Added new versions of
-	snow maps by 5t3v3.
-	* src/sound.cpp: Fixed an error in Davids last commit (couldn't compile
-	that way).
+	* data/maps/new_10-1.tmx, data/maps/new_11-1.tmx: Added new versions
+	of snow maps by 5t3v3.
+	* src/sound.cpp: Fixed an error in Davids last commit (couldn't
+	compile that way).
 
 2008-01-13  David Athay  <ko2fan@gmail.com>
 
@@ -920,8 +931,8 @@
 
 	* data/maps/new_22-1.tmx: Some mapping fixes at snake dungeon map.
 	* src/game.cpp, src/beingmanager.cpp, src/beingmanager.h,
-	src/keyboardconfig.cpp, src/keyboardconfig.h: Added a key for targeting
-	the nearest player character based on patches by Trinexx.
+	src/keyboardconfig.cpp, src/keyboardconfig.h: Added a key for
+	targeting the nearest player character based on patches by Trinexx.
 	* src/gui/viewport.cpp: Added config options to set the scroll center.
 	* src/gui/viewport.h, src/net/playerhandler.cpp: Retained scroll
 	offset during map change for smoother map transitions.
@@ -932,7 +943,7 @@
 	5t3v3 (east desert cave) and enhanced version of eastern desert by
 	Len.
 	* data/maps/new_3-1.tmx: Some mapping errors fixed by Zipon.
-	* src/being.cpp, src/monster.cpp, src/resources/monsterinfo.cpp, 
+	* src/being.cpp, src/monster.cpp, src/resources/monsterinfo.cpp,
 	src/resources/monsterinfo.h: Added the possibility to assign particle
 	effects to monsters in the monster database.
 	* data/monsters.xml: Added flame particle effect to fire goblin as a
@@ -1213,8 +1224,8 @@
 
 	* data/maps/new_4-1.tmx: Added npc.
 	* data/maps/new_5-1.tmx: Added npcs.
-	* data/maps/new_5-1.tmx, data/maps/new_6-1.tmx: Added monsters on map 5
-	and some fixes, added npcs to map 6.
+	* data/maps/new_5-1.tmx, data/maps/new_6-1.tmx: Added monsters on map
+	5 and some fixes, added npcs to map 6.
 
 2007-11-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -1223,25 +1234,27 @@
 2007-11-14  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/chat.cpp: Fixed up and down arrows in chat box.
-	* src/gui/inttextbox.h, src/gui/inttextbox.cpp: Changed to textfield so
-	that it is visibly editable.
+	* src/gui/inttextbox.h, src/gui/inttextbox.cpp: Changed to textfield
+	so that it is visibly editable.
 	* src/gui/item_amount.cpp: Converted to layout handler.
 	* src/game.cpp, src/gui/viewport.cpp, src/gui/popupmenu.cpp: Removed
 	tests on current_npc.
 
 2007-11-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* data/maps/new_1-1.tmx, data/maps/new_10-1.tmx, 
-	data/maps/new_11-1.tmx, data/maps/new_12-1.tmx, data/maps/new_13-1.tmx,
-	data/maps/new_14-1.tmx, data/maps/new_15-1.tmx, data/maps/new_16-1.tmx,
-	data/maps/new_17-1.tmx, data/maps/new_18-1.tmx, data/maps/new_19-1.tmx,
-	data/maps/new_2-1.tmx, data/maps/new_3-1.tmx, data/maps/new_4-1.tmx,
-	data/maps/new_5-1.tmx, data/maps/new_6-1.tmx, data/maps/new_7-1.tmx,
-	data/maps/new_8-1.tmx, data/maps/new_9-1.tmx, tmw.cbp:
-	Started porting warps to the new server, updated project file.
+	* data/maps/new_1-1.tmx, data/maps/new_10-1.tmx,
+	data/maps/new_11-1.tmx, data/maps/new_12-1.tmx,
+	data/maps/new_13-1.tmx, data/maps/new_14-1.tmx,
+	data/maps/new_15-1.tmx, data/maps/new_16-1.tmx,
+	data/maps/new_17-1.tmx, data/maps/new_18-1.tmx,
+	data/maps/new_19-1.tmx, data/maps/new_2-1.tmx, data/maps/new_3-1.tmx,
+	data/maps/new_4-1.tmx, data/maps/new_5-1.tmx, data/maps/new_6-1.tmx,
+	data/maps/new_7-1.tmx, data/maps/new_8-1.tmx, data/maps/new_9-1.tmx,
+	tmw.cbp: Started porting warps to the new server, updated project
+	file.
 	* data/maps/new_1-1.tmx: Fixed object type and added npcs.
-	* data/maps/new_1-1.tmx, data/maps/new_2-1.tmx: Fixed shop on map 1 and
-	added npcs on map 2.
+	* data/maps/new_1-1.tmx, data/maps/new_2-1.tmx: Fixed shop on map 1
+	and added npcs on map 2.
 
 2007-11-11  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -1268,14 +1281,16 @@
 2007-11-04  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/resources/dye.cpp, src/resources/resourcemanager.cpp: Moved
-	palette qualifiers to the right as the code appends things on the left.
+	palette qualifiers to the right as the code appends things on the
+	left.
 	* src/resources/spritedef.cpp, src/resources/spritedef.h,
 	src/resources/resourcemanager.h: Added propagation of palettes through
 	sprite resource names.
 	* data/monsters.xml, data/graphics/sprites/monster-scorpion.xml: Used
 	palettes on sprite names.
 	* data/graphics/sprites/monster-scorpion-black.xml,
-	data/graphics/sprites/monster-scorpion-red.xml: Removed obsolete files.
+	data/graphics/sprites/monster-scorpion-red.xml: Removed obsolete
+	files.
 	* src/player.cpp: Added hair colors.
 	* data/graphics/sprites/hairstyle*.xml: Removed sprite variants. Set
 	replaceable color.
@@ -1288,9 +1303,10 @@
 
 2007-11-03  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
-	* src/player.cpp, src/player.h, src/gui/char_select.cpp: Factored code.
-	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp: Fixed double
-	load of hair graphics.
+	* src/player.cpp, src/player.h, src/gui/char_select.cpp: Factored
+	code.
+	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp: Fixed
+	double load of hair graphics.
 	* src/Makefile.am, src/resources/dye.cpp, src/resources/dye.h: Added
 	palette holder and linear interpolator of colors.
 	* src/resources/image.h, src/resources/image.cpp: Added palette-based
@@ -1299,7 +1315,8 @@
 	Added automatic recoloring of images depending on their names.
 	* data/graphics/sprites/monster-scorpion.png: Flattened colors.
 	* data/graphics/sprites/monster-scorpion-black.png,
-	data/graphics/sprites/monster-scorpion-red.png: Removed obsolete files.
+	data/graphics/sprites/monster-scorpion-red.png: Removed obsolete
+	files.
 	* data/graphics/sprites/monster-scorpion.xml,
 	data/graphics/sprites/monster-scorpion-black.xml,
 	data/graphics/sprites/monster-scorpion-red.xml: Added automatic
@@ -1366,8 +1383,8 @@
 	src/resources/monsterinfo.cpp, src/resources/itemdb.cpp: Fixed missing
 	dependencies, spurious const qualifiers, and weak brackets, so that it
 	compiles with GCC 4.3.
-	* src/gui/widgets/layout.h, src/gui/widgets/layout.cpp: Improved layout
-	handler to support trees of nested arrays.
+	* src/gui/widgets/layout.h, src/gui/widgets/layout.cpp: Improved
+	layout handler to support trees of nested arrays.
 	* src/gui/window.cpp, src/gui/window.h: Removed unused function
 	updateContentSize. Simplified layout accessors.
 	* src/gui/char_select.cpp: Replaced flushed-layout hack with a tree.
@@ -1419,12 +1436,12 @@
 	* src/gui/widgets/layout.cpp: Allowed for decreasing sizes in layout.
 	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.cpp: Delegated
 	resizing events to layout handler.
-	* src/gui/widgets/layout.cpp, src/gui/widgets/layout.h: Renamed padding
-	to spacing. Added margin around layout. Constified code.
+	* src/gui/widgets/layout.cpp, src/gui/widgets/layout.h: Renamed
+	padding to spacing. Added margin around layout. Constified code.
 	* src/gui/window.cpp, src/gui/login.cpp, src/gui/char_select.cpp,
 	src/gui/serverdialog.cpp, src/gui/inventorywindow.cpp: Removed window
-	padding and replaced it by layout margin, so that the grip on resizable
-	window is not outside the inner clip area.
+	padding and replaced it by layout margin, so that the grip on
+	resizable window is not outside the inner clip area/
 	* src/engine.cpp, src/engine.h, src/game.cpp: Fixed current map not
 	deleted on server change.
 	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.h: Removed
@@ -1471,8 +1488,8 @@
 	* src/gui/buy.cpp, src/gui/sell.cpp, po/POTFILES.in: Marked buy and
 	sell dialog boxes as translatable.
 	* src/resources/resource.cpp, src/resources/resource.h,
-	src/resources/imageset.cpp, src/resources/imageset.h: Removed mandatory
-	identifier path.
+	src/resources/imageset.cpp, src/resources/imageset.h: Removed
+	mandatory identifier path/
 	* src/resources/resourcemanager.cpp, src/resources/resourcemanager.h:
 	Factored code between resource handlers.
 	* src/resources/soundeffect.h, src/resources/soundeffect.cpp,
@@ -1493,14 +1510,14 @@
 2007-10-18  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/beingmanager.h, src/beingmanager.cpp, src/net/beinghandler.cpp:
-	Removed guess of being type from class number. Factored handler for new
-	beings.
+	Removed guess of being type from class number. Factored handler for
+	new beings.
 	* src/gui/truetypefont.cpp: Fixed double-free of true-type resources.
 	* src/monster.cpp: Removed compatibility hack.
 	* data/monsters.xml: Merged client and server monster data.
 	* data/items.xml: Merged server item data. Removed obsolete fields.
-	* src/localplayer.cpp, src/localplayer.h: Moved equipment and inventory
-	storage to local player. Removed specific type.
+	* src/localplayer.cpp, src/localplayer.h: Moved equipment and
+	inventory storage to local player. Removed specific type.
 	* src/gui/viewport.cpp, src/gui/minimap.cpp: Changed identification of
 	local player to a check of player_node.
 	* src/animatedsprite.cpp, src/animatedsprite.h, src/npc.cpp,
@@ -1533,7 +1550,8 @@
 
 2007-10-07  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/graphics/maps/new_18-1.tmx: Fixed some collision layer problems.
+	* data/graphics/maps/new_18-1.tmx: Fixed some collision layer
+	problems.
 
 2007-10-01  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -1605,8 +1623,8 @@
 	data/graphics/sprites/item020.png, data/graphics/sprites/item020.xml,
 	data/graphics/sprites/item021.png, data/graphics/sprites/item021.xml,
 	data/graphics/sprites/item022.png, data/graphics/sprites/item022.xml,
-	data/items.xml, data/maps/new_21-1.tmx: Added 4 new items and a new ice
-	cave map.
+	data/items.xml, data/maps/new_21-1.tmx: Added 4 new items and a new
+	ice cave map.
 
 2007-09-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -1765,12 +1783,12 @@
 	src/resources/sdlimageloader.h, src/resources/openglsdlimageloader.h,
 	src/resources/openglsdlimageloader.cpp, src/resources/imageloader.cpp,
 	src/resources/imageloader.h, src/gui/gui.cpp, src/gui/gui.h: Replaced
-	Guichan's image loaders with our owns, so that we have control over all
-	the images used as textures.
+	Guichan's image loaders with our owns, so that we have control over
+	all the images used as textures.
 	* src/resources/image.cpp, src/openglgraphics.h, src/resources/image.h,
-	src/openglgraphics.cpp, src/graphics.cpp, src/graphics.h: Added support
-	for rectangle OpenGL textures when available, in order to reduce video
-	memory usage.
+	src/openglgraphics.cpp, src/graphics.cpp, src/graphics.h: Added
+	support for rectangle OpenGL textures when available, in order to
+	reduce video memory usage.
 
 2007-08-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -1914,7 +1932,8 @@
 	gui/item_amount.cpp, gui/item_amount.h, gui/itemcontainer.cpp,
 	gui/itemcontainer.h, gui/popupmenu.cpp, gui/trade.cpp, inventory.cpp,
 	inventory.h, localplayer.cpp, localplayer.h, net/gameserver/player.cpp,
-	net/gameserver/player.h, net/protocol.h: Inventory Window Slots created.
+	net/gameserver/player.h, net/protocol.h: Inventory Window Slots
+	created.
 
 2007-08-13  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -1927,7 +1946,8 @@
 
 2007-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* src/main.cpp, tmw.cbp: Fixed internationalization support on Windows.
+	* src/main.cpp, tmw.cbp: Fixed internationalization support on
+	Windows.
 	* po/it.po, po/LINGUAS: Added first draft of Italian translation.
 
 2007-08-10  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
@@ -2742,10 +2762,11 @@
 	src/gui/quitdialog.h, src/gui/quitdialog.cpp,
 	src/net/accountserver/accountserver.h,
 	src/net/accountserver/accountserver.cpp, src/net/loginhandler.cpp,
-	src/net/logouthandler.h, src/net/logouthandler.cpp, src/net/protocol.h,
-	src/net/gameserver/gameserver.h, src/net/gameserver/gameserver.cpp,
-	src/game.cpp, src/main.h, src/main.cpp: Added unregistering,
-	logout_then_exit, switch_character and switch_accountserver.
+	src/net/logouthandler.h, src/net/logouthandler.cpp,
+	src/net/protocol.h, src/net/gameserver/gameserver.h,
+	src/net/gameserver/gameserver.cpp, src/game.cpp, src/main.h,
+	src/main.cpp: Added unregistering, logout_then_exit, switch_character
+	and switch_accountserver.
 	* src/lockedarray.h: Added a clear function that keeps the original
 	size and data type.
 	* src/logindata.h: Added a clear function.
@@ -2814,7 +2835,8 @@
 
 	* data/maps/new_1-9.tmx.gz, data/maps/new_1-14.tmx.gz,
 	data/maps/new_1-16.tmx.gz: Restored the cloud shadow overlays in the
-	woodland that got lost somehow during the halloween and christmas chaos.
+	woodland that got lost somehow during the halloween and christmas
+	chaos.
 
 2007-02-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -2907,9 +2929,10 @@
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
 	src/particleemitter.h: Implemented die-distance (particles are deleted
 	when they reached a certain proximity to their target)
-	* src/particle.cpp: Fixed a bug in the acceleration vector calculation.
-	* src/particle.cpp, src/particle.h: Fixed a problem with particles with
-	unlimited lifetime and fade-in.
+	* src/particle.cpp: Fixed a bug in the acceleration vector
+	calculation.
+	* src/particle.cpp, src/particle.h: Fixed a problem with particles
+	with unlimited lifetime and fade-in.
 	* data/graphics/particles/playerglow.particle.xml: And again a new
 	player follow particle. This time it demonstrates die-distance and the
 	fixed acceleration vector calculation.
