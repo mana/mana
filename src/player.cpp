@@ -43,6 +43,7 @@ Player::Player(int id, int job, Map *map):
     Being(id, job, map)
 {
     mName = 0;
+    mIsGM = false;
 }
 
 Player::~Player()
@@ -57,9 +58,15 @@ void Player::setName(const std::string &name)
 {
     if (mName == 0)
     {
-        mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                              gcn::Graphics::CENTER,
-                              speechFont, gcn::Color(255, 255, 255));
+        if (mIsGM) {
+            mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+                                  gcn::Graphics::CENTER,
+                                  gmNameFont, gcn::Color(255, 255, 255));
+        } else {
+            mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+                                  gcn::Graphics::CENTER,
+                                  speechFont, gcn::Color(255, 255, 255));
+        }
         Being::setName(name);
     }
 }

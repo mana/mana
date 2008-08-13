@@ -168,7 +168,7 @@ void Monster::showName(bool show)
         mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,
                          mPy + NAME_Y_OFFSET - getHeight(),
                          gcn::Graphics::CENTER,
-                         speechFont, gcn::Color(255, 32, 32));
+                         mobNameFont, gcn::Color(255, 32, 32));
     }
     else
     {

@@ -119,4 +119,12 @@ extern gcn::Font *hitYellowFont;
  */
 extern gcn::Font *speechFont;
 
+/**
+ * being name fonts
+ */
+extern gcn::Font *npcNameFont;
+extern gcn::Font *mobNameFont;
+extern gcn::Font *gmNameFont;
+
+
 #endif

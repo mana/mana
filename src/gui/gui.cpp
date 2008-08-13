@@ -56,6 +56,13 @@ gcn::Font *hitYellowFont;
 // Font used to display speech and player names
 gcn::Font *speechFont;
 
+// Font for displaying NPC names
+gcn::Font *npcNameFont;
+// Font for displaying mob names
+gcn::Font *mobNameFont;
+// Font for displaying GM names
+gcn::Font *gmNameFont;
+
 class GuiConfigListener : public ConfigListener
 {
     public:
@@ -127,6 +134,46 @@ Gui::Gui(Graphics *graphics):
     {
         logger->error("Unable to load rpgfont_wider.png!");
     }
+
+    // Set npc name font
+    try {
+        npcNameFont = new gcn::ImageFont("graphics/gui/rpgfont_wider-blue.png",
+                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
+                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
+                );
+    }
+    catch (gcn::Exception e)
+    {
+        logger->error("Unable to load rpgfont_wider-blue.png!");
+    }
+
+    // Set monster name font
+    try {
+        mobNameFont = new gcn::ImageFont("graphics/gui/rpgfont_wider-orange.png",
+                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
+                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
+                );
+    }
+    catch (gcn::Exception e)
+    {
+        logger->error("Unable to load rpgfont_wider-orange.png!");
+    }
+
+    // Set GM name font
+    try {
+        gmNameFont = new gcn::ImageFont("graphics/gui/rpgfont_wider-green.png",
+                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
+                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
+                );
+    }
+    catch (gcn::Exception e)
+    {
+        logger->error("Unable to load rpgfont_wider-green.png!");
+    }
+
 
     gcn::Widget::setGlobalFont(mGuiFont);
 

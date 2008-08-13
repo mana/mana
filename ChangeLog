@@ -1,3 +1,10 @@
+2008-08-13	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
+
+	* Added code to display NPC and monster names using an
+	  alternate colored font.  Added support for a server
+	  provided "GM flag", which prepends "(GM)" to the player's
+	  name and changes the font color.
+
 2008-08-08  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
 
 	* Made "--skipupdate" skip the update download process, but

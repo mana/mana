@@ -84,7 +84,7 @@ void NPC::setName(const std::string &name)
         delete mName;
     }
     mName = new Text(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                     gcn::Graphics::CENTER, speechFont,
+                     gcn::Graphics::CENTER, npcNameFont,
                      gcn::Color(200, 200, 255));
                  }
 

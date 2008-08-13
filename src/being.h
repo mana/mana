@@ -233,6 +233,9 @@ class Being : public Sprite
         virtual void
         nextStep();
 
+        virtual void
+        setGM() { mIsGM = true; }
+
         /**
          * Performs being logic.
          */
@@ -382,6 +385,7 @@ class Being : public Sprite
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
+        bool mIsGM;
 
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;

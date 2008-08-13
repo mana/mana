@@ -82,6 +82,7 @@ Being::Being(int id, int job, Map *map):
 
     instances++;
     mSpeech = 0;
+    mIsGM = false;
 }
 
 Being::~Being()

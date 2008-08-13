@@ -32,6 +32,9 @@ gui_DATA =				\
 	radioout.png			\
 	resize.png			\
 	rpgfont_wider.png		\
+    rpgfont_wider-blue.png	\
+    rpgfont_wider-green.png	\
+    rpgfont_wider-orange.png	\
 	selection.png			\
 	sansserif8.png			\
 	slider.png			\

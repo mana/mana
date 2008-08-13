@@ -71,6 +71,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves, cape, misc1, misc2;
     Uint16 weapon, shield;
+    Uint16 gmstatus;
     Sint16 param1;
     Sint8 type;
     Being *srcBeing, *dstBeing;
@@ -443,8 +444,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 dstBeing->setDirection(dir);
             }
 
-            msg->readInt8();   // unknown
-            msg->readInt8();   // unknown
+            gmstatus = msg->readInt16();
+            if (gmstatus & 0x01)
+                dstBeing->setGM();
 
             if (msg->getId() == SMSG_PLAYER_UPDATE_1)
             {
