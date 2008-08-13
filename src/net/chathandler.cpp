@@ -67,7 +67,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
         case GPMSG_SAY:
             handleGameChatMessage(msg);
             break;
-            
+
         case CPMSG_ENTER_CHANNEL_RESPONSE:
             handleEnterChannelResponse(msg);
             break;
@@ -95,7 +95,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
         case CPMSG_LIST_CHANNELUSERS_RESPONSE:
             handleListChannelUsersResponse(msg);
             break;
-        
+
         case CPMSG_CHANNEL_EVENT:
             handleChannelEvent(msg);
     }
@@ -105,15 +105,15 @@ void ChatHandler::handleGameChatMessage(MessageIn &msg)
 {
     short id = msg.readInt16();
     std::string chatMsg = msg.readString();
-    
+
     if (id == 0)
     {
         chatWindow->chatLog(chatMsg, BY_SERVER);
         return;
     }
-    
+
     Being *being = beingManager->findBeing(id);
-    
+
     if (being)
     {
         chatWindow->chatLog(being->getName() + " : " + chatMsg,
@@ -137,17 +137,23 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         channelManager->addChannel(channel);
         chatWindow->createNewChannelTab(channelName);
         chatWindow->chatLog("Topic: " + announcement, BY_CHANNEL, channelName);
-        
+
         std::string user;
+        std::string userModes;
         chatWindow->chatLog("Players in this channel:", BY_CHANNEL, channelName);
         while(msg.getUnreadLength())
         {
             user = msg.readString();
             if (user == "")
                 return;
+            userModes = msg.readString();
+            if (userModes.find('o') != std::string::npos)
+            {
+                user = "@" + user;
+            }
             chatWindow->chatLog(user, BY_CHANNEL, channelName);
         }
-        
+
     }
     else
     {
@@ -180,7 +186,7 @@ void ChatHandler::handlePrivateMessage(MessageIn &msg)
     if (!chatWindow->tabExists(userNick))
     {
         chatWindow->createNewChannelTab(userNick);
-                
+
     }
     chatWindow->chatLog(userNick + ": " + chatMsg, BY_OTHER, userNick);
 }
@@ -214,6 +220,7 @@ void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
 {
     std::string channel = msg.readString();
     std::string userNick;
+    std::string userModes;
     chatWindow->chatLog("Players in this channel:", BY_CHANNEL, channel);
     while(msg.getUnreadLength())
     {
@@ -221,6 +228,11 @@ void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
         if (userNick == "")
         {
             break;
+        }
+        userModes = msg.readString();
+        if (userModes.find('o') != std::string::npos)
+        {
+            userNick = "@" + userNick;
         }
         chatWindow->chatLog(userNick, BY_CHANNEL, channel);
     }
@@ -232,7 +244,7 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
     char eventId = msg.readInt8();
     std::string line = msg.readString();
     Channel *channel = channelManager->findById(channelId);
-    
+
     if(channel)
     {
         switch(eventId)
@@ -240,7 +252,7 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
             case CHAT_EVENT_NEW_PLAYER:
                 line += " entered the channel.";
                 break;
-        
+
             case CHAT_EVENT_LEAVING_PLAYER:
                 line += " left the channel.";
                 break;
@@ -248,11 +260,29 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
             case CHAT_EVENT_TOPIC_CHANGE:
                 line = "Topic: " + line;
                 break;
-        
+
+            case CHAT_EVENT_MODE_CHANGE:
+            {
+                int first = line.find(":");
+                int second = line.find(":", first+1);
+                std::string user1 = line.substr(0, first);
+                std::string user2 = line.substr(first+1, second);
+                std::string mode = line.substr(second+1, line.length());
+                line = user1 + " has set mode " + mode + " on user " + user2;
+            } break;
+
+            case CHAT_EVENT_KICKED_PLAYER:
+            {
+                int first = line.find(":");
+                std::string user1 = line.substr(0, first);
+                std::string user2 = line.substr(first+1, line.length());
+                line = user1 + " has kicked " + user2;
+            } break;
+
             default:
                 line = "Unknown channel event.";
         }
-    
+
         chatWindow->chatLog(line, BY_CHANNEL, channel->getName());
     }
 }

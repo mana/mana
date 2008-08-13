@@ -111,6 +111,10 @@ void GuildListBox::mousePressed(gcn::MouseEvent &event)
         distributeActionEvent();
     }
     // TODO: Add guild functions, ie private messaging
+    if (event.getButton() == gcn::MouseEvent::RIGHT)
+    {
+        // Show context menu
+    }
 }
 
 void GuildListBox::setOnlineStatus(const std::string &user, bool online)

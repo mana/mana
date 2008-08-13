@@ -73,6 +73,19 @@ void Net::ChatServer::Guild::getGuildMembers(short guildId)
     Net::ChatServer::connection->send(msg);
 }
 
+void Net::ChatServer::Guild::promoteMember(const std::string &name,
+                                           short guildId, short level)
+{
+    logger->log("Sending PCMSG_GUILD_PROMOTE_MEMBER");
+    MessageOut msg(PCMSG_GUILD_PROMOTE_MEMBER);
+
+    msg.writeInt16(guildId);
+    msg.writeString(name);
+    msg.writeInt8(level);
+
+    Net::ChatServer::connection->send(msg);
+}
+
 void Net::ChatServer::Guild::quitGuild(short guildId)
 {
     logger->log("Sending PCMSG_GUILD_QUIT");

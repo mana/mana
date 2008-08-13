@@ -65,7 +65,12 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge guild was created
+                chatWindow->chatLog("Guild created.");
                 joinedGuild(msg);
+            }
+            else
+            {
+                chatWindow->chatLog("Error creating guild.");
             }
         } break;
 
@@ -75,6 +80,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge invite was sent
+                chatWindow->chatLog("Invite sent.");
             }
         } break;
 
@@ -168,6 +174,22 @@ void GuildHandler::handleMessage(MessageIn &msg)
             // Open a dialog asking if the player accepts joining the guild.
             guildWindow->openAcceptDialog(inviterName, guildName);
         } break;
+
+        case CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE:
+        {
+            logger->log("Received CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE");
+
+            if (msg.readInt8() == ERRMSG_OK)
+            {
+                // promotion succeeded
+                chatWindow->chatLog("Member was promoted successfully");
+            }
+            else
+            {
+                // promotion failed
+                chatWindow->chatLog("Failed to promote member");
+            }
+        }
 
         case CPMSG_GUILD_REJOIN:
         {

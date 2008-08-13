@@ -124,3 +124,25 @@ void Net::ChatServer::setChannelTopic(short channel, const std::string &topic)
 
     connection->send(msg);
 }
+
+void Net::ChatServer::setUserMode(short channel, const std::string &user,
+                                  unsigned char mode)
+{
+    MessageOut msg(PCMSG_USER_MODE);
+
+    msg.writeInt16(channel);
+    msg.writeString(user);
+    msg.writeInt8(mode);
+
+    connection->send(msg);
+}
+
+void Net::ChatServer::kickUser(short channel, const std::string &user)
+{
+    MessageOut msg(PCMSG_KICK_USER);
+
+    msg.writeInt16(channel);
+    msg.writeString(user);
+
+    connection->send(msg);
+}

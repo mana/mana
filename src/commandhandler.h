@@ -108,6 +108,16 @@ class CommandHandler
          */
         void handleParty(const std::string &args);
 
+        /**
+         * Handle a op command.
+         */
+        void handleOp(const std::string &args);
+
+        /**
+         * Handle a kick command.
+         */
+        void handleKick(const std::string &args);
+
 };
 
 extern CommandHandler *commandHandler;

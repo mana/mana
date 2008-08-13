@@ -89,6 +89,10 @@ void CommandHandler::handleCommand(const std::string &command)
     {
         handleParty(args);
     }
+    else if (type == "op")
+    {
+        handleOp(args);
+    }
     else
     {
         chatWindow->chatLog("Unknown command");
@@ -161,6 +165,13 @@ void CommandHandler::handleHelp(const std::string &args)
         chatWindow->chatLog("This command makes you enter <channel>.");
         chatWindow->chatLog("If <channel> doesn't exist, it's created.");
     }
+    else if (args == "kick")
+    {
+        chatWindow->chatLog("Command: /kick <nick>");
+        chatWindow->chatLog("This command makes <nick> leave the channel.");
+        chatWindow->chatLog("If the <nick> has spaces in it, enclose it in "
+                            "double quotes (\").");
+    }
     else if (args == "list")
     {
         chatWindow->chatLog("Command: /list");
@@ -172,6 +183,15 @@ void CommandHandler::handleHelp(const std::string &args)
         chatWindow->chatLog("This command sends the text <message> to <nick>.");
         chatWindow->chatLog("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\").");
+    }
+    else if (args == "op")
+    {
+        chatWindow->chatLog("Command: /op <nick>");
+        chatWindow->chatLog("This command makes <nick> a channel operator.");
+        chatWindow->chatLog("If the <nick> has spaces in it, enclose it in "
+                            "double quotes (\").");
+        chatWindow->chatLog("Channel operators can kick and op other users "
+                            "from the channel.");
     }
     else if (args == "party")
     {
@@ -285,5 +305,36 @@ void CommandHandler::handleParty(const std::string &args)
     if (args != "")
     {
         player_node->inviteToParty(args);
+    }
+}
+
+void CommandHandler::handleOp(const std::string &args)
+{
+    if (Channel *channel = channelManager->findByName(chatWindow->getFocused()))
+    {
+        // set the user mode 'o' to op a user
+        if (args != "")
+        {
+            Net::ChatServer::setUserMode(channel->getId(), args, 'o');
+        }
+    }
+    else
+    {
+        chatWindow->chatLog("Unable to set this user's mode", BY_CHANNEL);
+    }
+}
+
+void CommandHandler::handleKick(const std::string &args)
+{
+    if (Channel *channel = channelManager->findByName(chatWindow->getFocused()))
+    {
+        if (args != "")
+        {
+            Net::ChatServer::kickUser(channel->getId(), args);
+        }
+    }
+    else
+    {
+        chatWindow->chatLog("Unable to kick user", BY_CHANNEL);
     }
 }

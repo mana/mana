@@ -54,6 +54,12 @@ namespace Net
             void getGuildMembers(short guildId);
 
             /**
+             * Promote guild member
+             */
+            void promoteMember(const std::string &name, short guildId,
+                               short level);
+
+            /**
              * Quit guild.
              */
             void quitGuild(short guildId);

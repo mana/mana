@@ -1,3 +1,12 @@
+2008-08-13  David Athay  <ko2fan@gmail.com>
+
+	* src/commandhandler.cpp, src/gui/guildlistbox.cpp, 
+	src/commandhandler.h, src/net/guildhandler.cpp, src/net/protocol.h,
+	src/net/chathandler.cpp, src/net/chatserver/guild.cpp,
+	src/net/chatserver/chatserver.cpp, src/net/chatserver/guild.h,
+	src/net/chatserver/chatserver.h: Added permission levels to guilds, and
+	operator permissions to channels. 
+
 2008-08-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* INSTALL, autogen.sh: Removed autogen.sh and tell people in the

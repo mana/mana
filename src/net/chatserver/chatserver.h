@@ -52,6 +52,10 @@ namespace Net
 
         void setChannelTopic(short channel, const std::string &topic);
 
+        void setUserMode(short channel, const std::string &user, unsigned char mode);
+
+        void kickUser(short channel, const std::string &user);
+
     }
 }
 
