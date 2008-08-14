@@ -280,9 +280,15 @@ void Setup_Video::apply()
     bool fullscreen = mFsCheckBox->isSelected();
     if (fullscreen != (config.getValue("screen", 0) == 1))
     {
+
+        /*Commented  out the openGL test because
+ *        the fullscreen mode change works fine, but
+ *        will need to test it on windows so not
+ *        deleting entirely until then  --kraant*/
+
         // checks for opengl usage
-        if (!(config.getValue("opengl", 0) == 1))
-        {
+        /*if (!(config.getValue("opengl", 0) == 1))
+        {*/
             if (!graphics->setFullscreen(fullscreen))
             {
                 fullscreen = !fullscreen;
@@ -296,10 +302,10 @@ void Setup_Video::apply()
                     logger->error(error.str());
                 }
             }
-        } else {
+        /*} else {
             new OkDialog("Switching to full screen",
                     "Restart needed for changes to take effect.");
-        }
+        }*/
         config.setValue("screen", fullscreen ? 1 : 0);
     }
 
