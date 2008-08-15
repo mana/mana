@@ -98,7 +98,7 @@ void MiniStatusWindow::update()
     }
 
     mHpBar->setProgress((float) player_node->mHp / player_node->mMaxHp);
-    // mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
+    mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
     mXpBar->setProgress(
             (float) player_node->getXp() / player_node->mXpForNextLevel);
 

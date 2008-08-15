@@ -1,3 +1,8 @@
+2008-08-14	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
+
+	* Uncommented line so that MP status bar correctly
+	  updates based on remaining mana
+
 2008-08-13	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Added code to display NPC and monster names using an
