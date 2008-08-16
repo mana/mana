@@ -184,6 +184,11 @@ void LocalPlayer::pickUp(FloorItem *item)
 
 void LocalPlayer::walk(unsigned char dir)
 {
+
+    // If they have someone or something targeted, cancel it
+    if (mTarget)
+        setTarget(NULL);
+
     if (!mMap || !dir)
         return;
 
