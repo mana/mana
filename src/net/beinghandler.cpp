@@ -201,10 +201,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             if (!dstBeing)
                 break;
 
-            if (dstBeing == player_node->getTarget())
-            {
+            // If this is player's current target, clear it.
+            if (player_node->getTarget() == dstBeing)
                 player_node->stopAttack();
-            }
 
             if (msg->readInt8() == 1)
             {

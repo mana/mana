@@ -1,3 +1,8 @@
+2008-08-16	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
+
+	* Fixed bug where client would crash if another player
+	  was targeted when you hit a warp point.
+
 2008-08-14	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Uncommented line so that MP status bar correctly
@@ -10,33 +15,33 @@
 	  provided "GM flag", which prepends "(GM)" to the player's
 	  name and changes the font color.
 
-2008-08-08  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+2008-08-08  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Made "--skipupdate" skip the update download process, but
 	  still load whatever updates have been previously downloaded.
 
-2008-07-25  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+2008-07-25  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Added feature to remember window locations from one 
 	  session to the next (patch from TMW by ElvenProgrammer)
 
-2008-07-24  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+2008-07-24  Lloyd Bryant ("Sanga")  <sanga@aethyra.com>
 
 	* Tweak in net/beinghandler.cpp to compensate for a visual
 	  bug when using the TMW server.
 
-2008-07-23  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+2008-07-23  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Added support for capes/misc1/misc2 into the character
 	  selection display
 
-2008-07-23  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+2008-07-23  Lloyd Bryant ("Sanga")  <sanga@aethyra.com>
 
 	* Added "chat" button to open/close chat window
 	* Added support for viewable cape/misc1/misc2 (new eAthena
 	  version ONLY
 
-2008-07-22  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+2008-07-22  Lloyd Bryant ("Sanga")  <sanga@aethyra.com>
 
 	* Added handler for 0x0086 movement packet (new eAthena).
 	* Changed startup sequence for game.cpp to send a ping packet
@@ -44,11 +49,11 @@
 	  This is required by the new eAthena version.
 	* Added #deines for some "ping" packets.
 
-2008-07-19  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+2008-07-19  Lloyd Bryant ("Sanga")  <sanga@aethyra.com>
 
 	* Removed unnecessary check ("weight") from itemdb loader
 
-2008-07-18  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+2008-07-18  Lloyd Bryant ("Sanga")  <sanga@aethyra.com>
 
 	* Added code to provide viewable glove and shoe sprites
 
@@ -56,18 +61,18 @@
 
 	* Added code to avoid collision between different displayed text.
 
-2008-07-08  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+2008-07-08  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Added handling for a "Stop Walking" packet.  This will
 	  force the client back into sync during those "can't run
 	  away from a battle" sync error conditions.
 
-2008-07-07  Lloyd Bryant ("Sanga")	<lloyd_bryant@netzero.net>
+2008-07-07  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Added support for update host provided by login server
 	* Changed startup sequence to login first, then update
 
-2008-07-05  Lloyd Bryant ("Sanga")  <lloyd_bryant@netzero.net>
+2008-07-05  Lloyd Bryant ("Sanga")  <sanga@aethyra.com>
 
 	* Applied patch from kraant to convert into a TME branded client
 	* Removed redundant autoconf files
@@ -153,12 +158,12 @@
 	now stored in an update host specific directory. Based on a patch by
 	Sanga.
 
-2008-06-04  Lloyd Bryant  <lloyd_bryant@netzero.net>
+2008-06-04  Lloyd Bryant  <sanga@aethyra.com>
 
 	* src/net/charserverhandler.cpp: Display shield sprite also in
 	character select window.
 
-2008-05-30  Lloyd Bryant  <lloyd_bryant@netzero.net>
+2008-05-30  Lloyd Bryant  <sanga@aethyra.com>
 
 	* src/net/equipmenthandler.cpp, src/net/beinghandler.cpp,
 	src/net/protocol.h, src/being.h: Merged handling for eAthena packets

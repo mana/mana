@@ -33,6 +33,7 @@
 #include "map.h"
 #include "particle.h"
 #include "text.h"
+#include "localplayer.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"

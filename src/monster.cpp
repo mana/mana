@@ -28,7 +28,6 @@
 #include "sound.h"
 #include "particle.h"
 #include "text.h"
-#include "localplayer.h"
 
 #include "gui/gui.h"
 
@@ -66,12 +65,11 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     }
 }
 
-Monster::~Monster()
-{
+Monster::~Monster() {
+
     if (mText)
-    {
-        player_node->setTarget(0);
-    }
+        delete mText;
+
 }
 
 void
