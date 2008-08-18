@@ -80,14 +80,6 @@ void Inventory::setItem(int index, int id, int quantity, bool equipment)
         return;
     }
 
-    /* TODO: Check where to reenable this code.
-    // Dont stack equipment other than arrows.
-    if (equipment && !(id == 1199 || id == 529))
-        mItems[index].setQuantity(quantity);
-    else
-        mItems[index].increaseQuantity(quantity);
-    */
-
     if (!mItems[index] && id > 0) {
         Item *item = new Item(id, quantity, equipment);
         item->setInvIndex(index);

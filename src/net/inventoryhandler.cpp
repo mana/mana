@@ -55,7 +55,7 @@ InventoryHandler::InventoryHandler()
 void InventoryHandler::handleMessage(MessageIn *msg)
 {
     Sint32 number;
-    Sint16 index, amount, itemId, equipType;
+    Sint16 index, amount, itemId, equipType, arrow;
     Inventory *inventory = player_node->getInventory();
 
     switch (msg->getId())
@@ -67,21 +67,19 @@ void InventoryHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // length
             number = (msg->getLength() - 4) / 18;
 
-            for (int loop = 0; loop < number; loop++)
-            {
+            for (int loop = 0; loop < number; loop++) {
                 index = msg->readInt16();
                 itemId = msg->readInt16();
                 msg->readInt8(); // type
                 msg->readInt8(); // identify flag
                 amount = msg->readInt16();
-                msg->skip(2);    // unknown
+                arrow = msg->readInt16();
                 msg->skip(8);    // card (4 shorts)
 
                 inventory->setItem(index, itemId, amount, false);
 
                 // Trick because arrows are not considered equipment
-                if (itemId == 1199 || itemId == 529)
-                {
+                if (arrow & 0x8000) {
                     if (Item *item = inventory->getItem(index))
                         item->setEquipment(true);
                 }

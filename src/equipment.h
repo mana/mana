@@ -52,7 +52,7 @@ class Equipment
          * Remove equipment from the given slot.
          */
         void
-        removeEquipment(int index) { mEquipment[index] = 0; }
+        removeEquipment(int index);
 
         /**
          * Remove the given item from equipment.
@@ -69,7 +69,7 @@ class Equipment
          * Set the item used in the arrow slot.
          */
         void
-        setArrows(Item *arrows) { mArrows = arrows; }
+        setArrows(Item *arrows);
 
     private:
         Item *mEquipment[EQUIPMENT_SIZE];

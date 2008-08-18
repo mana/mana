@@ -41,10 +41,28 @@ Equipment::removeEquipment(Item *item)
     if (i != mEquipment + EQUIPMENT_SIZE) {
         *i = 0;
     }
+    item->setEquipped(false);
+}
+
+void Equipment::removeEquipment(int index)
+{
+    mEquipment[index]->setEquipped(false);
+    mEquipment[index] = 0;
 }
 
 void Equipment::setEquipment(int index, Item *item)
 {
     mEquipment[index] = item;
     item->setEquipped(true);
+}
+
+void Equipment::setArrows(Item *arrows)
+{
+    if (mArrows)
+        mArrows->setEquipped(false);
+
+    mArrows = arrows;
+
+    if (arrows)
+        arrows->setEquipped(true);
 }

@@ -109,7 +109,10 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 break;
             }
 
-            // Unequip any existing equipped item in this position
+            /*
+             * An item may occupy more than 1 slot.  If so, it's
+             * only shown as equipped on the *first* slot.
+             */
             mask = 1;
             position = 0;
             while (!(equipPoint & mask)) {
@@ -118,6 +121,8 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             }
             logger->log("Position %i", position);
             item = player_node->mEquipment->getEquipment(position);
+
+            // Unequip any existing equipped item in this position
             if (item) {
                 item->setEquipped(false);
             }
@@ -141,37 +146,17 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 break;
             }
 
-            mask = 1;
-            position = 0;
-            while (!(equipPoint & mask)) {
-                mask <<= 1;
-                position++;
-            }
-
-            item = inventory->getItem(index);
-            if (!item)
-                break;
-
-            item->setEquipped(false);
-
-            switch (item->getId()) {
-                case 529:
-                case 1199:
-                    player_node->mEquipment->setArrows(NULL);
-                    break;
-                case 521:
-                case 522:
-                case 530:
-                case 536:
-                case 1200:
-                case 1201:
-                    player_node->setSprite(Being::WEAPON_SPRITE, 0);
-                    // TODO: Why this break? Shouldn't a weapon be
-                    //       unequipped in inventory too?
-                    break;
-                default:
-                    player_node->mEquipment->removeEquipment(position);
-                    break;
+            if (equipPoint & 0x8000) {    // Arrows
+                player_node->mEquipment->setArrows(NULL);
+                position = 11;
+            } else {
+                mask = 1;
+                position = 0;
+                while (!(equipPoint & mask)) {
+                    mask <<= 1;
+                    position++;
+                }
+                player_node->mEquipment->removeEquipment(position);
             }
             logger->log("Unequipping: %i %i(%i) %i",
                     index, equipPoint, type, position);
@@ -188,12 +173,10 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 break;
 
             item = inventory->getItem(index);
-            if (!item)
-                break;
-
-            item->setEquipped(true);
-            player_node->mEquipment->setArrows(item);
-            logger->log("Arrows equipped: %i", index);
+            if (item) {
+                player_node->mEquipment->setArrows(item);
+                logger->log("Arrows equipped: %i", index);
+            }
             break;
     }
 }

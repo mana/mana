@@ -142,9 +142,6 @@ void LocalPlayer::unequipItem(Item *item)
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_PLAYER_UNEQUIP);
     outMsg.writeInt16(item->getInvIndex());
-
-    // Tidy equipment directly to avoid weapon still shown bug, for instance
-    mEquipment->removeEquipment(item);
 }
 
 void LocalPlayer::useItem(Item *item)

@@ -1,3 +1,8 @@
+2008-08-17	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
+
+	* Fixed issues with unequipping some arrows failing.
+	* Removed hard-coded item ID's from several files
+
 2008-08-16	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Fixed bug where client would crash if another player
