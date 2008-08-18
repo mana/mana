@@ -29,6 +29,7 @@
 
 #include "skill.h"
 
+#include "icon.h"
 #include "button.h"
 #include "listbox.h"
 #include "scrollarea.h"
@@ -100,10 +101,14 @@ void SkillDialog::draw(gcn::Graphics *g)
 
 void SkillDialog::update()
 {
-    for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&Skill_Tab::update));
+  for(std::list<Skill_Tab*>::const_iterator i = mTabs.begin();
+      i != mTabs.end(); ++i)
+    {
+      (*i)->update();
+    }
 }
 
-Skill_Tab::Skill_Tab(std::string type): type(type)
+Skill_Tab::Skill_Tab(const std::string &type): type(type)
 {
     setOpaque(false);
     setDimension(gcn::Rectangle(0, 0, 270, 420));
@@ -187,11 +192,11 @@ int Skill_Tab::getSkillBegin()
     else return skillBegin;
 }
 
-gcn::Icon* Skill_Tab::getIcon(int index)
+Icon* Skill_Tab::getIcon(int index)
 {
     int skillBegin = getSkillBegin();
     std::string icon = LocalPlayer::getSkillInfo(index + skillBegin).icon;
-    return new gcn::Icon(icon);
+    return new Icon(icon);
 }
 
 void Skill_Tab::updateSkill(int index)

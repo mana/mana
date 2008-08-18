@@ -1,3 +1,10 @@
+2008-08-17  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/gui/skill.cpp, src/gui/skill.h, src/gui/icon.h,
+	src/gui/icon.cpp, src/CMakeLists.txt, src/Makefile.am:
+	Fix bug #209. Have icons show properly in the skills dialog,
+	and allow easy use of icons in the future.
+
 2008-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/guildlistbox.cpp: Call the more appropriate method.

@@ -59,6 +59,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/hbox.cpp \
 	      gui/help.cpp \
 	      gui/help.h \
+	      gui/icon.h \
+	      gui/icon.cpp \
 	      gui/inttextbox.h \
 	      gui/inttextbox.cpp \
 	      gui/inventorywindow.cpp \

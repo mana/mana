@@ -36,6 +36,7 @@
 #include "../guichanfwd.h"
 
 class ProgressBar;
+class Icon;
 
 class Skill_Tab : public GCContainer, public gcn::ActionListener
 {
@@ -48,7 +49,7 @@ class Skill_Tab : public GCContainer, public gcn::ActionListener
         /**
          * Constructor
          */
-        Skill_Tab(std::string type);
+        Skill_Tab(const std::string &type);
 
         /**
          * Update this tab
@@ -82,9 +83,9 @@ class Skill_Tab : public GCContainer, public gcn::ActionListener
         /**
          * Get the icon associated with the given index
          */
-        gcn::Icon* getIcon(int index);
+        Icon* getIcon(int index);
 
-        std::vector<gcn::Icon *> mSkillIcons;
+        std::vector<Icon *> mSkillIcons;
         std::vector<gcn::Label *> mSkillNameLabels;
         std::vector<gcn::Label *> mSkillLevelLabels;
         std::vector<gcn::Label *> mSkillExpLabels;
