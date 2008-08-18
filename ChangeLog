@@ -1,5 +1,10 @@
 2008-08-17	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
+	* Correctly show GP remaining after buying from NPC
+	  vendor (from TMW svn, r4449)
+
+2008-08-17	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
+
 	* Fixed issues with unequipping some arrows failing.
 	* Removed hard-coded item ID's from several files
 
