@@ -1,3 +1,9 @@
+2008-08-17  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
+
+	* Set the wallpaper based on the screen width.
+	* Added a usleep to the login sequence loop to 
+	  prevent it from unnecessarily maxing out the CPU
+
 2008-08-17	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Correctly show GP remaining after buying from NPC

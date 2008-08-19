@@ -697,6 +697,27 @@ int main(int argc, char *argv[])
 
     SDLNet_Init();
     Network *network = new Network();
+
+    // Set the most appropriate wallpaper, based on screen width
+    int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);
+    std::string wallpaperName;
+
+    if (screenWidth <= 800)
+        wallpaperName = "graphics/images/login_wallpaper.png";
+    else if (screenWidth <= 1024)
+        wallpaperName = "graphics/images/login_wallpaper_1024x768.png";
+    else if (screenWidth <= 1280)
+        wallpaperName = "graphics/images/login_wallpaper_1280x960.png";
+    else if (screenWidth <= 1440)
+        wallpaperName = "graphics/images/login_wallpaper_1440x1080.png";
+    else
+        wallpaperName = "graphics/images/login_wallpaper_1600x1200.png";
+
+    login_wallpaper = ResourceManager::getInstance()-> getImage(wallpaperName);
+
+    if (!login_wallpaper)
+        logger->log("Couldn't load %s as wallpaper", wallpaperName.c_str());
+
     while (state != EXIT_STATE)
     {
         // Handle SDL events
@@ -729,16 +750,6 @@ int main(int argc, char *argv[])
                 errorMessage = network->getError();
             } else {
                 errorMessage = "Got disconnected from server!";
-            }
-        }
-
-        if (!login_wallpaper)
-        {
-            login_wallpaper = ResourceManager::getInstance()->
-                    getImage("graphics/images/login_wallpaper.png");
-            if (!login_wallpaper)
-            {
-                logger->error("Couldn't load login_wallpaper.png");
             }
         }
 
@@ -933,6 +944,12 @@ int main(int argc, char *argv[])
                     break;
             }
         }
+        /*
+         * This loop can really stress the CPU, for no reason since it's
+         * just constantly redrawing the wallpaper.  Added the following
+         * usleep to limit it to 20 FPS during the login sequence
+         */
+        usleep(50000);
     }
 
 #ifdef PACKAGE_VERSION
