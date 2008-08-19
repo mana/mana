@@ -1,3 +1,8 @@
+2008-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
+	Don't forget to install tab.png.
+
 2008-08-17  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/skill.cpp, src/gui/skill.h, src/gui/icon.h,
