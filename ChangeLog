@@ -1,3 +1,18 @@
+2008-08-20  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/gui/guildlistbox.cpp, src/gui/guildwindow.h,
+	src/gui/widgets/tabbedarea.h, src/gui/widgets/tab.cpp,
+	src/gui/widgets/tabbedarea.cpp, src/gui/widgets/tab.h,
+	src/gui/changepassworddialog.h, src/gui/guildlistbox.h,
+	src/gui/guildwindow.cpp, src/gui/textdialog.h,
+	src/gui/changepassworddialog.cpp, src/gui/textdialog.cpp,
+	src/guild.cpp, src/guild.h, src/net/partyhandler.h,
+	src/net/guildhandler.h, src/net/partyhandler.cpp,
+	src/net/guildhandler.cpp, src/net/chatserver/party.cpp,
+	src/net/chatserver/guild.cpp, src/net/chatserver/party.h,
+	src/net/chatserver/guild.h, src/winver.h: fix svn properties and
+	id tags.
+
 2008-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:

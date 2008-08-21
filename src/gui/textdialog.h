@@ -25,7 +25,6 @@
 #define _TMW_GUI_GUILD_DIALOG_H
 
 #include <guichan/actionlistener.hpp>
-
 #include "textfield.h"
 
 #include "window.h"
