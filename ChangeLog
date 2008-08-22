@@ -1,3 +1,11 @@
+2008-08-21  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
+
+	* Added configuration option "EnableSync" that causes
+	  client to honor 0x88 "Stop Walking" packet.
+	* Added X and Y coordinates to output of "/where"
+	* Reformatted src/chat.cpp - it was missing indentation
+	  in large areas
+
 2008-08-17  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Set the wallpaper based on the screen width.

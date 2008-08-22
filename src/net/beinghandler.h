@@ -29,9 +29,13 @@
 class BeingHandler : public MessageHandler
 {
     public:
-        BeingHandler();
+        BeingHandler(bool enableSync);
 
         void handleMessage(MessageIn *msg);
+
+    private:
+        // Should we honor server "Stop Walking" packets
+        bool mSync;
 };
 
 #endif

@@ -40,7 +40,8 @@
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
-BeingHandler::BeingHandler()
+BeingHandler::BeingHandler(bool enableSync):
+   mSync(enableSync)
 {
     static const Uint16 _messages[] = {
         SMSG_BEING_VISIBLE,
@@ -467,25 +468,30 @@ void BeingHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_STOP:
-            // Instruction from server to stop walking at x, y.
             /*
-             * Deactivated - it drives people on the TMW server nuts
+             *  Instruction from server to stop walking at x, y.
              *
+             *  Some people like having this enabled.  Others absolutely
+             *  despise it.  So I'm setting to so that it only affects the
+             *  local player if the person has set a key "EnableSync" to "1"
+             *  in their config.xml file.
+             *
+             *  This packet will be honored for all other beings, regardless
+             *  of the config setting.
+             */
+
             id = msg->readInt32();
-            dstBeing = beingManager->findBeing(id);
-
-            if (dstBeing) {
-                dstBeing->mX = msg->readInt16();
-                dstBeing->mY = msg->readInt16();
-                if (dstBeing->mAction == Being::WALK) {
-                     dstBeing->mFrame = 0;
-                     dstBeing->setAction(Being::STAND);
+            if (mSync || id != player_node->getId()) {
+                dstBeing = beingManager->findBeing(id);
+                if (dstBeing) {
+                    dstBeing->mX = msg->readInt16();
+                    dstBeing->mY = msg->readInt16();
+                    if (dstBeing->mAction == Being::WALK) {
+                        dstBeing->mFrame = 0;
+                        dstBeing->setAction(Being::STAND);
+                    }
                 }
-
-            } else {
-                logger->log("0x0088: Non-existent being %d", id);
             }
-            */
             break;
 
         case SMSG_PLAYER_MOVE_TO_ATTACK:

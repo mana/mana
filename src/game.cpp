@@ -261,7 +261,7 @@ void destroyGuiWindows()
 
 Game::Game(Network *network):
     mNetwork(network),
-    mBeingHandler(new BeingHandler()),
+    mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
     mBuySellHandler(new BuySellHandler()),
     mChatHandler(new ChatHandler()),
     mEquipmentHandler(new EquipmentHandler()),
