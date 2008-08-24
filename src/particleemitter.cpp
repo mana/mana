@@ -39,7 +39,8 @@
 #define DEG_RAD_FACTOR 0.017453293f
 
 ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map):
-    mParticleImage(0)
+    mParticleImage(0),
+    mOutputPauseLeft(0)
 {
     mMap = map;
     mParticleTarget = target;
@@ -62,6 +63,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mParticleFadeOut.set(0);
     mParticleFadeIn.set(0);
     mOutput.set(1);
+    mOutputPause.set(0);
     mParticleAlpha.set(1.0f);
 
     for_each_xml_child_node(propertyNode, emitterNode)
@@ -134,6 +136,11 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
                 mOutput = readMinMax(propertyNode, 0);
                 mOutput.maxVal +=1;
+            }
+            else if (name == "output-pause")
+            {
+                mOutputPause = readMinMax(propertyNode, 0);
+                mOutputPauseLeft = mOutputSkip.value();
             }
             else if (name == "acceleration")
             {
@@ -307,6 +314,13 @@ std::list<Particle *>
 ParticleEmitter::createParticles()
 {
     std::list<Particle *> newParticles;
+
+    if (mOutputPauseLeft > 0)
+    {
+        mOutputPauseLeft--;
+        return newParticles;
+    }
+    mOutputPauseLeft = mOutputPause.value();
 
     for (int i = mOutput.value(); i > 0; i--)
     {

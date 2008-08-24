@@ -1,3 +1,9 @@
+2008-08-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particleemitter.cpp, src/particleemitter.h: Added new particle
+	emitter property "output-pause" which allows to define a fixed (or random)
+	interval between two outputs.
+
 2008-08-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/window.cpp: Make sure only to save the window state when a
