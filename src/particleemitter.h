@@ -119,8 +119,8 @@ class ParticleEmitter
         Map *mMap;             /**< Map the particles are spawned on */
 
         MinMax<int> mOutput;   /**< Number of particles spawned per update */
-        MinMax<int> mOutputSkip; /**< Pause in frames between two spawns */
-        int mOutputSkipPause;
+        MinMax<int> mOutputPause; /**< Pause in frames between two spawns */
+        int mOutputPauseLeft;
 
         /*
          * Graphical representation of the particle

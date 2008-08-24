@@ -140,7 +140,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             else if (name == "output-pause")
             {
                 mOutputPause = readMinMax(propertyNode, 0);
-                mOutputPauseLeft = mOutputSkip.value();
+                mOutputPauseLeft = mOutputPause.value();
             }
             else if (name == "acceleration")
             {
