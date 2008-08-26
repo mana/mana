@@ -576,6 +576,18 @@ void accountLogin(Network *network, LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
+inline int MIN(int x, int y)
+{
+    return x < y ? x : y;
+}
+
+void positionDialog(Window *dialog, int screenWidth, int screenHeight)
+{
+    dialog->setPosition(
+        MIN(screenWidth * 5 / 8, screenWidth - dialog->getWidth()),
+        MIN(screenHeight * 5 / 8, screenHeight - dialog->getHeight()));
+}
+
 void charLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to char server...");
@@ -700,6 +712,8 @@ int main(int argc, char *argv[])
 
     // Set the most appropriate wallpaper, based on screen width
     int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);
+    int screenHeight = static_cast<int>(config.getValue("screenheight",
+                                                        defaultScreenHeight));
     std::string wallpaperName;
 
     if (screenWidth <= 800)
@@ -825,12 +839,15 @@ int main(int argc, char *argv[])
                         state = ACCOUNT_STATE;
                     } else {
                         currentDialog = new LoginDialog(&loginData);
+                        positionDialog(currentDialog, screenWidth,
+                                                      screenHeight);
                     }
                     break;
 
                 case REGISTER_STATE:
                     logger->log("State: REGISTER");
                     currentDialog = new RegisterDialog(&loginData);
+                    positionDialog(currentDialog, screenWidth, screenHeight);
                     break;
 
                 case CHAR_SERVER_STATE:
@@ -843,6 +860,8 @@ int main(int argc, char *argv[])
                         state = UPDATE_STATE;
                     } else {
                         currentDialog = new ServerSelectDialog(&loginData);
+                        positionDialog(currentDialog, screenWidth,
+                                                      screenHeight);
                         if (options.chooseDefault || options.playername != "") {
                             ((ServerSelectDialog*) currentDialog)->action(
                                 gcn::ActionEvent(NULL, "ok"));
@@ -853,7 +872,7 @@ int main(int argc, char *argv[])
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
                                                          1 - loginData.sex);
-
+                    positionDialog(currentDialog, screenWidth, screenHeight);
                     if (((CharSelectDialog*) currentDialog)->
                             selectByName(options.playername))
                         options.chooseDefault = true;
@@ -903,12 +922,15 @@ int main(int argc, char *argv[])
                     } else {
                         currentDialog = new UpdaterWindow(updateHost,
                                                 homeDir + "/" + updatesDir);
+                        positionDialog(currentDialog, screenWidth,
+                                                      screenHeight);
                     }
                     break;
 
                 case ERROR_STATE:
                     logger->log("State: ERROR");
                     currentDialog = new OkDialog("Error", errorMessage);
+                    positionDialog(currentDialog, screenWidth, screenHeight);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     network->disconnect();
