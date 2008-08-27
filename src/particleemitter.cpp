@@ -39,8 +39,8 @@
 #define DEG_RAD_FACTOR 0.017453293f
 
 ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map):
-    mParticleImage(0),
-    mOutputPauseLeft(0)
+    mOutputPauseLeft(0),
+    mParticleImage(0)
 {
     mMap = map;
     mParticleTarget = target;
@@ -53,7 +53,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mParticleAngleVertical.set(0.0f);
     mParticlePower.set(0.0f);
     mParticleGravity.set(0.0f);
-    mParticleRandomnes.set(0);
+    mParticleRandomness.set(0);
     mParticleBounce.set(0.0f);
     mParticleFollow = false;
     mParticleAcceleration.set(0.0f);
@@ -119,9 +119,9 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
                 mParticleGravity = readMinMax(propertyNode, 0.0f);
             }
-            else if (name == "randomnes")
+            else if (name == "randomnes" || name == "randomness") // legacy bug
             {
-                mParticleRandomnes = readMinMax(propertyNode, 0);
+                mParticleRandomness = readMinMax(propertyNode, 0);
             }
             else if (name == "bounce")
             {
@@ -268,7 +268,7 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleAngleVertical = o.mParticleAngleVertical;
     mParticlePower = o.mParticlePower;
     mParticleGravity = o.mParticleGravity;
-    mParticleRandomnes = o.mParticleRandomnes;
+    mParticleRandomness = o.mParticleRandomness;
     mParticleBounce = o.mParticleBounce;
     mParticleFollow = o.mParticleFollow;
     mParticleTarget = o.mParticleTarget;
@@ -356,7 +356,7 @@ ParticleEmitter::createParticles()
                 sin(angleH) * cos(angleV) * power,
                 sin(angleV) * power);
 
-        newParticle->setRandomnes(mParticleRandomnes.value());
+        newParticle->setRandomness(mParticleRandomness.value());
         newParticle->setGravity(mParticleGravity.value());
         newParticle->setBounce(mParticleBounce.value());
         newParticle->setFollow(mParticleFollow);

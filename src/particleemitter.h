@@ -97,7 +97,7 @@ class ParticleEmitter
          * Vector changing of particles:
          */
         MinMax<float> mParticleGravity;
-        MinMax<int> mParticleRandomnes;
+        MinMax<int> mParticleRandomness;
         MinMax<float> mParticleBounce;
         bool mParticleFollow;
 

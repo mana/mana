@@ -227,8 +227,8 @@ class Particle : public Sprite
          * Sets the ammount of random vector changes
          */
         void
-        setRandomnes(int r)
-        { mRandomnes = r; }
+        setRandomness(int r)
+        { mRandomness = r; }
 
         /**
          * Sets the ammount of velocity particles retain after
@@ -303,7 +303,7 @@ class Particle : public Sprite
         // dynamic particle
         Vector mVelocity;           /**< Speed in pixels per game-tick. */
         float mGravity;             /**< Downward acceleration in pixels per game-tick. */
-        int mRandomnes;             /**< Ammount of random vector change */
+        int mRandomness;            /**< Ammount of random vector change */
         float mBounce;              /**< How much the particle bounces off when hitting the ground */
         bool mFollow;               /**< is this particle moved when its parent particle moves? */
 

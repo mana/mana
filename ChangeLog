@@ -1,8 +1,14 @@
+2008-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/particleemitter.h, src/particle.h, src/particleemitter.cpp,
+	src/particle.cpp: Renamed "randomnes" to "randomness", so that it
+	won't show up as part of Fate's patch.
+
 2008-08-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particleemitter.cpp, src/particleemitter.h: Added new particle
-	emitter property "output-pause" which allows to define a fixed (or random)
-	interval between two outputs.
+	emitter property "output-pause" which allows to define a fixed (or
+	random) interval between two outputs.
 
 2008-08-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
