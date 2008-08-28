@@ -281,9 +281,12 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleAlpha = o.mParticleAlpha;
     mMap = o.mMap;
     mOutput = o.mOutput;
+    mOutputPause = o.mOutputPause;
     mParticleImage = o.mParticleImage;
     mParticleAnimation = o.mParticleAnimation;
     mParticleChildEmitters = o.mParticleChildEmitters;
+
+    mOutputPauseLeft = 0;
 
     if (mParticleImage) mParticleImage->incRef();
 

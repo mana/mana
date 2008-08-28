@@ -39,6 +39,7 @@
 
 	* src/net/loginhandler.cpp: Removed the usually incorrect "for 5
 	minutes" clause from the message displayed to banned users.
+	* src/particleemitter.cpp: Added output-pause to copy constructor.
 
 2008-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
