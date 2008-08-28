@@ -69,6 +69,7 @@
 #include "gui/trade.h"
 #include "gui/viewport.h"
 
+#include "net/protocol.h"
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
 #include "net/chathandler.h"
@@ -80,6 +81,7 @@
 #include "net/playerhandler.h"
 #include "net/skillhandler.h"
 #include "net/tradehandler.h"
+#include "net/messageout.h"
 
 #include "resources/imagewriter.h"
 
@@ -260,7 +262,7 @@ void destroyGuiWindows()
 
 Game::Game(Network *network):
     mNetwork(network),
-    mBeingHandler(new BeingHandler()),
+    mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
     mBuySellHandler(new BuySellHandler()),
     mChatHandler(new ChatHandler()),
     mEquipmentHandler(new EquipmentHandler()),
@@ -291,7 +293,6 @@ Game::Game(Network *network):
     // Initialize beings
     beingManager->setPlayer(player_node);
     player_node->setNetwork(network);
-    engine->changeMap(map_path);
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use
@@ -311,6 +312,25 @@ Game::Game(Network *network):
     network->registerHandler(mPlayerHandler.get());
     network->registerHandler(mSkillHandler.get());
     network->registerHandler(mTradeHandler.get());
+
+    /*
+     * THIS IS A TEMPORARY WORKAROUND!
+     *
+     * To prevent the server from sending data before the client has
+     * initialized, it's been modified to wait for a "ping" from the client to
+     * complete its initialization.
+     *
+     * The real fix is to make sure we are not throwing away messages in the
+     * network buffer due to not having registered the handlers above straight
+     * after receiving a login success from the map server.
+     *
+     * The response from eAthena on this packet is ignored by the client.
+     */
+    MessageOut msg(mNetwork);
+    msg.writeInt16(CMSG_CLIENT_PING);
+    msg.writeInt32(tick_time);
+
+    engine->changeMap(map_path);
 }
 
 Game::~Game()

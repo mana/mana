@@ -1,7 +1,16 @@
+2008-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/net/beinghandler.cpp,
+	src/net/charserverhandler.cpp, src/net/protocol.h,
+	src/net/beinghandler.h, src/net/playerhandler.cpp, src/being.h:
+	Applied patch put together by Jaxad0127 with changes from the Aethyra
+	project. Improves compatibility with the newer version of eAthena and
+	works around an initialization bug.
+
 2008-08-28  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/net/loginhandler.cpp: Removed the usually incorrect "for 5 minutes"
-	clause from the message displayed to banned users.
+	* src/net/loginhandler.cpp: Removed the usually incorrect "for 5
+	minutes" clause from the message displayed to banned users.
 
 2008-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

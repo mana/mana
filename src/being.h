@@ -93,8 +93,12 @@ class Being : public Sprite
             SHOE_SPRITE,
             BOTTOMCLOTHES_SPRITE,
             TOPCLOTHES_SPRITE,
+            MISC1_SPRITE,
+            MISC2_SPRITE,
             HAIR_SPRITE,
             HAT_SPRITE,
+            CAPE_SPRITE,
+            GLOVES_SPRITE,
             WEAPON_SPRITE,
             SHIELD_SPRITE,
             VECTOREND_SPRITE
