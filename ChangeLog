@@ -17,6 +17,8 @@
 	works around an initialization bug.
 	* data/help/index.txt, data/help/windows.txt: Included some
 	documentation for the shortcut window by Vq.
+	* src/resources/mapreader.cpp: Fixed crash when map layer has too many
+	tiles.
 
 2008-08-28  Philipp Sehmisch  <tmw@crushnet.org>
 
