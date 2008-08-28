@@ -365,6 +365,16 @@ class Being : public Sprite
 
         void setEmote(Uint8 emotion, Uint8 emote_time) { mEmotion = emotion; mEmotionTime = emote_time; }
 
+        /**
+         * Triggers a visual effect, such as `level up'
+         *
+         * Only draws the visual effect, does not play sound effects
+         *
+         * \param effectId ID of the effect to trigger
+         */
+        virtual void
+        triggerEffect(int effectId) { internalTriggerEffect(effectId, false, true); }
+
         const std::auto_ptr<Equipment> mEquipment;
 
     protected:
@@ -377,6 +387,16 @@ class Being : public Sprite
          * Returns the sprite direction of this being.
          */
         SpriteDirection getSpriteDirection() const;
+
+        /**
+         * Trigger visual effect, with components
+         *
+         * \param effectId ID of the effect to trigger
+         * \param sfx Whether to trigger sound effects
+         * \param gfx Whether to trigger graphical effects
+         */
+        void
+        internalTriggerEffect(int effectId, bool sfx, bool gfx);
 
         Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWalkSpeed;              /**< Walking speed */

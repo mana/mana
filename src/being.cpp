@@ -32,6 +32,8 @@
 #include "log.h"
 #include "map.h"
 #include "particle.h"
+#include "sound.h"
+#include "localplayer.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
@@ -41,6 +43,10 @@
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
+
+#include "utils/xml.h"
+
+#define BEING_EFFECTS_FILE "effects.xml"
 
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
@@ -386,7 +392,7 @@ Being::logic()
         )
     {
         (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
-        if (!(*i)->isAlive())
+        if ((*i)->isExtinct())
         {
             (*i)->kill();
             i = mChildParticleEffects.erase(i);
@@ -494,5 +500,100 @@ Being::getHeight() const
     }
     else {
         return 0;
+    }
+}
+
+
+
+struct EffectDescription {
+    std::string mGFXEffect;
+    std::string mSFXEffect;
+};
+
+static EffectDescription *default_effect = NULL;
+static std::map<int, EffectDescription *> effects;
+static bool effects_initialized = false;
+
+static EffectDescription *
+getEffectDescription(xmlNodePtr node, int *id)
+{
+    EffectDescription *ed = new EffectDescription;
+
+    *id = atoi(XML::getProperty(node, "id", "-1").c_str());
+    ed->mSFXEffect = XML::getProperty(node, "audio", "");
+    ed->mGFXEffect = XML::getProperty(node, "particle", "");
+
+    return ed;
+}
+
+static EffectDescription *
+getEffectDescription(int effectId)
+{
+    if (!effects_initialized)
+    {
+        XML::Document doc(BEING_EFFECTS_FILE);
+        xmlNodePtr root = doc.rootNode();
+
+        if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
+        {
+            logger->log("Error loading being effects file: "
+                    BEING_EFFECTS_FILE);
+            return NULL;
+        }
+
+        for_each_xml_child_node(node, root)
+        {
+            int id;
+
+            if (xmlStrEqual(node->name, BAD_CAST "effect"))
+            {
+                EffectDescription *EffectDescription =
+                    getEffectDescription(node, &id);
+                effects[id] = EffectDescription;
+            } else if (xmlStrEqual(node->name, BAD_CAST "default"))
+            {
+                EffectDescription *EffectDescription =
+                    getEffectDescription(node, &id);
+
+                if (default_effect)
+                    delete default_effect;
+
+                default_effect = EffectDescription;
+            }
+        }
+
+        effects_initialized = true;
+    } // done initializing
+
+    EffectDescription *ed = effects[effectId];
+
+    if (!ed)
+        return default_effect;
+    else
+        return ed;
+}
+
+void
+Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
+{
+    logger->log("Special effect #%d on %s", effectId,
+                getId() == player_node->getId() ? "self" : "other");
+
+    EffectDescription *ed = getEffectDescription(effectId);
+
+    if (!ed) {
+        logger->log("Unknown special effect and no default recorded");
+        return;
+    }
+
+    if (gfx && ed->mGFXEffect != "") {
+        Particle *selfFX;
+
+        selfFX = particleEngine->addEffect(ed->mGFXEffect, 0, 0);
+        controlParticle(selfFX);
+    }
+
+    if (sfx && ed->mSFXEffect != "") {
+        sound.playSfx(ed->mSFXEffect);
     }
 }

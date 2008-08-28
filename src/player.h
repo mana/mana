@@ -94,6 +94,14 @@ class Player : public Being
         virtual PlayerNameDrawStrategy *
         getNameDrawStrategy(void) const { return mDrawStrategy; }
 
+        /**
+         * Triggers a visual/audio effect, such as `level up'
+         *
+         * \param effect_id ID of the effect to trigger
+         */
+        virtual void
+        triggerEffect(int effectId) { internalTriggerEffect(effectId, true, true); }
+
     private:
         PlayerNameDrawStrategy *mDrawStrategy;
 };

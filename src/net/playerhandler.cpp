@@ -52,6 +52,9 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
 
+static const int MAP_TELEPORT_SCROLL_DISTANCE = 8; /* Max. distance we are willing to scroll after a teleport;
+                                                   ** everything beyond will reset the port hard. */
+
 /**
  * Listener used for handling the overweigth message.
  */
@@ -118,6 +121,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
         case SMSG_PLAYER_WARP:
             {
                 std::string mapPath = msg->readString(16);
+                bool nearby;
                 Uint16 x = msg->readInt16();
                 Uint16 y = msg->readInt16();
 
@@ -129,13 +133,22 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                  */
                 player_node->stopAttack();
 
-                // Switch the actual map, deleting the previous one
+                nearby = (engine->getCurrentMapName() == mapPath);
+                // Switch the actual map, deleting the previous one if necessary
                 engine->changeMap(mapPath);
 
                 current_npc = 0;
 
-                float scrollOffsetX = (x - player_node->mX) * 32;
-                float scrollOffsetY = (y - player_node->mY) * 32;
+                float scrollOffsetX = 0.0f;
+                float scrollOffsetY = 0.0f;
+
+                /* Scroll if neccessary */
+                if (!nearby
+                    || (abs(x - player_node->mX) > MAP_TELEPORT_SCROLL_DISTANCE)
+                    || (abs(y - player_node->mY) > MAP_TELEPORT_SCROLL_DISTANCE)) {
+                    scrollOffsetX = (x - player_node->mX) * 32;
+                    scrollOffsetY = (y - player_node->mY) * 32;
+                }
 
                 player_node->setAction(Being::STAND);
                 player_node->mFrame = 0;

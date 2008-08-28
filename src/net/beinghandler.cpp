@@ -36,7 +36,9 @@
 #include "../main.h"
 #include "../particle.h"
 #include "../sound.h"
+#include <iostream>
 #include "../player_relations.h"
+#include "../npc.h"
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
@@ -49,7 +51,7 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_BEING_MOVE2,
         SMSG_BEING_REMOVE,
         SMSG_BEING_ACTION,
-        SMSG_BEING_LEVELUP,
+        SMSG_BEING_SELFEFFECT,
         SMSG_BEING_EMOTION,
         SMSG_BEING_CHANGE_LOOKS,
         SMSG_BEING_CHANGE_LOOKS2,
@@ -208,6 +210,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 player_node->stopAttack();
             }
 
+            if (dstBeing == current_npc)
+                current_npc = NULL;
+
             if (msg->readInt8() == 1)
             {
                 dstBeing->setAction(Being::DEAD);
@@ -258,27 +263,17 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
             break;
 
-        case SMSG_BEING_LEVELUP:
+        case SMSG_BEING_SELFEFFECT: {
             id = (Uint32)msg->readInt32();
+            if (!beingManager->findBeing(id))
+                break;
 
-            if (id == player_node->getId()) {
-                logger->log("Level up");
-                sound.playSfx("sfx/levelup.ogg");
-            }
-            else {
-                logger->log("Someone else went level up");
-            }
-            Particle *levelupFX;
-            if (msg->readInt32() == 0) { // type
-                levelupFX = particleEngine->addEffect(
-                        "graphics/particles/levelup.particle.xml", 0, 0);
-            }
-            else {
-                levelupFX = particleEngine->addEffect(
-                        "graphics/particles/skillup.particle.xml", 0, 0);
-            }
-            beingManager->findBeing(id)->controlParticle(levelupFX);
+            int effectType = msg->readInt32();
+
+            beingManager->findBeing(id)->triggerEffect(effectType);
+
             break;
+        }
 
         case SMSG_BEING_EMOTION:
             if (!(dstBeing = beingManager->findBeing(msg->readInt32())))
@@ -513,3 +508,4 @@ void BeingHandler::handleMessage(MessageIn *msg)
             break;
     }
 }
+

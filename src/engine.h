@@ -25,6 +25,7 @@
 #define _ENGINE_H
 
 #include <iosfwd>
+#include <string>
 
 class Map;
 class Network;
@@ -51,6 +52,9 @@ class Engine
          */
         Map *getCurrentMap() { return mCurrentMap; }
 
+        const std::string &getCurrentMapName() { return mMapName; }
+
+
         /**
          * Sets the currently active map.
          */
@@ -64,6 +68,7 @@ class Engine
     private:
         Map *mCurrentMap;
         Network *mNetwork;
+        std::string mMapName;
 };
 
 extern Engine *engine;

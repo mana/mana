@@ -120,6 +120,7 @@ void Engine::changeMap(const std::string &mapPath)
     }
 
     mCurrentMap = newMap;
+    mMapName = mapPath;
 
     // Send "map loaded"
     MessageOut outMsg(mNetwork);

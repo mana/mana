@@ -1,3 +1,12 @@
+2008-08-28  Fate  <fate.tmw@googlemail.com>
+
+	* src/engine.h, src/gui/ministatus.cpp, src/engine.cpp,
+	src/particle.h, src/being.cpp, src/player.h, src/net/beinghandler.cpp,
+	src/net/protocol.h, src/net/playerhandler.cpp, src/being.h: Added
+	support for being effects through the eAthena levelup message, and
+	check whether the being exists before referencing it. Re-enabled
+	proper MP bar display. Improved handling of a warp to the same map.
+
 2008-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/net/beinghandler.cpp,

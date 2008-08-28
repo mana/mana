@@ -63,7 +63,7 @@
 #define SMSG_BEING_REMOVE            0x0080
 #define SMSG_BEING_CHANGE_LOOKS      0x00c3
 #define SMSG_BEING_CHANGE_LOOKS2     0x01d7 /**< Same as 0x00c3, but 16 bit ID */
-#define SMSG_BEING_LEVELUP           0x019b
+#define SMSG_BEING_SELFEFFECT        0x019b
 #define SMSG_BEING_EMOTION           0x00c0
 #define SMSG_BEING_ACTION            0x008a /**< Attack, sit, stand up, ... */
 #define SMSG_BEING_CHAT              0x008d /**< A being talks */
