@@ -30,6 +30,10 @@
 	documentation for the shortcut window by Vq.
 	* src/resources/mapreader.cpp: Fixed crash when map layer has too many
 	tiles.
+	* AUTHORS, src/winver.h, README, configure.ac, data/help/changes.txt,
+	data/help/header.txt, NEWS, CMakeLists.txt: Updated the version to
+	0.0.26 and updated the AUTHORS file. If you have contributed and I
+	forgot you, please contact me as soon as possible!
 
 2008-08-28  Philipp Sehmisch  <tmw@crushnet.org>
 

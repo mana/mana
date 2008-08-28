@@ -1,6 +1,6 @@
 PROJECT(TMW)
 
-SET(VERSION 0.0.25)
+SET(VERSION 0.0.26)
 
 # where to look for cmake modules
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)

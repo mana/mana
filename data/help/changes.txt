@@ -3,6 +3,13 @@
  
 ##3                         === RECENT CHANGES ===
  
+ 0.0.26 (29 August 2008)
+ - Added support for a newer version of eAthena server
+ - Added support for showing custom being effects
+ - Added new features to the particle engine
+ - Position names and chat such that there is no overlap, when possible
+ - Fixed a crash when loading a corrupt map that has too much layer data
+ 
  0.0.25 (27 July 2008)
  - Added support for whispering to other players
  - Added ability to ignore other players
@@ -61,20 +68,4 @@
  - Fixed a crash in equipment window on failure to load an item icon
  - Fixed a crash on filling up your inventory
  - Fixed item list in shops not to scroll back when selling
- 
- 0.0.23 (3 June 2007)
- - Added a particle engine along with some particle effects
- - Added a cursor to indicate targeted enemy
- - Added new program icon
- - Added a man page for UNIX like systems
- - Added the --version command line parameter
- - Improved MacOS X release
- - Screenshots are now saved in the .tmw directory on UNIX like systems
- - Magic pink is no longer used for transparency (fixes issues with that on Mac)
- - Fixed difficulties with resizing windows
- - Fixed misleading error message when connecting fails
- - Fixed wrong error message when account name already exists
- - Fixed crash when deleting a character
- - Fixed error message when creating a new character fails
- - Fixed updating problem when using scrollwheel to change shop selection
  

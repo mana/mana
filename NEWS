@@ -1,3 +1,10 @@
+0.0.26 (29 August 2008)
+- Added support for a newer version of eAthena server
+- Added support for showing custom being effects
+- Added new features to the particle engine
+- Position names and chat such that there is no overlap, when possible
+- Fixed a crash when loading a corrupt map that has too much layer data
+
 0.0.25 (27 July 2008)
 - Added support for whispering to other players
 - Added ability to ignore other players

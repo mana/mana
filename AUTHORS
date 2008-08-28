@@ -1,43 +1,55 @@
------------------------
-The Mana World Dev Team
------------------------
+-----------------------------
+-- The Mana World Dev Team --
+-----------------------------
 
- ElvenProgrammer aka Eugenio Favalli (elvenprogrammer@gmail.com)
- Project leader, programmer
+== Contributors to client/server development ==
 
-== Programmers ==
+Aaron Marks  <nymacro gmail.com>
+Alexander Baldeck (Shura)  <alexander archlinux.org>
+Andrej Sinicyn  <andrej4000 gmail.com>
+Björn Steinbrink (Doener)  <b.steinbrink gmx.de>
+Bjørn Lindeijer  <bjorn lindeijer.nl>
+Cedric Borgese (moi1392)  <cedric.borgese gmail.com>
+David Athay  <ko2fan gmail.com>
+Dennis Friis  <peavey placid.dk>
+Douglas Boffey  <dougaboffey netscape.net>
+Duane Bailey  <nayryeliab gmail.com>
+Eugenio Favalli  <elvenprogrammer gmail.com>
+Eric Scrivner  <zenogais gmail.com>
+Fredrik Reveny  <chetic gmail.com>
+Guillaume Melquiond (Silene)  <guillaume.melquiond gmail.com>
+Jan-Fabian Humann (Mra)  <malastare gmx.net>
+José Ávila  <linux javila.net>
+Kiyoshi Kyokai  <kiyoshi.kyokai gmail.com>
+Lloyd Bryant  <lloyd_bryant netzero.net>
+Marcel W. Wysocki  <maci satgnu.org>
+Mateusz Kaduk (Usiu)  <mateusz.kaduk gmail.com>
+Matthias Hartmann  <hartmann.matthias gmail.com>
+Philipp Sehmisch (Crush)  <tmw crushnet.org>
+Simon Edwardsson  <simon crossnet.se>
+Yohann Ferreira  <bertram cegetel.net>
 
- Bertram          (SDL input, progress bar drawing, Debian package)
- Bjørn Lindeijer  (various parts, GUI, graphics, A* and map rewrites)
- Björn Steinbrink (various parts)
- Javila           (various parts, GUI)
- nym              (several GUI parts)
- Shura            (configuration, sound, misc. ports)
- zenogais         (resource manager)
- Usiu             (several GUI parts)
- Mra              (some GUI parts)
+== Contributors to game content ==
 
-== Artists ==
+Clef
+Gnulia
+Frode Lindeijer (Modanung)  <f.lindeijer gmail.com>
+Jared Adams  <jaxad0127 gmail.com>
+Joni Orponen (Rotonen)  <joni.orponen gmail.com>
+Krzysztof Daszuta  <irukard gmail.com>
+Magick
+Neko-mon
+Neorice
+Pajarico Guaje  <pajarico users.sourceforge.net>
+Vlady
+QOAL
+Ryan Voss (Talaroc)  <arashi86 gmail.com>
+Tatjana
+Ti Sing Hao
 
- Clef             (tiles, concepts)
- Gnulia           (conceptual art)
- Irukard          (item icons)
- Magick           (music and sound effects)
- Neko-mon         (player sprites, various things)
- Neorice          (monster sprites, tiles)
- Modanung         (pixel art, concept art)
- Pajarico         (concepts)
- Rotonen          (backstory, art director, music, sound)
- Talaroc          (sprites)
- Ti Sing Hao      (music)
+== Other contributors ==
 
-== Misc thanks ==
-
- Ultramichy       (hosting test server)
-
-== Inactive/retired ==
-
- Chetic           (maps)
- SimEdw           (network code)
- Sull             (hosting CVS and related services)
- Vlady            (several items)
+Jean-Francois Lampron  <sull.kf gmail.com>
+Rodney Dawes  <dobey novell.com>
+Ultramichy
+Zuzanna K. Filutowska  <platyna users.sourceforge.net>
