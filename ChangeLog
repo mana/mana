@@ -1,3 +1,14 @@
+2008-08-28  Douglas Boffey  <DougABoffey@netscape.net>
+
+	* src/localplayer.cpp, src/text.h, src/gui/viewport.cpp, src/npc.cpp,
+	src/textmanager.h, src/player.cpp, src/monster.h, src/textmanager.cpp,
+	src/being.cpp, src/npc.h, src/monster.cpp, src/player.h,
+	src/localplayer.h, src/player_relations.cpp, src/text.cpp,
+	src/Makefile.am, src/being.h: Move any chat, character names, NPC
+	names or targetted mob names so that no text will obscure any other
+	text. If there is no decent place for the text, it will default to
+	overlapping.
+
 2008-08-28  Fate  <fate.tmw@googlemail.com>
 
 	* src/engine.h, src/gui/ministatus.cpp, src/engine.cpp,

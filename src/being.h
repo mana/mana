@@ -47,6 +47,7 @@ class Map;
 class Graphics;
 class ImageSet;
 class Particle;
+class Text;
 
 /**
  * A position along a being's path.
@@ -187,7 +188,7 @@ class Being : public Sprite
          *
          * @param name The name that should appear.
          */
-        void
+        virtual void
         setName(const std::string &name) { mName = name; }
 
         /**
@@ -239,22 +240,10 @@ class Being : public Sprite
         logic();
 
         /**
-         * Draws the speech text above the being.
-         */
-        void
-        drawSpeech(Graphics *graphics, int offsetX, int offsetY);
-
-        /**
          * Draws the emotion picture above the being.
          */
         void
         drawEmotion(Graphics *graphics, int offsetX, int offsetY);
-
-        /**
-         * Draws the name text below the being.
-         */
-        virtual void
-        drawName(Graphics *, int, int) {};
 
         /**
          * Returns the type of the being.
@@ -363,7 +352,11 @@ class Being : public Sprite
          */
         void controlParticle(Particle *particle);
 
-        void setEmote(Uint8 emotion, Uint8 emote_time) { mEmotion = emotion; mEmotionTime = emote_time; }
+        void setEmote(Uint8 emotion, Uint8 emote_time)
+        {
+            mEmotion = emotion;
+            mEmotionTime = emote_time;
+        }
 
         /**
          * Triggers a visual effect, such as `level up'
@@ -382,6 +375,11 @@ class Being : public Sprite
          * Sets the new path for this being.
          */
         void setPath(const Path &path);
+
+        /**
+         * Let the sub-classes react to a replacement
+         */
+        virtual void updateCoords() {}
 
         /**
          * Returns the sprite direction of this being.
@@ -409,7 +407,7 @@ class Being : public Sprite
         const ItemInfo* mEquippedWeapon;
 
         Path mPath;
-        std::string mSpeech;
+        Text *mSpeech;
         Uint16 mHairStyle, mHairColor;
         Uint8 mGender;
         Uint32 mSpeechTime;

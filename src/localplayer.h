@@ -54,8 +54,9 @@ class LocalPlayer : public Player
          */
         ~LocalPlayer();
 
+        void setName(const std::string &name) {Being::setName(name); }
         void setNetwork(Network *network) { mNetwork = network; }
-
+        Network *getNetwork() {return mNetwork; }
         virtual void logic();
 
         /**
@@ -63,12 +64,6 @@ class LocalPlayer : public Player
          * specified it picks up an item at the end of a path.
          */
         virtual void nextStep();
-
-        /**
-         * Draws the name text below the being.
-         */
-        virtual void
-        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
 
         /**
          * Returns the player's inventory.
@@ -140,7 +135,7 @@ class LocalPlayer : public Player
         /**
          * Sets the target being of the player.
          */
-        void setTarget(Being* target) { mTarget = target; }
+        void setTarget(Being* target);
 
         /**
          * Sets a new destination for this being to walk to.

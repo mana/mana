@@ -291,6 +291,10 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      sound.cpp \
 	      sound.h \
 	      sprite.h \
+	      text.cpp \
+	      text.h \
+	      textmanager.cpp \
+	      textmanager.h \
 	      textparticle.cpp \
 	      textparticle.h \
 	      tileset.h \

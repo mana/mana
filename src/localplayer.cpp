@@ -31,6 +31,7 @@
 #include "main.h"
 #include "particle.h"
 #include "sound.h"
+#include "monster.h"
 
 #include "gui/gui.h"
 
@@ -226,6 +227,23 @@ void LocalPlayer::walk(unsigned char dir)
     }
 }
 
+void LocalPlayer::setTarget(Being *target)
+{
+    if (target == mTarget)
+    {
+        return;
+    }
+    if (mTarget && mTarget->getType() == Being::MONSTER)
+    {
+        static_cast<Monster *>(mTarget)->showName(false);
+    }
+    mTarget = target;
+    if (target && target->getType() == Being::MONSTER)
+    {
+        static_cast<Monster *>(target)->showName(true);
+    }
+}
+
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     // Only send a new message to the server when destination changes
@@ -363,9 +381,13 @@ void LocalPlayer::attack(Being *target, bool keep)
         return;
 
     if (keep && target)
-        mTarget = target;
+    {
+        setTarget(target);
+    }
     else if (mTarget)
+    {
         target = mTarget;
+    }
 
     if (!target)
         return;
@@ -411,7 +433,7 @@ void LocalPlayer::attack(Being *target, bool keep)
 
 void LocalPlayer::stopAttack()
 {
-    mTarget = NULL;
+    setTarget(NULL);
 }
 
 Being* LocalPlayer::getTarget() const
@@ -454,7 +476,7 @@ bool LocalPlayer::withinAttackRange(Being *target)
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
-    mTarget = target;
+    setTarget(target);
     mGoingToTarget = true;
     setDestination(target->mX, target->mY);
 }

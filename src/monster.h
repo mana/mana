@@ -27,11 +27,14 @@
 #include "being.h"
 
 class MonsterInfo;
+class Text;
 
 class Monster : public Being
 {
     public:
         Monster(Uint32 id, Uint16 job, Map *map);
+
+        ~Monster();
 
         virtual void logic();
 
@@ -63,6 +66,23 @@ class Monster : public Being
          */
         const MonsterInfo&
         getInfo() const;
+
+        /**
+         * Determine whether the mob should show it's name
+         */
+        void showName(bool show);
+
+    protected:
+        /**
+         * Update the text when the monster moves
+         */
+        void updateCoords();
+
+    private:
+        /**
+         * holds a text object when the mod displays it's name, 0 otherwise
+         */
+        Text *mText;
 };
 
 #endif

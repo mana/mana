@@ -25,22 +25,10 @@
 #define _TMW_PLAYER_H
 
 #include "being.h"
+#include "text.h"
 
 class Graphics;
 class Map;
-
-class Player;
-
-class PlayerNameDrawStrategy
-{
-public:
-    virtual ~PlayerNameDrawStrategy(void) {}
-
-    /**
-     * Draw the player's name
-     */
-    virtual void draw(Player *p, Graphics *graphics, int px, int py) = 0;
-};
 
 /**
  * A player being. Players have their name drawn beneath them. This class also
@@ -52,14 +40,19 @@ class Player : public Being
     public:
         Player(int id, int job, Map *map);
 
+        ~Player();
+
+        /**
+         * Set up mName to be the character's name
+         */
+        virtual void
+        setName(const std::string &name);
+
         virtual void
         logic();
 
         virtual Type
         getType() const;
-
-        virtual void
-        drawName(Graphics *graphics, int offsetX, int offsetY);
 
         virtual void
         setGender(int gender);
@@ -83,27 +76,15 @@ class Player : public Being
         setSprite(int slot, int id, std::string color = "");
 
         /**
-         * Sets the strategy responsible for drawing the player's name
-         *
-         * \param draw_strategy A strategy describing how the player's name
-         * should be drawn, or NULL for default
+         * Flash the player's name
          */
-        virtual void
-        setNameDrawStrategy(PlayerNameDrawStrategy *draw_strategy);
+        void flash(int time);
 
-        virtual PlayerNameDrawStrategy *
-        getNameDrawStrategy(void) const { return mDrawStrategy; }
-
-        /**
-         * Triggers a visual/audio effect, such as `level up'
-         *
-         * \param effect_id ID of the effect to trigger
-         */
-        virtual void
-        triggerEffect(int effectId) { internalTriggerEffect(effectId, true, true); }
+    protected:
+        void updateCoords();
 
     private:
-        PlayerNameDrawStrategy *mDrawStrategy;
+        FlashText *mName;
 };
 
 #endif

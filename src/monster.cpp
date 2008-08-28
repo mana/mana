@@ -27,14 +27,21 @@
 #include "game.h"
 #include "sound.h"
 #include "particle.h"
+#include "text.h"
+#include "localplayer.h"
+
+#include "gui/gui.h"
 
 #include "resources/monsterdb.h"
 
 #include "utils/tostring.h"
 
+static const int NAME_X_OFFSET = 16;
+static const int NAME_Y_OFFSET = 16;
 
 Monster::Monster(Uint32 id, Uint16 job, Map *map):
-    Being(id, job, map)
+    Being(id, job, map),
+    mText(0)
 {
     const MonsterInfo&  info = MonsterDB::get(job - 1002);
 
@@ -56,6 +63,14 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
         )
     {
         controlParticle(particleEngine->addEffect((*i), 0, 0));
+    }
+}
+
+Monster::~Monster()
+{
+    if (mText)
+    {
+        player_node->setTarget(0);
     }
 }
 
@@ -120,7 +135,8 @@ Monster::handleAttack(Being *victim, int damage)
     Being::handleAttack(victim, damage);
 
     const MonsterInfo &mi = getInfo();
-    sound.playSfx(mi.getSound((damage > 0) ? MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
+    sound.playSfx(mi.getSound((damage > 0) ?
+                MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
 }
 
 void
@@ -140,4 +156,29 @@ const MonsterInfo&
 Monster::getInfo() const
 {
     return MonsterDB::get(mJob - 1002);
+}
+
+void Monster::showName(bool show)
+{
+    delete mText;
+    if (show)
+    {
+        mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,
+                         mPy + NAME_Y_OFFSET - getHeight(),
+                         gcn::Graphics::CENTER,
+                         speechFont, gcn::Color(255, 32, 32));
+    }
+    else
+    {
+        mText = 0;
+    }
+}
+
+void Monster::updateCoords()
+{
+    if (mText)
+    {
+        mText->adviseXY(mPx + NAME_X_OFFSET,
+                        mPy + NAME_Y_OFFSET - getHeight());
+    }
 }
