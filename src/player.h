@@ -116,6 +116,14 @@ class Player : public Being
         // Character guild information
         std::map<int, Guild*> mGuilds;
 
+        /**
+         * Triggers a visual/audio effect, such as `level up'
+         *
+         * \param effect_id ID of the effect to trigger
+         */
+        virtual void
+        triggerEffect(int effectId) { internalTriggerEffect(effectId, true, true); }
+
     private:
         bool mInParty;
 };

@@ -161,6 +161,9 @@ class Particle : public Sprite
         { mPos.x += x; mPos.y += y; mPos.z += z; }
 
         void
+        moveChildren(Vector change);
+
+        void
         moveBy (Vector change)
         { mPos += change; }
 
@@ -269,6 +272,12 @@ class Particle : public Sprite
 
         bool isAlive()
         { return mAlive; }
+
+        /**
+         * Determines whether the particle and its children are all dead
+         */
+        bool isExtinct()
+        { return !isAlive() && mChildParticles.empty(); }
 
         /**
          * Manually marks the particle for deletion.

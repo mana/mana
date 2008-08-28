@@ -119,6 +119,7 @@ void Engine::changeMap(const std::string &mapPath)
     }
 
     mCurrentMap = newMap;
+    mMapName = mapPath;
 }
 
 void Engine::logic()

@@ -360,6 +360,15 @@ class Being : public Sprite
          */
         const Path &getPath() const { return mPath; }
 
+        /**
+         * Triggers a visual effect, such as `level up'
+         *
+         * Only draws the visual effect, does not play sound effects
+         *
+         * \param effectId ID of the effect to trigger
+         */
+        virtual void
+        triggerEffect(int effectId) { internalTriggerEffect(effectId, false, true); }
 
         static int getHairColorsNr(void);
 
@@ -378,6 +387,16 @@ class Being : public Sprite
          */
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_NONE; }
+
+        /**
+         * Trigger visual effect, with components
+         *
+         * \param effectId ID of the effect to trigger
+         * \param sfx Whether to trigger sound effects
+         * \param gfx Whether to trigger graphical effects
+         */
+        void
+        internalTriggerEffect(int effectId, bool sfx, bool gfx);
 
         Uint16 mId;                     /**< Unique being id */
         Uint8 mSpriteDirection;         /**< Facing direction */
