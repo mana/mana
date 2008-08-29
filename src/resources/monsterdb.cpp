@@ -45,7 +45,7 @@ MonsterDB::load()
     if (mLoaded)
         return;
 
-    mUnknown.setSprite("error.xml");
+    mUnknown.addSprite("error.xml");
     mUnknown.setName("unnamed");
 
     logger->log("Initializing monster database...");
@@ -96,7 +96,7 @@ MonsterDB::load()
         {
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {
-                currentInfo->setSprite((const char*) spriteNode->xmlChildrenNode->content);
+                currentInfo->addSprite((const char*) spriteNode->xmlChildrenNode->content);
             }
 
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))

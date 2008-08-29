@@ -45,15 +45,24 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
 {
     const MonsterInfo&  info = MonsterDB::get(job - 1002);
 
-    std::string filename = info.getSprite();
-    if (filename != "")
+    // Setup Monster sprites
+    int c = BASE_SPRITE;
+    const std::list<std::string> &sprites = info.getSprites();
+    for (std::list<std::string>::const_iterator i = sprites.begin();
+         i != sprites.end();
+         i++)
     {
-        mSprites[BASE_SPRITE] = AnimatedSprite::load(
-            "graphics/sprites/" + filename);
+        if (c == VECTOREND_SPRITE) break;
+
+        std::string file = "graphics/sprites/" + *i;
+        mSprites[c] = AnimatedSprite::load(file);
+        c++;
     }
-    else
+
+    // Ensure that something is shown
+    if (c == BASE_SPRITE)
     {
-        mSprites[BASE_SPRITE] = AnimatedSprite::load("graphics/sprites/error.xml");
+        mSprites[c] = AnimatedSprite::load("graphics/sprites/error.xml");
     }
 
     const std::list<std::string> &particleEffects = info.getParticleEffects();
@@ -124,7 +133,13 @@ Monster::setAction(Uint8 action)
 
     if (currentAction != ACTION_INVALID)
     {
-        mSprites[BASE_SPRITE]->play(currentAction);
+        for (int i = 0; i < VECTOREND_SPRITE; i++)
+        {
+            if (mSprites[i])
+            {
+                mSprites[i]->play(currentAction);
+            }
+        }
         mAction = action;
     }
 }

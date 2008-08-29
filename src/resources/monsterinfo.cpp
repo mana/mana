@@ -27,8 +27,7 @@
 
 #include "../utils/dtor.h"
 
-MonsterInfo::MonsterInfo():
-    mSprite("error.xml")
+MonsterInfo::MonsterInfo()
 {
 
 }

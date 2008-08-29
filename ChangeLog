@@ -1,3 +1,9 @@
+2008-08-29  David Athay  <ko2fan@gmail.com>
+
+	* src/monster.cpp, src/resources/monsterinfo.h, 
+	src/resources/monsterdb.cpp, src/resources/monsterinfo.cpp: Mantis #406
+	by jaxad0127 to implement layered sprites.
+
 2008-08-28  Douglas Boffey  <DougABoffey@netscape.net>
 
 	* src/localplayer.cpp, src/text.h, src/gui/viewport.cpp, src/npc.cpp,
