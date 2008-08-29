@@ -63,7 +63,7 @@ class MonsterInfo
         setName(std::string name) { mName = name; }
 
         void
-        setSprite(std::string filename) { mSprite = filename; }
+        addSprite(std::string filename) { mSprites.push_back(filename); }
 
         void
         setTargetCursorSize(Being::TargetCursorSize targetCursorSize)
@@ -78,8 +78,8 @@ class MonsterInfo
         const std::string&
         getName() const { return mName; }
 
-        const std::string&
-        getSprite() const { return mSprite; }
+        const std::list<std::string>&
+        getSprites() const { return mSprites; }
 
         Being::TargetCursorSize
         getTargetCursorSize() const { return mTargetCursorSize; }
@@ -92,7 +92,7 @@ class MonsterInfo
 
     private:
         std::string mName;
-        std::string mSprite;
+        std::list<std::string> mSprites;
         Being::TargetCursorSize mTargetCursorSize;
         std::map<MonsterSoundEvent, std::vector<std::string>* > mSounds;
         std::list<std::string> mParticleEffects;
