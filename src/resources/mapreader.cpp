@@ -378,7 +378,13 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                     map->setTileWithGid(x, y, layer, gid);
 
                     x++;
-                    if (x == w) {x = 0; y++;}
+                    if (x == w) {
+                        x = 0; y++;
+
+                        // When we're done, don't crash on too much data
+                        if (y == h)
+                            break;
+                    }
                 }
                 free(binData);
             }
