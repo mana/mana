@@ -1,6 +1,9 @@
------------------------------
--- The Mana World Dev Team --
------------------------------
+---------------------------------
+-- The Mana World Contributors --
+---------------------------------
+
+ This file lists all contributors up to the current release. Check the wiki
+ for the currently active development team.
 
 == Contributors to client/server development ==
 
@@ -26,6 +29,7 @@ Marcel W. Wysocki  <maci satgnu.org>
 Mateusz Kaduk (Usiu)  <mateusz.kaduk gmail.com>
 Matthias Hartmann  <hartmann.matthias gmail.com>
 Philipp Sehmisch (Crush)  <tmw crushnet.org>
+Rogier Polak  <rogier.l.a.polak gmail.com>
 Simon Edwardsson  <simon crossnet.se>
 Yohann Ferreira  <bertram cegetel.net>
 
@@ -42,8 +46,8 @@ Neko-mon
 Neorice
 Pajarico Guaje  <pajarico users.sourceforge.net>
 Vlady
-QOAL
 Ryan Voss (Talaroc)  <arashi86 gmail.com>
+Scott Ellis  <quiche_on_a_leash hotmail.co.uk>
 Tatjana
 Ti Sing Hao
 
