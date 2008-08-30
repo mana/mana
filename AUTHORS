@@ -2,23 +2,25 @@
 Aethyra Dev Team
 ---------------------------
 
- Blameu aka Kevin Day (blame582@gmail.com)
+ Blameu aka Kevin Day (blame@aethyra.com.com)
 
 == Programmers ==
 
- Sanga            
- Scraggy          
- Kraant
+ Sanga            <sanga@aethyra.com>
+ Scraggy          <DougABoffey@netscape.net>
+ Kraant           <kraant@gmail.com>
+ Tametomo
 
 == Artists ==
  
  Frictor
  Angeliex
- Tametomo
+ 
 
 == Map Designers ==
 
- Ichigo Black
+ Ichigo Black (aka Gonzo Dark)
+ Arkyan 
 
 == Inactive ==
 
@@ -34,8 +36,8 @@ The Mana World Dev Team
 == Programmers ==
 
  Bertram          (SDL input, progress bar drawing, Debian package)
- Bjørn Lindeijer  (various parts, GUI, graphics, A* and map rewrites)
- Björn Steinbrink (various parts)
+ Bjï¿½rn Lindeijer  (various parts, GUI, graphics, A* and map rewrites)
+ Bjï¿½rn Steinbrink (various parts)
  Javila           (various parts, GUI)
  nym              (several GUI parts)
  Shura            (configuration, sound, misc. ports)

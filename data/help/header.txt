@@ -1,9 +1,9 @@
  
-##1               T  H  E      M  A  N  A      W  O  R  L  D
+##1                                 AETHYRA
 ##1               ==========================================
  
-           ##2Version:##6 0.0.24.1              ##2Date:##37 April 2008
+           ##2Version:##6 Aethyra SVN 0.0.25              ##2Date:##3 August 2008
  
-##2                    Website: http://themanaworld.org
+##2                    Website: http://www.aethyra.com
  
  

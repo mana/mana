@@ -1,17 +1,40 @@
  <- @@index|Back to Index@@
  
  
-##3                      === ABOUT THE MANA WORLD ===
+##3                      === ABOUT Aethyra ===
  
- ##2The Mana World (TMW)##P is a serious effort to create an innovative free
- and open source MMORPG. TMW uses 2D graphics and aims to create a
- large and diverse interactive world. It is licensed under the GPL,
- making sure this game can't ever run away from you.
- 
- The project includes the development of both a client and a server,
- as well as the development of an online world. At the moment we're
- making alpha releases of the client, while our server is in early
- development. The eAthena free software Ragnarok Online server is used
- until our own server has matured enough to replace it. Once ready,
- we'll be making releases of our server too so anybody will be free to
- set up their own server and start building their own online world.
+ ##2Aethyra (Ae)##P Aethyra is a 2D MMORPG, using the eAthena server 
+ (an open-source clone of the commercial Ragnarok Online server). It
+ features expanding lands and community-made graphics, making for a 
+ fun, free, open source community project.
+
+ ##PAethyra started out as "The Mana Experiment," an experimental 
+ test-server for community-developed content designed for The Mana 
+ World which was put into action by Blame, Sanga, and Sertaline.
+ ##PSoon thereafter, it became evident that it was taking far too 
+ long for the elitist development team at The Mana World to 
+ implement good tested-content. They made excuses and treated the
+ long-awaited custom server TMWServ as the answer to all the problems,
+ and left the eAthena server (which The Mana World still runs on) 
+ to rot. Many development team members lost interest in helping, and 
+ the programmers forsook the eAthena server saying that it would 
+ simply delay TMWServ progress for months to fix the simplest of 
+ errors. In response to this, The Mana Experiment became a fork 
+ project, and an official game server. 
+ ##PTime passed, and more and more content was tested and implemented.
+ Soon, discussion began for a name. Aethyra was chosen, and the Game 
+ you see now was setup. Content development has never been better, and
+ the staff never more motivated! Stay on the lookout for more exciting
+ Aethyra developments!
+
+##3                     === Aethyra's Goal ===
+
+ ##PAethyra is a community driven experiment that utilizes eAthena at 
+ its core with the end goal of getting its players as involved in the
+ process as much as possible.  It's originally forked from The Mana
+ World when its developers came up with the idea of "Why should we
+ have to wait for an MMORPG game in development when we've already got
+ a great server setup here that does everything we've been promised
+ and more?" ##P As such, we are trying to implement as many functions
+ of eAthena as possible while creating our own in the process based
+ on what our players want to see.

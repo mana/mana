@@ -1,7 +1,15 @@
+2008-08-30  kevin Day ("blame")     <blame@aethyra.com>
+
+	* Updated the in game help files "/trunk/data/help"
+
 2008-08-28  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Patch to prevent crash if a map layer has too many
 	  tiles (From TMW svn, r4544)
+
+2008-08-26 Douglas Boffey ("Scraggy")	<DougABoffey@netscape.net>
+
+	* Corrected position of registration dialogs
 
 2008-08-21  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 

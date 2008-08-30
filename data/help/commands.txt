@@ -50,6 +50,10 @@
  /whisper <name> <message>
 
  This will send <message> to player <name>, if that player is logged in.
+ to whisper to users with spaces in there name you must incase the user name in qoutes
+	(e.g. /whisper "user name" <message>)
+
+ For further help type /help in the chat console.
 
 
 ##2IGNORING COMMUNICATION

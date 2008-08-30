@@ -1,6 +1,6 @@
 ##3                             === INDEX ===
 
- -> @@about|About The Mana World@@
+ -> @@about|About Aethyra@@
  -> @@team|Development Team@@
  -> @@changes|Recent Changes@@
 

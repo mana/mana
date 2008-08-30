@@ -7,11 +7,11 @@
  can't find a solution to your problem, feel free to check our
  Bugs/Support section of the forum:
  
-##2     http://themanaworld.org/phpBB2/viewforum.php?f=3
+##2     http://forums.aethyra.com
  
  or come visit us on our IRC channel:
  
-##2     #themanaworld ##P@##2 irc.freenode.net
+##2     #aethyra ##P@##2 irc.freenode.net
  
  Otherwise see the @@team|Development Team@@ section to have a list of
  developers and how to contact them.

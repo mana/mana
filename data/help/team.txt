@@ -2,131 +2,41 @@
  
  
 ##3                        === DEVELOPMENT TEAM ===
- 
-##2 Project Leader:
- 
-     ##9Eugenio Favalli (aka ElvenProgrammer)
-         elvenprogrammer@gmail.com
- 
- 
+
 ##2 Programmers:
  
-     ##9Bjorn Lindeijer (aka Hammerbear)
-         b_lindeijer@users.sourceforge.net
-             (various parts, GUI, graphics, A* and map rewrites)
- 
-     ##9Björn Steinbrink  (aka Doener)
-         der_doener@users.sourceforge.net
-             (various parts)
- 
-     ##9Eric Scrivner (aka zenogais)
-         bitshift2002@users.sourceforge.net
-             (resource manager)
- 
-     ##9J. Avila (aka Javila)
-         javila@users.sourceforge.net
-             (various parts, GUI)
- 
-     ##9Jan-Fabian Humann (aka Mra)
-         malastare@users.sourceforge.net
-             (some GUI parts)
- 
-     ##9Kiyoshi Kyokai (aka Kiokay)
-         kyokai@users.sourceforge.net
-             (game systems designer)
- 
-     ##9Mateusz Kaduk (aka Usiu)
-         usiu@users.sourceforge.net
-             (several GUI parts)
- 
-     ##9Aaron Marks (aka nym)
-         nymacro@users.sourceforge.net
-             (several GUI parts)
- 
-     ##9Shura
-         kth5@users.sourceforge.net
-             (configuration, sound, misc. ports)
- 
-     ##9Yohann Ferreira (aka Bertram)
-         bertram25@users.sourceforge.net
-             (SDL input, progress bar drawing, Debian package)
+  ##9Sanga Head Developer/GM ("Sanga")
+            <sanga@aethyra.com>
+
+  ##9Scraggy Client Developer 
+            <DougABoffey@netscape.net>
+
+  ##9Kraant Developer
+            <kraant@gmail.com>
+
+  ##9Tametomo Developer/Artist
  
  
 ##2 Artists:
  
-     ##9Clef
-             (tiles, concepts)
- 
-     ##9Frode Lindeijer (aka Modanung)
-         f.lindeijer@xs4all.nl
-             (arts)
- 
-     ##9Gnulia 
-             (conceptual art)
- 
-     ##9Magick
-             (music and sound effects)
- 
-     ##9Neko-mon
-             (player sprites, various things)
-    
-     ##9Neorice
-             (monster sprites, tiles)
- 
-     ##9Pajarico
-         pajarico@users.sourceforge.net
-             (conceptual arts)
- 
-     ##9Romulo Fernandes
-         razor85@users.sourceforge.net
-             (arts)
- 
-     ##9Rotonen
-         rotonen@users.sourceforge.net
-             (backstory, art director, music, sound)
- 
-     ##9Talaroc
-         talaroc@users.sourceforge.net
-             (sprites)
- 
-     ##9Ti Sing Hao
-             (music)
+  ##9Frictor Head Artist 
+
+  ##9Angeliex Artist
+
+  ##9GonzoDark Mapper
+
+  ##9Arkyan Mapper
  
  
 ##2 Misc. thanks:
- 
-     ##9David Smith (aka catfish_man)
-         catfish_man@users.sourceforge.net
-             (Mac package)
- 
-     ##9Igor Morgado (aka imorgado)
-         imorgado@users.sourceforge.net
-             (tester)
- 
-     ##9maci
-         maci321@users.sourceforge.net
-             (technical support)
- 
-     ##9Rodney Dawes (aka dobey)
-         dobey@users.sourceforge.net
-             (Mac package)
- 
-     ##9Ultramichy
-             (hosting test server)
- 
- 
-##2 Inactive/retired:
- 
-     ##9Chetic
-         chetic@users.sourceforge.net
-             (maps)
- 
-     ##9Simon Edwardsson (aka SimEdw)
-         simonedw@users.sourceforge.net
-             (network code, Mac package)
- 
-     ##9Sull 
-             (hosting CVS and related services)
- 
-     ##9Vlady
-             (several items)
+
+  ##9MrDan Forum Admin/GM 
+
+  ##9Slinker Game Server Host
+
+##2 Leave of Absence
+
+  ##9Sert Head Artist/GM
+
+  ##9Blame Developer/GM
+            <blame@aethyra.com>
