@@ -40,6 +40,10 @@
 #include <cerrno>
 #include <sys/stat.h>
 #endif
+#ifdef __MINGW32__
+#include <windows.h>
+#define usleep(usec) (Sleep ((usec) / 1000), 0)
+#endif
 #if defined __APPLE__
 #include <CoreFoundation/CFBundle.h>
 #endif
