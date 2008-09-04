@@ -1,3 +1,7 @@
+2008-09-04  Douglas Boffey ("Scraggy")  <scraggy@aethyra.com>
+
+	* Added code to change colours in the chatlog
+
 2008-08-30  kevin Day ("blame")     <blame@aethyra.com>
 
 	* Updated the in game help files "/trunk/data/help"
@@ -7,7 +11,7 @@
 	* Patch to prevent crash if a map layer has too many
 	  tiles (From TMW svn, r4544)
 
-2008-08-26 Douglas Boffey ("Scraggy")	<DougABoffey@netscape.net>
+2008-08-26  Douglas Boffey ("Scraggy")	<DougABoffey@netscape.net>
 
 	* Corrected position of registration dialogs
 
@@ -22,7 +26,7 @@
 2008-08-17  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Set the wallpaper based on the screen width.
-	* Added a usleep to the login sequence loop to 
+	* Added a usleep to the login sequence loop to
 	  prevent it from unnecessarily maxing out the CPU
 
 2008-08-17	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
@@ -59,7 +63,7 @@
 
 2008-07-25  Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
-	* Added feature to remember window locations from one 
+	* Added feature to remember window locations from one
 	  session to the next (patch from TMW by ElvenProgrammer)
 
 2008-07-24  Lloyd Bryant ("Sanga")  <sanga@aethyra.com>
