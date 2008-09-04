@@ -30,11 +30,17 @@
 #include "../utils/tostring.h"
 #include "../utils/dtor.h"
 
-#define TABWIDTH 60
-#define TABHEIGHT 20
+TabbedContainer::TabbedContainer(int width, int padX, int buttonHeight,
+                                 int height, int padY, int buttonsPerRow):
+    mActiveContent(0),
+    mWidth(width),
+    mPadX(padX),
+    mButtonHeight(buttonHeight),
+    mHeight(height),
+    mPadY(padY),
+    mButtonsPerRow(buttonsPerRow),
 
-TabbedContainer::TabbedContainer():
-    mActiveContent(0)
+    mButtonWidth((width - (buttonsPerRow - 1) * padX) / buttonsPerRow - padX)
 {
 }
 
@@ -52,13 +58,14 @@ void TabbedContainer::addTab(gcn::Widget *widget, const std::string &caption)
 
     Button *tab = new Button(caption, toString(tabNumber), this);
 
-    tab->setSize(TABWIDTH, TABHEIGHT);
-    add(tab, TABWIDTH * tabNumber, 0);
+    tab->setSize(mButtonWidth, mButtonHeight);
+    add(tab, (mButtonWidth + mPadX) * (tabNumber % mButtonsPerRow),
+             (mButtonHeight + mPadY) * (tabNumber / mButtonsPerRow));
 
     mTabs[caption] = tab;
 
     mContents.push_back(widget);
-    widget->setPosition(0, TABHEIGHT);
+    widget->setPosition(0, mHeight);
 
     // If this is the first tab in this container, make it visible
     if (!mActiveContent) {
@@ -83,7 +90,7 @@ void TabbedContainer::logic()
     if (mActiveContent) {
         mActiveContent->setSize(
                 getWidth() - 2 * mActiveContent->getFrameSize(),
-                getHeight() - TABHEIGHT - 2 * mActiveContent->getFrameSize());
+                getHeight() - mHeight - 2 * mActiveContent->getFrameSize());
     }
 
     Container::logic();

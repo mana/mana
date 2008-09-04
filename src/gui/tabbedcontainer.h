@@ -37,7 +37,8 @@
 class TabbedContainer : public gcn::Container, public gcn::ActionListener
 {
     public:
-        TabbedContainer();
+        TabbedContainer(int width, int padX, int buttonHeight,
+                        int height, int padY, int buttonsPerRow);
         ~TabbedContainer();
 
         void addTab(gcn::Widget *widget, const std::string &caption);
@@ -62,6 +63,14 @@ class TabbedContainer : public gcn::Container, public gcn::ActionListener
 
         std::map<gcn::Widget*, std::string> mWidgets;
         gcn::Widget *mActiveContent;
+
+        int mWidth;         /**< The total width of all buttons */
+        int mPadX;          /**< The horizontal gap between buttons */
+        int mButtonHeight;  /**< The height of each button */
+        int mHeight;        /**< Height of the panel */
+        int mPadY;          /**< The vertical gap between buttons */
+        int mButtonsPerRow; /**< The number of buttons on each row */
+        int mButtonWidth;   /**< The width of each button */
 };
 
 #endif

@@ -31,6 +31,7 @@
 #include "setup_video.h"
 #include "setup_keyboard.h"
 #include "setup_players.h"
+#include "setup_colours.h"
 #include "tabbedcontainer.h"
 
 #include "../utils/dtor.h"
@@ -49,21 +50,22 @@ Setup::Setup():
 {
     setCloseButton(true);
     int width = 310;
-    int height = 265;
+    int height = 290;
     setContentSize(width, height);
 
     const char *buttonNames[] = {
         "Apply", "Cancel", "Reset Windows", 0
     };
     int x = width;
-    for (const char **curBtn = buttonNames; *curBtn; ++curBtn) {
+    for (const char **curBtn = buttonNames; *curBtn; ++curBtn)
+    {
         Button *btn = new Button(*curBtn, *curBtn, this);
         x -= btn->getWidth() + 5;
         btn->setPosition(x, height - btn->getHeight() - 5);
         add(btn);
     }
 
-    TabbedContainer *panel = new TabbedContainer();
+    TabbedContainer *panel = new TabbedContainer(width, 5, 20, 45, 5, 3);
     panel->setDimension(gcn::Rectangle(5, 5, width, height - 40));
     panel->setOpaque(false);
 
@@ -83,6 +85,10 @@ Setup::Setup():
 
     tab = new Setup_Keyboard();
     panel->addTab(tab, "Keyboard");
+    mTabs.push_back(tab);
+
+    tab = new Setup_Colours();
+    panel->addTab(tab, "Colours");
     mTabs.push_back(tab);
 
     tab = new Setup_Players();

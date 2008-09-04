@@ -38,7 +38,9 @@ int TextField::instances = 0;
 ImageRect TextField::skin;
 
 TextField::TextField(const std::string& text):
-    gcn::TextField(text)
+    gcn::TextField(text),
+    mNumeric(false),
+    mListener(0)
 {
     setFrameSize(2);
 
@@ -101,4 +103,68 @@ void TextField::drawFrame(gcn::Graphics *graphics)
     h = getHeight() + bs * 2;
 
     static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
+}
+
+void TextField::setNumeric(bool numeric)
+{
+    mNumeric = numeric;
+    if (!numeric)
+    {
+        return;
+    }
+    const char *text = mText.c_str();
+    for (const char *textPtr = text; *textPtr; ++textPtr)
+    {
+        if (*textPtr < '0' || *textPtr > '9')
+        {
+            setText(mText.substr(0, textPtr - text));
+            return;
+        }
+    }
+}
+
+void TextField::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    if (mNumeric)
+    {
+        while (true)
+        {
+            const gcn::Key &key = keyEvent.getKey();
+            if (key.isNumber())
+            {
+                break;
+            }
+            int value = key.getValue();
+            if (value == gcn::Key::LEFT || value == gcn::Key::RIGHT ||
+                value == gcn::Key::HOME || value == gcn::Key::END ||
+                value == gcn::Key::BACKSPACE || value == gcn::Key::DELETE)
+            {
+                break;
+            }
+            return;
+        }
+    }
+    gcn::TextField::keyPressed(keyEvent);
+    if (mListener)
+    {
+        mListener->listen(this);
+    }
+}
+
+int TextField::getValue() const
+{
+    if (!mNumeric)
+    {
+        return 0;
+    }
+    int value = atoi(mText.c_str());
+    if (value < mMinimum)
+    {
+        return mMinimum;
+    }
+    if (value > mMaximum)
+    {
+        return mMaximum;
+    }
+    return value;
 }

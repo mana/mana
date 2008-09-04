@@ -66,6 +66,7 @@
 
 #include "gui/char_server.h"
 #include "gui/char_select.h"
+#include "gui/colour.h"
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
@@ -117,6 +118,7 @@ CharServerHandler charServerHandler;
 LoginData loginData;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
+Colour *textColour;
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {
@@ -736,6 +738,9 @@ int main(int argc, char *argv[])
     if (!login_wallpaper)
         logger->log("Couldn't load %s as wallpaper", wallpaperName.c_str());
 
+    // Needs to be created in main, as the updater uses it
+    textColour = new Colour();
+
     while (state != EXIT_STATE)
     {
         // Handle SDL events
@@ -978,6 +983,7 @@ int main(int argc, char *argv[])
         usleep(50000);
     }
 
+    delete textColour;
 #ifdef PACKAGE_VERSION
     delete versionLabel;
 #endif
