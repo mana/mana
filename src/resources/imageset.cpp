@@ -21,8 +21,6 @@
  *  $Id$
  */
 
-#include <algorithm>
-
 #include "imageset.h"
 
 #include "../log.h"
@@ -46,7 +44,7 @@ ImageSet::ImageSet(Image *img, int width, int height)
 
 ImageSet::~ImageSet()
 {
-    for_each(mImages.begin(), mImages.end(), make_dtor(mImages));
+    delete_all(mImages);
 }
 
 Image*

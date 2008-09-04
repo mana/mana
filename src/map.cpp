@@ -23,7 +23,6 @@
 
 #include "map.h"
 
-#include <algorithm>
 #include <queue>
 #include <cassert>
 
@@ -161,13 +160,13 @@ Map::~Map()
 {
     // delete metadata, layers, tilesets and overlays
     delete[] mMetaTiles;
-    for (int i=0; i < NB_BLOCKTYPES; i++)
+    for (int i = 0; i < NB_BLOCKTYPES; i++)
     {
         delete[] mOccupation[i];
     }
-    for_each(mLayers.begin(), mLayers.end(), make_dtor(mLayers));
-    for_each(mTilesets.begin(), mTilesets.end(), make_dtor(mTilesets));
-    for_each(mOverlays.begin(), mOverlays.end(), make_dtor(mOverlays));
+    delete_all(mLayers);
+    delete_all(mTilesets);
+    delete_all(mOverlays);
 }
 
 void Map::initializeOverlays()

@@ -24,6 +24,7 @@
 #ifndef _TMW_UTILS_DTOR_H
 #define _TMW_UTILS_DTOR_H
 
+#include <algorithm>
 #include <functional>
 #include <utility>
 
@@ -44,6 +45,12 @@ public std::unary_function <std::pair<T1, T2>, void>
 inline dtor<typename Cont::value_type> make_dtor(Cont const&)
 {
     return dtor<typename Cont::value_type>();
+}
+
+template<typename Container>
+inline void delete_all(Container &c)
+{
+    std::for_each(c.begin(), c.end(), make_dtor(c));
 }
 
 #endif

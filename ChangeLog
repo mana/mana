@@ -1,3 +1,13 @@
+2008-09-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/gui/setup.cpp, src/gui/shop.cpp,
+	src/gui/windowcontainer.cpp, src/gui/skill.cpp, src/beingmanager.cpp,
+	src/flooritemmanager.cpp, src/channelmanager.cpp, src/being.cpp,
+	src/utils/dtor.h, src/resources/imageset.cpp,
+	src/resources/monsterinfo.cpp, src/resources/itemdb.cpp: Introduced
+	another template to make deleting all values in a container easier.
+	Inspired by qDeleteAll() from Qt.
+
 2008-08-20  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/guildlistbox.cpp, src/gui/guildwindow.h,
@@ -10,7 +20,7 @@
 	src/net/guildhandler.h, src/net/partyhandler.cpp,
 	src/net/guildhandler.cpp, src/net/chatserver/party.cpp,
 	src/net/chatserver/guild.cpp, src/net/chatserver/party.h,
-	src/net/chatserver/guild.h, src/winver.h: fix svn properties and
+	src/net/chatserver/guild.h, src/winver.h: Fix svn properties and
 	id tags.
 
 2008-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>

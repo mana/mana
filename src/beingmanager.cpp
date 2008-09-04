@@ -21,7 +21,6 @@
  *  $Id$
  */
 
-#include <algorithm>
 #include <cassert>
 
 #include "beingmanager.h"
@@ -148,7 +147,7 @@ void BeingManager::clear()
         mBeings.remove(player_node);
     }
 
-    for_each(mBeings.begin(), mBeings.end(), make_dtor(mBeings));
+    delete_all(mBeings);
     mBeings.clear();
 
     if (player_node)

@@ -21,7 +21,6 @@
  *  $Id$
  */
 
-#include <algorithm>
 #include <list>
 
 #include "channelmanager.h"
@@ -36,7 +35,7 @@ ChannelManager::ChannelManager()
 
 ChannelManager::~ChannelManager()
 {
-    for_each(mChannels.begin(), mChannels.end(), make_dtor(mChannels));
+    delete_all(mChannels);
     mChannels.clear();
 }
 

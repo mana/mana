@@ -21,8 +21,6 @@
  *  $Id$
  */
 
-#include <algorithm>
-
 #include <guichan/widgets/label.hpp>
 #include <guichan/widgets/container.hpp>
 #include <guichan/widgets/icon.hpp>
@@ -78,7 +76,7 @@ SkillDialog::SkillDialog():
 
 SkillDialog::~SkillDialog()
 {
-    for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
+    delete_all(mTabs);
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)

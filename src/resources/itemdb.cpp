@@ -21,7 +21,6 @@
  *  $Id$
  */
 
-#include <algorithm>
 #include <cassert>
 #include <libxml/tree.h>
 
@@ -196,7 +195,7 @@ void ItemDB::unload()
     delete mUnknown;
     mUnknown = NULL;
 
-    for_each(mItemInfos.begin(), mItemInfos.end(), make_dtor(mItemInfos));
+    delete_all(mItemInfos);
     mItemInfos.clear();
     mLoaded = false;
 }

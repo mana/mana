@@ -25,8 +25,6 @@
 
 #include "../utils/dtor.h"
 
-#include <algorithm>
-
 ShopItems::~ShopItems()
 {
     clear();
@@ -59,7 +57,7 @@ ShopItem* ShopItems::at(int i)
 
 void ShopItems::clear()
 {
-    std::for_each(mShopItems.begin(), mShopItems.end(), make_dtor(mShopItems));
+    delete_all(mShopItems);
     mShopItems.clear();
 }
 
