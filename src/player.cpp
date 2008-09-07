@@ -157,14 +157,20 @@ void Player::setHairStyle(int style, int color)
     {
         "#8c4b41,da9041,ffffff", // light brown
         "#06372b,489e25,fdedcc", // green
-        "#5f0b33,91191c,f9ad81", // red
+        "#5f0b33,91191c,f9ad81", // dark red
         "#602486,934cc3,fdc689", // purple
-        "#805e74,c6b09b,ffffff", // gray
+        "#805e74,c6b09b,ffffff", // white
         "#8c6625,dab425,ffffff", // yellow
         "#1d2d6d,1594a3,fdedcc", // blue
         "#831f2d,be4f2d,f8cc8b", // brown
         "#432482,584bbc,dae8e5", // light blue
         "#460850,611967,e7b4ae", // dark purple
+        "#8f3e21,bc522b,ff946c", // orange
+        "#9c6b84,d272a3,ffcae5", // pink
+        "#1d1d1d,414141,6f6f6f", // charcoal
+        "#525252,99999b,cacaca", // silver
+        "#841413,aa2829,ffaeb1", // light red
+        "#a82513,ffa525,ffffff", // strawberry blond
     };
 
     setSprite(HAIR_SPRITE, style * -1, colors[color]);

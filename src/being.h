@@ -35,7 +35,7 @@
 #include "animatedsprite.h"
 
 #define NR_HAIR_STYLES 8
-#define NR_HAIR_COLORS 10
+#define NR_HAIR_COLORS 16
 
 #define FIRST_IGNORE_EMOTE 14
 
