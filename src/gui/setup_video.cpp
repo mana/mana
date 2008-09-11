@@ -280,9 +280,18 @@ void Setup_Video::apply()
     bool fullscreen = mFsCheckBox->isSelected();
     if (fullscreen != (config.getValue("screen", 0) == 1))
     {
+        /* The OpenGL test is only necessary on Windows, since switching
+         * to/from full screen works fine on Linux. On Windows we'd have to
+         * reinitialize the OpenGL state and reload all textures.
+         *
+         * See http://libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode
+         */
+
+#ifdef WIN32
         // checks for opengl usage
         if (!(config.getValue("opengl", 0) == 1))
         {
+#endif
             if (!graphics->setFullscreen(fullscreen))
             {
                 fullscreen = !fullscreen;
@@ -296,10 +305,12 @@ void Setup_Video::apply()
                     logger->error(error.str());
                 }
             }
+#ifdef WIN32
         } else {
             new OkDialog("Switching to full screen",
                     "Restart needed for changes to take effect.");
         }
+#endif
         config.setValue("screen", fullscreen ? 1 : 0);
     }
 

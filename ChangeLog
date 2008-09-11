@@ -1,3 +1,10 @@
+2008-09-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/setup_video.cpp: Only require a restart to switch to full
+	screen with OpenGL on Windows, since it works fine in Linux without
+	having to reinitialize the OpenGL state. Adapted change by kraant from
+	Aethyra.
+
 2008-08-29  David Athay  <ko2fan@gmail.com>
 
 	* src/monster.cpp, src/resources/monsterinfo.h, 
