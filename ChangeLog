@@ -4,6 +4,7 @@
 	screen with OpenGL on Windows, since it works fine in Linux without
 	having to reinitialize the OpenGL state. Adapted change by kraant from
 	Aethyra.
+	* src/net/network.cpp: Fixed the name of a variable (fix by Scraggy).
 
 2008-08-29  David Athay  <ko2fan@gmail.com>
 

@@ -296,7 +296,7 @@ MessageIn Network::getNextMessage()
         len = readWord(2);
 
 #ifdef DEBUG
-    logger->log("Received packet 0x%x of length %d", msgId, length);
+    logger->log("Received packet 0x%x of length %d", msgId, len);
 #endif
 
     MessageIn msg(mInBuffer, len);
