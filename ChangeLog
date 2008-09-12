@@ -1,3 +1,16 @@
+2008-09-12 	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
+
+	* Changed default port for Aethyra to 21001
+	* Modified "/where" command to display X and Y coordinates
+	  (Again - this was done on 2008-08-21, but the changes
+	  were overwritten somehow)
+	* Added client support for Heal spell ("/cast heal")
+	* Added client support for Gather spell ("/cast gather")
+	* some changes to inventory system, to support the use of
+	  "Kafra" storage (this is not yet operational - these
+	  changes are only part of what's required to enable storage
+	  in the client)
+
 2008-09-04  Douglas Boffey ("Scraggy")  <scraggy@aethyra.com>
 
 	* Added code to change colours in the chatlog

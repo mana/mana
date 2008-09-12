@@ -48,16 +48,18 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mAttackRange(0),
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
-    mTrading(false), mGoingToTarget(false),
-    mLastAction(-1),
+    mTrading(false), mInStorage(false),
+    mGoingToTarget(false), mLastAction(-1),
     mWalkingDir(0), mDestX(0), mDestY(0),
-    mInventory(new Inventory)
+    mInventory(new Inventory(INVENTORY_SIZE)),
+    mStorage(new Inventory(STORAGE_SIZE))
 {
 }
 
 LocalPlayer::~LocalPlayer()
 {
     delete mInventory;
+    delete mStorage;
 }
 
 void LocalPlayer::logic()

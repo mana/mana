@@ -37,6 +37,7 @@
 
 #include "../inventory.h"
 #include "../item.h"
+#include "../localplayer.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
@@ -48,8 +49,8 @@
 TradeWindow::TradeWindow(Network *network):
     Window("Trade: You"),
     mNetwork(network),
-    mMyInventory(new Inventory()),
-    mPartnerInventory(new Inventory())
+    mMyInventory(new Inventory(INVENTORY_SIZE)),
+    mPartnerInventory(new Inventory(INVENTORY_SIZE))
 {
     setWindowName("Trade");
     setDefaultSize(115, 197, 332, 209);
@@ -59,14 +60,14 @@ TradeWindow::TradeWindow(Network *network):
     mCancelButton = new Button("Cancel", "cancel", this);
     mTradeButton = new Button("Trade", "trade", this);
 
-    mMyItemContainer = new ItemContainer(mMyInventory.get());
+    mMyItemContainer = new ItemContainer(mMyInventory.get(), 2);
     mMyItemContainer->addSelectionListener(this);
     mMyItemContainer->setPosition(2, 2);
 
     mMyScroll = new ScrollArea(mMyItemContainer);
     mMyScroll->setPosition(8, 8);
 
-    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get());
+    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 2);
     mPartnerItemContainer->addSelectionListener(this);
     mPartnerItemContainer->setPosition(2, 58);
 

@@ -29,6 +29,9 @@
 // TODO move into some sane place...
 #define MAX_SLOT 2
 
+#define INVENTORY_SIZE 102
+#define STORAGE_SIZE 301
+
 class FloorItem;
 class Inventory;
 class Item;
@@ -69,6 +72,11 @@ class LocalPlayer : public Player
          * Returns the player's inventory.
          */
         Inventory* getInventory() const { return mInventory; }
+
+        /**
+         * Returns the player's storage
+         */
+        Inventory* getStorage() const { return mStorage; }
 
         /**
          * Equips an item.
@@ -166,6 +174,12 @@ class LocalPlayer : public Player
         void revive();
 
         /**
+         * Accessors for mInStorage
+         */
+        bool getInStorage() { return mInStorage; }
+        void setInStorage(bool inStorage) { mInStorage = inStorage; }
+
+        /**
          * Sets the amount of XP. Shows XP gaining effect if the player is on
          * a map.
          */
@@ -210,6 +224,7 @@ class LocalPlayer : public Player
         FloorItem *mPickUpTarget;
 
         bool mTrading;
+        bool mInStorage;    /**< Whether storage is currently accessible */
         bool mGoingToTarget;
         int mLastAction;    /**< Time stamp of the last action, -1 if none. */
         int mWalkingDir;    /**< The direction the player is walking in. */
@@ -217,6 +232,7 @@ class LocalPlayer : public Player
         int mDestY;         /**< Y coordinate of destination. */
 
         Inventory *mInventory;
+        Inventory *mStorage;
 };
 
 extern LocalPlayer *player_node;

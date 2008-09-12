@@ -24,7 +24,9 @@
 #ifndef _TMW_PROTOCOL_
 #define _TMW_PROTOCOL_
 
-// Packets from server to client
+/*********************************
+ * Packets from server to client *
+ *********************************/
 #define SMSG_LOGIN_SUCCESS           0x0073 /**< Contains starting location */
 #define SMSG_SERVER_PING             0x007f /**< Contains server tick */
 #define SMSG_PLAYER_UPDATE_1         0x01d8
@@ -104,7 +106,16 @@
 #define SMSG_PARTY_UPDATE_COORDS     0x0107
 #define SMSG_PARTY_MESSAGE           0x0109
 
-// Packets from client to server
+#define SMSG_PLAYER_STORAGE_ITEMS    0x01f0 /**< Item list for storage */
+#define SMSG_PLAYER_STORAGE_EQUIP    0x00a6 /**< Equipment list for storage */
+#define SMSG_PLAYER_STORAGE_STATUS   0x00f2 /**< Slots used and total slots */
+#define SMSG_PLAYER_STORAGE_ADD      0x00f4 /**< Add item/equip to storage */
+#define SMSG_PLAYER_STORAGE_REMOVE   0x00f6 /**< Remove item/equip from storage */
+#define SMSG_PLAYER_STORAGE_CLOSE    0x00f8 /**< Storage access closed */
+
+/**********************************
+ *  Packets from client to server *
+ **********************************/
 #define CMSG_CLIENT_PING             0x007e /**< Send to server with tick */
 #define CMSG_TRADE_RESPONSE          0x00e6
 #define CMSG_ITEM_PICKUP             0x009f
@@ -137,6 +148,10 @@
 #define CMSG_PARTY_LEAVE             0x0100 /** Undocumented */
 #define CMSG_PARTY_SETTINGS          0x0101
 #define CMSG_PARTY_MESSAGE           0x0108
+
+#define CMSG_MOVE_TO_STORAGE         0x00f3 /** Move item to storage */
+#define CSMG_MOVE_FROM_STORAGE       0x00f5 /** Remove item from storage */
+#define CMSG_CLOSE_STORAGE           0x00f7 /** Request storage close */
 
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);

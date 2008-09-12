@@ -57,7 +57,7 @@ InventoryWindow::InventoryWindow():
     mUseButton = new Button("Use", "use", this);
     mDropButton = new Button("Drop", "drop", this);
 
-    mItems = new ItemContainer(player_node->getInventory());
+    mItems = new ItemContainer(player_node->getInventory(), 2);
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);
@@ -94,8 +94,8 @@ void InventoryWindow::logic()
 
     // Update weight information
     mWeightLabel->setCaption(
-            "Total Weight: " + toString(player_node->mTotalWeight) + " - "
-            "Maximum Weight: " + toString(player_node->mMaxWeight));
+        "Total Weight: " + toString(player_node->mTotalWeight) + " - " +
+        "Maximum Weight: " + toString(player_node->mMaxWeight));
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)

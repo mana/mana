@@ -50,7 +50,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
         /**
          * Constructor. Initializes the graphic.
          */
-        ItemContainer(Inventory *inventory);
+        ItemContainer(Inventory *inventory, int offset);
 
         /**
          * Destructor.
@@ -126,6 +126,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
         Item *mSelectedItem;
 
         int mMaxItems;
+        int mOffset;
 
         std::list<gcn::SelectionListener*> mListeners;
 

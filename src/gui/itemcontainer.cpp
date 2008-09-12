@@ -31,6 +31,7 @@
 #include "../item.h"
 #include "../itemshortcut.h"
 #include "../log.h"
+#include "../localplayer.h"
 
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
@@ -41,9 +42,10 @@
 const int ItemContainer::gridWidth = 36;  // item icon width + 4
 const int ItemContainer::gridHeight = 42; // item icon height + 10
 
-ItemContainer::ItemContainer(Inventory *inventory):
+ItemContainer::ItemContainer(Inventory *inventory, int offset):
     mInventory(inventory),
-    mSelectedItem(NULL)
+    mSelectedItem(NULL),
+    mOffset(offset)
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -94,10 +96,11 @@ ItemContainer::draw(gcn::Graphics *graphics)
     }
 
     /*
-     * eAthena seems to start inventory from the 3rd slot. Still a mystery to
-     * us why, make sure not to copy this oddity to our own server.
+     * mOffset is used to compensate for some weirdness that eAthena inherited from
+     * Ragnarok Online.  Inventory slots and cart slots are +2 from their actual index,
+     * while storage slots are +1.
      */
-    for (int i = 2; i < INVENTORY_SIZE; i++)
+    for (int i = mOffset; i < mInventory->getSize(); i++)
     {
         Item *item = mInventory->getItem(i);
 
@@ -194,7 +197,7 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         int columns = getWidth() / gridWidth;
         int mx = event.getX();
         int my = event.getY();
-        int index = mx / gridWidth + ((my / gridHeight) * columns) + 2;
+        int index = mx / gridWidth + ((my / gridHeight) * columns) + mOffset;
 
         itemShortcut->setItemSelected(-1);
         // Fix for old server, it should be: if (index >= mMaxItems)

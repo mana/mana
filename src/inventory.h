@@ -26,20 +26,23 @@
 
 class Item;
 
-#define INVENTORY_SIZE 102
-
 class Inventory
 {
     public:
         /**
          * Constructor.
          */
-        Inventory();
+        Inventory(int size);
 
         /**
          * Destructor.
          */
         ~Inventory();
+
+        /**
+         * Returns the size that this instance is configured for
+         */
+        int getSize() { return mSize; }
 
         /**
          * Returns the item at the specified index.
@@ -101,6 +104,7 @@ class Inventory
 
     protected:
         Item **mItems;  /**< The holder of items */
+        int mSize;      /**< The max number of inventory items */
 };
 
 #endif

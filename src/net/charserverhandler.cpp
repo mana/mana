@@ -32,9 +32,15 @@
 #include "../log.h"
 #include "../logindata.h"
 #include "../main.h"
+#include "../extensions.h"
 
 #include "../gui/ok_dialog.h"
 #include "../gui/char_select.h"
+
+/*
+ * Yeah, this is a global.  Get over it.
+ */
+struct EXTENSIONS extensions;
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
@@ -56,6 +62,7 @@ CharServerHandler::CharServerHandler():
 void CharServerHandler::handleMessage(MessageIn *msg)
 {
     int slot;
+    int flags;
     LocalPlayer *tempPlayer;
 
     logger->log("CharServerHandler: Packet ID: %x, Length: %d",
@@ -63,8 +70,13 @@ void CharServerHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case 0x006b:
-            // Skip length word and an additional mysterious 20 bytes
-            msg->skip(2 + 20);
+            msg->skip(2); // Length word
+            flags = msg->readInt32();  // Aethyra extensions flags
+            logger->log("Server flags are: %x", flags);
+            extensions.aethyra_inventory = (bool)(flags & 0x01);
+            extensions.aethyra_spells = (bool)(flags & 0x02);
+            extensions.aethyra_misc = (bool)(flags & 0x04);
+            msg->skip(16); // Unused
 
             // Derive number of characters from message length
             n_character = (msg->getLength() - 24) / 106;
