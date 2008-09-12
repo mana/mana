@@ -280,7 +280,7 @@ void init_engine(const Options &options)
     // Fill configuration with defaults
     logger->log("Initializing configuration...");
     config.setValue("host", "209.168.213.109");
-    config.setValue("port", 6901);
+    config.setValue("port", 21001);
     config.setValue("hwaccel", 0);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
     config.setValue("opengl", 1);

@@ -52,7 +52,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     gcn::Label *portLabel = new gcn::Label("Port:");
     mServerList = new DropDownList("MostRecent00",
                                    "209.168.213.109",
-                                   "6901",
+                                   "21001",
                                    MAX_SERVER_LIST_SIZE);
     mServerListBox = new gcn::ListBox(mServerList);
     mServerScrollArea = new ScrollArea();
