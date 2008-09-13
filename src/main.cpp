@@ -166,7 +166,7 @@ void setUpdatesDir()
     // If updatesHost is currently empty, fill it from config file
     if (updateHost.empty()) {
         updateHost =
-            config.getValue("updatehost", "http://updates.thanaworld.org");
+            config.getValue("updatehost", "http://209.168.213.109/updates");
     }
 
     // Parse out any "http://" or "ftp://", and set the updates directory
