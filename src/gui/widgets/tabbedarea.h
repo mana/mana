@@ -81,6 +81,11 @@ class TabbedArea : public gcn::TabbedArea
          */
         void removeTab(Tab *tab);
 
+        /**
+         * Overload the logic function since it's broken in guichan 0.8
+         */
+        void logic();
+
     private:
         typedef std::vector< std::pair<gcn::Tab*, gcn::Widget*> > TabContainer;
 };

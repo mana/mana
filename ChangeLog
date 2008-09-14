@@ -1,3 +1,8 @@
+2008-09-14  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/gui/widgets/tabbedarea.cpp, src/gui/widgets/tabbedarea.h:
+	Fix to avoid guichan bug and call logic in tabbed area children.
+
 2008-09-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/gui/setup.cpp, src/gui/shop.cpp,
@@ -108,7 +113,7 @@
 
 	* src/game.cpp, src/gui/window.cpp: Fix guild window focus and fix
 	crash when typing in account login.
- 
+
 2008-07-02  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/being.cpp: Fixed speech bubbles staying on screen during map
@@ -567,7 +572,7 @@
 	* src/map.cpp: Fixed a crash caused by the new blocking system.
 	* data/new_1-1.tmx: Fixed warp to map 15 (patch by peavey).
 	* src/npc.hpp: Added pathblocking rules for NPCs.
-	
+
 2008-03-13  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/being.cpp, src/being.h, src/gui/viewport.cpp,
@@ -692,7 +697,7 @@
 
 	* src/gui/textdialog.cpp, src/gui/textdialog.h: Replaced the basic
 	guichan text field class with our derivate class.
-	
+
 2008-02-27  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/net/beinghandler.cpp, src/net/gamehandler/player.cpp,
@@ -2247,7 +2252,7 @@
 
 	* src/main.cpp: Changed include order to avoid a problem with guichan
 	on windows.
-	* src/net/beinghandler.cpp: Implemented getting the direction of 
+	* src/net/beinghandler.cpp: Implemented getting the direction of
 	attacks from the server.
 
 2007-06-29  Philipp Sehmisch  <tmw@crushnet.org>
@@ -2256,7 +2261,7 @@
 	perspective issues of the particle engine and fixed a crash caused by
 	particles with child emitters that have an image than isn't used
 	elsewhere.
-	* data/maps/new-3-1.tmx.gz: Added a particle effect at the spawn point 
+	* data/maps/new-3-1.tmx.gz: Added a particle effect at the spawn point
 	in Tulimshar.
 
 2007-06-21  Philipp Sehmisch  <tmw@crushnet.org>

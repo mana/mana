@@ -155,3 +155,8 @@ void TabbedArea::removeTab(Tab *tab)
     adjustSize();
     adjustTabPositions();
 }
+
+void TabbedArea::logic()
+{
+    logicChildren();
+}
