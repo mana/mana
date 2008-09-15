@@ -124,7 +124,7 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     return (i == mBeings.end()) ? NULL : *i;
 }
 
-Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
+/*Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
 {
     BeingIterator itr = mBeings.begin();
     BeingIterator itr_end = mBeings.end();
@@ -144,7 +144,7 @@ Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
     }
 
     return NULL;
-}
+}*/
 
 Being* BeingManager::findBeingByName(std::string name, Being::Type type)
 {

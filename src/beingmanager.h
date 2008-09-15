@@ -67,7 +67,7 @@ class BeingManager
          * Return a being at specific coordinates.
          */
         Being* findBeing(Uint16 x, Uint16 y, Being::Type type = Being::UNKNOWN);
-        Being* findBeingByPixel(Uint16 x, Uint16 y);
+        //Being* findBeingByPixel(Uint16 x, Uint16 y);
 
         /**
          * Return a being nearest to specific coordinates.
