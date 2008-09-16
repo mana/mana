@@ -40,15 +40,21 @@ you to figure this out.
 ===============================================
 
 1) Go to the directory you have extracted the source to.
-2) If you checked out from SVN, run "./autogen.sh" to generate configure.
-3) Run "./configure"
-4) Run "make"
-5) Run "make install" as root
+2) If you checked out from SVN, run "./autobuild.sh" to install the client.
 
 It should have installed Aethyra on your system now, and you can
 run it with "aethyra". By default all files are installed to /usr/local, you can
 pass a different prefix to configure as usual.
 
+    NOTE: if the autobuild.sh fails 
+	1.) ./autogen.sh
+	2.) ./configure
+	3.) make
+	4.) su -c "make install"
+
+	you can get help from A.) IRC channel  irc.freenode.net #aedev or #aethyra
+			      B.) http://forum.aethyra.com
+	Make sure you record the output from the konsole window
 
   NOTE: It is possible to compile Aethyra without support for OpenGL rendering.
   To do this perform step 3 as follows:
@@ -64,4 +70,4 @@ pass a different prefix to configure as usual.
 If you have any problems, you are welcome to post your questions on our forums,
 or talk about them in our IRC channel.
 
-- The Mana Experiment Dev Team
+- Aethyra Dev Team

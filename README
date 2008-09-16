@@ -1,7 +1,7 @@
 AETHYRA
 ===================
 
- Version: 0.0.24.1    Date: 7/4/2007
+ Version: 0.0.25    Date: 9/16/2008
 
  Development team:
   - See AUTHORS file for a list
@@ -48,16 +48,15 @@ Use arrow keys to move around. Other keys:
 - F7                 toggle chat window
 - F9                 show setup window
 - F10                toggle debug window
-- Alt + 0-9          show emotions
-- Alt + S            sit down / stand up
+- Alt + 0-9          show emotions / usuable at skill level 2.
+- Alt + S            sit down / stand up / usuable at skill level 3.
 - Alt + F            toggle debug pathfinding feature
 - Alt + P            take screenshot
-- Alt + T            turns on anti-trade function 
+- Alt + T            turns on anti-trade function / usuable at skill level 1.
 - A                  target nearest monster
 - H                  hide all non-sticky windows
 - G or Z             pick up item
 - Enter              focus chat window / send message
-- Shift              hold it when attacking to lock target for auto attack
 
 MOUSE:
 
@@ -75,7 +74,7 @@ context menu. Holding [Left Shift] prevents from walking when attacking.
 - /whisper           send a private msg to another player
                         (format: /whisper <charname> <message>)
                      If the <nick> has spaces in it, enclose it in double
-                        quotes
+                        quotes e.g. /whisper "char name" <message>
 - /record            Records the Chat output 
                      (format: /record <filename to write to> starts the record
                         session /record again 
@@ -122,9 +121,11 @@ level 10: enables not used
 If you're having troubles, please first of all read the FAQ.
 If you can't find a solution to your problem, feel free to check our
 Bugs/Support section of the forum:
-- http://209.168.213.109/forums
+- http://forums.aethyra.com
 or come visit us on our IRC channel:
-- #themanaexperiment @ irc.freenode.net
+- #aethyra @ irc.freenode.net
+- ##aethyra @ irc.freenode.net
+- #aedev @ irc.freenode.net
 
 Otherwise check the AUTHORS file to have a list of developers and how to
 contact them.

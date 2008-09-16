@@ -1,3 +1,8 @@
+2008-09-16  Kevin Day ("Blame")     <blame@aethyra.com>
+
+	* Added autobuild.sh complete build script for the client
+	* Updated the gui graphics for the client for halloween 
+
 2008-09-12 	Lloyd Bryant ("Sanga")	<sanga@aethyra.com>
 
 	* Changed default port for Aethyra to 21001
@@ -15,7 +20,7 @@
 
 	* Added code to change colours in the chatlog
 
-2008-08-30  kevin Day ("blame")     <blame@aethyra.com>
+2008-08-30  Kevin Day ("Blame")     <blame@aethyra.com>
 
 	* Updated the in game help files "/trunk/data/help"
 
