@@ -24,12 +24,21 @@ echo "now running make"
 make
 
 echo
-echo "now running make install please input your root password"
-
-su -c "make install"
-su -c "make clean"
-
+echo "now running make install please input your root password";
+if [ /etc/fedora-release ]; then
+	echo "Fedora found";
+	su -c "make install";
+	su -c "make clean";
+	echo "Done";
+	aethyra &
+	exit 1;
+elif [ /etc/lsb-release ];then
+	echo "ubuntu found";
+	sudo make install;
+	aethyra &
+	exit 1;
+else 
+	echo "login as root and run make install"
+fi
 echo "done"
 
-aethyra &
-exit 1;

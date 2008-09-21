@@ -1,3 +1,7 @@
+2008-09-21  Kevin Day ("Blame")     <blame@aethyra.com>
+
+	* Added the update.sh script to work with autobuild.sh
+
 2008-09-16  Kevin Day ("Blame")     <blame@aethyra.com>
 
 	* Added autobuild.sh complete build script for the client
