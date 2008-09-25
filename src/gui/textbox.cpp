@@ -60,6 +60,8 @@ void TextBox::setTextWrapped(const std::string &text)
             text.substr(lastNewlinePos, newlinePos - lastNewlinePos);
         std::string::size_type spacePos, lastSpacePos = 0;
         int xpos = 0;
+        mMinWidth = getWidth();
+        bool longWord = false;
 
         do
         {
@@ -75,22 +77,28 @@ void TextBox::setTextWrapped(const std::string &text)
 
             int width = getFont()->getWidth(word);
 
-            if (xpos != 0 && xpos + width < getWidth())
+            if (xpos != 0 && xpos + width + getFont()->getWidth(" ") < getWidth())
             {
                 xpos += width + getFont()->getWidth(" ");
                 wrappedStream << " " << word;
             }
             else if (lastSpacePos == 0)
             {
+                if (xpos > mMinWidth)
+                {
+                    longWord = true;
+                    mMinWidth = xpos;
+                }
                 xpos += width;
                 wrappedStream << word;
             }
             else
             {
+                if ((xpos < mMinWidth) && !longWord && spacePos != line.size())
+                    mMinWidth = xpos;
                 xpos = width;
                 wrappedStream << "\n" << word;
             }
-
             lastSpacePos = spacePos + 1;
         }
         while (spacePos != line.size());

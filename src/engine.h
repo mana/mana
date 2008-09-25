@@ -18,13 +18,14 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: engine.h 4000 2008-03-23 11:47:52Z b_lindeijer $
+ *  $Id$
  */
 
 #ifndef _ENGINE_H
 #define _ENGINE_H
 
 #include <iosfwd>
+#include <string>
 
 class Map;
 class Network;
@@ -51,6 +52,9 @@ class Engine
          */
         Map *getCurrentMap() { return mCurrentMap; }
 
+        const std::string &getCurrentMapName() { return mMapName; }
+
+
         /**
          * Sets the currently active map.
          */
@@ -64,6 +68,7 @@ class Engine
     private:
         Map *mCurrentMap;
         Network *mNetwork;
+        std::string mMapName;
 };
 
 extern Engine *engine;

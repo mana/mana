@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: particle.h 4362 2008-06-24 12:29:33Z crush_tmw $
+ *  $Id$
  */
 
 #ifndef _PARTICLE_H
@@ -161,6 +161,9 @@ class Particle : public Sprite
         { mPos.x += x; mPos.y += y; mPos.z += z; }
 
         void
+        moveChildren(Vector change);
+
+        void
         moveBy (Vector change)
         { mPos += change; }
 
@@ -227,8 +230,8 @@ class Particle : public Sprite
          * Sets the ammount of random vector changes
          */
         void
-        setRandomnes(int r)
-        { mRandomnes = r; }
+        setRandomness(int r)
+        { mRandomness = r; }
 
         /**
          * Sets the ammount of velocity particles retain after
@@ -271,6 +274,12 @@ class Particle : public Sprite
         { return mAlive; }
 
         /**
+         * Determines whether the particle and its children are all dead
+         */
+        bool isExtinct()
+        { return !isAlive() && mChildParticles.empty(); }
+
+        /**
          * Manually marks the particle for deletion.
          */
         void kill()
@@ -303,7 +312,7 @@ class Particle : public Sprite
         // dynamic particle
         Vector mVelocity;           /**< Speed in pixels per game-tick. */
         float mGravity;             /**< Downward acceleration in pixels per game-tick. */
-        int mRandomnes;             /**< Ammount of random vector change */
+        int mRandomness;            /**< Ammount of random vector change */
         float mBounce;              /**< How much the particle bounces off when hitting the ground */
         bool mFollow;               /**< is this particle moved when its parent particle moves? */
 

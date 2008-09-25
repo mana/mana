@@ -25,7 +25,6 @@
 #define _TMW_BEING_H
 
 #include <list>
-#include <memory>
 #include <string>
 #include <SDL_types.h>
 #include <vector>
@@ -33,6 +32,8 @@
 #include "sprite.h"
 #include "map.h"
 #include "animatedsprite.h"
+
+#include "gui/speechbubble.h"
 
 #define NR_HAIR_STYLES 10
 #define NR_HAIR_COLORS 16
@@ -47,7 +48,7 @@ class Map;
 class Graphics;
 class ImageSet;
 class Particle;
-class Text;
+class SpeechBubble;
 
 /**
  * A position along a being's path.
@@ -116,20 +117,17 @@ class Being : public Sprite
         /**
          * Directions, to be used as bitmask values
          */
-        static const char DOWN = 1;
-        static const char LEFT = 2;
-        static const char UP = 4;
-        static const char RIGHT = 8;
+        enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
-        Uint8 mAction;          /**< Action the being is performing */
-        Uint8 mFrame;
+        Action mAction;          /**< Action the being is performing */
+	Uint16 mFrame;
         Uint16 mWalkTime;
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
 
-        Uint16 mAttackSpeed;          /**< Attack speed */
+        Uint16 mAttackSpeed;    /**< Attack speed */
 
         /**
          * Constructor.
@@ -165,8 +163,7 @@ class Being : public Sprite
          *
          * @param amount The amount of damage.
          */
-        virtual void
-        takeDamage(int amount);
+        virtual void takeDamage(int amount);
 
         /**
          * Handles an attack of another being by this being.
@@ -174,22 +171,19 @@ class Being : public Sprite
          * @param victim The attacked being.
          * @param damage The amount of damage dealt (0 means miss).
          */
-        virtual void
-        handleAttack(Being *victim, int damage);
+        virtual void handleAttack(Being *victim, int damage);
 
         /**
          * Returns the name of the being.
          */
-        const std::string&
-        getName() const { return mName; }
+        const std::string& getName() const { return mName; }
 
         /**
          * Sets the name for the being.
          *
          * @param name The name that should appear.
          */
-        virtual void
-        setName(const std::string &name) { mName = name; }
+        virtual void setName(const std::string &name) { mName = name; }
 
         /**
          * Gets the hair color for this being.
@@ -206,47 +200,44 @@ class Being : public Sprite
         /**
          * Sets the hair style and color for this being.
          */
-        virtual void
-        setHairStyle(int style, int color);
+        virtual void setHairStyle(int style, int color);
 
         /**
          * Sets visible equipments for this being.
          */
-        virtual void
-        setSprite(int slot, int id, std::string color = "");
+        virtual void setSprite(int slot, int id, std::string color = "");
 
         /**
          * Sets the gender of this being.
          */
-        virtual void
-        setGender(int gender) { mGender = gender; }
+        virtual void setGender(int gender) { mGender = gender; }
 
         /**
          * Gets the gender of this being.
          */
-        int
-        getGender() const { return mGender; }
+        int getGender() const { return mGender; }
 
         /**
          * Makes this being take the next step of his path.
          */
-        virtual void
-        nextStep();
+        virtual void nextStep();
 
-        virtual void
-        setGM() { mIsGM = true; }
+        virtual void setGM() { mIsGM = true; }
 
         /**
          * Performs being logic.
          */
-        virtual void
-        logic();
+        virtual void logic();
+
+        /**
+         * Draws the speech text above the being.
+         */
+        void drawSpeech(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.
          */
-        void
-        drawEmotion(Graphics *graphics, int offsetX, int offsetY);
+        void drawEmotion(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Returns the type of the being.
@@ -256,26 +247,22 @@ class Being : public Sprite
         /**
          * Gets the walk speed.
          */
-        Uint16
-        getWalkSpeed() const { return mWalkSpeed; }
+        Uint16 getWalkSpeed() const { return mWalkSpeed; }
 
         /**
          * Sets the walk speed.
          */
-        void
-        setWalkSpeed(Uint16 speed) { mWalkSpeed = speed; }
+        void setWalkSpeed(Uint16 speed) { mWalkSpeed = speed; }
 
         /**
          * Gets the sprite id.
          */
-        Uint32
-        getId() const { return mId; }
+        Uint32 getId() const { return mId; }
 
         /**
          * Sets the sprite id.
          */
-        void
-        setId(Uint32 id) { mId = id; }
+        void setId(Uint32 id) { mId = id; }
 
         /**
          * Sets the map the being is on
@@ -285,8 +272,7 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        virtual void
-        setAction(Uint8 action);
+        virtual void setAction(Action action);
 
         /**
          * Returns the current direction.
@@ -299,50 +285,53 @@ class Being : public Sprite
         void setDirection(Uint8 direction);
 
         /**
+         * Gets the current action.
+         */
+        int getWalkTime() { return mWalkTime; }
+
+        /**
+         * Returns the direction the being is facing.
+         */
+        SpriteDirection getSpriteDirection() const;
+
+        /**
          * Draws this being to the given graphics context.
          *
          * @see Sprite::draw(Graphics, int, int)
          */
-        virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) const;
+        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
          * Returns the pixel X coordinate.
          */
-        int
-        getPixelX() const { return mPx; }
+        int getPixelX() const { return mPx; }
 
         /**
          * Returns the pixel Y coordinate.
          *
          * @see Sprite::getPixelY()
          */
-        int
-        getPixelY() const { return mPy; }
+        int getPixelY() const { return mPy; }
 
         /**
          * Get the current X pixel offset.
          */
-        int
-        getXOffset() const { return getOffset(LEFT, RIGHT); }
+        int getXOffset() const { return getOffset(LEFT, RIGHT); }
 
         /**
          * Get the current Y pixel offset.
          */
-        int
-        getYOffset() const { return getOffset(UP, DOWN); }
+        int getYOffset() const { return getOffset(UP, DOWN); }
 
         /**
          * Returns the horizontal size of the current base sprite of the being
          */
-        virtual int
-        getWidth() const;
+        virtual int getWidth() const;
 
         /**
          * Returns the vertical size of the current base sprite of the being
          */
-        virtual int
-        getHeight() const;
+        virtual int getHeight() const;
 
         /**
          * Returns the required size of a target cursor for this being.
@@ -361,6 +350,15 @@ class Being : public Sprite
             mEmotionTime = emote_time;
         }
 
+        /**
+         * Triggers a visual effect, such as `level up'
+         *
+         * Only draws the visual effect, does not play sound effects
+         *
+         * \param effectId ID of the effect to trigger
+         */
+        virtual void triggerEffect(int effectId) { internalTriggerEffect(effectId, false, true); }
+
         const std::auto_ptr<Equipment> mEquipment;
 
     protected:
@@ -375,9 +373,13 @@ class Being : public Sprite
         virtual void updateCoords() {}
 
         /**
-         * Returns the sprite direction of this being.
+         * Trigger visual effect, with components
+         *
+         * \param effectId ID of the effect to trigger
+         * \param sfx Whether to trigger sound effects
+         * \param gfx Whether to trigger graphical effects
          */
-        SpriteDirection getSpriteDirection() const;
+        void internalTriggerEffect(int effectId, bool sfx, bool gfx);
 
         Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWalkSpeed;              /**< Walking speed */
@@ -391,7 +393,7 @@ class Being : public Sprite
         const ItemInfo* mEquippedWeapon;
 
         Path mPath;
-        Text *mSpeech;
+        std::string mSpeech;
         Uint16 mHairStyle, mHairColor;
         Uint8 mGender;
         Uint32 mSpeechTime;
@@ -408,6 +410,9 @@ class Being : public Sprite
          * If walking in direction 'neg' the value is negated.
          */
         int getOffset(char pos, char neg) const;
+
+        // Speech Bubble components
+        SpeechBubble *mSpeechBubble;
 
         static int instances;           /**< Number of Being instances */
         static ImageSet *emotionSet;    /**< Emoticons used by beings */

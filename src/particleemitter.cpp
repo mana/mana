@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: particleemitter.cpp 4362 2008-06-24 12:29:33Z crush_tmw $
+ *  $Id$
  */
 
 #include "particleemitter.h"
@@ -39,6 +39,7 @@
 #define DEG_RAD_FACTOR 0.017453293f
 
 ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map):
+    mOutputPauseLeft(0),
     mParticleImage(0)
 {
     mMap = map;
@@ -52,7 +53,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mParticleAngleVertical.set(0.0f);
     mParticlePower.set(0.0f);
     mParticleGravity.set(0.0f);
-    mParticleRandomnes.set(0);
+    mParticleRandomness.set(0);
     mParticleBounce.set(0.0f);
     mParticleFollow = false;
     mParticleAcceleration.set(0.0f);
@@ -62,6 +63,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mParticleFadeOut.set(0);
     mParticleFadeIn.set(0);
     mOutput.set(1);
+    mOutputPause.set(0);
     mParticleAlpha.set(1.0f);
 
     for_each_xml_child_node(propertyNode, emitterNode)
@@ -117,9 +119,9 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
                 mParticleGravity = readMinMax(propertyNode, 0.0f);
             }
-            else if (name == "randomnes")
+            else if (name == "randomnes" || name == "randomness") // legacy bug
             {
-                mParticleRandomnes = readMinMax(propertyNode, 0);
+                mParticleRandomness = readMinMax(propertyNode, 0);
             }
             else if (name == "bounce")
             {
@@ -134,6 +136,11 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
                 mOutput = readMinMax(propertyNode, 0);
                 mOutput.maxVal +=1;
+            }
+            else if (name == "output-pause")
+            {
+                mOutputPause = readMinMax(propertyNode, 0);
+                mOutputPauseLeft = mOutputPause.value();
             }
             else if (name == "acceleration")
             {
@@ -261,7 +268,7 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleAngleVertical = o.mParticleAngleVertical;
     mParticlePower = o.mParticlePower;
     mParticleGravity = o.mParticleGravity;
-    mParticleRandomnes = o.mParticleRandomnes;
+    mParticleRandomness = o.mParticleRandomness;
     mParticleBounce = o.mParticleBounce;
     mParticleFollow = o.mParticleFollow;
     mParticleTarget = o.mParticleTarget;
@@ -274,9 +281,12 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleAlpha = o.mParticleAlpha;
     mMap = o.mMap;
     mOutput = o.mOutput;
+    mOutputPause = o.mOutputPause;
     mParticleImage = o.mParticleImage;
     mParticleAnimation = o.mParticleAnimation;
     mParticleChildEmitters = o.mParticleChildEmitters;
+
+    mOutputPauseLeft = 0;
 
     if (mParticleImage) mParticleImage->incRef();
 
@@ -307,6 +317,13 @@ std::list<Particle *>
 ParticleEmitter::createParticles()
 {
     std::list<Particle *> newParticles;
+
+    if (mOutputPauseLeft > 0)
+    {
+        mOutputPauseLeft--;
+        return newParticles;
+    }
+    mOutputPauseLeft = mOutputPause.value();
 
     for (int i = mOutput.value(); i > 0; i--)
     {
@@ -342,7 +359,7 @@ ParticleEmitter::createParticles()
                 sin(angleH) * cos(angleV) * power,
                 sin(angleV) * power);
 
-        newParticle->setRandomnes(mParticleRandomnes.value());
+        newParticle->setRandomness(mParticleRandomness.value());
         newParticle->setGravity(mParticleGravity.value());
         newParticle->setBounce(mParticleBounce.value());
         newParticle->setFollow(mParticleFollow);

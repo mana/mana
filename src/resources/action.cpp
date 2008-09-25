@@ -23,8 +23,6 @@
 
 #include "action.h"
 
-#include <algorithm>
-
 #include "animation.h"
 
 #include "../utils/dtor.h"
@@ -36,8 +34,7 @@ Action::Action()
 
 Action::~Action()
 {
-    std::for_each(mAnimations.begin(), mAnimations.end(),
-                  make_dtor(mAnimations));
+    delete_all(mAnimations);
 }
 
 Animation*

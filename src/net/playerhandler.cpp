@@ -52,6 +52,9 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
 
+static const int MAP_TELEPORT_SCROLL_DISTANCE = 8; /* Max. distance we are willing to scroll after a teleport;
+                                                    * everything beyond will reset the port hard. */
+
 /**
  * Listener used for handling the overweigth message.
  */
@@ -113,17 +116,13 @@ void PlayerHandler::handleMessage(MessageIn *msg)
              * This client assumes that all walk messages succeed,
              * and that the server will send a correction notice
              * otherwise.
-             *
-             * Note that this packet is also used by eAthena to notify
-             * the client of a server-generated auto-move.  A patch has
-             * been submitted to Mantis to eliminate these auto moves,
-             * since they're inconsistent with the client design.
              */
             break;
 
         case SMSG_PLAYER_WARP:
             {
                 std::string mapPath = msg->readString(16);
+                bool nearby;
                 Uint16 x = msg->readInt16();
                 Uint16 y = msg->readInt16();
 
@@ -135,13 +134,23 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                  */
                 player_node->stopAttack();
 
+                nearby = (engine->getCurrentMapName() == mapPath);
                 // Switch the actual map, deleting the previous one
                 engine->changeMap(mapPath);
 
                 current_npc = 0;
 
-                float scrollOffsetX = (x - player_node->mX) * 32;
-                float scrollOffsetY = (y - player_node->mY) * 32;
+                float scrollOffsetX = 0.0f;
+                float scrollOffsetY = 0.0f;
+
+                /* Scroll if neccessary */
+                if (!nearby
+                    || (abs(x - player_node->mX) > MAP_TELEPORT_SCROLL_DISTANCE)
+                    || (abs(y - player_node->mY) > MAP_TELEPORT_SCROLL_DISTANCE)) 
+                {
+                    scrollOffsetX = (x - player_node->mX) * 32;
+                    scrollOffsetY = (y - player_node->mY) * 32;
+                }
 
                 player_node->setAction(Being::STAND);
                 player_node->mFrame = 0;
@@ -204,8 +213,39 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
                 if (player_node->mHp == 0 && deathNotice == NULL)
                 {
-                    deathNotice = new OkDialog("Message",
-                            "You're now dead, press ok to restart");
+                    static char const *const deadMsg[] =
+                    {
+                        "You are dead.",
+                        "We regret to inform you that your character was killed in battle.",
+                        "You are not that alive anymore.",
+                        "The cold hands of the grim reaper are grabbing for your soul.",
+                        "Game Over!",
+                        "Insert coin to continue",
+                        "No, kids. Your character did not really die. It... err... went to a better place.",
+                        "Your plan of breaking your enemies weapon by bashing it with your throat failed.",
+                        "I guess this did not run too well.",
+                        "Do you want your possessions identified?", // Nethack reference
+                        "Sadly, no trace of you was ever found...", // Secret of Mana reference
+                        "Annihilated.", // Final Fantasy VI reference
+                        "Looks like you got your head handed to you.", //Earthbound reference
+                        "You screwed up again, dump your body down the tubes and get you another one.", // Leisure Suit Larry 1 Reference
+                        "You're not dead yet. You're just resting.", // Monty Python reference from a couple of skits
+                        "You are no more.",  // Monty Python reference from the dead parrot sketch starting now
+                        "You have ceased to be.",
+                        "You've expired and gone to meet your maker.",
+                        "You're a stiff.",
+                        "Bereft of life, you rest in peace.",
+                        "If you weren't so animated, you'd be pushing up the daisies.",
+                        "Your metabolic processes are now history.",
+                        "You're off the twig.",
+                        "You've kicked the bucket.",
+                        "You've shuffled off your mortal coil, run down the curtain and joined the bleedin' choir invisibile.",
+                        "You are an ex-player.",
+                        "You're pining for the fjords." // Monty Python reference from the dead parrot sketch
+                    };
+                    std::string message(deadMsg[rand()%27]);
+
+                    deathNotice = new OkDialog("Message", message);
                     deathNotice->addActionListener(&deathListener);
                     player_node->setAction(Being::DEAD);
                 }
@@ -288,7 +328,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
             }
             break;
 
-            // Updates stats and status points
+        // Updates stats and status points
         case SMSG_PLAYER_STAT_UPDATE_5:
             player_node->mStatsPointsToAttribute = msg->readInt16();
             player_node->mAttr[LocalPlayer::STR] = msg->readInt8();

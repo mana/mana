@@ -47,12 +47,18 @@ class ImageSet : public Resource
          */
         ~ImageSet();
 
+        /**
+         * Returns the width of the images in the image set.
+         */
         int getWidth() { return mWidth; };
 
+        /**
+         * Returns the height of the images in the image set.
+         */
         int getHeight() { return mHeight; };
 
         typedef std::vector<Image*>::size_type size_type;
-        Image* get(size_type i);
+        Image* get(size_type i) const;
 
         size_type size() { return mImages.size(); }
 

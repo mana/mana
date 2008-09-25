@@ -21,8 +21,6 @@
  *  $Id: flooritemmanager.cpp 3754 2007-11-20 15:19:50Z b_lindeijer $
  */
 
-#include <algorithm>
-
 #include "flooritemmanager.h"
 
 #include "floor_item.h"
@@ -50,7 +48,7 @@ void FloorItemManager::destroy(FloorItem *item)
 
 void FloorItemManager::clear()
 {
-    for_each(mFloorItems.begin(), mFloorItems.end(), make_dtor(mFloorItems));
+    delete_all(mFloorItems);
     mFloorItems.clear();
 }
 

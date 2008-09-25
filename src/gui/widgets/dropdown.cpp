@@ -165,5 +165,5 @@ void DropDown::drawButton(gcn::Graphics *graphics)
     int height = mDroppedDown ? mFoldedUpHeight : getHeight();
 
     static_cast<Graphics*>(graphics)->
-        drawImage(buttons[mDroppedDown][mPushed], getWidth() - height, 1);
+        drawImage(buttons[mDroppedDown][mPushed], getWidth() - height + 2, 1);
 }

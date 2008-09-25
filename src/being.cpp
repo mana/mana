@@ -22,8 +22,8 @@
  */
 #include "being.h"
 
-#include <algorithm>
 #include <cassert>
+#include <cmath>
 
 #include "animatedsprite.h"
 #include "equipment.h"
@@ -32,7 +32,7 @@
 #include "log.h"
 #include "map.h"
 #include "particle.h"
-#include "text.h"
+#include "sound.h"
 #include "localplayer.h"
 
 #include "resources/resourcemanager.h"
@@ -40,20 +40,22 @@
 #include "resources/iteminfo.h"
 
 #include "gui/gui.h"
+#include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
 
+#include "utils/xml.h"
+
+#define BEING_EFFECTS_FILE "effects.xml"
+
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
-
-static const int X_SPEECH_OFFSET = 18;
-static const int Y_SPEECH_OFFSET = 60;
 
 Being::Being(int id, int job, Map *map):
     mJob(job),
     mX(0), mY(0),
-    mAction(0),
+    mAction(STAND),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
@@ -73,6 +75,8 @@ Being::Being(int id, int job, Map *map):
 {
     setMap(map);
 
+    mSpeechBubble = new SpeechBubble();
+
     if (instances == 0)
     {
         // Load the emotion set
@@ -82,13 +86,13 @@ Being::Being(int id, int job, Map *map):
     }
 
     instances++;
-    mSpeech = 0;
+    mSpeech = "";
     mIsGM = false;
 }
 
 Being::~Being()
 {
-    std::for_each(mSprites.begin(), mSprites.end(), make_dtor(mSprites));
+    delete_all(mSprites);
     clearPath();
 
     for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
@@ -107,14 +111,11 @@ Being::~Being()
         emotionSet->decRef();
         emotionSet = NULL;
     }
-    if (mSpeech)
-    {
-        delete mSpeech;
-    }
+
+    delete mSpeechBubble;
 }
 
-void
-Being::setDestination(Uint16 destX, Uint16 destY)
+void Being::setDestination(Uint16 destX, Uint16 destY)
 {
     if (mMap)
     {
@@ -122,14 +123,12 @@ Being::setDestination(Uint16 destX, Uint16 destY)
     }
 }
 
-void
-Being::clearPath()
+void Being::clearPath()
 {
     mPath.clear();
 }
 
-void
-Being::setPath(const Path &path)
+void Being::setPath(const Path &path)
 {
     mPath = path;
 
@@ -140,36 +139,26 @@ Being::setPath(const Path &path)
     }
 }
 
-void
-Being::setHairStyle(int style, int color)
+void Being::setHairStyle(int style, int color)
 {
     mHairStyle = style < 0 ? mHairStyle : style % NR_HAIR_STYLES;
     mHairColor = color < 0 ? mHairColor : color % NR_HAIR_COLORS;
 }
 
-void
-Being::setSprite(int slot, int id, std::string color)
+void Being::setSprite(int slot, int id, std::string color)
 {
     assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
     mSpriteIDs[slot] = id;
     mSpriteColors[slot] = color;
 }
 
-void
-Being::setSpeech(const std::string &text, Uint32 time)
+void Being::setSpeech(const std::string &text, Uint32 time)
 {
-    if (mSpeech) // don't introduce a memory leak
-    {
-        delete mSpeech;
-    }
-    mSpeech = new Text(text, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
-                       gcn::Graphics::CENTER, speechFont,
-                       gcn::Color(255, 255, 255));
+    mSpeech = text;
     mSpeechTime = 500;
 }
 
-void
-Being::takeDamage(int amount)
+void Being::takeDamage(int amount)
 {
     gcn::Font *font;
     std::string damage = amount ? toString(amount) : "miss";
@@ -200,16 +189,14 @@ Being::takeDamage(int amount)
                                         mPx + 16, mPy + 16);
 }
 
-void
-Being::handleAttack(Being *victim, int damage)
+void Being::handleAttack(Being *victim, int damage)
 {
     setAction(Being::ATTACK);
     mFrame = 0;
     mWalkTime = tick_time;
 }
 
-void
-Being::setMap(Map *map)
+void Being::setMap(Map *map)
 {
     // Remove sprite from potential previous map
     if (mMap)
@@ -229,8 +216,7 @@ Being::setMap(Map *map)
     mChildParticleEffects.clear();
 }
 
-void
-Being::controlParticle(Particle *particle)
+void Being::controlParticle(Particle *particle)
 {
     if (particle)
     {
@@ -240,8 +226,7 @@ Being::controlParticle(Particle *particle)
     }
 }
 
-void
-Being::setAction(Uint8 action)
+void Being::setAction(Action action)
 {
     SpriteAction currentAction = ACTION_INVALID;
     switch (action)
@@ -294,10 +279,11 @@ Being::setAction(Uint8 action)
     }
 }
 
-
-void
-Being::setDirection(Uint8 direction)
+void Being::setDirection(Uint8 direction)
 {
+    if (mDirection == direction)
+        return;
+
     mDirection = direction;
     SpriteDirection dir = getSpriteDirection();
 
@@ -308,8 +294,7 @@ Being::setDirection(Uint8 direction)
     }
 }
 
-SpriteDirection
-Being::getSpriteDirection() const
+SpriteDirection Being::getSpriteDirection() const
 {
     SpriteDirection dir;
 
@@ -325,15 +310,15 @@ Being::getSpriteDirection() const
     {
         dir = DIRECTION_RIGHT;
     }
-    else {
-        dir = DIRECTION_LEFT;
+    else 
+    {
+         dir = DIRECTION_LEFT;
     }
-
+ 
     return dir;
 }
 
-void
-Being::nextStep()
+void Being::nextStep()
 {
     if (mPath.empty())
     {
@@ -368,32 +353,23 @@ Being::nextStep()
     mWalkTime += mWalkSpeed / 10;
 }
 
-void
-Being::logic()
+void Being::logic()
 {
     // Reduce the time that speech is still displayed
-    if (mSpeechTime > 0 && mSpeech)
-    {
-        if (--mSpeechTime == 0)
-        {
-            delete mSpeech;
-            mSpeech = 0;
-        }
-    }
+    if (mSpeechTime > 0)
+         mSpeechTime--;
 
     int oldPx = mPx;
     int oldPy = mPy;
     // Update pixel coordinates
     mPx = mX * 32 + getXOffset();
     mPy = mY * 32 + getYOffset();
+
     if (mPx != oldPx || mPy != oldPy)
     {
-        if (mSpeech)
-        {
-            mSpeech->adviseXY(mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET);
-        }
         updateCoords();
     }
+
     if (mEmotion != 0)
     {
         mEmotionTime--;
@@ -412,25 +388,23 @@ Being::logic()
     }
 
     //Update particle effects
-    for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
-            i != mChildParticleEffects.end();
-
-        )
+    for (std::list<Particle *>::iterator i = mChildParticleEffects.begin();
+                                         i != mChildParticleEffects.end();)
     {
         (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
-        if (!(*i)->isAlive())
+        if ((*i)->isExtinct())
         {
             (*i)->kill();
             i = mChildParticleEffects.erase(i);
         }
-        else {
+        else 
+        {
             i++;
         }
     }
 }
 
-void
-Being::draw(Graphics *graphics, int offsetX, int offsetY) const
+void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;
@@ -444,8 +418,7 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     }
 }
 
-void
-Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
+void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 {
     if (!mEmotion)
         return;
@@ -458,17 +431,39 @@ Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
         graphics->drawImage(emotionSet->get(emotionIndex), px, py);
 }
 
-Being::Type
-Being::getType() const
+void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
+{
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
+
+    // Draw speech above this being
+    if (mSpeechTime > 0)
+    {
+        mSpeechBubble->setCaption(mName);
+        mSpeechBubble->setWindowName(mName);
+        // Not quite centered, but close enough. However, it's not too important to get 
+        // it right right now, as it doesn't take bubble collision into account yet. 
+        mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), py - 70 - 
+                                        (mSpeechBubble->getNumRows()*14));
+        mSpeechBubble->setText( mSpeech );
+        mSpeechBubble->setVisible(true);
+    }
+    else if (mSpeechTime == 0)
+    {
+        mSpeechBubble->setVisible(false);
+    }
+}
+
+Being::Type Being::getType() const
 {
     return UNKNOWN;
 }
 
-int
-Being::getOffset(char pos, char neg) const
+int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
-    if (mAction != WALK || !(mDirection & (pos | neg))) {
+    if (mAction != WALK ||  !(mDirection & (pos | neg))) 
+    {
         return 0;
     }
 
@@ -476,40 +471,132 @@ Being::getOffset(char pos, char neg) const
 
     // We calculate the offset _from_ the _target_ location
     offset -= 32;
-    if (offset > 0) {
+    if (offset > 0) 
+    {
         offset = 0;
     }
 
     // Going into negative direction? Invert the offset.
-    if (mDirection & pos) {
+    if (mDirection & pos) 
+    {
         offset = -offset;
     }
 
     return offset;
 }
 
-
-int
-Being::getWidth() const
+int Being::getWidth() const
 {
     if (mSprites[BASE_SPRITE])
     {
         return mSprites[BASE_SPRITE]->getWidth();
     }
-    else {
+    else 
+    {
         return 0;
     }
 }
 
 
-int
-Being::getHeight() const
+int Being::getHeight() const
 {
     if (mSprites[BASE_SPRITE])
     {
         return mSprites[BASE_SPRITE]->getHeight();
     }
-    else {
+    else 
+    {
         return 0;
+    }
+}
+
+struct EffectDescription 
+{
+    std::string mGFXEffect;
+    std::string mSFXEffect;
+};
+
+static EffectDescription *default_effect = NULL;
+static std::map<int, EffectDescription *> effects;
+static bool effects_initialized = false;
+
+static EffectDescription *getEffectDescription(xmlNodePtr node, int *id)
+{
+    EffectDescription *ed = new EffectDescription;
+
+    *id = atoi(XML::getProperty(node, "id", "-1").c_str());
+    ed->mSFXEffect = XML::getProperty(node, "audio", "");
+    ed->mGFXEffect = XML::getProperty(node, "particle", "");
+
+    return ed;
+}
+
+static EffectDescription *getEffectDescription(int effectId)
+{
+    if (!effects_initialized)
+    {
+        XML::Document doc(BEING_EFFECTS_FILE);
+        xmlNodePtr root = doc.rootNode();
+
+        if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
+        {
+            logger->log("Error loading being effects file: "
+                    BEING_EFFECTS_FILE);
+            return NULL;
+        }
+
+        for_each_xml_child_node(node, root)
+        {
+            int id;
+
+            if (xmlStrEqual(node->name, BAD_CAST "effect"))
+            {
+                EffectDescription *EffectDescription =
+                    getEffectDescription(node, &id);
+                effects[id] = EffectDescription;
+            } else if (xmlStrEqual(node->name, BAD_CAST "default"))
+            {
+                EffectDescription *EffectDescription =
+                    getEffectDescription(node, &id);
+
+                if (default_effect)
+                    delete default_effect;
+
+                default_effect = EffectDescription;
+            }
+        }
+
+        effects_initialized = true;
+    } // done initializing
+
+    EffectDescription *ed = effects[effectId];
+
+    if (!ed)
+        return default_effect;
+    else
+        return ed;
+}
+
+void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
+{
+    logger->log("Special effect #%d on %s", effectId,
+                 getId() == player_node->getId() ? "self" : "other");
+
+    EffectDescription *ed = getEffectDescription(effectId);
+ 
+    if (!ed) {
+        logger->log("Unknown special effect and no default recorded");
+        return;
+    }
+
+    if (gfx && ed->mGFXEffect != "") {
+        Particle *selfFX;
+
+        selfFX = particleEngine->addEffect(ed->mGFXEffect, 0, 0);
+        controlParticle(selfFX);
+    }
+
+    if (sfx && ed->mSFXEffect != "") {
+        sound.playSfx(ed->mSFXEffect);
     }
 }

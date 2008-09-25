@@ -21,8 +21,6 @@
  *  $Id: imageset.cpp 4209 2008-04-29 12:58:21Z b_lindeijer $
  */
 
-#include <algorithm>
-
 #include "imageset.h"
 
 #include "../log.h"
@@ -46,11 +44,10 @@ ImageSet::ImageSet(Image *img, int width, int height)
 
 ImageSet::~ImageSet()
 {
-    for_each(mImages.begin(), mImages.end(), make_dtor(mImages));
+    delete_all(mImages);
 }
 
-Image*
-ImageSet::get(size_type i)
+Image* ImageSet::get(size_type i) const
 {
     if (i >= mImages.size())
     {

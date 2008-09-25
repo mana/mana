@@ -21,7 +21,6 @@
  *  $Id: itemdb.cpp 4347 2008-06-12 09:06:01Z b_lindeijer $
  */
 
-#include <algorithm>
 #include <cassert>
 #include <libxml/tree.h>
 
@@ -146,7 +145,7 @@ void ItemDB::unload()
     delete mUnknown;
     mUnknown = NULL;
 
-    for_each(mItemInfos.begin(), mItemInfos.end(), make_dtor(mItemInfos));
+    delete_all(mItemInfos);
     mItemInfos.clear();
     mLoaded = false;
 }
@@ -177,8 +176,7 @@ void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
     {
         itemInfo->setSprite(filename, 0);
     }
-
-    if (gender == "female" || gender == "unisex")
+    else
     {
         itemInfo->setSprite(filename, 1);
     }

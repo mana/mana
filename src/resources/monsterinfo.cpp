@@ -21,8 +21,6 @@
  *  $Id: monsterinfo.cpp 2650 2006-09-03 15:00:47Z b_lindeijer $
  */
 
-#include <algorithm>
-
 #include "monsterinfo.h"
 
 #include "../utils/dtor.h"
@@ -35,8 +33,7 @@ MonsterInfo::MonsterInfo()
 MonsterInfo::~MonsterInfo()
 {
     // kill vectors in mSoundEffects
-    for_each (mSounds.begin(), mSounds.end(),
-              make_dtor(mSounds));
+    delete_all(mSounds);
     mSounds.clear();
 }
 

@@ -21,15 +21,13 @@
  *  $Id: windowcontainer.cpp 3754 2007-11-20 15:19:50Z b_lindeijer $
  */
 
-#include <algorithm>
-
 #include "windowcontainer.h"
 
 #include "../utils/dtor.h"
 
 void WindowContainer::logic()
 {
-    for_each(mDeathList.begin(), mDeathList.end(), make_dtor(mDeathList));
+    delete_all(mDeathList);
     mDeathList.clear();
 
     gcn::Container::logic();

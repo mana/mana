@@ -44,6 +44,19 @@ class TextBox : public gcn::TextBox {
          * Sets the text after wrapping it to the current width of the widget.
          */
         void setTextWrapped(const std::string &text);
+
+        /**
+         * Get the minimum text width for the text box.
+         */
+        int getMinWidth() { return mMinWidth; }
+
+        /**
+         * Set the minimum text width for the text box.
+         */
+        void setMinWidth(int width) { mMinWidth = width; }
+
+    private:
+        int mMinWidth;
 };
 
 #endif

@@ -75,6 +75,18 @@ void
 Player::logic()
 {
     switch (mAction) {
+        case STAND:
+           break;
+
+        case SIT:
+           break;
+
+        case DEAD:
+           break;
+
+        case HURT:
+           break;
+
         case WALK:
             mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
             if (mFrame >= 6) {

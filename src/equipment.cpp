@@ -41,12 +41,10 @@ Equipment::removeEquipment(Item *item)
     if (i != mEquipment + EQUIPMENT_SIZE) {
         *i = 0;
     }
-    item->setEquipped(false);
 }
 
 void Equipment::removeEquipment(int index)
 {
-    mEquipment[index]->setEquipped(false);
     mEquipment[index] = 0;
 }
 

@@ -24,6 +24,8 @@
 #ifndef _TMW_EQUIPMENT_H_
 #define _TMW_EQUIPMENT_H_
 
+#include <guichan/actionlistener.hpp>
+
 class Item;
 
 #define EQUIPMENT_SIZE 10

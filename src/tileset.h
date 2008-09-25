@@ -44,8 +44,7 @@ class Tileset : public ImageSet
         /**
          * Returns the first gid.
          */
-        int
-        getFirstGid()
+        int getFirstGid() const
         {
             return mFirstGid;
         }

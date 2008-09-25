@@ -33,6 +33,7 @@
 #include "../configuration.h"
 #include "../flooritemmanager.h"
 #include "../graphics.h"
+#include "../keyboardconfig.h"
 #include "../localplayer.h"
 #include "../map.h"
 #include "../monster.h"
@@ -48,6 +49,8 @@
 #include "../utils/tostring.h"
 
 #include <cassert>
+
+extern volatile int tick_time;
 
 Viewport::Viewport():
     mMap(0),
@@ -112,7 +115,8 @@ Viewport::loadTargetCursor(std::string filename, int width, int height,
         mOutRangeImages[size] = currentImageSet;
         mTargetCursorOutRange[size] = currentCursor;
     }
-    else {
+    else 
+    {
         mInRangeImages[size] = currentImageSet;
         mTargetCursorInRange[size] = currentCursor;
     }
@@ -223,52 +227,46 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     // Draw tiles and sprites
     if (mMap)
     {
-        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 0);
-        drawTargetCursor(graphics);
-        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 1);
-        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY, 2);
-        mMap->drawOverlay(graphics, mPixelViewX, mPixelViewY,
-                (int) config.getValue("OverlayDetail", 2));
-    }
+        mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
+        drawTargetCursor(graphics); // TODO: Draw the cursor with the sprite
 
-    // Find a path from the player to the mouse, and draw it. This is for debug
-    // purposes.
-    if (mShowDebugPath && mMap)
-    {
-        // Get the current mouse position
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
 
-        int mouseTileX = mouseX / 32 + mTileViewX;
-        int mouseTileY = mouseY / 32 + mTileViewY;
-
-        Path debugPath = mMap->findPath(
-                player_node->mX, player_node->mY,
-                mouseTileX, mouseTileY);
-
-        graphics->setColor(gcn::Color(255, 0, 0));
-        for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
+        // Find a path from the player to the mouse, and draw it. This is for debug
+        // purposes.
+        if (mShowDebugPath) 
         {
-            int squareX = i->x * 32 - (int) mPixelViewX + 12;
-            int squareY = i->y * 32 - (int) mPixelViewY + 12;
+            // Get the current mouse position
+            int mouseX, mouseY;
+            SDL_GetMouseState(&mouseX, &mouseY);
 
-            graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-            graphics->drawText(
-                    toString(mMap->getMetaTile(i->x, i->y)->Gcost),
-                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
+            int mouseTileX = mouseX / 32 + mTileViewX;
+            int mouseTileY = mouseY / 32 + mTileViewY;
+
+            Path debugPath = mMap->findPath(player_node->mX, player_node->mY, mouseTileX, mouseTileY);
+
+            graphics->setColor(gcn::Color(255, 0, 0));
+            for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
+            {
+                int squareX = i->x * 32 - (int) mPixelViewX + 12;
+                int squareY = i->y * 32 - (int) mPixelViewY + 12;
+
+                graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+                graphics->drawText(toString(mMap->getMetaTile(i->x, i->y)->Gcost), squareX + 4, squareY + 12, gcn::Graphics::CENTER);
+            }
         }
     }
 
-    // Draw text
+    // Draw names
     if (textManager)
     {
         textManager->draw(graphics, mPixelViewX, mPixelViewY);
     }
 
-    // Draw player nickname, speech, and emotion sprite as needed
+    // Draw player speech, and emotion sprite as needed
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
+        (*i)->drawSpeech(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
         (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
     }
 
@@ -276,8 +274,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     WindowContainer::draw(gcnGraphics);
 }
 
-void
-Viewport::logic()
+void Viewport::logic()
 {
     WindowContainer::logic();
 
@@ -295,15 +292,14 @@ Viewport::logic()
         mWalkTime = player_node->mWalkTime;
     }
 
-    for (int i = 0; i < 3; i++)
+    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
         mTargetCursorInRange[i]->update(10);
         mTargetCursorOutRange[i]->update(10);
     }
 }
 
-void
-Viewport::drawTargetCursor(Graphics *graphics)
+void Viewport::drawTargetCursor(Graphics *graphics)
 {
     // Draw target marker if needed
     Being *target = player_node->getTarget();
@@ -323,7 +319,8 @@ Viewport::drawTargetCursor(Graphics *graphics)
         {
             targetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
         }
-        else {
+        else 
+        {
             targetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
         }
 
@@ -332,11 +329,10 @@ Viewport::drawTargetCursor(Graphics *graphics)
         int posY = target->getPixelY() + 16 - targetCursor->getHeight() / 2 - (int) mPixelViewY;
 
         graphics->drawImage(targetCursor, posX, posY);
-    }
+   }
 }
 
-void
-Viewport::mousePressed(gcn::MouseEvent &event)
+void Viewport::mousePressed(gcn::MouseEvent &event)
 {
     // Check if we are alive and kickin'
     if (!mMap || !player_node || player_node->mAction == Being::DEAD)
@@ -348,8 +344,10 @@ Viewport::mousePressed(gcn::MouseEvent &event)
 
     mPlayerFollowMouse = false;
 
-    int tilex = event.getX() / 32 + mTileViewX;
-    int tiley = event.getY() / 32 + mTileViewY;
+    const int tilex = event.getX() / 32 + mTileViewX;
+    const int tiley = event.getY() / 32 + mTileViewY;
+    const int x = (int)((float) event.getX() + mPixelViewX);
+    const int y = (int)((float) event.getY() + mPixelViewY);
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
@@ -357,11 +355,11 @@ Viewport::mousePressed(gcn::MouseEvent &event)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = beingManager->findBeing(tilex, tiley)) &&
-            being != player_node)
+        if ((being = beingManager->findBeingByPixel(x, y)) &&
+             being != player_node)
         {
-            mPopupMenu->showPopup(event.getX(), event.getY(), being);
-            return;
+           mPopupMenu->showPopup(event.getX(), event.getY(), being);
+           return;
         }
         else if((floorItem = floorItemManager->findByCoordinates(tilex, tiley)))
         {
@@ -382,12 +380,10 @@ Viewport::mousePressed(gcn::MouseEvent &event)
     {
         Being *being;
         FloorItem *item;
-
+ 
         // Interact with some being
-//      int x = (int)((float) event.getX() + mPixelViewX);
-//      int y = (int)((float) event.getY() + mPixelViewY);
-//      if ((being = beingManager->findBeingByPixel(x, y)))
-        if ((being = beingManager->findBeing(tilex, tiley)))
+//        if ((being = beingManager->findBeing(tilex, tiley)))
+        if ((being = beingManager->findBeingByPixel(x, y)))
         {
             switch (being->getType())
             {
@@ -400,59 +396,49 @@ Viewport::mousePressed(gcn::MouseEvent &event)
                     if (being->mAction == Being::DEAD)
                         break;
 
-                    if (player_node->withinAttackRange(being))
+                    if (keyboard.isKeyActive(keyboard.KEY_TARGET) || player_node->withinAttackRange(being))
                     {
+                        player_node->stopAttack();
+                        player_node->setGotoTarget(being);
                         player_node->attack(being, true);
                     }
                     else
                     {
-                        Uint8 *keys = SDL_GetKeyState(NULL);
-                        if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
-                        {
-                            player_node->stopAttack();
-                            player_node->setGotoTarget(being);
-                        }
+                        player_node->setDestination(tilex, tiley);
+                        player_node->stopAttack();
                     }
                     break;
 
                 default:
                     break;
-            }
+             }
         }
         // Pick up some item
         else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
         {
-                player_node->pickUp(item);
+            player_node->pickUp(item);
         }
         // Just walk around
         else
         {
-            // XXX XXX XXX REALLY UGLY!
-            Uint8 *keys = SDL_GetKeyState(NULL);
-            if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
-            {
-                player_node->setDestination(tilex, tiley);
-                player_node->stopAttack();
-            }
+            player_node->stopAttack();
+            player_node->setDestination(tilex, tiley);
             mPlayerFollowMouse = true;
         }
     }
     else if (event.getButton() == gcn::MouseEvent::MIDDLE)
     {
         // Find the being nearest to the clicked position
-        Being *target = beingManager->findNearestLivingBeing(
-                tilex, tiley,
-                20, Being::MONSTER);
-
+        Being *target = beingManager->findBeingByPixel(x, y);
+ 
         if (target)
         {
-            player_node->setTarget(target);
+             player_node->setTarget(target);
         }
     }
 }
 
-void
-Viewport::mouseDragged(gcn::MouseEvent &event)
+void Viewport::mouseDragged(gcn::MouseEvent &event)
 {
     if (!mMap || !player_node)
         return;
@@ -465,20 +451,17 @@ Viewport::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void
-Viewport::mouseReleased(gcn::MouseEvent &event)
+void Viewport::mouseReleased(gcn::MouseEvent &event)
 {
     mPlayerFollowMouse = false;
 }
 
-void
-Viewport::showPopup(int x, int y, Item *item)
+void Viewport::showPopup(int x, int y, Item *item)
 {
     mPopupMenu->showPopup(x, y, item);
 }
 
-void
-Viewport::optionChanged(const std::string &name)
+void Viewport::optionChanged(const std::string &name)
 {
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);

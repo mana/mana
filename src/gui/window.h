@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: window.h 4207 2008-04-29 09:10:43Z b_lindeijer $
+ *  $Id$
  */
 
 #ifndef _TMW_WINDOW_H__
@@ -56,9 +56,10 @@ class Window : public gcn::Window, gcn::WidgetListener
          * @param parent  The parent window. This is the window standing above
          *                this one in the window hiearchy. When reordering,
          *                a window will never go below its parent window.
+         * @param skin    The location where the window's skin XML can be found.
          */
         Window(const std::string &caption = "Window", bool modal = false,
-                Window *parent = NULL);
+                Window *parent = NULL, const std::string &skin = "graphics/gui/gui.xml");
 
         /**
          * Destructor.
@@ -237,6 +238,11 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         virtual void resetToDefaultSize();
 
+        /**
+         * Loads a window skin
+         */
+        void loadSkin(const std::string filename);
+
         enum ResizeHandles
         {
             TOP    = 0x01,
@@ -255,6 +261,8 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
+        void setGuiAlpha();
+
         GCContainer *mChrome;      /**< Contained container */
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
@@ -263,6 +271,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         bool mModal;               /**< Window is modal */
         bool mCloseButton;         /**< Window has a close button */
         bool mSticky;              /**< Window resists minimization */
+        static bool mAlphaChanged; /**< Whether the alpha percent was changed */
         int mMinWinWidth;          /**< Minimum window width */
         int mMinWinHeight;         /**< Minimum window height */
         int mMaxWinWidth;          /**< Maximum window width */
@@ -271,6 +280,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */
         int mDefaultHeight;        /**< Default window height */
+        std::string mSkin;         /**< Name of the skin to use */
 
         /** The window container windows add themselves to. */
         static WindowContainer *windowContainer;

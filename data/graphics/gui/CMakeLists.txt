@@ -8,7 +8,9 @@ SET (FILES
     checkbox.png
     close_button.png
     deepbox.png
+    default.png
     fixedfont.png
+    gui.xml
     hits_blue.png
     hits_red.png
     hits_yellow.png
@@ -31,6 +33,8 @@ SET (FILES
     selection.png
     sansserif8.png
     slider.png
+    speech_bubble.png
+    speech_bubble.xml
     target-cursor-blue-l.png
     target-cursor-blue-m.png
     target-cursor-blue-s.png

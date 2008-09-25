@@ -113,7 +113,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
                     errorMessage = "You have been blocked by the GM Team";
                     break;
                 case 6:
-                    errorMessage = "You have been banned for 5 minutes";
+                    errorMessage = "You have been temporarily banned from the game. Please contact the GM team";
                     break;
                 case 9:
                     errorMessage = "This user name is already taken";

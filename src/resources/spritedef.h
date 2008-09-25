@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: spritedef.h 4255 2008-05-21 21:44:27Z crush_tmw $
+ *  $Id$
  */
 
 #ifndef _TMW_SPRITEDEF_H
@@ -90,6 +90,12 @@ class SpriteDef : public Resource
          * Destructor.
          */
         ~SpriteDef();
+
+        /**
+         * Loads a sprite element.
+         */
+        void loadSprite(xmlNodePtr spriteNode, int variant,
+                        const std::string &palettes = "");
 
         /**
          * Loads an imageset element.

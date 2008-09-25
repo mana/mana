@@ -156,6 +156,12 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                     mask <<= 1;
                     position++;
                 }
+
+                item = inventory->getItem(index);
+                if (!item)
+                    break;
+
+                item->setEquipped(false);
                 player_node->mEquipment->removeEquipment(position);
             }
             logger->log("Unequipping: %i %i(%i) %i",
@@ -174,6 +180,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
 
             item = inventory->getItem(index);
             if (item) {
+                item->setEquipped(true);
                 player_node->mEquipment->setArrows(item);
                 logger->log("Arrows equipped: %i", index);
             }

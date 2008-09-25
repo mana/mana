@@ -102,7 +102,7 @@ Setup::Setup():
 
 Setup::~Setup()
 {
-    for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
+    delete_all(mTabs);
 }
 
 void Setup::action(const gcn::ActionEvent &event)

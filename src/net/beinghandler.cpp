@@ -23,6 +23,7 @@
 
 #include "beinghandler.h"
 
+#include <iostream>
 #include <SDL_types.h>
 
 #include "messagein.h"
@@ -37,6 +38,7 @@
 #include "../particle.h"
 #include "../sound.h"
 #include "../player_relations.h"
+#include "../npc.h"
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
@@ -203,8 +205,13 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 break;
 
             // If this is player's current target, clear it.
-            if (player_node->getTarget() == dstBeing)
+            if (dstBeing == player_node->getTarget())
+            {
                 player_node->stopAttack();
+            }
+
+            if (dstBeing == current_npc)
+                current_npc = NULL;
 
             if (msg->readInt8() == 1)
             {
@@ -464,7 +471,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt8();   // unknown
 
             dstBeing->mWalkTime = tick_time;
-            dstBeing->mFrame = 0;
+            //dstBeing->mFrame = 0;
             break;
 
         case SMSG_PLAYER_STOP:

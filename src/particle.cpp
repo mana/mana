@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: particle.cpp 4362 2008-06-24 12:29:33Z crush_tmw $
+ *  $Id$
  */
 
 #include <algorithm>
@@ -61,7 +61,7 @@ Particle::Particle(Map *map):
     mAutoDelete(true),
     mMap(map),
     mGravity(0.0f),
-    mRandomnes(0),
+    mRandomness(0),
     mBounce(0.0f),
     mFollow(false),
     mTarget(NULL),
@@ -139,11 +139,11 @@ Particle::update()
             }
         }
 
-        if (mRandomnes > 0)
+        if (mRandomness > 0)
         {
-            mVelocity.x += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
-            mVelocity.y += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
-            mVelocity.z += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
+            mVelocity.x += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
+            mVelocity.y += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
+            mVelocity.z += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
         }
 
         mVelocity.z -= mGravity;

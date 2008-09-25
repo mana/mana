@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: localplayer.cpp 4347 2008-06-12 09:06:01Z b_lindeijer $
+ *  $Id$
  */
 
 #include "localplayer.h"
@@ -48,8 +48,8 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mAttackRange(0),
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
-    mTrading(false), mInStorage(false),
-    mGoingToTarget(false), mLastAction(-1),
+    mTrading(false), mGoingToTarget(false),
+    mLastAction(-1),
     mWalkingDir(0), mDestX(0), mDestY(0),
     mInventory(new Inventory(INVENTORY_SIZE)),
     mStorage(new Inventory(STORAGE_SIZE))
@@ -65,6 +65,18 @@ LocalPlayer::~LocalPlayer()
 void LocalPlayer::logic()
 {
     switch (mAction) {
+        case STAND:
+           break;
+
+        case SIT:
+           break;
+
+        case DEAD:
+           break;
+
+        case HURT:
+           break;
+
         case WALK:
             mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
             if (mFrame >= 6) {
@@ -144,6 +156,9 @@ void LocalPlayer::unequipItem(Item *item)
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_PLAYER_UNEQUIP);
     outMsg.writeInt16(item->getInvIndex());
+
+    // Tidy equipment directly to avoid weapon still shown bug, for instance
+    mEquipment->removeEquipment(item);
 }
 
 void LocalPlayer::useItem(Item *item)
@@ -183,7 +198,6 @@ void LocalPlayer::pickUp(FloorItem *item)
 
 void LocalPlayer::walk(unsigned char dir)
 {
-
     if (!mMap || !dir)
         return;
 

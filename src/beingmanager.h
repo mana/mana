@@ -51,7 +51,7 @@ class BeingManager
         /**
          * Create a being and add it to the list of beings.
          */
-        Being* createBeing(Uint32 id, Uint16 job);
+        Being *createBeing(Uint32 id, Uint16 job);
 
         /**
          * Remove a Being.
@@ -62,33 +62,36 @@ class BeingManager
          * Return a specific id Being.
          */
         Being* findBeing(Uint32 id);
+        Being* findBeingByPixel(Uint16 x, Uint16 y);
 
         /**
-         * Return a being at specific coordinates.
+         * Returns a being at specific coordinates.
          */
         Being* findBeing(Uint16 x, Uint16 y, Being::Type type = Being::UNKNOWN);
-        //Being* findBeingByPixel(Uint16 x, Uint16 y);
 
-        /**
-         * Return a being nearest to specific coordinates.
-         *
-         * \param maxdist maximal distance. If minimal distance is larger,
-         *                no being is returned
-         */
+       /**
+        * Returns a being nearest to specific coordinates.
+        *
+        * @param x       X coordinate.
+        * @param y       Y coordinate.
+        * @param maxdist Maximal distance. If minimal distance is larger,
+        *                no being is returned.
+        * @param type    The type of being to look for.
+        */
         Being* findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 
-        /**
-         * Finds a being by name and (optionally) by type.
-         */
+       /**
+        * Finds a being by name and (optionally) by type.
+        */
         Being* findBeingByName(std::string name, Being::Type type = Being::UNKNOWN);
 
-        /**
-         * Return a being nearest to another being.
-         *
-         * \param maxdist maximal distance. If minimal distance is larger,
-         *                no being is returned
-         */
+       /**
+        * Returns a being nearest to another being.
+        *
+        * \param maxdist maximal distance. If minimal distance is larger,
+        *                no being is returned
+        */
         Being* findNearestLivingBeing(Being *aroundBeing, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 

@@ -49,6 +49,8 @@ MARK_AS_ADVANCED(SDL_INCLUDE_DIR)
 MARK_AS_ADVANCED(SDL_LIBRARY)
 
 SET(SRCS
+    gui/widgets/dropdown.cpp
+    gui/widgets/dropdown.h
     gui/widgets/resizegrip.cpp
     gui/widgets/resizegrip.h
     gui/box.cpp
@@ -159,6 +161,8 @@ SET(SRCS
     gui/skill.h
     gui/slider.cpp
     gui/slider.h
+    gui/speechbubble.cpp
+    gui/speechbubble.h
     gui/status.cpp
     gui/status.h
     gui/tabbedcontainer.cpp

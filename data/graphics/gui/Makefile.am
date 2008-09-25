@@ -11,8 +11,10 @@ gui_DATA =				\
 	checkbox.png			\
 	close_button.png		\
 	deepbox.png			\
+	default.png			\
 	emotions.png			\
 	fixedfont.png			\
+	gui.xml				\
 	hits_blue.png			\
 	hits_red.png			\
 	hits_yellow.png			\
@@ -38,6 +40,8 @@ gui_DATA =				\
 	selection.png			\
 	sansserif8.png			\
 	slider.png			\
+	speech_bubble.png		\
+	speechbubble.xml		\
 	target-cursor-blue-l.png	\
 	target-cursor-blue-m.png	\
 	target-cursor-blue-s.png	\

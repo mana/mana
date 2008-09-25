@@ -21,7 +21,7 @@
  *  $Id: beingmanager.cpp 4237 2008-05-14 18:57:32Z b_lindeijer $
  */
 
-#include <algorithm>
+#include <cassert>
 
 #include "beingmanager.h"
 
@@ -124,7 +124,7 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     return (i == mBeings.end()) ? NULL : *i;
 }
 
-/*Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
+Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
 {
     BeingIterator itr = mBeings.begin();
     BeingIterator itr_end = mBeings.end();
@@ -144,7 +144,7 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     }
 
     return NULL;
-}*/
+}
 
 Being* BeingManager::findBeingByName(std::string name, Being::Type type)
 {
@@ -158,8 +158,6 @@ Being* BeingManager::findBeingByName(std::string name, Being::Type type)
     }
     return NULL;
 }
-
-
 
 Beings& BeingManager::getAll()
 {
@@ -193,7 +191,7 @@ void BeingManager::clear()
         mBeings.remove(player_node);
     }
 
-    for_each(mBeings.begin(), mBeings.end(), make_dtor(mBeings));
+    delete_all(mBeings);
     mBeings.clear();
 
     if (player_node)
@@ -208,9 +206,12 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
     Being *closestBeing = NULL;
     int dist = 0;
 
-    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    BeingIterator itr = mBeings.begin();
+    BeingIterator itr_end = mBeings.end();
+
+    for (; itr != itr_end; ++itr)
     {
-        Being *being = (*i);
+        Being *being = (*itr);
         int d = abs(being->mX - x) + abs(being->mY - y);
 
         if ((being->getType() == type || type == Being::UNKNOWN)

@@ -21,8 +21,6 @@
  *  $Id: monsterdb.cpp 4255 2008-05-21 21:44:27Z crush_tmw $
  */
 
-#include <algorithm>
-
 #include "monsterdb.h"
 
 #include "resourcemanager.h"
@@ -143,8 +141,7 @@ MonsterDB::load()
 void
 MonsterDB::unload()
 {
-    for_each(mMonsterInfos.begin(), mMonsterInfos.end(),
-             make_dtor(mMonsterInfos));
+    delete_all(mMonsterInfos);
     mMonsterInfos.clear();
 
     mLoaded = false;

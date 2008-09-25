@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: particleemitter.h 4362 2008-06-24 12:29:33Z crush_tmw $
+ *  $Id$
  */
 
 #ifndef _PARTICLEEMITTER_H
@@ -97,7 +97,7 @@ class ParticleEmitter
          * Vector changing of particles:
          */
         MinMax<float> mParticleGravity;
-        MinMax<int> mParticleRandomnes;
+        MinMax<int> mParticleRandomness;
         MinMax<float> mParticleBounce;
         bool mParticleFollow;
 
@@ -119,6 +119,8 @@ class ParticleEmitter
         Map *mMap;             /**< Map the particles are spawned on */
 
         MinMax<int> mOutput;   /**< Number of particles spawned per update */
+        MinMax<int> mOutputPause; /**< Pause in frames between two spawns */
+        int mOutputPauseLeft;
 
         /*
          * Graphical representation of the particle

@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: viewport.h 4247 2008-05-19 10:48:18Z b_lindeijer $
+ *  $Id$
  */
 
 #ifndef _TMW_VIEWPORT_H_
@@ -117,16 +117,16 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         optionChanged(const std::string &name);
 
         /**
-         * Returns camera x offset in tiles.
+         * Returns camera x offset in pixels.
          */
         int
-        getCameraX() { return mTileViewX; }
+        getCameraX() const { return (int) mPixelViewX; }
 
         /**
-         * Returns camera y offset in tiles.
+         * Returns camera y offset in pixels.
          */
         int
-        getCameraY() { return mTileViewY; }
+        getCameraY() const { return (int) mPixelViewY; }
 
         /**
          * Changes viewpoint by relative pixel coordinates.
@@ -138,22 +138,13 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         /**
          * Helper function for loading target cursors
          */
-        void
-        loadTargetCursor(std::string filename, int width, int height,
-                         bool outRange, Being::TargetCursorSize size);
+        void loadTargetCursor(std::string filename, int width, int height,
+                              bool outRange, Being::TargetCursorSize size);
 
         /**
          * Draws range based target cursor
          */
-        void
-        drawTargetCursor(Graphics *graphics);
-
-        /**
-         * Draws target name
-         */
-        void
-        drawTargetName(Graphics *graphics);
-
+        void drawTargetCursor(Graphics *graphics);
 
         Map *mMap;                 /**< The current map. */
 

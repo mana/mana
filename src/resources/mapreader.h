@@ -63,10 +63,10 @@ class MapReader
         readProperties(xmlNodePtr node, Properties* props);
 
         /**
-         * Reads a map layer.
+         * Reads a map layer and adds it to the given map.
          */
         static void
-        readLayer(xmlNodePtr node, Map *map, int layer);
+        readLayer(xmlNodePtr node, Map *map);
 
         /**
          * Reads a tile set.

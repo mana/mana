@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: keyboardconfig.cpp 4255 2008-05-21 21:44:27Z crush_tmw $
+ *  $Id$
  */
 
 #include "keyboardconfig.h"
@@ -43,6 +43,7 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyMoveLeft", SDLK_LEFT, "Move Left"},
     {"keyMoveRight", SDLK_RIGHT, "Move Right"},
     {"keyAttack", SDLK_LCTRL, "Attack"},
+    {"keySmilie", SDLK_LALT, "Smilie"},
     {"keyTarget", SDLK_LSHIFT, "Target"},
     {"keyTargetClosest", SDLK_a, "Target Closest"},
     {"keyTargetPlayer", SDLK_q, "Target Player"},

@@ -21,8 +21,6 @@
  *  $Id: skill.cpp 3754 2007-11-20 15:19:50Z b_lindeijer $
  */
 
-#include <algorithm>
-
 #include <guichan/widgets/label.hpp>
 
 #include "skill.h"
@@ -186,6 +184,6 @@ void SkillDialog::setSkill(int id, int lvl, int mp)
 
 void SkillDialog::cleanList()
 {
-    for_each(mSkillList.begin(), mSkillList.end(), make_dtor(mSkillList));
+    delete_all(mSkillList);
     mSkillList.clear();
 }
