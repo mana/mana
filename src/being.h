@@ -25,6 +25,7 @@
 #define _TMW_BEING_H
 
 #include <list>
+#include <memory>
 #include <string>
 #include <SDL_types.h>
 #include <vector>
