@@ -24,6 +24,7 @@
 #include <algorithm>
 
 #include <guichan/font.hpp>
+#include <guichan/sdl/sdlinput.hpp>
 
 #include "textfield.h"
 
@@ -135,9 +136,9 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
                 break;
             }
             int value = key.getValue();
-            if (value == gcn::Key::LEFT || value == gcn::Key::RIGHT ||
-                value == gcn::Key::HOME || value == gcn::Key::END ||
-                value == gcn::Key::BACKSPACE || value == gcn::Key::DELETE)
+            if (value == SDLK_LEFT || value == SDLK_RIGHT ||
+                value == SDLK_HOME || value == SDLK_END ||
+                value == SDLK_BACKSPACE || value == SDLK_DELETE)
             {
                 break;
             }
