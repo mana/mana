@@ -345,7 +345,7 @@ void ChatWindow::chatSend(const std::string & nick, std::string msg)
         mTextOutput->clearRows();
         return;
     }
-    if (command == "whisper") {
+    if (command == "whisper" || command == "msg") {
         std::string recvnick = "";
 
         if (msg.substr(0, 1) == "\"") {
@@ -704,7 +704,7 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
                 BY_SERVER);
         return;
     }
-    if (msg1 == "whisper") {
+    if (msg1 == "whisper" || msg1 == "msg") {
         chatLog("Command: /whisper <nick> <msg>", BY_SERVER);
         chatLog("This command sends the message <msg> to <nick.", BY_SERVER);
         chatLog("If the <nick> has spaces in it, enclose it in "
