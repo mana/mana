@@ -24,6 +24,7 @@
 #include "login.h"
 
 #include <string>
+#include <vector>
 
 #include <guichan/widgets/label.hpp>
 
@@ -50,9 +51,13 @@ LoginDialog::LoginDialog(LoginData *loginData):
     gcn::Label *passLabel = new gcn::Label("Password:");
     gcn::Label *serverLabel = new gcn::Label("Server:");
     gcn::Label *portLabel = new gcn::Label("Port:");
-    mServerList = new DropDownList("MostRecent00",
-                                   "209.168.213.109",
-                                   "21001",
+    std::vector<std::string> dfltServer;
+    dfltServer.push_back("www.aethyra.org"); 
+    dfltServer.push_back("www.aethyra.org");
+    std::vector<std::string> dfltPort;
+    dfltPort.push_back("22001");
+    dfltPort.push_back("21001");
+    mServerList = new DropDownList("MostRecent00", dfltServer, dfltPort,
                                    MAX_SERVER_LIST_SIZE);
     mServerListBox = new gcn::ListBox(mServerList);
     mServerScrollArea = new ScrollArea();
@@ -193,8 +198,8 @@ LoginDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
-        mLoginData->port = 6901;
-    }
+            mLoginData->port = 6901;
+        }
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
 
@@ -271,8 +276,8 @@ LoginDialog::DropDownList::saveEntry(const std::string &server,
 }
 
 LoginDialog::DropDownList::DropDownList(std::string prefix,
-                                        std::string dflt,
-                    std::string dfltPort,
+                                        std::vector<std::string> dflt,
+                                        std::vector<std::string> dfltPort,
                                         int maxEntries) :
                                         mConfigPrefix(prefix),
                                         mMaxEntries(maxEntries)
@@ -287,7 +292,7 @@ LoginDialog::DropDownList::DropDownList(std::string prefix,
                                      toString(i), "");
         }
         std::string port = config.getValue(mConfigPrefix + "Port" +
-                                           toString(i), dfltPort);
+                                           toString(i), dfltPort.front());
 
         if (server != "")
         {
@@ -297,10 +302,9 @@ LoginDialog::DropDownList::DropDownList(std::string prefix,
     }
     if (mServers.size() == 0)
     {
-        mServers.push_back(dflt);
-        mPorts.push_back(dfltPort);
+        mServers.assign(dflt.begin(), dflt.end());
+        mPorts.assign(dfltPort.begin(), dfltPort.end());
     }
-
 }
 
 void

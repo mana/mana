@@ -124,8 +124,8 @@ class LoginDialog : public Window, public gcn::ActionListener,
 			       const std::string &port, int &saved);
             public:
                 DropDownList(std::string prefix,
-                             std::string dfltServer,
-			     std::string dfltPort,
+                             std::vector<std::string> dfltServer,
+			     std::vector<std::string> dfltPort,
                              int maxEntries);
                 void save(const std::string &server, const std::string &port);
                 int getNumberOfElements();
