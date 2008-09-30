@@ -2,11 +2,12 @@
 #automated script to update aethyra from SVN
 #author=Blame <blame@aethyra.com>
 #last modified 2008-09-21 Blame
-
-# test for the aethyra client 
-if [ ~/src/aethyra ]; then
+file=~/src/aethyra
+file1=~/src
+# test for the aethyra client folder 
+if [ -e $file ]; then
 	#change to the aethyra directory
-	cd ~/src/aethyra;
+	cd $file;
 	#issue the svn update command
 	svn up;
 	#issue the autobuild command 
@@ -15,11 +16,11 @@ if [ ~/src/aethyra ]; then
 	exit 1;
 else 
 	#make directory /home/user-name/src
-	mkdir ~/src
+	mkdir $file1
 	#change to directory /home/user-name/src
-	cd ~/src
+	cd $file1
 	#execute the svn command to download the client files
-	svn co svn://209.168.213.109/client/trunk aethyra
+	svn co svn://www.aethyra.org/client/trunk aethyra
 	#issue the auto build script to compile the client
 	./autobuild
 	echo "congratulations on installing aethyra enjoy"
