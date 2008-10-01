@@ -471,7 +471,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt8();   // unknown
 
             dstBeing->mWalkTime = tick_time;
-            //dstBeing->mFrame = 0;
+            dstBeing->mFrame = 0;
             break;
 
         case SMSG_PLAYER_STOP:

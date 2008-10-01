@@ -176,7 +176,7 @@ void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
     {
         itemInfo->setSprite(filename, 0);
     }
-    else
+    if (gender == "female" || gender == "unisex")
     {
         itemInfo->setSprite(filename, 1);
     }
