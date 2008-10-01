@@ -24,7 +24,6 @@
 #include "map.h"
 
 #include <queue>
-#include <cassert>
 
 #include "beingmanager.h"
 #include "configuration.h"
@@ -223,9 +222,9 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     for (; layeri != mLayers.end(); ++layeri)
     {
         (*layeri)->draw(graphics,
-                   startX, startY, endX, endY,
-                   scrollX, scrollY,
-                   mSprites);
+                        startX, startY, endX, endY,
+                        scrollX, scrollY,
+                        mSprites);
     }
 
     drawOverlay(graphics, scrollX, scrollY,
@@ -338,8 +337,6 @@ void Map::removeSprite(SpriteIterator iterator)
 {
     mSprites.erase(iterator);
 }
-
-static int const basicCost = 100;
 
 Path Map::findPath(int startX, int startY, int destX, int destY)
 {

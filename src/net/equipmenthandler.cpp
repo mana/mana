@@ -146,22 +146,22 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 break;
             }
 
+            mask = 1;
+            position = 0;
+            while (!(equipPoint & mask)) {
+                mask <<= 1;
+                position++;
+            }
+
+            item = inventory->getItem(index);
+            if (!item)
+                break;
+
+            item->setEquipped(false);
             if (equipPoint & 0x8000) {    // Arrows
                 player_node->mEquipment->setArrows(NULL);
-                position = 11;
-            } else {
-                mask = 1;
-                position = 0;
-                while (!(equipPoint & mask)) {
-                    mask <<= 1;
-                    position++;
-                }
-
-                item = inventory->getItem(index);
-                if (!item)
-                    break;
-
-                item->setEquipped(false);
+            }
+            else {
                 player_node->mEquipment->removeEquipment(position);
             }
             logger->log("Unequipping: %i %i(%i) %i",

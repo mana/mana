@@ -45,7 +45,8 @@ Equipment::removeEquipment(Item *item)
 
 void Equipment::removeEquipment(int index)
 {
-    mEquipment[index] = 0;
+    if (index >= 0 && index < EQUIPMENT_SIZE)
+        mEquipment[index] = 0;
 }
 
 void Equipment::setEquipment(int index, Item *item)
