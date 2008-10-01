@@ -54,14 +54,3 @@ void Equipment::setEquipment(int index, Item *item)
     mEquipment[index] = item;
     item->setEquipped(true);
 }
-
-void Equipment::setArrows(Item *arrows)
-{
-    if (mArrows)
-        mArrows->setEquipped(false);
-
-    mArrows = arrows;
-
-    if (arrows)
-        arrows->setEquipped(true);
-}

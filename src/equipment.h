@@ -71,7 +71,7 @@ class Equipment
          * Set the item used in the arrow slot.
          */
         void
-        setArrows(Item *arrows);
+        setArrows(Item *arrows) {mArrows = arrows;}
 
     private:
         Item *mEquipment[EQUIPMENT_SIZE];
