@@ -97,6 +97,12 @@ void Engine::changeMap(const std::string &mapPath)
     {
         mapImage = resman->getImage(newMap->getProperty("minimap"));
     }
+    if (newMap->hasProperty("name"))
+    {
+        minimap->setCaption(newMap->getProperty("name"));
+    } else {
+        minimap->setCaption("Map");
+    }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
     particleEngine->setMap(newMap);

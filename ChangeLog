@@ -1,3 +1,8 @@
+2008-10-02  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/engine.cpp: The "name" property of the map is now used as caption
+	of minimap window when it exists.
+
 2008-09-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/setup_video.cpp: Only require a restart to switch to full
@@ -8,7 +13,7 @@
 
 2008-08-29  David Athay  <ko2fan@gmail.com>
 
-	* src/monster.cpp, src/resources/monsterinfo.h, 
+	* src/monster.cpp, src/resources/monsterinfo.h,
 	src/resources/monsterdb.cpp, src/resources/monsterinfo.cpp: Mantis #406
 	by jaxad0127 to implement layered sprites.
 
@@ -108,12 +113,12 @@
 2008-07-22  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp: Revert the Alt-Gr fix as it did not work.
-	* src/game.cpp, src/keyboardconfig.cpp, src/keyboardconfig.h: User can 
+	* src/game.cpp, src/keyboardconfig.cpp, src/keyboardconfig.h: User can
 	now configure which modifier key is used for smilies.
 
 2008-07-21  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp: Initial attempt at fixing Alt-Gr issue for Rotonen, 
+	* src/game.cpp: Initial attempt at fixing Alt-Gr issue for Rotonen,
 	this commit is just for him!
 
 2008-07-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -135,7 +140,7 @@
 2008-07-08  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/chat.cpp, src/gui/chat.h: Mantis #359 patch by Scraggy.
- 
+
 2008-06-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt: Updated CMake file to fix compilation. Patch by
@@ -160,7 +165,7 @@
 
 2008-06-17  Fate  <fate.tmw@googlemail.com>
 
-	* src/net/tradehandler.cpp: bug #333: Suppress `trade with X cancelled' 
+	* src/net/tradehandler.cpp: bug #333: Suppress `trade with X cancelled'
 	messages for ignored players.
 
 2008-06-16  Fate  <fate.tmw@googlemail.com>
@@ -699,7 +704,7 @@
 2007-12-28  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_3-1.tmx: Some mapping errors fixed by Zipon.
-	* src/being.cpp, src/monster.cpp, src/resources/monsterinfo.cpp, 
+	* src/being.cpp, src/monster.cpp, src/resources/monsterinfo.cpp,
 	src/resources/monsterinfo.h: Added the possibility to assign particle
 	effects to monsters in the monster database.
 	* data/monsters.xml: Added flame particle effect to fire goblin as a
@@ -884,7 +889,7 @@
 	data/graphics/sprites/head-xmaself.png,
 	data/graphics/sprites/head-xmaself.xml: New versions of funky hat
 	and elf hat by QOAL.
-	
+
 2007-12-04  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/items/generic-santacookie.png,
@@ -1147,7 +1152,7 @@
 
 	* src/player.cpp, data/graphics/sprites/hairstyle*:
 	Added support for different hairstyles for male and female characters
-	(current female hairstyles are copies of the male ones until the 
+	(current female hairstyles are copies of the male ones until the
 	real female ones are finished)
 
 2007-09-30  Philipp Sehmisch  <tmw@crushnet.org>
@@ -1539,15 +1544,15 @@
 	* src/particle.cpp, src/particleemitter.cpp: Corrected some perspective
 	issues of the particle engine and fixed a crash caused by particles
 	with child emitters that have an image than isn't used elsewhere.
-	* data/maps/new-3-1.tmx.gz: Added a particle effect at the spawn point 
+	* data/maps/new-3-1.tmx.gz: Added a particle effect at the spawn point
 	in Tulimshar.
 
 2007-06-21  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png, 
+	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png,
 	data/graphics/sprites/monster-logmonster.xml: Added logmonster by
 	Enigmatik (Monster ID is 23).
-	* data/items.xml, data/equipment.xml, 
+	* data/items.xml, data/equipment.xml,
 	data/graphics/items/armor-chest-lightplatemail.png,
 	data/graphics/sprites/chest-lightplatemail-male.xml,
 	data/graphics/sprites/chest-lightplatemail-male.png,
