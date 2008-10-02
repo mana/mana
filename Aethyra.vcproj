@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="ManaExperiment"
+	Name="Aethyra"
 	ProjectGUID="{DE31E83E-62BD-460E-8E6A-648CF98CC5A4}"
-	RootNamespace="ManaExperimet"
+	RootNamespace="Aethyra"
 	Keyword="Win32Proj"
 	SignManifests="true"
 	>
@@ -65,11 +65,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="physfs.lib sdl.lib sdlmain.lib sdl_image.lib sdl_mixer.lib guichan.lib guichan_sdl.lib ws2_32.lib libxml2.lib iconv.lib zlib.lib libcurl.lib"
-				OutputFile="$(OutDir)/ManaExperiment.exe"
+				OutputFile="$(OutDir)/Aethyra.exe"
 				LinkIncremental="2"
 				IgnoreDefaultLibraryNames="libc.lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/ManaExperiment.pdb"
+				ProgramDatabaseFile="$(OutDir)/Aethyra.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="physfs.lib alleg.lib guichan.lib guichan_sdl.lib sdl.lib sdlmain.lib sdl_mixer.lib sdl_image.lib ws2_32.lib libxml2.lib iconv.lib zlib.lib libcurl.lib"
-				OutputFile="tmw.exe"
+				OutputFile="aethyra.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="LIBC.lib"
 				GenerateDebugInformation="true"
@@ -254,11 +254,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\base64.cpp"
+				RelativePath=".\src\animatedsprite.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\base64.h"
+				RelativePath=".\src\animatedsprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\animationparticle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\animationparticle.h"
 				>
 			</File>
 			<File
@@ -267,6 +275,18 @@
 			</File>
 			<File
 				RelativePath=".\src\being.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\beingmanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\beingmanager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\configlistener.h"
 				>
 			</File>
 			<File
@@ -283,6 +303,18 @@
 			</File>
 			<File
 				RelativePath=".\src\engine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\equipment.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\equipment.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\extensions.h"
 				>
 			</File>
 			<File
@@ -310,11 +342,75 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\guichanfwd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\imageparticle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\imageparticle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\inventory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\inventory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\item.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\item.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\itemshortcut.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\itemshortcut.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\joystick.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\joystick.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\keyboardconfig.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\keyboardconfig.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\localplayer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\localplayer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\log.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\log.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\logindata.h"
 				>
 			</File>
 			<File
@@ -334,6 +430,102 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\monster.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\monster.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\npc.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\npc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\openglgraphics.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\openglgraphics.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\particle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\particle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\particleemitter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\particleemitter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\party.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\party.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\player.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\player.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\player_relations.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\player_relations.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\properties.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\recorder.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\recorder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\serverinfo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\shopitem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\shopitem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\simpleanimation.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\simpleanimation.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\sound.cpp"
 				>
 			</File>
@@ -342,26 +534,134 @@
 				>
 			</File>
 			<Filter
-				Name="graphic"
-				>
-				<File
-					RelativePath=".\src\graphic\spriteset.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\graphic\spriteset.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="net"
 				>
+				<File
+					RelativePath=".\src\net\beinghandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\beinghandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\buysellhandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\buysellhandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\charservhandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\charservhandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\chathandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\chathandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\equipmenthandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\equipmenthandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\inventoryhandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\inventoryhandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\itemhandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\itemhandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\loginhandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\loginhandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\maploginhandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\maploginhandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\messagehandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\messagehandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\messagein.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\messagein.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\messageout.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\messageout.h"
+					>
+				</File>
 				<File
 					RelativePath=".\src\net\network.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\net\network.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\npchandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\npchandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\partyhandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\partyhandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\playerhandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\playerhandler.h"
 					>
 				</File>
 				<File
@@ -373,15 +673,19 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\net\win2linux.h"
+					RelativePath=".\src\net\skillhandler.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\net\win2mac.cpp"
+					RelativePath=".\src\net\skillhandler.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\net\win2mac.h"
+					RelativePath=".\src\net\tradehandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\net\tradehandler.h"
 					>
 				</File>
 			</Filter>
@@ -405,19 +709,19 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\buddywindow.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\gui\buddywindow.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\gui\button.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\gui\button.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\buttonbox.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\buttonbox.h"
 					>
 				</File>
 				<File
@@ -493,11 +797,35 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\equipment.cpp"
+					RelativePath=".\src\gui\connection.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\equipment.h"
+					RelativePath=".\src\gui\connection.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\coulor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\coulor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\debugwindow.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\debugwindow.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\equipmentwindow.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\equipmentwindow.h"
 					>
 				</File>
 				<File
@@ -506,6 +834,14 @@
 				</File>
 				<File
 					RelativePath=".\src\gui\focushandler.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\gccontainer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\gccontainer.h"
 					>
 				</File>
 				<File
@@ -541,11 +877,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\inventory.cpp"
+					RelativePath=".\src\gui\inventorywindow.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\inventory.h"
+					RelativePath=".\src\gui\inventorywindow.h"
 					>
 				</File>
 				<File
@@ -562,6 +898,22 @@
 				</File>
 				<File
 					RelativePath=".\src\gui\itemcontainer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\itemshortcutcontainer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\itemshortcutcontainer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\itemshortcutwindow.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\itemshortcutwindow.h"
 					>
 				</File>
 				<File
@@ -585,11 +937,27 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\gui\menuwindow.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\menuwindow.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\gui\minimap.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\gui\minimap.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\ministatus.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\ministatus.h"
 					>
 				</File>
 				<File
@@ -601,11 +969,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\npc.cpp"
+					RelativePath=".\src\gui\npclistdialogue.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\npc.h"
+					RelativePath=".\src\gui\npclistdialogue.h"
 					>
 				</File>
 				<File
@@ -665,11 +1033,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\requesttrade.cpp"
+					RelativePath=".\src\gui\register.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\requesttrade.h"
+					RelativePath=".\src\gui\register.h"
 					>
 				</File>
 				<File
@@ -697,11 +1065,71 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\gui\setup_audio.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_audio.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_colours.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_colours.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_joystick.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_joystick.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_keyboard.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_keyboard.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_players.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_players.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_video.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setup_video.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\setuptab.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\gui\shop.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\gui\shop.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\shoplistbox.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\shoplistbox.h"
 					>
 				</File>
 				<File
@@ -721,11 +1149,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\stats.cpp"
+					RelativePath=".\src\gui\speechbubble.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\gui\stats.h"
+					RelativePath=".\src\gui\speechbubble.h"
 					>
 				</File>
 				<File
@@ -734,6 +1162,30 @@
 				</File>
 				<File
 					RelativePath=".\src\gui\status.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\tabbedcontainer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\tabbedcontainer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\table.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\table.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\table_model.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\table_model.h"
 					>
 				</File>
 				<File
@@ -777,6 +1229,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\gui\viewport.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\viewport.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\gui\window.cpp"
 					>
 				</File>
@@ -792,16 +1252,72 @@
 					RelativePath=".\src\gui\windowcontainer.h"
 					>
 				</File>
+				<Filter
+					Name="widgets"
+					>
+					<File
+						RelativePath=".\src\gui\dropdown.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\gui\dropdown.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\gui\gettext.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\gui\resizegrip.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\gui\resizegrip.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="resources"
 				>
+				<File
+					RelativePath=".\src\resources\action.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\action.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\ambiantoverlay.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\ambiantoverlay.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\animation.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\animation.h"
+					>
+				</File>
 				<File
 					RelativePath=".\src\resources\buddylist.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\resources\buddylist.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\dye.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\dye.h"
 					>
 				</File>
 				<File
@@ -813,19 +1329,43 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\resources\imageloader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\imageloader.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\imageset.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\imageset.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\imagewriter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\imagewriter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\itemdb.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\itemdb.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\resources\iteminfo.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\resources\iteminfo.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\resources\itemmanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\resources\itemmanager.h"
 					>
 				</File>
 				<File
@@ -837,11 +1377,35 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\resources\monsterdb.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\monsterdb.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\monsterinfo.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\monsterinfo.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\resources\music.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\resources\music.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\npcdb.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\npcdb.h"
 					>
 				</File>
 				<File
@@ -866,6 +1430,62 @@
 				</File>
 				<File
 					RelativePath=".\src\resources\soundeffect.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\spritedef.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\spritedef.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="utils"
+				>
+				<File
+					RelativePath=".\src\utils\base64.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\base64.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\dtor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\fastsqrt.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\minmax.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\strprintf.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\strprintf.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\tostring.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\trim.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\xml.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\utils\xml.h"
 					>
 				</File>
 			</Filter>
