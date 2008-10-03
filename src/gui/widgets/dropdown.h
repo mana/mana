@@ -29,6 +29,7 @@
 #include <guichan/widgets/dropdown.hpp>
 #include "../scrollarea.h"
 #include "../listbox.h"
+#include "../../guichanfwd.h"
 
 class Image;
 class ImageRect;

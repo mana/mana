@@ -26,6 +26,8 @@
 
 #include <guichan/widgets/textfield.hpp>
 
+#include "../guichanfwd.h"
+
 class ImageRect;
 
 class TextField;

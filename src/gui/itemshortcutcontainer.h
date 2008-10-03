@@ -28,6 +28,8 @@
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
+#include "../guichanfwd.h"
+
 class Image;
 class Item;
 

@@ -28,6 +28,8 @@
 
 #include <SDL_types.h>
 
+#include "../guichanfwd.h"
+
 class ImageRect;
 
 

@@ -26,6 +26,8 @@
 
 #include "textfield.h"
 
+#include "../guichanfwd.h"
+
 #include <guichan/focuslistener.hpp>
 
 /**

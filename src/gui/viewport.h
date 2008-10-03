@@ -30,6 +30,7 @@
 
 #include "../configlistener.h"
 #include "../being.h"
+#include "../guichanfwd.h"
 
 class Map;
 class FloorItem;

@@ -26,6 +26,8 @@
 
 #include <guichan/actionlistener.hpp>
 
+#include "../guichanfwd.h"
+
 #include "window.h"
 
 /**

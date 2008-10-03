@@ -40,7 +40,7 @@ class Recorder : public ButtonBoxListener
 	void help() const;
 	void help(const std::string &args) const;
 	void buttonBoxRespond();
-	bool isRecording() const {return mStream.is_open();}
+	bool isRecording() const {return mStream;}
         ~Recorder();
     private:
 	ChatWindow *mChat;

@@ -26,6 +26,8 @@
 
 #include "window.h"
 
+#include "../guichanfwd.h"
+
 class ItemShortcutContainer;
 class ScrollArea;
 

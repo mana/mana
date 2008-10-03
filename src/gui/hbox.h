@@ -26,6 +26,8 @@
 
 #include "box.h"
 
+#include "../guichanfwd.h"
+
 class HBox : public Box
 {
  public:

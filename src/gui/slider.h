@@ -26,6 +26,8 @@
 
 #include <guichan/widgets/slider.hpp>
 
+#include "../guichanfwd.h"
+
 class Image;
 
 

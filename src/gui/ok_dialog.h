@@ -28,6 +28,8 @@
 
 #include "window.h"
 
+#include "../guichanfwd.h"
+
 /**
  * An 'Ok' button dialog.
  *

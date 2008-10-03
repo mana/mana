@@ -26,6 +26,8 @@
 
 #include <guichan/widgets/container.hpp>
 
+#include "../guichanfwd.h"
+
 /**
  * A window container. This container adds functionality for more convenient
  * widget (windows in particular) destruction.

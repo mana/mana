@@ -32,6 +32,7 @@
 #include "../resources/image.h"
 
 #include "../shopitem.h"
+#include "../guichanfwd.h"
 
 class ShopItems : public gcn::ListModel
 {

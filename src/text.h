@@ -23,6 +23,7 @@
 #define _AETHYRA_TEXT_H
 
 #include "graphics.h"
+#include "guichanfwd.h"
 
 #include <list>
 

@@ -29,6 +29,8 @@
 
 #include "window.h"
 
+#include "../guichanfwd.h"
+
 class TextBox;
 
 /**

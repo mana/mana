@@ -27,6 +27,8 @@
 
 #include <guichan/listmodel.hpp>
 
+#include "../guichanfwd.h"
+
 class Colour : public gcn::ListModel
 {
     public:

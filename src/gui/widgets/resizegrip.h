@@ -26,6 +26,8 @@
 
 #include <guichan/widget.hpp>
 
+#include "../../guichanfwd.h"
+
 class Image;
 
 /**

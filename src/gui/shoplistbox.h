@@ -27,6 +27,8 @@
 #include "listbox.h"
 #include "shop.h"
 
+#include "../guichanfwd.h"
+
 /**
  * A list box, meant to be used inside a scroll area. Same as the Guichan list
  * box except this one doesn't have a background, instead completely relying

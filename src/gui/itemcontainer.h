@@ -30,6 +30,8 @@
 
 #include <list>
 
+#include "../guichanfwd.h"
+
 class Image;
 class Inventory;
 class Item;

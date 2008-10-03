@@ -28,6 +28,8 @@
 
 #include <guichan/widgets/button.hpp>
 
+#include "../guichanfwd.h"
+
 class ImageRect;
 
 /**
