@@ -35,8 +35,6 @@ Minimap::Minimap():
     mMapImage(NULL)
 {
     setWindowName("MiniMap");
-    setDefaultSize(5, 25, 100, 100);
-    loadWindowState();
 }
 
 Minimap::~Minimap()
@@ -59,6 +57,8 @@ void Minimap::setMapImage(Image *img)
     if (mMapImage)
     {
         mMapImage->setAlpha(0.7);
+    	setDefaultSize(5, 25, img->getWidth(), img->getHeight());
+        loadWindowState();
     }
 }
 
@@ -103,11 +103,11 @@ void Minimap::draw(gcn::Graphics *graphics)
                 continue;
         }
 
-        int offset = (dotSize - 1) / 2;
+        int offset = (dotSize - 1);
 
         graphics->fillRectangle(gcn::Rectangle(
-                    being->mX / 2 + getPadding() - offset,
-                    being->mY / 2 + getTitleBarHeight() - offset,
+                    being->mX + getPadding() - offset,
+                    being->mY + getTitleBarHeight() - offset,
                     dotSize, dotSize));
     }
 }
