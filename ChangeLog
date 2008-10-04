@@ -1,3 +1,8 @@
+2008-10-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/resources/mapreader.cpp: Added support for object groups that
+	have an offset.
+
 2008-10-02  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/engine.cpp: The "name" property of the map is now used as caption
