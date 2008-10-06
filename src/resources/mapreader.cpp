@@ -233,6 +233,12 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
         }
         else if (xmlStrEqual(childNode->name, BAD_CAST "objectgroup"))
         {
+            // The object group offset is applied to each object individually
+            const int tileOffsetX = XML::getProperty(childNode, "x", 0);
+            const int tileOffsetY = XML::getProperty(childNode, "y", 0);
+            const int offsetX = tileOffsetX * tw;
+            const int offsetY = tileOffsetY * th;
+
             for_each_xml_child_node(objectNode, childNode)
             {
                 if (xmlStrEqual(objectNode->name, BAD_CAST "object"))
@@ -260,7 +266,7 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
                             continue;
                         }
 
-                        map->addParticleEffect(objName, objX, objY);
+                        map->addParticleEffect(objName, objX + offsetX, objY + offsetY);
                     }
                     else
                     {
@@ -310,8 +316,8 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
     // Layers are not necessarily the same size as the map
     const int w = XML::getProperty(node, "width", map->getWidth());
     const int h = XML::getProperty(node, "height", map->getHeight());
-    const int offsetX = XML::getProperty(node, "xoffset", 0);
-    const int offsetY = XML::getProperty(node, "yoffset", 0);
+    const int offsetX = XML::getProperty(node, "x", 0);
+    const int offsetY = XML::getProperty(node, "y", 0);
     const std::string name = XML::getProperty(node, "name", "");
 
     const bool isFringeLayer = (name.substr(0,6) == "Fringe");
