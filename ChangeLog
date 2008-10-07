@@ -1,3 +1,10 @@
+2008-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp, src/particleemitter.cpp,
+	src/simpleanimation.cpp, src/resources/spritedef.cpp: Fixed some
+	compiler warnings. This probably also fixed the logging of several
+	error messages.
+
 2008-10-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/resources/mapreader.cpp: Added support for object groups that

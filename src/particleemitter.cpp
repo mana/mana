@@ -213,7 +213,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
 
                     if (!img)
                     {
-                        logger->log("No image at index " + (index));
+                        logger->log("No image at index %d", index);
                         continue;
                     }
 
@@ -236,8 +236,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
 
                         if (!img)
                         {
-                            logger->log("No image at index " +
-                                    (start));
+                            logger->log("No image at index %d", start);
                             continue;
                         }
 

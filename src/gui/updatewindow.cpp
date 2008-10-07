@@ -58,9 +58,9 @@ unsigned long fadler32(FILE *file)
 
     // Calculate Adler-32 checksum
     char *buffer = (char*) malloc(fileSize);
-    fread(buffer, 1, fileSize, file);
+    const size_t read = fread(buffer, 1, fileSize, file);
     unsigned long adler = adler32(0L, Z_NULL, 0);
-    adler = adler32(adler, (Bytef*) buffer, fileSize);
+    adler = adler32(adler, (Bytef*) buffer, read);
     free(buffer);
 
     return adler;

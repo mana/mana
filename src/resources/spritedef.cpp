@@ -232,7 +232,7 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
 
             if (!img)
             {
-                logger->log("No image at index " + (index + variant_offset));
+                logger->log("No image at index %d", index + variant_offset);
                 continue;
             }
 
@@ -255,8 +255,7 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
 
                 if (!img)
                 {
-                    logger->log("No image at index " +
-                            (start + variant_offset));
+                    logger->log("No image at index %d", start + variant_offset);
                     continue;
                 }
 
