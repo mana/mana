@@ -236,8 +236,8 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
             // The object group offset is applied to each object individually
             const int tileOffsetX = XML::getProperty(childNode, "x", 0);
             const int tileOffsetY = XML::getProperty(childNode, "y", 0);
-            const int offsetX = tileOffsetX * tw;
-            const int offsetY = tileOffsetY * th;
+            const int offsetX = tileOffsetX * tilew;
+            const int offsetY = tileOffsetY * tileh;
 
             for_each_xml_child_node(objectNode, childNode)
             {
