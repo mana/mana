@@ -8,12 +8,14 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2007-10-28 18:59+0100\n"
-"PO-Revision-Date: 2007-08-27 20:39+0100\n"
-"Last-Translator: Matthias Hartmann <hartmann.matthias@gmail.com>\n"
+"PO-Revision-Date: 2008-05-01 09:56+0000\n"
+"Last-Translator: fate <Unknown>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2008-10-09 20:16+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: src/gui/buy.cpp:43 src/gui/buy.cpp:60
 msgid "Buy"
@@ -51,7 +53,7 @@ msgstr "Bestätigen"
 
 #: src/gui/char_select.cpp:72
 msgid "Are you sure you want to delete this character?"
-msgstr "Bist du dir sicher ob du diese Spielfigur löschen möchtest?"
+msgstr "Bist Du sicher, daß Du diese Spielfigur löschen möchtest?"
 
 #: src/gui/char_select.cpp:88
 msgid "Select Character"
@@ -82,11 +84,11 @@ msgstr "Löschen"
 
 #: src/gui/char_select.cpp:96
 msgid "Previous"
-msgstr "Vorherige"
+msgstr "Zurück"
 
 #: src/gui/char_select.cpp:97
 msgid "Next"
-msgstr "Nächste"
+msgstr "Weiter"
 
 #: src/gui/char_select.cpp:98
 msgid "Unregister"
@@ -103,7 +105,7 @@ msgstr "Name : %s"
 #: src/gui/char_select.cpp:201
 #, c-format
 msgid "Level: %d"
-msgstr "Level: %d"
+msgstr "Stufe: %d"
 
 #: src/gui/char_select.cpp:102 src/gui/char_select.cpp:191
 #: src/gui/char_select.cpp:202
@@ -125,7 +127,7 @@ msgstr "Haarfarbe"
 
 #: src/gui/char_select.cpp:258
 msgid "Hair Style:"
-msgstr "Haarstil:"
+msgstr "Frisur"
 
 #: src/gui/char_select.cpp:259
 msgid "Create"
@@ -180,7 +182,7 @@ msgstr "Spielfigurattribute OK"
 #: src/gui/char_select.cpp:428
 #, c-format
 msgid "Please remove %d points"
-msgstr "Bitte entferne %d punti"
+msgstr "Bitte entferne %d Punkte"
 
 #: src/gui/confirm_dialog.cpp:37
 msgid "Yes"
@@ -208,7 +210,7 @@ msgstr "Inventar"
 
 #: src/gui/inventorywindow.cpp:64 src/gui/inventorywindow.cpp:197
 msgid "Use"
-msgstr "Nutzen"
+msgstr "Benutzen"
 
 #: src/gui/inventorywindow.cpp:65
 msgid "Drop"
@@ -229,16 +231,15 @@ msgstr "Ausrüsten"
 
 #: src/gui/item_amount.cpp:83
 msgid "Select amount of items to trade."
-msgstr "Wähle die Menge der Tauschgegenstände aus."
+msgstr "Wähle aus, wieviele Gegenstände Du tauschen möchtest."
 
 #: src/gui/item_amount.cpp:87
 msgid "Select amount of items to drop."
-msgstr "Wähle die Menge der zu wegwerfenden Gegenstände aus."
+msgstr "Wähle aus, wieviele Gegenstände Du wegwerfen möchtest."
 
 #: src/gui/item_amount.cpp:91
-#, fuzzy
 msgid "Select amount of items to split."
-msgstr "Wähle die Menge der zu wegwerfenden Gegenstände aus."
+msgstr "Wähle aus, wieviel Gegenstände Du aufteilen möchtest."
 
 #: src/gui/login.cpp:44
 msgid "Login"
@@ -262,11 +263,11 @@ msgstr "Status"
 
 #: src/gui/menuwindow.cpp:65
 msgid "Skills"
-msgstr "Fähigkeiten"
+msgstr "Fertigkeiten"
 
 #: src/gui/menuwindow.cpp:66
 msgid "Shortcut"
-msgstr "Tastenkombination"
+msgstr "Tastenkürzel"
 
 #: src/gui/menuwindow.cpp:67 src/gui/setup.cpp:47
 msgid "Setup"
@@ -292,7 +293,7 @@ msgstr "@@attack|%s angreifen@@"
 
 #: src/gui/popupmenu.cpp:90
 msgid "@@talk|Talk To NPC@@"
-msgstr "@@talk|Mit NPC reden@@"
+msgstr "@@talk|Mit NSC reden@@"
 
 #: src/gui/popupmenu.cpp:100 src/gui/popupmenu.cpp:116
 #: src/gui/popupmenu.cpp:225
@@ -365,13 +366,12 @@ msgid "Passwords do not match."
 msgstr "Passwörter stimmen nicht überein."
 
 #: src/gui/sell.cpp:47 src/gui/sell.cpp:64
-#, fuzzy
 msgid "Sell"
-msgstr "Fähigkeiten"
+msgstr "Verkaufen"
 
 #: src/gui/serverdialog.cpp:77
 msgid "Choose your Mana World Server"
-msgstr "Wähle deinen Mana World Spielserver"
+msgstr "Wähle Deinen Mana World Spielserver"
 
 #: src/gui/serverdialog.cpp:79
 msgid "Server:"
@@ -387,15 +387,15 @@ msgstr "Bitte die Adresse und den Port eines Servers eingeben"
 
 #: src/gui/setup_audio.cpp:42
 msgid "Sound"
-msgstr "Sound"
+msgstr "Ton"
 
 #: src/gui/setup_audio.cpp:48
 msgid "Sfx volume"
-msgstr "Soundeffekt Lautstärke"
+msgstr "Lautstärke der Klangeffekte"
 
 #: src/gui/setup_audio.cpp:49
 msgid "Music volume"
-msgstr "Musik Lautstärke"
+msgstr "Latustärke der Musik"
 
 #: src/gui/setup.cpp:55
 msgid "Apply"
@@ -467,7 +467,7 @@ msgstr "Scroll-Trägheit"
 
 #: src/gui/setup_video.cpp:202
 msgid "Ambient FX"
-msgstr "Hintergrundmusik"
+msgstr "Hintergrundeffekte"
 
 #: src/gui/setup_video.cpp:209 src/gui/setup_video.cpp:369
 msgid "off"
@@ -487,7 +487,7 @@ msgstr "Wechsle zum Vollbildmodus"
 
 #: src/gui/setup_video.cpp:269
 msgid "Restart needed for changes to take effect."
-msgstr "Änderungen werden erst nach einem Neustart der Anwendung angewendet."
+msgstr "Änderungen treten erst nach einem Neustart des Programmes in Kraft."
 
 #: src/gui/setup_video.cpp:280
 msgid "Changing OpenGL"
@@ -495,7 +495,9 @@ msgstr "Ändere OpenGL"
 
 #: src/gui/setup_video.cpp:281
 msgid "Applying change to OpenGL requires restart."
-msgstr "Änderungen an OpenGL werden erst nach einem Neustart der Anwendung übernommen."
+msgstr ""
+"Änderungen an OpenGL werden erst nach einem Neustart der Anwendung "
+"übernommen."
 
 #: src/gui/trade.cpp:61
 msgid "Add"
@@ -506,9 +508,8 @@ msgid "Propose trade"
 msgstr "Handel vorschlagen"
 
 #: src/gui/trade.cpp:66 src/gui/trade.cpp:181
-#, fuzzy
 msgid "Confirm trade"
-msgstr "Bestätigen"
+msgstr "Handel bestätigen"
 
 #: src/gui/trade.cpp:76 src/gui/trade.cpp:118 src/gui/trade.cpp:132
 #, c-format
@@ -520,9 +521,8 @@ msgid "You give:"
 msgstr "Du gibst:"
 
 #: src/gui/trade.cpp:80
-#, fuzzy
 msgid "Change"
-msgstr "Abbrechen"
+msgstr "Ändern"
 
 #: src/resources/itemdb.cpp:53
 #, c-format

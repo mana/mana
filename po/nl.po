@@ -8,18 +8,18 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2007-10-28 18:59+0100\n"
-"PO-Revision-Date: 2007-10-24 06:14+0000\n"
+"PO-Revision-Date: 2007-12-03 11:01+0000\n"
 "Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
 "Language-Team: Dutch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2007-10-24 11:48+0000\n"
+"X-Launchpad-Export-Date: 2008-10-09 20:16+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/gui/buy.cpp:43 src/gui/buy.cpp:60
 msgid "Buy"
-msgstr ""
+msgstr "Kopen"
 
 #: src/gui/buy.cpp:57 src/gui/buy.cpp:234 src/gui/sell.cpp:61
 #: src/gui/sell.cpp:241
@@ -218,7 +218,7 @@ msgstr "Neerleggen"
 
 #: src/gui/inventorywindow.cpp:66
 msgid "Split"
-msgstr ""
+msgstr "Splitsen"
 
 #: src/gui/inventorywindow.cpp:78 src/gui/inventorywindow.cpp:107
 #, c-format
@@ -238,9 +238,8 @@ msgid "Select amount of items to drop."
 msgstr "Selecteer het aantal exemplaren om neer te leggen"
 
 #: src/gui/item_amount.cpp:91
-#, fuzzy
 msgid "Select amount of items to split."
-msgstr "Selecteer het aantal exemplaren om neer te leggen"
+msgstr ""
 
 #: src/gui/login.cpp:44
 msgid "Login"
@@ -367,9 +366,8 @@ msgid "Passwords do not match."
 msgstr "Wachtwoorden komen niet overeen."
 
 #: src/gui/sell.cpp:47 src/gui/sell.cpp:64
-#, fuzzy
 msgid "Sell"
-msgstr "Vaardigheden"
+msgstr ""
 
 #: src/gui/serverdialog.cpp:77
 msgid "Choose your Mana World Server"
@@ -497,7 +495,8 @@ msgstr "Veranderen van OpenGL"
 
 #: src/gui/setup_video.cpp:281
 msgid "Applying change to OpenGL requires restart."
-msgstr "Het wisselen van of naar OpenGL wordt pas actief na opnieuw opstarten"
+msgstr ""
+"Het wisselen van of naar OpenGL wordt pas actief na opnieuw opstarten"
 
 #: src/gui/trade.cpp:61
 msgid "Add"
@@ -508,9 +507,8 @@ msgid "Propose trade"
 msgstr ""
 
 #: src/gui/trade.cpp:66 src/gui/trade.cpp:181
-#, fuzzy
 msgid "Confirm trade"
-msgstr "Bevestigen"
+msgstr ""
 
 #: src/gui/trade.cpp:76 src/gui/trade.cpp:118 src/gui/trade.cpp:132
 #, c-format
@@ -519,12 +517,11 @@ msgstr ""
 
 #: src/gui/trade.cpp:77
 msgid "You give:"
-msgstr ""
+msgstr "Je geeft:"
 
 #: src/gui/trade.cpp:80
-#, fuzzy
 msgid "Change"
-msgstr "Annuleren"
+msgstr ""
 
 #: src/resources/itemdb.cpp:53
 #, c-format

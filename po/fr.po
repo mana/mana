@@ -2,19 +2,21 @@
 # Copyright (C) 2007 The Mana World Development Team
 # This file is distributed under the same license as the The Mana World package.
 # Guillaume Melquiond <guillaume.melquiond@gmail.com>, 2007.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2007-10-28 18:59+0100\n"
-"PO-Revision-Date: 2007-10-28 19:12+0100\n"
-"Last-Translator: Guillaume Melquiond <guillaume.melquiond@gmail.com>\n"
+"PO-Revision-Date: 2007-12-03 01:45+0000\n"
+"Last-Translator: Guillaume Melquiond <Unknown>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2008-10-09 20:16+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: src/gui/buy.cpp:43 src/gui/buy.cpp:60
 msgid "Buy"
@@ -542,4 +544,3 @@ msgstr "PV %+d"
 #, c-format
 msgid "MP %+d"
 msgstr "PM %+d"
-

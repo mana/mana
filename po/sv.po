@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2007-10-28 18:59+0100\n"
-"PO-Revision-Date: 2007-12-19 16:43+0000\n"
-"Last-Translator: Zirro <Unknown>\n"
+"PO-Revision-Date: 2008-05-07 19:04+0000\n"
+"Last-Translator: Kess Vargavind <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-02-26 10:00+0000\n"
+"X-Launchpad-Export-Date: 2008-10-09 20:16+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/gui/buy.cpp:43 src/gui/buy.cpp:60
@@ -127,7 +127,7 @@ msgstr "Hårfärg:"
 
 #: src/gui/char_select.cpp:258
 msgid "Hair Style:"
-msgstr "Hårstil:"
+msgstr "Frisyr:"
 
 #: src/gui/char_select.cpp:259
 msgid "Create"
@@ -143,11 +143,11 @@ msgstr "Smidighet:"
 
 #: src/gui/char_select.cpp:264
 msgid "Dexterity:"
-msgstr ""
+msgstr "Skicklighet:"
 
 #: src/gui/char_select.cpp:265
 msgid "Vitality:"
-msgstr ""
+msgstr "Hälsa:"
 
 #: src/gui/char_select.cpp:266
 msgid "Intelligence:"
@@ -155,7 +155,7 @@ msgstr "Intelligens:"
 
 #: src/gui/char_select.cpp:267
 msgid "Willpower:"
-msgstr ""
+msgstr "Viljestyrka:"
 
 #: src/gui/char_select.cpp:268
 msgid "Charisma:"
@@ -164,7 +164,7 @@ msgstr "Karisma:"
 #: src/gui/char_select.cpp:276 src/gui/char_select.cpp:424
 #, c-format
 msgid "Please distribute %d points"
-msgstr ""
+msgstr "Var vänlig fördela %d poäng"
 
 #: src/gui/char_select.cpp:368 src/gui/register.cpp:220
 #: src/gui/serverdialog.cpp:171
@@ -177,12 +177,12 @@ msgstr "Ditt namn måste vara minst 4 tecken långt."
 
 #: src/gui/char_select.cpp:416
 msgid "Character stats OK"
-msgstr ""
+msgstr "Karaktärens värden OK"
 
 #: src/gui/char_select.cpp:428
 #, c-format
 msgid "Please remove %d points"
-msgstr ""
+msgstr "Var vänlig ta bort %d poäng"
 
 #: src/gui/confirm_dialog.cpp:37
 msgid "Yes"
@@ -202,11 +202,11 @@ msgstr "Utrustning"
 
 #: src/gui/equipmentwindow.cpp:66
 msgid "Unequip"
-msgstr "Ta av"
+msgstr "Avrusta"
 
 #: src/gui/inventorywindow.cpp:53 src/gui/menuwindow.cpp:64
 msgid "Inventory"
-msgstr ""
+msgstr "Inventarium"
 
 #: src/gui/inventorywindow.cpp:64 src/gui/inventorywindow.cpp:197
 msgid "Use"
@@ -218,28 +218,28 @@ msgstr "Släpp"
 
 #: src/gui/inventorywindow.cpp:66
 msgid "Split"
-msgstr "Dela upp"
+msgstr "Dela"
 
 #: src/gui/inventorywindow.cpp:78 src/gui/inventorywindow.cpp:107
 #, c-format
 msgid "Total Weight: %d - Maximum Weight: %d"
-msgstr "Total vikt: %d - Max vikt: %d"
+msgstr "Nuvarande vikt: %d - Maxvikt: %d"
 
 #: src/gui/inventorywindow.cpp:194
 msgid "Equip"
-msgstr "Ta på"
+msgstr "Utrusta"
 
 #: src/gui/item_amount.cpp:83
 msgid "Select amount of items to trade."
-msgstr "Välj antalet föremål att byta."
+msgstr "Välj antal föremål att handla med."
 
 #: src/gui/item_amount.cpp:87
 msgid "Select amount of items to drop."
-msgstr "Välj antalet föremål att tappa."
+msgstr "Välj antal föremål att släppa."
 
 #: src/gui/item_amount.cpp:91
 msgid "Select amount of items to split."
-msgstr "Välj antalet föremål att dela upp."
+msgstr "Välj antal föremål att dela."
 
 #: src/gui/login.cpp:44
 msgid "Login"
@@ -271,7 +271,7 @@ msgstr "Genväg"
 
 #: src/gui/menuwindow.cpp:67 src/gui/setup.cpp:47
 msgid "Setup"
-msgstr "Installera"
+msgstr "Inställningar"
 
 #: src/gui/minimap.cpp:36
 msgid "MiniMap"
@@ -284,46 +284,46 @@ msgstr "NPC"
 #: src/gui/popupmenu.cpp:79
 #, c-format
 msgid "@@trade|Trade With %s@@"
-msgstr ""
+msgstr "@@trade|Handla med %s@@"
 
 #: src/gui/popupmenu.cpp:81
 #, c-format
 msgid "@@attack|Attack %s@@"
-msgstr ""
+msgstr "@@attack|Attackera %s@@"
 
 #: src/gui/popupmenu.cpp:90
 msgid "@@talk|Talk To NPC@@"
-msgstr ""
+msgstr "@@talk|Prata med NPC@@"
 
 #: src/gui/popupmenu.cpp:100 src/gui/popupmenu.cpp:116
 #: src/gui/popupmenu.cpp:225
 msgid "@@cancel|Cancel@@"
-msgstr ""
+msgstr "@@cancel|Avbryt@@"
 
 #: src/gui/popupmenu.cpp:112
 #, c-format
 msgid "@@pickup|Pick Up %s@@"
-msgstr ""
+msgstr "@@pickup|Plocka upp %s@@"
 
 #: src/gui/popupmenu.cpp:216
 msgid "@@use|Equip@@"
-msgstr ""
+msgstr "@@use|Utrusta@@"
 
 #: src/gui/popupmenu.cpp:219
 msgid "@@use|Use@@"
-msgstr ""
+msgstr "@@use|Använd@@"
 
 #: src/gui/popupmenu.cpp:220
 msgid "@@drop|Drop@@"
-msgstr ""
+msgstr "@@drop|Släpp@@"
 
 #: src/gui/popupmenu.cpp:221
 msgid "@@description|Description@@"
-msgstr ""
+msgstr "@@description|Beskrivning@@"
 
 #: src/gui/popupmenu.cpp:223
 msgid "@@split|Split@@"
-msgstr ""
+msgstr "@@split|Dela@@"
 
 #: src/gui/quitdialog.cpp:42
 msgid "Switch server"
@@ -344,26 +344,26 @@ msgstr "E-post:"
 #: src/gui/register.cpp:168
 #, c-format
 msgid "The username needs to be at least %d characters long."
-msgstr "Användarnamnet måste vara minst %d bokstäver långt."
+msgstr "Användarnamnet måste vara minst %d tecken långt."
 
 #: src/gui/register.cpp:176
 #, c-format
 msgid "The username needs to be less than %d characters long."
-msgstr "Användarnamnet får inte vara längre än %d bokstäver."
+msgstr "Användarnamnet måste vara kortare än %d tecken."
 
 #: src/gui/register.cpp:184
 #, c-format
 msgid "The password needs to be at least %d characters long."
-msgstr "Lösenordet måste vara minst %d bokstäver långt."
+msgstr "Lösenordet måste vara minst %d tecken långt."
 
 #: src/gui/register.cpp:192
 #, c-format
 msgid "The password needs to be less than %d characters long."
-msgstr "Lösenordet får inte vara längre än %d bokstäver."
+msgstr "Lösenordet måste vara kortare än %d tecken."
 
 #: src/gui/register.cpp:199
 msgid "Passwords do not match."
-msgstr "Lösenorden stämmer inte överens med varandra."
+msgstr "Lösenorden stämmer inte överens."
 
 #: src/gui/sell.cpp:47 src/gui/sell.cpp:64
 msgid "Sell"
@@ -371,7 +371,7 @@ msgstr "Sälj"
 
 #: src/gui/serverdialog.cpp:77
 msgid "Choose your Mana World Server"
-msgstr "Välj din Mana World Server"
+msgstr "Välj din Mana World-server"
 
 #: src/gui/serverdialog.cpp:79
 msgid "Server:"
@@ -383,7 +383,7 @@ msgstr "Port:"
 
 #: src/gui/serverdialog.cpp:172
 msgid "Please type both the address and the port of a server."
-msgstr ""
+msgstr "Var vänlig skriv både adressen och porten till en server."
 
 #: src/gui/setup_audio.cpp:42
 msgid "Sound"
@@ -391,19 +391,19 @@ msgstr "Ljud"
 
 #: src/gui/setup_audio.cpp:48
 msgid "Sfx volume"
-msgstr "Sfx volym"
+msgstr "Volym för ljudeffekter"
 
 #: src/gui/setup_audio.cpp:49
 msgid "Music volume"
-msgstr "Musik volym"
+msgstr "Musikvolym"
 
 #: src/gui/setup.cpp:55
 msgid "Apply"
-msgstr ""
+msgstr "Verkställ"
 
 #: src/gui/setup.cpp:55
 msgid "Reset Windows"
-msgstr ""
+msgstr "Återställ fönster"
 
 #: src/gui/setup.cpp:72
 msgid "Video"
@@ -415,7 +415,7 @@ msgstr "Ljud"
 
 #: src/gui/setup.cpp:80
 msgid "Joystick"
-msgstr "Styrspak"
+msgstr "Joystick"
 
 #: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:72
 msgid "Press the button to start calibration"
@@ -427,7 +427,7 @@ msgstr "Kalibrera"
 
 #: src/gui/setup_joystick.cpp:40
 msgid "Enable joystick"
-msgstr ""
+msgstr "Aktivera joystick"
 
 #: src/gui/setup_joystick.cpp:75
 msgid "Stop"
@@ -435,7 +435,7 @@ msgstr "Stopp"
 
 #: src/gui/setup_joystick.cpp:76
 msgid "Rotate the stick"
-msgstr ""
+msgstr "Rotera spaken"
 
 #: src/gui/setup_video.cpp:113
 msgid "Full screen"
@@ -443,31 +443,31 @@ msgstr "Helskärm"
 
 #: src/gui/setup_video.cpp:114
 msgid "OpenGL"
-msgstr ""
+msgstr "OpenGL"
 
 #: src/gui/setup_video.cpp:115
 msgid "Custom cursor"
-msgstr "Egen muspekare"
+msgstr "Särskild muspekare"
 
 #: src/gui/setup_video.cpp:117
 msgid "FPS Limit:"
-msgstr "FPS gräns:"
+msgstr "FPS-gräns:"
 
 #: src/gui/setup_video.cpp:133
 msgid "Gui opacity"
-msgstr ""
+msgstr "Genomskinlighet"
 
 #: src/gui/setup_video.cpp:186
 msgid "Scroll radius"
-msgstr ""
+msgstr "Rullningsradie"
 
 #: src/gui/setup_video.cpp:194
 msgid "Scroll laziness"
-msgstr ""
+msgstr "Tröghet för rullning"
 
 #: src/gui/setup_video.cpp:202
 msgid "Ambient FX"
-msgstr ""
+msgstr "Omgivande FX"
 
 #: src/gui/setup_video.cpp:209 src/gui/setup_video.cpp:369
 msgid "off"
@@ -487,15 +487,15 @@ msgstr "Byte till helskärm"
 
 #: src/gui/setup_video.cpp:269
 msgid "Restart needed for changes to take effect."
-msgstr "Du måste starta om för att ändringarna ska synas."
+msgstr "Omstart krävs för att ändringarna ska synas."
 
 #: src/gui/setup_video.cpp:280
 msgid "Changing OpenGL"
-msgstr ""
+msgstr "Ändrar OpenGL"
 
 #: src/gui/setup_video.cpp:281
 msgid "Applying change to OpenGL requires restart."
-msgstr ""
+msgstr "Ändringar i OpenGL kräver omstart."
 
 #: src/gui/trade.cpp:61
 msgid "Add"
@@ -503,11 +503,11 @@ msgstr "Lägg till"
 
 #: src/gui/trade.cpp:63 src/gui/trade.cpp:65 src/gui/trade.cpp:181
 msgid "Propose trade"
-msgstr ""
+msgstr "Föreslå handel"
 
 #: src/gui/trade.cpp:66 src/gui/trade.cpp:181
 msgid "Confirm trade"
-msgstr "Godkänn byte"
+msgstr "Bekräfta handel"
 
 #: src/gui/trade.cpp:76 src/gui/trade.cpp:118 src/gui/trade.cpp:132
 #, c-format
@@ -516,7 +516,7 @@ msgstr "Du får %d GP."
 
 #: src/gui/trade.cpp:77
 msgid "You give:"
-msgstr "Du erbjuder:"
+msgstr "Du ger:"
 
 #: src/gui/trade.cpp:80
 msgid "Change"
@@ -525,19 +525,19 @@ msgstr "Ändra"
 #: src/resources/itemdb.cpp:53
 #, c-format
 msgid "Attack %+d"
-msgstr "Attackera %+d"
+msgstr "Attack %+d"
 
 #: src/resources/itemdb.cpp:54
 #, c-format
 msgid "Defense %+d"
-msgstr "Försvara %+d"
+msgstr "Försvar %+d"
 
 #: src/resources/itemdb.cpp:55
 #, c-format
 msgid "HP %+d"
-msgstr ""
+msgstr "Hälsa %+d"
 
 #: src/resources/itemdb.cpp:56
 #, c-format
 msgid "MP %+d"
-msgstr ""
+msgstr "Mana %+d"

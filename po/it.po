@@ -10,56 +10,41 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2007-10-28 18:59+0100\n"
-"PO-Revision-Date: 2007-11-14 17:03+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2007-12-03 01:45+0000\n"
+"Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2008-10-09 20:16+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
-#: src/gui/buy.cpp:43
-#: src/gui/buy.cpp:60
+#: src/gui/buy.cpp:43 src/gui/buy.cpp:60
 msgid "Buy"
 msgstr "Compra"
 
-#: src/gui/buy.cpp:57
-#: src/gui/buy.cpp:234
-#: src/gui/sell.cpp:61
+#: src/gui/buy.cpp:57 src/gui/buy.cpp:234 src/gui/sell.cpp:61
 #: src/gui/sell.cpp:241
 #, c-format
 msgid "Price: %d GP / Total: %d GP"
 msgstr "Prezzo: %d GP / Totale: %d GP"
 
-#: src/gui/buy.cpp:61
-#: src/gui/quitdialog.cpp:37
-#: src/gui/quitdialog.cpp:40
-#: src/gui/quitdialog.cpp:41
-#: src/gui/sell.cpp:65
+#: src/gui/buy.cpp:61 src/gui/quitdialog.cpp:37 src/gui/quitdialog.cpp:40
+#: src/gui/quitdialog.cpp:41 src/gui/sell.cpp:65
 msgid "Quit"
 msgstr "Esci"
 
-#: src/gui/buy.cpp:62
-#: src/gui/buy.cpp:203
-#: src/gui/buy.cpp:219
-#: src/gui/inventorywindow.cpp:75
-#: src/gui/inventorywindow.cpp:156
-#: src/gui/sell.cpp:66
-#: src/gui/sell.cpp:212
-#: src/gui/sell.cpp:226
-#: src/gui/trade.cpp:84
-#: src/gui/trade.cpp:171
+#: src/gui/buy.cpp:62 src/gui/buy.cpp:203 src/gui/buy.cpp:219
+#: src/gui/inventorywindow.cpp:75 src/gui/inventorywindow.cpp:156
+#: src/gui/sell.cpp:66 src/gui/sell.cpp:212 src/gui/sell.cpp:226
+#: src/gui/trade.cpp:84 src/gui/trade.cpp:171
 #, c-format
 msgid "Description: %s"
 msgstr "Descrizione : %s"
 
-#: src/gui/buy.cpp:63
-#: src/gui/buy.cpp:205
-#: src/gui/buy.cpp:220
-#: src/gui/inventorywindow.cpp:76
-#: src/gui/inventorywindow.cpp:154
-#: src/gui/sell.cpp:67
-#: src/gui/sell.cpp:214
-#: src/gui/sell.cpp:227
+#: src/gui/buy.cpp:63 src/gui/buy.cpp:205 src/gui/buy.cpp:220
+#: src/gui/inventorywindow.cpp:76 src/gui/inventorywindow.cpp:154
+#: src/gui/sell.cpp:67 src/gui/sell.cpp:214 src/gui/sell.cpp:227
 #, c-format
 msgid "Effect: %s"
 msgstr "Effetto : %s"
@@ -76,30 +61,20 @@ msgstr "Sei sicuro di voler cancellare questo personaggio?"
 msgid "Select Character"
 msgstr "Scelta Personaggio"
 
-#: src/gui/char_select.cpp:92
-#: src/gui/item_amount.cpp:47
-#: src/gui/login.cpp:51
-#: src/gui/npclistdialog.cpp:41
-#: src/gui/npc_text.cpp:42
-#: src/gui/ok_dialog.cpp:37
-#: src/gui/quitdialog.cpp:44
+#: src/gui/char_select.cpp:92 src/gui/item_amount.cpp:47 src/gui/login.cpp:51
+#: src/gui/npclistdialog.cpp:41 src/gui/npc_text.cpp:42
+#: src/gui/ok_dialog.cpp:37 src/gui/quitdialog.cpp:44
 #: src/gui/serverdialog.cpp:110
 msgid "Ok"
 msgstr "Ok"
 
-#: src/gui/char_select.cpp:93
-#: src/gui/char_select.cpp:260
-#: src/gui/connection.cpp:40
-#: src/gui/item_amount.cpp:48
-#: src/gui/login.cpp:52
-#: src/gui/npclistdialog.cpp:42
-#: src/gui/quitdialog.cpp:45
-#: src/gui/register.cpp:76
-#: src/gui/serverdialog.cpp:111
-#: src/gui/setup.cpp:55
+#: src/gui/char_select.cpp:93 src/gui/char_select.cpp:260
+#: src/gui/connection.cpp:40 src/gui/item_amount.cpp:48 src/gui/login.cpp:52
+#: src/gui/npclistdialog.cpp:42 src/gui/quitdialog.cpp:45
+#: src/gui/register.cpp:76 src/gui/serverdialog.cpp:111 src/gui/setup.cpp:55
 #: src/gui/trade.cpp:62
 msgid "Cancel"
-msgstr "Annulla"
+msgstr "Cancella"
 
 #: src/gui/char_select.cpp:94
 msgid "New"
@@ -121,38 +96,30 @@ msgstr "Prossimo"
 msgid "Unregister"
 msgstr "Cancella registrazione"
 
-#: src/gui/char_select.cpp:100
-#: src/gui/char_select.cpp:189
-#: src/gui/char_select.cpp:200
-#: src/gui/inventorywindow.cpp:73
-#: src/gui/inventorywindow.cpp:152
-#: src/gui/trade.cpp:82
-#: src/gui/trade.cpp:169
+#: src/gui/char_select.cpp:100 src/gui/char_select.cpp:189
+#: src/gui/char_select.cpp:200 src/gui/inventorywindow.cpp:73
+#: src/gui/inventorywindow.cpp:152 src/gui/trade.cpp:82 src/gui/trade.cpp:169
 #, c-format
 msgid "Name: %s"
 msgstr "Nome : %s"
 
-#: src/gui/char_select.cpp:101
-#: src/gui/char_select.cpp:190
+#: src/gui/char_select.cpp:101 src/gui/char_select.cpp:190
 #: src/gui/char_select.cpp:201
 #, c-format
 msgid "Level: %d"
 msgstr "Livello: %d"
 
-#: src/gui/char_select.cpp:102
-#: src/gui/char_select.cpp:191
+#: src/gui/char_select.cpp:102 src/gui/char_select.cpp:191
 #: src/gui/char_select.cpp:202
 #, c-format
 msgid "Money: %d"
-msgstr "Denaro: %d"
+msgstr "Monete: %d"
 
 #: src/gui/char_select.cpp:245
 msgid "Create Character"
 msgstr "Crea Personaggio"
 
-#: src/gui/char_select.cpp:252
-#: src/gui/login.cpp:46
-#: src/gui/register.cpp:67
+#: src/gui/char_select.cpp:252 src/gui/login.cpp:46 src/gui/register.cpp:67
 msgid "Name:"
 msgstr "Nome :"
 
@@ -162,11 +129,11 @@ msgstr "Colore Capelli"
 
 #: src/gui/char_select.cpp:258
 msgid "Hair Style:"
-msgstr "Taglio Capelli:"
+msgstr "Stile Capelli:"
 
 #: src/gui/char_select.cpp:259
 msgid "Create"
-msgstr "Crea"
+msgstr "Create"
 
 #: src/gui/char_select.cpp:262
 msgid "Strength:"
@@ -196,14 +163,12 @@ msgstr "Volontà:"
 msgid "Charisma:"
 msgstr "Carisma:"
 
-#: src/gui/char_select.cpp:276
-#: src/gui/char_select.cpp:424
+#: src/gui/char_select.cpp:276 src/gui/char_select.cpp:424
 #, c-format
 msgid "Please distribute %d points"
-msgstr "Prego distribuisci %d punti"
+msgstr "Prego distribuisci %d points"
 
-#: src/gui/char_select.cpp:368
-#: src/gui/register.cpp:220
+#: src/gui/char_select.cpp:368 src/gui/register.cpp:220
 #: src/gui/serverdialog.cpp:171
 msgid "Error"
 msgstr "Errore"
@@ -233,8 +198,7 @@ msgstr "No"
 msgid "Connecting..."
 msgstr "Connessione..."
 
-#: src/gui/equipmentwindow.cpp:57
-#: src/gui/menuwindow.cpp:63
+#: src/gui/equipmentwindow.cpp:57 src/gui/menuwindow.cpp:63
 msgid "Equipment"
 msgstr "Equipaggiamento"
 
@@ -242,13 +206,11 @@ msgstr "Equipaggiamento"
 msgid "Unequip"
 msgstr "Rimuovi"
 
-#: src/gui/inventorywindow.cpp:53
-#: src/gui/menuwindow.cpp:64
+#: src/gui/inventorywindow.cpp:53 src/gui/menuwindow.cpp:64
 msgid "Inventory"
 msgstr "Inventario"
 
-#: src/gui/inventorywindow.cpp:64
-#: src/gui/inventorywindow.cpp:197
+#: src/gui/inventorywindow.cpp:64 src/gui/inventorywindow.cpp:197
 msgid "Use"
 msgstr "Usa"
 
@@ -260,8 +222,7 @@ msgstr "Lascia"
 msgid "Split"
 msgstr "Lascia"
 
-#: src/gui/inventorywindow.cpp:78
-#: src/gui/inventorywindow.cpp:107
+#: src/gui/inventorywindow.cpp:78 src/gui/inventorywindow.cpp:107
 #, c-format
 msgid "Total Weight: %d - Maximum Weight: %d"
 msgstr "Peso totale : %d - Peso massimo : %d"
@@ -286,18 +247,15 @@ msgstr "Seleziona la quantità di oggetti da lasciare."
 msgid "Login"
 msgstr "Autenticazione"
 
-#: src/gui/login.cpp:47
-#: src/gui/register.cpp:68
+#: src/gui/login.cpp:47 src/gui/register.cpp:68
 msgid "Password:"
 msgstr "Password:"
 
 #: src/gui/login.cpp:50
 msgid "Keep"
-msgstr "Ricorda"
+msgstr "Mantieni"
 
-#: src/gui/login.cpp:53
-#: src/gui/register.cpp:63
-#: src/gui/register.cpp:75
+#: src/gui/login.cpp:53 src/gui/register.cpp:63 src/gui/register.cpp:75
 msgid "Register"
 msgstr "Registra"
 
@@ -313,8 +271,7 @@ msgstr "Abilità"
 msgid "Shortcut"
 msgstr "Scorciatoia"
 
-#: src/gui/menuwindow.cpp:67
-#: src/gui/setup.cpp:47
+#: src/gui/menuwindow.cpp:67 src/gui/setup.cpp:47
 msgid "Setup"
 msgstr "Impostazioni"
 
@@ -322,10 +279,9 @@ msgstr "Impostazioni"
 msgid "MiniMap"
 msgstr "Mini mappa"
 
-#: src/gui/npclistdialog.cpp:37
-#: src/gui/npc_text.cpp:37
+#: src/gui/npclistdialog.cpp:37 src/gui/npc_text.cpp:37
 msgid "NPC"
-msgstr "PNG"
+msgstr "NPC"
 
 #: src/gui/popupmenu.cpp:79
 #, c-format
@@ -341,8 +297,7 @@ msgstr "@@attack|Attacca %s@@"
 msgid "@@talk|Talk To NPC@@"
 msgstr "@@talk|Parla con NPC@@"
 
-#: src/gui/popupmenu.cpp:100
-#: src/gui/popupmenu.cpp:116
+#: src/gui/popupmenu.cpp:100 src/gui/popupmenu.cpp:116
 #: src/gui/popupmenu.cpp:225
 msgid "@@cancel|Cancel@@"
 msgstr "@@cancel|Cancella@@"
@@ -412,8 +367,7 @@ msgstr "La password deve contenere meno di %d caratteri."
 msgid "Passwords do not match."
 msgstr "Le password non corrispondono."
 
-#: src/gui/sell.cpp:47
-#: src/gui/sell.cpp:64
+#: src/gui/sell.cpp:47 src/gui/sell.cpp:64
 msgid "Sell"
 msgstr "Vendi"
 
@@ -465,13 +419,11 @@ msgstr "Audio"
 msgid "Joystick"
 msgstr "Joystick"
 
-#: src/gui/setup_joystick.cpp:38
-#: src/gui/setup_joystick.cpp:72
+#: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:72
 msgid "Press the button to start calibration"
 msgstr "Premi il pulsante per cominciare la calibrazione"
 
-#: src/gui/setup_joystick.cpp:39
-#: src/gui/setup_joystick.cpp:70
+#: src/gui/setup_joystick.cpp:39 src/gui/setup_joystick.cpp:70
 msgid "Calibrate"
 msgstr "Calibra"
 
@@ -505,7 +457,7 @@ msgstr "Limita FPS:"
 
 #: src/gui/setup_video.cpp:133
 msgid "Gui opacity"
-msgstr "Opacità Interfaccia Grafica"
+msgstr "Opacità IU"
 
 #: src/gui/setup_video.cpp:186
 msgid "Scroll radius"
@@ -519,18 +471,15 @@ msgstr "Lentezza dello scroll"
 msgid "Ambient FX"
 msgstr "Suoni ambientali"
 
-#: src/gui/setup_video.cpp:209
-#: src/gui/setup_video.cpp:369
+#: src/gui/setup_video.cpp:209 src/gui/setup_video.cpp:369
 msgid "off"
 msgstr "Spento"
 
-#: src/gui/setup_video.cpp:212
-#: src/gui/setup_video.cpp:372
+#: src/gui/setup_video.cpp:212 src/gui/setup_video.cpp:372
 msgid "low"
 msgstr "Basso"
 
-#: src/gui/setup_video.cpp:215
-#: src/gui/setup_video.cpp:375
+#: src/gui/setup_video.cpp:215 src/gui/setup_video.cpp:375
 msgid "high"
 msgstr "Alto"
 
@@ -548,26 +497,21 @@ msgstr "Modifica OpenGL"
 
 #: src/gui/setup_video.cpp:281
 msgid "Applying change to OpenGL requires restart."
-msgstr "Riavvia per rendere effettive le modifche OpenGL."
+msgstr "Applicare le modifiche ad OpenGL richiede il riavvio."
 
 #: src/gui/trade.cpp:61
 msgid "Add"
 msgstr "Aggiungi"
 
-#: src/gui/trade.cpp:63
-#: src/gui/trade.cpp:65
-#: src/gui/trade.cpp:181
+#: src/gui/trade.cpp:63 src/gui/trade.cpp:65 src/gui/trade.cpp:181
 msgid "Propose trade"
 msgstr "Inizia uno scambio"
 
-#: src/gui/trade.cpp:66
-#: src/gui/trade.cpp:181
+#: src/gui/trade.cpp:66 src/gui/trade.cpp:181
 msgid "Confirm trade"
 msgstr "Conferma scambio"
 
-#: src/gui/trade.cpp:76
-#: src/gui/trade.cpp:118
-#: src/gui/trade.cpp:132
+#: src/gui/trade.cpp:76 src/gui/trade.cpp:118 src/gui/trade.cpp:132
 #, c-format
 msgid "You get %d GP."
 msgstr "Ottieni %d GP."
@@ -599,4 +543,3 @@ msgstr "PF %+d"
 #, c-format
 msgid "MP %+d"
 msgstr "PM %+d"
-
