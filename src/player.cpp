@@ -46,7 +46,6 @@ Player::Player(int id, int job, Map *map):
 
 Player::~Player()
 {
-    if (mMap) mMap->freeTile(mX / 32, mY / 32, getBlockType());
 }
 
 Being::Type
@@ -55,15 +54,15 @@ Player::getType() const
     return PLAYER;
 }
 
-void
-Player::drawName(Graphics *graphics, int offsetX, int offsetY)
+void Player::drawName(Graphics *graphics, int offsetX, int offsetY)
 {
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
+    const Vector &pos = getPosition();
+    const int px = (int) pos.x + offsetX;
+    const int py = (int) pos.y + offsetY;
 
     graphics->setFont(speechFont);
     graphics->setColor(gcn::Color(255, 255, 255));
-    graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
+    graphics->drawText(mName, px, py, gcn::Graphics::CENTER);
 }
 
 void Player::setGender(Gender gender)

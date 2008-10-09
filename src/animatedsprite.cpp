@@ -160,9 +160,7 @@ bool
 AnimatedSprite::draw(Graphics* graphics, int posX, int posY) const
 {
     if (!mFrame || !mFrame->image)
-    {
         return false;
-    }
 
     return graphics->drawImage(mFrame->image,
                                posX + mFrame->offsetX,
@@ -177,9 +175,7 @@ AnimatedSprite::setDirection(SpriteDirection direction)
         mDirection = direction;
 
         if (!mAction)
-        {
             return;
-        }
 
         Animation *animation = mAction->getAnimation(mDirection);
 
@@ -192,26 +188,12 @@ AnimatedSprite::setDirection(SpriteDirection direction)
     }
 }
 
-int
-AnimatedSprite::getWidth() const
+int AnimatedSprite::getWidth() const
 {
-    if (mFrame)
-    {
-        return mFrame->image->getWidth();
-    }
-    else {
-        return 0;
-    }
+    return mFrame ? mFrame->image->getWidth() : 0;
 }
 
-int
-AnimatedSprite::getHeight() const
+int AnimatedSprite::getHeight() const
 {
-    if (mFrame)
-    {
-        return mFrame->image->getHeight();
-    }
-    else {
-        return 0;
-    }
+    return mFrame ? mFrame->image->getHeight() : 0;
 }

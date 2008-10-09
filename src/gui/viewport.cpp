@@ -58,7 +58,6 @@ Viewport::Viewport():
     mShowDebugPath(false),
     mVisibleNames(false),
     mPlayerFollowMouse(false),
-    mWalkTime(0),
     mLocalWalkTime(-1)
 {
     setOpaque(false);
@@ -91,9 +90,9 @@ Viewport::Viewport():
                      true, Being::TC_LARGE);
 }
 
-void
-Viewport::loadTargetCursor(std::string filename, int width, int height,
-                           bool outRange, Being::TargetCursorSize size)
+void Viewport::loadTargetCursor(const std::string &filename,
+                                int width, int height,
+                                bool outRange, Being::TargetCursorSize size)
 {
     assert(size >= Being::TC_SMALL);
     assert(size < Being::NUM_TC);
@@ -125,7 +124,7 @@ Viewport::loadTargetCursor(std::string filename, int width, int height,
 Viewport::~Viewport()
 {
     delete mPopupMenu;
-    
+
     config.removeListener("visiblenames", this);
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
@@ -137,14 +136,12 @@ Viewport::~Viewport()
     }
 }
 
-void
-Viewport::setMap(Map *map)
+void Viewport::setMap(Map *map)
 {
     mMap = map;
 }
 
-void
-Viewport::draw(gcn::Graphics *gcnGraphics)
+void Viewport::draw(gcn::Graphics *gcnGraphics)
 {
     static int lastTick = tick_time;
 
@@ -163,8 +160,9 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 2;
     int midTileY = (graphics->getHeight() + mScrollCenterOffsetX) / 2;
 
-    int player_x = player_node->mX - midTileX + player_node->getXOffset();
-    int player_y = player_node->mY - midTileY + player_node->getYOffset();
+    const Vector &playerPos = player_node->getPosition();
+    const int player_x = (int) playerPos.x - midTileX;
+    const int player_y = (int) playerPos.y - midTileY;
 
     if (mScrollLaziness < 1)
         mScrollLaziness = 1; // Avoids division by zero
@@ -203,8 +201,10 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     };
 
     // Don't move camera so that the end of the map is on screen
-    int viewXmax = mMap->getWidth() * 32 - graphics->getWidth();
-    int viewYmax = mMap->getHeight() * 32 - graphics->getHeight();
+    const int viewXmax =
+        mMap->getWidth() * mMap->getTileWidth() - graphics->getWidth();
+    const int viewYmax =
+        mMap->getHeight() * mMap->getTileHeight() - graphics->getHeight();
     if (mMap)
     {
         if (mViewX < 0) {
@@ -227,10 +227,11 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         mMap->draw(graphics, (int) mViewX, (int) mViewY);
         drawTargetCursor(graphics); // TODO: Draw the cursor with the sprite
         drawTargetName(graphics);
-
         if (mShowDebugPath) {
             mMap->drawCollision(graphics, (int) mViewX, (int) mViewY);
+#if 0
             drawDebugPath(graphics);
+#endif
         }
     }
 
@@ -239,19 +240,21 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
         (*i)->drawSpeech(graphics, -(int) mViewX, -(int) mViewY);
-        if(mVisibleNames)
+        if (mVisibleNames)
             (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
-	else if((*i) == mSelectedBeing)
+        else if ((*i) == mSelectedBeing)
             (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
         (*i)->drawEmotion(graphics, -(int) mViewX, -(int) mViewY);
+
+        if (mShowDebugPath && !(*i)->getPath().empty())
+            drawPath(graphics, (*i)->getPath());
     }
 
     // Draw contained widgets
     WindowContainer::draw(gcnGraphics);
 }
 
-void
-Viewport::logic()
+void Viewport::logic()
 {
     WindowContainer::logic();
 
@@ -262,13 +265,11 @@ Viewport::logic()
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
 
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
-            mWalkTime != player_node->mWalkTime && 
             get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
     {
             mLocalWalkTime = tick_time;
             player_node->setDestination(mouseX + (int) mViewX,
                                         mouseY + (int) mViewY);
-            mWalkTime = player_node->mWalkTime;
     }
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
@@ -278,8 +279,7 @@ Viewport::logic()
     }
 }
 
-void
-Viewport::drawTargetCursor(Graphics *graphics)
+void Viewport::drawTargetCursor(Graphics *graphics)
 {
     // Draw target marker if needed
     Being *target = player_node->getTarget();
@@ -288,9 +288,11 @@ Viewport::drawTargetCursor(Graphics *graphics)
         // Calculate target circle position
 
         // Find whether target is in range
-        int rangeX = abs(target->mX - player_node->mX);
-        int rangeY = abs(target->mY - player_node->mY);
-        int attackRange = player_node->getAttackRange();
+        const Vector &dist =
+            target->getPosition() - player_node->getPosition();
+        const int rangeX = abs((int) dist.x);
+        const int rangeY = abs((int) dist.y);
+        const int attackRange = player_node->getAttackRange();
 
         // Get the correct target cursors graphic
         Being::TargetCursorSize cursorSize = target->getTargetCursorSize();
@@ -313,8 +315,7 @@ Viewport::drawTargetCursor(Graphics *graphics)
     }
 }
 
-void
-Viewport::drawTargetName(Graphics *graphics)
+void Viewport::drawTargetName(Graphics *graphics)
 {
     // Draw target marker if needed
     Being *target = player_node->getTarget();
@@ -331,8 +332,7 @@ Viewport::drawTargetName(Graphics *graphics)
     }
 }
 
-void
-Viewport::drawDebugPath(Graphics *graphics)
+void Viewport::drawDebugPath(Graphics *graphics)
 {
     // Get the current mouse position
     int mouseX, mouseY;
@@ -340,13 +340,20 @@ Viewport::drawDebugPath(Graphics *graphics)
 
     const int mouseTileX = (mouseX + (int) mViewX) / 32;
     const int mouseTileY = (mouseY + (int) mViewY) / 32;
+    const Vector &playerPos = player_node->getPosition();
 
     Path debugPath = mMap->findPath(
-            player_node->mX / 32, player_node->mY / 32,
+            (int) playerPos.x / 32,
+            (int) playerPos.y / 32,
             mouseTileX, mouseTileY, 0xFF);
 
+    drawPath(graphics, debugPath);
+}
+
+void Viewport::drawPath(Graphics *graphics, const Path &path)
+{
     graphics->setColor(gcn::Color(255, 0, 0));
-    for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
+    for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
     {
         int squareX = i->x * 32 - (int) mViewX + 12;
         int squareY = i->y * 32 - (int) mViewY + 12;
@@ -358,8 +365,7 @@ Viewport::drawDebugPath(Graphics *graphics)
     }
 }
 
-void
-Viewport::mousePressed(gcn::MouseEvent &event)
+void Viewport::mousePressed(gcn::MouseEvent &event)
 {
     // Check if we are alive and kickin'
     if (!mMap || !player_node || player_node->mAction == Being::DEAD)
@@ -435,13 +441,12 @@ Viewport::mousePressed(gcn::MouseEvent &event)
     }
 }
 
-void
-Viewport::mouseDragged(gcn::MouseEvent &event)
+void Viewport::mouseDragged(gcn::MouseEvent &event)
 {
     if (!mMap || !player_node)
         return;
 
-    if (mPlayerFollowMouse && mWalkTime == player_node->mWalkTime
+    if (mPlayerFollowMouse
         && get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
     {
         mLocalWalkTime = tick_time;
@@ -450,31 +455,27 @@ Viewport::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void
-Viewport::mouseReleased(gcn::MouseEvent &event)
+void Viewport::mouseReleased(gcn::MouseEvent &event)
 {
     mPlayerFollowMouse = false;
 }
 
-void
-Viewport::showPopup(int x, int y, Item *item)
+void Viewport::showPopup(int x, int y, Item *item)
 {
     mPopupMenu->showPopup(x, y, item);
 }
 
-void
-Viewport::optionChanged(const std::string &name)
+void Viewport::optionChanged(const std::string &name)
 {
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
 
     if (name == "visiblenames") {
-                mVisibleNames = config.getValue("visiblenames", 1);     
+        mVisibleNames = config.getValue("visiblenames", 1);
     }
 }
 
-void
-Viewport::mouseMoved(gcn::MouseEvent &event)
+void Viewport::mouseMoved(gcn::MouseEvent &event)
 {
     // Check if we are on the map
     if (!mMap || !player_node)

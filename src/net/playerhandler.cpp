@@ -302,11 +302,12 @@ PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 
     current_npc = 0;
 
-    const float scrollOffsetX = x - player_node->mX;
-    const float scrollOffsetY = y - player_node->mY;
+    const Vector &playerPos = player_node->getPosition();
+    const float scrollOffsetX = x - (int) playerPos.x;
+    const float scrollOffsetY = y - (int) playerPos.y;
 
     player_node->setAction(Being::STAND);
-    player_node->setPositionInPixels(x, y);
+    player_node->setPosition(x, y);
 
     logger->log("Adjust scrolling by %d,%d", (int) scrollOffsetX,
                                              (int) scrollOffsetY);

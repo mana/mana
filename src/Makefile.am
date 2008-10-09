@@ -7,8 +7,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/widgets/layout.h \
 	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
-              gui/widgets/tab.cpp \
-              gui/widgets/tab.h \
+	      gui/widgets/tab.cpp \
+	      gui/widgets/tab.h \
 	      gui/widgets/tabbedarea.cpp \
 	      gui/widgets/tabbedarea.h \
 	      gui/box.h \
@@ -342,6 +342,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      particleemitter.h \
 	      player.cpp \
 	      player.h \
+	      position.cpp \
+	      position.h \
 	      properties.h \
 	      serverinfo.h \
 	      shopitem.cpp \
@@ -354,6 +356,7 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      textparticle.cpp \
 	      textparticle.h \
 	      tileset.h \
+	      vector.cpp \
 	      vector.h
 
 # set the include path found by configure

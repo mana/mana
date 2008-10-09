@@ -43,27 +43,27 @@
 #include "utils/dtor.h"
 #include "utils/tostring.h"
 
+namespace {
+const bool debug_movement = true;
+}
+
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
 
 Being::Being(int id, int job, Map *map):
-    mX(0), mY(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
-    mWalkTime(0),
     mAction(STAND),
     mJob(job),
     mId(id),
-    mWalkSpeed(150),
-    mSpeedModifier(1024),
     mSpriteDirection(DIRECTION_DOWN), mDirection(DOWN),
     mMap(NULL),
     mEquippedWeapon(NULL),
     mSpeechTime(0),
-    mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
-    mSpriteColors(VECTOREND_SPRITE, "")
+    mSpriteColors(VECTOREND_SPRITE, ""),
+    mWalkSpeed(100)
 {
     setMap(map);
 
@@ -106,27 +106,36 @@ Being::~Being()
     delete mSpeechBubble;
 }
 
-void Being::setPositionInPixels(int x, int y)
+void Being::setPosition(const Vector &pos)
 {
-    mMap->freeTile(mX / 32, mY / 32, getBlockType());
-    mX = x;
-    mY = y;
-    mMap->blockTile(x / 32, y / 32, getBlockType());
+    mPos = pos;
+    mDest = pos;
 }
 
-void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
+void Being::adjustCourse(int srcX, int srcY, int dstX, int dstY)
 {
-    if (!mMap || (mX == dstX && mY == dstY))
-    {
+    if (debug_movement)
+        printf("%p adjustCourse(%d, %d, %d, %d)\n",
+                (void*) this, srcX, srcY, dstX, dstY);
+
+    mDest.x = dstX;
+    mDest.y = dstY;
+
+    // Find a path to the destination when it is at least a tile away
+    if (mMap && fabsf((mDest - mPos).length()) > 32) {
+        setPath(mMap->findPath((int) mPos.x / 32, (int) mPos.y / 32,
+                               dstX / 32, dstY / 32, getWalkMask()));
+    } else {
         setPath(Path());
-        return;
     }
 
+    // TODO: Evaluate the implementation of this method
+    /*
     if (mX / 32 == dstX / 32 && mY / 32 == dstY / 32)
     {
         // The being is already on the last tile of the path.
         Path p;
-        p.push_back(PATH_NODE(dstX, dstY));
+        p.push_back(Position(dstX, dstY));
         setPath(p);
         return;
     }
@@ -173,7 +182,7 @@ void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
         p1_length = mMap->getMetaTile(dstX / 32, dstY / 32)->Gcost;
         p1_dist[p1_size - 1] = p1_length;
     }
-    p1.push_back(PATH_NODE(dstX, dstY));
+    p1.push_back(Position(dstX, dstY));
 
     if (mX / 32 == srcX / 32 && mY / 32 == srcY / 32)
     {
@@ -248,19 +257,24 @@ void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
     assert(bestLength > 0);
     setPath(p1, p1_length * 1024 / bestLength);
     delete[] p1_dist;
+    */
 }
 
-void Being::adjustCourse(Uint16 srcX, Uint16 srcY)
+void Being::adjustCourse(int srcX, int srcY)
 {
+    if (debug_movement)
+        printf("%p adjustCourse(%d, %d)\n", (void*) this, srcX, srcY);
+
     if (!mPath.empty())
-    {
-        adjustCourse(srcX, srcY, mPath.back().x, mPath.back().y);
-    }
+        adjustCourse(srcX, srcY, mPath.back().x * 32, mPath.back().y * 32);
 }
 
-void Being::setDestination(Uint16 destX, Uint16 destY)
+void Being::setDestination(int destX, int destY)
 {
-    adjustCourse(mX, mY, destX, destY);
+    if (debug_movement)
+        printf("%p setDestination(%d, %d)\n", (void*) this, destX, destY);
+
+    adjustCourse((int) mPos.x, (int) mPos.y, destX, destY);
 }
 
 void Being::clearPath()
@@ -268,34 +282,10 @@ void Being::clearPath()
     mPath.clear();
 }
 
-void Being::setPath(const Path &path, int mod)
+void Being::setPath(const Path &path)
 {
+    std::cout << this << " New path: " << path << std::endl;
     mPath = path;
-    mSpeedModifier = mod >= 512 ? (mod <= 2048 ? mod : 2048) : 512; // TODO: tune bounds
-
-    int sz = mPath.size();
-    if (sz > 1)
-    {
-        // The path contains intermediate steps, so avoid going through tile
-        // centers for them. Instead, interpolate the tile offset.
-        int sx = mX & 31, sy = mY & 31;
-        int dx = (mPath.back().x & 31) - sx;
-        int dy = (mPath.back().y & 31) - sy;
-        Path::iterator j = mPath.begin();
-        for (int i = 0; i < sz - 1; ++i)
-        {
-            j->x |= sx + dx * (i + 1) / (sz - 1);
-            j->y |= sy + dy * (i + 1) / (sz - 1);
-            ++j;
-        }
-    }
-
-    if (mAction != WALK && mAction != DEAD)
-    {
-        mWalkTime = tick_time;
-        mStepTime = 0;
-        nextStep();
-    }
 }
 
 void Being::setSprite(int slot, int id, const std::string &color)
@@ -339,7 +329,8 @@ void Being::takeDamage(int amount)
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage, 255, 255, 255, font,
-                                        mPx + 16, mPy + 16);
+                                        (int) mPos.x + 16,
+                                        (int) mPos.y + 16);
 }
 
 void Being::handleAttack()
@@ -349,11 +340,9 @@ void Being::handleAttack()
 
 void Being::setMap(Map *map)
 {
-
     // Remove sprite from potential previous map
     if (mMap)
     {
-        mMap->freeTile(mX / 32, mY / 32, getBlockType());
         mMap->removeSprite(mSpriteIterator);
     }
 
@@ -363,7 +352,6 @@ void Being::setMap(Map *map)
     if (mMap)
     {
         mSpriteIterator = mMap->addSprite(this);
-        mMap->blockTile(mX / 32, mY / 32, getBlockType());
     }
 
     // Clear particle effect list because child particles became invalid
@@ -447,21 +435,13 @@ void Being::setDirection(Uint8 direction)
 
     SpriteDirection dir;
     if (mFaceDirection & UP)
-    {
         dir = DIRECTION_UP;
-    }
     else if (mFaceDirection & RIGHT)
-    {
         dir = DIRECTION_RIGHT;
-    }
     else if (mFaceDirection & DOWN)
-    {
         dir = DIRECTION_DOWN;
-    }
     else
-    {
         dir = DIRECTION_LEFT;
-    }
     mSpriteDirection = dir;
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
@@ -471,56 +451,47 @@ void Being::setDirection(Uint8 direction)
     }
 }
 
-void Being::nextStep()
-{
-    if (mPath.empty())
-    {
-        setAction(STAND);
-        return;
-    }
-
-    PATH_NODE node = mPath.front();
-    mPath.pop_front();
-
-    mStepX = node.x - mX;
-    mStepY = node.y - mY;
-
-    int dir = 0, dx = std::abs(mStepX), dy = std::abs(mStepY);
-    if (dx * 2 > dy)
-        dir |= mStepX > 0 ? RIGHT : LEFT;
-    if (dy * 2 > dx)
-        dir |= mStepY > 0 ? DOWN : UP;
-
-    setDirection(dir);
-
-    if (!mMap->getWalk(node.x / 32, node.y / 32))
-    {
-        setAction(STAND);
-        return;
-    }
-
-    setPositionInPixels(node.x, node.y);
-    setAction(WALK);
-    mWalkTime += mStepTime / 10;
-    mStepTime = mWalkSpeed * (int)std::sqrt((double)mStepX * mStepX + (double)mStepY * mStepY) *
-                mSpeedModifier / (32 * 1024);
-}
-
 void Being::logic()
 {
-    // Determine whether the being should take another step
-    if (mAction == WALK && get_elapsed_time(mWalkTime) >= mStepTime)
-    {
-        nextStep();
+    const Vector dest = (mPath.empty()) ?
+        mDest : Vector(mPath.front().x * 32 + 16,
+                       mPath.front().y * 32 + 16);
+
+    Vector dir = dest - mPos;
+    const float length = dir.length();
+
+    // When we're over 2 pixels from our destination, move to it
+    // TODO: Should be possible to make it even pixel exact, but this solves
+    //       the jigger caused by moving too far.
+    if (length > 2.0f) {
+        const float speed = mWalkSpeed / 100.0f;
+        dir /= (length / speed);
+        mPos += dir;
+
+        if (mAction != WALK)
+            setAction(WALK);
+
+        // Update the player sprite direction
+        int direction = 0;
+        const float dx = std::abs(dir.x);
+        const float dy = std::abs(dir.y);
+        if (dx * 2 > dy)
+            direction |= (dir.x > 0) ? RIGHT : LEFT;
+        if (dy * 2 > dx)
+            direction |= (dir.y > 0) ? DOWN : UP;
+        setDirection(direction);
+    }
+    else if (!mPath.empty()) {
+        // TODO: Pop as soon as there is a direct unblocked line to the next
+        //       point on the path.
+        mPath.pop_front();
+    } else if (mAction == WALK) {
+        setAction(STAND);
     }
 
     // Reduce the time that speech is still displayed
     if (mSpeechTime > 0)
         mSpeechTime--;
-
-    // Update pixel coordinates
-    mPx = mX - 16 + getXOffset();
-    mPy = mY - 16 + getYOffset();
 
     if (mEmotion != 0)
     {
@@ -543,7 +514,7 @@ void Being::logic()
     for (std::list<Particle *>::iterator i = mChildParticleEffects.begin();
          i != mChildParticleEffects.end();)
     {
-        (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
+        (*i)->setPosition(mPos.x, mPos.y);
         if (!(*i)->isAlive())
         {
             (*i)->kill();
@@ -557,14 +528,16 @@ void Being::logic()
 
 void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
+    int px = (int) mPos.x + offsetX;
+    int py = (int) mPos.y + offsetY;
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
         if (mSprites[i] != NULL)
         {
-            mSprites[i]->draw(graphics, px, py);
+            // TODO: Eventually, we probably should fix all sprite offsets so
+            //       that this translation isn't necessary anymore.
+            mSprites[i]->draw(graphics, px - 16, py - 32);
         }
     }
 }
@@ -574,18 +547,18 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     if (!mEmotion)
         return;
 
-    const int px = mPx + offsetX + 3;
-    const int py = mPy + offsetY - 60;
+    const int px = (int) mPos.x + offsetX + 3;
+    const int py = (int) mPos.y + offsetY - 60;
     const int emotionIndex = mEmotion - 1;
 
-    if ( emotionIndex >= 0 && emotionIndex < (int) emotionSet->size() )
+    if (emotionIndex >= 0 && emotionIndex < (int) emotionSet->size())
         graphics->drawImage(emotionSet->get(emotionIndex), px, py);
 }
 
 void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
 {
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
+    int px = (int) mPos.x + offsetX;
+    int py = (int) mPos.y + offsetY;
 
     // Draw speech above this being
     if (mSpeechTime > 0)
@@ -605,32 +578,7 @@ Being::Type Being::getType() const
     return UNKNOWN;
 }
 
-int Being::getOffset(int step) const
-{
-    // Check whether we're walking in the requested direction
-    if (mAction != WALK || step == 0) {
-        return 0;
-    }
-
-    int offset = (get_elapsed_time(mWalkTime) * std::abs(step)) / mStepTime;
-
-    // We calculate the offset _from_ the _target_ location
-    offset -= std::abs(step);
-    if (offset > 0) {
-        offset = 0;
-    }
-
-    // Going into negative direction? Invert the offset.
-    if (step < 0) {
-        offset = -offset;
-    }
-
-    return offset;
-}
-
-
-int
-Being::getWidth() const
+int Being::getWidth() const
 {
     if (mSprites[BASE_SPRITE])
     {
@@ -641,9 +589,7 @@ Being::getWidth() const
     }
 }
 
-
-int
-Being::getHeight() const
+int Being::getHeight() const
 {
     if (mSprites[BASE_SPRITE])
     {

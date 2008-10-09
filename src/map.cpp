@@ -113,7 +113,7 @@ void MapLayer::draw(Graphics *graphics,
         // If drawing the fringe layer, make sure all sprites above this row of
         // tiles have been drawn
         if (mIsFringeLayer) {
-            while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32) {
+            while (si != sprites.end() && (*si)->getPixelY() <= y * 32) {
                 (*si)->draw(graphics, -scrollX, -scrollY);
                 si++;
             }
@@ -383,35 +383,6 @@ void Map::blockTile(int x, int y, BlockType type)
     }
 }
 
-void Map::freeTile(int x, int y, BlockType type)
-{
-    if (type == BLOCKTYPE_NONE || x < 0 || y < 0 || x >= mWidth || y >= mHeight)
-    {
-        return;
-    }
-
-    int tileNum = x + y * mWidth;
-
-    if ((--mOccupation[type][tileNum]) <= 0)
-    {
-        switch (type)
-        {
-            case BLOCKTYPE_WALL:
-                mMetaTiles[tileNum].blockmask &= (BLOCKMASK_WALL xor 0xff);
-                break;
-            case BLOCKTYPE_CHARACTER:
-                mMetaTiles[tileNum].blockmask &= (BLOCKMASK_CHARACTER xor 0xff);
-                break;
-            case BLOCKTYPE_MONSTER:
-                mMetaTiles[tileNum].blockmask &= (BLOCKMASK_MONSTER xor 0xff);
-                break;
-            default:
-                // shut up!
-                break;
-        }
-    }
-}
-
 bool Map::getWalk(int x, int y, char walkmask) const
 {
     // You can't walk outside of the map
@@ -450,7 +421,7 @@ static int const basicCost = 100;
 Path Map::findPath(int startX, int startY, int destX, int destY, unsigned char walkmask, int maxCost)
 {
     // Path to be built up (empty by default)
-    std::list<PATH_NODE> path;
+    std::list<Position> path;
 
     // Declare open list, a list with open tiles sorted on F cost
     std::priority_queue<Location> openList;
@@ -612,7 +583,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY, unsigned char w
         while (pathX != startX || pathY != startY)
         {
             // Add the new path node to the start of the path list
-            path.push_front(PATH_NODE(pathX, pathY));
+            path.push_front(Position(pathX, pathY));
 
             // Find out the next parent
             MetaTile *tile = getMetaTile(pathX, pathY);

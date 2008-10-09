@@ -27,6 +27,7 @@
 #include <list>
 #include <vector>
 
+#include "position.h"
 #include "properties.h"
 
 class AmbientOverlay;
@@ -36,8 +37,6 @@ class MapLayer;
 class Particle;
 class Sprite;
 class Tileset;
-
-struct PATH_NODE;
 
 typedef std::vector<Tileset*> Tilesets;
 typedef std::list<Sprite*> Sprites;
@@ -189,11 +188,6 @@ class Map : public Properties
         void blockTile(int x, int y, BlockType type);
 
         /**
-         * Marks a tile as unoccupied
-         */
-        void freeTile(int x, int y, BlockType type);
-
-        /**
          * Gets walkability for a tile with a blocking bitmask. When called
          * without walkmask, only blocks against colliding tiles.
          */
@@ -226,8 +220,8 @@ class Map : public Properties
         /**
          * Find a path from one location to the next.
          */
-        std::list<PATH_NODE>
-        findPath(int startX, int startY, int destX, int destY, unsigned char walkmask, int maxCost = 20);
+        Path findPath(int startX, int startY, int destX, int destY,
+                      unsigned char walkmask, int maxCost = 20);
 
         /**
          * Adds a sprite to the map.

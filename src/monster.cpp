@@ -55,7 +55,6 @@ Monster::Monster(Uint16 id, Uint16 job, Map *map):
 
 Monster::~Monster()
 {
-    if (mMap) mMap->freeTile(mX / 32, mY / 32, getBlockType());
 }
 
 Being::Type

@@ -82,10 +82,9 @@ PlayerBox::draw(gcn::Graphics *graphics)
     if (mPlayer)
     {
         // Draw character
-        int x, y, bs;
-        bs = getFrameSize();
-        x = getWidth() / 2 - 16 + bs;
-        y = getHeight() / 2 + bs;
+        const int bs = getFrameSize();
+        const int x = getWidth() / 2 + bs;
+        const int y = getHeight() - bs - 8;
         mPlayer->draw(static_cast<Graphics*>(graphics), x, y);
     }
 }

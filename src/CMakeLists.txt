@@ -390,6 +390,8 @@ SET(SRCS
     particleemitter.h
     player.cpp
     player.h
+    position.cpp
+    position.h
     properties.h
     serverinfo.h
     shopitem.cpp
@@ -402,6 +404,7 @@ SET(SRCS
     textparticle.cpp
     textparticle.h
     tileset.h
+    vector.cpp
     vector.h
     )
 

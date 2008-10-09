@@ -113,11 +113,12 @@ void Minimap::draw(gcn::Graphics *graphics)
                 break;
         }
 
-        int offset = (dotSize - 1) / 2;
+        const int offset = (dotSize - 1) / 2;
+        const Vector &pos = being->getPosition();
 
         graphics->fillRectangle(gcn::Rectangle(
-                    being->mX / 64 + getPadding() - offset,
-                    being->mY / 64 + getTitleBarHeight() - offset,
+                    (int) pos.x / 64 + getPadding() - offset,
+                    (int) pos.y / 64 + getTitleBarHeight() - offset,
                     dotSize, dotSize));
     }
 }

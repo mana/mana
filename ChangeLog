@@ -1,10 +1,76 @@
+2008-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp, src/particleemitter.cpp,
+	src/simpleanimation.cpp, src/resources/spritedef.cpp: Fixed some
+	compiler warnings. This probably also fixed the logging of several
+	error messages.
+
+2008-09-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp: Fixed conversion of positions in the path to pixel
+	coordinates. Solves issues with keyboard walking and other
+	strangeness.
+	* src/localplayer.cpp, src/gui/playerbox.cpp, src/npc.cpp,
+	src/player.cpp, src/being.cpp, src/being.h: Fixed updating of player
+	direction and animation. Also fixed position of name, particle effects
+	and the position of the player sprite in the player box.
+	* src/map.cpp: Fixed ordering of sprites and tiles on the fringe
+	layer.
+
+2008-09-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/localplayer.cpp, src/being.cpp, src/being.h: Reenabled keyboard
+	walking (though its offset is broken) and make the player walk to the
+	exact destination when reaching the end of the path.
+	* src/being.cpp, src/animatedsprite.cpp: Corrected the location at
+	which the player sprite is drawn to match with the clicking location.
+	Might be a workaround for a bug elsewhere, I'm not sure yet.
+
+2008-09-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/localplayer.cpp, src/gui/viewport.h, src/gui/viewport.cpp,
+	src/position.cpp, src/position.h, src/being.cpp, src/CMakeLists.txt,
+	src/Makefile.am, src/being.h: Added printing and drawing of paths
+	beings are taking and fixed an issue in adjustPath (interpreting tiles
+	as pixels) that caused beings to stop moving.
+
+2008-09-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/beinghandler.cpp: Fixed interpretation of being speed.
+
 2008-09-14  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/widgets/tabbedarea.cpp, src/gui/widgets/tabbedarea.h:
 	Fix to avoid guichan bug and call logic in tabbed area children.
 
+2008-09-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp, src/net/beinghandler.cpp, src/being.h: Take into
+	account the speed sent by the server. Currently interpreted as pixels
+	per second, but this seems to be a bit too slow.
+	* src/localplayer.cpp: Re-enabled moving by mouse. Shows how utterly
+	broken the thing still is, but makes testing easier.
+
+2008-09-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/vector.cpp, src/being.cpp, src/CMakeLists.txt, src/vector.h,
+	src/Makefile.am: Made sure at least something happens.
+
+2008-09-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/position.h, src/being.cpp, src/CMakeLists.txt,
+	src/net/beinghandler.cpp, src/vector.h, src/map.h, src/Makefile.am,
+	src/being.h: Some late night fiddling around. It isn't doing anything
+	yet, but no time left to figure out why.
+
 2008-09-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/localplayer.cpp, src/game.cpp, src/map.cpp, src/gui/viewport.h,
+	src/gui/viewport.cpp, src/gui/minimap.cpp, src/beingmanager.cpp,
+	src/npc.cpp, src/player.cpp, src/being.cpp, src/monster.cpp,
+	src/net/beinghandler.cpp, src/net/playerhandler.cpp, src/vector.h,
+	src/map.h, src/being.h: Almost completely disabled old style movement.
+	Clearing the road for a new movement system.
 	* src/map.cpp, src/gui/setup.cpp, src/gui/shop.cpp,
 	src/gui/windowcontainer.cpp, src/gui/skill.cpp, src/beingmanager.cpp,
 	src/flooritemmanager.cpp, src/channelmanager.cpp, src/being.cpp,

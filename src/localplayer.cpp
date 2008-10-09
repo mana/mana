@@ -87,14 +87,16 @@ void LocalPlayer::logic()
     }
 
     // Show XP messages
-    if(!mExpMessages.empty())
+    if (!mExpMessages.empty())
     {
         if (mExpMessageTime == 0)
         {
+            const Vector &pos = getPosition();
             particleEngine->addTextRiseFadeOutEffect(mExpMessages.front(),
                                                      0, 128, 255,
                                                      speechFont,
-                                                     mPx + 16, mPy - 16);
+                                                     (int) pos.x + 16,
+                                                     (int) pos.y - 16);
             mExpMessages.pop_front();
             mExpMessageTime = 30;
         }
@@ -106,6 +108,8 @@ void LocalPlayer::logic()
 
 void LocalPlayer::nextStep()
 {
+    // TODO: Fix picking up when reaching target (this method is obsolete)
+    // TODO: Fix holding walking button to keep walking smoothly
     if (mPath.empty())
     {
         if (mPickUpTarget)
@@ -118,8 +122,6 @@ void LocalPlayer::nextStep()
             walk(mWalkingDir);
         }
     }
-
-    Player::nextStep();
 }
 
 bool LocalPlayer::checkInviteRights(const std::string &guildName)
@@ -165,8 +167,7 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
     mInventory->setItem(index, id, amount);
 }
 
-void
-LocalPlayer::moveInvItem(Item *item, int newIndex)
+void LocalPlayer::moveInvItem(Item *item, int newIndex)
 {
     // special case, the old and new cannot copy over each other.
     if (item->getInvIndex() == newIndex)
@@ -218,13 +219,12 @@ void LocalPlayer::splitItem(Item *item, int quantity)
         Net::GameServer::Player::moveItem(
             item->getInvIndex(), newIndex, quantity);
     }
-
 }
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-    int dx = item->getX() - mX / 32;
-    int dy = item->getY() - mY / 32;
+    int dx = item->getX() - (int) getPosition().x / 32;
+    int dy = item->getY() - (int) getPosition().y / 32;
 
     if (dx * dx + dy * dy < 4) {
         int id = item->getId();
@@ -238,13 +238,16 @@ void LocalPlayer::pickUp(FloorItem *item)
 
 void LocalPlayer::walk(unsigned char dir)
 {
+    // TODO: Evaluate the implementation of this method
     if (!mMap || !dir)
         return;
+
+    const Vector &pos = getPosition();
 
     if (mAction == WALK && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
-        Being::setDestination(mX, mY);
+        Being::setDestination(pos.x, pos.y);
         return;
     }
 
@@ -259,19 +262,23 @@ void LocalPlayer::walk(unsigned char dir)
         dx += 32;
 
     // Prevent skipping corners over colliding tiles
-    if (dx && !mMap->getWalk((mX + dx) / 32, mY / 32, getWalkMask()))
-        dx = 16 - mX % 32;
-    if (dy && !mMap->getWalk(mX / 32, (mY + dy) / 32, getWalkMask()))
-        dy = 16 - mY % 32;
+    if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
+                             (int) pos.y / 32, getWalkMask()))
+        dx = 16 - (int) pos.x % 32;
+    if (dy && !mMap->getWalk((int) pos.x / 32,
+                             ((int) pos.y + dy) / 32, getWalkMask()))
+        dy = 16 - (int) pos.y % 32;
 
     // Choose a straight direction when diagonal target is blocked
-    if (dx && dy && !mMap->getWalk((mX + dx) / 32, (mY + dy) / 32, getWalkMask()))
-        dx = 16 - mX % 32;
+    if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
+                                   (pos.y + dy) / 32, getWalkMask()))
+        dx = 16 - (int) pos.x % 32;
 
     // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk((mX + dx) / 32, (mY + dy) / 32, getWalkMask()))
+    if ((dx || dy) && mMap->getWalk(((int) pos.x + dx) / 32,
+                                    ((int) pos.y + dy) / 32, getWalkMask()))
     {
-        setDestination(mX + dx, mY + dy);
+        setDestination((int) pos.x + dx, (int) pos.y + dy);
     }
     else if (dir)
     {
@@ -284,10 +291,20 @@ void LocalPlayer::walk(unsigned char dir)
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     // Fix coordinates so that the player does not seem to dig into walls.
-    int tx = x / 32, ty = y / 32, fx = x % 32, fy = y % 32;
-    if (fx != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty, getWalkMask())) fx = 16;
-    if (fy != 16 && !mMap->getWalk(tx, ty + fy / 16 * 2 - 1, getWalkMask())) fy = 16;
-    if (fx != 16 && fy != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty + fy / 16 * 2 - 1, getWalkMask())) fx = 16;
+    const int tx = x / 32;
+    const int ty = y / 32;
+    int fx = x % 32;
+    int fy = y % 32;
+
+    if (fx != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty, getWalkMask()))
+        fx = 16;
+    if (fy != 16 && !mMap->getWalk(tx, ty + fy / 16 * 2 - 1, getWalkMask()))
+        fy = 16;
+    if (fx != 16 && fy != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1,
+                                               ty + fy / 16 * 2 - 1,
+                                               getWalkMask()))
+        fx = 16;
+
     x = tx * 32 + fx;
     y = ty * 32 + fy;
 
@@ -375,7 +392,6 @@ void LocalPlayer::attack()
         return;
 
     mLastAction = tick_time;
-    mWalkTime = tick_time;
 
     setAction(ATTACK);
 
@@ -449,7 +465,6 @@ const struct LocalPlayer::SkillInfo& LocalPlayer::getSkillInfo(int skill)
     {
         return skills[skill];
     }
-
 }
 
 void LocalPlayer::setExperience(int skill, int current, int next)

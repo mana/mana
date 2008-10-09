@@ -580,8 +580,9 @@ void Game::handleInput()
                 switch (tKey) {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-                            Uint16 x = player_node->mX / 32;
-                            Uint16 y = player_node->mY / 32;
+                            const Vector &pos = player_node->getPosition();
+                            Uint16 x = (int) pos.x / 32;
+                            Uint16 y = (int) pos.y / 32;
                             FloorItem *item =
                                 floorItemManager->findByCoordinates(x, y);
 
@@ -754,7 +755,9 @@ void Game::handleInput()
         // Get the state of the keyboard keys
         keyboard.refreshActiveKeys();
 
-        Uint16 x = player_node->mX / 32, y = player_node->mY / 32;
+        const Vector &pos = player_node->getPosition();
+        Uint16 x = (int) pos.x / 32;
+        Uint16 y = (int) pos.y / 32;
 
         unsigned char direction = 0;
 

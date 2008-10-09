@@ -145,9 +145,10 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
 
     private:
         /**
-         * Helper function for loading target cursors
+         * Helper function for loading target cursors.
          */
-        void loadTargetCursor(std::string filename, int width, int height,
+        void loadTargetCursor(const std::string &filename,
+                              int width, int height,
                               bool outRange, Being::TargetCursorSize size);
 
         /**
@@ -165,6 +166,11 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * debug purposes.
          */
         void drawDebugPath(Graphics *graphics);
+
+        /**
+         * Draws the given path.
+         */
+        void drawPath(Graphics *graphics, const Path &path);
 
 
         Map *mMap;                 /**< The current map. */
@@ -191,7 +197,6 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         SimpleAnimation *mTargetCursorOutRange[Being::NUM_TC];
 
         bool mPlayerFollowMouse;
-        int mWalkTime;
         int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
 
         PopupMenu *mPopupMenu;     /**< Popup menu. */

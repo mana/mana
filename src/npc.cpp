@@ -69,15 +69,15 @@ NPC::getType() const
     return Being::NPC;
 }
 
-void
-NPC::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+void NPC::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 {
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
+    const Vector &pos = getPosition();
+    const int px = (int) pos.x + offsetX;
+    const int py = (int) pos.y + offsetY;
 
     graphics->setFont(speechFont);
     graphics->setColor(gcn::Color(200, 200, 255));
-    graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
+    graphics->drawText(mName, px, py, gcn::Graphics::CENTER);
 }
 
 void

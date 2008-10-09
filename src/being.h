@@ -29,9 +29,11 @@
 #include <SDL_types.h>
 #include <vector>
 
+#include "position.h"
 #include "sprite.h"
 #include "map.h"
 #include "animatedsprite.h"
+#include "vector.h"
 
 #define NR_HAIR_STYLES 8
 #define NR_HAIR_COLORS 10
@@ -45,24 +47,6 @@ class Graphics;
 class ImageSet;
 class Particle;
 class SpeechBubble;
-
-/**
- * A position along a being's path.
- */
-struct PATH_NODE
-{
-    /**
-     * Constructor.
-     */
-    PATH_NODE(unsigned short x, unsigned short y):
-        x(x), y(y)
-    { }
-
-    unsigned short x;
-    unsigned short y;
-};
-typedef std::list<PATH_NODE> Path;
-typedef Path::iterator PathIterator;
 
 class Being : public Sprite
 {
@@ -113,11 +97,9 @@ class Being : public Sprite
         enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
         std::string mName;      /**< Name of character */
-        Uint16 mX, mY;          /**< Pixel coordinates of tile center */
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
         Uint16 mAttackSpeed;    /**< Attack speed */
-        Uint16 mWalkTime;
         Action mAction;         /**< Action the being is performing */
         Uint16 mJob;            /**< Job (player job, npc, monster, creature ) */
 
@@ -139,17 +121,17 @@ class Being : public Sprite
         /**
          * Sets a new destination for this being to walk to.
          */
-        void setDestination(Uint16 destX, Uint16 destY);
+        void setDestination(int x, int y);
 
         /**
          * Adjusts course to expected stat point.
          */
-        void adjustCourse(Uint16, Uint16);
+        void adjustCourse(int, int);
 
         /**
          * Adjusts course to expected start and end points.
          */
-        void adjustCourse(Uint16, Uint16, Uint16, Uint16);
+        void adjustCourse(int, int, int, int);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -195,12 +177,6 @@ class Being : public Sprite
         setSprite(int slot, int id, const std::string &color = "");
 
         /**
-         * Makes this being take the next step of his path.
-         */
-        virtual void
-        nextStep();
-
-        /**
          * Performs being logic.
          */
         virtual void
@@ -231,15 +207,14 @@ class Being : public Sprite
 
         /**
          * Gets the walk speed.
+         * @see setWalkSpeed(int)
          */
-        Uint16
-        getWalkSpeed() const { return mWalkSpeed; }
+        int getWalkSpeed() const { return mWalkSpeed; }
 
         /**
-         * Sets the walk speed.
+         * Sets the walk speed (in pixels per second).
          */
-        void
-        setWalkSpeed(Uint16 speed) { mWalkSpeed = speed; }
+        void setWalkSpeed(int speed) { mWalkSpeed = speed; }
 
         /**
          * Gets the being id.
@@ -269,8 +244,6 @@ class Being : public Sprite
          */
         bool isAlive() { return mAction != DEAD; }
 
-        int getWalkTime() { return mWalkTime; }
-
         /**
          * Returns the direction the being is facing.
          */
@@ -287,57 +260,49 @@ class Being : public Sprite
          *
          * @see Sprite::draw(Graphics, int, int)
          */
-        virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) const;
+        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
          * Returns the pixel X coordinate.
          */
-        int
-        getPixelX() const { return mPx; }
+        int getPixelX() const { return (int) mPos.x; }
 
         /**
          * Returns the pixel Y coordinate.
          *
          * @see Sprite::getPixelY()
          */
-        int
-        getPixelY() const { return mPy; }
+        int getPixelY() const { return (int) mPos.y; }
 
         /**
-         * sets the position in pixels using pixel coordinates
+         * Sets the position of this being.
          */
-        void setPositionInPixels(int x, int y);
+        void setPosition(const Vector &pos);
 
         /**
-         * sets the position in pixels using tile coordinates
+         * Overloaded method provided for convenience.
+         *
+         * @see setPosition(const Vector &pos)
          */
-        void setPositionInTiles(int x, int y)
-        { setPositionInPixels(x * 32 + 16, y * 32 + 16); }
+        void setPosition(float x, float y, float z = 0.0f)
+        {
+            setPosition(Vector(x, y, z));
+        }
 
         /**
-         * Get the current X pixel offset.
+         * Returns the position of this being.
          */
-        int
-        getXOffset() const { return getOffset(mStepX); }
+        const Vector &getPosition() const { return mPos; }
 
         /**
-         * Get the current Y pixel offset.
+         * Returns the horizontal size of the current base sprite of the being.
          */
-        int
-        getYOffset() const { return getOffset(mStepY); }
+        virtual int getWidth() const;
 
         /**
-         * Returns the horizontal size of the current base sprite of the being
+         * Returns the vertical size of the current base sprite of the being.
          */
-        virtual int
-        getWidth() const;
-
-        /**
-         * Returns the vertical size of the current base sprite of the being
-         */
-        virtual int
-        getHeight() const;
+        virtual int getHeight() const;
 
         /**
          * Returns the required size of a target cursor for this being.
@@ -351,16 +316,22 @@ class Being : public Sprite
         void controlParticle(Particle *particle);
 
         /**
-         * Gets the way the object is blocked by other objects
+         * Gets the way the object is blocked by other objects.
          */
         virtual unsigned char getWalkMask() const
         { return 0x00; } //can walk through everything
+
+        /**
+         * Returns the path this being is following. An empty path is returned
+         * when this being isn't following any path currently.
+         */
+        const Path &getPath() const { return mPath; }
 
     protected:
         /**
          * Sets the new path for this being.
          */
-        void setPath(const Path &path, int mod = 1024);
+        void setPath(const Path &path);
 
         /**
          * Gets the way the object blocks pathfinding for other objects
@@ -369,8 +340,6 @@ class Being : public Sprite
         { return Map::BLOCKTYPE_NONE; }
 
         Uint16 mId;                     /**< Unique being id */
-        Uint16 mWalkSpeed;              /**< Walking speed */
-        Uint16 mSpeedModifier;          /**< Modifier to keep course on sync (1024 = normal speed) */
         Uint8 mSpriteDirection;         /**< Facing direction */
         Uint8 mDirection;               /**< Walking direction */
         Map *mMap;                      /**< Map on which this being resides */
@@ -382,7 +351,6 @@ class Being : public Sprite
         Path mPath;
         std::string mSpeech;
         Uint32 mSpeechTime;
-        Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
@@ -390,13 +358,13 @@ class Being : public Sprite
         std::list<Particle *> mChildParticleEffects;
 
     private:
-        int getOffset(int step) const;
-
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;
 
-        Sint16 mStepX, mStepY;
-        Uint16 mStepTime;
+        int mWalkSpeed;                 /**< Walking speed (pixels/sec) */
+
+        Vector mPos;
+        Vector mDest;
 
         static int instances;           /**< Number of Being instances */
         static ImageSet *emotionSet;    /**< Emoticons used by beings */
