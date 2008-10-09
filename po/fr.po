@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-10-28 18:59+0100\n"
+"POT-Creation-Date: 2008-10-09 22:58+0200\n"
 "PO-Revision-Date: 2007-12-03 01:45+0000\n"
 "Last-Translator: Guillaume Melquiond <Unknown>\n"
 "Language-Team: French\n"
@@ -18,169 +18,185 @@ msgstr ""
 "X-Launchpad-Export-Date: 2008-10-09 20:16+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: src/gui/buy.cpp:43 src/gui/buy.cpp:60
+#: src/gui/buy.cpp:42 src/gui/buy.cpp:59
 msgid "Buy"
 msgstr "Acheter"
 
-#: src/gui/buy.cpp:57 src/gui/buy.cpp:234 src/gui/sell.cpp:61
+#: src/gui/buy.cpp:56 src/gui/buy.cpp:235 src/gui/sell.cpp:60
 #: src/gui/sell.cpp:241
 #, c-format
 msgid "Price: %d GP / Total: %d GP"
 msgstr "Prix : %d PO / Total : %d PO"
 
-#: src/gui/buy.cpp:61 src/gui/quitdialog.cpp:37 src/gui/quitdialog.cpp:40
-#: src/gui/quitdialog.cpp:41 src/gui/sell.cpp:65
+#: src/gui/buy.cpp:60 src/gui/quitdialog.cpp:37 src/gui/quitdialog.cpp:40
+#: src/gui/quitdialog.cpp:41 src/gui/sell.cpp:64
 msgid "Quit"
 msgstr "Quitter"
 
-#: src/gui/buy.cpp:62 src/gui/buy.cpp:203 src/gui/buy.cpp:219
-#: src/gui/inventorywindow.cpp:75 src/gui/inventorywindow.cpp:156
-#: src/gui/sell.cpp:66 src/gui/sell.cpp:212 src/gui/sell.cpp:226
+#: src/gui/buy.cpp:61 src/gui/buy.cpp:202 src/gui/buy.cpp:220
+#: src/gui/sell.cpp:65 src/gui/sell.cpp:212 src/gui/sell.cpp:226
 #: src/gui/trade.cpp:84 src/gui/trade.cpp:171
 #, c-format
 msgid "Description: %s"
 msgstr "Description : %s"
 
-#: src/gui/buy.cpp:63 src/gui/buy.cpp:205 src/gui/buy.cpp:220
-#: src/gui/inventorywindow.cpp:76 src/gui/inventorywindow.cpp:154
-#: src/gui/sell.cpp:67 src/gui/sell.cpp:214 src/gui/sell.cpp:227
+#: src/gui/buy.cpp:62 src/gui/buy.cpp:204 src/gui/buy.cpp:221
+#: src/gui/sell.cpp:66 src/gui/sell.cpp:214 src/gui/sell.cpp:227
 #, c-format
 msgid "Effect: %s"
 msgstr "Effet : %s"
 
-#: src/gui/char_select.cpp:71
-msgid "Confirm"
-msgstr "Confirmer"
+#: src/gui/char_select.cpp:74
+#, fuzzy
+msgid "Confirm Character Delete"
+msgstr "Création du personnage"
 
-#: src/gui/char_select.cpp:72
+#: src/gui/char_select.cpp:75
 msgid "Are you sure you want to delete this character?"
 msgstr "Voulez-vous vraiment supprimer ce personnage ?"
 
-#: src/gui/char_select.cpp:88
-msgid "Select Character"
-msgstr "Choix du personnage"
+#: src/gui/char_select.cpp:91
+msgid "Account and Character Management"
+msgstr ""
 
-#: src/gui/char_select.cpp:92 src/gui/item_amount.cpp:47 src/gui/login.cpp:51
+#: src/gui/char_select.cpp:95 src/gui/item_amount.cpp:66 src/gui/login.cpp:50
 #: src/gui/npclistdialog.cpp:41 src/gui/npc_text.cpp:42
 #: src/gui/ok_dialog.cpp:37 src/gui/quitdialog.cpp:44
 #: src/gui/serverdialog.cpp:110
 msgid "Ok"
 msgstr "Ok"
 
-#: src/gui/char_select.cpp:93 src/gui/char_select.cpp:260
-#: src/gui/connection.cpp:40 src/gui/item_amount.cpp:48 src/gui/login.cpp:52
+#: src/gui/char_select.cpp:96 src/gui/char_select.cpp:283
+#: src/gui/connection.cpp:41 src/gui/item_amount.cpp:67 src/gui/login.cpp:51
 #: src/gui/npclistdialog.cpp:42 src/gui/quitdialog.cpp:45
-#: src/gui/register.cpp:76 src/gui/serverdialog.cpp:111 src/gui/setup.cpp:55
+#: src/gui/register.cpp:76 src/gui/serverdialog.cpp:111 src/gui/setup.cpp:57
 #: src/gui/trade.cpp:62
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/gui/char_select.cpp:94
+#: src/gui/char_select.cpp:97
 msgid "New"
 msgstr "Nouveau"
 
-#: src/gui/char_select.cpp:95
+#: src/gui/char_select.cpp:98
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/gui/char_select.cpp:96
+#: src/gui/char_select.cpp:99
 msgid "Previous"
 msgstr "Précédent"
 
-#: src/gui/char_select.cpp:97
+#: src/gui/char_select.cpp:100
 msgid "Next"
 msgstr "Suivant"
 
-#: src/gui/char_select.cpp:98
+#: src/gui/char_select.cpp:101
 msgid "Unregister"
 msgstr "Se désinscrire"
 
-#: src/gui/char_select.cpp:100 src/gui/char_select.cpp:189
-#: src/gui/char_select.cpp:200 src/gui/inventorywindow.cpp:73
-#: src/gui/inventorywindow.cpp:152 src/gui/trade.cpp:82 src/gui/trade.cpp:169
+#: src/gui/char_select.cpp:102
+#, fuzzy
+msgid "Change Password"
+msgstr "Mot de passe :"
+
+#: src/gui/char_select.cpp:103
+msgid "Change Email Address"
+msgstr ""
+
+#: src/gui/char_select.cpp:105
+#, c-format
+msgid "Account: %s"
+msgstr ""
+
+#: src/gui/char_select.cpp:106 src/gui/char_select.cpp:211
+#: src/gui/char_select.cpp:222 src/gui/trade.cpp:82 src/gui/trade.cpp:169
 #, c-format
 msgid "Name: %s"
 msgstr "Nom : %s"
 
-#: src/gui/char_select.cpp:101 src/gui/char_select.cpp:190
-#: src/gui/char_select.cpp:201
+#: src/gui/char_select.cpp:107 src/gui/char_select.cpp:212
+#: src/gui/char_select.cpp:223
 #, c-format
 msgid "Level: %d"
 msgstr "Niveau : %d"
 
-#: src/gui/char_select.cpp:102 src/gui/char_select.cpp:191
-#: src/gui/char_select.cpp:202
+#: src/gui/char_select.cpp:108 src/gui/char_select.cpp:213
+#: src/gui/char_select.cpp:224
 #, c-format
 msgid "Money: %d"
 msgstr "Argent : %d"
 
-#: src/gui/char_select.cpp:245
+#: src/gui/char_select.cpp:268
 msgid "Create Character"
 msgstr "Création du personnage"
 
-#: src/gui/char_select.cpp:252 src/gui/login.cpp:46 src/gui/register.cpp:67
+#: src/gui/char_select.cpp:275 src/gui/login.cpp:45 src/gui/register.cpp:67
 msgid "Name:"
 msgstr "Nom :"
 
-#: src/gui/char_select.cpp:255
+#: src/gui/char_select.cpp:278
 msgid "Hair Color:"
 msgstr "Teinte :"
 
-#: src/gui/char_select.cpp:258
+#: src/gui/char_select.cpp:281
 msgid "Hair Style:"
 msgstr "Coiffure :"
 
-#: src/gui/char_select.cpp:259
+#: src/gui/char_select.cpp:282
 msgid "Create"
 msgstr "Créer"
 
-#: src/gui/char_select.cpp:262
+#: src/gui/char_select.cpp:285
+msgid "Male"
+msgstr ""
+
+#: src/gui/char_select.cpp:286
+msgid "Female"
+msgstr ""
+
+#: src/gui/char_select.cpp:290
 msgid "Strength:"
 msgstr "Force :"
 
-#: src/gui/char_select.cpp:263
+#: src/gui/char_select.cpp:291
 msgid "Agility:"
 msgstr "Agilité :"
 
-#: src/gui/char_select.cpp:264
+#: src/gui/char_select.cpp:292
 msgid "Dexterity:"
 msgstr "Dextérité :"
 
-#: src/gui/char_select.cpp:265
+#: src/gui/char_select.cpp:293
 msgid "Vitality:"
 msgstr "Vitalité :"
 
-#: src/gui/char_select.cpp:266
+#: src/gui/char_select.cpp:294
 msgid "Intelligence:"
 msgstr "Intelligence :"
 
-#: src/gui/char_select.cpp:267
+#: src/gui/char_select.cpp:295
 msgid "Willpower:"
 msgstr "Volonté :"
 
-#: src/gui/char_select.cpp:268
-msgid "Charisma:"
-msgstr "Charisme :"
-
-#: src/gui/char_select.cpp:276 src/gui/char_select.cpp:424
+#: src/gui/char_select.cpp:303 src/gui/char_select.cpp:477
 #, c-format
 msgid "Please distribute %d points"
 msgstr "Veuillez distribuer %d points"
 
-#: src/gui/char_select.cpp:368 src/gui/register.cpp:220
+#: src/gui/char_select.cpp:417 src/gui/register.cpp:220
 #: src/gui/serverdialog.cpp:171
 msgid "Error"
 msgstr "Erreur"
 
-#: src/gui/char_select.cpp:369
+#: src/gui/char_select.cpp:417
 msgid "Your name needs to be at least 4 characters."
 msgstr "Votre nom doit faire 4 caractères au moins."
 
-#: src/gui/char_select.cpp:416
+#: src/gui/char_select.cpp:469
 msgid "Character stats OK"
 msgstr "Caractéristiques Ok"
 
-#: src/gui/char_select.cpp:428
+#: src/gui/char_select.cpp:481
 #, c-format
 msgid "Please remove %d points"
 msgstr "Veuillez retirer %d points"
@@ -193,11 +209,11 @@ msgstr "Oui"
 msgid "No"
 msgstr "Non"
 
-#: src/gui/connection.cpp:42
+#: src/gui/connection.cpp:43
 msgid "Connecting..."
 msgstr "Connexion..."
 
-#: src/gui/equipmentwindow.cpp:57 src/gui/menuwindow.cpp:63
+#: src/gui/equipmentwindow.cpp:57 src/gui/menuwindow.cpp:64
 msgid "Equipment"
 msgstr "Équipement"
 
@@ -205,28 +221,23 @@ msgstr "Équipement"
 msgid "Unequip"
 msgstr "Retirer"
 
-#: src/gui/inventorywindow.cpp:53 src/gui/menuwindow.cpp:64
+#: src/gui/inventorywindow.cpp:55 src/gui/menuwindow.cpp:65
 msgid "Inventory"
 msgstr "Inventaire"
 
-#: src/gui/inventorywindow.cpp:64 src/gui/inventorywindow.cpp:197
+#: src/gui/inventorywindow.cpp:68 src/gui/inventorywindow.cpp:181
 msgid "Use"
 msgstr "Utiliser"
 
-#: src/gui/inventorywindow.cpp:65
+#: src/gui/inventorywindow.cpp:69
 msgid "Drop"
 msgstr "Lâcher"
 
-#: src/gui/inventorywindow.cpp:66
+#: src/gui/inventorywindow.cpp:70
 msgid "Split"
 msgstr "Partager"
 
-#: src/gui/inventorywindow.cpp:78 src/gui/inventorywindow.cpp:107
-#, c-format
-msgid "Total Weight: %d - Maximum Weight: %d"
-msgstr "Poids total : %d - Poids maximal : %d"
-
-#: src/gui/inventorywindow.cpp:194
+#: src/gui/inventorywindow.cpp:178
 msgid "Equip"
 msgstr "Équiper"
 
@@ -242,35 +253,39 @@ msgstr "Choisissez le nombre d'objets à lâcher."
 msgid "Select amount of items to split."
 msgstr "Choisissez le nombre d'objets à déplacer."
 
-#: src/gui/login.cpp:44
+#: src/gui/login.cpp:43
 msgid "Login"
 msgstr "Connexion"
 
-#: src/gui/login.cpp:47 src/gui/register.cpp:68
+#: src/gui/login.cpp:46 src/gui/register.cpp:68
 msgid "Password:"
 msgstr "Mot de passe :"
 
-#: src/gui/login.cpp:50
-msgid "Keep"
-msgstr "Conserver"
+#: src/gui/login.cpp:49
+msgid "Remember Username"
+msgstr ""
 
-#: src/gui/login.cpp:53 src/gui/register.cpp:63 src/gui/register.cpp:75
+#: src/gui/login.cpp:52 src/gui/register.cpp:63 src/gui/register.cpp:75
 msgid "Register"
 msgstr "S'inscrire"
 
-#: src/gui/menuwindow.cpp:62
+#: src/gui/menuwindow.cpp:63
 msgid "Status"
 msgstr "Statut"
 
-#: src/gui/menuwindow.cpp:65
+#: src/gui/menuwindow.cpp:66
 msgid "Skills"
 msgstr "Compétences"
 
-#: src/gui/menuwindow.cpp:66
+#: src/gui/menuwindow.cpp:67
+msgid "Guilds"
+msgstr ""
+
+#: src/gui/menuwindow.cpp:68
 msgid "Shortcut"
 msgstr "Raccourci"
 
-#: src/gui/menuwindow.cpp:67 src/gui/setup.cpp:47
+#: src/gui/menuwindow.cpp:69 src/gui/setup.cpp:49
 msgid "Setup"
 msgstr "Configuration"
 
@@ -292,37 +307,47 @@ msgstr "@@trade|Troquer avec %s@@"
 msgid "@@attack|Attack %s@@"
 msgstr "@@attack|Attaquer %s@@"
 
-#: src/gui/popupmenu.cpp:90
+#: src/gui/popupmenu.cpp:84
+#, c-format
+msgid "@@guild|Invite %s@@"
+msgstr ""
+
+#: src/gui/popupmenu.cpp:85
+#, c-format
+msgid "@@party|Invite %s to join your party@@"
+msgstr ""
+
+#: src/gui/popupmenu.cpp:92
 msgid "@@talk|Talk To NPC@@"
 msgstr "@@talk|Parler au PNJ@@"
 
-#: src/gui/popupmenu.cpp:100 src/gui/popupmenu.cpp:116
-#: src/gui/popupmenu.cpp:225
+#: src/gui/popupmenu.cpp:102 src/gui/popupmenu.cpp:118
+#: src/gui/popupmenu.cpp:240
 msgid "@@cancel|Cancel@@"
 msgstr "@@cancel|Annuler@@"
 
-#: src/gui/popupmenu.cpp:112
+#: src/gui/popupmenu.cpp:114
 #, c-format
 msgid "@@pickup|Pick Up %s@@"
 msgstr "@@pickup|Ramasser %s@@"
 
-#: src/gui/popupmenu.cpp:216
+#: src/gui/popupmenu.cpp:231
 msgid "@@use|Equip@@"
 msgstr "@@use|Équiper@@"
 
-#: src/gui/popupmenu.cpp:219
+#: src/gui/popupmenu.cpp:234
 msgid "@@use|Use@@"
 msgstr "@@use|Utiliser@@"
 
-#: src/gui/popupmenu.cpp:220
+#: src/gui/popupmenu.cpp:235
 msgid "@@drop|Drop@@"
 msgstr "@@drop|Lâcher@@"
 
-#: src/gui/popupmenu.cpp:221
+#: src/gui/popupmenu.cpp:236
 msgid "@@description|Description@@"
 msgstr "@@description|Description@@"
 
-#: src/gui/popupmenu.cpp:223
+#: src/gui/popupmenu.cpp:238
 msgid "@@split|Split@@"
 msgstr "@@split|Partager@@"
 
@@ -366,7 +391,7 @@ msgstr "Le mot de passe doit faire moins de %d caractères."
 msgid "Passwords do not match."
 msgstr "Les deux mots de passe ne correspondent pas."
 
-#: src/gui/sell.cpp:47 src/gui/sell.cpp:64
+#: src/gui/sell.cpp:46 src/gui/sell.cpp:63
 msgid "Sell"
 msgstr "Vendre"
 
@@ -390,39 +415,43 @@ msgstr "Veuillez entrer l'adresse et le port du serveur."
 msgid "Sound"
 msgstr "Son"
 
-#: src/gui/setup_audio.cpp:48
+#: src/gui/setup_audio.cpp:49
 msgid "Sfx volume"
 msgstr "Volume des effets sonores"
 
-#: src/gui/setup_audio.cpp:49
+#: src/gui/setup_audio.cpp:50
 msgid "Music volume"
 msgstr "Volume de la musique"
 
-#: src/gui/setup.cpp:55
+#: src/gui/setup.cpp:57
 msgid "Apply"
 msgstr "Appliquer"
 
-#: src/gui/setup.cpp:55
+#: src/gui/setup.cpp:57
 msgid "Reset Windows"
 msgstr "Rétablir les fenêtres"
 
-#: src/gui/setup.cpp:72
+#: src/gui/setup.cpp:73
 msgid "Video"
 msgstr "Vidéo"
 
-#: src/gui/setup.cpp:76
+#: src/gui/setup.cpp:77
 msgid "Audio"
 msgstr "Audio"
 
-#: src/gui/setup.cpp:80
+#: src/gui/setup.cpp:81
 msgid "Joystick"
 msgstr "Joystick"
 
-#: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:72
+#: src/gui/setup.cpp:85
+msgid "Keyboard"
+msgstr ""
+
+#: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:74
 msgid "Press the button to start calibration"
 msgstr "Presser le bouton pour démarrer la calibration"
 
-#: src/gui/setup_joystick.cpp:39 src/gui/setup_joystick.cpp:70
+#: src/gui/setup_joystick.cpp:39 src/gui/setup_joystick.cpp:72
 msgid "Calibrate"
 msgstr "Calibrer"
 
@@ -430,72 +459,76 @@ msgstr "Calibrer"
 msgid "Enable joystick"
 msgstr "Activer le joystick"
 
-#: src/gui/setup_joystick.cpp:75
+#: src/gui/setup_joystick.cpp:77
 msgid "Stop"
 msgstr "Stop"
 
-#: src/gui/setup_joystick.cpp:76
+#: src/gui/setup_joystick.cpp:78
 msgid "Rotate the stick"
 msgstr "Tourner le joystick"
 
-#: src/gui/setup_video.cpp:113
+#: src/gui/setup_video.cpp:114
 msgid "Full screen"
 msgstr "Plein écran"
 
-#: src/gui/setup_video.cpp:114
+#: src/gui/setup_video.cpp:115
 msgid "OpenGL"
 msgstr "OpenGL"
 
-#: src/gui/setup_video.cpp:115
+#: src/gui/setup_video.cpp:116
 msgid "Custom cursor"
 msgstr "Curseur personnalisé"
 
 #: src/gui/setup_video.cpp:117
+msgid "Visible names"
+msgstr ""
+
+#: src/gui/setup_video.cpp:119
 msgid "FPS Limit:"
 msgstr "Limite FPS :"
 
-#: src/gui/setup_video.cpp:133
+#: src/gui/setup_video.cpp:136
 msgid "Gui opacity"
 msgstr "Opacité de l'interface"
 
-#: src/gui/setup_video.cpp:186
+#: src/gui/setup_video.cpp:192
 msgid "Scroll radius"
 msgstr "Rayon du scrolling"
 
-#: src/gui/setup_video.cpp:194
+#: src/gui/setup_video.cpp:200
 msgid "Scroll laziness"
 msgstr "Paresse du scrolling"
 
-#: src/gui/setup_video.cpp:202
+#: src/gui/setup_video.cpp:208
 msgid "Ambient FX"
 msgstr "Effets ambiants"
 
-#: src/gui/setup_video.cpp:209 src/gui/setup_video.cpp:369
+#: src/gui/setup_video.cpp:215 src/gui/setup_video.cpp:384
 msgid "off"
 msgstr "aucun"
 
-#: src/gui/setup_video.cpp:212 src/gui/setup_video.cpp:372
+#: src/gui/setup_video.cpp:218 src/gui/setup_video.cpp:387
 msgid "low"
 msgstr "léger"
 
-#: src/gui/setup_video.cpp:215 src/gui/setup_video.cpp:375
+#: src/gui/setup_video.cpp:221 src/gui/setup_video.cpp:390
 msgid "high"
 msgstr "complet"
 
-#: src/gui/setup_video.cpp:268
+#: src/gui/setup_video.cpp:275
 msgid "Switching to full screen"
 msgstr "Passage en plein écran"
 
-#: src/gui/setup_video.cpp:269
+#: src/gui/setup_video.cpp:276
 msgid "Restart needed for changes to take effect."
 msgstr ""
 "Les changements ne seront pris en compte qu'au prochain démarrage du jeu."
 
-#: src/gui/setup_video.cpp:280
+#: src/gui/setup_video.cpp:287
 msgid "Changing OpenGL"
 msgstr "Changement OpenGL"
 
-#: src/gui/setup_video.cpp:281
+#: src/gui/setup_video.cpp:288
 msgid "Applying change to OpenGL requires restart."
 msgstr ""
 "Le changement OpenGL ne sera pris en compte qu'au prochain démarrage du jeu."
@@ -525,22 +558,37 @@ msgstr "Vous donnez :"
 msgid "Change"
 msgstr "Changer"
 
-#: src/resources/itemdb.cpp:53
+#: src/resources/itemdb.cpp:52
 #, c-format
 msgid "Attack %+d"
 msgstr "Attaque %+d"
 
-#: src/resources/itemdb.cpp:54
+#: src/resources/itemdb.cpp:53
 #, c-format
 msgid "Defense %+d"
 msgstr "Défense %+d"
 
-#: src/resources/itemdb.cpp:55
+#: src/resources/itemdb.cpp:54
 #, c-format
 msgid "HP %+d"
 msgstr "PV %+d"
 
-#: src/resources/itemdb.cpp:56
+#: src/resources/itemdb.cpp:55
 #, c-format
 msgid "MP %+d"
 msgstr "PM %+d"
+
+#~ msgid "Confirm"
+#~ msgstr "Confirmer"
+
+#~ msgid "Select Character"
+#~ msgstr "Choix du personnage"
+
+#~ msgid "Charisma:"
+#~ msgstr "Charisme :"
+
+#~ msgid "Total Weight: %d - Maximum Weight: %d"
+#~ msgstr "Poids total : %d - Poids maximal : %d"
+
+#~ msgid "Keep"
+#~ msgstr "Conserver"

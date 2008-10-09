@@ -1,8 +1,8 @@
 2008-10-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	*  po/ar.po, po/pt_BR.po, po/tmw-zh_CN.po, po/es.po, po/fr.po,
-	po/nl.po, po/en_GB.po, po/pl.po, po/it.po, po/ca.po, po/da.po,
-	po/LINGUAS, po/ru.po, po/sv.po, po/de.po, po/ja.po, po/id.po: Updated
+	* po/ar.po, po/pt_BR.po, po/zh_CN.po, po/es.po, po/fr.po, po/nl.po,
+	po/en_GB.po, po/pl.po, po/it.po, po/ca.po, po/da.po, po/LINGUAS,
+	po/ru.po, po/sv.po, po/de.po, po/ja.po, po/id.po, po/tmw.pot: Updated
 	translations from Launchpad and added new ones.
 
 2008-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
