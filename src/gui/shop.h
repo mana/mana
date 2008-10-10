@@ -47,11 +47,6 @@ class ShopItems : public gcn::ListModel
         void addItem(int id, int amount, int price);
 
         /**
-         * Convenience function for adding items.
-         */
-        void addItem(ShopItem* shopItem);
-
-        /**
          * Returns the number of items in the shop.
          */
         int getNumberOfElements();

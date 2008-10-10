@@ -51,7 +51,6 @@ class ShopItem : public Item
 
     protected:
         int mPrice;
-        int mIndex;
         std::string mDisplayName;
 };
 

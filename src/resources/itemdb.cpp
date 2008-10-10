@@ -55,7 +55,7 @@ static char const *const fields[][2] =
     { "mp",        N_("MP %+d")        }
 };
 
-ItemType itemTypeFromString (std::string name, int id = 0)
+static ItemType itemTypeFromString(const std::string &name, int id = 0)
 {
     if      (name=="generic")           return ITEM_UNUSABLE;
     else if (name=="usable")            return ITEM_USABLE;
@@ -73,7 +73,7 @@ ItemType itemTypeFromString (std::string name, int id = 0)
     else return ITEM_UNUSABLE;
 }
 
-WeaponType weaponTypeFromString (std::string name, int id = 0)
+static WeaponType weaponTypeFromString(const std::string &name, int id = 0)
 {
     if      (name=="knife")      return WPNTYPE_KNIFE;
     else if (name=="sword")      return WPNTYPE_SWORD;

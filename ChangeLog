@@ -1,3 +1,8 @@
+2008-10-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/shop.cpp, src/gui/shop.h, src/resources/itemdb.cpp,
+	src/shopitem.h: Some old uncommitted cleanup.
+
 2008-10-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* po/ar.po, po/pt_BR.po, po/zh_CN.po, po/es.po, po/fr.po, po/nl.po,

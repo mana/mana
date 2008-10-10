@@ -45,11 +45,6 @@ void ShopItems::addItem(int id, int amount, int price)
     mShopItems.push_back(new ShopItem(id, amount, price));
 }
 
-void ShopItems::addItem(ShopItem* shopItem)
-{
-    mShopItems.push_back(shopItem);
-}
-
 ShopItem* ShopItems::at(int i)
 {
     return mShopItems.at(i);
