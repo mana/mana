@@ -46,6 +46,7 @@ void TextBox::setTextWrapped(const std::string &text)
     std::stringstream wrappedStream;
     std::string::size_type newlinePos, lastNewlinePos = 0;
     int minWidth = 0;
+    int xpos;
 
     do
     {
@@ -60,7 +61,7 @@ void TextBox::setTextWrapped(const std::string &text)
         std::string line =
             text.substr(lastNewlinePos, newlinePos - lastNewlinePos);
         std::string::size_type spacePos, lastSpacePos = 0;
-        int xpos = 0;
+        xpos = 0;
 
         do
         {
@@ -110,7 +111,15 @@ void TextBox::setTextWrapped(const std::string &text)
         lastNewlinePos = newlinePos + 1;
     }
     while (newlinePos != text.size());
-    mMinWidth = minWidth;
+
+    if (xpos > minWidth)
+    {
+        minWidth = xpos;
+    }
+    if (minWidth > mMinWidth)
+    {
+        mMinWidth = minWidth;
+    }
 
     gcn::TextBox::setText(wrappedStream.str());
 }
