@@ -195,7 +195,7 @@ AnimatedSprite::setDirection(SpriteDirection direction)
 int
 AnimatedSprite::getWidth() const
 {
-    return mframe ? mFrame->image->getWidth() : 0;
+    return mFrame ? mFrame->image->getWidth() : 0;
 }
 
 int
