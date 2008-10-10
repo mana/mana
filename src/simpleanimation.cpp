@@ -68,7 +68,7 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
 
             if (!img)
             {
-                logger->log("No image at index " + (index));
+                logger->log("No image at index %d", index);
                 continue;
             }
 
@@ -91,8 +91,7 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
 
                 if (!img)
                 {
-                    logger->log("No image at index " +
-                            (start));
+                    logger->log("No image at index %d", start);
                     continue;
                 }
 

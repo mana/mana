@@ -57,12 +57,14 @@ NpcTextDialog::NpcTextDialog():
 void
 NpcTextDialog::setText(const std::string &text)
 {
+    mTextBox->setMinWidth(230);
     mTextBox->setTextWrapped(text);
 }
 
 void
 NpcTextDialog::addText(const std::string &text)
 {
+    mTextBox->setMinWidth(230);
     mTextBox->setTextWrapped(mTextBox->getText() + text + "\n");
 }
 

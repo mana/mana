@@ -45,6 +45,7 @@ void TextBox::setTextWrapped(const std::string &text)
 
     std::stringstream wrappedStream;
     std::string::size_type newlinePos, lastNewlinePos = 0;
+    int minWidth = 0;
 
     do
     {
@@ -60,8 +61,6 @@ void TextBox::setTextWrapped(const std::string &text)
             text.substr(lastNewlinePos, newlinePos - lastNewlinePos);
         std::string::size_type spacePos, lastSpacePos = 0;
         int xpos = 0;
-        mMinWidth = getWidth();
-        bool longWord = false;
 
         do
         {
@@ -77,25 +76,26 @@ void TextBox::setTextWrapped(const std::string &text)
 
             int width = getFont()->getWidth(word);
 
-            if (xpos != 0 && xpos + width + getFont()->getWidth(" ") < getWidth())
+            if (xpos != 0 && xpos + width + getFont()->getWidth(" ") <= mMinWidth)
             {
                 xpos += width + getFont()->getWidth(" ");
                 wrappedStream << " " << word;
             }
             else if (lastSpacePos == 0)
             {
-                if (xpos > mMinWidth)
-                {
-                    longWord = true;
-                    mMinWidth = xpos;
-                }
                 xpos += width;
                 wrappedStream << word;
             }
             else
             {
-                if ((xpos < mMinWidth) && !longWord && spacePos != line.size())
-                    mMinWidth = xpos;
+                if (xpos > minWidth)
+                {
+                    minWidth = xpos;
+                    if (minWidth > mMinWidth)
+                    {
+                        mMinWidth = minWidth;
+                    }
+                }
                 xpos = width;
                 wrappedStream << "\n" << word;
             }
@@ -107,10 +107,10 @@ void TextBox::setTextWrapped(const std::string &text)
         {
             wrappedStream << "\n";
         }
-
         lastNewlinePos = newlinePos + 1;
     }
     while (newlinePos != text.size());
+    mMinWidth = minWidth;
 
     gcn::TextBox::setText(wrappedStream.str());
 }
