@@ -177,7 +177,7 @@ void setUpdatesDir()
     if (pos != updateHost.npos) {
         if (pos + 3 < updateHost.length()) {
             updates << "updates/" << updateHost.substr(pos + 3) 
-                    << "-" << loginData.port;
+                    << "/" << loginData.port;
             updatesDir = updates.str();
         } else {
             logger->log("Error: Invalid update host: %s", updateHost.c_str());
@@ -186,7 +186,7 @@ void setUpdatesDir()
         }
     } else {
         logger->log("Warning: no protocol was specified for the update host");
-        updates << "updates/" << updateHost  << "-" << loginData.port;
+        updates << "updates/" << updateHost  << "/" << loginData.port;
         updatesDir = updates.str();
     }
 
