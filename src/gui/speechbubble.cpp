@@ -59,8 +59,13 @@ SpeechBubble::SpeechBubble()//:
     mSpeechBox->setTextWrapped( "" );
 }
 
-void SpeechBubble::setText(const std::string mText)
+void SpeechBubble::setText(std::string mText)
 {
+    while (mText[0] == ' ')
+    {
+        mText = mText.substr(1, mText.size());
+    }
+
     mSpeechBox->setMinWidth(140);
     mSpeechBox->setTextWrapped( mText );
 

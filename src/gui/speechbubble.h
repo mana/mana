@@ -35,7 +35,7 @@ class SpeechBubble : public Window
 
 	SpeechBubble();
 
-	void setText(const std::string mText);
+	void setText(std::string mText);
 	void setLocation(int x, int y);
 	unsigned int getNumRows();
 

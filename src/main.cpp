@@ -163,6 +163,8 @@ struct Options
  */
 void setUpdatesDir()
 {
+    std::stringstream updates;
+
     // If updatesHost is currently empty, fill it from config file
     if (updateHost.empty()) {
         updateHost =
@@ -174,8 +176,9 @@ void setUpdatesDir()
     pos = updateHost.find("://");
     if (pos != updateHost.npos) {
         if (pos + 3 < updateHost.length()) {
-            updatesDir =
-                "updates/" + updateHost.substr(pos + 3);
+            updates << "updates/" << updateHost.substr(pos + 3) 
+                    << "-" << loginData.port;
+            updatesDir = updates.str();
         } else {
             logger->log("Error: Invalid update host: %s", updateHost.c_str());
             errorMessage = "Invalid update host: " + updateHost;
@@ -183,7 +186,8 @@ void setUpdatesDir()
         }
     } else {
         logger->log("Warning: no protocol was specified for the update host");
-        updatesDir = "updates/" + updateHost;
+        updates << "updates/" << updateHost  << "-" << loginData.port;
+        updatesDir = updates.str();
     }
 
     ResourceManager *resman = ResourceManager::getInstance();
@@ -708,8 +712,8 @@ int main(int argc, char *argv[])
     if (!options.password.empty()) {
         loginData.password = options.password;
     }
-    loginData.hostname = config.getValue("host", "216.139.126.36");
-    loginData.port = (short)config.getValue("port", 0);
+    loginData.hostname = config.getValue("host", "www.aethyra.org");
+    loginData.port = (short)config.getValue("port", 21001);
     loginData.remember = config.getValue("remember", 0);
     loginData.registerLogin = false;
 

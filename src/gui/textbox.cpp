@@ -92,13 +92,31 @@ void TextBox::setTextWrapped(const std::string &text)
                 if (xpos > minWidth)
                 {
                     minWidth = xpos;
-                    if (minWidth > mMinWidth)
-                    {
-                        mMinWidth = minWidth;
-                    }
+                }
+                // The window wasn't big enough. Resize it and try again.
+                if (minWidth > mMinWidth)
+                {
+                    mMinWidth = minWidth;
+                    // This is a reaaaly ugly hack for getting the string stream
+                    // to clear itself. Don't mess with the spacer in the stream
+                    // reset, as well as removing the break. These are all there
+                    // because there are several compilers that I have tried 
+                    // that do not properly reset the string stream. 
+                    // You have been warned!
+                    wrappedStream.str(" ");
+                    spacePos = 0;
+                    lastNewlinePos = 0;
+                    newlinePos = text.find("\n", lastNewlinePos);
+                    line = text.substr(lastNewlinePos, newlinePos -
+                                       lastNewlinePos);
+                    width = 0;
+                    break;
+                }
+                else
+                {
+                    wrappedStream << "\n" << word;
                 }
                 xpos = width;
-                wrappedStream << "\n" << word;
             }
             lastSpacePos = spacePos + 1;
         }
@@ -116,9 +134,10 @@ void TextBox::setTextWrapped(const std::string &text)
     {
         minWidth = xpos;
     }
+    mMinWidth = minWidth;
     if (minWidth > mMinWidth)
     {
-        mMinWidth = minWidth;
+        setTextWrapped(text);
     }
 
     gcn::TextBox::setText(wrappedStream.str());

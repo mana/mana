@@ -84,14 +84,14 @@ void ItemDB::load()
         }
 
         int type = XML::getProperty(node, "type", 0);
-        int weight = XML::getProperty(node, "weight", 0);
+        //int weight = XML::getProperty(node, "weight", 0);
         int view = XML::getProperty(node, "view", 0);
 
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-        std::string effect = XML::getProperty(node, "effect", "");
-        int weaponType = XML::getProperty(node, "weapon_type", 0);
+        //std::string effect = XML::getProperty(node, "effect", ""); // Not used by Aethyra
+        //int weaponType = XML::getProperty(node, "weapon_type", 0);
 
         if (id)
         {
@@ -99,11 +99,11 @@ void ItemDB::load()
             itemInfo->setImageName(image);
             itemInfo->setName((name == "") ? "Unnamed" : name);
             itemInfo->setDescription(description);
-            itemInfo->setEffect(effect);
+            //itemInfo->setEffect(effect);
             itemInfo->setType(type);
             itemInfo->setView(view);
-            itemInfo->setWeight(weight);
-            itemInfo->setWeaponType(weaponType);
+            //itemInfo->setWeight(weight);
+            //itemInfo->setWeaponType(weaponType);
 
             for_each_xml_child_node(itemChild, node)
             {
@@ -127,7 +127,7 @@ void ItemDB::load()
         CHECK_PARAM(name, "");
         CHECK_PARAM(image, "");
         CHECK_PARAM(description, "");
-        CHECK_PARAM(effect, "");
+        //CHECK_PARAM(effect, "");
         // CHECK_PARAM(type, 0);
         // CHECK_PARAM(weight, 0);
         // CHECK_PARAM(slot, 0);
