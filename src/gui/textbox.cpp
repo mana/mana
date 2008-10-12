@@ -135,10 +135,6 @@ void TextBox::setTextWrapped(const std::string &text)
         minWidth = xpos;
     }
     mMinWidth = minWidth;
-    if (minWidth > mMinWidth)
-    {
-        setTextWrapped(text);
-    }
 
     gcn::TextBox::setText(wrappedStream.str());
 }
