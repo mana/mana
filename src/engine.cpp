@@ -107,6 +107,12 @@ void Engine::changeMap(const std::string &mapPath)
              minimap->setCaption("Unknown");
              logger->log("WARNING: Map file '%s' defines a minimap image but does not define a 'mapname' property", map_path.c_str());
         }
+        // How many pixels equal one tile. .5 (which is the TMW default) is 2 tiles to a pixel, 
+        // while 1 is 1 tile to 1 pixel
+        if (newMap->hasProperty("minimapproportion"))
+        {
+             minimap->setProportion(atof(newMap->getProperty("minimapproportion").c_str()));
+        }
     }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
