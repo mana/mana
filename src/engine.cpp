@@ -113,6 +113,10 @@ void Engine::changeMap(const std::string &mapPath)
         {
              minimap->setProportion(atof(newMap->getProperty("minimapproportion").c_str()));
         }
+        else
+        {
+             minimap->setProportion(0.5);
+        }
     }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
