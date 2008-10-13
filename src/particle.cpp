@@ -226,7 +226,7 @@ Particle::update()
 
 Particle*
 Particle::addEffect(const std::string &particleEffectFile,
-                    int pixelX, int pixelY)
+                    int pixelX, int pixelY, int rotation)
 {
     Particle *newParticle = NULL;
 
@@ -290,7 +290,7 @@ Particle::addEffect(const std::string &particleEffectFile,
                 continue;
 
             ParticleEmitter *newEmitter;
-            newEmitter = new ParticleEmitter(emitterNode, newParticle, mMap);
+            newEmitter = new ParticleEmitter(emitterNode, newParticle, mMap, rotation);
             newParticle->addEmitter(newEmitter);
         }
 

@@ -46,6 +46,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
 
     // Setup Monster sprites
     int c = BASE_SPRITE;
+
     const std::list<std::string> &sprites = info.getSprites();
     for (std::list<std::string>::const_iterator i = sprites.begin();
          i != sprites.end();
@@ -103,6 +104,8 @@ Being::Type Monster::getType() const
 void Monster::setAction(Action action)
 {
     SpriteAction currentAction = ACTION_INVALID;
+    int rotation = 0;
+    std::string particleEffect;
 
     switch (action)
     {
@@ -116,6 +119,24 @@ void Monster::setAction(Action action)
         case ATTACK:
             currentAction = ACTION_ATTACK;
             mSprites[BASE_SPRITE]->reset();
+
+            //attack particle effect
+            particleEffect = getInfo().getAttackParticleEffect();
+            if (particleEffect != "")
+            {
+                switch (mDirection)
+                {
+                    case DOWN: rotation = 0; break;
+                    case LEFT: rotation = 90; break;
+                    case UP: rotation = 180; break;
+                    case RIGHT: rotation = 270; break;
+                    default: break;
+                }
+                Particle *p;
+                p = particleEngine->addEffect(
+                                    particleEffect, 0, 0, rotation);
+                controlParticle(p);
+            }
             break;
         case STAND:
            currentAction = ACTION_STAND;

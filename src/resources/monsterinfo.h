@@ -87,11 +87,19 @@ class MonsterInfo
         std::string
         getSound(MonsterSoundEvent event) const;
 
+        std::string 
+        getAttackParticleEffect() const { return mAttackParticle; }
+
+        void 
+        addAttackParticleEffect(const std::string &particleEffect)
+        { mAttackParticle = particleEffect; }
+
         const std::list<std::string>&
         getParticleEffects() const { return mParticleEffects; }
 
     private:
         std::string mName;
+        std::string mAttackParticle;
         std::list<std::string> mSprites;
         Being::TargetCursorSize mTargetCursorSize;
         std::map<MonsterSoundEvent, std::vector<std::string>* > mSounds;

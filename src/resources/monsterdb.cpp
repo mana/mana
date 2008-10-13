@@ -126,6 +126,12 @@ MonsterDB::load()
                 }
             }
 
+            if (xmlStrEqual(spriteNode->name, BAD_CAST "attack"))
+            {
+                std::string event = XML::getProperty(spriteNode, "particle-effect", "");
+                currentInfo->addAttackParticleEffect(event);
+            }
+
             if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
             {
                 currentInfo->addParticleEffect(
