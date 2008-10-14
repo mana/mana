@@ -58,13 +58,16 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
         c++;
     }
 
-    //setup particle effects
-    for (std::list<std::string>::const_iterator i = info.particles.begin();
-         i != info.particles.end();
-         i++)
+    if (mParticleEffects)
     {
-        Particle *p = particleEngine->addEffect(*i, 0, 0);
-        this->controlParticle(p);
+        //setup particle effects
+        for (std::list<std::string>::const_iterator i = info.particles.begin();
+             i != info.particles.end();
+             i++)
+        {
+            Particle *p = particleEngine->addEffect(*i, 0, 0);
+            this->controlParticle(p);
+        }
     }
     mName = 0;
 }

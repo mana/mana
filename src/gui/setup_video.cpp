@@ -106,6 +106,7 @@ Setup_Video::Setup_Video():
     mFullScreenEnabled(config.getValue("screen", 0)),
     mOpenGLEnabled(config.getValue("opengl", 0)),
     mCustomCursorEnabled(config.getValue("customcursor", 1)),
+    mParticleEffectsEnabled(config.getValue("particleeffects", 1)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int)config.getValue("fpslimit", 60)),
     mModeListModel(new ModeListModel()),
@@ -113,6 +114,7 @@ Setup_Video::Setup_Video():
     mFsCheckBox(new CheckBox("Full screen", mFullScreenEnabled)),
     mOpenGLCheckBox(new CheckBox("OpenGL", mOpenGLEnabled)),
     mCustomCursorCheckBox(new CheckBox("Custom cursor", mCustomCursorEnabled)),
+    mParticleEffectsCheckBox(new CheckBox("Particle effects", mParticleEffectsEnabled)),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox("FPS Limit: ")),
     mFpsSlider(new Slider(10, 200)),
@@ -144,6 +146,7 @@ Setup_Video::Setup_Video():
     scrollArea->setDimension(gcn::Rectangle(10, 10, 90, 50));
     mFsCheckBox->setPosition(110, 10);
     mOpenGLCheckBox->setPosition(110, 30);
+    mParticleEffectsCheckBox->setPosition(175, 30);
     mCustomCursorCheckBox->setPosition(110, 50);
     mAlphaSlider->setDimension(gcn::Rectangle(10, 80, 100, 10));
     alphaLabel->setPosition(20 + mAlphaSlider->getWidth(),
@@ -163,6 +166,7 @@ Setup_Video::Setup_Video():
     mFpsCheckBox->setSelected(mFps > 0);
 
     mCustomCursorCheckBox->setActionEventId("customcursor");
+    mParticleEffectsCheckBox->setActionEventId("particleeffects");
     mAlphaSlider->setActionEventId("guialpha");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
     mFpsSlider->setActionEventId("fpslimitslider");
@@ -176,6 +180,7 @@ Setup_Video::Setup_Video():
     mParticleDetailField->setActionEventId("particledetailfield");
 
     mCustomCursorCheckBox->addActionListener(this);
+    mParticleEffectsCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
     mFpsSlider->addActionListener(this);
@@ -250,6 +255,7 @@ Setup_Video::Setup_Video():
     add(mFsCheckBox);
     add(mOpenGLCheckBox);
     add(mCustomCursorCheckBox);
+    add(mParticleEffectsCheckBox);
     add(mAlphaSlider);
     add(alphaLabel);
     add(mFpsCheckBox);
@@ -371,6 +377,8 @@ void Setup_Video::cancel()
 
     config.setValue("screen", mFullScreenEnabled ? 1 : 0);
     config.setValue("customcursor", mCustomCursorEnabled ? 1 : 0);
+    config.setValue("particleeffects", mParticleEffectsEnabled ? 1 : 0);
+    config.setValue("screen", mParticleEffectsEnabled ? 1 : 0);
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled ? 1 : 0);
 }
@@ -385,6 +393,13 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("customcursor",
                 mCustomCursorCheckBox->isSelected() ? 1 : 0);
+    }
+    else if (event.getId() == "particleeffects")
+    {
+        config.setValue("particleeffects",
+                mParticleEffectsCheckBox->isSelected() ? 1 : 0);
+        new OkDialog("Particle effect settings changed",
+                     "Restart your client or change maps for the change to take effect.");
     }
     else if (event.getId() == "fpslimitslider")
     {

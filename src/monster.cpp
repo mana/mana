@@ -65,13 +65,15 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
         mSprites[c] = AnimatedSprite::load("graphics/sprites/error.xml");
     }
 
-    const std::list<std::string> &particleEffects = info.getParticleEffects();
-    for (   std::list<std::string>::const_iterator i = particleEffects.begin();
-            i != particleEffects.end();
-            i++
-        )
+    if (mParticleEffects)
     {
-        controlParticle(particleEngine->addEffect((*i), 0, 0));
+        const std::list<std::string> &particleEffects = info.getParticleEffects();
+        for (   std::list<std::string>::const_iterator i = particleEffects.begin();
+                i != particleEffects.end(); i++
+            )
+        {
+            controlParticle(particleEngine->addEffect((*i), 0, 0));
+        }
     }
 }
 
@@ -122,7 +124,7 @@ void Monster::setAction(Action action)
 
             //attack particle effect
             particleEffect = getInfo().getAttackParticleEffect();
-            if (particleEffect != "")
+            if (particleEffect != "" && mParticleEffects)
             {
                 switch (mDirection)
                 {

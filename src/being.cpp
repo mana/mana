@@ -34,6 +34,7 @@
 #include "particle.h"
 #include "sound.h"
 #include "localplayer.h"
+#include "configuration.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
@@ -71,7 +72,8 @@ Being::Being(int id, int job, Map *map):
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
-    mSpriteColors(VECTOREND_SPRITE, "")
+    mSpriteColors(VECTOREND_SPRITE, ""),
+    mParticleEffects(config.getValue("particleeffects", 1))
 {
     setMap(map);
 
@@ -387,19 +389,22 @@ void Being::logic()
         }
     }
 
-    //Update particle effects
-    for (std::list<Particle *>::iterator i = mChildParticleEffects.begin();
-                                         i != mChildParticleEffects.end();)
+    if (mParticleEffects)
     {
-        (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
-        if ((*i)->isExtinct())
+        //Update particle effects
+        for (std::list<Particle *>::iterator i = mChildParticleEffects.begin();
+                                             i != mChildParticleEffects.end();)
         {
-            (*i)->kill();
-            i = mChildParticleEffects.erase(i);
-        }
-        else 
-        {
-            i++;
+            (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
+            if ((*i)->isExtinct())
+            {
+                (*i)->kill();
+                i = mChildParticleEffects.erase(i);
+            }
+            else 
+            {
+                i++;
+            }
         }
     }
 }
@@ -589,7 +594,7 @@ void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
         return;
     }
 
-    if (gfx && ed->mGFXEffect != "") {
+    if (gfx && ed->mGFXEffect != "" && mParticleEffects) {
         Particle *selfFX;
 
         selfFX = particleEngine->addEffect(ed->mGFXEffect, 0, 0);

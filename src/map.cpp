@@ -504,11 +504,14 @@ void Map::addParticleEffect(const std::string &effectFile, int x, int y)
 
 void Map::initializeParticleEffects(Particle* particleEngine)
 {
-    for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
-         i != particleEffects.end();
-         i++
-        )
+    if (config.getValue("particleeffects", 1))
     {
-        particleEngine->addEffect(i->file, i->x, i->y);
+        for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
+             i != particleEffects.end();
+             i++
+            )
+        {
+            particleEngine->addEffect(i->file, i->x, i->y);
+        }
     }
 }

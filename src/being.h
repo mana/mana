@@ -405,6 +405,9 @@ class Being : public Sprite
         std::vector<std::string> mSpriteColors;
         std::list<Particle *> mChildParticleEffects;
 
+    protected:
+        bool mParticleEffects;          /**< Whether to display particles or not */
+
     private:
         /**
          * Calculates the offset in the given directions.
