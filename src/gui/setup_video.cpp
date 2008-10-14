@@ -378,7 +378,6 @@ void Setup_Video::cancel()
     config.setValue("screen", mFullScreenEnabled ? 1 : 0);
     config.setValue("customcursor", mCustomCursorEnabled ? 1 : 0);
     config.setValue("particleeffects", mParticleEffectsEnabled ? 1 : 0);
-    config.setValue("screen", mParticleEffectsEnabled ? 1 : 0);
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled ? 1 : 0);
 }
