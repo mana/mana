@@ -256,7 +256,10 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
 {
     mPlayer = new Player(0, 0, NULL);
     mPlayer->setGender(gender);
-    mPlayer->setHairStyle(rand() % NR_HAIR_STYLES, rand() % NR_HAIR_COLORS);
+
+    int numberOfHairColors = ColorDB::size();
+
+    mPlayer->setHairStyle(rand() % NR_HAIR_STYLES, rand() % numberOfHairColors);
 
     mNameField = new TextField("");
     mNameLabel = new gcn::Label("Name:");
@@ -322,6 +325,7 @@ CharCreateDialog::~CharCreateDialog()
 void
 CharCreateDialog::action(const gcn::ActionEvent &event)
 {
+    int numberOfColors = ColorDB::size();
     if (event.getId() == "create") {
         if (getName().length() >= 4) {
             // Attempt to create the character
@@ -340,7 +344,7 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
         mPlayer->setHairStyle(-1, mPlayer->getHairColor() + 1);
     }
     else if (event.getId() == "prevcolor") {
-        mPlayer->setHairStyle(-1, mPlayer->getHairColor() + NR_HAIR_COLORS - 1);
+        mPlayer->setHairStyle(-1, mPlayer->getHairColor() + numberOfColors - 1);
     }
     else if (event.getId() == "nextstyle") {
         mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, -1);

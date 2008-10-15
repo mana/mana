@@ -36,8 +36,9 @@
 
 #include "gui/speechbubble.h"
 
+#include "resources/colordb.h"
+
 #define NR_HAIR_STYLES 10
-#define NR_HAIR_COLORS 16
 
 #define FIRST_IGNORE_EMOTE 14
 
@@ -362,6 +363,7 @@ class Being : public Sprite
 
         const std::auto_ptr<Equipment> mEquipment;
 
+
     protected:
         /**
          * Sets the new path for this being.
@@ -389,6 +391,7 @@ class Being : public Sprite
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
         bool mIsGM;
+        bool mParticleEffects;          /**< Whether to display particles or not */
 
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
@@ -404,9 +407,6 @@ class Being : public Sprite
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
         std::list<Particle *> mChildParticleEffects;
-
-    protected:
-        bool mParticleEffects;          /**< Whether to display particles or not */
 
     private:
         /**

@@ -227,6 +227,8 @@ SET(SRCS
     resources/animation.h
     resources/buddylist.cpp
     resources/buddylist.h
+    resources/colordb.cpp
+    resources/colordb.h
     resources/dye.cpp
     resources/dye.h
     resources/image.cpp
