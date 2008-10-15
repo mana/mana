@@ -93,6 +93,17 @@ void CommandHandler::handleCommand(const std::string &command)
     {
         handleOp(args);
     }
+    else if (type == "post")
+    {
+        std::string::size_type pos = args.find(' ');
+        std::string recipient(args, 0, pos);
+        std::string text(args, pos+1);
+        Net::GameServer::Player::sendLetter(recipient, text);
+    }
+    else if (type == "check")
+    {
+        Net::GameServer::Player::getLetters();
+    }
     else
     {
         chatWindow->chatLog("Unknown command");

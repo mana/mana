@@ -217,6 +217,8 @@
 		<Unit filename="src/gui/help.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/icon.cpp" />
+		<Unit filename="src/gui/icon.h" />
 		<Unit filename="src/gui/inttextbox.cpp" />
 		<Unit filename="src/gui/inttextbox.h">
 			<Option target="default" />
@@ -621,6 +623,8 @@
 		<Unit filename="src/player.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/position.cpp" />
+		<Unit filename="src/position.h" />
 		<Unit filename="src/properties.h">
 			<Option target="default" />
 		</Unit>

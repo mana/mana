@@ -283,7 +283,7 @@ void LocalPlayer::walk(unsigned char dir)
     else if (dir)
     {
         // If the being can't move, just change direction
-        // TODO: Communicate this to the server (waiting on tmwserv)
+        Net::GameServer::Player::changeDir(dir);
         setDirection(dir);
     }
 }

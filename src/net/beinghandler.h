@@ -41,6 +41,7 @@ class BeingHandler : public MessageHandler
         void handleBeingsDamageMessage(MessageIn &msg);
         void handleBeingActionChangeMessage(MessageIn &msg);
         void handleBeingLooksChangeMessage(MessageIn &msg);
+        void handleBeingDirChangeMessage(MessageIn &msg);
 };
 
 #endif

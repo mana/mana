@@ -160,6 +160,21 @@ void Net::GameServer::Player::tradeWithNPC(int item, int amount)
     Net::GameServer::connection->send(msg);
 }
 
+void Net::GameServer::Player::sendLetter(const std::string &player,
+                                         const std::string &text)
+{
+    MessageOut msg(PGMSG_SEND_POST);
+    msg.writeString(player);
+    msg.writeString(text);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::getLetters()
+{
+    MessageOut msg(PGMSG_GET_POST);
+    Net::GameServer::connection->send(msg);
+}
+
 void Net::GameServer::Player::raiseAttribute(int attribute)
 {
     MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
@@ -177,5 +192,12 @@ void Net::GameServer::Player::lowerAttribute(int attribute)
 void Net::GameServer::Player::respawn()
 {
     MessageOut msg(PGMSG_RESPAWN);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::changeDir(unsigned char dir)
+{
+    MessageOut msg(PGMSG_DIRECTION_CHANGE);
+    msg.writeInt8(dir);
     Net::GameServer::connection->send(msg);
 }

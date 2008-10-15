@@ -55,6 +55,7 @@ BeingHandler::BeingHandler()
         GPMSG_BEINGS_DAMAGE,
         GPMSG_BEING_ACTION_CHANGE,
         GPMSG_BEING_LOOKS_CHANGE,
+        GPMSG_BEING_DIR_CHANGE,
         0
     };
     handledMessages = _messages;
@@ -84,6 +85,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
         case GPMSG_BEING_LOOKS_CHANGE:
             handleBeingLooksChangeMessage(msg);
+            break;
+        case GPMSG_BEING_DIR_CHANGE:
+            handleBeingDirChangeMessage(msg);
             break;
     }
 }
@@ -319,3 +323,9 @@ void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
     handleLooks(static_cast< Player * >(being), msg);
 }
 
+void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
+{
+    Being *being = beingManager->findBeing(msg.readInt16());
+    if (!being) return;
+    being->setDirection(msg.readInt8());
+}

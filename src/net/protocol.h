@@ -99,6 +99,8 @@ enum {
     PGMSG_WALK                     = 0x0260, // W*2 destination
     PGMSG_ACTION_CHANGE            = 0x0270, // B Action
     GPMSG_BEING_ACTION_CHANGE      = 0x0271, // W being id, B action
+    PGMSG_DIRECTION_CHANGE         = 0x0272, // B Direction
+    GPMSG_BEING_DIR_CHANGE         = 0x0273, // W being id, B direction
     GPMSG_BEINGS_MOVE              = 0x0280, // { W being id, B flags [, C position, B speed] [, W*2 destination] }*
     GPMSG_ITEMS                    = 0x0281, // { W item id, W*2 position }*
     PGMSG_ATTACK                   = 0x0290, // B direction
@@ -179,6 +181,12 @@ enum {
     // -- User mode
     PCMSG_USER_MODE                   = 0x0465, // W channel id, S name, B mode
     PCMSG_KICK_USER                   = 0x0466, // W channel id, S name
+
+    // Post
+    PGMSG_SEND_POST                 = 0x04A0, // S player, S letter, { W attachment id }
+    GPMSG_SEND_POST_RESPONSE        = 0x04A1, // B error
+    PGMSG_GET_POST                  = 0x04A2, //
+    GPMSG_GET_POST_RESPONSE         = 0x04A3, // { L sender id, S letter, { W attachment id } }
 
     XXMSG_INVALID = 0x7FFF
 };
