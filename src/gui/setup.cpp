@@ -50,7 +50,7 @@ Setup::Setup():
 {
     setCloseButton(true);
     int width = 310;
-    int height = 290;
+    int height = 310;
     setContentSize(width, height);
 
     const char *buttonNames[] = {

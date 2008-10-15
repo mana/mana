@@ -107,6 +107,7 @@ Setup_Video::Setup_Video():
     mOpenGLEnabled(config.getValue("opengl", 0)),
     mCustomCursorEnabled(config.getValue("customcursor", 1)),
     mParticleEffectsEnabled(config.getValue("particleeffects", 1)),
+    mSpeechBubbleEnabled(config.getValue("speechbubble", 1)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int)config.getValue("fpslimit", 60)),
     mModeListModel(new ModeListModel()),
@@ -115,6 +116,7 @@ Setup_Video::Setup_Video():
     mOpenGLCheckBox(new CheckBox("OpenGL", mOpenGLEnabled)),
     mCustomCursorCheckBox(new CheckBox("Custom cursor", mCustomCursorEnabled)),
     mParticleEffectsCheckBox(new CheckBox("Particle effects", mParticleEffectsEnabled)),
+    mSpeechBubbleCheckBox(new CheckBox("Speech bubbles", mSpeechBubbleEnabled)),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox("FPS Limit: ")),
     mFpsSlider(new Slider(10, 200)),
@@ -142,17 +144,18 @@ Setup_Video::Setup_Video():
     mOpenGLCheckBox->setEnabled(false);
 #endif
 
-    mModeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
-    scrollArea->setDimension(gcn::Rectangle(10, 10, 90, 50));
+    mModeList->setDimension(gcn::Rectangle(0, 0, 60, 70));
+    scrollArea->setDimension(gcn::Rectangle(10, 10, 90, 70));
     mFsCheckBox->setPosition(110, 10);
     mOpenGLCheckBox->setPosition(110, 30);
     mParticleEffectsCheckBox->setPosition(175, 30);
     mCustomCursorCheckBox->setPosition(110, 50);
-    mAlphaSlider->setDimension(gcn::Rectangle(10, 80, 100, 10));
+    mSpeechBubbleCheckBox->setPosition(110, 70);
+    mAlphaSlider->setDimension(gcn::Rectangle(10, 100, 100, 10));
     alphaLabel->setPosition(20 + mAlphaSlider->getWidth(),
                             mAlphaSlider->getY());
-    mFpsCheckBox->setPosition(90, 100);
-    mFpsSlider->setDimension(gcn::Rectangle(10, 100, 75, 10));
+    mFpsCheckBox->setPosition(90, 120);
+    mFpsSlider->setDimension(gcn::Rectangle(10, 120, 75, 10));
     mFpsField->setPosition(100 + mFpsCheckBox->getWidth(), 100);
     mFpsField->setWidth(30);
 
@@ -167,6 +170,7 @@ Setup_Video::Setup_Video():
 
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
+    mSpeechBubbleCheckBox->setActionEventId("speechbubble");
     mAlphaSlider->setActionEventId("guialpha");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
     mFpsSlider->setActionEventId("fpslimitslider");
@@ -181,6 +185,7 @@ Setup_Video::Setup_Video():
 
     mCustomCursorCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
+    mSpeechBubbleCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
     mFpsSlider->addActionListener(this);
@@ -194,26 +199,26 @@ Setup_Video::Setup_Video():
     mParticleDetailSlider->addActionListener(this);
     mParticleDetailField->addKeyListener(this);
 
-    mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 120, 75, 10));
+    mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 140, 75, 10));
     gcn::Label *scrollRadiusLabel = new gcn::Label("Scroll radius");
-    scrollRadiusLabel->setPosition(90, 120);
-    mScrollRadiusField->setPosition(mFpsField->getX(), 120);
+    scrollRadiusLabel->setPosition(90, 140);
+    mScrollRadiusField->setPosition(mFpsField->getX(), 140);
     mScrollRadiusField->setWidth(30);
     mScrollRadiusField->setText(toString(mOriginalScrollRadius));
     mScrollRadiusSlider->setValue(mOriginalScrollRadius);
 
-    mScrollLazinessSlider->setDimension(gcn::Rectangle(10, 140, 75, 10));
+    mScrollLazinessSlider->setDimension(gcn::Rectangle(10, 160, 75, 10));
     gcn::Label *scrollLazinessLabel = new gcn::Label("Scroll laziness");
-    scrollLazinessLabel->setPosition(90, 140);
-    mScrollLazinessField->setPosition(mFpsField->getX(), 140);
+    scrollLazinessLabel->setPosition(90, 160);
+    mScrollLazinessField->setPosition(mFpsField->getX(), 160);
     mScrollLazinessField->setWidth(30);
     mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
     mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
 
-    mOverlayDetailSlider->setDimension(gcn::Rectangle(10, 160, 75, 10));
+    mOverlayDetailSlider->setDimension(gcn::Rectangle(10, 180, 75, 10));
     gcn::Label *overlayDetailLabel = new gcn::Label("Ambient FX");
-    overlayDetailLabel->setPosition(90, 160);
-    mOverlayDetailField->setPosition(180, 160);
+    overlayDetailLabel->setPosition(90, 180);
+    mOverlayDetailField->setPosition(180, 180);
     mOverlayDetailField->setWidth(30);
     switch (mOverlayDetail)
     {
@@ -229,10 +234,10 @@ Setup_Video::Setup_Video():
     }
     mOverlayDetailSlider->setValue(mOverlayDetail);
 
-    mParticleDetailSlider->setDimension(gcn::Rectangle(10, 180, 75, 10));
+    mParticleDetailSlider->setDimension(gcn::Rectangle(10, 200, 75, 10));
     gcn::Label *particleDetailLabel = new gcn::Label("Particle Detail");
-    particleDetailLabel->setPosition(90, 180);
-    mParticleDetailField->setPosition(180, 180);
+    particleDetailLabel->setPosition(90, 200);
+    mParticleDetailField->setPosition(180, 200);
     mParticleDetailField->setWidth(60);
     switch (mParticleDetail)
     {
@@ -256,6 +261,7 @@ Setup_Video::Setup_Video():
     add(mOpenGLCheckBox);
     add(mCustomCursorCheckBox);
     add(mParticleEffectsCheckBox);
+    add(mSpeechBubbleCheckBox);
     add(mAlphaSlider);
     add(alphaLabel);
     add(mFpsCheckBox);
@@ -335,6 +341,8 @@ void Setup_Video::apply()
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getValue("screen", 0);
     mCustomCursorEnabled = config.getValue("customcursor", 1);
+    mParticleEffectsEnabled = config.getValue("particleeffects", 1);
+    mSpeechBubbleEnabled = config.getValue("speechbubble", 1);
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int)config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", 0);
@@ -378,6 +386,7 @@ void Setup_Video::cancel()
     config.setValue("screen", mFullScreenEnabled ? 1 : 0);
     config.setValue("customcursor", mCustomCursorEnabled ? 1 : 0);
     config.setValue("particleeffects", mParticleEffectsEnabled ? 1 : 0);
+    config.setValue("speechbubble", mSpeechBubbleEnabled ? 1 : 0);
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled ? 1 : 0);
 }
@@ -399,6 +408,11 @@ void Setup_Video::action(const gcn::ActionEvent &event)
                 mParticleEffectsCheckBox->isSelected() ? 1 : 0);
         new OkDialog("Particle effect settings changed",
                      "Restart your client or change maps for the change to take effect.");
+    }
+    else if (event.getId() == "speechbubble")
+    {
+        config.setValue("speechbubble",
+                mSpeechBubbleCheckBox->isSelected() ? 1 : 0);
     }
     else if (event.getId() == "fpslimitslider")
     {

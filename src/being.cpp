@@ -35,6 +35,7 @@
 #include "sound.h"
 #include "localplayer.h"
 #include "configuration.h"
+#include "text.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
@@ -52,6 +53,9 @@
 
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
+
+static const int X_SPEECH_OFFSET = 18;
+static const int Y_SPEECH_OFFSET = 60;
 
 Being::Being(int id, int job, Map *map):
     mJob(job),
@@ -90,6 +94,7 @@ Being::Being(int id, int job, Map *map):
     instances++;
     mSpeech = "";
     mIsGM = false;
+    mText = 0;
 }
 
 Being::~Being()
@@ -115,6 +120,7 @@ Being::~Being()
     }
 
     delete mSpeechBubble;
+    delete mText;
 }
 
 void Being::setDestination(Uint16 destX, Uint16 destY)
@@ -157,6 +163,17 @@ void Being::setSprite(int slot, int id, std::string color)
 void Being::setSpeech(const std::string &text, Uint32 time)
 {
     mSpeech = text;
+
+    if (!config.getValue("speechbubble", 1))
+    {
+        // don't introduce a memory leak
+        delete mText;
+
+        mText = new Text(text, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
+                         gcn::Graphics::CENTER, speechFont,
+                         gcn::Color(255, 255, 255));
+    }
+
     mSpeechTime = 500;
 }
 
@@ -361,6 +378,13 @@ void Being::logic()
     if (mSpeechTime > 0)
          mSpeechTime--;
 
+    // Remove text if speech boxes aren't being used
+    if (mSpeechTime == 0 && mText)
+    {
+        delete mText;
+        mText = 0;
+    }
+
     int oldPx = mPx;
     int oldPy = mPy;
     // Update pixel coordinates
@@ -442,7 +466,7 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
     int py = mPy + offsetY;
 
     // Draw speech above this being
-    if (mSpeechTime > 0)
+    if (mSpeechTime > 0 && config.getValue("speechbubble", 1))
     {
         mSpeechBubble->setCaption(mName);
         mSpeechBubble->setWindowName(mName);

@@ -51,6 +51,7 @@ class Graphics;
 class ImageSet;
 class Particle;
 class SpeechBubble;
+class Text;
 
 /**
  * A position along a being's path.
@@ -398,6 +399,7 @@ class Being : public Sprite
 
         Path mPath;
         std::string mSpeech;
+        Text *mText;
         Uint16 mHairStyle, mHairColor;
         Uint8 mGender;
         Uint32 mSpeechTime;

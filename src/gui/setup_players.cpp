@@ -48,7 +48,7 @@
 
 #define WIDGET_AT(row, column) (((row) * COLUMNS_NR) + column)
 
-static std::string table_titles[COLUMNS_NR] = {"name", "relation"};
+static std::string table_titles[COLUMNS_NR] = {" name", "relation "};
 
 static const std::string RELATION_NAMES[PlayerRelation::RELATIONS_NR] = {
     "neutral", "friend", "disregarded", "ignored"
