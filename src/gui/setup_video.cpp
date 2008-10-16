@@ -151,7 +151,7 @@ Setup_Video::Setup_Video():
     mParticleEffectsCheckBox->setPosition(175, 30);
     mCustomCursorCheckBox->setPosition(110, 50);
     mSpeechBubbleCheckBox->setPosition(110, 70);
-    mAlphaSlider->setDimension(gcn::Rectangle(10, 100, 100, 10));
+    mAlphaSlider->setDimension(gcn::Rectangle(10, 100, 75, 10));
     alphaLabel->setPosition(20 + mAlphaSlider->getWidth(),
                             mAlphaSlider->getY());
     mFpsCheckBox->setPosition(90, 120);

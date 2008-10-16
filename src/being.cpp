@@ -164,16 +164,6 @@ void Being::setSpeech(const std::string &text, Uint32 time)
 {
     mSpeech = text;
 
-    if (!config.getValue("speechbubble", 1))
-    {
-        // don't introduce a memory leak
-        delete mText;
-
-        mText = new Text(text, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
-                         gcn::Graphics::CENTER, speechFont,
-                         gcn::Color(255, 255, 255));
-    }
-
     mSpeechTime = 500;
 }
 
@@ -468,6 +458,12 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
     // Draw speech above this being
     if (mSpeechTime > 0 && config.getValue("speechbubble", 1))
     {
+        if (mText)
+        {
+            delete mText;
+            mText = 0;
+        }
+
         mSpeechBubble->setCaption(mName);
         mSpeechBubble->setWindowName(mName);
         // Not quite centered, but close enough. However, it's not too important to get 
@@ -476,6 +472,20 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
         mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), py - 70 - 
                                         (mSpeechBubble->getNumRows()*14));
         mSpeechBubble->setVisible(true);
+    }
+    else if (!config.getValue("speechbubble", 1))
+    {
+        mSpeechBubble->setVisible(false);
+        // don't introduce a memory leak
+        if (mText)
+        {
+            delete mText;
+            mText = 0;
+        }
+
+        mText = new Text(mSpeech, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
+                         gcn::Graphics::CENTER, speechFont,
+                         gcn::Color(255, 255, 255));
     }
     else if (mSpeechTime == 0)
     {
