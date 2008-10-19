@@ -113,7 +113,7 @@ std::string& ColorDB::get(int id)
     }
 }
 
-const int& ColorDB::size()
+int ColorDB::size()
 {
     return mColors.size();
 }

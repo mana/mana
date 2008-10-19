@@ -44,6 +44,7 @@ Player::Player(int id, int job, Map *map):
 {
     mName = 0;
     mIsGM = false;
+    ColorDB::load();
 }
 
 Player::~Player()

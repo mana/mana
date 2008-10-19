@@ -478,10 +478,7 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
         mSpeechBubble->setVisible(false);
         // don't introduce a memory leak
         if (mText)
-        {
             delete mText;
-            mText = 0;
-        }
 
         mText = new Text(mSpeech, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
                          gcn::Graphics::CENTER, speechFont,

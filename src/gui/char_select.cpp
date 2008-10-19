@@ -257,7 +257,10 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     mPlayer = new Player(0, 0, NULL);
     mPlayer->setGender(gender);
 
+    ColorDB::load();
     int numberOfHairColors = ColorDB::size();
+
+    printf("%d\n", numberOfHairColors);
 
     mPlayer->setHairStyle(rand() % NR_HAIR_STYLES, rand() % numberOfHairColors);
 

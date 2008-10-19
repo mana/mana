@@ -42,7 +42,7 @@ namespace ColorDB
 
     std::string& get(int id);
 
-    const int& size();
+    int size();
 
     // Color DB
     typedef std::map<int, std::string> Colors;
