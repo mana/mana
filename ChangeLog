@@ -1,14 +1,18 @@
+2008-10-21  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/CMakeLists.txt: Fixed building for cmake.
+
 2008-10-21  David Athay  <ko2fan@gmail.com>
 
-	* src/game.cpp, src/commandhandler.cpp, src/net/posthandler.h, 
+	* src/game.cpp, src/commandhandler.cpp, src/net/posthandler.h,
 	src/net/posthandler.cpp, src/net/protocol.h, src/game.h: Fixed some of
-	the test stuff for the postal system. 
+	the test stuff for the postal system.
 
 2008-10-15  David Athay  <ko2fan@gmail.com>
 
-	* src/localplayer.cpp, src/net/beinghandler.cpp, src/net/protocol.h, 
-	src/net/gameserver/player.h, src/net/gameserver/player.cpp, 
-	src/net/beinghandler.h, tmw.cbp: Added communicating change of 
+	* src/localplayer.cpp, src/net/beinghandler.cpp, src/net/protocol.h,
+	src/net/gameserver/player.h, src/net/gameserver/player.cpp,
+	src/net/beinghandler.h, tmw.cbp: Added communicating change of
 	direction to server.
 
 2008-10-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
