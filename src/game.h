@@ -69,6 +69,7 @@ class Game : public ConfigListener
         MessageHandlerPtr mNpcHandler;
         MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mPlayerHandler;
+        MessageHandlerPtr mPostHandler;
         MessageHandlerPtr mTradeHandler;
 
         SDL_TimerID mLogicCounterId;

@@ -96,8 +96,21 @@ void CommandHandler::handleCommand(const std::string &command)
     else if (type == "post")
     {
         std::string::size_type pos = args.find(' ');
+        if (pos == std::string::npos)
+        {
+            chatWindow->chatLog("Please include the user and message");
+            return;
+        }
         std::string recipient(args, 0, pos);
+        if (recipient == "")
+        {
+            chatWindow->chatLog("Invalid user");
+        }
         std::string text(args, pos+1);
+        if (text == "")
+        {
+            chatWindow->chatLog("Invalid message");
+        }
         Net::GameServer::Player::sendLetter(recipient, text);
     }
     else if (type == "check")

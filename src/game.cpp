@@ -82,6 +82,7 @@
 #include "net/network.h"
 #include "net/npchandler.h"
 #include "net/partyhandler.h"
+#include "net/posthandler.h"
 #include "net/playerhandler.h"
 #include "net/tradehandler.h"
 
@@ -272,6 +273,7 @@ Game::Game():
     mNpcHandler(new NPCHandler()),
     mPartyHandler(new PartyHandler()),
     mPlayerHandler(new PlayerHandler()),
+    mPostHandler(new PostHandler()),
     mTradeHandler(new TradeHandler()),
     mLogicCounterId(0), mSecondsCounterId(0)
 {
@@ -317,6 +319,7 @@ Game::Game():
     Net::registerHandler(mNpcHandler.get());
     Net::registerHandler(mPartyHandler.get());
     Net::registerHandler(mPlayerHandler.get());
+    Net::registerHandler(mPostHandler.get());
     Net::registerHandler(mTradeHandler.get());
 }
 

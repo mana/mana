@@ -186,7 +186,7 @@ enum {
     PGMSG_SEND_POST                 = 0x04A0, // S player, S letter, { W attachment id }
     GPMSG_SEND_POST_RESPONSE        = 0x04A1, // B error
     PGMSG_GET_POST                  = 0x04A2, //
-    GPMSG_GET_POST_RESPONSE         = 0x04A3, // { L sender id, S letter, { W attachment id } }
+    GPMSG_GET_POST_RESPONSE         = 0x04A3, // { S sender name, S letter, { W attachment id } }
 
     XXMSG_INVALID = 0x7FFF
 };

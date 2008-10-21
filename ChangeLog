@@ -1,3 +1,9 @@
+2008-10-21  David Athay  <ko2fan@gmail.com>
+
+	* src/game.cpp, src/commandhandler.cpp, src/net/posthandler.h, 
+	src/net/posthandler.cpp, src/net/protocol.h, src/game.h: Fixed some of
+	the test stuff for the postal system. 
+
 2008-10-15  David Athay  <ko2fan@gmail.com>
 
 	* src/localplayer.cpp, src/net/beinghandler.cpp, src/net/protocol.h, 
