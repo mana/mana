@@ -22,32 +22,33 @@
  */
 
 #include "ok_dialog.h"
-
-#include <guichan/widgets/label.hpp>
-
+#include "textbox.h"
 #include "button.h"
-
+#include "scrollarea.h"
 
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
 {
-    gcn::Label *textLabel = new gcn::Label(msg);
+    TextBox *textBox = new TextBox();
+    textBox->setEditable(false);
+
+    gcn::ScrollArea *scrollArea = new ScrollArea(textBox);
     gcn::Button *okButton = new Button("Ok", "ok", this);
 
-    int w = textLabel->getWidth() + 20;
-    int h = textLabel->getHeight() + 25 + okButton->getHeight();
+    setContentSize(260, 175);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    scrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+    scrollArea->setDimension(gcn::Rectangle(
+                5, 5, 250, 160 - okButton->getHeight()));
 
-    if (okButton->getWidth() + 10 > w) {
-        w = okButton->getWidth() + 10;
-    }
+    textBox->setTextWrapped(msg);
 
-    setContentSize(w, h);
-    textLabel->setPosition(10, 10);
-    okButton->setPosition((w - okButton->getWidth()) / 2,
-                          h - 5 - okButton->getHeight());
+    okButton->setPosition(
+            260 - 5 - okButton->getWidth(),
+            175 - 5 - okButton->getHeight());
 
-    add(textLabel);
+    add(scrollArea);
     add(okButton);
 
     setLocationRelativeTo(getParent());

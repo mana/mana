@@ -1,3 +1,7 @@
+2008-10-22  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/ok_dialog.cpp, src/net/loginhandler.cpp: Now shows ban time.
+
 2008-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp, src/particleemitter.cpp,

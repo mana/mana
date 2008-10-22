@@ -110,10 +110,12 @@ void LoginHandler::handleMessage(MessageIn *msg)
                     errorMessage = "Rejected from server";
                     break;
                 case 4:
-                    errorMessage = "You have been banned from the game. Please contact the GM Team";
+
+                    errorMessage = "You have been permanently banned from the game. Please contact the GM Team";
                     break;
                 case 6:
-                    errorMessage = "You have been temporarily banned from the game. Please contact the GM team";
+                    errorMessage = "You have been temporarily banned from the game until "
+                          + msg->readString(20) + ".\n Please contact the GM team via the forums";
                     break;
                 case 9:
                     errorMessage = "This user name is already taken";
