@@ -257,7 +257,6 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     mPlayer = new Player(0, 0, NULL);
     mPlayer->setGender(gender);
 
-    ColorDB::load();
     int numberOfHairColors = ColorDB::size();
 
     printf("%d\n", numberOfHairColors);
@@ -344,16 +343,16 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
         scheduleDelete();
     }
     else if (event.getId() == "nextcolor") {
-        mPlayer->setHairStyle(-1, mPlayer->getHairColor() + 1);
+        mPlayer->setHairStyle(mPlayer->getHairStyle(), (mPlayer->getHairColor() + 1) % numberOfColors);
     }
     else if (event.getId() == "prevcolor") {
-        mPlayer->setHairStyle(-1, mPlayer->getHairColor() + numberOfColors - 1);
+        mPlayer->setHairStyle(mPlayer->getHairStyle(), (mPlayer->getHairColor() + numberOfColors - 1) % numberOfColors);
     }
     else if (event.getId() == "nextstyle") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, -1);
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, mPlayer->getHairColor());
     }
     else if (event.getId() == "prevstyle") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + NR_HAIR_STYLES - 1, -1);
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + NR_HAIR_STYLES - 1, mPlayer->getHairColor());
     }
 }
 

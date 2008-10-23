@@ -98,7 +98,8 @@ void ColorDB::unload()
 
 std::string& ColorDB::get(int id)
 {
-    assert(mLoaded);
+    if(!mLoaded)
+        load();
 
     ColorIterator i = mColors.find(id);
 

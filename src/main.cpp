@@ -81,6 +81,7 @@
 #include "net/messageout.h"
 #include "net/network.h"
 
+#include "resources/colordb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
@@ -421,6 +422,7 @@ void exit_engine()
     sound.close();
 
     // Unload XML databases
+    ColorDB::unload();
     ItemDB::unload();
     MonsterDB::unload();
     NPCDB::unload();
@@ -838,6 +840,7 @@ int main(int argc, char *argv[])
                         false);
 
                     // Load XML databases
+                    ColorDB::load();
                     ItemDB::load();
                     MonsterDB::load();
                     NPCDB::load();
