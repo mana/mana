@@ -100,14 +100,3 @@ void FlashText::draw(Graphics *graphics, int xOff, int yOff)
     }
     Text::draw(graphics, xOff, yOff);
 }
-
-FlashText::~FlashText()
-{
-    mTime = 0;
-    textManager->removeText(this);
-    if (--mInstances == 0)
-    {
-        delete textManager;
-        textManager = 0;
-    }
-}

@@ -80,7 +80,7 @@ class FlashText : public Text
         /**
          * Remove the text from the screen
          */
-        virtual ~FlashText();
+        virtual ~FlashText() {}
 
         /**
          * Flash the text for so many refreshes
