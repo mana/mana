@@ -69,6 +69,8 @@ Being::Being(int id, int job, Map *map):
     mWalkSpeed(150),
     mDirection(DOWN),
     mMap(NULL),
+    mIsGM(false),
+    mParticleEffects(config.getValue("particleeffects", 1)),
     mEquippedWeapon(NULL),
     mHairStyle(1), mHairColor(0),
     mGender(2),
@@ -76,8 +78,7 @@ Being::Being(int id, int job, Map *map):
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
-    mSpriteColors(VECTOREND_SPRITE, ""),
-    mParticleEffects(config.getValue("particleeffects", 1))
+    mSpriteColors(VECTOREND_SPRITE, "")
 {
     setMap(map);
 
@@ -93,7 +94,6 @@ Being::Being(int id, int job, Map *map):
 
     instances++;
     mSpeech = "";
-    mIsGM = false;
     mText = 0;
 }
 

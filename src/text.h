@@ -57,7 +57,7 @@ class Text
         virtual void
         draw(Graphics *graphics, int xOff, int yOff);
 
-    private:
+    protected:
 
         int mX; /**< Actual x-value of left of text written */
         int mY; /**< Actual y-value of top of text written */
@@ -76,6 +76,11 @@ class FlashText : public Text
         FlashText(const std::string &text, int x, int y,
                   gcn::Graphics::Alignment alignment, gcn::Font *font,
                   gcn::Color colour);
+
+        /**
+         * Remove the text from the screen
+         */
+        ~FlashText();
 
         /**
          * Flash the text for so many refreshes
