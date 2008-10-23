@@ -22,6 +22,7 @@
 #include <map>
 #include <list>
 
+#include <string.h>
 #include <zlib.h>
 
 #include "xmlutils.h"
