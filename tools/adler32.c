@@ -7,6 +7,7 @@
  *  Usage: adler32 [file]...
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <zlib.h>
 
