@@ -1,3 +1,7 @@
+2008-10-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/Makefile.am: Fixed building with configure.
+
 2008-10-21  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/CMakeLists.txt: Fixed building for cmake.
