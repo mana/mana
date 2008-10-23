@@ -1,3 +1,8 @@
+2008-10-23  Dennis Friis  <peavey@placid.dk>
+
+	* src/net/tradehandler.cpp: Add support for new athena trade-add
+	failure condition; no free slot.
+
 2008-10-22  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/ok_dialog.cpp, src/net/loginhandler.cpp: Now shows ban time.
