@@ -41,7 +41,7 @@ class Recorder : public ButtonBoxListener
 	void help(const std::string &args) const;
 	void buttonBoxRespond();
 	bool isRecording() const {return mStream;}
-        ~Recorder();
+        virtual ~Recorder();
     private:
 	ChatWindow *mChat;
 	std::ofstream mStream;

@@ -49,7 +49,7 @@ class Text
         /**
          * Remove the text from the screen
          */
-        ~Text();
+        virtual ~Text();
 
         /**
          * Draws the text
@@ -80,7 +80,7 @@ class FlashText : public Text
         /**
          * Remove the text from the screen
          */
-        ~FlashText();
+        virtual ~FlashText();
 
         /**
          * Flash the text for so many refreshes
