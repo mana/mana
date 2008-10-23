@@ -177,6 +177,9 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     case 0x0006: player_node->mMaxHp = value; break;
                     case 0x0007: player_node->mMp = value; break;
                     case 0x0008: player_node->mMaxMp = value; break;
+                    case 0x0009:
+                                 player_node->mStatsPointsToAttribute = value;
+                                 break;
                     case 0x000b: player_node->mLevel = value; break;
                     case 0x000c:
                                  player_node->mSkillPoint = value;
@@ -197,10 +200,6 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                  player_node->mTotalWeight = value;
                                  break;
                     case 0x0019: player_node->mMaxWeight = value; break;
-                    case 0x0037: player_node->mJobLevel = value; break;
-                    case 0x0009:
-                                 player_node->mStatsPointsToAttribute = value;
-                                 break;
                     case 0x0029: player_node->ATK = value; break;
                     case 0x002b: player_node->MATK = value; break;
                     case 0x002d: player_node->DEF = value; break;
@@ -209,6 +208,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     case 0x0031: player_node->HIT = value; break;
                     case 0x0032: player_node->FLEE = value; break;
                     case 0x0035: player_node->mAttackSpeed = value; break;
+                    case 0x0037: player_node->mJobLevel = value; break;
                 }
 
                 if (player_node->mHp == 0 && deathNotice == NULL)

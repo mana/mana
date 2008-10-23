@@ -189,6 +189,12 @@ void TradeHandler::handleMessage(MessageIn *msg)
                                 "partner is over weighted.",
                                 BY_SERVER);
                         break;
+                     case 2:
+                         // Add item failed - player has no free slot
+                         chatWindow->chatLog("Failed adding item. Trade "
+                                             "partner has no free slot.",
+                                             BY_SERVER);
+                         break;
                     default:
                         chatWindow->chatLog("Failed adding item for "
                                 "unknown reason.", BY_SERVER);
