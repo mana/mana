@@ -298,18 +298,15 @@ void Viewport::drawTargetCursor(Graphics *graphics)
         Being::TargetCursorSize cursorSize = target->getTargetCursorSize();
         Image* targetCursor;
         if (rangeX > attackRange || rangeY > attackRange)
-        {
-            targetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
-        }
-        else {
-            targetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
-        }
+	    targetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
+        else
+	    targetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
 
         // Draw the target cursor at the correct position
-        int posX = target->getPixelX() + 16 -
-                   targetCursor->getWidth() / 2 - (int) mViewX;
-        int posY = target->getPixelY() + 16 -
-                   targetCursor->getHeight() / 2 - (int) mViewY;
+        int posX = target->getPixelX() -
+            targetCursor->getWidth() / 2 - (int) mViewX;
+        int posY = target->getPixelY() - 16 -
+            targetCursor->getHeight() / 2 - (int) mViewY;
 
         graphics->drawImage(targetCursor, posX, posY);
     }
@@ -325,7 +322,7 @@ void Viewport::drawTargetName(Graphics *graphics)
         graphics->setColor(gcn::Color(255, 32, 32));
 
         const MonsterInfo &mi = static_cast<Monster*>(target)->getInfo();
-        int posX = target->getPixelX() + 16 - (int) mViewX;
+        int posX = target->getPixelX() - (int) mViewX;
         int posY = target->getPixelY() + 16 - target->getHeight() - (int) mViewY;
 
         graphics->drawText(mi.getName(), posX, posY, gcn::Graphics::CENTER);

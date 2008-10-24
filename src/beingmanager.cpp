@@ -89,6 +89,8 @@ Being* BeingManager::createBeing(int id, int type, int subtype)
 void BeingManager::destroyBeing(Being *being)
 {
     mBeings.remove(being);
+    if(being == player_node->getTarget())
+        player_node->setTarget(NULL);
     delete being;
 }
 
@@ -179,7 +181,7 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
         }
     }
 
-    return (maxdist >= dist) ? closestBeing : NULL;
+    return (maxdist >= dist) ? NULL : closestBeing;
 }
 
 Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
@@ -207,5 +209,5 @@ Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
         }
     }
 
-    return (maxdist >= dist) ? closestBeing : NULL;
+    return (maxdist >= dist) ? NULL : closestBeing;
 }

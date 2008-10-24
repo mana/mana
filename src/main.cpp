@@ -798,8 +798,10 @@ int main(int argc, char *argv[])
         while (state != STATE_FORCE_QUIT)
         {
             // Handle SDL events
-            while (SDL_PollEvent(&event)) {
-                switch (event.type) {
+            while (SDL_PollEvent(&event)) 
+            {
+                switch (event.type) 
+                {
                     case SDL_QUIT:
                         state = STATE_FORCE_QUIT;
                         break;
