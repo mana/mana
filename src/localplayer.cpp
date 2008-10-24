@@ -391,6 +391,32 @@ void LocalPlayer::attack()
     if (mAction != STAND && mAction != ATTACK)
         return;
 
+    //Face direction of the target
+    if(mTarget){
+        unsigned char dir = 0;
+        int x = 0, y = 0;
+        Vector plaPos = this->getPosition();
+        Vector tarPos = mTarget->getPosition();
+        x = plaPos.x - tarPos.x;
+        y = plaPos.y - tarPos.y;
+        if(abs(x) < abs(y)){
+            //Check to see if target is above me or below me
+            if(y > 0){
+               dir = UP;
+            } else {
+               dir = DOWN;
+            }
+        } else {
+            //check to see if the target is to the left or right of me
+            if(x > 0){
+               dir = LEFT;
+            } else {
+               dir = RIGHT;
+            }
+        }
+        setDirection(dir);
+    }
+
     mLastAction = tick_time;
 
     setAction(ATTACK);
