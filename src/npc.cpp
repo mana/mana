@@ -86,10 +86,12 @@ void NPC::setName(const std::string &name)
     {
         delete mName;
     }
-    mName = new Text(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+    std::string displayName = name.substr(0, name.find('#', 0));
+
+    mName = new Text(displayName, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
                      gcn::Graphics::CENTER, npcNameFont,
                      gcn::Color(200, 200, 255));
-    Being::setName(name + " (NPC)");
+    Being::setName(displayName + " (NPC)");
 }
 
 Being::Type
