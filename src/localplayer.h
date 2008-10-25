@@ -199,14 +199,9 @@ class LocalPlayer : public Player
         void pickUp(FloorItem *item);
 
         /**
-         * Sets the attack range.
-         */
-        void setAttackRange(int range) { mAttackRange = range; }
-
-        /**
          * Gets the attack range.
          */
-        int getAttackRange() const { return mAttackRange; }
+        int getAttackRange();
 
         /**
          * Sents a trade request to the given being.
@@ -278,8 +273,6 @@ class LocalPlayer : public Player
 
         int getMaxHP() const
         { return mMaxHP; }
-
-        Uint16 mAttackRange;
 
         void setHP(int value)
         { mHP = value; }

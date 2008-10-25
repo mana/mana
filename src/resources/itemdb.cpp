@@ -135,6 +135,7 @@ void ItemDB::load()
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
         int weaponType = weaponTypeFromString(XML::getProperty(node, "weapon-type", ""));
+        int attackRange = XML::getProperty(node, "attack-range", 0);
 
         ItemInfo *itemInfo = new ItemInfo;
         itemInfo->setImageName(image);
@@ -144,6 +145,7 @@ void ItemDB::load()
         itemInfo->setView(view);
         itemInfo->setWeight(weight);
         itemInfo->setWeaponType(weaponType);
+        itemInfo->setAttackRange(attackRange);
 
         std::string effect;
         for (int i = 0; i < int(sizeof(fields) / sizeof(fields[0])); ++i)

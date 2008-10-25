@@ -52,7 +52,6 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer():
     Player(65535, 0, NULL),
-    mAttackRange(0),
     mInventory(new Inventory),
     mEquipment(new Equipment),
     mAttributeBase(NB_CHARACTER_ATTRIBUTES, -1),
@@ -510,3 +509,16 @@ std::pair<int, int> LocalPlayer::getExperience(int skill)
 {
     return std::pair<int, int> (mExpCurrent.at(skill), mExpNext.at(skill));
 }
+
+int LocalPlayer::getAttackRange()
+{
+    Item *weapon = mEquipment->getEquipment(EQUIP_FIGHT1_SLOT);
+    if(weapon)
+    {
+        const ItemInfo info = weapon->getInfo();
+        return info.getAttackRange();
+    }
+    return 32; //unarmed range
+    
+}
+

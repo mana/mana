@@ -1,4 +1,15 @@
 2008-10-24  Chuck Miller  <shadowmil@gmail.com>
+	
+	* src/resources/iteminfo.h,src/resources/itemdb.cpp: Added attack
+	range to item's info
+	* src/localplayer.h,src/localplayer.cpp: Changed the getAttackRange
+	method to use item's info, this is so targets will turn blue when you
+	are close enough, as a result mAttackRange and setAttackRange were
+	removed
+	* src/beingmanager.cpp: Fixed not selecting closest being, and cleaned
+	up some so the selecting code is only in one place
+
+2008-10-24  Chuck Miller  <shadowmil@gmail.com>
 
 	* src/localplayer.cpp: Made it so the player will auto face its target
 	* src/net/beinghandler.cpp: Fixed it so the correct direction will be

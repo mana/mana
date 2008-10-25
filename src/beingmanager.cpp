@@ -165,11 +165,21 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
     Being *closestBeing = NULL;
     int dist = 0;
 
+    //Why do we do this:
+    //For some reason x,y passed to this function is always
+    //in map coords, while down below its in pixels
+    //
+    //I believe there is a deeper problem under this, but
+    //for a temp solution we'll convert to coords to pixels 
+    x = x * 32;
+    y = y * 32;
+    maxdist = maxdist * 32;
+
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
         Being *being = (*i);
         const Vector &pos = being->getPosition();
-        int d = abs((int) pos.x - x) + abs((int) pos.y - y);
+        int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
 
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer
@@ -180,34 +190,13 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
             closestBeing = being;
         }
     }
-
-    return (maxdist >= dist) ? NULL : closestBeing;
+ 
+    return (maxdist >= dist) ? closestBeing : NULL; 
 }
 
 Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
                                             Being::Type type)
 {
-    Being *closestBeing = NULL;
-    int dist = 0;
     const Vector &aroundBeingPos = aroundBeing->getPosition();
-
-    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
-    {
-        Being *being = (*i);
-        const Vector &pos = being->getPosition();
-        int d = abs((int) pos.x - aroundBeingPos.x) +
-                abs((int) pos.y - aroundBeingPos.y);
-
-        if ((being->getType() == type || type == Being::UNKNOWN)
-                && (d < dist || closestBeing == NULL)   // it is closer
-                && being->mAction != Being::DEAD        // no dead beings
-                && being != aroundBeing
-           )
-        {
-            dist = d;
-            closestBeing = being;
-        }
-    }
-
-    return (maxdist >= dist) ? NULL : closestBeing;
+    return findNearestLivingBeing((int) aroundBeingPos.x,(int) aroundBeingPos.y,maxdist,type);
 }
