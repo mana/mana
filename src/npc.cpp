@@ -99,6 +99,12 @@ void NPC::setGender(int gender)
     Being::setGender(gender);
 }
 
+void NPC::setSprite(int slot, int id, std::string color)
+{
+    // Fix this later should it not be adequate enough.
+    Being::setSprite(slot, id, color);
+}
+
 Being::Type
 NPC::getType() const
 {

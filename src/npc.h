@@ -39,6 +39,7 @@ class NPC : public Player
 
         void setName(const std::string &name);
         void setGender(int gender);
+        void setSprite(int slot, int id, std::string color);
 
         virtual Type
         getType() const;
