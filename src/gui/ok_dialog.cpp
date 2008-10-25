@@ -23,36 +23,62 @@
 
 #include "ok_dialog.h"
 
-#include <guichan/widgets/label.hpp>
-
-#include "button.h"
+#include <guichan/font.hpp>
 
 
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
 {
-    gcn::Label *textLabel = new gcn::Label(msg);
-    gcn::Button *okButton = new Button("Ok", "ok", this);
+    mTextBox = new TextBox();
+    mTextBox->setEditable(false);
+    mTextBox->setOpaque(false);
 
-    int w = textLabel->getWidth() + 20;
-    int h = textLabel->getHeight() + 25 + okButton->getHeight();
+    mTextArea = new ScrollArea(mTextBox);
+    okButton = new Button("Ok", "ok", this);
 
-    if (okButton->getWidth() + 10 > w) {
-        w = okButton->getWidth() + 10;
+    mTextArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mTextArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mTextArea->setOpaque(false);
+
+    mTextBox->setMinWidth(260);
+    mTextBox->setTextWrapped(msg);
+
+    int numRows = mTextBox->getNumberOfRows();
+
+    if (numRows > 1)
+    {
+        // 15 == height of each line of text (based on font heights)
+        // 14 == row top + bottom graphic pixel heights
+        setContentSize(mTextBox->getMinWidth() + 15, 15 + (numRows * 15));
+        mTextArea->setDimension(gcn::Rectangle(4, 5, mTextBox->getMinWidth() + 5, 
+                                               3 + (numRows * 14)));
+    }
+    else
+    {
+        int width = getFont()->getWidth(title);
+        if (width < getFont()->getWidth(msg))
+            width = getFont()->getWidth(msg);
+        if (width < okButton->getWidth())
+            width = okButton->getWidth();
+        setContentSize(width + 15, 30 + okButton->getHeight());
+        mTextArea->setDimension(gcn::Rectangle(4, 5, width + 5, 17));
     }
 
-    setContentSize(w, h);
-    textLabel->setPosition(10, 10);
-    okButton->setPosition((w - okButton->getWidth()) / 2,
-                          h - 5 - okButton->getHeight());
+    okButton->setPosition((mTextBox->getMinWidth() - okButton->getWidth()) / 2,
+                          (numRows * 14) + okButton->getHeight() - 8);
 
-    add(textLabel);
+    add(mTextArea);
     add(okButton);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
     okButton->requestFocus();
+}
+
+unsigned int OkDialog::getNumRows()
+{
+    return mTextBox->getNumberOfRows();
 }
 
 void OkDialog::action(const gcn::ActionEvent &event)

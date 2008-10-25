@@ -36,8 +36,9 @@ NpcTextDialog::NpcTextDialog():
 {
     mTextBox = new TextBox;
     mTextBox->setEditable(false);
+
     gcn::ScrollArea *scrollArea = new ScrollArea(mTextBox);
-    Button *okButton = new Button("OK", "ok", this);
+    gcn::Button *okButton = new Button("OK", "ok", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
