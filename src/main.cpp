@@ -265,6 +265,9 @@ void init_engine(const Options &options)
     resman->addToSearchPath(homeDir, false);
 
     // Add the main data directory to our PhysicsFS search path
+    if (!options.dataPath.empty()) {
+        resman->addToSearchPath(options.dataPath, true);
+    }
     resman->addToSearchPath("data", true);
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -436,16 +439,17 @@ void printHelp()
     std::cout
         << "aethyra" << std::endl << std::endl
         << "Options: " << std::endl
-        << "  -h --help       : Display this help" << std::endl
-        << "  -v --version    : Display the version" << std::endl
-        << "  -u --skipupdate : Skip the update downloads" << std::endl
-        << "  -U --username   : Login with this username" << std::endl
-        << "  -P --password   : Login with this password" << std::endl
+        << "  -C --configfile : Configuration file to use" << std::endl
+        << "  -d --data       : Directory to load game data from" << std::endl
         << "  -D --default    : Bypass the login process with default "
                                 "settings" << std::endl
-        << "  -p --playername : Login with this player" << std::endl
-        << "  -C --configfile : Configuration file to use" << std::endl
+        << "  -h --help       : Display this help" << std::endl
         << "  -H --updatehost : Use this update host" << std::endl;
+        << "  -p --playername : Login with this player" << std::endl
+        << "  -P --password   : Login with this password" << std::endl
+        << "  -u --skipupdate : Skip the update downloads" << std::endl
+        << "  -U --username   : Login with this username" << std::endl
+        << "  -v --version    : Display the version" << std::endl
 }
 
 void printVersion()
@@ -464,15 +468,16 @@ void parseOptions(int argc, char *argv[], Options &options)
     const char *optstring = "hvuU:P:Dp:C:H:";
 
     const struct option long_options[] = {
-        { "help",       no_argument,       0, 'h' },
-        { "version",    no_argument,       0, 'v' },
-        { "skipupdate", no_argument,       0, 'u' },
-        { "username",   required_argument, 0, 'U' },
-        { "password",   required_argument, 0, 'P' },
+        { "configfile", required_argument, 0, 'C' },
+        { "data",       required_argument, 0, 'd' },
         { "default",    no_argument,       0, 'D' },
         { "playername", required_argument, 0, 'p' },
-        { "configfile", required_argument, 0, 'C' },
+        { "password",   required_argument, 0, 'P' },
+        { "help",       no_argument,       0, 'h' },
         { "updatehost", required_argument, 0, 'H' },
+        { "skipupdate", no_argument,       0, 'u' },
+        { "username",   required_argument, 0, 'U' },
+        { "version",    no_argument,       0, 'v' },
         { 0 }
     };
 
@@ -485,12 +490,27 @@ void parseOptions(int argc, char *argv[], Options &options)
         }
 
         switch (result) {
+            case 'C':
+                options.configPath = optarg;
+                break;
+            case 'd':
+                options.dataPath = optarg;
+                break;
+            case 'D':
+                options.chooseDefault = true;
+                break;
             default: // Unknown option
             case 'h':
                 options.printHelp = true;
                 break;
-            case 'v':
-                options.printVersion = true;
+            case 'H':
+                options.updateHost = optarg;
+                break;
+            case 'p':
+                options.playername = optarg;
+                break;
+            case 'P':
+                options.password = optarg;
                 break;
             case 'u':
                 options.skipUpdate = true;
@@ -498,20 +518,8 @@ void parseOptions(int argc, char *argv[], Options &options)
             case 'U':
                 options.username = optarg;
                 break;
-            case 'P':
-                options.password = optarg;
-                break;
-            case 'D':
-                options.chooseDefault = true;
-                break;
-            case 'p':
-                options.playername = optarg;
-                break;
-            case 'C':
-                options.configPath = optarg;
-                break;
-            case 'H':
-                options.updateHost = optarg;
+            case 'v':
+                options.printVersion = true;
                 break;
         }
     }
