@@ -40,7 +40,7 @@ static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
 
 NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
-    Being(id, job, map), mNetwork(network)
+    Player(id, job, map), mNetwork(network)
 {
     NPCInfo info = NPCDB::get(job);
 
@@ -92,6 +92,11 @@ void NPC::setName(const std::string &name)
                      gcn::Graphics::CENTER, npcNameFont,
                      gcn::Color(200, 200, 255));
     Being::setName(displayName + " (NPC)");
+}
+
+void NPC::setGender(int gender)
+{
+    Being::setGender(gender);
 }
 
 Being::Type

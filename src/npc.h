@@ -24,13 +24,13 @@
 #ifndef _TMW_NPC_H
 #define _TMW_NPC_H
 
-#include "being.h"
+#include "player.h"
 
 class Network;
 class Graphics;
 class Text;
 
-class NPC : public Being
+class NPC : public Player
 {
     public:
         NPC(Uint32 id, Uint16 job, Map *map, Network *network);
@@ -38,6 +38,7 @@ class NPC : public Being
         ~NPC();
 
         void setName(const std::string &name);
+        void setGender(int gender);
 
         virtual Type
         getType() const;
