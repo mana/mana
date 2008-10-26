@@ -252,6 +252,17 @@ class LocalPlayer : public Player
         void setWalkingDir(int dir);
 
         /**
+         * Gets the walking direction
+         */
+        int getWalkingDir() const
+        { return mWalkingDir; }
+
+        /**
+         * Stops the player dead in his tracks
+         */
+        void stopWalking(bool sendToServer = true);
+
+        /**
          * Uses a character point to raise an attribute
          */
         void raiseAttribute(size_t attr);

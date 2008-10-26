@@ -787,7 +787,24 @@ void Game::handleInput()
             direction |= Being::RIGHT;
         }
 
-        player_node->setWalkingDir(direction);
+        // First if player is pressing key for the direction he is already going
+        if (direction == player_node->getWalkingDir())
+        {  
+            player_node->setWalkingDir(direction);
+        } 
+        // Else if he is pressing a key, and its different from what he has 
+        // been pressing, stop (do not send this stop to the server) and 
+        // start in the new direction
+        else if (direction && direction != player_node->getWalkingDir()) 
+        {
+            player_node->stopWalking(false);
+            player_node->setWalkingDir(direction);
+        }
+        // Else, he is not pressing a key, stop (sending to server) 
+        else 
+        {
+            player_node->stopWalking(true);
+        }
 
         // Target the nearest player if 'q' is pressed
         if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))

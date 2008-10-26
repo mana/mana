@@ -46,7 +46,7 @@
 #include "utils/tostring.h"
 #include "utils/gettext.h"
 
-const short walkingKeyboardDelay = 100;
+const short walkingKeyboardDelay = 500;
 
 LocalPlayer *player_node = NULL;
 
@@ -242,6 +242,7 @@ void LocalPlayer::walk(unsigned char dir)
         return;
 
     const Vector &pos = getPosition();
+    int dScaler; // Distance to walk
 
     if (mAction == WALK && !mPath.empty())
     {
@@ -273,11 +274,22 @@ void LocalPlayer::walk(unsigned char dir)
                                    (pos.y + dy) / 32, getWalkMask()))
         dx = 16 - (int) pos.x % 32;
 
-    // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk(((int) pos.x + dx) / 32,
-                                    ((int) pos.y + dy) / 32, getWalkMask()))
+    // Checks our path up to 5 tiles, if a blocking tile is found
+    // We go to the last good tile, and break out of the loop
+    for (dScaler = 1; dScaler <= 5; dScaler++)
     {
-        setDestination((int) pos.x + dx, (int) pos.y + dy);
+        if ( (dx || dy) && 
+             !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
+                             ((int) pos.y + (dy * dScaler)) / 32, getWalkMask()) )
+        {
+            dScaler--;
+            break;
+        }
+    }
+    
+    if (dScaler >= 0)
+    {
+         setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
     }
     else if (dir)
     {
@@ -334,6 +346,20 @@ void LocalPlayer::setWalkingDir(int dir)
     {
         walk(dir);
     }
+}
+
+void LocalPlayer::stopWalking(bool sendToServer)
+{
+    if(mAction == WALK && mWalkingDir){
+        mWalkingDir = 0;
+        mLocalWalkTime = 0;
+        Being::setDestination(getPosition().x,getPosition().y);
+        if (sendToServer)
+             Net::GameServer::Player::walk(getPosition().x, getPosition().y);
+        setAction(STAND);
+    }
+
+    clearPath();
 }
 
 void LocalPlayer::toggleSit()

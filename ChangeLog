@@ -1,3 +1,9 @@
+2008-10-25  Chuck Miller  <shadowmil@gmail.com>
+
+	* src/localplayer.h,src/localplayer.cpp,src/game.cpp: Played around
+	with movement, its still not where it should be, but its quite a bit
+	better.
+
 2008-10-24  Chuck Miller  <shadowmil@gmail.com>
 	
 	* src/resources/iteminfo.h,src/resources/itemdb.cpp: Added attack
