@@ -57,11 +57,13 @@ Particle::Particle(Map *map):
     mLifetimePast(0),
     mFadeOut(0),
     mFadeIn(0),
+    mAlpha(1.0f),
     mAutoDelete(true),
     mMap(map),
     mGravity(0.0f),
-    mRandomnes(0),
+    mRandomness(0),
     mBounce(0.0f),
+    mFollow(false),
     mTarget(NULL),
     mAcceleration(0.0f),
     mInvDieDistance(-1.0f),
@@ -77,7 +79,7 @@ Particle::setupEngine()
 {
     Particle::maxCount = (int)config.getValue("particleMaxCount", 3000);
     Particle::fastPhysics = (int)config.getValue("particleFastPhysics", 0);
-    Particle::emitterSkip = (int)config.getValue("particleEmitterSkip", 0) + 1;
+    Particle::emitterSkip = (int)config.getValue("particleEmitterSkip", 1) + 1;
     disableAutoDelete();
     logger->log("Particle engine set up");
 }
@@ -93,6 +95,8 @@ Particle::update()
     {
         mAlive = false;
     }
+
+    Vector oldPos = mPos;
 
     if (mAlive)
     {
@@ -135,11 +139,11 @@ Particle::update()
             }
         }
 
-        if (mRandomnes > 0)
+        if (mRandomness > 0)
         {
-            mVelocity.x += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
-            mVelocity.y += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
-            mVelocity.z += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
+            mVelocity.x += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
+            mVelocity.y += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
+            mVelocity.z += (rand()%mRandomness - rand()%mRandomness) / 1000.0f;
         }
 
         mVelocity.z -= mGravity;
@@ -170,7 +174,7 @@ Particle::update()
         }
 
         // Update child emitters
-        if (mLifetimePast%Particle::emitterSkip == 0)
+        if ((mLifetimePast-1)%Particle::emitterSkip == 0)
         {
             for (   EmitterIterator e = mChildEmitters.begin();
                     e != mChildEmitters.end();
@@ -190,10 +194,19 @@ Particle::update()
         }
     }
 
+    Vector change = mPos - oldPos;
+
     // Update child particles
+
     for (ParticleIterator p = mChildParticles.begin();
          p != mChildParticles.end();)
     {
+        //move particle with its parent if desired
+        if ((*p)->doesFollow())
+        {
+            (*p)->moveBy(change);
+        }
+        //update particle
         if ((*p)->update())
         {
             p++;

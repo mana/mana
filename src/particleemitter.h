@@ -97,8 +97,9 @@ class ParticleEmitter
          * Vector changing of particles:
          */
         MinMax<float> mParticleGravity;
-        MinMax<int> mParticleRandomnes;
+        MinMax<int> mParticleRandomness;
         MinMax<float> mParticleBounce;
+        bool mParticleFollow;
 
         /*
          * Properties of targeting particles:
@@ -118,11 +119,15 @@ class ParticleEmitter
         Map *mMap;             /**< Map the particles are spawned on */
 
         MinMax<int> mOutput;   /**< Number of particles spawned per update */
+        MinMax<int> mOutputPause; /**< Pause in frames between two spawns */
+        int mOutputPauseLeft;
 
+        /*
+         * Graphical representation of the particle
+         */
         Image *mParticleImage; /**< Particle image, if used */
-
-        /** Filename of particle animation file */
-        Animation mParticleAnimation;
+        Animation mParticleAnimation; /**< Filename of particle animation file */
+        MinMax<float> mParticleAlpha; /**< Opacity of the graphical representation of the particles */
 
         /** List of emitters the spawned particles are equipped with */
         std::list<ParticleEmitter> mParticleChildEmitters;

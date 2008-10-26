@@ -162,6 +162,10 @@ class Particle : public Sprite
         moveBy(float x, float y, float z)
         { mPos.x += x; mPos.y += y; mPos.z += z; }
 
+        void
+        moveBy (Vector change)
+        { mPos += change; }
+
         /**
          * Sets the time in game ticks until the particle is destroyed.
          */
@@ -184,6 +188,13 @@ class Particle : public Sprite
         void
         setFadeIn(int fadeIn)
         { mFadeIn = fadeIn; }
+
+        /**
+         * Sets the alpha value of the particle
+         */
+        void
+        setAlpha(float alpha)
+        { mAlpha = alpha; }
 
         /**
          * Sets the sprite iterator of the particle on the current map to make
@@ -218,8 +229,8 @@ class Particle : public Sprite
          * Sets the ammount of random vector changes
          */
         void
-        setRandomnes(int r)
-        { mRandomnes = r; }
+        setRandomness(int r)
+        { mRandomness = r; }
 
         /**
          * Sets the ammount of velocity particles retain after
@@ -228,6 +239,20 @@ class Particle : public Sprite
         void
         setBounce(float bouncieness)
         { mBounce = bouncieness; }
+
+        /**
+         * Sets the flag if the particle is supposed to be moved by its parent
+         */
+        void
+        setFollow(bool follow)
+        { mFollow = follow; }
+
+        /**
+         * Gets the flag if the particle is supposed to be moved by its parent
+         */
+        bool
+        doesFollow()
+        { return mFollow; }
 
         /**
          * Makes the particle move toward another particle with a
@@ -267,6 +292,7 @@ class Particle : public Sprite
         int mLifetimePast;          /**< Age of the particle in game ticks*/
         int mFadeOut;               /**< Lifetime in game ticks left where fading out begins*/
         int mFadeIn;                /**< Age in game ticks where fading in is finished*/
+        float mAlpha;               /**< Opacity of the graphical representation of the particle */
 
     private:
         // generic properties
@@ -279,8 +305,9 @@ class Particle : public Sprite
         // dynamic particle
         Vector mVelocity;           /**< Speed in pixels per game-tick. */
         float mGravity;             /**< Downward acceleration in pixels per game-tick. */
-        int mRandomnes;             /**< Ammount of random vector change */
+        int mRandomness;            /**< Ammount of random vector change */
         float mBounce;              /**< How much the particle bounces off when hitting the ground */
+        bool mFollow;               /**< is this particle moved when its parent particle moves? */
 
         // follow-point particles
         Particle *mTarget;          /**< The particle that attracts this particle*/

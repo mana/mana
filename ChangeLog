@@ -147,6 +147,22 @@
 	another template to make deleting all values in a container easier.
 	Inspired by qDeleteAll() from Qt.
 
+2008-08-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particleemitter.cpp: Added output-pause to copy constructor.
+
+2008-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/particleemitter.h, src/particle.h, src/particleemitter.cpp,
+	src/particle.cpp: Renamed "randomnes" to "randomness", so that it
+	won't show up as part of Fate's patch.
+
+2008-08-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particleemitter.cpp, src/particleemitter.h: Added new particle
+	emitter property "output-pause" which allows to define a fixed (or
+	random) interval between two outputs.
+
 2008-08-20  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/guildlistbox.cpp, src/gui/guildwindow.h,
@@ -292,6 +308,18 @@
 	* src/net/guildhandler.cpp, src/net/protocol.h: Handle guild list
 	update events, and update protocol definitions.
 
+2008-06-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Added particle property "follow-parent" which
+	makes the particle move when its parent particle is moved.
+
+2008-06-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/imageparticle.cpp, src/particle.cpp, src/particle.h,
+	src/particleemitter.cpp, src/particleemitter.h, src/textparticle.cpp:
+	Implemented "alpha" particle property.
+
 2008-06-14  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/gui/viewport.cpp, data/graphics/images/CMakeLists.txt,
@@ -335,6 +363,12 @@
 	* src/gui/chat.cpp, src/net/chathandler.cpp: Fixed handling of
 	announce messages and private messages. Don't cut off the last
 	character from pm recipient's name. Got rid of old eAthena code.
+
+2008-05-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp: Changed the way particle emitter skip is handled
+	to make linear and circular emitters work with particleEmitterSkip
+	enabled.
 
 2008-05-22  Roderic Morris  <roderic@ccs.neu.edu>
 

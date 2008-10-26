@@ -39,6 +39,7 @@
 #define DEG_RAD_FACTOR 0.017453293f
 
 ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map, int rotation):
+    mOutputPauseLeft(0),
     mParticleImage(0)
 {
     mMap = map;
@@ -52,8 +53,9 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mParticleAngleVertical.set(0.0f);
     mParticlePower.set(0.0f);
     mParticleGravity.set(0.0f);
-    mParticleRandomnes.set(0);
+    mParticleRandomness.set(0);
     mParticleBounce.set(0.0f);
+    mParticleFollow = false;
     mParticleAcceleration.set(0.0f);
     mParticleDieDistance.set(-1.0f);
     mParticleMomentum.set(1.0f);
@@ -61,6 +63,8 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mParticleFadeOut.set(0);
     mParticleFadeIn.set(0);
     mOutput.set(1);
+    mOutputPause.set(0);
+    mParticleAlpha.set(1.0f);
 
     for_each_xml_child_node(propertyNode, emitterNode)
     {
@@ -114,9 +118,9 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
                 mParticleGravity = readMinMax(propertyNode, 0.0f);
             }
-            else if (name == "randomnes")
+            else if (name == "randomnes" || name == "randomness") // legacy bug
             {
-                mParticleRandomnes = readMinMax(propertyNode, 0);
+                mParticleRandomness = readMinMax(propertyNode, 0);
             }
             else if (name == "bounce")
             {
@@ -131,6 +135,11 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
                 mOutput = readMinMax(propertyNode, 0);
                 mOutput.maxVal +=1;
+            }
+            else if (name == "output-pause")
+            {
+                mOutputPause = readMinMax(propertyNode, 0);
+                mOutputPauseLeft = mOutputPause.value();
             }
             else if (name == "acceleration")
             {
@@ -151,6 +160,14 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             else if (name == "fade-in")
             {
                 mParticleFadeIn = readMinMax(propertyNode, 0);
+            }
+            else if (name == "alpha")
+            {
+                mParticleAlpha = readMinMax(propertyNode, 1.0f);
+            }
+            else if (name == "follow-parent")
+            {
+                mParticleFollow = true;
             }
             else
             {
@@ -249,8 +266,9 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleAngleVertical = o.mParticleAngleVertical;
     mParticlePower = o.mParticlePower;
     mParticleGravity = o.mParticleGravity;
-    mParticleRandomnes = o.mParticleRandomnes;
+    mParticleRandomness = o.mParticleRandomness;
     mParticleBounce = o.mParticleBounce;
+    mParticleFollow = o.mParticleFollow;
     mParticleTarget = o.mParticleTarget;
     mParticleAcceleration = o.mParticleAcceleration;
     mParticleDieDistance = o.mParticleDieDistance;
@@ -258,11 +276,15 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mParticleLifetime = o.mParticleLifetime;
     mParticleFadeOut = o.mParticleFadeOut;
     mParticleFadeIn = o.mParticleFadeIn;
+    mParticleAlpha = o.mParticleAlpha;
     mMap = o.mMap;
     mOutput = o.mOutput;
+    mOutputPause = o.mOutputPause;
     mParticleImage = o.mParticleImage;
     mParticleAnimation = o.mParticleAnimation;
     mParticleChildEmitters = o.mParticleChildEmitters;
+
+    mOutputPauseLeft = 0;
 
     if (mParticleImage) mParticleImage->incRef();
 
@@ -293,6 +315,13 @@ std::list<Particle *>
 ParticleEmitter::createParticles()
 {
     std::list<Particle *> newParticles;
+
+    if (mOutputPauseLeft > 0)
+    {
+        mOutputPauseLeft--;
+        return newParticles;
+    }
+    mOutputPauseLeft = mOutputPause.value();
 
     for (int i = mOutput.value(); i > 0; i--)
     {
@@ -328,9 +357,10 @@ ParticleEmitter::createParticles()
                 sin(angleH) * cos(angleV) * power,
                 sin(angleV) * power);
 
-        newParticle->setRandomnes(mParticleRandomnes.value());
+        newParticle->setRandomness(mParticleRandomness.value());
         newParticle->setGravity(mParticleGravity.value());
         newParticle->setBounce(mParticleBounce.value());
+        newParticle->setFollow(mParticleFollow);
 
         newParticle->setDestination(mParticleTarget,
                                     mParticleAcceleration.value(),
@@ -341,6 +371,7 @@ ParticleEmitter::createParticles()
         newParticle->setLifetime(mParticleLifetime.value());
         newParticle->setFadeOut(mParticleFadeOut.value());
         newParticle->setFadeIn(mParticleFadeIn.value());
+        newParticle->setAlpha(mParticleAlpha.value());
 
         for (std::list<ParticleEmitter>::iterator i = mParticleChildEmitters.begin();
              i != mParticleChildEmitters.end();

@@ -45,7 +45,7 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     int screenX = (int) mPos.x + offsetX;
     int screenY = (int) mPos.y - (int) mPos.z + offsetY;
 
-    int alpha = 255;
+    float alpha = mAlpha * 255.0f;
 
     if (mLifetimeLeft > -1 && mLifetimeLeft < mFadeOut)
     {
@@ -60,6 +60,6 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     }
 
     graphics->setFont(mTextFont);
-    graphics->setColor(gcn::Color(mColorR, mColorG, mColorB, alpha));
+    graphics->setColor(gcn::Color(mColorR, mColorG, mColorB, (int)alpha));
     graphics->drawText(mText, screenX, screenY, gcn::Graphics::CENTER);
 }
