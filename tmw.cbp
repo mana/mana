@@ -95,6 +95,8 @@
 		<Unit filename="src\gui\box.h" />
 		<Unit filename="src\gui\browserbox.cpp" />
 		<Unit filename="src\gui\browserbox.h" />
+		<Unit filename="src\gui\buddywindow.cpp" />
+		<Unit filename="src\gui\buddywindow.h" />
 		<Unit filename="src\gui\button.cpp" />
 		<Unit filename="src\gui\button.h" />
 		<Unit filename="src\gui\buy.cpp" />
@@ -105,6 +107,8 @@
 		<Unit filename="src\gui\char_select.h" />
 		<Unit filename="src\gui\char_server.cpp" />
 		<Unit filename="src\gui\char_server.h" />
+		<Unit filename="src\gui\chargedialog.cpp" />
+		<Unit filename="src\gui\chargedialog.h" />
 		<Unit filename="src\gui\chat.cpp" />
 		<Unit filename="src\gui\chat.h" />
 		<Unit filename="src\gui\chatinput.cpp" />
@@ -152,6 +156,8 @@
 		<Unit filename="src\gui\minimap.h" />
 		<Unit filename="src\gui\ministatus.cpp" />
 		<Unit filename="src\gui\ministatus.h" />
+		<Unit filename="src\gui\newskill.cpp" />
+		<Unit filename="src\gui\newskill.h" />
 		<Unit filename="src\gui\npc_text.cpp" />
 		<Unit filename="src\gui\npc_text.h" />
 		<Unit filename="src\gui\npclistdialog.cpp" />
@@ -172,6 +178,7 @@
 		<Unit filename="src\gui\register.h" />
 		<Unit filename="src\gui\scrollarea.cpp" />
 		<Unit filename="src\gui\scrollarea.h" />
+		<Unit filename="src\gui\selectionlistener.h" />
 		<Unit filename="src\gui\sell.cpp" />
 		<Unit filename="src\gui\sell.h" />
 		<Unit filename="src\gui\setup.cpp" />
@@ -274,6 +281,7 @@
 		<Unit filename="src\net\network.h" />
 		<Unit filename="src\net\npchandler.cpp" />
 		<Unit filename="src\net\npchandler.h" />
+		<Unit filename="src\net\packet.h" />
 		<Unit filename="src\net\playerhandler.cpp" />
 		<Unit filename="src\net\playerhandler.h" />
 		<Unit filename="src\net\protocol.cpp" />
@@ -290,6 +298,7 @@
 		<Unit filename="src\particle.h" />
 		<Unit filename="src\particleemitter.cpp" />
 		<Unit filename="src\particleemitter.h" />
+		<Unit filename="src\particleemitterprop.h" />
 		<Unit filename="src\player.cpp" />
 		<Unit filename="src\player.h" />
 		<Unit filename="src\player_relations.cpp" />
@@ -301,6 +310,8 @@
 		<Unit filename="src\resources\ambientoverlay.h" />
 		<Unit filename="src\resources\animation.cpp" />
 		<Unit filename="src\resources\animation.h" />
+		<Unit filename="src\resources\buddylist.cpp" />
+		<Unit filename="src\resources\buddylist.h" />
 		<Unit filename="src\resources\dye.cpp" />
 		<Unit filename="src\resources\dye.h" />
 		<Unit filename="src\resources\image.cpp" />
@@ -341,22 +352,30 @@
 		<Unit filename="src\sound.cpp" />
 		<Unit filename="src\sound.h" />
 		<Unit filename="src\sprite.h" />
+		<Unit filename="src\text.cpp" />
+		<Unit filename="src\text.h" />
+		<Unit filename="src\textmanager.cpp" />
+		<Unit filename="src\textmanager.h" />
 		<Unit filename="src\textparticle.cpp" />
 		<Unit filename="src\textparticle.h" />
 		<Unit filename="src\tileset.h" />
 		<Unit filename="src\tmw.rc">
-			<Option compilerVar="WINDRES" />
-			<Option target="default" />
+			<Option compilerVar="CPP" />
 		</Unit>
 		<Unit filename="src\utils\base64.cpp" />
 		<Unit filename="src\utils\base64.h" />
+		<Unit filename="src\utils\colorconversion.cpp" />
+		<Unit filename="src\utils\colorconversion.h" />
 		<Unit filename="src\utils\dtor.h" />
+		<Unit filename="src\utils\fastsqrt.h" />
+		<Unit filename="src\utils\strprintf.cpp" />
+		<Unit filename="src\utils\strprintf.h" />
 		<Unit filename="src\utils\tostring.h" />
+		<Unit filename="src\utils\trim.h" />
 		<Unit filename="src\utils\xml.cpp" />
 		<Unit filename="src\utils\xml.h" />
-		<Unit filename="src\winver.h">
-			<Option target="unix" />
-		</Unit>
+		<Unit filename="src\vector.h" />
+		<Unit filename="src\winver.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

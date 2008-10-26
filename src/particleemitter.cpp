@@ -74,20 +74,22 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
 
             if (name == "position-x")
             {
-                mParticlePosX = readMinMax(propertyNode, 0.0f);
+                mParticlePosX = readParticleEmitterProp(propertyNode, 0.0f);
             }
             else if (name == "position-y")
             {
 
-                mParticlePosY = readMinMax(propertyNode, 0.0f);
+                mParticlePosY = readParticleEmitterProp(propertyNode, 0.0f);
                 mParticlePosY.minVal *= SIN45;
                 mParticlePosY.maxVal *= SIN45;
+                mParticlePosY.changeAmplitude *= SIN45;
              }
             else if (name == "position-z")
             {
-                mParticlePosZ = readMinMax(propertyNode, 0.0f);
+                mParticlePosZ = readParticleEmitterProp(propertyNode, 0.0f);
                 mParticlePosZ.minVal *= SIN45;
                 mParticlePosZ.maxVal *= SIN45;
+                mParticlePosZ.changeAmplitude *= SIN45;
             }
             else if (name == "image")
             {
@@ -101,70 +103,72 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             }
             else if (name == "horizontal-angle")
             {
-                mParticleAngleHorizontal = readMinMax(propertyNode, 0.0f);
+                mParticleAngleHorizontal = readParticleEmitterProp(propertyNode, 0.0f);
                 mParticleAngleHorizontal.minVal *= DEG_RAD_FACTOR;
                 mParticleAngleHorizontal.maxVal *= DEG_RAD_FACTOR;
+                mParticleAngleHorizontal.changeAmplitude *= DEG_RAD_FACTOR;
             }
             else if (name == "vertical-angle")
             {
-                mParticleAngleVertical = readMinMax(propertyNode, 0.0f);
+                mParticleAngleVertical = readParticleEmitterProp(propertyNode, 0.0f);
                 mParticleAngleVertical.minVal *= DEG_RAD_FACTOR;
                 mParticleAngleVertical.maxVal *= DEG_RAD_FACTOR;
+                mParticleAngleVertical.changeAmplitude *= DEG_RAD_FACTOR;
             }
             else if (name == "power")
             {
-                mParticlePower = readMinMax(propertyNode, 0.0f);
+                mParticlePower = readParticleEmitterProp(propertyNode, 0.0f);
             }
             else if (name == "gravity")
             {
-                mParticleGravity = readMinMax(propertyNode, 0.0f);
+                mParticleGravity = readParticleEmitterProp(propertyNode, 0.0f);
             }
             else if (name == "randomnes" || name == "randomness") // legacy bug
             {
-                mParticleRandomness = readMinMax(propertyNode, 0);
+                mParticleRandomness = readParticleEmitterProp(propertyNode, 0);
             }
             else if (name == "bounce")
             {
-                mParticleBounce = readMinMax(propertyNode, 0.0f);
+                mParticleBounce = readParticleEmitterProp(propertyNode, 0.0f);
             }
             else if (name == "lifetime")
             {
-                mParticleLifetime = readMinMax(propertyNode, 0);
+                mParticleLifetime = readParticleEmitterProp(propertyNode, 0);
                 mParticleLifetime.minVal += 1;
             }
             else if (name == "output")
             {
-                mOutput = readMinMax(propertyNode, 0);
+                mOutput = readParticleEmitterProp(propertyNode, 0);
                 mOutput.maxVal +=1;
             }
             else if (name == "output-pause")
             {
-                mOutputPause = readMinMax(propertyNode, 0);
-                mOutputPauseLeft = mOutputPause.value();
+                mOutputPause = readParticleEmitterProp(propertyNode, 0);
+                mOutputPauseLeft = mOutputPause.value(0);
             }
             else if (name == "acceleration")
             {
-                mParticleAcceleration = readMinMax(propertyNode, 0.0f);
+                mParticleAcceleration = readParticleEmitterProp(propertyNode, 0.0f);
             }
             else if (name == "die-distance")
             {
-                mParticleDieDistance = readMinMax(propertyNode, 0.0f);
+                mParticleDieDistance = readParticleEmitterProp(propertyNode, 0.0f);
             }
             else if (name == "momentum")
             {
-                mParticleMomentum = readMinMax(propertyNode, 1.0f);
+                mParticleMomentum = readParticleEmitterProp(propertyNode, 1.0f);
             }
             else if (name == "fade-out")
             {
-                mParticleFadeOut = readMinMax(propertyNode, 0);
+                mParticleFadeOut = readParticleEmitterProp(propertyNode, 0);
             }
             else if (name == "fade-in")
             {
-                mParticleFadeIn = readMinMax(propertyNode, 0);
+                mParticleFadeIn = readParticleEmitterProp(propertyNode, 0);
             }
             else if (name == "alpha")
             {
-                mParticleAlpha = readMinMax(propertyNode, 1.0f);
+                mParticleAlpha = readParticleEmitterProp(propertyNode, 1.0f);
             }
             else if (name == "follow-parent")
             {
@@ -299,21 +303,35 @@ ParticleEmitter::~ParticleEmitter()
 }
 
 
-template <typename T> MinMax<T>
-ParticleEmitter::readMinMax(xmlNodePtr propertyNode, T def)
+template <typename T> ParticleEmitterProp<T>
+ParticleEmitter::readParticleEmitterProp(xmlNodePtr propertyNode, T def)
 {
-    MinMax<T> retval;
+    ParticleEmitterProp<T> retval;
 
     def = (T) XML::getFloatProperty(propertyNode, "value", (double) def);
     retval.set((T) XML::getFloatProperty(propertyNode, "min", (double) def),
                (T) XML::getFloatProperty(propertyNode, "max", (double) def));
+
+    std::string change = XML::getProperty(propertyNode, "change-func", "none");
+    T amplitude = (T) XML::getFloatProperty(propertyNode, "change-amplitude", 0.0);
+    int period = XML::getProperty(propertyNode, "change-period", 0);
+    int phase = XML::getProperty(propertyNode, "change-phase", 0);
+    if (change == "saw" || change == "sawtooth") {
+        retval.setFunction(FUNC_SAW, amplitude, period, phase);
+    } else if (change == "sine" || change == "sinewave") {
+        retval.setFunction(FUNC_SINE, amplitude, period, phase);
+    } else if (change == "triangle") {
+        retval.setFunction(FUNC_TRIANGLE, amplitude, period, phase);
+    } else if (change == "square"){
+        retval.setFunction(FUNC_SQUARE, amplitude, period, phase);
+    }
 
     return retval;
 }
 
 
 std::list<Particle *>
-ParticleEmitter::createParticles()
+ParticleEmitter::createParticles(int tick)
 {
     std::list<Particle *> newParticles;
 
@@ -322,9 +340,9 @@ ParticleEmitter::createParticles()
         mOutputPauseLeft--;
         return newParticles;
     }
-    mOutputPauseLeft = mOutputPause.value();
+    mOutputPauseLeft = mOutputPause.value(tick);
 
-    for (int i = mOutput.value(); i > 0; i--)
+    for (int i = mOutput.value(tick); i > 0; i--)
     {
         // Limit maximum particles
         if (Particle::particleCount > Particle::maxCount) break;
@@ -346,33 +364,33 @@ ParticleEmitter::createParticles()
 
 
         newParticle->setPosition(
-                mParticlePosX.value(),
-                mParticlePosY.value(),
-                mParticlePosZ.value());
+                mParticlePosX.value(tick),
+                mParticlePosY.value(tick),
+                mParticlePosZ.value(tick));
 
-        float angleH = mParticleAngleHorizontal.value();
-        float angleV = mParticleAngleVertical.value();
-        float power = mParticlePower.value();
+        float angleH = mParticleAngleHorizontal.value(tick);
+        float angleV = mParticleAngleVertical.value(tick);
+        float power = mParticlePower.value(tick);
         newParticle->setVelocity(
                 cos(angleH) * cos(angleV) * power,
                 sin(angleH) * cos(angleV) * power,
                 sin(angleV) * power);
 
-        newParticle->setRandomness(mParticleRandomness.value());
-        newParticle->setGravity(mParticleGravity.value());
-        newParticle->setBounce(mParticleBounce.value());
+        newParticle->setRandomness(mParticleRandomness.value(tick));
+        newParticle->setGravity(mParticleGravity.value(tick));
+        newParticle->setBounce(mParticleBounce.value(tick));
         newParticle->setFollow(mParticleFollow);
 
         newParticle->setDestination(mParticleTarget,
-                                    mParticleAcceleration.value(),
-                                    mParticleMomentum.value()
+                                    mParticleAcceleration.value(tick),
+                                    mParticleMomentum.value(tick)
                                    );
-        newParticle->setDieDistance(mParticleDieDistance.value());
+        newParticle->setDieDistance(mParticleDieDistance.value(tick));
 
-        newParticle->setLifetime(mParticleLifetime.value());
-        newParticle->setFadeOut(mParticleFadeOut.value());
-        newParticle->setFadeIn(mParticleFadeIn.value());
-        newParticle->setAlpha(mParticleAlpha.value());
+        newParticle->setLifetime(mParticleLifetime.value(tick));
+        newParticle->setFadeOut(mParticleFadeOut.value(tick));
+        newParticle->setFadeIn(mParticleFadeIn.value(tick));
+        newParticle->setAlpha(mParticleAlpha.value(tick));
 
         for (std::list<ParticleEmitter>::iterator i = mParticleChildEmitters.begin();
              i != mParticleChildEmitters.end();

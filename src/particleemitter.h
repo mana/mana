@@ -27,9 +27,10 @@
 #include <list>
 
 #include "utils/xml.h"
-#include "utils/minmax.h"
 
 #include "resources/animation.h"
+
+#include "particleemitterprop.h"
 
 class Image;
 class Map;
@@ -66,7 +67,7 @@ class ParticleEmitter
          * Spawns new particles
          * @return: a list of created particles
          */
-        std::list<Particle *> createParticles();
+        std::list<Particle *> createParticles(int tick);
 
         /**
          * Sets the target of the particles that are created
@@ -76,50 +77,50 @@ class ParticleEmitter
         { mParticleTarget = target; };
 
     private:
-        template <typename T> MinMax<T> readMinMax(xmlNodePtr propertyNode, T def);
+        template <typename T> ParticleEmitterProp<T> readParticleEmitterProp(xmlNodePtr propertyNode, T def);
 
         /**
          * initial position of particles:
          */
-        MinMax<float> mParticlePosX, mParticlePosY, mParticlePosZ;
+        ParticleEmitterProp<float> mParticlePosX, mParticlePosY, mParticlePosZ;
 
         /**
          * initial vector of particles:
          */
-        MinMax<float> mParticleAngleHorizontal, mParticleAngleVertical;
+        ParticleEmitterProp<float> mParticleAngleHorizontal, mParticleAngleVertical;
 
         /**
          * Initial velocity of particles
          */
-        MinMax<float> mParticlePower;
+        ParticleEmitterProp<float> mParticlePower;
 
         /*
          * Vector changing of particles:
          */
-        MinMax<float> mParticleGravity;
-        MinMax<int> mParticleRandomness;
-        MinMax<float> mParticleBounce;
+        ParticleEmitterProp<float> mParticleGravity;
+        ParticleEmitterProp<int> mParticleRandomness;
+        ParticleEmitterProp<float> mParticleBounce;
         bool mParticleFollow;
 
         /*
          * Properties of targeting particles:
          */
         Particle *mParticleTarget;
-        MinMax<float> mParticleAcceleration;
-        MinMax<float> mParticleDieDistance;
-        MinMax<float> mParticleMomentum;
+        ParticleEmitterProp<float> mParticleAcceleration;
+        ParticleEmitterProp<float> mParticleDieDistance;
+        ParticleEmitterProp<float> mParticleMomentum;
 
         /*
          * Behavior over time of the particles:
          */
-        MinMax<int> mParticleLifetime;
-        MinMax<int> mParticleFadeOut;
-        MinMax<int> mParticleFadeIn;
+        ParticleEmitterProp<int> mParticleLifetime;
+        ParticleEmitterProp<int> mParticleFadeOut;
+        ParticleEmitterProp<int> mParticleFadeIn;
 
         Map *mMap;             /**< Map the particles are spawned on */
 
-        MinMax<int> mOutput;   /**< Number of particles spawned per update */
-        MinMax<int> mOutputPause; /**< Pause in frames between two spawns */
+        ParticleEmitterProp<int> mOutput;   /**< Number of particles spawned per update */
+        ParticleEmitterProp<int> mOutputPause; /**< Pause in frames between two spawns */
         int mOutputPauseLeft;
 
         /*
@@ -127,7 +128,7 @@ class ParticleEmitter
          */
         Image *mParticleImage; /**< Particle image, if used */
         Animation mParticleAnimation; /**< Filename of particle animation file */
-        MinMax<float> mParticleAlpha; /**< Opacity of the graphical representation of the particles */
+        ParticleEmitterProp<float> mParticleAlpha; /**< Opacity of the graphical representation of the particles */
 
         /** List of emitters the spawned particles are equipped with */
         std::list<ParticleEmitter> mParticleChildEmitters;

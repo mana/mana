@@ -181,7 +181,7 @@ Particle::update()
                     e++
                 )
             {
-                Particles newParticles = (*e)->createParticles();
+                Particles newParticles = (*e)->createParticles(mLifetimePast);
                 for (   ParticleIterator p = newParticles.begin();
                         p != newParticles.end();
                         p++

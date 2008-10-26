@@ -215,7 +215,6 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
 	      utils/fastsqrt.h \
-	      utils/minmax.h \
 	      utils/strprintf.cpp \
 	      utils/strprintf.h \
 	      utils/tostring.h \
@@ -278,6 +277,7 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      particle.h \
 	      particleemitter.cpp \
 	      particleemitter.h \
+	      particleemitterprop.h \
 	      player.cpp \
 	      player.h \
 	      player_relations.cpp \
