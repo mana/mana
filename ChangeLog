@@ -1,3 +1,9 @@
+2008-10-26  Chuck Miller  <shadowmil@gmail.com>
+
+	* src/net/beinghandler.cpp,src/localplayer.cpp,src/being.h: Played
+	around more with movement.  I think later on all of movement will
+	need to be revised.  But this should work for now.
+
 2008-10-25  Roderic Morris  <roderic@ccs.neu.edu>
 
 	* src/commandhandler.cpp: get rid of /admin commands (they're now

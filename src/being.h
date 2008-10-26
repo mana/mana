@@ -124,6 +124,11 @@ class Being : public Sprite
         void setDestination(int x, int y);
 
         /**
+         * Returns the destination for this being.
+         */
+        const Vector &getDestination() const { return mDest; }
+
+        /**
          * Adjusts course to expected stat point.
          */
         void adjustCourse(int, int);
