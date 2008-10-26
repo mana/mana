@@ -130,10 +130,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            msg->readInt16();  // clothes color - not used
-            msg->readInt16();  // head dir
-            shoes = 0;
-            gloves = 0;
+            shoes = msg->readInt16();  // clothes color - "abused" as shoes
+            gloves = msg->readInt16();  // head dir - "abused" as gloves
             msg->readInt16();  // guild
             msg->readInt16();  // unknown
             msg->readInt16();  // unknown
@@ -403,10 +401,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            shoes = 0;
-            gloves = 0;
-            msg->readInt16();  // clothes color - not used
-            msg->readInt16();  // head dir
+            shoes = msg->readInt16();  // clothes color - "abused" as shoes
+            gloves = msg->readInt16();  // head dir - "abused" as gloves
             msg->readInt32();  // guild
             msg->readInt32();  // emblem
             msg->readInt16();  // manner

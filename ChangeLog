@@ -1,3 +1,9 @@
+2008-10-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/beinghandler.cpp: Since we somehow did end up depending on a
+	hacked eAthena instead of supporting existing features decently,
+	assign the shoes and gloves IDs.
+
 2008-10-26  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particleemitter.cpp, src/particleemitter.h,
