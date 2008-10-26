@@ -1,3 +1,8 @@
+2008-10-25  Roderic Morris  <roderic@ccs.neu.edu>
+
+	* src/commandhandler.cpp: get rid of /admin commands (they're now
+	@ commands).
+
 2008-10-25  Chuck Miller  <shadowmil@gmail.com>
 
 	* src/localplayer.h,src/localplayer.cpp,src/game.cpp: Played around
@@ -5,7 +10,7 @@
 	better.
 
 2008-10-24  Chuck Miller  <shadowmil@gmail.com>
-	
+
 	* src/resources/iteminfo.h,src/resources/itemdb.cpp: Added attack
 	range to item's info
 	* src/localplayer.h,src/localplayer.cpp: Changed the getAttackRange
@@ -22,7 +27,7 @@
 	set
 
 2008-10-23  Chuck Miller  <shadowmil@gmail.com>
-	
+
 	* src/beingmanager.cpp: Fixed a bug causing targets not to work, and
 	added code that sets player_node's target to null if it gets deleted
 	* src/gui/viewport.cpp: Changed some values to make targets show

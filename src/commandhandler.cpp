@@ -77,10 +77,6 @@ void CommandHandler::handleCommand(const std::string &command)
     {
         handleTopic(args);
     }
-    else if (type == "admin")
-    {
-        Net::GameServer::Player::say("/" + args);
-    }
     else if (type == "clear")
     {
         handleClear();
@@ -143,26 +139,9 @@ void CommandHandler::handleHelp(const std::string &args)
         chatWindow->chatLog("/join > Join or create a channel");
         chatWindow->chatLog("/topic > Set the topic of the current channel");
         chatWindow->chatLog("/quit > Leave a channel");
-        chatWindow->chatLog("/admin > Send a command to the server (GM only)");
         chatWindow->chatLog("/clear > Clears this window");
         chatWindow->chatLog("/party > Invite a user to party");
         chatWindow->chatLog("For more information, type /help <command>");
-    }
-    else if (args == "admin")
-    {
-        chatWindow->chatLog("Command: /admin <command>");
-        chatWindow->chatLog("*** only available to a GM ***");
-        chatWindow->chatLog("This command sends an admin command to the server.");
-        chatWindow->chatLog("<command> can be:");
-        chatWindow->chatLog("reload <db>");
-        chatWindow->chatLog("warp <name> <map> <x> <y>");
-        chatWindow->chatLog("item <name> <id> <quantity>");
-        chatWindow->chatLog("drop <id> <quantity>");
-        chatWindow->chatLog("money <name> <quantity>");
-        chatWindow->chatLog("spawn <id> <quantity>");
-        chatWindow->chatLog("goto <name>");
-        chatWindow->chatLog("recall <name>");
-        chatWindow->chatLog("ban <name> <duration>");
     }
     else if (args == "announce")
     {
