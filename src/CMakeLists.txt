@@ -265,7 +265,6 @@ SET(SRCS
     utils/base64.h
     utils/dtor.h
     utils/fastsqrt.h
-    utils/minmax.h
     utils/strprintf.cpp
     utils/strprintf.h
     utils/tostring.h
@@ -328,6 +327,7 @@ SET(SRCS
     particle.h
     particleemitter.cpp
     particleemitter.h
+    particleemitterprop.h
     player.cpp
     player.h
     properties.h

@@ -318,6 +318,7 @@
 		<Unit filename="src\particle.h" />
 		<Unit filename="src\particleemitter.cpp" />
 		<Unit filename="src\particleemitter.h" />
+		<Unit filename="src\particleemitterprop.h" />
 		<Unit filename="src\party.cpp" />
 		<Unit filename="src\party.h" />
 		<Unit filename="src\player.cpp" />

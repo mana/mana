@@ -227,7 +227,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
 	      utils/fastsqrt.h \
-	      utils/minmax.h \
 	      utils/strprintf.cpp \
 	      utils/strprintf.h \
 	      utils/tostring.h \
@@ -290,6 +289,7 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      particle.h \
 	      particleemitter.cpp \
 	      particleemitter.h \
+	      particleemitterprop.h \
               party.cpp \
               party.h \
 	      player.cpp \
