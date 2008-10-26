@@ -231,7 +231,7 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 
         // Ignore messages from the server for the local player
         if (being == player_node)
-            break;
+            continue;
 
         // If being is a player, and he only moves a little, its ok to be a little out of sync
         if (being->getType() == Being::PLAYER && abs(being->getPixelX() - dx) +
@@ -239,7 +239,7 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
                                                  (dx != being->getDestination().x && dy != being->getDestination().y))
         {
             being->setDestination(being->getPixelX(),being->getPixelY());
-            break;
+            continue;
         }
         if (abs(being->getPixelX() - sx) +
                 abs(being->getPixelY() - sy) > 10 * 32)
