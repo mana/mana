@@ -156,6 +156,7 @@ struct Options
     std::string playername;
     std::string configPath;
     std::string updateHost;
+    std::string dataPath;
 };
 
 /**
@@ -442,14 +443,14 @@ void printHelp()
         << "  -C --configfile : Configuration file to use" << std::endl
         << "  -d --data       : Directory to load game data from" << std::endl
         << "  -D --default    : Bypass the login process with default "
-                                "settings" << std::endl
+                               "settings" << std::endl
         << "  -h --help       : Display this help" << std::endl
-        << "  -H --updatehost : Use this update host" << std::endl;
+        << "  -H --updatehost : Use this update host" << std::endl
         << "  -p --playername : Login with this player" << std::endl
         << "  -P --password   : Login with this password" << std::endl
         << "  -u --skipupdate : Skip the update downloads" << std::endl
         << "  -U --username   : Login with this username" << std::endl
-        << "  -v --version    : Display the version" << std::endl
+        << "  -v --version    : Display the version" << std::endl;
 }
 
 void printVersion()
