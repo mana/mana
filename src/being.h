@@ -38,8 +38,6 @@
 
 #include "resources/colordb.h"
 
-#define NR_HAIR_STYLES 10
-
 #define FIRST_IGNORE_EMOTE 14
 
 class AnimatedSprite;
@@ -198,6 +196,11 @@ class Being : public Sprite
          */
         int getHairStyle() const
         { return mHairStyle; }
+
+        /**
+         * Get the number of hairstyles implemented
+         */
+        static int getNumOfHairstyles() { return mNumberOfHairstyles; }
 
         /**
          * Sets the hair style and color for this being.
@@ -397,6 +400,8 @@ class Being : public Sprite
 
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
+
+        static int mNumberOfHairstyles;          /** Number of hair styles in use */
 
         Path mPath;
         std::string mSpeech;

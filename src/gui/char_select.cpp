@@ -261,7 +261,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
 
     printf("%d\n", numberOfHairColors);
 
-    mPlayer->setHairStyle(rand() % NR_HAIR_STYLES, rand() % numberOfHairColors);
+    mPlayer->setHairStyle(rand() % mPlayer->getNumOfHairstyles(), rand() % numberOfHairColors);
 
     mNameField = new TextField("");
     mNameLabel = new gcn::Label("Name:");
@@ -352,7 +352,7 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
         mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, mPlayer->getHairColor());
     }
     else if (event.getId() == "prevstyle") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + NR_HAIR_STYLES - 1, mPlayer->getHairColor());
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + mPlayer->getNumOfHairstyles() - 1, mPlayer->getHairColor());
     }
 }
 

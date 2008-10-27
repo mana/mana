@@ -38,6 +38,7 @@
 #include "text.h"
 
 #include "resources/resourcemanager.h"
+#include "resources/itemdb.h"
 #include "resources/imageset.h"
 #include "resources/iteminfo.h"
 
@@ -52,6 +53,7 @@
 #define BEING_EFFECTS_FILE "effects.xml"
 
 int Being::instances = 0;
+int Being::mNumberOfHairstyles = 1;
 ImageSet *Being::emotionSet = NULL;
 
 static const int X_SPEECH_OFFSET = 18;
@@ -90,6 +92,17 @@ Being::Being(int id, int job, Map *map):
         ResourceManager *rm = ResourceManager::getInstance();
         emotionSet = rm->getImageSet("graphics/gui/emotions.png", 30, 32);
         if (!emotionSet) logger->error("Unable to load emotions!");
+
+        // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
+        int hairstyles = 1;
+        while (ItemDB::get(-hairstyles).getSprite(0) != "error.xml")
+        {
+            hairstyles++;
+        }
+        mNumberOfHairstyles = hairstyles;
+        if (mNumberOfHairstyles == 0)
+            mNumberOfHairstyles = 1; // No hair style -> no hair
+
     }
 
     instances++;
@@ -149,7 +162,7 @@ void Being::setPath(const Path &path)
 
 void Being::setHairStyle(int style, int color)
 {
-    mHairStyle = style < 0 ? mHairStyle : style % NR_HAIR_STYLES;
+    mHairStyle = style < 0 ? mHairStyle : style % mNumberOfHairstyles;
     mHairColor = color;
 }
 

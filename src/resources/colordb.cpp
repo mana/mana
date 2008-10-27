@@ -35,7 +35,7 @@ namespace
 {
     ColorDB::Colors mColors;
     bool mLoaded = false;
-    std::string mFail = "";
+    std::string mFail = "#ffffff";
 }
 
 void ColorDB::load()
