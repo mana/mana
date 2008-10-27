@@ -20,6 +20,7 @@
  *
  *  $Id$
  */
+#include <cassert>
 
 #include "localplayer.h"
 
@@ -38,6 +39,9 @@
 #include "net/messageout.h"
 #include "net/protocol.h"
 
+#include "resources/resourcemanager.h"
+#include "resources/imageset.h"
+
 #include "utils/tostring.h"
 
 LocalPlayer *player_node = NULL;
@@ -54,12 +58,21 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mInventory(new Inventory(INVENTORY_SIZE)),
     mStorage(new Inventory(STORAGE_SIZE))
 {
+    initTargetCursor();
 }
 
 LocalPlayer::~LocalPlayer()
 {
     delete mInventory;
     delete mStorage;
+
+    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
+    {
+        delete mTargetCursorInRange[i];
+        delete mTargetCursorOutRange[i];
+        mInRangeImages[i]->decRef();
+        mOutRangeImages[i]->decRef();
+    }
 }
 
 void LocalPlayer::logic()
@@ -102,6 +115,12 @@ void LocalPlayer::logic()
     // Actions are allowed once per second
     if (get_elapsed_time(mLastAction) >= 1000) {
         mLastAction = -1;
+    }
+
+    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
+    {
+        player_node->mTargetCursorInRange[i]->update(10);
+        player_node->mTargetCursorOutRange[i]->update(10);
     }
 
     Being::logic();
@@ -493,4 +512,84 @@ void LocalPlayer::setGotoTarget(Being *target)
     setTarget(target);
     mGoingToTarget = true;
     setDestination(target->mX, target->mY);
+}
+
+void LocalPlayer::initTargetCursor()
+{
+    // Load target cursors
+    loadTargetCursor("graphics/gui/target-cursor-blue-s.png", 44, 35,
+                     false, TC_SMALL);
+    loadTargetCursor("graphics/gui/target-cursor-red-s.png", 44, 35,
+                     true, TC_SMALL);
+    loadTargetCursor("graphics/gui/target-cursor-blue-m.png", 62, 44,
+                     false, TC_MEDIUM);
+    loadTargetCursor("graphics/gui/target-cursor-red-m.png", 62, 44,
+                     true, TC_MEDIUM);
+    loadTargetCursor("graphics/gui/target-cursor-blue-l.png", 82, 60,
+                     false, TC_LARGE);
+    loadTargetCursor("graphics/gui/target-cursor-red-l.png", 82, 60,
+                     true, TC_LARGE);
+}
+
+void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
+                                   bool outRange, TargetCursorSize size)
+{
+    assert(size > -1);
+    assert(size < 3);
+
+    ImageSet* currentImageSet;
+    SimpleAnimation* currentCursor;
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    currentImageSet = resman->getImageSet(filename, width, height);
+    Animation *anim = new Animation();
+    for (unsigned int i = 0; i < currentImageSet->size(); ++i)
+    {
+        anim->addFrame(currentImageSet->get(i), 75, 0, 0);
+    }
+    currentCursor = new SimpleAnimation(anim);
+
+    if (outRange)
+    {
+        mOutRangeImages[size] = currentImageSet;
+        mTargetCursorOutRange[size] = currentCursor;
+    }
+    else 
+    {
+        mInRangeImages[size] = currentImageSet;
+        mTargetCursorInRange[size] = currentCursor;
+    }
+}
+
+void LocalPlayer::drawTargetCursor(Graphics *graphics, int offsetX, int offsetY)
+{
+    // Draw target marker if needed
+    if (mTarget)
+    {
+        // Calculate target circle position
+
+        // Find whether target is in range
+        int rangeX = abs(mTarget->mX - mX);
+        int rangeY = abs(mTarget->mY - mY);
+        int attackRange = getAttackRange();
+
+        // Get the correct target cursors graphic
+        TargetCursorSize cursorSize = mTarget->getTargetCursorSize();
+
+        if (rangeX > attackRange || rangeY > attackRange)
+        {
+            mTarget->mTargetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
+        }
+        else 
+        {
+            mTarget->mTargetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
+        }
+
+        // Draw the target cursor at the correct position
+        int posX = mTarget->getPixelX() + 16 - mTarget->mTargetCursor->getWidth() / 2 - offsetX;
+        int posY = mTarget->getPixelY() + 16 - mTarget->mTargetCursor->getHeight() / 2 - offsetY;
+
+        graphics->drawImage(mTarget->mTargetCursor, posX, posY);
+   }
 }

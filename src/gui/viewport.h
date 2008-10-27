@@ -38,7 +38,6 @@ class ImageSet;
 class Item;
 class PopupMenu;
 class Graphics;
-class SimpleAnimation;
 
 /**
  * The viewport on the map. Displays the current map and handles mouse input
@@ -136,17 +135,6 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         scrollBy(float x, float y) { mPixelViewX += x; mPixelViewY += y; }
 
     private:
-        /**
-         * Helper function for loading target cursors
-         */
-        void loadTargetCursor(std::string filename, int width, int height,
-                              bool outRange, Being::TargetCursorSize size);
-
-        /**
-         * Draws range based target cursor
-         */
-        void drawTargetCursor(Graphics *graphics);
-
         Map *mMap;                 /**< The current map. */
 
         int mScrollRadius;
@@ -158,18 +146,6 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mTileViewX;              /**< Current viewpoint in tiles. */
         int mTileViewY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
-
-        /** Images of in range target cursor. */
-        ImageSet *mInRangeImages[Being::NUM_TC];
-
-        /** Images of out of range target cursor. */
-        ImageSet *mOutRangeImages[Being::NUM_TC];
-
-        /** Animated in range target cursor. */
-        SimpleAnimation *mTargetCursorInRange[Being::NUM_TC];
-
-        /** Animated out of range target cursor. */
-        SimpleAnimation *mTargetCursorOutRange[Being::NUM_TC];
 
         bool mPlayerFollowMouse;
         int mWalkTime;

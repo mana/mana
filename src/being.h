@@ -30,9 +30,9 @@
 #include <SDL_types.h>
 #include <vector>
 
-#include "sprite.h"
-#include "map.h"
 #include "animatedsprite.h"
+#include "map.h"
+#include "sprite.h"
 
 #include "gui/speechbubble.h"
 
@@ -48,7 +48,6 @@ class ItemInfo;
 class Item;
 class Map;
 class Graphics;
-class ImageSet;
 class Particle;
 class SpeechBubble;
 class Text;
@@ -362,8 +361,10 @@ class Being : public Sprite
          */
         virtual void triggerEffect(int effectId) { internalTriggerEffect(effectId, false, true); }
 
-        const std::auto_ptr<Equipment> mEquipment;
+        // Target cursor being used by the being
+        Image *mTargetCursor;
 
+        const std::auto_ptr<Equipment> mEquipment;
 
     protected:
         /**
@@ -392,6 +393,7 @@ class Being : public Sprite
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
         bool mIsGM;
+        bool mTargeted;
         bool mParticleEffects;          /**< Whether to display particles or not */
 
         /** Engine-related infos about weapon. */

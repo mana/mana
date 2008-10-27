@@ -25,6 +25,7 @@
 #define _TMW_LOCALPLAYER_H
 
 #include "player.h"
+#include "simpleanimation.h"
 
 // TODO move into some sane place...
 #define MAX_SLOT 2
@@ -33,6 +34,7 @@
 #define STORAGE_SIZE 301
 
 class FloorItem;
+class ImageSet;
 class Inventory;
 class Item;
 class Network;
@@ -214,6 +216,14 @@ class LocalPlayer : public Player
 
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
+        void drawTargetCursor(Graphics *graphics, int offsetX, int offsetY);
+
+        /** Animated in range target cursor. */
+        SimpleAnimation *mTargetCursorInRange[NUM_TC];
+
+        /** Animated out of range target cursor. */
+        SimpleAnimation *mTargetCursorOutRange[NUM_TC];
+
     protected:
         void walk(unsigned char dir);
 
@@ -233,6 +243,21 @@ class LocalPlayer : public Player
 
         Inventory *mInventory;
         Inventory *mStorage;
+
+        /**
+         * Helper function for loading target cursors
+         */
+        void loadTargetCursor(std::string filename, int width, int height,
+                              bool outRange, Being::TargetCursorSize size);
+
+        /** Images of in range target cursor. */
+        ImageSet *mInRangeImages[NUM_TC];
+
+        /** Images of out of range target cursor. */
+        ImageSet *mOutRangeImages[NUM_TC];
+
+        // Load the target cursors into memory
+        void initTargetCursor();
 };
 
 extern LocalPlayer *player_node;

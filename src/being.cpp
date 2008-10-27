@@ -26,15 +26,15 @@
 #include <cmath>
 
 #include "animatedsprite.h"
+#include "configuration.h"
 #include "equipment.h"
 #include "game.h"
 #include "graphics.h"
+#include "localplayer.h"
 #include "log.h"
 #include "map.h"
 #include "particle.h"
 #include "sound.h"
-#include "localplayer.h"
-#include "configuration.h"
 #include "text.h"
 
 #include "resources/resourcemanager.h"
