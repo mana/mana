@@ -273,7 +273,11 @@ void LocalPlayer::setTarget(Being *target)
     if (mLastAction != -1)
         return;
     mLastAction = tick_time;
-    mTargetTime = tick_time;
+
+    if (target)
+    {
+        mTargetTime = tick_time;
+    }
 
     if (target == mTarget)
     {

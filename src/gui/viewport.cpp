@@ -300,16 +300,14 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                     if (being->mAction == Being::DEAD)
                         break;
 
-                    if (keyboard.isKeyActive(keyboard.KEY_TARGET) || player_node->withinAttackRange(being))
+                    if (player_node->withinAttackRange(being))
                     {
-                        player_node->stopAttack();
                         player_node->setGotoTarget(being);
-                        player_node->attack(being, true);
+                        player_node->attack(being, keyboard.isKeyActive(keyboard.KEY_TARGET));
                     }
                     else
                     {
                         player_node->setDestination(tilex, tiley);
-                        player_node->stopAttack();
                     }
                     break;
 
