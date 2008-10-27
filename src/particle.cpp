@@ -360,11 +360,9 @@ Particle::~Particle()
 void
 Particle::clear()
 {
-    std::for_each(mChildEmitters.begin(), mChildEmitters.end(),
-            make_dtor(mChildEmitters));
+    delete_all(mChildEmitters);
     mChildEmitters.clear();
 
-    std::for_each(mChildParticles.begin(), mChildParticles.end(),
-            make_dtor(mChildParticles));
+    delete_all(mChildParticles);
     mChildParticles.clear();
 }

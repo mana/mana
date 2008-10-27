@@ -29,6 +29,7 @@
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"
+#include "localplayer.h"
 #include "particle.h"
 #include "sprite.h"
 #include "tileset.h"
@@ -112,6 +113,7 @@ void MapLayer::draw(Graphics *graphics,
         // If drawing the fringe layer, make sure all sprites above this row of
         // tiles have been drawn
         if (mIsFringeLayer) {
+             player_node->drawTargetCursor(graphics, scrollX, scrollY);
              while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32) {
                  (*si)->draw(graphics, -scrollX, -scrollY);
                  si++;

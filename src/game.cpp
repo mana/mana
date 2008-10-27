@@ -830,10 +830,7 @@ void Game::handleInput()
         {
             Being *target = beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
 
-            if (target)
-            {
-                player_node->setTarget(target);
-            }
+            player_node->setTarget(target);
         }
 
         // Target the nearest monster if 'a' pressed
@@ -841,9 +838,31 @@ void Game::handleInput()
         {
             Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
 
+            player_node->setTarget(target);
+        }
+
+        // Target the nearest npc if 'n' pressed
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) )
+        {
+            Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::NPC);
+
+            player_node->setTarget(target);
+        }
+
+        // Talk to the nearest NPC if 't' pressed
+        if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
+        {
+            Being *target = player_node->getTarget();
+
+            if (!target)
+            {
+                target = beingManager->findNearestLivingBeing(x, y, 20, Being::NPC);
+            }
+
             if (target)
             {
-                player_node->setTarget(target);
+                if (target->getType() == Being::NPC)
+                    dynamic_cast<NPC*>(target)->talk();
             }
         }
 

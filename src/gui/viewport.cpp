@@ -28,7 +28,6 @@
 #include "gui.h"
 #include "popupmenu.h"
 
-#include "../simpleanimation.h"
 #include "../beingmanager.h"
 #include "../configuration.h"
 #include "../flooritemmanager.h"
@@ -174,8 +173,6 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     if (mMap)
     {
         mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
-        player_node->drawTargetCursor(graphics, (int) mPixelViewX, (int) mPixelViewY);
-
 
         // Find a path from the player to the mouse, and draw it. This is for debug
         // purposes.

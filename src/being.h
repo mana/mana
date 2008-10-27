@@ -393,7 +393,6 @@ class Being : public Sprite
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
         bool mIsGM;
-        bool mTargeted;
         bool mParticleEffects;          /**< Whether to display particles or not */
 
         /** Engine-related infos about weapon. */

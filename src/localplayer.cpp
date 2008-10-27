@@ -117,6 +117,14 @@ void LocalPlayer::logic()
         mLastAction = -1;
     }
 
+    // Remove target if its been on a being for more than a minute
+    if (get_elapsed_time(mTargetTime) >= 60000)
+    {
+        mTargetTime = -1;
+        setTarget(mTarget);
+        mLastAction = -1;
+    }
+
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
         player_node->mTargetCursorInRange[i]->update(10);
@@ -262,8 +270,16 @@ void LocalPlayer::walk(unsigned char dir)
 
 void LocalPlayer::setTarget(Being *target)
 {
+    if (mLastAction != -1)
+        return;
+    mLastAction = tick_time;
+
     if (target == mTarget)
     {
+        if (target != NULL)
+        {
+            target->mTargetCursor = NULL;
+        }
         return;
     }
     if (mTarget && mTarget->getType() == Being::MONSTER)
@@ -562,7 +578,7 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
     }
 }
 
-void LocalPlayer::drawTargetCursor(Graphics *graphics, int offsetX, int offsetY)
+void LocalPlayer::drawTargetCursor(Graphics *graphics, int scrollX, int scrollY)
 {
     // Draw target marker if needed
     if (mTarget)
@@ -587,9 +603,10 @@ void LocalPlayer::drawTargetCursor(Graphics *graphics, int offsetX, int offsetY)
         }
 
         // Draw the target cursor at the correct position
-        int posX = mTarget->getPixelX() + 16 - mTarget->mTargetCursor->getWidth() / 2 - offsetX;
-        int posY = mTarget->getPixelY() + 16 - mTarget->mTargetCursor->getHeight() / 2 - offsetY;
+        int posX = mTarget->getPixelX() + 16 - mTarget->mTargetCursor->getWidth() / 2 - scrollX;
+        int posY = mTarget->getPixelY() + 16 - mTarget->mTargetCursor->getHeight() / 2 - scrollY;
 
         graphics->drawImage(mTarget->mTargetCursor, posX, posY);
    }
+   return;
 }
