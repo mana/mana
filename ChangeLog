@@ -1,3 +1,8 @@
+2008-10-27  David Athay  <ko2fan@gmail.com>
+
+	* src/commandhandler.cpp: Remove check command, now there is an NPC for
+	 checking for post.
+
 2008-10-27  Chuck Miller  <shadowmil@gmail.com>
 
 	* src/game.h, src/game.cpp, src/net/protocol.h, src/net/effecthandler.h,
