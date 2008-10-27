@@ -100,9 +100,6 @@ Being::Being(int id, int job, Map *map):
             hairstyles++;
         }
         mNumberOfHairstyles = hairstyles;
-        if (mNumberOfHairstyles == 0)
-            mNumberOfHairstyles = 1; // No hair style -> no hair
-
     }
 
     instances++;
