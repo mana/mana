@@ -109,10 +109,6 @@ void CommandHandler::handleCommand(const std::string &command)
         }
         Net::GameServer::Player::sendLetter(recipient, text);
     }
-    else if (type == "check")
-    {
-        Net::GameServer::Player::getLetters();
-    }
     else
     {
         chatWindow->chatLog("Unknown command");
