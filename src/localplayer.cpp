@@ -112,8 +112,8 @@ void LocalPlayer::logic()
             break;
     }
 
-    // Actions are allowed once per second
-    if (get_elapsed_time(mLastAction) >= 1000) {
+    // Actions are allowed twice per second
+    if (get_elapsed_time(mLastAction) >= 500) {
         mLastAction = -1;
     }
 
@@ -123,6 +123,15 @@ void LocalPlayer::logic()
         mTargetTime = -1;
         setTarget(mTarget);
         mLastAction = -1;
+    }
+
+    if (mTarget)
+    {
+        if (mTarget->mAction == DEAD)
+        {
+            setTarget(mTarget);
+            mLastAction = -1;
+        }
     }
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
@@ -439,13 +448,10 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (mAction != STAND)
         return;
 
-    if (keep && target)
+    if (keep && (mTarget != target))
     {
+        mLastAction = -1;
         setTarget(target);
-    }
-    else if (mTarget)
-    {
-        target = mTarget;
     }
 
     if (!target)
@@ -535,6 +541,7 @@ bool LocalPlayer::withinAttackRange(Being *target)
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
+    mLastAction = -1;
     setTarget(target);
     mGoingToTarget = true;
     setDestination(target->mX, target->mY);

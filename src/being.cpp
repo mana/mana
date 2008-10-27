@@ -238,6 +238,7 @@ void Being::controlParticle(Particle *particle)
 void Being::setAction(Action action)
 {
     SpriteAction currentAction = ACTION_INVALID;
+
     switch (action)
     {
         case WALK:
