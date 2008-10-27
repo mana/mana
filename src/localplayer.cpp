@@ -273,12 +273,18 @@ void LocalPlayer::setTarget(Being *target)
     if (mLastAction != -1)
         return;
     mLastAction = tick_time;
+    mTargetTime = tick_time;
 
     if (target == mTarget)
     {
-        if (target != NULL)
+        if (mTarget)
         {
-            target->mTargetCursor = NULL;
+            if (mTarget->getType() == Being::MONSTER)
+            {
+                static_cast<Monster *>(mTarget)->showName(false);
+            }
+            mTarget->mTargetCursor = NULL;
+            mTarget = NULL;
         }
         return;
     }
@@ -580,6 +586,7 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
 
 void LocalPlayer::drawTargetCursor(Graphics *graphics, int scrollX, int scrollY)
 {
+
     // Draw target marker if needed
     if (mTarget)
     {
