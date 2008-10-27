@@ -359,7 +359,9 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      textparticle.h \
 	      tileset.h \
 	      vector.cpp \
-	      vector.h
+	      vector.h \
+	      effectmanager.cpp \
+	      effectmanager.h
 
 # set the include path found by configure
 INCLUDES =					\

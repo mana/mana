@@ -408,6 +408,8 @@ SET(SRCS
     tileset.h
     vector.cpp
     vector.h
+    effectmanager.cpp
+    effectmanager.h
     )
 
 ADD_EXECUTABLE(tmw ${SRCS})

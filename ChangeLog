@@ -1,5 +1,11 @@
 2008-10-26  Chuck Miller  <shadowmil@gmail.com>
 
+	* src/effectmanager.h,src/effectmanager.cpp,src/game.cpp: Added a
+	effects manager that reads from effects.xml when created, and can
+	tigger the effects when ever needed.  Like 0.0 does.
+
+2008-10-26  Chuck Miller  <shadowmil@gmail.com>
+
 	* src/net/beinghandler.cpp,src/localplayer.cpp,src/being.h: Played
 	around more with movement.  I think later on all of movement will
 	need to be revised.  But this should work for now.

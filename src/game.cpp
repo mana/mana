@@ -44,6 +44,7 @@
 #include "log.h"
 #include "npc.h"
 #include "particle.h"
+#include "effectmanager.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
@@ -133,6 +134,7 @@ BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
 ChannelManager *channelManager = NULL;
 CommandHandler *commandHandler = NULL;
+EffectManager *effectManager = NULL;
 
 Particle *particleEngine = NULL;
 
@@ -286,6 +288,7 @@ Game::Game():
     floorItemManager = new FloorItemManager();
     channelManager = new ChannelManager();
     commandHandler = new CommandHandler();
+    effectManager = new EffectManager();
 
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();

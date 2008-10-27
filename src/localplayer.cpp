@@ -33,6 +33,7 @@
 #include "particle.h"
 #include "sound.h"
 #include "log.h"
+#include "effectmanager.h"
 
 #include "net/gameserver/player.h"
 #include "net/chatserver/guild.h"
@@ -326,7 +327,8 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
         mDestY = y;
 
         Net::GameServer::Player::walk(x, y);
-        particleEngine->addEffect("graphics/particles/hit.particle.xml", x, y);
+        //Debugging fire burst
+        effectManager->trigger(15,x,y);
     }
 
     mPickUpTarget = NULL;
