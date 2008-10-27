@@ -252,6 +252,8 @@ SET(SRCS
     net/protocol.h
     net/tradehandler.cpp
     net/tradehandler.h
+    net/effecthandler.cpp
+    net/effecthandler.h
     net/accountserver/account.cpp
     net/accountserver/account.h
     net/accountserver/accountserver.cpp

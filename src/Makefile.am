@@ -204,6 +204,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/protocol.h \
 	      net/tradehandler.cpp \
 	      net/tradehandler.h \
+              net/effecthandler.h \
+              net/effecthandler.cpp \
 	      net/accountserver/account.cpp \
 	      net/accountserver/account.h \
 	      net/accountserver/accountserver.cpp \

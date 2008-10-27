@@ -71,7 +71,6 @@ bool EffectManager::trigger(int id, int x, int y)
     {
         if ((*i).id == id)
         {
-            printf("Found effect, playing it");
             rValue = true;
             if((*i).GFX != "")
                 particleEngine->addEffect((*i).GFX, x, y);

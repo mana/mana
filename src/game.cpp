@@ -86,6 +86,7 @@
 #include "net/posthandler.h"
 #include "net/playerhandler.h"
 #include "net/tradehandler.h"
+#include "net/effecthandler.h"
 
 #include "resources/imagewriter.h"
 
@@ -277,6 +278,7 @@ Game::Game():
     mPlayerHandler(new PlayerHandler()),
     mPostHandler(new PostHandler()),
     mTradeHandler(new TradeHandler()),
+    mEffectHandler(new EffectHandler()),
     mLogicCounterId(0), mSecondsCounterId(0)
 {
     done = false;
@@ -324,6 +326,7 @@ Game::Game():
     Net::registerHandler(mPlayerHandler.get());
     Net::registerHandler(mPostHandler.get());
     Net::registerHandler(mTradeHandler.get());
+    Net::registerHandler(mEffectHandler.get());
 }
 
 Game::~Game()

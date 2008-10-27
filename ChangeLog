@@ -1,3 +1,11 @@
+2008-10-27  Chuck Miller  <shadowmil@gmail.com>
+
+	* src/game.h, src/game.cpp, src/net/protocol.h, src/net/effecthandler.h,
+	src/net/effecthandler.cpp: Added a handler for handling effects sent
+	from the server, you'll need the latest server patch for them too work
+	* src/effectmanager.cpp: Removed some debugging code left in by
+	mistake
+
 2008-10-26  Chuck Miller  <shadowmil@gmail.com>
 
 	* src/effectmanager.h,src/effectmanager.cpp,src/game.cpp: Added a
