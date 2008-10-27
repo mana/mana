@@ -300,7 +300,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                     if (being->mAction == Being::DEAD)
                         break;
 
-                    if (player_node->withinAttackRange(being))
+                    if (player_node->withinAttackRange(being) || keyboard.isKeyActive(keyboard.KEY_ATTACK))
                     {
                         player_node->setGotoTarget(being);
                         player_node->attack(being, keyboard.isKeyActive(keyboard.KEY_TARGET));
