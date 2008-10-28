@@ -826,7 +826,7 @@ void Game::handleInput()
         }
 
         // Target the nearest player if 'q' is pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) )
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) && !keyboard.isKeyActive(keyboard.KEY_TARGET) )
         {
             Being *target = beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
 
@@ -834,7 +834,7 @@ void Game::handleInput()
         }
 
         // Target the nearest monster if 'a' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) )
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) && !keyboard.isKeyActive(keyboard.KEY_TARGET) )
         {
             Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
 
@@ -842,7 +842,7 @@ void Game::handleInput()
         }
 
         // Target the nearest npc if 'n' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) )
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) && !keyboard.isKeyActive(keyboard.KEY_TARGET) )
         {
             Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::NPC);
 
@@ -864,6 +864,12 @@ void Game::handleInput()
                 if (target->getType() == Being::NPC)
                     dynamic_cast<NPC*>(target)->talk();
             }
+        }
+
+        // Stop attacking if shift is pressed
+        if (keyboard.isKeyActive(keyboard.KEY_TARGET))
+        {
+            player_node->stopAttack();
         }
 
         if (joystick)
