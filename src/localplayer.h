@@ -236,8 +236,10 @@ class LocalPlayer : public Player
         bool mTrading;
         bool mInStorage;    /**< Whether storage is currently accessible */
         bool mGoingToTarget;
+        bool mKeepAttacking;/** Whether or not to continue to attack */
         int mTargetTime;    /** How long the being has been targeted **/
         int mLastAction;    /**< Time stamp of the last action, -1 if none. */
+        int mLastTarget;    /** Time stamp of last targeting action, -1 if none. */
         int mWalkingDir;    /**< The direction the player is walking in. */
         int mDestX;         /**< X coordinate of destination. */
         int mDestY;         /**< Y coordinate of destination. */

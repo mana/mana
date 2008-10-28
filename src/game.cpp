@@ -801,7 +801,7 @@ void Game::handleInput()
         {
             Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
 
-            bool newTarget = keyboard.isKeyActive(keyboard.KEY_TARGET);
+            bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
             // A set target has highest priority
             if (newTarget || !player_node->getTarget())
             {

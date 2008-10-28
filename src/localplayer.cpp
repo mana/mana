@@ -107,14 +107,18 @@ void LocalPlayer::logic()
             mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
             if (mFrame >= frames) {
                 nextStep();
-                attack();
             }
             break;
     }
 
-    // Actions are allowed twice per second
-    if (get_elapsed_time(mLastAction) >= 500) {
+    // Actions are allowed once per second
+    if (get_elapsed_time(mLastAction) >= 1000) {
         mLastAction = -1;
+    }
+
+    // Targeting allowed 4 times a second
+    if (get_elapsed_time(mLastTarget) >= 250) {
+        mLastTarget = -1;
     }
 
     // Remove target if its been on a being for more than a minute
@@ -122,15 +126,18 @@ void LocalPlayer::logic()
     {
         mTargetTime = -1;
         setTarget(mTarget);
-        mLastAction = -1;
+        mLastTarget = -1;
     }
 
     if (mTarget)
     {
         if (mTarget->mAction == DEAD)
         {
-            setTarget(mTarget);
-            mLastAction = -1;
+            stopAttack();
+        }
+        if (mKeepAttacking && mTarget)
+        {
+            attack(mTarget, true);
         }
     }
 
@@ -279,27 +286,19 @@ void LocalPlayer::walk(unsigned char dir)
 
 void LocalPlayer::setTarget(Being *target)
 {
-    if (mLastAction != -1)
+    if (mLastTarget != -1 || target == this)
         return;
-    mLastAction = tick_time;
+    mLastTarget = tick_time;
 
     if (target)
     {
         mTargetTime = tick_time;
     }
 
-    if (target == mTarget)
+    if ((target == NULL) || target == mTarget)
     {
-        if (mTarget)
-        {
-            if (mTarget->getType() == Being::MONSTER)
-            {
-                static_cast<Monster *>(mTarget)->showName(false);
-            }
-            mTarget->mTargetCursor = NULL;
-            mTarget = NULL;
-        }
-        return;
+        target = NULL;
+        mKeepAttacking = false;
     }
     if (mTarget && mTarget->getType() == Being::MONSTER)
     {
@@ -444,21 +443,24 @@ bool LocalPlayer::tradeRequestOk() const
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
-    // Can only attack when standing still
-    if (mAction != STAND)
-        return;
-
-    if (keep && (mTarget != target))
-    {
-        mLastAction = -1;
-        setTarget(target);
-    }
+    mKeepAttacking = keep;
 
     if (!target)
         return;
 
+    if ((mTarget != target) || !mTarget)
+    {
+        mLastTarget = -1;
+        setTarget(target);
+    }
+
     int dist_x = target->mX - mX;
     int dist_y = target->mY - mY;
+
+    // Must be standing and be within attack range to continue
+    if ((mAction != STAND) || (mAttackRange < abs(dist_x)) || 
+        (mAttackRange < abs(dist_y)))
+        return;
 
     if (abs(dist_y) >= abs(dist_x))
     {
@@ -478,8 +480,9 @@ void LocalPlayer::attack(Being *target, bool keep)
     // Implement charging attacks here
     mLastAttackTime = 0;
 
-    setAction(ATTACK);
     mWalkTime = tick_time;
+
+    setAction(ATTACK);
 
     if (mEquippedWeapon)
     {
@@ -494,11 +497,22 @@ void LocalPlayer::attack(Being *target, bool keep)
     outMsg.writeInt16(0x0089);
     outMsg.writeInt32(target->getId());
     outMsg.writeInt8(0);
+
+    if (!keep)
+    {
+        stopAttack();
+    }
 }
 
 void LocalPlayer::stopAttack()
 {
-    setTarget(NULL);
+    if (mTarget)
+    {
+        setAction(STAND);
+        mLastTarget = -1;
+        setTarget(NULL);
+        mLastTarget = -1;
+    }
 }
 
 Being* LocalPlayer::getTarget() const
@@ -541,7 +555,7 @@ bool LocalPlayer::withinAttackRange(Being *target)
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
-    mLastAction = -1;
+    mLastTarget = -1;
     setTarget(target);
     mGoingToTarget = true;
     setDestination(target->mX, target->mY);
