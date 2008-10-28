@@ -70,9 +70,15 @@ void NPCHandler::handleMessage(MessageIn *msg)
             npcTextDialog->setVisible(true);
             break;
 
-        case SMSG_NPC_NEXT:
         case SMSG_NPC_CLOSE:
-            // Next/Close button in NPC dialog, currently unused
+            id = msg->readInt32();
+            dynamic_cast<NPC*>(beingManager->findBeing(id));
+            if (current_npc == dynamic_cast<NPC*>(beingManager->findBeing(id)))
+            	current_npc = NULL;
+            break;
+
+        case SMSG_NPC_NEXT:
+            // Next button in NPC dialog, currently unused
             break;
     }
 }

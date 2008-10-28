@@ -1,3 +1,8 @@
+2008-10-28  Dennis Friis  <peavey@placid.dk>
+
+	* src/net/npchandler.cpp: Handle NPC script close. Fixes client input
+	freeze on no-dialog NPCs.
+
 2008-10-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp: Fixed trade window being visible on client startup
