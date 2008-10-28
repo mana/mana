@@ -29,10 +29,11 @@
 #include "game.h"
 #include "inventory.h"
 #include "item.h"
+#include "keyboardconfig.h"
 #include "main.h"
+#include "monster.h"
 #include "particle.h"
 #include "sound.h"
-#include "monster.h"
 
 #include "gui/gui.h"
 
@@ -127,6 +128,11 @@ void LocalPlayer::logic()
         mTargetTime = -1;
         setTarget(mTarget);
         mLastTarget = -1;
+    }
+
+    if (keyboard.isKeyActive(keyboard.KEY_TARGET))
+    {
+        stopAttack();
     }
 
     if (mTarget)

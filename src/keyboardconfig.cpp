@@ -45,7 +45,7 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyAttack", SDLK_LCTRL, "Attack"},
     {"keySmilie", SDLK_LALT, "Smilie"},
     {"keyTalk", SDLK_t, "Talk"},
-    {"keyTarget", SDLK_LSHIFT, "Target"},
+    {"keyTarget", SDLK_LSHIFT, "Stop Attack"},
     {"keyTargetClosest", SDLK_a, "Target Closest"},
     {"keyTargetNPC", SDLK_n, "Target NPC"},
     {"keyTargetPlayer", SDLK_q, "Target Player"},
