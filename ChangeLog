@@ -1,3 +1,8 @@
+2008-10-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp: Fixed trade window being visible on client startup
+	when it was visible on shutdown.
+
 2008-10-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/beinghandler.cpp: Since we somehow did end up depending on a

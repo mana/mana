@@ -221,6 +221,7 @@ void createGuiWindows(Network *network)
         true));
     buyDialog->setVisible(false);
     sellDialog->setVisible(false);
+    tradeWindow->setVisible(false);
     menuWindow->setVisible((bool) config.getValue(
         menuWindow->getWindowName() + "Visible", true));
     itemShortcutWindow->setVisible((bool) config.getValue(
