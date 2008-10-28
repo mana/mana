@@ -25,7 +25,6 @@
 
 #include <guichan/font.hpp>
 
-
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
