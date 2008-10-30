@@ -1,3 +1,7 @@
+2008-10-30  Dennis Friis  <peavey@placid.dk>
+	* src/net/beinghandler.cpp: Do not set shoe sprite on player move
+	packet unless supported by eAthena.
+
 2008-10-28  Dennis Friis  <peavey@placid.dk>
 
 	* src/net/npchandler.cpp: Handle NPC script close. Fixes client input
