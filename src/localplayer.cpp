@@ -53,8 +53,9 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false),
-    mLastAction(-1),
-    mWalkingDir(0), mDestX(0), mDestY(0),
+    mTargetTime(-1), mLastAction(-1),
+    mLastTarget(-1), mWalkingDir(0), 
+    mDestX(0), mDestY(0),
     mInventory(new Inventory(INVENTORY_SIZE)),
     mStorage(new Inventory(STORAGE_SIZE))
 {
@@ -115,17 +116,15 @@ void LocalPlayer::logic()
     if (get_elapsed_time(mLastAction) >= 1000) {
         mLastAction = -1;
     }
-
     // Targeting allowed 4 times a second
     if (get_elapsed_time(mLastTarget) >= 250) {
         mLastTarget = -1;
     }
-
     // Remove target if its been on a being for more than a minute
     if (get_elapsed_time(mTargetTime) >= 60000)
     {
         mTargetTime = -1;
-        setTarget(mTarget);
+        setTarget(NULL);
         mLastTarget = -1;
     }
 
@@ -290,15 +289,15 @@ void LocalPlayer::setTarget(Being *target)
         return;
     mLastTarget = tick_time;
 
-    if (target)
-    {
-        mTargetTime = tick_time;
-    }
-
     if ((target == NULL) || target == mTarget)
     {
         target = NULL;
         mKeepAttacking = false;
+        mTargetTime = -1;
+    }
+    if (target)
+    {
+        mTargetTime = tick_time;
     }
     if (mTarget && mTarget->getType() == Being::MONSTER)
     {
