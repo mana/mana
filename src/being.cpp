@@ -315,7 +315,7 @@ void Being::takeDamage(int amount)
     {
         // Hit particle effect
         controlParticle(particleEngine->addEffect(
-                    "graphics/particles/hit.particle.xml", 0, 0));
+                    "graphics/particles/hit.particle.xml", mPos.x, mPos.y));
 
         if (getType() == MONSTER)
         {
@@ -465,8 +465,7 @@ void Being::logic()
     //       the jigger caused by moving too far.
     if (length > 2.0f) {
         const float speed = mWalkSpeed / 100.0f;
-        dir /= (length / speed);
-        mPos += dir;
+        mPos += dir / (length / speed);
 
         if (mAction != WALK)
             setAction(WALK);
@@ -475,9 +474,9 @@ void Being::logic()
         int direction = 0;
         const float dx = std::abs(dir.x);
         const float dy = std::abs(dir.y);
-        if (dx * 2 > dy)
+        if (dx > dy)
             direction |= (dir.x > 0) ? RIGHT : LEFT;
-        if (dy * 2 > dx)
+        else
             direction |= (dir.y > 0) ? DOWN : UP;
         setDirection(direction);
     }

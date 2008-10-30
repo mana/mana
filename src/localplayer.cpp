@@ -47,7 +47,7 @@
 #include "utils/tostring.h"
 #include "utils/gettext.h"
 
-const short walkingKeyboardDelay = 500;
+const short walkingKeyboardDelay = 100;
 
 LocalPlayer *player_node = NULL;
 
@@ -262,6 +262,7 @@ void LocalPlayer::walk(unsigned char dir)
     if (dir & RIGHT)
         dx += 32;
 
+    
     // Prevent skipping corners over colliding tiles
     if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
                              (int) pos.y / 32, getWalkMask()))
@@ -274,10 +275,10 @@ void LocalPlayer::walk(unsigned char dir)
     if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
                                    (pos.y + dy) / 32, getWalkMask()))
         dx = 16 - (int) pos.x % 32;
-
+   
     // Checks our path up to 5 tiles, if a blocking tile is found
     // We go to the last good tile, and break out of the loop
-    for (dScaler = 1; dScaler <= 5; dScaler++)
+    for (dScaler = 1; dScaler <= 10; dScaler++)
     {
         if ( (dx || dy) && 
              !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
@@ -319,7 +320,6 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 
     x = tx * 32 + fx;
     y = ty * 32 + fy;
-
     // Only send a new message to the server when destination changes
     if (x != mDestX || y != mDestY)
     {
