@@ -235,8 +235,12 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             switch (type)
             {
-                case 0x00: // Damage
                 case 0x0a: // Critical Damage
+                    if (dstBeing) {
+                        dstBeing->controlParticle(particleEngine->addEffect(
+                        "graphics/particles/crit.particle.xml", 0, 0));
+                    }
+                case 0x00: // Damage
                     if (dstBeing) {
                         dstBeing->takeDamage(param1);
                     }
@@ -415,9 +419,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setSprite(Being::HAT_SPRITE, headTop);
-            if (shoes > 10) // only if supported by eAthena
-                dstBeing->setSprite(Being::SHOE_SPRITE, shoes);
-            if (gloves > 10) // only if supported by eAthena
+            dstBeing->setSprite(Being::SHOE_SPRITE, shoes);
+            // Compensation for the unpatched TMW server
+            if (gloves > 10)
                 dstBeing->setSprite(Being::GLOVES_SPRITE, gloves);
             dstBeing->setSprite(Being::CAPE_SPRITE, cape);
             dstBeing->setSprite(Being::MISC1_SPRITE, misc1);

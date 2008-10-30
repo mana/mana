@@ -1,3 +1,8 @@
+2008-10-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp: Added particle effect on critical
+	hits.
+
 2008-10-30  Dennis Friis  <peavey@placid.dk>
 	* src/net/beinghandler.cpp: Do not set shoe sprite on player move
 	packet unless supported by eAthena.
