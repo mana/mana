@@ -370,8 +370,10 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
 
     mPlayerFollowMouse = false;
 
-    const int tilex = (event.getX() + (int) mViewX) / 32;
-    const int tiley = (event.getY() + (int) mViewY) / 32;
+    const int pixelx = event.getX() + (int) mViewX;
+    const int pixely = event.getY() + (int) mViewY;
+    const int tilex = pixelx / mMap->getTileWidth();
+    const int tiley = pixely / mMap->getTileHeight();
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
@@ -379,7 +381,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = beingManager->findBeing(tilex, tiley)) &&
+        if ((being = beingManager->findBeingByPixel(tilex, tiley)) &&
             being != player_node)
         {
             mPopupMenu->showPopup(event.getX(), event.getY(), being);

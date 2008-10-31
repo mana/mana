@@ -1,7 +1,7 @@
 2008-10-27  David Athay  <ko2fan@gmail.com>
 
-	* src/commandhandler.cpp: Remove check command, now there is an NPC for
-	 checking for post.
+	* src/commandhandler.cpp: Remove check command, now there is an NPC
+	for checking for post.
 
 2008-10-27  Chuck Miller  <shadowmil@gmail.com>
 
@@ -9,7 +9,7 @@
 	src/net/effecthandler.cpp: Added a handler for handling effects sent
 	from the server, you'll need the latest server patch for them too work
 	* src/effectmanager.cpp: Removed some debugging code left in by
-	mistake
+	mistake.
 
 2008-10-26  Chuck Miller  <shadowmil@gmail.com>
 
@@ -614,6 +614,8 @@
 
 	* src/gui/browserbox.cpp: Fix a basic_string::at sometimes being out
 	of range in BrowserBox::draw when checking for color codes.
+	* src/localplayer.cpp: Cancel walking to a clicked monster if the
+	target is lost while getting to it (killed or otherwise removed).
 
 2008-04-15  David Athay  <ko2fan@gmail.com>
 
@@ -625,6 +627,8 @@
 	src/Makefile.am, data/graphics/gui/circle-green.png
 	data/graphics/gui/circle-gray.png, tmw.cbp: Added online status of
 	guild members.
+	* src/gui/viewport.cpp, src/beingmanager.cpp, tmw.cbp: Fixed clicking
+	near player.
 
 2008-04-14 Yohann Ferreira <bertram@cegetel.net>
 
@@ -658,6 +662,13 @@
 	src/gui/itemshortcutwindow.cpp, src/gui/scrollarea.h,
 	src/gui/scrollarea.cpp, src/gui/itemshortcutwindow.h: Fixed display of
 	item shortcut container. gcn::Widget::setWidth is no longer virtual.
+
+2008-04-11  David Athay  <ko2fan@gmail.com>
+
+	* src/localplayer.cpp, src/beingmanager.h, src/gui/viewport.cpp,
+	src/beingmanager.cpp, src/localplayer.h, tmw.cbp: Players now need to
+	click on the monster sprites rather than the tile. Players will now
+	move to the target before attacking it.
 
 2008-04-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

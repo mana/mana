@@ -66,8 +66,9 @@ LocalPlayer::LocalPlayer():
     mTotalWeight(1), mMaxWeight(1),
     mHP(1), mMaxHP(1),
     mTarget(NULL), mPickUpTarget(NULL),
-    mTrading(false),
-    mLastAction(-1), mWalkingDir(0),
+    mTrading(false), mGoingToTarget(false),
+    mLastAction(-1),
+    mWalkingDir(0),
     mDestX(0), mDestY(0),
     mLocalWalkTime(-1),
     mExpMessageTime(0)
@@ -121,6 +122,21 @@ void LocalPlayer::nextStep()
         {
             walk(mWalkingDir);
         }
+    }
+
+    // TODO: Fix automatically walking within range of target, when wanted
+    if (mGoingToTarget && mTarget && withinAttackRange(mTarget))
+    {
+        mAction = Being::STAND;
+        //attack(mTarget, true);
+        mGoingToTarget = false;
+        mPath.clear();
+        return;
+    }
+    else if (mGoingToTarget && !mTarget)
+    {
+        mGoingToTarget = false;
+        mPath.clear();
     }
 }
 
@@ -541,12 +557,29 @@ std::pair<int, int> LocalPlayer::getExperience(int skill)
 int LocalPlayer::getAttackRange()
 {
     Item *weapon = mEquipment->getEquipment(EQUIP_FIGHT1_SLOT);
-    if(weapon)
+    if (weapon)
     {
         const ItemInfo info = weapon->getInfo();
         return info.getAttackRange();
     }
-    return 32; //unarmed range
-    
+    return 32; // unarmed range
 }
 
+bool LocalPlayer::withinAttackRange(Being *target)
+{
+    const Vector &targetPos = target->getPosition();
+    const Vector &pos = getPosition();
+    const int dx = abs(targetPos.x - pos.x);
+    const int dy = abs(targetPos.y - pos.y);
+    const int range = getAttackRange();
+
+    return !(dx > range || dy > range);
+}
+
+void LocalPlayer::setGotoTarget(Being *target)
+{
+    mTarget = target;
+    mGoingToTarget = true;
+    const Vector &targetPos = target->getPosition();
+    setDestination(targetPos.x, targetPos.y);
+}

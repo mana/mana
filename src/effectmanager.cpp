@@ -42,12 +42,10 @@ EffectManager::EffectManager()
     else
     {
         logger->log("Effects are now loading");
-    } 
+    }
 
     for_each_xml_child_node(node, root)
     {
-        int id;
-
         if (xmlStrEqual(node->name, BAD_CAST "effect"))
         {
             EffectDescription ed;
@@ -61,22 +59,22 @@ EffectManager::EffectManager()
 
 EffectManager::~EffectManager()
 {
-
 }
 
 bool EffectManager::trigger(int id, int x, int y)
 {
     bool rValue = false;
-    for (std::list<EffectDescription>::iterator i = mEffects.begin(); i != mEffects.end(); ++i)
+    for (std::list<EffectDescription>::iterator i = mEffects.begin();
+            i != mEffects.end(); ++i)
     {
         if ((*i).id == id)
         {
             rValue = true;
-            if((*i).GFX != "")
+            if ((*i).GFX != "")
                 particleEngine->addEffect((*i).GFX, x, y);
-            if((*i).SFX != "")
+            if ((*i).SFX != "")
                 sound.playSfx((*i).SFX);
-            break;            
+            break;
         }
     }
     return rValue;

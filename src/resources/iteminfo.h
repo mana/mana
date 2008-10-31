@@ -64,7 +64,7 @@ enum EquipmentSlot
     EQUIP_FIGHT2_SLOT = 9,
     // Projectile:
     //   this item does not amount to one, it only indicates the chosen projectile.
-    EQUIP_PROJECTILE_SLOT = 10,
+    EQUIP_PROJECTILE_SLOT = 10
 };
 
 
