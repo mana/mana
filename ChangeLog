@@ -1,9 +1,15 @@
+2008-10-31  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp: Applied patch by vargavind which adds more special
+	characters to the font. Somehow they were already part of the font
+	image, but not used.
+
 2008-10-30  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/net/beinghandler.cpp: Added particle effect on critical
-	hits.
+	* src/net/beinghandler.cpp: Added particle effect on critical hits.
 
 2008-10-30  Dennis Friis  <peavey@placid.dk>
+
 	* src/net/beinghandler.cpp: Do not set shoe sprite on player move
 	packet unless supported by eAthena.
 

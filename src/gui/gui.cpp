@@ -107,7 +107,7 @@ Gui::Gui(Graphics *graphics):
     try {
         mGuiFont = new gcn::ImageFont("graphics/gui/sansserif8.png",
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
-                "\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|"
+                "\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|·¡È…ﬂ¯Ë»"
                 );
     }
     catch (gcn::Exception e)
