@@ -166,6 +166,11 @@ class Being : public Sprite
         virtual void takeDamage(int amount);
 
         /**
+         * Puts a crit notification bubble above this being.
+         */
+        virtual void showCrit();
+
+        /**
          * Handles an attack of another being by this being.
          *
          * @param victim The attacked being.

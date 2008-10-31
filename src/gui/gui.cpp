@@ -180,9 +180,9 @@ Gui::Gui(Graphics *graphics):
     // Load hits' colourful fonts
     try {
         hitRedFont = new gcn::ImageFont("graphics/gui/hits_red.png",
-                "0123456789");
+                "0123456789crit! ");
         hitBlueFont = new gcn::ImageFont("graphics/gui/hits_blue.png",
-                "0123456789");
+                "0123456789crit! ");
         hitYellowFont = new gcn::ImageFont("graphics/gui/hits_yellow.png",
                 "0123456789misxp ");
     }

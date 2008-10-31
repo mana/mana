@@ -189,10 +189,6 @@ void Being::takeDamage(int amount)
     }
     else
     {
-        // Hit particle effect
-        controlParticle(particleEngine->addEffect(
-                    "graphics/particles/hit.particle.xml", 0, 0));
-
         if (getType() == MONSTER)
         {
             font = hitBlueFont;
@@ -206,6 +202,26 @@ void Being::takeDamage(int amount)
     // Show damage number
     particleEngine->addTextSplashEffect(damage, 255, 255, 255, font,
                                         mPx + 16, mPy + 16);
+}
+
+void Being::showCrit()
+{
+    gcn::Font *font;
+    std::string text = "crit!";
+
+    // Selecting the right color
+    if (getType() == MONSTER)
+    {
+        font = hitBlueFont;
+    }
+    else
+    {
+        font = hitRedFont;
+    }
+
+    // Show crit notice
+    particleEngine->addTextRiseFadeOutEffect(text, font,
+                                             mPx + 16, mPy - 16);
 }
 
 void Being::handleAttack(Being *victim, int damage)

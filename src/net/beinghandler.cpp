@@ -237,8 +237,11 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             switch (type)
             {
-                case 0x00: // Damage
                 case 0x0a: // Critical Damage
+                    if (dstBeing) {
+                         dstBeing->showCrit();
+                    }
+               case 0x00: // Damage
                     if (dstBeing) {
                         dstBeing->takeDamage(param1);
                     }
