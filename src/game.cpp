@@ -635,9 +635,15 @@ void Game::handleInput()
                 {
                     setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
                 }
+                // Proceed to the next dialog option, or close the window
                 else if (npcTextDialog->isVisible())
                 {
                     npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
+                }
+                // Choose the currently highlighted dialogue option
+                else if (npcListDialog->isVisible())
+                {
+                    npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
                 }
                 // Else, open the chat edit box
                 else
