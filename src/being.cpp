@@ -220,8 +220,8 @@ void Being::showCrit()
     }
 
     // Show crit notice
-    particleEngine->addTextRiseFadeOutEffect(text, font,
-                                             mPx + 16, mPy - 16);
+    particleEngine->addTextSplashEffect(text, 255, 255, 255, font,
+                                        mPx + 16, mPy + 16);
 }
 
 void Being::handleAttack(Being *victim, int damage)
