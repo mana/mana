@@ -47,12 +47,18 @@
 #include "resources/image.h"
 
 OpenGLGraphics::OpenGLGraphics():
-    mAlpha(false), mTexture(false), mColorAlpha(false)
+    mAlpha(false), mTexture(false), mColorAlpha(false),
+    mSync(false)
 {
 }
 
 OpenGLGraphics::~OpenGLGraphics()
 {
+}
+
+void OpenGLGraphics::setSync(bool sync)
+{
+    mSync = sync;
 }
 
 bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
@@ -76,8 +82,10 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     }
 
 #ifdef __APPLE__
-    //const GLint VBL = 1;
-    //CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
+    if (mSync) {
+        const GLint VBL = 1;
+        CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
+    }
 #endif
 
     // Setup OpenGL

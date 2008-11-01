@@ -1,3 +1,8 @@
+2008-11-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.h, src/openglgraphics.cpp: Made an option around
+	the syncing, but no way to change it for now.
+
 2008-10-27  David Athay  <ko2fan@gmail.com>
 
 	* src/commandhandler.cpp: Remove check command, now there is an NPC
