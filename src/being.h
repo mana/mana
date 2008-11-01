@@ -33,9 +33,6 @@
 #include "animatedsprite.h"
 #include "vector.h"
 
-#define NR_HAIR_STYLES 8
-#define NR_HAIR_COLORS 10
-
 class AnimatedSprite;
 class Equipment;
 class ItemInfo;
@@ -362,6 +359,13 @@ class Being : public Sprite
          * when this being isn't following any path currently.
          */
         const Path &getPath() const { return mPath; }
+
+
+        static int getHairColorsNr(void);
+
+        static int getHairStylesNr(void);
+
+        static std::string getHairColor(int index);
 
     protected:
         /**
