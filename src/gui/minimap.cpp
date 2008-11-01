@@ -77,9 +77,10 @@ void Minimap::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
 
-    if (mMapImage != NULL)
+    if (mMapImage)
     {
-        static_cast<Graphics*>(graphics)->drawImage(mMapImage, getPadding(), getTitleBarHeight());
+        static_cast<Graphics*>(graphics)->drawImage(
+                mMapImage, getPadding(), getTitleBarHeight());
     }
 
     Beings &beings = beingManager->getAll();
@@ -110,7 +111,7 @@ void Minimap::draw(gcn::Graphics *graphics)
                 break;
 
             default:
-                break;
+                continue;
         }
 
         const int offset = (dotSize - 1) / 2;
