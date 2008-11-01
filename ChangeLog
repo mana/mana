@@ -1,3 +1,8 @@
+2008-11-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.h, src/openglgraphics.cpp: Made an option around
+	the syncing, but no way to change it for now.
+
 2008-09-21  Kevin Day ("Blame")     <blame@aethyra.com>
 
 	* Added the update.sh script to work with autobuild.sh
