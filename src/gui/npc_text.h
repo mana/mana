@@ -45,6 +45,18 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         NpcTextDialog();
 
         /**
+         * Called when resizing the window
+         *
+         * @param event The calling event
+         */
+        void widgetResized(const gcn::Event &event);
+
+        /**
+         * Redraws the window
+         */
+        void draw();
+
+        /**
          * Called when receiving actions from the widgets.
          */
         void
@@ -68,7 +80,11 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         addText(const std::string &string);
 
     private:
+        gcn::Button *okButton;
+        gcn::ScrollArea *scrollArea;
         TextBox *mTextBox;
+
+        std::string mText;
 };
 
 #endif

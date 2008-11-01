@@ -49,6 +49,18 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         NpcListDialog();
 
         /**
+         * Called when resizing the window
+         *
+         * @param event The calling event
+         */
+        void widgetResized(const gcn::Event &event);
+
+        /**
+         * Redraws the window
+         */
+        void draw();
+
+        /**
          * Called when receiving actions from the widgets.
          */
         void
@@ -82,6 +94,9 @@ class NpcListDialog : public Window, public gcn::ActionListener,
 
     private:
         gcn::ListBox *mItemList;
+        gcn::ScrollArea *scrollArea;
+        gcn::Button *okButton;
+        gcn::Button *cancelButton;
 
         std::vector<std::string> mItems;
 };
