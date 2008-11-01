@@ -27,6 +27,8 @@
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
 
+#include "scrollarea.h"
+#include "button.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
@@ -47,6 +49,18 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          * @see Window::Window
          */
         NpcTextDialog();
+
+        /**
+         * Called when resizing the window
+         *
+         * @param event The calling event
+         */
+        void widgetResized(const gcn::Event &event);
+
+        /**
+         * Redraws the window
+         */
+        void draw();
 
         /**
          * Called when receiving actions from the widgets.
@@ -72,7 +86,11 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         addText(const std::string &string);
 
     private:
+        gcn::Button *okButton;
+        gcn::ScrollArea *scrollArea;
         TextBox *mTextBox;
+
+        std::string mText;
 };
 
 #endif

@@ -48,7 +48,6 @@ InventoryWindow::InventoryWindow():
     setResizable(true);
     setCloseButton(true);
     setMinWidth(240);
-    setMinHeight(172);
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(115, 25, 322, 172);
 
@@ -200,7 +199,6 @@ void InventoryWindow::draw()
     // Update weight information
     mWeightLabel->setTextWrapped(mWeight);
     mWeightLabel->setMinWidth(width - 16);
-    mWeightLabel->setWidth(width - 16);
 
     mUseButton->setPosition(8, height - 8 - mUseButton->getHeight());
     mDropButton->setPosition(8 + mUseButton->getWidth() + 5,
