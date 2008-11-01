@@ -227,6 +227,8 @@ class LocalPlayer : public Player
 
         void attack();
 
+        void useSpecial(int id);
+
         Being* getTarget() const;
 
         /**

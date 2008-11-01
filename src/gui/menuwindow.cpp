@@ -36,6 +36,7 @@ extern Window *setupWindow;
 extern Window *inventoryWindow;
 extern Window *equipmentWindow;
 extern Window *skillDialog;
+extern Window *magicDialog;
 extern Window *statusWindow;
 extern Window *guildWindow;
 extern Window *itemShortcutWindow;
@@ -64,6 +65,7 @@ MenuWindow::MenuWindow():
         N_("Equipment"),
         N_("Inventory"),
         N_("Skills"),
+        N_("Magic"),
         N_("Guilds"),
         N_("Shortcut"),
         N_("Setup"),
@@ -109,6 +111,10 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
     else if (event.getId() == "Skills")
     {
         window = skillDialog;
+    }
+    else if (event.getId() == "Magic")
+    {
+        window = magicDialog;
     }
     else if (event.getId() == "Guilds")
     {

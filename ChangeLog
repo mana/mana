@@ -1,3 +1,12 @@
+2008-11-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/game.cpp, src7gui/menuwindow.cpp, src/gui/setup.cpp,
+	src/gui/magic.cpp, src/gui/magic.h: Added very provisorical and
+	hackish magic gui.
+	* src/localplayer.cpp, src/localplayer.h,
+	src/net/gameserver/player.cpp, src/net/gameserver/player.h,
+	src/net/protocol.h: Added netcode for using special actions.
+
 2008-11-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/openglgraphics.h, src/openglgraphics.cpp: Made an option around

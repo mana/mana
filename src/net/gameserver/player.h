@@ -51,6 +51,7 @@ namespace Net
             void unequip(int slot);
             void useItem(int slot);
             void attack(int direction);
+            void useSpecial(int special);
             void changeAction(Being::Action action);
             void talkToNPC(int id, bool restart);
             void selectFromNPC(int id, int choice);

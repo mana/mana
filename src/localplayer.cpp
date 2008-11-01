@@ -280,7 +280,7 @@ void LocalPlayer::walk(unsigned char dir)
     if (dir & RIGHT)
         dx += 32;
 
-    
+
     // Prevent skipping corners over colliding tiles
     if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
                              (int) pos.y / 32, getWalkMask()))
@@ -293,12 +293,12 @@ void LocalPlayer::walk(unsigned char dir)
     if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
                                    (pos.y + dy) / 32, getWalkMask()))
         dx = 16 - (int) pos.x % 32;
-   
+
     // Checks our path up to 5 tiles, if a blocking tile is found
     // We go to the last good tile, and break out of the loop
     for (dScaler = 1; dScaler <= 10; dScaler++)
     {
-        if ( (dx || dy) && 
+        if ( (dx || dy) &&
              !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
                              ((int) pos.y + (dy * dScaler)) / 32, getWalkMask()) )
         {
@@ -306,7 +306,7 @@ void LocalPlayer::walk(unsigned char dir)
             break;
         }
     }
-    
+
     if (dScaler >= 0)
     {
          setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
@@ -475,6 +475,11 @@ void LocalPlayer::attack()
         sound.playSfx("sfx/fist-swish.ogg");
     }
     Net::GameServer::Player::attack(getSpriteDirection());
+}
+
+void LocalPlayer::useSpecial(int special)
+{
+    Net::GameServer::Player::useSpecial(special);
 }
 
 Being* LocalPlayer::getTarget() const

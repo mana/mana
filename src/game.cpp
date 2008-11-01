@@ -58,6 +58,7 @@
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
 #include "gui/itemshortcutwindow.h"
+#include "gui/magic.h"
 #include "gui/menuwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
@@ -118,6 +119,7 @@ InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
+MagicDialog *magicDialog;
 //NewSkillDialog *newSkillWindow;
 Setup* setupWindow;
 Minimap *minimap;
@@ -204,6 +206,7 @@ void createGuiWindows()
     npcTextDialog = new NpcTextDialog();
     npcListDialog = new NpcListDialog();
     skillDialog = new SkillDialog();
+    magicDialog = new MagicDialog();
     //newSkillWindow = new NewSkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
@@ -252,6 +255,7 @@ void destroyGuiWindows()
     delete npcListDialog;
     delete npcTextDialog;
     delete skillDialog;
+    delete magicDialog;
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
@@ -640,6 +644,7 @@ void Game::handleInput()
                             statusWindow->setVisible(false);
                             inventoryWindow->setVisible(false);
                             skillDialog->setVisible(false);
+                            magicDialog->setVisible(false);
                             setupWindow->setVisible(false);
                             equipmentWindow->setVisible(false);
                             helpWindow->setVisible(false);
@@ -796,19 +801,19 @@ void Game::handleInput()
 
         // First if player is pressing key for the direction he is already going
         if (direction == player_node->getWalkingDir())
-        {  
+        {
             player_node->setWalkingDir(direction);
-        } 
-        // Else if he is pressing a key, and its different from what he has 
-        // been pressing, stop (do not send this stop to the server) and 
+        }
+        // Else if he is pressing a key, and its different from what he has
+        // been pressing, stop (do not send this stop to the server) and
         // start in the new direction
-        else if (direction && direction != player_node->getWalkingDir()) 
+        else if (direction && direction != player_node->getWalkingDir())
         {
             player_node->stopWalking(false);
             player_node->setWalkingDir(direction);
         }
-        // Else, he is not pressing a key, stop (sending to server) 
-        else 
+        // Else, he is not pressing a key, stop (sending to server)
+        else
         {
             player_node->stopWalking(true);
         }
