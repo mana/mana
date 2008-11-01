@@ -6,6 +6,8 @@
 	* src/localplayer.cpp, src/localplayer.h,
 	src/net/gameserver/player.cpp, src/net/gameserver/player.h,
 	src/net/protocol.h: Added netcode for using special actions.
+	* src/CMakeLists.txt, src/Makefile.am, tmw.cbp: Updated project
+	files.
 
 2008-11-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -256,6 +256,10 @@
 		<Unit filename="src/gui/login.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/magic.cpp" />
+		<Unit filename="src/gui/magic.h">
+			<Option target="default" />
+		</Unit>
 		<Unit filename="src/gui/menuwindow.cpp" />
 		<Unit filename="src/gui/menuwindow.h">
 			<Option target="default" />

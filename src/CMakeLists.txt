@@ -128,6 +128,8 @@ SET(SRCS
     gui/listbox.h
     gui/login.cpp
     gui/login.h
+    gui/magic.cpp
+    gui/magic.h
     gui/menuwindow.cpp
     gui/menuwindow.h
     gui/minimap.cpp
