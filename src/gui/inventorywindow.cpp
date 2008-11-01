@@ -27,8 +27,6 @@
 
 #include <guichan/mouseinput.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "gui.h"
 #include "item_amount.h"
@@ -63,13 +61,21 @@ InventoryWindow::InventoryWindow():
     mInvenScroll = new ScrollArea(mItems);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mItemNameLabel = new gcn::Label("Name:");
-    mItemDescriptionLabel = new gcn::Label("Description:");
-    mItemEffectLabel = new gcn::Label("Effect:");
-    mWeightLabel = new gcn::Label("Total Weight: - Maximum Weight: ");
+    mTotalWeight = toString(player_node->mTotalWeight);
+    mMaxWeight = toString(player_node->mMaxWeight);
+
+    mItemName = "Name:";
+    mItemNameLabel = new TextBox();
+    mItemDescription = "Description:";
+    mItemDescriptionLabel = new TextBox();
+    mItemEffect = "Effect:";
+    mItemEffectLabel = new TextBox();
+    mWeight = "Total Weight: " + mTotalWeight + " g - " +
+              "Maximum Weight: " + mMaxWeight + " g";
+    mWeightLabel = new TextBox();
     mWeightLabel->setPosition(8, 8);
-    mInvenScroll->setPosition(8,
-            mWeightLabel->getY() + mWeightLabel->getHeight() + 5);
+
+    draw();
 
     add(mUseButton);
     add(mDropButton);
@@ -92,10 +98,18 @@ void InventoryWindow::logic()
     // redesign of InventoryWindow and ItemContainer probably.
     updateButtons();
 
-    // Update weight information
-    mWeightLabel->setCaption(
-        "Total Weight: " + toString(player_node->mTotalWeight) + " g - " +
-        "Maximum Weight: " + toString(player_node->mMaxWeight) + " g");
+    if ((mMaxWeight != toString(player_node->mMaxWeight)) ||
+         mTotalWeight != toString(player_node->mTotalWeight))
+    {
+        mTotalWeight = toString(player_node->mTotalWeight);
+        mMaxWeight = toString(player_node->mMaxWeight);
+
+        // Adjust widgets
+        mWeight = "Total Weight: " + mTotalWeight + " g - " +
+                  "Maximum Weight: " + mMaxWeight + " g";
+
+        draw();
+    }
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -137,21 +151,25 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
     // Update name, effect and description
     if (!item)
     {
-        mItemNameLabel->setCaption("Name:");
-        mItemEffectLabel->setCaption("Effect:");
-        mItemDescriptionLabel->setCaption("Description:");
+        mItemName = "Name:";
+        mItemNameLabel->setTextWrapped(mItemName);
+        mItemEffect = "Effect:";
+        mItemEffectLabel->setTextWrapped(mItemEffect);
+        mItemDescription = "Description:";
+        mItemDescriptionLabel->setTextWrapped(mItemDescription);
     }
     else
     {
         const ItemInfo& itemInfo = item->getInfo();
-        std::string SomeText;
-        SomeText = "Name: " + itemInfo.getName();
-        mItemNameLabel->setCaption(SomeText);
-        SomeText = "Effect: " + itemInfo.getEffect();
-        mItemEffectLabel->setCaption(SomeText);
-        SomeText = "Description: " + itemInfo.getDescription();
-        mItemDescriptionLabel->setCaption(SomeText);
+        mItemName = "Name: " + itemInfo.getName();
+        mItemNameLabel->setTextWrapped(mItemName);
+        mItemEffect = "Effect: " + itemInfo.getEffect();
+        mItemEffectLabel->setTextWrapped(mItemEffect);
+        mItemDescription = "Description: " + itemInfo.getDescription();
+        mItemDescriptionLabel->setTextWrapped(mItemDescription);
     }
+
+    draw();
 }
 
 void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
@@ -173,36 +191,54 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
-void InventoryWindow::widgetResized(const gcn::Event &event)
+void InventoryWindow::draw()
 {
-    Window::widgetResized(event);
-
     const gcn::Rectangle &area = getChildrenArea();
     const int width = area.width;
     const int height = area.height;
 
-    // Adjust widgets
+    // Update weight information
+    mWeightLabel->setTextWrapped(mWeight);
+    mWeightLabel->setMinWidth(width - 16);
+    mWeightLabel->setWidth(width - 16);
+
     mUseButton->setPosition(8, height - 8 - mUseButton->getHeight());
     mDropButton->setPosition(8 + mUseButton->getWidth() + 5,
             mUseButton->getY());
 
+    mItemNameLabel->setMinWidth(width - 16);
+    mItemNameLabel->setTextWrapped(mItemName);
     mItemNameLabel->setDimension(gcn::Rectangle(8,
-            mUseButton->getY() - 5 - mItemNameLabel->getHeight(),
+            mUseButton->getY() - 5 - (mItemNameLabel->getNumberOfRows()*15),
             width - 16,
-            mItemNameLabel->getHeight()));
+            (mItemNameLabel->getNumberOfRows()*15)));
+    mItemEffectLabel->setMinWidth(width - 16);
+    mItemEffectLabel->setTextWrapped(mItemEffect);
     mItemEffectLabel->setDimension(gcn::Rectangle(8,
-            mItemNameLabel->getY() - 5 - mItemEffectLabel->getHeight(),
+            mItemNameLabel->getY() - 5 - (mItemEffectLabel->getNumberOfRows()*15),
             width - 16,
-            mItemEffectLabel->getHeight()));
+            (mItemEffectLabel->getNumberOfRows()*15)));
+    mItemDescriptionLabel->setMinWidth(width - 16);
+    mItemDescriptionLabel->setTextWrapped(mItemDescription);
     mItemDescriptionLabel->setDimension(gcn::Rectangle(8,
-            mItemEffectLabel->getY() - 5 - mItemDescriptionLabel->getHeight(),
+            mItemEffectLabel->getY() - 5 - (mItemDescriptionLabel->getNumberOfRows()*15),
             width - 16,
-            mItemDescriptionLabel->getHeight()));
+            (mItemDescriptionLabel->getNumberOfRows()*15)));
 
     mInvenScroll->setSize(width - 16,
-            mItemDescriptionLabel->getY() - mWeightLabel->getHeight() - 18);
+            mItemDescriptionLabel->getY() - (mWeightLabel->getNumberOfRows()*15) - 18);
+    mInvenScroll->setPosition(8, (mWeightLabel->getNumberOfRows()*15) + 10);
 
-    mWeightLabel->setWidth(width - 16);
+    setMinHeight(130 + (mWeightLabel->getNumberOfRows()*15) + 
+                       (mItemDescriptionLabel->getNumberOfRows()*15) +
+                       (mItemEffectLabel->getNumberOfRows()*15) +
+                       (mItemNameLabel->getNumberOfRows()*15));
+}
+
+void InventoryWindow::widgetResized(const gcn::Event &event)
+{
+    Window::widgetResized(event);
+    draw();
 }
 
 void InventoryWindow::updateButtons()

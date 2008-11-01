@@ -27,6 +27,7 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
+#include "textbox.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
@@ -71,6 +72,11 @@ class InventoryWindow : public Window, gcn::ActionListener,
         void mouseClicked(gcn::MouseEvent &event);
 
         /**
+         * Updates window drawing.
+         */
+        void draw();
+
+        /**
          * Called whenever the widget changes size.
          */
         void widgetResized(const gcn::Event &event);
@@ -80,12 +86,18 @@ class InventoryWindow : public Window, gcn::ActionListener,
 
         ItemContainer *mItems;
 
+        std::string mItemName;
+        std::string mItemDescription;
+        std::string mItemEffect;
+        std::string mWeight;
+        std::string mTotalWeight;
+        std::string mMaxWeight;
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
-        gcn::Label *mItemNameLabel;
-        gcn::Label *mItemDescriptionLabel;
-        gcn::Label *mItemEffectLabel;
-        gcn::Label *mWeightLabel;
+        TextBox *mItemNameLabel;
+        TextBox *mItemDescriptionLabel;
+        TextBox *mItemEffectLabel;
+        TextBox *mWeightLabel;
 };
 
 extern InventoryWindow *inventoryWindow;
