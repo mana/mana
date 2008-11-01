@@ -661,11 +661,11 @@ void Game::handleInput()
 
             // Keys pressed together with Alt/Meta
             // Emotions and some internal gui windows
-            #ifndef __APPLE__
+#ifndef __APPLE__
             if (event.key.keysym.mod & KMOD_LALT)
-            #else
+#else
             if (event.key.keysym.mod & KMOD_LMETA)
-            #endif
+#endif
             {
                 switch (event.key.keysym.sym)
                 {

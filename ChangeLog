@@ -569,6 +569,9 @@
 	src/net/guildhandler.cpp, src/net/chathandler.cpp, src/Makefile.am,
 	tmw.cbp: Fixed numerous crashes with chat and guild windows using new
 	tabbed area.
+	* src/game.cpp, src/openglgraphics.cpp: Mac now uses Apple key for
+	emoticons, so alt can be used for alternate characters. Disable vsync
+	on mac.
 
 2008-04-17  David Athay  <ko2fan@gmail.com>
 
