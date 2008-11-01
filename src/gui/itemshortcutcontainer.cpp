@@ -76,6 +76,8 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
     Graphics *g = static_cast<Graphics*>(graphics);
 
+    graphics->setFont(getFont());
+
     for (int i = 0; i < mMaxItems; i++)
     {
         const int itemX = (i % mGridWidth) * mBoxWidth;
@@ -149,6 +151,8 @@ ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
             if (index == -1) {
                 return;
             }
+            if (itemShortcut->getItem(index) < 0)
+                return;
             Item *item = player_node->searchForItem(itemShortcut->getItem(index));
             if (item)
             {

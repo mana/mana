@@ -306,14 +306,7 @@ bool Window::isSticky()
 
 void Window::setVisible(bool visible)
 {
-    if (isSticky())
-    {
-        gcn::Window::setVisible(true);
-    }
-    else
-    {
-        gcn::Window::setVisible(visible);
-    }
+    gcn::Window::setVisible(isSticky() || visible);
 }
 
 void Window::scheduleDelete()
@@ -576,24 +569,22 @@ void Window::setGuiAlpha()
     mAlphaChanged = false;
 }
 
-void Window::loadSkin(const std::string filename)
+void Window::loadSkin(const std::string &fileName)
 {
-	const std::string windowId = Window::getId();
+    ResourceManager *resman = ResourceManager::getInstance();
 
-	ResourceManager *resman = ResourceManager::getInstance();
-
-    logger->log("Loading Window Skin '%s'.", filename.c_str());
-	logger->log("Loading Window ID '%d'.", windowId.c_str());
+    logger->log("Loading Window Skin '%s'.", fileName.c_str());
+    logger->log("Loading Window ID '%s'.", Window::getId().c_str());
 
 
-    if(filename == "")
+    if (fileName == "")
         logger->error("Window::loadSkin(): Invalid File Name.");
 
     // TODO:
     // If there is an error loading the specified file, we should try to revert
     // to a 'default' skin file. Only if the 'default' skin file can't be loaded
     // should we have a terminating error.
-    XML::Document doc(filename);
+    XML::Document doc(fileName);
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))

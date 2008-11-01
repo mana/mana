@@ -110,7 +110,7 @@ class ChatWindow : public Window,
         /**
          * Checks whether ChatWindow is Focused or not.
          */
-        bool isFocused();
+        bool isInputFocused();
 
         /**
          * Determines whether the message is a command or message, then

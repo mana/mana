@@ -197,8 +197,10 @@ Item* LocalPlayer::searchForItem(int itemId)
 {
     for (int i = 0; i < INVENTORY_SIZE; i++)
     {
-        if (itemId == mInventory->getItem(i)->getId()) {
-            return mInventory->getItem(i);
+        if (Item *item = mInventory->getItem(i)) {
+            if (item->getId() == itemId) {
+                return item;
+            }
         }
     }
     return NULL;

@@ -87,9 +87,9 @@ public:
     void updateTab();
 
     /**
-     * Check if the window is in focus
+     * Check if the window is in focus.
      */
-    bool isFocused();
+    bool isWindowFocused();
 
     /**
      * Create a dialog for accepting an invite

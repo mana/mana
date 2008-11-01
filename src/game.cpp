@@ -516,14 +516,14 @@ void Game::handleInput()
                 case SDLK_F5: requestedWindow = skillDialog; break;
                 case SDLK_F6: requestedWindow = minimap; break;
                 case SDLK_F7: requestedWindow = chatWindow; break;
-                //case SDLK_F8: requestedWindow = buddyWindow; break;
+                case SDLK_F8: requestedWindow = itemShortcutWindow; break;
                 case SDLK_F9: requestedWindow = setupWindow; break;
                 case SDLK_F10: requestedWindow = debugWindow; break;
                 //case SDLK_F11: requestedWindow = newSkillWindow; break;
 
                 case SDLK_RETURN:
                     // Input chat window
-                    if (chatWindow->isFocused() ||
+                    if (chatWindow->isInputFocused() ||
                         deathNotice != NULL ||
                         weightNotice != NULL)
                     {
@@ -572,7 +572,8 @@ void Game::handleInput()
                     break;
             }
 
-            if (keyboard.isEnabled() && !chatWindow->isFocused() && !guildWindow->isFocused())
+            if (keyboard.isEnabled() && !chatWindow->isInputFocused()
+                    && !guildWindow->isWindowFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
                 // Checks if any item shortcut is pressed.
@@ -634,7 +635,7 @@ void Game::handleInput()
 
                     case KeyboardConfig::KEY_HIDE_WINDOWS:
                          // Hide certain windows
-                        if (!chatWindow->isFocused())
+                        if (!chatWindow->isInputFocused())
                         {
                             statusWindow->setVisible(false);
                             inventoryWindow->setVisible(false);
@@ -759,7 +760,7 @@ void Game::handleInput()
     }
     // Moving player around
     if (player_node->mAction != Being::DEAD &&
-        !chatWindow->isFocused())
+        !chatWindow->isInputFocused())
     {
         // Get the state of the keyboard keys
         keyboard.refreshActiveKeys();

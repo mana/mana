@@ -37,21 +37,15 @@ GCContainer::~GCContainer()
     mDeathList.clear();
 }
 
-void GCContainer::add(gcn::Widget *w, bool delChild)
+void GCContainer::add(gcn::Widget *w)
 {
-    if (delChild) {
-        mDeathList.push_back(w);
-    }
-
+    mDeathList.push_back(w);
     Container::add(w);
 }
 
-void GCContainer::add(gcn::Widget *w, int x, int y, bool delChild)
+void GCContainer::add(gcn::Widget *w, int x, int y)
 {
-    if (delChild) {
-        mDeathList.push_back(w);
-    }
-
+    mDeathList.push_back(w);
     Container::add(w, x, y);
 }
 

@@ -208,7 +208,7 @@ void GuildWindow::setTab(const std::string &guildName)
     mGuildButton[2]->setEnabled(true);
 }
 
-bool GuildWindow::isFocused()
+bool GuildWindow::isWindowFocused()
 {
     return mFocus;
 }

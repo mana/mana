@@ -456,6 +456,16 @@
 	as messages from server. Made messages from unknown beings display as
 	from "Unknown" instead of "John Doe".
 
+2008-05-08  Dennis Friis  <peavey@placid.dk>
+
+	* src/game.cpp: Make F8 toggle shortcut window as suggested by And1
+	and fate.
+
+2008-05-06  Dennis Friis  <peavey@placid.dk>
+
+	* src/gui/itemshortcutcontainer.cpp: Dont allow dragging of empty
+	placeholders.
+
 2008-05-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/chat.h, src/gui/chat.cpp: Only update the size of chat
@@ -463,6 +473,19 @@
 
 2008-04-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/game.cpp, src/gui/chat.h, src/gui/chat.cpp: Fixed issue with
+	determining whether chat input is focused (method no longer virtual).
+	* src/gui/itemshortcutcontainer.cpp: Fixed sometimes rendering with
+	the wrong font.
+	* src/gui/window.h, src/gui/window.cpp: Fixed warnings about hiding
+	virtual method, Window now always deletes its children (the option not
+	to do so was never used anyway).
+	* src/gui/gccontainer.h, src/gui/gccontainer.cpp: Removed unused
+	option from GCContainer to not delete a child, fixing warnings about
+	hiding virtual method gcn::Container::add.
+	* src/log.h, src/resources/imageset.cpp: When compiling with GCC, use
+	the printf format attribute for the log method so that the compiler
+	checks the type of its parameters.
 	* src/localplayer.cpp, src/gui/changeemaildialog.h, src/localplayer.h:
 	Name structs with capital, just like classes.
 

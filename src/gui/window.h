@@ -251,10 +251,10 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         ContainerPlacer getPlacer(int x, int y);
 
-		/**
-		 * Loads a window skin
-		 */
-        void loadSkin(const std::string filename);
+        /**
+         * Loads a window skin
+         */
+        void loadSkin(const std::string &fileName);
 
     private:
         /**

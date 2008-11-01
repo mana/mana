@@ -52,7 +52,7 @@ ImageSet::get(size_type i) const
 {
     if (i >= mImages.size())
     {
-        logger->log("Warning: Sprite #%i does not exist in this image set", i);
+        logger->log("Warning: No sprite %d in this image set", (int) i);
         return NULL;
     }
     else
