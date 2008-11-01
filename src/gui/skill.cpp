@@ -81,13 +81,21 @@ public:
     virtual void
     update(void)
     {
+        static const SkillInfo fakeSkillInfo = { "Mystery Skill", false };
+
         mEntriesNr = mDialog->getSkills().size();
         resize();
 
         for (int i = 0; i < mEntriesNr; i++) {
             SKILL *skill = mDialog->getSkills()[i];
-            SkillInfo *info = &skill_db[skill->id];
+            SkillInfo const *info;
             char tmp[128];
+
+            if (skill->id >= 0
+                && (unsigned int) skill->id < skill_db.size())
+                info = &skill_db[skill->id];
+            else
+                info = &fakeSkillInfo;
 
             sprintf(tmp, "%c%s", info->modifiable? ' ' : '*', info->name.c_str());
             gcn::Label *name_label = new gcn::Label(std::string(tmp));
@@ -189,9 +197,19 @@ void SkillDialog::update()
 
     int selectedSkill = mTable.getSelectedRow();
 
-    mIncButton->setEnabled(selectedSkill > -1
-                           && skill_db[mSkillList[selectedSkill]->id].modifiable
-                           && player_node->mSkillPoint > 0);
+    if (selectedSkill >= 0) {
+        int skillId = mSkillList[selectedSkill]->id;
+        bool modifiable;
+
+        if (skillId >= 0 && (unsigned int) skillId < skill_db.size())
+            modifiable = skill_db[skillId].modifiable;
+        else
+            modifiable = false;
+
+        mIncButton->setEnabled(modifiable
+                               && player_node->mSkillPoint > 0);
+    } else
+        mIncButton->setEnabled(false);
 
     mTableModel->update();
 }

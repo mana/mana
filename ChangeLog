@@ -1,5 +1,8 @@
 2008-11-01  Fate  <fate.tmw@googlemail.com>
 
+	* src/gui/skill.cpp (class SkillGuiTableModel): Report unmapped
+	skill names as `Mystery Skill' (rather than random garbage)
+
 	* src/being.cpp (initializeHair): Read hair colours from external
 	`hair.xml' file (clientdata)
 	(initializeHair): Auto-detect number of hair colours
