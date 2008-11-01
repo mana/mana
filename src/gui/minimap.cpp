@@ -35,6 +35,7 @@ Minimap::Minimap():
     mMapImage(NULL),
     mProportion(0.5)
 {
+    setCloseButton(true);
     setWindowName("MiniMap");
 }
 
