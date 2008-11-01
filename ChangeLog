@@ -1,5 +1,9 @@
 2008-11-01  Fate  <fate.tmw@googlemail.com>
 
+	* src/being.cpp (initializeHair): Read hair colours from external
+	`hair.xml' file (clientdata)
+	(initializeHair): Auto-detect number of hair colours
+
 	* src/gui/skill.cpp (SkillDialog): Display skills using a table
 	and using an external `skills.xml' file
 	(SkillDialog::update): No longer segfault when skills beyond 199

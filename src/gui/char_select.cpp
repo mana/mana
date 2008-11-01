@@ -256,7 +256,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
 {
     mPlayer = new Player(0, 0, NULL);
     mPlayer->setGender(gender);
-    mPlayer->setHairStyle(rand() % NR_HAIR_STYLES, rand() % NR_HAIR_COLORS);
+    mPlayer->setHairStyle(rand() % Being::getHairStylesNr(), rand() % Being::getHairColorsNr());
 
     mNameField = new TextField("");
     mNameLabel = new gcn::Label("Name:");
@@ -340,13 +340,13 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
         mPlayer->setHairStyle(-1, mPlayer->getHairColor() + 1);
     }
     else if (event.getId() == "prevcolor") {
-        mPlayer->setHairStyle(-1, mPlayer->getHairColor() + NR_HAIR_COLORS - 1);
+        mPlayer->setHairStyle(-1, mPlayer->getHairColor() + Being::getHairColorsNr() - 1);
     }
     else if (event.getId() == "nextstyle") {
         mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, -1);
     }
     else if (event.getId() == "prevstyle") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + NR_HAIR_STYLES - 1, -1);
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + Being::getHairStylesNr() - 1, -1);
     }
 }
 

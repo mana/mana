@@ -34,9 +34,6 @@
 #include "map.h"
 #include "animatedsprite.h"
 
-#define NR_HAIR_STYLES 8
-#define NR_HAIR_COLORS 10
-
 #define FIRST_IGNORE_EMOTE 14
 
 class AnimatedSprite;
@@ -369,6 +366,13 @@ class Being : public Sprite
         triggerEffect(int effectId) { internalTriggerEffect(effectId, false, true); }
 
         const std::auto_ptr<Equipment> mEquipment;
+
+
+        static int getHairColorsNr(void);
+
+        static int getHairStylesNr(void);
+
+        static std::string getHairColor(int index);
 
     protected:
         /**

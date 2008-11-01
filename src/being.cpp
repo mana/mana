@@ -36,6 +36,7 @@
 #include "localplayer.h"
 #include "text.h"
 
+#include "resources/itemdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
 #include "resources/iteminfo.h"
@@ -48,6 +49,7 @@
 #include "utils/xml.h"
 
 #define BEING_EFFECTS_FILE "effects.xml"
+#define HAIR_FILE "hair.xml"
 
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
@@ -145,8 +147,8 @@ Being::setPath(const Path &path)
 void
 Being::setHairStyle(int style, int color)
 {
-    mHairStyle = style < 0 ? mHairStyle : style % NR_HAIR_STYLES;
-    mHairColor = color < 0 ? mHairColor : color % NR_HAIR_COLORS;
+    mHairStyle = style < 0 ? mHairStyle : style % getHairStylesNr();
+    mHairColor = color < 0 ? mHairColor : color % getHairColorsNr();
 }
 
 void
@@ -304,7 +306,7 @@ Being::setDirection(Uint8 direction)
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL)
+       if (mSprites[i] != NULL)
             mSprites[i]->setDirection(dir);
     }
 }
@@ -516,7 +518,6 @@ Being::getHeight() const
 }
 
 
-
 struct EffectDescription {
     std::string mGFXEffect;
     std::string mSFXEffect;
@@ -608,4 +609,90 @@ Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
     if (sfx && ed->mSFXEffect != "") {
         sound.playSfx(ed->mSFXEffect);
     }
+}
+
+
+
+
+static int hairStylesNr;
+static int hairColorsNr;
+static std::vector<std::string> hairColors;
+
+static void
+initializeHair(void);
+
+int
+Being::getHairStylesNr(void)
+{
+    initializeHair();
+    return hairStylesNr;
+}
+
+int
+Being::getHairColorsNr(void)
+{
+    initializeHair();
+    return hairColorsNr;
+}
+
+std::string
+Being::getHairColor(int index)
+{
+    initializeHair();
+    if (index < 0 || index >= hairColorsNr)
+        return "#000000";
+
+    return hairColors[index];
+}
+
+static bool hairInitialized = false;
+
+static void
+initializeHair(void)
+{
+    if (hairInitialized)
+        return;
+
+    // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
+    int hairstylesCtr = -1;
+    while (ItemDB::get(hairstylesCtr).getSprite(0) != "error.xml")
+        --hairstylesCtr;
+
+    hairStylesNr = -hairstylesCtr; // done.
+    if (hairStylesNr == 0)
+        hairStylesNr = 1; // No hair style -> no hair
+
+    hairColorsNr = 0;
+
+    XML::Document doc(HAIR_FILE);
+    xmlNodePtr root = doc.rootNode();
+
+    if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
+    {
+        logger->log("Error loading being hair configuration file");
+    } else {
+        for_each_xml_child_node(node, root)
+        {
+            if (xmlStrEqual(node->name, BAD_CAST "color"))
+            {
+                int index = atoi(XML::getProperty(node, "id", "-1").c_str());
+                std::string value = XML::getProperty(node, "value", "");
+
+                if (index >= 0 && value != "") {
+                    if (index >= hairColorsNr) {
+                        hairColorsNr = index + 1;
+                        hairColors.resize(hairColorsNr, "#000000");
+                    }
+                    hairColors[index] = value;
+                }
+            }
+        }
+    } // done initializing
+
+    if (hairColorsNr == 0) { // No colours -> black only
+        hairColorsNr = 1;
+        hairColors.resize(hairColorsNr, "#000000");
+    }
+
+    hairInitialized = 1;
 }
