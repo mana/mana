@@ -493,6 +493,14 @@
 	* src/game.cpp, src/gui/partywindow.h, src/gui/partywindow.cpp,
 	tmw.cbp: Added party window, updated codeblocks project file.
 
+2008-04-24  Dennis Friis  <peavey@placid.dk>
+
+	* src/itemshortcut.h, src/gui/itemshortcutcontainer.cpp,
+	src/gui/itemcontainer.cpp, src/net/inventoryhandler.cpp,
+	src/itemshortcut.cpp: Make shortcut container ID based instead of slot
+	based. Fixes items shifting around often causing equipment to be lost.
+	* data/help/commands.txt: Document anti-trade function.
+
 2008-04-23  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/guildwindow.h, src/net/partyhandler.h,

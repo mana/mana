@@ -32,12 +32,13 @@
 ItemShortcut::ItemShortcut *itemShortcut;
 
 ItemShortcut::ItemShortcut():
-    mItemSelected(NULL)
+    mItemSelected(-1)
 {
     for (int i = 0; i < SHORTCUT_ITEMS; i++)
     {
-        mItems[i] = NULL;
+        mItems[i] = -1;
     }
+    load();
 }
 
 ItemShortcut::~ItemShortcut()
@@ -49,15 +50,11 @@ void ItemShortcut::load()
 {
     for (int i = 0; i < SHORTCUT_ITEMS; i++)
     {
-        int itemId = (int) config.getValue("itemShortcut" + toString(i), -1);
+        int itemId = (int) config.getValue("shortcut" + toString(i), -1);
 
         if (itemId != -1)
         {
-            Item* item = player_node->searchForItem(itemId);
-            if (item)
-            {
-                mItems[i] = item;
-            }
+            mItems[i] = itemId;
         }
     }
 }
@@ -68,7 +65,7 @@ void ItemShortcut::save()
     {
         if (mItems[i])
         {
-            config.setValue("shortcut" + toString(i), mItems[i]->getId());
+            config.setValue("shortcut" + toString(i), mItems[i]);
         }
         else
         {
@@ -81,9 +78,10 @@ void ItemShortcut::useItem(int index)
 {
     if (mItems[index])
     {
-        if (mItems[index]->getQuantity()) {
+        Item *item = player_node->searchForItem(mItems[index]);
+        if (item && item->getQuantity()) {
             // TODO: Fix this (index vs. pointer mismatch)
-            //player_node->useItem(mItems[index]);
+            //player_node->useItem(item);
         }
     }
 }

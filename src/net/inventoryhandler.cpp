@@ -76,7 +76,6 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                     player_node->setInvItem(slot - 32, id, amount);
                 }
             };
-            itemShortcut->load();
             break;
     }
 }
