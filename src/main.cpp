@@ -156,6 +156,12 @@ void initHomeDir()
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
+#elif defined __APPLE__
+    // Use Application Directory instead of .tmw
+    homeDir = std::string(PHYSFS_getUserDir()) + 
+        "/Library/Application Support/The Mana World";
+    if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
+            (errno != EEXIST))
 #else
     // Checking if /home/user/.tmw folder exists.
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&

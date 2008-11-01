@@ -436,10 +436,10 @@ void Being::setDirection(Uint8 direction)
     SpriteDirection dir;
     if (mFaceDirection & UP)
         dir = DIRECTION_UP;
-    else if (mFaceDirection & RIGHT)
-        dir = DIRECTION_RIGHT;
     else if (mFaceDirection & DOWN)
         dir = DIRECTION_DOWN;
+    else if (mFaceDirection & RIGHT)
+        dir = DIRECTION_RIGHT;
     else
         dir = DIRECTION_LEFT;
     mSpriteDirection = dir;
