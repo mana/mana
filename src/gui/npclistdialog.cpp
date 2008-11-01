@@ -34,10 +34,15 @@
 NpcListDialog::NpcListDialog():
     Window(_("NPC"))
 {
+    setResizable(true);
+
+    setMinWidth(200);
+    setMinHeight(150);
+
     mItemList = new ListBox(this);
-    ScrollArea *scrollArea = new ScrollArea(mItemList);
-    Button *okButton = new Button(_("Ok"), "ok", this);
-    Button *cancelButton = new Button(_("Cancel"), "cancel", this);
+    scrollArea = new ScrollArea(mItemList);
+    okButton = new Button(_("OK"), "ok", this);
+    cancelButton = new Button(_("Cancel"), "cancel", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -82,6 +87,28 @@ void
 NpcListDialog::reset()
 {
     mItems.clear();
+}
+
+void NpcListDialog::widgetResized(const gcn::Event &event)
+{
+    Window::widgetResized(event);
+    draw();
+}
+
+void NpcListDialog::draw()
+{
+    const gcn::Rectangle &area = getChildrenArea();
+    const int width = area.width;
+    const int height = area.height;
+
+    scrollArea->setDimension(gcn::Rectangle(
+                5, 5, width - 10, height - 15 - okButton->getHeight()));
+    cancelButton->setPosition(
+            width - 5 - cancelButton->getWidth(),
+            height - 5 - cancelButton->getHeight());
+    okButton->setPosition(
+            cancelButton->getX() - 5 - okButton->getWidth(),
+            cancelButton->getY());
 }
 
 void
