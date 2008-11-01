@@ -405,8 +405,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            shoes = msg->readInt16();  // clothes color - "abused" as shoes
-            gloves = msg->readInt16();  // head dir - "abused" as gloves
+            msg->readInt16();  // clothes color - Aethyra-"abused" as shoes, we ignore it
+            msg->readInt16();  // head dir - Aethyra-"abused" as gloves, we ignore it
             msg->readInt32();  // guild
             msg->readInt32();  // emblem
             msg->readInt16();  // manner
@@ -419,10 +419,6 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setSprite(Being::HAT_SPRITE, headTop);
-            dstBeing->setSprite(Being::SHOE_SPRITE, shoes);
-            // Compensation for the unpatched TMW server
-            if (gloves > 10)
-                dstBeing->setSprite(Being::GLOVES_SPRITE, gloves);
             dstBeing->setSprite(Being::CAPE_SPRITE, cape);
             dstBeing->setSprite(Being::MISC1_SPRITE, misc1);
             dstBeing->setSprite(Being::MISC2_SPRITE, misc2);
@@ -447,9 +443,14 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             if (msg->getId() == SMSG_PLAYER_UPDATE_1)
             {
-                if (msg->readInt8() == 2)
-                {
-                    dstBeing->setAction(Being::SIT);
+                switch (msg->readInt8()) {
+
+                case 1: dstBeing->setAction(Being::DEAD);
+                    break;
+
+                case 2: dstBeing->setAction(Being::SIT);
+                    break;
+
                 }
             }
             else if (msg->getId() == SMSG_PLAYER_MOVE)

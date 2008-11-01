@@ -120,9 +120,14 @@ public:
      */
     virtual void fixRowHeight(int height);
 
-    virtual int getRows();
-    virtual int getColumns();
-    virtual int getRowHeight();
+    /**
+     * Resizes the table model
+     */
+    virtual void resize(void);
+
+    virtual int getRows(void);
+    virtual int getColumns(void);
+    virtual int getRowHeight(void);
     virtual int getColumnWidth(int index);
     virtual gcn::Widget *getElementAt(int row, int column);
 

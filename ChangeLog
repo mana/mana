@@ -1,3 +1,27 @@
+2008-11-01  Fate  <fate.tmw@googlemail.com>
+
+	* src/gui/skill.cpp (SkillDialog): Display skills using a table
+	and using an external `skills.xml' file
+	(SkillDialog::update): No longer segfault when skills beyond 199
+	are reported
+
+	* src/gui/table_model.cpp: Several fixes to tables and table
+	models to better handle `NULL' widgets and `NULL' models during
+	initialisation.
+
+	* src/main.cpp (charLogin): Send client protocol version to
+	character server (this is ignored in vanilla eAthena).
+
+	* src/net/network.h (TMW_CLIENT_PROTOCOL_VERSION): Record client
+	protocol version
+
+	* src/net/beinghandler.cpp (BeingHandler::handleMessage): Properly
+	decode whether character is dead
+	(BeingHandler::handleMessage): for SMSG_PLAYER_MOVE et al., ignore
+	shoe and glove updates-- they are incorrect and not needed (we get
+	them correctly when the PC is spawned for the client and they are
+	updated as needed by other packages.)
+
 2008-10-31  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/gui.cpp: Applied patch by vargavind which adds more special

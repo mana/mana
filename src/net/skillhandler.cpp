@@ -73,6 +73,7 @@ void SkillHandler::handleMessage(MessageIn *msg)
                     }
                 }
             }
+            skillDialog->update();
             break;
 
         case SMSG_SKILL_FAILED:

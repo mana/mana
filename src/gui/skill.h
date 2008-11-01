@@ -30,6 +30,7 @@
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
+#include "table.h"
 
 #include "../guichanfwd.h"
 
@@ -38,13 +39,14 @@ struct SKILL {
     short lv, sp;
 };
 
+class SkillGuiTableModel;
+
 /**
  * The skill dialog.
  *
  * \ingroup Interface
  */
-class SkillDialog : public Window, public gcn::ActionListener,
-                    public gcn::ListModel
+class SkillDialog : public Window, public gcn::ActionListener
 {
     public:
         /**
@@ -62,15 +64,17 @@ class SkillDialog : public Window, public gcn::ActionListener,
         void update();
 
         int getNumberOfElements();
-        std::string getElementAt(int);
 
         bool hasSkill(int id);
         void addSkill(int id, int lv, int sp);
         void setSkill(int id, int lv, int sp);
         void cleanList();
 
+        const std::vector<SKILL*>& getSkills(void) const { return mSkillList; }
+
     private:
-        gcn::ListBox *mSkillListBox;
+        GuiTable mTable;//gcn::ListBox *mSkillListBox;
+        SkillGuiTableModel *mTableModel;
         gcn::Label *mPointsLabel;
         gcn::Button *mIncButton;
         gcn::Button *mUseButton;
