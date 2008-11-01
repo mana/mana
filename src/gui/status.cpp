@@ -38,7 +38,6 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mPlayer(player)
 {
     setWindowName("Status");
-    setResizable(true);
     setCloseButton(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
                    (windowContainer->getHeight() - 255) / 2, 365, 275);
