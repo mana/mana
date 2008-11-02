@@ -30,6 +30,7 @@
 #include "../utils/xml.h"
 
 #define HAIR_COLOR_FILE "colors.xml"
+#define TMW_COLOR_FILE "hair.xml"
 
 namespace
 {
@@ -47,41 +48,30 @@ void ColorDB::load()
 
     XML::Document doc(HAIR_COLOR_FILE);
     xmlNodePtr root = doc.rootNode();
+    bool TMWHair = false;
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
-        logger->log("Error loading colors file: "
-                    HAIR_COLOR_FILE);
+        logger->log("Error loading Aethyra's color, %s, trying TMW's color file, %s.", 
+                    HAIR_COLOR_FILE, TMW_COLOR_FILE);
 
-        // Provide "legacy" support for the TMW server that
-        // doesn't seperate out hair colors from the actual
-        // code. Seriously, this is freaking annoying.
-        mColors[0] = "#8c4b41,da9041,ffffff"; // light brown
-        mColors[1] = "#06372b,489e25,fdedcc"; // green
-        mColors[2] = "#5f0b33,91191c,f9ad81"; // dark red
-        mColors[3] = "#602486,934cc3,fdc689"; // purple
-        mColors[4] = "#805e74,c6b09b,ffffff"; // white
-        mColors[5] = "#8c6625,dab425,ffffff"; // yellow
-        mColors[6] = "#1d2d6d,1594a3,fdedcc"; // blue
-        mColors[7] = "#831f2d,be4f2d,f8cc8b"; // brown
-        mColors[8] = "#432482,584bbc,dae8e5"; // light blue
-        mColors[9] = "#460850,611967,e7b4ae"; // dark purple
+        TMWHair = true;
+        XML::Document doc(TMW_COLOR_FILE);
+        root = doc.rootNode();
     }
-    else
+    for_each_xml_child_node(node, root)
     {
-        for_each_xml_child_node(node, root)
+        if (xmlStrEqual(node->name, BAD_CAST "color"))
         {
-            if (xmlStrEqual(node->name, BAD_CAST "color"))
+            int id = XML::getProperty(node, "id", 0);
+
+            if (mColors.find(id) != mColors.end())
             {
-                int id = XML::getProperty(node, "id", 0);
-
-                if (mColors.find(id) != mColors.end())
-                {
-                    logger->log("ColorDB: Redefinition of dye ID %d", id);
-                }
-
-                mColors[id] = XML::getProperty(node, "dye", "");
+                logger->log("ColorDB: Redefinition of dye ID %d", id);
             }
+
+            TMWHair ? mColors[id] = XML::getProperty(node, "value", "") :
+                      mColors[id] = XML::getProperty(node, "dye", "");
         }
     }
 
