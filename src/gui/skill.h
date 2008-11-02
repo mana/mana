@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: skill.h 3494 2007-08-20 05:29:12Z joshlangley $
+ *  $Id$
  */
 
 #ifndef _TMW_SKILL_H
@@ -26,9 +26,11 @@
 
 #include <vector>
 
-#include <guichan/listmodel.hpp>
 #include <guichan/actionlistener.hpp>
+#include <guichan/listmodel.hpp>
 
+#include "scrollarea.h"
+#include "table.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
@@ -38,13 +40,14 @@ struct SKILL {
     short lv, sp;
 };
 
+class SkillGuiTableModel;
+
 /**
  * The skill dialog.
  *
  * \ingroup Interface
  */
-class SkillDialog : public Window, public gcn::ActionListener,
-                    public gcn::ListModel
+class SkillDialog : public Window, public gcn::ActionListener
 {
     public:
         /**
@@ -62,15 +65,18 @@ class SkillDialog : public Window, public gcn::ActionListener,
         void update();
 
         int getNumberOfElements();
-        std::string getElementAt(int);
 
         bool hasSkill(int id);
         void addSkill(int id, int lv, int sp);
         void setSkill(int id, int lv, int sp);
         void cleanList();
 
+        const std::vector<SKILL*>& getSkills(void) const { return mSkillList; }
+
     private:
-        gcn::ListBox *mSkillListBox;
+        GuiTable mTable;//gcn::ListBox *mSkillListBox;
+        ScrollArea *skillScrollArea;
+        SkillGuiTableModel *mTableModel;
         gcn::Label *mPointsLabel;
         gcn::Button *mIncButton;
         gcn::Button *mUseButton;

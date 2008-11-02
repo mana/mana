@@ -102,11 +102,14 @@ GuiTable::setModel(TableModel *new_model)
         mModel->removeListener(this);
     }
 
+
     mModel = new_model;
     installActionListeners();
 
-    new_model->installListener(this);
-    recomputeDimensions();
+    if (new_model) {
+        new_model->installListener(this);
+        recomputeDimensions();
+    }
 }
 
 
@@ -187,6 +190,9 @@ GuiTable::uninstallActionListeners(void)
 void
 GuiTable::installActionListeners(void)
 {
+    if (!mModel)
+        return;
+
     int rows = mModel->getRows();
     int columns = mModel->getColumns();
 
@@ -367,7 +373,7 @@ GuiTable::getWidgetAt(int x, int y)
     if (row > -1
         && column > -1) {
         gcn::Widget *w = mModel->getElementAt(row, column);
-        if (w->isFocusable())
+        if (w && w->isFocusable())
             return w;
         else
             return NULL; // Grab the event locally

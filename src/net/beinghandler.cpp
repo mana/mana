@@ -406,8 +406,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             headTop = msg->readInt16();
             headMid = msg->readInt16();
             hairColor = msg->readInt16();
-            shoes = msg->readInt16();
-            gloves = msg->readInt16();
+            msg->readInt16();  // clothes color
+            msg->readInt16();  // head direction
             msg->readInt32();  // guild
             msg->readInt32();  // emblem
             msg->readInt16();  // manner
@@ -450,9 +450,15 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             if (msg->getId() == SMSG_PLAYER_UPDATE_1)
             {
-                if (msg->readInt8() == 2)
+                switch (msg->readInt8())
                 {
-                    dstBeing->setAction(Being::SIT);
+                    case 1:
+                        dstBeing->setAction(Being::DEAD);
+                        break;
+
+                    case 2:
+                        dstBeing->setAction(Being::SIT);
+                        break;
                 }
             }
             else if (msg->getId() == SMSG_PLAYER_MOVE)

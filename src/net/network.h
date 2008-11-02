@@ -29,6 +29,10 @@
 #include <SDL_thread.h>
 #include <string>
 
+#define TMW_CLIENT_PROTOCOL_VERSION     1
+     /***< Protocol version, reported to the eAthena char and mapserver who
+	   can adjust the protocol accordingly */
+
 class MessageHandler;
 class MessageIn;
 

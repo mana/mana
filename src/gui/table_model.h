@@ -120,6 +120,11 @@ public:
      */
     virtual void fixRowHeight(int height);
 
+    /**
+     * Resizes the table model
+     */
+    virtual void resize(void);
+
     virtual int getRows();
     virtual int getColumns();
     virtual int getRowHeight();

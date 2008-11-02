@@ -71,10 +71,18 @@ StaticTableModel::~StaticTableModel(void)
 }
 
 void
+StaticTableModel::resize(void)
+{
+    mRows = getRows();
+    mColumns = getColumns();
+    mTableModel.resize(mRows * mColumns, NULL);
+}
+
+void
 StaticTableModel::set(int row, int column, gcn::Widget *widget)
 {
     if (row >= mRows || row < 0
-        || column >= mColumns || row > 0)
+        || column >= mColumns || column < 0)
         // raise exn?
         return;
 
