@@ -240,9 +240,6 @@
 		<Unit filename="src\gui\viewport.h" />
 		<Unit filename="src\gui\widgets\dropdown.cpp" />
 		<Unit filename="src\gui\widgets\dropdown.h" />
-		<Unit filename="src\gui\widgets\gettext.h" />
-		<Unit filename="src\gui\widgets\layout.cpp" />
-		<Unit filename="src\gui\widgets\layout.h" />
 		<Unit filename="src\gui\widgets\resizegrip.cpp" />
 		<Unit filename="src\gui\widgets\resizegrip.h" />
 		<Unit filename="src\gui\window.cpp" />

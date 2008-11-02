@@ -35,7 +35,7 @@
 
 #include "../utils/dtor.h"
 #include "../utils/xml.h"
-#include "log.h"
+#include "../log.h"
 
 #define SKILLS_FILE "skills.xml"
 
