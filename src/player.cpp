@@ -160,6 +160,7 @@ void Player::setGender(int gender)
 void Player::setHairStyle(int style, int color)
 {
     style = style < 0 ? mHairStyle : style % mNumberOfHairstyles;
+    color = color < 0 ? mHairColor : color % ColorDB::size();
     if (style == mHairStyle && color == mHairColor) return;
 
     Being::setHairStyle(style, color);

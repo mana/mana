@@ -160,7 +160,7 @@ void Being::setPath(const Path &path)
 void Being::setHairStyle(int style, int color)
 {
     mHairStyle = style < 0 ? mHairStyle : style % mNumberOfHairstyles;
-    mHairColor = color;
+    mHairColor = color < 0 ? mHairColor : color % ColorDB::size();
 }
 
 void Being::setSprite(int slot, int id, std::string color)
