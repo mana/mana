@@ -58,6 +58,11 @@ void ColorDB::load()
         TMWHair = true;
         XML::Document doc(TMW_COLOR_FILE);
         root = doc.rootNode();
+        if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
+        {
+            mLoaded = true;
+            return;
+        }
     }
     for_each_xml_child_node(node, root)
     {
