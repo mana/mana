@@ -276,6 +276,10 @@ void Being::setAction(Action action)
         case ATTACK:
             if (mEquippedWeapon)
             {
+                currentAction = mEquippedWeapon->getAttackType();
+            }
+            else 
+            {
                 currentAction = ACTION_ATTACK;
             }
             for (int i = 0; i < VECTOREND_SPRITE; i++)
