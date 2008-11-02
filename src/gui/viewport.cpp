@@ -381,7 +381,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = beingManager->findBeingByPixel(tilex, tiley)) &&
+        if ((being = beingManager->findBeingByPixel(pixelx, pixely)) &&
             being != player_node)
         {
             mPopupMenu->showPopup(event.getX(), event.getY(), being);

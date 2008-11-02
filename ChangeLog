@@ -1,3 +1,7 @@
+2008-11-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/viewport.cpp: Fixed right-clicking on NPCs.
+
 2008-11-01  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/game.cpp, src7gui/menuwindow.cpp, src/gui/setup.cpp,
