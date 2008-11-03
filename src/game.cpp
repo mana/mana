@@ -863,17 +863,20 @@ void Game::handleInput()
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
         {
-            Being *target = player_node->getTarget();
-
-            if (!target)
+            if (!npcTextDialog->isVisible() && !npcListDialog->isVisible())
             {
-                target = beingManager->findNearestLivingBeing(x, y, 20, Being::NPC);
-            }
+                Being *target = player_node->getTarget();
 
-            if (target)
-            {
-                if (target->getType() == Being::NPC)
-                    dynamic_cast<NPC*>(target)->talk();
+                if (!target)
+                {
+                    target = beingManager->findNearestLivingBeing(x, y, 20, Being::NPC);
+                }
+
+                if (target)
+                {
+                    if (target->getType() == Being::NPC)
+                        dynamic_cast<NPC*>(target)->talk();
+                }
             }
         }
 
