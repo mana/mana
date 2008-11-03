@@ -1,4 +1,5 @@
 data/graphics/gui/*.png usr/share/games/aethyra/data/graphics/gui
+data/graphics/gui/*.xml usr/share/games/aethyra/data/graphics/gui
 data/graphics/images/*.png usr/share/games/aethyra/data/graphics/images
 data/graphics/images/ambient/*.png usr/share/games/aethyra/data/graphics/images/ambient
 data/graphics/tiles/*.png usr/share/games/aethyra/data/graphics/tiles

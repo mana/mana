@@ -1,8 +1,8 @@
 Source: aethyra
 Section: games
 Priority: optional
-Homepage: http://www.aethyra.com/
-Maintainer: Patrick Matthäi <patrick.matthaei@web.de> (Patrick is TMW maintainer need to change this)
+Homepage: http://www.aethyra.org/
+Maintainer: Aethyra Project <www.aethyra.org>
 Build-Depends: debhelper (>= 5), dpkg-dev (>= 1.13.19), dpatch, autotools-dev, libcurl4-gnutls-dev, libgl1-mesa-dev, libguichan2-dev (>= 0.7.1), libsdl1.2-dev, libsdl-image1.2-dev, libsdl-net1.2-dev, libsdl-mixer1.2-dev, libphysfs-dev, libpng12-dev, libxml2-dev, zlib1g-dev
 Standards-Version: 3.7.3
 
@@ -10,28 +10,34 @@ Package: aethyra
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, aethyra-data (= ${source:Version})
 Recommends: aethyra-music
-Description: Aethyra is a great Online Rolegame
- based upon The Mana World 0.0 codebase. It has its own universe, and its own
- character management system, which will give you the opportunity to play in a
- 2D heroic-fantasy world forever.
+Description:  Aethyra is a community driven experiment that utilizes eAthena at its core with the end goal of 
+ getting its players as involved in the process as much as possible. It's originally forked from 
+ The Mana World when its developers came up with the idea of "Why should we have to wait for an 
+ MMORPG game in development when we've already got a great server setup here that does everything 
+ we've been promised and more?" As such, we are trying to implement as many functions of eAthena 
+ as possible while creating our own in the process based on what our players want to see.
 
 Package: aethyra-dbg
 Architecture: any
 Priority: extra
 Depends: aethyra (= ${binary:Version})
-Description: Aethyra is a great Online Rolegame (debugging symbols)
- based upon the The Mana World 0.0 codebase. It has its own universe, and its own
- character management system, which will give you the opportunity to play in a
- 2D heroic-fantasy world forever.
+Description:  Aethyra is a community driven experiment that utilizes eAthena at its core with the end goal of 
+ getting its players as involved in the process as much as possible. It's originally forked from 
+ The Mana World when its developers came up with the idea of "Why should we have to wait for an 
+ MMORPG game in development when we've already got a great server setup here that does everything 
+ we've been promised and more?" As such, we are trying to implement as many functions of eAthena 
+ as possible while creating our own in the process based on what our players want to see.
  .
- This package provides debugging symbols for the tmw package.
+ This package provides debugging symbols for the aethyra package.
 
 Package: aethyra-data
 Architecture: all
 Recommends: aethyra, aethyra-music
-Description: Aethyra is a great Online Rolegame (data files)
- based upon The Mana World 0.0 codebase. It has its own universe, and its own
- character management system, which will give you the opportunity to play in a
- 2D heroic-fantasy world forever.
+Description:  Aethyra is a community driven experiment that utilizes eAthena at its core with the end goal of 
+ getting its players as involved in the process as much as possible. It's originally forked from 
+ The Mana World when its developers came up with the idea of "Why should we have to wait for an 
+ MMORPG game in development when we've already got a great server setup here that does everything 
+ we've been promised and more?" As such, we are trying to implement as many functions of eAthena 
+ as possible while creating our own in the process based on what our players want to see.
  .
  This package contains the data files.

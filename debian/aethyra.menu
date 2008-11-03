@@ -1,4 +1,4 @@
-?package(tmw):needs="X11" section="Games/Adventure"\
- title="The Mana World"\
- description="The Mana World is an Online Fantasy adventure game."\
- command="/usr/games/tmw" icon="/usr/share/pixmaps/tmw.xpm"
+?package(aethyra):needs="X11" section="Games/Adventure"\
+ title="Aethyra"\
+ description="Aethyra is a 2D MMORPG using eAthena."\
+ command="/usr/games/aethyra" icon="/usr/share/pixmaps/aethyra.xpm"
