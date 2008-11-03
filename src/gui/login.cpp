@@ -55,8 +55,8 @@ LoginDialog::LoginDialog(LoginData *loginData):
     dfltServer.push_back("www.aethyra.org"); 
     dfltServer.push_back("www.aethyra.org");
     std::vector<std::string> dfltPort;
-    dfltPort.push_back("22001");
     dfltPort.push_back("21001");
+    dfltPort.push_back("22001");
     mServerList = new DropDownList("MostRecent00", dfltServer, dfltPort,
                                    MAX_SERVER_LIST_SIZE);
     mServerListBox = new gcn::ListBox(mServerList);
