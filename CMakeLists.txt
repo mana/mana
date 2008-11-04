@@ -1,6 +1,6 @@
 PROJECT(AETHYRA)
 
-SET(VERSION 0.0.24.1)
+SET(VERSION 0.0.27)
 
 # where to look for cmake modules
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
