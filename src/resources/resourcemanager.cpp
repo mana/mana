@@ -446,9 +446,8 @@ ResourceManager::loadTextFile(const std::string &fileName)
     std::istringstream iss(std::string(fileContents, contentsLength));
     std::string line;
 
-    while (getline(iss, line, '\n')) {
+    while (getline(iss, line))
         lines.push_back(line);
-    }
 
     free(fileContents);
     return lines;

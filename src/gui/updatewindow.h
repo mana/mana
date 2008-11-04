@@ -49,9 +49,14 @@ class UpdaterWindow : public Window, public gcn::ActionListener
 {
  public:
     /**
-     * Constructor
+     * Constructor.
+     *
+     * @param updateHost Host where to get the updated files.
+     * @param updatesDir Directory where to store updates (should be absolute
+     *                   and already created).
      */
-    UpdaterWindow();
+    UpdaterWindow(const std::string &updateHost,
+                  const std::string &updatesDir);
 
     /**
      * Destructor
@@ -124,14 +129,14 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     /** Host where we get the updated files. */
     std::string mUpdateHost;
 
+    /** Place where the updates are stored (absolute path). */
+    std::string mUpdatesDir;
+
     /** The file currently downloading. */
     std::string mCurrentFile;
 
     /** The Adler32 checksum of the file currently downloading. */
     unsigned long mCurrentChecksum;
-
-    /** Absolute path to locally save downloaded files. */
-    std::string mBasePath;
 
     /** A flag to indicate whether to use a memory buffer or a regular file. */
     bool mStoreInMemory;

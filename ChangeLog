@@ -25,9 +25,10 @@
 
 2008-10-27  Chuck Miller  <shadowmil@gmail.com>
 
-	* src/game.h, src/game.cpp, src/net/protocol.h, src/net/effecthandler.h,
-	src/net/effecthandler.cpp: Added a handler for handling effects sent
-	from the server, you'll need the latest server patch for them too work
+	* src/game.h, src/game.cpp, src/net/protocol.h,
+	src/net/effecthandler.h, src/net/effecthandler.cpp: Added a handler
+	for handling effects sent from the server, you'll need the latest
+	server patch for them too work.
 	* src/effectmanager.cpp: Removed some debugging code left in by
 	mistake.
 
@@ -391,6 +392,16 @@
 	take command parsing code out of the chat dialog.
 	* src/channel.cpp, src/channel.h: Don't store channel users, its
 	handled with packets.
+
+2008-06-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h, src/main.cpp,
+	src/resources/buddylist.cpp, src/resources/spritedef.cpp,
+	src/resources/resourcemanager.cpp: Added command line argument to
+	specify the update host (-H). Also, to avoid problems when files with
+	the same name are served by different update hosts, the updates are
+	now stored in an update host specific directory. Based on a patch by
+	Sanga.
 
 2008-06-03  Roderic Morris  <roderic@ccs.neu.edu>
 
