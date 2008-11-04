@@ -1,3 +1,9 @@
+2008-11-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp, data/graphics/gui/sansserif8.png: Applied more
+	changes by vargavind, adding the complete ISO-8859-15 character set to
+	the sans-serif font.
+
 2008-11-01  Fate  <fate.tmw@googlemail.com>
 
 	* src/gui/skill.cpp (class SkillGuiTableModel): Report unmapped
