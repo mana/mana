@@ -138,12 +138,12 @@ void LocalPlayer::logic()
         {
             attack(mTarget, true);
         }
-    }
 
-    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
-    {
-        player_node->mTargetCursorInRange[i]->update(10);
-        player_node->mTargetCursorOutRange[i]->update(10);
+        for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
+        {
+            player_node->mTargetCursorInRange[i]->update(10);
+            player_node->mTargetCursorOutRange[i]->update(10);
+        }
     }
 
     Being::logic();
@@ -480,6 +480,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     mLastAttackTime = 0;
 
     mWalkTime = tick_time;
+    mTargetTime = tick_time;
 
     setAction(ATTACK);
 
