@@ -97,13 +97,8 @@ void TextBox::setTextWrapped(const std::string &text)
                 if (minWidth > mMinWidth)
                 {
                     mMinWidth = minWidth;
-                    // This is a reaaaly ugly hack for getting the string stream
-                    // to clear itself. Don't mess with the spacer in the stream
-                    // reset, as well as removing the break. These are all there
-                    // because there are several compilers that I have tried 
-                    // that do not properly reset the string stream. 
-                    // You have been warned!
-                    wrappedStream.str(" ");
+                    wrappedStream.clear();
+                    wrappedStream.str("");
                     spacePos = 0;
                     lastNewlinePos = 0;
                     newlinePos = text.find("\n", lastNewlinePos);
