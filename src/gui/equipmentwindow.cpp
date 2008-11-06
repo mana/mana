@@ -25,7 +25,9 @@
 
 #include "../equipment.h"
 #include "../graphics.h"
+#include "../inventory.h"
 #include "../item.h"
+#include "../localplayer.h"
 #include "../log.h"
 
 #include "../resources/iteminfo.h"
@@ -40,6 +42,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     setCloseButton(true);
     setDefaultSize(5, 230, 200, 120);
     loadWindowState();
+    inventory = player_node->getInventory();
 }
 
 EquipmentWindow::~EquipmentWindow()
@@ -61,22 +64,28 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
                 36 * (i / 4) + 25, 32, 32));
 
-        if (!(item = mEquipment->getEquipment(i)))
+        if (!(item = inventory->getItem(mEquipment->getEquipment(i))))
             continue;
 
         image = item->getImage();
-        static_cast<Graphics*>(graphics)->drawImage(
-                image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
+        if (image)
+        {
+            static_cast<Graphics*>(graphics)->drawImage(
+                    image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
+        }
     }
 
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
 
-    if (!(item = mEquipment->getArrows()))
+     if (!(item = inventory->getItem(mEquipment->getArrows())))
         return;
 
     image = item->getImage();
 
-    static_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
+    if (image)
+    {
+        static_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
+    }
     graphics->drawText(toString(item->getQuantity()), 170, 62,
-            gcn::Graphics::CENTER);
+            gcn::Graphics::CENTER);   
 }

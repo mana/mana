@@ -200,7 +200,7 @@ void LocalPlayer::unequipItem(Item *item)
     outMsg.writeInt16(item->getInvIndex());
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
-    mEquipment->removeEquipment(item);
+    mEquipment->removeEquipment(item->getInvIndex());
 }
 
 void LocalPlayer::useItem(Item *item)

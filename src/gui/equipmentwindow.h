@@ -27,6 +27,7 @@
 #include "window.h"
 
 #include "../guichanfwd.h"
+#include "../inventory.h"
 
 class Equipment;
 
@@ -55,6 +56,7 @@ class EquipmentWindow : public Window
 
     private:
         Equipment *mEquipment;
+        Inventory *inventory;
 };
 
 extern EquipmentWindow *equipmentWindow;

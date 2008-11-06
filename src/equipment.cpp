@@ -21,36 +21,25 @@
  *  $Id: equipment.cpp 4347 2008-06-12 09:06:01Z b_lindeijer $
  */
 
-#include "equipment.h"
-
 #include <algorithm>
 
+#include "equipment.h"
 #include "item.h"
-#include "item.h"
+#include "inventory.h"
+#include "localplayer.h"
 
 Equipment::Equipment():
     mArrows(0)
 {
-    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, 0);
 }
 
 void
-Equipment::removeEquipment(Item *item)
+Equipment::setEquipment(int index, int inventoryIndex)
 {
-    Item **i = std::find(mEquipment, mEquipment + EQUIPMENT_SIZE, item);
-    if (i != mEquipment + EQUIPMENT_SIZE) {
-        *i = 0;
-    }
+    mEquipment[index] = inventoryIndex;
+    Item* item = player_node->getInventory()->getItem(inventoryIndex);
+    if (item)
+    	item->setEquipped(true);
 }
 
-void Equipment::removeEquipment(int index)
-{
-    if (index >= 0 && index < EQUIPMENT_SIZE)
-        mEquipment[index] = 0;
-}
-
-void Equipment::setEquipment(int index, Item *item)
-{
-    mEquipment[index] = item;
-    item->setEquipped(true);
-}

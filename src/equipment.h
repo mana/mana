@@ -24,8 +24,6 @@
 #ifndef _TMW_EQUIPMENT_H_
 #define _TMW_EQUIPMENT_H_
 
-#include <guichan/actionlistener.hpp>
-
 class Item;
 
 #define EQUIPMENT_SIZE 10
@@ -41,41 +39,36 @@ class Equipment
         /**
          * Get equipment at the given slot.
          */
-        Item* getEquipment(int index) const
+        int getEquipment(int index) const
         { return mEquipment[index]; }
 
         /**
          * Set equipment at the given slot.
          */
         void
-        setEquipment(int index, Item *item);
+        setEquipment(int index, int inventoryIndex);
 
         /**
          * Remove equipment from the given slot.
          */
         void
-        removeEquipment(int index);
-
-        /**
-         * Remove the given item from equipment.
-         */
-        void removeEquipment(Item *item);
+        removeEquipment(int index) { mEquipment[index] = 0; }
 
         /**
          * Get the item used in the arrow slot.
          */
-        Item*
+        int
         getArrows() { return mArrows; }
 
         /**
          * Set the item used in the arrow slot.
          */
         void
-        setArrows(Item *arrows) {mArrows = arrows;}
+        setArrows(int arrows) {mArrows = arrows;}
 
     private:
-        Item *mEquipment[EQUIPMENT_SIZE];
-        Item *mArrows;
+        int mEquipment[EQUIPMENT_SIZE];
+        int mArrows;
 };
 
 #endif
