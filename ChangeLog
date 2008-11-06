@@ -3,6 +3,12 @@
 	* src/game.cpp: Do not activate shortcuts if tradewindow is visible.
 	* src/equipment.cpp: Remove an extra include and arrange headers like
 	the trunk client for easier merging.
+	* src/localplayer.cpp, src/gui/equipmentwindow.cpp,
+	src/gui/equipmentwindow.h, src/equipment.h,
+	src/net/equipmenthandler.cpp, src/equipment.cpp: Have equipment tied
+	into player inventory instead of keeping its own list of pointers to
+	items. This ensures the ressource is up-to-date and avoids crashes on
+	stale item pointers.
 
 2008-11-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

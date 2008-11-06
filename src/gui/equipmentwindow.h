@@ -25,6 +25,7 @@
 #define _TMW_EQUIPMENT_H
 
 #include "window.h"
+#include "../inventory.h"
 
 class Equipment;
 
@@ -53,6 +54,7 @@ class EquipmentWindow : public Window
 
     private:
         Equipment *mEquipment;
+        Inventory *inventory;
 };
 
 extern EquipmentWindow *equipmentWindow;

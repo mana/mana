@@ -87,7 +87,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                         position++;
                     }
                     item = inventory->getItem(index);
-                    player_node->mEquipment->setEquipment(position, item);
+                    player_node->mEquipment->setEquipment(position, index);
                 }
             }
             break;
@@ -117,13 +117,13 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 position++;
             }
             logger->log("Position %i", position);
-            item = player_node->mEquipment->getEquipment(position);
+            item =  player_node->getInventory()->getItem(player_node->mEquipment->getEquipment(position));
             if (item) {
                 item->setEquipped(false);
             }
 
             item = inventory->getItem(index);
-            player_node->mEquipment->setEquipment(position, item);
+            player_node->mEquipment->setEquipment(position, index);
             break;
 
         case SMSG_PLAYER_UNEQUIP:
@@ -192,7 +192,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 break;
 
             item->setEquipped(true);
-            player_node->mEquipment->setArrows(item);
+            player_node->mEquipment->setArrows(index);
             logger->log("Arrows equipped: %i", index);
             break;
     }
