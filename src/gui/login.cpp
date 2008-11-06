@@ -51,6 +51,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     gcn::Label *passLabel = new gcn::Label("Password:");
     gcn::Label *serverLabel = new gcn::Label("Server:");
     gcn::Label *portLabel = new gcn::Label("Port:");
+    gcn::Label *dropdownLabel = new gcn::Label("Recent:");
     std::vector<std::string> dfltServer;
     dfltServer.push_back("www.aethyra.org"); 
     dfltServer.push_back("www.aethyra.org");
@@ -98,7 +99,8 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mPortField->setWidth(FIELD_WIDTH);
 
     const int DROP_DOWN_TOP = 9 + PORT_TOP + serverLabel->getHeight();
-    mServerDropDown->setPosition(5, DROP_DOWN_TOP);
+    dropdownLabel->setPosition(5, DROP_DOWN_TOP);
+    mServerDropDown->setPosition(65, DROP_DOWN_TOP);
     mServerDropDown->setWidth(FIELD_WIDTH);
 
     const int REST_TOP = LOGIN_DIALOG_HEIGHT - mCancelButton->getHeight() - 5;
@@ -132,6 +134,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     add(passLabel);
     add(serverLabel);
     add(portLabel);
+    add(dropdownLabel);
     add(mUserField);
     add(mPassField);
     add(mServerField);
