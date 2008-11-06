@@ -21,12 +21,12 @@
  *  $Id$
  */
 
-#include <algorithm>
-
 #include "equipment.h"
 #include "item.h"
 #include "inventory.h"
 #include "localplayer.h"
+
+#include <algorithm>
 
 Equipment::Equipment():
     mArrows(0)
