@@ -595,15 +595,19 @@ void Game::handleInput()
                     && !guildWindow->isWindowFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-                // Checks if any item shortcut is pressed.
-                for (int i = KeyboardConfig::KEY_SHORTCUT_0;
-                    i <= KeyboardConfig::KEY_SHORTCUT_9;
-                    i++)
+                // Do not activate shortcuts if tradewindow is visible
+                if (!tradeWindow->isVisible())
                 {
-                    if (tKey == i) {
-                        itemShortcut->useItem(
-                                i - KeyboardConfig::KEY_SHORTCUT_0);
-                        break;
+                    // Checks if any item shortcut is pressed.
+                    for (int i = KeyboardConfig::KEY_SHORTCUT_0;
+                        i <= KeyboardConfig::KEY_SHORTCUT_9;
+                        i++)
+                    {
+                        if (tKey == i && !used) {
+                            itemShortcut->useItem(
+                                    i - KeyboardConfig::KEY_SHORTCUT_0);
+                            break;
+                        }
                     }
                 }
                 switch (tKey) {
