@@ -61,7 +61,6 @@ namespace Net
             void tradeMoney(int amount);
             void tradeWithNPC(int item, int amount);
             void sendLetter(const std::string &player, const std::string &text);
-            void getLetters();
             void raiseAttribute(int attribute);
             void lowerAttribute(int attribute);
             void respawn();

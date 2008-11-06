@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2009 The Mana World Development Team
+ *  Copyright 2008 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -21,17 +21,36 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_POSTHANDLER_H
-#define _TMW_NET_POSTHANDLER_H
+#ifndef _TMW_GUI_NPCPOSTDIALOG_H
+#define _TMW_GUI_NPCPOSTDIALOG_H
 
-#include "messagehandler.h"
+#include <guichan/actionlistener.hpp>
 
-class PostHandler : public MessageHandler
+#include "window.h"
+
+class TextField;
+
+class NpcPostDialog : public Window, public gcn::ActionListener
 {
 public:
-    PostHandler();
+    /**
+     * Constructor
+     */
+    NpcPostDialog();
 
-    void handleMessage(MessageIn &msg);
+    /**
+     * Called when receiving actions from the widgets.
+     */
+    void action(const gcn::ActionEvent &event);
+
+    /**
+     * Clear the contents of the dialog
+     */
+    void clear();
+
+private:
+    TextField *mText;
+    TextField *mSender;
 };
 
 #endif

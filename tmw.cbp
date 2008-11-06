@@ -109,6 +109,8 @@
 		<Unit filename="src/configuration.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/effectmanager.cpp" />
+		<Unit filename="src/effectmanager.h" />
 		<Unit filename="src/engine.cpp" />
 		<Unit filename="src/engine.h">
 			<Option target="default" />
@@ -280,6 +282,8 @@
 		<Unit filename="src/gui/npclistdialog.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/npcpostdialog.cpp" />
+		<Unit filename="src/gui/npcpostdialog.h" />
 		<Unit filename="src/gui/ok_dialog.cpp" />
 		<Unit filename="src/gui/ok_dialog.h">
 			<Option target="default" />
@@ -538,6 +542,8 @@
 		<Unit filename="src/net/connection.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/net/effecthandler.cpp" />
+		<Unit filename="src/net/effecthandler.h" />
 		<Unit filename="src/net/gameserver/gameserver.cpp" />
 		<Unit filename="src/net/gameserver/gameserver.h">
 			<Option target="default" />

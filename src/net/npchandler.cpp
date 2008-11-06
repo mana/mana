@@ -30,15 +30,18 @@
 #include "../npc.h"
 
 #include "../gui/npclistdialog.h"
+#include "../gui/npcpostdialog.h"
 #include "../gui/npc_text.h"
 
 extern NpcListDialog *npcListDialog;
 extern NpcTextDialog *npcTextDialog;
+extern NpcPostDialog *npcPostDialog;
 
 NPCHandler::NPCHandler()
 {
     static const Uint16 _messages[] = {
         GPMSG_NPC_CHOICE,
+        GPMSG_NPC_POST,
         GPMSG_NPC_MESSAGE,
         GPMSG_NPC_ERROR,
         0
@@ -67,12 +70,19 @@ void NPCHandler::handleMessage(MessageIn &msg)
             npcListDialog->setVisible(true);
             break;
 
+        case GPMSG_NPC_POST:
+            npcTextDialog->setVisible(false);
+            npcPostDialog->clear();
+            npcPostDialog->setVisible(true);
+            break;
+
         case GPMSG_NPC_ERROR:
             current_npc = NULL;
         case GPMSG_NPC_MESSAGE:
             npcTextDialog->addText(msg.readString(msg.getUnreadLength()));
             npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);
+            npcPostDialog->setVisible(false);
             break;
     }
 }

@@ -1,3 +1,11 @@
+2008-11-06  David Athay  <ko2fan@gmail.com>
+
+	*  src/game.cpp, src/commandhandler.cpp, src/gui/npcpostdialog.cpp,
+	src/gui/npcpostdialog.h, src/CMakeLists.txt, src/net/posthandler.h,
+	src/net/protocol.h, src/net/npchandler.cpp, src/net/gameserver/player.h,
+	src/net/gameserver/player.cpp, src/net/posthandler.cpp, src/Makefile.am,
+	tmw.cbp: Added interface for sending post.
+
 2008-11-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/viewport.cpp: Fixed right-clicking on NPCs.

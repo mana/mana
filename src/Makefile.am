@@ -92,6 +92,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/newskill.h \
 	      gui/npclistdialog.cpp \
 	      gui/npclistdialog.h \
+              gui/npcpostdialog.cpp \
+              gui/npcpostdialog.h \
 	      gui/npc_text.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
@@ -201,8 +203,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/partyhandler.h \
 	      net/playerhandler.cpp \
 	      net/playerhandler.h \
-	      net/posthandler.cpp \
-	      net/posthandler.h \
 	      net/protocol.h \
 	      net/tradehandler.cpp \
 	      net/tradehandler.h \

@@ -63,6 +63,7 @@
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
 #include "gui/npclistdialog.h"
+#include "gui/npcpostdialog.h"
 #include "gui/npc_text.h"
 #include "gui/ok_dialog.h"
 #include "gui/partywindow.h"
@@ -84,7 +85,6 @@
 #include "net/network.h"
 #include "net/npchandler.h"
 #include "net/partyhandler.h"
-#include "net/posthandler.h"
 #include "net/playerhandler.h"
 #include "net/tradehandler.h"
 #include "net/effecthandler.h"
@@ -118,6 +118,7 @@ BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
+NpcPostDialog *npcPostDialog;
 SkillDialog *skillDialog;
 MagicDialog *magicDialog;
 //NewSkillDialog *newSkillWindow;
@@ -205,6 +206,7 @@ void createGuiWindows()
     inventoryWindow = new InventoryWindow();
     npcTextDialog = new NpcTextDialog();
     npcListDialog = new NpcListDialog();
+    npcPostDialog = new NpcPostDialog();
     skillDialog = new SkillDialog();
     magicDialog = new MagicDialog();
     //newSkillWindow = new NewSkillDialog();
@@ -254,6 +256,7 @@ void destroyGuiWindows()
     delete inventoryWindow;
     delete npcListDialog;
     delete npcTextDialog;
+    delete npcPostDialog;
     delete skillDialog;
     delete magicDialog;
     delete setupWindow;
@@ -280,7 +283,6 @@ Game::Game():
     mNpcHandler(new NPCHandler()),
     mPartyHandler(new PartyHandler()),
     mPlayerHandler(new PlayerHandler()),
-    mPostHandler(new PostHandler()),
     mTradeHandler(new TradeHandler()),
     mEffectHandler(new EffectHandler()),
     mLogicCounterId(0), mSecondsCounterId(0)
@@ -328,7 +330,6 @@ Game::Game():
     Net::registerHandler(mNpcHandler.get());
     Net::registerHandler(mPartyHandler.get());
     Net::registerHandler(mPlayerHandler.get());
-    Net::registerHandler(mPostHandler.get());
     Net::registerHandler(mTradeHandler.get());
     Net::registerHandler(mEffectHandler.get());
 }
@@ -498,6 +499,22 @@ void Game::handleInput()
                 keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
                 return;
             }
+
+            // send straight to gui for certain windows
+            if (npcPostDialog->isVisible())
+            {
+                try
+                {
+                    guiInput->pushInput(event);
+                }
+                catch (gcn::Exception e)
+                {
+                    const char* err = e.getMessage().c_str();
+                    logger->log("Warning: guichan input exception: %s", err);
+                }
+                return;
+            }
+
             switch (event.key.keysym.sym)
             {
                 case SDLK_F1:
@@ -535,8 +552,8 @@ void Game::handleInput()
                     }
 
                     // Don not focus chat input when quit dialog is active
-		    if(quitDialog != NULL && quitDialog->isVisible())
-			break;
+                    if(quitDialog != NULL && quitDialog->isVisible())
+                        break;
 
                     // Close the Browser if opened
                     if (helpWindow->isVisible())

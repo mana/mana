@@ -170,15 +170,9 @@ void Net::GameServer::Player::tradeWithNPC(int item, int amount)
 void Net::GameServer::Player::sendLetter(const std::string &player,
                                          const std::string &text)
 {
-    MessageOut msg(PGMSG_SEND_POST);
+    MessageOut msg(PGMSG_NPC_POST_SEND);
     msg.writeString(player);
     msg.writeString(text);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::getLetters()
-{
-    MessageOut msg(PGMSG_GET_POST);
     Net::GameServer::connection->send(msg);
 }
 
