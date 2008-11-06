@@ -54,7 +54,7 @@ class EquipmentWindow : public Window
 
     private:
         Equipment *mEquipment;
-        Inventory *inventory;
+        Inventory *mInventory;
 };
 
 extern EquipmentWindow *equipmentWindow;

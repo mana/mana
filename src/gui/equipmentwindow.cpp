@@ -42,7 +42,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     setCloseButton(true);
     setDefaultSize(5, 230, 200, 120);
     loadWindowState();
-	inventory = player_node->getInventory();
+	mInventory = player_node->getInventory();
 }
 
 EquipmentWindow::~EquipmentWindow()
@@ -64,7 +64,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
                 36 * (i / 4) + 25, 32, 32));
 
-        if (!(item = inventory->getItem(mEquipment->getEquipment(i))))
+        if (!(item = mInventory->getItem(mEquipment->getEquipment(i))))
             continue;
 
         image = item->getImage();
@@ -77,7 +77,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
 
-    if (!(item = inventory->getItem(mEquipment->getArrows())))
+    if (!(item = mInventory->getItem(mEquipment->getArrows())))
         return;
 
     image = item->getImage();
