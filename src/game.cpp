@@ -672,97 +672,101 @@ void Game::handleInput()
         if (keyboard.isEnabled() && !chatWindow->isInputFocused())
         {
             const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-            // Checks if any item shortcut is pressed.
-            for (int i = KeyboardConfig::KEY_SHORTCUT_0;
-                i <= KeyboardConfig::KEY_SHORTCUT_9;
-                i++)
+
+            // Do not activate shortcuts if tradewindow is visible
+            if (!tradeWindow->isVisible())
             {
-                if (tKey == i && !used) {
-                    itemShortcut->useItem(i - KeyboardConfig::KEY_SHORTCUT_0);
-                    break;
-            }
-        }
-        switch (tKey) {
-            case KeyboardConfig::KEY_PICKUP:
-            {
-                FloorItem *item = floorItemManager->findByCoordinates(
-                                  player_node->mX, player_node->mY);
-
-                // If none below the player, try the tile in front
-                // of the player
-                if (!item) {
-                    Uint16 x = player_node->mX;
-                    Uint16 y = player_node->mY;
-                    switch (player_node->getSpriteDirection())
-                    {
-                        case DIRECTION_UP   : --y; break;
-                        case DIRECTION_DOWN : ++y; break;
-                        case DIRECTION_LEFT : --x; break;
-                        case DIRECTION_RIGHT: ++x; break;
-                        default: break;
-                    }
-                    item = floorItemManager->findByCoordinates(x, y);
-                }
-
-                if (item)
-                    player_node->pickUp(item);
-
-                used = true;
-            }
-            break;
-            case KeyboardConfig::KEY_SIT:
-                // Player sit action
-                player_node->toggleSit();
-                used = true;
-                break;
-            case KeyboardConfig::KEY_HIDE_WINDOWS:
-                // Hide certain windows
-                if (!chatWindow->isInputFocused())
+                // Checks if any item shortcut is pressed.
+                for (int i = KeyboardConfig::KEY_SHORTCUT_0;
+                    i <= KeyboardConfig::KEY_SHORTCUT_9;
+                    i++)
                 {
-                    statusWindow->setVisible(false);
-                    inventoryWindow->setVisible(false);
-                    skillDialog->setVisible(false);
-                    setupWindow->setVisible(false);
-                    equipmentWindow->setVisible(false);
-                    helpWindow->setVisible(false);
-                    debugWindow->setVisible(false);
+                    if (tKey == i && !used) {
+                        itemShortcut->useItem(i - KeyboardConfig::KEY_SHORTCUT_0);
+                        break;
+                    }
+                }
+            }
+            switch (tKey) {
+                case KeyboardConfig::KEY_PICKUP:
+                {
+                    FloorItem *item = floorItemManager->findByCoordinates(
+                                      player_node->mX, player_node->mY);
+
+                    // If none below the player, try the tile in front
+                    // of the player
+                    if (!item) {
+                        Uint16 x = player_node->mX;
+                        Uint16 y = player_node->mY;
+                        switch (player_node->getSpriteDirection())
+                        {
+                            case DIRECTION_UP   : --y; break;
+                            case DIRECTION_DOWN : ++y; break;
+                            case DIRECTION_LEFT : --x; break;
+                            case DIRECTION_RIGHT: ++x; break;
+                            default: break;
+                        }
+                        item = floorItemManager->findByCoordinates(x, y);
+                    }
+
+                    if (item)
+                        player_node->pickUp(item);
+
+                    used = true;
                 }
                 break;
+                case KeyboardConfig::KEY_SIT:
+                   // Player sit action
+                    player_node->toggleSit();
+                    used = true;
+                    break;
+                case KeyboardConfig::KEY_HIDE_WINDOWS:
+                    // Hide certain windows
+                    if (!chatWindow->isInputFocused())
+                    {
+                        statusWindow->setVisible(false);
+                        inventoryWindow->setVisible(false);
+                        skillDialog->setVisible(false);
+                        setupWindow->setVisible(false);
+                        equipmentWindow->setVisible(false);
+                        helpWindow->setVisible(false);
+                        debugWindow->setVisible(false);
+                    }
+                    break;
+                }
             }
-        }
 
-        if (requestedWindow)
-        {
-            requestedWindow->setVisible(!requestedWindow->isVisible());
-            if (requestedWindow->isVisible())
+            if (requestedWindow)
             {
-                requestedWindow->requestMoveToTop();
+                requestedWindow->setVisible(!requestedWindow->isVisible());
+                if (requestedWindow->isVisible())
+                {
+                    requestedWindow->requestMoveToTop();
+                }
+                used = true;
             }
-            used = true;
+
         }
 
-    }
-
-    // Quit event
-    else if (event.type == SDL_QUIT)
-    {
-        done = true;
-    }
-
-    // Push input to GUI when not used
-    if (!used)
-    {
-        try
+        // Quit event
+        else if (event.type == SDL_QUIT)
         {
-            guiInput->pushInput(event);
+            done = true;
         }
-        catch (gcn::Exception e)
-        {
-            const char* err = e.getMessage().c_str();
-            logger->log("Warning: guichan input exception: %s", err);
-        }
-    }
 
+        // Push input to GUI when not used
+        if (!used)
+        {
+            try
+            {
+                guiInput->pushInput(event);
+            }
+            catch (gcn::Exception e)
+            {
+                const char* err = e.getMessage().c_str();
+                logger->log("Warning: guichan input exception: %s", err);
+            }
+        }
     } // End while
     // If the user is configuring the keys then don't respond.
     if (!keyboard.isEnabled())
