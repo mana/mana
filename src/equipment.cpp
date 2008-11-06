@@ -21,11 +21,9 @@
  *  $Id$
  */
 
-#include "equipment.h"
-
 #include <algorithm>
 
-#include "item.h"
+#include "equipment.h"
 #include "item.h"
 
 Equipment::Equipment():
