@@ -1,3 +1,8 @@
+2008-11-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/utils/strprintf.cpp: Fixed compile error with GCC 4.4 reported
+	by Martin Michlmayr.
+
 2008-11-06  Dennis Friis  <peavey@placid.dk>
 
 	* src/game.cpp: Do not activate shortcuts if tradewindow is visible.
