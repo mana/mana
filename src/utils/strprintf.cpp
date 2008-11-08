@@ -21,10 +21,8 @@
  *  $Id: strprintf.cpp 3416 2007-08-06 06:20:14Z gmelquio $
  */
 
-#ifndef _TMW_UTILS_TOSTRING_H
-#define _TMW_UTILS_TOSTRING_H
-
 #include <cstdarg>
+#include <cstdio>
 
 #include "strprintf.h"
 
@@ -50,4 +48,3 @@ std::string strprintf(char const *format, ...)
     return res;
 }
 
-#endif
