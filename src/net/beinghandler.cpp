@@ -453,7 +453,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 switch (msg->readInt8())
                 {
                     case 1:
-                        dstBeing->setAction(Being::DEAD);
+			if (dstBeing->getType() != Being::NPC)
+                            dstBeing->setAction(Being::DEAD);
                         break;
 
                     case 2:
