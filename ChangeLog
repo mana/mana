@@ -1,3 +1,7 @@
+2008-10-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/skil.cpp: fixed two broken include paths.
+
 2008-11-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/utils/strprintf.cpp: Fixed compile error with GCC 4.4 reported
