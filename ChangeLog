@@ -1,6 +1,14 @@
+2008-11-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/main.cpp, src/main.h, src/gui/serverdialog.cpp, data/branding.xml:
+	Moved some hardcoded strings and filenames to an external configuration
+	file to make it easier for TMW forks to rebrand the client without changing
+	the source. That way it is much easier to spot significant changes in the
+	sourcecode of TMW forks and backport them when they make sense for us.
+
 2008-11-06  David Athay  <ko2fan@gmail.com>
 
-	*  src/game.cpp, src/commandhandler.cpp, src/gui/npcpostdialog.cpp,
+	* src/game.cpp, src/commandhandler.cpp, src/gui/npcpostdialog.cpp,
 	src/gui/npcpostdialog.h, src/CMakeLists.txt, src/net/posthandler.h,
 	src/net/protocol.h, src/net/npchandler.cpp, src/net/gameserver/player.h,
 	src/net/gameserver/player.cpp, src/net/posthandler.cpp, src/Makefile.am,

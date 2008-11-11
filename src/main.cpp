@@ -107,6 +107,7 @@ Sound sound;
 Music *bgm;
 
 Configuration config;         /**< XML file configuration reader */
+Configuration branding;       /**< XML branding information reader */
 Logger *logger;               /**< Log object */
 KeyboardConfig keyboard;
 
@@ -167,14 +168,17 @@ struct Options
  */
 void initHomeDir()
 {
-    homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
+    homeDir = std::string(PHYSFS_getUserDir()) +
+        "/." +
+        branding.getValue("appShort", "tmw");
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
 #elif defined __APPLE__
     // Use Application Directory instead of .tmw
-    homeDir = std::string(PHYSFS_getUserDir()) + 
-        "/Library/Application Support/The Mana World";
+    homeDir = std::string(PHYSFS_getUserDir()) +
+        "/Library/Application Support/" +
+        branding.getValue("appName", "The Mana World");
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
 #else
@@ -197,8 +201,11 @@ void initConfiguration(const Options &options)
 {
     // Fill configuration with defaults
     logger->log("Initializing configuration...");
-    config.setValue("host", "server.themanaworld.org");
-    config.setValue("port", 9601);
+    std::string defaultHost = branding.getValue("defaultServer",
+        "server.themanaworld.org");
+    config.setValue("host", defaultHost);
+    int defaultPort = (int)branding.getValue("defaultPort", 9601);
+    config.setValue("port", defaultPort);
     config.setValue("hwaccel", 0);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
     config.setValue("opengl", 1);
@@ -212,7 +219,9 @@ void initConfiguration(const Options &options)
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 0);
-    config.setValue("updatehost", "http://updates.themanaworld.org");
+    std::string defaultUpdateHost = branding.getValue("defaultUpdateHost",
+        "http://updates.themanaworld.org");
+    config.setValue("updatehost", defaultUpdateHost);
     config.setValue("customcursor", 1);
     config.setValue("ChatLogLength", 128);
 
@@ -257,7 +266,7 @@ void initEngine(const Options &options)
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-    SDL_WM_SetCaption("The Mana World", NULL);
+    SDL_WM_SetCaption(branding.getValue("appName", "The Mana World").c_str(), NULL);
 #ifdef WIN32
     static SDL_SysWMinfo pInfo;
     SDL_GetWMInfo(&pInfo);
@@ -267,7 +276,7 @@ void initEngine(const Options &options)
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
     }
 #else
-    SDL_Surface *icon = IMG_Load(TMW_DATADIR "data/icons/tmw.png");
+    SDL_Surface *icon = IMG_Load(TMW_DATADIR branding.getValue("appIcon", "data/icons/tmw.png"));
     if (icon)
     {
         SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -741,7 +750,6 @@ void xmlNullLogger(void *ctx, const char *msg, ...)
 // compiled version and the shared library actually used.
 void initXML()
 {
-    logger->log("Initializing libxml2...");
     xmlInitParser();
     LIBXML_TEST_VERSION;
 
@@ -783,6 +791,11 @@ int main(int argc, char *argv[])
         // Initialize PhysicsFS
         PHYSFS_init(argv[0]);
 
+        initXML();
+
+        // load branding information
+        branding.init("data/branding.xml");
+
         initHomeDir();
         // Configure logger
         logger = new Logger();
@@ -796,8 +809,8 @@ int main(int argc, char *argv[])
         logger->log("The Mana World - version not defined");
 #endif
 
-        initXML();
         initConfiguration(options);
+
         initEngine(options);
 
         Game *game = NULL;
@@ -811,19 +824,19 @@ int main(int argc, char *argv[])
         top->add(versionLabel, 25, 2);
 #endif
 
-        sound.playMusic("Magick - Real.ogg");
+        sound.playMusic(branding.getValue("loginMusic", ""));
 
         // Server choice
         if (options.serverName.empty()) {
             loginData.hostname = config.getValue("MostUsedServerName0",
-                                    defaultAccountServerName.c_str());
+                branding.getValue("defaultServer", "server.themanaworld.org").c_str());
         }
         else {
             loginData.hostname = options.serverName;
         }
         if (options.serverPort == 0) {
             loginData.port = (short)config.getValue("MostUsedServerPort0",
-                                                    defaultAccountServerPort);
+                 branding.getValue("defaultPort", 9601));
         } else {
             loginData.port = options.serverPort;
         }
@@ -852,9 +865,9 @@ int main(int argc, char *argv[])
         while (state != STATE_FORCE_QUIT)
         {
             // Handle SDL events
-            while (SDL_PollEvent(&event)) 
+            while (SDL_PollEvent(&event))
             {
-                switch (event.type) 
+                switch (event.type)
                 {
                     case SDL_QUIT:
                         state = STATE_FORCE_QUIT;
@@ -883,11 +896,13 @@ int main(int argc, char *argv[])
 
             if (!login_wallpaper)
             {
+                std::string wallpaperFile = branding.getValue(
+                    "loginWallpaper", "graphics/images/login_wallpaper.png");
                 login_wallpaper = ResourceManager::getInstance()->
-                        getImage("graphics/images/login_wallpaper.png");
+                        getImage(wallpaperFile);
                 if (!login_wallpaper)
                 {
-                    logger->error("Couldn't load login_wallpaper.png");
+                    logger->error(wallpaperFile);
                 }
             }
 
@@ -929,8 +944,9 @@ int main(int argc, char *argv[])
                     //loadUpdates();
                     // Reload the wallpaper in case that it was updated
                     login_wallpaper->decRef();
-                    login_wallpaper = ResourceManager::getInstance()->
-                        getImage("graphics/images/login_wallpaper.png");
+                    login_wallpaper = ResourceManager::getInstance()->getImage(
+                        branding.getValue("loginWallpaper",
+                            "graphics/images/login_wallpaper.png"));
                 }
 
                 oldstate = state;

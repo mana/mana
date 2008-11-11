@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<!-- 
+Branding information
+
+All values in here are the default values which are hardcoded into the TMW client.
+So it would make no difference for the official version when this file is missing. It is
+basically an example for developers of tmw forks to help them writing a branding.xml
+for their forks.
+-->
+
+<configuration>
+ <option name="appName" value="The Mana World"/>
+ <option name="appShort" value="tmw"/>
+ <option name="appIcon" value="icons/tmw.png"/>
+ <option name="loginWallpaper" value="graphics/images/login_wallpaper.png"/>
+ <option name="loginMusic" value="The Mana World - Hurnscald.ogg"/>
+ <option name="defaultServer" value="server.themanaworld.org"/>
+ <option name="defaultPort" value="9601"/>
+ <option name="defaultUpdateHost" value="http://updates.themanaworld.org"/>
+ 
+</configuration>
