@@ -501,7 +501,7 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
                                         (mSpeechBubble->getNumRows()*14));
         mSpeechBubble->setVisible(true);
     }
-    else if (!config.getValue("speechbubble", 1))
+    else if (mSpeechTime > 0 && !config.getValue("speechbubble", 1))
     {
         mSpeechBubble->setVisible(false);
         // don't introduce a memory leak
