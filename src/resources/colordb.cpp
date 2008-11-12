@@ -47,19 +47,20 @@ void ColorDB::load()
     }
 
     XML::Document doc(HAIR_COLOR_FILE);
+    XML::Document doc2(TMW_COLOR_FILE);
     xmlNodePtr root = doc.rootNode();
     bool TMWHair = false;
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
-        logger->log("Error loading Aethyra's color, %s, trying TMW's color file, %s.", 
-                    HAIR_COLOR_FILE, TMW_COLOR_FILE);
+        logger->log("Trying TMW's color file, %s.", TMW_COLOR_FILE);
 
         TMWHair = true;
-        XML::Document doc(TMW_COLOR_FILE);
-        root = doc.rootNode();
+        root = doc2.rootNode();
         if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
         {
+            logger->log("ColorDB: Failed");
+            mColors[0] = mFail;
             mLoaded = true;
             return;
         }
@@ -75,8 +76,10 @@ void ColorDB::load()
                 logger->log("ColorDB: Redefinition of dye ID %d", id);
             }
 
-            TMWHair ? mColors[id] = XML::getProperty(node, "value", "") :
-                      mColors[id] = XML::getProperty(node, "dye", "");
+            TMWHair ? mColors[id] = XML::getProperty(node, "value", "#FFFFFF") :
+                      mColors[id] = XML::getProperty(node, "dye", "#FFFFFF");
+
+            logger->log("%d %s", id, mColors[id].c_str());
         }
     }
 
