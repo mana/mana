@@ -267,22 +267,6 @@ void initEngine(const Options &options)
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
     SDL_WM_SetCaption(branding.getValue("appName", "The Mana World").c_str(), NULL);
-#ifdef WIN32
-    static SDL_SysWMinfo pInfo;
-    SDL_GetWMInfo(&pInfo);
-    HICON icon = LoadIcon(GetModuleHandle(NULL), "A");
-    if (icon)
-    {
-        SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
-    }
-#else
-    SDL_Surface *icon = IMG_Load(TMW_DATADIR branding.getValue("appIcon", "data/icons/tmw.png"));
-    if (icon)
-    {
-        SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-        SDL_WM_SetIcon(icon, NULL);
-    }
-#endif
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -352,6 +336,23 @@ void initEngine(const Options &options)
     resman->addToSearchPath(path, true);
 #else
     resman->addToSearchPath(TMW_DATADIR "data", true);
+#endif
+
+#ifdef WIN32
+    static SDL_SysWMinfo pInfo;
+    SDL_GetWMInfo(&pInfo);
+    HICON icon = LoadIcon(GetModuleHandle(NULL), "A");
+    if (icon)
+    {
+        SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
+    }
+#else
+    SDL_Surface *icon = IMG_Load(resman->getPath(branding.getValue("appIcon", "data/icons/tmw.png")).c_str());
+    if (icon)
+    {
+        SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+        SDL_WM_SetIcon(icon, NULL);
+    }
 #endif
 
 #ifdef USE_OPENGL

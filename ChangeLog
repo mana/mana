@@ -1,3 +1,8 @@
+2008-11-12  David Athay  <ko2fan@gmail.com>
+
+	* src/main.cpp: Fixed Icon loading.
+	* src/gui/chat.cpp: Fixed chat window transparency.
+
 2008-11-11  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/main.cpp, src/main.h, src/gui/serverdialog.cpp, data/branding.xml:

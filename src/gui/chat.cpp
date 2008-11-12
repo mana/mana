@@ -56,6 +56,7 @@ ChatWindow::ChatWindow():
 {
     setResizable(true);
     setDefaultSize(0, (windowContainer->getHeight() - 105), 400, 100);
+    setOpaque(false);
 
     mChatInput = new ChatInput();
     mChatInput->setActionEventId("chatinput");
