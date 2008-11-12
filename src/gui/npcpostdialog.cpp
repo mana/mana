@@ -22,6 +22,7 @@
  */
 
 #include "npcpostdialog.h"
+#include "textbox.h"
 #include "textfield.h"
 #include "button.h"
 #include "scrollarea.h"
@@ -53,8 +54,9 @@ NpcPostDialog::NpcPostDialog():
                               sendButton->getY());
 
     // create textfield for letter
-    mText = new TextField();
+    mText = new TextBox();
     mText->setHeight(400 - (mSender->getHeight() + sendButton->getHeight()));
+    mText->setEditable(true);
 
     // create scroll box for letter text
     ScrollArea *scrollArea = new ScrollArea(mText);

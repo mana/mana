@@ -28,6 +28,7 @@
 
 #include "window.h"
 
+class TextBox;
 class TextField;
 
 class NpcPostDialog : public Window, public gcn::ActionListener
@@ -49,7 +50,7 @@ public:
     void clear();
 
 private:
-    TextField *mText;
+    TextBox *mText;
     TextField *mSender;
 };
 
