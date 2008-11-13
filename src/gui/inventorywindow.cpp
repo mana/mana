@@ -34,6 +34,7 @@
 #include "scrollarea.h"
 #include "viewport.h"
 
+#include "../inventory.h"
 #include "../item.h"
 #include "../localplayer.h"
 
@@ -73,6 +74,11 @@ InventoryWindow::InventoryWindow():
               "Maximum Weight: " + mMaxWeight + " g";
     mWeightLabel = new TextBox();
     mWeightLabel->setPosition(8, 8);
+    mSlots = "Slots: " + 
+             toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
+             "/" + toString(player_node->getInventory()->getSize());
+    mSlotsLabel = new TextBox();
+    mItemEffectLabel = new TextBox();
 
     draw();
 
@@ -83,6 +89,7 @@ InventoryWindow::InventoryWindow():
     add(mItemDescriptionLabel);
     add(mItemEffectLabel);
     add(mWeightLabel);
+    add(mSlotsLabel);
 
     mUseButton->setSize(60, mUseButton->getHeight());
 
@@ -106,6 +113,10 @@ void InventoryWindow::logic()
         // Adjust widgets
         mWeight = "Total Weight: " + mTotalWeight + " g - " +
                   "Maximum Weight: " + mMaxWeight + " g";
+
+        mSlots = "Slots: " + 
+                 toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
+                 "/" + toString(player_node->getInventory()->getSize());
 
         draw();
     }
@@ -222,12 +233,19 @@ void InventoryWindow::draw()
             mItemEffectLabel->getY() - 5 - (mItemDescriptionLabel->getNumberOfRows()*15),
             width - 16,
             (mItemDescriptionLabel->getNumberOfRows()*15)));
+    mSlotsLabel->setMinWidth(width - 16);
+    mSlotsLabel->setTextWrapped(mSlots);
+    mSlotsLabel->setDimension(gcn::Rectangle(8,
+            mItemDescriptionLabel->getY() - 5 - (mSlotsLabel->getNumberOfRows()*15),
+            width - 16,
+            (mSlotsLabel->getNumberOfRows()*15)));
 
     mInvenScroll->setSize(width - 16,
-            mItemDescriptionLabel->getY() - (mWeightLabel->getNumberOfRows()*15) - 18);
+            mSlotsLabel->getY() - (mWeightLabel->getNumberOfRows()*15) - 18);
     mInvenScroll->setPosition(8, (mWeightLabel->getNumberOfRows()*15) + 10);
 
-    setMinHeight(130 + (mWeightLabel->getNumberOfRows()*15) + 
+    setMinHeight(130 + (mSlotsLabel->getNumberOfRows()*15) + 
+                       (mWeightLabel->getNumberOfRows()*15) + 
                        (mItemDescriptionLabel->getNumberOfRows()*15) +
                        (mItemEffectLabel->getNumberOfRows()*15) +
                        (mItemNameLabel->getNumberOfRows()*15));
