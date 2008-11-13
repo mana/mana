@@ -40,6 +40,7 @@
 struct PartyMember
 {
     std::string name;
+    int vitality;
 };
 
 /**
@@ -86,7 +87,7 @@ class PartyWindow : public Window, gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
     private:
-        typedef std::vector<PartyMember*> PartyList;
+        typedef std::vector<PartyMember> PartyList;
         PartyList mPartyMembers;
         std::string mPartyInviter;
         ConfirmDialog *acceptDialog;

@@ -47,10 +47,10 @@
 #include <guichan/widgets/tab.hpp>
 
 GuildWindow::GuildWindow():
-    Window(player_node->getName()),
+    Window(_("Guild")),
     mFocus(false)
 {
-    setCaption("Guild");
+    setCaption(_("Guild"));
     setResizable(false);
     setCloseButton(true);
     setMinWidth(200);
@@ -74,7 +74,7 @@ GuildWindow::GuildWindow():
     layout.setColWidth(0, 48);
     layout.setColWidth(1, 65);
 
-    loadWindowState(player_node->getName());
+    loadWindowState("Guild");
 }
 
 GuildWindow::~GuildWindow()

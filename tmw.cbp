@@ -415,6 +415,8 @@
 		<Unit filename="src/gui/viewport.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/widgets/avatar.cpp" />
+		<Unit filename="src/gui/widgets/avatar.h" />
 		<Unit filename="src/gui/widgets/dropdown.cpp" />
 		<Unit filename="src/gui/widgets/dropdown.h">
 			<Option target="default" />

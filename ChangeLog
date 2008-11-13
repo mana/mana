@@ -1,3 +1,10 @@
+2008-11-13  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/widgets/avatar.cpp, src/gui/widgets/avatar.h,
+	src/gui/guildwindow.cpp, src/gui/partywindow.h, src/gui/partywindow.cpp,
+	src/net/partyhandler.cpp, src/net/protocol.h, tmw.cbp: Added avatars to
+	party window.
+
 2008-11-12  David Athay  <ko2fan@gmail.com>
 
 	* src/main.cpp: Fixed Icon loading.

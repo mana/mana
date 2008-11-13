@@ -41,6 +41,8 @@ PartyHandler::PartyHandler()
         CPMSG_PARTY_INVITED,
         CPMSG_PARTY_ACCEPT_INVITE_RESPONSE,
         CPMSG_PARTY_QUIT_RESPONSE,
+        CPMSG_PARTY_NEW_MEMBER,
+        CPMSG_PARTY_MEMBER_LEFT,
         0
     };
     handledMessages = _messages;
@@ -55,10 +57,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
         {
             if (msg.readInt8() == ERRMSG_OK)
             {
-                if (!player_node->getInParty())
-                    player_node->setInParty(true);
-                std::string memberName = msg.readString();
-                partyWindow->addPartyMember(memberName);
+
             }
         } break;
 
@@ -73,6 +72,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 player_node->setInParty(true);
+                chatWindow->chatLog("Joined party");
             }
         }
 
@@ -82,6 +82,24 @@ void PartyHandler::handleMessage(MessageIn &msg)
             {
                 player_node->setInParty(false);
             }
+        } break;
+
+        case CPMSG_PARTY_NEW_MEMBER:
+        {
+            int id = msg.readInt16();
+            std::string name = msg.readString();
+
+            chatWindow->chatLog(name + " joined the party");
+
+            if (!player_node->getInParty())
+                player_node->setInParty(true);
+
+            partyWindow->addPartyMember(name);
+        } break;
+
+        case CPMSG_PARTY_MEMBER_LEFT:
+        {
+            partyWindow->removePartyMember(msg.readString());
         } break;
     }
 }
