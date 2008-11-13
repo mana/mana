@@ -1,7 +1,9 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
 bin_PROGRAMS = tmw
-tmw_SOURCES = gui/widgets/dropdown.cpp \
+tmw_SOURCES = gui/widgets/avatar.cpp \
+              gui/widgets/avatar.h \
+              gui/widgets/dropdown.cpp \
 	      gui/widgets/dropdown.h \
 	      gui/widgets/layout.cpp \
 	      gui/widgets/layout.h \
