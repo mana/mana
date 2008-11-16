@@ -5,8 +5,6 @@
  * http://www.math.purdue.edu/~clomont/Math/Papers/2003/InvSqrt.pdf
  *
  * Unfortunately the original creator of this function seems to be unknown.
- *
- * $Id$
  */
 
 float fastInvSqrt(float x)

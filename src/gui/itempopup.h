@@ -1,5 +1,4 @@
 /*
-*
  *  The Legend of Mazzeroth
  *  Copyright (C) 2008, The Legend of Mazzeroth Development Team
  *
@@ -19,8 +18,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Legend of Mazzeroth; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
 #ifndef _LOM_ITEMPOPUP_H__

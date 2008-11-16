@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: skill.h 4476 2008-08-18 01:23:58Z rhoderyc $
  */
 
 #ifndef _TMW_MAGIC_H
@@ -30,7 +28,6 @@
 #include "gccontainer.h"
 
 #include "../guichanfwd.h"
-
 
 
 /**
