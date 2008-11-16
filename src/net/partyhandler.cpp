@@ -86,7 +86,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_PARTY_NEW_MEMBER:
         {
-            int id = msg.readInt16();
+            msg.readInt16(); // being id
             std::string name = msg.readString();
 
             chatWindow->chatLog(name + " joined the party");
