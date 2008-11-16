@@ -94,8 +94,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/newskill.h \
 	      gui/npclistdialog.cpp \
 	      gui/npclistdialog.h \
-              gui/npcpostdialog.cpp \
-              gui/npcpostdialog.h \
+	      gui/npcpostdialog.cpp \
+	      gui/npcpostdialog.h \
 	      gui/npc_text.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
@@ -208,8 +208,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      net/protocol.h \
 	      net/tradehandler.cpp \
 	      net/tradehandler.h \
-              net/effecthandler.h \
-              net/effecthandler.cpp \
+	      net/effecthandler.h \
+	      net/effecthandler.cpp \
 	      net/accountserver/account.cpp \
 	      net/accountserver/account.h \
 	      net/accountserver/accountserver.cpp \
