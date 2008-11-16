@@ -29,19 +29,19 @@ SpeechBubble::SpeechBubble()
 {
     mSpeechBox = new TextBox();
     mSpeechBox->setEditable(false);
-	mSpeechBox->setOpaque(false);
+    mSpeechBox->setOpaque(false);
 
     mSpeechArea = new ScrollArea(mSpeechBox);
 
     // Height == Top Graphic (14px) + 1 Row of Text (15px) + Bottom Graphic (17px)
     setContentSize(135, 46);
-	setTitleBarHeight(0);
-	loadSkin("graphics/gui/speechbubble.xml");
+    setTitleBarHeight(0);
+    loadSkin("graphics/gui/speechbubble.xml");
 
     mSpeechArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mSpeechArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mSpeechArea->setDimension(gcn::Rectangle(4, 15, 130, 28));
-	mSpeechArea->setOpaque(false);
+    mSpeechArea->setOpaque(false);
 
     add(mSpeechArea);
 

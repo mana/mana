@@ -30,16 +30,15 @@
 class SpeechBubble : public Window
 {
     public:
+        SpeechBubble();
 
-	SpeechBubble();
-
-	void setText(const std::string mText);
-	void setLocation(int x, int y);
-	unsigned int getNumRows();
+        void setText(const std::string mText);
+        void setLocation(int x, int y);
+        unsigned int getNumRows();
 
     private:
-	TextBox *mSpeechBox;
-	ScrollArea *mSpeechArea;
+        TextBox *mSpeechBox;
+        ScrollArea *mSpeechArea;
 };
 
-#endif
+#endif // _LOM_SPEECHBUBBLE_H__

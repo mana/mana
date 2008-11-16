@@ -82,11 +82,6 @@ class InventoryWindow : public Window,
          */
         void valueChanged(const gcn::SelectionEvent &event);
 
-		/**
-		 * Tracks when the mouse exits the window
-		 */
-		~InventoryWindow();
-
     private:
         void updateButtons();    /**< Updates button states. */
 

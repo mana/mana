@@ -83,7 +83,6 @@ InventoryWindow::InventoryWindow():
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState("Inventory");
-
 }
 
 void InventoryWindow::logic()
@@ -211,8 +210,4 @@ void InventoryWindow::keyReleased(gcn::KeyEvent &event)
         case Key::RIGHT_SHIFT:
             mSplit = false;
     }
-}
-InventoryWindow::~InventoryWindow()
-{
-
 }

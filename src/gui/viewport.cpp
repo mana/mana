@@ -296,9 +296,9 @@ void Viewport::drawTargetCursor(Graphics *graphics)
         Being::TargetCursorSize cursorSize = target->getTargetCursorSize();
         Image* targetCursor;
         if (rangeX > attackRange || rangeY > attackRange)
-	    targetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
+            targetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
         else
-	    targetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
+            targetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
 
         // Draw the target cursor at the correct position
         int posX = target->getPixelX() -

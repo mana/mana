@@ -37,8 +37,8 @@ ItemPopup::ItemPopup()
 {
 
     setResizable(false);
-	setTitleBarHeight(0);
-	loadSkin("graphics/gui/gui.xml");
+    setTitleBarHeight(0);
+    loadSkin("graphics/gui/gui.xml");
 
     // Item Name
     mItemName = new gcn::Label("Label");
@@ -54,31 +54,31 @@ ItemPopup::ItemPopup()
     mItemDescScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mItemDescScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mItemDescScroll->setDimension(gcn::Rectangle(0, 0, 196, 14));
-	mItemDescScroll->setOpaque(false);
-	mItemDescScroll->setPosition(2, 15);
+    mItemDescScroll->setOpaque(false);
+    mItemDescScroll->setPosition(2, 15);
 
     // Item Effect
-	mItemEffect = new TextBox();
-	mItemEffect->setEditable(false);
-	mItemEffectScroll = new ScrollArea(mItemEffect);
+    mItemEffect = new TextBox();
+    mItemEffect->setEditable(false);
+    mItemEffectScroll = new ScrollArea(mItemEffect);
 
-	mItemEffectScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mItemEffectScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mItemEffectScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-	mItemEffectScroll->setDimension(gcn::Rectangle(0, 0, 196, 14));
-	mItemEffectScroll->setOpaque(false);
-	mItemEffectScroll->setPosition(2, 35);
+    mItemEffectScroll->setDimension(gcn::Rectangle(0, 0, 196, 14));
+    mItemEffectScroll->setOpaque(false);
+    mItemEffectScroll->setPosition(2, 35);
 
-	add(mItemName);
-	add(mItemDescScroll);
-	add(mItemEffectScroll);
+    add(mItemName);
+    add(mItemDescScroll);
+    add(mItemEffectScroll);
 
-	setLocationRelativeTo(getParent());
+    setLocationRelativeTo(getParent());
 
     // LEEOR / TODO: This causes an exception error.
     //moveToBottom(getParent());
 
     mItemDesc->setTextWrapped( "" );
-	mItemEffect->setTextWrapped( "" );
+    mItemEffect->setTextWrapped( "" );
 }
 
 void ItemPopup::setItem(Item *item)
@@ -87,11 +87,11 @@ void ItemPopup::setItem(Item *item)
     ItemInfo const *info = item ? &item->getInfo() : NULL;
 
     mItemName->setCaption(info->getName());
-	mItemDesc->setTextWrapped( info->getDescription() );
-	mItemEffect->setTextWrapped( info->getEffect() );
+    mItemDesc->setTextWrapped( info->getDescription() );
+    mItemEffect->setTextWrapped( info->getEffect() );
 
     int numRowsDesc = mItemDesc->getNumberOfRows();
-	int numRowsEffect = mItemEffect->getNumberOfRows();
+    int numRowsEffect = mItemEffect->getNumberOfRows();
 
     if(info->getEffect() == "")
     {
@@ -102,10 +102,10 @@ void ItemPopup::setItem(Item *item)
 
     mItemDescScroll->setDimension(gcn::Rectangle(2, 0, 196, numRowsDesc * 14));
 
-	mItemEffectScroll->setDimension(gcn::Rectangle(2, 0, 196, numRowsEffect * 14));
+    mItemEffectScroll->setDimension(gcn::Rectangle(2, 0, 196, numRowsEffect * 14));
 
-	mItemDescScroll->setPosition(2, 20);
-	mItemEffectScroll->setPosition(2, (numRowsDesc * 15) + 25);
+    mItemDescScroll->setPosition(2, 20);
+    mItemEffectScroll->setPosition(2, (numRowsDesc * 15) + 25);
 }
 
 unsigned int ItemPopup::getNumRows()

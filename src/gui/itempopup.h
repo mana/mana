@@ -30,21 +30,19 @@
 #include "../item.h"
 
 class ItemPopup : public Window
-	{
+{
     public:
+        ItemPopup();
 
-		ItemPopup();
-
-		void setItem(Item *item);
-		unsigned int getNumRows();
+        void setItem(Item *item);
+        unsigned int getNumRows();
 
     private:
-		gcn::Label *mItemName;
-		TextBox *mItemDesc;
-		TextBox *mItemEffect;
-		ScrollArea *mItemDescScroll;
-		ScrollArea *mItemEffectScroll;
+        gcn::Label *mItemName;
+        TextBox *mItemDesc;
+        TextBox *mItemEffect;
+        ScrollArea *mItemDescScroll;
+        ScrollArea *mItemEffectScroll;
+};
 
-	};
-
-#endif
+#endif // _LOM_ITEMPOPUP_H__

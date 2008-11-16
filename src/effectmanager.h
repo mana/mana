@@ -27,24 +27,21 @@
 
 class EffectManager
 {
-
-    public: 
+    public:
         struct EffectDescription {
              int id;
              std::string GFX;
              std::string SFX;
         };
 
-        
         EffectManager();
-        
         ~EffectManager();
 
         /**
          * Triggers a effect with the id, at x,y
          * returns true if ID exists
          */
-	bool trigger(int id, int x = 0, int y = 0);
+        bool trigger(int id, int x = 0, int y = 0);
 
    private:
         std::list<EffectDescription> mEffects;
