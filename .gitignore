@@ -1,21 +1,39 @@
 # files created by autoreconf
+ABOUT-NLS
 Makefile.in
 aclocal.m4
 autom4te.cache
+config.guess
 config.h.in
+config.rpath
+config.sub
 configure
 depcomp
 install-sh
+m4/
 missing
+po/Makefile.in.in
+po/Makevars.template
+po/Rules-quot
+po/boldquot.sed
+po/en@boldquot.header
+po/en@quot.header
+po/insert-header.sin
+po/quot.sed
+po/remove-potcdate.sin
 
 # files created by configure
 Makefile
 config.h
 config.log
 config.status
-src/.deps
+po/POTFILES
+.deps
 stamp-h1
 
 # files created during build
 *.o
+*.gmo
+.dirstamp
+po/stamp-po
 src/tmw
