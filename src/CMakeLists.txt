@@ -49,6 +49,8 @@ MARK_AS_ADVANCED(SDL_INCLUDE_DIR)
 MARK_AS_ADVANCED(SDL_LIBRARY)
 
 SET(SRCS
+    gui/widgets/avatar.cpp
+    gui/widgets/avatar.h
     gui/widgets/dropdown.cpp
     gui/widgets/dropdown.h
     gui/widgets/resizegrip.cpp
