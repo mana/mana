@@ -103,14 +103,16 @@ Gui::Gui(Graphics *graphics):
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Set global font
-    std::string path = resman->getPath("fonts/dejavusans.ttf");
+    std::string path = resman->getPath(
+            branding.getValue("guiFont","fonts/dejavusans.ttf"));
     if (!path.empty())
     {
         mGuiFont = new TrueTypeFont(path.c_str(), 11);
     }
 
     // Set speech font
-    path = resman->getPath("fonts/dejavusans.ttf");
+    path = resman->getPath(
+            branding.getValue("speechFont","fonts/dejavusans.ttf"));
     if (!path.empty())
     {
         speechFont = new TrueTypeFont(path.c_str(), 11);

@@ -18,5 +18,7 @@ for their forks.
  <option name="defaultServer" value="server.themanaworld.org"/>
  <option name="defaultPort" value="9601"/>
  <option name="defaultUpdateHost" value="http://updates.themanaworld.org"/>
+ <option name="guiFont" value="fonts/dejavusans.ttf" />
+ <option name="speechFont" value="fonts/dejavusans.ttf" />
  
 </configuration>

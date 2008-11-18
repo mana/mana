@@ -1,3 +1,8 @@
+2008-11-17  Philipp Sehmisch  <tmw@crushnet.org>
+
+	*  data/branding.xml, src/configuration.h, src/gui/gui.cpp: Added the
+	font file to branding.xml (patch by Seeseekey)
+
 2008-11-13  David Athay  <ko2fan@gmail.com>
 
 	* src/gui/widgets/avatar.cpp, src/gui/widgets/avatar.h,
