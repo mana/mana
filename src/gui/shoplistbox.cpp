@@ -17,18 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: listbox.cpp 2655 2006-09-03 21:25:02Z b_lindeijer $
  */
 
-#include "shoplistbox.h"
-
+#include <guichan/basiccontainer.hpp>
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
+#include <guichan/imagefont.hpp>
 #include <guichan/listmodel.hpp>
 #include <guichan/mouseinput.hpp>
-#include <guichan/imagefont.hpp>
-#include <guichan/basiccontainer.hpp>
+
+#include "shoplistbox.h"
 
 #include "../graphics.h"
 

@@ -17,11 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: openglgraphics.cpp 4130 2008-04-18 20:39:29Z the_enemy $
  */
-
-#include "main.h"
 
 #ifdef USE_OPENGL
 
@@ -29,8 +25,6 @@
 #define GL_TEXTURE_RECTANGLE_ARB 0x84F5
 #define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB 0x84F8
 #endif
-
-#include "openglgraphics.h"
 
 #include <cstring>
 #include <SDL.h>
@@ -43,6 +37,7 @@
 #include <guichan/image.hpp>
 
 #include "log.h"
+#include "openglgraphics.h"
 
 #include "resources/image.h"
 

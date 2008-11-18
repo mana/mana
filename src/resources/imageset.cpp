@@ -17,15 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: imageset.cpp 4209 2008-04-29 12:58:21Z b_lindeijer $
  */
 
+#include "image.h"
 #include "imageset.h"
 
 #include "../log.h"
-
-#include "image.h"
 
 #include "../utils/dtor.h"
 

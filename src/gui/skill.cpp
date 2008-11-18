@@ -17,25 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
 #include <algorithm>
 
 #include <guichan/widgets/label.hpp>
 
-#include "skill.h"
-
 #include "button.h"
 #include "listbox.h"
+#include "skill.h"
 #include "windowcontainer.h"
 
 #include "../localplayer.h"
+#include "../log.h"
 
 #include "../utils/dtor.h"
 #include "../utils/xml.h"
-#include "../log.h"
 
 #define SKILLS_FILE "skills.xml"
 

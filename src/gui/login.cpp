@@ -17,26 +17,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: login.cpp 4045 2008-04-07 15:23:07Z b_lindeijer $
  */
-
-#include "login.h"
 
 #include <string>
 #include <vector>
 
 #include <guichan/widgets/label.hpp>
 
+#include "button.h"
+#include "checkbox.h"
+#include "login.h"
+#include "ok_dialog.h"
+#include "passwordfield.h"
+#include "textfield.h"
+
 #include "../main.h"
 #include "../logindata.h"
 #include "../configuration.h"
 
-#include "button.h"
-#include "checkbox.h"
-#include "ok_dialog.h"
-#include "passwordfield.h"
-#include "textfield.h"
 #include "../utils/tostring.h"
 
 static const int MAX_SERVER_LIST_SIZE = 5;

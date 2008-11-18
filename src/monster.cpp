@@ -17,16 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: monster.cpp 3823 2007-12-28 18:36:58Z crush_tmw $
  */
-
-#include "monster.h"
 
 #include "animatedsprite.h"
 #include "game.h"
-#include "sound.h"
+#include "monster.h"
 #include "particle.h"
+#include "sound.h"
 #include "text.h"
 
 #include "gui/gui.h"

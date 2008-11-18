@@ -17,20 +17,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: messagein.cpp 2369 2006-06-26 21:32:52Z b_lindeijer $
  */
-
-#include "messagein.h"
 
 #include <cassert>
 #include <SDL.h>
 #include <SDL_endian.h>
 
+#include "messagein.h"
+
 #define MAKEWORD(low,high) \
     ((unsigned short)(((unsigned char)(low)) | \
     ((unsigned short)((unsigned char)(high))) << 8))
-
 
 MessageIn::MessageIn(const char *data, unsigned int length):
     mData(data),

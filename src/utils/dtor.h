@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: dtor.h 2271 2006-03-18 15:15:33Z der_doener $
  */
 
 #ifndef _TMW_UTILS_DTOR_H

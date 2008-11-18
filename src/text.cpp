@@ -19,12 +19,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "text.h"
-
 #include <cstring>
 
 #include <guichan/font.hpp>
 
+#include "text.h"
 #include "textmanager.h"
 
 int Text::mInstances = 0;

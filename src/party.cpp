@@ -17,15 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: party.cpp
  */
 
-#include "party.h"
-
 #include "beingmanager.h"
-#include "localplayer.h"
 #include "game.h"
+#include "localplayer.h"
+#include "party.h"
 
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"

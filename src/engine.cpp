@@ -17,21 +17,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: engine.cpp 4000 2008-03-23 11:47:52Z b_lindeijer $
  */
-
-#include "engine.h"
 
 #include <list>
 
 #include "being.h"
 #include "beingmanager.h"
 #include "configuration.h"
+#include "engine.h"
 #include "flooritemmanager.h"
 #include "game.h"
 #include "graphics.h"
-#include "main.h"
 #include "localplayer.h"
 #include "log.h"
 #include "main.h"

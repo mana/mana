@@ -19,8 +19,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "setup_colours.h"
-
 #include <vector>
 
 #include <guichan/listmodel.hpp>
@@ -29,6 +27,7 @@
 
 #include "colour.h"
 #include "scrollarea.h"
+#include "setup_colours.h"
 #include "slider.h"
 
 #include "../configuration.h"

@@ -17,25 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: charserverhandler.cpp 4330 2008-06-04 08:53:01Z b_lindeijer $
  */
 
 #include "charserverhandler.h"
-
 #include "messagein.h"
 #include "network.h"
 #include "protocol.h"
 
+#include "../extensions.h"
 #include "../game.h"
 #include "../localplayer.h"
 #include "../log.h"
 #include "../logindata.h"
 #include "../main.h"
-#include "../extensions.h"
 
-#include "../gui/ok_dialog.h"
 #include "../gui/char_select.h"
+#include "../gui/ok_dialog.h"
 
 /*
  * Yeah, this is a global.  Get over it.

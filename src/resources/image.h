@@ -17,16 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: image.h 3760 2007-11-21 19:43:11Z b_lindeijer $
  */
 
 #ifndef _TMW_IMAGE_H
 #define _TMW_IMAGE_H
 
+#include <SDL.h>
+
 #include "../main.h"
 
-#include <SDL.h>
 #ifdef USE_OPENGL
 
 /* The definition of OpenGL extensions by SDL is giving problems with recent

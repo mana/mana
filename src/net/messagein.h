@@ -17,15 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: messagein.h 1879 2005-10-16 21:18:11Z der_doener $
  */
 
 #ifndef _TMW_MESSAGEIN_
 #define _TMW_MESSAGEIN_
 
-#include <string>
 #include <SDL_types.h>
+#include <string>
 
 /**
  * Used for parsing an incoming message.

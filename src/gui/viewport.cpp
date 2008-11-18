@@ -17,16 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: viewport.cpp 4098 2008-04-16 11:36:41Z b_lindeijer $
  */
 
-#include "viewport.h"
+#include <cassert>
 
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "gui.h"
 #include "popupmenu.h"
+#include "viewport.h"
 
 #include "../beingmanager.h"
 #include "../configuration.h"
@@ -40,14 +39,12 @@
 #include "../textmanager.h"
 
 #include "../resources/animation.h"
-#include "../resources/monsterinfo.h"
-#include "../resources/resourcemanager.h"
 #include "../resources/image.h"
 #include "../resources/imageset.h"
+#include "../resources/monsterinfo.h"
+#include "../resources/resourcemanager.h"
 
 #include "../utils/tostring.h"
-
-#include <cassert>
 
 extern volatile int tick_time;
 

@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: tostring.h 3500 2007-08-21 15:11:19Z joshlangley $
  */
 
 #ifndef _TMW_UTILS_TOSTRING_H

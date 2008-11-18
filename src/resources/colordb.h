@@ -22,8 +22,8 @@
 #ifndef _AETHYRA_COLOR_MANAGER_H
 #define _AETHYRA_COLOR_MANAGER_H
 
-#include <string>
 #include <map>
+#include <string>
 
 /**
  * The class that holds the color information.

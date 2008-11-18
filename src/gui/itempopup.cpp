@@ -18,22 +18,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Legend of Mazzeroth; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
-#include "itempopup.h"
 #include <guichan/widgets/label.hpp>
-#include "widgets/layout.h"
 
 #include "gui.h"
+#include "itempopup.h"
+
+#include "widgets/layout.h"
 
 #include "../resources/image.h"
-#include "../resources/resourcemanager.h"
 #include "../resources/iteminfo.h"
+#include "../resources/resourcemanager.h"
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-
 
 ItemPopup::ItemPopup()
 {

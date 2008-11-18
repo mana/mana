@@ -19,11 +19,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "textmanager.h"
-
 #include <cstring>
 
 #include "text.h"
+#include "textmanager.h"
 
 TextManager *textManager = 0;
 

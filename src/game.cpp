@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: game.cpp 4237 2008-05-14 18:57:32Z b_lindeijer $
  */
 
 #include "game.h"
@@ -28,8 +26,8 @@
 #include <sstream>
 #include <string>
 
-#include <guichan/sdl/sdlinput.hpp>
 #include <guichan/exception.hpp>
+#include <guichan/sdl/sdlinput.hpp>
 
 #include "beingmanager.h"
 #include "configuration.h"
@@ -69,19 +67,19 @@
 #include "gui/trade.h"
 #include "gui/viewport.h"
 
-#include "net/protocol.h"
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
 #include "net/chathandler.h"
 #include "net/equipmenthandler.h"
 #include "net/inventoryhandler.h"
 #include "net/itemhandler.h"
+#include "net/messageout.h"
 #include "net/network.h"
 #include "net/npchandler.h"
 #include "net/playerhandler.h"
+#include "net/protocol.h"
 #include "net/skillhandler.h"
 #include "net/tradehandler.h"
-#include "net/messageout.h"
 
 #include "resources/imagewriter.h"
 
@@ -115,7 +113,6 @@ InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
-//NewSkillDialog *newSkillWindow;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
@@ -199,7 +196,6 @@ void createGuiWindows(Network *network)
     npcTextDialog = new NpcTextDialog();
     npcListDialog = new NpcListDialog();
     skillDialog = new SkillDialog();
-    //newSkillWindow = new NewSkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
@@ -256,7 +252,6 @@ void destroyGuiWindows()
     delete minimap;
     delete equipmentWindow;
     //delete chargeDialog;
-    //delete newSkillWindow;
     delete tradeWindow;
     //delete buddyWindow;
     delete helpWindow;
@@ -609,7 +604,6 @@ void Game::handleInput()
             case SDLK_F8: requestedWindow = itemShortcutWindow; break;
             case SDLK_F9: requestedWindow = setupWindow; break;
             case SDLK_F10: requestedWindow = debugWindow; break;
-            //case SDLK_F11: requestedWindow = newSkillWindow; break;
 
             case SDLK_RETURN:
                 // Input chat window

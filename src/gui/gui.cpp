@@ -17,11 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: gui.cpp 3628 2007-10-18 18:39:48Z b_lindeijer $
  */
-
-#include "gui.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
@@ -31,6 +27,7 @@
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "focushandler.h"
+#include "gui.h"
 #include "viewport.h"
 #include "window.h"
 #include "windowcontainer.h"
@@ -41,8 +38,8 @@
 #include "../log.h"
 
 #include "../resources/imageset.h"
-#include "../resources/resourcemanager.h"
 #include "../resources/imageloader.h"
+#include "../resources/resourcemanager.h"
 
 // Guichan stuff
 Gui *gui;

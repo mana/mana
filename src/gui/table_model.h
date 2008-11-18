@@ -22,9 +22,11 @@
 #ifndef TMW_TABLE_MODEL_H_
 #define TMW_TABLE_MODEL_H_
 
-#include <guichan/gui.hpp>
 #include <set>
 #include <vector>
+
+#include <guichan/gui.hpp>
+
 #include "../guichanfwd.h"
 
 class TableModelListener

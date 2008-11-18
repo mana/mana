@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: minimap.cpp 4116 2008-04-17 12:48:43Z peaveydk $
  */
 
 #include "minimap.h"

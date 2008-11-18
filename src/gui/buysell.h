@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: buysell.h 3035 2007-01-14 14:54:39Z b_lindeijer $
  */
 
 #ifndef _TMW_BUYSELL_H
@@ -26,9 +24,9 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "../guichanfwd.h"
-
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 /**
  * A dialog to choose between buying or selling at a shop.

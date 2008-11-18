@@ -17,50 +17,51 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: main.cpp 4332 2008-06-05 07:33:12Z b_lindeijer $
  */
-
-#include "main.h"
 
 #include <getopt.h>
 #include <iostream>
 #include <physfs.h>
+#include <SDL_image.h>
 #include <unistd.h>
 #include <vector>
-#include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
+
 #include <guichan/sdl/sdlinput.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
 
-#ifndef WIN32
-#include <cerrno>
-#include <sys/stat.h>
+#ifdef __APPLE__
+#include <CoreFoundation/CFBundle.h>
 #endif
 #ifdef __MINGW32__
 #include <windows.h>
 #define usleep(usec) (Sleep ((usec) / 1000), 0)
 #endif
-#if defined __APPLE__
-#include <CoreFoundation/CFBundle.h>
+#ifdef WIN32
+#include <SDL_syswm.h>
+#else
+#include <cerrno>
+#include <sys/stat.h>
 #endif
 
 #include "configuration.h"
-#include "keyboardconfig.h"
-#include "player_relations.h"
 #include "game.h"
 #include "graphics.h"
 #include "itemshortcut.h"
-#include "lockedarray.h"
+#include "keyboardconfig.h"
 #include "localplayer.h"
+#include "lockedarray.h"
 #include "log.h"
 #include "logindata.h"
+#include "main.h"
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
+#include "player_relations.h"
 #include "serverinfo.h"
 #include "sound.h"
 
@@ -72,8 +73,8 @@
 #include "gui/ok_dialog.h"
 #include "gui/progressbar.h"
 #include "gui/register.h"
-#include "gui/updatewindow.h"
 #include "gui/textfield.h"
+#include "gui/updatewindow.h"
 
 #include "net/charserverhandler.h"
 #include "net/loginhandler.h"
@@ -90,10 +91,6 @@
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
-
-#ifdef WIN32
-#include <SDL_syswm.h>
-#endif
 
 // Account infos
 char n_server, n_character;

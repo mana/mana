@@ -17,11 +17,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: setup_keyboard.cpp 4255 2008-05-21 21:44:27Z crush_tmw $
  */
 
-#include "setup_keyboard.h"
+#include <SDL_keyboard.h>
 
 #include <guichan/widgets/label.hpp>
 #include <guichan/listmodel.hpp>
@@ -30,13 +28,12 @@
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
+#include "setup_keyboard.h"
 
 #include "../configuration.h"
 #include "../keyboardconfig.h"
 
 #include "../utils/tostring.h"
-
-#include <SDL_keyboard.h>
 
 /**
  * The list model for key function list.

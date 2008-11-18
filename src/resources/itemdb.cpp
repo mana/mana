@@ -17,15 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: itemdb.cpp 4347 2008-06-12 09:06:01Z b_lindeijer $
  */
 
 #include <cassert>
+
 #include <libxml/tree.h>
 
 #include "itemdb.h"
-
 #include "iteminfo.h"
 #include "resourcemanager.h"
 

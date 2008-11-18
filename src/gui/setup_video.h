@@ -17,17 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: setup_video.h 4306 2008-05-28 20:22:37Z crush_tmw $
  */
 
 #ifndef _TMW_GUI_SETUP_VIDEO_H
 #define _TMW_GUI_SETUP_VIDEO_H
 
-#include "setuptab.h"
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
+
+#include "setuptab.h"
 
 #include "../guichanfwd.h"
 

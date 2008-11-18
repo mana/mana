@@ -17,15 +17,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: setup_video.cpp 4338 2008-06-05 18:41:39Z crush_tmw $
  */
 
-#include "setup_video.h"
-
+#include <SDL.h>
 #include <string>
 #include <vector>
-#include <SDL.h>
 
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
@@ -36,6 +32,7 @@
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
+#include "setup_video.h"
 #include "slider.h"
 #include "textfield.h"
 

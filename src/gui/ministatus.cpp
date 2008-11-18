@@ -17,20 +17,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: ministatus.cpp 3753 2007-11-20 12:27:56Z b_lindeijer $
  */
-
-#include "ministatus.h"
 
 #include <guichan/widgets/label.hpp>
 
 #include "gui.h"
+#include "ministatus.h"
 #include "progressbar.h"
 
-#include "../localplayer.h"
 #include "../configuration.h"
 #include "../graphics.h"
+#include "../localplayer.h"
 
 #include "../utils/tostring.h"
 

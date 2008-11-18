@@ -17,24 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: player.cpp 4237 2008-05-14 18:57:32Z b_lindeijer $
  */
 
-#include "player.h"
+#include <iostream>
 
 #include "animatedsprite.h"
 #include "game.h"
 #include "graphics.h"
 #include "log.h"
+#include "player.h"
+
+#include "gui/gui.h"
 
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
 #include "utils/strprintf.h"
-
-#include "gui/gui.h"
-#include <iostream>
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;

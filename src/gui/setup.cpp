@@ -17,33 +17,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: setup.cpp 4306 2008-05-28 20:22:37Z crush_tmw $
  */
 
 #include <algorithm>
-
-#include "setup.h"
+#include <iostream>
 
 #include "button.h"
+#include "setup.h"
 #include "setup_audio.h"
+#include "setup_colours.h"
 #include "setup_joystick.h"
-#include "setup_video.h"
 #include "setup_keyboard.h"
 #include "setup_players.h"
-#include "setup_colours.h"
+#include "setup_video.h"
 #include "tabbedcontainer.h"
 
 #include "../utils/dtor.h"
-#include <iostream>
 
-extern Window *statusWindow;
-extern Window *minimap;
 extern Window *chatWindow;
-extern Window *inventoryWindow;
 extern Window *equipmentWindow;
 extern Window *helpWindow;
+extern Window *inventoryWindow;
+extern Window *minimap;
 extern Window *skillDialog;
+extern Window *statusWindow;
 
 Setup::Setup():
     Window("Setup")

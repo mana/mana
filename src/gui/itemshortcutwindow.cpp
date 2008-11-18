@@ -17,13 +17,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: itemshortcutwindow.cpp 4076 2008-04-12 18:36:15Z b_lindeijer $
  */
 
-#include "itemshortcutwindow.h"
-
 #include "itemshortcutcontainer.h"
+#include "itemshortcutwindow.h"
 #include "scrollarea.h"
 
 static const int SCROLL_PADDING = 0;

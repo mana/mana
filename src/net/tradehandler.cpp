@@ -17,14 +17,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: tradehandler.cpp 4354 2008-06-17 16:52:44Z the_enemy $
  */
-
-#include "tradehandler.h"
 
 #include "messagein.h"
 #include "protocol.h"
+#include "tradehandler.h"
 
 #include "../inventory.h"
 #include "../item.h"

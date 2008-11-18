@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: progressbar.h 2240 2006-03-09 12:24:36Z der_doener $
  */
 
 #ifndef _TMW_PROGRESSBAR_H
@@ -31,7 +29,6 @@
 #include "../guichanfwd.h"
 
 class ImageRect;
-
 
 /**
  * A progress bar.

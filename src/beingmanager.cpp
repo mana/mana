@@ -17,14 +17,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: beingmanager.cpp 4237 2008-05-14 18:57:32Z b_lindeijer $
  */
 
 #include <cassert>
 
 #include "beingmanager.h"
-
 #include "localplayer.h"
 #include "monster.h"
 #include "npc.h"

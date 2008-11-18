@@ -17,18 +17,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: register.h 3234 2007-03-24 13:05:27Z b_lindeijer $
  */
 
 #ifndef _TMW_REGISTER_H
 #define _TMW_REGISTER_H
 
 #include <iosfwd>
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
 #include "window.h"
+
 #include "../guichanfwd.h"
 
 class LoginData;

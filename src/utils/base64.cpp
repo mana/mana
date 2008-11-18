@@ -26,10 +26,9 @@
    | Author: Jim Winstead (jimw@php.net)                                  |
    +----------------------------------------------------------------------+
    */
-/* $Id: base64.cpp 2906 2006-12-12 15:18:30Z b_lindeijer $ */
 
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "base64.h"
 

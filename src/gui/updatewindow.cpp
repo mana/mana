@@ -17,11 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: updatewindow.cpp 4332 2008-06-05 07:33:12Z b_lindeijer $
  */
-
-#include "updatewindow.h"
 
 #include <iostream>
 #include <SDL.h>
@@ -34,6 +30,7 @@
 #include "button.h"
 #include "progressbar.h"
 #include "scrollarea.h"
+#include "updatewindow.h"
 
 // Curl should be included after Guichan to avoid Windows redefinitions
 #include <curl/curl.h>
@@ -42,9 +39,9 @@
 #include "../log.h"
 #include "../main.h"
 
-#include "../utils/tostring.h"
-
 #include "../resources/resourcemanager.h"
+
+#include "../utils/tostring.h"
 
 /**
  * Calculates the Alder-32 checksum for the given file.

@@ -17,22 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: debugwindow.cpp 3509 2007-08-23 13:43:17Z b_lindeijer $
  */
-
-#include "debugwindow.h"
 
 #include <SDL_mouse.h>
 
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "debugwindow.h"
 #include "gui.h"
 #include "viewport.h"
 
-#include "../game.h"
 #include "../engine.h"
+#include "../game.h"
 #include "../particle.h"
 #include "../map.h"
 

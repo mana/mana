@@ -17,16 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: tabbedcontainer.h 3152 2007-02-27 16:31:34Z crush_tmw $
  */
 
 #ifndef _TMW_TABPANE_H
 #define _TMW_TABPANE_H
 
 #include <iosfwd>
-#include <vector>
 #include <map>
+#include <vector>
 
 #include <guichan/actionlistener.hpp>
 

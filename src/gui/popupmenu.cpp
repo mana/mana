@@ -17,11 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: popupmenu.cpp 4243 2008-05-16 15:48:52Z the_enemy $
  */
-
-#include "popupmenu.h"
 
 #include <cassert>
 #include <iostream>
@@ -31,6 +27,7 @@
 #include "browserbox.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
+#include "popupmenu.h"
 #include "windowcontainer.h"
 
 #include "../being.h"
@@ -43,8 +40,8 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
-#include "../resources/iteminfo.h"
 #include "../resources/itemdb.h"
+#include "../resources/iteminfo.h"
 
 extern std::string tradePartnerName;
 

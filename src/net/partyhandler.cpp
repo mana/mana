@@ -17,23 +17,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: partyhandler.cpp
  */
 
-#include "partyhandler.h"
+#include <guichan/actionlistener.hpp>
 
+#include "partyhandler.h"
 #include "protocol.h"
 #include "messagein.h"
 
 #include "../gui/chat.h"
 #include "../gui/confirm_dialog.h"
 
+#include "../beingmanager.h"
 #include "../game.h"
 #include "../party.h"
-#include "../beingmanager.h"
-
-#include <guichan/actionlistener.hpp>
 
 PartyHandler::PartyHandler(Party *party) : mParty(party)
 {

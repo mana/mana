@@ -17,18 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: mapreader.cpp 4255 2008-05-21 21:44:27Z crush_tmw $
  */
-
-#include "mapreader.h"
 
 #include <cassert>
 #include <iostream>
 #include <zlib.h>
 
-#include "resourcemanager.h"
 #include "image.h"
+#include "mapreader.h"
+#include "resourcemanager.h"
 
 #include "../log.h"
 #include "../map.h"

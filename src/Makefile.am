@@ -70,8 +70,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/minimap.h \
 	      gui/ministatus.cpp \
 	      gui/ministatus.h \
-	      gui/newskill.cpp \
-	      gui/newskill.h \
 	      gui/npclistdialog.cpp \
 	      gui/npclistdialog.h \
 	      gui/npc_text.cpp \
@@ -248,6 +246,7 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      engine.h \
 	      equipment.cpp \
 	      equipment.h \
+              extensions.h \
 	      floor_item.cpp \
 	      floor_item.h \
 	      flooritemmanager.cpp \

@@ -17,14 +17,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: item_amount.cpp 3718 2007-11-11 14:46:33Z b_lindeijer $
  */
-
-#include "item_amount.h"
 
 #include "button.h"
 #include "inttextbox.h"
+#include "item_amount.h"
 #include "slider.h"
 #include "trade.h"
 

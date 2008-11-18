@@ -17,24 +17,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
 #ifndef _TMW_WINDOW_H__
 #define _TMW_WINDOW_H__
 
-#include <guichan/widgets/window.hpp>
 #include <guichan/widgetlistener.hpp>
+
+#include <guichan/widgets/window.hpp>
 
 #include "../guichanfwd.h"
 
 class ConfigListener;
 class GCContainer;
+class Image;
 class ImageRect;
 class ResizeGrip;
 class WindowContainer;
-class Image;
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are

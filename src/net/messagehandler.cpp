@@ -17,14 +17,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: messagehandler.cpp 2112 2006-01-22 13:31:13Z der_doener $
  */
-
-#include "messagehandler.h"
 
 #include <cassert>
 
+#include "messagehandler.h"
 #include "network.h"
 
 MessageHandler::MessageHandler():

@@ -22,13 +22,14 @@
 #ifndef TMW_PLAYER_RELATIONS_H_
 #define TMW_PLAYER_RELATIONS_H_
 
-#include "being.h"
-#include "player.h"
-#include "configuration.h"
-#include <string>
-#include <map>
-#include <vector>
 #include <list>
+#include <map>
+#include <string>
+#include <vector>
+
+#include "being.h"
+#include "configuration.h"
+#include "player.h"
 
 struct PlayerRelation
 {

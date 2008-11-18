@@ -17,15 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: being.cpp 4301 2008-05-28 16:06:48Z peaveydk $
  */
-#include "being.h"
 
 #include <cassert>
 #include <cmath>
 
 #include "animatedsprite.h"
+#include "being.h"
 #include "configuration.h"
 #include "equipment.h"
 #include "game.h"
@@ -37,17 +35,16 @@
 #include "sound.h"
 #include "text.h"
 
-#include "resources/resourcemanager.h"
-#include "resources/itemdb.h"
 #include "resources/imageset.h"
+#include "resources/itemdb.h"
 #include "resources/iteminfo.h"
+#include "resources/resourcemanager.h"
 
 #include "gui/gui.h"
 #include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
-
 #include "utils/xml.h"
 
 #define BEING_EFFECTS_FILE "effects.xml"

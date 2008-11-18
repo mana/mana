@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: iteminfo.h 4347 2008-06-12 09:06:01Z b_lindeijer $
  */
 
 #ifndef _TMW_ITEMINFO_H_

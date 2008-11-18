@@ -17,11 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: map.cpp 4171 2008-04-22 18:42:21Z b_lindeijer $
  */
-
-#include "map.h"
 
 #include <queue>
 
@@ -30,13 +26,14 @@
 #include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
+#include "map.h"
 #include "particle.h"
 #include "sprite.h"
 #include "tileset.h"
 
-#include "resources/resourcemanager.h"
 #include "resources/ambientoverlay.h"
 #include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"

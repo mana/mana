@@ -17,15 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: loginhandler.h 2137 2006-02-04 16:54:35Z der_doener $
  */
 
 #ifndef _TMW_NET_LOGINHANDLER_H
 #define _TMW_NET_LOGINHANDLER_H
 
-#include "messagehandler.h"
 #include <string>
+
+#include "messagehandler.h"
 
 struct LoginData;
 

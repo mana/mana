@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: browserbox.h 3687 2007-10-26 00:22:12Z crush_tmw $
  */
 
 #ifndef __TMW_BROWSERBOX_H__
@@ -27,8 +25,8 @@
 #include <iosfwd>
 #include <vector>
 
-#include <guichan/widget.hpp>
 #include <guichan/mouselistener.hpp>
+#include <guichan/widget.hpp>
 
 #include "../guichanfwd.h"
 #include "../main.h"

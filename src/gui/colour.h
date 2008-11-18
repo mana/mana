@@ -21,9 +21,10 @@
 
 #ifndef _COLOUR_H
 #define _COLOUR_H
+
 #include <cstdio>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <guichan/listmodel.hpp>
 

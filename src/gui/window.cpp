@@ -17,21 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
 #include <algorithm>
-#include <climits>
 #include <cassert>
+#include <climits>
 
 #include <guichan/exception.hpp>
-#include <guichan/widgets/icon.hpp>
 
-#include "window.h"
+#include <guichan/widgets/icon.hpp>
 
 #include "gui.h"
 #include "gccontainer.h"
+#include "window.h"
 #include "windowcontainer.h"
 
 #include "widgets/resizegrip.h"

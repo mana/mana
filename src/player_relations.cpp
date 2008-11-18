@@ -19,12 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "beingmanager.h"
-#include "player_relations.h"
-#include "graphics.h"
-#include "gui/gui.h"
-
 #include <algorithm>
+
+#include "beingmanager.h"
+#include "graphics.h"
+#include "player_relations.h"
+
+#include "gui/gui.h"
 
 #define PLAYER_IGNORE_STRATEGY_NOP "nop"
 #define PLAYER_IGNORE_STRATEGY_EMOTE0 "emote0"

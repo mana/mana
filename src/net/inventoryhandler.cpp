@@ -17,25 +17,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: inventoryhandler.cpp 4347 2008-06-12 09:06:01Z b_lindeijer $
  */
-
-#include "inventoryhandler.h"
 
 #include <SDL_types.h>
 
+#include "inventoryhandler.h"
 #include "messagein.h"
 #include "protocol.h"
 
-#include "../resources/iteminfo.h"
+#include "../inventory.h"
 #include "../item.h"
 #include "../itemshortcut.h"
 #include "../localplayer.h"
 #include "../log.h"
-#include "../inventory.h"
 
 #include "../gui/chat.h"
+
+#include "../resources/iteminfo.h"
 
 #include "../utils/tostring.h"
 

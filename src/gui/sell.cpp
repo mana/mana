@@ -17,11 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: sell.cpp 4347 2008-06-12 09:06:01Z b_lindeijer $
  */
-
-#include "sell.h"
 
 #include <cassert>
 
@@ -30,16 +26,17 @@
 #include "button.h"
 #include "shoplistbox.h"
 #include "scrollarea.h"
+#include "sell.h"
 #include "shop.h"
 #include "slider.h"
 
 #include "../item.h"
 #include "../npc.h"
 
-#include "../resources/iteminfo.h"
-
 #include "../net/messageout.h"
 #include "../net/protocol.h"
+
+#include "../resources/iteminfo.h"
 
 #include "../utils/tostring.h"
 

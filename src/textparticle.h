@@ -17,18 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: textparticle.h 3539 2007-08-28 16:42:47Z b_lindeijer $
  */
 
 #ifndef _TEXTPARTICLE_H
 #define _TEXTPARTICLE_H
 
-#include "particle.h"
-
 #include <guichan/color.hpp>
 
 #include "guichanfwd.h"
+#include "particle.h"
 
 class TextParticle : public Particle
 {

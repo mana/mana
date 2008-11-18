@@ -17,18 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 #include <cassert>
-
-#include "localplayer.h"
 
 #include "equipment.h"
 #include "floor_item.h"
 #include "game.h"
 #include "inventory.h"
 #include "item.h"
+#include "localplayer.h"
 #include "main.h"
 #include "monster.h"
 #include "particle.h"
@@ -39,8 +36,8 @@
 #include "net/messageout.h"
 #include "net/protocol.h"
 
-#include "resources/resourcemanager.h"
 #include "resources/imageset.h"
+#include "resources/resourcemanager.h"
 
 #include "utils/tostring.h"
 

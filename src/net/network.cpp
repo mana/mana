@@ -17,18 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: network.cpp 3550 2007-08-30 16:46:21Z b_lindeijer $
  */
 
-#include "network.h"
+#include <sstream>
 
 #include "messagehandler.h"
 #include "messagein.h"
+#include "network.h"
 
 #include "../log.h"
-
-#include <sstream>
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */

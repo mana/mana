@@ -17,20 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: playerhandler.cpp 4190 2008-04-26 17:37:03Z peaveydk $
  */
 
-#include "playerhandler.h"
-
 #include "messagein.h"
+#include "playerhandler.h"
 #include "protocol.h"
 
 #include "../engine.h"
 #include "../localplayer.h"
 #include "../log.h"
 #include "../npc.h"
-#include "../utils/tostring.h"
 
 #include "../gui/buy.h"
 #include "../gui/chat.h"
@@ -41,6 +37,8 @@
 #include "../gui/sell.h"
 #include "../gui/skill.h"
 #include "../gui/viewport.h"
+
+#include "../utils/tostring.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;

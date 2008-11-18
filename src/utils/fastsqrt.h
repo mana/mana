@@ -5,8 +5,6 @@
  * http://www.math.purdue.edu/~clomont/Math/Papers/2003/InvSqrt.pdf
  *
  * Unfortunately the original creator of this function seems to be unknown.
- *
- * $Id: fastsqrt.h 3508 2007-08-22 16:32:52Z b_lindeijer $
  */
 
 float fastInvSqrt(float x)

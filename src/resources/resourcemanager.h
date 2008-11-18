@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: resourcemanager.h 3839 2008-01-13 16:28:50Z the_enemy $
  */
 
 #ifndef _TMW_RESOURCE_MANAGER_H
@@ -29,11 +27,11 @@
 #include <string>
 #include <vector>
 
-class Resource;
 class Image;
-class Music;
-class SoundEffect;
 class ImageSet;
+class Music;
+class Resource;
+class SoundEffect;
 class SpriteDef;
 struct SDL_Surface;
 

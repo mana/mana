@@ -17,13 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: dye.h 3706 2007-11-03 21:04:51Z gmelquio $
  */
 
 #ifndef _TMW_DYE_H
 #define _TMW_DYE_H
 
+#include <string>
 #include <vector>
 
 /**
@@ -38,7 +37,7 @@ class Palette
          * The string is either a file name or a sequence of hexadecimal RGB
          * values separated by ',' and starting with '#'.
          */
-        Palette(std::string const &);
+        Palette(std::string const &pallete);
 
         /**
          * Gets a pixel color depending on its intensity.
@@ -65,7 +64,7 @@ class Dye
          * The parts of string are separated by semi-colons. Each part starts
          * by an uppercase letter, followed by a colon and then a palette name.
          */
-        Dye(std::string const &);
+        Dye(std::string const &dye);
 
         /**
          * Destroys the associated palettes.

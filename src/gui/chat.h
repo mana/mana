@@ -17,16 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: chat.h 4227 2008-05-08 00:39:29Z peaveydk $
  */
 
 #ifndef _TMW_CHAT_H
 #define _TMW_CHAT_H
 
+#include <fstream>
 #include <list>
 #include <string>
-#include <fstream>
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
@@ -37,9 +35,9 @@
 
 class BrowserBox;
 class Network;
-class ScrollArea;
 class Recorder;
 class Party;
+class ScrollArea;
 
 #define BY_GM         0   // those should be self-explanatory =)
 #define BY_PLAYER     1

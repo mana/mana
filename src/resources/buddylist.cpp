@@ -17,19 +17,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: buddylist.cpp 4332 2008-06-05 07:33:12Z b_lindeijer $
  */
 
 #include <algorithm>
 #include <cstring>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 #include "buddylist.h"
 
-#include "../main.h"
 #include "../configuration.h"
+#include "../main.h"
 
 BuddyList::BuddyList()
 {

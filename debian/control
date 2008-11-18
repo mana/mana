@@ -3,7 +3,7 @@ Section: games
 Priority: optional
 Homepage: http://www.aethyra.org/
 Maintainer: Aethyra Project <www.aethyra.org>
-Build-Depends: debhelper (>= 5), dpkg-dev (>= 1.13.19), dpatch, autotools-dev, libcurl4-gnutls-dev, libgl1-mesa-dev, libguichan2-dev (>= 0.7.1), libsdl1.2-dev, libsdl-image1.2-dev, libsdl-net1.2-dev, libsdl-mixer1.2-dev, libphysfs-dev, libpng12-dev, libxml2-dev, zlib1g-dev
+Build-Depends: debhelper (>= 5), dpkg-dev (>= 1.13.19), dpatch, autotools-dev, libcurl4-gnutls-dev, libgl1-mesa-dev, libguichan-dev (>= 0.8.1-3), libsdl1.2-dev, libsdl-image1.2-dev, libsdl-net1.2-dev, libsdl-mixer1.2-dev, libphysfs-dev, libpng12-dev, libxml2-dev, zlib1g-dev
 Standards-Version: 3.7.3
 
 Package: aethyra

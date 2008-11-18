@@ -17,23 +17,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: setup_players.cpp 4353 2008-06-16 07:04:46Z b_lindeijer $
  */
 
-#include "setup_players.h"
-
 #include <vector>
+
 #include <guichan/widgets/dropdown.hpp>
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "checkbox.h"
 #include "ok_dialog.h"
+#include "setup_players.h"
 
-#include "../player_relations.h"
 #include "../configuration.h"
 #include "../log.h"
+#include "../player_relations.h"
 #include "../sound.h"
 
 #define COLUMNS_NR 2 // name plus listbox

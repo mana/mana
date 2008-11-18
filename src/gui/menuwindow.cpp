@@ -17,26 +17,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: menuwindow.cpp 4060 2008-04-09 14:49:07Z b_lindeijer $
  */
-
-#include "menuwindow.h"
 
 #include <string>
 
 #include <guichan/actionlistener.hpp>
 
 #include "button.h"
+#include "menuwindow.h"
 #include "windowcontainer.h"
 
-extern Window *setupWindow;
-extern Window *inventoryWindow;
+extern Window *chatWindow;
 extern Window *equipmentWindow;
+extern Window *inventoryWindow;
+extern Window *itemShortcutWindow;
+extern Window *setupWindow;
 extern Window *skillDialog;
 extern Window *statusWindow;
-extern Window *itemShortcutWindow;
-extern Window *chatWindow;
 
 namespace {
     struct MenuWindowListener : public gcn::ActionListener

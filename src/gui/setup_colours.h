@@ -22,17 +22,17 @@
 #ifndef _SETUP_COLOURS_H
 #define _SETUP_COLOURS_H
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <guichan/actionlistener.hpp>
-#include <guichan/widgets/listbox.hpp>
 #include <guichan/widgets/label.hpp>
+#include <guichan/widgets/listbox.hpp>
 
+#include "scrollarea.h"
 #include "setuptab.h"
 #include "slider.h"
 #include "textfield.h"
-#include "scrollarea.h"
 
 #include "../guichanfwd.h"
 

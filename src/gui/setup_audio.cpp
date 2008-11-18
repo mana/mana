@@ -17,16 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id: setup_audio.cpp 4045 2008-04-07 15:23:07Z b_lindeijer $
  */
-
-#include "setup_audio.h"
 
 #include <guichan/widgets/label.hpp>
 
 #include "checkbox.h"
 #include "ok_dialog.h"
+#include "setup_audio.h"
 #include "slider.h"
 
 #include "../configuration.h"
