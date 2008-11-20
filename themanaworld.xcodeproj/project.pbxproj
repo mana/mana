@@ -16,7 +16,6 @@
 		92024E760CF1DCF6006B55CB /* imageloader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92024E740CF1DCF6006B55CB /* imageloader.cpp */; };
 		92037A1F0ED2037300D3712D /* text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92037A1B0ED2037300D3712D /* text.cpp */; };
 		92037A200ED2037300D3712D /* textmanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92037A1D0ED2037300D3712D /* textmanager.cpp */; };
-		920D9ADF0DE09DC0003D7E61 /* Info.plist in Copy plist */ = {isa = PBXBuildFile; fileRef = 924A42600C0874D00066885E /* Info.plist */; };
 		922CD9580E3D00900074C50E /* npcdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 922CD9560E3D00900074C50E /* npcdb.cpp */; };
 		922CD95F0E3D01080074C50E /* shopitem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 922CD95D0E3D01080074C50E /* shopitem.cpp */; };
 		922CD9ED0E3D02C50074C50E /* guichan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 922CD9EC0E3D02C50074C50E /* guichan.framework */; };
@@ -27,7 +26,6 @@
 		924A39F50C0784280066885E /* particleemitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 924A39EE0C0784280066885E /* particleemitter.cpp */; };
 		924A39F60C0784280066885E /* textparticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 924A39F00C0784280066885E /* textparticle.cpp */; };
 		924A3A120C07A60B0066885E /* resizegrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 924A3A100C07A60B0066885E /* resizegrip.cpp */; };
-		924A3E580C085E600066885E /* main.nib in Resources */ = {isa = PBXBuildFile; fileRef = 02345980000FD03B11CA0E72 /* main.nib */; };
 		924A40570C085EF50066885E /* items.xsd in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 924A401C0C085ED80066885E /* items.xsd */; };
 		924A405A0C085F950066885E /* bg_quad_dis.png in Copy GUI Files */ = {isa = PBXBuildFile; fileRef = 924A3E600C085ED70066885E /* bg_quad_dis.png */; };
 		924A405B0C085F950066885E /* browserfont.png in Copy GUI Files */ = {isa = PBXBuildFile; fileRef = 924A3E610C085ED70066885E /* browserfont.png */; };
@@ -90,6 +88,7 @@
 		926F9CF80DB005FA00AACD26 /* itemshortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926F9CF60DB005FA00AACD26 /* itemshortcut.cpp */; };
 		926F9D450DB00AFC00AACD26 /* itemshortcutcontainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926F9D410DB00AFC00AACD26 /* itemshortcutcontainer.cpp */; };
 		926F9D460DB00AFC00AACD26 /* itemshortcutwindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926F9D430DB00AFC00AACD26 /* itemshortcutwindow.cpp */; };
+		927F62590ED4F1D100D919E6 /* main.nib in Resources */ = {isa = PBXBuildFile; fileRef = 927F62570ED4F1D100D919E6 /* main.nib */; };
 		9294DA9B0C17E70400FCEDE9 /* physfs.c in Sources */ = {isa = PBXBuildFile; fileRef = 92BC3FAB0BAEE55B000DAB7F /* physfs.c */; };
 		9294DA9C0C17E70600FCEDE9 /* physfs_byteorder.c in Sources */ = {isa = PBXBuildFile; fileRef = 92BC3FAD0BAEE55B000DAB7F /* physfs_byteorder.c */; };
 		9294DAA10C17E73200FCEDE9 /* libpng.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9294DAA00C17E73200FCEDE9 /* libpng.framework */; };
@@ -238,7 +237,6 @@
 		92EEA0060D2E20B300DDE300 /* SDL_mixer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 92BC408F0BAEE818000DAB7F /* SDL_mixer.framework */; };
 		92EEA0070D2E20B300DDE300 /* SDL_net.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 92BC40900BAEE818000DAB7F /* SDL_net.framework */; };
 		92EEA0080D2E20B300DDE300 /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 92BC40910BAEE818000DAB7F /* SDL.framework */; };
-		92FD19A20DDCD60C00D14E5D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 92FD19A00DDCD60C00D14E5D /* InfoPlist.strings */; };
 		92FD19B00DDCE51000D14E5D /* player_relations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92FD19AE0DDCE51000D14E5D /* player_relations.cpp */; };
 		92FD19BA0DDCE53400D14E5D /* setup_players.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92FD19B30DDCE53400D14E5D /* setup_players.cpp */; };
 		92FD19BB0DDCE53400D14E5D /* table.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92FD19B50DDCE53400D14E5D /* table.cpp */; };
@@ -248,17 +246,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		920D9AE20DE09DCA003D7E61 /* Copy plist */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = ..;
-			dstSubfolderSpec = 6;
-			files = (
-				920D9ADF0DE09DC0003D7E61 /* Info.plist in Copy plist */,
-			);
-			name = "Copy plist";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		924A3A520C085C190066885E /* Copy Data Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -379,7 +366,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1870340FFE93FCAF11CA0CD7 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/main.nib; sourceTree = "<group>"; };
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		508344B209E5C41E0093A071 /* The Mana World.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Mana World.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92024D2A0CF1BD9E006B55CB /* keyboardconfig.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = keyboardconfig.cpp; path = src/keyboardconfig.cpp; sourceTree = "<group>"; };
@@ -488,6 +474,7 @@
 		926F9D420DB00AFC00AACD26 /* itemshortcutcontainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itemshortcutcontainer.h; sourceTree = "<group>"; };
 		926F9D430DB00AFC00AACD26 /* itemshortcutwindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = itemshortcutwindow.cpp; sourceTree = "<group>"; };
 		926F9D440DB00AFC00AACD26 /* itemshortcutwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itemshortcutwindow.h; sourceTree = "<group>"; };
+		927F62580ED4F1D100D919E6 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/main.nib; sourceTree = "<group>"; };
 		9294DAA00C17E73200FCEDE9 /* libpng.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libpng.framework; path = /Library/Frameworks/libpng.framework; sourceTree = "<absolute>"; };
 		92A4CC9D0D1C622E00CA28FB /* dye.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dye.cpp; path = src/resources/dye.cpp; sourceTree = "<group>"; };
 		92A4CCE00D1DA58D00CA28FB /* dir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dir.c; sourceTree = "<group>"; };
@@ -768,7 +755,6 @@
 		92BC40E50BAEF54B000DAB7F /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SDLMain.m; path = src/SDLMain.m; sourceTree = "<group>"; };
 		92BC40E80BAEF57D000DAB7F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		92BC416E0BAF664C000DAB7F /* ChangeLog */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ChangeLog; sourceTree = "<group>"; };
-		92FD19A10DDCD60C00D14E5D /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		92FD19AE0DDCE51000D14E5D /* player_relations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = player_relations.cpp; path = src/player_relations.cpp; sourceTree = "<group>"; };
 		92FD19AF0DDCE51000D14E5D /* player_relations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = player_relations.h; path = src/player_relations.h; sourceTree = "<group>"; };
 		92FD19B30DDCE53400D14E5D /* setup_players.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = setup_players.cpp; sourceTree = "<group>"; };
@@ -815,6 +801,7 @@
 		20286C29FDCF999611CA2CEA /* themanaworld */ = {
 			isa = PBXGroup;
 			children = (
+				924A42600C0874D00066885E /* Info.plist */,
 				5048396909E3304600765E4B /* Configuration Files */,
 				20286C2AFDCF999611CA2CEA /* Sources */,
 				20286C2CFDCF999611CA2CEA /* Resources */,
@@ -918,13 +905,11 @@
 		20286C2CFDCF999611CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				92FD19A00DDCD60C00D14E5D /* InfoPlist.strings */,
+				927F62570ED4F1D100D919E6 /* main.nib */,
 				92A4CCFE0D1DA8E500CA28FB /* LICENSE.rtf */,
-				924A42600C0874D00066885E /* Info.plist */,
 				924A42590C0871EC0066885E /* The Mana World.icns */,
 				924A3E590C085ED70066885E /* data */,
 				92BC416E0BAF664C000DAB7F /* ChangeLog */,
-				02345980000FD03B11CA0E72 /* main.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1385,7 +1370,6 @@
 				924A40880C085FBD0066885E /* Copy Image Files */,
 				924A42000C0861C70066885E /* Copy Help Files */,
 				92EEA0090D2E20D100DDE300 /* Copy Frameworks */,
-				920D9AE20DE09DCA003D7E61 /* Copy plist */,
 			);
 			buildRules = (
 			);
@@ -1419,10 +1403,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				924A3E580C085E600066885E /* main.nib in Resources */,
 				924A425A0C0871EC0066885E /* The Mana World.icns in Resources */,
 				92A4CCFF0D1DA8E500CA28FB /* LICENSE.rtf in Resources */,
-				92FD19A20DDCD60C00D14E5D /* InfoPlist.strings in Resources */,
+				927F62590ED4F1D100D919E6 /* main.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1595,20 +1578,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		02345980000FD03B11CA0E72 /* main.nib */ = {
+		927F62570ED4F1D100D919E6 /* main.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1870340FFE93FCAF11CA0CD7 /* English */,
+				927F62580ED4F1D100D919E6 /* English */,
 			);
 			name = main.nib;
-			sourceTree = "<group>";
-		};
-		92FD19A00DDCD60C00D14E5D /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				92FD19A10DDCD60C00D14E5D /* English */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1620,12 +1595,11 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"/System/Library/Frameworks\"";
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1633,26 +1607,27 @@
 					USE_OPENGL,
 					__PHYSFS_CARBONIZED__,
 				);
-				GCC_VERSION_ppc = 3.3;
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL_net.framework/Headers,
 					/Library/Frameworks/SDL_image.framework/Headers,
 					/Library/Frameworks/SDL_mixer.framework/Headers,
-					/Library/Frameworks/guichan.framework/Headers,
+					guichan.framework/Headers,
 					/Library/Frameworks/libpng.framework/Headers,
 					/usr/include/libxml2,
 					/Library/Frameworks/SDL.framework/Headers,
 				);
+				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = /usr/lib;
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_LDFLAGS = (
+					"-lz",
 					"-lxml2",
 					"-lcurl",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "The Mana World";
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				USER_HEADER_SEARCH_PATHS = src;
-				ZERO_LINK = NO;
 			};
 			name = Debug;
 		};
@@ -1688,6 +1663,7 @@
 					/usr/include/libxml2,
 					/Library/Frameworks/SDL.framework/Headers,
 				);
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = /usr/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.3;
@@ -1728,7 +1704,7 @@
 					i386,
 				);
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_PREPROCESSOR_DEFINITIONS = PHYSFS_SUPPORTS_ZIP;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SEPARATE_STRIP = YES;
 			};
