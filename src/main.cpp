@@ -161,6 +161,52 @@ struct Options
 } // anonymous namespace
 
 /**
+ * Parse the update host and determine the updates directory
+ * Then verify that the directory exists (creating if needed).
+ */
+void setUpdatesDir()
+{
+    // If updatesHost is currently empty, fill it from config file
+    if (updateHost.empty()) {
+        updateHost =
+            config.getValue("updatehost", "http://updates.thanaworld.org");
+    }
+
+    // Remove any trailing slash at the end of the update host
+    if (updateHost.at(updateHost.size() - 1) == '/')
+        updateHost.resize(updateHost.size() - 1);
+
+    // Parse out any "http://" or "ftp://", and set the updates directory
+    size_t pos;
+    pos = updateHost.find("://");
+    if (pos != updateHost.npos) {
+        if (pos + 3 < updateHost.length()) {
+            updatesDir =
+                "updates/" + updateHost.substr(pos + 3);
+        } else {
+            logger->log("Error: Invalid update host: %s", updateHost.c_str());
+            errorMessage = "Invalid update host: " + updateHost;
+            state = STATE_ERROR;
+        }
+    } else {
+        logger->log("Warning: no protocol was specified for the update host");
+        updatesDir = "updates/" + updateHost;
+    }
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    // Verify that the updates directory exists. Create if necessary.
+    if (!resman->isDirectory("/" + updatesDir)) {
+        if (!resman->mkdir("/" + updatesDir)) {
+            logger->log("Error: %s/%s can't be made, but doesn't exist!",
+                         homeDir.c_str(), updatesDir.c_str());
+            errorMessage = "Error creating updates directory!";
+            state = STATE_ERROR;
+        }
+    }
+}
+
+/**
  * Initializes the home directory. On UNIX and FreeBSD, ~/.tmw is used. On
  * Windows and other systems we use the current working directory.
  */
@@ -273,43 +319,6 @@ void initEngine(const Options &options)
                   << " couldn't be set as home directory! Exitting."
                   << std::endl;
         exit(1);
-    }
-
-    // Take host for updates from config if it wasn't set on the command line
-    if (options.updateHost.empty()) {
-        updateHost =
-            config.getValue("updatehost", "http://updates.thanaworld.org");
-    } else {
-        updateHost = options.updateHost;
-    }
-
-    // Parse out any "http://" or "ftp://", and set the updates directory
-    size_t pos;
-    pos = updateHost.find("//");
-    if (pos != updateHost.npos) {
-        if (pos + 2 < updateHost.length()) {
-            updatesDir =
-                "updates/" + updateHost.substr(pos + 2);
-        } else {
-            std::cout << "The updates host - " << updateHost
-                      << " does not appear to be valid!" << std::endl
-                      << "Please fix the \"updatehost\" in your configuration"
-                      << " file. Exiting." << std::endl;
-            exit(1);
-        }
-    } else {
-        logger->log("Warning: no protocol was specified for the update host");
-        updatesDir = "updates/" + updateHost;
-    }
-
-    // Verify that the updates directory exists. Create if necessary.
-    if (!resman->isDirectory("/" + updatesDir)) {
-        if (!resman->mkdir("/" + updatesDir)) {
-            std::cout << homeDir << "/" << updatesDir
-                      << " can't be made, but it doesn't exist! Exiting."
-                      << std::endl;
-            exit(1);
-        }
     }
 
     // Add the user's homedir to PhysicsFS search path
@@ -587,14 +596,17 @@ void accountLogin(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
 
+    loginHandler.setLoginData(loginData);
     Net::registerHandler(&loginHandler);
 
     charServerHandler.setCharInfo(&charInfo);
     Net::registerHandler(&charServerHandler);
 
     // Send login infos
-    Net::AccountServer::login(accountServerConnection, 0,
-                loginData->username,loginData->password);
+    Net::AccountServer::login(accountServerConnection,
+            0,  // client version
+            loginData->username,
+            loginData->password);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -618,8 +630,11 @@ void accountRegister(LoginData *loginData)
     charServerHandler.setCharInfo(&charInfo);
     Net::registerHandler(&charServerHandler);
 
-    Net::AccountServer::registerAccount(accountServerConnection, 0,
-            loginData->username, loginData->password, loginData->email);
+    Net::AccountServer::registerAccount(accountServerConnection,
+            0, // client version
+            loginData->username,
+            loginData->password,
+            loginData->email);
 }
 
 void accountUnRegister(LoginData *loginData)
@@ -939,8 +954,7 @@ int main(int argc, char *argv[])
                 // Load updates after exiting the update state
                 if (oldstate == STATE_UPDATE)
                 {
-                    // TODO: Revive later
-                    //loadUpdates();
+                    loadUpdates();
                     // Reload the wallpaper in case that it was updated
                     login_wallpaper->decRef();
                     login_wallpaper = ResourceManager::getInstance()->getImage(
@@ -989,11 +1003,16 @@ int main(int argc, char *argv[])
                         break;
 
                     case STATE_UPDATE:
+                        // Determine which source to use for the update host
+                        if (!options.updateHost.empty())
+                            updateHost = options.updateHost;
+                        else
+                            updateHost = loginData.updateHost;
+
+                        setUpdatesDir();
                         logger->log("State: UPDATE");
-                        // TODO: Revive later
-                        //currentDialog = new UpdaterWindow(updateHost,
-                        //        homeDir + "/" + updatesDir);
-                        state = STATE_LOADDATA;
+                        currentDialog = new UpdaterWindow(updateHost,
+                                homeDir + "/" + updatesDir);
                         break;
 
                     case STATE_LOGIN:
@@ -1168,7 +1187,7 @@ int main(int argc, char *argv[])
                         game->logic();
                         delete game;
 
-                        //If the quitdialog didn't set the next state
+                        // If the quitdialog didn't set the next state
                         if (state == STATE_GAME)
                         {
                             state = STATE_EXIT;
@@ -1183,12 +1202,13 @@ int main(int argc, char *argv[])
                     case STATE_RECONNECT_ACCOUNT:
                         logger->log("State: RECONNECT_ACCOUNT");
 
-                        //done with game&chat
+                        // Done with game & chat
                         gameServerConnection->disconnect();
                         chatServerConnection->disconnect();
 
-                        accountServerConnection->connect(loginData.hostname,
-                                                                  loginData.port);
+                        accountServerConnection->connect(
+                                loginData.hostname,
+                                loginData.port);
                         break;
 
                     case STATE_WAIT:

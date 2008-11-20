@@ -24,6 +24,7 @@
 #include "messagein.h"
 #include "protocol.h"
 
+#include "../logindata.h"
 #include "../main.h"
 
 LoginHandler::LoginHandler()
@@ -39,73 +40,20 @@ LoginHandler::LoginHandler()
     handledMessages = _messages;
 }
 
+void LoginHandler::setLoginData(LoginData *loginData)
+{
+    mLoginData = loginData;
+}
+
 void LoginHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
         case APMSG_LOGIN_RESPONSE:
-        {
-            int errMsg = msg.readInt8();
-            // Successful login
-            if (errMsg == ERRMSG_OK)
-            {
-                state = STATE_CHAR_SELECT;
-            }
-            // Login failed
-            else
-            {
-                switch (errMsg) {
-                    case LOGIN_INVALID_VERSION:
-                    errorMessage = "Client has an insufficient version number to login.";
-                        break;
-                    case ERRMSG_INVALID_ARGUMENT:
-                        errorMessage = "Wrong username or password";
-                        break;
-                    case ERRMSG_FAILURE:
-                        errorMessage = "Already logged in";
-                        break;
-                    case LOGIN_SERVER_FULL:
-                        errorMessage = "Server is full";
-                        break;
-                    default:
-                        errorMessage = "Unknown error";
-                        break;
-                }
-                state = STATE_LOGIN_ERROR;
-            }
-        }
+            handleLoginResponse(msg);
             break;
         case APMSG_REGISTER_RESPONSE:
-        {
-            int errMsg = msg.readInt8();
-            // Successful registration
-            if (errMsg == ERRMSG_OK)
-            {
-                state = STATE_CHAR_SELECT;
-            }
-            // Registration failed
-            else
-            {
-                switch (errMsg) {
-                    case REGISTER_INVALID_VERSION:
-                        errorMessage = "Client has an insufficient version number to login.";
-                        break;
-                    case ERRMSG_INVALID_ARGUMENT:
-                        errorMessage = "Wrong username, password or email address";
-                        break;
-                    case REGISTER_EXISTS_USERNAME:
-                        errorMessage = "Username already exists";
-                        break;
-                    case REGISTER_EXISTS_EMAIL:
-                        errorMessage = "Email address already exists";
-                        break;
-                    default:
-                        errorMessage = "Unknown error";
-                        break;
-                }
-                state = STATE_LOGIN_ERROR;
-            }
-        }
+            handleRegisterResponse(msg);
             break;
         case APMSG_RECONNECT_RESPONSE:
         {
@@ -200,5 +148,78 @@ void LoginHandler::handleMessage(MessageIn &msg)
         }
             break;
 
+    }
+}
+
+void LoginHandler::handleLoginResponse(MessageIn &msg)
+{
+    const int errMsg = msg.readInt8();
+
+    if (errMsg == ERRMSG_OK)
+    {
+        readUpdateHost(msg);
+        state = STATE_CHAR_SELECT;
+    }
+    else
+    {
+        switch (errMsg) {
+            case LOGIN_INVALID_VERSION:
+                errorMessage = "Client version is too old";
+                break;
+            case ERRMSG_INVALID_ARGUMENT:
+                errorMessage = "Wrong username or password";
+                break;
+            case ERRMSG_FAILURE:
+                errorMessage = "Already logged in";
+                break;
+            case LOGIN_SERVER_FULL:
+                errorMessage = "Server is full";
+                break;
+            default:
+                errorMessage = "Unknown error";
+                break;
+        }
+        state = STATE_LOGIN_ERROR;
+    }
+}
+
+void LoginHandler::handleRegisterResponse(MessageIn &msg)
+{
+    const int errMsg = msg.readInt8();
+
+    if (errMsg == ERRMSG_OK)
+    {
+        readUpdateHost(msg);
+        state = STATE_CHAR_SELECT;
+    }
+    else
+    {
+        switch (errMsg) {
+            case REGISTER_INVALID_VERSION:
+                errorMessage = "Client version is too old";
+                break;
+            case ERRMSG_INVALID_ARGUMENT:
+                errorMessage = "Wrong username, password or email address";
+                break;
+            case REGISTER_EXISTS_USERNAME:
+                errorMessage = "Username already exists";
+                break;
+            case REGISTER_EXISTS_EMAIL:
+                errorMessage = "Email address already exists";
+                break;
+            default:
+                errorMessage = "Unknown error";
+                break;
+        }
+        state = STATE_LOGIN_ERROR;
+    }
+}
+
+void LoginHandler::readUpdateHost(MessageIn &msg)
+{
+    // Set the update host when included in the message
+    if (msg.getUnreadLength() > 0)
+    {
+        mLoginData->updateHost = msg.readString();
     }
 }

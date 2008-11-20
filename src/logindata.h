@@ -30,6 +30,7 @@ struct LoginData
     std::string password;
     std::string newPassword;
     std::string hostname;
+    std::string updateHost;
     std::string email;
     std::string newEmail;
     short port;
@@ -39,14 +40,15 @@ struct LoginData
 
     void clear()
     {
-        username = "";
-        password = "";
-        newPassword = "";
-        hostname = "";
-        email = "";
-        newEmail = "";
+        username.clear();
+        password.clear();
+        newPassword.clear();
+        hostname.clear();
+        updateHost.clear();
+        email.clear();
+        newEmail.clear();
         port = 0;
     };
 };
 
-#endif
+#endif // _TMW_LOGINDATA_H

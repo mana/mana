@@ -24,12 +24,24 @@
 
 #include "messagehandler.h"
 
+class LoginData;
+
 class LoginHandler : public MessageHandler
 {
     public:
         LoginHandler();
 
+        void setLoginData(LoginData *loginData);
+
         void handleMessage(MessageIn &msg);
+
+    private:
+        void handleLoginResponse(MessageIn &msg);
+        void handleRegisterResponse(MessageIn &msg);
+
+        void readUpdateHost(MessageIn &msg);
+
+        LoginData *mLoginData;
 };
 
-#endif
+#endif // _TMW_NET_LOGINHANDLER_H

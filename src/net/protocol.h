@@ -23,24 +23,29 @@
 #define _TMW_PROTOCOL_
 
 /**
- * Enumerated type for communicated messages
+ * Enumerated type for communicated messages:
+ *
  * - PAMSG_*: from client to account server
  * - APMSG_*: from account server to client
  * - PCMSG_*: from client to chat server
  * - CPMSG_*: from chat server to client
  * - PGMSG_*: from client to game server
  * - GPMSG_*: from game server to client
+ *
  * Components: B byte, W word, D double word, S variable-size string
  *             C tile-based coordinates (B*3)
+ *
+ * Hosts:      P (player's client), A (account server), C (char server),
+ *             G (game server)
  */
 enum {
     // Login/Register
-    PAMSG_REGISTER                 = 0x0000, // L version, S username, S password, S email
-    APMSG_REGISTER_RESPONSE        = 0x0002, // B error
+    PAMSG_REGISTER                 = 0x0001, // L version, S username, S password, S email
+    APMSG_REGISTER_RESPONSE        = 0x0002, // B error [, S updatehost]
     PAMSG_UNREGISTER               = 0x0003, // -
     APMSG_UNREGISTER_RESPONSE      = 0x0004, // B error
     PAMSG_LOGIN                    = 0x0010, // L version, S username, S password
-    APMSG_LOGIN_RESPONSE           = 0x0012, // B error
+    APMSG_LOGIN_RESPONSE           = 0x0012, // B error [, S updatehost]
     PAMSG_LOGOUT                   = 0x0013, // -
     APMSG_LOGOUT_RESPONSE          = 0x0014, // B error
     PAMSG_CHAR_CREATE              = 0x0020, // S name, B hair style, B hair color, B gender, W*6 stats
