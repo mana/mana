@@ -290,6 +290,12 @@
 	* INSTALL, autogen.sh: Removed autogen.sh and tell people in the
 	INSTALL file to run 'autoreconf -i' instead.
 
+2008-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/winver.h, README, configure.ac, data/help/changes.txt,
+	data/help/header.txt, NEWS, CMakeLists.txt: Updated the version to
+	0.0.25, release planned this Sunday.
+
 2008-07-24  David Athay  <ko2fan@gmail.com>
 
 	* src/game.cpp, src/net/protocol.h, src/net/npchandler.cpp: Reverted
