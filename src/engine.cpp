@@ -29,7 +29,6 @@
 #include "flooritemmanager.h"
 #include "game.h"
 #include "graphics.h"
-#include "main.h"
 #include "localplayer.h"
 #include "log.h"
 #include "main.h"
