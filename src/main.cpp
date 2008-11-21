@@ -34,20 +34,6 @@
 
 #include <libxml/parser.h>
 
-#ifdef __APPLE__
-#include <CoreFoundation/CFBundle.h>
-#endif
-#ifdef __MINGW32__
-#include <windows.h>
-#define usleep(usec) (Sleep ((usec) / 1000), 0)
-#endif
-#ifdef WIN32
-#include <SDL_syswm.h>
-#else
-#include <cerrno>
-#include <sys/stat.h>
-#endif
-
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"
@@ -91,6 +77,22 @@
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
+
+#ifdef __APPLE__
+#include <CoreFoundation/CFBundle.h>
+#endif
+
+#ifdef __MINGW32__
+#include <windows.h>
+#define usleep(usec) (Sleep ((usec) / 1000), 0)
+#endif
+
+#ifdef WIN32
+#include <SDL_syswm.h>
+#else
+#include <cerrno>
+#include <sys/stat.h>
+#endif
 
 // Account infos
 char n_server, n_character;

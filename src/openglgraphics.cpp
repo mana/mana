@@ -19,27 +19,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <cstring>
+#include <SDL.h>
+
+#include <guichan/exception.hpp>
+#include <guichan/image.hpp>
+
+#include "log.h"
+#include "main.h"
+#include "openglgraphics.h"
+
+#include "resources/image.h"
+
+#ifdef __APPLE__
+#include <OpenGL/OpenGL.h>
+#endif
+
 #ifdef USE_OPENGL
 
 #ifndef GL_TEXTURE_RECTANGLE_ARB
 #define GL_TEXTURE_RECTANGLE_ARB 0x84F5
 #define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB 0x84F8
 #endif
-
-#include <cstring>
-#include <SDL.h>
-
-#ifdef __APPLE__
-#include <OpenGL/OpenGL.h>
-#endif
-
-#include <guichan/exception.hpp>
-#include <guichan/image.hpp>
-
-#include "log.h"
-#include "openglgraphics.h"
-
-#include "resources/image.h"
 
 OpenGLGraphics::OpenGLGraphics():
     mAlpha(false), mTexture(false), mColorAlpha(false)
