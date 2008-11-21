@@ -48,7 +48,7 @@ ConfigListener *Window::windowConfigListener = 0;
 WindowContainer *Window::windowContainer = 0;
 int Window::instances = 0;
 int Window::mouseResize = 0;
-ImageRect Window::border;
+//ImageRect Window::border;
 Image *Window::closeImage = NULL;
 bool Window::mAlphaChanged = false;
 
@@ -57,9 +57,9 @@ class WindowConfigListener : public ConfigListener
     void optionChanged(const std::string &)
     {
         Window::mAlphaChanged = true;
-        for_each(Window::border.grid, Window::border.grid + 9,
-                std::bind2nd(std::mem_fun(&Image::setAlpha),
-                    config.getValue("guialpha", 0.8)));
+//        for_each(Window::border.grid, Window::border.grid + 9,
+//                 std::bind2nd(std::mem_fun(&Image::setAlpha),
+//                 config.getValue("guialpha", 0.8)));
     }
 };
 
@@ -142,18 +142,19 @@ Window::~Window()
 
     instances--;
 
+    // Clean up static resources
+    for( int i = 0; i < 9; i++ )
+    {
+        delete border.grid[i];
+        border.grid[i] = NULL;
+    }
+
     if (instances == 0)
     {
         config.removeListener("guialpha", windowConfigListener);
         delete windowConfigListener;
         windowConfigListener = NULL;
 
-        // Clean up static resources
-        for( int i = 0; i < 9; i++ )
-        {
-            delete border.grid[i];
-            border.grid[i] = NULL;
-        }
         closeImage->decRef();
     }
 

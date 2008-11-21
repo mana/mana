@@ -26,12 +26,11 @@
 
 #include <guichan/widgets/window.hpp>
 
+#include "../graphics.h"
 #include "../guichanfwd.h"
 
 class ConfigListener;
 class GCContainer;
-class Image;
-class ImageRect;
 class ResizeGrip;
 class WindowContainer;
 
@@ -291,7 +290,7 @@ class Window : public gcn::Window, gcn::WidgetListener
 
         static int mouseResize;    /**< Active resize handles */
         static int instances;      /**< Number of Window instances */
-        static ImageRect border;   /**< The window border and background */
+        ImageRect border;   /**< The window border and background */
         static Image *closeImage;  /**< Close Button Image */
 
         /**

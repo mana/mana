@@ -29,8 +29,8 @@
 
 // TODO: Fix windows so that they can each load their own skins without the
 // other windows overriding another window's skin.
-SpeechBubble::SpeechBubble()//:
-//    Window("Message", false, NULL, "graphics/gui/speechbubble.xml")
+SpeechBubble::SpeechBubble():
+    Window("Message", false, NULL, "graphics/gui/speechbubble.xml")
 {
     mSpeechBox = new TextBox();
     mSpeechBox->setEditable(false);
