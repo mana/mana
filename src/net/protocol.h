@@ -40,7 +40,7 @@
  */
 enum {
     // Login/Register
-    PAMSG_REGISTER                 = 0x0001, // L version, S username, S password, S email
+    PAMSG_REGISTER                 = 0x0000, // L version, S username, S password, S email
     APMSG_REGISTER_RESPONSE        = 0x0002, // B error [, S updatehost]
     PAMSG_UNREGISTER               = 0x0003, // -
     APMSG_UNREGISTER_RESPONSE      = 0x0004, // B error
