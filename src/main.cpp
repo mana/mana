@@ -59,6 +59,7 @@
 #include "gui/ok_dialog.h"
 #include "gui/progressbar.h"
 #include "gui/register.h"
+#include "gui/setup.h"
 #include "gui/textfield.h"
 #include "gui/updatewindow.h"
 
@@ -94,6 +95,16 @@
 #include <sys/stat.h>
 #endif
 
+namespace {
+    struct SetupListener : public gcn::ActionListener
+    {
+        /**
+         * Called when receiving actions from widget.
+         */
+        void action(const gcn::ActionEvent &event);
+    } listener;
+}
+
 // Account infos
 char n_server, n_character;
 
@@ -119,6 +130,8 @@ LoginData loginData;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
 Colour *textColour;
+
+extern Window *setupWindow;
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {
@@ -417,6 +430,7 @@ void exit_engine()
 
     delete gui;
     delete graphics;
+    delete setupWindow;
 
     // Shutdown libxml
     xmlCleanupParser();
@@ -699,6 +713,7 @@ int main(int argc, char *argv[])
     Game *game = NULL;
     Window *currentDialog = NULL;
     Image *login_wallpaper = NULL;
+    setupWindow = new Setup();
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
@@ -711,6 +726,9 @@ int main(int argc, char *argv[])
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
     progressBar->setVisible(false);
+    gcn::Button *setup = new Button("Setup", "Setup", &listener);
+    setup->setPosition(top->getWidth() - setup->getWidth() - 3, 3);
+    top->add(setup);
 
     sound.playMusic("Magick - Real.ogg");
 
@@ -1017,4 +1035,23 @@ int main(int argc, char *argv[])
     exit_engine();
     PHYSFS_deinit();
     return 0;
+}
+
+void SetupListener::action(const gcn::ActionEvent &event)
+{
+    Window *window = NULL;
+
+    if (event.getId() == "Setup")
+    {
+        window = setupWindow;
+    }
+
+    if (window)
+    {
+        window->setVisible(!window->isVisible());
+        if (window->isVisible())
+        {
+            window->requestMoveToTop();
+        }
+    }
 }
