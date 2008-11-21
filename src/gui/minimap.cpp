@@ -40,42 +40,47 @@ Minimap::Minimap():
 Minimap::~Minimap()
 {
     if (mMapImage)
-    {
         mMapImage->decRef();
-    }
 }
 
 void Minimap::setMapImage(Image *img)
 {
     if (mMapImage)
-    {
         mMapImage->decRef();
-    }
 
     mMapImage = img;
 
     if (mMapImage)
-    {
         mMapImage->setAlpha(0.7);
-    }
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
 
-    if (mMapImage != NULL)
+    const gcn::Rectangle a = getChildrenArea();
+
+    int mapOriginX = a.x;
+    int mapOriginY = a.y;
+
+    if (mMapImage)
     {
+        if (mMapImage->getWidth() > a.width ||
+            mMapImage->getHeight() > a.height)
+        {
+            mapOriginX += (a.width - player_node->mX) / 2;
+            mapOriginY += (a.height - player_node->mY) / 2;
+        }
         static_cast<Graphics*>(graphics)->
-            drawImage(mMapImage, getPadding(), getTitleBarHeight());
+            drawImage(mMapImage, mapOriginX, mapOriginY);
     }
 
-    Beings &beings = beingManager->getAll();
-    BeingIterator bi;
+    const Beings &beings = beingManager->getAll();
+    Beings::const_iterator bi;
 
     for (bi = beings.begin(); bi != beings.end(); bi++)
     {
-        Being *being = (*bi);
+        const Being *being = (*bi);
         int dotSize = 2;
 
         switch (being->getType()) {
@@ -101,11 +106,10 @@ void Minimap::draw(gcn::Graphics *graphics)
                 continue;
         }
 
-        int offset = (dotSize - 1) / 2;
-
+        const int offset = (dotSize - 1) / 2;
         graphics->fillRectangle(gcn::Rectangle(
-                    being->mX / 2 + getPadding() - offset,
-                    being->mY / 2 + getTitleBarHeight() - offset,
+                    being->mX / 2 + mapOriginX - offset,
+                    being->mY / 2 + mapOriginY - offset,
                     dotSize, dotSize));
     }
 }
