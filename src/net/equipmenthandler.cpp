@@ -155,7 +155,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             switch (item->getId()) {
                 case 529:
                 case 1199:
-                    player_node->mEquipment->setArrows(NULL);
+                    player_node->mEquipment->setArrows(0);
                     break;
                 case 521:
                 case 522:

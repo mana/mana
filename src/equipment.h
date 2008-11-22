@@ -43,26 +43,22 @@ class Equipment
         /**
          * Set equipment at the given slot.
          */
-        void
-        setEquipment(int index, int inventoryIndex);
+        void setEquipment(int index, int inventoryIndex);
 
         /**
          * Remove equipment from the given slot.
          */
-        void
-        removeEquipment(int index) { mEquipment[index] = 0; }
+        void removeEquipment(int index) { mEquipment[index] = 0; }
 
         /**
-         * Get the item used in the arrow slot.
+         * Returns the item used in the arrow slot.
          */
-        int
-        getArrows() { return mArrows; }
+        int getArrows() const { return mArrows; }
 
         /**
          * Set the item used in the arrow slot.
          */
-        void
-        setArrows(int arrows) { mArrows = arrows; }
+        void setArrows(int arrows) { mArrows = arrows; }
 
     private:
         int mEquipment[EQUIPMENT_SIZE];
