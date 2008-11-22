@@ -5,7 +5,7 @@ Homepage:  http://themanaworld.org/
 IRC:       irc.freenode.net / #themanaworld
 
 1) Requirements
-2) Compiling The Mana World
+2) Compiling And Installing The Mana World
 3) Notes
 
 
@@ -26,8 +26,7 @@ and some libraries. The required libraries are:
 * zlib 1.2.x        http://www.gzip.org/zlib/
 * libcurl           http://curl.haxx.se/libcurl/
 
-If you checked TMW out from Subversion you will also need these tools to
-compile:
+If you've cloned the Git repository, you will also need these tools to compile:
 
 * GNU automake 1.9  http://www.gnu.org/software/automake/
 * GNU autoconf      http://www.gnu.org/software/autoconf/
@@ -40,7 +39,8 @@ you to figure this out.
 ==========================================
 
 1) Go to the directory you have extracted the source to.
-2) If you checked out from SVN, run "./autogen.sh" to generate configure.
+2) If you've cloned the Git repository, run "autoreconf -i" to generate
+   configure and install any missing auxiliary files.
 3) Run "./configure"
 4) Run "make"
 5) Run "make install" as root
