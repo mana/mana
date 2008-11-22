@@ -4,7 +4,7 @@
 - Added --data parameter for developers
 - Added particle effect for critical hits
 - Added support for dynamic skill names and hair colors
-- Added ability to add equipment to the shurtcut bar
+- Added ability to add equipment to the shortcut bar
 - Inventory window now displays amount of slots used
 - Center minimap on player when it is larger than the minimap window
 - Extended particle emitters with properties that can change over time
