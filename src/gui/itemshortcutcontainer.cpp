@@ -86,7 +86,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
-            (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_0+i));
+            (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_0 + i));
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 
         if (itemShortcut->getItem(i) < 0)
@@ -98,9 +98,11 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
             // Draw item icon.
             Image* image = item->getImage();
             if (image) {
+                const std::string label =
+                    item->isEquipped() ? "Eq." : toString(item->getQuantity());
                 g->drawImage(image, itemX, itemY);
                 g->drawText(
-                        toString(item->getQuantity()),
+                        label,
                         itemX + mBoxWidth / 2,
                         itemY + mBoxHeight - 14,
                         gcn::Graphics::CENTER);

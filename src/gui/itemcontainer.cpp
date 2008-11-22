@@ -59,8 +59,7 @@ ItemContainer::~ItemContainer()
     mSelImg->decRef();
 }
 
-void
-ItemContainer::logic()
+void ItemContainer::logic()
 {
     gcn::Widget::logic();
 
@@ -73,8 +72,7 @@ ItemContainer::logic()
     }
 }
 
-void
-ItemContainer::draw(gcn::Graphics *graphics)
+void ItemContainer::draw(gcn::Graphics *graphics)
 {
     int columns = getWidth() / gridWidth;
 
@@ -147,20 +145,17 @@ void ItemContainer::recalculateHeight()
         setHeight(height);
 }
 
-Item*
-ItemContainer::getSelectedItem() const
+Item *ItemContainer::getSelectedItem() const
 {
     return mSelectedItem;
 }
 
-void
-ItemContainer::selectNone()
+void ItemContainer::selectNone()
 {
     setSelectedItem(NULL);
 }
 
-void
-ItemContainer::setSelectedItem(Item *item)
+void ItemContainer::setSelectedItem(Item *item)
 {
     if (mSelectedItem != item)
     {
@@ -169,8 +164,7 @@ ItemContainer::setSelectedItem(Item *item)
     }
 }
 
-void
-ItemContainer::distributeValueChangedEvent()
+void ItemContainer::distributeValueChangedEvent()
 {
     gcn::SelectionEvent event(this);
     std::list<gcn::SelectionListener*>::iterator i_end = mListeners.end();
@@ -182,8 +176,7 @@ ItemContainer::distributeValueChangedEvent()
     }
 }
 
-void
-ItemContainer::mousePressed(gcn::MouseEvent &event)
+void ItemContainer::mousePressed(gcn::MouseEvent &event)
 {
     int button = event.getButton();
 
@@ -203,9 +196,7 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         }
         Item *item = mInventory->getItem(index);
         setSelectedItem(item);
-        if (item && !item->isEquipment())
-        {
+        if (item)
             itemShortcut->setItemSelected(item->getId());
-        }
     }
 }
