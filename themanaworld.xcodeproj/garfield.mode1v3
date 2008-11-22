@@ -267,15 +267,12 @@
 								<string>20286C29FDCF999611CA2CEA</string>
 								<string>5048396909E3304600765E4B</string>
 								<string>20286C2CFDCF999611CA2CEA</string>
-								<string>1C37FBAC04509CD000000102</string>
-								<string>927F62010ED4EA4500D919E6</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>16</integer>
-									<integer>15</integer>
-									<integer>14</integer>
+									<integer>1</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -326,19 +323,27 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>927F623A0ED4EBEB00D919E6</string>
+										<string>927F62650ED4F41700D919E6</string>
 										<key>history</key>
 										<array>
-											<string>92B1EBDD0ED4E43D009AF197</string>
 											<string>92B1EBDE0ED4E43D009AF197</string>
 											<string>92B1EBF30ED4E5C5009AF197</string>
-											<string>92B1EC470ED4EA36009AF197</string>
+											<string>927F625B0ED4F41700D919E6</string>
+											<string>927F625C0ED4F41700D919E6</string>
+											<string>927F625D0ED4F41700D919E6</string>
 										</array>
 										<key>prevStack</key>
 										<array>
 											<string>92B1EBE00ED4E43D009AF197</string>
 											<string>92B1EBE10ED4E43D009AF197</string>
 											<string>92B1EBF50ED4E5C5009AF197</string>
+											<string>927F625E0ED4F41700D919E6</string>
+											<string>927F625F0ED4F41700D919E6</string>
+											<string>927F62600ED4F41700D919E6</string>
+											<string>927F62610ED4F41700D919E6</string>
+											<string>927F62620ED4F41700D919E6</string>
+											<string>927F62630ED4F41700D919E6</string>
+											<string>927F62640ED4F41700D919E6</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -531,8 +536,8 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>92A4CC8A0D1C5F1E00CA28FB</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/garfield/programming/tmwclient/themanaworld.xcodeproj</string>
 	</array>
 	<key>WindowString</key>

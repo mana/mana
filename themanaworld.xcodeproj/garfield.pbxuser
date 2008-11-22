@@ -134,23 +134,26 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 248834629;
-			PBXWorkspaceStateSaveDate = 248834629;
+			PBXPerProjectTemplateStateSaveDate = 249045476;
+			PBXWorkspaceStateSaveDate = 249045476;
 		};
 		perUserProjectItems = {
-			927F62190ED4EA6A00D919E6 /* PlistBookmark */ = 927F62190ED4EA6A00D919E6 /* PlistBookmark */;
-			927F621C0ED4EA6A00D919E6 /* PlistBookmark */ = 927F621C0ED4EA6A00D919E6 /* PlistBookmark */;
-			927F623A0ED4EBEB00D919E6 /* PlistBookmark */ = 927F623A0ED4EBEB00D919E6 /* PlistBookmark */;
-			92B1EBDD0ED4E43D009AF197 = 92B1EBDD0ED4E43D009AF197 /* PBXTextBookmark */;
+			927F625B0ED4F41700D919E6 = 927F625B0ED4F41700D919E6 /* PBXTextBookmark */;
+			927F625C0ED4F41700D919E6 = 927F625C0ED4F41700D919E6 /* PBXTextBookmark */;
+			927F625D0ED4F41700D919E6 = 927F625D0ED4F41700D919E6 /* PlistBookmark */;
+			927F625E0ED4F41700D919E6 = 927F625E0ED4F41700D919E6 /* PlistBookmark */;
+			927F625F0ED4F41700D919E6 = 927F625F0ED4F41700D919E6 /* PBXTextBookmark */;
+			927F62600ED4F41700D919E6 = 927F62600ED4F41700D919E6 /* PBXTextBookmark */;
+			927F62610ED4F41700D919E6 = 927F62610ED4F41700D919E6 /* PlistBookmark */;
+			927F62620ED4F41700D919E6 = 927F62620ED4F41700D919E6 /* PBXTextBookmark */;
+			927F62630ED4F41700D919E6 = 927F62630ED4F41700D919E6 /* PlistBookmark */;
+			927F62640ED4F41700D919E6 = 927F62640ED4F41700D919E6 /* PBXTextBookmark */;
+			927F62650ED4F41700D919E6 = 927F62650ED4F41700D919E6 /* PlistBookmark */;
 			92B1EBDE0ED4E43D009AF197 = 92B1EBDE0ED4E43D009AF197 /* PBXTextBookmark */;
 			92B1EBE00ED4E43D009AF197 = 92B1EBE00ED4E43D009AF197 /* PBXTextBookmark */;
 			92B1EBE10ED4E43D009AF197 = 92B1EBE10ED4E43D009AF197 /* PBXTextBookmark */;
-			92B1EBE90ED4E547009AF197 = 92B1EBE90ED4E547009AF197 /* PBXBookmark */;
 			92B1EBF30ED4E5C5009AF197 = 92B1EBF30ED4E5C5009AF197 /* PBXTextBookmark */;
 			92B1EBF50ED4E5C5009AF197 = 92B1EBF50ED4E5C5009AF197 /* PBXTextBookmark */;
-			92B1EC440ED4EA36009AF197 = 92B1EC440ED4EA36009AF197 /* PlistBookmark */;
-			92B1EC470ED4EA36009AF197 = 92B1EC470ED4EA36009AF197 /* PlistBookmark */;
-			92B1EC480ED4EA36009AF197 = 92B1EC480ED4EA36009AF197 /* PlistBookmark */;
 		};
 		sourceControlManager = 92BC3EC80BAEE3C8000DAB7F /* Source Control */;
 		userBuildSettings = {
@@ -172,9 +175,10 @@
 	};
 	92037A190ED2035A00D3712D /* SDLMain.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {511, 348}}";
+			sepNavIntBoundsRect = "{{0, 0}, {802, 506}}";
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 307}";
+			sepNavWindowFrame = "{{15, 389}, {861, 634}}";
 		};
 	};
 	924A42600C0874D00066885E /* Info.plist */ = {
@@ -193,7 +197,38 @@
 			sepNavVisRange = "{1251, 209}";
 		};
 	};
-	927F62190ED4EA6A00D919E6 /* PlistBookmark */ = {
+	927F625B0ED4F41700D919E6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 92037A190ED2035A00D3712D /* SDLMain.h */;
+		name = "SDLMain.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 307;
+		vrLoc = 0;
+	};
+	927F625C0ED4F41700D919E6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 92BC40E50BAEF54B000DAB7F /* SDLMain.m */;
+		name = "SDLMain.m: 14";
+		rLen = 0;
+		rLoc = 440;
+		rType = 0;
+		vrLen = 759;
+		vrLoc = 0;
+	};
+	927F625D0ED4F41700D919E6 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 924A42600C0874D00066885E /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = /Users/garfield/programming/tmwclient/Info.plist;
+		rLen = 0;
+		rLoc = 2147483647;
+	};
+	927F625E0ED4F41700D919E6 /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = 924A42600C0874D00066885E /* Info.plist */;
 		fallbackIsa = PBXBookmark;
@@ -205,7 +240,49 @@
 		rLen = 0;
 		rLoc = 2147483647;
 	};
-	927F621C0ED4EA6A00D919E6 /* PlistBookmark */ = {
+	927F625F0ED4F41700D919E6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 92037A190ED2035A00D3712D /* SDLMain.h */;
+		name = "SDLMain.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 307;
+		vrLoc = 0;
+	};
+	927F62600ED4F41700D919E6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 92BC40E50BAEF54B000DAB7F /* SDLMain.m */;
+		name = "SDLMain.m: 14";
+		rLen = 0;
+		rLoc = 440;
+		rType = 0;
+		vrLen = 635;
+		vrLoc = 124;
+	};
+	927F62610ED4F41700D919E6 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 924A42600C0874D00066885E /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			NSPrincipalClass,
+		);
+		name = /Users/garfield/programming/tmwclient/Info.plist;
+		rLen = 0;
+		rLoc = 2147483647;
+	};
+	927F62620ED4F41700D919E6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 92BC40E50BAEF54B000DAB7F /* SDLMain.m */;
+		name = "SDLMain.m: 14";
+		rLen = 0;
+		rLoc = 440;
+		rType = 0;
+		vrLen = 643;
+		vrLoc = 7053;
+	};
+	927F62630ED4F41700D919E6 /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = 924A42600C0874D00066885E /* Info.plist */;
 		fallbackIsa = PBXBookmark;
@@ -216,13 +293,23 @@
 		rLen = 0;
 		rLoc = 2147483647;
 	};
-	927F623A0ED4EBEB00D919E6 /* PlistBookmark */ = {
+	927F62640ED4F41700D919E6 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 92BC40E50BAEF54B000DAB7F /* SDLMain.m */;
+		name = "SDLMain.m: 14";
+		rLen = 0;
+		rLoc = 440;
+		rType = 0;
+		vrLen = 759;
+		vrLoc = 0;
+	};
+	927F62650ED4F41700D919E6 /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = 924A42600C0874D00066885E /* Info.plist */;
 		fallbackIsa = PBXBookmark;
 		isK = 0;
 		kPath = (
-			NSPrincipleClass,
+			CFBundleVersion,
 		);
 		name = /Users/garfield/programming/tmwclient/Info.plist;
 		rLen = 0;
@@ -251,16 +338,6 @@
 			sepNavVisRange = "{0, 961}";
 			sepNavWindowFrame = "{{180, 8}, {627, 714}}";
 		};
-	};
-	92B1EBDD0ED4E43D009AF197 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 92BC40E50BAEF54B000DAB7F /* SDLMain.m */;
-		name = "SDLMain.m: 14";
-		rLen = 0;
-		rLoc = 440;
-		rType = 0;
-		vrLen = 759;
-		vrLoc = 0;
 	};
 	92B1EBDE0ED4E43D009AF197 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -292,10 +369,6 @@
 		vrLen = 780;
 		vrLoc = 7501;
 	};
-	92B1EBE90ED4E547009AF197 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 924A42600C0874D00066885E /* Info.plist */;
-	};
 	92B1EBF30ED4E5C5009AF197 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 92BC3EEF0BAEE55A000DAB7F /* graphics.h */;
@@ -315,40 +388,6 @@
 		rType = 0;
 		vrLen = 692;
 		vrLoc = 434;
-	};
-	92B1EC440ED4EA36009AF197 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 924A42600C0874D00066885E /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = /Users/garfield/programming/tmwclient/Info.plist;
-		rLen = 0;
-		rLoc = 2147483647;
-	};
-	92B1EC470ED4EA36009AF197 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 924A42600C0874D00066885E /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-			NSPrincipalClass,
-		);
-		name = /Users/garfield/programming/tmwclient/Info.plist;
-		rLen = 0;
-		rLoc = 2147483647;
-	};
-	92B1EC480ED4EA36009AF197 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 924A42600C0874D00066885E /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = /Users/garfield/programming/tmwclient/Info.plist;
-		rLen = 0;
-		rLoc = 2147483647;
 	};
 	92BC3EBC0BAEE3BB000DAB7F /* themanaworld */ = {
 		isa = PBXExecutable;
@@ -862,8 +901,8 @@
 	92BC40E50BAEF54B000DAB7F /* SDLMain.m */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {726, 3906}}";
-			sepNavSelRange = "{440, 0}";
-			sepNavVisRange = "{7053, 643}";
+			sepNavSelRange = "{3069, 0}";
+			sepNavVisRange = "{2696, 949}";
 			sepNavWindowFrame = "{{583, 96}, {627, 714}}";
 		};
 	};

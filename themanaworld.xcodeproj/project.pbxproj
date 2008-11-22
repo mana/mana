@@ -88,7 +88,6 @@
 		926F9CF80DB005FA00AACD26 /* itemshortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926F9CF60DB005FA00AACD26 /* itemshortcut.cpp */; };
 		926F9D450DB00AFC00AACD26 /* itemshortcutcontainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926F9D410DB00AFC00AACD26 /* itemshortcutcontainer.cpp */; };
 		926F9D460DB00AFC00AACD26 /* itemshortcutwindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926F9D430DB00AFC00AACD26 /* itemshortcutwindow.cpp */; };
-		927F62590ED4F1D100D919E6 /* main.nib in Resources */ = {isa = PBXBuildFile; fileRef = 927F62570ED4F1D100D919E6 /* main.nib */; };
 		9294DA9B0C17E70400FCEDE9 /* physfs.c in Sources */ = {isa = PBXBuildFile; fileRef = 92BC3FAB0BAEE55B000DAB7F /* physfs.c */; };
 		9294DA9C0C17E70600FCEDE9 /* physfs_byteorder.c in Sources */ = {isa = PBXBuildFile; fileRef = 92BC3FAD0BAEE55B000DAB7F /* physfs_byteorder.c */; };
 		9294DAA10C17E73200FCEDE9 /* libpng.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9294DAA00C17E73200FCEDE9 /* libpng.framework */; };
@@ -474,7 +473,6 @@
 		926F9D420DB00AFC00AACD26 /* itemshortcutcontainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itemshortcutcontainer.h; sourceTree = "<group>"; };
 		926F9D430DB00AFC00AACD26 /* itemshortcutwindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = itemshortcutwindow.cpp; sourceTree = "<group>"; };
 		926F9D440DB00AFC00AACD26 /* itemshortcutwindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itemshortcutwindow.h; sourceTree = "<group>"; };
-		927F62580ED4F1D100D919E6 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/main.nib; sourceTree = "<group>"; };
 		9294DAA00C17E73200FCEDE9 /* libpng.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libpng.framework; path = /Library/Frameworks/libpng.framework; sourceTree = "<absolute>"; };
 		92A4CC9D0D1C622E00CA28FB /* dye.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dye.cpp; path = src/resources/dye.cpp; sourceTree = "<group>"; };
 		92A4CCE00D1DA58D00CA28FB /* dir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dir.c; sourceTree = "<group>"; };
@@ -905,7 +903,6 @@
 		20286C2CFDCF999611CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				927F62570ED4F1D100D919E6 /* main.nib */,
 				92A4CCFE0D1DA8E500CA28FB /* LICENSE.rtf */,
 				924A42590C0871EC0066885E /* The Mana World.icns */,
 				924A3E590C085ED70066885E /* data */,
@@ -1405,7 +1402,6 @@
 			files = (
 				924A425A0C0871EC0066885E /* The Mana World.icns in Resources */,
 				92A4CCFF0D1DA8E500CA28FB /* LICENSE.rtf in Resources */,
-				927F62590ED4F1D100D919E6 /* main.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1576,17 +1572,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		927F62570ED4F1D100D919E6 /* main.nib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				927F62580ED4F1D100D919E6 /* English */,
-			);
-			name = main.nib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		C0E91AC608A95435008D54AB /* Debug */ = {
