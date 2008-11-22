@@ -117,9 +117,9 @@ class BuyDialog : public Window, public gcn::ActionListener,
 
         ShopItems *mShopItems;
 
-        int mMoney;
-        int mAmountItems;
-        int mMaxItems;
+        Uint32 mMoney;
+        Uint32 mAmountItems;
+        Uint32 mMaxItems;
 };
 
 #endif

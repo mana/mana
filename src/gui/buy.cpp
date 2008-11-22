@@ -156,9 +156,6 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
-    // TODO: Actually we'd have a bug elsewhere if this check for the number
-    // of items to be bought ever fails, Bertram removed the assertions, is
-    // there a better way to ensure this fails in an _obivous_ way in C++?
     else if (event.getId() == "buy" && mAmountItems > 0 &&
                 mAmountItems <= mMaxItems)
     {

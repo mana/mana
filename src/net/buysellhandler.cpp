@@ -113,6 +113,7 @@ void BuySellHandler::handleMessage(MessageIn *msg)
             if (msg->readInt8() == 0) {
                 chatWindow->chatLog("Thanks for buying", BY_SERVER);
             } else {
+                buyDialog->setMoney(player_node->mGp);
                 chatWindow->chatLog("Unable to buy", BY_SERVER);
             }
             break;
