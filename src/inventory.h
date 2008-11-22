@@ -80,7 +80,7 @@ class Inventory
         /**
          * Returns id of next free slot or -1 if all occupied.
          */
-        int getFreeSlot();
+        int getFreeSlot() const;
 
         /**
          * Reset all item slots.
@@ -90,12 +90,17 @@ class Inventory
         /**
          * Get the number of slots filled with an item
          */
-        int getNumberOfSlotsUsed();
+        int getNumberOfSlotsUsed() const;
 
         /**
          * Returns the index of the last occupied slot or 0 if none occupied.
          */
-        int getLastUsedSlot();
+        int getLastUsedSlot() const;
+
+        /**
+         * Returns the number of slots available in the inventory.
+         */
+        int getInventorySize() const;
 
     protected:
         Item **mItems;  /**< The holder of items */

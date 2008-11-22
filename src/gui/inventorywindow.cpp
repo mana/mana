@@ -24,11 +24,11 @@
 #include <string>
 
 #include <guichan/mouseinput.hpp>
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "gui.h"
+#include "inventory.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
 #include "scrollarea.h"
@@ -64,10 +64,13 @@ InventoryWindow::InventoryWindow():
     mItemNameLabel = new gcn::Label("Name:");
     mItemDescriptionLabel = new gcn::Label("Description:");
     mItemEffectLabel = new gcn::Label("Effect:");
-    mWeightLabel = new gcn::Label("Total Weight: - Maximum Weight: ");
+    mWeightLabel = new gcn::Label("Weight:");
     mWeightLabel->setPosition(8, 8);
     mInvenScroll->setPosition(8,
             mWeightLabel->getY() + mWeightLabel->getHeight() + 5);
+    mInvenSlotLabel = new gcn::Label("Slots used:");
+    mInvenSlotLabel->setPosition(mWeightLabel->getX()
+            + mWeightLabel->getWidth() + 100, 8);
 
     add(mUseButton);
     add(mDropButton);
@@ -76,6 +79,7 @@ InventoryWindow::InventoryWindow():
     add(mItemDescriptionLabel);
     add(mItemEffectLabel);
     add(mWeightLabel);
+    add(mInvenSlotLabel);
 
     mUseButton->setSize(60, mUseButton->getHeight());
 
@@ -92,8 +96,14 @@ void InventoryWindow::logic()
 
     // Update weight information
     mWeightLabel->setCaption(
-            "Total Weight: " + toString(player_node->mTotalWeight) + " - "
-            "Maximum Weight: " + toString(player_node->mMaxWeight));
+            "Weight: " + toString(player_node->mTotalWeight) +
+            "/" + toString(player_node->mMaxWeight));
+
+    // Update number of items in inventory
+    mInvenSlotLabel->setCaption(
+            "Slots used: "
+            + toString(player_node->getInventory()->getNumberOfSlotsUsed())
+            + "/" + toString(player_node->getInventory()->getInventorySize()));
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -201,6 +211,7 @@ void InventoryWindow::widgetResized(const gcn::Event &event)
             mItemDescriptionLabel->getY() - mWeightLabel->getHeight() - 18);
 
     mWeightLabel->setWidth(width - 16);
+    mInvenSlotLabel->setWidth(width - 16);
 }
 
 void InventoryWindow::updateButtons()

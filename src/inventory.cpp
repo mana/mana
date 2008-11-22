@@ -132,19 +132,19 @@ bool Inventory::contains(Item *item) const
     return false;
 }
 
-int Inventory::getFreeSlot()
+int Inventory::getFreeSlot() const
 {
     Item **i = std::find_if(mItems + 2, mItems + INVENTORY_SIZE,
             std::not1(SlotUsed()));
     return (i == mItems + INVENTORY_SIZE) ? -1 : (i - mItems);
 }
 
-int Inventory::getNumberOfSlotsUsed()
+int Inventory::getNumberOfSlotsUsed() const
 {
     return count_if(mItems, mItems + INVENTORY_SIZE, SlotUsed());
 }
 
-int Inventory::getLastUsedSlot()
+int Inventory::getLastUsedSlot() const
 {
     for (int i = INVENTORY_SIZE - 1; i >= 0; i--) {
         if (SlotUsed()(mItems[i])) {
@@ -153,4 +153,9 @@ int Inventory::getLastUsedSlot()
     }
 
     return -1;
+}
+
+int Inventory::getInventorySize() const
+{
+    return INVENTORY_SIZE - 2;
 }

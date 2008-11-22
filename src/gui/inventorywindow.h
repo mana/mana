@@ -84,6 +84,7 @@ class InventoryWindow : public Window, gcn::ActionListener,
         gcn::Label *mItemDescriptionLabel;
         gcn::Label *mItemEffectLabel;
         gcn::Label *mWeightLabel;
+        gcn::Label *mInvenSlotLabel;
 };
 
 extern InventoryWindow *inventoryWindow;
