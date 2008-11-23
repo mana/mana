@@ -31,9 +31,8 @@ header("Pragma: no-cache");
 List of current updates:
 
 <?php
-$svn_url_base = 'http://themanaworld.svn.sourceforge.net/viewvc/themanaworld/tmwdata/trunk/';
-$download_url_base = 'http://themanaworld.svn.sourceforge.net/viewvc/*checkout*/themanaworld/tmwdata/trunk/';
-$svn_checkout_path = '/home/eathena/public_html/updates/tmwdata/';
+$download_url_base = 'http://updates.themanaworld.org/tmwdata/';
+$checkout_path = '/home/eathena/public_html/updates/tmwdata/';
 $update_file = array_filter(array_reverse(file('resources2.txt')));
 $updates = array();
 $update_file_maxlen = 0;
@@ -65,16 +64,20 @@ foreach ($update_file as $update_line)
       $update['uncompressed_size'] += zip_entry_filesize($zip_entry);
       $entry_name = zip_entry_name($zip_entry);
       $entry_size = zip_entry_compressedsize($zip_entry);
+      $entry_exists = file_exists($checkout_path . $entry_name);
       $entry_used = !array_key_exists($entry_name, $update_entries);
       $entries[$entry_name] = array(
         'name' => $entry_name,
         'size' => $entry_size,
-        'used' => $entry_used);
+        'used' => $entry_used,
+        'obsolete' => !$entry_exists);
       $update['size'] += $entry_size;
 
       if ($entry_used) {
-        $update['used_entry_count']++;
-        $update['used_size'] += $entry_size;
+        if ($entry_exists) {
+          $update['used_entry_count']++;
+          $update['used_size'] += $entry_size;
+        }
         $update_entries[$entry_name] = $update;
       }
 
@@ -143,20 +146,14 @@ ksort($update_entries);
 
 foreach ($update_entries as $entry => $update)
 {
-  $exists = file_exists($svn_checkout_path . $entry);
+  $exists = file_exists($checkout_path . $entry);
   printf("<span style=\"color: %s;\">%-{$update_entry_maxlen}s</span>  ",
     $exists ? "black" : "rgb(100,100,100)",
     $entry);
   print_update_name($update, true);
 
-  if ($exists) {
-    // Temporary hack to make URLs to map files work
-    $entry = str_replace('.tmx.gz', '.tmx', $entry);
-
-    printf('  <a href="%s%s?view=log">svn</a>', $svn_url_base, $entry);
-    if (substr($entry, strlen($entry) - 1) != '/')
-      printf('  <a href="%s%s">download</a>', $download_url_base, $entry);
-  }
+  if ($exists && substr($entry, strlen($entry) - 1) != '/')
+    printf('  <a href="%s%s">download</a>', $download_url_base, $entry);
   echo "\n";
 }
 
@@ -168,10 +165,13 @@ foreach (array_reverse($updates) as $update)
   print "\n<a name=\"".$update['file']."\"/><b>".$update['file']."</b>\n";
 
   foreach ($update['entries'] as $entry_name => $entry) {
-    printf("%-{$update_entry_maxlen}s", $entry_name);
-    if ($entry['used']) {
+    printf("%s%-{$update_entry_maxlen}s%s",
+      $entry['obsolete'] ? "<span style=\"color: rgb(100,100,100);\">" : "",
+      $entry_name,
+      $entry['obsolete'] ? "</span>" : "");
+    if ($entry['used'] && !$entry['obsolete']) {
       echo '  *';
-    } else {
+    } elseif (!$entry['obsolete']) {
       echo '  ';
       print_update_name($update_entries[$entry_name], false);
     }
