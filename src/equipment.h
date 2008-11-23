@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
 #ifndef _TMW_EQUIPMENT_H_
@@ -45,26 +43,22 @@ class Equipment
         /**
          * Set equipment at the given slot.
          */
-        void
-        setEquipment(int index, int inventoryIndex);
+        void setEquipment(int index, int inventoryIndex);
 
         /**
          * Remove equipment from the given slot.
          */
-        void
-        removeEquipment(int index) { mEquipment[index] = 0; }
+        void removeEquipment(int index) { mEquipment[index] = 0; }
 
         /**
-         * Get the item used in the arrow slot.
+         * Returns the item used in the arrow slot.
          */
-        int
-        getArrows() { return mArrows; }
+        int getArrows() const { return mArrows; }
 
         /**
          * Set the item used in the arrow slot.
          */
-        void
-        setArrows(int arrows) { mArrows = arrows; }
+        void setArrows(int arrows) { mArrows = arrows; }
 
     private:
         int mEquipment[EQUIPMENT_SIZE];

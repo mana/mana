@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
 #ifndef _INVENTORY_H
@@ -82,7 +80,7 @@ class Inventory
         /**
          * Returns id of next free slot or -1 if all occupied.
          */
-        int getFreeSlot();
+        int getFreeSlot() const;
 
         /**
          * Reset all item slots.
@@ -92,12 +90,17 @@ class Inventory
         /**
          * Get the number of slots filled with an item
          */
-        int getNumberOfSlotsUsed();
+        int getNumberOfSlotsUsed() const;
 
         /**
          * Returns the index of the last occupied slot or 0 if none occupied.
          */
-        int getLastUsedSlot();
+        int getLastUsedSlot() const;
+
+        /**
+         * Returns the number of slots available in the inventory.
+         */
+        int getInventorySize() const;
 
     protected:
         Item **mItems;  /**< The holder of items */

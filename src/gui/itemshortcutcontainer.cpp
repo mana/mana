@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
 #include "itemshortcutcontainer.h"
@@ -88,7 +86,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
-            (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_0+i));
+            (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_0 + i));
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 
         if (itemShortcut->getItem(i) < 0)
@@ -100,9 +98,11 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
             // Draw item icon.
             Image* image = item->getImage();
             if (image) {
+                const std::string label =
+                    item->isEquipped() ? "Eq." : toString(item->getQuantity());
                 g->drawImage(image, itemX, itemY);
                 g->drawText(
-                        toString(item->getQuantity()),
+                        label,
                         itemX + mBoxWidth / 2,
                         itemY + mBoxHeight - 14,
                         gcn::Graphics::CENTER);
