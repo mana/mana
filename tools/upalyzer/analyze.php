@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 header("Content-type: text/html");
-header("Cache-Control: no-store, no-cache, must-revalidate"); 
+header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
@@ -31,6 +31,9 @@ header("Pragma: no-cache");
 List of current updates:
 
 <?php
+$svn_url_base = 'http://themanaworld.svn.sourceforge.net/viewvc/themanaworld/tmwdata/trunk/';
+$download_url_base = 'http://themanaworld.svn.sourceforge.net/viewvc/*checkout*/themanaworld/tmwdata/trunk/';
+$svn_checkout_path = '/home/eathena/public_html/updates/tmwdata/';
 $update_file = array_filter(array_reverse(file('resources2.txt')));
 $updates = array();
 $update_file_maxlen = 0;
@@ -107,7 +110,7 @@ function print_update_name($update, $pad = true)
 foreach (array_reverse($updates) as $update)
 {
   print_update_name($update);
-  echo '  '. $update['adler32'];
+  printf("  %8s", $update['adler32']);
   printf("  %4d kb", $update['filesize'] / 1024);
   if (!$update['zip_error']) {
     printf("  %4d kb", $update['uncompressed_size'] / 1024);
@@ -140,8 +143,20 @@ ksort($update_entries);
 
 foreach ($update_entries as $entry => $update)
 {
-  printf("%-{$update_entry_maxlen}s  ", $entry);
-  print_update_name($update, false);
+  $exists = file_exists($svn_checkout_path . $entry);
+  printf("<span style=\"color: %s;\">%-{$update_entry_maxlen}s</span>  ",
+    $exists ? "black" : "rgb(100,100,100)",
+    $entry);
+  print_update_name($update, true);
+
+  if ($exists) {
+    // Temporary hack to make URLs to map files work
+    $entry = str_replace('.tmx.gz', '.tmx', $entry);
+
+    printf('  <a href="%s%s?view=log">svn</a>', $svn_url_base, $entry);
+    if (substr($entry, strlen($entry) - 1) != '/')
+      printf('  <a href="%s%s">download</a>', $download_url_base, $entry);
+  }
   echo "\n";
 }
 
