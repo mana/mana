@@ -265,7 +265,7 @@ void StatusWindow::update()
     }
 
     mHpBar->setProgress((float) mPlayer->mHp / (float) mPlayer->mMaxHp);
-    // mMpBar->setProgress((float)mPlayer->mp / (float)mPlayer->maxMp);
+    mMpBar->setProgress((float) mPlayer->mMp / (float) mPlayer->mMaxMp);
 
     mXpBar->setProgress(
             (float) mPlayer->getXp() / (float) mPlayer->mXpForNextLevel);
