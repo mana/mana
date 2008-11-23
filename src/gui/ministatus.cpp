@@ -100,7 +100,7 @@ void MiniStatusWindow::update()
     if (player_node->MATK <= 0)
         mMpBar->setColor(100, 100, 100); // grey, to indicate that we lack magic
     else
-        mMpBar->setColor(143, 192, 211); // blue, to indicate that we have magic
+        mMpBar->setColor(26, 102, 230); // blue, to indicate that we have magic
 
     mXpBar->setProgress(
             (float) player_node->getXp() / player_node->mXpForNextLevel);
