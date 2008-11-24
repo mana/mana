@@ -126,10 +126,10 @@ void ResourceManager::cleanOrphans()
         else
         {
             logger->log("ResourceManager::release(%s)", res->mIdPath.c_str());
-            delete res;
             ResourceIterator toErase = iter;
             ++iter;
             mOrphanedResources.erase(toErase);
+            delete res; // delete only after removal from list, to avoid issues in recursion
         }
     }
 
