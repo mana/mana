@@ -38,6 +38,7 @@ extern Window *magicDialog;
 extern Window *statusWindow;
 extern Window *guildWindow;
 extern Window *itemShortcutWindow;
+extern Window *buddyWindow;
 
 namespace {
     struct MenuWindowListener : public gcn::ActionListener
@@ -65,6 +66,7 @@ MenuWindow::MenuWindow():
         N_("Skills"),
         N_("Magic"),
         N_("Guilds"),
+        N_("Buddys"),
         N_("Shortcut"),
         N_("Setup"),
         0
@@ -117,6 +119,10 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
     else if (event.getId() == "Guilds")
     {
         window = guildWindow;
+    }
+    else if (event.getId() == "Buddys")
+    {
+        window = buddyWindow;
     }
     else if (event.getId() == "Shortcut")
     {

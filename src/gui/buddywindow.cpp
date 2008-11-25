@@ -20,64 +20,41 @@
  */
 
 #include "buddywindow.h"
-
-#include <guichan/widgets/listbox.hpp>
-
-#include "button.h"
 #include "chat.h"
-#include "scrollarea.h"
+#include "icon.h"
 
-#include "../resources/buddylist.h"
+#include "widgets/avatar.h"
+
+#include "../resources/resourcemanager.h"
+#include "../utils/gettext.h"
 
 extern ChatWindow *chatWindow;
 
 BuddyWindow::BuddyWindow():
-    Window("Buddy")
+    Window(_("Buddy"))
 {
+    setVisible(false);
     setContentSize(124, 202);
+    setCaption(_("Buddy List"));
+    setResizable(true);
+    setCloseButton(true);
 
-    mBuddyList = new BuddyList();
+    Image *addImg = ResourceManager::getInstance()->getImage("buddyadd.png");
+    Image *delImg = ResourceManager::getInstance()->getImage("buddydel.png");
 
-    mListbox = new gcn::ListBox();
-    mListbox->setListModel(mBuddyList);
+    if (addImg && delImg)
+    {
+        Icon *addBuddy = new Icon(addImg);
+        Icon *delBuddy = new Icon(delImg);
 
-    ScrollArea *scrollArea = new ScrollArea(mListbox);
-    scrollArea->setDimension(gcn::Rectangle(
-                7, 5, 110, 170));
-    add(scrollArea);
+        add(addBuddy);
+        add(delBuddy);
+    }
 
-    Button *talk = new Button("Talk", "Talk", this);
-    Button *remove = new Button("Remove", "Remove", this);
-    Button *cancel = new Button("Cancel", "Cancel", this);
-
-    talk->setPosition(2,180);
-    remove->setPosition(talk->getWidth()+2,180);
-    cancel->setPosition(talk->getWidth()+remove->getWidth()+2,180);
-
-    add(talk);
-    add(remove);
-    add(cancel);
+    loadWindowState("Buddy");
 }
 
 void BuddyWindow::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "Talk") {
-        int selected = mListbox->getSelected();
-        if ( selected > -1 )
-        {
-            std::string who = mBuddyList->getElementAt(selected);
-            chatWindow->setInputText(who +": ");
-        }
-    }
-    else if (event.getId() == "Remove") {
-        int selected = mListbox->getSelected();
-        if ( selected > -1 )
-        {
-            std::string who = mBuddyList->getElementAt(selected);
-            mBuddyList->removeBuddy(who);
-        }
-    }
-    else if (event.getId() == "Cancel") {
-        setVisible(false);
-    }
+
 }

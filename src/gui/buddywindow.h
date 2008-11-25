@@ -23,12 +23,11 @@
 #define _TMW_BUDDYWINDOW_H
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/actionevent.hpp>
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
-class BuddyList;
+class Avatar;
 
 /**
  * Window showing buddy list.
@@ -49,8 +48,7 @@ class BuddyWindow : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
     private:
-        BuddyList *mBuddyList;
-        gcn::ListBox *mListbox;
+        std::list<Avatar*> mBuddyList;
 };
 
 #endif /* _TMW_BUDDYWINDOW_H */

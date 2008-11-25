@@ -44,6 +44,7 @@
 #include "particle.h"
 #include "effectmanager.h"
 
+#include "gui/buddywindow.h"
 #include "gui/buy.h"
 #include "gui/buysell.h"
 //#include "gui/chargedialog.h"
@@ -125,7 +126,7 @@ Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 //ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
-//BuddyWindow *buddyWindow;
+BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
@@ -213,7 +214,7 @@ void createGuiWindows()
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     //chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow;
-    //buddyWindow = new BuddyWindow();
+    buddyWindow = new BuddyWindow();
     guildWindow = new GuildWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
@@ -263,7 +264,7 @@ void destroyGuiWindows()
     //delete chargeDialog;
     //delete newSkillWindow;
     delete tradeWindow;
-    //delete buddyWindow;
+    delete buddyWindow;
     delete guildWindow;
     delete helpWindow;
     delete debugWindow;
@@ -665,6 +666,7 @@ void Game::handleInput()
                             helpWindow->setVisible(false);
                             debugWindow->setVisible(false);
                             guildWindow->setVisible(false);
+                            buddyWindow->setVisible(false);
                         }
                         break;
                 }
