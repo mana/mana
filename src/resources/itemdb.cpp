@@ -89,7 +89,7 @@ void ItemDB::load()
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
         std::string effect = XML::getProperty(node, "effect", "");
-        int weaponType = XML::getProperty(node, "weapon_type", 0);// Not used by Aethyra
+        int weaponType = XML::getProperty(node, "weapon_type", 0);
 
         if (id)
         {

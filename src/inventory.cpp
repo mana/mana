@@ -124,19 +124,19 @@ bool Inventory::contains(Item *item) const
     return false;
 }
 
-int Inventory::getFreeSlot()
+int Inventory::getFreeSlot() const
 {
     Item **i = std::find_if(mItems + 2, mItems + mSize,
             std::not1(SlotUsed()));
     return (i == mItems + mSize) ? -1 : (i - mItems);
 }
 
-int Inventory::getNumberOfSlotsUsed()
+int Inventory::getNumberOfSlotsUsed() const
 {
     return count_if(mItems, mItems + mSize, SlotUsed());
 }
 
-int Inventory::getLastUsedSlot()
+int Inventory::getLastUsedSlot() const
 {
     for (int i = mSize - 1; i >= 0; i--) {
         if (SlotUsed()(mItems[i])) {

@@ -31,13 +31,13 @@
 Image *ResizeGrip::gripImage = 0;
 int ResizeGrip::mInstances = 0;
 
-ResizeGrip::ResizeGrip()
+ResizeGrip::ResizeGrip(std::string image)
 {
     if (mInstances == 0)
     {
         // Load the grip image
         ResourceManager *resman = ResourceManager::getInstance();
-        gripImage = resman->getImage("graphics/gui/resize.png");
+        gripImage = resman->getImage(image);
     }
 
     mInstances++;

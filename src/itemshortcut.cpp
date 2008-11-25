@@ -61,14 +61,8 @@ void ItemShortcut::save()
 {
     for (int i = 0; i < SHORTCUT_ITEMS; i++)
     {
-        if (mItems[i])
-        {
-            config.setValue("shortcut" + toString(i), mItems[i]);
-        }
-        else
-        {
-            config.setValue("shortcut" + toString(i), -1);
-        }
+        const int itemId = mItems[i] ? mItems[i] : -1;
+        config.setValue("shortcut" + toString(i), itemId);
     }
 }
 
@@ -78,6 +72,16 @@ void ItemShortcut::useItem(int index)
     {
         Item *item = player_node->getInventory()->findItem(mItems[index]);
         if (item && item->getQuantity())
-            player_node->useItem(item);
+        {
+            if (item->isEquipment()) {
+                if (item->isEquipped()) {
+                    player_node->unequipItem(item);
+                } else {
+                    player_node->equipItem(item);
+                }
+            } else {
+                player_node->useItem(item);
+            }
+        }
     }
 }

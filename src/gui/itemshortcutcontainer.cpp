@@ -96,11 +96,13 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
             player_node->getInventory()->findItem(itemShortcut->getItem(i));
         if (item) {
             // Draw item icon.
+            const std::string label =
+                item->isEquipped() ? "Eq." : toString(item->getQuantity());
             Image* image = item->getImage();
             if (image) {
                 g->drawImage(image, itemX, itemY);
                 g->drawText(
-                        toString(item->getQuantity()),
+                        label,
                         itemX + mBoxWidth / 2,
                         itemY + mBoxHeight - 14,
                         gcn::Graphics::CENTER);

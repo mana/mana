@@ -156,7 +156,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
 
             item->setEquipped(false);
             if (equipPoint & 0x8000) {    // Arrows
-                player_node->mEquipment->setArrows(NULL);
+                player_node->mEquipment->setArrows(0);
             }
             else {
                 player_node->mEquipment->removeEquipment(position);

@@ -206,7 +206,7 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         }
         Item *item = mInventory->getItem(index);
         setSelectedItem(item);
-        if (item && !item->isEquipment())
+        if (item)
         {
             itemShortcut->setItemSelected(item->getId());
         }
