@@ -50,7 +50,10 @@
 
  /whisper <name> <message>
 
- This will send <message> to player <name>, if that player is logged in.
+ This will send <message> to player <name>, if that player is logged in. If the
+ name has a space in it, put double quotes around it like this:
+
+ /whisper "<name>" <message>
 
 
 ##2IGNORING COMMUNICATION
