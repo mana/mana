@@ -297,9 +297,7 @@ Game::Game(Network *network):
     // TODO: The user should be able to choose which one to use
     // Open the first device
     if (Joystick::getNumberOfJoysticks() > 0)
-    {
-    joystick = new Joystick(0);
-    }
+        joystick = new Joystick(0);
 
     network->registerHandler(mBeingHandler.get());
     network->registerHandler(mBuySellHandler.get());
