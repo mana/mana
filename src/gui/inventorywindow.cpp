@@ -73,7 +73,7 @@ InventoryWindow::InventoryWindow():
     mWeightLabel->setPosition(8, 8);
     mSlots = "Slots: " + 
              toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
-             "/" + toString(player_node->getInventory()->getSize());
+             "/" + toString(player_node->getInventory()->getSize() - 2);
     mSlotsLabel = new TextBox();
     mItemEffectLabel = new TextBox();
 
@@ -113,7 +113,7 @@ void InventoryWindow::logic()
 
         mSlots = "Slots: " + 
                  toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
-                 "/" + toString(player_node->getInventory()->getSize());
+                 "/" + toString(player_node->getInventory()->getSize() - 2);
 
         draw();
     }

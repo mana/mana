@@ -28,7 +28,7 @@
 // TODO move into some sane place...
 #define MAX_SLOT 2
 
-#define INVENTORY_SIZE 100
+#define INVENTORY_SIZE 102
 #define STORAGE_SIZE 301
 
 class FloorItem;

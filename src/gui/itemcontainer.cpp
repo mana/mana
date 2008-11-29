@@ -40,9 +40,12 @@
 const int ItemContainer::gridWidth = 36;  // item icon width + 4
 const int ItemContainer::gridHeight = 42; // item icon height + 10
 
+static const int NO_ITEM = -1;
+
 ItemContainer::ItemContainer(Inventory *inventory, int offset):
     mInventory(inventory),
-    mSelectedItem(NULL),
+    mSelectedItemIndex(NO_ITEM),
+    mLastSelectedItemId(NO_ITEM),
     mOffset(offset)
 {
     ResourceManager *resman = ResourceManager::getInstance();
@@ -86,13 +89,6 @@ ItemContainer::draw(gcn::Graphics *graphics)
         columns = 1;
     }
 
-    // Reset selected item when quantity not above 0 (should probably be made
-    // sure somewhere else)
-    if (mSelectedItem && mSelectedItem->getQuantity() <= 0)
-    {
-        selectNone();
-    }
-
     /*
      * mOffset is used to compensate for some weirdness that eAthena inherited from
      * Ragnarok Online.  Inventory slots and cart slots are +2 from their actual index,
@@ -109,7 +105,7 @@ ItemContainer::draw(gcn::Graphics *graphics)
         int itemY = ((i - 2) / columns) * gridHeight;
 
         // Draw selection image below selected item
-        if (mSelectedItem == item)
+        if (mSelectedItemIndex == i)
         {
             static_cast<Graphics*>(graphics)->drawImage(
                     mSelImg, itemX, itemY);
@@ -151,23 +147,67 @@ void ItemContainer::recalculateHeight()
 }
 
 Item*
-ItemContainer::getSelectedItem() const
+ItemContainer::getSelectedItem()
 {
-    return mSelectedItem;
+    refindSelectedItem(); // Make sure that we're still current
+
+    if (mSelectedItemIndex == NO_ITEM)
+        return NULL;
+
+    return mInventory->getItem(mSelectedItemIndex);
 }
 
 void
 ItemContainer::selectNone()
 {
-    setSelectedItem(NULL);
+    setSelectedItemIndex(NO_ITEM);
 }
 
-void
-ItemContainer::setSelectedItem(Item *item)
+void ItemContainer::refindSelectedItem()
 {
-    if (mSelectedItem != item)
+    if (mSelectedItemIndex != NO_ITEM) {
+	
+        if (mInventory->getItem(mSelectedItemIndex) &&
+            mInventory->getItem(mSelectedItemIndex)->getId() == mLastSelectedItemId)
+            return; // we're already fine
+	
+        // Otherwise ensure the invariant: we must point to an item of the specified last ID,
+        // or nowhere at all.
+
+        for (int i = 0; i <= mMaxItems + mOffset; i++)
+            if (mInventory->getItem(i) &&
+                mInventory->getItem(i)->getId() == mLastSelectedItemId) {
+                mSelectedItemIndex = i;
+                return;
+            }
+    }
+
+    mLastSelectedItemId = mSelectedItemIndex = NO_ITEM;
+}
+
+void ItemContainer::setSelectedItemIndex(int index)
+{
+    int newSelectedItemIndex;
+
+    /*
+     * mOffset is used to compensate for some weirdness that eAthena inherited from
+     * Ragnarok Online.  Inventory slots and cart slots are +2 from their actual index,
+     * while storage slots are +1.
+     */
+    if (index < 0 || index > mMaxItems + mOffset || mInventory->getItem(index) == NULL)
+        newSelectedItemIndex = NO_ITEM;
+    else
+        newSelectedItemIndex = index;
+	
+    if (mSelectedItemIndex != newSelectedItemIndex)
     {
-        mSelectedItem = item;
+        mSelectedItemIndex = newSelectedItemIndex;
+
+        if (mSelectedItemIndex == NO_ITEM)
+            mLastSelectedItemId = NO_ITEM;
+        else
+            mLastSelectedItemId = mInventory->getItem(index)->getId();
+
         distributeValueChangedEvent();
     }
 }
@@ -198,14 +238,10 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         int index = mx / gridWidth + ((my / gridHeight) * columns) + mOffset;
 
         itemShortcut->setItemSelected(-1);
-        // Fix for old server, it should be: if (index >= mMaxItems)
-        if (index > mMaxItems + 1)
-        {
-            setSelectedItem(NULL);
-            return;
-        }
+        setSelectedItemIndex(index);
+
         Item *item = mInventory->getItem(index);
-        setSelectedItem(item);
+
         if (item)
         {
             itemShortcut->setItemSelected(item->getId());

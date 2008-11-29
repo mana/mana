@@ -47,6 +47,7 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
     mXpForNextLevel(0),
     mAttackRange(0),
+    mSkillPoint(0),
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false),

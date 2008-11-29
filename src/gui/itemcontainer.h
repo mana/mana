@@ -43,8 +43,9 @@ namespace gcn {
  *
  * \ingroup GUI
  */
-class ItemContainer : public gcn::Widget, public gcn::MouseListener,
-    public gcn::WidgetListener
+class ItemContainer : public gcn::Widget, 
+                      public gcn::MouseListener,
+                      public gcn::WidgetListener
 {
     public:
         /**
@@ -80,7 +81,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
         /**
          * Returns the selected item.
          */
-        Item* getSelectedItem() const;
+        Item* getSelectedItem();
 
         /**
          * Sets selected item to NULL.
@@ -107,9 +108,14 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
 
     private:
         /**
-         * Sets the currently selected item.
+         * Find the current item index by the most recently used item ID
          */
-        void setSelectedItem(Item *item);
+        void refindSelectedItem(void);
+
+        /**
+         * Sets the currently selected item. Invalid (e.g., negative) indices set `no item'.
+         */
+        void setSelectedItemIndex(int index);
 
         /**
          * Determine and set the height of the container.
@@ -123,7 +129,8 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
 
         Inventory *mInventory;
         Image *mSelImg;
-        Item *mSelectedItem;
+        int mSelectedItemIndex;
+        int mLastSelectedItemId; // last selected item ID. If we lose the item, find again by ID.
 
         int mMaxItems;
         int mOffset;
