@@ -43,7 +43,8 @@ static const int NO_ITEM = -1;
 
 ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory),
-    mSelectedItemIndex(NO_ITEM)
+    mSelectedItemIndex(NO_ITEM),
+    mLastSelectedItemId(NO_ITEM)
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -140,10 +141,13 @@ void ItemContainer::recalculateHeight()
         setHeight(height);
 }
 
-Item *ItemContainer::getSelectedItem() const
+Item *ItemContainer::getSelectedItem()
 {
+    refindSelectedItem(); // Make sure that we're still current
+
     if (mSelectedItemIndex == NO_ITEM)
         return NULL;
+
     return mInventory->getItem(mSelectedItemIndex);
 }
 
@@ -152,13 +156,36 @@ void ItemContainer::selectNone()
     setSelectedItemIndex(NO_ITEM);
 }
 
+void ItemContainer::refindSelectedItem()
+{
+    if (mSelectedItemIndex != NO_ITEM) {
+
+        if (mInventory->getItem(mSelectedItemIndex) &&
+            mInventory->getItem(mSelectedItemIndex)->getId() == mLastSelectedItemId)
+            return; // we're already fine
+
+        // Otherwise ensure the invariant: we must point to an item of the specified last ID,
+        // or nowhere at all.
+
+        for (int i = 0; i <= mMaxItems + 1; i++)
+            if (mInventory->getItem(i) &&
+                mInventory->getItem(i)->getId() == mLastSelectedItemId) {
+                mSelectedItemIndex = i;
+                return;
+            }
+    }
+
+    mLastSelectedItemId = mSelectedItemIndex = NO_ITEM;
+}
+
+
 void ItemContainer::setSelectedItemIndex(int index)
 {
     int newSelectedItemIndex;
 
     // mMaxItems is broken because of eAthena's odd inventory layout and the client's refusal
     // to handle it properly, so we work around the issue right here.
-    if (index < 0 || index > mMaxItems + 1)
+    if (index < 0 || index > mMaxItems + 1 || mInventory->getItem(index) == NULL)
         newSelectedItemIndex = NO_ITEM;
     else
         newSelectedItemIndex = index;
@@ -166,6 +193,12 @@ void ItemContainer::setSelectedItemIndex(int index)
     if (mSelectedItemIndex != newSelectedItemIndex)
     {
         mSelectedItemIndex = newSelectedItemIndex;
+
+        if (mSelectedItemIndex == NO_ITEM)
+            mLastSelectedItemId = NO_ITEM;
+        else
+            mLastSelectedItemId = mInventory->getItem(index)->getId();
+
         distributeValueChangedEvent();
     }
 }
@@ -194,7 +227,6 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
         int index = mx / gridWidth + ((my / gridHeight) * columns) + 2;
 
         itemShortcut->setItemSelected(-1);
-        // Fix for old server, it should be: if (index >= mMaxItems)
         setSelectedItemIndex(index);
 
         Item *item = mInventory->getItem(index);

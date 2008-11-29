@@ -78,7 +78,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
         /**
          * Returns the selected item.
          */
-        Item* getSelectedItem() const;
+        Item* getSelectedItem();
 
         /**
          * Sets selected item to NULL.
@@ -110,18 +110,24 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
         void setSelectedItemIndex(int index);
 
         /**
+         * Find the current item index by the most recently used item ID
+         */
+        void refindSelectedItem(void);
+
+        /**
          * Determine and set the height of the container.
          */
-        void recalculateHeight();
+        void recalculateHeight(void);
 
         /**
          * Sends out selection events to the list of selection listeners.
          */
-        void distributeValueChangedEvent();
+        void distributeValueChangedEvent(void);
 
         Inventory *mInventory;
         Image *mSelImg;
         int mSelectedItemIndex;
+        int mLastSelectedItemId;  // last selected item ID.  If we lose the item, find again by ID.
 
         int mMaxItems;
 
