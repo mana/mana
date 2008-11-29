@@ -39,9 +39,11 @@
 const int ItemContainer::gridWidth = 36;  // item icon width + 4
 const int ItemContainer::gridHeight = 42; // item icon height + 10
 
+static const int NO_ITEM = -1;
+
 ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory),
-    mSelectedItem(NULL)
+    mSelectedItemIndex(NO_ITEM)
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -82,13 +84,6 @@ void ItemContainer::draw(gcn::Graphics *graphics)
         columns = 1;
     }
 
-    // Reset selected item when quantity not above 0 (should probably be made
-    // sure somewhere else)
-    if (mSelectedItem && mSelectedItem->getQuantity() <= 0)
-    {
-        selectNone();
-    }
-
     /*
      * eAthena seems to start inventory from the 3rd slot. Still a mystery to
      * us why, make sure not to copy this oddity to our own server.
@@ -104,7 +99,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
         int itemY = ((i - 2) / columns) * gridHeight;
 
         // Draw selection image below selected item
-        if (mSelectedItem == item)
+        if (mSelectedItemIndex == i)
         {
             static_cast<Graphics*>(graphics)->drawImage(
                     mSelImg, itemX, itemY);
@@ -147,19 +142,30 @@ void ItemContainer::recalculateHeight()
 
 Item *ItemContainer::getSelectedItem() const
 {
-    return mSelectedItem;
+    if (mSelectedItemIndex == NO_ITEM)
+        return NULL;
+    return mInventory->getItem(mSelectedItemIndex);
 }
 
 void ItemContainer::selectNone()
 {
-    setSelectedItem(NULL);
+    setSelectedItemIndex(NO_ITEM);
 }
 
-void ItemContainer::setSelectedItem(Item *item)
+void ItemContainer::setSelectedItemIndex(int index)
 {
-    if (mSelectedItem != item)
+    int newSelectedItemIndex;
+
+    // mMaxItems is broken because of eAthena's odd inventory layout and the client's refusal
+    // to handle it properly, so we work around the issue right here.
+    if (index < 0 || index > mMaxItems + 1)
+        newSelectedItemIndex = NO_ITEM;
+    else
+        newSelectedItemIndex = index;
+
+    if (mSelectedItemIndex != newSelectedItemIndex)
     {
-        mSelectedItem = item;
+        mSelectedItemIndex = newSelectedItemIndex;
         distributeValueChangedEvent();
     }
 }
@@ -189,13 +195,10 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
 
         itemShortcut->setItemSelected(-1);
         // Fix for old server, it should be: if (index >= mMaxItems)
-        if (index > mMaxItems + 1)
-        {
-            setSelectedItem(NULL);
-            return;
-        }
+        setSelectedItemIndex(index);
+
         Item *item = mInventory->getItem(index);
-        setSelectedItem(item);
+
         if (item)
             itemShortcut->setItemSelected(item->getId());
     }

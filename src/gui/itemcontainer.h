@@ -105,9 +105,9 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
 
     private:
         /**
-         * Sets the currently selected item.
+         * Sets the currently selected item.  Invalid (e.g., negative) indices set `no item'.
          */
-        void setSelectedItem(Item *item);
+        void setSelectedItemIndex(int index);
 
         /**
          * Determine and set the height of the container.
@@ -121,7 +121,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
 
         Inventory *mInventory;
         Image *mSelImg;
-        Item *mSelectedItem;
+        int mSelectedItemIndex;
 
         int mMaxItems;
 

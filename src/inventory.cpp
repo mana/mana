@@ -50,7 +50,7 @@ Inventory::~Inventory()
 
 Item* Inventory::getItem(int index) const
 {
-    if (index < 0 || index >= INVENTORY_SIZE)
+    if (index < 0 || index >= INVENTORY_SIZE || mItems[index]->getQuantity() <= 0)
         return 0;
 
     return mItems[index];
