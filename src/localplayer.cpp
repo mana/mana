@@ -42,6 +42,7 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
+    mSkillPoint(0),
     mXpForNextLevel(0),
     mAttackRange(0),
     mXp(0), mNetwork(0),
