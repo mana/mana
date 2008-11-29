@@ -48,7 +48,7 @@ class Equipment
         /**
          * Remove equipment from the given slot.
          */
-        void removeEquipment(int index) { mEquipment[index] = 0; }
+        void removeEquipment(int index) { if (index >= 0 && index < EQUIPMENT_SIZE) mEquipment[index] = 0; }
 
         /**
          * Returns the item used in the arrow slot.
