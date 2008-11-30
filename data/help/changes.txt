@@ -3,5 +3,6 @@
  
 ##3                         === RECENT CHANGES ===
  
-check out  www.aethyra.com for our changes in progress
+Go to http://gitorious.org/projects/tmw/repos/aethyra for a detailed
+list of changes.
  

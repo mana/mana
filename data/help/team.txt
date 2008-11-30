@@ -3,40 +3,64 @@
  
 ##3                        === DEVELOPMENT TEAM ===
 
+##2 Administration:
+
+  ##9Blua Server Administrator/Content Development
+
+  ##9MrDan Forum Administrator/GM
+
+  ##9Slinker Game Server Host
+
+  ##9Tametomo Project Head/Artist/Client Developer/Ubuntu Package Maintainer/Misc.
+
 ##2 Programmers:
+
+  ##9Kraant Developer
+            <kraant@gmail.com>
  
+##2 Artists:
+
+  ##9Angeliex Artist
+ 
+  ##9Bawabawa/Kyron/Pyrestriker Artist/SuSe Package Contributor 
+
+  ##9Frictor Head Artist 
+
+##2 Mappers:
+
+  ##9Arkyan Mapper
+
+  ##9GonzoDark Mapper
+
+##2 Content Development: 
+
+  ##9Moose
+
+##2 GMs
+
+  ##9Grimmjow
+
+  ##9SoftLace1
+
+  ##9Srauls
+ 
+##2 Misc. thanks:
+
+  ##9doorsman Testing
+
+  ##9Snoopy Testing
+
+  ##9Tarax Testing
+
+##2 Leave of Absence
+
+  ##9Blame Developer/GM
+            <blame@aethyra.com>
+
   ##9Sanga Head Developer/GM ("Sanga")
             <sanga@aethyra.com>
 
   ##9Scraggy Client Developer 
             <DougABoffey@netscape.net>
 
-  ##9Kraant Developer
-            <kraant@gmail.com>
-
-  ##9Tametomo Developer/Artist
- 
- 
-##2 Artists:
- 
-  ##9Frictor Head Artist 
-
-  ##9Angeliex Artist
-
-  ##9GonzoDark Mapper
-
-  ##9Arkyan Mapper
- 
- 
-##2 Misc. thanks:
-
-  ##9MrDan Forum Admin/GM 
-
-  ##9Slinker Game Server Host
-
-##2 Leave of Absence
-
   ##9Sert Head Artist/GM
-
-  ##9Blame Developer/GM
-            <blame@aethyra.com>
