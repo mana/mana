@@ -86,8 +86,8 @@ void Minimap::draw(gcn::Graphics *graphics)
         if (mMapImage->getWidth() > a.width ||
             mMapImage->getHeight() > a.height)
         {
-            mapOriginX += ((a.width) / 2) - player_node->mX;
-            mapOriginY += ((a.height) / 2) - player_node->mY;
+            mapOriginX += ((a.width) / 2) - (player_node->mX * mProportion);
+            mapOriginY += ((a.height) / 2) - (player_node->mY * mProportion);
         }
 
         static_cast<Graphics*>(graphics)->
