@@ -56,8 +56,14 @@ void Minimap::setMapImage(Image *img)
 
     if (mMapImage)
     {
+        int offsetX = getPadding();
+        int offsetY = getTitleBarHeight();
         mMapImage->setAlpha(0.7);
-        setDefaultSize(5, 25, mMapImage->getWidth(), mMapImage->getHeight());
+        setDefaultSize(offsetX, offsetY, 
+                       mMapImage->getWidth() < (100 + offsetX) ? 
+                           mMapImage->getWidth() : (100 + offsetX), 
+                       mMapImage->getHeight() < (100 + offsetY) ? 
+                           mMapImage->getHeight() : (100 + offsetY));
         loadWindowState();
     }
     else
@@ -80,9 +86,10 @@ void Minimap::draw(gcn::Graphics *graphics)
         if (mMapImage->getWidth() > a.width ||
             mMapImage->getHeight() > a.height)
         {
-            mapOriginX += (a.width - player_node->mX) / 2;
-            mapOriginY += (a.height - player_node->mY) / 2;
+            mapOriginX += ((a.width) / 2) - player_node->mX;
+            mapOriginY += ((a.height) / 2) - player_node->mY;
         }
+
         static_cast<Graphics*>(graphics)->
             drawImage(mMapImage, mapOriginX, mapOriginY);
     }
