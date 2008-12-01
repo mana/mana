@@ -125,11 +125,11 @@ void Minimap::draw(gcn::Graphics *graphics)
                 continue;
         }
 
-        const int offset = (dotSize - 1) * (int) mProportion;
+        const int offset = (int) ((dotSize - 1) * mProportion);
 
         graphics->fillRectangle(gcn::Rectangle(
-                    (being->mX * (int) mProportion) + mapOriginX - offset,
-                    (being->mY * (int) mProportion) + mapOriginY - offset,
+                    (int) (being->mX * mProportion) + mapOriginX - offset,
+                    (int) (being->mY * mProportion) + mapOriginY - offset,
                     dotSize, dotSize));
     }
 }
