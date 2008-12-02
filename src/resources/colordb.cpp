@@ -46,9 +46,8 @@ void ColorDB::load()
         return;
     }
 
-    XML::Document doc(HAIR_COLOR_FILE);
-    XML::Document doc2(TMW_COLOR_FILE);
-    xmlNodePtr root = doc.rootNode();
+    XML::Document *doc = new XML::Document(HAIR_COLOR_FILE);
+    xmlNodePtr root = doc->rootNode();
     bool TMWHair = false;
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
@@ -56,7 +55,8 @@ void ColorDB::load()
         logger->log("Trying TMW's color file, %s.", TMW_COLOR_FILE);
 
         TMWHair = true;
-        root = doc2.rootNode();
+        doc = new XML::Document(TMW_COLOR_FILE);
+        root = doc->rootNode();
         if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
         {
             logger->log("ColorDB: Failed");
