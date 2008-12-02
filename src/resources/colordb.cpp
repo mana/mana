@@ -55,6 +55,7 @@ void ColorDB::load()
         logger->log("Trying TMW's color file, %s.", TMW_COLOR_FILE);
 
         TMWHair = true;
+        delete doc;
         doc = new XML::Document(TMW_COLOR_FILE);
         root = doc->rootNode();
         if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
@@ -83,6 +84,7 @@ void ColorDB::load()
         }
     }
 
+    delete doc;
     mLoaded = true;
 }
 
