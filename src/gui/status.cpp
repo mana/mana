@@ -48,6 +48,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
     mLvlLabel = new gcn::Label("Level:");
     mGpLabel = new gcn::Label("Money:");
+    mJobLvlLabel = new gcn::Label("Job:");
 
     mHpLabel = new gcn::Label("HP:");
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
@@ -62,7 +63,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mMpValueLabel = new gcn::Label("");
 
     mJobXpLabel = new gcn::Label("Job:");
-    mJobXpBar = new ProgressBar(1.0f, 60, 15, 220, 135, 203);
+    mJobXpBar = new ProgressBar(1.0f, 80, 15, 220, 135, 203);
     mJobValueLabel = new gcn::Label("");
 
     int y = 3;
@@ -70,6 +71,8 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
     mLvlLabel->setPosition(x, y);
     x += mLvlLabel->getWidth() + 40;
+    mJobLvlLabel->setPosition(x, y);
+    x += mJobLvlLabel->getWidth() + 40;
     mGpLabel->setPosition(x, y);
 
     y += mLvlLabel->getHeight() + 5; // Next Row
@@ -95,10 +98,11 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mMpValueLabel->setPosition(x, y);
 
     mJobXpLabel->setPosition(175, y);
-    mJobXpBar->setPosition(225, y);
+    mJobXpBar->setPosition(205, y);
     mJobValueLabel->setPosition(290, y);
 
     add(mLvlLabel);
+    add(mJobLvlLabel);
     add(mGpLabel);
     add(mHpLabel);
     add(mHpValueLabel);
@@ -226,11 +230,11 @@ void StatusWindow::update()
     mLvlLabel->setCaption("Level: " + toString(mPlayer->mLevel));
     mLvlLabel->adjustSize();
 
+    mJobLvlLabel->setCaption("Job: " + toString(mPlayer->mJobLevel));
+    mJobLvlLabel->adjustSize();
+
     mGpLabel->setCaption("Money: " + toString(mPlayer->mGp) + " GP");
     mGpLabel->adjustSize();
-
-    mJobXpLabel->setCaption("Job: " + toString(mPlayer->mJobLevel));
-    mJobXpLabel->adjustSize();
 
     mHpValueLabel->setCaption(toString(mPlayer->mHp) +
             "/" + toString(mPlayer->mMaxHp));
@@ -334,8 +338,10 @@ void StatusWindow::update()
     mStatsReflexPoints->adjustSize();
 
     // Update Second column widgets position
-    mGpLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
-                         mLvlLabel->getY());
+    mJobLvlLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
+                              mLvlLabel->getY());
+    mGpLabel->setPosition(mJobLvlLabel->getX() + mJobLvlLabel->getWidth() + 20,
+                          mJobLvlLabel->getY());
 
     mXpLabel->setPosition(
             mHpValueLabel->getX() + mHpValueLabel->getWidth() + 10,
@@ -347,11 +353,13 @@ void StatusWindow::update()
             mXpBar->getX() + mXpBar->getWidth() + 5,
             mXpLabel->getY());
 
-    mJobXpLabel->setPosition(mXpLabel->getX(), mMpLabel->getY());
+    mJobXpLabel->setPosition(mXpBar->getX() - mJobXpLabel->getWidth() - 5, 
+                             mMpLabel->getY());
     mJobXpBar->setPosition(
-            mXpBar->getX() + mXpBar->getWidth() - mJobXpBar->getWidth(),
+            mJobXpLabel->getX() + mJobXpLabel->getWidth() + 5,
             mJobXpLabel->getY());
-    mJobValueLabel->setPosition(290, mJobXpLabel->getY());
+    mJobValueLabel->setPosition(mJobXpBar->getX() + mJobXpBar->getWidth() + 5, 
+                                mJobXpLabel->getY());
 }
 
 void StatusWindow::draw(gcn::Graphics *g)
