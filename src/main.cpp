@@ -815,7 +815,16 @@ int main(int argc, char *argv[])
                 progressBar->setProgress(0.0f);
         }
 
-        graphics->drawImage(login_wallpaper, 0, 0);
+        if (graphics->getWidth() > login_wallpaper->getWidth() ||
+                graphics->getHeight() > login_wallpaper->getHeight())
+        {
+            graphics->setColor(gcn::Color(64, 64, 64));
+            graphics->fillRectangle(gcn::Rectangle(
+                        0, 0, graphics->getWidth(), graphics->getHeight()));
+        }
+        graphics->drawImage(login_wallpaper,
+                (graphics->getWidth() - login_wallpaper->getWidth()) / 2,
+                (graphics->getHeight() - login_wallpaper->getHeight()) / 2);
         gui->draw();
         graphics->updateScreen();
 
