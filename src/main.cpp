@@ -96,6 +96,8 @@
 #endif
 
 namespace {
+    Window *setupWindow = 0;
+
     struct SetupListener : public gcn::ActionListener
     {
         /**
@@ -130,8 +132,6 @@ LoginData loginData;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
 Colour *textColour;
-
-extern Window *setupWindow;
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {
