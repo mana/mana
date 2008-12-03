@@ -446,13 +446,17 @@ MapReader::readTileset(xmlNodePtr node,
                        const std::string &path,
                        Map *map)
 {
+    int firstGid = XML::getProperty(node, "firstgid", 0);
+    XML::Document* doc = NULL;
+
     if (xmlHasProp(node, BAD_CAST "source"))
     {
-        logger->log("Warning: External tilesets not supported yet.");
-        return NULL;
+        std::string filename = XML::getProperty(node, "source", "");
+        doc = new XML::Document(filename);
+        node = doc->rootNode();
+        firstGid += XML::getProperty(node, "firstgid", 0);
     }
 
-    const int firstGid = XML::getProperty(node, "firstgid", 0);
     const int tw = XML::getProperty(node, "tilewidth", map->getTileWidth());
     const int th = XML::getProperty(node, "tileheight", map->getTileHeight());
 
@@ -475,6 +479,8 @@ MapReader::readTileset(xmlNodePtr node,
             {
                 Tileset *set = new Tileset(tilebmp, tw, th, firstGid);
                 tilebmp->decRef();
+                if (doc)
+                    delete doc;
                 return set;
             }
             else {
@@ -485,6 +491,9 @@ MapReader::readTileset(xmlNodePtr node,
         // Only one image element expected
         break;
     }
+
+    if (doc)
+        delete doc;
 
     return NULL;
 }
