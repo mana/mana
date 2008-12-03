@@ -1024,8 +1024,6 @@ int main(int argc, char *argv[])
 #endif
     delete progressBar;
     delete progressLabel;
-    delete setup;
-    delete setupWindow;
 
     delete network;
     SDLNet_Quit();
