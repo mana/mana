@@ -33,7 +33,6 @@
 #include "scrollarea.h"
 #include "viewport.h"
 
-
 #include "../inventory.h"
 #include "../item.h"
 #include "../localplayer.h"
