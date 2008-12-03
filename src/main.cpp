@@ -88,6 +88,8 @@
 #endif
 
 namespace {
+    Window *setupWindow = 0;
+
     struct SetupListener : public gcn::ActionListener
     {
         /**
@@ -121,8 +123,6 @@ CharServerHandler charServerHandler;
 LoginData loginData;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
-
-extern Window *setupWindow;
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {
