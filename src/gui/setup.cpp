@@ -59,6 +59,10 @@ Setup::Setup():
         x -= btn->getWidth() + 5;
         btn->setPosition(x, height - btn->getHeight() - 5);
         add(btn);
+
+        // Disable this button when the windows aren't created yet
+        if (!strcmp(*curBtn, "Reset Windows"))
+            btn->setEnabled(statusWindow != NULL);
     }
 
     TabbedContainer *panel = new TabbedContainer();
@@ -111,6 +115,11 @@ void Setup::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "Reset Windows")
     {
+        // Bail out if this action happens to be activated before the windows
+        // are created (though it should be disabled then)
+        if (!statusWindow)
+            return;
+
         statusWindow->resetToDefaultSize();
         minimap->resetToDefaultSize();
         chatWindow->resetToDefaultSize();
