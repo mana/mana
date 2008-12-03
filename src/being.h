@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "animatedsprite.h"
+#include "effectmanager.h"
 #include "map.h"
 #include "sprite.h"
 
@@ -357,15 +358,6 @@ class Being : public Sprite
             mEmotion = emotion;
             mEmotionTime = emote_time;
         }
-
-        /**
-         * Triggers a visual effect, such as `level up'
-         *
-         * Only draws the visual effect, does not play sound effects
-         *
-         * \param effectId ID of the effect to trigger
-         */
-        virtual void triggerEffect(int effectId) { internalTriggerEffect(effectId, false, true); }
 
         // Target cursor being used by the being
         Image *mTargetCursor;

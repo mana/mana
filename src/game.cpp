@@ -31,6 +31,7 @@
 
 #include "beingmanager.h"
 #include "configuration.h"
+#include "effectmanager.h"
 #include "engine.h"
 #include "flooritemmanager.h"
 #include "graphics.h"
@@ -126,6 +127,7 @@ ItemShortcutWindow *itemShortcutWindow;
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
 Particle* particleEngine = NULL;
+EffectManager *effectManager = NULL;
 
 const int MAX_TIME = 10000;
 
@@ -277,6 +279,8 @@ Game::Game(Network *network):
 
     beingManager = new BeingManager(network);
     floorItemManager = new FloorItemManager();
+    effectManager = new EffectManager();
+
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();
 

@@ -342,6 +342,8 @@ SET(SRCS
     textparticle.h
     tileset.h
     vector.h
+    effectmanager.cpp
+    effectmanager.h
     )
 
 ADD_EXECUTABLE(aethyra ${SRCS})

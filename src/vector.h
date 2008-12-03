@@ -22,6 +22,10 @@
 #ifndef _TMW_VECTOR_H_
 #define _TMW_VECTOR_H_
 
+#include <math.h>
+
+#include <iostream>
+
 /**
  * Vector class. Represents either a 3D point in space, a velocity or a force.
  * Provides several convenient operator overloads.
@@ -41,7 +45,7 @@ class Vector
         /**
          * Constructor.
          */
-        Vector(float x, float y, float z):
+        Vector(float x, float y, float z = 0.0f):
             x(x),
             y(y),
             z(z)
@@ -69,11 +73,12 @@ class Vector
         /**
          * In-place scale vector operator.
          */
-        void operator*=(float c)
+        Vector &operator*=(float c)
         {
             x *= c;
             y *= c;
             z *= c;
+            return *this;
         }
 
         /**
@@ -84,6 +89,17 @@ class Vector
             return Vector(x / c,
                           y / c,
                           z / c);
+        }
+
+        /**
+         * In-place scale vector operator.
+         */
+        Vector &operator/=(float c)
+        {
+            x /= c;
+            y /= c;
+            z /= c;
+            return *this;
         }
 
         /**
@@ -99,11 +115,12 @@ class Vector
         /**
          * In-place add vector operator.
          */
-        void operator+=(const Vector &v)
+        Vector &operator+=(const Vector &v)
         {
             x += v.x;
             y += v.y;
             z += v.z;
+            return *this;
         }
 
         /**
@@ -119,14 +136,55 @@ class Vector
         /**
          * In-place substract vector operator.
          */
-        void operator-=(const Vector &v)
+        Vector &operator-=(const Vector &v)
         {
             x -= v.x;
             y -= v.y;
             z -= v.z;
+            return *this;
+        }
+
+        /**
+         * Returns the length of this vector. This method does a relatively
+         * slow square root.
+         */
+        float length() const
+        {
+            return sqrtf(x * x + y * y + z * z);
+        }
+
+        /**
+         * Returns the squared length of this vector. Avoids the square root.
+         */
+        float squaredLength() const
+        {
+            return x * x + y * y + z * z;
+        }
+
+        /**
+         * Returns the manhattan length of this vector.
+         */
+        float manhattanLength() const
+        {
+            return fabsf(x) + fabsf(y) + fabsf(z);
+        }
+
+        /**
+         * Returns a normalized version of this vector. This is a unit vector
+         * running parallel to it.
+         */
+        Vector normalized() const
+        {
+            const float l = length();
+            return Vector(x / l, y / l, z / l);
         }
 
         float x, y, z;
 };
 
-#endif
+/**
+ * Appends a string representation of a vector to the output stream.
+ */
+std::ostream& operator <<(std::ostream &os, const Vector &v);
+
+#endif // _TMW_VECTOR_H_

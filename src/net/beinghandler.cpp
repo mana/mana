@@ -28,6 +28,7 @@
 
 #include "../being.h"
 #include "../beingmanager.h"
+#include "../effectmanager.h"
 #include "../game.h"
 #include "../localplayer.h"
 #include "../log.h"
@@ -269,8 +270,10 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 break;
 
             int effectType = msg->readInt32();
+            Being* being = beingManager->findBeing(id);
 
-            beingManager->findBeing(id)->triggerEffect(effectType);
+            effectManager->trigger(effectType, (int) being->getPixelX(), 
+                                  (int) being->getPixelY());
 
             break;
         }

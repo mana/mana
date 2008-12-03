@@ -78,14 +78,6 @@ class Player : public Being
          */
         void flash(int time);
 
-        /**
-         * Triggers a visual/audio effect, such as `level up'
-         *
-         * \param effect_id ID of the effect to trigger
-         */
-        virtual void
-        triggerEffect(int effectId) { internalTriggerEffect(effectId, true, true); }
-
     protected:
         void updateCoords();
     private:

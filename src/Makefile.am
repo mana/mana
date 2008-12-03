@@ -242,6 +242,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \
+	      effectmanager.cpp \
+	      effectmanager.h \
 	      engine.cpp \
 	      engine.h \
 	      equipment.cpp \
@@ -313,6 +315,7 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      textparticle.cpp \
 	      textparticle.h \
 	      tileset.h \
+	      vector.cpp \
 	      vector.h
 
 # set the include path found by configure
