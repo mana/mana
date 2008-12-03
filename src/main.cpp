@@ -421,7 +421,6 @@ void exit_engine()
 
     delete gui;
     delete graphics;
-    delete setupWindow;
 
     // Shutdown libxml
     xmlCleanupParser();
@@ -898,9 +897,13 @@ int main(int argc, char *argv[])
 #endif
                     delete progressBar;
                     delete progressLabel;
+                    delete setup;
+                    delete setupWindow;
                     progressBar = NULL;
                     progressLabel = NULL;
                     currentDialog = NULL;
+                    setup = NULL;
+                    setupWindow = NULL;
                     login_wallpaper->decRef();
                     login_wallpaper = NULL;
 
@@ -969,6 +972,8 @@ int main(int argc, char *argv[])
 #endif
     delete progressBar;
     delete progressLabel;
+    delete setup;
+    delete setupWindow;
 
     delete network;
     SDLNet_Quit();
