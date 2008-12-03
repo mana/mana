@@ -5,6 +5,7 @@
 - Added particle effect for critical hits
 - Added support for dynamic skill names and hair colors
 - Added ability to add equipment to the shortcut bar
+- Added ability to change configuration during login phase (from Aethyra)
 - Inventory window now displays amount of slots used
 - Center minimap on player when it is larger than the minimap window
 - Extended particle emitters with properties that can change over time
@@ -15,6 +16,7 @@
 - Fixed dead players to lie on the ground instead of standing around
 - Fixed shortcuts being activated when trade window was visible
 - Fixed a crash when equipment window is open
+- Fixed money value on failing to buy (from Aethyra)
 
 0.0.26 (29 August 2008)
 - Added support for a newer version of eAthena server
