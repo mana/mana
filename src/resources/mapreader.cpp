@@ -470,7 +470,8 @@ MapReader::readTileset(xmlNodePtr node,
         if (!source.empty())
         {
             std::string sourceStr = source;
-            sourceStr.erase(0, 3);  // Remove "../"
+            while (sourceStr.substr(0, 3) == "../")
+                sourceStr.erase(0, 3);  // Remove "../"
 
             ResourceManager *resman = ResourceManager::getInstance();
             Image* tilebmp = resman->getImage(sourceStr);
@@ -479,8 +480,7 @@ MapReader::readTileset(xmlNodePtr node,
             {
                 Tileset *set = new Tileset(tilebmp, tw, th, firstGid);
                 tilebmp->decRef();
-                if (doc)
-                    delete doc;
+                delete doc;
                 return set;
             }
             else {
@@ -492,8 +492,7 @@ MapReader::readTileset(xmlNodePtr node,
         break;
     }
 
-    if (doc)
-        delete doc;
+    delete doc;
 
     return NULL;
 }
