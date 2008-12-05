@@ -40,6 +40,9 @@ public:
     void unlock();
 
 private:
+    Mutex(const Mutex&);  // prevent copying
+    Mutex& operator=(const Mutex&);
+
     SDL_mutex *mMutex;
 };
 
@@ -49,11 +52,11 @@ private:
 class MutexLocker
 {
 public:
-    MutexLocker(Mutex mutex);
+    MutexLocker(Mutex *mutex);
     ~MutexLocker();
 
 private:
-    Mutex mMutex;
+    Mutex *mMutex;
 };
 
 
@@ -80,15 +83,15 @@ inline void Mutex::unlock()
 }
 
 
-inline MutexLocker::MutexLocker(Mutex mutex):
+inline MutexLocker::MutexLocker(Mutex *mutex):
     mMutex(mutex)
 {
-    mMutex.lock();
+    mMutex->lock();
 }
 
 inline MutexLocker::~MutexLocker()
 {
-    mMutex.unlock();
+    mMutex->unlock();
 }
 
 #endif // TMW_MUTEX_H
