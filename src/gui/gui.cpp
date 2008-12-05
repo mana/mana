@@ -38,6 +38,7 @@
 #include "../graphics.h"
 #include "../log.h"
 
+#include "../resources/image.h"
 #include "../resources/imageset.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/imageloader.h"
@@ -75,6 +76,8 @@ class GuiConfigListener : public ConfigListener
 Gui::Gui(Graphics *graphics):
     mCustomCursor(false),
     mMouseCursors(NULL),
+    mMouseCursorAlpha(1.0f),
+    mMouseInactivityTimer(0),
     mCursorType(CURSOR_POINTER)
 {
     logger->log("Initializing GUI...");
@@ -174,32 +177,47 @@ Gui::~Gui()
     delete hitBlueFont;
     delete hitYellowFont;
 
-    if (mMouseCursors) {
+    if (mMouseCursors)
         mMouseCursors->decRef();
-    }
 
     delete mGuiFont;
     delete speechFont;
     delete viewport;
-    delete mTop;
+    delete getTop();
 
     delete guiInput;
 }
 
-void
-Gui::draw()
+void Gui::logic()
 {
-    mGraphics->pushClipArea(mTop->getDimension());
-    mTop->draw(mGraphics);
+    // Fade out mouse cursor after extended inactivity
+    if (mMouseInactivityTimer < 100 * 15) {
+        ++mMouseInactivityTimer;
+        mMouseCursorAlpha = std::min(1.0f, mMouseCursorAlpha + 0.05f);
+    } else {
+        mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
+    }
+
+    gcn::Gui::logic();
+}
+
+void Gui::draw()
+{
+    mGraphics->pushClipArea(getTop()->getDimension());
+    getTop()->draw(mGraphics);
 
     int mouseX, mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
 
-    if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1)) &&
-            mCustomCursor)
+    if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
+            && mCustomCursor
+            && mMouseCursorAlpha > 0.0f)
     {
+        Image *mouseCursor = mMouseCursors->get(mCursorType);
+        mouseCursor->setAlpha(mMouseCursorAlpha);
+
         static_cast<Graphics*>(mGraphics)->drawImage(
-                mMouseCursors->get(mCursorType),
+                mouseCursor,
                 mouseX - 15,
                 mouseY - 17);
     }
@@ -207,8 +225,7 @@ Gui::draw()
     mGraphics->popClipArea();
 }
 
-void
-Gui::setUseCustomCursor(bool customCursor)
+void Gui::setUseCustomCursor(bool customCursor)
 {
     if (customCursor != mCustomCursor)
     {
@@ -240,4 +257,10 @@ Gui::setUseCustomCursor(bool customCursor)
             }
         }
     }
+}
+
+void Gui::handleMouseMoved(const gcn::MouseInput &mouseInput)
+{
+    gcn::Gui::handleMouseMoved(mouseInput);
+    mMouseInactivityTimer = 0;
 }
