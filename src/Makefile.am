@@ -229,6 +229,7 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      utils/strprintf.h \
 	      utils/tostring.h \
 	      utils/trim.h \
+	      utils/mutex.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
 	      animatedsprite.cpp \

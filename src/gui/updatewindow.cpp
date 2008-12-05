@@ -46,7 +46,7 @@
 /**
  * Calculates the Alder-32 checksum for the given file.
  */
-unsigned long fadler32(FILE *file)
+static unsigned long fadler32(FILE *file)
 {
     // Obtain file size
     fseek(file, 0, SEEK_END);
@@ -145,15 +145,9 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 UpdaterWindow::~UpdaterWindow()
 {
     if (mThread)
-    {
-         SDL_WaitThread(mThread, NULL);
-         mThread = NULL;
-    }
+        SDL_WaitThread(mThread, NULL);
 
-    if (mMemoryBuffer)
-    {
-        free(mMemoryBuffer);
-    }
+    free(mMemoryBuffer);
 
     // Remove possibly leftover temporary download
     ::remove((mUpdatesDir + "/download.temp").c_str());
@@ -168,8 +162,9 @@ void UpdaterWindow::setProgress(float p)
 
 void UpdaterWindow::setLabel(const std::string &str)
 {
-    mLabel->setCaption(str);
-    mLabel->adjustSize();
+    // Do delayed label text update, since Guichan isn't thread-safe
+    MutexLocker lock(mLabelMutex);
+    mNewLabelCaption = str;
 }
 
 void UpdaterWindow::enable()
@@ -426,6 +421,17 @@ void UpdaterWindow::logic()
     // Update Scroll logic
     mScrollArea->logic();
 
+    // Synchronize label caption when necessary
+    {
+        MutexLocker lock(mLabelMutex);
+
+        if (mLabel->getCaption() != mNewLabelCaption)
+        {
+            mLabel->setCaption(mNewLabelCaption);
+            mLabel->adjustSize();
+        }
+    }
+
     switch (mDownloadStatus)
     {
         case UPDATE_ERROR:
@@ -447,7 +453,8 @@ void UpdaterWindow::logic()
             mBrowserBox->addRow("##1  It is strongly recommended that");
             mBrowserBox->addRow("##1  you try again later");
             mBrowserBox->addRow(mCurlError);
-            mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
+            mScrollArea->setVerticalScrollAmount(
+                    mScrollArea->getVerticalMaxScroll());
             mDownloadStatus = UPDATE_COMPLETE;
             break;
         case UPDATE_NEWS:
