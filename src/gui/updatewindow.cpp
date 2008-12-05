@@ -163,7 +163,7 @@ void UpdaterWindow::setProgress(float p)
 void UpdaterWindow::setLabel(const std::string &str)
 {
     // Do delayed label text update, since Guichan isn't thread-safe
-    MutexLocker lock(mLabelMutex);
+    MutexLocker lock(&mLabelMutex);
     mNewLabelCaption = str;
 }
 
@@ -423,7 +423,7 @@ void UpdaterWindow::logic()
 
     // Synchronize label caption when necessary
     {
-        MutexLocker lock(mLabelMutex);
+        MutexLocker lock(&mLabelMutex);
 
         if (mLabel->getCaption() != mNewLabelCaption)
         {
