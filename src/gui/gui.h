@@ -59,6 +59,12 @@ class Gui : public gcn::Gui
         ~Gui();
 
         /**
+         * Performs logic of the GUI. Overridden to track mouse pointer
+         * activity.
+         */
+        void logic();
+
+        /**
          * Draws the whole Gui by calling draw functions down in the
          * Gui hierarchy. It also draws the mouse pointer.
          */
@@ -95,11 +101,16 @@ class Gui : public gcn::Gui
             CURSOR_TOTAL
         };
 
+    protected:
+        void handleMouseMoved(const gcn::MouseInput &mouseInput);
+
     private:
         GuiConfigListener *mConfigListener;
         gcn::Font *mGuiFont;                  /**< The global GUI font */
         bool mCustomCursor;                   /**< Show custom cursor */
         ImageSet *mMouseCursors;              /**< Mouse cursor images */
+        float mMouseCursorAlpha;
+        int mMouseInactivityTimer;
         int mCursorType;
 };
 
