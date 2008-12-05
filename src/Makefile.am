@@ -282,6 +282,7 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      utils/strprintf.cpp \
 	      utils/tostring.h \
 	      utils/trim.h \
+	      utils/mutex.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
 	      animatedsprite.cpp \
