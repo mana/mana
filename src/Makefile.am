@@ -219,6 +219,7 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      utils/strprintf.h \
 	      utils/tostring.h \
 	      utils/trim.h \
+	      utils/mutex.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
 	      animatedsprite.cpp \
