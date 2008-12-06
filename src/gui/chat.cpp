@@ -327,7 +327,10 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
     {
-        chatLog(map_path, BY_SERVER);
+        // Display the current map, X, and Y
+        std::ostringstream where;
+        where << map_path << " " << player_node->mX << "," << player_node->mY;
+        chatLog(where.str(), BY_SERVER);
     }
     else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
     {
