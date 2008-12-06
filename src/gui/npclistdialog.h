@@ -58,41 +58,31 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         void widgetResized(const gcn::Event &event);
 
         /**
-         * Redraws the window
-         */
-        void draw();
-
-        /**
          * Called when receiving actions from the widgets.
          */
-        void
-        action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Returns the number of items in the choices list.
          */
-        int
-        getNumberOfElements();
+        int getNumberOfElements();
 
         /**
          * Returns the name of item number i of the choices list.
          */
-        std::string
-        getElementAt(int i);
+        std::string getElementAt(int i);
 
         /**
          * Fills the options list for an NPC dialog.
          *
          * @param itemString A string with the options separated with colons.
          */
-        void
-        parseItems(const std::string &itemString);
+        void parseItems(const std::string &itemString);
 
         /**
          * Resets the list by removing all items.
          */
-        void
-        reset();
+        void reset();
 
     private:
         gcn::ListBox *mItemList;
@@ -103,4 +93,4 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         std::vector<std::string> mItems;
 };
 
-#endif
+#endif // _TMW_GUI_NPCLISTDIALOG_H
