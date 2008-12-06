@@ -64,31 +64,26 @@ NpcListDialog::NpcListDialog():
     setLocationRelativeTo(getParent());
 }
 
-int
-NpcListDialog::getNumberOfElements()
+int NpcListDialog::getNumberOfElements()
 {
     return mItems.size();
 }
 
-std::string
-NpcListDialog::getElementAt(int i)
+std::string NpcListDialog::getElementAt(int i)
 {
     return mItems[i];
 }
 
-void
-NpcListDialog::parseItems(const std::string &itemString)
+void NpcListDialog::parseItems(const std::string &itemString)
 {
     std::istringstream iss(itemString);
 
     std::string tmp;
-    while(getline(iss, tmp, ':')) {
+    while (getline(iss, tmp, ':'))
         mItems.push_back(tmp);
-    }
 }
 
-void
-NpcListDialog::reset()
+void NpcListDialog::reset()
 {
     mItems.clear();
 }
@@ -96,11 +91,7 @@ NpcListDialog::reset()
 void NpcListDialog::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
-    draw();
-}
 
-void NpcListDialog::draw()
-{
     const gcn::Rectangle &area = getChildrenArea();
     const int width = area.width;
     const int height = area.height;
@@ -115,8 +106,7 @@ void NpcListDialog::draw()
             cancelButton->getY());
 }
 
-void
-NpcListDialog::action(const gcn::ActionEvent &event)
+void NpcListDialog::action(const gcn::ActionEvent &event)
 {
     int choice = 0;
 
