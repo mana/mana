@@ -6,6 +6,7 @@
 - Added support for dynamic skill names and hair colors
 - Added ability to add equipment to the shortcut bar
 - Added ability to change configuration during login phase (from Aethyra)
+- Mouse cursor will now hide when not used for some time
 - Inventory window now displays amount of slots used
 - Center minimap on player when it is larger than the minimap window
 - Extended particle emitters with properties that can change over time
