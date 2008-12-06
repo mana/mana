@@ -56,7 +56,8 @@ AnimatedSprite *AnimatedSprite::load(const std::string& filename, int variant)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     SpriteDef *s = resman->getSprite(filename, variant);
-    if (!s) return NULL;
+    if (!s)
+        return NULL;
     AnimatedSprite *as = new AnimatedSprite(s);
     s->decRef();
     return as;
@@ -67,22 +68,18 @@ AnimatedSprite::~AnimatedSprite()
     mSprite->decRef();
 }
 
-void
-AnimatedSprite::reset()
+void AnimatedSprite::reset()
 {
     mFrameIndex = 0;
     mFrameTime = 0;
     mLastTime = 0;
 }
 
-void
-AnimatedSprite::play(SpriteAction spriteAction)
+void AnimatedSprite::play(SpriteAction spriteAction)
 {
     Action *action = mSprite->getAction(spriteAction);
     if (!action)
-    {
         return;
-    }
 
     mAction = action;
     Animation *animation = mAction->getAnimation(mDirection);
@@ -96,20 +93,15 @@ AnimatedSprite::play(SpriteAction spriteAction)
     }
 }
 
-void
-AnimatedSprite::update(int time)
+void AnimatedSprite::update(int time)
 {
     // Avoid freaking out at first frame or when tick_time overflows
     if (time < mLastTime || mLastTime == 0)
-    {
         mLastTime = time;
-    }
 
     // If not enough time has passed yet, do nothing
     if (time <= mLastTime || !mAnimation)
-    {
         return;
-    }
 
     unsigned int dt = time - mLastTime;
     mLastTime = time;
@@ -121,13 +113,10 @@ AnimatedSprite::update(int time)
     }
 }
 
-bool
-AnimatedSprite::updateCurrentAnimation(unsigned int time)
+bool AnimatedSprite::updateCurrentAnimation(unsigned int time)
 {
     if (!mFrame || Animation::isTerminator(*mFrame))
-    {
         return false;
-    }
 
     mFrameTime += time;
 
@@ -137,9 +126,7 @@ AnimatedSprite::updateCurrentAnimation(unsigned int time)
         mFrameIndex++;
 
         if (mFrameIndex == mAnimation->getLength())
-        {
             mFrameIndex = 0;
-        }
 
         mFrame = mAnimation->getFrame(mFrameIndex);
 
@@ -154,8 +141,7 @@ AnimatedSprite::updateCurrentAnimation(unsigned int time)
     return true;
 }
 
-bool
-AnimatedSprite::draw(Graphics* graphics, int posX, int posY) const
+bool AnimatedSprite::draw(Graphics* graphics, int posX, int posY) const
 {
     if (!mFrame || !mFrame->image)
         return false;
@@ -165,8 +151,7 @@ AnimatedSprite::draw(Graphics* graphics, int posX, int posY) const
                                posY + mFrame->offsetY);
 }
 
-void
-AnimatedSprite::setDirection(SpriteDirection direction)
+void AnimatedSprite::setDirection(SpriteDirection direction)
 {
     if (mDirection != direction)
     {
