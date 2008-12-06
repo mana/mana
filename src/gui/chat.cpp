@@ -247,6 +247,38 @@ ChatWindow::isInputFocused()
 }
 
 void
+ChatWindow::whisper(const std::string &nick, std::string msg, int prefixlen)
+{
+    std::string recvnick = "";
+    msg.erase(0, prefixlen + 1);
+
+    if (msg.substr(0,1) == "\"")
+    {
+        const std::string::size_type pos = msg.find('"', 1);
+        if (pos != std::string::npos) {
+            recvnick = msg.substr(1, pos - 1);
+            msg.erase(0, pos + 2);
+        }
+    }
+    else
+    {
+        const std::string::size_type pos = msg.find(" ");
+        if (pos != std::string::npos) {
+            recvnick = msg.substr(0, pos);
+            msg.erase(0, pos + 1);
+        }
+    }
+
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_CHAT_WHISPER);
+    outMsg.writeInt16(msg.length() + 28);
+    outMsg.writeString(recvnick, 24);
+    outMsg.writeString(msg, msg.length());
+
+    chatLog("Whispering to " + recvnick + " : " + msg, BY_PLAYER);
+}
+
+void
 ChatWindow::chatSend(const std::string &nick, std::string msg)
 {
     /* Some messages are managed client side, while others
@@ -307,35 +339,9 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         mTextOutput->clearRows();
     }
     else if (msg.substr(0, IS_WHISPER_LENGTH) == IS_WHISPER)
-    {
-        std::string recvnick = "";
-        msg.erase(0, IS_WHISPER_LENGTH + 1);
-
-        if (msg.substr(0,1) == "\"")
-        {
-            const std::string::size_type pos = msg.find('"', 1);
-            if (pos != std::string::npos) {
-                recvnick = msg.substr(1, pos - 1);
-                msg.erase(0, pos + 2);
-            }
-        }
-        else
-        {
-            const std::string::size_type pos = msg.find(" ");
-            if (pos != std::string::npos) {
-                recvnick = msg.substr(0, pos);
-                msg.erase(0, pos + 1);
-            }
-        }
-
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_CHAT_WHISPER);
-        outMsg.writeInt16(msg.length() + 28);
-        outMsg.writeString(recvnick, 24);
-        outMsg.writeString(msg, msg.length());
-
-        chatLog("Whispering to " + recvnick + " : " + msg, BY_PLAYER);
-    }
+        whisper(nick, msg, IS_WHISPER_LENGTH + 1);
+    else if (msg.substr(0, IS_SHORT_WHISPER_LENGTH) == IS_SHORT_WHISPER)
+        whisper(nick, msg, IS_SHORT_WHISPER_LENGTH + 1);
     else
     {
         chatLog("Unknown command", BY_SERVER);
