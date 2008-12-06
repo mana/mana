@@ -339,9 +339,9 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         mTextOutput->clearRows();
     }
     else if (msg.substr(0, IS_WHISPER_LENGTH) == IS_WHISPER)
-        whisper(nick, msg, IS_WHISPER_LENGTH + 1);
+        whisper(nick, msg, IS_WHISPER_LENGTH);
     else if (msg.substr(0, IS_SHORT_WHISPER_LENGTH) == IS_SHORT_WHISPER)
-        whisper(nick, msg, IS_SHORT_WHISPER_LENGTH + 1);
+        whisper(nick, msg, IS_SHORT_WHISPER_LENGTH);
     else
     {
         chatLog("Unknown command", BY_SERVER);
