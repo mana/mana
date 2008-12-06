@@ -26,13 +26,15 @@
 #include <memory>
 #include <string>
 #include <SDL_types.h>
-#include <vector>
+#include <bitset>
 
 #include "sprite.h"
 #include "map.h"
 #include "animatedsprite.h"
+#include "particlecontainer.h"
 
 #define FIRST_IGNORE_EMOTE 14
+#define STATUS_EFFECTS 32
 
 class AnimatedSprite;
 class Equipment;
@@ -405,6 +407,8 @@ class Being : public Sprite
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
 
+        typedef std::bitset<STATUS_EFFECTS> StatusEffects;
+
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
 
@@ -414,11 +418,15 @@ class Being : public Sprite
         Uint8 mGender;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
+        Uint16 mStunMode;		/**< Stun mode; zero if not stunned */
+        StatusEffects mStatusEffects;	/**< Bitset of active status effects */
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
-        std::list<Particle *> mChildParticleEffects;
+        ParticleContainer mStunParticleEffects;
+        ParticleVector mStatusParticleEffects;
+        ParticleContainer mChildParticleEffects;
 
     private:
         /**

@@ -279,6 +279,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      particleemitter.cpp \
 	      particleemitter.h \
 	      particleemitterprop.h \
+	      particlecontainer.cpp \
+	      particlecontainer.h \
 	      player.cpp \
 	      player.h \
 	      player_relations.cpp \

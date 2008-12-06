@@ -74,7 +74,9 @@ Being::Being(int id, int job, Map *map):
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
-    mSpriteColors(VECTOREND_SPRITE, "")
+    mSpriteColors(VECTOREND_SPRITE, ""),
+    mStatusParticleEffects(&mStunParticleEffects, false),
+    mChildParticleEffects(&mStatusParticleEffects, false)
 {
     setMap(map);
 
@@ -94,13 +96,6 @@ Being::~Being()
 {
     std::for_each(mSprites.begin(), mSprites.end(), make_dtor(mSprites));
     clearPath();
-
-    for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
-            i != mChildParticleEffects.end();
-            i++)
-    {
-        (*i)->kill();
-    }
 
     setMap(NULL);
 
@@ -233,12 +228,7 @@ Being::setMap(Map *map)
 void
 Being::controlParticle(Particle *particle)
 {
-    if (particle)
-    {
-        // The effect may not die without the beings permission or we segfault
-        particle->disableAutoDelete();
-        mChildParticleEffects.push_back(particle);
-    }
+    mChildParticleEffects.addLocally(particle);
 }
 
 void
@@ -413,21 +403,7 @@ Being::logic()
     }
 
     //Update particle effects
-    for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
-            i != mChildParticleEffects.end();
-
-        )
-    {
-        (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
-        if ((*i)->isExtinct())
-        {
-            (*i)->kill();
-            i = mChildParticleEffects.erase(i);
-        }
-        else {
-            i++;
-        }
-    }
+    mChildParticleEffects.setPositions((float)mPx + 16.0f, (float)mPy + 32.0f);
 }
 
 void
