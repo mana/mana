@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([The Mana World], [0.0.27], [elvenprogrammer@gmail.com], [tmw])
+AC_INIT([The Mana World], [0.0.27], [themanaworld-devel@lists.sourceforge.net], [tmw])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
 
