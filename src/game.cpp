@@ -219,6 +219,8 @@ void createGuiWindows(Network *network)
         true));
     buyDialog->setVisible(false);
     sellDialog->setVisible(false);
+    minimap->setVisible((bool) config.getValue(
+        minimap->getWindowName() + "Visible", true));
     tradeWindow->setVisible(false);
     menuWindow->setVisible((bool) config.getValue(
         menuWindow->getWindowName() + "Visible", true));
