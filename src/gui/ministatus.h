@@ -23,10 +23,12 @@
 #define _TMW_MINISTATUS_H
 
 #include <iosfwd>
+#include <vector>
 
 #include "window.h"
 
 #include "../guichanfwd.h"
+#include "../animatedsprite.h"
 
 class ProgressBar;
 
@@ -48,6 +50,15 @@ class MiniStatusWindow : public Window
          */
         void draw(gcn::Graphics *graphics);
 
+        /**
+         * Sets one of the icons
+         */
+        void setIcon(int index, AnimatedSprite *sprite);
+
+        void eraseIcon(int index);
+
+        void drawIcons(Graphics *graphics);
+
     private:
         /**
          * Updates this dialog with values from player_node
@@ -63,6 +74,8 @@ class MiniStatusWindow : public Window
         gcn::Label *mHpLabel;
         gcn::Label *mMpLabel;
         gcn::Label *mXpLabel;
+
+        std::vector<AnimatedSprite *> mIcons;
 };
 
 #endif

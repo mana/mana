@@ -60,6 +60,7 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_PLAYER_STOP,
         SMSG_PLAYER_MOVE_TO_ATTACK,
         0x0119,
+        0x0196,
         0
     };
     handledMessages = _messages;
@@ -70,12 +71,15 @@ void BeingHandler::handleMessage(MessageIn *msg)
     Uint32 id;
     Uint16 job, speed;
     Uint16 headTop, headMid, headBottom;
-    Uint16 shoes, gloves, cape, misc1, misc2;
+    Uint16 shoes, gloves;
     Uint16 weapon, shield;
     Sint16 param1;
+    int stunMode;
+    Uint32 statusEffects;
     Sint8 type;
+    Uint16 status;
     Being *srcBeing, *dstBeing;
-    int hairStyle, hairColor;
+    int hairStyle, hairColor, flag;
 
     switch (msg->getId())
     {
@@ -84,9 +88,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             // Information about a being in range
             id = msg->readInt32();
             speed = msg->readInt16();
-            msg->readInt16();  // opt1
-            msg->readInt16();  // opt2
-            msg->readInt16();  // option
+            stunMode = msg->readInt16();  // opt1
+            statusEffects = msg->readInt16();  // opt2
+            statusEffects |= ((Uint32)msg->readInt16()) << 16;  // option
             job = msg->readInt16();  // class
 
             dstBeing = beingManager->findBeing(id);
@@ -109,6 +113,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 dstBeing->mWalkTime = tick_time;
                 dstBeing->setAction(Being::STAND);
             }
+
 
             // Prevent division by 0 when calculating frame
             if (speed == 0) { speed = 150; }
@@ -134,8 +139,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // unknown
             msg->readInt16();  // unknown
             msg->readInt16();  // manner
-            msg->readInt16();  // karma
-            msg->readInt8();   // unknown
+            dstBeing->setStatusEffectBlock(32, msg->readInt16());  // opt3
+            msg->readInt8();   // karma
             dstBeing->setGender(1 - msg->readInt8());   // gender
 
             // Set these after the gender, as the sprites may be gender-specific
@@ -165,6 +170,10 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt8();   // unknown
             msg->readInt8();   // unknown
             msg->readInt8();   // unknown / sit
+
+            dstBeing->setStunMode(stunMode);
+            dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
+            dstBeing->setStatusEffectBlock(16, statusEffects & 0xffff);
             break;
 
         case SMSG_BEING_MOVE2:
@@ -376,9 +385,10 @@ void BeingHandler::handleMessage(MessageIn *msg)
             // An update about a player, potentially including movement.
             id = msg->readInt32();
             speed = msg->readInt16();
-            cape = msg->readInt16();
-            misc1 = msg->readInt16();
-            misc2 = msg->readInt16();
+            stunMode = msg->readInt16();  // opt1; Aethyra use this as cape
+            statusEffects = msg->readInt16();  // opt2; Aethyra use this as misc1
+            statusEffects |= ((Uint32) msg->readInt16())
+                << 16; // status.options; Aethyra uses this as misc2
             job = msg->readInt16();
 
             dstBeing = beingManager->findBeing(id);
@@ -406,8 +416,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // clothes color - Aethyra-"abused" as shoes, we ignore it
             msg->readInt16();  // head dir - Aethyra-"abused" as gloves, we ignore it
             msg->readInt32();  // guild
-            msg->readInt32();  // emblem
+            msg->readInt16();  // emblem
             msg->readInt16();  // manner
+            dstBeing->setStatusEffectBlock(32, msg->readInt16());  // opt3
             msg->readInt8();   // karma
             dstBeing->setGender(1 - msg->readInt8());   // gender
 
@@ -417,9 +428,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setSprite(Being::HAT_SPRITE, headTop);
-            dstBeing->setSprite(Being::CAPE_SPRITE, cape);
-            dstBeing->setSprite(Being::MISC1_SPRITE, misc1);
-            dstBeing->setSprite(Being::MISC2_SPRITE, misc2);
+            //dstBeing->setSprite(Being::CAPE_SPRITE, cape);
+            //dstBeing->setSprite(Being::MISC1_SPRITE, misc1);
+            //dstBeing->setSprite(Being::MISC2_SPRITE, misc2);
             dstBeing->setHairStyle(hairStyle, hairColor);
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
@@ -461,6 +472,10 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             dstBeing->mWalkTime = tick_time;
             dstBeing->mFrame = 0;
+
+            dstBeing->setStunMode(stunMode);
+            dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
+            dstBeing->setStatusEffectBlock(16, statusEffects & 0xffff);
             break;
 
         case SMSG_PLAYER_STOP:
@@ -500,10 +515,30 @@ void BeingHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x0119:
-            // Change in players look
-            logger->log("0x0119 %i %i %i %x %i", msg->readInt32(),
-                    msg->readInt16(), msg->readInt16(), msg->readInt16(),
-                    msg->readInt8());
+            // Change in players' flags
+            id = msg->readInt32();
+            dstBeing = beingManager->findBeing(id);
+            stunMode = msg->readInt16();
+            statusEffects = msg->readInt16();
+            statusEffects |= ((Uint32) msg->readInt16()) << 16;
+            msg->readInt8();
+
+            if (dstBeing) {
+                dstBeing->setStunMode(stunMode);
+                dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
+                dstBeing->setStatusEffectBlock(16, statusEffects & 0xffff);
+            }
+            break;
+
+        case 0x0196:
+            // Status change
+            status = msg->readInt16();
+            id = msg->readInt32();
+            flag = msg->readInt8(); // 0: stop, 1: start
+
+            dstBeing = beingManager->findBeing(id);
+            if (dstBeing)
+                dstBeing->setStatusEffect(status, flag);
             break;
     }
 }

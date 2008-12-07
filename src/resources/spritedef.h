@@ -78,6 +78,19 @@ class SpriteDef : public Resource
          */
         Action *getAction(SpriteAction action) const;
 
+        /**
+         * Converts a string into a SpriteAction enum.
+         */
+        static SpriteAction
+        makeSpriteAction(const std::string &action);
+
+        /**
+         * Converts a string into a SpriteDirection enum.
+         */
+        static SpriteDirection
+        makeSpriteDirection(const std::string &direction);
+
+
     private:
         /**
          * Constructor.
@@ -131,18 +144,6 @@ class SpriteDef : public Resource
          */
         void
         substituteAction(SpriteAction complete, SpriteAction with);
-
-        /**
-         * Converts a string into a SpriteAction enum.
-         */
-        static SpriteAction
-        makeSpriteAction(const std::string &action);
-
-        /**
-         * Converts a string into a SpriteDirection enum.
-         */
-        static SpriteDirection
-        makeSpriteDirection(const std::string &direction);
 
 
         typedef std::map<std::string, ImageSet*> ImageSets;

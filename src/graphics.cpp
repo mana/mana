@@ -123,7 +123,7 @@ bool Graphics::drawImage(Image *image, int x, int y)
 {
     return drawImage(image, 0, 0, x, y, image->mBounds.w, image->mBounds.h);
 }
-
+#include <cstdio>
 bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
         int width, int height, bool)
 {

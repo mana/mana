@@ -26,7 +26,7 @@
 #include <memory>
 #include <string>
 #include <SDL_types.h>
-#include <bitset>
+#include <set>
 
 #include "sprite.h"
 #include "map.h"
@@ -45,6 +45,9 @@ class Graphics;
 class ImageSet;
 class Particle;
 class Text;
+
+
+class StatusEffect;
 
 /**
  * A position along a being's path.
@@ -108,7 +111,6 @@ class Being : public Sprite
             TC_LARGE,
             NUM_TC
         };
-
 
         /**
          * Directions, to be used as bitmask values
@@ -356,6 +358,27 @@ class Being : public Sprite
         }
 
         /**
+         * Sets the being's stun mode.  If zero, the being is `normal',
+         * otherwise it is `stunned' in some fashion.
+         */
+        void setStunMode(int stunMode)
+        {
+            if (mStunMode != stunMode)
+                updateStunMode(mStunMode, stunMode);
+            mStunMode = stunMode;
+        };
+
+        void setStatusEffect(int index, bool active);
+
+        /**
+         * A status effect block is a 16 bit mask of status effects.
+         * We assign each such flag a block ID of offset + bitnr.
+         *
+         * These are NOT the same as the status effect indices.
+         */
+        void setStatusEffectBlock(int offset, Uint16 flags);
+
+        /**
          * Triggers a visual effect, such as `level up'
          *
          * Only draws the visual effect, does not play sound effects
@@ -400,14 +423,35 @@ class Being : public Sprite
         void
         internalTriggerEffect(int effectId, bool sfx, bool gfx);
 
+        /**
+         * Notify self that the stun mode has been updated.  Invoked by
+         * setStunMode if something changed.
+         */
+        virtual void
+        updateStunMode(int oldMode, int newMode);
+
+        /**
+         * Notify self that a status effect has flipped.
+         * The new flag is passed.
+         */
+        virtual void
+        updateStatusEffect(int index, bool newStatus);
+
+        /**
+         * Handle an update to a status or stun effect
+         *
+         * \param The StatusEffect to effect
+         * \param effectId -1 for stun, otherwise the effect index
+         */
+        virtual void
+        handleStatusEffect(StatusEffect *effect, int effectId);
+
         Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint8 mDirection;               /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
-
-        typedef std::bitset<STATUS_EFFECTS> StatusEffects;
 
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
@@ -419,7 +463,7 @@ class Being : public Sprite
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
         Uint16 mStunMode;		/**< Stun mode; zero if not stunned */
-        StatusEffects mStatusEffects;	/**< Bitset of active status effects */
+        std::set<int> mStatusEffects;	/**< set of active status effects */
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;

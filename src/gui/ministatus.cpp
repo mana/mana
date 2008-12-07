@@ -79,6 +79,26 @@ MiniStatusWindow::MiniStatusWindow():
     loadWindowState();
 }
 
+void
+MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
+{
+    if (index >= (int) mIcons.size())
+        mIcons.resize(index + 1, NULL);
+
+    if (mIcons[index])
+        delete mIcons[index];
+
+    mIcons[index] = sprite;
+}
+
+void
+MiniStatusWindow::eraseIcon(int index)
+{
+    mIcons.erase(mIcons.begin() + index);
+}
+
+extern volatile int tick_time;
+
 void MiniStatusWindow::update()
 {
     // HP Bar coloration
@@ -128,10 +148,27 @@ void MiniStatusWindow::update()
     */
 
     mXpLabel->setCaption(updatedText.str());
+
+    for (unsigned int i = 0; i < mIcons.size(); i++)
+        if (mIcons[i])
+            mIcons[i]->update(tick_time * 10);
+
 }
 
-void MiniStatusWindow::draw(gcn::Graphics *graphics)
+void MiniStatusWindow::draw(gcn::Graphics *gcn_graphics)
 {
     update();
-    drawChildren(graphics);
+    drawChildren(gcn_graphics);
+}
+
+void
+MiniStatusWindow::drawIcons(Graphics *graphics)
+{
+    // Draw icons
+    int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
+    for (unsigned int i = 0; i < mIcons.size(); i++)
+        if (mIcons[i]) {
+            mIcons[i]->draw(graphics, icon_x, 3);
+            icon_x += 2 + mIcons[i]->getWidth();
+        }
 }

@@ -33,6 +33,7 @@
 #include "sound.h"
 #include "localplayer.h"
 #include "text.h"
+#include "statuseffect.h"
 
 #include "resources/itemdb.h"
 #include "resources/resourcemanager.h"
@@ -72,6 +73,7 @@ Being::Being(int id, int job, Map *map):
     mGender(2),
     mSpeechTime(0),
     mPx(0), mPy(0),
+    mStunMode(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
     mSpriteColors(VECTOREND_SPRITE, ""),
@@ -439,6 +441,67 @@ Being::Type
 Being::getType() const
 {
     return UNKNOWN;
+}
+
+void
+Being::setStatusEffectBlock(int offset, Uint16 newEffects)
+{
+    for (int i = 0; i < STATUS_EFFECTS; i++) {
+        int index = StatusEffect::blockEffectIndexToEffectIndex(offset + i);
+        if (index != -1)
+            setStatusEffect(index, (newEffects & (1 << i)) > 0);
+    }
+}
+
+void
+Being::handleStatusEffect(StatusEffect *effect, int effectId)
+{
+    if (!effect)
+        return;
+
+    effect->playSFX();
+
+    SpriteAction action = effect->getAction();
+    if (action != ACTION_INVALID)
+        setAction(action);
+
+    Particle *particle = effect->getParticle();
+
+    if (particle) {
+        if (effectId >= 0)
+            mStatusParticleEffects.setLocally(effectId, particle);
+        else {
+            mStunParticleEffects.clearLocally();
+            mStunParticleEffects.addLocally(particle);
+        }
+    }
+}
+
+void
+Being::updateStunMode(int oldMode, int newMode)
+{
+    handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
+    handleStatusEffect(StatusEffect::getStatusEffect(newMode, true), -1);
+}
+
+void
+Being::updateStatusEffect(int index, bool newStatus)
+{
+    handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);
+}
+
+void
+Being::setStatusEffect(int index, bool active)
+{
+    const bool wasActive = mStatusEffects.find(index) != mStatusEffects.end();
+
+    if (active != wasActive) {
+        updateStatusEffect(index, active);
+        if (active)
+            mStatusEffects.insert(index);
+        else
+            mStatusEffects.erase(index);
+    }
 }
 
 int

@@ -22,6 +22,8 @@
 #ifndef _TMW_LOCALPLAYER_H
 #define _TMW_LOCALPLAYER_H
 
+#include <vector>
+
 #include "player.h"
 
 // TODO move into some sane place...
@@ -199,6 +201,9 @@ class LocalPlayer : public Player
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
     protected:
+        virtual void
+        handleStatusEffect(StatusEffect *effect, int effectId);
+
         void walk(unsigned char dir);
 
         int mXp;            /**< Experience points. */
@@ -213,6 +218,8 @@ class LocalPlayer : public Player
         int mWalkingDir;    /**< The direction the player is walking in. */
         int mDestX;         /**< X coordinate of destination. */
         int mDestY;         /**< Y coordinate of destination. */
+
+        std::vector<int> mStatusEffectIcons;
 
         Inventory *mInventory;
 };

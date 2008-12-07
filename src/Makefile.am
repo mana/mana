@@ -294,6 +294,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      sound.cpp \
 	      sound.h \
 	      sprite.h \
+	      statuseffect.cpp \
+	      statuseffect.h \
 	      text.cpp \
 	      text.h \
 	      textmanager.cpp \

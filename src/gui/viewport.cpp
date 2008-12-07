@@ -25,6 +25,7 @@
 
 #include "gui.h"
 #include "popupmenu.h"
+#include "ministatus.h"
 
 #include "../simpleanimation.h"
 #include "../beingmanager.h"
@@ -136,6 +137,8 @@ Viewport::setMap(Map *map)
 {
     mMap = map;
 }
+
+extern MiniStatusWindow *miniStatusWindow;
 
 void
 Viewport::draw(gcn::Graphics *gcnGraphics)
@@ -267,6 +270,9 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     {
         (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
     }
+
+    if (miniStatusWindow)
+        miniStatusWindow->drawIcons(graphics);
 
     // Draw contained widgets
     WindowContainer::draw(gcnGraphics);
