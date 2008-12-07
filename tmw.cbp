@@ -296,6 +296,8 @@
 		<Unit filename="src\openglgraphics.h" />
 		<Unit filename="src\particle.cpp" />
 		<Unit filename="src\particle.h" />
+		<Unit filename="src\particlecontainer.cpp" />
+		<Unit filename="src\particlecontainer.h" />
 		<Unit filename="src\particleemitter.cpp" />
 		<Unit filename="src\particleemitter.h" />
 		<Unit filename="src\particleemitterprop.h" />
@@ -352,6 +354,8 @@
 		<Unit filename="src\sound.cpp" />
 		<Unit filename="src\sound.h" />
 		<Unit filename="src\sprite.h" />
+		<Unit filename="src\statuseffect.cpp" />
+		<Unit filename="src\statuseffect.h" />
 		<Unit filename="src\text.cpp" />
 		<Unit filename="src\text.h" />
 		<Unit filename="src\textmanager.cpp" />
@@ -364,8 +368,6 @@
 		</Unit>
 		<Unit filename="src\utils\base64.cpp" />
 		<Unit filename="src\utils\base64.h" />
-		<Unit filename="src\utils\colorconversion.cpp" />
-		<Unit filename="src\utils\colorconversion.h" />
 		<Unit filename="src\utils\dtor.h" />
 		<Unit filename="src\utils\fastsqrt.h" />
 		<Unit filename="src\utils\strprintf.cpp" />
