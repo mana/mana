@@ -32,10 +32,16 @@
 NpcTextDialog::NpcTextDialog():
     Window("NPC")
 {
+    setResizable(true);
+
+    setMinWidth(200);
+    setMinHeight(150);
+
     mTextBox = new TextBox;
     mTextBox->setEditable(false);
-    gcn::ScrollArea *scrollArea = new ScrollArea(mTextBox);
-    Button *okButton = new Button("OK", "ok", this);
+
+    scrollArea = new ScrollArea(mTextBox);
+    okButton = new Button("OK", "ok", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -52,20 +58,36 @@ NpcTextDialog::NpcTextDialog():
     setLocationRelativeTo(getParent());
 }
 
-void
-NpcTextDialog::setText(const std::string &text)
+void NpcTextDialog::setText(const std::string &text)
 {
-    mTextBox->setTextWrapped(text);
+    mText = text;
+    mTextBox->setTextWrapped(mText);
 }
 
-void
-NpcTextDialog::addText(const std::string &text)
+void NpcTextDialog::addText(const std::string &text)
 {
-    mTextBox->setTextWrapped(mTextBox->getText() + text + "\n");
+    setText(mText + text + "\n");
 }
 
-void
-NpcTextDialog::action(const gcn::ActionEvent &event)
+void NpcTextDialog::widgetResized(const gcn::Event &event)
+{
+    Window::widgetResized(event);
+
+    const gcn::Rectangle &area = getChildrenArea();
+    const int width = area.width;
+    const int height = area.height;
+
+    scrollArea->setDimension(gcn::Rectangle(
+                5, 5, width - 10, height - 15 - okButton->getHeight()));
+    okButton->setPosition(
+            width - 5 - okButton->getWidth(),
+            height - 5 - okButton->getHeight());
+
+    // Set the text again so that it gets wrapped according to the new size
+    mTextBox->setTextWrapped(mText);
+}
+
+void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {

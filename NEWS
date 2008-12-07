@@ -6,11 +6,14 @@
 - Added support for dynamic skill names and hair colors
 - Added ability to add equipment to the shortcut bar
 - Added ability to change configuration during login phase (from Aethyra)
+- Mouse cursor will now hide when not used for some time
 - Inventory window now displays amount of slots used
 - Center minimap on player when it is larger than the minimap window
 - Extended particle emitters with properties that can change over time
 - Extended the GUI font to support more characters
 - Only require a restart to switch to full screen with OpenGL on Windows
+- Make sure news and update file list aren't cached (from Aethyra)
+- Made NPC dialogs resizable (from Aethyra)
 - Fixed visibility of trade window on startup
 - Fixed a client input freeze when closing NPC script from server
 - Fixed dead players to lie on the ground instead of standing around

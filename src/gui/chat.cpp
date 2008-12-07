@@ -327,7 +327,10 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
     {
-        chatLog(map_path, BY_SERVER);
+        // Display the current map, X, and Y
+        std::ostringstream where;
+        where << map_path << " " << player_node->mX << "," << player_node->mY;
+        chatLog(where.str(), BY_SERVER);
     }
     else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
     {
@@ -339,9 +342,9 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         mTextOutput->clearRows();
     }
     else if (msg.substr(0, IS_WHISPER_LENGTH) == IS_WHISPER)
-        whisper(nick, msg, IS_WHISPER_LENGTH + 1);
+        whisper(nick, msg, IS_WHISPER_LENGTH);
     else if (msg.substr(0, IS_SHORT_WHISPER_LENGTH) == IS_SHORT_WHISPER)
-        whisper(nick, msg, IS_SHORT_WHISPER_LENGTH + 1);
+        whisper(nick, msg, IS_SHORT_WHISPER_LENGTH);
     else
     {
         chatLog("Unknown command", BY_SERVER);

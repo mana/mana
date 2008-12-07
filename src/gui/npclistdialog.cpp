@@ -32,10 +32,15 @@
 NpcListDialog::NpcListDialog():
     Window("NPC")
 {
+    setResizable(true);
+
+    setMinWidth(200);
+    setMinHeight(150);
+
     mItemList = new ListBox(this);
-    ScrollArea *scrollArea = new ScrollArea(mItemList);
-    Button *okButton = new Button("OK", "ok", this);
-    Button *cancelButton = new Button("Cancel", "cancel", this);
+    scrollArea = new ScrollArea(mItemList);
+    okButton = new Button("OK", "ok", this);
+    cancelButton = new Button("Cancel", "cancel", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -59,37 +64,49 @@ NpcListDialog::NpcListDialog():
     setLocationRelativeTo(getParent());
 }
 
-int
-NpcListDialog::getNumberOfElements()
+int NpcListDialog::getNumberOfElements()
 {
     return mItems.size();
 }
 
-std::string
-NpcListDialog::getElementAt(int i)
+std::string NpcListDialog::getElementAt(int i)
 {
     return mItems[i];
 }
 
-void
-NpcListDialog::parseItems(const std::string &itemString)
+void NpcListDialog::parseItems(const std::string &itemString)
 {
     std::istringstream iss(itemString);
 
     std::string tmp;
-    while(getline(iss, tmp, ':')) {
+    while (getline(iss, tmp, ':'))
         mItems.push_back(tmp);
-    }
 }
 
-void
-NpcListDialog::reset()
+void NpcListDialog::reset()
 {
     mItems.clear();
 }
 
-void
-NpcListDialog::action(const gcn::ActionEvent &event)
+void NpcListDialog::widgetResized(const gcn::Event &event)
+{
+    Window::widgetResized(event);
+
+    const gcn::Rectangle &area = getChildrenArea();
+    const int width = area.width;
+    const int height = area.height;
+
+    scrollArea->setDimension(gcn::Rectangle(
+                5, 5, width - 10, height - 15 - okButton->getHeight()));
+    cancelButton->setPosition(
+            width - 5 - cancelButton->getWidth(),
+            height - 5 - cancelButton->getHeight());
+    okButton->setPosition(
+            cancelButton->getX() - 5 - okButton->getWidth(),
+            cancelButton->getY());
+}
+
+void NpcListDialog::action(const gcn::ActionEvent &event)
 {
     int choice = 0;
 
