@@ -24,10 +24,10 @@
 #include "particlecontainer.h"
 
 
-ParticleContainer::ParticleContainer(ParticleContainer *parent, bool delParent) :
+ParticleContainer::ParticleContainer(ParticleContainer *parent, bool delParent):
     mDelParent(delParent),
     mNext(parent)
-{};
+{}
 
 ParticleContainer::~ParticleContainer()
 {
@@ -36,8 +36,7 @@ ParticleContainer::~ParticleContainer()
         delete mNext;
 }
 
-void
-ParticleContainer::clear()
+void ParticleContainer::clear()
 {
     clearLocally();
     if (mNext)
@@ -45,8 +44,7 @@ ParticleContainer::clear()
 }
 
 
-void
-ParticleContainer::setPositions(float x, float y)
+void ParticleContainer::setPositions(float x, float y)
 {
     if (mNext)
         mNext->setPositions(x, y);
@@ -55,12 +53,12 @@ ParticleContainer::setPositions(float x, float y)
 // -- particle list ----------------------------------------
 
 ParticleList::ParticleList(ParticleContainer *parent, bool delParent) :
-    ParticleContainer(parent, delParent) {};
+    ParticleContainer(parent, delParent)
+{}
 
 ParticleList::~ParticleList() {}
 
-void
-ParticleList::addLocally(Particle *particle)
+void ParticleList::addLocally(Particle *particle)
 {
     if (particle)
     {
@@ -70,8 +68,7 @@ ParticleList::addLocally(Particle *particle)
     }
 }
 
-void
-ParticleList::removeLocally(Particle *particle)
+void ParticleList::removeLocally(Particle *particle)
 {
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end(); it++)
@@ -81,18 +78,16 @@ ParticleList::removeLocally(Particle *particle)
         }
 }
 
-void
-ParticleList::clearLocally()
+void ParticleList::clearLocally()
 {
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end(); it++)
         (*it)->kill();
-    
+
     mElements.clear();
 }
 
-void
-ParticleList::setPositions(float x, float y)
+void ParticleList::setPositions(float x, float y)
 {
     ParticleContainer::setPositions(x, y);
 
@@ -115,13 +110,14 @@ ParticleList::setPositions(float x, float y)
 
 // -- particle vector ----------------------------------------
 
-ParticleVector::ParticleVector(ParticleContainer *parent, bool delParent) :
-    ParticleContainer(parent, delParent) {};
+ParticleVector::ParticleVector(ParticleContainer *parent, bool delParent):
+    ParticleContainer(parent, delParent)
+{}
 
-ParticleVector::~ParticleVector() {};
+ParticleVector::~ParticleVector()
+{}
 
-void
-ParticleVector::setLocally(int index, Particle *particle)
+void ParticleVector::setLocally(int index, Particle *particle)
 {
     assert(index >= 0);
 
@@ -134,8 +130,7 @@ ParticleVector::setLocally(int index, Particle *particle)
     mIndexedElements[index] = particle;
 }
 
-void
-ParticleVector::delLocally(int index)
+void ParticleVector::delLocally(int index)
 {
     assert(index >= 0);
 
@@ -150,20 +145,18 @@ ParticleVector::delLocally(int index)
     }
 }
 
-void
-ParticleVector::clearLocally()
+void ParticleVector::clearLocally()
 {
     for (unsigned int i = 0; i < mIndexedElements.size(); i++)
         delLocally(i);
 }
 
-void
-ParticleVector::setPositions(float x, float y)
+void ParticleVector::setPositions(float x, float y)
 {
     ParticleContainer::setPositions(x, y);
 
     for (std::vector<Particle *>::iterator it = mIndexedElements.begin();
-         it != mIndexedElements.end(); it++)
+         it != mIndexedElements.end(); it++) {
         if (*it)
         {
             (*it)->setPosition(x, y);
@@ -174,5 +167,6 @@ ParticleVector::setPositions(float x, float y)
                 *it = NULL;
             }
         }
+    }
 }
 

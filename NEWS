@@ -4,6 +4,7 @@
 - Added --data parameter for developers
 - Added particle effect for critical hits
 - Added support for dynamic skill names and hair colors
+- Added support for status effects
 - Added ability to add equipment to the shortcut bar
 - Added ability to change configuration during login phase (from Aethyra)
 - Mouse cursor will now hide when not used for some time
@@ -20,6 +21,7 @@
 - Fixed shortcuts being activated when trade window was visible
 - Fixed a crash when equipment window is open
 - Fixed money value on failing to buy (from Aethyra)
+- Fixed crash in right-click menu when used after a being disappeared
 
 0.0.26 (29 August 2008)
 - Added support for a newer version of eAthena server

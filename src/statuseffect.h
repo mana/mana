@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 #ifndef STATUS_EFFECT_H
 #define STATUS_EFFECT_H
 
@@ -33,36 +34,35 @@ public:
     ~StatusEffect();
 
     /**
-     * Plays the sound effect associated with this status effect, if possible
+     * Plays the sound effect associated with this status effect, if possible.
      */
     void playSFX();
 
     /**
-     * Delivers the chat message associated with this status effect, if possible
+     * Delivers the chat message associated with this status effect, if
+     * possible.
      */
     void deliverMessage();
 
     /**
-     * Creates the particle effect associated with this status effect, if possible
+     * Creates the particle effect associated with this status effect, if
+     * possible.
      */
-    Particle *
-    getParticle();
+    Particle *getParticle();
 
     /**
      * Retrieves the status icon for this effect, if applicable
      */
-    AnimatedSprite *
-    getIcon();
+    AnimatedSprite *getIcon();
 
     /**
      * Retrieves an action to perform, or ACTION_INVALID
      */
-    SpriteAction
-    getAction();
+    SpriteAction getAction();
 
 
     /**
-     * Retrieves a status effect. 
+     * Retrieves a status effect.
      *
      * \param index Index of the status effect.
      * \param enabling Whether to retrieve the activating effect (true) or
@@ -71,7 +71,7 @@ public:
     static StatusEffect *getStatusEffect(int index, bool enabling);
 
     /**
-     * Retrieves a stun effect. 
+     * Retrieves a stun effect.
      *
      * \param index Index of the stun effect.
      * \param enabling Whether to retrieve the activating effect (true) or

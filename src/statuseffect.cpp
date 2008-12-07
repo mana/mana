@@ -30,25 +30,25 @@
 
 #define STATUS_EFFECTS_FILE "status-effects.xml"
 
-StatusEffect::StatusEffect() {};
-StatusEffect::~StatusEffect() {};
+StatusEffect::StatusEffect()
+{}
 
-void
-StatusEffect::playSFX()
+StatusEffect::~StatusEffect()
+{}
+
+void StatusEffect::playSFX()
 {
     if (mSFXEffect != "")
         sound.playSfx(mSFXEffect);
 }
 
-void
-StatusEffect::deliverMessage()
+void StatusEffect::deliverMessage()
 {
     if (mMessage != "")
         chatWindow->chatLog(mMessage, BY_SERVER);
 }
 
-Particle *
-StatusEffect::getParticle()
+Particle *StatusEffect::getParticle()
 {
     if (mParticleEffect == "")
         return NULL;
@@ -56,13 +56,13 @@ StatusEffect::getParticle()
         return particleEngine->addEffect(mParticleEffect, 0, 0);
 }
 
-AnimatedSprite *
-StatusEffect::getIcon()
+AnimatedSprite *StatusEffect::getIcon()
 {
     if (mIcon == "")
         return NULL;
     else {
-        AnimatedSprite * sprite = AnimatedSprite::load("graphics/sprites/" + mIcon);
+        AnimatedSprite *sprite = AnimatedSprite::load(
+                "graphics/sprites/" + mIcon);
         if (false && sprite) {
             sprite->play(ACTION_DEFAULT);
             sprite->reset();
@@ -71,8 +71,7 @@ StatusEffect::getIcon()
     }
 }
 
-SpriteAction
-StatusEffect::getAction()
+SpriteAction StatusEffect::getAction()
 {
     if (mAction == "")
         return ACTION_INVALID;
@@ -90,23 +89,20 @@ static status_effect_map statusEffects;
 static status_effect_map stunEffects;
 static std::map<int, int> blockEffectIndexMap;
 
-int
-StatusEffect::blockEffectIndexToEffectIndex(int blockIndex)
+int StatusEffect::blockEffectIndexToEffectIndex(int blockIndex)
 {
     if (blockEffectIndexMap.find(blockIndex) == blockEffectIndexMap.end())
         return -1;
     return blockEffectIndexMap[blockIndex];
 }
 
-StatusEffect *
-StatusEffect::getStatusEffect(int index, bool enabling)
+StatusEffect *StatusEffect::getStatusEffect(int index, bool enabling)
 {
     load();
     return statusEffects[enabling][index];
 }
 
-StatusEffect *
-StatusEffect::getStunEffect(int index, bool enabling)
+StatusEffect *StatusEffect::getStunEffect(int index, bool enabling)
 {
     load();
     return stunEffects[enabling][index];
@@ -116,8 +112,7 @@ static bool status_effects_loaded = false;
 
 
 
-void
-StatusEffect::load()
+void StatusEffect::load()
 {
     if (status_effects_loaded)
         return;

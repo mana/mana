@@ -261,7 +261,6 @@ void PopupMenu::handleLink(const std::string& link)
 
     setVisible(false);
 
-    being = NULL;
     mBeingId = 0;
     mFloorItem = NULL;
     mItem = NULL;
