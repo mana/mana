@@ -45,7 +45,6 @@
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
-//#include "gui/chargedialog.h"
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/debugwindow.h"
@@ -116,7 +115,6 @@ SkillDialog *skillDialog;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
-//ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 //BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
@@ -197,7 +195,6 @@ void createGuiWindows(Network *network)
     setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    //chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow(network);
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
@@ -205,10 +202,6 @@ void createGuiWindows(Network *network)
     itemShortcutWindow = new ItemShortcutWindow();
 
     // Initialize window positions
-    //chargeDialog->setPosition(
-    //        graphics->getWidth() - 5 - chargeDialog->getWidth(),
-    //        graphics->getHeight() - chargeDialog->getHeight() - 15);
-
     //buddyWindow->setPosition(10, minimap->getHeight() + 30);
 
     // Set initial window visibility
@@ -252,7 +245,6 @@ void destroyGuiWindows()
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
-    //delete chargeDialog;
     //delete newSkillWindow;
     delete tradeWindow;
     //delete buddyWindow;

@@ -44,9 +44,19 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
-    mXpForNextLevel(0),
+    mCharId(0),
+    mJobXp(0),
+    mLevel(0),
+    mJobLevel(0),
+    mXpForNextLevel(0), mJobXpForNextLevel(0),
+    mHp(0), mMaxHp(0), mMp(0), mMaxMp(0),
+    mGp(0),
     mAttackRange(0),
-    mSkillPoint(0),
+    mTotalWeight(0), mMaxWeight(0),
+    ATK(0), MATK(0), DEF(0), MDEF(0), HIT(0), FLEE(0),
+    ATK_BONUS(0), MATK_BONUS(0), DEF_BONUS(0), MDEF_BONUS(0), FLEE_BONUS(0),
+    mStatPoint(0), mSkillPoint(0),
+    mStatsPointsToAttribute(0),
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false),
@@ -410,9 +420,6 @@ void LocalPlayer::attack(Being *target, bool keep)
         else
             setDirection(LEFT);
     }
-
-    // Implement charging attacks here
-    mLastAttackTime = 0;
 
     setAction(ATTACK);
     mWalkTime = tick_time;

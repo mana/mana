@@ -13,8 +13,6 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
 	      gui/buysell.h \
-	      gui/chargedialog.cpp \
-	      gui/chargedialog.h \
 	      gui/char_server.cpp \
 	      gui/char_server.h \
 	      gui/char_select.cpp \

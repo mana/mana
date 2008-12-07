@@ -182,9 +182,6 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setGender(1 - mLoginData->sex);
 
     tempPlayer->mCharId = msg.readInt32();
-    tempPlayer->mTotalWeight = 0;
-    tempPlayer->mMaxWeight = 0;
-    tempPlayer->mLastAttackTime = 0;
     tempPlayer->setXp(msg.readInt32());
     tempPlayer->mGp = msg.readInt32();
     tempPlayer->mJobXp = msg.readInt32();

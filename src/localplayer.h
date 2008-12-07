@@ -176,7 +176,7 @@ class LocalPlayer : public Player
          */
         int getXp() const { return mXp; }
 
-        Uint32 mCharId;
+        Uint32 mCharId;     /**< Used only during character selection. */
 
         Uint32 mJobXp;
         Uint16 mLevel;
@@ -197,8 +197,6 @@ class LocalPlayer : public Player
 
         Uint16 mStatPoint, mSkillPoint;
         Uint16 mStatsPointsToAttribute;
-
-        float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
     protected:
         virtual void

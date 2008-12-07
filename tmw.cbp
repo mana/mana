@@ -107,8 +107,6 @@
 		<Unit filename="src\gui\char_select.h" />
 		<Unit filename="src\gui\char_server.cpp" />
 		<Unit filename="src\gui\char_server.h" />
-		<Unit filename="src\gui\chargedialog.cpp" />
-		<Unit filename="src\gui\chargedialog.h" />
 		<Unit filename="src\gui\chat.cpp" />
 		<Unit filename="src\gui\chat.h" />
 		<Unit filename="src\gui\chatinput.cpp" />
