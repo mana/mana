@@ -42,8 +42,39 @@ public:
      *
      * delParent means that the destructor should also free the parent.
      */
-     ParticleContainer(ParticleContainer *parent = NULL, bool delParent = true);
-    ~ParticleContainer();
+    ParticleContainer(ParticleContainer *parent = NULL, bool delParent = true);
+    virtual ~ParticleContainer();
+
+    /**
+     * Kills and removes all particle effects
+     */
+    void clear();
+
+    /**
+     * Kills and removes all particle effects (only in this container)
+     */
+    virtual void clearLocally() {};
+
+    /**
+     * Sets the positions of all elements
+     */
+    virtual void setPositions(float x, float y);
+
+protected:
+    bool mDelParent;			/**< Delete mNext in destructor */
+    ParticleContainer *mNext;		/**< Contained container, if any */
+};
+
+
+
+/**
+ * Linked list of particle effects.
+ */
+class ParticleList : public ParticleContainer
+{
+public:
+    ParticleList(ParticleContainer *parent = NULL, bool delParent = true);
+    virtual ~ParticleList();
 
     /**
      * Takes control of and adds a particle
@@ -55,25 +86,12 @@ public:
      */
     void removeLocally(Particle *);
 
-    /**
-     * Kills and removes all particle effects
-     */
-    void clear();
-
-    /**
-     * Kills and removes all particle effects (only in this container)
-     */
     virtual void clearLocally();
 
-    /**
-     * Sets the positions of all elements
-     */
     virtual void setPositions(float x, float y);
 
 protected:
-    bool mDelParent;			/**< Delete mNext in destructor */
     std::list<Particle *> mElements;	/**< Contained particle effects */
-    ParticleContainer *mNext;		/**< Contained container, if any */
 };
 
 
@@ -84,6 +102,7 @@ class ParticleVector : public ParticleContainer
 {
 public:
     ParticleVector(ParticleContainer *parent = NULL, bool delParent = true);
+    virtual ~ParticleVector();
 
     /**
      * Sets a particle at a specified index.  Kills the previous particle

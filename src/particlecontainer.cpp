@@ -37,7 +37,30 @@ ParticleContainer::~ParticleContainer()
 }
 
 void
-ParticleContainer::addLocally(Particle *particle)
+ParticleContainer::clear()
+{
+    clearLocally();
+    if (mNext)
+        mNext->clear();
+}
+
+
+void
+ParticleContainer::setPositions(float x, float y)
+{
+    if (mNext)
+        mNext->setPositions(x, y);
+}
+
+// -- particle list ----------------------------------------
+
+ParticleList::ParticleList(ParticleContainer *parent, bool delParent) :
+    ParticleContainer(parent, delParent) {};
+
+ParticleList::~ParticleList() {}
+
+void
+ParticleList::addLocally(Particle *particle)
 {
     if (particle)
     {
@@ -48,7 +71,7 @@ ParticleContainer::addLocally(Particle *particle)
 }
 
 void
-ParticleContainer::removeLocally(Particle *particle)
+ParticleList::removeLocally(Particle *particle)
 {
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end(); it++)
@@ -59,15 +82,7 @@ ParticleContainer::removeLocally(Particle *particle)
 }
 
 void
-ParticleContainer::clear()
-{
-    clearLocally();
-    if (mNext)
-        mNext->clear();
-}
-
-void
-ParticleContainer::clearLocally()
+ParticleList::clearLocally()
 {
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end(); it++)
@@ -77,8 +92,10 @@ ParticleContainer::clearLocally()
 }
 
 void
-ParticleContainer::setPositions(float x, float y)
+ParticleList::setPositions(float x, float y)
 {
+    ParticleContainer::setPositions(x, y);
+
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end();)
     {
@@ -96,10 +113,12 @@ ParticleContainer::setPositions(float x, float y)
 
 
 
-ParticleVector::ParticleVector(ParticleContainer *next, bool delParent)
-{
-    ParticleContainer::ParticleContainer(next, delParent);
-}
+// -- particle vector ----------------------------------------
+
+ParticleVector::ParticleVector(ParticleContainer *parent, bool delParent) :
+    ParticleContainer(parent, delParent) {};
+
+ParticleVector::~ParticleVector() {};
 
 void
 ParticleVector::setLocally(int index, Particle *particle)

@@ -424,9 +424,9 @@ class Being : public Sprite
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
-        ParticleContainer mStunParticleEffects;
+        ParticleList mStunParticleEffects;
         ParticleVector mStatusParticleEffects;
-        ParticleContainer mChildParticleEffects;
+        ParticleList mChildParticleEffects;
 
     private:
         /**
