@@ -45,8 +45,10 @@ class ServerListModel : public gcn::ListModel {
         std::string getElementAt(int i);
 };
 
-ServerSelectDialog::ServerSelectDialog(LoginData *loginData):
-    Window("Select Server"), mLoginData(loginData)
+ServerSelectDialog::ServerSelectDialog(LoginData *loginData, int nextState):
+    Window("Select Server"),
+    mLoginData(loginData),
+    mNextState(nextState)
 {
     mServerListModel = new ServerListModel();
     mServerList = new ListBox(mServerListModel);
@@ -103,10 +105,10 @@ ServerSelectDialog::action(const gcn::ActionEvent &event)
         mLoginData->hostname = iptostring(si->address);
         mLoginData->port = si->port;
         mLoginData->updateHost = si->updateHost;
-        state = UPDATE_STATE; 
+        state = mNextState;
     }
     else if (event.getId() == "cancel") {
-        state = LOGIN_STATE; 
+        state = LOGIN_STATE;
     }
 }
 

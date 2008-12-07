@@ -257,7 +257,7 @@ bool ChatWindow::isInputFocused()
     return mChatInput->isFocused();
 }
 
-void ChatWindow::chatSend(const std::string & nick, std::string msg)
+void ChatWindow::chatSend(const std::string &nick, std::string msg)
 {
     /* Some messages are managed client side, while others
      * require server handling by proper packet. Probably
@@ -302,37 +302,42 @@ void ChatWindow::chatSend(const std::string & nick, std::string msg)
         trim(msg);
     }
 
-    if (command == "announce") {
+    if (command == "announce") 
+    {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(0x0099);
         outMsg.writeInt16(msg.length() + 4);
         outMsg.writeString(msg, msg.length());
         return;
     }
-    if (command == "help") {
+    else if (command == "help") 
+    {
+        msg.erase(0, 6);
+        trim(msg);
         std::size_t space = msg.find(" ");
         std::string msg1;
-        if (space == std::string::npos) {
+        if (space == std::string::npos)
+        {
             msg1 = "";
-        } else {
+        }
+        else
+        {
             msg1 = msg.substr(space + 1, msg.length());
             msg = msg.substr(0, space);
         }
-        if (msg != "" && msg.at(0) == '/') {
+        if (msg != "" && msg.at(0) == '/')
+        {
             msg.erase(0, 1);
         }
-        while (msg1 != "" && msg1.at(0) == ' ') {
-            msg1.erase(0, 1);
-        }
+        trim(msg1);
         help(msg, msg1);
-        return;
     }
-    if (command == "where") {
+    else if (command == "where")
+    {
         // Display the current map, X, and Y
         std::ostringstream where;
-        where << map_path << " " << player_node->mX << " " << player_node->mY;
+        where << map_path << " " << player_node->mX << "," << player_node->mY;
         chatLog(where.str(), BY_SERVER);
-        return;
     }
     if (command == "who") {
         MessageOut outMsg(mNetwork);
@@ -648,20 +653,23 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog("For more information, type /help <command>", BY_SERVER);
         return;
     }
-    if (msg1 == "announce") {
+    if (msg1 == "announce")
+    {
         chatLog("Command: /announce <msg>", BY_SERVER);
         chatLog("*** only available to a GM ***", BY_SERVER);
         chatLog("This command sends the message <msg> to "
                 "all players currently online.", BY_SERVER);
         return;
     }
-    if (msg1 == "clear") {
+    if (msg1 == "clear")
+    {
         chatLog("Command: /clear", BY_SERVER);
         chatLog("This command clears the chat log of previous chat.",
                 BY_SERVER);
         return;
     }
-    if (msg1 == "help") {
+    if (msg1 == "help")
+    {
         chatLog("Command: /help", BY_SERVER);
         chatLog("This command displays a list of all commands available.",
                 BY_SERVER);
@@ -669,22 +677,26 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog("This command displays help on <command>.", BY_SERVER);
         return;
     }
-    if (msg1 == "party") {
+    if (msg1 == "party") 
+    {
         mParty->help(msg2);
         return;
     }
-    if (msg1 == "present") {
+    if (msg1 == "present") 
+    {
         chatLog("Command: /present", BY_SERVER);
         chatLog("This command gets a list of players within hearing "
                 "and sends it to either the record log if recording, or the "
                 "chat log otherwise.", BY_SERVER);
         return;
     }
-    if (msg1 == "record") {
+    if (msg1 == "record") 
+    {
         mRecorder->help(msg2);
         return;
     }
-    if (msg1 == "toggle") {
+    if (msg1 == "toggle") 
+    {
         chatLog("Command: /toggle <state>", BY_SERVER);
         chatLog("This command sets whether the return key should toggle the "
                 "chat log, or whether the chat log turns off automatically.",
@@ -696,7 +708,8 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog("This command displays the return toggle status.", BY_SERVER);
         return;
     }
-    if (msg1 == "where") {
+    if (msg1 == "where")
+    {
         chatLog("Command: /where", BY_SERVER);
         chatLog("This command displays the name of the current map.",
                 BY_SERVER);
@@ -709,7 +722,8 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
                 "double quotes (\").", BY_SERVER);
         return;
     }
-    if (msg1 == "who") {
+    if (msg1 == "who")
+    {
         chatLog("Command: /who", BY_SERVER);
         chatLog("This command displays the number of players currently "
                 "online.", BY_SERVER);

@@ -31,43 +31,41 @@ class TextManager;
 
 class Text
 {
-        friend class TextManager;
+    friend class TextManager;
+
     public:
         /**
-         * Constructor creates a text object to display on the screen
+         * Constructor creates a text object to display on the screen.
          */
         Text(const std::string &text, int x, int y,
              gcn::Graphics::Alignment alignment, gcn::Font *font,
              gcn::Color colour);
 
         /**
-         * Allows the originator of the text to specify the ideal coordinates
-         */
-        void
-        adviseXY(int x, int y);
-
-        /**
-         * Remove the text from the screen
+         * Destructor. The text is removed from the screen.
          */
         virtual ~Text();
 
         /**
-         * Draws the text
+         * Allows the originator of the text to specify the ideal coordinates.
          */
-        virtual void
-        draw(Graphics *graphics, int xOff, int yOff);
+        void adviseXY(int x, int y);
 
-    protected:
+        /**
+         * Draws the text.
+         */
+        virtual void draw(Graphics *graphics, int xOff, int yOff);
 
-        int mX; /**< Actual x-value of left of text written */
-        int mY; /**< Actual y-value of top of text written */
-        int mWidth; /**< The width of the text */
-        int mHeight; /**< The height of the text */
-        int mXOffset; /**< The offset of mX from the desired x */
-        static int mInstances; /**< Instances of text */
-        gcn::Font *mFont; /**< The font used */
-        std::string mText; /**< The text to display */
-        gcn::Color mColour; /**< The colour of the text */
+    private:
+        int mX;                /**< Actual x-value of left of text written. */
+        int mY;                /**< Actual y-value of top of text written. */
+        int mWidth;            /**< The width of the text. */
+        int mHeight;           /**< The height of the text. */
+        int mXOffset;          /**< The offset of mX from the desired x. */
+        static int mInstances; /**< Instances of text. */
+        gcn::Font *mFont;      /**< The font used. */
+        std::string mText;     /**< The text to display. */
+        gcn::Color mColour;    /**< The colour of the text. */
 };
 
 class FlashText : public Text
@@ -90,10 +88,9 @@ class FlashText : public Text
         /**
          * Draws the text
          */
-        virtual void
-        draw(Graphics *graphics, int xOff, int yOff);
+        virtual void draw(Graphics *graphics, int xOff, int yOff);
 
     private:
-        int mTime; /**< Time left for flashing */
+        int mTime;             /**< Time left for flashing */
 };
 #endif

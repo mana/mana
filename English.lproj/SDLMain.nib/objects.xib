@@ -1,0 +1,77 @@
+<?xml version="1.0" standalone="yes"?>
+<object class="NSIBObjectData">
+  <object name="rootObject" class="NSCustomObject" id="1">
+  </object>
+  <array count="8" name="allObjects">
+    <object class="IBCarbonMenuItem" id="229">
+      <string name="title">Quit</string>
+      <string name="keyEquivalent">q</string>
+      <boolean name="notPreviousAlternate">TRUE</boolean>
+      <ostype name="command">quit</ostype>
+    </object>
+    <object class="IBCarbonWindow" id="166">
+      <boolean name="receiveUpdates">FALSE</boolean>
+      <boolean name="liveResize">TRUE</boolean>
+      <boolean name="compositing">TRUE</boolean>
+      <boolean name="isConstrained">FALSE</boolean>
+      <string name="title">Window</string>
+      <object name="rootControl" class="IBCarbonRootControl" id="167">
+        <string name="viewFrame">0 0 480 360 </string>
+        <string name="bounds">0 0 360 480 </string>
+      </object>
+      <string name="windowRect">204 300 564 780 </string>
+      <string name="ScreenRectAtEncodeTime">0 0 768 1024 </string>
+    </object>
+    <object class="IBCarbonMenu" id="184">
+      <string name="title">themanaworld</string>
+      <string name="name">_NSAppleMenu</string>
+      <array count="3" name="items">
+        <object class="IBCarbonMenuItem" id="187">
+          <string name="title">About themanaworld</string>
+          <int name="keyEquivalentModifier">0</int>
+          <ostype name="command">abou</ostype>
+        </object>
+        <object class="IBCarbonMenuItem" id="230">
+          <boolean name="separator">TRUE</boolean>
+          <boolean name="disabled">TRUE</boolean>
+          <boolean name="notPreviousAlternate">TRUE</boolean>
+        </object>
+        <reference idRef="229"/>
+      </array>
+    </object>
+    <reference idRef="230"/>
+    <object class="IBCarbonMenu" id="29">
+      <string name="title">main</string>
+      <string name="name">_NSMainMenu</string>
+      <array count="1" name="items">
+        <object class="IBCarbonMenuItem" id="185">
+          <string name="title">themanaworld</string>
+          <reference name="submenu" idRef="184"/>
+        </object>
+      </array>
+    </object>
+    <reference idRef="167"/>
+    <reference idRef="187"/>
+    <reference idRef="185"/>
+  </array>
+  <array count="8" name="allParents">
+    <reference idRef="184"/>
+    <reference idRef="1"/>
+    <reference idRef="185"/>
+    <reference idRef="184"/>
+    <reference idRef="1"/>
+    <reference idRef="166"/>
+    <reference idRef="184"/>
+    <reference idRef="29"/>
+  </array>
+  <dictionary count="3" name="nameTable">
+    <string>File&apos;s Owner</string>
+    <reference idRef="1"/>
+    <string>MainWindow</string>
+    <reference idRef="166"/>
+    <string>MenuBar</string>
+    <reference idRef="29"/>
+  </dictionary>
+  <string name="targetFramework">IBCarbonFramework</string>
+  <unsigned_int name="nextObjectID">231</unsigned_int>
+</object>

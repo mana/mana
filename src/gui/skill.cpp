@@ -87,7 +87,8 @@ public:
             SkillInfo const *info;
             char tmp[128];
 
-            if (skill->id >= 0 && (unsigned int) skill->id < skill_db.size())
+            if (skill->id >= 0
+                && (unsigned int) skill->id < skill_db.size())
                 info = &skill_db[skill->id];
             else
                 info = &fakeSkillInfo;
@@ -195,13 +196,14 @@ void SkillDialog::update()
     if (selectedSkill >= 0) {
         int skillId = mSkillList[selectedSkill]->id;
         bool modifiable;
- 	 
+
         if (skillId >= 0 && (unsigned int) skillId < skill_db.size())
             modifiable = skill_db[skillId].modifiable;
         else
             modifiable = false;
 
-        mIncButton->setEnabled(modifiable && player_node->mSkillPoint > 0);
+        mIncButton->setEnabled(modifiable
+                               && player_node->mSkillPoint > 0);
     } else
         mIncButton->setEnabled(false);
 

@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <cassert>
 #include <climits>
+#include <cassert>
 
 #include <guichan/exception.hpp>
 

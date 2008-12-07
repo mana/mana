@@ -21,6 +21,7 @@
 
 #include "animatedsprite.h"
 #include "game.h"
+#include "localplayer.h"
 #include "monster.h"
 #include "particle.h"
 #include "sound.h"
@@ -43,8 +44,8 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
 
     // Setup Monster sprites
     int c = BASE_SPRITE;
-
     const std::list<std::string> &sprites = info.getSprites();
+
     for (std::list<std::string>::const_iterator i = sprites.begin();
          i != sprites.end();
          i++)
@@ -77,7 +78,10 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
 Monster::~Monster() 
 {
     if (mText)
+    {
         delete mText;
+        player_node->setTarget(NULL);
+    }
 }
 
 void Monster::logic()
@@ -166,7 +170,8 @@ void Monster::handleAttack(Being *victim, int damage)
     Being::handleAttack(victim, damage);
 
     const MonsterInfo &mi = getInfo();
-    sound.playSfx(mi.getSound((damage > 0) ? MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
+    sound.playSfx(mi.getSound((damage > 0) ?
+                MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
 }
 
 void Monster::takeDamage(int amount)

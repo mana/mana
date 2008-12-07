@@ -108,29 +108,30 @@ class ItemContainer : public gcn::Widget,
 
     private:
         /**
+
+         * Sets the currently selected item.  Invalid (e.g., negative) indices set `no item'.
+         */
+        void setSelectedItemIndex(int index);
+
+        /**
          * Find the current item index by the most recently used item ID
          */
         void refindSelectedItem(void);
 
         /**
-         * Sets the currently selected item. Invalid (e.g., negative) indices set `no item'.
-         */
-        void setSelectedItemIndex(int index);
-
-        /**
          * Determine and set the height of the container.
          */
-        void recalculateHeight();
+        void recalculateHeight(void);
 
         /**
          * Sends out selection events to the list of selection listeners.
          */
-        void distributeValueChangedEvent();
+        void distributeValueChangedEvent(void);
 
         Inventory *mInventory;
         Image *mSelImg;
         int mSelectedItemIndex;
-        int mLastSelectedItemId; // last selected item ID. If we lose the item, find again by ID.
+        int mLastSelectedItemId;  // last selected item ID. If we lose the item, find again by ID.
 
         int mMaxItems;
         int mOffset;

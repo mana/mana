@@ -56,8 +56,7 @@ void ColorDB::load()
 
         TMWHair = true;
 
-        if (doc)
-            delete doc;
+        delete doc;
 
         doc = new XML::Document(TMW_COLOR_FILE);
         root = doc->rootNode();
@@ -67,8 +66,7 @@ void ColorDB::load()
             mColors[0] = mFail;
             mLoaded = true;
 
-            if (doc)
-                delete doc;
+            delete doc;
 
             return;
         }
@@ -91,8 +89,7 @@ void ColorDB::load()
         }
     }
 
-    if (doc)
-        delete doc;
+    delete doc;
 
     mLoaded = true;
 }

@@ -18,6 +18,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <cstring>
 #include <iostream>
 #include <map>
 #include <list>
@@ -250,6 +251,7 @@ bool Map::overwrite(  Map* srcMap,
     }
 
     std::clog<<"copying successful!"<<std::endl;
+    return true;
 }
 
 int Map::save(std::string filename)

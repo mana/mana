@@ -204,21 +204,15 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             // If this is player's current target, clear it.
             if (dstBeing == player_node->getTarget())
-            {
                 player_node->stopAttack();
-            }
 
             if (dstBeing == current_npc)
                 current_npc = NULL;
 
             if (msg->readInt8() == 1)
-            {
                 dstBeing->setAction(Being::DEAD);
-            }
             else
-            {
                 beingManager->destroyBeing(dstBeing);
-            }
 
             break;
 
@@ -236,27 +230,26 @@ void BeingHandler::handleMessage(MessageIn *msg)
             switch (type)
             {
                 case 0x0a: // Critical Damage
-                    if (dstBeing) {
+                    if (dstBeing) 
                          dstBeing->showCrit();
-                    }
-               case 0x00: // Damage
-                    if (dstBeing) {
+                case 0x00: // Damage
+                    if (dstBeing)
                         dstBeing->takeDamage(param1);
-                    }
-                    if (srcBeing) {
+                    if (srcBeing)
                         srcBeing->handleAttack(dstBeing, param1);
-                    }
                     break;
 
                 case 0x02: // Sit
-                    if (srcBeing) {
+                    if (srcBeing) 
+                    {
                         srcBeing->mFrame = 0;
                         srcBeing->setAction(Being::SIT);
                     }
                     break;
 
                 case 0x03: // Stand up
-                    if (srcBeing) {
+                    if (srcBeing) 
+                    {
                         srcBeing->mFrame = 0;
                         srcBeing->setAction(Being::STAND);
                     }
@@ -518,3 +511,4 @@ void BeingHandler::handleMessage(MessageIn *msg)
             break;
     }
 }
+

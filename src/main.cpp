@@ -60,6 +60,7 @@
 #include "gui/progressbar.h"
 #include "gui/register.h"
 #include "gui/setup.h"
+#include "gui/updatewindow.h"
 #include "gui/textfield.h"
 #include "gui/updatewindow.h"
 
@@ -184,6 +185,10 @@ void setUpdatesDir()
         updateHost =
             config.getValue("updatehost", "http://www.aethyra.org/updates");
     }
+
+    // Remove any trailing slash at the end of the update host
+    if (updateHost.at(updateHost.size() - 1) == '/')
+        updateHost.resize(updateHost.size() - 1);
 
     // Parse out any "http://" or "ftp://", and set the updates directory
     size_t pos;
@@ -478,7 +483,7 @@ void printVersion()
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvuU:P:Dp:C:H:";
+    const char *optstring = "hvud:U:P:Dp:C:H:";
 
     const struct option long_options[] = {
         { "configfile", required_argument, 0, 'C' },
@@ -498,9 +503,8 @@ void parseOptions(int argc, char *argv[], Options &options)
 
         int result = getopt_long(argc, argv, optstring, long_options, NULL);
 
-        if (result == -1) {
+        if (result == -1)
             break;
-        }
 
         switch (result) {
             case 'C':
@@ -583,9 +587,10 @@ void accountLogin(Network *network, LoginData *loginData)
     outMsg.writeString(loginData->password, 24);
 
     /*
-     * eAthena calls the last byte "client version 2", but it isn't
-     * used at all.  We're retasking it, with bit 0  to indicate whether
-     * the client can handle the 0x63 "update host" packet
+     * eAthena calls the last byte "client version 2", but it isn't used at
+     * at all. We're retasking it, with bit 0 to indicate whether the client
+     * can handle the 0x63 "update host" packet. Clients prior to 0.0.25 send
+     * 0 here.
      */
     outMsg.writeInt8(0x01);
 
@@ -903,17 +908,25 @@ int main(int argc, char *argv[])
 
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
-                    if (n_server == 1) {
+
+                    if (n_server == 1) 
+                    {
                         SERVER_INFO *si = *server_info;
                         loginData.hostname = iptostring(si->address);
                         loginData.port = si->port;
                         loginData.updateHost = si->updateHost;
                         state = UPDATE_STATE;
-                    } else {
-                        currentDialog = new ServerSelectDialog(&loginData);
+                    } 
+                    else 
+                    {
+                        int nextState = (options.skipUpdate) ?
+                            LOADDATA_STATE : UPDATE_STATE;
+                        currentDialog = new ServerSelectDialog(&loginData,
+                                                                nextState);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
-                        if (options.chooseDefault || options.playername != "") {
+                        if (options.chooseDefault || options.playername != "") 
+                        {
                             ((ServerSelectDialog*) currentDialog)->action(
                                 gcn::ActionEvent(NULL, "ok"));
                         }
@@ -964,7 +977,7 @@ int main(int argc, char *argv[])
 
                 case UPDATE_STATE:
                     // Determine which source to use for the update host
-                    if(!options.updateHost.empty())
+                    if (!options.updateHost.empty())
                         updateHost = options.updateHost;
                     else
                         updateHost = loginData.updateHost;

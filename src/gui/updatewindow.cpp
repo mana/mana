@@ -309,14 +309,15 @@ int UpdaterWindow::downloadThread(void *ptr)
             curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
             curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15);
 
-            struct curl_slist *pHeaders=NULL;
-            if(uw->mDownloadStatus != UPDATE_RESOURCES){
-                /*caching breaks things when resources2.txt is cached
-                 *so caching is turned off on the proxy with this header
-                 *change*/
-                pHeaders = curl_slist_append(pHeaders, "pragma: no-cache");  
-                pHeaders = curl_slist_append(pHeaders, "Cache-Control: no-cache");
-                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, pHeaders); 
+            struct curl_slist *pHeaders = NULL;
+            if (uw->mDownloadStatus != UPDATE_RESOURCES)
+            {
+                // Make sure the resources2.txt and news.txt aren't cached,
+                // in order to always get the latest version.
+                pHeaders = curl_slist_append(pHeaders, "pragma: no-cache");
+                pHeaders =
+                    curl_slist_append(pHeaders, "Cache-Control: no-cache");
+                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, pHeaders);
             }
 
             if ((res = curl_easy_perform(curl)) != 0)
@@ -343,8 +344,9 @@ int UpdaterWindow::downloadThread(void *ptr)
 
             curl_easy_cleanup(curl);
 
-            if(uw->mDownloadStatus != UPDATE_RESOURCES){
-                curl_slist_free_all(pHeaders); 
+            if (uw->mDownloadStatus != UPDATE_RESOURCES)
+            {
+                curl_slist_free_all(pHeaders);
             }
 
             if (!uw->mStoreInMemory)

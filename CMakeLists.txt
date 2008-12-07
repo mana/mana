@@ -1,6 +1,10 @@
 PROJECT(AETHYRA)
 
+<<<<<<< HEAD:CMakeLists.txt
 SET(VERSION 0.0.27)
+=======
+SET(VERSION 0.0.26)
+>>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:CMakeLists.txt
 
 # where to look for cmake modules
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)

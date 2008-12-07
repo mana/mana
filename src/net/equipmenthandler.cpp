@@ -117,6 +117,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 position++;
             }
             logger->log("Position %i", position);
+
             item = player_node->getInventory()->getItem(player_node->mEquipment->getEquipment(position));
 
             // Unequip any existing equipped item in this position
@@ -155,6 +156,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 break;
 
             item->setEquipped(false);
+
             if (equipPoint & 0x8000) {    // Arrows
                 player_node->mEquipment->setArrows(0);
             }
@@ -176,6 +178,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 break;
 
             item = inventory->getItem(index);
+
             if (item) {
                 item->setEquipped(true);
                 player_node->mEquipment->setArrows(index);

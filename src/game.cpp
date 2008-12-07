@@ -68,6 +68,7 @@
 #include "gui/trade.h"
 #include "gui/viewport.h"
 
+#include "net/protocol.h"
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
 #include "net/chathandler.h"
@@ -81,6 +82,7 @@
 #include "net/protocol.h"
 #include "net/skillhandler.h"
 #include "net/tradehandler.h"
+#include "net/messageout.h"
 
 #include "resources/imagewriter.h"
 
@@ -489,7 +491,7 @@ void Game::handleInput()
             // Keys pressed together with Alt/Meta
             // Emotions and some internal gui windows
             #ifndef __APPLE__
-            if (event.key.keysym.mod & KMOD_ALT)
+            if (event.key.keysym.mod & KMOD_LALT)
             #else
             if (event.key.keysym.mod & KMOD_LMETA)
             #endif
@@ -580,6 +582,7 @@ void Game::handleInput()
                 {
                     chatWindow->scroll(DEFAULT_CHAT_WINDOW_SCROLL);
                     used = true;
+                    return;
                 }
                 break;
 
@@ -837,7 +840,8 @@ void Game::handleInput()
         }
 
         // Target the nearest player if 'q' is pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) && !keyboard.isKeyActive(keyboard.KEY_TARGET) )
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) && 
+             !keyboard.isKeyActive(keyboard.KEY_TARGET) )
         {
             Being *target = beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
 
@@ -845,7 +849,9 @@ void Game::handleInput()
         }
 
         // Target the nearest monster if 'a' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) && !keyboard.isKeyActive(keyboard.KEY_TARGET) )
+        if ((keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) || 
+            (joystick && joystick->buttonPressed(3))) && 
+            !keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
             Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
 
@@ -853,7 +859,8 @@ void Game::handleInput()
         }
 
         // Target the nearest npc if 'n' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) && !keyboard.isKeyActive(keyboard.KEY_TARGET) )
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) && 
+             !keyboard.isKeyActive(keyboard.KEY_TARGET) )
         {
             Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::NPC);
 

@@ -50,7 +50,7 @@ Inventory::~Inventory()
 
 Item* Inventory::getItem(int index) const
 {
-    if (index < 0 || index >= mSize)
+    if (index < 0 || index >= INVENTORY_SIZE || !mItems[index] || mItems[index]->getQuantity() <= 0)
         return 0;
 
     return mItems[index];
@@ -145,4 +145,9 @@ int Inventory::getLastUsedSlot() const
     }
 
     return -1;
+}
+
+int Inventory::getInventorySize() const
+{
+    return INVENTORY_SIZE - 2;
 }

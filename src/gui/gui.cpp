@@ -110,7 +110,7 @@ Gui::Gui(Graphics *graphics):
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
-    // Set global font
+    // Set global font (based on ISO-8859-15)
     try {
         mGuiFont = new gcn::ImageFont("graphics/gui/sansserif8.png",
                 " !\"#$%&'()*+,-./"

@@ -127,9 +127,9 @@ public:
      */
     virtual void resize(void);
 
-    virtual int getRows();
-    virtual int getColumns();
-    virtual int getRowHeight();
+    virtual int getRows(void);
+    virtual int getColumns(void);
+    virtual int getRowHeight(void);
     virtual int getColumnWidth(int index);
     virtual gcn::Widget *getElementAt(int row, int column);
 

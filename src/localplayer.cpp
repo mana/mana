@@ -30,6 +30,7 @@
 #include "monster.h"
 #include "particle.h"
 #include "sound.h"
+#include "monster.h"
 
 #include "gui/gui.h"
 
@@ -508,9 +509,9 @@ void LocalPlayer::stopAttack()
     {
         setAction(STAND);
         mLastTarget = -1;
-        setTarget(NULL);
-        mLastTarget = -1;
     }
+    setTarget(NULL);
+    mLastTarget = -1;
 }
 
 Being* LocalPlayer::getTarget() const

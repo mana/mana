@@ -1,3 +1,4 @@
+<<<<<<< HEAD:AUTHORS
 ---------------------------
 Aethyra Dev Team
 ---------------------------
@@ -69,3 +70,65 @@ The Mana World Dev Team
  SimEdw           (network code)
  Sull             (hosting CVS and related services)
  Vlady            (several items)
+=======
+---------------------------------
+-- The Mana World Contributors --
+---------------------------------
+
+ This file lists all contributors up to the current release. Check the wiki
+ for the currently active development team.
+
+== Contributors to client/server development ==
+
+Aaron Marks  <nymacro gmail.com>
+Alexander Baldeck (Shura)  <alexander archlinux.org>
+Andrej Sinicyn  <andrej4000 gmail.com>
+Björn Steinbrink (Doener)  <b.steinbrink gmx.de>
+Bjørn Lindeijer  <bjorn lindeijer.nl>
+Cedric Borgese (moi1392)  <cedric.borgese gmail.com>
+David Athay  <ko2fan gmail.com>
+Dennis Friis  <peavey placid.dk>
+Douglas Boffey  <dougaboffey netscape.net>
+Duane Bailey  <nayryeliab gmail.com>
+Eugenio Favalli  <elvenprogrammer gmail.com>
+Eric Scrivner  <zenogais gmail.com>
+Fate  <fate.tmw googlemail.com>
+Fredrik Reveny  <chetic gmail.com>
+Guillaume Melquiond (Silene)  <guillaume.melquiond gmail.com>
+Jan-Fabian Humann (Mra)  <malastare gmx.net>
+José Ávila  <linux javila.net>
+Kiyoshi Kyokai  <kiyoshi.kyokai gmail.com>
+Lloyd Bryant  <lloyd_bryant netzero.net>
+Marcel W. Wysocki  <maci satgnu.org>
+Mateusz Kaduk (Usiu)  <mateusz.kaduk gmail.com>
+Matthias Hartmann  <hartmann.matthias gmail.com>
+Philipp Sehmisch (Crush)  <tmw crushnet.org>
+Rogier Polak  <rogier.l.a.polak gmail.com>
+Simon Edwardsson  <simon crossnet.se>
+Yohann Ferreira  <bertram cegetel.net>
+
+== Contributors to game content ==
+
+Clef
+Gnulia
+Frode Lindeijer (Modanung)  <f.lindeijer gmail.com>
+Jared Adams  <jaxad0127 gmail.com>
+Joni Orponen (Rotonen)  <joni.orponen gmail.com>
+Krzysztof Daszuta  <irukard gmail.com>
+Magick
+Neko-mon
+Neorice
+Pajarico Guaje  <pajarico users.sourceforge.net>
+Vlady
+Ryan Voss (Talaroc)  <arashi86 gmail.com>
+Scott Ellis  <quiche_on_a_leash hotmail.co.uk>
+Tatjana
+Ti Sing Hao
+
+== Other contributors ==
+
+Jean-Francois Lampron  <sull.kf gmail.com>
+Rodney Dawes  <dobey novell.com>
+Ultramichy
+Zuzanna K. Filutowska  <platyna users.sourceforge.net>
+>>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:AUTHORS

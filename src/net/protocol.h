@@ -27,6 +27,7 @@
  *********************************/
 #define SMSG_LOGIN_SUCCESS           0x0073 /**< Contains starting location */
 #define SMSG_SERVER_PING             0x007f /**< Contains server tick */
+#define SMSG_UPDATE_HOST             0x0063 /**< Custom update host packet */
 #define SMSG_PLAYER_UPDATE_1         0x01d8
 #define SMSG_PLAYER_UPDATE_2         0x01d9
 #define SMSG_PLAYER_MOVE             0x01da /**< A nearby player moves */

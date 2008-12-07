@@ -212,3 +212,4 @@ void Player::updateCoords()
         mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
     }
 }
+

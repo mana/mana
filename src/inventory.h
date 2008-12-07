@@ -24,6 +24,8 @@
 
 class Item;
 
+#define INVENTORY_SIZE 102
+
 class Inventory
 {
     public:
@@ -99,6 +101,11 @@ class Inventory
          * Returns the index of the last occupied slot or 0 if none occupied.
          */
         int getLastUsedSlot() const;
+
+        /**
+         * Returns the number of slots available in the inventory.
+         */
+        int getInventorySize() const;
 
     protected:
         Item **mItems;  /**< The holder of items */

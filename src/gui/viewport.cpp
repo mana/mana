@@ -48,6 +48,8 @@
 
 extern volatile int tick_time;
 
+extern volatile int tick_time;
+
 Viewport::Viewport():
     mMap(0),
     mPixelViewX(0.0f),
@@ -196,17 +198,16 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         }
     }
 
-    // Draw names
+    // Draw text
     if (textManager)
     {
-        textManager->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
+        textManager->draw(graphics, mPixelViewX, mPixelViewY);
     }
 
-    // Draw player speech, and emotion sprite as needed
+    // Draw player names, speech, and emotion sprite as needed
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
-        (*i)->drawSpeech(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
         (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
     }
 

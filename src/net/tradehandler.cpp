@@ -127,7 +127,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
                         chatWindow->chatLog("Trade with " + tradePartnerName +
                                             " cancelled", BY_SERVER);
                     // otherwise ignore silently
-                                    
+
                     tradeWindow->setVisible(false);
                     player_node->setTrading(false);
                     break;
@@ -186,7 +186,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
                                 "partner is over weighted.",
                                 BY_SERVER);
                         break;
-                     case 2:
+                    case 2:
                          // Add item failed - player has no free slot
                          chatWindow->chatLog("Failed adding item. Trade "
                                              "partner has no free slot.",

@@ -1,7 +1,11 @@
 AETHYRA
 ===================
 
+<<<<<<< HEAD:README
  Version: 0.0.25    Date: 9/16/2008
+=======
+ Version: 0.0.26    Date: 29/8/2008
+>>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:README
 
  Development team:
   - See AUTHORS file for a list
@@ -46,6 +50,7 @@ Use arrow keys to move around. Other keys:
 - F5                 toggle skills window
 - F6                 toggle minimap
 - F7                 toggle chat window
+- F8                 toggle shortcut window
 - F9                 show setup window
 - F10                toggle debug window
 - Alt + 0-9          show emotions / usuable at skill level 2.

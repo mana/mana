@@ -48,11 +48,11 @@ void LoginHandler::handleMessage(MessageIn *msg)
     {
         case 0x0063:
              int len;
-             
-             len = msg->readInt16() - 4; 
+
+             len = msg->readInt16() - 4;
              mUpdateHost = msg->readString(len);
 
-             logger->log("Received update host \"%s\" from login server", 
+             logger->log("Received update host \"%s\" from login server",
                           mUpdateHost.c_str());
              break;
 
@@ -107,10 +107,12 @@ void LoginHandler::handleMessage(MessageIn *msg)
                     errorMessage = "Rejected from server";
                     break;
                 case 4:
-                    errorMessage = "You have been blocked by the GM Team";
+
+                    errorMessage = "You have been permanently banned from the game. Please contact the GM Team";
                     break;
                 case 6:
-                    errorMessage = "You have been temporarily banned from the game until " + msg->readString(20) + ".\n Please contact the GM team";
+                    errorMessage = "You have been temporarily banned from the game until "
+                          + msg->readString(20) + ".\n Please contact the GM team via the forums";
                     break;
                 case 9:
                     errorMessage = "This user name is already taken";

@@ -30,6 +30,7 @@
 #include "scrollarea.h"
 #include "table.h"
 #include "window.h"
+#include "table.h"
 
 #include "../guichanfwd.h"
 

@@ -337,9 +337,9 @@ public:
 
     virtual void
     ignore(Player *player, unsigned int flags)
-     {
-         player->flash(200);
-     }
+    {
+        player->flash(200);
+    }
 };
 
 class PIS_emote : public PlayerIgnoreStrategy

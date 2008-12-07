@@ -289,11 +289,12 @@ void Setup_Video::apply()
     bool fullscreen = mFsCheckBox->isSelected();
     if (fullscreen != (config.getValue("screen", 0) == 1))
     {
- 
-        /* Commented  out the openGL test because
-         * the fullscreen mode change works fine, but
-         * will need to test it on windows so not
-         * deleting entirely until then  --kraant*/
+        /* The OpenGL test is only necessary on Windows, since switching
+         * to/from full screen works fine on Linux. On Windows we'd have to
+         * reinitialize the OpenGL state and reload all textures.
+         *
+         * See http://libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode
+         */
 
 #ifdef WIN32
         // checks for opengl usage

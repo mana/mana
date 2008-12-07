@@ -71,22 +71,22 @@ MapLayer::MapLayer(int x, int y, int width, int height, bool isFringeLayer):
     mTiles = new Image*[size];
     std::fill_n(mTiles, size, (Image*) 0);
 }
-	  	 
+
 MapLayer::~MapLayer()
 {
     delete[] mTiles;
 }
- 	  	 
+
 void MapLayer::setTile(int x, int y, Image *img)
 {
     mTiles[x + y * mWidth] = img;
 }
- 	  	 
+
 Image* MapLayer::getTile(int x, int y) const
 {
     return mTiles[x + y * mWidth];
 }
-	  	 
+
 void MapLayer::draw(Graphics *graphics,
                     int startX, int startY,
                     int endX, int endY,
@@ -97,43 +97,43 @@ void MapLayer::draw(Graphics *graphics,
     startY -= mY;
     endX -= mX;
     endY -= mY;
- 	  	 
+
     if (startX < 0) startX = 0;
     if (startY < 0) startY = 0;
     if (endX > mWidth) endX = mWidth;
     if (endY > mHeight) endY = mHeight;
- 	  	 
+
     Sprites::const_iterator si = sprites.begin();
-	  	 
+
     for (int y = startY; y < endY; y++)
     {
         // If drawing the fringe layer, make sure all sprites above this row of
         // tiles have been drawn
         if (mIsFringeLayer) {
-             player_node->drawTargetCursor(graphics, scrollX, scrollY);
-             while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32) {
-                 (*si)->draw(graphics, -scrollX, -scrollY);
-                 si++;
-             }
+            player_node->drawTargetCursor(graphics, scrollX, scrollY);
+            while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32) {
+                (*si)->draw(graphics, -scrollX, -scrollY);
+                si++;
+            }
         }
 
         for (int x = startX; x < endX; x++)
         {
-             Image *img = getTile(x, y);
-             if (img) {
-                 const int px = (x + mX) * 32 - scrollX;
-                 const int py = (y + mY) * 32 - scrollY + 32 - img->getHeight();
-                 graphics->drawImage(img, px, py);
-             }
-         }
+            Image *img = getTile(x, y);
+            if (img) {
+                const int px = (x + mX) * 32 - scrollX;
+                const int py = (y + mY) * 32 - scrollY + 32 - img->getHeight();
+                graphics->drawImage(img, px, py);
+            }
+        }
     }
- 	  	 
+
     // Draw any remaining sprites
     if (mIsFringeLayer) {
-         while (si != sprites.end()) {
-             (*si)->draw(graphics, -scrollX, -scrollY);
-             si++;
-         }
+        while (si != sprites.end()) {
+            (*si)->draw(graphics, -scrollX, -scrollY);
+            si++;
+        }
     }
 }
 
@@ -186,7 +186,7 @@ void Map::initializeOverlays()
 
 void Map::addLayer(MapLayer *layer)
 {
-     mLayers.push_back(layer);
+    mLayers.push_back(layer);
 }
 
 void Map::addTileset(Tileset *tileset)
@@ -273,7 +273,7 @@ void Map::drawOverlay(Graphics *graphics,
 class ContainsGidFunctor
 {
     public:
-        bool operator() (Tileset* set) const
+        bool operator() (const Tileset* set) const
         {
             return (set->getFirstGid() <= gid &&
                     gid - set->getFirstGid() < (int)set->size());

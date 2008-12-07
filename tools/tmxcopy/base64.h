@@ -26,7 +26,6 @@
    | Author: Jim Winstead (jimw@php.net)                                  |
    +----------------------------------------------------------------------+
  */
-/* $Id: base64.h 3773 2007-12-12 15:45:25Z crush_tmw $ */
 
 #ifndef _TMW_BASE64_H
 #define _TMW_BASE64_H

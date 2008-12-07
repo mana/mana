@@ -27,10 +27,12 @@
 #include <SDL_types.h>
 #include <string>
 #include <vector>
+#include <bitset>
 
 #include "animatedsprite.h"
 #include "effectmanager.h"
 #include "map.h"
+#include "particlecontainer.h"
 #include "sprite.h"
 
 #include "gui/speechbubble.h"
@@ -38,6 +40,7 @@
 #include "resources/colordb.h"
 
 #define FIRST_IGNORE_EMOTE 14
+#define STATUS_EFFECTS 32
 
 class AnimatedSprite;
 class Equipment;
@@ -364,6 +367,12 @@ class Being : public Sprite
 
         const std::auto_ptr<Equipment> mEquipment;
 
+        static int getHairColorsNr(void);
+
+        static int getHairStylesNr(void);
+
+        static std::string getHairColor(int index);
+
     protected:
         /**
          * Sets the new path for this being.
@@ -393,6 +402,8 @@ class Being : public Sprite
         bool mIsGM;
         bool mParticleEffects;          /**< Whether to display particles or not */
 
+        typedef std::bitset<STATUS_EFFECTS> StatusEffects;
+
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
 
@@ -405,11 +416,15 @@ class Being : public Sprite
         Uint8 mGender;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
+        Uint16 mStunMode;		/**< Stun mode; zero if not stunned */
+        StatusEffects mStatusEffects;	/**< Bitset of active status effects */
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
-        std::list<Particle *> mChildParticleEffects;
+        ParticleList mStunParticleEffects;
+        ParticleVector mStatusParticleEffects;
+        ParticleList mChildParticleEffects;
 
     private:
         /**

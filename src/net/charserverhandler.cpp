@@ -178,7 +178,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
                     errorMessage = "Duplicated login";
                     break;
                 default:
-                    errorMessage = "Unkown error with 0x0081";
+                    errorMessage = "Unknown error with 0x0081";
                     break;
             }
             mCharInfo->unlock();

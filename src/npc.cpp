@@ -21,6 +21,7 @@
 
 #include "animatedsprite.h"
 #include "graphics.h"
+#include "localplayer.h"
 #include "npc.h"
 #include "particle.h"
 #include "text.h"
@@ -42,7 +43,7 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
 {
     NPCInfo info = NPCDB::get(job);
 
-    //setup NPC sprites
+    // Setup NPC sprites
     int c = BASE_SPRITE;
     for (std::list<NPCsprite*>::const_iterator i = info.sprites.begin();
          i != info.sprites.end();
@@ -75,6 +76,7 @@ NPC::~NPC()
     if (mName)
     {
         delete mName;
+        player_node->setTarget(NULL);
     }
 }
 

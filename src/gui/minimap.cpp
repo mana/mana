@@ -40,17 +40,13 @@ Minimap::Minimap():
 Minimap::~Minimap()
 {
     if (mMapImage)
-    {
         mMapImage->decRef();
-    }
 }
 
 void Minimap::setMapImage(Image *img)
 {
     if (mMapImage)
-    {
         mMapImage->decRef();
-    }
 
     mMapImage = img;
 

@@ -256,8 +256,6 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
 
     int numberOfHairColors = ColorDB::size();
 
-    printf("%d\n", numberOfHairColors);
-
     mPlayer->setHairStyle(rand() % mPlayer->getNumOfHairstyles(), rand() % numberOfHairColors);
 
     mNameField = new TextField("");

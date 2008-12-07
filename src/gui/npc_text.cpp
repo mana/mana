@@ -59,7 +59,6 @@ void NpcTextDialog::setText(const std::string &text)
 {
     const gcn::Rectangle &area = getChildrenArea();
     const int width = area.width;
-    const int height = area.height;
 
     mText = text;
     mTextBox->setMinWidth(width - 30);

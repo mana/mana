@@ -133,7 +133,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 player_node->stopAttack();
 
                 nearby = (engine->getCurrentMapName() == mapPath);
-                // Switch the actual map, deleting the previous one
+
+                // Switch the actual map, deleting the previous one if necessary
                 engine->changeMap(mapPath);
 
                 current_npc = 0;

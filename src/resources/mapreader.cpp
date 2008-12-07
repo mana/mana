@@ -240,7 +240,8 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
             {
                 if (xmlStrEqual(objectNode->name, BAD_CAST "object"))
                 {
-                    const std::string objType = XML::getProperty(objectNode, "type", "");
+                    const std::string objType =
+                        XML::getProperty(objectNode, "type", "");
 
                     if (objType == "WARP" || objType == "NPC" ||
                         objType == "SCRIPT" || objType == "SPAWN")
@@ -249,12 +250,14 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
                         continue;
                     }
 
-                    const std::string objName = XML::getProperty(objectNode, "name", "");
+                    const std::string objName =
+                        XML::getProperty(objectNode, "name", "");
                     const int objX = XML::getProperty(objectNode, "x", 0);
                     const int objY = XML::getProperty(objectNode, "y", 0);
 
                     logger->log("- Loading object name: %s type: %s at %d:%d",
-                                objName.c_str(), objType.c_str(), objX, objY);
+                                objName.c_str(), objType.c_str(),
+                                objX, objY);
 
                     if (objType == "PARTICLE_EFFECT")
                     {
@@ -263,7 +266,9 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
                             continue;
                         }
 
-                        map->addParticleEffect(objName, objX + offsetX, objY + offsetY);
+                        map->addParticleEffect(objName,
+                                               objX + offsetX,
+                                               objY + offsetY);
                     }
                     else
                     {
@@ -302,13 +307,14 @@ static void setTile(Map *map, MapLayer *layer, int x, int y, int gid)
         // Set regular tile on a layer
         Image * const img = set ? set->get(gid - set->getFirstGid()) : 0;
         layer->setTile(x, y, img);
-     } else {
+    } else {
         // Set collision tile
         map->setWalk(x, y, (!set || (gid - set->getFirstGid() == 0)));
-     }
+    }
 }
 
-void MapReader::readLayer(xmlNodePtr node, Map *map)
+void
+MapReader::readLayer(xmlNodePtr node, Map *map)
 {
     // Layers are not necessarily the same size as the map
     const int w = XML::getProperty(node, "width", map->getWidth());
@@ -323,25 +329,25 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
     MapLayer *layer = 0;
 
     if (!isCollisionLayer) {
-         layer = new MapLayer(offsetX, offsetY, w, h, isFringeLayer);
-         map->addLayer(layer);
+        layer = new MapLayer(offsetX, offsetY, w, h, isFringeLayer);
+        map->addLayer(layer);
     }
 
     logger->log("- Loading layer \"%s\"", name.c_str());
     int x = 0;
     int y = 0;
- 
+
     // Load the tile data
     for_each_xml_child_node(childNode, node)
     {
         if (!xmlStrEqual(childNode->name, BAD_CAST "data"))
-             continue;
- 
+            continue;
+
         const std::string encoding =
-              XML::getProperty(childNode, "encoding", "");
+            XML::getProperty(childNode, "encoding", "");
         const std::string compression =
-              XML::getProperty(childNode, "compression", "");
-  
+            XML::getProperty(childNode, "compression", "");
+
         if (encoding == "base64")
         {
             if (!compression.empty() && compression != "gzip") {
@@ -382,11 +388,11 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                     unsigned char *inflated;
                     unsigned int inflatedSize =
                         inflateMemory(binData, binLen, inflated);
- 
+
                     free(binData);
                     binData = inflated;
                     binLen = inflatedSize;
- 
+
                     if (!inflated) {
                         logger->log("Error: Could not decompress layer!");
                         return;
@@ -400,11 +406,12 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
                         binData[i + 3] << 24;
 
                     setTile(map, layer, x, y, gid);
-  
+
                     x++;
-                    if (x == w) 
-                    {
+                    if (x == w) {
                         x = 0; y++;
+
+                        // When we're done, don't crash on too much data
                         if (y == h)
                             break;
                     }
@@ -418,17 +425,17 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
              {
                  if (!xmlStrEqual(childNode2->name, BAD_CAST "tile"))
                     continue;
- 
-                 const int gid = XML::getProperty(childNode2, "gid", -1);
-                 setTile(map, layer, x, y, gid);
- 
-                 x++;
-                 if (x == w) {
-                     x = 0; y++;
-                     if (y >= h)
-                         break;
-                 }
-             }
+
+                const int gid = XML::getProperty(childNode2, "gid", -1);
+                setTile(map, layer, x, y, gid);
+
+                x++;
+                if (x == w) {
+                    x = 0; y++;
+                    if (y >= h)
+                        break;
+                }
+            }
         }
  
         if (y < h)

@@ -26,7 +26,6 @@
    | Author: Jim Winstead (jimw@php.net)                                  |
    +----------------------------------------------------------------------+
    */
-/* $Id: base64.cpp 3773 2007-12-12 15:45:25Z crush_tmw $ */
 
 #include <string.h>
 #include <stdlib.h>

@@ -44,7 +44,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
          *
          * @see Window::Window
          */
-        ServerSelectDialog(LoginData *loginData);
+        ServerSelectDialog(LoginData *loginData, int nextState);
 
         /**
          * Destructor.
@@ -61,6 +61,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         ServerListModel *mServerListModel;
         gcn::ListBox *mServerList;
         gcn::Button *mOkButton;
+        int mNextState;
 };
 
 #endif

@@ -75,8 +75,12 @@ class Monster : public Being
          * Update the text when the monster moves
          */
         void updateCoords();
+
     private:
-        Text *mText; /**< holds a text object when the mod displays it's name, 0 otherwise */
+        /**
+         * holds a text object when the mod displays it's name, 0 otherwise
+         */
+        Text *mText;
 };
 
 #endif

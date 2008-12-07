@@ -86,9 +86,9 @@ class NpcListDialog : public Window, public gcn::ActionListener,
 
     private:
         gcn::ListBox *mItemList;
-        ScrollArea *scrollArea;
-        Button *okButton;
-        Button *cancelButton;
+        gcn::ScrollArea *scrollArea;
+        gcn::Button *okButton;
+        gcn::Button *cancelButton;
 
         std::vector<std::string> mItems;
 };

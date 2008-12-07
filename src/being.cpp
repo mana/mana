@@ -49,6 +49,11 @@
 
 #define BEING_EFFECTS_FILE "effects.xml"
 
+#include "utils/xml.h"
+
+#define BEING_EFFECTS_FILE "effects.xml"
+#define HAIR_FILE "hair.xml"
+
 int Being::instances = 0;
 int Being::mNumberOfHairstyles = 1;
 ImageSet *Being::emotionSet = NULL;
@@ -77,7 +82,9 @@ Being::Being(int id, int job, Map *map):
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
-    mSpriteColors(VECTOREND_SPRITE, "")
+    mSpriteColors(VECTOREND_SPRITE, ""),
+    mStatusParticleEffects(&mStunParticleEffects, false),
+    mChildParticleEffects(&mStatusParticleEffects, false)
 {
     setMap(map);
 
@@ -108,13 +115,6 @@ Being::~Being()
 {
     delete_all(mSprites);
     clearPath();
-
-    for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
-            i != mChildParticleEffects.end();
-            i++)
-    {
-        (*i)->kill();
-    }
 
     setMap(NULL);
 
@@ -250,12 +250,7 @@ void Being::setMap(Map *map)
 
 void Being::controlParticle(Particle *particle)
 {
-    if (particle)
-    {
-        // The effect may not die without the beings permission or we segfault
-        particle->disableAutoDelete();
-        mChildParticleEffects.push_back(particle);
-    }
+    mChildParticleEffects.addLocally(particle);
 }
 
 void Being::setAction(Action action)
@@ -323,7 +318,7 @@ void Being::setDirection(Uint8 direction)
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL)
+       if (mSprites[i] != NULL)
             mSprites[i]->setDirection(dir);
     }
 }
@@ -402,6 +397,7 @@ void Being::logic()
 
     int oldPx = mPx;
     int oldPy = mPy;
+
     // Update pixel coordinates
     mPx = mX * 32 + getXOffset();
     mPy = mY * 32 + getYOffset();
@@ -428,24 +424,8 @@ void Being::logic()
         }
     }
 
-    if (mParticleEffects)
-    {
-        //Update particle effects
-        for (std::list<Particle *>::iterator i = mChildParticleEffects.begin();
-                                             i != mChildParticleEffects.end();)
-        {
-            (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
-            if ((*i)->isExtinct())
-            {
-                (*i)->kill();
-                i = mChildParticleEffects.erase(i);
-            }
-            else 
-            {
-                i++;
-            }
-        }
-    }
+    //Update particle effects
+    mChildParticleEffects.setPositions((float)mPx + 16.0f, (float)mPy + 32.0f);
 }
 
 void Being::draw(Graphics *graphics, int offsetX, int offsetY) const

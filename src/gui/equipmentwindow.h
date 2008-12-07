@@ -23,6 +23,7 @@
 #define _TMW_EQUIPMENT_H
 
 #include "window.h"
+#include "../inventory.h"
 
 #include "../guichanfwd.h"
 #include "../inventory.h"
@@ -54,7 +55,7 @@ class EquipmentWindow : public Window
 
     private:
         Equipment *mEquipment;
-        Inventory *inventory;
+        Inventory *mInventory;
 };
 
 extern EquipmentWindow *equipmentWindow;

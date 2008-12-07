@@ -1,5 +1,52 @@
+0.0.27 (...)
+- Added support for showing map name above minimap
+- Added showing how long the ban is when banned
+- Added --data parameter for developers
+- Added particle effect for critical hits
+- Added support for dynamic skill names and hair colors
+- Added ability to add equipment to the shortcut bar
+- Added ability to change configuration during login phase (from Aethyra)
+- Mouse cursor will now hide when not used for some time
+- Inventory window now displays amount of slots used
+- Center minimap on player when it is larger than the minimap window
+- Extended particle emitters with properties that can change over time
+- Extended the GUI font to support more characters
+- Only require a restart to switch to full screen with OpenGL on Windows
+- Make sure news and update file list aren't cached (from Aethyra)
+- Made NPC dialogs resizable (from Aethyra)
+- Fixed visibility of trade window on startup
+- Fixed a client input freeze when closing NPC script from server
+- Fixed dead players to lie on the ground instead of standing around
+- Fixed shortcuts being activated when trade window was visible
+- Fixed a crash when equipment window is open
+- Fixed money value on failing to buy (from Aethyra)
+
+0.0.26 (29 August 2008)
+- Added support for a newer version of eAthena server
+- Added support for showing custom being effects
+- Added new features to the particle engine
+- Position names and chat such that there is no overlap, when possible
+- Fixed a crash when loading a corrupt map that has too much layer data
+
+0.0.25 (27 July 2008)
+- Added support for whispering to other players
+- Added ability to ignore other players
+- Added command line argument for specifying the update host (-H)
+- Added support for receiving the update host from the server
+- Added support for displaying a shield sprite
+- Added shortcut window, allowing you to quickly access inventory items
+- Added message when gaining money from trade or quest
+- Added support for an arbitrary number of map layers
+- Added support for basing one sprite definition on another
+- Added the possibility to assign particle effects to NPCs
+- Added remembering whether windows are visible or not
+- Updated to work with Guichan 0.8.x
+- Improved accuracy of monster targeting with the mouse
+- Page up and page down will now scroll the chat window
 - Item icons are now loaded on demand and unloaded when no longer used
 - Fixed display of critical hits
+- Fixed multi-channel image dyeing
+- Fixed updating of money display after buying
 
 0.0.24.1 (7 April 2008)
 - Added /clear command to clear chat window

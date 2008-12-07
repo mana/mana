@@ -64,8 +64,7 @@ ItemContainer::~ItemContainer()
     mSelImg->decRef();
 }
 
-void
-ItemContainer::logic()
+void ItemContainer::logic()
 {
     gcn::Widget::logic();
 
@@ -78,8 +77,7 @@ ItemContainer::logic()
     }
 }
 
-void
-ItemContainer::draw(gcn::Graphics *graphics)
+void ItemContainer::draw(gcn::Graphics *graphics)
 {
     int columns = getWidth() / gridWidth;
 
@@ -146,8 +144,7 @@ void ItemContainer::recalculateHeight()
         setHeight(height);
 }
 
-Item*
-ItemContainer::getSelectedItem()
+Item *ItemContainer::getSelectedItem()
 {
     refindSelectedItem(); // Make sure that we're still current
 
@@ -157,8 +154,7 @@ ItemContainer::getSelectedItem()
     return mInventory->getItem(mSelectedItemIndex);
 }
 
-void
-ItemContainer::selectNone()
+void ItemContainer::selectNone()
 {
     setSelectedItemIndex(NO_ITEM);
 }
@@ -166,15 +162,15 @@ ItemContainer::selectNone()
 void ItemContainer::refindSelectedItem()
 {
     if (mSelectedItemIndex != NO_ITEM) {
-	
+
         if (mInventory->getItem(mSelectedItemIndex) &&
             mInventory->getItem(mSelectedItemIndex)->getId() == mLastSelectedItemId)
             return; // we're already fine
-	
+
         // Otherwise ensure the invariant: we must point to an item of the specified last ID,
         // or nowhere at all.
 
-        for (int i = 0; i <= mMaxItems + mOffset; i++)
+        for (int i = 0; i <= mMaxItems + 1; i++)
             if (mInventory->getItem(i) &&
                 mInventory->getItem(i)->getId() == mLastSelectedItemId) {
                 mSelectedItemIndex = i;
@@ -198,7 +194,6 @@ void ItemContainer::setSelectedItemIndex(int index)
         newSelectedItemIndex = NO_ITEM;
     else
         newSelectedItemIndex = index;
-	
     if (mSelectedItemIndex != newSelectedItemIndex)
     {
         mSelectedItemIndex = newSelectedItemIndex;
@@ -212,8 +207,7 @@ void ItemContainer::setSelectedItemIndex(int index)
     }
 }
 
-void
-ItemContainer::distributeValueChangedEvent()
+void ItemContainer::distributeValueChangedEvent()
 {
     gcn::SelectionEvent event(this);
     std::list<gcn::SelectionListener*>::iterator i_end = mListeners.end();
@@ -225,8 +219,7 @@ ItemContainer::distributeValueChangedEvent()
     }
 }
 
-void
-ItemContainer::mousePressed(gcn::MouseEvent &event)
+void ItemContainer::mousePressed(gcn::MouseEvent &event)
 {
     int button = event.getButton();
 
@@ -243,8 +236,6 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         Item *item = mInventory->getItem(index);
 
         if (item)
-        {
             itemShortcut->setItemSelected(item->getId());
-        }
     }
 }
