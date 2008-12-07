@@ -385,8 +385,10 @@ class Being : public Sprite
          *
          * \param effectId ID of the effect to trigger
          */
-        virtual void
-        triggerEffect(int effectId) { internalTriggerEffect(effectId, false, true); }
+        virtual void triggerEffect(int effectId)
+        {
+            internalTriggerEffect(effectId, false, true);
+        }
 
         const std::auto_ptr<Equipment> mEquipment;
 
@@ -420,22 +422,19 @@ class Being : public Sprite
          * \param sfx Whether to trigger sound effects
          * \param gfx Whether to trigger graphical effects
          */
-        void
-        internalTriggerEffect(int effectId, bool sfx, bool gfx);
+        void internalTriggerEffect(int effectId, bool sfx, bool gfx);
 
         /**
          * Notify self that the stun mode has been updated.  Invoked by
          * setStunMode if something changed.
          */
-        virtual void
-        updateStunMode(int oldMode, int newMode);
+        virtual void updateStunMode(int oldMode, int newMode);
 
         /**
          * Notify self that a status effect has flipped.
          * The new flag is passed.
          */
-        virtual void
-        updateStatusEffect(int index, bool newStatus);
+        virtual void updateStatusEffect(int index, bool newStatus);
 
         /**
          * Handle an update to a status or stun effect
@@ -443,8 +442,7 @@ class Being : public Sprite
          * \param The StatusEffect to effect
          * \param effectId -1 for stun, otherwise the effect index
          */
-        virtual void
-        handleStatusEffect(StatusEffect *effect, int effectId);
+        virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
         Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWalkSpeed;              /**< Walking speed */
@@ -462,8 +460,8 @@ class Being : public Sprite
         Uint8 mGender;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
-        Uint16 mStunMode;		/**< Stun mode; zero if not stunned */
-        std::set<int> mStatusEffects;	/**< set of active status effects */
+        Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
+        std::set<int> mStatusEffects;   /**< set of active status effects */
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;

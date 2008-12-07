@@ -33,8 +33,7 @@
 #include "../log.h"
 #include "../utils/xml.h"
 
-Action*
-SpriteDef::getAction(SpriteAction action) const
+Action *SpriteDef::getAction(SpriteAction action) const
 {
     Actions::const_iterator i = mActions.find(action);
 
