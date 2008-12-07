@@ -32,6 +32,7 @@
 #include "windowcontainer.h"
 
 #include "../being.h"
+#include "../beingmanager.h"
 #include "../floor_item.h"
 #include "../item.h"
 #include "../localplayer.h"
@@ -45,7 +46,7 @@ extern std::string tradePartnerName;
 
 PopupMenu::PopupMenu():
     Window(),
-    mBeing(NULL),
+    mBeingId(0),
     mFloorItem(NULL),
     mItem(NULL)
 {
@@ -63,16 +64,16 @@ PopupMenu::PopupMenu():
 
 void PopupMenu::showPopup(int x, int y, Being *being)
 {
-    mBeing = being;
+    mBeingId = being->getId();
     mBrowserBox->clearRows();
 
-    switch (mBeing->getType())
+    switch (being->getType())
     {
         case Being::PLAYER:
             {
                 // Players can be traded with. Later also attack, follow and
                 // add as buddy will be options in this menu.
-                const std::string &name = mBeing->getName();
+                const std::string &name = being->getName();
                 mBrowserBox->addRow("@@trade|Trade With " + name + "@@");
                 mBrowserBox->addRow("@@attack|Attack " + name + "@@");
 
@@ -138,58 +139,60 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 
 void PopupMenu::handleLink(const std::string& link)
 {
+    Being *being = beingManager->findBeing(mBeingId);
+
     // Talk To action
     if (link == "talk" &&
-        mBeing != NULL &&
-        mBeing->getType() == Being::NPC &&
+        being != NULL &&
+        being->getType() == Being::NPC &&
         current_npc == 0)
     {
-        dynamic_cast<NPC*>(mBeing)->talk();
+        dynamic_cast<NPC*>(being)->talk();
     }
 
     // Trade action
     else if (link == "trade" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+             being != NULL &&
+             being->getType() == Being::PLAYER)
     {
-        player_node->trade(mBeing);
-        tradePartnerName = mBeing->getName();
+        player_node->trade(being);
+        tradePartnerName = being->getName();
     }
 
     // Attack action
     else if (link == "attack" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+             being != NULL &&
+             being->getType() == Being::PLAYER)
     {
-        player_node->attack(mBeing, true);
+        player_node->attack(being, true);
     }
 
     else if (link == "unignore" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+             being != NULL &&
+             being->getType() == Being::PLAYER)
     {
-        player_relations.setRelation(mBeing->getName(), PlayerRelation::NEUTRAL);
+        player_relations.setRelation(being->getName(), PlayerRelation::NEUTRAL);
     }
 
     else if (link == "ignore" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+             being != NULL &&
+             being->getType() == Being::PLAYER)
     {
-        player_relations.setRelation(mBeing->getName(), PlayerRelation::IGNORED);
+        player_relations.setRelation(being->getName(), PlayerRelation::IGNORED);
     }
 
     else if (link == "disregard" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+             being != NULL &&
+             being->getType() == Being::PLAYER)
     {
-        player_relations.setRelation(mBeing->getName(), PlayerRelation::DISREGARDED);
+        player_relations.setRelation(being->getName(), PlayerRelation::DISREGARDED);
     }
 
     else if (link == "friend" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+             being != NULL &&
+             being->getType() == Being::PLAYER)
     {
-        player_relations.setRelation(mBeing->getName(), PlayerRelation::FRIEND);
+        player_relations.setRelation(being->getName(), PlayerRelation::FRIEND);
     }
 
     /*
@@ -200,12 +203,12 @@ void PopupMenu::handleLink(const std::string& link)
 
     /*
     // Add Buddy action
-    else if ((link == "buddy") && mBeing != NULL && mBeing->isPlayer())
+    else if ((link == "buddy") && being != NULL && being->isPlayer())
     {
         if (!buddyWindow->isVisible())
             buddyWindow->setVisible(true);
 
-        buddyWindow->addBuddy(mBeing->getName());
+        buddyWindow->addBuddy(being->getName());
     }*/
 
     // Pick Up Floor Item action
@@ -258,7 +261,8 @@ void PopupMenu::handleLink(const std::string& link)
 
     setVisible(false);
 
-    mBeing = NULL;
+    being = NULL;
+    mBeingId = 0;
     mFloorItem = NULL;
     mItem = NULL;
 }
