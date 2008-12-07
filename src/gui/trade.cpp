@@ -50,7 +50,7 @@ TradeWindow::TradeWindow(Network *network):
     mPartnerInventory(new Inventory(INVENTORY_SIZE))
 {
     setWindowName("Trade");
-    setDefaultSize(115, 197, 332, 209);
+    setDefaultSize(115, 227, 332, 209);
 
     mAddButton = new Button("Add", "add", this);
     mOkButton = new Button("Ok", "ok", this);

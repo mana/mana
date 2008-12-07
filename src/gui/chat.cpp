@@ -50,10 +50,9 @@ Window(""), mNetwork(network), mTmpVisible(false)
     setWindowName("Chat");
 
     setResizable(true);
-    setDefaultSize(0, (windowContainer->getHeight() - 123), 600, 100);
-    loadWindowState();
+    setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
 
-    mChatInput = new ChatInput();
+    mChatInput = new ChatInput;
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
@@ -70,6 +69,8 @@ Window(""), mNetwork(network), mTmpVisible(false)
 
     add(mScrollArea);
     add(mChatInput);
+
+    loadWindowState();
 
     // Add key listener to chat input to be able to respond to up/down
     mChatInput->addKeyListener(this);

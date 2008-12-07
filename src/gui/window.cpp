@@ -233,7 +233,7 @@ void Window::setMaxHeight(unsigned int height)
 
 void Window::setResizable(bool r)
 {
-    if ((bool)mGrip == r) return;
+    if ((bool) mGrip == r) return;
 
     if (r)
     {
@@ -251,9 +251,12 @@ void Window::setResizable(bool r)
 
 void Window::widgetResized(const gcn::Event &event)
 {
+    const gcn::Rectangle area = getChildrenArea();
+
+    mChrome->setSize(area.width, area.height);
+
     if (mGrip)
     {
-        gcn::Rectangle const &area = getChildrenArea();
         mGrip->setPosition(getWidth() - mGrip->getWidth() - area.x,
                            getHeight() - mGrip->getHeight() - area.y);
     }
@@ -458,13 +461,10 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 
         // Set the new window and content dimensions
         setDimension(newDim);
-        const gcn::Rectangle area = getChildrenArea();
-        mChrome->setSize(area.width, area.height);
     }
 }
 
-void
-Window::loadWindowState()
+void Window::loadWindowState()
 {
     const std::string &name = mWindowName;
     assert(!name.empty());
@@ -477,13 +477,10 @@ Window::loadWindowState()
     {
         setSize((int) config.getValue(name + "WinWidth", mDefaultWidth),
                 (int) config.getValue(name + "WinHeight", mDefaultHeight));
-
-        const gcn::Rectangle area = getChildrenArea();
-        mChrome->setSize(area.width, area.height);
     }
     else
     {
-        setContentSize(mDefaultWidth, mDefaultHeight);
+        setSize(mDefaultWidth, mDefaultHeight);
     }
 }
 
@@ -499,7 +496,7 @@ void Window::setDefaultSize(int defaultX, int defaultY,
 void Window::resetToDefaultSize()
 {
     setPosition(mDefaultX, mDefaultY);
-    setContentSize(mDefaultWidth, mDefaultHeight);
+    setSize(mDefaultWidth, mDefaultHeight);
 }
 
 int Window::getResizeHandles(gcn::MouseEvent &event)

@@ -125,7 +125,7 @@ SkillDialog::SkillDialog():
 
     setWindowName("Skills");
     setCloseButton(true);
-    setDefaultSize(windowContainer->getWidth() - 255, 25, 240, 240);
+    setDefaultSize(windowContainer->getWidth() - 260, 25, 255, 260);
 
 //    mSkillListBox = new ListBox(this);
     skillScrollArea = new ScrollArea(&mTable);

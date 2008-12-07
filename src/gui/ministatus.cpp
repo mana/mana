@@ -73,8 +73,9 @@ MiniStatusWindow::MiniStatusWindow():
     add(mMpLabel);
     add(mXpLabel);
 
-    setDefaultSize(0, 0, mXpBar->getX() + mXpBar->getWidth(),
+    setContentSize(mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
+    setDefaultSize(0, 0, getWidth(), getHeight());
     loadWindowState();
 }
 
