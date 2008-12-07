@@ -24,6 +24,7 @@
 #include "protocol.h"
 
 #include "../beingmanager.h"
+#include "../localplayer.h"
 #include "../npc.h"
 
 #include "../gui/npc_text.h"
@@ -53,6 +54,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
         case SMSG_NPC_CHOICE:
             msg->readInt16();  // length
             id = msg->readInt32();
+            player_node->setAction(LocalPlayer::STAND);
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcListDialog->parseItems(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(true);
@@ -61,6 +63,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
         case SMSG_NPC_MESSAGE:
             msg->readInt16();  // length
             id = msg->readInt32();
+            player_node->setAction(LocalPlayer::STAND);
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcTextDialog->addText(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(false);
