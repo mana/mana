@@ -247,6 +247,38 @@ ChatWindow::isInputFocused()
 }
 
 void
+ChatWindow::whisper(const std::string &nick, std::string msg, int prefixlen)
+{
+    std::string recvnick = "";
+    msg.erase(0, prefixlen + 1);
+
+    if (msg.substr(0,1) == "\"")
+    {
+        const std::string::size_type pos = msg.find('"', 1);
+        if (pos != std::string::npos) {
+            recvnick = msg.substr(1, pos - 1);
+            msg.erase(0, pos + 2);
+        }
+    }
+    else
+    {
+        const std::string::size_type pos = msg.find(" ");
+        if (pos != std::string::npos) {
+            recvnick = msg.substr(0, pos);
+            msg.erase(0, pos + 1);
+        }
+    }
+
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_CHAT_WHISPER);
+    outMsg.writeInt16(msg.length() + 28);
+    outMsg.writeString(recvnick, 24);
+    outMsg.writeString(msg, msg.length());
+
+    chatLog("Whispering to " + recvnick + " : " + msg, BY_PLAYER);
+}
+
+void
 ChatWindow::chatSend(const std::string &nick, std::string msg)
 {
     /* Some messages are managed client side, while others
@@ -295,7 +327,10 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
     {
-        chatLog(map_path, BY_SERVER);
+        // Display the current map, X, and Y
+        std::ostringstream where;
+        where << map_path << " " << player_node->mX << "," << player_node->mY;
+        chatLog(where.str(), BY_SERVER);
     }
     else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
     {
@@ -307,35 +342,9 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         mTextOutput->clearRows();
     }
     else if (msg.substr(0, IS_WHISPER_LENGTH) == IS_WHISPER)
-    {
-        std::string recvnick = "";
-        msg.erase(0, IS_WHISPER_LENGTH + 1);
-
-        if (msg.substr(0,1) == "\"")
-        {
-            const std::string::size_type pos = msg.find('"', 1);
-            if (pos != std::string::npos) {
-                recvnick = msg.substr(1, pos - 1);
-                msg.erase(0, pos + 2);
-            }
-        }
-        else
-        {
-            const std::string::size_type pos = msg.find(" ");
-            if (pos != std::string::npos) {
-                recvnick = msg.substr(0, pos);
-                msg.erase(0, pos + 1);
-            }
-        }
-
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_CHAT_WHISPER);
-        outMsg.writeInt16(msg.length() + 28);
-        outMsg.writeString(recvnick, 24);
-        outMsg.writeString(msg, msg.length());
-
-        chatLog("Whispering to " + recvnick + " : " + msg, BY_PLAYER);
-    }
+        whisper(nick, msg, IS_WHISPER_LENGTH);
+    else if (msg.substr(0, IS_SHORT_WHISPER_LENGTH) == IS_SHORT_WHISPER)
+        whisper(nick, msg, IS_SHORT_WHISPER_LENGTH);
     else
     {
         chatLog("Unknown command", BY_SERVER);
@@ -490,6 +499,7 @@ void ChatWindow::help(const std::string &msg1, const std::string &msg2)
         chatLog("/where: Display map name", BY_SERVER);
         chatLog("/whisper <nick> <message>: Sends a private <message>"
                 " to <nick>", BY_SERVER);
+        chatLog("/w <nick> <message>: Short form for /whisper", BY_SERVER);
         chatLog("/who: Display number of online users", BY_SERVER);
         chatLog("For more information, type /help <command>", BY_SERVER);
         return;
@@ -525,10 +535,11 @@ void ChatWindow::help(const std::string &msg1, const std::string &msg2)
                 BY_SERVER);
         return;
     }
-    if (msg1 == "whisper")
+    if (msg1 == "whisper" || msg1 == "w")
     {
         chatLog("Command: /whisper <nick> <msg>", BY_SERVER);
-        chatLog("This command sends the message <msg> to <nick.", BY_SERVER);
+        chatLog("Command: /w <nick> <msg>", BY_SERVER);
+        chatLog("This command sends the message <msg> to <nick>.", BY_SERVER);
         chatLog("If the <nick> has spaces in it, enclose it in "
                 "double quotes (\").", BY_SERVER);
         return;

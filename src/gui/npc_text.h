@@ -45,18 +45,23 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         NpcTextDialog();
 
         /**
+         * Called when resizing the window
+         *
+         * @param event The calling event
+         */
+        void widgetResized(const gcn::Event &event);
+
+        /**
          * Called when receiving actions from the widgets.
          */
-        void
-        action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Sets the text shows in the dialog.
          *
          * @param string The new text.
          */
-        void
-        setText(const std::string &string);
+        void setText(const std::string &string);
 
         /**
          * Adds the text to the text shows in the dialog. Also adds a newline
@@ -64,11 +69,14 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          *
          * @param string The text to add.
          */
-        void
-        addText(const std::string &string);
+        void addText(const std::string &string);
 
     private:
+        gcn::Button *okButton;
+        gcn::ScrollArea *scrollArea;
         TextBox *mTextBox;
+
+        std::string mText;
 };
 
-#endif
+#endif // _TMW_NPC_TEXT_H

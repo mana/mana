@@ -46,18 +46,20 @@ class ScrollArea;
 
 #define BY_LOGGER     6
 
-#define IS_ANNOUNCE         "/announce "
-#define IS_ANNOUNCE_LENGTH  10
-#define IS_HELP             "/help"
-#define IS_HELP_LENGTH      5
-#define IS_WHERE            "/where"
-#define IS_WHERE_LENGTH     6
-#define IS_WHO              "/who"
-#define IS_WHO_LENGTH       4
-#define IS_CLEAR            "/clear"
-#define IS_CLEAR_LENGTH     6
-#define IS_WHISPER          "/whisper"
-#define IS_WHISPER_LENGTH   8
+#define IS_ANNOUNCE               "/announce "
+#define IS_ANNOUNCE_LENGTH        10
+#define IS_HELP                   "/help"
+#define IS_HELP_LENGTH            5
+#define IS_WHERE                  "/where"
+#define IS_WHERE_LENGTH           6
+#define IS_WHO                    "/who"
+#define IS_WHO_LENGTH             4
+#define IS_CLEAR                  "/clear"
+#define IS_CLEAR_LENGTH           6
+#define IS_WHISPER                "/whisper"
+#define IS_WHISPER_LENGTH         8
+#define IS_SHORT_WHISPER          "/w"
+#define IS_SHORT_WHISPER_LENGTH   2
 
 /**
  * gets in between usernick and message text depending on
@@ -218,6 +220,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
     private:
         Network *mNetwork;
         bool mTmpVisible;
+
+        void
+        whisper(const std::string &nick, std::string msg, int prefixlen);
 
         /** One item in the chat log */
         struct CHATLOG
