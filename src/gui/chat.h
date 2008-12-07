@@ -127,9 +127,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ChatWindow(Network *network);
 
         /**
-         * Logic (updates components' size)
+         * Called whenever the widget changes size.
          */
-        void logic();
+        void widgetResized(const gcn::Event &event);
 
         /*
          * Adds a line of text to our message list. Parameters:

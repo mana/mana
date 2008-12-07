@@ -75,10 +75,9 @@ ChatWindow::ChatWindow(Network *network):
     mCurHist = mHistory.end();
 }
 
-void
-ChatWindow::logic()
+void ChatWindow::widgetResized(const gcn::Event &event)
 {
-    // todo: only do this when the size changes (updateWidgets?)
+    Window::widgetResized(event);
 
     const gcn::Rectangle area = getChildrenArea();
 
@@ -89,7 +88,6 @@ ChatWindow::logic()
     mScrollArea->setWidth(area.width - 2 * mScrollArea->getFrameSize());
     mScrollArea->setHeight(area.height - 2 * mScrollArea->getFrameSize() -
             mChatInput->getHeight() - 5);
-    mScrollArea->logic();
 }
 
 void
