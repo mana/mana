@@ -50,7 +50,7 @@ InventoryWindow::InventoryWindow():
     setMinWidth(240);
     setMinHeight(172);
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 322, 172);
+    setDefaultSize(115, 25, 322, 200);
 
     mUseButton = new Button("Use", "use", this);
     mDropButton = new Button("Drop", "drop", this);

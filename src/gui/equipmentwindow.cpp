@@ -38,9 +38,9 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
 {
     setWindowName("Equipment");
     setCloseButton(true);
-    setDefaultSize(5, 230, 200, 120);
+    setDefaultSize(5, 230, 200, 140);
     loadWindowState();
-	mInventory = player_node->getInventory();
+    mInventory = player_node->getInventory();
 }
 
 EquipmentWindow::~EquipmentWindow()

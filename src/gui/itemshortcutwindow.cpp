@@ -35,7 +35,7 @@ ItemShortcutWindow::ItemShortcutWindow()
     setResizable(true);
     setDefaultSize(758, 174, 42, 426);
 
-    mItems = new ItemShortcutContainer();
+    mItems = new ItemShortcutContainer;
 
     const int border = SCROLL_PADDING * 2 + getPadding() * 2;
     setMinWidth(mItems->getBoxWidth() + border);
