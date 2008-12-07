@@ -19,3 +19,10 @@ stamp-h1
 # files created during build
 *.o
 src/tmw
+
+# files created during Windows build
+.objs
+*.dll
+tmw.exe
+tmw.depend
+tmw.layout
