@@ -60,43 +60,36 @@ NpcTextDialog::NpcTextDialog():
     setLocationRelativeTo(getParent());
 }
 
-void
-NpcTextDialog::setText(const std::string &text)
+void NpcTextDialog::setText(const std::string &text)
 {
     mText = text;
-    draw();
+    mTextBox->setTextWrapped(mText);
 }
 
-void
-NpcTextDialog::addText(const std::string &text)
+void NpcTextDialog::addText(const std::string &text)
 {
-    mText = mTextBox->getText() + text + "\n";
-    draw();
+    setText(mText + text + "\n");
 }
 
 void NpcTextDialog::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
-    draw();
-}
 
-void NpcTextDialog::draw()
-{
     const gcn::Rectangle &area = getChildrenArea();
     const int width = area.width;
     const int height = area.height;
-
-    mTextBox->setTextWrapped(mText);
 
     scrollArea->setDimension(gcn::Rectangle(
                 5, 5, width - 10, height - 15 - okButton->getHeight()));
     okButton->setPosition(
             width - 5 - okButton->getWidth(),
             height - 5 - okButton->getHeight());
+
+    // Set the text again so that it gets wrapped according to the new size
+    mTextBox->setTextWrapped(mText);
 }
 
-void
-NpcTextDialog::action(const gcn::ActionEvent &event)
+void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {

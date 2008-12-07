@@ -66,14 +66,12 @@ NpcListDialog::NpcListDialog():
     setLocationRelativeTo(getParent());
 }
 
-int
-NpcListDialog::getNumberOfElements()
+int NpcListDialog::getNumberOfElements()
 {
     return mItems.size();
 }
 
-std::string
-NpcListDialog::getElementAt(int i)
+std::string NpcListDialog::getElementAt(int i)
 {
     return mItems[i];
 }
@@ -83,8 +81,7 @@ void NpcListDialog::addItem(std::string const &item)
     mItems.push_back(item);
 }
 
-void
-NpcListDialog::reset()
+void NpcListDialog::reset()
 {
     mItems.clear();
 }
@@ -92,11 +89,7 @@ NpcListDialog::reset()
 void NpcListDialog::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
-    draw();
-}
 
-void NpcListDialog::draw()
-{
     const gcn::Rectangle &area = getChildrenArea();
     const int width = area.width;
     const int height = area.height;
@@ -111,8 +104,7 @@ void NpcListDialog::draw()
             cancelButton->getY());
 }
 
-void
-NpcListDialog::action(const gcn::ActionEvent &event)
+void NpcListDialog::action(const gcn::ActionEvent &event)
 {
     int choice = 0;
 
