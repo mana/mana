@@ -319,7 +319,7 @@ void init_engine(const Options &options)
     config.setValue("remember", 1);
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
-    config.setValue("fpslimit", 60);
+    config.setValue("fpslimit", 0);
     config.setValue("updatehost", "http://www.aethyra.org/updates");
     config.setValue("customcursor", 1);
     config.setValue("ChatLogLength", 128);
