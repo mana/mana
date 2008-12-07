@@ -250,7 +250,7 @@ void
 ChatWindow::whisper(const std::string &nick, std::string msg, int prefixlen)
 {
     std::string recvnick = "";
-    msg.erase(0, prefixlen + 1);
+    msg.erase(0, prefixlen);
 
     if (msg.substr(0,1) == "\"")
     {
@@ -496,6 +496,7 @@ void ChatWindow::help(const std::string &msg1, const std::string &msg2)
         chatLog("/where: Display map name", BY_SERVER);
         chatLog("/whisper <nick> <message>: Sends a private <message>"
                 " to <nick>", BY_SERVER);
+        chatLog("/w <nick> <message>: Short form for /whisper", BY_SERVER);
         chatLog("/who: Display number of online users", BY_SERVER);
         chatLog("For more information, type /help <command>", BY_SERVER);
         return;
@@ -531,9 +532,10 @@ void ChatWindow::help(const std::string &msg1, const std::string &msg2)
                 BY_SERVER);
         return;
     }
-    if (msg1 == "whisper")
+    if (msg1 == "whisper" || msg1 == "w")
     {
         chatLog("Command: /whisper <nick> <msg>", BY_SERVER);
+        chatLog("Command: /w <nick> <msg>", BY_SERVER);
         chatLog("This command sends the message <msg> to <nick.", BY_SERVER);
         chatLog("If the <nick> has spaces in it, enclose it in "
                 "double quotes (\").", BY_SERVER);
