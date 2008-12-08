@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "button.h"
 #include "tabbedcontainer.h"
 
@@ -43,8 +41,7 @@ TabbedContainer::TabbedContainer(int width, int padX, int buttonHeight,
 
 TabbedContainer::~TabbedContainer()
 {
-    for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
-
+    delete_all(mTabs);
     mTabs.clear();
     mContents.clear();
 }

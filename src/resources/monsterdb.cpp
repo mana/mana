@@ -141,8 +141,7 @@ MonsterDB::load()
     mLoaded = true;
 }
 
-void
-MonsterDB::unload()
+void MonsterDB::unload()
 {
     delete_all(mMonsterInfos);
     mMonsterInfos.clear();
@@ -151,8 +150,7 @@ MonsterDB::unload()
 }
 
 
-const MonsterInfo&
-MonsterDB::get(int id)
+const MonsterInfo &MonsterDB::get(int id)
 {
     MonsterInfoIterator i = mMonsterInfos.find(id);
 

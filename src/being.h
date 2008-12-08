@@ -234,6 +234,12 @@ class Being : public Sprite
          */
         virtual void nextStep();
 
+        /**
+         * Triggers whether or not to show the name as a GM name.
+         * NOTE: This doesn't mean that just anyone can use this.
+         * If the server doesn't acknowlege you, you won't be shown
+         * as a GM on other people's clients.
+         */
         virtual void setGM() { mIsGM = true; }
 
         /**

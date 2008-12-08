@@ -33,8 +33,7 @@ Action::~Action()
     delete_all(mAnimations);
 }
 
-Animation*
-Action::getAnimation(int direction) const
+Animation *Action::getAnimation(int direction) const
 {
     Animations::const_iterator i = mAnimations.find(direction);
 
@@ -48,8 +47,7 @@ Action::getAnimation(int direction) const
     return (i == mAnimations.end()) ? NULL : i->second;
 }
 
-void
-Action::setAnimation(int direction, Animation *animation)
+void Action::setAnimation(int direction, Animation *animation)
 {
     mAnimations[direction] = animation;
 }

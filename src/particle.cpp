@@ -67,12 +67,21 @@ Particle::Particle(Map *map):
     mMomentum(1.0f)
 {
     Particle::particleCount++;
-    if (mMap) setSpriteIterator(mMap->addSprite(this));
+    if (mMap)
+        setSpriteIterator(mMap->addSprite(this));
 }
 
+Particle::~Particle()
+{
+    // Remove from map sprite list
+    if (mMap)
+        mMap->removeSprite(mSpriteIterator);
+    // Delete child emitters and child particles
+    clear();
+    Particle::particleCount--;
+}
 
-void
-Particle::setupEngine()
+void Particle::setupEngine()
 {
     Particle::maxCount = (int)config.getValue("particleMaxCount", 3000);
     Particle::fastPhysics = (int)config.getValue("particleFastPhysics", 0);
@@ -81,17 +90,17 @@ Particle::setupEngine()
     logger->log("Particle engine set up");
 }
 
-void Particle::draw(Graphics *, int, int) const {}
-
-bool
-Particle::update()
+void Particle::draw(Graphics *, int, int) const
 {
-    if (!mMap) return false;
+}
+
+bool Particle::update()
+{
+    if (!mMap)
+        return false;
 
     if (mLifetimeLeft == 0)
-    {
         mAlive = false;
-    }
 
     Vector oldPos = mPos;
 
@@ -221,9 +230,8 @@ Particle::update()
     return true;
 }
 
-Particle*
-Particle::addEffect(const std::string &particleEffectFile,
-                    int pixelX, int pixelY, int rotation)
+Particle* Particle::addEffect(const std::string &particleEffectFile,
+                              int pixelX, int pixelY, int rotation)
 {
     Particle *newParticle = NULL;
 
@@ -297,11 +305,9 @@ Particle::addEffect(const std::string &particleEffectFile,
     return newParticle;
 }
 
-
-Particle*
-Particle::addTextSplashEffect(const std::string &text,
-                              int colorR, int colorG, int colorB,
-                              gcn::Font *font, int x, int y)
+Particle *Particle::addTextSplashEffect(const std::string &text,
+                                        int colorR, int colorG, int colorB,
+                                        gcn::Font *font, int x, int y)
 {
     Particle *newParticle = new TextParticle(mMap, text, colorR, colorG, colorB,
                                              font);
@@ -319,9 +325,9 @@ Particle::addTextSplashEffect(const std::string &text,
     return newParticle;
 }
 
-Particle*
-Particle::addTextRiseFadeOutEffect(const std::string &text, gcn::Font *font,
-                                   int x, int y)
+Particle *Particle::addTextRiseFadeOutEffect(const std::string &text,
+                                             gcn::Font *font,
+                                             int x, int y)
 {
     Particle *newParticle = new TextParticle(mMap, text, 255, 255, 255, font);
     newParticle->setPosition(x, y, 0);
@@ -336,26 +342,14 @@ Particle::addTextRiseFadeOutEffect(const std::string &text, gcn::Font *font,
     return newParticle;
 }
 
-void
-Particle::setMap(Map *map)
+void Particle::setMap(Map *map)
 {
     mMap = map;
-    if (mMap) setSpriteIterator(mMap->addSprite(this));
+    if (mMap)
+        setSpriteIterator(mMap->addSprite(this));
 }
 
-
-Particle::~Particle()
-{
-    // Remove from map sprite list
-    if (mMap) mMap->removeSprite(mSpriteIterator);
-    // Delete child emitters and child particles
-    clear();
-    Particle::particleCount--;
-}
-
-
-void
-Particle::clear()
+void Particle::clear()
 {
     delete_all(mChildEmitters);
     mChildEmitters.clear();
