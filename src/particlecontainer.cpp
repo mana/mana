@@ -24,7 +24,8 @@
 #include "particlecontainer.h"
 
 
-ParticleContainer::ParticleContainer(ParticleContainer *parent, bool delParent):
+ParticleContainer::ParticleContainer(ParticleContainer *parent,
+                                     bool delParent):
     mDelParent(delParent),
     mNext(parent)
 {}
@@ -32,7 +33,7 @@ ParticleContainer::ParticleContainer(ParticleContainer *parent, bool delParent):
 ParticleContainer::~ParticleContainer()
 {
     clearLocally();
-    if (mNext && mDelParent)
+    if (mDelParent)
         delete mNext;
 }
 
@@ -52,11 +53,12 @@ void ParticleContainer::setPositions(float x, float y)
 
 // -- particle list ----------------------------------------
 
-ParticleList::ParticleList(ParticleContainer *parent, bool delParent) :
+ParticleList::ParticleList(ParticleContainer *parent, bool delParent):
     ParticleContainer(parent, delParent)
 {}
 
-ParticleList::~ParticleList() {}
+ParticleList::~ParticleList()
+{}
 
 void ParticleList::addLocally(Particle *particle)
 {
@@ -72,10 +74,12 @@ void ParticleList::removeLocally(Particle *particle)
 {
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end(); it++)
+    {
         if (*it == particle) {
             (*it)->kill();
             mElements.erase(it);
         }
+    }
 }
 
 void ParticleList::clearLocally()

@@ -61,8 +61,8 @@ public:
     virtual void setPositions(float x, float y);
 
 protected:
-    bool mDelParent;			/**< Delete mNext in destructor */
-    ParticleContainer *mNext;		/**< Contained container, if any */
+    bool mDelParent;                    /**< Delete mNext in destructor */
+    ParticleContainer *mNext;           /**< Contained container, if any */
 };
 
 
@@ -91,7 +91,7 @@ public:
     virtual void setPositions(float x, float y);
 
 protected:
-    std::list<Particle *> mElements;	/**< Contained particle effects */
+    std::list<Particle *> mElements;    /**< Contained particle effects */
 };
 
 
