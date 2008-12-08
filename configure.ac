@@ -1,9 +1,5 @@
 AC_PREREQ(2.59)
-<<<<<<< HEAD:configure.ac
 AC_INIT([Aethyra], [SVN-0.0.27], [irarice@gmail.com], [aethyra])
-=======
-AC_INIT([The Mana World], [0.0.26], [elvenprogrammer@gmail.com], [tmw])
->>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:configure.ac
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
 
