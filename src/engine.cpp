@@ -67,10 +67,15 @@ Engine::~Engine()
 
 void Engine::changeMap(const std::string &mapPath)
 {
-    // Clean up floor items
+    // Clean up floor items, beings and particles
     floorItemManager->clear();
-
     beingManager->clear();
+
+    // Unset the map of the player so that its particles are cleared before
+    // being deleted in the next step
+    if (player_node)
+        player_node->setMap(0);
+
     particleEngine->clear();
 
     // Store full map path in global var
