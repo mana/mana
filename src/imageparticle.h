@@ -49,8 +49,7 @@ class ImageParticle : public Particle
         /**
          * Draws the particle image
          */
-        virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) const;
+        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
     protected:
         Image *mImage;   /**< The image used for this particle. */

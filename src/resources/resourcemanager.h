@@ -64,8 +64,7 @@ class ResourceManager
          * @param path The path of the directory to be added.
          * @return <code>true</code> on success, <code>false</code> otherwise.
          */
-        bool
-        setWriteDir(const std::string &path);
+        bool setWriteDir(const std::string &path);
 
         /**
          * Adds a directory or archive to the search path. If append is true
@@ -74,35 +73,30 @@ class ResourceManager
          *
          * @return <code>true</code> on success, <code>false</code> otherwise.
          */
-        bool
-        addToSearchPath(const std::string &path, bool append);
+        bool addToSearchPath(const std::string &path, bool append);
 
         /**
         * Searches for zip files and adds them to the search path.
         */
-        void
-        searchAndAddArchives(const std::string &path,
-                             const std::string &ext,
-                             bool append);
+        void searchAndAddArchives(const std::string &path,
+                                  const std::string &ext,
+                                  bool append);
 
         /**
          * Creates a directory in the write path
          */
-        bool
-        mkdir(const std::string &path);
+        bool mkdir(const std::string &path);
 
         /**
          * Checks whether the given file or directory exists in the search path
          */
-        bool
-        exists(const std::string &path);
+        bool exists(const std::string &path);
 
         /**
          * Checks whether the given path is a directory.
          */
-        bool
-        isDirectory(const std::string &path);
-    
+        bool isDirectory(const std::string &path);
+
         /**
          * Returns the real path to a file
          * 
@@ -136,29 +130,25 @@ class ResourceManager
          * Convenience wrapper around ResourceManager::get for loading
          * images.
          */
-        Image*
-        getImage(const std::string &idPath);
+        Image *getImage(const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::get for loading
          * songs.
          */
-        Music*
-        getMusic(const std::string &idPath);
+        Music *getMusic(const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::get for loading
          * samples.
          */
-        SoundEffect*
-        getSoundEffect(const std::string &idPath);
+        SoundEffect *getSoundEffect(const std::string &idPath);
 
         /**
          * Creates a image set based on the image referenced by the given
          * path and the supplied sprite sizes
          */
-        ImageSet*
-        getImageSet(const std::string &imagePath, int w, int h);
+        ImageSet *getImageSet(const std::string &imagePath, int w, int h);
 
         /**
          * Creates a sprite definition based on a given path and the supplied
@@ -181,41 +171,35 @@ class ResourceManager
          * @return An allocated byte array containing the data that was loaded,
          *         or <code>NULL</code> on fail.
          */
-        void*
-        loadFile(const std::string &fileName, int &fileSize);
+        void *loadFile(const std::string &fileName, int &fileSize);
 
         /**
          * Retrieves the contents of a text file.
          */
-        std::vector<std::string>
-        loadTextFile(const std::string &fileName);
+        std::vector<std::string> loadTextFile(const std::string &fileName);
 
         /**
          * Loads the given filename as an SDL surface. The returned surface is
          * expected to be freed by the caller using SDL_FreeSurface.
          */
-        SDL_Surface*
-        loadSDLSurface(const std::string& filename);
+        SDL_Surface *loadSDLSurface(const std::string& filename);
 
         /**
          * Returns an instance of the class, creating one if it does not
          * already exist.
          */
-        static ResourceManager*
-        getInstance();
+        static ResourceManager *getInstance();
 
         /**
          * Deletes the class instance if it exists.
          */
-        static void
-        deleteInstance();
+        static void deleteInstance();
 
     private:
         /**
          * Deletes the resource after logging a cleanup message.
          */
-        static void
-        cleanUp(Resource *resource);
+        static void cleanUp(Resource *resource);
 
         void cleanOrphans();
 

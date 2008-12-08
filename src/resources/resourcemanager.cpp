@@ -93,8 +93,7 @@ ResourceManager::~ResourceManager()
     }
 }
 
-void
-ResourceManager::cleanUp(Resource *res)
+void ResourceManager::cleanUp(Resource *res)
 {
     if (res->mRefCount > 0)
     {
@@ -140,14 +139,12 @@ void ResourceManager::cleanOrphans()
     mOldestOrphan = oldest;
 }
 
-bool
-ResourceManager::setWriteDir(const std::string &path)
+bool ResourceManager::setWriteDir(const std::string &path)
 {
     return (bool) PHYSFS_setWriteDir(path.c_str());
 }
 
-bool
-ResourceManager::addToSearchPath(const std::string &path, bool append)
+bool ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
     logger->log("Adding to PhysicsFS: %s", path.c_str());
     if (!PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0)) {
@@ -157,8 +154,7 @@ ResourceManager::addToSearchPath(const std::string &path, bool append)
     return true;
 }
 
-void
-ResourceManager::searchAndAddArchives(const std::string &path,
+void ResourceManager::searchAndAddArchives(const std::string &path,
                                       const std::string &ext,
                                       bool append)
 {
@@ -184,31 +180,27 @@ ResourceManager::searchAndAddArchives(const std::string &path,
     PHYSFS_freeList(list);
 }
 
-bool
-ResourceManager::mkdir(const std::string &path)
+bool ResourceManager::mkdir(const std::string &path)
 {
     return (bool) PHYSFS_mkdir(path.c_str());
 }
 
-bool
-ResourceManager::exists(const std::string &path)
+bool ResourceManager::exists(const std::string &path)
 {
     return PHYSFS_exists(path.c_str());
 }
 
-bool
-ResourceManager::isDirectory(const std::string &path)
+bool ResourceManager::isDirectory(const std::string &path)
 {
     return PHYSFS_isDirectory(path.c_str());
 }
 
-std::string
-ResourceManager::getPath(const std::string &file)
+std::string ResourceManager::getPath(const std::string &file)
 {
     // get the real path to the file
     const char* tmp = PHYSFS_getRealDir(file.c_str());
     std::string path;
-    
+
     // if the file is not in the search path, then its NULL
     if (tmp)
     {
@@ -219,11 +211,12 @@ ResourceManager::getPath(const std::string &file)
         // if not found in search path return the default path
         path = std::string(TMW_DATADIR) + std::string("data") + "/" + file;
     }
-    
+
     return path;
 }
 
-Resource *ResourceManager::get(std::string const &idPath, generator fun, void *data)
+Resource *ResourceManager::get(std::string const &idPath, generator fun,
+                               void *data)
 {
     // Check if the id exists, and return the value if it does.
     ResourceIterator resIter = mResources.find(idPath);
@@ -280,14 +273,12 @@ Resource *ResourceManager::load(std::string const &path, loader fun)
     return get(path, ResourceLoader::load, &l);
 }
 
-Music*
-ResourceManager::getMusic(const std::string &idPath)
+Music *ResourceManager::getMusic(const std::string &idPath)
 {
     return static_cast<Music*>(load(idPath, Music::load));
 }
 
-SoundEffect*
-ResourceManager::getSoundEffect(const std::string &idPath)
+SoundEffect *ResourceManager::getSoundEffect(const std::string &idPath)
 {
     return static_cast<SoundEffect*>(load(idPath, SoundEffect::load));
 }
@@ -340,8 +331,8 @@ struct ImageSetLoader
     }
 };
 
-ImageSet*
-ResourceManager::getImageSet(const std::string &imagePath, int w, int h)
+ImageSet *ResourceManager::getImageSet(const std::string &imagePath,
+                                       int w, int h)
 {
     ImageSetLoader l = { this, imagePath, w, h };
     std::stringstream ss;
@@ -387,23 +378,20 @@ void ResourceManager::release(Resource *res)
     mResources.erase(resIter);
 }
 
-ResourceManager*
-ResourceManager::getInstance()
+ResourceManager *ResourceManager::getInstance()
 {
     // Create a new instance if necessary.
     if (instance == NULL) instance = new ResourceManager();
     return instance;
 }
 
-void
-ResourceManager::deleteInstance()
+void ResourceManager::deleteInstance()
 {
     delete instance;
     instance = NULL;
 }
 
-void*
-ResourceManager::loadFile(const std::string &fileName, int &fileSize)
+void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
 {
     // Attempt to open the specified file using PhysicsFS
     PHYSFS_file *file = PHYSFS_openRead(fileName.c_str());
@@ -455,8 +443,7 @@ ResourceManager::loadTextFile(const std::string &fileName)
     return lines;
 }
 
-SDL_Surface*
-ResourceManager::loadSDLSurface(const std::string& filename)
+SDL_Surface *ResourceManager::loadSDLSurface(const std::string& filename)
 {
     int fileSize;
     void *buffer = loadFile(filename, fileSize);

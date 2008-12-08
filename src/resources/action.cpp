@@ -21,8 +21,6 @@
 
 #include "action.h"
 
-#include <algorithm>
-
 #include "animation.h"
 
 #include "../utils/dtor.h"
@@ -34,12 +32,10 @@ Action::Action()
 
 Action::~Action()
 {
-    std::for_each(mAnimations.begin(), mAnimations.end(),
-                  make_dtor(mAnimations));
+    delete_all(mAnimations);
 }
 
-Animation*
-Action::getAnimation(int direction) const
+Animation *Action::getAnimation(int direction) const
 {
     Animations::const_iterator i = mAnimations.find(direction);
 
@@ -53,8 +49,7 @@ Action::getAnimation(int direction) const
     return (i == mAnimations.end()) ? NULL : i->second;
 }
 
-void
-Action::setAnimation(int direction, Animation *animation)
+void Action::setAnimation(int direction, Animation *animation)
 {
     mAnimations[direction] = animation;
 }

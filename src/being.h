@@ -164,8 +164,7 @@ class Being : public Sprite
          *
          * @param amount The amount of damage.
          */
-        virtual void
-        takeDamage(int amount);
+        virtual void takeDamage(int amount);
 
         /**
          * Handles an attack of another being by this being.
@@ -173,22 +172,21 @@ class Being : public Sprite
          * @param victim The attacked being.
          * @param damage The amount of damage dealt (0 means miss).
          */
-        virtual void
-        handleAttack(Being *victim, int damage);
+        virtual void handleAttack(Being *victim, int damage);
 
         /**
          * Returns the name of the being.
          */
-        const std::string&
-        getName() const { return mName; }
+        const std::string &getName() const
+        { return mName; }
 
         /**
          * Sets the name for the being.
          *
          * @param name The name that should appear.
          */
-        virtual void
-        setName(const std::string &name) { mName = name; }
+        virtual void setName(const std::string &name)
+        { mName = name; }
 
         /**
          * Gets the hair color for this being.
@@ -205,44 +203,37 @@ class Being : public Sprite
         /**
          * Sets the hair style and color for this being.
          */
-        virtual void
-        setHairStyle(int style, int color);
+        virtual void setHairStyle(int style, int color);
 
         /**
          * Sets visible equipments for this being.
          */
-        virtual void
-        setSprite(int slot, int id, std::string color = "");
+        virtual void setSprite(int slot, int id, std::string color = "");
 
         /**
          * Sets the gender of this being.
          */
-        virtual void
-        setGender(int gender) { mGender = gender; }
+        virtual void setGender(int gender) { mGender = gender; }
 
         /**
          * Gets the gender of this being.
          */
-        int
-        getGender() const { return mGender; }
+        int getGender() const { return mGender; }
 
         /**
          * Makes this being take the next step of his path.
          */
-        virtual void
-        nextStep();
+        virtual void nextStep();
 
         /**
          * Performs being logic.
          */
-        virtual void
-        logic();
+        virtual void logic();
 
         /**
          * Draws the emotion picture above the being.
          */
-        void
-        drawEmotion(Graphics *graphics, int offsetX, int offsetY);
+        void drawEmotion(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Returns the type of the being.
@@ -252,26 +243,22 @@ class Being : public Sprite
         /**
          * Gets the walk speed.
          */
-        Uint16
-        getWalkSpeed() const { return mWalkSpeed; }
+        Uint16 getWalkSpeed() const { return mWalkSpeed; }
 
         /**
          * Sets the walk speed.
          */
-        void
-        setWalkSpeed(Uint16 speed) { mWalkSpeed = speed; }
+        void setWalkSpeed(Uint16 speed) { mWalkSpeed = speed; }
 
         /**
          * Gets the sprite id.
          */
-        Uint32
-        getId() const { return mId; }
+        Uint32 getId() const { return mId; }
 
         /**
          * Sets the sprite id.
          */
-        void
-        setId(Uint32 id) { mId = id; }
+        void setId(Uint32 id) { mId = id; }
 
         /**
          * Sets the map the being is on
@@ -281,8 +268,7 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        virtual void
-        setAction(Uint8 action);
+        virtual void setAction(Uint8 action);
 
         /**
          * Returns the current direction.
@@ -299,46 +285,41 @@ class Being : public Sprite
          *
          * @see Sprite::draw(Graphics, int, int)
          */
-        virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) const;
+        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
          * Returns the pixel X coordinate.
          */
-        int
-        getPixelX() const { return mPx; }
+        int getPixelX() const { return mPx; }
 
         /**
          * Returns the pixel Y coordinate.
          *
          * @see Sprite::getPixelY()
          */
-        int
-        getPixelY() const { return mPy; }
+        int getPixelY() const { return mPy; }
 
         /**
          * Get the current X pixel offset.
          */
-        int
-        getXOffset() const { return getOffset(LEFT, RIGHT); }
+        int getXOffset() const
+        { return getOffset(LEFT, RIGHT); }
 
         /**
          * Get the current Y pixel offset.
          */
-        int
-        getYOffset() const { return getOffset(UP, DOWN); }
+        int getYOffset() const
+        { return getOffset(UP, DOWN); }
 
         /**
          * Returns the horizontal size of the current base sprite of the being
          */
-        virtual int
-        getWidth() const;
+        virtual int getWidth() const;
 
         /**
          * Returns the vertical size of the current base sprite of the being
          */
-        virtual int
-        getHeight() const;
+        virtual int getHeight() const;
 
         /**
          * Returns the required size of a target cursor for this being.

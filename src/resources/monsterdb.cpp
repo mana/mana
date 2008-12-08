@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "monsterdb.h"
 
 #include "resourcemanager.h"
@@ -138,19 +136,16 @@ MonsterDB::load()
     mLoaded = true;
 }
 
-void
-MonsterDB::unload()
+void MonsterDB::unload()
 {
-    for_each(mMonsterInfos.begin(), mMonsterInfos.end(),
-             make_dtor(mMonsterInfos));
+    delete_all(mMonsterInfos);
     mMonsterInfos.clear();
 
     mLoaded = false;
 }
 
 
-const MonsterInfo&
-MonsterDB::get(int id)
+const MonsterInfo &MonsterDB::get(int id)
 {
     MonsterInfoIterator i = mMonsterInfos.find(id);
 

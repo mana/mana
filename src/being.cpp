@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 #include "being.h"
 
 #include <cassert>
@@ -111,8 +112,7 @@ Being::~Being()
     delete mSpeech;
 }
 
-void
-Being::setDestination(Uint16 destX, Uint16 destY)
+void Being::setDestination(Uint16 destX, Uint16 destY)
 {
     if (mMap)
     {
@@ -120,14 +120,12 @@ Being::setDestination(Uint16 destX, Uint16 destY)
     }
 }
 
-void
-Being::clearPath()
+void Being::clearPath()
 {
     mPath.clear();
 }
 
-void
-Being::setPath(const Path &path)
+void Being::setPath(const Path &path)
 {
     mPath = path;
 
@@ -138,23 +136,20 @@ Being::setPath(const Path &path)
     }
 }
 
-void
-Being::setHairStyle(int style, int color)
+void Being::setHairStyle(int style, int color)
 {
     mHairStyle = style < 0 ? mHairStyle : style % getHairStylesNr();
     mHairColor = color < 0 ? mHairColor : color % getHairColorsNr();
 }
 
-void
-Being::setSprite(int slot, int id, std::string color)
+void Being::setSprite(int slot, int id, std::string color)
 {
     assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
     mSpriteIDs[slot] = id;
     mSpriteColors[slot] = color;
 }
 
-void
-Being::setSpeech(const std::string &text, Uint32 time)
+void Being::setSpeech(const std::string &text, Uint32 time)
 {
     // don't introduce a memory leak
     delete mSpeech;
@@ -165,8 +160,7 @@ Being::setSpeech(const std::string &text, Uint32 time)
     mSpeechTime = 500;
 }
 
-void
-Being::takeDamage(int amount)
+void Being::takeDamage(int amount)
 {
     gcn::Font *font;
     std::string damage = amount ? toString(amount) : "miss";
@@ -197,16 +191,14 @@ Being::takeDamage(int amount)
                                         mPx + 16, mPy + 16);
 }
 
-void
-Being::handleAttack(Being *victim, int damage)
+void Being::handleAttack(Being *victim, int damage)
 {
     setAction(Being::ATTACK);
     mFrame = 0;
     mWalkTime = tick_time;
 }
 
-void
-Being::setMap(Map *map)
+void Being::setMap(Map *map)
 {
     // Remove sprite from potential previous map
     if (mMap)
@@ -226,14 +218,12 @@ Being::setMap(Map *map)
     mChildParticleEffects.clear();
 }
 
-void
-Being::controlParticle(Particle *particle)
+void Being::controlParticle(Particle *particle)
 {
     mChildParticleEffects.addLocally(particle);
 }
 
-void
-Being::setAction(Uint8 action)
+void Being::setAction(Uint8 action)
 {
     SpriteAction currentAction = ACTION_INVALID;
     switch (action)
@@ -287,8 +277,7 @@ Being::setAction(Uint8 action)
 }
 
 
-void
-Being::setDirection(Uint8 direction)
+void Being::setDirection(Uint8 direction)
 {
     mDirection = direction;
     SpriteDirection dir = getSpriteDirection();
@@ -324,8 +313,7 @@ Being::getSpriteDirection() const
     return dir;
 }
 
-void
-Being::nextStep()
+void Being::nextStep()
 {
     if (mPath.empty())
     {
@@ -360,8 +348,7 @@ Being::nextStep()
     mWalkTime += mWalkSpeed / 10;
 }
 
-void
-Being::logic()
+void Being::logic()
 {
     // Reduce the time that speech is still displayed
     if (mSpeechTime > 0 && mSpeech)
@@ -407,8 +394,7 @@ Being::logic()
     mChildParticleEffects.setPositions((float)mPx + 16.0f, (float)mPy + 32.0f);
 }
 
-void
-Being::draw(Graphics *graphics, int offsetX, int offsetY) const
+void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;
@@ -422,8 +408,7 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     }
 }
 
-void
-Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
+void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 {
     if (!mEmotion)
         return;
@@ -436,8 +421,7 @@ Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
         graphics->drawImage(emotionSet->get(emotionIndex), px, py);
 }
 
-Being::Type
-Being::getType() const
+Being::Type Being::getType() const
 {
     return UNKNOWN;
 }
@@ -528,8 +512,7 @@ Being::getOffset(char pos, char neg) const
 }
 
 
-int
-Being::getWidth() const
+int Being::getWidth() const
 {
     if (mSprites[BASE_SPRITE])
     {
@@ -541,8 +524,7 @@ Being::getWidth() const
 }
 
 
-int
-Being::getHeight() const
+int Being::getHeight() const
 {
     if (mSprites[BASE_SPRITE])
     {
