@@ -98,6 +98,10 @@ void Engine::changeMap(const std::string &mapPath)
         {
              minimap->setCaption(newMap->getProperty("mapname"));
         }
+        else if (newMap->hasProperty("name"))
+        {
+            minimap->setCaption(newMap->getProperty("name"));
+        }
         else
         {
              minimap->setCaption("Unknown");
@@ -113,12 +117,6 @@ void Engine::changeMap(const std::string &mapPath)
         {
              minimap->setProportion(0.5);
         }
-    }
-    if (newMap->hasProperty("name"))
-    {
-        minimap->setCaption(newMap->getProperty("name"));
-    } else {
-        minimap->setCaption("Map");
     }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
