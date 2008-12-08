@@ -190,7 +190,7 @@ class LocalPlayer : public Player
          */
         int getXp() const { return mXp; }
 
-        Uint32 mCharId;
+        Uint32 mCharId;     /**< Used only during character selection. */
 
         Uint32 mJobXp;
         Uint16 mLevel;
