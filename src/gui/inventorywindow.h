@@ -90,14 +90,12 @@ class InventoryWindow : public Window, gcn::ActionListener,
         std::string mWeight;
         std::string mTotalWeight;
         std::string mMaxWeight;
-        std::string mSlots;
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
         TextBox *mItemNameLabel;
         TextBox *mItemDescriptionLabel;
         TextBox *mItemEffectLabel;
         TextBox *mWeightLabel;
-        TextBox *mSlotsLabel;
 };
 
 extern InventoryWindow *inventoryWindow;
