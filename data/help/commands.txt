@@ -48,18 +48,11 @@
 
  /whisper <name> <message>
 
-<<<<<<< HEAD:data/help/commands.txt
  This will send <message> to player <name>, if that player is logged in.
  to whisper to users with spaces in there name you must incase the user name in qoutes
 	(e.g. /whisper "user name" <message>)
 
  For further help type /help in the chat console.
-=======
- This will send <message> to player <name>, if that player is logged in. If the
- name has a space in it, put double quotes around it like this:
-
- /whisper "<name>" <message>
->>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:data/help/commands.txt
 
 
 ##2IGNORING COMMUNICATION

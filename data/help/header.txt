@@ -1,12 +1,8 @@
  
 ##1                                 AETHYRA
 ##1               ==========================================
- 
-<<<<<<< HEAD:data/help/header.txt
-           ##2Version:##6 Aethyra GIT 0.0.27              ##2Date:##5 December 2008
-=======
-           ##2Version:##6 0.0.26              ##2Date:##329 August 2008
->>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:data/help/header.txt
+
+           ##2Version:##6 Aethyra GIT 0.0.27              ##2Date:##7 December 2008
  
 ##2                    Website: http://www.aethyra.org
  

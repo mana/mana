@@ -7,11 +7,7 @@
  can't find a solution to your problem, feel free to check our
  Bugs/Support section of the forum:
  
-<<<<<<< HEAD:data/help/support.txt
 ##2     http://forums.aethyra.com
-=======
-##2     http://forums.themanaworld.org/viewforum.php?f=3
->>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:data/help/support.txt
  
  or come visit us on our IRC channel:
  
