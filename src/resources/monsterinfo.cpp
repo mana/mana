@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "monsterinfo.h"
 
 #include "../utils/dtor.h"
@@ -33,8 +31,7 @@ MonsterInfo::MonsterInfo()
 MonsterInfo::~MonsterInfo()
 {
     // kill vectors in mSoundEffects
-    for_each (mSounds.begin(), mSounds.end(),
-              make_dtor(mSounds));
+    delete_all(mSounds);
     mSounds.clear();
 }
 

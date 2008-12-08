@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "flooritemmanager.h"
 
 #include "floor_item.h"
@@ -48,7 +46,7 @@ void FloorItemManager::destroy(FloorItem *item)
 
 void FloorItemManager::clear()
 {
-    for_each(mFloorItems.begin(), mFloorItems.end(), make_dtor(mFloorItems));
+    delete_all(mFloorItems);
     mFloorItems.clear();
 }
 

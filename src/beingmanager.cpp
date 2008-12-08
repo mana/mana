@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "beingmanager.h"
 
 #include "localplayer.h"
@@ -191,7 +189,7 @@ void BeingManager::clear()
         mBeings.remove(player_node);
     }
 
-    for_each(mBeings.begin(), mBeings.end(), make_dtor(mBeings));
+    delete_all(mBeings);
     mBeings.clear();
 
     if (player_node)

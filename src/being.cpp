@@ -20,7 +20,6 @@
  */
 #include "being.h"
 
-#include <algorithm>
 #include <cassert>
 
 #include "animatedsprite.h"
@@ -96,7 +95,7 @@ Being::Being(int id, int job, Map *map):
 
 Being::~Being()
 {
-    std::for_each(mSprites.begin(), mSprites.end(), make_dtor(mSprites));
+    delete_all(mSprites);
     clearPath();
 
     setMap(NULL);

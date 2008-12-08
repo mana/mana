@@ -19,15 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "windowcontainer.h"
 
 #include "../utils/dtor.h"
 
 void WindowContainer::logic()
 {
-    for_each(mDeathList.begin(), mDeathList.end(), make_dtor(mDeathList));
+    delete_all(mDeathList);
     mDeathList.clear();
 
     gcn::Container::logic();

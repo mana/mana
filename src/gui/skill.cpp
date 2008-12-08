@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include <guichan/widgets/label.hpp>
 
 #include "skill.h"
@@ -248,7 +246,7 @@ void SkillDialog::setSkill(int id, int lvl, int mp)
 
 void SkillDialog::cleanList()
 {
-    for_each(mSkillList.begin(), mSkillList.end(), make_dtor(mSkillList));
+    delete_all(mSkillList);
     mSkillList.clear();
 }
 
