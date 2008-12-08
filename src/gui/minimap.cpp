@@ -70,6 +70,18 @@ void Minimap::draw(gcn::Graphics *graphics)
         {
             mapOriginX += (a.width - player_node->mX) / 2;
             mapOriginY += (a.height - player_node->mY) / 2;
+
+            const int minOriginX = a.x + a.width - mMapImage->getWidth();
+            const int minOriginY = a.y + a.height - mMapImage->getHeight();
+
+            if (mapOriginX < minOriginX)
+                mapOriginX = minOriginX;
+            if (mapOriginY < minOriginY)
+                mapOriginY = minOriginY;
+            if (mapOriginX > a.x)
+                mapOriginX = a.x;
+            if (mapOriginY > a.y)
+                mapOriginY = a.y;
         }
         static_cast<Graphics*>(graphics)->
             drawImage(mMapImage, mapOriginX, mapOriginY);
