@@ -74,28 +74,30 @@ void Minimap::draw(gcn::Graphics *graphics)
 
     const gcn::Rectangle a = getChildrenArea();
 
-    int mapOriginX = a.x;
-    int mapOriginY = a.y;
+    graphics->pushClipArea(a);
+
+    int mapOriginX = 0;
+    int mapOriginY = 0;
 
     if (mMapImage)
     {
         if (mMapImage->getWidth() > a.width ||
             mMapImage->getHeight() > a.height)
         {
-            mapOriginX += ((a.width) / 2) - (player_node->mX * mProportion);
-            mapOriginY += ((a.height) / 2) - (player_node->mY * mProportion);
+            mapOriginX = ((a.width) / 2) - (player_node->mX * mProportion);
+            mapOriginY = ((a.height) / 2) - (player_node->mY * mProportion);
 
-            const int minOriginX = a.x + a.width - mMapImage->getWidth();
-            const int minOriginY = a.y + a.height - mMapImage->getHeight();
+            const int minOriginX = a.width - mMapImage->getWidth();
+            const int minOriginY = a.height - mMapImage->getHeight();
 
             if (mapOriginX < minOriginX)
                 mapOriginX = minOriginX;
             if (mapOriginY < minOriginY)
                 mapOriginY = minOriginY;
-            if (mapOriginX > a.x)
-                mapOriginX = a.x;
-            if (mapOriginY > a.y)
-                mapOriginY = a.y;
+            if (mapOriginX > 0)
+                mapOriginX = 0;
+            if (mapOriginY > 0)
+                mapOriginY = 0;
         }
 
         static_cast<Graphics*>(graphics)->
@@ -140,4 +142,6 @@ void Minimap::draw(gcn::Graphics *graphics)
                     (int) (being->mY * mProportion) + mapOriginY - offset,
                     dotSize, dotSize));
     }
+
+    graphics->popClipArea();
 }
