@@ -102,22 +102,26 @@ ChatWindow::chatLog(std::string line, int own)
     tmp.nick = "";
     tmp.text = line;
 
-    // Fix the owner of welcome message.
-    if (line.substr(0, 7) == "Welcome")
-    {
-        own = BY_SERVER;
-    }
-
     std::string::size_type pos = line.find(" : ");
     if (pos != std::string::npos) {
         tmp.nick = line.substr(0, pos);
         tmp.text = line.substr(pos + 3);
+    } else {
+        // Fix the owner of welcome message.
+        if (line.substr(0, 7) == "Welcome")
+        {
+            own = BY_SERVER;
+        }
     }
 
     std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
     switch (own) {
         case BY_GM:
-            tmp.nick += std::string("Global announcement: ");
+            if (tmp.nick.empty())
+                tmp.nick = std::string("Global announcement: ");
+            else
+                tmp.nick = std::string("Global announcement from " + tmp.nick
+                        + std::string(": "));
             lineColor = "##1"; // Equiv. to BrowserBox::RED
             break;
         case BY_PLAYER:
