@@ -168,6 +168,15 @@ class KeyboardConfig
             KEY_SHORTCUT_7,
             KEY_SHORTCUT_8,
             KEY_SHORTCUT_9,
+            KEY_WINDOW_STATUS,
+            KEY_WINDOW_INVENTORY,
+            KEY_WINDOW_EQUIPMENT,
+            KEY_WINDOW_SKILL,
+            KEY_WINDOW_MINIMAP,
+            KEY_WINDOW_CHAT,
+            KEY_WINDOW_SHORTCUT,
+            KEY_WINDOW_SETUP,
+            KEY_WINDOW_DEBUG,
             KEY_TOTAL
         };
 

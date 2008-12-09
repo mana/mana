@@ -52,14 +52,14 @@ void Minimap::setMapImage(Image *img)
 
     if (mMapImage)
     {
-        int offsetX = getPadding();
-        int offsetY = getTitleBarHeight();
+        int offsetX = getPadding() + 4;
+        int offsetY = getTitleBarHeight() + 4;
         mMapImage->setAlpha(0.7);
         setDefaultSize(offsetX, offsetY, 
-                       mMapImage->getWidth() < (100 + offsetX) ? 
-                           mMapImage->getWidth() + offsetX : (100 + offsetX), 
-                       mMapImage->getHeight() < (100 + offsetY) ? 
-                           mMapImage->getHeight() + offsetY : (100 + offsetY));
+                       mMapImage->getWidth() < 100 ? 
+                           mMapImage->getWidth() + offsetX : 100, 
+                       mMapImage->getHeight() < 100 ? 
+                           mMapImage->getHeight() + offsetY : 100);
         loadWindowState();
     }
     else

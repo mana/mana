@@ -594,16 +594,6 @@ void Game::handleInput()
                 used = true;
                 break;
 
-            case SDLK_F2: requestedWindow = statusWindow; break;
-            case SDLK_F3: requestedWindow = inventoryWindow; break;
-            case SDLK_F4: requestedWindow = equipmentWindow; break;
-            case SDLK_F5: requestedWindow = skillDialog; break;
-            case SDLK_F6: requestedWindow = minimap; break;
-            case SDLK_F7: requestedWindow = chatWindow; break;
-            case SDLK_F8: requestedWindow = itemShortcutWindow; break;
-            case SDLK_F9: requestedWindow = setupWindow; break;
-            case SDLK_F10: requestedWindow = debugWindow; break;
-
             case SDLK_RETURN:
                 // Input chat window
                 if (chatWindow->isInputFocused() ||
@@ -704,7 +694,6 @@ void Game::handleInput()
 
                     if (item)
                         player_node->pickUp(item);
-
                     used = true;
                 }
                 break;
@@ -725,6 +714,33 @@ void Game::handleInput()
                         helpWindow->setVisible(false);
                         debugWindow->setVisible(false);
                     }
+                    break;
+                case KeyboardConfig::KEY_WINDOW_STATUS:
+                    requestedWindow = statusWindow;
+                    break;
+                case KeyboardConfig::KEY_WINDOW_INVENTORY:
+                    requestedWindow = inventoryWindow;
+                    break;
+                case KeyboardConfig::KEY_WINDOW_EQUIPMENT:
+                    requestedWindow = equipmentWindow;
+                    break;
+                case KeyboardConfig::KEY_WINDOW_SKILL:
+                    requestedWindow = skillDialog;
+                    break;
+                case KeyboardConfig::KEY_WINDOW_MINIMAP:
+                    requestedWindow = minimap;
+                    break;
+                case KeyboardConfig::KEY_WINDOW_CHAT:
+                    requestedWindow = chatWindow;
+                    break;
+                case KeyboardConfig::KEY_WINDOW_SHORTCUT:
+                    requestedWindow = itemShortcutWindow;
+                    break;
+                case KeyboardConfig::KEY_WINDOW_SETUP:
+                    requestedWindow = setupWindow;
+                    break;
+                case KeyboardConfig::KEY_WINDOW_DEBUG:
+                    requestedWindow = debugWindow;
                     break;
                 }
             }
