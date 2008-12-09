@@ -91,6 +91,7 @@ static std::map<int, int> blockEffectIndexMap;
 
 int StatusEffect::blockEffectIndexToEffectIndex(int blockIndex)
 {
+    load();
     if (blockEffectIndexMap.find(blockIndex) == blockEffectIndexMap.end())
         return -1;
     return blockEffectIndexMap[blockIndex];
@@ -142,6 +143,7 @@ void StatusEffect::load()
 
             if (index >= 0 && block_index >= 0)
                 blockEffectIndexMap[block_index] = index;
+
         } else if (xmlStrEqual(node->name, BAD_CAST "stun-effect"))
             the_map = &stunEffects;
 
@@ -158,6 +160,8 @@ void StatusEffect::load()
             endEffect->mMessage = XML::getProperty(node, "end-message", "");
             endEffect->mSFXEffect = XML::getProperty(node, "end-audio", "");
             endEffect->mParticleEffect = XML::getProperty(node, "end-particle", "");
+
+            endEffect->mPersistentParticleEffect = (XML::getProperty(node, "persistent-particle-effect", "no")) != "no";
 
             (*the_map)[1][index] = startEffect;
             (*the_map)[0][index] = endEffect;

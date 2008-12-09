@@ -60,6 +60,12 @@ public:
      */
     SpriteAction getAction();
 
+    /**
+     * Determines whether the particle effect should be restarted when the
+     * being changes maps
+     */
+    bool particleEffectIsPersistent() const { return mPersistentParticleEffect; }
+
 
     /**
      * Retrieves a status effect.
@@ -96,6 +102,7 @@ private:
     std::string mParticleEffect;
     std::string mIcon;
     std::string mAction;
+    bool mPersistentParticleEffect;
 };
 
 #endif // !defined(STATUS_EFFECT_H)

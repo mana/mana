@@ -432,6 +432,7 @@ Being::setStatusEffectBlock(int offset, Uint16 newEffects)
 {
     for (int i = 0; i < STATUS_EFFECTS; i++) {
         int index = StatusEffect::blockEffectIndexToEffectIndex(offset + i);
+
         if (index != -1)
             setStatusEffect(index, (newEffects & (1 << i)) > 0);
     }
@@ -451,13 +452,12 @@ Being::handleStatusEffect(StatusEffect *effect, int effectId)
 
     Particle *particle = effect->getParticle();
 
-    if (particle) {
-        if (effectId >= 0)
-            mStatusParticleEffects.setLocally(effectId, particle);
-        else {
-            mStunParticleEffects.clearLocally();
+    if (effectId >= 0)
+        mStatusParticleEffects.setLocally(effectId, particle);
+    else {
+        mStunParticleEffects.clearLocally();
+        if (particle)
             mStunParticleEffects.addLocally(particle);
-        }
     }
 }
 

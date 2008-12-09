@@ -130,7 +130,8 @@ void ParticleVector::setLocally(int index, Particle *particle)
     if (mIndexedElements.size() <= (unsigned) index)
         mIndexedElements.resize(index + 1, NULL);
 
-    particle->disableAutoDelete();
+    if (particle)
+        particle->disableAutoDelete();
     mIndexedElements[index] = particle;
 }
 
