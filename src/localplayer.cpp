@@ -495,8 +495,12 @@ extern MiniStatusWindow *miniStatusWindow;
 void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
 {
     Being::handleStatusEffect(effect, effectId);
+
+
+
     if (effect) {
         effect->deliverMessage();
+        effect->playSFX();
 
         AnimatedSprite *sprite = effect->getIcon();
 

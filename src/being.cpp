@@ -458,8 +458,6 @@ Being::handleStatusEffect(StatusEffect *effect, int effectId)
     if (!effect)
         return;
 
-    effect->playSFX();
-
     SpriteAction action = effect->getAction();
     if (action != ACTION_INVALID)
         setAction(action);
