@@ -57,9 +57,9 @@ void Minimap::setMapImage(Image *img)
         mMapImage->setAlpha(0.7);
         setDefaultSize(offsetX, offsetY, 
                        mMapImage->getWidth() < (100 + offsetX) ? 
-                           mMapImage->getWidth() : (100 + offsetX), 
+                           mMapImage->getWidth() + offsetX : (100 + offsetX), 
                        mMapImage->getHeight() < (100 + offsetY) ? 
-                           mMapImage->getHeight() : (100 + offsetY));
+                           mMapImage->getHeight() + offsetY : (100 + offsetY));
         loadWindowState();
     }
     else
