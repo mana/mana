@@ -154,8 +154,6 @@
 		<Unit filename="src\gui\minimap.h" />
 		<Unit filename="src\gui\ministatus.cpp" />
 		<Unit filename="src\gui\ministatus.h" />
-		<Unit filename="src\gui\newskill.cpp" />
-		<Unit filename="src\gui\newskill.h" />
 		<Unit filename="src\gui\npc_text.cpp" />
 		<Unit filename="src\gui\npc_text.h" />
 		<Unit filename="src\gui\npclistdialog.cpp" />

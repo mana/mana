@@ -1,4 +1,4 @@
-0.0.27 (7 December 2008)
+0.0.27 (9 December 2008)
 - Added support for showing map name above minimap
 - Added showing how long the ban is when banned
 - Added --data parameter for developers
@@ -15,6 +15,7 @@
 - Only require a restart to switch to full screen with OpenGL on Windows
 - Make sure news and update file list aren't cached (from Aethyra)
 - Made NPC dialogs resizable (from Aethyra)
+- Made window shortcuts configurable
 - Fixed visibility of trade window on startup
 - Fixed a client input freeze when closing NPC script from server
 - Fixed dead players to lie on the ground instead of standing around
