@@ -111,7 +111,6 @@ InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
-//NewSkillDialog *newSkillWindow;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
@@ -191,7 +190,6 @@ void createGuiWindows(Network *network)
     npcTextDialog = new NpcTextDialog();
     npcListDialog = new NpcListDialog();
     skillDialog = new SkillDialog();
-    //newSkillWindow = new NewSkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
@@ -245,7 +243,6 @@ void destroyGuiWindows()
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
-    //delete newSkillWindow;
     delete tradeWindow;
     //delete buddyWindow;
     delete helpWindow;
@@ -591,8 +588,6 @@ void Game::handleInput()
                     }
                     used = true;
                     break;
-
-                //case SDLK_F11: requestedWindow = newSkillWindow; break;
 
                 case SDLK_RETURN:
                     // Input chat window
