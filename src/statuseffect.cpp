@@ -30,7 +30,8 @@
 
 #define STATUS_EFFECTS_FILE "status-effects.xml"
 
-StatusEffect::StatusEffect()
+StatusEffect::StatusEffect() :
+    mPersistentParticleEffect(false)
 {}
 
 StatusEffect::~StatusEffect()
@@ -156,12 +157,11 @@ void StatusEffect::load()
             startEffect->mParticleEffect = XML::getProperty(node, "start-particle", "");
             startEffect->mIcon = XML::getProperty(node, "icon", "");
             startEffect->mAction = XML::getProperty(node, "action", "");
+            startEffect->mPersistentParticleEffect = (XML::getProperty(node, "persistent-particle-effect", "no")) != "no";
 
             endEffect->mMessage = XML::getProperty(node, "end-message", "");
             endEffect->mSFXEffect = XML::getProperty(node, "end-audio", "");
             endEffect->mParticleEffect = XML::getProperty(node, "end-particle", "");
-
-            endEffect->mPersistentParticleEffect = (XML::getProperty(node, "persistent-particle-effect", "no")) != "no";
 
             (*the_map)[1][index] = startEffect;
             (*the_map)[0][index] = endEffect;

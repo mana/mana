@@ -460,6 +460,7 @@ class Being : public Sprite
 
         static int instances;           /**< Number of Being instances */
         static ImageSet *emotionSet;    /**< Emoticons used by beings */
+        bool mMustResetParticles;	/**< Reset particle status effects on next redraw? */
 };
 
 #endif

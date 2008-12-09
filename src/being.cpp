@@ -78,7 +78,8 @@ Being::Being(int id, int job, Map *map):
     mSpriteIDs(VECTOREND_SPRITE, 0),
     mSpriteColors(VECTOREND_SPRITE, ""),
     mStatusParticleEffects(&mStunParticleEffects, false),
-    mChildParticleEffects(&mStatusParticleEffects, false)
+    mChildParticleEffects(&mStatusParticleEffects, false),
+    mMustResetParticles(false)
 {
     setMap(map);
 
@@ -216,6 +217,7 @@ void Being::setMap(Map *map)
 
     // Clear particle effect list because child particles became invalid
     mChildParticleEffects.clear();
+    mMustResetParticles = true; // Reset status particles on next redraw
 }
 
 void Being::controlParticle(Particle *particle)
@@ -390,9 +392,21 @@ void Being::logic()
         }
     }
 
+    // Restart status/particle effects, if needed
+    if (mMustResetParticles) {
+        mMustResetParticles = false;
+        for (std::set<int>::iterator it = mStatusEffects.begin();
+             it != mStatusEffects.end(); it++) {
+            const StatusEffect *effect = StatusEffect::getStatusEffect(*it, true);
+            if (effect && effect->particleEffectIsPersistent())
+                updateStatusEffect(*it, true);
+        }
+    }
+
     // Update particle effects
     mChildParticleEffects.setPositions((float) mPx + 16.0f,
                                        (float) mPy + 32.0f);
+
 }
 
 void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
