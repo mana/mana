@@ -56,7 +56,16 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyShortcut6", SDLK_6, "Item Shortcut 6"},
     {"keyShortcut7", SDLK_7, "Item Shortcut 7"},
     {"keyShortcut8", SDLK_8, "Item Shortcut 8"},
-    {"keyShortcut9", SDLK_9, "Item Shortcut 9"}
+    {"keyShortcut9", SDLK_9, "Item Shortcut 9"},
+    {"keyWindowStatus", SDLK_F2, "Status Window"},
+    {"keyWindowInventory", SDLK_F3, "Inventory Window"},
+    {"keyWindowEquipment", SDLK_F4, "Equipment WIndow"},
+    {"keyWindowSkill", SDLK_F5, "Skill Window"},
+    {"keyWindowMinimap", SDLK_F6, "Minimap Window"},
+    {"keyWindowChat", SDLK_F7, "Chat Window"},
+    {"keyWindowShortcut", SDLK_F8, "Item Shortcut Window"},
+    {"keyWindowSetup", SDLK_F9, "Setup Window"},
+    {"keyWindowDebug", SDLK_F10, "Debug Window"}
 };
 
 void KeyboardConfig::init()
