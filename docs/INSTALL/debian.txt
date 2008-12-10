@@ -9,11 +9,11 @@ to for Aethyra...
 
 WARNING! These instructions are probably outdated!
 
-Check the forums (http://forums.aethyra.com/) where better help can be found.
+Check the forums (http://www.aethyra.org/forums/) where better help can be found.
 
 Aethyra project
 ======================
-Homepage: http://www.aethyra.com/
+Homepage: http://www.aethyra.org/
 IRC:      irc.freenode.net / #aethyra
 
 1) Installing Aethyra and dependencies
@@ -53,7 +53,7 @@ And the debhelper tools:
 Download tmw from Subversion using the command (You'll need Subversion
 installed on your system):
 
-   svn co svn://209.168.213.109/client/trunk aethyra
+   svn co svn://www.aethyra.org/client/trunk aethyra
 
 Rename the aethyra folder into aethyra-XXX and open a console in it.
 You can now type:

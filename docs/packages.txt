@@ -15,7 +15,7 @@ AETHYRA PACKAGE SYSTEM
 
 1. INTRODUCTION
 
-Aethyra (Was The Mana Experiment, original;y The Mana World) is expected to grow continuously with updates to the game
+Aethyra (Was The Mana Experiment, originally part of The Mana World) is expected to grow continuously with updates to the game
 world occurring relatively frequently. More often so than for example new
 releases of the game client. To make sure players don't have to update their
 data manually all the time, by for example downloading the latest from the

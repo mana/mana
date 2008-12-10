@@ -1,5 +1,5 @@
 -----------------------------------
-THE MANA WORLD PLAYER'S PROGRESSION
+   AETHYRA PLAYER'S PROGRESSION
 -----------------------------------
 
 1. PLAYER'S STATS
@@ -126,4 +126,4 @@ Peon        17          Double Hit, Hard Hit(JL:5)           Beginner Lvl:10
 Every of these notes have to be discussed, if you have any feedback,
 suggestions, updates, commit or tell them at:
 
-address: irc://irc.freenode.net      channel:  #themanaworld
+address: irc://irc.freenode.net      channel:  #aethyra
