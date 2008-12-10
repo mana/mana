@@ -347,28 +347,33 @@ bool saveScreenshot(SDL_Surface *screenshot)
     static unsigned int screenshotCount = 0;
 
     // Search for an unused screenshot name
+    std::stringstream filenameSuffix;
     std::stringstream filename;
     std::fstream testExists;
     bool found = false;
 
     do {
-    screenshotCount++;
-    filename.str("");
+        screenshotCount++;
+        filename.str("");
+        filenameSuffix.str("");
+        filename << PHYSFS_getUserDir();
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
-    filename << PHYSFS_getUserDir() << ".aethyra/";
+        filenameSuffix << ".aethyra/";
 #elif defined __APPLE__
-    filename << PHYSFS_getUserDir() << "Desktop/";
+        filenameSuffix << "Desktop/";
 #endif
-    filename << "Ae_Screenshot_" << screenshotCount << ".png";
-    testExists.open(filename.str().c_str(), std::ios::in);
-    found = !testExists.is_open();
-    testExists.close();
+        filenameSuffix << "Ae_Screenshot_" << screenshotCount << ".png";
+        filename << filenameSuffix.str();
+        std::cerr << "Trying `" << filename.str() << "' from `" << filenameSuffix.str() << "'\n";
+        testExists.open(filename.str().c_str(), std::ios::in);
+        found = !testExists.is_open();
+        testExists.close();
     } while (!found);
 
     if (ImageWriter::writePNG(screenshot, filename.str()))
     {
         std::stringstream chatlogentry;
-        chatlogentry << "Screenshot saved to " << filename.str().c_str();
+        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str().c_str();
         chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
         return true;
     }
