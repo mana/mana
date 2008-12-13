@@ -146,8 +146,9 @@ struct Options
     bool printHelp;
     bool printVersion;
     bool skipUpdate;
-    std::string playername;
+    std::string username;
     std::string password;
+    std::string character;
     std::string configPath;
     std::string updateHost;
     std::string dataPath;
@@ -455,7 +456,7 @@ void printHelp()
         "  -P --password   : Login with this password\n"
         "  -s --server     : Login Server name or IP\n"
         "  -o --port       : Login Server Port\n"
-        "  -p --playername : Login with this player\n"
+        "  -c --character  : Login with this character\n"
         "  -C --configfile : Configuration file to use\n"
         "  -H --updatehost : Use this update host\n";
 }
@@ -472,7 +473,7 @@ void printVersion()
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvud:U:P:Dp:s:o:C:H:";
+    const char *optstring = "hvud:U:P:Dc:s:o:C:H:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
@@ -483,7 +484,7 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "password",   required_argument, 0, 'P' },
         { "server",     required_argument, 0, 's' },
         { "port",       required_argument, 0, 'o' },
-        { "playername", required_argument, 0, 'p' },
+        { "character",  required_argument, 0, 'c' },
         { "configfile", required_argument, 0, 'C' },
         { "updatehost", required_argument, 0, 'H' },
         { 0 }
@@ -510,7 +511,7 @@ void parseOptions(int argc, char *argv[], Options &options)
                 options.dataPath = optarg;
                 break;
             case 'U':
-                options.playername = optarg;
+                options.username = optarg;
                 break;
             case 'P':
                 options.password = optarg;
@@ -521,8 +522,8 @@ void parseOptions(int argc, char *argv[], Options &options)
             case 'o':
                 options.serverPort = (short)atoi(optarg);
                 break;
-            case 'p':
-                options.playername = optarg;
+            case 'c':
+                options.character = optarg;
                 break;
             case 'C':
                 options.configPath = optarg;
@@ -847,7 +848,7 @@ int main(int argc, char *argv[])
             loginData.port = options.serverPort;
         }
 
-        loginData.username = options.playername;
+        loginData.username = options.username;
         if (loginData.username.empty()) {
             if (config.getValue("remember", 0)) {
                 loginData.username = config.getValue("username", "");
@@ -981,16 +982,16 @@ int main(int argc, char *argv[])
                         logger->log("State: CHOOSE_SERVER");
 
                         // Allow changing this using a server choice dialog
-                        // We show the dialog box only if the command-line options
-                        // weren't set.
+                        // We show the dialog box only if the command-line
+                        // options weren't set.
                         if (options.serverName.empty() && options.serverPort == 0) {
                             currentDialog = new ServerDialog(&loginData);
                         } else {
                             state = STATE_CONNECT_ACCOUNT;
 
-                            // Reset options so that cancelling or connect timeout
-                            // will show the server dialog
-                            options.serverName = "";
+                            // Reset options so that cancelling or connect
+                            // timeout will show the server dialog.
+                            options.serverName.clear();
                             options.serverPort = 0;
                         }
                         break;
@@ -1000,7 +1001,8 @@ int main(int argc, char *argv[])
                         logger->log("Trying to connect to account server...");
                         accountServerConnection->connect(loginData.hostname,
                                 loginData.port);
-                        currentDialog = new ConnectionDialog(STATE_SWITCH_ACCOUNTSERVER_ATTEMPT);
+                        currentDialog = new ConnectionDialog(
+                                STATE_SWITCH_ACCOUNTSERVER_ATTEMPT);
                         break;
 
                     case STATE_UPDATE:
@@ -1018,11 +1020,15 @@ int main(int argc, char *argv[])
 
                     case STATE_LOGIN:
                         logger->log("State: LOGIN");
-                        currentDialog = new LoginDialog(&loginData);
-                        // TODO: Restore autologin
-                        //if (!loginData.password.empty()) {
-                        //    accountLogin(&loginData);
-                        //}
+                        if (options.username.empty()
+                                || options.password.empty()) {
+                            currentDialog = new LoginDialog(&loginData);
+                        } else {
+                            state = STATE_LOGIN_ATTEMPT;
+                            // Clear the password so that when login fails, the
+                            // dialog will show up next time.
+                            options.password.clear();
+                        }
                         break;
 
                     case STATE_LOADDATA:
@@ -1084,7 +1090,7 @@ int main(int argc, char *argv[])
                             new CharSelectDialog(&charInfo, &loginData);
 
                         if (((CharSelectDialog*) currentDialog)->
-                                selectByName(options.playername)) {
+                                selectByName(options.character)) {
                             ((CharSelectDialog*) currentDialog)->action(
                                 gcn::ActionEvent(NULL, "ok"));
                         } else {
