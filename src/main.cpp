@@ -140,14 +140,12 @@ struct Options
         printHelp(false),
         printVersion(false),
         skipUpdate(false),
-        chooseDefault(false),
         serverPort(0)
     {};
 
     bool printHelp;
     bool printVersion;
     bool skipUpdate;
-    bool chooseDefault;
     std::string playername;
     std::string password;
     std::string configPath;
@@ -455,7 +453,6 @@ void printHelp()
         "  -d --data       : Directory to load game data from\n"
         "  -U --username   : Login with this username\n"
         "  -P --password   : Login with this password\n"
-        "  -D --default    : Bypass the login process with default settings\n"
         "  -s --server     : Login Server name or IP\n"
         "  -o --port       : Login Server Port\n"
         "  -p --playername : Login with this player\n"
@@ -484,7 +481,6 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "data",       required_argument, 0, 'd' },
         { "username",   required_argument, 0, 'U' },
         { "password",   required_argument, 0, 'P' },
-        { "default",    no_argument,       0, 'D' },
         { "server",     required_argument, 0, 's' },
         { "port",       required_argument, 0, 'o' },
         { "playername", required_argument, 0, 'p' },
@@ -494,7 +490,6 @@ void parseOptions(int argc, char *argv[], Options &options)
     };
 
     while (optind < argc) {
-
         int result = getopt_long(argc, argv, optstring, long_options, NULL);
 
         if (result == -1)
@@ -519,9 +514,6 @@ void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'P':
                 options.password = optarg;
-                break;
-            case 'D':
-                options.chooseDefault = true;
                 break;
             case 's':
                 options.serverName = optarg;
@@ -1089,20 +1081,15 @@ int main(int argc, char *argv[])
                     case STATE_CHAR_SELECT:
                         logger->log("State: CHAR_SELECT");
                         currentDialog =
-                                      new CharSelectDialog(&charInfo, &loginData);
+                            new CharSelectDialog(&charInfo, &loginData);
 
                         if (((CharSelectDialog*) currentDialog)->
-                                selectByName(options.playername))
-                            options.chooseDefault = true;
-                        else
-                            ((CharSelectDialog*) currentDialog)->selectByName(
-                                config.getValue("lastCharacter", ""));
-
-                        if (options.chooseDefault)
-                        {
+                                selectByName(options.playername)) {
                             ((CharSelectDialog*) currentDialog)->action(
                                 gcn::ActionEvent(NULL, "ok"));
-                            options.chooseDefault = false;
+                        } else {
+                            ((CharSelectDialog*) currentDialog)->selectByName(
+                                config.getValue("lastCharacter", ""));
                         }
 
                         break;
@@ -1115,7 +1102,7 @@ int main(int argc, char *argv[])
                     case STATE_CHANGEEMAIL:
                         logger->log("State: CHANGE EMAIL");
                         currentDialog = new OkDialog("Email Address change",
-                                            "Email Address changed successfully!");
+                                "Email Address changed successfully!");
                         currentDialog->addActionListener(&accountListener);
                         currentDialog = NULL; // OkDialog deletes itself
                         loginData.email = loginData.newEmail;
