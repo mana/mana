@@ -36,8 +36,9 @@
 class GuiTableActionListener;
 
 /**
- * A table, with rows and columns made out of sub-widgets. Largely inspired by (and can be thought of as a generalisation of)
- * the guichan listbox implementation.
+ * A table, with rows and columns made out of sub-widgets. Largely inspired by
+ * (and can be thought of as a generalisation of) the guichan listbox
+ * implementation.
  *
  * Normally you want this within a ScrollArea.
  *
@@ -48,41 +49,43 @@ class GuiTable : public gcn::Widget,
                  public gcn::KeyListener,
                  public TableModelListener
 {
-    friend class GuiTableActionListener; // so that the action listener can call distributeActionEvent
+    // so that the action listener can call distributeActionEvent
+    friend class GuiTableActionListener;
+
 public:
     GuiTable(TableModel * initial_model = NULL);
 
-    virtual ~GuiTable(void);
+    virtual ~GuiTable();
 
     /**
      * Retrieves the active table model
      */
-    TableModel *getModel(void) const;
+    TableModel *getModel() const;
 
     /**
      * Sets the table model
      *
-     * Note that actions issued by widgets returned from the model will update the table
-     * selection, but only AFTER any event handlers installed within the widget have been
-     *triggered. To be notified after such an update, add an action listener to the table
-     * instead.
+     * Note that actions issued by widgets returned from the model will update
+     * the table selection, but only AFTER any event handlers installed within
+     * the widget have been triggered. To be notified after such an update,
+     * add an action listener to the table instead.
      */
     void setModel(TableModel *m);
 
     void setSelected(int row, int column);
 
-    int getSelectedRow(void);
+    int getSelectedRow();
 
-    int getSelectedColumn(void);
+    int getSelectedColumn();
 
-    gcn::Rectangle getChildrenArea(void);
+    gcn::Rectangle getChildrenArea();
 
     /**
-     * Toggle whether to use linewise selection mode, in which the table selects an entire
-     * line at a time, rather than a single cell.
+     * Toggle whether to use linewise selection mode, in which the table
+     * selects an entire line at a time, rather than a single cell.
      *
-     * Note that column information is tracked even in linewise selection mode; this mode
-     * therefore only affects visualisation.
+     * Note that column information is tracked even in linewise selection
+     * mode; this mode therefore only affects visualisation.
      *
      * Disabled by default.
      *
@@ -93,7 +96,7 @@ public:
     // Inherited from Widget
     virtual void draw(gcn::Graphics* graphics);
 
-    virtual void logic(void);
+    virtual void logic();
 
     virtual gcn::Widget *getWidgetAt(int x, int y);
 
@@ -113,25 +116,25 @@ public:
     virtual void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
 
     virtual void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
-        
+
     virtual void mouseDragged(gcn::MouseEvent& mouseEvent);
 
     // Constraints inherited from TableModelListener
     virtual void modelUpdated(bool);
 
 protected:
+    /** Frees all action listeners on inner widgets. */
+    virtual void uninstallActionListeners();
+    /** Installs all action listeners on inner widgets. */
+    virtual void installActionListeners();
 
-    virtual void uninstallActionListeners(void); // frees all action listeners on inner widgets
-    virtual void installActionListeners(void); // installs all action listeners on inner widgets
-
-    virtual int getRowHeight(void);
+    virtual int getRowHeight();
     virtual int getColumnWidth(int i);
-    
-private:
 
+private:
     int getRowForY(int y); // -1 on error
     int getColumnForX(int x); // -1 on error
-    void recomputeDimensions(void);
+    void recomputeDimensions();
     bool mLinewiseMode;
 
     TableModel *mModel;
@@ -139,11 +142,14 @@ private:
     int mSelectedRow;
     int mSelectedColumn;
 
-    int mPopFramesNr; // Number of frames to skip upwards when drawing the selected widget
+    /** Number of frames to skip upwards when drawing the selected widget. */
+    int mPopFramesNr;
 
-    gcn::Widget *mTopWidget; // If someone moves a fresh widget to the top, we must display it
+    /** If someone moves a fresh widget to the top, we must display it. */
+    gcn::Widget *mTopWidget;
 
-    std::vector<GuiTableActionListener *> action_listeners; // Vector for compactness; used as a list in practice.
+    /** Vector for compactness; used as a list in practice. */
+    std::vector<GuiTableActionListener *> action_listeners;
 };
 
 

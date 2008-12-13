@@ -71,7 +71,7 @@ class ConfigurationObject
     friend class Configuration;
 
     public:
-        virtual ~ConfigurationObject(void);
+        virtual ~ConfigurationObject();
 
         /**
          * Sets an option using a string value.
@@ -108,7 +108,7 @@ class ConfigurationObject
         /**
          * Re-sets all data in the configuration
          */
-        virtual void clear(void);
+        virtual void clear();
 
         /**
          * Serialises a container into a list of configuration options
@@ -158,7 +158,7 @@ class ConfigurationObject
         {
             ConfigurationList *list = &(mContainerOptions[name]);
             CONT container = empty;
-            
+
             for (ConfigurationList::const_iterator it = list->begin(); it != list->end(); it++)
                 container = manager->readConfigItem(*it, container);
 
@@ -187,7 +187,7 @@ class ConfigurationObject
 class Configuration : public ConfigurationObject
 {
     public:
-        virtual ~Configuration(void) {}
+        virtual ~Configuration() {}
 
         /**
          * Reads config file and parse all options into memory.
@@ -214,6 +214,7 @@ class Configuration : public ConfigurationObject
 
         virtual void setValue(const std::string &key, std::string value);
         virtual void setValue(const std::string &key, float value);
+
     private:
         typedef std::list<ConfigListener*> Listeners;
         typedef Listeners::iterator ListenerIterator;

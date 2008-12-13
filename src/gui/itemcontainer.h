@@ -112,17 +112,17 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
         /**
          * Find the current item index by the most recently used item ID
          */
-        void refindSelectedItem(void);
+        void refindSelectedItem();
 
         /**
          * Determine and set the height of the container.
          */
-        void recalculateHeight(void);
+        void recalculateHeight();
 
         /**
          * Sends out selection events to the list of selection listeners.
          */
-        void distributeValueChangedEvent(void);
+        void distributeValueChangedEvent();
 
         Inventory *mInventory;
         Image *mSelImg;

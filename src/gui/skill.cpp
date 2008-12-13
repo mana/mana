@@ -43,7 +43,7 @@ struct SkillInfo {
 
 std::vector<SkillInfo> skill_db;
 
-static void initSkillinfo(void);
+static void initSkillinfo();
 
 class SkillGuiTableModel : public StaticTableModel
 {
@@ -56,11 +56,9 @@ public:
         update();
     }
 
-    virtual int
-    getRows(void) { return mEntriesNr; }
+    virtual int getRows() { return mEntriesNr; }
 
-    virtual int
-    getColumnWidth(int index)
+    virtual int getColumnWidth(int index)
     {
         switch (index) {
         case 0:  return 160;
@@ -68,14 +66,12 @@ public:
         }
     }
 
-    virtual int
-    getRowHeight(void)
+    virtual int getRowHeight()
     {
         return 12;
     }
 
-    virtual void
-    update(void)
+    virtual void update()
     {
         static const SkillInfo fakeSkillInfo = { "Mystery Skill", false };
 
@@ -107,7 +103,6 @@ public:
             set(i, 2, sp_label);
         }
     }
-
 
 private:
     SkillDialog *mDialog;
@@ -250,8 +245,7 @@ void SkillDialog::cleanList()
     mSkillList.clear();
 }
 
-static void
-initSkillinfo(void)
+static void initSkillinfo()
 {
     SkillInfo emptySkillInfo = { "", false };
 

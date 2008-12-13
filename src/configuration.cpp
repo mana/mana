@@ -60,7 +60,8 @@ void Configuration::setValue(const std::string &key, std::string value)
     }
 }
 
-std::string ConfigurationObject::getValue(const std::string &key, std::string deflt)
+std::string ConfigurationObject::getValue(const std::string &key,
+                                          std::string deflt)
 {
     OptionIterator iter = mOptions.find(key);
     return ((iter != mOptions.end()) ? iter->second : deflt);
@@ -72,8 +73,7 @@ float ConfigurationObject::getValue(const std::string &key, float deflt)
     return (iter != mOptions.end()) ? atof(iter->second.c_str()) : deflt;
 }
 
-void
-ConfigurationObject::deleteList(const std::string &name)
+void ConfigurationObject::deleteList(const std::string &name)
 {
     for (ConfigurationList::const_iterator
              it = mContainerOptions[name].begin(); it != mContainerOptions[name].end(); it++)
@@ -82,8 +82,7 @@ ConfigurationObject::deleteList(const std::string &name)
     mContainerOptions[name].clear();
 }
 
-void
-ConfigurationObject::clear(void)
+void ConfigurationObject::clear()
 {
     for (std::map<std::string, ConfigurationList>::const_iterator
              it = mContainerOptions.begin(); it != mContainerOptions.end(); it++)
@@ -92,13 +91,12 @@ ConfigurationObject::clear(void)
 }
 
 
-ConfigurationObject::~ConfigurationObject(void)
+ConfigurationObject::~ConfigurationObject()
 {
     clear();
 }
 
-void
-ConfigurationObject::initFromXML(xmlNodePtr parent_node)
+void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
 {
     clear();
 
@@ -163,8 +161,7 @@ void Configuration::init(const std::string &filename)
     xmlFreeDoc(doc);
 }
 
-void
-ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
+void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
 {
     for (OptionIterator i = mOptions.begin(); i != mOptions.end(); i++)
     {

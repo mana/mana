@@ -21,10 +21,6 @@
 
 #include "setup_players.h"
 
-#include <vector>
-#include <guichan/widgets/dropdown.hpp>
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "checkbox.h"
 #include "ok_dialog.h"
@@ -33,6 +29,11 @@
 #include "../configuration.h"
 #include "../log.h"
 #include "../sound.h"
+
+#include <guichan/widgets/dropdown.hpp>
+#include <guichan/widgets/label.hpp>
+
+#include <vector>
 
 #define COLUMNS_NR 2 // name plus listbox
 #define NAME_COLUMN 0
@@ -55,9 +56,9 @@ static const std::string RELATION_NAMES[PlayerRelation::RELATIONS_NR] = {
 class PlayerRelationListModel : public gcn::ListModel
 {
 public:
-    virtual ~PlayerRelationListModel(void) { }
+    virtual ~PlayerRelationListModel() { }
 
-    virtual int getNumberOfElements(void)
+    virtual int getNumberOfElements()
     {
         return PlayerRelation::RELATIONS_NR;
     }
@@ -73,30 +74,30 @@ public:
 class PlayerTableModel : public TableModel
 {
 public:
-    PlayerTableModel(void) :
+    PlayerTableModel() :
         mPlayers(NULL)
     {
         playerRelationsUpdated();
     }
 
-    virtual ~PlayerTableModel(void)
+    virtual ~PlayerTableModel()
     {
         freeWidgets();
         if (mPlayers)
             delete mPlayers;
     }
 
-    virtual int getRows(void)
+    virtual int getRows()
     {
         return mPlayers->size();
     }
 
-    virtual int getColumns(void)
+    virtual int getColumns()
     {
         return COLUMNS_NR;
     }
 
-    virtual int getRowHeight(void)
+    virtual int getRowHeight()
     {
         return ROW_HEIGHT;
     }
@@ -109,7 +110,7 @@ public:
             return RELATION_CHOICE_COLUMN_WIDTH;
     }
 
-    virtual void playerRelationsUpdated(void)
+    virtual void playerRelationsUpdated()
     {
         signalBeforeUpdate();
 
@@ -146,7 +147,7 @@ public:
         return mWidgets[WIDGET_AT(row, column)];
     }
 
-    virtual void freeWidgets(void)
+    virtual void freeWidgets()
     {
         if (mPlayers)
             delete mPlayers;
@@ -175,9 +176,9 @@ protected:
 class IgnoreChoicesListModel : public gcn::ListModel
 {
 public:
-    virtual ~IgnoreChoicesListModel(void) { }
+    virtual ~IgnoreChoicesListModel() { }
 
-    virtual int getNumberOfElements(void)
+    virtual int getNumberOfElements()
     {
         return player_relations.getPlayerIgnoreStrategies()->size();
     }
@@ -260,14 +261,13 @@ Setup_Players::Setup_Players():
     player_relations.addListener(this);
 }
 
-Setup_Players::~Setup_Players(void)
+Setup_Players::~Setup_Players()
 {
     player_relations.removeListener(this);
 }
 
 
-void
-Setup_Players::reset()
+void Setup_Players::reset()
 {
     // We now have to search through the list of ignore choices to find the current
     // selection.  We could use an index into the table of config options in
@@ -284,8 +284,7 @@ Setup_Players::reset()
     mIgnoreActionChoicesBox->setSelected(selection);
 }
 
-void
-Setup_Players::apply()
+void Setup_Players::apply()
 {
     player_relations.setPersistIgnores(mPersistIgnores->isSelected());
     player_relations.store();
@@ -297,13 +296,11 @@ Setup_Players::apply()
                                 | (mDefaultWhisper->isSelected()? PlayerRelation::WHISPER : 0));
 }
 
-void
-Setup_Players::cancel()
+void Setup_Players::cancel()
 {
 }
 
-void
-Setup_Players::action(const gcn::ActionEvent &event)
+void Setup_Players::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == ACTION_TABLE) {
         // temporarily eliminate ourselves: we are fully aware of this change, so there is no
@@ -336,8 +333,7 @@ Setup_Players::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-Setup_Players::updatedPlayer(const std::string &name)
+void Setup_Players::updatedPlayer(const std::string &name)
 {
     mPlayerTableModel->playerRelationsUpdated();
     mDefaultTrading->setSelected(player_relations.getDefault() & PlayerRelation::TRADE);

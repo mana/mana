@@ -21,8 +21,6 @@
 
 #include "being.h"
 
-#include <cassert>
-
 #include "animatedsprite.h"
 #include "equipment.h"
 #include "game.h"
@@ -46,6 +44,8 @@
 #include "utils/tostring.h"
 
 #include "utils/xml.h"
+
+#include <cassert>
 
 #define BEING_EFFECTS_FILE "effects.xml"
 #define HAIR_FILE "hair.xml"
@@ -291,8 +291,7 @@ void Being::setDirection(Uint8 direction)
     }
 }
 
-SpriteDirection
-Being::getSpriteDirection() const
+SpriteDirection Being::getSpriteDirection() const
 {
     SpriteDirection dir;
 
@@ -441,8 +440,7 @@ Being::Type Being::getType() const
     return UNKNOWN;
 }
 
-void
-Being::setStatusEffectBlock(int offset, Uint16 newEffects)
+void Being::setStatusEffectBlock(int offset, Uint16 newEffects)
 {
     for (int i = 0; i < STATUS_EFFECTS; i++) {
         int index = StatusEffect::blockEffectIndexToEffectIndex(offset + i);
@@ -452,8 +450,7 @@ Being::setStatusEffectBlock(int offset, Uint16 newEffects)
     }
 }
 
-void
-Being::handleStatusEffect(StatusEffect *effect, int effectId)
+void Being::handleStatusEffect(StatusEffect *effect, int effectId)
 {
     if (!effect)
         return;
@@ -473,21 +470,18 @@ Being::handleStatusEffect(StatusEffect *effect, int effectId)
     }
 }
 
-void
-Being::updateStunMode(int oldMode, int newMode)
+void Being::updateStunMode(int oldMode, int newMode)
 {
     handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
     handleStatusEffect(StatusEffect::getStatusEffect(newMode, true), -1);
 }
 
-void
-Being::updateStatusEffect(int index, bool newStatus)
+void Being::updateStatusEffect(int index, bool newStatus)
 {
     handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);
 }
 
-void
-Being::setStatusEffect(int index, bool active)
+void Being::setStatusEffect(int index, bool active)
 {
     const bool wasActive = mStatusEffects.find(index) != mStatusEffects.end();
 
@@ -500,8 +494,7 @@ Being::setStatusEffect(int index, bool active)
     }
 }
 
-int
-Being::getOffset(char pos, char neg) const
+int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
     if (mAction != WALK || !(mDirection & (pos | neg))) {
@@ -558,8 +551,7 @@ static EffectDescription *default_effect = NULL;
 static std::map<int, EffectDescription *> effects;
 static bool effects_initialized = false;
 
-static EffectDescription *
-getEffectDescription(xmlNodePtr node, int *id)
+static EffectDescription *getEffectDescription(xmlNodePtr node, int *id)
 {
     EffectDescription *ed = new EffectDescription;
 
@@ -570,8 +562,7 @@ getEffectDescription(xmlNodePtr node, int *id)
     return ed;
 }
 
-static EffectDescription *
-getEffectDescription(int effectId)
+static EffectDescription *getEffectDescription(int effectId)
 {
     if (!effects_initialized)
     {
@@ -617,8 +608,7 @@ getEffectDescription(int effectId)
         return ed;
 }
 
-void
-Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
+void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
 {
     logger->log("Special effect #%d on %s", effectId,
                 getId() == player_node->getId() ? "self" : "other");
@@ -649,25 +639,21 @@ static int hairStylesNr;
 static int hairColorsNr;
 static std::vector<std::string> hairColors;
 
-static void
-initializeHair(void);
+static void initializeHair();
 
-int
-Being::getHairStylesNr(void)
+int Being::getHairStylesNr()
 {
     initializeHair();
     return hairStylesNr;
 }
 
-int
-Being::getHairColorsNr(void)
+int Being::getHairColorsNr()
 {
     initializeHair();
     return hairColorsNr;
 }
 
-std::string
-Being::getHairColor(int index)
+std::string Being::getHairColor(int index)
 {
     initializeHair();
     if (index < 0 || index >= hairColorsNr)
@@ -678,8 +664,7 @@ Being::getHairColor(int index)
 
 static bool hairInitialized = false;
 
-static void
-initializeHair(void)
+static void initializeHair()
 {
     if (hairInitialized)
         return;

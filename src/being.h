@@ -374,9 +374,9 @@ class Being : public Sprite
         const std::auto_ptr<Equipment> mEquipment;
 
 
-        static int getHairColorsNr(void);
+        static int getHairColorsNr();
 
-        static int getHairStylesNr(void);
+        static int getHairStylesNr();
 
         static std::string getHairColor(int index);
 

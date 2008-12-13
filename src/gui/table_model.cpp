@@ -19,31 +19,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widget.hpp>
-#include <cstdlib>
 #include "table_model.h"
 
-void
-TableModel::installListener(TableModelListener *listener)
+#include <guichan/widget.hpp>
+#include <cstdlib>
+
+void TableModel::installListener(TableModelListener *listener)
 {
     listeners.insert(listener);
 }
 
-void
-TableModel::removeListener(TableModelListener *listener)
+void TableModel::removeListener(TableModelListener *listener)
 {
     listeners.erase(listener);
 }
 
-void
-TableModel::signalBeforeUpdate(void)
+void TableModel::signalBeforeUpdate()
 {
     for (std::set<TableModelListener *>::const_iterator it = listeners.begin(); it != listeners.end(); it++)
         (*it)->modelUpdated(false);
 }
 
-void
-TableModel::signalAfterUpdate(void)
+void TableModel::signalAfterUpdate()
 {
     for (std::set<TableModelListener *>::const_iterator it = listeners.begin(); it != listeners.end(); it++)
         (*it)->modelUpdated(true);
@@ -63,23 +60,21 @@ StaticTableModel::StaticTableModel(int row, int column) :
     mWidths.resize(column, 1);
 }
 
-StaticTableModel::~StaticTableModel(void)
+StaticTableModel::~StaticTableModel()
 {
     for (std::vector<gcn::Widget *>::const_iterator it = mTableModel.begin(); it != mTableModel.end(); it++)
         if (*it)
             delete *it;
 }
 
-void
-StaticTableModel::resize(void)
+void StaticTableModel::resize()
 {
     mRows = getRows();
     mColumns = getColumns();
     mTableModel.resize(mRows * mColumns, NULL);
 }
 
-void
-StaticTableModel::set(int row, int column, gcn::Widget *widget)
+void StaticTableModel::set(int row, int column, gcn::Widget *widget)
 {
     if (row >= mRows || row < 0
         || column >= mColumns || column < 0)
@@ -104,14 +99,12 @@ StaticTableModel::set(int row, int column, gcn::Widget *widget)
     signalAfterUpdate();
 }
 
-gcn::Widget *
-StaticTableModel::getElementAt(int row, int column)
+gcn::Widget *StaticTableModel::getElementAt(int row, int column)
 {
     return mTableModel[WIDGET_AT(row, column)];
 }
 
-void
-StaticTableModel::fixColumnWidth(int column, int width)
+void StaticTableModel::fixColumnWidth(int column, int width)
 {
     if (width < 0
         || column < 0 || column >= mColumns)
@@ -120,8 +113,7 @@ StaticTableModel::fixColumnWidth(int column, int width)
     mWidths[column] = -width; // Negate to tag as fixed
 }
 
-void
-StaticTableModel::fixRowHeight(int height)
+void StaticTableModel::fixRowHeight(int height)
 {
     if (height < 0)
         return;
@@ -129,14 +121,12 @@ StaticTableModel::fixRowHeight(int height)
     mHeight = -height;
 }
 
-int
-StaticTableModel::getRowHeight(void)
+int StaticTableModel::getRowHeight()
 {
     return abs(mHeight);
 }
 
-int
-StaticTableModel::getColumnWidth(int column)
+int StaticTableModel::getColumnWidth(int column)
 {
    if (column < 0 || column >= mColumns)
         return 0;
@@ -144,14 +134,12 @@ StaticTableModel::getColumnWidth(int column)
     return abs(mWidths[column]);
 }
 
-int
-StaticTableModel::getRows(void)
+int StaticTableModel::getRows()
 {
     return mRows;
 }
 
-int
-StaticTableModel::getColumns(void)
+int StaticTableModel::getColumns()
 {
     return mColumns;
 }

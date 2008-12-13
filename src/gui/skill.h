@@ -68,7 +68,7 @@ class SkillDialog : public Window, public gcn::ActionListener
         void setSkill(int id, int lv, int sp);
         void cleanList();
 
-        const std::vector<SKILL*>& getSkills(void) const { return mSkillList; }
+        const std::vector<SKILL*>& getSkills() const { return mSkillList; }
 
     private:
         GuiTable mTable;//gcn::ListBox *mSkillListBox;

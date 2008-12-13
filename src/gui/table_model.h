@@ -22,17 +22,20 @@
 #ifndef TMW_TABLE_MODEL_H_
 #define TMW_TABLE_MODEL_H_
 
+#include "../guichanfwd.h"
+
 #include <guichan/gui.hpp>
+
 #include <set>
 #include <vector>
-#include "../guichanfwd.h"
 
 class TableModelListener
 {
 public:
     /**
-     * Must be invoked by the TableModel whenever a global change is about to occur or
-     * has occurred (e.g., when a row or column is being removed or added).
+     * Must be invoked by the TableModel whenever a global change is about to
+     * occur or has occurred (e.g., when a row or column is being removed or
+     * added).
      *
      * This method is triggered twice, once before and once after the update.
      *
@@ -47,22 +50,22 @@ public:
 class TableModel
 {
 public:
-    virtual ~TableModel(void) { }
+    virtual ~TableModel() { }
 
     /**
      * Determines the number of rows (lines) in the table
      */
-    virtual int getRows(void) = 0;
+    virtual int getRows() = 0;
 
     /**
      * Determines the number of columns in each row
      */
-    virtual int getColumns(void) = 0;
+    virtual int getColumns() = 0;
 
     /**
      * Determines the height for each row
      */
-    virtual int getRowHeight(void) = 0;
+    virtual int getRowHeight() = 0;
 
     /**
      * Determines the width of each individual column
@@ -82,12 +85,12 @@ protected:
     /**
      * Tells all listeners that the table is about to see an update
      */
-    virtual void signalBeforeUpdate(void);
+    virtual void signalBeforeUpdate();
 
     /**
      * Tells all listeners that the table has seen an update
      */
-    virtual void signalAfterUpdate(void);
+    virtual void signalAfterUpdate();
 
 private:
     std::set<TableModelListener *> listeners;
@@ -98,16 +101,18 @@ class StaticTableModel : public TableModel
 {
 public:
     StaticTableModel(int width, int height);
-    virtual ~StaticTableModel(void);
+    virtual ~StaticTableModel();
 
     /**
      * Inserts a widget into the table model.
-     * The model is resized to accomodate the widget's width and height, unless column width / row height have been fixed.
+     * The model is resized to accomodate the widget's width and height,
+     * unless column width / row height have been fixed.
      */
     virtual void set(int row, int column, gcn::Widget *widget);
 
     /**
-     * Fixes the column width for a given column; this overrides dynamic width inference.
+     * Fixes the column width for a given column; this overrides dynamic width
+     * inference.
      *
      * Semantics are undefined for width 0.
      */
@@ -123,14 +128,13 @@ public:
     /**
      * Resizes the table model
      */
-    virtual void resize(void);
+    virtual void resize();
 
-    virtual int getRows(void);
-    virtual int getColumns(void);
-    virtual int getRowHeight(void);
+    virtual int getRows();
+    virtual int getColumns();
+    virtual int getRowHeight();
     virtual int getColumnWidth(int index);
     virtual gcn::Widget *getElementAt(int row, int column);
-
 
 protected:
     int mRows, mColumns;
