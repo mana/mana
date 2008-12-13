@@ -35,10 +35,7 @@
 #include "gui/gui.h"
 
 Player::Player(int id, int job, Map *map):
-    Being(id, job, map),
-    mGender(GENDER_UNSPECIFIED),
-    mHairStyle(0),
-    mHairColor(0)
+    Being(id, job, map)
 {
 }
 
@@ -67,7 +64,7 @@ void Player::setGender(Gender gender)
 {
     if (gender != mGender)
     {
-        mGender = gender;
+        Being::setGender(gender);
 
         /* Human base sprite. When implementing different races remove this
          * line and set the base sprite when setting the race of the player
@@ -92,8 +89,7 @@ void Player::setHairStyle(int style, int color)
     color = color < 0 ? mHairColor : color % NR_HAIR_COLORS;
     if (style == mHairStyle && color == mHairColor) return;
 
-    mHairStyle = style;
-    mHairColor = color;
+    Being::setHairStyle(style, color);
 
     static char const *const colors[NR_HAIR_COLORS] =
     {

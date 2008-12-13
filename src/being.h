@@ -46,6 +46,12 @@ class ImageSet;
 class Particle;
 class SpeechBubble;
 
+enum Gender {
+    GENDER_MALE = 0,
+    GENDER_FEMALE = 1,
+    GENDER_UNSPECIFIED = 2
+};
+
 class Being : public Sprite
 {
     public:
@@ -172,6 +178,33 @@ class Being : public Sprite
          */
         void
         setName(const std::string &name) { mName = name; }
+
+        /**
+         * Sets the gender for this being.
+         */
+        virtual void setGender(Gender gender) { mGender = gender; }
+
+        /**
+         * Gets the hair color for this being.
+         */
+        int getHairColor() const
+        { return mHairColor; }
+
+        /**
+         * Gets the hair style for this being.
+         */
+        int getHairStyle() const
+        { return mHairStyle; }
+
+        /**
+         * Sets the hair style and color for this being.
+         *
+         * NOTE: This method was necessary for convenience in the 0.0 client.
+         * It should be removed here since the server can provide the hair ID
+         * and coloring the same way it does for other equipment pieces. Then
+         * Being::setSprite can be used instead.
+         */
+        virtual void setHairStyle(int style, int color);
 
         /**
          * Sets visible equipments for this being.
@@ -353,6 +386,9 @@ class Being : public Sprite
 
         Path mPath;
         std::string mSpeech;
+        int mHairStyle;
+        int mHairColor;
+        Gender mGender;
         Uint32 mSpeechTime;
 
         std::vector<AnimatedSprite*> mSprites;

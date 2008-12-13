@@ -57,6 +57,9 @@ Being::Being(int id, int job, Map *map):
     mSpriteDirection(DIRECTION_DOWN), mDirection(DOWN),
     mMap(NULL),
     mEquippedWeapon(NULL),
+    mHairStyle(0),
+    mHairColor(0),
+    mGender(GENDER_UNSPECIFIED),
     mSpeechTime(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
@@ -284,6 +287,12 @@ void Being::setPath(const Path &path)
 {
     std::cout << this << " New path: " << path << std::endl;
     mPath = path;
+}
+
+void Being::setHairStyle(int style, int color)
+{
+    mHairStyle = style < 0 ? mHairStyle : style % NR_HAIR_STYLES;
+    mHairColor = color < 0 ? mHairColor : color % NR_HAIR_COLORS;
 }
 
 void Being::setSprite(int slot, int id, const std::string &color)
