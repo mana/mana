@@ -5,6 +5,7 @@
  -> @@changes|Recent Changes@@
 
  -> @@commands|Commands@@
+ -> @@windows|Windows@@
  -> @@skills|Skills@@
 
  -> @@support|Support@@
