@@ -29,8 +29,6 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/changeemaildialog.h \
 	      gui/changepassworddialog.cpp \
 	      gui/changepassworddialog.h \
-	      gui/chargedialog.cpp \
-	      gui/chargedialog.h \
 	      gui/char_select.cpp \
 	      gui/char_select.h \
 	      gui/chat.cpp \

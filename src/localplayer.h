@@ -290,8 +290,6 @@ class LocalPlayer : public Player
         int getHP() const
         { return mHP; }
 
-        Uint32 mCharId;
-
         int getMaxHP() const
         { return mMaxHP; }
 
@@ -360,7 +358,6 @@ class LocalPlayer : public Player
 
         std::pair<int, int> getExperience(int skill);
 
-        float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
         Inventory *mInventory;
         const std::auto_ptr<Equipment> mEquipment;
