@@ -127,14 +127,13 @@ class Particle : public Sprite
         /**
          * Sets the position in 3 dimensional space in pixels relative to map.
          */
-        void setPosition(float x, float y, float z)
-        { mPos.x = x; mPos.y = y; mPos.z = z; }
+        void moveTo(Vector pos)
+        { moveBy (pos - mPos);}
 
         /**
          * Sets the position in 2 dimensional space in pixels relative to map.
          */
-        void setPosition(float x, float y)
-        { mPos.x = x; mPos.y = y; }
+        void moveTo(float x, float y);
 
         /**
          * Returns the particle position.
@@ -145,13 +144,7 @@ class Particle : public Sprite
         /**
          * Changes the particle position relative
          */
-        void moveBy(float x, float y, float z)
-        { mPos.x += x; mPos.y += y; mPos.z += z; }
-
-        void moveChildren(Vector change);
-
-        void moveBy (Vector change)
-        { mPos += change; }
+        void moveBy (Vector change);
 
         /**
          * Sets the time in game ticks until the particle is destroyed.

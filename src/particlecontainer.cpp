@@ -45,10 +45,10 @@ void ParticleContainer::clear()
 }
 
 
-void ParticleContainer::setPositions(float x, float y)
+void ParticleContainer::moveTo(float x, float y)
 {
     if (mNext)
-        mNext->setPositions(x, y);
+        mNext->moveTo(x, y);
 }
 
 // -- particle list ----------------------------------------
@@ -91,14 +91,14 @@ void ParticleList::clearLocally()
     mElements.clear();
 }
 
-void ParticleList::setPositions(float x, float y)
+void ParticleList::moveTo(float x, float y)
 {
-    ParticleContainer::setPositions(x, y);
+    ParticleContainer::moveTo(x, y);
 
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end();)
     {
-        (*it)->setPosition(x, y);
+        (*it)->moveTo(x, y);
         if ((*it)->isExtinct())
         {
             (*it)->kill();
@@ -156,15 +156,15 @@ void ParticleVector::clearLocally()
         delLocally(i);
 }
 
-void ParticleVector::setPositions(float x, float y)
+void ParticleVector::moveTo(float x, float y)
 {
-    ParticleContainer::setPositions(x, y);
+    ParticleContainer::moveTo(x, y);
 
     for (std::vector<Particle *>::iterator it = mIndexedElements.begin();
          it != mIndexedElements.end(); it++) {
         if (*it)
         {
-            (*it)->setPosition(x, y);
+            (*it)->moveTo(x, y);
 
             if ((*it)->isExtinct())
             {
