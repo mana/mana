@@ -342,9 +342,11 @@ Game::~Game()
     joystick = NULL;
 }
 
-bool saveScreenshot(SDL_Surface *screenshot)
+static bool saveScreenshot()
 {
     static unsigned int screenshotCount = 0;
+
+    SDL_Surface *screenshot = graphics->getScreenshot();
 
     // Search for an unused screenshot name
     std::stringstream filenameSuffix;
@@ -364,24 +366,28 @@ bool saveScreenshot(SDL_Surface *screenshot)
 #endif
         filenameSuffix << "Ae_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
-        std::cerr << "Trying `" << filename.str() << "' from `" << filenameSuffix.str() << "'\n";
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
         testExists.close();
     } while (!found);
 
-    if (ImageWriter::writePNG(screenshot, filename.str()))
+    const bool success = ImageWriter::writePNG(screenshot, filename.str());
+
+    if (success)
     {
         std::stringstream chatlogentry;
-        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str().c_str();
+        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str();
         chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
-        return true;
     }
     else
     {
         chatWindow->chatLog("Saving screenshot failed!", BY_SERVER);
-        return false;
+        logger->log("Error: could not save screenshot.");
     }
+
+    SDL_FreeSurface(screenshot);
+
+    return success;
 }
 
 void Game::optionChanged(const std::string &name)
@@ -404,69 +410,67 @@ void Game::logic()
 
     while (!done)
     {
-    // Handle all necessary game logic
-    while (get_elapsed_time(gameTime) > 0)
-    {
-        handleInput();
-        engine->logic();
-        gameTime++;
-    }
-
-    // This is done because at some point tick_time will wrap.
-    gameTime = tick_time;
-
-    // Update the screen when application is active, delay otherwise.
-    if (SDL_GetAppState() & SDL_APPACTIVE)
-    {
-        // Draw a frame if either frames are not limited or enough time has
-        // passed since the last frame.
-        if (!mMinFrameTime ||
-            get_elapsed_time(mDrawTime / 10) > mMinFrameTime)
+        // Handle all necessary game logic
+        while (get_elapsed_time(gameTime) > 0)
         {
-            frame++;
-            gui->draw();
-            graphics->updateScreen();
-            mDrawTime += mMinFrameTime;
+            handleInput();
+            engine->logic();
+            gameTime++;
+        }
 
-            // Make sure to wrap mDrawTime, since tick_time will wrap.
-            if (mDrawTime > MAX_TIME * 10)
-                mDrawTime -= MAX_TIME * 10;
+        // This is done because at some point tick_time will wrap.
+        gameTime = tick_time;
+
+        // Update the screen when application is active, delay otherwise.
+        if (SDL_GetAppState() & SDL_APPACTIVE)
+        {
+            // Draw a frame if either frames are not limited or enough time has
+            // passed since the last frame.
+            if (!mMinFrameTime ||
+                get_elapsed_time(mDrawTime / 10) > mMinFrameTime)
+            {
+                frame++;
+                gui->draw();
+                graphics->updateScreen();
+                mDrawTime += mMinFrameTime;
+
+                // Make sure to wrap mDrawTime, since tick_time will wrap.
+                if (mDrawTime > MAX_TIME * 10)
+                    mDrawTime -= MAX_TIME * 10;
+            }
+            else
+            {
+                SDL_Delay(10);
+            }
         }
         else
         {
             SDL_Delay(10);
+            mDrawTime = tick_time * 10;
         }
-    }
-    else
-    {
-        SDL_Delay(10);
-        mDrawTime = tick_time * 10;
-    }
 
-    // Handle network stuff
-    mNetwork->flush();
-    mNetwork->dispatchMessages();
+        // Handle network stuff
+        mNetwork->flush();
+        mNetwork->dispatchMessages();
 
-    if (!mNetwork->isConnected())
-    {
-        if (!disconnectedDialog)
+        if (!mNetwork->isConnected())
         {
-            disconnectedDialog = new
-                OkDialog("Network Error",
-                         "The connection to the server was lost, the program will now quit");
-            disconnectedDialog->addActionListener(&exitListener);
-            disconnectedDialog->requestMoveToTop();
+            if (!disconnectedDialog)
+            {
+                disconnectedDialog = new OkDialog("Network Error",
+                        "The connection to the server was lost, "
+                        "the program will now quit");
+                disconnectedDialog->addActionListener(&exitListener);
+                disconnectedDialog->requestMoveToTop();
+            }
         }
-    }
     }
 }
 
 void Game::handleInput()
 {
-    if (joystick != NULL)
-    {
+    if (joystick)
         joystick->update();
-    }
 
     // Events
     SDL_Event event;
@@ -499,14 +503,7 @@ void Game::handleInput()
                 {
                     case SDLK_p:
                         // Screenshot (picture, hence the p)
-                        {
-                            SDL_Surface *screenshot = graphics->getScreenshot();
-                            if (!saveScreenshot(screenshot))
-                            {
-                                logger->log("Error: could not save Screenshot.");
-                            }
-                            SDL_FreeSurface(screenshot);
-                        }
+                        saveScreenshot();
                         used = true;
                         break;
 
@@ -524,10 +521,14 @@ void Game::handleInput()
                         {
                             unsigned int deflt = player_relations.getDefault();
                             if (deflt & PlayerRelation::TRADE) {
-                                chatWindow->chatLog("Ignoring incoming trade requests", BY_SERVER);
+                                chatWindow->chatLog(
+                                        "Ignoring incoming trade requests",
+                                        BY_SERVER);
                                 deflt &= ~PlayerRelation::TRADE;
                             } else {
-                                chatWindow->chatLog("Accepting incoming trade requests", BY_SERVER);
+                                chatWindow->chatLog(
+                                        "Accepting incoming trade requests",
+                                        BY_SERVER);
                                 deflt |= PlayerRelation::TRADE;
                             }
 
@@ -656,97 +657,102 @@ void Game::handleInput()
 
             default:
                 break;
-        }
-        if (keyboard.isEnabled() && !chatWindow->isInputFocused())
-        {
-            const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-
-            // Do not activate shortcuts if tradewindow is visible
-            if (!tradeWindow->isVisible())
-            {
-                // Checks if any item shortcut is pressed.
-                for (int i = KeyboardConfig::KEY_SHORTCUT_0;
-                    i <= KeyboardConfig::KEY_SHORTCUT_9;
-                    i++)
-                {
-                    if (tKey == i && !used) {
-                        itemShortcut->useItem(i - KeyboardConfig::KEY_SHORTCUT_0);
-                        break;
-                    }
-                }
             }
-            switch (tKey) {
-                case KeyboardConfig::KEY_PICKUP:
+            if (keyboard.isEnabled() && !chatWindow->isInputFocused())
+            {
+                const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+                // Do not activate shortcuts if tradewindow is visible
+                if (!tradeWindow->isVisible())
                 {
-                    FloorItem *item = floorItemManager->findByCoordinates(
-                                      player_node->mX, player_node->mY);
-
-                    // If none below the player, try the tile in front
-                    // of the player
-                    if (!item) {
-                        Uint16 x = player_node->mX;
-                        Uint16 y = player_node->mY;
-                        switch (player_node->getSpriteDirection())
-                        {
-                            case DIRECTION_UP   : --y; break;
-                            case DIRECTION_DOWN : ++y; break;
-                            case DIRECTION_LEFT : --x; break;
-                            case DIRECTION_RIGHT: ++x; break;
-                            default: break;
-                        }
-                        item = floorItemManager->findByCoordinates(x, y);
-                    }
-
-                    if (item)
-                        player_node->pickUp(item);
-                    used = true;
-                }
-                break;
-                case KeyboardConfig::KEY_SIT:
-                   // Player sit action
-                    player_node->toggleSit();
-                    used = true;
-                    break;
-                case KeyboardConfig::KEY_HIDE_WINDOWS:
-                    // Hide certain windows
-                    if (!chatWindow->isInputFocused())
+                    // Checks if any item shortcut is pressed.
+                    for (int i = KeyboardConfig::KEY_SHORTCUT_0;
+                        i <= KeyboardConfig::KEY_SHORTCUT_9;
+                        i++)
                     {
-                        statusWindow->setVisible(false);
-                        inventoryWindow->setVisible(false);
-                        skillDialog->setVisible(false);
-                        setupWindow->setVisible(false);
-                        equipmentWindow->setVisible(false);
-                        helpWindow->setVisible(false);
-                        debugWindow->setVisible(false);
+                        if (tKey == i && !used) {
+                            itemShortcut->useItem(
+                                    i - KeyboardConfig::KEY_SHORTCUT_0);
+                            break;
+                        }
                     }
-                    break;
-                case KeyboardConfig::KEY_WINDOW_STATUS:
-                    requestedWindow = statusWindow;
-                    break;
-                case KeyboardConfig::KEY_WINDOW_INVENTORY:
-                    requestedWindow = inventoryWindow;
-                    break;
-                case KeyboardConfig::KEY_WINDOW_EQUIPMENT:
-                    requestedWindow = equipmentWindow;
-                    break;
-                case KeyboardConfig::KEY_WINDOW_SKILL:
-                    requestedWindow = skillDialog;
-                    break;
-                case KeyboardConfig::KEY_WINDOW_MINIMAP:
-                    requestedWindow = minimap;
-                    break;
-                case KeyboardConfig::KEY_WINDOW_CHAT:
-                    requestedWindow = chatWindow;
-                    break;
-                case KeyboardConfig::KEY_WINDOW_SHORTCUT:
-                    requestedWindow = itemShortcutWindow;
-                    break;
-                case KeyboardConfig::KEY_WINDOW_SETUP:
-                    requestedWindow = setupWindow;
-                    break;
-                case KeyboardConfig::KEY_WINDOW_DEBUG:
-                    requestedWindow = debugWindow;
-                    break;
+                }
+                switch (tKey) {
+                    case KeyboardConfig::KEY_PICKUP:
+                        {
+                            FloorItem *item =
+                                floorItemManager->findByCoordinates(
+                                        player_node->mX, player_node->mY);
+
+                            // If none below the player, try the tile in front
+                            // of the player
+                            if (!item) {
+                                Uint16 x = player_node->mX;
+                                Uint16 y = player_node->mY;
+                                if (player_node->getDirection() & Being::UP)
+                                    y--;
+                                if (player_node->getDirection() & Being::DOWN)
+                                    y++;
+                                if (player_node->getDirection() & Being::LEFT)
+                                    x--;
+                                if (player_node->getDirection() & Being::RIGHT)
+                                    x++;
+
+                                item = floorItemManager->findByCoordinates(
+                                        x, y);
+                            }
+
+                            if (item)
+                                player_node->pickUp(item);
+
+                            used = true;
+                        }
+                        break;
+                    case KeyboardConfig::KEY_SIT:
+                        // Player sit action
+                        player_node->toggleSit();
+                        used = true;
+                        break;
+                    case KeyboardConfig::KEY_HIDE_WINDOWS:
+                         // Hide certain windows
+                        if (!chatWindow->isInputFocused())
+                        {
+                            statusWindow->setVisible(false);
+                            inventoryWindow->setVisible(false);
+                            skillDialog->setVisible(false);
+                            setupWindow->setVisible(false);
+                            equipmentWindow->setVisible(false);
+                            helpWindow->setVisible(false);
+                            debugWindow->setVisible(false);
+                        }
+                        break;
+
+                    case KeyboardConfig::KEY_WINDOW_STATUS:
+                        requestedWindow = statusWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_INVENTORY:
+                        requestedWindow = inventoryWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_EQUIPMENT:
+                        requestedWindow = equipmentWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SKILL:
+                        requestedWindow = skillDialog;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_MINIMAP:
+                        requestedWindow = minimap;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_CHAT:
+                        requestedWindow = chatWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SHORTCUT:
+                        requestedWindow = itemShortcutWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SETUP:
+                        requestedWindow = setupWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_DEBUG:
+                        requestedWindow = debugWindow;
+                        break;
                 }
             }
 
@@ -782,11 +788,11 @@ void Game::handleInput()
             }
         }
     } // End while
+
     // If the user is configuring the keys then don't respond.
     if (!keyboard.isEnabled())
-    {
-       return;
-    }
+        return;
+
     // Moving player around
     if (player_node->mAction != Being::DEAD &&
         current_npc == 0 &&
@@ -868,7 +874,8 @@ void Game::handleInput()
             (joystick && joystick->buttonPressed(3))) && 
             !keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
-            Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
+            Being *target = beingManager->findNearestLivingBeing(
+                    x, y, 20, Being::MONSTER);
 
             player_node->setTarget(target);
         }
@@ -877,7 +884,8 @@ void Game::handleInput()
         if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) && 
              !keyboard.isKeyActive(keyboard.KEY_TARGET) )
         {
-            Being *target = beingManager->findNearestLivingBeing(x, y, 20, Being::NPC);
+            Being *target = beingManager->findNearestLivingBeing(
+                    x, y, 20, Being::NPC);
 
             player_node->setTarget(target);
         }
@@ -891,7 +899,8 @@ void Game::handleInput()
 
                 if (!target)
                 {
-                    target = beingManager->findNearestLivingBeing(x, y, 20, Being::NPC);
+                    target = beingManager->findNearestLivingBeing(
+                      x, y, 20, Being::NPC);
                 }
 
                 if (target)
