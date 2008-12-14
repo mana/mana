@@ -378,7 +378,7 @@ static bool saveScreenshot()
     if (success)
     {
         std::stringstream chatlogentry;
-        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str().c_str();
+        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str();
         chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
     }
     else
