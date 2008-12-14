@@ -424,8 +424,10 @@ void Being::logic()
         }
     }
 
-    //Update particle effects
-    mChildParticleEffects.setPositions((float)mPx + 16.0f, (float)mPy + 32.0f);
+    // Update particle effects
+    mChildParticleEffects.moveTo((float) mPx + 16.0f,
+                                 (float) mPy + 32.0f);
+
 }
 
 void Being::draw(Graphics *graphics, int offsetX, int offsetY) const

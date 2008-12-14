@@ -193,7 +193,7 @@ bool Particle::update()
                         p++
                     )
                 {
-                    (*p)->moveBy(mPos.x, mPos.y, mPos.z);
+                    (*p)->moveBy(mPos);
                     mChildParticles.push_back (*p);
                 }
             }
@@ -228,6 +228,30 @@ bool Particle::update()
     }
 
     return true;
+}
+
+void Particle::moveBy(Vector change)
+{
+    mPos += change;
+    for (ParticleIterator p = mChildParticles.begin();
+         p != mChildParticles.end();
+         p++)
+    {
+        if ((*p)->doesFollow())
+        {
+            (*p)->moveBy(change);
+        }
+    }
+    return;
+}
+
+void Particle::moveTo(float x, float y)
+{
+    Vector pos;
+    pos.x = x;
+    pos.y = y;
+    pos.z = mPos.z;
+    moveTo(pos);
 }
 
 Particle* Particle::addEffect(const std::string &particleEffectFile,
@@ -275,17 +299,18 @@ Particle* Particle::addEffect(const std::string &particleEffectFile,
         }
 
         // Read and set the basic properties of the particle
-        int offsetX = XML::getProperty(effectChildNode, "position-x", 0);
-        int offsetY = XML::getProperty(effectChildNode, "position-y", 0);
-        int offsetZ = XML::getProperty(effectChildNode, "position-z", 0);
+        float offsetX = XML::getFloatProperty(effectChildNode, "position-x", 0);
+        float offsetY = XML::getFloatProperty(effectChildNode, "position-y", 0);
+        float offsetZ = XML::getFloatProperty(effectChildNode, "position-z", 0);
 
-        int particleX = (int) mPos.x + pixelX + offsetX;
-        int particleY = (int) mPos.y + pixelY + offsetY;
-        int particleZ = (int) mPos.z          + offsetZ;
+        Vector position;
+        position.x = mPos.x + (float)pixelX + offsetX;
+        position.y = mPos.y + (float)pixelY + offsetY;
+        position.z = mPos.z + offsetZ;
 
         int lifetime = XML::getProperty(effectChildNode, "lifetime", -1);
 
-        newParticle->setPosition(particleX, particleY, particleZ);
+        newParticle->moveTo(position);
         newParticle->setLifetime(lifetime);
 
         // Look for additional emitters for this particle
@@ -311,7 +336,7 @@ Particle *Particle::addTextSplashEffect(const std::string &text,
 {
     Particle *newParticle = new TextParticle(mMap, text, colorR, colorG, colorB,
                                              font);
-    newParticle->setPosition(x, y, 0);
+    newParticle->moveTo(x, y);
     newParticle->setVelocity(((rand() % 100) - 50) / 200.0f,    // X
                              ((rand() % 100) - 50) / 200.0f,    // Y
                              ((rand() % 100) / 200.0f) + 4.0f); // Z
@@ -330,7 +355,7 @@ Particle *Particle::addTextRiseFadeOutEffect(const std::string &text,
                                              int x, int y)
 {
     Particle *newParticle = new TextParticle(mMap, text, 255, 255, 255, font);
-    newParticle->setPosition(x, y, 0);
+    newParticle->moveTo(x, y);
     newParticle->setVelocity(0.0f, 0.0f, 0.5f);
     newParticle->setGravity(0.0015f);
     newParticle->setLifetime(300);

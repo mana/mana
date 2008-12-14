@@ -361,11 +361,12 @@ ParticleEmitter::createParticles(int tick)
             newParticle = new Particle(mMap);
         }
 
+        Vector position;
+        position.x = mParticlePosX.value(tick);
+        position.y = mParticlePosY.value(tick);
+        position.z = mParticlePosZ.value(tick);
 
-        newParticle->setPosition(
-                mParticlePosX.value(tick),
-                mParticlePosY.value(tick),
-                mParticlePosZ.value(tick));
+        newParticle->moveTo(position);
 
         float angleH = mParticleAngleHorizontal.value(tick);
         float angleV = mParticleAngleVertical.value(tick);

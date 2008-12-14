@@ -58,7 +58,7 @@ public:
     /**
      * Sets the positions of all elements
      */
-    virtual void setPositions(float x, float y);
+    virtual void moveTo(float x, float y);
 
 protected:
     bool mDelParent;			/**< Delete mNext in destructor */
@@ -88,7 +88,7 @@ public:
 
     virtual void clearLocally();
 
-    virtual void setPositions(float x, float y);
+    virtual void moveTo(float x, float y);
 
 protected:
     std::list<Particle *> mElements;	/**< Contained particle effects */
@@ -116,7 +116,7 @@ public:
     virtual void delLocally(int index);
 
     virtual void clearLocally();
-    virtual void setPositions(float x, float y);
+    virtual void moveTo(float x, float y);
 
 protected:
     std::vector<Particle *> mIndexedElements;
