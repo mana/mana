@@ -231,7 +231,7 @@ bool Particle::update()
     return true;
 }
 
-void Particle::moveBy(Vector change)
+void Particle::moveBy(const Vector &change)
 {
     mPos += change;
     for (ParticleIterator p = mChildParticles.begin();

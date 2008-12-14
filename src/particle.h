@@ -127,7 +127,7 @@ class Particle : public Sprite
         /**
          * Sets the position in 3 dimensional space in pixels relative to map.
          */
-        void moveTo(Vector pos)
+        void moveTo(const Vector &pos)
         { moveBy (pos - mPos);}
 
         /**
@@ -144,7 +144,7 @@ class Particle : public Sprite
         /**
          * Changes the particle position relative
          */
-        void moveBy (Vector change);
+        void moveBy (const Vector &change);
 
         /**
          * Sets the time in game ticks until the particle is destroyed.
