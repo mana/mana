@@ -337,9 +337,11 @@ Game::~Game()
     joystick = NULL;
 }
 
-bool saveScreenshot(SDL_Surface *screenshot)
+static bool saveScreenshot()
 {
     static unsigned int screenshotCount = 0;
+
+    SDL_Surface *screenshot = graphics->getScreenshot();
 
     // Search for an unused screenshot name
     std::stringstream filenameSuffix;
@@ -359,24 +361,28 @@ bool saveScreenshot(SDL_Surface *screenshot)
 #endif
         filenameSuffix << "TMW_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
-        std::cerr << "Trying `" << filename.str() << "' from `" << filenameSuffix.str() << "'\n";
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
         testExists.close();
     } while (!found);
 
-    if (ImageWriter::writePNG(screenshot, filename.str()))
+    const bool success = ImageWriter::writePNG(screenshot, filename.str());
+
+    if (success)
     {
         std::stringstream chatlogentry;
-        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str().c_str();
+        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str();
         chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
-        return true;
     }
     else
     {
         chatWindow->chatLog("Saving screenshot failed!", BY_SERVER);
-        return false;
+        logger->log("Error: could not save screenshot.");
     }
+
+    SDL_FreeSurface(screenshot);
+
+    return success;
 }
 
 void Game::optionChanged(const std::string &name)
@@ -446,9 +452,9 @@ void Game::logic()
         {
             if (!disconnectedDialog)
             {
-                disconnectedDialog = new
-                    OkDialog("Network Error",
-                    "The connection to the server was lost, the program will now quit");
+                disconnectedDialog = new OkDialog("Network Error",
+                        "The connection to the server was lost, "
+                        "the program will now quit");
                 disconnectedDialog->addActionListener(&exitListener);
                 disconnectedDialog->requestMoveToTop();
             }
@@ -458,10 +464,8 @@ void Game::logic()
 
 void Game::handleInput()
 {
-    if (joystick != NULL)
-    {
+    if (joystick)
         joystick->update();
-    }
 
     // Events
     SDL_Event event;
@@ -494,14 +498,7 @@ void Game::handleInput()
                 {
                     case SDLK_p:
                         // Screenshot (picture, hence the p)
-                        {
-                            SDL_Surface *screenshot = graphics->getScreenshot();
-                            if (!saveScreenshot(screenshot))
-                            {
-                                logger->log("Error: could not save Screenshot.");
-                            }
-                            SDL_FreeSurface(screenshot);
-                        }
+                        saveScreenshot();
                         used = true;
                         break;
 
@@ -519,10 +516,14 @@ void Game::handleInput()
                         {
                             unsigned int deflt = player_relations.getDefault();
                             if (deflt & PlayerRelation::TRADE) {
-                                chatWindow->chatLog("Ignoring incoming trade requests", BY_SERVER);
+                                chatWindow->chatLog(
+                                        "Ignoring incoming trade requests",
+                                        BY_SERVER);
                                 deflt &= ~PlayerRelation::TRADE;
                             } else {
-                                chatWindow->chatLog("Accepting incoming trade requests", BY_SERVER);
+                                chatWindow->chatLog(
+                                        "Accepting incoming trade requests",
+                                        BY_SERVER);
                                 deflt |= PlayerRelation::TRADE;
                             }
 
@@ -663,11 +664,12 @@ void Game::handleInput()
                 switch (tKey) {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-                            FloorItem *item = floorItemManager->findByCoordinates(
-                                    player_node->mX, player_node->mY);
+                            FloorItem *item =
+                                floorItemManager->findByCoordinates(
+                                        player_node->mX, player_node->mY);
 
-                            // If none below the player, try the tile in front of
-                            // the player
+                            // If none below the player, try the tile in front
+                            // of the player
                             if (!item) {
                                 Uint16 x = player_node->mX;
                                 Uint16 y = player_node->mY;
@@ -680,7 +682,8 @@ void Game::handleInput()
                                 if (player_node->getDirection() & Being::RIGHT)
                                     x++;
 
-                                item = floorItemManager->findByCoordinates(x, y);
+                                item = floorItemManager->findByCoordinates(
+                                        x, y);
                             }
 
                             if (item)
@@ -707,15 +710,34 @@ void Game::handleInput()
                             debugWindow->setVisible(false);
                         }
                         break;
-                    case KeyboardConfig::KEY_WINDOW_STATUS: requestedWindow = statusWindow; break;
-                    case KeyboardConfig::KEY_WINDOW_INVENTORY: requestedWindow = inventoryWindow; break;
-                    case KeyboardConfig::KEY_WINDOW_EQUIPMENT: requestedWindow = equipmentWindow; break;
-                    case KeyboardConfig::KEY_WINDOW_SKILL: requestedWindow = skillDialog; break;
-                    case KeyboardConfig::KEY_WINDOW_MINIMAP: requestedWindow = minimap; break;
-                    case KeyboardConfig::KEY_WINDOW_CHAT: requestedWindow = chatWindow; break;
-                    case KeyboardConfig::KEY_WINDOW_SHORTCUT: requestedWindow = itemShortcutWindow; break;
-                    case KeyboardConfig::KEY_WINDOW_SETUP: requestedWindow = setupWindow; break;
-                    case KeyboardConfig::KEY_WINDOW_DEBUG: requestedWindow = debugWindow; break;
+
+                    case KeyboardConfig::KEY_WINDOW_STATUS:
+                        requestedWindow = statusWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_INVENTORY:
+                        requestedWindow = inventoryWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_EQUIPMENT:
+                        requestedWindow = equipmentWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SKILL:
+                        requestedWindow = skillDialog;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_MINIMAP:
+                        requestedWindow = minimap;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_CHAT:
+                        requestedWindow = chatWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SHORTCUT:
+                        requestedWindow = itemShortcutWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SETUP:
+                        requestedWindow = setupWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_DEBUG:
+                        requestedWindow = debugWindow;
+                        break;
                 }
             }
 
@@ -752,11 +774,11 @@ void Game::handleInput()
         }
 
     } // End while
+
     // If the user is configuring the keys then don't respond.
     if (!keyboard.isEnabled())
-    {
-       return;
-    }
+        return;
+
     // Moving player around
     if (player_node->mAction != Being::DEAD &&
         current_npc == 0 &&
@@ -841,8 +863,8 @@ void Game::handleInput()
         if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST)
                 || (joystick && joystick->buttonPressed(3)))
         {
-            Being *target =
-                beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
+            Being *target = beingManager->findNearestLivingBeing(
+                    x, y, 20, Being::MONSTER);
 
             if (target)
             {
