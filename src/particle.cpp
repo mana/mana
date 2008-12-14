@@ -247,11 +247,7 @@ void Particle::moveBy(Vector change)
 
 void Particle::moveTo(float x, float y)
 {
-    Vector pos;
-    pos.x = x;
-    pos.y = y;
-    pos.z = mPos.z;
-    moveTo(pos);
+    moveTo(Vector(x, y, mPos.z));
 }
 
 Particle* Particle::addEffect(const std::string &particleEffectFile,
@@ -302,15 +298,12 @@ Particle* Particle::addEffect(const std::string &particleEffectFile,
         float offsetX = XML::getFloatProperty(effectChildNode, "position-x", 0);
         float offsetY = XML::getFloatProperty(effectChildNode, "position-y", 0);
         float offsetZ = XML::getFloatProperty(effectChildNode, "position-z", 0);
-
-        Vector position;
-        position.x = mPos.x + (float)pixelX + offsetX;
-        position.y = mPos.y + (float)pixelY + offsetY;
-        position.z = mPos.z + offsetZ;
+        Vector position (mPos.x + (float)pixelX + offsetX,
+                         mPos.y + (float)pixelY + offsetY,
+                         mPos.z + offsetZ);
+        newParticle->moveTo(position);
 
         int lifetime = XML::getProperty(effectChildNode, "lifetime", -1);
-
-        newParticle->moveTo(position);
         newParticle->setLifetime(lifetime);
 
         // Look for additional emitters for this particle
