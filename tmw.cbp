@@ -66,7 +66,7 @@
 			<Add alias="All" targets="default;" />
 		</VirtualTargets>
 		<Compiler>
-			<Add directory="D:\tmw\client-eAthena\src\" />
+			<Add directory="src\" />
 		</Compiler>
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
