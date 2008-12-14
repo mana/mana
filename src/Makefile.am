@@ -88,8 +88,6 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/minimap.h \
 	      gui/ministatus.cpp \
 	      gui/ministatus.h \
-	      gui/newskill.cpp \
-	      gui/newskill.h \
 	      gui/npclistdialog.cpp \
 	      gui/npclistdialog.h \
 	      gui/npcpostdialog.cpp \
