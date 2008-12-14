@@ -22,9 +22,9 @@ Every Win32 releaser should follow this checklist when creating a new package.
       <configuration>
         <option name="chatlog" value="chatlog.txt"/>
         <option name="guialpha" value="0.8"/>
-        <option name="host" value="209.168.213.109"/>
+        <option name="host" value="www.aethyra.org"/>
         <option name="hwaccel" value="0"/>
-        <option name="port" value="6901"/>
+        <option name="port" value="21001"/>
         <option name="remember" value="0"/>
         <option name="screen" value="0"/>
         <option name="sfxVolume" value="100"/>

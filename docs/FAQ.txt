@@ -9,7 +9,7 @@ A: The fastest way is to come on our IRC channel. There you can find a lot of
    nice people that will help you until you solve your problem. Server:
    irc.freenode.net Channel: #aethyra.
    If you don't like IRC just come to our forums:
-   http://forums.aethyra.com/ . Ok, do you think forums are evil?
+   http://www.aethyra.org/ . Ok, do you think forums are evil?
    Don't worry, send me an e-mail at blame582@gmail.com and you're done.
    That's not enough? No, I won't give you my phone number! ;P
    
@@ -60,7 +60,7 @@ DEVELOPMENT
 Q: When will the next version be released?
 
 A: We have scheduled releases. Usually a new release is available every month.
-   Check http://www.aethyra.com/ for further info.
+   Check http://www.aethyra.org/ for further info.
 
 
 Q: How can I contribute?

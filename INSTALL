@@ -1,7 +1,7 @@
 How to compile and run Aethyra on your GNU/Linux Box
 ================================================
 
-Homepage:  http://www.aethyra.com/
+Homepage:  http://www.aethyra.org/
 IRC:       irc.freenode.net / #aethyra
 
 1) Requirements
@@ -69,7 +69,7 @@ pass a different prefix to configure as usual.
 	4.) su -c "make install"
 
 	you can get help from A.) IRC channel  irc.freenode.net #aedev or #aethyra
-			      B.) http://forum.aethyra.com
+			      B.) http://www.aethyra.org/forums/
 	Make sure you record the output from the konsole window
 
   NOTE: It is possible to compile Aethyra without support for OpenGL rendering.

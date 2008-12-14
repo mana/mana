@@ -1,5 +1,5 @@
 -------------------------------
-THE MANA WORLD INVENTORY SYSTEM
+   AETHYRA INVENTORY SYSTEM
 -------------------------------
 
 1. INTRODUCTION
