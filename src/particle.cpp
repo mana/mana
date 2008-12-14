@@ -230,7 +230,7 @@ bool Particle::update()
     return true;
 }
 
-void Particle::moveBy(Vector change)
+void Particle::moveBy(const Vector &change)
 {
     mPos += change;
     for (ParticleIterator p = mChildParticles.begin();
@@ -242,7 +242,6 @@ void Particle::moveBy(Vector change)
             (*p)->moveBy(change);
         }
     }
-    return;
 }
 
 void Particle::moveTo(float x, float y)

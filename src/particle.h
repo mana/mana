@@ -101,7 +101,7 @@ class Particle : public Sprite
          * Creates a child particle that hosts some emitters described in the
          * particleEffectFile.
          */
-        Particle* addEffect(const std::string &particleEffectFile,
+        Particle *addEffect(const std::string &particleEffectFile,
                             int pixelX, int pixelY, int rotation = 0);
 
         /**
@@ -127,7 +127,7 @@ class Particle : public Sprite
         /**
          * Sets the position in 3 dimensional space in pixels relative to map.
          */
-        void moveTo(Vector pos)
+        void moveTo(const Vector &pos)
         { moveBy (pos - mPos);}
 
         /**
@@ -144,7 +144,7 @@ class Particle : public Sprite
         /**
          * Changes the particle position relative
          */
-        void moveBy (Vector change);
+        void moveBy (const Vector &change);
 
         /**
          * Sets the time in game ticks until the particle is destroyed.
@@ -286,7 +286,7 @@ class Particle : public Sprite
 
         // follow-point particles
         Particle *mTarget;          /**< The particle that attracts this particle*/
-        float mAcceleration;        /**< Acceleration towards the target particle in pixels per game-tickï¿½*/
+        float mAcceleration;        /**< Acceleration towards the target particle in pixels per game-tick²*/
         float mInvDieDistance;      /**< Distance in pixels from the target particle that causes the destruction of the particle*/
         float mMomentum;            /**< How much speed the particle retains after each game tick*/
 };
