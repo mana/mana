@@ -51,7 +51,6 @@ static const int boxPosition[][2] = {
 };
 
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
-
     Window(_("Equipment")),
     mEquipment(equipment),
     mBackground(NULL),
