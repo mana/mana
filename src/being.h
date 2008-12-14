@@ -153,28 +153,25 @@ class Being : public Sprite
          *
          * @param amount The amount of damage.
          */
-        virtual void
-        takeDamage(int amount);
+        virtual void takeDamage(int amount);
 
         /**
          * Handles an attack of another being by this being.
          */
-        virtual void
-        handleAttack();
+        virtual void handleAttack();
 
         /**
          * Returns the name of the being.
          */
-        const std::string&
-        getName() const { return mName; }
+        const std::string &getName() const
+        { return mName; }
 
         /**
          * Sets the name for the being.
          *
          * @param name The name that should appear.
          */
-        void
-        setName(const std::string &name) { mName = name; }
+        void setName(const std::string &name) { mName = name; }
 
         /**
          * Sets the gender for this being.
@@ -206,32 +203,28 @@ class Being : public Sprite
         /**
          * Sets visible equipments for this being.
          */
-        virtual void
-        setSprite(int slot, int id, const std::string &color = "");
+        virtual void setSprite(int slot, int id,
+                               const std::string &color = "");
 
         /**
          * Performs being logic.
          */
-        virtual void
-        logic();
+        virtual void logic();
 
         /**
          * Draws the speech text above the being.
          */
-        void
-        drawSpeech(Graphics* graphics, int offsetX, int offsetY);
+        void drawSpeech(Graphics* graphics, int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.
          */
-        void
-        drawEmotion(Graphics *graphics, int offsetX, int offsetY);
+        void drawEmotion(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Draws the name text below the being.
          */
-        virtual void
-        drawName(Graphics *, int, int) {};
+        virtual void drawName(Graphics *, int, int) {};
 
         /**
          * Returns the type of the being.
@@ -252,14 +245,12 @@ class Being : public Sprite
         /**
          * Gets the being id.
          */
-        Uint16
-        getId() const { return mId; }
+        Uint16 getId() const { return mId; }
 
         /**
          * Sets the sprite id.
          */
-        void
-        setId(Uint16 id) { mId = id; }
+        void setId(Uint16 id) { mId = id; }
 
         /**
          * Sets the map the being is on
@@ -269,8 +260,7 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        virtual void
-        setAction(Action action, int attackType = 0);
+        virtual void setAction(Action action, int attackType = 0);
 
         /**
          * Gets the current action.

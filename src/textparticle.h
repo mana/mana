@@ -37,11 +37,11 @@ class TextParticle : public Particle
         TextParticle(Map *map, const std::string &text,
                      int colorR, int colorG, int colorB,
                      gcn::Font *font);
+
         /**
          * Draws the particle image.
          */
-        virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) const;
+        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         // hack to improve text visibility
         virtual int getPixelY() const

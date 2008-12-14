@@ -67,22 +67,19 @@ class Particle : public Sprite
         /**
          * Deletes all child particles and emitters.
          */
-        void
-        clear();
+        void clear();
 
         /**
          * Gives a particle the properties of an engine root particle and loads
          * the particle-related config settings.
          */
-        void
-        setupEngine();
+        void setupEngine();
 
         /**
          * Updates particle position, returns false when the particle should
          * be deleted.
          */
-        virtual bool
-        update();
+        virtual bool update();
 
         /**
          * Draws the particle image.
@@ -92,8 +89,7 @@ class Particle : public Sprite
         /**
          * Necessary for sorting with the other sprites.
          */
-        virtual int
-        getPixelY() const
+        virtual int getPixelY() const
         { return (int) (mPos.y + mPos.z) - 64; }
 
         /**
@@ -105,46 +101,40 @@ class Particle : public Sprite
          * Creates a child particle that hosts some emitters described in the
          * particleEffectFile.
          */
-        Particle*
-        addEffect(const std::string &particleEffectFile,
-                  int pixelX, int pixelY, int rotation = 0);
+        Particle *addEffect(const std::string &particleEffectFile,
+                            int pixelX, int pixelY, int rotation = 0);
 
         /**
          * Creates a standalone text particle.
          */
-        Particle*
-        addTextSplashEffect(const std::string &text,
-                            int colorR, int colorG, int colorB,
-                            gcn::Font *font, int x, int y);
+        Particle *addTextSplashEffect(const std::string &text,
+                                      int colorR, int colorG, int colorB,
+                                      gcn::Font *font, int x, int y);
 
         /**
          * Creates a standalone text particle.
          */
-        Particle*
-        addTextRiseFadeOutEffect(const std::string &text,
-                                 int colorR, int colorG, int colorB,
-                                 gcn::Font *font,
-                                 int x, int y);
+        Particle *addTextRiseFadeOutEffect(const std::string &text,
+                                           int colorR, int colorG, int colorB,
+                                           gcn::Font *font,
+                                           int x, int y);
 
         /**
          * Adds an emitter to the particle.
          */
-        void
-        addEmitter (ParticleEmitter* emitter)
+        void addEmitter (ParticleEmitter* emitter)
         { mChildEmitters.push_back(emitter); }
 
         /**
          * Sets the position in 3 dimensional space in pixels relative to map.
          */
-        void
-        setPosition(float x, float y, float z)
+        void setPosition(float x, float y, float z)
         { mPos.x = x; mPos.y = y; mPos.z = z; }
 
         /**
          * Sets the position in 2 dimensional space in pixels relative to map.
          */
-        void
-        setPosition(float x, float y)
+        void setPosition(float x, float y)
         { mPos.x = x; mPos.y = y; }
 
         /**
@@ -156,53 +146,45 @@ class Particle : public Sprite
         /**
          * Changes the particle position relative
          */
-        void
-        moveBy(float x, float y, float z)
+        void moveBy(float x, float y, float z)
         { mPos.x += x; mPos.y += y; mPos.z += z; }
 
-        void
-        moveChildren(Vector change);
+        void moveChildren(Vector change);
 
-        void
-        moveBy (Vector change)
+        void moveBy (Vector change)
         { mPos += change; }
 
         /**
          * Sets the time in game ticks until the particle is destroyed.
          */
-        void
-        setLifetime(int lifetime)
+        void setLifetime(int lifetime)
         { mLifetimeLeft = lifetime; mLifetimePast = 0; }
 
         /**
          * Sets the age of the pixel in game ticks where the particle has
          * faded in completely.
          */
-        void
-        setFadeOut(int fadeOut)
+        void setFadeOut(int fadeOut)
         { mFadeOut = fadeOut; }
 
         /**
          * Sets the remaining particle lifetime where the particle starts to
          * fade out.
          */
-        void
-        setFadeIn(int fadeIn)
+        void setFadeIn(int fadeIn)
         { mFadeIn = fadeIn; }
 
         /**
          * Sets the alpha value of the particle
          */
-        void
-        setAlpha(float alpha)
+        void setAlpha(float alpha)
         { mAlpha = alpha; }
 
         /**
          * Sets the sprite iterator of the particle on the current map to make
          * it easier to remove the particle from the map when it is destroyed.
          */
-        void
-        setSpriteIterator(std::list<Sprite*>::iterator spriteIterator)
+        void setSpriteIterator(std::list<Sprite*>::iterator spriteIterator)
         { mSpriteIterator = spriteIterator; }
 
         /**
@@ -215,44 +197,38 @@ class Particle : public Sprite
         /**
          * Sets the current velocity in 3 dimensional space.
          */
-        void
-        setVelocity(float x, float y, float z)
+        void setVelocity(float x, float y, float z)
         { mVelocity.x = x; mVelocity.y = y; mVelocity.z = z; }
 
         /**
          * Sets the downward acceleration.
          */
-        void
-        setGravity(float gravity)
+        void setGravity(float gravity)
         { mGravity = gravity; }
 
         /**
          * Sets the ammount of random vector changes
          */
-        void
-        setRandomness(int r)
+        void setRandomness(int r)
         { mRandomness = r; }
 
         /**
          * Sets the ammount of velocity particles retain after
          * hitting the ground.
          */
-        void
-        setBounce(float bouncieness)
+        void setBounce(float bouncieness)
         { mBounce = bouncieness; }
 
         /**
          * Sets the flag if the particle is supposed to be moved by its parent
          */
-        void
-        setFollow(bool follow)
+        void setFollow(bool follow)
         { mFollow = follow; }
 
         /**
          * Gets the flag if the particle is supposed to be moved by its parent
          */
-        bool
-        doesFollow()
+        bool doesFollow()
         { return mFollow; }
 
         /**
