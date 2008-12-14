@@ -243,7 +243,6 @@ void Particle::moveBy(Vector change)
             (*p)->moveBy(change);
         }
     }
-    return;
 }
 
 void Particle::moveTo(float x, float y)
