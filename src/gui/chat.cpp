@@ -91,8 +91,7 @@ void ChatWindow::widgetResized(const gcn::Event &event)
             mChatInput->getHeight() - 5);
 }
 
-void
-ChatWindow::chatLog(std::string line, int own)
+void ChatWindow::chatLog(std::string line, int own)
 {
     // Trim whitespace
     trim(line);
@@ -182,14 +181,12 @@ ChatWindow::chatLog(std::string line, int own)
     }
 }
 
-void
-ChatWindow::chatLog(CHATSKILL act)
+void ChatWindow::chatLog(CHATSKILL act)
 {
     chatLog(const_msg(act), BY_SERVER);
 }
 
-void
-ChatWindow::action(const gcn::ActionEvent &event)
+void ChatWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "chatinput")
     {
@@ -222,8 +219,7 @@ ChatWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-ChatWindow::requestChatFocus()
+void ChatWindow::requestChatFocus()
 {
     // Make sure chatWindow is visible
     if (!isVisible())
@@ -243,14 +239,13 @@ ChatWindow::requestChatFocus()
     mChatInput->requestFocus();
 }
 
-bool
-ChatWindow::isInputFocused()
+bool ChatWindow::isInputFocused()
 {
     return mChatInput->isFocused();
 }
 
-void
-ChatWindow::whisper(const std::string &nick, std::string msg, int prefixlen)
+void ChatWindow::whisper(const std::string &nick, std::string msg,
+                         int prefixlen)
 {
     std::string recvnick = "";
     msg.erase(0, prefixlen + 1);
@@ -281,8 +276,7 @@ ChatWindow::whisper(const std::string &nick, std::string msg, int prefixlen)
     chatLog("Whispering to " + recvnick + " : " + msg, BY_PLAYER);
 }
 
-void
-ChatWindow::chatSend(const std::string &nick, std::string msg)
+void ChatWindow::chatSend(const std::string &nick, std::string msg)
 {
     /* Some messages are managed client side, while others
      * require server handling by proper packet. Probably
@@ -354,8 +348,7 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
 }
 
-std::string
-ChatWindow::const_msg(CHATSKILL act)
+std::string ChatWindow::const_msg(CHATSKILL act)
 {
     std::string msg;
     if (act.success == SKILL_FAILED && act.skill == SKILL_BASIC) {
@@ -432,8 +425,7 @@ ChatWindow::const_msg(CHATSKILL act)
     return msg;
 }
 
-void
-ChatWindow::scroll(int amount)
+void ChatWindow::scroll(int amount)
 {
     if (!isVisible())
         return;
@@ -445,8 +437,7 @@ ChatWindow::scroll(int amount)
     mTextOutput->showPart(scr);
 }
 
-void
-ChatWindow::keyPressed(gcn::KeyEvent &event)
+void ChatWindow::keyPressed(gcn::KeyEvent &event)
 {
     if (event.getKey().getValue() == gcn::Key::DOWN &&
             mCurHist != mHistory.end())
@@ -471,15 +462,13 @@ ChatWindow::keyPressed(gcn::KeyEvent &event)
     }
 }
 
-void
-ChatWindow::setInputText(std::string input_str)
+void ChatWindow::setInputText(std::string input_str)
 {
      mChatInput->setText(input_str + " ");
      requestChatFocus();
 }
 
-void
-ChatWindow::setVisible(bool isVisible)
+void ChatWindow::setVisible(bool isVisible)
 {
     Window::setVisible(isVisible);
 

@@ -183,20 +183,16 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * // for simple message by a user /- message
          * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
          */
-        void
-        chatSend(const std::string &nick, std::string msg);
+        void chatSend(const std::string &nick, std::string msg);
 
         /** Called when key is pressed */
-        void
-        keyPressed(gcn::KeyEvent &event);
+        void keyPressed(gcn::KeyEvent &event);
 
         /** Called to set current text */
-        void
-        setInputText(std::string input_str);
+        void setInputText(std::string input_str);
 
         /** Override to reset mTmpVisible */
-        void
-        setVisible(bool visible);
+        void setVisible(bool visible);
 
        /**
         * Scrolls the chat window
@@ -205,8 +201,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         * up, positive numbers scroll down.  The absolute amount indicates the
         * amount of 1/8ths of chat window real estate that should be scrolled.
         */
-        void
-        scroll(int amount);
+        void scroll(int amount);
 
         /**
          * help implements the /help command
@@ -214,15 +209,13 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * @param msg1 is the command that the player needs help on
          * @param msg2 is the sub-command relating to the command
          */
-        void
-        help(const std::string &msg1, const std::string &msg2);
+        void help(const std::string &msg1, const std::string &msg2);
 
     private:
         Network *mNetwork;
         bool mTmpVisible;
 
-        void
-        whisper(const std::string &nick, std::string msg, int prefixlen);
+        void whisper(const std::string &nick, std::string msg, int prefixlen);
 
         /** One item in the chat log */
         struct CHATLOG
