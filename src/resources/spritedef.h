@@ -81,7 +81,7 @@ class SpriteDef : public Resource
         /**
          * Loads a sprite definition file.
          */
-        static SpriteDef *load(std::string const &file, int variant);
+        static SpriteDef *load(const std::string &file, int variant);
 
         /**
          * Returns the specified action.
@@ -91,8 +91,7 @@ class SpriteDef : public Resource
         /**
          * Converts a string into a SpriteAction enum.
          */
-        static SpriteAction
-        makeSpriteAction(const std::string &action);
+        static SpriteAction makeSpriteAction(const std::string &action);
 
     private:
         /**
@@ -114,27 +113,24 @@ class SpriteDef : public Resource
         /**
          * Loads an imageset element.
          */
-        void loadImageSet(xmlNodePtr node, std::string const &palettes);
+        void loadImageSet(xmlNodePtr node, const std::string &palettes);
 
         /**
          * Loads an action element.
          */
-        void
-        loadAction(xmlNodePtr node, int variant_offset);
+        void loadAction(xmlNodePtr node, int variant_offset);
 
         /**
          * Loads an animation element.
          */
-        void
-        loadAnimation(xmlNodePtr animationNode,
-                      Action *action, ImageSet *imageSet,
-                      int variant_offset);
+        void loadAnimation(xmlNodePtr animationNode,
+                           Action *action, ImageSet *imageSet,
+                           int variant_offset);
 
         /**
          * Include another sprite into this one.
          */
-        void
-        includeSprite(xmlNodePtr includeNode);
+        void includeSprite(xmlNodePtr includeNode);
 
         /**
          * Complete missing actions by copying existing ones.
@@ -145,8 +141,7 @@ class SpriteDef : public Resource
          * When there are no animations defined for the action "complete", its
          * animations become a copy of those of the action "with".
          */
-        void
-        substituteAction(SpriteAction complete, SpriteAction with);
+        void substituteAction(SpriteAction complete, SpriteAction with);
 
         /**
          * Converts a string into a SpriteDirection enum.

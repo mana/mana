@@ -198,7 +198,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Don't forget to set these default values and resizable before
          * calling this function.
          */
-        void loadWindowState(std::string const &);
+        void loadWindowState(const std::string &);
 
         /**
          * Set the default win pos and size.

@@ -76,7 +76,7 @@ std::string NpcListDialog::getElementAt(int i)
     return mItems[i];
 }
 
-void NpcListDialog::addItem(std::string const &item)
+void NpcListDialog::addItem(const std::string &item)
 {
     mItems.push_back(item);
 }

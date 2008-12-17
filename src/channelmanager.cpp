@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <list>
-
 #include "channelmanager.h"
 #include "channel.h"
 
@@ -28,7 +26,6 @@
 
 ChannelManager::ChannelManager()
 {
-
 }
 
 ChannelManager::~ChannelManager()
@@ -37,39 +34,43 @@ ChannelManager::~ChannelManager()
     mChannels.clear();
 }
 
-Channel* ChannelManager::findById(int id)
+Channel *ChannelManager::findById(int id) const
 {
-    Channel* channel;
-    for(std::list<Channel*>::iterator itr = mChannels.begin();
-        itr != mChannels.end();
-        itr++)
+    Channel *channel = 0;
+    for (std::list<Channel*>::const_iterator itr = mChannels.begin(),
+                                             end = mChannels.end();
+         itr != end;
+         itr++)
     {
-        channel = (*itr);
-        if(channel->getId() == id)
+        Channel *c = (*itr);
+        if (channel->getId() == id)
         {
-            return channel;
+            channel = c;
+            break;
         }
     }
-    return NULL;
+    return channel;
 }
 
-Channel *ChannelManager::findByName(std::string const &name)
+Channel *ChannelManager::findByName(const std::string &name) const
 {
-    Channel* channel;
-    if(name != "")
+    Channel *channel = 0;
+    if (!name.empty())
     {
-        for(std::list<Channel*>::iterator itr = mChannels.begin();
-            itr != mChannels.end();
-            itr++)
+        for (std::list<Channel*>::const_iterator itr = mChannels.begin(),
+                                                 end = mChannels.end();
+             itr != end;
+             itr++)
         {
-            channel = (*itr);
-            if(channel->getName() == name)
+            Channel *c = (*itr);
+            if (c->getName() == name)
             {
-                return channel;
+                channel = c;
+                break;
             }
         }
     }
-    return NULL;
+    return channel;
 }
 
 void ChannelManager::addChannel(Channel *channel)

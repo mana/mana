@@ -73,7 +73,7 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         /**
          * Adds an item to the option list.
          */
-        void addItem(std::string const &);
+        void addItem(const std::string &);
 
         /**
          * Resets the list by removing all items.

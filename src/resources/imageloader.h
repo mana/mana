@@ -61,7 +61,8 @@ class ProxyImage : public gcn::Image
 class ImageLoader : public gcn::ImageLoader
 {
     public:
-        gcn::Image *load(std::string const &filename, bool convertToDisplayFormat);
+        gcn::Image *load(const std::string &filename,
+                         bool convertToDisplayFormat);
 };
 
 #endif

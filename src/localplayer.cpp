@@ -353,10 +353,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 
 void LocalPlayer::setWalkingDir(int dir)
 {
-    if (mWalkingDir != dir)
-    {
-        mWalkingDir = dir;
-    }
+    mWalkingDir = dir;
 
     // If we're not already walking, start walking.
     if (mAction != WALK && dir
@@ -368,7 +365,7 @@ void LocalPlayer::setWalkingDir(int dir)
 
 void LocalPlayer::stopWalking(bool sendToServer)
 {
-    if(mAction == WALK && mWalkingDir){
+    if (mAction == WALK && mWalkingDir) {
         mWalkingDir = 0;
         mLocalWalkTime = 0;
         Being::setDestination(getPosition().x,getPosition().y);

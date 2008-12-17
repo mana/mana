@@ -130,14 +130,14 @@ class Being : public Sprite
         const Vector &getDestination() const { return mDest; }
 
         /**
-         * Adjusts course to expected stat point.
+         * Adjusts course to expected start point.
          */
-        void adjustCourse(int, int);
+        void adjustCourse(int srcX, int srcY);
 
         /**
          * Adjusts course to expected start and end points.
          */
-        void adjustCourse(int, int, int, int);
+        void adjustCourse(int srcX, int srcY, int destX, int destY);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -298,7 +298,8 @@ class Being : public Sprite
         int getPixelY() const { return (int) mPos.y; }
 
         /**
-         * Sets the position of this being.
+         * Sets the position of this being. When the being was walking, it also
+         * clears the destination and the path.
          */
         void setPosition(const Vector &pos);
 

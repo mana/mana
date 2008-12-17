@@ -98,7 +98,8 @@ class ResourceManager
         bool isDirectory(const std::string &path);
 
         /**
-         * Returns the real path to a file
+         * Returns the real path to a file. Note that this method will always
+         * return a path, it does not check whether the file exists.
          * 
          * @param file The file to get the real path to.
          * @return The real path.
@@ -114,7 +115,7 @@ class ResourceManager
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be generated.
          */
-        Resource *get(std::string const &idPath, generator fun, void *data);
+        Resource *get(const std::string &idPath, generator fun, void *data);
 
         /**
          * Loads a resource from a file and adds it to the resource map.
@@ -124,7 +125,7 @@ class ResourceManager
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be loaded.
          */
-        Resource *load(std::string const &path, loader fun);
+        Resource *load(const std::string &path, loader fun);
 
         /**
          * Convenience wrapper around ResourceManager::get for loading
@@ -154,7 +155,7 @@ class ResourceManager
          * Creates a sprite definition based on a given path and the supplied
          * variant.
          */
-        SpriteDef *getSprite(std::string const &path, int variant = 0);
+        SpriteDef *getSprite(const std::string &path, int variant = 0);
 
         /**
          * Releases a resource, placing it in the set of orphaned resources.

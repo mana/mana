@@ -33,23 +33,17 @@ Avatar::Avatar(const std::string &name):
     mLabel = new gcn::Label(name);
     mLabel->setSize(85, 12);
     mLabel->setPosition(25, 0);
-    mStatusOffline = ResourceManager::getInstance()->getImage("graphics/gui/circle-gray.png");
-    mStatusOnline = ResourceManager::getInstance()->getImage("graphics/gui/circle-green.png");
+    ResourceManager *resman = ResourceManager::getInstance();
+    mStatusOffline = resman->getImage("graphics/gui/circle-gray.png");
+    mStatusOnline = resman->getImage("graphics/gui/circle-green.png");
     mStatus = new Icon(mStatusOffline);
     mStatus->setSize(25, 12);
     mStatus->setPosition(0, 0);
 }
 
-void Avatar::setOnline(bool status)
+void Avatar::setOnline(bool online)
 {
-    if (status)
-    {
-        mStatus->setImage(mStatusOnline);
-    }
-    else
-    {
-        mStatus->setImage(mStatusOffline);
-    }
+    mStatus->setImage(online ? mStatusOnline : mStatusOffline);
 }
 
 void Avatar::draw(gcn::Graphics *g)

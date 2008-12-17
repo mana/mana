@@ -122,6 +122,7 @@ void Being::setPosition(const Vector &pos)
 {
     mPos = pos;
     mDest = pos;
+    mPath.clear();
 }
 
 void Being::adjustCourse(int srcX, int srcY, int dstX, int dstY)
