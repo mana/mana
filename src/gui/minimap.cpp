@@ -34,8 +34,9 @@ Minimap::Minimap():
     Window(_("MiniMap")),
     mMapImage(NULL)
 {
-    setDefaultSize(0, 0, 100, 100);
-    loadWindowState("MiniMap");
+    setWindowName("MiniMap");
+    setDefaultSize(5, 25, 100, 100);
+    loadWindowState();
     // LEEOR: The Window class needs to modified to accept
     // setAlignment calls.
     setAlignment(gcn::Graphics::CENTER);

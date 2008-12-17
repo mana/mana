@@ -43,6 +43,7 @@
 SkillDialog::SkillDialog():
     Window(_("Skills"))
 {
+    setWindowName("Skills");
     setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
 
@@ -69,7 +70,7 @@ SkillDialog::SkillDialog():
     update();
 
     setLocationRelativeTo(getParent());
-    loadWindowState(_("Skills"));
+    loadWindowState();
 }
 
 SkillDialog::~SkillDialog()

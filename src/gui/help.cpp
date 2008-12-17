@@ -31,6 +31,7 @@ HelpWindow::HelpWindow():
     Window("Help")
 {
     setContentSize(455, 350);
+    setWindowName("Help");
 
     mBrowserBox = new BrowserBox();
     mBrowserBox->setOpaque(false);

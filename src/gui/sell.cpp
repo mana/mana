@@ -44,6 +44,7 @@ SellDialog::SellDialog():
     Window(_("Sell")),
     mMaxItems(0), mAmountItems(0)
 {
+    setWindowName("Sell");
     setResizable(true);
     setMinWidth(260);
     setMinHeight(230);
@@ -90,7 +91,7 @@ SellDialog::SellDialog():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    loadWindowState("Sell");
+    loadWindowState();
     setLocationRelativeTo(getParent());
 }
 

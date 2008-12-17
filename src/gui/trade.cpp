@@ -53,6 +53,7 @@ TradeWindow::TradeWindow():
     mPartnerInventory(new Inventory),
     mStatus(PREPARING)
 {
+    setWindowName("Trade");
     setResizable(true);
     setDefaultSize(115, 197, 332, 209);
 
@@ -102,7 +103,7 @@ TradeWindow::TradeWindow():
     layout.setColWidth(0, Layout::AUTO_SET);
     layout.setColWidth(1, Layout::AUTO_SET);
 
-    loadWindowState("Trade");
+    loadWindowState();
 }
 
 TradeWindow::~TradeWindow()

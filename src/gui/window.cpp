@@ -129,7 +129,7 @@ Window::~Window()
 {
     logger->log("UNLOAD: Window::~Window(\"%s\")", getCaption().c_str());
 
-    const std::string &name = mConfigName;
+    const std::string &name = mWindowName;
     if (!name.empty())
     {
         // Saving X, Y and Width and Height for resizables in the config
@@ -466,9 +466,10 @@ void Window::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void Window::loadWindowState(const std::string &name)
+void Window::loadWindowState()
 {
-    mConfigName = name;
+    const std::string &name = mWindowName;
+    assert(!name.empty());
 
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
                 (int) config.getValue(name + "WinY", mDefaultY));

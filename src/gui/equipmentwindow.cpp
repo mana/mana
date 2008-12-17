@@ -56,9 +56,10 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     mBackground(NULL),
     mSelected(-1)
 {
+    setWindowName("Equipment");
     setCloseButton(true);
     setDefaultSize(5, 195, 216, 260);
-    loadWindowState("Equipment");
+    loadWindowState();
 
     mUnequip = new Button(_("Unequip"), "unequip", this);
     gcn::Rectangle const &area = getChildrenArea();

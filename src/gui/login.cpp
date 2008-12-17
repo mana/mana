@@ -71,12 +71,9 @@ LoginDialog::LoginDialog(LoginData *loginData) : Window(_("Login")), mLoginData(
     setLocationRelativeTo(getParent());
     setVisible(true);
 
-    if (mUserField->getText().empty())
-    {
+    if (mUserField->getText().empty()) {
         mUserField->requestFocus();
-    }
-    else
-    {
+    } else {
         mPassField->requestFocus();
     }
 

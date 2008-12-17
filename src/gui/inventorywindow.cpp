@@ -53,6 +53,7 @@ InventoryWindow::InventoryWindow():
     Window(_("Inventory")),
     mSplit(false)
 {
+    setWindowName("Inventory");
     setResizable(false);
     setCloseButton(true);
     // LEEOR/TODO: Since this window is not resizable, do we really need to set these
@@ -82,7 +83,7 @@ InventoryWindow::InventoryWindow():
     layout.setColWidth(2, 48);
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    loadWindowState("Inventory");
+    loadWindowState();
 }
 
 void InventoryWindow::logic()

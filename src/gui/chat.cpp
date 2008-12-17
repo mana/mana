@@ -52,6 +52,7 @@ ChatWindow::ChatWindow():
     Window("Chat"),
     mTmpVisible(false)
 {
+    setWindowName("Chat");
     setResizable(true);
     setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
     setOpaque(false);
@@ -88,7 +89,7 @@ ChatWindow::ChatWindow():
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
 
-    loadWindowState("Chat");
+    loadWindowState();
 }
 
 ChatWindow::~ChatWindow()

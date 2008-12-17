@@ -35,6 +35,7 @@
 MagicDialog::MagicDialog():
     Window(_("Magic"))
 {
+    setWindowName("Magic");
     setCloseButton(true);
     setDefaultSize(255, 30, 175, 225);
 
@@ -53,7 +54,7 @@ MagicDialog::MagicDialog():
     update();
 
     setLocationRelativeTo(getParent());
-    loadWindowState(_("Magic"));
+    loadWindowState();
 }
 
 MagicDialog::~MagicDialog()
