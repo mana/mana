@@ -135,6 +135,7 @@ Window::~Window()
         // Saving X, Y and Width and Height for resizables in the config
         config.setValue(name + "WinX", getX());
         config.setValue(name + "WinY", getY());
+        config.setValue(name + "Visible", isVisible());
 
         if (mGrip)
         {
@@ -473,6 +474,7 @@ void Window::loadWindowState()
 
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
                 (int) config.getValue(name + "WinY", mDefaultY));
+    setVisible((bool) config.getValue(name + "Visible", false));
 
     if (mGrip)
     {
