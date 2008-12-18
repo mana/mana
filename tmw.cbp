@@ -143,6 +143,8 @@
 		<Unit filename="src/gui/browserbox.h">
 			<Option target="default" />
 		</Unit>
+		<Unit filename="src/gui/buddywindow.cpp" />
+		<Unit filename="src/gui/buddywindow.h" />
 		<Unit filename="src/gui/button.cpp" />
 		<Unit filename="src/gui/button.h">
 			<Option target="default" />

@@ -34,10 +34,13 @@ BuddyWindow::BuddyWindow():
     Window(_("Buddy"))
 {
     setVisible(false);
-    setContentSize(124, 202);
+    setWindowName("Buddy Window");
     setCaption(_("Buddy List"));
     setResizable(true);
     setCloseButton(true);
+    setMinWidth(110);
+    setMinHeight(200);
+    setDefaultSize(124, 41, 288, 330);
 
     Image *addImg = ResourceManager::getInstance()->getImage("buddyadd.png");
     Image *delImg = ResourceManager::getInstance()->getImage("buddydel.png");
@@ -51,10 +54,15 @@ BuddyWindow::BuddyWindow():
         add(delBuddy);
     }
 
-    loadWindowState("Buddy");
+    loadWindowState();
 }
 
 void BuddyWindow::action(const gcn::ActionEvent &event)
 {
 
+}
+
+void BuddyWindow::draw(gcn::Graphics *graphics)
+{
+    Window::draw(graphics);
 }

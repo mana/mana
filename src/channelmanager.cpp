@@ -43,7 +43,7 @@ Channel *ChannelManager::findById(int id) const
          itr++)
     {
         Channel *c = (*itr);
-        if (channel->getId() == id)
+        if (c->getId() == id)
         {
             channel = c;
             break;

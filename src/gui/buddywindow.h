@@ -47,6 +47,12 @@ class BuddyWindow : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        /**
+         * Draws the window
+         */
+        void draw(gcn::Graphics *graphics);
+
+
     private:
         std::list<Avatar*> mBuddyList;
 };
