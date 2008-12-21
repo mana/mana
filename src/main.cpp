@@ -378,11 +378,11 @@ void init_engine(const Options &options)
     graphics = new Graphics();
 #endif
 
-    int width = (int) config.getValue("screenwidth", defaultScreenWidth);
-    int height = (int) config.getValue("screenheight", defaultScreenHeight);
-    int bpp = 0;
-    bool fullscreen = ((int) config.getValue("screen", 0) == 1);
-    bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
+    const int width = (int) config.getValue("screenwidth", defaultScreenWidth);
+    const int height = (int) config.getValue("screenheight", defaultScreenHeight);
+    const int bpp = 0;
+    const bool fullscreen = ((int) config.getValue("screen", 0) == 1);
+    const bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
 
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
@@ -759,15 +759,14 @@ int main(int argc, char *argv[])
                                                         defaultScreenHeight));
     std::string wallpaperName;
 
-    if (screenWidth <= 800)
-        wallpaperName = "graphics/images/login_wallpaper.png";
-    else if (screenWidth <= 1024)
+    wallpaperName = "graphics/images/login_wallpaper.png";
+    if (screenWidth == 1024)
         wallpaperName = "graphics/images/login_wallpaper_1024x768.png";
-    else if (screenWidth <= 1280)
+    else if (screenWidth == 1280)
         wallpaperName = "graphics/images/login_wallpaper_1280x960.png";
-    else if (screenWidth <= 1440)
+    else if (screenWidth == 1440)
         wallpaperName = "graphics/images/login_wallpaper_1440x1080.png";
-    else
+    else if (screenWidth >= 1600)
         wallpaperName = "graphics/images/login_wallpaper_1600x1200.png";
 
     login_wallpaper = ResourceManager::getInstance()-> getImage(wallpaperName);

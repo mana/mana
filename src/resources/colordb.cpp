@@ -84,8 +84,6 @@ void ColorDB::load()
 
             TMWHair ? mColors[id] = XML::getProperty(node, "value", "#FFFFFF") :
                       mColors[id] = XML::getProperty(node, "dye", "#FFFFFF");
-
-            logger->log("%d %s", id, mColors[id].c_str());
         }
     }
 

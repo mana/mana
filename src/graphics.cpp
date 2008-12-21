@@ -42,6 +42,8 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     logger->log("Setting video mode %dx%d %s",
             w, h, fs ? "fullscreen" : "windowed");
 
+    logger->log("Bits per pixel: %d", bpp);
+
     int displayFlags = SDL_ANYFORMAT;
 
     mFullscreen = fs;

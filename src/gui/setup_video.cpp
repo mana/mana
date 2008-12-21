@@ -136,7 +136,7 @@ Setup_Video::Setup_Video():
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     gcn::Label *alphaLabel = new gcn::Label("Gui opacity");
 
-    mModeList->setEnabled(false);
+    mModeList->setEnabled(true);
 #ifndef USE_OPENGL
     mOpenGLCheckBox->setEnabled(false);
 #endif
@@ -165,6 +165,7 @@ Setup_Video::Setup_Video():
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setSelected(mFps > 0);
 
+    mModeList->setActionEventId("videomode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
     mSpeechBubbleCheckBox->setActionEventId("speechbubble");
@@ -180,6 +181,7 @@ Setup_Video::Setup_Video():
     mParticleDetailSlider->setActionEventId("particledetailslider");
     mParticleDetailField->setActionEventId("particledetailfield");
 
+    mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
     mSpeechBubbleCheckBox->addActionListener(this);
@@ -391,7 +393,34 @@ void Setup_Video::cancel()
 
 void Setup_Video::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "guialpha")
+    if (event.getId() == "videomode")
+    {
+        const std::string mode = mModeListModel->getElementAt(mModeList->getSelected());
+        const int width = atoi(mode.substr(0, mode.find("x")).c_str());
+        const int height = atoi(mode.substr(mode.find("x") + 1).c_str());
+        const int bpp = 0;
+        const bool fullscreen = ((int) config.getValue("screen", 0) == 1);
+        const bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
+        // Try to set the desired video mode
+        if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
+        {
+            std::cerr << "Couldn't set "
+                      << width << "x" << height << "x" << bpp << " video mode: "
+                      << SDL_GetError() << std::endl;
+            exit(1);
+        }
+
+        // Initialize for drawing
+        graphics->_beginDraw();
+
+        // TODO: Find out why the drawing area doesn't resize without a restart.
+        new OkDialog("Screen resolution changed",
+                     "Restart your client for the change to take effect.");
+
+        config.setValue("screenwidth", width);
+        config.setValue("screenheight", height);
+    }
+    else if (event.getId() == "guialpha")
     {
         config.setValue("guialpha", mAlphaSlider->getValue());
     }
