@@ -760,11 +760,11 @@ int main(int argc, char *argv[])
     std::string wallpaperName;
 
     wallpaperName = "graphics/images/login_wallpaper.png";
-    if (screenWidth == 1024)
+    if (screenWidth >= 1024 && screenWidth < 1280)
         wallpaperName = "graphics/images/login_wallpaper_1024x768.png";
-    else if (screenWidth == 1280)
+    else if (screenWidth >= 1280 && screenWidth < 1440)
         wallpaperName = "graphics/images/login_wallpaper_1280x960.png";
-    else if (screenWidth == 1440)
+    else if (screenWidth >= 1440 && screenWidth < 1600)
         wallpaperName = "graphics/images/login_wallpaper_1440x1080.png";
     else if (screenWidth >= 1600)
         wallpaperName = "graphics/images/login_wallpaper_1600x1200.png";
