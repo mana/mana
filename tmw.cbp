@@ -67,7 +67,13 @@
 		</VirtualTargets>
 		<Compiler>
 			<Add directory="src\" />
+			<Add directory="include" />
+			<Add directory="include\libxml2" />
+			<Add directory="include\SDL" />
 		</Compiler>
+		<Linker>
+			<Add directory="lib" />
+		</Linker>
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
