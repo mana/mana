@@ -3,14 +3,14 @@ SetCompress off
 SetCompressor /SOLID lzma
 
 ;--- (and without !defines ) ---
-!System "%ProgramFiles%\upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d tmw.exe"
+!System "%ProgramFiles%\upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d aethyra.exe"
 
 ; HM NIS Edit helper defines
-!define PRODUCT_NAME "The Mana World"
-!define PRODUCT_VERSION "0.0.26"
-!define PRODUCT_PUBLISHER "The Mana World Development Team"
-!define PRODUCT_WEB_SITE "http://themanaworld.org"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\tmw.exe"
+!define PRODUCT_NAME "Aethyra"
+!define PRODUCT_VERSION "0.0.27"
+!define PRODUCT_PUBLISHER "Aethyra Development Team"
+!define PRODUCT_WEB_SITE "http://aethyra.org"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\aethyra.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
@@ -20,14 +20,14 @@ SetCompressor /SOLID lzma
 ; MUI Settings
 !define MUI_ABORTWARNING
 ;!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\win-install.ico"
-!define MUI_ICON "data\icons\tmw.ico"
+!define MUI_ICON "data\icons\aethyra.ico"
 ;!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\win-uninstall.ico"
-!define MUI_UNICON "data\icons\tmw.ico"
+!define MUI_UNICON "data\icons\aethyra.ico"
 
 ;Language Selection Dialog Settings
 ;Remember the installer language
 !define MUI_LANGDLL_REGISTRY_ROOT "HKCU"
-!define MUI_LANGDLL_REGISTRY_KEY "Software\The Mana World"
+!define MUI_LANGDLL_REGISTRY_KEY "Software\Aethyra"
 !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
 
 !define MUI_WELCOMEFINISHPAGE_BITMAP "setup_welcome.bmp"
@@ -45,16 +45,16 @@ SetCompressor /SOLID lzma
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
 !define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_RUN_FUNCTION RunTMW
+!define MUI_FINISHPAGE_RUN_FUNCTION Runaethyra
 !define MUI_FINISHPAGE_SHOWREADME 'notepad.exe "$\"$INSTDIR\README$\""'
 !define MUI_PAGE_CUSTOMFUNCTION_PRE changeFinishBmp
-!define MUI_FINISHPAGE_LINK "Visit TMW website for the latest news, FAQs and support"
-!define MUI_FINISHPAGE_LINK_LOCATION "http://themanaworld.org"
+!define MUI_FINISHPAGE_LINK "Visit the Aethyra website for the latest news, FAQs and support"
+!define MUI_FINISHPAGE_LINK_LOCATION "http://aethyra.org"
 !insertmacro MUI_PAGE_FINISH
 
-Function RunTMW
+Function Runaethyra
 SetOutPath $INSTDIR
-Exec "$INSTDIR\tmw.exe"
+Exec "$INSTDIR\aethyra.exe"
 FunctionEnd
 
 Function changeFinishBmp
@@ -126,8 +126,8 @@ ReserveFile "setup_finish.bmp"
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "tmw-${PRODUCT_VERSION}-win32.exe"
-InstallDir "$PROGRAMFILES\The Mana World"
+OutFile "aethyra-${PRODUCT_VERSION}-win32.exe"
+InstallDir "$PROGRAMFILES\Aethyra"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
@@ -142,9 +142,9 @@ Section "Core files (required)" SecCore
   SectionIn RO
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  CreateDirectory "$SMPROGRAMS\The Mana World"
-  CreateShortCut "$SMPROGRAMS\The Mana World\The Mana World.lnk" "$INSTDIR\tmw.exe"
-  CreateShortCut "$DESKTOP\The Mana World.lnk" "$INSTDIR\tmw.exe"
+  CreateDirectory "$SMPROGRAMS\Aethyra"
+  CreateShortCut "$SMPROGRAMS\Aethyra\Aethyra.lnk" "$INSTDIR\aethyra.exe"
+  CreateShortCut "$DESKTOP\Aethyra.lnk" "$INSTDIR\aethyra.exe"
   CreateDirectory "$INSTDIR\data"
   CreateDirectory "$INSTDIR\data\graphics"
   CreateDirectory "$INSTDIR\data\help"
@@ -162,7 +162,7 @@ Section "Core files (required)" SecCore
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
   
-  File "tmw.exe"
+  File "aethyra.exe"
   File "*.dll"
   File "AUTHORS"
   File "ChangeLog"
@@ -182,7 +182,7 @@ Section "Core files (required)" SecCore
   SetOutPath "$INSTDIR\data\help"
   File "data\help\*.txt"
   SetOutPath "$INSTDIR\data\icons\"
-  File "data\icons\tmw.ico"
+  File "data\icons\aethyra.ico"
   SetOutPath "$INSTDIR\data\music"
   File /nonfatal "data\music\*.ogg"
   SetOutPath "$INSTDIR\docs"
@@ -191,18 +191,18 @@ SectionEnd
 
 Section -AdditionalIcons
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
-  CreateShortCut "$SMPROGRAMS\The Mana World\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
-  CreateShortCut "$SMPROGRAMS\The Mana World\Readme.lnk" "notepad.exe" "$INSTDIR\README"
-  CreateShortCut "$SMPROGRAMS\The Mana World\FAQ.lnk" "$INSTDIR\docs\FAQ.txt"
-  CreateShortCut "$SMPROGRAMS\The Mana World\Uninstall.lnk" "$INSTDIR\uninst.exe"
+  CreateShortCut "$SMPROGRAMS\Aethyra\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
+  CreateShortCut "$SMPROGRAMS\Aethyra\Readme.lnk" "notepad.exe" "$INSTDIR\README"
+  CreateShortCut "$SMPROGRAMS\Aethyra\FAQ.lnk" "$INSTDIR\docs\FAQ.txt"
+  CreateShortCut "$SMPROGRAMS\Aethyra\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\tmw.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\aethyra.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\tmw.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\aethyra.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
@@ -213,18 +213,18 @@ Function un.onInit
 FunctionEnd
 
 Section Uninstall
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\The Mana World"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Aethyra"
 
   Delete "$INSTDIR\*.*"
 
-  Delete "$SMPROGRAMS\The Mana World\Uninstall.lnk"
-  Delete "$DESKTOP\The Mana World.lnk"
-  Delete "$SMPROGRAMS\The Mana World\The Mana World.lnk"
-  Delete "$SMPROGRAMS\The Mana World\Website.lnk"
-  Delete "$SMPROGRAMS\The Mana World\Readme.lnk"
-  Delete "$SMPROGRAMS\The Mana World\FAQ.lnk"
+  Delete "$SMPROGRAMS\Aethyra\Uninstall.lnk"
+  Delete "$DESKTOP\Aethyra.lnk"
+  Delete "$SMPROGRAMS\Aethyra\Aethyra.lnk"
+  Delete "$SMPROGRAMS\Aethyra\Website.lnk"
+  Delete "$SMPROGRAMS\Aethyra\Readme.lnk"
+  Delete "$SMPROGRAMS\Aethyra\FAQ.lnk"
 
-  RMDir "$SMPROGRAMS\The Mana World"
+  RMDir "$SMPROGRAMS\Aethyra"
   
   RMDir /r "$INSTDIR\data"
   RMDir /r "$INSTDIR\docs"

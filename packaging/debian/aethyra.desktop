@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Aethyra
+Comment=Aethyra is a 2D MMORPG using eAthena.
+Exec=aethyra
+StartupNotify=false
+Terminal=false
+Type=Game
+Icon=aethyra.png
+Categories=Game
