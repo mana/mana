@@ -88,6 +88,10 @@
 		<Unit filename="src\configlistener.h" />
 		<Unit filename="src\configuration.cpp" />
 		<Unit filename="src\configuration.h" />
+		<Unit filename="src\effectmanager.cpp" />
+		<Unit filename="src\effectmanager.h">
+			<Option target="default" />
+		</Unit>
 		<Unit filename="src\engine.cpp" />
 		<Unit filename="src\engine.h" />
 		<Unit filename="src\equipment.cpp" />
@@ -309,6 +313,8 @@
 		<Unit filename="src\openglgraphics.h" />
 		<Unit filename="src\particle.cpp" />
 		<Unit filename="src\particle.h" />
+		<Unit filename="src\particlecontainer.cpp" />
+		<Unit filename="src\particlecontainer.h" />
 		<Unit filename="src\particleemitter.cpp" />
 		<Unit filename="src\particleemitter.h" />
 		<Unit filename="src\particleemitterprop.h" />

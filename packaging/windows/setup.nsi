@@ -2,8 +2,10 @@ CRCCheck on
 SetCompress off
 SetCompressor /SOLID lzma
 
+!define AETHYRAROOT "..\.."
+
 ;--- (and without !defines ) ---
-!System "%ProgramFiles%\upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d aethyra.exe"
+!System "upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d ${AETHYRAROOT}\aethyra.exe"
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Aethyra"
@@ -20,9 +22,9 @@ SetCompressor /SOLID lzma
 ; MUI Settings
 !define MUI_ABORTWARNING
 ;!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\win-install.ico"
-!define MUI_ICON "data\icons\aethyra.ico"
+!define MUI_ICON "${AETHYRAROOT}\data\icons\aethyra.ico"
 ;!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\win-uninstall.ico"
-!define MUI_UNICON "data\icons\aethyra.ico"
+!define MUI_UNICON "${AETHYRAROOT}\data\icons\aethyra.ico"
 
 ;Language Selection Dialog Settings
 ;Remember the installer language
@@ -38,7 +40,7 @@ SetCompressor /SOLID lzma
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "COPYING"
+!insertmacro MUI_PAGE_LICENSE "${AETHYRAROOT}\COPYING"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Instfiles page
@@ -47,7 +49,7 @@ SetCompressor /SOLID lzma
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_FUNCTION Runaethyra
 !define MUI_FINISHPAGE_SHOWREADME 'notepad.exe "$\"$INSTDIR\README$\""'
-!define MUI_PAGE_CUSTOMFUNCTION_PRE changeFinishBmp
+!define MUI_PAGE_CUSTOMFUNCTION_PRE changeFinishImage
 !define MUI_FINISHPAGE_LINK "Visit the Aethyra website for the latest news, FAQs and support"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://aethyra.org"
 !insertmacro MUI_PAGE_FINISH
@@ -57,7 +59,7 @@ SetOutPath $INSTDIR
 Exec "$INSTDIR\aethyra.exe"
 FunctionEnd
 
-Function changeFinishBmp
+Function changeFinishImage
 !insertmacro MUI_INSTALLOPTIONS_WRITE "ioSpecial.ini" "Field 1" "Text" "$PLUGINSDIR\setup_finish.bmp"
 FunctionEnd
 
@@ -149,44 +151,33 @@ Section "Core files (required)" SecCore
   CreateDirectory "$INSTDIR\data\graphics"
   CreateDirectory "$INSTDIR\data\help"
   CreateDirectory "$INSTDIR\data\icons"
-  CreateDirectory "$INSTDIR\data\maps"
   CreateDirectory "$INSTDIR\data\music"
-  CreateDirectory "$INSTDIR\data\sfx"
   CreateDirectory "$INSTDIR\data\graphics\gui"
   CreateDirectory "$INSTDIR\data\graphics\images"
-  CreateDirectory "$INSTDIR\data\graphics\items"
-  CreateDirectory "$INSTDIR\data\graphics\tiles"
-  CreateDirectory "$INSTDIR\data\graphics\images\ambient"
   CreateDirectory "$INSTDIR\docs"
 
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
-  
-  File "aethyra.exe"
-  File "*.dll"
-  File "AUTHORS"
-  File "ChangeLog"
-  File "COPYING"
-  File "NEWS"
-  File "README"
+
+  File "${AETHYRAROOT}\aethyra.exe"
+  File "${AETHYRAROOT}\*.dll"
+  File "${AETHYRAROOT}\AUTHORS"
+  File "${AETHYRAROOT}\COPYING"
+  File "${AETHYRAROOT}\NEWS"
+  File "${AETHYRAROOT}\README"
   SetOutPath "$INSTDIR\data\graphics\gui"
-  File "data\graphics\gui\*.png"
-  SetOutPath "$INSTDIR\data\graphics\images\ambient"
-  File /nonfatal "data\graphics\images\ambient\*.png"
+  File "${AETHYRAROOT}\data\graphics\gui\*.png"
+  File "${AETHYRAROOT}\data\graphics\gui\*.xml"
   SetOutPath "$INSTDIR\data\graphics\images"
-  File /x minimap_*.png data\graphics\images\*.png
-  SetOutPath "$INSTDIR\data\graphics\sprites"
-  File /nonfatal /x monster-*.png data\graphics\sprites\*.png
-  SetOutPath "$INSTDIR\data\graphics\tiles"
-  File /nonfatal "data\graphics\tiles\*.png"
+  File /x minimap_*.png ${AETHYRAROOT}\data\graphics\images\*.png
   SetOutPath "$INSTDIR\data\help"
-  File "data\help\*.txt"
+  File "${AETHYRAROOT}\data\help\*.txt"
   SetOutPath "$INSTDIR\data\icons\"
-  File "data\icons\aethyra.ico"
+  File "${AETHYRAROOT}\data\icons\aethyra.ico"
   SetOutPath "$INSTDIR\data\music"
-  File /nonfatal "data\music\*.ogg"
+  File /nonfatal "${AETHYRAROOT}\data\music\*.ogg"
   SetOutPath "$INSTDIR\docs"
-  File "docs\FAQ.txt"
+  File "${AETHYRAROOT}\docs\FAQ.txt"
 SectionEnd
 
 Section -AdditionalIcons
@@ -225,7 +216,6 @@ Section Uninstall
   Delete "$SMPROGRAMS\Aethyra\FAQ.lnk"
 
   RMDir "$SMPROGRAMS\Aethyra"
-  
   RMDir /r "$INSTDIR\data"
   RMDir /r "$INSTDIR\docs"
   RMDir /r "$INSTDIR\updates"
