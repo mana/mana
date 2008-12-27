@@ -89,9 +89,7 @@
 		<Unit filename="src\configuration.cpp" />
 		<Unit filename="src\configuration.h" />
 		<Unit filename="src\effectmanager.cpp" />
-		<Unit filename="src\effectmanager.h">
-			<Option target="default" />
-		</Unit>
+		<Unit filename="src\effectmanager.h" />
 		<Unit filename="src\engine.cpp" />
 		<Unit filename="src\engine.h" />
 		<Unit filename="src\equipment.cpp" />
