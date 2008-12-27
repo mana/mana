@@ -454,6 +454,8 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
     if (xmlHasProp(node, BAD_CAST "source"))
     {
         std::string filename = XML::getProperty(node, "source", "");
+        while (filename.substr(0, 3) == "../")
+               filename.erase(0, 3);  // Remove "../"
         doc = new XML::Document(filename);
         node = doc->rootNode();
         firstGid += XML::getProperty(node, "firstgid", 0);
@@ -473,7 +475,7 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
         {
             std::string sourceStr = source;
             while (sourceStr.substr(0, 3) == "../")
-                sourceStr.erase(0, 3);  // Remove "../"
+                   sourceStr.erase(0, 3);  // Remove "../"
 
             ResourceManager *resman = ResourceManager::getInstance();
             Image* tilebmp = resman->getImage(sourceStr);
