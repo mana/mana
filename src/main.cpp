@@ -822,7 +822,7 @@ int main(int argc, char *argv[])
         if (graphics->getWidth() > login_wallpaper->getWidth() ||
                 graphics->getHeight() > login_wallpaper->getHeight())
         {
-            graphics->setColor(gcn::Color(64, 64, 64));
+            graphics->setColor(gcn::Color(255, 255, 255));
             graphics->fillRectangle(gcn::Rectangle(
                         0, 0, graphics->getWidth(), graphics->getHeight()));
         }

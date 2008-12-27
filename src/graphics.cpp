@@ -59,6 +59,7 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
         displayFlags |= SDL_SWSURFACE;
     }
 
+    delete mScreen;
     mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags);
 
     if (!mScreen) {
@@ -71,7 +72,7 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
         logger->log("Using video driver: %s", videoDriverName);
     }
     else {
-        logger->log("Using video driver: unkown");
+        logger->log("Using video driver: unknown");
     }
 
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();

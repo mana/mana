@@ -284,6 +284,8 @@ SET(SRCS
     configlistener.h
     configuration.cpp
     configuration.h
+    effectmanager.cpp
+    effectmanager.h
     engine.cpp
     engine.h
     equipment.cpp
@@ -348,8 +350,6 @@ SET(SRCS
     textparticle.h
     tileset.h
     vector.h
-    effectmanager.cpp
-    effectmanager.h
     )
 
 ADD_EXECUTABLE(aethyra ${SRCS})

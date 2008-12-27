@@ -21,13 +21,11 @@
  */
 
 #include "effectmanager.h"
-
-#include "particle.h"
 #include "log.h"
+#include "particle.h"
 #include "sound.h"
 
 #include "utils/xml.h"
-
 
 EffectManager::EffectManager()
 {
@@ -62,6 +60,29 @@ EffectManager::EffectManager()
 EffectManager::~EffectManager()
 {
 
+}
+
+bool EffectManager::trigger(int id, Being* being)
+{
+    bool rValue = false;
+    for (std::list<EffectDescription>::iterator i = mEffects.begin(); i != mEffects.end(); ++i)
+    {
+        if ((*i).id == id)
+        {
+            printf("Found effect, playing it");
+            rValue = true;
+            if((*i).GFX != "")
+            {
+                Particle *selfFX;
+                selfFX = particleEngine->addEffect((*i).GFX, 0, 0);
+                being->controlParticle(selfFX);
+            }
+            if((*i).SFX != "")
+                sound.playSfx((*i).SFX);
+            break;            
+        }
+    }
+    return rValue;
 }
 
 bool EffectManager::trigger(int id, int x, int y)

@@ -401,6 +401,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         const int bpp = 0;
         const bool fullscreen = ((int) config.getValue("screen", 0) == 1);
         const bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
+
         // Try to set the desired video mode
         if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
         {
@@ -411,7 +412,9 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         }
 
         // Initialize for drawing
+        graphics->_endDraw();
         graphics->_beginDraw();
+        graphics->updateScreen();
 
         // TODO: Find out why the drawing area doesn't resize without a restart.
         new OkDialog("Screen resolution changed",

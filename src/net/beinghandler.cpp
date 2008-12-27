@@ -265,8 +265,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             int effectType = msg->readInt32();
             Being* being = beingManager->findBeing(id);
 
-            effectManager->trigger(effectType, (int) being->getPixelX(), 
-                                  (int) being->getPixelY());
+            effectManager->trigger(effectType, being);
 
             break;
         }

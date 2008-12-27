@@ -23,8 +23,12 @@
 #ifndef _EFFECT_MANAGER_H
 #define _EFFECT_MANAGER_H
 
-#include <string>
 #include <list>
+#include <string>
+
+#include "being.h"
+
+class Being;
 
 class EffectManager
 {
@@ -42,10 +46,16 @@ class EffectManager
         ~EffectManager();
 
         /**
-         * Triggers a effect with the id, at x,y
-         * returns true if ID exists
+         * Triggers a effect with the id, at
+         * the specified being.
          */
-	bool trigger(int id, int x = 0, int y = 0);
+	bool trigger(int id, Being* being);
+
+        /**
+         * Triggers a effect with the id, at
+         * the specified x and y coordinate.
+         */
+	bool trigger(int id, int x, int y);
 
    private:
         std::list<EffectDescription> mEffects;

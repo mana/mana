@@ -48,10 +48,6 @@
 #include "utils/xml.h"
 
 #define BEING_EFFECTS_FILE "effects.xml"
-
-#include "utils/xml.h"
-
-#define BEING_EFFECTS_FILE "effects.xml"
 #define HAIR_FILE "hair.xml"
 
 int Being::instances = 0;
