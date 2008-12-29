@@ -1,6 +1,5 @@
 SET (FILES
     bg_quad_dis.png
-    browserfont.png
     button.png
     button_disabled.png
     buttonhi.png
@@ -9,7 +8,6 @@ SET (FILES
     close_button.png
     deepbox.png
     default.png
-    fixedfont.png
     gui.xml
     hits_blue.png
     hits_red.png
@@ -31,7 +29,6 @@ SET (FILES
     resize.png
     rpgfont_wider.png
     selection.png
-    sansserif8.png
     slider.png
     speech_bubble.png
     speech_bubble.xml

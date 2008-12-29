@@ -3,7 +3,6 @@ guidir = $(pkgdatadir)/data/graphics/gui
 
 gui_DATA =				\
 	bg_quad_dis.png			\
-	browserfont.png			\
 	button.png			\
 	button_disabled.png		\
 	buttonhi.png			\
@@ -13,7 +12,6 @@ gui_DATA =				\
 	deepbox.png			\
 	default.png			\
 	emotions.png			\
-	fixedfont.png			\
 	gui.xml				\
 	hits_blue.png			\
 	hits_red.png			\
@@ -38,7 +36,6 @@ gui_DATA =				\
     rpgfont_wider-green.png	\
     rpgfont_wider-orange.png	\
 	selection.png			\
-	sansserif8.png			\
 	slider.png			\
 	speech_bubble.png		\
 	speechbubble.xml		\
