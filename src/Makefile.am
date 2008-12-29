@@ -74,6 +74,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
 	      gui/ok_dialog.h \
+	      gui/truetypefont.cpp \
+	      gui/truetypefont.h \
 	      gui/passwordfield.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
@@ -301,6 +303,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      properties.h \
               recorder.cpp \
               recorder.h \
+	      sdltruetypefont.cpp \
+	      sdltruetypefont.h \
 	      serverinfo.h \
 	      shopitem.cpp \
 	      shopitem.h \

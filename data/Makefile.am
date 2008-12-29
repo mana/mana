@@ -1,4 +1,4 @@
 
-SUBDIRS = graphics help icons
+SUBDIRS = fonts graphics help icons
 
 aethyradatadir = $(pkgdatadir)/data

@@ -338,6 +338,8 @@ SET(SRCS
     player_relations.cpp
     player_relations.h
     properties.h
+    sdltruetypefont.cpp
+    sdltruetypefont.hpp
     serverinfo.h
     shopitem.cpp
     shopitem.h

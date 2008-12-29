@@ -87,6 +87,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
             (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_0 + i));
+        graphics->setColor(0x000000);
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 
         if (itemShortcut->getItem(i) < 0)

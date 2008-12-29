@@ -55,6 +55,9 @@ AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, ,
 AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
 (http://www.libsdl.org/projects/SDL_image/)]))
 
+AC_CHECK_LIB(SDL_ttf, TTF_Quit, ,
+AC_MSG_ERROR([ *** Unable to find SDL_ttf library (http://www.libsdl.org/projects/SDL_ttf/)]))
+
 AC_CHECK_LIB([SDL_mixer], [Mix_OpenAudio], ,
 AC_MSG_ERROR([ *** Unable to find SDL_mixer library (http://www.libsdl.org/projects/SDL_mixer/)]))
 
@@ -86,7 +89,7 @@ fi
 AC_PATH_PROG(LIBSDL_CONFIG, sdl-config)
 
 if test -n "$LIBSDL_CONFIG"; then
-  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs` -lSDL_image -lSDL_mixer"
+  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs` -lSDL_image -lSDL_mixer -lSDL_ttf"
   LIBSDL_CFLAGS="`$LIBSDL_CONFIG --cflags`"
   AC_SUBST(LIBSDL_LIBS)
   AC_SUBST(LIBSDL_CFLAGS)
@@ -103,6 +106,7 @@ AC_CONFIG_FILES([
 Makefile
 src/Makefile
 data/Makefile
+data/fonts/Makefile
 data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile

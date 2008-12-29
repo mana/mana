@@ -36,6 +36,7 @@
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
+#include "../sdltruetypefont.hpp"
 
 #include "../resources/image.h"
 #include "../resources/imageset.h"
@@ -110,26 +111,20 @@ Gui::Gui(Graphics *graphics):
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
-    // Set global font (based on ISO-8859-15)
+    // Set global font
     try {
-        mGuiFont = new gcn::ImageFont("graphics/gui/sansserif8.png",
-                " !\"#$%&'()*+,-./"
-                "0123456789:;<=>?"
-                "@ABCDEFGHIJKLMNO"
-                "PQRSTUVWXYZ[\\]^_"
-                "`abcdefghijklmno"
-                "pqrstuvwxyz{|}~|"
-                " ¡¢£¤¥¦§¨©ª«¬­®¯"
-                "°±²³´µ¶·¸¹º»¼½¾¿"
-                "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ"
-                "ÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß"
-                "àáâãäåæçèéêëìíîï"
-                "ðñòóôõö÷øùúûüýþÿ"
-                );
+        mGuiFont = new gcn::contrib::SDLTrueTypeFont("/usr/local/share/aethyra/data/fonts/dejavusans.ttf", 10);
     }
     catch (gcn::Exception e)
     {
-        logger->error("Unable to load sansserif8.png!");
+        try {
+            mGuiFont = new gcn::contrib::SDLTrueTypeFont("data/fonts/dejavusans.ttf", 10);
+        }
+        catch (gcn::Exception e)
+        {
+        logger->error(std::string("Unable to load dejavusans.ttf: ")
+            + e.getMessage());
+        }
     }
 
     // Set speech font
@@ -142,7 +137,8 @@ Gui::Gui(Graphics *graphics):
     }
     catch (gcn::Exception e)
     {
-        logger->error("Unable to load rpgfont_wider.png!");
+        logger->error(std::string("Unable to load rpgfont_wider.png: ")
+            + e.getMessage());
     }
 
     // Set npc name font
@@ -198,7 +194,8 @@ Gui::Gui(Graphics *graphics):
     }
     catch (gcn::Exception e)
     {
-        logger->error("Unable to load colored hits' fonts!");
+        logger->error(std::string("Unable to load colored hits' fonts: ")
+                + e.getMessage());
     }
 
     // Initialize mouse cursor and listen for changes to the option
