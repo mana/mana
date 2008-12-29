@@ -1,4 +1,3 @@
-<<<<<<< HEAD:AUTHORS
 ---------------------------
 Aethyra Dev Team
 ---------------------------
@@ -30,50 +29,6 @@ Aethyra Dev Team
 -----------------------
 The Mana World Dev Team
 -----------------------
-
- ElvenProgrammer aka Eugenio Favalli (elvenprogrammer@gmail.com)
- Project leader, programmer
-
-== Programmers ==
-
- Bertram          (SDL input, progress bar drawing, Debian package)
- Bj�rn Lindeijer  (various parts, GUI, graphics, A* and map rewrites)
- Bj�rn Steinbrink (various parts)
- Javila           (various parts, GUI)
- nym              (several GUI parts)
- Shura            (configuration, sound, misc. ports)
- zenogais         (resource manager)
- Usiu             (several GUI parts)
- Mra              (some GUI parts)
-
-== Artists ==
-
- Clef             (tiles, concepts)
- Gnulia           (conceptual art)
- Irukard          (item icons)
- Magick           (music and sound effects)
- Neko-mon         (player sprites, various things)
- Neorice          (monster sprites, tiles)
- Modanung         (pixel art, concept art)
- Pajarico         (concepts)
- Rotonen          (backstory, art director, music, sound)
- Talaroc          (sprites)
- Ti Sing Hao      (music)
-
-== Misc thanks ==
-
- Ultramichy       (hosting test server)
-
-== Inactive/retired ==
-
- Chetic           (maps)
- SimEdw           (network code)
- Sull             (hosting CVS and related services)
- Vlady            (several items)
-=======
----------------------------------
--- The Mana World Contributors --
----------------------------------
 
  This file lists all contributors up to the current release. Check the wiki
  for the currently active development team.
@@ -131,4 +86,3 @@ Jean-Francois Lampron  <sull.kf gmail.com>
 Rodney Dawes  <dobey novell.com>
 Ultramichy
 Zuzanna K. Filutowska  <platyna users.sourceforge.net>
->>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:AUTHORS

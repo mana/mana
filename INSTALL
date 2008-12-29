@@ -5,11 +5,7 @@ Homepage:  http://www.aethyra.org/
 IRC:       irc.freenode.net / #aethyra
 
 1) Requirements
-<<<<<<< HEAD:INSTALL
 2) Compiling Aethyra
-=======
-2) Compiling And Installing The Mana World
->>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:INSTALL
 3) Notes
 
 
@@ -30,12 +26,8 @@ a source release. To get Aethyra to compile, you need a compiler
 * zlib 1.2.x        http://www.gzip.org/zlib/
 * libcurl           http://curl.haxx.se/libcurl/
 
-<<<<<<< HEAD:INSTALL
-If you checked Aethyra out from Subversion you will also need these tools to
+If you cloned Aethyra from the Git repository, you will also need these tools to
 compile:
-=======
-If you've cloned the Git repository, you will also need these tools to compile:
->>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:INSTALL
 
 * GNU automake 1.9  http://www.gnu.org/software/automake/
 * GNU autoconf      http://www.gnu.org/software/autoconf/
@@ -48,15 +40,11 @@ you to figure this out.
 ===============================================
 
 1) Go to the directory you have extracted the source to.
-<<<<<<< HEAD:INSTALL
-2) If you checked out from SVN, run "./autobuild.sh" to install the client.
-=======
 2) If you've cloned the Git repository, run "autoreconf -i" to generate
    configure and install any missing auxiliary files.
 3) Run "./configure"
 4) Run "make"
 5) Run "make install" as root
->>>>>>> a7c21e6f8add37af7412449742ec55c8daa8571a:INSTALL
 
 It should have installed Aethyra on your system now, and you can
 run it with "aethyra". By default all files are installed to /usr/local, you can
