@@ -59,7 +59,6 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
         displayFlags |= SDL_SWSURFACE;
     }
 
-    delete mScreen;
     mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags);
 
     if (!mScreen) {
