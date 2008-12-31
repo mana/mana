@@ -108,7 +108,7 @@ Gui::Gui(Graphics *graphics):
 
     // Set global font (based on ISO-8859-15)
     try {
-        mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 12);
+        mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 11);
     }
     catch (gcn::Exception e)
     {
