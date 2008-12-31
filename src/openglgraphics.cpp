@@ -78,8 +78,6 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     }
 
 #ifdef __APPLE__
-//    long VBL = 1;
-//    CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
     if (mSync) {
         const GLint VBL = 1;
         CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
@@ -360,7 +358,7 @@ void OpenGLGraphics::setTexturingAndBlending(bool enable)
 
 void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect, bool filled)
 {
-    float offset = filled ? 0 : 0.5f;
+    const float offset = filled ? 0 : 0.5f;
 
     setTexturingAndBlending(false);
 
