@@ -26,3 +26,9 @@ src/tmw
 tmw.exe
 tmw.depend
 tmw.layout
+
+# files copied in on Windows
+include/*
+lib/*
+packaging/windows/upx/*
+data/music/*.ogg
