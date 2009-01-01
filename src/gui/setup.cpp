@@ -42,6 +42,7 @@ extern Window *minimap;
 extern Window *skillDialog;
 extern Window *statusWindow;
 extern Window *itemShortcutWindow;
+extern Window *tradeWindow;
 
 Setup::Setup():
     Window("Setup")
@@ -134,5 +135,6 @@ void Setup::action(const gcn::ActionEvent &event)
         helpWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
         itemShortcutWindow->resetToDefaultSize();
+        tradeWindow->resetToDefaultSize();
     }
 }

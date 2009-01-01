@@ -32,6 +32,7 @@
 					<Add library="SDL_image" />
 					<Add library="SDL_mixer" />
 					<Add library="SDL_net" />
+					<Add library="SDL_ttf" />
 					<Add library="mingw32" />
 					<Add library="SDLmain" />
 					<Add library="SDL.dll" />
@@ -67,6 +68,7 @@
 					<Add library="SDL_mixer" />
 					<Add library="SDL_net" />
 					<Add library="SDL_image" />
+					<Add library="SDL_ttf" />
 					<Add library="png" />
 				</Linker>
 			</Target>
@@ -230,8 +232,8 @@
 		<Unit filename="src\gui\textfield.h" />
 		<Unit filename="src\gui\trade.cpp" />
 		<Unit filename="src\gui\trade.h" />
-		<Unit filename="src\gui\truetypefont.cpp"/>
-		<Unit filename="src\gui\truetypefont.h"/>
+		<Unit filename="src\gui\truetypefont.cpp" />
+		<Unit filename="src\gui\truetypefont.h" />
 		<Unit filename="src\gui\updatewindow.cpp" />
 		<Unit filename="src\gui\updatewindow.h" />
 		<Unit filename="src\gui\vbox.cpp" />

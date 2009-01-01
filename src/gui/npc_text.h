@@ -50,7 +50,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         NpcTextDialog();
 
         /**
-         * Called when resizing the window
+         * Called when resizing the window.
          *
          * @param event The calling event
          */

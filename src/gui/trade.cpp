@@ -50,7 +50,11 @@ TradeWindow::TradeWindow(Network *network):
     mPartnerInventory(new Inventory(INVENTORY_SIZE))
 {
     setWindowName("Trade");
-    setDefaultSize(115, 227, 332, 209);
+    setDefaultSize(115, 227, 342, 209);
+    setResizable(true);
+
+    setMinWidth(342);
+    setMinHeight(209);
 
     mAddButton = new Button("Add", "add", this);
     mOkButton = new Button("Ok", "ok", this);
@@ -73,7 +77,8 @@ TradeWindow::TradeWindow(Network *network):
 
     mMoneyLabel = new gcn::Label("You get: 0 GP");
     mMoneyLabel2 = new gcn::Label("You give:");
-    mMoneyField = new TextField();
+    mMoneyField = new TextField;
+    mMoneyField->setWidth(50);
 
     mAddButton->adjustSize();
     mOkButton->adjustSize();
@@ -98,38 +103,49 @@ TradeWindow::TradeWindow(Network *network):
     add(mMoneyLabel);
 
     loadWindowState();
-
-    gcn::Rectangle area = getChildrenArea();
-    int width = area.width;
-    int height = area.height;
-
-    mMoneyField->setPosition(8 + 60, height - 20);
-    mMoneyField->setWidth(50);
-
-    mMoneyLabel->setPosition(8 + 60 + 50 + 6, height - 20);
-    mMoneyLabel2->setPosition(8, height - 20);
-
-    mCancelButton->setPosition(width - 54, height - 49);
-    mTradeButton->setPosition(mCancelButton->getX() - 41, height - 49);
-    mOkButton->setPosition(mTradeButton->getX() - 24, height - 49);
-    mAddButton->setPosition(mOkButton->getX() - 31, height - 49);
-
-    mMyItemContainer->setSize(width - 24 - 12 - 1,
-        (INVENTORY_SIZE * 24) / (width / 24) - 1);
-    mMyScroll->setSize(width - 16, (height - 76) / 2);
-
-    mPartnerItemContainer->setSize(width - 24 - 12 - 1,
-        (INVENTORY_SIZE * 24) / (width / 24) - 1);
-    mPartnerScroll->setSize(width - 16, (height - 76) / 2);
-
-    mItemNameLabel->setPosition(8,
-        mPartnerScroll->getY() + mPartnerScroll->getHeight() + 4);
-    mItemDescriptionLabel->setPosition(8,
-        mItemNameLabel->getY() + mItemNameLabel->getHeight() + 4);
 }
 
 TradeWindow::~TradeWindow()
 {
+}
+
+void TradeWindow::widgetResized(const gcn::Event &event)
+{
+    Window::widgetResized(event);
+
+    const gcn::Rectangle &area = getChildrenArea();
+    const int width = area.width;
+    const int height = area.height;
+
+    mMoneyLabel2->setPosition(8, height - 8 - mMoneyLabel2->getHeight());
+    mMoneyField->setPosition(
+        8 + mMoneyLabel2->getWidth(),
+        height - 8 - mMoneyField->getHeight());
+    mMoneyLabel->setPosition(
+        mMoneyField->getX() + mMoneyField->getWidth() + 6,
+        mMoneyLabel2->getY());
+
+    mCancelButton->setPosition(width - 54, height - 8 - mCancelButton->getHeight());
+    mTradeButton->setPosition(mCancelButton->getX() - 41, mCancelButton->getY());
+    mOkButton->setPosition(mTradeButton->getX() - 24, mCancelButton->getY());
+    mAddButton->setPosition(mOkButton->getX() - 31, mCancelButton->getY());
+
+    mItemDescriptionLabel->setPosition(8,
+        mOkButton->getY() - mItemDescriptionLabel->getHeight() - 4);
+    mItemNameLabel->setPosition(8,
+        mItemDescriptionLabel->getY() - mItemNameLabel->getHeight() - 4);
+
+    const int remaining = mItemNameLabel->getY() - 4 - 8 - 8;
+    const int itemContainerHeight = remaining / 2;
+
+    mMyItemContainer->setSize(width - 24 - 12 - 1,
+        (INVENTORY_SIZE * 24) / (width / 24) - 1);
+    mMyScroll->setSize(width - 16, itemContainerHeight);
+
+    mPartnerItemContainer->setSize(width - 24 - 12 - 1,
+        (INVENTORY_SIZE * 24) / (width / 24) - 1);
+    mPartnerScroll->setSize(width - 16, itemContainerHeight);
+    mPartnerScroll->setPosition(8, 8 + itemContainerHeight + 8);
 }
 
 void TradeWindow::addMoney(int amount)

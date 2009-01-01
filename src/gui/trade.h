@@ -56,6 +56,13 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         ~TradeWindow();
 
         /**
+         * Called when resizing the window.
+         *
+         * @param event The calling event
+         */
+        void widgetResized(const gcn::Event &event);
+
+        /**
          * Add money to the trade window.
          */
         void addMoney(int quantity);
@@ -98,8 +105,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         /**
          * Send trade packet.
          */
-        void
-        tradeItem(Item *item, int quantity);
+        void tradeItem(Item *item, int quantity);
 
         /**
          * Updates the labels and makes sure only one item is selected in
