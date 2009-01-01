@@ -177,6 +177,20 @@ class KeyboardConfig
             KEY_WINDOW_SHORTCUT,
             KEY_WINDOW_SETUP,
             KEY_WINDOW_DEBUG,
+            KEY_WINDOW_ALLSMILEY,
+            KEY_WINDOW_SMILEY_SHORTCUT,
+            KEY_SMILEY_1,
+            KEY_SMILEY_2,
+            KEY_SMILEY_3,
+            KEY_SMILEY_4,
+            KEY_SMILEY_5,
+            KEY_SMILEY_6,
+            KEY_SMILEY_7,
+            KEY_SMILEY_8,
+            KEY_SMILEY_9,
+            KEY_SMILEY_10,
+            KEY_SMILEY_11,
+            KEY_SMILEY_12,
             KEY_TOTAL
         };
 

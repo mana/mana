@@ -541,32 +541,54 @@ void Game::handleInput()
 
         // Smilie
         if (keyboard.isKeyActive(keyboard.KEY_SMILIE))
-        {
-            // Emotions
-            Uint8 emotion;
-            switch (event.key.keysym.sym)
-            {
-                case SDLK_1: emotion = 1; break;
-                case SDLK_2: emotion = 2; break;
-                case SDLK_3: emotion = 3; break;
-                case SDLK_4: emotion = 4; break;
-                case SDLK_5: emotion = 5; break;
-                case SDLK_6: emotion = 6; break;
-                case SDLK_7: emotion = 7; break;
-                case SDLK_8: emotion = 8; break;
-                case SDLK_9: emotion = 9; break;
-                case SDLK_0: emotion = 10; break;
-                case SDLK_MINUS: emotion = 11; break;
-                case SDLK_EQUALS: emotion = 12; break;
-                default: emotion = 0; break;
-            }
+		{
+			// Emotions
+			Uint8 emotion;
+			/** 
+			 *
+			 * Might be simpler to perform as follow
+			 * emotion=0;
+			 * const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+			 * if ((tKey <=KeyboardConfig::KEY_SMILEY_12)
+			 *     &&(tKey >=KeyboardConfig::KEY_SMILEY_1)
+			 *     )
+			 * {
+			 *    emotion= 1+tKey-KeyboardConfig::KEY_SMILEY_1;
+			 * }
+			 *
+			 * But this add constraints over KEY_SMILEY_* allocation 
+			 * (ordering, consecutive positive values)
+			 * Old story... compiler optimisation 
+			 * or code complexity for update, which one is better ?
+			 * I won't rely on enum allocation, let's keep the switch, 
+			 * it does not add such undocumented constraints on that enum.
+			 *
+			 * Speed consideration ? not even sure!
+			 */
+			const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+			switch (tKey)
+			{
+				case KeyboardConfig::KEY_SMILEY_1: emotion = 1; break;
+				case KeyboardConfig::KEY_SMILEY_2: emotion = 2; break;
+				case KeyboardConfig::KEY_SMILEY_3: emotion = 3; break;
+				case KeyboardConfig::KEY_SMILEY_4: emotion = 4; break;
+				case KeyboardConfig::KEY_SMILEY_5: emotion = 5; break;
+				case KeyboardConfig::KEY_SMILEY_6: emotion = 6; break;
+				case KeyboardConfig::KEY_SMILEY_7: emotion = 7; break;
+				case KeyboardConfig::KEY_SMILEY_8: emotion = 8; break;
+				case KeyboardConfig::KEY_SMILEY_9: emotion = 9; break;
+				case KeyboardConfig::KEY_SMILEY_10: emotion = 10; break;
+				case KeyboardConfig::KEY_SMILEY_11: emotion = 11; break;
+				case KeyboardConfig::KEY_SMILEY_12: emotion = 12; break;
+				default: emotion = 0; break;
+			}
 
-            if (emotion)
-            {
-                player_node->emote(emotion);
-                used = true;
-            }
-        }
+			if (emotion)
+			{
+				player_node->emote(emotion);
+				used = true;
+			}
+		}
         switch (event.key.keysym.sym)
         {
             case SDLK_PAGEUP:

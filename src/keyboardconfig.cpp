@@ -68,7 +68,21 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyWindowChat", SDLK_F7, "Chat Window"},
     {"keyWindowShortcut", SDLK_F8, "Item Shortcut Window"},
     {"keyWindowSetup", SDLK_F9, "Setup Window"},
-    {"keyWindowDebug", SDLK_F10, "Debug Window"}
+    {"keyWindowDebug", SDLK_F10, "Debug Window"},
+    {"keyWindowSmileyList", SDLK_F11, "Smiley List Window"},
+    {"keyWindowSmileyBar", SDLK_F12, "Smiley Shortcut Window"},
+    {"keySmileyShortcut1", SDLK_KP1, "Smiley Shortcut 1"},
+    {"keySmileyShortcut2", SDLK_KP2, "Smiley Shortcut 2"},
+    {"keySmileyShortcut3", SDLK_KP3, "Smiley Shortcut 3"},
+    {"keySmileyShortcut4", SDLK_KP4, "Smiley Shortcut 4"},
+    {"keySmileyShortcut5", SDLK_KP5, "Smiley Shortcut 5"},
+    {"keySmileyShortcut6", SDLK_KP6, "Smiley Shortcut 6"},
+    {"keySmileyShortcut7", SDLK_KP7, "Smiley Shortcut 7"},
+    {"keySmileyShortcut8", SDLK_KP8, "Smiley Shortcut 8"},
+    {"keySmileyShortcut9", SDLK_KP9, "Smiley Shortcut 9"},
+    {"keySmileyShortcut10", SDLK_KP0, "Smiley Shortcut 10"},
+    {"keySmileyShortcut11", SDLK_KP_DIVIDE, "Smiley Shortcut 11"},
+    {"keySmileyShortcut12", SDLK_KP_MULTIPLY, "Smiley Shortcut 12"}
 };
 
 void KeyboardConfig::init()
