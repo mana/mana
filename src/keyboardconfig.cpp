@@ -128,11 +128,24 @@ void KeyboardConfig::makeDefault()
 bool KeyboardConfig::hasConflicts()
 {
     int i, j;
+/**
+ * No need to parse the square matrix: only check one triangle
+ * that's enough to detect conflicts
+ */
     for (i = 0; i < KEY_TOTAL; i++)
     {
-        for (j = 0; j < KEY_TOTAL; j++)
+        for (j = i,j++; j < KEY_TOTAL; j++)
         {
-            if (i != j && mKey[i].value == mKey[j].value)
+/**
+ * KEY_SMILEY_* are separated from other keys, duplicate in different
+ *  area is allowed, but not in same area (of course)
+ *  (i.e.: not two identical key for smiley, not two identical for other;
+ *  but same key for a smiley and a not-smiley is ok)
+ *  
+ */
+            if (!((i<KEY_SMILEY_1)&&(j>=KEY_SMILEY_1))
+                 && mKey[i].value == mKey[j].value
+	       )
             {
                 return true;
             }
@@ -153,6 +166,18 @@ int KeyboardConfig::getKeyIndex(int keyValue) const
         if(keyValue == mKey[i].value)
         {
             return i;
+        }
+    }
+    return KEY_NO_VALUE;
+}
+
+int KeyboardConfig::getKeySmilieOffset(int keyValue) const
+{
+    for (int i = KEY_SMILEY_1; i <= KEY_SMILEY_12; i++)
+    {
+        if(keyValue == mKey[i].value)
+        {
+            return 1+i-KEY_SMILEY_1;
         }
     }
     return KEY_NO_VALUE;

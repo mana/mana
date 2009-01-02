@@ -102,6 +102,11 @@ class KeyboardConfig
         int getKeyIndex(int keyValue) const;
 
         /**
+         * Get the key function index for smiley by providing the offset value.
+         */
+        int getKeySmilieOffset(int keyValue) const;
+
+        /**
          * Set the enable flag, which will stop the user from doing actions.
          */
         void setEnabled(bool flag)
@@ -141,6 +146,8 @@ class KeyboardConfig
          * KEY_TOTAL should always be last (used as a conditional in loops).
          * The key assignment view gets arranged according to the order of
          * these values.
+         *
+         * KEY_SMILEY_* must be also at the end (just before KEY_TOTAL)
          */
         enum KeyAction {
             KEY_NO_VALUE = -1,
