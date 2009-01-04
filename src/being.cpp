@@ -322,29 +322,29 @@ void Being::nextStep()
         return;
     }
 
-    PATH_NODE node = mPath.front();
+    Position pos = mPath.front();
     mPath.pop_front();
 
     int dir = 0;
-    if (node.x > mX)
+    if (pos.x > mX)
         dir |= RIGHT;
-    else if (node.x < mX)
+    else if (pos.x < mX)
         dir |= LEFT;
-    if (node.y > mY)
+    if (pos.y > mY)
         dir |= DOWN;
-    else if (node.y < mY)
+    else if (pos.y < mY)
         dir |= UP;
 
     setDirection(dir);
 
-    if (mMap->tileCollides(node.x, node.y))
+    if (mMap->tileCollides(pos.x, pos.y))
     {
         setAction(STAND);
         return;
     }
 
-    mX = node.x;
-    mY = node.y;
+    mX = pos.x;
+    mY = pos.y;
     setAction(WALK);
     mWalkTime += mWalkSpeed / 10;
 }

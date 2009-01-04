@@ -28,6 +28,7 @@
 #include <SDL_types.h>
 #include <set>
 
+#include "position.h"
 #include "sprite.h"
 #include "map.h"
 #include "animatedsprite.h"
@@ -48,24 +49,6 @@ class Text;
 
 
 class StatusEffect;
-
-/**
- * A position along a being's path.
- */
-struct PATH_NODE
-{
-    /**
-     * Constructor.
-     */
-    PATH_NODE(unsigned short x, unsigned short y):
-        x(x), y(y)
-    { }
-
-    unsigned short x;
-    unsigned short y;
-};
-typedef std::list<PATH_NODE> Path;
-typedef Path::iterator PathIterator;
 
 class Being : public Sprite
 {
@@ -115,10 +98,7 @@ class Being : public Sprite
         /**
          * Directions, to be used as bitmask values
          */
-        static const char DOWN = 1;
-        static const char LEFT = 2;
-        static const char UP = 4;
-        static const char RIGHT = 8;
+        enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
