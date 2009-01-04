@@ -25,6 +25,7 @@
 #include <list>
 #include <vector>
 
+#include "position.h"
 #include "properties.h"
 
 class AmbientOverlay;
@@ -34,8 +35,6 @@ class MapLayer;
 class Particle;
 class Sprite;
 class Tileset;
-
-struct PATH_NODE;
 
 typedef std::vector<Tileset*> Tilesets;
 typedef std::list<Sprite*> Sprites;
@@ -55,13 +54,13 @@ struct MetaTile
     MetaTile():whichList(0) {};
 
     // Pathfinding members
-    int Fcost;              /**< Estimation of total path cost */
-    int Gcost;              /**< Cost from start to this location */
-    int Hcost;              /**< Estimated cost to goal */
-    int whichList;          /**< No list, open list or closed list */
-    int parentX;            /**< X coordinate of parent tile */
-    int parentY;            /**< Y coordinate of parent tile */
-    bool walkable;          /**< Can beings walk on this tile */
+    int Fcost;               /**< Estimation of total path cost */
+    int Gcost;               /**< Cost from start to this location */
+    int Hcost;               /**< Estimated cost to goal */
+    int whichList;           /**< No list, open list or closed list */
+    int parentX;             /**< X coordinate of parent tile */
+    int parentY;             /**< Y coordinate of parent tile */
+    bool walkable;           /**< Can beings walk on this tile */
 };
 
 /**
@@ -204,8 +203,7 @@ class Map : public Properties
         /**
          * Find a path from one location to the next.
          */
-        std::list<PATH_NODE>
-        findPath(int startX, int startY, int destX, int destY);
+        Path findPath(int startX, int startY, int destX, int destY);
 
         /**
          * Adds a sprite to the map.

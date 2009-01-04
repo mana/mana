@@ -480,7 +480,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY)
         while (pathX != startX || pathY != startY)
         {
             // Add the new path node to the start of the path list
-            path.push_front(PATH_NODE(pathX, pathY));
+            path.push_front(Position(pathX, pathY));
 
             // Find out the next parent
             MetaTile *tile = getMetaTile(pathX, pathY);

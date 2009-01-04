@@ -337,6 +337,8 @@ SET(SRCS
     player.h
     player_relations.cpp
     player_relations.h
+    position.cpp
+    position.h
     properties.h
     sdltruetypefont.cpp
     sdltruetypefont.hpp

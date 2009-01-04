@@ -306,6 +306,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      player.h \
 	      player_relations.cpp \
 	      player_relations.h \
+	      position.cpp \
+	      position.h \
 	      properties.h \
               recorder.cpp \
               recorder.h \

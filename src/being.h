@@ -33,6 +33,7 @@
 #include "effectmanager.h"
 #include "map.h"
 #include "particlecontainer.h"
+#include "position.h"
 #include "sprite.h"
 
 #include "gui/speechbubble.h"
@@ -51,24 +52,6 @@ class Graphics;
 class Particle;
 class SpeechBubble;
 class Text;
-
-/**
- * A position along a being's path.
- */
-struct PATH_NODE
-{
-    /**
-     * Constructor.
-     */
-    PATH_NODE(unsigned short x, unsigned short y):
-        x(x), y(y)
-    { }
-
-    unsigned short x;
-    unsigned short y;
-};
-typedef std::list<PATH_NODE> Path;
-typedef Path::iterator PathIterator;
 
 enum Gender {
     GENDER_MALE = 0,
