@@ -340,6 +340,7 @@ SET(SRCS
     textparticle.cpp
     textparticle.h
     tileset.h
+    vector.cpp
     vector.h
     )
 
