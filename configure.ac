@@ -106,6 +106,7 @@ AC_CONFIG_FILES([
 Makefile
 src/Makefile
 data/Makefile
+data/fonts/Makefile
 data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile

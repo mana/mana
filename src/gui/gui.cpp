@@ -106,9 +106,11 @@ Gui::Gui(Graphics *graphics):
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
-    // Set global font (based on ISO-8859-15)
+    // Set global font
+    ResourceManager *resman = ResourceManager::getInstance();
+    std::string path = resman->getPath("fonts/dejavusans.ttf");
     try {
-        mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 11);
+        mGuiFont = new TrueTypeFont(path, 11);
     }
     catch (gcn::Exception e)
     {
