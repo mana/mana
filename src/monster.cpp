@@ -35,12 +35,26 @@ Monster::Monster(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
     const MonsterInfo& info = getInfo();
-    std::string filename = info.getSprite();
-    if (filename.empty())
-        filename = "error.xml";
 
-    mSprites[BASE_SPRITE] =
-        AnimatedSprite::load("graphics/sprites/" + filename);
+    // Setup Monster sprites
+    int c = BASE_SPRITE;
+    const std::list<std::string> &sprites = info.getSprites();
+    for (std::list<std::string>::const_iterator i = sprites.begin();
+         i != sprites.end();
+         i++)
+    {
+        if (c == VECTOREND_SPRITE) break;
+
+        std::string file = "graphics/sprites/" + *i;
+        mSprites[c] = AnimatedSprite::load(file);
+        c++;
+    }
+
+    // Ensure that something is shown
+    if (c == BASE_SPRITE)
+    {
+        mSprites[c] = AnimatedSprite::load("graphics/sprites/error.xml");
+    }
 
     const std::list<std::string> &particleEffects = info.getParticleEffects();
     for (std::list<std::string>::const_iterator i = particleEffects.begin();
@@ -111,7 +125,13 @@ Monster::setAction(Action action, int attackType)
 
     if (currentAction != ACTION_INVALID)
     {
-        mSprites[BASE_SPRITE]->play(currentAction);
+        for (int i = 0; i < VECTOREND_SPRITE; i++)
+        {
+            if (mSprites[i])
+            {
+                mSprites[i]->play(currentAction);
+            }
+        }
         mAction = action;
     }
 }

@@ -32,8 +32,7 @@
 
 #include "../utils/tostring.h"
 
-MiniStatusWindow::MiniStatusWindow():
-    Window()
+MiniStatusWindow::MiniStatusWindow()
 {
     setResizable(false);
     setMovable(false);

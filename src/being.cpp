@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 #include "being.h"
 
 #include <cassert>
@@ -30,7 +31,10 @@
 #include "log.h"
 #include "map.h"
 #include "particle.h"
+#include "sound.h"
+#include "localplayer.h"
 
+#include "resources/itemdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
 #include "resources/iteminfo.h"
@@ -40,10 +44,17 @@
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
+#include "utils/xml.h"
 
 namespace {
 const bool debug_movement = true;
 }
+
+#define HAIR_FILE "hair.xml"
+
+#include "utils/xml.h"
+
+#define BEING_EFFECTS_FILE "effects.xml"
 
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
@@ -57,6 +68,9 @@ Being::Being(int id, int job, Map *map):
     mSpriteDirection(DIRECTION_DOWN), mDirection(DOWN),
     mMap(NULL),
     mEquippedWeapon(NULL),
+    mHairStyle(0),
+    mHairColor(0),
+    mGender(GENDER_UNSPECIFIED),
     mSpeechTime(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
@@ -108,6 +122,7 @@ void Being::setPosition(const Vector &pos)
 {
     mPos = pos;
     mDest = pos;
+    mPath.clear();
 }
 
 void Being::adjustCourse(int srcX, int srcY, int dstX, int dstY)
@@ -284,6 +299,12 @@ void Being::setPath(const Path &path)
 {
     std::cout << this << " New path: " << path << std::endl;
     mPath = path;
+}
+
+void Being::setHairStyle(int style, int color)
+{
+    mHairStyle = style < 0 ? mHairStyle : style % getHairStylesNr();
+    mHairColor = color < 0 ? mHairColor : color % getHairColorsNr();
 }
 
 void Being::setSprite(int slot, int id, const std::string &color)
@@ -512,7 +533,7 @@ void Being::logic()
          i != mChildParticleEffects.end();)
     {
         (*i)->setPosition(mPos.x, mPos.y);
-        if (!(*i)->isAlive())
+        if ((*i)->isExtinct())
         {
             (*i)->kill();
             i = mChildParticleEffects.erase(i);
@@ -594,5 +615,186 @@ int Being::getHeight() const
     }
     else {
         return 0;
+    }
+}
+
+
+
+
+static int hairStylesNr;
+static int hairColorsNr;
+static std::vector<std::string> hairColors;
+
+static void
+initializeHair(void);
+
+int
+Being::getHairStylesNr(void)
+{
+    initializeHair();
+    return hairStylesNr;
+}
+
+int
+Being::getHairColorsNr(void)
+{
+    initializeHair();
+    return hairColorsNr;
+}
+
+std::string
+Being::getHairColor(int index)
+{
+    initializeHair();
+    if (index < 0 || index >= hairColorsNr)
+        return "#000000";
+
+    return hairColors[index];
+}
+
+static bool hairInitialized = false;
+
+static void
+initializeHair(void)
+{
+    if (hairInitialized)
+        return;
+
+    // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
+    int hairstylesCtr = -1;
+    while (ItemDB::get(hairstylesCtr).getSprite(GENDER_MALE) != "error.xml")
+        --hairstylesCtr;
+
+    hairStylesNr = -hairstylesCtr; // done.
+    if (hairStylesNr == 0)
+        hairStylesNr = 1; // No hair style -> no hair
+
+    hairColorsNr = 0;
+
+    XML::Document doc(HAIR_FILE);
+    xmlNodePtr root = doc.rootNode();
+
+    if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
+    {
+        logger->log("Error loading being hair configuration file");
+    } else {
+        for_each_xml_child_node(node, root)
+        {
+            if (xmlStrEqual(node->name, BAD_CAST "color"))
+            {
+                int index = atoi(XML::getProperty(node, "id", "-1").c_str());
+                std::string value = XML::getProperty(node, "value", "");
+
+                if (index >= 0 && value != "") {
+                    if (index >= hairColorsNr) {
+                        hairColorsNr = index + 1;
+                        hairColors.resize(hairColorsNr, "#000000");
+                    }
+                    hairColors[index] = value;
+                }
+            }
+        }
+    } // done initializing
+
+    if (hairColorsNr == 0) { // No colours -> black only
+        hairColorsNr = 1;
+        hairColors.resize(hairColorsNr, "#000000");
+    }
+
+    hairInitialized = 1;
+}
+
+
+
+struct EffectDescription {
+    std::string mGFXEffect;
+    std::string mSFXEffect;
+};
+
+static EffectDescription *default_effect = NULL;
+static std::map<int, EffectDescription *> effects;
+static bool effects_initialized = false;
+
+static EffectDescription *
+getEffectDescription(xmlNodePtr node, int *id)
+{
+    EffectDescription *ed = new EffectDescription;
+
+    *id = atoi(XML::getProperty(node, "id", "-1").c_str());
+    ed->mSFXEffect = XML::getProperty(node, "audio", "");
+    ed->mGFXEffect = XML::getProperty(node, "particle", "");
+
+    return ed;
+}
+
+static EffectDescription *
+getEffectDescription(int effectId)
+{
+    if (!effects_initialized)
+    {
+        XML::Document doc(BEING_EFFECTS_FILE);
+        xmlNodePtr root = doc.rootNode();
+
+        if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
+        {
+            logger->log("Error loading being effects file: "
+                    BEING_EFFECTS_FILE);
+            return NULL;
+        }
+
+        for_each_xml_child_node(node, root)
+        {
+            int id;
+
+            if (xmlStrEqual(node->name, BAD_CAST "effect"))
+            {
+                EffectDescription *EffectDescription =
+                    getEffectDescription(node, &id);
+                effects[id] = EffectDescription;
+            } else if (xmlStrEqual(node->name, BAD_CAST "default"))
+            {
+                EffectDescription *EffectDescription =
+                    getEffectDescription(node, &id);
+
+                if (default_effect)
+                    delete default_effect;
+
+                default_effect = EffectDescription;
+            }
+        }
+
+        effects_initialized = true;
+    } // done initializing
+
+    EffectDescription *ed = effects[effectId];
+
+    if (!ed)
+        return default_effect;
+    else
+        return ed;
+}
+
+void
+Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
+{
+    logger->log("Special effect #%d on %s", effectId,
+                getId() == player_node->getId() ? "self" : "other");
+
+    EffectDescription *ed = getEffectDescription(effectId);
+
+    if (!ed) {
+        logger->log("Unknown special effect and no default recorded");
+        return;
+    }
+
+    if (gfx && ed->mGFXEffect != "") {
+        Particle *selfFX;
+
+        selfFX = particleEngine->addEffect(ed->mGFXEffect, 0, 0);
+        controlParticle(selfFX);
+    }
+
+    if (sfx && ed->mSFXEffect != "") {
+        sound.playSfx(ed->mSFXEffect);
     }
 }

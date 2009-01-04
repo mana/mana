@@ -33,18 +33,18 @@ class Avatar : public gcn::Widget
 {
 public:
     /**
-     * Constructor
+     * Constructor.
      * @param name Character name
      */
     Avatar(const std::string &name);
 
     /**
-     * Set the avatar online status
+     * Set the avatar online status.
      */
-    void setOnline(bool status);
+    void setOnline(bool online);
 
     /**
-     * Draws the Avatar
+     * Draws the avatar.
      */
     void draw(gcn::Graphics *g);
 

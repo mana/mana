@@ -1,0 +1,15 @@
+ <- @@index|Back to Index@@
+ 
+ 
+##3                            === WINDOWS ===
+ 
+##2SHORTCUT:
+
+ To add an item to the shortcut bar click on the item in the inventory window,
+ then click on the box in the shortcut-window which should be associated with
+ the item. To reorder items within the shortcut-window simply click and drag
+ them between the boxes. To remove items you simply drag them outside of the
+ window and drop them.
+
+ Currently only stackable items like food, but not weapons or clothes can be
+ used with the shortcut window.

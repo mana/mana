@@ -30,12 +30,13 @@
 
 #include "../guichanfwd.h"
 
+#include "../utils/mutex.h"
+
 class BrowserBox;
 class Button;
 class ProgressBar;
 class ScrollArea;
 
-struct SDL_mutex;
 struct SDL_Thread;
 
 /**
@@ -88,7 +89,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener
 
     int updateState;
 
- protected:
+private:
     void download();
 
     /**
@@ -133,6 +134,12 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     /** The file currently downloading. */
     std::string mCurrentFile;
 
+    /** The new label caption to be set in the logic method. */
+    std::string mNewLabelCaption;
+
+    /** The mutex used to guard access to mNewLabelCaption. */
+    Mutex mLabelMutex;
+
     /** The Adler32 checksum of the file currently downloading. */
     unsigned long mCurrentChecksum;
 
@@ -164,7 +171,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     Button *mCancelButton;        /**< Button to stop the update process. */
     Button *mPlayButton;          /**< Button to start playing. */
     ProgressBar *mProgressBar;    /**< Update progress bar. */
-    BrowserBox* mBrowserBox;      /**< Box to display news. */
+    BrowserBox *mBrowserBox;      /**< Box to display news. */
     ScrollArea *mScrollArea;      /**< Used to scroll news box. */
 };
 

@@ -53,6 +53,7 @@ InventoryWindow::InventoryWindow():
     Window(_("Inventory")),
     mSplit(false)
 {
+    setWindowName("Inventory");
     setResizable(false);
     setCloseButton(true);
     // LEEOR/TODO: Since this window is not resizable, do we really need to set these
@@ -60,7 +61,7 @@ InventoryWindow::InventoryWindow():
     setMinWidth(375);
     setMinHeight(283);
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 375, 283);
+    setDefaultSize(115, 30, 375, 283);
     addKeyListener(this);
 
     mUseButton = new Button(_("Use"), "use", this);
@@ -82,7 +83,7 @@ InventoryWindow::InventoryWindow():
     layout.setColWidth(2, 48);
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    loadWindowState("Inventory");
+    loadWindowState();
 }
 
 void InventoryWindow::logic()

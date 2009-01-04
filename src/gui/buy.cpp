@@ -40,6 +40,7 @@ BuyDialog::BuyDialog():
     Window(_("Buy")),
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
+    setWindowName("Buy");
     setResizable(true);
     setMinWidth(260);
     setMinHeight(230);
@@ -85,7 +86,7 @@ BuyDialog::BuyDialog():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    loadWindowState("Buy");
+    loadWindowState();
     setLocationRelativeTo(getParent());
 }
 

@@ -35,8 +35,7 @@ class Properties
         /**
          * Destructor.
          */
-        virtual
-        ~Properties() {}
+        virtual ~Properties() {}
 
         /**
          * Get a map property.
@@ -46,8 +45,8 @@ class Properties
          * @return the value of the given property or the given default when it
          *         doesn't exist.
          */
-        const std::string&
-        getProperty(const std::string &name, const std::string &def = "") const
+        const std::string &getProperty(const std::string &name,
+                                       const std::string &def = "") const
         {
             PropertyMap::const_iterator i = mProperties.find(name);
             return (i != mProperties.end()) ? i->second : def;
@@ -61,7 +60,7 @@ class Properties
          * @return the value of the given property, or 0.0f when it doesn't
          *         exist.
          */
-        float getFloatProperty(std::string const &name, float def = 0.0f) const
+        float getFloatProperty(const std::string &name, float def = 0.0f) const
         {
             PropertyMap::const_iterator i = mProperties.find(name);
             float ret = def;
@@ -81,8 +80,7 @@ class Properties
          * @return <code>true</code> when a property is defined,
          *         <code>false</code> otherwise.
          */
-        bool
-        hasProperty(const std::string &name) const
+        bool hasProperty(const std::string &name) const
         {
             return (mProperties.find(name) != mProperties.end());
         }
@@ -93,8 +91,7 @@ class Properties
          * @param name  The name of the property.
          * @param value The value of the property.
          */
-        void
-        setProperty(const std::string &name, const std::string &value)
+        void setProperty(const std::string &name, const std::string &value)
         {
             mProperties[name] = value;
         }

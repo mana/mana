@@ -29,6 +29,7 @@
 
 PartyWindow::PartyWindow() : Window(_("Party"))
 {
+    setWindowName("Party");
     setVisible(false);
     setResizable(false);
     setCaption(_("Party"));
@@ -37,7 +38,7 @@ PartyWindow::PartyWindow() : Window(_("Party"))
     setMinHeight(200);
     setDefaultSize(620, 300, 110, 200);
 
-    loadWindowState("Party");
+    loadWindowState();
 }
 
 PartyWindow::~PartyWindow()

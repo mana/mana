@@ -24,12 +24,17 @@
 #include "configuration.h"
 #include "log.h"
 
+#include <cassert>
+
 int Joystick::joystickCount = 0;
 
 void Joystick::init()
 {
     SDL_InitSubSystem(SDL_INIT_JOYSTICK);
-    //SDL_JoystickEventState(SDL_ENABLE);
+
+    // Have SDL call SDL_JoystickUpdate() automatically
+    SDL_JoystickEventState(SDL_ENABLE);
+
     joystickCount = SDL_NumJoysticks();
     logger->log("%i joysticks/gamepads found", joystickCount);
     for (int i = 0; i < joystickCount; i++)
@@ -37,11 +42,11 @@ void Joystick::init()
 }
 
 Joystick::Joystick(int no):
-    mDirection(0), mCalibrating(false)
+    mDirection(0),
+    mCalibrating(false),
+    mEnabled(false)
 {
-    // TODO Bail out here?
-    if (no > joystickCount)
-        return;
+    assert(no < joystickCount);
 
     mJoystick = SDL_JoystickOpen(no);
 
@@ -66,14 +71,12 @@ Joystick::Joystick(int no):
 
 Joystick::~Joystick()
 {
-        SDL_JoystickClose(mJoystick);
+    SDL_JoystickClose(mJoystick);
 }
 
 void Joystick::update()
 {
     mDirection = 0;
-
-    SDL_JoystickUpdate();
 
     // When calibrating, don't bother the outside with our state
     if (mCalibrating) {
@@ -81,35 +84,26 @@ void Joystick::update()
         return;
     };
 
-    if (!mEnabled) return;
+    if (!mEnabled)
+        return;
 
     // X-Axis
     int position = SDL_JoystickGetAxis(mJoystick, 0);
     if (position >= mRightTolerance)
-    {
         mDirection |= RIGHT;
-    }
     else if (position <= mLeftTolerance)
-    {
         mDirection |= LEFT;
-    }
 
     // Y-Axis
     position = SDL_JoystickGetAxis(mJoystick, 1);
     if (position <= mUpTolerance)
-    {
         mDirection |= UP;
-    }
     else if (position >= mDownTolerance)
-    {
         mDirection |= DOWN;
-    }
 
     // Buttons
     for (int i = 0; i < MAX_BUTTONS; i++)
-    {
         mButtons[i] = (SDL_JoystickGetButton(mJoystick, i) == 1);
-    }
 }
 
 void Joystick::startCalibration()
@@ -126,24 +120,16 @@ void Joystick::doCalibration()
     // X-Axis
     int position = SDL_JoystickGetAxis(mJoystick, 0);
     if (position > mRightTolerance)
-    {
         mRightTolerance = position;
-    }
     else if (position < mLeftTolerance)
-    {
         mLeftTolerance = position;
-    }
 
     // Y-Axis
     position = SDL_JoystickGetAxis(mJoystick, 1);
     if (position > mDownTolerance)
-    {
         mDownTolerance = position;
-    }
     else if (position < mUpTolerance)
-    {
         mUpTolerance = position;
-    }
 }
 
 void Joystick::finishCalibration()
@@ -157,5 +143,5 @@ void Joystick::finishCalibration()
 
 bool Joystick::buttonPressed(unsigned char no) const
 {
-    return (no < MAX_BUTTONS) ? mButtons[no] : false;
+    return (mEnabled && no < MAX_BUTTONS) ? mButtons[no] : false;
 }

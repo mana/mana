@@ -153,8 +153,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          *
          * @return The parent window or <code>NULL</code> if there is none.
          */
-        Window*
-        getParentWindow() { return mParent; }
+        Window *getParentWindow() { return mParent; }
 
         /**
          * Schedule this window for deletion. It will be deleted at the start
@@ -192,13 +191,23 @@ class Window : public gcn::Window, gcn::WidgetListener
         void mouseExited(gcn::MouseEvent &event);
 
         /**
+         * Sets the name of the window. This is not the window title.
+         */
+        void setWindowName(const std::string &name) { mWindowName = name; }
+
+        /**
+         * Returns the name of the window. This is not the window title.
+         */
+        const std::string &getWindowName() { return mWindowName; }
+
+        /**
          * Reads the position (and the size for resizable windows) in the
          * configuration based on the given string.
          * Uses the default values when config values are missing.
          * Don't forget to set these default values and resizable before
          * calling this function.
          */
-        void loadWindowState(std::string const &);
+        void loadWindowState();
 
         /**
          * Set the default win pos and size.
@@ -267,7 +276,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
         Layout *mLayout;           /**< Layout handler */
-        std::string mConfigName;   /**< Name used for saving window-related data */
+        std::string mWindowName;   /**< Name of the window */
         bool mShowTitle;           /**< Window has a title bar */
         bool mModal;               /**< Window is modal */
         bool mCloseButton;         /**< Window has a close button */

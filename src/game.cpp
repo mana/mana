@@ -47,7 +47,6 @@
 #include "gui/buddywindow.h"
 #include "gui/buy.h"
 #include "gui/buysell.h"
-//#include "gui/chargedialog.h"
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/debugwindow.h"
@@ -120,11 +119,9 @@ NpcTextDialog *npcTextDialog;
 NpcPostDialog *npcPostDialog;
 SkillDialog *skillDialog;
 MagicDialog *magicDialog;
-//NewSkillDialog *newSkillWindow;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
-//ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
@@ -208,11 +205,9 @@ void createGuiWindows()
     npcPostDialog = new NpcPostDialog();
     skillDialog = new SkillDialog();
     magicDialog = new MagicDialog();
-    //newSkillWindow = new NewSkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    //chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow;
     buddyWindow = new BuddyWindow();
     guildWindow = new GuildWindow();
@@ -222,17 +217,21 @@ void createGuiWindows()
     partyWindow = new PartyWindow();
 
     // Initialize window positions
-    //chargeDialog->setPosition(
-    //        graphics->getWidth() - 5 - chargeDialog->getWidth(),
-    //        graphics->getHeight() - chargeDialog->getHeight() - 15);
-
     //buddyWindow->setPosition(10, minimap->getHeight() + 30);
 
     // Set initial window visibility
-    chatWindow->setVisible(true);
-    miniStatusWindow->setVisible(true);
-    menuWindow->setVisible(true);
-    itemShortcutWindow->setVisible(true);
+    chatWindow->setVisible((bool) config.getValue(
+        chatWindow->getWindowName() + "Visible", true));
+    miniStatusWindow->setVisible((bool) config.getValue(
+        miniStatusWindow->getWindowName() + "Visible",
+        true));
+    buyDialog->setVisible(false);
+    sellDialog->setVisible(false);
+    tradeWindow->setVisible(false);
+    menuWindow->setVisible((bool) config.getValue(
+        menuWindow->getWindowName() + "Visible", true));
+    itemShortcutWindow->setVisible((bool) config.getValue(
+        itemShortcutWindow->getWindowName() + "Visible", true));
 
     if (config.getValue("logToChat", 0))
     {
@@ -261,8 +260,6 @@ void destroyGuiWindows()
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
-    //delete chargeDialog;
-    //delete newSkillWindow;
     delete tradeWindow;
     delete buddyWindow;
     delete guildWindow;
@@ -316,9 +313,7 @@ Game::Game():
     // TODO: The user should be able to choose which one to use
     // Open the first device
     if (Joystick::getNumberOfJoysticks() > 0)
-    {
         joystick = new Joystick(0);
-    }
 
     Net::registerHandler(mBeingHandler.get());
     Net::registerHandler(mBuySellHandler.get());
@@ -358,11 +353,14 @@ Game::~Game()
     SDL_RemoveTimer(mSecondsCounterId);
 }
 
-bool saveScreenshot(SDL_Surface *screenshot)
+static bool saveScreenshot()
 {
     static unsigned int screenshotCount = 0;
 
+    SDL_Surface *screenshot = graphics->getScreenshot();
+
     // Search for an unused screenshot name
+    std::stringstream filenameSuffix;
     std::stringstream filename;
     std::fstream testExists;
     bool found = false;
@@ -370,29 +368,37 @@ bool saveScreenshot(SDL_Surface *screenshot)
     do {
         screenshotCount++;
         filename.str("");
+        filenameSuffix.str("");
+        filename << PHYSFS_getUserDir();
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
-        filename << PHYSFS_getUserDir() << ".tmw/";
+        filenameSuffix << ".tmw/";
 #elif defined __APPLE__
-        filename << PHYSFS_getUserDir() << "Desktop/";
+        filenameSuffix << "Desktop/";
 #endif
-        filename << "TMW_Screenshot_" << screenshotCount << ".png";
+        filenameSuffix << "TMW_Screenshot_" << screenshotCount << ".png";
+        filename << filenameSuffix.str();
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
         testExists.close();
     } while (!found);
 
-    if (ImageWriter::writePNG(screenshot, filename.str()))
+    const bool success = ImageWriter::writePNG(screenshot, filename.str());
+
+    if (success)
     {
         std::stringstream chatlogentry;
-        chatlogentry << "Screenshot saved to " << filename.str().c_str();
+        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str();
         chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
-        return true;
     }
     else
     {
         chatWindow->chatLog("Saving screenshot failed!", BY_SERVER);
-        return false;
+        logger->log("Error: could not save screenshot.");
     }
+
+    SDL_FreeSurface(screenshot);
+
+    return success;
 }
 
 void Game::optionChanged(const std::string &name)
@@ -462,9 +468,9 @@ void Game::logic()
         {
             if (!disconnectedDialog)
             {
-                disconnectedDialog = new
-                    OkDialog("Network Error",
-                    "The connection to the server was lost, the program will now quit");
+                disconnectedDialog = new OkDialog("Network Error",
+                        "The connection to the server was lost, "
+                        "the program will now quit");
                 disconnectedDialog->addActionListener(&exitListener);
                 disconnectedDialog->requestMoveToTop();
             }
@@ -474,10 +480,8 @@ void Game::logic()
 
 void Game::handleInput()
 {
-    if (joystick != NULL)
-    {
+    if (joystick)
         joystick->update();
-    }
 
     // Events
     SDL_Event event;
@@ -530,17 +534,6 @@ void Game::handleInput()
                     used = true;
                     break;
 
-                case SDLK_F2: requestedWindow = statusWindow; break;
-                case SDLK_F3: requestedWindow = inventoryWindow; break;
-                case SDLK_F4: requestedWindow = equipmentWindow; break;
-                case SDLK_F5: requestedWindow = skillDialog; break;
-                case SDLK_F6: requestedWindow = minimap; break;
-                case SDLK_F7: requestedWindow = chatWindow; break;
-                case SDLK_F8: requestedWindow = itemShortcutWindow; break;
-                case SDLK_F9: requestedWindow = setupWindow; break;
-                case SDLK_F10: requestedWindow = debugWindow; break;
-                //case SDLK_F11: requestedWindow = newSkillWindow; break;
-
                 case SDLK_RETURN:
                     // Input chat window
                     if (chatWindow->isInputFocused() ||
@@ -564,10 +557,12 @@ void Game::handleInput()
                     {
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
                     }
-/*                    else if (guildWindow->isVisible())
+                    /*
+                    else if (guildWindow->isVisible())
                     {
                         // TODO: Check if a dialog is open and close it if so
-                    }*/
+                    }
+                    */
                     // Else, open the chat edit box
                     else
                     {
@@ -596,15 +591,19 @@ void Game::handleInput()
                     && !guildWindow->isWindowFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-                // Checks if any item shortcut is pressed.
-                for (int i = KeyboardConfig::KEY_SHORTCUT_0;
-                    i <= KeyboardConfig::KEY_SHORTCUT_9;
-                    i++)
+                // Do not activate shortcuts if tradewindow is visible
+                if (!tradeWindow->isVisible())
                 {
-                    if (tKey == i) {
-                        itemShortcut->useItem(
-                                i - KeyboardConfig::KEY_SHORTCUT_0);
-                        break;
+                    // Checks if any item shortcut is pressed.
+                    for (int i = KeyboardConfig::KEY_SHORTCUT_0;
+                        i <= KeyboardConfig::KEY_SHORTCUT_9;
+                        i++)
+                    {
+                        if (tKey == i && !used) {
+                            itemShortcut->useItem(
+                                    i - KeyboardConfig::KEY_SHORTCUT_0);
+                            break;
+                        }
                     }
                 }
                 switch (tKey) {
@@ -669,6 +668,34 @@ void Game::handleInput()
                             buddyWindow->setVisible(false);
                         }
                         break;
+
+                    case KeyboardConfig::KEY_WINDOW_STATUS:
+                        requestedWindow = statusWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_INVENTORY:
+                        requestedWindow = inventoryWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_EQUIPMENT:
+                        requestedWindow = equipmentWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SKILL:
+                        requestedWindow = skillDialog;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_MINIMAP:
+                        requestedWindow = minimap;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_CHAT:
+                        requestedWindow = chatWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SHORTCUT:
+                        requestedWindow = itemShortcutWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SETUP:
+                        requestedWindow = setupWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_DEBUG:
+                        requestedWindow = debugWindow;
+                        break;
                 }
             }
 
@@ -694,15 +721,7 @@ void Game::handleInput()
                 {
                     case SDLK_p:
                         // Screenshot (picture, hence the p)
-                        {
-                            SDL_Surface *screenshot = graphics->getScreenshot();
-                            if (!saveScreenshot(screenshot))
-                            {
-                                logger->log(
-                                        "Error: could not save Screenshot.");
-                            }
-                            SDL_FreeSurface(screenshot);
-                        }
+                        saveScreenshot();
                         used = true;
                         break;
 
@@ -775,11 +794,11 @@ void Game::handleInput()
         }
 
     } // End while
+
     // If the user is configuring the keys then don't respond.
     if (!keyboard.isEnabled())
-    {
-       return;
-    }
+        return;
+
     // Moving player around
     if (player_node->mAction != Being::DEAD &&
         !chatWindow->isInputFocused())
@@ -816,7 +835,8 @@ void Game::handleInput()
             direction |= Being::RIGHT;
         }
 
-        // First if player is pressing key for the direction he is already going
+        // First if player is pressing key for the direction he is already
+        // going
         if (direction == player_node->getWalkingDir())
         {
             player_node->setWalkingDir(direction);
@@ -838,8 +858,8 @@ void Game::handleInput()
         // Target the nearest player if 'q' is pressed
         if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
         {
-            Being *target =
-                beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
+            Being *target = beingManager->findNearestLivingBeing(
+                    player_node, 20, Being::PLAYER);
 
             if (target)
             {
@@ -850,8 +870,8 @@ void Game::handleInput()
         // Target the nearest monster if 'a' pressed
         if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST))
         {
-            Being *target =
-                beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
+            Being *target = beingManager->findNearestLivingBeing(
+                    x, y, 20, Being::MONSTER);
 
             if (target)
             {

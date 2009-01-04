@@ -34,8 +34,9 @@ Minimap::Minimap():
     Window(_("MiniMap")),
     mMapImage(NULL)
 {
-    setDefaultSize(0, 0, 100, 100);
-    loadWindowState("MiniMap");
+    setWindowName("MiniMap");
+    setDefaultSize(5, 25, 100, 100);
+    loadWindowState();
     // LEEOR: The Window class needs to modified to accept
     // setAlignment calls.
     setAlignment(gcn::Graphics::CENTER);
@@ -44,49 +45,50 @@ Minimap::Minimap():
 Minimap::~Minimap()
 {
     if (mMapImage)
-    {
         mMapImage->decRef();
-    }
 }
 
 void Minimap::setMapImage(Image *img)
 {
     if (mMapImage)
-    {
         mMapImage->decRef();
-    }
 
     mMapImage = img;
 
-    if (mMapImage)
-    {
+    if (mMapImage) {
         mMapImage->setAlpha(0.7);
-        setSize( mMapImage->getWidth() + 6, mMapImage->getHeight() + 23 );
-        setVisible(true);
+        setContentSize(mMapImage->getWidth(), mMapImage->getHeight());
     }
-    else
-    {
-        setVisible(false);
-    }
-
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
 
+    const gcn::Rectangle a = getChildrenArea();
+
+    int mapOriginX = a.x;
+    int mapOriginY = a.y;
+
     if (mMapImage)
     {
-        static_cast<Graphics*>(graphics)->drawImage(
-                mMapImage, getPadding(), getTitleBarHeight());
+        if (mMapImage->getWidth() > a.width ||
+            mMapImage->getHeight() > a.height)
+        {
+            const Vector &pos = player_node->getPosition();
+            mapOriginX += (a.width - (int) (pos.x / 32)) / 2;
+            mapOriginY += (a.height - (int) (pos.y / 32)) / 2;
+        }
+        static_cast<Graphics*>(graphics)->
+            drawImage(mMapImage, mapOriginX, mapOriginY);
     }
 
-    Beings &beings = beingManager->getAll();
-    BeingIterator bi;
+    const Beings &beings = beingManager->getAll();
+    Beings::const_iterator bi;
 
     for (bi = beings.begin(); bi != beings.end(); bi++)
     {
-        Being *being = (*bi);
+        const Being *being = (*bi);
         int dotSize = 2;
 
         switch (being->getType()) {
@@ -116,8 +118,8 @@ void Minimap::draw(gcn::Graphics *graphics)
         const Vector &pos = being->getPosition();
 
         graphics->fillRectangle(gcn::Rectangle(
-                    (int) pos.x / 64 + getPadding() - offset,
-                    (int) pos.y / 64 + getTitleBarHeight() - offset,
+                    (int) pos.x / 64 + mapOriginX - offset,
+                    (int) pos.x / 64 + mapOriginY - offset,
                     dotSize, dotSize));
     }
 }

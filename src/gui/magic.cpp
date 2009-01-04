@@ -35,8 +35,9 @@
 MagicDialog::MagicDialog():
     Window(_("Magic"))
 {
+    setWindowName("Magic");
     setCloseButton(true);
-    setDefaultSize(255, 25, 175, 225);
+    setDefaultSize(255, 30, 175, 225);
 
     gcn::Button *spellButton1 = new Button(_("Cast Test Spell 1"), "spell_1", this);
     gcn::Button *spellButton2 = new Button(_("Cast Test Spell 2"), "spell_2", this);
@@ -53,7 +54,7 @@ MagicDialog::MagicDialog():
     update();
 
     setLocationRelativeTo(getParent());
-    loadWindowState(_("Magic"));
+    loadWindowState();
 }
 
 MagicDialog::~MagicDialog()

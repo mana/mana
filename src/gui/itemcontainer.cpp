@@ -82,8 +82,7 @@ ItemContainer::~ItemContainer()
     mSelImg->decRef();
 }
 
-void
-ItemContainer::draw(gcn::Graphics *graphics)
+void ItemContainer::draw(gcn::Graphics *graphics)
 {
     Graphics *g = static_cast<Graphics*>(graphics);
 
@@ -147,8 +146,7 @@ ItemContainer::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-ItemContainer::selectNone()
+void ItemContainer::selectNone()
 {
     setSelectedItem(NULL);
 }
@@ -324,8 +322,7 @@ int ItemContainer::getSlotIndex(const int posX, const int posY) const
     return Inventory::NO_SLOT_INDEX;
 }
 
-void
-ItemContainer::keyAction()
+void ItemContainer::keyAction()
 {
     // If there is no highlight then return.
     if (!mHighlightedItem)
@@ -362,8 +359,7 @@ ItemContainer::keyAction()
     }
 }
 
-void
-ItemContainer::moveHighlight(int direction)
+void ItemContainer::moveHighlight(int direction)
 {
     if (!mHighlightedItem)
     {

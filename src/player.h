@@ -28,12 +28,6 @@ class Graphics;
 class Map;
 class Guild;
 
-enum Gender {
-    GENDER_MALE = 0,
-    GENDER_FEMALE = 1,
-    GENDER_UNSPECIFIED = 2
-};
-
 /**
  * A player being. Players have their name drawn beneath them. This class also
  * implements player-specific loading of base sprite, hair sprite and equipment
@@ -61,24 +55,7 @@ class Player : public Being
         void setGender(Gender);
 
         /**
-         * Gets the hair color for this player.
-         */
-        int getHairColor() const
-        { return mHairColor; }
-
-        /**
-         * Gets the hair style for this player.
-         */
-        int getHairStyle() const
-        { return mHairStyle; }
-
-        /**
          * Sets the hair style and color for this player.
-         *
-         * NOTE: This method was necessary for convenience in the 0.0 client.
-         * It should be removed here since the server can provide the hair ID
-         * and coloring the same way it does for other equipment pieces. Then
-         * Being::setSprite can be used instead.
          */
         void setHairStyle(int style, int color);
 
@@ -139,10 +116,15 @@ class Player : public Being
         // Character guild information
         std::map<int, Guild*> mGuilds;
 
+        /**
+         * Triggers a visual/audio effect, such as `level up'
+         *
+         * \param effect_id ID of the effect to trigger
+         */
+        virtual void
+        triggerEffect(int effectId) { internalTriggerEffect(effectId, true, true); }
+
     private:
-        Gender mGender;
-        Uint8 mHairStyle;
-        Uint8 mHairColor;
         bool mInParty;
 };
 

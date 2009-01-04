@@ -129,12 +129,13 @@ Window::~Window()
 {
     logger->log("UNLOAD: Window::~Window(\"%s\")", getCaption().c_str());
 
-    std::string const &name = mConfigName;
+    const std::string &name = mWindowName;
     if (!name.empty())
     {
         // Saving X, Y and Width and Height for resizables in the config
         config.setValue(name + "WinX", getX());
         config.setValue(name + "WinY", getY());
+        config.setValue(name + "Visible", isVisible());
 
         if (mGrip)
         {
@@ -179,9 +180,8 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics *graphics)
 {
-    if(mAlphaChanged)
+    if (mAlphaChanged)
         setGuiAlpha();
-
 
     Graphics *g = static_cast<Graphics*>(graphics);
 
@@ -248,7 +248,7 @@ void Window::setMaxHeight(unsigned int height)
 
 void Window::setResizable(bool r)
 {
-    if ((bool)mGrip == r) return;
+    if ((bool) mGrip == r) return;
 
     if (r)
     {
@@ -269,7 +269,7 @@ void Window::widgetResized(const gcn::Event &event)
 {
     if (mGrip)
     {
-        gcn::Rectangle const &area = getChildrenArea();
+        const gcn::Rectangle area = getChildrenArea();
         mGrip->setPosition(getWidth() - mGrip->getWidth() - area.x,
                            getHeight() - mGrip->getHeight() - area.y);
     }
@@ -467,12 +467,14 @@ void Window::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void Window::loadWindowState(std::string const &name)
+void Window::loadWindowState()
 {
-    mConfigName = name;
+    const std::string &name = mWindowName;
+    assert(!name.empty());
 
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
                 (int) config.getValue(name + "WinY", mDefaultY));
+    setVisible((bool) config.getValue(name + "Visible", false));
 
     if (mGrip)
     {
@@ -497,7 +499,7 @@ void Window::setDefaultSize(int defaultX, int defaultY,
 void Window::resetToDefaultSize()
 {
     setPosition(mDefaultX, mDefaultY);
-    setContentSize(mDefaultWidth, mDefaultHeight);
+    setSize(mDefaultWidth, mDefaultHeight);
 }
 
 int Window::getResizeHandles(gcn::MouseEvent &event)

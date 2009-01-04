@@ -118,41 +118,34 @@ class ChatWindow : public Window,
          * @param msg  The message text which is to be sent.
          *
          */
-        void chatSend(std::string const &msg);
+        void chatSend(const std::string &msg);
 
         /** Called to remove the channel from the channel manager */
-        void
-        removeChannel(short channelId);
+        void removeChannel(short channelId);
 
-        void
-        removeChannel(const std::string &channelName);
+        void removeChannel(const std::string &channelName);
 
-        void
-        removeChannel(Channel *channel);
+        void removeChannel(Channel *channel);
 
         /** Called to create a new channel tab */
-        void
-        createNewChannelTab(const std::string &channelName);
+        void createNewChannelTab(const std::string &channelName);
 
         /** Called to output text to a specific channel */
-        void
-        sendToChannel(short channel, const std::string &user, const std::string &msg);
+        void sendToChannel(short channel,
+                           const std::string &user,
+                           const std::string &msg);
 
         /** Called when key is pressed */
-        void
-        keyPressed(gcn::KeyEvent &event);
+        void keyPressed(gcn::KeyEvent &event);
 
         /** Called to set current text */
-        void
-        setInputText(std::string input_str);
+        void setInputText(std::string input_str);
 
         /** Override to reset mTmpVisible */
-        void
-        setVisible(bool visible);
+        void setVisible(bool visible);
 
         /** Check if tab with that name already exists */
-        bool
-        tabExists(const std::string &tabName);
+        bool tabExists(const std::string &tabName);
 
         void logic();
 

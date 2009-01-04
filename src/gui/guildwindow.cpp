@@ -49,6 +49,7 @@ GuildWindow::GuildWindow():
     Window(_("Guild")),
     mFocus(false)
 {
+    setWindowName("Guild");
     setCaption(_("Guild"));
     setResizable(false);
     setCloseButton(true);
@@ -73,7 +74,7 @@ GuildWindow::GuildWindow():
     layout.setColWidth(0, 48);
     layout.setColWidth(1, 65);
 
-    loadWindowState("Guild");
+    loadWindowState();
 }
 
 GuildWindow::~GuildWindow()

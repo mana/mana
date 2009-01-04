@@ -43,9 +43,8 @@ const unsigned int DEFAULT_TILE_HEIGHT = 32;
  * Inflates either zlib or gzip deflated memory. The inflated memory is
  * expected to be freed by the caller.
  */
-int
-inflateMemory(unsigned char *in, unsigned int inLength,
-              unsigned char *&out, unsigned int &outLength)
+int inflateMemory(unsigned char *in, unsigned int inLength,
+                  unsigned char *&out, unsigned int &outLength)
 {
     int bufferSize = 256 * 1024;
     int ret;
@@ -109,9 +108,8 @@ inflateMemory(unsigned char *in, unsigned int inLength,
     return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
 }
 
-int
-inflateMemory(unsigned char *in, unsigned int inLength,
-              unsigned char *&out)
+int inflateMemory(unsigned char *in, unsigned int inLength,
+                  unsigned char *&out)
 {
     unsigned int outLength = 0;
     int ret = inflateMemory(in, inLength, out, outLength);
@@ -143,8 +141,7 @@ inflateMemory(unsigned char *in, unsigned int inLength,
     return outLength;
 }
 
-Map*
-MapReader::readMap(const std::string &filename)
+Map *MapReader::readMap(const std::string &filename)
 {
     // Load the file through resource manager
     ResourceManager *resman = ResourceManager::getInstance();
@@ -201,8 +198,7 @@ MapReader::readMap(const std::string &filename)
     return map;
 }
 
-Map*
-MapReader::readMap(xmlNodePtr node, const std::string &path)
+Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
 {
     // Take the filename off the path
     const std::string pathDir = path.substr(0, path.rfind("/") + 1);
@@ -280,8 +276,7 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
     return map;
 }
 
-void
-MapReader::readProperties(xmlNodePtr node, Properties* props)
+void MapReader::readProperties(xmlNodePtr node, Properties *props)
 {
     for_each_xml_child_node(childNode, node)
     {
@@ -311,8 +306,7 @@ static void setTile(Map *map, MapLayer *layer, int x, int y, int gid)
     }
 }
 
-void
-MapReader::readLayer(xmlNodePtr node, Map *map)
+void MapReader::readLayer(xmlNodePtr node, Map *map)
 {
     // Layers are not necessarily the same size as the map
     const int w = XML::getProperty(node, "width", map->getWidth());
@@ -406,7 +400,13 @@ MapReader::readLayer(xmlNodePtr node, Map *map)
                     setTile(map, layer, x, y, gid);
 
                     x++;
-                    if (x == w) {x = 0; y++;}
+                    if (x == w) {
+                        x = 0; y++;
+
+                        // When we're done, don't crash on too much data
+                        if (y == h)
+                            break;
+                    }
                 }
                 free(binData);
             }
@@ -440,10 +440,9 @@ MapReader::readLayer(xmlNodePtr node, Map *map)
     }
 }
 
-Tileset*
-MapReader::readTileset(xmlNodePtr node,
-                       const std::string &path,
-                       Map *map)
+Tileset *MapReader::readTileset(xmlNodePtr node,
+                                const std::string &path,
+                                Map *map)
 {
     if (xmlHasProp(node, BAD_CAST "source"))
     {

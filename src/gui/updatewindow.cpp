@@ -47,7 +47,7 @@
 /**
  * Calculates the Alder-32 checksum for the given file.
  */
-unsigned long fadler32(FILE *file)
+static unsigned long fadler32(FILE *file)
 {
     // Obtain file size
     fseek(file, 0, SEEK_END);
@@ -146,15 +146,9 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 UpdaterWindow::~UpdaterWindow()
 {
     if (mThread)
-    {
-         SDL_WaitThread(mThread, NULL);
-         mThread = NULL;
-    }
+        SDL_WaitThread(mThread, NULL);
 
-    if (mMemoryBuffer)
-    {
-        free(mMemoryBuffer);
-    }
+    free(mMemoryBuffer);
 
     // Remove possibly leftover temporary download
     ::remove((mUpdatesDir + "/download.temp").c_str());
@@ -169,8 +163,9 @@ void UpdaterWindow::setProgress(float p)
 
 void UpdaterWindow::setLabel(const std::string &str)
 {
-    mLabel->setCaption(str);
-    mLabel->adjustSize();
+    // Do delayed label text update, since Guichan isn't thread-safe
+    MutexLocker lock(&mLabelMutex);
+    mNewLabelCaption = str;
 }
 
 void UpdaterWindow::enable()
@@ -315,6 +310,17 @@ int UpdaterWindow::downloadThread(void *ptr)
             curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
             curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15);
 
+            struct curl_slist *pHeaders = NULL;
+            if (uw->mDownloadStatus != UPDATE_RESOURCES)
+            {
+                // Make sure the resources2.txt and news.txt aren't cached,
+                // in order to always get the latest version.
+                pHeaders = curl_slist_append(pHeaders, "pragma: no-cache");
+                pHeaders =
+                    curl_slist_append(pHeaders, "Cache-Control: no-cache");
+                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, pHeaders);
+            }
+
             if ((res = curl_easy_perform(curl)) != 0)
             {
                 uw->mDownloadStatus = UPDATE_ERROR;
@@ -338,6 +344,11 @@ int UpdaterWindow::downloadThread(void *ptr)
             }
 
             curl_easy_cleanup(curl);
+
+            if (uw->mDownloadStatus != UPDATE_RESOURCES)
+            {
+                curl_slist_free_all(pHeaders);
+            }
 
             if (!uw->mStoreInMemory)
             {
@@ -413,6 +424,17 @@ void UpdaterWindow::logic()
     // Update Scroll logic
     mScrollArea->logic();
 
+    // Synchronize label caption when necessary
+    {
+        MutexLocker lock(&mLabelMutex);
+
+        if (mLabel->getCaption() != mNewLabelCaption)
+        {
+            mLabel->setCaption(mNewLabelCaption);
+            mLabel->adjustSize();
+        }
+    }
+
     switch (mDownloadStatus)
     {
         case UPDATE_ERROR:
@@ -434,7 +456,8 @@ void UpdaterWindow::logic()
             mBrowserBox->addRow("##1  It is strongly recommended that");
             mBrowserBox->addRow("##1  you try again later");
             mBrowserBox->addRow(mCurlError);
-            mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
+            mScrollArea->setVerticalScrollAmount(
+                    mScrollArea->getVerticalMaxScroll());
             mDownloadStatus = UPDATE_COMPLETE;
             break;
         case UPDATE_NEWS:

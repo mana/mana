@@ -43,8 +43,9 @@
 SkillDialog::SkillDialog():
     Window(_("Skills"))
 {
+    setWindowName("Skills");
     setCloseButton(true);
-    setDefaultSize(windowContainer->getWidth() - 255, 25, 275, 425);
+    setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
 
     TabbedArea *panel = new TabbedArea();
     panel->setDimension(gcn::Rectangle(5, 5, 270, 420));
@@ -69,7 +70,7 @@ SkillDialog::SkillDialog():
     update();
 
     setLocationRelativeTo(getParent());
-    loadWindowState(_("Skills"));
+    loadWindowState();
 }
 
 SkillDialog::~SkillDialog()

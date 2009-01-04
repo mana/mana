@@ -1,87 +1,39 @@
-<?xml version="1.0"?>
-<!DOCTYPE CodeBlocks_project_file>
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_project_file>
-	<FileVersion major="1" minor="1"/>
+	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="tmxcopy"/>
-		<Option makefile="Makefile"/>
-		<Option makefile_is_custom="0"/>
-		<Option active_target="0"/>
-		<Option compiler="0"/>
+		<Option title="untitled" />
+		<Option pch_mode="0" />
+		<Option compiler="gcc" />
 		<Build>
 			<Target title="default">
-				<Option output="tmxcopy.exe"/>
-				<Option working_dir="."/>
-				<Option object_output=".objs"/>
-				<Option deps_output=".deps"/>
-				<Option type="1"/>
-				<Option compiler="0"/>
-				<Option projectResourceIncludeDirsRelation="1"/>
+				<Option output="TMXCopy.exe" prefix_auto="0" extension_auto="0" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectResourceIncludeDirsRelation="1" />
+				<Linker>
+					<Add library="libxml2" />
+					<Add library="z" />
+				</Linker>
 			</Target>
 		</Build>
-		<Linker>
-			<Add library="libxml2"/>
-			<Add library="libz"/>
-		</Linker>
-		<Unit filename="base64.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="base64.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="main.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="map.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="map.hpp">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="tostring.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="xmlutils.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="xmlutils.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="zlibutils.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
-		<Unit filename="zlibutils.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-			<Option target="release"/>
-		</Unit>
+		<VirtualTargets>
+			<Add alias="All" targets="default;" />
+		</VirtualTargets>
+		<Unit filename="base64.cpp" />
+		<Unit filename="base64.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="map.cpp" />
+		<Unit filename="map.hpp" />
+		<Unit filename="tostring.h" />
+		<Unit filename="xmlutils.cpp" />
+		<Unit filename="xmlutils.h" />
+		<Unit filename="zlibutils.cpp" />
+		<Unit filename="zlibutils.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

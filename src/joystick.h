@@ -35,7 +35,12 @@ class Joystick
         /**
          * Directions, to be used as bitmask values.
          */
-        enum { UP = 1, DOWN = 2, LEFT = 4, RIGHT = 8 };
+        enum {
+            UP    = 1,
+            DOWN  = 2,
+            LEFT  = 4,
+            RIGHT = 8
+        };
 
         /**
          * Initializes the joystick subsystem.
@@ -55,33 +60,27 @@ class Joystick
 
         ~Joystick();
 
-        bool
-        isEnabled() const { return mEnabled; }
+        bool isEnabled() const { return mEnabled; }
 
-        void
-        setEnabled(bool enabled) { mEnabled = enabled; }
+        void setEnabled(bool enabled) { mEnabled = enabled; }
 
         /**
          * Updates the direction and button information.
          */
-        void
-        update();
+        void update();
 
-        void
-        startCalibration();
+        void startCalibration();
 
-        void
-        finishCalibration();
+        void finishCalibration();
 
-        bool
-        isCalibrating() const { return mCalibrating; }
+        bool isCalibrating() const { return mCalibrating; }
 
         bool buttonPressed(unsigned char no) const;
 
-        bool isUp() const { return mDirection & UP; };
-        bool isDown() const { return mDirection & DOWN; };
-        bool isLeft() const { return mDirection & LEFT; };
-        bool isRight() const { return mDirection & RIGHT; };
+        bool isUp() const { return mEnabled && (mDirection & UP); };
+        bool isDown() const { return mEnabled && (mDirection & DOWN); };
+        bool isLeft() const { return mEnabled && (mDirection & LEFT); };
+        bool isRight() const { return mEnabled && (mDirection & RIGHT); };
 
     protected:
         unsigned char mDirection;
@@ -97,4 +96,4 @@ class Joystick
         void doCalibration();
 };
 
-#endif
+#endif // _TMW_JOYSTICK_H

@@ -43,6 +43,7 @@ extern Window *helpWindow;
 extern Window *skillDialog;
 extern Window *magicDialog;
 extern Window *guildWindow;
+extern Window *itemShortcutWindow;
 
 Setup::Setup():
     Window(_("Setup"))
@@ -117,5 +118,6 @@ void Setup::action(const gcn::ActionEvent &event)
         skillDialog->resetToDefaultSize();
         magicDialog->resetToDefaultSize();
         guildWindow->resetToDefaultSize();
+        itemShortcutWindow->resetToDefaultSize();
     }
 }

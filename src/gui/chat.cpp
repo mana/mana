@@ -52,11 +52,12 @@ ChatWindow::ChatWindow():
     Window("Chat"),
     mTmpVisible(false)
 {
+    setWindowName("Chat");
     setResizable(true);
-    setDefaultSize(0, (windowContainer->getHeight() - 105), 400, 100);
+    setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
     setOpaque(false);
 
-    mChatInput = new ChatInput();
+    mChatInput = new ChatInput;
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
@@ -88,7 +89,7 @@ ChatWindow::ChatWindow():
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
 
-    loadWindowState("Chat");
+    loadWindowState();
 }
 
 ChatWindow::~ChatWindow()
@@ -97,7 +98,7 @@ ChatWindow::~ChatWindow()
     delete mChatTabs;
 }
 
-const std::string& ChatWindow::getFocused() const
+const std::string &ChatWindow::getFocused() const
 {
     return mChatTabs->getSelectedTab()->getCaption();
 }
@@ -151,8 +152,7 @@ void ChatWindow::logic()
     }
 }
 
-void
-ChatWindow::chatLog(std::string line, int own, std::string channelName)
+void ChatWindow::chatLog(std::string line, int own, std::string channelName)
 {
     if(channelName.empty())
         channelName = getFocused();
@@ -240,8 +240,7 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
     scroll->logic();
 }
 
-void
-ChatWindow::action(const gcn::ActionEvent &event)
+void ChatWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "chatinput")
     {
@@ -274,8 +273,7 @@ ChatWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-ChatWindow::requestChatFocus()
+void ChatWindow::requestChatFocus()
 {
     // Make sure chatWindow is visible
     if (!isVisible())
@@ -295,13 +293,12 @@ ChatWindow::requestChatFocus()
     mChatInput->requestFocus();
 }
 
-bool
-ChatWindow::isInputFocused()
+bool ChatWindow::isInputFocused()
 {
     return mChatInput->isFocused();
 }
 
-void ChatWindow::chatSend(std::string const &msg)
+void ChatWindow::chatSend(const std::string &msg)
 {
     if (msg.empty()) return;
 
@@ -327,20 +324,17 @@ void ChatWindow::chatSend(std::string const &msg)
     }
 }
 
-void
-ChatWindow::removeChannel(short channelId)
+void ChatWindow::removeChannel(short channelId)
 {
     removeChannel(channelManager->findById(channelId));
 }
 
-void
-ChatWindow::removeChannel(const std::string &channelName)
+void ChatWindow::removeChannel(const std::string &channelName)
 {
     removeChannel(channelManager->findByName(channelName));
 }
 
-void
-ChatWindow::removeChannel(Channel *channel)
+void ChatWindow::removeChannel(Channel *channel)
 {
     if (channel)
     {
@@ -356,8 +350,7 @@ ChatWindow::removeChannel(Channel *channel)
     }
 }
 
-void
-ChatWindow::createNewChannelTab(const std::string &channelName)
+void ChatWindow::createNewChannelTab(const std::string &channelName)
 {
     // Create new channel
     BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
@@ -384,8 +377,9 @@ ChatWindow::createNewChannelTab(const std::string &channelName)
     logic();
 }
 
-void
-ChatWindow::sendToChannel(short channelId, const std::string &user, const std::string &msg)
+void ChatWindow::sendToChannel(short channelId,
+                               const std::string &user,
+                               const std::string &msg)
 {
     Channel *channel = channelManager->findById(channelId);
     if (channel)
@@ -395,8 +389,7 @@ ChatWindow::sendToChannel(short channelId, const std::string &user, const std::s
     }
 }
 
-void
-ChatWindow::keyPressed(gcn::KeyEvent &event)
+void ChatWindow::keyPressed(gcn::KeyEvent &event)
 {
     if (event.getKey().getValue() == Key::DOWN &&
             mCurHist != mHistory.end())
@@ -421,15 +414,13 @@ ChatWindow::keyPressed(gcn::KeyEvent &event)
     }
 }
 
-void
-ChatWindow::setInputText(std::string input_str)
+void ChatWindow::setInputText(std::string input_str)
 {
      mChatInput->setText(input_str + " ");
      requestChatFocus();
 }
 
-void
-ChatWindow::setVisible(bool isVisible)
+void ChatWindow::setVisible(bool isVisible)
 {
      Window::setVisible(isVisible);
 
@@ -440,11 +431,8 @@ ChatWindow::setVisible(bool isVisible)
      mTmpVisible = false;
 }
 
-bool
-ChatWindow::tabExists(const std::string &tabName)
+bool ChatWindow::tabExists(const std::string &tabName)
 {
     Tab *tab = mChatTabs->getTab(tabName);
-    if (tab)
-        return true;
-    return false;
+    return tab != 0;
 }

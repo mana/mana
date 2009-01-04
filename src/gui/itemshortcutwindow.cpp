@@ -28,13 +28,14 @@ static const int SCROLL_PADDING = 0;
 
 ItemShortcutWindow::ItemShortcutWindow()
 {
+    setWindowName("ItemShortcut");
     // no title presented, title bar is padding so window can be moved.
     gcn::Window::setTitleBarHeight(gcn::Window::getPadding());
     setShowTitle(false);
     setResizable(true);
     setDefaultSize(758, 174, 42, 426);
 
-    mItems = new ItemShortcutContainer();
+    mItems = new ItemShortcutContainer;
 
     const int border = SCROLL_PADDING * 2 + getPadding() * 2;
     setMinWidth(mItems->getBoxWidth() + border);
@@ -49,7 +50,7 @@ ItemShortcutWindow::ItemShortcutWindow()
 
     add(mScrollArea);
 
-    loadWindowState("ItemShortcut");
+    loadWindowState();
 }
 
 ItemShortcutWindow::~ItemShortcutWindow()

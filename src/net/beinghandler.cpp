@@ -32,6 +32,7 @@
 #include "../localplayer.h"
 #include "../log.h"
 #include "../main.h"
+#include "../npc.h"
 #include "../particle.h"
 #include "../sound.h"
 
@@ -268,7 +269,7 @@ void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
     int attackType = msg.readInt8();
 
     if (!being) return;
-    
+
     switch (direction)
     {
         case DIRECTION_UP: being->setDirection(Being::UP); break;
@@ -347,3 +348,4 @@ void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
        case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
     }
 }
+

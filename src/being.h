@@ -33,9 +33,6 @@
 #include "animatedsprite.h"
 #include "vector.h"
 
-#define NR_HAIR_STYLES 8
-#define NR_HAIR_COLORS 10
-
 class AnimatedSprite;
 class Equipment;
 class ItemInfo;
@@ -45,6 +42,12 @@ class Graphics;
 class ImageSet;
 class Particle;
 class SpeechBubble;
+
+enum Gender {
+    GENDER_MALE = 0,
+    GENDER_FEMALE = 1,
+    GENDER_UNSPECIFIED = 2
+};
 
 class Being : public Sprite
 {
@@ -127,14 +130,14 @@ class Being : public Sprite
         const Vector &getDestination() const { return mDest; }
 
         /**
-         * Adjusts course to expected stat point.
+         * Adjusts course to expected start point.
          */
-        void adjustCourse(int, int);
+        void adjustCourse(int srcX, int srcY);
 
         /**
          * Adjusts course to expected start and end points.
          */
-        void adjustCourse(int, int, int, int);
+        void adjustCourse(int srcX, int srcY, int destX, int destY);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -150,58 +153,78 @@ class Being : public Sprite
          *
          * @param amount The amount of damage.
          */
-        virtual void
-        takeDamage(int amount);
+        virtual void takeDamage(int amount);
 
         /**
          * Handles an attack of another being by this being.
          */
-        virtual void
-        handleAttack();
+        virtual void handleAttack();
 
         /**
          * Returns the name of the being.
          */
-        const std::string&
-        getName() const { return mName; }
+        const std::string &getName() const
+        { return mName; }
 
         /**
          * Sets the name for the being.
          *
          * @param name The name that should appear.
          */
-        void
-        setName(const std::string &name) { mName = name; }
+        void setName(const std::string &name) { mName = name; }
+
+        /**
+         * Sets the gender for this being.
+         */
+        virtual void setGender(Gender gender) { mGender = gender; }
+
+        /**
+         * Gets the hair color for this being.
+         */
+        int getHairColor() const
+        { return mHairColor; }
+
+        /**
+         * Gets the hair style for this being.
+         */
+        int getHairStyle() const
+        { return mHairStyle; }
+
+        /**
+         * Sets the hair style and color for this being.
+         *
+         * NOTE: This method was necessary for convenience in the 0.0 client.
+         * It should be removed here since the server can provide the hair ID
+         * and coloring the same way it does for other equipment pieces. Then
+         * Being::setSprite can be used instead.
+         */
+        virtual void setHairStyle(int style, int color);
 
         /**
          * Sets visible equipments for this being.
          */
-        virtual void
-        setSprite(int slot, int id, const std::string &color = "");
+        virtual void setSprite(int slot, int id,
+                               const std::string &color = "");
 
         /**
          * Performs being logic.
          */
-        virtual void
-        logic();
+        virtual void logic();
 
         /**
          * Draws the speech text above the being.
          */
-        void
-        drawSpeech(Graphics* graphics, int offsetX, int offsetY);
+        void drawSpeech(Graphics* graphics, int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.
          */
-        void
-        drawEmotion(Graphics *graphics, int offsetX, int offsetY);
+        void drawEmotion(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Draws the name text below the being.
          */
-        virtual void
-        drawName(Graphics *, int, int) {};
+        virtual void drawName(Graphics *, int, int) {};
 
         /**
          * Returns the type of the being.
@@ -222,14 +245,12 @@ class Being : public Sprite
         /**
          * Gets the being id.
          */
-        Uint16
-        getId() const { return mId; }
+        Uint16 getId() const { return mId; }
 
         /**
          * Sets the sprite id.
          */
-        void
-        setId(Uint16 id) { mId = id; }
+        void setId(Uint16 id) { mId = id; }
 
         /**
          * Sets the map the being is on
@@ -239,8 +260,7 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        virtual void
-        setAction(Action action, int attackType = 0);
+        virtual void setAction(Action action, int attackType = 0);
 
         /**
          * Gets the current action.
@@ -278,7 +298,8 @@ class Being : public Sprite
         int getPixelY() const { return (int) mPos.y; }
 
         /**
-         * Sets the position of this being.
+         * Sets the position of this being. When the being was walking, it also
+         * clears the destination and the path.
          */
         void setPosition(const Vector &pos);
 
@@ -330,6 +351,22 @@ class Being : public Sprite
          */
         const Path &getPath() const { return mPath; }
 
+        /**
+         * Triggers a visual effect, such as `level up'
+         *
+         * Only draws the visual effect, does not play sound effects
+         *
+         * \param effectId ID of the effect to trigger
+         */
+        virtual void
+        triggerEffect(int effectId) { internalTriggerEffect(effectId, false, true); }
+
+        static int getHairColorsNr(void);
+
+        static int getHairStylesNr(void);
+
+        static std::string getHairColor(int index);
+
     protected:
         /**
          * Sets the new path for this being.
@@ -342,6 +379,16 @@ class Being : public Sprite
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_NONE; }
 
+        /**
+         * Trigger visual effect, with components
+         *
+         * \param effectId ID of the effect to trigger
+         * \param sfx Whether to trigger sound effects
+         * \param gfx Whether to trigger graphical effects
+         */
+        void
+        internalTriggerEffect(int effectId, bool sfx, bool gfx);
+
         Uint16 mId;                     /**< Unique being id */
         Uint8 mSpriteDirection;         /**< Facing direction */
         Uint8 mDirection;               /**< Walking direction */
@@ -353,6 +400,9 @@ class Being : public Sprite
 
         Path mPath;
         std::string mSpeech;
+        int mHairStyle;
+        int mHairColor;
+        Gender mGender;
         Uint32 mSpeechTime;
 
         std::vector<AnimatedSprite*> mSprites;

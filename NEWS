@@ -1,3 +1,7 @@
+- Mouse cursor will now hide when not used for some time
+- Make sure news and update file list aren't cached (from Aethyra)
+- Added ability to add equipment to the shortcut bar
+
 0.0.25 (27 July 2008)
 - Added support for whispering to other players
 - Added ability to ignore other players

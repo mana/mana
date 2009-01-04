@@ -61,8 +61,8 @@ Viewport::Viewport():
     setOpaque(false);
     addMouseListener(this);
 
-    mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
-    mScrollRadius = (int) config.getValue("ScrollRadius", 32);
+    mScrollLaziness = (int) config.getValue("ScrollLaziness", 16);
+    mScrollRadius = (int) config.getValue("ScrollRadius", 0);
     mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
     mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
     mVisibleNames = config.getValue("visiblenames", 1);

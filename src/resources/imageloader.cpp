@@ -88,7 +88,7 @@ void ProxyImage::convertToDisplayFormat()
     mSDLImage = NULL;
 }
 
-gcn::Image *ImageLoader::load(std::string const &filename, bool convert)
+gcn::Image *ImageLoader::load(const std::string &filename, bool convert)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     ProxyImage *i = new ProxyImage(resman->loadSDLSurface(filename));
