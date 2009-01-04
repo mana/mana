@@ -49,12 +49,20 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/inttextbox.cpp \
 	      gui/inventorywindow.cpp \
 	      gui/inventorywindow.h \
+	      gui/smileywindow.cpp \
+	      gui/smileywindow.h \
+	      gui/smileycontainer.cpp \
+	      gui/smileycontainer.h \
 	      gui/itemcontainer.cpp \
 	      gui/itemcontainer.h \
 	      gui/itemshortcutcontainer.cpp \
 	      gui/itemshortcutcontainer.h \
-	      gui/itemshortcutwindow.cpp \
-	      gui/itemshortcutwindow.h \
+	      gui/shortcutwindow.cpp \
+	      gui/shortcutwindow.h \
+	      gui/smileyshortcutcontainer.cpp \
+	      gui/smileyshortcutcontainer.h \
+	      gui/shortcutcontainer.cpp \
+	      gui/shortcutcontainer.h \
 	      gui/item_amount.cpp \
 	      gui/item_amount.h \
 	      gui/linkhandler.h \

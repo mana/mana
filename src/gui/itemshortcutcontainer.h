@@ -27,6 +27,7 @@
 #include <guichan/widgetlistener.hpp>
 
 #include "../guichanfwd.h"
+#include "shortcutcontainer.h"
 
 class Image;
 class Item;
@@ -36,9 +37,7 @@ class Item;
  *
  * \ingroup GUI
  */
-class ItemShortcutContainer : public gcn::Widget,
-                              public gcn::WidgetListener,
-                              public gcn::MouseListener
+class ItemShortcutContainer : public ShortcutContainer
 {
     public:
         /**

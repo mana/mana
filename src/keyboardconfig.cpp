@@ -180,7 +180,7 @@ int KeyboardConfig::getKeySmilieOffset(int keyValue) const
             return 1+i-KEY_SMILEY_1;
         }
     }
-    return KEY_NO_VALUE;
+    return 0;
 }
 
 bool KeyboardConfig::isKeyActive(int index)

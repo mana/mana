@@ -53,7 +53,11 @@
 #include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
-#include "gui/itemshortcutwindow.h"
+#include "gui/smileywindow.h"
+#include "gui/shortcutwindow.h"
+#include "gui/shortcutcontainer.h"
+#include "gui/itemshortcutcontainer.h"
+#include "gui/smileyshortcutcontainer.h"
 #include "gui/menuwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
@@ -112,6 +116,7 @@ BuyDialog *buyDialog;
 SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
+SmileyWindow *smileyWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
@@ -122,7 +127,8 @@ TradeWindow *tradeWindow;
 //BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
-ItemShortcutWindow *itemShortcutWindow;
+ShortcutWindow *itemShortcutWindow;
+ShortcutWindow *smileyShortcutWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
@@ -195,6 +201,7 @@ void createGuiWindows(Network *network)
     sellDialog = new SellDialog(network);
     buySellDialog = new BuySellDialog();
     inventoryWindow = new InventoryWindow();
+    smileyWindow = new SmileyWindow();
     npcTextDialog = new NpcTextDialog();
     npcListDialog = new NpcListDialog();
     skillDialog = new SkillDialog();
@@ -205,7 +212,8 @@ void createGuiWindows(Network *network)
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
-    itemShortcutWindow = new ItemShortcutWindow();
+    itemShortcutWindow = new ShortcutWindow("ItemShortcut",new ItemShortcutContainer);
+    smileyShortcutWindow = new ShortcutWindow("SmileyShortcut",new SmileyShortcutContainer);
 
     // Initialize window positions
     //buddyWindow->setPosition(10, minimap->getHeight() + 30);
@@ -224,6 +232,8 @@ void createGuiWindows(Network *network)
         menuWindow->getWindowName() + "Visible", true));
     itemShortcutWindow->setVisible((bool) config.getValue(
         itemShortcutWindow->getWindowName() + "Visible", true));
+    smileyShortcutWindow->setVisible((bool) config.getValue(
+        smileyShortcutWindow->getWindowName() + "Visible", true));
 
     if (config.getValue("logToChat", 0))
     {
@@ -244,6 +254,7 @@ void destroyGuiWindows()
     delete sellDialog;
     delete buySellDialog;
     delete inventoryWindow;
+    delete smileyWindow;
     delete npcListDialog;
     delete npcTextDialog;
     delete skillDialog;
@@ -255,6 +266,7 @@ void destroyGuiWindows()
     delete helpWindow;
     delete debugWindow;
     delete itemShortcutWindow;
+    delete smileyShortcutWindow;
 }
 
 Game::Game(Network *network):
@@ -553,6 +565,7 @@ void Game::handleInput()
 		{
 		    player_node->emote(emotion);
 		    used = true;
+                    return;
 		}
 	    }
 	    switch (event.key.keysym.sym)
@@ -706,6 +719,7 @@ void Game::handleInput()
 			{
 			    statusWindow->setVisible(false);
 			    inventoryWindow->setVisible(false);
+			    smileyWindow->setVisible(false);
 			    skillDialog->setVisible(false);
 			    setupWindow->setVisible(false);
 			    equipmentWindow->setVisible(false);
@@ -740,6 +754,12 @@ void Game::handleInput()
 			break;
 		    case KeyboardConfig::KEY_WINDOW_DEBUG:
 			requestedWindow = debugWindow;
+			break;
+		    case KeyboardConfig::KEY_WINDOW_ALLSMILEY:
+			requestedWindow = smileyWindow;
+			break;
+		    case KeyboardConfig::KEY_WINDOW_SMILEY_SHORTCUT:
+			requestedWindow = smileyShortcutWindow;
 			break;
 		}
 	    }
