@@ -19,22 +19,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itemshortcutcontainer.h"
-#include "itemshortcutwindow.h"
+#include "shortcutcontainer.h"
+#include "shortcutwindow.h"
 #include "scrollarea.h"
 
 static const int SCROLL_PADDING = 0;
 
-ItemShortcutWindow::ItemShortcutWindow()
+ShortcutWindow::ShortcutWindow(const char * title,ShortcutContainer *content)
 {
-    setWindowName("ItemShortcut");
+    setWindowName(title);
     // no title presented, title bar is padding so window can be moved.
     gcn::Window::setTitleBarHeight(gcn::Window::getPadding());
     setShowTitle(false);
     setResizable(true);
     setDefaultSize(758, 174, 42, 426);
 
-    mItems = new ItemShortcutContainer;
+    mItems = content;
 
     const int border = SCROLL_PADDING * 2 + getPadding() * 2;
     setMinWidth(mItems->getBoxWidth() + border);
@@ -52,13 +52,13 @@ ItemShortcutWindow::ItemShortcutWindow()
     loadWindowState();
 }
 
-ItemShortcutWindow::~ItemShortcutWindow()
+ShortcutWindow::~ShortcutWindow()
 {
     delete mItems;
     delete mScrollArea;
 }
 
-void ItemShortcutWindow::widgetResized(const gcn::Event &event)
+void ShortcutWindow::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
 

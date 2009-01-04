@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2007 The Mana World Development Team
+ *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,33 +19,48 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_ITEMSHORTCUTWINDOW_H
-#define _TMW_ITEMSHORTCUTWINDOW_H
+#ifndef _TMW_SMILEYWINDOW_H
+#define _TMW_SMILEYWINDOW_H
 
+#include <guichan/actionlistener.hpp>
+#include <guichan/selectionlistener.hpp>
+
+#include "textbox.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
 
-class ItemShortcutContainer;
-class ScrollArea;
+class Item;
+class SmileyContainer;
 
 /**
- * A window around the ItemShortcutContainer.
+ * smiley dialog.
  *
  * \ingroup Interface
  */
-class ItemShortcutWindow : public Window
+class SmileyWindow : public Window, gcn::ActionListener,
+    gcn::SelectionListener
 {
     public:
         /**
          * Constructor.
          */
-        ItemShortcutWindow();
+        SmileyWindow();
 
         /**
-         * Destructor.
+         * Called when receiving actions from the widgets.
          */
-        ~ItemShortcutWindow();
+        void action(const gcn::ActionEvent &event);
+
+        /**
+         * Returns the selected item.
+         */
+        int getSelectedSmiley() const;
+
+        /**
+         * Updates window drawing.
+         */
+        void draw();
 
         /**
          * Called whenever the widget changes size.
@@ -53,11 +68,13 @@ class ItemShortcutWindow : public Window
         void widgetResized(const gcn::Event &event);
 
     private:
-        ItemShortcutContainer *mItems;
 
-        ScrollArea *mScrollArea;
+        SmileyContainer *mItems;
+
+        gcn::Button *mUseButton;
+        gcn::ScrollArea *mInvenScroll;
 };
 
-extern ItemShortcutWindow *itemShortcutWindow;
+extern SmileyWindow *smileyWindow;
 
 #endif
