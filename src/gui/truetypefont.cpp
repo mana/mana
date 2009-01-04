@@ -55,7 +55,7 @@ class TextChunk
             sdlCol.r = color.r;
             sdlCol.g = color.g;
 
-            SDL_Surface *surface = TTF_RenderUTF8_Blended(
+            SDL_Surface *surface = TTF_RenderText_Blended(
                     font, text.c_str(), sdlCol);
 
             if (!surface)
@@ -167,7 +167,7 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
 int TrueTypeFont::getWidth(const std::string &text) const
 {
     int w, h;
-    TTF_SizeUTF8(mFont, text.c_str(), &w, &h);
+    TTF_SizeText(mFont, text.c_str(), &w, &h);
     return w;
 }
 
