@@ -31,7 +31,6 @@
 #include "window.h"
 
 #include "gui.h"
-#include "gccontainer.h"
 #include "windowcontainer.h"
 
 #include "widgets/layout.h"
@@ -87,8 +86,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
-    if (!windowContainer)
-    {
+    if (!windowContainer) {
         throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
     }
 
@@ -128,17 +126,15 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 Window::~Window()
 {
     logger->log("UNLOAD: Window::~Window(\"%s\")", getCaption().c_str());
-
     const std::string &name = mWindowName;
-    if (!name.empty())
-    {
-        // Saving X, Y and Width and Height for resizables in the config
+
+    // Saving X, Y and Width and Height for resizables in the config
+    if (!name.empty()) {
         config.setValue(name + "WinX", getX());
         config.setValue(name + "WinY", getY());
         config.setValue(name + "Visible", isVisible());
 
-        if (mGrip)
-        {
+        if (mGrip) {
             config.setValue(name + "WinWidth", getWidth());
             config.setValue(name + "WinHeight", getHeight());
         }

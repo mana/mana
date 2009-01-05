@@ -53,7 +53,7 @@ Setup::Setup():
     int height = 265;
     setContentSize(width, height);
 
-    static char const *buttonNames[] = {
+    static const char *buttonNames[] = {
         N_("Apply"), N_("Cancel"), N_("Reset Windows"), 0
     };
     int x = width;

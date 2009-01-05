@@ -12,7 +12,7 @@ A: The fastest way is to come on our IRC channel. There you can find a lot of
    http://forums.themanaworld.org. Ok, do you think forums are evil? Don't
    worry, send me an e-mail at elvenprogrammer@gmail.com and you're done.
    That's not enough? No, I won't give you my phone number! ;P
-   
+
 GAME
 
 Q: I always get "Unregistered ID" error message, why?
@@ -59,7 +59,7 @@ Q: What's SVN?
 A: It's a system where is stored the latest development version. It's not
    assured that it's stable, but surely it has the latest updates. (SVN version
    is updated quite frequently). If you want to check it out, read this guide
-   http://themanaworld.org/svn-tutorial.txt 
+   http://themanaworld.org/svn-tutorial.txt
 
 
 DEVELOPMENT
@@ -73,18 +73,18 @@ A: We have scheduled releases. Usually a new release is available every month.
 Q: How can I contribute?
 
 A: There are a lot of ways:
-   
+
    - If you're a programmer, an artist or just willing to help in any way, you
      can become part of the development team. Send an e-mail to
      elvenprogrammer@gmail.com explaining what you want to do, or join our irc
      channel: #themanaworld @ irc.freenode.net.
-   
+
    - You can donate money. Follow the link on the project page:
 	http://sourceforge.net/projects/themanaworld.
-   
+
    - You can be a beta tester. Just play with The Mana World and report every
      error to the tracker. Read for more infos on the project page:
 	http://themanaworld.org.
-   
+
    - Play with The Mana World: more players, more fun! Simple as that! ;-)
 

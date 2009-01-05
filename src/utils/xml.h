@@ -71,20 +71,18 @@ namespace XML
     /**
      * Gets an integer property from an xmlNodePtr.
      */
-    int
-    getProperty(xmlNodePtr node, const char *name, int def);
+    int getProperty(xmlNodePtr node, const char *name, int def);
 
     /**
      * Gets an floating point property from an xmlNodePtr.
      */
-    double
-    getFloatProperty(xmlNodePtr node, const char *name, double def);
+    double getFloatProperty(xmlNodePtr node, const char *name, double def);
 
     /**
      * Gets a string property from an xmlNodePtr.
      */
-    std::string
-    getProperty(xmlNodePtr node, const char *name, const std::string &def);
+    std::string getProperty(xmlNodePtr node, const char *name,
+                            const std::string &def);
 
     /**
      * Finds the first child node with the given name

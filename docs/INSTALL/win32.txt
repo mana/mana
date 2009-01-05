@@ -99,11 +99,11 @@ Install them all through the Dev-C++ package manager.
 
 **) For PhysFS copy the headers to your include directory, the libs to
     the lib directory and the dlls (in bin direcotry) to your tmw directory.
-	 
+
 ***) Download developer files and put headers and libs in to include and lib
      directories of Dev-Cpp. Download binaries and place the dll inside tmw
-	 folder.
-	 
+     folder.
+
 ****) Get latest win32 - mingw package and install as usual.
 
 You should now be fully equipped for compiling the latest TMW development

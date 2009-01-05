@@ -222,17 +222,6 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         void resetToDefaultSize();
 
-        enum ResizeHandles
-        {
-            TOP    = 0x01,
-            RIGHT  = 0x02,
-            BOTTOM = 0x04,
-            LEFT   = 0x08
-        };
-
-        /** The window container windows add themselves to. */
-        static WindowContainer *windowContainer;
-
         /**
          * Gets the layout handler for this window.
          */
@@ -263,7 +252,19 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         void loadSkin(const std::string &fileName);
 
+    protected:
+        /** The window container windows add themselves to. */
+        static WindowContainer *windowContainer;
+
     private:
+        enum ResizeHandles
+        {
+            TOP    = 0x01,
+            RIGHT  = 0x02,
+            BOTTOM = 0x04,
+            LEFT   = 0x08
+        };
+
         /**
          * Determines if the mouse is in a resize area and returns appropriate
          * resize handles. Also initializes drag offset in case the resize

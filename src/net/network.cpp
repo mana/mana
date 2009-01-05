@@ -83,8 +83,7 @@ Net::Connection *Net::getConnection()
     return new Net::Connection(client);
 }
 
-void
-Net::registerHandler(MessageHandler *handler)
+void Net::registerHandler(MessageHandler *handler)
 {
     for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
@@ -92,8 +91,7 @@ Net::registerHandler(MessageHandler *handler)
     }
 }
 
-void
-Net::unregisterHandler(MessageHandler *handler)
+void Net::unregisterHandler(MessageHandler *handler)
 {
     for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
@@ -101,8 +99,7 @@ Net::unregisterHandler(MessageHandler *handler)
     }
 }
 
-void
-Net::clearHandlers()
+void Net::clearHandlers()
 {
     mMessageHandlers.clear();
 }
@@ -114,26 +111,25 @@ Net::clearHandlers()
  */
 namespace
 {
-    void
-        dispatchMessage(ENetPacket *packet)
-        {
-            MessageIn msg((const char *)packet->data, packet->dataLength);
+    void dispatchMessage(ENetPacket *packet)
+    {
+        MessageIn msg((const char *)packet->data, packet->dataLength);
 
-            MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
+        MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
-            if (iter != mMessageHandlers.end()) {
-                //logger->log("Received packet %x (%i B)",
-                //        msg.getId(), msg.getLength());
-                iter->second->handleMessage(msg);
-            }
-            else {
-                logger->log("Unhandled packet %x (%i B)",
-                        msg.getId(), msg.getLength());
-            }
-
-            // Clean up the packet now that we're done using it.
-            enet_packet_destroy(packet);
+        if (iter != mMessageHandlers.end()) {
+            //logger->log("Received packet %x (%i B)",
+            //        msg.getId(), msg.getLength());
+            iter->second->handleMessage(msg);
         }
+        else {
+            logger->log("Unhandled packet %x (%i B)",
+                    msg.getId(), msg.getLength());
+        }
+
+        // Clean up the packet now that we're done using it.
+        enet_packet_destroy(packet);
+    }
 }
 
 void Net::flush()

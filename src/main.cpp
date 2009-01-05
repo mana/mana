@@ -315,7 +315,7 @@ void initEngine(const Options &options)
 
     if (!resman->setWriteDir(homeDir)) {
         std::cout << homeDir
-                  << " couldn't be set as home directory! Exitting."
+                  << " couldn't be set as home directory! Exiting."
                   << std::endl;
         exit(1);
     }

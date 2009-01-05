@@ -142,7 +142,7 @@ void BrowserBox::addRow(const std::string &row)
     {
         unsigned int y = 0;
         unsigned int nextChar;
-        char const *hyphen = "~";
+        const char *hyphen = "~";
         int hyphenWidth = font->getWidth(hyphen);
         int x = 0;
 

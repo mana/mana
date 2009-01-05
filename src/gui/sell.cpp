@@ -202,8 +202,7 @@ void SellDialog::setMoney(int amount)
     mShopItemList->setPlayersMoney(amount);
 }
 
-void
-SellDialog::updateButtonsAndLabels()
+void SellDialog::updateButtonsAndLabels()
 {
     int selectedItem = mShopItemList->getSelected();
     int income = 0;
@@ -211,7 +210,6 @@ SellDialog::updateButtonsAndLabels()
     if (selectedItem > -1)
     {
         const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
-
         mItemDescLabel->setCaption
             (strprintf(_("Description: %s"), info.getDescription().c_str()));
         mItemEffectLabel->setCaption

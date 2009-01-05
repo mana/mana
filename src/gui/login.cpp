@@ -38,7 +38,8 @@
 
 #include "../utils/gettext.h"
 
-LoginDialog::LoginDialog(LoginData *loginData) : Window(_("Login")), mLoginData(loginData)
+LoginDialog::LoginDialog(LoginData *loginData):
+    Window(_("Login")), mLoginData(loginData)
 {
     gcn::Label *userLabel = new gcn::Label(_("Name:"));
     gcn::Label *passLabel = new gcn::Label(_("Password:"));

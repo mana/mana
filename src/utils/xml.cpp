@@ -26,7 +26,7 @@
 namespace XML
 {
     Document::Document(const std::string &filename):
-        mDoc(NULL)
+        mDoc(0)
     {
         int size;
         ResourceManager *resman = ResourceManager::getInstance();
@@ -59,8 +59,7 @@ namespace XML
         return mDoc ? xmlDocGetRootElement(mDoc) : 0;
     }
 
-    int
-    getProperty(xmlNodePtr node, const char* name, int def)
+    int getProperty(xmlNodePtr node, const char* name, int def)
     {
         int &ret = def;
 
@@ -73,8 +72,7 @@ namespace XML
         return ret;
     }
 
-    double
-    getFloatProperty(xmlNodePtr node, const char* name, double def)
+    double getFloatProperty(xmlNodePtr node, const char* name, double def)
     {
         double &ret = def;
 
@@ -87,8 +85,8 @@ namespace XML
         return ret;
     }
 
-    std::string
-    getProperty(xmlNodePtr node, const char *name, const std::string &def)
+    std::string getProperty(xmlNodePtr node, const char *name,
+                            const std::string &def)
     {
         xmlChar *prop = xmlGetProp(node, BAD_CAST name);
         if (prop) {
@@ -108,4 +106,5 @@ namespace XML
 
         return NULL;
     }
-}
+
+} // namespace XML

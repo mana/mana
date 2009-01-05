@@ -92,8 +92,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         /**
          * Updates the state of buttons and labels.
          */
-        void
-        updateButtonsAndLabels();
+        void updateButtonsAndLabels();
 
     private:
         gcn::Button *mBuyButton;

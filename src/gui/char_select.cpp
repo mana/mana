@@ -134,7 +134,6 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     setVisible(true);
     mSelectButton->requestFocus();
     updatePlayerInfo();
-
 }
 
 void CharSelectDialog::action(const gcn::ActionEvent &event)

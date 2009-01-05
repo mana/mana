@@ -21,6 +21,7 @@ src/gui/serverdialog.cpp
 src/gui/setup_audio.cpp
 src/gui/setup.cpp
 src/gui/setup_joystick.cpp
+src/gui/setup_keyboard.cpp
 src/gui/setup_video.cpp
 src/gui/trade.cpp
 src/resources/itemdb.cpp

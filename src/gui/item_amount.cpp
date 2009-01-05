@@ -75,8 +75,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item,
 
     resetAmount();
 
-    switch (usage)
-    {
+    switch (usage) {
         case AMOUNT_TRADE_ADD:
             setCaption(_("Select amount of items to trade."));
             okButton->setActionEventId("AddTrade");

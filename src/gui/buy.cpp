@@ -165,15 +165,15 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         Net::GameServer::Player::tradeWithNPC
             (mShopItems->at(selectedItem)->getId(), mAmountItems);
 
-        // Reset selection
-        mAmountItems = 1;
-        mSlider->setValue(1);
-        mSlider->gcn::Slider::setScale(1, mMaxItems);
-
         // Update money and adjust the max number of items that can be bought
         mMaxItems -= mAmountItems;
         setMoney(mMoney -
                 mAmountItems * mShopItems->at(selectedItem)->getPrice());
+
+        // Reset selection
+        mAmountItems = 1;
+        mSlider->setValue(1);
+        mSlider->gcn::Slider::setScale(1, mMaxItems);
     }
 }
 
@@ -187,8 +187,7 @@ void BuyDialog::valueChanged(const gcn::SelectionEvent &event)
     mSlider->gcn::Slider::setScale(1, mMaxItems);
 }
 
-void
-BuyDialog::updateButtonsAndLabels()
+void BuyDialog::updateButtonsAndLabels()
 {
     const int selectedItem = mShopItemList->getSelected();
     int price = 0;

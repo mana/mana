@@ -132,4 +132,3 @@ NPCDB::get(int id)
         return *(i->second);
     }
 }
-

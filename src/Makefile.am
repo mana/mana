@@ -250,14 +250,14 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      resources/iteminfo.cpp \
 	      resources/mapreader.cpp \
 	      resources/mapreader.h \
-	      resources/monsterdb.h \
 	      resources/monsterdb.cpp \
-	      resources/monsterinfo.h \
+	      resources/monsterdb.h \
 	      resources/monsterinfo.cpp \
-	      resources/music.h \
+	      resources/monsterinfo.h \
 	      resources/music.cpp \
-	      resources/npcdb.h \
+	      resources/music.h \
 	      resources/npcdb.cpp \
+	      resources/npcdb.h \
 	      resources/resource.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \
@@ -276,8 +276,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      utils/minmax.h \
 	      utils/sha256.h \
 	      utils/sha256.cpp \
-	      utils/strprintf.h \
 	      utils/strprintf.cpp \
+	      utils/strprintf.h \
 	      utils/tostring.h \
 	      utils/trim.h \
 	      utils/mutex.h \

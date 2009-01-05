@@ -102,9 +102,8 @@ void InventoryWindow::logic()
 void InventoryWindow::action(const gcn::ActionEvent &event)
 {
     Item *item = mItems->getItem();
-    if (!item) {
+    if (!item)
         return;
-    }
 
     if (event.getId() == "use")
     {

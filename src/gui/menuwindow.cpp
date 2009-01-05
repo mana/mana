@@ -58,7 +58,7 @@ MenuWindow::MenuWindow():
     setTitleBarHeight(0);
 
     // Buttons
-    static char const *buttonNames[] =
+    static const char *buttonNames[] =
     {
         N_("Status"),
         N_("Equipment"),

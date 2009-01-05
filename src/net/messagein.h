@@ -61,13 +61,13 @@ class MessageIn
          * Returns the message length.
          */
         unsigned int
-        getLength() { return mLength; }
+        getLength() const { return mLength; }
 
         /**
          * Returns the length of unread data.
          */
         unsigned int
-        getUnreadLength() { return mLength - mPos; }
+        getUnreadLength() const { return mLength - mPos; }
 
     private:
         const char* mData;             /**< The message data. */

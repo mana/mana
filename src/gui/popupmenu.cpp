@@ -75,7 +75,6 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 // add as buddy will be options in this menu.
                 const std::string &name = mBeing->getName();
                 mBrowserBox->addRow(strprintf(_("@@trade|Trade With %s@@"), name.c_str()));
-
                 mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
                 //mBrowserBox->addRow("@@follow|Follow " + name + "@@");
                 //mBrowserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");

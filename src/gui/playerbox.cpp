@@ -74,8 +74,7 @@ PlayerBox::~PlayerBox()
     }
 }
 
-void
-PlayerBox::draw(gcn::Graphics *graphics)
+void PlayerBox::draw(gcn::Graphics *graphics)
 {
     if (mPlayer)
     {
@@ -87,8 +86,7 @@ PlayerBox::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-PlayerBox::drawFrame(gcn::Graphics *graphics)
+void PlayerBox::drawFrame(gcn::Graphics *graphics)
 {
     int w, h, bs;
     bs = getFrameSize();

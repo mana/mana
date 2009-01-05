@@ -188,9 +188,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
     if (event.getId() == "add")
     {
         if (!item)
-        {
             return;
-        }
 
         if (mMyInventory->contains(item)) {
             chatWindow->chatLog("Failed adding item. You can not "

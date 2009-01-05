@@ -12,9 +12,9 @@ IRC:       irc.freenode.net / #themanaworld
 1. Requirements
 ===============
 
-You are expected to have either checked out TMW from Subversion or you have
-downloaded a source release. To get The Mana World to compile, you need a
-compiler (GCC) and some libraries. The required libraries are:
+You are expected to have either checked out TMW from Git or you have downloaded
+a source release. To get The Mana World to compile, you need a compiler (GCC)
+and some libraries. The required libraries are:
 
 * SDL               http://www.libsdl.org/
 * SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/
@@ -51,6 +51,7 @@ you to figure this out.
 It should have installed The Mana World on your system now, and you can run it
 with "tmw". By default all files are installed to /usr/local, you can pass a
 different prefix to configure as usual.
+
 
   NOTE: It is possible to compile TMW without support for OpenGL rendering.
   To do this perform step 3 as follows:
