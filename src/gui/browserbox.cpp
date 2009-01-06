@@ -22,6 +22,7 @@
 #include <algorithm>
 
 #include "browserbox.h"
+#include "colour.h"
 #include "linkhandler.h"
 
 #include "../graphics.h"
@@ -99,12 +100,12 @@ void BrowserBox::addRow(const std::string &row)
 
             mLinks.push_back(bLink);
 
-            newRow += "##L" + bLink.caption;
+            newRow += "##<" + bLink.caption;
 
             tmp.erase(0, idx3 + 2);
             if(tmp != "")
             {
-                newRow += "##P";
+                newRow += "##>";
             }
             idx1 = tmp.find("@@");
         }
@@ -255,7 +256,8 @@ BrowserBox::draw(gcn::Graphics *graphics)
 
         if ((mHighMode & UNDERLINE))
         {
-            graphics->setColor(gcn::Color(LINK));
+            bool valid;
+            graphics->setColor(gcn::Color(textColour->getColour('<', valid)));
             graphics->drawLine(
                     mLinks[mSelectedLink].x1,
                     mLinks[mSelectedLink].y2,
@@ -312,57 +314,30 @@ BrowserBox::draw(gcn::Graphics *graphics)
                 // Check for color change in format "##x", x = [L,P,0..9]
                 if (row.find("##", start) == start && row.size() > start + 2)
                 {
-                    switch (row.at(start + 2))
+                    char c = row.at(start + 2);
+                    if (c == '>')
                     {
-                        case 'L': // Link color
+                        selColor = prevColor;
+                    }
+                    else
+                    {
+                        bool valid;
+                        int rgb = textColour->getColour(c, valid);
+                        if (c == '<')
+                        {
                             prevColor = selColor;
-                            selColor = LINK;
-                            break;
-                        case 'P': // Previous color
-                            selColor = prevColor;
-                            break;
-                        case '1':
-                            prevColor = selColor;
-                            selColor = RED;
-                            break;
-                        case '2':
-                            prevColor = selColor;
-                            selColor = GREEN;
-                            break;
-                        case '3':
-                            prevColor = selColor;
-                            selColor = BLUE;
-                            break;
-                        case '4':
-                            prevColor = selColor;
-                            selColor = ORANGE;
-                            break;
-                        case '5':
-                            prevColor = selColor;
-                            selColor = YELLOW;
-                            break;
-                        case '6':
-                            prevColor = selColor;
-                            selColor = PINK;
-                            break;
-                        case '7':
-                            prevColor = selColor;
-                            selColor = PURPLE;
-                            break;
-                        case '8':
-                            prevColor = selColor;
-                            selColor = GRAY;
-                            break;
-                        case '9':
-                            prevColor = selColor;
-                            selColor = BROWN;
-                            break;
-                        case '0':
-                        default:
-                            prevColor = selColor;
-                            selColor = BLACK;
+                        }
+                        if (valid)
+                        {
+                            selColor = rgb;
+                        }
                     }
                     start += 3;
+
+                    if (start == row.size())
+                    {
+                        break;
+                    }
                 }
                 graphics->setColor(gcn::Color(selColor));
             }
