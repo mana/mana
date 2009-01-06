@@ -75,6 +75,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
     Graphics *g = static_cast<Graphics*>(graphics);
 
+    graphics->setColor(gcn::Color(0, 0, 0));
     graphics->setFont(getFont());
 
     for (int i = 0; i < mMaxItems; i++)
