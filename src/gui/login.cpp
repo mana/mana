@@ -31,6 +31,8 @@
 #include "passwordfield.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
 #include "../main.h"
 #include "../logindata.h"
 #include "../configuration.h"
@@ -75,43 +77,6 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mRegisterButton = new Button(_("Register"), "register", this);
 
-    setContentSize(LOGIN_DIALOG_WIDTH, LOGIN_DIALOG_HEIGHT);
-
-    const int USER_TOP = 5;
-    userLabel->setPosition(5, USER_TOP);
-    mUserField->setPosition(65, USER_TOP);
-    mUserField->setWidth(FIELD_WIDTH);
-
-    const int PASS_TOP = 9 + USER_TOP + userLabel->getHeight();
-    passLabel->setPosition(5, PASS_TOP);
-    mPassField->setPosition(65, PASS_TOP);
-    mPassField->setWidth(FIELD_WIDTH);
-
-    const int SERVER_TOP = 9 + PASS_TOP + passLabel->getHeight();
-    serverLabel->setPosition(5, SERVER_TOP);
-    mServerField->setPosition(65, SERVER_TOP);
-    mServerField->setWidth(FIELD_WIDTH);
-
-    const int PORT_TOP = 9 + SERVER_TOP + serverLabel->getHeight();
-    portLabel->setPosition(5, PORT_TOP);
-    mPortField->setPosition(65, PORT_TOP);
-    mPortField->setWidth(FIELD_WIDTH);
-
-    const int DROP_DOWN_TOP = 9 + PORT_TOP + serverLabel->getHeight();
-    dropdownLabel->setPosition(5, DROP_DOWN_TOP);
-    mServerDropDown->setPosition(65, DROP_DOWN_TOP);
-    mServerDropDown->setWidth(FIELD_WIDTH);
-
-    const int REST_TOP = LOGIN_DIALOG_HEIGHT - mCancelButton->getHeight() - 5;
-
-    mKeepCheck->setPosition(4, REST_TOP);
-    mCancelButton->setPosition(
-            LOGIN_DIALOG_WIDTH - mCancelButton->getWidth() - 5, REST_TOP);
-    mOkButton->setPosition(
-            mCancelButton->getX() - mOkButton->getWidth() - 5, REST_TOP);
-    mRegisterButton->setPosition(
-            mKeepCheck->getX() + mKeepCheck->getWidth() + 10, REST_TOP);
-
     mUserField->setActionEventId("ok");
     mPassField->setActionEventId("ok");
     mServerField->setActionEventId("ok");
@@ -129,20 +94,21 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mServerDropDown->addActionListener(this);
     mKeepCheck->addActionListener(this);
 
-    add(userLabel);
-    add(passLabel);
-    add(serverLabel);
-    add(portLabel);
-    add(dropdownLabel);
-    add(mUserField);
-    add(mPassField);
-    add(mServerField);
-    add(mPortField);
-    add(mServerDropDown);
-    add(mKeepCheck);
-    add(mOkButton);
-    add(mCancelButton);
-    add(mRegisterButton);
+    place(0, 0, userLabel);
+    place(0, 1, passLabel);
+    place(0, 2, serverLabel);
+    place(0, 3, portLabel);
+    place(0, 4, dropdownLabel);
+    place(1, 0, mUserField, 3).setPadding(2);
+    place(1, 1, mPassField, 3).setPadding(2);
+    place(1, 2, mServerField, 3).setPadding(2);
+    place(1, 3, mPortField, 3).setPadding(2);
+    place(1, 4, mServerDropDown, 3).setPadding(2);
+    place(0, 5, mKeepCheck, 4);
+    place(0, 6, mRegisterButton).setHAlign(LayoutCell::LEFT);
+    place(2, 6, mOkButton);
+    place(3, 6, mCancelButton);
+    reflowLayout(250, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -163,8 +129,7 @@ LoginDialog::~LoginDialog()
     delete mServerScrollArea;
 }
 
-void
-LoginDialog::action(const gcn::ActionEvent &event)
+void LoginDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok" && canSubmit())
     {
@@ -209,14 +174,12 @@ LoginDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
+void LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
     mOkButton->setEnabled(canSubmit());
 }
 
-bool
-LoginDialog::canSubmit()
+bool LoginDialog::canSubmit()
 {
     return !mUserField->getText().empty() &&
            !mPassField->getText().empty() &&

@@ -53,6 +53,8 @@ SET(SRCS
     gui/widgets/dropdown.h
     gui/widgets/resizegrip.cpp
     gui/widgets/resizegrip.h
+    gui/widgets/layout.cpp
+    gui/widgets/layout.h
     gui/box.cpp
     gui/box.h
     gui/browserbox.cpp

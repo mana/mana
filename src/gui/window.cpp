@@ -22,7 +22,6 @@
 #include <algorithm>
 #include <cassert>
 #include <climits>
-#include <cassert>
 
 #include <guichan/exception.hpp>
 
@@ -33,6 +32,7 @@
 #include "window.h"
 #include "windowcontainer.h"
 
+#include "widgets/layout.h"
 #include "widgets/resizegrip.h"
 
 #include "../configlistener.h"
@@ -68,6 +68,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     gcn::Window(caption),
     mGrip(0),
     mParent(parent),
+    mLayout(NULL),
     mWindowName("window"),
     mShowTitle(true),
     mModal(modal),
@@ -82,7 +83,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
     if (!windowContainer) {
-        throw GCN_EXCEPTION("Window::Window. no windowContainer set");
+        throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
     }
 
     // Loads the skin
@@ -103,11 +104,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     setFrameSize(0);
     setPadding(3);
     setTitleBarHeight(20);
-
-    // Add chrome
-    mChrome = new GCContainer();
-    mChrome->setOpaque(false);
-    gcn::Window::add(mChrome);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -141,6 +137,15 @@ Window::~Window()
         }
     }
 
+    delete mLayout;
+
+    while (!mWidgets.empty())
+    {
+        gcn::Widget *w = mWidgets.front();
+        remove(w);
+        delete(w);
+    }
+
     instances--;
 
     // Clean up static resources
@@ -158,9 +163,6 @@ Window::~Window()
 
         closeImage->decRef();
     }
-
-    delete mChrome;
-    delete mGrip;
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
@@ -195,7 +197,6 @@ void Window::draw(gcn::Graphics *graphics)
 
 void Window::setContentSize(int width, int height)
 {
-    mChrome->setSize(width, height);
     setSize(width + 2 * getPadding(),
             height + getPadding() + getTitleBarHeight());
 }
@@ -241,10 +242,11 @@ void Window::setResizable(bool r)
         mGrip = new ResizeGrip();
         mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
         mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
-        gcn::Window::add(mGrip);
+        add(mGrip);
     }
     else
     {
+        remove(mGrip);
         delete mGrip;
         mGrip = 0;
     }
@@ -252,14 +254,18 @@ void Window::setResizable(bool r)
 
 void Window::widgetResized(const gcn::Event &event)
 {
-    const gcn::Rectangle area = getChildrenArea();
-
-    mChrome->setSize(area.width, area.height);
-
     if (mGrip)
     {
+        const gcn::Rectangle area = getChildrenArea();
         mGrip->setPosition(getWidth() - mGrip->getWidth() - area.x,
                            getHeight() - mGrip->getHeight() - area.y);
+    }
+
+    if (mLayout)
+    {
+        int w = getWidth() - 2 * getPadding();
+        int h = getHeight() - getPadding() - getTitleBarHeight();
+        mLayout->reflow(w, h);
     }
 }
 
@@ -285,29 +291,12 @@ bool Window::isSticky()
 
 void Window::setVisible(bool visible)
 {
-    if (isSticky())
-    {
-        gcn::Window::setVisible(true);
-    }
-    else
-    {
-        gcn::Window::setVisible(visible);
-    }
+    gcn::Window::setVisible(isSticky() || visible);
 }
 
 void Window::scheduleDelete()
 {
     windowContainer->scheduleDelete(this);
-}
-
-void Window::add(gcn::Widget *w)
-{
-    mChrome->add(w);
-}
-
-void Window::add(gcn::Widget *w, int x, int y)
-{
-    mChrome->add(w, x, y);
 }
 
 void Window::mousePressed(gcn::MouseEvent &event)
@@ -708,5 +697,31 @@ void Window::loadSkin(const std::string filename)
 
     // Hard-coded for now until we update the above code to look for window buttons.
     closeImage = resman->getImage("graphics/gui/close_button.png");
+}
+
+Layout &Window::getLayout()
+{
+    if (!mLayout) mLayout = new Layout;
+    return *mLayout;
+}
+
+LayoutCell &Window::place(int x, int y, gcn::Widget *wg, int w, int h)
+{
+    add(wg);
+    return getLayout().place(wg, x, y, w, h);
+}
+
+ContainerPlacer Window::getPlacer(int x, int y)
+{
+    return ContainerPlacer(this, &getLayout().at(x, y));
+}
+
+void Window::reflowLayout(int w, int h)
+{
+    assert(mLayout);
+    mLayout->reflow(w, h);
+    delete mLayout;
+    mLayout = NULL;
+    setContentSize(w, h);
 }
 
