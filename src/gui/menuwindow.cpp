@@ -31,6 +31,7 @@ extern Window *chatWindow;
 extern Window *equipmentWindow;
 extern Window *inventoryWindow;
 extern Window *itemShortcutWindow;
+extern Window *smileyWindow;
 extern Window *setupWindow;
 extern Window *skillDialog;
 extern Window *statusWindow;
@@ -62,6 +63,7 @@ MenuWindow::MenuWindow():
         "Inventory",
         "Skills",
         "Shortcut",
+        "Emote",
         "Setup",
         0
     };
@@ -113,6 +115,10 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
     else if (event.getId() == "Shortcut")
     {
         window = itemShortcutWindow;
+    }
+    else if (event.getId() == "Emote")
+    {
+        window = smileyWindow;
     }
     else if (event.getId() == "Setup")
     {
