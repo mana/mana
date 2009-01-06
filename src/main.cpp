@@ -675,6 +675,7 @@ int main(int argc, char *argv[])
 #endif
         setlocale(LC_MESSAGES, "");
         bindtextdomain("tmw", LOCALEDIR);
+        bind_textdomain_codeset("tmw", "UTF-8");
         textdomain("tmw");
 #endif
 
