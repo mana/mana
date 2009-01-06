@@ -30,6 +30,8 @@
 #include "playerbox.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
 #include "../game.h"
 #include "../localplayer.h"
 #include "../main.h"
@@ -114,17 +116,20 @@ CharSelectDialog::CharSelectDialog(Network *network,
             mCancelButton->getX() - 5 - mSelectButton->getWidth(),
             mNewCharButton->getY());
 
-    add(mPlayerBox);
-    add(mSelectButton);
-    add(mCancelButton);
-    add(mNewCharButton);
-    add(mDelCharButton);
-    add(mPreviousButton);
-    add(mNextButton);
-    add(mNameLabel);
-    add(mLevelLabel);
-    add(mJobLevelLabel);
-    add(mMoneyLabel);
+    place(0, 0, mPlayerBox, 5).setPadding(3);
+    place(0, 1, mNameLabel, 2);
+    place(0, 2, mLevelLabel, 2);
+    place(0, 3, mJobLevelLabel, 2);
+    place(0, 4, mMoneyLabel, 2);
+    place(0, 5, mPreviousButton);
+    place(1, 5, mNextButton);
+    place(0, 6, mNewCharButton);
+    place(1, 6, mDelCharButton);
+    place(3, 6, mSelectButton);
+    place(4, 6, mCancelButton);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
