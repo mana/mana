@@ -31,6 +31,8 @@
 
 #include "../net/network.h" // TODO this is just for iptostring, move that?
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 extern SERVER_INFO **server_info;
@@ -47,15 +49,15 @@ class ServerListModel : public gcn::ListModel {
 };
 
 ServerSelectDialog::ServerSelectDialog(LoginData *loginData, int nextState):
-    Window("Select Server"),
+    Window(_("Select Server")),
     mLoginData(loginData),
     mNextState(nextState)
 {
     mServerListModel = new ServerListModel();
     mServerList = new ListBox(mServerListModel);
     ScrollArea *mScrollArea = new ScrollArea(mServerList);
-    mOkButton = new Button("OK", "ok", this);
-    Button *mCancelButton = new Button("Cancel", "cancel", this);
+    mOkButton = new Button(_("OK"), "ok", this);
+    Button *mCancelButton = new Button(_("Cancel"), "cancel", this);
 
     setContentSize(200, 100);
 

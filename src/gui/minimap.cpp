@@ -28,8 +28,10 @@
 
 #include "../resources/image.h"
 
+#include "../utils/gettext.h"
+
 Minimap::Minimap():
-    Window("Map"),
+    Window(_("MiniMap")),
     mMapImage(NULL)
 {
     setWindowName("MiniMap");

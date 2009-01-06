@@ -24,6 +24,8 @@
 #include "button.h"
 #include "scrollarea.h"
 
+#include "../utils/gettext.h"
+
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
@@ -32,7 +34,7 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     textBox->setEditable(false);
 
     gcn::ScrollArea *scrollArea = new ScrollArea(textBox);
-    gcn::Button *okButton = new Button("Ok", "ok", this);
+    gcn::Button *okButton = new Button(_("Ok"), "ok", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

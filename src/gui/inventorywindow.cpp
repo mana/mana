@@ -39,10 +39,11 @@
 
 #include "../resources/iteminfo.h"
 
-#include "../utils/tostring.h"
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 
 InventoryWindow::InventoryWindow():
-    Window("Inventory")
+    Window(_("Inventory"))
 {
     setWindowName("Inventory");
     setResizable(true);
@@ -52,8 +53,8 @@ InventoryWindow::InventoryWindow():
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(115, 25, 322, 200);
 
-    mUseButton = new Button("Use", "use", this);
-    mDropButton = new Button("Drop", "drop", this);
+    mUseButton = new Button(_("Use"), "use", this);
+    mDropButton = new Button(_("Drop"), "drop", this);
 
     mItems = new ItemContainer(player_node->getInventory());
     mItems->addSelectionListener(this);
@@ -95,15 +96,14 @@ void InventoryWindow::logic()
     updateButtons();
 
     // Update weight information
-    mWeightLabel->setCaption(
-            "Weight: " + toString(player_node->mTotalWeight) +
-            "/" + toString(player_node->mMaxWeight));
+    mWeightLabel->setCaption(strprintf(_("Weight: %d / %d"),
+                                       player_node->mTotalWeight,
+                                       player_node->mMaxWeight));
 
     // Update number of items in inventory
-    mInvenSlotLabel->setCaption(
-            "Slots used: "
-            + toString(player_node->getInventory()->getNumberOfSlotsUsed())
-            + "/" + toString(player_node->getInventory()->getInventorySize()));
+    mInvenSlotLabel->setCaption(strprintf(_("Slots used: %d / %d"),
+            player_node->getInventory()->getNumberOfSlotsUsed(),
+            player_node->getInventory()->getInventorySize()));
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -145,20 +145,20 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
     // Update name, effect and description
     if (!item)
     {
-        mItemNameLabel->setCaption("Name:");
-        mItemEffectLabel->setCaption("Effect:");
-        mItemDescriptionLabel->setCaption("Description:");
+        mItemNameLabel->setCaption(strprintf(_("Name: %s"), ""));
+        mItemEffectLabel->setCaption(strprintf(_("Effect: %s"), ""));
+        mItemDescriptionLabel->setCaption(strprintf(_("Description: %s"), ""));
     }
     else
     {
         const ItemInfo& itemInfo = item->getInfo();
-        std::string SomeText;
-        SomeText = "Name: " + itemInfo.getName();
-        mItemNameLabel->setCaption(SomeText);
-        SomeText = "Effect: " + itemInfo.getEffect();
-        mItemEffectLabel->setCaption(SomeText);
-        SomeText = "Description: " + itemInfo.getDescription();
-        mItemDescriptionLabel->setCaption(SomeText);
+        mItemNameLabel->setCaption(
+                strprintf(_("Name: %s"), itemInfo.getName().c_str()));
+        mItemEffectLabel->setCaption(
+                strprintf(_("Effect: %s"), itemInfo.getEffect().c_str()));
+        mItemDescriptionLabel->setCaption(
+                strprintf(_("Description: %s"),
+                          itemInfo.getDescription().c_str()));
     }
 }
 
@@ -170,7 +170,8 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     {
         Item *item = mItems->getSelectedItem();
 
-        if (!item) return;
+        if (!item)
+            return;
 
         /* Convert relative to the window coordinates to absolute screen
          * coordinates.
@@ -221,14 +222,14 @@ void InventoryWindow::updateButtons()
     if (selectedItem && selectedItem->isEquipment())
     {
         if (selectedItem->isEquipped()) {
-            mUseButton->setCaption("Unequip");
+            mUseButton->setCaption(_("Unequip"));
         }
         else {
-            mUseButton->setCaption("Equip");
+            mUseButton->setCaption(_("Equip"));
         }
     }
     else {
-        mUseButton->setCaption("Use");
+        mUseButton->setCaption(_("Use"));
     }
 
     mUseButton->setEnabled(selectedItem != 0);

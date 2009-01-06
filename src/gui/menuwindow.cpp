@@ -28,6 +28,8 @@
 #include "button.h"
 #include "windowcontainer.h"
 
+#include "../utils/gettext.h"
+
 extern Window *setupWindow;
 extern Window *inventoryWindow;
 extern Window *equipmentWindow;
@@ -54,21 +56,21 @@ MenuWindow::MenuWindow():
     setTitleBarHeight(0);
 
     // Buttons
-    const char *buttonNames[] =
+    static const char *buttonNames[] =
     {
-        "Status",
-        "Equipment",
-        "Inventory",
-        "Skills",
-        "Shortcut",
-        "Setup",
+        N_("Status"),
+        N_("Equipment"),
+        N_("Inventory"),
+        N_("Skills"),
+        N_("Shortcut"),
+        N_("Setup"),
         0
     };
     int x = 0, h = 0;
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
-        gcn::Button *btn = new Button(*curBtn, *curBtn, &listener);
+        gcn::Button *btn = new Button(gettext(*curBtn), *curBtn, &listener);
         btn->setPosition(x, 0);
         add(btn);
         x += btn->getWidth() + 3;
