@@ -28,6 +28,8 @@
 #include "shoplistbox.h"
 #include "slider.h"
 
+#include "widgets/layout.h"
+
 #include "../npc.h"
 
 #include "../net/messageout.h"
@@ -62,7 +64,6 @@ BuyDialog::BuyDialog(Network *network):
 
     mIncreaseButton->setSize(20, 20);
     mDecreaseButton->setSize(20, 20);
-    mQuantityLabel->setWidth(60);
 
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mIncreaseButton->setEnabled(false);
@@ -70,22 +71,22 @@ BuyDialog::BuyDialog(Network *network):
     mBuyButton->setEnabled(false);
     mSlider->setEnabled(false);
 
-    mShopItemList->setActionEventId("item");
     mSlider->setActionEventId("slider");
-
-    mShopItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
+    mShopItemList->addSelectionListener(this);
 
-    add(mScrollArea);
-    add(mSlider);
-    add(mQuantityLabel);
-    add(mBuyButton);
-    add(mQuitButton);
-    add(mIncreaseButton);
-    add(mDecreaseButton);
-    add(mMoneyLabel);
-    add(mItemDescLabel);
-    add(mItemEffectLabel);
+    place(0, 0, mScrollArea, 5).setPadding(3);
+    place(0, 1, mQuantityLabel, 2);
+    place(2, 1, mSlider, 3);
+    place(0, 2, mMoneyLabel, 5);
+    place(0, 3, mItemEffectLabel, 5);
+    place(0, 4, mItemDescLabel, 5);
+    place(0, 5, mDecreaseButton);
+    place(1, 5, mIncreaseButton);
+    place(3, 5, mBuyButton);
+    place(4, 5, mQuitButton);
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
     setLocationRelativeTo(getParent());
@@ -191,53 +192,7 @@ void BuyDialog::valueChanged(const gcn::SelectionEvent &event)
     mSlider->gcn::Slider::setScale(1, mMaxItems);
 }
 
-void BuyDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    mDecreaseButton->setPosition(8, height - 8 - mDecreaseButton->getHeight());
-    mIncreaseButton->setPosition(
-            mDecreaseButton->getX() + mDecreaseButton->getWidth() + 5,
-            mDecreaseButton->getY());
-
-    mQuitButton->setPosition(
-            width - 8 - mQuitButton->getWidth(),
-            height - 8 - mQuitButton->getHeight());
-    mBuyButton->setPosition(
-            mQuitButton->getX() - 5 - mBuyButton->getWidth(),
-            mQuitButton->getY());
-
-    mItemDescLabel->setDimension(gcn::Rectangle(8,
-                mBuyButton->getY() - 5 - mItemDescLabel->getHeight(),
-                width - 16,
-                mItemDescLabel->getHeight()));
-    mItemEffectLabel->setDimension(gcn::Rectangle(8,
-                mItemDescLabel->getY() - 5 - mItemEffectLabel->getHeight(),
-                width - 16,
-                mItemEffectLabel->getHeight()));
-    mMoneyLabel->setDimension(gcn::Rectangle(8,
-                mItemEffectLabel->getY() - 5 - mMoneyLabel->getHeight(),
-                width - 16,
-                mMoneyLabel->getHeight()));
-
-    mQuantityLabel->setPosition(
-            width - mQuantityLabel->getWidth() - 8,
-            mMoneyLabel->getY() - 5 - mQuantityLabel->getHeight());
-    mSlider->setDimension(gcn::Rectangle(8,
-                mQuantityLabel->getY(),
-                mQuantityLabel->getX() - 8 - 8,
-                10));
-
-    mScrollArea->setDimension(gcn::Rectangle(8, 8, width - 16,
-                mSlider->getY() - 5 - 8));
-}
-
-void
-BuyDialog::updateButtonsAndLabels()
+void BuyDialog::updateButtonsAndLabels()
 {
     const int selectedItem = mShopItemList->getSelected();
     int price = 0;

@@ -30,6 +30,8 @@
 #include "shop.h"
 #include "slider.h"
 
+#include "widgets/layout.h"
+
 #include "../item.h"
 #include "../npc.h"
 
@@ -70,7 +72,6 @@ SellDialog::SellDialog(Network *network):
 
     mIncreaseButton->setSize(20, 20);
     mDecreaseButton->setSize(20, 20);
-    mQuantityLabel->setWidth(60);
 
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mIncreaseButton->setEnabled(false);
@@ -79,23 +80,22 @@ SellDialog::SellDialog(Network *network):
     mSlider->setEnabled(false);
 
     mShopItemList->setPriceCheck(false);
-    mShopItemList->setActionEventId("item");
-    mSlider->setActionEventId("slider");
-
-    mShopItemList->addActionListener(this);
     mShopItemList->addSelectionListener(this);
+    mSlider->setActionEventId("slider");
     mSlider->addActionListener(this);
 
-    add(mScrollArea);
-    add(mSlider);
-    add(mQuantityLabel);
-    add(mMoneyLabel);
-    add(mItemEffectLabel);
-    add(mItemDescLabel);
-    add(mIncreaseButton);
-    add(mDecreaseButton);
-    add(mSellButton);
-    add(mQuitButton);
+    place(0, 0, mScrollArea, 5).setPadding(3);
+    place(0, 1, mQuantityLabel, 2);
+    place(2, 1, mSlider, 3);
+    place(0, 2, mMoneyLabel, 5);
+    place(0, 3, mItemEffectLabel, 5);
+    place(0, 4, mItemDescLabel, 5);
+    place(0, 5, mDecreaseButton);
+    place(1, 5, mIncreaseButton);
+    place(3, 5, mSellButton);
+    place(4, 5, mQuitButton);
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
     setLocationRelativeTo(getParent());
@@ -210,51 +210,6 @@ void SellDialog::valueChanged(const gcn::SelectionEvent &event)
 
     updateButtonsAndLabels();
     mSlider->gcn::Slider::setScale(1, mMaxItems);
-}
-
-void SellDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    gcn::Rectangle area = getChildrenArea();
-    int width = area.width;
-    int height = area.height;
-
-    mDecreaseButton->setPosition(8, height - 8 - mDecreaseButton->getHeight());
-    mIncreaseButton->setPosition(
-            mDecreaseButton->getX() + mDecreaseButton->getWidth() + 5,
-            mDecreaseButton->getY());
-
-    mQuitButton->setPosition(
-            width - 8 - mQuitButton->getWidth(),
-            height - 8 - mQuitButton->getHeight());
-    mSellButton->setPosition(
-            mQuitButton->getX() - 5 - mSellButton->getWidth(),
-            mQuitButton->getY());
-
-    mItemDescLabel->setDimension(gcn::Rectangle(8,
-                mSellButton->getY() - 5 - mItemDescLabel->getHeight(),
-                width - 16,
-                mItemDescLabel->getHeight()));
-    mItemEffectLabel->setDimension(gcn::Rectangle(8,
-                mItemDescLabel->getY() - 5 - mItemEffectLabel->getHeight(),
-                width - 16,
-                mItemEffectLabel->getHeight()));
-    mMoneyLabel->setDimension(gcn::Rectangle(8,
-                mItemEffectLabel->getY() - 5 - mMoneyLabel->getHeight(),
-                width - 16,
-                mMoneyLabel->getHeight()));
-
-    mQuantityLabel->setPosition(
-            width - mQuantityLabel->getWidth() - 8,
-            mMoneyLabel->getY() - 5 - mQuantityLabel->getHeight());
-    mSlider->setDimension(gcn::Rectangle(8,
-                mQuantityLabel->getY(),
-                mQuantityLabel->getX() - 8 - 8,
-                10));
-
-    mScrollArea->setDimension(gcn::Rectangle(8, 8, width - 16,
-                mSlider->getY() - 5 - 8));
 }
 
 void SellDialog::setMoney(int amount)

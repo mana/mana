@@ -77,11 +77,6 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         void valueChanged(const gcn::SelectionEvent &event);
 
         /**
-         * Called whenever the widget changes size.
-         */
-        void widgetResized(const gcn::Event &event);
-
-        /**
          * Gives Player's Money amount
          */
         void setMoney(int amount);

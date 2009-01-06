@@ -93,13 +93,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         /**
          * Updates the state of buttons and labels.
          */
-        void
-        updateButtonsAndLabels();
-
-        /**
-         * Called whenever the widget changes size.
-         */
-        void widgetResized(const gcn::Event &event);
+        void updateButtonsAndLabels();
 
     private:
         Network *mNetwork;
