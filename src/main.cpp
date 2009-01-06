@@ -708,6 +708,7 @@ int main(int argc, char *argv[])
 #endif
         setlocale(LC_MESSAGES, "");
         bindtextdomain("aethyra", LOCALEDIR);
+        bind_textdomain_codeset("aethyra", "UTF-8");
         textdomain("aethyra");
 #endif
 
