@@ -201,7 +201,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     // Draw text
     if (textManager)
     {
-        textManager->draw(graphics, mPixelViewX, mPixelViewY);
+        textManager->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
     }
 
     // Draw player names, speech, and emotion sprite as needed

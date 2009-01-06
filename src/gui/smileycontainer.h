@@ -24,11 +24,11 @@
 
 #include <list>
 
-#include <resources/imageset.h>
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
+#include "../resources/imageset.h"
 #include "../guichanfwd.h"
 
 class Image;

@@ -44,7 +44,7 @@ EffectManager::EffectManager()
 
     for_each_xml_child_node(node, root)
     {
-        int id;
+        //int id;
 
         if (xmlStrEqual(node->name, BAD_CAST "effect"))
         {

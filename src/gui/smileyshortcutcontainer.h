@@ -25,9 +25,10 @@
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
-#include <resources/imageset.h>
 
+#include "../resources/imageset.h"
 #include "../guichanfwd.h"
+
 #include "shortcutcontainer.h"
 
 class Image;
