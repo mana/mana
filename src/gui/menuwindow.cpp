@@ -27,6 +27,8 @@
 #include "menuwindow.h"
 #include "windowcontainer.h"
 
+#include "../utils/gettext.h"
+
 extern Window *chatWindow;
 extern Window *equipmentWindow;
 extern Window *inventoryWindow;
@@ -55,23 +57,23 @@ MenuWindow::MenuWindow():
     setTitleBarHeight(0);
 
     // Buttons
-    const char *buttonNames[] =
+    static const char *buttonNames[] =
     {
-        "Chat",
-        "Status",
-        "Equipment",
-        "Inventory",
-        "Skills",
-        "Shortcut",
-        "Emote",
-        "Setup",
+        _("Chat"),
+        _("Status"),
+        _("Equipment"),
+        _("Inventory"),
+        _("Skills"),
+        _("Shortcut"),
+        _("Emote"),
+        _("Setup"),
         0
     };
     int x = 0, h = 0;
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
-        gcn::Button *btn = new Button(*curBtn, *curBtn, &listener);
+        gcn::Button *btn = new Button(gettext(*curBtn), *curBtn, &listener);
         btn->setPosition(x, 0);
         add(btn);
         x += btn->getWidth() + 3;
@@ -92,35 +94,35 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
 {
     Window *window = NULL;
 
-    if (event.getId() == "Chat")
+    if (event.getId() == _("Chat"))
     {
         window = chatWindow;
     }
-    else if (event.getId() == "Status")
+    else if (event.getId() == _("Status"))
     {
         window = statusWindow;
     }
-    else if (event.getId() == "Equipment")
+    else if (event.getId() == _("Equipment"))
     {
         window = equipmentWindow;
     }
-    else if (event.getId() == "Inventory")
+    else if (event.getId() == _("Inventory"))
     {
         window = inventoryWindow;
     }
-    else if (event.getId() == "Skills")
+    else if (event.getId() == _("Skills"))
     {
         window = skillDialog;
     }
-    else if (event.getId() == "Shortcut")
+    else if (event.getId() == _("Shortcut"))
     {
         window = itemShortcutWindow;
     }
-    else if (event.getId() == "Emote")
+    else if (event.getId() == _("Emote"))
     {
         window = smileyWindow;
     }
-    else if (event.getId() == "Setup")
+    else if (event.getId() == _("Setup"))
     {
         window = setupWindow;
     }

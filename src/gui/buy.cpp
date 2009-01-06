@@ -33,10 +33,11 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
-#include "../utils/tostring.h"
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 
 BuyDialog::BuyDialog(Network *network):
-    Window("Buy"), mNetwork(network),
+    Window(_("Buy")), mNetwork(network),
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     setWindowName("Buy");
@@ -51,13 +52,13 @@ BuyDialog::BuyDialog(Network *network):
     mScrollArea = new ScrollArea(mShopItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
-    mMoneyLabel = new gcn::Label("Price : 0 GP / 0 GP");
+    mMoneyLabel = new gcn::Label(strprintf(_("Price: %d GP / Total: %d GP"), 0, 0));
     mIncreaseButton = new Button("+", "+", this);
     mDecreaseButton = new Button("-", "-", this);
-    mBuyButton = new Button("Buy", "buy", this);
-    mQuitButton = new Button("Quit", "quit", this);
-    mItemDescLabel = new gcn::Label("Description:");
-    mItemEffectLabel = new gcn::Label("Effect:");
+    mBuyButton = new Button(_("Buy"), "buy", this);
+    mQuitButton = new Button(_("Quit"), "quit", this);
+    mItemDescLabel = new gcn::Label(strprintf(_("Description: %s"), ""));
+    mItemEffectLabel = new gcn::Label(strprintf(_("Effect: %s"), ""));
 
     mIncreaseButton->setSize(20, 20);
     mDecreaseButton->setSize(20, 20);
@@ -156,6 +157,9 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
+    // TODO: Actually we'd have a bug elsewhere if this check for the number
+    // of items to be bought ever fails, Bertram removed the assertions, is
+    // there a better way to ensure this fails in an _obvious_ way in C++?
     else if (event.getId() == "buy" && mAmountItems > 0 &&
                 mAmountItems <= mMaxItems)
     {
@@ -242,8 +246,10 @@ BuyDialog::updateButtonsAndLabels()
     {
         const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
 
-        mItemDescLabel->setCaption("Description: " + info.getDescription());
-        mItemEffectLabel->setCaption("Effect: " + info.getEffect());
+        mItemDescLabel->setCaption
+            (strprintf(_("Description: %s"), info.getDescription().c_str()));
+        mItemEffectLabel->setCaption
+            (strprintf(_("Effect: %s"), info.getEffect().c_str()));
 
         int itemPrice = mShopItems->at(selectedItem)->getPrice();
 
@@ -259,8 +265,8 @@ BuyDialog::updateButtonsAndLabels()
     }
     else
     {
-        mItemDescLabel->setCaption("Description:");
-        mItemEffectLabel->setCaption("Effect:");
+        mItemDescLabel->setCaption(strprintf(_("Description: %s"), ""));
+        mItemEffectLabel->setCaption(strprintf(_("Effect: %s"), ""));
         mMaxItems = 0;
         mAmountItems = 0;
     }
@@ -272,8 +278,7 @@ BuyDialog::updateButtonsAndLabels()
     mSlider->setEnabled(mMaxItems > 1);
 
     // Update quantity and money labels
-    mQuantityLabel->setCaption(
-        toString(mAmountItems) + " / " + toString(mMaxItems));
-    mMoneyLabel->setCaption("Price: " + toString(price)  + " GP / "
-                             + toString(mMoney - price) + " GP" );
+    mQuantityLabel->setCaption(strprintf("%d / %d", mAmountItems, mMaxItems));
+    mMoneyLabel->setCaption
+        (strprintf(_("Price: %d GP / Total: %d GP"), price, mMoney - price));
 }

@@ -12,7 +12,7 @@ IRC:       irc.freenode.net / #aethyra
 1. Requirements
 ===============
 
-You are expected to have either checked out Aethyra from CVS or you have downloaded
+You are expected to have either checked out Aethyra from git or you have downloaded
 a source release. To get Aethyra to compile, you need a compiler
 (GCC) and some libraries. The required libraries are:
 
@@ -32,6 +32,8 @@ compile:
 
 * GNU automake 1.9  http://www.gnu.org/software/automake/
 * GNU autoconf      http://www.gnu.org/software/autoconf/
+* GNU gettext       http://www.gnu.org/software/gettext/
+* CVS               http://www.nongnu.org/cvs/ (needed to run autopoint)
 
 Installing these dependencies is distributions-specific, and we'll leave it to
 you to figure this out.

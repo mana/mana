@@ -29,6 +29,8 @@
 
 #include "../main.h"
 
+#include "../utils/gettext.h"
+
 namespace {
     struct ConnectionActionListener : public gcn::ActionListener
     {
@@ -41,9 +43,9 @@ ConnectionDialog::ConnectionDialog():
 {
     setContentSize(200, 100);
 
-    Button *cancelButton = new Button("Cancel", "cancelButton", &listener);
+    Button *cancelButton = new Button(_("Cancel"), "cancelButton", &listener);
     mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
-    gcn::Label *label = new gcn::Label("Connecting...");
+    gcn::Label *label = new gcn::Label(_("Connecting..."));
 
     cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
     mProgressBar->setPosition(5, cancelButton->getY() - 25);

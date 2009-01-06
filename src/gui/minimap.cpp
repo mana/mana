@@ -28,13 +28,15 @@
 
 #include "../resources/image.h"
 
+#include "../utils/gettext.h"
+
 Minimap::Minimap():
-    Window("Map"),
+    Window(_("Map")),
     mMapImage(NULL),
     mProportion(0.5)
 {
     setCloseButton(true);
-    setWindowName("MiniMap");
+    setWindowName(_("MiniMap"));
 }
 
 Minimap::~Minimap()

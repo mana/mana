@@ -37,10 +37,12 @@
 
 #include "../resources/iteminfo.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 InventoryWindow::InventoryWindow():
-    Window("Inventory")
+    Window(_("Inventory"))
 {
     setWindowName("Inventory");
     setResizable(true);
@@ -49,8 +51,8 @@ InventoryWindow::InventoryWindow():
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(115, 25, 322, 200);
 
-    mUseButton = new Button("Use", "use", this);
-    mDropButton = new Button("Drop", "drop", this);
+    mUseButton = new Button(_("Use"), "use", this);
+    mDropButton = new Button(_("Drop"), "drop", this);
 
     mItems = new ItemContainer(player_node->getInventory(), 2);
     mItems->addSelectionListener(this);
@@ -61,14 +63,14 @@ InventoryWindow::InventoryWindow():
     mTotalWeight = toString(player_node->mTotalWeight);
     mMaxWeight = toString(player_node->mMaxWeight);
 
-    mItemName = "Name:";
+    mItemName = _("Name:");
     mItemNameLabel = new TextBox();
-    mItemDescription = "Description:";
+    mItemDescription = _("Description:");
     mItemDescriptionLabel = new TextBox();
-    mItemEffect = "Effect:";
+    mItemEffect = _("Effect:");
     mItemEffectLabel = new TextBox();
-    mWeight = "Weight: " + mTotalWeight + " g / " +
-              mMaxWeight + " g Slots: " + 
+    mWeight = _("Weight: ") + mTotalWeight + " g / " +
+              mMaxWeight + _(" g Slots: ") + 
               toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
               "/" + toString(player_node->getInventory()->getInventorySize());
     mWeightLabel = new TextBox();
@@ -105,8 +107,8 @@ void InventoryWindow::logic()
         mMaxWeight = toString(player_node->mMaxWeight);
 
         // Adjust widgets
-        mWeight = "Weight: " + mTotalWeight + " g / " +
-                  mMaxWeight + " g  Slots: " + 
+        mWeight = _("Weight: ") + mTotalWeight + " g / " +
+                  mMaxWeight + _(" g  Slots: ") + 
                  toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
                  "/" + toString(player_node->getInventory()->getInventorySize());
 
@@ -153,21 +155,21 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
     // Update name, effect and description
     if (!item)
     {
-        mItemName = "Name:";
+        mItemName = _("Name:");
         mItemNameLabel->setTextWrapped(mItemName);
-        mItemEffect = "Effect:";
+        mItemEffect = _("Effect:");
         mItemEffectLabel->setTextWrapped(mItemEffect);
-        mItemDescription = "Description:";
+        mItemDescription = _("Description:");
         mItemDescriptionLabel->setTextWrapped(mItemDescription);
     }
     else
     {
         const ItemInfo& itemInfo = item->getInfo();
-        mItemName = "Name: " + itemInfo.getName();
+        mItemName = _("Name: ") + itemInfo.getName();
         mItemNameLabel->setTextWrapped(mItemName);
-        mItemEffect = "Effect: " + itemInfo.getEffect();
+        mItemEffect = _("Effect: ") + itemInfo.getEffect();
         mItemEffectLabel->setTextWrapped(mItemEffect);
-        mItemDescription = "Description: " + itemInfo.getDescription();
+        mItemDescription = _("Description: ") + itemInfo.getDescription();
         mItemDescriptionLabel->setTextWrapped(mItemDescription);
     }
 
@@ -182,7 +184,8 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     {
         Item *item = mItems->getSelectedItem();
 
-        if (!item) return;
+        if (!item)
+            return;
 
         /* Convert relative to the window coordinates to absolute screen
          * coordinates.
@@ -249,14 +252,14 @@ void InventoryWindow::updateButtons()
     if (selectedItem && selectedItem->isEquipment())
     {
         if (selectedItem->isEquipped()) {
-            mUseButton->setCaption("Unequip");
+            mUseButton->setCaption(_("Unequip"));
         }
         else {
-            mUseButton->setCaption("Equip");
+            mUseButton->setCaption(_("Equip"));
         }
     }
     else {
-        mUseButton->setCaption("Use");
+        mUseButton->setCaption(_("Use"));
     }
 
     mUseButton->setEnabled(selectedItem != 0);

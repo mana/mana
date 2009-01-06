@@ -23,6 +23,8 @@
 
 #include <guichan/font.hpp>
 
+#include "../utils/gettext.h"
+
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
@@ -32,7 +34,7 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     mTextBox->setOpaque(false);
 
     mTextArea = new ScrollArea(mTextBox);
-    okButton = new Button("Ok", "ok", this);
+    okButton = new Button(_("Ok"), "ok", this);
 
     mTextArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mTextArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

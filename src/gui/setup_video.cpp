@@ -42,6 +42,7 @@
 #include "../main.h"
 #include "../particle.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 extern Graphics *graphics;
@@ -109,13 +110,13 @@ Setup_Video::Setup_Video():
     mFps((int) config.getValue("fpslimit", 0)),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
-    mFsCheckBox(new CheckBox("Full screen", mFullScreenEnabled)),
-    mOpenGLCheckBox(new CheckBox("OpenGL", mOpenGLEnabled)),
-    mCustomCursorCheckBox(new CheckBox("Custom cursor", mCustomCursorEnabled)),
-    mParticleEffectsCheckBox(new CheckBox("Particle effects", mParticleEffectsEnabled)),
-    mSpeechBubbleCheckBox(new CheckBox("Speech bubbles", mSpeechBubbleEnabled)),
+    mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
+    mOpenGLCheckBox(new CheckBox(_("OpenGL"), mOpenGLEnabled)),
+    mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
+    mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
+    mSpeechBubbleCheckBox(new CheckBox(_("Speech bubbles"), mSpeechBubbleEnabled)),
     mAlphaSlider(new Slider(0.2, 1.0)),
-    mFpsCheckBox(new CheckBox("FPS Limit: ")),
+    mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
     mFpsSlider(new Slider(10, 200)),
     mFpsField(new TextField),
     mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 16)),
@@ -134,7 +135,7 @@ Setup_Video::Setup_Video():
     setOpaque(false);
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
-    gcn::Label *alphaLabel = new gcn::Label("Gui opacity");
+    gcn::Label *alphaLabel = new gcn::Label(_("Gui opacity"));
 
     mModeList->setEnabled(true);
 #ifndef USE_OPENGL
@@ -199,7 +200,7 @@ Setup_Video::Setup_Video():
     mParticleDetailField->addKeyListener(this);
 
     mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 140, 75, 10));
-    gcn::Label *scrollRadiusLabel = new gcn::Label("Scroll radius");
+    gcn::Label *scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
     scrollRadiusLabel->setPosition(90, 140);
     mScrollRadiusField->setPosition(mFpsField->getX(), 140);
     mScrollRadiusField->setWidth(30);
@@ -207,7 +208,7 @@ Setup_Video::Setup_Video():
     mScrollRadiusSlider->setValue(mOriginalScrollRadius);
 
     mScrollLazinessSlider->setDimension(gcn::Rectangle(10, 160, 75, 10));
-    gcn::Label *scrollLazinessLabel = new gcn::Label("Scroll laziness");
+    gcn::Label *scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
     scrollLazinessLabel->setPosition(90, 160);
     mScrollLazinessField->setPosition(mFpsField->getX(), 160);
     mScrollLazinessField->setWidth(30);
@@ -215,42 +216,42 @@ Setup_Video::Setup_Video():
     mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
 
     mOverlayDetailSlider->setDimension(gcn::Rectangle(10, 180, 75, 10));
-    gcn::Label *overlayDetailLabel = new gcn::Label("Ambient FX");
+    gcn::Label *overlayDetailLabel = new gcn::Label(_("Ambient FX"));
     overlayDetailLabel->setPosition(90, 180);
     mOverlayDetailField->setPosition(180, 180);
     mOverlayDetailField->setWidth(30);
     switch (mOverlayDetail)
     {
         case 0:
-            mOverlayDetailField->setCaption("off");
+            mOverlayDetailField->setCaption(_("off"));
             break;
         case 1:
-            mOverlayDetailField->setCaption("low");
+            mOverlayDetailField->setCaption(_("low"));
             break;
         case 2:
-            mOverlayDetailField->setCaption("high");
+            mOverlayDetailField->setCaption(_("high"));
             break;
     }
     mOverlayDetailSlider->setValue(mOverlayDetail);
 
     mParticleDetailSlider->setDimension(gcn::Rectangle(10, 200, 75, 10));
-    gcn::Label *particleDetailLabel = new gcn::Label("Particle Detail");
+    gcn::Label *particleDetailLabel = new gcn::Label(_("Particle Detail"));
     particleDetailLabel->setPosition(90, 200);
     mParticleDetailField->setPosition(180, 200);
     mParticleDetailField->setWidth(60);
     switch (mParticleDetail)
     {
         case 0:
-            mParticleDetailField->setCaption("low");
+            mParticleDetailField->setCaption(_("low"));
             break;
         case 1:
-            mParticleDetailField->setCaption("medium");
+            mParticleDetailField->setCaption(_("medium"));
             break;
         case 2:
-            mParticleDetailField->setCaption("high");
+            mParticleDetailField->setCaption(_("high"));
             break;
         case 3:
-            mParticleDetailField->setCaption("max");
+            mParticleDetailField->setCaption(_("max"));
             break;
     }
     mParticleDetailSlider->setValue(mParticleDetail);
@@ -309,17 +310,17 @@ void Setup_Video::apply()
                 if (!graphics->setFullscreen(fullscreen))
                 {
                     std::stringstream error;
-                    error << "Failed to switch to " <<
-                        (fullscreen ? "windowed" : "fullscreen") <<
-                        "mode and restoration of old mode also failed!" <<
+                    error << _("Failed to switch to ") <<
+                        (fullscreen ? _("windowed") : _("fullscreen")) <<
+                        _("mode and restoration of old mode also failed!") <<
                         std::endl;
                     logger->error(error.str());
                 }
             }
 #ifdef WIN32
         } else {
-            new OkDialog("Switching to full screen",
-                    "Restart needed for changes to take effect.");
+            new OkDialog(_("Switching to full screen"),
+                    _("Restart needed for changes to take effect."));
         }
 #endif
         config.setValue("screen", fullscreen ? 1 : 0);
@@ -331,8 +332,8 @@ void Setup_Video::apply()
         config.setValue("opengl", mOpenGLCheckBox->isSelected() ? 1 : 0);
 
         // OpenGL can currently only be changed by restarting, notify user.
-        new OkDialog("Changing OpenGL",
-                "Applying change to OpenGL requires restart.");
+        new OkDialog(_("Changing OpenGL"),
+                _("Applying change to OpenGL requires restart."));
     }
 
     // FPS change
@@ -405,8 +406,8 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         // Try to set the desired video mode
         if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
         {
-            std::cerr << "Couldn't set "
-                      << width << "x" << height << "x" << bpp << " video mode: "
+            std::cerr << _("Couldn't set ")
+                      << width << "x" << height << "x" << bpp << _(" video mode: ")
                       << SDL_GetError() << std::endl;
             exit(1);
         }
@@ -417,8 +418,8 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         graphics->updateScreen();
 
         // TODO: Find out why the drawing area doesn't resize without a restart.
-        new OkDialog("Screen resolution changed",
-                     "Restart your client for the change to take effect.");
+        new OkDialog(_("Screen resolution changed"),
+                     _("Restart your client for the change to take effect."));
 
         config.setValue("screenwidth", width);
         config.setValue("screenheight", height);
@@ -436,8 +437,8 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("particleeffects",
                 mParticleEffectsCheckBox->isSelected() ? 1 : 0);
-        new OkDialog("Particle effect settings changed",
-                     "Restart your client or change maps for the change to take effect.");
+        new OkDialog(_("Particle effect settings changed"),
+                     _("Restart your client or change maps for the change to take effect."));
     }
     else if (event.getId() == "speechbubble")
     {
@@ -467,13 +468,13 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         switch (val)
         {
             case 0:
-                mOverlayDetailField->setCaption("off");
+                mOverlayDetailField->setCaption(_("off"));
                 break;
             case 1:
-                mOverlayDetailField->setCaption("low");
+                mOverlayDetailField->setCaption(_("low"));
                 break;
             case 2:
-                mOverlayDetailField->setCaption("high");
+                mOverlayDetailField->setCaption(_("high"));
                 break;
         }
         config.setValue("OverlayDetail", val);
@@ -484,16 +485,16 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         switch (val)
         {
             case 0:
-                mParticleDetailField->setCaption("low");
+                mParticleDetailField->setCaption(_("low"));
                 break;
             case 1:
-                mParticleDetailField->setCaption("medium");
+                mParticleDetailField->setCaption(_("medium"));
                 break;
             case 2:
-                mParticleDetailField->setCaption("high");
+                mParticleDetailField->setCaption(_("high"));
                 break;
             case 3:
-                mParticleDetailField->setCaption("max");
+                mParticleDetailField->setCaption(_("max"));
                 break;
         }
         config.setValue("particleEmitterSkip", 3 - val);

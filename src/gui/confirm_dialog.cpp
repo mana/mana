@@ -23,6 +23,8 @@
 
 #include "confirm_dialog.h"
 
+#include "../utils/gettext.h"
+
 ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
@@ -32,8 +34,8 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     mTextBox->setOpaque(false);
 
     mTextArea = new ScrollArea(mTextBox);
-    gcn::Button *yesButton = new Button("Yes", "yes", this);
-    gcn::Button *noButton = new Button("No", "no", this);
+    gcn::Button *yesButton = new Button(_("Yes"), "yes", this);
+    gcn::Button *noButton = new Button(_("No"), "no", this);
 
     mTextArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mTextArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

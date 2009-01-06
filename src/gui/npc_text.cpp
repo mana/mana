@@ -26,8 +26,10 @@
 
 #include "../npc.h"
 
+#include "../utils/gettext.h"
+
 NpcTextDialog::NpcTextDialog():
-    Window("NPC")
+    Window(_("NPC"))
 {
     setResizable(true);
 
@@ -38,7 +40,7 @@ NpcTextDialog::NpcTextDialog():
     mTextBox->setEditable(false);
 
     scrollArea = new ScrollArea(mTextBox);
-    okButton = new Button("OK", "ok", this);
+    okButton = new Button(_("OK"), "ok", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

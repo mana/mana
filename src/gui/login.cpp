@@ -35,6 +35,7 @@
 #include "../logindata.h"
 #include "../configuration.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 static const int MAX_SERVER_LIST_SIZE = 5;
@@ -43,13 +44,13 @@ static const int LOGIN_DIALOG_HEIGHT = 140;
 static const int FIELD_WIDTH = LOGIN_DIALOG_WIDTH - 70;
 
 LoginDialog::LoginDialog(LoginData *loginData):
-    Window("Login"), mLoginData(loginData)
+    Window(_("Login")), mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label("Name:");
-    gcn::Label *passLabel = new gcn::Label("Password:");
-    gcn::Label *serverLabel = new gcn::Label("Server:");
-    gcn::Label *portLabel = new gcn::Label("Port:");
-    gcn::Label *dropdownLabel = new gcn::Label("Recent:");
+    gcn::Label *userLabel = new gcn::Label(_("Name:"));
+    gcn::Label *passLabel = new gcn::Label(_("Password:"));
+    gcn::Label *serverLabel = new gcn::Label(_("Server:"));
+    gcn::Label *portLabel = new gcn::Label(_("Port:"));
+    gcn::Label *dropdownLabel = new gcn::Label(_("Recent:"));
     std::vector<std::string> dfltServer;
     dfltServer.push_back("www.aethyra.org"); 
     dfltServer.push_back("www.aethyra.org");
@@ -69,10 +70,10 @@ LoginDialog::LoginDialog(LoginData *loginData):
                                    mServerScrollArea,
                                    mServerListBox);
 
-    mKeepCheck = new CheckBox("Keep", mLoginData->remember);
-    mOkButton = new Button("OK", "ok", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mRegisterButton = new Button("Register", "register", this);
+    mKeepCheck = new CheckBox(_("Keep"), mLoginData->remember);
+    mOkButton = new Button(_("OK"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mRegisterButton = new Button(_("Register"), "register", this);
 
     setContentSize(LOGIN_DIALOG_WIDTH, LOGIN_DIALOG_HEIGHT);
 

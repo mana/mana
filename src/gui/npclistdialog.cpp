@@ -26,8 +26,10 @@
 
 #include "../npc.h"
 
+#include "../utils/gettext.h"
+
 NpcListDialog::NpcListDialog():
-    Window("NPC")
+    Window(_("NPC"))
 {
     setResizable(true);
 
@@ -36,8 +38,8 @@ NpcListDialog::NpcListDialog():
 
     mItemList = new ListBox(this);
     scrollArea = new ScrollArea(mItemList);
-    okButton = new Button("OK", "ok", this);
-    cancelButton = new Button("Cancel", "cancel", this);
+    okButton = new Button(_("OK"), "ok", this);
+    cancelButton = new Button(_("Cancel"), "cancel", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

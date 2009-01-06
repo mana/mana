@@ -33,6 +33,7 @@
 #include "tabbedcontainer.h"
 
 #include "../utils/dtor.h"
+#include "../utils/gettext.h"
 
 extern Window *chatWindow;
 extern Window *equipmentWindow;
@@ -52,19 +53,19 @@ Setup::Setup():
     int height = 310;
     setContentSize(width, height);
 
-    const char *buttonNames[] = {
-        "Apply", "Cancel", "Reset Windows", 0
+    static const char *buttonNames[] = {
+        N_("Apply"), N_("Cancel"), N_("Reset Windows"), 0
     };
     int x = width;
     for (const char **curBtn = buttonNames; *curBtn; ++curBtn)
     {
-        Button *btn = new Button(*curBtn, *curBtn, this);
+        Button *btn = new Button(gettext(*curBtn), *curBtn, this);
         x -= btn->getWidth() + 5;
         btn->setPosition(x, height - btn->getHeight() - 5);
         add(btn);
 
         // Disable this button when the windows aren't created yet
-        if (!strcmp(*curBtn, "Reset Windows"))
+        if (!strcmp(*curBtn, _("Reset Windows")))
             btn->setEnabled(statusWindow != NULL);
     }
 
@@ -75,27 +76,27 @@ Setup::Setup():
     SetupTab *tab;
 
     tab = new Setup_Video();
-    panel->addTab(tab, "Video");
+    panel->addTab(tab, _("Video"));
     mTabs.push_back(tab);
 
     tab = new Setup_Audio();
-    panel->addTab(tab, "Audio");
+    panel->addTab(tab, _("Audio"));
     mTabs.push_back(tab);
 
     tab = new Setup_Joystick();
-    panel->addTab(tab, "Joystick");
+    panel->addTab(tab, _("Joystick"));
     mTabs.push_back(tab);
 
     tab = new Setup_Keyboard();
-    panel->addTab(tab, "Keyboard");
+    panel->addTab(tab, _("Keyboard"));
     mTabs.push_back(tab);
 
     tab = new Setup_Colours();
-    panel->addTab(tab, "Colours");
+    panel->addTab(tab, _("Colours"));
     mTabs.push_back(tab);
 
     tab = new Setup_Players();
-    panel->addTab(tab, "Players");
+    panel->addTab(tab, _("Players"));
     mTabs.push_back(tab);
 
     add(panel);
@@ -110,17 +111,17 @@ Setup::~Setup()
 
 void Setup::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "Apply")
+    if (event.getId() == _("Apply"))
     {
         setVisible(false);
         for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::apply));
     }
-    else if (event.getId() == "Cancel")
+    else if (event.getId() == _("Cancel"))
     {
         setVisible(false);
         for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::cancel));
     }
-    else if (event.getId() == "Reset Windows")
+    else if (event.getId() == _("Reset Windows"))
     {
         // Bail out if this action happens to be activated before the windows
         // are created (though it should be disabled then)

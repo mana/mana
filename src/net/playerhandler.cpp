@@ -39,6 +39,7 @@
 #include "../gui/viewport.h"
 
 #include "../utils/tostring.h"
+#include "../utils/gettext.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
@@ -189,10 +190,10 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                          player_node->mTotalWeight <
                                          player_node->mMaxWeight / 2)
                                  {
-                                     weightNotice = new OkDialog("Message",
-                                             "You are carrying more then half "
-                                             "your weight. You are unable to "
-                                             "regain health.");
+                                     weightNotice = new OkDialog(_("Message"),
+                                             _("You are carrying more then half "
+                                               "your weight. You are unable to "
+                                               "regain health."));
                                      weightNotice->addActionListener(
                                              &weightListener);
                                  }
@@ -214,37 +215,37 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 {
                     static char const *const deadMsg[] =
                     {
-                        "You are dead.",
-                        "We regret to inform you that your character was killed in battle.",
-                        "You are not that alive anymore.",
-                        "The cold hands of the grim reaper are grabbing for your soul.",
-                        "Game Over!",
-                        "Insert coin to continue",
-                        "No, kids. Your character did not really die. It... err... went to a better place.",
-                        "Your plan of breaking your enemies weapon by bashing it with your throat failed.",
-                        "I guess this did not run too well.",
-                        "Do you want your possessions identified?", // Nethack reference
-                        "Sadly, no trace of you was ever found...", // Secret of Mana reference
-                        "Annihilated.", // Final Fantasy VI reference
-                        "Looks like you got your head handed to you.", //Earthbound reference
-                        "You screwed up again, dump your body down the tubes and get you another one.", // Leisure Suit Larry 1 Reference
-                        "You're not dead yet. You're just resting.", // Monty Python reference from a couple of skits
-                        "You are no more.",  // Monty Python reference from the dead parrot sketch starting now
-                        "You have ceased to be.",
-                        "You've expired and gone to meet your maker.",
-                        "You're a stiff.",
-                        "Bereft of life, you rest in peace.",
-                        "If you weren't so animated, you'd be pushing up the daisies.",
-                        "Your metabolic processes are now history.",
-                        "You're off the twig.",
-                        "You've kicked the bucket.",
-                        "You've shuffled off your mortal coil, run down the curtain and joined the bleedin' choir invisibile.",
-                        "You are an ex-player.",
-                        "You're pining for the fjords." // Monty Python reference from the dead parrot sketch
+                        _("You are dead."),
+                        _("We regret to inform you that your character was killed in battle."),
+                        _("You are not that alive anymore."),
+                        _("The cold hands of the grim reaper are grabbing for your soul."),
+                        _("Game Over!"),
+                        _("Insert coin to continue"),
+                        _("No, kids. Your character did not really die. It... err... went to a better place."),
+                        _("Your plan of breaking your enemies weapon by bashing it with your throat failed."),
+                        _("I guess this did not run too well."),
+                        _("Do you want your possessions identified?"), // Nethack reference
+                        _("Sadly, no trace of you was ever found..."), // Secret of Mana reference
+                        _("Annihilated."), // Final Fantasy VI reference
+                        _("Looks like you got your head handed to you."), //Earthbound reference
+                        _("You screwed up again, dump your body down the tubes and get you another one."), // Leisure Suit Larry 1 Reference
+                        _("You're not dead yet. You're just resting."), // Monty Python reference from a couple of skits
+                        _("You are no more."),  // Monty Python reference from the dead parrot sketch starting now
+                        _("You have ceased to be."),
+                        _("You've expired and gone to meet your maker."),
+                        _("You're a stiff."),
+                        _("Bereft of life, you rest in peace."),
+                        _("If you weren't so animated, you'd be pushing up the daisies."),
+                        _("Your metabolic processes are now history."),
+                        _("You're off the twig."),
+                        _("You've kicked the bucket."),
+                        _("You've shuffled off your mortal coil, run down the curtain and joined the bleedin' choir invisibile."),
+                        _("You are an ex-player."),
+                        _("You're pining for the fjords.") // Monty Python reference from the dead parrot sketch
                     };
                     std::string message(deadMsg[rand()%27]);
 
-                    deathNotice = new OkDialog("Message", message);
+                    deathNotice = new OkDialog(_("Message"), message);
                     deathNotice->addActionListener(&deathListener);
                     player_node->setAction(Being::DEAD);
                 }
@@ -386,11 +387,11 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
                 switch (type) {
                     case 0:
-                        chatWindow->chatLog("Equip arrows first",
+                        chatWindow->chatLog(_("Equip arrows first"),
                                              BY_SERVER);
                         break;
                     default:
-                        logger->log("0x013b: Unhandled message %i", type);
+                        logger->log(_("0x013b: Unhandled message %i"), type);
                         break;
                 }
             }

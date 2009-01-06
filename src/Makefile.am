@@ -233,6 +233,7 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
 	      utils/fastsqrt.h \
+	      utils/gettext.h \
 	      utils/strprintf.cpp \
 	      utils/strprintf.h \
 	      utils/tostring.h \
@@ -333,8 +334,9 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 
 # set the include path found by configure
 INCLUDES =					\
-	$(all_includes)				\
-	-DAETHYRA_DATADIR=\""$(pkgdatadir)/"\"
+	$(all_includes)		                \
+	-DAETHYRA_DATADIR=\""$(pkgdatadir)/"\"  \
+	-DLOCALEDIR=\""$(localedir)/"\"
 
 # the library search path.
 aethyra_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`

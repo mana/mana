@@ -267,6 +267,7 @@ SET(SRCS
     utils/base64.h
     utils/dtor.h
     utils/fastsqrt.h
+    utils/gettext.h
     utils/strprintf.cpp
     utils/strprintf.h
     utils/tostring.h
