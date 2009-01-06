@@ -32,6 +32,8 @@
 #include "tabbedcontainer.h"
 
 #include "../utils/dtor.h"
+#include "../utils/gettext.h"
+
 #include <iostream>
 
 extern Window *statusWindow;
@@ -52,12 +54,12 @@ Setup::Setup():
     int height = 265;
     setContentSize(width, height);
 
-    const char *buttonNames[] = {
-        "Apply", "Cancel", "Reset Windows", 0
+    static const char *buttonNames[] = {
+        N_("Apply"), N_("Cancel"), N_("Reset Windows"), 0
     };
     int x = width;
     for (const char **curBtn = buttonNames; *curBtn; ++curBtn) {
-        Button *btn = new Button(*curBtn, *curBtn, this);
+        Button *btn = new Button(gettext(*curBtn), *curBtn, this);
         x -= btn->getWidth() + 5;
         btn->setPosition(x, height - btn->getHeight() - 5);
         add(btn);
@@ -74,23 +76,23 @@ Setup::Setup():
     SetupTab *tab;
 
     tab = new Setup_Video();
-    panel->addTab(tab, "Video");
+    panel->addTab(tab, _("Video"));
     mTabs.push_back(tab);
 
     tab = new Setup_Audio();
-    panel->addTab(tab, "Audio");
+    panel->addTab(tab, _("Audio"));
     mTabs.push_back(tab);
 
     tab = new Setup_Joystick();
-    panel->addTab(tab, "Joystick");
+    panel->addTab(tab, _("Joystick"));
     mTabs.push_back(tab);
 
     tab = new Setup_Keyboard();
-    panel->addTab(tab, "Keyboard");
+    panel->addTab(tab, _("Keyboard"));
     mTabs.push_back(tab);
 
     tab = new Setup_Players();
-    panel->addTab(tab, "Players");
+    panel->addTab(tab, _("Players"));
     mTabs.push_back(tab);
 
     add(panel);

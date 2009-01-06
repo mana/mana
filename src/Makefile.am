@@ -215,6 +215,7 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
 	      utils/fastsqrt.h \
+	      utils/gettext.h \
 	      utils/strprintf.cpp \
 	      utils/strprintf.h \
 	      utils/tostring.h \
@@ -311,4 +312,5 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 # set the include path found by configure
 INCLUDES =					\
 	$(all_includes)				\
-	-DTMW_DATADIR=\""$(pkgdatadir)/"\"
+	-DTMW_DATADIR=\""$(pkgdatadir)/"\"      \
+	-DLOCALEDIR=\""$(localedir)"\"

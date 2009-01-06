@@ -84,6 +84,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
+#include "utils/gettext.h"
 #include "utils/tostring.h"
 
 namespace {
@@ -267,7 +268,7 @@ void init_engine(const Options &options)
     // Add the user's homedir to PhysicsFS search path
     resman->addToSearchPath(homeDir, false);
 
-    // Add the main data directory to our PhysicsFS search path
+    // Add the main data directories to our PhysicsFS search path
     if (!options.dataPath.empty()) {
         resman->addToSearchPath(options.dataPath, true);
     }
@@ -646,6 +647,7 @@ void mapLogin(Network *network, LoginData *loginData)
 
 } // namespace
 
+extern "C" char const *_nl_locale_name_default(void);
 
 /** Main */
 int main(int argc, char *argv[])
@@ -666,6 +668,16 @@ int main(int argc, char *argv[])
         printVersion();
         return 0;
     }
+
+#if ENABLE_NLS
+#ifdef WIN32
+        putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+#endif
+        setlocale(LC_MESSAGES, "");
+        bindtextdomain("tmw", LOCALEDIR);
+        textdomain("tmw");
+#endif
+
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.
     xmlInitParser();

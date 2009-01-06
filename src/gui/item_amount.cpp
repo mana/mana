@@ -29,31 +29,33 @@
 #include "../item.h"
 #include "../localplayer.h"
 
+#include "../utils/gettext.h"
+
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
-    Window("Select amount of items to drop.", true, parent),
+    Window("", true, parent),
     mItem(item)
 {
-    // New labels
+    // Integer field
     mItemAmountTextBox = new IntTextBox(1);
+    mItemAmountTextBox->setRange(1, mItem->getQuantity());
 
-    // New buttons
+    // Slider
+    mItemAmountSlide = new Slider(1.0, mItem->getQuantity());
+    mItemAmountSlide->setActionEventId("Slide");
+    mItemAmountSlide->addActionListener(this);
+
+    // Buttons
     Button *minusButton = new Button("-", "Minus", this);
     Button *plusButton = new Button("+", "Plus", this);
-    Button *okButton = new Button("Okay", "Drop", this);
-    Button *cancelButton = new Button("Cancel", "Cancel", this);
-    mItemAmountSlide = new Slider(1.0, mItem->getQuantity());
+    Button *okButton = new Button(_("Ok"), "Drop", this);
+    Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
 
-    mItemAmountTextBox->setRange(1, mItem->getQuantity());
-    mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
-
-    // Set button events Id
-    mItemAmountSlide->setActionEventId("Slide");
-
-    // Set position
+    // Set positions
     mItemAmountTextBox->setPosition(35, 10);
     mItemAmountTextBox->setSize(24, 16);
     plusButton->setPosition(60, 5);
     minusButton->setPosition(10, 5);
+    mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
     mItemAmountSlide->setPosition(10, 35);
     okButton->setPosition(10, 50);
     cancelButton->setPosition(60, 50);
@@ -66,17 +68,15 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     add(okButton);
     add(cancelButton);
 
-    mItemAmountSlide->addActionListener(this);
-
     resetAmount();
 
     switch (usage) {
         case AMOUNT_TRADE_ADD:
-            setCaption("Select amount of items to trade.");
+            setCaption(_("Select amount of items to trade."));
             okButton->setActionEventId("AddTrade");
             break;
         case AMOUNT_ITEM_DROP:
-            setCaption("Select amount of items to drop.");
+            setCaption(_("Select amount of items to drop."));
             okButton->setActionEventId("Drop");
             break;
         default:

@@ -7,13 +7,9 @@ AC_LANG_CPLUSPLUS
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_INSTALL
-AC_PROG_MAKE_SET
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_CONST
 AC_HEADER_TIME
-AC_C_VOLATILE
 
 # Checks for library functions.
 AC_FUNC_ERROR_AT_LINE
@@ -22,6 +18,10 @@ AC_FUNC_REALLOC
 AC_FUNC_SELECT_ARGTYPES
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([atexit floor getcwd gethostbyname memset mkdir select socket])
+
+# Checks for internationalization support
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.16.1])
 
 # Search for *-config
 AC_PATH_PROG(SDL_CONFIG, sdl-config)
@@ -117,6 +117,7 @@ data/graphics/images/Makefile
 data/help/Makefile
 data/icons/Makefile
 docs/Makefile
+po/Makefile.in
 ])
 
 AC_OUTPUT

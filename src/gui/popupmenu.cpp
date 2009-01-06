@@ -42,6 +42,9 @@
 #include "../resources/iteminfo.h"
 #include "../resources/itemdb.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
+
 extern std::string tradePartnerName;
 
 PopupMenu::PopupMenu():
@@ -74,8 +77,10 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 // Players can be traded with. Later also attack, follow and
                 // add as buddy will be options in this menu.
                 const std::string &name = being->getName();
-                mBrowserBox->addRow("@@trade|Trade With " + name + "@@");
-                mBrowserBox->addRow("@@attack|Attack " + name + "@@");
+                mBrowserBox->addRow(
+                    strprintf(_("@@trade|Trade With %s@@"), name.c_str()));
+                mBrowserBox->addRow(
+                    strprintf(_("@@attack|Attack %s@@"), name.c_str()));
 
                 mBrowserBox->addRow("##3---");
 
@@ -106,7 +111,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
         case Being::NPC:
             // NPCs can be talked to (single option, candidate for removal
             // unless more options would be added)
-            mBrowserBox->addRow("@@talk|Talk To NPC@@");
+            mBrowserBox->addRow(_("@@talk|Talk To NPC@@"));
             break;
 
         default:
@@ -116,7 +121,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
     //browserBox->addRow("@@look|Look To@@");
     mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow("@@cancel|Cancel@@");
+    mBrowserBox->addRow(_("@@cancel|Cancel@@"));
 
     showPopup(x, y);
 }
@@ -128,11 +133,11 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 
     // Floor item can be picked up (single option, candidate for removal)
     std::string name = ItemDB::get(mFloorItem->getItemId()).getName();
-    mBrowserBox->addRow("@@pickup|Pick Up " + name + "@@");
+    mBrowserBox->addRow(strprintf(_("@@pickup|Pick Up %s@@"), name.c_str()));
 
     //browserBox->addRow("@@look|Look To@@");
     mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow("@@cancel|Cancel@@");
+    mBrowserBox->addRow(_("@@cancel|Cancel@@"));
 
     showPopup(x, y);
 }
@@ -275,17 +280,17 @@ void PopupMenu::showPopup(int x, int y, Item *item)
     if (item->isEquipment())
     {
         if (item->isEquipped())
-            mBrowserBox->addRow("@@use|Unequip@@");
+            mBrowserBox->addRow(_("@@use|Unequip@@"));
         else
-            mBrowserBox->addRow("@@use|Equip@@");
+            mBrowserBox->addRow(_("@@use|Equip@@"));
     }
     else
-        mBrowserBox->addRow("@@use|Use@@");
+        mBrowserBox->addRow(_("@@use|Use@@"));
 
-    mBrowserBox->addRow("@@drop|Drop@@");
-    mBrowserBox->addRow("@@description|Description@@");
+    mBrowserBox->addRow(_("@@drop|Drop@@"));
+    mBrowserBox->addRow(_("@@description|Description@@"));
     mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow("@@cancel|Cancel@@");
+    mBrowserBox->addRow(_("@@cancel|Cancel@@"));
 
     showPopup(x, y);
 }

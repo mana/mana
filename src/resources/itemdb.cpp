@@ -30,6 +30,7 @@
 #include "../log.h"
 
 #include "../utils/dtor.h"
+#include "../utils/gettext.h"
 #include "../utils/xml.h"
 
 namespace
@@ -93,9 +94,9 @@ void ItemDB::load()
 
         if (id)
         {
-            ItemInfo *itemInfo = new ItemInfo();
+            ItemInfo *itemInfo = new ItemInfo;
             itemInfo->setImageName(image);
-            itemInfo->setName((name == "") ? "Unnamed" : name);
+            itemInfo->setName(name.empty() ? _("Unnamed") : name);
             itemInfo->setDescription(description);
             itemInfo->setEffect(effect);
             itemInfo->setType(type);
