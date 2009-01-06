@@ -1,3 +1,10 @@
+0.0.28 (...)
+- Added support for internationalization, plus many translations
+- Added support for TrueType fonts
+- Trade window is now resizable
+- Obscure precise home directory name when making screenshots
+- Fixed follow-parent of nested and being-following particle emitters
+
 0.0.27 (9 December 2008)
 - Added support for showing map name above minimap
 - Added showing how long the ban is when banned
