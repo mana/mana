@@ -32,9 +32,9 @@
 #include "../utils/tostring.h"
 
 SmileyWindow::SmileyWindow():
-    Window("Smiley")
+    Window("Emote")
 {
-    setWindowName("Smiley");
+    setWindowName("Emote");
     setResizable(true);
     setCloseButton(true);
     setMinWidth(80);
