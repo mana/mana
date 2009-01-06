@@ -28,11 +28,13 @@
 #include "../guichanfwd.h"
 
 class ConfigListener;
-class GCContainer;
+class ContainerPlacer;
+class Image;
 class ImageRect;
+class Layout;
+class LayoutCell;
 class ResizeGrip;
 class WindowContainer;
-class Image;
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
@@ -59,7 +61,7 @@ class Window : public gcn::Window, gcn::WidgetListener
                 Window *parent = NULL);
 
         /**
-         * Destructor.
+         * Destructor. Deletes all the added widgets.
          */
         ~Window();
 
@@ -72,18 +74,6 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Draws the window.
          */
         void draw(gcn::Graphics *graphics);
-
-        /**
-         * Adds a widget to the window. The widget will be deleted by the
-         * window.
-         */
-        void add(gcn::Widget *w);
-
-        /**
-         * Adds a widget to the window and also specifices its position. The
-         * widget will be deleted by the window.
-         */
-        void add(gcn::Widget *w, int x, int y);
 
         /**
          * Sets the size of this window.
@@ -217,21 +207,51 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Don't forget to set these default values and resizable before
          * calling this function.
          */
-        virtual void loadWindowState();
+        void loadWindowState();
 
         /**
          * Set the default win pos and size.
          * (which can be different of the actual ones.)
          */
-        virtual void setDefaultSize(int defaultX, int defaultY,
-                                    int defaultWidth, int defaultHeight);
+        void setDefaultSize(int defaultX, int defaultY,
+                            int defaultWidth, int defaultHeight);
 
         /**
          * Reset the win pos and size to default. Don't forget to set defaults
          * first.
          */
-        virtual void resetToDefaultSize();
+        void resetToDefaultSize();
 
+        /**
+         * Gets the layout handler for this window.
+         */
+        Layout &getLayout();
+
+        /**
+         * Computes the position of the widgets according to the current
+         * layout. Resizes the window so that the layout fits. Deletes the
+         * layout.
+         * @param w if non-zero, force the window to this width.
+         * @param h if non-zero, force the window to this height.
+         * @note This function is meant to be called with fixed-size windows.
+         */
+        void reflowLayout(int w = 0, int h = 0);
+
+        /**
+         * Adds a widget to the window and sets it at given cell.
+         */
+        LayoutCell &place(int x, int y, gcn::Widget *, int w = 1, int h = 1);
+
+        /**
+         * Returns a proxy for adding widgets in an inner table of the layout.
+         */
+        ContainerPlacer getPlacer(int x, int y);
+
+    protected:
+        /** The window container windows add themselves to. */
+        static WindowContainer *windowContainer;
+
+    private:
         enum ResizeHandles
         {
             TOP    = 0x01,
@@ -240,7 +260,6 @@ class Window : public gcn::Window, gcn::WidgetListener
             LEFT   = 0x08
         };
 
-    protected:
         /**
          * Determines if the mouse is in a resize area and returns appropriate
          * resize handles. Also initializes drag offset in case the resize
@@ -250,9 +269,9 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
-        GCContainer *mChrome;      /**< Contained container */
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
+        Layout *mLayout;           /**< Layout handler */
         std::string mWindowName;   /**< Name of the window */
         bool mShowTitle;           /**< Window has a title bar */
         bool mModal;               /**< Window is modal */
@@ -266,9 +285,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */
         int mDefaultHeight;        /**< Default window height */
-
-        /** The window container windows add themselves to. */
-        static WindowContainer *windowContainer;
 
         /**
          * The config listener that listens to changes relevant to all windows.

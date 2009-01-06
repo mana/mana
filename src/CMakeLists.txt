@@ -51,6 +51,8 @@ MARK_AS_ADVANCED(SDL_LIBRARY)
 SET(SRCS
     gui/widgets/resizegrip.cpp
     gui/widgets/resizegrip.h
+    gui/widgets/layout.cpp
+    gui/widgets/layout.h
     gui/box.cpp
     gui/box.h
     gui/browserbox.cpp

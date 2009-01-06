@@ -1,7 +1,9 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
 bin_PROGRAMS = tmw
-tmw_SOURCES = gui/widgets/resizegrip.cpp \
+tmw_SOURCES = gui/widgets/layout.cpp \
+	      gui/widgets/layout.h \
+	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
 	      gui/box.h \
 	      gui/box.cpp \
