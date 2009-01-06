@@ -24,7 +24,6 @@
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
-#include <SDL/SDL_ttf.h>
 
 #include "focushandler.h"
 #include "sdlinput.h"
@@ -46,7 +45,7 @@
 // Guichan stuff
 Gui *gui;
 Viewport *viewport;                    /**< Viewport on the map. */
-SDLInput *guiInput;                    /**< GUI input. */
+SDLInput *guiInput;
 
 // Fonts used in showing hits
 gcn::Font *hitRedFont;
@@ -104,8 +103,9 @@ Gui::Gui(Graphics *graphics):
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
-    // Set global font
     ResourceManager *resman = ResourceManager::getInstance();
+
+    // Set global font
     std::string path = resman->getPath("fonts/dejavusans.ttf");
     try {
         mGuiFont = new TrueTypeFont(path, 11);
