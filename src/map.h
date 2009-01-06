@@ -28,6 +28,8 @@
 #include "position.h"
 #include "properties.h"
 
+#include "simpleanimation.h"
+
 class AmbientOverlay;
 class Graphics;
 class Image;
@@ -64,6 +66,23 @@ struct MetaTile
 };
 
 /**
+ * Animation cycle of a tile image which changes the map accordingly.
+ */
+class TileAnimation
+{
+    public:
+        TileAnimation(Animation *ani);
+        void update();
+        void addAffectedTile(MapLayer *layer, int index)
+        { mAffected.push_back(std::make_pair(layer, index)); }
+    private:
+        std::list<std::pair<MapLayer*, int> > mAffected;
+        SimpleAnimation mAnimation;
+        int mLastUpdate;
+        Image* mLastImage;
+};
+
+/**
  * A map layer. Stores a grid of tiles and their offset, and implements layer
  * rendering.
  */
@@ -86,6 +105,11 @@ class MapLayer
          * Set tile image, with x and y in layer coordinates.
          */
         void setTile(int x, int y, Image *img);
+
+        /**
+         * Set tile image with x + y * width already known.
+         */
+        void setTile(int index, Image *img) { mTiles[index] = img; }
 
         /**
          * Get tile image, with x and y in layer coordinates.
@@ -225,8 +249,18 @@ class Map : public Properties
         /**
          * Initializes all added particle effects
          */
-        void
-        initializeParticleEffects(Particle* particleEngine);
+        void initializeParticleEffects(Particle* particleEngine);
+
+        /**
+         * Adds a tile animation to the map
+         */
+        void addAnimation(int gid, TileAnimation *animation)
+        { mTileAnimations[gid] = animation; }
+
+        /**
+         * Gets the tile animation for a specific gid
+         */
+        TileAnimation *getAnimationForGid(int gid);
 
     private:
         /**
@@ -270,6 +304,8 @@ class Map : public Properties
             int y;
         };
         std::list<ParticleEffectData> particleEffects;
+
+        std::map<int, TileAnimation*> mTileAnimations;
 };
 
 #endif

@@ -300,7 +300,8 @@ void MapReader::readProperties(xmlNodePtr node, Properties *props)
 static void setTile(Map *map, MapLayer *layer, int x, int y, int gid)
 {
     const Tileset * const set = map->getTilesetWithGid(gid);
-    if (layer) {
+    if (layer)
+    {
         // Set regular tile on a layer
         Image * const img = set ? set->get(gid - set->getFirstGid()) : 0;
         layer->setTile(x, y, img);
@@ -403,6 +404,12 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
                     setTile(map, layer, x, y, gid);
 
+                    TileAnimation* ani = map->getAnimationForGid(gid);
+                    if (ani)
+                    {
+                        ani->addAffectedTile(layer, x + y * w);
+                    }
+
                     x++;
                     if (x == w) {
                         x = 0; y++;
@@ -450,6 +457,7 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
 {
     int firstGid = XML::getProperty(node, "firstgid", 0);
     XML::Document* doc = NULL;
+    Tileset *set = NULL;
 
     if (xmlHasProp(node, BAD_CAST "source"))
     {
@@ -466,37 +474,71 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
 
     for_each_xml_child_node(childNode, node)
     {
-        if (!xmlStrEqual(childNode->name, BAD_CAST "image"))
-            continue;
-
-        const std::string source = XML::getProperty(childNode, "source", "");
-
-        if (!source.empty())
+        if (xmlStrEqual(childNode->name, BAD_CAST "image"))
         {
-            std::string sourceStr = source;
-            while (sourceStr.substr(0, 3) == "../")
-                   sourceStr.erase(0, 3);  // Remove "../"
+            const std::string source = XML::getProperty(childNode, "source", "");
 
-            ResourceManager *resman = ResourceManager::getInstance();
-            Image* tilebmp = resman->getImage(sourceStr);
-
-            if (tilebmp)
+            if (!source.empty())
             {
-                Tileset *set = new Tileset(tilebmp, tw, th, firstGid);
-                tilebmp->decRef();
-                delete doc;
-                return set;
-            }
-            else {
-                logger->log("Warning: Failed to load tileset (%s)", source.c_str());
+                std::string sourceStr = source;
+                sourceStr.erase(0, 3);  // Remove "../"
+
+                ResourceManager *resman = ResourceManager::getInstance();
+                Image* tilebmp = resman->getImage(sourceStr);
+
+                if (tilebmp)
+                {
+                    set = new Tileset(tilebmp, tw, th, firstGid);
+                    tilebmp->decRef();
+                }
+                else {
+                    logger->log("Warning: Failed to load tileset (%s)",
+                            source.c_str());
+                }
             }
         }
+        else if (xmlStrEqual(childNode->name, BAD_CAST "tile"))
+        {
+            for_each_xml_child_node(tileNode, childNode)
+            {
+                if (!xmlStrEqual(tileNode->name, BAD_CAST "properties")) continue;
 
-        // Only one image element expected
-        break;
+                int tileGID = firstGid + XML::getProperty(childNode, "id", 0);
+
+                // read tile properties to a map for simpler handling
+                std::map<std::string, int> tileProperties;
+                for_each_xml_child_node(propertyNode, tileNode)
+                {
+                    if (!xmlStrEqual(propertyNode->name, BAD_CAST "property")) continue;
+                    std::string name = XML::getProperty(propertyNode, "name", "");
+                    int value = XML::getProperty(propertyNode, "value", 0);
+                    tileProperties[name] = value;
+                    logger->log("Tile Prop of %d \"%s\" = \"%d\"", tileGID, name.c_str(), value);
+                }
+
+                // create animation
+                if (!set) continue;
+
+                Animation *ani = new Animation();
+                for (int i = 0; ;i++)
+                {
+                    std::map<std::string, int>::iterator iFrame, iDelay;
+                    iFrame = tileProperties.find("animation-frame" + toString(i));
+                    iDelay = tileProperties.find("animation-delay" + toString(i));
+                    if (iFrame != tileProperties.end() && iDelay != tileProperties.end())
+                    {
+                        ani->addFrame(set->get(iFrame->second), iDelay->second, 0, 0);
+                    } else {
+                        break;
+                    }
+                }
+                map->addAnimation(tileGID, new TileAnimation(ani));
+                logger->log("Animation length: %d", ani->getLength());
+            }
+        }
     }
 
     delete doc;
 
-    return NULL;
+    return set;
 }

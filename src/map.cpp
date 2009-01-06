@@ -62,6 +62,34 @@ struct Location
     MetaTile *tile;
 };
 
+TileAnimation::TileAnimation(Animation *ani):
+    mAnimation(ani),
+    mLastUpdate(tick_time),
+    mLastImage(NULL)
+{
+}
+
+void TileAnimation::update()
+{
+    //update animation
+    mAnimation.update(tick_time - mLastUpdate);
+    mLastUpdate = tick_time;
+
+    // exchange images
+    Image *img = mAnimation.getCurrentImage();
+    if (img != mLastImage)
+    {
+        for (std::list<std::pair<MapLayer*, int> >::iterator i = mAffected.begin();
+             i != mAffected.end();
+             i++)
+        {
+            i->first->setTile(i->second, img);
+        }
+        mLastImage = img;
+    }
+
+}
+
 MapLayer::MapLayer(int x, int y, int width, int height, bool isFringeLayer):
     mX(x), mY(y),
     mWidth(width), mHeight(height),
@@ -79,7 +107,7 @@ MapLayer::~MapLayer()
 
 void MapLayer::setTile(int x, int y, Image *img)
 {
-    mTiles[x + y * mWidth] = img;
+    setTile(x + y * mWidth, img);
 }
 
 Image* MapLayer::getTile(int x, int y) const
@@ -156,6 +184,7 @@ Map::~Map()
     delete_all(mLayers);
     delete_all(mTilesets);
     delete_all(mOverlays);
+    delete_all(mTileAnimations);
 }
 
 void Map::initializeOverlays()
@@ -217,6 +246,15 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     // Make sure sprites are sorted
     mSprites.sort(spriteCompare);
 
+    //update animated tiles
+    for (std::map<int, TileAnimation*>::iterator iAni = mTileAnimations.begin();
+         iAni != mTileAnimations.end();
+         iAni++)
+    {
+        iAni->second->update();
+    }
+
+    // draw the game world
     Layers::const_iterator layeri = mLayers.begin();
     for (; layeri != mLayers.end(); ++layeri)
     {
@@ -512,5 +550,16 @@ void Map::initializeParticleEffects(Particle* particleEngine)
         {
             particleEngine->addEffect(i->file, i->x, i->y);
         }
+    }
+}
+
+TileAnimation* Map::getAnimationForGid(int gid)
+{
+    std::map<int, TileAnimation*>::iterator i = mTileAnimations.find(gid);
+    if (i == mTileAnimations.end())
+    {
+        return NULL;
+    } else {
+        return i->second;
     }
 }
