@@ -1,4 +1,0 @@
-?package(aethyra):needs="X11" section="Games/Adventure"\
- title="Aethyra"\
- description="Aethyra is a 2D MMORPG using eAthena."\
- command="/usr/games/aethyra" icon="/usr/share/pixmaps/aethyra.xpm"
