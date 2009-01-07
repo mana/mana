@@ -134,6 +134,24 @@ void NPC::dialogChoice(char choice)
     outMsg.writeInt8(choice);
 }
 
+void NPC::integerInput(int value)
+{
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_INT_RESPONSE);
+    outMsg.writeInt32(mId);
+    outMsg.writeInt32(value);
+}
+
+void NPC::stringInput(const std::string &value)
+{
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
+    outMsg.writeInt16(value.length() + 8);
+    outMsg.writeInt32(mId);
+    outMsg.writeString(value, value.length());
+    outMsg.writeInt8(0); // Just to be safe
+}
+
 /*
  * TODO Unify the buy() and sell() methods, without sacrificing readability of
  * the code calling the method. buy(bool buySell) would be bad...

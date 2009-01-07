@@ -76,8 +76,12 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/minimap.h \
 	      gui/ministatus.cpp \
 	      gui/ministatus.h \
+	      gui/npcintegerdialog.cpp \
+	      gui/npcintegerdialog.h \
 	      gui/npclistdialog.cpp \
 	      gui/npclistdialog.h \
+	      gui/npcstringdialog.cpp \
+	      gui/npcstringdialog.h \
 	      gui/npc_text.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \

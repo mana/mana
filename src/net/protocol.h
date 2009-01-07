@@ -79,7 +79,8 @@
 #define SMSG_NPC_SELL                0x00c7
 #define SMSG_NPC_BUY_RESPONSE        0x00ca
 #define SMSG_NPC_SELL_RESPONSE       0x00cb
-
+#define SMSG_NPC_INT_INPUT           0x0142 /**< Integer input */
+#define SMSG_NPC_STR_INPUT           0x01d4 /**< String input */
 #define SMSG_PLAYER_CHAT             0x008e /**< Player talks */
 #define SMSG_WHISPER                 0x0097 /**< Whisper Recieved */
 #define SMSG_WHISPER_RESPONSE        0x0098
@@ -128,6 +129,8 @@
 #define CMSG_NPC_LIST_CHOICE         0x00b8
 #define CMSG_NPC_NEXT_REQUEST        0x00b9
 #define CMSG_NPC_SELL_REQUEST        0x00c9
+#define CMSG_NPC_INT_RESPONSE        0x0143
+#define CMSG_NPC_STR_RESPONSE        0x01d5
 #define CMSG_SKILL_LEVELUP_REQUEST   0x0112
 #define CMSG_STAT_UPDATE_REQUEST     0x00bb
 #define CMSG_TRADE_ITEM_ADD_REQUEST  0x00e8

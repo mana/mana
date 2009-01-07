@@ -44,6 +44,8 @@ class NPC : public Player
         void talk();
         void nextDialog();
         void dialogChoice(char choice);
+        void integerInput(int value);
+        void stringInput(const std::string &value);
 
         void buy();
         void sell();
