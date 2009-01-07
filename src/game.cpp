@@ -55,7 +55,9 @@
 #include "gui/menuwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
+#include "gui/npcintegerdialog.h"
 #include "gui/npclistdialog.h"
+#include "gui/npcstringdialog.h"
 #include "gui/npc_text.h"
 #include "gui/ok_dialog.h"
 #include "gui/sdlinput.h"
@@ -107,8 +109,10 @@ BuyDialog *buyDialog;
 SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
+NpcIntegerDialog *npcIntegerDialog;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
+NpcStringDialog *npcStringDialog;
 SkillDialog *skillDialog;
 Setup* setupWindow;
 Minimap *minimap;
@@ -187,7 +191,9 @@ void createGuiWindows(Network *network)
     buySellDialog = new BuySellDialog();
     inventoryWindow = new InventoryWindow();
     npcTextDialog = new NpcTextDialog();
+    npcIntegerDialog = new NpcIntegerDialog();
     npcListDialog = new NpcListDialog();
+    npcStringDialog = new NpcStringDialog();
     skillDialog = new SkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
@@ -237,8 +243,10 @@ void destroyGuiWindows()
     delete sellDialog;
     delete buySellDialog;
     delete inventoryWindow;
+    delete npcIntegerDialog;
     delete npcListDialog;
     delete npcTextDialog;
+    delete npcStringDialog;
     delete skillDialog;
     delete setupWindow;
     delete minimap;
@@ -643,7 +651,8 @@ void Game::handleInput()
                 default:
                     break;
             }
-            if (keyboard.isEnabled() && !chatWindow->isInputFocused())
+            if (keyboard.isEnabled() && !chatWindow->isInputFocused()
+                && !npcStringDialog->isInputFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
                 // Do not activate shortcuts if tradewindow is visible
