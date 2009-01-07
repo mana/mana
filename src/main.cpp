@@ -402,7 +402,6 @@ void init_engine(const Options &options)
     // Initialize the item shortcuts.
     itemShortcut = new ItemShortcut();
 
-    TTF_Init();
     gui = new Gui(graphics);
     state = LOGIN_STATE; /**< Initial game state */
 
@@ -1070,7 +1069,6 @@ int main(int argc, char *argv[])
 
     delete network;
     SDLNet_Quit();
-    TTF_Quit();
 
     if (nullFile)
     {
