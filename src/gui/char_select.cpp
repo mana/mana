@@ -31,6 +31,8 @@
 #include "playerbox.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
 #include "../game.h"
 #include "../localplayer.h"
 #include "../main.h"
@@ -93,39 +95,24 @@ CharSelectDialog::CharSelectDialog(Network *network,
 
     // Control that shows the Player
     mPlayerBox = new PlayerBox;
+    mPlayerBox->setWidth(74);
 
-    int w = 195;
-    int h = 220;
-    setContentSize(w, h);
-    mPlayerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
-    mNameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
-    mLevelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
-    mJobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
-    mMoneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
-    mPreviousButton->setPosition(5, 170);
-    mNextButton->setPosition(mPreviousButton->getWidth() + 10, 170);
-    mNewCharButton->setPosition(5, h - 5 - mNewCharButton->getHeight());
-    mDelCharButton->setPosition(
-            5 + mNewCharButton->getWidth() + 5,
-            mNewCharButton->getY());
-    mCancelButton->setPosition(
-            w - 5 - mCancelButton->getWidth(),
-            mNewCharButton->getY());
-    mSelectButton->setPosition(
-            mCancelButton->getX() - 5 - mSelectButton->getWidth(),
-            mNewCharButton->getY());
-
-    add(mPlayerBox);
-    add(mSelectButton);
-    add(mCancelButton);
-    add(mNewCharButton);
-    add(mDelCharButton);
-    add(mPreviousButton);
-    add(mNextButton);
-    add(mNameLabel);
-    add(mLevelLabel);
-    add(mJobLevelLabel);
-    add(mMoneyLabel);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+    place(0, 0, mPlayerBox, 1, 6).setPadding(3);
+    place(1, 0, mNameLabel, 3);
+    place(1, 1, mLevelLabel, 3);
+    place(1, 2, mJobLevelLabel, 3);
+    place(1, 3, mMoneyLabel, 3);
+    place(1, 4, mPreviousButton);
+    place(2, 4, mNextButton);
+    place(1, 5, mNewCharButton);
+    place(2, 5, mDelCharButton);
+    place.getCell().matchColWidth(1, 2);
+    place = getPlacer(0, 2);
+    place(0, 0, mSelectButton);
+    place(1, 0, mCancelButton);
+    reflowLayout(265, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
