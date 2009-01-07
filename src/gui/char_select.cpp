@@ -80,56 +80,37 @@ CharSelectDialog::CharSelectDialog(Network *network,
     Window(_("Select Character")), mNetwork(network),
     mCharInfo(charInfo), mGender(gender), mCharSelected(false)
 {
-    mSelectButton = new Button(_("Ok"), "ok", this);
-    mCancelButton = new Button(_("Cancel"), "cancel", this);
-    mNewCharButton = new Button(_("New"), "new", this);
-    mDelCharButton = new Button(_("Delete"), "delete", this);
-    mPreviousButton = new Button(_("Previous"), "previous", this);
-    mNextButton = new Button(_("Next"), "next", this);
+    // Control that shows the Player
+    mPlayerBox = new PlayerBox;
 
     mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
     mJobLevelLabel = new gcn::Label(strprintf(_("Job Level: %d"), 0));
     mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
 
-    // Control that shows the Player
-    mPlayerBox = new PlayerBox;
+    mPreviousButton = new Button(_("Previous"), "previous", this);
+    mNextButton = new Button(_("Next"), "next", this);
+    mNewCharButton = new Button(_("New"), "new", this);
+    mDelCharButton = new Button(_("Delete"), "delete", this);
+    mSelectButton = new Button(_("Ok"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
 
-    int w = 195;
-    int h = 220;
-    setContentSize(w, h);
-    mPlayerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
-    mNameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
-    mLevelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
-    mJobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
-    mMoneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
-    mPreviousButton->setPosition(5, 170);
-    mNextButton->setPosition(mPreviousButton->getWidth() + 10, 170);
-    mNewCharButton->setPosition(5, h - 5 - mNewCharButton->getHeight());
-    mDelCharButton->setPosition(
-            5 + mNewCharButton->getWidth() + 5,
-            mNewCharButton->getY());
-    mCancelButton->setPosition(
-            w - 5 - mCancelButton->getWidth(),
-            mNewCharButton->getY());
-    mSelectButton->setPosition(
-            mCancelButton->getX() - 5 - mSelectButton->getWidth(),
-            mNewCharButton->getY());
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
 
-    place(0, 0, mPlayerBox, 5).setPadding(3);
-    place(0, 1, mNameLabel, 2);
-    place(0, 2, mLevelLabel, 2);
-    place(0, 3, mJobLevelLabel, 2);
-    place(0, 4, mMoneyLabel, 2);
-    place(0, 5, mPreviousButton);
-    place(1, 5, mNextButton);
-    place(0, 6, mNewCharButton);
-    place(1, 6, mDelCharButton);
-    place(3, 6, mSelectButton);
-    place(4, 6, mCancelButton);
+    place(0, 0, mPlayerBox, 6, 3);
+    place(0, 3, mNameLabel, 2);
+    place(0, 4, mLevelLabel, 2);
+    place(0, 5, mJobLevelLabel, 2);
+    place(0, 6, mMoneyLabel, 2);
+    place(0, 7, mPreviousButton);
+    place(1, 7, mNextButton);
+    place(0, 8, mNewCharButton);
+    place(1, 8, mDelCharButton);
+    place(3, 8, mSelectButton);
+    place(4, 8, mCancelButton);
 
-    Layout &layout = getLayout();
-    layout.setRowHeight(0, Layout::AUTO_SET);
+    reflowLayout(195, 220);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
