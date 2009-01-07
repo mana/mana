@@ -32,6 +32,8 @@
 #include "scrollarea.h"
 #include "updatewindow.h"
 
+#include "widgets/layout.h"
+
 // Curl should be included after Guichan to avoid Windows redefinitions
 #include <curl/curl.h>
 
@@ -105,34 +107,29 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 {
     mCurlError[0] = 0;
 
-    const int h = 240;
-    const int w = 320;
-    setContentSize(w, h);
-
     mBrowserBox = new BrowserBox();
     mScrollArea = new ScrollArea(mBrowserBox);
     mLabel = new gcn::Label("Connecting...");
-    mProgressBar = new ProgressBar(0.0, w - 10, 20, 168, 116, 31);
+    mProgressBar = new ProgressBar(0.0, 310, 20, 168, 116, 31);
     mCancelButton = new Button("Cancel", "cancel", this);
     mPlayButton = new Button("Play", "play", this);
 
     mBrowserBox->setOpaque(false);
     mPlayButton->setEnabled(false);
 
-    mCancelButton->setPosition(5, h - 5 - mCancelButton->getHeight());
-    mPlayButton->setPosition(
-            mCancelButton->getX() + mCancelButton->getWidth() + 5,
-            h - 5 - mPlayButton->getHeight());
-    mProgressBar->setPosition(5, mCancelButton->getY() - 20 - 5);
-    mLabel->setPosition(5, mProgressBar->getY() - mLabel->getHeight() - 5);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
 
-    mScrollArea->setDimension(gcn::Rectangle(5, 5, 310, mLabel->getY() - 12));
+    place(0, 0, mScrollArea, 5, 3).setPadding(3);
+    place(0, 3, mLabel, 5);
+    place(0, 4, mProgressBar, 5);
+    place(0, 5, mCancelButton);
+    place(1, 5, mPlayButton);
 
-    add(mScrollArea);
-    add(mLabel);
-    add(mProgressBar);
-    add(mCancelButton);
-    add(mPlayButton);
+    reflowLayout(320, 240);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
