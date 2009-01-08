@@ -34,11 +34,11 @@
 #include "../utils/tostring.h"
 
 ItemShortcutContainer::ItemShortcutContainer():
-    mGridWidth(1),
-    mGridHeight(1),
     mItemClicked(false),
     mItemMoved(NULL)
 {
+    mGridWidth=1;
+    mGridHeight=1;
     addMouseListener(this);
     addWidgetListener(this);
 
@@ -131,22 +131,6 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
     }
 }
 
-void ItemShortcutContainer::widgetResized(const gcn::Event &event)
-{
-    mGridWidth = getWidth() / mBoxWidth;
-    if (mGridWidth < 1) {
-        mGridWidth = 1;
-    }
-
-    setHeight((mMaxItems / mGridWidth +
-                (mMaxItems % mGridWidth > 0 ? 1 : 0)) * mBoxHeight);
-
-    mGridHeight = getHeight() / mBoxHeight;
-    if (mGridHeight < 1) {
-        mGridHeight = 1;
-    }
-}
-
 void
 ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 {
@@ -219,19 +203,3 @@ ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
     }
 }
 
-int
-ItemShortcutContainer::getIndexFromGrid(int pointX, int pointY) const
-{
-    const gcn::Rectangle tRect = gcn::Rectangle(
-        0, 0, mGridWidth * mBoxWidth, mGridHeight * mBoxHeight);
-    if (!tRect.isPointInRect(pointX, pointY)) {
-        return -1;
-    }
-    const int index = ((pointY / mBoxHeight) * mGridWidth) +
-        pointX / mBoxWidth;
-    if (index >= mMaxItems)
-    {
-        return -1;
-    }
-    return index;
-}

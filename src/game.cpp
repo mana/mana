@@ -36,6 +36,7 @@
 #include "flooritemmanager.h"
 #include "graphics.h"
 #include "itemshortcut.h"
+#include "smileyshortcut.h"
 #include "joystick.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
@@ -556,15 +557,10 @@ void Game::handleInput()
 	    if (keyboard.isKeyActive(keyboard.KEY_SMILIE))
 	    {
 		// Emotions
-		Uint8 emotion=keyboard.getKeySmilieOffset(event.key.keysym.sym);
-		/**
-		 * Later here: increase the size of emotion, 
-		 * and get the entry from the smiley
-		 * shortcut object
-		 */
+		int emotion=keyboard.getKeySmilieOffset(event.key.keysym.sym);
 		if (emotion)
 		{
-		    player_node->emote(emotion);
+		    smileyShortcut->useSmiley(emotion);
 		    used = true;
                     return;
 		}

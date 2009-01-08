@@ -49,17 +49,12 @@ class ShortcutContainer : public gcn::Widget,
         /**
          * Destructor.
          */
-        virtual ~ShortcutContainer();
-
-        /**
-         * Handles the logic of the ItemContainer
-         */
-        virtual void logic();
+        ~ShortcutContainer(){}
 
         /**
          * Draws the items.
          */
-        virtual void draw(gcn::Graphics *graphics);
+        virtual void draw(gcn::Graphics *graphics)=0;
 
         /**
          * Invoked when a widget changes its size. This is used to determine
@@ -70,17 +65,17 @@ class ShortcutContainer : public gcn::Widget,
         /**
          * Handles mouse when dragged.
          */
-        virtual void mouseDragged(gcn::MouseEvent &event);
+        virtual void mouseDragged(gcn::MouseEvent &event)=0;
 
         /**
          * Handles mouse when pressed.
          */
-        virtual void mousePressed(gcn::MouseEvent &event);
+        virtual void mousePressed(gcn::MouseEvent &event)=0;
 
         /**
          * Handles mouse release.
          */
-        virtual void mouseReleased(gcn::MouseEvent &event);
+        virtual void mouseReleased(gcn::MouseEvent &event)=0;
 
         virtual int getMaxItems()
         { return mMaxItems; }
@@ -108,8 +103,6 @@ class ShortcutContainer : public gcn::Widget,
         int mBoxHeight;
         int mCursorPosX, mCursorPosY;
         int mGridWidth, mGridHeight;
-        bool mItemClicked;
-        Item *mItemMoved;
 };
 
 #endif

@@ -26,6 +26,7 @@
 
 #include "../graphics.h"
 #include "../log.h"
+#include "../smileyshortcut.h"
 
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
@@ -159,7 +160,10 @@ void SmileyContainer::mousePressed(gcn::MouseEvent &event)
         int mx = event.getX();
         int my = event.getY();
         int index = mx / gridWidth + ((my / gridHeight) * columns);
-
-        setSelectedItemIndex(index);
+        if (index <mMaxSmiley)
+        {
+           setSelectedItemIndex(index);
+           smileyShortcut->setSmileySelected(index+1);
+        }
     }
 }

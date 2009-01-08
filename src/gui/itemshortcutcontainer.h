@@ -61,12 +61,6 @@ class ItemShortcutContainer : public ShortcutContainer
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Invoked when a widget changes its size. This is used to determine
-         * the new height of the container.
-         */
-        void widgetResized(const gcn::Event &event);
-
-        /**
          * Handles mouse when dragged.
          */
         void mouseDragged(gcn::MouseEvent &event);
@@ -81,32 +75,7 @@ class ItemShortcutContainer : public ShortcutContainer
          */
         void mouseReleased(gcn::MouseEvent &event);
 
-        int getMaxItems()
-        { return mMaxItems; }
-
-        int getBoxWidth()
-        { return mBoxWidth; }
-
-        int getBoxHeight()
-        { return mBoxHeight; }
-
     private:
-        /**
-         * Gets the index from the grid provided the point is in an item box.
-         *
-         * @param pointX X coordinate of the point.
-         * @param pointY Y coordinate of the point.
-         * @return index on success, -1 on failure.
-         */
-        int getIndexFromGrid(int pointX, int pointY) const;
-
-        Image *mBackgroundImg;
-
-        int mMaxItems;
-        int mBoxWidth;
-        int mBoxHeight;
-        int mCursorPosX, mCursorPosY;
-        int mGridWidth, mGridHeight;
         bool mItemClicked;
         Item *mItemMoved;
 };
