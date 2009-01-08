@@ -25,17 +25,19 @@
 
 #include "../configuration.h"
 
+#include "../utils/gettext.h"
+
 Colour::Colour()
 {
-    addColour('C', 0x000000, "Chat");
-    addColour('G', 0xff0000, "GM");
-    addColour('Y', 0x1fa052, "Player");
-    addColour('W', 0x0000ff, "Whisper");
-    addColour('I', 0xf1dc27, "Is");
-    addColour('P', 0xff00d8, "Party");
-    addColour('S', 0x8415e2, "Server");
-    addColour('L', 0x919191, "Logger");
-    addColour('<', 0xe50d0d, "Hyperlink");
+    addColour('C', 0x000000, _("Chat"));
+    addColour('G', 0xff0000, _("GM"));
+    addColour('Y', 0x1fa052, _("Player"));
+    addColour('W', 0x0000ff, _("Whisper"));
+    addColour('I', 0xf1dc27, _("Is"));
+    addColour('P', 0xff00d8, _("Party"));
+    addColour('S', 0x8415e2, _("Server"));
+    addColour('L', 0x919191, _("Logger"));
+    addColour('<', 0xe50d0d, _("Hyperlink"));
     commit();
 }
 

@@ -202,12 +202,12 @@ void setUpdatesDir()
                     << "/" << loginData.port;
             updatesDir = updates.str();
         } else {
-            logger->log("Error: Invalid update host: %s", updateHost.c_str());
-            errorMessage = "Invalid update host: " + updateHost;
+            logger->log(_("Error: Invalid update host: %s"), updateHost.c_str());
+            errorMessage = _("Invalid update host: ") + updateHost;
             state = ERROR_STATE;
         }
     } else {
-        logger->log("Warning: no protocol was specified for the update host");
+        logger->log(_("Warning: no protocol was specified for the update host"));
         updates << "updates/" << updateHost  << "/" << loginData.port;
         updatesDir = updates.str();
     }
@@ -217,9 +217,9 @@ void setUpdatesDir()
     // Verify that the updates directory exists. Create if necessary.
     if (!resman->isDirectory("/" + updatesDir)) {
         if (!resman->mkdir("/" + updatesDir)) {
-            logger->log("Error: %s/%s can't be made, but doesn't exist!",
+            logger->log(_("Error: %s/%s can't be made, but doesn't exist!"),
                          homeDir.c_str(), updatesDir.c_str());
-            errorMessage = "Error creating updates directory!";
+            errorMessage = _("Error creating updates directory!");
             state = ERROR_STATE;
         }
     }
@@ -247,7 +247,7 @@ void init_engine(const Options &options)
 #endif
     {
         std::cout << homeDir
-                  << " can't be created, but it doesn't exist! Exiting."
+                  << _(" can't be created, but it doesn't exist! Exiting.")
                   << std::endl;
         exit(1);
     }
@@ -256,15 +256,15 @@ void init_engine(const Options &options)
     logger->setLogFile(homeDir + std::string("/aethyra.log"));
 
     #ifdef PACKAGE_VERSION
-        logger->log("Starting Aethyra Version %s", PACKAGE_VERSION);
+        logger->log(_("Starting Aethyra Version %s"), PACKAGE_VERSION);
     #else
-        logger->log("Starting Aethyra - Version not defined");
+        logger->log(_("Starting Aethyra - Version not defined"));
     #endif
 
     // Initialize SDL
-    logger->log("Initializing SDL...");
+    logger->log(_("Initializing SDL..."));
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-        std::cerr << "Could not initialize SDL: " <<
+        std::cerr << _("Could not initialize SDL: ") <<
             SDL_GetError() << std::endl;
         exit(1);
     }
@@ -277,7 +277,7 @@ void init_engine(const Options &options)
 
     if (!resman->setWriteDir(homeDir)) {
         std::cout << homeDir
-                  << " couldn't be set as home directory! Exiting."
+                  << _(" couldn't be set as home directory! Exiting.")
                   << std::endl;
         exit(1);
     }
@@ -297,7 +297,7 @@ void init_engine(const Options &options)
     if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path,
                                           PATH_MAX))
     {
-        fprintf(stderr, "Can't find Resources directory\n");
+        fprintf(stderr, _("Can't find Resources directory\n"));
     }
     CFRelease(resourcesURL);
     strncat(path, "/data", PATH_MAX - 1);
@@ -307,7 +307,7 @@ void init_engine(const Options &options)
 #endif
 
     // Fill configuration with defaults
-    logger->log("Initializing configuration...");
+    logger->log(_("Initializing configuration..."));
     config.setValue("host", "www.aethyra.org");
     config.setValue("port", 21001);
     config.setValue("hwaccel", 0);
@@ -390,8 +390,8 @@ void init_engine(const Options &options)
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
     {
-        std::cerr << "Couldn't set "
-                  << width << "x" << height << "x" << bpp << " video mode: "
+        std::cerr << _("Couldn't set ")
+                  << width << "x" << height << "x" << bpp << _(" video mode: ")
                   << SDL_GetError() << std::endl;
         exit(1);
     }
@@ -418,7 +418,7 @@ void init_engine(const Options &options)
     catch (const char *err) {
         state = ERROR_STATE;
         errorMessage = err;
-        logger->log("Warning: %s", err);
+        logger->log(_("Warning: %s"), err);
     }
 
     // Initialize keyboard
@@ -458,29 +458,28 @@ void exit_engine()
 void printHelp()
 {
     std::cout
-        << "aethyra" << std::endl << std::endl
-        << "Options: " << std::endl
-        << "  -C --configfile : Configuration file to use" << std::endl
-        << "  -d --data       : Directory to load game data from" << std::endl
-        << "  -D --default    : Bypass the login process with default "
-                               "settings" << std::endl
-        << "  -h --help       : Display this help" << std::endl
-        << "  -H --updatehost : Use this update host" << std::endl
-        << "  -p --playername : Login with this player" << std::endl
-        << "  -P --password   : Login with this password" << std::endl
-        << "  -u --skipupdate : Skip the update downloads" << std::endl
-        << "  -U --username   : Login with this username" << std::endl
-        << "  -v --version    : Display the version" << std::endl;
+        << _("aethyra") << std::endl << std::endl
+        << _("Options: ") << std::endl
+        << _("  -C --configfile : Configuration file to use") << std::endl
+        << _("  -d --data       : Directory to load game data from") << std::endl
+        << _("  -D --default    : Bypass the login process with default settings") << std::endl
+        << _("  -h --help       : Display this help") << std::endl
+        << _("  -H --updatehost : Use this update host") << std::endl
+        << _("  -p --playername : Login with this player") << std::endl
+        << _("  -P --password   : Login with this password") << std::endl
+        << _("  -u --skipupdate : Skip the update downloads") << std::endl
+        << _("  -U --username   : Login with this username") << std::endl
+        << _("  -v --version    : Display the version") << std::endl;
 }
 
 void printVersion()
 {
 #ifdef PACKAGE_VERSION
-    std::cout << "Aethyra version " << PACKAGE_VERSION <<
+    std::cout << _("Aethyra version ") << PACKAGE_VERSION <<
         std::endl;
 #else
-    std::cout << "Aethyra version " <<
-             "(local build?, PACKAGE_VERSION is not defined)" << std::endl;
+    std::cout << _("Aethyra version ") <<
+             _("(local build?, PACKAGE_VERSION is not defined)") << std::endl;
 #endif
 }
 
@@ -576,8 +575,8 @@ struct ErrorListener : public gcn::ActionListener
 // TODO Find some nice place for these functions
 void accountLogin(Network *network, LoginData *loginData)
 {
-    logger->log("Trying to connect to account server...");
-    logger->log("Username is %s", loginData->username.c_str());
+    logger->log(_("Trying to connect to account server..."));
+    logger->log(_("Username is %s"), loginData->username.c_str());
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
     loginHandler.setLoginData(loginData);
@@ -631,7 +630,7 @@ void positionDialog(Window *dialog, int screenWidth, int screenHeight)
 
 void charLogin(Network *network, LoginData *loginData)
 {
-    logger->log("Trying to connect to char server...");
+    logger->log(_("Trying to connect to char server..."));
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&charServerHandler);
     charServerHandler.setCharInfo(&charInfo);
@@ -653,14 +652,14 @@ void charLogin(Network *network, LoginData *loginData)
 
 void mapLogin(Network *network, LoginData *loginData)
 {
-    logger->log("Memorizing selected character %s",
+    logger->log(_("Memorizing selected character %s"),
             player_node->getName().c_str());
     config.setValue("lastCharacter", player_node->getName());
 
     MessageOut outMsg(network);
 
-    logger->log("Trying to connect to map server...");
-    logger->log("Map: %s", map_path.c_str());
+    logger->log(_("Trying to connect to map server..."));
+    logger->log(_("Map: %s"), map_path.c_str());
 
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&mapLoginHandler);
@@ -745,7 +744,7 @@ int main(int argc, char *argv[])
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
     progressBar->setVisible(false);
-    gcn::Button *setup = new Button("Setup", "Setup", &listener);
+    gcn::Button *setup = new Button(_("Setup"), "Setup", &listener);
     setup->setPosition(top->getWidth() - setup->getWidth() - 3, 3);
     top->add(setup);
 
@@ -787,7 +786,7 @@ int main(int argc, char *argv[])
     login_wallpaper = ResourceManager::getInstance()-> getImage(wallpaperName);
 
     if (!login_wallpaper)
-        logger->log("Couldn't load %s as wallpaper", wallpaperName.c_str());
+        logger->log(_("Couldn't load %s as wallpaper"), wallpaperName.c_str());
 
     // Needs to be created in main, as the updater uses it
     textColour = new Colour();
@@ -823,7 +822,7 @@ int main(int argc, char *argv[])
             if (!network->getError().empty()) {
                 errorMessage = network->getError();
             } else {
-                errorMessage = "Got disconnected from server!";
+                errorMessage = _("Got disconnected from server!");
             }
         }
 
@@ -1013,7 +1012,7 @@ int main(int argc, char *argv[])
 
                 case ERROR_STATE:
                     logger->log("State: ERROR");
-                    currentDialog = new OkDialog("Error", errorMessage);
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
                     positionDialog(currentDialog, screenWidth, screenHeight);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
@@ -1024,7 +1023,8 @@ int main(int argc, char *argv[])
                 case CONNECTING_STATE:
                     logger->log("State: CONNECTING");
                     progressBar->setVisible(true);
-                    progressLabel->setCaption("Connecting to map server...");
+                    progressLabel->setCaption(
+                            _("Connecting to map server..."));
                     progressLabel->adjustSize();
                     mapLogin(network, &loginData);
                     break;
@@ -1032,7 +1032,7 @@ int main(int argc, char *argv[])
                 case CHAR_CONNECT_STATE:
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
-                            "Connecting to character server...");
+                            _("Connecting to character server..."));
                     progressLabel->adjustSize();
                     charLogin(network, &loginData);
                     break;
@@ -1040,7 +1040,7 @@ int main(int argc, char *argv[])
                 case ACCOUNT_STATE:
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
-                            "Connecting to account server...");
+                            _("Connecting to account server..."));
                     progressLabel->adjustSize();
                     accountLogin(network, &loginData);
                     break;

@@ -33,6 +33,7 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 SmileyShortcutContainer::SmileyShortcutContainer():
@@ -48,7 +49,7 @@ SmileyShortcutContainer::SmileyShortcutContainer():
 
     mBackgroundImg = resman->getImage("graphics/gui/item_shortcut_bgr.png");
     mSmileyImg = resman->getImageSet("graphics/gui/emotions.png",30,32);
-    if (!mSmileyImg) logger->error("Unable to load emotions");
+    if (!mSmileyImg) logger->error(_("Unable to load emotions"));
 
     mMaxItems = 12; 
 

@@ -31,6 +31,7 @@
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 const int SmileyContainer::gridWidth = 34;  // item icon width + 4
@@ -44,10 +45,10 @@ SmileyContainer::SmileyContainer():
     ResourceManager *resman = ResourceManager::getInstance();
 
     mSmileyImg = resman->getImageSet("graphics/gui/emotions.png",30,32);
-    if (!mSmileyImg) logger->error("Unable to load emotions");
+    if (!mSmileyImg) logger->error(_("Unable to load emotions"));
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
-    if (!mSelImg) logger->error("Unable to load selection.png");
+    if (!mSelImg) logger->error(_("Unable to load selection.png"));
 
     mMaxSmiley = mSmileyImg->size(); 
 

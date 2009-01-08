@@ -280,8 +280,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             return;
 
         if (mMyInventory->contains(item)) {
-            chatWindow->chatLog("Failed adding item. You can not "
-                    "overlap one kind of item on the window.", BY_SERVER);
+            chatWindow->chatLog(_("Failed adding item. You can not "
+                        "overlap one kind of item on the window."), BY_SERVER);
             return;
         }
 

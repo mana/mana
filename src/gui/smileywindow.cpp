@@ -28,19 +28,22 @@
 #include "smileywindow.h"
 #include "smileycontainer.h"
 #include "scrollarea.h"
-#include "../localplayer.h"      
+
+#include "../localplayer.h"
+
+#include "../utils/gettext.h"      
 #include "../utils/tostring.h"
 
 SmileyWindow::SmileyWindow():
-    Window("Emote")
+    Window(_("Emote"))
 {
-    setWindowName("Emote");
+    setWindowName(_("Emote"));
     setResizable(true);
     setCloseButton(true);
     setMinWidth(80);
     setDefaultSize(115, 25, 322, 200);
 
-    mUseButton = new Button("Use", "use", this);
+    mUseButton = new Button(_("Use"), "use", this);
 
     mItems = new SmileyContainer();
     mItems->addSelectionListener(this);

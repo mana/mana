@@ -33,6 +33,7 @@
 #include "../configuration.h"
 #include "../keyboardconfig.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 /**
@@ -83,13 +84,13 @@ Setup_Keyboard::Setup_Keyboard():
     scrollArea->setDimension(gcn::Rectangle(10, 10, 200, 140));
     add(scrollArea);
 
-    mAssignKeyButton = new Button("Assign", "assign", this);
+    mAssignKeyButton = new Button(_("Assign"), "assign", this);
     mAssignKeyButton->setPosition(165, 155);
     mAssignKeyButton->addActionListener(this);
     mAssignKeyButton->setEnabled(false);
     add(mAssignKeyButton);
 
-    mMakeDefaultButton = new Button("Default", "makeDefault", this);
+    mMakeDefaultButton = new Button(_("Default"), "makeDefault", this);
     mMakeDefaultButton->setPosition(10, 155);
     mMakeDefaultButton->addActionListener(this);
     add(mMakeDefaultButton);
@@ -110,8 +111,9 @@ void Setup_Keyboard::apply()
 
     if (keyboard.hasConflicts())
     {
-        new OkDialog("Key Conflict(s) Detected.",
-            "Resolve them, or gameplay may result in strange behaviour.");
+        new OkDialog(_("Key Conflict(s) Detected."),
+                     _("Resolve them, or gameplay may result in strange "
+                       "behaviour."));
     }
     keyboard.setEnabled(true);
     keyboard.store();
@@ -169,7 +171,7 @@ void Setup_Keyboard::newKeyCallback(int index)
 
 void Setup_Keyboard::refreshKeys()
 {
-    for(int i = 0; i < keyboard.KEY_TOTAL; i++)
+    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
     {
         refreshAssignedKey(i);
     }

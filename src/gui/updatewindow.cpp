@@ -43,6 +43,7 @@
 
 #include "../resources/resourcemanager.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 /**
@@ -75,7 +76,7 @@ loadTextFile(const std::string &fileName)
     std::ifstream fin(fileName.c_str());
 
     if (!fin) {
-        logger->log("Couldn't load text file: %s", fileName.c_str());
+        logger->log(_("Couldn't load text file: %s"), fileName.c_str());
         return lines;
     }
 
@@ -90,7 +91,7 @@ loadTextFile(const std::string &fileName)
 
 UpdaterWindow::UpdaterWindow(const std::string &updateHost,
                              const std::string &updatesDir):
-    Window("Updating..."),
+    Window(_("Updating...")),
     mThread(NULL),
     mDownloadStatus(UPDATE_NEWS),
     mUpdateHost(updateHost),
@@ -109,10 +110,10 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 
     mBrowserBox = new BrowserBox();
     mScrollArea = new ScrollArea(mBrowserBox);
-    mLabel = new gcn::Label("Connecting...");
+    mLabel = new gcn::Label(_("Connecting..."));
     mProgressBar = new ProgressBar(0.0, 310, 20, 168, 116, 31);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mPlayButton = new Button("Play", "play", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mPlayButton = new Button(_("Play"), "play", this);
 
     mBrowserBox->setOpaque(false);
     mPlayButton->setEnabled(false);
@@ -193,7 +194,7 @@ void UpdaterWindow::loadNews()
 {
     if (!mMemoryBuffer)
     {
-        logger->log("Couldn't load news");
+        logger->log(_("Couldn't load news"));
         return;
     }
 
@@ -324,8 +325,8 @@ int UpdaterWindow::downloadThread(void *ptr)
                 {
                 case CURLE_COULDNT_CONNECT:
                 default:
-                    std::cerr << "curl error " << res << ": "
-                              << uw->mCurlError << " host: " << url.c_str()
+                    std::cerr << _("curl error ") << res << ": "
+                              << uw->mCurlError << _(" host: ") << url.c_str()
                               << std::endl;
                     break;
                 }
@@ -360,7 +361,7 @@ int UpdaterWindow::downloadThread(void *ptr)
                         // Remove the corrupted file
                         ::remove(outFilename.c_str());
                         logger->log(
-                            "Checksum for file %s failed: (%lx/%lx)",
+                            _("Checksum for file %s failed: (%lx/%lx)"),
                             uw->mCurrentFile.c_str(),
                             adler, uw->mCurrentChecksum);
                         attempts++;
@@ -410,7 +411,7 @@ void UpdaterWindow::download()
 
     if (mThread == NULL)
     {
-        logger->log("Unable to create mThread");
+        logger->log(_("Unable to create mThread"));
         mDownloadStatus = UPDATE_ERROR;
     }
 }
@@ -448,9 +449,9 @@ void UpdaterWindow::logic()
                 mThread = NULL;
             }
             mBrowserBox->addRow("");
-            mBrowserBox->addRow("##1  The update process is incomplete.");
-            mBrowserBox->addRow("##1  It is strongly recommended that");
-            mBrowserBox->addRow("##1  you try again later");
+            mBrowserBox->addRow(_("##1  The update process is incomplete."));
+            mBrowserBox->addRow(_("##1  It is strongly recommended that"));
+            mBrowserBox->addRow(_("##1  you try again later"));
             mBrowserBox->addRow(mCurlError);
             mScrollArea->setVerticalScrollAmount(
                     mScrollArea->getVerticalMaxScroll());
@@ -504,7 +505,7 @@ void UpdaterWindow::logic()
                     }
                     else
                     {
-                        logger->log("%s already here", mCurrentFile.c_str());
+                        logger->log(_("%s already here"), mCurrentFile.c_str());
                     }
                     mLineIndex++;
                 }
@@ -517,7 +518,7 @@ void UpdaterWindow::logic()
             break;
         case UPDATE_COMPLETE:
             enable();
-            setLabel("Completed");
+            setLabel(_("Completed"));
             break;
         case UPDATE_IDLE:
             break;

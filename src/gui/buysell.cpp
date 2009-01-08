@@ -24,18 +24,20 @@
 
 #include "../npc.h"
 
+#include "../utils/gettext.h"
+
 BuySellDialog::BuySellDialog():
-    Window("Shop")
+    Window(_("Shop"))
 {
     Button *buyButton = 0;
-    const char *buttonNames[] = {
-        "Buy", "Sell", "Cancel", 0
+    static const char *buttonNames[] = {
+        N_("Buy"), N_("Sell"), N_("Cancel"), 0
     };
     int x = 10, y = 10;
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
-        Button *btn = new Button(*curBtn, *curBtn, this);
+        Button *btn = new Button(gettext(*curBtn), *curBtn, this);
         if (!buyButton) buyButton = btn; // For focus request
         btn->setPosition(x, y);
         add(btn);
