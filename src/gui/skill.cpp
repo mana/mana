@@ -29,12 +29,14 @@
 #include "windowcontainer.h"
 
 #include "../localplayer.h"
-
-#include "../utils/dtor.h"
-#include "../utils/xml.h"
 #include "../log.h"
 
-#define SKILLS_FILE "skills.xml"
+#include "../utils/dtor.h"
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
+#include "../utils/xml.h"
+
+static const char *SKILLS_FILE = "skills.xml";
 
 struct SkillInfo {
     std::string name;
@@ -73,7 +75,10 @@ public:
 
     virtual void update()
     {
-        static const SkillInfo fakeSkillInfo = { "Mystery Skill", false };
+        static const SkillInfo fakeSkillInfo = {
+            _("Mystery Skill"),
+            false
+        };
 
         mEntriesNr = mDialog->getSkills().size();
         resize();
@@ -90,13 +95,13 @@ public:
                 info = &fakeSkillInfo;
 
             sprintf(tmp, "%c%s", info->modifiable? ' ' : '*', info->name.c_str());
-            gcn::Label *name_label = new gcn::Label(std::string(tmp));
+            gcn::Label *name_label = new gcn::Label(tmp);
 
             sprintf(tmp, "Lv:%i", skill->lv);
-            gcn::Label *lv_label = new gcn::Label(std::string(tmp));
+            gcn::Label *lv_label = new gcn::Label(tmp);
 
             sprintf(tmp, "Sp:%i", skill->sp);
-            gcn::Label *sp_label = new gcn::Label(std::string(tmp));
+            gcn::Label *sp_label = new gcn::Label(tmp);
 
             set(i, 0, name_label);
             set(i, 1, lv_label);
@@ -111,7 +116,7 @@ private:
 
 
 SkillDialog::SkillDialog():
-    Window("Skills")
+    Window(_("Skills"))
 {
     initSkillinfo();
     mTableModel = new SkillGuiTableModel(this);
@@ -124,9 +129,9 @@ SkillDialog::SkillDialog():
 
 //    mSkillListBox = new ListBox(this);
     ScrollArea *skillScrollArea = new ScrollArea(&mTable);
-    mPointsLabel = new gcn::Label("Skill Points:");
-    mIncButton = new Button("Up", "inc", this);
-    mUseButton = new Button("Use", "use", this);
+    mPointsLabel = new gcn::Label(strprintf(_("Skill points: %d"), 0));
+    mIncButton = new Button(_("Up"), "inc", this);
+    mUseButton = new Button(_("Use"), "use", this);
     mUseButton->setEnabled(false);
 
 //    mSkillListBox->setActionEventId("skill");
@@ -180,11 +185,8 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 
 void SkillDialog::update()
 {
-    if (mPointsLabel != NULL) {
-        char tmp[128];
-        sprintf(tmp, "Skill points: %i", player_node->mSkillPoint);
-        mPointsLabel->setCaption(tmp);
-    }
+    mPointsLabel->setCaption(strprintf(_("Skill points: %d"),
+                                       player_node->mSkillPoint));
 
     int selectedSkill = mTable.getSelectedRow();
 
@@ -254,8 +256,7 @@ static void initSkillinfo()
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
     {
-        logger->log("Error loading skills file: "
-                    SKILLS_FILE);
+        logger->log("Error loading skills file: %s", SKILLS_FILE);
         skill_db.resize(2, emptySkillInfo);
         skill_db[1].name = "Basic";
         skill_db[1].modifiable = true;

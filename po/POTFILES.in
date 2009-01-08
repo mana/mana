@@ -1,11 +1,14 @@
 # List of source files which contain translatable strings.
 
 src/gui/buy.cpp
+src/gui/buysell.cpp
 src/gui/char_select.cpp
 src/gui/char_server.cpp
+src/gui/chat.cpp
 src/gui/confirm_dialog.cpp
 src/gui/connection.cpp
 src/gui/equipmentwindow.cpp
+src/gui/help.cpp
 src/gui/inventorywindow.cpp
 src/gui/item_amount.cpp
 src/gui/login.cpp
@@ -20,6 +23,12 @@ src/gui/sell.cpp
 src/gui/setup_audio.cpp
 src/gui/setup.cpp
 src/gui/setup_joystick.cpp
+src/gui/setup_keyboard.cpp
+src/gui/setup_players.cpp
 src/gui/setup_video.cpp
+src/gui/skill.cpp
+src/gui/status.cpp
 src/gui/trade.cpp
+src/gui/updatewindow.cpp
 src/resources/itemdb.cpp
+src/main.cpp

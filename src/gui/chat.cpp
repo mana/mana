@@ -39,6 +39,8 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/trim.h"
 
 ChatWindow::ChatWindow(Network *network):
@@ -116,11 +118,14 @@ void ChatWindow::chatLog(std::string line, int own)
     std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
     switch (own) {
         case BY_GM:
-            if (tmp.nick.empty())
-                tmp.nick = std::string("Global announcement: ");
-            else
-                tmp.nick = std::string("Global announcement from " + tmp.nick
-                        + std::string(": "));
+            if (tmp.nick.empty()) {
+                tmp.nick = _("Global announcement:");
+                tmp.nick += " ";
+            } else {
+                tmp.nick = strprintf(_("Global announcement from %s:"),
+                                     tmp.nick.c_str());
+                tmp.nick += " ";
+            }
             lineColor = "##1"; // Equiv. to BrowserBox::RED
             break;
         case BY_PLAYER:
@@ -132,12 +137,14 @@ void ChatWindow::chatLog(std::string line, int own)
             lineColor = "##0"; // Equiv. to BrowserBox::BLACK
             break;
         case BY_SERVER:
-            tmp.nick = "Server: ";
+            tmp.nick = _("Server:");
+            tmp.nick += " ";
             tmp.text = line;
             lineColor = "##7"; // Equiv. to BrowserBox::PINK
             break;
         case ACT_WHISPER:
-            tmp.nick += CAT_WHISPER;
+            tmp.nick = strprintf(_("%s whispers:"), tmp.nick.c_str());
+            tmp.nick += " ";
             lineColor = "##3"; // Equiv. to BrowserBox::BLUE
             break;
         case ACT_IS:
@@ -250,7 +257,7 @@ void ChatWindow::whisper(const std::string &nick, std::string msg,
     std::string recvnick = "";
     msg.erase(0, prefixlen + 1);
 
-    if (msg.substr(0,1) == "\"")
+    if (msg.substr(0, 1) == "\"")
     {
         const std::string::size_type pos = msg.find('"', 1);
         if (pos != std::string::npos) {
@@ -273,7 +280,9 @@ void ChatWindow::whisper(const std::string &nick, std::string msg,
     outMsg.writeString(recvnick, 24);
     outMsg.writeString(msg, msg.length());
 
-    chatLog("Whispering to " + recvnick + " : " + msg, BY_PLAYER);
+    chatLog(strprintf(_("Whispering to %s: %s"),
+                      recvnick.c_str(), msg.c_str()),
+            BY_PLAYER);
 }
 
 void ChatWindow::chatSend(const std::string &nick, std::string msg)
@@ -344,7 +353,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         whisper(nick, msg, IS_SHORT_WHISPER_LENGTH);
     else
     {
-        chatLog("Unknown command", BY_SERVER);
+        chatLog(_("Unknown command"), BY_SERVER);
     }
 }
 
@@ -353,71 +362,73 @@ std::string ChatWindow::const_msg(CHATSKILL act)
     std::string msg;
     if (act.success == SKILL_FAILED && act.skill == SKILL_BASIC) {
         switch (act.bskill) {
-            case BSKILL_TRADE :
-                msg = "Trade failed!";
+            case BSKILL_TRADE:
+                msg = _("Trade failed!");
                 break;
-            case BSKILL_EMOTE :
-                msg = "Emote failed!";
+            case BSKILL_EMOTE:
+                msg = _("Emote failed!");
                 break;
-            case BSKILL_SIT :
-                msg = "Sit failed!";
+            case BSKILL_SIT:
+                msg = _("Sit failed!");
                 break;
-            case BSKILL_CREATECHAT :
-                msg = "Chat creating failed!";
+            case BSKILL_CREATECHAT:
+                msg = _("Chat creating failed!");
                 break;
-            case BSKILL_JOINPARTY :
-                msg = "Could not join party!";
+            case BSKILL_JOINPARTY:
+                msg = _("Could not join party!");
                 break;
-            case BSKILL_SHOUT :
-                msg = "Cannot shout!";
+            case BSKILL_SHOUT:
+                msg = _("Cannot shout!");
                 break;
         }
 
+        msg += " ";
+
         switch (act.reason) {
-            case RFAIL_SKILLDEP :
-                msg += " You have not yet reached a high enough lvl!";
+            case RFAIL_SKILLDEP:
+                msg += _("You have not yet reached a high enough lvl!");
                 break;
-            case RFAIL_INSUFHP :
-                msg += " Insufficient HP!";
+            case RFAIL_INSUFHP:
+                msg += _("Insufficient HP!");
                 break;
-            case RFAIL_INSUFSP :
-                msg += " Insufficient SP!";
+            case RFAIL_INSUFSP:
+                msg += _("Insufficient SP!");
                 break;
-            case RFAIL_NOMEMO :
-                msg += " You have no memos!";
+            case RFAIL_NOMEMO:
+                msg += _("You have no memos!");
                 break;
-            case RFAIL_SKILLDELAY :
-                msg += " You cannot do that right now!";
+            case RFAIL_SKILLDELAY:
+                msg += _("You cannot do that right now!");
                 break;
-            case RFAIL_ZENY :
-                msg += " Seems you need more Zeny... ;-)";
+            case RFAIL_ZENY:
+                msg += _("Seems you need more Zeny... ;-)");
                 break;
-            case RFAIL_WEAPON :
-                msg += " You cannot use this skill with that kind of weapon!";
+            case RFAIL_WEAPON:
+                msg += _("You cannot use this skill with that kind of weapon!");
                 break;
-            case RFAIL_REDGEM :
-                msg += " You need another red gem!";
+            case RFAIL_REDGEM:
+                msg += _("You need another red gem!");
                 break;
-            case RFAIL_BLUEGEM :
-                msg += " You need another blue gem!";
+            case RFAIL_BLUEGEM:
+                msg += _("You need another blue gem!");
                 break;
-            case RFAIL_OVERWEIGHT :
-                msg += " You're carrying to much to do this!";
+            case RFAIL_OVERWEIGHT:
+                msg += _("You're carrying to much to do this!");
                 break;
-            default :
-                msg += " Huh? What's that?";
+            default:
+                msg += _("Huh? What's that?");
                 break;
         }
     } else {
-        switch(act.skill) {
+        switch (act.skill) {
             case SKILL_WARP :
-                msg = "Warp failed...";
+                msg = _("Warp failed...");
                 break;
             case SKILL_STEAL :
-                msg = "Could not steal anything...";
+                msg = _("Could not steal anything...");
                 break;
             case SKILL_ENVENOM :
-                msg = "Poison had no effect...";
+                msg = _("Poison had no effect...");
                 break;
         }
     }
@@ -482,67 +493,68 @@ void ChatWindow::setVisible(bool isVisible)
 
 void ChatWindow::help(const std::string &msg1, const std::string &msg2)
 {
-    chatLog("-- Help --", BY_SERVER);
+    chatLog(_("-- Help --"), BY_SERVER);
     if (msg1 == "")
     {
-        chatLog("/announce: Global announcement (GM only)", BY_SERVER);
-        chatLog("/clear: Clears this window", BY_SERVER);
-        chatLog("/help: Display this help.", BY_SERVER);
-        chatLog("/where: Display map name", BY_SERVER);
-        chatLog("/whisper <nick> <message>: Sends a private <message>"
-                " to <nick>", BY_SERVER);
-        chatLog("/w <nick> <message>: Short form for /whisper", BY_SERVER);
-        chatLog("/who: Display number of online users", BY_SERVER);
-        chatLog("For more information, type /help <command>", BY_SERVER);
+        chatLog(_("/announce: Global announcement (GM only)"), BY_SERVER);
+        chatLog(_("/clear: Clears this window"), BY_SERVER);
+        chatLog(_("/help: Display this help"), BY_SERVER);
+        chatLog(_("/where: Display map name"), BY_SERVER);
+        chatLog(_("/whisper <nick> <message>: Sends a private <message>"
+                    " to <nick>"), BY_SERVER);
+        chatLog(_("/w <nick> <message>: Short form for /whisper"), BY_SERVER);
+        chatLog(_("/who: Display number of online users"), BY_SERVER);
+        chatLog(_("For more information, type /help <command>"), BY_SERVER);
         return;
     }
     if (msg1 == "announce")
     {
-        chatLog("Command: /announce <msg>", BY_SERVER);
-        chatLog("*** only available to a GM ***", BY_SERVER);
-        chatLog("This command sends the message <msg> to "
-                "all players currently online.", BY_SERVER);
+        chatLog(_("Command: /announce <msg>"), BY_SERVER);
+        chatLog(_("*** only available to a GM ***"), BY_SERVER);
+        chatLog(_("This command sends the message <msg> to "
+                    "all players currently online."), BY_SERVER);
         return;
     }
     if (msg1 == "clear")
     {
-        chatLog("Command: /clear", BY_SERVER);
-        chatLog("This command clears the chat log of previous chat.",
+        chatLog(_("Command: /clear"), BY_SERVER);
+        chatLog(_("This command clears the chat log of previous chat."),
                 BY_SERVER);
         return;
     }
     if (msg1 == "help")
     {
-        chatLog("Command: /help", BY_SERVER);
-        chatLog("This command displays a list of all commands available.",
+        chatLog(_("Command: /help"), BY_SERVER);
+        chatLog(_("This command displays a list of all commands available."),
                 BY_SERVER);
-        chatLog("Command: /help <command>", BY_SERVER);
-        chatLog("This command displays help on <command>.", BY_SERVER);
+        chatLog(_("Command: /help <command>"), BY_SERVER);
+        chatLog(_("This command displays help on <command>."), BY_SERVER);
         return;
     }
     if (msg1 == "where")
     {
-        chatLog("Command: /where", BY_SERVER);
-        chatLog("This command displays the name of the current map.",
+        chatLog(_("Command: /where"), BY_SERVER);
+        chatLog(_("This command displays the name of the current map."),
                 BY_SERVER);
         return;
     }
     if (msg1 == "whisper" || msg1 == "w")
     {
-        chatLog("Command: /whisper <nick> <msg>", BY_SERVER);
-        chatLog("Command: /w <nick> <msg>", BY_SERVER);
-        chatLog("This command sends the message <msg> to <nick>.", BY_SERVER);
-        chatLog("If the <nick> has spaces in it, enclose it in "
-                "double quotes (\").", BY_SERVER);
+        chatLog(_("Command: /whisper <nick> <msg>"), BY_SERVER);
+        chatLog(_("Command: /w <nick> <msg>"), BY_SERVER);
+        chatLog(_("This command sends the message <msg> to <nick>."),
+                BY_SERVER);
+        chatLog(_("If the <nick> has spaces in it, enclose it in "
+                "double quotes (\")."), BY_SERVER);
         return;
     }
     if (msg1 == "who")
     {
-        chatLog("Command: /who", BY_SERVER);
-        chatLog("This command displays the number of players currently "
-                "online.", BY_SERVER);
+        chatLog(_("Command: /who"), BY_SERVER);
+        chatLog(_("This command displays the number of players currently "
+                "online."), BY_SERVER);
         return;
     }
-    chatLog("Unknown command.", BY_SERVER);
-    chatLog("Type /help for a list of commands.", BY_SERVER);
+    chatLog(_("Unknown command."), BY_SERVER);
+    chatLog(_("Type /help for a list of commands."), BY_SERVER);
 }

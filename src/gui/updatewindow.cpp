@@ -40,6 +40,7 @@
 #include "../log.h"
 #include "../main.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 #include "../resources/resourcemanager.h"
@@ -89,7 +90,7 @@ loadTextFile(const std::string &fileName)
 
 UpdaterWindow::UpdaterWindow(const std::string &updateHost,
                              const std::string &updatesDir):
-    Window("Updating..."),
+    Window(_("Updating...")),
     mThread(NULL),
     mDownloadStatus(UPDATE_NEWS),
     mUpdateHost(updateHost),
@@ -112,10 +113,10 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 
     mBrowserBox = new BrowserBox();
     mScrollArea = new ScrollArea(mBrowserBox);
-    mLabel = new gcn::Label("Connecting...");
+    mLabel = new gcn::Label(_("Connecting..."));
     mProgressBar = new ProgressBar(0.0, w - 10, 20, 37, 70, 200);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mPlayButton = new Button("Play", "play", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mPlayButton = new Button(_("Play"), "play", this);
 
     mBrowserBox->setOpaque(false);
     mPlayButton->setEnabled(false);
@@ -521,7 +522,7 @@ void UpdaterWindow::logic()
             break;
         case UPDATE_COMPLETE:
             enable();
-            setLabel("Completed");
+            setLabel(_("Completed"));
             break;
         case UPDATE_IDLE:
             break;

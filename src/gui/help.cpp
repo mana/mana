@@ -27,8 +27,10 @@
 
 #include "../resources/resourcemanager.h"
 
+#include "../utils/gettext.h"
+
 HelpWindow::HelpWindow():
-    Window("Help")
+    Window(_("Help"))
 {
     setContentSize(455, 350);
     setWindowName("Help");
@@ -36,7 +38,7 @@ HelpWindow::HelpWindow():
     mBrowserBox = new BrowserBox();
     mBrowserBox->setOpaque(false);
     mScrollArea = new ScrollArea(mBrowserBox);
-    Button *okButton = new Button("Close", "close", this);
+    Button *okButton = new Button(_("Close"), "close", this);
 
     mScrollArea->setDimension(gcn::Rectangle(
                 5, 5, 445, 335 - okButton->getHeight()));

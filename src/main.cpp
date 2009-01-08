@@ -713,7 +713,7 @@ int main(int argc, char *argv[])
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
     progressBar->setVisible(false);
-    gcn::Button *setup = new Button("Setup", "Setup", &listener);
+    gcn::Button *setup = new Button(_("Setup"), "Setup", &listener);
     setup->setPosition(top->getWidth() - setup->getWidth() - 3, 3);
     top->add(setup);
 
@@ -766,7 +766,7 @@ int main(int argc, char *argv[])
             if (!network->getError().empty()) {
                 errorMessage = network->getError();
             } else {
-                errorMessage = "Got disconnected from server!";
+                errorMessage = _("Got disconnected from server!");
             }
         }
 
@@ -942,7 +942,7 @@ int main(int argc, char *argv[])
 
                 case ERROR_STATE:
                     logger->log("State: ERROR");
-                    currentDialog = new OkDialog("Error", errorMessage);
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     network->disconnect();
@@ -952,7 +952,8 @@ int main(int argc, char *argv[])
                 case CONNECTING_STATE:
                     logger->log("State: CONNECTING");
                     progressBar->setVisible(true);
-                    progressLabel->setCaption("Connecting to map server...");
+                    progressLabel->setCaption(
+                            _("Connecting to map server..."));
                     progressLabel->adjustSize();
                     mapLogin(network, &loginData);
                     break;
@@ -960,7 +961,7 @@ int main(int argc, char *argv[])
                 case CHAR_CONNECT_STATE:
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
-                            "Connecting to character server...");
+                            _("Connecting to character server..."));
                     progressLabel->adjustSize();
                     charLogin(network, &loginData);
                     break;
@@ -968,7 +969,7 @@ int main(int argc, char *argv[])
                 case ACCOUNT_STATE:
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
-                            "Connecting to account server...");
+                            _("Connecting to account server..."));
                     progressLabel->adjustSize();
                     accountLogin(network, &loginData);
                     break;
