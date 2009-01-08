@@ -278,6 +278,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      inventory.h \
 	      item.cpp \
 	      item.h \
+	      smileyshortcut.cpp \
+	      smileyshortcut.h \
 	      itemshortcut.cpp \
 	      itemshortcut.h \
 	      joystick.cpp \

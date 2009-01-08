@@ -20,7 +20,7 @@
  */
 
 #ifndef _TMW_SMILEYSHORTCUT_H__
-#define _TMW_ITEMSHORTCUT_H__
+#define _TMW_SMILEYSHORTCUT_H__
 
 #define SHORTCUT_SMILEYS 12
 
