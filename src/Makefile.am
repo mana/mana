@@ -5,8 +5,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/widgets/layout.h \
               gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
-	      gui/box.cpp \
-	      gui/box.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/button.cpp \
@@ -43,8 +41,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/gccontainer.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
-	      gui/hbox.cpp \
-	      gui/hbox.h \
 	      gui/help.cpp \
 	      gui/help.h \
 	      gui/inttextbox.h \
@@ -145,8 +141,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/trade.h \
 	      gui/updatewindow.h \
 	      gui/updatewindow.cpp \
-	      gui/vbox.h \
-	      gui/vbox.cpp \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/window.cpp \

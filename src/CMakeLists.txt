@@ -55,8 +55,6 @@ SET(SRCS
     gui/widgets/resizegrip.h
     gui/widgets/layout.cpp
     gui/widgets/layout.h
-    gui/box.cpp
-    gui/box.h
     gui/browserbox.cpp
     gui/browserbox.h
     gui/buddywindow.cpp
@@ -91,8 +89,6 @@ SET(SRCS
     gui/gccontainer.h
     gui/gui.cpp
     gui/gui.h
-    gui/hbox.cpp
-    gui/hbox.h
     gui/help.cpp
     gui/help.h
     gui/inttextbox.cpp
@@ -181,8 +177,6 @@ SET(SRCS
     gui/trade.h
     gui/updatewindow.h
     gui/updatewindow.cpp
-    gui/vbox.h
-    gui/vbox.cpp
     gui/viewport.cpp
     gui/viewport.h
     gui/window.cpp
