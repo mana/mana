@@ -246,6 +246,7 @@ void createGuiWindows(Network *network)
  */
 void destroyGuiWindows()
 {
+    logger->setChatWindow(NULL);
     delete chatWindow;
     delete statusWindow;
     delete miniStatusWindow;
