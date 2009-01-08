@@ -5,8 +5,6 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/widgets/layout.h \
 	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
-	      gui/box.h \
-	      gui/box.cpp \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -41,8 +39,6 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/gccontainer.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
-	      gui/hbox.h \
-	      gui/hbox.cpp \
 	      gui/help.cpp \
 	      gui/help.h \
 	      gui/inttextbox.h \
@@ -131,8 +127,6 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/trade.h \
 	      gui/updatewindow.h \
 	      gui/updatewindow.cpp \
-	      gui/vbox.h \
-	      gui/vbox.cpp \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/window.cpp \

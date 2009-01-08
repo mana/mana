@@ -99,8 +99,6 @@
 		<Unit filename="src\game.h" />
 		<Unit filename="src\graphics.cpp" />
 		<Unit filename="src\graphics.h" />
-		<Unit filename="src\gui\box.cpp" />
-		<Unit filename="src\gui\box.h" />
 		<Unit filename="src\gui\browserbox.cpp" />
 		<Unit filename="src\gui\browserbox.h" />
 		<Unit filename="src\gui\buddywindow.cpp" />
@@ -135,8 +133,6 @@
 		<Unit filename="src\gui\gccontainer.h" />
 		<Unit filename="src\gui\gui.cpp" />
 		<Unit filename="src\gui\gui.h" />
-		<Unit filename="src\gui\hbox.cpp" />
-		<Unit filename="src\gui\hbox.h" />
 		<Unit filename="src\gui\help.cpp" />
 		<Unit filename="src\gui\help.h" />
 		<Unit filename="src\gui\inttextbox.cpp" />
@@ -224,8 +220,6 @@
 		<Unit filename="src\gui\truetypefont.h" />
 		<Unit filename="src\gui\updatewindow.cpp" />
 		<Unit filename="src\gui\updatewindow.h" />
-		<Unit filename="src\gui\vbox.cpp" />
-		<Unit filename="src\gui\vbox.h" />
 		<Unit filename="src\gui\viewport.cpp" />
 		<Unit filename="src\gui\viewport.h" />
 		<Unit filename="src\gui\widgets\resizegrip.cpp" />
