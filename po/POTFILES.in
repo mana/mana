@@ -38,4 +38,5 @@ src/gui/trade.cpp
 src/gui/updatewindow.cpp
 src/net/playerhandler.cpp
 src/resources/itemdb.cpp
+src/game.cpp
 src/main.cpp

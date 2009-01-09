@@ -23,12 +23,15 @@
 
 #include "../being.h"
 #include "../beingmanager.h"
+#include "../configuration.h"
 #include "../graphics.h"
 #include "../localplayer.h"
 
 #include "../resources/image.h"
 
 #include "../utils/gettext.h"
+
+bool Minimap::mShow = config.getValue("MinimapVisible", true);
 
 Minimap::Minimap():
     Window(_("Map")),
@@ -56,13 +59,14 @@ void Minimap::setMapImage(Image *img)
     {
         int offsetX = getPadding() + 4;
         int offsetY = getTitleBarHeight() + 4;
-        mMapImage->setAlpha(0.7);
+        mMapImage->setAlpha(config.getValue("guialpha", 0.8));
         setDefaultSize(offsetX, offsetY, 
                        mMapImage->getWidth() < 100 ? 
                            mMapImage->getWidth() + offsetX : 100, 
                        mMapImage->getHeight() < 100 ? 
                            mMapImage->getHeight() + offsetY : 100);
         loadWindowState();
+        setVisible(mShow);
     }
     else
     {
@@ -70,9 +74,20 @@ void Minimap::setMapImage(Image *img)
     }
 }
 
+void Minimap::toggle()
+{
+    mShow = !mShow;
+    config.setValue("MinimapVisible", mShow);
+}
+
 void Minimap::draw(gcn::Graphics *graphics)
 {
+    setVisible(mShow);
+
     Window::draw(graphics);
+
+    if (!mShow)
+        return;
 
     const gcn::Rectangle a = getChildrenArea();
 

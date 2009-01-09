@@ -57,6 +57,11 @@ class Minimap : public Window
         void setProportion(float proportion) { mProportion = proportion; }
 
         /**
+         * Toggles the displaying of the minimap.
+         */
+        void toggle();
+
+        /**
          * Draws the minimap.
          */
         void draw(gcn::Graphics *graphics);
@@ -64,6 +69,7 @@ class Minimap : public Window
     private:
         Image *mMapImage;
         float mProportion;
+        static bool mShow;
 };
 
 extern Minimap *minimap;

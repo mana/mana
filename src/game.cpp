@@ -30,7 +30,6 @@
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "beingmanager.h"
-#include "configuration.h"
 #include "effectmanager.h"
 #include "engine.h"
 #include "flooritemmanager.h"
@@ -91,6 +90,8 @@
 
 #include "resources/imagewriter.h"
 
+#include "utils/gettext.h"
+
 extern Graphics *graphics;
 
 class Map;
@@ -125,7 +126,6 @@ Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 TradeWindow *tradeWindow;
-//BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 ShortcutWindow *itemShortcutWindow;
@@ -210,14 +210,10 @@ void createGuiWindows(Network *network)
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     tradeWindow = new TradeWindow(network);
-    //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",new ItemShortcutContainer);
     smileyShortcutWindow = new ShortcutWindow("SmileyShortcut",new SmileyShortcutContainer);
-
-    // Initialize window positions
-    //buddyWindow->setPosition(10, minimap->getHeight() + 30);
 
     // Set initial window visibility
     chatWindow->setVisible((bool) config.getValue(
@@ -226,8 +222,6 @@ void createGuiWindows(Network *network)
         miniStatusWindow->getWindowName() + "Visible", true));
     buyDialog->setVisible(false);
     sellDialog->setVisible(false);
-    minimap->setVisible((bool) config.getValue(
-        minimap->getWindowName() + "Visible", true));
     tradeWindow->setVisible(false);
     menuWindow->setVisible((bool) config.getValue(
         menuWindow->getWindowName() + "Visible", true));
@@ -264,7 +258,6 @@ void destroyGuiWindows()
     delete minimap;
     delete equipmentWindow;
     delete tradeWindow;
-    //delete buddyWindow;
     delete helpWindow;
     delete debugWindow;
     delete itemShortcutWindow;
@@ -390,13 +383,13 @@ static bool saveScreenshot()
     if (success)
     {
         std::stringstream chatlogentry;
-        chatlogentry << "Screenshot saved to ~/" << filenameSuffix.str();
+        chatlogentry << _("Screenshot saved to ~/") << filenameSuffix.str();
         chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
     }
     else
     {
-        chatWindow->chatLog("Saving screenshot failed!", BY_SERVER);
-        logger->log("Error: could not save screenshot.");
+        chatWindow->chatLog(_("Saving screenshot failed!"), BY_SERVER);
+        logger->log(_("Error: could not save screenshot."));
     }
 
     SDL_FreeSurface(screenshot);
@@ -471,9 +464,8 @@ void Game::logic()
         {
             if (!disconnectedDialog)
             {
-                disconnectedDialog = new OkDialog("Network Error",
-                        "The connection to the server was lost, "
-                        "the program will now quit");
+                disconnectedDialog = new OkDialog(_("Network Error"),
+                        _("The connection to the server was lost, the program will now quit"));
                 disconnectedDialog->addActionListener(&exitListener);
                 disconnectedDialog->requestMoveToTop();
             }
@@ -536,12 +528,12 @@ void Game::handleInput()
 				unsigned int deflt = player_relations.getDefault();
 				if (deflt & PlayerRelation::TRADE) {
 				    chatWindow->chatLog(
-					    "Ignoring incoming trade requests",
+					    _("Ignoring incoming trade requests"),
 					    BY_SERVER);
 				    deflt &= ~PlayerRelation::TRADE;
 				} else {
 				    chatWindow->chatLog(
-					    "Accepting incoming trade requests",
+					    _("Accepting incoming trade requests"),
 					    BY_SERVER);
 				    deflt |= PlayerRelation::TRADE;
 				}
@@ -557,7 +549,7 @@ void Game::handleInput()
 	    if (keyboard.isKeyActive(keyboard.KEY_SMILIE))
 	    {
 		// Emotions
-		int emotion=keyboard.getKeySmilieOffset(event.key.keysym.sym);
+		int emotion = keyboard.getKeySmilieOffset(event.key.keysym.sym);
 		if (emotion)
 		{
 		    smileyShortcut->useSmiley(emotion);
@@ -643,13 +635,13 @@ void Game::handleInput()
 		case SDLK_ESCAPE:
 		    if (!exitConfirm) {
 			exitConfirm = new ConfirmDialog(
-				"Quit", "Are you sure you want to quit?");
+				_("Quit"), _("Are you sure you want to quit?"));
 			exitConfirm->addActionListener(&exitListener);
 			exitConfirm->requestMoveToTop();
 		    }
 		    else
 		    {
-			exitConfirm->action(gcn::ActionEvent(NULL, "no"));
+			exitConfirm->action(gcn::ActionEvent(NULL, _("no")));
 		    }
 		    break;
 
@@ -738,6 +730,7 @@ void Game::handleInput()
 			requestedWindow = skillDialog;
 			break;
 		    case KeyboardConfig::KEY_WINDOW_MINIMAP:
+			minimap->toggle();
 			requestedWindow = minimap;
 			break;
 		    case KeyboardConfig::KEY_WINDOW_CHAT:
@@ -789,7 +782,7 @@ void Game::handleInput()
 	    catch (gcn::Exception e)
 	    {
 		const char* err = e.getMessage().c_str();
-		logger->log("Warning: guichan input exception: %s", err);
+		logger->log(_("Warning: guichan input exception: %s"), err);
 	    }
 	}
     } // End while
