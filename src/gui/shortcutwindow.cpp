@@ -23,6 +23,8 @@
 #include "shortcutwindow.h"
 #include "scrollarea.h"
 
+#include "../configuration.h"
+
 static const int SCROLL_PADDING = 0;
 
 ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
@@ -41,7 +43,12 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
     setMaxWidth(mItems->getBoxWidth() * mItems->getMaxItems() + border);
     setMaxHeight(mItems->getBoxHeight() * mItems->getMaxItems() + border);
 
-    setDefaultSize(758, 174, mItems->getBoxWidth() + border, 
+    const int width = (int) config.getValue("screenwidth", 800);
+    const int height = (int) config.getValue("screenheight", 600);
+
+    setDefaultSize(width - mItems->getBoxWidth() - border, 
+                   height - (mItems->getBoxHeight() * mItems->getMaxItems()) - 
+                   border, mItems->getBoxWidth() + border, 
                    (mItems->getBoxHeight() * mItems->getMaxItems()) + border);
 
     mScrollArea = new ScrollArea(mItems);
