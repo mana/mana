@@ -39,7 +39,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     setWindowName(_("Status"));
     setCloseButton(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 365, 275);
+                   (windowContainer->getHeight() - 255) / 2, 400, 275);
     loadWindowState();
 
     // ----------------------
