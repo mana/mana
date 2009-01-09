@@ -378,6 +378,10 @@ BrowserBox::draw(gcn::Graphics *graphics)
                 char const *hyphen = "~";
                 int hyphenWidth =  font->getWidth(hyphen);
 
+                /* FIXME: This code layout makes it easy to crash remote
+                   clients by talking garbage. Forged long utf-8 characters
+                   will cause either a buffer underflow in substr or an
+                   infinite loop in the main loop. */
                 do
                 {
                     if (!forced)
