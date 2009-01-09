@@ -10,6 +10,7 @@
 				<Option output="tmw.exe" prefix_auto="0" extension_auto="0" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
 					<Add option="-Wall" />
@@ -178,6 +179,8 @@
 		<Unit filename="src\gui\register.h" />
 		<Unit filename="src\gui\scrollarea.cpp" />
 		<Unit filename="src\gui\scrollarea.h" />
+		<Unit filename="src\gui\sdlinput.cpp" />
+		<Unit filename="src\gui\sdlinput.h" />
 		<Unit filename="src\gui\selectionlistener.h" />
 		<Unit filename="src\gui\sell.cpp" />
 		<Unit filename="src\gui\sell.h" />
@@ -222,6 +225,8 @@
 		<Unit filename="src\gui\updatewindow.h" />
 		<Unit filename="src\gui\viewport.cpp" />
 		<Unit filename="src\gui\viewport.h" />
+		<Unit filename="src\gui\widgets\layout.cpp" />
+		<Unit filename="src\gui\widgets\layout.h" />
 		<Unit filename="src\gui\widgets\resizegrip.cpp" />
 		<Unit filename="src\gui\widgets\resizegrip.h" />
 		<Unit filename="src\gui\window.cpp" />
