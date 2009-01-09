@@ -229,8 +229,9 @@ int UpdaterWindow::updateProgress(void *ptr,
     float progress = dn / dt;
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
 
-    if (progress < 0) progress = 0.0f;
-    if (progress > 1) progress = 1.0f;
+    if(progress != progress) progress = 0.0f; // check for NaN
+    if (progress < 0.0f) progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
+    if (progress > 1.0f) progress = 1.0f;
 
     uw->setLabel(
             uw->mCurrentFile + " (" + toString((int) (progress * 100)) + "%)");
