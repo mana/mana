@@ -95,19 +95,24 @@ void MiniStatusWindow::update()
         mHpBar->setColor(0, 171, 34); // Green
     }
 
+    float xp = (float) player_node->getXp() / player_node->mXpForNextLevel;
+
+    std::cout << xp << std::endl;
+
+    if (xp != xp) xp = 0.0f; // check for NaN
+    if (xp < 0.0f) xp = 0.0f; // make sure the experience isn't negative (uninitialized pointer most likely)
+    if (xp > 1.0f) xp = 1.0f;
+
     mHpBar->setProgress((float) player_node->mHp / player_node->mMaxHp);
     mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
-    mXpBar->setProgress(
-            (float) player_node->getXp() / player_node->mXpForNextLevel);
+    mXpBar->setProgress(xp);
 
     // Update labels
     mHpLabel->setCaption(toString(player_node->mHp));
     mMpLabel->setCaption(toString(player_node->mMp));
 
     std::stringstream updatedText;
-    updatedText << (int) (
-            (float) player_node->getXp() /
-            player_node->mXpForNextLevel * 100) << "%";
+    updatedText << (float) ((int) (xp * 10000.0f)) / 100.0f << "%";
 
     // Displays the number of monsters to next lvl
     // (disabled for now but interesting idea)
