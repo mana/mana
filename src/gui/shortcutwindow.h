@@ -40,7 +40,7 @@ class ShortcutWindow : public Window
         /**
          * Constructor.
          */
-        ShortcutWindow(const char *title,ShortcutContainer *content);
+        ShortcutWindow(const char *title, ShortcutContainer *content);
 
         /**
          * Destructor.

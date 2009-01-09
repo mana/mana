@@ -25,14 +25,13 @@
 
 static const int SCROLL_PADDING = 0;
 
-ShortcutWindow::ShortcutWindow(const char * title,ShortcutContainer *content)
+ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
 {
     setWindowName(title);
     // no title presented, title bar is padding so window can be moved.
     gcn::Window::setTitleBarHeight(gcn::Window::getPadding());
     setShowTitle(false);
     setResizable(true);
-    setDefaultSize(758, 174, 42, 426);
 
     mItems = content;
 
@@ -41,6 +40,9 @@ ShortcutWindow::ShortcutWindow(const char * title,ShortcutContainer *content)
     setMinHeight(mItems->getBoxHeight() + border);
     setMaxWidth(mItems->getBoxWidth() * mItems->getMaxItems() + border);
     setMaxHeight(mItems->getBoxHeight() * mItems->getMaxItems() + border);
+
+    setDefaultSize(758, 174, mItems->getBoxWidth() + border, 
+                   (mItems->getBoxHeight() * mItems->getMaxItems()) + border);
 
     mScrollArea = new ScrollArea(mItems);
     mScrollArea->setPosition(SCROLL_PADDING, SCROLL_PADDING);
