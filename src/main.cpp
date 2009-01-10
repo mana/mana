@@ -734,6 +734,9 @@ int main(int argc, char *argv[])
 
     unsigned int oldstate = !state; // We start with a status change.
 
+    // Needs to be created in main, as the updater uses it
+    textColour = new Colour();
+
     Game *game = NULL;
     Window *currentDialog = NULL;
     Image *login_wallpaper = NULL;
@@ -793,9 +796,6 @@ int main(int argc, char *argv[])
 
     if (!login_wallpaper)
         logger->log(_("Couldn't load %s as wallpaper"), wallpaperName.c_str());
-
-    // Needs to be created in main, as the updater uses it
-    textColour = new Colour();
 
     while (state != EXIT_STATE)
     {
