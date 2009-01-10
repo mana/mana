@@ -195,14 +195,6 @@ void LocalPlayer::setName(const std::string &name)
     }
 }
 
-void LocalPlayer::updateCoords()
-{
-    if (mName)
-    {
-        mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
-    }
-}
-
 void LocalPlayer::nextStep()
 {
     if (mPath.empty())

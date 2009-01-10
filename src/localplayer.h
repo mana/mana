@@ -271,8 +271,6 @@ class LocalPlayer : public Player
 
         // Load the target cursors into memory
         void initTargetCursor();
-
-        virtual void updateCoords();
 };
 
 extern LocalPlayer *player_node;
