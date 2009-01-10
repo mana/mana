@@ -93,6 +93,10 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
+    // Ensure the client doesn't freak out if a feature localplayer uses
+    // is dependent on a map.
+    player_node->mMapInitialized = true;
+
     // Avoid freaking out when tick_time overflows
     if (tick_time < lastTick)
     {
@@ -195,6 +199,13 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
             }
         }
     }
+
+    if (player_node->mUpdateName)
+    {
+        player_node->mUpdateName = false;
+        player_node->setName(player_node->getName());
+    }
+
 
     // Draw text
     if (textManager)

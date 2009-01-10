@@ -20,6 +20,7 @@
  */
 #include <cassert>
 
+#include "configuration.h"
 #include "equipment.h"
 #include "floor_item.h"
 #include "game.h"
@@ -43,6 +44,9 @@
 #include "utils/tostring.h"
 
 LocalPlayer *player_node = NULL;
+
+static const int NAME_X_OFFSET = 15;
+static const int NAME_Y_OFFSET = 30;
 
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
@@ -68,6 +72,13 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mInventory(new Inventory(INVENTORY_SIZE)),
     mStorage(new Inventory(STORAGE_SIZE))
 {
+    // Variable to keep the local player from doing certain actions before a map
+    // is initialized. e.g. drawing a player's name using the TextManager, since
+    // it appears to be dependant upon map coordinates for updating drawing.
+    mMapInitialized = false;
+
+    mUpdateName = true;
+
     initTargetCursor();
 }
 
@@ -75,6 +86,7 @@ LocalPlayer::~LocalPlayer()
 {
     delete mInventory;
     delete mStorage;
+    delete mName;
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
@@ -156,6 +168,38 @@ void LocalPlayer::logic()
     }
 
     Being::logic();
+}
+
+void LocalPlayer::setGM()
+{ 
+    mIsGM = !mIsGM;
+    setName(getName());  
+}
+
+void LocalPlayer::setName(const std::string &name)
+{
+    if (mName)
+    {
+        delete mName;
+        mName = 0;
+    }
+
+    if (config.getValue("showownname", false) && mMapInitialized)
+    {
+        Player::setName(name);
+    }
+    else
+    {
+        Being::setName(name);
+    }
+}
+
+void LocalPlayer::updateCoords()
+{
+    if (mName)
+    {
+        mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
+    }
 }
 
 void LocalPlayer::nextStep()

@@ -41,15 +41,11 @@ Player::Player(int id, int job, Map *map):
     Being(id, job, map)
 {
     mName = 0;
-    mIsGM = false;
 }
 
 Player::~Player()
 {
-    if (mName)
-    {
-        delete mName;
-    }
+    delete mName;
 }
 
 void Player::setName(const std::string &name)
@@ -69,8 +65,7 @@ void Player::setName(const std::string &name)
     }
 }
 
-void
-Player::logic()
+void Player::logic()
 {
     switch (mAction) {
         case STAND:
@@ -109,14 +104,12 @@ Player::logic()
     Being::logic();
 }
 
-Being::Type
-Player::getType() const
+Being::Type Player::getType() const
 {
     return PLAYER;
 }
 
-void
-Player::flash(int time)
+void Player::flash(int time)
 {
     if (mName)
     {

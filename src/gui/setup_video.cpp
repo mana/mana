@@ -38,6 +38,7 @@
 
 #include "../configuration.h"
 #include "../graphics.h"
+#include "../localplayer.h"
 #include "../log.h"
 #include "../main.h"
 #include "../particle.h"
@@ -106,6 +107,7 @@ Setup_Video::Setup_Video():
     mCustomCursorEnabled(config.getValue("customcursor", 1)),
     mParticleEffectsEnabled(config.getValue("particleeffects", 1)),
     mSpeechBubbleEnabled(config.getValue("speechbubble", 1)),
+    mNameEnabled(config.getValue("showownname", 0)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 0)),
     mModeListModel(new ModeListModel),
@@ -115,6 +117,7 @@ Setup_Video::Setup_Video():
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
     mSpeechBubbleCheckBox(new CheckBox(_("Speech bubbles"), mSpeechBubbleEnabled)),
+    mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
     mFpsSlider(new Slider(10, 200)),
@@ -145,8 +148,9 @@ Setup_Video::Setup_Video():
     mModeList->setDimension(gcn::Rectangle(0, 0, 60, 70));
     scrollArea->setDimension(gcn::Rectangle(10, 10, 90, 70));
     mFsCheckBox->setPosition(110, 10);
+    mNameCheckBox->setPosition(195, 10);
     mOpenGLCheckBox->setPosition(110, 30);
-    mParticleEffectsCheckBox->setPosition(175, 30);
+    mParticleEffectsCheckBox->setPosition(180, 30);
     mCustomCursorCheckBox->setPosition(110, 50);
     mSpeechBubbleCheckBox->setPosition(110, 70);
     mAlphaSlider->setDimension(gcn::Rectangle(10, 100, 75, 10));
@@ -170,6 +174,7 @@ Setup_Video::Setup_Video():
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
     mSpeechBubbleCheckBox->setActionEventId("speechbubble");
+    mNameCheckBox->setActionEventId("showownname");
     mAlphaSlider->setActionEventId("guialpha");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
     mFpsSlider->setActionEventId("fpslimitslider");
@@ -186,6 +191,7 @@ Setup_Video::Setup_Video():
     mCustomCursorCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
     mSpeechBubbleCheckBox->addActionListener(this);
+    mNameCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
     mFpsSlider->addActionListener(this);
@@ -262,6 +268,7 @@ Setup_Video::Setup_Video():
     add(mCustomCursorCheckBox);
     add(mParticleEffectsCheckBox);
     add(mSpeechBubbleCheckBox);
+    add(mNameCheckBox);
     add(mAlphaSlider);
     add(alphaLabel);
     add(mFpsCheckBox);
@@ -344,6 +351,7 @@ void Setup_Video::apply()
     mCustomCursorEnabled = config.getValue("customcursor", 1);
     mParticleEffectsEnabled = config.getValue("particleeffects", 1);
     mSpeechBubbleEnabled = config.getValue("speechbubble", 1);
+    mNameEnabled = config.getValue("showownname", 0);
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int)config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", 0);
@@ -375,6 +383,9 @@ void Setup_Video::cancel()
     mFsCheckBox->setSelected(mFullScreenEnabled);
     mOpenGLCheckBox->setSelected(mOpenGLEnabled);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
+    mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
+    mSpeechBubbleCheckBox->setSelected(mSpeechBubbleEnabled);
+    mNameCheckBox->setSelected(mNameEnabled);
     mAlphaSlider->setValue(mOpacity);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
@@ -388,6 +399,7 @@ void Setup_Video::cancel()
     config.setValue("customcursor", mCustomCursorEnabled ? 1 : 0);
     config.setValue("particleeffects", mParticleEffectsEnabled ? 1 : 0);
     config.setValue("speechbubble", mSpeechBubbleEnabled ? 1 : 0);
+    config.setValue("showownname", mNameEnabled ? 1 : 0);
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled ? 1 : 0);
 }
@@ -444,6 +456,14 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("speechbubble",
                 mSpeechBubbleCheckBox->isSelected() ? 1 : 0);
+    }
+    else if (event.getId() == "showownname")
+    {
+        // Notify the local player that settings have changed for the name
+        // and requires an update
+        player_node->mUpdateName = true;
+        config.setValue("showownname",
+                mNameCheckBox->isSelected() ? 1 : 0);
     }
     else if (event.getId() == "fpslimitslider")
     {

@@ -95,8 +95,7 @@ ChatWindow::~ChatWindow()
     delete mRecorder;
 }
 
-void
- ChatWindow::logic()
+void ChatWindow::logic()
 {
     // todo: only do this when the size changes (updateWidgets?)
 
@@ -296,6 +295,15 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     // Prepare ordinary message
     if (msg.substr(0, 1) != "/") {
+        // The server never tells you about your own GM status, so work around
+        // this for now by intercepting it here. NOTE: This assumes that the 
+        // assert works, when it's not guaranteed to.
+
+        std::size_t space = msg.find(" ");
+        const std::string command = msg.substr(1, space);
+        if (msg.at(0) == '@' && command == "assert")
+            player_node->setGM();
+
         msg = nick + " : " + msg;
 
         MessageOut outMsg(mNetwork);

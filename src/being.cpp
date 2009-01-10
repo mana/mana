@@ -69,6 +69,7 @@ Being::Being(int id, int job, Map *map):
     mWalkSpeed(150),
     mDirection(DOWN),
     mMap(NULL),
+    mName(""),
     mIsGM(false),
     mParticleEffects(config.getValue("particleeffects", 1)),
     mEquippedWeapon(NULL),

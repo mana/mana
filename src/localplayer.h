@@ -57,7 +57,7 @@ class LocalPlayer : public Player
          */
         ~LocalPlayer();
 
-        void setName(const std::string &name) {Being::setName(name); }
+        virtual void setName(const std::string &name);
         void setNetwork(Network *network) { mNetwork = network; }
         Network *getNetwork() {return mNetwork; }
         virtual void logic();
@@ -125,6 +125,14 @@ class LocalPlayer : public Player
         void setTrading(bool trading) { mTrading = trading; }
 
         void attack(Being *target = NULL, bool keep = false);
+
+        /**
+         * Triggers whether or not to show the name as a GM name.
+         * NOTE: This doesn't mean that just anyone can use this.
+         * If the server doesn't acknowlege you, you won't be shown
+         * as a GM on other people's clients.
+         */
+        virtual void setGM();
 
         void stopAttack();
 
@@ -212,6 +220,10 @@ class LocalPlayer : public Player
         Uint16 mStatPoint, mSkillPoint;
         Uint16 mStatsPointsToAttribute;
 
+        bool mUpdateName;     /** Whether or not the name settings have changed */
+
+        bool mMapInitialized; /** Whether or not the map is available yet */
+
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
         void drawTargetCursor(Graphics *graphics, int offsetX, int offsetY);
@@ -232,15 +244,15 @@ class LocalPlayer : public Player
         FloorItem *mPickUpTarget;
 
         bool mTrading;
-        bool mInStorage;    /**< Whether storage is currently accessible */
+        bool mInStorage;      /**< Whether storage is currently accessible */
         bool mGoingToTarget;
-        bool mKeepAttacking;/** Whether or not to continue to attack */
-        int mTargetTime;    /** How long the being has been targeted **/
-        int mLastAction;    /**< Time stamp of the last action, -1 if none. */
-        int mLastTarget;    /** Time stamp of last targeting action, -1 if none. */
-        int mWalkingDir;    /**< The direction the player is walking in. */
-        int mDestX;         /**< X coordinate of destination. */
-        int mDestY;         /**< Y coordinate of destination. */
+        bool mKeepAttacking;  /** Whether or not to continue to attack */
+        int mTargetTime;      /** How long the being has been targeted **/
+        int mLastAction;      /**< Time stamp of the last action, -1 if none. */
+        int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
+        int mWalkingDir;      /**< The direction the player is walking in. */
+        int mDestX;           /**< X coordinate of destination. */
+        int mDestY;           /**< Y coordinate of destination. */
 
         Inventory *mInventory;
         Inventory *mStorage;
@@ -259,6 +271,8 @@ class LocalPlayer : public Player
 
         // Load the target cursors into memory
         void initTargetCursor();
+
+        virtual void updateCoords();
 };
 
 extern LocalPlayer *player_node;

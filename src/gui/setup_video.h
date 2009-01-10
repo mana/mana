@@ -51,6 +51,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mCustomCursorEnabled;
         bool mParticleEffectsEnabled;
         bool mSpeechBubbleEnabled;
+        bool mNameEnabled;
         double mOpacity;
         int mFps;
 
@@ -62,6 +63,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mCustomCursorCheckBox;
         gcn::CheckBox *mParticleEffectsCheckBox;
         gcn::CheckBox *mSpeechBubbleCheckBox;
+        gcn::CheckBox *mNameCheckBox;
 
         gcn::Slider *mAlphaSlider;
         gcn::CheckBox *mFpsCheckBox;

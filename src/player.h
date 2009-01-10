@@ -43,17 +43,13 @@ class Player : public Being
         /**
          * Set up mName to be the character's name
          */
-        virtual void
-        setName(const std::string &name);
+        virtual void setName(const std::string &name);
 
-        virtual void
-        logic();
+        virtual void logic();
 
-        virtual Type
-        getType() const;
+        virtual Type getType() const;
 
-        virtual void
-        setGender(Gender gender);
+        virtual void setGender(Gender gender);
 
         /**
          * Sets the hair style and color for this player.
@@ -70,8 +66,7 @@ class Player : public Being
         /**
          * Sets visible equipments for this player.
          */
-        virtual void
-        setSprite(int slot, int id, std::string color = "");
+        virtual void setSprite(int slot, int id, std::string color = "");
 
         /**
          * Flash the player's name
@@ -79,8 +74,8 @@ class Player : public Being
         void flash(int time);
 
     protected:
-        void updateCoords();
-    private:
+        virtual void updateCoords();
+
         FlashText *mName;
 };
 

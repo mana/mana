@@ -968,6 +968,7 @@ int main(int argc, char *argv[])
                     if (options.chooseDefault)
                         ((CharSelectDialog*) currentDialog)->action(
                             gcn::ActionEvent(NULL, "ok"));
+
                     break;
 
                 case GAME_STATE:
