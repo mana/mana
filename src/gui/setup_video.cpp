@@ -461,7 +461,8 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         // Notify the local player that settings have changed for the name
         // and requires an update
-        player_node->mUpdateName = true;
+        if (player_node)
+            player_node->mUpdateName = true;
         config.setValue("showownname",
                 mNameCheckBox->isSelected() ? 1 : 0);
     }
