@@ -62,75 +62,63 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         /**
          * Sets the map displayed by the viewport.
          */
-        void
-        setMap(Map *map);
+        void setMap(Map *map);
 
         /**
          * Draws the viewport.
          */
-        void
-        draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics);
 
         /**
          * Implements player to keep following mouse.
          */
-        void
-        logic();
+        void logic();
 
         /**
          * Toggles whether the path debug graphics are shown
          */
-        void
-        toggleDebugPath() { mShowDebugPath = !mShowDebugPath; }
+        void toggleDebugPath() { mShowDebugPath = !mShowDebugPath; }
 
         /**
          * Handles mouse press on map.
          */
-        void
-        mousePressed(gcn::MouseEvent &event);
+        void mousePressed(gcn::MouseEvent &event);
 
         /**
          * Handles mouse move on map
          */
-        void
-        mouseDragged(gcn::MouseEvent &event);
+        void mouseDragged(gcn::MouseEvent &event);
 
         /**
          * Handles mouse button release on map.
          */
-        void
-        mouseReleased(gcn::MouseEvent &event);
+        void mouseReleased(gcn::MouseEvent &event);
 
         /**
          * Shows a popup for an item.
          * TODO Find some way to get rid of Item here
          */
-        void
-        showPopup(int x, int y, Item *item);
+        void showPopup(int x, int y, Item *item);
 
         /**
          * A relevant config option changed.
          */
-        void
-        optionChanged(const std::string &name);
+        void optionChanged(const std::string &name);
 
         /**
          * Returns camera x offset in pixels.
          */
-        int
-        getCameraX() const { return (int) mPixelViewX; }
+        int getCameraX() const { return (int) mPixelViewX; }
 
         /**
          * Returns camera y offset in pixels.
          */
-        int
-        getCameraY() const { return (int) mPixelViewY; }
+        int getCameraY() const { return (int) mPixelViewY; }
 
         /**
          * Changes viewpoint by relative pixel coordinates.
          */
-        void
-        scrollBy(float x, float y) { mPixelViewX += x; mPixelViewY += y; }
+        void scrollBy(float x, float y) { mPixelViewX += x; mPixelViewY += y; }
 
     private:
         Map *mMap;                 /**< The current map. */

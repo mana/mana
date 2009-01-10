@@ -77,14 +77,12 @@ Viewport::~Viewport()
     delete mPopupMenu;
 }
 
-void
-Viewport::setMap(Map *map)
+void Viewport::setMap(Map *map)
 {
     mMap = map;
 }
 
-void
-Viewport::draw(gcn::Graphics *gcnGraphics)
+void Viewport::draw(gcn::Graphics *gcnGraphics)
 {
     static int lastTick = tick_time;
 
