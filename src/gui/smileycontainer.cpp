@@ -24,6 +24,7 @@
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
 
+#include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
 #include "../smileyshortcut.h"
@@ -50,6 +51,8 @@ SmileyContainer::SmileyContainer():
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
     if (!mSelImg) logger->error(_("Unable to load selection.png"));
+
+    mSelImg->setAlpha(config.getValue("guialpha", 0.8));
 
     mMaxSmiley = mSmileyImg->size(); 
 

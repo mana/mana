@@ -21,6 +21,7 @@
 
 #include "itemshortcutcontainer.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 #include "../inventory.h"
 #include "../item.h"
@@ -46,6 +47,8 @@ ItemShortcutContainer::ItemShortcutContainer():
 
     mBackgroundImg = resman->getImage("graphics/gui/item_shortcut_bgr.png");
     mMaxItems = itemShortcut->getItemCount();
+
+    mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
 
     mBoxHeight = 42;
     mBoxWidth = 36;

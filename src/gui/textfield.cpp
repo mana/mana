@@ -30,6 +30,7 @@
 #include "sdlinput.h"
 #include "textfield.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -67,6 +68,7 @@ TextField::TextField(const std::string& text):
                         gridx[x], gridy[y],
                         gridx[x + 1] - gridx[x] + 1,
                         gridy[y + 1] - gridy[y] + 1);
+                skin.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }

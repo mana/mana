@@ -23,6 +23,7 @@
 
 #include "playerbox.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 #include "../player.h"
 
@@ -54,6 +55,7 @@ PlayerBox::PlayerBox(const Player *player):
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,
                         bggridy[y + 1] - bggridy[y] + 1);
+                background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }

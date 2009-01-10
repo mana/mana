@@ -23,6 +23,7 @@
 
 #include "scrollarea.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -94,6 +95,7 @@ void ScrollArea::init()
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,
                         bggridy[y + 1] - bggridy[y] + 1);
+                background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }
@@ -112,6 +114,7 @@ void ScrollArea::init()
                         vsgridx[x], vsgridy[y],
                         vsgridx[x + 1] - vsgridx[x],
                         vsgridy[y + 1] - vsgridy[y]);
+                vMarker.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }

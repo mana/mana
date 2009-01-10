@@ -58,11 +58,9 @@ public:
         update();
     }
 
-    virtual int
-    getRows(void) { return mEntriesNr; }
+    virtual int getRows(void) { return mEntriesNr; }
 
-    virtual int
-    getColumnWidth(int index)
+    virtual int getColumnWidth(int index)
     {
         switch (index) {
         case 0:  return 160;
@@ -70,14 +68,12 @@ public:
         }
     }
 
-    virtual int
-    getRowHeight(void)
+    virtual int getRowHeight(void)
     {
         return 12;
     }
 
-    virtual void
-    update(void)
+    virtual void update(void)
     {
 	static const SkillInfo fakeSkillInfo = { _("???"), false };
 
@@ -249,8 +245,7 @@ void SkillDialog::cleanList()
     mSkillList.clear();
 }
 
-static void
-initSkillinfo(void)
+static void initSkillinfo(void)
 {
     SkillInfo emptySkillInfo = { "", false };
 
