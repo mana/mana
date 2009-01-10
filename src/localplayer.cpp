@@ -173,7 +173,8 @@ void LocalPlayer::logic()
 void LocalPlayer::setGM()
 { 
     mIsGM = !mIsGM;
-    setName(getName());  
+    setName(getName());
+    config.setValue(getName() + "GMassert", mIsGM);
 }
 
 void LocalPlayer::setName(const std::string &name)

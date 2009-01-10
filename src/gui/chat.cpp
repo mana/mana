@@ -84,6 +84,11 @@ Window(""), mNetwork(network), mTmpVisible(false)
     mReturnToggles = config.getValue("ReturnToggles", "0") == "1";
     mRecorder = new Recorder(this);
     mParty = new Party(this, mNetwork);
+
+    // If the player had @assert on in the last session, ask the server to
+    // run the @assert command for the player again. Convenience for GMs.
+    if (config.getValue(player_node->getName() + "GMassert", 0))
+        chatSend(player_node->getName(), "@assert");
 }
 
 ChatWindow::~ChatWindow()
