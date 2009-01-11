@@ -69,7 +69,7 @@ class SmileyWindow : public Window, gcn::ActionListener,
 
     private:
 
-        SmileyContainer *mItems;
+        SmileyContainer *mEmotes;
 
         gcn::Button *mUseButton;
         gcn::ScrollArea *mInvenScroll;

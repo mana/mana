@@ -41,15 +41,15 @@ SmileyShortcutContainer::SmileyShortcutContainer():
     mSmileyClicked(false),
     mSmileyMoved(0)
 {
-    mGridWidth=1,
-    mGridHeight=1,
+    mGridWidth = 1,
+    mGridHeight = 1,
     addMouseListener(this);
     addWidgetListener(this);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
     mBackgroundImg = resman->getImage("graphics/gui/item_shortcut_bgr.png");
-    mSmileyImg = resman->getImageSet("graphics/gui/emotions.png",30,32);
+    mSmileyImg = resman->getImageSet("graphics/sprites/emotions.png", 30, 32);
     if (!mSmileyImg) logger->error(_("Unable to load emotions"));
 
     mMaxItems = smileyShortcut->getSmileyCount(); 

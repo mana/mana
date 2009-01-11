@@ -47,20 +47,10 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/inttextbox.cpp \
 	      gui/inventorywindow.cpp \
 	      gui/inventorywindow.h \
-	      gui/smileywindow.cpp \
-	      gui/smileywindow.h \
-	      gui/smileycontainer.cpp \
-	      gui/smileycontainer.h \
 	      gui/itemcontainer.cpp \
 	      gui/itemcontainer.h \
 	      gui/itemshortcutcontainer.cpp \
 	      gui/itemshortcutcontainer.h \
-	      gui/shortcutwindow.cpp \
-	      gui/shortcutwindow.h \
-	      gui/smileyshortcutcontainer.cpp \
-	      gui/smileyshortcutcontainer.h \
-	      gui/shortcutcontainer.cpp \
-	      gui/shortcutcontainer.h \
 	      gui/item_amount.cpp \
 	      gui/item_amount.h \
 	      gui/linkhandler.h \
@@ -119,10 +109,20 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/shop.h \
 	      gui/shoplistbox.cpp \
 	      gui/shoplistbox.h \
+	      gui/shortcutwindow.cpp \
+	      gui/shortcutwindow.h \
+	      gui/shortcutcontainer.cpp \
+	      gui/shortcutcontainer.h \
 	      gui/skill.cpp \
 	      gui/skill.h \
 	      gui/slider.cpp \
 	      gui/slider.h \
+	      gui/smileycontainer.cpp \
+	      gui/smileycontainer.h \
+	      gui/smileyshortcutcontainer.cpp \
+	      gui/smileyshortcutcontainer.h \
+	      gui/smileywindow.cpp \
+	      gui/smileywindow.h \
 	      gui/speechbubble.cpp \
 	      gui/speechbubble.h \
 	      gui/status.cpp \

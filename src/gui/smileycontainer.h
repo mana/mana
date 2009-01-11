@@ -33,7 +33,7 @@
 
 class Image;
 class Inventory;
-class Item;
+class Emote;
 
 namespace gcn {
     class SelectionListener;
@@ -107,12 +107,12 @@ class SmileyContainer : public gcn::Widget,
 
          * Sets the currently selected item.  Invalid (e.g., negative) indices set `no item'.
          */
-        void setSelectedItemIndex(int index);
+        void setSelectedEmoteIndex(int index);
 
         /**
          * Find the current item index by the most recently used item ID
          */
-        void refindSelectedItem(void);
+        void refindSelectedEmote(void);
 
         /**
          * Determine and set the height of the container.
@@ -126,7 +126,7 @@ class SmileyContainer : public gcn::Widget,
 
         ImageSet *mSmileyImg;
         Image *mSelImg;
-        int mSelectedItemIndex;
+        int mSelectedEmoteIndex;
 
         int mMaxSmiley;
 

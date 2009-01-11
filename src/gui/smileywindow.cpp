@@ -45,10 +45,10 @@ SmileyWindow::SmileyWindow():
 
     mUseButton = new Button(_("Use"), "use", this);
 
-    mItems = new SmileyContainer();
-    mItems->addSelectionListener(this);
+    mEmotes = new SmileyContainer();
+    mEmotes->addSelectionListener(this);
 
-    mInvenScroll = new ScrollArea(mItems);
+    mInvenScroll = new ScrollArea(mEmotes);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     draw();
@@ -63,12 +63,12 @@ SmileyWindow::SmileyWindow():
 
 void SmileyWindow::action(const gcn::ActionEvent &event)
 {
-    int item = mItems->getSelectedSmiley();
+    int emote = mEmotes->getSelectedSmiley();
 
-    if (!item)
+    if (!emote)
         return;
 
-    player_node->emote(item);
+    player_node->emote(emote);
 }
 
 
@@ -95,5 +95,5 @@ void SmileyWindow::widgetResized(const gcn::Event &event)
 
 int SmileyWindow::getSelectedSmiley() const
 {
-    return mItems->getSelectedSmiley();
+    return mEmotes->getSelectedSmiley();
 }

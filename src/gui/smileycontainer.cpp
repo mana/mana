@@ -36,17 +36,17 @@
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
-const int SmileyContainer::gridWidth = 34;  // item icon width + 4
-const int SmileyContainer::gridHeight = 36; // item icon height + 4
+const int SmileyContainer::gridWidth = 34;  // emote icon width + 4
+const int SmileyContainer::gridHeight = 36; // emote icon height + 4
 
-static const int NO_ITEM = -1;
+static const int NO_EMOTE = -1;
 
 SmileyContainer::SmileyContainer():
-    mSelectedItemIndex(NO_ITEM)
+    mSelectedEmoteIndex(NO_EMOTE)
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
-    mSmileyImg = resman->getImageSet("graphics/gui/emotions.png",30,32);
+    mSmileyImg = resman->getImageSet("graphics/sprites/emotions.png", 30, 32);
     if (!mSmileyImg) logger->error(_("Unable to load emotions"));
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
@@ -95,7 +95,7 @@ void SmileyContainer::draw(gcn::Graphics *graphics)
                     mSmileyImg->get(i), itemX, itemY);
 
         // Draw selection image below selected item
-        if (mSelectedItemIndex == i)
+        if (mSelectedEmoteIndex == i)
         {
             static_cast<Graphics*>(graphics)->drawImage(
                     mSelImg, itemX, itemY);
@@ -123,23 +123,23 @@ void SmileyContainer::recalculateHeight()
 
 int SmileyContainer::getSelectedSmiley() 
 {
-    if (mSelectedItemIndex == NO_ITEM)
+    if (mSelectedEmoteIndex == NO_EMOTE)
         return 0;
 
-    return 1+mSelectedItemIndex;
+    return 1+mSelectedEmoteIndex;
 }
 
 void SmileyContainer::selectNone()
 {
-    setSelectedItemIndex(NO_ITEM);
+    setSelectedEmoteIndex(NO_EMOTE);
 }
 
-void SmileyContainer::setSelectedItemIndex(int index)
+void SmileyContainer::setSelectedEmoteIndex(int index)
 {
     if (index < 0 || index >= mMaxSmiley )
-        mSelectedItemIndex = NO_ITEM;
+        mSelectedEmoteIndex = NO_EMOTE;
     else
-        mSelectedItemIndex = index;
+        mSelectedEmoteIndex = index;
 }
 
 void SmileyContainer::distributeValueChangedEvent()
@@ -165,7 +165,7 @@ void SmileyContainer::mousePressed(gcn::MouseEvent &event)
         int index = mx / gridWidth + ((my / gridHeight) * columns);
         if (index <mMaxSmiley)
         {
-           setSelectedItemIndex(index);
+           setSelectedEmoteIndex(index);
            smileyShortcut->setSmileySelected(index+1);
         }
     }

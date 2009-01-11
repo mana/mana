@@ -11,7 +11,6 @@ gui_DATA =				\
 	close_button.png		\
 	deepbox.png			\
 	default.png			\
-	emotions.png			\
 	gui.xml				\
 	hits_blue.png			\
 	hits_red.png			\
