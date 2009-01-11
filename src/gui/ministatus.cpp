@@ -97,8 +97,6 @@ void MiniStatusWindow::update()
 
     float xp = (float) player_node->getXp() / player_node->mXpForNextLevel;
 
-    std::cout << xp << std::endl;
-
     if (xp != xp) xp = 0.0f; // check for NaN
     if (xp < 0.0f) xp = 0.0f; // make sure the experience isn't negative (uninitialized pointer most likely)
     if (xp > 1.0f) xp = 1.0f;
