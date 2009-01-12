@@ -35,7 +35,7 @@
 #include "../utils/gettext.h"
 
 Setup_Colours::Setup_Colours() :
-    mColourLabel(_("Colour:")),
+    mColourLabel(_("Color:")),
     mSelected(-1)
 {
     mColourBox = new gcn::ListBox(textColour);

@@ -353,13 +353,12 @@ void Setup_Video::apply()
     mSpeechBubbleEnabled = config.getValue("speechbubble", 1);
     mNameEnabled = config.getValue("showownname", 0);
     mOpacity = config.getValue("guialpha", 0.8);
-    mOverlayDetail = (int)config.getValue("OverlayDetail", 2);
+    mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", 0);
 }
 
-int
-Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
-                          const std::string &configName)
+int Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
+                              const std::string &configName)
 {
     int value;
     std::stringstream temp(field->getText());
@@ -538,8 +537,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-Setup_Video::keyPressed(gcn::KeyEvent &event)
+void Setup_Video::keyPressed(gcn::KeyEvent &event)
 {
     std::stringstream tempFps(mFpsField->getText());
 

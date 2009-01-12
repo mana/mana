@@ -8,6 +8,9 @@ src/gui/chat.cpp
 src/gui/colour.cpp
 src/gui/confirm_dialog.cpp
 src/gui/connection.cpp
+src/gui/emotecontainer.cpp
+src/gui/emoteshortcutcontainer.cpp
+src/gui/emotewindow.cpp
 src/gui/equipmentwindow.cpp
 src/gui/help.cpp
 src/gui/inventorywindow.cpp
@@ -29,9 +32,6 @@ src/gui/setup_keyboard.cpp
 src/gui/setup_players.cpp
 src/gui/setup_video.cpp
 src/gui/skill.cpp
-src/gui/smileycontainer.cpp
-src/gui/smileyshortcutcontainer.cpp
-src/gui/smileywindow.cpp
 src/gui/speechbubble.cpp
 src/gui/status.cpp
 src/gui/trade.cpp

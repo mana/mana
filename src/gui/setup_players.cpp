@@ -281,8 +281,7 @@ Setup_Players::~Setup_Players(void)
 }
 
 
-void
-Setup_Players::reset()
+void Setup_Players::reset()
 {
     // We now have to search through the list of ignore choices to find the
     // current selection. We could use an index into the table of config
@@ -299,8 +298,7 @@ Setup_Players::reset()
     mIgnoreActionChoicesBox->setSelected(selection);
 }
 
-void
-Setup_Players::apply()
+void Setup_Players::apply()
 {
     player_relations.setPersistIgnores(mPersistIgnores->isSelected());
     player_relations.store();
@@ -312,13 +310,11 @@ Setup_Players::apply()
                                 | (mDefaultWhisper->isSelected()? PlayerRelation::WHISPER : 0));
 }
 
-void
-Setup_Players::cancel()
+void Setup_Players::cancel()
 {
 }
 
-void
-Setup_Players::action(const gcn::ActionEvent &event)
+void Setup_Players::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == ACTION_TABLE) {
         // temporarily eliminate ourselves: we are fully aware of this change,
@@ -352,8 +348,7 @@ Setup_Players::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-Setup_Players::updatedPlayer(const std::string &name)
+void Setup_Players::updatedPlayer(const std::string &name)
 {
     mPlayerTableModel->playerRelationsUpdated();
     mDefaultTrading->setSelected(
