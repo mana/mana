@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <guichan/font.hpp>
+
 #include "minimap.h"
 
 #include "../being.h"
@@ -56,12 +58,14 @@ void Minimap::setMapImage(Image *img)
 
     if (mMapImage)
     {
-        int offsetX = getPadding() + 4;
-        int offsetY = getTitleBarHeight() + 4;
+        const int offsetX = getPadding() + 4;
+        const int offsetY = getTitleBarHeight() + 4;
+        const int titleWidth = getFont()->getWidth(getCaption()) + 15;
+        const int mapWidth = mMapImage->getWidth() < 100 ? 
+                             mMapImage->getWidth() + offsetX : 100;
         mMapImage->setAlpha(config.getValue("guialpha", 0.8));
         setDefaultSize(offsetX, offsetY, 
-                       mMapImage->getWidth() < 100 ? 
-                           mMapImage->getWidth() + offsetX : 100, 
+                       mapWidth > titleWidth ? mapWidth : titleWidth, 
                        mMapImage->getHeight() < 100 ? 
                            mMapImage->getHeight() + offsetY : 100);
         loadWindowState();
