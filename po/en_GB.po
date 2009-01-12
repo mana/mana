@@ -858,9 +858,8 @@ msgid "Players"
 msgstr ""
 
 #: ../src/gui/setup_colours.cpp:38
-#, fuzzy
 msgid "Color:"
-msgstr "Hair Colour:"
+msgstr "Colour:"
 
 #: ../src/gui/setup_joystick.cpp:36 ../src/gui/setup_joystick.cpp:70
 msgid "Press the button to start calibration"
