@@ -22,7 +22,7 @@
 #ifndef _TMW_ITEMSHORTCUT_H__
 #define _TMW_ITEMSHORTCUT_H__
 
-#define SHORTCUT_ITEMS 10
+#define SHORTCUT_ITEMS 12
 
 class Item;
 

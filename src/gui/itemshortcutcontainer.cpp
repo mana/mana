@@ -50,8 +50,8 @@ ItemShortcutContainer::ItemShortcutContainer():
 
     mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
 
-    mBoxHeight = 42;
-    mBoxWidth = 36;
+    mBoxHeight = mBackgroundImg->getHeight();
+    mBoxWidth = mBackgroundImg->getWidth();
 }
 
 ItemShortcutContainer::~ItemShortcutContainer()
@@ -89,7 +89,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
-            (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_0 + i));
+            (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_1 + i));
         graphics->setColor(0x000000);
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 

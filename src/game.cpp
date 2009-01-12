@@ -35,7 +35,6 @@
 #include "flooritemmanager.h"
 #include "graphics.h"
 #include "itemshortcut.h"
-#include "smileyshortcut.h"
 #include "joystick.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
@@ -49,15 +48,16 @@
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/debugwindow.h"
+#include "gui/emoteshortcut.h"
+#include "gui/emoteshortcutcontainer.h"
+#include "gui/emotewindow.h"
 #include "gui/equipmentwindow.h"
 #include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
-#include "gui/smileywindow.h"
 #include "gui/shortcutwindow.h"
 #include "gui/shortcutcontainer.h"
 #include "gui/itemshortcutcontainer.h"
-#include "gui/smileyshortcutcontainer.h"
 #include "gui/menuwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
@@ -118,7 +118,7 @@ BuyDialog *buyDialog;
 SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
-SmileyWindow *smileyWindow;
+EmoteWindow *emoteWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
@@ -129,7 +129,7 @@ TradeWindow *tradeWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 ShortcutWindow *itemShortcutWindow;
-ShortcutWindow *smileyShortcutWindow;
+ShortcutWindow *emoteShortcutWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
@@ -202,7 +202,7 @@ void createGuiWindows(Network *network)
     sellDialog = new SellDialog(network);
     buySellDialog = new BuySellDialog();
     inventoryWindow = new InventoryWindow();
-    smileyWindow = new SmileyWindow();
+    emoteWindow = new EmoteWindow();
     npcTextDialog = new NpcTextDialog();
     npcListDialog = new NpcListDialog();
     skillDialog = new SkillDialog();
@@ -213,7 +213,7 @@ void createGuiWindows(Network *network)
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",new ItemShortcutContainer);
-    smileyShortcutWindow = new ShortcutWindow("SmileyShortcut",new SmileyShortcutContainer);
+    emoteShortcutWindow = new ShortcutWindow("emoteShortcut",new EmoteShortcutContainer);
 
     // Set initial window visibility
     chatWindow->setVisible((bool) config.getValue(
@@ -227,8 +227,8 @@ void createGuiWindows(Network *network)
         menuWindow->getWindowName() + "Visible", true));
     itemShortcutWindow->setVisible((bool) config.getValue(
         itemShortcutWindow->getWindowName() + "Visible", true));
-    smileyShortcutWindow->setVisible((bool) config.getValue(
-        smileyShortcutWindow->getWindowName() + "Visible", true));
+    emoteShortcutWindow->setVisible((bool) config.getValue(
+        emoteShortcutWindow->getWindowName() + "Visible", true));
 
     if (config.getValue("logToChat", 0))
     {
@@ -250,7 +250,7 @@ void destroyGuiWindows()
     delete sellDialog;
     delete buySellDialog;
     delete inventoryWindow;
-    delete smileyWindow;
+    delete emoteWindow;
     delete npcListDialog;
     delete npcTextDialog;
     delete skillDialog;
@@ -261,7 +261,7 @@ void destroyGuiWindows()
     delete helpWindow;
     delete debugWindow;
     delete itemShortcutWindow;
-    delete smileyShortcutWindow;
+    delete emoteShortcutWindow;
 }
 
 Game::Game(Network *network):
@@ -545,14 +545,14 @@ void Game::handleInput()
 		    }
 		}
 
-	    // Smilie
-	    if (keyboard.isKeyActive(keyboard.KEY_SMILIE))
+	    // Mode switch to emotes
+	    if (keyboard.isKeyActive(keyboard.KEY_EMOTE))
 	    {
 		// Emotions
-		int emotion = keyboard.getKeySmilieOffset(event.key.keysym.sym);
+		int emotion = keyboard.getKeyEmoteOffset(event.key.keysym.sym);
 		if (emotion)
 		{
-		    smileyShortcut->useSmiley(emotion);
+		    emoteShortcut->useEmote(emotion);
 		    used = true;
                     return;
 		}
@@ -655,13 +655,13 @@ void Game::handleInput()
 		if (!tradeWindow->isVisible())
 		{
 		    // Checks if any item shortcut is pressed.
-		    for (int i = KeyboardConfig::KEY_SHORTCUT_0;
-			    i <= KeyboardConfig::KEY_SHORTCUT_9;
+		    for (int i = KeyboardConfig::KEY_SHORTCUT_1;
+			    i <= KeyboardConfig::KEY_SHORTCUT_12;
 			    i++)
 		    {
 			if (tKey == i && !used) {
 			    itemShortcut->useItem(
-				    i - KeyboardConfig::KEY_SHORTCUT_0);
+				    i - KeyboardConfig::KEY_SHORTCUT_1);
 			    break;
 			}
 		    }
@@ -708,7 +708,7 @@ void Game::handleInput()
 			{
 			    statusWindow->setVisible(false);
 			    inventoryWindow->setVisible(false);
-			    smileyWindow->setVisible(false);
+			    emoteWindow->setVisible(false);
 			    skillDialog->setVisible(false);
 			    setupWindow->setVisible(false);
 			    equipmentWindow->setVisible(false);
@@ -745,11 +745,11 @@ void Game::handleInput()
 		    case KeyboardConfig::KEY_WINDOW_DEBUG:
 			requestedWindow = debugWindow;
 			break;
-		    case KeyboardConfig::KEY_WINDOW_ALLSMILEY:
-			requestedWindow = smileyWindow;
+		    case KeyboardConfig::KEY_WINDOW_EMOTE:
+			requestedWindow = emoteWindow;
 			break;
-		    case KeyboardConfig::KEY_WINDOW_SMILEY_SHORTCUT:
-			requestedWindow = smileyShortcutWindow;
+		    case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
+			requestedWindow = emoteShortcutWindow;
 			break;
 		}
 	    }

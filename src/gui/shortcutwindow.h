@@ -60,6 +60,6 @@ class ShortcutWindow : public Window
 };
 
 extern ShortcutWindow *itemShortcutWindow;
-extern ShortcutWindow *smileyShortcutWindow;
+extern ShortcutWindow *emoteShortcutWindow;
 
 #endif

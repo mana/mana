@@ -1,26 +1,26 @@
 /*
- *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Aethyra
+ *  Copyright 2009 Aethyra Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  Aethyra is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  Aethyra is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with Aethyra; if not, write to the Free Software Foundation, 
+ *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_SMILEYWINDOW_H
-#define _TMW_SMILEYWINDOW_H
+#ifndef _AETHYRA_EMOTEWINDOW_H
+#define _AETHYRA_EMOTEWINDOW_H
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
@@ -30,22 +30,21 @@
 
 #include "../guichanfwd.h"
 
-class Item;
-class SmileyContainer;
+class EmoteContainer;
 
 /**
- * smiley dialog.
+ * Emote dialog.
  *
  * \ingroup Interface
  */
-class SmileyWindow : public Window, gcn::ActionListener,
+class EmoteWindow : public Window, gcn::ActionListener,
     gcn::SelectionListener
 {
     public:
         /**
          * Constructor.
          */
-        SmileyWindow();
+        EmoteWindow();
 
         /**
          * Called when receiving actions from the widgets.
@@ -55,7 +54,7 @@ class SmileyWindow : public Window, gcn::ActionListener,
         /**
          * Returns the selected item.
          */
-        int getSelectedSmiley() const;
+        int getSelectedEmote() const;
 
         /**
          * Updates window drawing.
@@ -69,12 +68,12 @@ class SmileyWindow : public Window, gcn::ActionListener,
 
     private:
 
-        SmileyContainer *mEmotes;
+        EmoteContainer *mEmotes;
 
         gcn::Button *mUseButton;
         gcn::ScrollArea *mInvenScroll;
 };
 
-extern SmileyWindow *smileyWindow;
+extern EmoteWindow *emoteWindow;
 
 #endif

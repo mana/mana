@@ -33,7 +33,7 @@ extern Window *chatWindow;
 extern Window *equipmentWindow;
 extern Window *inventoryWindow;
 extern Window *itemShortcutWindow;
-extern Window *smileyWindow;
+extern Window *emoteWindow;
 extern Window *setupWindow;
 extern Window *skillDialog;
 extern Window *statusWindow;
@@ -120,7 +120,7 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == _("Emote"))
     {
-        window = smileyWindow;
+        window = emoteWindow;
     }
     else if (event.getId() == _("Setup"))
     {

@@ -40,7 +40,6 @@
 #include "game.h"
 #include "graphics.h"
 #include "itemshortcut.h"
-#include "smileyshortcut.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "lockedarray.h"
@@ -57,6 +56,7 @@
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/colour.h"
+#include "gui/emoteshortcut.h"
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
@@ -403,8 +403,8 @@ void init_engine(const Options &options)
     // Initialize the item shortcuts.
     itemShortcut = new ItemShortcut();
       
-    // Initialize the smiley shortcuts.
-    smileyShortcut = new SmileyShortcut();
+    // Initialize the emote shortcuts.
+    emoteShortcut = new EmoteShortcut();
 
     gui = new Gui(graphics);
     state = LOGIN_STATE; /**< Initial game state */
@@ -438,7 +438,7 @@ void exit_engine()
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
     
-    delete smileyShortcut;
+    delete emoteShortcut;
 
     config.write();
 

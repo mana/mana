@@ -1,26 +1,26 @@
 /*
- *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Aethyra
+ *  Copyright 2009 Aethyra Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  Aethyra is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  Aethyra is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with Aethyra; if not, write to the Free Software Foundation, 
+ *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_SMILEYCONTAINER_H__
-#define _TMW_SMILEYCONTAINER_H__
+#ifndef _AETHYRA_EMOTECONTAINER_H__
+#define _AETHYRA_EMOTECONTAINER_H__
 
 #include <list>
 
@@ -28,8 +28,9 @@
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
-#include "../resources/imageset.h"
 #include "../guichanfwd.h"
+
+#include "../resources/imageset.h"
 
 class Image;
 class Inventory;
@@ -44,20 +45,20 @@ namespace gcn {
  *
  * \ingroup GUI
  */
-class SmileyContainer : public gcn::Widget, 
-                      public gcn::MouseListener,
-                      public gcn::WidgetListener
+class EmoteContainer : public gcn::Widget, 
+                       public gcn::MouseListener,
+                       public gcn::WidgetListener
 {
     public:
         /**
          * Constructor. Initializes the graphic.
          */
-        SmileyContainer();
+        EmoteContainer();
 
         /**
          * Destructor.
          */
-        virtual ~SmileyContainer();
+        virtual ~EmoteContainer();
 
         /**
          * Draws the items.
@@ -77,7 +78,7 @@ class SmileyContainer : public gcn::Widget,
         /**
          * Returns the selected item.
          */
-        int getSelectedSmiley();
+        int getSelectedEmote();
 
         /**
          * Sets selected item to NULL.
@@ -124,11 +125,11 @@ class SmileyContainer : public gcn::Widget,
          */
         void distributeValueChangedEvent(void);
 
-        ImageSet *mSmileyImg;
+        ImageSet *mEmoteImg;
         Image *mSelImg;
         int mSelectedEmoteIndex;
 
-        int mMaxSmiley;
+        int mMaxEmote;
 
         std::list<gcn::SelectionListener*> mListeners;
 

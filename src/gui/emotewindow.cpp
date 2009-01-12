@@ -1,22 +1,22 @@
 /*
- *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Aethyra
+ *  Copyright 2009 Aethyra Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  Aethyra is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  Aethyra is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with Aethyra; if not, write to the Free Software Foundation, 
+ *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include <string>
@@ -25,8 +25,8 @@
 
 #include "button.h"
 #include "gui.h"
-#include "smileywindow.h"
-#include "smileycontainer.h"
+#include "emotewindow.h"
+#include "emotecontainer.h"
 #include "scrollarea.h"
 
 #include "../localplayer.h"
@@ -34,7 +34,7 @@
 #include "../utils/gettext.h"      
 #include "../utils/tostring.h"
 
-SmileyWindow::SmileyWindow():
+EmoteWindow::EmoteWindow():
     Window(_("Emote"))
 {
     setWindowName(_("Emote"));
@@ -45,7 +45,7 @@ SmileyWindow::SmileyWindow():
 
     mUseButton = new Button(_("Use"), "use", this);
 
-    mEmotes = new SmileyContainer();
+    mEmotes = new EmoteContainer();
     mEmotes->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mEmotes);
@@ -61,9 +61,9 @@ SmileyWindow::SmileyWindow():
     loadWindowState();
 }
 
-void SmileyWindow::action(const gcn::ActionEvent &event)
+void EmoteWindow::action(const gcn::ActionEvent &event)
 {
-    int emote = mEmotes->getSelectedSmiley();
+    int emote = mEmotes->getSelectedEmote();
 
     if (!emote)
         return;
@@ -72,7 +72,7 @@ void SmileyWindow::action(const gcn::ActionEvent &event)
 }
 
 
-void SmileyWindow::draw()
+void EmoteWindow::draw()
 {
     const gcn::Rectangle &area = getChildrenArea();
     const int width = area.width;
@@ -86,14 +86,14 @@ void SmileyWindow::draw()
     setMinHeight(130);
 }
 
-void SmileyWindow::widgetResized(const gcn::Event &event)
+void EmoteWindow::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
     draw();
 }
 
 
-int SmileyWindow::getSelectedSmiley() const
+int EmoteWindow::getSelectedEmote() const
 {
-    return mEmotes->getSelectedSmiley();
+    return mEmotes->getSelectedEmote();
 }

@@ -50,7 +50,6 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyPickup", SDLK_z, "Pickup"},
     {"keyHideWindows", SDLK_h, "Hide Windows"},
     {"keyBeingSit", SDLK_s, "Sit"},
-    {"keyShortcut0", SDLK_0, "Item Shortcut 0"},
     {"keyShortcut1", SDLK_1, "Item Shortcut 1"},
     {"keyShortcut2", SDLK_2, "Item Shortcut 2"},
     {"keyShortcut3", SDLK_3, "Item Shortcut 3"},
@@ -60,6 +59,9 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyShortcut7", SDLK_7, "Item Shortcut 7"},
     {"keyShortcut8", SDLK_8, "Item Shortcut 8"},
     {"keyShortcut9", SDLK_9, "Item Shortcut 9"},
+    {"keyShortcut10", SDLK_0, "Item Shortcut 10"},
+    {"keyShortcut11", SDLK_MINUS, "Item Shortcut 11"},
+    {"keyShortcut12", SDLK_EQUALS, "Item Shortcut 12"},
     {"keyWindowStatus", SDLK_F2, "Status Window"},
     {"keyWindowInventory", SDLK_F3, "Inventory Window"},
     {"keyWindowEquipment", SDLK_F4, "Equipment WIndow"},
@@ -69,20 +71,20 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyWindowShortcut", SDLK_F8, "Item Shortcut Window"},
     {"keyWindowSetup", SDLK_F9, "Setup Window"},
     {"keyWindowDebug", SDLK_F10, "Debug Window"},
-    {"keyWindowSmileyList", SDLK_F11, "Smiley List Window"},
-    {"keyWindowSmileyBar", SDLK_F12, "Smiley Shortcut Window"},
-    {"keySmileyShortcut1", SDLK_KP1, "Smiley Shortcut 1"},
-    {"keySmileyShortcut2", SDLK_KP2, "Smiley Shortcut 2"},
-    {"keySmileyShortcut3", SDLK_KP3, "Smiley Shortcut 3"},
-    {"keySmileyShortcut4", SDLK_KP4, "Smiley Shortcut 4"},
-    {"keySmileyShortcut5", SDLK_KP5, "Smiley Shortcut 5"},
-    {"keySmileyShortcut6", SDLK_KP6, "Smiley Shortcut 6"},
-    {"keySmileyShortcut7", SDLK_KP7, "Smiley Shortcut 7"},
-    {"keySmileyShortcut8", SDLK_KP8, "Smiley Shortcut 8"},
-    {"keySmileyShortcut9", SDLK_KP9, "Smiley Shortcut 9"},
-    {"keySmileyShortcut10", SDLK_KP0, "Smiley Shortcut 10"},
-    {"keySmileyShortcut11", SDLK_KP_DIVIDE, "Smiley Shortcut 11"},
-    {"keySmileyShortcut12", SDLK_KP_MULTIPLY, "Smiley Shortcut 12"}
+    {"keyWindowEmote", SDLK_F11, "Emote Window"},
+    {"keyWindowEmoteBar", SDLK_F12, "Emote Shortcut Window"},
+    {"keyEmoteShortcut1", SDLK_1, "Emote Shortcut 1"},
+    {"keyEmoteShortcut2", SDLK_2, "Emote Shortcut 2"},
+    {"keyEmoteShortcut3", SDLK_3, "Emote Shortcut 3"},
+    {"keyEmoteShortcut4", SDLK_4, "Emote Shortcut 4"},
+    {"keyEmoteShortcut5", SDLK_5, "Emote Shortcut 5"},
+    {"keyEmoteShortcut6", SDLK_6, "Emote Shortcut 6"},
+    {"keyEmoteShortcut7", SDLK_7, "Emote Shortcut 7"},
+    {"keyEmoteShortcut8", SDLK_8, "Emote Shortcut 8"},
+    {"keyEmoteShortcut9", SDLK_9, "Emote Shortcut 9"},
+    {"keyEmoteShortcut10", SDLK_0, "Emote Shortcut 10"},
+    {"keyEmoteShortcut11", SDLK_MINUS, "Emote Shortcut 11"},
+    {"keyEmoteShortcut12", SDLK_EQUALS, "Emote Shortcut 12"}
 };
 
 void KeyboardConfig::init()
@@ -134,16 +136,11 @@ bool KeyboardConfig::hasConflicts()
  */
     for (i = 0; i < KEY_TOTAL; i++)
     {
-        for (j = i,j++; j < KEY_TOTAL; j++)
+        for (j = i, j++; j < KEY_TOTAL; j++)
         {
-/**
- * KEY_SMILEY_* are separated from other keys, duplicate in different
- *  area is allowed, but not in same area (of course)
- *  (i.e.: not two identical key for smiley, not two identical for other;
- *  but same key for a smiley and a not-smiley is ok)
- *  
- */
-            if (!((i<KEY_SMILEY_1)&&(j>=KEY_SMILEY_1))
+            // Allow for item shortcut and emote keys to overlap, but no other keys
+            if (!(((i >= KEY_SHORTCUT_1) && (i <= KEY_SHORTCUT_12)) && 
+                  ((j >= KEY_EMOTE_1) && (j <= KEY_EMOTE_12)))
                  && mKey[i].value == mKey[j].value
 	       )
             {
@@ -171,13 +168,14 @@ int KeyboardConfig::getKeyIndex(int keyValue) const
     return KEY_NO_VALUE;
 }
 
-int KeyboardConfig::getKeySmilieOffset(int keyValue) const
+
+int KeyboardConfig::getKeyEmoteOffset(int keyValue) const
 {
-    for (int i = KEY_SMILEY_1; i <= KEY_SMILEY_12; i++)
+    for (int i = KEY_EMOTE_1; i <= KEY_EMOTE_12; i++)
     {
         if(keyValue == mKey[i].value)
         {
-            return 1+i-KEY_SMILEY_1;
+            return 1 + i - KEY_EMOTE_1;
         }
     }
     return 0;

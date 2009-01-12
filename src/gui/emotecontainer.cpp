@@ -1,33 +1,33 @@
 /*
- *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Aethyra
+ *  Copyright 2009 Aethyra Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  Aethyra is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  Aethyra is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with Aethyra; if not, write to the Free Software Foundation, 
+ *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
-#include "smileycontainer.h"
 
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
 
+#include "emotecontainer.h"
+#include "emoteshortcut.h"
+
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
-#include "../smileyshortcut.h"
 
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
@@ -36,45 +36,45 @@
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
-const int SmileyContainer::gridWidth = 34;  // emote icon width + 4
-const int SmileyContainer::gridHeight = 36; // emote icon height + 4
+const int EmoteContainer::gridWidth = 34;  // emote icon width + 4
+const int EmoteContainer::gridHeight = 36; // emote icon height + 4
 
 static const int NO_EMOTE = -1;
 
-SmileyContainer::SmileyContainer():
+EmoteContainer::EmoteContainer():
     mSelectedEmoteIndex(NO_EMOTE)
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
-    mSmileyImg = resman->getImageSet("graphics/sprites/emotions.png", 30, 32);
-    if (!mSmileyImg) logger->error(_("Unable to load emotions"));
+    mEmoteImg = resman->getImageSet("graphics/sprites/emotions.png", 30, 32);
+    if (!mEmoteImg) logger->error(_("Unable to load emotions"));
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
     if (!mSelImg) logger->error(_("Unable to load selection.png"));
 
     mSelImg->setAlpha(config.getValue("guialpha", 0.8));
 
-    mMaxSmiley = mSmileyImg->size(); 
+    mMaxEmote = mEmoteImg->size(); 
 
     addMouseListener(this);
     addWidgetListener(this);
 }
 
-SmileyContainer::~SmileyContainer()
+EmoteContainer::~EmoteContainer()
 {
-    if (mSmileyImg)
+    if (mEmoteImg)
     {
-       mSmileyImg->decRef();
-       mSmileyImg=NULL;
+       mEmoteImg->decRef();
+       mEmoteImg = NULL;
     }
     if (!mSelImg)
     {
        mSelImg->decRef();
-       mSelImg=NULL;
+       mSelImg = NULL;
     }
 }
 
-void SmileyContainer::draw(gcn::Graphics *graphics)
+void EmoteContainer::draw(gcn::Graphics *graphics)
 {
     int columns = getWidth() / gridWidth;
 
@@ -84,65 +84,64 @@ void SmileyContainer::draw(gcn::Graphics *graphics)
         columns = 1;
     }
 
-    for (int i = 0; i < mMaxSmiley ; i++)
+    for (int i = 0; i < mMaxEmote ; i++)
     {
-        int itemX = ((i) % columns) * gridWidth;
-        int itemY = ((i) / columns) * gridHeight;
+        int emoteX = ((i) % columns) * gridWidth;
+        int emoteY = ((i) / columns) * gridHeight;
            
-
-        // Draw item icon
+        // Draw emote icon
         static_cast<Graphics*>(graphics)->drawImage(
-                    mSmileyImg->get(i), itemX, itemY);
+                    mEmoteImg->get(i), emoteX, emoteY);
 
         // Draw selection image below selected item
         if (mSelectedEmoteIndex == i)
         {
             static_cast<Graphics*>(graphics)->drawImage(
-                    mSelImg, itemX, itemY);
+                    mSelImg, emoteX, emoteY);
         }
     }
 }
 
-void SmileyContainer::widgetResized(const gcn::Event &event)
+void EmoteContainer::widgetResized(const gcn::Event &event)
 {
     recalculateHeight();
 }
 
-void SmileyContainer::recalculateHeight()
+void EmoteContainer::recalculateHeight()
 {
     int cols = getWidth() / gridWidth;
 
     if (cols < 1)
         cols = 1;
 
-    const int rows = (mMaxSmiley / cols) + (mMaxSmiley % cols > 0 ? 1 : 0);
+    const int rows = (mMaxEmote / cols) + (mMaxEmote % cols > 0 ? 1 : 0);
     const int height = rows * gridHeight + 8;
     if (height != getHeight())
         setHeight(height);
 }
 
-int SmileyContainer::getSelectedSmiley() 
+int EmoteContainer::getSelectedEmote() 
 {
     if (mSelectedEmoteIndex == NO_EMOTE)
         return 0;
 
-    return 1+mSelectedEmoteIndex;
+    return 1 + mSelectedEmoteIndex;
 }
 
-void SmileyContainer::selectNone()
+void EmoteContainer::selectNone()
 {
     setSelectedEmoteIndex(NO_EMOTE);
 }
 
-void SmileyContainer::setSelectedEmoteIndex(int index)
+void EmoteContainer::setSelectedEmoteIndex(int index)
 {
-    if (index < 0 || index >= mMaxSmiley )
+    if (index < 0 || index >= mMaxEmote )
         mSelectedEmoteIndex = NO_EMOTE;
     else
         mSelectedEmoteIndex = index;
 }
 
-void SmileyContainer::distributeValueChangedEvent()
+void EmoteContainer::distributeValueChangedEvent()
 {
     gcn::SelectionEvent event(this);
     std::list<gcn::SelectionListener*>::iterator i_end = mListeners.end();
@@ -154,7 +153,7 @@ void SmileyContainer::distributeValueChangedEvent()
     }
 }
 
-void SmileyContainer::mousePressed(gcn::MouseEvent &event)
+void EmoteContainer::mousePressed(gcn::MouseEvent &event)
 {
     int button = event.getButton();
     if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
@@ -163,10 +162,10 @@ void SmileyContainer::mousePressed(gcn::MouseEvent &event)
         int mx = event.getX();
         int my = event.getY();
         int index = mx / gridWidth + ((my / gridHeight) * columns);
-        if (index <mMaxSmiley)
+        if (index < mMaxEmote)
         {
            setSelectedEmoteIndex(index);
-           smileyShortcut->setSmileySelected(index+1);
+           emoteShortcut->setEmoteSelected(index + 1);
         }
     }
 }

@@ -100,6 +100,8 @@
 		<Unit filename="src\configuration.h" />
 		<Unit filename="src\effectmanager.cpp" />
 		<Unit filename="src\effectmanager.h" />
+		<Unit filename="src\emoteshortcut.cpp" />
+		<Unit filename="src\emoteshortcut.h" />
 		<Unit filename="src\engine.cpp" />
 		<Unit filename="src\engine.h" />
 		<Unit filename="src\equipment.cpp" />
@@ -141,6 +143,12 @@
 		<Unit filename="src\gui\connection.h" />
 		<Unit filename="src\gui\debugwindow.cpp" />
 		<Unit filename="src\gui\debugwindow.h" />
+		<Unit filename="src\gui\emotecontainer.cpp" />
+		<Unit filename="src\gui\emotecontainer.h" />
+		<Unit filename="src\gui\emoteshortcutcontainer.cpp" />
+		<Unit filename="src\gui\emoteshortcutcontainer.h" />
+		<Unit filename="src\gui\emotewindow.cpp" />
+		<Unit filename="src\gui\emotewindow.h" />
 		<Unit filename="src\gui\equipmentwindow.cpp" />
 		<Unit filename="src\gui\equipmentwindow.h" />
 		<Unit filename="src\gui\focushandler.cpp" />
@@ -223,12 +231,6 @@
 		<Unit filename="src\gui\skill.h" />
 		<Unit filename="src\gui\slider.cpp" />
 		<Unit filename="src\gui\slider.h" />
-		<Unit filename="src\gui\smileycontainer.cpp" />
-		<Unit filename="src\gui\smileycontainer.h" />
-		<Unit filename="src\gui\smileyshortcutcontainer.cpp" />
-		<Unit filename="src\gui\smileyshortcutcontainer.h" />
-		<Unit filename="src\gui\smileywindow.cpp" />
-		<Unit filename="src\gui\smileywindow.h" />
 		<Unit filename="src\gui\speechbubble.cpp" />
 		<Unit filename="src\gui\speechbubble.h" />
 		<Unit filename="src\gui\status.cpp" />

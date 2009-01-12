@@ -33,6 +33,12 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/connection.h \
 	      gui/debugwindow.cpp \
 	      gui/debugwindow.h \
+	      gui/emotecontainer.cpp \
+	      gui/emotecontainer.h \
+	      gui/emoteshortcutcontainer.cpp \
+	      gui/emoteshortcutcontainer.h \
+	      gui/emotewindow.cpp \
+	      gui/emotewindow.h \
 	      gui/equipmentwindow.cpp \
 	      gui/equipmentwindow.h \
 	      gui/focushandler.cpp \
@@ -117,12 +123,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/skill.h \
 	      gui/slider.cpp \
 	      gui/slider.h \
-	      gui/smileycontainer.cpp \
-	      gui/smileycontainer.h \
-	      gui/smileyshortcutcontainer.cpp \
-	      gui/smileyshortcutcontainer.h \
-	      gui/smileywindow.cpp \
-	      gui/smileywindow.h \
 	      gui/speechbubble.cpp \
 	      gui/speechbubble.h \
 	      gui/status.cpp \
@@ -252,6 +252,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      configuration.h \
 	      effectmanager.cpp \
 	      effectmanager.h \
+	      emoteshortcut.cpp \
+	      emoteshortcut.h \
 	      engine.cpp \
 	      engine.h \
 	      equipment.cpp \
@@ -272,8 +274,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      inventory.h \
 	      item.cpp \
 	      item.h \
-	      smileyshortcut.cpp \
-	      smileyshortcut.h \
 	      itemshortcut.cpp \
 	      itemshortcut.h \
 	      joystick.cpp \
