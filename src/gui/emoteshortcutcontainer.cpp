@@ -71,7 +71,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 {
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    //graphics->setFont(getFont());
+    graphics->setFont(getFont());
 
     for (int i = 0; i < mMaxItems; i++)
     {

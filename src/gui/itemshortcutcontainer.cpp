@@ -59,8 +59,7 @@ ItemShortcutContainer::~ItemShortcutContainer()
     mBackgroundImg->decRef();
 }
 
-void
-ItemShortcutContainer::logic()
+void ItemShortcutContainer::logic()
 {
     gcn::Widget::logic();
 
@@ -73,8 +72,7 @@ ItemShortcutContainer::logic()
     }
 }
 
-void
-ItemShortcutContainer::draw(gcn::Graphics *graphics)
+void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
     Graphics *g = static_cast<Graphics*>(graphics);
 
@@ -134,8 +132,7 @@ ItemShortcutContainer::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
+void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT) {
         if (!mItemMoved && mItemClicked) {
@@ -160,8 +157,7 @@ ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void
-ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
+void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
 {
     const int index = getIndexFromGrid(event.getX(), event.getY());
     if (index == -1) {
@@ -178,8 +174,7 @@ ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
     }
 }
 
-void
-ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
+void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
