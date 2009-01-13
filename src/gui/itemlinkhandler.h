@@ -1,7 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
- *  Copyright (C) 2008  The Mana World Development Team
+ *  Copyright 2009 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -20,29 +19,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_ITEMPOPUP_H__
-#define _TMW_ITEMPOPUP_H__
+#ifndef _TMW_ITEM_LINK_HANDLER_H_
+#define _TMW_ITEM_LINK_HANDLER_H_
 
-#include "textbox.h"
-#include "scrollarea.h"
-#include "window.h"
+#include "linkhandler.h"
 
-#include "../item.h"
+class ItemPopup;
 
-class ItemPopup : public Window
+class ItemLinkHandler : public LinkHandler
 {
     public:
-        ItemPopup();
-
-        void setItem(const ItemInfo &item);
-        unsigned int getNumRows();
+        ItemLinkHandler();
+        ~ItemLinkHandler();
+        void handleLink(const std::string &link);
 
     private:
-        gcn::Label *mItemName;
-        TextBox *mItemDesc;
-        TextBox *mItemEffect;
-        ScrollArea *mItemDescScroll;
-        ScrollArea *mItemEffectScroll;
+        ItemPopup *mItemPopup;
 };
 
-#endif // _TMW_ITEMPOPUP_H__
+#endif

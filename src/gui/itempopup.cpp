@@ -81,19 +81,16 @@ ItemPopup::ItemPopup()
     mItemEffect->setTextWrapped( "" );
 }
 
-void ItemPopup::setItem(Item *item)
+void ItemPopup::setItem(const ItemInfo &item)
 {
-
-    ItemInfo const *info = item ? &item->getInfo() : NULL;
-
-    mItemName->setCaption(info->getName());
-    mItemDesc->setTextWrapped( info->getDescription() );
-    mItemEffect->setTextWrapped( info->getEffect() );
+    mItemName->setCaption(item.getName());
+    mItemDesc->setTextWrapped(item.getDescription());
+    mItemEffect->setTextWrapped(item.getEffect());
 
     int numRowsDesc = mItemDesc->getNumberOfRows();
     int numRowsEffect = mItemEffect->getNumberOfRows();
 
-    if(info->getEffect() == "")
+    if(item.getEffect() == "")
     {
         setContentSize(200, (numRowsDesc * 14) + 30);
     } else {

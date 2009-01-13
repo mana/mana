@@ -28,6 +28,7 @@
 
 #include "browserbox.h"
 #include "chatinput.h"
+#include "itemlinkhandler.h"
 #include "scrollarea.h"
 #include "sdlinput.h"
 #include "windowcontainer.h"
@@ -57,14 +58,16 @@ ChatWindow::ChatWindow():
     setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
     setOpaque(false);
 
+    mItemLinkHandler = new ItemLinkHandler();
+
     mChatInput = new ChatInput;
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
     BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     textOutput->setOpaque(false);
-    textOutput->disableLinksAndUserColors();
     textOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
+    textOutput->setLinkHandler(mItemLinkHandler);
 
     ScrollArea *scrollArea = new ScrollArea(textOutput);
     scrollArea->setPosition(
@@ -416,8 +419,16 @@ void ChatWindow::keyPressed(gcn::KeyEvent &event)
 
 void ChatWindow::setInputText(std::string input_str)
 {
-     mChatInput->setText(input_str + " ");
+     mChatInput->setText(mChatInput->getText() + input_str + " ");
      requestChatFocus();
+}
+
+void ChatWindow::addItemText(int itemId, const std::string &item)
+{
+    std::ostringstream text;
+    text << "[@@" << itemId << "|" << item << "@@] ";
+    mChatInput->setText(mChatInput->getText() + text.str());
+    requestChatFocus();
 }
 
 void ChatWindow::setVisible(bool isVisible)

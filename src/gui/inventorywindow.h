@@ -93,6 +93,8 @@ class InventoryWindow : public Window,
         gcn::ScrollArea *mInvenScroll;         /**< Inventory Scroll Area. */
 
         bool mSplit;
+
+        bool mItemDesc;
 };
 
 extern InventoryWindow *inventoryWindow;

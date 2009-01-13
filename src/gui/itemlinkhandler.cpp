@@ -1,7 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
- *  Copyright (C) 2008  The Mana World Development Team
+ *  Copyright 2009 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -20,29 +19,42 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_ITEMPOPUP_H__
-#define _TMW_ITEMPOPUP_H__
+#include "itemlinkhandler.h"
+#include "itempopup.h"
 
-#include "textbox.h"
-#include "scrollarea.h"
-#include "window.h"
+#include "../resources/iteminfo.h"
+#include "../resources/itemdb.h"
 
-#include "../item.h"
+#include <sstream>
+#include <string>
 
-class ItemPopup : public Window
+ItemLinkHandler::ItemLinkHandler()
 {
-    public:
-        ItemPopup();
+    mItemPopup = new ItemPopup;
+}
 
-        void setItem(const ItemInfo &item);
-        unsigned int getNumRows();
+ItemLinkHandler::~ItemLinkHandler()
+{
+    delete mItemPopup;
+}
 
-    private:
-        gcn::Label *mItemName;
-        TextBox *mItemDesc;
-        TextBox *mItemEffect;
-        ScrollArea *mItemDescScroll;
-        ScrollArea *mItemEffectScroll;
-};
-
-#endif // _TMW_ITEMPOPUP_H__
+void ItemLinkHandler::handleLink(const std::string &link)
+{
+    int id = 0;
+    std::stringstream stream;
+    stream << link;
+    stream >> id;
+    if (id > 0)
+    {
+        const ItemInfo &iteminfo = ItemDB::get(id);
+        mItemPopup->setItem(iteminfo);
+        if (mItemPopup->isVisible())
+        {
+            mItemPopup->setVisible(false);
+        }
+        else
+        {
+            mItemPopup->setVisible(true);
+        }
+    }
+}

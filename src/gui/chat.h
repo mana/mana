@@ -37,6 +37,7 @@ class BrowserBox;
 class ScrollArea;
 class TabbedArea;
 class Channel;
+class ItemLinkHandler;
 
 enum
 {
@@ -141,6 +142,9 @@ class ChatWindow : public Window,
         /** Called to set current text */
         void setInputText(std::string input_str);
 
+        /** Called to add item to chat */
+        void addItemText(int itemid, const std::string &item);
+
         /** Override to reset mTmpVisible */
         void setVisible(bool visible);
 
@@ -174,6 +178,9 @@ class ChatWindow : public Window,
             BrowserBox *browser;
             ScrollArea *scroll;
         };
+
+        /** Used for showing item popup on clicking links **/
+        ItemLinkHandler *mItemLinkHandler;
 
         /** Tabbed area for holding each channel. */
         TabbedArea *mChatTabs;

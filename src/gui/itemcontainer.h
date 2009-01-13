@@ -169,6 +169,7 @@ class ItemContainer : public gcn::Widget,
         Item *mSelectedItem, *mHighlightedItem;
         int mSelectionStatus;
         bool mSwapItems;
+        bool mDescItems;
         int mDragPosX, mDragPosY;
 
         ItemPopup *mItemPopup;

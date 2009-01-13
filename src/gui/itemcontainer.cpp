@@ -20,6 +20,7 @@
  */
 
 #include "itemcontainer.h"
+#include "chat.h"
 
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
@@ -61,7 +62,8 @@ ItemContainer::ItemContainer(Inventory *inventory,
     mSelectedItem(NULL),
     mHighlightedItem(NULL),
     mSelectionStatus(SEL_NONE),
-    mSwapItems(false)
+    mSwapItems(false),
+    mDescItems(false)
 {
     mItemPopup = new ItemPopup();
     setFocusable(true);
@@ -195,6 +197,10 @@ ItemContainer::keyPressed(gcn::KeyEvent &event)
         case Key::LEFT_ALT:
         case Key::RIGHT_ALT:
             mSwapItems = true;
+            break;
+        case Key::RIGHT_CONTROL:
+            mDescItems = true;
+            break;
     }
 }
 
@@ -206,13 +212,16 @@ ItemContainer::keyReleased(gcn::KeyEvent &event)
         case Key::LEFT_ALT:
         case Key::RIGHT_ALT:
             mSwapItems = false;
+            break;
+        case Key::RIGHT_CONTROL:
+            mDescItems = false;
+            break;
     }
 }
 
 void
 ItemContainer::mousePressed(gcn::MouseEvent &event)
 {
-
     const int button = event.getButton();
     if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
     {
@@ -222,6 +231,12 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         }
 
         Item *item = mInventory->getItem(index);
+
+        // put item name into chat window
+        if (mDescItems)
+        {
+            chatWindow->addItemText(item->getId(), item->getInfo().getName());
+        }
 
         if (mSelectedItem && mSelectedItem == item)
         {
@@ -288,7 +303,7 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
     {
         mItemPopup->setPosition(getParent()->getParent()->getX() + getParent()->getParent()->getWidth(), getParent()->getParent()->getY());
 
-        mItemPopup->setItem(item);
+        mItemPopup->setItem(item->getInfo());
 
         mItemPopup->setVisible(true);
     }

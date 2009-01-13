@@ -51,7 +51,8 @@
 
 InventoryWindow::InventoryWindow():
     Window(_("Inventory")),
-    mSplit(false)
+    mSplit(false),
+    mItemDesc(false)
 {
     setWindowName("Inventory");
     setResizable(false);
@@ -200,6 +201,7 @@ void InventoryWindow::keyPressed(gcn::KeyEvent &event)
         case Key::LEFT_SHIFT:
         case Key::RIGHT_SHIFT:
             mSplit = true;
+            break;
     }
 }
 
@@ -210,5 +212,6 @@ void InventoryWindow::keyReleased(gcn::KeyEvent &event)
         case Key::LEFT_SHIFT:
         case Key::RIGHT_SHIFT:
             mSplit = false;
+            break;
     }
 }
