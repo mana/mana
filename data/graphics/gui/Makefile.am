@@ -33,6 +33,8 @@ gui_DATA =				\
 	rpgfont_wider.png		\
 	selection.png			\
 	slider.png			\
+	tab.png				\
+	tabselected.png			\
 	target-cursor-blue-l.png	\
 	target-cursor-blue-m.png	\
 	target-cursor-blue-s.png	\

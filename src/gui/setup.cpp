@@ -29,7 +29,8 @@
 #include "setup_video.h"
 #include "setup_keyboard.h"
 #include "setup_players.h"
-#include "tabbedcontainer.h"
+
+#include "widgets/tabbedarea.h"
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
@@ -47,7 +48,7 @@ extern Window *itemShortcutWindow;
 extern Window *tradeWindow;
 
 Setup::Setup():
-    Window("Setup")
+    Window(_("Setup"))
 {
     setCloseButton(true);
     int width = 310;
@@ -69,30 +70,29 @@ Setup::Setup():
             btn->setEnabled(statusWindow != NULL);
     }
 
-    TabbedContainer *panel = new TabbedContainer();
-    panel->setDimension(gcn::Rectangle(5, 5, width, height - 40));
-    panel->setOpaque(false);
+    TabbedArea *panel = new TabbedArea();
+    panel->setDimension(gcn::Rectangle(5, 5, 260, 225));
 
     SetupTab *tab;
 
     tab = new Setup_Video();
-    panel->addTab(tab, _("Video"));
+    panel->addTab(_("Video"), tab);
     mTabs.push_back(tab);
 
     tab = new Setup_Audio();
-    panel->addTab(tab, _("Audio"));
+    panel->addTab(_("Audio"), tab);
     mTabs.push_back(tab);
 
     tab = new Setup_Joystick();
-    panel->addTab(tab, _("Joystick"));
+    panel->addTab(_("Joystick"), tab);
     mTabs.push_back(tab);
 
     tab = new Setup_Keyboard();
-    panel->addTab(tab, _("Keyboard"));
+    panel->addTab(_("Keyboard"), tab);
     mTabs.push_back(tab);
 
     tab = new Setup_Players();
-    panel->addTab(tab, _("Players"));
+    panel->addTab(_("Players"), tab);
     mTabs.push_back(tab);
 
     add(panel);
