@@ -37,6 +37,7 @@
 #include <SDL/SDL_ttf.h>
 
 #include "configuration.h"
+#include "emoteshortcut.h"
 #include "game.h"
 #include "graphics.h"
 #include "itemshortcut.h"
@@ -56,7 +57,6 @@
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/colour.h"
-#include "gui/emoteshortcut.h"
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"

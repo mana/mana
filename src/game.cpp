@@ -31,6 +31,7 @@
 
 #include "beingmanager.h"
 #include "effectmanager.h"
+#include "emoteshortcut.h"
 #include "engine.h"
 #include "flooritemmanager.h"
 #include "graphics.h"
@@ -48,7 +49,6 @@
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/debugwindow.h"
-#include "gui/emoteshortcut.h"
 #include "gui/emoteshortcutcontainer.h"
 #include "gui/emotewindow.h"
 #include "gui/equipmentwindow.h"
