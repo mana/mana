@@ -67,6 +67,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/inventorywindow.h \
 	      gui/itemcontainer.cpp \
 	      gui/itemcontainer.h \
+              gui/itemlinkhandler.cpp \
+              gui/itemlinkhandler.h \
 	      gui/itempopup.cpp \
 	      gui/itempopup.h \
 	      gui/itemshortcutcontainer.cpp \
