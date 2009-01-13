@@ -1,27 +1,27 @@
 /*
- *  The Legend of Mazzeroth
- *  Copyright (C) 2008, The Legend of Mazzeroth Development Team
+ *  The Mana World
+ *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
+ *  Copyright (C) 2008  The Mana World Development Team
  *
- *  This file is part of The Legend of Mazzeroth based on original code
- *  from The Mana World.
+ *  This file is part of The Mana World.
  *
- *  The Legend of Mazzeroth is free software; you can redistribute it and/or modify
+ *  The Mana World is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Legend of Mazzeroth is distributed in the hope that it will be useful,
+ *  The Mana World is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Legend of Mazzeroth; if not, write to the Free Software
+ *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _LOM_SPEECHBUBBLE_H__
-#define _LOM_SPEECHBUBBLE_H__
+#ifndef _TMW_SPEECHBUBBLE_H__
+#define _TMW_SPEECHBUBBLE_H__
 
 #include "textbox.h"
 #include "scrollarea.h"
@@ -41,4 +41,4 @@ class SpeechBubble : public Window
         ScrollArea *mSpeechArea;
 };
 
-#endif // _LOM_SPEECHBUBBLE_H__
+#endif // _TMW_SPEECHBUBBLE_H__
