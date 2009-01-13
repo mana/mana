@@ -38,6 +38,8 @@ gui_DATA =				\
 	slider.png			\
 	speech_bubble.png		\
 	speechbubble.xml		\
+	tab.png				\
+	tabselected.png			\
 	target-cursor-blue-l.png	\
 	target-cursor-blue-m.png	\
 	target-cursor-blue-s.png	\

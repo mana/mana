@@ -55,6 +55,10 @@ SET(SRCS
     gui/widgets/resizegrip.h
     gui/widgets/layout.cpp
     gui/widgets/layout.h
+    gui/widgets/tab.cpp
+    gui/widgets/tab.h
+    gui/widgets/tabbedarea.cpp
+    gui/widgets/tabbedarea.h
     gui/browserbox.cpp
     gui/browserbox.h
     gui/buddywindow.cpp
@@ -163,8 +167,6 @@ SET(SRCS
     gui/speechbubble.h
     gui/status.cpp
     gui/status.h
-    gui/tabbedcontainer.cpp
-    gui/tabbedcontainer.h
     gui/table.cpp
     gui/table.h
     gui/table_model.cpp

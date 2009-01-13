@@ -220,6 +220,7 @@ Setup_Players::Setup_Players():
     mIgnoreActionChoicesBox(new gcn::DropDown(new IgnoreChoicesListModel()))
 {
     setOpaque(false);
+    setDimension(gcn::Rectangle(0, 0, 290, 255));
 
     int table_width = NAME_COLUMN_WIDTH + RELATION_CHOICE_COLUMN_WIDTH;
     mPlayerTableTitleModel->fixColumnWidth(NAME_COLUMN, NAME_COLUMN_WIDTH);

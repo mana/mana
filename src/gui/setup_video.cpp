@@ -136,6 +136,7 @@ Setup_Video::Setup_Video():
     mParticleDetailField(new gcn::Label(""))
 {
     setOpaque(false);
+    setDimension(gcn::Rectangle(0, 0, 290, 255));
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     gcn::Label *alphaLabel = new gcn::Label(_("Gui opacity"));

@@ -38,6 +38,9 @@ Setup_Colours::Setup_Colours() :
     mColourLabel(_("Color:")),
     mSelected(-1)
 {
+    setOpaque(false);
+    setDimension(gcn::Rectangle(0, 0, 290, 255));
+
     mColourBox = new gcn::ListBox(textColour);
     mScroll = new ScrollArea(mColourBox);
 

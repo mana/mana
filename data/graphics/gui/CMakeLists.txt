@@ -32,6 +32,8 @@ SET (FILES
     slider.png
     speech_bubble.png
     speech_bubble.xml
+    tab.png
+    tabselected.png
     target-cursor-blue-l.png
     target-cursor-blue-m.png
     target-cursor-blue-s.png

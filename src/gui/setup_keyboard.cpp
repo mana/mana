@@ -73,6 +73,7 @@ Setup_Keyboard::Setup_Keyboard():
 {
     keyboard.setSetupKeyboard(this);
     setOpaque(false);
+    setDimension(gcn::Rectangle(0, 0, 290, 255));
 
     refreshKeys();
 
