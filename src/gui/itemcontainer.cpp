@@ -164,7 +164,8 @@ void ItemContainer::selectNone()
 
 void ItemContainer::refindSelectedItem()
 {
-    if (mSelectedItemIndex != NO_ITEM) {
+    if (mSelectedItemIndex != NO_ITEM)
+    {
 
         if (mInventory->getItem(mSelectedItemIndex) &&
             mInventory->getItem(mSelectedItemIndex)->getId() == mLastSelectedItemId)
@@ -175,7 +176,8 @@ void ItemContainer::refindSelectedItem()
 
         for (int i = 0; i <= mMaxItems + 1; i++)
             if (mInventory->getItem(i) &&
-                mInventory->getItem(i)->getId() == mLastSelectedItemId) {
+                mInventory->getItem(i)->getId() == mLastSelectedItemId)
+            {
                 mSelectedItemIndex = i;
                 return;
             }
@@ -248,12 +250,11 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
 {
     Item *item = mInventory->getItem( getSlotIndex(event.getX(), event.getY() ) );
 
-    if( item )
+    if (item)
     {
         mItemPopup->setPosition(getParent()->getParent()->getX() + 
                                 getParent()->getParent()->getWidth(), 
                                 getParent()->getParent()->getY());
-
         mItemPopup->setItem(item->getInfo());
         mItemPopup->setOpaque(false);
         mItemPopup->setVisible(true);
@@ -277,5 +278,4 @@ int ItemContainer::getSlotIndex(const int posX, const int posY) const
 
     return (index);
 }
-
 

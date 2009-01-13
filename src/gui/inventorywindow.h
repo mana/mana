@@ -90,6 +90,8 @@ class InventoryWindow : public Window, gcn::ActionListener,
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
         TextBox *mWeightLabel;
+
+        bool mItemDesc;
 };
 
 extern InventoryWindow *inventoryWindow;

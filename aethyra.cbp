@@ -167,6 +167,8 @@
 		<Unit filename="src\gui\item_amount.h" />
 		<Unit filename="src\gui\itemcontainer.cpp" />
 		<Unit filename="src\gui\itemcontainer.h" />
+		<Unit filename="src\gui\itemlinkhandler.cpp" />
+		<Unit filename="src\gui\itemlinkhandler.h" />
 		<Unit filename="src\gui\itempopup.cpp" />
 		<Unit filename="src\gui\itempopup.h" />
 		<Unit filename="src\gui\itemshortcutcontainer.cpp" />

@@ -50,6 +50,7 @@ ItemPopup::ItemPopup():
     // Item Description
     mItemDesc = new TextBox();
     mItemDesc->setEditable(false);
+    mItemDesc->setMinWidth(186);
     mItemDescScroll = new ScrollArea(mItemDesc);
 
     mItemDescScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -61,6 +62,7 @@ ItemPopup::ItemPopup():
     // Item Effect
     mItemEffect = new TextBox();
     mItemEffect->setEditable(false);
+    mItemEffect->setMinWidth(186);
     mItemEffectScroll = new ScrollArea(mItemEffect);
 
     mItemEffectScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -98,11 +100,9 @@ void ItemPopup::setItem(const ItemInfo &item)
     int numRowsEffect = mItemEffect->getNumberOfRows();
 
     if(item.getEffect() == "")
-    {
         setContentSize(200, (numRowsDesc * 14) + 30);
-    } else {
+    else
         setContentSize(200, (numRowsDesc * 14) + (numRowsEffect * 14) + 30);
-    }
 
     mItemDescScroll->setDimension(gcn::Rectangle(2, 0, 196, numRowsDesc * 14));
 

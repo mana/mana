@@ -144,9 +144,9 @@ class ItemContainer : public gcn::Widget,
 
         Inventory *mInventory;
         Image *mSelImg;
+
         int mSelectedItemIndex;
         int mLastSelectedItemId;  // last selected item ID. If we lose the item, find again by ID.
-
         int mMaxItems;
         int mOffset;
 

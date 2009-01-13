@@ -27,6 +27,7 @@
 #include "browserbox.h"
 #include "chat.h"
 #include "chatinput.h"
+#include "itemlinkhandler.h"
 #include "scrollarea.h"
 #include "sdlinput.h"
 #include "windowcontainer.h"
@@ -54,19 +55,23 @@ Window(""), mNetwork(network), mTmpVisible(false)
     setResizable(true);
     setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
 
+    mItemLinkHandler = new ItemLinkHandler();
+
     mChatInput = new ChatInput;
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
     mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     mTextOutput->setOpaque(false);
-    mTextOutput->disableLinksAndUserColors();
     mTextOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
+    mTextOutput->setLinkHandler(mItemLinkHandler);
+
     mScrollArea = new ScrollArea(mTextOutput);
-    mScrollArea->setPosition(mScrollArea->getFrameSize(),
+    mScrollArea->setPosition(mScrollArea->getFrameSize(), 
                              mScrollArea->getFrameSize());
     mScrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_ALWAYS);
+    mScrollArea->setScrollAmount(0, 1);
     mScrollArea->setOpaque(false);
 
     add(mScrollArea);
@@ -257,9 +262,8 @@ void ChatWindow::action(const gcn::ActionEvent & event)
 
             // If the chatWindow is shown up because you want to send a message
             // It should hide now
-            if (mTmpVisible) {
+            if (mTmpVisible)
                 setVisible(false);
-            }
         }
     }
 }
@@ -697,7 +701,15 @@ void ChatWindow::keyPressed(gcn::KeyEvent & event)
 
 void ChatWindow::setInputText(std::string input_str)
 {
-    mChatInput->setText(input_str + " ");
+     mChatInput->setText(mChatInput->getText() + input_str + " ");
+     requestChatFocus();
+}
+
+void ChatWindow::addItemText(int itemId, const std::string &item)
+{
+    std::ostringstream text;
+    text << "[@@" << itemId << "|" << item << "@@] ";
+    mChatInput->setText(mChatInput->getText() + text.str());
     requestChatFocus();
 }
 

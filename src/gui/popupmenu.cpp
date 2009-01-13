@@ -25,6 +25,7 @@
 #include <guichan/focushandler.hpp>
 
 #include "browserbox.h"
+#include "chat.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "popupmenu.h"
@@ -248,6 +249,11 @@ void PopupMenu::handleLink(const std::string& link)
 	}
     }
 
+    else if (link == "chat")
+    {
+	chatWindow->addItemText(mItem->getId(), mItem->getInfo().getName());
+    }
+
     else if (link == "drop")
     {
 	new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, mItem);
@@ -297,6 +303,7 @@ void PopupMenu::showPopup(int x, int y, Item *item)
         mBrowserBox->addRow(_("@@use|Use@@"));
 
     mBrowserBox->addRow(_("@@drop|Drop@@"));
+    mBrowserBox->addRow(_("@@chat|Add to Chat@@"));
     mBrowserBox->addRow(_("@@description|Description@@"));
     mBrowserBox->addRow("##3---");
     mBrowserBox->addRow(_("@@cancel|Cancel@@"));

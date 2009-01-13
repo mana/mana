@@ -42,7 +42,8 @@
 #include "../utils/tostring.h"
 
 InventoryWindow::InventoryWindow():
-    Window(_("Inventory"))
+    Window(_("Inventory")),
+    mItemDesc(false)
 {
     setWindowName(_("Inventory"));
     setResizable(true);
@@ -201,8 +202,7 @@ void InventoryWindow::updateButtons()
         }
         else {
             mUseButton->setCaption(_("Equip"));
-        }
-    }
+        }    }
     else {
         mUseButton->setCaption(_("Use"));
     }

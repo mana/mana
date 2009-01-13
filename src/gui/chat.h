@@ -38,6 +38,7 @@ class Network;
 class Recorder;
 class Party;
 class ScrollArea;
+class ItemLinkHandler;
 
 #define BY_GM         0   // those should be self-explanatory =)
 #define BY_PLAYER     1
@@ -185,6 +186,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /** Called to set current text */
         void setInputText(std::string input_str);
 
+        /** Called to add item to chat */
+        void addItemText(int itemid, const std::string &item);
+
         /** Override to reset mTmpVisible */
         void setVisible(bool visible);
 
@@ -234,7 +238,8 @@ class ChatWindow : public Window, public gcn::ActionListener,
         gcn::TextField *mChatInput; /**< Input box for typing chat messages */
         BrowserBox *mTextOutput;    /**< Text box for displaying chat history */
         ScrollArea *mScrollArea;    /**< Scroll area around text output */
-
+        ItemLinkHandler *mItemLinkHandler; /** Used for showing item popup on
+                                               clicking links **/
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;
         History mHistory;           /**< Command history */
