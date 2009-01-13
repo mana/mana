@@ -850,8 +850,8 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-msgid "Colours"
-msgstr ""
+msgid "Colors"
+msgstr "Colours"
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-12 16:41-0700\n"
+"POT-Creation-Date: 2009-01-12 17:52-0700\n"
 "PO-Revision-Date: 2008-12-28 14:45+0000\n"
 "Last-Translator: Niels L Ellegaard <niels.ellegaard@gmail.com>\n"
 "Language-Team: Danish <da@li.org>\n"
@@ -850,8 +850,9 @@ msgid "Keyboard"
 msgstr "Tastatur"
 
 #: ../src/gui/setup.cpp:97
-msgid "Colours"
-msgstr ""
+#, fuzzy
+msgid "Colors"
+msgstr "Hårfarve:"
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"

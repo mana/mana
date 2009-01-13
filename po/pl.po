@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-12 16:41-0700\n"
+"POT-Creation-Date: 2009-01-12 17:52-0700\n"
 "PO-Revision-Date: 2008-10-10 05:26+0000\n"
 "Last-Translator: Michał Trzebiatowski <Unknown>\n"
 "Language-Team: <pl@li.org>\n"
@@ -852,8 +852,9 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-msgid "Colours"
-msgstr ""
+#, fuzzy
+msgid "Colors"
+msgstr "Kolor włosów:"
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"

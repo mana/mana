@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-12 16:41-0700\n"
+"POT-Creation-Date: 2009-01-12 17:52-0700\n"
 "PO-Revision-Date: 2008-12-28 23:36+0000\n"
 "Last-Translator: Dino Paskvan <dpaskvan@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
@@ -844,8 +844,9 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-msgid "Colours"
-msgstr ""
+#, fuzzy
+msgid "Colors"
+msgstr "Boja kose:"
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"

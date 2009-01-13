@@ -94,7 +94,7 @@ Setup::Setup():
     mTabs.push_back(tab);
 
     tab = new Setup_Colours();
-    panel->addTab(tab, _("Colours"));
+    panel->addTab(tab, _("Colors"));
     mTabs.push_back(tab);
 
     tab = new Setup_Players();
