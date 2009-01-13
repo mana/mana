@@ -34,46 +34,23 @@
 #include "passwordfield.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
+#include "../utils/gettext.h"
+
 LoginDialog::LoginDialog(LoginData *loginData):
-    Window("Login"), mLoginData(loginData)
+    Window(_("Login")), mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label("Name:");
-    gcn::Label *passLabel = new gcn::Label("Password:");
-    gcn::Label *serverLabel = new gcn::Label("Server:");
+    gcn::Label *userLabel = new gcn::Label(_("Name:"));
+    gcn::Label *passLabel = new gcn::Label(_("Password:"));
+    gcn::Label *serverLabel = new gcn::Label(_("Server:"));
     mUserField = new TextField(mLoginData->username);
     mPassField = new PasswordField(mLoginData->password);
     mServerField = new TextField(mLoginData->hostname);
-    mKeepCheck = new CheckBox("Keep", mLoginData->remember);
-    mOkButton = new Button("OK", "ok", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mRegisterButton = new Button("Register", "register", this);
-
-    const int width = 220;
-    const int height = 100;
-
-    setContentSize(width, height);
-
-    userLabel->setPosition(5, 5);
-    passLabel->setPosition(5, 14 + userLabel->getHeight());
-    serverLabel->setPosition(
-            5, 23 + userLabel->getHeight() + passLabel->getHeight());
-    mUserField->setPosition(65, 5);
-    mPassField->setPosition(65, 14 + userLabel->getHeight());
-    mServerField->setPosition(
-            65, 23 + userLabel->getHeight() + passLabel->getHeight());
-    mUserField->setWidth(width - 70);
-    mPassField->setWidth(width - 70);
-    mServerField->setWidth(width - 70);
-    mKeepCheck->setPosition(4, 77);
-    mCancelButton->setPosition(
-            width - mCancelButton->getWidth() - 5,
-            height - mCancelButton->getHeight() - 5);
-    mOkButton->setPosition(
-            mCancelButton->getX() - mOkButton->getWidth() - 5,
-            height - mOkButton->getHeight() - 5);
-    mRegisterButton->setPosition(
-            mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
-            height - mRegisterButton->getHeight() - 5);
+    mKeepCheck = new CheckBox(_("Remember Username"), mLoginData->remember);
+    mOkButton = new Button(_("Ok"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mRegisterButton = new Button(_("Register"), "register", this);
 
     mUserField->setActionEventId("ok");
     mPassField->setActionEventId("ok");
@@ -87,16 +64,17 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mServerField->addActionListener(this);
     mKeepCheck->addActionListener(this);
 
-    add(userLabel);
-    add(passLabel);
-    add(serverLabel);
-    add(mUserField);
-    add(mPassField);
-    add(mServerField);
-    add(mKeepCheck);
-    add(mOkButton);
-    add(mCancelButton);
-    add(mRegisterButton);
+    place(0, 0, userLabel);
+    place(0, 1, passLabel);
+    place(0, 2, serverLabel);
+    place(1, 0, mUserField, 3).setPadding(2);
+    place(1, 1, mPassField, 3).setPadding(2);
+    place(1, 2, mServerField, 3).setPadding(2);
+    place(0, 3, mKeepCheck, 4);
+    place(0, 4, mRegisterButton).setHAlign(LayoutCell::LEFT);
+    place(2, 4, mOkButton);
+    place(3, 4, mCancelButton);
+    reflowLayout(250, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -114,8 +92,7 @@ LoginDialog::~LoginDialog()
 {
 }
 
-void
-LoginDialog::action(const gcn::ActionEvent &event)
+void LoginDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok" && canSubmit())
     {
@@ -145,14 +122,12 @@ LoginDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
+void LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
     mOkButton->setEnabled(canSubmit());
 }
 
-bool
-LoginDialog::canSubmit()
+bool LoginDialog::canSubmit()
 {
     return !mUserField->getText().empty() &&
            !mPassField->getText().empty() &&

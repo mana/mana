@@ -21,8 +21,6 @@
 
 #include "viewport.h"
 
-#include <guichan/sdl/sdlinput.hpp>
-
 #include "gui.h"
 #include "popupmenu.h"
 #include "ministatus.h"

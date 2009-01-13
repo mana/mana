@@ -53,6 +53,11 @@ class TextField : public gcn::TextField {
          */
         void drawFrame(gcn::Graphics *graphics);
 
+        /**
+         * Processes one keypress.
+         */
+        void keyPressed(gcn::KeyEvent &keyEvent);
+
     private:
         static int instances;
         static ImageRect skin;

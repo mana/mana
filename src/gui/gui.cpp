@@ -24,12 +24,9 @@
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
-#include <SDL/SDL_ttf.h>
-
-// Should stay here because of Guichan being sensitive to headers order
-#include <guichan/sdl/sdlinput.hpp>
 
 #include "focushandler.h"
+#include "sdlinput.h"
 #include "truetypefont.h"
 #include "viewport.h"
 #include "window.h"
@@ -48,7 +45,7 @@
 // Guichan stuff
 Gui *gui;
 Viewport *viewport;                    /**< Viewport on the map. */
-gcn::SDLInput *guiInput;               /**< GUI input. */
+SDLInput *guiInput;
 
 // Fonts used in showing hits
 gcn::Font *hitRedFont;
@@ -91,7 +88,7 @@ Gui::Gui(Graphics *graphics):
     gcn::Image::setImageLoader(&imageLoader);
 
     // Set input
-    guiInput = new gcn::SDLInput();
+    guiInput = new SDLInput;
     setInput(guiInput);
 
     // Set focus handler
@@ -106,9 +103,12 @@ Gui::Gui(Graphics *graphics):
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
-    // Set global font (based on ISO-8859-15)
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    // Set global font
+    std::string path = resman->getPath("fonts/dejavusans.ttf");
     try {
-        mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 12);
+        mGuiFont = new TrueTypeFont(path, 11);
     }
     catch (gcn::Exception e)
     {

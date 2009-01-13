@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2007 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,40 +19,27 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "position.h"
 
-#ifndef BOX_H
-#define BOX_H
-
-#include <guichan/widgets/container.hpp>
-
-#include "../guichanfwd.h"
-
-class Box : public gcn::Container
+std::ostream& operator <<(std::ostream &os, const Position &p)
 {
-    public:
-        /**
-         * Returns padding.
-         */
-        unsigned int getPadding();
+    os << "(" << p.x << ", " << p.y << ")";
+    return os;
+}
 
-        /**
-         * Sets padding between widgets.
-         */
-        void setPadding(unsigned int);
+std::ostream& operator <<(std::ostream &os, const Path &path)
+{
+    Path::const_iterator i = path.begin();
 
-    protected:
-        Box();
-        virtual ~Box();
+    os << "(";
+    while (i != path.end())
+    {
+        os << *i;
+        ++i;
+        if (i != path.end())
+            os << ", ";
+    }
+    os << ")";
 
-        /**
-         * Spacing between client widgets.
-         */
-        unsigned int padding;
-
-        virtual void draw(gcn::Graphics *) = 0;
-
-        typedef std::list<gcn::Widget*> Widgets;
-        typedef Widgets::iterator WidgetIterator;
-};
-
-#endif
+    return os;
+}

@@ -215,7 +215,7 @@ std::string ResourceManager::getPath(const std::string &file)
     return path;
 }
 
-Resource *ResourceManager::get(std::string const &idPath, generator fun,
+Resource *ResourceManager::get(const std::string &idPath, generator fun,
                                void *data)
 {
     // Check if the id exists, and return the value if it does.
@@ -267,7 +267,7 @@ struct ResourceLoader
     }
 };
 
-Resource *ResourceManager::load(std::string const &path, loader fun)
+Resource *ResourceManager::load(const std::string &path, loader fun)
 {
     ResourceLoader l = { this, path, fun };
     return get(path, ResourceLoader::load, &l);
@@ -309,7 +309,7 @@ struct DyedImageLoader
     }
 };
 
-Image *ResourceManager::getImage(std::string const &idPath)
+Image *ResourceManager::getImage(const std::string &idPath)
 {
     DyedImageLoader l = { this, idPath };
     return static_cast<Image*>(get(idPath, DyedImageLoader::load, &l));
@@ -351,8 +351,7 @@ struct SpriteDefLoader
     }
 };
 
-SpriteDef *ResourceManager::getSprite
-    (std::string const &path, int variant)
+SpriteDef *ResourceManager::getSprite(const std::string &path, int variant)
 {
     SpriteDefLoader l = { path, variant };
     std::stringstream ss;
@@ -381,7 +380,8 @@ void ResourceManager::release(Resource *res)
 ResourceManager *ResourceManager::getInstance()
 {
     // Create a new instance if necessary.
-    if (instance == NULL) instance = new ResourceManager();
+    if (!instance)
+        instance = new ResourceManager();
     return instance;
 }
 

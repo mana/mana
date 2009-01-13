@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2007 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,21 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "hbox.h"
+#ifndef _TMW_UTILS_GETTEXT_H
+#define _TMW_UTILS_GETTEXT_H
 
-void HBox::draw(gcn::Graphics *graphics)
-{
-    int widgetCount = mWidgets.size();
-    int childHeight = getHeight();
-    if (widgetCount == 0)
-        return;
-    int childWidth = getWidth() / widgetCount;
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-    int i = 0;
-    for (WidgetIterator w = mWidgets.begin(); w != mWidgets.end(); w++) {
-        (*w)->setPosition(childWidth * i - padding, 0);
-        (*w)->setSize(childWidth, childHeight);
-        i++;
-    }
-    gcn::Container::draw(graphics);
-}
+#if ENABLE_NLS
+
+#include <libintl.h>
+
+#define _(s) ((char const *)gettext(s))
+#define N_(s) ((char const *)s)
+
+#else
+
+#define gettext(s) ((char const *)s)
+#define _(s) ((char const *)s)
+#define N_(s) ((char const *)s)
+
+#endif
+
+#endif

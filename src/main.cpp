@@ -29,11 +29,13 @@
 #include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
-#include <guichan/sdl/sdlinput.hpp>
 #include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
 
+#ifdef WIN32
+#include <SDL_syswm.h>
+#endif
 #ifndef WIN32
 #include <cerrno>
 #include <sys/stat.h>
@@ -64,9 +66,10 @@
 #include "gui/ok_dialog.h"
 #include "gui/progressbar.h"
 #include "gui/register.h"
+#include "gui/sdlinput.h"
 #include "gui/setup.h"
-#include "gui/updatewindow.h"
 #include "gui/textfield.h"
+#include "gui/updatewindow.h"
 
 #include "net/charserverhandler.h"
 #include "net/loginhandler.h"
@@ -81,11 +84,8 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
+#include "utils/gettext.h"
 #include "utils/tostring.h"
-
-#ifdef WIN32
-#include <SDL_syswm.h>
-#endif
 
 namespace {
     Window *setupWindow = 0;
@@ -268,7 +268,7 @@ void init_engine(const Options &options)
     // Add the user's homedir to PhysicsFS search path
     resman->addToSearchPath(homeDir, false);
 
-    // Add the main data directory to our PhysicsFS search path
+    // Add the main data directories to our PhysicsFS search path
     if (!options.dataPath.empty()) {
         resman->addToSearchPath(options.dataPath, true);
     }
@@ -647,6 +647,7 @@ void mapLogin(Network *network, LoginData *loginData)
 
 } // namespace
 
+extern "C" char const *_nl_locale_name_default(void);
 
 /** Main */
 int main(int argc, char *argv[])
@@ -667,6 +668,17 @@ int main(int argc, char *argv[])
         printVersion();
         return 0;
     }
+
+#if ENABLE_NLS
+#ifdef WIN32
+        putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+#endif
+        setlocale(LC_MESSAGES, "");
+        bindtextdomain("tmw", LOCALEDIR);
+        bind_textdomain_codeset("tmw", "UTF-8");
+        textdomain("tmw");
+#endif
+
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.
     xmlInitParser();
@@ -701,7 +713,7 @@ int main(int argc, char *argv[])
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
     progressBar->setVisible(false);
-    gcn::Button *setup = new Button("Setup", "Setup", &listener);
+    gcn::Button *setup = new Button(_("Setup"), "Setup", &listener);
     setup->setPosition(top->getWidth() - setup->getWidth() - 3, 3);
     top->add(setup);
 
@@ -754,7 +766,7 @@ int main(int argc, char *argv[])
             if (!network->getError().empty()) {
                 errorMessage = network->getError();
             } else {
-                errorMessage = "Got disconnected from server!";
+                errorMessage = _("Got disconnected from server!");
             }
         }
 
@@ -874,7 +886,8 @@ int main(int argc, char *argv[])
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
-                                                         1 - loginData.sex);
+                            (loginData.sex == 0) ?
+                            GENDER_FEMALE : GENDER_MALE);
 
                     if (((CharSelectDialog*) currentDialog)->
                             selectByName(options.playername))
@@ -929,7 +942,7 @@ int main(int argc, char *argv[])
 
                 case ERROR_STATE:
                     logger->log("State: ERROR");
-                    currentDialog = new OkDialog("Error", errorMessage);
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     network->disconnect();
@@ -939,7 +952,8 @@ int main(int argc, char *argv[])
                 case CONNECTING_STATE:
                     logger->log("State: CONNECTING");
                     progressBar->setVisible(true);
-                    progressLabel->setCaption("Connecting to map server...");
+                    progressLabel->setCaption(
+                            _("Connecting to map server..."));
                     progressLabel->adjustSize();
                     mapLogin(network, &loginData);
                     break;
@@ -947,7 +961,7 @@ int main(int argc, char *argv[])
                 case CHAR_CONNECT_STATE:
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
-                            "Connecting to character server...");
+                            _("Connecting to character server..."));
                     progressLabel->adjustSize();
                     charLogin(network, &loginData);
                     break;
@@ -955,7 +969,7 @@ int main(int argc, char *argv[])
                 case ACCOUNT_STATE:
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
-                            "Connecting to account server...");
+                            _("Connecting to account server..."));
                     progressLabel->adjustSize();
                     accountLogin(network, &loginData);
                     break;

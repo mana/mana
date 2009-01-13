@@ -29,15 +29,18 @@
 #include "shoplistbox.h"
 #include "slider.h"
 
+#include "widgets/layout.h"
+
 #include "../npc.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
-#include "../utils/tostring.h"
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 
 BuyDialog::BuyDialog(Network *network):
-    Window("Buy"), mNetwork(network),
+    Window(_("Buy")), mNetwork(network),
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     setWindowName("Buy");
@@ -52,17 +55,16 @@ BuyDialog::BuyDialog(Network *network):
     mScrollArea = new ScrollArea(mShopItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
-    mMoneyLabel = new gcn::Label("Price : 0 GP / 0 GP");
+    mMoneyLabel = new gcn::Label(strprintf(_("Price: %d GP / Total: %d GP"), 0, 0));
     mIncreaseButton = new Button("+", "+", this);
     mDecreaseButton = new Button("-", "-", this);
-    mBuyButton = new Button("Buy", "buy", this);
-    mQuitButton = new Button("Quit", "quit", this);
-    mItemDescLabel = new gcn::Label("Description:");
-    mItemEffectLabel = new gcn::Label("Effect:");
+    mBuyButton = new Button(_("Buy"), "buy", this);
+    mQuitButton = new Button(_("Quit"), "quit", this);
+    mItemDescLabel = new gcn::Label(strprintf(_("Description: %s"), ""));
+    mItemEffectLabel = new gcn::Label(strprintf(_("Effect: %s"), ""));
 
     mIncreaseButton->setSize(20, 20);
     mDecreaseButton->setSize(20, 20);
-    mQuantityLabel->setWidth(60);
 
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mIncreaseButton->setEnabled(false);
@@ -70,22 +72,22 @@ BuyDialog::BuyDialog(Network *network):
     mBuyButton->setEnabled(false);
     mSlider->setEnabled(false);
 
-    mShopItemList->setActionEventId("item");
     mSlider->setActionEventId("slider");
-
-    mShopItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
+    mShopItemList->addSelectionListener(this);
 
-    add(mScrollArea);
-    add(mSlider);
-    add(mQuantityLabel);
-    add(mBuyButton);
-    add(mQuitButton);
-    add(mIncreaseButton);
-    add(mDecreaseButton);
-    add(mMoneyLabel);
-    add(mItemDescLabel);
-    add(mItemEffectLabel);
+    place(0, 0, mScrollArea, 5).setPadding(3);
+    place(0, 1, mQuantityLabel, 2);
+    place(2, 1, mSlider, 3);
+    place(0, 2, mMoneyLabel, 5);
+    place(0, 3, mItemEffectLabel, 5);
+    place(0, 4, mItemDescLabel, 5);
+    place(0, 5, mDecreaseButton);
+    place(1, 5, mIncreaseButton);
+    place(3, 5, mBuyButton);
+    place(4, 5, mQuitButton);
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
     setLocationRelativeTo(getParent());
@@ -159,7 +161,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     }
     // TODO: Actually we'd have a bug elsewhere if this check for the number
     // of items to be bought ever fails, Bertram removed the assertions, is
-    // there a better way to ensure this fails in an _obivous_ way in C++?
+    // there a better way to ensure this fails in an _obvious_ way in C++?
     else if (event.getId() == "buy" && mAmountItems > 0 &&
                 mAmountItems <= mMaxItems)
     {
@@ -191,53 +193,7 @@ void BuyDialog::valueChanged(const gcn::SelectionEvent &event)
     mSlider->gcn::Slider::setScale(1, mMaxItems);
 }
 
-void BuyDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    mDecreaseButton->setPosition(8, height - 8 - mDecreaseButton->getHeight());
-    mIncreaseButton->setPosition(
-            mDecreaseButton->getX() + mDecreaseButton->getWidth() + 5,
-            mDecreaseButton->getY());
-
-    mQuitButton->setPosition(
-            width - 8 - mQuitButton->getWidth(),
-            height - 8 - mQuitButton->getHeight());
-    mBuyButton->setPosition(
-            mQuitButton->getX() - 5 - mBuyButton->getWidth(),
-            mQuitButton->getY());
-
-    mItemDescLabel->setDimension(gcn::Rectangle(8,
-                mBuyButton->getY() - 5 - mItemDescLabel->getHeight(),
-                width - 16,
-                mItemDescLabel->getHeight()));
-    mItemEffectLabel->setDimension(gcn::Rectangle(8,
-                mItemDescLabel->getY() - 5 - mItemEffectLabel->getHeight(),
-                width - 16,
-                mItemEffectLabel->getHeight()));
-    mMoneyLabel->setDimension(gcn::Rectangle(8,
-                mItemEffectLabel->getY() - 5 - mMoneyLabel->getHeight(),
-                width - 16,
-                mMoneyLabel->getHeight()));
-
-    mQuantityLabel->setPosition(
-            width - mQuantityLabel->getWidth() - 8,
-            mMoneyLabel->getY() - 5 - mQuantityLabel->getHeight());
-    mSlider->setDimension(gcn::Rectangle(8,
-                mQuantityLabel->getY(),
-                mQuantityLabel->getX() - 8 - 8,
-                10));
-
-    mScrollArea->setDimension(gcn::Rectangle(8, 8, width - 16,
-                mSlider->getY() - 5 - 8));
-}
-
-void
-BuyDialog::updateButtonsAndLabels()
+void BuyDialog::updateButtonsAndLabels()
 {
     const int selectedItem = mShopItemList->getSelected();
     int price = 0;
@@ -246,8 +202,10 @@ BuyDialog::updateButtonsAndLabels()
     {
         const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
 
-        mItemDescLabel->setCaption("Description: " + info.getDescription());
-        mItemEffectLabel->setCaption("Effect: " + info.getEffect());
+        mItemDescLabel->setCaption
+            (strprintf(_("Description: %s"), info.getDescription().c_str()));
+        mItemEffectLabel->setCaption
+            (strprintf(_("Effect: %s"), info.getEffect().c_str()));
 
         int itemPrice = mShopItems->at(selectedItem)->getPrice();
 
@@ -263,8 +221,8 @@ BuyDialog::updateButtonsAndLabels()
     }
     else
     {
-        mItemDescLabel->setCaption("Description:");
-        mItemEffectLabel->setCaption("Effect:");
+        mItemDescLabel->setCaption(strprintf(_("Description: %s"), ""));
+        mItemEffectLabel->setCaption(strprintf(_("Effect: %s"), ""));
         mMaxItems = 0;
         mAmountItems = 0;
     }
@@ -276,8 +234,7 @@ BuyDialog::updateButtonsAndLabels()
     mSlider->setEnabled(mMaxItems > 1);
 
     // Update quantity and money labels
-    mQuantityLabel->setCaption(
-        toString(mAmountItems) + " / " + toString(mMaxItems));
-    mMoneyLabel->setCaption("Price: " + toString(price)  + " GP / "
-                             + toString(mMoney - price) + " GP" );
+    mQuantityLabel->setCaption(strprintf("%d / %d", mAmountItems, mMaxItems));
+    mMoneyLabel->setCaption
+        (strprintf(_("Price: %d GP / Total: %d GP"), price, mMoney - price));
 }

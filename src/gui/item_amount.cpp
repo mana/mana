@@ -26,64 +26,64 @@
 #include "slider.h"
 #include "trade.h"
 
+#include "widgets/layout.h"
+
 #include "../item.h"
 #include "../localplayer.h"
 
+#include "../utils/gettext.h"
+
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
-    Window("Select amount of items to drop.", true, parent),
+    Window("", true, parent),
     mItem(item)
 {
-    // New labels
+    const int maxRange = mItem->getQuantity();
+
+    // Integer field
     mItemAmountTextBox = new IntTextBox(1);
+    mItemAmountTextBox->setRange(1, maxRange);
+    mItemAmountTextBox->setWidth(30);
+    mItemAmountTextBox->setActionEventId("Dummy");
+    mItemAmountTextBox->addActionListener(this);
 
-    // New buttons
-    Button *minusButton = new Button("-", "Minus", this);
-    Button *plusButton = new Button("+", "Plus", this);
-    Button *okButton = new Button("Okay", "Drop", this);
-    Button *cancelButton = new Button("Cancel", "Cancel", this);
-    mItemAmountSlide = new Slider(1.0, mItem->getQuantity());
-
-    mItemAmountTextBox->setRange(1, mItem->getQuantity());
-    mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
-
-    // Set button events Id
+    // Slider
+    mItemAmountSlide = new Slider(1.0, maxRange);
+    mItemAmountSlide->setHeight(10);
     mItemAmountSlide->setActionEventId("Slide");
-
-    // Set position
-    mItemAmountTextBox->setPosition(35, 10);
-    mItemAmountTextBox->setSize(24, 16);
-    plusButton->setPosition(60, 5);
-    minusButton->setPosition(10, 5);
-    mItemAmountSlide->setPosition(10, 35);
-    okButton->setPosition(10, 50);
-    cancelButton->setPosition(60, 50);
-
-    // Assemble
-    add(mItemAmountTextBox);
-    add(plusButton);
-    add(minusButton);
-    add(mItemAmountSlide);
-    add(okButton);
-    add(cancelButton);
-
     mItemAmountSlide->addActionListener(this);
+
+    // Buttons
+    Button *minusButton = new Button("-", "Minus", this);
+    minusButton->setSize(20, 20);
+    Button *plusButton = new Button("+", "Plus", this);
+    plusButton->setSize(20, 20);
+    Button *okButton = new Button(_("Ok"), "Drop", this);
+    Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
+
+    // Set positions
+    place(0, 0, minusButton);
+    place(1, 0, mItemAmountTextBox).setPadding(2);
+    place(2, 0, plusButton);
+    place(0, 1, mItemAmountSlide, 6);
+    place(4, 2, okButton);
+    place(5, 2, cancelButton);
+    reflowLayout(250, 0);
 
     resetAmount();
 
     switch (usage) {
         case AMOUNT_TRADE_ADD:
-            setCaption("Select amount of items to trade.");
+            setCaption(_("Select amount of items to trade."));
             okButton->setActionEventId("AddTrade");
             break;
         case AMOUNT_ITEM_DROP:
-            setCaption("Select amount of items to drop.");
+            setCaption(_("Select amount of items to drop."));
             okButton->setActionEventId("Drop");
             break;
         default:
             break;
     }
 
-    setContentSize(200, 80);
     setLocationRelativeTo(getParentWindow());
     setVisible(true);
 }
@@ -101,16 +101,6 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     {
         scheduleDelete();
     }
-    else if (event.getId() == "Drop")
-    {
-        player_node->dropItem(mItem, mItemAmountTextBox->getInt());
-        scheduleDelete();
-    }
-    else if (event.getId() == "AddTrade")
-    {
-        tradeWindow->tradeItem(mItem, mItemAmountTextBox->getInt());
-        scheduleDelete();
-    }
     else if (event.getId() == "Plus")
     {
         amount++;
@@ -123,7 +113,16 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     {
         amount = static_cast<int>(mItemAmountSlide->getValue());
     }
+    else if (event.getId() == "Drop")
+    {
+        player_node->dropItem(mItem, mItemAmountTextBox->getInt());
+        scheduleDelete();
+    }
+    else if (event.getId() == "AddTrade")
+    {
+        tradeWindow->tradeItem(mItem, mItemAmountTextBox->getInt());
+        scheduleDelete();
+    }
     mItemAmountTextBox->setInt(amount);
     mItemAmountSlide->setValue(amount);
 }
-

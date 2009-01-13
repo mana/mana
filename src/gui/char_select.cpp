@@ -31,6 +31,8 @@
 #include "playerbox.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
 #include "../game.h"
 #include "../localplayer.h"
 #include "../main.h"
@@ -38,7 +40,8 @@
 #include "../net/charserverhandler.h"
 #include "../net/messageout.h"
 
-#include "../utils/tostring.h"
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/trim.h"
 
 // Defined in main.cpp, used here for setting the char create dialog
@@ -57,8 +60,8 @@ class CharDeleteConfirm : public ConfirmDialog
 };
 
 CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
-    ConfirmDialog("Confirm", "Are you sure you want to delete this character?",
-            m),
+    ConfirmDialog(_("Confirm Character Delete"),
+                  _("Are you sure you want to delete this character?"), m),
     master(m)
 {
 }
@@ -74,55 +77,42 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 
 CharSelectDialog::CharSelectDialog(Network *network,
                                    LockedArray<LocalPlayer*> *charInfo,
-                                   unsigned char gender):
-    Window("Select Character"), mNetwork(network),
+                                   Gender gender):
+    Window(_("Select Character")), mNetwork(network),
     mCharInfo(charInfo), mGender(gender), mCharSelected(false)
 {
-    mSelectButton = new Button("Ok", "ok", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mNewCharButton = new Button("New", "new", this);
-    mDelCharButton = new Button("Delete", "delete", this);
-    mPreviousButton = new Button("Previous", "previous", this);
-    mNextButton = new Button("Next", "next", this);
+    mSelectButton = new Button(_("Ok"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mNewCharButton = new Button(_("New"), "new", this);
+    mDelCharButton = new Button(_("Delete"), "delete", this);
+    mPreviousButton = new Button(_("Previous"), "previous", this);
+    mNextButton = new Button(_("Next"), "next", this);
 
-    mNameLabel = new gcn::Label("Name");
-    mLevelLabel = new gcn::Label("Level");
-    mJobLevelLabel = new gcn::Label("Job Level");
-    mMoneyLabel = new gcn::Label("Money");
-    mPlayerBox = new PlayerBox();
+    mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
+    mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
+    mJobLevelLabel = new gcn::Label(strprintf(_("Job Level: %d"), 0));
+    mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
 
-    int w = 195;
-    int h = 220;
-    setContentSize(w, h);
-    mPlayerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
-    mNameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
-    mLevelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
-    mJobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
-    mMoneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
-    mPreviousButton->setPosition(5, 170);
-    mNextButton->setPosition(mPreviousButton->getWidth() + 10, 170);
-    mNewCharButton->setPosition(5, h - 5 - mNewCharButton->getHeight());
-    mDelCharButton->setPosition(
-            5 + mNewCharButton->getWidth() + 5,
-            mNewCharButton->getY());
-    mCancelButton->setPosition(
-            w - 5 - mCancelButton->getWidth(),
-            mNewCharButton->getY());
-    mSelectButton->setPosition(
-            mCancelButton->getX() - 5 - mSelectButton->getWidth(),
-            mNewCharButton->getY());
+    // Control that shows the Player
+    mPlayerBox = new PlayerBox;
+    mPlayerBox->setWidth(74);
 
-    add(mPlayerBox);
-    add(mSelectButton);
-    add(mCancelButton);
-    add(mNewCharButton);
-    add(mDelCharButton);
-    add(mPreviousButton);
-    add(mNextButton);
-    add(mNameLabel);
-    add(mLevelLabel);
-    add(mJobLevelLabel);
-    add(mMoneyLabel);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+    place(0, 0, mPlayerBox, 1, 6).setPadding(3);
+    place(1, 0, mNameLabel, 3);
+    place(1, 1, mLevelLabel, 3);
+    place(1, 2, mJobLevelLabel, 3);
+    place(1, 3, mMoneyLabel, 3);
+    place(1, 4, mPreviousButton);
+    place(2, 4, mNextButton);
+    place(1, 5, mNewCharButton);
+    place(2, 5, mDelCharButton);
+    place.getCell().matchColWidth(1, 2);
+    place = getPlacer(0, 2);
+    place(0, 0, mSelectButton);
+    place(1, 0, mCancelButton);
+    reflowLayout(265, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -178,10 +168,10 @@ void CharSelectDialog::updatePlayerInfo()
 
     if (pi)
     {
-        mNameLabel->setCaption(pi->getName());
-        mLevelLabel->setCaption("Lvl: " + toString(pi->mLevel));
-        mJobLevelLabel->setCaption("Job Lvl: " + toString(pi->mJobLevel));
-        mMoneyLabel->setCaption("Gold: " + toString(pi->mGp));
+        mNameLabel->setCaption(strprintf(_("Name: %s"), pi->getName().c_str()));
+        mLevelLabel->setCaption(strprintf(_("Level: %d"), pi->mLevel));
+        mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"), pi->mJobLevel));
+        mMoneyLabel->setCaption(strprintf(_("Gold: %d"), pi->mGp));
         if (!mCharSelected)
         {
             mNewCharButton->setEnabled(false);
@@ -190,10 +180,10 @@ void CharSelectDialog::updatePlayerInfo()
         }
     }
     else {
-        mNameLabel->setCaption("Name");
-        mLevelLabel->setCaption("Level");
-        mJobLevelLabel->setCaption("Job Level");
-        mMoneyLabel->setCaption("Money");
+        mNameLabel->setCaption(strprintf(_("Name: %s"), ""));
+        mLevelLabel->setCaption(strprintf(_("Level: %d"), 0));
+        mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"), 0));
+        mMoneyLabel->setCaption(strprintf(_("Money: %d"), 0));
         mNewCharButton->setEnabled(true);
         mDelCharButton->setEnabled(false);
         mSelectButton->setEnabled(false);
@@ -249,23 +239,23 @@ bool CharSelectDialog::selectByName(const std::string &name)
 }
 
 CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
-                                   unsigned char gender):
-    Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
+                                   Gender gender):
+    Window(_("Create Character"), true, parent), mNetwork(network), mSlot(slot)
 {
     mPlayer = new Player(0, 0, NULL);
     mPlayer->setGender(gender);
     mPlayer->setHairStyle(rand() % Being::getHairStylesNr(), rand() % Being::getHairColorsNr());
 
     mNameField = new TextField("");
-    mNameLabel = new gcn::Label("Name:");
+    mNameLabel = new gcn::Label(_("Name:"));
     mNextHairColorButton = new Button(">", "nextcolor", this);
     mPrevHairColorButton = new Button("<", "prevcolor", this);
-    mHairColorLabel = new gcn::Label("Hair Color:");
+    mHairColorLabel = new gcn::Label(_("Hair Color:"));
     mNextHairStyleButton = new Button(">", "nextstyle", this);
     mPrevHairStyleButton = new Button("<", "prevstyle", this);
-    mHairStyleLabel = new gcn::Label("Hair Style:");
-    mCreateButton = new Button("Create", "create", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
+    mHairStyleLabel = new gcn::Label(_("Hair Style:"));
+    mCreateButton = new Button(_("Create"), "create", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayerBox = new PlayerBox(mPlayer);
 
     mNameField->setActionEventId("create");

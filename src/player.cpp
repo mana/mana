@@ -105,25 +105,17 @@ Player::flash(int time)
     }
 }
 
-void Player::setGender(int gender)
+void Player::setGender(Gender gender)
 {
-    // Players can only be male or female
-    if (gender > 1)
-    {
-        logger->log("Warning: unsupported gender %i, assuming male.", gender);
-        gender = 0;
-    }
-
-
     if (gender != mGender)
     {
         Being::setGender(gender);
 
-        setSprite(Being::BASE_SPRITE, -100); /* Human base sprite. When implementing
-                                              * different races remove this line
-                                              * and set the base sprite when setting
-                                              * the race of the player character.
-                                              */
+        /* Human base sprite. When implementing different races remove this
+         * line and set the base sprite when setting the race of the player
+         * character.
+         */
+        setSprite(Being::BASE_SPRITE, -100);
 
         // Reload all subsprites
         for (int i = 1; i < VECTOREND_SPRITE; i++)

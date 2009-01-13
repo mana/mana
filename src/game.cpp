@@ -26,7 +26,6 @@
 #include <sstream>
 #include <string>
 
-#include <guichan/sdl/sdlinput.hpp>
 #include <guichan/exception.hpp>
 
 #include "beingmanager.h"
@@ -59,6 +58,7 @@
 #include "gui/npclistdialog.h"
 #include "gui/npc_text.h"
 #include "gui/ok_dialog.h"
+#include "gui/sdlinput.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/skill.h"
@@ -83,7 +83,6 @@
 #include "resources/imagewriter.h"
 
 extern Graphics *graphics;
-extern gcn::SDLInput *guiInput;
 
 class Map;
 
@@ -229,6 +228,7 @@ void createGuiWindows(Network *network)
  */
 void destroyGuiWindows()
 {
+    logger->setChatWindow(NULL);
     delete chatWindow;
     delete statusWindow;
     delete miniStatusWindow;

@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2008 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,15 +19,40 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef VBOX_H
-#define VBOX_H
+#ifndef TMW_POSITION_H
+#define TMW_POSITION_H
 
-#include "box.h"
+#include <list>
+#include <iostream>
 
-class VBox : public Box
+/**
+ * A position along a being's path.
+ */
+struct Position
 {
-    public:
-        void draw(gcn::Graphics *);
+    /**
+     * Constructor.
+     */
+    Position(int x, int y):
+        x(x), y(y)
+    { }
+
+    int x;
+    int y;
 };
 
-#endif
+typedef std::list<Position> Path;
+typedef Path::iterator PathIterator;
+
+/**
+ * Appends a string representation of a position to the output stream.
+ */
+std::ostream& operator <<(std::ostream &os, const Position &p);
+
+/**
+ * Appends a string representation of a path (sequence of positions) to the
+ * output stream.
+ */
+std::ostream& operator <<(std::ostream &os, const Path &path);
+
+#endif // TMW_POSITION_H

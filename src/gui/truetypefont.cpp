@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
 
 #include "truetypefont.h"
@@ -47,8 +45,7 @@ class TextChunk
 
         bool operator==(const TextChunk &chunk) const
         {
-            return (
-                chunk.text == text && chunk.color == color);
+            return (chunk.text == text && chunk.color == color);
         }
 
         void generate(TTF_Font *font)
@@ -84,7 +81,7 @@ typedef std::list<TextChunk>::iterator CacheIterator;
 
 static int fontCounter;
 
-TrueTypeFont::TrueTypeFont(const std::string& filename, int size)
+TrueTypeFont::TrueTypeFont(const std::string &filename, int size)
 {
     if (fontCounter == 0 && TTF_Init() == -1)
     {
@@ -167,7 +164,7 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
     g->drawImage(cache.front().img, x, y);
 }
 
-int TrueTypeFont::getWidth(const std::string& text) const
+int TrueTypeFont::getWidth(const std::string &text) const
 {
     int w, h;
     TTF_SizeUTF8(mFont, text.c_str(), &w, &h);

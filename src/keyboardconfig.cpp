@@ -23,8 +23,6 @@
 #include "configuration.h"
 #include "log.h"
 
-#include <guichan/sdl/sdlinput.hpp>
-
 #include "gui/setup_keyboard.h"
 
 struct KeyData

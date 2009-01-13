@@ -12,7 +12,7 @@ IRC:       irc.freenode.net / #themanaworld
 1. Requirements
 ===============
 
-You are expected to have either checked out TMW from CVS or you have downloaded
+You are expected to have either checked out TMW from Git or you have downloaded
 a source release. To get The Mana World to compile, you need a compiler (GCC)
 and some libraries. The required libraries are:
 
@@ -20,6 +20,7 @@ and some libraries. The required libraries are:
 * SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/
 * SDL_image         http://www.libsdl.org/projects/SDL_image/
 * SDL_net           http://www.libsdl.org/projects/SDL_net/
+* SDL_ttf           http://www.libsdl.org/projects/SDL_ttf/
 * Guichan 0.8.x     http://guichan.sourceforge.net/
 * libxml2           http://www.xmlsoft.org/
 * physfs 1.0.x      http://icculus.org/physfs/
@@ -30,6 +31,8 @@ If you've cloned the Git repository, you will also need these tools to compile:
 
 * GNU automake 1.9  http://www.gnu.org/software/automake/
 * GNU autoconf      http://www.gnu.org/software/autoconf/
+* GNU gettext       http://www.gnu.org/software/gettext/
+* CVS               http://www.nongnu.org/cvs/ (needed to run autopoint)
 
 Installing these dependencies is distributions-specific, and we'll leave it to
 you to figure this out.

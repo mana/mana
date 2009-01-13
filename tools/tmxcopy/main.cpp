@@ -28,7 +28,7 @@ int main(int argc, char * argv[] )
     // parsing command line options
     if (argc < 9 || argc > 10)
     {
-        std::cerr<<"Usage: srcFile x y width height tgtFile x y [outfile]";
+        std::cerr<<"Usage: srcFile x y width height tgtFile x y [outfile]\n";
         return -1;
     }
 

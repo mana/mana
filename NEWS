@@ -1,3 +1,11 @@
+0.0.28 (...)
+- Added support for animated map tiles
+- Added support for internationalization, plus many translations
+- Added support for TrueType fonts
+- Trade window is now resizable
+- Obscure precise home directory name when making screenshots
+- Fixed follow-parent of nested and being-following particle emitters
+
 0.0.27 (9 December 2008)
 - Added support for showing map name above minimap
 - Added showing how long the ban is when banned
@@ -368,7 +376,7 @@
 - Added 'enter' key support in login screen
 - Added RLE sprites for tiles
 - Added collision detection with beings
-- Fix for mapserver segfault-bug in chatsystem (broken pipe for all users on 
+- Fix for mapserver segfault-bug in chatsystem (broken pipe for all users on
   screen)
 - Partially added TMW GUI to inventory
 - Added soundpool that can preload, play and remove items to/from ram

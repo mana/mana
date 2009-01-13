@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 header("Content-type: text/html");
-header("Cache-Control: no-store, no-cache, must-revalidate"); 
+header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
@@ -31,6 +31,8 @@ header("Pragma: no-cache");
 List of current updates:
 
 <?php
+$download_url_base = 'http://updates.themanaworld.org/tmwdata/';
+$checkout_path = '/home/eathena/public_html/updates/tmwdata/';
 $update_file = array_filter(array_reverse(file('resources2.txt')));
 $updates = array();
 $update_file_maxlen = 0;
@@ -62,16 +64,20 @@ foreach ($update_file as $update_line)
       $update['uncompressed_size'] += zip_entry_filesize($zip_entry);
       $entry_name = zip_entry_name($zip_entry);
       $entry_size = zip_entry_compressedsize($zip_entry);
+      $entry_exists = file_exists($checkout_path . $entry_name);
       $entry_used = !array_key_exists($entry_name, $update_entries);
       $entries[$entry_name] = array(
         'name' => $entry_name,
         'size' => $entry_size,
-        'used' => $entry_used);
+        'used' => $entry_used,
+        'obsolete' => !$entry_exists);
       $update['size'] += $entry_size;
 
       if ($entry_used) {
-        $update['used_entry_count']++;
-        $update['used_size'] += $entry_size;
+        if ($entry_exists) {
+          $update['used_entry_count']++;
+          $update['used_size'] += $entry_size;
+        }
         $update_entries[$entry_name] = $update;
       }
 
@@ -107,7 +113,7 @@ function print_update_name($update, $pad = true)
 foreach (array_reverse($updates) as $update)
 {
   print_update_name($update);
-  echo '  '. $update['adler32'];
+  printf("  %8s", $update['adler32']);
   printf("  %4d kb", $update['filesize'] / 1024);
   if (!$update['zip_error']) {
     printf("  %4d kb", $update['uncompressed_size'] / 1024);
@@ -140,8 +146,14 @@ ksort($update_entries);
 
 foreach ($update_entries as $entry => $update)
 {
-  printf("%-{$update_entry_maxlen}s  ", $entry);
-  print_update_name($update, false);
+  $exists = file_exists($checkout_path . $entry);
+  printf("<span style=\"color: %s;\">%-{$update_entry_maxlen}s</span>  ",
+    $exists ? "black" : "rgb(100,100,100)",
+    $entry);
+  print_update_name($update, true);
+
+  if ($exists && substr($entry, strlen($entry) - 1) != '/')
+    printf('  <a href="%s%s">download</a>', $download_url_base, $entry);
   echo "\n";
 }
 
@@ -153,10 +165,13 @@ foreach (array_reverse($updates) as $update)
   print "\n<a name=\"".$update['file']."\"/><b>".$update['file']."</b>\n";
 
   foreach ($update['entries'] as $entry_name => $entry) {
-    printf("%-{$update_entry_maxlen}s", $entry_name);
-    if ($entry['used']) {
+    printf("%s%-{$update_entry_maxlen}s%s",
+      $entry['obsolete'] ? "<span style=\"color: rgb(100,100,100);\">" : "",
+      $entry_name,
+      $entry['obsolete'] ? "</span>" : "");
+    if ($entry['used'] && !$entry['obsolete']) {
       echo '  *';
-    } else {
+    } elseif (!$entry['obsolete']) {
       echo '  ';
       print_update_name($update_entries[$entry_name], false);
     }

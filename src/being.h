@@ -28,6 +28,7 @@
 #include <SDL_types.h>
 #include <set>
 
+#include "position.h"
 #include "sprite.h"
 #include "map.h"
 #include "animatedsprite.h"
@@ -46,26 +47,13 @@ class ImageSet;
 class Particle;
 class Text;
 
-
 class StatusEffect;
 
-/**
- * A position along a being's path.
- */
-struct PATH_NODE
-{
-    /**
-     * Constructor.
-     */
-    PATH_NODE(unsigned short x, unsigned short y):
-        x(x), y(y)
-    { }
-
-    unsigned short x;
-    unsigned short y;
+enum Gender {
+    GENDER_MALE = 0,
+    GENDER_FEMALE = 1,
+    GENDER_UNSPECIFIED = 2
 };
-typedef std::list<PATH_NODE> Path;
-typedef Path::iterator PathIterator;
 
 class Being : public Sprite
 {
@@ -115,10 +103,7 @@ class Being : public Sprite
         /**
          * Directions, to be used as bitmask values
          */
-        static const char DOWN = 1;
-        static const char LEFT = 2;
-        static const char UP = 4;
-        static const char RIGHT = 8;
+        enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
@@ -213,12 +198,12 @@ class Being : public Sprite
         /**
          * Sets the gender of this being.
          */
-        virtual void setGender(int gender) { mGender = gender; }
+        virtual void setGender(Gender gender) { mGender = gender; }
 
         /**
          * Gets the gender of this being.
          */
-        int getGender() const { return mGender; }
+        Gender getGender() const { return mGender; }
 
         /**
          * Makes this being take the next step of his path.
@@ -438,7 +423,7 @@ class Being : public Sprite
         Path mPath;
         Text *mSpeech;
         Uint16 mHairStyle, mHairColor;
-        Uint8 mGender;
+        Gender mGender;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
         Uint16 mStunMode;               /**< Stun mode; zero if not stunned */

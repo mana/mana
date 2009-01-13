@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2007 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,25 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "vbox.h"
+#include "vector.h"
 
-void VBox::draw(gcn::Graphics *graphics)
+std::ostream& operator <<(std::ostream &os, const Vector &v)
 {
-    if (mWidgets.empty())
-    {
-        return;
-    }
-
-    int childWidth = getWidth();
-    int childHeight = getHeight() / mWidgets.size();
-    int i = 0;
-
-    for (WidgetIterator w = mWidgets.begin(); w != mWidgets.end(); w++)
-    {
-        (*w)->setPosition(0, childHeight * i - padding);
-        (*w)->setSize(childWidth, childHeight);
-        i++;
-    }
-
-    gcn::Container::draw(graphics);
+    os << "Vector(" << v.x << ", " << v.y << ", " << v.z << ")";
+    return os;
 }

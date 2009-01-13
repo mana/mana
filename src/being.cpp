@@ -70,7 +70,7 @@ Being::Being(int id, int job, Map *map):
     mMap(NULL),
     mEquippedWeapon(NULL),
     mHairStyle(1), mHairColor(0),
-    mGender(2),
+    mGender(GENDER_UNSPECIFIED),
     mSpeechTime(0),
     mPx(0), mPy(0),
     mStunMode(0),
@@ -322,29 +322,29 @@ void Being::nextStep()
         return;
     }
 
-    PATH_NODE node = mPath.front();
+    Position pos = mPath.front();
     mPath.pop_front();
 
     int dir = 0;
-    if (node.x > mX)
+    if (pos.x > mX)
         dir |= RIGHT;
-    else if (node.x < mX)
+    else if (pos.x < mX)
         dir |= LEFT;
-    if (node.y > mY)
+    if (pos.y > mY)
         dir |= DOWN;
-    else if (node.y < mY)
+    else if (pos.y < mY)
         dir |= UP;
 
     setDirection(dir);
 
-    if (mMap->tileCollides(node.x, node.y))
+    if (mMap->tileCollides(pos.x, pos.y))
     {
         setAction(STAND);
         return;
     }
 
-    mX = node.x;
-    mY = node.y;
+    mX = pos.x;
+    mY = pos.y;
     setAction(WALK);
     mWalkTime += mWalkSpeed / 10;
 }
@@ -669,9 +669,10 @@ static void initializeHair()
     if (hairInitialized)
         return;
 
-    // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
+    // Hairstyles are encoded as negative numbers. Count how far negative we
+    // can go.
     int hairstylesCtr = -1;
-    while (ItemDB::get(hairstylesCtr).getSprite(0) != "error.xml")
+    while (ItemDB::get(hairstylesCtr).getSprite(GENDER_MALE) != "error.xml")
         --hairstylesCtr;
 
     hairStylesNr = -hairstylesCtr; // done.

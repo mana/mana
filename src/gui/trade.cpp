@@ -41,6 +41,8 @@
 
 #include "../resources/iteminfo.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 TradeWindow::TradeWindow(Network *network):
@@ -56,10 +58,10 @@ TradeWindow::TradeWindow(Network *network):
     setMinWidth(342);
     setMinHeight(209);
 
-    mAddButton = new Button("Add", "add", this);
-    mOkButton = new Button("Ok", "ok", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mTradeButton = new Button("Trade", "trade", this);
+    mAddButton = new Button(_("Add"), "add", this);
+    mOkButton = new Button(_("Ok"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mTradeButton = new Button(_("Trade"), "trade", this);
 
     mMyItemContainer = new ItemContainer(mMyInventory.get());
     mMyItemContainer->addSelectionListener(this);
@@ -75,8 +77,8 @@ TradeWindow::TradeWindow(Network *network):
     mPartnerScroll = new ScrollArea(mPartnerItemContainer);
     mPartnerScroll->setPosition(8, 64);
 
-    mMoneyLabel = new gcn::Label("You get: 0 GP");
-    mMoneyLabel2 = new gcn::Label("You give:");
+    mMoneyLabel = new gcn::Label(strprintf(_("You get %d GP."), 0));
+    mMoneyLabel2 = new gcn::Label(_("You give:"));
     mMoneyField = new TextField;
     mMoneyField->setWidth(50);
 
@@ -87,8 +89,9 @@ TradeWindow::TradeWindow(Network *network):
 
     mTradeButton->setEnabled(false);
 
-    mItemNameLabel = new gcn::Label("Name:");
-    mItemDescriptionLabel = new gcn::Label("Description:");
+    mItemNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
+    mItemDescriptionLabel = new gcn::Label(
+        strprintf(_("Description: %s"), ""));
 
     add(mMyScroll);
     add(mPartnerScroll);
@@ -150,7 +153,7 @@ void TradeWindow::widgetResized(const gcn::Event &event)
 
 void TradeWindow::addMoney(int amount)
 {
-    mMoneyLabel->setCaption("You get: " + toString(amount) + " GP");
+    mMoneyLabel->setCaption(strprintf(_("You get %d GP."), amount));
     mMoneyLabel->adjustSize();
 }
 
@@ -198,7 +201,7 @@ void TradeWindow::reset()
     mOkButton->setEnabled(true);
     mOkOther = false;
     mOkMe = false;
-    mMoneyLabel->setCaption("You get: 0 GP");
+    mMoneyLabel->setCaption(strprintf(_("You get %d GP."), 0));
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
 }
@@ -257,21 +260,11 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
     }
 
     // Update name and description
-    if (!item)
-    {
-        mItemNameLabel->setCaption("Name:");
-        mItemDescriptionLabel->setCaption("Description:");
-    }
-    else
-    {
-        std::string SomeText;
-        SomeText = "Name: " + item->getInfo().getName();
-        mItemNameLabel->setCaption(SomeText);
-        mItemNameLabel->adjustSize();
-        SomeText = "Description: " + item->getInfo().getDescription();
-        mItemDescriptionLabel->setCaption(SomeText);
-        mItemDescriptionLabel->adjustSize();
-    }
+    ItemInfo const *info = item ? &item->getInfo() : NULL;
+    mItemNameLabel->setCaption(strprintf(_("Name: %s"),
+        info ? info->getName().c_str() : ""));
+    mItemDescriptionLabel->setCaption(strprintf(_("Description: %s"),
+        info ? info->getDescription().c_str() : ""));
 }
 
 void TradeWindow::action(const gcn::ActionEvent &event)
@@ -287,8 +280,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             return;
 
         if (mMyInventory->contains(item)) {
-            chatWindow->chatLog("Failed adding item. You can not "
-                    "overlap one kind of item on the window.", BY_SERVER);
+            chatWindow->chatLog(_("Failed adding item. You can not "
+                        "overlap one kind of item on the window."), BY_SERVER);
             return;
         }
 

@@ -25,7 +25,10 @@
 #include <list>
 #include <vector>
 
+#include "position.h"
 #include "properties.h"
+
+#include "simpleanimation.h"
 
 class AmbientOverlay;
 class Graphics;
@@ -34,8 +37,6 @@ class MapLayer;
 class Particle;
 class Sprite;
 class Tileset;
-
-struct PATH_NODE;
 
 typedef std::vector<Tileset*> Tilesets;
 typedef std::list<Sprite*> Sprites;
@@ -55,13 +56,30 @@ struct MetaTile
     MetaTile():whichList(0) {};
 
     // Pathfinding members
-    int Fcost;              /**< Estimation of total path cost */
-    int Gcost;              /**< Cost from start to this location */
-    int Hcost;              /**< Estimated cost to goal */
-    int whichList;          /**< No list, open list or closed list */
-    int parentX;            /**< X coordinate of parent tile */
-    int parentY;            /**< Y coordinate of parent tile */
-    bool walkable;          /**< Can beings walk on this tile */
+    int Fcost;               /**< Estimation of total path cost */
+    int Gcost;               /**< Cost from start to this location */
+    int Hcost;               /**< Estimated cost to goal */
+    int whichList;           /**< No list, open list or closed list */
+    int parentX;             /**< X coordinate of parent tile */
+    int parentY;             /**< Y coordinate of parent tile */
+    bool walkable;           /**< Can beings walk on this tile */
+};
+
+/**
+ * Animation cycle of a tile image which changes the map accordingly.
+ */
+class TileAnimation
+{
+    public:
+        TileAnimation(Animation *ani);
+        void update();
+        void addAffectedTile(MapLayer *layer, int index)
+        { mAffected.push_back(std::make_pair(layer, index)); }
+    private:
+        std::list<std::pair<MapLayer*, int> > mAffected;
+        SimpleAnimation mAnimation;
+        int mLastUpdate;
+        Image* mLastImage;
 };
 
 /**
@@ -87,6 +105,11 @@ class MapLayer
          * Set tile image, with x and y in layer coordinates.
          */
         void setTile(int x, int y, Image *img);
+
+        /**
+         * Set tile image with x + y * width already known.
+         */
+        void setTile(int index, Image *img) { mTiles[index] = img; }
 
         /**
          * Get tile image, with x and y in layer coordinates.
@@ -204,8 +227,7 @@ class Map : public Properties
         /**
          * Find a path from one location to the next.
          */
-        std::list<PATH_NODE>
-        findPath(int startX, int startY, int destX, int destY);
+        Path findPath(int startX, int startY, int destX, int destY);
 
         /**
          * Adds a sprite to the map.
@@ -227,8 +249,18 @@ class Map : public Properties
         /**
          * Initializes all added particle effects
          */
-        void
-        initializeParticleEffects(Particle* particleEngine);
+        void initializeParticleEffects(Particle* particleEngine);
+
+        /**
+         * Adds a tile animation to the map
+         */
+        void addAnimation(int gid, TileAnimation *animation)
+        { mTileAnimations[gid] = animation; }
+
+        /**
+         * Gets the tile animation for a specific gid
+         */
+        TileAnimation *getAnimationForGid(int gid);
 
     private:
         /**
@@ -272,6 +304,8 @@ class Map : public Properties
             int y;
         };
         std::list<ParticleEffectData> particleEffects;
+
+        std::map<int, TileAnimation*> mTileAnimations;
 };
 
 #endif

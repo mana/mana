@@ -51,8 +51,8 @@ MARK_AS_ADVANCED(SDL_LIBRARY)
 SET(SRCS
     gui/widgets/resizegrip.cpp
     gui/widgets/resizegrip.h
-    gui/box.cpp
-    gui/box.h
+    gui/widgets/layout.cpp
+    gui/widgets/layout.h
     gui/browserbox.cpp
     gui/browserbox.h
     gui/buddywindow.cpp
@@ -87,8 +87,6 @@ SET(SRCS
     gui/gccontainer.h
     gui/gui.cpp
     gui/gui.h
-    gui/hbox.cpp
-    gui/hbox.h
     gui/help.cpp
     gui/help.h
     gui/inttextbox.cpp
@@ -134,6 +132,8 @@ SET(SRCS
     gui/register.h
     gui/scrollarea.cpp
     gui/scrollarea.h
+    gui/sdlinput.cpp
+    gui/sdlinput.h
     gui/sell.cpp
     gui/sell.h
     gui/setup_audio.cpp
@@ -173,8 +173,6 @@ SET(SRCS
     gui/trade.h
     gui/updatewindow.h
     gui/updatewindow.cpp
-    gui/vbox.h
-    gui/vbox.cpp
     gui/viewport.cpp
     gui/viewport.h
     gui/window.cpp
@@ -261,6 +259,7 @@ SET(SRCS
     utils/base64.h
     utils/dtor.h
     utils/fastsqrt.h
+    utils/gettext.h
     utils/strprintf.cpp
     utils/strprintf.h
     utils/tostring.h
@@ -328,6 +327,8 @@ SET(SRCS
     player.h
     player_relations.cpp
     player_relations.h
+    position.cpp
+    position.h
     properties.h
     serverinfo.h
     shopitem.cpp
@@ -340,6 +341,7 @@ SET(SRCS
     textparticle.cpp
     textparticle.h
     tileset.h
+    vector.cpp
     vector.h
     )
 

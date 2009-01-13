@@ -3,7 +3,6 @@ guidir = $(pkgdatadir)/data/graphics/gui
 
 gui_DATA =				\
 	bg_quad_dis.png			\
-	browserfont.png			\
 	button.png			\
 	button_disabled.png		\
 	buttonhi.png			\
@@ -33,7 +32,6 @@ gui_DATA =				\
 	resize.png			\
 	rpgfont_wider.png		\
 	selection.png			\
-	sansserif8.png			\
 	slider.png			\
 	target-cursor-blue-l.png	\
 	target-cursor-blue-m.png	\

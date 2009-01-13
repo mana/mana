@@ -39,6 +39,9 @@
 #include "textfield.h"
 #include "ok_dialog.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
+
 void
 WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 {
@@ -59,18 +62,18 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mWrongDataNoticeListener(new WrongDataNoticeListener()),
     mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label("Name:");
-    gcn::Label *passwordLabel = new gcn::Label("Password:");
-    gcn::Label *confirmLabel = new gcn::Label("Confirm:");
-    gcn::Label *serverLabel = new gcn::Label("Server:");
+    gcn::Label *userLabel = new gcn::Label(_("Name:"));
+    gcn::Label *passwordLabel = new gcn::Label(_("Password:"));
+    gcn::Label *confirmLabel = new gcn::Label(_("Confirm:"));
+    gcn::Label *serverLabel = new gcn::Label(_("Server:"));
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField();
     mServerField = new TextField(loginData->hostname);
-    mMaleButton = new RadioButton("Male", "sex", true);
-    mFemaleButton = new RadioButton("Female", "sex", false);
-    mRegisterButton = new Button("Register", "register", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
+    mMaleButton = new RadioButton(_("Male"), "sex", true);
+    mFemaleButton = new RadioButton(_("Female"), "sex", false);
+    mRegisterButton = new Button(_("Register"), "register", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
 
     const int width = 220;
     const int height = 150;
@@ -163,45 +166,45 @@ RegisterDialog::action(const gcn::ActionEvent &event)
         const std::string user = mUserField->getText();
         logger->log("RegisterDialog::register Username is %s", user.c_str());
 
-        std::stringstream errorMsg;
+        std::string errorMsg;
         int error = 0;
 
         if (user.length() < LEN_MIN_USERNAME)
         {
             // Name too short
-            errorMsg << "The username needs to be at least "
-                     << LEN_MIN_USERNAME
-                     << " characters long.";
+            errorMsg = strprintf
+                (_("The username needs to be at least %d characters long."),
+                 LEN_MIN_USERNAME);
             error = 1;
         }
         else if (user.length() > LEN_MAX_USERNAME - 1 )
         {
             // Name too long
-            errorMsg << "The username needs to be less than "
-                     << LEN_MAX_USERNAME
-                     << " characters long.";
+            errorMsg = strprintf
+                (_("The username needs to be less than %d characters long."),
+                 LEN_MAX_USERNAME);
             error = 1;
         }
         else if (mPasswordField->getText().length() < LEN_MIN_PASSWORD)
         {
             // Pass too short
-            errorMsg << "The password needs to be at least "
-                     << LEN_MIN_PASSWORD
-                     << " characters long.";
+            errorMsg = strprintf
+                (_("The password needs to be at least %d characters long."),
+                 LEN_MIN_PASSWORD);
             error = 2;
         }
         else if (mPasswordField->getText().length() > LEN_MAX_PASSWORD - 1 )
         {
             // Pass too long
-            errorMsg << "The password needs to be less than "
-                     << LEN_MAX_PASSWORD
-                     << " characters long.";
+            errorMsg = strprintf
+                (_("The password needs to be less than %d characters long."),
+                 LEN_MAX_PASSWORD);
             error = 2;
         }
         else if (mPasswordField->getText() != mConfirmField->getText())
         {
             // Password does not match with the confirmation one
-            errorMsg << "Passwords do not match.";
+            errorMsg = _("Passwords do not match.");
             error = 2;
         }
 
@@ -220,8 +223,8 @@ RegisterDialog::action(const gcn::ActionEvent &event)
                 mWrongDataNoticeListener->setTarget(this->mPasswordField);
             }
 
-            OkDialog *mWrongRegisterNotice = new OkDialog("Error",
-                                                          errorMsg.str());
+            OkDialog *mWrongRegisterNotice =
+                new OkDialog(_("Error"), errorMsg);
             mWrongRegisterNotice->addActionListener(mWrongDataNoticeListener);
         }
         else

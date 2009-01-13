@@ -31,6 +31,8 @@
 #include "shop.h"
 #include "slider.h"
 
+#include "widgets/layout.h"
+
 #include "../item.h"
 #include "../npc.h"
 
@@ -39,10 +41,11 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
-#include "../utils/tostring.h"
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 
 SellDialog::SellDialog(Network *network):
-    Window("Sell"),
+    Window(_("Sell")),
     mNetwork(network),
     mMaxItems(0), mAmountItems(0)
 {
@@ -58,17 +61,17 @@ SellDialog::SellDialog(Network *network):
     mScrollArea = new ScrollArea(mShopItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
-    mMoneyLabel = new gcn::Label("Money: 0 GP / Total: 0 GP");
+    mMoneyLabel = new gcn::Label(
+        strprintf(_("Price: %d GP / Total: %d GP"), 0, 0));
     mIncreaseButton = new Button("+", "+", this);
     mDecreaseButton = new Button("-", "-", this);
-    mSellButton = new Button("Sell", "sell", this);
-    mQuitButton = new Button("Quit", "quit", this);
-    mItemDescLabel = new gcn::Label("Description:");
-    mItemEffectLabel = new gcn::Label("Effect:");
+    mSellButton = new Button(_("Sell"), "sell", this);
+    mQuitButton = new Button(_("Quit"), "quit", this);
+    mItemDescLabel = new gcn::Label(strprintf(_("Description: %s"), ""));
+    mItemEffectLabel = new gcn::Label(strprintf(_("Effect: %s"), ""));
 
     mIncreaseButton->setSize(20, 20);
     mDecreaseButton->setSize(20, 20);
-    mQuantityLabel->setWidth(60);
 
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mIncreaseButton->setEnabled(false);
@@ -77,23 +80,22 @@ SellDialog::SellDialog(Network *network):
     mSlider->setEnabled(false);
 
     mShopItemList->setPriceCheck(false);
-    mShopItemList->setActionEventId("item");
-    mSlider->setActionEventId("slider");
-
-    mShopItemList->addActionListener(this);
     mShopItemList->addSelectionListener(this);
+    mSlider->setActionEventId("slider");
     mSlider->addActionListener(this);
 
-    add(mScrollArea);
-    add(mSlider);
-    add(mQuantityLabel);
-    add(mMoneyLabel);
-    add(mItemEffectLabel);
-    add(mItemDescLabel);
-    add(mIncreaseButton);
-    add(mDecreaseButton);
-    add(mSellButton);
-    add(mQuitButton);
+    place(0, 0, mScrollArea, 5).setPadding(3);
+    place(0, 1, mQuantityLabel, 2);
+    place(2, 1, mSlider, 3);
+    place(0, 2, mMoneyLabel, 5);
+    place(0, 3, mItemEffectLabel, 5);
+    place(0, 4, mItemDescLabel, 5);
+    place(0, 5, mDecreaseButton);
+    place(1, 5, mIncreaseButton);
+    place(3, 5, mSellButton);
+    place(4, 5, mQuitButton);
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
     setLocationRelativeTo(getParent());
@@ -210,65 +212,25 @@ void SellDialog::valueChanged(const gcn::SelectionEvent &event)
     mSlider->gcn::Slider::setScale(1, mMaxItems);
 }
 
-void SellDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    gcn::Rectangle area = getChildrenArea();
-    int width = area.width;
-    int height = area.height;
-
-    mDecreaseButton->setPosition(8, height - 8 - mDecreaseButton->getHeight());
-    mIncreaseButton->setPosition(
-            mDecreaseButton->getX() + mDecreaseButton->getWidth() + 5,
-            mDecreaseButton->getY());
-
-    mQuitButton->setPosition(
-            width - 8 - mQuitButton->getWidth(),
-            height - 8 - mQuitButton->getHeight());
-    mSellButton->setPosition(
-            mQuitButton->getX() - 5 - mSellButton->getWidth(),
-            mQuitButton->getY());
-
-    mItemDescLabel->setDimension(gcn::Rectangle(8,
-                mSellButton->getY() - 5 - mItemDescLabel->getHeight(),
-                width - 16,
-                mItemDescLabel->getHeight()));
-    mItemEffectLabel->setDimension(gcn::Rectangle(8,
-                mItemDescLabel->getY() - 5 - mItemEffectLabel->getHeight(),
-                width - 16,
-                mItemEffectLabel->getHeight()));
-    mMoneyLabel->setDimension(gcn::Rectangle(8,
-                mItemEffectLabel->getY() - 5 - mMoneyLabel->getHeight(),
-                width - 16,
-                mMoneyLabel->getHeight()));
-
-    mQuantityLabel->setPosition(
-            width - mQuantityLabel->getWidth() - 8,
-            mMoneyLabel->getY() - 5 - mQuantityLabel->getHeight());
-    mSlider->setDimension(gcn::Rectangle(8,
-                mQuantityLabel->getY(),
-                mQuantityLabel->getX() - 8 - 8,
-                10));
-
-    mScrollArea->setDimension(gcn::Rectangle(8, 8, width - 16,
-                mSlider->getY() - 5 - 8));
-}
-
 void SellDialog::setMoney(int amount)
 {
     mPlayerMoney = amount;
     mShopItemList->setPlayersMoney(amount);
 }
 
-void
-SellDialog::updateButtonsAndLabels()
+void SellDialog::updateButtonsAndLabels()
 {
     int selectedItem = mShopItemList->getSelected();
     int income = 0;
 
     if (selectedItem > -1)
     {
+        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
+        mItemDescLabel->setCaption
+            (strprintf(_("Description: %s"), info.getDescription().c_str()));
+        mItemEffectLabel->setCaption
+            (strprintf(_("Effect: %s"), info.getEffect().c_str()));
+
         mMaxItems = mShopItems->at(selectedItem)->getQuantity();
         if (mAmountItems > mMaxItems)
         {
@@ -276,17 +238,13 @@ SellDialog::updateButtonsAndLabels()
         }
 
         income = mAmountItems * mShopItems->at(selectedItem)->getPrice();
-
-        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
-        mItemDescLabel->setCaption("Description: " + info.getDescription());
-        mItemEffectLabel->setCaption("Effect: " + info.getEffect());
     }
     else
     {
+        mItemDescLabel->setCaption(strprintf(_("Description: %s"), ""));
+        mItemEffectLabel->setCaption(strprintf(_("Effect: %s"), ""));
         mMaxItems = 0;
         mAmountItems = 0;
-        mItemDescLabel->setCaption("Description:");
-        mItemEffectLabel->setCaption("Effect:");
     }
 
     // Update Buttons and slider
@@ -296,8 +254,8 @@ SellDialog::updateButtonsAndLabels()
     mSlider->setEnabled(mMaxItems > 1);
 
     // Update the quantity and money labels
-    mQuantityLabel->setCaption(
-            toString(mAmountItems) + " / " + toString(mMaxItems));
-    mMoneyLabel->setCaption("Money: " + toString(income) + " GP / Total: "
-                            + toString(mPlayerMoney + income) + " GP");
+    mQuantityLabel->setCaption(strprintf("%d / %d", mAmountItems, mMaxItems));
+    mMoneyLabel->setCaption
+        (strprintf(_("Price: %d GP / Total: %d GP"),
+                   income, mPlayerMoney + income));
 }

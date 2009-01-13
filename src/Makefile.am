@@ -1,8 +1,10 @@
+AUTOMAKE_OPTIONS = subdir-objects
+
 bin_PROGRAMS = tmw
-tmw_SOURCES = gui/widgets/resizegrip.cpp \
+tmw_SOURCES = gui/widgets/layout.cpp \
+	      gui/widgets/layout.h \
+	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
-	      gui/box.h \
-	      gui/box.cpp \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -37,8 +39,6 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/gccontainer.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
-	      gui/hbox.h \
-	      gui/hbox.cpp \
 	      gui/help.cpp \
 	      gui/help.h \
 	      gui/inttextbox.h \
@@ -86,6 +86,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/register.h \
 	      gui/scrollarea.cpp \
 	      gui/scrollarea.h \
+	      gui/sdlinput.cpp \
+	      gui/sdlinput.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
 	      gui/setup_audio.cpp \
@@ -125,8 +127,6 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/trade.h \
 	      gui/updatewindow.h \
 	      gui/updatewindow.cpp \
-	      gui/vbox.h \
-	      gui/vbox.cpp \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/window.cpp \
@@ -213,6 +213,7 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
 	      utils/fastsqrt.h \
+	      utils/gettext.h \
 	      utils/strprintf.cpp \
 	      utils/strprintf.h \
 	      utils/tostring.h \
@@ -283,6 +284,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      player.h \
 	      player_relations.cpp \
 	      player_relations.h \
+	      position.cpp \
+	      position.h \
 	      properties.h \
 	      serverinfo.h \
 	      shopitem.cpp \
@@ -301,15 +304,11 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      textparticle.cpp \
 	      textparticle.h \
 	      tileset.h \
+	      vector.cpp \
 	      vector.h
 
 # set the include path found by configure
 INCLUDES =					\
 	$(all_includes)				\
-	-DTMW_DATADIR=\""$(pkgdatadir)/"\"
-
-# the library search path.
-tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
-tmw_CXXFLAGS = -Wall $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(CURL_LIBS)
-tmw_TARGET = tmw
+	-DTMW_DATADIR=\""$(pkgdatadir)/"\"      \
+	-DLOCALEDIR=\""$(localedir)"\"

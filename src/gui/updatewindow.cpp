@@ -40,6 +40,7 @@
 #include "../log.h"
 #include "../main.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 #include "../resources/resourcemanager.h"
@@ -89,7 +90,7 @@ loadTextFile(const std::string &fileName)
 
 UpdaterWindow::UpdaterWindow(const std::string &updateHost,
                              const std::string &updatesDir):
-    Window("Updating..."),
+    Window(_("Updating...")),
     mThread(NULL),
     mDownloadStatus(UPDATE_NEWS),
     mUpdateHost(updateHost),
@@ -112,10 +113,10 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 
     mBrowserBox = new BrowserBox();
     mScrollArea = new ScrollArea(mBrowserBox);
-    mLabel = new gcn::Label("Connecting...");
+    mLabel = new gcn::Label(_("Connecting..."));
     mProgressBar = new ProgressBar(0.0, w - 10, 20, 37, 70, 200);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mPlayButton = new Button("Play", "play", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mPlayButton = new Button(_("Play"), "play", this);
 
     mBrowserBox->setOpaque(false);
     mPlayButton->setEnabled(false);
@@ -228,8 +229,9 @@ int UpdaterWindow::updateProgress(void *ptr,
     float progress = dn / dt;
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
 
-    if (progress < 0) progress = 0.0f;
-    if (progress > 1) progress = 1.0f;
+    if (progress != progress) progress = 0.0f; // check for NaN
+    if (progress < 0.0f) progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
+    if (progress > 1.0f) progress = 1.0f;
 
     uw->setLabel(
             uw->mCurrentFile + " (" + toString((int) (progress * 100)) + "%)");
@@ -521,7 +523,7 @@ void UpdaterWindow::logic()
             break;
         case UPDATE_COMPLETE:
             enable();
-            setLabel("Completed");
+            setLabel(_("Completed"));
             break;
         case UPDATE_IDLE:
             break;
