@@ -37,6 +37,7 @@
 namespace
 {
     ItemDB::ItemInfos mItemInfos;
+    ItemDB::NamedItemInfos mNamedItemInfos;
     ItemInfo *mUnknown;
     bool mLoaded = false;
 }
@@ -136,6 +137,7 @@ void ItemDB::load()
         int attackRange = XML::getProperty(node, "attack-range", 0);
 
         ItemInfo *itemInfo = new ItemInfo;
+        itemInfo->setId(id);
         itemInfo->setImageName(image);
         itemInfo->setName(name.empty() ? "Unnamed" : name);
         itemInfo->setDescription(description);
@@ -169,6 +171,18 @@ void ItemDB::load()
         }
 
         mItemInfos[id] = itemInfo;
+        if (!name.empty())
+        {
+            NamedItemInfoIterator itr = mNamedItemInfos.find(name);
+            if (itr == mNamedItemInfos.end())
+            {
+                mNamedItemInfos[name] = itemInfo;
+            }
+            else
+            {
+                logger->log("ItemDB: Duplicate name of item found item %d", id);
+            }
+        }
 
 #define CHECK_PARAM(param, error_value) \
         if (param == error_value) \
@@ -209,6 +223,23 @@ const ItemInfo& ItemDB::get(int id)
     if (i == mItemInfos.end())
     {
         logger->log("ItemDB: Error, unknown item ID# %d", id);
+        return *mUnknown;
+    }
+    else
+    {
+        return *(i->second);
+    }
+}
+
+const ItemInfo& ItemDB::get(const std::string &name)
+{
+    assert(mLoaded && !name.empty());
+
+    NamedItemInfoIterator i = mNamedItemInfos.find(name);
+
+    if (i == mNamedItemInfos.end())
+    {
+        logger->log("ItemDB: Error, unknown item name %s", name.c_str());
         return *mUnknown;
     }
     else

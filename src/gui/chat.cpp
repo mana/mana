@@ -46,8 +46,12 @@
 #include "../net/chatserver/chatserver.h"
 #include "../net/gameserver/player.h"
 
+#include "../resources/iteminfo.h"
+#include "../resources/itemdb.h"
+
 #include "../utils/dtor.h"
 #include "../utils/trim.h"
+#include "../utils/tostring.h"
 
 ChatWindow::ChatWindow():
     Window("Chat"),
@@ -301,9 +305,27 @@ bool ChatWindow::isInputFocused()
     return mChatInput->isFocused();
 }
 
-void ChatWindow::chatSend(const std::string &msg)
+void ChatWindow::chatSend(std::string &msg)
 {
     if (msg.empty()) return;
+
+    // check for item link
+    std::string::size_type start = msg.find('[');
+    if (start != std::string::npos)
+    {
+        std::string::size_type end = msg.find(']', start);
+        if (end != std::string::npos)
+        {
+            std::string temp = msg.substr(start+1, end-1);
+            ItemInfo itemInfo = ItemDB::get(temp);
+            msg.insert(end, "@@");
+            msg.insert(start+1, "|");
+            msg.insert(start+1, toString(itemInfo.getId()));
+            msg.insert(start+1, "@@");
+
+        }
+    }
+
 
     // Prepare ordinary message
     if (msg[0] != '/')

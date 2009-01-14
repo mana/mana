@@ -119,7 +119,7 @@ class ChatWindow : public Window,
          * @param msg  The message text which is to be sent.
          *
          */
-        void chatSend(const std::string &msg);
+        void chatSend(std::string &msg);
 
         /** Called to remove the channel from the channel manager */
         void removeChannel(short channelId);
