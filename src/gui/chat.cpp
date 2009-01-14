@@ -43,8 +43,12 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
+#include "../resources/iteminfo.h"
+#include "../resources/itemdb.h"
+
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
+#include "../utils/tostring.h"
 #include "../utils/trim.h"
 
 ChatWindow::ChatWindow(Network * network):
@@ -350,6 +354,23 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         outMsg.writeInt16(length + 4);
         outMsg.writeString(msg, length);
         return;
+    }
+
+    // check for item link
+    std::string::size_type start = msg.find('[');
+    if (start != std::string::npos)
+    {
+        std::string::size_type end = msg.find(']', start);
+        if (end != std::string::npos)
+        {
+            std::string temp = msg.substr(start+1, end-1);
+            ItemInfo itemInfo = ItemDB::get(temp);
+            msg.insert(end, "@@");
+            msg.insert(start+1, "|");
+            msg.insert(start+1, toString(itemInfo.getId()));
+            msg.insert(start+1, "@@");
+
+        }
     }
 
     // Prepare ordinary message

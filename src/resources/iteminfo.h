@@ -54,6 +54,12 @@ class ItemInfo
         {
         }
 
+        void setId(int id)
+        { mId = id; }
+
+        int getId() const
+        { return mId; }
+
         void setName(const std::string &name)
         { mName = name; }
 
@@ -115,6 +121,7 @@ class ItemInfo
         char mType;                    /**< Item type. */
         short mWeight;                 /**< Weight in grams. */
         int mView;                     /**< Item ID of how this item looks. */
+        int mId;                       /**< Item ID */
 
         // Equipment related members
         SpriteAction mAttackType;      /**< Attack type, in case of weapon. */
