@@ -311,7 +311,7 @@ void ChatWindow::chatSend(std::string &msg)
 
     // check for item link
     std::string::size_type start = msg.find('[');
-    if (start != std::string::npos)
+    if (start != std::string::npos && msg[start+1] != '@')
     {
         std::string::size_type end = msg.find(']', start);
         if (end != std::string::npos)
