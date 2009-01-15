@@ -42,8 +42,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         void action(const gcn::ActionEvent &event);
 
         /** Called when key is pressed */
-        void
-        keyPressed(gcn::KeyEvent &event);
+        void keyPressed(gcn::KeyEvent &event);
 
     private:
         bool mFullScreenEnabled;
@@ -86,12 +85,10 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::Slider *mParticleDetailSlider;
         gcn::Label *mParticleDetailField;
 
-        void
-        updateSliders(bool originalValues);
+        void updateSliders(bool originalValues);
 
-        int
-        updateSlider(gcn::Slider *slider, gcn::TextField *field,
-                     const std::string &configName);
+        int updateSlider(gcn::Slider *slider, gcn::TextField *field,
+                         const std::string &configName);
 };
 
 #endif

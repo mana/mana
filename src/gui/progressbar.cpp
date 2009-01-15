@@ -88,8 +88,7 @@ void ProgressBar::logic()
     if (mBlueToGo < mBlue) mBlue--;
 }
 
-void
-ProgressBar::draw(gcn::Graphics *graphics)
+void ProgressBar::draw(gcn::Graphics *graphics)
 {
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
@@ -104,16 +103,14 @@ ProgressBar::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-ProgressBar::setProgress(float progress)
+void ProgressBar::setProgress(float progress)
 {
     if (progress < 0.0f) mProgress = 0.0;
     else if (progress > 1.0f) mProgress = 1.0;
     else mProgress = progress;
 }
 
-void
-ProgressBar::setColor(Uint8 red, Uint8 green, Uint8 blue)
+void ProgressBar::setColor(Uint8 red, Uint8 green, Uint8 blue)
 {
     mRedToGo = red;
     mGreenToGo = green;

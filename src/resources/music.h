@@ -56,14 +56,12 @@ class Music : public Resource
          * @return <code>true</code> if the playback started properly
          *         <code>false</code> otherwise.
          */
-        virtual bool
-        play(int loops);
+        virtual bool play(int loops);
 
         /**
          * Stops the music.
          */
-        virtual void
-        stop();
+        virtual void stop();
 
     protected:
         /**

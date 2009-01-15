@@ -43,14 +43,12 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-void
-WrongDataNoticeListener::setTarget(gcn::TextField *textField)
+void WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 {
     mTarget = textField;
 }
 
-void
-WrongDataNoticeListener::action(const gcn::ActionEvent &event)
+void WrongDataNoticeListener::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
@@ -173,8 +171,7 @@ RegisterDialog::~RegisterDialog()
     delete mWrongDataNoticeListener;
 }
 
-void
-RegisterDialog::action(const gcn::ActionEvent &event)
+void RegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
@@ -263,14 +260,12 @@ RegisterDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
+void RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
     mRegisterButton->setEnabled(canSubmit());
 }
 
-bool
-RegisterDialog::canSubmit()
+bool RegisterDialog::canSubmit()
 {
     return !mUserField->getText().empty() &&
            !mPasswordField->getText().empty() &&
@@ -280,8 +275,7 @@ RegisterDialog::canSubmit()
            state == REGISTER_STATE;
 }
 
-bool
-RegisterDialog::isUShort(const std::string &str)
+bool RegisterDialog::isUShort(const std::string &str)
 {
     if (str == "")
     {
@@ -304,8 +298,7 @@ RegisterDialog::isUShort(const std::string &str)
     return true;
 }
 
-unsigned short
-RegisterDialog::getUShort(const std::string &str)
+unsigned short RegisterDialog::getUShort(const std::string &str)
 {
     unsigned long l = 0;
     for (std::string::const_iterator strPtr = str.begin(), strEnd = str.end();

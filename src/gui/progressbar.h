@@ -52,50 +52,42 @@ class ProgressBar : public gcn::Widget {
         /**
          * Performs progress bar logic (fading colors)
          */
-        void
-        logic();
+        void logic();
 
         /**
          * Draws the progress bar.
          */
-        void
-        draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics);
 
         /**
          * Sets the current progress.
          */
-        void
-        setProgress(float progress);
+        void setProgress(float progress);
 
         /**
          * Returns the current progress.
          */
-        float
-        getProgress() { return mProgress; }
+        float getProgress() { return mProgress; }
 
         /**
          * Change the filling of the progress bar.
          */
-        void
-        setColor(Uint8, Uint8 green, Uint8 blue);
+        void setColor(Uint8, Uint8 green, Uint8 blue);
 
         /**
          * Get The red value of color
          */
-        Uint8
-        getRed() { return mRed; }
+        Uint8 getRed() { return mRed; }
 
          /**
          * Get The red value of color
          */
-        Uint8
-        getGreen() { return mGreen; }
+        Uint8 getGreen() { return mGreen; }
 
         /**
          * Get The red value of color
          */
-        Uint8
-        getBlue() { return mBlue; }
+        Uint8 getBlue() { return mBlue; }
 
     private:
         float mProgress;

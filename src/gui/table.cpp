@@ -63,8 +63,7 @@ GuiTableActionListener::~GuiTableActionListener(void)
     }
 }
 
-void
-GuiTableActionListener::action(const gcn::ActionEvent& actionEvent)
+void GuiTableActionListener::action(const gcn::ActionEvent& actionEvent)
 {
     mTable->setSelected(mRow, mColumn);
     mTable->distributeActionEvent();
@@ -88,14 +87,12 @@ GuiTable::~GuiTable(void)
     delete mModel;
 }
 
-TableModel *
-GuiTable::getModel(void) const
+TableModel* GuiTable::getModel(void) const
 {
     return mModel;
 }
 
-void
-GuiTable::setModel(TableModel *new_model)
+void GuiTable::setModel(TableModel *new_model)
 {
     if (mModel) {
         uninstallActionListeners();
@@ -112,9 +109,7 @@ GuiTable::setModel(TableModel *new_model)
     }
 }
 
-
-void
-GuiTable::recomputeDimensions(void)
+void GuiTable::recomputeDimensions(void)
 {
     int rows_nr = mModel->getRows();
     int columns_nr = mModel->getColumns();
@@ -136,33 +131,28 @@ GuiTable::recomputeDimensions(void)
     setHeight(height);
 }
 
-void
-GuiTable::setSelected(int row, int column)
+void GuiTable::setSelected(int row, int column)
 {
     mSelectedColumn = column;
     mSelectedRow = row;
 }
 
-int
-GuiTable::getSelectedRow(void)
+int GuiTable::getSelectedRow(void)
 {
     return mSelectedRow;
 }
 
-int
-GuiTable::getSelectedColumn(void)
+int GuiTable::getSelectedColumn(void)
 {
     return mSelectedColumn;
 }
 
-void
-GuiTable::setLinewiseSelection(bool linewise)
+void GuiTable::setLinewiseSelection(bool linewise)
 {
     mLinewiseMode = linewise;
 }
 
-int
-GuiTable::getRowHeight(void)
+int GuiTable::getRowHeight(void)
 {
     if (mModel)
         return mModel->getRowHeight() + 1; // border
@@ -170,8 +160,7 @@ GuiTable::getRowHeight(void)
         return 0;
 }
 
-int
-GuiTable::getColumnWidth(int i)
+int GuiTable::getColumnWidth(int i)
 {
     if (mModel)
         return mModel->getColumnWidth(i) + 1; // border
@@ -179,16 +168,14 @@ GuiTable::getColumnWidth(int i)
         return 0;
 }
 
-void
-GuiTable::uninstallActionListeners(void)
+void GuiTable::uninstallActionListeners(void)
 {
     for (std::vector<GuiTableActionListener *>::const_iterator it = action_listeners.begin(); it != action_listeners.end(); it++)
         delete *it;
     action_listeners.clear();
 }
 
-void
-GuiTable::installActionListeners(void)
+void GuiTable::installActionListeners(void)
 {
     if (!mModel)
         return;
@@ -207,8 +194,7 @@ GuiTable::installActionListeners(void)
 }
 
 // -- widget ops
-void
-GuiTable::draw(gcn::Graphics* graphics)
+void GuiTable::draw(gcn::Graphics* graphics)
 {
     graphics->setColor(getBackgroundColor());
     graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
@@ -282,42 +268,35 @@ GuiTable::draw(gcn::Graphics* graphics)
     }
 }
 
-void
-GuiTable::logic(void)
+void GuiTable::logic(void)
 {
 }
 
-void
-GuiTable::moveToTop(gcn::Widget *widget)
+void GuiTable::moveToTop(gcn::Widget *widget)
 {
     gcn::Widget::moveToTop(widget);
     this->mTopWidget = widget;
 }
 
-void
-GuiTable::moveToBottom(gcn::Widget *widget)
+void GuiTable::moveToBottom(gcn::Widget *widget)
 {
     gcn::Widget::moveToBottom(widget);
     if (widget == this->mTopWidget)
         this->mTopWidget = NULL;
 }
 
-gcn::Rectangle
-GuiTable::getChildrenArea(void)
+gcn::Rectangle GuiTable::getChildrenArea(void)
 {
     return gcn::Rectangle(0, 0, getWidth(), getHeight());
 }
 
 // -- KeyListener notifications
-void
-GuiTable::keyPressed(gcn::KeyEvent& keyEvent)
+void GuiTable::keyPressed(gcn::KeyEvent& keyEvent)
 {
 }
 
-
 // -- MouseListener notifications
-void
-GuiTable::mousePressed(gcn::MouseEvent& mouseEvent)
+void GuiTable::mousePressed(gcn::MouseEvent& mouseEvent)
 {
     if (mouseEvent.getButton() == gcn::MouseEvent::LEFT) {
         int row = getRowForY(mouseEvent.getY());
@@ -332,24 +311,20 @@ GuiTable::mousePressed(gcn::MouseEvent& mouseEvent)
     }
 }
 
-void
-GuiTable::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
+void GuiTable::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
 }
 
-void
-GuiTable::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
+void GuiTable::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
 {
 }
         
-void
-GuiTable::mouseDragged(gcn::MouseEvent& mouseEvent)
+void GuiTable::mouseDragged(gcn::MouseEvent& mouseEvent)
 {
 }
 
 // -- TableModelListener notifications
-void
-GuiTable::modelUpdated(bool completed)
+void GuiTable::modelUpdated(bool completed)
 {
     if (completed) {
         recomputeDimensions();
@@ -360,8 +335,7 @@ GuiTable::modelUpdated(bool completed)
     }
 }
 
-gcn::Widget *
-GuiTable::getWidgetAt(int x, int y)
+gcn::Widget* GuiTable::getWidgetAt(int x, int y)
 {
     int row = getRowForY(y);
     int column = getColumnForX(x);
@@ -381,8 +355,7 @@ GuiTable::getWidgetAt(int x, int y)
         return NULL;
 }
 
-int
-GuiTable::getRowForY(int y)
+int GuiTable::getRowForY(int y)
 {
    int row = y / getRowHeight();
 
@@ -393,8 +366,7 @@ GuiTable::getRowForY(int y)
        return row;
 }
 
-int
-GuiTable::getColumnForX(int x)
+int GuiTable::getColumnForX(int x)
 {
     int column;
     int delta = 0;
@@ -412,9 +384,7 @@ GuiTable::getColumnForX(int x)
         return column;
 }
 
-
-void
-GuiTable::_setFocusHandler(gcn::FocusHandler* focusHandler)
+void GuiTable::_setFocusHandler(gcn::FocusHandler* focusHandler)
 {
     gcn::Widget::_setFocusHandler(focusHandler);
 

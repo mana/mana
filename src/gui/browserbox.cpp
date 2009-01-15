@@ -210,8 +210,7 @@ struct MouseOverLink
     int mX, mY;
 };
 
-void
-BrowserBox::mousePressed(gcn::MouseEvent &event)
+void BrowserBox::mousePressed(gcn::MouseEvent &event)
 {
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
@@ -221,8 +220,7 @@ BrowserBox::mousePressed(gcn::MouseEvent &event)
     }
 }
 
-void
-BrowserBox::mouseMoved(gcn::MouseEvent &event)
+void BrowserBox::mouseMoved(gcn::MouseEvent &event)
 {
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
@@ -230,8 +228,7 @@ BrowserBox::mouseMoved(gcn::MouseEvent &event)
     mSelectedLink = (i != mLinks.end()) ? (i - mLinks.begin()) : -1;
 }
 
-void
-BrowserBox::draw(gcn::Graphics *graphics)
+void BrowserBox::draw(gcn::Graphics *graphics)
 {
     if (mOpaque)
     {

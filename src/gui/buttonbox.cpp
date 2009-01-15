@@ -34,8 +34,7 @@ ButtonBox::ButtonBox(const std::string &title, const std::string &buttonTxt,
     add(button);
 }
 
-void
-ButtonBox::action(const gcn::ActionEvent &event)
+void ButtonBox::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "activate")
     {

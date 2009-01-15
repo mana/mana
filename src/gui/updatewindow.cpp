@@ -69,8 +69,7 @@ static unsigned long fadler32(FILE *file)
 /**
  * Load the given file into a vector of strings.
  */
-std::vector<std::string>
-loadTextFile(const std::string &fileName)
+std::vector<std::string> loadTextFile(const std::string &fileName)
 {
     std::vector<std::string> lines;
     std::ifstream fin(fileName.c_str());
@@ -242,8 +241,7 @@ int UpdaterWindow::updateProgress(void *ptr,
     return 0;
 }
 
-size_t
-UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(stream);
     size_t totalMem = size * nmemb;

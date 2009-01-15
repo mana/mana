@@ -329,8 +329,7 @@ ParticleEmitter::readParticleEmitterProp(xmlNodePtr propertyNode, T def)
 }
 
 
-std::list<Particle *>
-ParticleEmitter::createParticles(int tick)
+std::list<Particle *> ParticleEmitter::createParticles(int tick)
 {
     std::list<Particle *> newParticles;
 

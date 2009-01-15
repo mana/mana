@@ -67,8 +67,7 @@ DebugWindow::DebugWindow():
     add(mParticleCountLabel);
 }
 
-void
-DebugWindow::logic()
+void DebugWindow::logic()
 {
     // Get the current mouse position
     int mouseX, mouseY;

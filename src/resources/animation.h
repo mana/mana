@@ -54,39 +54,33 @@ class Animation
         /**
          * Appends a new animation at the end of the sequence.
          */
-        void
-        addFrame(Image *image, unsigned int delay, int offsetX, int offsetY);
+        void addFrame(Image *image, unsigned int delay, int offsetX, int offsetY);
 
         /**
          * Appends an animation terminator that states that the animation
          * should not loop.
          */
-        void
-        addTerminator();
+        void addTerminator();
 
         /**
          * Returns the frame at the specified index.
          */
-        Frame*
-        getFrame(int index) { return &(mFrames[index]); }
+        Frame* getFrame(int index) { return &(mFrames[index]); }
 
         /**
          * Returns the length of this animation in frames.
          */
-        unsigned int
-        getLength() const { return mFrames.size(); }
+        unsigned int getLength() const { return mFrames.size(); }
 
         /**
          * Returns the duration of this animation.
          */
-        int
-        getDuration() const { return mDuration; }
+        int getDuration() const { return mDuration; }
 
         /**
          * Determines whether the given animation frame is a terminator.
          */
-        static bool
-        isTerminator(const Frame &phase);
+        static bool isTerminator(const Frame &phase);
 
     protected:
         std::vector<Frame> mFrames;

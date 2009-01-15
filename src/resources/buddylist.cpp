@@ -111,7 +111,7 @@ bool BuddyList::removeBuddy(const std::string buddy)
     return false;
 }
 
-int  BuddyList::getNumberOfElements()
+int BuddyList::getNumberOfElements()
 {
     return mBuddylist.size();
 }

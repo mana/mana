@@ -188,8 +188,7 @@ bool LoginDialog::canSubmit()
            state == LOGIN_STATE;
 }
 
-bool
-LoginDialog::isUShort(const std::string &str)
+bool LoginDialog::isUShort(const std::string &str)
 {
     if (str == "")
     {
@@ -212,8 +211,7 @@ LoginDialog::isUShort(const std::string &str)
     return true;
 }
 
-unsigned short
-LoginDialog::getUShort(const std::string &str)
+unsigned short LoginDialog::getUShort(const std::string &str)
 {
     unsigned long l = 0;
     for (std::string::const_iterator strPtr = str.begin(), strEnd = str.end();
@@ -228,9 +226,8 @@ LoginDialog::getUShort(const std::string &str)
  * LoginDialog::DropDownList
  */
 
-void
-LoginDialog::DropDownList::saveEntry(const std::string &server,
-                     const std::string &port, int &saved)
+void LoginDialog::DropDownList::saveEntry(const std::string &server,
+                                          const std::string &port, int &saved)
 {
     if (saved < MAX_SERVER_LIST_SIZE && server != "")
     {
@@ -272,9 +269,8 @@ LoginDialog::DropDownList::DropDownList(std::string prefix,
     }
 }
 
-void
-LoginDialog::DropDownList::save(const std::string &server,
-                const std::string &port)
+void LoginDialog::DropDownList::save(const std::string &server,
+                                     const std::string &port)
 {
     int position = 0;
     saveEntry(server, port, position);
@@ -292,14 +288,12 @@ LoginDialog::DropDownList::save(const std::string &server,
     }
 }
 
-int
-LoginDialog::DropDownList::getNumberOfElements()
+int LoginDialog::DropDownList::getNumberOfElements()
 {
     return mServers.size();
 }
 
-std::string
-LoginDialog::DropDownList::getElementAt(int i)
+std::string LoginDialog::DropDownList::getElementAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -308,8 +302,7 @@ LoginDialog::DropDownList::getElementAt(int i)
     return getServerAt(i) + ":" + getPortAt(i);
 }
 
-std::string
-LoginDialog::DropDownList::getServerAt(int i)
+std::string LoginDialog::DropDownList::getServerAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -318,9 +311,7 @@ LoginDialog::DropDownList::getServerAt(int i)
     return mServers.at(i);
 }
 
-
-std::string
-LoginDialog::DropDownList::getPortAt(int i)
+std::string LoginDialog::DropDownList::getPortAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {

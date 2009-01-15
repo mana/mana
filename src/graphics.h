@@ -95,17 +95,15 @@ class Graphics : public gcn::SDLGraphics {
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        virtual bool
-        drawImage(Image *image,
-                  int srcX, int srcY,
-                  int dstX, int dstY,
-                  int width, int height,
-                  bool useColor = false);
+        virtual bool drawImage(Image *image,
+                               int srcX, int srcY,
+                               int dstX, int dstY,
+                               int width, int height,
+                               bool useColor = false);
 
-        virtual void
-        drawImagePattern(Image *image,
-                         int x, int y,
-                         int w, int h);
+        virtual void drawImagePattern(Image *image,
+                                      int x, int y,
+                                      int w, int h);
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1

@@ -49,10 +49,10 @@ void ItemDB::load()
     if (mLoaded)
         return;
 
-    logger->log("Initializing item database...");
+    logger->log(_("Initializing item database..."));
 
     mUnknown = new ItemInfo();
-    mUnknown->setName("Unknown item");
+    mUnknown->setName(_("Unknown item"));
     mUnknown->setImageName("");
     mUnknown->setSprite("error.xml", GENDER_MALE);
     mUnknown->setSprite("error.xml", GENDER_FEMALE);
@@ -62,7 +62,7 @@ void ItemDB::load()
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
     {
-        logger->error("ItemDB: Error while loading items.xml!");
+        logger->error(_("ItemDB: Error while loading items.xml!"));
     }
 
     for_each_xml_child_node(node, rootNode)
@@ -74,12 +74,12 @@ void ItemDB::load()
 
         if (id == 0)
         {
-            logger->log("ItemDB: Invalid or missing item ID in items.xml!");
+            logger->log(_("ItemDB: Invalid or missing item ID in items.xml!"));
             continue;
         }
         else if (mItemInfos.find(id) != mItemInfos.end())
         {
-            logger->log("ItemDB: Redefinition of item ID %d", id);
+            logger->log(_("ItemDB: Redefinition of item ID %d"), id);
         }
 
         int type = XML::getProperty(node, "type", 0);
@@ -139,7 +139,7 @@ void ItemDB::load()
 
 void ItemDB::unload()
 {
-    logger->log("Unloading item database...");
+    logger->log(_("Unloading item database..."));
 
     delete mUnknown;
     mUnknown = NULL;
@@ -157,7 +157,7 @@ const ItemInfo& ItemDB::get(int id)
 
     if (i == mItemInfos.end())
     {
-        logger->log("ItemDB: Error, unknown item ID# %d", id);
+        logger->log(_("ItemDB: Error, unknown item ID# %d"), id);
         return *mUnknown;
     }
     else
@@ -196,7 +196,7 @@ void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
     }
     else
     {
-        logger->log("ItemDB: Ignoring unknown sound event '%s'",
+        logger->log(_("ItemDB: Ignoring unknown sound event '%s'"),
                 event.c_str());
     }
 }

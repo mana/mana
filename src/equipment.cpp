@@ -32,8 +32,7 @@ Equipment::Equipment():
     std::fill_n(mEquipment, EQUIPMENT_SIZE, 0);
 }
 
-void
-Equipment::setEquipment(int index, int inventoryIndex)
+void Equipment::setEquipment(int index, int inventoryIndex)
 {
     mEquipment[index] = inventoryIndex;
     Item* item = player_node->getInventory()->getItem(inventoryIndex);

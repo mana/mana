@@ -178,13 +178,12 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     }
 }
 
-void
-Graphics::drawImageRect(int x, int y, int w, int h,
-                        Image *topLeft, Image *topRight,
-                        Image *bottomLeft, Image *bottomRight,
-                        Image *top, Image *right,
-                        Image *bottom, Image *left,
-                        Image *center)
+void Graphics::drawImageRect(int x, int y, int w, int h,
+                             Image *topLeft, Image *topRight,
+                             Image *bottomLeft, Image *bottomRight,
+                             Image *top, Image *right,
+                             Image *bottom, Image *left,
+                             Image *center)
 {
     pushClipArea(gcn::Rectangle(x, y, w, h));
 
@@ -222,9 +221,8 @@ Graphics::drawImageRect(int x, int y, int w, int h,
     popClipArea();
 }
 
-void
-Graphics::drawImageRect(int x, int y, int w, int h,
-                        const ImageRect &imgRect)
+void Graphics::drawImageRect(int x, int y, int w, int h,
+                             const ImageRect &imgRect)
 {
     drawImageRect(x, y, w, h,
             imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],

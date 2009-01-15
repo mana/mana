@@ -45,11 +45,9 @@ typedef std::map<int, NPCInfo*> NPCInfos;
  */
 namespace NPCDB
 {
-    void
-    load();
+    void load();
 
-    void
-    unload();
+    void unload();
 
     const NPCInfo& get(int id);
 

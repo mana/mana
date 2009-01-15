@@ -57,8 +57,7 @@ void ListBox::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-ListBox::mouseDragged(gcn::MouseEvent &event)
+void ListBox::mouseDragged(gcn::MouseEvent &event)
 {
     // Pretend mouse is pressed continuously while dragged. Causes list
     // selection to be updated as is default in many GUIs.

@@ -87,7 +87,6 @@ void ConfigurationObject::clear(void)
     mOptions.clear();
 }
 
-
 ConfigurationObject::~ConfigurationObject(void)
 {
     clear();
@@ -189,7 +188,6 @@ void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
         xmlTextWriterEndElement(writer);
     }
 }
-
 
 void Configuration::write()
 {

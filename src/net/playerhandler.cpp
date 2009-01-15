@@ -264,7 +264,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                         Uint32 curGp = player_node->mGp;
                         player_node->mGp = msg->readInt32();
                         if (player_node->mGp > curGp)
-                            chatWindow->chatLog("You picked up " +
+                            chatWindow->chatLog(_("You picked up ") +
                                 toString(player_node->mGp - curGp) + " GP",
                                 BY_SERVER);
                     }

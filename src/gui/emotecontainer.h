@@ -33,15 +33,13 @@
 #include "../resources/imageset.h"
 
 class Image;
-class Inventory;
-class Emote;
 
 namespace gcn {
     class SelectionListener;
 }
 
 /**
- * An item container. Used to show items in inventory and trade dialog.
+ * An emote container. Used to show emotes in inventory and trade dialog.
  *
  * \ingroup GUI
  */
@@ -61,7 +59,7 @@ class EmoteContainer : public gcn::Widget,
         virtual ~EmoteContainer();
 
         /**
-         * Draws the items.
+         * Draws the emotes.
          */
         void draw(gcn::Graphics *graphics);
 
@@ -76,12 +74,12 @@ class EmoteContainer : public gcn::Widget,
         void mousePressed(gcn::MouseEvent &event);
 
         /**
-         * Returns the selected item.
+         * Returns the selected emote.
          */
         int getSelectedEmote();
 
         /**
-         * Sets selected item to NULL.
+         * Sets selected emote to NULL.
          */
         void selectNone();
 
@@ -106,12 +104,12 @@ class EmoteContainer : public gcn::Widget,
     private:
         /**
 
-         * Sets the currently selected item.  Invalid (e.g., negative) indices set `no item'.
+         * Sets the currently selected emote.  Invalid (e.g., negative) indices set `no emotr'.
          */
         void setSelectedEmoteIndex(int index);
 
         /**
-         * Find the current item index by the most recently used item ID
+         * Find the current emote index by the most recently used emote ID
          */
         void refindSelectedEmote(void);
 

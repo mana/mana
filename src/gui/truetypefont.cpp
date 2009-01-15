@@ -17,15 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
  */
-
-#include "truetypefont.h"
 
 #include <list>
 
 #include <guichan/exception.hpp>
+
+#include "truetypefont.h"
 
 #include "../graphics.h"
 #include "../resources/image.h"
@@ -77,7 +75,6 @@ class TextChunk
         gcn::Color color;
 };
 
-
 // Word surfaces cache
 static std::list<TextChunk> cache;
 typedef std::list<TextChunk>::iterator CacheIterator;
@@ -114,8 +111,8 @@ TrueTypeFont::~TrueTypeFont()
 }
 
 void TrueTypeFont::drawString(gcn::Graphics *graphics,
-                               const std::string &text,
-                               int x, int y)
+                              const std::string &text,
+                              int x, int y)
 {
     if (text.empty())
     {

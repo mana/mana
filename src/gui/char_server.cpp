@@ -98,8 +98,7 @@ ServerSelectDialog::~ServerSelectDialog()
     delete mServerListModel;
 }
 
-void
-ServerSelectDialog::action(const gcn::ActionEvent &event)
+void ServerSelectDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok") {
         mOkButton->setEnabled(false);
@@ -114,14 +113,12 @@ ServerSelectDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-int
-ServerListModel::getNumberOfElements()
+int ServerListModel::getNumberOfElements()
 {
     return n_server;
 }
 
-std::string
-ServerListModel::getElementAt(int i)
+std::string ServerListModel::getElementAt(int i)
 {
     const SERVER_INFO *si = server_info[i];
     return si->name + " (" + toString(si->online_users) + ")";

@@ -29,8 +29,7 @@ IntTextBox::IntTextBox(int i):
 {
 }
 
-void
-IntTextBox::keyPressed(gcn::KeyEvent &event)
+void IntTextBox::keyPressed(gcn::KeyEvent &event)
 {
     const gcn::Key &key = event.getKey();
 

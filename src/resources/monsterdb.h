@@ -31,11 +31,9 @@
  */
 namespace MonsterDB
 {
-    void
-    load();
+    void load();
 
-    void
-    unload();
+    void unload();
 
     const MonsterInfo& get(int id);
 

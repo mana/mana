@@ -308,8 +308,7 @@ CharCreateDialog::~CharCreateDialog()
     charServerHandler.setCharCreateDialog(0);
 }
 
-void
-CharCreateDialog::action(const gcn::ActionEvent &event)
+void CharCreateDialog::action(const gcn::ActionEvent &event)
 {
     int numberOfColors = ColorDB::size();
     if (event.getId() == "create") {
@@ -340,22 +339,19 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-std::string
-CharCreateDialog::getName()
+std::string CharCreateDialog::getName()
 {
     std::string name = mNameField->getText();
     trim(name);
     return name;
 }
 
-void
-CharCreateDialog::unlock()
+void CharCreateDialog::unlock()
 {
     mCreateButton->setEnabled(true);
 }
 
-void
-CharCreateDialog::attemptCharCreate()
+void CharCreateDialog::attemptCharCreate()
 {
     // Send character infos
     MessageOut outMsg(mNetwork);

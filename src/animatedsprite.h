@@ -60,50 +60,42 @@ class AnimatedSprite
         /**
          * Resets the animated sprite.
          */
-        void
-        reset();
+        void reset();
 
         /**
          * Plays an action using the current direction
          */
-        void
-        play(SpriteAction action);
+        void play(SpriteAction action);
 
         /**
          * Inform the animation of the passed time so that it can output the
          * correct animation frame.
          */
-        void
-        update(int time);
+        void update(int time);
 
         /**
          * Draw the current animation frame at the coordinates given in screen
          * pixels.
          */
-        bool
-        draw(Graphics* graphics, int posX, int posY) const;
+        bool draw(Graphics* graphics, int posX, int posY) const;
 
         /**
          * gets the width in pixels of the image of the current frame
          */
-        int
-        getWidth() const;
+        int getWidth() const;
 
         /**
          * gets the height in pixels of the image of the current frame
          */
-        int
-        getHeight() const;
+        int getHeight() const;
 
         /**
          * Sets the direction.
          */
-        void
-        setDirection(SpriteDirection direction);
+        void setDirection(SpriteDirection direction);
 
     private:
-        bool
-        updateCurrentAnimation(unsigned int dt);
+        bool updateCurrentAnimation(unsigned int dt);
 
         SpriteDirection mDirection;    /**< The sprite direction. */
         int mLastTime;                 /**< The last time update was called. */

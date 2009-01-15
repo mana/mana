@@ -70,8 +70,7 @@ class ParticleEmitter
         /**
          * Sets the target of the particles that are created
          */
-        void
-        setTarget(Particle *target)
+        void setTarget(Particle *target)
         { mParticleTarget = target; };
 
     private:

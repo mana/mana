@@ -418,8 +418,7 @@ void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
     return buffer;
 }
 
-std::vector<std::string>
-ResourceManager::loadTextFile(const std::string &fileName)
+std::vector<std::string> ResourceManager::loadTextFile(const std::string &fileName)
 {
     int contentsLength;
     char *fileContents = (char*)loadFile(fileName, contentsLength);

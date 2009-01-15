@@ -55,8 +55,7 @@ class Image : public Resource
         /**
          * Destructor.
          */
-        virtual
-        ~Image();
+        virtual ~Image();
 
         /**
          * Loads an image from a buffer in memory.
@@ -89,21 +88,17 @@ class Image : public Resource
         /**
          * Frees the resources created by SDL.
          */
-        virtual void
-        unload();
+        virtual void unload();
 
         /**
          * Returns the width of the image.
          */
-        virtual int
-        getWidth() const { return mBounds.w; }
-
+        virtual int getWidth() const { return mBounds.w; }
 
         /**
          * Returns the height of the image.
          */
-        virtual int
-        getHeight() const { return mBounds.h; }
+        virtual int getHeight() const { return mBounds.h; }
 
         /**
          * Creates a new image with the desired clipping rectangle.
@@ -111,20 +106,17 @@ class Image : public Resource
          * @return <code>NULL</code> if creation failed and a valid
          *         object otherwise.
          */
-        virtual Image*
-        getSubImage(int x, int y, int width, int height);
+        virtual Image* getSubImage(int x, int y, int width, int height);
 
         /**
          * Sets the alpha value of this image.
          */
-        void
-        setAlpha(float alpha);
+        void setAlpha(float alpha);
 
         /**
          * Returns the alpha value of this image.
          */
-        float
-        getAlpha();
+        float getAlpha();
 
 #ifdef USE_OPENGL
         /**
@@ -133,7 +125,6 @@ class Image : public Resource
          */
         static void setLoadAsOpenGL(bool useOpenGL);
 #endif
-
 
     protected:
         /**
@@ -146,8 +137,7 @@ class Image : public Resource
         /**
          * Returns the first power of two equal or bigger than the input.
          */
-        static int
-        powerOfTwo(int input);
+        static int powerOfTwo(int input);
 #endif
         Image(SDL_Surface *image);
 
@@ -193,8 +183,7 @@ class SubImage : public Image
          * @return <code>NULL</code> if creation failed and a valid
          *         image otherwise.
          */
-        Image*
-        getSubImage(int x, int y, int width, int height);
+        Image* getSubImage(int x, int y, int width, int height);
 
     private:
         Image *mParent;

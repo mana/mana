@@ -431,8 +431,7 @@ char *iptostring(int address)
     return asciiIP;
 }
 
-void
-Network::setError(const std::string& error)
+void Network::setError(const std::string& error)
 {
     logger->log("Network error: %s", error.c_str());
     mError = error;

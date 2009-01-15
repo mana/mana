@@ -36,8 +36,7 @@ ParticleContainer::~ParticleContainer()
         delete mNext;
 }
 
-void
-ParticleContainer::clear()
+void ParticleContainer::clear()
 {
     clearLocally();
     if (mNext)
@@ -57,8 +56,7 @@ ParticleList::ParticleList(ParticleContainer *parent, bool delParent) :
 
 ParticleList::~ParticleList() {}
 
-void
-ParticleList::addLocally(Particle *particle)
+void ParticleList::addLocally(Particle *particle)
 {
     if (particle)
     {
@@ -68,8 +66,7 @@ ParticleList::addLocally(Particle *particle)
     }
 }
 
-void
-ParticleList::removeLocally(Particle *particle)
+void ParticleList::removeLocally(Particle *particle)
 {
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end(); it++)
@@ -79,8 +76,7 @@ ParticleList::removeLocally(Particle *particle)
         }
 }
 
-void
-ParticleList::clearLocally()
+void ParticleList::clearLocally()
 {
     for (std::list<Particle *>::iterator it = mElements.begin();
          it != mElements.end(); it++)
@@ -117,8 +113,7 @@ ParticleVector::ParticleVector(ParticleContainer *parent, bool delParent) :
 
 ParticleVector::~ParticleVector() {};
 
-void
-ParticleVector::setLocally(int index, Particle *particle)
+void ParticleVector::setLocally(int index, Particle *particle)
 {
     assert(index >= 0);
 
@@ -130,8 +125,7 @@ ParticleVector::setLocally(int index, Particle *particle)
     mIndexedElements[index] = particle;
 }
 
-void
-ParticleVector::delLocally(int index)
+void ParticleVector::delLocally(int index)
 {
     assert(index >= 0);
 
@@ -146,8 +140,7 @@ ParticleVector::delLocally(int index)
     }
 }
 
-void
-ParticleVector::clearLocally()
+void ParticleVector::clearLocally()
 {
     for (unsigned int i = 0; i < mIndexedElements.size(); i++)
         delLocally(i);

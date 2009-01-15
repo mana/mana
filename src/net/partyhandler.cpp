@@ -50,8 +50,7 @@ PartyHandler::PartyHandler(Party *party) : mParty(party)
     handledMessages = _messages;
 }
 
-void
-PartyHandler::handleMessage(MessageIn *msg)
+void PartyHandler::handleMessage(MessageIn *msg)
 {
     switch (msg->getId())
     {

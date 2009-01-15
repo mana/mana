@@ -56,8 +56,7 @@ ResizeGrip::~ResizeGrip()
     }
 }
 
-void
-ResizeGrip::draw(gcn::Graphics *graphics)
+void ResizeGrip::draw(gcn::Graphics *graphics)
 {
     static_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
 }

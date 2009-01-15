@@ -111,8 +111,7 @@ NPC::getType() const
     return Being::NPC;
 }
 
-void
-NPC::talk()
+void NPC::talk()
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_TALK);
@@ -121,16 +120,14 @@ NPC::talk()
     current_npc = this;
 }
 
-void
-NPC::nextDialog()
+void NPC::nextDialog()
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(mId);
 }
 
-void
-NPC::dialogChoice(char choice)
+void NPC::dialogChoice(char choice)
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
@@ -142,8 +139,7 @@ NPC::dialogChoice(char choice)
  * TODO Unify the buy() and sell() methods, without sacrificing readability of
  * the code calling the method. buy(bool buySell) would be bad...
  */
-void
-NPC::buy()
+void NPC::buy()
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
@@ -151,8 +147,7 @@ NPC::buy()
     outMsg.writeInt8(0);
 }
 
-void
-NPC::sell()
+void NPC::sell()
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);

@@ -58,8 +58,7 @@ class SoundEffect : public Resource
          * @return <code>true</code> if the playback started properly
          *         <code>false</code> otherwise.
          */
-        virtual bool
-        play(int loops, int volume);
+        virtual bool play(int loops, int volume);
 
     protected:
         /**

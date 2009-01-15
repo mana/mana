@@ -22,8 +22,7 @@
 #include "itemdb.h"
 #include "iteminfo.h"
 
-const std::string&
-ItemInfo::getSprite(Gender gender) const
+const std::string& ItemInfo::getSprite(Gender gender) const
 {
     if (mView)
     {
@@ -66,15 +65,12 @@ void ItemInfo::setWeaponType(int type)
     }
 }
 
-void
-ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
+void ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
 {
     mSounds[event].push_back("sfx/" + filename);
 }
 
-
-const std::string&
-ItemInfo::getSound(EquipmentSoundEvent event) const
+const std::string& ItemInfo::getSound(EquipmentSoundEvent event) const
 {
     static const std::string empty;
     std::map< EquipmentSoundEvent, std::vector<std::string> >::const_iterator i;

@@ -32,8 +32,7 @@
 #include "../log.h"
 #include "../utils/xml.h"
 
-Action*
-SpriteDef::getAction(SpriteAction action) const
+Action* SpriteDef::getAction(SpriteAction action) const
 {
     Actions::const_iterator i = mActions.find(action);
 
@@ -146,8 +145,7 @@ void SpriteDef::loadImageSet(xmlNodePtr node, std::string const &palettes)
     mImageSets[name] = imageSet;
 }
 
-void
-SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
+void SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
 {
     const std::string actionName = XML::getProperty(node, "name", "");
     const std::string imageSetName = XML::getProperty(node, "imageset", "");
@@ -187,10 +185,9 @@ SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
     }
 }
 
-void
-SpriteDef::loadAnimation(xmlNodePtr animationNode,
-                         Action *action, ImageSet *imageSet,
-                         int variant_offset)
+void SpriteDef::loadAnimation(xmlNodePtr animationNode,
+                              Action *action, ImageSet *imageSet,
+                              int variant_offset)
 {
     const std::string directionName =
         XML::getProperty(animationNode, "direction", "");
@@ -267,8 +264,7 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
     } // for frameNode
 }
 
-void
-SpriteDef::includeSprite(xmlNodePtr includeNode)
+void SpriteDef::includeSprite(xmlNodePtr includeNode)
 {
     // TODO: Perform circular dependency check, since it's easy to crash the
     // client this way.
@@ -289,8 +285,7 @@ SpriteDef::includeSprite(xmlNodePtr includeNode)
     loadSprite(rootNode, 0);
 }
 
-void
-SpriteDef::substituteAction(SpriteAction complete, SpriteAction with)
+void SpriteDef::substituteAction(SpriteAction complete, SpriteAction with)
 {
     if (mActions.find(complete) == mActions.end())
     {
@@ -324,8 +319,7 @@ SpriteDef::~SpriteDef()
     }
 }
 
-SpriteAction
-SpriteDef::makeSpriteAction(const std::string& action)
+SpriteAction SpriteDef::makeSpriteAction(const std::string& action)
 {
     if (action == "" || action == "default") {
         return ACTION_DEFAULT;
@@ -377,8 +371,7 @@ SpriteDef::makeSpriteAction(const std::string& action)
     }
 }
 
-SpriteDirection
-SpriteDef::makeSpriteDirection(const std::string& direction)
+SpriteDirection SpriteDef::makeSpriteDirection(const std::string& direction)
 {
     if (direction == "" || direction == "default") {
         return DIRECTION_DEFAULT;

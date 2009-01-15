@@ -55,8 +55,7 @@ Resource *Music::load(void *buffer, unsigned bufferSize)
     }
 }
 
-bool
-Music::play(int loops)
+bool Music::play(int loops)
 {
     /*
      * Warning: loops should be always set to -1 (infinite) with current
@@ -71,8 +70,7 @@ Music::play(int loops)
     return mChannel != -1;
 }
 
-void
-Music::stop()
+void Music::stop()
 {
     /*
      * Warning: very dungerous trick, it could try to stop channels occupied

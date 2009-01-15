@@ -27,5 +27,5 @@ class ImageWriter
 {
     public:
         static bool writePNG(SDL_Surface *surface,
-                const std::string &filename);
+                             const std::string &filename);
 };

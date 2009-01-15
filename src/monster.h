@@ -62,8 +62,7 @@ class Monster : public Being
         /**
          * Returns the MonsterInfo, with static data about this monster.
          */
-        const MonsterInfo&
-        getInfo() const;
+        const MonsterInfo& getInfo() const;
 
         /**
          * Determine whether the mob should show it's name

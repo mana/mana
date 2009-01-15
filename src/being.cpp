@@ -48,9 +48,6 @@
 #include "utils/tostring.h"
 #include "utils/xml.h"
 
-#define BEING_EFFECTS_FILE "effects.xml"
-#define HAIR_FILE "hair.xml"
-
 int Being::instances = 0;
 int Being::mNumberOfHairstyles = 1;
 ImageSet *Being::emotionSet = NULL;

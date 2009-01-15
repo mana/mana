@@ -46,8 +46,6 @@
 
 extern volatile int tick_time;
 
-extern volatile int tick_time;
-
 Viewport::Viewport():
     mMap(0),
     mPixelViewX(0.0f),

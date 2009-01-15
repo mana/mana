@@ -33,7 +33,6 @@
 class LocalPlayer;
 class ProgressBar;
 
-
 /**
  * The player status dialog.
  *

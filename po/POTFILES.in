@@ -37,7 +37,11 @@ src/gui/status.cpp
 src/gui/trade.cpp
 src/gui/updatewindow.cpp
 src/net/playerhandler.cpp
+src/net/tradehandler.cpp
+src/resources/colordb.cpp
 src/resources/itemdb.cpp
+src/resources/monsterdb.cpp
+src/resources/npcdb.cpp
 src/being.cpp
 src/game.cpp
 src/main.cpp

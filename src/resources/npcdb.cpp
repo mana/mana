@@ -25,6 +25,7 @@
 #include "../log.h"
 
 #include "../utils/dtor.h"
+#include "../utils/gettext.h"
 #include "../utils/xml.h"
 
 namespace
@@ -44,14 +45,14 @@ void NPCDB::load()
     unknownSprite->variant = 0;
     mUnknown.sprites.push_back(unknownSprite);
 
-    logger->log("Initializing NPC database...");
+    logger->log(_("Initializing NPC database..."));
 
     XML::Document doc("npcs.xml");
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "npcs"))
     {
-        logger->error("NPC Database: Error while loading items.xml!");
+        logger->error(_("NPC Database: Error while loading npcs.xml!"));
     }
 
     //iterate <monster>s
@@ -63,7 +64,7 @@ void NPCDB::load()
         int id = XML::getProperty(npcNode, "id", 0);
         if (id == 0)
         {
-            logger->log("NPC Database: NPC with missing ID in npcs.xml!");
+            logger->log(_("NPC Database: NPC with missing ID in npcs.xml!"));
             continue;
         }
 
@@ -90,8 +91,7 @@ void NPCDB::load()
     mLoaded = true;
 }
 
-void
-NPCDB::unload()
+void NPCDB::unload()
 {
     for (   NPCInfosIterator i = mNPCInfos.begin();
             i != mNPCInfos.end();
@@ -116,14 +116,13 @@ NPCDB::unload()
     mLoaded = false;
 }
 
-const NPCInfo&
-NPCDB::get(int id)
+const NPCInfo& NPCDB::get(int id)
 {
     NPCInfosIterator i = mNPCInfos.find(id);
 
     if (i == mNPCInfos.end())
     {
-        logger->log("NPCDB: Warning, unknown NPC ID %d requested", id);
+        logger->log(_("NPCDB: Warning, unknown NPC ID %d requested"), id);
         return mUnknown;
     }
     else

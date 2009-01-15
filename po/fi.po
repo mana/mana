@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-12 17:52-0700\n"
+"POT-Creation-Date: 2009-01-15 11:01-0700\n"
 "PO-Revision-Date: 2008-12-30 10:23+0000\n"
 "Last-Translator: ville-v <villev90@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -57,8 +57,8 @@ msgstr "Myy"
 #: ../src/gui/char_select.cpp:259 ../src/gui/char_server.cpp:59
 #: ../src/gui/connection.cpp:46 ../src/gui/item_amount.cpp:60
 #: ../src/gui/login.cpp:77 ../src/gui/npclistdialog.cpp:42
-#: ../src/gui/register.cpp:79 ../src/gui/setup.cpp:59 ../src/gui/setup.cpp:121
-#: ../src/gui/trade.cpp:63 ../src/gui/updatewindow.cpp:115
+#: ../src/gui/register.cpp:77 ../src/gui/setup.cpp:59 ../src/gui/setup.cpp:121
+#: ../src/gui/trade.cpp:63 ../src/gui/updatewindow.cpp:114
 msgid "Cancel"
 msgstr "Peru"
 
@@ -137,7 +137,7 @@ msgstr "Luo hahmo"
 
 #: ../src/gui/char_select.cpp:251 ../src/gui/inventorywindow.cpp:66
 #: ../src/gui/inventorywindow.cpp:158 ../src/gui/login.cpp:51
-#: ../src/gui/register.cpp:66
+#: ../src/gui/register.cpp:64
 msgid "Name:"
 msgstr "Nimi:"
 
@@ -182,7 +182,7 @@ msgstr ""
 msgid "Global announcement from "
 msgstr ""
 
-#: ../src/gui/chat.cpp:166 ../src/gui/login.cpp:53 ../src/gui/register.cpp:69
+#: ../src/gui/chat.cpp:166 ../src/gui/login.cpp:53 ../src/gui/register.cpp:67
 msgid "Server:"
 msgstr "Palvelin:"
 
@@ -540,12 +540,12 @@ msgstr "Kyllä"
 msgid "No"
 msgstr "Ei"
 
-#: ../src/gui/connection.cpp:48 ../src/gui/updatewindow.cpp:113
+#: ../src/gui/connection.cpp:48 ../src/gui/updatewindow.cpp:112
 msgid "Connecting..."
 msgstr "Yhdistetään..."
 
 #: ../src/gui/emotecontainer.cpp:50 ../src/gui/emoteshortcutcontainer.cpp:52
-#: ../src/being.cpp:96
+#: ../src/being.cpp:93
 msgid "Unable to load emotions"
 msgstr ""
 
@@ -643,11 +643,11 @@ msgstr "Anna pudotettavien tavaroiden määrä."
 msgid "Login"
 msgstr "Kirjaudu sisään"
 
-#: ../src/gui/login.cpp:52 ../src/gui/register.cpp:67
+#: ../src/gui/login.cpp:52 ../src/gui/register.cpp:65
 msgid "Password:"
 msgstr "Salasana:"
 
-#: ../src/gui/login.cpp:54 ../src/gui/register.cpp:70
+#: ../src/gui/login.cpp:54 ../src/gui/register.cpp:68
 msgid "Port:"
 msgstr "Portti:"
 
@@ -659,8 +659,8 @@ msgstr ""
 msgid "Keep"
 msgstr ""
 
-#: ../src/gui/login.cpp:78 ../src/gui/register.cpp:62
-#: ../src/gui/register.cpp:78
+#: ../src/gui/login.cpp:78 ../src/gui/register.cpp:60
+#: ../src/gui/register.cpp:76
 msgid "Register"
 msgstr "Rekisteröidy"
 
@@ -767,49 +767,49 @@ msgstr "@@drop|Pudota maahan@@"
 msgid "@@description|Description@@"
 msgstr "@@description|Kuvaus@@"
 
-#: ../src/gui/register.cpp:68
+#: ../src/gui/register.cpp:66
 msgid "Confirm:"
 msgstr "Vahvista:"
 
-#: ../src/gui/register.cpp:76
+#: ../src/gui/register.cpp:74
 msgid "Male"
 msgstr "Miespuolinen"
 
-#: ../src/gui/register.cpp:77
+#: ../src/gui/register.cpp:75
 msgid "Female"
 msgstr "Naispuolinen"
 
-#: ../src/gui/register.cpp:186
+#: ../src/gui/register.cpp:183
 #, c-format
 msgid "RegisterDialog::register Username is %s"
 msgstr ""
 
-#: ../src/gui/register.cpp:195
+#: ../src/gui/register.cpp:192
 #, c-format
 msgid "The username needs to be at least %d characters long."
 msgstr "Käyttäjänimen tulee olla vähintään %d merkkiä pitkä"
 
-#: ../src/gui/register.cpp:203
+#: ../src/gui/register.cpp:200
 #, c-format
 msgid "The username needs to be less than %d characters long."
 msgstr "Käyttäjänimen tulee olla alle %d merkkiä pitkä."
 
-#: ../src/gui/register.cpp:211
+#: ../src/gui/register.cpp:208
 #, c-format
 msgid "The password needs to be at least %d characters long."
 msgstr "Salasanan tulee olla vähintään %d merkkiä pitkä"
 
-#: ../src/gui/register.cpp:219
+#: ../src/gui/register.cpp:216
 #, c-format
 msgid "The password needs to be less than %d characters long."
 msgstr "Salasanan tulee olla alle %d merkkiä pitkä."
 
 #. Password does not match with the confirmation one
-#: ../src/gui/register.cpp:226
+#: ../src/gui/register.cpp:223
 msgid "Passwords do not match."
 msgstr "Salasanat eivät täsmää."
 
-#: ../src/gui/register.cpp:246 ../src/main.cpp:1022
+#: ../src/gui/register.cpp:243 ../src/main.cpp:1022
 msgid "Error"
 msgstr "Virhe"
 
@@ -1230,58 +1230,58 @@ msgstr "Annat:"
 msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:79
+#: ../src/gui/updatewindow.cpp:78
 #, c-format
 msgid "Couldn't load text file: %s"
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:94
+#: ../src/gui/updatewindow.cpp:93
 msgid "Updating..."
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:116
+#: ../src/gui/updatewindow.cpp:115
 msgid "Play"
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:197
+#: ../src/gui/updatewindow.cpp:196
 msgid "Couldn't load news"
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:329
+#: ../src/gui/updatewindow.cpp:327
 msgid "curl error "
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:330
+#: ../src/gui/updatewindow.cpp:328
 msgid " host: "
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:365
+#: ../src/gui/updatewindow.cpp:363
 #, c-format
 msgid "Checksum for file %s failed: (%lx/%lx)"
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:415
+#: ../src/gui/updatewindow.cpp:413
 msgid "Unable to create mThread"
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:453
+#: ../src/gui/updatewindow.cpp:451
 msgid "##1  The update process is incomplete."
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:454
+#: ../src/gui/updatewindow.cpp:452
 msgid "##1  It is strongly recommended that"
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:455
+#: ../src/gui/updatewindow.cpp:453
 msgid "##1  you try again later"
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:509
+#: ../src/gui/updatewindow.cpp:507
 #, c-format
 msgid "%s already here"
 msgstr ""
 
-#: ../src/gui/updatewindow.cpp:522
+#: ../src/gui/updatewindow.cpp:520
 msgid "Completed"
 msgstr ""
 
@@ -1412,6 +1412,10 @@ msgstr ""
 msgid "You're pining for the fjords."
 msgstr ""
 
+#: ../src/net/playerhandler.cpp:267
+msgid "You picked up "
+msgstr ""
+
 #: ../src/net/playerhandler.cpp:390
 msgid "Equip arrows first"
 msgstr ""
@@ -1421,8 +1425,175 @@ msgstr ""
 msgid "0x013b: Unhandled message %i"
 msgstr ""
 
+#: ../src/net/tradehandler.cpp:91
+msgid "Request for trade"
+msgstr ""
+
+#: ../src/net/tradehandler.cpp:93
+msgid " wants to trade with you, do you accept?"
+msgstr ""
+
+#. Too far away
+#: ../src/net/tradehandler.cpp:107
+msgid "Trading isn't possible. Trade partner is too far away."
+msgstr ""
+
+#. Character doesn't exist
+#: ../src/net/tradehandler.cpp:111
+msgid "Trading isn't possible. Character doesn't exist."
+msgstr ""
+
+#. Invite request check failed...
+#: ../src/net/tradehandler.cpp:115
+msgid "Trade cancelled due to an unknown reason."
+msgstr ""
+
+#: ../src/net/tradehandler.cpp:121
+msgid "Trade: You and "
+msgstr ""
+
+#: ../src/net/tradehandler.cpp:127
+#, fuzzy
+msgid "Trade with "
+msgstr "@@trade|Vaihda tavaroita %s kanssa@@"
+
+#: ../src/net/tradehandler.cpp:128
+#, fuzzy
+msgid " cancelled"
+msgstr "Peru"
+
+#. Shouldn't happen as well, but to be sure
+#: ../src/net/tradehandler.cpp:135
+msgid "Unhandled trade cancel packet"
+msgstr ""
+
+#. Add item failed - player overweighted
+#: ../src/net/tradehandler.cpp:185
+msgid "Failed adding item. Trade partner is over weighted."
+msgstr ""
+
+#. Add item failed - player has no free slot
+#: ../src/net/tradehandler.cpp:190
+msgid "Failed adding item. Trade partner has no free slot."
+msgstr ""
+
+#: ../src/net/tradehandler.cpp:194
+msgid "Failed adding item for unknown reason."
+msgstr ""
+
+#: ../src/net/tradehandler.cpp:207
+msgid "Trade canceled."
+msgstr ""
+
+#: ../src/net/tradehandler.cpp:214
+msgid "Trade completed."
+msgstr ""
+
+#: ../src/resources/colordb.cpp:56
+#, c-format
+msgid "Trying TMW's color file, %s."
+msgstr ""
+
+#: ../src/resources/colordb.cpp:66
+msgid "ColorDB: Failed"
+msgstr ""
+
+#: ../src/resources/colordb.cpp:83
+#, c-format
+msgid "ColorDB: Redefinition of dye ID %d"
+msgstr ""
+
+#: ../src/resources/colordb.cpp:98
+msgid "Unloading color database..."
+msgstr ""
+
+#: ../src/resources/colordb.cpp:113
+#, c-format
+msgid "ColorDB: Error, unknown dye ID# %d"
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:52
+msgid "Initializing item database..."
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:55
+msgid "Unknown item"
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:65
+msgid "ItemDB: Error while loading items.xml!"
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:77
+msgid "ItemDB: Invalid or missing item ID in items.xml!"
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:82
+#, c-format
+msgid "ItemDB: Redefinition of item ID %d"
+msgstr ""
+
 #: ../src/resources/itemdb.cpp:99
 msgid "Unnamed"
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:142
+msgid "Unloading item database..."
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:160
+#, c-format
+msgid "ItemDB: Error, unknown item ID# %d"
+msgstr ""
+
+#: ../src/resources/itemdb.cpp:199
+#, c-format
+msgid "ItemDB: Ignoring unknown sound event '%s'"
+msgstr ""
+
+#: ../src/resources/monsterdb.cpp:44
+msgid "unnamed"
+msgstr ""
+
+#: ../src/resources/monsterdb.cpp:46
+msgid "Initializing monster database..."
+msgstr ""
+
+#: ../src/resources/monsterdb.cpp:53
+msgid "Monster Database: Error while loading monster.xml!"
+msgstr ""
+
+#: ../src/resources/monsterdb.cpp:84
+#, c-format
+msgid ""
+"MonsterDB: Unknown target cursor type \"%s\" for %s - using medium sized one"
+msgstr ""
+
+#: ../src/resources/monsterdb.cpp:121
+#, c-format
+msgid "MonsterDB: Warning, sound effect %s for unknown event %s of monster %s"
+msgstr ""
+
+#: ../src/resources/monsterdb.cpp:159
+#, c-format
+msgid "MonsterDB: Warning, unknown monster ID %d requested"
+msgstr ""
+
+#: ../src/resources/npcdb.cpp:48
+msgid "Initializing NPC database..."
+msgstr ""
+
+#: ../src/resources/npcdb.cpp:55
+msgid "NPC Database: Error while loading npcs.xml!"
+msgstr ""
+
+#: ../src/resources/npcdb.cpp:67
+msgid "NPC Database: NPC with missing ID in npcs.xml!"
+msgstr ""
+
+#: ../src/resources/npcdb.cpp:125
+#, c-format
+msgid "NPCDB: Warning, unknown NPC ID %d requested"
 msgstr ""
 
 #: ../src/game.cpp:386

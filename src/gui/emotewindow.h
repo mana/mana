@@ -67,7 +67,6 @@ class EmoteWindow : public Window, gcn::ActionListener,
         void widgetResized(const gcn::Event &event);
 
     private:
-
         EmoteContainer *mEmotes;
 
         gcn::Button *mUseButton;
