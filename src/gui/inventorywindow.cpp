@@ -63,28 +63,18 @@ InventoryWindow::InventoryWindow():
     mTotalWeight = toString(player_node->mTotalWeight);
     mMaxWeight = toString(player_node->mMaxWeight);
 
-    mItemName = _("Name:");
-    mItemNameLabel = new TextBox();
-    mItemDescription = _("Description:");
-    mItemDescriptionLabel = new TextBox();
-    mItemEffect = _("Effect:");
-    mItemEffectLabel = new TextBox();
     mWeight = _("Weight: ") + mTotalWeight + " g / " +
               mMaxWeight + _(" g Slots: ") + 
               toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
               "/" + toString(player_node->getInventory()->getInventorySize());
     mWeightLabel = new TextBox();
     mWeightLabel->setPosition(8, 8);
-    mItemEffectLabel = new TextBox();
 
     draw();
 
     add(mUseButton);
     add(mDropButton);
     add(mInvenScroll);
-    add(mItemNameLabel);
-    add(mItemDescriptionLabel);
-    add(mItemEffectLabel);
     add(mWeightLabel);
 
     mUseButton->setSize(60, mUseButton->getHeight());
@@ -150,29 +140,6 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 
 void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
-    const Item *item = mItems->getSelectedItem();
-
-    // Update name, effect and description
-    if (!item)
-    {
-        mItemName = _("Name:");
-        mItemNameLabel->setTextWrapped(mItemName);
-        mItemEffect = _("Effect:");
-        mItemEffectLabel->setTextWrapped(mItemEffect);
-        mItemDescription = _("Description:");
-        mItemDescriptionLabel->setTextWrapped(mItemDescription);
-    }
-    else
-    {
-        const ItemInfo& itemInfo = item->getInfo();
-        mItemName = _("Name: ") + itemInfo.getName();
-        mItemNameLabel->setTextWrapped(mItemName);
-        mItemEffect = _("Effect: ") + itemInfo.getEffect();
-        mItemEffectLabel->setTextWrapped(mItemEffect);
-        mItemDescription = _("Description: ") + itemInfo.getDescription();
-        mItemDescriptionLabel->setTextWrapped(mItemDescription);
-    }
-
     draw();
 }
 
@@ -210,33 +177,11 @@ void InventoryWindow::draw()
     mDropButton->setPosition(8 + mUseButton->getWidth() + 5,
             mUseButton->getY());
 
-    mItemNameLabel->setMinWidth(width - 16);
-    mItemNameLabel->setTextWrapped(mItemName);
-    mItemNameLabel->setDimension(gcn::Rectangle(8,
-            mUseButton->getY() - 5 - (mItemNameLabel->getNumberOfRows()*15),
-            width - 16,
-            (mItemNameLabel->getNumberOfRows()*15)));
-    mItemEffectLabel->setMinWidth(width - 16);
-    mItemEffectLabel->setTextWrapped(mItemEffect);
-    mItemEffectLabel->setDimension(gcn::Rectangle(8,
-            mItemNameLabel->getY() - 5 - (mItemEffectLabel->getNumberOfRows()*15),
-            width - 16,
-            (mItemEffectLabel->getNumberOfRows()*15)));
-    mItemDescriptionLabel->setMinWidth(width - 16);
-    mItemDescriptionLabel->setTextWrapped(mItemDescription);
-    mItemDescriptionLabel->setDimension(gcn::Rectangle(8,
-            mItemEffectLabel->getY() - 5 - (mItemDescriptionLabel->getNumberOfRows()*15),
-            width - 16,
-            (mItemDescriptionLabel->getNumberOfRows()*15)));
-
     mInvenScroll->setSize(width - 16,
-            mItemDescriptionLabel->getY() - (mWeightLabel->getNumberOfRows()*15) - 18);
+            mUseButton->getY() - (mWeightLabel->getNumberOfRows()*15) - 18);
     mInvenScroll->setPosition(8, (mWeightLabel->getNumberOfRows()*15) + 10);
 
-    setMinHeight(130 + (mWeightLabel->getNumberOfRows()*15) + 
-                       (mItemDescriptionLabel->getNumberOfRows()*15) +
-                       (mItemEffectLabel->getNumberOfRows()*15) +
-                       (mItemNameLabel->getNumberOfRows()*15));
+    setMinHeight(130 + (mWeightLabel->getNumberOfRows()*15));
 }
 
 void InventoryWindow::widgetResized(const gcn::Event &event)
