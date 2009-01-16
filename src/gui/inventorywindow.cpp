@@ -28,7 +28,6 @@
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
-#include "itempopup.h"
 #include "scrollarea.h"
 #include "viewport.h"
 

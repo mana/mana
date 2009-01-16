@@ -108,6 +108,8 @@ class ItemContainer : public gcn::Widget,
             mListeners.remove(listener);
         }
 
+        ItemPopup *mItemPopup;
+
     private:
         void mouseExited(gcn::MouseEvent &event);
         void mouseMoved(gcn::MouseEvent &event);
@@ -149,8 +151,6 @@ class ItemContainer : public gcn::Widget,
 
         int mMaxItems;
         int mOffset;
-
-        ItemPopup *mItemPopup;
 
         std::list<gcn::SelectionListener*> mListeners;
 

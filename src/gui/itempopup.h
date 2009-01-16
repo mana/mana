@@ -23,8 +23,8 @@
 #ifndef _TMW_ITEMPOPUP_H__
 #define _TMW_ITEMPOPUP_H__
 
-#include "textbox.h"
 #include "scrollarea.h"
+#include "textbox.h"
 #include "window.h"
 
 #include "../item.h"

@@ -20,23 +20,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itempopup.h"
 #include <guichan/widgets/label.hpp>
-#include "widgets/layout.h"
 
 #include "gui.h"
+#include "itempopup.h"
+
+#include "widgets/layout.h"
 
 #include "../resources/image.h"
-#include "../resources/resourcemanager.h"
 #include "../resources/iteminfo.h"
+#include "../resources/resourcemanager.h"
+
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-
 
 ItemPopup::ItemPopup()
 {
     setResizable(false);
-    setCaption("");
+    setShowTitle(false);
     setTitleBarHeight(0);
     loadSkin("graphics/gui/gui.xml");
 
@@ -49,7 +50,6 @@ ItemPopup::ItemPopup()
     // Item Description
     mItemDesc = new TextBox();
     mItemDesc->setEditable(false);
-    mItemDesc->setMinWidth(170);
     mItemDescScroll = new ScrollArea(mItemDesc);
 
     mItemDescScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -61,7 +61,6 @@ ItemPopup::ItemPopup()
     // Item Effect
     mItemEffect = new TextBox();
     mItemEffect->setEditable(false);
-    mItemEffect->setMinWidth(170);
     mItemEffectScroll = new ScrollArea(mItemEffect);
 
     mItemEffectScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -88,8 +87,8 @@ void ItemPopup::setItem(const ItemInfo &item)
     const gcn::Rectangle &area = getChildrenArea();
     const int width = area.width;
 
-    mItemDesc->setMinWidth(width - 30);
-    mItemEffect->setMinWidth(width - 30);
+    mItemDesc->setMinWidth(width - 10);
+    mItemEffect->setMinWidth(width - 10);
 
     mItemName->setCaption(item.getName());
     mItemDesc->setTextWrapped(item.getDescription());
