@@ -57,14 +57,7 @@ EmoteShortcutContainer::EmoteShortcutContainer():
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); i++)
     {
-        EmoteInfo info = EmoteDB::get(i);
-
-        if (info.sprites != EmoteDB::getUnknown().sprites)
-        { 
-            std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
-            int variant = info.sprites.front()->variant;
-            mEmoteImg.push_back(AnimatedSprite::load(file, variant));
-        }
+        mEmoteImg.push_back(player_node->getEmote(i));
     }
 
     mMaxItems = MAX_ITEMS;

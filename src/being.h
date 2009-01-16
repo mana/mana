@@ -351,6 +351,8 @@ class Being : public Sprite
          */
         void controlParticle(Particle *particle);
 
+        AnimatedSprite* getEmote(int index) { return emotionSet[index]; }
+
         void setEmote(Uint8 emotion, Uint8 emote_time)
         {
             mEmotion = emotion;

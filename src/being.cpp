@@ -93,12 +93,9 @@ Being::Being(int id, int job, Map *map):
         {
             EmoteInfo info = EmoteDB::get(i);
 
-            if (info.sprites != EmoteDB::getUnknown().sprites)
-            {
-                std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
-                int variant = info.sprites.front()->variant;
-                emotionSet.push_back(AnimatedSprite::load(file, variant));
-            }
+            std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
+            int variant = info.sprites.front()->variant;
+            emotionSet.push_back(AnimatedSprite::load(file, variant));
         }
 
         // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
@@ -456,7 +453,7 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     const int py = mPy + offsetY - 60;
     const int emotionIndex = mEmotion - 1;
 
-    if (emotionIndex >= 0 && emotionIndex < EmoteDB::getLast())
+    if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
         emotionSet[emotionIndex]->draw(graphics, px, py);
 }
 
