@@ -48,6 +48,8 @@ ItemContainer::ItemContainer(Inventory *inventory, int offset):
     mLastSelectedItemId(NO_ITEM),
     mOffset(offset)
 {
+    mItemPopup = new ItemPopup();
+
     ResourceManager *resman = ResourceManager::getInstance();
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
@@ -222,7 +224,7 @@ void ItemContainer::distributeValueChangedEvent()
 
 void ItemContainer::mousePressed(gcn::MouseEvent &event)
 {
-    int button = event.getButton();
+    const int button = event.getButton();
 
     if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
     {
@@ -240,3 +242,40 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
             itemShortcut->setItemSelected(item->getId());
     }
 }
+
+// Show ItemTooltip
+void ItemContainer::mouseMoved(gcn::MouseEvent &event)
+{
+    Item *item = mInventory->getItem( getSlotIndex(event.getX(), event.getY() ) );
+
+    if( item )
+    {
+        mItemPopup->setPosition(getParent()->getParent()->getX() + 
+                                getParent()->getParent()->getWidth(), 
+                                getParent()->getParent()->getY());
+
+        mItemPopup->setItem(item->getInfo());
+
+        mItemPopup->setVisible(true);
+    }
+    else
+    {
+        mItemPopup->setVisible(false);
+    }
+}
+
+// Hide ItemTooltip
+void ItemContainer::mouseExited(gcn::MouseEvent &event)
+{
+    mItemPopup->setVisible(false);
+}
+
+int ItemContainer::getSlotIndex(const int posX, const int posY) const
+{
+    int columns = getWidth() / gridWidth;
+    int index = posX / gridWidth + ((posY / gridHeight) * columns) + mOffset;
+
+    return (index);
+}
+
+

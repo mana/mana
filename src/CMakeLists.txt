@@ -101,6 +101,8 @@ SET(SRCS
     gui/inventorywindow.h
     gui/itemcontainer.cpp
     gui/itemcontainer.h
+    gui/itempopup.cpp
+    gui/itempopup.h
     gui/itemshortcutcontainer.cpp
     gui/itemshortcutcontainer.h
     gui/itemshortcutwindow.cpp

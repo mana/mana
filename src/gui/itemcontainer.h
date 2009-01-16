@@ -28,6 +28,8 @@
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
+#include "itempopup.h"
+
 #include "../guichanfwd.h"
 
 class Image;
@@ -107,6 +109,9 @@ class ItemContainer : public gcn::Widget,
         }
 
     private:
+        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
+
         /**
 
          * Sets the currently selected item.  Invalid (e.g., negative) indices set `no item'.
@@ -128,6 +133,15 @@ class ItemContainer : public gcn::Widget,
          */
         void distributeValueChangedEvent(void);
 
+        /**
+         * Gets the slot index based on the cursor position.
+         *
+         * @param posX The X Coordinate position.
+         * @param posY The Y Coordinate position.
+         * @return The slot index on success, -1 on failure.
+         */
+        int getSlotIndex(const int posX, const int posY) const;
+
         Inventory *mInventory;
         Image *mSelImg;
         int mSelectedItemIndex;
@@ -135,6 +149,8 @@ class ItemContainer : public gcn::Widget,
 
         int mMaxItems;
         int mOffset;
+
+        ItemPopup *mItemPopup;
 
         std::list<gcn::SelectionListener*> mListeners;
 
