@@ -167,10 +167,10 @@
 		<Unit filename="src\gui\item_amount.h" />
 		<Unit filename="src\gui\itemcontainer.cpp" />
 		<Unit filename="src\gui\itemcontainer.h" />
+		<Unit filename="src\gui\itempopup.cpp" />
+		<Unit filename="src\gui\itempopup.h" />
 		<Unit filename="src\gui\itemshortcutcontainer.cpp" />
 		<Unit filename="src\gui\itemshortcutcontainer.h" />
-		<Unit filename="src\gui\itemshortcutwindow.cpp" />
-		<Unit filename="src\gui\itemshortcutwindow.h" />
 		<Unit filename="src\gui\linkhandler.h" />
 		<Unit filename="src\gui\listbox.cpp" />
 		<Unit filename="src\gui\listbox.h" />
@@ -202,6 +202,8 @@
 		<Unit filename="src\gui\register.h" />
 		<Unit filename="src\gui\scrollarea.cpp" />
 		<Unit filename="src\gui\scrollarea.h" />
+		<Unit filename="src\gui\sdlinput.cpp" />
+		<Unit filename="src\gui\sdlinput.h" />
 		<Unit filename="src\gui\sell.cpp" />
 		<Unit filename="src\gui\sell.h" />
 		<Unit filename="src\gui\setup.cpp" />
@@ -235,8 +237,6 @@
 		<Unit filename="src\gui\speechbubble.h" />
 		<Unit filename="src\gui\status.cpp" />
 		<Unit filename="src\gui\status.h" />
-		<Unit filename="src\gui\tabbedcontainer.cpp" />
-		<Unit filename="src\gui\tabbedcontainer.h" />
 		<Unit filename="src\gui\table.cpp" />
 		<Unit filename="src\gui\table.h" />
 		<Unit filename="src\gui\table_model.cpp" />
@@ -255,8 +255,14 @@
 		<Unit filename="src\gui\viewport.h" />
 		<Unit filename="src\gui\widgets\dropdown.cpp" />
 		<Unit filename="src\gui\widgets\dropdown.h" />
+		<Unit filename="src\gui\widgets\layout.cpp" />
+		<Unit filename="src\gui\widgets\layout.h" />
 		<Unit filename="src\gui\widgets\resizegrip.cpp" />
 		<Unit filename="src\gui\widgets\resizegrip.h" />
+		<Unit filename="src\gui\widgets\tab.cpp" />
+		<Unit filename="src\gui\widgets\tab.h" />
+		<Unit filename="src\gui\widgets\tabbedarea.cpp" />
+		<Unit filename="src\gui\widgets\tabbedarea.h" />
 		<Unit filename="src\gui\window.cpp" />
 		<Unit filename="src\gui\window.h" />
 		<Unit filename="src\gui\windowcontainer.cpp" />
@@ -358,6 +364,8 @@
 		<Unit filename="src\resources\colordb.h" />
 		<Unit filename="src\resources\dye.cpp" />
 		<Unit filename="src\resources\dye.h" />
+		<Unit filename="src\resources\emotedb.cpp" />
+		<Unit filename="src\resources\emotedb.h" />
 		<Unit filename="src\resources\image.cpp" />
 		<Unit filename="src\resources\image.h" />
 		<Unit filename="src\resources\imageloader.cpp" />
@@ -407,6 +415,7 @@
 		<Unit filename="src\utils\base64.h" />
 		<Unit filename="src\utils\dtor.h" />
 		<Unit filename="src\utils\fastsqrt.h" />
+		<Unit filename="src\utils\gettext.h" />
 		<Unit filename="src\utils\mutex.h" />
 		<Unit filename="src\utils\strprintf.cpp" />
 		<Unit filename="src\utils\strprintf.h" />

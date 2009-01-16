@@ -23,10 +23,10 @@
 #include <guichan/selectionlistener.hpp>
 
 #include "emotecontainer.h"
-#include "emoteshortcut.h"
 
 #include "../animatedsprite.h"
 #include "../configuration.h"
+#include "../emoteshortcut.h"
 #include "../graphics.h"
 #include "../localplayer.h"
 #include "../log.h"
@@ -69,8 +69,6 @@ EmoteContainer::EmoteContainer():
 
 EmoteContainer::~EmoteContainer()
 {
-    delete_all(mEmoteImg);
-
     if (!mSelImg)
     {
        mSelImg->decRef();

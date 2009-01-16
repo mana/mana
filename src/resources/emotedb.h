@@ -52,8 +52,6 @@ namespace EmoteDB
 
     const EmoteInfo& get(int id);
 
-    const EmoteInfo& getUnknown();
-
     const int& getLast();
 
     typedef EmoteInfos::iterator EmoteInfosIterator;

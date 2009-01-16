@@ -69,8 +69,6 @@ EmoteShortcutContainer::EmoteShortcutContainer():
 EmoteShortcutContainer::~EmoteShortcutContainer()
 {
     mBackgroundImg->decRef();
-
-    delete_all(mEmoteImg);
 }
 
 void EmoteShortcutContainer::draw(gcn::Graphics *graphics)

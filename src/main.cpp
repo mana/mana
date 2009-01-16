@@ -748,7 +748,7 @@ int main(int argc, char *argv[])
     gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
     top->add(versionLabel, 2, 2);
 #endif
-    ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20);
+    ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
     gcn::Label *progressLabel = new gcn::Label();
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
     top->add(progressLabel, 15 + progressBar->getWidth(),

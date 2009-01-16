@@ -17,6 +17,8 @@
 
   ##9Kraant Developer
             <kraant@gmail.com>
+
+  ##9Forge Developer
  
 ##2 Artists:
 
@@ -32,6 +34,8 @@
 
   ##9GonzoDark Mapper
 
+  ##9Solo Mapper
+
 ##2 Content Development: 
 
   ##9Moose
@@ -41,6 +45,8 @@
   ##9Grimmjow
 
   ##9SoftLace1
+
+  ##9Mr. and Mrs. Solo
 
   ##9Srauls
  

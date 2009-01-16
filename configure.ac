@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Aethyra], [SVN-0.0.27], [irarice@gmail.com], [aethyra])
+AC_INIT([Aethyra], [0.0.27.1], [irarice@gmail.com], [aethyra])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
 

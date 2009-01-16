@@ -137,11 +137,6 @@ const EmoteInfo& EmoteDB::get(int id)
     }
 }
 
-const EmoteInfo& EmoteDB::getUnknown()
-{
-    return mUnknown;
-}
-
 const int& EmoteDB::getLast()
 {
     return mLastEmote;
