@@ -60,7 +60,7 @@ EmoteShortcutContainer::EmoteShortcutContainer():
         mEmoteImg.push_back(player_node->getEmote(i));
     }
 
-    mMaxItems = MAX_ITEMS;
+    mMaxItems = EmoteDB::getLast() < MAX_ITEMS ? EmoteDB::getLast() : MAX_ITEMS;
 
     mBoxHeight = mBackgroundImg->getHeight();
     mBoxWidth = mBackgroundImg->getWidth();
