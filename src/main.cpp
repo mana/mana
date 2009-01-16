@@ -74,6 +74,7 @@
 #include "net/network.h"
 
 #include "resources/colordb.h"
+#include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
@@ -402,7 +403,7 @@ void init_engine(const Options &options)
 
     // Initialize the item shortcuts.
     itemShortcut = new ItemShortcut();
-      
+
     // Initialize the emote shortcuts.
     emoteShortcut = new EmoteShortcut();
 
@@ -437,7 +438,6 @@ void exit_engine()
 {
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
-    
     delete emoteShortcut;
 
     config.write();
@@ -453,6 +453,7 @@ void exit_engine()
 
     // Unload XML databases
     ColorDB::unload();
+    EmoteDB::unload();
     ItemDB::unload();
     MonsterDB::unload();
     NPCDB::unload();
@@ -903,6 +904,8 @@ int main(int argc, char *argv[])
                     ItemDB::load();
                     MonsterDB::load();
                     NPCDB::load();
+                    EmoteDB::load();
+
                     state = CHAR_CONNECT_STATE;
                     break;
 

@@ -25,14 +25,17 @@
 #include "emotecontainer.h"
 #include "emoteshortcut.h"
 
+#include "../animatedsprite.h"
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
 
+#include "../resources/emotedb.h"
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/dtor.h"
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
@@ -46,15 +49,25 @@ EmoteContainer::EmoteContainer():
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
-    mEmoteImg = resman->getImageSet("graphics/sprites/emotions.png", 30, 32);
-    if (!mEmoteImg) logger->error(_("Unable to load emotions"));
+    // Setup emote sprites
+    for (int i = 0; i <= EmoteDB::getLast(); i++)
+    {
+        EmoteInfo info = EmoteDB::get(i);
+
+        if (info.sprites != EmoteDB::getUnknown().sprites)
+        { 
+            std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
+            int variant = info.sprites.front()->variant;
+            mEmoteImg.push_back(AnimatedSprite::load(file, variant));
+        }
+    }
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
     if (!mSelImg) logger->error(_("Unable to load selection.png"));
 
     mSelImg->setAlpha(config.getValue("guialpha", 0.8));
 
-    mMaxEmote = mEmoteImg->size(); 
+    mMaxEmote = EmoteDB::getLast() + 1;
 
     addMouseListener(this);
     addWidgetListener(this);
@@ -62,11 +75,8 @@ EmoteContainer::EmoteContainer():
 
 EmoteContainer::~EmoteContainer()
 {
-    if (mEmoteImg)
-    {
-       mEmoteImg->decRef();
-       mEmoteImg = NULL;
-    }
+    delete_all(mEmoteImg);
+
     if (!mSelImg)
     {
        mSelImg->decRef();
@@ -90,8 +100,7 @@ void EmoteContainer::draw(gcn::Graphics *graphics)
         int emoteY = ((i) / columns) * gridHeight;
            
         // Draw emote icon
-        static_cast<Graphics*>(graphics)->drawImage(
-                    mEmoteImg->get(i), emoteX, emoteY);
+        mEmoteImg[i]->draw(static_cast<Graphics*>(graphics), emoteX, emoteY);
 
         // Draw selection image below selected item
         if (mSelectedEmoteIndex == i)

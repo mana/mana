@@ -55,7 +55,7 @@ void NPCDB::load()
         logger->error(_("NPC Database: Error while loading npcs.xml!"));
     }
 
-    //iterate <monster>s
+    //iterate <npc>s
     for_each_xml_child_node(npcNode, rootNode)
     {
         if (!xmlStrEqual(npcNode->name, BAD_CAST "npc"))

@@ -233,6 +233,8 @@ SET(SRCS
     resources/colordb.h
     resources/dye.cpp
     resources/dye.h
+    resources/emotedb.cpp
+    resources/emotedb.h
     resources/image.cpp
     resources/image.h
     resources/imageloader.cpp

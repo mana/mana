@@ -48,13 +48,13 @@ EmoteWindow::EmoteWindow():
     mEmotes = new EmoteContainer();
     mEmotes->addSelectionListener(this);
 
-    mInvenScroll = new ScrollArea(mEmotes);
-    mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mEmoteScroll = new ScrollArea(mEmotes);
+    mEmoteScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     draw();
 
     add(mUseButton);
-    add(mInvenScroll);
+    add(mEmoteScroll);
 
     mUseButton->setSize(60, mUseButton->getHeight());
 
@@ -80,8 +80,8 @@ void EmoteWindow::draw()
 
     mUseButton->setPosition(8, height - 8 - mUseButton->getHeight());
 
-    mInvenScroll->setSize(width - 16, mUseButton->getY() - 18);
-    mInvenScroll->setPosition(8,  10);
+    mEmoteScroll->setSize(width - 16, mUseButton->getY() - 18);
+    mEmoteScroll->setPosition(8,  10);
 
     setMinHeight(130);
 }

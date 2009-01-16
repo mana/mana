@@ -21,6 +21,7 @@
 
 #include "emoteshortcutcontainer.h"
 
+#include "../animatedsprite.h"
 #include "../emoteshortcut.h"
 #include "../graphics.h"
 #include "../inventory.h"
@@ -30,11 +31,15 @@
 #include "../localplayer.h"
 #include "../log.h"
 
+#include "../resources/emotedb.h"
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/dtor.h"
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
+
+static const int MAX_ITEMS = 12;
 
 EmoteShortcutContainer::EmoteShortcutContainer():
     mEmoteClicked(false),
@@ -48,10 +53,21 @@ EmoteShortcutContainer::EmoteShortcutContainer():
     ResourceManager *resman = ResourceManager::getInstance();
 
     mBackgroundImg = resman->getImage("graphics/gui/item_shortcut_bgr.png");
-    mEmoteImg = resman->getImageSet("graphics/sprites/emotions.png", 30, 32);
-    if (!mEmoteImg) logger->error(_("Unable to load emotions"));
 
-    mMaxItems = emoteShortcut->getEmoteCount(); 
+    // Setup emote sprites
+    for (int i = 0; i <= EmoteDB::getLast(); i++)
+    {
+        EmoteInfo info = EmoteDB::get(i);
+
+        if (info.sprites != EmoteDB::getUnknown().sprites)
+        { 
+            std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
+            int variant = info.sprites.front()->variant;
+            mEmoteImg.push_back(AnimatedSprite::load(file, variant));
+        }
+    }
+
+    mMaxItems = MAX_ITEMS;
 
     mBoxHeight = mBackgroundImg->getHeight();
     mBoxWidth = mBackgroundImg->getWidth();
@@ -60,11 +76,8 @@ EmoteShortcutContainer::EmoteShortcutContainer():
 EmoteShortcutContainer::~EmoteShortcutContainer()
 {
     mBackgroundImg->decRef();
-    if (mEmoteImg)
-    {
-        mEmoteImg->decRef();
-        mEmoteImg=NULL;
-    }
+
+    delete_all(mEmoteImg);
 }
 
 void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
@@ -88,21 +101,20 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 
         if (emoteShortcut->getEmote(i))
         {
-            static_cast<Graphics*>(graphics)->drawImage(
-                                   mEmoteImg->get(emoteShortcut->getEmote(i) - 1), emoteX + 2, emoteY + 10);
+            mEmoteImg[emoteShortcut->getEmote(i) - 1]->draw(g, emoteX + 2, emoteY + 10);
         }
 
     }
     if (mEmoteMoved)
     {
         // Draw the emote image being dragged by the cursor.
-        Image* image = mEmoteImg->get(mEmoteMoved-1);
-        if (image)
+        AnimatedSprite* sprite = mEmoteImg[mEmoteMoved - 1];
+        if (sprite)
         {
-            const int tPosX = mCursorPosX - (image->getWidth() / 2);
-            const int tPosY = mCursorPosY - (image->getHeight() / 2);
+            const int tPosX = mCursorPosX - (sprite->getWidth() / 2);
+            const int tPosY = mCursorPosY - (sprite->getHeight() / 2);
 
-            g->drawImage(image, tPosX, tPosY);
+            sprite->draw(g, tPosX, tPosY);
         }
     }
 }

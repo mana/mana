@@ -131,7 +131,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/speechbubble.h \
 	      gui/status.cpp \
 	      gui/status.h \
-	      gui/table.h \
 	      gui/table.cpp \
 	      gui/table.h \
 	      gui/table_model.cpp \
@@ -200,6 +199,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/colordb.h \
 	      resources/dye.cpp \
 	      resources/dye.h \
+	      resources/emotedb.cpp \
+	      resources/emotedb.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imageloader.cpp \

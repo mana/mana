@@ -105,8 +105,7 @@ void NPC::setSprite(int slot, int id, std::string color)
     Being::setSprite(slot, id, color);
 }
 
-Being::Type
-NPC::getType() const
+Being::Type NPC::getType() const
 {
     return Being::NPC;
 }

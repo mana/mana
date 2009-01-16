@@ -35,6 +35,7 @@
 #include "sound.h"
 #include "text.h"
 
+#include "resources/emotedb.h"
 #include "resources/imageset.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
@@ -50,7 +51,7 @@
 
 int Being::instances = 0;
 int Being::mNumberOfHairstyles = 1;
-ImageSet *Being::emotionSet = NULL;
+std::vector<AnimatedSprite*> Being::emotionSet;
 
 static const int X_SPEECH_OFFSET = 18;
 static const int Y_SPEECH_OFFSET = 60;
@@ -87,10 +88,18 @@ Being::Being(int id, int job, Map *map):
 
     if (instances == 0)
     {
-        // Load the emotion set
-        ResourceManager *rm = ResourceManager::getInstance();
-        emotionSet = rm->getImageSet("graphics/sprites/emotions.png", 30, 32);
-        if (!emotionSet) logger->error(_("Unable to load emotions"));
+        // Setup emote sprites
+        for (int i = 0; i <= EmoteDB::getLast(); i++)
+        {
+            EmoteInfo info = EmoteDB::get(i);
+
+            if (info.sprites != EmoteDB::getUnknown().sprites)
+            {
+                std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
+                int variant = info.sprites.front()->variant;
+                emotionSet.push_back(AnimatedSprite::load(file, variant));
+            }
+        }
 
         // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
         int hairstyles = 1;
@@ -117,8 +126,7 @@ Being::~Being()
 
     if (instances == 0)
     {
-        emotionSet->decRef();
-        emotionSet = NULL;
+        delete_all(emotionSet);
     }
 
     delete mSpeechBubble;
@@ -448,8 +456,8 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     const int py = mPy + offsetY - 60;
     const int emotionIndex = mEmotion - 1;
 
-    if (emotionIndex >= 0 && emotionIndex < (int) emotionSet->size())
-        graphics->drawImage(emotionSet->get(emotionIndex), px, py);
+    if (emotionIndex >= 0 && emotionIndex < EmoteDB::getLast())
+        emotionSet[emotionIndex]->draw(graphics, px, py);
 }
 
 void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)

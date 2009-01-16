@@ -22,6 +22,8 @@
 #ifndef _AETHYRA_EMOTESHORTCUTCONTAINER_H__
 #define _AETHYRA_EMOTESHORTCUTCONTAINER_H__
 
+#include <vector>
+
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
@@ -30,8 +32,7 @@
 
 #include "../guichanfwd.h"
 
-#include "../resources/imageset.h"
-
+class AnimatedSprite;
 class Image;
 
 /**
@@ -73,7 +74,7 @@ class EmoteShortcutContainer : public ShortcutContainer
         void mouseReleased(gcn::MouseEvent &event);
 
     private:
-        ImageSet *mEmoteImg;
+        std::vector<AnimatedSprite*> mEmoteImg;
 
         bool mEmoteClicked;
         int mEmoteMoved;

@@ -431,8 +431,8 @@ class Being : public Sprite
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;
 
-        static int instances;           /**< Number of Being instances */
-        static ImageSet *emotionSet;    /**< Emoticons used by beings */
+        static int instances;                              /**< Number of Being instances */
+        static std::vector<AnimatedSprite*> emotionSet;    /**< Emoticons used by beings */
 };
 
 #endif

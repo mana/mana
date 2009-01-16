@@ -23,6 +23,7 @@
 #define _AETHYRA_EMOTECONTAINER_H__
 
 #include <list>
+#include <vector>
 
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
@@ -30,8 +31,7 @@
 
 #include "../guichanfwd.h"
 
-#include "../resources/imageset.h"
-
+class AnimatedSprite;
 class Image;
 
 namespace gcn {
@@ -123,7 +123,7 @@ class EmoteContainer : public gcn::Widget,
          */
         void distributeValueChangedEvent(void);
 
-        ImageSet *mEmoteImg;
+        std::vector<AnimatedSprite*> mEmoteImg;
         Image *mSelImg;
         int mSelectedEmoteIndex;
 

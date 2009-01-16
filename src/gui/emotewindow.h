@@ -70,7 +70,7 @@ class EmoteWindow : public Window, gcn::ActionListener,
         EmoteContainer *mEmotes;
 
         gcn::Button *mUseButton;
-        gcn::ScrollArea *mInvenScroll;
+        gcn::ScrollArea *mEmoteScroll;
 };
 
 extern EmoteWindow *emoteWindow;

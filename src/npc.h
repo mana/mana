@@ -39,8 +39,7 @@ class NPC : public Player
         void setGender(Gender gender);
         void setSprite(int slot, int id, std::string color);
 
-        virtual Type
-        getType() const;
+        virtual Type getType() const;
 
         void talk();
         void nextDialog();
