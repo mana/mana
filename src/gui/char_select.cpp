@@ -82,6 +82,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
 {
     // Control that shows the Player
     mPlayerBox = new PlayerBox;
+    mPlayerBox->setWidth(74);
 
     mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
@@ -98,19 +99,21 @@ CharSelectDialog::CharSelectDialog(Network *network,
     ContainerPlacer place;
     place = getPlacer(0, 0);
 
-    place(0, 0, mPlayerBox, 6, 3);
-    place(0, 3, mNameLabel, 2);
-    place(0, 4, mLevelLabel, 2);
-    place(0, 5, mJobLevelLabel, 2);
-    place(0, 6, mMoneyLabel, 2);
-    place(0, 7, mPreviousButton);
-    place(1, 7, mNextButton);
-    place(0, 8, mNewCharButton);
-    place(1, 8, mDelCharButton);
-    place(3, 8, mSelectButton);
-    place(4, 8, mCancelButton);
+    place(0, 0, mPlayerBox, 1, 6).setPadding(3);
+    place(1, 0, mNewCharButton);
+    place(2, 0, mDelCharButton);
+    place(1, 1, mNameLabel, 5);
+    place(1, 2, mLevelLabel, 5);
+    place(1, 3, mJobLevelLabel, 5);
+    place(1, 4, mMoneyLabel, 5);
+    place.getCell().matchColWidth(1, 4);
+    place = getPlacer(0, 2);
+    place(0, 0, mPreviousButton);
+    place(1, 0, mNextButton);
+    place(4, 0, mSelectButton);
+    place(5, 0, mCancelButton);
 
-    reflowLayout(195, 220);
+    reflowLayout(250, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -222,7 +225,8 @@ bool CharSelectDialog::selectByName(const std::string &name)
     unsigned int oldPos = mCharInfo->getPos();
 
     mCharInfo->select(0);
-    do {
+    do 
+    {
         LocalPlayer *player = mCharInfo->getEntry();
 
         if (player && player->getName() == name)
@@ -259,41 +263,29 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayerBox = new PlayerBox(mPlayer);
 
+    mPlayerBox->setWidth(74);
+
     mNameField->setActionEventId("create");
-
-    int w = 200;
-    int h = 150;
-    setContentSize(w, h);
-    mPlayerBox->setDimension(gcn::Rectangle(80, 30, 110, 85));
-    mNameLabel->setPosition(5, 5);
-    mNameField->setDimension(
-            gcn::Rectangle(45, 5, w - 45 - 7, mNameField->getHeight()));
-    mPrevHairColorButton->setPosition(90, 35);
-    mNextHairColorButton->setPosition(165, 35);
-    mHairColorLabel->setPosition(5, 40);
-    mPrevHairStyleButton->setPosition(90, 64);
-    mNextHairStyleButton->setPosition(165, 64);
-    mHairStyleLabel->setPosition(5, 70);
-    mCancelButton->setPosition(
-            w - 5 - mCancelButton->getWidth(),
-            h - 5 - mCancelButton->getHeight());
-    mCreateButton->setPosition(
-            mCancelButton->getX() - 5 - mCreateButton->getWidth(),
-            h - 5 - mCancelButton->getHeight());
-
     mNameField->addActionListener(this);
 
-    add(mPlayerBox);
-    add(mNameField);
-    add(mNameLabel);
-    add(mNextHairColorButton);
-    add(mPrevHairColorButton);
-    add(mHairColorLabel);
-    add(mNextHairStyleButton);
-    add(mPrevHairStyleButton);
-    add(mHairStyleLabel);
-    add(mCreateButton);
-    add(mCancelButton);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+
+    place(0, 0, mNameLabel, 1);
+    place(1, 0, mNameField, 6);
+    place(0, 1, mHairStyleLabel, 1);
+    place(1, 1, mPrevHairStyleButton);
+    place(2, 1, mPlayerBox, 1, 8).setPadding(3);
+    place(3, 1, mNextHairStyleButton);
+    place(0, 2, mHairColorLabel, 1);
+    place(1, 2, mPrevHairColorButton);
+    place(3, 2, mNextHairColorButton);
+    place.getCell().matchColWidth(0, 2);
+    place = getPlacer(0, 2);
+    place(4, 0, mCreateButton);
+    place(5, 0, mCancelButton);
+
+    reflowLayout(225, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
