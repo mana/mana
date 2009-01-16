@@ -34,12 +34,12 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-ItemPopup::ItemPopup()
+ItemPopup::ItemPopup():
+    Window()
 {
     setResizable(false);
     setShowTitle(false);
     setTitleBarHeight(0);
-    loadSkin("graphics/gui/gui.xml");
 
     // Item Name
     mItemName = new gcn::Label("Label");

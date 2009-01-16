@@ -255,7 +255,7 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
                                 getParent()->getParent()->getY());
 
         mItemPopup->setItem(item->getInfo());
-
+        mItemPopup->setOpaque(false);
         mItemPopup->setVisible(true);
     }
     else

@@ -44,7 +44,7 @@
 InventoryWindow::InventoryWindow():
     Window(_("Inventory"))
 {
-    setWindowName("Inventory");
+    setWindowName(_("Inventory"));
     setResizable(true);
     setCloseButton(true);
     setMinWidth(240);
