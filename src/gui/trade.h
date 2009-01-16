@@ -128,8 +128,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         ItemContainer *mMyItemContainer;
         ItemContainer *mPartnerItemContainer;
 
-        gcn::Label *mItemNameLabel;
-        gcn::Label *mItemDescriptionLabel;
         gcn::Label *mMoneyLabel;
         gcn::Label *mMoneyLabel2;
         gcn::Button *mAddButton, *mOkButton, *mCancelButton, *mTradeButton;

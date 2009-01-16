@@ -32,6 +32,8 @@
 #include "textfield.h"
 #include "trade.h"
 
+#include "widgets/layout.h"
+
 #include "../inventory.h"
 #include "../item.h"
 #include "../localplayer.h"
@@ -46,12 +48,12 @@
 #include "../utils/tostring.h"
 
 TradeWindow::TradeWindow(Network *network):
-    Window("Trade: You"),
+    Window(_("Trade: You")),
     mNetwork(network),
     mMyInventory(new Inventory(INVENTORY_SIZE)),
     mPartnerInventory(new Inventory(INVENTORY_SIZE))
 {
-    setWindowName("Trade");
+    setWindowName(_("Trade"));
     setDefaultSize(115, 227, 342, 209);
     setResizable(true);
 
@@ -63,47 +65,43 @@ TradeWindow::TradeWindow(Network *network):
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mTradeButton = new Button(_("Trade"), "trade", this);
 
+    mTradeButton->setEnabled(false);
+
     mMyItemContainer = new ItemContainer(mMyInventory.get(), 2);
+    mMyItemContainer->setWidth(160);
     mMyItemContainer->addSelectionListener(this);
-    mMyItemContainer->setPosition(2, 2);
 
     mMyScroll = new ScrollArea(mMyItemContainer);
-    mMyScroll->setPosition(8, 8);
 
     mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 2);
+    mPartnerItemContainer->setWidth(160);
     mPartnerItemContainer->addSelectionListener(this);
-    mPartnerItemContainer->setPosition(2, 58);
 
     mPartnerScroll = new ScrollArea(mPartnerItemContainer);
-    mPartnerScroll->setPosition(8, 64);
 
     mMoneyLabel = new gcn::Label(strprintf(_("You get %d GP."), 0));
     mMoneyLabel2 = new gcn::Label(_("You give:"));
     mMoneyField = new TextField;
     mMoneyField->setWidth(50);
 
-    mAddButton->adjustSize();
-    mOkButton->adjustSize();
-    mCancelButton->adjustSize();
-    mTradeButton->adjustSize();
-
-    mTradeButton->setEnabled(false);
-
-    mItemNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
-    mItemDescriptionLabel = new gcn::Label(
-        strprintf(_("Description: %s"), ""));
-
-    add(mMyScroll);
-    add(mPartnerScroll);
-    add(mAddButton);
-    add(mOkButton);
-    add(mCancelButton);
-    add(mTradeButton);
-    add(mItemNameLabel);
-    add(mItemDescriptionLabel);
-    add(mMoneyLabel2);
-    add(mMoneyField);
-    add(mMoneyLabel);
+    place(1, 0, mMoneyLabel);
+    place(0, 1, mMyScroll).setPadding(3);
+    place(1, 1, mPartnerScroll).setPadding(3);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+    place(0, 0, mMoneyLabel2);
+    place(1, 0, mMoneyField);
+    place = getPlacer(0, 2);
+    place(0, 0, mAddButton);
+    place(1, 0, mOkButton);
+    place(2, 0, mTradeButton);
+    place(3, 0, mCancelButton);
+    Layout &layout = getLayout();
+    layout.extend(0, 2, 2, 1);
+    layout.setRowHeight(1, Layout::AUTO_SET);
+    layout.setRowHeight(2, 0);
+    layout.setColWidth(0, Layout::AUTO_SET);
+    layout.setColWidth(1, Layout::AUTO_SET);
 
     loadWindowState();
 }
@@ -114,42 +112,12 @@ TradeWindow::~TradeWindow()
 
 void TradeWindow::widgetResized(const gcn::Event &event)
 {
+    mMyItemContainer->setWidth(mMyScroll->getWidth());
+    mPartnerItemContainer->setWidth(mPartnerScroll->getWidth());
+
     Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    mMoneyLabel2->setPosition(8, height - 8 - mMoneyLabel2->getHeight());
-    mMoneyField->setPosition(
-        8 + mMoneyLabel2->getWidth(),
-        height - 8 - mMoneyField->getHeight());
-    mMoneyLabel->setPosition(
-        mMoneyField->getX() + mMoneyField->getWidth() + 6,
-        mMoneyLabel2->getY());
-
-    mCancelButton->setPosition(width - 54, height - 8 - mCancelButton->getHeight());
-    mTradeButton->setPosition(mCancelButton->getX() - 41, mCancelButton->getY());
-    mOkButton->setPosition(mTradeButton->getX() - 24, mCancelButton->getY());
-    mAddButton->setPosition(mOkButton->getX() - 31, mCancelButton->getY());
-
-    mItemDescriptionLabel->setPosition(8,
-        mOkButton->getY() - mItemDescriptionLabel->getHeight() - 4);
-    mItemNameLabel->setPosition(8,
-        mItemDescriptionLabel->getY() - mItemNameLabel->getHeight() - 4);
-
-    const int remaining = mItemNameLabel->getY() - 4 - 8 - 8;
-    const int itemContainerHeight = remaining / 2;
-
-    mMyItemContainer->setSize(width - 24 - 12 - 1,
-        (INVENTORY_SIZE * 24) / (width / 24) - 1);
-    mMyScroll->setSize(width - 16, itemContainerHeight);
-
-    mPartnerItemContainer->setSize(width - 24 - 12 - 1,
-        (INVENTORY_SIZE * 24) / (width / 24) - 1);
-    mPartnerScroll->setSize(width - 16, itemContainerHeight);
-    mPartnerScroll->setPosition(8, 8 + itemContainerHeight + 8);
 }
+
 
 void TradeWindow::addMoney(int amount)
 {
@@ -159,38 +127,40 @@ void TradeWindow::addMoney(int amount)
 
 void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
 {
-    if (own) {
+    if (own) 
+    {
+        mMyItemContainer->setWidth(mMyScroll->getWidth());
         mMyInventory->addItem(id, quantity, equipment);
-    } else {
+    }
+    else
+    {
+        mPartnerItemContainer->setWidth(mPartnerScroll->getWidth());
         mPartnerInventory->addItem(id, quantity, equipment);
     }
 }
 
 void TradeWindow::removeItem(int id, bool own)
 {
-    if (own) {
+    if (own) 
         mMyInventory->removeItem(id);
-    } else {
+    else
         mPartnerInventory->removeItem(id);
-    }
 }
 
 void TradeWindow::changeQuantity(int index, bool own, int quantity)
 {
-    if (own) {
+    if (own)
         mMyInventory->getItem(index)->setQuantity(quantity);
-    } else {
+    else
         mPartnerInventory->getItem(index)->setQuantity(quantity);
-    }
 }
 
 void TradeWindow::increaseQuantity(int index, bool own, int quantity)
 {
-    if (own) {
+    if (own)
         mMyInventory->getItem(index)->increaseQuantity(quantity);
-    } else {
+    else
         mPartnerInventory->getItem(index)->increaseQuantity(quantity);
-    }
 }
 
 void TradeWindow::reset()
@@ -213,21 +183,30 @@ void TradeWindow::setTradeButton(bool enabled)
 
 void TradeWindow::receivedOk(bool own)
 {
-    if (own) {
+    if (own)
+    {
         mOkMe = true;
-        if (mOkOther) {
+        if (mOkOther)
+        {
             mTradeButton->setEnabled(true);
             mOkButton->setEnabled(false);
-        } else {
+        }
+        else
+        {
             mTradeButton->setEnabled(false);
             mOkButton->setEnabled(false);
         }
-    } else {
+    }
+    else
+    {
         mOkOther = true;
-        if (mOkMe) {
+        if (mOkMe)
+        {
             mTradeButton->setEnabled(true);
             mOkButton->setEnabled(false);
-        } else {
+        }
+        else
+        {
             mTradeButton->setEnabled(false);
             mOkButton->setEnabled(true);
         }
@@ -251,20 +230,9 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
      */
     if (event.getSource() == mMyItemContainer &&
             (item = mMyItemContainer->getSelectedItem()))
-    {
         mPartnerItemContainer->selectNone();
-    }
     else if ((item = mPartnerItemContainer->getSelectedItem()))
-    {
         mMyItemContainer->selectNone();
-    }
-
-    // Update name and description
-    ItemInfo const *info = item ? &item->getInfo() : NULL;
-    mItemNameLabel->setCaption(strprintf(_("Name: %s"),
-        info ? info->getName().c_str() : ""));
-    mItemDescriptionLabel->setCaption(strprintf(_("Description: %s"),
-        info ? info->getDescription().c_str() : ""));
 }
 
 void TradeWindow::action(const gcn::ActionEvent &event)
@@ -279,16 +247,19 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         if (mMyInventory->getFreeSlot() < 1)
             return;
 
-        if (mMyInventory->contains(item)) {
+        if (mMyInventory->contains(item))
+        {
             chatWindow->chatLog(_("Failed adding item. You can not "
                         "overlap one kind of item on the window."), BY_SERVER);
             return;
         }
 
-        if (item->getQuantity() == 1) {
+        if (item->getQuantity() == 1)
+        {
             tradeItem(item, 1);
         }
-        else {
+        else
+        {
             // Choose amount of items to trade
             new ItemAmountWindow(AMOUNT_TRADE_ADD, this, item);
         }
@@ -310,7 +281,9 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
             outMsg.writeInt16(0);
             outMsg.writeInt32(tempInt);
-        } else {
+        }
+        else
+        {
             mMoneyField->setText("");
         }
         mMoneyField->setEnabled(false);
