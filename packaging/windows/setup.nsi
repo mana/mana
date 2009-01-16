@@ -9,7 +9,7 @@ SetCompressor /SOLID lzma
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Aethyra"
-!define PRODUCT_VERSION "0.0.27"
+!define PRODUCT_VERSION "0.0.27.1"
 !define PRODUCT_PUBLISHER "Aethyra Development Team"
 !define PRODUCT_WEB_SITE "http://aethyra.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\aethyra.exe"
@@ -155,6 +155,7 @@ Section "Core files (required)" SecCore
   CreateDirectory "$INSTDIR\data\graphics\gui"
   CreateDirectory "$INSTDIR\data\graphics\images"
   CreateDirectory "$INSTDIR\docs"
+  CreateDirectory "$INSTDIR\po"
 
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
@@ -178,6 +179,10 @@ Section "Core files (required)" SecCore
   File /nonfatal "${AETHYRAROOT}\data\music\*.ogg"
   SetOutPath "$INSTDIR\docs"
   File "${AETHYRAROOT}\docs\FAQ.txt"
+  SetOutPath "$INSTDIR\po"
+  File "${AETHYRAROOT}\po\aethyra.pot"
+  File "${AETHYRAROOT}\po\LINGUAS"
+  File "${AETHYRAROOT}\po\*.po"
 SectionEnd
 
 Section -AdditionalIcons
