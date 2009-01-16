@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-15 11:01-0700\n"
+"POT-Creation-Date: 2009-01-16 15:17-0700\n"
 "PO-Revision-Date: 2008-12-28 23:36+0000\n"
 "Last-Translator: Dino Paskvan <dpaskvan@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
@@ -33,7 +33,6 @@ msgstr "Izlaz"
 
 #: ../src/gui/buy.cpp:62 ../src/gui/buy.cpp:205 ../src/gui/buy.cpp:223
 #: ../src/gui/sell.cpp:70 ../src/gui/sell.cpp:230 ../src/gui/sell.cpp:244
-#: ../src/gui/trade.cpp:94 ../src/gui/trade.cpp:266
 #, c-format
 msgid "Description: %s"
 msgstr "Opis: %s"
@@ -52,12 +51,12 @@ msgstr ""
 msgid "Sell"
 msgstr ""
 
-#: ../src/gui/buysell.cpp:34 ../src/gui/char_select.cpp:96
-#: ../src/gui/char_select.cpp:259 ../src/gui/char_server.cpp:59
+#: ../src/gui/buysell.cpp:34 ../src/gui/char_select.cpp:98
+#: ../src/gui/char_select.cpp:265 ../src/gui/char_server.cpp:59
 #: ../src/gui/connection.cpp:46 ../src/gui/item_amount.cpp:60
 #: ../src/gui/login.cpp:77 ../src/gui/npclistdialog.cpp:42
-#: ../src/gui/register.cpp:77 ../src/gui/setup.cpp:59 ../src/gui/setup.cpp:121
-#: ../src/gui/trade.cpp:63 ../src/gui/updatewindow.cpp:114
+#: ../src/gui/register.cpp:77 ../src/gui/setup.cpp:60 ../src/gui/setup.cpp:121
+#: ../src/gui/trade.cpp:65 ../src/gui/updatewindow.cpp:114
 msgid "Cancel"
 msgstr "Poništi"
 
@@ -69,14 +68,13 @@ msgstr "Potvrdi Brisanje Lika"
 msgid "Are you sure you want to delete this character?"
 msgstr "Da li ste sigurni da želite obrisati ovog lika?"
 
-#: ../src/gui/char_select.cpp:80
+#: ../src/gui/char_select.cpp:81
 #, fuzzy
 msgid "Select Character"
 msgstr "Stvori Lika"
 
-#: ../src/gui/char_select.cpp:86 ../src/gui/char_select.cpp:169
-#: ../src/gui/char_select.cpp:181 ../src/gui/trade.cpp:92
-#: ../src/gui/trade.cpp:264
+#: ../src/gui/char_select.cpp:88 ../src/gui/char_select.cpp:173
+#: ../src/gui/char_select.cpp:186
 #, c-format
 msgid "Name: %s"
 msgstr "Ime: %s"
@@ -86,69 +84,68 @@ msgstr "Ime: %s"
 #. ----------------------
 #. Status Part
 #. -----------
-#: ../src/gui/char_select.cpp:87 ../src/gui/char_select.cpp:170
-#: ../src/gui/char_select.cpp:182 ../src/gui/status.cpp:49
+#: ../src/gui/char_select.cpp:89 ../src/gui/char_select.cpp:174
+#: ../src/gui/char_select.cpp:187 ../src/gui/status.cpp:49
 #: ../src/gui/status.cpp:230
 #, c-format
 msgid "Level: %d"
 msgstr "Nivo: %d"
 
-#: ../src/gui/char_select.cpp:88 ../src/gui/char_select.cpp:171
-#: ../src/gui/char_select.cpp:183
+#: ../src/gui/char_select.cpp:90 ../src/gui/char_select.cpp:175
+#: ../src/gui/char_select.cpp:188
 #, fuzzy, c-format
 msgid "Job Level: %d"
 msgstr "Nivo: %d"
 
-#: ../src/gui/char_select.cpp:89 ../src/gui/char_select.cpp:184
+#: ../src/gui/char_select.cpp:91 ../src/gui/char_select.cpp:189
 #, c-format
 msgid "Money: %d"
 msgstr "Novac: %d"
 
-#: ../src/gui/char_select.cpp:91
+#: ../src/gui/char_select.cpp:93
 msgid "Previous"
 msgstr "Prethodni"
 
-#: ../src/gui/char_select.cpp:92
+#: ../src/gui/char_select.cpp:94
 msgid "Next"
 msgstr "Slijedeći"
 
-#: ../src/gui/char_select.cpp:93
+#: ../src/gui/char_select.cpp:95
 msgid "New"
 msgstr "Novi"
 
-#: ../src/gui/char_select.cpp:94 ../src/gui/setup_players.cpp:219
+#: ../src/gui/char_select.cpp:96 ../src/gui/setup_players.cpp:219
 msgid "Delete"
 msgstr "Obriši"
 
-#: ../src/gui/char_select.cpp:95 ../src/gui/item_amount.cpp:59
-#: ../src/gui/ok_dialog.cpp:37 ../src/gui/trade.cpp:62
+#: ../src/gui/char_select.cpp:97 ../src/gui/item_amount.cpp:59
+#: ../src/gui/ok_dialog.cpp:37 ../src/gui/trade.cpp:64
 msgid "Ok"
 msgstr "U redu"
 
-#: ../src/gui/char_select.cpp:172
+#: ../src/gui/char_select.cpp:176
 #, c-format
 msgid "Gold: %d"
 msgstr ""
 
-#: ../src/gui/char_select.cpp:241
+#: ../src/gui/char_select.cpp:247
 msgid "Create Character"
 msgstr "Stvori Lika"
 
-#: ../src/gui/char_select.cpp:251 ../src/gui/inventorywindow.cpp:66
-#: ../src/gui/inventorywindow.cpp:158 ../src/gui/login.cpp:51
+#: ../src/gui/char_select.cpp:257 ../src/gui/login.cpp:51
 #: ../src/gui/register.cpp:64
 msgid "Name:"
 msgstr "Ime:"
 
-#: ../src/gui/char_select.cpp:254
+#: ../src/gui/char_select.cpp:260
 msgid "Hair Color:"
 msgstr "Boja kose:"
 
-#: ../src/gui/char_select.cpp:257
+#: ../src/gui/char_select.cpp:263
 msgid "Hair Style:"
 msgstr "Frizura:"
 
-#: ../src/gui/char_select.cpp:258
+#: ../src/gui/char_select.cpp:264
 msgid "Create"
 msgstr "Stvori"
 
@@ -539,12 +536,7 @@ msgstr "Ne"
 msgid "Connecting..."
 msgstr "Spajanje..."
 
-#: ../src/gui/emotecontainer.cpp:50 ../src/gui/emoteshortcutcontainer.cpp:52
-#: ../src/being.cpp:93
-msgid "Unable to load emotions"
-msgstr ""
-
-#: ../src/gui/emotecontainer.cpp:53
+#: ../src/gui/emotecontainer.cpp:60
 msgid "Unable to load selection.png"
 msgstr ""
 
@@ -554,7 +546,7 @@ msgid "Emote"
 msgstr ""
 
 #: ../src/gui/emotewindow.cpp:46 ../src/gui/inventorywindow.cpp:54
-#: ../src/gui/inventorywindow.cpp:262 ../src/gui/skill.cpp:132
+#: ../src/gui/inventorywindow.cpp:207 ../src/gui/skill.cpp:132
 msgid "Use"
 msgstr "Upotrijebi"
 
@@ -571,8 +563,8 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: ../src/gui/inventorywindow.cpp:45 ../src/gui/menuwindow.cpp:65
-#: ../src/gui/menuwindow.cpp:109
+#: ../src/gui/inventorywindow.cpp:45 ../src/gui/inventorywindow.cpp:47
+#: ../src/gui/menuwindow.cpp:65 ../src/gui/menuwindow.cpp:109
 msgid "Inventory"
 msgstr "Zalihe"
 
@@ -580,49 +572,24 @@ msgstr "Zalihe"
 msgid "Drop"
 msgstr "Ispusti"
 
-#: ../src/gui/inventorywindow.cpp:68 ../src/gui/inventorywindow.cpp:162
-#, fuzzy
-msgid "Description:"
-msgstr "Opis: %s"
-
-#: ../src/gui/inventorywindow.cpp:70 ../src/gui/inventorywindow.cpp:160
-#, fuzzy
-msgid "Effect:"
-msgstr "Učinak: %s"
-
 #. Adjust widgets
-#: ../src/gui/inventorywindow.cpp:72 ../src/gui/inventorywindow.cpp:110
+#: ../src/gui/inventorywindow.cpp:66 ../src/gui/inventorywindow.cpp:100
 msgid "Weight: "
 msgstr ""
 
-#: ../src/gui/inventorywindow.cpp:73
+#: ../src/gui/inventorywindow.cpp:67
 msgid " g Slots: "
 msgstr ""
 
-#: ../src/gui/inventorywindow.cpp:111
+#: ../src/gui/inventorywindow.cpp:101
 msgid " g  Slots: "
 msgstr ""
 
-#: ../src/gui/inventorywindow.cpp:168
-#, fuzzy
-msgid "Name: "
-msgstr "Ime:"
-
-#: ../src/gui/inventorywindow.cpp:170
-#, fuzzy
-msgid "Effect: "
-msgstr "Učinak: %s"
-
-#: ../src/gui/inventorywindow.cpp:172
-#, fuzzy
-msgid "Description: "
-msgstr "Opis: %s"
-
-#: ../src/gui/inventorywindow.cpp:255
+#: ../src/gui/inventorywindow.cpp:200
 msgid "Unequip"
 msgstr "Skini opremu"
 
-#: ../src/gui/inventorywindow.cpp:258
+#: ../src/gui/inventorywindow.cpp:203
 msgid "Equip"
 msgstr "Opremi"
 
@@ -674,7 +641,7 @@ msgid "Shortcut"
 msgstr "Kratica"
 
 #: ../src/gui/menuwindow.cpp:69 ../src/gui/menuwindow.cpp:125
-#: ../src/main.cpp:756
+#: ../src/gui/setup.cpp:52 ../src/main.cpp:757
 msgid "Setup"
 msgstr "Podešavanje"
 
@@ -802,7 +769,7 @@ msgstr ""
 msgid "Passwords do not match."
 msgstr ""
 
-#: ../src/gui/register.cpp:243 ../src/main.cpp:1022
+#: ../src/gui/register.cpp:243 ../src/main.cpp:1025
 msgid "Error"
 msgstr "Greška"
 
@@ -810,20 +777,20 @@ msgstr "Greška"
 msgid "Sound"
 msgstr ""
 
-#: ../src/gui/setup_audio.cpp:45
+#: ../src/gui/setup_audio.cpp:46
 msgid "Sfx volume"
 msgstr ""
 
-#: ../src/gui/setup_audio.cpp:46
+#: ../src/gui/setup_audio.cpp:47
 msgid "Music volume"
 msgstr ""
 
-#: ../src/gui/setup.cpp:59 ../src/gui/setup.cpp:116
+#: ../src/gui/setup.cpp:60 ../src/gui/setup.cpp:116
 msgid "Apply"
 msgstr ""
 
 #. Disable this button when the windows aren't created yet
-#: ../src/gui/setup.cpp:59 ../src/gui/setup.cpp:70 ../src/gui/setup.cpp:126
+#: ../src/gui/setup.cpp:60 ../src/gui/setup.cpp:71 ../src/gui/setup.cpp:126
 msgid "Reset Windows"
 msgstr ""
 
@@ -857,11 +824,11 @@ msgstr ""
 msgid "Color:"
 msgstr "Boja kose:"
 
-#: ../src/gui/setup_joystick.cpp:36 ../src/gui/setup_joystick.cpp:70
+#: ../src/gui/setup_joystick.cpp:36 ../src/gui/setup_joystick.cpp:72
 msgid "Press the button to start calibration"
 msgstr ""
 
-#: ../src/gui/setup_joystick.cpp:37 ../src/gui/setup_joystick.cpp:68
+#: ../src/gui/setup_joystick.cpp:37 ../src/gui/setup_joystick.cpp:70
 msgid "Calibrate"
 msgstr ""
 
@@ -869,28 +836,28 @@ msgstr ""
 msgid "Enable joystick"
 msgstr ""
 
-#: ../src/gui/setup_joystick.cpp:73
+#: ../src/gui/setup_joystick.cpp:75
 msgid "Stop"
 msgstr ""
 
-#: ../src/gui/setup_joystick.cpp:74
+#: ../src/gui/setup_joystick.cpp:76
 msgid "Rotate the stick"
 msgstr ""
 
-#: ../src/gui/setup_keyboard.cpp:87
+#: ../src/gui/setup_keyboard.cpp:88
 msgid "Assign"
 msgstr ""
 
-#: ../src/gui/setup_keyboard.cpp:93
+#: ../src/gui/setup_keyboard.cpp:94
 #, fuzzy
 msgid "Default"
 msgstr "Obriši"
 
-#: ../src/gui/setup_keyboard.cpp:114
+#: ../src/gui/setup_keyboard.cpp:115
 msgid "Key Conflict(s) Detected."
 msgstr ""
 
-#: ../src/gui/setup_keyboard.cpp:115
+#: ../src/gui/setup_keyboard.cpp:116
 msgid "Resolve them, or gameplay may result in strange behaviour."
 msgstr ""
 
@@ -935,7 +902,7 @@ msgstr ""
 msgid "Allow whispers"
 msgstr ""
 
-#: ../src/gui/setup_players.cpp:244
+#: ../src/gui/setup_players.cpp:245
 msgid "When ignoring:"
 msgstr ""
 
@@ -975,103 +942,103 @@ msgstr ""
 msgid "FPS Limit:"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:141
+#: ../src/gui/setup_video.cpp:142
 msgid "Gui opacity"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:209
+#: ../src/gui/setup_video.cpp:210
 msgid "Scroll radius"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:217
+#: ../src/gui/setup_video.cpp:218
 msgid "Scroll laziness"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:225
+#: ../src/gui/setup_video.cpp:226
 msgid "Ambient FX"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:232 ../src/gui/setup_video.cpp:491
+#: ../src/gui/setup_video.cpp:233 ../src/gui/setup_video.cpp:492
 msgid "off"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:235 ../src/gui/setup_video.cpp:251
-#: ../src/gui/setup_video.cpp:494 ../src/gui/setup_video.cpp:508
+#: ../src/gui/setup_video.cpp:236 ../src/gui/setup_video.cpp:252
+#: ../src/gui/setup_video.cpp:495 ../src/gui/setup_video.cpp:509
 msgid "low"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:238 ../src/gui/setup_video.cpp:257
-#: ../src/gui/setup_video.cpp:497 ../src/gui/setup_video.cpp:514
+#: ../src/gui/setup_video.cpp:239 ../src/gui/setup_video.cpp:258
+#: ../src/gui/setup_video.cpp:498 ../src/gui/setup_video.cpp:515
 msgid "high"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:244
+#: ../src/gui/setup_video.cpp:245
 msgid "Particle Detail"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:254 ../src/gui/setup_video.cpp:511
+#: ../src/gui/setup_video.cpp:255 ../src/gui/setup_video.cpp:512
 msgid "medium"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:260 ../src/gui/setup_video.cpp:517
+#: ../src/gui/setup_video.cpp:261 ../src/gui/setup_video.cpp:518
 msgid "max"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:320
+#: ../src/gui/setup_video.cpp:321
 msgid "Failed to switch to "
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:321
+#: ../src/gui/setup_video.cpp:322
 msgid "windowed"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:321
+#: ../src/gui/setup_video.cpp:322
 msgid "fullscreen"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:322
+#: ../src/gui/setup_video.cpp:323
 msgid "mode and restoration of old mode also failed!"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:329
+#: ../src/gui/setup_video.cpp:330
 msgid "Switching to full screen"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:330
+#: ../src/gui/setup_video.cpp:331
 msgid "Restart needed for changes to take effect."
 msgstr ""
 
 #. OpenGL can currently only be changed by restarting, notify user.
-#: ../src/gui/setup_video.cpp:342
+#: ../src/gui/setup_video.cpp:343
 msgid "Changing OpenGL"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:343
+#: ../src/gui/setup_video.cpp:344
 msgid "Applying change to OpenGL requires restart."
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:420 ../src/main.cpp:394
+#: ../src/gui/setup_video.cpp:421 ../src/main.cpp:395
 msgid "Couldn't set "
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:421 ../src/main.cpp:395
+#: ../src/gui/setup_video.cpp:422 ../src/main.cpp:396
 msgid " video mode: "
 msgstr ""
 
 #. TODO: Find out why the drawing area doesn't resize without a restart.
-#: ../src/gui/setup_video.cpp:432
+#: ../src/gui/setup_video.cpp:433
 msgid "Screen resolution changed"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:433
+#: ../src/gui/setup_video.cpp:434
 msgid "Restart your client for the change to take effect."
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:451
+#: ../src/gui/setup_video.cpp:452
 msgid "Particle effect settings changed"
 msgstr ""
 
-#: ../src/gui/setup_video.cpp:452
+#: ../src/gui/setup_video.cpp:453
 msgid "Restart your client or change maps for the change to take effect."
 msgstr ""
 
@@ -1195,24 +1162,28 @@ msgstr ""
 msgid "Remaining Status Points: %d"
 msgstr ""
 
-#: ../src/gui/trade.cpp:61
-msgid "Add"
+#: ../src/gui/trade.cpp:51
+msgid "Trade: You"
 msgstr ""
 
-#: ../src/gui/trade.cpp:64
+#: ../src/gui/trade.cpp:56 ../src/gui/trade.cpp:66
 msgid "Trade"
 msgstr ""
 
-#: ../src/gui/trade.cpp:80 ../src/gui/trade.cpp:156 ../src/gui/trade.cpp:204
+#: ../src/gui/trade.cpp:63
+msgid "Add"
+msgstr ""
+
+#: ../src/gui/trade.cpp:82 ../src/gui/trade.cpp:124 ../src/gui/trade.cpp:174
 #, c-format
 msgid "You get %d GP."
 msgstr ""
 
-#: ../src/gui/trade.cpp:81
+#: ../src/gui/trade.cpp:83
 msgid "You give:"
 msgstr ""
 
-#: ../src/gui/trade.cpp:283
+#: ../src/gui/trade.cpp:252
 msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr ""
 
@@ -1497,6 +1468,23 @@ msgstr ""
 msgid "ColorDB: Error, unknown dye ID# %d"
 msgstr ""
 
+#: ../src/resources/emotedb.cpp:52
+msgid "Initializing emote database..."
+msgstr ""
+
+#: ../src/resources/emotedb.cpp:59
+msgid "Emote Database: Error while loading emotes.xml!"
+msgstr ""
+
+#: ../src/resources/emotedb.cpp:72
+msgid "Emote Database: Emote with missing ID in emotes.xml!"
+msgstr ""
+
+#: ../src/resources/emotedb.cpp:131
+#, c-format
+msgid "EmoteDB: Warning, unknown emote ID %d requested"
+msgstr ""
+
 #: ../src/resources/itemdb.cpp:52
 msgid "Initializing item database..."
 msgstr ""
@@ -1623,176 +1611,196 @@ msgstr ""
 msgid "Warning: guichan input exception: %s"
 msgstr ""
 
-#: ../src/main.cpp:206
+#: ../src/main.cpp:207
 #, c-format
 msgid "Error: Invalid update host: %s"
 msgstr ""
 
-#: ../src/main.cpp:207
+#: ../src/main.cpp:208
 msgid "Invalid update host: "
 msgstr ""
 
-#: ../src/main.cpp:211
+#: ../src/main.cpp:212
 msgid "Warning: no protocol was specified for the update host"
 msgstr ""
 
-#: ../src/main.cpp:221
+#: ../src/main.cpp:222
 #, c-format
 msgid "Error: %s/%s can't be made, but doesn't exist!"
 msgstr ""
 
-#: ../src/main.cpp:223
+#: ../src/main.cpp:224
 msgid "Error creating updates directory!"
 msgstr ""
 
-#: ../src/main.cpp:251
+#: ../src/main.cpp:252
 msgid " can't be created, but it doesn't exist! Exiting."
 msgstr ""
 
-#: ../src/main.cpp:260
+#: ../src/main.cpp:261
 #, c-format
 msgid "Starting Aethyra Version %s"
 msgstr ""
 
-#: ../src/main.cpp:262
+#: ../src/main.cpp:263
 msgid "Starting Aethyra - Version not defined"
 msgstr ""
 
 #. Initialize SDL
-#: ../src/main.cpp:266
+#: ../src/main.cpp:267
 msgid "Initializing SDL..."
 msgstr ""
 
-#: ../src/main.cpp:268
+#: ../src/main.cpp:269
 msgid "Could not initialize SDL: "
 msgstr ""
 
-#: ../src/main.cpp:281
+#: ../src/main.cpp:282
 msgid " couldn't be set as home directory! Exiting."
 msgstr ""
 
-#: ../src/main.cpp:301
+#: ../src/main.cpp:302
 #, c-format
 msgid "Can't find Resources directory\n"
 msgstr ""
 
 #. Fill configuration with defaults
-#: ../src/main.cpp:311
+#: ../src/main.cpp:312
 msgid "Initializing configuration..."
 msgstr ""
 
-#: ../src/main.cpp:425
+#: ../src/main.cpp:426
 #, c-format
 msgid "Warning: %s"
 msgstr ""
 
-#: ../src/main.cpp:467
+#: ../src/main.cpp:468
 msgid "aethyra"
 msgstr ""
 
-#: ../src/main.cpp:468
+#: ../src/main.cpp:469
 msgid "Options: "
 msgstr ""
 
-#: ../src/main.cpp:469
+#: ../src/main.cpp:470
 msgid "  -C --configfile : Configuration file to use"
 msgstr ""
 
-#: ../src/main.cpp:470
+#: ../src/main.cpp:471
 msgid "  -d --data       : Directory to load game data from"
 msgstr ""
 
-#: ../src/main.cpp:471
+#: ../src/main.cpp:472
 msgid "  -D --default    : Bypass the login process with default settings"
 msgstr ""
 
-#: ../src/main.cpp:472
+#: ../src/main.cpp:473
 msgid "  -h --help       : Display this help"
 msgstr ""
 
-#: ../src/main.cpp:473
+#: ../src/main.cpp:474
 msgid "  -H --updatehost : Use this update host"
 msgstr ""
 
-#: ../src/main.cpp:474
+#: ../src/main.cpp:475
 msgid "  -p --playername : Login with this player"
 msgstr ""
 
-#: ../src/main.cpp:475
+#: ../src/main.cpp:476
 msgid "  -P --password   : Login with this password"
 msgstr ""
 
-#: ../src/main.cpp:476
+#: ../src/main.cpp:477
 msgid "  -u --skipupdate : Skip the update downloads"
 msgstr ""
 
-#: ../src/main.cpp:477
+#: ../src/main.cpp:478
 msgid "  -U --username   : Login with this username"
 msgstr ""
 
-#: ../src/main.cpp:478
+#: ../src/main.cpp:479
 msgid "  -v --version    : Display the version"
 msgstr ""
 
-#: ../src/main.cpp:484 ../src/main.cpp:487
+#: ../src/main.cpp:485 ../src/main.cpp:488
 msgid "Aethyra version "
 msgstr ""
 
-#: ../src/main.cpp:488
+#: ../src/main.cpp:489
 msgid "(local build?, PACKAGE_VERSION is not defined)"
 msgstr ""
 
-#: ../src/main.cpp:584
+#: ../src/main.cpp:585
 #, fuzzy
 msgid "Trying to connect to account server..."
 msgstr "Spajanje..."
 
-#: ../src/main.cpp:585
+#: ../src/main.cpp:586
 #, c-format
 msgid "Username is %s"
 msgstr ""
 
-#: ../src/main.cpp:639
+#: ../src/main.cpp:640
 #, fuzzy
 msgid "Trying to connect to char server..."
 msgstr "Spajanje..."
 
-#: ../src/main.cpp:661
+#: ../src/main.cpp:662
 #, c-format
 msgid "Memorizing selected character %s"
 msgstr ""
 
-#: ../src/main.cpp:667
+#: ../src/main.cpp:668
 #, fuzzy
 msgid "Trying to connect to map server..."
 msgstr "Spajanje..."
 
-#: ../src/main.cpp:668
+#: ../src/main.cpp:669
 #, fuzzy, c-format
 msgid "Map: %s"
 msgstr "Ime: %s"
 
-#: ../src/main.cpp:798
+#: ../src/main.cpp:799
 #, c-format
 msgid "Couldn't load %s as wallpaper"
 msgstr ""
 
-#: ../src/main.cpp:831
+#: ../src/main.cpp:832
 msgid "Got disconnected from server!"
 msgstr ""
 
-#: ../src/main.cpp:1034
+#: ../src/main.cpp:1037
 #, fuzzy
 msgid "Connecting to map server..."
 msgstr "Spajanje..."
 
-#: ../src/main.cpp:1042
+#: ../src/main.cpp:1045
 msgid "Connecting to character server..."
 msgstr ""
 
-#: ../src/main.cpp:1050
+#: ../src/main.cpp:1053
 msgid "Connecting to account server..."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Description:"
+#~ msgstr "Opis: %s"
+
+#, fuzzy
+#~ msgid "Effect:"
+#~ msgstr "Učinak: %s"
+
+#, fuzzy
+#~ msgid "Name: "
+#~ msgstr "Ime:"
+
+#, fuzzy
+#~ msgid "Effect: "
+#~ msgstr "Učinak: %s"
+
+#, fuzzy
+#~ msgid "Description: "
+#~ msgstr "Opis: %s"
 
 #~ msgid "Remember Username"
 #~ msgstr "Zapamti korisničko ime"
