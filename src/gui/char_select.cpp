@@ -68,7 +68,8 @@ CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
 void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 {
     //ConfirmDialog::action(event);
-    if (event.getId() == "yes") {
+    if (event.getId() == "yes")
+    {
         master->attemptCharDelete();
     }
     ConfirmDialog::action(event);
@@ -110,8 +111,8 @@ CharSelectDialog::CharSelectDialog(Network *network,
     place = getPlacer(0, 2);
     place(0, 0, mPreviousButton);
     place(1, 0, mNextButton);
-    place(4, 0, mSelectButton);
-    place(5, 0, mCancelButton);
+    place(4, 0, mCancelButton);
+    place(5, 0, mSelectButton);
 
     reflowLayout(250, 0);
 
@@ -180,7 +181,8 @@ void CharSelectDialog::updatePlayerInfo()
             mSelectButton->setEnabled(true);
         }
     }
-    else {
+    else
+    {
         mNameLabel->setCaption(strprintf(_("Name: %s"), ""));
         mLevelLabel->setCaption(strprintf(_("Level: %d"), 0));
         mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"), 0));
@@ -282,8 +284,8 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     place(3, 2, mNextHairColorButton);
     place.getCell().matchColWidth(0, 2);
     place = getPlacer(0, 2);
-    place(4, 0, mCreateButton);
-    place(5, 0, mCancelButton);
+    place(4, 0, mCancelButton);
+    place(5, 0, mCreateButton);
 
     reflowLayout(225, 0);
 
@@ -303,32 +305,36 @@ CharCreateDialog::~CharCreateDialog()
 void CharCreateDialog::action(const gcn::ActionEvent &event)
 {
     int numberOfColors = ColorDB::size();
-    if (event.getId() == "create") {
-        if (getName().length() >= 4) {
+    if (event.getId() == "create") 
+    {
+        if (getName().length() >= 4) 
+        {
             // Attempt to create the character
             mCreateButton->setEnabled(false);
             attemptCharCreate();
         }
-        else {
+        else 
+        {
             new OkDialog("Error",
                     "Your name needs to be at least 4 characters.", this);
         }
     }
-    else if (event.getId() == "cancel") {
+    else if (event.getId() == "cancel")
         scheduleDelete();
-    }
-    else if (event.getId() == "nextcolor") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle(), (mPlayer->getHairColor() + 1) % numberOfColors);
-    }
-    else if (event.getId() == "prevcolor") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle(), (mPlayer->getHairColor() + numberOfColors - 1) % numberOfColors);
-    }
-    else if (event.getId() == "nextstyle") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, mPlayer->getHairColor());
-    }
-    else if (event.getId() == "prevstyle") {
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + mPlayer->getNumOfHairstyles() - 1, mPlayer->getHairColor());
-    }
+    else if (event.getId() == "nextcolor")
+        mPlayer->setHairStyle(mPlayer->getHairStyle(), 
+                             (mPlayer->getHairColor() + 1) % numberOfColors);
+    else if (event.getId() == "prevcolor")
+        mPlayer->setHairStyle(mPlayer->getHairStyle(), 
+                             (mPlayer->getHairColor() + numberOfColors - 1) % 
+                              numberOfColors);
+    else if (event.getId() == "nextstyle")
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, 
+                              mPlayer->getHairColor());
+    else if (event.getId() == "prevstyle")
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + 
+                              mPlayer->getNumOfHairstyles() - 1, 
+                              mPlayer->getHairColor());
 }
 
 std::string CharCreateDialog::getName()

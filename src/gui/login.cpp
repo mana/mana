@@ -99,15 +99,15 @@ LoginDialog::LoginDialog(LoginData *loginData):
     place(0, 2, serverLabel);
     place(0, 3, portLabel);
     place(0, 4, dropdownLabel);
-    place(1, 0, mUserField, 3).setPadding(2);
-    place(1, 1, mPassField, 3).setPadding(2);
-    place(1, 2, mServerField, 3).setPadding(2);
-    place(1, 3, mPortField, 3).setPadding(2);
-    place(1, 4, mServerDropDown, 3).setPadding(2);
+    place(1, 0, mUserField, 3).setPadding(1);
+    place(1, 1, mPassField, 3).setPadding(1);
+    place(1, 2, mServerField, 3).setPadding(1);
+    place(1, 3, mPortField, 3).setPadding(1);
+    place(1, 4, mServerDropDown, 3).setPadding(1);
     place(0, 5, mKeepCheck, 4);
     place(0, 6, mRegisterButton).setHAlign(LayoutCell::LEFT);
-    place(2, 6, mOkButton);
-    place(3, 6, mCancelButton);
+    place(2, 6, mCancelButton);
+    place(3, 6, mOkButton);
     reflowLayout(250, 0);
 
     setLocationRelativeTo(getParent());

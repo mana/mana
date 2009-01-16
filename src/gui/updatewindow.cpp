@@ -123,8 +123,8 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     place(0, 0, mScrollArea, 5, 3).setPadding(3);
     place(0, 3, mLabel, 5);
     place(0, 4, mProgressBar, 5);
-    place(0, 5, mCancelButton);
-    place(1, 5, mPlayButton);
+    place(3, 5, mCancelButton);
+    place(4, 5, mPlayButton);
 
     reflowLayout(320, 240);
 
