@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <physfs.h>
+
 #include "recorder.h"
 
 #include "gui/buttonbox.h"
@@ -73,7 +75,9 @@ void Recorder::respond(const std::string &msg)
 	 * recorded.
 	 */
 	mChat->chatLog("Starting to record...", BY_SERVER);
-	mStream.open(msg.c_str(), std::ios_base::trunc);
+        std::string file = std::string(PHYSFS_getUserDir()) + "/.aethyra/" + msgCopy;
+        
+	mStream.open(file.c_str(), std::ios_base::trunc);
 	if (mStream.is_open())
 	{
 	    mButtonBox->setVisible(true);
