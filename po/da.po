@@ -122,8 +122,8 @@ msgstr "Slet"
 
 #: ../src/gui/char_select.cpp:97 ../src/gui/item_amount.cpp:59
 #: ../src/gui/ok_dialog.cpp:37 ../src/gui/trade.cpp:64
-msgid "Ok"
-msgstr ""
+msgid "OK"
+msgstr "OK"
 
 #: ../src/gui/char_select.cpp:176
 #, c-format
@@ -176,16 +176,16 @@ msgstr "Global meddelelse: "
 #: ../src/gui/chat.cpp:157
 #, fuzzy, c-format
 msgid "Global announcement from %s: "
-msgstr "Global meddelelse fra "
+msgstr "Global meddelelse fra %s: "
 
 #: ../src/gui/chat.cpp:171 ../src/gui/login.cpp:53 ../src/gui/register.cpp:83
 msgid "Server:"
 msgstr "Server:"
 
 #: ../src/gui/chat.cpp:327
-#, fuzzy, c-format
+#, c-format
 msgid "Whispering to %s: %s"
-msgstr "Hvisker til "
+msgstr "Hvisker til %s: %s"
 
 #: ../src/gui/chat.cpp:346
 msgid "Trying to send a blank party message."
@@ -211,12 +211,10 @@ msgstr "Besked lukker nu chat."
 msgid ""
 "Options to /toggle are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 msgstr ""
-"Mulighederne til /toggle er \"yes\", \"no\", \"true\", \"false\", \"1\", \"0"
-"\"."
+"Mulighederne til /toggle er \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 
-#: ../src/gui/chat.cpp:510
-#, fuzzy
-msgid "Unknown party command... Type \"/help\" party for more information."
+#: ../src/gui/chat.cpp:432
+msgid "Unknown party command... Type \"/help party\" party for more information."
 msgstr "Ukendt gruppe kommando... Skriv \"/help party\" for mere information."
 
 #: ../src/gui/chat.cpp:556
@@ -595,7 +593,7 @@ msgstr "Smid"
 #: ../src/gui/inventorywindow.cpp:72 ../src/gui/inventorywindow.cpp:114
 #, fuzzy, c-format
 msgid "Weight: %d  g / %d g"
-msgstr "Vægt: "
+msgstr "Vægt: %d  g / %d g"
 
 #: ../src/gui/inventorywindow.cpp:75 ../src/gui/inventorywindow.cpp:117
 #, c-format
@@ -1090,9 +1088,8 @@ msgid "Restart your client or change maps for the change to take effect."
 msgstr "Ændringerne kræver at du genstarter klienten, eller skifter bane."
 
 #: ../src/gui/skill.cpp:41
-#, fuzzy
 msgid "skills.xml"
-msgstr "Færdigheder"
+msgstr ""
 
 #: ../src/gui/skill.cpp:139 ../src/gui/skill.cpp:190
 #, c-format
@@ -1120,7 +1117,7 @@ msgstr "Fejl under loading af færdigheds fil: %s"
 #: ../src/gui/speechbubble.cpp:38
 #, fuzzy
 msgid "Speech"
-msgstr "Snakke bobler"
+msgstr "Snakke"
 
 #: ../src/gui/status.cpp:50 ../src/gui/status.cpp:233
 #, fuzzy, c-format
@@ -1527,7 +1524,7 @@ msgstr "ColorDB: Fejlede"
 #: ../src/resources/colordb.cpp:83
 #, fuzzy, c-format
 msgid "ColorDB: Redefinition of dye ID %d"
-msgstr "ItemDB: Ny definition af genstand ID %d"
+msgstr "ColorDB: Ny definition af genstand ID %d"
 
 #: ../src/resources/colordb.cpp:98
 msgid "Unloading color database..."
@@ -1710,9 +1707,9 @@ msgid "Warning: no protocol was specified for the update host"
 msgstr "Advarsel: ingen protocol var aktiv som opdate host"
 
 #: ../src/main.cpp:245
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s can't be made, but doesn't exist!"
-msgstr "Fejl: %s/%s kan ikke laves, men findes ikke!"
+msgstr "Fejl: %s kan ikke laves, men findes ikke!"
 
 #: ../src/main.cpp:247 ../src/main.cpp:253
 msgid "Error creating updates directory!"
@@ -1730,11 +1727,11 @@ msgstr " kan ikke laves, men det findes ikke! Lukker."
 #: ../src/main.cpp:291
 #, c-format
 msgid "Starting Aethyra Version %s"
-msgstr ""
+msgstr "Starter Aethyra Version %s"
 
 #: ../src/main.cpp:293
 msgid "Starting Aethyra - Version not defined"
-msgstr ""
+msgstr "Starter Aethyra - Version er ikke defineret"
 
 #. Initialize SDL
 #: ../src/main.cpp:297
@@ -1815,7 +1812,7 @@ msgstr "  -v --version    : Viser den nuværende version"
 
 #: ../src/main.cpp:515 ../src/main.cpp:518
 msgid "Aethyra version "
-msgstr ""
+msgstr "Aethyra version "
 
 #: ../src/main.cpp:519
 msgid "(local build?, PACKAGE_VERSION is not defined)"
@@ -2132,7 +2129,7 @@ msgstr "Skriv /help for at få en liste med kommandoer"
 #~ msgstr "E-mail:"
 
 #~ msgid "Choose your Mana World Server"
-#~ msgstr "Vælg din Mana World Server"
+#~ msgstr "Vælg din Aethyra Server"
 
 #~ msgid "Please type both the address and the port of a server."
 #~ msgstr "Skriv både adressen og porten på serveren."
