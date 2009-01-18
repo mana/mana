@@ -49,7 +49,7 @@ class DebugWindow : public Window
         void logic();
 
     private:
-        gcn::Label *mMusicFileLabel, *mMapFileLabel;
+        gcn::Label *mMusicFileLabel, *mMapLabel, *mMiniMapLabel;
         gcn::Label *mTileMouseLabel, *mFPSLabel;
         gcn::Label *mParticleCountLabel;
 };
