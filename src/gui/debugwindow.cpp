@@ -42,27 +42,31 @@ DebugWindow::DebugWindow():
 
     setResizable(true);
     setCloseButton(true);
-    setDefaultSize(0, 0, 400, 100);
+    setDefaultSize(0, 0, 400, 60);
     loadWindowState();
 
     mFPSLabel = new gcn::Label("[0 FPS]");
     mFPSLabel->setPosition(0,0);
 
-    mMusicFileLabel = new gcn::Label("Music File: ");
-    mMusicFileLabel->setPosition(0, 20);
+    mMusicFileLabel = new gcn::Label("Music: ");
+    mMusicFileLabel->setPosition(0, 15);
 
-    mMapFileLabel = new gcn::Label("Mini-Map File: ");
-    mMapFileLabel->setPosition(0, 40);
+    mMapLabel = new gcn::Label("Map: ");
+    mMapLabel->setPosition(0, 30);
+
+    mMiniMapLabel = new gcn::Label("Mini-Map: ");
+    mMiniMapLabel->setPosition(0, 45);
 
     mTileMouseLabel = new gcn::Label("[Mouse: 0, 0]");
-    mTileMouseLabel->setPosition(100, 0);
+    mTileMouseLabel->setPosition(200, 0);
 
     mParticleCountLabel = new gcn::Label("[Particle count: 0]");
-    mParticleCountLabel->setPosition(100, 60);
+    mParticleCountLabel->setPosition(200, 15);
 
     add(mFPSLabel);
     add(mMusicFileLabel);
-    add(mMapFileLabel);
+    add(mMiniMapLabel);
+    add(mMapLabel);
     add(mTileMouseLabel);
     add(mParticleCountLabel);
 }
@@ -75,7 +79,7 @@ void DebugWindow::logic()
     int mouseTileX = mouseX / 32 + viewport->getCameraX();
     int mouseTileY = mouseY / 32 + viewport->getCameraY();
 
-    mFPSLabel->setCaption("[" + toString(fps) + " FPS");
+    mFPSLabel->setCaption("[" + toString(fps) + " FPS]");
     mFPSLabel->adjustSize();
 
     mTileMouseLabel->setCaption("[Mouse: " +
@@ -86,14 +90,19 @@ void DebugWindow::logic()
     if (currentMap != NULL)
     {
         const std::string music =
-            " [Music File: " + currentMap->getProperty("music") + "]";
+            " [Music: " + currentMap->getProperty("music") + "]";
         mMusicFileLabel->setCaption(music);
         mMusicFileLabel->adjustSize();
 
         const std::string minimap =
-            " [MiniMap File: " + currentMap->getProperty("minimap") + "]";
-        mMapFileLabel->setCaption(minimap);
-        mMapFileLabel->adjustSize();
+            " [MiniMap: " + currentMap->getProperty("minimap") + "]";
+        mMiniMapLabel->setCaption(minimap);
+        mMiniMapLabel->adjustSize();
+
+        const std::string map =
+            " [Map: " + currentMap->getProperty("_filename") + "]";
+        mMapLabel->setCaption(map);
+        mMapLabel->adjustSize();
     }
 
     mParticleCountLabel->setCaption("[Particle count: " +
