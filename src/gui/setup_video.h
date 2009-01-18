@@ -45,6 +45,11 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         void keyPressed(gcn::KeyEvent &event);
 
     private:
+        void updateSliders(bool originalValues);
+
+        int updateSlider(gcn::Slider *slider, gcn::TextField *field,
+                         const std::string &configName);
+
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
@@ -84,11 +89,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         int mParticleDetail;
         gcn::Slider *mParticleDetailSlider;
         gcn::Label *mParticleDetailField;
-
-        void updateSliders(bool originalValues);
-
-        int updateSlider(gcn::Slider *slider, gcn::TextField *field,
-                         const std::string &configName);
 };
 
 #endif

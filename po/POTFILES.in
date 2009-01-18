@@ -18,7 +18,9 @@ src/gui/item_amount.cpp
 src/gui/login.cpp
 src/gui/menuwindow.cpp
 src/gui/minimap.cpp
+src/gui/npcintegerdialog.cpp
 src/gui/npclistdialog.cpp
+src/gui/npcstringdialog.cpp
 src/gui/npc_text.cpp
 src/gui/ok_dialog.cpp
 src/gui/popupmenu.cpp

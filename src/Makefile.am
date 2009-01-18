@@ -3,7 +3,9 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
               gui/widgets/dropdown.h \
 	      gui/widgets/layout.cpp \
 	      gui/widgets/layout.h \
-              gui/widgets/resizegrip.cpp \
+	      gui/widgets/layouthelper.cpp \
+	      gui/widgets/layouthelper.h \
+	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
 	      gui/widgets/tab.cpp \
 	      gui/widgets/tab.h \

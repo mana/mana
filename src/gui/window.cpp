@@ -257,17 +257,16 @@ void Window::setResizable(bool r)
 
 void Window::widgetResized(const gcn::Event &event)
 {
+    const gcn::Rectangle area = getChildrenArea();
+
     if (mGrip)
-    {
-        const gcn::Rectangle area = getChildrenArea();
         mGrip->setPosition(getWidth() - mGrip->getWidth() - area.x,
                            getHeight() - mGrip->getHeight() - area.y);
-    }
 
     if (mLayout)
     {
-        int w = getWidth() - 2 * getPadding();
-        int h = getHeight() - getPadding() - getTitleBarHeight();
+        int w = area.width;
+        int h = area.height;
         mLayout->reflow(w, h);
     }
 }

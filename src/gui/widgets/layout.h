@@ -317,4 +317,4 @@ class Layout: public LayoutCell
         bool mComputed;
 };
 
-#endif
+#endif // _TMW_WIDGET_LAYOUT_H__
