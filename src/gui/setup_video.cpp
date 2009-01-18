@@ -240,33 +240,33 @@ Setup_Video::Setup_Video():
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, scrollArea, 1, 5).setPadding(2);
+    place(0, 0, scrollArea, 1, 6).setPadding(2);
     place(1, 0, mFsCheckBox, 3);
-    place(2, 0, mNameCheckBox, 3);
     place(1, 1, mOpenGLCheckBox, 3);
-    place(2, 1, mParticleEffectsCheckBox, 3);
     place(1, 2, mCustomCursorCheckBox, 3);
     place(1, 3, mSpeechBubbleCheckBox, 3);
+    place(1, 4, mNameCheckBox, 3);
+    place(1, 5, mParticleEffectsCheckBox, 3);
 
-    place(0, 5, mAlphaSlider);
-    place(0, 6, mFpsSlider);
-    place(0, 7, mScrollRadiusSlider);
-    place(0, 8, mScrollLazinessSlider);
-    place(0, 9, mOverlayDetailSlider);
-    place(0, 10, mParticleDetailSlider);
+    place(0, 7, mAlphaSlider);
+    place(0, 8, mFpsSlider);
+    place(0, 9, mScrollRadiusSlider);
+    place(0, 10, mScrollLazinessSlider);
+    place(0, 11, mOverlayDetailSlider);
+    place(0, 12, mParticleDetailSlider);
 
-    place(1, 5, alphaLabel, 2);
-    place(1, 6, mFpsCheckBox).setPadding(3);
-    place(1, 7, scrollRadiusLabel);
-    place(1, 8, scrollLazinessLabel);
-    place(1, 9, overlayDetailLabel);
-    place(1, 10, particleDetailLabel);
+    place(1, 7, alphaLabel, 2);
+    place(1, 8, mFpsCheckBox).setPadding(3);
+    place(1, 9, scrollRadiusLabel);
+    place(1, 10, scrollLazinessLabel);
+    place(1, 11, overlayDetailLabel);
+    place(1, 12, particleDetailLabel);
 
-    place(2, 6, mFpsField).setPadding(1);
-    place(2, 7, mScrollRadiusField).setPadding(1);
-    place(2, 8, mScrollLazinessField).setPadding(1);
-    place(2, 9, mOverlayDetailField, 2).setPadding(2);
-    place(2, 10, mParticleDetailField, 2).setPadding(2);
+    place(2, 8, mFpsField).setPadding(1);
+    place(2, 9, mScrollRadiusField).setPadding(1);
+    place(2, 10, mScrollLazinessField).setPadding(1);
+    place(2, 11, mOverlayDetailField, 2).setPadding(2);
+    place(2, 12, mParticleDetailField, 2).setPadding(2);
 
     setDimension(gcn::Rectangle(0, 0, 295, 255));
 }
