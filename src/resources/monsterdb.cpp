@@ -45,7 +45,7 @@ void MonsterDB::load()
 
     logger->log(_("Initializing monster database..."));
 
-    XML::Document doc("monsters.xml");
+    XML::Document doc(_("monsters.xml"));
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "monsters"))

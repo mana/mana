@@ -36,7 +36,7 @@
 #include "../utils/strprintf.h"
 #include "../utils/xml.h"
 
-static const char *SKILLS_FILE = "skills.xml";
+static const char *SKILLS_FILE = _("skills.xml");
 
 struct SkillInfo {
     std::string name;
