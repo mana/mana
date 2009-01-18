@@ -53,6 +53,8 @@ SET(SRCS
     gui/widgets/resizegrip.h
     gui/widgets/layout.cpp
     gui/widgets/layout.h
+    gui/widgets/layouthelper.cpp
+    gui/widgets/layouthelper.h
     gui/widgets/tab.cpp
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp

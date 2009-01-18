@@ -71,7 +71,7 @@ Setup::Setup():
     }
 
     TabbedArea *panel = new TabbedArea();
-    panel->setDimension(gcn::Rectangle(5, 5, 260, 225));
+    panel->setDimension(gcn::Rectangle(5, 5, 280, 225));
 
     SetupTab *tab;
 

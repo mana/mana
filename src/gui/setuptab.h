@@ -27,8 +27,8 @@
 class SetupTab : public GCContainer
 {
     public:
-        virtual void apply() =0;
-        virtual void cancel() =0;
+        virtual void apply() = 0;
+        virtual void cancel() = 0;
 };
 
 #endif
