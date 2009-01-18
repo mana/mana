@@ -121,9 +121,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ~ChatWindow();
 
         /**
-         * Logic (updates components' size)
+         * Called whenever the widget changes size.
          */
-        void logic();
+        void widgetResized(const gcn::Event &event);
 
         /**
          * Adds a line of text to our message list. Parameters:
@@ -217,6 +217,8 @@ class ChatWindow : public Window, public gcn::ActionListener,
 
         Network *mNetwork;
         bool mTmpVisible;
+
+        void whisper(const std::string &nick, std::string msg);
 
         /** One item in the chat log */
         struct CHATLOG
