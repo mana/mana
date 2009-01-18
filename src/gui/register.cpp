@@ -39,17 +39,30 @@
 #include "textfield.h"
 #include "ok_dialog.h"
 
+#include "widgets/layout.h"
+
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-void
-WrongDataNoticeListener::setTarget(gcn::TextField *textField)
+/**
+ * Listener used while dealing with wrong data. It is used to direct the focus
+ * to the field which contained wrong data when the Ok button was pressed on
+ * the error notice.
+ */
+class WrongDataNoticeListener : public gcn::ActionListener {
+    public:
+        void setTarget(gcn::TextField *textField);
+        void action(const gcn::ActionEvent &event);
+    private:
+        gcn::TextField *mTarget;
+};
+
+void WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 {
     mTarget = textField;
 }
 
-void
-WrongDataNoticeListener::action(const gcn::ActionEvent &event)
+void WrongDataNoticeListener::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
@@ -57,9 +70,10 @@ WrongDataNoticeListener::action(const gcn::ActionEvent &event)
     }
 }
 
+
 RegisterDialog::RegisterDialog(LoginData *loginData):
-    Window("Register"),
-    mWrongDataNoticeListener(new WrongDataNoticeListener()),
+    Window(_("Register")),
+    mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
     gcn::Label *userLabel = new gcn::Label(_("Name:"));
@@ -68,46 +82,29 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     gcn::Label *serverLabel = new gcn::Label(_("Server:"));
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
-    mConfirmField = new PasswordField();
+    mConfirmField = new PasswordField;
     mServerField = new TextField(loginData->hostname);
     mMaleButton = new RadioButton(_("Male"), "sex", true);
     mFemaleButton = new RadioButton(_("Female"), "sex", false);
     mRegisterButton = new Button(_("Register"), "register", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
-    const int width = 220;
-    const int height = 150;
-    setContentSize(width, height);
-
-    mUserField->setPosition(65, 5);
-    mUserField->setWidth(width - 70);
-    mPasswordField->setPosition(
-            65, mUserField->getY() + mUserField->getHeight() + 7);
-    mPasswordField->setWidth(mUserField->getWidth());
-    mConfirmField->setPosition(
-            65, mPasswordField->getY() + mPasswordField->getHeight() + 7);
-    mConfirmField->setWidth(mUserField->getWidth());
-    mServerField->setPosition(
-            65, 23 + mConfirmField->getY() + mConfirmField->getHeight() + 7);
-    mServerField->setWidth(mUserField->getWidth());
-
-    userLabel->setPosition(5, mUserField->getY() + 1);
-    passwordLabel->setPosition(5, mPasswordField->getY() + 1);
-    confirmLabel->setPosition(5, mConfirmField->getY() + 1);
-    serverLabel->setPosition(5, mServerField->getY() + 1);
-
-    mMaleButton->setPosition(
-            70, mConfirmField->getY() + mConfirmField->getHeight() + 7);
-    mFemaleButton->setPosition(
-            70 + 10 + mMaleButton->getWidth(),
-            mMaleButton->getY());
-
-    mCancelButton->setPosition(
-            width - mCancelButton->getWidth() - 5,
-            height - mCancelButton->getHeight() - 5);
-    mRegisterButton->setPosition(
-            mCancelButton->getX() - mRegisterButton->getWidth() - 5,
-            height - mRegisterButton->getHeight() - 5);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+    place(0, 0, userLabel);
+    place(0, 1, passwordLabel);
+    place(0, 2, confirmLabel);
+    place(1, 3, mMaleButton);
+    place(2, 3, mFemaleButton);
+    place(0, 4, serverLabel);
+    place(1, 0, mUserField, 3).setPadding(2);
+    place(1, 1, mPasswordField, 3).setPadding(2);
+    place(1, 2, mConfirmField, 3).setPadding(2);
+    place(1, 4, mServerField, 3).setPadding(2);
+    place = getPlacer(0, 2);
+    place(1, 0, mRegisterButton);
+    place(2, 0, mCancelButton);
+    reflowLayout(250, 0);
 
     mUserField->addKeyListener(this);
     mPasswordField->addKeyListener(this);
@@ -128,19 +125,6 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mConfirmField->addActionListener(this);
     mServerField->addActionListener(this);
 
-    add(userLabel);
-    add(passwordLabel);
-    add(serverLabel);
-    add(confirmLabel);
-    add(mUserField);
-    add(mPasswordField);
-    add(mConfirmField);
-    add(mServerField);
-    add(mMaleButton);
-    add(mFemaleButton);
-    add(mRegisterButton);
-    add(mCancelButton);
-
     setLocationRelativeTo(getParent());
     setVisible(true);
     mUserField->requestFocus();
@@ -154,8 +138,7 @@ RegisterDialog::~RegisterDialog()
     delete mWrongDataNoticeListener;
 }
 
-void
-RegisterDialog::action(const gcn::ActionEvent &event)
+void RegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
@@ -244,14 +227,12 @@ RegisterDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
+void RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
     mRegisterButton->setEnabled(canSubmit());
 }
 
-bool
-RegisterDialog::canSubmit()
+bool RegisterDialog::canSubmit() const
 {
     return !mUserField->getText().empty() &&
            !mPasswordField->getText().empty() &&

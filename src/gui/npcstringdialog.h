@@ -19,41 +19,33 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_REGISTER_H
-#define _TMW_REGISTER_H
+#ifndef _TMW_GUI_NPCSTRINGDIALOG_H
+#define _TMW_GUI_NPCSTRINGDIALOG_H
 
 #include <iosfwd>
+#include <vector>
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
 #include "window.h"
+
 #include "../guichanfwd.h"
 
-class LoginData;
-class OkDialog;
-class WrongDataNoticeListener;
-
 /**
- * The registration dialog.
+ * The npc integer input dialog.
  *
  * \ingroup Interface
  */
-class RegisterDialog : public Window, public gcn::ActionListener,
-                       public gcn::KeyListener
+class NpcStringDialog : public Window, public gcn::ActionListener
 {
     public:
         /**
-         * Constructor. Name, password and server fields will be initialized to
-         * the information already present in the LoginData instance.
+         * Constructor.
          *
          * @see Window::Window
          */
-        RegisterDialog(LoginData *loginData);
-
-        /**
-         * Destructor
-         */
-        ~RegisterDialog();
+        NpcStringDialog();
 
         /**
          * Called when receiving actions from the widgets.
@@ -61,30 +53,26 @@ class RegisterDialog : public Window, public gcn::ActionListener,
         void action(const gcn::ActionEvent &event);
 
         /**
-         * Called when a key is pressed in one of the text fields.
+         * Returns the current value.
          */
-        void keyPressed(gcn::KeyEvent &keyEvent);
+        std::string getValue();
+
+        /**
+         * Chnages the current value.
+         *
+         * @param value The new value
+         */
+        void setValue(const std::string &value);
+
+        /**
+         * Checks whether NpcStringDialog is Focused or not.
+         */
+        bool isInputFocused();
 
     private:
-        /**
-         * Returns whether submit can be enabled. This is true in the register
-         * state, when all necessary fields have some text.
-         */
-        bool canSubmit() const;
-
-        gcn::TextField *mUserField;
-        gcn::TextField *mPasswordField;
-        gcn::TextField *mConfirmField;
-        gcn::TextField *mServerField;
-
-        gcn::Button *mRegisterButton;
-        gcn::Button *mCancelButton;
-        gcn::RadioButton *mMaleButton;
-        gcn::RadioButton *mFemaleButton;
-
-        WrongDataNoticeListener *mWrongDataNoticeListener;
-
-        LoginData *mLoginData;
+        gcn::TextField *mValueField;
+        gcn::Button *okButton;
+        gcn::Button *cancelButton;
 };
 
-#endif
+#endif // _TMW_GUI_NPCSTRINGDIALOG_H

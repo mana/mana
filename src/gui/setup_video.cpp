@@ -287,7 +287,7 @@ void Setup_Video::apply()
          * See http://libsdl.org/cgi/docwiki.cgi/SDL_SetVideoMode
          */
 
-#ifdef WIN32
+#if defined(WIN32) || defined(__APPLE__)
         // checks for opengl usage
         if (!(config.getValue("opengl", 0) == 1))
         {
@@ -305,7 +305,7 @@ void Setup_Video::apply()
                     logger->error(error.str());
                 }
             }
-#ifdef WIN32
+#if defined(WIN32) || defined(__APPLE__)
         } else {
             new OkDialog(_("Switching to full screen"),
                     _("Restart needed for changes to take effect."));
