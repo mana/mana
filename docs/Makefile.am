@@ -4,8 +4,7 @@ EXTRA_DIST = $(man6_MANS) \
 	     packages.txt \
 	     FAQ.txt \
 	     HACKING.txt \
-	     SOURCE/tmwdox.sh \
-	     SOURCE/tmw.doxcfg \
+	     SOURCE/Doxyfile \
 	     items.txt \
 	     progression.txt \
 	     INSTALL/debian.txt \
