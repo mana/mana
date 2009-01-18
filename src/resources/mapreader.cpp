@@ -531,8 +531,12 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
                         break;
                     }
                 }
-                map->addAnimation(tileGID, new TileAnimation(ani));
-                logger->log("Animation length: %d", ani->getLength());
+
+                if (ani->getLength() > 0)
+                {
+                    map->addAnimation(tileGID, new TileAnimation(ani));
+                    logger->log("Animation length: %d", ani->getLength());
+                }
             }
         }
     }
