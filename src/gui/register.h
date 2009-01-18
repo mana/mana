@@ -31,19 +31,7 @@
 
 class LoginData;
 class OkDialog;
-
-/**
- * Listener used while dealing with wrong data. It is used to direct the focus
- * to the field which contained wrong data when the Ok button was pressed on
- * the error notice.
- */
-class WrongDataNoticeListener : public gcn::ActionListener {
-    public:
-        void setTarget(gcn::TextField *textField);
-        void action(const gcn::ActionEvent &event);
-    private:
-        gcn::TextField *mTarget;
-};
+class WrongDataNoticeListener;
 
 /**
  * The registration dialog.
@@ -82,8 +70,7 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          * Returns whether submit can be enabled. This is true in the register
          * state, when all necessary fields have some text.
          */
-        bool
-        canSubmit();
+        bool canSubmit() const;
 
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
