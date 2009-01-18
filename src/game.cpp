@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "game.h"
-
 #include <fstream>
 #include <physfs.h>
 #include <sstream>
@@ -34,6 +32,7 @@
 #include "emoteshortcut.h"
 #include "engine.h"
 #include "flooritemmanager.h"
+#include "game.h"
 #include "graphics.h"
 #include "itemshortcut.h"
 #include "joystick.h"
@@ -230,10 +229,11 @@ void createGuiWindows(Network *network)
     emoteShortcutWindow->setVisible((bool) config.getValue(
         emoteShortcutWindow->getWindowName() + "Visible", true));
 
+    if (!(bool) config.getValue("MinimapVisible", true))
+        minimap->toggle();
+
     if (config.getValue("logToChat", 0))
-    {
         logger->setChatWindow(chatWindow);
-    }
 }
 
 /**
