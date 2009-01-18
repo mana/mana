@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2008 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,43 +19,42 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_SETUP_H
-#define _TMW_SETUP_H
+#ifndef _TMW_TAB_H
+#define _TMW_TAB_H
 
-#include <list>
+#include <guichan/widgets/tab.hpp>
 
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
-
-class SetupTab;
+class ImageRect;
 
 /**
- * The setup dialog.
- *
- * \ingroup GUI
+ * A tab, the same as the guichan tab in 0.8, but extended to allow transparancy
  */
-class Setup : public Window, public gcn::ActionListener
+class Tab : public gcn::Tab
 {
     public:
         /**
          * Constructor.
          */
-        Setup();
+        Tab();
 
         /**
          * Destructor.
          */
-        ~Setup();
+        ~Tab();
 
         /**
-         * Event handling method.
+         * Draw the tabbed area.
          */
-        void
-        action(const gcn::ActionEvent &event);
+        void draw(gcn::Graphics *graphics);
 
     private:
-        std::list<SetupTab*> mTabs;
+        /** Load images if no other instances exist yet */
+        void init();
+
+        static ImageRect tabImg[4];    /**< Tab state graphics */
+        static int mInstances;         /**< Number of tab instances */
 };
 
 #endif
+
+

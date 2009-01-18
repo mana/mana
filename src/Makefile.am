@@ -5,6 +5,10 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/widgets/layout.h \
 	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
+	      gui/widgets/tab.cpp \
+	      gui/widgets/tab.h \
+	      gui/widgets/tabbedarea.cpp \
+	      gui/widgets/tabbedarea.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -64,8 +68,12 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/minimap.h \
 	      gui/ministatus.cpp \
 	      gui/ministatus.h \
+	      gui/npcintegerdialog.cpp \
+	      gui/npcintegerdialog.h \
 	      gui/npclistdialog.cpp \
 	      gui/npclistdialog.h \
+	      gui/npcstringdialog.cpp \
+	      gui/npcstringdialog.h \
 	      gui/npc_text.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
@@ -113,8 +121,6 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/slider.h \
 	      gui/status.cpp \
 	      gui/status.h \
-	      gui/tabbedcontainer.cpp \
-	      gui/tabbedcontainer.h \
 	      gui/table.h \
 	      gui/table.cpp \
 	      gui/table_model.h \

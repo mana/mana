@@ -19,47 +19,60 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_TABPANE_H
-#define _TMW_TABPANE_H
+#ifndef _TMW_GUI_NPCSTRINGDIALOG_H
+#define _TMW_GUI_NPCSTRINGDIALOG_H
 
 #include <iosfwd>
 #include <vector>
-#include <map>
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 
-#include <guichan/widgets/container.hpp>
+#include "window.h"
 
 #include "../guichanfwd.h"
 
-class TabbedContainer : public gcn::Container, public gcn::ActionListener
+/**
+ * The npc integer input dialog.
+ *
+ * \ingroup Interface
+ */
+class NpcStringDialog : public Window, public gcn::ActionListener
 {
     public:
-        TabbedContainer();
-        ~TabbedContainer();
+        /**
+         * Constructor.
+         *
+         * @see Window::Window
+         */
+        NpcStringDialog();
 
-        void addTab(gcn::Widget *widget, const std::string &caption);
-
-        void removeTab(const std::string &caption);
-
-        void logic();
-
+        /**
+         * Called when receiving actions from the widgets.
+         */
         void action(const gcn::ActionEvent &event);
 
-        void setOpaque(bool opaque);
+        /**
+         * Returns the current value.
+         */
+        std::string getValue();
 
-        short getNumberOfTabs();
+        /**
+         * Chnages the current value.
+         *
+         * @param value The new value
+         */
+        void setValue(const std::string &value);
 
-        std::string getActiveWidget();
+        /**
+         * Checks whether NpcStringDialog is Focused or not.
+         */
+        bool isInputFocused();
 
     private:
-        typedef std::vector<gcn::Widget*> Widgets;
-        typedef Widgets::iterator WidgetIterator;
-        std::map<std::string, gcn::Widget*> mTabs; // tabs mapped to their channel name
-        Widgets mContents;  // The contents of the tabs
-
-        std::map<gcn::Widget*, std::string> mWidgets;
-        gcn::Widget *mActiveContent;
+        gcn::TextField *mValueField;
+        gcn::Button *okButton;
+        gcn::Button *cancelButton;
 };
 
-#endif
+#endif // _TMW_GUI_NPCSTRINGDIALOG_H

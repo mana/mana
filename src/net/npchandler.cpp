@@ -27,11 +27,15 @@
 #include "../beingmanager.h"
 #include "../npc.h"
 
+#include "../gui/npcintegerdialog.h"
 #include "../gui/npclistdialog.h"
+#include "../gui/npcstringdialog.h"
 #include "../gui/npc_text.h"
 
+extern NpcIntegerDialog *npcIntegerDialog;
 extern NpcListDialog *npcListDialog;
 extern NpcTextDialog *npcTextDialog;
+extern NpcStringDialog *npcStringDialog;
 
 NPCHandler::NPCHandler()
 {
@@ -40,6 +44,8 @@ NPCHandler::NPCHandler()
         SMSG_NPC_MESSAGE,
         SMSG_NPC_NEXT,
         SMSG_NPC_CLOSE,
+        SMSG_NPC_INT_INPUT,
+        SMSG_NPC_STR_INPUT,
         0
     };
     handledMessages = _messages;
@@ -77,6 +83,22 @@ void NPCHandler::handleMessage(MessageIn *msg)
 
         case SMSG_NPC_NEXT:
             // Next button in NPC dialog, currently unused
+            break;
+
+        case SMSG_NPC_INT_INPUT:
+            // Request for an integer
+            id = msg->readInt32();
+            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
+            npcIntegerDialog->prepDialog(0, 0, 2147483647);
+            npcIntegerDialog->setVisible(true);
+            break;
+
+        case SMSG_NPC_STR_INPUT:
+            // Request for a string
+            id = msg->readInt32();
+            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
+            npcStringDialog->setValue("");
+            npcStringDialog->setVisible(true);
             break;
     }
 }
