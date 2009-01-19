@@ -61,7 +61,8 @@ Setup_Joystick::Setup_Joystick():
 
 void Setup_Joystick::action(const gcn::ActionEvent &event)
 {
-    if (!joystick) {
+    if (!joystick)
+    {
         return;
     }
 
@@ -71,12 +72,15 @@ void Setup_Joystick::action(const gcn::ActionEvent &event)
     }
     else
     {
-        if (joystick->isCalibrating()) {
+        if (joystick->isCalibrating())
+        {
             mCalibrateButton->setCaption(_("Calibrate"));
             mCalibrateLabel->setCaption
                 (_("Press the button to start calibration"));
             joystick->finishCalibration();
-        } else {
+        }
+        else
+        {
             mCalibrateButton->setCaption(_("Stop"));
             mCalibrateLabel->setCaption(_("Rotate the stick"));
             joystick->startCalibration();
