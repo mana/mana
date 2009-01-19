@@ -69,6 +69,7 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     setVisible(false);
     current_npc->stringInput(mValueField->getText());
     current_npc = 0;
+    mValueField->setText("");
 }
 
 bool NpcStringDialog::isInputFocused()
