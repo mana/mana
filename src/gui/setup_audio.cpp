@@ -26,6 +26,8 @@
 #include "setup_audio.h"
 #include "slider.h"
 
+#include "widgets/layouthelper.h"
+
 #include "../configuration.h"
 #include "../log.h"
 #include "../sound.h"
@@ -41,7 +43,6 @@ Setup_Audio::Setup_Audio():
     mMusicSlider(new Slider(0, 128))
 {
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 290, 255));
 
     gcn::Label *sfxLabel = new gcn::Label(_("Sfx volume"));
     gcn::Label *musicLabel = new gcn::Label(_("Music volume"));
@@ -53,19 +54,24 @@ Setup_Audio::Setup_Audio():
     mMusicSlider->addActionListener(this);
 
     mSoundCheckBox->setPosition(10, 10);
-    mSfxSlider->setDimension(gcn::Rectangle(10, 30, 100, 10));
-    mMusicSlider->setDimension(gcn::Rectangle(10, 50, 100, 10));
-    sfxLabel->setPosition(20 + mSfxSlider->getWidth(), 27);
-    musicLabel->setPosition(20 + mMusicSlider->getWidth(), 47);
 
     mSfxSlider->setValue(mSfxVolume);
     mMusicSlider->setValue(mMusicVolume);
 
-    add(mSoundCheckBox);
-    add(mSfxSlider);
-    add(mMusicSlider);
-    add(sfxLabel);
-    add(musicLabel);
+    mSfxSlider->setWidth(90);
+    mMusicSlider->setWidth(90);
+
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    place(0, 0, mSoundCheckBox);
+    place(0, 1, sfxLabel);
+    place(1, 1, mSfxSlider);
+    place(0, 2, musicLabel);
+    place(1, 2, mMusicSlider);
+
+    setDimension(gcn::Rectangle(0, 0, 290, 250));
 }
 
 void Setup_Audio::apply()
