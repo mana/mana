@@ -42,8 +42,8 @@ NpcStringDialog::NpcStringDialog():
     cancelButton = new Button(_("Cancel"), "cancel", this);
 
     place(0, 0, mValueField, 3);
-    place(1, 1, okButton);
-    place(2, 1, cancelButton);
+    place(1, 1, cancelButton);
+    place(2, 1, okButton);
     reflowLayout(175, 0);
 
     setLocationRelativeTo(getParent());
