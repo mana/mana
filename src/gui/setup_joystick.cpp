@@ -25,6 +25,9 @@
 
 #include "button.h"
 #include "checkbox.h"
+
+#include "widgets/layouthelper.h"
+
 #include "../configuration.h"
 #include "../joystick.h"
 
@@ -38,20 +41,23 @@ Setup_Joystick::Setup_Joystick():
     mJoystickEnabled(new CheckBox(_("Enable joystick")))
 {
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
-
-    mJoystickEnabled->setPosition(10, 10);
-    mCalibrateLabel->setPosition(10, 25);
-    mCalibrateButton->setPosition(10, 30 + mCalibrateLabel->getHeight());
 
     mOriginalJoystickEnabled = (int)config.getValue("joystickEnabled", 0) != 0;
     mJoystickEnabled->setSelected(mOriginalJoystickEnabled);
 
     mJoystickEnabled->addActionListener(this);
 
-    add(mCalibrateLabel);
-    add(mCalibrateButton);
-    add(mJoystickEnabled);
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    place(0, 0, mJoystickEnabled);
+    place(0, 1, mCalibrateLabel);
+    place.getCell().matchColWidth(0, 0);
+    place = h.getPlacer(0, 1);
+    place(0, 0, mCalibrateButton);
+
+    setDimension(gcn::Rectangle(0, 0, 250, 200));
 }
 
 void Setup_Joystick::action(const gcn::ActionEvent &event)
