@@ -67,10 +67,10 @@ Setup_Audio::Setup_Audio():
     ContainerPlacer place = h.getPlacer(0, 0);
 
     place(0, 0, mSoundCheckBox);
-    place(0, 1, sfxLabel);
-    place(1, 1, mSfxSlider);
-    place(0, 2, musicLabel);
-    place(1, 2, mMusicSlider);
+    place(0, 1, mSfxSlider);
+    place(1, 1, sfxLabel);
+    place(0, 2, mMusicSlider);
+    place(1, 2, musicLabel);
 
     setDimension(gcn::Rectangle(0, 0, 250, 200));
 }
