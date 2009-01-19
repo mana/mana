@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-08 22:10+0100\n"
+"POT-Creation-Date: 2009-01-19 21:00+0100\n"
 "PO-Revision-Date: 2008-12-28 14:45+0000\n"
-"Last-Translator: Niels L Ellegaard <niels.ellegaard@gmail.com>\n"
-"Language-Team: Danish <da@li.org>\n"
+"Last-Translator: GonzoDark AKA IchigoBlack <Gonzo.Dark@gmail.com>\n"
+"Language-Team: Danish <none@none.none>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -49,7 +49,7 @@ msgstr "Effekt: %s"
 #: src/gui/buysell.cpp:31
 #, fuzzy
 msgid "Shop"
-msgstr "Stop"
+msgstr "Butik"
 
 #: src/gui/buysell.cpp:35 src/gui/sell.cpp:48 src/gui/sell.cpp:68
 msgid "Sell"
@@ -58,33 +58,33 @@ msgstr "Sælg"
 #: src/gui/buysell.cpp:35 src/gui/char_select.cpp:85
 #: src/gui/char_select.cpp:258 src/gui/char_server.cpp:60
 #: src/gui/connection.cpp:47 src/gui/item_amount.cpp:61 src/gui/login.cpp:52
-#: src/gui/npclistdialog.cpp:45 src/gui/register.cpp:76 src/gui/setup.cpp:58
+#: src/gui/npclistdialog.cpp:45 src/gui/register.cpp:90 src/gui/setup.cpp:59
 #: src/gui/trade.cpp:63 src/gui/updatewindow.cpp:118
 msgid "Cancel"
 msgstr "Fortryd"
 
 #: src/gui/char_select.cpp:63
 msgid "Confirm Character Delete"
-msgstr "Er du sikker på at du vil slette denne figur?"
+msgstr "Bekræft sletning af karakter"
 
 #: src/gui/char_select.cpp:64
 msgid "Are you sure you want to delete this character?"
-msgstr "Er du sikker på at du vil slette denne figur?"
+msgstr "Er du sikker på at du vil slette denne karakter?"
 
 #: src/gui/char_select.cpp:81
 msgid "Select Character"
-msgstr "Vælg Bruger"
+msgstr "Vælg Karakter"
 
 #: src/gui/char_select.cpp:84 src/gui/item_amount.cpp:60 src/gui/login.cpp:51
 #: src/gui/ok_dialog.cpp:37 src/gui/trade.cpp:62
 msgid "Ok"
-msgstr "O.k."
+msgstr ""
 
 #: src/gui/char_select.cpp:86
 msgid "New"
 msgstr "Opret"
 
-#: src/gui/char_select.cpp:87 src/gui/setup_players.cpp:220
+#: src/gui/char_select.cpp:87 src/gui/setup_players.cpp:223
 msgid "Delete"
 msgstr "Slet"
 
@@ -101,7 +101,7 @@ msgstr "Næste"
 #: src/gui/inventorywindow.cpp:156 src/gui/trade.cpp:92 src/gui/trade.cpp:264
 #, c-format
 msgid "Name: %s"
-msgstr "Navn; %s"
+msgstr "Navn: %s"
 
 #: src/gui/char_select.cpp:92 src/gui/char_select.cpp:172
 #: src/gui/char_select.cpp:184 src/gui/status.cpp:51 src/gui/status.cpp:232
@@ -123,13 +123,13 @@ msgstr "Penge: %d"
 #: src/gui/char_select.cpp:174
 #, c-format
 msgid "Gold: %d"
-msgstr ""
+msgstr "Guld: %d"
 
 #: src/gui/char_select.cpp:243
 msgid "Create Character"
-msgstr "Lav figur."
+msgstr "Lav Bruger"
 
-#: src/gui/char_select.cpp:250 src/gui/login.cpp:44 src/gui/register.cpp:65
+#: src/gui/char_select.cpp:250 src/gui/login.cpp:44 src/gui/register.cpp:79
 msgid "Name:"
 msgstr "Navn:"
 
@@ -148,231 +148,234 @@ msgstr "Opret"
 #: src/gui/char_server.cpp:52
 #, fuzzy
 msgid "Select Server"
-msgstr "Vælg Bruger"
+msgstr "Vælg Server"
 
 #: src/gui/char_server.cpp:59 src/gui/npclistdialog.cpp:44
 #: src/gui/npc_text.cpp:46
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: src/gui/chat.cpp:122
+#, fuzzy
 msgid "Global announcement:"
-msgstr ""
+msgstr "Global meddelelse: "
 
 #: src/gui/chat.cpp:125
-#, c-format
+#, fuzzy, c-format
 msgid "Global announcement from %s:"
-msgstr ""
+msgstr "Global meddelelse fra "
 
-#: src/gui/chat.cpp:140 src/gui/login.cpp:46 src/gui/register.cpp:68
+#: src/gui/chat.cpp:140 src/gui/login.cpp:46 src/gui/register.cpp:82
 msgid "Server:"
 msgstr "Server:"
 
 #: src/gui/chat.cpp:146
-#, c-format
+#, fuzzy, c-format
 msgid "%s whispers:"
-msgstr ""
+msgstr "Tillad hviskere"
 
 #: src/gui/chat.cpp:283
-#, c-format
+#, fuzzy, c-format
 msgid "Whispering to %s: %s"
-msgstr ""
+msgstr "Hvisker til "
 
 #: src/gui/chat.cpp:356
 msgid "Unknown command"
-msgstr ""
+msgstr "Ukendt kommando"
 
 #: src/gui/chat.cpp:366
 msgid "Trade failed!"
-msgstr ""
+msgstr "Handel fejlede!"
 
 #: src/gui/chat.cpp:369
 msgid "Emote failed!"
-msgstr ""
+msgstr "Emote fejlede!"
 
 #: src/gui/chat.cpp:372
 msgid "Sit failed!"
-msgstr ""
+msgstr "Sæt dig fejlede!"
 
 #: src/gui/chat.cpp:375
 msgid "Chat creating failed!"
-msgstr ""
+msgstr "Chat skabelsen fejlede!"
 
 #: src/gui/chat.cpp:378
 msgid "Could not join party!"
-msgstr ""
+msgstr "Kunne ikke tilslutte sig gruppen!"
 
 #: src/gui/chat.cpp:381
 msgid "Cannot shout!"
-msgstr ""
+msgstr "Kan ikke råbe!"
 
 #: src/gui/chat.cpp:389
 msgid "You have not yet reached a high enough lvl!"
-msgstr ""
+msgstr "Du er ikke nået til det rette Niveau endnu!"
 
 #: src/gui/chat.cpp:392
 msgid "Insufficient HP!"
-msgstr ""
+msgstr "Utilstrækkelig HP!"
 
 #: src/gui/chat.cpp:395
 msgid "Insufficient SP!"
-msgstr ""
+msgstr "Utilstrækkelig SP!"
 
 #: src/gui/chat.cpp:398
 msgid "You have no memos!"
-msgstr ""
+msgstr "Du har ingen memorandaer!"
 
 #: src/gui/chat.cpp:401
 msgid "You cannot do that right now!"
-msgstr ""
+msgstr "Det kan du ikke gøre lige nu!"
 
 #: src/gui/chat.cpp:404
 msgid "Seems you need more Zeny... ;-)"
-msgstr ""
+msgstr "Det ser ud til at du har behov for flere Zeny... ;-)"
 
 #: src/gui/chat.cpp:407
 msgid "You cannot use this skill with that kind of weapon!"
-msgstr ""
+msgstr "Du kan ikke bruge denne færdighed med dette slags våben!"
 
 #: src/gui/chat.cpp:410
 msgid "You need another red gem!"
-msgstr ""
+msgstr "Du har behov for en rød krystal mere"
 
 #: src/gui/chat.cpp:413
 msgid "You need another blue gem!"
-msgstr ""
+msgstr "Du har behov for en blå krystal mere"
 
 #: src/gui/chat.cpp:416
 msgid "You're carrying to much to do this!"
-msgstr ""
+msgstr "Du har for meget på dig, til at kunne gøre dette"
 
 #: src/gui/chat.cpp:419
 msgid "Huh? What's that?"
-msgstr ""
+msgstr "Hmm? Hvad er det?"
 
 #: src/gui/chat.cpp:425
 msgid "Warp failed..."
-msgstr ""
+msgstr "Warp mislykkede..."
 
 #: src/gui/chat.cpp:428
 msgid "Could not steal anything..."
-msgstr ""
+msgstr "Kunne ikke stjæle noget som helst..."
 
 #: src/gui/chat.cpp:431
 msgid "Poison had no effect..."
-msgstr ""
+msgstr "Giften havde ingen effekt..."
 
 #: src/gui/chat.cpp:496
 msgid "-- Help --"
-msgstr ""
+msgstr "--Hjælp--"
 
 #: src/gui/chat.cpp:499
 msgid "/announce: Global announcement (GM only)"
-msgstr ""
+msgstr "/announce: Global meddelelse (Kun for GM)"
 
 #: src/gui/chat.cpp:500
 msgid "/clear: Clears this window"
-msgstr ""
+msgstr "/clear: Rydder dette vindue"
 
 #: src/gui/chat.cpp:501
 msgid "/help: Display this help"
-msgstr ""
+msgstr "/help: Viser denne hjælp"
 
 #: src/gui/chat.cpp:502
 msgid "/where: Display map name"
-msgstr ""
+msgstr "/where: Viser bane navnet"
 
 #: src/gui/chat.cpp:503
 msgid "/whisper <nick> <message>: Sends a private <message> to <nick>"
 msgstr ""
+"/whisper <navn> <besked>: Sender en privat besked til det givne brugernavn"
 
 #: src/gui/chat.cpp:505
 msgid "/w <nick> <message>: Short form for /whisper"
-msgstr ""
+msgstr "/w <navn> <besked>: Kort form for /whisper"
 
 #: src/gui/chat.cpp:506
 msgid "/who: Display number of online users"
-msgstr ""
+msgstr "/who: Viser antalet af online brugere"
 
 #: src/gui/chat.cpp:507
 msgid "For more information, type /help <command>"
-msgstr ""
+msgstr "For at få mere information, skriv /help <kommando>"
 
 #: src/gui/chat.cpp:512
 msgid "Command: /announce <msg>"
-msgstr ""
+msgstr "Kommando: /announce <besked>"
 
 #: src/gui/chat.cpp:513
 msgid "*** only available to a GM ***"
-msgstr ""
+msgstr "*** kun tilgængelig for en GM ***"
 
 #: src/gui/chat.cpp:514
 msgid "This command sends the message <msg> to all players currently online."
-msgstr ""
+msgstr "Denne kommando sender beskeden <besked> til alle brugere online."
 
 #: src/gui/chat.cpp:520
 msgid "Command: /clear"
-msgstr ""
+msgstr "Kommando: /clear"
 
 #: src/gui/chat.cpp:521
 msgid "This command clears the chat log of previous chat."
-msgstr ""
+msgstr "Denne commando rydder chat loggen"
 
 #: src/gui/chat.cpp:527
 msgid "Command: /help"
-msgstr ""
+msgstr "Kommando: /help"
 
 #: src/gui/chat.cpp:528
 msgid "This command displays a list of all commands available."
-msgstr ""
+msgstr "Denne kommando viser en liste over alle tilgængelige kommandoer"
 
 #: src/gui/chat.cpp:530
 msgid "Command: /help <command>"
-msgstr ""
+msgstr "Kommando: /help <kommando>"
 
 #: src/gui/chat.cpp:531
 msgid "This command displays help on <command>."
-msgstr ""
+msgstr "Denne kommando viser hjælp for <kommando>"
 
 #: src/gui/chat.cpp:536
 msgid "Command: /where"
-msgstr ""
+msgstr "kommando: /where"
 
 #: src/gui/chat.cpp:537
 msgid "This command displays the name of the current map."
-msgstr ""
+msgstr "Denne kommando viser det nuværende bane navn."
 
 #: src/gui/chat.cpp:543
 msgid "Command: /whisper <nick> <msg>"
-msgstr ""
+msgstr "Kommando: /whisper <navn> <besked>"
 
 #: src/gui/chat.cpp:544
 msgid "Command: /w <nick> <msg>"
-msgstr ""
+msgstr "Kommando: /w <navn> <besked>"
 
 #: src/gui/chat.cpp:545
 msgid "This command sends the message <msg> to <nick>."
-msgstr ""
+msgstr "Denne kommando sender beskeden <besked> til <navn>."
 
 #: src/gui/chat.cpp:547
 msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
-msgstr ""
+msgstr "Hvis navnet har mellemrum i det, skal det omringes med følgende (\")."
 
 #: src/gui/chat.cpp:553
 msgid "Command: /who"
-msgstr ""
+msgstr "Kommando: /who"
 
 #: src/gui/chat.cpp:554
 msgid "This command displays the number of players currently online."
 msgstr ""
+"Denne kommando viser det antal af online brugere, der nuværende er online."
 
 #: src/gui/chat.cpp:558
 msgid "Unknown command."
-msgstr ""
+msgstr "Ukendt kommando"
 
 #: src/gui/chat.cpp:559
 msgid "Type /help for a list of commands."
-msgstr ""
+msgstr "Skriv /help for at få en liste med kommandoer"
 
 #: src/gui/confirm_dialog.cpp:35
 msgid "Yes"
@@ -392,11 +395,11 @@ msgstr "Udstyr"
 
 #: src/gui/help.cpp:33
 msgid "Help"
-msgstr ""
+msgstr "Hjælp"
 
 #: src/gui/help.cpp:41
 msgid "Close"
-msgstr ""
+msgstr "Luk"
 
 #: src/gui/inventorywindow.cpp:46 src/gui/menuwindow.cpp:63
 msgid "Inventory"
@@ -412,9 +415,9 @@ msgid "Drop"
 msgstr "Smid"
 
 #: src/gui/inventorywindow.cpp:99
-#, c-format
+#, fuzzy, c-format
 msgid "Weight: %d / %d"
-msgstr ""
+msgstr "Vægt: "
 
 #: src/gui/inventorywindow.cpp:104
 #, c-format
@@ -431,25 +434,25 @@ msgstr "Tag på"
 
 #: src/gui/item_amount.cpp:76
 msgid "Select amount of items to trade."
-msgstr "Vælge hvor mange du vil bytte."
+msgstr "Vælg hvor mange genstande du vil bytte."
 
 #: src/gui/item_amount.cpp:80
 msgid "Select amount of items to drop."
-msgstr "Vælg hvor mange du vil smide,"
+msgstr "Vælg hvor mange genstande du vil smide."
 
 #: src/gui/login.cpp:42
 msgid "Login"
 msgstr "Log Ind"
 
-#: src/gui/login.cpp:45 src/gui/register.cpp:66
+#: src/gui/login.cpp:45 src/gui/register.cpp:80
 msgid "Password:"
 msgstr "Adgangskode:"
 
 #: src/gui/login.cpp:50
 msgid "Remember Username"
-msgstr "Husk dette brugernavn."
+msgstr "Husk Brugernavn"
 
-#: src/gui/login.cpp:53 src/gui/register.cpp:75
+#: src/gui/login.cpp:53 src/gui/register.cpp:75 src/gui/register.cpp:89
 msgid "Register"
 msgstr "Registrer"
 
@@ -465,7 +468,7 @@ msgstr "Færdigheder"
 msgid "Shortcut"
 msgstr "Genvej"
 
-#: src/gui/menuwindow.cpp:66 src/main.cpp:716
+#: src/gui/menuwindow.cpp:66 src/gui/setup.cpp:51 src/main.cpp:716
 msgid "Setup"
 msgstr "Opsætning"
 
@@ -478,18 +481,18 @@ msgid "NPC"
 msgstr "NPC"
 
 #: src/gui/popupmenu.cpp:81
-#, c-format
+#, fuzzy, c-format
 msgid "@@trade|Trade With %s@@"
-msgstr "@@trade|Byt Med %s@@"
+msgstr "@@trade|Byt Med "
 
 #: src/gui/popupmenu.cpp:83
-#, c-format
+#, fuzzy, c-format
 msgid "@@attack|Attack %s@@"
-msgstr "@@attack|Angrib %s@@"
+msgstr "@@attack|Angrib "
 
 #: src/gui/popupmenu.cpp:114
 msgid "@@talk|Talk To NPC@@"
-msgstr "@@talk|Snak med NPC@@"
+msgstr "@@talk|Snak Til NPC@@"
 
 #: src/gui/popupmenu.cpp:124 src/gui/popupmenu.cpp:140
 #: src/gui/popupmenu.cpp:293
@@ -504,7 +507,7 @@ msgstr "@@pickup|Saml Op %s@@"
 #: src/gui/popupmenu.cpp:283
 #, fuzzy
 msgid "@@use|Unequip@@"
-msgstr "@@use|Tag på@@"
+msgstr "@@use|Tag af@@"
 
 #: src/gui/popupmenu.cpp:285
 msgid "@@use|Equip@@"
@@ -522,65 +525,65 @@ msgstr "@@drop|Smid@@"
 msgid "@@description|Description@@"
 msgstr "@@description|Beskrivelse@@"
 
-#: src/gui/register.cpp:67
+#: src/gui/register.cpp:81
 msgid "Confirm:"
 msgstr "Bekræft:"
 
-#: src/gui/register.cpp:73
+#: src/gui/register.cpp:87
 msgid "Male"
 msgstr "Mand"
 
-#: src/gui/register.cpp:74
+#: src/gui/register.cpp:88
 msgid "Female"
 msgstr "Kvinde"
 
-#: src/gui/register.cpp:176
+#: src/gui/register.cpp:159
 #, c-format
 msgid "The username needs to be at least %d characters long."
 msgstr "Brugernavnet skal mindst være %d bogstaver langt."
 
-#: src/gui/register.cpp:184
+#: src/gui/register.cpp:167
 #, c-format
 msgid "The username needs to be less than %d characters long."
 msgstr "Brugernavnet skal være mindre end %d bogstaver langt."
 
-#: src/gui/register.cpp:192
+#: src/gui/register.cpp:175
 #, c-format
 msgid "The password needs to be at least %d characters long."
 msgstr "Adgangskoden skal mindst være %d bogstaver langt."
 
-#: src/gui/register.cpp:200
+#: src/gui/register.cpp:183
 #, c-format
 msgid "The password needs to be less than %d characters long."
 msgstr "Adgangskoden skal være mindre end %d bogstaver langt."
 
-#: src/gui/register.cpp:207
+#: src/gui/register.cpp:190
 msgid "Passwords do not match."
-msgstr "Adgangskoder stemmer ikke overens."
+msgstr "De indtastede adgangskoder stemmer ikke overens."
 
-#: src/gui/register.cpp:227 src/main.cpp:945
+#: src/gui/register.cpp:210 src/main.cpp:945
 msgid "Error"
 msgstr "Fejl"
 
-#: src/gui/setup_audio.cpp:40
+#: src/gui/setup_audio.cpp:42
 msgid "Sound"
 msgstr "Lyd"
 
-#: src/gui/setup_audio.cpp:46
+#: src/gui/setup_audio.cpp:48
 msgid "Sfx volume"
 msgstr "Lydstyrke på effekter"
 
-#: src/gui/setup_audio.cpp:47
+#: src/gui/setup_audio.cpp:49
 msgid "Music volume"
 msgstr "Lydstyrke på musik"
 
-#: src/gui/setup.cpp:58
+#: src/gui/setup.cpp:59
 msgid "Apply"
 msgstr "Anvend"
 
-#: src/gui/setup.cpp:58
+#: src/gui/setup.cpp:59
 msgid "Reset Windows"
-msgstr "Nulstil vinduer"
+msgstr "Nulstil Vinduer"
 
 #: src/gui/setup.cpp:79
 msgid "Video"
@@ -600,157 +603,157 @@ msgstr "Tastatur"
 
 #: src/gui/setup.cpp:95
 msgid "Players"
-msgstr ""
+msgstr "Brugere"
 
-#: src/gui/setup_joystick.cpp:36 src/gui/setup_joystick.cpp:70
+#: src/gui/setup_joystick.cpp:39 src/gui/setup_joystick.cpp:78
 msgid "Press the button to start calibration"
 msgstr "Tryk på knappen for at starte justeringen."
 
-#: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:68
+#: src/gui/setup_joystick.cpp:40 src/gui/setup_joystick.cpp:76
 msgid "Calibrate"
 msgstr "Justering"
 
-#: src/gui/setup_joystick.cpp:38
+#: src/gui/setup_joystick.cpp:41
 msgid "Enable joystick"
 msgstr "Aktiver joystick"
 
-#: src/gui/setup_joystick.cpp:73
+#: src/gui/setup_joystick.cpp:81
 msgid "Stop"
 msgstr "Stop"
 
-#: src/gui/setup_joystick.cpp:74
+#: src/gui/setup_joystick.cpp:82
 msgid "Rotate the stick"
-msgstr "Roter joystick"
+msgstr "Rotere joysticket"
 
 #: src/gui/setup_keyboard.cpp:88
 msgid "Assign"
-msgstr ""
+msgstr "Tildel"
 
-#: src/gui/setup_keyboard.cpp:94
+#: src/gui/setup_keyboard.cpp:92
 #, fuzzy
 msgid "Default"
-msgstr "Slet"
+msgstr "Standart"
 
-#: src/gui/setup_keyboard.cpp:115
+#: src/gui/setup_keyboard.cpp:121
 msgid "Key Conflict(s) Detected."
-msgstr ""
+msgstr "Tast Konfikt(er) Opdaget."
 
-#: src/gui/setup_keyboard.cpp:116
+#: src/gui/setup_keyboard.cpp:122
 msgid "Resolve them, or gameplay may result in strange behaviour."
-msgstr ""
+msgstr "Løs problemet, ellers kan spillet risikere at opfører sig ustabilt."
 
-#: src/gui/setup_players.cpp:53
+#: src/gui/setup_players.cpp:55
 #, fuzzy
 msgid "Name"
 msgstr "Navn:"
 
-#: src/gui/setup_players.cpp:54
+#: src/gui/setup_players.cpp:56
 msgid "Relation"
-msgstr ""
-
-#: src/gui/setup_players.cpp:58
-msgid "Neutral"
-msgstr ""
-
-#: src/gui/setup_players.cpp:59
-msgid "Friend"
-msgstr ""
+msgstr "Relation"
 
 #: src/gui/setup_players.cpp:60
-msgid "Disregarded"
-msgstr ""
+msgid "Neutral"
+msgstr "Neutral"
 
 #: src/gui/setup_players.cpp:61
+msgid "Friend"
+msgstr "Ven"
+
+#: src/gui/setup_players.cpp:62
+msgid "Disregarded"
+msgstr "Se bort fra"
+
+#: src/gui/setup_players.cpp:63
 msgid "Ignored"
-msgstr ""
+msgstr "Ignorer"
 
-#: src/gui/setup_players.cpp:214
+#: src/gui/setup_players.cpp:217
 msgid "Save player list"
-msgstr ""
+msgstr "Gem bruger liste"
 
-#: src/gui/setup_players.cpp:216
+#: src/gui/setup_players.cpp:219
 msgid "Allow trading"
-msgstr ""
+msgstr "Tillad handel"
 
-#: src/gui/setup_players.cpp:218
+#: src/gui/setup_players.cpp:221
 msgid "Allow whispers"
-msgstr ""
+msgstr "Tillad hviskere"
 
-#: src/gui/setup_players.cpp:245
+#: src/gui/setup_players.cpp:248
 msgid "When ignoring:"
-msgstr ""
+msgstr "Når ignorer:"
 
-#: src/gui/setup_video.cpp:112
+#: src/gui/setup_video.cpp:114
 msgid "Full screen"
 msgstr "Fuld Skærm"
 
-#: src/gui/setup_video.cpp:113
+#: src/gui/setup_video.cpp:115
 msgid "OpenGL"
 msgstr "OpenGL"
 
-#: src/gui/setup_video.cpp:114
+#: src/gui/setup_video.cpp:116
 msgid "Custom cursor"
 msgstr "Brugerdefineret Musepil"
 
-#: src/gui/setup_video.cpp:116
+#: src/gui/setup_video.cpp:118
 msgid "FPS Limit:"
 msgstr "FPS grænse:"
 
-#: src/gui/setup_video.cpp:135
+#: src/gui/setup_video.cpp:139
 msgid "Gui opacity"
 msgstr "Gennemsigtighed"
 
-#: src/gui/setup_video.cpp:192
+#: src/gui/setup_video.cpp:141
 msgid "Scroll radius"
 msgstr "Følsomhed på mus"
 
-#: src/gui/setup_video.cpp:200
+#: src/gui/setup_video.cpp:142
 msgid "Scroll laziness"
 msgstr "Acceleration på mus"
 
-#: src/gui/setup_video.cpp:208
+#: src/gui/setup_video.cpp:143
 msgid "Ambient FX"
 msgstr "Omgivende FX"
 
-#: src/gui/setup_video.cpp:215 src/gui/setup_video.cpp:412
+#: src/gui/setup_video.cpp:144
+msgid "Particle Detail"
+msgstr "Partikel Detalje"
+
+#: src/gui/setup_video.cpp:198 src/gui/setup_video.cpp:398
 msgid "off"
 msgstr "fra"
 
-#: src/gui/setup_video.cpp:218 src/gui/setup_video.cpp:234
-#: src/gui/setup_video.cpp:415 src/gui/setup_video.cpp:429
+#: src/gui/setup_video.cpp:201 src/gui/setup_video.cpp:212
+#: src/gui/setup_video.cpp:401 src/gui/setup_video.cpp:415
 msgid "low"
 msgstr "lav"
 
-#: src/gui/setup_video.cpp:221 src/gui/setup_video.cpp:240
-#: src/gui/setup_video.cpp:418 src/gui/setup_video.cpp:435
+#: src/gui/setup_video.cpp:204 src/gui/setup_video.cpp:218
+#: src/gui/setup_video.cpp:404 src/gui/setup_video.cpp:421
 msgid "high"
 msgstr "høj"
 
-#: src/gui/setup_video.cpp:227
-msgid "Particle Detail"
-msgstr ""
-
-#: src/gui/setup_video.cpp:237 src/gui/setup_video.cpp:432
+#: src/gui/setup_video.cpp:215 src/gui/setup_video.cpp:418
 msgid "medium"
-msgstr ""
+msgstr "mellem"
 
-#: src/gui/setup_video.cpp:243 src/gui/setup_video.cpp:438
+#: src/gui/setup_video.cpp:221 src/gui/setup_video.cpp:424
 msgid "max"
-msgstr ""
+msgstr "maks"
 
-#: src/gui/setup_video.cpp:309
+#: src/gui/setup_video.cpp:296
 msgid "Switching to full screen"
 msgstr "Skifter til fuld skærm"
 
-#: src/gui/setup_video.cpp:310
+#: src/gui/setup_video.cpp:297
 msgid "Restart needed for changes to take effect."
 msgstr "Ændringerne kræver at du genstarter klienten."
 
-#: src/gui/setup_video.cpp:322
+#: src/gui/setup_video.cpp:309
 msgid "Changing OpenGL"
 msgstr "Skrifter til OpenGL"
 
-#: src/gui/setup_video.cpp:323
+#: src/gui/setup_video.cpp:310
 msgid "Applying change to OpenGL requires restart."
 msgstr "Ændringerne til OpenGL kræver at du genstarter klienten."
 
@@ -761,21 +764,21 @@ msgstr ""
 #: src/gui/skill.cpp:132 src/gui/skill.cpp:188
 #, c-format
 msgid "Skill points: %d"
-msgstr ""
+msgstr "Færdigheds points: %d"
 
 #: src/gui/skill.cpp:133
 msgid "Up"
-msgstr ""
+msgstr "Op"
 
 #: src/gui/status.cpp:52 src/gui/status.cpp:235
 #, fuzzy, c-format
 msgid "Job: %d"
-msgstr "Niveau: %d"
+msgstr "Karriere: %d"
 
 #: src/gui/status.cpp:53 src/gui/status.cpp:238
 #, fuzzy, c-format
 msgid "Money: %d GP"
-msgstr "Penge: %d"
+msgstr "Penge: %d GP"
 
 #: src/gui/status.cpp:127
 #, fuzzy
@@ -784,45 +787,45 @@ msgstr "Status"
 
 #: src/gui/status.cpp:128
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: src/gui/status.cpp:129
 msgid "Cost"
-msgstr ""
+msgstr "Pris"
 
 #: src/gui/status.cpp:132
 #, fuzzy
 msgid "Attack:"
-msgstr "Angrib %+d"
+msgstr "Angrib:"
 
 #: src/gui/status.cpp:133
 #, fuzzy
 msgid "Defense:"
-msgstr "Forsvar %+d"
+msgstr "Forsvar:"
 
 #: src/gui/status.cpp:134
 #, fuzzy
 msgid "M.Attack:"
-msgstr "Angrib %+d"
+msgstr "M.Angrib:"
 
 #: src/gui/status.cpp:135
 #, fuzzy
 msgid "M.Defense:"
-msgstr "Forsvar %+d"
+msgstr "M.Forsvar:"
 
 #: src/gui/status.cpp:136
-#, c-format
+#, fuzzy, c-format
 msgid "% Accuracy:"
-msgstr ""
+msgstr "% Nøjagtighed:"
 
 #: src/gui/status.cpp:137
-#, c-format
+#, fuzzy, c-format
 msgid "% Evade:"
-msgstr ""
+msgstr "% Undvig:"
 
 #: src/gui/status.cpp:138
 msgid "% Reflex:"
-msgstr ""
+msgstr "% Refleks:"
 
 #: src/gui/status.cpp:282
 #, fuzzy
@@ -837,26 +840,26 @@ msgstr "Adræthed"
 #: src/gui/status.cpp:284
 #, fuzzy
 msgid "Vitality"
-msgstr "Helbred:"
+msgstr "Helbred"
 
 #: src/gui/status.cpp:285
 #, fuzzy
 msgid "Intelligence"
-msgstr "Intelligens:"
+msgstr "Intelligens"
 
 #: src/gui/status.cpp:286
 #, fuzzy
 msgid "Dexterity"
-msgstr "Behændighed:"
+msgstr "Behændighed"
 
 #: src/gui/status.cpp:287
 msgid "Luck"
-msgstr ""
+msgstr "Held"
 
 #: src/gui/status.cpp:305
 #, c-format
 msgid "Remaining Status Points: %d"
-msgstr ""
+msgstr "Tilgode Status Points: %d"
 
 #: src/gui/trade.cpp:61
 msgid "Add"
@@ -864,7 +867,7 @@ msgstr "Tilføj"
 
 #: src/gui/trade.cpp:64
 msgid "Trade"
-msgstr ""
+msgstr "Handel"
 
 #: src/gui/trade.cpp:80 src/gui/trade.cpp:156 src/gui/trade.cpp:204
 #, c-format
@@ -878,42 +881,719 @@ msgstr "Du giver:"
 #: src/gui/trade.cpp:283
 msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr ""
+"Fejlede i at tilføje genstand. Du kan ikke overlappe en slags genstand på "
+"vinduet."
 
 #: src/gui/updatewindow.cpp:93
 msgid "Updating..."
-msgstr ""
+msgstr "Updatere..."
 
 #: src/gui/updatewindow.cpp:119
 msgid "Play"
-msgstr ""
+msgstr "Spil"
 
-#: src/gui/updatewindow.cpp:525
+#: src/gui/updatewindow.cpp:526
 msgid "Completed"
-msgstr ""
+msgstr "Udført"
 
 #: src/resources/itemdb.cpp:99
 msgid "Unnamed"
-msgstr ""
+msgstr "Unavngivet"
 
 #: src/main.cpp:769
 msgid "Got disconnected from server!"
-msgstr ""
+msgstr "Blev smidt af serveren!"
 
 #: src/main.cpp:956
 #, fuzzy
 msgid "Connecting to map server..."
-msgstr "Opretter forbindelse..."
+msgstr "Opretter forbindelse til bane serveren..."
 
 #: src/main.cpp:964
 msgid "Connecting to character server..."
-msgstr ""
+msgstr "Opretter forbindelse til karakter serveren..."
 
 #: src/main.cpp:972
 msgid "Connecting to account server..."
-msgstr ""
+msgstr "Opretter forbindelse til bruger serveren..."
+
+#, fuzzy
+#~ msgid "Chat"
+#~ msgstr "Chat"
+
+#~ msgid "Welcome"
+#~ msgstr "Velkommen"
+
+#~ msgid "Trying to send a blank party message."
+#~ msgstr "Prøver at sende en blank gruppe besked."
+
+#~ msgid "Return toggles chat."
+#~ msgstr "Retur bringer focus på chatten."
+
+#~ msgid "Message closes chat."
+#~ msgstr "Besked lukker chat."
+
+#~ msgid "Return now toggles chat."
+#~ msgstr "Enter bringer nu focus på chatten."
+
+#~ msgid "Message now closes chat."
+#~ msgstr "Besked lukker nu chat."
+
+#~ msgid ""
+#~ "Options to /toggle are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
+#~ msgstr ""
+#~ "Mulighederne til /toggle er \"yes\", \"no\", \"true\", \"false\", \"1\", "
+#~ "\"0\"."
+
+#~ msgid ""
+#~ "Unknown party command... Type \"/help party\" party for more information."
+#~ msgstr ""
+#~ "Ukendt gruppe kommando... Skriv \"/help party\" for mere information."
+
+#~ msgid "No such spell!"
+#~ msgstr "Trylleformularen findes ikke!"
+
+#~ msgid "The current server doesn't support spells"
+#~ msgstr "Den nuværende server understøtter ikke trylleformulare"
+
+#~ msgid "Present: "
+#~ msgstr "Til stede: "
+
+#~ msgid "Attendance written to record log."
+#~ msgstr "Fremmøde skrives til loggen"
+
+#~ msgid "The current party prefix is "
+#~ msgstr "Det nuværende gruppe præfiks er "
+
+#~ msgid "Party prefix must be one character long."
+#~ msgstr "Gruppens præfiks skal være et bogstav langt. "
+
+#~ msgid "Cannot use a '/' as the prefix."
+#~ msgstr "Kan ikke bruge '/' som præfikset"
+
+#, fuzzy
+#~ msgid "Changing prefix to "
+#~ msgstr "Ændre præfikset til "
+
+#~ msgid "/msg <nick> <message>: Alternate form for /whisper"
+#~ msgstr "/msg <navn> <besked>: Alternativ form for /whisper"
+
+#~ msgid "/present: Get list of players present"
+#~ msgstr "/present: Får listen af tilstedeværende brugere"
+
+#~ msgid "/toggle: Determine whether <return> toggles the chat log."
+#~ msgstr "/toggle: Bestemmer om <retur> bringer focus på chat loggen."
+
+#~ msgid "Command: /present"
+#~ msgstr "Kommando: /present"
+
+#~ msgid ""
+#~ "This command gets a list of players within hearing and sends it to either "
+#~ "the record log if recording, or the chat log otherwise."
+#~ msgstr ""
+#~ "Denne kommando finder en liste over brugere, der er inden for en "
+#~ "lytteradius, og sender listen til enten record loggen, hvis du optager, "
+#~ "ellers er det chat loggen."
+
+#~ msgid "Command: /toggle <state>"
+#~ msgstr "Kommando /toggle <tilstand>"
+
+#~ msgid ""
+#~ "This command sets whether the return key should toggle the chat log, or "
+#~ "whether the chat log turns off automatically."
+#~ msgstr ""
+#~ "Denne kommando bestemmer om retur, skal bruges til at fokusere på chat "
+#~ "loggen, ellerom chat om chat loggen, automatisk skal slå fra."
+
+#~ msgid ""
+#~ "<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or "
+#~ "\"0\", \"no\", \"false\" to turn the toggle off."
+#~ msgstr ""
+#~ "<tilstand> kan være en ud af \"1\", \"yes\", \"true\" for at slå "
+#~ "fokusering af chat vindue til, eller \"0\", \"no\", \"false\" for at slå "
+#~ "fokusering af chat vindue fra."
+
+#~ msgid "Command: /toggle"
+#~ msgstr "Kommando: /toggle"
+
+#~ msgid "This command displays the return toggle status."
+#~ msgstr "Denne kommando viser fokusering af chat vinduets status."
+
+#~ msgid "Command: /msg <nick> <msg>"
+#~ msgstr "Kommando: /msg <navn> <besked>"
+
+#~ msgid "GM"
+#~ msgstr "GM"
+
+#~ msgid "Player"
+#~ msgstr "Bruger"
+
+#~ msgid "Whisper"
+#~ msgstr "Hvisk"
+
+#~ msgid "Is"
+#~ msgstr "Er"
+
+#, fuzzy
+#~ msgid "Party"
+#~ msgstr "Gruppe"
+
+#, fuzzy
+#~ msgid "Server"
+#~ msgstr "Server"
+
+#~ msgid "Logger"
+#~ msgstr "Logger"
+
+#~ msgid "Hyperlink"
+#~ msgstr "Hyperlink"
+
+#~ msgid "Unable to load selection.png"
+#~ msgstr "Kan ikke loade valgte-billede.png"
+
+#~ msgid "Emote"
+#~ msgstr "Emote"
+
+#~ msgid " g Slots: "
+#~ msgstr " g Pladser: "
+
+#~ msgid " g  Slots: "
+#~ msgstr " g  Pladser: "
+
+#~ msgid "Port:"
+#~ msgstr "Port:"
+
+#~ msgid "Recent:"
+#~ msgstr "Nuværende:"
+
+#~ msgid "Keep"
+#~ msgstr "Behold"
+
+#, fuzzy
+#~ msgid "Map"
+#~ msgstr "MiniKort"
+
+#~ msgid "@@friend|Befriend "
+#~ msgstr "@@friend|Bliv ven med "
+
+#~ msgid "@@disregard|Disregard "
+#~ msgstr "@@disregard|Se bort fra "
+
+#~ msgid "@@ignore|Ignore "
+#~ msgstr "@@ignore|Bloker "
+
+#~ msgid "@@unignore|Un-Ignore "
+#~ msgstr "@@unignore|Fjern blokering "
+
+#~ msgid "@@ignore|Completely ignore "
+#~ msgstr "@@ignore|Bloker fuldstændig "
+
+#~ msgid "@@party-invite|Invite "
+#~ msgstr "@@party-invite|Inviter "
+
+#~ msgid "RegisterDialog::register Username is %s"
+#~ msgstr "RegisterDialog::register Brugernavn er %s"
+
+#, fuzzy
+#~ msgid "Colors"
+#~ msgstr "Farver:"
+
+#, fuzzy
+#~ msgid "Color:"
+#~ msgstr "Farve:"
+
+#~ msgid "???"
+#~ msgstr "???"
+
+#~ msgid "No modes available"
+#~ msgstr "Ingen opsætning tilgængelig"
+
+#~ msgid "All resolutions available"
+#~ msgstr "Alle opløsninger er tilgængelige"
+
+#~ msgid "Particle effects"
+#~ msgstr "Partikel effekter"
+
+#~ msgid "Speech bubbles"
+#~ msgstr "Snakke bobler"
+
+#~ msgid "Show name"
+#~ msgstr "Vis navn"
+
+#~ msgid "Failed to switch to "
+#~ msgstr "Fejlede i at skifte til "
+
+#~ msgid "windowed"
+#~ msgstr "vinduet"
+
+#, fuzzy
+#~ msgid "fullscreen"
+#~ msgstr "Fuld Skærm"
+
+#~ msgid "mode and restoration of old mode also failed!"
+#~ msgstr "opsætning og genoprettelse af gammel opsætning fejlede også!"
+
+#~ msgid "Couldn't set "
+#~ msgstr "Kunne ikke definere "
+
+#~ msgid " video mode: "
+#~ msgstr " skærm opsætning: "
+
+#~ msgid "Screen resolution changed"
+#~ msgstr "Skærm opløsning ændret"
+
+#, fuzzy
+#~ msgid "Restart your client for the change to take effect."
+#~ msgstr "Ændringerne kræver at du genstarter klienten."
+
+#~ msgid "Particle effect settings changed"
+#~ msgstr "Partikel effekt opsætningen er ændret"
+
+#, fuzzy
+#~ msgid "Restart your client or change maps for the change to take effect."
+#~ msgstr "Ændringerne kræver at du genstarter klienten, eller skifter bane."
+
+#~ msgid "inc"
+#~ msgstr "inc"
+
+#, fuzzy
+#~ msgid "use"
+#~ msgstr "Brug"
+
+#~ msgid "Error loading skills file: %s"
+#~ msgstr "Fejl under loading af færdigheds fil: %s"
+
+#~ msgid "Message"
+#~ msgstr "Besked"
+
+#~ msgid "Trade: You"
+#~ msgstr "Handel: Dig"
+
+#~ msgid "Couldn't load text file: %s"
+#~ msgstr "Kunne ikke loade tekst fil: %s"
+
+#~ msgid "Couldn't load news"
+#~ msgstr "Kunne ikke loade nyhederne"
+
+#~ msgid "curl error "
+#~ msgstr "curl fejl "
+
+#~ msgid " host: "
+#~ msgstr " host: "
+
+#~ msgid "Checksum for file %s failed: (%lx/%lx)"
+#~ msgstr "Checksum for fil %s fejlede: (%lx/%lx)"
+
+#~ msgid "Unable to create mThread"
+#~ msgstr "Kunne ikke skabe mThread"
+
+#~ msgid "##1  The update process is incomplete."
+#~ msgstr "##1  Opdateringsprocessen er ikke færdiggjort"
+
+#~ msgid "##1  It is strongly recommended that"
+#~ msgstr "##1  Det er varmt anbefalet at"
+
+#~ msgid "##1  you try again later"
+#~ msgstr "##1  du prøver igen senere"
+
+#~ msgid "%s already here"
+#~ msgstr "%s allerede her"
+
+#~ msgid ""
+#~ "You are carrying more then half your weight. You are unable to regain "
+#~ "health."
+#~ msgstr ""
+#~ "Du bære på mere en halvdelen af din vægt. Du kan derfor ikke genvinde liv."
+
+#~ msgid "You are dead."
+#~ msgstr "Du er død."
+
+#~ msgid "We regret to inform you that your character was killed in battle."
+#~ msgstr ""
+#~ "Vi er ked af at måtte informere dig, om at din karakter var dræbt i kamp."
+
+#~ msgid "You are not that alive anymore."
+#~ msgstr "Du er ikke så levende som du engang har været."
+
+#~ msgid "The cold hands of the grim reaper are grabbing for your soul."
+#~ msgstr "De kolder hænder der tilhøre Grim Reaper, griber ud efter din sjæl"
+
+#~ msgid "Game Over!"
+#~ msgstr "Game Over!"
+
+#~ msgid "Insert coin to continue"
+#~ msgstr "Indsæt en mønt for at fortsætte"
+
+#~ msgid ""
+#~ "No, kids. Your character did not really die. It... err... went to a "
+#~ "better place."
+#~ msgstr ""
+#~ "Nej, børn. Din karakter døde ikke rigtigt. Den.. err... tog til et bedre "
+#~ "sted."
+
+#~ msgid ""
+#~ "Your plan of breaking your enemies weapon by bashing it with your throat "
+#~ "failed."
+#~ msgstr ""
+#~ "Din plan om at smadre fjendens våben, ved at benytte din hals fejlede."
+
+#~ msgid "I guess this did not run too well."
+#~ msgstr "Jeg går ud fra at dette ikke gik alt for godt."
+
+#~ msgid "Do you want your possessions identified?"
+#~ msgstr "Du vil gerne have dine ejendele identificeret?"
+
+#~ msgid "Sadly, no trace of you was ever found..."
+#~ msgstr "Desværre, blev der aldrig fundet noget spor efter dig..."
+
+#~ msgid "Annihilated."
+#~ msgstr "Udslettet."
+
+#~ msgid "Looks like you got your head handed to you."
+#~ msgstr "Det ser ud til at du fik du hoved udleveret til dig."
+
+#~ msgid ""
+#~ "You screwed up again, dump your body down the tubes and get you another "
+#~ "one."
+#~ msgstr ""
+#~ "Du kvajede dig igen, smid din krop ned i kloakken og find dig en ny."
+
+#~ msgid "You're not dead yet. You're just resting."
+#~ msgstr "Du er ikke død endnu. Du hviler dig bare."
+
+#~ msgid "You are no more."
+#~ msgstr "Du er ikke mere."
+
+#~ msgid "You have ceased to be."
+#~ msgstr "Du er holdt op med at være til."
+
+#~ msgid "You've expired and gone to meet your maker."
+#~ msgstr "Du er udløbet og er gået hen for at møde din skaber."
+
+#~ msgid "You're a stiff."
+#~ msgstr "Du er en hård nød at knække, men desværre død."
+
+#~ msgid "Bereft of life, you rest in peace."
+#~ msgstr "Du siver langtsomt ud af din krop, du kan nu endelig slappe af."
+
+#~ msgid "If you weren't so animated, you'd be pushing up the daisies."
+#~ msgstr ""
+#~ "Hvis det ikke var fordi du var så animeret, kunne du sikker imponere "
+#~ "Chuck Norris."
+
+#~ msgid "Your metabolic processes are now history."
+#~ msgstr "Din tid er ovre."
+
+#~ msgid "You're off the twig."
+#~ msgstr "Drik noget syre."
+
+#~ msgid "You've kicked the bucket."
+#~ msgstr "Du har stillet træskoene."
+
+#~ msgid ""
+#~ "You've shuffled off your mortal coil, run down the curtain and joined the "
+#~ "bleedin' choir invisibile."
+#~ msgstr "Du har spist af dødens pølse for den sidste gang."
+
+#~ msgid "You are an ex-player."
+#~ msgstr "Du er en forhenværende spiller."
+
+#~ msgid "You're pining for the fjords."
+#~ msgstr "Du er tabt bag en vogn."
+
+#~ msgid "You picked up "
+#~ msgstr "Du samlede op "
+
+#~ msgid "Equip arrows first"
+#~ msgstr "Tag først pile på"
+
+#~ msgid "0x013b: Unhandled message %i"
+#~ msgstr "0x013b: Unbehandlet besked %i"
+
+#~ msgid "Request for trade"
+#~ msgstr "Ansøg om lov til at handle"
+
+#~ msgid " wants to trade with you, do you accept?"
+#~ msgstr " vil gerne handle med dig, vil du acceptere?"
+
+#~ msgid "Trading isn't possible. Trade partner is too far away."
+#~ msgstr "Du kan ikke handle. Handle partneren er for langt væk."
+
+#~ msgid "Trading isn't possible. Character doesn't exist."
+#~ msgstr "Du kan ikke handle. Karakteren findes ikke."
+
+#~ msgid "Trade cancelled due to an unknown reason."
+#~ msgstr "Handlen blev annulleret af en ukendt grund."
+
+#~ msgid "Trade: You and "
+#~ msgstr "Handel: Dig og "
+
+#, fuzzy
+#~ msgid "Trade with "
+#~ msgstr "Handel med "
+
+#, fuzzy
+#~ msgid " cancelled"
+#~ msgstr " afbrudt"
+
+#~ msgid "Unhandled trade cancel packet"
+#~ msgstr "Ubehandlet handel annullerede pakken"
+
+#~ msgid "Failed adding item. Trade partner is over weighted."
+#~ msgstr "Fejlede i at tilføje genstand. Handels partneren bære på for meget."
+
+#~ msgid "Failed adding item. Trade partner has no free slot."
+#~ msgstr ""
+#~ "Fejlede i at tilføje genstand. Handels partneren har ikke flere frie "
+#~ "pladser."
+
+#~ msgid "Failed adding item for unknown reason."
+#~ msgstr "Fejlede i at tilføje genstand af en ukendt grund."
+
+#~ msgid "Trade canceled."
+#~ msgstr "Handel annulleret."
+
+#~ msgid "Trade completed."
+#~ msgstr "Handel er komplet."
+
+#~ msgid "Trying TMW's color file, %s."
+#~ msgstr "Prøver TMW's farve fil, %s."
+
+#~ msgid "ColorDB: Failed"
+#~ msgstr "ColorDB: Fejlede"
+
+#~ msgid "Unloading color database..."
+#~ msgstr "Udlæser farve database..."
+
+#~ msgid "ColorDB: Error, unknown dye ID# %d"
+#~ msgstr "ColorDB: Fejl, ukendt dye ID# %d"
+
+#~ msgid "Initializing emote database..."
+#~ msgstr "startede emote database..."
+
+#~ msgid "Emote Database: Error while loading emotes.xml!"
+#~ msgstr "Emote Database: Fejl under læsning af emotes.xml!"
+
+#~ msgid "Emote Database: Emote with missing ID in emotes.xml!"
+#~ msgstr "Emote Database: Emote med manglende ID i emotes.xml!"
+
+#~ msgid "EmoteDB: Warning, unknown emote ID %d requested"
+#~ msgstr "EmoteDB: Warning, unknown emote ID %d requested"
+
+#~ msgid "Initializing item database..."
+#~ msgstr "Startede genstans database..."
+
+#~ msgid "Unknown item"
+#~ msgstr "Ukendt genstand"
+
+#~ msgid "ItemDB: Error while loading items.xml!"
+#~ msgstr "ItemDB: Fejl under læsningen af items.xml!"
+
+#~ msgid "ItemDB: Invalid or missing item ID in items.xml!"
+#~ msgstr "ItemDB: Ugyldig eller manglende genstand ID i items.xml!"
+
+#~ msgid "ItemDB: Redefinition of item ID %d"
+#~ msgstr "ItemDB: Ny definition af genstand ID %d"
+
+#~ msgid "Unloading item database..."
+#~ msgstr "Udlæser genstands databasen..."
+
+#~ msgid "ItemDB: Error, unknown item ID# %d"
+#~ msgstr "ItemDB: Fejl, ukendt genstand ID# %d"
+
+#~ msgid "ItemDB: Ignoring unknown sound event '%s'"
+#~ msgstr "ItemDB: Ignorerer ukendt lyd begivenhed '%s'"
+
+#~ msgid "unnamed"
+#~ msgstr "unavngivet"
+
+#~ msgid "Initializing monster database..."
+#~ msgstr "Starter monster database..."
+
+#~ msgid "Monster Database: Error while loading monster.xml!"
+#~ msgstr "Monster Database: Fejl under indlæsningen ad monster.xml!"
+
+#~ msgid ""
+#~ "MonsterDB: Unknown target cursor type \"%s\" for %s - using medium sized "
+#~ "one"
+#~ msgstr ""
+#~ "MonsterDB: Ukendt mål mus skriver \"%s\" for %s - at bruge en mellem "
+#~ "størelse"
+
+#~ msgid ""
+#~ "MonsterDB: Warning, sound effect %s for unknown event %s of monster %s"
+#~ msgstr ""
+#~ "MonsterDB: Advarsel, lyd effekt %s for ukendt begivenhed %s af monster %s"
+
+#~ msgid "MonsterDB: Warning, unknown monster ID %d requested"
+#~ msgstr "MonsterDB: Advarsel, ukendt monster ID %d efterspurgt"
+
+#~ msgid "Initializing NPC database..."
+#~ msgstr "Starter NPC database..."
+
+#~ msgid "NPC Database: Error while loading npcs.xml!"
+#~ msgstr "NPC Database: Fejl under indlæsning af npcs.xml!"
+
+#~ msgid "NPC Database: NPC with missing ID in npcs.xml!"
+#~ msgstr "NPC Database: NPC med manglende ID i npcs.xml!"
+
+#~ msgid "NPCDB: Warning, unknown NPC ID %d requested"
+#~ msgstr "NPCDB: Advarsel, ukendt NPC ID %d efterspurgt"
+
+#~ msgid "Screenshot saved to ~/"
+#~ msgstr "Skærmbillede gemt under ~/"
+
+#~ msgid "Saving screenshot failed!"
+#~ msgstr "Gemningen af skærmbilledet fejlede!"
+
+#~ msgid "Error: could not save screenshot."
+#~ msgstr "Fejl: kunne ikke gemme skærmbilledet."
+
+#~ msgid "Network Error"
+#~ msgstr "Netværk Fejl"
+
+#~ msgid "The connection to the server was lost, the program will now quit"
+#~ msgstr "Forbindelsen til serveren er tabt, programmet vil nu lukke"
+
+#~ msgid "Ignoring incoming trade requests"
+#~ msgstr "Ignorer indkomne handels anmodninger"
+
+#~ msgid "Accepting incoming trade requests"
+#~ msgstr "Accepter indkomne handels anmodninger"
+
+#, fuzzy
+#~ msgid "Are you sure you want to quit?"
+#~ msgstr "Er du sikker på at du gerne vil stoppe?"
+
+#~ msgid "no"
+#~ msgstr "nej"
+
+#~ msgid "Warning: guichan input exception: %s"
+#~ msgstr "Advarsel: guichan indput untagelse: %s"
+
+#~ msgid "Error: Invalid update host: %s"
+#~ msgstr "Fejl: Ugyldigt opdaterings host: %s"
+
+#~ msgid "Invalid update host: "
+#~ msgstr "Ugyldigt opdaterings host: "
+
+#~ msgid "Warning: no protocol was specified for the update host"
+#~ msgstr "Advarsel: ingen protocol var aktiv som opdate host"
+
+#~ msgid "Error: %s/%s can't be made, but doesn't exist!"
+#~ msgstr "Fejl: %s/%s kan ikke laves, men findes ikke!"
+
+#~ msgid "Error creating updates directory!"
+#~ msgstr "Fejl under oprettelsen af opdateringen mappen!"
+
+#~ msgid " can't be created, but it doesn't exist! Exiting."
+#~ msgstr " kan ikke laves, men det findes ikke! Lukker."
+
+#~ msgid "Initializing SDL..."
+#~ msgstr "Starter SDL..."
+
+#~ msgid "Could not initialize SDL: "
+#~ msgstr "Kunne ikke starte SDL: "
+
+#~ msgid " couldn't be set as home directory! Exiting."
+#~ msgstr " kunne ikke blive sat til hjemmemappen! Lukker."
+
+#~ msgid "Can't find Resources directory\n"
+#~ msgstr "Kan ikke finde ressourcernes mappe\n"
+
+#~ msgid "Initializing configuration..."
+#~ msgstr "Starter configurationen..."
+
+#~ msgid "Warning: %s"
+#~ msgstr "Advarsel: %s"
+
+#~ msgid "aethyra"
+#~ msgstr "aethyra"
+
+#~ msgid "Options: "
+#~ msgstr "Opsætning: "
+
+#~ msgid "  -C --configfile : Configuration file to use"
+#~ msgstr "  -C --configfile : Configurations fil til brug"
+
+#~ msgid "  -d --data       : Directory to load game data from"
+#~ msgstr "  -d --data       : Mappen at indlæse spillets data fra"
+
+#~ msgid "  -D --default    : Bypass the login process with default settings"
+#~ msgstr ""
+#~ "  -D --default    : Overskriv login processen med normale indstillinger"
+
+#~ msgid "  -h --help       : Display this help"
+#~ msgstr "  -h --help       : Viser denne hjælp"
+
+#~ msgid "  -H --updatehost : Use this update host"
+#~ msgstr "  -H --updatehost : Brug denne opdaterings host"
+
+#~ msgid "  -p --playername : Login with this player"
+#~ msgstr "  -p --playername : Logind med denne bruger"
+
+#~ msgid "  -P --password   : Login with this password"
+#~ msgstr "  -P --password   : Logind med denne adgangskode"
+
+#~ msgid "  -u --skipupdate : Skip the update downloads"
+#~ msgstr "  -u --skipupdate : Spring opdateringerne over"
+
+#~ msgid "  -U --username   : Login with this username"
+#~ msgstr "  -U --username   : Logind med dette brugernavn"
+
+#~ msgid "  -v --version    : Display the version"
+#~ msgstr "  -v --version    : Viser den nuværende version"
+
+#~ msgid "(local build?, PACKAGE_VERSION is not defined)"
+#~ msgstr "(lokalt build?, PACKAGE_VERSION er ikke defineret)"
+
+#, fuzzy
+#~ msgid "Trying to connect to account server..."
+#~ msgstr "Prøver at opretter forbindelse til bruger serveren..."
+
+#~ msgid "Username is %s"
+#~ msgstr "Brugernavn er %s"
+
+#, fuzzy
+#~ msgid "Trying to connect to char server..."
+#~ msgstr "Prøver at oprette forbindelse til karakter serveren..."
+
+#~ msgid "Memorizing selected character %s"
+#~ msgstr "Husk den valgte karakter %s"
+
+#, fuzzy
+#~ msgid "Trying to connect to map server..."
+#~ msgstr "Prøver at oprette forbindelse til bane serveren..."
+
+#, fuzzy
+#~ msgid "Map: %s"
+#~ msgstr "Bane; %s"
+
+#~ msgid "Couldn't load %s as wallpaper"
+#~ msgstr "Kunne ikke indlæse %s som background"
+
+#, fuzzy
+#~ msgid "Description:"
+#~ msgstr "Beskrivelse:"
+
+#, fuzzy
+#~ msgid "Effect:"
+#~ msgstr "Effekt:"
+
+#, fuzzy
+#~ msgid "Name: "
+#~ msgstr "Navn: "
+
+#, fuzzy
+#~ msgid "Effect: "
+#~ msgstr "Effekt: "
+
+#, fuzzy
+#~ msgid "Description: "
+#~ msgstr "Beskrivelse: "
 
 #~ msgid "Account and Character Management"
-#~ msgstr "Ret konto og figurer"
+#~ msgstr "Ret konto og karakter"
 
 #~ msgid "Unregister"
 #~ msgstr "Frameld"
@@ -946,10 +1626,10 @@ msgstr ""
 #~ msgstr "Opdel"
 
 #~ msgid "Select amount of items to split."
-#~ msgstr "Vælg hvor mange du vil opdele."
+#~ msgstr "Vælg hvor mange genstande du vil opdele."
 
 #~ msgid "Guilds"
-#~ msgstr "Gilder"
+#~ msgstr "Klaner"
 
 #~ msgid "@@guild|Invite %s@@"
 #~ msgstr "@@guild|Inviter %s@@"
@@ -964,7 +1644,7 @@ msgstr ""
 #~ msgstr "Skift server"
 
 #~ msgid "Switch character"
-#~ msgstr "Skift figur"
+#~ msgstr "Skift karakter"
 
 #~ msgid "Email:"
 #~ msgstr "E-mail:"
@@ -972,14 +1652,11 @@ msgstr ""
 #~ msgid "Choose your Mana World Server"
 #~ msgstr "Vælg din Mana World Server"
 
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
 #~ msgid "Please type both the address and the port of a server."
 #~ msgstr "Skriv både adressen og porten på serveren."
 
 #~ msgid "Visible names"
-#~ msgstr "Vis navne"
+#~ msgstr "Synlige navne"
 
 #~ msgid "Propose trade"
 #~ msgstr "Foreslå handel"
@@ -1004,6 +1681,3 @@ msgstr ""
 
 #~ msgid "Total Weight: %d - Maximum Weight: %d"
 #~ msgstr "Total Vægt: %d - Maximum Vægt: %d"
-
-#~ msgid "Keep"
-#~ msgstr "Behold"
