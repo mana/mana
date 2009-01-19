@@ -510,194 +510,182 @@ void Game::handleInput()
 #ifndef __APPLE__
             if (event.key.keysym.mod & KMOD_LALT)
 #else
-                if (event.key.keysym.mod & KMOD_LMETA)
+            if (event.key.keysym.mod & KMOD_LMETA)
 #endif
-                {
-                    switch (event.key.keysym.sym)
-                    {
-                        case SDLK_p:
-                            // Screenshot (picture, hence the p)
-                            saveScreenshot();
-                            used = true;
-                            break;
-
-                        default:
-                            break;
-
-                        case SDLK_f:
-                            // Find path to mouse (debug purpose)
-                            viewport->toggleDebugPath();
-                            used = true;
-                            break;
-
-                        case SDLK_t:
-                            // Toggle accepting of incoming trade requests
-                            {
-                                unsigned int deflt = player_relations.getDefault();
-                                if (deflt & PlayerRelation::TRADE) {
-                                    chatWindow->chatLog(
-                                            _("Ignoring incoming trade requests"),
-                                            BY_SERVER);
-                                    deflt &= ~PlayerRelation::TRADE;
-                                } else {
-                                    chatWindow->chatLog(
-                                            _("Accepting incoming trade requests"),
-                                            BY_SERVER);
-                                    deflt |= PlayerRelation::TRADE;
-                                }
-
-                                player_relations.setDefault(deflt);
-                            }
-                            used = true;
-                            break;
-                    }
-                }
-
-                // Mode switch to emotes
-                if (keyboard.isKeyActive(keyboard.KEY_EMOTE))
-                {
-                    // Emotions
-                    int emotion = keyboard.getKeyEmoteOffset(event.key.keysym.sym);
-                    if (emotion)
-                    {
-                        emoteShortcut->useEmote(emotion);
-                        used = true;
-                        return;
-                    }
-                }
+            {
                 switch (event.key.keysym.sym)
                 {
-                    case SDLK_PAGEUP:
-                        if (chatWindow->isVisible())
-                        {
-                            chatWindow->scroll(-DEFAULT_CHAT_WINDOW_SCROLL);
-                            used = true;
-                        }
-                        break;
-
-                    case SDLK_PAGEDOWN:
-                        if (chatWindow->isVisible())
-                        {
-                            chatWindow->scroll(DEFAULT_CHAT_WINDOW_SCROLL);
-                            used = true;
-                            return;
-                        }
-                        break;
-
-                    case SDLK_F1:
-                        // In-game Help
-                        if (helpWindow->isVisible())
-                        {
-                            helpWindow->setVisible(false);
-                        }
-                        else
-                        {
-                            helpWindow->loadHelp("index");
-                            helpWindow->requestMoveToTop();
-                        }
+                    case SDLK_p:
+                        // Screenshot (picture, hence the p)
+                        saveScreenshot();
                         used = true;
-                        break;
-
-                    case SDLK_RETURN:
-                        // Input chat window
-                        if (chatWindow->isInputFocused() ||
-                                        deathNotice != NULL ||
-                                        weightNotice != NULL)
-                        {
-                            break;
-                        }
-
-                        // Quit by pressing Enter if the exit confirm is there
-                        if (exitConfirm)
-                        {
-                           done = true;
-                        }
-                        // Close the Browser if opened
-                        else if (helpWindow->isVisible())
-                        {
-                            helpWindow->setVisible(false);
-                        }
-                        // Close the config window, cancelling changes if opened
-                        else if (setupWindow->isVisible())
-                        {
-                            setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                        }
-                        // Submits the text and proceeds to the next dialog
-                        else if (npcStringDialog->isVisible())
-                        {
-                            npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
-                        }
-                        // Proceed to the next dialog option, or close the window
-                        else if (npcTextDialog->isVisible())
-                        {
-                            npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
-                        }
-                        // Choose the currently highlighted dialogue option
-                        else if (npcListDialog->isVisible())
-                        {
-                            npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
-                        }
-                        // Submits the text and proceeds to the next dialog
-                        else if (npcIntegerDialog->isVisible())
-                        {
-                            npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
-                        }
-                        // Else, open the chat edit box
-                        else
-                        {
-                            chatWindow->requestChatFocus();
-                            used = true;
-                        }
-                        break;
-                        // Quitting confirmation dialog
-                    case SDLK_ESCAPE:
-                        if (!exitConfirm) 
-                        {
-                            exitConfirm = new ConfirmDialog( _("Quit"), 
-                                                             _("Are you sure you "
-                                                               "want to quit?"));
-                            exitConfirm->addActionListener(&exitListener);
-                            exitConfirm->requestMoveToTop();
-                        }
-                        else
-                        {
-                            exitConfirm->action(gcn::ActionEvent(NULL, _("no")));
-                        }
                         break;
 
                     default:
                         break;
-                 }
-                if (keyboard.isEnabled() && !chatWindow->isInputFocused()
-                                         && !npcStringDialog->isInputFocused())
-                {
-                    const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-                    // Do not activate shortcuts if tradewindow is visible
-                    if (!tradeWindow->isVisible())
-                    {
-                        // Checks if any item shortcut is pressed.
-                        for (int i = KeyboardConfig::KEY_SHORTCUT_1;
-                                 i <= KeyboardConfig::KEY_SHORTCUT_12;
-                                 i++)
+
+                    case SDLK_f:
+                        // Find path to mouse (debug purpose)
+                        viewport->toggleDebugPath();
+                        used = true;
+                        break;
+
+                    case SDLK_t:
+                        // Toggle accepting of incoming trade requests
+                        unsigned int deflt = player_relations.getDefault();
+                        if (deflt & PlayerRelation::TRADE)
                         {
-                            if (tKey == i && !used) 
-                            {
-                                itemShortcut->useItem(
-                                              i - KeyboardConfig::KEY_SHORTCUT_1);
-                                break;
-                            }
+                            chatWindow->chatLog(
+                                              _("Ignoring incoming trade requests"),
+                                                BY_SERVER);
+                            deflt &= ~PlayerRelation::TRADE;
+                        }
+                        else
+                        {
+                            chatWindow->chatLog(
+                                              _("Accepting incoming trade requests"),
+                                                BY_SERVER);
+                            deflt |= PlayerRelation::TRADE;
+                        }
+
+                        player_relations.setDefault(deflt);
+
+                        used = true;
+                        break;
+                }
+            }
+
+            // Mode switch to emotes
+            if (keyboard.isKeyActive(keyboard.KEY_EMOTE))
+            {
+                // Emotions
+                int emotion = keyboard.getKeyEmoteOffset(event.key.keysym.sym);
+                if (emotion)
+                {
+                    emoteShortcut->useEmote(emotion);
+                    used = true;
+                    return;
+                }
+            }
+            switch (event.key.keysym.sym)
+            {
+                case SDLK_PAGEUP:
+                    if (chatWindow->isVisible())
+                    {
+                        chatWindow->scroll(-DEFAULT_CHAT_WINDOW_SCROLL);
+                        used = true;
+                    }
+                    break;
+                case SDLK_PAGEDOWN:
+                    if (chatWindow->isVisible())
+                    {
+                        chatWindow->scroll(DEFAULT_CHAT_WINDOW_SCROLL);
+                        used = true;
+                        return;
+                    }
+                    break;
+                case SDLK_F1:
+                    // In-game Help
+                    if (helpWindow->isVisible())
+                        helpWindow->setVisible(false);
+                    else
+                    {
+                        helpWindow->loadHelp("index");
+                        helpWindow->requestMoveToTop();
+                    }
+                    used = true;
+                    break;
+
+                case SDLK_RETURN:
+                    // Input chat window
+                    if (chatWindow->isInputFocused() ||
+                                    deathNotice != NULL ||
+                                    weightNotice != NULL)
+                    {
+                        break;
+                    }
+
+                    // Quit by pressing Enter if the exit confirm is there
+                    if (exitConfirm)
+                       done = true;
+                    // Close the Browser if opened
+                    else if (helpWindow->isVisible())
+                        helpWindow->setVisible(false);
+                    // Close the config window, cancelling changes if opened
+                    else if (setupWindow->isVisible())
+                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
+                    // Submits the text and proceeds to the next dialog
+                    else if (npcStringDialog->isVisible())
+                        npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Proceed to the next dialog option, or close the window
+                    else if (npcTextDialog->isVisible())
+                        npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Choose the currently highlighted dialogue option
+                    else if (npcListDialog->isVisible())
+                        npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Submits the text and proceeds to the next dialog
+                    else if (npcIntegerDialog->isVisible())
+                        npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Else, open the chat edit box
+                    else
+                    {
+                        chatWindow->requestChatFocus();
+                        used = true;
+                    }
+                    break;
+               // Quitting confirmation dialog
+               case SDLK_ESCAPE:
+                    if (!exitConfirm) 
+                    {
+                        exitConfirm = new ConfirmDialog( _("Quit"), 
+                                                         _("Are you sure you "
+                                                           "want to quit?"));
+                        exitConfirm->addActionListener(&exitListener);
+                        exitConfirm->requestMoveToTop();
+                    }
+                    else
+                    {
+                        exitConfirm->action(gcn::ActionEvent(NULL, _("no")));
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            if (keyboard.isEnabled() && !chatWindow->isInputFocused()
+                                     && !npcStringDialog->isInputFocused())
+            {
+                const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+
+                // Do not activate shortcuts if tradewindow is visible
+                if (!tradeWindow->isVisible())
+                {
+                    // Checks if any item shortcut is pressed.
+                    for (int i = KeyboardConfig::KEY_SHORTCUT_1;
+                             i <= KeyboardConfig::KEY_SHORTCUT_12;
+                             i++)
+                    {
+                        if (tKey == i && !used) 
+                        {
+                            itemShortcut->useItem(
+                                          i - KeyboardConfig::KEY_SHORTCUT_1);
+                            break;
                         }
                     }
-                    switch (tKey)
-                    {
-                        case KeyboardConfig::KEY_PICKUP:
-                            FloorItem *item =
-                                floorItemManager->findByCoordinates(
-                                        player_node->mX, player_node->mY);
+                }
+
+                switch (tKey)
+                {
+                    case KeyboardConfig::KEY_PICKUP:
+                        {
+                            FloorItem *item = floorItemManager->findByCoordinates(
+                                                                player_node->mX,
+                                                                player_node->mY);
 
                             // If none below the player, try the tile in front
                             // of the player
-                            if (!item) {
+                            if (!item)
+                            {
                                 Uint16 x = player_node->mX;
                                 Uint16 y = player_node->mY;
                                 if (player_node->getDirection() & Being::UP)
@@ -708,164 +696,160 @@ void Game::handleInput()
                                     x--;
                                 if (player_node->getDirection() & Being::RIGHT)
                                     x++;
-
-                                item = floorItemManager->findByCoordinates(
-                                        x, y);
+                                item = floorItemManager->findByCoordinates(x, y);
                             }
 
                             if (item)
                                 player_node->pickUp(item);
 
                             used = true;
-                            break;
-                        case KeyboardConfig::KEY_SIT:
-                             // Player sit action
-                            player_node->toggleSit();
-                            used = true;
-                            break;
-                        case KeyboardConfig::KEY_HIDE_WINDOWS:
-                            // Hide certain windows
-                            if (!chatWindow->isInputFocused())
-                            {
-                                statusWindow->setVisible(false);
-                                inventoryWindow->setVisible(false);
-                                emoteWindow->setVisible(false);
-                                skillDialog->setVisible(false);
-                                setupWindow->setVisible(false);
-                                equipmentWindow->setVisible(false);
-                                helpWindow->setVisible(false);
-                                debugWindow->setVisible(false);
-                            }
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_STATUS:
-                            requestedWindow = statusWindow;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_INVENTORY:
-                            requestedWindow = inventoryWindow;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_EQUIPMENT:
-                            requestedWindow = equipmentWindow;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_SKILL:
-                            requestedWindow = skillDialog;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_MINIMAP:
-                            minimap->toggle();
-                            requestedWindow = minimap;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_CHAT:
-                            requestedWindow = chatWindow;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_SHORTCUT:
-                            requestedWindow = itemShortcutWindow;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_SETUP:
-                            requestedWindow = setupWindow;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_DEBUG:
-                            requestedWindow = debugWindow;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_EMOTE:
-                            requestedWindow = emoteWindow;
-                            break;
-                        case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
-                            requestedWindow = emoteShortcutWindow;
-                            break;
-                   }
+                        }
+                        break;
+                    case KeyboardConfig::KEY_SIT:
+                        // Player sit action
+                        player_node->toggleSit();
+                        used = true;
+                        break;
+                    case KeyboardConfig::KEY_HIDE_WINDOWS:
+                        // Hide certain windows
+                        if (!chatWindow->isInputFocused())
+                        {
+                            statusWindow->setVisible(false);
+                            inventoryWindow->setVisible(false);
+                            emoteWindow->setVisible(false);
+                            skillDialog->setVisible(false);
+                            setupWindow->setVisible(false);
+                            equipmentWindow->setVisible(false);
+                            helpWindow->setVisible(false);
+                            debugWindow->setVisible(false);
+                        }
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_STATUS:
+                        requestedWindow = statusWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_INVENTORY:
+                        requestedWindow = inventoryWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_EQUIPMENT:
+                        requestedWindow = equipmentWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SKILL:
+                        requestedWindow = skillDialog;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_MINIMAP:
+                        minimap->toggle();
+                        requestedWindow = minimap;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_CHAT:
+                        requestedWindow = chatWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SHORTCUT:
+                        requestedWindow = itemShortcutWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_SETUP:
+                        requestedWindow = setupWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_DEBUG:
+                        requestedWindow = debugWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_EMOTE:
+                        requestedWindow = emoteWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
+                        requestedWindow = emoteShortcutWindow;
+                        break;
                 }
-
-                if (requestedWindow)
-                {
-                    requestedWindow->setVisible(!requestedWindow->isVisible());
-                    if (requestedWindow->isVisible())
-                    {
-                        requestedWindow->requestMoveToTop();
-                    }
-                    used = true;
-                }
-
             }
-            // Quit event
-            else if (event.type == SDL_QUIT)
+
+            if (requestedWindow)
             {
-                done = true;
+                requestedWindow->setVisible(!requestedWindow->isVisible());
+                if (requestedWindow->isVisible())
+                    requestedWindow->requestMoveToTop();
+                used = true;
             }
-
-            // Push input to GUI when not used
-            if (!used)
-            {
-                try
-                {
-                    guiInput->pushInput(event);
-                }
-                catch (gcn::Exception e)
-                {
-                    const char* err = e.getMessage().c_str();
-                    logger->log(_("Warning: guichan input exception: %s"), err);
-                }
-            }
-        } // End while
-
-        // If the user is configuring the keys then don't respond.
-        if (!keyboard.isEnabled())
-            return;
-
-        // Moving player around
-        if (player_node->mAction != Being::DEAD &&
-            current_npc == 0 && !chatWindow->isInputFocused())
+        }
+        // Quit event
+        else if (event.type == SDL_QUIT)
         {
-            // Get the state of the keyboard keys
-            keyboard.refreshActiveKeys();
+            done = true;
+        }
 
-            const Uint16 x = player_node->mX;
-            const Uint16 y = player_node->mY;
-            unsigned char direction = 0;
-
-            // Translate pressed keys to movement and direction
-            if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
-               (joystick && joystick->isUp()))
+        // Push input to GUI when not used
+        if (!used)
+        {
+            try
             {
-                direction |= Being::UP;
+                guiInput->pushInput(event);
             }
-            else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
-                    (joystick && joystick->isDown()))
+            catch (gcn::Exception e)
             {
-                direction |= Being::DOWN;
+                const char* err = e.getMessage().c_str();
+                logger->log(_("Warning: guichan input exception: %s"), err);
             }
+        }
+    } // End while
 
-            if (keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
-               (joystick && joystick->isLeft()))
+    // If the user is configuring the keys then don't respond.
+    if (!keyboard.isEnabled())
+        return;
+
+    // Moving player around
+    if (player_node->mAction != Being::DEAD &&
+        current_npc == 0 && !chatWindow->isInputFocused())
+    {
+        // Get the state of the keyboard keys
+        keyboard.refreshActiveKeys();
+
+        const Uint16 x = player_node->mX;
+        const Uint16 y = player_node->mY;
+        unsigned char direction = 0;
+
+        // Translate pressed keys to movement and direction
+        if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
+           (joystick && joystick->isUp()))
+        {
+            direction |= Being::UP;
+        }
+        else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
+                (joystick && joystick->isDown()))
+        {
+            direction |= Being::DOWN;
+        }
+
+        if (keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
+           (joystick && joystick->isLeft()))
+        {
+            direction |= Being::LEFT;
+        }
+        else if (keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
+                (joystick && joystick->isRight()))
+        {
+            direction |= Being::RIGHT;
+        }
+
+        player_node->setWalkingDir(direction);
+
+        // Attacking monsters
+        if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
+           (joystick && joystick->buttonPressed(0)))
+        {
+            Being *target = beingManager->findNearestLivingBeing(x, y, 20, 
+                                                                 Being::MONSTER);
+
+            bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
+            // A set target has highest priority
+            if (newTarget || !player_node->getTarget())
             {
-                direction |= Being::LEFT;
-            }
-            else if (keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
-                    (joystick && joystick->isRight()))
-            {
-                direction |= Being::RIGHT;
-            }
+                Uint16 targetX = x, targetY = y;
 
-            player_node->setWalkingDir(direction);
-
-            // Attacking monsters
-            if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
-               (joystick && joystick->buttonPressed(0)))
-            {
-                Being *target = beingManager->findNearestLivingBeing(x, y, 20, 
-                                                                     Being::MONSTER);
-
-                bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
-                // A set target has highest priority
-                if (newTarget || !player_node->getTarget())
+                switch (player_node->getSpriteDirection())
                 {
-                     Uint16 targetX = x, targetY = y;
-
-                    switch (player_node->getSpriteDirection())
-                    {
-                        case DIRECTION_UP   : --targetY; break;
-                        case DIRECTION_DOWN : ++targetY; break;
-                        case DIRECTION_LEFT : --targetX; break;
-                        case DIRECTION_RIGHT: ++targetX; break;
-                        default: break;
+                    case DIRECTION_UP   : --targetY; break;
+                    case DIRECTION_DOWN : ++targetY; break;
+                    case DIRECTION_LEFT : --targetX; break;
+                    case DIRECTION_RIGHT: ++targetX; break;
+                    default: break;
                 }
 
                 // Attack priorioty is: Monster, Player, auto target
