@@ -19,19 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "inttextbox.h"
+#include "inttextfield.h"
 
 #include "sdlinput.h"
 
 #include "../utils/tostring.h"
 
-IntTextBox::IntTextBox(int i):
-    mValue(i)
+IntTextField::IntTextField(int def):
+    TextField(toString(def)),
+    mDefault(def),
+    mValue(def)
 {
 }
 
-void
-IntTextBox::keyPressed(gcn::KeyEvent &event)
+void IntTextField::keyPressed(gcn::KeyEvent &event)
 {
     const gcn::Key &key = event.getKey();
 
@@ -42,32 +43,43 @@ IntTextBox::keyPressed(gcn::KeyEvent &event)
         event.consume();
     }
 
-    if (!key.isNumber()) return;
+    if (!key.isNumber())
+        return;
+
     TextField::keyPressed(event);
 
     std::istringstream s(getText());
     int i;
     s >> i;
-    setInt(i);
+    setValue(i);
 }
 
-void IntTextBox::setRange(int min, int max)
+void IntTextField::setRange(int min, int max)
 {
     mMin = min;
     mMax = max;
 }
 
-int IntTextBox::getInt()
+int IntTextField::getValue()
 {
     return getText().empty() ? mMin : mValue;
 }
 
-void IntTextBox::setInt(int i)
+void IntTextField::setValue(int i)
 {
     if (i >= mMin && i <= mMax)
         mValue = i;
+    else if (i < mMin)
+        mValue = mMin;
+    else if (i > mMax)
+        mValue = mMax;
 
     const std::string valStr = toString(mValue);
     setText(valStr);
     setCaretPosition(valStr.length() + 1);
+}
+
+void IntTextField::reset()
+{
+    setValue(mDefault);
 }

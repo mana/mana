@@ -22,7 +22,7 @@
 #include "item_amount.h"
 
 #include "button.h"
-#include "inttextbox.h"
+#include "inttextfield.h"
 #include "slider.h"
 #include "trade.h"
 
@@ -40,11 +40,11 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     const int maxRange = mItem->getQuantity();
 
     // Integer field
-    mItemAmountTextBox = new IntTextBox(1);
-    mItemAmountTextBox->setRange(1, maxRange);
-    mItemAmountTextBox->setWidth(30);
-    mItemAmountTextBox->setActionEventId("Dummy");
-    mItemAmountTextBox->addActionListener(this);
+    mItemAmountTextField = new IntTextField(1);
+    mItemAmountTextField->setRange(1, maxRange);
+    mItemAmountTextField->setWidth(30);
+    mItemAmountTextField->setActionEventId("Dummy");
+    mItemAmountTextField->addActionListener(this);
 
     // Slider
     mItemAmountSlide = new Slider(1.0, maxRange);
@@ -62,7 +62,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
 
     // Set positions
     place(0, 0, minusButton);
-    place(1, 0, mItemAmountTextBox).setPadding(2);
+    place(1, 0, mItemAmountTextField).setPadding(2);
     place(2, 0, plusButton);
     place(0, 1, mItemAmountSlide, 6);
     place(4, 2, okButton);
@@ -90,12 +90,12 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
 
 void ItemAmountWindow::resetAmount()
 {
-    mItemAmountTextBox->setInt(1);
+    mItemAmountTextField->setValue(1);
 }
 
 void ItemAmountWindow::action(const gcn::ActionEvent &event)
 {
-    int amount = mItemAmountTextBox->getInt();
+    int amount = mItemAmountTextField->getValue();
 
     if (event.getId() == "Cancel")
     {
@@ -115,14 +115,14 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "Drop")
     {
-        player_node->dropItem(mItem, mItemAmountTextBox->getInt());
+        player_node->dropItem(mItem, mItemAmountTextField->getValue());
         scheduleDelete();
     }
     else if (event.getId() == "AddTrade")
     {
-        tradeWindow->tradeItem(mItem, mItemAmountTextBox->getInt());
+        tradeWindow->tradeItem(mItem, mItemAmountTextField->getValue());
         scheduleDelete();
     }
-    mItemAmountTextBox->setInt(amount);
+    mItemAmountTextField->setValue(amount);
     mItemAmountSlide->setValue(amount);
 }

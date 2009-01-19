@@ -37,7 +37,7 @@
 NpcStringDialog::NpcStringDialog():
     Window(_("NPC Text Request"))
 {
-    mValueField = new TextField("The Mana World"); // Just a sizing value :)
+    mValueField = new TextField("");
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
 

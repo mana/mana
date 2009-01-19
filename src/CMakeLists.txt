@@ -95,8 +95,8 @@ SET(SRCS
     gui/gui.h
     gui/help.cpp
     gui/help.h
-    gui/inttextbox.cpp
-    gui/inttextbox.h
+    gui/inttextfield.cpp
+    gui/inttextfield.h
     gui/inventorywindow.cpp
     gui/inventorywindow.h
     gui/itemcontainer.cpp

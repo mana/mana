@@ -30,7 +30,7 @@
 
 #include "../guichanfwd.h"
 
-class IntTextBox;
+class IntTextField;
 class Item;
 
 #define AMOUNT_TRADE_ADD 1
@@ -60,7 +60,7 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         void resetAmount();
 
     private:
-        IntTextBox *mItemAmountTextBox;   /**< Item amount caption. */
+        IntTextField *mItemAmountTextField;   /**< Item amount caption. */
         Item *mItem;
 
         /**

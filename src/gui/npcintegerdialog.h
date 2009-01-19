@@ -32,6 +32,8 @@
 
 #include "../guichanfwd.h"
 
+class IntTextField;
+
 /**
  * The npc integer input dialog.
  *
@@ -53,9 +55,6 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener,
          */
         void action(const gcn::ActionEvent &event);
 
-        /** Called when key is pressed */
-        void keyPressed(gcn::KeyEvent &event);
-
         /**
          * Returns the current value.
          */
@@ -65,18 +64,17 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener,
          * Prepares the NPC dialog.
          *
          * @param min The minimum value to allow
-         * @param def The default value
          * @param max The maximum value to allow
          */
-        void prepDialog(const int min, const int def, const int max);
+        void setRange(const int min, const int max);
 
     private:
-        int mMin, mMax, mDefault, mValue;
         gcn::Button *mDecButton;
         gcn::Button *mIncButton;
-        gcn::TextField *mValueField;
+        IntTextField *mValueField;
         gcn::Button *okButton;
         gcn::Button *cancelButton;
+        gcn::Button *resetButton;
 };
 
 #endif // _TMW_GUI_NPCINTEGERDIALOG_H
