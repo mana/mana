@@ -90,7 +90,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             // Request for an integer
             id = msg->readInt32();
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
-            npcIntegerDialog->prepDialog(0, 0, 2147483647);
+            npcIntegerDialog->setRange(0, 2147483647);
             npcIntegerDialog->setVisible(true);
             break;
 

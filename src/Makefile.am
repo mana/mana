@@ -55,8 +55,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/gui.h \
 	      gui/help.cpp \
 	      gui/help.h \
-	      gui/inttextbox.h \
-	      gui/inttextbox.cpp \
+	      gui/inttextfield.h \
+	      gui/inttextfield.cpp \
 	      gui/inventorywindow.cpp \
 	      gui/inventorywindow.h \
 	      gui/itemcontainer.cpp \

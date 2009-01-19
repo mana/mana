@@ -27,7 +27,6 @@
 #include "../guichanfwd.h"
 
 class ImageRect;
-
 class TextField;
 
 class TextFieldListener
