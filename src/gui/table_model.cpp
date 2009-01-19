@@ -25,6 +25,8 @@
 
 #include "table_model.h"
 
+#include "../utils/dtor.h"
+
 void TableModel::installListener(TableModelListener *listener)
 {
     listeners.insert(listener);
@@ -63,9 +65,7 @@ StaticTableModel::StaticTableModel(int row, int column) :
 
 StaticTableModel::~StaticTableModel(void)
 {
-    for (std::vector<gcn::Widget *>::const_iterator it = mTableModel.begin(); it != mTableModel.end(); it++)
-        if (*it)
-            delete *it;
+    delete_all(mTableModel);
 }
 
 void StaticTableModel::resize(void)
