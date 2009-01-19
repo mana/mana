@@ -25,9 +25,11 @@
 #include "checkbox.h"
 #include "ok_dialog.h"
 
-#include "../player_relations.h"
+#include "widgets/layouthelper.h"
+
 #include "../configuration.h"
 #include "../log.h"
+#include "../player_relations.h"
 #include "../sound.h"
 
 #include "../utils/gettext.h"
@@ -44,7 +46,7 @@
 #define ROW_HEIGHT 12
 // The following column widths really shouldn't be hardcoded but should scale with the size of the widget... except
 // that, right now, the widget doesn't exactly scale either.
-#define NAME_COLUMN_WIDTH 120
+#define NAME_COLUMN_WIDTH 155
 #define RELATION_CHOICE_COLUMN_WIDTH 80
 
 #define WIDGET_AT(row, column) (((row) * COLUMNS_NR) + column)
@@ -129,7 +131,8 @@ public:
         mPlayers = player_names;
 
         // set up widgets
-        for (unsigned int r = 0; r < player_names->size(); ++r) {
+        for (unsigned int r = 0; r < player_names->size(); ++r)
+        {
             std::string name = (*player_names)[r];
             gcn::Widget *widget = new gcn::Label(name);
             mWidgets.push_back(widget);
@@ -221,7 +224,6 @@ Setup_Players::Setup_Players():
     mIgnoreActionChoicesBox(new gcn::DropDown(new IgnoreChoicesListModel()))
 {
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
 
     int table_width = NAME_COLUMN_WIDTH + RELATION_CHOICE_COLUMN_WIDTH;
     mPlayerTableTitleModel->fixColumnWidth(NAME_COLUMN, NAME_COLUMN_WIDTH);
@@ -229,28 +231,30 @@ Setup_Players::Setup_Players():
                                            RELATION_CHOICE_COLUMN_WIDTH);
     mPlayerTitleTable->setDimension(gcn::Rectangle(10, 10, table_width, 10));
     mPlayerTitleTable->setBackgroundColor(gcn::Color(0xbf, 0xbf, 0xbf));
-    for (int i = 0; i < COLUMNS_NR; i++) {
+
+    for (int i = 0; i < COLUMNS_NR; i++)
+    {
         mPlayerTableTitleModel->set(0, i,
                 new gcn::Label(gettext(table_titles[i])));
     }
+
     mPlayerTitleTable->setLinewiseSelection(true);
 
-    mPlayerScrollArea->setDimension(gcn::Rectangle(10, 25, table_width + COLUMNS_NR, 90));
     mPlayerScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mPlayerTable->setActionEventId(ACTION_TABLE);
     mPlayerTable->setLinewiseSelection(true);
     mPlayerTable->addActionListener(this);
 
-    mDeleteButton->setPosition(10, 118);
-
     gcn::Label *ignore_action_label = new gcn::Label(_("When ignoring:"));
 
-    ignore_action_label->setPosition(80, 118);
     mIgnoreActionChoicesBox->setDimension(gcn::Rectangle(80, 132, 120, 12));
     mIgnoreActionChoicesBox->setActionEventId(ACTION_STRATEGY);
     mIgnoreActionChoicesBox->addActionListener(this);
+
     int ignore_strategy_index = 0; // safe default
-    if (player_relations.getPlayerIgnoreStrategy()) {
+
+    if (player_relations.getPlayerIgnoreStrategy())
+    {
         ignore_strategy_index = player_relations.getPlayerIgnoreStrategyIndex(
             player_relations.getPlayerIgnoreStrategy()->mShortName);
         if (ignore_strategy_index < 0)
@@ -259,22 +263,24 @@ Setup_Players::Setup_Players():
     mIgnoreActionChoicesBox->setSelected(ignore_strategy_index);
     mIgnoreActionChoicesBox->adjustHeight();
 
-    mPersistIgnores->setPosition(80, 148);
-    mDefaultTrading->setPosition(80, 160);
-    mDefaultWhisper->setPosition(80, 172);
-
     reset();
 
-    add(ignore_action_label);
-    add(mDefaultTrading);
-    add(mDefaultWhisper);
-    add(mIgnoreActionChoicesBox);
-    add(mDeleteButton);
-    add(mPlayerScrollArea);
-    add(mPlayerTitleTable);
-    add(mPersistIgnores);
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    place(0, 0, mPlayerTitleTable, 4);
+    place(0, 1, mPlayerScrollArea, 4, 4).setPadding(2);
+    place(0, 5, mDeleteButton);
+    place(2, 5, ignore_action_label);
+    place(2, 6, mIgnoreActionChoicesBox, 2).setPadding(2);
+    place(2, 7, mPersistIgnores);
+    place(2, 8, mDefaultTrading);
+    place(2, 9, mDefaultWhisper);
 
     player_relations.addListener(this);
+
+    setDimension(gcn::Rectangle(0, 0, 250, 200));
 }
 
 Setup_Players::~Setup_Players()
