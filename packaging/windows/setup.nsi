@@ -226,6 +226,7 @@ Section Uninstall
   RMDir "$SMPROGRAMS\Aethyra"
   RMDir /r "$INSTDIR\data"
   RMDir /r "$INSTDIR\docs"
+  RMDir /r "$INSTDIR\po"
   RMDir /r "$INSTDIR\updates"
   RMDir "$INSTDIR"
 
