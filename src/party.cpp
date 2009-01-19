@@ -30,6 +30,9 @@
 #include "net/messageout.h"
 #include "net/protocol.h"
 
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+
 Party::Party(ChatWindow *chat, Network *network) :
              mChat(chat), mNetwork(network), mInviteListener(network, &mInParty)
 {
@@ -49,7 +52,7 @@ void Party::respond(const std::string &command, const std::string &args)
     }
     if (command == "settings")
     {
-	mChat->chatLog("Not yet implemented!", BY_SERVER);
+	mChat->chatLog(_("Not yet implemented!"), BY_SERVER);
 	return;
 	/*
 	  MessageOut outMsg(mNetwork);
@@ -58,14 +61,14 @@ void Party::respond(const std::string &command, const std::string &args)
 	  outMsg.writeInt16(0); // Item
 	 */
     }
-    mChat->chatLog("Party command not known.", BY_SERVER);
+    mChat->chatLog(_("Party command not known."), BY_SERVER);
 }
 
 void Party::create(const std::string &party)
 {
     if (party == "")
     {
-	mChat->chatLog("Party name is missing.", BY_SERVER);
+	mChat->chatLog(_("Party name is missing."), BY_SERVER);
 	return;
     }
     MessageOut outMsg(mNetwork);
@@ -78,7 +81,7 @@ void Party::leave(const std::string &args)
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_PARTY_LEAVE);
-    mChat->chatLog("Left party.", BY_SERVER);
+    mChat->chatLog(_("Left party."), BY_SERVER);
     mInParty = false;
 }
 
@@ -86,12 +89,12 @@ void Party::createResponse(bool ok)
 {
     if (ok)
     {
-	mChat->chatLog("Party successfully created.", BY_SERVER);
+	mChat->chatLog(_("Party successfully created."), BY_SERVER);
 	mInParty = true;
     }
     else
     {
-	mChat->chatLog("Could not create party.", BY_SERVER);
+	mChat->chatLog(_("Could not create party."), BY_SERVER);
     }
 }
 
@@ -100,15 +103,16 @@ void Party::inviteResponse(const std::string &nick, int status)
     switch (status)
     {
         case 0:
-  	    mChat->chatLog(nick + " is already a member of a party.",
-			   BY_SERVER);
+  	    mChat->chatLog(strprintf(_("%s is already a member of a party."),
+                           nick.c_str()), BY_SERVER);
 	    break;
         case 1:
-  	    mChat->chatLog(nick + " refused your invitation.", BY_SERVER);
+  	    mChat->chatLog(strprintf(_("%s refused your invitation."),
+                           nick.c_str()), BY_SERVER);
 	    break;
         case 2:
- 	    mChat->chatLog(nick + " is now a member of your party.",
-			   BY_SERVER);
+ 	    mChat->chatLog(strprintf(_("%s is now a member of your party."),
+                           nick.c_str()), BY_SERVER);
 	    break;
     }
 }
@@ -119,15 +123,14 @@ void Party::invitedAsk(const std::string &nick, int gender,
     mPartyName = partyName; /* Quick and nasty - needs redoing */
     if (nick == "")
     {
-        mChat->chatLog("Something\'s wrong!", BY_SERVER);
+        mChat->chatLog(_("You can\'t have a blank party name!"), BY_SERVER);
 	return;
     }
     mCreating = false;
-    ConfirmDialog *dlg = new ConfirmDialog("Invite to party",
-					   nick + " invites you to join " +
-					   (gender == 0 ? "his" : "her") +
-					   " party, " + partyName +
-					   ", do you accept?");
+    ConfirmDialog *dlg = new ConfirmDialog(_("Invite to party"),
+					     strprintf(_("%s invites you to join"
+                                             " the %s party, do you accept?"), 
+                                             nick.c_str(), partyName.c_str()));
     dlg->addActionListener(&mInviteListener);
 }
 
@@ -143,7 +146,8 @@ void Party::InviteListener::action(const gcn::ActionEvent &event)
 
 void Party::leftResponse(const std::string &nick)
 {
-    mChat->chatLog(nick + " has left your party.", BY_SERVER);
+    mChat->chatLog(strprintf(_("%s has left your party."), nick.c_str()), 
+                               BY_SERVER);
 }
 
 void Party::receiveChat(Being *being, const std::string &msg)
@@ -154,7 +158,8 @@ void Party::receiveChat(Being *being, const std::string &msg)
     }
     if (being->getType() != Being::PLAYER)
     {
-	mChat->chatLog("Something\'s wrong!", BY_SERVER);
+	mChat->chatLog(_("Party chat received, but being is not a player"), 
+                       BY_SERVER);
 	return;
     }
     being->setSpeech(msg, SPEECH_TIME);
@@ -163,54 +168,54 @@ void Party::receiveChat(Being *being, const std::string &msg)
 
 void Party::help()
 {
-    mChat->chatLog("/party <command> <params>: Party commands.", BY_SERVER);
+    mChat->chatLog(_("/party <command> <params>: Party commands."), BY_SERVER);
 }
 
 void Party::help(const std::string &msg)
 {
     if (msg == "")
     {
-	mChat->chatLog("Command: /party <command> <args>", BY_SERVER);
-	mChat->chatLog("where <command> can be one of:", BY_SERVER);
-	mChat->chatLog("   /new", BY_SERVER);
-	mChat->chatLog("   /create", BY_SERVER);
-	mChat->chatLog("   /prefix", BY_SERVER);
-	mChat->chatLog("   /leave", BY_SERVER);
-	mChat->chatLog("This command implements the partying function.",
+	mChat->chatLog(_("Command: /party <command> <args>"), BY_SERVER);
+	mChat->chatLog(_("where <command> can be one of:"), BY_SERVER);
+	mChat->chatLog(_("   /new"), BY_SERVER);
+	mChat->chatLog(_("   /create"), BY_SERVER);
+	mChat->chatLog(_("   /prefix"), BY_SERVER);
+	mChat->chatLog(_("   /leave"), BY_SERVER);
+	mChat->chatLog(_("This command implements the partying function."),
 		       BY_SERVER);
-	mChat->chatLog("Type /help party <command> for further help.",
+	mChat->chatLog(_("Type /help party <command> for further help."),
 		       BY_SERVER);
 	return;
     }
     if (msg == "new" || msg == "create")
     {
-	mChat->chatLog("Command: /party new <party-name>", BY_SERVER);
-	mChat->chatLog("Command: /party create <party-name>", BY_SERVER);
-	mChat->chatLog("These commands create a new party <party-name.",
+	mChat->chatLog(_("Command: /party new <party-name>"), BY_SERVER);
+	mChat->chatLog(_("Command: /party create <party-name>"), BY_SERVER);
+	mChat->chatLog(_("These commands create a new party <party-name."),
 		       BY_SERVER);
 	return;
     }
     if (msg == "prefix")
     {
-	mChat->chatLog("Command: /party prefix <prefix-char>", BY_SERVER);
-	mChat->chatLog("This command sets the party prefix character.",
+	mChat->chatLog(_("Command: /party prefix <prefix-char>"), BY_SERVER);
+	mChat->chatLog(_("This command sets the party prefix character."),
 		       BY_SERVER);
-	mChat->chatLog("Any message preceded by <prefix-char> is sent to "
-		       "the party instead of everyone.", BY_SERVER);
-	mChat->chatLog("Command: /party prefix", BY_SERVER);
-	mChat->chatLog("This command reports the current party prefix "
-		       "character.", BY_SERVER);
+	mChat->chatLog(_("Any message preceded by <prefix-char> is sent to "
+		       "the party instead of everyone."), BY_SERVER);
+	mChat->chatLog(_("Command: /party prefix"), BY_SERVER);
+	mChat->chatLog(_("This command reports the current party prefix "
+		       "character."), BY_SERVER);
 	return;
     }
     //if (msg == "settings")
     //if (msg == "info")
     if (msg == "leave")
     {
-	mChat->chatLog("Command: /party leave", BY_SERVER);
-	mChat->chatLog("This command causes the player to leave the party.",
+	mChat->chatLog(_("Command: /party leave"), BY_SERVER);
+	mChat->chatLog(_("This command causes the player to leave the party."),
 		       BY_SERVER);
 	return;
     }
-    mChat->chatLog("Unknown /party command.", BY_SERVER);
-    mChat->chatLog("Type /help party for a list of options.", BY_SERVER);
+    mChat->chatLog(_("Unknown /party command."), BY_SERVER);
+    mChat->chatLog(_("Type /help party for a list of options."), BY_SERVER);
 }

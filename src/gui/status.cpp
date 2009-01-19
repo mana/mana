@@ -131,9 +131,9 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsDefenseLabel= new gcn::Label(_("Defense:"));
     mStatsMagicAttackLabel = new gcn::Label(_("M.Attack:"));
     mStatsMagicDefenseLabel = new gcn::Label(_("M.Defense:"));
-    mStatsAccuracyLabel = new gcn::Label(_("% Accuracy:"));
-    mStatsEvadeLabel = new gcn::Label(_("% Evade:"));
-    mStatsReflexLabel = new gcn::Label(_("% Reflex:"));
+    mStatsAccuracyLabel = new gcn::Label(_("\% Accuracy:"));
+    mStatsEvadeLabel = new gcn::Label(_("\% Evade:"));
+    mStatsReflexLabel = new gcn::Label(_("\% Reflex:"));
 
     mStatsAttackPoints = new gcn::Label;
     mStatsDefensePoints = new gcn::Label;
