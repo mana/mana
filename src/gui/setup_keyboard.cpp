@@ -30,6 +30,8 @@
 #include "scrollarea.h"
 #include "setup_keyboard.h"
 
+#include "widgets/layouthelper.h"
+
 #include "../configuration.h"
 #include "../keyboardconfig.h"
 
@@ -73,7 +75,6 @@ Setup_Keyboard::Setup_Keyboard():
 {
     keyboard.setSetupKeyboard(this);
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 290, 255));
 
     refreshKeys();
 
@@ -82,19 +83,23 @@ Setup_Keyboard::Setup_Keyboard():
     mKeyList->setSelected(-1);
 
     ScrollArea *scrollArea = new ScrollArea(mKeyList);
-    scrollArea->setDimension(gcn::Rectangle(10, 10, 200, 140));
-    add(scrollArea);
 
     mAssignKeyButton = new Button(_("Assign"), "assign", this);
-    mAssignKeyButton->setPosition(165, 155);
     mAssignKeyButton->addActionListener(this);
     mAssignKeyButton->setEnabled(false);
-    add(mAssignKeyButton);
 
     mMakeDefaultButton = new Button(_("Default"), "makeDefault", this);
-    mMakeDefaultButton->setPosition(10, 155);
     mMakeDefaultButton->addActionListener(this);
-    add(mMakeDefaultButton);
+
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    place(0, 0, scrollArea, 4, 6).setPadding(2);
+    place(0, 6, mMakeDefaultButton);
+    place(3, 6, mAssignKeyButton);
+
+    setDimension(gcn::Rectangle(0, 0, 295, 250));
 }
 
 Setup_Keyboard::~Setup_Keyboard()
