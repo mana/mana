@@ -101,7 +101,8 @@
 #include <sys/stat.h>
 #endif
 
-namespace {
+namespace
+{
     Window *setupWindow = 0;
 
     struct SetupListener : public gcn::ActionListener
@@ -186,7 +187,8 @@ void setUpdatesDir()
     std::stringstream updates;
 
     // If updatesHost is currently empty, fill it from config file
-    if (updateHost.empty()) {
+    if (updateHost.empty())
+    {
         updateHost =
             config.getValue("updatehost", "http://www.aethyra.org/updates");
     }
@@ -198,31 +200,59 @@ void setUpdatesDir()
     // Parse out any "http://" or "ftp://", and set the updates directory
     size_t pos;
     pos = updateHost.find("://");
-    if (pos != updateHost.npos) {
-        if (pos + 3 < updateHost.length()) {
+    if (pos != updateHost.npos)
+    {
+        if (pos + 3 < updateHost.length())
+        {
             updates << "updates/" << updateHost.substr(pos + 3) 
                     << "/" << loginData.port;
             updatesDir = updates.str();
-        } else {
+        }
+        else
+        {
             logger->log(_("Error: Invalid update host: %s"), updateHost.c_str());
             errorMessage = _("Invalid update host: ") + updateHost;
             state = ERROR_STATE;
         }
-    } else {
+    }
+    else
+    {
         logger->log(_("Warning: no protocol was specified for the update host"));
-        updates << "updates/" << updateHost  << "/" << loginData.port;
+        updates << "updates/" << updateHost << "/" << loginData.port;
         updatesDir = updates.str();
     }
 
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Verify that the updates directory exists. Create if necessary.
-    if (!resman->isDirectory("/" + updatesDir)) {
-        if (!resman->mkdir("/" + updatesDir)) {
+    if (!resman->isDirectory("/" + updatesDir))
+    {
+        if (!resman->mkdir("/" + updatesDir))
+        {
+#if defined WIN32
+            std::string newDir = homeDir + "\\" + updatesDir;
+            std::string::size_type loc = newDir.find("/", 0);
+
+            while (loc != std::string::npos)
+            {
+                newDir.replace(loc, 1, "\\");
+                loc = newDir.find("/", loc);
+            }
+
+            if (!CreateDirectory(newDir.c_str(), 0) &&
+                GetLastError() != ERROR_ALREADY_EXISTS)
+            {
+                logger->log(_("Error: %s can't be made, but doesn't exist!"),
+                              newDir.c_str());
+                errorMessage = _("Error creating updates directory!");
+                state = ERROR_STATE;
+            }
+#else
             logger->log(_("Error: %s/%s can't be made, but doesn't exist!"),
                          homeDir.c_str(), updatesDir.c_str());
             errorMessage = _("Error creating updates directory!");
             state = ERROR_STATE;
+#endif
         }
     }
 }

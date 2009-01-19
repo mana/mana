@@ -159,8 +159,8 @@
 		<Unit filename="src\gui\gui.h" />
 		<Unit filename="src\gui\help.cpp" />
 		<Unit filename="src\gui\help.h" />
-		<Unit filename="src\gui\inttextbox.cpp" />
-		<Unit filename="src\gui\inttextbox.h" />
+		<Unit filename="src\gui\inttextfield.cpp" />
+		<Unit filename="src\gui\inttextfield.h" />
 		<Unit filename="src\gui\inventorywindow.cpp" />
 		<Unit filename="src\gui\inventorywindow.h" />
 		<Unit filename="src\gui\item_amount.cpp" />
@@ -184,8 +184,12 @@
 		<Unit filename="src\gui\ministatus.h" />
 		<Unit filename="src\gui\npc_text.cpp" />
 		<Unit filename="src\gui\npc_text.h" />
+		<Unit filename="src\gui\npcintegerdialog.cpp" />
+		<Unit filename="src\gui\npcintegerdialog.h" />
 		<Unit filename="src\gui\npclistdialog.cpp" />
 		<Unit filename="src\gui\npclistdialog.h" />
+		<Unit filename="src\gui\npcstringdialog.cpp" />
+		<Unit filename="src\gui\npcstringdialog.h" />
 		<Unit filename="src\gui\ok_dialog.cpp" />
 		<Unit filename="src\gui\ok_dialog.h" />
 		<Unit filename="src\gui\passwordfield.cpp" />
@@ -257,6 +261,8 @@
 		<Unit filename="src\gui\widgets\dropdown.h" />
 		<Unit filename="src\gui\widgets\layout.cpp" />
 		<Unit filename="src\gui\widgets\layout.h" />
+		<Unit filename="src\gui\widgets\layouthelper.cpp" />
+		<Unit filename="src\gui\widgets\layouthelper.h" />
 		<Unit filename="src\gui\widgets\resizegrip.cpp" />
 		<Unit filename="src\gui\widgets\resizegrip.h" />
 		<Unit filename="src\gui\widgets\tab.cpp" />

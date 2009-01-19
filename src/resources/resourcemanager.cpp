@@ -153,8 +153,8 @@ bool ResourceManager::addToSearchPath(const std::string &path, bool append)
 }
 
 void ResourceManager::searchAndAddArchives(const std::string &path,
-                                      const std::string &ext,
-                                      bool append)
+                                           const std::string &ext,
+                                           bool append)
 {
     const char *dirSep = PHYSFS_getDirSeparator();
     char **list = PHYSFS_enumerateFiles(path.c_str());

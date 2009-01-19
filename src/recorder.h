@@ -31,18 +31,18 @@ class ChatWindow;
 
 class Recorder : public ButtonBoxListener
 {
+    private:
+        ChatWindow *mChat;
+        std::ofstream mStream;
+        ButtonBox *mButtonBox;
     public:
         Recorder(ChatWindow *chat);
-	void record(const std::string &msg);
-	void respond(const std::string &msg);
-	void help() const;
-	void help(const std::string &args) const;
-	void buttonBoxRespond();
-	bool isRecording() const {return mStream.is_open();}
+        void record(const std::string &msg);
+        void respond(const std::string &msg);
+        void help() const;
+        void help(const std::string &args) const;
+        void buttonBoxRespond();
+        bool isRecording() {return (bool) mStream.is_open();}
         virtual ~Recorder();
-    private:
-	ChatWindow *mChat;
-	std::ofstream mStream;
-	ButtonBox *mButtonBox;
 };
 #endif
