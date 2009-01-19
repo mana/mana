@@ -29,57 +29,102 @@
 #include "scrollarea.h"
 #include "setup_colours.h"
 #include "slider.h"
+#include "textfield.h"
+
+#include "widgets/layouthelper.h"
 
 #include "../configuration.h"
 
 #include "../utils/gettext.h"
 
 Setup_Colours::Setup_Colours() :
-    mColourLabel(_("Color:")),
     mSelected(-1)
 {
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 290, 255));
 
     mColourBox = new gcn::ListBox(textColour);
-    mScroll = new ScrollArea(mColourBox);
-
-    mColourLabel.setX(5);
-    mColourLabel.setY(5);
-
-    mColourBox->setDimension(gcn::Rectangle(0, 10 + mColourLabel.getHeight(),
-                                            80,
-                                            115 - mColourLabel.getHeight()));
-    mScroll->setDimension(gcn::Rectangle(5, 10 + mColourLabel.getHeight(),
-                                         100, 115 - mColourLabel.getHeight()));
-    mColourBox->setSelected(-1);
     mColourBox->setActionEventId("colour_box");
     mColourBox->addActionListener(this);
 
+    mScroll = new ScrollArea(mColourBox);
+    mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mScroll->setWidth(90);
+
+    mRedLabel = new gcn::Label(_("Red: "));
+
+    mRedText = new TextField();
+    mRedText->setWidth(40);
+    mRedText->setRange(0, 255);
+    mRedText->setNumeric(true);
+    mRedText->addListener(this);
+
+    mRedSlider = new Slider(0, 255);
+    mRedSlider->setWidth(90);
+    mRedSlider->setValue(mRedText->getValue());
+    mRedSlider->setActionEventId("slider_red");
+    mRedSlider->addActionListener(this);
+
+    mGreenLabel = new gcn::Label(_("Green: "));
+
+    mGreenText = new TextField();
+    mGreenText->setWidth(40);
+    mGreenText->setRange(0, 255);
+    mGreenText->setNumeric(true);
+    mGreenText->addListener(this);
+
+    mGreenSlider = new Slider(0, 255);
+    mGreenSlider->setWidth(90);
+    mGreenSlider->setValue(mGreenText->getValue());
+    mGreenSlider->setActionEventId("slider_green");
+    mGreenSlider->addActionListener(this);
+
+    mBlueLabel = new gcn::Label(_("Blue: "));
+
+    mBlueText = new TextField();
+    mBlueText->setWidth(40);
+    mBlueText->setRange(0, 255);
+    mBlueText->setNumeric(true);
+    mBlueText->addListener(this);
+
+    mBlueSlider = new Slider(0, 255);
+    mBlueSlider->setWidth(90);
+    mBlueSlider->setValue(mBlueText->getValue());
+    mBlueSlider->setActionEventId("slider_blue");
+    mBlueSlider->addActionListener(this);
+
     setOpaque(false);
 
-    add(&mColourLabel);
-    add(mScroll);
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
 
-    setupPlacer(140, mLabel1, mSlider1, mText1, "R", "1");
-    setupPlacer(165, mLabel2, mSlider2, mText2, "G", "2");
-    setupPlacer(190, mLabel3, mSlider3, mText3, "B", "3");
+    place(0, 0, mScroll, 1, 3).setPadding(2);
+    place(1, 0, mRedLabel, 2);
+    place(3, 0, mRedSlider);
+    place(4, 0, mRedText).setPadding(1);
+    place(1, 1, mGreenLabel, 2);
+    place(3, 1, mGreenSlider);
+    place(4, 1, mGreenText).setPadding(1);
+    place(1, 2, mBlueLabel, 2);
+    place(3, 2, mBlueSlider);
+    place(4, 2, mBlueText).setPadding(1);
 
+    setDimension(gcn::Rectangle(0, 0, 290, 150));
 }
 
 Setup_Colours::~Setup_Colours()
 {
-    delete mLabel1;
-    delete mSlider1;
-    delete mText1;
+    delete mRedLabel;
+    delete mRedSlider;
+    delete mRedText;
 
-    delete mLabel2;
-    delete mSlider2;
-    delete mText2;
+    delete mGreenLabel;
+    delete mGreenSlider;
+    delete mGreenText;
 
-    delete mLabel3;
-    delete mSlider3;
-    delete mText3;
+    delete mBlueLabel;
+    delete mBlueSlider;
+    delete mBlueText;
 
     delete mScroll;
 }
@@ -90,35 +135,35 @@ void Setup_Colours::action(const gcn::ActionEvent &event)
     {
         mSelected = mColourBox->getSelected();
         int col = textColour->getColourAt(mSelected);
-        setEntry(mSlider1, mText1, col >> 16);
-        setEntry(mSlider2, mText2, (col >> 8) & 0xff);
-        setEntry(mSlider3, mText3, col & 0xff);
+        setEntry(mRedSlider, mRedText, col >> 16);
+        setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
+        setEntry(mBlueSlider, mBlueText, col & 0xff);
         return;
     }
 
-    if (event.getId() == "slider1")
+    if (event.getId() == "slider_red")
     {
         char buffer[30];
-        std::sprintf(buffer, "%d", static_cast<int>(mSlider1->getValue()));
-        mText1->setText(buffer);
+        std::sprintf(buffer, "%d", static_cast<int>(mRedSlider->getValue()));
+        mRedText->setText(buffer);
         updateColour();
         return;
     }
 
-    if (event.getId() == "slider2")
+    if (event.getId() == "slider_green")
     {
         char buffer[30];
-        std::sprintf(buffer, "%d", static_cast<int>(mSlider2->getValue()));
-        mText2->setText(buffer);
+        std::sprintf(buffer, "%d", static_cast<int>(mGreenSlider->getValue()));
+        mGreenText->setText(buffer);
         updateColour();
         return;
     }
 
-    if (event.getId() == "slider3")
+    if (event.getId() == "slider_blue")
     {
         char buffer[30];
-        std::sprintf(buffer, "%d", static_cast<int>(mSlider3->getValue()));
-        mText3->setText(buffer);
+        std::sprintf(buffer, "%d", static_cast<int>(mBlueSlider->getValue()));
+        mBlueText->setText(buffer);
         updateColour();
         return;
     }
@@ -141,59 +186,28 @@ void Setup_Colours::cancel()
 {
     textColour->rollback();
     int col = textColour->getColourAt(mSelected);
-    setEntry(mSlider1, mText1, col >> 16);
-    setEntry(mSlider2, mText2, (col >> 8) & 0xff);
-    setEntry(mSlider3, mText3, col & 0xff);
-}
-
-void Setup_Colours::setupPlacer(int v, gcn::Label *&l, Slider *&s,
-                                TextField *&t, std::string lbl,
-                                std::string sfx)
-{
-    l = new gcn::Label(lbl + ":");
-    l->setX(5);
-    l->setY(v - l->getHeight() / 2);
-
-    s = new Slider(0, 255);
-    s->setHeight(10);
-    s->setX(25);
-    s->setY(v - s->getHeight() / 2);
-    s->setWidth(128);
-    s->setScale(0, 255);
-
-    t = new TextField();
-    t->setX(165);
-    t->setY(v - t->getHeight() / 2);
-    t->setWidth(40);
-    t->setNumeric(true);
-    t->setRange(0, 255);
-    t->addListener(this);
-
-    s->setActionEventId("slider" + sfx);
-    s->addActionListener(this);
-
-    add(l);
-    add(s);
-    add(t);
+    setEntry(mRedSlider, mRedText, col >> 16);
+    setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
+    setEntry(mBlueSlider, mBlueText, col & 0xff);
 }
 
 void Setup_Colours::listen(const TextField *tf)
 {
-    if (tf == mText1)
+    if (tf == mRedText)
     {
-        mSlider1->setValue(tf->getValue());
+        mRedSlider->setValue(tf->getValue());
         updateColour();
         return;
     }
-    if (tf == mText2)
+    if (tf == mGreenText)
     {
-        mSlider2->setValue(tf->getValue());
+        mGreenSlider->setValue(tf->getValue());
         updateColour();
         return;
     }
-    if (tf == mText3)
+    if (tf == mBlueText)
     {
-        mSlider3->setValue(tf->getValue());
+        mBlueSlider->setValue(tf->getValue());
         updateColour();
         return;
     }
@@ -205,8 +219,8 @@ void Setup_Colours::updateColour()
     {
         return;
     }
-    int rgb = static_cast<int>(mSlider1->getValue()) << 16 |
-              static_cast<int>(mSlider2->getValue()) << 8 |
-              static_cast<int>(mSlider3->getValue());
+    int rgb = static_cast<int>(mRedSlider->getValue()) << 16 |
+              static_cast<int>(mGreenSlider->getValue()) << 8 |
+              static_cast<int>(mBlueSlider->getValue());
     textColour->setColourAt(mSelected, rgb);
 }

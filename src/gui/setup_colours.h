@@ -49,27 +49,24 @@ class Setup_Colours : public SetupTab, public gcn::ActionListener,
         void listen(const TextField *tf);
     private:
         gcn::ListBox *mColourBox;
-        gcn::Label mColourLabel;
         ScrollArea *mScroll;
         int mSelected;
 
-        gcn::Label *mLabel1;
-        Slider *mSlider1;
-        TextField *mText1;
-        int mValue1;
+        gcn::Label *mRedLabel;
+        Slider *mRedSlider;
+        TextField *mRedText;
+        int mRedValue;
 
-        gcn::Label *mLabel2;
-        Slider *mSlider2;
-        TextField *mText2;
-        int mValue2;
+        gcn::Label *mGreenLabel;
+        Slider *mGreenSlider;
+        TextField *mGreenText;
+        int mGreenValue;
 
-        gcn::Label *mLabel3;
-        Slider *mSlider3;
-        TextField *mText3;
-        int mValue3;
+        gcn::Label *mBlueLabel;
+        Slider *mBlueSlider;
+        TextField *mBlueText;
+        int mBlueValue;
 
-        void setupPlacer(int v, gcn::Label *&l, Slider *&s, TextField *&t,
-                         std::string lbl, std::string sfx);
         void setEntry(Slider *s, TextField *t, int value);
         void updateColour();
 };
