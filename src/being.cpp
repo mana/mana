@@ -171,7 +171,39 @@ void Being::setSpeech(const std::string &text, Uint32 time)
 {
     mSpeech = text;
 
-    mSpeechTime = 500;
+    // Trim whitespace
+    while (mSpeech[0] == ' ')
+    {
+        mSpeech = mSpeech.substr(1, mSpeech.size());
+    }
+    while (mSpeech[mSpeech.size()] == ' ')
+    {
+        mSpeech = mSpeech.substr(0, mSpeech.size() - 1);
+    }
+
+    // check for links
+    const std::string::size_type start = mSpeech.find('[');
+    const std::string::size_type end = mSpeech.find(']', start);
+
+    if (start != std::string::npos && end != std::string::npos)
+    {
+        mSpeech.erase(end);
+        std::string::size_type pos = mSpeech.find('@');
+
+        while (pos != std::string::npos)
+        {
+            mSpeech.erase(pos, 2);
+            pos = mSpeech.find('@');
+        }
+
+        pos = mSpeech.find('|');
+
+        if (pos != std::string::npos)
+            mSpeech = mSpeech.substr(pos + 1, mSpeech.size());
+    }
+
+    if (mSpeech != "")
+        mSpeechTime = 500;
 }
 
 void Being::takeDamage(int amount)
