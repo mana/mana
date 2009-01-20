@@ -47,17 +47,12 @@ DebugWindow::DebugWindow():
     setDefaultSize(0, 0, 400, 60);
     loadWindowState();
 
-    mFPSLabel = new gcn::Label("[0 FPS]");
-
+    mFPSLabel = new gcn::Label("0 FPS");
     mMusicFileLabel = new gcn::Label("Music: ");
-
     mMapLabel = new gcn::Label("Map: ");
-
     mMiniMapLabel = new gcn::Label("Mini-Map: ");
-
-    mTileMouseLabel = new gcn::Label("[Mouse: 0, 0]");
-
-    mParticleCountLabel = new gcn::Label("[Particle count: 0]");
+    mTileMouseLabel = new gcn::Label("Mouse: 0, 0");
+    mParticleCountLabel = new gcn::Label("Particle count: 0");
 
     place(0, 0, mFPSLabel);
     place(3, 0, mTileMouseLabel);
@@ -77,34 +72,33 @@ void DebugWindow::logic()
     int mouseTileX = mouseX / 32 + viewport->getCameraX();
     int mouseTileY = mouseY / 32 + viewport->getCameraY();
 
-    mFPSLabel->setCaption("[" + toString(fps) + " FPS]");
+    mFPSLabel->setCaption(toString(fps) + " FPS");
     mFPSLabel->adjustSize();
 
-    mTileMouseLabel->setCaption("[Mouse: " +
-            toString(mouseTileX) + ", " + toString(mouseTileY) + "]");
+    mTileMouseLabel->setCaption("Mouse: " +
+            toString(mouseTileX) + ", " + toString(mouseTileY));
     mTileMouseLabel->adjustSize();
 
     Map *currentMap = engine->getCurrentMap();
-    if (currentMap != NULL)
+    if (currentMap)
     {
         const std::string music =
-            " [Music: " + currentMap->getProperty("music") + "]";
+            "Music: " + currentMap->getProperty("music");
         mMusicFileLabel->setCaption(music);
         mMusicFileLabel->adjustSize();
 
         const std::string minimap =
-            " [MiniMap: " + currentMap->getProperty("minimap") + "]";
+            "MiniMap: " + currentMap->getProperty("minimap");
         mMiniMapLabel->setCaption(minimap);
         mMiniMapLabel->adjustSize();
 
         const std::string map =
-            " [Map: " + currentMap->getProperty("_filename") + "]";
+            "Map: " + currentMap->getProperty("_filename");
         mMapLabel->setCaption(map);
         mMapLabel->adjustSize();
     }
 
-    mParticleCountLabel->setCaption("[Particle count: " +
-                                    toString(Particle::particleCount)
-                                    +"]");
+    mParticleCountLabel->setCaption("Particle count: " +
+                                    toString(Particle::particleCount));
     mParticleCountLabel->adjustSize();
 }
