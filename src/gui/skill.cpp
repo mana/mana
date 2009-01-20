@@ -28,6 +28,8 @@
 #include "skill.h"
 #include "windowcontainer.h"
 
+#include "widgets/layout.h"
+
 #include "../localplayer.h"
 #include "../log.h"
 
@@ -51,7 +53,7 @@ class SkillGuiTableModel : public StaticTableModel
 {
 public:
     SkillGuiTableModel(SkillDialog *dialog) :
-        StaticTableModel(0, 3)
+        StaticTableModel(0, 3, 0xbdb5aa)
     {
         mEntriesNr = 0;
         mDialog = dialog;
@@ -136,16 +138,15 @@ SkillDialog::SkillDialog():
     mTable.setActionEventId("skill");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
-    mPointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
-    mIncButton->setPosition(skillScrollArea->getX(), 210);
-    mUseButton->setPosition(mIncButton->getX() + mIncButton->getWidth() + 5,
-        210);
+    skillScrollArea->setOpaque(false);
 
-    add(skillScrollArea);
-    add(mPointsLabel);
-    add(mIncButton);
-    add(mUseButton);
+    place(0, 0, skillScrollArea, 5).setPadding(3);
+    place(0, 1, mPointsLabel, 2);
+    place(3, 2, mIncButton);
+    place(4, 2, mUseButton);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
 //    mSkillListBox->addActionListener(this);
     mTable.addActionListener(this);

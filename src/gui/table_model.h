@@ -25,6 +25,7 @@
 #include <set>
 #include <vector>
 
+#include <guichan/color.hpp>
 #include <guichan/gui.hpp>
 
 #include "../guichanfwd.h"
@@ -99,12 +100,14 @@ private:
 class StaticTableModel : public TableModel
 {
 public:
-    StaticTableModel(int width, int height);
+    StaticTableModel(int width, int height, gcn::Color background = 0xffffff,
+                     bool opacity = true);
     virtual ~StaticTableModel(void);
 
     /**
      * Inserts a widget into the table model.
-     * The model is resized to accomodate the widget's width and height, unless column width / row height have been fixed.
+     * The model is resized to accomodate the widget's width and height,
+     * unless column width / row height have been fixed.
      */
     virtual void set(int row, int column, gcn::Widget *widget);
 
@@ -127,9 +130,27 @@ public:
      */
     virtual void resize(void);
 
+    /**
+     * Sets the table to be opaque, that is sets the table
+     * to display its background.
+     *
+     * @param opaque True if the table should be opaque, false otherwise.
+     */
+    virtual void setOpaque(bool opaque);
+
+    /**
+     * Checks if the scroll area is opaque, that is if the scroll area
+     * displays its background.
+     *
+     * @return True if the scroll area is opaque, false otherwise.
+     */
+    virtual bool isOpaque() const;
+
     virtual int getRows(void);
     virtual int getColumns(void);
     virtual int getRowHeight(void);
+    virtual int getWidth(void);
+    virtual int getHeight(void);
     virtual int getColumnWidth(int index);
     virtual gcn::Widget *getElementAt(int row, int column);
 
@@ -137,8 +158,22 @@ public:
 protected:
     int mRows, mColumns;
     int mHeight;
+    bool mOpaque;
     std::vector<gcn::Widget *> mTableModel;
     std::vector<int> mWidths;
+
+    /**
+     * Holds the background color of the table.
+     */
+    gcn::Color mBackgroundColor;
+
+    /**
+     * Draws the background of the table, that is
+     * the area behind the content.
+     *
+     * @param graphics a Graphics object to draw with.
+     */
+    virtual void drawBackground(gcn::Graphics *graphics);
 };
 
 #endif /* !defined(TMW_TABLE_MODEL_H_) */
