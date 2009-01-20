@@ -24,6 +24,8 @@
 #include "listbox.h"
 #include "npclistdialog.h"
 
+#include "widgets/layout.h"
+
 #include "../npc.h"
 
 #include "../utils/gettext.h"
@@ -43,23 +45,15 @@ NpcListDialog::NpcListDialog():
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    scrollArea->setDimension(gcn::Rectangle(
-                5, 5, 250, 160 - okButton->getHeight()));
-    cancelButton->setPosition(
-            260 - 5 - cancelButton->getWidth(),
-            175 - 5 - cancelButton->getHeight());
-    okButton->setPosition(
-            cancelButton->getX() - 5 - okButton->getWidth(),
-            cancelButton->getY());
 
-    mItemList->setActionEventId("item");
+    place(0, 0, scrollArea, 5).setPadding(3);
+    place(3, 1, cancelButton);
+    place(4, 1, okButton);
 
-    mItemList->addActionListener(this);
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
-    add(scrollArea);
-    add(okButton);
-    add(cancelButton);
-
+    loadWindowState();
     setLocationRelativeTo(getParent());
 }
 
