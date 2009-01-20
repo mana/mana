@@ -26,6 +26,8 @@
 #include "button.h"
 #include "scrollarea.h"
 
+#include "widgets/layout.h"
+
 #include "../npc.h"
 
 #include "../utils/gettext.h"
@@ -38,24 +40,27 @@ NpcTextDialog::NpcTextDialog():
     setMinWidth(200);
     setMinHeight(150);
 
+    setDefaultSize(0, 0, 260, 175);
+
     mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
     mBrowserBox->setOpaque(true);
 
     scrollArea = new ScrollArea(mBrowserBox);
     okButton = new Button(_("OK"), "ok", this);
 
-    setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
-    scrollArea->setDimension(gcn::Rectangle(
-                5, 5, 250, 160 - okButton->getHeight()));
-    okButton->setPosition(
-            260 - 5 - okButton->getWidth(),
-            175 - 5 - okButton->getHeight());
 
     add(scrollArea);
     add(okButton);
 
+    place(0, 0, scrollArea, 5).setPadding(3);
+    place(4, 1, okButton);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
+
+    loadWindowState();
     setLocationRelativeTo(getParent());
 }
 
