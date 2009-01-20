@@ -2,10 +2,10 @@ CRCCheck on
 SetCompress off
 SetCompressor /SOLID lzma
 
-!define AETHYRAROOT "..\.."
+!define SRCDIR "..\.."
 
 ;--- (and without !defines ) ---
-!System "upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d ${AETHYRAROOT}\aethyra.exe"
+!System "upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d ${SRCDIR}\aethyra.exe"
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Aethyra"
@@ -22,9 +22,9 @@ SetCompressor /SOLID lzma
 ; MUI Settings
 !define MUI_ABORTWARNING
 ;!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\win-install.ico"
-!define MUI_ICON "${AETHYRAROOT}\data\icons\aethyra.ico"
+!define MUI_ICON "${SRCDIR}\data\icons\aethyra.ico"
 ;!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\win-uninstall.ico"
-!define MUI_UNICON "${AETHYRAROOT}\data\icons\aethyra.ico"
+!define MUI_UNICON "${SRCDIR}\data\icons\aethyra.ico"
 
 ;Language Selection Dialog Settings
 ;Remember the installer language
@@ -40,7 +40,7 @@ SetCompressor /SOLID lzma
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "${AETHYRAROOT}\COPYING"
+!insertmacro MUI_PAGE_LICENSE "${SRCDIR}\COPYING"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Instfiles page
@@ -161,31 +161,31 @@ Section "Core files (required)" SecCore
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
 
-  File "${AETHYRAROOT}\aethyra.exe"
-  File "${AETHYRAROOT}\*.dll"
-  File "${AETHYRAROOT}\AUTHORS"
-  File "${AETHYRAROOT}\COPYING"
-  File "${AETHYRAROOT}\NEWS"
-  File "${AETHYRAROOT}\README"
+  File "${SRCDIR}\aethyra.exe"
+  File "${SRCDIR}\*.dll"
+  File "${SRCDIR}\AUTHORS"
+  File "${SRCDIR}\COPYING"
+  File "${SRCDIR}\NEWS"
+  File "${SRCDIR}\README"
   SetOutPath "$INSTDIR\data\fonts"
-  File "${AETHYRAROOT}\data\fonts\*.ttf"
+  File "${SRCDIR}\data\fonts\*.ttf"
   SetOutPath "$INSTDIR\data\graphics\gui"
-  File "${AETHYRAROOT}\data\graphics\gui\*.png"
-  File "${AETHYRAROOT}\data\graphics\gui\*.xml"
+  File "${SRCDIR}\data\graphics\gui\*.png"
+  File "${SRCDIR}\data\graphics\gui\*.xml"
   SetOutPath "$INSTDIR\data\graphics\images"
-  File /x minimap_*.png ${AETHYRAROOT}\data\graphics\images\*.png
+  File /x minimap_*.png ${SRCDIR}\data\graphics\images\*.png
   SetOutPath "$INSTDIR\data\help"
-  File "${AETHYRAROOT}\data\help\*.txt"
+  File "${SRCDIR}\data\help\*.txt"
   SetOutPath "$INSTDIR\data\icons\"
-  File "${AETHYRAROOT}\data\icons\aethyra.ico"
+  File "${SRCDIR}\data\icons\aethyra.ico"
   SetOutPath "$INSTDIR\data\music"
-  File /nonfatal "${AETHYRAROOT}\data\music\*.ogg"
+  File /nonfatal "${SRCDIR}\data\music\*.ogg"
   SetOutPath "$INSTDIR\docs"
-  File "${AETHYRAROOT}\docs\FAQ.txt"
+  File "${SRCDIR}\docs\FAQ.txt"
   SetOutPath "$INSTDIR\po"
-  File "${AETHYRAROOT}\po\aethyra.pot"
-  File "${AETHYRAROOT}\po\LINGUAS"
-  File "${AETHYRAROOT}\po\*.po"
+  File "${SRCDIR}\po\aethyra.pot"
+  File "${SRCDIR}\po\LINGUAS"
+  File "${SRCDIR}\po\*.po"
 SectionEnd
 
 Section -AdditionalIcons
