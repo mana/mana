@@ -22,7 +22,9 @@
 #include <string>
 
 #include "npc_text.h"
-#include "textbox.h"
+#include "browserbox.h"
+#include "button.h"
+#include "scrollarea.h"
 
 #include "../npc.h"
 
@@ -36,10 +38,10 @@ NpcTextDialog::NpcTextDialog():
     setMinWidth(200);
     setMinHeight(150);
 
-    mTextBox = new TextBox;
-    mTextBox->setEditable(false);
+    mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
+    mBrowserBox->setOpaque(true);
 
-    scrollArea = new ScrollArea(mTextBox);
+    scrollArea = new ScrollArea(mBrowserBox);
     okButton = new Button(_("OK"), "ok", this);
 
     setContentSize(260, 175);
@@ -57,47 +59,27 @@ NpcTextDialog::NpcTextDialog():
     setLocationRelativeTo(getParent());
 }
 
+void NpcTextDialog::clearText()
+{
+    mBrowserBox->clearRows();
+}
+
 void NpcTextDialog::setText(const std::string &text)
 {
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-
-    mText = text;
-    mTextBox->setMinWidth(width - 30);
-    mTextBox->setTextWrapped(mText);
+    mBrowserBox->clearRows();
+    mBrowserBox->addRow(text);
 }
 
 void NpcTextDialog::addText(const std::string &text)
 {
-    setText(mText + text + "\n");
-}
-
-void NpcTextDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    mTextBox->setMinWidth(width - 30);
-    mTextBox->setTextWrapped(mText);
-
-    scrollArea->setDimension(gcn::Rectangle(
-                5, 5, width - 10, height - 15 - okButton->getHeight()));
-    okButton->setPosition(
-            width - 5 - okButton->getWidth(),
-            height - 5 - okButton->getHeight());
-
-    // Set the text again so that it gets wrapped according to the new size
-    mTextBox->setTextWrapped(mText);
+    mBrowserBox->addRow(text);
 }
 
 void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        setText("");
+        clearText();
         setVisible(false);
         if (current_npc)
             current_npc->nextDialog();

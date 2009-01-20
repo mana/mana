@@ -26,13 +26,10 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "button.h"
 #include "scrollarea.h"
 #include "window.h"
 
-#include "../guichanfwd.h"
-
-class TextBox;
+class BrowserBox;
 
 /**
  * The npc text dialog.
@@ -50,16 +47,14 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         NpcTextDialog();
 
         /**
-         * Called when resizing the window.
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+        /**
+         * Clears the text shown in the dialog.
+         */
+        void clearText();
 
         /**
          * Sets the text shows in the dialog.
@@ -79,9 +74,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
     private:
         gcn::Button *okButton;
         gcn::ScrollArea *scrollArea;
-        TextBox *mTextBox;
-
-        std::string mText;
+        BrowserBox *mBrowserBox;
 };
 
 #endif // _TMW_NPC_TEXT_H
