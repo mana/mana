@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <SDL_mouse.h>
+
 #include "itemlinkhandler.h"
 #include "itempopup.h"
 
@@ -47,14 +49,15 @@ void ItemLinkHandler::handleLink(const std::string &link)
     if (id > 0)
     {
         const ItemInfo &iteminfo = ItemDB::get(id);
+        int mouseX, mouseY;
+
+        SDL_GetMouseState(&mouseX, &mouseY);
+
         mItemPopup->setItem(iteminfo);
+
         if (mItemPopup->isVisible())
-        {
             mItemPopup->setVisible(false);
-        }
         else
-        {
-            mItemPopup->setVisible(true);
-        }
+            mItemPopup->view(mouseX, mouseY);
     }
 }

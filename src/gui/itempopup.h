@@ -36,6 +36,7 @@ class ItemPopup : public Window
 
         void setItem(const ItemInfo &item);
         unsigned int getNumRows();
+        void view(int x, int y);
 
     private:
         gcn::Label *mItemName;

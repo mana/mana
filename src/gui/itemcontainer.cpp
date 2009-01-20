@@ -19,10 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itemcontainer.h"
+#include <SDL_mouse.h>
 
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
+
+#include "itemcontainer.h"
 
 #include "../graphics.h"
 #include "../inventory.h"
@@ -143,6 +145,7 @@ void ItemContainer::recalculateHeight()
 
     const int rows = (mMaxItems / cols) + (mMaxItems % cols > 0 ? 1 : 0);
     const int height = rows * gridHeight + 8;
+
     if (height != getHeight())
         setHeight(height);
 }
@@ -248,16 +251,16 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
 // Show ItemTooltip
 void ItemContainer::mouseMoved(gcn::MouseEvent &event)
 {
-    Item *item = mInventory->getItem( getSlotIndex(event.getX(), event.getY() ) );
+    Item *item = mInventory->getItem(getSlotIndex(event.getX(), event.getY()));
 
     if (item)
     {
-        mItemPopup->setPosition(getParent()->getParent()->getX() + 
-                                getParent()->getParent()->getWidth(), 
-                                getParent()->getParent()->getY());
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+
         mItemPopup->setItem(item->getInfo());
         mItemPopup->setOpaque(false);
-        mItemPopup->setVisible(true);
+        mItemPopup->view(mouseX, mouseY);
     }
     else
     {

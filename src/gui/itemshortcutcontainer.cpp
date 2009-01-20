@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+#include <SDL_mouse.h>
 
 #include "itemshortcutcontainer.h"
 
@@ -223,23 +224,12 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
 
     if (item)
     {
-        if (getParent()->getParent()->getWidth() < 
-            getParent()->getParent()->getHeight())
-        {
-            mItemPopup->setPosition(getParent()->getParent()->getX() - 
-                                    mItemPopup->getWidth(), 
-                                    getParent()->getParent()->getY());
-        }
-        else
-        {
-            mItemPopup->setPosition(getParent()->getParent()->getX(), 
-                                    getParent()->getParent()->getY() + 
-                                    getParent()->getParent()->getHeight());
-        }
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
 
         mItemPopup->setItem(item->getInfo());
         mItemPopup->setOpaque(false);
-        mItemPopup->setVisible(true);
+        mItemPopup->view(mouseX, mouseY);
     }
     else
     {
