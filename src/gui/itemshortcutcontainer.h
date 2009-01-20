@@ -29,6 +29,8 @@
 #include "../guichanfwd.h"
 #include "shortcutcontainer.h"
 
+#include "itempopup.h"
+
 class Image;
 class Item;
 
@@ -76,8 +78,13 @@ class ItemShortcutContainer : public ShortcutContainer
         void mouseReleased(gcn::MouseEvent &event);
 
     private:
+        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
+
         bool mItemClicked;
         Item *mItemMoved;
+
+        ItemPopup *mItemPopup;
 };
 
 #endif

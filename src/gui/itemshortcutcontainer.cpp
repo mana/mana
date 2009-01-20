@@ -43,6 +43,8 @@ ItemShortcutContainer::ItemShortcutContainer():
     addMouseListener(this);
     addWidgetListener(this);
 
+    mItemPopup = new ItemPopup();
+
     ResourceManager *resman = ResourceManager::getInstance();
 
     mBackgroundImg = resman->getImage("graphics/gui/item_shortcut_bgr.png");
@@ -134,16 +136,21 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
 void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 {
-    if (event.getButton() == gcn::MouseEvent::LEFT) {
-        if (!mItemMoved && mItemClicked) {
+    if (event.getButton() == gcn::MouseEvent::LEFT)
+    {
+        if (!mItemMoved && mItemClicked)
+        {
             const int index = getIndexFromGrid(event.getX(), event.getY());
-            if (index == -1) {
-                return;
-            }
             const int itemId = itemShortcut->getItem(index);
+
+            if (index == -1)
+                return;
+
             if (itemId < 0)
                 return;
+
             Item *item = player_node->getInventory()->findItem(itemId);
+
             if (item)
             {
                 mItemMoved = item;
@@ -160,18 +167,17 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
 {
     const int index = getIndexFromGrid(event.getX(), event.getY());
-    if (index == -1) {
+    if (index == -1)
         return;
-    }
 
     // Stores the selected item if theirs one.
-    if (itemShortcut->isItemSelected()) {
+    if (itemShortcut->isItemSelected())
+    {
         itemShortcut->setItem(index);
         itemShortcut->setItemSelected(-1);
     }
-    else if (itemShortcut->getItem(index)) {
+    else if (itemShortcut->getItem(index))
         mItemClicked = true;
-    }
 }
 
 void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
@@ -179,15 +185,16 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
         if (itemShortcut->isItemSelected())
-        {
             itemShortcut->setItemSelected(-1);
-        }
+
         const int index = getIndexFromGrid(event.getX(), event.getY());
-        if (index == -1) {
+        if (index == -1)
+        {
             mItemMoved = NULL;
             return;
         }
-        if (mItemMoved) {
+        if (mItemMoved)
+        {
             itemShortcut->setItems(index, mItemMoved->getId());
             mItemMoved = NULL;
         }
@@ -195,9 +202,54 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         {
             itemShortcut->useItem(index);
         }
-        if (mItemClicked) {
+        if (mItemClicked)
             mItemClicked = false;
-        }
     }
+}
+
+// Show ItemTooltip
+void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
+{
+    const int index = getIndexFromGrid(event.getX(), event.getY());
+    const int itemId = itemShortcut->getItem(index);
+
+    if (index == -1)
+         return;
+
+    if (itemId < 0)
+        return;
+
+    Item *item = player_node->getInventory()->findItem(itemId);
+
+    if (item)
+    {
+        if (getParent()->getParent()->getWidth() < 
+            getParent()->getParent()->getHeight())
+        {
+            mItemPopup->setPosition(getParent()->getParent()->getX() - 
+                                    mItemPopup->getWidth(), 
+                                    getParent()->getParent()->getY());
+        }
+        else
+        {
+            mItemPopup->setPosition(getParent()->getParent()->getX(), 
+                                    getParent()->getParent()->getY() + 
+                                    getParent()->getParent()->getHeight());
+        }
+
+        mItemPopup->setItem(item->getInfo());
+        mItemPopup->setOpaque(false);
+        mItemPopup->setVisible(true);
+    }
+    else
+    {
+        mItemPopup->setVisible(false);
+    }
+}
+
+// Hide ItemTooltip
+void ItemShortcutContainer::mouseExited(gcn::MouseEvent &event)
+{
+    mItemPopup->setVisible(false);
 }
 
