@@ -43,7 +43,7 @@ NpcTextDialog::NpcTextDialog():
     setDefaultSize(0, 0, 260, 175);
 
     mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mBrowserBox->setOpaque(true);
+    mBrowserBox->setOpaque(false);
 
     scrollArea = new ScrollArea(mBrowserBox);
     okButton = new Button(_("OK"), "ok", this);
