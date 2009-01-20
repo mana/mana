@@ -51,9 +51,6 @@ NpcTextDialog::NpcTextDialog():
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
 
-    add(scrollArea);
-    add(okButton);
-
     place(0, 0, scrollArea, 5).setPadding(3);
     place(4, 1, okButton);
 
