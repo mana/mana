@@ -29,8 +29,10 @@
 #include "gui.h"
 #include "viewport.h"
 
-#include "../game.h"
+#include "widgets/layout.h"
+
 #include "../engine.h"
+#include "../game.h"
 #include "../particle.h"
 #include "../map.h"
 
@@ -47,33 +49,28 @@ DebugWindow::DebugWindow():
     loadWindowState();
 
     mFPSLabel = new gcn::Label("[0 FPS]");
-    mFPSLabel->setPosition(0,0);
 
     mMusicFileLabel = new gcn::Label("Music: ");
-    mMusicFileLabel->setPosition(0, 15);
 
     mMapLabel = new gcn::Label("Map: ");
-    mMapLabel->setPosition(0, 30);
 
     mMiniMapLabel = new gcn::Label("Mini-Map: ");
-    mMiniMapLabel->setPosition(0, 45);
 
     mTileMouseLabel = new gcn::Label("[Mouse: 0, 0]");
-    mTileMouseLabel->setPosition(200, 0);
 
     mParticleCountLabel = new gcn::Label("[Particle count: 0]");
-    mParticleCountLabel->setPosition(200, 15);
 
-    add(mFPSLabel);
-    add(mMusicFileLabel);
-    add(mMiniMapLabel);
-    add(mMapLabel);
-    add(mTileMouseLabel);
-    add(mParticleCountLabel);
+    place(0, 0, mFPSLabel);
+    place(3, 0, mTileMouseLabel);
+    place(0, 1, mMusicFileLabel, 2);
+    place(3, 1, mParticleCountLabel);
+    place(0, 2, mMapLabel, 2);
+    place(0, 3, mMiniMapLabel, 2);
+
+    reflowLayout(375, 0);
 }
 
-void
-DebugWindow::logic()
+void DebugWindow::logic()
 {
     // Get the current mouse position
     int mouseX, mouseY;
