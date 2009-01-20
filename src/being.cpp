@@ -187,19 +187,16 @@ void Being::setSpeech(const std::string &text, Uint32 time)
 
     if (start != std::string::npos && end != std::string::npos)
     {
-        mSpeech.erase(end);
-        std::string::size_type pos = mSpeech.find('@');
+        std::string::size_type position = mSpeech.find('|');
+        mSpeech.erase(end, 1);
+        mSpeech.erase(start, (position - start) + 1);
+        position = mSpeech.find('@');
 
-        while (pos != std::string::npos)
+        while (position != std::string::npos)
         {
-            mSpeech.erase(pos, 2);
-            pos = mSpeech.find('@');
+            mSpeech.erase(position, 2);
+            position = mSpeech.find('@');
         }
-
-        pos = mSpeech.find('|');
-
-        if (pos != std::string::npos)
-            mSpeech = mSpeech.substr(pos + 1, mSpeech.size());
     }
 
     if (mSpeech != "")
