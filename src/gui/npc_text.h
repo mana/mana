@@ -27,7 +27,7 @@
 
 #include "window.h"
 
-class TextBox;
+class BrowserBox;
 
 /**
  * The npc text dialog.
@@ -57,6 +57,11 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         /**
+         * Clears the text shown in the dialog.
+         */
+        void clearText();
+
+        /**
          * Sets the text shows in the dialog.
          *
          * @param string The new text.
@@ -74,9 +79,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
     private:
         gcn::Button *okButton;
         gcn::ScrollArea *scrollArea;
-        TextBox *mTextBox;
-
-        std::string mText;
+        BrowserBox *mBrowserBox;
 };
 
 #endif // _TMW_NPC_TEXT_H

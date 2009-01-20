@@ -23,9 +23,9 @@
 
 #include <string>
 
-#include "scrollarea.h"
+#include "browserbox.h"
 #include "button.h"
-#include "textbox.h"
+#include "scrollarea.h"
 
 #include "../npc.h"
 
@@ -39,10 +39,10 @@ NpcTextDialog::NpcTextDialog():
     setMinWidth(200);
     setMinHeight(150);
 
-    mTextBox = new TextBox;
-    mTextBox->setEditable(false);
+    mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
+    mBrowserBox->setOpaque(true);
 
-    scrollArea = new ScrollArea(mTextBox);
+    scrollArea = new ScrollArea(mBrowserBox);
     okButton = new Button(_("OK"), "ok", this);
 
     setContentSize(260, 175);
@@ -60,15 +60,20 @@ NpcTextDialog::NpcTextDialog():
     setLocationRelativeTo(getParent());
 }
 
+void NpcTextDialog::clearText()
+{
+    mBrowserBox->clearRows();
+}
+
 void NpcTextDialog::setText(const std::string &text)
 {
-    mText = text;
-    mTextBox->setTextWrapped(mText);
+    mBrowserBox->clearRows();
+    mBrowserBox->addRow(text);
 }
 
 void NpcTextDialog::addText(const std::string &text)
 {
-    setText(mText + text + "\n");
+    mBrowserBox->addRow(text);
 }
 
 void NpcTextDialog::widgetResized(const gcn::Event &event)
@@ -84,16 +89,13 @@ void NpcTextDialog::widgetResized(const gcn::Event &event)
     okButton->setPosition(
             width - 5 - okButton->getWidth(),
             height - 5 - okButton->getHeight());
-
-    // Set the text again so that it gets wrapped according to the new size
-    mTextBox->setTextWrapped(mText);
 }
 
 void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        setText("");
+        clearText();
         setVisible(false);
         if (current_npc)
             current_npc->nextDialog();
