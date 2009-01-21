@@ -358,27 +358,34 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
 
     // check for item link
     std::string::size_type start = msg.find('[');
-    if (start != std::string::npos && msg[start+1] != '@')
+    while (start != std::string::npos && msg[start+1] != '@')
     {
         std::string::size_type end = msg.find(']', start);
         if (end != std::string::npos)
         {
-            std::string temp = msg.substr(start+1, end-1);
+            std::string temp = msg.substr(start+1, end - start - 1);
+
+            while (temp[0] == ' ')
+            {
+                temp = temp.substr(1, temp.size());
+            }
+            while (temp[temp.size()] == ' ')
+            {
+                temp = temp.substr(0, temp.size() - 1);
+            }
 
             for (unsigned int i = 0; i < temp.size(); i++)
             {
                 temp[i] = (char) tolower(temp[i]);
             }
 
-            std::cout << temp << std::endl;
-
-            ItemInfo itemInfo = ItemDB::get(temp);
+            const ItemInfo itemInfo = ItemDB::get(temp);
             msg.insert(end, "@@");
             msg.insert(start+1, "|");
             msg.insert(start+1, toString(itemInfo.getId()));
             msg.insert(start+1, "@@");
-
         }
+        start =  msg.find('[', start + 1);
     }
 
     // Prepare ordinary message
