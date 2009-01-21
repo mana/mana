@@ -54,7 +54,7 @@ run it with "aethyra". By default all files are installed to /usr/local, you can
 pass a different prefix to configure as usual.
 
     NOTE: if the autobuild.sh fails 
-	1.) ./autogen.sh
+	1.) autoreconf -i
 	2.) ./configure
 	3.) make
 	4.) su -c "make install"

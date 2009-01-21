@@ -10,10 +10,7 @@ echo "Generating build information using aclocal, autoheader, automake and autoc
 echo
 
 # Regerate configuration files
-aclocal
-autoheader
-automake --gnu --add-missing --copy
-autoconf
+autoreconf -i
 
 echo
 echo "Now you are ready to run ./configure"
