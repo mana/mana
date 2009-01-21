@@ -122,8 +122,8 @@ void ItemPopup::view(int x, int y)
 {
     if (windowContainer->getWidth() < (x + getWidth() + 5))
 	x = windowContainer->getWidth() - getWidth();
-    if (windowContainer->getHeight() < (y + getHeight() + 5))
-	y = windowContainer->getHeight() - getHeight();
+    if ((y - getHeight() - 5) < 0)
+	y = 0;
     else
         y = y - getHeight() - 5;
     setPosition(x, y);
