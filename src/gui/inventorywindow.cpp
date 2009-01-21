@@ -21,7 +21,10 @@
 
 #include <string>
 
+#include <guichan/font.hpp>
 #include <guichan/mouseinput.hpp>
+
+#include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "gui.h"
@@ -30,6 +33,8 @@
 #include "itemcontainer.h"
 #include "scrollarea.h"
 #include "viewport.h"
+
+#include "widgets/layout.h"
 
 #include "../inventory.h"
 #include "../item.h"
@@ -48,7 +53,7 @@ InventoryWindow::InventoryWindow():
     setWindowName(_("Inventory"));
     setResizable(true);
     setCloseButton(true);
-    setMinWidth(240);
+
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(115, 25, 322, 200);
 
@@ -68,19 +73,24 @@ InventoryWindow::InventoryWindow():
               mMaxWeight + _(" g Slots: ") + 
               toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
               "/" + toString(player_node->getInventory()->getInventorySize());
-    mWeightLabel = new TextBox();
-    mWeightLabel->setPosition(8, 8);
+    mWeightLabel = new gcn::Label(mWeight);
 
-    draw();
+    setMinHeight(130);
+    setMinWidth(getFont()->getWidth(mWeight));
 
-    add(mUseButton);
-    add(mDropButton);
-    add(mInvenScroll);
-    add(mWeightLabel);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
 
-    mUseButton->setSize(60, mUseButton->getHeight());
+    place(0, 0, mInvenScroll, 5, 4);
+    place(0, 4, mWeightLabel, 5);
+    place(3, 5, mDropButton);
+    place(4, 5, mUseButton);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
+    setLocationRelativeTo(getParent());
 }
 
 void InventoryWindow::logic()
@@ -103,7 +113,7 @@ void InventoryWindow::logic()
                  toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
                  "/" + toString(player_node->getInventory()->getInventorySize());
 
-        draw();
+        setMinWidth(getFont()->getWidth(mWeight));
     }
 }
 
@@ -114,34 +124,28 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     if (!item)
         return;
 
-    if (event.getId() == "use") {
-        if (item->isEquipment()) {
-            if (item->isEquipped()) {
+    if (event.getId() == "use")
+    {
+        if (item->isEquipment())
+        {
+            if (item->isEquipped())
                 player_node->unequipItem(item);
-            }
-            else {
+            else
                 player_node->equipItem(item);
-            }
         }
-        else {
+        else
             player_node->useItem(item);
-        }
     }
     else if (event.getId() == "drop")
     {
-        if (item->getQuantity() == 1) {
+        if (item->getQuantity() == 1)
             player_node->dropItem(item, 1);
-        }
-        else {
+        else
+        {
             // Choose amount of items to drop
             new ItemAmountWindow(AMOUNT_ITEM_DROP, this, item);
         }
     }
-}
-
-void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
-{
-    draw();
 }
 
 void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
@@ -164,48 +168,19 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
-void InventoryWindow::draw()
-{
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    // Update weight information
-    mWeightLabel->setTextWrapped(mWeight);
-    mWeightLabel->setMinWidth(width - 16);
-
-    mUseButton->setPosition(8, height - 8 - mUseButton->getHeight());
-    mDropButton->setPosition(8 + mUseButton->getWidth() + 5,
-            mUseButton->getY());
-
-    mInvenScroll->setSize(width - 16,
-            mUseButton->getY() - (mWeightLabel->getNumberOfRows()*15) - 18);
-    mInvenScroll->setPosition(8, (mWeightLabel->getNumberOfRows()*15) + 10);
-
-    setMinHeight(130 + (mWeightLabel->getNumberOfRows()*15));
-}
-
-void InventoryWindow::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-    draw();
-}
-
 void InventoryWindow::updateButtons()
 {
     const Item *selectedItem = mItems->getSelectedItem();
 
     if (selectedItem && selectedItem->isEquipment())
     {
-        if (selectedItem->isEquipped()) {
+        if (selectedItem->isEquipped())
             mUseButton->setCaption(_("Unequip"));
-        }
-        else {
+        else
             mUseButton->setCaption(_("Equip"));
-        }    }
-    else {
-        mUseButton->setCaption(_("Use"));
     }
+    else
+        mUseButton->setCaption(_("Use"));
 
     mUseButton->setEnabled(selectedItem != 0);
     mDropButton->setEnabled(selectedItem != 0);

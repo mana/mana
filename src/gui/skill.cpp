@@ -60,14 +60,17 @@ public:
         update();
     }
 
-    virtual int getRows(void) { return mEntriesNr; }
+    virtual int getRows(void)
+    {
+        return mEntriesNr;
+    }
 
     virtual int getColumnWidth(int index)
     {
-        switch (index) {
-        case 0:  return 160;
-        default: return 35;
-        }
+        if (index == 0)
+            return 160;
+
+        return 35;
     }
 
     virtual int getRowHeight(void)
@@ -82,7 +85,8 @@ public:
         mEntriesNr = mDialog->getSkills().size();
         resize();
 
-        for (int i = 0; i < mEntriesNr; i++) {
+        for (int i = 0; i < mEntriesNr; i++)
+        {
             SKILL *skill = mDialog->getSkills()[i];
             SkillInfo const *info;
             char tmp[128];
@@ -127,6 +131,9 @@ SkillDialog::SkillDialog():
     setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 260, 25, 255, 260);
 
+    setMinHeight(50 + mTableModel->getHeight());
+    setMinWidth(200);
+
 //    mSkillListBox = new ListBox(this);
     ScrollArea *skillScrollArea = new ScrollArea(&mTable);
     mPointsLabel = new gcn::Label(strprintf(_("Skill points: %d"), 0));
@@ -166,9 +173,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
         // Increment skill
         int selectedSkill = mTable.getSelectedRow();//mSkillListBox->getSelected();
         if (selectedSkill >= 0)
-        {
             player_node->raiseSkill(mSkillList[selectedSkill]->id);
-        }
     }
     else if (event.getId() == "skill")
     {
@@ -177,9 +182,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
                 player_node->mSkillPoint > 0);
     }
     else if (event.getId() == "close")
-    {
         setVisible(false);
-    }
 }
 
 void SkillDialog::update()
@@ -189,7 +192,8 @@ void SkillDialog::update()
 
     int selectedSkill = mTable.getSelectedRow();
 
-    if (selectedSkill >= 0) {
+    if (selectedSkill >= 0)
+    {
         int skillId = mSkillList[selectedSkill]->id;
         bool modifiable;
 
@@ -200,10 +204,12 @@ void SkillDialog::update()
 
         mIncButton->setEnabled(modifiable
                                && player_node->mSkillPoint > 0);
-    } else
+    }
+    else
         mIncButton->setEnabled(false);
 
     mTableModel->update();
+    setMinHeight(50 + mTableModel->getHeight());
 }
 
 int SkillDialog::getNumberOfElements()
@@ -213,10 +219,10 @@ int SkillDialog::getNumberOfElements()
 
 bool SkillDialog::hasSkill(int id)
 {
-    for (unsigned int i = 0; i < mSkillList.size(); i++) {
-        if (mSkillList[i]->id == id) {
+    for (unsigned int i = 0; i < mSkillList.size(); i++)
+    {
+        if (mSkillList[i]->id == id)
             return true;
-        }
     }
     return false;
 }
@@ -232,8 +238,10 @@ void SkillDialog::addSkill(int id, int lvl, int mp)
 
 void SkillDialog::setSkill(int id, int lvl, int mp)
 {
-    for (unsigned int i = 0; i < mSkillList.size(); i++) {
-        if (mSkillList[i]->id == id) {
+    for (unsigned int i = 0; i < mSkillList.size(); i++)
+    {
+        if (mSkillList[i]->id == id)
+        {
             mSkillList[i]->lv = lvl;
             mSkillList[i]->sp = mp;
         }

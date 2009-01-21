@@ -51,13 +51,6 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         NpcListDialog();
 
         /**
-         * Called when resizing the window
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);

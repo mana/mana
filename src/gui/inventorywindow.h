@@ -62,22 +62,7 @@ class InventoryWindow : public Window, gcn::ActionListener,
          */
         Item* getSelectedItem() const;
 
-        /**
-         * Updates labels to currently selected item.
-         */
-        void valueChanged(const gcn::SelectionEvent &event);
-
         void mouseClicked(gcn::MouseEvent &event);
-
-        /**
-         * Updates window drawing.
-         */
-        void draw();
-
-        /**
-         * Called whenever the widget changes size.
-         */
-        void widgetResized(const gcn::Event &event);
 
     private:
         void updateButtons();    /**< Updates button states. */
@@ -89,7 +74,7 @@ class InventoryWindow : public Window, gcn::ActionListener,
         std::string mMaxWeight;
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
-        TextBox *mWeightLabel;
+        gcn::Label *mWeightLabel;
 
         bool mItemDesc;
 };

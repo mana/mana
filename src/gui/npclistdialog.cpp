@@ -47,8 +47,8 @@ NpcListDialog::NpcListDialog():
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     place(0, 0, scrollArea, 5).setPadding(3);
-    place(3, 1, cancelButton);
-    place(4, 1, okButton);
+    place(3, 1, okButton);
+    place(4, 1, cancelButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
@@ -79,24 +79,6 @@ void NpcListDialog::parseItems(const std::string &itemString)
 void NpcListDialog::reset()
 {
     mItems.clear();
-}
-
-void NpcListDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    scrollArea->setDimension(gcn::Rectangle(
-                5, 5, width - 10, height - 15 - okButton->getHeight()));
-    cancelButton->setPosition(
-            width - 5 - cancelButton->getWidth(),
-            height - 5 - cancelButton->getHeight());
-    okButton->setPosition(
-            cancelButton->getX() - 5 - okButton->getWidth(),
-            cancelButton->getY());
 }
 
 void NpcListDialog::action(const gcn::ActionEvent &event)
