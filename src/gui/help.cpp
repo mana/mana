@@ -50,9 +50,6 @@ HelpWindow::HelpWindow():
 
     mBrowserBox->setLinkHandler(this);
 
-    add(mScrollArea);
-    add(okButton);
-
     place(0, 0, mScrollArea, 5, 3).setPadding(3);
     place(4, 3, okButton);
 
