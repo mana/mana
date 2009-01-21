@@ -24,6 +24,8 @@
 #include "help.h"
 #include "scrollarea.h"
 
+#include "widgets/layout.h"
+
 #include "../resources/resourcemanager.h"
 
 #include "../utils/gettext.h"
@@ -32,7 +34,8 @@ HelpWindow::HelpWindow():
     Window(_("Help"))
 {
     setContentSize(455, 350);
-    setWindowName("Help");
+    setWindowName(_("Help"));
+    setResizable(true);
 
     mBrowserBox = new BrowserBox();
     mBrowserBox->setOpaque(false);
@@ -49,6 +52,12 @@ HelpWindow::HelpWindow():
 
     add(mScrollArea);
     add(okButton);
+
+    place(0, 0, mScrollArea, 5, 3).setPadding(3);
+    place(4, 3, okButton);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     setLocationRelativeTo(getParent());
 }
