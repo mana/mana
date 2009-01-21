@@ -21,8 +21,10 @@ else
 	cd $file1
 	#execute the git command to download the client files
 	git clone git://gitorious.org/tmw/aethyra.git
+	#change to the aethyra directory
+	cd $file;
 	#issue the auto build script to compile the client
-	./autobuild
+	./autobuild.sh
 	echo "congratulations on installing aethyra enjoy"
 	exit 1;
 fi
