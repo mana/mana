@@ -364,6 +364,14 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         if (end != std::string::npos)
         {
             std::string temp = msg.substr(start+1, end-1);
+
+            for (unsigned int i = 0; i < temp.size(); i++)
+            {
+                temp[i] = (char) tolower(temp[i]);
+            }
+
+            std::cout << temp << std::endl;
+
             ItemInfo itemInfo = ItemDB::get(temp);
             msg.insert(end, "@@");
             msg.insert(start+1, "|");

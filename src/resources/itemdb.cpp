@@ -124,7 +124,14 @@ void ItemDB::load()
                 NamedItemInfoIterator itr = mNamedItemInfos.find(name);
                 if (itr == mNamedItemInfos.end())
                 {
-                    mNamedItemInfos[name] = itemInfo;
+                    std::string temp = name;
+
+                    for (unsigned int i = 0; i < temp.size(); i++)
+                    {
+                        temp[i] = (char) tolower(temp[i]);
+                    }
+
+                    mNamedItemInfos[temp] = itemInfo;
                 }
                 else
                 {
