@@ -363,6 +363,13 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         std::string::size_type end = msg.find(']', start);
         if (end != std::string::npos)
         {
+            // Catch multiple embeds and ignore them so it doesn't crash the client.
+            while ((msg.find('[', start + 1) != std::string::npos) && 
+                   (msg.find('[', start + 1) < end))
+            {
+                start = msg.find('[', start + 1);
+            }
+
             std::string temp = msg.substr(start+1, end - start - 1);
 
             while (temp[0] == ' ')

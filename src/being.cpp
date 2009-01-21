@@ -187,6 +187,13 @@ void Being::setSpeech(const std::string &text, Uint32 time)
 
     while (start != std::string::npos && end != std::string::npos)
     {
+        // Catch multiple embeds and ignore them so it doesn't crash the client.
+        while ((mSpeech.find('[', start + 1) != std::string::npos) && 
+               (mSpeech.find('[', start + 1) < end))
+        {
+            start = mSpeech.find('[', start + 1);
+        }
+
         std::string::size_type position = mSpeech.find('|');
         mSpeech.erase(end, 1);
         mSpeech.erase(start, (position - start) + 1);
