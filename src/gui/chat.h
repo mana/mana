@@ -122,11 +122,6 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ~ChatWindow();
 
         /**
-         * Called whenever the widget changes size.
-         */
-        void widgetResized(const gcn::Event &event);
-
-        /**
          * Adds a line of text to our message list. Parameters:
          *
          * @param line Text message.

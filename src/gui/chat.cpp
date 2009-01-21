@@ -32,6 +32,8 @@
 #include "sdlinput.h"
 #include "windowcontainer.h"
 
+#include "widgets/layout.h"
+
 #include "../beingmanager.h"
 #include "../configuration.h"
 #include "../extensions.h"
@@ -78,8 +80,11 @@ Window(""), mNetwork(network), mTmpVisible(false)
     mScrollArea->setScrollAmount(0, 1);
     mScrollArea->setOpaque(false);
 
-    add(mScrollArea);
-    add(mChatInput);
+    place(0, 0, mScrollArea, 5, 5);
+    place(0, 5, mChatInput, 5);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
 
@@ -107,21 +112,6 @@ ChatWindow::~ChatWindow()
     config.setValue("PartyPrefix", partyPrefix);
     config.setValue("ReturnToggles", mReturnToggles ? "1" : "0");
     delete mRecorder;
-}
-
-void ChatWindow::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle area = getChildrenArea();
-
-    mChatInput->setPosition(mChatInput->getFrameSize(),
-                            area.height - mChatInput->getHeight() -
-                            mChatInput->getFrameSize());
-    mChatInput->setWidth(area.width - 2 * mChatInput->getFrameSize());
-    mScrollArea->setWidth(area.width - 2 * mScrollArea->getFrameSize());
-    mScrollArea->setHeight(area.height - 2 * mScrollArea->getFrameSize() -
-            mChatInput->getHeight() - 5);
 }
 
 void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
