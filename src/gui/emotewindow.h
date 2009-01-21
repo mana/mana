@@ -56,16 +56,6 @@ class EmoteWindow : public Window, gcn::ActionListener,
          */
         int getSelectedEmote() const;
 
-        /**
-         * Updates window drawing.
-         */
-        void draw();
-
-        /**
-         * Called whenever the widget changes size.
-         */
-        void widgetResized(const gcn::Event &event);
-
     private:
         EmoteContainer *mEmotes;
 

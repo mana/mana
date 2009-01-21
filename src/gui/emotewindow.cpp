@@ -29,6 +29,8 @@
 #include "emotecontainer.h"
 #include "scrollarea.h"
 
+#include "widgets/layout.h"
+
 #include "../localplayer.h"
 
 #include "../utils/gettext.h"      
@@ -41,6 +43,7 @@ EmoteWindow::EmoteWindow():
     setResizable(true);
     setCloseButton(true);
     setMinWidth(80);
+    setMinHeight(130);
     setDefaultSize(115, 25, 322, 200);
 
     mUseButton = new Button(_("Use"), "use", this);
@@ -51,10 +54,11 @@ EmoteWindow::EmoteWindow():
     mEmoteScroll = new ScrollArea(mEmotes);
     mEmoteScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    draw();
+    place(0, 0, mEmoteScroll, 5, 4);
+    place(4, 4, mUseButton);
 
-    add(mUseButton);
-    add(mEmoteScroll);
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     mUseButton->setSize(60, mUseButton->getHeight());
 
@@ -70,28 +74,6 @@ void EmoteWindow::action(const gcn::ActionEvent &event)
 
     player_node->emote(emote);
 }
-
-
-void EmoteWindow::draw()
-{
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    mUseButton->setPosition(8, height - 8 - mUseButton->getHeight());
-
-    mEmoteScroll->setSize(width - 16, mUseButton->getY() - 18);
-    mEmoteScroll->setPosition(8,  10);
-
-    setMinHeight(130);
-}
-
-void EmoteWindow::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-    draw();
-}
-
 
 int EmoteWindow::getSelectedEmote() const
 {
