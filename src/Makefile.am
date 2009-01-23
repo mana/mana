@@ -3,6 +3,8 @@ AUTOMAKE_OPTIONS = subdir-objects
 bin_PROGRAMS = tmw
 tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/widgets/layout.h \
+	      gui/widgets/layouthelper.cpp \
+	      gui/widgets/layouthelper.h \
 	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
 	      gui/widgets/tab.cpp \
@@ -45,8 +47,8 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/gui.h \
 	      gui/help.cpp \
 	      gui/help.h \
-	      gui/inttextbox.h \
-	      gui/inttextbox.cpp \
+	      gui/inttextfield.h \
+	      gui/inttextfield.cpp \
 	      gui/inventorywindow.cpp \
 	      gui/inventorywindow.h \
 	      gui/itemcontainer.cpp \

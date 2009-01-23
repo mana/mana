@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -23,9 +23,9 @@
 
 #include <string>
 
-#include "scrollarea.h"
+#include "browserbox.h"
 #include "button.h"
-#include "textbox.h"
+#include "scrollarea.h"
 
 #include "../npc.h"
 
@@ -39,10 +39,10 @@ NpcTextDialog::NpcTextDialog():
     setMinWidth(200);
     setMinHeight(150);
 
-    mTextBox = new TextBox;
-    mTextBox->setEditable(false);
+    mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
+    mBrowserBox->setOpaque(true);
 
-    scrollArea = new ScrollArea(mTextBox);
+    scrollArea = new ScrollArea(mBrowserBox);
     okButton = new Button(_("OK"), "ok", this);
 
     setContentSize(260, 175);
@@ -60,15 +60,20 @@ NpcTextDialog::NpcTextDialog():
     setLocationRelativeTo(getParent());
 }
 
+void NpcTextDialog::clearText()
+{
+    mBrowserBox->clearRows();
+}
+
 void NpcTextDialog::setText(const std::string &text)
 {
-    mText = text;
-    mTextBox->setTextWrapped(mText);
+    mBrowserBox->clearRows();
+    mBrowserBox->addRow(text);
 }
 
 void NpcTextDialog::addText(const std::string &text)
 {
-    setText(mText + text + "\n");
+    mBrowserBox->addRow(text);
 }
 
 void NpcTextDialog::widgetResized(const gcn::Event &event)
@@ -84,16 +89,13 @@ void NpcTextDialog::widgetResized(const gcn::Event &event)
     okButton->setPosition(
             width - 5 - okButton->getWidth(),
             height - 5 - okButton->getHeight());
-
-    // Set the text again so that it gets wrapped according to the new size
-    mTextBox->setTextWrapped(mText);
 }
 
 void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        setText("");
+        clearText();
         setVisible(false);
         if (current_npc)
             current_npc->nextDialog();

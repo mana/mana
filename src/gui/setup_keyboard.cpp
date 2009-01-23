@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2007 The Mana World Development Team
+ *  Copyright (C) 2007  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -28,6 +28,8 @@
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
+
+#include "widgets/layouthelper.h"
 
 #include "../configuration.h"
 #include "../keyboardconfig.h"
@@ -74,7 +76,6 @@ Setup_Keyboard::Setup_Keyboard():
 {
     keyboard.setSetupKeyboard(this);
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
 
     refreshKeys();
 
@@ -83,19 +84,23 @@ Setup_Keyboard::Setup_Keyboard():
     mKeyList->setSelected(-1);
 
     ScrollArea *scrollArea = new ScrollArea(mKeyList);
-    scrollArea->setDimension(gcn::Rectangle(10, 10, 200, 140));
-    add(scrollArea);
 
     mAssignKeyButton = new Button(_("Assign"), "assign", this);
-    mAssignKeyButton->setPosition(165, 155);
     mAssignKeyButton->addActionListener(this);
     mAssignKeyButton->setEnabled(false);
-    add(mAssignKeyButton);
 
     mMakeDefaultButton = new Button(_("Default"), "makeDefault", this);
-    mMakeDefaultButton->setPosition(10, 155);
     mMakeDefaultButton->addActionListener(this);
-    add(mMakeDefaultButton);
+
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    place(0, 0, scrollArea, 4, 6).setPadding(2);
+    place(0, 6, mMakeDefaultButton);
+    place(3, 6, mAssignKeyButton);
+
+    setDimension(gcn::Rectangle(0, 0, 250, 200));
 }
 
 Setup_Keyboard::~Setup_Keyboard()

@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -25,6 +25,9 @@
 
 #include "button.h"
 #include "checkbox.h"
+
+#include "widgets/layouthelper.h"
+
 #include "../configuration.h"
 #include "../joystick.h"
 
@@ -38,20 +41,23 @@ Setup_Joystick::Setup_Joystick():
     mJoystickEnabled(new CheckBox(_("Enable joystick")))
 {
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
-
-    mJoystickEnabled->setPosition(10, 10);
-    mCalibrateLabel->setPosition(10, 25);
-    mCalibrateButton->setPosition(10, 30 + mCalibrateLabel->getHeight());
 
     mOriginalJoystickEnabled = (int)config.getValue("joystickEnabled", 0) != 0;
     mJoystickEnabled->setSelected(mOriginalJoystickEnabled);
 
     mJoystickEnabled->addActionListener(this);
 
-    add(mCalibrateLabel);
-    add(mCalibrateButton);
-    add(mJoystickEnabled);
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    place(0, 0, mJoystickEnabled);
+    place(0, 1, mCalibrateLabel);
+    place.getCell().matchColWidth(0, 0);
+    place = h.getPlacer(0, 1);
+    place(0, 0, mCalibrateButton);
+
+    setDimension(gcn::Rectangle(0, 0, 250, 200));
 }
 
 void Setup_Joystick::action(const gcn::ActionEvent &event)

@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -627,6 +627,26 @@ void Game::handleInput()
                     {
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
                     }
+                    // Submits the text and proceeds to the next dialog
+                    else if (npcStringDialog->isVisible())
+                    {
+                        npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    }
+                    // Proceed to the next dialog option, or close the window
+                    else if (npcTextDialog->isVisible())
+                    {
+                        npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    }
+                    // Choose the currently highlighted dialogue option
+                    else if (npcListDialog->isVisible())
+                    {
+                        npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    }
+                    // Submits the text and proceeds to the next dialog
+                    else if (npcIntegerDialog->isVisible())
+                    {
+                        npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    }
                     // Else, open the chat edit box
                     else
                     {
@@ -634,7 +654,7 @@ void Game::handleInput()
                         used = true;
                     }
                     break;
-                   // Quitting confirmation dialog
+                    // Quitting confirmation dialog
                 case SDLK_ESCAPE:
                     if (!exitConfirm) {
                         exitConfirm = new ConfirmDialog(

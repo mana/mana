@@ -53,6 +53,8 @@ SET(SRCS
     gui/widgets/resizegrip.h
     gui/widgets/layout.cpp
     gui/widgets/layout.h
+    gui/widgets/layouthelper.cpp
+    gui/widgets/layouthelper.h
     gui/widgets/tab.cpp
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp
@@ -93,8 +95,8 @@ SET(SRCS
     gui/gui.h
     gui/help.cpp
     gui/help.h
-    gui/inttextbox.cpp
-    gui/inttextbox.h
+    gui/inttextfield.cpp
+    gui/inttextfield.h
     gui/inventorywindow.cpp
     gui/inventorywindow.h
     gui/itemcontainer.cpp

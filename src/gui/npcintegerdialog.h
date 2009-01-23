@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -31,6 +31,8 @@
 #include "window.h"
 
 #include "../guichanfwd.h"
+
+class IntTextField;
 
 /**
  * The npc integer input dialog.
@@ -53,9 +55,6 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener,
          */
         void action(const gcn::ActionEvent &event);
 
-        /** Called when key is pressed */
-        void keyPressed(gcn::KeyEvent &event);
-
         /**
          * Returns the current value.
          */
@@ -65,18 +64,17 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener,
          * Prepares the NPC dialog.
          *
          * @param min The minimum value to allow
-         * @param def The default value
          * @param max The maximum value to allow
          */
-        void prepDialog(const int min, const int def, const int max);
+        void setRange(const int min, const int max);
 
     private:
-        int mMin, mMax, mDefault, mValue;
         gcn::Button *mDecButton;
         gcn::Button *mIncButton;
-        gcn::TextField *mValueField;
+        IntTextField *mValueField;
         gcn::Button *okButton;
         gcn::Button *cancelButton;
+        gcn::Button *resetButton;
 };
 
 #endif // _TMW_GUI_NPCINTEGERDIALOG_H

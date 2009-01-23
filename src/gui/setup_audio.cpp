@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -26,6 +26,8 @@
 #include "checkbox.h"
 #include "ok_dialog.h"
 #include "slider.h"
+
+#include "widgets/layouthelper.h"
 
 #include "../configuration.h"
 #include "../log.h"
@@ -42,7 +44,6 @@ Setup_Audio::Setup_Audio():
     mMusicSlider(new Slider(0, 128))
 {
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
 
     gcn::Label *sfxLabel = new gcn::Label(_("Sfx volume"));
     gcn::Label *musicLabel = new gcn::Label(_("Music volume"));
@@ -54,19 +55,24 @@ Setup_Audio::Setup_Audio():
     mMusicSlider->addActionListener(this);
 
     mSoundCheckBox->setPosition(10, 10);
-    mSfxSlider->setDimension(gcn::Rectangle(10, 30, 100, 10));
-    mMusicSlider->setDimension(gcn::Rectangle(10, 50, 100, 10));
-    sfxLabel->setPosition(20 + mSfxSlider->getWidth(), 27);
-    musicLabel->setPosition(20 + mMusicSlider->getWidth(), 47);
 
     mSfxSlider->setValue(mSfxVolume);
     mMusicSlider->setValue(mMusicVolume);
 
-    add(mSoundCheckBox);
-    add(mSfxSlider);
-    add(mMusicSlider);
-    add(sfxLabel);
-    add(musicLabel);
+    mSfxSlider->setWidth(90);
+    mMusicSlider->setWidth(90);
+
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    place(0, 0, mSoundCheckBox);
+    place(0, 1, mSfxSlider);
+    place(1, 1, sfxLabel);
+    place(0, 2, mMusicSlider);
+    place(1, 2, musicLabel);
+
+    setDimension(gcn::Rectangle(0, 0, 250, 200));
 }
 
 void Setup_Audio::apply()

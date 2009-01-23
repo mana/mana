@@ -2,10 +2,10 @@ CRCCheck on
 SetCompress off
 SetCompressor /SOLID lzma
 
-!define TMWROOT "..\.."
+!define SRCDIR "..\.."
 
 ;--- (and without !defines ) ---
-!System "upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d ${TMWROOT}\tmw.exe"
+!System "upx\upx.exe --best --crp-ms=999999 --compress-icons=0 --nrv2d ${SRCDIR}\tmw.exe"
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "The Mana World"
@@ -22,9 +22,9 @@ SetCompressor /SOLID lzma
 ; MUI Settings
 !define MUI_ABORTWARNING
 ;!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\win-install.ico"
-!define MUI_ICON "${TMWROOT}\data\icons\tmw.ico"
+!define MUI_ICON "${SRCDIR}\data\icons\tmw.ico"
 ;!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\win-uninstall.ico"
-!define MUI_UNICON "${TMWROOT}\data\icons\tmw.ico"
+!define MUI_UNICON "${SRCDIR}\data\icons\tmw.ico"
 
 ;Language Selection Dialog Settings
 ;Remember the installer language
@@ -40,7 +40,7 @@ SetCompressor /SOLID lzma
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "${TMWROOT}\COPYING"
+!insertmacro MUI_PAGE_LICENSE "${SRCDIR}\COPYING"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Instfiles page
@@ -148,6 +148,7 @@ Section "Core files (required)" SecCore
   CreateShortCut "$SMPROGRAMS\The Mana World\The Mana World.lnk" "$INSTDIR\tmw.exe"
   CreateShortCut "$DESKTOP\The Mana World.lnk" "$INSTDIR\tmw.exe"
   CreateDirectory "$INSTDIR\data"
+  CreateDirectory "$INSTDIR\data\fonts"
   CreateDirectory "$INSTDIR\data\graphics"
   CreateDirectory "$INSTDIR\data\help"
   CreateDirectory "$INSTDIR\data\icons"
@@ -159,24 +160,26 @@ Section "Core files (required)" SecCore
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
 
-  File "${TMWROOT}\tmw.exe"
-  File "${TMWROOT}\*.dll"
-  File "${TMWROOT}\AUTHORS"
-  File "${TMWROOT}\COPYING"
-  File "${TMWROOT}\NEWS"
-  File "${TMWROOT}\README"
+  File "${SRCDIR}\tmw.exe"
+  File "${SRCDIR}\*.dll"
+  File "${SRCDIR}\AUTHORS"
+  File "${SRCDIR}\COPYING"
+  File "${SRCDIR}\NEWS"
+  File "${SRCDIR}\README"
+  SetOutPath "$INSTDIR\data\fonts"
+  File "${SRCDIR}\data\fonts\*.ttf"
   SetOutPath "$INSTDIR\data\graphics\gui"
-  File "${TMWROOT}\data\graphics\gui\*.png"
+  File "${SRCDIR}\data\graphics\gui\*.png"
   SetOutPath "$INSTDIR\data\graphics\images"
-  File /x minimap_*.png ${TMWROOT}\data\graphics\images\*.png
+  File /x minimap_*.png ${SRCDIR}\data\graphics\images\*.png
   SetOutPath "$INSTDIR\data\help"
-  File "${TMWROOT}\data\help\*.txt"
+  File "${SRCDIR}\data\help\*.txt"
   SetOutPath "$INSTDIR\data\icons\"
-  File "${TMWROOT}\data\icons\tmw.ico"
+  File "${SRCDIR}\data\icons\tmw.ico"
   SetOutPath "$INSTDIR\data\music"
-  File /nonfatal "${TMWROOT}\data\music\*.ogg"
+  File /nonfatal "${SRCDIR}\data\music\*.ogg"
   SetOutPath "$INSTDIR\docs"
-  File "${TMWROOT}\docs\FAQ.txt"
+  File "${SRCDIR}\docs\FAQ.txt"
 SectionEnd
 
 Section -AdditionalIcons

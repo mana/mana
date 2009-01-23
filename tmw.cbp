@@ -136,8 +136,8 @@
 		<Unit filename="src\gui\gui.h" />
 		<Unit filename="src\gui\help.cpp" />
 		<Unit filename="src\gui\help.h" />
-		<Unit filename="src\gui\inttextbox.cpp" />
-		<Unit filename="src\gui\inttextbox.h" />
+		<Unit filename="src\gui\inttextfield.cpp" />
+		<Unit filename="src\gui\inttextfield.h" />
 		<Unit filename="src\gui\inventorywindow.cpp" />
 		<Unit filename="src\gui\inventorywindow.h" />
 		<Unit filename="src\gui\item_amount.cpp" />

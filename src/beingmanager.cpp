@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -71,15 +71,15 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
 
     if (job < 10)
         being = new Player(id, job, mMap);
-    else if (job >= 100 && job < 200)
+    else if (job >= 50 && job < 1002)
         being = new NPC(id, job, mMap, mNetwork);
-    else if (job >= 1000 && job < 1200)
+    else if (job >= 1002 && job < 1500)
         being = new Monster(id, job, mMap);
     else
         being = new Being(id, job, mMap);
 
     // Player or NPC
-    if (job < 200)
+    if (job < 1002)
     {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(0x0094);

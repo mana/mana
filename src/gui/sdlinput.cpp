@@ -7,7 +7,7 @@
  * \______\/ \______\/ \_\/ \_____\/ \_\/ \_\/ \_\/ \_\/ \_\/ \_\/
  *
  * Copyright (c) 2004, 2005, 2006, 2007 Olof Naessén and Per Larsson
- * Copyright 2007 The Mana World Development Team
+ * Copyright (C) 2007  The Mana World Development Team
  *
  *                                                         Js_./
  * Per Larsson a.k.a finalman                          _RqZ{a<^_aa

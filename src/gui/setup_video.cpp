@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -36,6 +36,8 @@
 #include "scrollarea.h"
 #include "slider.h"
 #include "textfield.h"
+
+#include "widgets/layouthelper.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -130,34 +132,29 @@ Setup_Video::Setup_Video():
     mParticleDetailField(new gcn::Label(""))
 {
     setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+
     gcn::Label *alphaLabel = new gcn::Label(_("Gui opacity"));
+
+    gcn::Label *scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
+    gcn::Label *scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
+    gcn::Label *overlayDetailLabel = new gcn::Label(_("Ambient FX"));
+    gcn::Label *particleDetailLabel = new gcn::Label(_("Particle Detail"));
 
     mModeList->setEnabled(false);
 #ifndef USE_OPENGL
     mOpenGLCheckBox->setEnabled(false);
 #endif
 
-    mModeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
-    scrollArea->setDimension(gcn::Rectangle(10, 10, 90, 50));
-    mFsCheckBox->setPosition(110, 10);
-    mOpenGLCheckBox->setPosition(110, 30);
-    mCustomCursorCheckBox->setPosition(110, 50);
-    mAlphaSlider->setDimension(gcn::Rectangle(10, 80, 100, 10));
-    alphaLabel->setPosition(20 + mAlphaSlider->getWidth(),
-                            mAlphaSlider->getY());
-    mFpsCheckBox->setPosition(90, 100);
-    mFpsSlider->setDimension(gcn::Rectangle(10, 100, 75, 10));
-    mFpsField->setPosition(100 + mFpsCheckBox->getWidth(), 100);
-    mFpsField->setWidth(30);
-
     mModeList->setSelected(-1);
     mAlphaSlider->setValue(mOpacity);
+    mAlphaSlider->setWidth(90);
 
     mFpsField->setText(toString(mFps));
     mFpsField->setEnabled(mFps > 0);
+    mFpsField->setWidth(30);
     mFpsSlider->setValue(mFps);
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setSelected(mFps > 0);
@@ -189,27 +186,12 @@ Setup_Video::Setup_Video():
     mParticleDetailSlider->addActionListener(this);
     mParticleDetailField->addKeyListener(this);
 
-    mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 120, 75, 10));
-    gcn::Label *scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
-    scrollRadiusLabel->setPosition(90, 120);
-    mScrollRadiusField->setPosition(mFpsField->getX(), 120);
-    mScrollRadiusField->setWidth(30);
     mScrollRadiusField->setText(toString(mOriginalScrollRadius));
     mScrollRadiusSlider->setValue(mOriginalScrollRadius);
 
-    mScrollLazinessSlider->setDimension(gcn::Rectangle(10, 140, 75, 10));
-    gcn::Label *scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
-    scrollLazinessLabel->setPosition(90, 140);
-    mScrollLazinessField->setPosition(mFpsField->getX(), 140);
-    mScrollLazinessField->setWidth(30);
     mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
     mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
 
-    mOverlayDetailSlider->setDimension(gcn::Rectangle(10, 160, 75, 10));
-    gcn::Label *overlayDetailLabel = new gcn::Label(_("Ambient FX"));
-    overlayDetailLabel->setPosition(90, 160);
-    mOverlayDetailField->setPosition(180, 160);
-    mOverlayDetailField->setWidth(30);
     switch (mOverlayDetail)
     {
         case 0:
@@ -224,11 +206,6 @@ Setup_Video::Setup_Video():
     }
     mOverlayDetailSlider->setValue(mOverlayDetail);
 
-    mParticleDetailSlider->setDimension(gcn::Rectangle(10, 180, 75, 10));
-    gcn::Label *particleDetailLabel = new gcn::Label(_("Particle Detail"));
-    particleDetailLabel->setPosition(90, 180);
-    mParticleDetailField->setPosition(180, 180);
-    mParticleDetailField->setWidth(60);
     switch (mParticleDetail)
     {
         case 0:
@@ -246,27 +223,36 @@ Setup_Video::Setup_Video():
     }
     mParticleDetailSlider->setValue(mParticleDetail);
 
-    add(scrollArea);
-    add(mFsCheckBox);
-    add(mOpenGLCheckBox);
-    add(mCustomCursorCheckBox);
-    add(mAlphaSlider);
-    add(alphaLabel);
-    add(mFpsCheckBox);
-    add(mFpsSlider);
-    add(mFpsField);
-    add(mScrollRadiusSlider);
-    add(scrollRadiusLabel);
-    add(mScrollRadiusField);
-    add(mScrollLazinessSlider);
-    add(scrollLazinessLabel);
-    add(mScrollLazinessField);
-    add(mOverlayDetailSlider);
-    add(overlayDetailLabel);
-    add(mOverlayDetailField);
-    add(mParticleDetailSlider);
-    add(particleDetailLabel);
-    add(mParticleDetailField);
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    place(0, 0, scrollArea, 1, 3).setPadding(2);
+    place(1, 0, mFsCheckBox, 3);
+    place(1, 1, mOpenGLCheckBox, 3);
+    place(1, 2, mCustomCursorCheckBox, 3);
+
+    place(0, 4, mAlphaSlider);
+    place(0, 5, mFpsSlider);
+    place(0, 6, mScrollRadiusSlider);
+    place(0, 7, mScrollLazinessSlider);
+    place(0, 8, mOverlayDetailSlider);
+    place(0, 9, mParticleDetailSlider);
+
+    place(1, 4, alphaLabel, 2);
+    place(1, 5, mFpsCheckBox).setPadding(3);
+    place(1, 6, scrollRadiusLabel);
+    place(1, 7, scrollLazinessLabel);
+    place(1, 8, overlayDetailLabel);
+    place(1, 9, particleDetailLabel);
+
+    place(2, 5, mFpsField).setPadding(1);
+    place(2, 6, mScrollRadiusField).setPadding(1);
+    place(2, 7, mScrollLazinessField).setPadding(1);
+    place(2, 8, mOverlayDetailField, 2).setPadding(2);
+    place(2, 9, mParticleDetailField, 2).setPadding(2);
+
+    setDimension(gcn::Rectangle(0, 0, 280, 200));
 }
 
 Setup_Video::~Setup_Video()
@@ -335,9 +321,8 @@ void Setup_Video::apply()
     mOpenGLEnabled = config.getValue("opengl", 0);
 }
 
-int
-Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
-                          const std::string &configName)
+int Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
+                              const std::string &configName)
 {
     int value;
     std::stringstream temp(field->getText());
@@ -459,8 +444,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
 }
 
-void
-Setup_Video::keyPressed(gcn::KeyEvent &event)
+void Setup_Video::keyPressed(gcn::KeyEvent &event)
 {
     std::stringstream tempFps(mFpsField->getText());
 

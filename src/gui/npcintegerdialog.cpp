@@ -1,21 +1,21 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -25,7 +25,7 @@
 #include <sstream>
 
 #include "button.h"
-#include "textfield.h"
+#include "inttextfield.h"
 
 #include "../npc.h"
 
@@ -39,18 +39,25 @@ NpcIntegerDialog::NpcIntegerDialog():
 {
     mDecButton = new Button("-", "decvalue", this);
     mIncButton = new Button("+", "incvalue", this);
-    mValueField = new TextField();
+    mValueField = new IntTextField();
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
+    resetButton = new Button(_("Reset"), "reset", this);
 
     mDecButton->setSize(20, 20);
     mIncButton->setSize(20, 20);
 
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+
     place(0, 0, mDecButton);
     place(1, 0, mValueField, 3);
     place(4, 0, mIncButton);
-    place(2, 1, okButton);
-    place(3, 1, cancelButton, 2);
+    place.getCell().matchColWidth(1, 0);
+    place = getPlacer(0, 1);
+    place(0, 0, resetButton);
+    place(2, 0, cancelButton);
+    place(3, 0, okButton);
     reflowLayout(175, 0);
 
     setLocationRelativeTo(getParent());
@@ -59,19 +66,14 @@ NpcIntegerDialog::NpcIntegerDialog():
     mValueField->addKeyListener(this);
 }
 
-void NpcIntegerDialog::prepDialog(const int min, const int def, const int max)
+void NpcIntegerDialog::setRange(const int min, const int max)
 {
-    mMin = min;
-    mMax = max;
-    mDefault = def;
-    mValue = def;
-
-    mValueField->setText(toString(mValue));
+    mValueField->setRange(min, max);
 }
 
 int NpcIntegerDialog::getValue()
 {
-    return mValue;
+    return mValueField->getValue();
 }
 
 void NpcIntegerDialog::action(const gcn::ActionEvent &event)
@@ -85,41 +87,25 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "cancel")
     {
         finish = 1;
-        mValue = mDefault;
+        mValueField->reset();
     }
-    else if (event.getId() == "decvalue" && mValue < mMin)
+    else if (event.getId() == "decvalue")
     {
-        mValue--;
+        mValueField->setValue(mValueField->getValue() - 1);
     }
-    else if (event.getId() == "incvalue" && mValue > mMax)
+    else if (event.getId() == "incvalue")
     {
-        mValue++;
+        mValueField->setValue(mValueField->getValue() + 1);
     }
-
-    mValueField->setText(toString(mValue));
+    else if (event.getId() == "reset")
+    {
+        mValueField->reset();
+    }
 
     if (finish)
     {
         setVisible(false);
-        current_npc->integerInput(mValue);
+        current_npc->integerInput(mValueField->getValue());
         current_npc = 0;
     }
-}
-
-void NpcIntegerDialog::keyPressed(gcn::KeyEvent &event)
-{
-    std::stringstream tempValue(mValueField->getText());
-    int value;
-    tempValue >> value;
-    if (value < mMin)
-    {
-        value = mMin;
-    }
-    if (value > mMax)
-    {
-        value = mMax;
-    }
-
-    mValue = value;
-    mValueField->setText(toString(value));
 }
