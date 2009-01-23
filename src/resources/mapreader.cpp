@@ -536,6 +536,8 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
                 {
                     map->addAnimation(tileGID, new TileAnimation(ani));
                     logger->log("Animation length: %d", ani->getLength());
+                } else {
+                    delete ani;
                 }
             }
         }
