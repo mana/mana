@@ -161,8 +161,12 @@
 		<Unit filename="src\gui\ministatus.h" />
 		<Unit filename="src\gui\npc_text.cpp" />
 		<Unit filename="src\gui\npc_text.h" />
+		<Unit filename="src\gui\npcintegerdialog.cpp" />
+		<Unit filename="src\gui\npcintegerdialog.h" />
 		<Unit filename="src\gui\npclistdialog.cpp" />
 		<Unit filename="src\gui\npclistdialog.h" />
+		<Unit filename="src\gui\npcstringdialog.cpp" />
+		<Unit filename="src\gui\npcstringdialog.h" />
 		<Unit filename="src\gui\ok_dialog.cpp" />
 		<Unit filename="src\gui\ok_dialog.h" />
 		<Unit filename="src\gui\passwordfield.cpp" />
@@ -181,7 +185,6 @@
 		<Unit filename="src\gui\scrollarea.h" />
 		<Unit filename="src\gui\sdlinput.cpp" />
 		<Unit filename="src\gui\sdlinput.h" />
-		<Unit filename="src\gui\selectionlistener.h" />
 		<Unit filename="src\gui\sell.cpp" />
 		<Unit filename="src\gui\sell.h" />
 		<Unit filename="src\gui\setup.cpp" />
@@ -207,8 +210,6 @@
 		<Unit filename="src\gui\slider.h" />
 		<Unit filename="src\gui\status.cpp" />
 		<Unit filename="src\gui\status.h" />
-		<Unit filename="src\gui\tabbedcontainer.cpp" />
-		<Unit filename="src\gui\tabbedcontainer.h" />
 		<Unit filename="src\gui\table.cpp" />
 		<Unit filename="src\gui\table.h" />
 		<Unit filename="src\gui\table_model.cpp" />
@@ -227,8 +228,14 @@
 		<Unit filename="src\gui\viewport.h" />
 		<Unit filename="src\gui\widgets\layout.cpp" />
 		<Unit filename="src\gui\widgets\layout.h" />
+		<Unit filename="src\gui\widgets\layouthelper.cpp" />
+		<Unit filename="src\gui\widgets\layouthelper.h" />
 		<Unit filename="src\gui\widgets\resizegrip.cpp" />
 		<Unit filename="src\gui\widgets\resizegrip.h" />
+		<Unit filename="src\gui\widgets\tab.cpp" />
+		<Unit filename="src\gui\widgets\tab.h" />
+		<Unit filename="src\gui\widgets\tabbedarea.cpp" />
+		<Unit filename="src\gui\widgets\tabbedarea.h" />
 		<Unit filename="src\gui\window.cpp" />
 		<Unit filename="src\gui\window.h" />
 		<Unit filename="src\gui\windowcontainer.cpp" />
