@@ -124,17 +124,6 @@ extern SDLInput *guiInput;                    /**< GUI input */
 extern gcn::Font *hitRedFont;
 extern gcn::Font *hitBlueFont;
 extern gcn::Font *hitYellowFont;
-/**
- * Font used to display speech and player names
- */
-extern gcn::Font *speechFont;
-
-/**
- * being name fonts
- */
-extern gcn::Font *npcNameFont;
-extern gcn::Font *mobNameFont;
-extern gcn::Font *gmNameFont;
 
 
 #endif

@@ -27,8 +27,6 @@
 #include "log.h"
 #include "player.h"
 
-#include "gui/gui.h"
-
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
@@ -54,12 +52,10 @@ void Player::setName(const std::string &name)
     {
         if (mIsGM) {
             mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                                  gcn::Graphics::CENTER,
-                                  gmNameFont, gcn::Color(255, 255, 255));
+                                  gcn::Graphics::CENTER, gcn::Color(0, 255, 0));
         } else {
             mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                                  gcn::Graphics::CENTER,
-                                  speechFont, gcn::Color(255, 255, 255));
+                                  gcn::Graphics::CENTER, gcn::Color(255, 255, 255));
         }
         Being::setName(name);
     }

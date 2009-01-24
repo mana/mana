@@ -27,8 +27,6 @@
 #include "sound.h"
 #include "text.h"
 
-#include "gui/gui.h"
-
 #include "resources/monsterdb.h"
 
 #include "utils/tostring.h"
@@ -200,8 +198,7 @@ void Monster::showName(bool show)
     {
         mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,
                          mPy + NAME_Y_OFFSET - getHeight(),
-                         gcn::Graphics::CENTER,
-                         mobNameFont, gcn::Color(255, 32, 32));
+                         gcn::Graphics::CENTER, gcn::Color(255, 32, 32));
     }
     else
     {

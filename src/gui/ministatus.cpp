@@ -54,14 +54,6 @@ MiniStatusWindow::MiniStatusWindow():
     mMpLabel->setDimension(mMpBar->getDimension());
     mXpLabel->setDimension(mXpBar->getDimension());
 
-    mHpLabel->setForegroundColor(gcn::Color(255, 255, 255));
-    mMpLabel->setForegroundColor(gcn::Color(255, 255, 255));
-    mXpLabel->setForegroundColor(gcn::Color(255, 255, 255));
-
-    mHpLabel->setFont(speechFont);
-    mMpLabel->setFont(speechFont);
-    mXpLabel->setFont(speechFont);
-
     mHpLabel->setAlignment(gcn::Graphics::CENTER);
     mMpLabel->setAlignment(gcn::Graphics::CENTER);
     mXpLabel->setAlignment(gcn::Graphics::CENTER);

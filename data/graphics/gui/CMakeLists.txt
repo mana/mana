@@ -27,7 +27,6 @@ SET (FILES
     radioin.png
     radioout.png
     resize.png
-    rpgfont_wider.png
     selection.png
     slider.png
     speech_bubble.png

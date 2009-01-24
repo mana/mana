@@ -527,8 +527,7 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
             delete mText;
 
         mText = new Text(mSpeech, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
-                         gcn::Graphics::CENTER, speechFont,
-                         gcn::Color(255, 255, 255));
+                         gcn::Graphics::CENTER, gcn::Color(255, 255, 255));
     }
     else if (mSpeechTime == 0)
     {

@@ -42,14 +42,14 @@
 #include "../resources/resourcemanager.h"
 
 // Guichan stuff
-Gui *gui;
-Viewport *viewport;                    /**< Viewport on the map. */
-SDLInput *guiInput;
+Gui *gui = 0;
+Viewport *viewport = 0;                    /**< Viewport on the map. */
+SDLInput *guiInput = 0;
 
 // Fonts used in showing hits
-gcn::Font *hitRedFont;
-gcn::Font *hitBlueFont;
-gcn::Font *hitYellowFont;
+gcn::Font *hitRedFont = 0;
+gcn::Font *hitBlueFont = 0;
+gcn::Font *hitYellowFont = 0;
 // Font used to display speech and player names
 gcn::Font *speechFont;
 
@@ -122,60 +122,6 @@ Gui::Gui(Graphics *graphics):
             + e.getMessage());
     }
 
-    // Set speech font
-    try {
-        speechFont = new gcn::ImageFont("graphics/gui/rpgfont_wider.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
-                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
-                );
-    }
-    catch (gcn::Exception e)
-    {
-        logger->error(std::string("Unable to load rpgfont_wider.png: ")
-            + e.getMessage());
-    }
-
-    // Set npc name font
-    try {
-        npcNameFont = new gcn::ImageFont("graphics/gui/rpgfont_wider-blue.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
-                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
-                );
-    }
-    catch (gcn::Exception e)
-    {
-        logger->error("Unable to load rpgfont_wider-blue.png!");
-    }
-
-    // Set monster name font
-    try {
-        mobNameFont = new gcn::ImageFont("graphics/gui/rpgfont_wider-orange.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
-                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
-                );
-    }
-    catch (gcn::Exception e)
-    {
-        logger->error("Unable to load rpgfont_wider-orange.png!");
-    }
-
-    // Set GM name font
-    try {
-        gmNameFont = new gcn::ImageFont("graphics/gui/rpgfont_wider-green.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
-                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
-                );
-    }
-    catch (gcn::Exception e)
-    {
-        logger->error("Unable to load rpgfont_wider-green.png!");
-    }
-
-
     gcn::Widget::setGlobalFont(mGuiFont);
 
     // Load hits' colourful fonts
@@ -219,7 +165,6 @@ Gui::~Gui()
         mMouseCursors->decRef();
 
     delete mGuiFont;
-    delete speechFont;
     delete viewport;
     delete getTop();
 

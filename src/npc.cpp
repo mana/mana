@@ -31,8 +31,6 @@
 
 #include "resources/npcdb.h"
 
-#include "gui/gui.h"
-
 NPC *current_npc = 0;
 
 static const int NAME_X_OFFSET = 15;
@@ -89,8 +87,7 @@ void NPC::setName(const std::string &name)
     std::string displayName = name.substr(0, name.find('#', 0));
 
     mName = new Text(displayName, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                     gcn::Graphics::CENTER, npcNameFont,
-                     gcn::Color(200, 200, 255));
+                     gcn::Graphics::CENTER, gcn::Color(200, 200, 255));
     Being::setName(displayName + " (NPC)");
 }
 

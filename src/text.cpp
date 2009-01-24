@@ -25,12 +25,12 @@
 #include "text.h"
 #include "textmanager.h"
 
+#include "gui/gui.h"
+
 int Text::mInstances = 0;
 
-
 Text::Text(const std::string &text, int x, int y,
-           gcn::Graphics::Alignment alignment, gcn::Font *font,
-           gcn::Color colour) :
+           gcn::Graphics::Alignment alignment, gcn::Color colour) :
     mText(text), mColour(colour)
 {
     if (textManager == 0)
@@ -38,8 +38,8 @@ Text::Text(const std::string &text, int x, int y,
         textManager = new TextManager();
     }
     ++mInstances;
-    mHeight = font->getHeight();
-    mWidth = font->getWidth(text);
+    mHeight = gui->getFont()->getHeight();
+    mWidth = gui->getFont()->getWidth(text);
     switch (alignment)
     {
         case gcn::Graphics::LEFT:
@@ -55,7 +55,6 @@ Text::Text(const std::string &text, int x, int y,
     mX = x - mXOffset;
     mY = y;
     textManager->addText(this);
-    mFont = font;
 }
 
 void Text::adviseXY(int x, int y)
@@ -75,15 +74,31 @@ Text::~Text()
 
 void Text::draw(Graphics *graphics, int xOff, int yOff)
 {
-    graphics->setFont(mFont);
+    graphics->setFont(gui->getFont());
+
+    // Text shadow
+    graphics->setColor(gcn::Color(0, 0, 0));
+    graphics->drawText(mText, mX - xOff + 1, mY - yOff + 1,
+              gcn::Graphics::LEFT);
+
+    // Text outline
+    graphics->drawText(mText, mX - xOff + 1, mY - yOff,
+              gcn::Graphics::LEFT);
+    graphics->drawText(mText, mX - xOff - 1, mY - yOff,
+              gcn::Graphics::LEFT);
+    graphics->drawText(mText, mX - xOff, mY - yOff + 1,
+              gcn::Graphics::LEFT);
+    graphics->drawText(mText, mX - xOff, mY - yOff - 1,
+              gcn::Graphics::LEFT);
+
     graphics->setColor(mColour);
     graphics->drawText(mText, mX - xOff, mY - yOff, gcn::Graphics::LEFT);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,
-                     gcn::Graphics::Alignment alignment, gcn::Font *font,
-                     gcn::Color colour) :
-    Text(text, x, y, alignment, font, colour), mTime(0)
+                     gcn::Graphics::Alignment alignment, gcn::Color colour) :
+    Text(text, x, y, alignment, colour),
+    mTime(0)
 {
 }
 
