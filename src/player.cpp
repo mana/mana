@@ -61,8 +61,7 @@ void Player::setName(const std::string &name)
     }
 }
 
-void
-Player::logic()
+void Player::logic()
 {
     switch (mAction) {
         case WALK:
@@ -89,14 +88,12 @@ Player::logic()
     Being::logic();
 }
 
-Being::Type
-Player::getType() const
+Being::Type Player::getType() const
 {
     return PLAYER;
 }
 
-void
-Player::flash(int time)
+void Player::flash(int time)
 {
     if (mName)
     {

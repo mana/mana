@@ -111,13 +111,11 @@ TrueTypeFont::~TrueTypeFont()
 }
 
 void TrueTypeFont::drawString(gcn::Graphics *graphics,
-                               const std::string &text,
-                               int x, int y)
+                              const std::string &text,
+                              int x, int y)
 {
     if (text.empty())
-    {
         return;
-    }
 
     Graphics *g = dynamic_cast<Graphics *>(graphics);
 
