@@ -157,7 +157,7 @@ void Being::setSpeech(const std::string &text, Uint32 time)
 
     mSpeech = new Text(text, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
                        gcn::Graphics::CENTER, speechFont,
-                       gcn::Color(255, 255, 255));
+                       gcn::Color(255, 255, 255), true);
     mSpeechTime = 500;
 }
 
