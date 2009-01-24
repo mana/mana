@@ -98,7 +98,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     {
         graphics->setColor(gcn::Color(mRed, mGreen, mBlue, 200));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
-                    (int)(mProgress * (getWidth() - 8)),
+                    (int) (mProgress * (getWidth() - 8)),
                     getHeight() - 8));
     }
 }

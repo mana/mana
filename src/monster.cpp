@@ -183,7 +183,7 @@ Being::TargetCursorSize Monster::getTargetCursorSize() const
     return getInfo().getTargetCursorSize();
 }
 
-const MonsterInfo& Monster::getInfo() const
+const MonsterInfo &Monster::getInfo() const
 {
     return MonsterDB::get(mJob - 1002);
 }

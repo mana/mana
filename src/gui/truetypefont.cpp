@@ -115,9 +115,7 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
                               int x, int y)
 {
     if (text.empty())
-    {
         return;
-    }
 
     Graphics *g = dynamic_cast<Graphics *>(graphics);
 

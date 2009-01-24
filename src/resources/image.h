@@ -78,7 +78,8 @@ class Image : public Resource
          * @return <code>NULL</code> if an error occurred, a valid pointer
          *         otherwise.
          */
-        static Resource *load(void *buffer, unsigned bufferSize, Dye const &dye);
+        static Resource *load(void *buffer, unsigned bufferSize,
+                              Dye const &dye);
 
         /**
          * Loads an image from an SDL surface.
@@ -93,12 +94,14 @@ class Image : public Resource
         /**
          * Returns the width of the image.
          */
-        virtual int getWidth() const { return mBounds.w; }
+        virtual int getWidth() const
+        { return mBounds.w; }
 
         /**
          * Returns the height of the image.
          */
-        virtual int getHeight() const { return mBounds.h; }
+        virtual int getHeight() const
+        { return mBounds.h; }
 
         /**
          * Creates a new image with the desired clipping rectangle.
@@ -106,7 +109,7 @@ class Image : public Resource
          * @return <code>NULL</code> if creation failed and a valid
          *         object otherwise.
          */
-        virtual Image* getSubImage(int x, int y, int width, int height);
+        virtual Image *getSubImage(int x, int y, int width, int height);
 
         /**
          * Sets the alpha value of this image.
@@ -183,7 +186,7 @@ class SubImage : public Image
          * @return <code>NULL</code> if creation failed and a valid
          *         image otherwise.
          */
-        Image* getSubImage(int x, int y, int width, int height);
+        Image *getSubImage(int x, int y, int width, int height);
 
     private:
         Image *mParent;
