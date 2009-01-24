@@ -32,6 +32,8 @@
 #include "sdlinput.h"
 #include "windowcontainer.h"
 
+#include "widgets/layout.h"
+
 #include "../configuration.h"
 #include "../game.h"
 #include "../localplayer.h"
@@ -68,29 +70,17 @@ ChatWindow::ChatWindow(Network *network):
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     mScrollArea->setOpaque(false);
 
-    add(mScrollArea);
-    add(mChatInput);
+    place(0, 0, mScrollArea, 5, 5);
+    place(0, 5, mChatInput, 5);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
 
     // Add key listener to chat input to be able to respond to up/down
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
-}
-
-void ChatWindow::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle area = getChildrenArea();
-
-    mChatInput->setPosition(mChatInput->getFrameSize(),
-                            area.height - mChatInput->getHeight() -
-                                mChatInput->getFrameSize());
-    mChatInput->setWidth(area.width - 2 * mChatInput->getFrameSize());
-    mScrollArea->setWidth(area.width - 2 * mScrollArea->getFrameSize());
-    mScrollArea->setHeight(area.height - 2 * mScrollArea->getFrameSize() -
-            mChatInput->getHeight() - 5);
 }
 
 void ChatWindow::chatLog(std::string line, int own)
