@@ -50,15 +50,9 @@ SDLInput *guiInput = 0;
 gcn::Font *hitRedFont = 0;
 gcn::Font *hitBlueFont = 0;
 gcn::Font *hitYellowFont = 0;
-// Font used to display speech and player names
-gcn::Font *speechFont;
 
-// Font for displaying NPC names
-gcn::Font *npcNameFont;
-// Font for displaying mob names
-gcn::Font *mobNameFont;
-// Font for displaying GM names
-gcn::Font *gmNameFont;
+// Bolded font
+gcn::Font *boldFont = 0;
 
 class GuiConfigListener : public ConfigListener
 {
@@ -119,6 +113,17 @@ Gui::Gui(Graphics *graphics):
     catch (gcn::Exception e)
     {
         logger->error(std::string("Unable to load dejavusans.ttf: ")
+            + e.getMessage());
+    }
+
+    // Set bold font
+    path = resman->getPath("fonts/dejavusans-bold.ttf");
+    try {
+        boldFont = new TrueTypeFont(path, 11);
+    }
+    catch (gcn::Exception e)
+    {
+        logger->error(std::string("Unable to load dejavusans-bold.ttf: ")
             + e.getMessage());
     }
 

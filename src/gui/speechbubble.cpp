@@ -22,6 +22,7 @@
 
 #include <guichan/font.hpp>
 
+#include "gui.h"
 #include "speechbubble.h"
 
 #include "../resources/image.h"
@@ -32,7 +33,7 @@
 // TODO: Fix windows so that they can each load their own skins without the
 // other windows overriding another window's skin.
 SpeechBubble::SpeechBubble():
-    Window(_("Message"), false, NULL, "graphics/gui/speechbubble.xml")
+    Window(_(""), false, NULL, "graphics/gui/speechbubble.xml")
 {
     mSpeechBox = new TextBox();
     mSpeechBox->setEditable(false);
@@ -59,28 +60,38 @@ SpeechBubble::SpeechBubble():
     mSpeechBox->setTextWrapped( "" );
 }
 
+void SpeechBubble::setName(const std::string &name)
+{
+    setWindowName(name);
+    setCaption(name);
+}
+
 void SpeechBubble::setText(std::string mText)
 {
     mSpeechBox->setMinWidth(140);
     mSpeechBox->setTextWrapped( mText );
 
+    const int fontHeight = getFont()->getHeight();
     int numRows = mSpeechBox->getNumberOfRows();
 
     if (numRows > 1)
     {
         // 15 == height of each line of text (based on font heights)
         // 14 == speechbubble Top + Bottom graphic pixel heights
-        setContentSize(mSpeechBox->getMinWidth() + 15, 15 + (numRows * 15));
-        mSpeechArea->setDimension(gcn::Rectangle(4, 15, mSpeechBox->getMinWidth() + 5, 
-                                  3 +(numRows * 14)));
+        setContentSize(mSpeechBox->getMinWidth() + fontHeight, fontHeight + 
+                      (numRows * fontHeight));
+        mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight,
+                                  mSpeechBox->getMinWidth() + 5, 
+                                  3 + (numRows * fontHeight)));
     }
     else
     {
-        int width = getFont()->getWidth(this->getCaption());
+        int width = boldFont->getWidth(this->getCaption());
         if (width < getFont()->getWidth(mText))
             width = getFont()->getWidth(mText);
-        setContentSize(width + 15, 30);
-        mSpeechArea->setDimension(gcn::Rectangle(4, 15, width + 5, 17));
+        setContentSize(width + fontHeight, fontHeight * 2);
+        mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight, 
+                                                 width + 5, fontHeight + 2));
     }
 }
 

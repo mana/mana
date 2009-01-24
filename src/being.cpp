@@ -510,11 +510,12 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
             mText = 0;
         }
 
-        mSpeechBubble->setCaption(mName);
-        mSpeechBubble->setWindowName(mName);
+        if (mName != mSpeechBubble->getCaption())
+            mSpeechBubble->setName(mName);
+
         // Not quite centered, but close enough. However, it's not too important to get 
         // it right right now, as it doesn't take bubble collision into account yet. 
-        mSpeechBubble->setText( mSpeech );
+        mSpeechBubble->setText(mSpeech);
         mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), py - 70 - 
                                         (mSpeechBubble->getNumRows()*14));
         mSpeechBubble->setVisible(true);

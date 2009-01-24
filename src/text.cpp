@@ -38,8 +38,8 @@ Text::Text(const std::string &text, int x, int y,
         textManager = new TextManager();
     }
     ++mInstances;
-    mHeight = gui->getFont()->getHeight();
-    mWidth = gui->getFont()->getWidth(text);
+    mHeight = boldFont->getHeight();
+    mWidth = boldFont->getWidth(text);
     switch (alignment)
     {
         case gcn::Graphics::LEFT:
@@ -74,7 +74,7 @@ Text::~Text()
 
 void Text::draw(Graphics *graphics, int xOff, int yOff)
 {
-    graphics->setFont(gui->getFont());
+    graphics->setFont(boldFont);
 
     // Text shadow
     graphics->setColor(gcn::Color(0, 0, 0));

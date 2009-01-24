@@ -46,6 +46,14 @@ MiniStatusWindow::MiniStatusWindow():
     mMpLabel = new gcn::Label("");
     mXpLabel = new gcn::Label("");
 
+    mHpLabel->setForegroundColor(gcn::Color(50, 50, 50));
+    mMpLabel->setForegroundColor(gcn::Color(50, 50, 50));
+    mXpLabel->setForegroundColor(gcn::Color(50, 50, 50));
+
+    mHpLabel->setFont(boldFont);
+    mMpLabel->setFont(boldFont);
+    mXpLabel->setFont(boldFont);
+
     mHpBar->setPosition(0, 3);
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
     mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);

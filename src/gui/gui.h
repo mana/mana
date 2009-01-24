@@ -125,5 +125,9 @@ extern gcn::Font *hitRedFont;
 extern gcn::Font *hitBlueFont;
 extern gcn::Font *hitYellowFont;
 
+/**
+ * Bolded text font
+ */
+extern gcn::Font *boldFont;
 
 #endif
