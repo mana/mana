@@ -59,8 +59,8 @@ StaticTableModel::StaticTableModel(int row, int column,
     mRows(row),
     mColumns(column),
     mHeight(1),
-    mBackgroundColor(backgroundColor),
-    mOpaque(opacity)
+    mOpaque(opacity),
+    mBackgroundColor(backgroundColor)
 {
     mTableModel.resize(row * column, NULL);
     mWidths.resize(column, 1);
