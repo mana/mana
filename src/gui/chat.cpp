@@ -54,6 +54,8 @@ ChatWindow::ChatWindow(Network *network):
 
     setResizable(true);
     setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
+    setMinWidth(150);
+    setMinHeight(90);
 
     mChatInput = new ChatInput;
     mChatInput->setActionEventId("chatinput");
@@ -70,11 +72,12 @@ ChatWindow::ChatWindow(Network *network):
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
     mScrollArea->setOpaque(false);
 
-    place(0, 0, mScrollArea, 5, 5);
-    place(0, 5, mChatInput, 5);
+    place(0, 0, mScrollArea, 5, 5).setPadding(0);
+    place(0, 5, mChatInput, 5).setPadding(1);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
+    layout.setMargin(2);
 
     loadWindowState();
 
