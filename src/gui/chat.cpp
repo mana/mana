@@ -60,6 +60,8 @@ Window(""), mNetwork(network), mTmpVisible(false)
 
     setResizable(true);
     setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
+    setMinWidth(150);
+    setMinHeight(90);
 
     mItemLinkHandler = new ItemLinkHandler();
 
@@ -80,11 +82,12 @@ Window(""), mNetwork(network), mTmpVisible(false)
     mScrollArea->setScrollAmount(0, 1);
     mScrollArea->setOpaque(false);
 
-    place(0, 0, mScrollArea, 5, 5);
-    place(0, 5, mChatInput, 5);
+    place(0, 0, mScrollArea, 5, 5).setPadding(0);
+    place(0, 5, mChatInput, 5).setPadding(1);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
+    layout.setMargin(2);
 
     loadWindowState();
 
