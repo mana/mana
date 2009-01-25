@@ -137,7 +137,7 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
     else
     {
         // Fix the owner of welcome message.
-        if (line.substr(0, 7) == _("Welcome"))
+        if (line.substr(0, 7) == "Welcome")
         {
             own = BY_SERVER;
         }
@@ -190,6 +190,11 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
             tmp.text = line;
             lineColor = "##L";
             break;
+    }
+
+    if (tmp.nick == ": " && tmp.text.substr(0, 17) == "Visible GM status")
+    {
+        player_node->setGM();
     }
 
     // Get the current system time
@@ -391,15 +396,6 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     // Prepare ordinary message
     if (msg.substr(0, 1) != "/") 
     {
-        // The server never tells you about your own GM status, so work around
-        // this for now by intercepting it here. NOTE: This assumes that the 
-        // assert works, when it's not guaranteed to.
-
-        std::size_t space = msg.find(" ");
-        const std::string command = msg.substr(1, space);
-        if (msg.at(0) == '@' && command == "assert")
-            player_node->setGM();
-
         msg = nick + " : " + msg;
 
         MessageOut outMsg(mNetwork);

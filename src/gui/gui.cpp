@@ -170,6 +170,7 @@ Gui::~Gui()
         mMouseCursors->decRef();
 
     delete mGuiFont;
+    delete boldFont;
     delete viewport;
     delete getTop();
 
