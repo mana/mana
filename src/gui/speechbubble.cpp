@@ -96,12 +96,12 @@ void SpeechBubble::setText(std::string mText)
     }
     else
     {
-        int width = mCaption->getWidth() + 8;
+        int width = mCaption->getWidth() + 3;
         if (width < getFont()->getWidth(mText))
             width = getFont()->getWidth(mText);
         setContentSize(width + fontHeight, (fontHeight * 2) + 6);
         mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight + 3, 
-                                                 width + 5, fontHeight));
+                                                 width, fontHeight));
     }
 }
 
