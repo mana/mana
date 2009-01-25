@@ -19,8 +19,8 @@
  *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _AETHYRA_EMOTE_DB_H
-#define _AETHYRA_EMOTE_DB_H
+#ifndef EMOTE_DB_H
+#define EMOTE_DB_H
 
 #include <list>
 #include <map>

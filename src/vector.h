@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_VECTOR_H_
-#define _TMW_VECTOR_H_
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include <math.h>
 
@@ -187,4 +187,4 @@ class Vector
  */
 std::ostream& operator <<(std::ostream &os, const Vector &v);
 
-#endif // _TMW_VECTOR_H_
+#endif // VECTOR_H

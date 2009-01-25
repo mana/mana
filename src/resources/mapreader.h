@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_MAPREADER_H_
-#define _TMW_MAPREADER_H_
+#ifndef MAPREADER_H
+#define MAPREADER_H
 
 #include <iosfwd>
 

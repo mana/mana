@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_DYE_H
-#define _TMW_DYE_H
+#ifndef DYE_H
+#define DYE_H
 
 #include <string>
 #include <vector>

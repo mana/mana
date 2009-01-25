@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_GUI_GCCONTAINER_H
-#define _TMW_GUI_GCCONTAINER_H
+#ifndef GUI_GCCONTAINER_H
+#define GUI_GCCONTAINER_H
 
 #include <list>
 

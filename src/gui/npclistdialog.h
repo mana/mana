@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_GUI_NPCLISTDIALOG_H
-#define _TMW_GUI_NPCLISTDIALOG_H
+#ifndef GUI_NPCLISTDIALOG_H
+#define GUI_NPCLISTDIALOG_H
 
 #include <iosfwd>
 #include <vector>
@@ -86,4 +86,4 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         std::vector<std::string> mItems;
 };
 
-#endif // _TMW_GUI_NPCLISTDIALOG_H
+#endif // GUI_NPCLISTDIALOG_H

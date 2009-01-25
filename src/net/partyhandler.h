@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_NET_PARTYHANDLER_H
-#define _TMW_NET_PARTYHANDLER_H
+#ifndef PARTYHANDLER_H
+#define PARTYHANDLER_H
 
 #include "messagehandler.h"
 

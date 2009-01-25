@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _AETHYRA_TEXTMANAGER_H
-#define _AETHYRA_TEXTMANAGER_H
+#ifndef TEXTMANAGER_H
+#define TEXTMANAGER_H
 
 #include <list>
 
@@ -71,4 +71,5 @@ class TextManager
 };
 
 extern TextManager *textManager;
-#endif
+
+#endif // TEXTMANAGER_H

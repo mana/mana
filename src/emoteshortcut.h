@@ -19,8 +19,8 @@
  *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _AETHYRA_EMOTESHORTCUT_H__
-#define _AETHYRA_EMOTESHORTCUT_H__
+#ifndef EMOTESHORTCUT_H__
+#define EMOTESHORTCUT_H__
 
 #define SHORTCUT_EMOTES 12
 

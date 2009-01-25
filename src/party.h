@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_PARTY_H
-#define _TMW_PARTY_H
+#ifndef PARTY_H
+#define PARTY_H
 
 #include <string>
 

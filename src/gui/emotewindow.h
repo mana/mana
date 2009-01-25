@@ -19,8 +19,8 @@
  *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _AETHYRA_EMOTEWINDOW_H
-#define _AETHYRA_EMOTEWINDOW_H
+#ifndef EMOTEWINDOW_H
+#define EMOTEWINDOW_H
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>

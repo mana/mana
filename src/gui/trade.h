@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_TRADE_H
-#define _TMW_TRADE_H
+#ifndef TRADE_H
+#define TRADE_H
 
 #include <memory>
 

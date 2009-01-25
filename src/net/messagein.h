@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_MESSAGEIN_
-#define _TMW_MESSAGEIN_
+#ifndef MESSAGEIN_
+#define MESSAGEIN_
 
 #include <SDL_types.h>
 #include <string>

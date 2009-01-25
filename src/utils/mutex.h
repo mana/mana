@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef TMW_MUTEX_H
-#define TMW_MUTEX_H
+#ifndef MUTEX_H
+#define MUTEX_H
 
 #include <SDL_thread.h>
 
@@ -94,4 +94,4 @@ inline MutexLocker::~MutexLocker()
     mMutex->unlock();
 }
 
-#endif // TMW_MUTEX_H
+#endif // MUTEX_H

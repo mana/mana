@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_CONFIGURATION_H
-#define _TMW_CONFIGURATION_H
+#ifndef CONFIGURATION_H
+#define CONFIGURATION_H
 
 #include <cassert>
 #include <libxml/xmlwriter.h>

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_RESOURCES_AMBIENTOVERLAY_H_
-#define _TMW_RESOURCES_AMBIENTOVERLAY_H_
+#ifndef RESOURCES_AMBIENTOVERLAY_H
+#define RESOURCES_AMBIENTOVERLAY_H
 
 class Graphics;
 class Image;

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_GAME_
-#define _TMW_GAME_
+#ifndef GAME_
+#define GAME_
 
 #include <iosfwd>
 #include <memory>

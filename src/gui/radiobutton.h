@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_RADIOBUTTON_H
-#define _TMW_RADIOBUTTON_H
+#ifndef RADIOBUTTON_H
+#define RADIOBUTTON_H
 
 #include <guichan/widgets/radiobutton.hpp>
 
@@ -63,4 +63,4 @@ class RadioButton : public gcn::RadioButton {
         static Image *radioDisabledChecked;
 };
 
-#endif /* _TMW_RADIOBUTTON_H */
+#endif /* RADIOBUTTON_H */

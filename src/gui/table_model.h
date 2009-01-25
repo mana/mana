@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef TMW_TABLE_MODEL_H_
-#define TMW_TABLE_MODEL_H_
+#ifndef TABLE_MODEL_H
+#define TABLE_MODEL_H
 
 #include <set>
 #include <vector>
@@ -176,4 +176,4 @@ protected:
     virtual void drawBackground(gcn::Graphics *graphics);
 };
 
-#endif /* !defined(TMW_TABLE_MODEL_H_) */
+#endif /* !defined(TABLE_MODEL_H) */

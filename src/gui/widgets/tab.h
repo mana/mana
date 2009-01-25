@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_TAB_H
-#define _TMW_TAB_H
+#ifndef TAB_H
+#define TAB_H
 
 #include <guichan/widgets/tab.hpp>
 

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_MONSTER_H
-#define _TMW_MONSTER_H
+#ifndef MONSTER_H
+#define MONSTER_H
 
 #include "being.h"
 

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __TMW_PLAYERBOX_H__
-#define __TMW_PLAYERBOX_H__
+#ifndef PLAYERBOX_H
+#define PLAYERBOX_H
 
 #include <guichan/widgets/scrollarea.hpp>
 

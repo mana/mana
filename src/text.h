@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _AETHYRA_TEXT_H
-#define _AETHYRA_TEXT_H
+#ifndef TEXT_H
+#define TEXT_H
 
 #include "graphics.h"
 #include "guichanfwd.h"
@@ -89,4 +89,5 @@ class FlashText : public Text
     private:
         int mTime;             /**< Time left for flashing */
 };
-#endif
+
+#endif // TEXT_H

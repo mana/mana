@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __TMW_TEXTBOX_H__
-#define __TMW_TEXTBOX_H__
+#ifndef TEXTBOX_H
+#define TEXTBOX_H
 
 #include <guichan/widgets/textbox.hpp>
 

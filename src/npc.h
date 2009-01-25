@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_NPC_H
-#define _TMW_NPC_H
+#ifndef NPC_H
+#define NPC_H
 
 #include "player.h"
 

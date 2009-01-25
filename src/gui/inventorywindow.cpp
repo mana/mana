@@ -109,7 +109,7 @@ void InventoryWindow::logic()
 
         // Adjust widgets
         mWeight = _("Weight: ") + mTotalWeight + " g / " +
-                  mMaxWeight + _(" g  Slots: ") + 
+                  mMaxWeight + _(" g Slots: ") + 
                  toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
                  "/" + toString(player_node->getInventory()->getInventorySize());
 

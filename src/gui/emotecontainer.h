@@ -19,8 +19,8 @@
  *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _AETHYRA_EMOTECONTAINER_H__
-#define _AETHYRA_EMOTECONTAINER_H__
+#ifndef EMOTECONTAINER_H__
+#define EMOTECONTAINER_H__
 
 #include <list>
 #include <vector>

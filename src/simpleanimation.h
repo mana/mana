@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_SIMPLEANIMAION_H
-#define _TMW_SIMPLEANIMAION_H
+#ifndef SIMPLEANIMAION_H
+#define SIMPLEANIMAION_H
 
 #include "resources/animation.h"
 

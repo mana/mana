@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_BUTTON_H
-#define _TMW_BUTTON_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
 #include <iosfwd>
 

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_UTILS_GETTEXT_H
-#define _TMW_UTILS_GETTEXT_H
+#ifndef UTILS_GETTEXT_H
+#define UTILS_GETTEXT_H
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

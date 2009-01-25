@@ -680,7 +680,7 @@ void charLogin(Network *network, LoginData *loginData)
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
     // [Fate] The next word is unused by the old char server, so we squeeze in tmw client version information
-    outMsg.writeInt16(TMW_CLIENT_PROTOCOL_VERSION);
+    outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
     outMsg.writeInt8(loginData->sex);
 
     // We get 4 useless bytes before the real answer comes in

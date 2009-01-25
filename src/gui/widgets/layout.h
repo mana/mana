@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_WIDGET_LAYOUT_H__
-#define _TMW_WIDGET_LAYOUT_H__
+#ifndef WIDGET_LAYOUT_H
+#define WIDGET_LAYOUT_H
 
 #include <vector>
 
@@ -317,4 +317,4 @@ class Layout: public LayoutCell
         bool mComputed;
 };
 
-#endif // _TMW_WIDGET_LAYOUT_H__
+#endif // WIDGET_LAYOUT_H

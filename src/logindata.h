@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_LOGINDATA_H
-#define _TMW_LOGINDATA_H
+#ifndef LOGINDATA_H
+#define LOGINDATA_H
 
 #include <string>
 

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_CHECKBOX_H
-#define _TMW_CHECKBOX_H
+#ifndef CHECKBOX_H
+#define CHECKBOX_H
 
 #include <iosfwd>
 

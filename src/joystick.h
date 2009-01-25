@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_JOYSTICK_H
-#define _TMW_JOYSTICK_H
+#ifndef JOYSTICK_H
+#define JOYSTICK_H
 
 #include <SDL.h>
 
@@ -98,4 +98,4 @@ class Joystick
         void doCalibration();
 };
 
-#endif // _TMW_JOYSTICK_H
+#endif // JOYSTICK_H

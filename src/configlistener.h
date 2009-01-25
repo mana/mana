@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_CONFIGLISTENER_H
-#define _TMW_CONFIGLISTENER_H
+#ifndef CONFIGLISTENER_H
+#define CONFIGLISTENER_H
 
 #include <iosfwd>
 

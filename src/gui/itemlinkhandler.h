@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_ITEM_LINK_HANDLER_H_
-#define _TMW_ITEM_LINK_HANDLER_H_
+#ifndef ITEM_LINK_HANDLER_H_
+#define ITEM_LINK_HANDLER_H_
 
 #include "linkhandler.h"
 
