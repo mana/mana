@@ -28,8 +28,6 @@
 #include "text.h"
 #include "localplayer.h"
 
-#include "gui/gui.h"
-
 #include "resources/monsterdb.h"
 
 #include "utils/tostring.h"
@@ -81,8 +79,7 @@ Monster::~Monster()
     }
 }
 
-void
-Monster::logic()
+void Monster::logic()
 {
     if (mAction != STAND)
     {
@@ -97,14 +94,12 @@ Monster::logic()
     Being::logic();
 }
 
-Being::Type
-Monster::getType() const
+Being::Type Monster::getType() const
 {
     return MONSTER;
 }
 
-void
-Monster::setAction(Uint8 action)
+void Monster::setAction(Uint8 action)
 {
     SpriteAction currentAction = ACTION_INVALID;
 
@@ -142,8 +137,7 @@ Monster::setAction(Uint8 action)
     }
 }
 
-void
-Monster::handleAttack(Being *victim, int damage)
+void Monster::handleAttack(Being *victim, int damage)
 {
     Being::handleAttack(victim, damage);
 
@@ -152,21 +146,18 @@ Monster::handleAttack(Being *victim, int damage)
                 MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
 }
 
-void
-Monster::takeDamage(int amount)
+void Monster::takeDamage(int amount)
 {
     if (amount > 0) sound.playSfx(getInfo().getSound(MONSTER_EVENT_HURT));
     Being::takeDamage(amount);
 }
 
-Being::TargetCursorSize
-Monster::getTargetCursorSize() const
+Being::TargetCursorSize Monster::getTargetCursorSize() const
 {
     return getInfo().getTargetCursorSize();
 }
 
-const MonsterInfo&
-Monster::getInfo() const
+const MonsterInfo &Monster::getInfo() const
 {
     return MonsterDB::get(mJob - 1002);
 }
@@ -179,7 +170,7 @@ void Monster::showName(bool show)
         mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,
                          mPy + NAME_Y_OFFSET - getHeight(),
                          gcn::Graphics::CENTER,
-                         speechFont, gcn::Color(255, 32, 32));
+                         gcn::Color(255, 64, 64));
     }
     else
     {

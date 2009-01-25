@@ -37,8 +37,8 @@ class Text
          * Constructor creates a text object to display on the screen.
          */
         Text(const std::string &text, int x, int y,
-             gcn::Graphics::Alignment alignment, gcn::Font *font,
-             gcn::Color colour);
+             gcn::Graphics::Alignment alignment,
+             gcn::Color colour, bool isSpeech = false);
 
         /**
          * Destructor. The text is removed from the screen.
@@ -62,16 +62,20 @@ class Text
         int mHeight;           /**< The height of the text. */
         int mXOffset;          /**< The offset of mX from the desired x. */
         static int mInstances; /**< Instances of text. */
-        gcn::Font *mFont;      /**< The font used. */
         std::string mText;     /**< The text to display. */
         gcn::Color mColour;    /**< The colour of the text. */
+        bool mIsSpeech;        /**< Is this text a speech bubble? */
+
+    protected:
+        static ImageRect mBubble;   /**< Speech bubble graphic */
+        static Image *mBubbleArrow; /**< Speech bubble arrow graphic */
 };
 
 class FlashText : public Text
 {
     public:
         FlashText(const std::string &text, int x, int y,
-                  gcn::Graphics::Alignment alignment, gcn::Font *font,
+                  gcn::Graphics::Alignment alignment,
                   gcn::Color colour);
 
         /**

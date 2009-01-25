@@ -55,14 +55,6 @@ MiniStatusWindow::MiniStatusWindow():
     mMpLabel->setDimension(mMpBar->getDimension());
     mXpLabel->setDimension(mXpBar->getDimension());
 
-    mHpLabel->setForegroundColor(gcn::Color(255, 255, 255));
-    mMpLabel->setForegroundColor(gcn::Color(255, 255, 255));
-    mXpLabel->setForegroundColor(gcn::Color(255, 255, 255));
-
-    mHpLabel->setFont(speechFont);
-    mMpLabel->setFont(speechFont);
-    mXpLabel->setFont(speechFont);
-
     mHpLabel->setAlignment(gcn::Graphics::CENTER);
     mMpLabel->setAlignment(gcn::Graphics::CENTER);
     mXpLabel->setAlignment(gcn::Graphics::CENTER);
@@ -80,8 +72,7 @@ MiniStatusWindow::MiniStatusWindow():
     loadWindowState();
 }
 
-void
-MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
+void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
 {
     if (index >= (int) mIcons.size())
         mIcons.resize(index + 1, NULL);
@@ -92,8 +83,7 @@ MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
     mIcons[index] = sprite;
 }
 
-void
-MiniStatusWindow::eraseIcon(int index)
+void MiniStatusWindow::eraseIcon(int index)
 {
     mIcons.erase(mIcons.begin() + index);
 }
@@ -156,20 +146,20 @@ void MiniStatusWindow::update()
 
 }
 
-void MiniStatusWindow::draw(gcn::Graphics *gcn_graphics)
+void MiniStatusWindow::draw(gcn::Graphics *graphics)
 {
     update();
-    drawChildren(gcn_graphics);
+    drawChildren(graphics);
 }
 
-void
-MiniStatusWindow::drawIcons(Graphics *graphics)
+void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
     // Draw icons
     int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
-    for (unsigned int i = 0; i < mIcons.size(); i++)
+    for (unsigned int i = 0; i < mIcons.size(); i++) {
         if (mIcons[i]) {
             mIcons[i]->draw(graphics, icon_x, 3);
             icon_x += 2 + mIcons[i]->getWidth();
         }
+    }
 }

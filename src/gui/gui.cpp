@@ -43,16 +43,14 @@
 #include "../resources/imageloader.h"
 
 // Guichan stuff
-Gui *gui;
-Viewport *viewport;                    /**< Viewport on the map. */
-SDLInput *guiInput;
+Gui *gui = 0;
+Viewport *viewport = 0;               /**< Viewport on the map. */
+SDLInput *guiInput = 0;
 
 // Fonts used in showing hits
-gcn::Font *hitRedFont;
-gcn::Font *hitBlueFont;
-gcn::Font *hitYellowFont;
-// Font used to display speech and player names
-gcn::Font *speechFont;
+gcn::Font *hitRedFont = 0;
+gcn::Font *hitBlueFont = 0;
+gcn::Font *hitYellowFont = 0;
 
 class GuiConfigListener : public ConfigListener
 {
@@ -116,20 +114,6 @@ Gui::Gui(Graphics *graphics):
             + e.getMessage());
     }
 
-    // Set speech font
-    try {
-        speechFont = new gcn::ImageFont("graphics/gui/rpgfont_wider.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
-                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
-                );
-    }
-    catch (gcn::Exception e)
-    {
-        logger->error(std::string("Unable to load rpgfont_wider.png: ")
-            + e.getMessage());
-    }
-
     gcn::Widget::setGlobalFont(mGuiFont);
 
     // Load hits' colourful fonts
@@ -173,7 +157,6 @@ Gui::~Gui()
         mMouseCursors->decRef();
 
     delete mGuiFont;
-    delete speechFont;
     delete viewport;
     delete getTop();
 

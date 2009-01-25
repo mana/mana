@@ -31,7 +31,6 @@
 
 #include "utils/strprintf.h"
 
-#include "gui/gui.h"
 #include <iostream>
 
 static const int NAME_X_OFFSET = 15;
@@ -57,13 +56,12 @@ void Player::setName(const std::string &name)
     {
         mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
                               gcn::Graphics::CENTER,
-                              speechFont, gcn::Color(255, 255, 255));
+                              gcn::Color(255, 255, 255));
         Being::setName(name);
     }
 }
 
-void
-Player::logic()
+void Player::logic()
 {
     switch (mAction) {
         case WALK:
@@ -90,14 +88,12 @@ Player::logic()
     Being::logic();
 }
 
-Being::Type
-Player::getType() const
+Being::Type Player::getType() const
 {
     return PLAYER;
 }
 
-void
-Player::flash(int time)
+void Player::flash(int time)
 {
     if (mName)
     {

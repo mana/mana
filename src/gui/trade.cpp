@@ -128,10 +128,15 @@ void TradeWindow::widgetResized(const gcn::Event &event)
         mMoneyField->getX() + mMoneyField->getWidth() + 6,
         mMoneyLabel2->getY());
 
-    mCancelButton->setPosition(width - 54, height - 8 - mCancelButton->getHeight());
-    mTradeButton->setPosition(mCancelButton->getX() - 41, mCancelButton->getY());
-    mOkButton->setPosition(mTradeButton->getX() - 24, mCancelButton->getY());
-    mAddButton->setPosition(mOkButton->getX() - 31, mCancelButton->getY());
+    mCancelButton->setPosition(width - 8 - mCancelButton->getWidth(),
+                               height - 8 - mCancelButton->getHeight());
+    mTradeButton->setPosition(
+            mCancelButton->getX() - 4 - mTradeButton->getWidth(),
+            mCancelButton->getY());
+    mOkButton->setPosition(mTradeButton->getX() - 4 - mOkButton->getWidth(),
+                           mCancelButton->getY());
+    mAddButton->setPosition(mOkButton->getX() - 4 - mAddButton->getWidth(),
+                            mCancelButton->getY());
 
     mItemDescriptionLabel->setPosition(8,
         mOkButton->getY() - mItemDescriptionLabel->getHeight() - 4);
@@ -263,8 +268,10 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
     ItemInfo const *info = item ? &item->getInfo() : NULL;
     mItemNameLabel->setCaption(strprintf(_("Name: %s"),
         info ? info->getName().c_str() : ""));
+    mItemNameLabel->adjustSize();
     mItemDescriptionLabel->setCaption(strprintf(_("Description: %s"),
         info ? info->getDescription().c_str() : ""));
+    mItemDescriptionLabel->adjustSize();
 }
 
 void TradeWindow::action(const gcn::ActionEvent &event)

@@ -30,8 +30,6 @@
 #include "net/protocol.h"
 #include "resources/npcdb.h"
 
-#include "gui/gui.h"
-
 NPC *current_npc = 0;
 
 static const int NAME_X_OFFSET = 15;
@@ -76,7 +74,7 @@ void NPC::setName(const std::string &name)
 {
     delete mName;
     mName = new Text(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                     gcn::Graphics::CENTER, speechFont,
+                     gcn::Graphics::CENTER,
                      gcn::Color(200, 200, 255));
 }
 
