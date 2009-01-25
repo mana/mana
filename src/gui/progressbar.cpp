@@ -19,12 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui.h"
 #include "progressbar.h"
 
 #include "../graphics.h"
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
+
+#include <guichan/font.hpp>
 
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;
@@ -94,12 +97,29 @@ void ProgressBar::draw(gcn::Graphics *graphics)
         drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
 
     // The bar
-    if (mProgress > 0)
-    {
+    if (mProgress > 0) {
         graphics->setColor(gcn::Color(mRed, mGreen, mBlue, 200));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
                     (int) (mProgress * (getWidth() - 8)),
                     getHeight() - 8));
+    }
+
+    // The label
+    if (!mText.empty()) {
+        gcn::Font *f = boldFont;
+        const int textX = getWidth() / 2;
+        const int textY = (getHeight() - f->getHeight()) / 2;
+
+        graphics->setFont(f);
+
+        graphics->setColor(gcn::Color(0, 0, 0));
+        graphics->drawText(mText, textX + 1, textY, gcn::Graphics::CENTER);
+        graphics->drawText(mText, textX, textY - 1, gcn::Graphics::CENTER);
+        graphics->drawText(mText, textX, textY + 1, gcn::Graphics::CENTER);
+        graphics->drawText(mText, textX - 1, textY, gcn::Graphics::CENTER);
+
+        graphics->setColor(gcn::Color(255, 255, 255));
+        graphics->drawText(mText, textX, textY, gcn::Graphics::CENTER);
     }
 }
 

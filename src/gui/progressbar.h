@@ -25,6 +25,7 @@
 #include <guichan/widget.hpp>
 
 #include <SDL_types.h>
+#include <string>
 
 #include "../guichanfwd.h"
 
@@ -35,7 +36,8 @@ class ImageRect;
  *
  * \ingroup GUI
  */
-class ProgressBar : public gcn::Widget {
+class ProgressBar : public gcn::Widget
+{
     public:
         /**
          * Constructor, initializes the progress with the given value.
@@ -67,7 +69,7 @@ class ProgressBar : public gcn::Widget {
         /**
          * Returns the current progress.
          */
-        float getProgress() { return mProgress; }
+        float getProgress() const { return mProgress; }
 
         /**
          * Change the filling of the progress bar.
@@ -75,24 +77,37 @@ class ProgressBar : public gcn::Widget {
         void setColor(Uint8, Uint8 green, Uint8 blue);
 
         /**
-         * Get The red value of color
+         * Returns the red value of color.
          */
-        Uint8 getRed() { return mRed; }
-
-         /**
-         * Get The red value of color
-         */
-        Uint8 getGreen() { return mGreen; }
+        Uint8 getRed() const { return mRed; }
 
         /**
-         * Get The red value of color
+         * Returns the green value of color.
          */
-        Uint8 getBlue() { return mBlue; }
+        Uint8 getGreen() const { return mGreen; }
+
+        /**
+         * Returns the blue value of color.
+         */
+        Uint8 getBlue() const { return mBlue; }
+
+        /**
+         * Sets the text shown on the progress bar.
+         */
+        void setText(const std::string &text)
+        { mText = text; }
+
+        /**
+         * Returns the text shown on the progress bar.
+         */
+        const std::string &text() const
+        { return mText; }
 
     private:
         float mProgress;
         Uint8 mRed, mGreen, mBlue;
         Uint8 mRedToGo, mGreenToGo, mBlueToGo;
+        std::string mText;
 
         static ImageRect mBorder;
         static int mInstances;

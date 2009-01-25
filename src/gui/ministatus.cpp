@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "gui.h"
 #include "ministatus.h"
 #include "progressbar.h"
@@ -42,36 +40,14 @@ MiniStatusWindow::MiniStatusWindow():
     mHpBar = new ProgressBar(1.0f, 100, 20, 0, 171, 34);
     mMpBar = new ProgressBar(1.0f, 100, 20, 26, 102, 230);
     mXpBar = new ProgressBar(1.0f, 100, 20, 143, 192, 211);
-    mHpLabel = new gcn::Label("");
-    mMpLabel = new gcn::Label("");
-    mXpLabel = new gcn::Label("");
-
-    mHpLabel->setForegroundColor(gcn::Color(50, 50, 50));
-    mMpLabel->setForegroundColor(gcn::Color(50, 50, 50));
-    mXpLabel->setForegroundColor(gcn::Color(50, 50, 50));
-
-    mHpLabel->setFont(boldFont);
-    mMpLabel->setFont(boldFont);
-    mXpLabel->setFont(boldFont);
 
     mHpBar->setPosition(0, 3);
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
     mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);
 
-    mHpLabel->setDimension(mHpBar->getDimension());
-    mMpLabel->setDimension(mMpBar->getDimension());
-    mXpLabel->setDimension(mXpBar->getDimension());
-
-    mHpLabel->setAlignment(gcn::Graphics::CENTER);
-    mMpLabel->setAlignment(gcn::Graphics::CENTER);
-    mXpLabel->setAlignment(gcn::Graphics::CENTER);
-
     add(mHpBar);
     add(mMpBar);
     add(mXpBar);
-    add(mHpLabel);
-    add(mMpLabel);
-    add(mXpLabel);
 
     setContentSize(mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
@@ -106,8 +82,8 @@ void MiniStatusWindow::update()
     mXpBar->setProgress(xp);
 
     // Update labels
-    mHpLabel->setCaption(toString(player_node->mHp));
-    mMpLabel->setCaption(toString(player_node->mMp));
+    mHpBar->setText(toString(player_node->mHp));
+    mMpBar->setText(toString(player_node->mMp));
 
     std::stringstream updatedText;
     updatedText << (float) ((int) (xp * 10000.0f)) / 100.0f << "%";
@@ -125,7 +101,7 @@ void MiniStatusWindow::update()
     }
     */
 
-    mXpLabel->setCaption(updatedText.str());
+    mXpBar->setText(updatedText.str());
 }
 
 void MiniStatusWindow::draw(gcn::Graphics *graphics)
