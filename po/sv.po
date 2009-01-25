@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 18:28-0700\n"
+"POT-Creation-Date: 2009-01-25 18:51-0700\n"
 "PO-Revision-Date: 2008-05-07 19:04+0000\n"
 "Last-Translator: Kess Vargavind <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -832,9 +832,8 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-#, fuzzy
 msgid "Colors"
-msgstr "Hårfärg:"
+msgstr ""
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"
@@ -1453,9 +1452,8 @@ msgid "Trade: You and "
 msgstr ""
 
 #: ../src/net/tradehandler.cpp:127
-#, fuzzy
 msgid "Trade with "
-msgstr "@@trade|Handla med %s@@"
+msgstr ""
 
 #: ../src/net/tradehandler.cpp:128
 #, fuzzy
@@ -1992,30 +1990,6 @@ msgstr ""
 #: ../src/party.cpp:220
 msgid "Type /help party for a list of options."
 msgstr ""
-
-#, fuzzy
-#~ msgid "Color:"
-#~ msgstr "Hårfärg:"
-
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "Beskrivning: %s"
-
-#, fuzzy
-#~ msgid "Effect:"
-#~ msgstr "Effekt: %s"
-
-#, fuzzy
-#~ msgid "Name: "
-#~ msgstr "Namn:"
-
-#, fuzzy
-#~ msgid "Effect: "
-#~ msgstr "Effekt: %s"
-
-#, fuzzy
-#~ msgid "Description: "
-#~ msgstr "Beskrivning: %s"
 
 #~ msgid "Unregister"
 #~ msgstr "Avregistrera"

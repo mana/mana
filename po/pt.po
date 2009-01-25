@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 18:28-0700\n"
+"POT-Creation-Date: 2009-01-25 18:51-0700\n"
 "PO-Revision-Date: 2008-02-03 10:14+0000\n"
 "Last-Translator: Tiago Silva <Unknown>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -832,9 +832,8 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-#, fuzzy
 msgid "Colors"
-msgstr "Cor de Cabelo:"
+msgstr ""
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"
@@ -1461,9 +1460,8 @@ msgid "Trade: You and "
 msgstr ""
 
 #: ../src/net/tradehandler.cpp:127
-#, fuzzy
 msgid "Trade with "
-msgstr "@@trade|Negociar com %s@@"
+msgstr ""
 
 #: ../src/net/tradehandler.cpp:128
 #, fuzzy
@@ -2000,30 +1998,6 @@ msgstr ""
 #: ../src/party.cpp:220
 msgid "Type /help party for a list of options."
 msgstr ""
-
-#, fuzzy
-#~ msgid "Color:"
-#~ msgstr "Cor de Cabelo:"
-
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "Descrição: %s"
-
-#, fuzzy
-#~ msgid "Effect:"
-#~ msgstr "Efeito: %s"
-
-#, fuzzy
-#~ msgid "Name: "
-#~ msgstr "Nome:"
-
-#, fuzzy
-#~ msgid "Effect: "
-#~ msgstr "Efeito: %s"
-
-#, fuzzy
-#~ msgid "Description: "
-#~ msgstr "Descrição: %s"
 
 #~ msgid "Unregister"
 #~ msgstr "Remover o Registo"

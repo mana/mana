@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 18:28-0700\n"
+"POT-Creation-Date: 2009-01-25 18:51-0700\n"
 "PO-Revision-Date: 2008-07-16 18:28+0000\n"
 "Last-Translator: صقر بن عبدالله <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
@@ -328,8 +328,9 @@ msgid "Cannot use a '/' as the prefix."
 msgstr ""
 
 #: ../src/gui/chat.cpp:784
+#, fuzzy
 msgid "Changing prefix to "
-msgstr ""
+msgstr "تغيير OpenGL"
 
 #: ../src/gui/chat.cpp:794
 msgid "-- Help --"
@@ -831,9 +832,8 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-#, fuzzy
 msgid "Colors"
-msgstr "لون الشعر:"
+msgstr ""
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"
@@ -1452,9 +1452,8 @@ msgid "Trade: You and "
 msgstr ""
 
 #: ../src/net/tradehandler.cpp:127
-#, fuzzy
 msgid "Trade with "
-msgstr "@@تجارة|متاجرة مع %s@@"
+msgstr ""
 
 #: ../src/net/tradehandler.cpp:128
 #, fuzzy
@@ -1991,29 +1990,6 @@ msgstr ""
 #: ../src/party.cpp:220
 msgid "Type /help party for a list of options."
 msgstr ""
-
-#~ msgid "Color:"
-#~ msgstr "لون الشعر:"
-
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "الوصف: %s"
-
-#, fuzzy
-#~ msgid "Effect:"
-#~ msgstr "التأثير: %s"
-
-#, fuzzy
-#~ msgid "Name: "
-#~ msgstr "الاسم:"
-
-#, fuzzy
-#~ msgid "Effect: "
-#~ msgstr "التأثير: %s"
-
-#, fuzzy
-#~ msgid "Description: "
-#~ msgstr "الوصف: %s"
 
 #~ msgid "Unregister"
 #~ msgstr "إلغاء التسجيل"

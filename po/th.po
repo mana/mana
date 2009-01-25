@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 18:28-0700\n"
+"POT-Creation-Date: 2009-01-25 18:51-0700\n"
 "PO-Revision-Date: 2008-11-25 06:16+0000\n"
 "Last-Translator: Tharawut Paripaiboon <Unknown>\n"
 "Language-Team: Thai <th@li.org>\n"
@@ -824,9 +824,8 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-#, fuzzy
 msgid "Colors"
-msgstr "สีผม:"
+msgstr ""
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"
@@ -1974,14 +1973,6 @@ msgstr ""
 #: ../src/party.cpp:220
 msgid "Type /help party for a list of options."
 msgstr ""
-
-#, fuzzy
-#~ msgid "Color:"
-#~ msgstr "สีผม:"
-
-#, fuzzy
-#~ msgid "Name: "
-#~ msgstr "ชื่อ:"
 
 #~ msgid "Change Password"
 #~ msgstr "เปลี่ยนรหัสผ่าน"

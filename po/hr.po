@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 18:28-0700\n"
+"POT-Creation-Date: 2009-01-25 18:51-0700\n"
 "PO-Revision-Date: 2008-12-28 23:36+0000\n"
 "Last-Translator: Dino Paskvan <dpaskvan@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
@@ -826,9 +826,8 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-#, fuzzy
 msgid "Colors"
-msgstr "Boja kose:"
+msgstr ""
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"
@@ -1978,30 +1977,6 @@ msgstr ""
 #: ../src/party.cpp:220
 msgid "Type /help party for a list of options."
 msgstr ""
-
-#, fuzzy
-#~ msgid "Color:"
-#~ msgstr "Boja kose:"
-
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "Opis: %s"
-
-#, fuzzy
-#~ msgid "Effect:"
-#~ msgstr "Učinak: %s"
-
-#, fuzzy
-#~ msgid "Name: "
-#~ msgstr "Ime:"
-
-#, fuzzy
-#~ msgid "Effect: "
-#~ msgstr "Učinak: %s"
-
-#, fuzzy
-#~ msgid "Description: "
-#~ msgstr "Opis: %s"
 
 #~ msgid "Remember Username"
 #~ msgstr "Zapamti korisničko ime"

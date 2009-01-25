@@ -7,26 +7,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 18:28-0700\n"
-"PO-Revision-Date: 2008-09-17 14:41+0000\n"
-"Last-Translator: luojie-dune <Unknown>\n"
-"Language-Team: Simplified Chinese <zh_CN@li.org>\n"
+"POT-Creation-Date: 2009-01-25 18:51-0700\n"
+"PO-Revision-Date: 2009-01-21 22:42+0800\n"
+"Last-Translator: Hong Hao <oahong@gmail.com>\n"
+"Language-Team: Simplified Chinese <themanaworld-devel@lists.sourceforge."
+"net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-01-06 12:40+0000\n"
+"X-Launchpad-Export-Date: 2009-01-21 13:16+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+"Plural-Forms: nplurals=2; plural=1;\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: China\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: ../src/gui/buy.cpp:42 ../src/gui/buy.cpp:45 ../src/gui/buy.cpp:60
 #: ../src/gui/buysell.cpp:34
 msgid "Buy"
-msgstr "买"
+msgstr "购买"
 
 #: ../src/gui/buy.cpp:57 ../src/gui/buy.cpp:238 ../src/gui/sell.cpp:65
 #: ../src/gui/sell.cpp:259
 #, c-format
 msgid "Price: %d GP / Total: %d GP"
-msgstr "价格：%d GP/总数：%d GP"
+msgstr "价格：%d 金币/总数：%d 金币"
 
 #: ../src/gui/buy.cpp:61 ../src/gui/sell.cpp:69 ../src/game.cpp:640
 msgid "Quit"
@@ -42,12 +47,11 @@ msgstr "描述：%s"
 #: ../src/gui/sell.cpp:71 ../src/gui/sell.cpp:232 ../src/gui/sell.cpp:245
 #, c-format
 msgid "Effect: %s"
-msgstr "影响: %s"
+msgstr "效果：%s"
 
 #: ../src/gui/buysell.cpp:30
-#, fuzzy
 msgid "Shop"
-msgstr "停止"
+msgstr "商店"
 
 #: ../src/gui/buysell.cpp:34 ../src/gui/sell.cpp:48 ../src/gui/sell.cpp:68
 msgid "Sell"
@@ -65,21 +69,21 @@ msgstr "取消"
 
 #: ../src/gui/char_select.cpp:62
 msgid "Confirm Character Delete"
-msgstr ""
+msgstr "确认删除角色"
 
 #: ../src/gui/char_select.cpp:63
 msgid "Are you sure you want to delete this character?"
-msgstr "你确定想删除这个较色"
+msgstr "你确定想删除这个角色？"
 
 #: ../src/gui/char_select.cpp:81
 msgid "Select Character"
-msgstr "选择较色"
+msgstr "选择角色"
 
 #: ../src/gui/char_select.cpp:88 ../src/gui/char_select.cpp:173
 #: ../src/gui/char_select.cpp:186
 #, c-format
 msgid "Name: %s"
-msgstr "名字：%s"
+msgstr "姓名：%s"
 
 #. ----------------------
 #. Status Part
@@ -95,9 +99,9 @@ msgstr "等级：%d"
 
 #: ../src/gui/char_select.cpp:90 ../src/gui/char_select.cpp:175
 #: ../src/gui/char_select.cpp:188
-#, fuzzy, c-format
+#, c-format
 msgid "Job Level: %d"
-msgstr "等级：%d"
+msgstr "职业等级：%d"
 
 #: ../src/gui/char_select.cpp:91 ../src/gui/char_select.cpp:189
 #, c-format
@@ -106,11 +110,11 @@ msgstr "金钱：%d"
 
 #: ../src/gui/char_select.cpp:93
 msgid "Previous"
-msgstr "上一页"
+msgstr "上一个"
 
 #: ../src/gui/char_select.cpp:94
 msgid "Next"
-msgstr "下一页"
+msgstr "下一个"
 
 #: ../src/gui/char_select.cpp:95
 msgid "New"
@@ -123,12 +127,12 @@ msgstr "删除"
 #: ../src/gui/char_select.cpp:97 ../src/gui/item_amount.cpp:59
 #: ../src/gui/ok_dialog.cpp:37 ../src/gui/trade.cpp:64
 msgid "Ok"
-msgstr "OK"
+msgstr "确认"
 
 #: ../src/gui/char_select.cpp:176
 #, c-format
 msgid "Gold: %d"
-msgstr ""
+msgstr "金币：%d"
 
 #: ../src/gui/char_select.cpp:247
 msgid "Create Character"
@@ -137,30 +141,29 @@ msgstr "创建角色"
 #: ../src/gui/char_select.cpp:257 ../src/gui/login.cpp:51
 #: ../src/gui/register.cpp:80
 msgid "Name:"
-msgstr "名称"
+msgstr "姓名："
 
 #: ../src/gui/char_select.cpp:260
 msgid "Hair Color:"
-msgstr "头发颜色"
+msgstr "发色："
 
 #: ../src/gui/char_select.cpp:263
 msgid "Hair Style:"
-msgstr "发型"
+msgstr "发型："
 
 #: ../src/gui/char_select.cpp:264
 msgid "Create"
 msgstr "建立"
 
 #: ../src/gui/char_server.cpp:51
-#, fuzzy
 msgid "Select Server"
-msgstr "选择较色"
+msgstr "选择服务器"
 
 #: ../src/gui/char_server.cpp:58 ../src/gui/login.cpp:78
 #: ../src/gui/npcintegerdialog.cpp:43 ../src/gui/npclistdialog.cpp:43
 #: ../src/gui/npcstringdialog.cpp:41 ../src/gui/npc_text.cpp:49
 msgid "OK"
-msgstr ""
+msgstr "确定"
 
 #: ../src/gui/chat.cpp:59 ../src/gui/colour.cpp:32
 #: ../src/gui/menuwindow.cpp:62 ../src/gui/menuwindow.cpp:97
@@ -169,13 +172,14 @@ msgid "Chat"
 msgstr "建立"
 
 #: ../src/gui/chat.cpp:152
+#, fuzzy
 msgid "Global announcement: "
-msgstr ""
+msgstr "全局公告："
 
 #: ../src/gui/chat.cpp:157
-#, c-format
+#, fuzzy, c-format
 msgid "Global announcement from %s: "
-msgstr ""
+msgstr "%s 全局公告："
 
 #: ../src/gui/chat.cpp:171 ../src/gui/login.cpp:53 ../src/gui/register.cpp:83
 msgid "Server:"
@@ -184,7 +188,7 @@ msgstr "服务器："
 #: ../src/gui/chat.cpp:327
 #, c-format
 msgid "Whispering to %s: %s"
-msgstr ""
+msgstr "对%s窃窃私语：%s"
 
 #: ../src/gui/chat.cpp:346
 msgid "Trying to send a blank party message."
@@ -233,87 +237,88 @@ msgstr ""
 
 #: ../src/gui/chat.cpp:604
 msgid "Unknown command"
-msgstr ""
+msgstr "未知指令"
 
 #: ../src/gui/chat.cpp:616
 msgid "Trade failed!"
-msgstr ""
+msgstr "交易失败！"
 
 #: ../src/gui/chat.cpp:619
 msgid "Emote failed!"
-msgstr ""
+msgstr "发送表情失败！"
 
 #: ../src/gui/chat.cpp:622
 msgid "Sit failed!"
-msgstr ""
+msgstr "原地休息失败！"
 
 #: ../src/gui/chat.cpp:625
 msgid "Chat creating failed!"
-msgstr ""
+msgstr "聊天创建失败！"
 
 #: ../src/gui/chat.cpp:628
 msgid "Could not join party!"
-msgstr ""
+msgstr "不能加入工会！"
 
 #: ../src/gui/chat.cpp:631
 msgid "Cannot shout!"
-msgstr ""
+msgstr "无法呼喊！"
 
 #: ../src/gui/chat.cpp:640
 msgid "You have not yet reached a high enough lvl!"
-msgstr ""
+msgstr "你还没有达到足够的等级！"
 
 #: ../src/gui/chat.cpp:643
 msgid "Insufficient HP!"
-msgstr ""
+msgstr "HP不足！"
 
 #: ../src/gui/chat.cpp:646
 msgid "Insufficient SP!"
-msgstr ""
+msgstr "SP不足！"
 
 #: ../src/gui/chat.cpp:649
 msgid "You have no memos!"
-msgstr ""
+msgstr "没有备忘录"
 
 #: ../src/gui/chat.cpp:652
+#, fuzzy
 msgid "You cannot do that right now!"
-msgstr ""
+msgstr "你现在无法办到！"
 
 #: ../src/gui/chat.cpp:655
 msgid "Seems you need more Zeny... ;-)"
-msgstr ""
+msgstr "你需要更多钞票……;-)"
 
 #: ../src/gui/chat.cpp:658
 msgid "You cannot use this skill with that kind of weapon!"
-msgstr ""
+msgstr "此武器无法用来使用此项技能！"
 
 #: ../src/gui/chat.cpp:661
 msgid "You need another red gem!"
-msgstr ""
+msgstr "你需要另一颗红宝石！"
 
 #: ../src/gui/chat.cpp:664
 msgid "You need another blue gem!"
-msgstr ""
+msgstr "你需要另一颗蓝宝石！"
 
 #: ../src/gui/chat.cpp:667
 msgid "You're carrying to much to do this!"
-msgstr ""
+msgstr "你已负重太多，无法办到！"
 
 #: ../src/gui/chat.cpp:670
 msgid "Huh? What's that?"
-msgstr ""
+msgstr "啊？那是什么？"
 
 #: ../src/gui/chat.cpp:679
 msgid "Warp failed..."
-msgstr ""
+msgstr "传送失败..."
 
 #: ../src/gui/chat.cpp:682
 msgid "Could not steal anything..."
-msgstr ""
+msgstr "无法偷取任何物品..."
 
 #: ../src/gui/chat.cpp:685
 msgid "Poison had no effect..."
-msgstr ""
+msgstr "毒药无效..."
 
 #: ../src/gui/chat.cpp:768
 msgid "The current party prefix is "
@@ -334,23 +339,24 @@ msgstr "改变成OpenGL"
 
 #: ../src/gui/chat.cpp:794
 msgid "-- Help --"
-msgstr ""
+msgstr "-- 帮助 --"
 
 #: ../src/gui/chat.cpp:797
 msgid "/announce: Global announcement (GM only)"
-msgstr ""
+msgstr "/announce: 全局通告（只有GM可使用）"
 
 #: ../src/gui/chat.cpp:798
 msgid "/clear: Clears this window"
-msgstr ""
+msgstr "/clear: 清除聊天记录"
 
 #: ../src/gui/chat.cpp:799
 msgid "/help: Display this help"
-msgstr ""
+msgstr "/help: 显示帮助信息"
 
 #: ../src/gui/chat.cpp:801
+#, fuzzy
 msgid "/msg <nick> <message>: Alternate form for /whisper"
-msgstr ""
+msgstr "/w <昵称> <信息>: /whisper的缩写形式"
 
 #: ../src/gui/chat.cpp:802
 msgid "/present: Get list of players present"
@@ -362,63 +368,64 @@ msgstr ""
 
 #: ../src/gui/chat.cpp:806
 msgid "/where: Display map name"
-msgstr ""
+msgstr "/where: 显示地图名称"
 
 #: ../src/gui/chat.cpp:807
 msgid "/w <nick> <message>: Short form for /whisper"
-msgstr ""
+msgstr "/w <昵称> <信息>: /whisper的缩写形式"
 
 #: ../src/gui/chat.cpp:808
 msgid "/whisper <nick> <message>: Sends a private <message> to <nick>"
-msgstr ""
+msgstr "/whisper <昵称> <信息>： 发送一条私密信息 <信息> 给 <昵称>"
 
 #: ../src/gui/chat.cpp:810
 msgid "/who: Display number of online users"
-msgstr ""
+msgstr "/who: 显示在线用户数"
 
 #: ../src/gui/chat.cpp:811
 msgid "For more information, type /help <command>"
-msgstr ""
+msgstr "输入/help <指令> 获取更多帮助信息"
 
 #: ../src/gui/chat.cpp:815
 msgid "Command: /announce <msg>"
-msgstr ""
+msgstr "指令： /announce <信息>"
 
 #: ../src/gui/chat.cpp:816
 msgid "*** only available to a GM ***"
-msgstr ""
+msgstr "*** 只有GM可用 ***"
 
 #: ../src/gui/chat.cpp:817
 msgid "This command sends the message <msg> to all players currently online."
-msgstr ""
+msgstr "该指令会发送<信息>给所有在线用户。"
 
 #: ../src/gui/chat.cpp:822
 msgid "Command: /clear"
-msgstr ""
+msgstr "指令： /clear"
 
 #: ../src/gui/chat.cpp:823
 msgid "This command clears the chat log of previous chat."
-msgstr ""
+msgstr "该指令可清除历史聊天记录。"
 
 #: ../src/gui/chat.cpp:828
 msgid "Command: /help"
-msgstr ""
+msgstr "指令： /help"
 
 #: ../src/gui/chat.cpp:829
 msgid "This command displays a list of all commands available."
-msgstr ""
+msgstr "该指令可显示所有可用指令。"
 
 #: ../src/gui/chat.cpp:831
 msgid "Command: /help <command>"
-msgstr ""
+msgstr "指令： /help <指令>"
 
 #: ../src/gui/chat.cpp:832
 msgid "This command displays help on <command>."
-msgstr ""
+msgstr "该指令显现<指令>的帮助信息"
 
 #: ../src/gui/chat.cpp:840
+#, fuzzy
 msgid "Command: /present"
-msgstr ""
+msgstr "指令: /where"
 
 #: ../src/gui/chat.cpp:841
 msgid ""
@@ -427,8 +434,9 @@ msgid ""
 msgstr ""
 
 #: ../src/gui/chat.cpp:851
+#, fuzzy
 msgid "Command: /toggle <state>"
-msgstr ""
+msgstr "指令： /announce <信息>"
 
 #: ../src/gui/chat.cpp:852
 msgid ""
@@ -443,68 +451,73 @@ msgid ""
 msgstr ""
 
 #: ../src/gui/chat.cpp:858
+#, fuzzy
 msgid "Command: /toggle"
-msgstr ""
+msgstr "指令： /clear"
 
 #: ../src/gui/chat.cpp:859
+#, fuzzy
 msgid "This command displays the return toggle status."
-msgstr ""
+msgstr "该条指令显示当前地图名。"
 
 #: ../src/gui/chat.cpp:863
 msgid "Command: /where"
-msgstr ""
+msgstr "指令: /where"
 
 #: ../src/gui/chat.cpp:864
 msgid "This command displays the name of the current map."
-msgstr ""
+msgstr "该条指令显示当前地图名。"
 
 #: ../src/gui/chat.cpp:869
+#, fuzzy
 msgid "Command: /msg <nick> <msg>"
-msgstr ""
+msgstr "指令： /w <昵称> <信息>"
 
 #: ../src/gui/chat.cpp:870
 msgid "Command: /whisper <nick> <msg>"
-msgstr ""
+msgstr "指令： /whisper <昵称> <信息>"
 
 #: ../src/gui/chat.cpp:871
 msgid "Command: /w <nick> <msg>"
-msgstr ""
+msgstr "指令： /w <昵称> <信息>"
 
 #: ../src/gui/chat.cpp:872
 msgid "This command sends the message <msg> to <nick>."
-msgstr ""
+msgstr "该条指令发送信息 <msg> 给 <nick>"
 
 #: ../src/gui/chat.cpp:874
 msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
-msgstr ""
+msgstr "如果<昵称>之间有空格，用双引号(\")括起来。"
 
 #: ../src/gui/chat.cpp:879
 msgid "Command: /who"
-msgstr ""
+msgstr "指令： /who"
 
 #: ../src/gui/chat.cpp:880
 msgid "This command displays the number of players currently online."
-msgstr ""
+msgstr "该条指令可显现当前在线用户总数。"
 
 #: ../src/gui/chat.cpp:885
 msgid "Unknown command."
-msgstr ""
+msgstr "未知命令"
 
 #: ../src/gui/chat.cpp:886
 msgid "Type /help for a list of commands."
-msgstr ""
+msgstr "输入 /help 获取指令列表。"
 
 #: ../src/gui/colour.cpp:33
 msgid "GM"
 msgstr ""
 
 #: ../src/gui/colour.cpp:34
+#, fuzzy
 msgid "Player"
-msgstr ""
+msgstr "玩家"
 
 #: ../src/gui/colour.cpp:35
+#, fuzzy
 msgid "Whisper"
-msgstr ""
+msgstr "%s悄悄对你说："
 
 #: ../src/gui/colour.cpp:36
 msgid "Is"
@@ -513,7 +526,7 @@ msgstr ""
 #: ../src/gui/colour.cpp:37
 #, fuzzy
 msgid "Party"
-msgstr "端口："
+msgstr "开始"
 
 #: ../src/gui/colour.cpp:38
 #, fuzzy
@@ -561,16 +574,16 @@ msgstr "装备"
 
 #: ../src/gui/help.cpp:34 ../src/gui/help.cpp:37
 msgid "Help"
-msgstr ""
+msgstr "帮助"
 
 #: ../src/gui/help.cpp:43
 msgid "Close"
-msgstr ""
+msgstr "关闭"
 
 #: ../src/gui/inventorywindow.cpp:49 ../src/gui/inventorywindow.cpp:53
 #: ../src/gui/menuwindow.cpp:65 ../src/gui/menuwindow.cpp:109
 msgid "Inventory"
-msgstr "清单"
+msgstr "物品栏"
 
 #: ../src/gui/inventorywindow.cpp:61
 msgid "Drop"
@@ -578,14 +591,14 @@ msgstr "丢弃"
 
 #. Adjust widgets
 #: ../src/gui/inventorywindow.cpp:72 ../src/gui/inventorywindow.cpp:114
-#, c-format
+#, fuzzy, c-format
 msgid "Weight: %d  g / %d g"
-msgstr ""
+msgstr "负重：%d / %d"
 
 #: ../src/gui/inventorywindow.cpp:75 ../src/gui/inventorywindow.cpp:117
 #, c-format
 msgid "Slots used: %d / %d"
-msgstr ""
+msgstr "已使用槽： %d / %d"
 
 #: ../src/gui/inventorywindow.cpp:183
 msgid "Unequip"
@@ -605,7 +618,7 @@ msgstr "请选择丢弃的物品数量"
 
 #: ../src/gui/login.cpp:49
 msgid "Login"
-msgstr "登陆"
+msgstr "登录"
 
 #: ../src/gui/login.cpp:52 ../src/gui/register.cpp:81
 msgid "Password:"
@@ -645,7 +658,7 @@ msgstr "快捷键"
 #: ../src/gui/menuwindow.cpp:69 ../src/gui/menuwindow.cpp:125
 #: ../src/gui/setup.cpp:52 ../src/main.cpp:787
 msgid "Setup"
-msgstr "安装"
+msgstr "设置"
 
 #: ../src/gui/minimap.cpp:39
 #, fuzzy
@@ -688,8 +701,9 @@ msgid "@@friend|Befriend "
 msgstr ""
 
 #: ../src/gui/popupmenu.cpp:92
+#, fuzzy
 msgid "@@disregard|Disregard "
-msgstr ""
+msgstr "无视"
 
 #: ../src/gui/popupmenu.cpp:93
 msgid "@@ignore|Ignore "
@@ -724,9 +738,8 @@ msgid "@@pickup|Pick Up %s@@"
 msgstr "@@捡起|捡起%s@@"
 
 #: ../src/gui/popupmenu.cpp:298
-#, fuzzy
 msgid "@@use|Unequip@@"
-msgstr "@@使用|装备@@"
+msgstr "@@使用|卸载@@"
 
 #: ../src/gui/popupmenu.cpp:300
 msgid "@@use|Equip@@"
@@ -750,15 +763,15 @@ msgstr "@@描述|描述@@"
 
 #: ../src/gui/register.cpp:82
 msgid "Confirm:"
-msgstr "确定"
+msgstr "确认："
 
 #: ../src/gui/register.cpp:90
 msgid "Male"
-msgstr ""
+msgstr "帅哥"
 
 #: ../src/gui/register.cpp:91
 msgid "Female"
-msgstr ""
+msgstr "美女"
 
 #: ../src/gui/register.cpp:159
 #, c-format
@@ -768,7 +781,7 @@ msgstr ""
 #: ../src/gui/register.cpp:168
 #, c-format
 msgid "The username needs to be at least %d characters long."
-msgstr "用户名至少需要%d个字符"
+msgstr "用户名至少需要%d个字符。"
 
 #: ../src/gui/register.cpp:176
 #, c-format
@@ -783,7 +796,7 @@ msgstr "密码需要至少%d个字符"
 #: ../src/gui/register.cpp:192
 #, c-format
 msgid "The password needs to be less than %d characters long."
-msgstr "密码不能少于%d个字符"
+msgstr "密码不能少于%d个字符。"
 
 #. Password does not match with the confirmation one
 #: ../src/gui/register.cpp:199
@@ -829,16 +842,16 @@ msgstr "游戏杆"
 
 #: ../src/gui/setup.cpp:93
 msgid "Keyboard"
-msgstr ""
+msgstr "键盘"
 
 #: ../src/gui/setup.cpp:97
 #, fuzzy
 msgid "Colors"
-msgstr "头发颜色"
+msgstr "关闭"
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"
-msgstr ""
+msgstr "玩家"
 
 #: ../src/gui/setup_colours.cpp:53
 msgid "Red: "
@@ -874,45 +887,44 @@ msgstr "旋转手柄"
 
 #: ../src/gui/setup_keyboard.cpp:87
 msgid "Assign"
-msgstr ""
+msgstr "分配"
 
 #: ../src/gui/setup_keyboard.cpp:91
-#, fuzzy
 msgid "Default"
-msgstr "删除"
+msgstr "预设"
 
 #: ../src/gui/setup_keyboard.cpp:120
 msgid "Key Conflict(s) Detected."
-msgstr ""
+msgstr "检测到按键冲突。"
 
 #: ../src/gui/setup_keyboard.cpp:121
 msgid "Resolve them, or gameplay may result in strange behaviour."
-msgstr ""
+msgstr "解决按键冲突，否者游戏过程中可能发生奇怪行为。"
 
 #: ../src/gui/setup_players.cpp:54
-#, fuzzy
 msgid "Name"
-msgstr "名称"
+msgstr "姓名"
 
 #: ../src/gui/setup_players.cpp:55
 msgid "Relation"
-msgstr ""
+msgstr "关系"
 
 #: ../src/gui/setup_players.cpp:59
 msgid "Neutral"
-msgstr ""
+msgstr "中立"
 
 #: ../src/gui/setup_players.cpp:60
 msgid "Friend"
-msgstr ""
+msgstr "好友"
 
 #: ../src/gui/setup_players.cpp:61
+#, fuzzy
 msgid "Disregarded"
-msgstr ""
+msgstr "无视"
 
 #: ../src/gui/setup_players.cpp:62
 msgid "Ignored"
-msgstr ""
+msgstr "忽略"
 
 #: ../src/gui/setup_players.cpp:200 ../src/gui/skill.cpp:83
 msgid "???"
@@ -920,19 +932,19 @@ msgstr ""
 
 #: ../src/gui/setup_players.cpp:216
 msgid "Save player list"
-msgstr ""
+msgstr "保存玩家列表"
 
 #: ../src/gui/setup_players.cpp:218
 msgid "Allow trading"
-msgstr ""
+msgstr "允许交易"
 
 #: ../src/gui/setup_players.cpp:220
 msgid "Allow whispers"
-msgstr ""
+msgstr "允许私语"
 
 #: ../src/gui/setup_players.cpp:247
 msgid "When ignoring:"
-msgstr ""
+msgstr "当忽略时："
 
 #: ../src/gui/setup_video.cpp:92
 msgid "No modes available"
@@ -952,11 +964,12 @@ msgstr "OpenGL"
 
 #: ../src/gui/setup_video.cpp:119
 msgid "Custom cursor"
-msgstr "通常的光标"
+msgstr "自定义鼠标"
 
 #: ../src/gui/setup_video.cpp:120
+#, fuzzy
 msgid "Particle effects"
-msgstr ""
+msgstr "纹理细节"
 
 #: ../src/gui/setup_video.cpp:121
 msgid "Speech bubbles"
@@ -968,7 +981,7 @@ msgstr ""
 
 #: ../src/gui/setup_video.cpp:124
 msgid "FPS Limit:"
-msgstr "FPS限制"
+msgstr "FPS限制："
 
 #: ../src/gui/setup_video.cpp:145
 msgid "Gui opacity"
@@ -976,23 +989,24 @@ msgstr "Gui 透明度"
 
 #: ../src/gui/setup_video.cpp:146
 msgid "Scroll radius"
-msgstr "滚动半径"
+msgstr "滑动半径"
 
 #: ../src/gui/setup_video.cpp:147
 msgid "Scroll laziness"
-msgstr "拉动极限"
+msgstr "滑动延迟"
 
 #: ../src/gui/setup_video.cpp:148
+#, fuzzy
 msgid "Ambient FX"
-msgstr "环境音效"
+msgstr "雾化效果"
 
 #: ../src/gui/setup_video.cpp:149
 msgid "Particle Detail"
-msgstr ""
+msgstr "纹理细节"
 
 #: ../src/gui/setup_video.cpp:211 ../src/gui/setup_video.cpp:474
 msgid "off"
-msgstr "离线"
+msgstr "关闭"
 
 #: ../src/gui/setup_video.cpp:214 ../src/gui/setup_video.cpp:225
 #: ../src/gui/setup_video.cpp:477 ../src/gui/setup_video.cpp:491
@@ -1006,11 +1020,11 @@ msgstr "高"
 
 #: ../src/gui/setup_video.cpp:228 ../src/gui/setup_video.cpp:494
 msgid "medium"
-msgstr ""
+msgstr "中"
 
 #: ../src/gui/setup_video.cpp:234 ../src/gui/setup_video.cpp:500
 msgid "max"
-msgstr ""
+msgstr "最大"
 
 #: ../src/gui/setup_video.cpp:303
 msgid "Failed to switch to "
@@ -1035,7 +1049,7 @@ msgstr "切换到全屏"
 
 #: ../src/gui/setup_video.cpp:313
 msgid "Restart needed for changes to take effect."
-msgstr "只有改变生效后才能重启"
+msgstr "重启生效"
 
 #. OpenGL can currently only be changed by restarting, notify user.
 #: ../src/gui/setup_video.cpp:325
@@ -1062,7 +1076,7 @@ msgstr ""
 #: ../src/gui/setup_video.cpp:416
 #, fuzzy
 msgid "Restart your client for the change to take effect."
-msgstr "只有改变生效后才能重启"
+msgstr "重启生效"
 
 #: ../src/gui/setup_video.cpp:434
 msgid "Particle effect settings changed"
@@ -1071,7 +1085,7 @@ msgstr ""
 #: ../src/gui/setup_video.cpp:435
 #, fuzzy
 msgid "Restart your client or change maps for the change to take effect."
-msgstr "只有改变生效后才能重启"
+msgstr "重启生效"
 
 #: ../src/gui/skill.cpp:41
 #, fuzzy
@@ -1081,11 +1095,11 @@ msgstr "技能"
 #: ../src/gui/skill.cpp:139 ../src/gui/skill.cpp:190
 #, c-format
 msgid "Skill points: %d"
-msgstr ""
+msgstr "技能点数：%d"
 
 #: ../src/gui/skill.cpp:140
 msgid "Up"
-msgstr ""
+msgstr "升级"
 
 #: ../src/gui/skill.cpp:140
 msgid "inc"
@@ -1106,108 +1120,99 @@ msgid "Speech"
 msgstr ""
 
 #: ../src/gui/status.cpp:50 ../src/gui/status.cpp:233
-#, fuzzy, c-format
+#, c-format
 msgid "Job: %d"
-msgstr "等级：%d"
+msgstr "职业：%d"
 
 #: ../src/gui/status.cpp:51 ../src/gui/status.cpp:236
-#, fuzzy, c-format
+#, c-format
 msgid "Money: %d GP"
-msgstr "金钱：%d"
+msgstr "金钱：%d 金币"
 
 #. ----------------------
 #. Stats Part
 #. ----------------------
 #. Static Labels
 #: ../src/gui/status.cpp:125
-#, fuzzy
 msgid "Stats"
 msgstr "状态"
 
 #: ../src/gui/status.cpp:126
 msgid "Total"
-msgstr ""
+msgstr "总计"
 
 #: ../src/gui/status.cpp:127
 msgid "Cost"
-msgstr ""
+msgstr "花费"
 
 #. Derived Stats
 #: ../src/gui/status.cpp:130
-#, fuzzy
 msgid "Attack:"
-msgstr "攻击 %+d"
+msgstr "攻击:"
 
 #: ../src/gui/status.cpp:131
-#, fuzzy
 msgid "Defense:"
-msgstr "防护 %+d"
+msgstr "防御："
 
 #: ../src/gui/status.cpp:132
-#, fuzzy
 msgid "M.Attack:"
-msgstr "攻击 %+d"
+msgstr "魔攻："
 
 #: ../src/gui/status.cpp:133
-#, fuzzy
 msgid "M.Defense:"
-msgstr "防护 %+d"
+msgstr "魔防："
 
 #: ../src/gui/status.cpp:134
 #, c-format
 msgid "% Accuracy:"
-msgstr ""
+msgstr "% Ac精确度："
 
 #: ../src/gui/status.cpp:135
 #, c-format
 msgid "% Evade:"
-msgstr ""
+msgstr "% E回避率："
 
 #: ../src/gui/status.cpp:136
 msgid "% Reflex:"
-msgstr ""
+msgstr "% 伤害反射："
 
 #: ../src/gui/status.cpp:280
-#, fuzzy
 msgid "Strength"
 msgstr "力量"
 
 #: ../src/gui/status.cpp:281
-#, fuzzy
 msgid "Agility"
-msgstr "敏捷:"
+msgstr "敏捷"
 
 #: ../src/gui/status.cpp:282
-#, fuzzy
 msgid "Vitality"
-msgstr "体力:"
+msgstr "生命"
 
 #: ../src/gui/status.cpp:283
-#, fuzzy
 msgid "Intelligence"
-msgstr "智力:"
+msgstr "智慧"
 
 #: ../src/gui/status.cpp:284
-#, fuzzy
 msgid "Dexterity"
-msgstr "智慧:"
+msgstr "敏捷"
 
 #: ../src/gui/status.cpp:285
 msgid "Luck"
-msgstr ""
+msgstr "幸运"
 
 #: ../src/gui/status.cpp:303
 #, c-format
 msgid "Remaining Status Points: %d"
-msgstr ""
+msgstr "剩余状态点数：%d"
 
 #: ../src/gui/trade.cpp:51
+#, fuzzy
 msgid "Trade: You"
-msgstr ""
+msgstr "交易"
 
 #: ../src/gui/trade.cpp:56 ../src/gui/trade.cpp:66
 msgid "Trade"
-msgstr ""
+msgstr "交易"
 
 #: ../src/gui/trade.cpp:63
 msgid "Add"
@@ -1220,11 +1225,11 @@ msgstr "你得到%d GP."
 
 #: ../src/gui/trade.cpp:83
 msgid "You give:"
-msgstr "你得到："
+msgstr "你付出:"
 
 #: ../src/gui/trade.cpp:252
 msgid "Failed adding item. You can not overlap one kind of item on the window."
-msgstr ""
+msgstr "添加物品失败。你不能覆盖窗口中的该类物品。"
 
 #: ../src/gui/updatewindow.cpp:78
 #, c-format
@@ -1233,11 +1238,11 @@ msgstr ""
 
 #: ../src/gui/updatewindow.cpp:93
 msgid "Updating..."
-msgstr ""
+msgstr "更新..."
 
 #: ../src/gui/updatewindow.cpp:115
 msgid "Play"
-msgstr ""
+msgstr "开始"
 
 #: ../src/gui/updatewindow.cpp:196
 msgid "Couldn't load news"
@@ -1279,7 +1284,7 @@ msgstr ""
 
 #: ../src/gui/updatewindow.cpp:520
 msgid "Completed"
-msgstr ""
+msgstr "已完成"
 
 #: ../src/net/playerhandler.cpp:193 ../src/net/playerhandler.cpp:248
 msgid "Message"
@@ -1299,8 +1304,9 @@ msgid "We regret to inform you that your character was killed in battle."
 msgstr ""
 
 #: ../src/net/playerhandler.cpp:220
+#, fuzzy
 msgid "You are not that alive anymore."
-msgstr ""
+msgstr "你现在无法办到！"
 
 #: ../src/net/playerhandler.cpp:221
 msgid "The cold hands of the grim reaper are grabbing for your soul."
@@ -1362,13 +1368,15 @@ msgstr ""
 
 #. Monty Python reference from a couple of skits
 #: ../src/net/playerhandler.cpp:233
+#, fuzzy
 msgid "You are no more."
-msgstr ""
+msgstr "没有备忘录"
 
 #. Monty Python reference from the dead parrot sketch starting now
 #: ../src/net/playerhandler.cpp:234
+#, fuzzy
 msgid "You have ceased to be."
-msgstr ""
+msgstr "没有备忘录"
 
 #: ../src/net/playerhandler.cpp:235
 msgid "You've expired and gone to meet your maker."
@@ -1455,7 +1463,7 @@ msgstr ""
 #: ../src/net/tradehandler.cpp:127
 #, fuzzy
 msgid "Trade with "
-msgstr "@@交易|与%s交易@@"
+msgstr "交易"
 
 #: ../src/net/tradehandler.cpp:128
 #, fuzzy
@@ -1482,12 +1490,14 @@ msgid "Failed adding item for unknown reason."
 msgstr ""
 
 #: ../src/net/tradehandler.cpp:207
+#, fuzzy
 msgid "Trade canceled."
-msgstr ""
+msgstr "交易失败！"
 
 #: ../src/net/tradehandler.cpp:214
+#, fuzzy
 msgid "Trade completed."
-msgstr ""
+msgstr "已完成"
 
 #: ../src/resources/colordb.cpp:56
 #, c-format
@@ -1534,8 +1544,9 @@ msgid "Initializing item database..."
 msgstr ""
 
 #: ../src/resources/itemdb.cpp:56
+#, fuzzy
 msgid "Unknown item"
-msgstr ""
+msgstr "未知指令"
 
 #: ../src/resources/itemdb.cpp:61
 msgid "items.xml"
@@ -1556,7 +1567,7 @@ msgstr ""
 
 #: ../src/resources/itemdb.cpp:101
 msgid "Unnamed"
-msgstr ""
+msgstr "未知物品"
 
 #: ../src/resources/itemdb.cpp:146
 #, c-format
@@ -1578,8 +1589,9 @@ msgid "ItemDB: Ignoring unknown sound event '%s'"
 msgstr ""
 
 #: ../src/resources/monsterdb.cpp:44
+#, fuzzy
 msgid "unnamed"
-msgstr ""
+msgstr "未知物品"
 
 #: ../src/resources/monsterdb.cpp:46
 msgid "Initializing monster database..."
@@ -1631,8 +1643,9 @@ msgid "Screenshot saved to ~/"
 msgstr ""
 
 #: ../src/game.cpp:399
+#, fuzzy
 msgid "Saving screenshot failed!"
-msgstr ""
+msgstr "原地休息失败！"
 
 #: ../src/game.cpp:400
 msgid "Error: could not save screenshot."
@@ -1657,7 +1670,7 @@ msgstr ""
 #: ../src/game.cpp:641
 #, fuzzy
 msgid "Are you sure you want to quit?"
-msgstr "你确定想删除这个较色"
+msgstr "你确定想删除这个角色？"
 
 #: ../src/game.cpp:648
 msgid "no"
@@ -1757,8 +1770,9 @@ msgid "  -D --default    : Bypass the login process with default settings"
 msgstr ""
 
 #: ../src/main.cpp:503
+#, fuzzy
 msgid "  -h --help       : Display this help"
-msgstr ""
+msgstr "/help: 显示帮助信息"
 
 #: ../src/main.cpp:504
 msgid "  -H --updatehost : Use this update host"
@@ -1795,7 +1809,7 @@ msgstr ""
 #: ../src/main.cpp:615
 #, fuzzy
 msgid "Trying to connect to account server..."
-msgstr "连接中..."
+msgstr "正在连接 帐号 服务器..."
 
 #: ../src/main.cpp:616
 #, c-format
@@ -1805,7 +1819,7 @@ msgstr ""
 #: ../src/main.cpp:670
 #, fuzzy
 msgid "Trying to connect to char server..."
-msgstr "连接中..."
+msgstr "正在连接 角色 服务器..."
 
 #: ../src/main.cpp:692
 #, c-format
@@ -1815,12 +1829,12 @@ msgstr ""
 #: ../src/main.cpp:698
 #, fuzzy
 msgid "Trying to connect to map server..."
-msgstr "连接中..."
+msgstr "正在连接 地图 服务器..."
 
 #: ../src/main.cpp:699
 #, fuzzy, c-format
 msgid "Map: %s"
-msgstr "名字：%s"
+msgstr "姓名：%s"
 
 #: ../src/main.cpp:829
 #, c-format
@@ -1829,20 +1843,19 @@ msgstr ""
 
 #: ../src/main.cpp:862
 msgid "Got disconnected from server!"
-msgstr ""
+msgstr "和服务器失去连接"
 
 #: ../src/main.cpp:1067
-#, fuzzy
 msgid "Connecting to map server..."
-msgstr "连接中..."
+msgstr "正在连接 地图 服务器..."
 
 #: ../src/main.cpp:1075
 msgid "Connecting to character server..."
-msgstr ""
+msgstr "正在连接 角色 服务器..."
 
 #: ../src/main.cpp:1083
 msgid "Connecting to account server..."
-msgstr ""
+msgstr "正在连接 帐号 服务器..."
 
 #: ../src/party.cpp:55
 msgid "Not yet implemented!"
@@ -1865,8 +1878,9 @@ msgid "Party successfully created."
 msgstr ""
 
 #: ../src/party.cpp:97
+#, fuzzy
 msgid "Could not create party."
-msgstr ""
+msgstr "不能加入工会！"
 
 #: ../src/party.cpp:106
 #, c-format
@@ -1890,7 +1904,7 @@ msgstr ""
 #: ../src/party.cpp:130
 #, fuzzy
 msgid "Invite to party"
-msgstr "清单"
+msgstr "物品栏"
 
 #: ../src/party.cpp:131
 #, c-format
@@ -1911,8 +1925,9 @@ msgid "/party <command> <params>: Party commands."
 msgstr ""
 
 #: ../src/party.cpp:178
+#, fuzzy
 msgid "Command: /party <command> <args>"
-msgstr ""
+msgstr "指令： /help <指令>"
 
 #: ../src/party.cpp:179
 msgid "where <command> can be one of:"
@@ -1936,16 +1951,18 @@ msgid "   /leave"
 msgstr ""
 
 #: ../src/party.cpp:184
+#, fuzzy
 msgid "This command implements the partying function."
-msgstr ""
+msgstr "该指令显现<指令>的帮助信息"
 
 #: ../src/party.cpp:186
 msgid "Type /help party <command> for further help."
 msgstr ""
 
 #: ../src/party.cpp:192
+#, fuzzy
 msgid "Command: /party new <party-name>"
-msgstr ""
+msgstr "指令： /announce <信息>"
 
 #: ../src/party.cpp:193
 msgid "Command: /party create <party-name>"
@@ -1960,8 +1977,9 @@ msgid "Command: /party prefix <prefix-char>"
 msgstr ""
 
 #: ../src/party.cpp:201
+#, fuzzy
 msgid "This command sets the party prefix character."
-msgstr ""
+msgstr "该指令可清除历史聊天记录。"
 
 #: ../src/party.cpp:203
 msgid ""
@@ -1970,52 +1988,43 @@ msgid ""
 msgstr ""
 
 #: ../src/party.cpp:205
+#, fuzzy
 msgid "Command: /party prefix"
-msgstr ""
+msgstr "指令： /clear"
 
 #: ../src/party.cpp:206
+#, fuzzy
 msgid "This command reports the current party prefix character."
-msgstr ""
+msgstr "该指令可清除历史聊天记录。"
 
 #: ../src/party.cpp:214
+#, fuzzy
 msgid "Command: /party leave"
-msgstr ""
+msgstr "指令： /clear"
 
 #: ../src/party.cpp:215
+#, fuzzy
 msgid "This command causes the player to leave the party."
-msgstr ""
+msgstr "该指令可清除历史聊天记录。"
 
 #: ../src/party.cpp:219
+#, fuzzy
 msgid "Unknown /party command."
-msgstr ""
+msgstr "未知命令"
 
 #: ../src/party.cpp:220
+#, fuzzy
 msgid "Type /help party for a list of options."
-msgstr ""
+msgstr "输入 /help 获取指令列表。"
 
-#, fuzzy
-#~ msgid "Color:"
-#~ msgstr "头发颜色"
+#~ msgid "Remember Username"
+#~ msgstr "保存用户名"
 
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "描述：%s"
+#~ msgid "Mystery Skill"
+#~ msgstr "神秘技能"
 
-#, fuzzy
-#~ msgid "Effect:"
-#~ msgstr "影响: %s"
-
-#, fuzzy
-#~ msgid "Name: "
-#~ msgstr "名称"
-
-#, fuzzy
-#~ msgid "Effect: "
-#~ msgstr "影响: %s"
-
-#, fuzzy
-#~ msgid "Description: "
-#~ msgstr "描述：%s"
+#~ msgid "Change"
+#~ msgstr "改变"
 
 #~ msgid "Unregister"
 #~ msgstr "注销"
@@ -2064,9 +2073,6 @@ msgstr ""
 
 #~ msgid "Confirm trade"
 #~ msgstr "决定交易"
-
-#~ msgid "Change"
-#~ msgstr "改变"
 
 #~ msgid "HP %+d"
 #~ msgstr "HP %+d"

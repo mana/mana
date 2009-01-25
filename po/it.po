@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 18:28-0700\n"
+"POT-Creation-Date: 2009-01-25 18:51-0700\n"
 "PO-Revision-Date: 2007-12-03 01:45+0000\n"
 "Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
 "Language-Team: Italian\n"
@@ -834,9 +834,8 @@ msgid "Keyboard"
 msgstr ""
 
 #: ../src/gui/setup.cpp:97
-#, fuzzy
 msgid "Colors"
-msgstr "Colore Capelli"
+msgstr ""
 
 #: ../src/gui/setup.cpp:101
 msgid "Players"
@@ -1455,9 +1454,8 @@ msgid "Trade: You and "
 msgstr ""
 
 #: ../src/net/tradehandler.cpp:127
-#, fuzzy
 msgid "Trade with "
-msgstr "@@trade|Scambia Con %s@@"
+msgstr ""
 
 #: ../src/net/tradehandler.cpp:128
 #, fuzzy
@@ -1994,30 +1992,6 @@ msgstr ""
 #: ../src/party.cpp:220
 msgid "Type /help party for a list of options."
 msgstr ""
-
-#, fuzzy
-#~ msgid "Color:"
-#~ msgstr "Colore Capelli"
-
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "Descrizione : %s"
-
-#, fuzzy
-#~ msgid "Effect:"
-#~ msgstr "Effetto : %s"
-
-#, fuzzy
-#~ msgid "Name: "
-#~ msgstr "Nome :"
-
-#, fuzzy
-#~ msgid "Effect: "
-#~ msgstr "Effetto : %s"
-
-#, fuzzy
-#~ msgid "Description: "
-#~ msgstr "Descrizione : %s"
 
 #~ msgid "Unregister"
 #~ msgstr "Cancella registrazione"

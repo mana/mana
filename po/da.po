@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 18:28-0700\n"
+"POT-Creation-Date: 2009-01-25 18:51-0700\n"
 "PO-Revision-Date: 2008-12-28 14:45+0000\n"
 "Last-Translator: GonzoDark AKA IchigoBlack <Gonzo.Dark@gmail.com>\n"
 "Language-Team: Danish <none@none.none>\n"
@@ -169,6 +169,7 @@ msgid "Chat"
 msgstr "Chat"
 
 #: ../src/gui/chat.cpp:152
+#, fuzzy
 msgid "Global announcement: "
 msgstr "Global meddelelse: "
 
@@ -592,9 +593,9 @@ msgstr "Smid"
 
 #. Adjust widgets
 #: ../src/gui/inventorywindow.cpp:72 ../src/gui/inventorywindow.cpp:114
-#, c-format
+#, fuzzy, c-format
 msgid "Weight: %d  g / %d g"
-msgstr ""
+msgstr "Vægt: "
 
 #: ../src/gui/inventorywindow.cpp:75 ../src/gui/inventorywindow.cpp:117
 #, c-format
@@ -1180,7 +1181,6 @@ msgid "% Evade:"
 msgstr "% Undvig:"
 
 #: ../src/gui/status.cpp:136
-#, fuzzy
 msgid "% Reflex:"
 msgstr "% Refleks:"
 
@@ -1730,11 +1730,11 @@ msgstr " kan ikke laves, men det findes ikke! Lukker."
 #: ../src/main.cpp:291
 #, c-format
 msgid "Starting Aethyra Version %s"
-msgstr "Starter Aethyra Version %s"
+msgstr ""
 
 #: ../src/main.cpp:293
 msgid "Starting Aethyra - Version not defined"
-msgstr "Starter Aethyra - Version er ikke defineret"
+msgstr ""
 
 #. Initialize SDL
 #: ../src/main.cpp:297
@@ -1815,7 +1815,7 @@ msgstr "  -v --version    : Viser den nuværende version"
 
 #: ../src/main.cpp:515 ../src/main.cpp:518
 msgid "Aethyra version "
-msgstr "Aethyra version "
+msgstr ""
 
 #: ../src/main.cpp:519
 msgid "(local build?, PACKAGE_VERSION is not defined)"
@@ -2034,17 +2034,21 @@ msgstr "Ukendt kommando"
 msgid "Type /help party for a list of options."
 msgstr "Skriv /help for at få en liste med kommandoer"
 
-#~ msgid "Weight: "
-#~ msgstr "Vægt: "
+#, fuzzy
+#~ msgid "%s whispers:"
+#~ msgstr "Tillad hviskere"
+
+#~ msgid "Remember Username"
+#~ msgstr "Husk Brugernavn"
+
+#~ msgid "Welcome"
+#~ msgstr "Velkommen"
 
 #~ msgid " g Slots: "
 #~ msgstr " g Pladser: "
 
 #~ msgid " g  Slots: "
 #~ msgstr " g  Pladser: "
-
-#~ msgid "Welcome"
-#~ msgstr "Velkommen"
 
 #, fuzzy
 #~ msgid "Color:"
@@ -2069,9 +2073,6 @@ msgstr "Skriv /help for at få en liste med kommandoer"
 #, fuzzy
 #~ msgid "Description: "
 #~ msgstr "Beskrivelse: "
-
-#~ msgid "Remember Username"
-#~ msgstr "Husk Brugernavn"
 
 #~ msgid "Account and Character Management"
 #~ msgstr "Ret konto og karakter"
@@ -2131,7 +2132,7 @@ msgstr "Skriv /help for at få en liste med kommandoer"
 #~ msgstr "E-mail:"
 
 #~ msgid "Choose your Mana World Server"
-#~ msgstr "Vælg din Aethyra Server"
+#~ msgstr "Vælg din Mana World Server"
 
 #~ msgid "Please type both the address and the port of a server."
 #~ msgstr "Skriv både adressen og porten på serveren."
