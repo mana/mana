@@ -411,6 +411,10 @@ class Being : public Sprite
         std::list<Particle *> mChildParticleEffects;
 
     private:
+
+        static const int Being::DEFAULT_WIDTH = 32;
+        static const int Being::DEFAULT_HEIGHT = 32;
+
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;
 

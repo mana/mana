@@ -123,12 +123,13 @@ Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
     for (; itr != itr_end; ++itr)
     {
         Being *being = (*itr);
-        if ((being->mAction != Being::DEAD) &&
-            (being != player_node) &&
-            (being->getPixelX() <= x) &&
-            (being->getPixelX() + being->getWidth() >= x) &&
-            (being->getPixelY() <= y) &&
-            (being->getPixelY() + being->getHeight() >= y))
+        int xtol = being->getWidth() / 2;
+        int uptol = being->getHeight();
+        if ((being != player_node) &&
+            (being->getPixelX() - xtol <= x) &&
+            (being->getPixelX() + xtol >= x) &&
+            (being->getPixelY() - uptol <= y) &&
+            (being->getPixelY() >= y))
         {
             return being;
         }
@@ -190,7 +191,7 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
     //in map coords, while down below its in pixels
     //
     //I believe there is a deeper problem under this, but
-    //for a temp solution we'll convert to coords to pixels 
+    //for a temp solution we'll convert to coords to pixels
     x = x * 32;
     y = y * 32;
     maxdist = maxdist * 32;
@@ -210,8 +211,8 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
             closestBeing = being;
         }
     }
- 
-    return (maxdist >= dist) ? closestBeing : NULL; 
+
+    return (maxdist >= dist) ? closestBeing : NULL;
 }
 
 Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,

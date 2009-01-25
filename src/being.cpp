@@ -603,7 +603,7 @@ int Being::getWidth() const
         return mSprites[BASE_SPRITE]->getWidth();
     }
     else {
-        return 0;
+        return Being::DEFAULT_WIDTH;
     }
 }
 
@@ -614,7 +614,7 @@ int Being::getHeight() const
         return mSprites[BASE_SPRITE]->getHeight();
     }
     else {
-        return 0;
+        return Being::DEFAULT_HEIGHT;
     }
 }
 
