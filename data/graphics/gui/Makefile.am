@@ -23,10 +23,6 @@ gui_DATA =				\
 	hscroll_right_pressed.png	\
 	item_shortcut_bgr.png		\
 	mouse.png			\
-	menuitemD.png			\
-	menuitemF.png			\
-	menuitemN.png			\
-	menuitemP.png			\
 	radioin.png			\
 	radioout.png			\
 	resize.png			\
@@ -42,7 +38,6 @@ gui_DATA =				\
 	target-cursor-red-l.png		\
 	target-cursor-red-m.png		\
 	target-cursor-red-s.png		\
-	thickborder.png			\
 	unknown-item.png		\
 	vscroll_blue.png		\
 	vscroll_down_default.png	\
