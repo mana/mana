@@ -46,7 +46,7 @@
 #define ROW_HEIGHT 12
 // The following column widths really shouldn't be hardcoded but should scale with the size of the widget... except
 // that, right now, the widget doesn't exactly scale either.
-#define NAME_COLUMN_WIDTH 155
+#define NAME_COLUMN_WIDTH 195
 #define RELATION_CHOICE_COLUMN_WIDTH 80
 
 #define WIDGET_AT(row, column) (((row) * COLUMNS_NR) + column)
@@ -280,7 +280,7 @@ Setup_Players::Setup_Players():
 
     player_relations.addListener(this);
 
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
+    setDimension(gcn::Rectangle(0, 0, 290, 250));
 }
 
 Setup_Players::~Setup_Players()

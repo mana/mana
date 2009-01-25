@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "setup.h"
 
 #include "button.h"
@@ -35,6 +33,7 @@
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
 
+#include <algorithm>
 #include <iostream>
 
 extern Window *statusWindow;
@@ -52,7 +51,7 @@ Setup::Setup():
 {
     setCloseButton(true);
     int width = 310;
-    int height = 265;
+    int height = 310;
     setContentSize(width, height);
 
     static const char *buttonNames[] = {
@@ -71,7 +70,7 @@ Setup::Setup():
     }
 
     TabbedArea *panel = new TabbedArea();
-    panel->setDimension(gcn::Rectangle(5, 5, 280, 225));
+    panel->setDimension(gcn::Rectangle(5, 5, width - 10, height - 40));
 
     SetupTab *tab;
 

@@ -72,7 +72,7 @@ Setup_Audio::Setup_Audio():
     place(0, 2, mMusicSlider);
     place(1, 2, musicLabel);
 
-    setDimension(gcn::Rectangle(0, 0, 250, 200));
+    setDimension(gcn::Rectangle(0, 0, 290, 250));
 }
 
 void Setup_Audio::apply()

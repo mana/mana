@@ -227,7 +227,7 @@ Setup_Video::Setup_Video():
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, scrollArea, 1, 3).setPadding(2);
+    place(0, 0, scrollArea, 1, 4).setPadding(2);
     place(1, 0, mFsCheckBox, 3);
     place(1, 1, mOpenGLCheckBox, 3);
     place(1, 2, mCustomCursorCheckBox, 3);
@@ -252,7 +252,7 @@ Setup_Video::Setup_Video():
     place(2, 8, mOverlayDetailField, 2).setPadding(2);
     place(2, 9, mParticleDetailField, 2).setPadding(2);
 
-    setDimension(gcn::Rectangle(0, 0, 280, 200));
+    setDimension(gcn::Rectangle(0, 0, 295, 250));
 }
 
 Setup_Video::~Setup_Video()
