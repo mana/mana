@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_GUICHANFWD_H
-#define _TMW_GUICHANFWD_H
+#ifndef GUICHANFWD_H
+#define GUICHANFWD_H
 
 namespace gcn {
     class ActionListener;

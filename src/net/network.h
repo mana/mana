@@ -19,17 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_NETWORK_
-#define _TMW_NETWORK_
+#ifndef NETWORK_
+#define NETWORK_
 
 #include <map>
 #include <SDL_net.h>
 #include <SDL_thread.h>
 #include <string>
 
-#define TMW_CLIENT_PROTOCOL_VERSION	1
-	/**< Protocol version, reported to the eAthena char and mapserver who
-             can adjust the protocol accordingly */
+/**
+ * Protocol version, reported to the eAthena char and mapserver who can adjust
+ * the protocol accordingly.
+ */
+#define CLIENT_PROTOCOL_VERSION      1
 
 class MessageHandler;
 class MessageIn;

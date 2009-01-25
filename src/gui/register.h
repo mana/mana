@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_REGISTER_H
-#define _TMW_REGISTER_H
+#ifndef REGISTER_H
+#define REGISTER_H
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>

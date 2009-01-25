@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_ANIMATEDSPRITE_H
-#define _TMW_ANIMATEDSPRITE_H
+#ifndef ANIMATEDSPRITE_H
+#define ANIMATEDSPRITE_H
 
 #include "resources/spritedef.h"
 

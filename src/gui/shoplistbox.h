@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_SHOPLISTBOX_H
-#define _TMW_SHOPLISTBOX_H
+#ifndef SHOPLISTBOX_H
+#define SHOPLISTBOX_H
 
 #include "listbox.h"
 #include "shop.h"

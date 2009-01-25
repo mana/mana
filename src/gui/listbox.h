@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_LISTBOX_H
-#define _TMW_LISTBOX_H
+#ifndef LISTBOX_H
+#define LISTBOX_H
 
 #include <guichan/widgets/listbox.hpp>
 

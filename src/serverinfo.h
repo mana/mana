@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_SERVERINFO_
-#define _TMW_SERVERINFO_
+#ifndef SERVERINFO_
+#define SERVERINFO_
 
 #include <string>
 

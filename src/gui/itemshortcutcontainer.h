@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_ITEMSHORTCUTCONTAINER_H__
-#define _TMW_ITEMSHORTCUTCONTAINER_H__
+#ifndef ITEMSHORTCUTCONTAINER_H
+#define ITEMSHORTCUTCONTAINER_H
 
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>

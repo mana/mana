@@ -55,8 +55,8 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _TMW_SDLINPUT_
-#define _TMW_SDLINPUT_
+#ifndef SDLINPUT_
+#define SDLINPUT_
 
 #include <queue>
 

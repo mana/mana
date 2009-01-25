@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef TMW_POSITION_H
-#define TMW_POSITION_H
+#ifndef POSITION_H
+#define POSITION_H
 
 #include <list>
 #include <iostream>
@@ -55,4 +55,4 @@ std::ostream& operator <<(std::ostream &os, const Position &p);
  */
 std::ostream& operator <<(std::ostream &os, const Path &path);
 
-#endif // TMW_POSITION_H
+#endif // POSITION_H

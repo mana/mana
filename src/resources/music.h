@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_MUSIC_H
-#define _TMW_MUSIC_H
+#ifndef MUSIC_H
+#define MUSIC_H
 
 #include <SDL_mixer.h>
 

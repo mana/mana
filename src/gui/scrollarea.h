@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __TMW_SCROLLAREA_H__
-#define __TMW_SCROLLAREA_H__
+#ifndef SCROLLAREA_H
+#define SCROLLAREA_H
 
 #include <guichan/widgets/scrollarea.hpp>
 

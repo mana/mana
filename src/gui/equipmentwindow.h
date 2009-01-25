@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_EQUIPMENT_H
-#define _TMW_EQUIPMENT_H
+#ifndef EQUIPMENTWINDOW_H
+#define EQUIPMENTWINDOW_H
 
 #include "window.h"
 #include "../inventory.h"

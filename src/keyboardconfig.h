@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_KEYBOARDCONFIG_H
-#define _TMW_KEYBOARDCONFIG_H
+#ifndef KEYBOARDCONFIG_H
+#define KEYBOARDCONFIG_H
 
 #include <string>
 

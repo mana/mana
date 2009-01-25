@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_SELL_H
-#define _TMW_SELL_H
+#ifndef SELL_H
+#define SELL_H
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>

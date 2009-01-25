@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_GUI
-#define _TMW_GUI
+#ifndef GUI
+#define GUI
 
 #include <guichan/gui.hpp>
 

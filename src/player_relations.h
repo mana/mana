@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef TMW_PLAYER_RELATIONS_H_
-#define TMW_PLAYER_RELATIONS_H_
+#ifndef PLAYER_RELATIONS_H
+#define PLAYER_RELATIONS_H
 
 #include "being.h"
 #include "player.h"
@@ -238,4 +238,4 @@ private:
 extern PlayerRelationsManager player_relations; // singleton representation of player relations
 
 
-#endif /* !defined(TMW_PLAYER_RELATIONS_H_) */
+#endif /* !defined(PLAYER_RELATIONS_H) */

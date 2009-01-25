@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_GUI_NPCSTRINGDIALOG_H
-#define _TMW_GUI_NPCSTRINGDIALOG_H
+#ifndef GUI_NPCSTRINGDIALOG_H
+#define GUI_NPCSTRINGDIALOG_H
 
 #include <iosfwd>
 #include <vector>
@@ -75,4 +75,4 @@ class NpcStringDialog : public Window, public gcn::ActionListener
         gcn::Button *cancelButton;
 };
 
-#endif // _TMW_GUI_NPCSTRINGDIALOG_H
+#endif // GUI_NPCSTRINGDIALOG_H

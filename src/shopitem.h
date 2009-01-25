@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SHOPITEM_H_
-#define _SHOPITEM_H_
+#ifndef _SHOPITEM_H
+#define _SHOPITEM_H
 
 #include "item.h"
 

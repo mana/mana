@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_OPENGLGRAPHICS_H
-#define _TMW_OPENGLGRAPHICS_H
+#ifndef OPENGLGRAPHICS_H
+#define OPENGLGRAPHICS_H
 
 #include "graphics.h"
 

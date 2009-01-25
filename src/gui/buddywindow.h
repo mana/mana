@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_BUDDYWINDOW_H
-#define _TMW_BUDDYWINDOW_H
+#ifndef BUDDYWINDOW_H
+#define BUDDYWINDOW_H
 
 #include <guichan/actionlistener.hpp>
 
@@ -53,4 +53,4 @@ class BuddyWindow : public Window, public gcn::ActionListener
         gcn::ListBox *mListbox;
 };
 
-#endif /* _TMW_BUDDYWINDOW_H */
+#endif /* BUDDYWINDOW_H */

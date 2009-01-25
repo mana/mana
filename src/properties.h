@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_PROPERTIES_H_
-#define _TMW_PROPERTIES_H_
+#ifndef PROPERTIES_H
+#define PROPERTIES_H
 
 #include <map>
 #include <string>

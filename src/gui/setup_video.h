@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_GUI_SETUP_VIDEO_H
-#define _TMW_GUI_SETUP_VIDEO_H
+#ifndef GUI_SETUP_VIDEO_H
+#define GUI_SETUP_VIDEO_H
 
 #include "setuptab.h"
 

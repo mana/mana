@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_SPRITEDEF_H
-#define _TMW_SPRITEDEF_H
+#ifndef SPRITEDEF_H
+#define SPRITEDEF_H
 
 #include <map>
 #include <string>

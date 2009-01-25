@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_FLOORITEM_H_
-#define _TMW_FLOORITEM_H_
+#ifndef FLOORITEM_H
+#define FLOORITEM_H
 
 #include "graphics.h"
 #include "item.h"

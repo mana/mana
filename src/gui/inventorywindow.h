@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_INVENTORYWINDOW_H
-#define _TMW_INVENTORYWINDOW_H
+#ifndef INVENTORYWINDOW_H
+#define INVENTORYWINDOW_H
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>

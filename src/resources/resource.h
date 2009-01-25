@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_RESOURCE_H
-#define _TMW_RESOURCE_H
+#ifndef RESOURCE_H
+#define RESOURCE_H
 
 #include <ctime>
 #include <string>

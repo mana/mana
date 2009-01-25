@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_NET_MESSAGEHANDLER_H
-#define _TMW_NET_MESSAGEHANDLER_H
+#ifndef NET_MESSAGEHANDLER_H
+#define NET_MESSAGEHANDLER_H
 
 #include <SDL_types.h>
 

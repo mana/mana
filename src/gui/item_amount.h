@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_ITEM_AMOUNT_WINDOW_H
-#define _TMW_ITEM_AMOUNT_WINDOW_H
+#ifndef ITEM_AMOUNT_WINDOW_H
+#define ITEM_AMOUNT_WINDOW_H
 
 #include <iosfwd>
 
@@ -69,4 +69,4 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         gcn::Slider *mItemAmountSlide;
 };
 
-#endif /* _TMW_ITEM_AMOUNT_WINDOW_H */
+#endif /* ITEM_AMOUNT_WINDOW_H */

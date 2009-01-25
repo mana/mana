@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_NPC_TEXT_H
-#define _TMW_NPC_TEXT_H
+#ifndef NPC_TEXT_H
+#define NPC_TEXT_H
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
@@ -82,4 +82,4 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         BrowserBox *mBrowserBox;
 };
 
-#endif // _TMW_NPC_TEXT_H
+#endif // NPC_TEXT_H

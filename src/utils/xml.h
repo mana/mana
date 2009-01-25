@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_XML_H
-#define _TMW_XML_H
+#ifndef XML_H
+#define XML_H
 
 #include <libxml/tree.h>
 

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_TEXT_H
-#define _TMW_TEXT_H
+#ifndef TEXT_H
+#define TEXT_H
 
 #include "graphics.h"
 
@@ -92,4 +92,4 @@ class FlashText : public Text
         int mTime;             /**< Time left for flashing. */
 };
 
-#endif // _TMW_TEXT_H
+#endif // TEXT_H

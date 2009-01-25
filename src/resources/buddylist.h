@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_BUDDYLIST_H
-#define _TMW_BUDDYLIST_H
+#ifndef BUDDYLIST_H
+#define BUDDYLIST_H
 
 #include <list>
 #include <string>
@@ -76,4 +76,4 @@ class BuddyList : public gcn::ListModel {
         std::string mFilename;            /* File to work with */
 };
 
-#endif /* _TMW_BUDDYLIST_H */
+#endif /* BUDDYLIST_H */

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_NPC_DB_H
-#define _TMW_NPC_DB_H
+#ifndef NPC_DB_H
+#define NPC_DB_H
 
 #include <map>
 #include <list>
