@@ -26,15 +26,17 @@
 
 #include <SDL_types.h>
 
-class ImageRect;
+#include <string>
 
+class ImageRect;
 
 /**
  * A progress bar.
  *
  * \ingroup GUI
  */
-class ProgressBar : public gcn::Widget {
+class ProgressBar : public gcn::Widget
+{
     public:
         /**
          * Constructor, initializes the progress with the given value.
@@ -51,55 +53,60 @@ class ProgressBar : public gcn::Widget {
         /**
          * Performs progress bar logic (fading colors)
          */
-        void
-        logic();
+        void logic();
 
         /**
          * Draws the progress bar.
          */
-        void
-        draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics);
 
         /**
          * Sets the current progress.
          */
-        void
-        setProgress(float progress);
+        void setProgress(float progress);
 
         /**
          * Returns the current progress.
          */
-        float
-        getProgress() { return mProgress; }
+        float getProgress() const { return mProgress; }
 
         /**
          * Change the filling of the progress bar.
          */
-        void
-        setColor(Uint8, Uint8 green, Uint8 blue);
+        void setColor(Uint8, Uint8 green, Uint8 blue);
 
         /**
-         * Get The red value of color
+         * Returns the red value of color.
          */
-        Uint8
-        getRed() { return mRed; }
-
-         /**
-         * Get The red value of color
-         */
-        Uint8
-        getGreen() { return mGreen; }
+        Uint8 getRed() const { return mRed; }
 
         /**
-         * Get The red value of color
+         * Returns the red value of color.
          */
-        Uint8
-        getBlue() { return mBlue; }
+        Uint8 getGreen() const { return mGreen; }
+
+        /**
+         * Returns the red value of color.
+         */
+        Uint8 getBlue() const { return mBlue; }
+
+        /**
+         * Sets the text shown on the progress bar.
+         */
+        void setText(const std::string &text)
+        { mText = text; }
+
+        /**
+         * Returns the text shown on the progress bar.
+         */
+        const std::string &text() const
+        { return mText; }
 
     private:
         float mProgress;
         Uint8 mRed, mGreen, mBlue;
         Uint8 mRedToGo, mGreenToGo, mBlueToGo;
+        std::string mText;
 
         static ImageRect mBorder;
         static int mInstances;

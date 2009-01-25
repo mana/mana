@@ -33,7 +33,8 @@ class ImageRect;
  *
  * \ingroup GUI
  */
-class Button : public gcn::Button {
+class Button : public gcn::Button
+{
     public:
         /**
          * Default constructor.
@@ -44,7 +45,7 @@ class Button : public gcn::Button {
          * Constructor, sets the caption of the button to the given string and
          * adds the given action listener.
          */
-        Button(const std::string& caption, const std::string &actionEventId,
+        Button(const std::string &caption, const std::string &actionEventId,
                 gcn::ActionListener *listener);
 
         /**
@@ -55,7 +56,7 @@ class Button : public gcn::Button {
         /**
          * Draws the button.
          */
-        void draw(gcn::Graphics* graphics);
+        void draw(gcn::Graphics *graphics);
 
         /**
          * Enable/Disable highlighting

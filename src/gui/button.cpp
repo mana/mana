@@ -19,12 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
-#include <guichan/exception.hpp>
-#include <guichan/graphics.hpp>
-#include <guichan/imagefont.hpp>
-
 #include "button.h"
 
 #include "../graphics.h"
@@ -33,6 +27,12 @@
 #include "../resources/resourcemanager.h"
 
 #include "../utils/dtor.h"
+
+#include <guichan/exception.hpp>
+#include <guichan/graphics.hpp>
+#include <guichan/font.hpp>
+
+#include <algorithm>
 
 int Button::mInstances = 0;
 
@@ -52,10 +52,10 @@ struct ButtonData
 };
 
 static ButtonData const data[BUTTON_COUNT] = {
-    {"graphics/gui/button.png", 0, 0},
-    {"graphics/gui/buttonhi.png", 9, 4},
-    {"graphics/gui/buttonpress.png", 16, 19},
-    {"graphics/gui/button_disabled.png", 25, 23}
+    { "graphics/gui/button.png", 0, 0 },
+    { "graphics/gui/buttonhi.png", 9, 4 },
+    { "graphics/gui/buttonpress.png", 16, 19 },
+    { "graphics/gui/button_disabled.png", 25, 23 }
 };
 
 ImageRect Button::button[BUTTON_COUNT];

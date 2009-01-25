@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_MINISTATUS_H
-#define _TMW_MINISTATUS_H
+#ifndef MINISTATUS_H
+#define MINISTATUS_H
 
 #include <iosfwd>
 #include <vector>
@@ -46,12 +46,12 @@ class MiniStatusWindow : public Window
         MiniStatusWindow();
 
         /**
-         * Draw this window
+         * Draw this window.
          */
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Sets one of the icons
+         * Sets one of the icons.
          */
         void setIcon(int index, AnimatedSprite *sprite);
 
@@ -61,7 +61,7 @@ class MiniStatusWindow : public Window
 
     private:
         /**
-         * Updates this dialog with values from player_node
+         * Updates this dialog with values from player_node.
          */
         void update();
 
@@ -71,9 +71,6 @@ class MiniStatusWindow : public Window
         ProgressBar *mHpBar;
         ProgressBar *mMpBar;
         ProgressBar *mXpBar;
-        gcn::Label *mHpLabel;
-        gcn::Label *mMpLabel;
-        gcn::Label *mXpLabel;
 
         std::vector<AnimatedSprite *> mIcons;
 };

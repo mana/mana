@@ -21,8 +21,6 @@
 
 #include "ministatus.h"
 
-#include <guichan/widgets/label.hpp>
-
 #include "gui.h"
 #include "progressbar.h"
 
@@ -43,28 +41,14 @@ MiniStatusWindow::MiniStatusWindow():
     mHpBar = new ProgressBar(1.0f, 100, 20, 0, 171, 34);
     mMpBar = new ProgressBar(1.0f, 100, 20, 26, 102, 230);
     mXpBar = new ProgressBar(1.0f, 100, 20, 143, 192, 211);
-    mHpLabel = new gcn::Label("");
-    mMpLabel = new gcn::Label("");
-    mXpLabel = new gcn::Label("");
 
     mHpBar->setPosition(0, 3);
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
     mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);
 
-    mHpLabel->setDimension(mHpBar->getDimension());
-    mMpLabel->setDimension(mMpBar->getDimension());
-    mXpLabel->setDimension(mXpBar->getDimension());
-
-    mHpLabel->setAlignment(gcn::Graphics::CENTER);
-    mMpLabel->setAlignment(gcn::Graphics::CENTER);
-    mXpLabel->setAlignment(gcn::Graphics::CENTER);
-
     add(mHpBar);
     add(mMpBar);
     add(mXpBar);
-    add(mHpLabel);
-    add(mMpLabel);
-    add(mXpLabel);
 
     setContentSize(mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
@@ -117,8 +101,8 @@ void MiniStatusWindow::update()
             (float) player_node->getXp() / player_node->mXpForNextLevel);
 
     // Update labels
-    mHpLabel->setCaption(toString(player_node->mHp));
-    mMpLabel->setCaption(toString(player_node->mMp));
+    mHpBar->setText(toString(player_node->mHp));
+    mMpBar->setText(toString(player_node->mMp));
 
     std::stringstream updatedText;
     updatedText << (int) (
@@ -138,7 +122,7 @@ void MiniStatusWindow::update()
     }
     */
 
-    mXpLabel->setCaption(updatedText.str());
+    mXpBar->setText(updatedText.str());
 
     for (unsigned int i = 0; i < mIcons.size(); i++)
         if (mIcons[i])
