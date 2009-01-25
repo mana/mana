@@ -78,7 +78,6 @@ class TileAnimation
     private:
         std::list<std::pair<MapLayer*, int> > mAffected;
         SimpleAnimation mAnimation;
-        int mLastUpdate;
         Image* mLastImage;
 };
 
@@ -158,6 +157,11 @@ class Map : public Properties
          * are set.
          */
         void initializeOverlays();
+
+        /**
+         * Updates animations. Called every game tick.
+         */
+        void update();
 
         /**
          * Draws the map to the given graphics output. This method draws all

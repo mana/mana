@@ -157,5 +157,6 @@ void Engine::logic()
 {
     beingManager->logic();
     particleEngine->update();
+    mCurrentMap->update();
     gui->logic();
 }

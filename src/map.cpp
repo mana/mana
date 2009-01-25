@@ -64,7 +64,6 @@ struct Location
 
 TileAnimation::TileAnimation(Animation *ani):
     mAnimation(ani),
-    mLastUpdate(tick_time),
     mLastImage(NULL)
 {
 }
@@ -72,8 +71,7 @@ TileAnimation::TileAnimation(Animation *ani):
 void TileAnimation::update()
 {
     //update animation
-    mAnimation.update(tick_time - mLastUpdate);
-    mLastUpdate = tick_time;
+    mAnimation.update(1);
 
     // exchange images
     Image *img = mAnimation.getCurrentImage();
@@ -231,6 +229,17 @@ bool spriteCompare(const Sprite *a, const Sprite *b)
     return a->getPixelY() < b->getPixelY();
 }
 
+void Map::update()
+{
+    //update animated tiles
+    for (std::map<int, TileAnimation*>::iterator iAni = mTileAnimations.begin();
+         iAni != mTileAnimations.end();
+         iAni++)
+    {
+        iAni->second->update();
+    }
+}
+
 void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 {
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
@@ -245,14 +254,6 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 
     // Make sure sprites are sorted
     mSprites.sort(spriteCompare);
-
-    //update animated tiles
-    for (std::map<int, TileAnimation*>::iterator iAni = mTileAnimations.begin();
-         iAni != mTileAnimations.end();
-         iAni++)
-    {
-        iAni->second->update();
-    }
 
     // draw the game world
     Layers::const_iterator layeri = mLayers.begin();
