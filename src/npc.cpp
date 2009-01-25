@@ -67,6 +67,8 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
         }
     }
     mName = 0;
+
+    mNameColor = 0x21bbbb;
 }
 
 NPC::~NPC()

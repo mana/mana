@@ -33,12 +33,14 @@ class SpeechBubble : public Window
 
 	SpeechBubble();
 
-        void setName(const std::string &name);
+        void setCaption(const std::string &name,
+                        const gcn::Color &color = 0x000000);
 	void setText(std::string mText);
 	void setLocation(int x, int y);
 	unsigned int getNumRows();
 
     private:
+        gcn::Label *mCaption;
 	TextBox *mSpeechBox;
 	ScrollArea *mSpeechArea;
 };

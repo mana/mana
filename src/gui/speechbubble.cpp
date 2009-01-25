@@ -22,6 +22,8 @@
 
 #include <guichan/font.hpp>
 
+#include <guichan/widgets/label.hpp>
+
 #include "gui.h"
 #include "speechbubble.h"
 
@@ -33,23 +35,30 @@
 // TODO: Fix windows so that they can each load their own skins without the
 // other windows overriding another window's skin.
 SpeechBubble::SpeechBubble():
-    Window(_(""), false, NULL, "graphics/gui/speechbubble.xml")
+    Window(_("Speech"), false, NULL, "graphics/gui/speechbubble.xml")
 {
+    // Height == Top Graphic (14px) + 1 Row of Text (15px) + Bottom Graphic (17px)
+    setContentSize(140, 46);
+    setShowTitle(false);
+    setTitleBarHeight(0);
+
+    mCaption = new gcn::Label("");
+    mCaption->setFont(boldFont);
+    mCaption->setPosition(5, 3);
+
     mSpeechBox = new TextBox();
     mSpeechBox->setEditable(false);
     mSpeechBox->setOpaque(false);
 
     mSpeechArea = new ScrollArea(mSpeechBox);
 
-    // Height == Top Graphic (14px) + 1 Row of Text (15px) + Bottom Graphic (17px)
-    setContentSize(140, 46);
-    setTitleBarHeight(5);
-
     mSpeechArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mSpeechArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mSpeechArea->setDimension(gcn::Rectangle(4, 15, 130, 28));
+    mSpeechArea->setDimension(gcn::Rectangle(4, boldFont->getHeight() + 3,
+                                             130, 28));
     mSpeechArea->setOpaque(false);
 
+    add(mCaption);
     add(mSpeechArea);
 
     setLocationRelativeTo(getParent());
@@ -60,38 +69,39 @@ SpeechBubble::SpeechBubble():
     mSpeechBox->setTextWrapped( "" );
 }
 
-void SpeechBubble::setName(const std::string &name)
+void SpeechBubble::setCaption(const std::string &name, const gcn::Color &color)
 {
-    setWindowName(name);
-    setCaption(name);
+    mCaption->setCaption(name);
+    mCaption->adjustSize();
+    mCaption->setForegroundColor(color);
 }
 
 void SpeechBubble::setText(std::string mText)
 {
     mSpeechBox->setMinWidth(140);
-    mSpeechBox->setTextWrapped( mText );
+    mSpeechBox->setTextWrapped(mText);
 
     const int fontHeight = getFont()->getHeight();
-    int numRows = mSpeechBox->getNumberOfRows();
+    const int numRows = mSpeechBox->getNumberOfRows() + 1;
 
-    if (numRows > 1)
+    if (numRows > 2)
     {
         // 15 == height of each line of text (based on font heights)
         // 14 == speechbubble Top + Bottom graphic pixel heights
-        setContentSize(mSpeechBox->getMinWidth() + fontHeight, fontHeight + 
-                      (numRows * fontHeight));
-        mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight,
-                                  mSpeechBox->getMinWidth() + 5, 
-                                  3 + (numRows * fontHeight)));
+        setContentSize(mSpeechBox->getMinWidth() + fontHeight,
+                      (numRows * fontHeight) + 6);
+        mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight + 3,
+                                                 mSpeechBox->getMinWidth() + 5, 
+                                                (numRows * fontHeight)));
     }
     else
     {
-        int width = boldFont->getWidth(this->getCaption());
+        int width = mCaption->getWidth() + 8;
         if (width < getFont()->getWidth(mText))
             width = getFont()->getWidth(mText);
-        setContentSize(width + fontHeight, fontHeight * 2);
-        mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight, 
-                                                 width + 5, fontHeight + 2));
+        setContentSize(width + fontHeight, (fontHeight * 2) + 6);
+        mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight + 3, 
+                                                 width + 5, fontHeight));
     }
 }
 

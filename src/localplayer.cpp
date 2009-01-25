@@ -173,6 +173,7 @@ void LocalPlayer::logic()
 void LocalPlayer::setGM()
 { 
     mIsGM = !mIsGM;
+    mNameColor = mIsGM ? 0x009000: 0x202020;
     setName(getName());
     config.setValue(getName() + "GMassert", mIsGM);
 }

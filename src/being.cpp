@@ -109,6 +109,7 @@ Being::Being(int id, int job, Map *map):
 
     instances++;
     mSpeech = "";
+    mNameColor = 0x202020;
     mText = 0;
 }
 
@@ -510,8 +511,7 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
             mText = 0;
         }
 
-        if (mName != mSpeechBubble->getCaption())
-            mSpeechBubble->setName(mName);
+        mSpeechBubble->setCaption(mName, mNameColor);
 
         // Not quite centered, but close enough. However, it's not too important to get 
         // it right right now, as it doesn't take bubble collision into account yet. 

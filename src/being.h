@@ -416,6 +416,8 @@ class Being : public Sprite
         Uint16 mStunMode;		/**< Stun mode; zero if not stunned */
         StatusEffects mStatusEffects;	/**< Bitset of active status effects */
 
+        gcn::Color mNameColor;
+
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;

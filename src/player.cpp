@@ -50,10 +50,15 @@ void Player::setName(const std::string &name)
 {
     if (mName == 0)
     {
-        if (mIsGM) {
+        if (mIsGM)
+        {
+            mNameColor = 0x009000;
             mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
                                   gcn::Graphics::CENTER, gcn::Color(0, 255, 0));
-        } else {
+        }
+        else
+        {
+            mNameColor = 0x202020;
             mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
                                   gcn::Graphics::CENTER, gcn::Color(255, 255, 255));
         }

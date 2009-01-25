@@ -71,6 +71,8 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
             controlParticle(particleEngine->addEffect((*i), 0, 0));
         }
     }
+
+    mNameColor = 0xff2020;
 }
 
 Monster::~Monster() 
