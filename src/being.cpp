@@ -56,6 +56,9 @@ std::vector<AnimatedSprite*> Being::emotionSet;
 static const int X_SPEECH_OFFSET = 18;
 static const int Y_SPEECH_OFFSET = 60;
 
+static const int DEFAULT_WIDTH = 32;
+static const int DEFAULT_HEIGHT = 32;
+
 Being::Being(int id, int job, Map *map):
     mJob(job),
     mX(0), mY(0),
@@ -571,14 +574,14 @@ int Being::getWidth() const
 {
     if (mSprites[BASE_SPRITE])
     {
-        const int width = mSprites[BASE_SPRITE]->getWidth() > Being::DEFAULT_WIDTH ?
+        const int width = mSprites[BASE_SPRITE]->getWidth() > DEFAULT_WIDTH ?
                                    mSprites[BASE_SPRITE]->getWidth() : 
-                                   Being::DEFAULT_WIDTH;
+                                   DEFAULT_WIDTH;
         return width;
     }
     else 
     {
-        return Being::DEFAULT_WIDTH;
+        return DEFAULT_WIDTH;
     }
 }
 
@@ -587,14 +590,14 @@ int Being::getHeight() const
 {
     if (mSprites[BASE_SPRITE])
     {
-        const int height = mSprites[BASE_SPRITE]->getHeight() > Being::DEFAULT_HEIGHT ?
+        const int height = mSprites[BASE_SPRITE]->getHeight() > DEFAULT_HEIGHT ?
                                    mSprites[BASE_SPRITE]->getHeight() : 
-                                   Being::DEFAULT_HEIGHT;
+                                   DEFAULT_HEIGHT;
         return height;
     }
     else 
     {
-        return Being::DEFAULT_HEIGHT;
+        return DEFAULT_HEIGHT;
     }
 }
 
