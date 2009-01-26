@@ -41,6 +41,7 @@ Minimap::Minimap():
     mProportion(0.5)
 {
     setWindowName(_("MiniMap"));
+    setResizable(true);
 }
 
 Minimap::~Minimap()
@@ -63,11 +64,19 @@ void Minimap::setMapImage(Image *img)
         const int titleWidth = getFont()->getWidth(getCaption()) + 15;
         const int mapWidth = mMapImage->getWidth() < 100 ? 
                              mMapImage->getWidth() + offsetX : 100;
+        const int mapHeight = mMapImage->getHeight() < 100 ? 
+                              mMapImage->getHeight() + offsetY : 100;
+
+        setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);
+        setMinHeight(mapHeight);
+        setMaxWidth(mMapImage->getWidth() + offsetX);
+        setMaxHeight(mMapImage->getHeight() + offsetY);
+
         mMapImage->setAlpha(config.getValue("guialpha", 0.8));
-        setDefaultSize(offsetX, offsetY, 
-                       mapWidth > titleWidth ? mapWidth : titleWidth, 
-                       mMapImage->getHeight() < 100 ? 
-                           mMapImage->getHeight() + offsetY : 100);
+        setDefaultSize(offsetX, offsetY, getMinWidth() > getWidth() ? 
+                                              getMinWidth() : getWidth(),
+                                         getMaxHeight() < getHeight() ? 
+                                              getMaxHeight() : getHeight());
         loadWindowState();
         setVisible(mShow);
     }

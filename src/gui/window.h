@@ -130,6 +130,26 @@ class Window : public gcn::Window, gcn::WidgetListener
         void setMaxHeight(unsigned int height);
 
         /**
+         * Gets the minimum width of the window.
+         */
+        int getMinWidth() { return mMinWinWidth; }
+
+        /**
+         * Gets the minimum height of the window.
+         */
+        int getMinHeight() { return mMinWinHeight; }
+
+        /**
+         * Gets the maximum width of the window.
+         */
+        int getMaxWidth() { return mMaxWinWidth; }
+
+        /**
+         * Gets the minimum height of the window.
+         */
+        int getMaxHeight() { return mMaxWinHeight; }
+
+        /**
          * Sets flag to show a title or not.
          */
         void setShowTitle(bool flag)
