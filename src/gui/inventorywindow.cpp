@@ -31,6 +31,7 @@
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "progressbar.h"
 #include "scrollarea.h"
 #include "viewport.h"
 
@@ -80,23 +81,22 @@ InventoryWindow::InventoryWindow(int invSize):
     mMaxWeight = toString(player_node->mMaxWeight);
     mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
-    mWeight = strprintf(_("Weight: %d  g / %d g"),
-                          atoi(mTotalWeight.c_str()), atoi(mMaxWeight.c_str()));
-    mSlots = strprintf(_("Slots used: %d / %d"),
-                         atoi(mUsedSlots.c_str()), mMaxSlots);
+    mSlotsLabel = new gcn::Label(_("Slots: "));
+    mWeightLabel = new gcn::Label(_("Weight: "));
 
-    mWeightLabel = new gcn::Label(mWeight + "  " + mSlots);
+    mSlotsBar = new ProgressBar(1.0f, 100, 20, 225, 200, 25);
+    mWeightBar = new ProgressBar(1.0f, 100, 20, 0, 0, 255);
 
     setMinHeight(130);
-    setMinWidth(getFont()->getWidth(mWeight));
+    setMinWidth(mWeightLabel->getWidth() + mSlotsLabel->getWidth() + 310);
 
-    ContainerPlacer place;
-    place = getPlacer(0, 0);
-
-    place(0, 0, mInvenScroll, 5, 4);
-    place(0, 4, mWeightLabel, 5);
-    place(3, 5, mDropButton);
-    place(4, 5, mUseButton);
+    place(0, 0, mInvenScroll, 7, 4);
+    place(0, 4, mWeightLabel).setPadding(3);
+    place(1, 4, mWeightBar, 2);
+    place(3, 4, mSlotsLabel).setPadding(3);
+    place(4, 4, mSlotsBar, 2);
+    place(5, 5, mDropButton);
+    place(6, 5, mUseButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
@@ -121,15 +121,30 @@ void InventoryWindow::logic()
         mMaxWeight = toString(player_node->mMaxWeight);
         mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
-        // Adjust widgets
-        mWeight = strprintf(_("Weight: %d  g / %d g"),
-                              atoi(mTotalWeight.c_str()), atoi(mMaxWeight.c_str()));
-        mSlots = strprintf(_("Slots used: %d / %d"),
-                             atoi(mUsedSlots.c_str()), mMaxSlots);
+        // Weight Bar coloration
+        if (int(player_node->mTotalWeight) < int(player_node->mMaxWeight / 3))
+        {
+            mWeightBar->setColor(0, 0, 255); // Blue
+        }
+        else if (int(player_node->mTotalWeight) <
+                 int((player_node->mMaxWeight / 3) * 2))
+        {
+            mWeightBar->setColor(255, 255, 0); // Yellow
+        }
+        else
+        {
+            mWeightBar->setColor(255, 0, 0); // Red
+        }
 
-        mWeightLabel->setCaption(mWeight + "  " + mSlots);
+        // Adjust progress bars
+        mSlotsBar->setProgress((float)
+               player_node->getInventory()->getNumberOfSlotsUsed() / mMaxSlots);
+        mWeightBar->setProgress((float) player_node->mTotalWeight / 
+                                        player_node->mMaxWeight);
 
-        setMinWidth(getFont()->getWidth(mWeight));
+        mSlotsBar->setText(strprintf("%s/%d", mUsedSlots.c_str(), mMaxSlots));
+        mWeightBar->setText(strprintf("%sg/%sg", mTotalWeight.c_str(),
+                                                 mMaxWeight.c_str()));
     }
 }
 

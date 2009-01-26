@@ -33,6 +33,7 @@
 
 class Item;
 class ItemContainer;
+class ProgressBar;
 
 /**
  * Inventory dialog.
@@ -77,7 +78,12 @@ class InventoryWindow : public Window, gcn::ActionListener,
         std::string mMaxWeight;
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
+
         gcn::Label *mWeightLabel;
+        gcn::Label *mSlotsLabel;
+
+        ProgressBar *mWeightBar;
+        ProgressBar *mSlotsBar;
 
         int mMaxSlots;
 
