@@ -29,6 +29,7 @@
 #include "window.h"
 
 #include "../guichanfwd.h"
+#include "../localplayer.h"
 
 class Item;
 class ItemContainer;
@@ -45,7 +46,7 @@ class InventoryWindow : public Window, gcn::ActionListener,
         /**
          * Constructor.
          */
-        InventoryWindow();
+        InventoryWindow(int invSize = INVENTORY_SIZE);
 
         /**
          * Logic (updates buttons and weight information).
@@ -75,6 +76,8 @@ class InventoryWindow : public Window, gcn::ActionListener,
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
         gcn::Label *mWeightLabel;
+
+        int mSize;
 
         bool mItemDesc;
 };

@@ -38,7 +38,6 @@
 
 #include "../inventory.h"
 #include "../item.h"
-#include "../localplayer.h"
 
 #include "../resources/iteminfo.h"
 
@@ -46,8 +45,9 @@
 #include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
-InventoryWindow::InventoryWindow():
+InventoryWindow::InventoryWindow(int invSize):
     Window(_("Inventory")),
+    mSize(invSize),
     mItemDesc(false)
 {
     setWindowName(_("Inventory"));
@@ -69,10 +69,13 @@ InventoryWindow::InventoryWindow():
     mTotalWeight = toString(player_node->mTotalWeight);
     mMaxWeight = toString(player_node->mMaxWeight);
 
-    mWeight = _("Weight: ") + mTotalWeight + " g / " +
-              mMaxWeight + _(" g Slots: ") + 
-              toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
-              "/" + toString(player_node->getInventory()->getInventorySize());
+    mWeight = strprintf(_("Weight: %d  g / %d g"),
+                              player_node->mTotalWeight,
+                              player_node->mMaxWeight) + " " +
+              strprintf(_("Slots used: %d / %d"),
+                              player_node->getInventory()->getNumberOfSlotsUsed(),
+                              mSize);
+
     mWeightLabel = new gcn::Label(mWeight);
 
     setMinHeight(130);
@@ -108,10 +111,12 @@ void InventoryWindow::logic()
         mMaxWeight = toString(player_node->mMaxWeight);
 
         // Adjust widgets
-        mWeight = _("Weight: ") + mTotalWeight + " g / " +
-                  mMaxWeight + _(" g Slots: ") + 
-                 toString(player_node->getInventory()->getNumberOfSlotsUsed()) + 
-                 "/" + toString(player_node->getInventory()->getInventorySize());
+        mWeight = strprintf(_("Weight: %d  g / %d g"),
+                              player_node->mTotalWeight,
+                              player_node->mMaxWeight) + " " +
+                  strprintf(_("Slots used: %d / %d"),
+                              player_node->getInventory()->getNumberOfSlotsUsed(),
+                              mSize);
 
         setMinWidth(getFont()->getWidth(mWeight));
     }
