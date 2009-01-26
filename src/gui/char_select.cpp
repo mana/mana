@@ -21,6 +21,7 @@
 
 #include <string>
 
+#include <guichan/font.hpp>
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
@@ -90,10 +91,13 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mJobLevelLabel = new gcn::Label(strprintf(_("Job Level: %d"), 0));
     mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
 
+    const std::string tempString = getFont()->getWidth(_("New")) < 
+                                   getFont()->getWidth(_("Delete")) ? 
+                                   _("Delete") : _("New");
+
     mPreviousButton = new Button(_("Previous"), "previous", this);
     mNextButton = new Button(_("Next"), "next", this);
-    mNewCharButton = new Button(_("New"), "new", this);
-    mDelCharButton = new Button(_("Delete"), "delete", this);
+    mNewDelCharButton = new Button(tempString, "newdel", this);
     mSelectButton = new Button(_("Ok"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
@@ -101,8 +105,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
     place = getPlacer(0, 0);
 
     place(0, 0, mPlayerBox, 1, 6).setPadding(3);
-    place(1, 0, mNewCharButton);
-    place(2, 0, mDelCharButton);
+    place(1, 0, mNewDelCharButton);
     place(1, 1, mNameLabel, 5);
     place(1, 2, mLevelLabel, 5);
     place(1, 3, mJobLevelLabel, 5);
@@ -127,8 +130,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "ok" && n_character > 0)
     {
         // Start game
-        mNewCharButton->setEnabled(false);
-        mDelCharButton->setEnabled(false);
+        mNewDelCharButton->setEnabled(false);
         mSelectButton->setEnabled(false);
         mPreviousButton->setEnabled(false);
         mNextButton->setEnabled(false);
@@ -139,19 +141,20 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     {
         state = EXIT_STATE;
     }
-    else if (event.getId() == "new" && n_character <= MAX_SLOT)
+    else if (event.getId() == "newdel")
     {
-        // Start new character dialog
-        CharCreateDialog *charCreateDialog =
-            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mGender);
-        charServerHandler.setCharCreateDialog(charCreateDialog);
-    }
-    else if (event.getId() == "delete")
-    {
-        // Delete character
-        if (mCharInfo->getEntry())
+        // Check for a character
+        if (mCharInfo->getEntry() && n_character <= MAX_SLOT )
         {
             new CharDeleteConfirm(this);
+        }
+        else
+        {
+            // Start new character dialog
+            CharCreateDialog *charCreateDialog =
+                new CharCreateDialog(this, mCharInfo->getPos(),
+                                     mNetwork, mGender);
+            charServerHandler.setCharCreateDialog(charCreateDialog);
         }
     }
     else if (event.getId() == "previous")
@@ -176,8 +179,7 @@ void CharSelectDialog::updatePlayerInfo()
         mMoneyLabel->setCaption(strprintf(_("Gold: %d"), pi->mGp));
         if (!mCharSelected)
         {
-            mNewCharButton->setEnabled(false);
-            mDelCharButton->setEnabled(true);
+            mNewDelCharButton->setCaption(_("Delete"));
             mSelectButton->setEnabled(true);
         }
     }
@@ -187,8 +189,7 @@ void CharSelectDialog::updatePlayerInfo()
         mLevelLabel->setCaption(strprintf(_("Level: %d"), 0));
         mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"), 0));
         mMoneyLabel->setCaption(strprintf(_("Money: %d"), 0));
-        mNewCharButton->setEnabled(true);
-        mDelCharButton->setEnabled(false);
+        mNewDelCharButton->setCaption(_("New"));
         mSelectButton->setEnabled(false);
     }
 

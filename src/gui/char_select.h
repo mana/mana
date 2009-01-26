@@ -65,8 +65,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         gcn::Button *mSelectButton;
         gcn::Button *mCancelButton;
-        gcn::Button *mNewCharButton;
-        gcn::Button *mDelCharButton;
+        gcn::Button *mNewDelCharButton;
         gcn::Button *mPreviousButton;
         gcn::Button *mNextButton;
 
