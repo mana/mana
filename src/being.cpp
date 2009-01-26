@@ -571,11 +571,14 @@ int Being::getWidth() const
 {
     if (mSprites[BASE_SPRITE])
     {
-        return mSprites[BASE_SPRITE]->getWidth();
+        const int width = mSprites[BASE_SPRITE]->getWidth() > Being::DEFAULT_WIDTH ?
+                                   mSprites[BASE_SPRITE]->getWidth() : 
+                                   Being::DEFAULT_WIDTH;
+        return width;
     }
     else 
     {
-        return 0;
+        return Being::DEFAULT_WIDTH;
     }
 }
 
@@ -584,11 +587,14 @@ int Being::getHeight() const
 {
     if (mSprites[BASE_SPRITE])
     {
-        return mSprites[BASE_SPRITE]->getHeight();
+        const int height = mSprites[BASE_SPRITE]->getHeight() > Being::DEFAULT_HEIGHT ?
+                                   mSprites[BASE_SPRITE]->getHeight() : 
+                                   Being::DEFAULT_HEIGHT;
+        return height;
     }
     else 
     {
-        return 0;
+        return Being::DEFAULT_HEIGHT;
     }
 }
 

@@ -432,6 +432,9 @@ class Being : public Sprite
          */
         int getOffset(char pos, char neg) const;
 
+        static const int DEFAULT_WIDTH = 32;
+        static const int DEFAULT_HEIGHT = 32;
+
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;
 

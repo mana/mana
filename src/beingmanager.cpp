@@ -129,12 +129,16 @@ Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
     for (; itr != itr_end; ++itr)
     {
         Being *being = (*itr);
+
+        int xtol = being->getWidth();
+        int uptol = being->getHeight();
+
         if ((being->mAction != Being::DEAD) &&
             (being != player_node) &&
             (being->getPixelX() <= x) &&
-            (being->getPixelX() + being->getWidth() >= x) &&
-            (being->getPixelY() <= y) &&
-            (being->getPixelY() + being->getHeight() >= y))
+            (being->getPixelX() + xtol >= x) &&
+            (being->getPixelY() - (uptol / 2) <= y) &&
+            (being->getPixelY() + (uptol / 2) >= y))
         {
             return being;
         }
