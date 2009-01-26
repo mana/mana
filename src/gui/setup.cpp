@@ -68,7 +68,7 @@ Setup::Setup():
         add(btn);
 
         // Disable this button when the windows aren't created yet
-        if (!strcmp(*curBtn, _("Reset Windows")))
+        if (!strcmp(*curBtn, "Reset Windows"))
             btn->setEnabled(statusWindow != NULL);
     }
 
@@ -113,17 +113,17 @@ Setup::~Setup()
 
 void Setup::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == _("Apply"))
+    if (event.getId() == "Apply")
     {
         setVisible(false);
         for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::apply));
     }
-    else if (event.getId() == _("Cancel"))
+    else if (event.getId() == "Cancel")
     {
         setVisible(false);
         for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::cancel));
     }
-    else if (event.getId() == _("Reset Windows"))
+    else if (event.getId() == "Reset Windows")
     {
         // Bail out if this action happens to be activated before the windows
         // are created (though it should be disabled then)
