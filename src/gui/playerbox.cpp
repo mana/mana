@@ -23,6 +23,7 @@
 
 #include "playerbox.h"
 
+#include "../animatedsprite.h"
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../player.h"
@@ -85,7 +86,13 @@ void PlayerBox::draw(gcn::Graphics *graphics)
         bs = getFrameSize();
         x = getWidth() / 2 - 16 + bs;
         y = getHeight() / 2 + bs;
-        mPlayer->draw(static_cast<Graphics*>(graphics), x, y);
+        for (int i = 0; i < Being::VECTOREND_SPRITE; i++)
+        {
+            if (mPlayer->getSprite(i) != NULL)
+            {
+                mPlayer->getSprite(i)->draw(static_cast<Graphics*>(graphics), x, y);
+            }
+        }
     }
 }
 

@@ -370,6 +370,9 @@ class Being : public Sprite
 
         static std::string getHairColor(int index);
 
+        virtual AnimatedSprite* getSprite(int index) const
+            { return mSprites[index]; }
+
     protected:
         /**
          * Sets the new path for this being.
