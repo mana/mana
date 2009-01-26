@@ -71,13 +71,15 @@ class InventoryWindow : public Window, gcn::ActionListener,
         ItemContainer *mItems;
 
         std::string mWeight;
+        std::string mSlots;
+        std::string mUsedSlots;
         std::string mTotalWeight;
         std::string mMaxWeight;
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
         gcn::Label *mWeightLabel;
 
-        int mSize;
+        int mMaxSlots;
 
         bool mItemDesc;
 };

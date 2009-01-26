@@ -47,7 +47,7 @@
 
 InventoryWindow::InventoryWindow(int invSize):
     Window(_("Inventory")),
-    mSize(invSize),
+    mMaxSlots(invSize),
     mItemDesc(false)
 {
     setWindowName(_("Inventory"));
@@ -68,15 +68,14 @@ InventoryWindow::InventoryWindow(int invSize):
 
     mTotalWeight = toString(player_node->mTotalWeight);
     mMaxWeight = toString(player_node->mMaxWeight);
+    mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
     mWeight = strprintf(_("Weight: %d  g / %d g"),
-                              player_node->mTotalWeight,
-                              player_node->mMaxWeight) + " " +
-              strprintf(_("Slots used: %d / %d"),
-                              player_node->getInventory()->getNumberOfSlotsUsed(),
-                              mSize);
+                          atoi(mTotalWeight.c_str()), atoi(mMaxWeight.c_str()));
+    mSlots = strprintf(_("Slots used: %d / %d"),
+                         atoi(mUsedSlots.c_str()), mMaxSlots);
 
-    mWeightLabel = new gcn::Label(mWeight);
+    mWeightLabel = new gcn::Label(mWeight + "  " + mSlots);
 
     setMinHeight(130);
     setMinWidth(getFont()->getWidth(mWeight));
@@ -105,18 +104,20 @@ void InventoryWindow::logic()
     updateButtons();
 
     if ((mMaxWeight != toString(player_node->mMaxWeight)) ||
-         mTotalWeight != toString(player_node->mTotalWeight))
+         mTotalWeight != toString(player_node->mTotalWeight) ||
+         mUsedSlots != toString(player_node->getInventory()->getNumberOfSlotsUsed()))
     {
         mTotalWeight = toString(player_node->mTotalWeight);
         mMaxWeight = toString(player_node->mMaxWeight);
+        mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
         // Adjust widgets
         mWeight = strprintf(_("Weight: %d  g / %d g"),
-                              player_node->mTotalWeight,
-                              player_node->mMaxWeight) + " " +
-                  strprintf(_("Slots used: %d / %d"),
-                              player_node->getInventory()->getNumberOfSlotsUsed(),
-                              mSize);
+                              atoi(mTotalWeight.c_str()), atoi(mMaxWeight.c_str()));
+        mSlots = strprintf(_("Slots used: %d / %d"),
+                             atoi(mUsedSlots.c_str()), mMaxSlots);
+
+        mWeightLabel->setCaption(mWeight + "  " + mSlots);
 
         setMinWidth(getFont()->getWidth(mWeight));
     }
