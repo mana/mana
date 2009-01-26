@@ -46,7 +46,7 @@ class InventoryWindow : public Window, gcn::ActionListener,
         /**
          * Constructor.
          */
-        InventoryWindow(int invSize = INVENTORY_SIZE);
+        InventoryWindow(int invSize = (INVENTORY_SIZE - 2));
 
         /**
          * Logic (updates buttons and weight information).
