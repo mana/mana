@@ -192,7 +192,13 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
             break;
     }
 
-    if (tmp.nick == ": " && tmp.text.substr(0, 17) == "Visible GM status")
+    if (tmp.nick == ": ")
+    {
+        tmp.nick = "";
+        lineColor = "##S";
+    }
+
+    if (tmp.nick == "" && tmp.text.substr(0, 17) == "Visible GM status")
     {
         player_node->setGM();
     }
