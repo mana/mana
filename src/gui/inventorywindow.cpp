@@ -57,7 +57,17 @@ InventoryWindow::InventoryWindow(int invSize):
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(115, 25, 322, 200);
 
-    mUseButton = new Button(_("Use"), "use", this);
+    std::string longestUseString = getFont()->getWidth(_("Equip")) > 
+                                   getFont()->getWidth(_("Use")) ?
+                                   _("Equip") : _("Use");
+
+    if (getFont()->getWidth(longestUseString) < 
+        getFont()->getWidth(_("Unequip")))
+    {
+        longestUseString = _("Unequip");
+    }
+
+    mUseButton = new Button(longestUseString, "use", this);
     mDropButton = new Button(_("Drop"), "drop", this);
 
     mItems = new ItemContainer(player_node->getInventory(), 2);
