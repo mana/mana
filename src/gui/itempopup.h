@@ -42,8 +42,10 @@ class ItemPopup : public Window
         gcn::Label *mItemName;
         TextBox *mItemDesc;
         TextBox *mItemEffect;
+        TextBox *mItemWeight;
         ScrollArea *mItemDescScroll;
         ScrollArea *mItemEffectScroll;
+        ScrollArea *mItemWeightScroll;
 };
 
 #endif // ITEMPOPUP_H__

@@ -84,7 +84,7 @@ void ItemDB::load()
         }
 
         int type = XML::getProperty(node, "type", 0);
-        //int weight = XML::getProperty(node, "weight", 0);
+        int weight = XML::getProperty(node, "weight", 0);
         int view = XML::getProperty(node, "view", 0);
 
         std::string name = XML::getProperty(node, "name", "");
@@ -103,7 +103,7 @@ void ItemDB::load()
             itemInfo->setEffect(effect);
             itemInfo->setType(type);
             itemInfo->setView(view);
-            //itemInfo->setWeight(weight);
+            itemInfo->setWeight(weight);
             itemInfo->setWeaponType(weaponType);
 
             for_each_xml_child_node(itemChild, node)
@@ -158,7 +158,7 @@ void ItemDB::load()
         CHECK_PARAM(description, "");
         // CHECK_PARAM(effect, "");
         // CHECK_PARAM(type, 0);
-        // CHECK_PARAM(weight, 0);
+        CHECK_PARAM(weight, 0);
         // CHECK_PARAM(slot, 0);
 
 #undef CHECK_PARAM
