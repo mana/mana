@@ -20,8 +20,10 @@
  */
 #include <SDL_mouse.h>
 
+#include "gui.h"
 #include "itemshortcutcontainer.h"
 #include "itempopup.h"
+#include "viewport.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -172,14 +174,33 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
     if (index == -1)
         return;
 
-    // Stores the selected item if theirs one.
-    if (itemShortcut->isItemSelected())
+    if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        itemShortcut->setItem(index);
-        itemShortcut->setItemSelected(-1);
+
+        // Stores the selected item if theirs one.
+        if (itemShortcut->isItemSelected())
+        {
+            itemShortcut->setItem(index);
+            itemShortcut->setItemSelected(-1);
+        }
+        else if (itemShortcut->getItem(index))
+            mItemClicked = true;
     }
-    else if (itemShortcut->getItem(index))
-        mItemClicked = true;
+    else if (event.getButton() == gcn::MouseEvent::RIGHT)
+    {
+        Item *item = player_node->getInventory()->
+                     findItem(itemShortcut->getItem(index));
+
+        if (!item)
+            return;
+
+        /* Convert relative to the window coordinates to absolute screen
+         * coordinates.
+         */
+        int mx, my;
+        SDL_GetMouseState(&mx, &my);
+        viewport->showPopup(mx, my, item);
+    }
 }
 
 void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)

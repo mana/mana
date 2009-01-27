@@ -33,6 +33,7 @@
 #include "itemcontainer.h"
 #include "progressbar.h"
 #include "scrollarea.h"
+#include "textbox.h"
 #include "viewport.h"
 
 #include "widgets/layout.h"

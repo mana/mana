@@ -25,7 +25,6 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
-#include "textbox.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
@@ -34,6 +33,7 @@
 class Item;
 class ItemContainer;
 class ProgressBar;
+class TextBox;
 
 /**
  * Inventory dialog.
@@ -41,7 +41,7 @@ class ProgressBar;
  * \ingroup Interface
  */
 class InventoryWindow : public Window, gcn::ActionListener,
-    gcn::SelectionListener
+                                       gcn::SelectionListener
 {
     public:
         /**
