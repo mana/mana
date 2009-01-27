@@ -108,7 +108,8 @@ Gui::Gui(Graphics *graphics):
     // Set global font
     std::string path = resman->getPath("fonts/dejavusans.ttf");
     try {
-        mGuiFont = new TrueTypeFont(path, 11);
+        const int fontSize = config.getValue("fontSize", 11);
+        mGuiFont = new TrueTypeFont(path, fontSize);
     }
     catch (gcn::Exception e)
     {
