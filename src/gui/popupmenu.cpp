@@ -258,12 +258,6 @@ void PopupMenu::handleLink(const std::string& link)
     {
 	new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, mItem);
     }
-
-    else if (link == "description")
-    {
-	// do nothing for now, I need to write
-	// a window for the description first
-    }
     else if (link == "party-invite" &&
 	     mBeing != NULL &&
 	     mBeing->getType() == Being::PLAYER)
@@ -304,7 +298,6 @@ void PopupMenu::showPopup(int x, int y, Item *item)
 
     mBrowserBox->addRow(_("@@drop|Drop@@"));
     mBrowserBox->addRow(_("@@chat|Add to Chat@@"));
-    mBrowserBox->addRow(_("@@description|Description@@"));
     mBrowserBox->addRow("##3---");
     mBrowserBox->addRow(_("@@cancel|Cancel@@"));
 
