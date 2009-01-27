@@ -161,6 +161,11 @@ void Player::setSprite(int slot, int id, std::string color)
     {
         delete mSprites[slot];
         mSprites[slot] = NULL;
+
+        if (slot == WEAPON_SPRITE)
+        {
+            mEquippedWeapon = NULL;
+        }
     }
     else
     {
