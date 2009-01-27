@@ -21,6 +21,7 @@
 #include <SDL_mouse.h>
 
 #include "itemshortcutcontainer.h"
+#include "itempopup.h"
 
 #include "../configuration.h"
 #include "../graphics.h"

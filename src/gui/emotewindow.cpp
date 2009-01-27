@@ -28,6 +28,7 @@
 #include "emotewindow.h"
 #include "emotecontainer.h"
 #include "scrollarea.h"
+#include "textbox.h"
 
 #include "widgets/layout.h"
 

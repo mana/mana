@@ -28,13 +28,12 @@
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
-#include "itempopup.h"
-
 #include "../guichanfwd.h"
 
 class Image;
 class Inventory;
 class Item;
+class ItemPopup;
 
 namespace gcn {
     class SelectionListener;

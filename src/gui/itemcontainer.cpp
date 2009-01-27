@@ -25,6 +25,7 @@
 #include <guichan/selectionlistener.hpp>
 
 #include "itemcontainer.h"
+#include "itempopup.h"
 
 #include "../graphics.h"
 #include "../inventory.h"

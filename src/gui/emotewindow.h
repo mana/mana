@@ -25,12 +25,12 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
-#include "textbox.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
 
 class EmoteContainer;
+class TextBox;
 
 /**
  * Emote dialog.
@@ -38,7 +38,7 @@ class EmoteContainer;
  * \ingroup Interface
  */
 class EmoteWindow : public Window, gcn::ActionListener,
-    gcn::SelectionListener
+                                   gcn::SelectionListener
 {
     public:
         /**

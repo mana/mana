@@ -23,16 +23,14 @@
 #define ITEMSHORTCUTCONTAINER_H
 
 #include <guichan/mouselistener.hpp>
-#include <guichan/widget.hpp>
-#include <guichan/widgetlistener.hpp>
 
-#include "../guichanfwd.h"
 #include "shortcutcontainer.h"
 
-#include "itempopup.h"
+#include "../guichanfwd.h"
 
 class Image;
 class Item;
+class ItemPopup;
 
 /**
  * An item shortcut container. Used to quickly use items.

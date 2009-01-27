@@ -25,8 +25,6 @@
 #include <vector>
 
 #include <guichan/mouselistener.hpp>
-#include <guichan/widget.hpp>
-#include <guichan/widgetlistener.hpp>
 
 #include "shortcutcontainer.h"
 

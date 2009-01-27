@@ -26,8 +26,7 @@
 
 #include "window.h"
 
-#include "../equipment.h"
-
+class Equipment;
 class Inventory;
 class PlayerBox;
 

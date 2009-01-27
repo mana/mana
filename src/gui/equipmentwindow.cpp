@@ -28,6 +28,7 @@
 #include "equipmentwindow.h"
 #include "playerbox.h"
 
+#include "../equipment.h"
 #include "../graphics.h"
 #include "../inventory.h"
 #include "../item.h"
@@ -42,15 +43,15 @@
 // Positions of the boxes, 2nd dimension is X and Y respectively.
 static const int boxPosition[][2] = {
     {50, 208},   // EQUIP_LEGS_SLOT
-    {8, 123},   // EQUIP_FIGHT1_SLOT
-    {8, 78},    // EQUIP_GLOVES_SLOT
+    {8, 123},    // EQUIP_FIGHT1_SLOT
+    {8, 78},     // EQUIP_GLOVES_SLOT
     {129, 168},  // EQUIP_RING2_SLOT
-    {8, 168},   // EQUIP_RING1_SLOT
+    {8, 168},    // EQUIP_RING1_SLOT
     {129, 123},  // EQUIP_FIGHT2_SLOT
-    {90, 208},  // EQUIP_FEET_SLOT
+    {90, 208},   // EQUIP_FEET_SLOT
     {50, 40},    // EQUIP_CAPE_SLOT
     {70, 0},     // EQUIP_HEAD_SLOT
-    {90, 40},   // EQUIP_TORSO_SLOT
+    {90, 40},    // EQUIP_TORSO_SLOT
     {129, 78}    // EQUIP_AMMO_SLOT
 };
 
