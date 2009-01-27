@@ -120,7 +120,8 @@ Gui::Gui(Graphics *graphics):
     // Set bold font
     path = resman->getPath("fonts/dejavusans-bold.ttf");
     try {
-        boldFont = new TrueTypeFont(path, 11);
+        const int fontSize = config.getValue("fontSize", 11);
+        boldFont = new TrueTypeFont(path, fontSize);
     }
     catch (gcn::Exception e)
     {
