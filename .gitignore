@@ -27,6 +27,7 @@ Makefile
 config.h
 config.log
 config.status
+config.status.lineno
 po/POTFILES
 .deps
 stamp-h1
