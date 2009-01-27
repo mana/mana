@@ -38,6 +38,8 @@ NpcListDialog::NpcListDialog():
     setMinWidth(200);
     setMinHeight(150);
 
+    setDefaultSize(0, 0, 260, 200);
+
     mItemList = new ListBox(this);
     scrollArea = new ScrollArea(mItemList);
     okButton = new Button(_("OK"), "ok", this);

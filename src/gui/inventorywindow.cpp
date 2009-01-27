@@ -57,7 +57,7 @@ InventoryWindow::InventoryWindow(int invSize):
     setCloseButton(true);
 
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 322, 200);
+    setDefaultSize(115, 25, 375, 300);
 
     std::string longestUseString = getFont()->getWidth(_("Equip")) > 
                                    getFont()->getWidth(_("Use")) ?
