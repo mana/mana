@@ -36,7 +36,7 @@ void ListBox::draw(gcn::Graphics *graphics)
     if (!mListModel)
         return;
 
-    graphics->setColor(gcn::Color(110, 160, 255));
+    graphics->setColor(gcn::Color(235, 200, 115));
     graphics->setFont(getFont());
 
     int fontHeight = getFont()->getHeight();

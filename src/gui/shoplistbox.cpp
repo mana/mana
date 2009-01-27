@@ -72,7 +72,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 
         if (i == mSelected)
         {
-            backgroundColor = gcn::Color(110, 160, 255);
+            backgroundColor = gcn::Color(235, 200, 115);
         }
         else if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
