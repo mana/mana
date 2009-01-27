@@ -50,6 +50,7 @@ ItemPopup::ItemPopup():
     mItemName->setFont(gui->getFont());
     mItemName->setPosition(2, 2);
     mItemName->setWidth(getWidth() - 4);
+    mItemName->setFont(boldFont);
 
     // Item Description
     mItemDesc = new TextBox();
