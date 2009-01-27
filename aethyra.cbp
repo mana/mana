@@ -119,8 +119,6 @@
 		<Unit filename="src\gui\browserbox.h" />
 		<Unit filename="src\gui\button.cpp" />
 		<Unit filename="src\gui\button.h" />
-		<Unit filename="src\gui\buttonbox.cpp" />
-		<Unit filename="src\gui\buttonbox.h" />
 		<Unit filename="src\gui\buy.cpp" />
 		<Unit filename="src\gui\buy.h" />
 		<Unit filename="src\gui\buysell.cpp" />
@@ -206,6 +204,8 @@
 		<Unit filename="src\gui\radiobutton.h" />
 		<Unit filename="src\gui\register.cpp" />
 		<Unit filename="src\gui\register.h" />
+		<Unit filename="src\gui\recorder.cpp" />
+		<Unit filename="src\gui\recorder.h" />
 		<Unit filename="src\gui\scrollarea.cpp" />
 		<Unit filename="src\gui\scrollarea.h" />
 		<Unit filename="src\gui\sdlinput.cpp" />
@@ -358,8 +358,6 @@
 		<Unit filename="src\position.cpp" />
 		<Unit filename="src\position.h" />
 		<Unit filename="src\properties.h" />
-		<Unit filename="src\recorder.cpp" />
-		<Unit filename="src\recorder.h" />
 		<Unit filename="src\resources\action.cpp" />
 		<Unit filename="src\resources\action.h" />
 		<Unit filename="src\resources\ambientoverlay.cpp" />

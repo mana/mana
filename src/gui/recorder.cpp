@@ -21,71 +21,73 @@
 
 #include <physfs.h>
 
+#include "button.h"
+#include "chat.h"
 #include "recorder.h"
 
-#include "gui/buttonbox.h"
-#include "gui/chat.h"
+#include "../utils/trim.h"
 
-#include "utils/trim.h"
-
-Recorder::Recorder(ChatWindow *chat) : mChat(chat)
+Recorder::Recorder(ChatWindow *chat, const std::string &title,
+                   const std::string &buttonTxt) :
+    Window(title)
 {
-    mButtonBox = new ButtonBox("Recording...", "Stop recording", this);
-    mButtonBox->setY(20);
+    mChat = chat;
+    Button *button = new Button(buttonTxt, "activate", this);
+    setContentSize(button->getWidth() + 10, button->getHeight() + 10);
+    button->setPosition(5, 5);
+    add(button);
 }
 
 void Recorder::record(const std::string &msg)
 {
     if (mStream.is_open())
     {
-	mStream << msg << std::endl;
+        mStream << msg << std::endl;
     }
 }
 
-void Recorder::respond(const std::string &msg)
+void Recorder::changeStatus(const std::string &msg)
 {
     std::string msgCopy = msg;
     trim(msgCopy);
+
     if (msgCopy == "")
     {
-	if (mStream.is_open())
-	{
-	    mStream.close();
-	    mButtonBox->setVisible(false);
-	    /*
-	     * Message should go after mStream is closed so that it isn't
-	     * recorded.
-	     */
-	    mChat->chatLog("Finishing recording.", BY_SERVER);
-	}
-	else
-	{
-	    mChat->chatLog("Not currently recording.", BY_SERVER);
-	}
-	return;
+        if (mStream.is_open())
+        {
+            mStream.close();
+            setVisible(false);
+
+            /*
+             * Message should go after mStream is closed so that it isn't
+             * recorded.
+             */
+            mChat->chatLog("Finishing recording.", BY_SERVER);
+        }
+        else
+        {
+            mChat->chatLog("Not currently recording.", BY_SERVER);
+        }
     }
-    if (mStream.is_open())
+    else if (mStream.is_open())
     {
-	mChat->chatLog("Already recording.", BY_SERVER);
+        mChat->chatLog("Already recording.", BY_SERVER);
     }
     else
     {
-	/*
-	 * Message should go before mStream is opened so that it isn't
-	 * recorded.
-	 */
-	mChat->chatLog("Starting to record...", BY_SERVER);
+        /*
+         * Message should go before mStream is opened so that it isn't
+         * recorded.
+         */
+        mChat->chatLog("Starting to record...", BY_SERVER);
         std::string file = std::string(PHYSFS_getUserDir()) + "/.aethyra/" + msgCopy;
         
-	mStream.open(file.c_str(), std::ios_base::trunc);
-	if (mStream.is_open())
-	{
-	    mButtonBox->setVisible(true);
-	}
-	else
-	{
-	    mChat->chatLog("Failed to start recording.", BY_SERVER);
-	}
+        mStream.open(file.c_str(), std::ios_base::trunc);
+
+        if (mStream.is_open())
+            setVisible(true);
+        else
+            mChat->chatLog("Failed to start recording.", BY_SERVER);
     }
 }
 
@@ -94,21 +96,21 @@ void Recorder::help() const
     mChat->chatLog("/record <filename>: Start recording the chat.", BY_SERVER);
 }
 
-void Recorder::help(const std::string &args) const
+void Recorder::help2() const
 {
     mChat->chatLog("Command: /record <filename>", BY_SERVER);
     mChat->chatLog("This command starts recording the chat log to the file "
-		  "<filename>.", BY_SERVER);
+                  "<filename>.", BY_SERVER);
     mChat->chatLog("Command: /record", BY_SERVER);
     mChat->chatLog("This command finishes a recording session.", BY_SERVER);
 }
 
-void Recorder::buttonBoxRespond()
+void Recorder::action(const gcn::ActionEvent &event)
 {
-    respond("");
+    if (event.getId() == "activate")
+        changeStatus("");
 }
 
 Recorder::~Recorder()
 {
-    delete mButtonBox;
 }

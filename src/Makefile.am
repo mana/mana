@@ -15,8 +15,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/browserbox.h \
 	      gui/button.cpp \
 	      gui/button.h \
-              gui/buttonbox.cpp \
-              gui/buttonbox.h \
 	      gui/buy.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
@@ -102,6 +100,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/progressbar.h \
 	      gui/radiobutton.cpp \
 	      gui/radiobutton.h \
+              gui/recorder.cpp \
+              gui/recorder.h \
 	      gui/register.cpp \
 	      gui/register.h \
 	      gui/scrollarea.cpp \
@@ -326,8 +326,6 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      position.cpp \
 	      position.h \
 	      properties.h \
-              recorder.cpp \
-              recorder.h \
 	      serverinfo.h \
 	      shopitem.cpp \
 	      shopitem.h \

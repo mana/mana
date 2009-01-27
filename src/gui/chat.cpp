@@ -28,6 +28,7 @@
 #include "chat.h"
 #include "chatinput.h"
 #include "itemlinkhandler.h"
+#include "recorder.h"
 #include "scrollarea.h"
 #include "sdlinput.h"
 #include "windowcontainer.h"
@@ -40,7 +41,6 @@
 #include "../game.h"
 #include "../localplayer.h"
 #include "../party.h"
-#include "../recorder.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
@@ -477,7 +477,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     else if (command == "whisper" || command == "msg" || command == "w")
         whisper(nick, msg);
     else if (command == "record")
-        mRecorder->respond(msg);
+        mRecorder->changeStatus(msg);
     else if (command == "toggle")
     {
         if (msg == "")
@@ -850,7 +850,7 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
     }
     else if (msg1 == "record") 
     {
-        mRecorder->help(msg2);
+        mRecorder->help2();
     }
     else if (msg1 == "toggle") 
     {
