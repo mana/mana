@@ -219,7 +219,7 @@ void init_engine(const Options &options)
             GetLastError() != ERROR_ALREADY_EXISTS)
 #elif defined __APPLE__
     // Use Application Directory instead of .tmw
-    homeDir = std::string(PHYSFS_getUserDir()) + 
+    homeDir = std::string(PHYSFS_getUserDir()) +
         "/Library/Application Support/The Mana World";
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
@@ -672,9 +672,12 @@ int main(int argc, char *argv[])
 #if ENABLE_NLS
 #ifdef WIN32
         putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+        // mingw doesn't like LOCALEDIR to be defined for some reason
+        bindtextdomain("tmw", "translations/");
+#else
+        bindtextdomain("tmw", LOCALEDIR);
 #endif
         setlocale(LC_MESSAGES, "");
-        bindtextdomain("tmw", LOCALEDIR);
         bind_textdomain_codeset("tmw", "UTF-8");
         textdomain("tmw");
 #endif

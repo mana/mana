@@ -156,6 +156,7 @@ Section "Core files (required)" SecCore
   CreateDirectory "$INSTDIR\data\graphics\gui"
   CreateDirectory "$INSTDIR\data\graphics\images"
   CreateDirectory "$INSTDIR\docs"
+  CreateDirectory "$INSTDIR\translations"
 
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
@@ -180,6 +181,8 @@ Section "Core files (required)" SecCore
   File /nonfatal "${SRCDIR}\data\music\*.ogg"
   SetOutPath "$INSTDIR\docs"
   File "${SRCDIR}\docs\FAQ.txt"
+  SetOutPath "$INSTDIR\"
+  File /nonfatal /r "${SRCDIR}\translations"
 SectionEnd
 
 Section -AdditionalIcons
