@@ -40,7 +40,7 @@ NpcTextDialog::NpcTextDialog():
     setMinWidth(200);
     setMinHeight(150);
 
-    setDefaultSize(0, 0, 260, 175);
+    setDefaultSize(0, 0, 260, 200);
 
     mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
     mBrowserBox->setOpaque(false);
