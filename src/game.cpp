@@ -234,12 +234,8 @@ void createGuiWindows(Network *network)
         itemShortcutWindow->getWindowName() + "Visible", true));
     emoteShortcutWindow->setVisible((bool) config.getValue(
         emoteShortcutWindow->getWindowName() + "Visible", true));
-
-    if (!(bool) config.getValue("MinimapVisible", true))
-        minimap->toggle();
-
-    if (config.getValue("logToChat", 0))
-        logger->setChatWindow(chatWindow);
+    minimap->setVisible((bool) config.getValue(
+        minimap->getWindowName() + "Visible", true));
 }
 
 /**

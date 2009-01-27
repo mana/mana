@@ -33,14 +33,16 @@
 
 #include "../utils/gettext.h"
 
-bool Minimap::mShow = config.getValue("MinimapVisible", true);
+bool Minimap::mShow = true;
 
 Minimap::Minimap():
-    Window(_("Map")),
+    Window(_("MiniMap")),
     mMapImage(NULL),
     mProportion(0.5)
 {
     setWindowName(_("MiniMap"));
+    mShow = config.getValue(getWindowName() + "Visible", true);
+    setDefaultSize(5, 25, 100, 100);
     setResizable(true);
 }
 
@@ -59,8 +61,8 @@ void Minimap::setMapImage(Image *img)
 
     if (mMapImage)
     {
-        const int offsetX = getPadding() + 4;
-        const int offsetY = getTitleBarHeight() + 4;
+        const int offsetX = 2 * getPadding();
+        const int offsetY = getTitleBarHeight() + getPadding();
         const int titleWidth = getFont()->getWidth(getCaption()) + 15;
         const int mapWidth = mMapImage->getWidth() < 100 ? 
                              mMapImage->getWidth() + offsetX : 100;
@@ -73,10 +75,18 @@ void Minimap::setMapImage(Image *img)
         setMaxHeight(mMapImage->getHeight() + offsetY);
 
         mMapImage->setAlpha(config.getValue("guialpha", 0.8));
-        setDefaultSize(offsetX, offsetY, getMinWidth() > getWidth() ? 
-                                              getMinWidth() : getWidth(),
-                                         getMaxHeight() < getHeight() ? 
-                                              getMaxHeight() : getHeight());
+
+        // Set content size to be within the minimum and maximum boundaries
+        setWidth(getMinWidth() < getWidth() ? getWidth() : getMinWidth());
+        if (getMaxWidth() > getWidth())
+            setWidth(getMaxWidth());
+        setHeight(getMinHeight() < getHeight() ? getHeight() : getMinHeight());
+        if (getMaxHeight() > getHeight())
+            setHeight(getMaxHeight());
+
+        setDefaultSize(getX(), getY(), getWidth(), getHeight());
+        resetToDefaultSize();
+
         loadWindowState();
         setVisible(mShow);
     }
@@ -89,7 +99,7 @@ void Minimap::setMapImage(Image *img)
 void Minimap::toggle()
 {
     mShow = !mShow;
-    config.setValue("MinimapVisible", mShow);
+    config.setValue(getWindowName() + "Visible", mShow);
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
