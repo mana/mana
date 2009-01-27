@@ -124,7 +124,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         enum {
             BLACK = 0x000000,       /**< Color 0 */
             RED = 0xff0000,         /**< Color 1 */
-            GREEN = 0x1fa052,       /**< Color 2 */
+            GREEN = 0x009000,       /**< Color 2 */
             BLUE = 0x0000ff,        /**< Color 3 */
             ORANGE = 0xe0980e,      /**< Color 4 */
             YELLOW = 0xf1dc27,      /**< Color 5 */
