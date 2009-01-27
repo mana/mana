@@ -116,6 +116,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
             g->drawImage(image, mEquipBox[i].posX, mEquipBox[i].posY);
             if (i == EQUIP_AMMO_SLOT)
             {
+                g->setColor(gcn::Color(0, 0, 0));
                 graphics->drawText(toString(item->getQuantity()),
                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
                                    mEquipBox[i].posY - getFont()->getHeight(),
