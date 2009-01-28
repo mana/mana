@@ -38,6 +38,7 @@ CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
+        SMSG_CONNECTION_PROBLEM,
         0x006b,
         0x006c,
         0x006d,
@@ -45,7 +46,6 @@ CharServerHandler::CharServerHandler():
         0x006f,
         0x0070,
         0x0071,
-        0x0081,
         0
     };
     handledMessages = _messages;
@@ -53,13 +53,40 @@ CharServerHandler::CharServerHandler():
 
 void CharServerHandler::handleMessage(MessageIn *msg)
 {
-    int slot;
+    int slot, code;
     LocalPlayer *tempPlayer;
 
     logger->log("CharServerHandler: Packet ID: %x, Length: %d",
             msg->getId(), msg->getLength());
     switch (msg->getId())
     {
+        case SMSG_CONNECTION_PROBLEM:
+            code = msg->readInt8();
+            logger->log("Connection problem: %i", code);
+
+            switch (code) {
+                case 0:
+                    errorMessage = "Authentication failed";
+                    break;
+                case 1:
+                    errorMessage = "Map server(s) offline";
+                    break;
+                case 2:
+                    errorMessage = "This account is already logged in";
+                    break;
+                case 3:
+                    errorMessage = "Speed hack detected";
+                    break;
+                case 8:
+                    errorMessage = "Duplicated login";
+                    break;
+                default:
+                    errorMessage = "Unknown connection error";
+                    break;
+            }
+            state = ERROR_STATE;
+            break;
+
         case 0x006b:
             // Skip length word and an additional mysterious 20 bytes
             msg->skip(2 + 20);
@@ -153,25 +180,6 @@ void CharServerHandler::handleMessage(MessageIn *msg)
 
             mCharInfo->select(slot);
             state = CONNECTING_STATE;
-            break;
-
-        case 0x0081:
-            switch (msg->readInt8()) {
-                case 1:
-                    errorMessage = "Map server offline";
-                    break;
-                case 3:
-                    errorMessage = "Speed hack detected";
-                    break;
-                case 8:
-                    errorMessage = "Duplicated login";
-                    break;
-                default:
-                    errorMessage = "Unknown error with 0x0081";
-                    break;
-            }
-            mCharInfo->unlock();
-            state = ERROR_STATE;
             break;
     }
 }
