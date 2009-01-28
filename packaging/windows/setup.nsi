@@ -43,6 +43,8 @@ SetCompressor /SOLID lzma
 !insertmacro MUI_PAGE_LICENSE "${SRCDIR}\COPYING"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
+; Components page
+!insertmacro MUI_PAGE_COMPONENTS
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
@@ -152,11 +154,9 @@ Section "Core files (required)" SecCore
   CreateDirectory "$INSTDIR\data\graphics"
   CreateDirectory "$INSTDIR\data\help"
   CreateDirectory "$INSTDIR\data\icons"
-  CreateDirectory "$INSTDIR\data\music"
   CreateDirectory "$INSTDIR\data\graphics\gui"
   CreateDirectory "$INSTDIR\data\graphics\images"
   CreateDirectory "$INSTDIR\docs"
-  CreateDirectory "$INSTDIR\po"
 
   SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
@@ -178,15 +178,30 @@ Section "Core files (required)" SecCore
   File "${SRCDIR}\data\help\*.txt"
   SetOutPath "$INSTDIR\data\icons\"
   File "${SRCDIR}\data\icons\aethyra.ico"
-  SetOutPath "$INSTDIR\data\music"
-  File /nonfatal "${SRCDIR}\data\music\*.ogg"
   SetOutPath "$INSTDIR\docs"
   File "${SRCDIR}\docs\FAQ.txt"
-  SetOutPath "$INSTDIR\po"
-  File "${SRCDIR}\po\aethyra.pot"
-  File "${SRCDIR}\po\LINGUAS"
-  File "${SRCDIR}\po\*.po"
 SectionEnd
+
+Section "Music" SecMusic
+  CreateDirectory "$INSTDIR\data\music"
+  SetOutPath "$INSTDIR\data\music"
+  File /nonfatal "${SRCDIR}\data\music\*.ogg"
+SectionEnd
+
+Section "Translations" SecTrans
+  CreateDirectory "$INSTDIR\translations"
+  SetOutPath "$INSTDIR\translations"
+  File /nonfatal /r "${SRCDIR}\translations"
+SectionEnd
+
+;Package descriptions
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "The core program files."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecMusic} "Background music."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Translations for the user interface into 23 different languages. Uncheck this component to leave it in English."
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+
+
 
 Section -AdditionalIcons
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
