@@ -46,7 +46,8 @@
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"  
-#include "utils/tostring.h"
+#include "utils/tostring.h"  
+#include "utils/trim.h"
 #include "utils/xml.h"
 
 int Being::instances = 0;
@@ -176,14 +177,7 @@ void Being::setSpeech(const std::string &text, Uint32 time)
     mSpeech = text;
 
     // Trim whitespace
-    while (mSpeech[0] == ' ')
-    {
-        mSpeech = mSpeech.substr(1, mSpeech.size());
-    }
-    while (mSpeech[mSpeech.size()] == ' ')
-    {
-        mSpeech = mSpeech.substr(0, mSpeech.size() - 1);
-    }
+    trim(mSpeech);
 
     // check for links
     std::string::size_type start = mSpeech.find('[');

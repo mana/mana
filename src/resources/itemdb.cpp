@@ -31,6 +31,7 @@
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
+#include "../utils/trim.h"
 #include "../utils/xml.h"
 
 namespace
@@ -125,14 +126,7 @@ void ItemDB::load()
                 if (itr == mNamedItemInfos.end())
                 {
                     std::string temp = name;
-                    while (temp[0] == ' ')
-                    {
-                        temp = temp.substr(1, temp.size());
-                    }
-                    while (temp[temp.size()] == ' ')
-                    {
-                        temp = temp.substr(0, temp.size() - 1);
-                    }
+                    trim(temp);
 
                     for (unsigned int i = 0; i < temp.size(); i++)
                     {
