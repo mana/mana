@@ -15,6 +15,7 @@ src/gui/equipmentwindow.cpp
 src/gui/help.cpp
 src/gui/inventorywindow.cpp
 src/gui/item_amount.cpp
+src/gui/itempopup.cpp
 src/gui/login.cpp
 src/gui/menuwindow.cpp
 src/gui/minimap.cpp
