@@ -29,7 +29,7 @@
 #include "scrollarea.h"
 #include "window.h"
 
-class BrowserBox;
+class TextBox;
 
 /**
  * The npc text dialog.
@@ -71,10 +71,19 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          */
         void addText(const std::string &string);
 
+        /**
+         * Called when resizing the window.
+         *
+         * @param event The calling event
+         */
+        void widgetResized(const gcn::Event &event);
+
     private:
         gcn::Button *okButton;
         gcn::ScrollArea *scrollArea;
-        BrowserBox *mBrowserBox;
+        TextBox *mTextBox;
+
+        std::string mText;
 };
 
 #endif // NPC_TEXT_H

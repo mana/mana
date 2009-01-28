@@ -22,9 +22,9 @@
 #include <string>
 
 #include "npc_text.h"
-#include "browserbox.h"
 #include "button.h"
 #include "scrollarea.h"
+#include "textbox.h"
 
 #include "widgets/layout.h"
 
@@ -42,10 +42,11 @@ NpcTextDialog::NpcTextDialog():
 
     setDefaultSize(0, 0, 260, 200);
 
-    mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mBrowserBox->setOpaque(false);
+    mTextBox = new TextBox;
+    mTextBox->setEditable(false);
+    mTextBox->setOpaque(false);
 
-    scrollArea = new ScrollArea(mBrowserBox);
+    scrollArea = new ScrollArea(mTextBox);
     okButton = new Button(_("OK"), "ok", this);
 
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -61,30 +62,43 @@ NpcTextDialog::NpcTextDialog():
     setLocationRelativeTo(getParent());
 }
 
-void NpcTextDialog::clearText()
-{
-    mBrowserBox->clearRows();
-}
-
 void NpcTextDialog::setText(const std::string &text)
 {
-    mBrowserBox->clearRows();
-    mBrowserBox->addRow(text);
+    const gcn::Rectangle &area = getChildrenArea();
+    const int width = area.width;
+
+    mText = text;
+    mTextBox->setMinWidth(width - 30);
+    mTextBox->setTextWrapped(mText);
 }
 
 void NpcTextDialog::addText(const std::string &text)
 {
-    mBrowserBox->addRow(text);
+    setText(mText + text + "\n");
 }
 
 void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        clearText();
+        setText("");
         setVisible(false);
         if (current_npc)
             current_npc->nextDialog();
         current_npc = 0;
     }
 }
+
+void NpcTextDialog::widgetResized(const gcn::Event &event)
+{
+    Window::widgetResized(event);
+
+    const gcn::Rectangle &area = getChildrenArea();
+		
+    mTextBox->setMinWidth(area.width - 30);
+    mTextBox->setTextWrapped(mText);
+
+    // Set the text again so that it gets wrapped according to the new size
+    mTextBox->setTextWrapped(mText);
+}
+
