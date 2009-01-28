@@ -87,6 +87,10 @@ void CommandHandler::handleCommand(const std::string &command)
     {
         handleOp(args);
     }
+    else if (type == "kick")
+    {
+        handleKick(args);
+    }
     else
     {
         chatWindow->chatLog("Unknown command");
@@ -115,6 +119,8 @@ void CommandHandler::handleHelp(const std::string &args)
         chatWindow->chatLog("/quit > Leave a channel");
         chatWindow->chatLog("/clear > Clears this window");
         chatWindow->chatLog("/party > Invite a user to party");
+        chatWindow->chatLog("/op > Make a user a channel operator");
+        chatWindow->chatLog("/kick > Kick a user from the channel");
         chatWindow->chatLog("For more information, type /help <command>");
     }
     else if (args == "announce")

@@ -411,6 +411,7 @@ void ChatWindow::sendToChannel(short channelId,
     {
         std::string channelName = channel->getName();
         chatLog(user + ": " + msg, user == player_node->getName() ? BY_PLAYER : BY_OTHER, channelName);
+        mChatTabs->getTab(channelName)->setHighlighted(true);
     }
 }
 

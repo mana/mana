@@ -412,8 +412,8 @@ class Being : public Sprite
 
     private:
 
-        static const int Being::DEFAULT_WIDTH = 32;
-        static const int Being::DEFAULT_HEIGHT = 32;
+        static const int DEFAULT_WIDTH = 32;
+        static const int DEFAULT_HEIGHT = 32;
 
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;
