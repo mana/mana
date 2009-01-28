@@ -47,6 +47,11 @@ class Tab : public gcn::Tab
          */
         void draw(gcn::Graphics *graphics);
 
+        /**
+         * Set tab highlighted
+         */
+        void setHighlighted(bool high);
+
     private:
         /** Load images if no other instances exist yet */
         void init();
@@ -54,6 +59,8 @@ class Tab : public gcn::Tab
         static ImageRect tabImg[4];    /**< Tab state graphics */
         static int mInstances;         /**< Number of tab instances */
         static float mAlpha;
+
+        bool mHighlighted;
 };
 
 #endif

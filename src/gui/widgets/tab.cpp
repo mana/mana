@@ -21,8 +21,9 @@
 
 #include <algorithm>
 
-#include "tab.h"
+#include <guichan/widgets/label.hpp>
 
+#include "tab.h"
 #include "tabbedarea.h"
 
 #include "../../configuration.h"
@@ -81,6 +82,7 @@ Tab::~Tab()
 void Tab::init()
 {
     setFrameSize(0);
+    mHighlighted = false;
 
     if (mInstances == 0)
     {
@@ -112,16 +114,23 @@ void Tab::init()
 
 void Tab::draw(gcn::Graphics *graphics)
 {
-    int mode;
+    int mode = TAB_STANDARD;
 
     // check which type of tab to draw
-    if (mTabbedArea && mTabbedArea->isTabSelected(this))
+    if (mTabbedArea)
     {
-        mode = TAB_SELECTED;
-    }
-    else
-    {
-        mode = TAB_STANDARD;
+        if(mTabbedArea->isTabSelected(this))
+        {
+            mode = TAB_SELECTED;
+            // if tab is selected, it doesnt need to highlight activity
+            mLabel->setForegroundColor(gcn::Color(0, 0, 0));
+            mHighlighted = false;
+        }
+        else if (mHighlighted)
+        {
+            mode = TAB_HIGHLIGHTED;
+            mLabel->setForegroundColor(gcn::Color(255, 0, 0));
+        }
     }
 
     if (config.getValue("guialpha", 0.8) != mAlpha)
@@ -140,4 +149,9 @@ void Tab::draw(gcn::Graphics *graphics)
 
     // draw label
     drawChildren(graphics);
+}
+
+void Tab::setHighlighted(bool high)
+{
+    mHighlighted = high;
 }
