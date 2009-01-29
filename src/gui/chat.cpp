@@ -341,6 +341,11 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
      * require server handling by proper packet. Probably
      * those if elses should be replaced by protocol calls */
 
+    trim(msg);
+
+    if (msg.compare("") == 0)
+        return;
+
     // Send party message
     if (msg.at(0) == mPartyPrefix) 
     {
