@@ -132,7 +132,7 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
             const std::string word = line.substr(spacePos + 1);
             const int length = getFont()->getWidth(word);
 
-            if ((length > xpos || length > minWidth) && mMinWidth != length)
+            if ((length > xpos || length > minWidth) && length > mMinWidth)
             {
                 mMinWidth = length;
                 wrappedStream.clear();
