@@ -47,10 +47,8 @@ ItemPopup::ItemPopup():
 
     // Item Name
     mItemName = new gcn::Label("Label");
-    mItemName->setFont(gui->getFont());
-    mItemName->setPosition(2, 2);
-    mItemName->setWidth(getWidth() - 4);
     mItemName->setFont(boldFont);
+    mItemName->setPosition(2, 2);
 
     // Item Description
     mItemDesc = new TextBox();
@@ -99,6 +97,7 @@ ItemPopup::ItemPopup():
 void ItemPopup::setItem(const ItemInfo &item)
 {
     mItemName->setCaption(item.getName());
+    mItemName->setWidth(boldFont->getWidth(item.getName()));
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);
     mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) + 
