@@ -65,8 +65,6 @@ SpeechBubble::SpeechBubble():
 
     // LEEOR / TODO: This causes an exception error.
     //moveToBottom(getParent());
-
-    mSpeechBox->setTextWrapped( "" );
 }
 
 void SpeechBubble::setCaption(const std::string &name, const gcn::Color &color)
@@ -78,8 +76,7 @@ void SpeechBubble::setCaption(const std::string &name, const gcn::Color &color)
 
 void SpeechBubble::setText(std::string mText)
 {
-    mSpeechBox->setMinWidth(140);
-    mSpeechBox->setTextWrapped(mText);
+    mSpeechBox->setTextWrapped(mText, 130);
 
     const int fontHeight = getFont()->getHeight();
     const int numRows = mSpeechBox->getNumberOfRows() + 1;

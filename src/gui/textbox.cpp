@@ -31,15 +31,19 @@ TextBox::TextBox():
 {
     setOpaque(false);
     setFrameSize(0);
+    mMinWidth = getWidth();
 }
 
-void TextBox::setTextWrapped(const std::string &text)
+void TextBox::setTextWrapped(const std::string &text, int minDimension)
 {
     // Make sure parent scroll area sets width of this widget
     if (getParent())
     {
         getParent()->logic();
     }
+
+    // Take the supplied minimum dimension as a starting point and try to beat it
+    mMinWidth = minDimension;
 
     std::stringstream wrappedStream;
     std::string::size_type newlinePos, lastNewlinePos = 0;

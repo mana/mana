@@ -64,12 +64,8 @@ NpcTextDialog::NpcTextDialog():
 
 void NpcTextDialog::setText(const std::string &text)
 {
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-
     mText = text;
-    mTextBox->setMinWidth(width - 30);
-    mTextBox->setTextWrapped(mText);
+    mTextBox->setTextWrapped(mText, scrollArea->getWidth() - 15);
 }
 
 void NpcTextDialog::addText(const std::string &text)
@@ -93,12 +89,6 @@ void NpcTextDialog::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
 
-    const gcn::Rectangle &area = getChildrenArea();
-		
-    mTextBox->setMinWidth(area.width - 30);
-    mTextBox->setTextWrapped(mText);
-
-    // Set the text again so that it gets wrapped according to the new size
-    mTextBox->setTextWrapped(mText);
+    setText(mText);
 }
 
