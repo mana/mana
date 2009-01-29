@@ -92,9 +92,8 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
             else
             {
                 if (xpos > minWidth)
-                {
                     minWidth = xpos;
-                }
+
                 // The window wasn't big enough. Resize it and try again.
                 if (minWidth > mMinWidth)
                 {
@@ -120,17 +119,37 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
         while (spacePos != line.size());
 
         if (text.find("\n", lastNewlinePos) != std::string::npos)
-        {
             wrappedStream << "\n";
-        }
+
         lastNewlinePos = newlinePos + 1;
+
+        // Is the last line we're trying to text wrap longer than the minimum
+        // width we're trying to beat in the first place? If so, then rewrap
+        // using that length.
+        if (newlinePos == text.size())
+        {
+            spacePos = text.rfind(" ", text.size());
+            const std::string word = line.substr(spacePos + 1);
+            const int length = getFont()->getWidth(word);
+
+            if ((length > xpos || length > minWidth) && mMinWidth != length)
+            {
+                mMinWidth = length;
+                wrappedStream.clear();
+                wrappedStream.str("");
+                spacePos = 0;
+                lastNewlinePos = 0;
+                newlinePos = text.find("\n", lastNewlinePos);
+                line = text.substr(lastNewlinePos, newlinePos -
+                                   lastNewlinePos);
+            }
+        }
     }
     while (newlinePos != text.size());
 
     if (xpos > minWidth)
-    {
         minWidth = xpos;
-    }
+
     mMinWidth = minWidth;
 
     gcn::TextBox::setText(wrappedStream.str());
