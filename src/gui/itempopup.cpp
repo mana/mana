@@ -97,6 +97,7 @@ ItemPopup::ItemPopup():
 void ItemPopup::setItem(const ItemInfo &item)
 {
     mItemName->setCaption(item.getName());
+    mItemName->setForegroundColor(getColor(item.getType()));
     mItemName->setWidth(boldFont->getWidth(item.getName()));
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);
@@ -152,6 +153,40 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemDescScroll->setPosition(2, 20);
     mItemEffectScroll->setPosition(2, (numRowsDesc * getFont()->getHeight()) +
                       (2 * getFont()->getHeight()));
+}
+
+gcn::Color ItemPopup::getColor(const std::string& type)
+{
+    gcn::Color color;
+
+    if (type.compare("generic") == 0)
+        color = 0x21a5b1;
+    else if (type.compare("equip-head") == 0)
+        color = 0x527fa4;
+    else if (type.compare("usable") == 0)
+        color = 0x268d24;
+    else if (type.compare("equip-torso") == 0)
+        color = 0xd12aa4;
+    else if (type.compare("equip-1hand") == 0)
+        color = 0xf42a2a;
+    else if (type.compare("equip-legs") == 0)
+        color = 0x718218;
+    else if (type.compare("equip-feet") == 0)
+        color = 0xf44ca5;
+    else if (type.compare("equip-2hand") == 0)
+        color = 0xf46d0e;
+    else if (type.compare("equip-shield") == 0)
+        color = 0x9c2424;
+    else if (type.compare("equip-ring") == 0)
+        color = 0xf4ea17;
+    else if (type.compare("equip-arms") == 0)
+        color = 0x9c24e8;
+    else if (type.compare("equip-ammo") == 0)
+        color = 0xbe8717;
+    else
+        color = 0x000000;
+
+    return color;
 }
 
 unsigned int ItemPopup::getNumRows()

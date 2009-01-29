@@ -84,7 +84,7 @@ void ItemDB::load()
             logger->log(_("ItemDB: Redefinition of item ID %d"), id);
         }
 
-        int type = XML::getProperty(node, "type", 0);
+        std::string type = XML::getProperty(node, "type", "other");
         int weight = XML::getProperty(node, "weight", 0);
         int view = XML::getProperty(node, "view", 0);
 
@@ -152,7 +152,7 @@ void ItemDB::load()
         CHECK_PARAM(description, "");
         // CHECK_PARAM(effect, "");
         // CHECK_PARAM(type, 0);
-        CHECK_PARAM(weight, 0);
+        // CHECK_PARAM(weight, 0);
         // CHECK_PARAM(slot, 0);
 
 #undef CHECK_PARAM

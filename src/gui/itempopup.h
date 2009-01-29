@@ -27,6 +27,7 @@
 #include "textbox.h"
 #include "window.h"
 
+#include "../guichanfwd.h"
 #include "../item.h"
 
 class ItemPopup : public Window
@@ -46,6 +47,8 @@ class ItemPopup : public Window
         ScrollArea *mItemDescScroll;
         ScrollArea *mItemEffectScroll;
         ScrollArea *mItemWeightScroll;
+
+        gcn::Color getColor(const std::string& type);
 };
 
 #endif // ITEMPOPUP_H__
