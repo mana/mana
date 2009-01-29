@@ -170,19 +170,19 @@ gcn::Color ItemPopup::getColor(const std::string& type)
     else if (type.compare("equip-1hand") == 0)
         color = 0xf42a2a;
     else if (type.compare("equip-legs") == 0)
-        color = 0x718218;
+        color = 0x699900;
     else if (type.compare("equip-feet") == 0)
-        color = 0xf44ca5;
+        color = 0xaa1d48;
     else if (type.compare("equip-2hand") == 0)
         color = 0xf46d0e;
     else if (type.compare("equip-shield") == 0)
         color = 0x9c2424;
     else if (type.compare("equip-ring") == 0)
-        color = 0xf4ea17;
+        color = 0x0000ff;
     else if (type.compare("equip-arms") == 0)
         color = 0x9c24e8;
     else if (type.compare("equip-ammo") == 0)
-        color = 0xbe8717;
+        color = 0x8b6311;
     else
         color = 0x000000;
 
