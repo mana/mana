@@ -376,14 +376,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
 
             std::string temp = msg.substr(start+1, end - start - 1);
 
-            while (temp[0] == ' ')
-            {
-                temp = temp.substr(1, temp.size());
-            }
-            while (temp[temp.size()] == ' ')
-            {
-                temp = temp.substr(0, temp.size() - 1);
-            }
+            trim(temp);
 
             for (unsigned int i = 0; i < temp.size(); i++)
             {
@@ -391,10 +384,13 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
             }
 
             const ItemInfo itemInfo = ItemDB::get(temp);
-            msg.insert(end, "@@");
-            msg.insert(start+1, "|");
-            msg.insert(start+1, toString(itemInfo.getId()));
-            msg.insert(start+1, "@@");
+            if (itemInfo.getName() != _("Unknown item"))
+            {
+                msg.insert(end, "@@");
+                msg.insert(start+1, "|");
+                msg.insert(start+1, toString(itemInfo.getId()));
+                msg.insert(start+1, "@@");
+            }
         }
         start =  msg.find('[', start + 1);
     }

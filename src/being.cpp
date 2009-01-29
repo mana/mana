@@ -193,7 +193,8 @@ void Being::setSpeech(const std::string &text, Uint32 time)
         }
 
         std::string::size_type position = mSpeech.find('|');
-        mSpeech.erase(end, 1);
+        if (mSpeech[start + 1] == '@' && mSpeech[start + 2] == '@')
+            mSpeech.erase(end, 1);
         mSpeech.erase(start, (position - start) + 1);
         position = mSpeech.find('@');
 
