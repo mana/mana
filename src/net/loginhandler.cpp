@@ -35,6 +35,7 @@ extern SERVER_INFO **server_info;
 LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
+        SMSG_CONNECTION_PROBLEM,
         SMSG_UPDATE_HOST,
         0x0069,
         0x006a,
@@ -45,9 +46,32 @@ LoginHandler::LoginHandler()
 
 void LoginHandler::handleMessage(MessageIn *msg)
 {
+    int code;
+
     switch (msg->getId())
     {
-        case 0x0063:
+        case SMSG_CONNECTION_PROBLEM:
+            code = msg->readInt8();
+            logger->log("Connection problem: %i", code);
+
+            switch (code) {
+                case 0:
+                    errorMessage = "Authentication failed";
+                    break;
+                case 1:
+                    errorMessage = "No servers available";
+                    break;
+                case 2:
+                    errorMessage = "This account is already logged in";
+                    break;
+                default:
+                    errorMessage = "Unknown connection error";
+                    break;
+            }
+            state = ERROR_STATE;
+            break;
+
+        case SMSG_UPDATE_HOST:
              int len;
 
              len = msg->readInt16() - 4;
@@ -91,10 +115,10 @@ void LoginHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x006a:
-            int loginError = msg->readInt8();
-            logger->log("Login::error code: %i", loginError);
+            code = msg->readInt8();
+            logger->log("Login::error code: %i", code);
 
-            switch (loginError) {
+            switch (code) {
                 case 0:
                     errorMessage = "Unregistered ID";
                     break;
