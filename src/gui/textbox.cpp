@@ -66,11 +66,8 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
         xpos = 0;
 
         spacePos = text.rfind(" ", text.size());
-        if (spacePos == std::string::npos)
-        {
-            spacePos = 0;
-        }
-        else
+
+        if (spacePos != std::string::npos)
         {
             const std::string word = text.substr(spacePos + 1);
             const int length = getFont()->getWidth(word);
@@ -78,6 +75,7 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
             if (length > mMinWidth)
                 mMinWidth = length;
         }
+
         do
         {
             spacePos = line.find(" ", lastSpacePos);
