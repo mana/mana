@@ -71,19 +71,25 @@ void Minimap::setMapImage(Image *img)
 
         setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);
         setMinHeight(mapHeight);
-        setMaxWidth(mMapImage->getWidth() + offsetX);
+        setMaxWidth(mMapImage->getWidth() > titleWidth ? 
+                    mMapImage->getWidth() + offsetX : titleWidth);
         setMaxHeight(mMapImage->getHeight() + offsetY);
 
         mMapImage->setAlpha(config.getValue("guialpha", 0.8));
 
-        // Set content size to be within the minimum and maximum boundaries
-        setWidth(getMinWidth() < getWidth() ? getWidth() : getMinWidth());
-        if (getMaxWidth() > getWidth())
+        // Make sure the window is within the minimum and maximum boundaries
+        // TODO: Shouldn't this be happening automatically within the Window
+        // class?
+        if (getMinWidth() > getWidth())
+            setWidth(getMinWidth());
+        else if (getMaxWidth() < getWidth())
             setWidth(getMaxWidth());
-        setHeight(getMinHeight() < getHeight() ? getHeight() : getMinHeight());
-        if (getMaxHeight() > getHeight())
+        if (getMinHeight() > getHeight())
+            setHeight(getMinHeight());
+        else if (getMaxHeight() < getHeight())
             setHeight(getMaxHeight());
 
+        setContentSize(getWidth() - offsetX, getHeight() - offsetY);
         setDefaultSize(getX(), getY(), getWidth(), getHeight());
         resetToDefaultSize();
 
