@@ -65,6 +65,19 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
         std::string::size_type spacePos, lastSpacePos = 0;
         xpos = 0;
 
+        spacePos = text.rfind(" ", text.size());
+        if (spacePos == std::string::npos)
+        {
+            spacePos = 0;
+        }
+        else
+        {
+            const std::string word = text.substr(spacePos + 1);
+            const int length = getFont()->getWidth(word);
+
+            if (length > mMinWidth)
+                mMinWidth = length;
+        }
         do
         {
             spacePos = line.find(" ", lastSpacePos);
@@ -103,6 +116,8 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
                     spacePos = 0;
                     lastNewlinePos = 0;
                     newlinePos = text.find("\n", lastNewlinePos);
+                    if (newlinePos == std::string::npos)
+                        newlinePos = text.size();
                     line = text.substr(lastNewlinePos, newlinePos -
                                        lastNewlinePos);
                     width = 0;
@@ -122,28 +137,6 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
             wrappedStream << "\n";
 
         lastNewlinePos = newlinePos + 1;
-
-        // Is the last line we're trying to text wrap longer than the minimum
-        // width we're trying to beat in the first place? If so, then rewrap
-        // using that length.
-        if (newlinePos == text.size())
-        {
-            spacePos = text.rfind(" ", text.size());
-            const std::string word = line.substr(spacePos + 1);
-            const int length = getFont()->getWidth(word);
-
-            if ((length > xpos || length > minWidth) && length > mMinWidth)
-            {
-                mMinWidth = length;
-                wrappedStream.clear();
-                wrappedStream.str("");
-                spacePos = 0;
-                lastNewlinePos = 0;
-                newlinePos = text.find("\n", lastNewlinePos);
-                line = text.substr(lastNewlinePos, newlinePos -
-                                   lastNewlinePos);
-            }
-        }
     }
     while (newlinePos != text.size());
 
