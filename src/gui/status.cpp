@@ -26,6 +26,8 @@
 #include "status.h"
 #include "windowcontainer.h"
 
+#include "widgets/layout.h"
+
 #include "../localplayer.h"
 
 #include "../utils/gettext.h"
@@ -39,8 +41,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     setWindowName(_("Status"));
     setCloseButton(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 400, 275);
-    loadWindowState();
+                   (windowContainer->getHeight() - 255) / 2, 400, 335);
 
     // ----------------------
     // Status Part
@@ -52,70 +53,15 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
     mHpLabel = new gcn::Label(_("HP:"));
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
-    mHpValueLabel = new gcn::Label;
 
     mXpLabel = new gcn::Label(_("Exp:"));
     mXpBar = new ProgressBar(1.0f, 80, 15, 143, 192, 211);
-    mXpValueLabel = new gcn::Label;
 
     mMpLabel = new gcn::Label(_("MP:"));
     mMpBar = new ProgressBar(1.0f, 80, 15, 26, 102, 230);
-    mMpValueLabel = new gcn::Label;
 
-    mJobXpLabel = new gcn::Label(_("Job:"));
-    mJobXpBar = new ProgressBar(1.0f, 80, 15, 220, 135, 203);
-    mJobValueLabel = new gcn::Label;
-
-    int y = 3;
-    int x = 5;
-
-    mLvlLabel->setPosition(x, y);
-    x += mLvlLabel->getWidth() + 40;
-    mJobLvlLabel->setPosition(x, y);
-    x += mJobLvlLabel->getWidth() + 40;
-    mGpLabel->setPosition(x, y);
-
-    y += mLvlLabel->getHeight() + 5; // Next Row
-    x = 5;
-
-    mHpLabel->setPosition(x, y);
-    x += mHpLabel->getWidth() + 5;
-    mHpBar->setPosition(x, y);
-    x += mHpBar->getWidth() + 5;
-    mHpValueLabel->setPosition(x, y);
-
-    mXpLabel->setPosition(175, y);
-    mXpBar->setPosition(205, y);
-    mXpValueLabel->setPosition(290, y);
-
-    y += mHpLabel->getHeight() + 5; // Next Row
-    x = 5;
-
-    mMpLabel->setPosition(x, y);
-    x += mMpLabel->getWidth() + 5;
-    mMpBar->setPosition(x, y);
-    x += mMpBar->getWidth() + 5;
-    mMpValueLabel->setPosition(x, y);
-
-    mJobXpLabel->setPosition(175, y);
-    mJobXpBar->setPosition(205, y);
-    mJobValueLabel->setPosition(290, y);
-
-    add(mLvlLabel);
-    add(mJobLvlLabel);
-    add(mGpLabel);
-    add(mHpLabel);
-    add(mHpValueLabel);
-    add(mMpLabel);
-    add(mMpValueLabel);
-    add(mXpLabel);
-    add(mXpValueLabel);
-    add(mJobXpLabel);
-    add(mJobValueLabel);
-    add(mHpBar);
-    add(mMpBar);
-    add(mXpBar);
-    add(mJobXpBar);
+    mJobLabel = new gcn::Label(_("Job:"));
+    mJobBar = new ProgressBar(1.0f, 80, 15, 220, 135, 203);
 
     // ----------------------
     // Stats Part
@@ -144,7 +90,8 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsReflexPoints = new gcn::Label;
 
     // New labels
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++)
+    {
         mStatsLabel[i] = new gcn::Label;
         mStatsDisplayLabel[i] = new gcn::Label;
         mPointsLabel[i] = new gcn::Label("0");
@@ -159,68 +106,53 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsButton[4] = new Button("+", "DEX", this);
     mStatsButton[5] = new Button("+", "LUK", this);
 
-
-    // Set position
-    mStatsTitleLabel->setPosition(mMpLabel->getX(), mMpLabel->getY() + 23 );
-    mStatsTotalLabel->setPosition(110, mStatsTitleLabel->getY() + 15);
-    int totalLabelY = mStatsTotalLabel->getY();
-    mStatsCostLabel->setPosition(170, totalLabelY);
-
-    for (int i = 0; i < 6; i++)
-    {
-        mStatsLabel[i]->setPosition(5, mStatsTotalLabel->getY() + (i * 23) + 15);
-        mStatsDisplayLabel[i]->setPosition(115,
-                                          totalLabelY + (i * 23) + 15);
-        mStatsButton[i]->setPosition(145, totalLabelY + (i * 23) + 10);
-        mPointsLabel[i]->setPosition(175, totalLabelY + (i * 23) + 15);
-    }
-
-    mRemainingStatsPointsLabel->setPosition(5, mPointsLabel[5]->getY() + 25);
-
-    mStatsAttackLabel->setPosition(220, mStatsLabel[0]->getY());
-    mStatsDefenseLabel->setPosition(220, mStatsLabel[1]->getY());
-    mStatsMagicAttackLabel->setPosition(220, mStatsLabel[2]->getY());
-    mStatsMagicDefenseLabel->setPosition(220, mStatsLabel[3]->getY());
-    mStatsAccuracyLabel->setPosition(220, mStatsLabel[4]->getY());
-    mStatsEvadeLabel->setPosition(220, mStatsLabel[5]->getY());
-    mStatsReflexLabel->setPosition(220, mRemainingStatsPointsLabel->getY());
-
-    mStatsAttackPoints->setPosition(310, mStatsLabel[0]->getY());
-    mStatsDefensePoints->setPosition(310, mStatsLabel[1]->getY());
-    mStatsMagicAttackPoints->setPosition(310, mStatsLabel[2]->getY());
-    mStatsMagicDefensePoints->setPosition(310, mStatsLabel[3]->getY());
-    mStatsAccuracyPoints->setPosition(310, mStatsLabel[4]->getY());
-    mStatsEvadePoints->setPosition(310, mStatsLabel[5]->getY());
-    mStatsReflexPoints->setPosition(310, mRemainingStatsPointsLabel->getY());
-
     // Assemble
-    add(mStatsTitleLabel);
-    add(mStatsTotalLabel);
-    add(mStatsCostLabel);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+
+    place(0, 0, mLvlLabel, 3);
+    place(5, 0, mJobLvlLabel, 3);
+    place(8, 0, mGpLabel, 3);
+    place(1, 1, mHpLabel);
+    place(2, 1, mHpBar, 3);
+    place(6, 1, mXpLabel);
+    place(7, 1, mXpBar, 3);
+    place(1, 2, mMpLabel);
+    place(2, 2, mMpBar, 3);
+    place(6, 2, mJobLabel);
+    place(7, 2, mJobBar, 3);
+    place.getCell().matchColWidth(0, 1);
+    place = getPlacer(0, 3);
+    place(0, 0, mStatsTitleLabel, 3);
+    place(4, 1, mStatsTotalLabel, 2);
+    place(7, 1, mStatsCostLabel, 2);
     for(int i = 0; i < 6; i++)
     {
-        add(mStatsLabel[i]);
-        add(mStatsDisplayLabel[i]);
-        add(mStatsButton[i]);
-        add(mPointsLabel[i]);
+        place(0, 2 + i, mStatsLabel[i], 3).setPadding(5);
+        place(4, 2 + i, mStatsDisplayLabel[i]).setPadding(5);
+        place(6, 2 + i, mStatsButton[i]);
+        place(7, 2 + i, mPointsLabel[i]).setPadding(5);
     }
-    add(mStatsAttackLabel);
-    add(mStatsDefenseLabel);
-    add(mStatsMagicAttackLabel);
-    add(mStatsMagicDefenseLabel);
-    add(mStatsAccuracyLabel);
-    add(mStatsEvadeLabel);
-    add(mStatsReflexLabel);
+    place(10, 2, mStatsAttackLabel, 3).setPadding(5);
+    place(10, 3, mStatsDefenseLabel, 3).setPadding(5);
+    place(10, 4, mStatsMagicAttackLabel, 3).setPadding(5);
+    place(10, 5, mStatsMagicDefenseLabel, 3).setPadding(5);
+    place(10, 6, mStatsAccuracyLabel, 3).setPadding(5);
+    place(10, 7, mStatsEvadeLabel, 3).setPadding(5);
+    place(10, 8, mStatsReflexLabel, 3).setPadding(5);
+    place(13, 2, mStatsAttackPoints, 3).setPadding(5);
+    place(13, 3, mStatsDefensePoints, 3).setPadding(5);
+    place(13, 4, mStatsMagicAttackPoints, 3).setPadding(5);
+    place(13, 5, mStatsMagicDefensePoints, 3).setPadding(5);
+    place(13, 6, mStatsAccuracyPoints, 3).setPadding(5);
+    place(13, 7, mStatsEvadePoints, 3).setPadding(5);
+    place(13, 8, mStatsReflexPoints, 3).setPadding(5);
+    place(0, 8, mRemainingStatsPointsLabel, 3).setPadding(5);
 
-    add(mStatsAttackPoints);
-    add(mStatsDefensePoints);
-    add(mStatsMagicAttackPoints);
-    add(mStatsMagicDefensePoints);
-    add(mStatsAccuracyPoints);
-    add(mStatsEvadePoints);
-    add(mStatsReflexPoints);
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
-    add(mRemainingStatsPointsLabel);
+    loadWindowState();
 }
 
 void StatusWindow::update()
@@ -236,21 +168,17 @@ void StatusWindow::update()
     mGpLabel->setCaption(strprintf(_("Money: %d GP"), mPlayer->mGp));
     mGpLabel->adjustSize();
 
-    mHpValueLabel->setCaption(toString(mPlayer->mHp) +
-            "/" + toString(mPlayer->mMaxHp));
-    mHpValueLabel->adjustSize();
+    mHpBar->setText(toString(mPlayer->mHp) +
+                    "/" + toString(mPlayer->mMaxHp));
 
-    mMpValueLabel->setCaption(toString(mPlayer->mMp) +
-            "/" + toString(mPlayer->mMaxMp));
-    mMpValueLabel->adjustSize();
+    mMpBar->setText(toString(mPlayer->mMp) +
+                    "/" + toString(mPlayer->mMaxMp));
 
-    mXpValueLabel->setCaption(toString(mPlayer->getXp()) +
-            "/" + toString(mPlayer->mXpForNextLevel));
-    mXpValueLabel->adjustSize();
+    mXpBar->setText(toString(mPlayer->getXp()) +
+                    "/" + toString(mPlayer->mXpForNextLevel));
 
-    mJobValueLabel->setCaption(toString(mPlayer->mJobXp) +
-            "/" + toString(mPlayer->mJobXpForNextLevel));
-    mJobValueLabel->adjustSize();
+    mJobBar->setText(toString(mPlayer->mJobXp) +
+                     "/" + toString(mPlayer->mJobXpForNextLevel));
 
     // HP Bar coloration
     if (mPlayer->mHp < int(mPlayer->mMaxHp / 3))
@@ -271,7 +199,7 @@ void StatusWindow::update()
 
     mXpBar->setProgress(
             (float) mPlayer->getXp() / (float) mPlayer->mXpForNextLevel);
-    mJobXpBar->setProgress(
+    mJobBar->setProgress(
             (float) mPlayer->mJobXp / (float) mPlayer->mJobXpForNextLevel);
 
     // Stats Part
@@ -336,30 +264,6 @@ void StatusWindow::update()
     // Reflex %
     mStatsReflexPoints->setCaption(toString(mPlayer->DEX / 4)); // + counter
     mStatsReflexPoints->adjustSize();
-
-    // Update Second column widgets position
-    mJobLvlLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
-                              mLvlLabel->getY());
-    mGpLabel->setPosition(mJobLvlLabel->getX() + mJobLvlLabel->getWidth() + 20,
-                          mJobLvlLabel->getY());
-
-    mXpLabel->setPosition(
-            mHpValueLabel->getX() + mHpValueLabel->getWidth() + 10,
-            mHpLabel->getY());
-    mXpBar->setPosition(
-            mXpLabel->getX() + mXpLabel->getWidth() + 5,
-            mXpLabel->getY());
-    mXpValueLabel->setPosition(
-            mXpBar->getX() + mXpBar->getWidth() + 5,
-            mXpLabel->getY());
-
-    mJobXpLabel->setPosition(mXpBar->getX() - mJobXpLabel->getWidth() - 5,
-                             mMpLabel->getY());
-    mJobXpBar->setPosition(
-            mJobXpLabel->getX() + mJobXpLabel->getWidth() + 5,
-            mJobXpLabel->getY());
-    mJobValueLabel->setPosition(mJobXpBar->getX() + mJobXpBar->getWidth() + 5,
-                                mJobXpLabel->getY());
 }
 
 void StatusWindow::draw(gcn::Graphics *g)

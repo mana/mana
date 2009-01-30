@@ -69,11 +69,9 @@ class StatusWindow : public Window, public gcn::ActionListener
          */
         gcn::Label *mLvlLabel, *mJobLvlLabel;
         gcn::Label *mGpLabel;
-        gcn::Label *mHpLabel, *mHpValueLabel;
-        gcn::Label *mMpLabel, *mMpValueLabel;
-        gcn::Label *mXpLabel, *mXpValueLabel, *mJobXpLabel, *mJobValueLabel;
+        gcn::Label *mHpLabel, *mMpLabel, *mXpLabel, *mJobLabel;
         ProgressBar *mHpBar, *mMpBar;
-        ProgressBar *mXpBar, *mJobXpBar;
+        ProgressBar *mXpBar, *mJobBar;
 
         /**
          * Derived Statistics captions
