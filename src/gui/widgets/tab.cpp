@@ -25,6 +25,7 @@
 
 #include "tabbedarea.h"
 
+#include "../../configuration.h"
 #include "../../graphics.h"
 
 #include "../../resources/image.h"
@@ -33,6 +34,7 @@
 #include "../../utils/dtor.h"
 
 int Tab::mInstances = 0;
+float Tab::mAlpha = config.getValue("guialpha", 0.8);
 
 enum{
     TAB_STANDARD,    // 0
@@ -98,6 +100,7 @@ void Tab::init()
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,
                             data[y + 1].gridY - data[y].gridY + 1);
+                    tabImg[mode].grid[a]->setAlpha(mAlpha);
                     a++;
                 }
             }
@@ -119,6 +122,16 @@ void Tab::draw(gcn::Graphics *graphics)
     else
     {
         mode = TAB_STANDARD;
+    }
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        for (int a = 0; a < 9; a++)
+        {
+            tabImg[TAB_SELECTED].grid[a]->setAlpha(mAlpha);
+            tabImg[TAB_STANDARD].grid[a]->setAlpha(mAlpha);
+        }
     }
 
     // draw tab

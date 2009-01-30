@@ -68,6 +68,7 @@ class PlayerBox : public gcn::ScrollArea
     private:
         const Player *mPlayer;       /**< The character used for display */
 
+        static float mAlpha;
         static int instances;
         static ImageRect background;
 };

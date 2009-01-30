@@ -34,6 +34,7 @@
 #include "../utils/dtor.h"
 
 int PlayerBox::instances = 0;
+float PlayerBox::mAlpha = config.getValue("guialpha", 0.8);
 ImageRect PlayerBox::background;
 
 PlayerBox::PlayerBox(const Player *player):
@@ -92,6 +93,14 @@ void PlayerBox::draw(gcn::Graphics *graphics)
             {
                 mPlayer->getSprite(i)->draw(static_cast<Graphics*>(graphics), x, y);
             }
+        }
+    }
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        for (int a = 0; a < 9; a++)
+        {
+            background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
         }
     }
 }

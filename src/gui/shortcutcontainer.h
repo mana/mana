@@ -97,6 +97,8 @@ class ShortcutContainer : public gcn::Widget,
 
         Image *mBackgroundImg;
 
+        static float mAlpha;
+
         int mMaxItems;
         int mBoxWidth;
         int mBoxHeight;

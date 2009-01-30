@@ -21,12 +21,14 @@
 
 #include "checkbox.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 int CheckBox::instances = 0;
+float CheckBox::mAlpha = config.getValue("guialpha", 0.8);
 Image *CheckBox::checkBoxNormal;
 Image *CheckBox::checkBoxChecked;
 Image *CheckBox::checkBoxDisabled;
@@ -43,6 +45,10 @@ CheckBox::CheckBox(const std::string& caption, bool selected):
         checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
         checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);
         checkBoxDisabledChecked = checkBox->getSubImage(27, 0, 9, 10);
+        checkBoxNormal->setAlpha(mAlpha);
+        checkBoxChecked->setAlpha(mAlpha);
+        checkBoxDisabled->setAlpha(mAlpha);
+        checkBoxDisabledChecked->setAlpha(mAlpha);
         checkBox->decRef();
     }
 
@@ -66,16 +72,25 @@ void CheckBox::drawBox(gcn::Graphics* graphics)
 {
     Image *box;
 
-    if (isSelected()) {
-        if (isEnabled()) {
+    if (isSelected())
+    {
+        if (isEnabled())
             box = checkBoxChecked;
-        } else {
+        else
             box = checkBoxDisabledChecked;
-        }
-    } else if (isEnabled()) {
+    }
+    else if (isEnabled())
         box = checkBoxNormal;
-    } else {
+    else
         box = checkBoxDisabled;
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        checkBoxNormal->setAlpha(mAlpha);
+        checkBoxChecked->setAlpha(mAlpha);
+        checkBoxDisabled->setAlpha(mAlpha);
+        checkBoxDisabledChecked->setAlpha(mAlpha);
     }
 
     static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);

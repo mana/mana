@@ -99,6 +99,7 @@ class TextField : public gcn::TextField {
 
     private:
         static int instances;
+        static float mAlpha;
         static ImageRect skin;
         bool mNumeric;
         int mMinimum;

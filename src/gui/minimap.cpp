@@ -79,8 +79,6 @@ void Minimap::setMapImage(Image *img)
                     mMapImage->getWidth() + offsetX : titleWidth);
         setMaxHeight(mMapImage->getHeight() + offsetY);
 
-        mMapImage->setAlpha(config.getValue("guialpha", 0.8));
-
         // Make sure the window is within the minimum and maximum boundaries
         // TODO: Shouldn't this be happening automatically within the Window
         // class?

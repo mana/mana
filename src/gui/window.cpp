@@ -199,6 +199,7 @@ void Window::draw(gcn::Graphics *graphics)
         for_each(border.grid, border.grid + 9,
                  std::bind2nd(std::mem_fun(&Image::setAlpha),
                  config.getValue("guialpha", 0.8)));
+        closeImage->setAlpha(config.getValue("guialpha", 0.8));
     }
     drawChildren(graphics);
 }

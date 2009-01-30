@@ -39,11 +39,10 @@
 #include "../utils/tostring.h"
 
 ItemShortcutContainer::ItemShortcutContainer():
+    ShortcutContainer(),
     mItemClicked(false),
     mItemMoved(NULL)
 {
-    mGridWidth=1;
-    mGridHeight=1;
     addMouseListener(this);
     addWidgetListener(this);
 
@@ -135,6 +134,11 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
                     tPosY + mBoxHeight - 14,
                     gcn::Graphics::CENTER);
         }
+    }
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
     }
 }
 

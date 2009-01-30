@@ -102,6 +102,7 @@ class ScrollArea : public gcn::ScrollArea
         void drawHMarker(gcn::Graphics *graphics);
 
         static int instances;
+        static float mAlpha;
         static ImageRect background;
         static ImageRect vMarker;
         static Image *buttons[4][2];

@@ -21,6 +21,7 @@
 
 #include "shortcutcontainer.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 #include "../inventory.h"
 #include "../item.h"
@@ -33,12 +34,13 @@
 
 #include "../utils/tostring.h"
 
+float ShortcutContainer::mAlpha = config.getValue("guialpha", 0.8);
+
 ShortcutContainer::ShortcutContainer():
     mGridWidth(1),
     mGridHeight(1)
 {
 }
-
 
 void ShortcutContainer::widgetResized(const gcn::Event &event)
 {

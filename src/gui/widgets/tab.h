@@ -53,6 +53,7 @@ class Tab : public gcn::Tab
 
         static ImageRect tabImg[4];    /**< Tab state graphics */
         static int mInstances;         /**< Number of tab instances */
+        static float mAlpha;
 };
 
 #endif

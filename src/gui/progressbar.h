@@ -111,6 +111,7 @@ class ProgressBar : public gcn::Widget
 
         static ImageRect mBorder;
         static int mInstances;
+        static float mAlpha;
 };
 
 #endif

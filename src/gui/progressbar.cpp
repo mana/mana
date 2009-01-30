@@ -22,6 +22,7 @@
 #include "gui.h"
 #include "progressbar.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -31,6 +32,7 @@
 
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;
+float ProgressBar::mAlpha = config.getValue("guialpha", 0.8);
 
 ProgressBar::ProgressBar(float progress,
                          unsigned int width, unsigned int height,
@@ -56,6 +58,12 @@ ProgressBar::ProgressBar(float progress,
         mBorder.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
         mBorder.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
         mBorder.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
+
+        for (int i = 0; i < 9; i++)
+        {
+            mBorder.grid[i]->setAlpha(mAlpha);
+        }
+
         dBorders->decRef();
     }
 
@@ -93,6 +101,15 @@ void ProgressBar::logic()
 
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        for (int i = 0; i < 9; i++)
+        {
+            mBorder.grid[i]->setAlpha(mAlpha);
+        }
+    }
+
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
 

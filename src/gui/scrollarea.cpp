@@ -32,6 +32,7 @@
 #include "../utils/dtor.h"
 
 int ScrollArea::instances = 0;
+float ScrollArea::mAlpha = config.getValue("guialpha", 0.8);
 ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
 Image *ScrollArea::buttons[4][2];
@@ -191,6 +192,16 @@ void ScrollArea::draw(gcn::Graphics *graphics)
                     getHeight() - mScrollbarWidth,
                     mScrollbarWidth,
                     mScrollbarWidth));
+    }
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        for (int a = 0; a < 9; a++)
+        {
+            background.grid[a]->setAlpha(mAlpha);
+            vMarker.grid[a]->setAlpha(mAlpha);
+        }
     }
 
     drawChildren(graphics);
