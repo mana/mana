@@ -123,6 +123,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
         }
 
         // Draw item caption
+        graphics->setFont(getFont());
         graphics->setColor(0x000000);
         graphics->drawText(
                 (item->isEquipped() ? "Eq." : toString(item->getQuantity())),
