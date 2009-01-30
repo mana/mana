@@ -113,9 +113,12 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
 
+    const int alpha = mAlpha * 255;
+
     // The bar
     if (mProgress > 0) {
-        graphics->setColor(gcn::Color(mRed, mGreen, mBlue, 200));
+
+        graphics->setColor(gcn::Color(mRed, mGreen, mBlue, alpha));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
                     (int) (mProgress * (getWidth() - 8)),
                     getHeight() - 8));
@@ -129,14 +132,16 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 
         graphics->setFont(f);
 
-        graphics->setColor(gcn::Color(0, 0, 0));
+        graphics->setColor(gcn::Color(0, 0, 0, alpha));
         graphics->drawText(mText, textX + 1, textY, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX, textY - 1, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX, textY + 1, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX - 1, textY, gcn::Graphics::CENTER);
 
-        graphics->setColor(gcn::Color(255, 255, 255));
+        graphics->setColor(gcn::Color(255, 255, 255, alpha));
         graphics->drawText(mText, textX, textY, gcn::Graphics::CENTER);
+
+        graphics->setColor(gcn::Color(0, 0, 0));
     }
 }
 
