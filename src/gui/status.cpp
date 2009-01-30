@@ -48,8 +48,8 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // ----------------------
 
     mLvlLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
-    mGpLabel = new gcn::Label(strprintf(_("Job: %d"), 0));
-    mJobLvlLabel = new gcn::Label(strprintf(_("Money: %d GP"), 0));
+    mJobLvlLabel = new gcn::Label(strprintf(_("Job: %d"), 0));
+    mGpLabel = new gcn::Label(strprintf(_("Money: %d GP"), 0));
 
     mHpLabel = new gcn::Label(_("HP:"));
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
