@@ -26,6 +26,7 @@
 #include "../configuration.h"
 
 #include "../utils/gettext.h"
+#include "../utils/tostring.h"
 
 Colour::Colour()
 {
@@ -48,9 +49,7 @@ Colour::~Colour()
          col != colEnd;
          ++col)
     {
-        char buffer[20];
-        std::sprintf(buffer, "0x%06x", col->rgb);
-        config.setValue("Colour" + col->text, buffer);
+        config.setValue("Colour" + col->text, toString(col->rgb));
     }
 }
 
