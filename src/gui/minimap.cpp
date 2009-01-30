@@ -44,6 +44,8 @@ Minimap::Minimap():
     mShow = config.getValue(getWindowName() + "Visible", true);
     setDefaultSize(5, 25, 100, 100);
     setResizable(true);
+
+    loadWindowState();
 }
 
 Minimap::~Minimap()
@@ -93,7 +95,6 @@ void Minimap::setMapImage(Image *img)
         setDefaultSize(getX(), getY(), getWidth(), getHeight());
         resetToDefaultSize();
 
-        loadWindowState();
         setVisible(mShow);
     }
     else
