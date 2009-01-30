@@ -41,7 +41,7 @@ Minimap::Minimap():
     mProportion(0.5)
 {
     setWindowName(_("MiniMap"));
-    mShow = config.getValue(getWindowName() + "Visible", true);
+    mShow = config.getValue(getWindowName() + "Show", true);
     setDefaultSize(5, 25, 100, 100);
     setResizable(true);
 
@@ -52,6 +52,8 @@ Minimap::~Minimap()
 {
     if (mMapImage)
         mMapImage->decRef();
+
+    config.setValue(getWindowName() + "Show", mShow);
 }
 
 void Minimap::setMapImage(Image *img)
@@ -106,7 +108,6 @@ void Minimap::setMapImage(Image *img)
 void Minimap::toggle()
 {
     mShow = !mShow;
-    config.setValue(getWindowName() + "Visible", mShow);
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
