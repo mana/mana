@@ -102,7 +102,7 @@ class Particle : public Sprite
          * particleEffectFile.
          */
         Particle *addEffect(const std::string &particleEffectFile,
-                            int pixelX, int pixelY);
+                            int pixelX, int pixelY, int rotation = 0);
 
         /**
          * Creates a standalone text particle.

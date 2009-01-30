@@ -30,8 +30,8 @@
 #include "winver.h"
 #endif
 
-#ifndef TMW_DATADIR
-#define TMW_DATADIR ""
+#ifndef AETHYRA_DATADIR
+#define AETHYRA_DATADIR ""
 #endif
 
 /*

@@ -22,14 +22,14 @@
 #ifndef GUI_SETUP_KEYBOARD_H
 #define GUI_SETUP_KEYBOARD_H
 
-#include "setuptab.h"
-#include "button.h"
-#include "../guichanfwd.h"
+#include <string>
 
 #include <guichan/actionlistener.hpp>
 
+#include "button.h"
+#include "setuptab.h"
 
-#include <string>
+#include "../guichanfwd.h"
 
 class Setup_Keyboard : public SetupTab, public gcn::ActionListener
 {

@@ -19,14 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "monster.h"
-
 #include "animatedsprite.h"
 #include "game.h"
-#include "sound.h"
-#include "particle.h"
-#include "text.h"
 #include "localplayer.h"
+#include "monster.h"
+#include "particle.h"
+#include "sound.h"
+#include "text.h"
 
 #include "resources/monsterdb.h"
 
@@ -44,6 +43,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     // Setup Monster sprites
     int c = BASE_SPRITE;
     const std::list<std::string> &sprites = info.getSprites();
+
     for (std::list<std::string>::const_iterator i = sprites.begin();
          i != sprites.end();
          i++)
@@ -61,21 +61,26 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
         mSprites[c] = AnimatedSprite::load("graphics/sprites/error.xml");
     }
 
-    const std::list<std::string> &particleEffects = info.getParticleEffects();
-    for (   std::list<std::string>::const_iterator i = particleEffects.begin();
-            i != particleEffects.end();
-            i++
-        )
+    if (mParticleEffects)
     {
-        controlParticle(particleEngine->addEffect((*i), 0, 0));
+        const std::list<std::string> &particleEffects = info.getParticleEffects();
+        for (   std::list<std::string>::const_iterator i = particleEffects.begin();
+                i != particleEffects.end(); i++
+            )
+        {
+            controlParticle(particleEngine->addEffect((*i), 0, 0));
+        }
     }
+
+    mNameColor = 0xff2020;
 }
 
-Monster::~Monster()
+Monster::~Monster() 
 {
     if (mText)
     {
-        player_node->setTarget(0);
+        delete mText;
+        player_node->setTarget(NULL);
     }
 }
 
@@ -99,9 +104,11 @@ Being::Type Monster::getType() const
     return MONSTER;
 }
 
-void Monster::setAction(Uint8 action)
+void Monster::setAction(Action action)
 {
     SpriteAction currentAction = ACTION_INVALID;
+    int rotation = 0;
+    std::string particleEffect;
 
     switch (action)
     {
@@ -115,13 +122,34 @@ void Monster::setAction(Uint8 action)
         case ATTACK:
             currentAction = ACTION_ATTACK;
             mSprites[BASE_SPRITE]->reset();
+
+            //attack particle effect
+            particleEffect = getInfo().getAttackParticleEffect();
+            if (particleEffect != "" && mParticleEffects)
+            {
+                switch (mDirection)
+                {
+                    case DOWN: rotation = 0; break;
+                    case LEFT: rotation = 90; break;
+                    case UP: rotation = 180; break;
+                    case RIGHT: rotation = 270; break;
+                    default: break;
+                }
+                Particle *p;
+                p = particleEngine->addEffect(
+                                    particleEffect, 0, 0, rotation);
+                controlParticle(p);
+            }
             break;
         case STAND:
-            currentAction = ACTION_STAND;
-            break;
+           currentAction = ACTION_STAND;
+           break;
         case HURT:
-            // Not implemented yet
-            break;
+           // Not implemented yet
+           break;
+        case SIT:
+           // Also not implemented yet
+           break;
     }
 
     if (currentAction != ACTION_INVALID)
@@ -164,13 +192,15 @@ const MonsterInfo &Monster::getInfo() const
 
 void Monster::showName(bool show)
 {
-    delete mText;
+    if (mText)
+    {
+        delete mText;
+    }
     if (show)
     {
         mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,
                          mPy + NAME_Y_OFFSET - getHeight(),
-                         gcn::Graphics::CENTER,
-                         gcn::Color(255, 64, 64));
+                         gcn::Graphics::CENTER, gcn::Color(255, 64, 64));
     }
     else
     {

@@ -22,9 +22,10 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <SDL.h>
+
 #include "../main.h"
 
-#include <SDL.h>
 #ifdef USE_OPENGL
 
 /* The definition of OpenGL extensions by SDL is giving problems with recent
@@ -96,7 +97,6 @@ class Image : public Resource
         virtual int getWidth() const
         { return mBounds.w; }
 
-
         /**
          * Returns the height of the image.
          */
@@ -128,7 +128,6 @@ class Image : public Resource
          */
         static void setLoadAsOpenGL(bool useOpenGL);
 #endif
-
 
     protected:
         /**

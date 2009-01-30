@@ -22,15 +22,14 @@
 #ifndef GUI_SETUP_PLAYERS_H
 #define GUI_SETUP_PLAYERS_H
 
-#include "setuptab.h"
-
-#include "scrollarea.h"
-#include "button.h"
-#include "table.h"
 #include <guichan/actionlistener.hpp>
 
-#include "../guichanfwd.h"
+#include "button.h"
+#include "scrollarea.h"
+#include "setuptab.h"
+#include "table.h"
 
+#include "../guichanfwd.h"
 #include "../player_relations.h"
 
 class PlayerTableModel;

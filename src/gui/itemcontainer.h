@@ -22,15 +22,18 @@
 #ifndef ITEMCONTAINER_H
 #define ITEMCONTAINER_H
 
+#include <list>
+
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
-#include <list>
+#include "../guichanfwd.h"
 
 class Image;
 class Inventory;
 class Item;
+class ItemPopup;
 
 namespace gcn {
     class SelectionListener;
@@ -41,14 +44,15 @@ namespace gcn {
  *
  * \ingroup GUI
  */
-class ItemContainer : public gcn::Widget, public gcn::MouseListener,
-    public gcn::WidgetListener
+class ItemContainer : public gcn::Widget, 
+                      public gcn::MouseListener,
+                      public gcn::WidgetListener
 {
     public:
         /**
          * Constructor. Initializes the graphic.
          */
-        ItemContainer(Inventory *inventory);
+        ItemContainer(Inventory *inventory, int offset);
 
         /**
          * Destructor.
@@ -104,7 +108,11 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
         }
 
     private:
+        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
+
         /**
+
          * Sets the currently selected item.  Invalid (e.g., negative) indices set `no item'.
          */
         void setSelectedItemIndex(int index);
@@ -124,12 +132,24 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener,
          */
         void distributeValueChangedEvent();
 
+        /**
+         * Gets the slot index based on the cursor position.
+         *
+         * @param posX The X Coordinate position.
+         * @param posY The Y Coordinate position.
+         * @return The slot index on success, -1 on failure.
+         */
+        int getSlotIndex(const int posX, const int posY) const;
+
         Inventory *mInventory;
         Image *mSelImg;
-        int mSelectedItemIndex;
-        int mLastSelectedItemId;  // last selected item ID.  If we lose the item, find again by ID.
 
+        int mSelectedItemIndex;
+        int mLastSelectedItemId;  // last selected item ID. If we lose the item, find again by ID.
         int mMaxItems;
+        int mOffset;
+
+        ItemPopup *mItemPopup;
 
         std::list<gcn::SelectionListener*> mListeners;
 

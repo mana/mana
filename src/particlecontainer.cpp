@@ -44,7 +44,6 @@ void ParticleContainer::clear()
         mNext->clear();
 }
 
-
 void ParticleContainer::moveTo(float x, float y)
 {
     if (mNext)

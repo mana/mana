@@ -24,7 +24,16 @@
 
 #include <guichan/widgets/textfield.hpp>
 
+#include "../guichanfwd.h"
+
 class ImageRect;
+class TextField;
+
+class TextFieldListener
+{
+    public:
+        virtual void listen(const TextField *value) = 0;
+};
 
 /**
  * A text field.
@@ -54,13 +63,47 @@ class TextField : public gcn::TextField {
         void drawFrame(gcn::Graphics *graphics);
 
         /**
+         * Determine whether the field should be numeric or not
+         */
+        void setNumeric(bool numeric);
+
+        /**
+         * Set the range on the field if it is numeric
+         */
+        void setRange(int min, int max) {mMinimum = min; mMaximum = max; }
+
+        /**
          * Processes one keypress.
          */
         void keyPressed(gcn::KeyEvent &keyEvent);
 
+        /**
+         * Set the minimum value for a range
+         */
+        void setMinimum(int min) {mMinimum = min; }
+
+        /**
+         * Set the maximum value for a range
+         */
+        void setMaximum(int max) {mMaximum = max; }
+
+        /**
+         * Return the value for a numeric field
+         */
+        int getValue() const;
+
+        /**
+         * Add a listener
+         */
+        void addListener(TextFieldListener *listener) {mListener = listener; }
+
     private:
         static int instances;
         static ImageRect skin;
+        bool mNumeric;
+        int mMinimum;
+        int mMaximum;
+        TextFieldListener *mListener;
 };
 
 #endif

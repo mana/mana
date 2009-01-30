@@ -23,8 +23,10 @@
 #define NPC_TEXT_H
 
 #include <iosfwd>
+
 #include <guichan/actionlistener.hpp>
 
+#include "scrollarea.h"
 #include "window.h"
 
 class BrowserBox;
@@ -43,13 +45,6 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          * @see Window::Window
          */
         NpcTextDialog();
-
-        /**
-         * Called when resizing the window.
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
 
         /**
          * Called when receiving actions from the widgets.

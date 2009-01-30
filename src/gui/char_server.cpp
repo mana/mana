@@ -19,9 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "char_server.h"
-
 #include "button.h"
+#include "char_server.h"
 #include "listbox.h"
 #include "scrollarea.h"
 
@@ -99,8 +98,7 @@ ServerSelectDialog::~ServerSelectDialog()
     delete mServerListModel;
 }
 
-void
-ServerSelectDialog::action(const gcn::ActionEvent &event)
+void ServerSelectDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok") {
         mOkButton->setEnabled(false);
@@ -108,7 +106,6 @@ ServerSelectDialog::action(const gcn::ActionEvent &event)
         mLoginData->hostname = iptostring(si->address);
         mLoginData->port = si->port;
         mLoginData->updateHost = si->updateHost;
-
         state = mNextState;
     }
     else if (event.getId() == "cancel") {
@@ -116,14 +113,12 @@ ServerSelectDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-int
-ServerListModel::getNumberOfElements()
+int ServerListModel::getNumberOfElements()
 {
     return n_server;
 }
 
-std::string
-ServerListModel::getElementAt(int i)
+std::string ServerListModel::getElementAt(int i)
 {
     const SERVER_INFO *si = server_info[i];
     return si->name + " (" + toString(si->online_users) + ")";

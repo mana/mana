@@ -20,11 +20,9 @@
  */
 
 #include "action.h"
-
 #include "animation.h"
 
 #include "../utils/dtor.h"
-
 
 Action::Action()
 {

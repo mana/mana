@@ -45,3 +45,4 @@ std::string strprintf(char const *format, ...)
     delete [] buf2;
     return res;
 }
+

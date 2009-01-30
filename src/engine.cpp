@@ -19,13 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "engine.h"
-
 #include <list>
 
 #include "being.h"
 #include "beingmanager.h"
 #include "configuration.h"
+#include "engine.h"
 #include "flooritemmanager.h"
 #include "game.h"
 #include "graphics.h"
@@ -82,28 +81,40 @@ void Engine::changeMap(const std::string &mapPath)
     map_path = "maps/" + mapPath.substr(0, mapPath.rfind(".")) + ".tmx";
     ResourceManager *resman = ResourceManager::getInstance();
     if (!resman->exists(map_path))
-    {
         map_path += ".gz";
-    }
 
     // Attempt to load the new map
     Map *newMap = MapReader::readMap(map_path);
 
-    if (!newMap) {
+    if (!newMap)
         logger->error("Could not find map file");
-    }
 
     // Notify the minimap and beingManager about the map change
     Image *mapImage = NULL;
     if (newMap->hasProperty("minimap"))
     {
         mapImage = resman->getImage(newMap->getProperty("minimap"));
-    }
-    if (newMap->hasProperty("name"))
-    {
-        minimap->setCaption(newMap->getProperty("name"));
-    } else {
-        minimap->setCaption("Map");
+
+        // Set the title for the Minimap
+        if (newMap->hasProperty("mapname"))
+             minimap->setCaption(newMap->getProperty("mapname"));
+        else if (newMap->hasProperty("name"))
+            minimap->setCaption(newMap->getProperty("name"));
+        else
+        {
+             minimap->setCaption("Unknown");
+             logger->log("WARNING: Map file '%s' defines a minimap image but "
+                         "does not define a 'mapname' property",
+                         map_path.c_str());
+        }
+
+        // How many pixels equal one tile. .5 (which is the TMW default) is 
+        // 2 tiles to a pixel, while 1 is 1 tile to 1 pixel
+        if (newMap->hasProperty("minimapproportion"))
+             minimap->setProportion(atof(
+                      newMap->getProperty("minimapproportion").c_str()));
+        else
+             minimap->setProportion(0.5);
     }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
@@ -116,16 +127,16 @@ void Engine::changeMap(const std::string &mapPath)
     // Start playing new music file when necessary
     std::string oldMusic = "";
 
-    if (mCurrentMap) {
+    if (mCurrentMap)
+    {
         oldMusic = mCurrentMap->getProperty("music");
         delete mCurrentMap;
     }
 
     std::string newMusic = newMap->getProperty("music");
 
-    if (newMusic != oldMusic) {
+    if (newMusic != oldMusic)
         sound.playMusic(newMusic, -1);
-    }
 
     mCurrentMap = newMap;
     mMapName = mapPath;

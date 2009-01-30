@@ -1,5 +1,6 @@
 /*
  *  The Mana World
+ *  Copyright (C) 2008  Douglas Boffey <DougABoffey@netscape.net>
  *  Copyright (C) 2008  The Mana World Development Team
  *
  *  This file is part of The Mana World.
@@ -68,8 +69,8 @@ Text::Text(const std::string &text, int x, int y,
         sbImage->decRef();
     }
     ++mInstances;
-    mHeight = gui->getFont()->getHeight();
-    mWidth = gui->getFont()->getWidth(text);
+    mHeight = boldFont->getHeight();
+    mWidth = boldFont->getWidth(text);
 
     switch (alignment)
     {
@@ -115,7 +116,7 @@ void Text::adviseXY(int x, int y)
 
 void Text::draw(Graphics *graphics, int xOff, int yOff)
 {
-    graphics->setFont(gui->getFont());
+    graphics->setFont(boldFont);
 
     if (mIsSpeech) {
         static_cast<Graphics*>(graphics)->drawImageRect(

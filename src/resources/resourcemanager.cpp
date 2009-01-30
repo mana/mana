@@ -20,23 +20,21 @@
  */
 
 #include <cassert>
-#include <sstream>
-#include <sys/time.h>
-
 #include <physfs.h>
 #include <SDL_image.h>
+#include <sstream>
 
-#include "resourcemanager.h"
+#include <sys/time.h>
 
 #include "dye.h"
 #include "image.h"
-#include "music.h"
-#include "soundeffect.h"
 #include "imageset.h"
+#include "music.h"
+#include "resourcemanager.h"
+#include "soundeffect.h"
 #include "spritedef.h"
 
 #include "../log.h"
-
 
 ResourceManager *ResourceManager::instance = NULL;
 
@@ -155,8 +153,8 @@ bool ResourceManager::addToSearchPath(const std::string &path, bool append)
 }
 
 void ResourceManager::searchAndAddArchives(const std::string &path,
-                                      const std::string &ext,
-                                      bool append)
+                                           const std::string &ext,
+                                           bool append)
 {
     const char *dirSep = PHYSFS_getDirSeparator();
     char **list = PHYSFS_enumerateFiles(path.c_str());
@@ -420,8 +418,7 @@ void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
     return buffer;
 }
 
-std::vector<std::string>
-ResourceManager::loadTextFile(const std::string &fileName)
+std::vector<std::string> ResourceManager::loadTextFile(const std::string &fileName)
 {
     int contentsLength;
     char *fileContents = (char*)loadFile(fileName, contentsLength);

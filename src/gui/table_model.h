@@ -22,12 +22,13 @@
 #ifndef TABLE_MODEL_H
 #define TABLE_MODEL_H
 
-#include "../guichanfwd.h"
-
-#include <guichan/gui.hpp>
-
 #include <set>
 #include <vector>
+
+#include <guichan/color.hpp>
+#include <guichan/gui.hpp>
+
+#include "../guichanfwd.h"
 
 class TableModelListener
 {
@@ -100,7 +101,8 @@ private:
 class StaticTableModel : public TableModel
 {
 public:
-    StaticTableModel(int width, int height);
+    StaticTableModel(int width, int height, gcn::Color background = 0xffffff,
+                     bool opacity = true);
     virtual ~StaticTableModel();
 
     /**
@@ -130,17 +132,49 @@ public:
      */
     virtual void resize();
 
+    /**
+     * Sets the table to be opaque, that is sets the table
+     * to display its background.
+     *
+     * @param opaque True if the table should be opaque, false otherwise.
+     */
+    virtual void setOpaque(bool opaque);
+
+    /**
+     * Checks if the scroll area is opaque, that is if the scroll area
+     * displays its background.
+     *
+     * @return True if the scroll area is opaque, false otherwise.
+     */
+    virtual bool isOpaque() const;
+
     virtual int getRows();
     virtual int getColumns();
     virtual int getRowHeight();
+    virtual int getWidth();
+    virtual int getHeight();
     virtual int getColumnWidth(int index);
     virtual gcn::Widget *getElementAt(int row, int column);
 
 protected:
     int mRows, mColumns;
     int mHeight;
+    bool mOpaque;
     std::vector<gcn::Widget *> mTableModel;
     std::vector<int> mWidths;
+
+    /**
+     * Holds the background color of the table.
+     */
+    gcn::Color mBackgroundColor;
+
+    /**
+     * Draws the background of the table, that is
+     * the area behind the content.
+     *
+     * @param graphics a Graphics object to draw with.
+     */
+    virtual void drawBackground(gcn::Graphics *graphics);
 };
 
 #endif /* !defined(TABLE_MODEL_H) */

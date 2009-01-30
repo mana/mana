@@ -23,7 +23,6 @@
 #define SOUND_H
 
 #include <SDL_mixer.h>
-
 #include <string>
 
 /** Sound engine

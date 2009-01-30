@@ -19,13 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npclistdialog.h"
-
 #include <sstream>
 
-#include "button.h"
-#include "scrollarea.h"
 #include "listbox.h"
+#include "npclistdialog.h"
+
+#include "widgets/layout.h"
 
 #include "../npc.h"
 
@@ -39,6 +38,8 @@ NpcListDialog::NpcListDialog():
     setMinWidth(200);
     setMinHeight(150);
 
+    setDefaultSize(0, 0, 260, 200);
+
     mItemList = new ListBox(this);
     scrollArea = new ScrollArea(mItemList);
     okButton = new Button(_("OK"), "ok", this);
@@ -46,23 +47,15 @@ NpcListDialog::NpcListDialog():
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    scrollArea->setDimension(gcn::Rectangle(
-                5, 5, 250, 160 - okButton->getHeight()));
-    cancelButton->setPosition(
-            260 - 5 - cancelButton->getWidth(),
-            175 - 5 - cancelButton->getHeight());
-    okButton->setPosition(
-            cancelButton->getX() - 5 - okButton->getWidth(),
-            cancelButton->getY());
 
-    mItemList->setActionEventId("item");
+    place(0, 0, scrollArea, 5).setPadding(3);
+    place(3, 1, okButton);
+    place(4, 1, cancelButton);
 
-    mItemList->addActionListener(this);
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
-    add(scrollArea);
-    add(okButton);
-    add(cancelButton);
-
+    loadWindowState();
     setLocationRelativeTo(getParent());
 }
 
@@ -88,24 +81,6 @@ void NpcListDialog::parseItems(const std::string &itemString)
 void NpcListDialog::reset()
 {
     mItems.clear();
-}
-
-void NpcListDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    scrollArea->setDimension(gcn::Rectangle(
-                5, 5, width - 10, height - 15 - okButton->getHeight()));
-    cancelButton->setPosition(
-            width - 5 - cancelButton->getWidth(),
-            height - 5 - cancelButton->getHeight());
-    okButton->setPosition(
-            cancelButton->getX() - 5 - okButton->getWidth(),
-            cancelButton->getY());
 }
 
 void NpcListDialog::action(const gcn::ActionEvent &event)

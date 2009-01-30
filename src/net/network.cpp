@@ -19,14 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "network.h"
+#include <sstream>
 
 #include "messagehandler.h"
 #include "messagein.h"
+#include "network.h"
 
 #include "../log.h"
-
-#include <sstream>
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
@@ -432,8 +431,7 @@ char *iptostring(int address)
     return asciiIP;
 }
 
-void
-Network::setError(const std::string& error)
+void Network::setError(const std::string& error)
 {
     logger->log("Network error: %s", error.c_str());
     mError = error;

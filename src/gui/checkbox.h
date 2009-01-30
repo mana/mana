@@ -26,6 +26,8 @@
 
 #include <guichan/widgets/checkbox.hpp>
 
+#include "../guichanfwd.h"
+
 class Image;
 
 /**

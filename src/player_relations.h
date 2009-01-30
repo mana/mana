@@ -22,13 +22,14 @@
 #ifndef PLAYER_RELATIONS_H
 #define PLAYER_RELATIONS_H
 
-#include "being.h"
-#include "player.h"
-#include "configuration.h"
-#include <string>
-#include <map>
-#include <vector>
 #include <list>
+#include <map>
+#include <string>
+#include <vector>
+
+#include "being.h"
+#include "configuration.h"
+#include "player.h"
 
 struct PlayerRelation
 {

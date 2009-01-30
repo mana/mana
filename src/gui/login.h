@@ -23,10 +23,17 @@
 #define LOGIN_H
 
 #include <iosfwd>
+#include <string>
+#include <vector>
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
+#include "scrollarea.h"
 #include "window.h"
+
+#include "widgets/dropdown.h"
+
 #include "../guichanfwd.h"
 
 class LoginData;
@@ -67,18 +74,66 @@ class LoginDialog : public Window, public gcn::ActionListener,
          * Returns whether submit can be enabled. This is true in the login
          * state, when all necessary fields have some text.
          */
-        bool
-        canSubmit();
+        bool canSubmit();
 
+	/**
+	 * Function to decide whether string is an unsigned short or not
+	 *
+	 * @param str the string to parse
+	 *
+	 * @return true is str is an unsigned short, false otherwise
+	 */
+	static bool isUShort(const std::string &str);
+
+	/**
+	 * Converts string to an unsigned short (undefined if invalid)
+	 *
+	 * @param str the string to parse
+	 *
+	 * @return the value str represents
+	 */
+	static unsigned short getUShort(const std::string &str);
+
+        DropDown *mServerDropDown;
         gcn::TextField *mUserField;
         gcn::TextField *mPassField;
         gcn::TextField *mServerField;
+	gcn::TextField *mPortField;
         gcn::CheckBox *mKeepCheck;
         gcn::Button *mOkButton;
         gcn::Button *mCancelButton;
         gcn::Button *mRegisterButton;
 
         LoginData *mLoginData;
+
+        /**
+         * Helper class to keep a list of all the recent entries for the
+         * dropdown
+         */
+        class DropDownList : public gcn::ListModel
+        {
+            private:
+                std::vector<std::string> mServers;
+		std::vector<std::string> mPorts;
+                std::string mConfigPrefix;
+                int mMaxEntries;
+                void saveEntry(const std::string &server,
+			       const std::string &port, int &saved);
+            public:
+                DropDownList(std::string prefix,
+                             std::vector<std::string> dfltServer,
+			     std::vector<std::string> dfltPort,
+                             int maxEntries);
+                void save(const std::string &server, const std::string &port);
+                int getNumberOfElements();
+                std::string getElementAt(int i);
+		std::string getServerAt(int i);
+		std::string getPortAt(int i);
+        };
+        DropDownList *mServerList;
+        gcn::ListBox *mServerListBox;
+        ScrollArea *mServerScrollArea;
+
 };
 
 #endif

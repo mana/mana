@@ -22,9 +22,9 @@
 #ifndef GUI_SETUP_AUDIO_H
 #define GUI_SETUP_AUDIO_H
 
-#include "setuptab.h"
-
 #include <guichan/actionlistener.hpp>
+
+#include "setuptab.h"
 
 #include "../guichanfwd.h"
 

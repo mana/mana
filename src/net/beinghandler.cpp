@@ -19,24 +19,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "beinghandler.h"
-
+#include <iostream>
 #include <SDL_types.h>
 
+#include "beinghandler.h"
 #include "messagein.h"
 #include "protocol.h"
 
 #include "../being.h"
 #include "../beingmanager.h"
+#include "../effectmanager.h"
 #include "../game.h"
 #include "../localplayer.h"
 #include "../log.h"
 #include "../main.h"
-#include "../particle.h"
-#include "../sound.h"
-#include <iostream>
-#include "../player_relations.h"
 #include "../npc.h"
+#include "../particle.h"
+#include "../player_relations.h"
+#include "../sound.h"
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
@@ -73,6 +73,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves;
     Uint16 weapon, shield;
+    Uint16 gmstatus;
     Sint16 param1;
     int stunMode;
     Uint32 statusEffects;
@@ -211,22 +212,17 @@ void BeingHandler::handleMessage(MessageIn *msg)
             if (!dstBeing)
                 break;
 
+            // If this is player's current target, clear it.
             if (dstBeing == player_node->getTarget())
-            {
                 player_node->stopAttack();
-            }
 
             if (dstBeing == current_npc)
                 current_npc = NULL;
 
             if (msg->readInt8() == 1)
-            {
                 dstBeing->setAction(Being::DEAD);
-            }
             else
-            {
                 beingManager->destroyBeing(dstBeing);
-            }
 
             break;
 
@@ -244,28 +240,26 @@ void BeingHandler::handleMessage(MessageIn *msg)
             switch (type)
             {
                 case 0x0a: // Critical Damage
-                    if (dstBeing) {
-                        dstBeing->controlParticle(particleEngine->addEffect(
-                        "graphics/particles/crit.particle.xml", 0, 0));
-                    }
+                    if (dstBeing) 
+                         dstBeing->showCrit();
                 case 0x00: // Damage
-                    if (dstBeing) {
+                    if (dstBeing)
                         dstBeing->takeDamage(param1);
-                    }
-                    if (srcBeing) {
+                    if (srcBeing)
                         srcBeing->handleAttack(dstBeing, param1);
-                    }
                     break;
 
                 case 0x02: // Sit
-                    if (srcBeing) {
+                    if (srcBeing) 
+                    {
                         srcBeing->mFrame = 0;
                         srcBeing->setAction(Being::SIT);
                     }
                     break;
 
                 case 0x03: // Stand up
-                    if (srcBeing) {
+                    if (srcBeing) 
+                    {
                         srcBeing->mFrame = 0;
                         srcBeing->setAction(Being::STAND);
                     }
@@ -279,8 +273,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 break;
 
             int effectType = msg->readInt32();
+            Being* being = beingManager->findBeing(id);
 
-            beingManager->findBeing(id)->triggerEffect(effectType);
+            effectManager->trigger(effectType, being);
 
             break;
         }
@@ -450,18 +445,22 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 dstBeing->setDirection(dir);
             }
 
-            msg->readInt16();   // GM status
+            gmstatus = msg->readInt16();
+            if (gmstatus & 0x80)
+                dstBeing->setGM();
 
             if (msg->getId() == SMSG_PLAYER_UPDATE_1)
             {
-                switch (msg->readInt8()) {
+                switch (msg->readInt8())
+                {
+                    case 1:
+			if (dstBeing->getType() != Being::NPC)
+                            dstBeing->setAction(Being::DEAD);
+                        break;
 
-                case 1: dstBeing->setAction(Being::DEAD);
-                    break;
-
-                case 2: dstBeing->setAction(Being::SIT);
-                    break;
-
+                    case 2:
+                        dstBeing->setAction(Being::SIT);
+                        break;
                 }
             }
             else if (msg->getId() == SMSG_PLAYER_MOVE)
@@ -482,16 +481,16 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_STOP:
             /*
-            *  Instruction from server to stop walking at x, y.
-            *
-            *  Some people like having this enabled.  Others absolutely
-            *  despise it.  So I'm setting to so that it only affects the
-            *  local player if the person has set a key "EnableSync" to "1"
-            *  in their config.xml file.
-            *
-            *  This packet will be honored for all other beings, regardless
-            *  of the config setting.
-            */
+             *  Instruction from server to stop walking at x, y.
+             *
+             *  Some people like having this enabled.  Others absolutely
+             *  despise it.  So I'm setting to so that it only affects the
+             *  local player if the person has set a key "EnableSync" to "1"
+             *  in their config.xml file.
+             *
+             *  This packet will be honored for all other beings, regardless
+             *  of the config setting.
+             */
 
             id = msg->readInt32();
             if (mSync || id != player_node->getId()) {
@@ -509,11 +508,11 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_MOVE_TO_ATTACK:
             /*
-            * This is an *advisory* message, telling the client that
-            * it needs to move the character before attacking
-            * a target (out of range, obstruction in line of fire).
-            * We can safely ignore this...
-            */
+             * This is an *advisory* message, telling the client that
+             * it needs to move the character before attacking
+             * a target (out of range, obstruction in line of fire).
+             * We can safely ignore this...
+             */
             break;
 
         case 0x0119:

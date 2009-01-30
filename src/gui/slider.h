@@ -24,8 +24,9 @@
 
 #include <guichan/widgets/slider.hpp>
 
-class Image;
+#include "../guichanfwd.h"
 
+class Image;
 
 /**
  * Slider widget. Same as the Guichan slider but with custom look.

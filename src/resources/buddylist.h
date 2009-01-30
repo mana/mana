@@ -52,7 +52,7 @@ class BuddyList : public gcn::ListModel {
         /**
          * Returns the number of buddy on the list
          */
-        int  getNumberOfElements();
+        int getNumberOfElements();
 
         /**
          * Returns the buddy of the number or null

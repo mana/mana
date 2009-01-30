@@ -1,5 +1,6 @@
 /*
  *  The Mana World
+ *  Copyright (C) 2008  Douglas Boffey <DougABoffey@netscape.net>
  *  Copyright (C) 2008  The Mana World Development Team
  *
  *  This file is part of The Mana World.
@@ -23,6 +24,7 @@
 #define TEXT_H
 
 #include "graphics.h"
+#include "guichanfwd.h"
 
 #include <list>
 
@@ -79,6 +81,11 @@ class FlashText : public Text
                   gcn::Color colour);
 
         /**
+         * Remove the text from the screen
+         */
+        virtual ~FlashText() {}
+
+        /**
          * Flash the text for so many refreshes.
          */
         void flash(int time) {mTime = time; }
@@ -89,7 +96,7 @@ class FlashText : public Text
         virtual void draw(Graphics *graphics, int xOff, int yOff);
 
     private:
-        int mTime;             /**< Time left for flashing. */
+        int mTime;             /**< Time left for flashing */
 };
 
 #endif // TEXT_H

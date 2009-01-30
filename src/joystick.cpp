@@ -19,9 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "joystick.h"
+#include <cassert>
 
 #include "configuration.h"
+#include "joystick.h"
 #include "log.h"
 
 #include <cassert>

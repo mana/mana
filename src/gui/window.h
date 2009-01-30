@@ -22,9 +22,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <guichan/widgets/window.hpp>
 #include <guichan/widgetlistener.hpp>
 
+#include <guichan/widgets/window.hpp>
+
+#include "../graphics.h"
 #include "../guichanfwd.h"
 
 class ConfigListener;
@@ -56,9 +58,10 @@ class Window : public gcn::Window, gcn::WidgetListener
          * @param parent  The parent window. This is the window standing above
          *                this one in the window hiearchy. When reordering,
          *                a window will never go below its parent window.
+         * @param skin    The location where the window's skin XML can be found.
          */
         Window(const std::string &caption = "Window", bool modal = false,
-                Window *parent = NULL);
+                Window *parent = NULL, const std::string &skin = "graphics/gui/gui.xml");
 
         /**
          * Destructor. Deletes all the added widgets.
@@ -124,6 +127,26 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Sets the minimum height of the window.
          */
         void setMaxHeight(unsigned int height);
+
+        /**
+         * Gets the minimum width of the window.
+         */
+        int getMinWidth() { return mMinWinWidth; }
+
+        /**
+         * Gets the minimum height of the window.
+         */
+        int getMinHeight() { return mMinWinHeight; }
+
+        /**
+         * Gets the maximum width of the window.
+         */
+        int getMaxWidth() { return mMaxWinWidth; }
+
+        /**
+         * Gets the minimum height of the window.
+         */
+        int getMaxHeight() { return mMaxWinHeight; }
 
         /**
          * Sets flag to show a title or not.
@@ -238,6 +261,11 @@ class Window : public gcn::Window, gcn::WidgetListener
         void reflowLayout(int w = 0, int h = 0);
 
         /**
+         * Loads a window skin
+         */
+        void loadSkin(const std::string filename);
+
+        /**
          * Adds a widget to the window and sets it at given cell.
          */
         LayoutCell &place(int x, int y, gcn::Widget *, int w = 1, int h = 1);
@@ -269,6 +297,8 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
+        void setGuiAlpha();
+
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
         Layout *mLayout;           /**< Layout handler */
@@ -277,6 +307,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         bool mModal;               /**< Window is modal */
         bool mCloseButton;         /**< Window has a close button */
         bool mSticky;              /**< Window resists minimization */
+        static bool mAlphaChanged; /**< Whether the alpha percent was changed */
         int mMinWinWidth;          /**< Minimum window width */
         int mMinWinHeight;         /**< Minimum window height */
         int mMaxWinWidth;          /**< Maximum window width */
@@ -285,6 +316,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */
         int mDefaultHeight;        /**< Default window height */
+        std::string mSkin;         /**< Name of the skin to use */
 
         /**
          * The config listener that listens to changes relevant to all windows.
@@ -293,7 +325,7 @@ class Window : public gcn::Window, gcn::WidgetListener
 
         static int mouseResize;    /**< Active resize handles */
         static int instances;      /**< Number of Window instances */
-        static ImageRect border;   /**< The window border and background */
+        ImageRect border;   /**< The window border and background */
         static Image *closeImage;  /**< Close Button Image */
 
         /**

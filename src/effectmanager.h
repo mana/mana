@@ -1,8 +1,8 @@
 /*
  *  The Mana World
- *  Copyright (C) 2007  The Mana World Development Team
+ *  Copyright 2008 The Mana World Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,43 +19,48 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef ITEMSHORTCUTWINDOW_H
-#define ITEMSHORTCUTWINDOW_H
+#ifndef _EFFECT_MANAGER_H
+#define _EFFECT_MANAGER_H
 
-#include "window.h"
+#include <list>
+#include <string>
 
-class ItemShortcutContainer;
-class ScrollArea;
+#include "being.h"
 
-/**
- * A window around the ItemShortcutContainer.
- *
- * \ingroup Interface
- */
-class ItemShortcutWindow : public Window
+class Being;
+
+class EffectManager
 {
-    public:
-        /**
-         * Constructor.
-         */
-        ItemShortcutWindow();
+
+    public: 
+        struct EffectDescription {
+             int id;
+             std::string GFX;
+             std::string SFX;
+        };
+
+        
+        EffectManager();
+        
+        ~EffectManager();
 
         /**
-         * Destructor.
+         * Triggers a effect with the id, at
+         * the specified being.
          */
-        ~ItemShortcutWindow();
+	bool trigger(int id, Being* being);
 
         /**
-         * Called whenever the widget changes size.
+         * Triggers a effect with the id, at
+         * the specified x and y coordinate.
          */
-        void widgetResized(const gcn::Event &event);
+	bool trigger(int id, int x, int y);
 
-    private:
-        ItemShortcutContainer *mItems;
+   private:
+        std::list<EffectDescription> mEffects;
 
-        ScrollArea *mScrollArea;
 };
 
-extern ItemShortcutWindow *itemShortcutWindow;
+extern EffectManager *effectManager;
 
-#endif
+#endif // _EFFECT_MANAGER_H

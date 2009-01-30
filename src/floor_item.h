@@ -51,42 +51,36 @@ class FloorItem : public Sprite
         /**
          * Returns instance id of this item.
          */
-        unsigned int
-        getId() const { return mId; }
+        unsigned int getId() const { return mId; }
 
         /**
          * Returns the item id.
          */
-        unsigned int
-        getItemId() const { return mItem->getId(); }
+        unsigned int getItemId() const { return mItem->getId(); }
 
         /**
          * Returns the x coordinate.
          */
-        unsigned short
-        getX() const { return mX; }
+        unsigned short getX() const { return mX; }
 
         /**
          * Returns the y coordinate.
          */
-        unsigned short
-        getY() const { return mY; }
+        unsigned short getY() const { return mY; }
 
         /**
          * Returns the pixel y coordinate.
          *
          * @see Sprite::getPixelY()
          */
-        int
-        getPixelY() const { return mY * 32; }
+        int getPixelY() const { return mY * 32; }
 
         /**
          * Draws this floor item to the given graphics context.
          *
          * @see Sprite::draw(Graphics, int, int)
          */
-        void
-        draw(Graphics *graphics, int offsetX, int offsetY) const
+        void draw(Graphics *graphics, int offsetX, int offsetY) const
         {
             graphics->drawImage(mItem->getImage(),
                                 mX * 32 + offsetX,

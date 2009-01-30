@@ -24,8 +24,9 @@
 
 #include <guichan/widgets/radiobutton.hpp>
 
-class Image;
+#include "../guichanfwd.h"
 
+class Image;
 
 /*
  * Guichan based RadioButton with custom look

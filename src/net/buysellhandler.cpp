@@ -19,10 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "buysellhandler.h"
-
 #include <SDL_types.h>
 
+#include "buysellhandler.h"
 #include "messagein.h"
 #include "protocol.h"
 
@@ -37,8 +36,8 @@
 #include "../gui/sell.h"
 
 extern BuyDialog *buyDialog;
-extern SellDialog *sellDialog;
 extern Window *buySellDialog;
+extern SellDialog *sellDialog;
 
 BuySellHandler::BuySellHandler()
 {

@@ -49,6 +49,8 @@ MARK_AS_ADVANCED(SDL_INCLUDE_DIR)
 MARK_AS_ADVANCED(SDL_LIBRARY)
 
 SET(SRCS
+    gui/widgets/dropdown.cpp
+    gui/widgets/dropdown.h
     gui/widgets/resizegrip.cpp
     gui/widgets/resizegrip.h
     gui/widgets/layout.cpp
@@ -101,6 +103,10 @@ SET(SRCS
     gui/inventorywindow.h
     gui/itemcontainer.cpp
     gui/itemcontainer.h
+    gui/itemlinkhandler.cpp
+    gui/itemlinkhandler.h
+    gui/itempopup.cpp
+    gui/itempopup.h
     gui/itemshortcutcontainer.cpp
     gui/itemshortcutcontainer.h
     gui/itemshortcutwindow.cpp
@@ -167,6 +173,8 @@ SET(SRCS
     gui/skill.h
     gui/slider.cpp
     gui/slider.h
+    gui/speechbubble.cpp
+    gui/speechbubble.h
     gui/status.cpp
     gui/status.h
     gui/table.cpp
@@ -231,8 +239,12 @@ SET(SRCS
     resources/animation.h
     resources/buddylist.cpp
     resources/buddylist.h
+    resources/colordb.cpp
+    resources/colordb.h
     resources/dye.cpp
     resources/dye.h
+    resources/emotedb.cpp
+    resources/emotedb.h
     resources/image.cpp
     resources/image.h
     resources/imageloader.cpp
@@ -285,10 +297,13 @@ SET(SRCS
     configlistener.h
     configuration.cpp
     configuration.h
+    effectmanager.cpp
+    effectmanager.h
     engine.cpp
     engine.h
     equipment.cpp
     equipment.h
+    extensions.h
     floor_item.cpp
     floor_item.h
     flooritemmanager.cpp
@@ -338,6 +353,8 @@ SET(SRCS
     position.cpp
     position.h
     properties.h
+    sdltruetypefont.cpp
+    sdltruetypefont.hpp
     serverinfo.h
     shopitem.cpp
     shopitem.h

@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "setup_keyboard.h"
+#include <SDL_keyboard.h>
 
 #include <guichan/widgets/label.hpp>
 #include <guichan/listmodel.hpp>
@@ -28,6 +28,9 @@
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
+#include "setup_keyboard.h"
+
+#include "widgets/layouthelper.h"
 
 #include "widgets/layouthelper.h"
 
@@ -36,8 +39,6 @@
 
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
-
-#include <SDL_keyboard.h>
 
 /**
  * The list model for key function list.

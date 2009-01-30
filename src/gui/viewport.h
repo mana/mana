@@ -26,8 +26,9 @@
 
 #include "windowcontainer.h"
 
-#include "../configlistener.h"
 #include "../being.h"
+#include "../configlistener.h"
+#include "../guichanfwd.h"
 
 class Map;
 class FloorItem;
@@ -35,7 +36,6 @@ class ImageSet;
 class Item;
 class PopupMenu;
 class Graphics;
-class SimpleAnimation;
 
 /**
  * The viewport on the map. Displays the current map and handles mouse input
@@ -62,97 +62,65 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         /**
          * Sets the map displayed by the viewport.
          */
-        void
-        setMap(Map *map);
+        void setMap(Map *map);
 
         /**
          * Draws the viewport.
          */
-        void
-        draw(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics);
 
         /**
          * Implements player to keep following mouse.
          */
-        void
-        logic();
+        void logic();
 
         /**
          * Toggles whether the path debug graphics are shown
          */
-        void
-        toggleDebugPath() { mShowDebugPath = !mShowDebugPath; }
+        void toggleDebugPath() { mShowDebugPath = !mShowDebugPath; }
 
         /**
          * Handles mouse press on map.
          */
-        void
-        mousePressed(gcn::MouseEvent &event);
+        void mousePressed(gcn::MouseEvent &event);
 
         /**
          * Handles mouse move on map
          */
-        void
-        mouseDragged(gcn::MouseEvent &event);
+        void mouseDragged(gcn::MouseEvent &event);
 
         /**
          * Handles mouse button release on map.
          */
-        void
-        mouseReleased(gcn::MouseEvent &event);
+        void mouseReleased(gcn::MouseEvent &event);
 
         /**
          * Shows a popup for an item.
          * TODO Find some way to get rid of Item here
          */
-        void
-        showPopup(int x, int y, Item *item);
+        void showPopup(int x, int y, Item *item);
 
         /**
          * A relevant config option changed.
          */
-        void
-        optionChanged(const std::string &name);
+        void optionChanged(const std::string &name);
 
         /**
-         * Returns camera x offset in tiles.
+         * Returns camera x offset in pixels.
          */
-        int
-        getCameraX() { return mTileViewX; }
+        int getCameraX() const { return (int) mPixelViewX; }
 
         /**
-         * Returns camera y offset in tiles.
+         * Returns camera y offset in pixels.
          */
-        int
-        getCameraY() { return mTileViewY; }
+        int getCameraY() const { return (int) mPixelViewY; }
 
         /**
          * Changes viewpoint by relative pixel coordinates.
          */
-        void
-        scrollBy(float x, float y) { mPixelViewX += x; mPixelViewY += y; }
+        void scrollBy(float x, float y) { mPixelViewX += x; mPixelViewY += y; }
 
     private:
-        /**
-         * Helper function for loading target cursors
-         */
-        void
-        loadTargetCursor(std::string filename, int width, int height,
-                         bool outRange, Being::TargetCursorSize size);
-
-        /**
-         * Draws range based target cursor
-         */
-        void
-        drawTargetCursor(Graphics *graphics);
-
-        /**
-         * Draws target name
-         */
-        void
-        drawTargetName(Graphics *graphics);
-
-
         Map *mMap;                 /**< The current map. */
 
         int mScrollRadius;
@@ -164,18 +132,6 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mTileViewX;              /**< Current viewpoint in tiles. */
         int mTileViewY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
-
-        /** Images of in range target cursor. */
-        ImageSet *mInRangeImages[Being::NUM_TC];
-
-        /** Images of out of range target cursor. */
-        ImageSet *mOutRangeImages[Being::NUM_TC];
-
-        /** Animated in range target cursor. */
-        SimpleAnimation *mTargetCursorInRange[Being::NUM_TC];
-
-        /** Animated out of range target cursor. */
-        SimpleAnimation *mTargetCursorOutRange[Being::NUM_TC];
 
         bool mPlayerFollowMouse;
         int mWalkTime;

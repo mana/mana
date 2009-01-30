@@ -22,6 +22,8 @@
 #ifndef NET_LOGINHANDLER_H
 #define NET_LOGINHANDLER_H
 
+#include <string>
+
 #include "messagehandler.h"
 #include <string>
 

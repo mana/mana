@@ -19,13 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "debugwindow.h"
-
 #include <SDL_mouse.h>
 
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "debugwindow.h"
 #include "gui.h"
 #include "viewport.h"
 

@@ -22,11 +22,11 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#include <map>
-#include <list>
-#include <string>
 #include <cassert>
 #include <libxml/xmlwriter.h>
+#include <list>
+#include <map>
+#include <string>
 
 class ConfigListener;
 class ConfigurationObject;

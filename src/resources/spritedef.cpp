@@ -21,14 +21,13 @@
 
 #include <set>
 
-#include "spritedef.h"
-
 #include "action.h"
 #include "animation.h"
 #include "dye.h"
 #include "image.h"
 #include "imageset.h"
 #include "resourcemanager.h"
+#include "spritedef.h"
 
 #include "../log.h"
 #include "../utils/xml.h"

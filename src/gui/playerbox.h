@@ -24,6 +24,8 @@
 
 #include <guichan/widgets/scrollarea.hpp>
 
+#include "../guichanfwd.h"
+
 class ImageRect;
 class Player;
 
@@ -51,8 +53,7 @@ class PlayerBox : public gcn::ScrollArea
          * player to <code>NULL</code> causes the box not to draw any
          * character.
          */
-        void
-        setPlayer(const Player *player) { mPlayer = player; }
+        void setPlayer(const Player *player) { mPlayer = player; }
 
         /**
          * Draws the scroll area.

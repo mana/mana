@@ -19,6 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui.h"
 #include "progressbar.h"
 
 #include "../graphics.h"
@@ -105,7 +106,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 
     // The label
     if (!mText.empty()) {
-        gcn::Font *f = getFont();
+        gcn::Font *f = boldFont;
         const int textX = getWidth() / 2;
         const int textY = (getHeight() - f->getHeight()) / 2;
 

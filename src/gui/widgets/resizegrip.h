@@ -24,6 +24,8 @@
 
 #include <guichan/widget.hpp>
 
+#include "../../guichanfwd.h"
+
 class Image;
 
 /**
@@ -39,7 +41,7 @@ class ResizeGrip : public gcn::Widget
         /**
          * Constructor.
          */
-        ResizeGrip();
+        ResizeGrip(std::string image = "graphics/gui/resize.png");
 
         /**
          * Destructor.

@@ -24,9 +24,11 @@
 
 #include <vector>
 
-#include <guichan/listmodel.hpp>
 #include <guichan/actionlistener.hpp>
+#include <guichan/listmodel.hpp>
 
+#include "scrollarea.h"
+#include "table.h"
 #include "window.h"
 #include "table.h"
 
@@ -72,6 +74,7 @@ class SkillDialog : public Window, public gcn::ActionListener
 
     private:
         GuiTable mTable;//gcn::ListBox *mSkillListBox;
+        ScrollArea *skillScrollArea;
         SkillGuiTableModel *mTableModel;
         gcn::Label *mPointsLabel;
         gcn::Button *mIncButton;

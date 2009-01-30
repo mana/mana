@@ -24,14 +24,13 @@
 
 #include <SDL.h> // for Uint32
 
-#include "window.h"
 #include "linkhandler.h"
+#include "window.h"
 
 class Being;
 class BrowserBox;
 class FloorItem;
 class Item;
-
 
 /**
  * Window showing popup menu.

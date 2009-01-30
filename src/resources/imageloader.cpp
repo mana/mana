@@ -21,12 +21,12 @@
 
 #include <cassert>
 #include <string>
+
 #include <guichan/color.hpp>
 #include <guichan/sdl/sdlpixel.hpp>
 
-#include "imageloader.h"
-
 #include "image.h"
+#include "imageloader.h"
 #include "resourcemanager.h"
 
 ProxyImage::ProxyImage(SDL_Surface *s):

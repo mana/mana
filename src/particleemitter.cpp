@@ -19,24 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "particleemitter.h"
-
 #include "animationparticle.h"
 #include "imageparticle.h"
 #include "log.h"
 #include "particle.h"
+#include "particleemitter.h"
 
 #include "resources/animation.h"
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 #include "resources/imageset.h"
+#include "resources/resourcemanager.h"
 
 #include <cmath>
 
 #define SIN45 0.707106781f
 #define DEG_RAD_FACTOR 0.017453293f
 
-ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map):
+ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map, int rotation):
     mOutputPauseLeft(0),
     mParticleImage(0)
 {
@@ -102,7 +101,9 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             else if (name == "horizontal-angle")
             {
                 mParticleAngleHorizontal = readParticleEmitterProp(propertyNode, 0.0f);
+                mParticleAngleHorizontal.minVal += rotation;
                 mParticleAngleHorizontal.minVal *= DEG_RAD_FACTOR;
+                mParticleAngleHorizontal.maxVal += rotation;
                 mParticleAngleHorizontal.maxVal *= DEG_RAD_FACTOR;
                 mParticleAngleHorizontal.changeAmplitude *= DEG_RAD_FACTOR;
             }
@@ -310,26 +311,25 @@ ParticleEmitter::readParticleEmitterProp(xmlNodePtr propertyNode, T def)
     retval.set((T) XML::getFloatProperty(propertyNode, "min", (double) def),
                (T) XML::getFloatProperty(propertyNode, "max", (double) def));
 
-    std::string change = XML::getProperty(propertyNode, "change-func", "none");
-    T amplitude = (T) XML::getFloatProperty(propertyNode, "change-amplitude", 0.0);
-    int period = XML::getProperty(propertyNode, "change-period", 0);
-    int phase = XML::getProperty(propertyNode, "change-phase", 0);
-    if (change == "saw" || change == "sawtooth") {
-        retval.setFunction(FUNC_SAW, amplitude, period, phase);
-    } else if (change == "sine" || change == "sinewave") {
-        retval.setFunction(FUNC_SINE, amplitude, period, phase);
-    } else if (change == "triangle") {
-        retval.setFunction(FUNC_TRIANGLE, amplitude, period, phase);
-    } else if (change == "square"){
-        retval.setFunction(FUNC_SQUARE, amplitude, period, phase);
-    }
+     std::string change = XML::getProperty(propertyNode, "change-func", "none");
+     T amplitude = (T) XML::getFloatProperty(propertyNode, "change-amplitude", 0.0);
+     int period = XML::getProperty(propertyNode, "change-period", 0);
+     int phase = XML::getProperty(propertyNode, "change-phase", 0);
+     if (change == "saw" || change == "sawtooth") {
+         retval.setFunction(FUNC_SAW, amplitude, period, phase);
+     } else if (change == "sine" || change == "sinewave") {
+         retval.setFunction(FUNC_SINE, amplitude, period, phase);
+     } else if (change == "triangle") {
+         retval.setFunction(FUNC_TRIANGLE, amplitude, period, phase);
+     } else if (change == "square"){
+         retval.setFunction(FUNC_SQUARE, amplitude, period, phase);
+     }
 
     return retval;
 }
 
 
-std::list<Particle *>
-ParticleEmitter::createParticles(int tick)
+std::list<Particle *> ParticleEmitter::createParticles(int tick)
 {
     std::list<Particle *> newParticles;
 

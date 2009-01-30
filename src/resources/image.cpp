@@ -21,9 +21,8 @@
 
 #include <SDL_image.h>
 
-#include "image.h"
-
 #include "dye.h"
+#include "image.h"
 
 #include "../log.h"
 

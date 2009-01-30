@@ -28,6 +28,8 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
 
+#include "button.h"
+#include "scrollarea.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
@@ -47,13 +49,6 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          * @see Window::Window
          */
         NpcListDialog();
-
-        /**
-         * Called when resizing the window
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
 
         /**
          * Called when receiving actions from the widgets.

@@ -24,12 +24,15 @@
 
 #include "textfield.h"
 
+#include "../guichanfwd.h"
+
 /**
  * A password field.
  *
  * \ingroup GUI
  */
-class PasswordField : public TextField {
+class PasswordField : public TextField 
+{
     public:
         /**
          * Constructor, initializes the password field with the given string.

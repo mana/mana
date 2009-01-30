@@ -19,11 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <guichan/font.hpp>
+
 #include "confirm_dialog.h"
-
-#include <guichan/widgets/label.hpp>
-
-#include "button.h"
 
 #include "../utils/gettext.h"
 
@@ -31,28 +29,51 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
 {
-    gcn::Label *textLabel = new gcn::Label(msg);
+    mTextBox = new TextBox();
+    mTextBox->setEditable(false);
+    mTextBox->setOpaque(false);
+
+    mTextArea = new ScrollArea(mTextBox);
     gcn::Button *yesButton = new Button(_("Yes"), "yes", this);
     gcn::Button *noButton = new Button(_("No"), "no", this);
 
-    int w = textLabel->getWidth() + 20;
-    int inWidth = yesButton->getWidth() + noButton->getWidth() + 5;
-    int h = textLabel->getHeight() + 25 + yesButton->getHeight();
+    mTextArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mTextArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mTextArea->setOpaque(false);
 
-    if (w < inWidth + 10) {
-        w = inWidth + 10;
+    mTextBox->setMinWidth(260);
+    mTextBox->setTextWrapped(msg);
+
+    int numRows = mTextBox->getNumberOfRows();
+    int width = getFont()->getWidth(title);
+    int inWidth = yesButton->getWidth() + noButton->getWidth() + 5;
+
+    if (numRows > 1)
+    {
+        // 15 == height of each line of text (based on font heights)
+        // 14 == row top + bottom graphic pixel heights
+        setContentSize(mTextBox->getMinWidth() + 15, 15 + (numRows * 15) + noButton->getHeight());
+        mTextArea->setDimension(gcn::Rectangle(4, 5, mTextBox->getMinWidth() + 5, 
+                                               3 + (numRows * 14)));
+    }
+    else
+    {
+        if (width < getFont()->getWidth(msg))
+            width = getFont()->getWidth(msg);
+        if (width < inWidth)
+            width = inWidth;
+        setContentSize(width + 15, 30 + noButton->getHeight());
+        mTextArea->setDimension(gcn::Rectangle(4, 5, width + 5, 17));
     }
 
-    setContentSize(w, h);
-    textLabel->setPosition(10, 10);
     yesButton->setPosition(
-            (w - inWidth) / 2,
-            h - 5 - noButton->getHeight());
+            (mTextBox->getMinWidth() - inWidth) / 2,
+            (numRows * 14) + noButton->getHeight() - 8);
     noButton->setPosition(
             yesButton->getX() + yesButton->getWidth() + 5,
-            h - 5 - noButton->getHeight());
+            (numRows * 14) + noButton->getHeight() - 8);
 
-    add(textLabel);
+    add(mTextArea);
     add(yesButton);
     add(noButton);
 
@@ -62,6 +83,11 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     }
     setVisible(true);
     yesButton->requestFocus();
+}
+
+unsigned int ConfirmDialog::getNumRows()
+{
+    return mTextBox->getNumberOfRows();
 }
 
 void ConfirmDialog::action(const gcn::ActionEvent &event)

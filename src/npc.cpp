@@ -19,15 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npc.h"
-
 #include "animatedsprite.h"
 #include "graphics.h"
+#include "localplayer.h"
+#include "npc.h"
 #include "particle.h"
 #include "text.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
+
 #include "resources/npcdb.h"
 
 NPC *current_npc = 0;
@@ -36,7 +37,7 @@ static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
 
 NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
-    Being(id, job, map), mNetwork(network)
+    Player(id, job, map), mNetwork(network)
 {
     NPCInfo info = NPCDB::get(job);
 
@@ -54,28 +55,53 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
         c++;
     }
 
-    // Setup particle effects
-    for (std::list<std::string>::const_iterator i = info.particles.begin();
-         i != info.particles.end();
-         i++)
+    if (mParticleEffects)
     {
-        Particle *p = particleEngine->addEffect(*i, 0, 0);
-        this->controlParticle(p);
+        //setup particle effects
+        for (std::list<std::string>::const_iterator i = info.particles.begin();
+             i != info.particles.end();
+             i++)
+        {
+            Particle *p = particleEngine->addEffect(*i, 0, 0);
+            this->controlParticle(p);
+        }
     }
     mName = 0;
+
+    mNameColor = 0x21bbbb;
 }
 
 NPC::~NPC()
 {
-    delete mName;
+    if (mName)
+    {
+        delete mName;
+        player_node->setTarget(NULL);
+    }
 }
 
 void NPC::setName(const std::string &name)
 {
-    delete mName;
-    mName = new Text(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                     gcn::Graphics::CENTER,
-                     gcn::Color(200, 200, 255));
+    if (mName)
+    {
+        delete mName;
+    }
+    std::string displayName = name.substr(0, name.find('#', 0));
+
+    mName = new Text(displayName, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+                     gcn::Graphics::CENTER, gcn::Color(200, 200, 255));
+    Being::setName(displayName + " (NPC)");
+}
+
+void NPC::setGender(Gender gender)
+{
+    Being::setGender(gender);
+}
+
+void NPC::setSprite(int slot, int id, std::string color)
+{
+    // Fix this later should it not be adequate enough.
+    Being::setSprite(slot, id, color);
 }
 
 Being::Type NPC::getType() const

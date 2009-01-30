@@ -36,8 +36,7 @@ MonsterInfo::~MonsterInfo()
 }
 
 
-void
-MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
+void MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
 {
     if (mSounds.find(event) == mSounds.end())
     {
@@ -48,8 +47,7 @@ MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
 }
 
 
-std::string
-MonsterInfo::getSound(MonsterSoundEvent event) const
+std::string MonsterInfo::getSound(MonsterSoundEvent event) const
 {
     std::map<MonsterSoundEvent, std::vector<std::string>* >::const_iterator i;
 

@@ -19,11 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "help.h"
-
 #include "button.h"
 #include "browserbox.h"
+#include "help.h"
 #include "scrollarea.h"
+
+#include "widgets/layout.h"
 
 #include "../resources/resourcemanager.h"
 
@@ -33,7 +34,8 @@ HelpWindow::HelpWindow():
     Window(_("Help"))
 {
     setContentSize(455, 350);
-    setWindowName("Help");
+    setWindowName(_("Help"));
+    setResizable(true);
 
     mBrowserBox = new BrowserBox();
     mBrowserBox->setOpaque(false);
@@ -48,8 +50,11 @@ HelpWindow::HelpWindow():
 
     mBrowserBox->setLinkHandler(this);
 
-    add(mScrollArea);
-    add(okButton);
+    place(0, 0, mScrollArea, 5, 3).setPadding(3);
+    place(4, 3, okButton);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     setLocationRelativeTo(getParent());
 }

@@ -48,47 +48,33 @@ class Network
 
         ~Network();
 
-        bool
-        connect(const std::string &address, short port);
+        bool connect(const std::string &address, short port);
 
-        void
-        disconnect();
+        void disconnect();
 
-        void
-        registerHandler(MessageHandler *handler);
+        void registerHandler(MessageHandler *handler);
 
-        void
-        unregisterHandler(MessageHandler *handler);
+        void unregisterHandler(MessageHandler *handler);
 
-        void
-        clearHandlers();
+        void clearHandlers();
 
-        int
-        getState() const { return mState; }
+        int getState() const { return mState; }
 
-        const std::string&
-        getError() const { return mError; }
+        const std::string& getError() const { return mError; }
 
-        bool
-        isConnected() const { return mState == CONNECTED; }
+        bool isConnected() const { return mState == CONNECTED; }
 
-        int
-        getInSize() const { return mInSize; }
+        int getInSize() const { return mInSize; }
 
-        void
-        skip(int len);
+        void skip(int len);
 
-        bool
-        messageReady();
+        bool messageReady();
 
-        MessageIn
-        getNextMessage();
+        MessageIn getNextMessage();
 
-        void
-        dispatchMessages();
+        void dispatchMessages();
 
-        void
-        flush();
+        void flush();
 
         // ERROR replaced by NET_ERROR because already defined in Windows
         enum {
@@ -100,17 +86,13 @@ class Network
         };
 
     protected:
-        void
-        setError(const std::string& error);
+        void setError(const std::string& error);
 
-        Uint16
-        readWord(int pos);
+        Uint16 readWord(int pos);
 
-        bool
-        realConnect();
+        bool realConnect();
 
-        void
-        receive();
+        void receive();
 
         TCPsocket mSocket;
 

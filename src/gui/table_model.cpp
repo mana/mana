@@ -19,10 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "table_model.h"
-
-#include <guichan/widget.hpp>
 #include <cstdlib>
+
+#include <guichan/graphics.hpp>
+#include <guichan/widget.hpp>
+
+#include "table_model.h"
 
 #include "../utils/dtor.h"
 
@@ -49,14 +51,16 @@ void TableModel::signalAfterUpdate()
 }
 
 
-
 #define WIDGET_AT(row, column) (((row) * mColumns) + (column))
 #define DYN_SIZE(h) ((h) >= 0)  // determines whether this size is tagged for auto-detection
 
-StaticTableModel::StaticTableModel(int row, int column) :
+StaticTableModel::StaticTableModel(int row, int column, 
+                                   gcn::Color backgroundColor, bool opacity) :
     mRows(row),
     mColumns(column),
-    mHeight(1)
+    mHeight(1),
+    mOpaque(opacity),
+    mBackgroundColor(backgroundColor)
 {
     mTableModel.resize(row * column, NULL);
     mWidths.resize(column, 1);
@@ -143,3 +147,42 @@ int StaticTableModel::getColumns()
 {
     return mColumns;
 }
+
+int StaticTableModel::getWidth(void)
+{
+    int width = 0;
+
+    for (unsigned int i = 0; i < mWidths.size(); i++)
+    {
+        width += mWidths[i];
+    }
+
+    return width;
+}
+
+int StaticTableModel::getHeight(void)
+{
+    return (mColumns * mHeight);
+}
+
+void StaticTableModel::drawBackground(gcn::Graphics *graphics)
+{
+    if (isOpaque())
+    {
+        for (unsigned int i = 0; i < mTableModel.size(); i++)
+        {
+            mTableModel[i]->setBackgroundColor(mBackgroundColor);
+        }
+    }
+}
+
+void StaticTableModel::setOpaque(bool opaque)
+{
+    mOpaque = opaque;
+}
+
+bool StaticTableModel::isOpaque() const
+{
+    return mOpaque;
+}
+

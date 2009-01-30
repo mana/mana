@@ -19,11 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "buy.h"
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "buy.h"
 #include "scrollarea.h"
 #include "shop.h"
 #include "shoplistbox.h"
@@ -43,7 +42,7 @@ BuyDialog::BuyDialog(Network *network):
     Window(_("Buy")), mNetwork(network),
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
-    setWindowName("Buy");
+    setWindowName(_("Buy"));
     setResizable(true);
     setMinWidth(260);
     setMinHeight(230);

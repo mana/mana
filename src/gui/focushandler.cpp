@@ -21,7 +21,6 @@
 
 #include "focushandler.h"
 
-
 void FocusHandler::requestModalFocus(gcn::Widget *widget)
 {
     /* If there is another widget with modal focus, remove its modal focus

@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2007  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,38 +19,47 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef BUDDYWINDOW_H
-#define BUDDYWINDOW_H
-
-#include <guichan/actionlistener.hpp>
+#ifndef SHORTCUTWINDOW_H
+#define SHORTCUTWINDOW_H
 
 #include "window.h"
 
 #include "../guichanfwd.h"
 
-class BuddyList;
+class ShortcutContainer;
+class ScrollArea;
 
 /**
- * Window showing buddy list.
+ * A window around the ItemShortcutContainer.
  *
  * \ingroup Interface
  */
-class BuddyWindow : public Window, public gcn::ActionListener
+class ShortcutWindow : public Window
 {
     public:
         /**
          * Constructor.
          */
-        BuddyWindow();
+        ShortcutWindow(const char *title, ShortcutContainer *content);
 
         /**
-         * Performs action.
+         * Destructor.
          */
-        void action(const gcn::ActionEvent &event);
+        ~ShortcutWindow();
+
+        /**
+         * Called whenever the widget changes size.
+         */
+        void widgetResized(const gcn::Event &event);
 
     private:
-        BuddyList *mBuddyList;
-        gcn::ListBox *mListbox;
+        ShortcutWindow();
+        ShortcutContainer *mItems;
+
+        ScrollArea *mScrollArea;
 };
 
-#endif /* BUDDYWINDOW_H */
+extern ShortcutWindow *itemShortcutWindow;
+extern ShortcutWindow *emoteShortcutWindow;
+
+#endif

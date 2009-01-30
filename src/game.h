@@ -40,35 +40,35 @@ extern volatile int tick_time;
 class Game : public ConfigListener
 {
     public:
-        Game(Network *network);
-        ~Game();
+	Game(Network *network);
+	~Game();
 
-        void logic();
+	void logic();
 
-        void handleInput();
+	void handleInput();
 
-        void optionChanged(const std::string &name);
+	void optionChanged(const std::string &name);
 
     private:
-        Network *mNetwork;
+	Network *mNetwork;
 
-        /** Used to determine whether to draw the next frame. */
-        int mDrawTime;
+	/** Used to determine whether to draw the next frame. */
+	int mDrawTime;
 
-        /** The minimum frame time (used for frame limiting). */
-        int mMinFrameTime;
+	/** The minimum frame time (used for frame limiting). */
+	int mMinFrameTime;
 
-        typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
-        MessageHandlerPtr mBeingHandler;
-        MessageHandlerPtr mBuySellHandler;
-        MessageHandlerPtr mChatHandler;
-        MessageHandlerPtr mEquipmentHandler;
-        MessageHandlerPtr mInventoryHandler;
-        MessageHandlerPtr mItemHandler;
-        MessageHandlerPtr mNpcHandler;
-        MessageHandlerPtr mPlayerHandler;
-        MessageHandlerPtr mSkillHandler;
-        MessageHandlerPtr mTradeHandler;
+	typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
+	MessageHandlerPtr mBeingHandler;
+	MessageHandlerPtr mBuySellHandler;
+	MessageHandlerPtr mChatHandler;
+	MessageHandlerPtr mEquipmentHandler;
+	MessageHandlerPtr mInventoryHandler;
+	MessageHandlerPtr mItemHandler;
+	MessageHandlerPtr mNpcHandler;
+	MessageHandlerPtr mPlayerHandler;
+	MessageHandlerPtr mSkillHandler;
+	MessageHandlerPtr mTradeHandler;
 };
 
 /**

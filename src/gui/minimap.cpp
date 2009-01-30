@@ -19,10 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <guichan/font.hpp>
+
 #include "minimap.h"
 
 #include "../being.h"
 #include "../beingmanager.h"
+#include "../configuration.h"
 #include "../graphics.h"
 #include "../localplayer.h"
 
@@ -30,13 +33,17 @@
 
 #include "../utils/gettext.h"
 
+bool Minimap::mShow = true;
+
 Minimap::Minimap():
     Window(_("MiniMap")),
-    mMapImage(NULL)
+    mMapImage(NULL),
+    mProportion(0.5)
 {
-    setWindowName("MiniMap");
+    setWindowName(_("MiniMap"));
+    mShow = config.getValue(getWindowName() + "Visible", true);
     setDefaultSize(5, 25, 100, 100);
-    loadWindowState();
+    setResizable(true);
 }
 
 Minimap::~Minimap()
@@ -53,12 +60,56 @@ void Minimap::setMapImage(Image *img)
     mMapImage = img;
 
     if (mMapImage)
-        mMapImage->setAlpha(0.7);
+    {
+        const int offsetX = 2 * getPadding();
+        const int offsetY = getTitleBarHeight() + getPadding();
+        const int titleWidth = getFont()->getWidth(getCaption()) + 15;
+        const int mapWidth = mMapImage->getWidth() < 100 ? 
+                             mMapImage->getWidth() + offsetX : 100;
+        const int mapHeight = mMapImage->getHeight() < 100 ? 
+                              mMapImage->getHeight() + offsetY : 100;
+
+        setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);
+        setMinHeight(mapHeight);
+        setMaxWidth(mMapImage->getWidth() + offsetX);
+        setMaxHeight(mMapImage->getHeight() + offsetY);
+
+        mMapImage->setAlpha(config.getValue("guialpha", 0.8));
+
+        // Set content size to be within the minimum and maximum boundaries
+        setWidth(getMinWidth() < getWidth() ? getWidth() : getMinWidth());
+        if (getMaxWidth() > getWidth())
+            setWidth(getMaxWidth());
+        setHeight(getMinHeight() < getHeight() ? getHeight() : getMinHeight());
+        if (getMaxHeight() > getHeight())
+            setHeight(getMaxHeight());
+
+        setDefaultSize(getX(), getY(), getWidth(), getHeight());
+        resetToDefaultSize();
+
+        loadWindowState();
+        setVisible(mShow);
+    }
+    else
+    {
+        setVisible(false);
+    }
+}
+
+void Minimap::toggle()
+{
+    mShow = !mShow;
+    config.setValue(getWindowName() + "Visible", mShow);
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
 {
+    setVisible(mShow);
+
     Window::draw(graphics);
+
+    if (!mShow)
+        return;
 
     const gcn::Rectangle a = getChildrenArea();
 
@@ -72,8 +123,8 @@ void Minimap::draw(gcn::Graphics *graphics)
         if (mMapImage->getWidth() > a.width ||
             mMapImage->getHeight() > a.height)
         {
-            mapOriginX = (a.width - player_node->mX) / 2;
-            mapOriginY = (a.height - player_node->mY) / 2;
+            mapOriginX = (int) (((a.width) / 2) - (player_node->mX * mProportion));
+            mapOriginY = (int) (((a.height) / 2) - (player_node->mY * mProportion));
 
             const int minOriginX = a.width - mMapImage->getWidth();
             const int minOriginY = a.height - mMapImage->getHeight();
@@ -87,6 +138,7 @@ void Minimap::draw(gcn::Graphics *graphics)
             if (mapOriginY > 0)
                 mapOriginY = 0;
         }
+
         static_cast<Graphics*>(graphics)->
             drawImage(mMapImage, mapOriginX, mapOriginY);
     }
@@ -122,10 +174,11 @@ void Minimap::draw(gcn::Graphics *graphics)
                 continue;
         }
 
-        const int offset = (dotSize - 1) / 2;
+        const int offset = (int) ((dotSize - 1) * mProportion);
+
         graphics->fillRectangle(gcn::Rectangle(
-                    being->mX / 2 + mapOriginX - offset,
-                    being->mY / 2 + mapOriginY - offset,
+                    (int) (being->mX * mProportion) + mapOriginX - offset,
+                    (int) (being->mY * mProportion) + mapOriginY - offset,
                     dotSize, dotSize));
     }
 

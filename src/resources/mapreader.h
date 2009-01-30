@@ -26,8 +26,8 @@
 
 #include <libxml/tree.h>
 
-class Properties;
 class Map;
+class Properties;
 class Tileset;
 
 /**

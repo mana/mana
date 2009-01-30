@@ -107,5 +107,6 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
         setVisible(false);
         current_npc->integerInput(mValueField->getValue());
         current_npc = 0;
+        mValueField->reset();
     }
 }

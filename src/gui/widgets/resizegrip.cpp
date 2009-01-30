@@ -19,9 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "resizegrip.h"
-
 #include <guichan/graphics.hpp>
+
+#include "resizegrip.h"
 
 #include "../../graphics.h"
 
@@ -31,13 +31,13 @@
 Image *ResizeGrip::gripImage = 0;
 int ResizeGrip::mInstances = 0;
 
-ResizeGrip::ResizeGrip()
+ResizeGrip::ResizeGrip(std::string image)
 {
     if (mInstances == 0)
     {
         // Load the grip image
         ResourceManager *resman = ResourceManager::getInstance();
-        gripImage = resman->getImage("graphics/gui/resize.png");
+        gripImage = resman->getImage(image);
     }
 
     mInstances++;
@@ -56,8 +56,7 @@ ResizeGrip::~ResizeGrip()
     }
 }
 
-void
-ResizeGrip::draw(gcn::Graphics *graphics)
+void ResizeGrip::draw(gcn::Graphics *graphics)
 {
     static_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
 }

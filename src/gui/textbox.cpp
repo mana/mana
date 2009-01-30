@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "textbox.h"
-
 #include <sstream>
 
 #include <guichan/basiccontainer.hpp>
 #include <guichan/font.hpp>
+
+#include "textbox.h"
 
 TextBox::TextBox():
     gcn::TextBox()
@@ -43,6 +43,8 @@ void TextBox::setTextWrapped(const std::string &text)
 
     std::stringstream wrappedStream;
     std::string::size_type newlinePos, lastNewlinePos = 0;
+    int minWidth = 0;
+    int xpos;
 
     do
     {
@@ -57,7 +59,7 @@ void TextBox::setTextWrapped(const std::string &text)
         std::string line =
             text.substr(lastNewlinePos, newlinePos - lastNewlinePos);
         std::string::size_type spacePos, lastSpacePos = 0;
-        int xpos = 0;
+        xpos = 0;
 
         do
         {
@@ -73,7 +75,7 @@ void TextBox::setTextWrapped(const std::string &text)
 
             int width = getFont()->getWidth(word);
 
-            if (xpos != 0 && xpos + width < getWidth())
+            if (xpos != 0 && xpos + width + getFont()->getWidth(" ") <= mMinWidth)
             {
                 xpos += width + getFont()->getWidth(" ");
                 wrappedStream << " " << word;
@@ -85,10 +87,30 @@ void TextBox::setTextWrapped(const std::string &text)
             }
             else
             {
+                if (xpos > minWidth)
+                {
+                    minWidth = xpos;
+                }
+                // The window wasn't big enough. Resize it and try again.
+                if (minWidth > mMinWidth)
+                {
+                    mMinWidth = minWidth;
+                    wrappedStream.clear();
+                    wrappedStream.str("");
+                    spacePos = 0;
+                    lastNewlinePos = 0;
+                    newlinePos = text.find("\n", lastNewlinePos);
+                    line = text.substr(lastNewlinePos, newlinePos -
+                                       lastNewlinePos);
+                    width = 0;
+                    break;
+                }
+                else
+                {
+                    wrappedStream << "\n" << word;
+                }
                 xpos = width;
-                wrappedStream << "\n" << word;
             }
-
             lastSpacePos = spacePos + 1;
         }
         while (spacePos != line.size());
@@ -97,10 +119,15 @@ void TextBox::setTextWrapped(const std::string &text)
         {
             wrappedStream << "\n";
         }
-
         lastNewlinePos = newlinePos + 1;
     }
     while (newlinePos != text.size());
+
+    if (xpos > minWidth)
+    {
+        minWidth = xpos;
+    }
+    mMinWidth = minWidth;
 
     gcn::TextBox::setText(wrappedStream.str());
 }

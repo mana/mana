@@ -19,14 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#define BOX_WIDTH 36
+#define BOX_HEIGHT 36
+
+#include <guichan/font.hpp>
+
+#include "button.h"
 #include "equipmentwindow.h"
+#include "playerbox.h"
 
 #include "../equipment.h"
-#include "../inventory.h"
-#include "../localplayer.h"
 #include "../graphics.h"
+#include "../inventory.h"
 #include "../item.h"
-#include "../log.h"
+#include "../localplayer.h"
 
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
@@ -34,19 +40,57 @@
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
+// Positions of the boxes, 2nd dimension is X and Y respectively.
+static const int boxPosition[][2] = {
+    {50, 208},   // EQUIP_LEGS_SLOT
+    {8, 123},    // EQUIP_FIGHT1_SLOT
+    {8, 78},     // EQUIP_GLOVES_SLOT
+    {129, 168},  // EQUIP_RING2_SLOT
+    {8, 168},    // EQUIP_RING1_SLOT
+    {129, 123},  // EQUIP_FIGHT2_SLOT
+    {90, 208},   // EQUIP_FEET_SLOT
+    {50, 40},    // EQUIP_CAPE_SLOT
+    {70, 0},     // EQUIP_HEAD_SLOT
+    {90, 40},    // EQUIP_TORSO_SLOT
+    {129, 78}    // EQUIP_AMMO_SLOT
+};
+
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window(_("Equipment")),
-    mEquipment(equipment)
+    mEquipment(equipment),
+    mSelected(-1)
+
 {
+    // Control that shows the Player
+    mPlayerBox = new PlayerBox;
+    mPlayerBox->setDimension(gcn::Rectangle(50, 80, 74, 123));
+    mPlayerBox->setPlayer(player_node);
+
     setWindowName("Equipment");
     setCloseButton(true);
-    setDefaultSize(5, 230, 200, 140);
+    setDefaultSize(5, 195, 180, 300);
     loadWindowState();
+
+    mUnequip = new Button(_("Unequip"), "unequip", this);
+    gcn::Rectangle const &area = getChildrenArea();
+    mUnequip->setPosition(area.width  - mUnequip->getWidth() - 5,
+                          area.height - mUnequip->getHeight() - 5);
+
+    add(mPlayerBox);
+    add(mUnequip);
+
+    for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+    {
+        mEquipBox[i].posX = boxPosition[i][0] + getPadding();
+        mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
+    }
+
     mInventory = player_node->getInventory();
 }
 
 EquipmentWindow::~EquipmentWindow()
 {
+    delete mUnequip;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
@@ -54,37 +98,85 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Draw window graphics
     Window::draw(graphics);
 
-    Item *item;
-    Image *image;
+    Item* item;
 
-    // Rectangles around items are black
-    graphics->setColor(gcn::Color(0, 0, 0));
+    Graphics *g = static_cast<Graphics*>(graphics);
 
-    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
-        graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
-                36 * (i / 4) + 25, 32, 32));
+    Window::drawChildren(graphics);
 
-        if (!(item = mInventory->getItem(mEquipment->getEquipment(i))))
-            continue;
-
-        image = item->getImage();
-        if (image)
+    for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+    {
+        item = (i != EQUIP_AMMO_SLOT) ?
+               mInventory->getItem(mEquipment->getEquipment(i)) :
+               mInventory->getItem(mEquipment->getArrows());
+        if (item)
         {
-            static_cast<Graphics*>(graphics)->drawImage(
-                    image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
+            // Draw Item.
+            Image* image = item->getImage();
+            g->drawImage(image, mEquipBox[i].posX, mEquipBox[i].posY);
+            if (i == EQUIP_AMMO_SLOT)
+            {
+                g->setColor(gcn::Color(0, 0, 0));
+                graphics->drawText(toString(item->getQuantity()),
+                                   mEquipBox[i].posX + (BOX_WIDTH / 2),
+                                   mEquipBox[i].posY - getFont()->getHeight(),
+                                   gcn::Graphics::CENTER); 
+            }
+        }
+
+        if (i == mSelected)
+        {
+            // Set color red.
+            g->setColor(gcn::Color(255, 0, 0));
+        }
+        else
+        {
+            // Set color black.
+            g->setColor(gcn::Color(0, 0, 0));
+        }
+
+        // Draw box border.
+        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
+            BOX_WIDTH, BOX_HEIGHT));
+    }
+}
+
+void EquipmentWindow::action(const gcn::ActionEvent &event)
+{
+    if (event.getId() == "unequip" && mSelected > -1)
+    {
+        Item* item = (mSelected != EQUIP_AMMO_SLOT) ?
+                     mInventory->getItem(mEquipment->getEquipment(mSelected)) :
+                     mInventory->getItem(mEquipment->getArrows());
+        player_node->unequipItem(item);
+        mSelected = -1;
+    }
+}
+
+void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
+{
+    Window::mousePressed(mouseEvent);
+
+    const int x = mouseEvent.getX();
+    const int y = mouseEvent.getY();
+
+    Item* item;
+
+    // Checks if any of the presses were in the equip boxes.
+    for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+    {
+        item = (i != EQUIP_AMMO_SLOT) ?
+               mInventory->getItem(mEquipment->getEquipment(i)) :
+               mInventory->getItem(mEquipment->getArrows());
+        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                             BOX_WIDTH, BOX_HEIGHT);
+        if (tRect.isPointInRect(x, y))
+        {
+            if (item)
+            {
+                mSelected = i;
+            }
         }
     }
-
-    graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
-
-    if (!(item = mInventory->getItem(mEquipment->getArrows())))
-        return;
-
-    image = item->getImage();
-    if (image)
-    {
-        static_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
-    }
-    graphics->drawText(toString(item->getQuantity()), 170, 62,
-            gcn::Graphics::CENTER);
 }
+

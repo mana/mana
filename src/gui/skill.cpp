@@ -21,12 +21,12 @@
 
 #include <guichan/widgets/label.hpp>
 
-#include "skill.h"
-
 #include "button.h"
 #include "listbox.h"
-#include "scrollarea.h"
+#include "skill.h"
 #include "windowcontainer.h"
+
+#include "widgets/layout.h"
 
 #include "../localplayer.h"
 #include "../log.h"
@@ -36,7 +36,7 @@
 #include "../utils/strprintf.h"
 #include "../utils/xml.h"
 
-static const char *SKILLS_FILE = "skills.xml";
+static const char *SKILLS_FILE = _("skills.xml");
 
 struct SkillInfo {
     std::string name;
@@ -51,21 +51,24 @@ class SkillGuiTableModel : public StaticTableModel
 {
 public:
     SkillGuiTableModel(SkillDialog *dialog) :
-        StaticTableModel(0, 3)
+        StaticTableModel(0, 3, 0xbdb5aa)
     {
         mEntriesNr = 0;
         mDialog = dialog;
         update();
     }
 
-    virtual int getRows() { return mEntriesNr; }
+    virtual int getRows(void)
+    {
+        return mEntriesNr;
+    }
 
     virtual int getColumnWidth(int index)
     {
-        switch (index) {
-        case 0:  return 160;
-        default: return 35;
-        }
+        if (index == 0)
+            return 160;
+
+        return 35;
     }
 
     virtual int getRowHeight()
@@ -83,7 +86,8 @@ public:
         mEntriesNr = mDialog->getSkills().size();
         resize();
 
-        for (int i = 0; i < mEntriesNr; i++) {
+        for (int i = 0; i < mEntriesNr; i++)
+        {
             SKILL *skill = mDialog->getSkills()[i];
             SkillInfo const *info;
             char tmp[128];
@@ -123,31 +127,33 @@ SkillDialog::SkillDialog():
     mTable.setModel(mTableModel);
     mTable.setLinewiseSelection(true);
 
-    setWindowName("Skills");
+    setWindowName(_("Skills"));
     setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 260, 25, 255, 260);
+
+    setMinHeight(50 + mTableModel->getHeight());
+    setMinWidth(200);
 
 //    mSkillListBox = new ListBox(this);
     ScrollArea *skillScrollArea = new ScrollArea(&mTable);
     mPointsLabel = new gcn::Label(strprintf(_("Skill points: %d"), 0));
-    mIncButton = new Button(_("Up"), "inc", this);
-    mUseButton = new Button(_("Use"), "use", this);
+    mIncButton = new Button(_("Up"), _("inc"), this);
+    mUseButton = new Button(_("Use"), _("use"), this);
     mUseButton->setEnabled(false);
 
 //    mSkillListBox->setActionEventId("skill");
     mTable.setActionEventId("skill");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
-    mPointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
-    mIncButton->setPosition(skillScrollArea->getX(), 210);
-    mUseButton->setPosition(mIncButton->getX() + mIncButton->getWidth() + 5,
-        210);
+    skillScrollArea->setOpaque(false);
 
-    add(skillScrollArea);
-    add(mPointsLabel);
-    add(mIncButton);
-    add(mUseButton);
+    place(0, 0, skillScrollArea, 5).setPadding(3);
+    place(0, 1, mPointsLabel, 2);
+    place(3, 2, mIncButton);
+    place(4, 2, mUseButton);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
 //    mSkillListBox->addActionListener(this);
     mTable.addActionListener(this);
@@ -167,9 +173,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
         // Increment skill
         int selectedSkill = mTable.getSelectedRow();//mSkillListBox->getSelected();
         if (selectedSkill >= 0)
-        {
             player_node->raiseSkill(mSkillList[selectedSkill]->id);
-        }
     }
     else if (event.getId() == "skill")
     {
@@ -178,9 +182,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
                 player_node->mSkillPoint > 0);
     }
     else if (event.getId() == "close")
-    {
         setVisible(false);
-    }
 }
 
 void SkillDialog::update()
@@ -190,7 +192,8 @@ void SkillDialog::update()
 
     int selectedSkill = mTable.getSelectedRow();
 
-    if (selectedSkill >= 0) {
+    if (selectedSkill >= 0)
+    {
         int skillId = mSkillList[selectedSkill]->id;
         bool modifiable;
 
@@ -201,10 +204,12 @@ void SkillDialog::update()
 
         mIncButton->setEnabled(modifiable
                                && player_node->mSkillPoint > 0);
-    } else
+    }
+    else
         mIncButton->setEnabled(false);
 
     mTableModel->update();
+    setMinHeight(50 + mTableModel->getHeight());
 }
 
 int SkillDialog::getNumberOfElements()
@@ -214,10 +219,10 @@ int SkillDialog::getNumberOfElements()
 
 bool SkillDialog::hasSkill(int id)
 {
-    for (unsigned int i = 0; i < mSkillList.size(); i++) {
-        if (mSkillList[i]->id == id) {
+    for (unsigned int i = 0; i < mSkillList.size(); i++)
+    {
+        if (mSkillList[i]->id == id)
             return true;
-        }
     }
     return false;
 }
@@ -233,8 +238,10 @@ void SkillDialog::addSkill(int id, int lvl, int mp)
 
 void SkillDialog::setSkill(int id, int lvl, int mp)
 {
-    for (unsigned int i = 0; i < mSkillList.size(); i++) {
-        if (mSkillList[i]->id == id) {
+    for (unsigned int i = 0; i < mSkillList.size(); i++)
+    {
+        if (mSkillList[i]->id == id)
+        {
             mSkillList[i]->lv = lvl;
             mSkillList[i]->sp = mp;
         }
@@ -256,7 +263,7 @@ static void initSkillinfo()
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
     {
-        logger->log("Error loading skills file: %s", SKILLS_FILE);
+        logger->log(_("Error loading skills file: %s"), SKILLS_FILE);
         skill_db.resize(2, emptySkillInfo);
         skill_db[1].name = "Basic";
         skill_db[1].modifiable = true;

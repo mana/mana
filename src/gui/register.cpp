@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "register.h"
-
 #include <string>
 #include <sstream>
 
@@ -34,10 +32,13 @@
 #include "button.h"
 #include "checkbox.h"
 #include "login.h"
+#include "ok_dialog.h"
 #include "passwordfield.h"
 #include "radiobutton.h"
+#include "register.h"
 #include "textfield.h"
-#include "ok_dialog.h"
+
+#include "../utils/tostring.h"
 
 #include "widgets/layout.h"
 
@@ -80,10 +81,12 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     gcn::Label *passwordLabel = new gcn::Label(_("Password:"));
     gcn::Label *confirmLabel = new gcn::Label(_("Confirm:"));
     gcn::Label *serverLabel = new gcn::Label(_("Server:"));
+    gcn::Label *portLabel = new gcn::Label(_("Port:"));
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField;
     mServerField = new TextField(loginData->hostname);
+    mPortField = new TextField(toString(loginData->port));
     mMaleButton = new RadioButton(_("Male"), "sex", true);
     mFemaleButton = new RadioButton(_("Female"), "sex", false);
     mRegisterButton = new Button(_("Register"), "register", this);
@@ -97,10 +100,12 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     place(1, 3, mMaleButton);
     place(2, 3, mFemaleButton);
     place(0, 4, serverLabel);
+    place(0, 5, portLabel);
     place(1, 0, mUserField, 3).setPadding(2);
     place(1, 1, mPasswordField, 3).setPadding(2);
     place(1, 2, mConfirmField, 3).setPadding(2);
     place(1, 4, mServerField, 3).setPadding(2);
+    place(1, 5, mPortField, 3).setPadding(2);
     place = getPlacer(0, 2);
     place(1, 0, mRegisterButton);
     place(2, 0, mCancelButton);
@@ -110,6 +115,7 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mPasswordField->addKeyListener(this);
     mConfirmField->addKeyListener(this);
     mServerField->addKeyListener(this);
+    mPortField->addKeyListener(this);
 
     /* TODO:
      * This is a quick and dirty way to respond to the ENTER key, regardless of
@@ -120,10 +126,13 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mPasswordField->setActionEventId("register");
     mConfirmField->setActionEventId("register");
     mServerField->setActionEventId("register");
+    mPortField->setActionEventId("register");
+
     mUserField->addActionListener(this);
     mPasswordField->addActionListener(this);
     mConfirmField->addActionListener(this);
     mServerField->addActionListener(this);
+    mPortField->addActionListener(this);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -147,7 +156,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "register" && canSubmit())
     {
         const std::string user = mUserField->getText();
-        logger->log("RegisterDialog::register Username is %s", user.c_str());
+        logger->log(_("RegisterDialog::register Username is %s"), user.c_str());
 
         std::string errorMsg;
         int error = 0;
@@ -216,7 +225,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
             mRegisterButton->setEnabled(false);
 
             mLoginData->hostname = mServerField->getText();
-            mLoginData->port = (short) config.getValue("port", 0);
+            mLoginData->port = getUShort(mPortField->getText());
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
             mLoginData->username += mFemaleButton->isSelected() ? "_F" : "_M";
@@ -238,5 +247,40 @@ bool RegisterDialog::canSubmit() const
            !mPasswordField->getText().empty() &&
            !mConfirmField->getText().empty() &&
            !mServerField->getText().empty() &&
+           isUShort(mPortField->getText()) &&
            state == REGISTER_STATE;
+}
+
+bool RegisterDialog::isUShort(const std::string &str)
+{
+    if (str == "")
+    {
+	return false;
+    }
+    unsigned long l = 0;
+    for (std::string::const_iterator strPtr = str.begin(), strEnd = str.end();
+	 strPtr != strEnd; ++strPtr)
+    {
+	if (*strPtr < '0' || *strPtr > '9')
+        {
+	    return false;
+	}
+	l = l * 10 + (*strPtr - '0'); // *strPtr - '0' will never be negative
+	if (l > 65535)
+	{
+	    return false;
+	}
+    }
+    return true;
+}
+
+unsigned short RegisterDialog::getUShort(const std::string &str)
+{
+    unsigned long l = 0;
+    for (std::string::const_iterator strPtr = str.begin(), strEnd = str.end();
+	 strPtr != strEnd; ++strPtr)
+    {
+	l = l * 10 + (*strPtr - '0');
+    }
+    return static_cast<unsigned short>(l);
 }

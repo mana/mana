@@ -22,13 +22,12 @@
 #include <algorithm>
 #include <cmath>
 
-#include "particle.h"
-
 #include "animationparticle.h"
 #include "configuration.h"
 #include "imageparticle.h"
 #include "log.h"
 #include "map.h"
+#include "particle.h"
 #include "particleemitter.h"
 #include "textparticle.h"
 
@@ -251,7 +250,7 @@ void Particle::moveTo(float x, float y)
 }
 
 Particle *Particle::addEffect(const std::string &particleEffectFile,
-                              int pixelX, int pixelY)
+                              int pixelX, int pixelY, int rotation)
 {
     Particle *newParticle = NULL;
 
@@ -313,7 +312,7 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
                 continue;
 
             ParticleEmitter *newEmitter;
-            newEmitter = new ParticleEmitter(emitterNode, newParticle, mMap);
+            newEmitter = new ParticleEmitter(emitterNode, newParticle, mMap, rotation);
             newParticle->addEmitter(newEmitter);
         }
 

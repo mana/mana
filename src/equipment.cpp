@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <algorithm>
+
 #include "equipment.h"
 #include "item.h"
 #include "inventory.h"
 #include "localplayer.h"
-
-#include <algorithm>
 
 Equipment::Equipment():
     mArrows(0)
@@ -32,11 +32,11 @@ Equipment::Equipment():
     std::fill_n(mEquipment, EQUIPMENT_SIZE, 0);
 }
 
-void
-Equipment::setEquipment(int index, int inventoryIndex)
+void Equipment::setEquipment(int index, int inventoryIndex)
 {
     mEquipment[index] = inventoryIndex;
     Item* item = player_node->getInventory()->getItem(inventoryIndex);
     if (item)
     	item->setEquipped(true);
 }
+

@@ -31,6 +31,7 @@
 #include <guichan/widget.hpp>
 
 #include "table_model.h"
+
 #include "../guichanfwd.h"
 
 class GuiTableActionListener;

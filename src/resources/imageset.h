@@ -28,7 +28,6 @@
 
 class Image;
 
-
 /**
  * Stores a set of subimages originating from a single image.
  */

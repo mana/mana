@@ -19,17 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "viewport.h"
+#include <cassert>
 
 #include "gui.h"
-#include "popupmenu.h"
 #include "ministatus.h"
+#include "popupmenu.h"
+#include "viewport.h"
 
-#include "../simpleanimation.h"
 #include "../beingmanager.h"
 #include "../configuration.h"
 #include "../flooritemmanager.h"
 #include "../graphics.h"
+#include "../keyboardconfig.h"
 #include "../localplayer.h"
 #include "../map.h"
 #include "../monster.h"
@@ -37,14 +38,12 @@
 #include "../textmanager.h"
 
 #include "../resources/animation.h"
-#include "../resources/monsterinfo.h"
-#include "../resources/resourcemanager.h"
 #include "../resources/image.h"
 #include "../resources/imageset.h"
+#include "../resources/monsterinfo.h"
+#include "../resources/resourcemanager.h"
 
 #include "../utils/tostring.h"
-
-#include <cassert>
 
 extern volatile int tick_time;
 
@@ -70,76 +69,21 @@ Viewport::Viewport():
     config.addListener("ScrollRadius", this);
 
     mPopupMenu = new PopupMenu();
-
-    // Load target cursors
-    loadTargetCursor("graphics/gui/target-cursor-blue-s.png", 44, 35,
-                     false, Being::TC_SMALL);
-    loadTargetCursor("graphics/gui/target-cursor-red-s.png", 44, 35,
-                     true, Being::TC_SMALL);
-    loadTargetCursor("graphics/gui/target-cursor-blue-m.png", 62, 44,
-                     false, Being::TC_MEDIUM);
-    loadTargetCursor("graphics/gui/target-cursor-red-m.png", 62, 44,
-                     true, Being::TC_MEDIUM);
-    loadTargetCursor("graphics/gui/target-cursor-blue-l.png", 82, 60,
-                     false, Being::TC_LARGE);
-    loadTargetCursor("graphics/gui/target-cursor-red-l.png", 82, 60,
-                     true, Being::TC_LARGE);
-}
-
-void
-Viewport::loadTargetCursor(std::string filename, int width, int height,
-                           bool outRange, Being::TargetCursorSize size)
-{
-    assert(size > -1);
-    assert(size < 3);
-
-    ImageSet* currentImageSet;
-    SimpleAnimation* currentCursor;
-
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    currentImageSet = resman->getImageSet(filename, width, height);
-    Animation *anim = new Animation();
-    for (unsigned int i = 0; i < currentImageSet->size(); ++i)
-    {
-        anim->addFrame(currentImageSet->get(i), 75, 0, 0);
-    }
-    currentCursor = new SimpleAnimation(anim);
-
-    if (outRange)
-    {
-        mOutRangeImages[size] = currentImageSet;
-        mTargetCursorOutRange[size] = currentCursor;
-    }
-    else {
-        mInRangeImages[size] = currentImageSet;
-        mTargetCursorInRange[size] = currentCursor;
-    }
 }
 
 Viewport::~Viewport()
 {
     delete mPopupMenu;
-
-    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
-    {
-        delete mTargetCursorInRange[i];
-        delete mTargetCursorOutRange[i];
-        mInRangeImages[i]->decRef();
-        mOutRangeImages[i]->decRef();
-    }
 }
 
-void
-Viewport::setMap(Map *map)
+void Viewport::setMap(Map *map)
 {
     mMap = map;
 }
 
 extern MiniStatusWindow *miniStatusWindow;
 
-void
-Viewport::draw(gcn::Graphics *gcnGraphics)
+void Viewport::draw(gcn::Graphics *gcnGraphics)
 {
     static int lastTick = tick_time;
 
@@ -147,6 +91,10 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         return;
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
+
+    // Ensure the client doesn't freak out if a feature localplayer uses
+    // is dependent on a map.
+    player_node->mMapInitialized = true;
 
     // Avoid freaking out when tick_time overflows
     if (tick_time < lastTick)
@@ -225,36 +173,38 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     if (mMap)
     {
         mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
-        drawTargetCursor(graphics); // TODO: Draw the cursor with the sprite
-    }
 
-    // Find a path from the player to the mouse, and draw it. This is for debug
-    // purposes.
-    if (mShowDebugPath && mMap)
-    {
-        // Get the current mouse position
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-
-        int mouseTileX = mouseX / 32 + mTileViewX;
-        int mouseTileY = mouseY / 32 + mTileViewY;
-
-        Path debugPath = mMap->findPath(
-                player_node->mX, player_node->mY,
-                mouseTileX, mouseTileY);
-
-        graphics->setColor(gcn::Color(255, 0, 0));
-        for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
+        // Find a path from the player to the mouse, and draw it. This is for debug
+        // purposes.
+        if (mShowDebugPath) 
         {
-            int squareX = i->x * 32 - (int) mPixelViewX + 12;
-            int squareY = i->y * 32 - (int) mPixelViewY + 12;
+            // Get the current mouse position
+            int mouseX, mouseY;
+            SDL_GetMouseState(&mouseX, &mouseY);
 
-            graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-            graphics->drawText(
-                    toString(mMap->getMetaTile(i->x, i->y)->Gcost),
-                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
+            int mouseTileX = mouseX / 32 + mTileViewX;
+            int mouseTileY = mouseY / 32 + mTileViewY;
+
+            Path debugPath = mMap->findPath(player_node->mX, player_node->mY, mouseTileX, mouseTileY);
+
+            graphics->setColor(gcn::Color(255, 0, 0));
+            for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
+            {
+                int squareX = i->x * 32 - (int) mPixelViewX + 12;
+                int squareY = i->y * 32 - (int) mPixelViewY + 12;
+
+                graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+                graphics->drawText(toString(mMap->getMetaTile(i->x, i->y)->Gcost), squareX + 4, squareY + 12, gcn::Graphics::CENTER);
+            }
         }
     }
+
+    if (player_node->mUpdateName)
+    {
+        player_node->mUpdateName = false;
+        player_node->setName(player_node->getName());
+    }
+
 
     // Draw text
     if (textManager)
@@ -266,6 +216,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
+        (*i)->drawSpeech(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
         (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
     }
 
@@ -276,8 +227,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     WindowContainer::draw(gcnGraphics);
 }
 
-void
-Viewport::logic()
+void Viewport::logic()
 {
     WindowContainer::logic();
 
@@ -294,49 +244,9 @@ Viewport::logic()
                                     mouseY / 32 + mTileViewY);
         mWalkTime = player_node->mWalkTime;
     }
-
-    for (int i = 0; i < 3; i++)
-    {
-        mTargetCursorInRange[i]->update(10);
-        mTargetCursorOutRange[i]->update(10);
-    }
 }
 
-void
-Viewport::drawTargetCursor(Graphics *graphics)
-{
-    // Draw target marker if needed
-    Being *target = player_node->getTarget();
-    if (target)
-    {
-        // Calculate target circle position
-
-        // Find whether target is in range
-        int rangeX = abs(target->mX - player_node->mX);
-        int rangeY = abs(target->mY - player_node->mY);
-        int attackRange = player_node->getAttackRange();
-
-        // Get the correct target cursors graphic
-        Being::TargetCursorSize cursorSize = target->getTargetCursorSize();
-        Image* targetCursor;
-        if (rangeX > attackRange || rangeY > attackRange)
-        {
-            targetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
-        }
-        else {
-            targetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
-        }
-
-        // Draw the target cursor at the correct position
-        int posX = target->getPixelX() + 16 - targetCursor->getWidth() / 2 - (int) mPixelViewX;
-        int posY = target->getPixelY() + 16 - targetCursor->getHeight() / 2 - (int) mPixelViewY;
-
-        graphics->drawImage(targetCursor, posX, posY);
-    }
-}
-
-void
-Viewport::mousePressed(gcn::MouseEvent &event)
+void Viewport::mousePressed(gcn::MouseEvent &event)
 {
     // Check if we are alive and kickin'
     if (!mMap || !player_node || player_node->mAction == Being::DEAD)
@@ -348,8 +258,10 @@ Viewport::mousePressed(gcn::MouseEvent &event)
 
     mPlayerFollowMouse = false;
 
-    int tilex = event.getX() / 32 + mTileViewX;
-    int tiley = event.getY() / 32 + mTileViewY;
+    const int tilex = event.getX() / 32 + mTileViewX;
+    const int tiley = event.getY() / 32 + mTileViewY;
+    const int x = (int)((float) event.getX() + mPixelViewX);
+    const int y = (int)((float) event.getY() + mPixelViewY);
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
@@ -357,11 +269,11 @@ Viewport::mousePressed(gcn::MouseEvent &event)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = beingManager->findBeing(tilex, tiley)) &&
-            being != player_node)
+        if ((being = beingManager->findBeingByPixel(x, y)) &&
+             being != player_node)
         {
-            mPopupMenu->showPopup(event.getX(), event.getY(), being);
-            return;
+           mPopupMenu->showPopup(event.getX(), event.getY(), being);
+           return;
         }
         else if((floorItem = floorItemManager->findByCoordinates(tilex, tiley)))
         {
@@ -382,11 +294,9 @@ Viewport::mousePressed(gcn::MouseEvent &event)
     {
         Being *being;
         FloorItem *item;
-
+ 
         // Interact with some being
-//      if ((being = beingManager->findBeing(tilex, tiley))
-        int x = (int)((float) event.getX() + mPixelViewX);
-        int y = (int)((float) event.getY() + mPixelViewY);
+//        if ((being = beingManager->findBeing(tilex, tiley)))
         if ((being = beingManager->findBeingByPixel(x, y)))
         {
             switch (being->getType())
@@ -400,59 +310,47 @@ Viewport::mousePressed(gcn::MouseEvent &event)
                     if (being->mAction == Being::DEAD)
                         break;
 
-                    if (player_node->withinAttackRange(being))
+                    if (player_node->withinAttackRange(being) || keyboard.isKeyActive(keyboard.KEY_ATTACK))
                     {
-                        player_node->attack(being, true);
+                        player_node->setGotoTarget(being);
+                        player_node->attack(being, !keyboard.isKeyActive(keyboard.KEY_TARGET));
                     }
                     else
                     {
-                        Uint8 *keys = SDL_GetKeyState(NULL);
-                        if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
-                        {
-                            player_node->stopAttack();
-                            player_node->setGotoTarget(being);
-                        }
+                        player_node->setDestination(tilex, tiley);
                     }
                     break;
 
                 default:
                     break;
-            }
+             }
         }
         // Pick up some item
         else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
         {
-                player_node->pickUp(item);
+            player_node->pickUp(item);
         }
         // Just walk around
         else
         {
-            // XXX XXX XXX REALLY UGLY!
-            Uint8 *keys = SDL_GetKeyState(NULL);
-            if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
-            {
-                player_node->setDestination(tilex, tiley);
-                player_node->stopAttack();
-            }
+            player_node->stopAttack();
+            player_node->setDestination(tilex, tiley);
             mPlayerFollowMouse = true;
         }
     }
     else if (event.getButton() == gcn::MouseEvent::MIDDLE)
     {
         // Find the being nearest to the clicked position
-        Being *target = beingManager->findNearestLivingBeing(
-                tilex, tiley,
-                20, Being::MONSTER);
-
+        Being *target = beingManager->findBeingByPixel(x, y);
+ 
         if (target)
         {
-            player_node->setTarget(target);
+             player_node->setTarget(target);
         }
     }
 }
 
-void
-Viewport::mouseDragged(gcn::MouseEvent &event)
+void Viewport::mouseDragged(gcn::MouseEvent &event)
 {
     if (!mMap || !player_node)
         return;
@@ -465,20 +363,17 @@ Viewport::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void
-Viewport::mouseReleased(gcn::MouseEvent &event)
+void Viewport::mouseReleased(gcn::MouseEvent &event)
 {
     mPlayerFollowMouse = false;
 }
 
-void
-Viewport::showPopup(int x, int y, Item *item)
+void Viewport::showPopup(int x, int y, Item *item)
 {
     mPopupMenu->showPopup(x, y, item);
 }
 
-void
-Viewport::optionChanged(const std::string &name)
+void Viewport::optionChanged(const std::string &name)
 {
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);

@@ -22,21 +22,18 @@
 #include <cassert>
 
 #include "resource.h"
-
 #include "resourcemanager.h"
 
 Resource::~Resource()
 {
 }
 
-void
-Resource::incRef()
+void Resource::incRef()
 {
     mRefCount++;
 }
 
-void
-Resource::decRef()
+void Resource::decRef()
 {
     // Reference may not already have reached zero
     assert(mRefCount != 0);

@@ -24,15 +24,22 @@
 
 #include <list>
 #include <memory>
-#include <string>
 #include <SDL_types.h>
 #include <set>
+#include <string>
+#include <vector>
+#include <bitset>
 
+#include "animatedsprite.h"
+#include "effectmanager.h"
+#include "map.h"
+#include "particlecontainer.h"
 #include "position.h"
 #include "sprite.h"
-#include "map.h"
-#include "animatedsprite.h"
-#include "particlecontainer.h"
+
+#include "gui/speechbubble.h"
+
+#include "resources/colordb.h"
 
 #define FIRST_IGNORE_EMOTE 14
 #define STATUS_EFFECTS 32
@@ -43,8 +50,8 @@ class ItemInfo;
 class Item;
 class Map;
 class Graphics;
-class ImageSet;
 class Particle;
+class SpeechBubble;
 class Text;
 
 class StatusEffect;
@@ -107,13 +114,13 @@ class Being : public Sprite
 
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
-        Uint8 mAction;          /**< Action the being is performing */
-        Uint8 mFrame;
+        Action mAction;          /**< Action the being is performing */
+	Uint16 mFrame;
         Uint16 mWalkTime;
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
 
-        Uint16 mAttackSpeed;          /**< Attack speed */
+        Uint16 mAttackSpeed;    /**< Attack speed */
 
         /**
          * Constructor.
@@ -152,6 +159,11 @@ class Being : public Sprite
         virtual void takeDamage(int amount);
 
         /**
+         * Puts a crit notification bubble above this being.
+         */
+        virtual void showCrit();
+
+        /**
          * Handles an attack of another being by this being.
          *
          * @param victim The attacked being.
@@ -186,6 +198,11 @@ class Being : public Sprite
         { return mHairStyle; }
 
         /**
+         * Get the number of hairstyles implemented
+         */
+        static int getNumOfHairstyles() { return mNumberOfHairstyles; }
+
+        /**
          * Sets the hair style and color for this being.
          */
         virtual void setHairStyle(int style, int color);
@@ -211,9 +228,22 @@ class Being : public Sprite
         virtual void nextStep();
 
         /**
+         * Triggers whether or not to show the name as a GM name.
+         * NOTE: This doesn't mean that just anyone can use this.
+         * If the server doesn't acknowlege you, you won't be shown
+         * as a GM on other people's clients.
+         */
+        virtual void setGM() { mIsGM = true; }
+
+        /**
          * Performs being logic.
          */
         virtual void logic();
+
+        /**
+         * Draws the speech text above the being.
+         */
+        void drawSpeech(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.
@@ -253,7 +283,7 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        virtual void setAction(Uint8 action);
+        virtual void setAction(Action action);
 
         /**
          * Returns the current direction.
@@ -264,6 +294,16 @@ class Being : public Sprite
          * Sets the current direction.
          */
         void setDirection(Uint8 direction);
+
+        /**
+         * Gets the current action.
+         */
+        int getWalkTime() { return mWalkTime; }
+
+        /**
+         * Returns the direction the being is facing.
+         */
+        SpriteDirection getSpriteDirection() const;
 
         /**
          * Draws this being to the given graphics context.
@@ -317,6 +357,8 @@ class Being : public Sprite
          */
         void controlParticle(Particle *particle);
 
+        AnimatedSprite* getEmote(int index) { return emotionSet[index]; }
+
         void setEmote(Uint8 emotion, Uint8 emote_time)
         {
             mEmotion = emotion;
@@ -356,14 +398,19 @@ class Being : public Sprite
             internalTriggerEffect(effectId, false, true);
         }
 
-        const std::auto_ptr<Equipment> mEquipment;
+        // Target cursor being used by the being
+        Image *mTargetCursor;
 
+        const std::auto_ptr<Equipment> mEquipment;
 
         static int getHairColorsNr();
 
         static int getHairStylesNr();
 
         static std::string getHairColor(int index);
+
+        virtual AnimatedSprite* getSprite(int index) const
+            { return mSprites[index]; }
 
     protected:
         /**
@@ -375,11 +422,6 @@ class Being : public Sprite
          * Let the sub-classes react to a replacement
          */
         virtual void updateCoords() {}
-
-        /**
-         * Returns the sprite direction of this being.
-         */
-        SpriteDirection getSpriteDirection() const;
 
         /**
          * Trigger visual effect, with components
@@ -416,18 +458,25 @@ class Being : public Sprite
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
+        bool mIsGM;
+        bool mParticleEffects;          /**< Whether to display particles or not */
 
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
 
+        static int mNumberOfHairstyles;          /** Number of hair styles in use */
+
         Path mPath;
-        Text *mSpeech;
+        std::string mSpeech;
+        Text *mText;
         Uint16 mHairStyle, mHairColor;
         Gender mGender;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
         Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
+
+        gcn::Color mNameColor;
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
@@ -443,9 +492,13 @@ class Being : public Sprite
          */
         int getOffset(char pos, char neg) const;
 
-        static int instances;           /**< Number of Being instances */
-        static ImageSet *emotionSet;    /**< Emoticons used by beings */
         bool mMustResetParticles;	/**< Reset particle status effects on next redraw? */
+
+        // Speech Bubble components
+        SpeechBubble *mSpeechBubble;
+
+        static int instances;                              /**< Number of Being instances */
+        static std::vector<AnimatedSprite*> emotionSet;    /**< Emoticons used by beings */
 };
 
 #endif

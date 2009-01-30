@@ -26,8 +26,8 @@
 
 #include "../guichanfwd.h"
 
-class GuiConfigListener;
 class Graphics;
+class GuiConfigListener;
 class ImageSet;
 class SDLInput;
 class Viewport;
@@ -124,5 +124,10 @@ extern SDLInput *guiInput;                    /**< GUI input */
 extern gcn::Font *hitRedFont;
 extern gcn::Font *hitBlueFont;
 extern gcn::Font *hitYellowFont;
+
+/**
+ * Bolded text font
+ */
+extern gcn::Font *boldFont;
 
 #endif

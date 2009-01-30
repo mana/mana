@@ -19,12 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "status.h"
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "progressbar.h"
+#include "status.h"
 #include "windowcontainer.h"
 
 #include "../localplayer.h"
@@ -37,11 +36,10 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     Window(player->getName()),
     mPlayer(player)
 {
-    setWindowName("Status");
-    setResizable(true);
+    setWindowName(_("Status"));
     setCloseButton(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 365, 275);
+                   (windowContainer->getHeight() - 255) / 2, 400, 275);
     loadWindowState();
 
     // ----------------------
@@ -52,19 +50,19 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mGpLabel = new gcn::Label(strprintf(_("Job: %d"), 0));
     mJobLvlLabel = new gcn::Label(strprintf(_("Money: %d GP"), 0));
 
-    mHpLabel = new gcn::Label("HP:");
+    mHpLabel = new gcn::Label(_("HP:"));
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
     mHpValueLabel = new gcn::Label;
 
-    mXpLabel = new gcn::Label("Exp:");
+    mXpLabel = new gcn::Label(_("Exp:"));
     mXpBar = new ProgressBar(1.0f, 80, 15, 143, 192, 211);
     mXpValueLabel = new gcn::Label;
 
-    mMpLabel = new gcn::Label("MP:");
+    mMpLabel = new gcn::Label(_("MP:"));
     mMpBar = new ProgressBar(1.0f, 80, 15, 26, 102, 230);
     mMpValueLabel = new gcn::Label;
 
-    mJobXpLabel = new gcn::Label("Job:");
+    mJobXpLabel = new gcn::Label(_("Job:"));
     mJobXpBar = new ProgressBar(1.0f, 80, 15, 220, 135, 203);
     mJobValueLabel = new gcn::Label;
 

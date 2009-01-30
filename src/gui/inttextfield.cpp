@@ -20,7 +20,6 @@
  */
 
 #include "inttextfield.h"
-
 #include "sdlinput.h"
 
 #include "../utils/tostring.h"

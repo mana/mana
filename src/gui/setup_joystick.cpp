@@ -19,12 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "setup_joystick.h"
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "checkbox.h"
+#include "setup_joystick.h"
 
 #include "widgets/layouthelper.h"
 
@@ -62,7 +61,8 @@ Setup_Joystick::Setup_Joystick():
 
 void Setup_Joystick::action(const gcn::ActionEvent &event)
 {
-    if (!joystick) {
+    if (!joystick)
+    {
         return;
     }
 
@@ -72,12 +72,15 @@ void Setup_Joystick::action(const gcn::ActionEvent &event)
     }
     else
     {
-        if (joystick->isCalibrating()) {
+        if (joystick->isCalibrating())
+        {
             mCalibrateButton->setCaption(_("Calibrate"));
             mCalibrateLabel->setCaption
                 (_("Press the button to start calibration"));
             joystick->finishCalibration();
-        } else {
+        }
+        else
+        {
             mCalibrateButton->setCaption(_("Stop"));
             mCalibrateLabel->setCaption(_("Rotate the stick"));
             joystick->startCalibration();

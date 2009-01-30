@@ -22,17 +22,17 @@
 #ifndef _CHAR_SELECT_H
 #define _CHAR_SELECT_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 
 #include "../guichanfwd.h"
 #include "../lockedarray.h"
 #include "../being.h"
 
-#include <guichan/actionlistener.hpp>
-
-class Player;
 class LocalPlayer;
 class Network;
+class Player;
 class PlayerBox;
 
 /**
@@ -65,8 +65,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         gcn::Button *mSelectButton;
         gcn::Button *mCancelButton;
-        gcn::Button *mNewCharButton;
-        gcn::Button *mDelCharButton;
+        gcn::Button *mNewDelCharButton;
         gcn::Button *mPreviousButton;
         gcn::Button *mNextButton;
 

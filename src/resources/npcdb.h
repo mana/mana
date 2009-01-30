@@ -22,8 +22,8 @@
 #ifndef NPC_DB_H
 #define NPC_DB_H
 
-#include <map>
 #include <list>
+#include <map>
 #include <string>
 
 struct NPCsprite
@@ -45,11 +45,9 @@ typedef std::map<int, NPCInfo*> NPCInfos;
  */
 namespace NPCDB
 {
-    void
-    load();
+    void load();
 
-    void
-    unload();
+    void unload();
 
     const NPCInfo& get(int id);
 

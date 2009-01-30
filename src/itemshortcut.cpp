@@ -19,11 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itemshortcut.h"
-
 #include "configuration.h"
 #include "inventory.h"
 #include "item.h"
+#include "itemshortcut.h"
 #include "localplayer.h"
 
 #include "utils/tostring.h"

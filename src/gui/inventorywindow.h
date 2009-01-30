@@ -28,9 +28,12 @@
 #include "window.h"
 
 #include "../guichanfwd.h"
+#include "../localplayer.h"
 
 class Item;
 class ItemContainer;
+class ProgressBar;
+class TextBox;
 
 /**
  * Inventory dialog.
@@ -38,13 +41,13 @@ class ItemContainer;
  * \ingroup Interface
  */
 class InventoryWindow : public Window, gcn::ActionListener,
-    gcn::SelectionListener
+                                       gcn::SelectionListener
 {
     public:
         /**
          * Constructor.
          */
-        InventoryWindow();
+        InventoryWindow(int invSize = (INVENTORY_SIZE - 2));
 
         /**
          * Logic (updates buttons and weight information).
@@ -61,30 +64,30 @@ class InventoryWindow : public Window, gcn::ActionListener,
          */
         Item* getSelectedItem() const;
 
-        /**
-         * Updates labels to currently selected item.
-         */
-        void valueChanged(const gcn::SelectionEvent &event);
-
         void mouseClicked(gcn::MouseEvent &event);
-
-        /**
-         * Called whenever the widget changes size.
-         */
-        void widgetResized(const gcn::Event &event);
 
     private:
         void updateButtons();    /**< Updates button states. */
 
         ItemContainer *mItems;
 
+        std::string mWeight;
+        std::string mSlots;
+        std::string mUsedSlots;
+        std::string mTotalWeight;
+        std::string mMaxWeight;
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
-        gcn::Label *mItemNameLabel;
-        gcn::Label *mItemDescriptionLabel;
-        gcn::Label *mItemEffectLabel;
+
         gcn::Label *mWeightLabel;
-        gcn::Label *mInvenSlotLabel;
+        gcn::Label *mSlotsLabel;
+
+        ProgressBar *mWeightBar;
+        ProgressBar *mSlotsBar;
+
+        int mMaxSlots;
+
+        bool mItemDesc;
 };
 
 extern InventoryWindow *inventoryWindow;

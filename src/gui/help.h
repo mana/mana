@@ -24,8 +24,8 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
 #include "linkhandler.h"
+#include "window.h"
 
 #include "../guichanfwd.h"
 

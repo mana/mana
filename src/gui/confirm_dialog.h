@@ -24,8 +24,12 @@
 
 #include <guichan/actionlistener.hpp>
 
+#include "button.h"
+#include "scrollarea.h"
+#include "textbox.h"
 #include "window.h"
 
+#include "../guichanfwd.h"
 
 /**
  * An option dialog.
@@ -42,10 +46,17 @@ class ConfirmDialog : public Window, public gcn::ActionListener {
         ConfirmDialog(const std::string &title, const std::string &msg,
                 Window *parent = NULL);
 
+        unsigned int getNumRows();
+
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+    private:
+        TextBox *mTextBox;
+        ScrollArea *mTextArea;
+        gcn::Button *okButton;
 };
 
 #endif

@@ -19,48 +19,44 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "main.h"
-
 #include <getopt.h>
 #include <iostream>
 #include <physfs.h>
+#include <SDL_image.h>
 #include <unistd.h>
 #include <vector>
-#include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
+
+#include <guichan/sdl/sdlinput.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
 
-#ifdef WIN32
-#include <SDL_syswm.h>
-#endif
-#ifndef WIN32
-#include <cerrno>
-#include <sys/stat.h>
-#endif
-#if defined __APPLE__
-#include <CoreFoundation/CFBundle.h>
-#endif
+#include <SDL/SDL_ttf.h>
 
 #include "configuration.h"
-#include "keyboardconfig.h"
-#include "player_relations.h"
+#include "emoteshortcut.h"
 #include "game.h"
 #include "graphics.h"
 #include "itemshortcut.h"
-#include "lockedarray.h"
+#include "keyboardconfig.h"
 #include "localplayer.h"
+#include "lockedarray.h"
 #include "log.h"
 #include "logindata.h"
+#include "main.h"
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
+#include "player_relations.h"
+#include "serverinfo.h"
 #include "sound.h"
 
 #include "gui/char_server.h"
 #include "gui/char_select.h"
+#include "gui/colour.h"
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
@@ -77,6 +73,8 @@
 #include "net/messageout.h"
 #include "net/network.h"
 
+#include "resources/colordb.h"
+#include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
@@ -87,7 +85,24 @@
 #include "utils/gettext.h"
 #include "utils/tostring.h"
 
-namespace {
+#ifdef __APPLE__
+#include <CoreFoundation/CFBundle.h>
+#endif
+
+#ifdef __MINGW32__
+#include <windows.h>
+#define usleep(usec) (Sleep ((usec) / 1000), 0)
+#endif
+
+#ifdef WIN32
+#include <SDL_syswm.h>
+#else
+#include <cerrno>
+#include <sys/stat.h>
+#endif
+
+namespace
+{
     Window *setupWindow = 0;
 
     struct SetupListener : public gcn::ActionListener
@@ -123,6 +138,7 @@ CharServerHandler charServerHandler;
 LoginData loginData;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
+Colour *textColour;
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {
@@ -168,10 +184,13 @@ struct Options
  */
 void setUpdatesDir()
 {
+    std::stringstream updates;
+
     // If updatesHost is currently empty, fill it from config file
-    if (updateHost.empty()) {
+    if (updateHost.empty())
+    {
         updateHost =
-            config.getValue("updatehost", "http://updates.themanaworld.org");
+            config.getValue("updatehost", "http://updates.themanaworld.org/");
     }
 
     // Remove any trailing slash at the end of the update host
@@ -181,29 +200,59 @@ void setUpdatesDir()
     // Parse out any "http://" or "ftp://", and set the updates directory
     size_t pos;
     pos = updateHost.find("://");
-    if (pos != updateHost.npos) {
-        if (pos + 3 < updateHost.length()) {
-            updatesDir =
-                "updates/" + updateHost.substr(pos + 3);
-        } else {
-            logger->log("Error: Invalid update host: %s", updateHost.c_str());
-            errorMessage = "Invalid update host: " + updateHost;
+    if (pos != updateHost.npos)
+    {
+        if (pos + 3 < updateHost.length())
+        {
+            updates << "updates/" << updateHost.substr(pos + 3) 
+                    << "/" << loginData.port;
+            updatesDir = updates.str();
+        }
+        else
+        {
+            logger->log(_("Error: Invalid update host: %s"), updateHost.c_str());
+            errorMessage = _("Invalid update host: ") + updateHost;
             state = ERROR_STATE;
         }
-    } else {
-        logger->log("Warning: no protocol was specified for the update host");
-        updatesDir = "updates/" + updateHost;
+    }
+    else
+    {
+        logger->log(_("Warning: no protocol was specified for the update host"));
+        updates << "updates/" << updateHost << "/" << loginData.port;
+        updatesDir = updates.str();
     }
 
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Verify that the updates directory exists. Create if necessary.
-    if (!resman->isDirectory("/" + updatesDir)) {
-        if (!resman->mkdir("/" + updatesDir)) {
-            logger->log("Error: %s/%s can't be made, but doesn't exist!",
+    if (!resman->isDirectory("/" + updatesDir))
+    {
+        if (!resman->mkdir("/" + updatesDir))
+        {
+#if defined WIN32
+            std::string newDir = homeDir + "\\" + updatesDir;
+            std::string::size_type loc = newDir.find("/", 0);
+
+            while (loc != std::string::npos)
+            {
+                newDir.replace(loc, 1, "\\");
+                loc = newDir.find("/", loc);
+            }
+
+            if (!CreateDirectory(newDir.c_str(), 0) &&
+                GetLastError() != ERROR_ALREADY_EXISTS)
+            {
+                logger->log(_("Error: %s can't be made, but doesn't exist!"),
+                              newDir.c_str());
+                errorMessage = _("Error creating updates directory!");
+                state = ERROR_STATE;
+            }
+#else
+            logger->log(_("Error: %s/%s can't be made, but doesn't exist!"),
                          homeDir.c_str(), updatesDir.c_str());
-            errorMessage = "Error creating updates directory!";
+            errorMessage = _("Error creating updates directory!");
             state = ERROR_STATE;
+#endif
         }
     }
 }
@@ -219,7 +268,7 @@ void init_engine(const Options &options)
             GetLastError() != ERROR_ALREADY_EXISTS)
 #elif defined __APPLE__
     // Use Application Directory instead of .tmw
-    homeDir = std::string(PHYSFS_getUserDir()) + 
+    homeDir = std::string(PHYSFS_getUserDir()) +
         "/Library/Application Support/The Mana World";
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
@@ -230,7 +279,7 @@ void init_engine(const Options &options)
 #endif
     {
         std::cout << homeDir
-                  << " can't be created, but it doesn't exist! Exiting."
+                  << _(" can't be created, but it doesn't exist! Exiting.")
                   << std::endl;
         exit(1);
     }
@@ -239,15 +288,15 @@ void init_engine(const Options &options)
     logger->setLogFile(homeDir + std::string("/tmw.log"));
 
     #ifdef PACKAGE_VERSION
-        logger->log("Starting The Mana World Version %s", PACKAGE_VERSION);
+        logger->log(_("Starting The Mana World Version %s"), PACKAGE_VERSION);
     #else
-        logger->log("Starting The Mana World - Version not defined");
+        logger->log(_("Starting The Mana World - Version not defined"));
     #endif
 
     // Initialize SDL
-    logger->log("Initializing SDL...");
+    logger->log(_("Initializing SDL..."));
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-        std::cerr << "Could not initialize SDL: " <<
+        std::cerr << _("Could not initialize SDL: ") <<
             SDL_GetError() << std::endl;
         exit(1);
     }
@@ -260,7 +309,7 @@ void init_engine(const Options &options)
 
     if (!resman->setWriteDir(homeDir)) {
         std::cout << homeDir
-                  << " couldn't be set as home directory! Exiting."
+                  << _(" couldn't be set as home directory! Exiting.")
                   << std::endl;
         exit(1);
     }
@@ -280,7 +329,7 @@ void init_engine(const Options &options)
     if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path,
                                           PATH_MAX))
     {
-        fprintf(stderr, "Can't find Resources directory\n");
+        fprintf(stderr, _("Can't find Resources directory\n"));
     }
     CFRelease(resourcesURL);
     strncat(path, "/data", PATH_MAX - 1);
@@ -290,9 +339,9 @@ void init_engine(const Options &options)
 #endif
 
     // Fill configuration with defaults
-    logger->log("Initializing configuration...");
-    config.setValue("host", "server.themanaworld.org");
-    config.setValue("port", 6901);
+    logger->log(_("Initializing configuration..."));
+    config.setValue("host", "www.themanaworld.org");
+    config.setValue("port", 21001);
     config.setValue("hwaccel", 0);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
     config.setValue("opengl", 1);
@@ -312,24 +361,24 @@ void init_engine(const Options &options)
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
-    FILE *tmwFile = 0;
+    FILE *configFile = 0;
     std::string configPath = options.configPath;
 
     if (configPath.empty())
         configPath = homeDir + "/config.xml";
 
-    tmwFile = fopen(configPath.c_str(), "r");
+    configFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
-    if (tmwFile == NULL) {
+    if (configFile == NULL) {
         // We reopen the file in write mode and we create it
-        tmwFile = fopen(configPath.c_str(), "wt");
+        configFile = fopen(configPath.c_str(), "wt");
     }
-    if (tmwFile == NULL) {
+    if (configFile == NULL) {
         std::cout << "Can't create " << configPath << ". "
             "Using Defaults." << std::endl;
     } else {
-        fclose(tmwFile);
+        fclose(configFile);
         config.init(configPath);
     }
 
@@ -364,17 +413,17 @@ void init_engine(const Options &options)
     graphics = new Graphics();
 #endif
 
-    int width = (int) config.getValue("screenwidth", defaultScreenWidth);
-    int height = (int) config.getValue("screenheight", defaultScreenHeight);
-    int bpp = 0;
-    bool fullscreen = ((int) config.getValue("screen", 0) == 1);
-    bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
+    const int width = (int) config.getValue("screenwidth", defaultScreenWidth);
+    const int height = (int) config.getValue("screenheight", defaultScreenHeight);
+    const int bpp = 0;
+    const bool fullscreen = ((int) config.getValue("screen", 0) == 1);
+    const bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
 
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
     {
-        std::cerr << "Couldn't set "
-                  << width << "x" << height << "x" << bpp << " video mode: "
+        std::cerr << _("Couldn't set ")
+                  << width << "x" << height << "x" << bpp << _(" video mode: ")
                   << SDL_GetError() << std::endl;
         exit(1);
     }
@@ -384,6 +433,9 @@ void init_engine(const Options &options)
 
     // Initialize the item shortcuts.
     itemShortcut = new ItemShortcut();
+
+    // Initialize the emote shortcuts.
+    emoteShortcut = new EmoteShortcut();
 
     gui = new Gui(graphics);
     state = LOGIN_STATE; /**< Initial game state */
@@ -401,7 +453,7 @@ void init_engine(const Options &options)
     catch (const char *err) {
         state = ERROR_STATE;
         errorMessage = err;
-        logger->log("Warning: %s", err);
+        logger->log(_("Warning: %s"), err);
     }
 
     // Initialize keyboard
@@ -416,6 +468,7 @@ void exit_engine()
 {
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
+    delete emoteShortcut;
 
     config.write();
 
@@ -429,6 +482,8 @@ void exit_engine()
     sound.close();
 
     // Unload XML databases
+    ColorDB::unload();
+    EmoteDB::unload();
     ItemDB::unload();
     MonsterDB::unload();
     NPCDB::unload();
@@ -440,27 +495,27 @@ void exit_engine()
 void printHelp()
 {
     std::cout
-        << "tmw" << std::endl << std::endl
-        << "Options: " << std::endl
-        << "  -h --help       : Display this help" << std::endl
-        << "  -v --version    : Display the version" << std::endl
-        << "  -u --skipupdate : Skip the update process" << std::endl
-        << "  -d --data       : Directory to load game data from" << std::endl
-        << "  -U --username   : Login with this username" << std::endl
-        << "  -P --password   : Login with this password" << std::endl
-        << "  -D --default    : Bypass the login process with default settings" << std::endl
-        << "  -p --playername : Login with this player" << std::endl
-        << "  -C --configfile : Configuration file to use" << std::endl
-        << "  -H --updatehost : Use this update host" << std::endl;
+        << _("tmw") << std::endl << std::endl
+        << _("Options: ") << std::endl
+        << _("  -C --configfile : Configuration file to use") << std::endl
+        << _("  -d --data       : Directory to load game data from") << std::endl
+        << _("  -D --default    : Bypass the login process with default settings") << std::endl
+        << _("  -h --help       : Display this help") << std::endl
+        << _("  -H --updatehost : Use this update host") << std::endl
+        << _("  -p --playername : Login with this player") << std::endl
+        << _("  -P --password   : Login with this password") << std::endl
+        << _("  -u --skipupdate : Skip the update downloads") << std::endl
+        << _("  -U --username   : Login with this username") << std::endl
+        << _("  -v --version    : Display the version") << std::endl;
 }
 
 void printVersion()
 {
 #ifdef PACKAGE_VERSION
-    std::cout << "The Mana World version " << PACKAGE_VERSION << std::endl;
+    std::cout << _("The Mana World version ") << PACKAGE_VERSION << std::endl;
 #else
-    std::cout << "The Mana World version " <<
-             "(local build?, PACKAGE_VERSION is not defined)" << std::endl;
+    std::cout << _("The Mana World version ") <<
+             _"(local build?, PACKAGE_VERSION is not defined)") << std::endl;
 #endif
 }
 
@@ -469,16 +524,16 @@ void parseOptions(int argc, char *argv[], Options &options)
     const char *optstring = "hvud:U:P:Dp:C:H:";
 
     const struct option long_options[] = {
-        { "help",       no_argument,       0, 'h' },
-        { "version",    no_argument,       0, 'v' },
-        { "skipupdate", no_argument,       0, 'u' },
+        { "configfile", required_argument, 0, 'C' },
         { "data",       required_argument, 0, 'd' },
-        { "username",   required_argument, 0, 'U' },
-        { "password",   required_argument, 0, 'P' },
         { "default",    no_argument,       0, 'D' },
         { "playername", required_argument, 0, 'p' },
-        { "configfile", required_argument, 0, 'C' },
+        { "password",   required_argument, 0, 'P' },
+        { "help",       no_argument,       0, 'h' },
         { "updatehost", required_argument, 0, 'H' },
+        { "skipupdate", no_argument,       0, 'u' },
+        { "username",   required_argument, 0, 'U' },
+        { "version",    no_argument,       0, 'v' },
         { 0 }
     };
 
@@ -490,36 +545,36 @@ void parseOptions(int argc, char *argv[], Options &options)
             break;
 
         switch (result) {
-            default: // Unknown option
-            case 'h':
-                options.printHelp = true;
-                break;
-            case 'v':
-                options.printVersion = true;
-                break;
-            case 'u':
-                options.skipUpdate = true;
+            case 'C':
+                options.configPath = optarg;
                 break;
             case 'd':
                 options.dataPath = optarg;
                 break;
-            case 'U':
-                options.username = optarg;
-                break;
-            case 'P':
-                options.password = optarg;
-                break;
             case 'D':
                 options.chooseDefault = true;
+                break;
+            default: // Unknown option
+            case 'h':
+                options.printHelp = true;
+                break;
+            case 'H':
+                options.updateHost = optarg;
                 break;
             case 'p':
                 options.playername = optarg;
                 break;
-            case 'C':
-                options.configPath = optarg;
+            case 'P':
+                options.password = optarg;
                 break;
-            case 'H':
-                options.updateHost = optarg;
+            case 'u':
+                options.skipUpdate = true;
+                break;
+            case 'U':
+                options.username = optarg;
+                break;
+            case 'v':
+                options.printVersion = true;
                 break;
         }
     }
@@ -556,8 +611,8 @@ struct ErrorListener : public gcn::ActionListener
 // TODO Find some nice place for these functions
 void accountLogin(Network *network, LoginData *loginData)
 {
-    logger->log("Trying to connect to account server...");
-    logger->log("Username is %s", loginData->username.c_str());
+    logger->log(_("Trying to connect to account server..."));
+    logger->log(_("Username is %s"), loginData->username.c_str());
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
     loginHandler.setLoginData(loginData);
@@ -597,9 +652,21 @@ void accountLogin(Network *network, LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
+inline int MIN(int x, int y)
+{
+    return x < y ? x : y;
+}
+
+void positionDialog(Window *dialog, int screenWidth, int screenHeight)
+{
+    dialog->setPosition(
+        MIN(screenWidth * 5 / 8, screenWidth - dialog->getWidth()),
+        MIN(screenHeight * 5 / 8, screenHeight - dialog->getHeight()));
+}
+
 void charLogin(Network *network, LoginData *loginData)
 {
-    logger->log("Trying to connect to char server...");
+    logger->log(_("Trying to connect to char server..."));
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&charServerHandler);
     charServerHandler.setCharInfo(&charInfo);
@@ -621,14 +688,14 @@ void charLogin(Network *network, LoginData *loginData)
 
 void mapLogin(Network *network, LoginData *loginData)
 {
-    logger->log("Memorizing selected character %s",
+    logger->log(_("Memorizing selected character %s"),
             player_node->getName().c_str());
     config.setValue("lastCharacter", player_node->getName());
 
     MessageOut outMsg(network);
 
-    logger->log("Trying to connect to map server...");
-    logger->log("Map: %s", map_path.c_str());
+    logger->log(_("Trying to connect to map server..."));
+    logger->log(_("Map: %s"), map_path.c_str());
 
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&mapLoginHandler);
@@ -697,6 +764,9 @@ int main(int argc, char *argv[])
 
     unsigned int oldstate = !state; // We start with a status change.
 
+    // Needs to be created in main, as the updater uses it
+    textColour = new Colour();
+
     Game *game = NULL;
     Window *currentDialog = NULL;
     Image *login_wallpaper = NULL;
@@ -707,7 +777,7 @@ int main(int argc, char *argv[])
     gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
     top->add(versionLabel, 2, 2);
 #endif
-    ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20);
+    ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
     gcn::Label *progressLabel = new gcn::Label();
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
     top->add(progressLabel, 15 + progressBar->getWidth(),
@@ -729,12 +799,34 @@ int main(int argc, char *argv[])
         loginData.password = options.password;
     }
     loginData.hostname = config.getValue("host", "server.themanaworld.org");
-    loginData.port = (short)config.getValue("port", 0);
+    loginData.port = (short)config.getValue("port", 6901);
     loginData.remember = config.getValue("remember", 0);
     loginData.registerLogin = false;
 
     SDLNet_Init();
     Network *network = new Network();
+
+    // Set the most appropriate wallpaper, based on screen width
+    int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);
+    int screenHeight = static_cast<int>(config.getValue("screenheight",
+                                                        defaultScreenHeight));
+    std::string wallpaperName;
+
+    wallpaperName = "graphics/images/login_wallpaper.png";
+    if (screenWidth >= 1024 && screenWidth < 1280)
+        wallpaperName = "graphics/images/login_wallpaper_1024x768.png";
+    else if (screenWidth >= 1280 && screenWidth < 1440)
+        wallpaperName = "graphics/images/login_wallpaper_1280x960.png";
+    else if (screenWidth >= 1440 && screenWidth < 1600)
+        wallpaperName = "graphics/images/login_wallpaper_1440x1080.png";
+    else if (screenWidth >= 1600)
+        wallpaperName = "graphics/images/login_wallpaper_1600x1200.png";
+
+    login_wallpaper = ResourceManager::getInstance()-> getImage(wallpaperName);
+
+    if (!login_wallpaper)
+        logger->log(_("Couldn't load %s as wallpaper"), wallpaperName.c_str());
+
     while (state != EXIT_STATE)
     {
         // Handle SDL events
@@ -770,16 +862,6 @@ int main(int argc, char *argv[])
             }
         }
 
-        if (!login_wallpaper)
-        {
-            login_wallpaper = ResourceManager::getInstance()->
-                    getImage("graphics/images/login_wallpaper.png");
-            if (!login_wallpaper)
-            {
-                logger->error("Couldn't load login_wallpaper.png");
-            }
-        }
-
         if (progressBar->isVisible())
         {
             progressBar->setProgress(progressBar->getProgress() + 0.005f);
@@ -808,7 +890,7 @@ int main(int argc, char *argv[])
                     // Reload the wallpaper in case that it was updated
                     login_wallpaper->decRef();
                     login_wallpaper = ResourceManager::getInstance()->
-                        getImage("graphics/images/login_wallpaper.png");
+                        getImage(wallpaperName);
                     break;
 
                     // Those states don't cause a network disconnect
@@ -847,9 +929,12 @@ int main(int argc, char *argv[])
                         false);
 
                     // Load XML databases
+                    ColorDB::load();
                     ItemDB::load();
                     MonsterDB::load();
                     NPCDB::load();
+                    EmoteDB::load();
+
                     state = CHAR_CONNECT_STATE;
                     break;
 
@@ -861,33 +946,49 @@ int main(int argc, char *argv[])
                         state = ACCOUNT_STATE;
                     } else {
                         currentDialog = new LoginDialog(&loginData);
+                        positionDialog(currentDialog, screenWidth,
+                                                      screenHeight);
                     }
                     break;
 
                 case REGISTER_STATE:
                     logger->log("State: REGISTER");
                     currentDialog = new RegisterDialog(&loginData);
+                    positionDialog(currentDialog, screenWidth, screenHeight);
                     break;
 
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
+
+                    if (n_server == 1) 
+                    {
+                        SERVER_INFO *si = *server_info;
+                        loginData.hostname = iptostring(si->address);
+                        loginData.port = si->port;
+                        loginData.updateHost = si->updateHost;
+                        state = UPDATE_STATE;
+                    } 
+                    else 
                     {
                         int nextState = (options.skipUpdate) ?
                             LOADDATA_STATE : UPDATE_STATE;
                         currentDialog = new ServerSelectDialog(&loginData,
-                                nextState);
-                    }
-                    if (options.chooseDefault || options.playername != "") {
-                        ((ServerSelectDialog*) currentDialog)->action(
-                            gcn::ActionEvent(NULL, "ok"));
+                                                                nextState);
+                        positionDialog(currentDialog, screenWidth,
+                                                      screenHeight);
+                        if (options.chooseDefault || options.playername != "") 
+                        {
+                            ((ServerSelectDialog*) currentDialog)->action(
+                                gcn::ActionEvent(NULL, "ok"));
+                        }
                     }
                     break;
-
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
                             (loginData.sex == 0) ?
                             GENDER_FEMALE : GENDER_MALE);
+                    positionDialog(currentDialog, screenWidth, screenHeight);
 
                     if (((CharSelectDialog*) currentDialog)->
                             selectByName(options.playername))
@@ -899,6 +1000,7 @@ int main(int argc, char *argv[])
                     if (options.chooseDefault)
                         ((CharSelectDialog*) currentDialog)->action(
                             gcn::ActionEvent(NULL, "ok"));
+
                     break;
 
                 case GAME_STATE:
@@ -936,13 +1038,21 @@ int main(int argc, char *argv[])
 
                     setUpdatesDir();
                     logger->log("State: UPDATE");
-                    currentDialog = new UpdaterWindow(updateHost,
-                            homeDir + "/" + updatesDir);
+
+                    if (options.skipUpdate) {
+                        state = LOADDATA_STATE;
+                    } else {
+                        currentDialog = new UpdaterWindow(updateHost,
+                                                homeDir + "/" + updatesDir);
+                        positionDialog(currentDialog, screenWidth,
+                                                      screenHeight);
+                    }
                     break;
 
                 case ERROR_STATE:
                     logger->log("State: ERROR");
                     currentDialog = new OkDialog(_("Error"), errorMessage);
+                    positionDialog(currentDialog, screenWidth, screenHeight);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     network->disconnect();
@@ -979,8 +1089,15 @@ int main(int argc, char *argv[])
                     break;
             }
         }
+        /*
+         * This loop can really stress the CPU, for no reason since it's
+         * just constantly redrawing the wallpaper.  Added the following
+         * usleep to limit it to 20 FPS during the login sequence
+         */
+        usleep(50000);
     }
 
+    delete textColour;
 #ifdef PACKAGE_VERSION
     delete versionLabel;
 #endif

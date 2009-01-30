@@ -19,14 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "textfield.h"
-
 #include <algorithm>
 
 #include <guichan/font.hpp>
 
 #include "sdlinput.h"
+#include "textfield.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -40,7 +40,9 @@ int TextField::instances = 0;
 ImageRect TextField::skin;
 
 TextField::TextField(const std::string& text):
-    gcn::TextField(text)
+    gcn::TextField(text),
+    mNumeric(false),
+    mListener(0)
 {
     setFrameSize(2);
 
@@ -62,6 +64,7 @@ TextField::TextField(const std::string& text):
                         gridx[x], gridy[y],
                         gridx[x + 1] - gridx[x] + 1,
                         gridy[y + 1] - gridy[y] + 1);
+                skin.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }
@@ -103,6 +106,42 @@ void TextField::drawFrame(gcn::Graphics *graphics)
     h = getHeight() + bs * 2;
 
     static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
+}
+
+void TextField::setNumeric(bool numeric)
+{
+    mNumeric = numeric;
+    if (!numeric)
+    {
+        return;
+    }
+    const char *text = mText.c_str();
+    for (const char *textPtr = text; *textPtr; ++textPtr)
+    {
+        if (*textPtr < '0' || *textPtr > '9')
+        {
+            setText(mText.substr(0, textPtr - text));
+            return;
+        }
+    }
+}
+
+int TextField::getValue() const
+{
+    if (!mNumeric)
+    {
+        return 0;
+    }
+    int value = atoi(mText.c_str());
+    if (value < mMinimum)
+    {
+        return mMinimum;
+    }
+    if (value > mMaximum)
+    {
+        return mMaximum;
+    }
+    return value;
 }
 
 void TextField::keyPressed(gcn::KeyEvent &keyEvent)

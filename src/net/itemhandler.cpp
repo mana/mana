@@ -20,7 +20,6 @@
  */
 
 #include "itemhandler.h"
-
 #include "messagein.h"
 #include "protocol.h"
 

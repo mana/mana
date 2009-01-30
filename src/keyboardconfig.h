@@ -24,6 +24,8 @@
 
 #include <string>
 
+#include <guichan/sdl/sdlinput.hpp>
+
 #include "gui/sdlinput.h"
 #include "gui/setup_keyboard.h"
 
@@ -101,6 +103,11 @@ class KeyboardConfig
         int getKeyIndex(int keyValue) const;
 
         /**
+         * Get the key function index for an emote by providing the offset value.
+         */
+        int getKeyEmoteOffset(int keyValue) const;
+
+        /**
          * Set the enable flag, which will stop the user from doing actions.
          */
         void setEnabled(bool flag)
@@ -148,14 +155,15 @@ class KeyboardConfig
             KEY_MOVE_LEFT,
             KEY_MOVE_RIGHT,
             KEY_ATTACK,
-            KEY_SMILIE,
+            KEY_EMOTE,
+            KEY_TALK,
             KEY_TARGET,
             KEY_TARGET_CLOSEST,
+            KEY_TARGET_NPC,
             KEY_TARGET_PLAYER,
             KEY_PICKUP,
             KEY_HIDE_WINDOWS,
             KEY_SIT,
-            KEY_SHORTCUT_0,
             KEY_SHORTCUT_1,
             KEY_SHORTCUT_2,
             KEY_SHORTCUT_3,
@@ -165,6 +173,9 @@ class KeyboardConfig
             KEY_SHORTCUT_7,
             KEY_SHORTCUT_8,
             KEY_SHORTCUT_9,
+            KEY_SHORTCUT_10,
+            KEY_SHORTCUT_11,
+            KEY_SHORTCUT_12,
             KEY_WINDOW_STATUS,
             KEY_WINDOW_INVENTORY,
             KEY_WINDOW_EQUIPMENT,
@@ -174,6 +185,20 @@ class KeyboardConfig
             KEY_WINDOW_SHORTCUT,
             KEY_WINDOW_SETUP,
             KEY_WINDOW_DEBUG,
+            KEY_WINDOW_EMOTE,
+            KEY_WINDOW_EMOTE_SHORTCUT,
+            KEY_EMOTE_1,
+            KEY_EMOTE_2,
+            KEY_EMOTE_3,
+            KEY_EMOTE_4,
+            KEY_EMOTE_5,
+            KEY_EMOTE_6,
+            KEY_EMOTE_7,
+            KEY_EMOTE_8,
+            KEY_EMOTE_9,
+            KEY_EMOTE_10,
+            KEY_EMOTE_11,
+            KEY_EMOTE_12,
             KEY_TOTAL
         };
 

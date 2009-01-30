@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "listbox.h"
-
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
 #include <guichan/mouseinput.hpp>
+
+#include "listbox.h"
 
 ListBox::ListBox(gcn::ListModel *listModel):
     gcn::ListBox(listModel)
@@ -36,7 +36,7 @@ void ListBox::draw(gcn::Graphics *graphics)
     if (!mListModel)
         return;
 
-    graphics->setColor(gcn::Color(110, 160, 255));
+    graphics->setColor(gcn::Color(235, 200, 115));
     graphics->setFont(getFont());
 
     int fontHeight = getFont()->getHeight();
@@ -57,8 +57,7 @@ void ListBox::draw(gcn::Graphics *graphics)
     }
 }
 
-void
-ListBox::mouseDragged(gcn::MouseEvent &event)
+void ListBox::mouseDragged(gcn::MouseEvent &event)
 {
     // Pretend mouse is pressed continuously while dragged. Causes list
     // selection to be updated as is default in many GUIs.

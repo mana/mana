@@ -19,23 +19,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "menuwindow.h"
-
 #include <string>
 
 #include <guichan/actionlistener.hpp>
 
 #include "button.h"
+#include "menuwindow.h"
 #include "windowcontainer.h"
 
 #include "../utils/gettext.h"
 
-extern Window *setupWindow;
-extern Window *inventoryWindow;
+extern Window *chatWindow;
 extern Window *equipmentWindow;
+extern Window *inventoryWindow;
+extern Window *itemShortcutWindow;
+extern Window *emoteWindow;
+extern Window *setupWindow;
 extern Window *skillDialog;
 extern Window *statusWindow;
-extern Window *itemShortcutWindow;
 
 namespace {
     struct MenuWindowListener : public gcn::ActionListener
@@ -58,12 +59,14 @@ MenuWindow::MenuWindow():
     // Buttons
     static const char *buttonNames[] =
     {
-        N_("Status"),
-        N_("Equipment"),
-        N_("Inventory"),
-        N_("Skills"),
-        N_("Shortcut"),
-        N_("Setup"),
+        _("Chat"),
+        _("Status"),
+        _("Equipment"),
+        _("Inventory"),
+        _("Skills"),
+        _("Shortcut"),
+        _("Emote"),
+        _("Setup"),
         0
     };
     int x = 0, h = 0;
@@ -91,27 +94,35 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
 {
     Window *window = NULL;
 
-    if (event.getId() == "Status")
+    if (event.getId() == _("Chat"))
+    {
+        window = chatWindow;
+    }
+    else if (event.getId() == _("Status"))
     {
         window = statusWindow;
     }
-    else if (event.getId() == "Equipment")
+    else if (event.getId() == _("Equipment"))
     {
         window = equipmentWindow;
     }
-    else if (event.getId() == "Inventory")
+    else if (event.getId() == _("Inventory"))
     {
         window = inventoryWindow;
     }
-    else if (event.getId() == "Skills")
+    else if (event.getId() == _("Skills"))
     {
         window = skillDialog;
     }
-    else if (event.getId() == "Shortcut")
+    else if (event.getId() == _("Shortcut"))
     {
         window = itemShortcutWindow;
     }
-    else if (event.getId() == "Setup")
+    else if (event.getId() == _("Emote"))
+    {
+        window = emoteWindow;
+    }
+    else if (event.getId() == _("Setup"))
     {
         window = setupWindow;
     }

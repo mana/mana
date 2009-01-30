@@ -19,11 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "truetypefont.h"
-
 #include <list>
 
 #include <guichan/exception.hpp>
+
+#include "truetypefont.h"
 
 #include "../graphics.h"
 #include "../resources/image.h"
@@ -73,7 +73,6 @@ class TextChunk
         std::string text;
         gcn::Color color;
 };
-
 
 // Word surfaces cache
 static std::list<TextChunk> cache;

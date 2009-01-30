@@ -19,9 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "imageparticle.h"
-
 #include "graphics.h"
+#include "imageparticle.h"
 
 #include "resources/image.h"
 

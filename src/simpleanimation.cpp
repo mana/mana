@@ -19,15 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "simpleanimation.h"
-
 #include "graphics.h"
 #include "log.h"
+#include "simpleanimation.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 #include "resources/imageset.h"
-
+#include "resources/resourcemanager.h"
 
 SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
     mAnimationTime(0),

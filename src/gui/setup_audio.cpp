@@ -19,12 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "setup_audio.h"
-
 #include <guichan/widgets/label.hpp>
 
 #include "checkbox.h"
 #include "ok_dialog.h"
+#include "setup_audio.h"
 #include "slider.h"
 
 #include "widgets/layouthelper.h"

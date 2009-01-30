@@ -19,14 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "shoplistbox.h"
-
+#include <guichan/basiccontainer.hpp>
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
+#include <guichan/imagefont.hpp>
 #include <guichan/listmodel.hpp>
 #include <guichan/mouseinput.hpp>
-#include <guichan/imagefont.hpp>
-#include <guichan/basiccontainer.hpp>
+
+#include "shoplistbox.h"
 
 #include "../graphics.h"
 
@@ -72,7 +72,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 
         if (i == mSelected)
         {
-            backgroundColor = gcn::Color(110, 160, 255);
+            backgroundColor = gcn::Color(235, 200, 115);
         }
         else if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)

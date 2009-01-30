@@ -19,72 +19,91 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "inventorywindow.h"
-
 #include <string>
 
+#include <guichan/font.hpp>
 #include <guichan/mouseinput.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "gui.h"
+#include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "progressbar.h"
 #include "scrollarea.h"
+#include "textbox.h"
 #include "viewport.h"
+
+#include "widgets/layout.h"
 
 #include "../inventory.h"
 #include "../item.h"
-#include "../localplayer.h"
 
 #include "../resources/iteminfo.h"
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
+#include "../utils/tostring.h"
 
-InventoryWindow::InventoryWindow():
-    Window(_("Inventory"))
+InventoryWindow::InventoryWindow(int invSize):
+    Window(_("Inventory")),
+    mMaxSlots(invSize),
+    mItemDesc(false)
 {
-    setWindowName("Inventory");
+    setWindowName(_("Inventory"));
     setResizable(true);
     setCloseButton(true);
-    setMinWidth(240);
-    setMinHeight(172);
-    // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 322, 200);
 
-    mUseButton = new Button(_("Use"), "use", this);
+    // If you adjust these defaults, don't forget to adjust the trade window's.
+    setDefaultSize(115, 25, 375, 300);
+
+    std::string longestUseString = getFont()->getWidth(_("Equip")) > 
+                                   getFont()->getWidth(_("Use")) ?
+                                   _("Equip") : _("Use");
+
+    if (getFont()->getWidth(longestUseString) < 
+        getFont()->getWidth(_("Unequip")))
+    {
+        longestUseString = _("Unequip");
+    }
+
+    mUseButton = new Button(longestUseString, "use", this);
     mDropButton = new Button(_("Drop"), "drop", this);
 
-    mItems = new ItemContainer(player_node->getInventory());
+    mItems = new ItemContainer(player_node->getInventory(), 2);
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mItemNameLabel = new gcn::Label("Name:");
-    mItemDescriptionLabel = new gcn::Label("Description:");
-    mItemEffectLabel = new gcn::Label("Effect:");
-    mWeightLabel = new gcn::Label("Weight:");
-    mWeightLabel->setPosition(8, 8);
-    mInvenScroll->setPosition(8,
-            mWeightLabel->getY() + mWeightLabel->getHeight() + 5);
-    mInvenSlotLabel = new gcn::Label("Slots used:");
-    mInvenSlotLabel->setPosition(mWeightLabel->getX()
-            + mWeightLabel->getWidth() + 100, 8);
+    mTotalWeight = toString(player_node->mTotalWeight);
+    mMaxWeight = toString(player_node->mMaxWeight);
+    mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
-    add(mUseButton);
-    add(mDropButton);
-    add(mInvenScroll);
-    add(mItemNameLabel);
-    add(mItemDescriptionLabel);
-    add(mItemEffectLabel);
-    add(mWeightLabel);
-    add(mInvenSlotLabel);
+    mSlotsLabel = new gcn::Label(_("Slots: "));
+    mWeightLabel = new gcn::Label(_("Weight: "));
 
-    mUseButton->setSize(60, mUseButton->getHeight());
+    mSlotsBar = new ProgressBar(1.0f, 100, 20, 225, 200, 25);
+    mWeightBar = new ProgressBar(1.0f, 100, 20, 0, 0, 255);
+
+    setMinHeight(130);
+    setMinWidth(mWeightLabel->getWidth() + mSlotsLabel->getWidth() + 310);
+
+    place(0, 0, mInvenScroll, 7, 4);
+    place(0, 4, mWeightLabel).setPadding(3);
+    place(1, 4, mWeightBar, 2);
+    place(3, 4, mSlotsLabel).setPadding(3);
+    place(4, 4, mSlotsBar, 2);
+    place(5, 5, mDropButton);
+    place(6, 5, mUseButton);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
+    setLocationRelativeTo(getParent());
 }
 
 void InventoryWindow::logic()
@@ -95,15 +114,39 @@ void InventoryWindow::logic()
     // redesign of InventoryWindow and ItemContainer probably.
     updateButtons();
 
-    // Update weight information
-    mWeightLabel->setCaption(strprintf(_("Weight: %d / %d"),
-                                       player_node->mTotalWeight,
-                                       player_node->mMaxWeight));
+    if ((mMaxWeight != toString(player_node->mMaxWeight)) ||
+         mTotalWeight != toString(player_node->mTotalWeight) ||
+         mUsedSlots != toString(player_node->getInventory()->getNumberOfSlotsUsed()))
+    {
+        mTotalWeight = toString(player_node->mTotalWeight);
+        mMaxWeight = toString(player_node->mMaxWeight);
+        mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
-    // Update number of items in inventory
-    mInvenSlotLabel->setCaption(strprintf(_("Slots used: %d / %d"),
-            player_node->getInventory()->getNumberOfSlotsUsed(),
-            player_node->getInventory()->getInventorySize()));
+        // Weight Bar coloration
+        if (int(player_node->mTotalWeight) < int(player_node->mMaxWeight / 3))
+        {
+            mWeightBar->setColor(0, 0, 255); // Blue
+        }
+        else if (int(player_node->mTotalWeight) <
+                 int((player_node->mMaxWeight / 3) * 2))
+        {
+            mWeightBar->setColor(255, 255, 0); // Yellow
+        }
+        else
+        {
+            mWeightBar->setColor(255, 0, 0); // Red
+        }
+
+        // Adjust progress bars
+        mSlotsBar->setProgress((float)
+               player_node->getInventory()->getNumberOfSlotsUsed() / mMaxSlots);
+        mWeightBar->setProgress((float) player_node->mTotalWeight / 
+                                        player_node->mMaxWeight);
+
+        mSlotsBar->setText(strprintf("%s/%d", mUsedSlots.c_str(), mMaxSlots));
+        mWeightBar->setText(strprintf("%sg/%sg", mTotalWeight.c_str(),
+                                                 mMaxWeight.c_str()));
+    }
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -113,52 +156,27 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     if (!item)
         return;
 
-    if (event.getId() == "use") {
-        if (item->isEquipment()) {
-            if (item->isEquipped()) {
+    if (event.getId() == "use")
+    {
+        if (item->isEquipment())
+        {
+            if (item->isEquipped())
                 player_node->unequipItem(item);
-            }
-            else {
+            else
                 player_node->equipItem(item);
-            }
         }
-        else {
+        else
             player_node->useItem(item);
-        }
     }
     else if (event.getId() == "drop")
     {
-        if (item->getQuantity() == 1) {
+        if (item->getQuantity() == 1)
             player_node->dropItem(item, 1);
-        }
-        else {
+        else
+        {
             // Choose amount of items to drop
             new ItemAmountWindow(AMOUNT_ITEM_DROP, this, item);
         }
-    }
-}
-
-void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
-{
-    const Item *item = mItems->getSelectedItem();
-
-    // Update name, effect and description
-    if (!item)
-    {
-        mItemNameLabel->setCaption(strprintf(_("Name: %s"), ""));
-        mItemEffectLabel->setCaption(strprintf(_("Effect: %s"), ""));
-        mItemDescriptionLabel->setCaption(strprintf(_("Description: %s"), ""));
-    }
-    else
-    {
-        const ItemInfo& itemInfo = item->getInfo();
-        mItemNameLabel->setCaption(
-                strprintf(_("Name: %s"), itemInfo.getName().c_str()));
-        mItemEffectLabel->setCaption(
-                strprintf(_("Effect: %s"), itemInfo.getEffect().c_str()));
-        mItemDescriptionLabel->setCaption(
-                strprintf(_("Description: %s"),
-                          itemInfo.getDescription().c_str()));
     }
 }
 
@@ -182,55 +200,19 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
-void InventoryWindow::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    // Adjust widgets
-    mUseButton->setPosition(8, height - 8 - mUseButton->getHeight());
-    mDropButton->setPosition(8 + mUseButton->getWidth() + 5,
-            mUseButton->getY());
-
-    mItemNameLabel->setDimension(gcn::Rectangle(8,
-            mUseButton->getY() - 5 - mItemNameLabel->getHeight(),
-            width - 16,
-            mItemNameLabel->getHeight()));
-    mItemEffectLabel->setDimension(gcn::Rectangle(8,
-            mItemNameLabel->getY() - 5 - mItemEffectLabel->getHeight(),
-            width - 16,
-            mItemEffectLabel->getHeight()));
-    mItemDescriptionLabel->setDimension(gcn::Rectangle(8,
-            mItemEffectLabel->getY() - 5 - mItemDescriptionLabel->getHeight(),
-            width - 16,
-            mItemDescriptionLabel->getHeight()));
-
-    mInvenScroll->setSize(width - 16,
-            mItemDescriptionLabel->getY() - mWeightLabel->getHeight() - 18);
-
-    mWeightLabel->setWidth(width - 16);
-    mInvenSlotLabel->setWidth(width - 16);
-}
-
 void InventoryWindow::updateButtons()
 {
     const Item *selectedItem = mItems->getSelectedItem();
 
     if (selectedItem && selectedItem->isEquipment())
     {
-        if (selectedItem->isEquipped()) {
+        if (selectedItem->isEquipped())
             mUseButton->setCaption(_("Unequip"));
-        }
-        else {
+        else
             mUseButton->setCaption(_("Equip"));
-        }
     }
-    else {
+    else
         mUseButton->setCaption(_("Use"));
-    }
 
     mUseButton->setEnabled(selectedItem != 0);
     mDropButton->setEnabled(selectedItem != 0);

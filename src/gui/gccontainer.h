@@ -26,6 +26,8 @@
 
 #include <guichan/widgets/container.hpp>
 
+#include "../guichanfwd.h"
+
 /**
  * A garbage collecting container. Childs added to this container are
  * automatically deleted when the container is deleted.

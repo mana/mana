@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "updatewindow.h"
-
 #include <iostream>
 #include <SDL.h>
 #include <SDL_thread.h>
@@ -32,6 +30,9 @@
 #include "button.h"
 #include "progressbar.h"
 #include "scrollarea.h"
+#include "updatewindow.h"
+
+#include "widgets/layout.h"
 
 // Curl should be included after Guichan to avoid Windows redefinitions
 #include <curl/curl.h>
@@ -40,10 +41,10 @@
 #include "../log.h"
 #include "../main.h"
 
+#include "../resources/resourcemanager.h"
+
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
-
-#include "../resources/resourcemanager.h"
 
 /**
  * Calculates the Alder-32 checksum for the given file.
@@ -68,14 +69,13 @@ static unsigned long fadler32(FILE *file)
 /**
  * Load the given file into a vector of strings.
  */
-std::vector<std::string>
-loadTextFile(const std::string &fileName)
+std::vector<std::string> loadTextFile(const std::string &fileName)
 {
     std::vector<std::string> lines;
     std::ifstream fin(fileName.c_str());
 
     if (!fin) {
-        logger->log("Couldn't load text file: %s", fileName.c_str());
+        logger->log(_("Couldn't load text file: %s"), fileName.c_str());
         return lines;
     }
 
@@ -107,34 +107,29 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 {
     mCurlError[0] = 0;
 
-    const int h = 240;
-    const int w = 320;
-    setContentSize(w, h);
-
     mBrowserBox = new BrowserBox();
     mScrollArea = new ScrollArea(mBrowserBox);
     mLabel = new gcn::Label(_("Connecting..."));
-    mProgressBar = new ProgressBar(0.0, w - 10, 20, 37, 70, 200);
+    mProgressBar = new ProgressBar(0.0, 310, 20, 168, 116, 31);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayButton = new Button(_("Play"), "play", this);
 
     mBrowserBox->setOpaque(false);
     mPlayButton->setEnabled(false);
 
-    mCancelButton->setPosition(5, h - 5 - mCancelButton->getHeight());
-    mPlayButton->setPosition(
-            mCancelButton->getX() + mCancelButton->getWidth() + 5,
-            h - 5 - mPlayButton->getHeight());
-    mProgressBar->setPosition(5, mCancelButton->getY() - 20 - 5);
-    mLabel->setPosition(5, mProgressBar->getY() - mLabel->getHeight() - 5);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
 
-    mScrollArea->setDimension(gcn::Rectangle(5, 5, 310, mLabel->getY() - 12));
+    place(0, 0, mScrollArea, 5, 3).setPadding(3);
+    place(0, 3, mLabel, 5);
+    place(0, 4, mProgressBar, 5);
+    place(3, 5, mCancelButton);
+    place(4, 5, mPlayButton);
 
-    add(mScrollArea);
-    add(mLabel);
-    add(mProgressBar);
-    add(mCancelButton);
-    add(mPlayButton);
+    reflowLayout(320, 240);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -198,7 +193,7 @@ void UpdaterWindow::loadNews()
 {
     if (!mMemoryBuffer)
     {
-        logger->log("Couldn't load news");
+        logger->log(_("Couldn't load news"));
         return;
     }
 
@@ -246,8 +241,7 @@ int UpdaterWindow::updateProgress(void *ptr,
     return 0;
 }
 
-size_t
-UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(stream);
     size_t totalMem = size * nmemb;
@@ -330,8 +324,8 @@ int UpdaterWindow::downloadThread(void *ptr)
                 {
                 case CURLE_COULDNT_CONNECT:
                 default:
-                    std::cerr << "curl error " << res << ": "
-                              << uw->mCurlError << " host: " << url.c_str()
+                    std::cerr << _("curl error ") << res << ": "
+                              << uw->mCurlError << _(" host: ") << url.c_str()
                               << std::endl;
                     break;
                 }
@@ -366,7 +360,7 @@ int UpdaterWindow::downloadThread(void *ptr)
                         // Remove the corrupted file
                         ::remove(outFilename.c_str());
                         logger->log(
-                            "Checksum for file %s failed: (%lx/%lx)",
+                            _("Checksum for file %s failed: (%lx/%lx)"),
                             uw->mCurrentFile.c_str(),
                             adler, uw->mCurrentChecksum);
                         attempts++;
@@ -416,7 +410,7 @@ void UpdaterWindow::download()
 
     if (mThread == NULL)
     {
-        logger->log("Unable to create mThread");
+        logger->log(_("Unable to create mThread"));
         mDownloadStatus = UPDATE_ERROR;
     }
 }
@@ -454,9 +448,9 @@ void UpdaterWindow::logic()
                 mThread = NULL;
             }
             mBrowserBox->addRow("");
-            mBrowserBox->addRow("##1  The update process is incomplete.");
-            mBrowserBox->addRow("##1  It is strongly recommended that");
-            mBrowserBox->addRow("##1  you try again later");
+            mBrowserBox->addRow(_("##1  The update process is incomplete."));
+            mBrowserBox->addRow(_("##1  It is strongly recommended that"));
+            mBrowserBox->addRow(_("##1  you try again later"));
             mBrowserBox->addRow(mCurlError);
             mScrollArea->setVerticalScrollAmount(
                     mScrollArea->getVerticalMaxScroll());
@@ -510,7 +504,7 @@ void UpdaterWindow::logic()
                     }
                     else
                     {
-                        logger->log("%s already here", mCurrentFile.c_str());
+                        logger->log(_("%s already here"), mCurrentFile.c_str());
                     }
                     mLineIndex++;
                 }

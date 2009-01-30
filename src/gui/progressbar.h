@@ -25,8 +25,9 @@
 #include <guichan/widget.hpp>
 
 #include <SDL_types.h>
-
 #include <string>
+
+#include "../guichanfwd.h"
 
 class ImageRect;
 
@@ -81,12 +82,12 @@ class ProgressBar : public gcn::Widget
         Uint8 getRed() const { return mRed; }
 
         /**
-         * Returns the red value of color.
+         * Returns the green value of color.
          */
         Uint8 getGreen() const { return mGreen; }
 
         /**
-         * Returns the red value of color.
+         * Returns the blue value of color.
          */
         Uint8 getBlue() const { return mBlue; }
 

@@ -19,11 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "setup_players.h"
+#include <vector>
+
+#include <guichan/widgets/dropdown.hpp>
+#include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "checkbox.h"
 #include "ok_dialog.h"
+#include "setup_players.h"
 
 #include "widgets/layouthelper.h"
 
@@ -33,11 +37,6 @@
 #include "../sound.h"
 
 #include "../utils/gettext.h"
-
-#include <guichan/widgets/dropdown.hpp>
-#include <guichan/widgets/label.hpp>
-
-#include <vector>
 
 #define COLUMNS_NR 2 // name plus listbox
 #define NAME_COLUMN 0
@@ -198,7 +197,7 @@ public:
     virtual std::string getElementAt(int i)
     {
         if (i >= getNumberOfElements()) {
-            return "???";
+            return _("???");
         }
         return (*player_relations.getPlayerIgnoreStrategies())[i]->mDescription;
     }

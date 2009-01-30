@@ -19,13 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "table.h"
+#include <cassert>
 
 #include <guichan/graphics.hpp>
 #include <guichan/actionlistener.hpp>
 
-#include <cassert>
-
+#include "table.h"
 
 class GuiTableActionListener : public gcn::ActionListener
 {
@@ -100,6 +99,7 @@ void GuiTable::setModel(TableModel *new_model)
         mModel->removeListener(this);
     }
 
+
     mModel = new_model;
     installActionListeners();
 
@@ -108,7 +108,6 @@ void GuiTable::setModel(TableModel *new_model)
         recomputeDimensions();
     }
 }
-
 
 void GuiTable::recomputeDimensions()
 {
@@ -296,7 +295,6 @@ void GuiTable::keyPressed(gcn::KeyEvent& keyEvent)
 {
 }
 
-
 // -- MouseListener notifications
 void GuiTable::mousePressed(gcn::MouseEvent& mouseEvent)
 {
@@ -385,7 +383,6 @@ int GuiTable::getColumnForX(int x)
     else
         return column;
 }
-
 
 void GuiTable::_setFocusHandler(gcn::FocusHandler* focusHandler)
 {

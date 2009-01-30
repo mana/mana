@@ -122,8 +122,7 @@ Button::~Button()
     }
 }
 
-void
-Button::draw(gcn::Graphics *graphics)
+void Button::draw(gcn::Graphics *graphics)
 {
     int mode;
 

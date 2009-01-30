@@ -170,6 +170,7 @@ Section "Core files (required)" SecCore
   File "${SRCDIR}\data\fonts\*.ttf"
   SetOutPath "$INSTDIR\data\graphics\gui"
   File "${SRCDIR}\data\graphics\gui\*.png"
+  File "${SRCDIR}\data\graphics\gui\*.xml"
   SetOutPath "$INSTDIR\data\graphics\images"
   File /x minimap_*.png ${SRCDIR}\data\graphics\images\*.png
   SetOutPath "$INSTDIR\data\help"

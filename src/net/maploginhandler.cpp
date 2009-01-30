@@ -20,7 +20,6 @@
  */
 
 #include "maploginhandler.h"
-
 #include "messagein.h"
 #include "protocol.h"
 

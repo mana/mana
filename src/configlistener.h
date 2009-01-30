@@ -24,7 +24,6 @@
 
 #include <iosfwd>
 
-
 /**
  * The listener interface for receiving notifications about changes to
  * configuration options.

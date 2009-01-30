@@ -20,7 +20,6 @@
  */
 
 #include "floor_item.h"
-
 #include "map.h"
 
 FloorItem::FloorItem(unsigned int id,
