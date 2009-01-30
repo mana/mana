@@ -58,9 +58,6 @@ class WindowConfigListener : public ConfigListener
     void optionChanged(const std::string &)
     {
         Window::mAlphaChanged = true;
-//        for_each(Window::border.grid, Window::border.grid + 9,
-//                 std::bind2nd(std::mem_fun(&Image::setAlpha),
-//                 config.getValue("guialpha", 0.8)));
     }
 };
 
@@ -194,6 +191,14 @@ void Window::draw(gcn::Graphics *graphics)
             getWidth() - closeImage->getWidth() - getPadding(),
             getPadding()
         );
+    }
+
+    // Update window alpha values
+    if (mAlphaChanged)
+    {
+        for_each(border.grid, border.grid + 9,
+                 std::bind2nd(std::mem_fun(&Image::setAlpha),
+                 config.getValue("guialpha", 0.8)));
     }
     drawChildren(graphics);
 }
