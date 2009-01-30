@@ -166,11 +166,6 @@ void Party::receiveChat(Being *being, const std::string &msg)
     mChat->chatLog(being->getName() + " : " + msg, BY_PARTY);
 }
 
-void Party::help()
-{
-    mChat->chatLog(_("/party <command> <params>: Party commands."), BY_SERVER);
-}
-
 void Party::help(const std::string &msg)
 {
     if (msg == "")

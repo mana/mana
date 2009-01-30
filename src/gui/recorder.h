@@ -53,20 +53,9 @@ class Recorder : public Window, public gcn::ActionListener
         /*
          * Outputs the message to the recorder file
          *
-         * @param msg the line to write to the recorded file.
+         * @param msg The file to write out to. If null, then stop recording.
          */
-        void changeStatus(const std::string &msg);
-
-        /*
-         * Displays a help message on how to use this class in the chat window.
-         */
-        void help() const;
-
-        /*
-         * Displays an extended help message on how to use this class in the
-         * chat window.
-         */
-        void help2() const;
+        void changeRecordingStatus(const std::string &msg);
 
         /*
          * Whether or not the recorder is in use.

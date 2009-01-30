@@ -46,7 +46,7 @@ void Recorder::record(const std::string &msg)
     }
 }
 
-void Recorder::changeStatus(const std::string &msg)
+void Recorder::changeRecordingStatus(const std::string &msg)
 {
     std::string msgCopy = msg;
     trim(msgCopy);
@@ -91,24 +91,9 @@ void Recorder::changeStatus(const std::string &msg)
     }
 }
 
-void Recorder::help() const
-{
-    mChat->chatLog("/record <filename>: Start recording the chat.", BY_SERVER);
-}
-
-void Recorder::help2() const
-{
-    mChat->chatLog("Command: /record <filename>", BY_SERVER);
-    mChat->chatLog("This command starts recording the chat log to the file "
-                  "<filename>.", BY_SERVER);
-    mChat->chatLog("Command: /record", BY_SERVER);
-    mChat->chatLog("This command finishes a recording session.", BY_SERVER);
-}
-
 void Recorder::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "activate")
-        changeStatus("");
+    changeRecordingStatus("");
 }
 
 Recorder::~Recorder()

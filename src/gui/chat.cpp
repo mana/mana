@@ -478,7 +478,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     else if (command == "whisper" || command == "msg" || command == "w")
         whisper(nick, msg);
     else if (command == "record")
-        mRecorder->changeStatus(msg);
+        mRecorder->changeRecordingStatus(msg);
     else if (command == "toggle")
     {
         if (msg == "")
@@ -804,10 +804,11 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog(_("/announce: Global announcement (GM only)"), BY_SERVER);
         chatLog(_("/clear: Clears this window"), BY_SERVER);
         chatLog(_("/help: Display this help"), BY_SERVER);
-        mParty->help();
+        chatLog(_("/party <command> <params>: Party commands."), BY_SERVER);
         chatLog(_("/msg <nick> <message>: Alternate form for /whisper"), BY_SERVER);
         chatLog(_("/present: Get list of players present"), BY_SERVER);
-        mRecorder->help();
+        chatLog(_("/record <filename>: Start recording the chat to an"
+                  " external file."), BY_SERVER);
         chatLog(_("/toggle: Determine whether <return> toggles the chat log."),
                 BY_SERVER);
         chatLog(_("/where: Display map name"), BY_SERVER);
@@ -851,7 +852,11 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
     }
     else if (msg1 == "record") 
     {
-        mRecorder->help2();
+        chatLog(_("Command: /record <filename>"), BY_SERVER);
+        chatLog(_("This command starts recording the chat log to the file "
+                  "<filename>."), BY_SERVER);
+        chatLog(_("Command: /record"), BY_SERVER);
+        chatLog(_("This command finishes a recording session."), BY_SERVER);
     }
     else if (msg1 == "toggle") 
     {

@@ -47,7 +47,6 @@ class Party
 	 void leftResponse(const std::string &nick);
 	 void receiveChat(Being *being, const std::string &msg);
 
-	 void help();
 	 void help(const std::string &msg);
      private:
          ChatWindow *mChat;
