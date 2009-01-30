@@ -26,6 +26,10 @@
 
 #include "listbox.h"
 
+#include "../configuration.h"
+
+float ListBox::mAlpha = config.getValue("guialpha", 0.8);
+
 ListBox::ListBox(gcn::ListModel *listModel):
     gcn::ListBox(listModel)
 {
@@ -36,19 +40,23 @@ void ListBox::draw(gcn::Graphics *graphics)
     if (!mListModel)
         return;
 
-    graphics->setColor(gcn::Color(235, 200, 115));
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+        mAlpha = config.getValue("guialpha", 0.8);
+
+    const int alpha = mAlpha * 255;
+
+    graphics->setColor(gcn::Color(235, 200, 115, alpha));
     graphics->setFont(getFont());
 
-    int fontHeight = getFont()->getHeight();
+    const int fontHeight = getFont()->getHeight();
 
     // Draw rectangle below the selected list element
-    if (mSelected >= 0) {
+    if (mSelected >= 0)
         graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
                                                getWidth(), fontHeight));
-    }
 
     // Draw the list elements
-    graphics->setColor(gcn::Color(0, 0, 0));
+    graphics->setColor(gcn::Color(0, 0, 0, 255));
     for (int i = 0, y = 0;
          i < mListModel->getNumberOfElements();
          ++i, y += fontHeight)

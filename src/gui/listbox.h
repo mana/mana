@@ -49,6 +49,9 @@ class ListBox : public gcn::ListBox
         void draw(gcn::Graphics *graphics);
 
         void mouseDragged(gcn::MouseEvent &event);
+
+    private:
+        static float mAlpha;
 };
 
 #endif

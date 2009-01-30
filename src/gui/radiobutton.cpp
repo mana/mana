@@ -21,12 +21,14 @@
 
 #include "radiobutton.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 int RadioButton::instances = 0;
+float RadioButton::mAlpha = config.getValue("guialpha", 0.8);
 Image *RadioButton::radioNormal;
 Image *RadioButton::radioChecked;
 Image *RadioButton::radioDisabled;
@@ -43,6 +45,10 @@ RadioButton::RadioButton(const std::string& caption, const std::string& group,
         radioChecked = resman->getImage("graphics/gui/radioin.png");
         radioDisabled = resman->getImage("graphics/gui/radioout.png");
         radioDisabledChecked = resman->getImage("graphics/gui/radioin.png");
+        radioNormal->setAlpha(mAlpha);
+        radioChecked->setAlpha(mAlpha);
+        radioDisabled->setAlpha(mAlpha);
+        radioDisabledChecked->setAlpha(mAlpha);
     }
 
     instances++;
@@ -63,32 +69,37 @@ RadioButton::~RadioButton()
 
 void RadioButton::drawBox(gcn::Graphics* graphics)
 {
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        radioNormal->setAlpha(mAlpha);
+        radioChecked->setAlpha(mAlpha);
+        radioDisabled->setAlpha(mAlpha);
+        radioDisabledChecked->setAlpha(mAlpha);
+    }
+
     Image *box = NULL;
 
-    if (isSelected()) {
-        if (isEnabled()) {
+    if (isSelected())
+    {
+        if (isEnabled())
             box = radioChecked;
-        } else {
+        else
             box = radioDisabledChecked;
-        }
-    } else if (isEnabled()) {
+    }
+    else if (isEnabled())
         box = radioNormal;
-    } else {
+    else
         box = radioDisabled;
-    }
 
-    if (box != NULL) {
+    if (box != NULL)
         static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
-    }
 }
 
 void RadioButton::draw(gcn::Graphics* graphics)
 {
-
-    graphics->pushClipArea(gcn::Rectangle(1,
-                                    1,
-                                    getWidth() - 1,
-                                    getHeight() - 1));
+    graphics->pushClipArea(gcn::Rectangle(1, 1, getWidth() - 1,
+                                          getHeight() - 1));
 
     drawBox(graphics);
 

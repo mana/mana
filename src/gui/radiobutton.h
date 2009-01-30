@@ -57,6 +57,7 @@ class RadioButton : public gcn::RadioButton {
 
     private:
         static int instances;
+        static float mAlpha;
         static Image *radioNormal;
         static Image *radioChecked;
         static Image *radioDisabled;
