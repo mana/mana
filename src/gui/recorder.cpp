@@ -24,18 +24,33 @@
 #include "button.h"
 #include "chat.h"
 #include "recorder.h"
+#include "windowcontainer.h"
 
+#include "widgets/layout.h"
+
+#include "../utils/gettext.h"
 #include "../utils/trim.h"
 
 Recorder::Recorder(ChatWindow *chat, const std::string &title,
                    const std::string &buttonTxt) :
     Window(title)
 {
+    setWindowName(_("Recorder"));
+    const int offsetX = 2 * getPadding() + 10;
+    const int offsetY = getTitleBarHeight() + getPadding() + 10;
+
     mChat = chat;
     Button *button = new Button(buttonTxt, "activate", this);
-    setContentSize(button->getWidth() + 10, button->getHeight() + 10);
-    button->setPosition(5, 5);
-    add(button);
+    setDefaultSize(0, windowContainer->getHeight() - 123 - button->getHeight() - 
+                   offsetY,  button->getWidth() + offsetX, button->getHeight() +
+                   offsetY);
+
+    place(0, 0, button);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
+
+    loadWindowState();
 }
 
 void Recorder::record(const std::string &msg)
@@ -62,16 +77,16 @@ void Recorder::changeRecordingStatus(const std::string &msg)
              * Message should go after mStream is closed so that it isn't
              * recorded.
              */
-            mChat->chatLog("Finishing recording.", BY_SERVER);
+            mChat->chatLog(_("Finishing recording."), BY_SERVER);
         }
         else
         {
-            mChat->chatLog("Not currently recording.", BY_SERVER);
+            mChat->chatLog(_("Not currently recording."), BY_SERVER);
         }
     }
     else if (mStream.is_open())
     {
-        mChat->chatLog("Already recording.", BY_SERVER);
+        mChat->chatLog(_("Already recording."), BY_SERVER);
     }
     else
     {
@@ -79,7 +94,7 @@ void Recorder::changeRecordingStatus(const std::string &msg)
          * Message should go before mStream is opened so that it isn't
          * recorded.
          */
-        mChat->chatLog("Starting to record...", BY_SERVER);
+        mChat->chatLog(_("Starting to record..."), BY_SERVER);
         std::string file = std::string(PHYSFS_getUserDir()) + "/.aethyra/" + msgCopy;
         
         mStream.open(file.c_str(), std::ios_base::trunc);
@@ -87,7 +102,7 @@ void Recorder::changeRecordingStatus(const std::string &msg)
         if (mStream.is_open())
             setVisible(true);
         else
-            mChat->chatLog("Failed to start recording.", BY_SERVER);
+            mChat->chatLog(_("Failed to start recording."), BY_SERVER);
     }
 }
 

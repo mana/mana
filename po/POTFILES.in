@@ -25,6 +25,7 @@ src/gui/npcstringdialog.cpp
 src/gui/npc_text.cpp
 src/gui/ok_dialog.cpp
 src/gui/popupmenu.cpp
+src/gui/recorder.cpp
 src/gui/recorder.h
 src/gui/register.cpp
 src/gui/sell.cpp
