@@ -28,9 +28,12 @@
 
 #include "shoplistbox.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 const int ITEM_ICON_SIZE = 32;
+
+float ShopListBox::mAlpha = config.getValue("guialpha", 0.8);
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel):
     ListBox(listModel),
@@ -59,6 +62,11 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     if (!mListModel)
         return;
 
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+        mAlpha = config.getValue("guialpha", 0.8);
+
+    const int alpha = mAlpha * 255;
+
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
     graphics->setFont(getFont());
@@ -68,16 +76,16 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
          i < mListModel->getNumberOfElements();
          ++i, y += mRowHeight)
     {
-        gcn::Color backgroundColor = gcn::Color(0xffffff);
+        gcn::Color backgroundColor = gcn::Color(255, 255, 255, alpha);
 
         if (i == mSelected)
         {
-            backgroundColor = gcn::Color(235, 200, 115);
+            backgroundColor = gcn::Color(235, 200, 115, alpha);
         }
         else if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
         {
-            backgroundColor = gcn::Color(0x919191);
+            backgroundColor = gcn::Color(145, 145, 145, alpha);
         }
 
         graphics->setColor(backgroundColor);

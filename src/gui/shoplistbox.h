@@ -86,6 +86,8 @@ class ShopListBox : public ListBox
 
         unsigned int mRowHeight; /**< Row Height */
 
+        static float mAlpha;
+
         bool mPriceCheck;
 };
 
