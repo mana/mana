@@ -26,6 +26,7 @@
 #include <guichan/listmodel.hpp>
 #include <guichan/mouseinput.hpp>
 
+#include "colour.h"
 #include "shoplistbox.h"
 
 #include "../configuration.h"
@@ -65,6 +66,10 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     if (config.getValue("guialpha", 0.8) != mAlpha)
         mAlpha = config.getValue("guialpha", 0.8);
 
+    bool valid;
+    const int red = (textColour->getColour('H', valid) >> 16) & 0xFF;
+    const int green = (textColour->getColour('H', valid) >> 8) & 0xFF;
+    const int blue = textColour->getColour('H', valid) & 0xFF;
     const int alpha = mAlpha * 255;
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
@@ -80,7 +85,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 
         if (i == mSelected)
         {
-            backgroundColor = gcn::Color(235, 200, 115, alpha);
+            backgroundColor = gcn::Color(red, green, blue, alpha);
         }
         else if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)

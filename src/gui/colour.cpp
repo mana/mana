@@ -32,6 +32,7 @@ Colour::Colour()
 {
     addColour('C', 0x000000, _("Chat"));
     addColour('G', 0xff0000, _("GM"));
+    addColour('H', 0xebc873, _("Highlight"));
     addColour('Y', 0x1fa052, _("Player"));
     addColour('W', 0x0000ff, _("Whisper"));
     addColour('I', 0xf1dc27, _("Is"));

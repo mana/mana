@@ -24,6 +24,7 @@
 #include <guichan/listmodel.hpp>
 #include <guichan/mouseinput.hpp>
 
+#include "colour.h"
 #include "listbox.h"
 
 #include "../configuration.h"
@@ -43,9 +44,13 @@ void ListBox::draw(gcn::Graphics *graphics)
     if (config.getValue("guialpha", 0.8) != mAlpha)
         mAlpha = config.getValue("guialpha", 0.8);
 
+    bool valid;
+    const int red = (textColour->getColour('H', valid) >> 16) & 0xFF;
+    const int green = (textColour->getColour('H', valid) >> 8) & 0xFF;
+    const int blue = textColour->getColour('H', valid) & 0xFF;
     const int alpha = mAlpha * 255;
 
-    graphics->setColor(gcn::Color(235, 200, 115, alpha));
+    graphics->setColor(gcn::Color(red, green, blue, alpha));
     graphics->setFont(getFont());
 
     const int fontHeight = getFont()->getHeight();
