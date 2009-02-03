@@ -54,13 +54,10 @@ void TableModel::signalAfterUpdate(void)
 #define WIDGET_AT(row, column) (((row) * mColumns) + (column))
 #define DYN_SIZE(h) ((h) >= 0)  // determines whether this size is tagged for auto-detection
 
-StaticTableModel::StaticTableModel(int row, int column, 
-                                   gcn::Color backgroundColor, bool opacity) :
+StaticTableModel::StaticTableModel(int row, int column) :
     mRows(row),
     mColumns(column),
-    mHeight(1),
-    mOpaque(opacity),
-    mBackgroundColor(backgroundColor)
+    mHeight(1)
 {
     mTableModel.resize(row * column, NULL);
     mWidths.resize(column, 1);
@@ -163,26 +160,5 @@ int StaticTableModel::getWidth(void)
 int StaticTableModel::getHeight(void)
 {
     return (mColumns * mHeight);
-}
-
-void StaticTableModel::drawBackground(gcn::Graphics *graphics)
-{
-    if (isOpaque())
-    {
-        for (unsigned int i = 0; i < mTableModel.size(); i++)
-        {
-            mTableModel[i]->setBackgroundColor(mBackgroundColor);
-        }
-    }
-}
-
-void StaticTableModel::setOpaque(bool opaque)
-{
-    mOpaque = opaque;
-}
-
-bool StaticTableModel::isOpaque() const
-{
-    return mOpaque;
 }
 

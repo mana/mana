@@ -53,7 +53,7 @@ class SkillGuiTableModel : public StaticTableModel
 {
 public:
     SkillGuiTableModel(SkillDialog *dialog) :
-        StaticTableModel(0, 3, 0xbdb5aa)
+        StaticTableModel(0, 3)
     {
         mEntriesNr = 0;
         mDialog = dialog;
@@ -125,6 +125,7 @@ SkillDialog::SkillDialog():
     initSkillinfo();
     mTableModel = new SkillGuiTableModel(this);
     mTable.setModel(mTableModel);
+    mTable.setOpaque(false);
     mTable.setLinewiseSelection(true);
 
     setWindowName(_("Skills"));
@@ -134,14 +135,12 @@ SkillDialog::SkillDialog():
     setMinHeight(50 + mTableModel->getHeight());
     setMinWidth(200);
 
-//    mSkillListBox = new ListBox(this);
     ScrollArea *skillScrollArea = new ScrollArea(&mTable);
     mPointsLabel = new gcn::Label(strprintf(_("Skill points: %d"), 0));
     mIncButton = new Button(_("Up"), _("inc"), this);
     mUseButton = new Button(_("Use"), _("use"), this);
     mUseButton->setEnabled(false);
 
-//    mSkillListBox->setActionEventId("skill");
     mTable.setActionEventId("skill");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -155,7 +154,6 @@ SkillDialog::SkillDialog():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-//    mSkillListBox->addActionListener(this);
     mTable.addActionListener(this);
 
     setLocationRelativeTo(getParent());
@@ -171,7 +169,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "inc")
     {
         // Increment skill
-        int selectedSkill = mTable.getSelectedRow();//mSkillListBox->getSelected();
+        int selectedSkill = mTable.getSelectedRow();
         if (selectedSkill >= 0)
             player_node->raiseSkill(mSkillList[selectedSkill]->id);
     }
@@ -278,7 +276,8 @@ static void initSkillinfo(void)
             std::string name = XML::getProperty(node, "name", "");
             bool modifiable = !atoi(XML::getProperty(node, "fixed", "0").c_str());
 
-            if (index >= 0) {
+            if (index >= 0)
+            {
                 skill_db.resize(index + 1, emptySkillInfo);
                 skill_db[index].name = name;
                 skill_db[index].modifiable = modifiable;

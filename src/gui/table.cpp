@@ -24,7 +24,12 @@
 #include <guichan/graphics.hpp>
 #include <guichan/actionlistener.hpp>
 
+#include "colour.h"
 #include "table.h"
+
+#include "../configuration.h"
+
+float GuiTable::mAlpha = config.getValue("guialpha", 0.8);
 
 class GuiTableActionListener : public gcn::ActionListener
 {
@@ -49,7 +54,8 @@ GuiTableActionListener::GuiTableActionListener(GuiTable *table, gcn::Widget *wid
     mColumn(column),
     mWidget(widget)
 {
-    if (widget) {
+    if (widget)
+    {
         widget->addActionListener(this);
         widget->_setParent(table);
     }
@@ -57,7 +63,8 @@ GuiTableActionListener::GuiTableActionListener(GuiTable *table, gcn::Widget *wid
 
 GuiTableActionListener::~GuiTableActionListener(void)
 {
-    if (mWidget) {
+    if (mWidget)
+    {
         mWidget->removeActionListener(this);
         mWidget->_setParent(NULL);
     }
@@ -70,8 +77,11 @@ void GuiTableActionListener::action(const gcn::ActionEvent& actionEvent)
 }
 
 
-GuiTable::GuiTable(TableModel *initial_model) :
+GuiTable::GuiTable(TableModel *initial_model, gcn::Color background,
+                   bool opacity) :
     mLinewiseMode(false),
+    mOpaque(opacity),
+    mBackgroundColor(background),
     mModel(NULL),
     mSelectedRow(0),
     mSelectedColumn(0),
@@ -94,16 +104,17 @@ TableModel* GuiTable::getModel(void) const
 
 void GuiTable::setModel(TableModel *new_model)
 {
-    if (mModel) {
+    if (mModel)
+    {
         uninstallActionListeners();
         mModel->removeListener(this);
     }
 
-
     mModel = new_model;
     installActionListeners();
 
-    if (new_model) {
+    if (new_model)
+    {
         new_model->installListener(this);
         recomputeDimensions();
     }
@@ -184,10 +195,11 @@ void GuiTable::installActionListeners(void)
     int columns = mModel->getColumns();
 
     for (int row = 0; row < rows; ++row)
-        for (int column = 0; column < columns; ++column) {
+        for (int column = 0; column < columns; ++column)
+        {
             gcn::Widget *widget = mModel->getElementAt(row, column);
             action_listeners.push_back(new GuiTableActionListener(this, widget,
-                                                                        row, column));
+                                                                  row, column));
         }
 
     _setFocusHandler(_getFocusHandler()); // propagate focus handler to widgets
@@ -196,11 +208,21 @@ void GuiTable::installActionListeners(void)
 // -- widget ops
 void GuiTable::draw(gcn::Graphics* graphics)
 {
-    graphics->setColor(getBackgroundColor());
-    graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
-
     if (!mModel)
         return;
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+        mAlpha = config.getValue("guialpha", 0.8);
+
+    if (mOpaque)
+    {
+        const int red = getBackgroundColor().r;
+        const int green = getBackgroundColor().g;
+        const int blue = getBackgroundColor().b;
+        const int alpha = mAlpha * 255;
+        graphics->setColor(gcn::Color(red, green, blue, alpha));
+        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+    }
 
     // First, determine how many rows we need to draw, and where we should start.
     int first_row = -(getY() / getRowHeight());
@@ -223,44 +245,68 @@ void GuiTable::draw(gcn::Graphics* graphics)
     int height = getRowHeight();
     int y_offset = first_row * height;
 
-    for (int r = first_row; r < first_row + rows_nr; ++r) {
+    for (int r = first_row; r < first_row + rows_nr; ++r)
+    {
         int x_offset = 0;
 
-        for (int c = first_column; c <= last_column; ++c) {
+        for (int c = first_column; c <= last_column; ++c)
+        {
             gcn::Widget *widget = mModel->getElementAt(r, c);
             int width = getColumnWidth(c);
-            if (widget) {
+            if (widget)
+            {
                 gcn::Rectangle bounds(x_offset, y_offset, width, height);
 
-                if (widget == mTopWidget) {
+                if (widget == mTopWidget)
+                {
                     bounds.height = widget->getHeight();
                     bounds.width = widget->getWidth();
                 }
 
                 widget->setDimension(bounds);
 
+                if (!mLinewiseMode && c == mSelectedColumn && r == mSelectedRow)
+                {
+                    bool valid;
+                    const int red = 
+                        (textColour->getColour('H', valid) >> 16) & 0xFF;
+                    const int green =
+                        (textColour->getColour('H', valid) >> 8) & 0xFF;
+                    const int blue = textColour->getColour('H', valid) & 0xFF;
+                    const int alpha = mAlpha * 127;
+
+                    graphics->setColor(gcn::Color(red, green, blue, alpha));
+                    graphics->fillRectangle(bounds);
+                }
+
                 graphics->pushClipArea(bounds);
                 widget->draw(graphics);
                 graphics->popClipArea();
-
-                if (!mLinewiseMode
-                    && c == mSelectedColumn
-                    && r == mSelectedRow)
-                    graphics->drawRectangle(bounds);
             }
 
             x_offset += width;
         }
 
-        if (mLinewiseMode
-            && r == mSelectedRow)
-            graphics->drawRectangle(gcn::Rectangle(0, y_offset,
+        if (mLinewiseMode && r == mSelectedRow)
+        {
+            bool valid;
+            const int red = 
+                (textColour->getColour('H', valid) >> 16) & 0xFF;
+            const int green =
+                (textColour->getColour('H', valid) >> 8) & 0xFF;
+            const int blue = textColour->getColour('H', valid) & 0xFF;
+            const int alpha = mAlpha * 127;
+
+            graphics->setColor(gcn::Color(red, green, blue, alpha));
+            graphics->fillRectangle(gcn::Rectangle(0, y_offset,
                                                    x_offset, height));
+        }
 
         y_offset += height;
     }
 
-    if (mTopWidget) {
+    if (mTopWidget)
+    {
         gcn::Rectangle bounds = mTopWidget->getDimension();
         graphics->pushClipArea(bounds);
         mTopWidget->draw(graphics);
@@ -268,21 +314,17 @@ void GuiTable::draw(gcn::Graphics* graphics)
     }
 }
 
-void GuiTable::logic(void)
-{
-}
-
 void GuiTable::moveToTop(gcn::Widget *widget)
 {
     gcn::Widget::moveToTop(widget);
-    this->mTopWidget = widget;
+    mTopWidget = widget;
 }
 
 void GuiTable::moveToBottom(gcn::Widget *widget)
 {
     gcn::Widget::moveToBottom(widget);
-    if (widget == this->mTopWidget)
-        this->mTopWidget = NULL;
+    if (widget == mTopWidget)
+        mTopWidget = NULL;
 }
 
 gcn::Rectangle GuiTable::getChildrenArea(void)
@@ -298,11 +340,13 @@ void GuiTable::keyPressed(gcn::KeyEvent& keyEvent)
 // -- MouseListener notifications
 void GuiTable::mousePressed(gcn::MouseEvent& mouseEvent)
 {
-    if (mouseEvent.getButton() == gcn::MouseEvent::LEFT) {
+    if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
+    {
         int row = getRowForY(mouseEvent.getY());
         int column = getColumnForX(mouseEvent.getX());
 
-        if (row > -1 && column > -1) {
+        if (row > -1 && column > -1)
+        {
             mSelectedColumn = column;
             mSelectedRow = row;
         }
@@ -326,10 +370,13 @@ void GuiTable::mouseDragged(gcn::MouseEvent& mouseEvent)
 // -- TableModelListener notifications
 void GuiTable::modelUpdated(bool completed)
 {
-    if (completed) {
+    if (completed)
+    {
         recomputeDimensions();
         installActionListeners();
-    } else { // before the update?
+    }
+    else
+    { // before the update?
         mTopWidget = NULL; // No longer valid in general
         uninstallActionListeners();
     }
@@ -340,18 +387,18 @@ gcn::Widget* GuiTable::getWidgetAt(int x, int y)
     int row = getRowForY(y);
     int column = getColumnForX(x);
 
-    if (mTopWidget
-        && mTopWidget->getDimension().isPointInRect(x, y))
+    if (mTopWidget && mTopWidget->getDimension().isPointInRect(x, y))
         return mTopWidget;
 
-    if (row > -1
-        && column > -1) {
+    if (row > -1 && column > -1)
+    {
         gcn::Widget *w = mModel->getElementAt(row, column);
         if (w && w->isFocusable())
             return w;
         else
             return NULL; // Grab the event locally
-    } else
+    }
+    else
         return NULL;
 }
 
@@ -359,8 +406,7 @@ int GuiTable::getRowForY(int y)
 {
    int row = y / getRowHeight();
 
-   if (row < 0
-       || row >= mModel->getRows())
+   if (row < 0 || row >= mModel->getRows())
        return -1;
    else
        return row;
@@ -371,14 +417,14 @@ int GuiTable::getColumnForX(int x)
     int column;
     int delta = 0;
 
-    for (column = 0; column < mModel->getColumns(); column++) {
+    for (column = 0; column < mModel->getColumns(); column++)
+    {
         delta += getColumnWidth(column);
         if (x <= delta)
             break;
     }
 
-    if (column < 0
-        || column >= mModel->getColumns())
+    if (column < 0 || column >= mModel->getColumns())
         return -1;
     else
         return column;
@@ -390,7 +436,8 @@ void GuiTable::_setFocusHandler(gcn::FocusHandler* focusHandler)
 
     if (mModel)
         for (int r = 0; r < mModel->getRows(); ++r)
-            for (int c = 0; c < mModel->getColumns(); ++c) {
+            for (int c = 0; c < mModel->getColumns(); ++c)
+            {
                 gcn::Widget *w = mModel->getElementAt(r, c);
                 if (w)
                     w->_setFocusHandler(focusHandler);

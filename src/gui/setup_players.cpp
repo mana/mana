@@ -223,12 +223,13 @@ Setup_Players::Setup_Players():
     mIgnoreActionChoicesBox(new gcn::DropDown(new IgnoreChoicesListModel()))
 {
     setOpaque(false);
+    mPlayerTable->setOpaque(false);
 
     int table_width = NAME_COLUMN_WIDTH + RELATION_CHOICE_COLUMN_WIDTH;
     mPlayerTableTitleModel->fixColumnWidth(NAME_COLUMN, NAME_COLUMN_WIDTH);
     mPlayerTableTitleModel->fixColumnWidth(RELATION_CHOICE_COLUMN,
                                            RELATION_CHOICE_COLUMN_WIDTH);
-    mPlayerTitleTable->setDimension(gcn::Rectangle(10, 10, table_width, 10));
+    mPlayerTitleTable->setDimension(gcn::Rectangle(10, 10, table_width - 1, 10));
     mPlayerTitleTable->setBackgroundColor(gcn::Color(0xbf, 0xbf, 0xbf));
 
     for (int i = 0; i < COLUMNS_NR; i++) 

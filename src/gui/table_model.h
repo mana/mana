@@ -100,8 +100,7 @@ private:
 class StaticTableModel : public TableModel
 {
 public:
-    StaticTableModel(int width, int height, gcn::Color background = 0xffffff,
-                     bool opacity = true);
+    StaticTableModel(int width, int height);
     virtual ~StaticTableModel(void);
 
     /**
@@ -130,22 +129,6 @@ public:
      */
     virtual void resize(void);
 
-    /**
-     * Sets the table to be opaque, that is sets the table
-     * to display its background.
-     *
-     * @param opaque True if the table should be opaque, false otherwise.
-     */
-    virtual void setOpaque(bool opaque);
-
-    /**
-     * Checks if the scroll area is opaque, that is if the scroll area
-     * displays its background.
-     *
-     * @return True if the scroll area is opaque, false otherwise.
-     */
-    virtual bool isOpaque() const;
-
     virtual int getRows(void);
     virtual int getColumns(void);
     virtual int getRowHeight(void);
@@ -158,22 +141,8 @@ public:
 protected:
     int mRows, mColumns;
     int mHeight;
-    bool mOpaque;
     std::vector<gcn::Widget *> mTableModel;
     std::vector<int> mWidths;
-
-    /**
-     * Holds the background color of the table.
-     */
-    gcn::Color mBackgroundColor;
-
-    /**
-     * Draws the background of the table, that is
-     * the area behind the content.
-     *
-     * @param graphics a Graphics object to draw with.
-     */
-    virtual void drawBackground(gcn::Graphics *graphics);
 };
 
 #endif /* !defined(TABLE_MODEL_H) */

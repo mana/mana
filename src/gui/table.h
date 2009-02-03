@@ -51,7 +51,8 @@ class GuiTable : public gcn::Widget,
 {
     friend class GuiTableActionListener; // so that the action listener can call distributeActionEvent
 public:
-    GuiTable(TableModel * initial_model = NULL);
+    GuiTable(TableModel * initial_model = NULL, gcn::Color background = 0xffffff,
+             bool opacity = true);
 
     virtual ~GuiTable(void);
 
@@ -94,8 +95,6 @@ public:
     // Inherited from Widget
     virtual void draw(gcn::Graphics* graphics);
 
-    virtual void logic(void);
-
     virtual gcn::Widget *getWidgetAt(int x, int y);
 
     virtual void moveToTop(gcn::Widget *child);
@@ -107,6 +106,21 @@ public:
     // Inherited from KeyListener
     virtual void keyPressed(gcn::KeyEvent& keyEvent);
 
+    /**
+     * Sets the table to be opaque, that is sets the table
+     * to display its background.
+     *
+     * @param opaque True if the table should be opaque, false otherwise.
+     */
+    virtual void setOpaque(bool opaque) {mOpaque = opaque;}
+
+    /**
+     * Checks if the table is opaque, that is if the table area displays its
+     * background.
+     *
+     * @return True if the table is opaque, false otherwise.
+     */
+    virtual bool isOpaque() const {return mOpaque;}
 
     // Inherited from MouseListener
     virtual void mousePressed(gcn::MouseEvent& mouseEvent);
@@ -134,6 +148,14 @@ private:
     int getColumnForX(int x); // -1 on error
     void recomputeDimensions(void);
     bool mLinewiseMode;
+    bool mOpaque;
+
+    static float mAlpha;
+
+    /**
+     * Holds the background color of the table.
+     */
+    gcn::Color mBackgroundColor;
 
     TableModel *mModel;
 
