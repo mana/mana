@@ -56,7 +56,8 @@ class DropDown : public gcn::DropDown
          */
         DropDown(gcn::ListModel *listModel = NULL,
                  gcn::ScrollArea *scrollArea = NULL,
-                 gcn::ListBox *listBox = NULL);
+                 gcn::ListBox *listBox = NULL,
+                 bool opacity = true);
 
         /**
          * Destructor.
@@ -66,6 +67,22 @@ class DropDown : public gcn::DropDown
         void draw(gcn::Graphics* graphics);
 
         void drawFrame(gcn::Graphics* graphics);
+
+        /**
+         * Sets the widget to be opaque, that is sets the widget to display its
+         * background.
+         *
+         * @param opaque True if the widget should be opaque, false otherwise.
+         */
+        void setOpaque(bool opaque) {mOpaque = opaque;}
+
+        /**
+         * Checks if the widget is opaque, that is if the widget area displays
+         * its background.
+         *
+         * @return True if the widget is opaque, false otherwise.
+         */
+        bool isOpaque() const {return mOpaque;}
 
 
     protected:
@@ -80,6 +97,9 @@ class DropDown : public gcn::DropDown
         static int instances;
         static Image *buttons[2][2];
         static ImageRect skin;
+        static float mAlpha;
+
+        bool mOpaque;
 };
 
 #endif // end DROPDOWN_H

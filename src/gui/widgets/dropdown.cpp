@@ -23,6 +23,9 @@
 
 #include "dropdown.h"
 
+#include "../colour.h"
+
+#include "../../configuration.h"
 #include "../../graphics.h"
 
 #include "../../resources/image.h"
@@ -33,12 +36,12 @@
 int DropDown::instances = 0;
 Image *DropDown::buttons[2][2];
 ImageRect DropDown::skin;
+float DropDown::mAlpha = config.getValue("guialpha", 0.8);
 
-DropDown::DropDown(gcn::ListModel *listModel,
-                   gcn::ScrollArea *scrollArea,
-                   gcn::ListBox *listBox):
-                   gcn::DropDown::DropDown(listModel,
-                   scrollArea, listBox)
+DropDown::DropDown(gcn::ListModel *listModel, gcn::ScrollArea *scrollArea, 
+                   gcn::ListBox *listBox, bool opacity):
+    gcn::DropDown::DropDown(listModel, scrollArea, listBox),
+    mOpaque(opacity)
 {
     setFrameSize(2);
 
@@ -58,6 +61,11 @@ DropDown::DropDown(gcn::ListModel *listModel,
         buttons[0][1] =
             resman->getImage("graphics/gui/vscroll_down_pressed.png");
 
+        buttons[0][0]->setAlpha(mAlpha);
+        buttons[0][1]->setAlpha(mAlpha);
+        buttons[1][0]->setAlpha(mAlpha);
+        buttons[1][1]->setAlpha(mAlpha);
+
         // get the border skin
         Image *boxBorder = resman->getImage("graphics/gui/deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
@@ -70,6 +78,7 @@ DropDown::DropDown(gcn::ListModel *listModel,
                         gridx[x], gridy[y],
                         gridx[x + 1] - gridx[x] + 1,
                         gridy[y + 1] - gridy[y] + 1);
+                skin.grid[a]->setAlpha(mAlpha);
                 a++;
             }
         }
@@ -108,19 +117,44 @@ void DropDown::draw(gcn::Graphics* graphics)
         h = getHeight();
     }
 
-    int alpha = getBaseColor().a;
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+
+        buttons[0][0]->setAlpha(mAlpha);
+        buttons[0][1]->setAlpha(mAlpha);
+        buttons[1][0]->setAlpha(mAlpha);
+        buttons[1][1]->setAlpha(mAlpha);
+
+        for (int a = 0; a < 9; a++)
+        {
+            skin.grid[a]->setAlpha(mAlpha);
+        }
+    }
+
+    bool valid;
+    const int alpha = mAlpha * 255;
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
-    gcn::Color highlightColor = faceColor + 0x303030;
+    gcn::Color highlightColor = textColour->getColour('H', valid);
     highlightColor.a = alpha;
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;
 
+    if (mOpaque)
+    {
+        int red = getBackgroundColor().r;
+        int green = getBackgroundColor().g;
+        int blue = getBackgroundColor().b;
+        graphics->setColor(gcn::Color(red, green, blue, alpha));
+        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), h));
 
-    graphics->setColor(getBackgroundColor());
-    graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), h));
+        red = getForegroundColor().r;
+        green = getForegroundColor().g;
+        blue = getForegroundColor().b;
+        graphics->setColor(gcn::Color(red, green, blue, alpha));
+    }
 
-    graphics->setColor(getForegroundColor());
     graphics->setFont(getFont());
 
     if (mListBox->getListModel() && mListBox->getSelected() >= 0)
@@ -140,7 +174,7 @@ void DropDown::draw(gcn::Graphics* graphics)
     {
         drawChildren(graphics);
 
-        // Draw two lines separating the ListBox with se selected
+        // Draw two lines separating the ListBox with selected
         // element view.
         graphics->setColor(highlightColor);
         graphics->drawLine(0, h, getWidth(), h);

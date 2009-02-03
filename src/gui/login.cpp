@@ -63,7 +63,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     dfltPort.push_back("21001");
     mServerList = new DropDownList("MostRecent00", dfltServer, dfltPort,
                                    MAX_SERVER_LIST_SIZE);
-    mServerListBox = new gcn::ListBox(mServerList);
+    mServerListBox = new ListBox(mServerList);
     mServerScrollArea = new ScrollArea();
 
     mUserField = new TextField(mLoginData->username);
@@ -73,6 +73,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mServerDropDown = new DropDown(mServerList,
                                    mServerScrollArea,
                                    mServerListBox);
+    mServerDropDown->setOpaque(false);
 
     mKeepCheck = new CheckBox(_("Keep"), mLoginData->remember);
     mOkButton = new Button(_("OK"), "ok", this);
