@@ -26,6 +26,7 @@
 #include <guichan/widgets/slider.hpp>
 
 #include "colour.h"
+#include "listbox.h"
 #include "scrollarea.h"
 #include "setup_colours.h"
 #include "slider.h"
@@ -42,7 +43,7 @@ Setup_Colours::Setup_Colours() :
 {
     setOpaque(false);
 
-    mColourBox = new gcn::ListBox(textColour);
+    mColourBox = new ListBox(textColour);
     mColourBox->setActionEventId("colour_box");
     mColourBox->addActionListener(this);
 
