@@ -188,12 +188,18 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
         // Checks if any of the presses were in the equip boxes.
         for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
         {
-            item = getItem(x, y);
+            item = (i != EQUIP_AMMO_SLOT) ?
+                    mInventory->getItem(mEquipment->getEquipment(i)) :
+                    mInventory->getItem(mEquipment->getArrows());
+            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                 BOX_WIDTH, BOX_HEIGHT);
 
-            if (item)
+            if (tRect.isPointInRect(x, y))
             {
-                mSelected = i;
-                break;
+                if (item)
+                {
+                    mSelected = i;
+                }
             }
         }
     }
