@@ -1,26 +1,26 @@
 /*
- *  Aethyra
- *  Copyright 2009 Aethyra Development Team
+ *  Extended support for activating emotes
+ *  Copyright (C) 2009  Aethyra Development Team
  *
- *  This file is part of Aethyra.
+ *  This file is part of The Mana World.
  *
- *  Aethyra is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  Aethyra is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Aethyra; if not, write to the Free Software Foundation, 
- *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef EMOTECONTAINER_H__
-#define EMOTECONTAINER_H__
+#ifndef EMOTECONTAINER_H
+#define EMOTECONTAINER_H
 
 #include <list>
 #include <vector>
@@ -43,7 +43,7 @@ namespace gcn {
  *
  * \ingroup GUI
  */
-class EmoteContainer : public gcn::Widget, 
+class EmoteContainer : public gcn::Widget,
                        public gcn::MouseListener,
                        public gcn::WidgetListener
 {
@@ -103,8 +103,8 @@ class EmoteContainer : public gcn::Widget,
 
     private:
         /**
-
-         * Sets the currently selected emote.  Invalid (e.g., negative) indices set `no emotr'.
+         * Sets the currently selected emote.  Invalid (e.g., negative) indices
+         * set `no emotr'.
          */
         void setSelectedEmoteIndex(int index);
 

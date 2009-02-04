@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright 2008 The Mana World Development Team
+ *  An effects manager
+ *  Copyright (C) 2008  Fate <fate.tmw@googlemail.com>
+ *  Copyright (C) 2008  Chuck Miller <shadowmil@gmail.com>
  *
- *  This file is part of Aethyra.
+ *  This file is part of The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,7 +19,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 
 #include "effectmanager.h"
 #include "log.h"
@@ -40,7 +40,7 @@ EffectManager::EffectManager()
     else
     {
         logger->log("Effects are now loading");
-    } 
+    }
 
     for_each_xml_child_node(node, root)
     {
@@ -79,7 +79,7 @@ bool EffectManager::trigger(int id, Being* being)
             }
             if((*i).SFX != "")
                 sound.playSfx((*i).SFX);
-            break;            
+            break;
         }
     }
     return rValue;
@@ -98,9 +98,8 @@ bool EffectManager::trigger(int id, int x, int y)
                 particleEngine->addEffect((*i).GFX, x, y);
             if((*i).SFX != "")
                 sound.playSfx((*i).SFX);
-            break;            
+            break;
         }
     }
     return rValue;
 }
-

@@ -1,7 +1,6 @@
 /*
- *  The Mana World
+ *  Support for non-overlapping floating text
  *  Copyright (C) 2008  Douglas Boffey <DougABoffey@netscape.net>
- *  Copyright (C) 2008  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *

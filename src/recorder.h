@@ -1,8 +1,8 @@
 /*
- *  Aethyra
- *  Copyright (C) 2008 Aethyra Development Team
+ *  A chat recorder
+ *  Copyright (C) 2008  Lloyd Bryant <lloyd_bryant@netzero.net>
  *
- *  This file is part of Aethyra.
+ *  This file is part of The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -45,4 +45,5 @@ class Recorder : public ButtonBoxListener
         bool isRecording() {return (bool) mStream.is_open();}
         virtual ~Recorder();
 };
+
 #endif
