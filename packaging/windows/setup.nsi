@@ -188,8 +188,7 @@ Section "Music" SecMusic
 SectionEnd
 
 Section "Translations" SecTrans
-  CreateDirectory "$INSTDIR\translations"
-  SetOutPath "$INSTDIR\translations"
+  SetOutPath "$INSTDIR"
   File /nonfatal /r "${SRCDIR}\translations"
 SectionEnd
 
