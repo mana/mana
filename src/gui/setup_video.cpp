@@ -393,23 +393,6 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         const std::string mode = mModeListModel->getElementAt(mModeList->getSelected());
         const int width = atoi(mode.substr(0, mode.find("x")).c_str());
         const int height = atoi(mode.substr(mode.find("x") + 1).c_str());
-        const int bpp = 0;
-        const bool fullscreen = ((int) config.getValue("screen", 0) == 1);
-        const bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
-
-        // Try to set the desired video mode
-        if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
-        {
-            std::cerr << _("Couldn't set ")
-                      << width << "x" << height << "x" << bpp << _(" video mode: ")
-                      << SDL_GetError() << std::endl;
-            exit(1);
-        }
-
-        // Initialize for drawing
-        graphics->_endDraw();
-        graphics->_beginDraw();
-        graphics->updateScreen();
 
         // TODO: Find out why the drawing area doesn't resize without a restart.
         new OkDialog(_("Screen resolution changed"),
