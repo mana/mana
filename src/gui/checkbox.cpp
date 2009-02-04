@@ -45,10 +45,13 @@ CheckBox::CheckBox(const std::string& caption, bool selected):
         checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
         checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);
         checkBoxDisabledChecked = checkBox->getSubImage(27, 0, 9, 10);
-        checkBoxNormal->setAlpha(mAlpha);
-        checkBoxChecked->setAlpha(mAlpha);
-        checkBoxDisabled->setAlpha(mAlpha);
-        checkBoxDisabledChecked->setAlpha(mAlpha);
+        if (config.getValue("opengl", 0))
+        {
+            checkBoxNormal->setAlpha(mAlpha);
+            checkBoxChecked->setAlpha(mAlpha);
+            checkBoxDisabled->setAlpha(mAlpha);
+            checkBoxDisabledChecked->setAlpha(mAlpha);
+        }
         checkBox->decRef();
     }
 
@@ -84,7 +87,8 @@ void CheckBox::drawBox(gcn::Graphics* graphics)
     else
         box = checkBoxDisabled;
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
+    if (config.getValue("guialpha", 0.8) != mAlpha &&
+        config.getValue("opengl", 0))
     {
         mAlpha = config.getValue("guialpha", 0.8);
         checkBoxNormal->setAlpha(mAlpha);

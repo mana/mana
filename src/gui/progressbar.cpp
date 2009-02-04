@@ -103,7 +103,10 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 {
     if (config.getValue("guialpha", 0.8) != mAlpha)
     {
-        mAlpha = config.getValue("guialpha", 0.8);
+        if (config.getValue("opengl", 0))
+            mAlpha = config.getValue("guialpha", 0.8);
+        else
+            mAlpha = 1.0f;
         for (int i = 0; i < 9; i++)
         {
             mBorder.grid[i]->setAlpha(mAlpha);
