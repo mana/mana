@@ -33,6 +33,8 @@
 HelpWindow::HelpWindow():
     Window(_("Help"))
 {
+    setMinWidth(300);
+    setMinHeight(250);
     setContentSize(455, 350);
     setWindowName(_("Help"));
     setResizable(true);
