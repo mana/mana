@@ -73,9 +73,12 @@ void SpeechBubble::setText(std::string mText)
 
     const int fontHeight = getFont()->getHeight();
     const int numRows = mSpeechBox->getNumberOfRows() + 1;
+    int width = mCaption->getWidth() + 3;
 
     if (numRows > 2)
     {
+        if (width < mSpeechBox->getMinWidth())
+            width = mSpeechBox->getMinWidth();
         setContentSize(mSpeechBox->getMinWidth() + fontHeight,
                       (numRows * fontHeight) + 6);
         mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight + 3,
@@ -84,7 +87,6 @@ void SpeechBubble::setText(std::string mText)
     }
     else
     {
-        int width = mCaption->getWidth() + 3;
         if (width < getFont()->getWidth(mText))
             width = getFont()->getWidth(mText);
         setContentSize(width + fontHeight, (fontHeight * 2) + 6);
