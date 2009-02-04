@@ -90,6 +90,17 @@ ItemPopup::ItemPopup():
     setLocationRelativeTo(getParent());
 }
 
+ItemPopup::~ItemPopup()
+{
+    delete mItemName;
+    delete mItemDesc;
+    delete mItemDescScroll;
+    delete mItemEffect;
+    delete mItemEffectScroll;
+    delete mItemWeight;
+    delete mItemWeightScroll;
+}
+
 void ItemPopup::setItem(const ItemInfo &item)
 {
     mItemName->setCaption(item.getName());

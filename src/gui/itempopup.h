@@ -33,6 +33,7 @@ class ItemPopup : public Window
 {
     public:
         ItemPopup();
+        ~ItemPopup();
 
         void setItem(const ItemInfo &item);
         unsigned int getNumRows();

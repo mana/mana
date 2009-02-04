@@ -33,6 +33,7 @@ class SpeechBubble : public Window
     public:
 
 	SpeechBubble();
+	~SpeechBubble();
 
         void setCaption(const std::string &name,
                         const gcn::Color &color = 0x000000);

@@ -60,6 +60,13 @@ SpeechBubble::SpeechBubble():
     setLocationRelativeTo(getParent());
 }
 
+SpeechBubble::~SpeechBubble()
+{
+    delete mCaption;
+    delete mSpeechBox;
+    delete mSpeechArea;
+}
+
 void SpeechBubble::setCaption(const std::string &name, const gcn::Color &color)
 {
     mCaption->setCaption(name);
