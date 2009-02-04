@@ -69,11 +69,11 @@ void SpeechBubble::setCaption(const std::string &name, const gcn::Color &color)
 
 void SpeechBubble::setText(std::string mText)
 {
-    mSpeechBox->setTextWrapped(mText, 130);
+    int width = mCaption->getWidth() + 3;
+    mSpeechBox->setTextWrapped(mText, 130 > width ? 130 : width);
 
     const int fontHeight = getFont()->getHeight();
     const int numRows = mSpeechBox->getNumberOfRows() + 1;
-    int width = mCaption->getWidth() + 3;
 
     if (width < mSpeechBox->getMinWidth())
         width = mSpeechBox->getMinWidth();
