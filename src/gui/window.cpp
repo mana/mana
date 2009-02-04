@@ -25,8 +25,6 @@
 
 #include <guichan/exception.hpp>
 
-#include <guichan/widgets/icon.hpp>
-
 #include "gui.h"
 #include "window.h"
 #include "windowcontainer.h"

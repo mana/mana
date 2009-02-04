@@ -21,6 +21,8 @@
 
 #include <algorithm>
 
+#include <guichan/graphics.hpp>
+
 #include "browserbox.h"
 #include "colour.h"
 #include "linkhandler.h"

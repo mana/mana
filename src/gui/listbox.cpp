@@ -22,7 +22,6 @@
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
-#include <guichan/mouseinput.hpp>
 
 #include "colour.h"
 #include "listbox.h"

@@ -25,7 +25,6 @@
 #include <string>
 
 #include <guichan/font.hpp>
-#include <guichan/graphics.hpp>
 #ifndef __APPLE__
 #include <SDL/SDL_ttf.h>
 #else

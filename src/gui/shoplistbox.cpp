@@ -20,7 +20,6 @@
  */
 
 #include <guichan/font.hpp>
-#include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
 
 #include "colour.h"
