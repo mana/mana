@@ -21,8 +21,10 @@
 
 #include <sstream>
 
+#include "button.h"
 #include "listbox.h"
 #include "npclistdialog.h"
+#include "scrollarea.h"
 
 #include "widgets/layout.h"
 

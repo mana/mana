@@ -24,15 +24,11 @@
 
 #include <vector>
 
-#include <guichan/gui.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
-#include <guichan/platform.hpp>
 #include <guichan/widget.hpp>
 
 #include "table_model.h"
-
-#include "../guichanfwd.h"
 
 class GuiTableActionListener;
 

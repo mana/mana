@@ -22,11 +22,10 @@
 #ifndef NPC_TEXT_H
 #define NPC_TEXT_H
 
-#include <iosfwd>
+#include <string>
 
 #include <guichan/actionlistener.hpp>
 
-#include "scrollarea.h"
 #include "window.h"
 
 class TextBox;

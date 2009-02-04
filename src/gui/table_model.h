@@ -25,11 +25,6 @@
 #include <set>
 #include <vector>
 
-#include <guichan/color.hpp>
-#include <guichan/gui.hpp>
-
-#include "../guichanfwd.h"
-
 class TableModelListener
 {
 public:

@@ -19,9 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ok_dialog.h"
-
 #include <guichan/font.hpp>
+
+#include "button.h"
+#include "ok_dialog.h"
+#include "scrollarea.h"
+#include "textbox.h"
 
 #include "../utils/gettext.h"
 

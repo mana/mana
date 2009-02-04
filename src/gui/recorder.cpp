@@ -28,7 +28,6 @@
 
 #include "widgets/layout.h"
 
-#include "../utils/gettext.h"
 #include "../utils/trim.h"
 
 Recorder::Recorder(ChatWindow *chat, const std::string &title,

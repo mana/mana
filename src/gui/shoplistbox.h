@@ -23,9 +23,8 @@
 #define SHOPLISTBOX_H
 
 #include "listbox.h"
-#include "shop.h"
 
-#include "../guichanfwd.h"
+class ShopItems;
 
 /**
  * A list box, meant to be used inside a scroll area. Same as the Guichan list

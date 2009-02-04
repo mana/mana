@@ -19,13 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "listbox.h"
+#include "scrollarea.h"
 #include "skill.h"
+#include "table.h"
 #include "windowcontainer.h"
 
 #include "widgets/layout.h"
@@ -124,9 +124,11 @@ SkillDialog::SkillDialog():
 {
     initSkillinfo();
     mTableModel = new SkillGuiTableModel(this);
-    mTable.setModel(mTableModel);
-    mTable.setOpaque(false);
-    mTable.setLinewiseSelection(true);
+    mTable = new GuiTable(mTableModel);
+    mTable->setOpaque(false);
+    mTable->setLinewiseSelection(true);
+    mTable->setActionEventId("skill");
+    mTable->addActionListener(this);
 
     setWindowName(_("Skills"));
     setCloseButton(true);
@@ -135,13 +137,11 @@ SkillDialog::SkillDialog():
     setMinHeight(50 + mTableModel->getHeight());
     setMinWidth(200);
 
-    ScrollArea *skillScrollArea = new ScrollArea(&mTable);
+    ScrollArea *skillScrollArea = new ScrollArea(mTable);
     mPointsLabel = new gcn::Label(strprintf(_("Skill points: %d"), 0));
     mIncButton = new Button(_("Up"), _("inc"), this);
     mUseButton = new Button(_("Use"), _("use"), this);
     mUseButton->setEnabled(false);
-
-    mTable.setActionEventId("skill");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
@@ -153,14 +153,13 @@ SkillDialog::SkillDialog():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    mTable.addActionListener(this);
-
     setLocationRelativeTo(getParent());
     loadWindowState();
 }
 
 SkillDialog::~SkillDialog()
 {
+    delete mTable;
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)
@@ -168,15 +167,14 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "inc")
     {
         // Increment skill
-        int selectedSkill = mTable.getSelectedRow();
+        int selectedSkill = mTable->getSelectedRow();
         if (selectedSkill >= 0)
             player_node->raiseSkill(mSkillList[selectedSkill]->id);
     }
     else if (event.getId() == "skill")
     {
-        mIncButton->setEnabled(
-                mTable.getSelectedRow() > -1 &&
-                player_node->mSkillPoint > 0);
+        mIncButton->setEnabled(mTable->getSelectedRow() > -1 &&
+                               player_node->mSkillPoint > 0);
     }
     else if (event.getId() == "close")
         setVisible(false);
@@ -187,7 +185,7 @@ void SkillDialog::update()
     mPointsLabel->setCaption(strprintf(_("Skill points: %d"),
                                        player_node->mSkillPoint));
 
-    int selectedSkill = mTable.getSelectedRow();
+    int selectedSkill = mTable->getSelectedRow();
 
     if (selectedSkill >= 0)
     {

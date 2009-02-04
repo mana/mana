@@ -20,9 +20,6 @@
  */
 
 #include <cassert>
-#include <iostream>
-
-#include <guichan/focushandler.hpp>
 
 #include "browserbox.h"
 #include "chat.h"
@@ -42,7 +39,6 @@
 #include "../net/protocol.h"
 
 #include "../resources/itemdb.h"
-#include "../resources/iteminfo.h"
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"

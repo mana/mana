@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <guichan/font.hpp>
+
 #include "gui.h"
 #include "progressbar.h"
 
@@ -27,8 +29,6 @@
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
-
-#include <guichan/font.hpp>
 
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;

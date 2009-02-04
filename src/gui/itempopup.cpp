@@ -26,16 +26,15 @@
 
 #include "gui.h"
 #include "itempopup.h"
+#include "scrollarea.h"
+#include "textbox.h"
 #include "windowcontainer.h"
 
 #include "widgets/layout.h"
 
-#include "../resources/image.h"
 #include "../resources/iteminfo.h"
-#include "../resources/resourcemanager.h"
 
 #include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 ItemPopup::ItemPopup():
@@ -89,9 +88,6 @@ ItemPopup::ItemPopup():
     add(mItemWeightScroll);
 
     setLocationRelativeTo(getParent());
-
-    // LEEOR / TODO: This causes an exception error.
-    //moveToBottom(getParent());
 }
 
 void ItemPopup::setItem(const ItemInfo &item)

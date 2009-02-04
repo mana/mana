@@ -26,12 +26,10 @@
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
-#include "../guichanfwd.h"
-
 class Image;
 
 /**
- * An item shortcut container. Used to quickly use items.
+ * A generic shortcut container.
  *
  * \ingroup GUI
  */
@@ -41,7 +39,7 @@ class ShortcutContainer : public gcn::Widget,
 {
     public:
         /**
-         * Constructor. Initializes the graphic.
+         * Constructor. Initializes the shortcut container.
          */
         ShortcutContainer();
 
@@ -51,7 +49,7 @@ class ShortcutContainer : public gcn::Widget,
         ~ShortcutContainer(){}
 
         /**
-         * Draws the items.
+         * Draws the shortcuts
          */
         virtual void draw(gcn::Graphics *graphics) = 0;
 

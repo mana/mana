@@ -23,7 +23,6 @@
 
 #include <guichan/widgets/label.hpp>
 
-#include "button.h"
 #include "debugwindow.h"
 #include "gui.h"
 #include "viewport.h"

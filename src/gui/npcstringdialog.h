@@ -22,15 +22,10 @@
 #ifndef GUI_NPCSTRINGDIALOG_H
 #define GUI_NPCSTRINGDIALOG_H
 
-#include <iosfwd>
-#include <vector>
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 /**
  * The npc integer input dialog.

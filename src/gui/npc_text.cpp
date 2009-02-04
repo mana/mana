@@ -19,10 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
-
-#include "npc_text.h"
 #include "button.h"
+#include "npc_text.h"
 #include "scrollarea.h"
 #include "textbox.h"
 

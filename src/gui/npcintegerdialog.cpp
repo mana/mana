@@ -19,20 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npcintegerdialog.h"
-
-#include <limits>
-#include <sstream>
-
 #include "button.h"
 #include "inttextfield.h"
+#include "npcintegerdialog.h"
+
+#include "widgets/layout.h"
 
 #include "../npc.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
-
-#include "widgets/layout.h"
 
 NpcIntegerDialog::NpcIntegerDialog():
     Window(_("NPC Number Request"))

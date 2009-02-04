@@ -24,6 +24,8 @@
 #include "dropdown.h"
 
 #include "../colour.h"
+#include "../listbox.h"
+#include "../scrollarea.h"
 
 #include "../../configuration.h"
 #include "../../graphics.h"

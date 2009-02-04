@@ -26,6 +26,7 @@
 
 #include "button.h"
 #include "checkbox.h"
+#include "listbox.h"
 #include "login.h"
 #include "ok_dialog.h"
 #include "passwordfield.h"

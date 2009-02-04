@@ -26,6 +26,9 @@
 
 #include <guichan/widgets/label.hpp>
 
+// Curl should be included after Guichan to avoid Windows redefinitions
+#include <curl/curl.h>
+
 #include "browserbox.h"
 #include "button.h"
 #include "progressbar.h"
@@ -33,9 +36,6 @@
 #include "updatewindow.h"
 
 #include "widgets/layout.h"
-
-// Curl should be included after Guichan to avoid Windows redefinitions
-#include <curl/curl.h>
 
 #include "../configuration.h"
 #include "../log.h"

@@ -22,15 +22,8 @@
 #include "shortcutcontainer.h"
 
 #include "../configuration.h"
-#include "../graphics.h"
-#include "../inventory.h"
-#include "../item.h"
-#include "../itemshortcut.h"
-#include "../keyboardconfig.h"
-#include "../localplayer.h"
 
 #include "../resources/image.h"
-#include "../resources/resourcemanager.h"
 
 #include "../utils/tostring.h"
 

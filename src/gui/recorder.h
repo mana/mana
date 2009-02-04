@@ -29,8 +29,6 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 #include "../utils/gettext.h"
 
 class ChatWindow;

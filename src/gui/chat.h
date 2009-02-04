@@ -22,7 +22,6 @@
 #ifndef CHAT_H
 #define CHAT_H
 
-#include <fstream>
 #include <list>
 #include <string>
 
@@ -30,8 +29,6 @@
 #include <guichan/keylistener.hpp>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 class BrowserBox;
 class Network;

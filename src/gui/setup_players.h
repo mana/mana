@@ -24,17 +24,16 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "button.h"
-#include "scrollarea.h"
 #include "setuptab.h"
-#include "table.h"
 
-#include "../guichanfwd.h"
 #include "../player_relations.h"
 
+class GuiTable;
 class PlayerTableModel;
+class StaticTableModel;
 
-class Setup_Players : public SetupTab, public gcn::ActionListener, public PlayerRelationsListener
+class Setup_Players : public SetupTab, 
+                      public gcn::ActionListener, public PlayerRelationsListener
 {
 public:
     Setup_Players();
@@ -60,7 +59,7 @@ private:
     gcn::CheckBox *mDefaultTrading;
     gcn::CheckBox *mDefaultWhisper;
 
-    Button *mDeleteButton;
+    gcn::Button *mDeleteButton;
     gcn::DropDown *mIgnoreActionChoicesBox;
 };
 

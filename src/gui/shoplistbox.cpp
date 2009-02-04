@@ -19,14 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/basiccontainer.hpp>
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
-#include <guichan/imagefont.hpp>
 #include <guichan/listmodel.hpp>
-#include <guichan/mouseinput.hpp>
 
 #include "colour.h"
+#include "shop.h"
 #include "shoplistbox.h"
 
 #include "../configuration.h"

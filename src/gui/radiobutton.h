@@ -24,14 +24,13 @@
 
 #include <guichan/widgets/radiobutton.hpp>
 
-#include "../guichanfwd.h"
-
 class Image;
 
 /*
  * Guichan based RadioButton with custom look
  */
-class RadioButton : public gcn::RadioButton {
+class RadioButton : public gcn::RadioButton
+{
     public:
         /*
          * Constructor.

@@ -31,7 +31,8 @@
 
 #include "../utils/gettext.h"
 
-namespace {
+namespace
+{
     struct ConnectionActionListener : public gcn::ActionListener
     {
         void action(const gcn::ActionEvent &event) { state = EXIT_STATE; }
@@ -62,10 +63,10 @@ ConnectionDialog::ConnectionDialog():
 void ConnectionDialog::logic()
 {
     mProgress += 0.005f;
+
     if (mProgress > 1.0f)
-    {
         mProgress = 0.0f;
-    }
+
     mProgressBar->setProgress(mProgress);
     Window::logic();
 }

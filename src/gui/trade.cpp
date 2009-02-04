@@ -41,8 +41,6 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
-#include "../resources/iteminfo.h"
-
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 #include "../utils/tostring.h"

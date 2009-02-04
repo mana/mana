@@ -22,6 +22,7 @@
 #include <string>
 
 #include <guichan/font.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"

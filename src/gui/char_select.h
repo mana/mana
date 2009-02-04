@@ -26,9 +26,8 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-#include "../lockedarray.h"
 #include "../being.h"
+#include "../lockedarray.h"
 
 class LocalPlayer;
 class Network;
@@ -109,14 +108,12 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         ~CharCreateDialog();
 
-        void
-        action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Unlocks the dialog, enabling the create character button again.
          */
-        void
-        unlock();
+        void unlock();
 
     private:
         /**

@@ -35,7 +35,6 @@
 #include "../log.h"
 
 #include "../resources/image.h"
-#include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
 #include "../utils/tostring.h"

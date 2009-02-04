@@ -26,9 +26,7 @@
 
 #include "windowcontainer.h"
 
-#include "../being.h"
 #include "../configlistener.h"
-#include "../guichanfwd.h"
 
 class Map;
 class FloorItem;

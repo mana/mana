@@ -25,19 +25,15 @@
 #include <guichan/widgets/label.hpp>
 
 #include "gui.h"
+#include "scrollarea.h"
 #include "speechbubble.h"
-
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
+#include "textbox.h"
 
 #include "../utils/gettext.h"
 
-// TODO: Fix windows so that they can each load their own skins without the
-// other windows overriding another window's skin.
 SpeechBubble::SpeechBubble():
     Window(_("Speech"), false, NULL, "graphics/gui/speechbubble.xml")
 {
-    // Height == Top Graphic (14px) + 1 Row of Text (15px) + Bottom Graphic (17px)
     setContentSize(140, 46);
     setShowTitle(false);
     setTitleBarHeight(0);
@@ -62,9 +58,6 @@ SpeechBubble::SpeechBubble():
     add(mSpeechArea);
 
     setLocationRelativeTo(getParent());
-
-    // LEEOR / TODO: This causes an exception error.
-    //moveToBottom(getParent());
 }
 
 void SpeechBubble::setCaption(const std::string &name, const gcn::Color &color)
@@ -83,8 +76,6 @@ void SpeechBubble::setText(std::string mText)
 
     if (numRows > 2)
     {
-        // 15 == height of each line of text (based on font heights)
-        // 14 == speechbubble Top + Bottom graphic pixel heights
         setContentSize(mSpeechBox->getMinWidth() + fontHeight,
                       (numRows * fontHeight) + 6);
         mSpeechArea->setDimension(gcn::Rectangle(4, fontHeight + 3,

@@ -24,8 +24,6 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 /**
  * The Button Menu.
  *

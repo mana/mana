@@ -22,11 +22,7 @@
 #ifndef MINISTATUS_H
 #define MINISTATUS_H
 
-#include <iosfwd>
-
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 class ProgressBar;
 

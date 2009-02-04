@@ -25,9 +25,9 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
-#include "window.h"
+#include <SDL_types.h>
 
-#include "../guichanfwd.h"
+#include "window.h"
 
 class Network;
 class ShopItems;
@@ -40,7 +40,7 @@ class ListBox;
  * \ingroup Interface
  */
 class BuyDialog : public Window, public gcn::ActionListener,
-    gcn::SelectionListener
+                  public gcn::SelectionListener
 {
     public:
         /**

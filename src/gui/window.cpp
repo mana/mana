@@ -28,7 +28,6 @@
 #include <guichan/widgets/icon.hpp>
 
 #include "gui.h"
-#include "gccontainer.h"
 #include "window.h"
 #include "windowcontainer.h"
 
@@ -37,7 +36,6 @@
 
 #include "../configlistener.h"
 #include "../configuration.h"
-#include "../graphics.h"
 #include "../log.h"
 
 #include "../resources/image.h"

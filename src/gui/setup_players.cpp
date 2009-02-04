@@ -19,6 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <string>
 #include <vector>
 
 #include <guichan/widgets/label.hpp>
@@ -27,14 +28,15 @@
 #include "checkbox.h"
 #include "listbox.h"
 #include "ok_dialog.h"
+#include "scrollarea.h"
 #include "setup_players.h"
+#include "table.h"
 
 #include "widgets/dropdown.h"
 #include "widgets/layouthelper.h"
 
 #include "../configuration.h"
 #include "../log.h"
-#include "../player_relations.h"
 
 #include "../utils/gettext.h"
 

@@ -24,8 +24,6 @@
 
 #include <guichan/widgets/listbox.hpp>
 
-#include "../guichanfwd.h"
-
 class SelectionListener;
 
 /**

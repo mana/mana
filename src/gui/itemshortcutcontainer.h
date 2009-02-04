@@ -26,8 +26,6 @@
 
 #include "shortcutcontainer.h"
 
-#include "../guichanfwd.h"
-
 class Image;
 class Item;
 class ItemPopup;

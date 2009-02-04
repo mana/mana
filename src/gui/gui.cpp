@@ -63,7 +63,8 @@ class GuiConfigListener : public ConfigListener
 
         void optionChanged(const std::string &name)
         {
-            if (name == "customcursor") {
+            if (name == "customcursor")
+            {
                 bool bCustomCursor = config.getValue("customcursor", 1) == 1;
                 mGui->setUseCustomCursor(bCustomCursor);
             }
@@ -107,7 +108,8 @@ Gui::Gui(Graphics *graphics):
 
     // Set global font
     std::string path = resman->getPath("fonts/dejavusans.ttf");
-    try {
+    try
+    {
         const int fontSize = config.getValue("fontSize", 11);
         mGuiFont = new TrueTypeFont(path, fontSize);
     }
@@ -119,7 +121,8 @@ Gui::Gui(Graphics *graphics):
 
     // Set bold font
     path = resman->getPath("fonts/dejavusans-bold.ttf");
-    try {
+    try
+    {
         const int fontSize = config.getValue("fontSize", 11);
         boldFont = new TrueTypeFont(path, fontSize);
     }
@@ -132,7 +135,8 @@ Gui::Gui(Graphics *graphics):
     gcn::Widget::setGlobalFont(mGuiFont);
 
     // Load hits' colourful fonts
-    try {
+    try
+    {
         hitRedFont = new gcn::ImageFont("graphics/gui/hits_red.png",
                 "0123456789crit! ");
         hitBlueFont = new gcn::ImageFont("graphics/gui/hits_blue.png",
@@ -182,12 +186,13 @@ Gui::~Gui()
 void Gui::logic()
 {
     // Fade out mouse cursor after extended inactivity
-    if (mMouseInactivityTimer < 100 * 15) {
+    if (mMouseInactivityTimer < 100 * 15)
+    {
         ++mMouseInactivityTimer;
         mMouseCursorAlpha = std::min(1.0f, mMouseCursorAlpha + 0.05f);
-    } else {
-        mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
     }
+    else
+        mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
 
     gcn::Gui::logic();
 }
@@ -232,9 +237,8 @@ void Gui::setUseCustomCursor(bool customCursor)
             mMouseCursors =
                 resman->getImageSet("graphics/gui/mouse.png", 40, 40);
 
-            if (!mMouseCursors) {
+            if (!mMouseCursors)
                 logger->error("Unable to load mouse cursors.");
-            }
         }
         else
         {
@@ -242,7 +246,8 @@ void Gui::setUseCustomCursor(bool customCursor)
             SDL_ShowCursor(SDL_ENABLE);
 
             // Unload the mouse cursor
-            if (mMouseCursors) {
+            if (mMouseCursors)
+            {
                 mMouseCursors->decRef();
                 mMouseCursors = NULL;
             }

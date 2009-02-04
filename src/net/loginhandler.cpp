@@ -21,13 +21,14 @@
 
 #include "loginhandler.h"
 #include "messagein.h"
-#include "network.h"
 #include "protocol.h"
 
 #include "../log.h"
 #include "../logindata.h"
 #include "../main.h"
 #include "../serverinfo.h"
+
+#include "../utils/tostring.h"
 
 extern SERVER_INFO **server_info;
 

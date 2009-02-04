@@ -21,7 +21,6 @@
 
 #include "charserverhandler.h"
 #include "messagein.h"
-#include "network.h"
 #include "protocol.h"
 
 #include "../extensions.h"
@@ -33,6 +32,8 @@
 
 #include "../gui/char_select.h"
 #include "../gui/ok_dialog.h"
+
+#include "../utils/tostring.h"
 
 /*
  * Yeah, this is a global.  Get over it.

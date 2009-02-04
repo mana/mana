@@ -54,6 +54,7 @@
 #include "serverinfo.h"
 #include "sound.h"
 
+#include "gui/button.h"
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/colour.h"

@@ -23,9 +23,9 @@
 #define _SETUP_COLOURS_H
 
 #include <string>
-#include <vector>
 
 #include <guichan/actionlistener.hpp>
+
 #include <guichan/widgets/label.hpp>
 #include <guichan/widgets/listbox.hpp>
 

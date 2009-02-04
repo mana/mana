@@ -22,11 +22,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <iosfwd>
-
 #include <guichan/widgets/button.hpp>
-
-#include "../guichanfwd.h"
 
 class ImageRect;
 

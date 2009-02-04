@@ -24,8 +24,6 @@
 
 #include <guichan/widgets/scrollarea.hpp>
 
-#include "../guichanfwd.h"
-
 class Image;
 class ImageRect;
 

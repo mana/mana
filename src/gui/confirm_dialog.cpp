@@ -21,7 +21,10 @@
 
 #include <guichan/font.hpp>
 
+#include "button.h"
 #include "confirm_dialog.h"
+#include "scrollarea.h"
+#include "textbox.h"
 
 #include "../utils/gettext.h"
 

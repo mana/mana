@@ -19,18 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npcstringdialog.h"
-
-#include <limits>
-#include <sstream>
-
 #include "button.h"
+#include "npcstringdialog.h"
 #include "textfield.h"
 
 #include "../npc.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
 
 #include "widgets/layout.h"
 

@@ -27,7 +27,6 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
 #include "../localplayer.h"
 
 class Item;

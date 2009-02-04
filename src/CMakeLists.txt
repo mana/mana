@@ -323,7 +323,6 @@ SET(SRCS
     engine.h
     equipment.cpp
     equipment.h
-    extensions.h
     floor_item.cpp
     floor_item.h
     flooritemmanager.cpp

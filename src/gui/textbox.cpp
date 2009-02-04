@@ -21,7 +21,6 @@
 
 #include <sstream>
 
-#include <guichan/basiccontainer.hpp>
 #include <guichan/font.hpp>
 
 #include "textbox.h"

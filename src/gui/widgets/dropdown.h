@@ -22,14 +22,7 @@
 #ifndef DROPDOWN_H
 #define DROPDOWN_H
 
-#include <iosfwd>
-
 #include <guichan/widgets/dropdown.hpp>
-
-#include "../listbox.h"
-#include "../scrollarea.h"
-
-#include "../../guichanfwd.h"
 
 class Image;
 class ImageRect;

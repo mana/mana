@@ -20,7 +20,6 @@
  */
 
 #include <algorithm>
-#include <fstream>
 
 #include <guichan/focushandler.hpp>
 
@@ -37,7 +36,6 @@
 
 #include "../beingmanager.h"
 #include "../configuration.h"
-#include "../extensions.h"
 #include "../game.h"
 #include "../localplayer.h"
 #include "../party.h"
@@ -538,32 +536,27 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
          * This will eventually be replaced by a GUI, so
          * we don't need to get too sophisticated
          */
-        if (extensions.aethyra_spells)
+        MessageOut outMsg(mNetwork);
+        if (msg == "heal")
         {
-            MessageOut outMsg(mNetwork);
-            if (msg == "heal")
-            {
-                outMsg.writeInt16(0x03f3);
-                outMsg.writeInt16(0x01);
-                outMsg.writeInt32(0);
-                outMsg.writeInt8(0);
-                outMsg.writeInt8(0);
-                outMsg.writeString("", 24);
-            }
-            else if (msg == "gather")
-            {
-                outMsg.writeInt16(0x03f3);
-                outMsg.writeInt16(0x02);
-                outMsg.writeInt32(0);
-                outMsg.writeInt8(0);
-                outMsg.writeInt8(0);
-                outMsg.writeString("", 24);
-            }
-            else
-                chatLog(_("No such spell!"), BY_SERVER);
+            outMsg.writeInt16(0x03f3);
+            outMsg.writeInt16(0x01);
+            outMsg.writeInt32(0);
+            outMsg.writeInt8(0);
+            outMsg.writeInt8(0);
+            outMsg.writeString("", 24);
+        }
+        else if (msg == "gather")
+        {
+            outMsg.writeInt16(0x03f3);
+            outMsg.writeInt16(0x02);
+            outMsg.writeInt32(0);
+            outMsg.writeInt8(0);
+            outMsg.writeInt8(0);
+            outMsg.writeString("", 24);
         }
         else
-            chatLog(_("The current server doesn't support spells"), BY_SERVER);
+            chatLog(_("No such spell!"), BY_SERVER);
     }
     else if (command == "present")
     {

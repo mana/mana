@@ -19,30 +19,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "shoplistbox.h"
 #include "scrollarea.h"
 #include "sell.h"
 #include "shop.h"
+#include "shoplistbox.h"
 #include "slider.h"
 
 #include "widgets/layout.h"
 
-#include "../item.h"
 #include "../npc.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
-#include "../resources/iteminfo.h"
-
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/tostring.h"
 
 SellDialog::SellDialog(Network *network):
     Window(_("Sell")),

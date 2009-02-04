@@ -23,12 +23,11 @@
 #ifndef ITEMPOPUP_H__
 #define ITEMPOPUP_H__
 
-#include "scrollarea.h"
-#include "textbox.h"
 #include "window.h"
 
-#include "../guichanfwd.h"
-#include "../item.h"
+class ItemInfo;
+class ScrollArea;
+class TextBox;
 
 class ItemPopup : public Window
 {

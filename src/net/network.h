@@ -115,7 +115,4 @@ class Network
         MessageHandlers mMessageHandlers;
 };
 
-/** Convert an address from int format to string */
-char *iptostring(int address);
-
 #endif

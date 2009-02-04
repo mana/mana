@@ -22,13 +22,10 @@
 #ifndef _COLOUR_H
 #define _COLOUR_H
 
-#include <cstdio>
 #include <string>
 #include <vector>
 
 #include <guichan/listmodel.hpp>
-
-#include "../guichanfwd.h"
 
 class Colour : public gcn::ListModel
 {

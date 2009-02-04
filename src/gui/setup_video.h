@@ -27,8 +27,6 @@
 
 #include "setuptab.h"
 
-#include "../guichanfwd.h"
-
 class Setup_Video : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener
 {

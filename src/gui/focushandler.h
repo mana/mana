@@ -26,8 +26,6 @@
 
 #include <guichan/focushandler.hpp>
 
-#include "../guichanfwd.h"
-
 /**
  * The focus handler. This focus handler does exactly the same as the Guichan
  * focus handler, but keeps a stack of modal widgets to be able to handle

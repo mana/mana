@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
-
 #include "gui.h"
 #include "popupmenu.h"
 #include "viewport.h"
@@ -36,9 +34,6 @@
 #include "../npc.h"
 #include "../textmanager.h"
 
-#include "../resources/animation.h"
-#include "../resources/image.h"
-#include "../resources/imageset.h"
 #include "../resources/monsterinfo.h"
 #include "../resources/resourcemanager.h"
 

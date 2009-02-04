@@ -22,15 +22,10 @@
 #ifndef GUI_NPCINTEGERDIALOG_H
 #define GUI_NPCINTEGERDIALOG_H
 
-#include <iosfwd>
-#include <vector>
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 class IntTextField;
 

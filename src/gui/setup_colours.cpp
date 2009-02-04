@@ -19,8 +19,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <vector>
-
 #include <guichan/listmodel.hpp>
 #include <guichan/widgets/label.hpp>
 #include <guichan/widgets/slider.hpp>

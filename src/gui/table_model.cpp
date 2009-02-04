@@ -19,9 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cstdlib>
-
-#include <guichan/graphics.hpp>
 #include <guichan/widget.hpp>
 
 #include "table_model.h"

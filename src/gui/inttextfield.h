@@ -24,8 +24,6 @@
 
 #include "textfield.h"
 
-#include "../guichanfwd.h"
-
 /**
  * TextBox which only accepts numbers as input.
  */

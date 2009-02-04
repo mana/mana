@@ -22,12 +22,11 @@
 #ifndef PROGRESSBAR_H
 #define PROGRESSBAR_H
 
+#include <string>
+
 #include <guichan/widget.hpp>
 
 #include <SDL_types.h>
-#include <string>
-
-#include "../guichanfwd.h"
 
 class ImageRect;
 

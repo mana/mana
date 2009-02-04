@@ -106,7 +106,6 @@
 		<Unit filename="src\engine.h" />
 		<Unit filename="src\equipment.cpp" />
 		<Unit filename="src\equipment.h" />
-		<Unit filename="src\extensions.h" />
 		<Unit filename="src\floor_item.cpp" />
 		<Unit filename="src\floor_item.h" />
 		<Unit filename="src\flooritemmanager.cpp" />
