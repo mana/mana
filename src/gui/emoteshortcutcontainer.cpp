@@ -1,22 +1,22 @@
 /*
- *  Aethyra
- *  Copyright 2009 Aethyra Development Team
+ *  Extended support for activating emotes
+ *  Copyright (C) 2009  Aethyra Development Team
  *
- *  This file is part of Aethyra.
+ *  This file is part of The Mana World.
  *
- *  Aethyra is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  Aethyra is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Aethyra; if not, write to the Free Software Foundation, 
- *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include "emoteshortcutcontainer.h"
@@ -121,14 +121,14 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 
 void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 {
-    if (event.getButton() == gcn::MouseEvent::LEFT) 
+    if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (!mEmoteMoved && mEmoteClicked) 
+        if (!mEmoteMoved && mEmoteClicked)
         {
             const int index = getIndexFromGrid(event.getX(), event.getY());
             const int emoteId = emoteShortcut->getEmote(index);
 
-            if (index == -1) 
+            if (index == -1)
             {
                 return;
             }
@@ -139,7 +139,7 @@ void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
                 emoteShortcut->removeEmote(index);
             }
         }
-        if (mEmoteMoved) 
+        if (mEmoteMoved)
         {
             mCursorPosX = event.getX();
             mCursorPosY = event.getY();
@@ -151,18 +151,18 @@ void EmoteShortcutContainer::mousePressed(gcn::MouseEvent &event)
 {
     const int index = getIndexFromGrid(event.getX(), event.getY());
 
-    if (index == -1) 
+    if (index == -1)
     {
          return;
     }
 
     // Stores the selected emote if there is one.
-    if (emoteShortcut->isEmoteSelected()) 
+    if (emoteShortcut->isEmoteSelected())
     {
          emoteShortcut->setEmote(index);
          emoteShortcut->setEmoteSelected(0);
     }
-    else if (emoteShortcut->getEmote(index)) 
+    else if (emoteShortcut->getEmote(index))
     {
          mEmoteClicked = true;
     }
@@ -179,13 +179,13 @@ void EmoteShortcutContainer::mouseReleased(gcn::MouseEvent &event)
             emoteShortcut->setEmoteSelected(0);
         }
 
-        if (index == -1) 
+        if (index == -1)
         {
             mEmoteMoved = 0;
             return;
         }
 
-        if (mEmoteMoved) 
+        if (mEmoteMoved)
         {
             emoteShortcut->setEmotes(index, mEmoteMoved);
             mEmoteMoved = 0;
@@ -195,7 +195,7 @@ void EmoteShortcutContainer::mouseReleased(gcn::MouseEvent &event)
             emoteShortcut->useEmote(index + 1);
         }
 
-        if (mEmoteClicked) 
+        if (mEmoteClicked)
         {
             mEmoteClicked = false;
         }

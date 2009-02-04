@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright 2008 The Mana World Development Team
+ *  An effects manager
+ *  Copyright (C) 2008  Fate <fate.tmw@googlemail.com>
+ *  Copyright (C) 2008  Chuck Miller <shadowmil@gmail.com>
  *
- *  This file is part of Aethyra.
+ *  This file is part of The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,8 +20,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _EFFECT_MANAGER_H
-#define _EFFECT_MANAGER_H
+#ifndef EFFECT_MANAGER_H
+#define EFFECT_MANAGER_H
 
 #include <list>
 #include <string>
@@ -29,7 +30,6 @@ class Being;
 
 class EffectManager
 {
-
     public: 
         struct EffectDescription
         {
@@ -38,28 +38,25 @@ class EffectManager
              std::string SFX;
         };
 
-        
         EffectManager();
-        
         ~EffectManager();
 
         /**
          * Triggers a effect with the id, at
          * the specified being.
          */
-	bool trigger(int id, Being* being);
+        bool trigger(int id, Being* being);
 
         /**
          * Triggers a effect with the id, at
          * the specified x and y coordinate.
          */
-	bool trigger(int id, int x, int y);
+        bool trigger(int id, int x, int y);
 
    private:
         std::list<EffectDescription> mEffects;
-
 };
 
 extern EffectManager *effectManager;
 
-#endif // _EFFECT_MANAGER_H
+#endif // EFFECT_MANAGER_H

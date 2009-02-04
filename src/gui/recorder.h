@@ -1,6 +1,6 @@
 /*
- *  Aethyra
- *  Copyright (C) 2008 Aethyra Development Team
+ *  A chat recorder
+ *  Copyright (C) 2008  Lloyd Bryant <lloyd_bryant@netzero.net>
  *
  *  This file is part of Aethyra.
  *
@@ -72,4 +72,5 @@ class Recorder : public Window, public gcn::ActionListener
 
         std::ofstream mStream;
 };
+
 #endif
