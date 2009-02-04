@@ -62,6 +62,7 @@ ItemShortcutContainer::ItemShortcutContainer():
 ItemShortcutContainer::~ItemShortcutContainer()
 {
     mBackgroundImg->decRef();
+    delete mItemPopup;
 }
 
 void ItemShortcutContainer::logic()

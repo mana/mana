@@ -66,6 +66,7 @@ ItemContainer::ItemContainer(Inventory *inventory, int offset):
 ItemContainer::~ItemContainer()
 {
     mSelImg->decRef();
+    delete mItemPopup;
 }
 
 void ItemContainer::logic()
