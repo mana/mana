@@ -33,8 +33,9 @@
 class GuiTableActionListener;
 
 /**
- * A table, with rows and columns made out of sub-widgets. Largely inspired by (and can be thought of as a generalisation of)
- * the guichan listbox implementation.
+ * A table, with rows and columns made out of sub-widgets. Largely inspired by
+ * (and can be thought of as a generalisation of) the guichan listbox
+ * implementation.
  *
  * Normally you want this within a ScrollArea.
  *
@@ -60,12 +61,14 @@ public:
     /**
      * Sets the table model
      *
-     * Note that actions issued by widgets returned from the model will update the table
-     * selection, but only AFTER any event handlers installed within the widget have been
-     *triggered. To be notified after such an update, add an action listener to the table
-     * instead.
+     * Note that actions issued by widgets returned from the model will update
+     * the table selection, but only AFTER any event handlers installed within
+     * the widget have been triggered. To be notified after such an update, add
+     * an action listener to the table instead.
      */
     void setModel(TableModel *m);
+
+    const TableModel* getModel() {return mModel;}
 
     void setSelected(int row, int column);
 
@@ -73,14 +76,23 @@ public:
 
     int getSelectedColumn(void);
 
+    void setSelectedRow(int selected);
+
+    void setSelectedColumn(int selected);
+
+    bool isWrappingEnabled() const {return mWrappingEnabled;}
+
+    void setWrappingEnabled(bool wrappingEnabled)
+    {mWrappingEnabled = wrappingEnabled;}
+
     gcn::Rectangle getChildrenArea(void);
 
     /**
-     * Toggle whether to use linewise selection mode, in which the table selects an entire
-     * line at a time, rather than a single cell.
+     * Toggle whether to use linewise selection mode, in which the table selects
+     * an entire line at a time, rather than a single cell.
      *
-     * Note that column information is tracked even in linewise selection mode; this mode
-     * therefore only affects visualisation.
+     * Note that column information is tracked even in linewise selection mode;
+     * this mode therefore only affects visualisation.
      *
      * Disabled by default.
      *
@@ -144,6 +156,7 @@ private:
     int getColumnForX(int x); // -1 on error
     void recomputeDimensions(void);
     bool mLinewiseMode;
+    bool mWrappingEnabled;
     bool mOpaque;
 
     static float mAlpha;

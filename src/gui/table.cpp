@@ -21,11 +21,14 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/graphics.hpp>
+#include <guichan/key.hpp>
 
 #include "colour.h"
 #include "table.h"
 
 #include "../configuration.h"
+
+#include "../utils/dtor.h"
 
 float GuiTable::mAlpha = config.getValue("guialpha", 0.8);
 
@@ -78,6 +81,7 @@ void GuiTableActionListener::action(const gcn::ActionEvent& actionEvent)
 GuiTable::GuiTable(TableModel *initial_model, gcn::Color background,
                    bool opacity) :
     mLinewiseMode(false),
+    mWrappingEnabled(false),
     mOpaque(opacity),
     mBackgroundColor(background),
     mModel(NULL),
@@ -86,6 +90,8 @@ GuiTable::GuiTable(TableModel *initial_model, gcn::Color background,
     mTopWidget(NULL)
 {
     setModel(initial_model);
+    setFocusable(true);
+
     addMouseListener(this);
     addKeyListener(this);
 }
@@ -177,10 +183,63 @@ int GuiTable::getColumnWidth(int i)
         return 0;
 }
 
+void GuiTable::setSelectedRow(int selected)
+{
+    if (mModel == NULL)
+    {
+        mSelectedRow = -1;
+    }
+    else
+    {
+        if (selected < 0)
+        {
+            mSelectedRow = -1;
+        }
+        else if (selected >= mModel->getRows() && mWrappingEnabled)
+        {
+            mSelectedRow = 0;
+        }
+        else if (selected >= mModel->getRows() && !mWrappingEnabled)
+        {
+            mSelectedRow = mModel->getRows() - 1;
+        }
+        else
+        {
+            mSelectedRow = selected;
+        }
+    }
+}
+
+void GuiTable::setSelectedColumn(int selected)
+{
+    if (mModel == NULL)
+    {
+        mSelectedColumn = -1;
+    }
+    else
+    {
+        if (selected < 0)
+        {
+            mSelectedColumn = -1;
+        }
+        else if (selected >= mModel->getColumns() && mWrappingEnabled)
+        {
+            mSelectedColumn = 0;
+        }
+        else if (selected >= mModel->getColumns() && !mWrappingEnabled)
+        {
+            mSelectedColumn = mModel->getColumns() - 1;
+        }
+        else
+        {
+            mSelectedColumn = selected;
+        }
+    }
+}
+
 void GuiTable::uninstallActionListeners(void)
 {
-    for (std::vector<GuiTableActionListener *>::const_iterator it = action_listeners.begin(); it != action_listeners.end(); it++)
-        delete *it;
+    delete_all(action_listeners);
     action_listeners.clear();
 }
 
@@ -333,6 +392,49 @@ gcn::Rectangle GuiTable::getChildrenArea(void)
 // -- KeyListener notifications
 void GuiTable::keyPressed(gcn::KeyEvent& keyEvent)
 {
+    gcn::Key key = keyEvent.getKey();
+
+    if (key.getValue() == gcn::Key::ENTER || key.getValue() == gcn::Key::SPACE)
+    {
+        distributeActionEvent();
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::UP)
+    {
+        setSelectedRow(mSelectedRow - 1);
+            
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::DOWN)
+    {
+        setSelectedRow(mSelectedRow + 1);
+            
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::LEFT)
+    {
+        setSelectedColumn(mSelectedColumn - 1);
+            
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::RIGHT)
+    {
+        setSelectedColumn(mSelectedColumn + 1);
+            
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::HOME)
+    {
+        setSelectedRow(0);
+        setSelectedColumn(0);
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::END)
+    {
+        setSelectedRow(mModel->getRows() - 1);
+        setSelectedColumn(mModel->getColumns() - 1);
+        keyEvent.consume();
+    }
 }
 
 // -- MouseListener notifications
@@ -355,10 +457,25 @@ void GuiTable::mousePressed(gcn::MouseEvent& mouseEvent)
 
 void GuiTable::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
+    if (isFocused())
+    {
+        if (getSelectedRow() > 0 )
+        {
+            setSelectedRow(getSelectedRow() - 1);
+        }
+
+        mouseEvent.consume();
+    }
 }
 
 void GuiTable::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
 {
+    if (isFocused())
+    {
+        setSelectedRow(getSelectedRow() + 1);
+
+        mouseEvent.consume();
+    }
 }
         
 void GuiTable::mouseDragged(gcn::MouseEvent& mouseEvent)

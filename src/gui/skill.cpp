@@ -127,6 +127,7 @@ SkillDialog::SkillDialog():
     mTable = new GuiTable(mTableModel);
     mTable->setOpaque(false);
     mTable->setLinewiseSelection(true);
+    mTable->setWrappingEnabled(true);
     mTable->setActionEventId("skill");
     mTable->addActionListener(this);
 
