@@ -58,7 +58,7 @@ Setup_Colours::Setup_Colours() :
     mRedText->addListener(this);
 
     mRedSlider = new Slider(0, 255);
-    mRedSlider->setWidth(90);
+    mRedSlider->setWidth(160);
     mRedSlider->setValue(mRedText->getValue());
     mRedSlider->setActionEventId("slider_red");
     mRedSlider->addActionListener(this);
@@ -72,7 +72,7 @@ Setup_Colours::Setup_Colours() :
     mGreenText->addListener(this);
 
     mGreenSlider = new Slider(0, 255);
-    mGreenSlider->setWidth(90);
+    mGreenSlider->setWidth(160);
     mGreenSlider->setValue(mGreenText->getValue());
     mGreenSlider->setActionEventId("slider_green");
     mGreenSlider->addActionListener(this);
@@ -86,7 +86,7 @@ Setup_Colours::Setup_Colours() :
     mBlueText->addListener(this);
 
     mBlueSlider = new Slider(0, 255);
-    mBlueSlider->setWidth(90);
+    mBlueSlider->setWidth(160);
     mBlueSlider->setValue(mBlueText->getValue());
     mBlueSlider->setActionEventId("slider_blue");
     mBlueSlider->addActionListener(this);
@@ -97,18 +97,18 @@ Setup_Colours::Setup_Colours() :
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, mScroll, 1, 3).setPadding(2);
-    place(1, 0, mRedLabel, 2);
-    place(3, 0, mRedSlider);
-    place(4, 0, mRedText).setPadding(1);
-    place(1, 1, mGreenLabel, 2);
-    place(3, 1, mGreenSlider);
-    place(4, 1, mGreenText).setPadding(1);
-    place(1, 2, mBlueLabel, 2);
-    place(3, 2, mBlueSlider);
-    place(4, 2, mBlueText).setPadding(1);
+    place(0, 0, mScroll, 4, 3).setPadding(2);
+    place(0, 3, mRedLabel, 2);
+    place(2, 3, mRedSlider);
+    place(3, 3, mRedText).setPadding(1);
+    place(0, 4, mGreenLabel, 2);
+    place(2, 4, mGreenSlider);
+    place(3, 4, mGreenText).setPadding(1);
+    place(0, 5, mBlueLabel, 2);
+    place(2, 5, mBlueSlider);
+    place(3, 5, mBlueText).setPadding(1);
 
-    setDimension(gcn::Rectangle(0, 0, 290, 150));
+    setDimension(gcn::Rectangle(0, 0, 290, 250));
 }
 
 Setup_Colours::~Setup_Colours()
