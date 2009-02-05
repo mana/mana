@@ -32,9 +32,10 @@
 NpcIntegerDialog::NpcIntegerDialog():
     Window(_("NPC Number Request"))
 {
+    mValueField = new IntTextField();
+
     mDecButton = new Button("-", "decvalue", this);
     mIncButton = new Button("+", "incvalue", this);
-    mValueField = new IntTextField();
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
     resetButton = new Button(_("Reset"), "reset", this);
@@ -56,9 +57,6 @@ NpcIntegerDialog::NpcIntegerDialog():
     reflowLayout(175, 0);
 
     setLocationRelativeTo(getParent());
-
-    mValueField->setActionEventId("valuefield");
-    mValueField->addKeyListener(this);
 }
 
 void NpcIntegerDialog::setRange(const int min, const int max)
@@ -104,4 +102,14 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
         current_npc = 0;
         mValueField->reset();
     }
+}
+
+bool NpcIntegerDialog::isInputFocused()
+{
+    return mValueField->isFocused();
+}
+
+void NpcIntegerDialog::requestFocus()
+{
+    mValueField->requestFocus();
 }

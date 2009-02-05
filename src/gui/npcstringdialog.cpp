@@ -33,6 +33,7 @@ NpcStringDialog::NpcStringDialog():
     Window(_("NPC Text Request"))
 {
     mValueField = new TextField("");
+
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
 
@@ -70,4 +71,9 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
 bool NpcStringDialog::isInputFocused()
 {
     return mValueField->isFocused();
+}
+
+void NpcStringDialog::requestFocus()
+{
+    mValueField->requestFocus();
 }
