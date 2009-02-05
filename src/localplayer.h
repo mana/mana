@@ -31,6 +31,7 @@
 #define INVENTORY_SIZE 102
 #define STORAGE_SIZE 301
 
+class Equipment;
 class FloorItem;
 class ImageSet;
 class Inventory;
@@ -233,6 +234,8 @@ class LocalPlayer : public Player
 
         /** Animated out of range target cursor. */
         SimpleAnimation *mTargetCursorOutRange[NUM_TC];
+
+        const std::auto_ptr<Equipment> mEquipment;
 
     protected:
         void walk(unsigned char dir);

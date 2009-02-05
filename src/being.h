@@ -44,7 +44,6 @@
 #define STATUS_EFFECTS 32
 
 class AnimatedSprite;
-class Equipment;
 class ItemInfo;
 class Item;
 class Map;
@@ -361,8 +360,6 @@ class Being : public Sprite
 
         // Target cursor being used by the being
         Image *mTargetCursor;
-
-        const std::auto_ptr<Equipment> mEquipment;
 
         static int getHairColorsNr(void);
 

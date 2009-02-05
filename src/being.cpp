@@ -25,7 +25,6 @@
 #include "animatedsprite.h"
 #include "being.h"
 #include "configuration.h"
-#include "equipment.h"
 #include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
@@ -67,7 +66,6 @@ Being::Being(int id, int job, Map *map):
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
-    mEquipment(new Equipment()),
     mId(id),
     mWalkSpeed(150),
     mDirection(DOWN),
