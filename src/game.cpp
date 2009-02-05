@@ -515,6 +515,57 @@ void Game::handleInput()
                 }
             }
 
+            if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+            {
+                // Input chat window
+                if (!(chatWindow->isInputFocused() ||
+                                deathNotice != NULL ||
+                                weightNotice != NULL))
+                {
+                    // Quit by pressing Enter if the exit confirm is there
+                    if (exitConfirm)
+                        done = true;
+                    // Close the Browser if opened
+                    else if (helpWindow->isVisible())
+                        helpWindow->setVisible(false);
+                    // Close the config window, cancelling changes if opened
+                    else if (setupWindow->isVisible())
+                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
+                    else if (!(keyboard.getKeyValue(
+                                   KeyboardConfig::KEY_TOGGLE_CHAT) == 
+                               keyboard.getKeyValue(
+                                   KeyboardConfig::KEY_OK) && 
+                               (npcStringDialog->isVisible() ||
+                                npcTextDialog->isVisible() ||
+                                npcListDialog->isVisible() ||
+                                npcIntegerDialog->isVisible())))
+                    {
+                        chatWindow->requestChatFocus();
+                        used = true;
+                    }
+                }
+            }
+
+            if (keyboard.isKeyActive(keyboard.KEY_OK))
+            {
+                if (!(exitConfirm || helpWindow->isVisible() || 
+                      setupWindow->isVisible()))
+                {
+                    // Submits the text and proceeds to the next dialog
+                    if (npcStringDialog->isVisible())
+                        npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Proceed to the next dialog option, or close the window
+                    else if (npcTextDialog->isVisible())
+                        npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Choose the currently highlighted dialogue option
+                    else if (npcListDialog->isVisible())
+                        npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Submits the text and proceeds to the next dialog
+                    else if (npcIntegerDialog->isVisible())
+                        npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
+                }
+            }
+
             const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
             switch (tKey)
             {
@@ -544,45 +595,6 @@ void Game::handleInput()
                     }
                     used = true;
                     break;
-
-                case KeyboardConfig::KEY_TOGGLE_CHAT:
-                    // Input chat window
-                    if (chatWindow->isInputFocused() ||
-                                    deathNotice != NULL ||
-                                    weightNotice != NULL)
-                    {
-                        break;
-                    }
-
-                    // Quit by pressing Enter if the exit confirm is there
-                    if (exitConfirm)
-                       done = true;
-                    // Close the Browser if opened
-                    else if (helpWindow->isVisible())
-                        helpWindow->setVisible(false);
-                    // Close the config window, cancelling changes if opened
-                    else if (setupWindow->isVisible())
-                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                    else
-                    {
-                        chatWindow->requestChatFocus();
-                        used = true;
-                    }
-                    break;
-                case KeyboardConfig::KEY_OK:
-                    // Submits the text and proceeds to the next dialog
-                    if (npcStringDialog->isVisible())
-                        npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Proceed to the next dialog option, or close the window
-                    else if (npcTextDialog->isVisible())
-                        npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Choose the currently highlighted dialogue option
-                    else if (npcListDialog->isVisible())
-                        npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Submits the text and proceeds to the next dialog
-                    else if (npcIntegerDialog->isVisible())
-                        npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    break;
                // Quitting confirmation dialog
                case KeyboardConfig::KEY_QUIT:
                     if (!exitConfirm) 
@@ -598,7 +610,6 @@ void Game::handleInput()
                         exitConfirm->action(gcn::ActionEvent(NULL, _("no")));
                     }
                     break;
-
                 default:
                     break;
             }
