@@ -88,6 +88,27 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             state = ERROR_STATE;
             break;
 
+        case 0x006b:
+            msg->skip(2); // Length word
+            flags = msg->readInt32(); // Aethyra extensions flags
+            logger->log("Server flags are: %x", flags);
+            msg->skip(16); // Unused
+
+            // Derive number of characters from message length
+            n_character = (msg->getLength() - 24) / 106;
+
+            for (int i = 0; i < n_character; i++)
+            {
+                tempPlayer = readPlayerData(*msg, slot);
+                mCharInfo->select(slot);
+                mCharInfo->setEntry(tempPlayer);
+                logger->log("CharServer: Player: %s (%d)",
+                tempPlayer->getName().c_str(), slot);
+            }
+
+            state = CHAR_SELECT_STATE;
+            break;
+
         case 0x006c:
             switch (msg->readInt8()) {
                 case 0:
