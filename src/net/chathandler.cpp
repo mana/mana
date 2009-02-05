@@ -33,6 +33,7 @@
 
 #include "../gui/chat.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 #include "../utils/trim.h"
 
@@ -72,10 +73,10 @@ void ChatHandler::handleMessage(MessageIn *msg)
                     //chatWindow->chatLog("Whisper sent", BY_SERVER);
                     break;
                 case 0x01:
-                    chatWindow->chatLog("Whisper could not be sent, user is offline", BY_SERVER);
+                    chatWindow->chatLog(_("Whisper could not be sent, user is offline"), BY_SERVER);
                     break;
                 case 0x02:
-                    chatWindow->chatLog("Whisper could not be sent, ignored by user", BY_SERVER);
+                    chatWindow->chatLog(_("Whisper could not be sent, ignored by user"), BY_SERVER);
                     break;
             }
             break;

@@ -35,6 +35,8 @@
 #include "../gui/chat.h"
 #include "../gui/sell.h"
 
+#include "../utils/gettext.h"
+
 extern BuyDialog *buyDialog;
 extern Window *buySellDialog;
 extern SellDialog *sellDialog;
@@ -104,27 +106,27 @@ void BuySellHandler::handleMessage(MessageIn *msg)
                 }
             }
             else {
-                chatWindow->chatLog("Nothing to sell", BY_SERVER);
+                chatWindow->chatLog(_("Nothing to sell"), BY_SERVER);
                 current_npc = 0;
             }
             break;
 
         case SMSG_NPC_BUY_RESPONSE:
             if (msg->readInt8() == 0) {
-                chatWindow->chatLog("Thanks for buying", BY_SERVER);
+                chatWindow->chatLog(_("Thanks for buying"), BY_SERVER);
             } else {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
                 buyDialog->setMoney(player_node->mGp);
-                chatWindow->chatLog("Unable to buy", BY_SERVER);
+                chatWindow->chatLog(_("Unable to buy"), BY_SERVER);
             }
             break;
 
         case SMSG_NPC_SELL_RESPONSE:
             if (msg->readInt8() == 0) {
-                chatWindow->chatLog("Thanks for selling", BY_SERVER);
+                chatWindow->chatLog(_("Thanks for selling"), BY_SERVER);
             } else {
-                chatWindow->chatLog("Unable to sell", BY_SERVER);
+                chatWindow->chatLog(_("Unable to sell"), BY_SERVER);
             }
             break;
     }

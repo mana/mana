@@ -27,6 +27,8 @@
 #include "../log.h"
 #include "../main.h"
 
+#include "../utils/gettext.h"
+
 MapLoginHandler::MapLoginHandler()
 {
     static const Uint16 _messages[] = {
@@ -50,13 +52,13 @@ void MapLoginHandler::handleMessage(MessageIn *msg)
 
             switch (code) {
                 case 0:
-                    errorMessage = "Authentication failed";
+                    errorMessage = _("Authentication failed");
                     break;
                 case 2:
-                    errorMessage = "This account is already logged in";
+                    errorMessage = _("This account is already logged in");
                     break;
                 default:
-                    errorMessage = "Unknown connection error";
+                    errorMessage = _("Unknown connection error");
                     break;
             }
             state = ERROR_STATE;
