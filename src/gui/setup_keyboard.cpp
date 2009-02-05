@@ -78,11 +78,10 @@ Setup_Keyboard::Setup_Keyboard():
 
     refreshKeys();
 
-    mKeyList->setDimension(gcn::Rectangle(0, 0, 185, 140));
     mKeyList->addActionListener(this);
-    mKeyList->setSelected(-1);
 
     ScrollArea *scrollArea = new ScrollArea(mKeyList);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mAssignKeyButton = new Button(_("Assign"), "assign", this);
     mAssignKeyButton->addActionListener(this);

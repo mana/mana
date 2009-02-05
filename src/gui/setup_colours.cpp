@@ -47,7 +47,6 @@ Setup_Colours::Setup_Colours() :
 
     mScroll = new ScrollArea(mColourBox);
     mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mScroll->setWidth(90);
 
     mRedLabel = new gcn::Label(_("Red: "));
 
