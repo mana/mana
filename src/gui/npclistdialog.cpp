@@ -43,6 +43,7 @@ NpcListDialog::NpcListDialog():
     setDefaultSize(0, 0, 260, 200);
 
     mItemList = new ListBox(this);
+    mItemList->setWrappingEnabled(true);
     scrollArea = new ScrollArea(mItemList);
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
