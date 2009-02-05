@@ -27,15 +27,13 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
+#include <guichan/listmodel.hpp>
 
-#include "scrollarea.h"
 #include "window.h"
 
-#include "widgets/dropdown.h"
-
-#include "../guichanfwd.h"
-
+class DropDown;
 class LoginData;
+class ScrollArea;
 
 /**
  * The login dialog.
@@ -131,7 +129,7 @@ class LoginDialog : public Window, public gcn::ActionListener,
         };
         DropDownList *mServerList;
         gcn::ListBox *mServerListBox;
-        ScrollArea *mServerScrollArea;
+        gcn::ScrollArea *mServerScrollArea;
 
 };
 

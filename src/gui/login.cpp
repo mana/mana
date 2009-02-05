@@ -19,9 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
-#include <vector>
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
@@ -30,8 +27,10 @@
 #include "login.h"
 #include "ok_dialog.h"
 #include "passwordfield.h"
+#include "scrollarea.h"
 #include "textfield.h"
 
+#include "widgets/dropdown.h"
 #include "widgets/layout.h"
 
 #include "../main.h"
