@@ -515,7 +515,8 @@ void Game::handleInput()
                 }
             }
 
-            if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+            if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT) ||
+                keyboard.isKeyActive(keyboard.KEY_OK))
             {
                 // Input chat window
                 if (!(chatWindow->isInputFocused() ||
@@ -543,16 +544,8 @@ void Game::handleInput()
                         chatWindow->requestChatFocus();
                         used = true;
                     }
-                }
-            }
-
-            if (keyboard.isKeyActive(keyboard.KEY_OK))
-            {
-                if (!(exitConfirm || helpWindow->isVisible() || 
-                      setupWindow->isVisible()))
-                {
                     // Submits the text and proceeds to the next dialog
-                    if (npcStringDialog->isVisible())
+                    else if (npcStringDialog->isVisible())
                         npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
                     // Proceed to the next dialog option, or close the window
                     else if (npcTextDialog->isVisible())
