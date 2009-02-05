@@ -58,9 +58,8 @@ static const int boxPosition[][2] = {
     {129, 78}    // EQUIP_AMMO_SLOT
 };
 
-EquipmentWindow::EquipmentWindow(Equipment *equipment):
+EquipmentWindow::EquipmentWindow():
     Window(_("Equipment")),
-    mEquipment(equipment),
     mSelected(-1)
 {
     mItemPopup = new ItemPopup();
@@ -89,6 +88,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
         mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
     }
 
+    mEquipment = player_node->mEquipment.get();
     mInventory = player_node->getInventory();
 }
 

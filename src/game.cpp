@@ -213,7 +213,7 @@ void createGuiWindows(Network *network)
     skillDialog = new SkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
-    equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
+    equipmentWindow = new EquipmentWindow();
     tradeWindow = new TradeWindow(network);
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();

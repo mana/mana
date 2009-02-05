@@ -52,7 +52,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        EquipmentWindow(Equipment *equipment);
+        EquipmentWindow();
 
         /**
          * Destructor.
@@ -67,8 +67,6 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         void mousePressed(gcn::MouseEvent& mouseEvent);
-
-        Item* getItem(const int &x, const int &y);
 
         enum {
             // Equipment rules:
@@ -90,6 +88,8 @@ class EquipmentWindow : public Window, public gcn::ActionListener
     private:
         void mouseExited(gcn::MouseEvent &event);
         void mouseMoved(gcn::MouseEvent &event);
+
+        Item* getItem(const int &x, const int &y);
 
         Equipment *mEquipment;
         Inventory *mInventory;
