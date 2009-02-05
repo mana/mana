@@ -50,5 +50,6 @@ src/resources/monsterdb.cpp
 src/resources/npcdb.cpp
 src/being.cpp
 src/game.cpp
+src/keyboardconfig.cpp
 src/main.cpp
 src/party.cpp

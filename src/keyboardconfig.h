@@ -164,6 +164,9 @@ class KeyboardConfig
             KEY_PICKUP,
             KEY_HIDE_WINDOWS,
             KEY_SIT,
+            KEY_SCREENSHOT,
+            KEY_TRADE,
+            KEY_PATHFIND,
             KEY_SHORTCUT_1,
             KEY_SHORTCUT_2,
             KEY_SHORTCUT_3,
@@ -176,6 +179,7 @@ class KeyboardConfig
             KEY_SHORTCUT_10,
             KEY_SHORTCUT_11,
             KEY_SHORTCUT_12,
+            KEY_WINDOW_HELP,
             KEY_WINDOW_STATUS,
             KEY_WINDOW_INVENTORY,
             KEY_WINDOW_EQUIPMENT,
@@ -199,6 +203,11 @@ class KeyboardConfig
             KEY_EMOTE_10,
             KEY_EMOTE_11,
             KEY_EMOTE_12,
+            KEY_TOGGLE_CHAT,
+            KEY_SCROLL_CHAT_UP,
+            KEY_SCROLL_CHAT_DOWN,
+            KEY_OK,
+            KEY_QUIT,
             KEY_TOTAL
         };
 
