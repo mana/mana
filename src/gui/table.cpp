@@ -191,7 +191,7 @@ void GuiTable::setSelectedRow(int selected)
     }
     else
     {
-        if (selected < 0)
+        if (selected < 0 && !mWrappingEnabled)
         {
             mSelectedRow = -1;
         }
@@ -199,7 +199,8 @@ void GuiTable::setSelectedRow(int selected)
         {
             mSelectedRow = 0;
         }
-        else if (selected >= mModel->getRows() && !mWrappingEnabled)
+        else if ((selected >= mModel->getRows() && !mWrappingEnabled) || 
+                 (selected < 0 && mWrappingEnabled))
         {
             mSelectedRow = mModel->getRows() - 1;
         }
@@ -218,15 +219,13 @@ void GuiTable::setSelectedColumn(int selected)
     }
     else
     {
-        if (selected < 0)
-        {
-            mSelectedColumn = -1;
-        }
-        else if (selected >= mModel->getColumns() && mWrappingEnabled)
+        if ((selected >= mModel->getColumns() && mWrappingEnabled) ||
+                 (selected < 0 && !mWrappingEnabled))
         {
             mSelectedColumn = 0;
         }
-        else if (selected >= mModel->getColumns() && !mWrappingEnabled)
+        else if ((selected >= mModel->getColumns() && !mWrappingEnabled) || 
+                 (selected < 0 && mWrappingEnabled))
         {
             mSelectedColumn = mModel->getColumns() - 1;
         }
@@ -445,7 +444,8 @@ void GuiTable::mousePressed(gcn::MouseEvent& mouseEvent)
         int row = getRowForY(mouseEvent.getY());
         int column = getColumnForX(mouseEvent.getX());
 
-        if (row > -1 && column > -1)
+        if (row > -1 && column > -1 &&
+            row < mModel->getRows() && column < mModel->getColumns())
         {
             mSelectedColumn = column;
             mSelectedRow = row;
@@ -459,7 +459,7 @@ void GuiTable::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
     if (isFocused())
     {
-        if (getSelectedRow() > 0 )
+        if (getSelectedRow() >= 0 )
         {
             setSelectedRow(getSelectedRow() - 1);
         }
