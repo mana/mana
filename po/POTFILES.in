@@ -41,6 +41,7 @@ src/gui/speechbubble.cpp
 src/gui/status.cpp
 src/gui/trade.cpp
 src/gui/updatewindow.cpp
+src/net/charserverhandler.cpp
 src/net/playerhandler.cpp
 src/net/tradehandler.cpp
 src/resources/colordb.cpp
