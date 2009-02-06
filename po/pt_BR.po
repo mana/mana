@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-05 09:19-0700\n"
+"POT-Creation-Date: 2009-02-05 18:42-0700\n"
 "PO-Revision-Date: 2009-01-21 20:48+0000\n"
 "Last-Translator: Bruno <brunorafaelcardoso@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
@@ -28,7 +28,7 @@ msgstr "Comprar"
 msgid "Price: %d GP / Total: %d GP"
 msgstr "Preço: %d GP / Total: %d GP"
 
-#: ../src/gui/buy.cpp:61 ../src/gui/sell.cpp:63 ../src/game.cpp:590
+#: ../src/gui/buy.cpp:61 ../src/gui/sell.cpp:63 ../src/game.cpp:602
 #: ../src/keyboardconfig.cpp:99
 msgid "Quit"
 msgstr "Sair"
@@ -922,15 +922,15 @@ msgstr "Fechar"
 msgid "Players"
 msgstr "Jogadores"
 
-#: ../src/gui/setup_colours.cpp:52
+#: ../src/gui/setup_colours.cpp:51
 msgid "Red: "
 msgstr ""
 
-#: ../src/gui/setup_colours.cpp:66
+#: ../src/gui/setup_colours.cpp:65
 msgid "Green: "
 msgstr ""
 
-#: ../src/gui/setup_colours.cpp:80
+#: ../src/gui/setup_colours.cpp:79
 msgid "Blue: "
 msgstr ""
 
@@ -954,19 +954,19 @@ msgstr "Parar"
 msgid "Rotate the stick"
 msgstr "Gire o bastão"
 
-#: ../src/gui/setup_keyboard.cpp:87
+#: ../src/gui/setup_keyboard.cpp:86
 msgid "Assign"
 msgstr "Atribuir"
 
-#: ../src/gui/setup_keyboard.cpp:91
+#: ../src/gui/setup_keyboard.cpp:90
 msgid "Default"
 msgstr "Padrão"
 
-#: ../src/gui/setup_keyboard.cpp:120
+#: ../src/gui/setup_keyboard.cpp:119
 msgid "Key Conflict(s) Detected."
 msgstr "Conflitos nas teclas detectado."
 
-#: ../src/gui/setup_keyboard.cpp:121
+#: ../src/gui/setup_keyboard.cpp:120
 msgid "Resolve them, or gameplay may result in strange behaviour."
 msgstr "Corrija-os, ou o jogo irá se comportar de forma estranha."
 
@@ -1731,24 +1731,24 @@ msgstr ""
 msgid "The connection to the server was lost, the program will now quit"
 msgstr ""
 
-#: ../src/game.cpp:591
+#: ../src/game.cpp:603
 #, fuzzy
 msgid "Are you sure you want to quit?"
 msgstr "Tem certeza que deseja excluir este personagem?"
 
-#: ../src/game.cpp:598
+#: ../src/game.cpp:610
 msgid "no"
 msgstr ""
 
-#: ../src/game.cpp:727
+#: ../src/game.cpp:738
 msgid "Ignoring incoming trade requests"
 msgstr ""
 
-#: ../src/game.cpp:734
+#: ../src/game.cpp:745
 msgid "Accepting incoming trade requests"
 msgstr ""
 
-#: ../src/game.cpp:770
+#: ../src/game.cpp:781
 #, c-format
 msgid "Warning: guichan input exception: %s"
 msgstr ""

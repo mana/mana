@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-05 09:19-0700\n"
+"POT-Creation-Date: 2009-02-06 10:40-0700\n"
 "PO-Revision-Date: 2008-12-28 14:45+0000\n"
 "Last-Translator: GonzoDark AKA IchigoBlack <Gonzo.Dark@gmail.com>\n"
 "Language-Team: Danish <none@none.none>\n"
@@ -28,7 +28,7 @@ msgstr "Køb"
 msgid "Price: %d GP / Total: %d GP"
 msgstr "Pris: %d GP / Total: %d GP"
 
-#: ../src/gui/buy.cpp:61 ../src/gui/sell.cpp:63 ../src/game.cpp:590
+#: ../src/gui/buy.cpp:61 ../src/gui/sell.cpp:63 ../src/game.cpp:602
 #: ../src/keyboardconfig.cpp:99
 msgid "Quit"
 msgstr "Afslut"
@@ -930,16 +930,16 @@ msgstr "Farver:"
 msgid "Players"
 msgstr "Brugere"
 
-#: ../src/gui/setup_colours.cpp:52
+#: ../src/gui/setup_colours.cpp:51
 msgid "Red: "
 msgstr ""
 
-#: ../src/gui/setup_colours.cpp:66
+#: ../src/gui/setup_colours.cpp:65
 #, fuzzy
 msgid "Green: "
 msgstr "Til stede: "
 
-#: ../src/gui/setup_colours.cpp:80
+#: ../src/gui/setup_colours.cpp:79
 msgid "Blue: "
 msgstr ""
 
@@ -963,20 +963,20 @@ msgstr "Stop"
 msgid "Rotate the stick"
 msgstr "Rotere joysticket"
 
-#: ../src/gui/setup_keyboard.cpp:87
+#: ../src/gui/setup_keyboard.cpp:86
 msgid "Assign"
 msgstr "Tildel"
 
-#: ../src/gui/setup_keyboard.cpp:91
+#: ../src/gui/setup_keyboard.cpp:90
 #, fuzzy
 msgid "Default"
 msgstr "Standart"
 
-#: ../src/gui/setup_keyboard.cpp:120
+#: ../src/gui/setup_keyboard.cpp:119
 msgid "Key Conflict(s) Detected."
 msgstr "Tast Konfikt(er) Opdaget."
 
-#: ../src/gui/setup_keyboard.cpp:121
+#: ../src/gui/setup_keyboard.cpp:120
 msgid "Resolve them, or gameplay may result in strange behaviour."
 msgstr "Løs problemet, ellers kan spillet risikere at opfører sig ustabilt."
 
@@ -1753,24 +1753,24 @@ msgstr "Netværk Fejl"
 msgid "The connection to the server was lost, the program will now quit"
 msgstr "Forbindelsen til serveren er tabt, programmet vil nu lukke"
 
-#: ../src/game.cpp:591
+#: ../src/game.cpp:603
 #, fuzzy
 msgid "Are you sure you want to quit?"
 msgstr "Er du sikker på at du gerne vil stoppe?"
 
-#: ../src/game.cpp:598
+#: ../src/game.cpp:610
 msgid "no"
 msgstr "nej"
 
-#: ../src/game.cpp:727
+#: ../src/game.cpp:738
 msgid "Ignoring incoming trade requests"
 msgstr "Ignorer indkomne handels anmodninger"
 
-#: ../src/game.cpp:734
+#: ../src/game.cpp:745
 msgid "Accepting incoming trade requests"
 msgstr "Accepter indkomne handels anmodninger"
 
-#: ../src/game.cpp:770
+#: ../src/game.cpp:781
 #, c-format
 msgid "Warning: guichan input exception: %s"
 msgstr "Advarsel: guichan indput untagelse: %s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-05 09:19-0700\n"
+"POT-Creation-Date: 2009-02-05 18:42-0700\n"
 "PO-Revision-Date: 2009-01-21 22:42+0800\n"
 "Last-Translator: Hong Hao <oahong@gmail.com>\n"
 "Language-Team: Simplified Chinese <themanaworld-devel@lists.sourceforge."
@@ -33,7 +33,7 @@ msgstr "购买"
 msgid "Price: %d GP / Total: %d GP"
 msgstr "价格：%d 金币/总数：%d 金币"
 
-#: ../src/gui/buy.cpp:61 ../src/gui/sell.cpp:63 ../src/game.cpp:590
+#: ../src/gui/buy.cpp:61 ../src/gui/sell.cpp:63 ../src/game.cpp:602
 #: ../src/keyboardconfig.cpp:99
 msgid "Quit"
 msgstr "退出"
@@ -928,15 +928,15 @@ msgstr "关闭"
 msgid "Players"
 msgstr "玩家"
 
-#: ../src/gui/setup_colours.cpp:52
+#: ../src/gui/setup_colours.cpp:51
 msgid "Red: "
 msgstr ""
 
-#: ../src/gui/setup_colours.cpp:66
+#: ../src/gui/setup_colours.cpp:65
 msgid "Green: "
 msgstr ""
 
-#: ../src/gui/setup_colours.cpp:80
+#: ../src/gui/setup_colours.cpp:79
 msgid "Blue: "
 msgstr ""
 
@@ -960,19 +960,19 @@ msgstr "停止"
 msgid "Rotate the stick"
 msgstr "旋转手柄"
 
-#: ../src/gui/setup_keyboard.cpp:87
+#: ../src/gui/setup_keyboard.cpp:86
 msgid "Assign"
 msgstr "分配"
 
-#: ../src/gui/setup_keyboard.cpp:91
+#: ../src/gui/setup_keyboard.cpp:90
 msgid "Default"
 msgstr "预设"
 
-#: ../src/gui/setup_keyboard.cpp:120
+#: ../src/gui/setup_keyboard.cpp:119
 msgid "Key Conflict(s) Detected."
 msgstr "检测到按键冲突。"
 
-#: ../src/gui/setup_keyboard.cpp:121
+#: ../src/gui/setup_keyboard.cpp:120
 msgid "Resolve them, or gameplay may result in strange behaviour."
 msgstr "解决按键冲突，否者游戏过程中可能发生奇怪行为。"
 
@@ -1738,24 +1738,24 @@ msgstr ""
 msgid "The connection to the server was lost, the program will now quit"
 msgstr ""
 
-#: ../src/game.cpp:591
+#: ../src/game.cpp:603
 #, fuzzy
 msgid "Are you sure you want to quit?"
 msgstr "你确定想删除这个角色？"
 
-#: ../src/game.cpp:598
+#: ../src/game.cpp:610
 msgid "no"
 msgstr ""
 
-#: ../src/game.cpp:727
+#: ../src/game.cpp:738
 msgid "Ignoring incoming trade requests"
 msgstr ""
 
-#: ../src/game.cpp:734
+#: ../src/game.cpp:745
 msgid "Accepting incoming trade requests"
 msgstr ""
 
-#: ../src/game.cpp:770
+#: ../src/game.cpp:781
 #, c-format
 msgid "Warning: guichan input exception: %s"
 msgstr ""
