@@ -276,6 +276,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
     int x = 0, y = 0;
     int wrappedLines = 0;
+    int link = 0;
     TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     graphics->setColor(BLACK);
@@ -333,6 +334,12 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                         int rgb = textColour->getColour(c, valid);
                         if (c == '<')
                         {
+                            const int size = mLinks[link].x2 - mLinks[link].x1;
+                            mLinks[link].x1 = x;
+                            mLinks[link].y1 = y;
+                            mLinks[link].x2 = mLinks[link].x1 + size;
+                            mLinks[link].y2 = y + font->getHeight();
+                            link++;
                             prevColor = selColor;
                         }
                         if (valid)
