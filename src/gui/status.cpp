@@ -71,6 +71,8 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     gcn::Label *mStatsTitleLabel = new gcn::Label(_("Stats"));
     gcn::Label *mStatsTotalLabel = new gcn::Label(_("Total"));
     gcn::Label *mStatsCostLabel = new gcn::Label(_("Cost"));
+    mStatsTotalLabel->setAlignment(gcn::Graphics::CENTER);
+    mStatsCostLabel->setAlignment(gcn::Graphics::CENTER);
 
     // Derived Stats
     mStatsAttackLabel = new gcn::Label(_("Attack:"));
@@ -92,9 +94,11 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // New labels
     for (int i = 0; i < 6; i++)
     {
-        mStatsLabel[i] = new gcn::Label;
+        mStatsLabel[i] = new gcn::Label("0");
+        mStatsLabel[i]->setAlignment(gcn::Graphics::CENTER);
         mStatsDisplayLabel[i] = new gcn::Label;
         mPointsLabel[i] = new gcn::Label("0");
+        mPointsLabel[i]->setAlignment(gcn::Graphics::CENTER);
     }
     mRemainingStatsPointsLabel = new gcn::Label;
 
@@ -123,30 +127,30 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     place(7, 2, mJobBar, 3);
     place.getCell().matchColWidth(0, 1);
     place = getPlacer(0, 3);
-    place(0, 0, mStatsTitleLabel, 3);
-    place(4, 1, mStatsTotalLabel, 2);
-    place(7, 1, mStatsCostLabel, 2);
+    place(0, 0, mStatsTitleLabel, 5);
+    place(4, 1, mStatsTotalLabel, 5);
+    place(10, 1, mStatsCostLabel, 5);
     for(int i = 0; i < 6; i++)
     {
         place(0, 2 + i, mStatsLabel[i], 3).setPadding(5);
-        place(4, 2 + i, mStatsDisplayLabel[i]).setPadding(5);
-        place(6, 2 + i, mStatsButton[i]);
-        place(7, 2 + i, mPointsLabel[i]).setPadding(5);
+        place(6, 2 + i, mStatsDisplayLabel[i]).setPadding(5);
+        place(9, 2 + i, mStatsButton[i]);
+        place(12, 2 + i, mPointsLabel[i]).setPadding(5);
     }
-    place(10, 2, mStatsAttackLabel, 3).setPadding(5);
-    place(10, 3, mStatsDefenseLabel, 3).setPadding(5);
-    place(10, 4, mStatsMagicAttackLabel, 3).setPadding(5);
-    place(10, 5, mStatsMagicDefenseLabel, 3).setPadding(5);
-    place(10, 6, mStatsAccuracyLabel, 3).setPadding(5);
-    place(10, 7, mStatsEvadeLabel, 3).setPadding(5);
-    place(10, 8, mStatsReflexLabel, 3).setPadding(5);
-    place(13, 2, mStatsAttackPoints, 3).setPadding(5);
-    place(13, 3, mStatsDefensePoints, 3).setPadding(5);
-    place(13, 4, mStatsMagicAttackPoints, 3).setPadding(5);
-    place(13, 5, mStatsMagicDefensePoints, 3).setPadding(5);
-    place(13, 6, mStatsAccuracyPoints, 3).setPadding(5);
-    place(13, 7, mStatsEvadePoints, 3).setPadding(5);
-    place(13, 8, mStatsReflexPoints, 3).setPadding(5);
+    place(15, 2, mStatsAttackLabel, 5).setPadding(5);
+    place(15, 3, mStatsDefenseLabel, 5).setPadding(5);
+    place(15, 4, mStatsMagicAttackLabel, 5).setPadding(5);
+    place(15, 5, mStatsMagicDefenseLabel, 5).setPadding(5);
+    place(15, 6, mStatsAccuracyLabel, 5).setPadding(5);
+    place(15, 7, mStatsEvadeLabel, 5).setPadding(5);
+    place(15, 8, mStatsReflexLabel, 5).setPadding(5);
+    place(20, 2, mStatsAttackPoints, 3).setPadding(5);
+    place(20, 3, mStatsDefensePoints, 3).setPadding(5);
+    place(20, 4, mStatsMagicAttackPoints, 3).setPadding(5);
+    place(20, 5, mStatsMagicDefensePoints, 3).setPadding(5);
+    place(20, 6, mStatsAccuracyPoints, 3).setPadding(5);
+    place(20, 7, mStatsEvadePoints, 3).setPadding(5);
+    place(20, 8, mStatsReflexPoints, 3).setPadding(5);
     place(0, 8, mRemainingStatsPointsLabel, 3).setPadding(5);
 
     Layout &layout = getLayout();
