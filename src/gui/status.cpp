@@ -127,29 +127,29 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     place.getCell().matchColWidth(0, 1);
     place = getPlacer(0, 3);
     place(0, 0, mStatsTitleLabel, 5);
-    place(4, 1, mStatsTotalLabel, 5);
-    place(11, 1, mStatsCostLabel, 5);
+    place(5, 1, mStatsTotalLabel, 5);
+    place(12, 1, mStatsCostLabel, 5);
     for(int i = 0; i < 6; i++)
     {
-        place(0, 2 + i, mStatsLabel[i], 3).setPadding(5);
-        place(6, 2 + i, mStatsDisplayLabel[i]).setPadding(5);
-        place(9, 2 + i, mStatsButton[i]);
-        place(11, 2 + i, mPointsLabel[i]).setPadding(5);
+        place(0, 2 + i, mStatsLabel[i], 7).setPadding(5);
+        place(7, 2 + i, mStatsDisplayLabel[i]).setPadding(5);
+        place(10, 2 + i, mStatsButton[i]);
+        place(12, 2 + i, mPointsLabel[i]).setPadding(5);
     }
-    place(13, 2, mStatsAttackLabel, 7).setPadding(5);
-    place(13, 3, mStatsDefenseLabel, 7).setPadding(5);
-    place(13, 4, mStatsMagicAttackLabel, 7).setPadding(5);
-    place(13, 5, mStatsMagicDefenseLabel, 7).setPadding(5);
-    place(13, 6, mStatsAccuracyLabel, 7).setPadding(5);
-    place(13, 7, mStatsEvadeLabel, 7).setPadding(5);
-    place(13, 8, mStatsReflexLabel, 7).setPadding(5);
-    place(20, 2, mStatsAttackPoints, 3).setPadding(5);
-    place(20, 3, mStatsDefensePoints, 3).setPadding(5);
-    place(20, 4, mStatsMagicAttackPoints, 3).setPadding(5);
-    place(20, 5, mStatsMagicDefensePoints, 3).setPadding(5);
-    place(20, 6, mStatsAccuracyPoints, 3).setPadding(5);
-    place(20, 7, mStatsEvadePoints, 3).setPadding(5);
-    place(20, 8, mStatsReflexPoints, 3).setPadding(5);
+    place(14, 2, mStatsAttackLabel, 7).setPadding(5);
+    place(14, 3, mStatsDefenseLabel, 7).setPadding(5);
+    place(14, 4, mStatsMagicAttackLabel, 7).setPadding(5);
+    place(14, 5, mStatsMagicDefenseLabel, 7).setPadding(5);
+    place(14, 6, mStatsAccuracyLabel, 7).setPadding(5);
+    place(14, 7, mStatsEvadeLabel, 7).setPadding(5);
+    place(14, 8, mStatsReflexLabel, 7).setPadding(5);
+    place(21, 2, mStatsAttackPoints, 3).setPadding(5);
+    place(21, 3, mStatsDefensePoints, 3).setPadding(5);
+    place(21, 4, mStatsMagicAttackPoints, 3).setPadding(5);
+    place(21, 5, mStatsMagicDefensePoints, 3).setPadding(5);
+    place(21, 6, mStatsAccuracyPoints, 3).setPadding(5);
+    place(21, 7, mStatsEvadePoints, 3).setPadding(5);
+    place(21, 8, mStatsReflexPoints, 3).setPadding(5);
     place(0, 8, mRemainingStatsPointsLabel, 3).setPadding(5);
 
     Layout &layout = getLayout();
