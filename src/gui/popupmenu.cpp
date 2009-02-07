@@ -75,27 +75,27 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 		// Players can be traded with. Later also attack, follow and
 		// add as buddy will be options in this menu.
 		const std::string &name = mBeing->getName();
-		mBrowserBox->addRow(_("@@trade|Trade With ") + name + "@@");
-		mBrowserBox->addRow(_("@@attack|Attack ") + name + "@@");
+		mBrowserBox->addRow(strprintf(_("@@trade|Trade With %s@@"), name.c_str()));
+		mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
 
 		mBrowserBox->addRow("##3---");
 
 		switch (player_relations.getRelation(name)) {
 		case PlayerRelation::NEUTRAL:
-		    mBrowserBox->addRow(_("@@friend|Befriend ") + name + "@@");
+		    mBrowserBox->addRow(strprintf(_("@@friend|Befriend %s@@"), name.c_str()));
 
 		case PlayerRelation::FRIEND:
-		    mBrowserBox->addRow(_("@@disregard|Disregard ") + name + "@@");
-		    mBrowserBox->addRow(_("@@ignore|Ignore ") + name + "@@");
+		    mBrowserBox->addRow(strprintf(_("@@disregard|Disregard %s@@"), name.c_str()));
+		    mBrowserBox->addRow(strprintf(_("@@ignore|Ignore %s@@"), name.c_str()));
 		    break;
 
 		case PlayerRelation::DISREGARDED:
-		    mBrowserBox->addRow(_("@@unignore|Un-Ignore ") + name + "@@");
-		    mBrowserBox->addRow(_("@@ignore|Completely ignore ") + name + "@@");
+		    mBrowserBox->addRow(strprintf(_("@@unignore|Un-Ignore %s@@"), name.c_str()));
+		    mBrowserBox->addRow(strprintf(_("@@ignore|Completely ignore %s@@"), name.c_str()));
 		    break;
 
 		case PlayerRelation::IGNORED:
-		    mBrowserBox->addRow(_("@@unignore|Un-Ignore ") + name + "@@");
+		    mBrowserBox->addRow(strprintf(_("@@unignore|Un-Ignore %s@@"), name.c_str()));
 		    break;
 		}
 
@@ -103,8 +103,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 		//mBrowserBox->addRow(_("@@buddy|Add ") + name + " to Buddy List@@");
 
 		mBrowserBox->addRow("##3---");
-		mBrowserBox->addRow(_("@@party-invite|Invite ") + name +
-				    " to party@@");
+		mBrowserBox->addRow(strprintf(_("@@party-invite|Invite %s to party@@"), name.c_str()));
 	    }
 	    break;
 
@@ -247,7 +246,7 @@ void PopupMenu::handleLink(const std::string& link)
 
     else if (link == "chat")
     {
-	chatWindow->addItemText(mItem->getId(), mItem->getInfo().getName());
+	chatWindow->addItemText(mItem->getInfo().getName());
     }
 
     else if (link == "drop")

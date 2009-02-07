@@ -735,10 +735,10 @@ void ChatWindow::setInputText(std::string input_str)
      requestChatFocus();
 }
 
-void ChatWindow::addItemText(int itemId, const std::string &item)
+void ChatWindow::addItemText(const std::string &item)
 {
     std::ostringstream text;
-    text << "[@@" << itemId << "|" << item << "@@] ";
+    text << "[" << item << "] ";
     mChatInput->setText(mChatInput->getText() + text.str());
     requestChatFocus();
 }
