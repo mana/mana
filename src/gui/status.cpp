@@ -72,7 +72,6 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     gcn::Label *mStatsTotalLabel = new gcn::Label(_("Total"));
     gcn::Label *mStatsCostLabel = new gcn::Label(_("Cost"));
     mStatsTotalLabel->setAlignment(gcn::Graphics::CENTER);
-    mStatsCostLabel->setAlignment(gcn::Graphics::CENTER);
 
     // Derived Stats
     mStatsAttackLabel = new gcn::Label(_("Attack:"));
@@ -129,21 +128,21 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     place = getPlacer(0, 3);
     place(0, 0, mStatsTitleLabel, 5);
     place(4, 1, mStatsTotalLabel, 5);
-    place(10, 1, mStatsCostLabel, 5);
+    place(11, 1, mStatsCostLabel, 5);
     for(int i = 0; i < 6; i++)
     {
         place(0, 2 + i, mStatsLabel[i], 3).setPadding(5);
         place(6, 2 + i, mStatsDisplayLabel[i]).setPadding(5);
         place(9, 2 + i, mStatsButton[i]);
-        place(12, 2 + i, mPointsLabel[i]).setPadding(5);
+        place(11, 2 + i, mPointsLabel[i]).setPadding(5);
     }
-    place(15, 2, mStatsAttackLabel, 5).setPadding(5);
-    place(15, 3, mStatsDefenseLabel, 5).setPadding(5);
-    place(15, 4, mStatsMagicAttackLabel, 5).setPadding(5);
-    place(15, 5, mStatsMagicDefenseLabel, 5).setPadding(5);
-    place(15, 6, mStatsAccuracyLabel, 5).setPadding(5);
-    place(15, 7, mStatsEvadeLabel, 5).setPadding(5);
-    place(15, 8, mStatsReflexLabel, 5).setPadding(5);
+    place(13, 2, mStatsAttackLabel, 7).setPadding(5);
+    place(13, 3, mStatsDefenseLabel, 7).setPadding(5);
+    place(13, 4, mStatsMagicAttackLabel, 7).setPadding(5);
+    place(13, 5, mStatsMagicDefenseLabel, 7).setPadding(5);
+    place(13, 6, mStatsAccuracyLabel, 7).setPadding(5);
+    place(13, 7, mStatsEvadeLabel, 7).setPadding(5);
+    place(13, 8, mStatsReflexLabel, 7).setPadding(5);
     place(20, 2, mStatsAttackPoints, 3).setPadding(5);
     place(20, 3, mStatsDefensePoints, 3).setPadding(5);
     place(20, 4, mStatsMagicAttackPoints, 3).setPadding(5);
