@@ -434,7 +434,6 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (command == "help") 
     {
-        msg.erase(0, 6);
         trim(msg);
         std::size_t space = msg.find(" ");
         std::string msg1;
