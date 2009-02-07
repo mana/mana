@@ -28,10 +28,10 @@
 #include "linkhandler.h"
 #include "truetypefont.h"
 
-BrowserBox::BrowserBox(unsigned int mode):
+BrowserBox::BrowserBox(unsigned int mode, bool opaque):
     gcn::Widget(),
     mMode(mode), mHighMode(UNDERLINE | BACKGROUND),
-    mOpaque(true),
+    mOpaque(opaque),
     mUseLinksAndUserColors(true),
     mSelectedLink(-1),
     mMaxRows(0)

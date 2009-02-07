@@ -93,6 +93,15 @@ std::string Colour::getElementAt(int i)
     return mColVector[i].text;
 }
 
+char Colour::getColourCharAt(int i)
+{
+    if (i < 0 || i >= getNumberOfElements())
+    {
+        return 'C';
+    }
+    return mColVector[i].ch;
+}
+
 void Colour::addColour(const char c, const int rgb, const std::string &text)
 {
     int trueRgb = config.getValue("Colour" + text, rgb);

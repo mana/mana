@@ -35,15 +35,17 @@ ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
 Image *ScrollArea::buttons[4][2];
 
-ScrollArea::ScrollArea(bool gc):
+ScrollArea::ScrollArea(bool gc, bool opaque):
     gcn::ScrollArea(),
+    mOpaque(opaque),
     mGC(gc)
 {
     init();
 }
 
-ScrollArea::ScrollArea(gcn::Widget *widget, bool gc):
+ScrollArea::ScrollArea(gcn::Widget *widget, bool gc, bool opaque):
     gcn::ScrollArea(widget),
+    mOpaque(opaque),
     mGC(gc)
 {
     init();
@@ -52,9 +54,8 @@ ScrollArea::ScrollArea(gcn::Widget *widget, bool gc):
 ScrollArea::~ScrollArea()
 {
     // Garbage collection
-    if (mGC) {
+    if (mGC)
         delete getContent();
-    }
 
     instances--;
 
@@ -88,8 +89,10 @@ void ScrollArea::init()
         const int bggridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
 
-        for (y = 0; y < 3; y++) {
-            for (x = 0; x < 3; x++) {
+        for (y = 0; y < 3; y++)
+        {
+            for (x = 0; x < 3; x++)
+            {
                 background.grid[a] = textbox->getSubImage(
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,

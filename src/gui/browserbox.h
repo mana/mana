@@ -46,7 +46,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         /**
          * Constructor.
          */
-        BrowserBox(unsigned int mode = AUTO_SIZE);
+        BrowserBox(unsigned int mode = AUTO_SIZE, bool opaque = true);
 
         /**
          * Destructor.

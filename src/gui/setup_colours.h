@@ -29,12 +29,12 @@
 #include <guichan/widgets/label.hpp>
 #include <guichan/widgets/listbox.hpp>
 
-#include "scrollarea.h"
 #include "setuptab.h"
-#include "slider.h"
 #include "textfield.h"
 
 #include "../guichanfwd.h"
+
+class BrowserBox;
 
 class Setup_Colours : public SetupTab, public gcn::ActionListener,
                       public TextFieldListener
@@ -49,25 +49,27 @@ class Setup_Colours : public SetupTab, public gcn::ActionListener,
         void listen(const TextField *tf);
     private:
         gcn::ListBox *mColourBox;
-        ScrollArea *mScroll;
+        gcn::ScrollArea *mScroll;
+        BrowserBox *mPreview;
+        gcn::ScrollArea *mPreviewBox;
         int mSelected;
 
         gcn::Label *mRedLabel;
-        Slider *mRedSlider;
+        gcn::Slider *mRedSlider;
         TextField *mRedText;
         int mRedValue;
 
         gcn::Label *mGreenLabel;
-        Slider *mGreenSlider;
+        gcn::Slider *mGreenSlider;
         TextField *mGreenText;
         int mGreenValue;
 
         gcn::Label *mBlueLabel;
-        Slider *mBlueSlider;
+        gcn::Slider *mBlueSlider;
         TextField *mBlueText;
         int mBlueValue;
 
-        void setEntry(Slider *s, TextField *t, int value);
+        void setEntry(gcn::Slider *s, TextField *t, int value);
         void updateColour();
 };
 #endif

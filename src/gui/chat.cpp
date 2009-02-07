@@ -71,8 +71,6 @@ Window(""), mNetwork(network), mTmpVisible(false)
     mTextOutput->setLinkHandler(mItemLinkHandler);
 
     mScrollArea = new ScrollArea(mTextOutput);
-    mScrollArea->setPosition(mScrollArea->getFrameSize(), 
-                             mScrollArea->getFrameSize());
     mScrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_ALWAYS);
     mScrollArea->setScrollAmount(0, 1);

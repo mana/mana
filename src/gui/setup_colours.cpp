@@ -19,11 +19,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <string>
+
 #include <guichan/listmodel.hpp>
 #include <guichan/widgets/label.hpp>
 #include <guichan/widgets/slider.hpp>
 
+#include "browserbox.h"
 #include "colour.h"
+#include "itemlinkhandler.h"
 #include "listbox.h"
 #include "scrollarea.h"
 #include "setup_colours.h"
@@ -35,6 +39,7 @@
 #include "../configuration.h"
 
 #include "../utils/gettext.h"
+#include "../utils/tostring.h"
 
 Setup_Colours::Setup_Colours() :
     mSelected(-1)
@@ -47,6 +52,18 @@ Setup_Colours::Setup_Colours() :
 
     mScroll = new ScrollArea(mColourBox);
     mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+
+    mPreview = new BrowserBox(BrowserBox::AUTO_WRAP);
+    mPreview->setOpaque(false);
+
+    // Replace this later with a more appropriate link handler. For now, this'll
+    // do, as it'll do nothing when clicked on.
+    mPreview->setLinkHandler(new ItemLinkHandler());
+
+    mPreviewBox = new ScrollArea(mPreview);
+    mPreviewBox->setHeight(20);
+    mPreviewBox->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
+                                 gcn::ScrollArea::SHOW_NEVER);
 
     mRedLabel = new gcn::Label(_("Red: "));
 
@@ -96,16 +113,17 @@ Setup_Colours::Setup_Colours() :
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, mScroll, 4, 3).setPadding(2);
-    place(0, 3, mRedLabel, 2);
-    place(2, 3, mRedSlider);
-    place(3, 3, mRedText).setPadding(1);
-    place(0, 4, mGreenLabel, 2);
-    place(2, 4, mGreenSlider);
-    place(3, 4, mGreenText).setPadding(1);
-    place(0, 5, mBlueLabel, 2);
-    place(2, 5, mBlueSlider);
-    place(3, 5, mBlueText).setPadding(1);
+    place(0, 0, mScroll, 4, 7).setPadding(2);
+    place(0, 7, mPreviewBox, 4).setPadding(2);
+    place(0, 8, mRedLabel, 2);
+    place(2, 8, mRedSlider);
+    place(3, 8, mRedText).setPadding(1);
+    place(0, 9, mGreenLabel, 2);
+    place(2, 9, mGreenSlider);
+    place(3, 9, mGreenText).setPadding(1);
+    place(0, 10, mBlueLabel, 2);
+    place(2, 10, mBlueSlider);
+    place(3, 10, mBlueText).setPadding(1);
 
     setDimension(gcn::Rectangle(0, 0, 290, 250));
 }
@@ -133,6 +151,18 @@ void Setup_Colours::action(const gcn::ActionEvent &event)
     {
         mSelected = mColourBox->getSelected();
         int col = textColour->getColourAt(mSelected);
+        char ch = textColour->getColourCharAt(mSelected);
+        std::string msg;
+
+        if (ch == '<')
+            msg = toString("@@|") + 
+                  _("This is what the color looks like") + "@@";
+        else
+            msg = "##" + toString(ch) + 
+                  _("This is what the color looks like");
+
+        mPreview->clearRows();
+        mPreview->addRow(msg);
         setEntry(mRedSlider, mRedText, col >> 16);
         setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
         setEntry(mBlueSlider, mBlueText, col & 0xff);
@@ -167,7 +197,7 @@ void Setup_Colours::action(const gcn::ActionEvent &event)
     }
 }
 
-void Setup_Colours::setEntry(Slider *s, TextField *t, int value)
+void Setup_Colours::setEntry(gcn::Slider *s, TextField *t, int value)
 {
     s->setValue(value);
     char buffer[100];

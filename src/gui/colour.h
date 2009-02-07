@@ -88,6 +88,12 @@ class Colour : public gcn::ListModel
         int getColourAt(int i);
 
         /**
+         * Get the character used by the colour for the element at index i in
+         * the current colour model
+         */
+        char getColourCharAt(int i);
+
+        /**
          * Set the colour for the element at index i
          */
         void setColourAt(int i, int rgb);
