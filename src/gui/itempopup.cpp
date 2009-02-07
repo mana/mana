@@ -206,10 +206,10 @@ void ItemPopup::view(int x, int y)
 {
     if (windowContainer->getWidth() < (x + getWidth() + 5))
 	x = windowContainer->getWidth() - getWidth();
-    if ((y - getHeight() - 5) < 0)
+    if ((y - getHeight() - 10) < 0)
 	y = 0;
     else
-        y = y - getHeight() - 5;
+        y = y - getHeight() - 10;
     setPosition(x, y);
     setVisible(true);
     requestMoveToTop();
