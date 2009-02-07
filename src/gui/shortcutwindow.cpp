@@ -27,7 +27,7 @@
 
 static const int SCROLL_PADDING = 0;
 
-int ShortcutWindow::mInstances = 1;
+int ShortcutWindow::mInstances = 0;
 
 ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
 {
@@ -38,6 +38,8 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
     setResizable(true);
 
     mItems = content;
+
+    mInstances++;
 
     const int border = SCROLL_PADDING * 2 + getPadding() * 2;
     setMinWidth(mItems->getBoxWidth() + border);
@@ -58,8 +60,6 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
     mScrollArea->setPosition(SCROLL_PADDING, SCROLL_PADDING);
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mScrollArea->setOpaque(false);
-
-    mInstances++;
 
     add(mScrollArea);
 
