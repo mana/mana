@@ -23,8 +23,9 @@
 
 #include <list>
 
+#include "guichanfwd.h"
+
 class Text;
-class Graphics;
 
 class TextManager
 {
@@ -57,7 +58,7 @@ class TextManager
         /**
          * Draw the text
          */
-        void draw(Graphics *graphics, int xOff, int yOff);
+        void draw(gcn::Graphics *graphics, int xOff, int yOff);
 
     private:
         /**

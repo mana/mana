@@ -27,7 +27,6 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "gui.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"

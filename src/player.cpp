@@ -19,16 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <iostream>
-
 #include "animatedsprite.h"
 #include "game.h"
-#include "graphics.h"
-#include "log.h"
 #include "player.h"
+#include "text.h"
 
+#include "resources/colordb.h"
 #include "resources/itemdb.h"
-#include "resources/iteminfo.h"
 
 #include "utils/strprintf.h"
 

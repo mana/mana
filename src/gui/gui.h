@@ -115,7 +115,6 @@ class Gui : public gcn::Gui
 };
 
 extern Gui *gui;                              /**< The GUI system */
-extern Viewport *viewport;                    /**< The viewport */
 extern SDLInput *guiInput;                    /**< GUI input */
 
 /**

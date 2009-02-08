@@ -22,7 +22,6 @@
 #ifndef _LOG_H
 #define _LOG_H
 
-#include <iosfwd>
 #include <fstream>
 
 class ChatWindow;

@@ -28,8 +28,7 @@
 #include "text.h"
 
 #include "resources/monsterdb.h"
-
-#include "utils/tostring.h"
+#include "resources/monsterinfo.h"
 
 static const int NAME_X_OFFSET = 16;
 static const int NAME_Y_OFFSET = 16;

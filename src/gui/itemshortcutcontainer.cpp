@@ -20,7 +20,6 @@
  */
 #include <SDL_mouse.h>
 
-#include "gui.h"
 #include "itemshortcutcontainer.h"
 #include "itempopup.h"
 #include "viewport.h"

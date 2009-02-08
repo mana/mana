@@ -22,12 +22,8 @@
 #ifndef KEYBOARDCONFIG_H
 #define KEYBOARDCONFIG_H
 
+#include <SDL_types.h>
 #include <string>
-
-#include <guichan/sdl/sdlinput.hpp>
-
-#include "gui/sdlinput.h"
-#include "gui/setup_keyboard.h"
 
 /**
  * Each key represents a key function. Such as 'Move up', 'Attack' etc.
@@ -39,6 +35,8 @@ struct KeyFunction
     std::string caption;        /** The caption value for the key function. */
     int value;                  /** The actual value that is used. */
 };
+
+class Setup_Keyboard;
 
 class KeyboardConfig
 {
@@ -148,7 +146,8 @@ class KeyboardConfig
          * The key assignment view gets arranged according to the order of
          * these values.
          */
-        enum KeyAction {
+        enum KeyAction
+        {
             KEY_NO_VALUE = -1,
             KEY_MOVE_UP,
             KEY_MOVE_DOWN,

@@ -21,8 +21,8 @@
 
 #include <cassert>
 
+#include "particle.h"
 #include "particlecontainer.h"
-
 
 ParticleContainer::ParticleContainer(ParticleContainer *parent, bool delParent) :
     mDelParent(delParent),
@@ -102,9 +102,6 @@ void ParticleList::moveTo(float x, float y)
             it++;
     }
 }
-
-
-
 
 // -- particle vector ----------------------------------------
 

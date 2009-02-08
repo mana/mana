@@ -30,14 +30,16 @@ class Joystick
         /**
          * Number of buttons we can handle.
          */
-        enum { 
+        enum
+        { 
             MAX_BUTTONS = 6
         };
 
         /**
          * Directions, to be used as bitmask values.
          */
-        enum {
+        enum
+        {
             UP    = 1,
             DOWN  = 2,
             LEFT  = 4,

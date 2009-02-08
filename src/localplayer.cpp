@@ -24,20 +24,24 @@
 #include "equipment.h"
 #include "floor_item.h"
 #include "game.h"
+#include "graphics.h"
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
-#include "main.h"
+#include "map.h"
 #include "monster.h"
 #include "particle.h"
+#include "simpleanimation.h"
 #include "sound.h"
-#include "monster.h"
+#include "text.h"
 
 #include "gui/gui.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
 
+#include "resources/animation.h"
+#include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 

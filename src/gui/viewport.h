@@ -27,13 +27,14 @@
 #include "windowcontainer.h"
 
 #include "../configlistener.h"
+#include "../position.h"
 
-class Map;
 class FloorItem;
+class Graphics;
 class ImageSet;
 class Item;
+class Map;
 class PopupMenu;
-class Graphics;
 
 /**
  * The viewport on the map. Displays the current map and handles mouse input
@@ -136,5 +137,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
 
         PopupMenu *mPopupMenu;     /**< Popup menu. */
 };
+
+extern Viewport *viewport;                    /**< The viewport */
 
 #endif

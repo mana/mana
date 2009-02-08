@@ -25,15 +25,14 @@
 #include <list>
 #include <string>
 
-#include "being.h"
-
 class Being;
 
 class EffectManager
 {
 
     public: 
-        struct EffectDescription {
+        struct EffectDescription
+        {
              int id;
              std::string GFX;
              std::string SFX;

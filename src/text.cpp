@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <cstring>
-
 #include <guichan/font.hpp>
 
 #include "text.h"
@@ -72,7 +70,7 @@ Text::~Text()
     }
 }
 
-void Text::draw(Graphics *graphics, int xOff, int yOff)
+void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
     graphics->setFont(boldFont);
 
@@ -102,7 +100,7 @@ FlashText::FlashText(const std::string &text, int x, int y,
 {
 }
 
-void FlashText::draw(Graphics *graphics, int xOff, int yOff)
+void FlashText::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
     if (mTime)
     {

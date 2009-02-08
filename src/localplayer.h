@@ -22,8 +22,9 @@
 #ifndef LOCALPLAYER_H
 #define LOCALPLAYER_H
 
+#include <memory>
+
 #include "player.h"
-#include "simpleanimation.h"
 
 // TODO move into some sane place...
 #define MAX_SLOT 2
@@ -36,7 +37,9 @@ class FloorItem;
 class ImageSet;
 class Inventory;
 class Item;
+class Map;
 class Network;
+class SimpleAnimation;
 
 /**
  * The local player character.
@@ -44,7 +47,8 @@ class Network;
 class LocalPlayer : public Player
 {
     public:
-        enum Attribute {
+        enum Attribute
+        {
             STR = 0, AGI, VIT, INT, DEX, LUK
         };
 

@@ -22,7 +22,6 @@
 #ifndef GAME_
 #define GAME_
 
-#include <iosfwd>
 #include <memory>
 
 #include "configlistener.h"

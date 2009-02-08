@@ -23,7 +23,6 @@
 #include "messagein.h"
 #include "protocol.h"
 
-#include "../beingmanager.h"
 #include "../equipment.h"
 #include "../inventory.h"
 #include "../item.h"

@@ -25,9 +25,9 @@
 #include <string>
 
 #include <guichan/exception.hpp>
-#include <guichan/sdl/sdlinput.hpp>
 
 #include "beingmanager.h"
+#include "configuration.h"
 #include "effectmanager.h"
 #include "emoteshortcut.h"
 #include "engine.h"
@@ -55,7 +55,6 @@
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
 #include "gui/shortcutwindow.h"
-#include "gui/shortcutcontainer.h"
 #include "gui/itemshortcutcontainer.h"
 #include "gui/menuwindow.h"
 #include "gui/minimap.h"
@@ -73,7 +72,6 @@
 #include "gui/trade.h"
 #include "gui/viewport.h"
 
-#include "net/protocol.h"
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
 #include "net/chathandler.h"
@@ -87,13 +85,10 @@
 #include "net/protocol.h"
 #include "net/skillhandler.h"
 #include "net/tradehandler.h"
-#include "net/messageout.h"
 
 #include "resources/imagewriter.h"
 
 #include "utils/gettext.h"
-
-extern Graphics *graphics;
 
 class Map;
 

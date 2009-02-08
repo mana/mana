@@ -22,12 +22,12 @@
 #ifndef SIMPLEANIMAION_H
 #define SIMPLEANIMAION_H
 
-#include "resources/animation.h"
-
 #include "utils/xml.h"
 
+class Animation;
 class Frame;
 class Graphics;
+class Image;
 
 /**
  * This class is a leightweight alternative to the AnimatedSprite class.
@@ -39,12 +39,7 @@ class SimpleAnimation
         /**
          * Creates a simple animation with an already created animation.
          */
-        SimpleAnimation(Animation *animation):
-            mAnimation(animation),
-            mAnimationTime(0),
-            mAnimationPhase(0),
-            mCurrentFrame(mAnimation->getFrame(0))
-        {};
+        SimpleAnimation(Animation *animation);
 
         /**
          * Creates a simple animation that creates its animation from XML Data.

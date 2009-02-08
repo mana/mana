@@ -25,8 +25,7 @@
 #include <list>
 #include <vector>
 
-#include "particle.h"
-
+class Particle;
 
 /**
  * Set of particle effects.  May be stacked with other ParticleContainers.  All
@@ -65,8 +64,6 @@ protected:
     ParticleContainer *mNext;		/**< Contained container, if any */
 };
 
-
-
 /**
  * Linked list of particle effects.
  */
@@ -93,7 +90,6 @@ public:
 protected:
     std::list<Particle *> mElements;	/**< Contained particle effects */
 };
-
 
 /**
  * Particle container with indexing facilities

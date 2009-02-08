@@ -27,9 +27,8 @@
 #include <string>
 #include <vector>
 
-#include "being.h"
-#include "configuration.h"
-#include "player.h"
+class Being;
+class Player;
 
 struct PlayerRelation
 {

@@ -21,10 +21,10 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include "graphics.h"
-#include "guichanfwd.h"
+#include <guichan/color.hpp>
+#include <guichan/graphics.hpp>
 
-#include <list>
+#include "guichanfwd.h"
 
 class TextManager;
 
@@ -52,7 +52,7 @@ class Text
         /**
          * Draws the text.
          */
-        virtual void draw(Graphics *graphics, int xOff, int yOff);
+        virtual void draw(gcn::Graphics *graphics, int xOff, int yOff);
 
     private:
         int mX;                /**< Actual x-value of left of text written. */
@@ -84,7 +84,7 @@ class FlashText : public Text
         /**
          * Draws the text
          */
-        virtual void draw(Graphics *graphics, int xOff, int yOff);
+        virtual void draw(gcn::Graphics *graphics, int xOff, int yOff);
 
     private:
         int mTime;             /**< Time left for flashing */

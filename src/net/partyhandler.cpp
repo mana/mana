@@ -29,7 +29,6 @@
 #include "../gui/confirm_dialog.h"
 
 #include "../beingmanager.h"
-#include "../game.h"
 #include "../party.h"
 
 PartyHandler::PartyHandler(Party *party) : mParty(party)

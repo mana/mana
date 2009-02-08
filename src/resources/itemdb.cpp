@@ -24,8 +24,6 @@
 #include <libxml/tree.h>
 
 #include "itemdb.h"
-#include "iteminfo.h"
-#include "resourcemanager.h"
 
 #include "../log.h"
 

@@ -32,7 +32,6 @@
 #include "../game.h"
 #include "../localplayer.h"
 #include "../log.h"
-#include "../main.h"
 #include "../npc.h"
 #include "../particle.h"
 #include "../player_relations.h"

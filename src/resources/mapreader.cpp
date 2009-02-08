@@ -23,6 +23,7 @@
 #include <iostream>
 #include <zlib.h>
 
+#include "animation.h"
 #include "image.h"
 #include "mapreader.h"
 #include "resourcemanager.h"

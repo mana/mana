@@ -34,7 +34,7 @@ std::string toString(const T &arg)
 
 // TODO: Is there a good way to suppress warnings from classes which don't use
 // this function?
-static char *iptostring(int address)
+inline char *iptostring(int address)
 {
     static char asciiIP[16];
 

@@ -25,8 +25,6 @@
 #include "joystick.h"
 #include "log.h"
 
-#include <cassert>
-
 int Joystick::joystickCount = 0;
 
 void Joystick::init()

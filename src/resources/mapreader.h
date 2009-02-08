@@ -22,8 +22,6 @@
 #ifndef MAPREADER_H
 #define MAPREADER_H
 
-#include <iosfwd>
-
 #include <libxml/tree.h>
 
 class Map;

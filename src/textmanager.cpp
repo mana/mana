@@ -59,7 +59,7 @@ TextManager::~TextManager()
 {
 }
 
-void TextManager::draw(Graphics *graphics, int xOff, int yOff)
+void TextManager::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
     for (TextList::iterator bPtr = mTextList.begin(), ePtr = mTextList.end();
          bPtr != ePtr; ++bPtr)
@@ -89,21 +89,13 @@ void TextManager::place(const Text *textObj, const Text *omit,
             int from = (*ptr)->mY - occupiedTop;
             int to = from + (*ptr)->mHeight - 1;
             if (to < 0 || from >= TEST) // out of range considered
-            {
                 continue;
-            }
             if (from < 0)
-            {
                 from = 0;
-            }
             if (to >= TEST)
-            {
                 to = TEST - 1;
-            }
             for (int i = from; i <= to; ++i)
-            {
                 occupied[i] = true;
-            }
         }
     }
     bool ok = true;
@@ -111,10 +103,10 @@ void TextManager::place(const Text *textObj, const Text *omit,
     {
         ok = ok && !occupied[i];
     }
+
     if (ok)
-    {
         return;
-    }
+
     // Have to move it up or down, so find nearest spaces either side
     int consec = 0;
     int upSlot = -1; // means not found

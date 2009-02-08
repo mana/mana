@@ -33,9 +33,8 @@ ItemShortcut::ItemShortcut():
     mItemSelected(-1)
 {
     for (int i = 0; i < SHORTCUT_ITEMS; i++)
-    {
         mItems[i] = -1;
-    }
+
     load();
 }
 
@@ -51,9 +50,7 @@ void ItemShortcut::load()
         int itemId = (int) config.getValue("shortcut" + toString(i), -1);
 
         if (itemId != -1)
-        {
             mItems[i] = itemId;
-        }
     }
 }
 
@@ -73,13 +70,15 @@ void ItemShortcut::useItem(int index)
         Item *item = player_node->getInventory()->findItem(mItems[index]);
         if (item && item->getQuantity())
         {
-            if (item->isEquipment()) {
-                if (item->isEquipped()) {
+            if (item->isEquipment())
+            {
+                if (item->isEquipped())
                     player_node->unequipItem(item);
-                } else {
+                else
                     player_node->equipItem(item);
-                }
-            } else {
+            }
+            else
+            {
                 player_node->useItem(item);
             }
         }

@@ -20,7 +20,7 @@
  */
 
 #include "monsterdb.h"
-#include "resourcemanager.h"
+#include "monsterinfo.h"
 
 #include "../log.h"
 

@@ -26,7 +26,6 @@
 
 #include "button.h"
 #include "equipmentwindow.h"
-#include "gui.h"
 #include "itempopup.h"
 #include "playerbox.h"
 #include "viewport.h"

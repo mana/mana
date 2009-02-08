@@ -25,8 +25,6 @@
 #include <list>
 #include <string>
 
-#include <guichan/color.hpp>
-
 #include "guichanfwd.h"
 #include "sprite.h"
 #include "vector.h"

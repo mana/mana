@@ -22,11 +22,16 @@
 #ifndef FLOORITEM_H
 #define FLOORITEM_H
 
-#include "graphics.h"
-#include "item.h"
-#include "map.h"
+#include <list>
+
 #include "sprite.h"
-#include "resources/image.h"
+
+class Graphics;
+class Image;
+class Item;
+class Map;
+
+typedef std::list<Sprite*> Sprites;
 
 /**
  * An item lying on the floor.
@@ -56,7 +61,7 @@ class FloorItem : public Sprite
         /**
          * Returns the item id.
          */
-        unsigned int getItemId() const { return mItem->getId(); }
+        unsigned int getItemId() const;
 
         /**
          * Returns the x coordinate.
@@ -80,12 +85,7 @@ class FloorItem : public Sprite
          *
          * @see Sprite::draw(Graphics, int, int)
          */
-        void draw(Graphics *graphics, int offsetX, int offsetY) const
-        {
-            graphics->drawImage(mItem->getImage(),
-                                mX * 32 + offsetX,
-                                mY * 32 + offsetY);
-        }
+        void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
     private:
         unsigned int mId;

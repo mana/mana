@@ -35,8 +35,7 @@ class Properties
         /**
          * Destructor.
          */
-        virtual
-        ~Properties() {}
+        virtual ~Properties() {}
 
         /**
          * Get a map property.

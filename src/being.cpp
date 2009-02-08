@@ -25,6 +25,7 @@
 #include "animatedsprite.h"
 #include "being.h"
 #include "configuration.h"
+#include "effectmanager.h"
 #include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
@@ -34,7 +35,12 @@
 #include "sound.h"
 #include "text.h"
 
+#include "gui/speechbubble.h"
+
+#include "resources/colordb.h"
+
 #include "resources/emotedb.h"
+#include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"

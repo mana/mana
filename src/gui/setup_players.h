@@ -53,7 +53,7 @@ private:
     PlayerTableModel *mPlayerTableModel;
     GuiTable *mPlayerTable;
     GuiTable *mPlayerTitleTable;
-    ScrollArea *mPlayerScrollArea;
+    gcn::ScrollArea *mPlayerScrollArea;
 
     gcn::CheckBox *mPersistIgnores;
     gcn::CheckBox *mDefaultTrading;

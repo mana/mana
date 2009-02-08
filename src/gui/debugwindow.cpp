@@ -24,7 +24,6 @@
 #include <guichan/widgets/label.hpp>
 
 #include "debugwindow.h"
-#include "gui.h"
 #include "viewport.h"
 
 #include "widgets/layout.h"
