@@ -215,7 +215,7 @@ void Being::setSpeech(const std::string &text, Uint32 time)
     }
 
     if (mSpeech != "")
-        mSpeechTime = 500;
+        mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 }
 
 void Being::takeDamage(int amount)
@@ -501,7 +501,7 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
         emotionSet[emotionIndex]->draw(graphics, px, py);
 }
 
-void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
+void Being::drawSpeech(int offsetX, int offsetY)
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;

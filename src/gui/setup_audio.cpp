@@ -109,8 +109,8 @@ void Setup_Audio::cancel()
     sound.setMusicVolume(mMusicVolume);
     mMusicSlider->setValue(mMusicVolume);
 
-    config.setValue("sound", mSoundEnabled ? 1 : 0);
-    config.setValue("sfxVolume", mSfxVolume ? 1 : 0);
+    config.setValue("sound", mSoundEnabled ? true : false);
+    config.setValue("sfxVolume", mSfxVolume);
     config.setValue("musicVolume", mMusicVolume);
 }
 

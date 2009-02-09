@@ -39,6 +39,9 @@
 #define FIRST_IGNORE_EMOTE 14
 #define STATUS_EFFECTS 32
 
+#define SPEECH_TIME 500
+#define SPEECH_MAX_TIME 1000
+
 class AnimatedSprite;
 class Image;
 class ItemInfo;
@@ -152,7 +155,7 @@ class Being : public Sprite
          * @param text The text that should appear.
          * @param time The amount of time the text should stay in milliseconds.
          */
-        void setSpeech(const std::string &text, Uint32 time);
+        void setSpeech(const std::string &text, Uint32 time = 500);
 
         /**
          * Puts a damage bubble above this being.
@@ -244,7 +247,7 @@ class Being : public Sprite
         /**
          * Draws the speech text above the being.
          */
-        void drawSpeech(Graphics *graphics, int offsetX, int offsetY);
+        void drawSpeech(int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.

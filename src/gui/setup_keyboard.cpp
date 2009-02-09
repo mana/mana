@@ -32,7 +32,6 @@
 
 #include "widgets/layouthelper.h"
 
-#include "../configuration.h"
 #include "../keyboardconfig.h"
 
 #include "../utils/gettext.h"
@@ -138,9 +137,8 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
 {
     if (event.getSource() == mKeyList)
     {
-        if (!mKeySetting) {
+        if (!mKeySetting)
             mAssignKeyButton->setEnabled(true);
-        }
     }
     else if (event.getId() == "assign")
     {
@@ -184,7 +182,8 @@ void Setup_Keyboard::refreshKeys()
 
 void Setup_Keyboard::keyUnresolved()
 {
-    if (mKeySetting) {
+    if (mKeySetting)
+    {
         newKeyCallback(keyboard.getNewKeyIndex());
         keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
     }

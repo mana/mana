@@ -207,7 +207,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
-        (*i)->drawSpeech(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
+        (*i)->drawSpeech(-(int) mPixelViewX, -(int) mPixelViewY);
         (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
     }
 

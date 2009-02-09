@@ -305,7 +305,7 @@ public:
 
     virtual void ignore(Player *player, unsigned int flags)
      {
-         player->setSpeech("...", 5);
+         player->setSpeech("...", 500);
      }
 };
 

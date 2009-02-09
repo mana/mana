@@ -104,12 +104,12 @@ ModeListModel::ModeListModel()
 }
 
 Setup_Video::Setup_Video():
-    mFullScreenEnabled(config.getValue("screen", 0)),
-    mOpenGLEnabled(config.getValue("opengl", 0)),
-    mCustomCursorEnabled(config.getValue("customcursor", 1)),
-    mParticleEffectsEnabled(config.getValue("particleeffects", 1)),
-    mSpeechBubbleEnabled(config.getValue("speechbubble", 1)),
-    mNameEnabled(config.getValue("showownname", 0)),
+    mFullScreenEnabled(config.getValue("screen", false)),
+    mOpenGLEnabled(config.getValue("opengl", false)),
+    mCustomCursorEnabled(config.getValue("customcursor", true)),
+    mParticleEffectsEnabled(config.getValue("particleeffects", true)),
+    mSpeechBubbleEnabled(config.getValue("speechbubble", true)),
+    mNameEnabled(config.getValue("showownname", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 0)),
     mModeListModel(new ModeListModel),
@@ -280,7 +280,7 @@ void Setup_Video::apply()
 {
     // Full screen changes
     bool fullscreen = mFsCheckBox->isSelected();
-    if (fullscreen != (config.getValue("screen", 0) == 1))
+    if (fullscreen != (config.getValue("screen", false) == 1))
     {
         /* The OpenGL test is only necessary on Windows, since switching
          * to/from full screen works fine on Linux. On Windows we'd have to
@@ -291,7 +291,7 @@ void Setup_Video::apply()
 
 #ifdef WIN32
         // checks for opengl usage
-        if (!(config.getValue("opengl", 0) == 1))
+        if (!(config.getValue("opengl", false) == 1))
         {
 #endif
             if (!graphics->setFullscreen(fullscreen))
@@ -313,13 +313,13 @@ void Setup_Video::apply()
                     _("Restart needed for changes to take effect."));
         }
 #endif
-        config.setValue("screen", fullscreen ? 1 : 0);
+        config.setValue("screen", fullscreen ? true : false);
     }
 
     // OpenGL change
     if (mOpenGLCheckBox->isSelected() != mOpenGLEnabled)
     {
-        config.setValue("opengl", mOpenGLCheckBox->isSelected() ? 1 : 0);
+        config.setValue("opengl", mOpenGLCheckBox->isSelected() ? true : false);
 
         // OpenGL can currently only be changed by restarting, notify user.
         new OkDialog(_("Changing OpenGL"),
@@ -330,14 +330,14 @@ void Setup_Video::apply()
     config.setValue("fpslimit", mFps);
 
     // We sync old and new values at apply time
-    mFullScreenEnabled = config.getValue("screen", 0);
-    mCustomCursorEnabled = config.getValue("customcursor", 1);
-    mParticleEffectsEnabled = config.getValue("particleeffects", 1);
-    mSpeechBubbleEnabled = config.getValue("speechbubble", 1);
-    mNameEnabled = config.getValue("showownname", 0);
+    mFullScreenEnabled = config.getValue("screen", false);
+    mCustomCursorEnabled = config.getValue("customcursor", true);
+    mParticleEffectsEnabled = config.getValue("particleeffects", true);
+    mSpeechBubbleEnabled = config.getValue("speechbubble", true);
+    mNameEnabled = config.getValue("showownname", false);
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
-    mOpenGLEnabled = config.getValue("opengl", 0);
+    mOpenGLEnabled = config.getValue("opengl", false);
 }
 
 int Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
@@ -377,13 +377,13 @@ void Setup_Video::cancel()
     updateSlider(mScrollRadiusSlider, mScrollRadiusField, "ScrollRadius");
     updateSlider(mScrollLazinessSlider, mScrollLazinessField, "ScrollLaziness");
 
-    config.setValue("screen", mFullScreenEnabled ? 1 : 0);
-    config.setValue("customcursor", mCustomCursorEnabled ? 1 : 0);
-    config.setValue("particleeffects", mParticleEffectsEnabled ? 1 : 0);
-    config.setValue("speechbubble", mSpeechBubbleEnabled ? 1 : 0);
-    config.setValue("showownname", mNameEnabled ? 1 : 0);
+    config.setValue("screen", mFullScreenEnabled ? true : false);
+    config.setValue("customcursor", mCustomCursorEnabled ? true : false);
+    config.setValue("particleeffects", mParticleEffectsEnabled ? true : false);
+    config.setValue("speechbubble", mSpeechBubbleEnabled ? true : false);
+    config.setValue("showownname", mNameEnabled ? true : false);
     config.setValue("guialpha", mOpacity);
-    config.setValue("opengl", mOpenGLEnabled ? 1 : 0);
+    config.setValue("opengl", mOpenGLEnabled ? true : false);
 }
 
 void Setup_Video::action(const gcn::ActionEvent &event)
@@ -408,19 +408,19 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     else if (event.getId() == "customcursor")
     {
         config.setValue("customcursor",
-                mCustomCursorCheckBox->isSelected() ? 1 : 0);
+                mCustomCursorCheckBox->isSelected() ? true : false);
     }
     else if (event.getId() == "particleeffects")
     {
         config.setValue("particleeffects",
-                mParticleEffectsCheckBox->isSelected() ? 1 : 0);
+                mParticleEffectsCheckBox->isSelected() ? true : false);
         new OkDialog(_("Particle effect settings changed"),
                      _("Restart your client or change maps for the change to take effect."));
     }
     else if (event.getId() == "speechbubble")
     {
         config.setValue("speechbubble",
-                mSpeechBubbleCheckBox->isSelected() ? 1 : 0);
+                mSpeechBubbleCheckBox->isSelected() ? true : false);
     }
     else if (event.getId() == "showownname")
     {
@@ -429,7 +429,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         if (player_node)
             player_node->mUpdateName = true;
         config.setValue("showownname",
-                mNameCheckBox->isSelected() ? 1 : 0);
+                mNameCheckBox->isSelected() ? true : false);
     }
     else if (event.getId() == "fpslimitslider")
     {
