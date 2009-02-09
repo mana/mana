@@ -121,7 +121,7 @@ class Being : public Sprite
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
         Action mAction;          /**< Action the being is performing */
-	Uint16 mFrame;
+        Uint16 mFrame;
         Uint16 mWalkTime;
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */

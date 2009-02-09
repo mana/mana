@@ -67,13 +67,13 @@ class MonsterInfo
 
         void addParticleEffect(std::string filename);
 
-        const std::string& getName() const 
+        const std::string& getName() const
         { return mName; }
 
-        const std::list<std::string>& getSprites() const 
+        const std::list<std::string>& getSprites() const
         { return mSprites; }
 
-        Being::TargetCursorSize getTargetCursorSize() const 
+        Being::TargetCursorSize getTargetCursorSize() const
         { return mTargetCursorSize; }
 
         std::string getSound(MonsterSoundEvent event) const;
@@ -83,7 +83,7 @@ class MonsterInfo
         void addAttackParticleEffect(const std::string &particleEffect)
         { mAttackParticle = particleEffect; }
 
-        const std::list<std::string>& getParticleEffects() const 
+        const std::list<std::string>& getParticleEffects() const
         { return mParticleEffects; }
 
     private:

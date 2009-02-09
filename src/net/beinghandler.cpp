@@ -230,7 +230,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             switch (type)
             {
                 case 0x0a: // Critical Damage
-                    if (dstBeing) 
+                    if (dstBeing)
                          dstBeing->showCrit();
                 case 0x00: // Damage
                     if (dstBeing)
@@ -240,7 +240,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     break;
 
                 case 0x02: // Sit
-                    if (srcBeing) 
+                    if (srcBeing)
                     {
                         srcBeing->mFrame = 0;
                         srcBeing->setAction(Being::SIT);
@@ -248,7 +248,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     break;
 
                 case 0x03: // Stand up
-                    if (srcBeing) 
+                    if (srcBeing)
                     {
                         srcBeing->mFrame = 0;
                         srcBeing->setAction(Being::STAND);
@@ -446,7 +446,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 switch (msg->readInt8())
                 {
                     case 1:
-			if (dstBeing->getType() != Being::NPC)
+                        if (dstBeing->getType() != Being::NPC)
                             dstBeing->setAction(Being::DEAD);
                         break;
 
@@ -511,4 +511,3 @@ void BeingHandler::handleMessage(MessageIn *msg)
             break;
     }
 }
-

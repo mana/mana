@@ -29,11 +29,11 @@ class Party;
 class PartyHandler : public MessageHandler
 {
     public:
-	PartyHandler(Party *party);
+        PartyHandler(Party *party);
 
-	void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn *msg);
     private:
-	Party *mParty;
+        Party *mParty;
 };
 
 #endif

@@ -42,7 +42,7 @@ namespace gcn {
  *
  * \ingroup GUI
  */
-class ItemContainer : public gcn::Widget, 
+class ItemContainer : public gcn::Widget,
                       public gcn::MouseListener,
                       public gcn::WidgetListener
 {

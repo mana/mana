@@ -167,7 +167,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
         // Find a path from the player to the mouse, and draw it. This is for debug
         // purposes.
-        if (mShowDebugPath) 
+        if (mShowDebugPath)
         {
             // Get the current mouse position
             int mouseX, mouseY;
@@ -263,7 +263,8 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
            mPopupMenu->showPopup(event.getX(), event.getY(), being);
            return;
         }
-        else if((floorItem = floorItemManager->findByCoordinates(tilex, tiley)))
+        else if ((floorItem = floorItemManager->findByCoordinates(tilex,
+                                                                  tiley)))
         {
             mPopupMenu->showPopup(event.getX(), event.getY(), floorItem);
             return;
@@ -282,7 +283,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     {
         Being *being;
         FloorItem *item;
- 
+
         // Interact with some being
 //        if ((being = beingManager->findBeing(tilex, tiley)))
         if ((being = beingManager->findBeingByPixel(x, y)))
@@ -330,7 +331,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     {
         // Find the being nearest to the clicked position
         Being *target = beingManager->findBeingByPixel(x, y);
- 
+
         if (target)
         {
              player_node->setTarget(target);

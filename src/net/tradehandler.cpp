@@ -112,7 +112,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
                             BY_SERVER);
                     break;
                 case 2: // Invite request check failed...
-                    chatWindow->chatLog(_("Trade cancelled due to an unknown reason."), 
+                    chatWindow->chatLog(_("Trade cancelled due to an unknown reason."),
                                         BY_SERVER);
                     break;
                 case 3: // Trade accepted
@@ -191,7 +191,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
                                              BY_SERVER);
                          break;
                     default:
-                        chatWindow->chatLog(_("Failed adding item for unknown reason."), 
+                        chatWindow->chatLog(_("Failed adding item for unknown reason."),
                                              BY_SERVER);
                         break;
                 }

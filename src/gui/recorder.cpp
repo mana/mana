@@ -52,6 +52,10 @@ Recorder::Recorder(ChatWindow *chat, const std::string &title,
     loadWindowState();
 }
 
+Recorder::~Recorder()
+{
+}
+
 void Recorder::record(const std::string &msg)
 {
     if (mStream.is_open())
@@ -110,6 +114,3 @@ void Recorder::action(const gcn::ActionEvent &event)
     changeRecordingStatus("");
 }
 
-Recorder::~Recorder()
-{
-}

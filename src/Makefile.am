@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = subdir-objects
+
 bin_PROGRAMS = aethyra
 aethyra_SOURCES = gui/widgets/dropdown.cpp \
               gui/widgets/dropdown.h \
@@ -187,8 +189,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      net/network.h \
 	      net/npchandler.cpp \
 	      net/npchandler.h \
-              net/partyhandler.cpp \
-              net/partyhandler.h \
+	      net/partyhandler.cpp \
+	      net/partyhandler.h \
 	      net/playerhandler.cpp \
 	      net/playerhandler.h \
 	      net/protocol.cpp \
@@ -316,8 +318,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      particleemitter.cpp \
 	      particleemitter.h \
 	      particleemitterprop.h \
-              party.cpp \
-              party.h \
+	      party.cpp \
+	      party.h \
 	      player.cpp \
 	      player.h \
 	      player_relations.cpp \

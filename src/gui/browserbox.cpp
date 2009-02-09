@@ -103,7 +103,7 @@ void BrowserBox::addRow(const std::string &row)
             newRow += "##<" + bLink.caption;
 
             tmp.erase(0, idx3 + 2);
-            if(tmp != "")
+            if (tmp != "")
             {
                 newRow += "##>";
             }

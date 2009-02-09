@@ -113,7 +113,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
                         iptostring(server_info[i]->address),
                         server_info[i]->port);
             }
-            state = CHAR_SERVER_STATE; 
+            state = CHAR_SERVER_STATE;
             break;
 
         case 0x006a:

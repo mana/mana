@@ -136,12 +136,12 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
                                     numRowsWeight * getFont()->getHeight()));
 
-    if(item.getEffect() == "")
+    if (item.getEffect() == "")
     {
         setContentSize(minWidth, (numRowsDesc * getFont()->getHeight() + 
                       (3 * getFont()->getHeight())));
 
-        mItemWeightScroll->setPosition(2, 
+        mItemWeightScroll->setPosition(2,
                           (numRowsDesc * getFont()->getHeight()) +
                           (2 * getFont()->getHeight()));
     }
@@ -151,7 +151,7 @@ void ItemPopup::setItem(const ItemInfo &item)
                       (numRowsEffect * getFont()->getHeight()) +
                       (3 * getFont()->getHeight()));
 
-        mItemWeightScroll->setPosition(2, 
+        mItemWeightScroll->setPosition(2,
                           (numRowsDesc * getFont()->getHeight()) +
                           (numRowsEffect * getFont()->getHeight()) +
                           (2 * getFont()->getHeight()));

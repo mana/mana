@@ -125,7 +125,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
                 graphics->drawText(toString(item->getQuantity()),
                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
                                    mEquipBox[i].posY - getFont()->getHeight(),
-                                   gcn::Graphics::CENTER); 
+                                   gcn::Graphics::CENTER);
             }
         }
 

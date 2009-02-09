@@ -201,7 +201,7 @@ void setUpdatesDir()
     {
         if (pos + 3 < updateHost.length())
         {
-            updates << "updates/" << updateHost.substr(pos + 3) 
+            updates << "updates/" << updateHost.substr(pos + 3)
                     << "/" << loginData.port;
             updatesDir = updates.str();
         }
@@ -958,15 +958,15 @@ int main(int argc, char *argv[])
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
 
-                    if (n_server == 1) 
+                    if (n_server == 1)
                     {
                         SERVER_INFO *si = *server_info;
                         loginData.hostname = iptostring(si->address);
                         loginData.port = si->port;
                         loginData.updateHost = si->updateHost;
                         state = UPDATE_STATE;
-                    } 
-                    else 
+                    }
+                    else
                     {
                         int nextState = (options.skipUpdate) ?
                             LOADDATA_STATE : UPDATE_STATE;
@@ -974,7 +974,7 @@ int main(int argc, char *argv[])
                                                                 nextState);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
-                        if (options.chooseDefault || options.playername != "") 
+                        if (options.chooseDefault || options.playername != "")
                         {
                             ((ServerSelectDialog*) currentDialog)->action(
                                 gcn::ActionEvent(NULL, "ok"));

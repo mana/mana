@@ -264,7 +264,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Loads a window skin
          */
-        void loadSkin(const std::string filename);
+        void loadSkin(const std::string &filename);
 
         /**
          * Adds a widget to the window and sets it at given cell.

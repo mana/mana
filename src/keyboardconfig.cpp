@@ -141,10 +141,10 @@ void KeyboardConfig::makeDefault()
 bool KeyboardConfig::hasConflicts()
 {
     int i, j;
-/**
- * No need to parse the square matrix: only check one triangle
- * that's enough to detect conflicts
- */
+    /**
+     * No need to parse the square matrix: only check one triangle
+     * that's enough to detect conflicts
+     */
     for (i = 0; i < KEY_TOTAL; i++)
     {
         for (j = i, j++; j < KEY_TOTAL; j++)
@@ -154,7 +154,7 @@ bool KeyboardConfig::hasConflicts()
                    ((j >= KEY_EMOTE_1) && (j <= KEY_EMOTE_12))) || 
                    ((i == KEY_TOGGLE_CHAT) && (j == KEY_OK))) &&
                    (mKey[i].value == mKey[j].value)
-	       )
+               )
             {
                 return true;
             }
@@ -172,7 +172,7 @@ int KeyboardConfig::getKeyIndex(int keyValue) const
 {
     for (int i = 0; i < KEY_TOTAL; i++)
     {
-        if(keyValue == mKey[i].value)
+        if (keyValue == mKey[i].value)
         {
             return i;
         }
@@ -185,7 +185,7 @@ int KeyboardConfig::getKeyEmoteOffset(int keyValue) const
 {
     for (int i = KEY_EMOTE_1; i <= KEY_EMOTE_12; i++)
     {
-        if(keyValue == mKey[i].value)
+        if (keyValue == mKey[i].value)
         {
             return 1 + i - KEY_EMOTE_1;
         }

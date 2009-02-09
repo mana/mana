@@ -69,7 +69,7 @@ A: There are a lot of ways:
    
    - If you're a programmer, an artist or just willing to help in any way, you
      can become part of the development team. Send an e-mail to
-     blame582@gmail.com explaining what you want to do, or join our irc
+     irarice@gmail.com explaining what you want to do, or join our irc
      channel: #aethyra @ irc.freenode.net.
    
    - You can be a beta tester. Just play with Aethyra and report

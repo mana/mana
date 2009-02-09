@@ -55,9 +55,9 @@ void BuddyList::loadFile()
         char *buddy = new char[LEN_MAX_USERNAME];
         inputStream.getline(buddy, LEN_MAX_USERNAME);
         // Ugly ?
-        if(strcmp(buddy,"")) mBuddylist.push_back(buddy);
+        if (strcmp(buddy, "")) mBuddylist.push_back(buddy);
         delete [] buddy;
-    } while(!inputStream.eof());
+    } while (!inputStream.eof());
 
     // Read buddy and close file
     inputStream.close();

@@ -72,7 +72,7 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false),
     mTargetTime(-1), mLastAction(-1),
-    mLastTarget(-1), mWalkingDir(0), 
+    mLastTarget(-1), mWalkingDir(0),
     mDestX(0), mDestY(0),
     mInventory(new Inventory(INVENTORY_SIZE)),
     mStorage(new Inventory(STORAGE_SIZE))
@@ -176,7 +176,7 @@ void LocalPlayer::logic()
 }
 
 void LocalPlayer::setGM()
-{ 
+{
     mIsGM = !mIsGM;
     mNameColor = mIsGM ? 0x009000: 0x202020;
     setName(getName());
@@ -509,7 +509,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     int dist_y = target->mY - mY;
 
     // Must be standing and be within attack range to continue
-    if ((mAction != STAND) || (mAttackRange < abs(dist_x)) || 
+    if ((mAction != STAND) || (mAttackRange < abs(dist_x)) ||
         (mAttackRange < abs(dist_y)))
         return;
 
@@ -654,7 +654,7 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
         mOutRangeImages[size] = currentImageSet;
         mTargetCursorOutRange[size] = currentCursor;
     }
-    else 
+    else
     {
         mInRangeImages[size] = currentImageSet;
         mTargetCursorInRange[size] = currentCursor;
@@ -681,7 +681,7 @@ void LocalPlayer::drawTargetCursor(Graphics *graphics, int scrollX, int scrollY)
         {
             mTarget->mTargetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
         }
-        else 
+        else
         {
             mTarget->mTargetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
         }
