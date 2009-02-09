@@ -30,8 +30,8 @@
 #include "winver.h"
 #endif
 
-#ifndef AETHYRA_DATADIR
-#define AETHYRA_DATADIR ""
+#ifndef PKG_DATADIR
+#define PKG_DATADIR ""
 #endif
 
 /*

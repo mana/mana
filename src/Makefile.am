@@ -346,7 +346,7 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 # set the include path found by configure
 INCLUDES =					\
 	$(all_includes)		                \
-	-DAETHYRA_DATADIR=\""$(pkgdatadir)/"\"  \
+	-DPKG_DATADIR=\""$(pkgdatadir)/"\"  \
 	-DLOCALEDIR=\""$(localedir)/"\"
 
 # the library search path.
