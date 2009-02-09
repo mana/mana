@@ -34,11 +34,16 @@ Recorder::Recorder(ChatWindow *chat) : mChat(chat)
     mButtonBox->setY(20);
 }
 
+Recorder::~Recorder()
+{
+    delete mButtonBox;
+}
+
 void Recorder::record(const std::string &msg)
 {
     if (mStream.is_open())
     {
-	mStream << msg << std::endl;
+        mStream << msg << std::endl;
     }
 }
 
@@ -48,44 +53,44 @@ void Recorder::respond(const std::string &msg)
     trim(msgCopy);
     if (msgCopy == "")
     {
-	if (mStream.is_open())
-	{
-	    mStream.close();
-	    mButtonBox->setVisible(false);
-	    /*
-	     * Message should go after mStream is closed so that it isn't
-	     * recorded.
-	     */
-	    mChat->chatLog("Finishing recording.", BY_SERVER);
-	}
-	else
-	{
-	    mChat->chatLog("Not currently recording.", BY_SERVER);
-	}
-	return;
+        if (mStream.is_open())
+        {
+            mStream.close();
+            mButtonBox->setVisible(false);
+            /*
+             * Message should go after mStream is closed so that it isn't
+             * recorded.
+             */
+            mChat->chatLog("Finishing recording.", BY_SERVER);
+        }
+        else
+        {
+            mChat->chatLog("Not currently recording.", BY_SERVER);
+        }
+        return;
     }
     if (mStream.is_open())
     {
-	mChat->chatLog("Already recording.", BY_SERVER);
+        mChat->chatLog("Already recording.", BY_SERVER);
     }
     else
     {
-	/*
-	 * Message should go before mStream is opened so that it isn't
-	 * recorded.
-	 */
-	mChat->chatLog("Starting to record...", BY_SERVER);
+        /*
+         * Message should go before mStream is opened so that it isn't
+         * recorded.
+         */
+        mChat->chatLog("Starting to record...", BY_SERVER);
         std::string file = std::string(PHYSFS_getUserDir()) + "/.tmw/" + msgCopy;
-        
-	mStream.open(file.c_str(), std::ios_base::trunc);
-	if (mStream.is_open())
-	{
-	    mButtonBox->setVisible(true);
-	}
-	else
-	{
-	    mChat->chatLog("Failed to start recording.", BY_SERVER);
-	}
+
+        mStream.open(file.c_str(), std::ios_base::trunc);
+        if (mStream.is_open())
+        {
+            mButtonBox->setVisible(true);
+        }
+        else
+        {
+            mChat->chatLog("Failed to start recording.", BY_SERVER);
+        }
     }
 }
 
@@ -98,7 +103,7 @@ void Recorder::help(const std::string &args) const
 {
     mChat->chatLog("Command: /record <filename>", BY_SERVER);
     mChat->chatLog("This command starts recording the chat log to the file "
-		  "<filename>.", BY_SERVER);
+                   "<filename>.", BY_SERVER);
     mChat->chatLog("Command: /record", BY_SERVER);
     mChat->chatLog("This command finishes a recording session.", BY_SERVER);
 }
@@ -106,9 +111,4 @@ void Recorder::help(const std::string &args) const
 void Recorder::buttonBoxRespond()
 {
     respond("");
-}
-
-Recorder::~Recorder()
-{
-    delete mButtonBox;
 }

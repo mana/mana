@@ -33,41 +33,45 @@ class Network;
 
 class Party
 {
-     public:
-  Party(ChatWindow *chat, Network *network);
-	 void respond(const std::string &command, const std::string &args);
+    public:
+        Party(ChatWindow *chat, Network *network);
+        void respond(const std::string &command, const std::string &args);
 
-	 void create(const std::string &party);
-	 void leave(const std::string &args);
+        void create(const std::string &party);
+        void leave(const std::string &args);
 
-	 void createResponse(bool ok);
-	 void inviteResponse(const std::string &nick, int status);
-	 void invitedAsk(const std::string &nick, int gender,
-			 const std::string &partyName);
-	 void leftResponse(const std::string &nick);
-	 void receiveChat(Being *being, const std::string &msg);
+        void createResponse(bool ok);
+        void inviteResponse(const std::string &nick, int status);
+        void invitedAsk(const std::string &nick, int gender,
+                const std::string &partyName);
+        void leftResponse(const std::string &nick);
+        void receiveChat(Being *being, const std::string &msg);
 
-	 void help();
-	 void help(const std::string &msg);
-     private:
-         ChatWindow *mChat;
-         std::string mPartyName;
-	 Network *mNetwork;
-	 bool mInParty;
-	 bool mCreating; /**< Used to give an appropriate response to
-			    failure */
-	 PartyHandler *handler;
+        void help();
+        void help(const std::string &msg);
 
-	 class InviteListener : public gcn::ActionListener
-	 {
-    	     public:
-	         InviteListener(Network *network, bool *inParty) :
-	                        mNetwork(network), mInParty(inParty) {};
-		 void action(const gcn::ActionEvent &event);
-		 Network *mNetwork;
-	     private:
-		 bool *mInParty;
-	 };
-	 InviteListener mInviteListener;
+    private:
+        ChatWindow *mChat;
+        std::string mPartyName;
+        Network *mNetwork;
+        bool mInParty;
+        bool mCreating; /**< Used to give an appropriate response to
+                          failure */
+        PartyHandler *handler;
+
+        class InviteListener : public gcn::ActionListener
+        {
+            public:
+                InviteListener(Network *network, bool *inParty) :
+                    mNetwork(network),
+                    mInParty(inParty)
+                {}
+                void action(const gcn::ActionEvent &event);
+                Network *mNetwork;
+            private:
+                bool *mInParty;
+        };
+        InviteListener mInviteListener;
 };
+
 #endif

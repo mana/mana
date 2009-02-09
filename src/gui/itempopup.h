@@ -20,8 +20,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef ITEMPOPUP_H__
-#define ITEMPOPUP_H__
+#ifndef ITEMPOPUP_H
+#define ITEMPOPUP_H
 
 #include "scrollarea.h"
 #include "textbox.h"
@@ -48,4 +48,4 @@ class ItemPopup : public Window
         ScrollArea *mItemWeightScroll;
 };
 
-#endif // ITEMPOPUP_H__
+#endif // ITEMPOPUP_H

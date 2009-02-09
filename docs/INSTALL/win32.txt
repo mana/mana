@@ -44,7 +44,7 @@ This tutorial is written and tested with the latest beta version, which is
 the old stable version, so don't do that. Get Dev-C++ here:
 
   http://www.bloodshed.net/
- 
+
 After you have fetched it, simply run and install as prompted.
 
 
@@ -124,7 +124,7 @@ start compilition with Excute -> Compile. A file called tmw.exe should appear
 in the same directory as where you opened the .dev from.
 
 Before you can actually run the executable be sure to copy over the following
-DLLs from your Dev-Cpp/dll directory to the directory containing tmw.exe (or 
+DLLs from your Dev-Cpp/dll directory to the directory containing tmw.exe (or
 alternatively into your c:\windows\system\ for a more universal solution):
 
  SDL.dll

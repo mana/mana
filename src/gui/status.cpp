@@ -200,7 +200,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     add(mStatsTitleLabel);
     add(mStatsTotalLabel);
     add(mStatsCostLabel);
-    for(int i = 0; i < 6; i++)
+    for (int i = 0; i < 6; i++)
     {
         add(mStatsLabel[i]);
         add(mStatsDisplayLabel[i]);

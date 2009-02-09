@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = subdir-objects
 
 bin_PROGRAMS = tmw
 tmw_SOURCES = gui/widgets/dropdown.cpp \
-              gui/widgets/dropdown.h \
+	      gui/widgets/dropdown.h \
 	      gui/widgets/layout.cpp \
 	      gui/widgets/layout.h \
 	      gui/widgets/layouthelper.cpp \
@@ -17,8 +17,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/browserbox.h \
 	      gui/button.cpp \
 	      gui/button.h \
-              gui/buttonbox.cpp \
-              gui/buttonbox.h \
+	      gui/buttonbox.cpp \
+	      gui/buttonbox.h \
 	      gui/buy.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
@@ -189,8 +189,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/network.h \
 	      net/npchandler.cpp \
 	      net/npchandler.h \
-              net/partyhandler.cpp \
-              net/partyhandler.h \
+	      net/partyhandler.cpp \
+	      net/partyhandler.h \
 	      net/playerhandler.cpp \
 	      net/playerhandler.h \
 	      net/protocol.cpp \
@@ -274,7 +274,7 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      engine.h \
 	      equipment.cpp \
 	      equipment.h \
-              extensions.h \
+	      extensions.h \
 	      floor_item.cpp \
 	      floor_item.h \
 	      flooritemmanager.cpp \
@@ -319,8 +319,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      particleemitter.cpp \
 	      particleemitter.h \
 	      particleemitterprop.h \
-              party.cpp \
-              party.h \
+	      party.cpp \
+	      party.h \
 	      player.cpp \
 	      player.h \
 	      player_relations.cpp \
@@ -328,8 +328,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      position.cpp \
 	      position.h \
 	      properties.h \
-              recorder.cpp \
-              recorder.h \
+	      recorder.cpp \
+	      recorder.h \
 	      serverinfo.h \
 	      shopitem.cpp \
 	      shopitem.h \

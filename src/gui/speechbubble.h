@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _LOM_SPEECHBUBBLE_H__
-#define _LOM_SPEECHBUBBLE_H__
+#ifndef SPEECHBUBBLE_H
+#define SPEECHBUBBLE_H
 
 #include "scrollarea.h"
 #include "textbox.h"
@@ -29,19 +29,18 @@
 class SpeechBubble : public Window
 {
     public:
-
-	SpeechBubble();
+        SpeechBubble();
 
         void setCaption(const std::string &name,
                         const gcn::Color &color = 0x000000);
-	void setText(std::string mText);
-	void setLocation(int x, int y);
-	unsigned int getNumRows();
+        void setText(std::string mText);
+        void setLocation(int x, int y);
+        unsigned int getNumRows();
 
     private:
         gcn::Label *mCaption;
-	TextBox *mSpeechBox;
-	ScrollArea *mSpeechArea;
+        TextBox *mSpeechBox;
+        ScrollArea *mSpeechArea;
 };
 
 #endif

@@ -181,11 +181,11 @@ Uint32 nextSecond(Uint32 interval, void *param)
 
 int get_elapsed_time(int start_time)
 {
-    if (start_time <= tick_time) 
+    if (start_time <= tick_time)
     {
         return (tick_time - start_time) * 10;
     }
-    else 
+    else
     {
         return (tick_time + (MAX_TIME - start_time)) * 10;
     }
@@ -496,7 +496,7 @@ void Game::handleInput()
         {
             gcn::Window *requestedWindow = NULL;
 
-            if (setupWindow->isVisible() && 
+            if (setupWindow->isVisible() &&
                     keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
             {
                 keyboard.setNewKey((int) event.key.keysym.sym);
@@ -622,9 +622,9 @@ void Game::handleInput()
                     break;
                // Quitting confirmation dialog
                case SDLK_ESCAPE:
-                    if (!exitConfirm) 
+                    if (!exitConfirm)
                     {
-                        exitConfirm = new ConfirmDialog( _("Quit"), 
+                        exitConfirm = new ConfirmDialog( _("Quit"),
                                                          _("Are you sure you "
                                                            "want to quit?"));
                         exitConfirm->addActionListener(&exitListener);
@@ -652,7 +652,7 @@ void Game::handleInput()
                              i <= KeyboardConfig::KEY_SHORTCUT_12;
                              i++)
                     {
-                        if (tKey == i && !used) 
+                        if (tKey == i && !used)
                         {
                             itemShortcut->useItem(
                                           i - KeyboardConfig::KEY_SHORTCUT_1);
@@ -823,7 +823,7 @@ void Game::handleInput()
         if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
            (joystick && joystick->buttonPressed(0)))
         {
-            Being *target = beingManager->findNearestLivingBeing(x, y, 20, 
+            Being *target = beingManager->findNearestLivingBeing(x, y, 20,
                                                                  Being::MONSTER);
 
             bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
@@ -851,7 +851,7 @@ void Game::handleInput()
         }
 
         // Target the nearest player if 'q' is pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) && 
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) &&
                 !keyboard.isKeyActive(keyboard.KEY_TARGET) )
         {
             Being *target = beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
@@ -860,8 +860,8 @@ void Game::handleInput()
         }
 
         // Target the nearest monster if 'a' pressed
-        if ((keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) || 
-                    (joystick && joystick->buttonPressed(3))) && 
+        if ((keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+                    (joystick && joystick->buttonPressed(3))) &&
                 !keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
             Being *target = beingManager->findNearestLivingBeing(
@@ -871,7 +871,7 @@ void Game::handleInput()
         }
 
         // Target the nearest npc if 'n' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) && 
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) &&
                 !keyboard.isKeyActive(keyboard.KEY_TARGET) )
         {
             Being *target = beingManager->findNearestLivingBeing(

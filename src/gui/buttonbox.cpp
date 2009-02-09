@@ -23,13 +23,13 @@
 #include "buttonbox.h"
 
 ButtonBox::ButtonBox(const std::string &title, const std::string &buttonTxt,
-		     ButtonBoxListener *listener) :
-		     Window(title),
-		     mListener(listener)
+                     ButtonBoxListener *listener) :
+    Window(title),
+    mListener(listener)
 {
     Button *button = new Button(buttonTxt, "activate", this);
     setContentSize(button->getWidth() + 10,
-		   button->getHeight() + 10);
+                   button->getHeight() + 10);
     button->setPosition(5, 5);
     add(button);
 }
@@ -38,6 +38,6 @@ void ButtonBox::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "activate")
     {
-	mListener->buttonBoxRespond();
+        mListener->buttonBoxRespond();
     }
 }

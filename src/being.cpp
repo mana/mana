@@ -44,7 +44,7 @@
 #include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
-#include "utils/gettext.h"  
+#include "utils/gettext.h"
 #include "utils/tostring.h"
 #include "utils/xml.h"
 
@@ -199,7 +199,7 @@ void Being::setSpeech(const std::string &text, Uint32 time)
     while (start != std::string::npos && end != std::string::npos)
     {
         // Catch multiple embeds and ignore them so it doesn't crash the client.
-        while ((mSpeech.find('[', start + 1) != std::string::npos) && 
+        while ((mSpeech.find('[', start + 1) != std::string::npos) &&
                (mSpeech.find('[', start + 1) < end))
         {
             start = mSpeech.find('[', start + 1);
@@ -321,7 +321,7 @@ void Being::setAction(Action action)
             {
                 currentAction = mEquippedWeapon->getAttackType();
             }
-            else 
+            else
             {
                 currentAction = ACTION_ATTACK;
             }
@@ -390,11 +390,11 @@ SpriteDirection Being::getSpriteDirection() const
     {
         dir = DIRECTION_RIGHT;
     }
-    else 
+    else
     {
          dir = DIRECTION_LEFT;
     }
- 
+
     return dir;
 }
 
@@ -535,10 +535,10 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
 
         mSpeechBubble->setCaption(mName, mNameColor);
 
-        // Not quite centered, but close enough. However, it's not too important to get 
-        // it right right now, as it doesn't take bubble collision into account yet. 
+        // Not quite centered, but close enough. However, it's not too important to get
+        // it right right now, as it doesn't take bubble collision into account yet.
         mSpeechBubble->setText(mSpeech);
-        mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), py - 70 - 
+        mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), py - 70 -
                                         (mSpeechBubble->getNumRows()*14));
         mSpeechBubble->setVisible(true);
     }
@@ -622,7 +622,7 @@ void Being::setStatusEffect(int index, bool active)
 int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
-    if (mAction != WALK ||  !(mDirection & (pos | neg))) 
+    if (mAction != WALK ||  !(mDirection & (pos | neg)))
     {
         return 0;
     }
@@ -631,13 +631,13 @@ int Being::getOffset(char pos, char neg) const
 
     // We calculate the offset _from_ the _target_ location
     offset -= 32;
-    if (offset > 0) 
+    if (offset > 0)
     {
         offset = 0;
     }
 
     // Going into negative direction? Invert the offset.
-    if (mDirection & pos) 
+    if (mDirection & pos)
     {
         offset = -offset;
     }
@@ -650,11 +650,11 @@ int Being::getWidth() const
     if (mSprites[BASE_SPRITE])
     {
         const int width = mSprites[BASE_SPRITE]->getWidth() > DEFAULT_WIDTH ?
-                                   mSprites[BASE_SPRITE]->getWidth() : 
+                                   mSprites[BASE_SPRITE]->getWidth() :
                                    DEFAULT_WIDTH;
         return width;
     }
-    else 
+    else
     {
         return DEFAULT_WIDTH;
     }
@@ -666,11 +666,11 @@ int Being::getHeight() const
     if (mSprites[BASE_SPRITE])
     {
         const int height = mSprites[BASE_SPRITE]->getHeight() > DEFAULT_HEIGHT ?
-                                   mSprites[BASE_SPRITE]->getHeight() : 
+                                   mSprites[BASE_SPRITE]->getHeight() :
                                    DEFAULT_HEIGHT;
         return height;
     }
-    else 
+    else
     {
         return DEFAULT_HEIGHT;
     }

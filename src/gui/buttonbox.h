@@ -33,37 +33,35 @@
 class ButtonBoxListener
 {
     public:
-
-	/*
-	 * function that ButtonBox calls when the button has been pressed
-	 */
-	virtual void buttonBoxRespond() = 0;
+        /*
+         * function that ButtonBox calls when the button has been pressed
+         */
+        virtual void buttonBoxRespond() = 0;
 };
 
 class ButtonBox : public Window, public gcn::ActionListener
 {
     public:
+        /*
+         * Constructor.
+         *
+         * @param title is the text that appears at the top of the box
+         * @param buttonTxt is the text that appears on the button
+         * @param listener points to the class that should respond to the
+         *                 button press
+         */
+        ButtonBox(const std::string &title, const std::string &buttonTxt,
+                  ButtonBoxListener *listener);
 
-	/*
-	 * Constructor
-	 *
-	 * @param title is the text that appears at the top of the box
-	 * @param buttonTxt is the text that appears on the button
-	 * @param listener points to the class that should respond to the
-	 *                 button press
-	 */
-	ButtonBox(const std::string &title, const std::string &buttonTxt,
-		  ButtonBoxListener *listener);
-
-	/*
-	 * called when the button is pressed
-	 *
-	 * @param event is the event that is generated
-	 */
-	void action(const gcn::ActionEvent &event);
+        /*
+         * called when the button is pressed
+         *
+         * @param event is the event that is generated
+         */
+        void action(const gcn::ActionEvent &event);
 
     private:
-
-	ButtonBoxListener *mListener;
+        ButtonBoxListener *mListener;
 };
+
 #endif

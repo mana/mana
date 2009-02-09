@@ -146,7 +146,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 /* Scroll if neccessary */
                 if (!nearby
                     || (abs(x - player_node->mX) > MAP_TELEPORT_SCROLL_DISTANCE)
-                    || (abs(y - player_node->mY) > MAP_TELEPORT_SCROLL_DISTANCE)) 
+                    || (abs(y - player_node->mY) > MAP_TELEPORT_SCROLL_DISTANCE))
                 {
                     scrollOffsetX = (x - player_node->mX) * 32;
                     scrollOffsetY = (y - player_node->mY) * 32;

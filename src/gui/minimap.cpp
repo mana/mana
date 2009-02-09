@@ -64,9 +64,9 @@ void Minimap::setMapImage(Image *img)
         const int offsetX = 2 * getPadding();
         const int offsetY = getTitleBarHeight() + getPadding();
         const int titleWidth = getFont()->getWidth(getCaption()) + 15;
-        const int mapWidth = mMapImage->getWidth() < 100 ? 
+        const int mapWidth = mMapImage->getWidth() < 100 ?
                              mMapImage->getWidth() + offsetX : 100;
-        const int mapHeight = mMapImage->getHeight() < 100 ? 
+        const int mapHeight = mMapImage->getHeight() < 100 ?
                               mMapImage->getHeight() + offsetY : 100;
 
         setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);

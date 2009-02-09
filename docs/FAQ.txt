@@ -71,11 +71,13 @@ A: There are a lot of ways:
      channel: #themanaworld @ irc.freenode.net.
 
    - You can donate money. Follow the link on the project page:
-	http://sourceforge.net/projects/themanaworld.
+
+        http://sourceforge.net/projects/themanaworld/
 
    - You can be a beta tester. Just play The Mana World and report every
      error to the tracker. Read for more infos on the project page:
-	http://themanaworld.org.
+
+        http://themanaworld.org/
 
    - Play with The Mana World: more players, more fun! Simple as that! ;-)
 

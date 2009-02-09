@@ -108,9 +108,9 @@ void ScrollArea::init()
         int vsgridy[4] = {0, 4, 15, 19};
         a = 0;
 
-        for (y = 0; y < 3; y++) 
+        for (y = 0; y < 3; y++)
         {
-            for (x = 0; x < 3; x++) 
+            for (x = 0; x < 3; x++)
             {
                 vMarker.grid[a] = vscroll->getSubImage(
                         vsgridx[x], vsgridy[y],
@@ -202,7 +202,7 @@ void ScrollArea::drawFrame(gcn::Graphics *graphics)
     int w = getWidth() + bs * 2;
     int h = getHeight() + bs * 2;
 
-    if (mOpaque) 
+    if (mOpaque)
     {
         static_cast<Graphics*>(graphics)->
             drawImageRect(0, 0, w, h, background);
@@ -213,11 +213,11 @@ void ScrollArea::setOpaque(bool opaque)
 {
     mOpaque = opaque;
 
-    if (mOpaque) 
+    if (mOpaque)
     {
         setFrameSize(2);
     }
-    else 
+    else
     {
         setFrameSize(0);
     }
@@ -228,7 +228,7 @@ void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)
     int state = 0;
     gcn::Rectangle dim;
 
-    switch(dir) 
+    switch (dir)
     {
         case UP:
             state = mUpButtonPressed ? 1 : 0;

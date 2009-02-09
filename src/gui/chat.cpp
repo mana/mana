@@ -75,7 +75,7 @@ Window(""), mNetwork(network), mTmpVisible(false)
     mTextOutput->setLinkHandler(mItemLinkHandler);
 
     mScrollArea = new ScrollArea(mTextOutput);
-    mScrollArea->setPosition(mScrollArea->getFrameSize(), 
+    mScrollArea->setPosition(mScrollArea->getFrameSize(),
                              mScrollArea->getFrameSize());
     mScrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_ALWAYS);
@@ -144,7 +144,7 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
     }
 
     std::string lineColor = "##C";
-    switch (own) 
+    switch (own)
     {
         case BY_GM:
             if (tmp.nick.empty())
@@ -224,7 +224,7 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
     // adding a row, otherwise the max will always be a row higher
     // at comparison.
     if (mScrollArea->getVerticalScrollAmount() ==
-        mScrollArea->getVerticalMaxScroll()) 
+        mScrollArea->getVerticalMaxScroll())
     {
         mTextOutput->addRow(line);
         mScrollArea->setVerticalScrollAmount(mScrollArea->
@@ -345,7 +345,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
      * those if elses should be replaced by protocol calls */
 
     // Send party message
-    if (msg.at(0) == mPartyPrefix) 
+    if (msg.at(0) == mPartyPrefix)
     {
         msg.erase(0, 1);
         std::size_t length = msg.length() + 1;
@@ -371,7 +371,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         if (end != std::string::npos)
         {
             // Catch multiple embeds and ignore them so it doesn't crash the client.
-            while ((msg.find('[', start + 1) != std::string::npos) && 
+            while ((msg.find('[', start + 1) != std::string::npos) &&
                    (msg.find('[', start + 1) < end))
             {
                 start = msg.find('[', start + 1);
@@ -403,7 +403,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
 
     // Prepare ordinary message
-    if (msg.substr(0, 1) != "/") 
+    if (msg.substr(0, 1) != "/")
     {
         msg = nick + " : " + msg;
 
@@ -431,14 +431,14 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         trim(msg);
     }
 
-    if (command == "announce") 
+    if (command == "announce")
     {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(0x0099);
         outMsg.writeInt16(msg.length() + 4);
         outMsg.writeString(msg, msg.length());
     }
-    else if (command == "help") 
+    else if (command == "help")
     {
         msg.erase(0, 6);
         trim(msg);
@@ -492,16 +492,16 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
 
         msg = msg.substr(0, 1);
 
-        if (msg == "1" || 
-            msg == "y" || msg == "Y" || 
+        if (msg == "1" ||
+            msg == "y" || msg == "Y" ||
             msg == "t" || msg == "T")
         {
             chatLog(_("Return now toggles chat."), BY_SERVER);
             mReturnToggles = true;
             return;
         }
-        else if (msg == "0" || 
-                 msg == "n" || msg == "N" || 
+        else if (msg == "0" ||
+                 msg == "n" || msg == "N" ||
                  msg == "f" || msg == "F")
         {
             chatLog(_("Message now closes chat."), BY_SERVER);
@@ -800,7 +800,7 @@ void ChatWindow::party(const std::string & command, const std::string & rest)
 void ChatWindow::help(const std::string & msg1, const std::string & msg2)
 {
     chatLog(_("-- Help --"), BY_SERVER);
-    if (msg1 == "") 
+    if (msg1 == "")
     {
         chatLog(_("/announce: Global announcement (GM only)"), BY_SERVER);
         chatLog(_("/clear: Clears this window"), BY_SERVER);
@@ -839,25 +839,25 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog(_("Command: /help <command>"), BY_SERVER);
         chatLog(_("This command displays help on <command>."), BY_SERVER);
     }
-    else if (msg1 == "party") 
+    else if (msg1 == "party")
     {
         mParty->help(msg2);
     }
-    else if (msg1 == "present") 
+    else if (msg1 == "present")
     {
         chatLog(_("Command: /present"), BY_SERVER);
         chatLog(_("This command gets a list of players within hearing and "
                   "sends it to either the record log if recording, or the chat "
                   "log otherwise."), BY_SERVER);
     }
-    else if (msg1 == "record") 
+    else if (msg1 == "record")
     {
         mRecorder->help(msg2);
     }
-    else if (msg1 == "toggle") 
+    else if (msg1 == "toggle")
     {
         chatLog(_("Command: /toggle <state>"), BY_SERVER);
-        chatLog(_("This command sets whether the return key should toggle the" 
+        chatLog(_("This command sets whether the return key should toggle the"
                   "chat log, or whether the chat log turns off automatically."),
                   BY_SERVER);
         chatLog(_("<state> can be one of \"1\", \"yes\", \"true\" to "

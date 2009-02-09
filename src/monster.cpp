@@ -75,7 +75,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     mNameColor = 0xff2020;
 }
 
-Monster::~Monster() 
+Monster::~Monster()
 {
     if (mText)
     {

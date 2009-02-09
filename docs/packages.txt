@@ -125,27 +125,27 @@ the data while working on the next package to be released.
 
 The resource management technique is critical to the overall success of the
 package management system as a whole.  Resources are loaded at runtime as they
-are needed, and unloaded as they become unused.  In order to ensure the 
-autonomous functioning of this process reference counting is the agreed upon 
-technique for managing loaded resources in TMW.  
+are needed, and unloaded as they become unused.  In order to ensure the
+autonomous functioning of this process reference counting is the agreed upon
+technique for managing loaded resources in TMW.
 
-For those unfamiliar with the practice of reference counting, it involves 
+For those unfamiliar with the practice of reference counting, it involves
 every resource object having a variable containing the number of references to
 the object. When a reference is added the function addRef() is called and when
-it is removed the function release() is called. When the reference count 
-reaches zero the object will automatically delete itself, thus handling the 
+it is removed the function release() is called. When the reference count
+reaches zero the object will automatically delete itself, thus handling the
 cleanup of resources.
 
 Reference counting will form the core of the resource management system.  Each
 resource object will have the functionality of a reference counted object. The
-resource manager will hold ResourceEntry objects.  The resource entry object 
-contains a pointer to the resource as well as the location of the path of the 
+resource manager will hold ResourceEntry objects.  The resource entry object
+contains a pointer to the resource as well as the location of the path of the
 file the resource was loaded from.  This would look something like:
 
   /**
    * A generic reference counted resource object.
    */
-  class Resource { 
+  class Resource {
       public:
           /**
            * Loads the resource from the specified path.
@@ -158,17 +158,17 @@ file the resource was loaded from.  This would look something like:
            * Increments the reference counted of this object.
            */
           void addRef() { ++referenceCount; }
- 
+
           /**
            * Decrements the reference count and deletes the object
            * if no references are left.
            * @return <code>true</code> if the object was deleted
            * <code>false</code> otherwise.
            */
-          void release() { 
+          void release() {
               --referenceCount;
 
-              if(!referenceCount)
+              if (!referenceCount)
               {
                   delete this;
                   return true;
@@ -183,14 +183,14 @@ file the resource was loaded from.  This would look something like:
   /**
    * A resource entry descriptor.
    */
-  struct ResourceEntry { 
-      Resource*   resource; 
-      std::string filePath; 
+  struct ResourceEntry {
+      Resource*   resource;
+      std::string filePath;
   };
   ...
 
 The resource manager would then hold a mapping containing the resource entry as
-well as the string defining its resource identification path. The resource 
+well as the string defining its resource identification path. The resource
 manager would thus look something like this:
 
   /**

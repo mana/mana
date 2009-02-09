@@ -108,7 +108,7 @@ void Engine::changeMap(const std::string &mapPath)
                          map_path.c_str());
         }
 
-        // How many pixels equal one tile. .5 (which is the TMW default) is 
+        // How many pixels equal one tile. .5 (which is the TMW default) is
         // 2 tiles to a pixel, while 1 is 1 tile to 1 pixel
         if (newMap->hasProperty("minimapproportion"))
              minimap->setProportion(atof(

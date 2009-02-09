@@ -115,7 +115,7 @@ class Being : public Sprite
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
         Action mAction;          /**< Action the being is performing */
-	Uint16 mFrame;
+        Uint16 mFrame;
         Uint16 mWalkTime;
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
@@ -492,7 +492,8 @@ class Being : public Sprite
          */
         int getOffset(char pos, char neg) const;
 
-        bool mMustResetParticles;	/**< Reset particle status effects on next redraw? */
+        /** Reset particle status effects on next redraw? */
+        bool mMustResetParticles;
 
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;

@@ -53,7 +53,7 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
         // 15 == height of each line of text (based on font heights)
         // 14 == row top + bottom graphic pixel heights
         setContentSize(mTextBox->getMinWidth() + 15, 15 + (numRows * 15) + noButton->getHeight());
-        mTextArea->setDimension(gcn::Rectangle(4, 5, mTextBox->getMinWidth() + 5, 
+        mTextArea->setDimension(gcn::Rectangle(4, 5, mTextBox->getMinWidth() + 5,
                                                3 + (numRows * 14)));
     }
     else

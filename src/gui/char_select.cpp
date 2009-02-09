@@ -91,8 +91,8 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mJobLevelLabel = new gcn::Label(strprintf(_("Job Level: %d"), 0));
     mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
 
-    const std::string tempString = getFont()->getWidth(_("New")) < 
-                                   getFont()->getWidth(_("Delete")) ? 
+    const std::string tempString = getFont()->getWidth(_("New")) <
+                                   getFont()->getWidth(_("Delete")) ?
                                    _("Delete") : _("New");
 
     mPreviousButton = new Button(_("Previous"), "previous", this);
@@ -228,7 +228,7 @@ bool CharSelectDialog::selectByName(const std::string &name)
     unsigned int oldPos = mCharInfo->getPos();
 
     mCharInfo->select(0);
-    do 
+    do
     {
         LocalPlayer *player = mCharInfo->getEntry();
 
@@ -306,15 +306,15 @@ CharCreateDialog::~CharCreateDialog()
 void CharCreateDialog::action(const gcn::ActionEvent &event)
 {
     int numberOfColors = ColorDB::size();
-    if (event.getId() == "create") 
+    if (event.getId() == "create")
     {
-        if (getName().length() >= 4) 
+        if (getName().length() >= 4)
         {
             // Attempt to create the character
             mCreateButton->setEnabled(false);
             attemptCharCreate();
         }
-        else 
+        else
         {
             new OkDialog("Error",
                     "Your name needs to be at least 4 characters.", this);
@@ -323,18 +323,18 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "cancel")
         scheduleDelete();
     else if (event.getId() == "nextcolor")
-        mPlayer->setHairStyle(mPlayer->getHairStyle(), 
+        mPlayer->setHairStyle(mPlayer->getHairStyle(),
                              (mPlayer->getHairColor() + 1) % numberOfColors);
     else if (event.getId() == "prevcolor")
-        mPlayer->setHairStyle(mPlayer->getHairStyle(), 
-                             (mPlayer->getHairColor() + numberOfColors - 1) % 
+        mPlayer->setHairStyle(mPlayer->getHairStyle(),
+                             (mPlayer->getHairColor() + numberOfColors - 1) %
                               numberOfColors);
     else if (event.getId() == "nextstyle")
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + 1, 
+        mPlayer->setHairStyle(mPlayer->getHairStyle() + 1,
                               mPlayer->getHairColor());
     else if (event.getId() == "prevstyle")
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + 
-                              mPlayer->getNumOfHairstyles() - 1, 
+        mPlayer->setHairStyle(mPlayer->getHairStyle() +
+                              mPlayer->getNumOfHairstyles() - 1,
                               mPlayer->getHairColor());
 }
 

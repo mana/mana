@@ -59,11 +59,11 @@ InventoryWindow::InventoryWindow(int invSize):
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(115, 25, 375, 300);
 
-    std::string longestUseString = getFont()->getWidth(_("Equip")) > 
+    std::string longestUseString = getFont()->getWidth(_("Equip")) >
                                    getFont()->getWidth(_("Use")) ?
                                    _("Equip") : _("Use");
 
-    if (getFont()->getWidth(longestUseString) < 
+    if (getFont()->getWidth(longestUseString) <
         getFont()->getWidth(_("Unequip")))
     {
         longestUseString = _("Unequip");
@@ -140,7 +140,7 @@ void InventoryWindow::logic()
         // Adjust progress bars
         mSlotsBar->setProgress((float)
                player_node->getInventory()->getNumberOfSlotsUsed() / mMaxSlots);
-        mWeightBar->setProgress((float) player_node->mTotalWeight / 
+        mWeightBar->setProgress((float) player_node->mTotalWeight /
                                         player_node->mMaxWeight);
 
         mSlotsBar->setText(strprintf("%s/%d", mUsedSlots.c_str(), mMaxSlots));

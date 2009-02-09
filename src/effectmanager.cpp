@@ -71,13 +71,13 @@ bool EffectManager::trigger(int id, Being* being)
         {
             printf("Found effect, playing it");
             rValue = true;
-            if((*i).GFX != "")
+            if (!(*i).GFX.empty())
             {
                 Particle *selfFX;
                 selfFX = particleEngine->addEffect((*i).GFX, 0, 0);
                 being->controlParticle(selfFX);
             }
-            if((*i).SFX != "")
+            if (!(*i).SFX.empty())
                 sound.playSfx((*i).SFX);
             break;
         }
@@ -94,9 +94,9 @@ bool EffectManager::trigger(int id, int x, int y)
         {
             printf("Found effect, playing it");
             rValue = true;
-            if((*i).GFX != "")
+            if (!(*i).GFX.empty())
                 particleEngine->addEffect((*i).GFX, x, y);
-            if((*i).SFX != "")
+            if (!(*i).SFX.empty())
                 sound.playSfx((*i).SFX);
             break;
         }

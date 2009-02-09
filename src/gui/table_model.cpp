@@ -54,7 +54,7 @@ void TableModel::signalAfterUpdate()
 #define WIDGET_AT(row, column) (((row) * mColumns) + (column))
 #define DYN_SIZE(h) ((h) >= 0)  // determines whether this size is tagged for auto-detection
 
-StaticTableModel::StaticTableModel(int row, int column, 
+StaticTableModel::StaticTableModel(int row, int column,
                                    gcn::Color backgroundColor, bool opacity) :
     mRows(row),
     mColumns(column),

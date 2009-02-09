@@ -54,7 +54,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     gcn::Label *portLabel = new gcn::Label(_("Port:"));
     gcn::Label *dropdownLabel = new gcn::Label(_("Recent:"));
     std::vector<std::string> dfltServer;
-    dfltServer.push_back("server.themanaworld.org"); 
+    dfltServer.push_back("server.themanaworld.org");
     dfltServer.push_back("server.themanaworld.org");
     std::vector<std::string> dfltPort;
     dfltPort.push_back("21001");

@@ -255,21 +255,21 @@ bool RegisterDialog::isUShort(const std::string &str)
 {
     if (str == "")
     {
-	return false;
+        return false;
     }
     unsigned long l = 0;
     for (std::string::const_iterator strPtr = str.begin(), strEnd = str.end();
-	 strPtr != strEnd; ++strPtr)
+         strPtr != strEnd; ++strPtr)
     {
-	if (*strPtr < '0' || *strPtr > '9')
+        if (*strPtr < '0' || *strPtr > '9')
         {
-	    return false;
-	}
-	l = l * 10 + (*strPtr - '0'); // *strPtr - '0' will never be negative
-	if (l > 65535)
-	{
-	    return false;
-	}
+            return false;
+        }
+        l = l * 10 + (*strPtr - '0'); // *strPtr - '0' will never be negative
+        if (l > 65535)
+        {
+            return false;
+        }
     }
     return true;
 }
@@ -278,9 +278,9 @@ unsigned short RegisterDialog::getUShort(const std::string &str)
 {
     unsigned long l = 0;
     for (std::string::const_iterator strPtr = str.begin(), strEnd = str.end();
-	 strPtr != strEnd; ++strPtr)
+         strPtr != strEnd; ++strPtr)
     {
-	l = l * 10 + (*strPtr - '0');
+        l = l * 10 + (*strPtr - '0');
     }
     return static_cast<unsigned short>(l);
 }

@@ -82,7 +82,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
-    if (!windowContainer) 
+    if (!windowContainer)
     {
         throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
     }
@@ -133,7 +133,7 @@ Window::~Window()
         config.setValue(name + "WinY", getY());
         config.setValue(name + "Visible", isVisible());
 
-        if (mGrip) 
+        if (mGrip)
         {
             config.setValue(name + "WinWidth", getWidth());
             config.setValue(name + "WinHeight", getHeight());
@@ -152,7 +152,7 @@ Window::~Window()
     instances--;
 
     // Clean up static resources
-    for( int i = 0; i < 9; i++ )
+    for (int i = 0; i < 9; i++)
     {
         delete border.grid[i];
         border.grid[i] = NULL;
@@ -523,7 +523,7 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
 void Window::setGuiAlpha()
 {
     //logger->log("Window::setGuiAlpha: Alpha Value %f", config.getValue("guialpha", 0.8));
-    for(int i = 0; i < 9; i++)
+    for (int i = 0; i < 9; i++)
     {
         //logger->log("Window::setGuiAlpha: Border Image (%i)", i);
         border.grid[i]->setAlpha(config.getValue("guialpha", 0.8));
@@ -532,7 +532,7 @@ void Window::setGuiAlpha()
     mAlphaChanged = false;
 }
 
-void Window::loadSkin(const std::string filename)
+void Window::loadSkin(const std::string &filename)
 {
     const std::string windowId = Window::getId();
 
@@ -542,7 +542,7 @@ void Window::loadSkin(const std::string filename)
     logger->log("Loading Window ID '%s'.", windowId.c_str());
 
 
-    if(filename == "")
+    if (filename.empty())
         logger->error("Window::loadSkin(): Invalid File Name.");
 
     // TODO:
@@ -560,7 +560,7 @@ void Window::loadSkin(const std::string filename)
     std::string skinSetImage;
     skinSetImage = XML::getProperty(rootNode, "image", "");
     Image *dBorders = NULL;
-    if(skinSetImage != "")
+    if (!skinSetImage.empty())
     {
         logger->log("Window::loadSkin(): <skinset> defines '%s' as a skin image.", skinSetImage.c_str());
         dBorders = resman->getImage("graphics/gui/" + skinSetImage);//"graphics/gui/speech_bubble.png");
@@ -594,7 +594,7 @@ void Window::loadSkin(const std::string filename)
                 std::string partType;
                 partType = XML::getProperty(partNode, "type", "unknown");
                 // TOP ROW
-                if(partType == "top-left-corner")
+                if (partType == "top-left-corner")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);
@@ -603,7 +603,7 @@ void Window::loadSkin(const std::string filename)
 
                     border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
                 }
-                else if(partType == "top-edge")
+                else if (partType == "top-edge")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);
@@ -612,7 +612,7 @@ void Window::loadSkin(const std::string filename)
 
                     border.grid[1] = dBorders->getSubImage(xPos, yPos, width, height);
                 }
-                else if(partType == "top-right-corner")
+                else if (partType == "top-right-corner")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);
@@ -623,7 +623,7 @@ void Window::loadSkin(const std::string filename)
                 }
 
                 // MIDDLE ROW
-                else if(partType == "left-edge")
+                else if (partType == "left-edge")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);
@@ -632,7 +632,7 @@ void Window::loadSkin(const std::string filename)
 
                     border.grid[3] = dBorders->getSubImage(xPos, yPos, width, height);
                 }
-                else if(partType == "bg-quad")
+                else if (partType == "bg-quad")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);
@@ -641,7 +641,7 @@ void Window::loadSkin(const std::string filename)
 
                     border.grid[4] = dBorders->getSubImage(xPos, yPos, width, height);
                 }
-                else if(partType == "right-edge")
+                else if (partType == "right-edge")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);
@@ -652,7 +652,7 @@ void Window::loadSkin(const std::string filename)
                 }
 
                 // BOTTOM ROW
-                else if(partType == "bottom-left-corner")
+                else if (partType == "bottom-left-corner")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);
@@ -661,7 +661,7 @@ void Window::loadSkin(const std::string filename)
 
                     border.grid[6] = dBorders->getSubImage(xPos, yPos, width, height);
                 }
-                else if(partType == "bottom-edge")
+                else if (partType == "bottom-edge")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);
@@ -670,7 +670,7 @@ void Window::loadSkin(const std::string filename)
 
                     border.grid[7] = dBorders->getSubImage(xPos, yPos, width, height);
                 }
-                else if(partType == "bottom-right-corner")
+                else if (partType == "bottom-right-corner")
                 {
                     const int xPos = XML::getProperty(partNode, "xpos", 0);
                     const int yPos = XML::getProperty(partNode, "ypos", 0);

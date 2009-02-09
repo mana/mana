@@ -109,7 +109,7 @@ void MiniStatusWindow::update()
     // Displays the number of monsters to next lvl
     // (disabled for now but interesting idea)
     /*
-    if(config.getValue("xpBarMonsterCounterExp", 0)!=0)
+    if (config.getValue("xpBarMonsterCounterExp", 0)!=0)
     {
         updatedText << " | "
             << (int)(((float)player_node->mXpForNextLevel - (float)player_node->mXp)

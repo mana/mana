@@ -114,7 +114,7 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemName->setCaption(item.getName());
     mItemDesc->setTextWrapped(item.getDescription());
     mItemEffect->setTextWrapped(item.getEffect());
-    mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) + 
+    mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) +
                                 _(" grams"));
 
     int numRowsDesc = mItemDesc->getNumberOfRows();
@@ -130,22 +130,22 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, 196,
                                     numRowsWeight * getFont()->getHeight()));
 
-    if(item.getEffect() == "")
+    if (item.getEffect() == "")
     {
-        setContentSize(200, (numRowsDesc * getFont()->getHeight() + 
+        setContentSize(200, (numRowsDesc * getFont()->getHeight() +
                       (3 * getFont()->getHeight())));
 
-        mItemWeightScroll->setPosition(2, 
+        mItemWeightScroll->setPosition(2,
                           (numRowsDesc * getFont()->getHeight()) +
                           (2 * getFont()->getHeight()));
     }
     else
     {
-        setContentSize(200, (numRowsDesc * getFont()->getHeight()) + 
+        setContentSize(200, (numRowsDesc * getFont()->getHeight()) +
                       (numRowsEffect * getFont()->getHeight()) +
                       (3 * getFont()->getHeight()));
 
-        mItemWeightScroll->setPosition(2, 
+        mItemWeightScroll->setPosition(2,
                           (numRowsDesc * getFont()->getHeight()) +
                           (numRowsEffect * getFont()->getHeight()) +
                           (2 * getFont()->getHeight()));
@@ -165,9 +165,9 @@ unsigned int ItemPopup::getNumRows()
 void ItemPopup::view(int x, int y)
 {
     if (windowContainer->getWidth() < (x + getWidth() + 5))
-	x = windowContainer->getWidth() - getWidth();
+        x = windowContainer->getWidth() - getWidth();
     if ((y - getHeight() - 5) < 0)
-	y = 0;
+        y = 0;
     else
         y = y - getHeight() - 5;
     setPosition(x, y);

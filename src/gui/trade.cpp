@@ -127,7 +127,7 @@ void TradeWindow::addMoney(int amount)
 
 void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
 {
-    if (own) 
+    if (own)
     {
         mMyItemContainer->setWidth(mMyScroll->getWidth());
         mMyInventory->addItem(id, quantity, equipment);
@@ -141,7 +141,7 @@ void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
 
 void TradeWindow::removeItem(int id, bool own)
 {
-    if (own) 
+    if (own)
         mMyInventory->removeItem(id);
     else
         mPartnerInventory->removeItem(id);

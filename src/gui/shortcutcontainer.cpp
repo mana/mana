@@ -43,7 +43,7 @@ ShortcutContainer::ShortcutContainer():
 void ShortcutContainer::widgetResized(const gcn::Event &event)
 {
     mGridWidth = getWidth() / mBoxWidth;
-    if (mGridWidth < 1) 
+    if (mGridWidth < 1)
     {
         mGridWidth = 1;
     }
@@ -52,7 +52,7 @@ void ShortcutContainer::widgetResized(const gcn::Event &event)
                 (mMaxItems % mGridWidth > 0 ? 1 : 0)) * mBoxHeight);
 
     mGridHeight = getHeight() / mBoxHeight;
-    if (mGridHeight < 1) 
+    if (mGridHeight < 1)
     {
         mGridHeight = 1;
     }
@@ -62,7 +62,7 @@ int ShortcutContainer::getIndexFromGrid(int pointX, int pointY) const
 {
     const gcn::Rectangle tRect = gcn::Rectangle(
         0, 0, mGridWidth * mBoxWidth, mGridHeight * mBoxHeight);
-    if (!tRect.isPointInRect(pointX, pointY)) 
+    if (!tRect.isPointInRect(pointX, pointY))
     {
         return -1;
     }

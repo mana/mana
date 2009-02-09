@@ -46,9 +46,9 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
     const int width = (int) config.getValue("screenwidth", 800);
     const int height = (int) config.getValue("screenheight", 600);
 
-    setDefaultSize(width - mItems->getBoxWidth() - border, 
-                   height - (mItems->getBoxHeight() * mItems->getMaxItems()) - 
-                   border, mItems->getBoxWidth() + border, 
+    setDefaultSize(width - mItems->getBoxWidth() - border,
+                   height - (mItems->getBoxHeight() * mItems->getMaxItems()) -
+                   border, mItems->getBoxWidth() + border,
                    (mItems->getBoxHeight() * mItems->getMaxItems()) + border);
 
     mScrollArea = new ScrollArea(mItems);
