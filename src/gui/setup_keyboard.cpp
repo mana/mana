@@ -1,6 +1,7 @@
 /*
- *  The Mana World
- *  Copyright (C) 2007  The Mana World Development Team
+ *  Custom keyboard shortcuts configuration
+ *  Copyright (C) 2007  Joshua Langley <joshlangley@optusnet.com.au>
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
