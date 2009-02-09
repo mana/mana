@@ -26,8 +26,6 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 /**
  * A dialog to choose between buying or selling at a shop.
  *

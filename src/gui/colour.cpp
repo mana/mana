@@ -19,18 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cstdio>
-
 #include "colour.h"
 
 #include "../configuration.h"
 
 #include "../utils/gettext.h"
+#include "../utils/tostring.h"
 
 Colour::Colour()
 {
     addColour('C', 0x000000, _("Chat"));
     addColour('G', 0xff0000, _("GM"));
+    addColour('H', 0xebc873, _("Highlight"));
     addColour('Y', 0x1fa052, _("Player"));
     addColour('W', 0x0000ff, _("Whisper"));
     addColour('I', 0xf1dc27, _("Is"));
@@ -48,9 +48,7 @@ Colour::~Colour()
          col != colEnd;
          ++col)
     {
-        char buffer[20];
-        std::sprintf(buffer, "0x%06x", col->rgb);
-        config.setValue("Colour" + col->text, buffer);
+        config.setValue("Colour" + col->text, toString(col->rgb));
     }
 }
 
@@ -93,6 +91,15 @@ std::string Colour::getElementAt(int i)
         return "";
     }
     return mColVector[i].text;
+}
+
+char Colour::getColourCharAt(int i)
+{
+    if (i < 0 || i >= getNumberOfElements())
+    {
+        return 'C';
+    }
+    return mColVector[i].ch;
 }
 
 void Colour::addColour(const char c, const int rgb, const std::string &text)

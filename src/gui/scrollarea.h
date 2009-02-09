@@ -24,8 +24,6 @@
 
 #include <guichan/widgets/scrollarea.hpp>
 
-#include "../guichanfwd.h"
-
 class Image;
 class ImageRect;
 
@@ -40,12 +38,12 @@ class ScrollArea : public gcn::ScrollArea
         /**
          * Constructor.
          */
-        ScrollArea(bool gc = true);
+        ScrollArea(bool gc = true, bool opaque = true);
 
         /**
          * Constructor.
          */
-        ScrollArea(gcn::Widget *content, bool gc = true);
+        ScrollArea(gcn::Widget *content, bool gc = true, bool opaque = true);
 
         /**
          * Destructor.
@@ -102,6 +100,7 @@ class ScrollArea : public gcn::ScrollArea
         void drawHMarker(gcn::Graphics *graphics);
 
         static int instances;
+        static float mAlpha;
         static ImageRect background;
         static ImageRect vMarker;
         static Image *buttons[4][2];

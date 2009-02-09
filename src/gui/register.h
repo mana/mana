@@ -22,14 +22,12 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include <iosfwd>
+#include <string>
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 class LoginData;
 class OkDialog;

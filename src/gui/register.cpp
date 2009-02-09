@@ -19,15 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
-#include <sstream>
-
 #include <guichan/widgets/label.hpp>
 
-#include "../main.h"
 #include "../configuration.h"
 #include "../log.h"
 #include "../logindata.h"
+#include "../main.h"
 
 #include "button.h"
 #include "checkbox.h"
@@ -38,12 +35,11 @@
 #include "register.h"
 #include "textfield.h"
 
-#include "../utils/tostring.h"
-
 #include "widgets/layout.h"
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
+#include "../utils/tostring.h"
 
 /**
  * Listener used while dealing with wrong data. It is used to direct the focus

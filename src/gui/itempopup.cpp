@@ -26,16 +26,15 @@
 
 #include "gui.h"
 #include "itempopup.h"
+#include "scrollarea.h"
+#include "textbox.h"
 #include "windowcontainer.h"
 
 #include "widgets/layout.h"
 
-#include "../resources/image.h"
 #include "../resources/iteminfo.h"
-#include "../resources/resourcemanager.h"
 
 #include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 ItemPopup::ItemPopup():
@@ -47,16 +46,12 @@ ItemPopup::ItemPopup():
 
     // Item Name
     mItemName = new gcn::Label("Label");
-    mItemName->setFont(gui->getFont());
-    mItemName->setPosition(2, 2);
-    mItemName->setWidth(getWidth() - 4);
     mItemName->setFont(boldFont);
+    mItemName->setPosition(2, 2);
 
     // Item Description
     mItemDesc = new TextBox();
     mItemDesc->setEditable(false);
-    mItemDesc->setMinWidth(186);
-    mItemDesc->setTextWrapped("");
     mItemDescScroll = new ScrollArea(mItemDesc);
 
     mItemDescScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -68,8 +63,6 @@ ItemPopup::ItemPopup():
     // Item Effect
     mItemEffect = new TextBox();
     mItemEffect->setEditable(false);
-    mItemEffect->setMinWidth(186);
-    mItemEffect->setTextWrapped("");
     mItemEffectScroll = new ScrollArea(mItemEffect);
 
     mItemEffectScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -81,8 +74,6 @@ ItemPopup::ItemPopup():
     // Item Weight
     mItemWeight = new TextBox();
     mItemWeight->setEditable(false);
-    mItemWeight->setMinWidth(186);
-    mItemWeight->setTextWrapped("");
     mItemWeightScroll = new ScrollArea(mItemWeight);
 
     mItemWeightScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -97,42 +88,57 @@ ItemPopup::ItemPopup():
     add(mItemWeightScroll);
 
     setLocationRelativeTo(getParent());
+}
 
-    // LEEOR / TODO: This causes an exception error.
-    //moveToBottom(getParent());
+ItemPopup::~ItemPopup()
+{
+    delete mItemName;
+    delete mItemDesc;
+    delete mItemDescScroll;
+    delete mItemEffect;
+    delete mItemEffectScroll;
+    delete mItemWeight;
+    delete mItemWeightScroll;
 }
 
 void ItemPopup::setItem(const ItemInfo &item)
 {
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-
-    mItemDesc->setMinWidth(width - 10);
-    mItemEffect->setMinWidth(width - 10);
-    mItemWeight->setMinWidth(width - 10);
-
     mItemName->setCaption(item.getName());
-    mItemDesc->setTextWrapped(item.getDescription());
-    mItemEffect->setTextWrapped(item.getEffect());
-    mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) +
-                                _(" grams"));
+    mItemName->setForegroundColor(getColor(item.getType()));
+    mItemName->setWidth(boldFont->getWidth(item.getName()));
+    mItemDesc->setTextWrapped(item.getDescription(), 196);
+    mItemEffect->setTextWrapped(item.getEffect(), 196);
+    mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) + 
+                                _(" grams"), 196);
+
+    int minWidth = mItemName->getWidth();
+
+    if (mItemDesc->getMinWidth() > minWidth)
+        minWidth = mItemDesc->getMinWidth();
+    if (mItemEffect->getMinWidth() > minWidth)
+        minWidth = mItemEffect->getMinWidth();
+    if (mItemWeight->getMinWidth() > minWidth)
+        minWidth = mItemWeight->getMinWidth();
+
+    minWidth += 8;
+    setWidth(minWidth);
 
     int numRowsDesc = mItemDesc->getNumberOfRows();
     int numRowsEffect = mItemEffect->getNumberOfRows();
     int numRowsWeight = mItemWeight->getNumberOfRows();
 
-    mItemDescScroll->setDimension(gcn::Rectangle(2, 0, 196,
+    mItemDescScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
                                   numRowsDesc * getFont()->getHeight()));
 
-    mItemEffectScroll->setDimension(gcn::Rectangle(2, 0, 196,
+    mItemEffectScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
                                     numRowsEffect * getFont()->getHeight()));
 
-    mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, 196,
+    mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
                                     numRowsWeight * getFont()->getHeight()));
 
     if (item.getEffect() == "")
     {
-        setContentSize(200, (numRowsDesc * getFont()->getHeight() +
+        setContentSize(minWidth, (numRowsDesc * getFont()->getHeight() + 
                       (3 * getFont()->getHeight())));
 
         mItemWeightScroll->setPosition(2,
@@ -141,7 +147,7 @@ void ItemPopup::setItem(const ItemInfo &item)
     }
     else
     {
-        setContentSize(200, (numRowsDesc * getFont()->getHeight()) +
+        setContentSize(minWidth, (numRowsDesc * getFont()->getHeight()) + 
                       (numRowsEffect * getFont()->getHeight()) +
                       (3 * getFont()->getHeight()));
 
@@ -156,6 +162,40 @@ void ItemPopup::setItem(const ItemInfo &item)
                       (2 * getFont()->getHeight()));
 }
 
+gcn::Color ItemPopup::getColor(const std::string& type)
+{
+    gcn::Color color;
+
+    if (type.compare("generic") == 0)
+        color = 0x21a5b1;
+    else if (type.compare("equip-head") == 0)
+        color = 0x527fa4;
+    else if (type.compare("usable") == 0)
+        color = 0x268d24;
+    else if (type.compare("equip-torso") == 0)
+        color = 0xd12aa4;
+    else if (type.compare("equip-1hand") == 0)
+        color = 0xf42a2a;
+    else if (type.compare("equip-legs") == 0)
+        color = 0x699900;
+    else if (type.compare("equip-feet") == 0)
+        color = 0xaa1d48;
+    else if (type.compare("equip-2hand") == 0)
+        color = 0xf46d0e;
+    else if (type.compare("equip-shield") == 0)
+        color = 0x9c2424;
+    else if (type.compare("equip-ring") == 0)
+        color = 0x0000ff;
+    else if (type.compare("equip-arms") == 0)
+        color = 0x9c24e8;
+    else if (type.compare("equip-ammo") == 0)
+        color = 0x8b6311;
+    else
+        color = 0x000000;
+
+    return color;
+}
+
 unsigned int ItemPopup::getNumRows()
 {
     return mItemDesc->getNumberOfRows() + mItemEffect->getNumberOfRows() +
@@ -166,10 +206,10 @@ void ItemPopup::view(int x, int y)
 {
     if (windowContainer->getWidth() < (x + getWidth() + 5))
         x = windowContainer->getWidth() - getWidth();
-    if ((y - getHeight() - 5) < 0)
+    if ((y - getHeight() - 10) < 0)
         y = 0;
     else
-        y = y - getHeight() - 5;
+        y = y - getHeight() - 10;
     setPosition(x, y);
     setVisible(true);
     requestMoveToTop();

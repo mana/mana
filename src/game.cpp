@@ -25,9 +25,9 @@
 #include <string>
 
 #include <guichan/exception.hpp>
-#include <guichan/sdl/sdlinput.hpp>
 
 #include "beingmanager.h"
+#include "configuration.h"
 #include "effectmanager.h"
 #include "emoteshortcut.h"
 #include "engine.h"
@@ -55,7 +55,6 @@
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
 #include "gui/shortcutwindow.h"
-#include "gui/shortcutcontainer.h"
 #include "gui/itemshortcutcontainer.h"
 #include "gui/menuwindow.h"
 #include "gui/minimap.h"
@@ -73,7 +72,6 @@
 #include "gui/trade.h"
 #include "gui/viewport.h"
 
-#include "net/protocol.h"
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
 #include "net/chathandler.h"
@@ -87,13 +85,10 @@
 #include "net/protocol.h"
 #include "net/skillhandler.h"
 #include "net/tradehandler.h"
-#include "net/messageout.h"
 
 #include "resources/imagewriter.h"
 
 #include "utils/gettext.h"
-
-extern Graphics *graphics;
 
 class Map;
 
@@ -213,7 +208,7 @@ void createGuiWindows(Network *network)
     skillDialog = new SkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
-    equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
+    equipmentWindow = new EquipmentWindow();
     tradeWindow = new TradeWindow(network);
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
@@ -504,55 +499,6 @@ void Game::handleInput()
                 keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
                 return;
             }
-            // Keys pressed together with Alt/Meta
-            // Emotions and some internal gui windows
-#ifndef __APPLE__
-            if (event.key.keysym.mod & KMOD_LALT)
-#else
-            if (event.key.keysym.mod & KMOD_LMETA)
-#endif
-            {
-                switch (event.key.keysym.sym)
-                {
-                    case SDLK_p:
-                        // Screenshot (picture, hence the p)
-                        saveScreenshot();
-                        used = true;
-                        break;
-
-                    default:
-                        break;
-
-                    case SDLK_f:
-                        // Find path to mouse (debug purpose)
-                        viewport->toggleDebugPath();
-                        used = true;
-                        break;
-
-                    case SDLK_t:
-                        // Toggle accepting of incoming trade requests
-                        unsigned int deflt = player_relations.getDefault();
-                        if (deflt & PlayerRelation::TRADE)
-                        {
-                            chatWindow->chatLog(
-                                              _("Ignoring incoming trade requests"),
-                                                BY_SERVER);
-                            deflt &= ~PlayerRelation::TRADE;
-                        }
-                        else
-                        {
-                            chatWindow->chatLog(
-                                              _("Accepting incoming trade requests"),
-                                                BY_SERVER);
-                            deflt |= PlayerRelation::TRADE;
-                        }
-
-                        player_relations.setDefault(deflt);
-
-                        used = true;
-                        break;
-                }
-            }
 
             // Mode switch to emotes
             if (keyboard.isKeyActive(keyboard.KEY_EMOTE))
@@ -566,16 +512,69 @@ void Game::handleInput()
                     return;
                 }
             }
-            switch (event.key.keysym.sym)
+
+            if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT) ||
+                keyboard.isKeyActive(keyboard.KEY_OK))
             {
-                case SDLK_PAGEUP:
+                // Input chat window
+                if (!(chatWindow->isInputFocused() ||
+                                deathNotice != NULL ||
+                                weightNotice != NULL))
+                {
+                    // Quit by pressing Enter if the exit confirm is there
+                    if (exitConfirm &&
+                        keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                        done = true;
+                    // Close the Browser if opened
+                    else if (helpWindow->isVisible() &&
+                             keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                        helpWindow->setVisible(false);
+                    // Close the config window, cancelling changes if opened
+                    else if (setupWindow->isVisible() &&
+                             keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
+                    // Submits the text and proceeds to the next dialog
+                    else if (npcStringDialog->isVisible() &&
+                             keyboard.isKeyActive(keyboard.KEY_OK))
+                        npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Proceed to the next dialog option, or close the window
+                    else if (npcTextDialog->isVisible() &&
+                             keyboard.isKeyActive(keyboard.KEY_OK))
+                        npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Choose the currently highlighted dialogue option
+                    else if (npcListDialog->isVisible() &&
+                             keyboard.isKeyActive(keyboard.KEY_OK))
+                        npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    // Submits the text and proceeds to the next dialog
+                    else if (npcIntegerDialog->isVisible() &&
+                             keyboard.isKeyActive(keyboard.KEY_OK))
+                        npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    else if (!(keyboard.getKeyValue(
+                                   KeyboardConfig::KEY_TOGGLE_CHAT) == 
+                               keyboard.getKeyValue(
+                                   KeyboardConfig::KEY_OK) && 
+                               (npcStringDialog->isVisible() ||
+                                npcTextDialog->isVisible() ||
+                                npcListDialog->isVisible() ||
+                                npcIntegerDialog->isVisible())))
+                    {
+                        chatWindow->requestChatFocus();
+                        used = true;
+                    }
+                }
+            }
+
+            const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+            switch (tKey)
+            {
+                case KeyboardConfig::KEY_SCROLL_CHAT_UP:
                     if (chatWindow->isVisible())
                     {
                         chatWindow->scroll(-DEFAULT_CHAT_WINDOW_SCROLL);
                         used = true;
                     }
                     break;
-                case SDLK_PAGEDOWN:
+                case KeyboardConfig::KEY_SCROLL_CHAT_DOWN:
                     if (chatWindow->isVisible())
                     {
                         chatWindow->scroll(DEFAULT_CHAT_WINDOW_SCROLL);
@@ -583,7 +582,7 @@ void Game::handleInput()
                         return;
                     }
                     break;
-                case SDLK_F1:
+                case KeyboardConfig::KEY_WINDOW_HELP:
                     // In-game Help
                     if (helpWindow->isVisible())
                         helpWindow->setVisible(false);
@@ -594,35 +593,9 @@ void Game::handleInput()
                     }
                     used = true;
                     break;
-
-                case SDLK_RETURN:
-                    // Input chat window
-                    if (chatWindow->isInputFocused() ||
-                                    deathNotice != NULL ||
-                                    weightNotice != NULL)
-                    {
-                        break;
-                    }
-
-                    // Quit by pressing Enter if the exit confirm is there
-                    if (exitConfirm)
-                       done = true;
-                    // Close the Browser if opened
-                    else if (helpWindow->isVisible())
-                        helpWindow->setVisible(false);
-                    // Close the config window, cancelling changes if opened
-                    else if (setupWindow->isVisible())
-                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                    // Else, open the chat edit box
-                    else
-                    {
-                        chatWindow->requestChatFocus();
-                        used = true;
-                    }
-                    break;
                // Quitting confirmation dialog
-               case SDLK_ESCAPE:
-                    if (!exitConfirm)
+               case KeyboardConfig::KEY_QUIT:
+                    if (!exitConfirm) 
                     {
                         exitConfirm = new ConfirmDialog( _("Quit"),
                                                          _("Are you sure you "
@@ -635,7 +608,6 @@ void Game::handleInput()
                         exitConfirm->action(gcn::ActionEvent(NULL, _("no")));
                     }
                     break;
-
                 default:
                     break;
             }
@@ -746,6 +718,38 @@ void Game::handleInput()
                         break;
                     case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
                         requestedWindow = emoteShortcutWindow;
+                        break;
+                    case KeyboardConfig::KEY_SCREENSHOT:
+                        // Screenshot (picture, hence the p)
+                        saveScreenshot();
+                        used = true;
+                        break;
+                    case KeyboardConfig::KEY_PATHFIND:
+                        // Find path to mouse (debug purpose)
+                        viewport->toggleDebugPath();
+                        used = true;
+                        break;
+                    case KeyboardConfig::KEY_TRADE:
+                        // Toggle accepting of incoming trade requests
+                        unsigned int deflt = player_relations.getDefault();
+                        if (deflt & PlayerRelation::TRADE)
+                        {
+                            chatWindow->chatLog(
+                                              _("Ignoring incoming trade requests"),
+                                                BY_SERVER);
+                            deflt &= ~PlayerRelation::TRADE;
+                        }
+                        else
+                        {
+                            chatWindow->chatLog(
+                                              _("Accepting incoming trade requests"),
+                                                BY_SERVER);
+                            deflt |= PlayerRelation::TRADE;
+                        }
+
+                        player_relations.setDefault(deflt);
+
+                        used = true;
                         break;
                 }
             }

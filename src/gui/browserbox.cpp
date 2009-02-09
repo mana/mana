@@ -21,15 +21,17 @@
 
 #include <algorithm>
 
+#include <guichan/graphics.hpp>
+
 #include "browserbox.h"
 #include "colour.h"
 #include "linkhandler.h"
 #include "truetypefont.h"
 
-BrowserBox::BrowserBox(unsigned int mode):
+BrowserBox::BrowserBox(unsigned int mode, bool opaque):
     gcn::Widget(),
     mMode(mode), mHighMode(UNDERLINE | BACKGROUND),
-    mOpaque(true),
+    mOpaque(opaque),
     mUseLinksAndUserColors(true),
     mSelectedLink(-1),
     mMaxRows(0)
@@ -122,7 +124,18 @@ void BrowserBox::addRow(const std::string &row)
     //discard older rows when a row limit has been set
     if (mMaxRows > 0)
     {
-        while (mTextRows.size() > mMaxRows) mTextRows.pop_front();
+        while (mTextRows.size() > mMaxRows)
+        {
+            mTextRows.pop_front();
+            for (unsigned int i = 0; i < mLinks.size(); i++)
+            {
+                mLinks[i].y1 -= font->getHeight();
+                mLinks[i].y2 -= font->getHeight();
+
+                if (mLinks[i].y1 < 0)
+                    mLinks.erase(mLinks.begin() + i);
+            }
+        }
     }
 
     // Auto size mode
@@ -238,9 +251,10 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
     if (mSelectedLink >= 0)
     {
+        bool valid;
         if ((mHighMode & BACKGROUND))
         {
-            graphics->setColor(gcn::Color(HIGHLIGHT));
+            graphics->setColor(gcn::Color(textColour->getColour('H', valid)));
             graphics->fillRectangle(gcn::Rectangle(
                         mLinks[mSelectedLink].x1,
                         mLinks[mSelectedLink].y1,
@@ -251,7 +265,6 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
         if ((mHighMode & UNDERLINE))
         {
-            bool valid;
             graphics->setColor(gcn::Color(textColour->getColour('<', valid)));
             graphics->drawLine(
                     mLinks[mSelectedLink].x1,
@@ -263,6 +276,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
     int x = 0, y = 0;
     int wrappedLines = 0;
+    int link = 0;
     TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     graphics->setColor(BLACK);
@@ -320,6 +334,12 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                         int rgb = textColour->getColour(c, valid);
                         if (c == '<')
                         {
+                            const int size = mLinks[link].x2 - mLinks[link].x1;
+                            mLinks[link].x1 = x;
+                            mLinks[link].y1 = y;
+                            mLinks[link].x2 = mLinks[link].x1 + size;
+                            mLinks[link].y2 = y + font->getHeight();
+                            link++;
                             prevColor = selColor;
                         }
                         if (valid)

@@ -19,14 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cstring>
 #include <SDL.h>
 
-#include <guichan/exception.hpp>
-#include <guichan/image.hpp>
-
 #include "log.h"
-#include "main.h"
 #include "openglgraphics.h"
 
 #include "resources/image.h"

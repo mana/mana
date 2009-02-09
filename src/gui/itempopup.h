@@ -23,16 +23,17 @@
 #ifndef ITEMPOPUP_H
 #define ITEMPOPUP_H
 
-#include "scrollarea.h"
-#include "textbox.h"
 #include "window.h"
 
-#include "../item.h"
+class ItemInfo;
+class ScrollArea;
+class TextBox;
 
 class ItemPopup : public Window
 {
     public:
         ItemPopup();
+        ~ItemPopup();
 
         void setItem(const ItemInfo &item);
         unsigned int getNumRows();
@@ -46,6 +47,8 @@ class ItemPopup : public Window
         ScrollArea *mItemDescScroll;
         ScrollArea *mItemEffectScroll;
         ScrollArea *mItemWeightScroll;
+
+        gcn::Color getColor(const std::string& type);
 };
 
 #endif // ITEMPOPUP_H

@@ -22,14 +22,16 @@
 #ifndef SPEECHBUBBLE_H
 #define SPEECHBUBBLE_H
 
-#include "scrollarea.h"
-#include "textbox.h"
 #include "window.h"
+
+class ScrollArea;
+class TextBox;
 
 class SpeechBubble : public Window
 {
     public:
         SpeechBubble();
+        ~SpeechBubble();
 
         void setCaption(const std::string &name,
                         const gcn::Color &color = 0x000000);

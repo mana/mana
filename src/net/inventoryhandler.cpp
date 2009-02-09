@@ -35,6 +35,8 @@
 
 #include "../resources/iteminfo.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 InventoryHandler::InventoryHandler()
@@ -139,13 +141,13 @@ void InventoryHandler::handleMessage(MessageIn *msg)
             itemType = msg->readInt8();
 
             if (msg->readInt8() > 0) {
-                chatWindow->chatLog("Unable to pick up item", BY_SERVER);
+                chatWindow->chatLog(_("Unable to pick up item"), BY_SERVER);
             } else {
                 const ItemInfo &itemInfo = ItemDB::get(itemId);
                 const std::string amountStr =
                     (amount > 1) ? toString(amount) : "a";
-                chatWindow->chatLog("You picked up " + amountStr + " " +
-                        itemInfo.getName(), BY_SERVER);
+                chatWindow->chatLog(strprintf(_("You picked up %s %s"),
+                        amountStr.c_str(), itemInfo.getName().c_str()), BY_SERVER);
 
                 if (Item *item = inventory->getItem(index)) {
                     item->setId(itemId);
@@ -182,7 +184,7 @@ void InventoryHandler::handleMessage(MessageIn *msg)
             amount = msg->readInt16();
 
             if (msg->readInt8() == 0) {
-                chatWindow->chatLog("Failed to use item", BY_SERVER);
+                chatWindow->chatLog(_("Failed to use item"), BY_SERVER);
             } else {
                 if (Item *item = inventory->getItem(index))
                     item->setQuantity(amount);

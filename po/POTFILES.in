@@ -15,6 +15,7 @@ src/gui/equipmentwindow.cpp
 src/gui/help.cpp
 src/gui/inventorywindow.cpp
 src/gui/item_amount.cpp
+src/gui/itempopup.cpp
 src/gui/login.cpp
 src/gui/menuwindow.cpp
 src/gui/minimap.cpp
@@ -24,6 +25,8 @@ src/gui/npcstringdialog.cpp
 src/gui/npc_text.cpp
 src/gui/ok_dialog.cpp
 src/gui/popupmenu.cpp
+src/gui/recorder.cpp
+src/gui/recorder.h
 src/gui/register.cpp
 src/gui/sell.cpp
 src/gui/setup_audio.cpp
@@ -38,6 +41,13 @@ src/gui/speechbubble.cpp
 src/gui/status.cpp
 src/gui/trade.cpp
 src/gui/updatewindow.cpp
+src/net/buysellhandler.cpp
+src/net/charserverhandler.cpp
+src/net/chathandler.cpp
+src/net/equipmenthandler.cpp
+src/net/inventoryhandler.cpp
+src/net/loginhandler.cpp
+src/net/maploginhandler.cpp
 src/net/playerhandler.cpp
 src/net/tradehandler.cpp
 src/resources/colordb.cpp
@@ -47,5 +57,6 @@ src/resources/monsterdb.cpp
 src/resources/npcdb.cpp
 src/being.cpp
 src/game.cpp
+src/keyboardconfig.cpp
 src/main.cpp
 src/party.cpp

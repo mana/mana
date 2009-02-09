@@ -19,18 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <cmath>
+
 #include "animationparticle.h"
 #include "imageparticle.h"
 #include "log.h"
 #include "particle.h"
 #include "particleemitter.h"
 
-#include "resources/animation.h"
 #include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
-
-#include <cmath>
 
 #define SIN45 0.707106781f
 #define DEG_RAD_FACTOR 0.017453293f

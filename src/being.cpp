@@ -23,7 +23,7 @@
 
 #include "animatedsprite.h"
 #include "configuration.h"
-#include "equipment.h"
+#include "effectmanager.h"
 #include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
@@ -34,7 +34,12 @@
 #include "text.h"
 #include "statuseffect.h"
 
+#include "gui/speechbubble.h"
+
+#include "resources/colordb.h"
+
 #include "resources/emotedb.h"
+#include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
@@ -44,8 +49,9 @@
 #include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
-#include "utils/gettext.h"
-#include "utils/tostring.h"
+#include "utils/gettext.h"  
+#include "utils/tostring.h"  
+#include "utils/trim.h"
 #include "utils/xml.h"
 
 #include <cassert>
@@ -71,7 +77,6 @@ Being::Being(int id, int job, Map *map):
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
-    mEquipment(new Equipment()),
     mId(id),
     mWalkSpeed(150),
     mDirection(DOWN),
@@ -183,14 +188,7 @@ void Being::setSpeech(const std::string &text, Uint32 time)
     mSpeech = text;
 
     // Trim whitespace
-    while (mSpeech[0] == ' ')
-    {
-        mSpeech = mSpeech.substr(1, mSpeech.size());
-    }
-    while (mSpeech[mSpeech.size()] == ' ')
-    {
-        mSpeech = mSpeech.substr(0, mSpeech.size() - 1);
-    }
+    trim(mSpeech);
 
     // check for links
     std::string::size_type start = mSpeech.find('[');
@@ -206,8 +204,11 @@ void Being::setSpeech(const std::string &text, Uint32 time)
         }
 
         std::string::size_type position = mSpeech.find('|');
-        mSpeech.erase(end, 1);
-        mSpeech.erase(start, (position - start) + 1);
+        if (mSpeech[start + 1] == '@' && mSpeech[start + 2] == '@')
+        {
+            mSpeech.erase(end, 1);
+            mSpeech.erase(start, (position - start) + 1);
+        }
         position = mSpeech.find('@');
 
         while (position != std::string::npos)
@@ -221,7 +222,7 @@ void Being::setSpeech(const std::string &text, Uint32 time)
     }
 
     if (mSpeech != "")
-        mSpeechTime = 500;
+        mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 }
 
 void Being::takeDamage(int amount)
@@ -519,7 +520,7 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
         emotionSet[emotionIndex]->draw(graphics, px, py);
 }
 
-void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
+void Being::drawSpeech(int offsetX, int offsetY)
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;

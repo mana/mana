@@ -26,9 +26,9 @@
 
 #include "utils/xml.h"
 
-#include "resources/animation.h"
-
 #include "particleemitterprop.h"
+
+#include "resources/animation.h"
 
 class Image;
 class Map;

@@ -22,7 +22,6 @@
 #ifndef CHAT_H
 #define CHAT_H
 
-#include <fstream>
 #include <list>
 #include <string>
 
@@ -30,8 +29,6 @@
 #include <guichan/keylistener.hpp>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 class BrowserBox;
 class Network;
@@ -182,7 +179,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void setInputText(std::string input_str);
 
         /** Called to add item to chat */
-        void addItemText(int itemid, const std::string &item);
+        void addItemText(const std::string &item);
 
         /** Override to reset mTmpVisible */
         void setVisible(bool visible);

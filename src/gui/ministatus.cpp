@@ -23,6 +23,7 @@
 #include "ministatus.h"
 #include "progressbar.h"
 
+#include "../animatedsprite.h"
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../localplayer.h"

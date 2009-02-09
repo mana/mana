@@ -20,7 +20,6 @@
  */
 
 #include "animatedsprite.h"
-#include "graphics.h"
 #include "localplayer.h"
 #include "npc.h"
 #include "particle.h"

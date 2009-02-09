@@ -19,6 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <sstream>
+#include <string>
+
 #include <SDL_mouse.h>
 
 #include "itemlinkhandler.h"
@@ -26,9 +29,6 @@
 
 #include "../resources/iteminfo.h"
 #include "../resources/itemdb.h"
-
-#include <sstream>
-#include <string>
 
 ItemLinkHandler::ItemLinkHandler()
 {

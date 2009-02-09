@@ -20,7 +20,6 @@
  */
 
 #include <cassert>
-#include <string>
 
 #include <guichan/color.hpp>
 #include <guichan/sdl/sdlpixel.hpp>

@@ -27,10 +27,9 @@
 
 #include <guichan/listmodel.hpp>
 
-#include "../guichanfwd.h"
 #include "../shopitem.h"
 
-#include "../resources/image.h"
+class ShopItem;
 
 class ShopItems : public gcn::ListModel
 {

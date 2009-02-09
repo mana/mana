@@ -22,6 +22,7 @@
 #include "emoteshortcutcontainer.h"
 
 #include "../animatedsprite.h"
+#include "../configuration.h"
 #include "../emoteshortcut.h"
 #include "../graphics.h"
 #include "../inventory.h"
@@ -42,17 +43,18 @@
 static const int MAX_ITEMS = 12;
 
 EmoteShortcutContainer::EmoteShortcutContainer():
+    ShortcutContainer(),
     mEmoteClicked(false),
     mEmoteMoved(0)
 {
-    mGridWidth = 1,
-    mGridHeight = 1,
     addMouseListener(this);
     addWidgetListener(this);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
     mBackgroundImg = resman->getImage("graphics/gui/item_shortcut_bgr.png");
+
+    mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
 
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); i++)
@@ -96,6 +98,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
         }
 
     }
+
     if (mEmoteMoved)
     {
         // Draw the emote image being dragged by the cursor.
@@ -107,6 +110,12 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 
             sprite->draw(g, tPosX, tPosY);
         }
+    }
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        mBackgroundImg->setAlpha(mAlpha);
     }
 }
 

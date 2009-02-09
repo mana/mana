@@ -19,15 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-#include <fstream>
-
 #include <guichan/focushandler.hpp>
 
 #include "browserbox.h"
 #include "chat.h"
 #include "chatinput.h"
 #include "itemlinkhandler.h"
+#include "recorder.h"
 #include "scrollarea.h"
 #include "sdlinput.h"
 #include "windowcontainer.h"
@@ -36,11 +34,9 @@
 
 #include "../beingmanager.h"
 #include "../configuration.h"
-#include "../extensions.h"
 #include "../game.h"
 #include "../localplayer.h"
 #include "../party.h"
-#include "../recorder.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
@@ -75,8 +71,6 @@ Window(""), mNetwork(network), mTmpVisible(false)
     mTextOutput->setLinkHandler(mItemLinkHandler);
 
     mScrollArea = new ScrollArea(mTextOutput);
-    mScrollArea->setPosition(mScrollArea->getFrameSize(),
-                             mScrollArea->getFrameSize());
     mScrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_ALWAYS);
     mScrollArea->setScrollAmount(0, 1);
@@ -344,6 +338,11 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
      * require server handling by proper packet. Probably
      * those if elses should be replaced by protocol calls */
 
+    trim(msg);
+
+    if (msg.compare("") == 0)
+        return;
+
     // Send party message
     if (msg.at(0) == mPartyPrefix)
     {
@@ -379,14 +378,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
 
             std::string temp = msg.substr(start+1, end - start - 1);
 
-            while (temp[0] == ' ')
-            {
-                temp = temp.substr(1, temp.size());
-            }
-            while (temp[temp.size()] == ' ')
-            {
-                temp = temp.substr(0, temp.size() - 1);
-            }
+            trim(temp);
 
             for (unsigned int i = 0; i < temp.size(); i++)
             {
@@ -394,10 +386,13 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
             }
 
             const ItemInfo itemInfo = ItemDB::get(temp);
-            msg.insert(end, "@@");
-            msg.insert(start+1, "|");
-            msg.insert(start+1, toString(itemInfo.getId()));
-            msg.insert(start+1, "@@");
+            if (itemInfo.getName() != _("Unknown item"))
+            {
+                msg.insert(end, "@@");
+                msg.insert(start+1, "|");
+                msg.insert(start+1, toString(itemInfo.getId()));
+                msg.insert(start+1, "@@");
+            }
         }
         start =  msg.find('[', start + 1);
     }
@@ -440,7 +435,6 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (command == "help")
     {
-        msg.erase(0, 6);
         trim(msg);
         std::size_t space = msg.find(" ");
         std::string msg1;
@@ -480,7 +474,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     else if (command == "whisper" || command == "msg" || command == "w")
         whisper(nick, msg);
     else if (command == "record")
-        mRecorder->respond(msg);
+        mRecorder->changeRecordingStatus(msg);
     else if (command == "toggle")
     {
         if (msg == "")
@@ -540,32 +534,27 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
          * This will eventually be replaced by a GUI, so
          * we don't need to get too sophisticated
          */
-        if (extensions.aethyra_spells)
+        MessageOut outMsg(mNetwork);
+        if (msg == "heal")
         {
-            MessageOut outMsg(mNetwork);
-            if (msg == "heal")
-            {
-                outMsg.writeInt16(0x03f3);
-                outMsg.writeInt16(0x01);
-                outMsg.writeInt32(0);
-                outMsg.writeInt8(0);
-                outMsg.writeInt8(0);
-                outMsg.writeString("", 24);
-            }
-            else if (msg == "gather")
-            {
-                outMsg.writeInt16(0x03f3);
-                outMsg.writeInt16(0x02);
-                outMsg.writeInt32(0);
-                outMsg.writeInt8(0);
-                outMsg.writeInt8(0);
-                outMsg.writeString("", 24);
-            }
-            else
-                chatLog(_("No such spell!"), BY_SERVER);
+            outMsg.writeInt16(0x03f3);
+            outMsg.writeInt16(0x01);
+            outMsg.writeInt32(0);
+            outMsg.writeInt8(0);
+            outMsg.writeInt8(0);
+            outMsg.writeString("", 24);
+        }
+        else if (msg == "gather")
+        {
+            outMsg.writeInt16(0x03f3);
+            outMsg.writeInt16(0x02);
+            outMsg.writeInt32(0);
+            outMsg.writeInt8(0);
+            outMsg.writeInt8(0);
+            outMsg.writeString("", 24);
         }
         else
-            chatLog(_("The current server doesn't support spells"), BY_SERVER);
+            chatLog(_("No such spell!"), BY_SERVER);
     }
     else if (command == "present")
     {
@@ -745,10 +734,10 @@ void ChatWindow::setInputText(std::string input_str)
      requestChatFocus();
 }
 
-void ChatWindow::addItemText(int itemId, const std::string &item)
+void ChatWindow::addItemText(const std::string &item)
 {
     std::ostringstream text;
-    text << "[@@" << itemId << "|" << item << "@@] ";
+    text << "[" << item << "] ";
     mChatInput->setText(mChatInput->getText() + text.str());
     requestChatFocus();
 }
@@ -805,10 +794,11 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog(_("/announce: Global announcement (GM only)"), BY_SERVER);
         chatLog(_("/clear: Clears this window"), BY_SERVER);
         chatLog(_("/help: Display this help"), BY_SERVER);
-        mParty->help();
+        chatLog(_("/party <command> <params>: Party commands."), BY_SERVER);
         chatLog(_("/msg <nick> <message>: Alternate form for /whisper"), BY_SERVER);
         chatLog(_("/present: Get list of players present"), BY_SERVER);
-        mRecorder->help();
+        chatLog(_("/record <filename>: Start recording the chat to an"
+                  " external file."), BY_SERVER);
         chatLog(_("/toggle: Determine whether <return> toggles the chat log."),
                 BY_SERVER);
         chatLog(_("/where: Display map name"), BY_SERVER);
@@ -852,7 +842,11 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
     }
     else if (msg1 == "record")
     {
-        mRecorder->help(msg2);
+        chatLog(_("Command: /record <filename>"), BY_SERVER);
+        chatLog(_("This command starts recording the chat log to the file "
+                  "<filename>."), BY_SERVER);
+        chatLog(_("Command: /record"), BY_SERVER);
+        chatLog(_("This command finishes a recording session."), BY_SERVER);
     }
     else if (msg1 == "toggle")
     {

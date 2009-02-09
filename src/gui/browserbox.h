@@ -22,14 +22,11 @@
 #ifndef BROWSERBOX_H
 #define BROWSERBOX_H
 
-#include <iosfwd>
+#include <list>
 #include <vector>
 
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
-
-#include "../guichanfwd.h"
-#include "../main.h"
 
 class LinkHandler;
 
@@ -49,7 +46,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         /**
          * Constructor.
          */
-        BrowserBox(unsigned int mode = AUTO_SIZE);
+        BrowserBox(unsigned int mode = AUTO_SIZE, bool opaque = true);
 
         /**
          * Destructor.

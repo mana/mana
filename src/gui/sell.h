@@ -25,9 +25,9 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
-#include "window.h"
+#include <SDL_types.h>
 
-#include "../guichanfwd.h"
+#include "window.h"
 
 class Item;
 class Network;

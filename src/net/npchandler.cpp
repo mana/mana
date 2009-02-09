@@ -92,6 +92,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcIntegerDialog->setRange(0, 2147483647);
             npcIntegerDialog->setVisible(true);
+            npcIntegerDialog->requestFocus();
             break;
 
         case SMSG_NPC_STR_INPUT:
@@ -100,6 +101,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcStringDialog->setValue("");
             npcStringDialog->setVisible(true);
+            npcStringDialog->requestFocus();
             break;
     }
 }

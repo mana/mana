@@ -33,9 +33,6 @@
 
 #include "widgets/layouthelper.h"
 
-#include "widgets/layouthelper.h"
-
-#include "../configuration.h"
 #include "../keyboardconfig.h"
 
 #include "../utils/gettext.h"
@@ -81,11 +78,10 @@ Setup_Keyboard::Setup_Keyboard():
 
     refreshKeys();
 
-    mKeyList->setDimension(gcn::Rectangle(0, 0, 185, 140));
     mKeyList->addActionListener(this);
-    mKeyList->setSelected(-1);
 
     ScrollArea *scrollArea = new ScrollArea(mKeyList);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mAssignKeyButton = new Button(_("Assign"), "assign", this);
     mAssignKeyButton->addActionListener(this);
@@ -142,9 +138,8 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
 {
     if (event.getSource() == mKeyList)
     {
-        if (!mKeySetting) {
+        if (!mKeySetting)
             mAssignKeyButton->setEnabled(true);
-        }
     }
     else if (event.getId() == "assign")
     {
@@ -188,7 +183,8 @@ void Setup_Keyboard::refreshKeys()
 
 void Setup_Keyboard::keyUnresolved()
 {
-    if (mKeySetting) {
+    if (mKeySetting)
+    {
         newKeyCallback(keyboard.getNewKeyIndex());
         keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
     }

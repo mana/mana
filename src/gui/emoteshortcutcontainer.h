@@ -24,11 +24,7 @@
 
 #include <vector>
 
-#include <guichan/mouselistener.hpp>
-
 #include "shortcutcontainer.h"
-
-#include "../guichanfwd.h"
 
 class AnimatedSprite;
 class Image;

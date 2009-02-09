@@ -40,6 +40,8 @@
 #include "resource.h"
 
 class Dye;
+class SDL_Rect;
+class SDL_Surface;
 
 /**
  * Defines a class for loading and storing images.
@@ -92,6 +94,12 @@ class Image : public Resource
         virtual void unload();
 
         /**
+         * Returns the image.
+         */
+        virtual const Image* getImage() const
+        { return this; }
+
+        /**
          * Returns the width of the image.
          */
         virtual int getWidth() const
@@ -114,7 +122,7 @@ class Image : public Resource
         /**
          * Sets the alpha value of this image.
          */
-        void setAlpha(float alpha);
+        virtual void setAlpha(float alpha);
 
         /**
          * Returns the alpha value of this image.
@@ -179,6 +187,12 @@ class SubImage : public Image
          * Destructor.
          */
         ~SubImage();
+
+        /**
+         * Returns the image.
+         */
+        virtual const Image* getImage() const
+        { return mParent; }
 
         /**
          * Creates a new image with the desired clipping rectangle.

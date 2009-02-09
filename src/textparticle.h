@@ -22,8 +22,6 @@
 #ifndef _TEXTPARTICLE_H
 #define _TEXTPARTICLE_H
 
-#include <guichan/color.hpp>
-
 #include "guichanfwd.h"
 #include "particle.h"
 

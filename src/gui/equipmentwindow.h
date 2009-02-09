@@ -28,6 +28,8 @@
 
 class Equipment;
 class Inventory;
+class Item;
+class ItemPopup;
 class PlayerBox;
 
 /**
@@ -50,7 +52,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        EquipmentWindow(Equipment *equipment);
+        EquipmentWindow();
 
         /**
          * Destructor.
@@ -84,10 +86,17 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
 
     private:
+        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
+
+        Item* getItem(const int &x, const int &y);
+
         Equipment *mEquipment;
         Inventory *mInventory;
         gcn::Button *mUnequip;                  /**< Button for unequipping. */
         EquipBox mEquipBox[EQUIP_VECTOREND];    /**< Equipment Boxes. */
+
+        ItemPopup *mItemPopup;
 
         PlayerBox *mPlayerBox;
 

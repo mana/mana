@@ -24,15 +24,14 @@
 
 #include <guichan/widgets/container.hpp>
 
-#include "../guichanfwd.h"
-
 /**
  * A window container. This container adds functionality for more convenient
  * widget (windows in particular) destruction.
  *
  * \ingroup GUI
  */
-class WindowContainer : public gcn::Container {
+class WindowContainer : public gcn::Container
+{
     public:
         /**
          * Do GUI logic. This functions adds automatic deletion of objects that

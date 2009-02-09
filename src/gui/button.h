@@ -22,11 +22,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <iosfwd>
-
 #include <guichan/widgets/button.hpp>
-
-#include "../guichanfwd.h"
 
 class ImageRect;
 
@@ -71,6 +67,7 @@ class Button : public gcn::Button
 
         static ImageRect button[4];    /**< Button state graphics */
         static int mInstances;         /**< Number of button instances */
+        static float mAlpha;
         bool mIsLogged;                /**< Makes the button appear pressed all the time */
 };
 

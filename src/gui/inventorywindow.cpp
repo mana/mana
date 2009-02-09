@@ -27,13 +27,11 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "gui.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
 #include "progressbar.h"
 #include "scrollarea.h"
-#include "textbox.h"
 #include "viewport.h"
 
 #include "widgets/layout.h"
@@ -91,19 +89,31 @@ InventoryWindow::InventoryWindow(int invSize):
     setMinHeight(130);
     setMinWidth(mWeightLabel->getWidth() + mSlotsLabel->getWidth() + 310);
 
-    place(0, 0, mInvenScroll, 7, 4);
-    place(0, 4, mWeightLabel).setPadding(3);
-    place(1, 4, mWeightBar, 2);
-    place(3, 4, mSlotsLabel).setPadding(3);
-    place(4, 4, mSlotsBar, 2);
+    place(0, 0, mWeightLabel).setPadding(3);
+    place(1, 0, mWeightBar, 2);
+    place(3, 0, mSlotsLabel).setPadding(3);
+    place(4, 0, mSlotsBar, 2);
+    place(0, 1, mInvenScroll, 7, 4);
     place(5, 5, mDropButton);
     place(6, 5, mUseButton);
 
     Layout &layout = getLayout();
-    layout.setRowHeight(0, Layout::AUTO_SET);
+    layout.setRowHeight(0,  mDropButton->getHeight());
 
     loadWindowState();
     setLocationRelativeTo(getParent());
+}
+
+InventoryWindow::~InventoryWindow()
+{
+    delete mWeightBar;
+    delete mSlotsBar;
+    delete mUseButton;
+    delete mDropButton;
+    delete mItems;
+    delete mWeightLabel;
+    delete mSlotsLabel;
+    delete mInvenScroll;
 }
 
 void InventoryWindow::logic()

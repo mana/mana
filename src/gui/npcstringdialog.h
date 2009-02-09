@@ -22,15 +22,9 @@
 #ifndef GUI_NPCSTRINGDIALOG_H
 #define GUI_NPCSTRINGDIALOG_H
 
-#include <iosfwd>
-#include <vector>
-
 #include <guichan/actionlistener.hpp>
-#include <guichan/keylistener.hpp>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 /**
  * The npc integer input dialog.
@@ -68,6 +62,11 @@ class NpcStringDialog : public Window, public gcn::ActionListener
          * Checks whether NpcStringDialog is Focused or not.
          */
         bool isInputFocused();
+
+        /**
+         * Requests the textfield to take focus for input.
+         */
+        void requestFocus();
 
     private:
         gcn::TextField *mValueField;

@@ -24,13 +24,12 @@
 #include <libxml/tree.h>
 
 #include "itemdb.h"
-#include "iteminfo.h"
-#include "resourcemanager.h"
 
 #include "../log.h"
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
+#include "../utils/trim.h"
 #include "../utils/xml.h"
 
 namespace
@@ -83,7 +82,7 @@ void ItemDB::load()
             logger->log(_("ItemDB: Redefinition of item ID %d"), id);
         }
 
-        int type = XML::getProperty(node, "type", 0);
+        std::string type = XML::getProperty(node, "type", "other");
         int weight = XML::getProperty(node, "weight", 0);
         int view = XML::getProperty(node, "view", 0);
 
@@ -125,14 +124,7 @@ void ItemDB::load()
                 if (itr == mNamedItemInfos.end())
                 {
                     std::string temp = name;
-                    while (temp[0] == ' ')
-                    {
-                        temp = temp.substr(1, temp.size());
-                    }
-                    while (temp[temp.size()] == ' ')
-                    {
-                        temp = temp.substr(0, temp.size() - 1);
-                    }
+                    trim(temp);
 
                     for (unsigned int i = 0; i < temp.size(); i++)
                     {
@@ -158,7 +150,7 @@ void ItemDB::load()
         CHECK_PARAM(description, "");
         // CHECK_PARAM(effect, "");
         // CHECK_PARAM(type, 0);
-        CHECK_PARAM(weight, 0);
+        // CHECK_PARAM(weight, 0);
         // CHECK_PARAM(slot, 0);
 
 #undef CHECK_PARAM

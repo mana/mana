@@ -20,11 +20,9 @@
  */
 
 #include "npcdb.h"
-#include "resourcemanager.h"
 
 #include "../log.h"
 
-#include "../utils/dtor.h"
 #include "../utils/gettext.h"
 #include "../utils/xml.h"
 

@@ -20,6 +20,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "being.h"
 #include "effectmanager.h"
 #include "log.h"
 #include "particle.h"
@@ -69,7 +70,6 @@ bool EffectManager::trigger(int id, Being* being)
     {
         if ((*i).id == id)
         {
-            printf("Found effect, playing it");
             rValue = true;
             if (!(*i).GFX.empty())
             {
@@ -92,7 +92,6 @@ bool EffectManager::trigger(int id, int x, int y)
     {
         if ((*i).id == id)
         {
-            printf("Found effect, playing it");
             rValue = true;
             if (!(*i).GFX.empty())
                 particleEngine->addEffect((*i).GFX, x, y);

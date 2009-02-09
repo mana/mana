@@ -26,8 +26,6 @@
 
 #include "setuptab.h"
 
-#include "../guichanfwd.h"
-
 class Setup_Joystick : public SetupTab, public gcn::ActionListener
 {
     public:

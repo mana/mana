@@ -21,7 +21,6 @@
 
 #include <sstream>
 
-#include <guichan/basiccontainer.hpp>
 #include <guichan/font.hpp>
 
 #include "textbox.h"
@@ -31,15 +30,19 @@ TextBox::TextBox():
 {
     setOpaque(false);
     setFrameSize(0);
+    mMinWidth = getWidth();
 }
 
-void TextBox::setTextWrapped(const std::string &text)
+void TextBox::setTextWrapped(const std::string &text, int minDimension)
 {
     // Make sure parent scroll area sets width of this widget
     if (getParent())
     {
         getParent()->logic();
     }
+
+    // Take the supplied minimum dimension as a starting point and try to beat it
+    mMinWidth = minDimension;
 
     std::stringstream wrappedStream;
     std::string::size_type newlinePos, lastNewlinePos = 0;
@@ -60,6 +63,17 @@ void TextBox::setTextWrapped(const std::string &text)
             text.substr(lastNewlinePos, newlinePos - lastNewlinePos);
         std::string::size_type spacePos, lastSpacePos = 0;
         xpos = 0;
+
+        spacePos = text.rfind(" ", text.size());
+
+        if (spacePos != std::string::npos)
+        {
+            const std::string word = text.substr(spacePos + 1);
+            const int length = getFont()->getWidth(word);
+
+            if (length > mMinWidth)
+                mMinWidth = length;
+        }
 
         do
         {
@@ -88,9 +102,8 @@ void TextBox::setTextWrapped(const std::string &text)
             else
             {
                 if (xpos > minWidth)
-                {
                     minWidth = xpos;
-                }
+
                 // The window wasn't big enough. Resize it and try again.
                 if (minWidth > mMinWidth)
                 {
@@ -100,6 +113,8 @@ void TextBox::setTextWrapped(const std::string &text)
                     spacePos = 0;
                     lastNewlinePos = 0;
                     newlinePos = text.find("\n", lastNewlinePos);
+                    if (newlinePos == std::string::npos)
+                        newlinePos = text.size();
                     line = text.substr(lastNewlinePos, newlinePos -
                                        lastNewlinePos);
                     width = 0;
@@ -116,17 +131,15 @@ void TextBox::setTextWrapped(const std::string &text)
         while (spacePos != line.size());
 
         if (text.find("\n", lastNewlinePos) != std::string::npos)
-        {
             wrappedStream << "\n";
-        }
+
         lastNewlinePos = newlinePos + 1;
     }
     while (newlinePos != text.size());
 
     if (xpos > minWidth)
-    {
         minWidth = xpos;
-    }
+
     mMinWidth = minWidth;
 
     gcn::TextBox::setText(wrappedStream.str());

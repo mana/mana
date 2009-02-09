@@ -22,7 +22,7 @@
 #ifndef CONFIGLISTENER_H
 #define CONFIGLISTENER_H
 
-#include <iosfwd>
+#include <string>
 
 /**
  * The listener interface for receiving notifications about changes to

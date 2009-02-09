@@ -19,9 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ok_dialog.h"
-
 #include <guichan/font.hpp>
+
+#include "button.h"
+#include "ok_dialog.h"
+#include "scrollarea.h"
+#include "textbox.h"
 
 #include "../utils/gettext.h"
 
@@ -40,8 +43,7 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     mTextArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mTextArea->setOpaque(false);
 
-    mTextBox->setMinWidth(260);
-    mTextBox->setTextWrapped(msg);
+    mTextBox->setTextWrapped(msg, 260);
 
     int numRows = mTextBox->getNumberOfRows();
 

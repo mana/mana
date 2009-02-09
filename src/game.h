@@ -22,13 +22,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iosfwd>
 #include <memory>
 
 #include "configlistener.h"
-
-#define SPEECH_TIME 80
-#define SPEECH_MAX_TIME 100
 
 class MessageHandler;
 class Network;

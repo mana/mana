@@ -81,12 +81,20 @@ SET(SRCS
     gui/chatinput.h
     gui/checkbox.cpp
     gui/checkbox.h
+    gui/colour.cpp
+    gui/colour.h
     gui/confirm_dialog.cpp
     gui/confirm_dialog.h
     gui/connection.cpp
     gui/connection.h
     gui/debugwindow.cpp
     gui/debugwindow.h
+    gui/emotecontainer.cpp
+    gui/emotecontainer.h
+    gui/emoteshortcutcontainer.cpp
+    gui/emoteshortcutcontainer.h
+    gui/emotewindow.cpp
+    gui/emotewindow.h
     gui/equipmentwindow.cpp
     gui/equipmentwindow.h
     gui/focushandler.cpp
@@ -108,9 +116,7 @@ SET(SRCS
     gui/itempopup.cpp
     gui/itempopup.h
     gui/itemshortcutcontainer.cpp
-    gui/itemshortcutcontainer.h
-    gui/itemshortcutwindow.cpp
-    gui/itemshortcutwindow.h
+    gui/itemshortcutcontainer.h\
     gui/item_amount.cpp
     gui/item_amount.h
     gui/linkhandler.h
@@ -144,6 +150,8 @@ SET(SRCS
     gui/progressbar.h
     gui/radiobutton.cpp
     gui/radiobutton.h
+    gui/recorder.cpp
+    gui/recorder.h
     gui/register.cpp
     gui/register.h
     gui/scrollarea.cpp
@@ -152,10 +160,12 @@ SET(SRCS
     gui/sdlinput.h
     gui/sell.cpp
     gui/sell.h
-    gui/setup_audio.cpp
-    gui/setup_audio.h
     gui/setup.cpp
     gui/setup.h
+    gui/setup_audio.cpp
+    gui/setup_audio.h
+    gui/setup_colours.cpp
+    gui/setup_colours.h
     gui/setup_joystick.cpp
     gui/setup_joystick.h
     gui/setup_keyboard.cpp
@@ -169,6 +179,10 @@ SET(SRCS
     gui/shop.h
     gui/shoplistbox.cpp
     gui/shoplistbox.h
+    gui/shortcutwindow.cpp
+    gui/shortcutwindow.h
+    gui/shortcutcontainer.cpp
+    gui/shortcutcontainer.h
     gui/skill.cpp
     gui/skill.h
     gui/slider.cpp
@@ -187,6 +201,8 @@ SET(SRCS
     gui/textfield.h
     gui/trade.cpp
     gui/trade.h
+    gui/truetypefont.cpp
+    gui/truetypefont.h
     gui/updatewindow.h
     gui/updatewindow.cpp
     gui/viewport.cpp
@@ -223,6 +239,8 @@ SET(SRCS
     net/network.h
     net/npchandler.cpp
     net/npchandler.h
+    net/partyhandler.cpp
+    net/partyhandler.h
     net/playerhandler.cpp
     net/playerhandler.h
     net/protocol.cpp
@@ -299,11 +317,12 @@ SET(SRCS
     configuration.h
     effectmanager.cpp
     effectmanager.h
+    emoteshortcut.cpp
+    emoteshortcut.h
     engine.cpp
     engine.h
     equipment.cpp
     equipment.h
-    extensions.h
     floor_item.cpp
     floor_item.h
     flooritemmanager.cpp
@@ -343,9 +362,13 @@ SET(SRCS
     openglgraphics.h
     particle.cpp
     particle.h
+    particlecontainer.cpp
+    particlecontainer.h
     particleemitter.cpp
     particleemitter.h
     particleemitterprop.h
+    party.cpp
+    party.h
     player.cpp
     player.h
     player_relations.cpp
@@ -353,8 +376,6 @@ SET(SRCS
     position.cpp
     position.h
     properties.h
-    sdltruetypefont.cpp
-    sdltruetypefont.hpp
     serverinfo.h
     shopitem.cpp
     shopitem.h
@@ -363,6 +384,10 @@ SET(SRCS
     sound.cpp
     sound.h
     sprite.h
+    text.cpp
+    text.h
+    textmanager.cpp
+    textmanager.h
     textparticle.cpp
     textparticle.h
     tileset.h

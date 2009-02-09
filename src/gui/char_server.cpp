@@ -28,10 +28,7 @@
 #include "../main.h"
 #include "../serverinfo.h"
 
-#include "../net/network.h" // TODO this is just for iptostring, move that?
-
 #include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 extern SERVER_INFO **server_info;
@@ -39,7 +36,8 @@ extern SERVER_INFO **server_info;
 /**
  * The list model for the server list.
  */
-class ServerListModel : public gcn::ListModel {
+class ServerListModel : public gcn::ListModel
+{
     public:
         virtual ~ServerListModel() {};
 
@@ -80,13 +78,12 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData, int nextState):
     add(mOkButton);
     add(mCancelButton);
 
-    if (n_server == 0) {
+    if (n_server == 0)
         // Disable Ok button
         mOkButton->setEnabled(false);
-    } else {
+    else
         // Select first server
         mServerList->setSelected(1);
-    }
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -100,7 +97,8 @@ ServerSelectDialog::~ServerSelectDialog()
 
 void ServerSelectDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok") {
+    if (event.getId() == "ok")
+    {
         mOkButton->setEnabled(false);
         const SERVER_INFO *si = server_info[mServerList->getSelected()];
         mLoginData->hostname = iptostring(si->address);
@@ -108,9 +106,8 @@ void ServerSelectDialog::action(const gcn::ActionEvent &event)
         mLoginData->updateHost = si->updateHost;
         state = mNextState;
     }
-    else if (event.getId() == "cancel") {
+    else if (event.getId() == "cancel")
         state = LOGIN_STATE;
-    }
 }
 
 int ServerListModel::getNumberOfElements()

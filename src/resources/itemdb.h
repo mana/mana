@@ -26,6 +26,8 @@
 
 #include "iteminfo.h"
 
+class ItemInfo;
+
 /**
  * The namespace that holds the item information.
  */

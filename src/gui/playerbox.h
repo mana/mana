@@ -24,8 +24,6 @@
 
 #include <guichan/widgets/scrollarea.hpp>
 
-#include "../guichanfwd.h"
-
 class ImageRect;
 class Player;
 
@@ -68,6 +66,7 @@ class PlayerBox : public gcn::ScrollArea
     private:
         const Player *mPlayer;       /**< The character used for display */
 
+        static float mAlpha;
         static int instances;
         static ImageRect background;
 };

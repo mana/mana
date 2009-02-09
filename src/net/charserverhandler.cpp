@@ -21,10 +21,8 @@
 
 #include "charserverhandler.h"
 #include "messagein.h"
-#include "network.h"
 #include "protocol.h"
 
-#include "../extensions.h"
 #include "../game.h"
 #include "../localplayer.h"
 #include "../log.h"
@@ -34,10 +32,8 @@
 #include "../gui/char_select.h"
 #include "../gui/ok_dialog.h"
 
-/*
- * Yeah, this is a global.  Get over it.
- */
-struct EXTENSIONS extensions;
+#include "../utils/gettext.h"
+#include "../utils/tostring.h"
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
@@ -58,9 +54,7 @@ CharServerHandler::CharServerHandler():
 
 void CharServerHandler::handleMessage(MessageIn *msg)
 {
-    int slot;
-    int flags;
-    int code;
+    int slot, flags, code;
     LocalPlayer *tempPlayer;
 
     logger->log("CharServerHandler: Packet ID: %x, Length: %d",
@@ -73,22 +67,22 @@ void CharServerHandler::handleMessage(MessageIn *msg)
 
             switch (code) {
                 case 0:
-                    errorMessage = "Authentication failed";
+                    errorMessage = _("Authentication failed");
                     break;
                 case 1:
-                    errorMessage = "Map server(s) offline";
+                    errorMessage = _("Map server(s) offline");
                     break;
                 case 2:
-                    errorMessage = "This account is already logged in";
+                    errorMessage = _("This account is already logged in");
                     break;
                 case 3:
-                    errorMessage = "Speed hack detected";
+                    errorMessage = _("Speed hack detected");
                     break;
                 case 8:
-                    errorMessage = "Duplicated login";
+                    errorMessage = _("Duplicated login");
                     break;
                 default:
-                    errorMessage = "Unknown connection error";
+                    errorMessage = _("Unknown connection error");
                     break;
             }
             state = ERROR_STATE;
@@ -96,11 +90,8 @@ void CharServerHandler::handleMessage(MessageIn *msg)
 
         case 0x006b:
             msg->skip(2); // Length word
-            flags = msg->readInt32();  // Aethyra extensions flags
+            flags = msg->readInt32(); // Aethyra extensions flags
             logger->log("Server flags are: %x", flags);
-            extensions.aethyra_inventory = (bool)(flags & 0x01);
-            extensions.aethyra_spells = (bool)(flags & 0x02);
-            extensions.aethyra_misc = (bool)(flags & 0x04);
             msg->skip(16); // Unused
 
             // Derive number of characters from message length
@@ -112,7 +103,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
                 mCharInfo->select(slot);
                 mCharInfo->setEntry(tempPlayer);
                 logger->log("CharServer: Player: %s (%d)",
-                        tempPlayer->getName().c_str(), slot);
+                tempPlayer->getName().c_str(), slot);
             }
 
             state = CHAR_SELECT_STATE;
@@ -121,13 +112,13 @@ void CharServerHandler::handleMessage(MessageIn *msg)
         case 0x006c:
             switch (msg->readInt8()) {
                 case 0:
-                    errorMessage = "Access denied";
+                    errorMessage = _("Access denied");
                     break;
                 case 1:
-                    errorMessage = "Cannot use this ID";
+                    errorMessage = _("Cannot use this ID");
                     break;
                 default:
-                    errorMessage = "Unknown failure to select character";
+                    errorMessage = _("Unknown failure to select character");
                     break;
             }
             mCharInfo->unlock();
@@ -149,8 +140,8 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x006e:
-            new OkDialog("Error", "Failed to create character. Most likely"
-                                  " the name is already taken.");
+            new OkDialog(_("Error"), _("Failed to create character. Most likely"
+                                       " the name is already taken."));
 
             if (mCharCreateDialog)
                 mCharCreateDialog->unlock();
@@ -161,12 +152,12 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             mCharInfo->setEntry(0);
             mCharInfo->unlock();
             n_character--;
-            new OkDialog("Info", "Player deleted");
+            new OkDialog(_("Info"), _("Player deleted"));
             break;
 
         case 0x0070:
             mCharInfo->unlock();
-            new OkDialog("Error", "Failed to delete character.");
+            new OkDialog(_("Error"), _("Failed to delete character."));
             break;
 
         case 0x0071:

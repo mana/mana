@@ -21,7 +21,10 @@
 
 #include <guichan/font.hpp>
 
+#include "button.h"
 #include "confirm_dialog.h"
+#include "scrollarea.h"
+#include "textbox.h"
 
 #include "../utils/gettext.h"
 
@@ -41,8 +44,7 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     mTextArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mTextArea->setOpaque(false);
 
-    mTextBox->setMinWidth(260);
-    mTextBox->setTextWrapped(msg);
+    mTextBox->setTextWrapped(msg, 260);
 
     int numRows = mTextBox->getNumberOfRows();
     int width = getFont()->getWidth(title);
@@ -77,7 +79,8 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     add(yesButton);
     add(noButton);
 
-    if (getParent()) {
+    if (getParent())
+    {
         setLocationRelativeTo(getParent());
         getParent()->moveToTop(this);
     }

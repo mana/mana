@@ -26,7 +26,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "button.h"
 #include "setuptab.h"
 
 #include "../guichanfwd.h"

@@ -24,12 +24,10 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "button.h"
-#include "scrollarea.h"
-#include "textbox.h"
 #include "window.h"
 
-#include "../guichanfwd.h"
+class ScrollArea;
+class TextBox;
 
 /**
  * An 'Ok' button dialog.

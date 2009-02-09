@@ -36,7 +36,6 @@
 #include "../log.h"
 
 #include "../resources/image.h"
-#include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
 #include "../utils/tostring.h"
@@ -68,6 +67,7 @@ ItemContainer::ItemContainer(Inventory *inventory, int offset):
 ItemContainer::~ItemContainer()
 {
     mSelImg->decRef();
+    delete mItemPopup;
 }
 
 void ItemContainer::logic()
@@ -124,6 +124,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
         }
 
         // Draw item caption
+        graphics->setFont(getFont());
         graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawText(
                 (item->isEquipped() ? "Eq." : toString(item->getQuantity())),

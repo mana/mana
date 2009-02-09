@@ -25,7 +25,6 @@
 #include <string>
 
 #include "messagehandler.h"
-#include <string>
 
 struct LoginData;
 

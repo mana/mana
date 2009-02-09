@@ -195,7 +195,7 @@ SectionEnd
 
 ;Package descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "The TMW program files."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "The core program files."
   !insertmacro MUI_DESCRIPTION_TEXT ${SecMusic} "Background music."
   !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Translations for the user interface into 23 different languages. Uncheck this component to leave it in English."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END

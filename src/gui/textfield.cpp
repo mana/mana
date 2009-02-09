@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include <guichan/font.hpp>
 
 #include "sdlinput.h"
@@ -37,6 +35,7 @@
 #undef DELETE //Win32 compatibility hack
 
 int TextField::instances = 0;
+float TextField::mAlpha = config.getValue("guialpha", 0.8);
 ImageRect TextField::skin;
 
 TextField::TextField(const std::string& text):
@@ -53,9 +52,6 @@ TextField::TextField(const std::string& text):
         Image *textbox = resman->getImage("graphics/gui/deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
-        //Image *textbox = resman->getImage("graphics/gui/textbox.png");
-        //int gridx[4] = {0, 5, 26, 31};
-        //int gridy[4] = {0, 5, 26, 31};
         int a = 0, x, y;
 
         for (y = 0; y < 3; y++) {
@@ -96,6 +92,15 @@ void TextField::draw(gcn::Graphics *graphics)
     graphics->setColor(getForegroundColor());
     graphics->setFont(getFont());
     graphics->drawText(mText, 1 - mXScroll, 1);
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        for (int a = 0; a < 9; a++)
+        {
+            skin.grid[a]->setAlpha(mAlpha);
+        }
+    }
 }
 
 void TextField::drawFrame(gcn::Graphics *graphics)

@@ -23,8 +23,8 @@
 #define PLAYER_H
 
 #include "being.h"
-#include "text.h"
 
+class FlashText;
 class Graphics;
 class Map;
 

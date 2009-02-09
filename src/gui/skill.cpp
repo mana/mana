@@ -23,7 +23,9 @@
 
 #include "button.h"
 #include "listbox.h"
+#include "scrollarea.h"
 #include "skill.h"
+#include "table.h"
 #include "windowcontainer.h"
 
 #include "widgets/layout.h"
@@ -51,7 +53,7 @@ class SkillGuiTableModel : public StaticTableModel
 {
 public:
     SkillGuiTableModel(SkillDialog *dialog) :
-        StaticTableModel(0, 3, 0xbdb5aa)
+        StaticTableModel(0, 3)
     {
         mEntriesNr = 0;
         mDialog = dialog;
@@ -124,8 +126,12 @@ SkillDialog::SkillDialog():
 {
     initSkillinfo();
     mTableModel = new SkillGuiTableModel(this);
-    mTable.setModel(mTableModel);
-    mTable.setLinewiseSelection(true);
+    mTable = new GuiTable(mTableModel);
+    mTable->setOpaque(false);
+    mTable->setLinewiseSelection(true);
+    mTable->setWrappingEnabled(true);
+    mTable->setActionEventId("skill");
+    mTable->addActionListener(this);
 
     setWindowName(_("Skills"));
     setCloseButton(true);
@@ -134,18 +140,13 @@ SkillDialog::SkillDialog():
     setMinHeight(50 + mTableModel->getHeight());
     setMinWidth(200);
 
-//    mSkillListBox = new ListBox(this);
-    ScrollArea *skillScrollArea = new ScrollArea(&mTable);
+    ScrollArea *skillScrollArea = new ScrollArea(mTable);
     mPointsLabel = new gcn::Label(strprintf(_("Skill points: %d"), 0));
     mIncButton = new Button(_("Up"), _("inc"), this);
     mUseButton = new Button(_("Use"), _("use"), this);
     mUseButton->setEnabled(false);
 
-//    mSkillListBox->setActionEventId("skill");
-    mTable.setActionEventId("skill");
-
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    skillScrollArea->setOpaque(false);
 
     place(0, 0, skillScrollArea, 5).setPadding(3);
     place(0, 1, mPointsLabel, 2);
@@ -155,15 +156,13 @@ SkillDialog::SkillDialog():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-//    mSkillListBox->addActionListener(this);
-    mTable.addActionListener(this);
-
     setLocationRelativeTo(getParent());
     loadWindowState();
 }
 
 SkillDialog::~SkillDialog()
 {
+    delete mTable;
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)
@@ -171,15 +170,14 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "inc")
     {
         // Increment skill
-        int selectedSkill = mTable.getSelectedRow();//mSkillListBox->getSelected();
+        int selectedSkill = mTable->getSelectedRow();
         if (selectedSkill >= 0)
             player_node->raiseSkill(mSkillList[selectedSkill]->id);
     }
     else if (event.getId() == "skill")
     {
-        mIncButton->setEnabled(
-                mTable.getSelectedRow() > -1 &&
-                player_node->mSkillPoint > 0);
+        mIncButton->setEnabled(mTable->getSelectedRow() > -1 &&
+                               player_node->mSkillPoint > 0);
     }
     else if (event.getId() == "close")
         setVisible(false);
@@ -190,7 +188,7 @@ void SkillDialog::update()
     mPointsLabel->setCaption(strprintf(_("Skill points: %d"),
                                        player_node->mSkillPoint));
 
-    int selectedSkill = mTable.getSelectedRow();
+    int selectedSkill = mTable->getSelectedRow();
 
     if (selectedSkill >= 0)
     {
@@ -278,7 +276,8 @@ static void initSkillinfo()
             std::string name = XML::getProperty(node, "name", "");
             bool modifiable = !atoi(XML::getProperty(node, "fixed", "0").c_str());
 
-            if (index >= 0) {
+            if (index >= 0)
+            {
                 skill_db.resize(index + 1, emptySkillInfo);
                 skill_db[index].name = name;
                 skill_db[index].modifiable = modifiable;

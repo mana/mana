@@ -20,7 +20,6 @@
  */
 
 #include <algorithm>
-#include <cassert>
 
 #include "inventory.h"
 #include "item.h"
@@ -28,7 +27,8 @@
 
 struct SlotUsed : public std::unary_function<Item*, bool>
 {
-    bool operator()(const Item *item) const {
+    bool operator()(const Item *item) const
+    {
         return item && item->getId() != -1 && item->getQuantity() > 0;
     }
 };
@@ -59,10 +59,9 @@ Item* Inventory::getItem(int index) const
 Item* Inventory::findItem(int itemId) const
 {
     for (int i = 0; i < mSize; i++)
-    {
         if (mItems[i] && mItems[i]->getId() == itemId)
             return mItems[i];
-    }
+
     return NULL;
 }
 
@@ -73,38 +72,41 @@ void Inventory::addItem(int id, int quantity, bool equipment)
 
 void Inventory::setItem(int index, int id, int quantity, bool equipment)
 {
-    if (index < 0 || index >= mSize) {
+    if (index < 0 || index >= mSize)
+    {
         logger->log("Warning: invalid inventory index: %d", index);
         return;
     }
 
-    if (!mItems[index] && id > 0) {
+    if (!mItems[index] && id > 0)
+    {
         Item *item = new Item(id, quantity, equipment);
         item->setInvIndex(index);
         mItems[index] = item;
-    } else if (id > 0) {
+    }
+    else if (id > 0)
+    {
         mItems[index]->setId(id);
         mItems[index]->setQuantity(quantity);
         mItems[index]->setEquipment(equipment);
-    } else if (mItems[index]) {
+    }
+    else if (mItems[index])
+    {
         removeItemAt(index);
     }
 }
 
 void Inventory::clear()
 {
-    for (int i = 0; i < mSize; i++) {
+    for (int i = 0; i < mSize; i++)
         removeItemAt(i);
-    }
 }
 
 void Inventory::removeItem(int id)
 {
-    for (int i = 0; i < mSize; i++) {
-        if (mItems[i] && mItems[i]->getId() == id) {
+    for (int i = 0; i < mSize; i++)
+        if (mItems[i] && mItems[i]->getId() == id)
             removeItemAt(i);
-        }
-    }
 }
 
 void Inventory::removeItemAt(int index)
@@ -115,11 +117,9 @@ void Inventory::removeItemAt(int index)
 
 bool Inventory::contains(Item *item) const
 {
-    for (int i = 0; i < mSize; i++) {
-        if (mItems[i] && mItems[i]->getId() == item->getId()) {
+    for (int i = 0; i < mSize; i++)
+        if (mItems[i] && mItems[i]->getId() == item->getId())
             return true;
-        }
-    }
 
     return false;
 }
@@ -138,11 +138,9 @@ int Inventory::getNumberOfSlotsUsed() const
 
 int Inventory::getLastUsedSlot() const
 {
-    for (int i = mSize - 1; i >= 0; i--) {
-        if (SlotUsed()(mItems[i])) {
+    for (int i = mSize - 1; i >= 0; i--)
+        if (SlotUsed()(mItems[i]))
             return i;
-        }
-    }
 
     return -1;
 }

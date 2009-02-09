@@ -19,9 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
-
-#include "gui.h"
 #include "ministatus.h"
 #include "popupmenu.h"
 #include "viewport.h"
@@ -37,9 +34,6 @@
 #include "../npc.h"
 #include "../textmanager.h"
 
-#include "../resources/animation.h"
-#include "../resources/image.h"
-#include "../resources/imageset.h"
 #include "../resources/monsterinfo.h"
 #include "../resources/resourcemanager.h"
 
@@ -216,7 +210,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
-        (*i)->drawSpeech(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
+        (*i)->drawSpeech(-(int) mPixelViewX, -(int) mPixelViewY);
         (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
     }
 

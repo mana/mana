@@ -19,8 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "beingmanager.h"
-#include "game.h"
+#include "being.h"
 #include "localplayer.h"
 #include "party.h"
 
@@ -166,11 +165,6 @@ void Party::receiveChat(Being *being, const std::string &msg)
     }
     being->setSpeech(msg, SPEECH_TIME);
     mChat->chatLog(being->getName() + " : " + msg, BY_PARTY);
-}
-
-void Party::help()
-{
-    mChat->chatLog(_("/party <command> <params>: Party commands."), BY_SERVER);
 }
 
 void Party::help(const std::string &msg)

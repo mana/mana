@@ -24,7 +24,7 @@
 
 #include <map>
 
-#include "monsterinfo.h"
+class MonsterInfo;
 
 /**
  * Monster information database.

@@ -27,9 +27,9 @@
 
 #include "position.h"
 #include "properties.h"
-
 #include "simpleanimation.h"
 
+class Animation;
 class AmbientOverlay;
 class Graphics;
 class Image;
@@ -72,6 +72,7 @@ class TileAnimation
 {
     public:
         TileAnimation(Animation *ani);
+        ~TileAnimation();
         void update();
         void addAffectedTile(MapLayer *layer, int index)
         { mAffected.push_back(std::make_pair(layer, index)); }

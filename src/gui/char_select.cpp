@@ -22,6 +22,7 @@
 #include <string>
 
 #include <guichan/font.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
@@ -39,6 +40,8 @@
 
 #include "../net/charserverhandler.h"
 #include "../net/messageout.h"
+
+#include "../resources/colordb.h"
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"

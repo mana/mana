@@ -22,41 +22,44 @@
 #ifndef BEING_H
 #define BEING_H
 
-#include <list>
-#include <memory>
+#include <guichan/color.hpp>
+
 #include <SDL_types.h>
+
 #include <set>
 #include <string>
 #include <vector>
-#include <bitset>
 
-#include "animatedsprite.h"
-#include "effectmanager.h"
-#include "map.h"
 #include "particlecontainer.h"
 #include "position.h"
 #include "sprite.h"
 
-#include "gui/speechbubble.h"
-
-#include "resources/colordb.h"
+#include "resources/spritedef.h"
 
 #define FIRST_IGNORE_EMOTE 14
 #define STATUS_EFFECTS 32
 
+#define SPEECH_TIME 500
+#define SPEECH_MAX_TIME 1000
+
 class AnimatedSprite;
-class Equipment;
+class Image;
 class ItemInfo;
 class Item;
 class Map;
 class Graphics;
 class Particle;
+class Position;
 class SpeechBubble;
 class Text;
 
 class StatusEffect;
 
-enum Gender {
+typedef std::list<Sprite*> Sprites;
+typedef Sprites::iterator SpriteIterator;
+
+enum Gender
+{
     GENDER_MALE = 0,
     GENDER_FEMALE = 1,
     GENDER_UNSPECIFIED = 2
@@ -65,7 +68,8 @@ enum Gender {
 class Being : public Sprite
 {
     public:
-        enum Type {
+        enum Type
+        {
             UNKNOWN,
             PLAYER,
             NPC,
@@ -75,7 +79,8 @@ class Being : public Sprite
         /**
          * Action the being is currently performing.
          */
-        enum Action {
+        enum Action
+        {
             STAND,
             WALK,
             ATTACK,
@@ -84,7 +89,8 @@ class Being : public Sprite
             HURT
         };
 
-        enum Sprite {
+        enum Sprite
+        {
             BASE_SPRITE = 0,
             SHOE_SPRITE,
             BOTTOMCLOTHES_SPRITE,
@@ -100,7 +106,8 @@ class Being : public Sprite
             VECTOREND_SPRITE
         };
 
-        enum TargetCursorSize {
+        enum TargetCursorSize
+        {
             TC_SMALL = 0,
             TC_MEDIUM,
             TC_LARGE,
@@ -149,7 +156,7 @@ class Being : public Sprite
          * @param text The text that should appear.
          * @param time The amount of time the text should stay in milliseconds.
          */
-        void setSpeech(const std::string &text, Uint32 time);
+        void setSpeech(const std::string &text, Uint32 time = 500);
 
         /**
          * Puts a damage bubble above this being.
@@ -243,7 +250,7 @@ class Being : public Sprite
         /**
          * Draws the speech text above the being.
          */
-        void drawSpeech(Graphics *graphics, int offsetX, int offsetY);
+        void drawSpeech(int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.
@@ -400,8 +407,6 @@ class Being : public Sprite
 
         // Target cursor being used by the being
         Image *mTargetCursor;
-
-        const std::auto_ptr<Equipment> mEquipment;
 
         static int getHairColorsNr();
 

@@ -28,8 +28,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <guichan/sdl/sdlinput.hpp>
-
 #include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
@@ -54,6 +52,7 @@
 #include "serverinfo.h"
 #include "sound.h"
 
+#include "gui/button.h"
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/colour.h"
@@ -64,7 +63,6 @@
 #include "gui/register.h"
 #include "gui/sdlinput.h"
 #include "gui/setup.h"
-#include "gui/textfield.h"
 #include "gui/updatewindow.h"
 
 #include "net/charserverhandler.h"
@@ -81,7 +79,6 @@
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
 
-#include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/tostring.h"
 

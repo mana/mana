@@ -25,25 +25,52 @@
 #include <fstream>
 #include <string>
 
-#include "gui/buttonbox.h"
+#include <guichan/actionlistener.hpp>
+
+#include "window.h"
+
+#include "../utils/gettext.h"
 
 class ChatWindow;
 
-class Recorder : public ButtonBoxListener
+class Recorder : public Window, public gcn::ActionListener
 {
+    public:
+        Recorder(ChatWindow *chat, const std::string &title = _("Recording..."),
+                 const std::string &buttonTxt = _("Stop recording"));
+
+        virtual ~Recorder();
+
+        /*
+         * Outputs the message to the recorder file
+         *
+         * @param msg the line to write to the recorded file.
+         */
+        void record(const std::string &msg);
+
+        /*
+         * Outputs the message to the recorder file
+         *
+         * @param msg The file to write out to. If null, then stop recording.
+         */
+        void changeRecordingStatus(const std::string &msg);
+
+        /*
+         * Whether or not the recorder is in use.
+         */
+        bool isRecording() {return (bool) mStream.is_open();}
+
+        /*
+         * called when the button is pressed
+         *
+         * @param event is the event that is generated
+         */
+        void action(const gcn::ActionEvent &event);
+
     private:
         ChatWindow *mChat;
+
         std::ofstream mStream;
-        ButtonBox *mButtonBox;
-    public:
-        Recorder(ChatWindow *chat);
-        void record(const std::string &msg);
-        void respond(const std::string &msg);
-        void help() const;
-        void help(const std::string &args) const;
-        void buttonBoxRespond();
-        bool isRecording() {return (bool) mStream.is_open();}
-        virtual ~Recorder();
 };
 
 #endif

@@ -22,7 +22,8 @@
 #ifndef GUICHANFWD_H
 #define GUICHANFWD_H
 
-namespace gcn {
+namespace gcn
+{
     class ActionListener;
     class AllegroGraphics;
     class AllegroImage;

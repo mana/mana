@@ -24,15 +24,11 @@
 
 #include <vector>
 
-#include <guichan/gui.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
-#include <guichan/platform.hpp>
 #include <guichan/widget.hpp>
 
 #include "table_model.h"
-
-#include "../guichanfwd.h"
 
 class GuiTableActionListener;
 
@@ -54,7 +50,8 @@ class GuiTable : public gcn::Widget,
     friend class GuiTableActionListener;
 
 public:
-    GuiTable(TableModel * initial_model = NULL);
+    GuiTable(TableModel * initial_model = NULL, gcn::Color background = 0xffffff,
+             bool opacity = true);
 
     virtual ~GuiTable();
 
@@ -68,10 +65,12 @@ public:
      *
      * Note that actions issued by widgets returned from the model will update
      * the table selection, but only AFTER any event handlers installed within
-     * the widget have been triggered. To be notified after such an update,
-     * add an action listener to the table instead.
+     * the widget have been triggered. To be notified after such an update, add
+     * an action listener to the table instead.
      */
     void setModel(TableModel *m);
+
+    const TableModel* getModel() {return mModel;}
 
     void setSelected(int row, int column);
 
@@ -79,14 +78,23 @@ public:
 
     int getSelectedColumn();
 
-    gcn::Rectangle getChildrenArea();
+    void setSelectedRow(int selected);
+
+    void setSelectedColumn(int selected);
+
+    bool isWrappingEnabled() const {return mWrappingEnabled;}
+
+    void setWrappingEnabled(bool wrappingEnabled)
+    {mWrappingEnabled = wrappingEnabled;}
+
+    gcn::Rectangle getChildrenArea(void);
 
     /**
-     * Toggle whether to use linewise selection mode, in which the table
-     * selects an entire line at a time, rather than a single cell.
+     * Toggle whether to use linewise selection mode, in which the table selects
+     * an entire line at a time, rather than a single cell.
      *
-     * Note that column information is tracked even in linewise selection
-     * mode; this mode therefore only affects visualisation.
+     * Note that column information is tracked even in linewise selection mode;
+     * this mode therefore only affects visualisation.
      *
      * Disabled by default.
      *
@@ -96,8 +104,6 @@ public:
 
     // Inherited from Widget
     virtual void draw(gcn::Graphics* graphics);
-
-    virtual void logic();
 
     virtual gcn::Widget *getWidgetAt(int x, int y);
 
@@ -110,6 +116,21 @@ public:
     // Inherited from KeyListener
     virtual void keyPressed(gcn::KeyEvent& keyEvent);
 
+    /**
+     * Sets the table to be opaque, that is sets the table
+     * to display its background.
+     *
+     * @param opaque True if the table should be opaque, false otherwise.
+     */
+    virtual void setOpaque(bool opaque) {mOpaque = opaque;}
+
+    /**
+     * Checks if the table is opaque, that is if the table area displays its
+     * background.
+     *
+     * @return True if the table is opaque, false otherwise.
+     */
+    virtual bool isOpaque() const {return mOpaque;}
 
     // Inherited from MouseListener
     virtual void mousePressed(gcn::MouseEvent& mouseEvent);
@@ -137,6 +158,15 @@ private:
     int getColumnForX(int x); // -1 on error
     void recomputeDimensions();
     bool mLinewiseMode;
+    bool mWrappingEnabled;
+    bool mOpaque;
+
+    static float mAlpha;
+
+    /**
+     * Holds the background color of the table.
+     */
+    gcn::Color mBackgroundColor;
 
     TableModel *mModel;
 

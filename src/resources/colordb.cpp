@@ -19,14 +19,12 @@
  *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
 #include <libxml/tree.h>
 
 #include "colordb.h"
 
 #include "../log.h"
 
-#include "../utils/dtor.h"
 #include "../utils/gettext.h"
 #include "../utils/xml.h"
 

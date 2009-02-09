@@ -24,19 +24,18 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "button.h"
-#include "scrollarea.h"
-#include "textbox.h"
 #include "window.h"
 
-#include "../guichanfwd.h"
+class ScrollArea;
+class TextBox;
 
 /**
  * An option dialog.
  *
  * \ingroup GUI
  */
-class ConfirmDialog : public Window, public gcn::ActionListener {
+class ConfirmDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor.

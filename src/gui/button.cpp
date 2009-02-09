@@ -19,8 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <guichan/exception.hpp>
+#include <guichan/font.hpp>
+
 #include "button.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -28,13 +32,8 @@
 
 #include "../utils/dtor.h"
 
-#include <guichan/exception.hpp>
-#include <guichan/graphics.hpp>
-#include <guichan/font.hpp>
-
-#include <algorithm>
-
 int Button::mInstances = 0;
+float Button::mAlpha = config.getValue("guialpha", 0.8);
 
 enum{
     BUTTON_STANDARD,    // 0
@@ -100,6 +99,7 @@ void Button::init()
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,
                             data[y + 1].gridY - data[y].gridY + 1);
+                    button[mode].grid[a]->setAlpha(mAlpha);
                     a++;
                 }
             }
@@ -126,17 +126,25 @@ void Button::draw(gcn::Graphics *graphics)
 {
     int mode;
 
-    if (!isEnabled()) {
+    if (!isEnabled())
         mode = BUTTON_DISABLED;
-    }
-    else if (isPressed() || mIsLogged) {
+    else if (isPressed() || mIsLogged)
         mode = BUTTON_PRESSED;
-    }
-    else if (mHasMouse || isFocused()) {
+    else if (mHasMouse || isFocused())
         mode = BUTTON_HIGHLIGHTED;
-    }
-    else {
+    else
         mode = BUTTON_STANDARD;
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        for (int a = 0; a < 9; a++)
+        {
+            button[BUTTON_DISABLED].grid[a]->setAlpha(mAlpha);
+            button[BUTTON_PRESSED].grid[a]->setAlpha(mAlpha);
+            button[BUTTON_HIGHLIGHTED].grid[a]->setAlpha(mAlpha);
+            button[BUTTON_STANDARD].grid[a]->setAlpha(mAlpha);
+        }
     }
 
     static_cast<Graphics*>(graphics)->
@@ -147,7 +155,8 @@ void Button::draw(gcn::Graphics *graphics)
     int textX;
     int textY = getHeight() / 2 - getFont()->getHeight() / 2;
 
-    switch (getAlignment()) {
+    switch (getAlignment())
+    {
         case gcn::Graphics::LEFT:
             textX = 4;
             break;
@@ -163,10 +172,8 @@ void Button::draw(gcn::Graphics *graphics)
 
     graphics->setFont(getFont());
 
-    if (isPressed()) {
+    if (isPressed())
         graphics->drawText(getCaption(), textX + 1, textY + 1, getAlignment());
-    }
-    else {
+    else
         graphics->drawText(getCaption(), textX, textY, getAlignment());
-    }
 }

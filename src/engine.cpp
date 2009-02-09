@@ -19,18 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <list>
-
-#include "being.h"
 #include "beingmanager.h"
-#include "configuration.h"
 #include "engine.h"
 #include "flooritemmanager.h"
 #include "game.h"
-#include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 #include "map.h"
 #include "particle.h"
 #include "sound.h"
@@ -43,13 +37,9 @@
 #include "net/protocol.h"
 
 #include "resources/mapreader.h"
-#include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
 
-#include "utils/dtor.h"
 #include "utils/tostring.h"
-
-extern Minimap *minimap;
 
 char itemCurrenyQ[10] = "0";
 

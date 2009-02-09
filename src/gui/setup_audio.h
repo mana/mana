@@ -26,8 +26,6 @@
 
 #include "setuptab.h"
 
-#include "../guichanfwd.h"
-
 class Setup_Audio : public SetupTab, public gcn::ActionListener
 {
     public:

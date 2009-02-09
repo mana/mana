@@ -22,12 +22,11 @@
 #ifndef PROGRESSBAR_H
 #define PROGRESSBAR_H
 
+#include <string>
+
 #include <guichan/widget.hpp>
 
 #include <SDL_types.h>
-#include <string>
-
-#include "../guichanfwd.h"
 
 class ImageRect;
 
@@ -111,6 +110,7 @@ class ProgressBar : public gcn::Widget
 
         static ImageRect mBorder;
         static int mInstances;
+        static float mAlpha;
 };
 
 #endif

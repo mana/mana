@@ -19,13 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "scrollarea.h"
 #include "shortcutcontainer.h"
 #include "shortcutwindow.h"
-#include "scrollarea.h"
 
 #include "../configuration.h"
 
 static const int SCROLL_PADDING = 0;
+
+int ShortcutWindow::mInstances = 0;
 
 ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
 {
@@ -37,6 +39,8 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
 
     mItems = content;
 
+    mInstances++;
+
     const int border = SCROLL_PADDING * 2 + getPadding() * 2;
     setMinWidth(mItems->getBoxWidth() + border);
     setMinHeight(mItems->getBoxHeight() + border);
@@ -46,10 +50,11 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
     const int width = (int) config.getValue("screenwidth", 800);
     const int height = (int) config.getValue("screenheight", 600);
 
-    setDefaultSize(width - mItems->getBoxWidth() - border,
-                   height - (mItems->getBoxHeight() * mItems->getMaxItems()) -
-                   border, mItems->getBoxWidth() + border,
-                   (mItems->getBoxHeight() * mItems->getMaxItems()) + border);
+    setDefaultSize(width - (mInstances * mItems->getBoxWidth()) - 
+                   (mInstances * border),  height - (mItems->getBoxHeight() *
+                   mItems->getMaxItems()) - border, mItems->getBoxWidth() +
+                   border, (mItems->getBoxHeight() * mItems->getMaxItems()) +
+                   border);
 
     mScrollArea = new ScrollArea(mItems);
     mScrollArea->setPosition(SCROLL_PADDING, SCROLL_PADDING);

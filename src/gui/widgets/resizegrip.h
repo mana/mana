@@ -24,8 +24,6 @@
 
 #include <guichan/widget.hpp>
 
-#include "../../guichanfwd.h"
-
 class Image;
 
 /**
@@ -56,6 +54,7 @@ class ResizeGrip : public gcn::Widget
     private:
         static Image *gripImage;   /**< Resize grip image */
         static int mInstances;     /**< Number of resize grip instances */
+        static float mAlpha;
 };
 
 #endif

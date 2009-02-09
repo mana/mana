@@ -22,6 +22,8 @@
 #include <algorithm>
 #include <cmath>
 
+#include <guichan/color.hpp>
+
 #include "animationparticle.h"
 #include "configuration.h"
 #include "imageparticle.h"

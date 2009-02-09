@@ -22,8 +22,9 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#include <cassert>
 #include <libxml/xmlwriter.h>
+
+#include <cassert>
 #include <list>
 #include <map>
 #include <string>

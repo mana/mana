@@ -22,8 +22,6 @@
 
 #include "text.h"
 
-#include <cstring>
-
 #include <guichan/font.hpp>
 
 #include "configuration.h"
@@ -114,7 +112,7 @@ void Text::adviseXY(int x, int y)
     textManager->moveText(this, x - mXOffset, y);
 }
 
-void Text::draw(Graphics *graphics, int xOff, int yOff)
+void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
     graphics->setFont(boldFont);
 
@@ -176,7 +174,7 @@ FlashText::FlashText(const std::string &text, int x, int y,
 {
 }
 
-void FlashText::draw(Graphics *graphics, int xOff, int yOff)
+void FlashText::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
     if (mTime)
     {

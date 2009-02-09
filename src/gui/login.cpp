@@ -19,18 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
-#include <vector>
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "checkbox.h"
+#include "listbox.h"
 #include "login.h"
 #include "ok_dialog.h"
 #include "passwordfield.h"
+#include "scrollarea.h"
 #include "textfield.h"
 
+#include "widgets/dropdown.h"
 #include "widgets/layout.h"
 
 #include "../main.h"
@@ -62,7 +62,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     dfltPort.push_back("21001");
     mServerList = new DropDownList("MostRecent00", dfltServer, dfltPort,
                                    MAX_SERVER_LIST_SIZE);
-    mServerListBox = new gcn::ListBox(mServerList);
+    mServerListBox = new ListBox(mServerList);
     mServerScrollArea = new ScrollArea();
 
     mUserField = new TextField(mLoginData->username);
@@ -72,6 +72,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mServerDropDown = new DropDown(mServerList,
                                    mServerScrollArea,
                                    mServerListBox);
+    mServerDropDown->setOpaque(false);
 
     mKeepCheck = new CheckBox(_("Remember Username"), mLoginData->remember);
     mOkButton = new Button(_("OK"), "ok", this);

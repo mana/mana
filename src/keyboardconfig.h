@@ -22,12 +22,8 @@
 #ifndef KEYBOARDCONFIG_H
 #define KEYBOARDCONFIG_H
 
+#include <SDL_types.h>
 #include <string>
-
-#include <guichan/sdl/sdlinput.hpp>
-
-#include "gui/sdlinput.h"
-#include "gui/setup_keyboard.h"
 
 /**
  * Each key represents a key function. Such as 'Move up', 'Attack' etc.
@@ -39,6 +35,8 @@ struct KeyFunction
     std::string caption;        /** The caption value for the key function. */
     int value;                  /** The actual value that is used. */
 };
+
+class Setup_Keyboard;
 
 class KeyboardConfig
 {
@@ -148,7 +146,8 @@ class KeyboardConfig
          * The key assignment view gets arranged according to the order of
          * these values.
          */
-        enum KeyAction {
+        enum KeyAction
+        {
             KEY_NO_VALUE = -1,
             KEY_MOVE_UP,
             KEY_MOVE_DOWN,
@@ -164,6 +163,9 @@ class KeyboardConfig
             KEY_PICKUP,
             KEY_HIDE_WINDOWS,
             KEY_SIT,
+            KEY_SCREENSHOT,
+            KEY_TRADE,
+            KEY_PATHFIND,
             KEY_SHORTCUT_1,
             KEY_SHORTCUT_2,
             KEY_SHORTCUT_3,
@@ -176,6 +178,7 @@ class KeyboardConfig
             KEY_SHORTCUT_10,
             KEY_SHORTCUT_11,
             KEY_SHORTCUT_12,
+            KEY_WINDOW_HELP,
             KEY_WINDOW_STATUS,
             KEY_WINDOW_INVENTORY,
             KEY_WINDOW_EQUIPMENT,
@@ -199,6 +202,11 @@ class KeyboardConfig
             KEY_EMOTE_10,
             KEY_EMOTE_11,
             KEY_EMOTE_12,
+            KEY_TOGGLE_CHAT,
+            KEY_SCROLL_CHAT_UP,
+            KEY_SCROLL_CHAT_DOWN,
+            KEY_OK,
+            KEY_QUIT,
             KEY_TOTAL
         };
 

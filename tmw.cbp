@@ -183,6 +183,8 @@
 		<Unit filename="src\gui\radiobutton.h" />
 		<Unit filename="src\gui\register.cpp" />
 		<Unit filename="src\gui\register.h" />
+		<Unit filename="src\gui\recorder.cpp" />
+		<Unit filename="src\gui\recorder.h" />
 		<Unit filename="src\gui\scrollarea.cpp" />
 		<Unit filename="src\gui\scrollarea.h" />
 		<Unit filename="src\gui\sdlinput.cpp" />

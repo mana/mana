@@ -22,9 +22,9 @@
 #ifndef PASSWORDFIELD_H
 #define PASSWORDFIELD_H
 
-#include "textfield.h"
+#include <string>
 
-#include "../guichanfwd.h"
+#include "textfield.h"
 
 /**
  * A password field.

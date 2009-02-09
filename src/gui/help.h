@@ -27,8 +27,6 @@
 #include "linkhandler.h"
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 class BrowserBox;
 
 /**

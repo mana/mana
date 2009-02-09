@@ -26,7 +26,9 @@
 
 #include "button.h"
 #include "equipmentwindow.h"
+#include "itempopup.h"
 #include "playerbox.h"
+#include "viewport.h"
 
 #include "../equipment.h"
 #include "../graphics.h"
@@ -55,12 +57,12 @@ static const int boxPosition[][2] = {
     {129, 78}    // EQUIP_AMMO_SLOT
 };
 
-EquipmentWindow::EquipmentWindow(Equipment *equipment):
+EquipmentWindow::EquipmentWindow():
     Window(_("Equipment")),
-    mEquipment(equipment),
     mSelected(-1)
-
 {
+    mItemPopup = new ItemPopup();
+
     // Control that shows the Player
     mPlayerBox = new PlayerBox;
     mPlayerBox->setDimension(gcn::Rectangle(50, 80, 74, 123));
@@ -85,12 +87,15 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
         mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
     }
 
+    mEquipment = player_node->mEquipment.get();
     mInventory = player_node->getInventory();
 }
 
 EquipmentWindow::~EquipmentWindow()
 {
     delete mUnequip;
+    delete mItemPopup;
+    delete mPlayerBox;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
@@ -153,6 +158,23 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
     }
 }
 
+Item* EquipmentWindow::getItem(const int &x, const int &y)
+{
+    for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+    {
+        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                             BOX_WIDTH, BOX_HEIGHT);
+
+        if (tRect.isPointInRect(x, y))
+        {
+            return (i != EQUIP_AMMO_SLOT) ?
+                    mInventory->getItem(mEquipment->getEquipment(i)) :
+                    mInventory->getItem(mEquipment->getArrows());
+        }
+    }
+    return NULL;
+}
+
 void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
 {
     Window::mousePressed(mouseEvent);
@@ -162,21 +184,67 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
 
     Item* item;
 
-    // Checks if any of the presses were in the equip boxes.
-    for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+    if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
     {
-        item = (i != EQUIP_AMMO_SLOT) ?
-               mInventory->getItem(mEquipment->getEquipment(i)) :
-               mInventory->getItem(mEquipment->getArrows());
-        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                             BOX_WIDTH, BOX_HEIGHT);
-        if (tRect.isPointInRect(x, y))
+        // Checks if any of the presses were in the equip boxes.
+        for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
         {
-            if (item)
+            item = (i != EQUIP_AMMO_SLOT) ?
+                    mInventory->getItem(mEquipment->getEquipment(i)) :
+                    mInventory->getItem(mEquipment->getArrows());
+            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                 BOX_WIDTH, BOX_HEIGHT);
+
+            if (tRect.isPointInRect(x, y))
             {
-                mSelected = i;
+                if (item)
+                {
+                    mSelected = i;
+                }
             }
         }
     }
+    else if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
+    {
+        item = getItem(x, y);
+
+        if (!item)
+            return;
+
+        /* Convert relative to the window coordinates to absolute screen
+         * coordinates.
+         */
+        const int mx = x + getX();
+        const int my = y + getY();
+        viewport->showPopup(mx, my, item);
+    }
 }
 
+// Show ItemTooltip
+void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
+{
+    const int x = event.getX();
+    const int y = event.getY();
+
+    Item* item = getItem(x, y);
+
+    if (item)
+    {
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+
+        mItemPopup->setItem(item->getInfo());
+        mItemPopup->setOpaque(false);
+        mItemPopup->view(x + getX(), y + getY());
+    }
+    else
+    {
+        mItemPopup->setVisible(false);
+    }
+}
+
+// Hide ItemTooltip
+void EquipmentWindow::mouseExited(gcn::MouseEvent &event)
+{
+    mItemPopup->setVisible(false);
+}

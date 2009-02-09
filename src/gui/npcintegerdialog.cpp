@@ -19,27 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npcintegerdialog.h"
-
-#include <limits>
-#include <sstream>
-
 #include "button.h"
 #include "inttextfield.h"
+#include "npcintegerdialog.h"
+
+#include "widgets/layout.h"
 
 #include "../npc.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
-
-#include "widgets/layout.h"
 
 NpcIntegerDialog::NpcIntegerDialog():
     Window(_("NPC Number Request"))
 {
+    mValueField = new IntTextField();
+
     mDecButton = new Button("-", "decvalue", this);
     mIncButton = new Button("+", "incvalue", this);
-    mValueField = new IntTextField();
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
     resetButton = new Button(_("Reset"), "reset", this);
@@ -61,9 +57,6 @@ NpcIntegerDialog::NpcIntegerDialog():
     reflowLayout(175, 0);
 
     setLocationRelativeTo(getParent());
-
-    mValueField->setActionEventId("valuefield");
-    mValueField->addKeyListener(this);
 }
 
 void NpcIntegerDialog::setRange(const int min, const int max)
@@ -109,4 +102,14 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
         current_npc = 0;
         mValueField->reset();
     }
+}
+
+bool NpcIntegerDialog::isInputFocused()
+{
+    return mValueField->isFocused();
+}
+
+void NpcIntegerDialog::requestFocus()
+{
+    mValueField->requestFocus();
 }

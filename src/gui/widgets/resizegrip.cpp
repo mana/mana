@@ -23,6 +23,7 @@
 
 #include "resizegrip.h"
 
+#include "../../configuration.h"
 #include "../../graphics.h"
 
 #include "../../resources/image.h"
@@ -30,6 +31,7 @@
 
 Image *ResizeGrip::gripImage = 0;
 int ResizeGrip::mInstances = 0;
+float ResizeGrip::mAlpha = config.getValue("guialpha", 0.8);
 
 ResizeGrip::ResizeGrip(std::string image)
 {
@@ -38,6 +40,7 @@ ResizeGrip::ResizeGrip(std::string image)
         // Load the grip image
         ResourceManager *resman = ResourceManager::getInstance();
         gripImage = resman->getImage(image);
+        gripImage->setAlpha(mAlpha);
     }
 
     mInstances++;
@@ -58,5 +61,11 @@ ResizeGrip::~ResizeGrip()
 
 void ResizeGrip::draw(gcn::Graphics *graphics)
 {
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        gripImage->setAlpha(mAlpha);
+    }
+
     static_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
 }

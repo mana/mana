@@ -41,7 +41,7 @@ Setup_Joystick::Setup_Joystick():
 {
     setOpaque(false);
 
-    mOriginalJoystickEnabled = (int)config.getValue("joystickEnabled", 0) != 0;
+    mOriginalJoystickEnabled = !config.getValue("joystickEnabled", false);
     mJoystickEnabled->setSelected(mOriginalJoystickEnabled);
 
     mJoystickEnabled->addActionListener(this);

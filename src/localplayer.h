@@ -22,10 +22,10 @@
 #ifndef LOCALPLAYER_H
 #define LOCALPLAYER_H
 
+#include <memory>
 #include <vector>
 
 #include "player.h"
-#include "simpleanimation.h"
 
 // TODO move into some sane place...
 #define MAX_SLOT 2
@@ -33,11 +33,14 @@
 #define INVENTORY_SIZE 102
 #define STORAGE_SIZE 301
 
+class Equipment;
 class FloorItem;
 class ImageSet;
 class Inventory;
 class Item;
+class Map;
 class Network;
+class SimpleAnimation;
 
 /**
  * The local player character.
@@ -45,7 +48,8 @@ class Network;
 class LocalPlayer : public Player
 {
     public:
-        enum Attribute {
+        enum Attribute
+        {
             STR = 0, AGI, VIT, INT, DEX, LUK
         };
 
@@ -235,6 +239,8 @@ class LocalPlayer : public Player
 
         /** Animated out of range target cursor. */
         SimpleAnimation *mTargetCursorOutRange[NUM_TC];
+
+        const std::auto_ptr<Equipment> mEquipment;
 
     protected:
         virtual void

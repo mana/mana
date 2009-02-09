@@ -20,7 +20,11 @@
  */
 
 #include "floor_item.h"
+#include "graphics.h"
+#include "item.h"
 #include "map.h"
+
+#include "resources/image.h"
 
 FloorItem::FloorItem(unsigned int id,
                      unsigned int itemId,
@@ -45,4 +49,16 @@ FloorItem::~FloorItem()
     mMap->removeSprite(mSpriteIterator);
 
     delete mItem;
+}
+
+unsigned int FloorItem::getItemId() const
+{
+    return mItem->getId();
+}
+
+void FloorItem::draw(Graphics *graphics, int offsetX, int offsetY) const
+{
+    graphics->drawImage(mItem->getImage(),
+                        mX * 32 + offsetX,
+                        mY * 32 + offsetY);
 }

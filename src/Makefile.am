@@ -17,8 +17,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/browserbox.h \
 	      gui/button.cpp \
 	      gui/button.h \
-	      gui/buttonbox.cpp \
-	      gui/buttonbox.h \
 	      gui/buy.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
@@ -92,8 +90,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
 	      gui/ok_dialog.h \
-	      gui/truetypefont.cpp \
-	      gui/truetypefont.h \
 	      gui/passwordfield.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
@@ -104,6 +100,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/progressbar.h \
 	      gui/radiobutton.cpp \
 	      gui/radiobutton.h \
+	      gui/recorder.cpp \
+	      gui/recorder.h \
 	      gui/register.cpp \
 	      gui/register.h \
 	      gui/scrollarea.cpp \
@@ -153,6 +151,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/textfield.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
+	      gui/truetypefont.cpp \
+	      gui/truetypefont.h \
 	      gui/updatewindow.h \
 	      gui/updatewindow.cpp \
 	      gui/viewport.cpp \
@@ -274,7 +274,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      engine.h \
 	      equipment.cpp \
 	      equipment.h \
-	      extensions.h \
 	      floor_item.cpp \
 	      floor_item.h \
 	      flooritemmanager.cpp \
@@ -328,8 +327,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      position.cpp \
 	      position.h \
 	      properties.h \
-	      recorder.cpp \
-	      recorder.h \
 	      serverinfo.h \
 	      shopitem.cpp \
 	      shopitem.h \

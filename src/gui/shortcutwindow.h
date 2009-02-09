@@ -24,10 +24,8 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
-class ShortcutContainer;
 class ScrollArea;
+class ShortcutContainer;
 
 /**
  * A window around the ItemShortcutContainer.
@@ -57,6 +55,8 @@ class ShortcutWindow : public Window
         ShortcutContainer *mItems;
 
         ScrollArea *mScrollArea;
+
+        static int mInstances;
 };
 
 extern ShortcutWindow *itemShortcutWindow;

@@ -27,7 +27,8 @@
 
 #include <guichan/listmodel.hpp>
 
-class BuddyList : public gcn::ListModel {
+class BuddyList : public gcn::ListModel
+{
     public:
         /**
          * Constructor

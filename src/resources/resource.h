@@ -62,8 +62,7 @@ class Resource
         /**
          * Destructor.
          */
-        virtual
-        ~Resource();
+        virtual ~Resource();
 
     private:
         std::string mIdPath; /**< Path identifying this resource. */

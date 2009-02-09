@@ -21,11 +21,12 @@
 
 #include <algorithm>
 
+#include "being.h"
 #include "beingmanager.h"
+#include "configuration.h"
 #include "graphics.h"
+#include "player.h"
 #include "player_relations.h"
-
-#include "gui/gui.h"
 
 #define PLAYER_IGNORE_STRATEGY_NOP "nop"
 #define PLAYER_IGNORE_STRATEGY_EMOTE0 "emote0"
@@ -304,7 +305,7 @@ public:
 
     virtual void ignore(Player *player, unsigned int flags)
      {
-         player->setSpeech("...", 5);
+         player->setSpeech("...", 500);
      }
 };
 
