@@ -613,18 +613,6 @@ void Game::handleInput()
                     // Close the config window, cancelling changes if opened
                     else if (setupWindow->isVisible())
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                    // Submits the text and proceeds to the next dialog
-                    else if (npcStringDialog->isVisible())
-                        npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Proceed to the next dialog option, or close the window
-                    else if (npcTextDialog->isVisible())
-                        npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Choose the currently highlighted dialogue option
-                    else if (npcListDialog->isVisible())
-                        npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Submits the text and proceeds to the next dialog
-                    else if (npcIntegerDialog->isVisible())
-                        npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
                     // Else, open the chat edit box
                     else
                     {

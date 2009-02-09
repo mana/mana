@@ -131,8 +131,11 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsDefenseLabel= new gcn::Label(_("Defense:"));
     mStatsMagicAttackLabel = new gcn::Label(_("M.Attack:"));
     mStatsMagicDefenseLabel = new gcn::Label(_("M.Defense:"));
+    // Gettext flag for next line: xgettext:no-c-format
     mStatsAccuracyLabel = new gcn::Label(_("% Accuracy:"));
+    // Gettext flag for next line: xgettext:no-c-format
     mStatsEvadeLabel = new gcn::Label(_("% Evade:"));
+    // Gettext flag for next line: xgettext:no-c-format
     mStatsReflexLabel = new gcn::Label(_("% Reflex:"));
 
     mStatsAttackPoints = new gcn::Label;
@@ -400,3 +403,4 @@ void StatusWindow::action(const gcn::ActionEvent &event)
         }
     }
 }
+

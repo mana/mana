@@ -16,6 +16,7 @@
 					<Add option="-Wall" />
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DNOGDI" />
+					<Add option="-DENABLE_NLS" />
 				</Compiler>
 				<Linker>
 					<Add library="guichan" />
@@ -35,6 +36,7 @@
 					<Add library="z.dll" />
 					<Add library="physfs" />
 					<Add library="curl.dll" />
+					<Add library="intl" />
 				</Linker>
 			</Target>
 			<Target title="unix">
