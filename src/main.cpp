@@ -649,16 +649,11 @@ void accountLogin(Network *network, LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
-inline int MIN(int x, int y)
-{
-    return x < y ? x : y;
-}
-
-void positionDialog(Window *dialog, int screenWidth, int screenHeight)
+static void positionDialog(Window *dialog, int screenWidth, int screenHeight)
 {
     dialog->setPosition(
-        MIN(screenWidth * 5 / 8, screenWidth - dialog->getWidth()),
-        MIN(screenHeight * 5 / 8, screenHeight - dialog->getHeight()));
+            (screenWidth - dialog->getWidth()) / 2,
+            (screenHeight - dialog->getHeight()) / 2);
 }
 
 void charLogin(Network *network, LoginData *loginData)
