@@ -23,7 +23,7 @@
 #include "button.h"
 #include "setup.h"
 #include "setup_audio.h"
-#include "setup_colours.h"
+#include "setup_colors.h"
 #include "setup_joystick.h"
 #include "setup_keyboard.h"
 #include "setup_players.h"
@@ -91,7 +91,7 @@ Setup::Setup():
     panel->addTab(_("Keyboard"), tab);
     mTabs.push_back(tab);
 
-    tab = new Setup_Colours();
+    tab = new Setup_Colors();
     panel->addTab(_("Colors"), tab);
     mTabs.push_back(tab);
 

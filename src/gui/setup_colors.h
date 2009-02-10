@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef SETUP_COLOURS_H
-#define SETUP_COLOURS_H
+#ifndef SETUP_COLORS_H
+#define SETUP_COLORS_H
 
 #include <string>
 
@@ -36,19 +36,19 @@
 
 class BrowserBox;
 
-class Setup_Colours : public SetupTab, public gcn::ActionListener,
-                      public TextFieldListener
+class Setup_Colors : public SetupTab, public gcn::ActionListener,
+                     public TextFieldListener
 {
     public:
-        Setup_Colours();
-        ~Setup_Colours();
+        Setup_Colors();
+        ~Setup_Colors();
         void apply();
         void cancel();
         void action(const gcn::ActionEvent &event);
 
         void listen(const TextField *tf);
     private:
-        gcn::ListBox *mColourBox;
+        gcn::ListBox *mColorBox;
         gcn::ScrollArea *mScroll;
         BrowserBox *mPreview;
         gcn::ScrollArea *mPreviewBox;
@@ -70,6 +70,6 @@ class Setup_Colours : public SetupTab, public gcn::ActionListener,
         int mBlueValue;
 
         void setEntry(gcn::Slider *s, TextField *t, int value);
-        void updateColour();
+        void updateColor();
 };
 #endif

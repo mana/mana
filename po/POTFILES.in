@@ -5,7 +5,7 @@ src/gui/buysell.cpp
 src/gui/char_select.cpp
 src/gui/char_server.cpp
 src/gui/chat.cpp
-src/gui/colour.cpp
+src/gui/color.cpp
 src/gui/confirm_dialog.cpp
 src/gui/connection.cpp
 src/gui/emotecontainer.cpp
@@ -31,7 +31,7 @@ src/gui/register.cpp
 src/gui/sell.cpp
 src/gui/setup_audio.cpp
 src/gui/setup.cpp
-src/gui/setup_colours.cpp
+src/gui/setup_colors.cpp
 src/gui/setup_joystick.cpp
 src/gui/setup_keyboard.cpp
 src/gui/setup_players.cpp

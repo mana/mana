@@ -24,7 +24,7 @@
 #include <guichan/graphics.hpp>
 #include <guichan/key.hpp>
 
-#include "colour.h"
+#include "color.h"
 #include "table.h"
 
 #include "../configuration.h"
@@ -326,10 +326,10 @@ void GuiTable::draw(gcn::Graphics* graphics)
                 {
                     bool valid;
                     const int red = 
-                        (textColour->getColour('H', valid) >> 16) & 0xFF;
+                        (textColor->getColor('H', valid) >> 16) & 0xFF;
                     const int green =
-                        (textColour->getColour('H', valid) >> 8) & 0xFF;
-                    const int blue = textColour->getColour('H', valid) & 0xFF;
+                        (textColor->getColor('H', valid) >> 8) & 0xFF;
+                    const int blue = textColor->getColor('H', valid) & 0xFF;
                     const int alpha = mAlpha * 127;
 
                     graphics->setColor(gcn::Color(red, green, blue, alpha));
@@ -348,10 +348,10 @@ void GuiTable::draw(gcn::Graphics* graphics)
         {
             bool valid;
             const int red = 
-                (textColour->getColour('H', valid) >> 16) & 0xFF;
+                (textColor->getColor('H', valid) >> 16) & 0xFF;
             const int green =
-                (textColour->getColour('H', valid) >> 8) & 0xFF;
-            const int blue = textColour->getColour('H', valid) & 0xFF;
+                (textColor->getColor('H', valid) >> 8) & 0xFF;
+            const int blue = textColor->getColor('H', valid) & 0xFF;
             const int alpha = mAlpha * 127;
 
             graphics->setColor(gcn::Color(red, green, blue, alpha));

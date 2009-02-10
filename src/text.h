@@ -39,7 +39,7 @@ class Text
          * Constructor creates a text object to display on the screen.
          */
         Text(const std::string &text, int x, int y,
-             gcn::Graphics::Alignment alignment, gcn::Color colour);
+             gcn::Graphics::Alignment alignment, gcn::Color color);
 
         /**
          * Destructor. The text is removed from the screen.
@@ -64,14 +64,14 @@ class Text
         int mXOffset;          /**< The offset of mX from the desired x. */
         static int mInstances; /**< Instances of text. */
         std::string mText;     /**< The text to display. */
-        gcn::Color mColour;    /**< The colour of the text. */
+        gcn::Color mColor;    /**< The color of the text. */
 };
 
 class FlashText : public Text
 {
     public:
         FlashText(const std::string &text, int x, int y,
-                  gcn::Graphics::Alignment alignment, gcn::Color colour);
+                  gcn::Graphics::Alignment alignment, gcn::Color color);
 
         /**
          * Remove the text from the screen
