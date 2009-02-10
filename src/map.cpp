@@ -70,7 +70,8 @@ TileAnimation::TileAnimation(Animation *ani):
 
 TileAnimation::~TileAnimation()
 {
-    delete mLastImage;
+// TODO: fix or remove this
+//    delete mLastImage;
 }
 
 void TileAnimation::update()
