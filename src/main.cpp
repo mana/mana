@@ -817,7 +817,10 @@ int main(int argc, char *argv[])
     else if (screenWidth >= 1600)
         wallpaperName = "graphics/images/login_wallpaper_1600x1200.png";
 
-    login_wallpaper = ResourceManager::getInstance()-> getImage(wallpaperName);
+    if (!ResourceManager::getInstance()->exists(wallpaperName))
+        wallpaperName = "graphics/images/login_wallpaper.png";
+
+    login_wallpaper = ResourceManager::getInstance()->getImage(wallpaperName);
 
     if (!login_wallpaper)
         logger->log(_("Couldn't load %s as wallpaper"), wallpaperName.c_str());
