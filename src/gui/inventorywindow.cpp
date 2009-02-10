@@ -87,12 +87,12 @@ InventoryWindow::InventoryWindow(int invSize):
     mWeightBar = new ProgressBar(1.0f, 100, 20, 0, 0, 255);
 
     setMinHeight(130);
-    setMinWidth(mWeightLabel->getWidth() + mSlotsLabel->getWidth() + 310);
+    setMinWidth(mWeightLabel->getWidth() + mSlotsLabel->getWidth() + 280);
 
     place(0, 0, mWeightLabel).setPadding(3);
-    place(1, 0, mWeightBar, 2);
-    place(3, 0, mSlotsLabel).setPadding(3);
-    place(4, 0, mSlotsBar, 2);
+    place(1, 0, mWeightBar, 3);
+    place(4, 0, mSlotsLabel).setPadding(3);
+    place(5, 0, mSlotsBar, 2);
     place(0, 1, mInvenScroll, 7, 4);
     place(5, 5, mDropButton);
     place(6, 5, mUseButton);
