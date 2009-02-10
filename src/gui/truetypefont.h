@@ -22,6 +22,7 @@
 #ifndef TRUETYPEFONT_H
 #define TRUETYPEFONT_H
 
+#include <list>
 #include <string>
 
 #include <guichan/font.hpp>
@@ -30,6 +31,8 @@
 #else
 #include <SDL_ttf.h>
 #endif
+
+class TextChunk;
 
 /**
  * A wrapper around SDL_ttf for allowing the use of TrueType fonts.
@@ -63,6 +66,9 @@ class TrueTypeFont : public gcn::Font
 
     private:
         TTF_Font *mFont;
+
+        // Word surfaces cache
+        std::list<TextChunk> cache;
 };
 
 #endif
