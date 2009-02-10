@@ -44,7 +44,7 @@ void NPCDB::load()
     unknownSprite->variant = 0;
     mUnknown.sprites.push_back(unknownSprite);
 
-    logger->log(_("Initializing NPC database..."));
+    logger->log("Initializing NPC database...");
 
     XML::Document doc("npcs.xml");
     xmlNodePtr rootNode = doc.rootNode();
@@ -63,7 +63,7 @@ void NPCDB::load()
         int id = XML::getProperty(npcNode, "id", 0);
         if (id == 0)
         {
-            logger->log(_("NPC Database: NPC with missing ID in npcs.xml!"));
+            logger->log("NPC Database: NPC with missing ID in npcs.xml!");
             continue;
         }
 
@@ -121,7 +121,7 @@ const NPCInfo& NPCDB::get(int id)
 
     if (i == mNPCInfos.end())
     {
-        logger->log(_("NPCDB: Warning, unknown NPC ID %d requested"), id);
+        logger->log("NPCDB: Warning, unknown NPC ID %d requested", id);
         return mUnknown;
     }
     else

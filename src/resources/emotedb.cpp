@@ -23,7 +23,6 @@
 
 #include "../log.h"
 
-#include "../utils/gettext.h"
 #include "../utils/xml.h"
 
 namespace
@@ -47,14 +46,14 @@ void EmoteDB::load()
     unknownSprite->variant = 0;
     mUnknown.sprites.push_back(unknownSprite);
 
-    logger->log(_("Initializing emote database..."));
+    logger->log("Initializing emote database...");
 
     XML::Document doc("emotes.xml");
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "emotes"))
     {
-        logger->log(_("Emote Database: Error while loading emotes.xml!"));
+        logger->log("Emote Database: Error while loading emotes.xml!");
         return;
     }
 
@@ -67,7 +66,7 @@ void EmoteDB::load()
         int id = XML::getProperty(emoteNode, "id", -1);
         if (id == -1)
         {
-            logger->log(_("Emote Database: Emote with missing ID in emotes.xml!"));
+            logger->log("Emote Database: Emote with missing ID in emotes.xml!");
             continue;
         }
 
@@ -126,7 +125,7 @@ const EmoteInfo& EmoteDB::get(int id)
 
     if (i == mEmoteInfos.end())
     {
-        logger->log(_("EmoteDB: Warning, unknown emote ID %d requested"), id);
+        logger->log("EmoteDB: Warning, unknown emote ID %d requested", id);
         return mUnknown;
     }
     else

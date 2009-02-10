@@ -269,7 +269,7 @@ static void initSkillinfo(void)
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
     {
-        logger->log(_("Error loading skills file: %s"), SKILLS_FILE);
+        logger->log("Error loading skills file: %s", SKILLS_FILE);
         skill_db.resize(2, emptySkillInfo);
         skill_db[1].name = "Basic";
         skill_db[1].modifiable = true;

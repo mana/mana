@@ -50,7 +50,7 @@ void ItemDB::load()
     if (mLoaded)
         return;
 
-    logger->log(_("Initializing item database..."));
+    logger->log("Initializing item database...");
 
     mUnknown = new ItemInfo();
     mUnknown->setName(_("Unknown item"));
@@ -63,7 +63,7 @@ void ItemDB::load()
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
     {
-        logger->error(_("ItemDB: Error while loading items.xml!"));
+        logger->error("ItemDB: Error while loading items.xml!");
     }
 
     for_each_xml_child_node(node, rootNode)
@@ -75,12 +75,12 @@ void ItemDB::load()
 
         if (id == 0)
         {
-            logger->log(_("ItemDB: Invalid or missing item ID in items.xml!"));
+            logger->log("ItemDB: Invalid or missing item ID in items.xml!");
             continue;
         }
         else if (mItemInfos.find(id) != mItemInfos.end())
         {
-            logger->log(_("ItemDB: Redefinition of item ID %d"), id);
+            logger->log("ItemDB: Redefinition of item ID %d", id);
         }
 
         std::string type = XML::getProperty(node, "type", "other");
@@ -136,7 +136,7 @@ void ItemDB::load()
                 }
                 else
                 {
-                    logger->log(_("ItemDB: Duplicate name of item found item %d"),
+                    logger->log("ItemDB: Duplicate name of item found item %d",
                                    id);
                 }
             }
@@ -162,7 +162,7 @@ void ItemDB::load()
 
 void ItemDB::unload()
 {
-    logger->log(_("Unloading item database..."));
+    logger->log("Unloading item database...");
 
     delete mUnknown;
     mUnknown = NULL;
@@ -180,7 +180,7 @@ const ItemInfo& ItemDB::get(int id)
 
     if (i == mItemInfos.end())
     {
-        logger->log(_("ItemDB: Error, unknown item ID# %d"), id);
+        logger->log("ItemDB: Error, unknown item ID# %d", id);
         return *mUnknown;
     }
     else
@@ -236,7 +236,7 @@ void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
     }
     else
     {
-        logger->log(_("ItemDB: Ignoring unknown sound event '%s'"),
+        logger->log("ItemDB: Ignoring unknown sound event '%s'",
                 event.c_str());
     }
 }

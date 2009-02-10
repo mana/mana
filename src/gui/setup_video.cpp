@@ -90,9 +90,9 @@ ModeListModel::ModeListModel()
 
     /* Check which modes are available */
     if (modes == (SDL_Rect **)0) {
-        logger->log(_("No modes available"));
+        logger->log("No modes available");
     } else if (modes == (SDL_Rect **)-1) {
-        logger->log(_("All resolutions available"));
+        logger->log("All resolutions available");
     } else {
         //logger->log("Available Modes");
         for (int i = 0; modes[i]; ++i) {

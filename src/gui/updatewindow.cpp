@@ -76,7 +76,7 @@ std::vector<std::string> loadTextFile(const std::string &fileName)
     std::ifstream fin(fileName.c_str());
 
     if (!fin) {
-        logger->log(_("Couldn't load text file: %s"), fileName.c_str());
+        logger->log("Couldn't load text file: %s", fileName.c_str());
         return lines;
     }
 
@@ -194,7 +194,7 @@ void UpdaterWindow::loadNews()
 {
     if (!mMemoryBuffer)
     {
-        logger->log(_("Couldn't load news"));
+        logger->log("Couldn't load news");
         return;
     }
 
@@ -411,7 +411,7 @@ void UpdaterWindow::download()
 
     if (!mThread)
     {
-        logger->log(_("Unable to create mThread"));
+        logger->log("Unable to create mThread");
         mDownloadStatus = UPDATE_ERROR;
     }
 }
@@ -505,7 +505,7 @@ void UpdaterWindow::logic()
                     }
                     else
                     {
-                        logger->log(_("%s already here"), mCurrentFile.c_str());
+                        logger->log("%s already here", mCurrentFile.c_str());
                     }
                     mLineIndex++;
                 }
