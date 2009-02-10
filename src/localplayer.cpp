@@ -337,7 +337,7 @@ void LocalPlayer::setTarget(Being *target)
     if (target == mTarget)
         target = NULL;
 
-    if (target)
+    if (target || mAction == ATTACK)
     {
         mTargetTime = tick_time;
     }
