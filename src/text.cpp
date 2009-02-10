@@ -37,9 +37,9 @@ Image *Text::mBubbleArrow;
 
 Text::Text(const std::string &text, int x, int y,
            gcn::Graphics::Alignment alignment,
-           gcn::Color colour, bool isSpeech) :
+           gcn::Color color, bool isSpeech) :
     mText(text),
-    mColour(colour),
+    mcolor(color),
     mIsSpeech(isSpeech)
 {
     if (textManager == 0)
@@ -47,7 +47,7 @@ Text::Text(const std::string &text, int x, int y,
         textManager = new TextManager;
         ResourceManager *resman = ResourceManager::getInstance();
         Image *sbImage = resman->getImage("graphics/gui/bubble.png|W:#"
-            + config.getValue("speechBubbleColour", "000000"));
+            + config.getValue("speechBubblecolor", "000000"));
         mBubble.grid[0] = sbImage->getSubImage(0, 0, 5, 5);
         mBubble.grid[1] = sbImage->getSubImage(5, 0, 5, 5);
         mBubble.grid[2] = sbImage->getSubImage(10, 0, 5, 5);
@@ -161,15 +161,15 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
                 gcn::Graphics::LEFT);
     }
 
-    graphics->setColor(mColour);
+    graphics->setColor(mcolor);
     graphics->drawText(mText, mX - xOff, mY - yOff,
             gcn::Graphics::LEFT);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,
                      gcn::Graphics::Alignment alignment,
-                     gcn::Color colour) :
-    Text(text, x, y, alignment, colour),
+                     gcn::Color color) :
+    Text(text, x, y, alignment, color),
     mTime(0)
 {
 }

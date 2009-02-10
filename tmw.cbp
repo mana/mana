@@ -125,8 +125,8 @@
 		<Unit filename="src\gui\chatinput.h" />
 		<Unit filename="src\gui\checkbox.cpp" />
 		<Unit filename="src\gui\checkbox.h" />
-		<Unit filename="src\gui\colour.cpp" />
-		<Unit filename="src\gui\colour.h" />
+		<Unit filename="src\gui\color.cpp" />
+		<Unit filename="src\gui\color.h" />
 		<Unit filename="src\gui\confirm_dialog.cpp" />
 		<Unit filename="src\gui\confirm_dialog.h" />
 		<Unit filename="src\gui\connection.cpp" />
@@ -208,8 +208,8 @@
 		<Unit filename="src\gui\setup.h" />
 		<Unit filename="src\gui\setup_audio.cpp" />
 		<Unit filename="src\gui\setup_audio.h" />
-		<Unit filename="src\gui\setup_colours.cpp" />
-		<Unit filename="src\gui\setup_colours.h" />
+		<Unit filename="src\gui\setup_colors.cpp" />
+		<Unit filename="src\gui\setup_colors.h" />
 		<Unit filename="src\gui\setup_joystick.cpp" />
 		<Unit filename="src\gui\setup_joystick.h" />
 		<Unit filename="src\gui\setup_keyboard.cpp" />

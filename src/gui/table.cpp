@@ -23,7 +23,7 @@
 #include <guichan/graphics.hpp>
 #include <guichan/key.hpp>
 
-#include "colour.h"
+#include "color.h"
 #include "table.h"
 
 #include "../configuration.h"
@@ -199,7 +199,7 @@ void GuiTable::setSelectedRow(int selected)
         {
             mSelectedRow = 0;
         }
-        else if ((selected >= mModel->getRows() && !mWrappingEnabled) || 
+        else if ((selected >= mModel->getRows() && !mWrappingEnabled) ||
                  (selected < 0 && mWrappingEnabled))
         {
             mSelectedRow = mModel->getRows() - 1;
@@ -224,7 +224,7 @@ void GuiTable::setSelectedColumn(int selected)
         {
             mSelectedColumn = 0;
         }
-        else if ((selected >= mModel->getColumns() && !mWrappingEnabled) || 
+        else if ((selected >= mModel->getColumns() && !mWrappingEnabled) ||
                  (selected < 0 && mWrappingEnabled))
         {
             mSelectedColumn = mModel->getColumns() - 1;
@@ -324,11 +324,11 @@ void GuiTable::draw(gcn::Graphics* graphics)
                 if (!mLinewiseMode && c == mSelectedColumn && r == mSelectedRow)
                 {
                     bool valid;
-                    const int red = 
-                        (textColour->getColour('H', valid) >> 16) & 0xFF;
+                    const int red =
+                        (textcolor->getcolor('H', valid) >> 16) & 0xFF;
                     const int green =
-                        (textColour->getColour('H', valid) >> 8) & 0xFF;
-                    const int blue = textColour->getColour('H', valid) & 0xFF;
+                        (textcolor->getcolor('H', valid) >> 8) & 0xFF;
+                    const int blue = textcolor->getcolor('H', valid) & 0xFF;
                     const int alpha = mAlpha * 127;
 
                     graphics->setColor(gcn::Color(red, green, blue, alpha));
@@ -346,11 +346,11 @@ void GuiTable::draw(gcn::Graphics* graphics)
         if (mLinewiseMode && r == mSelectedRow)
         {
             bool valid;
-            const int red = 
-                (textColour->getColour('H', valid) >> 16) & 0xFF;
+            const int red =
+                (textcolor->getcolor('H', valid) >> 16) & 0xFF;
             const int green =
-                (textColour->getColour('H', valid) >> 8) & 0xFF;
-            const int blue = textColour->getColour('H', valid) & 0xFF;
+                (textcolor->getcolor('H', valid) >> 8) & 0xFF;
+            const int blue = textcolor->getcolor('H', valid) & 0xFF;
             const int alpha = mAlpha * 127;
 
             graphics->setColor(gcn::Color(red, green, blue, alpha));
@@ -401,25 +401,25 @@ void GuiTable::keyPressed(gcn::KeyEvent& keyEvent)
     else if (key.getValue() == gcn::Key::UP)
     {
         setSelectedRow(mSelectedRow - 1);
-            
+
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::DOWN)
     {
         setSelectedRow(mSelectedRow + 1);
-            
+
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::LEFT)
     {
         setSelectedColumn(mSelectedColumn - 1);
-            
+
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::RIGHT)
     {
         setSelectedColumn(mSelectedColumn + 1);
-            
+
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::HOME)

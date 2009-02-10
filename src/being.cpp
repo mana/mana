@@ -49,8 +49,8 @@
 #include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
-#include "utils/gettext.h"  
-#include "utils/tostring.h"  
+#include "utils/gettext.h"
+#include "utils/tostring.h"
 #include "utils/trim.h"
 #include "utils/xml.h"
 
@@ -842,7 +842,7 @@ static void initializeHair()
         }
     } // done initializing
 
-    if (hairColorsNr == 0) { // No colours -> black only
+    if (hairColorsNr == 0) { // No colors -> black only
         hairColorsNr = 1;
         hairColors.resize(hairColorsNr, "#000000");
     }

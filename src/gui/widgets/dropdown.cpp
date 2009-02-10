@@ -23,7 +23,7 @@
 
 #include "dropdown.h"
 
-#include "../colour.h"
+#include "../color.h"
 #include "../listbox.h"
 #include "../scrollarea.h"
 
@@ -40,7 +40,7 @@ Image *DropDown::buttons[2][2];
 ImageRect DropDown::skin;
 float DropDown::mAlpha = config.getValue("guialpha", 0.8);
 
-DropDown::DropDown(gcn::ListModel *listModel, gcn::ScrollArea *scrollArea, 
+DropDown::DropDown(gcn::ListModel *listModel, gcn::ScrollArea *scrollArea,
                    gcn::ListBox *listBox, bool opacity):
     gcn::DropDown::DropDown(listModel, scrollArea, listBox),
     mOpaque(opacity)
@@ -138,7 +138,7 @@ void DropDown::draw(gcn::Graphics* graphics)
     const int alpha = mAlpha * 255;
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
-    gcn::Color highlightColor = textColour->getColour('H', valid);
+    gcn::Color highlightColor = textcolor->getcolor('H', valid);
     highlightColor.a = alpha;
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;

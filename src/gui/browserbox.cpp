@@ -24,7 +24,7 @@
 #include <guichan/graphics.hpp>
 
 #include "browserbox.h"
-#include "colour.h"
+#include "color.h"
 #include "linkhandler.h"
 #include "truetypefont.h"
 
@@ -254,7 +254,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         bool valid;
         if ((mHighMode & BACKGROUND))
         {
-            graphics->setColor(gcn::Color(textColour->getColour('H', valid)));
+            graphics->setColor(gcn::Color(textcolor->getcolor('H', valid)));
             graphics->fillRectangle(gcn::Rectangle(
                         mLinks[mSelectedLink].x1,
                         mLinks[mSelectedLink].y1,
@@ -265,7 +265,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
         if ((mHighMode & UNDERLINE))
         {
-            graphics->setColor(gcn::Color(textColour->getColour('<', valid)));
+            graphics->setColor(gcn::Color(textcolor->getcolor('<', valid)));
             graphics->drawLine(
                     mLinks[mSelectedLink].x1,
                     mLinks[mSelectedLink].y2,
@@ -331,7 +331,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                     else
                     {
                         bool valid;
-                        int rgb = textColour->getColour(c, valid);
+                        int rgb = textcolor->getcolor(c, valid);
                         if (c == '<')
                         {
                             const int size = mLinks[link].x2 - mLinks[link].x1;

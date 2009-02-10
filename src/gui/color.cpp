@@ -19,40 +19,40 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "colour.h"
+#include "color.h"
 
 #include "../configuration.h"
 
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
-Colour::Colour()
+color::color()
 {
-    addColour('C', 0x000000, _("Chat"));
-    addColour('G', 0xff0000, _("GM"));
-    addColour('H', 0xebc873, _("Highlight"));
-    addColour('Y', 0x1fa052, _("Player"));
-    addColour('W', 0x0000ff, _("Whisper"));
-    addColour('I', 0xf1dc27, _("Is"));
-    addColour('P', 0xff00d8, _("Party"));
-    addColour('S', 0x8415e2, _("Server"));
-    addColour('L', 0x919191, _("Logger"));
-    addColour('<', 0xe50d0d, _("Hyperlink"));
+    addcolor('C', 0x000000, _("Chat"));
+    addcolor('G', 0xff0000, _("GM"));
+    addcolor('H', 0xebc873, _("Highlight"));
+    addcolor('Y', 0x1fa052, _("Player"));
+    addcolor('W', 0x0000ff, _("Whisper"));
+    addcolor('I', 0xf1dc27, _("Is"));
+    addcolor('P', 0xff00d8, _("Party"));
+    addcolor('S', 0x8415e2, _("Server"));
+    addcolor('L', 0x919191, _("Logger"));
+    addcolor('<', 0xe50d0d, _("Hyperlink"));
     commit();
 }
 
-Colour::~Colour()
+color::~color()
 {
     for (ColVector::iterator col = mColVector.begin(),
              colEnd = mColVector.end();
          col != colEnd;
          ++col)
     {
-        config.setValue("Colour" + col->text, toString(col->rgb));
+        config.setValue("color" + col->text, toString(col->rgb));
     }
 }
 
-void Colour::setColour(const char c, const int rgb)
+void color::setcolor(const char c, const int rgb)
 {
     for (ColVector::iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -67,7 +67,7 @@ void Colour::setColour(const char c, const int rgb)
     }
 }
 
-int Colour::getColour(const char c, bool &valid) const
+int color::getcolor(const char c, bool &valid) const
 {
     for (ColVector::const_iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -84,7 +84,7 @@ int Colour::getColour(const char c, bool &valid) const
     return 0x000000;
 }
 
-std::string Colour::getElementAt(int i)
+std::string color::getElementAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -93,7 +93,7 @@ std::string Colour::getElementAt(int i)
     return mColVector[i].text;
 }
 
-char Colour::getColourCharAt(int i)
+char color::getcolorCharAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -102,13 +102,13 @@ char Colour::getColourCharAt(int i)
     return mColVector[i].ch;
 }
 
-void Colour::addColour(const char c, const int rgb, const std::string &text)
+void color::addcolor(const char c, const int rgb, const std::string &text)
 {
-    int trueRgb = config.getValue("Colour" + text, rgb);
-    mColVector.push_back(ColourElem(c, trueRgb, text));
+    int trueRgb = config.getValue("color" + text, rgb);
+    mColVector.push_back(colorElem(c, trueRgb, text));
 }
 
-int Colour::getColourAt(int i)
+int color::getcolorAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -117,7 +117,7 @@ int Colour::getColourAt(int i)
     return mColVector[i].rgb;
 }
 
-void Colour::setColourAt(int i, int rgb)
+void color::setcolorAt(int i, int rgb)
 {
     if (i >= 0 && i < getNumberOfElements())
     {
@@ -125,7 +125,7 @@ void Colour::setColourAt(int i, int rgb)
     }
 }
 
-void Colour::commit()
+void color::commit()
 {
     for (ColVector::iterator i = mColVector.begin(), iEnd = mColVector.end();
          i != iEnd;
@@ -135,7 +135,7 @@ void Colour::commit()
     }
 }
 
-void Colour::rollback()
+void color::rollback()
 {
     for (ColVector::iterator i = mColVector.begin(), iEnd = mColVector.end();
          i != iEnd;

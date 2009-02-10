@@ -36,19 +36,19 @@
 
 class BrowserBox;
 
-class Setup_Colours : public SetupTab, public gcn::ActionListener,
+class Setup_colors : public SetupTab, public gcn::ActionListener,
                       public TextFieldListener
 {
     public:
-        Setup_Colours();
-        ~Setup_Colours();
+        Setup_colors();
+        ~Setup_colors();
         void apply();
         void cancel();
         void action(const gcn::ActionEvent &event);
 
         void listen(const TextField *tf);
     private:
-        gcn::ListBox *mColourBox;
+        gcn::ListBox *mcolorBox;
         gcn::ScrollArea *mScroll;
         BrowserBox *mPreview;
         gcn::ScrollArea *mPreviewBox;
@@ -70,6 +70,6 @@ class Setup_Colours : public SetupTab, public gcn::ActionListener,
         int mBlueValue;
 
         void setEntry(gcn::Slider *s, TextField *t, int value);
-        void updateColour();
+        void updatecolor();
 };
 #endif

@@ -31,8 +31,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/chatinput.h \
 	      gui/checkbox.cpp \
 	      gui/checkbox.h \
-	      gui/colour.cpp \
-	      gui/colour.h \
+	      gui/color.cpp \
+	      gui/color.h \
 	      gui/confirm_dialog.cpp \
 	      gui/confirm_dialog.h \
 	      gui/connection.cpp \
@@ -114,8 +114,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/setup.h \
 	      gui/setup_audio.cpp \
 	      gui/setup_audio.h \
-	      gui/setup_colours.cpp \
-	      gui/setup_colours.h \
+	      gui/setup_colors.cpp \
+	      gui/setup_colors.h \
 	      gui/setup_joystick.cpp \
 	      gui/setup_joystick.h \
 	      gui/setup_keyboard.cpp \

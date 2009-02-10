@@ -22,7 +22,7 @@
 #include <guichan/font.hpp>
 #include <guichan/listmodel.hpp>
 
-#include "colour.h"
+#include "color.h"
 #include "shop.h"
 #include "shoplistbox.h"
 
@@ -64,9 +64,9 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
         mAlpha = config.getValue("guialpha", 0.8);
 
     bool valid;
-    const int red = (textColour->getColour('H', valid) >> 16) & 0xFF;
-    const int green = (textColour->getColour('H', valid) >> 8) & 0xFF;
-    const int blue = textColour->getColour('H', valid) & 0xFF;
+    const int red = (textcolor->getcolor('H', valid) >> 16) & 0xFF;
+    const int green = (textcolor->getcolor('H', valid) >> 8) & 0xFF;
+    const int blue = textcolor->getcolor('H', valid) & 0xFF;
     const int alpha = mAlpha * 255;
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);

@@ -134,7 +134,7 @@ Gui::Gui(Graphics *graphics):
 
     gcn::Widget::setGlobalFont(mGuiFont);
 
-    // Load hits' colourful fonts
+    // Load hits' colorful fonts
     try
     {
         hitRedFont = new gcn::ImageFont("graphics/gui/hits_red.png",
