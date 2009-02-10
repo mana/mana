@@ -40,10 +40,13 @@
 
 static const char *SKILLS_FILE = _("skills.xml");
 
-struct SkillInfo {
+struct SkillInfo
+{
     std::string name;
     bool modifiable;
 };
+
+static const SkillInfo fakeSkillInfo = { _("???"), false };
 
 std::vector<SkillInfo> skill_db;
 
@@ -80,8 +83,6 @@ public:
 
     virtual void update(void)
     {
-	static const SkillInfo fakeSkillInfo = { _("???"), false };
-
         mEntriesNr = mDialog->getSkills().size();
         resize();
 
@@ -172,10 +173,18 @@ void SkillDialog::action(const gcn::ActionEvent &event)
         if (selectedSkill >= 0)
             player_node->raiseSkill(mSkillList[selectedSkill]->id);
     }
-    else if (event.getId() == "skill")
+    else if (event.getId() == "skill" && mTable->getSelectedRow() > -1)
     {
-        mIncButton->setEnabled(mTable->getSelectedRow() > -1 &&
-                               player_node->mSkillPoint > 0);
+        SKILL *skill = mSkillList[mTable->getSelectedRow()];
+        SkillInfo const *info;
+
+        if (skill->id >= 0 && (unsigned int) skill->id < skill_db.size())
+            info = &skill_db[skill->id];
+        else
+            info = &fakeSkillInfo;
+
+        mIncButton->setEnabled(player_node->mSkillPoint > 0 &&
+                               info->modifiable);
     }
     else if (event.getId() == "close")
         setVisible(false);
