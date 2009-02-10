@@ -26,7 +26,7 @@
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
-color::color()
+Color::Color()
 {
     addColor('C', 0x000000, _("Chat"));
     addColor('G', 0xff0000, _("GM"));
@@ -41,7 +41,7 @@ color::color()
     commit();
 }
 
-color::~color()
+Color::~Color()
 {
     for (ColVector::iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -52,7 +52,7 @@ color::~color()
     }
 }
 
-void color::setColor(const char c, const int rgb)
+void Color::setColor(const char c, const int rgb)
 {
     for (ColVector::iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -67,7 +67,7 @@ void color::setColor(const char c, const int rgb)
     }
 }
 
-int color::getColor(const char c, bool &valid) const
+int Color::getColor(const char c, bool &valid) const
 {
     for (ColVector::const_iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -84,7 +84,7 @@ int color::getColor(const char c, bool &valid) const
     return 0x000000;
 }
 
-std::string color::getElementAt(int i)
+std::string Color::getElementAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -93,7 +93,7 @@ std::string color::getElementAt(int i)
     return mColVector[i].text;
 }
 
-char color::getColorCharAt(int i)
+char Color::getColorCharAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -102,13 +102,13 @@ char color::getColorCharAt(int i)
     return mColVector[i].ch;
 }
 
-void color::addColor(const char c, const int rgb, const std::string &text)
+void Color::addColor(const char c, const int rgb, const std::string &text)
 {
     int trueRgb = config.getValue("color" + text, rgb);
     mColVector.push_back(colorElem(c, trueRgb, text));
 }
 
-int color::getColorAt(int i)
+int Color::getColorAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -117,7 +117,7 @@ int color::getColorAt(int i)
     return mColVector[i].rgb;
 }
 
-void color::setColorAt(int i, int rgb)
+void Color::setColorAt(int i, int rgb)
 {
     if (i >= 0 && i < getNumberOfElements())
     {
@@ -125,7 +125,7 @@ void color::setColorAt(int i, int rgb)
     }
 }
 
-void color::commit()
+void Color::commit()
 {
     for (ColVector::iterator i = mColVector.begin(), iEnd = mColVector.end();
          i != iEnd;
@@ -135,7 +135,7 @@ void color::commit()
     }
 }
 
-void color::rollback()
+void Color::rollback()
 {
     for (ColVector::iterator i = mColVector.begin(), iEnd = mColVector.end();
          i != iEnd;

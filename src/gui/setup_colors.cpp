@@ -42,12 +42,12 @@
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
-Setup_colors::Setup_colors() :
+Setup_Colors::Setup_Colors() :
     mSelected(-1)
 {
     setOpaque(false);
 
-    mcolorBox = new ListBox(textcolor);
+    mcolorBox = new ListBox(textColor);
     mcolorBox->setActionEventId("color_box");
     mcolorBox->addActionListener(this);
 
@@ -129,7 +129,7 @@ Setup_colors::Setup_colors() :
     setDimension(gcn::Rectangle(0, 0, 290, 250));
 }
 
-Setup_colors::~Setup_colors()
+Setup_Colors::~Setup_Colors()
 {
     delete mRedLabel;
     delete mRedSlider;
@@ -146,13 +146,13 @@ Setup_colors::~Setup_colors()
     delete mScroll;
 }
 
-void Setup_colors::action(const gcn::ActionEvent &event)
+void Setup_Colors::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "color_box")
     {
         mSelected = mcolorBox->getSelected();
-        int col = textcolor->getColorAt(mSelected);
-        char ch = textcolor->getColorCharAt(mSelected);
+        int col = textColor->getColorAt(mSelected);
+        char ch = textColor->getColorCharAt(mSelected);
         std::string msg;
 
         if (ch == '<')
@@ -173,26 +173,26 @@ void Setup_colors::action(const gcn::ActionEvent &event)
     if (event.getId() == "slider_red")
     {
         mRedText->setText(toString(std::floor(mRedSlider->getValue())));
-        updatecolor();
+        updateColor();
         return;
     }
 
     if (event.getId() == "slider_green")
     {
         mGreenText->setText(toString(std::floor(mGreenSlider->getValue())));
-        updatecolor();
+        updateColor();
         return;
     }
 
     if (event.getId() == "slider_blue")
     {
         mBlueText->setText(toString(std::floor(mBlueSlider->getValue())));
-        updatecolor();
+        updateColor();
         return;
     }
 }
 
-void Setup_colors::setEntry(gcn::Slider *s, TextField *t, int value)
+void Setup_Colors::setEntry(gcn::Slider *s, TextField *t, int value)
 {
     s->setValue(value);
     char buffer[100];
@@ -200,43 +200,43 @@ void Setup_colors::setEntry(gcn::Slider *s, TextField *t, int value)
     t->setText(buffer);
 }
 
-void Setup_colors::apply()
+void Setup_Colors::apply()
 {
-    textcolor->commit();
+    textColor->commit();
 }
 
-void Setup_colors::cancel()
+void Setup_Colors::cancel()
 {
-    textcolor->rollback();
-    int col = textcolor->getColorAt(mSelected);
+    textColor->rollback();
+    int col = textColor->getColorAt(mSelected);
     setEntry(mRedSlider, mRedText, col >> 16);
     setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
     setEntry(mBlueSlider, mBlueText, col & 0xff);
 }
 
-void Setup_colors::listen(const TextField *tf)
+void Setup_Colors::listen(const TextField *tf)
 {
     if (tf == mRedText)
     {
         mRedSlider->setValue(tf->getValue());
-        updatecolor();
+        updateColor();
         return;
     }
     if (tf == mGreenText)
     {
         mGreenSlider->setValue(tf->getValue());
-        updatecolor();
+        updateColor();
         return;
     }
     if (tf == mBlueText)
     {
         mBlueSlider->setValue(tf->getValue());
-        updatecolor();
+        updateColor();
         return;
     }
 }
 
-void Setup_colors::updatecolor()
+void Setup_Colors::updateColor()
 {
     if (mSelected == -1)
     {
@@ -245,5 +245,5 @@ void Setup_colors::updatecolor()
     int rgb = static_cast<int>(mRedSlider->getValue()) << 16 |
               static_cast<int>(mGreenSlider->getValue()) << 8 |
               static_cast<int>(mBlueSlider->getValue());
-    textcolor->setColorAt(mSelected, rgb);
+    textColor->setColorAt(mSelected, rgb);
 }

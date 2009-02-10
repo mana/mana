@@ -27,18 +27,18 @@
 
 #include <guichan/listmodel.hpp>
 
-class color : public gcn::ListModel
+class Color : public gcn::ListModel
 {
     public:
         /**
          * Constructor
          */
-        color();
+        Color();
 
         /**
          * Destructor
          */
-        ~color();
+        ~Color();
 
         /**
          * Define the color replacement for a character
@@ -131,6 +131,6 @@ class color : public gcn::ListModel
         void addColor(const char c, const int rgb, const std::string &text);
 };
 
-extern color *textcolor;
+extern Color *textColor;
 
 #endif

@@ -90,7 +90,7 @@ Setup::Setup():
     panel->addTab(_("Keyboard"), tab);
     mTabs.push_back(tab);
 
-    tab = new Setup_colors();
+    tab = new Setup_Colors();
     panel->addTab(_("Colors"), tab);
     mTabs.push_back(tab);
 

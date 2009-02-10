@@ -254,7 +254,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         bool valid;
         if ((mHighMode & BACKGROUND))
         {
-            graphics->setColor(gcn::Color(textcolor->getColor('H', valid)));
+            graphics->setColor(gcn::Color(textColor->getColor('H', valid)));
             graphics->fillRectangle(gcn::Rectangle(
                         mLinks[mSelectedLink].x1,
                         mLinks[mSelectedLink].y1,
@@ -265,7 +265,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
         if ((mHighMode & UNDERLINE))
         {
-            graphics->setColor(gcn::Color(textcolor->getColor('<', valid)));
+            graphics->setColor(gcn::Color(textColor->getColor('<', valid)));
             graphics->drawLine(
                     mLinks[mSelectedLink].x1,
                     mLinks[mSelectedLink].y2,
@@ -331,7 +331,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                     else
                     {
                         bool valid;
-                        int rgb = textcolor->getColor(c, valid);
+                        int rgb = textColor->getColor(c, valid);
                         if (c == '<')
                         {
                             const int size = mLinks[link].x2 - mLinks[link].x1;

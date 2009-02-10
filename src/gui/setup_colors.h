@@ -36,12 +36,12 @@
 
 class BrowserBox;
 
-class Setup_colors : public SetupTab, public gcn::ActionListener,
+class Setup_Colors : public SetupTab, public gcn::ActionListener,
                       public TextFieldListener
 {
     public:
-        Setup_colors();
-        ~Setup_colors();
+        Setup_Colors();
+        ~Setup_Colors();
         void apply();
         void cancel();
         void action(const gcn::ActionEvent &event);
@@ -70,6 +70,6 @@ class Setup_colors : public SetupTab, public gcn::ActionListener,
         int mBlueValue;
 
         void setEntry(gcn::Slider *s, TextField *t, int value);
-        void updatecolor();
+        void updateColor();
 };
 #endif

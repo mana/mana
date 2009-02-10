@@ -135,7 +135,7 @@ CharServerHandler charServerHandler;
 LoginData loginData;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
-color *textcolor;
+Color *textColor;
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {
@@ -760,7 +760,7 @@ int main(int argc, char *argv[])
     unsigned int oldstate = !state; // We start with a status change.
 
     // Needs to be created in main, as the updater uses it
-    textcolor = new color();
+    textColor = new Color();
 
     Game *game = NULL;
     Window *currentDialog = NULL;
@@ -1095,7 +1095,7 @@ int main(int argc, char *argv[])
         usleep(50000);
     }
 
-    delete textcolor;
+    delete textColor;
 #ifdef PACKAGE_VERSION
     delete versionLabel;
 #endif
