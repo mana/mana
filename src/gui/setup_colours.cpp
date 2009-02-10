@@ -20,6 +20,7 @@
  */
 
 #include <string>
+#include <cmath>
 
 #include <guichan/listmodel.hpp>
 #include <guichan/widgets/label.hpp>
@@ -171,21 +172,21 @@ void Setup_Colours::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "slider_red")
     {
-        mRedText->setText(toString(mRedSlider->getValue()));
+        mRedText->setText(toString(std::floor(mRedSlider->getValue())));
         updateColour();
         return;
     }
 
     if (event.getId() == "slider_green")
     {
-        mGreenText->setText(toString(mGreenSlider->getValue()));
+        mGreenText->setText(toString(std::floor(mGreenSlider->getValue())));
         updateColour();
         return;
     }
 
     if (event.getId() == "slider_blue")
     {
-        mBlueText->setText(toString(mBlueSlider->getValue()));
+        mBlueText->setText(toString(std::floor(mBlueSlider->getValue())));
         updateColour();
         return;
     }
