@@ -28,20 +28,18 @@
 #include "effectmanager.h"
 #include "game.h"
 #include "graphics.h"
-#include "localplayer.h"
 #include "log.h"
 #include "map.h"
 #include "particle.h"
+#include "simpleanimation.h"
 #include "sound.h"
 #include "text.h"
 
 #include "gui/speechbubble.h"
 
 #include "resources/colordb.h"
-
 #include "resources/emotedb.h"
 #include "resources/image.h"
-#include "resources/imageset.h"
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
@@ -88,7 +86,8 @@ Being::Being(int id, int job, Map *map):
     mSpriteIDs(VECTOREND_SPRITE, 0),
     mSpriteColors(VECTOREND_SPRITE, ""),
     mStatusParticleEffects(&mStunParticleEffects, false),
-    mChildParticleEffects(&mStatusParticleEffects, false)
+    mChildParticleEffects(&mStatusParticleEffects, false),
+    mUsedTargetCursor(NULL)
 {
     setMap(map);
 
@@ -106,7 +105,8 @@ Being::Being(int id, int job, Map *map):
             emotionSet.push_back(AnimatedSprite::load(file, variant));
         }
 
-        // Hairstyles are encoded as negative numbers.  Count how far negative we can go.
+        // Hairstyles are encoded as negative numbers.  Count how far negative
+        // we can go.
         int hairstyles = 1;
         while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
         {
@@ -123,6 +123,7 @@ Being::Being(int id, int job, Map *map):
 
 Being::~Being()
 {
+    mUsedTargetCursor = NULL;
     delete_all(mSprites);
     clearPath();
 
@@ -142,9 +143,7 @@ Being::~Being()
 void Being::setDestination(Uint16 destX, Uint16 destY)
 {
     if (mMap)
-    {
         setPath(mMap->findPath(mX, mY, destX, destY));
-    }
 }
 
 void Being::clearPath()
@@ -225,19 +224,13 @@ void Being::takeDamage(int amount)
 
     // Selecting the right color
     if (damage == "miss")
-    {
         font = hitYellowFont;
-    }
     else
     {
         if (getType() == MONSTER)
-        {
             font = hitBlueFont;
-        }
         else
-        {
             font = hitRedFont;
-        }
     }
 
     // Show damage number
@@ -252,13 +245,9 @@ void Being::showCrit()
 
     // Selecting the right color
     if (getType() == MONSTER)
-    {
         font = hitBlueFont;
-    }
     else
-    {
         font = hitRedFont;
-    }
 
     // Show crit notice
     particleEngine->addTextSplashEffect(text, 255, 255, 255, font,
@@ -276,17 +265,13 @@ void Being::setMap(Map *map)
 {
     // Remove sprite from potential previous map
     if (mMap)
-    {
         mMap->removeSprite(mSpriteIterator);
-    }
 
     mMap = map;
 
     // Add sprite to potential new map
     if (mMap)
-    {
         mSpriteIterator = mMap->addSprite(this);
-    }
 
     // Clear particle effect list because child particles became invalid
     mChildParticleEffects.clear();
@@ -321,9 +306,7 @@ void Being::setAction(Action action)
             for (int i = 0; i < VECTOREND_SPRITE; i++)
             {
                 if (mSprites[i])
-                {
                     mSprites[i]->reset();
-                }
             }
             break;
         case HURT:
@@ -344,9 +327,7 @@ void Being::setAction(Action action)
         for (int i = 0; i < VECTOREND_SPRITE; i++)
         {
             if (mSprites[i])
-            {
                 mSprites[i]->play(currentAction);
-            }
         }
         mAction = action;
     }
@@ -454,18 +435,18 @@ void Being::logic()
     if (mEmotion != 0)
     {
         mEmotionTime--;
-        if (mEmotionTime == 0) {
+        if (mEmotionTime == 0)
             mEmotion = 0;
-        }
     }
 
     // Update sprite animations
+    if (mUsedTargetCursor != NULL)
+        mUsedTargetCursor->update(tick_time * 10);
+
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
         if (mSprites[i] != NULL)
-        {
             mSprites[i]->update(tick_time * 10);
-        }
     }
 
     // Update particle effects
@@ -478,6 +459,14 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;
+
+    if (mUsedTargetCursor != NULL)
+    {
+        const int width = mSprites[BASE_SPRITE]->getWidth();
+        const int height = mSprites[BASE_SPRITE]->getHeight();
+
+        mUsedTargetCursor->draw(graphics, px, py);
+    }
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
@@ -517,11 +506,12 @@ void Being::drawSpeech(int offsetX, int offsetY)
 
         mSpeechBubble->setCaption(mName, mNameColor);
 
-        // Not quite centered, but close enough. However, it's not too important to get
-        // it right right now, as it doesn't take bubble collision into account yet.
+        // Not quite centered, but close enough. However, it's not too important
+        // to get it right right now, as it doesn't take bubble collision into
+        // account yet.
         mSpeechBubble->setText(mSpeech);
-        mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), py - 70 -
-                                        (mSpeechBubble->getNumRows()*14));
+        mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), 
+                                   py - 70 - (mSpeechBubble->getNumRows() * 14));
         mSpeechBubble->setVisible(true);
     }
     else if (mSpeechTime > 0 && !config.getValue("speechbubble", 1))
@@ -586,7 +576,6 @@ int Being::getWidth() const
     }
 }
 
-
 int Being::getHeight() const
 {
     if (mSprites[BASE_SPRITE])
@@ -602,3 +591,8 @@ int Being::getHeight() const
     }
 }
 
+void Being::setTargetAnimation(SimpleAnimation* animation)
+{
+    mUsedTargetCursor = animation;
+    mUsedTargetCursor->reset();
+}

@@ -39,7 +39,6 @@ class Inventory;
 class Item;
 class Map;
 class Network;
-class SimpleAnimation;
 
 /**
  * The local player character.
@@ -231,14 +230,6 @@ class LocalPlayer : public Player
 
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
-        void drawTargetCursor(Graphics *graphics, int offsetX, int offsetY);
-
-        /** Animated in range target cursor. */
-        SimpleAnimation *mTargetCursorInRange[NUM_TC];
-
-        /** Animated out of range target cursor. */
-        SimpleAnimation *mTargetCursorOutRange[NUM_TC];
-
         const std::auto_ptr<Equipment> mEquipment;
 
     protected:
@@ -264,20 +255,20 @@ class LocalPlayer : public Player
         Inventory *mInventory;
         Inventory *mStorage;
 
+        // Load the target cursors into memory
+        void initTargetCursor();
+
         /**
          * Helper function for loading target cursors
          */
         void loadTargetCursor(std::string filename, int width, int height,
                               bool outRange, Being::TargetCursorSize size);
 
-        /** Images of in range target cursor. */
-        ImageSet *mInRangeImages[NUM_TC];
+        /** Images of the target cursor. */
+        ImageSet *mTargetCursorImages[2][NUM_TC];
 
-        /** Images of out of range target cursor. */
-        ImageSet *mOutRangeImages[NUM_TC];
-
-        // Load the target cursors into memory
-        void initTargetCursor();
+        /** Animated target cursors. */
+        SimpleAnimation *mTargetCursor[2][NUM_TC];
 };
 
 extern LocalPlayer *player_node;

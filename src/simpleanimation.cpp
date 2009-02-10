@@ -19,6 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "graphics.h"
 #include "log.h"
 #include "simpleanimation.h"
 
@@ -112,17 +113,42 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
     mCurrentFrame = mAnimation->getFrame(0);
 }
 
+bool SimpleAnimation::draw(Graphics* graphics, int posX, int posY) const
+{
+    if (!mCurrentFrame || !mCurrentFrame->image)
+        return false;
+
+    return graphics->drawImage(mCurrentFrame->image,
+                               posX + mCurrentFrame->offsetX,
+                               posY + mCurrentFrame->offsetY);
+}
+
+void SimpleAnimation::reset()
+{
+    mAnimationTime = 0;
+    mAnimationPhase = 0;
+}
+
 void SimpleAnimation::update(unsigned int timePassed)
 {
+    // Avoid freaking out at first frame or when tick_time overflows
+    if (timePassed < mLastTime || mLastTime == 0)
+        mLastTime = timePassed;
+
+    // If not enough time has passed yet, do nothing
+    if (timePassed <= mLastTime || !mAnimation)
+        return;
+
     mAnimationTime += timePassed;
-    while (mAnimationTime > mCurrentFrame->delay)
+
+    while (mAnimationTime > mCurrentFrame->delay && mCurrentFrame->delay > 0)
     {
         mAnimationTime -= mCurrentFrame->delay;
         mAnimationPhase++;
+
         if (mAnimationPhase >= mAnimation->getLength())
-        {
             mAnimationPhase = 0;
-        }
+
         mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
     }
 }

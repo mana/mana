@@ -41,7 +41,6 @@
 #include "net/protocol.h"
 
 #include "resources/animation.h"
-#include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
@@ -95,10 +94,10 @@ LocalPlayer::~LocalPlayer()
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
-        delete mTargetCursorInRange[i];
-        delete mTargetCursorOutRange[i];
-        mInRangeImages[i]->decRef();
-        mOutRangeImages[i]->decRef();
+        delete mTargetCursor[0][i];
+        delete mTargetCursor[1][i];
+        mTargetCursorImages[0][i]->decRef();
+        mTargetCursorImages[1][i]->decRef();
     }
 }
 
@@ -119,33 +118,32 @@ void LocalPlayer::logic()
 
         case WALK:
             mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
-            if (mFrame >= 6) {
+            if (mFrame >= 6)
                 nextStep();
-            }
             break;
 
         case ATTACK:
             int frames = 4;
-            if (    mEquippedWeapon
-                &&  mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
-            {
+            if (mEquippedWeapon &&
+                mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
                 frames = 5;
-            }
+
             mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
-            if (mFrame >= frames) {
+
+            if (mFrame >= frames)
                 nextStep();
-            }
+
             break;
     }
 
     // Actions are allowed once per second
-    if (get_elapsed_time(mLastAction) >= 1000) {
+    if (get_elapsed_time(mLastAction) >= 1000)
         mLastAction = -1;
-    }
+
     // Targeting allowed 4 times a second
-    if (get_elapsed_time(mLastTarget) >= 250) {
+    if (get_elapsed_time(mLastTarget) >= 250)
         mLastTarget = -1;
-    }
+
     // Remove target if its been on a being for more than a minute
     if (get_elapsed_time(mTargetTime) >= 60000)
     {
@@ -156,20 +154,20 @@ void LocalPlayer::logic()
 
     if (mTarget)
     {
-        if (mTarget->mAction == DEAD)
-        {
-            stopAttack();
-        }
-        if (mKeepAttacking && mTarget)
-        {
-            attack(mTarget, true);
-        }
+        // Find whether target is in range
+        const int rangeX = abs(mTarget->mX - mX);
+        const int rangeY = abs(mTarget->mY - mY);
+        const int attackRange = getAttackRange();
+        const int inRange = rangeX > attackRange || rangeY > attackRange ? 1 : 0;
 
-        for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
-        {
-            player_node->mTargetCursorInRange[i]->update(10);
-            player_node->mTargetCursorOutRange[i]->update(10);
-        }
+        mTarget->setTargetAnimation(
+            mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
+
+        if (mTarget->mAction == DEAD)
+            stopAttack();
+
+        if (mKeepAttacking && mTarget)
+            attack(mTarget, true);
     }
 
     Being::logic();
@@ -192,13 +190,9 @@ void LocalPlayer::setName(const std::string &name)
     }
 
     if (config.getValue("showownname", false) && mMapInitialized)
-    {
         Player::setName(name);
-    }
     else
-    {
         Being::setName(name);
-    }
 }
 
 void LocalPlayer::nextStep()
@@ -206,15 +200,10 @@ void LocalPlayer::nextStep()
     if (mPath.empty())
     {
         if (mPickUpTarget)
-        {
             pickUp(mPickUpTarget);
-        }
 
         if (mWalkingDir)
-        {
             walk(mWalkingDir);
-        }
-
     }
 
     if (mGoingToTarget && mTarget && withinAttackRange(mTarget))
@@ -278,12 +267,15 @@ void LocalPlayer::pickUp(FloorItem *item)
     int dx = item->getX() - mX;
     int dy = item->getY() - mY;
 
-    if (dx * dx + dy * dy < 4) {
+    if (dx * dx + dy * dy < 4)
+    {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_ITEM_PICKUP);
         outMsg.writeInt32(item->getId());
         mPickUpTarget = NULL;
-    } else {
+    }
+    else
+    {
         setDestination(item->getX(), item->getY());
         mPickUpTarget = item;
         stopAttack();
@@ -339,27 +331,32 @@ void LocalPlayer::setTarget(Being *target)
 {
     if (mLastTarget != -1 || target == this)
         return;
+
     mLastTarget = tick_time;
 
-    if ((target == NULL) || target == mTarget)
-    {
+    if (target == mTarget)
         target = NULL;
-        mKeepAttacking = false;
-        mTargetTime = -1;
-    }
+
     if (target)
     {
         mTargetTime = tick_time;
     }
+    else
+    {
+        mKeepAttacking = false;
+        mTargetTime = -1;
+    }
+
+    if (mTarget)
+        mTarget->untarget();
+
     if (mTarget && mTarget->getType() == Being::MONSTER)
-    {
         static_cast<Monster *>(mTarget)->showName(false);
-    }
+
     mTarget = target;
+
     if (target && target->getType() == Being::MONSTER)
-    {
         static_cast<Monster *>(target)->showName(true);
-    }
 }
 
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
@@ -541,7 +538,8 @@ void LocalPlayer::attack(Being *target, bool keep)
         std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);
         if (soundFile != "") sound.playSfx(soundFile);
     }
-    else {
+    else
+    {
         sound.playSfx("sfx/fist-swish.ogg");
     }
 
@@ -551,9 +549,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     outMsg.writeInt8(0);
 
     if (!keep)
-    {
         stopAttack();
-    }
 }
 
 void LocalPlayer::stopAttack()
@@ -643,54 +639,19 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
 
     currentImageSet = resman->getImageSet(filename, width, height);
     Animation *anim = new Animation();
+
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)
     {
-        anim->addFrame(currentImageSet->get(i), 75, 0, 0);
+        anim->addFrame(currentImageSet->get(i), 75,
+                      (16 - (currentImageSet->getWidth() / 2)),
+                      (16 - (currentImageSet->getHeight() / 2)));
     }
+
     currentCursor = new SimpleAnimation(anim);
 
-    if (outRange)
-    {
-        mOutRangeImages[size] = currentImageSet;
-        mTargetCursorOutRange[size] = currentCursor;
-    }
-    else
-    {
-        mInRangeImages[size] = currentImageSet;
-        mTargetCursorInRange[size] = currentCursor;
-    }
+    const int index = outRange ? 1 : 0;
+
+    mTargetCursorImages[index][size] = currentImageSet;
+    mTargetCursor[index][size] = currentCursor;
 }
 
-void LocalPlayer::drawTargetCursor(Graphics *graphics, int scrollX, int scrollY)
-{
-
-    // Draw target marker if needed
-    if (mTarget)
-    {
-        // Calculate target circle position
-
-        // Find whether target is in range
-        int rangeX = abs(mTarget->mX - mX);
-        int rangeY = abs(mTarget->mY - mY);
-        int attackRange = getAttackRange();
-
-        // Get the correct target cursors graphic
-        TargetCursorSize cursorSize = mTarget->getTargetCursorSize();
-
-        if (rangeX > attackRange || rangeY > attackRange)
-        {
-            mTarget->mTargetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
-        }
-        else
-        {
-            mTarget->mTargetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
-        }
-
-        // Draw the target cursor at the correct position
-        int posX = mTarget->getPixelX() + 16 - mTarget->mTargetCursor->getWidth() / 2 - scrollX;
-        int posY = mTarget->getPixelY() + 16 - mTarget->mTargetCursor->getHeight() / 2 - scrollY;
-
-        graphics->drawImage(mTarget->mTargetCursor, posX, posY);
-   }
-   return;
-}
