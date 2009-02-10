@@ -39,7 +39,7 @@ Text::Text(const std::string &text, int x, int y,
            gcn::Graphics::Alignment alignment,
            gcn::Color color, bool isSpeech) :
     mText(text),
-    mcolor(color),
+    mColor(color),
     mIsSpeech(isSpeech)
 {
     if (textManager == 0)
@@ -161,7 +161,7 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
                 gcn::Graphics::LEFT);
     }
 
-    graphics->setColor(mcolor);
+    graphics->setColor(mColor);
     graphics->drawText(mText, mX - xOff, mY - yOff,
             gcn::Graphics::LEFT);
 }
