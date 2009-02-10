@@ -214,7 +214,7 @@ void Being::setSpeech(const std::string &text, Uint32 time)
         end = mSpeech.find(']', start);
     }
 
-    if (mSpeech != "")
+    if (!mSpeech.empty())
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 }
 

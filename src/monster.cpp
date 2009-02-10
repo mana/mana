@@ -125,7 +125,7 @@ void Monster::setAction(Action action)
 
             //attack particle effect
             particleEffect = getInfo().getAttackParticleEffect();
-            if (particleEffect != "" && mParticleEffects)
+            if (!particleEffect.empty() && mParticleEffects)
             {
                 switch (mDirection)
                 {

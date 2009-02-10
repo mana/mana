@@ -92,7 +92,7 @@ Window(""), mNetwork(network), mTmpVisible(false)
 
     // Read the party prefix
     std::string partyPrefix = config.getValue("PartyPrefix", "$");
-    mPartyPrefix = (partyPrefix == "" ? '$' : partyPrefix.at(0));
+    mPartyPrefix = (partyPrefix.empty() ? '$' : partyPrefix.at(0));
     mReturnToggles = config.getValue("ReturnToggles", "0") == "1";
     mRecorder = new Recorder(this);
     mParty = new Party(this, mNetwork);
@@ -193,7 +193,7 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
         lineColor = "##S";
     }
 
-    if (tmp.nick == "" && tmp.text.substr(0, 17) == "Visible GM status")
+    if (tmp.nick.empty() && tmp.text.substr(0, 17) == "Visible GM status")
     {
         player_node->setGM();
     }
@@ -447,7 +447,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
             msg = msg.substr(0, space);
         }
 
-        if (msg != "" && msg.at(0) == '/')
+        if (!msg.empty() && msg.at(0) == '/')
         {
             msg.erase(0, 1);
         }
@@ -475,7 +475,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         mRecorder->changeRecordingStatus(msg);
     else if (command == "toggle")
     {
-        if (msg == "")
+        if (msg.empty())
         {
             chatLog(mReturnToggles ? _("Return toggles chat.")
                     : _("Message closes chat."), BY_SERVER);
@@ -506,7 +506,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (command == "party")
     {
-        if (msg == "")
+        if (msg.empty())
         {
             chatLog(_("Unknown party command... Type \"/help\" party for more "
                     "information."), BY_SERVER);
@@ -517,7 +517,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         std::string rest = (space == std::string::npos ? ""
                             : msg.substr(space + 1, msg.length()));
 
-        if (rest != "")
+        if (!rest.empty())
         {
             msg = msg.substr(0, space);
             trim(msg);
@@ -564,7 +564,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         {
             if ((*bi)->getType() == Being::PLAYER)
             {
-                if (response != "")
+                if (!response.empty())
                 {
                     response += ", ";
                 }
@@ -757,7 +757,7 @@ void ChatWindow::party(const std::string & command, const std::string & rest)
 {
     if (command == "prefix")
     {
-        if (rest == "")
+        if (rest.empty())
         {
             char temp[2] = ".";
             *temp = mPartyPrefix;
@@ -788,7 +788,7 @@ void ChatWindow::party(const std::string & command, const std::string & rest)
 void ChatWindow::help(const std::string & msg1, const std::string & msg2)
 {
     chatLog(_("-- Help --"), BY_SERVER);
-    if (msg1 == "")
+    if (msg1.empty())
     {
         chatLog(_("/announce: Global announcement (GM only)"), BY_SERVER);
         chatLog(_("/clear: Clears this window"), BY_SERVER);

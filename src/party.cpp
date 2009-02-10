@@ -67,7 +67,7 @@ void Party::respond(const std::string &command, const std::string &args)
 
 void Party::create(const std::string &party)
 {
-    if (party == "")
+    if (party.empty())
     {
         mChat->chatLog(_("Party name is missing."), BY_SERVER);
         return;
@@ -122,7 +122,7 @@ void Party::invitedAsk(const std::string &nick, int gender,
                        const std::string &partyName)
 {
     mPartyName = partyName; /* Quick and nasty - needs redoing */
-    if (nick == "")
+    if (nick.empty())
     {
         mChat->chatLog(_("You can\'t have a blank party name!"), BY_SERVER);
         return;
@@ -153,7 +153,7 @@ void Party::leftResponse(const std::string &nick)
 
 void Party::receiveChat(Being *being, const std::string &msg)
 {
-    if (being == NULL)
+    if (!being)
     {
         return;
     }
@@ -169,7 +169,7 @@ void Party::receiveChat(Being *being, const std::string &msg)
 
 void Party::help(const std::string &msg)
 {
-    if (msg == "")
+    if (msg.empty())
     {
         mChat->chatLog(_("Command: /party <command> <args>"), BY_SERVER);
         mChat->chatLog(_("where <command> can be one of:"), BY_SERVER);

@@ -170,11 +170,12 @@ void Player::setSprite(int slot, int id, std::string color)
         std::string filename = ItemDB::get(id).getSprite(mGender);
         AnimatedSprite *equipmentSprite = NULL;
 
-        if (filename != "")
+        if (!filename.empty())
         {
-            if (color!="") filename += "|" + color;
+            if (!color.empty())
+                filename += "|" + color;
             equipmentSprite = AnimatedSprite::load(
-                "graphics/sprites/" + filename);
+                    "graphics/sprites/" + filename);
         }
 
         if (equipmentSprite)

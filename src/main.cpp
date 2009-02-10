@@ -975,7 +975,8 @@ int main(int argc, char *argv[])
                                                                 nextState);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
-                        if (options.chooseDefault || options.playername != "")
+                        if (options.chooseDefault
+                                || !options.playername.empty())
                         {
                             ((ServerSelectDialog*) currentDialog)->action(
                                 gcn::ActionEvent(NULL, "ok"));

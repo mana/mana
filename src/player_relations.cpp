@@ -59,7 +59,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
                    std::map<std::string, PlayerRelation *> *container)
     {
         std::string name = cobj->getValue(NAME, "");
-        if (name == "")
+        if (name.empty())
             return container;
 
         if (!(*container)[name]) {

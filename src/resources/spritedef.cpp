@@ -322,7 +322,7 @@ SpriteDef::~SpriteDef()
 
 SpriteAction SpriteDef::makeSpriteAction(const std::string& action)
 {
-    if (action == "" || action == "default") {
+    if (action.empty() || action == "default") {
         return ACTION_DEFAULT;
     }
     if (action == "stand") {
@@ -374,7 +374,7 @@ SpriteAction SpriteDef::makeSpriteAction(const std::string& action)
 
 SpriteDirection SpriteDef::makeSpriteDirection(const std::string& direction)
 {
-    if (direction == "" || direction == "default") {
+    if (direction.empty() || direction == "default") {
         return DIRECTION_DEFAULT;
     }
     else if (direction == "up") {

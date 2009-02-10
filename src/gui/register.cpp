@@ -250,7 +250,7 @@ bool RegisterDialog::canSubmit() const
 
 bool RegisterDialog::isUShort(const std::string &str)
 {
-    if (str == "")
+    if (str.empty())
     {
         return false;
     }
