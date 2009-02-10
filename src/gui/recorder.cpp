@@ -15,7 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -40,7 +40,7 @@ Recorder::Recorder(ChatWindow *chat, const std::string &title,
 
     mChat = chat;
     Button *button = new Button(buttonTxt, "activate", this);
-    setDefaultSize(0, windowContainer->getHeight() - 123 - button->getHeight() - 
+    setDefaultSize(0, windowContainer->getHeight() - 123 - button->getHeight() -
                    offsetY,  button->getWidth() + offsetX, button->getHeight() +
                    offsetY);
 
@@ -99,7 +99,7 @@ void Recorder::changeRecordingStatus(const std::string &msg)
          */
         mChat->chatLog(_("Starting to record..."), BY_SERVER);
         std::string file = std::string(PHYSFS_getUserDir()) + "/.aethyra/" + msgCopy;
-        
+
         mStream.open(file.c_str(), std::ios_base::trunc);
 
         if (mStream.is_open())
@@ -113,4 +113,3 @@ void Recorder::action(const gcn::ActionEvent &event)
 {
     changeRecordingStatus("");
 }
-

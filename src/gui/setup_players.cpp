@@ -241,7 +241,7 @@ Setup_Players::Setup_Players():
     mIgnoreActionChoicesBox = new DropDown(ignoreChoices, new ScrollArea(),
                                            new ListBox(ignoreChoices), false);
 
-    for (int i = 0; i < COLUMNS_NR; i++) 
+    for (int i = 0; i < COLUMNS_NR; i++)
     {
         mPlayerTableTitleModel->set(0, i,
                 new gcn::Label(gettext(table_titles[i])));

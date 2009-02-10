@@ -31,7 +31,7 @@ class Being;
 
 class EffectManager
 {
-    public: 
+    public:
         struct EffectDescription
         {
              int id;

@@ -130,7 +130,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     place(0, 0, mStatsTitleLabel, 5);
     place(5, 1, mStatsTotalLabel, 5);
     place(12, 1, mStatsCostLabel, 5);
-    for(int i = 0; i < 6; i++)
+    for (int i = 0; i < 6; i++)
     {
         place(0, 2 + i, mStatsLabel[i], 7).setPadding(5);
         place(7, 2 + i, mStatsDisplayLabel[i]).setPadding(5);

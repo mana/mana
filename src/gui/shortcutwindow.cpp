@@ -51,7 +51,7 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
     const int width = (int) config.getValue("screenwidth", 800);
     const int height = (int) config.getValue("screenheight", 600);
 
-    setDefaultSize(width - (mInstances * mItems->getBoxWidth()) - 
+    setDefaultSize(width - (mInstances * mItems->getBoxWidth()) -
                    (mInstances * border),  height - (mItems->getBoxHeight() *
                    mItems->getMaxItems()) - border, mItems->getBoxWidth() +
                    border, (mItems->getBoxHeight() * mItems->getMaxItems()) +
