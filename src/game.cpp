@@ -390,7 +390,7 @@ static bool saveScreenshot()
     else
     {
         chatWindow->chatLog(_("Saving screenshot failed!"), BY_SERVER);
-        logger->log(_("Error: could not save screenshot."));
+        logger->log("Error: could not save screenshot.");
     }
 
     SDL_FreeSurface(screenshot);
@@ -597,9 +597,9 @@ void Game::handleInput()
                case KeyboardConfig::KEY_QUIT:
                     if (!exitConfirm)
                     {
-                        exitConfirm = new ConfirmDialog( _("Quit"),
-                                                         _("Are you sure you "
-                                                           "want to quit?"));
+                        exitConfirm = new ConfirmDialog(_("Quit"),
+                                                        _("Are you sure you "
+                                                          "want to quit?"));
                         exitConfirm->addActionListener(&exitListener);
                         exitConfirm->requestMoveToTop();
                     }
@@ -778,7 +778,7 @@ void Game::handleInput()
             catch (gcn::Exception e)
             {
                 const char* err = e.getMessage().c_str();
-                logger->log(_("Warning: guichan input exception: %s"), err);
+                logger->log("Warning: guichan input exception: %s", err);
             }
         }
     } // End while

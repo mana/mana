@@ -191,9 +191,9 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                          player_node->mMaxWeight / 2)
                                  {
                                      weightNotice = new OkDialog(_("Message"),
-                                             _("You are carrying more then half "
-                                               "your weight. You are unable to "
-                                               "regain health."));
+                                             _("You are carrying more then "
+                                               "half your weight. You are "
+                                               "unable to regain health."));
                                      weightNotice->addActionListener(
                                              &weightListener);
                                  }
@@ -391,7 +391,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                              BY_SERVER);
                         break;
                     default:
-                        logger->log(_("0x013b: Unhandled message %i"), type);
+                        logger->log("0x013b: Unhandled message %i", type);
                         break;
                 }
             }

@@ -25,7 +25,6 @@
 
 #include "../log.h"
 
-#include "../utils/gettext.h"
 #include "../utils/xml.h"
 
 #define HAIR_COLOR_FILE "colors.xml"
@@ -51,7 +50,7 @@ void ColorDB::load()
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
-        logger->log(_("Trying TMW's color file, %s."), TMW_COLOR_FILE);
+        logger->log("Trying TMW's color file, %s.", TMW_COLOR_FILE);
 
         TMWHair = true;
 
@@ -61,7 +60,7 @@ void ColorDB::load()
         root = doc->rootNode();
         if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
         {
-            logger->log(_("ColorDB: Failed"));
+            logger->log("ColorDB: Failed");
             mColors[0] = mFail;
             mLoaded = true;
 
@@ -78,7 +77,7 @@ void ColorDB::load()
 
             if (mColors.find(id) != mColors.end())
             {
-                logger->log(_("ColorDB: Redefinition of dye ID %d"), id);
+                logger->log("ColorDB: Redefinition of dye ID %d", id);
             }
 
             TMWHair ? mColors[id] = XML::getProperty(node, "value", "#FFFFFF") :
@@ -93,7 +92,7 @@ void ColorDB::load()
 
 void ColorDB::unload()
 {
-    logger->log(_("Unloading color database..."));
+    logger->log("Unloading color database...");
 
     mColors.clear();
     mLoaded = false;
@@ -108,7 +107,7 @@ std::string& ColorDB::get(int id)
 
     if (i == mColors.end())
     {
-        logger->log(_("ColorDB: Error, unknown dye ID# %d"), id);
+        logger->log("ColorDB: Error, unknown dye ID# %d", id);
         return mFail;
     }
     else

@@ -43,7 +43,7 @@ void MonsterDB::load()
     mUnknown.addSprite("error.xml");
     mUnknown.setName(_("unnamed"));
 
-    logger->log(_("Initializing monster database..."));
+    logger->log("Initializing monster database...");
 
     XML::Document doc(_("monsters.xml"));
     xmlNodePtr rootNode = doc.rootNode();
@@ -81,7 +81,8 @@ void MonsterDB::load()
         }
         else
         {
-            logger->log(_("MonsterDB: Unknown target cursor type \"%s\" for %s - using medium sized one"),
+            logger->log("MonsterDB: Unknown target cursor type \"%s\" for %s -"
+                        "using medium sized one",
                         targetCursor.c_str(), currentInfo->getName().c_str());
             currentInfo->setTargetCursorSize(Being::TC_MEDIUM);
         }
@@ -91,7 +92,8 @@ void MonsterDB::load()
         {
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {
-                currentInfo->addSprite((const char*) spriteNode->xmlChildrenNode->content);
+                currentInfo->addSprite(
+                        (const char*) spriteNode->xmlChildrenNode->content);
             }
 
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
@@ -118,14 +120,17 @@ void MonsterDB::load()
                 }
                 else
                 {
-                    logger->log(_("MonsterDB: Warning, sound effect %s for unknown event %s of monster %s"),
-                                filename, event.c_str(), currentInfo->getName().c_str());
+                    logger->log("MonsterDB: Warning, sound effect %s for "
+                                "unknown event %s of monster %s",
+                                filename, event.c_str(),
+                                currentInfo->getName().c_str());
                 }
             }
 
             if (xmlStrEqual(spriteNode->name, BAD_CAST "attack"))
             {
-                std::string event = XML::getProperty(spriteNode, "particle-effect", "");
+                std::string event = XML::getProperty(
+                        spriteNode, "particle-effect", "");
                 currentInfo->addAttackParticleEffect(event);
             }
 
@@ -156,7 +161,7 @@ const MonsterInfo &MonsterDB::get(int id)
 
     if (i == mMonsterInfos.end())
     {
-        logger->log(_("MonsterDB: Warning, unknown monster ID %d requested"), id);
+        logger->log("MonsterDB: Warning, unknown monster ID %d requested", id);
         return mUnknown;
     }
     else

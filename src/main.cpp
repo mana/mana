@@ -207,14 +207,14 @@ void setUpdatesDir()
         }
         else
         {
-            logger->log(_("Error: Invalid update host: %s"), updateHost.c_str());
+            logger->log("Error: Invalid update host: %s", updateHost.c_str());
             errorMessage = _("Invalid update host: ") + updateHost;
             state = ERROR_STATE;
         }
     }
     else
     {
-        logger->log(_("Warning: no protocol was specified for the update host"));
+        logger->log("Warning: no protocol was specified for the update host");
         updates << "updates/" << updateHost << "/" << loginData.port;
         updatesDir = updates.str();
     }
@@ -239,14 +239,14 @@ void setUpdatesDir()
             if (!CreateDirectory(newDir.c_str(), 0) &&
                 GetLastError() != ERROR_ALREADY_EXISTS)
             {
-                logger->log(_("Error: %s can't be made, but doesn't exist!"),
-                              newDir.c_str());
+                logger->log("Error: %s can't be made, but doesn't exist!",
+                            newDir.c_str());
                 errorMessage = _("Error creating updates directory!");
                 state = ERROR_STATE;
             }
 #else
-            logger->log(_("Error: %s/%s can't be made, but doesn't exist!"),
-                         homeDir.c_str(), updatesDir.c_str());
+            logger->log("Error: %s/%s can't be made, but doesn't exist!",
+                        homeDir.c_str(), updatesDir.c_str());
             errorMessage = _("Error creating updates directory!");
             state = ERROR_STATE;
 #endif
@@ -285,13 +285,13 @@ void init_engine(const Options &options)
     logger->setLogFile(homeDir + std::string("/tmw.log"));
 
     #ifdef PACKAGE_VERSION
-        logger->log(_("Starting The Mana World Version %s"), PACKAGE_VERSION);
+        logger->log("Starting The Mana World Version %s", PACKAGE_VERSION);
     #else
-        logger->log(_("Starting The Mana World - Version not defined"));
+        logger->log("Starting The Mana World - Version not defined");
     #endif
 
     // Initialize SDL
-    logger->log(_("Initializing SDL..."));
+    logger->log("Initializing SDL...");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
         std::cerr << _("Could not initialize SDL: ") <<
             SDL_GetError() << std::endl;
@@ -336,7 +336,7 @@ void init_engine(const Options &options)
 #endif
 
     // Fill configuration with defaults
-    logger->log(_("Initializing configuration..."));
+    logger->log("Initializing configuration...");
     config.setValue("host", "www.themanaworld.org");
     config.setValue("port", 6901);
     config.setValue("hwaccel", 0);
@@ -450,7 +450,7 @@ void init_engine(const Options &options)
     catch (const char *err) {
         state = ERROR_STATE;
         errorMessage = err;
-        logger->log(_("Warning: %s"), err);
+        logger->log("Warning: %s", err);
     }
 
     // Initialize keyboard
@@ -608,8 +608,8 @@ struct ErrorListener : public gcn::ActionListener
 // TODO Find some nice place for these functions
 void accountLogin(Network *network, LoginData *loginData)
 {
-    logger->log(_("Trying to connect to account server..."));
-    logger->log(_("Username is %s"), loginData->username.c_str());
+    logger->log("Trying to connect to account server...");
+    logger->log("Username is %s", loginData->username.c_str());
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
     loginHandler.setLoginData(loginData);
@@ -658,7 +658,7 @@ static void positionDialog(Window *dialog, int screenWidth, int screenHeight)
 
 void charLogin(Network *network, LoginData *loginData)
 {
-    logger->log(_("Trying to connect to char server..."));
+    logger->log("Trying to connect to char server...");
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&charServerHandler);
     charServerHandler.setCharInfo(&charInfo);
@@ -680,14 +680,14 @@ void charLogin(Network *network, LoginData *loginData)
 
 void mapLogin(Network *network, LoginData *loginData)
 {
-    logger->log(_("Memorizing selected character %s"),
+    logger->log("Memorizing selected character %s",
             player_node->getName().c_str());
     config.setValue("lastCharacter", player_node->getName());
 
     MessageOut outMsg(network);
 
-    logger->log(_("Trying to connect to map server..."));
-    logger->log(_("Map: %s"), map_path.c_str());
+    logger->log("Trying to connect to map server...");
+    logger->log("Map: %s", map_path.c_str());
 
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&mapLoginHandler);
@@ -823,7 +823,7 @@ int main(int argc, char *argv[])
     login_wallpaper = ResourceManager::getInstance()->getImage(wallpaperName);
 
     if (!login_wallpaper)
-        logger->log(_("Couldn't load %s as wallpaper"), wallpaperName.c_str());
+        logger->log("Couldn't load %s as wallpaper", wallpaperName.c_str());
 
     while (state != EXIT_STATE)
     {
