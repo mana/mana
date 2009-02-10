@@ -154,7 +154,7 @@ bool KeyboardConfig::hasConflicts()
                    ((j >= KEY_EMOTE_1) && (j <= KEY_EMOTE_12))) || 
                    ((i == KEY_TOGGLE_CHAT) && (j == KEY_OK))) &&
                    (mKey[i].value == mKey[j].value)
-	       )
+               )
             {
                 return true;
             }

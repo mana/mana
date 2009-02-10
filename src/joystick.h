@@ -31,7 +31,7 @@ class Joystick
          * Number of buttons we can handle.
          */
         enum
-        { 
+        {
             MAX_BUTTONS = 6
         };
 

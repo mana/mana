@@ -332,7 +332,7 @@ void init_engine(const Options &options)
     strncat(path, "/data", PATH_MAX - 1);
     resman->addToSearchPath(path, true);
 #else
-    resman->addToSearchPath(TMW_DATADIR "data", true);
+    resman->addToSearchPath(PKG_DATADIR "data", true);
 #endif
 
     // Fill configuration with defaults
@@ -389,7 +389,7 @@ void init_engine(const Options &options)
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
     }
 #else
-    SDL_Surface *icon = IMG_Load(TMW_DATADIR "data/icons/tmw.png");
+    SDL_Surface *icon = IMG_Load(PKG_DATADIR "data/icons/tmw.png");
     if (icon)
     {
         SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);

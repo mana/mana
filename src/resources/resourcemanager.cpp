@@ -207,7 +207,7 @@ std::string ResourceManager::getPath(const std::string &file)
     else
     {
         // if not found in search path return the default path
-        path = std::string(TMW_DATADIR) + std::string("data") + "/" + file;
+        path = std::string(PKG_DATADIR) + std::string("data") + "/" + file;
     }
 
     return path;

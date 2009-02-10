@@ -30,7 +30,6 @@ class Being;
 
 class EffectManager
 {
-
     public: 
         struct EffectDescription
         {
