@@ -41,7 +41,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     setWindowName(_("Status"));
     setCloseButton(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 400, 335);
+                   (windowContainer->getHeight() - 255) / 2, 400, 345);
 
     // ----------------------
     // Status Part
@@ -116,13 +116,13 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     place(0, 0, mLvlLabel, 3);
     place(5, 0, mJobLvlLabel, 3);
     place(8, 0, mGpLabel, 3);
-    place(1, 1, mHpLabel);
+    place(1, 1, mHpLabel).setPadding(3);
     place(2, 1, mHpBar, 3);
-    place(6, 1, mXpLabel);
+    place(6, 1, mXpLabel).setPadding(3);
     place(7, 1, mXpBar, 3);
-    place(1, 2, mMpLabel);
+    place(1, 2, mMpLabel).setPadding(3);
     place(2, 2, mMpBar, 3);
-    place(6, 2, mJobLabel);
+    place(6, 2, mJobLabel).setPadding(3);
     place(7, 2, mJobBar, 3);
     place.getCell().matchColWidth(0, 1);
     place = getPlacer(0, 3);
