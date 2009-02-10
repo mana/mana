@@ -150,8 +150,8 @@ bool KeyboardConfig::hasConflicts()
         for (j = i, j++; j < KEY_TOTAL; j++)
         {
             // Allow for item shortcut and emote keys to overlap, but no other keys
-            if (!((((i >= KEY_SHORTCUT_1) && (i <= KEY_SHORTCUT_12)) && 
-                   ((j >= KEY_EMOTE_1) && (j <= KEY_EMOTE_12))) || 
+            if (!((((i >= KEY_SHORTCUT_1) && (i <= KEY_SHORTCUT_12)) &&
+                   ((j >= KEY_EMOTE_1) && (j <= KEY_EMOTE_12))) ||
                    ((i == KEY_TOGGLE_CHAT) && (j == KEY_OK))) &&
                    (mKey[i].value == mKey[j].value)
                )

@@ -51,10 +51,10 @@ struct TabData
 };
 
 static TabData const data[TAB_COUNT] = {
-    {"graphics/gui/tab.png", 0, 0},
-    {"graphics/gui/tab.png", 9, 4},
-    {"graphics/gui/tabselected.png", 16, 19},
-    {"graphics/gui/tab.png", 25, 23}
+    { "graphics/gui/tab.png", 0, 0 },
+    { "graphics/gui/tab.png", 9, 4 },
+    { "graphics/gui/tabselected.png", 16, 19 },
+    { "graphics/gui/tab.png", 25, 23 }
 };
 
 ImageRect Tab::tabImg[TAB_COUNT];
@@ -117,7 +117,7 @@ void Tab::draw(gcn::Graphics *graphics)
     // check which type of tab to draw
     if (mTabbedArea)
     {
-        if(mTabbedArea->isTabSelected(this))
+        if (mTabbedArea->isTabSelected(this))
         {
             mode = TAB_SELECTED;
             // if tab is selected, it doesnt need to highlight activity

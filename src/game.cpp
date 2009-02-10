@@ -550,9 +550,9 @@ void Game::handleInput()
                              keyboard.isKeyActive(keyboard.KEY_OK))
                         npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
                     else if (!(keyboard.getKeyValue(
-                                   KeyboardConfig::KEY_TOGGLE_CHAT) == 
+                                   KeyboardConfig::KEY_TOGGLE_CHAT) ==
                                keyboard.getKeyValue(
-                                   KeyboardConfig::KEY_OK) && 
+                                   KeyboardConfig::KEY_OK) &&
                                (npcStringDialog->isVisible() ||
                                 npcTextDialog->isVisible() ||
                                 npcListDialog->isVisible() ||
@@ -595,7 +595,7 @@ void Game::handleInput()
                     break;
                // Quitting confirmation dialog
                case KeyboardConfig::KEY_QUIT:
-                    if (!exitConfirm) 
+                    if (!exitConfirm)
                     {
                         exitConfirm = new ConfirmDialog( _("Quit"),
                                                          _("Are you sure you "
