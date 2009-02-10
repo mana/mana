@@ -94,12 +94,6 @@ class Image : public Resource
         virtual void unload();
 
         /**
-         * Returns the image.
-         */
-        virtual const Image* getImage() const
-        { return this; }
-
-        /**
          * Returns the width of the image.
          */
         virtual int getWidth() const
@@ -187,12 +181,6 @@ class SubImage : public Image
          * Destructor.
          */
         ~SubImage();
-
-        /**
-         * Returns the image.
-         */
-        virtual const Image* getImage() const
-        { return mParent; }
 
         /**
          * Creates a new image with the desired clipping rectangle.
