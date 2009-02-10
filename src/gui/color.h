@@ -46,7 +46,7 @@ class color : public gcn::ListModel
          * @param c charater to be replaced
          * @param rgb color to replace character
          */
-        void setcolor(const char c, const int rgb);
+        void setColor(const char c, const int rgb);
 
         /**
          * Define the color replacement for a character
@@ -56,9 +56,9 @@ class color : public gcn::ListModel
          * @param g green component
          * @param b blue component
          */
-        void setcolor(const char c, const int r, const int g, const int b)
+        void setColor(const char c, const int r, const int g, const int b)
         {
-            setcolor(c, (r << 16) | (g << 8) | b);
+            setColor(c, (r << 16) | (g << 8) | b);
         }
 
         /**
@@ -67,7 +67,7 @@ class color : public gcn::ListModel
          * @param c character requested
          * @param valid indicate whether character is known
          */
-        int getcolor(const char c, bool &valid) const;
+        int getColor(const char c, bool &valid) const;
 
         /**
          * Return the number of colors known
@@ -85,18 +85,18 @@ class color : public gcn::ListModel
          * Get the color for the element at index i in the current color
          * model
          */
-        int getcolorAt(int i);
+        int getColorAt(int i);
 
         /**
          * Get the character used by the color for the element at index i in
          * the current color model
          */
-        char getcolorCharAt(int i);
+        char getColorCharAt(int i);
 
         /**
          * Set the color for the element at index i
          */
-        void setcolorAt(int i, int rgb);
+        void setColorAt(int i, int rgb);
 
         /**
          * Commit the colors
@@ -128,7 +128,7 @@ class color : public gcn::ListModel
          * @param rgb default color if not found in config
          * @param text identifier of color
          */
-        void addcolor(const char c, const int rgb, const std::string &text);
+        void addColor(const char c, const int rgb, const std::string &text);
 };
 
 extern color *textcolor;

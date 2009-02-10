@@ -28,16 +28,16 @@
 
 color::color()
 {
-    addcolor('C', 0x000000, _("Chat"));
-    addcolor('G', 0xff0000, _("GM"));
-    addcolor('H', 0xebc873, _("Highlight"));
-    addcolor('Y', 0x1fa052, _("Player"));
-    addcolor('W', 0x0000ff, _("Whisper"));
-    addcolor('I', 0xf1dc27, _("Is"));
-    addcolor('P', 0xff00d8, _("Party"));
-    addcolor('S', 0x8415e2, _("Server"));
-    addcolor('L', 0x919191, _("Logger"));
-    addcolor('<', 0xe50d0d, _("Hyperlink"));
+    addColor('C', 0x000000, _("Chat"));
+    addColor('G', 0xff0000, _("GM"));
+    addColor('H', 0xebc873, _("Highlight"));
+    addColor('Y', 0x1fa052, _("Player"));
+    addColor('W', 0x0000ff, _("Whisper"));
+    addColor('I', 0xf1dc27, _("Is"));
+    addColor('P', 0xff00d8, _("Party"));
+    addColor('S', 0x8415e2, _("Server"));
+    addColor('L', 0x919191, _("Logger"));
+    addColor('<', 0xe50d0d, _("Hyperlink"));
     commit();
 }
 
@@ -52,7 +52,7 @@ color::~color()
     }
 }
 
-void color::setcolor(const char c, const int rgb)
+void color::setColor(const char c, const int rgb)
 {
     for (ColVector::iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -67,7 +67,7 @@ void color::setcolor(const char c, const int rgb)
     }
 }
 
-int color::getcolor(const char c, bool &valid) const
+int color::getColor(const char c, bool &valid) const
 {
     for (ColVector::const_iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -93,7 +93,7 @@ std::string color::getElementAt(int i)
     return mColVector[i].text;
 }
 
-char color::getcolorCharAt(int i)
+char color::getColorCharAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -102,13 +102,13 @@ char color::getcolorCharAt(int i)
     return mColVector[i].ch;
 }
 
-void color::addcolor(const char c, const int rgb, const std::string &text)
+void color::addColor(const char c, const int rgb, const std::string &text)
 {
     int trueRgb = config.getValue("color" + text, rgb);
     mColVector.push_back(colorElem(c, trueRgb, text));
 }
 
-int color::getcolorAt(int i)
+int color::getColorAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
@@ -117,7 +117,7 @@ int color::getcolorAt(int i)
     return mColVector[i].rgb;
 }
 
-void color::setcolorAt(int i, int rgb)
+void color::setColorAt(int i, int rgb)
 {
     if (i >= 0 && i < getNumberOfElements())
     {

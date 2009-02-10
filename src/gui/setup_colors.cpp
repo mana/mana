@@ -151,8 +151,8 @@ void Setup_colors::action(const gcn::ActionEvent &event)
     if (event.getId() == "color_box")
     {
         mSelected = mcolorBox->getSelected();
-        int col = textcolor->getcolorAt(mSelected);
-        char ch = textcolor->getcolorCharAt(mSelected);
+        int col = textcolor->getColorAt(mSelected);
+        char ch = textcolor->getColorCharAt(mSelected);
         std::string msg;
 
         if (ch == '<')
@@ -208,7 +208,7 @@ void Setup_colors::apply()
 void Setup_colors::cancel()
 {
     textcolor->rollback();
-    int col = textcolor->getcolorAt(mSelected);
+    int col = textcolor->getColorAt(mSelected);
     setEntry(mRedSlider, mRedText, col >> 16);
     setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
     setEntry(mBlueSlider, mBlueText, col & 0xff);
@@ -245,5 +245,5 @@ void Setup_colors::updatecolor()
     int rgb = static_cast<int>(mRedSlider->getValue()) << 16 |
               static_cast<int>(mGreenSlider->getValue()) << 8 |
               static_cast<int>(mBlueSlider->getValue());
-    textcolor->setcolorAt(mSelected, rgb);
+    textcolor->setColorAt(mSelected, rgb);
 }

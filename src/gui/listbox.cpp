@@ -44,9 +44,9 @@ void ListBox::draw(gcn::Graphics *graphics)
         mAlpha = config.getValue("guialpha", 0.8);
 
     bool valid;
-    const int red = (textcolor->getcolor('H', valid) >> 16) & 0xFF;
-    const int green = (textcolor->getcolor('H', valid) >> 8) & 0xFF;
-    const int blue = textcolor->getcolor('H', valid) & 0xFF;
+    const int red = (textcolor->getColor('H', valid) >> 16) & 0xFF;
+    const int green = (textcolor->getColor('H', valid) >> 8) & 0xFF;
+    const int blue = textcolor->getColor('H', valid) & 0xFF;
     const int alpha = mAlpha * 255;
 
     graphics->setColor(gcn::Color(red, green, blue, alpha));

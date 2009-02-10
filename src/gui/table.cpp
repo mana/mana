@@ -325,10 +325,10 @@ void GuiTable::draw(gcn::Graphics* graphics)
                 {
                     bool valid;
                     const int red =
-                        (textcolor->getcolor('H', valid) >> 16) & 0xFF;
+                        (textcolor->getColor('H', valid) >> 16) & 0xFF;
                     const int green =
-                        (textcolor->getcolor('H', valid) >> 8) & 0xFF;
-                    const int blue = textcolor->getcolor('H', valid) & 0xFF;
+                        (textcolor->getColor('H', valid) >> 8) & 0xFF;
+                    const int blue = textcolor->getColor('H', valid) & 0xFF;
                     const int alpha = mAlpha * 127;
 
                     graphics->setColor(gcn::Color(red, green, blue, alpha));
@@ -347,10 +347,10 @@ void GuiTable::draw(gcn::Graphics* graphics)
         {
             bool valid;
             const int red =
-                (textcolor->getcolor('H', valid) >> 16) & 0xFF;
+                (textcolor->getColor('H', valid) >> 16) & 0xFF;
             const int green =
-                (textcolor->getcolor('H', valid) >> 8) & 0xFF;
-            const int blue = textcolor->getcolor('H', valid) & 0xFF;
+                (textcolor->getColor('H', valid) >> 8) & 0xFF;
+            const int blue = textcolor->getColor('H', valid) & 0xFF;
             const int alpha = mAlpha * 127;
 
             graphics->setColor(gcn::Color(red, green, blue, alpha));
