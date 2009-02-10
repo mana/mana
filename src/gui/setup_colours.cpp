@@ -155,10 +155,10 @@ void Setup_Colours::action(const gcn::ActionEvent &event)
         std::string msg;
 
         if (ch == '<')
-            msg = toString("@@|") + 
+            msg = toString("@@|") +
                   _("This is what the color looks like") + "@@";
         else
-            msg = "##" + toString(ch) + 
+            msg = "##" + toString(ch) +
                   _("This is what the color looks like");
 
         mPreview->clearRows();
@@ -171,27 +171,21 @@ void Setup_Colours::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "slider_red")
     {
-        char buffer[30];
-        std::sprintf(buffer, "%d", static_cast<int>(mRedSlider->getValue()));
-        mRedText->setText(buffer);
+        mRedText->setText(toString(mRedSlider->getValue()));
         updateColour();
         return;
     }
 
     if (event.getId() == "slider_green")
     {
-        char buffer[30];
-        std::sprintf(buffer, "%d", static_cast<int>(mGreenSlider->getValue()));
-        mGreenText->setText(buffer);
+        mGreenText->setText(toString(mGreenSlider->getValue()));
         updateColour();
         return;
     }
 
     if (event.getId() == "slider_blue")
     {
-        char buffer[30];
-        std::sprintf(buffer, "%d", static_cast<int>(mBlueSlider->getValue()));
-        mBlueText->setText(buffer);
+        mBlueText->setText(toString(mBlueSlider->getValue()));
         updateColour();
         return;
     }
