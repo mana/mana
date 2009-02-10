@@ -136,7 +136,7 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
                                     numRowsWeight * getFont()->getHeight()));
 
-    if (item.getEffect() == "")
+    if (item.getEffect().empty())
     {
         setContentSize(minWidth, (numRowsDesc * getFont()->getHeight() +
                       (3 * getFont()->getHeight())));

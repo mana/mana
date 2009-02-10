@@ -189,7 +189,7 @@ bool LoginDialog::canSubmit()
 
 bool LoginDialog::isUShort(const std::string &str)
 {
-    if (str == "")
+    if (str.empty())
     {
         return false;
     }
@@ -228,7 +228,7 @@ unsigned short LoginDialog::getUShort(const std::string &str)
 void LoginDialog::DropDownList::saveEntry(const std::string &server,
                                           const std::string &port, int &saved)
 {
-    if (saved < MAX_SERVER_LIST_SIZE && server != "")
+    if (saved < MAX_SERVER_LIST_SIZE && !server.empty())
     {
         config.setValue(mConfigPrefix + "Server" + toString(saved), server);
         config.setValue(mConfigPrefix + "Port" + toString(saved), port);
@@ -247,7 +247,7 @@ LoginDialog::DropDownList::DropDownList(std::string prefix,
     {
         std::string server = config.getValue(mConfigPrefix + "Server" +
                                              toString(i), "");
-        if (server == "") // Just in case had original config entries
+        if (server.empty()) // Just in case had original config entries
         {
             server = config.getValue(mConfigPrefix + "ServerList" +
                                      toString(i), "");
@@ -255,13 +255,13 @@ LoginDialog::DropDownList::DropDownList(std::string prefix,
         std::string port = config.getValue(mConfigPrefix + "Port" +
                                            toString(i), dfltPort.front());
 
-        if (server != "")
+        if (!server.empty())
         {
             mServers.push_back(server);
             mPorts.push_back(port);
         }
     }
-    if (mServers.size() == 0)
+    if (mServers.empty())
     {
         mServers.assign(dflt.begin(), dflt.end());
         mPorts.assign(dfltPort.begin(), dfltPort.end());

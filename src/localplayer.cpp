@@ -538,7 +538,8 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (mEquippedWeapon)
     {
         std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);
-        if (soundFile != "") sound.playSfx(soundFile);
+        if (!soundFile.empty())
+            sound.playSfx(soundFile);
     }
     else {
         sound.playSfx("sfx/fist-swish.ogg");

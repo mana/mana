@@ -69,7 +69,7 @@ void Recorder::changeRecordingStatus(const std::string &msg)
     std::string msgCopy = msg;
     trim(msgCopy);
 
-    if (msgCopy == "")
+    if (msgCopy.empty())
     {
         if (mStream.is_open())
         {
