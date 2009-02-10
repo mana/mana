@@ -518,8 +518,8 @@ void Game::handleInput()
             {
                 // Input chat window
                 if (!(chatWindow->isInputFocused() ||
-                                deathNotice != NULL ||
-                                weightNotice != NULL))
+                                deathNotice ||
+                                weightNotice))
                 {
                     // Quit by pressing Enter if the exit confirm is there
                     if (exitConfirm &&

@@ -148,7 +148,7 @@ void PopupMenu::handleLink(const std::string& link)
 
     // Talk To action
     if (link == "talk" &&
-        being != NULL &&
+        being &&
         being->getType() == Being::NPC &&
         current_npc == 0)
     {
@@ -157,7 +157,7 @@ void PopupMenu::handleLink(const std::string& link)
 
     // Trade action
     else if (link == "trade" &&
-             being != NULL &&
+             being &&
              being->getType() == Being::PLAYER)
     {
         player_node->trade(being);
@@ -166,35 +166,35 @@ void PopupMenu::handleLink(const std::string& link)
 
     // Attack action
     else if (link == "attack" &&
-             being != NULL &&
+             being &&
              being->getType() == Being::PLAYER)
     {
         player_node->attack(being, true);
     }
 
     else if (link == "unignore" &&
-             being != NULL &&
+             being &&
              being->getType() == Being::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::NEUTRAL);
     }
 
     else if (link == "ignore" &&
-             being != NULL &&
+             being &&
              being->getType() == Being::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::IGNORED);
     }
 
     else if (link == "disregard" &&
-             being != NULL &&
+             being &&
              being->getType() == Being::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::DISREGARDED);
     }
 
     else if (link == "friend" &&
-             being != NULL &&
+             being &&
              being->getType() == Being::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::FRIEND);
@@ -208,7 +208,7 @@ void PopupMenu::handleLink(const std::string& link)
 
     /*
     // Add Buddy action
-    else if ((link == "buddy") && being != NULL && being->isPlayer())
+    else if ((link == "buddy") && being && being->isPlayer())
     {
         if (!buddyWindow->isVisible())
             buddyWindow->setVisible(true);
@@ -217,7 +217,7 @@ void PopupMenu::handleLink(const std::string& link)
     }*/
 
     // Pick Up Floor Item action
-    else if ((link == "pickup") && mFloorItem != NULL)
+    else if ((link == "pickup") && mFloorItem)
     {
         player_node->pickUp(mFloorItem);
     }
@@ -257,7 +257,7 @@ void PopupMenu::handleLink(const std::string& link)
         new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, mItem);
     }
     else if (link == "party-invite" &&
-             being != NULL &&
+             being &&
              being->getType() == Being::PLAYER)
     {
         MessageOut outMsg(player_node->getNetwork());

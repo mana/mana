@@ -26,7 +26,7 @@ void FocusHandler::requestModalFocus(gcn::Widget *widget)
     /* If there is another widget with modal focus, remove its modal focus
      * and put it on the modal widget stack.
      */
-    if (mModalFocusedWidget != NULL && mModalFocusedWidget != widget)
+    if (mModalFocusedWidget && mModalFocusedWidget != widget)
     {
         mModalStack.push_front(mModalFocusedWidget);
         mModalFocusedWidget = NULL;

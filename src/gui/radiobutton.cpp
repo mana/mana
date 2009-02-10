@@ -92,7 +92,7 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
     else
         box = radioDisabled;
 
-    if (box != NULL)
+    if (box)
         static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
 }
 

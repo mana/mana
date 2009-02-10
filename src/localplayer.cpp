@@ -343,7 +343,7 @@ void LocalPlayer::setTarget(Being *target)
         return;
     mLastTarget = tick_time;
 
-    if ((target == NULL) || target == mTarget)
+    if (!target || target == mTarget)
     {
         target = NULL;
         mKeepAttacking = false;
