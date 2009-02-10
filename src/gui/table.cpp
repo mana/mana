@@ -186,7 +186,7 @@ int GuiTable::getColumnWidth(int i)
 
 void GuiTable::setSelectedRow(int selected)
 {
-    if (mModel == NULL)
+    if (!mModel)
     {
         mSelectedRow = -1;
     }
@@ -214,7 +214,7 @@ void GuiTable::setSelectedRow(int selected)
 
 void GuiTable::setSelectedColumn(int selected)
 {
-    if (mModel == NULL)
+    if (!mModel)
     {
         mSelectedColumn = -1;
     }

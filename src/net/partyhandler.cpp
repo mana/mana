@@ -69,7 +69,7 @@ void PartyHandler::handleMessage(MessageIn *msg)
             {
                 int id = msg->readInt32();
                 Being *being = beingManager->findBeing(id);
-                if (being == NULL)
+                if (!being)
                 {
                     break;
                 }

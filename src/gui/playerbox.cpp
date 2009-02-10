@@ -88,7 +88,7 @@ void PlayerBox::draw(gcn::Graphics *graphics)
         y = getHeight() / 2 + bs;
         for (int i = 0; i < Being::VECTOREND_SPRITE; i++)
         {
-            if (mPlayer->getSprite(i) != NULL)
+            if (mPlayer->getSprite(i))
             {
                 mPlayer->getSprite(i)->draw(static_cast<Graphics*>(graphics), x, y);
             }

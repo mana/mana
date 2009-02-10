@@ -145,55 +145,42 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 void PopupMenu::handleLink(const std::string& link)
 {
     // Talk To action
-    if (link == "talk" &&
-        mBeing != NULL &&
-        mBeing->getType() == Being::NPC &&
+    if (link == "talk" && mBeing && mBeing->getType() == Being::NPC &&
         current_npc == 0)
     {
         dynamic_cast<NPC*>(mBeing)->talk();
     }
 
     // Trade action
-    else if (link == "trade" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+    else if (link == "trade" && mBeing && mBeing->getType() == Being::PLAYER)
     {
         player_node->trade(mBeing);
         tradePartnerName = mBeing->getName();
     }
 
     // Attack action
-    else if (link == "attack" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+    else if (link == "attack" && mBeing && mBeing->getType() == Being::PLAYER)
     {
         player_node->attack(mBeing, true);
     }
 
-    else if (link == "unignore" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+    else if (link == "unignore" && mBeing && mBeing->getType() == Being::PLAYER)
     {
         player_relations.setRelation(mBeing->getName(), PlayerRelation::NEUTRAL);
     }
 
-    else if (link == "ignore" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+    else if (link == "ignore" && mBeing && mBeing->getType() == Being::PLAYER)
     {
         player_relations.setRelation(mBeing->getName(), PlayerRelation::IGNORED);
     }
 
-    else if (link == "disregard" &&
-             mBeing != NULL &&
+    else if (link == "disregard" && mBeing &&
              mBeing->getType() == Being::PLAYER)
     {
         player_relations.setRelation(mBeing->getName(), PlayerRelation::DISREGARDED);
     }
 
-    else if (link == "friend" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
+    else if (link == "friend" && mBeing && mBeing->getType() == Being::PLAYER)
     {
         player_relations.setRelation(mBeing->getName(), PlayerRelation::FRIEND);
     }
@@ -206,7 +193,7 @@ void PopupMenu::handleLink(const std::string& link)
 
     /*
     // Add Buddy action
-    else if ((link == "buddy") && mBeing != NULL && mBeing->isPlayer())
+    else if ((link == "buddy") && mBeing && mBeing->isPlayer())
     {
         if (!buddyWindow->isVisible())
             buddyWindow->setVisible(true);
@@ -215,7 +202,7 @@ void PopupMenu::handleLink(const std::string& link)
     }*/
 
     // Pick Up Floor Item action
-    else if ((link == "pickup") && mFloorItem != NULL)
+    else if ((link == "pickup") && mFloorItem)
     {
         player_node->pickUp(mFloorItem);
     }
@@ -254,8 +241,7 @@ void PopupMenu::handleLink(const std::string& link)
     {
         new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, mItem);
     }
-    else if (link == "party-invite" &&
-             mBeing != NULL &&
+    else if (link == "party-invite" && mBeing &&
              mBeing->getType() == Being::PLAYER)
     {
         MessageOut outMsg(player_node->getNetwork());

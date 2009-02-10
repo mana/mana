@@ -206,7 +206,7 @@ void UpdaterWindow::loadNews()
 
     // Tokenize and add each line separately
     char *line = strtok(mMemoryBuffer, "\n");
-    while (line != NULL)
+    while (line)
     {
         mBrowserBox->addRow(line);
         line = strtok(NULL, "\n");
@@ -409,7 +409,7 @@ void UpdaterWindow::download()
     mDownloadComplete = false;
     mThread = SDL_CreateThread(UpdaterWindow::downloadThread, this);
 
-    if (mThread == NULL)
+    if (!mThread)
     {
         logger->log(_("Unable to create mThread"));
         mDownloadStatus = UPDATE_ERROR;

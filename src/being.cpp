@@ -344,8 +344,8 @@ void Being::setDirection(Uint8 direction)
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-       if (mSprites[i] != NULL)
-            mSprites[i]->setDirection(dir);
+       if (mSprites[i])
+           mSprites[i]->setDirection(dir);
     }
 }
 
@@ -446,7 +446,7 @@ void Being::logic()
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL)
+        if (mSprites[i])
             mSprites[i]->update(tick_time * 10);
     }
 
@@ -468,7 +468,7 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL)
+        if (mSprites[i])
         {
             mSprites[i]->draw(graphics, px, py);
         }

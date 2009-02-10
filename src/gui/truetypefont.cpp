@@ -89,7 +89,7 @@ TrueTypeFont::TrueTypeFont(const std::string& filename, int size)
     ++fontCounter;
     mFont = TTF_OpenFont(filename.c_str(), size);
 
-    if (mFont == NULL)
+    if (!mFont)
     {
         throw GCN_EXCEPTION("SDLTrueTypeFont::SDLTrueTypeFont: " +
             std::string(TTF_GetError()));
