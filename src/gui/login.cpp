@@ -55,11 +55,8 @@ LoginDialog::LoginDialog(LoginData *loginData):
     gcn::Label *dropdownLabel = new gcn::Label(_("Recent:"));
     std::vector<std::string> dfltServer;
     dfltServer.push_back("server.themanaworld.org");
-    dfltServer.push_back("server.themanaworld.org");
     std::vector<std::string> dfltPort;
-    dfltPort.push_back("21001");
-    dfltPort.push_back("22001");
-    dfltPort.push_back("21001");
+    dfltPort.push_back("6901");
     mServerList = new DropDownList("MostRecent00", dfltServer, dfltPort,
                                    MAX_SERVER_LIST_SIZE);
     mServerListBox = new ListBox(mServerList);
