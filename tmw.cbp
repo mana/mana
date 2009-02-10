@@ -79,6 +79,7 @@
 		<Linker>
 			<Add directory="lib" />
 		</Linker>
+		<Unit filename="src\SDLMain.h" />
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
@@ -90,6 +91,10 @@
 		<Unit filename="src\configlistener.h" />
 		<Unit filename="src\configuration.cpp" />
 		<Unit filename="src\configuration.h" />
+		<Unit filename="src\effectmanager.cpp" />
+		<Unit filename="src\effectmanager.h" />
+		<Unit filename="src\emoteshortcut.cpp" />
+		<Unit filename="src\emoteshortcut.h" />
 		<Unit filename="src\engine.cpp" />
 		<Unit filename="src\engine.h" />
 		<Unit filename="src\equipment.cpp" />
@@ -104,8 +109,6 @@
 		<Unit filename="src\graphics.h" />
 		<Unit filename="src\gui\browserbox.cpp" />
 		<Unit filename="src\gui\browserbox.h" />
-		<Unit filename="src\gui\buddywindow.cpp" />
-		<Unit filename="src\gui\buddywindow.h" />
 		<Unit filename="src\gui\button.cpp" />
 		<Unit filename="src\gui\button.h" />
 		<Unit filename="src\gui\buy.cpp" />
@@ -122,12 +125,20 @@
 		<Unit filename="src\gui\chatinput.h" />
 		<Unit filename="src\gui\checkbox.cpp" />
 		<Unit filename="src\gui\checkbox.h" />
+		<Unit filename="src\gui\colour.cpp" />
+		<Unit filename="src\gui\colour.h" />
 		<Unit filename="src\gui\confirm_dialog.cpp" />
 		<Unit filename="src\gui\confirm_dialog.h" />
 		<Unit filename="src\gui\connection.cpp" />
 		<Unit filename="src\gui\connection.h" />
 		<Unit filename="src\gui\debugwindow.cpp" />
 		<Unit filename="src\gui\debugwindow.h" />
+		<Unit filename="src\gui\emotecontainer.cpp" />
+		<Unit filename="src\gui\emotecontainer.h" />
+		<Unit filename="src\gui\emoteshortcutcontainer.cpp" />
+		<Unit filename="src\gui\emoteshortcutcontainer.h" />
+		<Unit filename="src\gui\emotewindow.cpp" />
+		<Unit filename="src\gui\emotewindow.h" />
 		<Unit filename="src\gui\equipmentwindow.cpp" />
 		<Unit filename="src\gui\equipmentwindow.h" />
 		<Unit filename="src\gui\focushandler.cpp" />
@@ -146,10 +157,12 @@
 		<Unit filename="src\gui\item_amount.h" />
 		<Unit filename="src\gui\itemcontainer.cpp" />
 		<Unit filename="src\gui\itemcontainer.h" />
+		<Unit filename="src\gui\itemlinkhandler.cpp" />
+		<Unit filename="src\gui\itemlinkhandler.h" />
+		<Unit filename="src\gui\itempopup.cpp" />
+		<Unit filename="src\gui\itempopup.h" />
 		<Unit filename="src\gui\itemshortcutcontainer.cpp" />
 		<Unit filename="src\gui\itemshortcutcontainer.h" />
-		<Unit filename="src\gui\itemshortcutwindow.cpp" />
-		<Unit filename="src\gui\itemshortcutwindow.h" />
 		<Unit filename="src\gui\linkhandler.h" />
 		<Unit filename="src\gui\listbox.cpp" />
 		<Unit filename="src\gui\listbox.h" />
@@ -181,10 +194,10 @@
 		<Unit filename="src\gui\progressbar.h" />
 		<Unit filename="src\gui\radiobutton.cpp" />
 		<Unit filename="src\gui\radiobutton.h" />
-		<Unit filename="src\gui\register.cpp" />
-		<Unit filename="src\gui\register.h" />
 		<Unit filename="src\gui\recorder.cpp" />
 		<Unit filename="src\gui\recorder.h" />
+		<Unit filename="src\gui\register.cpp" />
+		<Unit filename="src\gui\register.h" />
 		<Unit filename="src\gui\scrollarea.cpp" />
 		<Unit filename="src\gui\scrollarea.h" />
 		<Unit filename="src\gui\sdlinput.cpp" />
@@ -195,6 +208,8 @@
 		<Unit filename="src\gui\setup.h" />
 		<Unit filename="src\gui\setup_audio.cpp" />
 		<Unit filename="src\gui\setup_audio.h" />
+		<Unit filename="src\gui\setup_colours.cpp" />
+		<Unit filename="src\gui\setup_colours.h" />
 		<Unit filename="src\gui\setup_joystick.cpp" />
 		<Unit filename="src\gui\setup_joystick.h" />
 		<Unit filename="src\gui\setup_keyboard.cpp" />
@@ -208,10 +223,16 @@
 		<Unit filename="src\gui\shop.h" />
 		<Unit filename="src\gui\shoplistbox.cpp" />
 		<Unit filename="src\gui\shoplistbox.h" />
+		<Unit filename="src\gui\shortcutcontainer.cpp" />
+		<Unit filename="src\gui\shortcutcontainer.h" />
+		<Unit filename="src\gui\shortcutwindow.cpp" />
+		<Unit filename="src\gui\shortcutwindow.h" />
 		<Unit filename="src\gui\skill.cpp" />
 		<Unit filename="src\gui\skill.h" />
 		<Unit filename="src\gui\slider.cpp" />
 		<Unit filename="src\gui\slider.h" />
+		<Unit filename="src\gui\speechbubble.cpp" />
+		<Unit filename="src\gui\speechbubble.h" />
 		<Unit filename="src\gui\status.cpp" />
 		<Unit filename="src\gui\status.h" />
 		<Unit filename="src\gui\table.cpp" />
@@ -230,6 +251,8 @@
 		<Unit filename="src\gui\updatewindow.h" />
 		<Unit filename="src\gui\viewport.cpp" />
 		<Unit filename="src\gui\viewport.h" />
+		<Unit filename="src\gui\widgets\dropdown.cpp" />
+		<Unit filename="src\gui\widgets\dropdown.h" />
 		<Unit filename="src\gui\widgets\layout.cpp" />
 		<Unit filename="src\gui\widgets\layout.h" />
 		<Unit filename="src\gui\widgets\layouthelper.cpp" />
@@ -298,6 +321,8 @@
 		<Unit filename="src\net\npchandler.cpp" />
 		<Unit filename="src\net\npchandler.h" />
 		<Unit filename="src\net\packet.h" />
+		<Unit filename="src\net\partyhandler.cpp" />
+		<Unit filename="src\net\partyhandler.h" />
 		<Unit filename="src\net\playerhandler.cpp" />
 		<Unit filename="src\net\playerhandler.h" />
 		<Unit filename="src\net\protocol.cpp" />
@@ -317,10 +342,14 @@
 		<Unit filename="src\particleemitter.cpp" />
 		<Unit filename="src\particleemitter.h" />
 		<Unit filename="src\particleemitterprop.h" />
+		<Unit filename="src\party.cpp" />
+		<Unit filename="src\party.h" />
 		<Unit filename="src\player.cpp" />
 		<Unit filename="src\player.h" />
 		<Unit filename="src\player_relations.cpp" />
 		<Unit filename="src\player_relations.h" />
+		<Unit filename="src\position.cpp" />
+		<Unit filename="src\position.h" />
 		<Unit filename="src\properties.h" />
 		<Unit filename="src\resources\action.cpp" />
 		<Unit filename="src\resources\action.h" />
@@ -330,8 +359,12 @@
 		<Unit filename="src\resources\animation.h" />
 		<Unit filename="src\resources\buddylist.cpp" />
 		<Unit filename="src\resources\buddylist.h" />
+		<Unit filename="src\resources\colordb.cpp" />
+		<Unit filename="src\resources\colordb.h" />
 		<Unit filename="src\resources\dye.cpp" />
 		<Unit filename="src\resources\dye.h" />
+		<Unit filename="src\resources\emotedb.cpp" />
+		<Unit filename="src\resources\emotedb.h" />
 		<Unit filename="src\resources\image.cpp" />
 		<Unit filename="src\resources\image.h" />
 		<Unit filename="src\resources\imageloader.cpp" />
@@ -386,12 +419,15 @@
 		<Unit filename="src\utils\base64.h" />
 		<Unit filename="src\utils\dtor.h" />
 		<Unit filename="src\utils\fastsqrt.h" />
+		<Unit filename="src\utils\gettext.h" />
+		<Unit filename="src\utils\mutex.h" />
 		<Unit filename="src\utils\strprintf.cpp" />
 		<Unit filename="src\utils\strprintf.h" />
 		<Unit filename="src\utils\tostring.h" />
 		<Unit filename="src\utils\trim.h" />
 		<Unit filename="src\utils\xml.cpp" />
 		<Unit filename="src\utils\xml.h" />
+		<Unit filename="src\vector.cpp" />
 		<Unit filename="src\vector.h" />
 		<Unit filename="src\winver.h" />
 		<Extensions>
