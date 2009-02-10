@@ -98,7 +98,8 @@ void Recorder::changeRecordingStatus(const std::string &msg)
          * recorded.
          */
         mChat->chatLog(_("Starting to record..."), BY_SERVER);
-        std::string file = std::string(PHYSFS_getUserDir()) + "/.aethyra/" + msgCopy;
+        const std::string file =
+            std::string(PHYSFS_getUserDir()) + "/.tmw/" + msgCopy;
 
         mStream.open(file.c_str(), std::ios_base::trunc);
 
