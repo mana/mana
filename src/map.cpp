@@ -68,11 +68,6 @@ TileAnimation::TileAnimation(Animation *ani):
 {
 }
 
-TileAnimation::~TileAnimation()
-{
-// TODO: fix or remove this
-//    delete mLastImage;
-}
 
 void TileAnimation::update()
 {

@@ -72,7 +72,6 @@ class TileAnimation
 {
     public:
         TileAnimation(Animation *ani);
-        ~TileAnimation();
         void update();
         void addAffectedTile(MapLayer *layer, int index)
         { mAffected.push_back(std::make_pair(layer, index)); }
