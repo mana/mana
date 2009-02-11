@@ -28,6 +28,8 @@
 #include "../config.h"
 #elif defined WIN32
 #include "winver.h"
+#elif defined __APPLE__
+#define PACKAGE_VERSION "0.0.28"
 #endif
 
 #ifndef TMW_DATADIR
