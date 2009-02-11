@@ -21,6 +21,7 @@
 
 #include <cassert>
 
+#include "particle.h"
 #include "particlecontainer.h"
 
 
@@ -43,7 +44,6 @@ void ParticleContainer::clear()
     if (mNext)
         mNext->clear();
 }
-
 
 void ParticleContainer::moveTo(float x, float y)
 {
@@ -108,9 +108,6 @@ void ParticleList::moveTo(float x, float y)
             it++;
     }
 }
-
-
-
 
 // -- particle vector ----------------------------------------
 

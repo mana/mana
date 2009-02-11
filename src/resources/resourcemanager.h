@@ -27,11 +27,11 @@
 #include <string>
 #include <vector>
 
-class Resource;
 class Image;
-class Music;
-class SoundEffect;
 class ImageSet;
+class Music;
+class Resource;
+class SoundEffect;
 class SpriteDef;
 struct SDL_Surface;
 
@@ -100,7 +100,7 @@ class ResourceManager
         /**
          * Returns the real path to a file. Note that this method will always
          * return a path, it does not check whether the file exists.
-         * 
+         *
          * @param file The file to get the real path to.
          * @return The real path.
          */

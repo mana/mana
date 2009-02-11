@@ -22,12 +22,10 @@
 #ifndef GUI_SETUP_VIDEO_H
 #define GUI_SETUP_VIDEO_H
 
-#include "setuptab.h"
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
-#include "../guichanfwd.h"
+#include "setuptab.h"
 
 class Setup_Video : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener
@@ -53,6 +51,9 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
+        bool mParticleEffectsEnabled;
+        bool mSpeechBubbleEnabled;
+        bool mNameEnabled;
         double mOpacity;
         int mFps;
 
@@ -62,6 +63,9 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
+        gcn::CheckBox *mParticleEffectsCheckBox;
+        gcn::CheckBox *mSpeechBubbleCheckBox;
+        gcn::CheckBox *mNameCheckBox;
 
         gcn::Slider *mAlphaSlider;
         gcn::CheckBox *mFpsCheckBox;

@@ -19,14 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ministatus.h"
-
 #include "gui.h"
+#include "ministatus.h"
 #include "progressbar.h"
 
-#include "../localplayer.h"
+#include "../animatedsprite.h"
 #include "../configuration.h"
 #include "../graphics.h"
+#include "../localplayer.h"
 
 #include "../utils/tostring.h"
 
@@ -90,29 +90,27 @@ void MiniStatusWindow::update()
         mHpBar->setColor(0, 171, 34); // Green
     }
 
+    float xp = (float) player_node->getXp() / player_node->mXpForNextLevel;
+
+    if (xp != xp) xp = 0.0f; // check for NaN
+    if (xp < 0.0f) xp = 0.0f; // make sure the experience isn't negative (uninitialized pointer most likely)
+    if (xp > 1.0f) xp = 1.0f;
+
     mHpBar->setProgress((float) player_node->mHp / player_node->mMaxHp);
     mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
-    if (player_node->MATK <= 0)
-        mMpBar->setColor(100, 100, 100); // grey, to indicate that we lack magic
-    else
-        mMpBar->setColor(26, 102, 230); // blue, to indicate that we have magic
-
-    mXpBar->setProgress(
-            (float) player_node->getXp() / player_node->mXpForNextLevel);
+    mXpBar->setProgress(xp);
 
     // Update labels
     mHpBar->setText(toString(player_node->mHp));
     mMpBar->setText(toString(player_node->mMp));
 
     std::stringstream updatedText;
-    updatedText << (int) (
-            (float) player_node->getXp() /
-            player_node->mXpForNextLevel * 100) << "%";
+    updatedText << (float) ((int) (xp * 10000.0f)) / 100.0f << "%";
 
     // Displays the number of monsters to next lvl
     // (disabled for now but interesting idea)
     /*
-    if(config.getValue("xpBarMonsterCounterExp", 0)!=0)
+    if (config.getValue("xpBarMonsterCounterExp", 0)!=0)
     {
         updatedText << " | "
             << (int)(((float)player_node->mXpForNextLevel - (float)player_node->mXp)

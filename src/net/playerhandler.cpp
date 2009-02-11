@@ -19,16 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "playerhandler.h"
-
 #include "messagein.h"
+#include "playerhandler.h"
 #include "protocol.h"
 
 #include "../engine.h"
 #include "../localplayer.h"
 #include "../log.h"
 #include "../npc.h"
-#include "../utils/tostring.h"
 
 #include "../gui/buy.h"
 #include "../gui/chat.h"
@@ -39,6 +37,9 @@
 #include "../gui/sell.h"
 #include "../gui/skill.h"
 #include "../gui/viewport.h"
+
+#include "../utils/tostring.h"
+#include "../utils/gettext.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
@@ -51,7 +52,7 @@ extern SellDialog *sellDialog;
 extern Window *buySellDialog;
 
 static const int MAP_TELEPORT_SCROLL_DISTANCE = 8; /* Max. distance we are willing to scroll after a teleport;
-                                                   ** everything beyond will reset the port hard. */
+                                                    * everything beyond will reset the port hard. */
 
 /**
  * Listener used for handling the overweigth message.
@@ -110,10 +111,11 @@ void PlayerHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case SMSG_WALK_RESPONSE:
-            // It is assumed by the client any request to walk actually
-            // succeeds on the server. The plan is to have a correction
-            // message when the server senses the client has the wrong
-            // idea.
+            /*
+             * This client assumes that all walk messages succeed,
+             * and that the server will send a correction notice
+             * otherwise.
+             */
             break;
 
         case SMSG_PLAYER_WARP:
@@ -132,6 +134,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 player_node->stopAttack();
 
                 nearby = (engine->getCurrentMapName() == mapPath);
+
                 // Switch the actual map, deleting the previous one if necessary
                 engine->changeMap(mapPath);
 
@@ -143,7 +146,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 /* Scroll if neccessary */
                 if (!nearby
                     || (abs(x - player_node->mX) > MAP_TELEPORT_SCROLL_DISTANCE)
-                    || (abs(y - player_node->mY) > MAP_TELEPORT_SCROLL_DISTANCE)) {
+                    || (abs(y - player_node->mY) > MAP_TELEPORT_SCROLL_DISTANCE))
+                {
                     scrollOffsetX = (x - player_node->mX) * 32;
                     scrollOffsetY = (y - player_node->mY) * 32;
                 }
@@ -173,6 +177,9 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     case 0x0006: player_node->mMaxHp = value; break;
                     case 0x0007: player_node->mMp = value; break;
                     case 0x0008: player_node->mMaxMp = value; break;
+                    case 0x0009:
+                                 player_node->mStatsPointsToAttribute = value;
+                                 break;
                     case 0x000b: player_node->mLevel = value; break;
                     case 0x000c:
                                  player_node->mSkillPoint = value;
@@ -183,20 +190,16 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                          player_node->mTotalWeight <
                                          player_node->mMaxWeight / 2)
                                  {
-                                     weightNotice = new OkDialog("Message",
-                                             "You are carrying more then half "
-                                             "your weight. You are unable to "
-                                             "regain health.");
+                                     weightNotice = new OkDialog(_("Message"),
+                                             _("You are carrying more then "
+                                               "half your weight. You are "
+                                               "unable to regain health."));
                                      weightNotice->addActionListener(
                                              &weightListener);
                                  }
                                  player_node->mTotalWeight = value;
                                  break;
                     case 0x0019: player_node->mMaxWeight = value; break;
-                    case 0x0037: player_node->mJobLevel = value; break;
-                    case 0x0009:
-                                 player_node->mStatsPointsToAttribute = value;
-                                 break;
                     case 0x0029: player_node->ATK = value; break;
                     case 0x002b: player_node->MATK = value; break;
                     case 0x002d: player_node->DEF = value; break;
@@ -205,12 +208,44 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     case 0x0031: player_node->HIT = value; break;
                     case 0x0032: player_node->FLEE = value; break;
                     case 0x0035: player_node->mAttackSpeed = value; break;
+                    case 0x0037: player_node->mJobLevel = value; break;
                 }
 
                 if (player_node->mHp == 0 && deathNotice == NULL)
                 {
-                    deathNotice = new OkDialog("Message",
-                            "You're now dead, press ok to restart");
+                    static char const *const deadMsg[] =
+                    {
+                        _("You are dead."),
+                        _("We regret to inform you that your character was killed in battle."),
+                        _("You are not that alive anymore."),
+                        _("The cold hands of the grim reaper are grabbing for your soul."),
+                        _("Game Over!"),
+                        _("Insert coin to continue"),
+                        _("No, kids. Your character did not really die. It... err... went to a better place."),
+                        _("Your plan of breaking your enemies weapon by bashing it with your throat failed."),
+                        _("I guess this did not run too well."),
+                        _("Do you want your possessions identified?"), // Nethack reference
+                        _("Sadly, no trace of you was ever found..."), // Secret of Mana reference
+                        _("Annihilated."), // Final Fantasy VI reference
+                        _("Looks like you got your head handed to you."), //Earthbound reference
+                        _("You screwed up again, dump your body down the tubes and get you another one."), // Leisure Suit Larry 1 Reference
+                        _("You're not dead yet. You're just resting."), // Monty Python reference from a couple of skits
+                        _("You are no more."),  // Monty Python reference from the dead parrot sketch starting now
+                        _("You have ceased to be."),
+                        _("You've expired and gone to meet your maker."),
+                        _("You're a stiff."),
+                        _("Bereft of life, you rest in peace."),
+                        _("If you weren't so animated, you'd be pushing up the daisies."),
+                        _("Your metabolic processes are now history."),
+                        _("You're off the twig."),
+                        _("You've kicked the bucket."),
+                        _("You've shuffled off your mortal coil, run down the curtain and joined the bleedin' choir invisibile."),
+                        _("You are an ex-player."),
+                        _("You're pining for the fjords.") // Monty Python reference from the dead parrot sketch
+                    };
+                    std::string message(deadMsg[rand()%27]);
+
+                    deathNotice = new OkDialog(_("Message"), message);
                     deathNotice->addActionListener(&deathListener);
                     player_node->setAction(Being::DEAD);
                 }
@@ -229,7 +264,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                         Uint32 curGp = player_node->mGp;
                         player_node->mGp = msg->readInt32();
                         if (player_node->mGp > curGp)
-                            chatWindow->chatLog("You picked up " +
+                            chatWindow->chatLog(_("You picked up ") +
                                 toString(player_node->mGp - curGp) + " GP",
                                 BY_SERVER);
                     }
@@ -293,7 +328,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
             }
             break;
 
-            // Updates stats and status points
+        // Updates stats and status points
         case SMSG_PLAYER_STAT_UPDATE_5:
             player_node->mStatsPointsToAttribute = msg->readInt16();
             player_node->mAttr[LocalPlayer::STR] = msg->readInt8();
@@ -352,7 +387,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
                 switch (type) {
                     case 0:
-                        chatWindow->chatLog("Equip arrows first",
+                        chatWindow->chatLog(_("Equip arrows first"),
                                              BY_SERVER);
                         break;
                     default:
@@ -361,18 +396,5 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 }
             }
             break;
-
-        //Stop walking
-        //case 0x0088:  // Disabled because giving some problems
-        //if (being = beingManager->findBeing(readInt32(2))) {
-        //    if (being->getId() != player_node->getId()) {
-        //        being->action = STAND;
-        //        being->mFrame = 0;
-        //        set_coordinates(being->coordinates,
-        //                        readWord(6), readWord(8),
-        //                        get_direction(being->coordinates));
-        //    }
-        //}
-        //break;
     }
 }

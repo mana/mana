@@ -19,18 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npchandler.h"
-
 #include "messagein.h"
+#include "npchandler.h"
 #include "protocol.h"
 
 #include "../beingmanager.h"
+#include "../localplayer.h"
 #include "../npc.h"
 
+#include "../gui/npc_text.h"
 #include "../gui/npcintegerdialog.h"
 #include "../gui/npclistdialog.h"
 #include "../gui/npcstringdialog.h"
-#include "../gui/npc_text.h"
 
 extern NpcIntegerDialog *npcIntegerDialog;
 extern NpcListDialog *npcListDialog;
@@ -60,6 +60,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
         case SMSG_NPC_CHOICE:
             msg->readInt16();  // length
             id = msg->readInt32();
+            player_node->setAction(LocalPlayer::STAND);
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcListDialog->parseItems(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(true);
@@ -68,17 +69,17 @@ void NPCHandler::handleMessage(MessageIn *msg)
         case SMSG_NPC_MESSAGE:
             msg->readInt16();  // length
             id = msg->readInt32();
+            player_node->setAction(LocalPlayer::STAND);
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcTextDialog->addText(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);
             break;
 
-        case SMSG_NPC_CLOSE:
+         case SMSG_NPC_CLOSE:
             id = msg->readInt32();
-            dynamic_cast<NPC*>(beingManager->findBeing(id));
             if (current_npc == dynamic_cast<NPC*>(beingManager->findBeing(id)))
-            	current_npc = NULL;
+                current_npc = NULL;
             break;
 
         case SMSG_NPC_NEXT:
@@ -91,6 +92,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcIntegerDialog->setRange(0, 2147483647);
             npcIntegerDialog->setVisible(true);
+            npcIntegerDialog->requestFocus();
             break;
 
         case SMSG_NPC_STR_INPUT:
@@ -99,6 +101,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcStringDialog->setValue("");
             npcStringDialog->setVisible(true);
+            npcStringDialog->requestFocus();
             break;
     }
 }

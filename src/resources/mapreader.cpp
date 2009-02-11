@@ -19,14 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "mapreader.h"
-
 #include <cassert>
 #include <iostream>
 #include <zlib.h>
 
-#include "resourcemanager.h"
+#include "animation.h"
 #include "image.h"
+#include "mapreader.h"
+#include "resourcemanager.h"
 
 #include "../log.h"
 #include "../map.h"
@@ -205,14 +205,11 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
     // Take the filename off the path
     const std::string pathDir = path.substr(0, path.rfind("/") + 1);
 
-    //xmlChar *prop = xmlGetProp(node, BAD_CAST "version");
-    //xmlFree(prop);
-
     const int w = XML::getProperty(node, "width", 0);
     const int h = XML::getProperty(node, "height", 0);
-    const int tw = XML::getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
-    const int th = XML::getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
-    Map *map = new Map(w, h, tw, th);
+    const int tilew = XML::getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
+    const int tileh = XML::getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
+    Map *map = new Map(w, h, tilew, tileh);
 
     for_each_xml_child_node(childNode, node)
     {
@@ -236,8 +233,8 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
             // The object group offset is applied to each object individually
             const int tileOffsetX = XML::getProperty(childNode, "x", 0);
             const int tileOffsetY = XML::getProperty(childNode, "y", 0);
-            const int offsetX = tileOffsetX * tw;
-            const int offsetY = tileOffsetY * th;
+            const int offsetX = tileOffsetX * tilew;
+            const int offsetY = tileOffsetY * tileh;
 
             for_each_xml_child_node(objectNode, childNode)
             {
@@ -326,8 +323,8 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
     const int offsetY = XML::getProperty(node, "y", 0);
     const std::string name = XML::getProperty(node, "name", "");
 
-    const bool isFringeLayer = (name == "Fringe");
-    const bool isCollisionLayer = (name == "Collision");
+    const bool isFringeLayer = (name.substr(0,6) == "Fringe");
+    const bool isCollisionLayer = (name.substr(0,9) == "Collision");
 
     MapLayer *layer = 0;
 
@@ -370,7 +367,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
 
             while (*charStart) {
                 if (*charStart != ' ' && *charStart != '\t' &&
-                        *charStart != '\n')
+                    *charStart != '\n')
                 {
                     *charIndex = *charStart;
                     charIndex++;
@@ -461,15 +458,20 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
                                 const std::string &path,
                                 Map *map)
 {
+    int firstGid = XML::getProperty(node, "firstgid", 0);
+    XML::Document* doc = NULL;
     Tileset *set = NULL;
 
     if (xmlHasProp(node, BAD_CAST "source"))
     {
-        logger->log("Warning: External tilesets not supported yet.");
-        return set;
+        std::string filename = XML::getProperty(node, "source", "");
+        while (filename.substr(0, 3) == "../")
+               filename.erase(0, 3);  // Remove "../"
+        doc = new XML::Document(filename);
+        node = doc->rootNode();
+        firstGid += XML::getProperty(node, "firstgid", 0);
     }
 
-    const int firstGid = XML::getProperty(node, "firstgid", 0);
     const int tw = XML::getProperty(node, "tilewidth", map->getTileWidth());
     const int th = XML::getProperty(node, "tileheight", map->getTileHeight());
 
@@ -544,6 +546,8 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
             }
         }
     }
+
+    delete doc;
 
     return set;
 }

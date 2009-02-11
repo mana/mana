@@ -27,7 +27,7 @@
 class BeingHandler : public MessageHandler
 {
     public:
-        BeingHandler(bool);
+        BeingHandler(bool enableSync);
 
         void handleMessage(MessageIn *msg);
 

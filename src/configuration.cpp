@@ -19,12 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
-#include "configuration.h"
-
-#include <libxml/xmlwriter.h>
-
 #include "configlistener.h"
+#include "configuration.h"
 #include "log.h"
 
 #include "utils/tostring.h"
@@ -89,7 +85,6 @@ void ConfigurationObject::clear()
         deleteList(it->first);
     mOptions.clear();
 }
-
 
 ConfigurationObject::~ConfigurationObject()
 {
@@ -192,7 +187,6 @@ void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
         xmlTextWriterEndElement(writer);
     }
 }
-
 
 void Configuration::write()
 {

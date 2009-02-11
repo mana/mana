@@ -22,9 +22,11 @@
 #ifndef ITEM_MANAGER_H
 #define ITEM_MANAGER_H
 
+#include <map>
+
 #include "iteminfo.h"
 
-#include <map>
+class ItemInfo;
 
 /**
  * The namespace that holds the item information.
@@ -42,10 +44,13 @@ namespace ItemDB
     void unload();
 
     const ItemInfo& get(int id);
+    const ItemInfo& get(const std::string &name);
 
     // Items database
     typedef std::map<int, ItemInfo*> ItemInfos;
+    typedef std::map<std::string, ItemInfo*> NamedItemInfos;
     typedef ItemInfos::iterator ItemInfoIterator;
+    typedef NamedItemInfos::iterator NamedItemInfoIterator;
 }
 
 #endif

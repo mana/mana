@@ -24,18 +24,16 @@
 
 #include <map>
 
-#include "monsterinfo.h"
+class MonsterInfo;
 
 /**
  * Monster information database.
  */
 namespace MonsterDB
 {
-    void
-    load();
+    void load();
 
-    void
-    unload();
+    void unload();
 
     const MonsterInfo& get(int id);
 

@@ -22,11 +22,11 @@
 #ifndef PROGRESSBAR_H
 #define PROGRESSBAR_H
 
+#include <string>
+
 #include <guichan/widget.hpp>
 
 #include <SDL_types.h>
-
-#include <string>
 
 class ImageRect;
 
@@ -81,12 +81,12 @@ class ProgressBar : public gcn::Widget
         Uint8 getRed() const { return mRed; }
 
         /**
-         * Returns the red value of color.
+         * Returns the green value of color.
          */
         Uint8 getGreen() const { return mGreen; }
 
         /**
-         * Returns the red value of color.
+         * Returns the blue value of color.
          */
         Uint8 getBlue() const { return mBlue; }
 
@@ -110,6 +110,7 @@ class ProgressBar : public gcn::Widget
 
         static ImageRect mBorder;
         static int mInstances;
+        static float mAlpha;
 };
 
 #endif

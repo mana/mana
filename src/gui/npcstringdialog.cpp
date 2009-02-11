@@ -19,18 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npcstringdialog.h"
-
-#include <limits>
-#include <sstream>
-
 #include "button.h"
+#include "npcstringdialog.h"
 #include "textfield.h"
 
 #include "../npc.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
 
 #include "widgets/layout.h"
 
@@ -38,12 +33,13 @@ NpcStringDialog::NpcStringDialog():
     Window(_("NPC Text Request"))
 {
     mValueField = new TextField("");
+
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
 
     place(0, 0, mValueField, 3);
-    place(1, 1, okButton);
-    place(2, 1, cancelButton);
+    place(1, 1, cancelButton);
+    place(2, 1, okButton);
     reflowLayout(175, 0);
 
     setLocationRelativeTo(getParent());
@@ -69,9 +65,15 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     setVisible(false);
     current_npc->stringInput(mValueField->getText());
     current_npc = 0;
+    mValueField->setText("");
 }
 
 bool NpcStringDialog::isInputFocused()
 {
     return mValueField->isFocused();
+}
+
+void NpcStringDialog::requestFocus()
+{
+    mValueField->requestFocus();
 }

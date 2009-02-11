@@ -22,15 +22,9 @@
 #ifndef GUI_NPCINTEGERDIALOG_H
 #define GUI_NPCINTEGERDIALOG_H
 
-#include <iosfwd>
-#include <vector>
-
 #include <guichan/actionlistener.hpp>
-#include <guichan/keylistener.hpp>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 class IntTextField;
 
@@ -39,8 +33,7 @@ class IntTextField;
  *
  * \ingroup Interface
  */
-class NpcIntegerDialog : public Window, public gcn::ActionListener,
-                         public gcn::KeyListener
+class NpcIntegerDialog : public Window, public gcn::ActionListener
 {
     public:
         /**
@@ -67,6 +60,16 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener,
          * @param max The maximum value to allow
          */
         void setRange(const int min, const int max);
+
+        /**
+         * Checks whether NpcStringDialog is Focused or not.
+         */
+        bool isInputFocused();
+
+        /**
+         * Requests the textfield to take focus for input.
+         */
+        void requestFocus();
 
     private:
         gcn::Button *mDecButton;

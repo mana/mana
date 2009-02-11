@@ -18,19 +18,23 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+#include <cassert>
 
-#include "localplayer.h"
-
+#include "configuration.h"
 #include "equipment.h"
 #include "floor_item.h"
 #include "game.h"
+#include "graphics.h"
 #include "inventory.h"
 #include "item.h"
-#include "main.h"
-#include "particle.h"
-#include "sound.h"
+#include "localplayer.h"
+#include "map.h"
 #include "monster.h"
+#include "particle.h"
+#include "simpleanimation.h"
+#include "sound.h"
 #include "statuseffect.h"
+#include "text.h"
 
 #include "gui/gui.h"
 #include "gui/ministatus.h"
@@ -38,9 +42,17 @@
 #include "net/messageout.h"
 #include "net/protocol.h"
 
+#include "resources/animation.h"
+#include "resources/image.h"
+#include "resources/imageset.h"
+#include "resources/resourcemanager.h"
+
 #include "utils/tostring.h"
 
 LocalPlayer *player_node = NULL;
+
+static const int NAME_X_OFFSET = 15;
+static const int NAME_Y_OFFSET = 30;
 
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
@@ -57,23 +69,56 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     ATK_BONUS(0), MATK_BONUS(0), DEF_BONUS(0), MDEF_BONUS(0), FLEE_BONUS(0),
     mStatPoint(0), mSkillPoint(0),
     mStatsPointsToAttribute(0),
+    mEquipment(new Equipment()),
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false),
-    mLastAction(-1),
-    mWalkingDir(0), mDestX(0), mDestY(0),
-    mInventory(new Inventory)
+    mTargetTime(-1), mLastAction(-1),
+    mLastTarget(-1), mWalkingDir(0),
+    mDestX(0), mDestY(0),
+    mInventory(new Inventory(INVENTORY_SIZE)),
+    mStorage(new Inventory(STORAGE_SIZE))
 {
+    // Variable to keep the local player from doing certain actions before a map
+    // is initialized. e.g. drawing a player's name using the TextManager, since
+    // it appears to be dependant upon map coordinates for updating drawing.
+    mMapInitialized = false;
+
+    mUpdateName = true;
+
+    initTargetCursor();
 }
 
 LocalPlayer::~LocalPlayer()
 {
     delete mInventory;
+    delete mStorage;
+    delete mName;
+
+    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
+    {
+        delete mTargetCursorInRange[i];
+        delete mTargetCursorOutRange[i];
+        mInRangeImages[i]->decRef();
+        mOutRangeImages[i]->decRef();
+    }
 }
 
 void LocalPlayer::logic()
 {
     switch (mAction) {
+        case STAND:
+           break;
+
+        case SIT:
+           break;
+
+        case DEAD:
+           break;
+
+        case HURT:
+           break;
+
         case WALK:
             mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
             if (mFrame >= 6) {
@@ -91,7 +136,6 @@ void LocalPlayer::logic()
             mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
             if (mFrame >= frames) {
                 nextStep();
-                attack();
             }
             break;
     }
@@ -100,8 +144,63 @@ void LocalPlayer::logic()
     if (get_elapsed_time(mLastAction) >= 1000) {
         mLastAction = -1;
     }
+    // Targeting allowed 4 times a second
+    if (get_elapsed_time(mLastTarget) >= 250) {
+        mLastTarget = -1;
+    }
+    // Remove target if its been on a being for more than a minute
+    if (get_elapsed_time(mTargetTime) >= 60000)
+    {
+        mTargetTime = -1;
+        setTarget(NULL);
+        mLastTarget = -1;
+    }
+
+    if (mTarget)
+    {
+        if (mTarget->mAction == DEAD)
+        {
+            stopAttack();
+        }
+        if (mKeepAttacking && mTarget)
+        {
+            attack(mTarget, true);
+        }
+
+        for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
+        {
+            player_node->mTargetCursorInRange[i]->update(10);
+            player_node->mTargetCursorOutRange[i]->update(10);
+        }
+    }
 
     Being::logic();
+}
+
+void LocalPlayer::setGM()
+{
+    mIsGM = !mIsGM;
+    mNameColor = mIsGM ? 0x009000: 0x202020;
+    setName(getName());
+    config.setValue(getName() + "GMassert", mIsGM);
+}
+
+void LocalPlayer::setName(const std::string &name)
+{
+    if (mName)
+    {
+        delete mName;
+        mName = 0;
+    }
+
+    if (config.getValue("showownname", false) && mMapInitialized)
+    {
+        Player::setName(name);
+    }
+    else
+    {
+        Being::setName(name);
+    }
 }
 
 void LocalPlayer::nextStep()
@@ -240,9 +339,19 @@ void LocalPlayer::walk(unsigned char dir)
 
 void LocalPlayer::setTarget(Being *target)
 {
-    if (target == mTarget)
-    {
+    if (mLastTarget != -1 || target == this)
         return;
+    mLastTarget = tick_time;
+
+    if (!target || target == mTarget)
+    {
+        target = NULL;
+        mKeepAttacking = false;
+        mTargetTime = -1;
+    }
+    if (target)
+    {
+        mTargetTime = tick_time;
     }
     if (mTarget && mTarget->getType() == Being::MONSTER)
     {
@@ -384,24 +493,24 @@ bool LocalPlayer::tradeRequestOk() const
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
-    // Can only attack when standing still
-    if (mAction != STAND)
-        return;
-
-    if (keep && target)
-    {
-        setTarget(target);
-    }
-    else if (mTarget)
-    {
-        target = mTarget;
-    }
+    mKeepAttacking = keep;
 
     if (!target)
         return;
 
+    if ((mTarget != target) || !mTarget)
+    {
+        mLastTarget = -1;
+        setTarget(target);
+    }
+
     int dist_x = target->mX - mX;
     int dist_y = target->mY - mY;
+
+    // Must be standing and be within attack range to continue
+    if ((mAction != STAND) || (mAttackRange < abs(dist_x)) ||
+        (mAttackRange < abs(dist_y)))
+        return;
 
     if (abs(dist_y) >= abs(dist_x))
     {
@@ -418,13 +527,19 @@ void LocalPlayer::attack(Being *target, bool keep)
             setDirection(LEFT);
     }
 
-    setAction(ATTACK);
+    // Implement charging attacks here
+    mLastAttackTime = 0;
+
     mWalkTime = tick_time;
+    mTargetTime = tick_time;
+
+    setAction(ATTACK);
 
     if (mEquippedWeapon)
     {
         std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);
-        if (soundFile != "") sound.playSfx(soundFile);
+        if (!soundFile.empty())
+            sound.playSfx(soundFile);
     }
     else {
         sound.playSfx("sfx/fist-swish.ogg");
@@ -434,11 +549,22 @@ void LocalPlayer::attack(Being *target, bool keep)
     outMsg.writeInt16(0x0089);
     outMsg.writeInt32(target->getId());
     outMsg.writeInt8(0);
+
+    if (!keep)
+    {
+        stopAttack();
+    }
 }
 
 void LocalPlayer::stopAttack()
 {
+    if (mTarget)
+    {
+        setAction(STAND);
+        mLastTarget = -1;
+    }
     setTarget(NULL);
+    mLastTarget = -1;
 }
 
 Being* LocalPlayer::getTarget() const
@@ -481,6 +607,7 @@ bool LocalPlayer::withinAttackRange(Being *target)
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
+    mLastTarget = -1;
     setTarget(target);
     mGoingToTarget = true;
     setDestination(target->mX, target->mY);
@@ -526,4 +653,86 @@ void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
             }
         }
     }
+}
+
+void LocalPlayer::initTargetCursor()
+{
+    // Load target cursors
+    loadTargetCursor("graphics/gui/target-cursor-blue-s.png", 44, 35,
+                     false, TC_SMALL);
+    loadTargetCursor("graphics/gui/target-cursor-red-s.png", 44, 35,
+                     true, TC_SMALL);
+    loadTargetCursor("graphics/gui/target-cursor-blue-m.png", 62, 44,
+                     false, TC_MEDIUM);
+    loadTargetCursor("graphics/gui/target-cursor-red-m.png", 62, 44,
+                     true, TC_MEDIUM);
+    loadTargetCursor("graphics/gui/target-cursor-blue-l.png", 82, 60,
+                     false, TC_LARGE);
+    loadTargetCursor("graphics/gui/target-cursor-red-l.png", 82, 60,
+                     true, TC_LARGE);
+}
+
+void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
+                                   bool outRange, TargetCursorSize size)
+{
+    assert(size > -1);
+    assert(size < 3);
+
+    ImageSet* currentImageSet;
+    SimpleAnimation* currentCursor;
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    currentImageSet = resman->getImageSet(filename, width, height);
+    Animation *anim = new Animation();
+    for (unsigned int i = 0; i < currentImageSet->size(); ++i)
+    {
+        anim->addFrame(currentImageSet->get(i), 75, 0, 0);
+    }
+    currentCursor = new SimpleAnimation(anim);
+
+    if (outRange)
+    {
+        mOutRangeImages[size] = currentImageSet;
+        mTargetCursorOutRange[size] = currentCursor;
+    }
+    else
+    {
+        mInRangeImages[size] = currentImageSet;
+        mTargetCursorInRange[size] = currentCursor;
+    }
+}
+
+void LocalPlayer::drawTargetCursor(Graphics *graphics, int scrollX, int scrollY)
+{
+
+    // Draw target marker if needed
+    if (mTarget)
+    {
+        // Calculate target circle position
+
+        // Find whether target is in range
+        int rangeX = abs(mTarget->mX - mX);
+        int rangeY = abs(mTarget->mY - mY);
+        int attackRange = getAttackRange();
+
+        // Get the correct target cursors graphic
+        TargetCursorSize cursorSize = mTarget->getTargetCursorSize();
+
+        if (rangeX > attackRange || rangeY > attackRange)
+        {
+            mTarget->mTargetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
+        }
+        else
+        {
+            mTarget->mTargetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
+        }
+
+        // Draw the target cursor at the correct position
+        int posX = mTarget->getPixelX() + 16 - mTarget->mTargetCursor->getWidth() / 2 - scrollX;
+        int posY = mTarget->getPixelY() + 16 - mTarget->mTargetCursor->getHeight() / 2 - scrollY;
+
+        graphics->drawImage(mTarget->mTargetCursor, posX, posY);
+   }
+   return;
 }

@@ -26,13 +26,16 @@
 
 #include "window.h"
 
+class ScrollArea;
+class TextBox;
 
 /**
  * An option dialog.
  *
  * \ingroup GUI
  */
-class ConfirmDialog : public Window, public gcn::ActionListener {
+class ConfirmDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor.
@@ -42,10 +45,17 @@ class ConfirmDialog : public Window, public gcn::ActionListener {
         ConfirmDialog(const std::string &title, const std::string &msg,
                 Window *parent = NULL);
 
+        unsigned int getNumRows();
+
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+    private:
+        TextBox *mTextBox;
+        ScrollArea *mTextArea;
+        gcn::Button *okButton;
 };
 
 #endif

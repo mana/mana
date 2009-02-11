@@ -22,12 +22,10 @@
 #ifndef MAPREADER_H
 #define MAPREADER_H
 
-#include <iosfwd>
-
 #include <libxml/tree.h>
 
-class Properties;
 class Map;
+class Properties;
 class Tileset;
 
 /**

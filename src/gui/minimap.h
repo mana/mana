@@ -50,12 +50,24 @@ class Minimap : public Window
         void setMapImage(Image *img);
 
         /**
+         * Sets the map proportion (1 means 1 tile to one pixel, .5 means 2 tiles to 1 pixel, etc.)
+         */
+        void setProportion(float proportion) { mProportion = proportion; }
+
+        /**
+         * Toggles the displaying of the minimap.
+         */
+        void toggle();
+
+        /**
          * Draws the minimap.
          */
         void draw(gcn::Graphics *graphics);
 
     private:
         Image *mMapImage;
+        float mProportion;
+        static bool mShow;
 };
 
 extern Minimap *minimap;

@@ -22,15 +22,12 @@
 #ifndef GUI_NPCLISTDIALOG_H
 #define GUI_NPCLISTDIALOG_H
 
-#include <iosfwd>
 #include <vector>
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 /**
  * The npc list dialog.
@@ -47,13 +44,6 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          * @see Window::Window
          */
         NpcListDialog();
-
-        /**
-         * Called when resizing the window
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
 
         /**
          * Called when receiving actions from the widgets.

@@ -24,10 +24,8 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
 #include "linkhandler.h"
-
-#include "../guichanfwd.h"
+#include "window.h"
 
 class BrowserBox;
 

@@ -22,17 +22,16 @@
 #ifndef _CHAR_SELECT_H
 #define _CHAR_SELECT_H
 
-#include "window.h"
-
-#include "../guichanfwd.h"
-#include "../lockedarray.h"
-#include "../being.h"
-
 #include <guichan/actionlistener.hpp>
 
-class Player;
+#include "window.h"
+
+#include "../being.h"
+#include "../lockedarray.h"
+
 class LocalPlayer;
 class Network;
+class Player;
 class PlayerBox;
 
 /**
@@ -65,8 +64,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         gcn::Button *mSelectButton;
         gcn::Button *mCancelButton;
-        gcn::Button *mNewCharButton;
-        gcn::Button *mDelCharButton;
+        gcn::Button *mNewDelCharButton;
         gcn::Button *mPreviousButton;
         gcn::Button *mNextButton;
 
@@ -110,14 +108,12 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         ~CharCreateDialog();
 
-        void
-        action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Unlocks the dialog, enabling the create character button again.
          */
-        void
-        unlock();
+        void unlock();
 
     private:
         /**

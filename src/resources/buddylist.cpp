@@ -21,13 +21,13 @@
 
 #include <algorithm>
 #include <cstring>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 #include "buddylist.h"
 
-#include "../main.h"
 #include "../configuration.h"
+#include "../main.h"
 
 BuddyList::BuddyList()
 {
@@ -55,9 +55,9 @@ void BuddyList::loadFile()
         char *buddy = new char[LEN_MAX_USERNAME];
         inputStream.getline(buddy, LEN_MAX_USERNAME);
         // Ugly ?
-        if(strcmp(buddy,"")) mBuddylist.push_back(buddy);
+        if (strcmp(buddy, "")) mBuddylist.push_back(buddy);
         delete [] buddy;
-    } while(!inputStream.eof());
+    } while (!inputStream.eof());
 
     // Read buddy and close file
     inputStream.close();
@@ -111,7 +111,7 @@ bool BuddyList::removeBuddy(const std::string buddy)
     return false;
 }
 
-int  BuddyList::getNumberOfElements()
+int BuddyList::getNumberOfElements()
 {
     return mBuddylist.size();
 }

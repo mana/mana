@@ -20,9 +20,7 @@
  */
 
 #include "loginhandler.h"
-
 #include "messagein.h"
-#include "network.h"
 #include "protocol.h"
 
 #include "../log.h"
@@ -30,11 +28,16 @@
 #include "../main.h"
 #include "../serverinfo.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
+#include "../utils/tostring.h"
+
 extern SERVER_INFO **server_info;
 
 LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
+        SMSG_CONNECTION_PROBLEM,
         SMSG_UPDATE_HOST,
         0x0069,
         0x006a,
@@ -45,9 +48,32 @@ LoginHandler::LoginHandler()
 
 void LoginHandler::handleMessage(MessageIn *msg)
 {
+    int code;
+
     switch (msg->getId())
     {
-        case 0x0063:
+        case SMSG_CONNECTION_PROBLEM:
+            code = msg->readInt8();
+            logger->log("Connection problem: %i", code);
+
+            switch (code) {
+                case 0:
+                    errorMessage = _("Authentication failed");
+                    break;
+                case 1:
+                    errorMessage = _("No servers available");
+                    break;
+                case 2:
+                    errorMessage = _("This account is already logged in");
+                    break;
+                default:
+                    errorMessage = _("Unknown connection error");
+                    break;
+            }
+            state = ERROR_STATE;
+            break;
+
+        case SMSG_UPDATE_HOST:
              int len;
 
              len = msg->readInt16() - 4;
@@ -91,35 +117,39 @@ void LoginHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x006a:
-            int loginError = msg->readInt8();
-            logger->log("Login::error code: %i", loginError);
+            code = msg->readInt8();
+            logger->log("Login::error code: %i", code);
 
-            switch (loginError) {
+            switch (code) {
                 case 0:
-                    errorMessage = "Unregistered ID";
+                    errorMessage = _("Unregistered ID");
                     break;
                 case 1:
-                    errorMessage = "Wrong password";
+                    errorMessage = _("Wrong password");
                     break;
                 case 2:
-                    errorMessage = "Account expired";
+                    errorMessage = _("Account expired");
                     break;
                 case 3:
-                    errorMessage = "Rejected from server";
+                    errorMessage = _("Rejected from server");
                     break;
                 case 4:
 
-                    errorMessage = "You have been permanently banned from the game. Please contact the GM Team";
+                    errorMessage = _("You have been permanently banned from the"
+                                     " game. Please contact the GM Team");
                     break;
                 case 6:
-                    errorMessage = "You have been temporarily banned from the game until "
-                          + msg->readString(20) + ".\n Please contact the GM team via the forums";
+                    errorMessage = strprintf(_("You have been temporarily "
+                                               "banned from the game until %s.\n"
+                                               " Please contact the GM team via "
+                                               "the forums"),
+                                               msg->readString(20).c_str());
                     break;
                 case 9:
-                    errorMessage = "This user name is already taken";
+                    errorMessage = _("This user name is already taken");
                     break;
                 default:
-                    errorMessage = "Unknown error";
+                    errorMessage = _("Unknown error");
                     break;
             }
             state = ERROR_STATE;

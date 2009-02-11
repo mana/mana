@@ -19,10 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "scrollarea.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -31,19 +30,22 @@
 #include "../utils/dtor.h"
 
 int ScrollArea::instances = 0;
+float ScrollArea::mAlpha = config.getValue("guialpha", 0.8);
 ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
 Image *ScrollArea::buttons[4][2];
 
-ScrollArea::ScrollArea(bool gc):
+ScrollArea::ScrollArea(bool gc, bool opaque):
     gcn::ScrollArea(),
+    mOpaque(opaque),
     mGC(gc)
 {
     init();
 }
 
-ScrollArea::ScrollArea(gcn::Widget *widget, bool gc):
+ScrollArea::ScrollArea(gcn::Widget *widget, bool gc, bool opaque):
     gcn::ScrollArea(widget),
+    mOpaque(opaque),
     mGC(gc)
 {
     init();
@@ -52,9 +54,8 @@ ScrollArea::ScrollArea(gcn::Widget *widget, bool gc):
 ScrollArea::~ScrollArea()
 {
     // Garbage collection
-    if (mGC) {
+    if (mGC)
         delete getContent();
-    }
 
     instances--;
 
@@ -88,12 +89,15 @@ void ScrollArea::init()
         const int bggridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
 
-        for (y = 0; y < 3; y++) {
-            for (x = 0; x < 3; x++) {
+        for (y = 0; y < 3; y++)
+        {
+            for (x = 0; x < 3; x++)
+            {
                 background.grid[a] = textbox->getSubImage(
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,
                         bggridy[y + 1] - bggridy[y] + 1);
+                background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }
@@ -106,12 +110,15 @@ void ScrollArea::init()
         int vsgridy[4] = {0, 4, 15, 19};
         a = 0;
 
-        for (y = 0; y < 3; y++) {
-            for (x = 0; x < 3; x++) {
+        for (y = 0; y < 3; y++)
+        {
+            for (x = 0; x < 3; x++)
+            {
                 vMarker.grid[a] = vscroll->getSubImage(
                         vsgridx[x], vsgridy[y],
                         vsgridx[x + 1] - vsgridx[x],
                         vsgridy[y + 1] - vsgridy[y]);
+                vMarker.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }
@@ -146,7 +153,7 @@ void ScrollArea::logic()
 
     // When no scrollbar in a certain direction, adapt content size to match
     // the content dimension exactly.
-    if (content != NULL)
+    if (content)
     {
         if (getHorizontalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
         {
@@ -188,6 +195,16 @@ void ScrollArea::draw(gcn::Graphics *graphics)
                     mScrollbarWidth));
     }
 
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        for (int a = 0; a < 9; a++)
+        {
+            background.grid[a]->setAlpha(mAlpha);
+            vMarker.grid[a]->setAlpha(mAlpha);
+        }
+    }
+
     drawChildren(graphics);
 }
 
@@ -197,7 +214,8 @@ void ScrollArea::drawFrame(gcn::Graphics *graphics)
     int w = getWidth() + bs * 2;
     int h = getHeight() + bs * 2;
 
-    if (mOpaque) {
+    if (mOpaque)
+    {
         static_cast<Graphics*>(graphics)->
             drawImageRect(0, 0, w, h, background);
     }
@@ -207,10 +225,12 @@ void ScrollArea::setOpaque(bool opaque)
 {
     mOpaque = opaque;
 
-    if (mOpaque) {
+    if (mOpaque)
+    {
         setFrameSize(2);
     }
-    else {
+    else
+    {
         setFrameSize(0);
     }
 }
@@ -220,7 +240,8 @@ void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)
     int state = 0;
     gcn::Rectangle dim;
 
-    switch(dir) {
+    switch (dir)
+    {
         case UP:
             state = mUpButtonPressed ? 1 : 0;
             dim = getUpButtonDimension();

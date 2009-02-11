@@ -20,7 +20,6 @@
  */
 
 #include "animatedsprite.h"
-
 #include "graphics.h"
 #include "log.h"
 

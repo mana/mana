@@ -31,6 +31,8 @@
 
 #include "utils/dtor.h"
 
+#include <cassert>
+
 class FindBeingFunctor
 {
     public:
@@ -128,12 +130,16 @@ Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
     for (; itr != itr_end; ++itr)
     {
         Being *being = (*itr);
+
+        int xtol = being->getWidth();
+        int uptol = being->getHeight() / 2;
+
         if ((being->mAction != Being::DEAD) &&
             (being != player_node) &&
             (being->getPixelX() <= x) &&
-            (being->getPixelX() + being->getWidth() >= x) &&
-            (being->getPixelY() <= y) &&
-            (being->getPixelY() + being->getHeight() >= y))
+            (being->getPixelX() + xtol >= x) &&
+            (being->getPixelY() - uptol <= y) &&
+            (being->getPixelY() + uptol >= y))
         {
             return being;
         }
@@ -154,8 +160,6 @@ Being* BeingManager::findBeingByName(std::string name, Being::Type type)
     }
     return NULL;
 }
-
-
 
 Beings& BeingManager::getAll()
 {
@@ -204,9 +208,12 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
     Being *closestBeing = NULL;
     int dist = 0;
 
-    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    BeingIterator itr = mBeings.begin();
+    BeingIterator itr_end = mBeings.end();
+
+    for (; itr != itr_end; ++itr)
     {
-        Being *being = (*i);
+        Being *being = (*itr);
         int d = abs(being->mX - x) + abs(being->mY - y);
 
         if ((being->getType() == type || type == Being::UNKNOWN)

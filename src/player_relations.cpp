@@ -19,12 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "beingmanager.h"
-#include "player_relations.h"
-#include "graphics.h"
-#include "gui/gui.h"
-
 #include <algorithm>
+
+#include "being.h"
+#include "beingmanager.h"
+#include "configuration.h"
+#include "graphics.h"
+#include "player.h"
+#include "player_relations.h"
 
 #define PLAYER_IGNORE_STRATEGY_NOP "nop"
 #define PLAYER_IGNORE_STRATEGY_EMOTE0 "emote0"
@@ -56,7 +58,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
                    std::map<std::string, PlayerRelation *> *container)
     {
         std::string name = cobj->getValue(NAME, "");
-        if (name == "")
+        if (name.empty())
             return container;
 
         if (!(*container)[name]) {
@@ -90,8 +92,7 @@ PlayerRelationsManager::PlayerRelationsManager() :
 {
 }
 
-void
-PlayerRelationsManager::clear()
+void PlayerRelationsManager::clear()
 {
     std::vector<std::string> *names = getPlayers();
     for (std::vector<std::string>::const_iterator
@@ -104,8 +105,7 @@ PlayerRelationsManager::clear()
 #define PLAYER_IGNORE_STRATEGY "player-ignore-strategy"
 #define DEFAULT_PERMISSIONS "default-player-permissions"
 
-int
-PlayerRelationsManager::getPlayerIgnoreStrategyIndex(const std::string &name)
+int PlayerRelationsManager::getPlayerIgnoreStrategyIndex(const std::string &name)
 {
     std::vector<PlayerIgnoreStrategy *> *strategies = getPlayerIgnoreStrategies();
     for (unsigned int i = 0; i < strategies->size(); i++)
@@ -115,8 +115,7 @@ PlayerRelationsManager::getPlayerIgnoreStrategyIndex(const std::string &name)
     return -1;
 }
 
-void
-PlayerRelationsManager::load()
+void PlayerRelationsManager::load()
 {
     clear();
 
@@ -133,8 +132,7 @@ PlayerRelationsManager::load()
 }
 
 
-void
-PlayerRelationsManager::init()
+void PlayerRelationsManager::init()
 {
     load();
 
@@ -142,8 +140,7 @@ PlayerRelationsManager::init()
         clear(); // Yes, we still keep them around in the config file until the next update.
 }
 
-void
-PlayerRelationsManager::store()
+void PlayerRelationsManager::store()
 {
     config.setList<std::map<std::string, PlayerRelation *>::const_iterator,
                    std::pair<std::string, PlayerRelation *>,
@@ -160,8 +157,7 @@ PlayerRelationsManager::store()
     config.write();
 }
 
-void
-PlayerRelationsManager::signalUpdate(const std::string &name)
+void PlayerRelationsManager::signalUpdate(const std::string &name)
 {
     store();
 
@@ -169,8 +165,7 @@ PlayerRelationsManager::signalUpdate(const std::string &name)
         (*it)->updatedPlayer(name);
 }
 
-unsigned int
-PlayerRelationsManager::checkPermissionSilently(const std::string &player_name, unsigned int flags)
+unsigned int PlayerRelationsManager::checkPermissionSilently(const std::string &player_name, unsigned int flags)
 {
     PlayerRelation *r = mRelations[player_name];
     if (!r)
@@ -195,16 +190,14 @@ PlayerRelationsManager::checkPermissionSilently(const std::string &player_name, 
     }
 }
 
-bool
-PlayerRelationsManager::hasPermission(Being *being, unsigned int flags)
+bool PlayerRelationsManager::hasPermission(Being *being, unsigned int flags)
 {
     if (being->getType() == Being::PLAYER)
         return hasPermission(being->getName(), flags) == flags;
     return true;
 }
 
-bool
-PlayerRelationsManager::hasPermission(const std::string &name, unsigned int flags)
+bool PlayerRelationsManager::hasPermission(const std::string &name, unsigned int flags)
 {
     unsigned int rejections = flags & ~checkPermissionSilently(name, flags);
     bool permitted = rejections == 0;
@@ -223,8 +216,7 @@ PlayerRelationsManager::hasPermission(const std::string &name, unsigned int flag
     return permitted;
 }
 
-void
-PlayerRelationsManager::setRelation(const std::string &player_name, PlayerRelation::relation relation)
+void PlayerRelationsManager::setRelation(const std::string &player_name, PlayerRelation::relation relation)
 {
     PlayerRelation *r = mRelations[player_name];
     if (r == NULL)
@@ -235,8 +227,7 @@ PlayerRelationsManager::setRelation(const std::string &player_name, PlayerRelati
     signalUpdate(player_name);
 }
 
-std::vector<std::string> *
-PlayerRelationsManager::getPlayers()
+std::vector<std::string> * PlayerRelationsManager::getPlayers()
 {
     std::vector<std::string> *retval = new std::vector<std::string>();
 
@@ -249,8 +240,7 @@ PlayerRelationsManager::getPlayers()
     return retval;
 }
 
-void
-PlayerRelationsManager::removePlayer(const std::string &name)
+void PlayerRelationsManager::removePlayer(const std::string &name)
 {
     if (mRelations[name])
         delete mRelations[name];
@@ -261,8 +251,7 @@ PlayerRelationsManager::removePlayer(const std::string &name)
 }
 
 
-PlayerRelation::relation
-PlayerRelationsManager::getRelation(const std::string &name)
+PlayerRelation::relation PlayerRelationsManager::getRelation(const std::string &name)
 {
     if (mRelations[name])
         return mRelations[name]->mRelation;
@@ -273,14 +262,12 @@ PlayerRelationsManager::getRelation(const std::string &name)
 ////////////////////////////////////////
 // defaults
 
-unsigned int
-PlayerRelationsManager::getDefault() const
+unsigned int PlayerRelationsManager::getDefault() const
 {
     return mDefaultPermissions;
 }
 
-void
-PlayerRelationsManager::setDefault(unsigned int permissions)
+void PlayerRelationsManager::setDefault(unsigned int permissions)
 {
     mDefaultPermissions = permissions;
 
@@ -302,8 +289,7 @@ public:
         mShortName = PLAYER_IGNORE_STRATEGY_NOP;
     }
 
-    virtual void
-    ignore(Player *player, unsigned int flags)
+    virtual void ignore(Player *player, unsigned int flags)
      {
      }
 };
@@ -317,10 +303,9 @@ public:
         mShortName = "dotdotdot";
     }
 
-    virtual void
-    ignore(Player *player, unsigned int flags)
+    virtual void ignore(Player *player, unsigned int flags)
      {
-         player->setSpeech("...", 5);
+         player->setSpeech("...", 500);
      }
 };
 
@@ -334,8 +319,7 @@ public:
         mShortName = "blinkname";
     }
 
-    virtual void
-    ignore(Player *player, unsigned int flags)
+    virtual void ignore(Player *player, unsigned int flags)
     {
         player->flash(200);
     }
@@ -351,8 +335,7 @@ public:
         mShortName = shortname;
     }
 
-    virtual void
-    ignore(Player *player, unsigned int flags)
+    virtual void ignore(Player *player, unsigned int flags)
      {
          player->setEmote(mEmotion, IGNORE_EMOTE_TIME);
      }

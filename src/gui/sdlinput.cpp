@@ -228,7 +228,7 @@ int SDLInput::convertMouseButton(int button)
 int SDLInput::convertKeyCharacter(SDL_Event event)
 {
     SDL_keysym keysym = event.key.keysym;
-    
+
     int value = keysym.unicode;
 
     switch (keysym.sym)

@@ -1,5 +1,6 @@
 /*
- *  The Mana World
+ *  Support for non-overlapping floating text
+ *  Copyright (C) 2008  Douglas Boffey <DougABoffey@netscape.net>
  *  Copyright (C) 2008  The Mana World Development Team
  *
  *  This file is part of The Mana World.
@@ -22,9 +23,10 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include "graphics.h"
+#include <guichan/color.hpp>
 
-#include <list>
+#include "graphics.h"
+#include "guichanfwd.h"
 
 class TextManager;
 
@@ -38,7 +40,7 @@ class Text
          */
         Text(const std::string &text, int x, int y,
              gcn::Graphics::Alignment alignment,
-             gcn::Color colour, bool isSpeech = false);
+             gcn::Color color, bool isSpeech = false);
 
         /**
          * Destructor. The text is removed from the screen.
@@ -53,7 +55,7 @@ class Text
         /**
          * Draws the text.
          */
-        virtual void draw(Graphics *graphics, int xOff, int yOff);
+        virtual void draw(gcn::Graphics *graphics, int xOff, int yOff);
 
     private:
         int mX;                /**< Actual x-value of left of text written. */
@@ -63,7 +65,7 @@ class Text
         int mXOffset;          /**< The offset of mX from the desired x. */
         static int mInstances; /**< Instances of text. */
         std::string mText;     /**< The text to display. */
-        gcn::Color mColour;    /**< The colour of the text. */
+        gcn::Color mColor;     /**< The color of the text. */
         bool mIsSpeech;        /**< Is this text a speech bubble? */
 
     protected:
@@ -76,7 +78,12 @@ class FlashText : public Text
     public:
         FlashText(const std::string &text, int x, int y,
                   gcn::Graphics::Alignment alignment,
-                  gcn::Color colour);
+                  gcn::Color color);
+
+        /**
+         * Remove the text from the screen
+         */
+        virtual ~FlashText() {}
 
         /**
          * Flash the text for so many refreshes.
@@ -86,10 +93,10 @@ class FlashText : public Text
         /**
          * Draws the text.
          */
-        virtual void draw(Graphics *graphics, int xOff, int yOff);
+        virtual void draw(gcn::Graphics *graphics, int xOff, int yOff);
 
     private:
-        int mTime;             /**< Time left for flashing. */
+        int mTime;             /**< Time left for flashing */
 };
 
 #endif // TEXT_H

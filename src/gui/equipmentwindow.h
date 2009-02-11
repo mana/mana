@@ -22,23 +22,37 @@
 #ifndef EQUIPMENTWINDOW_H
 #define EQUIPMENTWINDOW_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
-#include "../inventory.h"
 
 class Equipment;
+class Inventory;
+class Item;
+class ItemPopup;
+class PlayerBox;
+
+/**
+ * Equipment box.
+ */
+struct EquipBox
+{
+    int posX;
+    int posY;
+};
 
 /**
  * Equipment dialog.
  *
  * \ingroup Interface
  */
-class EquipmentWindow : public Window
+class EquipmentWindow : public Window, public gcn::ActionListener
 {
     public:
         /**
          * Constructor.
          */
-        EquipmentWindow(Equipment *equipment);
+        EquipmentWindow();
 
         /**
          * Destructor.
@@ -50,9 +64,43 @@ class EquipmentWindow : public Window
          */
         void draw(gcn::Graphics *graphics);
 
+        void action(const gcn::ActionEvent &event);
+
+        void mousePressed(gcn::MouseEvent& mouseEvent);
+
+        enum {
+            // Equipment rules:
+            EQUIP_LEGS_SLOT = 0,
+            EQUIP_FIGHT1_SLOT,
+            EQUIP_GLOVES_SLOT,
+            EQUIP_RING2_SLOT,
+            EQUIP_RING1_SLOT,
+            EQUIP_FIGHT2_SLOT,
+            EQUIP_FEET_SLOT,
+            EQUIP_CAPE_SLOT,
+            EQUIP_HEAD_SLOT,
+            EQUIP_TORSO_SLOT,
+            EQUIP_AMMO_SLOT,
+            EQUIP_VECTOREND
+        };
+
+
     private:
+        void mouseExited(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
+
+        Item* getItem(const int &x, const int &y);
+
         Equipment *mEquipment;
         Inventory *mInventory;
+        gcn::Button *mUnequip;                  /**< Button for unequipping. */
+        EquipBox mEquipBox[EQUIP_VECTOREND];    /**< Equipment Boxes. */
+
+        ItemPopup *mItemPopup;
+
+        PlayerBox *mPlayerBox;
+
+        int mSelected;                          /**< Index of selected item. */
 };
 
 extern EquipmentWindow *equipmentWindow;

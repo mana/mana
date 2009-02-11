@@ -30,7 +30,8 @@
  *
  * \ingroup GUI
  */
-class WindowContainer : public gcn::Container {
+class WindowContainer : public gcn::Container
+{
     public:
         /**
          * Do GUI logic. This functions adds automatic deletion of objects that

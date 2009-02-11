@@ -31,7 +31,8 @@
  *
  * \ingroup GUI
  */
-class TextBox : public gcn::TextBox {
+class TextBox : public gcn::TextBox
+{
     public:
         /**
          * Constructor.
@@ -41,7 +42,15 @@ class TextBox : public gcn::TextBox {
         /**
          * Sets the text after wrapping it to the current width of the widget.
          */
-        void setTextWrapped(const std::string &text);
+        void setTextWrapped(const std::string &text, int minDimension);
+
+        /**
+         * Get the minimum text width for the text box.
+         */
+        int getMinWidth() { return mMinWidth; }
+
+    private:
+        int mMinWidth;
 };
 
 #endif

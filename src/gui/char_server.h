@@ -27,8 +27,6 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 class LoginData;
 class ServerListModel;
 

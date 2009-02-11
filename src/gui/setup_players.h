@@ -22,20 +22,19 @@
 #ifndef GUI_SETUP_PLAYERS_H
 #define GUI_SETUP_PLAYERS_H
 
-#include "setuptab.h"
-
-#include "scrollarea.h"
-#include "button.h"
-#include "table.h"
 #include <guichan/actionlistener.hpp>
 
-#include "../guichanfwd.h"
+#include "setuptab.h"
 
 #include "../player_relations.h"
 
+class GuiTable;
 class PlayerTableModel;
+class StaticTableModel;
 
-class Setup_Players : public SetupTab, public gcn::ActionListener, public PlayerRelationsListener
+class Setup_Players : public SetupTab,
+                      public gcn::ActionListener,
+                      public PlayerRelationsListener
 {
 public:
     Setup_Players();
@@ -55,13 +54,13 @@ private:
     PlayerTableModel *mPlayerTableModel;
     GuiTable *mPlayerTable;
     GuiTable *mPlayerTitleTable;
-    ScrollArea *mPlayerScrollArea;
+    gcn::ScrollArea *mPlayerScrollArea;
 
     gcn::CheckBox *mPersistIgnores;
     gcn::CheckBox *mDefaultTrading;
     gcn::CheckBox *mDefaultWhisper;
 
-    Button *mDeleteButton;
+    gcn::Button *mDeleteButton;
     gcn::DropDown *mIgnoreActionChoicesBox;
 };
 

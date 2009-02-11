@@ -51,8 +51,7 @@ class PlayerBox : public gcn::ScrollArea
          * player to <code>NULL</code> causes the box not to draw any
          * character.
          */
-        void
-        setPlayer(const Player *player) { mPlayer = player; }
+        void setPlayer(const Player *player) { mPlayer = player; }
 
         /**
          * Draws the scroll area.
@@ -67,6 +66,7 @@ class PlayerBox : public gcn::ScrollArea
     private:
         const Player *mPlayer;       /**< The character used for display */
 
+        static float mAlpha;
         static int instances;
         static ImageRect background;
 };

@@ -27,9 +27,9 @@
 
 #include "position.h"
 #include "properties.h"
-
 #include "simpleanimation.h"
 
+class Animation;
 class AmbientOverlay;
 class Graphics;
 class Image;
@@ -186,8 +186,7 @@ class Map : public Properties
         /**
          * Finds the tile set that a tile with the given global id is part of.
          */
-        Tileset*
-        getTilesetWithGid(int gid) const;
+        Tileset* getTilesetWithGid(int gid) const;
 
         /**
          * Get tile reference.
@@ -207,26 +206,22 @@ class Map : public Properties
         /**
          * Returns the width of this map.
          */
-        int
-        getWidth() const { return mWidth; }
+        int getWidth() const { return mWidth; }
 
         /**
          * Returns the height of this map.
          */
-        int
-        getHeight() const { return mHeight; }
+        int getHeight() const { return mHeight; }
 
         /**
          * Returns the tile width of this map.
          */
-        int
-        getTileWidth() const { return mTileWidth; }
+        int getTileWidth() const { return mTileWidth; }
 
         /**
          * Returns the tile height used by this map.
          */
-        int
-        getTileHeight() const { return mTileHeight; }
+        int getTileHeight() const { return mTileHeight; }
 
         /**
          * Find a path from one location to the next.
@@ -236,14 +231,12 @@ class Map : public Properties
         /**
          * Adds a sprite to the map.
          */
-        SpriteIterator
-        addSprite(Sprite *sprite);
+        SpriteIterator addSprite(Sprite *sprite);
 
         /**
          * Removes a sprite from the map.
          */
-        void
-        removeSprite(SpriteIterator iterator);
+        void removeSprite(SpriteIterator iterator);
 
         /**
          * Adds a particle effect
@@ -270,9 +263,8 @@ class Map : public Properties
         /**
          * Draws the overlay graphic to the given graphics output.
          */
-        void
-        drawOverlay(Graphics *graphics, float scrollX, float scrollY,
-                    int detail);
+        void drawOverlay(Graphics *graphics, float scrollX, float scrollY,
+                         int detail);
 
         /**
          * Tells whether a tile is occupied by a being.

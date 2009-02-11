@@ -19,20 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "connection.h"
-
 #include <guichan/actionlistener.hpp>
 
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "connection.h"
 #include "progressbar.h"
 
 #include "../main.h"
 
 #include "../utils/gettext.h"
 
-namespace {
+namespace
+{
     struct ConnectionActionListener : public gcn::ActionListener
     {
         void action(const gcn::ActionEvent &event) { state = EXIT_STATE; }
@@ -63,10 +63,10 @@ ConnectionDialog::ConnectionDialog():
 void ConnectionDialog::logic()
 {
     mProgress += 0.005f;
+
     if (mProgress > 1.0f)
-    {
         mProgress = 0.0f;
-    }
+
     mProgressBar->setProgress(mProgress);
     Window::logic();
 }

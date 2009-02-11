@@ -21,17 +21,21 @@
 
 #include "itemcontainer.h"
 
+#include "itempopup.h"
+
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
+
+#include <SDL_mouse.h>
 
 #include "../graphics.h"
 #include "../inventory.h"
 #include "../item.h"
 #include "../itemshortcut.h"
+#include "../localplayer.h"
 #include "../log.h"
 
 #include "../resources/image.h"
-#include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
 #include "../utils/tostring.h"
@@ -41,11 +45,14 @@ const int ItemContainer::gridHeight = 42; // item icon height + 10
 
 static const int NO_ITEM = -1;
 
-ItemContainer::ItemContainer(Inventory *inventory):
+ItemContainer::ItemContainer(Inventory *inventory, int offset):
     mInventory(inventory),
     mSelectedItemIndex(NO_ITEM),
-    mLastSelectedItemId(NO_ITEM)
+    mLastSelectedItemId(NO_ITEM),
+    mOffset(offset)
 {
+    mItemPopup = new ItemPopup();
+
     ResourceManager *resman = ResourceManager::getInstance();
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
@@ -60,6 +67,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
 ItemContainer::~ItemContainer()
 {
     mSelImg->decRef();
+    delete mItemPopup;
 }
 
 void ItemContainer::logic()
@@ -86,10 +94,11 @@ void ItemContainer::draw(gcn::Graphics *graphics)
     }
 
     /*
-     * eAthena seems to start inventory from the 3rd slot. Still a mystery to
-     * us why, make sure not to copy this oddity to our own server.
+     * mOffset is used to compensate for some weirdness that eAthena inherited from
+     * Ragnarok Online.  Inventory slots and cart slots are +2 from their actual index,
+     * while storage slots are +1.
      */
-    for (int i = 2; i < INVENTORY_SIZE; i++)
+    for (int i = mOffset; i < mInventory->getSize(); i++)
     {
         Item *item = mInventory->getItem(i);
 
@@ -115,6 +124,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
         }
 
         // Draw item caption
+        graphics->setFont(getFont());
         graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawText(
                 (item->isEquipped() ? "Eq." : toString(item->getQuantity())),
@@ -138,6 +148,7 @@ void ItemContainer::recalculateHeight()
 
     const int rows = (mMaxItems / cols) + (mMaxItems % cols > 0 ? 1 : 0);
     const int height = rows * gridHeight + 8;
+
     if (height != getHeight())
         setHeight(height);
 }
@@ -159,8 +170,8 @@ void ItemContainer::selectNone()
 
 void ItemContainer::refindSelectedItem()
 {
-    if (mSelectedItemIndex != NO_ITEM) {
-
+    if (mSelectedItemIndex != NO_ITEM)
+    {
         if (mInventory->getItem(mSelectedItemIndex) &&
             mInventory->getItem(mSelectedItemIndex)->getId() == mLastSelectedItemId)
             return; // we're already fine
@@ -170,7 +181,8 @@ void ItemContainer::refindSelectedItem()
 
         for (int i = 0; i <= mMaxItems + 1; i++)
             if (mInventory->getItem(i) &&
-                mInventory->getItem(i)->getId() == mLastSelectedItemId) {
+                mInventory->getItem(i)->getId() == mLastSelectedItemId)
+            {
                 mSelectedItemIndex = i;
                 return;
             }
@@ -179,14 +191,16 @@ void ItemContainer::refindSelectedItem()
     mLastSelectedItemId = mSelectedItemIndex = NO_ITEM;
 }
 
-
 void ItemContainer::setSelectedItemIndex(int index)
 {
     int newSelectedItemIndex;
 
-    // mMaxItems is broken because of eAthena's odd inventory layout and the client's refusal
-    // to handle it properly, so we work around the issue right here.
-    if (index < 0 || index > mMaxItems + 1 || mInventory->getItem(index) == NULL)
+    /*
+     * mOffset is used to compensate for some weirdness that eAthena inherited from
+     * Ragnarok Online.  Inventory slots and cart slots are +2 from their actual index,
+     * while storage slots are +1.
+     */
+    if (index < 0 || index > mMaxItems + mOffset || mInventory->getItem(index) == NULL)
         newSelectedItemIndex = NO_ITEM;
     else
         newSelectedItemIndex = index;
@@ -218,14 +232,14 @@ void ItemContainer::distributeValueChangedEvent()
 
 void ItemContainer::mousePressed(gcn::MouseEvent &event)
 {
-    int button = event.getButton();
+    const int button = event.getButton();
 
     if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
     {
         int columns = getWidth() / gridWidth;
         int mx = event.getX();
         int my = event.getY();
-        int index = mx / gridWidth + ((my / gridHeight) * columns) + 2;
+        int index = mx / gridWidth + ((my / gridHeight) * columns) + mOffset;
 
         itemShortcut->setItemSelected(-1);
         setSelectedItemIndex(index);
@@ -236,3 +250,38 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
             itemShortcut->setItemSelected(item->getId());
     }
 }
+
+// Show ItemTooltip
+void ItemContainer::mouseMoved(gcn::MouseEvent &event)
+{
+    Item *item = mInventory->getItem(getSlotIndex(event.getX(), event.getY()));
+
+    if (item)
+    {
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+
+        mItemPopup->setItem(item->getInfo());
+        mItemPopup->setOpaque(false);
+        mItemPopup->view(mouseX, mouseY);
+    }
+    else
+    {
+        mItemPopup->setVisible(false);
+    }
+}
+
+// Hide ItemTooltip
+void ItemContainer::mouseExited(gcn::MouseEvent &event)
+{
+    mItemPopup->setVisible(false);
+}
+
+int ItemContainer::getSlotIndex(const int posX, const int posY) const
+{
+    int columns = getWidth() / gridWidth;
+    int index = posX / gridWidth + ((posY / gridHeight) * columns) + mOffset;
+
+    return (index);
+}
+

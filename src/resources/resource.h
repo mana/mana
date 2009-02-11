@@ -41,8 +41,7 @@ class Resource
         /**
          * Increments the internal reference count.
          */
-        void
-        incRef();
+        void incRef();
 
         /**
          * Decrements the reference count and deletes the object
@@ -51,8 +50,7 @@ class Resource
          * @return <code>true</code> if the object was deleted
          *         <code>false</code> otherwise.
          */
-        void
-        decRef();
+        void decRef();
 
         /**
          * Return the path identifying this resource.
@@ -64,8 +62,7 @@ class Resource
         /**
          * Destructor.
          */
-        virtual
-        ~Resource();
+        virtual ~Resource();
 
     private:
         std::string mIdPath; /**< Path identifying this resource. */

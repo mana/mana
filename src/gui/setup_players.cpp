@@ -19,25 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "setup_players.h"
+#include <string>
+#include <vector>
+
+#include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "checkbox.h"
+#include "listbox.h"
 #include "ok_dialog.h"
+#include "scrollarea.h"
+#include "setup_players.h"
+#include "table.h"
 
+#include "widgets/dropdown.h"
 #include "widgets/layouthelper.h"
 
 #include "../configuration.h"
 #include "../log.h"
-#include "../player_relations.h"
-#include "../sound.h"
 
 #include "../utils/gettext.h"
-
-#include <guichan/widgets/dropdown.hpp>
-#include <guichan/widgets/label.hpp>
-
-#include <vector>
 
 #define COLUMNS_NR 2 // name plus listbox
 #define NAME_COLUMN 0
@@ -136,8 +137,12 @@ public:
             std::string name = (*player_names)[r];
             gcn::Widget *widget = new gcn::Label(name);
             mWidgets.push_back(widget);
+            gcn::ListModel *playerRelation = new PlayerRelationListModel();
 
-            gcn::DropDown *choicebox = new gcn::DropDown(new PlayerRelationListModel());
+            gcn::DropDown *choicebox = new DropDown(playerRelation,
+                                                    new ScrollArea(),
+                                                    new ListBox(playerRelation),
+                                                    false);
             choicebox->setSelected(player_relations.getRelation(name));
             mWidgets.push_back(choicebox);
         }
@@ -198,7 +203,7 @@ public:
     virtual std::string getElementAt(int i)
     {
         if (i >= getNumberOfElements()) {
-            return "???";
+            return _("???");
         }
         return (*player_relations.getPlayerIgnoreStrategies())[i]->mDescription;
     }
@@ -220,17 +225,21 @@ Setup_Players::Setup_Players():
                 player_relations.getDefault() & PlayerRelation::TRADE)),
     mDefaultWhisper(new CheckBox(_("Allow whispers"),
                 player_relations.getDefault() & PlayerRelation::WHISPER)),
-    mDeleteButton(new Button(_("Delete"), ACTION_DELETE, this)),
-    mIgnoreActionChoicesBox(new gcn::DropDown(new IgnoreChoicesListModel()))
+    mDeleteButton(new Button(_("Delete"), ACTION_DELETE, this))
 {
     setOpaque(false);
+    mPlayerTable->setOpaque(false);
 
     int table_width = NAME_COLUMN_WIDTH + RELATION_CHOICE_COLUMN_WIDTH;
     mPlayerTableTitleModel->fixColumnWidth(NAME_COLUMN, NAME_COLUMN_WIDTH);
     mPlayerTableTitleModel->fixColumnWidth(RELATION_CHOICE_COLUMN,
                                            RELATION_CHOICE_COLUMN_WIDTH);
-    mPlayerTitleTable->setDimension(gcn::Rectangle(10, 10, table_width, 10));
+    mPlayerTitleTable->setDimension(gcn::Rectangle(10, 10, table_width - 1, 10));
     mPlayerTitleTable->setBackgroundColor(gcn::Color(0xbf, 0xbf, 0xbf));
+
+    gcn::ListModel *ignoreChoices = new IgnoreChoicesListModel();
+    mIgnoreActionChoicesBox = new DropDown(ignoreChoices, new ScrollArea(),
+                                           new ListBox(ignoreChoices), false);
 
     for (int i = 0; i < COLUMNS_NR; i++)
     {

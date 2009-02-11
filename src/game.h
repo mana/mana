@@ -19,16 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef GAME_
-#define GAME_
+#ifndef GAME_H
+#define GAME_H
 
-#include <iosfwd>
 #include <memory>
 
 #include "configlistener.h"
-
-#define SPEECH_TIME 80
-#define SPEECH_MAX_TIME 100
 
 class MessageHandler;
 class Network;

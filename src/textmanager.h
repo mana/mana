@@ -1,6 +1,6 @@
 /*
- *  The Mana World
- *  Copyright (C) 2008  The Mana World Development Team
+ *  Support for non-overlapping floating text
+ *  Copyright (C) 2008  Douglas Boffey <DougABoffey@netscape.net>
  *
  *  This file is part of The Mana World.
  *
@@ -24,8 +24,9 @@
 
 #include <list>
 
+#include "guichanfwd.h"
+
 class Text;
-class Graphics;
 
 class TextManager
 {
@@ -58,7 +59,7 @@ class TextManager
         /**
          * Draw the text
          */
-        void draw(Graphics *graphics, int xOff, int yOff);
+        void draw(gcn::Graphics *graphics, int xOff, int yOff);
 
     private:
         /**

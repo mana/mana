@@ -19,11 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "sound.h"
-
 #include <SDL.h>
 
 #include "log.h"
+#include "sound.h"
+
 #include "resources/resourcemanager.h"
 #include "resources/soundeffect.h"
 
@@ -128,7 +128,7 @@ void Sound::playMusic(const std::string &filename, int loop)
 {
     if (!mInstalled) return;
 
-    if (mMusic != NULL) {
+    if (mMusic) {
         stopMusic();
     }
 
@@ -154,7 +154,7 @@ void Sound::stopMusic()
 
     logger->log("Sound::stopMusic()");
 
-    if (mMusic != NULL) {
+    if (mMusic) {
         Mix_HaltMusic();
         Mix_FreeMusic(mMusic);
         mMusic = NULL;
@@ -165,7 +165,7 @@ void Sound::fadeInMusic(const std::string &path, int loop, int ms)
 {
     if (!mInstalled) return;
 
-    if (mMusic != NULL) {
+    if (mMusic) {
         stopMusic();
     }
 
@@ -188,7 +188,7 @@ void Sound::fadeOutMusic(int ms)
 
     logger->log("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
 
-    if (mMusic != NULL) {
+    if (mMusic) {
         Mix_FadeOutMusic(ms);
         Mix_FreeMusic(mMusic);
         mMusic = NULL;

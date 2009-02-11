@@ -22,8 +22,8 @@
 #ifndef MESSAGEIN_
 #define MESSAGEIN_
 
-#include <string>
 #include <SDL_types.h>
+#include <string>
 
 /**
  * Used for parsing an incoming message.
@@ -43,14 +43,12 @@ class MessageIn
         /**
          * Returns the message ID.
          */
-        short
-        getId() { return mId; }
+        short getId() { return mId; }
 
         /**
          * Returns the message length.
          */
-        unsigned int
-        getLength() { return mLength; }
+        unsigned int getLength() { return mLength; }
 
         Sint8 readInt8();               /**< Reads a byte. */
         Sint16 readInt16();             /**< Reads a short. */
@@ -60,30 +58,26 @@ class MessageIn
          * Reads a special 3 byte block used by eAthena, containing x and y
          * coordinates and direction.
          */
-        void
-        readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction);
+        void readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction);
 
         /**
          * Reads a special 5 byte block used by eAthena, containing a source
          * and destination coordinate pair.
          */
-        void
-        readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
-                Uint16 &dstX, Uint16 &dstY);
+        void readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
+                                Uint16 &dstX, Uint16 &dstY);
 
         /**
          * Skips a given number of bytes.
          */
-        void
-        skip(unsigned int length);
+        void skip(unsigned int length);
 
         /**
          * Reads a string. If a length is not given (-1), it is assumed
          * that the length of the string is stored in a short at the
          * start of the string.
          */
-        std::string
-        readString(int length = -1);
+        std::string readString(int length = -1);
 
     private:
         const char* mData;             /**< The message data. */

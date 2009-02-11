@@ -39,19 +39,19 @@ StatusEffect::~StatusEffect()
 
 void StatusEffect::playSFX()
 {
-    if (mSFXEffect != "")
+    if (!mSFXEffect.empty())
         sound.playSfx(mSFXEffect);
 }
 
 void StatusEffect::deliverMessage()
 {
-    if (mMessage != "")
+    if (!mMessage.empty())
         chatWindow->chatLog(mMessage, BY_SERVER);
 }
 
 Particle *StatusEffect::getParticle()
 {
-    if (mParticleEffect == "")
+    if (mParticleEffect.empty())
         return NULL;
     else
         return particleEngine->addEffect(mParticleEffect, 0, 0);
@@ -59,7 +59,7 @@ Particle *StatusEffect::getParticle()
 
 AnimatedSprite *StatusEffect::getIcon()
 {
-    if (mIcon == "")
+    if (mIcon.empty())
         return NULL;
     else {
         AnimatedSprite *sprite = AnimatedSprite::load(
@@ -74,7 +74,7 @@ AnimatedSprite *StatusEffect::getIcon()
 
 SpriteAction StatusEffect::getAction()
 {
-    if (mAction == "")
+    if (mAction.empty())
         return ACTION_INVALID;
     else
         return SpriteDef::makeSpriteAction(mAction);

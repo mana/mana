@@ -26,6 +26,9 @@
 
 #include "window.h"
 
+class ScrollArea;
+class TextBox;
+
 /**
  * An 'Ok' button dialog.
  *
@@ -41,10 +44,17 @@ class OkDialog : public Window, public gcn::ActionListener {
         OkDialog(const std::string &title, const std::string &msg,
                 Window *parent = NULL);
 
+        unsigned int getNumRows();
+
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+    private:
+        TextBox *mTextBox;
+        ScrollArea *mTextArea;
+        gcn::Button *okButton;
 };
 
 #endif

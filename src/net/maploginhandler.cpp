@@ -20,7 +20,6 @@
  */
 
 #include "maploginhandler.h"
-
 #include "messagein.h"
 #include "protocol.h"
 
@@ -28,11 +27,13 @@
 #include "../log.h"
 #include "../main.h"
 
+#include "../utils/gettext.h"
+
 MapLoginHandler::MapLoginHandler()
 {
     static const Uint16 _messages[] = {
+        SMSG_CONNECTION_PROBLEM,
         SMSG_LOGIN_SUCCESS,
-        0x0081,
         0
     };
     handledMessages = _messages;
@@ -40,10 +41,29 @@ MapLoginHandler::MapLoginHandler()
 
 void MapLoginHandler::handleMessage(MessageIn *msg)
 {
+    int code;
     unsigned char direction;
 
     switch (msg->getId())
     {
+        case SMSG_CONNECTION_PROBLEM:
+            code = msg->readInt8();
+            logger->log("Connection problem: %i", code);
+
+            switch (code) {
+                case 0:
+                    errorMessage = _("Authentication failed");
+                    break;
+                case 2:
+                    errorMessage = _("This account is already logged in");
+                    break;
+                default:
+                    errorMessage = _("Unknown connection error");
+                    break;
+            }
+            state = ERROR_STATE;
+            break;
+
         case SMSG_LOGIN_SUCCESS:
             msg->readInt32();   // server tick
             msg->readCoordinates(player_node->mX, player_node->mY, direction);
@@ -51,11 +71,6 @@ void MapLoginHandler::handleMessage(MessageIn *msg)
             logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
                     player_node->mX, player_node->mY, direction);
             state = GAME_STATE;
-            break;
-
-        case 0x0081:
-            logger->log("Warning: Map server D/C");
-            state = ERROR_STATE;
             break;
     }
 }

@@ -22,10 +22,6 @@
 #ifndef TABLE_MODEL_H
 #define TABLE_MODEL_H
 
-#include "../guichanfwd.h"
-
-#include <guichan/gui.hpp>
-
 #include <set>
 #include <vector>
 
@@ -133,6 +129,8 @@ public:
     virtual int getRows();
     virtual int getColumns();
     virtual int getRowHeight();
+    virtual int getWidth();
+    virtual int getHeight();
     virtual int getColumnWidth(int index);
     virtual gcn::Widget *getElementAt(int row, int column);
 

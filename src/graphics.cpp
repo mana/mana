@@ -42,6 +42,8 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     logger->log("Setting video mode %dx%d %s",
             w, h, fs ? "fullscreen" : "windowed");
 
+    logger->log("Bits per pixel: %d", bpp);
+
     int displayFlags = SDL_ANYFORMAT;
 
     mFullscreen = fs;
@@ -69,7 +71,7 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
         logger->log("Using video driver: %s", videoDriverName);
     }
     else {
-        logger->log("Using video driver: unkown");
+        logger->log("Using video driver: unknown");
     }
 
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();
@@ -176,13 +178,12 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     }
 }
 
-void
-Graphics::drawImageRect(int x, int y, int w, int h,
-                        Image *topLeft, Image *topRight,
-                        Image *bottomLeft, Image *bottomRight,
-                        Image *top, Image *right,
-                        Image *bottom, Image *left,
-                        Image *center)
+void Graphics::drawImageRect(int x, int y, int w, int h,
+                             Image *topLeft, Image *topRight,
+                             Image *bottomLeft, Image *bottomRight,
+                             Image *top, Image *right,
+                             Image *bottom, Image *left,
+                             Image *center)
 {
     pushClipArea(gcn::Rectangle(x, y, w, h));
 
@@ -220,9 +221,8 @@ Graphics::drawImageRect(int x, int y, int w, int h,
     popClipArea();
 }
 
-void
-Graphics::drawImageRect(int x, int y, int w, int h,
-                        const ImageRect &imgRect)
+void Graphics::drawImageRect(int x, int y, int w, int h,
+                             const ImageRect &imgRect)
 {
     drawImageRect(x, y, w, h,
             imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],

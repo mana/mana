@@ -19,13 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <iosfwd>
-
 struct SDL_Surface;
 
 class ImageWriter
 {
     public:
         static bool writePNG(SDL_Surface *surface,
-                const std::string &filename);
+                             const std::string &filename);
 };

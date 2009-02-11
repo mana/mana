@@ -36,15 +36,6 @@ A: Did you read README? Are you really sure? If not go read it and you'll find
    README/ingame help is not up to date/wrong, please report it to the
    developers.
 
-Q: I just typed /<command> in the chat window and then I saw "Your account has
-   been banished until ..." and TMW closed. Now when I try to log in nothing
-   happens?
-
-A: That's because /<commands> are not implemented at the moment of writing.
-   Please avoid using such commands (i.e. /help) until they're added.
-   Anyway the ban is temp, just wait some minutes and you should be able to
-   connect again.
-
 Q: I can't recover HP anymore.
 
 A: Check your inventory, if you've got lots of stuff probably you're
@@ -67,7 +58,7 @@ DEVELOPMENT
 Q: When will the next version be released?
 
 A: We have scheduled releases. Usually a new release is available every month.
-   Check http://wiki.themanaworld.org/index.php/Roadmap for further infos.
+   Check http://themanaworld.org/ for further info.
 
 
 Q: How can I contribute?
@@ -80,11 +71,11 @@ A: There are a lot of ways:
      channel: #themanaworld @ irc.freenode.net.
 
    - You can donate money. Follow the link on the project page:
-	http://sourceforge.net/projects/themanaworld.
 
-   - You can be a beta tester. Just play with The Mana World and report every
-     error to the tracker. Read for more infos on the project page:
-	http://themanaworld.org.
+        http://sourceforge.net/projects/themanaworld/
+
+   - You can be a beta tester. Just play The Mana World and report every
+     error to the tracker or on the forum.
 
    - Play with The Mana World: more players, more fun! Simple as that! ;-)
 

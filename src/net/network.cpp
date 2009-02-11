@@ -19,14 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "network.h"
+#include <sstream>
 
 #include "messagehandler.h"
 #include "messagein.h"
+#include "network.h"
 
 #include "../log.h"
-
-#include <sstream>
+#include "../utils/tostring.h"
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
@@ -419,21 +419,7 @@ void Network::receive()
     SDLNet_FreeSocketSet(set);
 }
 
-char *iptostring(int address)
-{
-    static char asciiIP[16];
-
-    sprintf(asciiIP, "%i.%i.%i.%i",
-            (unsigned char)(address),
-            (unsigned char)(address >> 8),
-            (unsigned char)(address >> 16),
-            (unsigned char)(address >> 24));
-
-    return asciiIP;
-}
-
-void
-Network::setError(const std::string& error)
+void Network::setError(const std::string& error)
 {
     logger->log("Network error: %s", error.c_str());
     mError = error;

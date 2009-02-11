@@ -22,13 +22,12 @@
 #ifndef MONSTERINFO_H
 #define MONSTERINFO_H
 
+#include <list>
 #include <map>
 #include <string>
 #include <vector>
-#include <list>
 
 #include "../being.h"
-
 
 enum MonsterSoundEvent
 {
@@ -57,39 +56,39 @@ class MonsterInfo
          */
         ~MonsterInfo();
 
-        void
-        setName(std::string name) { mName = name; }
+        void setName(std::string name) { mName = name; }
 
-        void
-        addSprite(std::string filename) { mSprites.push_back(filename); }
+        void addSprite(std::string filename) { mSprites.push_back(filename); }
 
-        void
-        setTargetCursorSize(Being::TargetCursorSize targetCursorSize)
+        void setTargetCursorSize(Being::TargetCursorSize targetCursorSize)
         { mTargetCursorSize = targetCursorSize; }
 
-        void
-        addSound(MonsterSoundEvent event, std::string filename);
+        void addSound(MonsterSoundEvent event, std::string filename);
 
-        void
-        addParticleEffect(std::string filename);
+        void addParticleEffect(std::string filename);
 
-        const std::string&
-        getName() const { return mName; }
+        const std::string& getName() const
+        { return mName; }
 
-        const std::list<std::string>&
-        getSprites() const { return mSprites; }
+        const std::list<std::string>& getSprites() const
+        { return mSprites; }
 
-        Being::TargetCursorSize
-        getTargetCursorSize() const { return mTargetCursorSize; }
+        Being::TargetCursorSize getTargetCursorSize() const
+        { return mTargetCursorSize; }
 
-        std::string
-        getSound(MonsterSoundEvent event) const;
+        std::string getSound(MonsterSoundEvent event) const;
 
-        const std::list<std::string>&
-        getParticleEffects() const { return mParticleEffects; }
+        std::string getAttackParticleEffect() const { return mAttackParticle; }
+
+        void addAttackParticleEffect(const std::string &particleEffect)
+        { mAttackParticle = particleEffect; }
+
+        const std::list<std::string>& getParticleEffects() const
+        { return mParticleEffects; }
 
     private:
         std::string mName;
+        std::string mAttackParticle;
         std::list<std::string> mSprites;
         Being::TargetCursorSize mTargetCursorSize;
         std::map<MonsterSoundEvent, std::vector<std::string>* > mSounds;

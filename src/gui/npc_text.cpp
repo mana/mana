@@ -19,13 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npc_text.h"
-
-#include <string>
-
-#include "browserbox.h"
 #include "button.h"
+#include "npc_text.h"
 #include "scrollarea.h"
+#include "textbox.h"
+
+#include "widgets/layout.h"
 
 #include "../npc.h"
 
@@ -39,66 +38,55 @@ NpcTextDialog::NpcTextDialog():
     setMinWidth(200);
     setMinHeight(150);
 
-    mBrowserBox = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mBrowserBox->setOpaque(true);
+    setDefaultSize(0, 0, 260, 200);
 
-    scrollArea = new ScrollArea(mBrowserBox);
+    mTextBox = new TextBox;
+    mTextBox->setEditable(false);
+    mTextBox->setOpaque(false);
+
+    scrollArea = new ScrollArea(mTextBox);
     okButton = new Button(_("OK"), "ok", this);
 
-    setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
-    scrollArea->setDimension(gcn::Rectangle(
-                5, 5, 250, 160 - okButton->getHeight()));
-    okButton->setPosition(
-            260 - 5 - okButton->getWidth(),
-            175 - 5 - okButton->getHeight());
 
-    add(scrollArea);
-    add(okButton);
+    place(0, 0, scrollArea, 5).setPadding(3);
+    place(4, 1, okButton);
 
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
+
+    loadWindowState();
     setLocationRelativeTo(getParent());
-}
-
-void NpcTextDialog::clearText()
-{
-    mBrowserBox->clearRows();
 }
 
 void NpcTextDialog::setText(const std::string &text)
 {
-    mBrowserBox->clearRows();
-    mBrowserBox->addRow(text);
+    mText = text;
+    mTextBox->setTextWrapped(mText, scrollArea->getWidth() - 15);
 }
 
 void NpcTextDialog::addText(const std::string &text)
 {
-    mBrowserBox->addRow(text);
-}
-
-void NpcTextDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-    const int width = area.width;
-    const int height = area.height;
-
-    scrollArea->setDimension(gcn::Rectangle(
-                5, 5, width - 10, height - 15 - okButton->getHeight()));
-    okButton->setPosition(
-            width - 5 - okButton->getWidth(),
-            height - 5 - okButton->getHeight());
+    setText(mText + text + "\n");
 }
 
 void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        clearText();
+        setText("");
         setVisible(false);
         if (current_npc)
             current_npc->nextDialog();
         current_npc = 0;
     }
 }
+
+void NpcTextDialog::widgetResized(const gcn::Event &event)
+{
+    Window::widgetResized(event);
+
+    setText(mText);
+}
+

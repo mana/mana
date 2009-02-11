@@ -28,6 +28,8 @@
 
 #include "window.h"
 
+#include "../guichanfwd.h"
+
 class SetupTab;
 
 /**
@@ -51,8 +53,7 @@ class Setup : public Window, public gcn::ActionListener
         /**
          * Event handling method.
          */
-        void
-        action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &event);
 
     private:
         std::list<SetupTab*> mTabs;

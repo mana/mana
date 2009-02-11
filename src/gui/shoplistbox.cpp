@@ -19,18 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <guichan/font.hpp>
+#include <guichan/listmodel.hpp>
+
+#include "color.h"
+#include "shop.h"
 #include "shoplistbox.h"
 
-#include <guichan/font.hpp>
-#include <guichan/graphics.hpp>
-#include <guichan/listmodel.hpp>
-#include <guichan/mouseinput.hpp>
-#include <guichan/imagefont.hpp>
-#include <guichan/basiccontainer.hpp>
-
+#include "../configuration.h"
 #include "../graphics.h"
 
 const int ITEM_ICON_SIZE = 32;
+
+float ShopListBox::mAlpha = config.getValue("guialpha", 0.8);
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel):
     ListBox(listModel),
@@ -59,6 +60,15 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     if (!mListModel)
         return;
 
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+        mAlpha = config.getValue("guialpha", 0.8);
+
+    bool valid;
+    const int red = (textColor->getColor('H', valid) >> 16) & 0xFF;
+    const int green = (textColor->getColor('H', valid) >> 8) & 0xFF;
+    const int blue = textColor->getColor('H', valid) & 0xFF;
+    const int alpha = mAlpha * 255;
+
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
     graphics->setFont(getFont());
@@ -68,16 +78,16 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
          i < mListModel->getNumberOfElements();
          ++i, y += mRowHeight)
     {
-        gcn::Color backgroundColor = gcn::Color(0xffffff);
+        gcn::Color backgroundColor = gcn::Color(255, 255, 255, alpha);
 
         if (i == mSelected)
         {
-            backgroundColor = gcn::Color(110, 160, 255);
+            backgroundColor = gcn::Color(red, green, blue, alpha);
         }
         else if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
         {
-            backgroundColor = gcn::Color(0x919191);
+            backgroundColor = gcn::Color(145, 145, 145, alpha);
         }
 
         graphics->setColor(backgroundColor);

@@ -19,10 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "table_model.h"
-
 #include <guichan/widget.hpp>
-#include <cstdlib>
+
+#include "table_model.h"
 
 #include "../utils/dtor.h"
 
@@ -47,7 +46,6 @@ void TableModel::signalAfterUpdate()
     for (std::set<TableModelListener *>::const_iterator it = listeners.begin(); it != listeners.end(); it++)
         (*it)->modelUpdated(true);
 }
-
 
 
 #define WIDGET_AT(row, column) (((row) * mColumns) + (column))
@@ -143,3 +141,21 @@ int StaticTableModel::getColumns()
 {
     return mColumns;
 }
+
+int StaticTableModel::getWidth(void)
+{
+    int width = 0;
+
+    for (unsigned int i = 0; i < mWidths.size(); i++)
+    {
+        width += mWidths[i];
+    }
+
+    return width;
+}
+
+int StaticTableModel::getHeight(void)
+{
+    return (mColumns * mHeight);
+}
+

@@ -21,15 +21,17 @@
 
 #include <algorithm>
 
-#include "browserbox.h"
+#include <guichan/graphics.hpp>
 
+#include "browserbox.h"
+#include "color.h"
 #include "linkhandler.h"
 #include "truetypefont.h"
 
-BrowserBox::BrowserBox(unsigned int mode):
+BrowserBox::BrowserBox(unsigned int mode, bool opaque):
     gcn::Widget(),
     mMode(mode), mHighMode(UNDERLINE | BACKGROUND),
-    mOpaque(true),
+    mOpaque(opaque),
     mUseLinksAndUserColors(true),
     mSelectedLink(-1),
     mMaxRows(0)
@@ -98,12 +100,12 @@ void BrowserBox::addRow(const std::string &row)
 
             mLinks.push_back(bLink);
 
-            newRow += "##L" + bLink.caption;
+            newRow += "##<" + bLink.caption;
 
             tmp.erase(0, idx3 + 2);
-            if(tmp != "")
+            if (!tmp.empty())
             {
-                newRow += "##P";
+                newRow += "##>";
             }
             idx1 = tmp.find("@@");
         }
@@ -122,7 +124,18 @@ void BrowserBox::addRow(const std::string &row)
     //discard older rows when a row limit has been set
     if (mMaxRows > 0)
     {
-        while (mTextRows.size() > mMaxRows) mTextRows.pop_front();
+        while (mTextRows.size() > mMaxRows)
+        {
+            mTextRows.pop_front();
+            for (unsigned int i = 0; i < mLinks.size(); i++)
+            {
+                mLinks[i].y1 -= font->getHeight();
+                mLinks[i].y2 -= font->getHeight();
+
+                if (mLinks[i].y1 < 0)
+                    mLinks.erase(mLinks.begin() + i);
+            }
+        }
     }
 
     // Auto size mode
@@ -210,8 +223,7 @@ struct MouseOverLink
     int mX, mY;
 };
 
-void
-BrowserBox::mousePressed(gcn::MouseEvent &event)
+void BrowserBox::mousePressed(gcn::MouseEvent &event)
 {
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
@@ -221,8 +233,7 @@ BrowserBox::mousePressed(gcn::MouseEvent &event)
     }
 }
 
-void
-BrowserBox::mouseMoved(gcn::MouseEvent &event)
+void BrowserBox::mouseMoved(gcn::MouseEvent &event)
 {
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
@@ -230,8 +241,7 @@ BrowserBox::mouseMoved(gcn::MouseEvent &event)
     mSelectedLink = (i != mLinks.end()) ? (i - mLinks.begin()) : -1;
 }
 
-void
-BrowserBox::draw(gcn::Graphics *graphics)
+void BrowserBox::draw(gcn::Graphics *graphics)
 {
     if (mOpaque)
     {
@@ -241,9 +251,10 @@ BrowserBox::draw(gcn::Graphics *graphics)
 
     if (mSelectedLink >= 0)
     {
+        bool valid;
         if ((mHighMode & BACKGROUND))
         {
-            graphics->setColor(gcn::Color(HIGHLIGHT));
+            graphics->setColor(gcn::Color(textColor->getColor('H', valid)));
             graphics->fillRectangle(gcn::Rectangle(
                         mLinks[mSelectedLink].x1,
                         mLinks[mSelectedLink].y1,
@@ -254,7 +265,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
 
         if ((mHighMode & UNDERLINE))
         {
-            graphics->setColor(gcn::Color(LINK));
+            graphics->setColor(gcn::Color(textColor->getColor('<', valid)));
             graphics->drawLine(
                     mLinks[mSelectedLink].x1,
                     mLinks[mSelectedLink].y2,
@@ -265,6 +276,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
 
     int x = 0, y = 0;
     int wrappedLines = 0;
+    int link = 0;
     TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     graphics->setColor(BLACK);
@@ -311,57 +323,36 @@ BrowserBox::draw(gcn::Graphics *graphics)
                 // Check for color change in format "##x", x = [L,P,0..9]
                 if (row.find("##", start) == start && row.size() > start + 2)
                 {
-                    switch (row.at(start + 2))
+                    char c = row.at(start + 2);
+                    if (c == '>')
                     {
-                        case 'L': // Link color
+                        selColor = prevColor;
+                    }
+                    else
+                    {
+                        bool valid;
+                        int rgb = textColor->getColor(c, valid);
+                        if (c == '<')
+                        {
+                            const int size = mLinks[link].x2 - mLinks[link].x1;
+                            mLinks[link].x1 = x;
+                            mLinks[link].y1 = y;
+                            mLinks[link].x2 = mLinks[link].x1 + size;
+                            mLinks[link].y2 = y + font->getHeight();
+                            link++;
                             prevColor = selColor;
-                            selColor = LINK;
-                            break;
-                        case 'P': // Previous color
-                            selColor = prevColor;
-                            break;
-                        case '1':
-                            prevColor = selColor;
-                            selColor = RED;
-                            break;
-                        case '2':
-                            prevColor = selColor;
-                            selColor = GREEN;
-                            break;
-                        case '3':
-                            prevColor = selColor;
-                            selColor = BLUE;
-                            break;
-                        case '4':
-                            prevColor = selColor;
-                            selColor = ORANGE;
-                            break;
-                        case '5':
-                            prevColor = selColor;
-                            selColor = YELLOW;
-                            break;
-                        case '6':
-                            prevColor = selColor;
-                            selColor = PINK;
-                            break;
-                        case '7':
-                            prevColor = selColor;
-                            selColor = PURPLE;
-                            break;
-                        case '8':
-                            prevColor = selColor;
-                            selColor = GRAY;
-                            break;
-                        case '9':
-                            prevColor = selColor;
-                            selColor = BROWN;
-                            break;
-                        case '0':
-                        default:
-                            prevColor = selColor;
-                            selColor = BLACK;
+                        }
+                        if (valid)
+                        {
+                            selColor = rgb;
+                        }
                     }
                     start += 3;
+
+                    if (start == row.size())
+                    {
+                        break;
+                    }
                 }
                 graphics->setColor(gcn::Color(selColor));
             }
@@ -424,3 +415,4 @@ BrowserBox::draw(gcn::Graphics *graphics)
         setHeight((mTextRows.size() + wrappedLines) * font->getHeight());
     }
 }
+

@@ -22,12 +22,13 @@
 #ifndef NPC_TEXT_H
 #define NPC_TEXT_H
 
-#include <iosfwd>
+#include <string>
+
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
 
-class BrowserBox;
+class TextBox;
 
 /**
  * The npc text dialog.
@@ -43,13 +44,6 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          * @see Window::Window
          */
         NpcTextDialog();
-
-        /**
-         * Called when resizing the window.
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
 
         /**
          * Called when receiving actions from the widgets.
@@ -76,10 +70,19 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          */
         void addText(const std::string &string);
 
+        /**
+         * Called when resizing the window.
+         *
+         * @param event The calling event
+         */
+        void widgetResized(const gcn::Event &event);
+
     private:
         gcn::Button *okButton;
         gcn::ScrollArea *scrollArea;
-        BrowserBox *mBrowserBox;
+        TextBox *mTextBox;
+
+        std::string mText;
 };
 
 #endif // NPC_TEXT_H

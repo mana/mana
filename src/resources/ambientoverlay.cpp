@@ -20,7 +20,6 @@
  */
 
 #include "ambientoverlay.h"
-
 #include "image.h"
 
 #include "../graphics.h"

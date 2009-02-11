@@ -19,16 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "messagein.h"
-
 #include <cassert>
 #include <SDL.h>
 #include <SDL_endian.h>
 
+#include "messagein.h"
+
 #define MAKEWORD(low,high) \
     ((unsigned short)(((unsigned char)(low)) | \
     ((unsigned short)((unsigned char)(high))) << 8))
-
 
 MessageIn::MessageIn(const char *data, unsigned int length):
     mData(data),
@@ -39,15 +38,13 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mId = readInt16();
 }
 
-Sint8
-MessageIn::readInt8()
+Sint8 MessageIn::readInt8()
 {
     assert(mPos < mLength);
     return mData[mPos++];
 }
 
-Sint16
-MessageIn::readInt16()
+Sint16 MessageIn::readInt16()
 {
     assert(mPos + 2 <= mLength);
     mPos += 2;
@@ -58,8 +55,7 @@ MessageIn::readInt16()
 #endif
 }
 
-Sint32
-MessageIn::readInt32()
+Sint32 MessageIn::readInt32()
 {
     assert(mPos + 4 <= mLength);
     mPos += 4;
@@ -70,8 +66,7 @@ MessageIn::readInt32()
 #endif
 }
 
-void
-MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
+void MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
 {
     assert(mPos + 3 <= mLength);
 
@@ -120,8 +115,7 @@ MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
     mPos += 3;
 }
 
-void
-MessageIn::readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
+void MessageIn::readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
                               Uint16 &dstX, Uint16 &dstY)
 {
     assert(mPos + 5 <= mLength);
@@ -143,15 +137,13 @@ MessageIn::readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
     mPos += 5;
 }
 
-void
-MessageIn::skip(unsigned int length)
+void MessageIn::skip(unsigned int length)
 {
     assert(mPos + length <= mLength);
     mPos += length;
 }
 
-std::string
-MessageIn::readString(int length)
+std::string MessageIn::readString(int length)
 {
     // Get string length
     if (length < 0) {

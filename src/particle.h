@@ -25,8 +25,6 @@
 #include <list>
 #include <string>
 
-#include <guichan/color.hpp>
-
 #include "guichanfwd.h"
 #include "sprite.h"
 #include "vector.h"
@@ -102,7 +100,7 @@ class Particle : public Sprite
          * particleEffectFile.
          */
         Particle *addEffect(const std::string &particleEffectFile,
-                            int pixelX, int pixelY);
+                            int pixelX, int pixelY, int rotation = 0);
 
         /**
          * Creates a standalone text particle.

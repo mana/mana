@@ -1,6 +1,6 @@
 /*
- *  The Mana World
- *  Copyright (C) 2007  The Mana World Development Team
+ *  Custom keyboard shortcuts configuration
+ *  Copyright (C) 2007  Joshua Langley <joshlangley@optusnet.com.au>
  *
  *  This file is part of The Mana World.
  *
@@ -22,14 +22,13 @@
 #ifndef GUI_SETUP_KEYBOARD_H
 #define GUI_SETUP_KEYBOARD_H
 
-#include "setuptab.h"
-#include "button.h"
-#include "../guichanfwd.h"
+#include <string>
 
 #include <guichan/actionlistener.hpp>
 
+#include "setuptab.h"
 
-#include <string>
+#include "../guichanfwd.h"
 
 class Setup_Keyboard : public SetupTab, public gcn::ActionListener
 {

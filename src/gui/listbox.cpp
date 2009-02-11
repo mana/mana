@@ -19,12 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "listbox.h"
-
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
-#include <guichan/mouseinput.hpp>
+
+#include "color.h"
+#include "listbox.h"
+
+#include "../configuration.h"
+
+float ListBox::mAlpha = config.getValue("guialpha", 0.8);
 
 ListBox::ListBox(gcn::ListModel *listModel):
     gcn::ListBox(listModel)
@@ -36,29 +40,35 @@ void ListBox::draw(gcn::Graphics *graphics)
     if (!mListModel)
         return;
 
-    graphics->setColor(gcn::Color(110, 160, 255));
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+        mAlpha = config.getValue("guialpha", 0.8);
+
+    bool valid;
+    const int red = (textColor->getColor('H', valid) >> 16) & 0xFF;
+    const int green = (textColor->getColor('H', valid) >> 8) & 0xFF;
+    const int blue = textColor->getColor('H', valid) & 0xFF;
+    const int alpha = mAlpha * 255;
+
+    graphics->setColor(gcn::Color(red, green, blue, alpha));
     graphics->setFont(getFont());
 
-    int fontHeight = getFont()->getHeight();
+    const int fontHeight = getFont()->getHeight();
 
     // Draw rectangle below the selected list element
-    if (mSelected >= 0) {
+    if (mSelected >= 0)
         graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
                                                getWidth(), fontHeight));
-    }
 
     // Draw the list elements
-    graphics->setColor(gcn::Color(0, 0, 0));
-    for (int i = 0, y = 0;
-         i < mListModel->getNumberOfElements();
+    graphics->setColor(gcn::Color(0, 0, 0, 255));
+    for (int i = 0, y = 0; i < mListModel->getNumberOfElements();
          ++i, y += fontHeight)
     {
         graphics->drawText(mListModel->getElementAt(i), 1, y);
     }
 }
 
-void
-ListBox::mouseDragged(gcn::MouseEvent &event)
+void ListBox::mouseDragged(gcn::MouseEvent &event)
 {
     // Pretend mouse is pressed continuously while dragged. Causes list
     // selection to be updated as is default in many GUIs.

@@ -25,9 +25,9 @@
 #include <map>
 #include <string>
 
-#include "resource.h"
-
 #include <libxml/tree.h>
+
+#include "resource.h"
 
 class Action;
 class ImageSet;
@@ -89,7 +89,6 @@ class SpriteDef : public Resource
         static SpriteDirection
         makeSpriteDirection(const std::string &direction);
 
-
     private:
         /**
          * Constructor.
@@ -139,7 +138,6 @@ class SpriteDef : public Resource
          * animations become a copy of those of the action "with".
          */
         void substituteAction(SpriteAction complete, SpriteAction with);
-
 
         typedef std::map<std::string, ImageSet*> ImageSets;
         typedef ImageSets::iterator ImageSetIterator;

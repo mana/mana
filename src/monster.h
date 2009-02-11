@@ -36,7 +36,7 @@ class Monster : public Being
 
         virtual void logic();
 
-        virtual void setAction(Uint8 action);
+        virtual void setAction(Action action);
 
         virtual Type getType() const;
 
@@ -62,8 +62,7 @@ class Monster : public Being
         /**
          * Returns the MonsterInfo, with static data about this monster.
          */
-        const MonsterInfo&
-        getInfo() const;
+        const MonsterInfo& getInfo() const;
 
         /**
          * Determine whether the mob should show it's name

@@ -11,5 +11,7 @@
      ##2Level 1:##P enables the ability to trade with others
      ##2Level 2:##P enables the ability to express emotions
      ##2Level 3:##P enables character to sit
+     ##2Level 5:##P enables a char to join a party.
+     ##2Level 7:##P enables a char to create a party
      Other levels are still not implemented.
  

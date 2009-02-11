@@ -22,12 +22,12 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include <iosfwd>
+#include <string>
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
 #include "window.h"
-#include "../guichanfwd.h"
 
 class LoginData;
 class OkDialog;
@@ -72,10 +72,29 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          */
         bool canSubmit() const;
 
+        /**
+         * Function to decide whether string is an unsigned short or not
+         *
+         * @param str the string to parse
+         *
+         * @return true if str is an unsigned short, false otherwise
+         */
+        static bool isUShort(const std::string &str);
+
+        /**
+         * Converts string to an unsigned short (undefined if invalid)
+         *
+         * @param str the string to parse
+         *
+         * @return the value str represents
+         */
+        static unsigned short getUShort(const std::string &str);
+
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;
         gcn::TextField *mServerField;
+        gcn::TextField *mPortField;
 
         gcn::Button *mRegisterButton;
         gcn::Button *mCancelButton;

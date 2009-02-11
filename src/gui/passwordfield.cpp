@@ -21,8 +21,6 @@
 
 #include "passwordfield.h"
 
-#include <string>
-
 PasswordField::PasswordField(const std::string& text):
     TextField(text)
 {

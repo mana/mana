@@ -26,7 +26,6 @@
 
 class Image;
 
-
 /**
  * Slider widget. Same as the Guichan slider but with custom look.
  *
@@ -67,6 +66,7 @@ class Slider : public gcn::Slider {
 
         static Image *hStart, *hMid, *hEnd, *hGrip;
         static Image *vStart, *vMid, *vEnd, *vGrip;
+        static float mAlpha;
         static int mInstances;
 };
 

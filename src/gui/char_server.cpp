@@ -19,9 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "char_server.h"
-
 #include "button.h"
+#include "char_server.h"
 #include "listbox.h"
 #include "scrollarea.h"
 
@@ -29,10 +28,7 @@
 #include "../main.h"
 #include "../serverinfo.h"
 
-#include "../net/network.h" // TODO this is just for iptostring, move that?
-
 #include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 extern SERVER_INFO **server_info;
@@ -40,7 +36,8 @@ extern SERVER_INFO **server_info;
 /**
  * The list model for the server list.
  */
-class ServerListModel : public gcn::ListModel {
+class ServerListModel : public gcn::ListModel
+{
     public:
         virtual ~ServerListModel() {};
 
@@ -81,13 +78,12 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData, int nextState):
     add(mOkButton);
     add(mCancelButton);
 
-    if (n_server == 0) {
+    if (n_server == 0)
         // Disable Ok button
         mOkButton->setEnabled(false);
-    } else {
+    else
         // Select first server
         mServerList->setSelected(1);
-    }
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -99,31 +95,27 @@ ServerSelectDialog::~ServerSelectDialog()
     delete mServerListModel;
 }
 
-void
-ServerSelectDialog::action(const gcn::ActionEvent &event)
+void ServerSelectDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok") {
+    if (event.getId() == "ok")
+    {
         mOkButton->setEnabled(false);
         const SERVER_INFO *si = server_info[mServerList->getSelected()];
         mLoginData->hostname = iptostring(si->address);
         mLoginData->port = si->port;
         mLoginData->updateHost = si->updateHost;
-
         state = mNextState;
     }
-    else if (event.getId() == "cancel") {
+    else if (event.getId() == "cancel")
         state = LOGIN_STATE;
-    }
 }
 
-int
-ServerListModel::getNumberOfElements()
+int ServerListModel::getNumberOfElements()
 {
     return n_server;
 }
 
-std::string
-ServerListModel::getElementAt(int i)
+std::string ServerListModel::getElementAt(int i)
 {
     const SERVER_INFO *si = server_info[i];
     return si->name + " (" + toString(si->online_users) + ")";

@@ -19,13 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui.h"
-
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
 
 #include "focushandler.h"
+#include "gui.h"
 #include "sdlinput.h"
 #include "truetypefont.h"
 #include "viewport.h"
@@ -39,18 +38,21 @@
 
 #include "../resources/image.h"
 #include "../resources/imageset.h"
-#include "../resources/resourcemanager.h"
 #include "../resources/imageloader.h"
+#include "../resources/resourcemanager.h"
 
 // Guichan stuff
 Gui *gui = 0;
-Viewport *viewport = 0;               /**< Viewport on the map. */
+Viewport *viewport = 0;                    /**< Viewport on the map. */
 SDLInput *guiInput = 0;
 
 // Fonts used in showing hits
 gcn::Font *hitRedFont = 0;
 gcn::Font *hitBlueFont = 0;
 gcn::Font *hitYellowFont = 0;
+
+// Bolded font
+gcn::Font *boldFont = 0;
 
 class GuiConfigListener : public ConfigListener
 {
@@ -61,7 +63,8 @@ class GuiConfigListener : public ConfigListener
 
         void optionChanged(const std::string &name)
         {
-            if (name == "customcursor") {
+            if (name == "customcursor")
+            {
                 bool bCustomCursor = config.getValue("customcursor", 1) == 1;
                 mGui->setUseCustomCursor(bCustomCursor);
             }
@@ -105,7 +108,8 @@ Gui::Gui(Graphics *graphics):
 
     // Set global font
     std::string path = resman->getPath("fonts/dejavusans.ttf");
-    try {
+    try
+    {
         const int fontSize = config.getValue("fontSize", 11);
         mGuiFont = new TrueTypeFont(path, fontSize);
     }
@@ -115,14 +119,28 @@ Gui::Gui(Graphics *graphics):
             + e.getMessage());
     }
 
+    // Set bold font
+    path = resman->getPath("fonts/dejavusans-bold.ttf");
+    try
+    {
+        const int fontSize = config.getValue("fontSize", 11);
+        boldFont = new TrueTypeFont(path, fontSize);
+    }
+    catch (gcn::Exception e)
+    {
+        logger->error(std::string("Unable to load dejavusans-bold.ttf: ")
+            + e.getMessage());
+    }
+
     gcn::Widget::setGlobalFont(mGuiFont);
 
-    // Load hits' colourful fonts
-    try {
+    // Load hits' colorful fonts
+    try
+    {
         hitRedFont = new gcn::ImageFont("graphics/gui/hits_red.png",
-                "0123456789");
+                "0123456789crit! ");
         hitBlueFont = new gcn::ImageFont("graphics/gui/hits_blue.png",
-                "0123456789");
+                "0123456789crit! ");
         hitYellowFont = new gcn::ImageFont("graphics/gui/hits_yellow.png",
                 "0123456789misxp ");
     }
@@ -158,6 +176,7 @@ Gui::~Gui()
         mMouseCursors->decRef();
 
     delete mGuiFont;
+    delete boldFont;
     delete viewport;
     delete getTop();
 
@@ -167,12 +186,13 @@ Gui::~Gui()
 void Gui::logic()
 {
     // Fade out mouse cursor after extended inactivity
-    if (mMouseInactivityTimer < 100 * 15) {
+    if (mMouseInactivityTimer < 100 * 15)
+    {
         ++mMouseInactivityTimer;
         mMouseCursorAlpha = std::min(1.0f, mMouseCursorAlpha + 0.05f);
-    } else {
-        mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
     }
+    else
+        mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
 
     gcn::Gui::logic();
 }
@@ -217,9 +237,8 @@ void Gui::setUseCustomCursor(bool customCursor)
             mMouseCursors =
                 resman->getImageSet("graphics/gui/mouse.png", 40, 40);
 
-            if (!mMouseCursors) {
+            if (!mMouseCursors)
                 logger->error("Unable to load mouse cursors.");
-            }
         }
         else
         {
@@ -227,7 +246,8 @@ void Gui::setUseCustomCursor(bool customCursor)
             SDL_ShowCursor(SDL_ENABLE);
 
             // Unload the mouse cursor
-            if (mMouseCursors) {
+            if (mMouseCursors)
+            {
                 mMouseCursors->decRef();
                 mMouseCursors = NULL;
             }

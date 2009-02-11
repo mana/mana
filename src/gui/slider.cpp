@@ -21,6 +21,7 @@
 
 #include "slider.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -28,6 +29,7 @@
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;
+float Slider::mAlpha = config.getValue("guialpha", 0.8);
 int Slider::mInstances = 0;
 
 Slider::Slider(double scaleEnd):
@@ -106,6 +108,20 @@ void Slider::draw(gcn::Graphics *graphics)
     int h = getHeight();
     int x = 0;
     int y = (h - hStart->getHeight()) / 2;
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        hStart->setAlpha(mAlpha);
+        hMid->setAlpha(mAlpha);
+        hEnd->setAlpha(mAlpha);
+        hGrip->setAlpha(mAlpha);
+
+        vStart->setAlpha(mAlpha);
+        vMid->setAlpha(mAlpha);
+        vEnd->setAlpha(mAlpha);
+        vGrip->setAlpha(mAlpha);
+    }
 
     static_cast<Graphics*>(graphics)->drawImage(hStart, x, y);
 

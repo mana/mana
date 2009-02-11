@@ -23,12 +23,11 @@
 #define _UPDATERWINDOW_H
 
 #include <guichan/actionlistener.hpp>
+
 #include <string>
 #include <vector>
 
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 #include "../utils/mutex.h"
 

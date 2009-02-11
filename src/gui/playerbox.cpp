@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-
 #include "playerbox.h"
 
-#include "../player.h"
+#include "../animatedsprite.h"
+#include "../configuration.h"
 #include "../graphics.h"
+#include "../player.h"
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
@@ -32,6 +32,7 @@
 #include "../utils/dtor.h"
 
 int PlayerBox::instances = 0;
+float PlayerBox::mAlpha = config.getValue("guialpha", 0.8);
 ImageRect PlayerBox::background;
 
 PlayerBox::PlayerBox(const Player *player):
@@ -54,6 +55,7 @@ PlayerBox::PlayerBox(const Player *player):
                         bggridx[x], bggridy[y],
                         bggridx[x + 1] - bggridx[x] + 1,
                         bggridy[y + 1] - bggridy[y] + 1);
+                background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }
@@ -83,7 +85,21 @@ void PlayerBox::draw(gcn::Graphics *graphics)
         bs = getFrameSize();
         x = getWidth() / 2 - 16 + bs;
         y = getHeight() / 2 + bs;
-        mPlayer->draw(static_cast<Graphics*>(graphics), x, y);
+        for (int i = 0; i < Being::VECTOREND_SPRITE; i++)
+        {
+            if (mPlayer->getSprite(i))
+            {
+                mPlayer->getSprite(i)->draw(static_cast<Graphics*>(graphics), x, y);
+            }
+        }
+    }
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        for (int a = 0; a < 9; a++)
+        {
+            background.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
+        }
     }
 }
 

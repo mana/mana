@@ -47,12 +47,18 @@ class ItemInfo
          * Constructor.
          */
         ItemInfo():
-            mType(0),
+            mType(""),
             mWeight(0),
             mView(0),
             mAttackType(ACTION_DEFAULT)
         {
         }
+
+        void setId(int id)
+        { mId = id; }
+
+        int getId() const
+        { return mId; }
 
         void setName(const std::string &name)
         { mName = name; }
@@ -75,14 +81,12 @@ class ItemInfo
         void setEffect(const std::string &effect)
         { mEffect = effect; }
 
-        const std::string&
-        getEffect() const { return mEffect; }
+        const std::string& getEffect() const { return mEffect; }
 
-        void setType(short type)
+        void setType(const std::string& type)
         { mType = type; }
 
-        short getType() const
-        { return mType; }
+        const std::string& getType() const { return mType; }
 
         void setWeight(short weight)
         { mWeight = weight; }
@@ -112,9 +116,10 @@ class ItemInfo
         std::string mName;
         std::string mDescription;      /**< Short description. */
         std::string mEffect;           /**< Description of effects. */
-        char mType;                    /**< Item type. */
+        std::string mType;             /**< Item type. */
         short mWeight;                 /**< Weight in grams. */
         int mView;                     /**< Item ID of how this item looks. */
+        int mId;                       /**< Item ID */
 
         // Equipment related members
         SpriteAction mAttackType;      /**< Attack type, in case of weapon. */

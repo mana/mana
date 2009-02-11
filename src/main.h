@@ -32,8 +32,8 @@
 #define PACKAGE_VERSION "0.0.28"
 #endif
 
-#ifndef TMW_DATADIR
-#define TMW_DATADIR ""
+#ifndef PKG_DATADIR
+#define PKG_DATADIR ""
 #endif
 
 /*

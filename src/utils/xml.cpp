@@ -20,7 +20,9 @@
  */
 
 #include "xml.h"
+
 #include "../log.h"
+
 #include "../resources/resourcemanager.h"
 
 namespace XML

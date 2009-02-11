@@ -22,11 +22,8 @@
 #ifndef _TEXTPARTICLE_H
 #define _TEXTPARTICLE_H
 
-#include "particle.h"
-
-#include <guichan/color.hpp>
-
 #include "guichanfwd.h"
+#include "particle.h"
 
 class TextParticle : public Particle
 {

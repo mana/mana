@@ -1,7 +1,9 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
 bin_PROGRAMS = tmw
-tmw_SOURCES = gui/widgets/layout.cpp \
+tmw_SOURCES = gui/widgets/dropdown.cpp \
+	      gui/widgets/dropdown.h \
+	      gui/widgets/layout.cpp \
 	      gui/widgets/layout.h \
 	      gui/widgets/layouthelper.cpp \
 	      gui/widgets/layouthelper.h \
@@ -13,30 +15,36 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/widgets/tabbedarea.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
-	      gui/buddywindow.cpp \
-	      gui/buddywindow.h \
 	      gui/button.cpp \
 	      gui/button.h \
 	      gui/buy.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
 	      gui/buysell.h \
-	      gui/char_server.cpp \
-	      gui/char_server.h \
 	      gui/char_select.cpp \
 	      gui/char_select.h \
+	      gui/char_server.cpp \
+	      gui/char_server.h \
 	      gui/chat.cpp \
 	      gui/chat.h \
 	      gui/chatinput.cpp \
 	      gui/chatinput.h \
 	      gui/checkbox.cpp \
 	      gui/checkbox.h \
+	      gui/color.cpp \
+	      gui/color.h \
 	      gui/confirm_dialog.cpp \
 	      gui/confirm_dialog.h \
 	      gui/connection.cpp \
 	      gui/connection.h \
 	      gui/debugwindow.cpp \
 	      gui/debugwindow.h \
+	      gui/emotecontainer.cpp \
+	      gui/emotecontainer.h \
+	      gui/emoteshortcutcontainer.cpp \
+	      gui/emoteshortcutcontainer.h \
+	      gui/emotewindow.cpp \
+	      gui/emotewindow.h \
 	      gui/equipmentwindow.cpp \
 	      gui/equipmentwindow.h \
 	      gui/focushandler.cpp \
@@ -53,10 +61,12 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/inventorywindow.h \
 	      gui/itemcontainer.cpp \
 	      gui/itemcontainer.h \
+	      gui/itemlinkhandler.cpp \
+	      gui/itemlinkhandler.h \
+	      gui/itempopup.cpp \
+	      gui/itempopup.h \
 	      gui/itemshortcutcontainer.cpp \
 	      gui/itemshortcutcontainer.h \
-	      gui/itemshortcutwindow.cpp \
-	      gui/itemshortcutwindow.h \
 	      gui/item_amount.cpp \
 	      gui/item_amount.h \
 	      gui/linkhandler.h \
@@ -80,8 +90,6 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
 	      gui/ok_dialog.h \
-	      gui/truetypefont.cpp \
-	      gui/truetypefont.h \
 	      gui/passwordfield.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
@@ -92,6 +100,8 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/progressbar.h \
 	      gui/radiobutton.cpp \
 	      gui/radiobutton.h \
+	      gui/recorder.cpp \
+	      gui/recorder.h \
 	      gui/register.cpp \
 	      gui/register.h \
 	      gui/scrollarea.cpp \
@@ -100,10 +110,12 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/sdlinput.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
-	      gui/setup_audio.cpp \
-	      gui/setup_audio.h \
 	      gui/setup.cpp \
 	      gui/setup.h \
+	      gui/setup_audio.cpp \
+	      gui/setup_audio.h \
+	      gui/setup_colors.cpp \
+	      gui/setup_colors.h \
 	      gui/setup_joystick.cpp \
 	      gui/setup_joystick.h \
 	      gui/setup_keyboard.cpp \
@@ -117,22 +129,30 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/shop.h \
 	      gui/shoplistbox.cpp \
 	      gui/shoplistbox.h \
+	      gui/shortcutwindow.cpp \
+	      gui/shortcutwindow.h \
+	      gui/shortcutcontainer.cpp \
+	      gui/shortcutcontainer.h \
 	      gui/skill.cpp \
 	      gui/skill.h \
 	      gui/slider.cpp \
 	      gui/slider.h \
+	      gui/speechbubble.cpp \
+	      gui/speechbubble.h \
 	      gui/status.cpp \
 	      gui/status.h \
-	      gui/table.h \
 	      gui/table.cpp \
-	      gui/table_model.h \
+	      gui/table.h \
 	      gui/table_model.cpp \
+	      gui/table_model.h \
 	      gui/textbox.cpp \
 	      gui/textbox.h \
 	      gui/textfield.cpp \
 	      gui/textfield.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
+	      gui/truetypefont.cpp \
+	      gui/truetypefont.h \
 	      gui/updatewindow.h \
 	      gui/updatewindow.cpp \
 	      gui/viewport.cpp \
@@ -169,6 +189,8 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      net/network.h \
 	      net/npchandler.cpp \
 	      net/npchandler.h \
+	      net/partyhandler.cpp \
+	      net/partyhandler.h \
 	      net/playerhandler.cpp \
 	      net/playerhandler.h \
 	      net/protocol.cpp \
@@ -183,8 +205,14 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      resources/ambientoverlay.h \
 	      resources/animation.cpp \
 	      resources/animation.h \
+	      resources/buddylist.cpp \
+	      resources/buddylist.h \
+	      resources/colordb.cpp \
+	      resources/colordb.h \
 	      resources/dye.cpp \
 	      resources/dye.h \
+	      resources/emotedb.cpp \
+	      resources/emotedb.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imageloader.cpp \
@@ -215,8 +243,6 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
-	      resources/buddylist.h \
-	      resources/buddylist.cpp \
 	      utils/base64.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
@@ -240,6 +266,10 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \
+	      effectmanager.cpp \
+	      effectmanager.h \
+	      emoteshortcut.cpp \
+	      emoteshortcut.h \
 	      engine.cpp \
 	      engine.h \
 	      equipment.cpp \
@@ -283,11 +313,13 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      openglgraphics.h \
 	      particle.cpp \
 	      particle.h \
+	      particlecontainer.cpp \
+	      particlecontainer.h \
 	      particleemitter.cpp \
 	      particleemitter.h \
 	      particleemitterprop.h \
-	      particlecontainer.cpp \
-	      particlecontainer.h \
+	      party.cpp \
+	      party.h \
 	      player.cpp \
 	      player.h \
 	      player_relations.cpp \
@@ -318,5 +350,5 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 # set the include path found by configure
 INCLUDES =					\
 	$(all_includes)				\
-	-DTMW_DATADIR=\""$(pkgdatadir)/"\"      \
+	-DPKG_DATADIR=\""$(pkgdatadir)/"\"      \
 	-DLOCALEDIR=\""$(localedir)"\"

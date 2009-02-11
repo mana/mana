@@ -21,11 +21,9 @@
 
 #include "npcdb.h"
 
-#include "resourcemanager.h"
-
 #include "../log.h"
 
-#include "../utils/dtor.h"
+#include "../utils/gettext.h"
 #include "../utils/xml.h"
 
 namespace
@@ -52,10 +50,10 @@ void NPCDB::load()
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "npcs"))
     {
-        logger->error("NPC Database: Error while loading items.xml!");
+        logger->error(_("NPC Database: Error while loading npcs.xml!"));
     }
 
-    //iterate <monster>s
+    //iterate <npc>s
     for_each_xml_child_node(npcNode, rootNode)
     {
         if (!xmlStrEqual(npcNode->name, BAD_CAST "npc"))
@@ -91,8 +89,7 @@ void NPCDB::load()
     mLoaded = true;
 }
 
-void
-NPCDB::unload()
+void NPCDB::unload()
 {
     for (   NPCInfosIterator i = mNPCInfos.begin();
             i != mNPCInfos.end();
@@ -117,8 +114,7 @@ NPCDB::unload()
     mLoaded = false;
 }
 
-const NPCInfo&
-NPCDB::get(int id)
+const NPCInfo& NPCDB::get(int id)
 {
     NPCInfosIterator i = mNPCInfos.find(id);
 

@@ -23,8 +23,8 @@
 #define PROPERTIES_H
 
 #include <map>
-#include <string>
 #include <sstream>
+#include <string>
 
 /**
  * A class holding a set of properties.

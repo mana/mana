@@ -19,15 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "log.h"
 #include "simpleanimation.h"
 
-#include "graphics.h"
-#include "log.h"
-
+#include "resources/animation.h"
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 #include "resources/imageset.h"
+#include "resources/resourcemanager.h"
 
+SimpleAnimation::SimpleAnimation(Animation *animation):
+    mAnimation(animation),
+    mAnimationTime(0),
+    mAnimationPhase(0),
+    mCurrentFrame(mAnimation->getFrame(0))
+{
+}
 
 SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
     mAnimationTime(0),
@@ -43,7 +49,7 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
 
     // Get animation frames
     for (   xmlNodePtr frameNode = animationNode->xmlChildrenNode;
-            frameNode != NULL;
+            frameNode;
             frameNode = frameNode->next)
     {
         int delay = XML::getProperty(frameNode, "delay", 0);

@@ -19,10 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "item_amount.h"
-
 #include "button.h"
 #include "inttextfield.h"
+#include "item_amount.h"
 #include "slider.h"
 #include "trade.h"
 
@@ -71,7 +70,8 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
 
     resetAmount();
 
-    switch (usage) {
+    switch (usage)
+    {
         case AMOUNT_TRADE_ADD:
             setCaption(_("Select amount of items to trade."));
             okButton->setActionEventId("AddTrade");

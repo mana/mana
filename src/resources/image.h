@@ -22,9 +22,10 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <SDL.h>
+
 #include "../main.h"
 
-#include <SDL.h>
 #ifdef USE_OPENGL
 
 /* The definition of OpenGL extensions by SDL is giving problems with recent
@@ -39,6 +40,8 @@
 #include "resource.h"
 
 class Dye;
+class SDL_Rect;
+class SDL_Surface;
 
 /**
  * Defines a class for loading and storing images.
@@ -96,7 +99,6 @@ class Image : public Resource
         virtual int getWidth() const
         { return mBounds.w; }
 
-
         /**
          * Returns the height of the image.
          */
@@ -114,7 +116,7 @@ class Image : public Resource
         /**
          * Sets the alpha value of this image.
          */
-        void setAlpha(float alpha);
+        virtual void setAlpha(float alpha);
 
         /**
          * Returns the alpha value of this image.
@@ -128,7 +130,6 @@ class Image : public Resource
          */
         static void setLoadAsOpenGL(bool useOpenGL);
 #endif
-
 
     protected:
         /**

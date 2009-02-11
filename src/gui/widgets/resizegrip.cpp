@@ -19,10 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "resizegrip.h"
-
 #include <guichan/graphics.hpp>
 
+#include "resizegrip.h"
+
+#include "../../configuration.h"
 #include "../../graphics.h"
 
 #include "../../resources/image.h"
@@ -30,14 +31,16 @@
 
 Image *ResizeGrip::gripImage = 0;
 int ResizeGrip::mInstances = 0;
+float ResizeGrip::mAlpha = config.getValue("guialpha", 0.8);
 
-ResizeGrip::ResizeGrip()
+ResizeGrip::ResizeGrip(std::string image)
 {
     if (mInstances == 0)
     {
         // Load the grip image
         ResourceManager *resman = ResourceManager::getInstance();
-        gripImage = resman->getImage("graphics/gui/resize.png");
+        gripImage = resman->getImage(image);
+        gripImage->setAlpha(mAlpha);
     }
 
     mInstances++;
@@ -56,8 +59,13 @@ ResizeGrip::~ResizeGrip()
     }
 }
 
-void
-ResizeGrip::draw(gcn::Graphics *graphics)
+void ResizeGrip::draw(gcn::Graphics *graphics)
 {
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        gripImage->setAlpha(mAlpha);
+    }
+
     static_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
 }

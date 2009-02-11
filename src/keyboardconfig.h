@@ -1,6 +1,6 @@
 /*
- *  The Mana World
- *  Copyright (C) 2007  The Mana World Development Team
+ *  Custom keyboard shortcuts configuration
+ *  Copyright (C) 2007  Joshua Langley <joshlangley@optusnet.com.au>
  *
  *  This file is part of The Mana World.
  *
@@ -22,10 +22,8 @@
 #ifndef KEYBOARDCONFIG_H
 #define KEYBOARDCONFIG_H
 
+#include <SDL_types.h>
 #include <string>
-
-#include "gui/sdlinput.h"
-#include "gui/setup_keyboard.h"
 
 /**
  * Each key represents a key function. Such as 'Move up', 'Attack' etc.
@@ -37,6 +35,8 @@ struct KeyFunction
     std::string caption;        /** The caption value for the key function. */
     int value;                  /** The actual value that is used. */
 };
+
+class Setup_Keyboard;
 
 class KeyboardConfig
 {
@@ -101,6 +101,11 @@ class KeyboardConfig
         int getKeyIndex(int keyValue) const;
 
         /**
+         * Get the key function index for an emote by providing the offset value.
+         */
+        int getKeyEmoteOffset(int keyValue) const;
+
+        /**
          * Set the enable flag, which will stop the user from doing actions.
          */
         void setEnabled(bool flag)
@@ -141,21 +146,26 @@ class KeyboardConfig
          * The key assignment view gets arranged according to the order of
          * these values.
          */
-        enum KeyAction {
+        enum KeyAction
+        {
             KEY_NO_VALUE = -1,
             KEY_MOVE_UP,
             KEY_MOVE_DOWN,
             KEY_MOVE_LEFT,
             KEY_MOVE_RIGHT,
             KEY_ATTACK,
-            KEY_SMILIE,
+            KEY_EMOTE,
+            KEY_TALK,
             KEY_TARGET,
             KEY_TARGET_CLOSEST,
+            KEY_TARGET_NPC,
             KEY_TARGET_PLAYER,
             KEY_PICKUP,
             KEY_HIDE_WINDOWS,
             KEY_SIT,
-            KEY_SHORTCUT_0,
+            KEY_SCREENSHOT,
+            KEY_TRADE,
+            KEY_PATHFIND,
             KEY_SHORTCUT_1,
             KEY_SHORTCUT_2,
             KEY_SHORTCUT_3,
@@ -165,6 +175,10 @@ class KeyboardConfig
             KEY_SHORTCUT_7,
             KEY_SHORTCUT_8,
             KEY_SHORTCUT_9,
+            KEY_SHORTCUT_10,
+            KEY_SHORTCUT_11,
+            KEY_SHORTCUT_12,
+            KEY_WINDOW_HELP,
             KEY_WINDOW_STATUS,
             KEY_WINDOW_INVENTORY,
             KEY_WINDOW_EQUIPMENT,
@@ -174,6 +188,25 @@ class KeyboardConfig
             KEY_WINDOW_SHORTCUT,
             KEY_WINDOW_SETUP,
             KEY_WINDOW_DEBUG,
+            KEY_WINDOW_EMOTE,
+            KEY_WINDOW_EMOTE_SHORTCUT,
+            KEY_EMOTE_1,
+            KEY_EMOTE_2,
+            KEY_EMOTE_3,
+            KEY_EMOTE_4,
+            KEY_EMOTE_5,
+            KEY_EMOTE_6,
+            KEY_EMOTE_7,
+            KEY_EMOTE_8,
+            KEY_EMOTE_9,
+            KEY_EMOTE_10,
+            KEY_EMOTE_11,
+            KEY_EMOTE_12,
+            KEY_TOGGLE_CHAT,
+            KEY_SCROLL_CHAT_UP,
+            KEY_SCROLL_CHAT_DOWN,
+            KEY_OK,
+            KEY_QUIT,
             KEY_TOTAL
         };
 

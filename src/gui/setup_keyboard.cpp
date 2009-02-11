@@ -1,6 +1,7 @@
 /*
- *  The Mana World
- *  Copyright (C) 2007  The Mana World Development Team
+ *  Custom keyboard shortcuts configuration
+ *  Copyright (C) 2007  Joshua Langley <joshlangley@optusnet.com.au>
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,7 +20,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "setup_keyboard.h"
+#include <SDL_keyboard.h>
 
 #include <guichan/widgets/label.hpp>
 #include <guichan/listmodel.hpp>
@@ -28,16 +29,14 @@
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
+#include "setup_keyboard.h"
 
 #include "widgets/layouthelper.h"
 
-#include "../configuration.h"
 #include "../keyboardconfig.h"
 
 #include "../utils/gettext.h"
 #include "../utils/tostring.h"
-
-#include <SDL_keyboard.h>
 
 /**
  * The list model for key function list.
@@ -79,11 +78,10 @@ Setup_Keyboard::Setup_Keyboard():
 
     refreshKeys();
 
-    mKeyList->setDimension(gcn::Rectangle(0, 0, 185, 140));
     mKeyList->addActionListener(this);
-    mKeyList->setSelected(-1);
 
     ScrollArea *scrollArea = new ScrollArea(mKeyList);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mAssignKeyButton = new Button(_("Assign"), "assign", this);
     mAssignKeyButton->addActionListener(this);
@@ -140,9 +138,8 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
 {
     if (event.getSource() == mKeyList)
     {
-        if (!mKeySetting) {
+        if (!mKeySetting)
             mAssignKeyButton->setEnabled(true);
-        }
     }
     else if (event.getId() == "assign")
     {
@@ -186,7 +183,8 @@ void Setup_Keyboard::refreshKeys()
 
 void Setup_Keyboard::keyUnresolved()
 {
-    if (mKeySetting) {
+    if (mKeySetting)
+    {
         newKeyCallback(keyboard.getNewKeyIndex());
         keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
     }

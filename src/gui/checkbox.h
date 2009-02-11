@@ -22,8 +22,6 @@
 #ifndef CHECKBOX_H
 #define CHECKBOX_H
 
-#include <iosfwd>
-
 #include <guichan/widgets/checkbox.hpp>
 
 class Image;
@@ -33,7 +31,8 @@ class Image;
  *
  * \ingroup GUI
  */
-class CheckBox : public gcn::CheckBox {
+class CheckBox : public gcn::CheckBox
+{
     public:
         /**
          * Constructor.
@@ -52,6 +51,7 @@ class CheckBox : public gcn::CheckBox {
 
     private:
         static int instances;
+        static float mAlpha;
         static Image *checkBoxNormal;
         static Image *checkBoxChecked;
         static Image *checkBoxDisabled;

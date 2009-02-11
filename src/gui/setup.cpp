@@ -19,31 +19,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "setup.h"
-
 #include "button.h"
+#include "setup.h"
 #include "setup_audio.h"
+#include "setup_colors.h"
 #include "setup_joystick.h"
-#include "setup_video.h"
 #include "setup_keyboard.h"
 #include "setup_players.h"
+#include "setup_video.h"
 
 #include "widgets/tabbedarea.h"
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
 
-#include <algorithm>
-#include <iostream>
-
-extern Window *statusWindow;
-extern Window *minimap;
 extern Window *chatWindow;
-extern Window *inventoryWindow;
 extern Window *equipmentWindow;
 extern Window *helpWindow;
+extern Window *inventoryWindow;
+extern Window *minimap;
 extern Window *skillDialog;
+extern Window *statusWindow;
 extern Window *itemShortcutWindow;
+extern Window *emoteShortcutWindow;
+extern Window *emoteWindow;
 extern Window *tradeWindow;
 
 Setup::Setup():
@@ -58,7 +57,8 @@ Setup::Setup():
         N_("Apply"), N_("Cancel"), N_("Reset Windows"), 0
     };
     int x = width;
-    for (const char **curBtn = buttonNames; *curBtn; ++curBtn) {
+    for (const char **curBtn = buttonNames; *curBtn; ++curBtn)
+    {
         Button *btn = new Button(gettext(*curBtn), *curBtn, this);
         x -= btn->getWidth() + 5;
         btn->setPosition(x, height - btn->getHeight() - 5);
@@ -88,6 +88,10 @@ Setup::Setup():
 
     tab = new Setup_Keyboard();
     panel->addTab(_("Keyboard"), tab);
+    mTabs.push_back(tab);
+
+    tab = new Setup_Colors();
+    panel->addTab(_("Colors"), tab);
     mTabs.push_back(tab);
 
     tab = new Setup_Players();
@@ -131,6 +135,8 @@ void Setup::action(const gcn::ActionEvent &event)
         helpWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
         itemShortcutWindow->resetToDefaultSize();
+        emoteShortcutWindow->resetToDefaultSize();
+        emoteWindow->resetToDefaultSize();
         tradeWindow->resetToDefaultSize();
     }
 }

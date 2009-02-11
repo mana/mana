@@ -19,17 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <guichan/font.hpp>
+
+#include "gui.h"
 #include "progressbar.h"
 
+#include "../configuration.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
-#include <guichan/font.hpp>
-
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;
+float ProgressBar::mAlpha = config.getValue("guialpha", 0.8);
 
 ProgressBar::ProgressBar(float progress,
                          unsigned int width, unsigned int height,
@@ -55,6 +58,12 @@ ProgressBar::ProgressBar(float progress,
         mBorder.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
         mBorder.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
         mBorder.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
+
+        for (int i = 0; i < 9; i++)
+        {
+            mBorder.grid[i]->setAlpha(mAlpha);
+        }
+
         dBorders->decRef();
     }
 
@@ -92,12 +101,27 @@ void ProgressBar::logic()
 
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        if (config.getValue("opengl", 0))
+            mAlpha = config.getValue("guialpha", 0.8);
+        else
+            mAlpha = 1.0f;
+        for (int i = 0; i < 9; i++)
+        {
+            mBorder.grid[i]->setAlpha(mAlpha);
+        }
+    }
+
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
 
+    const int alpha = mAlpha * 255;
+
     // The bar
     if (mProgress > 0) {
-        graphics->setColor(gcn::Color(mRed, mGreen, mBlue, 200));
+
+        graphics->setColor(gcn::Color(mRed, mGreen, mBlue, alpha));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
                     (int) (mProgress * (getWidth() - 8)),
                     getHeight() - 8));
@@ -105,20 +129,22 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 
     // The label
     if (!mText.empty()) {
-        gcn::Font *f = getFont();
+        gcn::Font *f = boldFont;
         const int textX = getWidth() / 2;
         const int textY = (getHeight() - f->getHeight()) / 2;
 
         graphics->setFont(f);
 
-        graphics->setColor(gcn::Color(0, 0, 0));
+        graphics->setColor(gcn::Color(0, 0, 0, alpha));
         graphics->drawText(mText, textX + 1, textY, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX, textY - 1, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX, textY + 1, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX - 1, textY, gcn::Graphics::CENTER);
 
-        graphics->setColor(gcn::Color(255, 255, 255));
+        graphics->setColor(gcn::Color(255, 255, 255, alpha));
         graphics->drawText(mText, textX, textY, gcn::Graphics::CENTER);
+
+        graphics->setColor(gcn::Color(0, 0, 0));
     }
 }
 

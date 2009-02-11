@@ -1,6 +1,6 @@
 /*
- *  The Mana World
- *  Copyright (C) 2007  The Mana World Development Team
+ *  Emote database
+ *  Copyright (C) 2008  Aethyra Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,43 +19,42 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef ITEMSHORTCUTWINDOW_H
-#define ITEMSHORTCUTWINDOW_H
+#ifndef EMOTE_DB_H
+#define EMOTE_DB_H
 
-#include "window.h"
+#include <list>
+#include <map>
+#include <string>
 
-class ItemShortcutContainer;
-class ScrollArea;
-
-/**
- * A window around the ItemShortcutContainer.
- *
- * \ingroup Interface
- */
-class ItemShortcutWindow : public Window
+struct EmoteSprite
 {
-    public:
-        /**
-         * Constructor.
-         */
-        ItemShortcutWindow();
-
-        /**
-         * Destructor.
-         */
-        ~ItemShortcutWindow();
-
-        /**
-         * Called whenever the widget changes size.
-         */
-        void widgetResized(const gcn::Event &event);
-
-    private:
-        ItemShortcutContainer *mItems;
-
-        ScrollArea *mScrollArea;
+    std::string sprite;
+    std::string name;
+    int variant;
 };
 
-extern ItemShortcutWindow *itemShortcutWindow;
+struct EmoteInfo
+{
+    std::list<EmoteSprite*> sprites;
+    std::list<std::string> particles;
+};
+
+typedef std::map<int, EmoteInfo*> EmoteInfos;
+
+/**
+ * Emote information database.
+ */
+namespace EmoteDB
+{
+    void load();
+
+    void unload();
+
+    const EmoteInfo& get(int id);
+
+    const int& getLast();
+
+    typedef EmoteInfos::iterator EmoteInfosIterator;
+}
 
 #endif

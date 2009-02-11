@@ -1,5 +1,6 @@
 /*
- *  The Mana World
+ *  Support for non-overlapping floating text
+ *  Copyright (C) 2008  Douglas Boffey <DougABoffey@netscape.net>
  *  Copyright (C) 2008  The Mana World Development Team
  *
  *  This file is part of The Mana World.
@@ -21,8 +22,6 @@
 
 #include "text.h"
 
-#include <cstring>
-
 #include <guichan/font.hpp>
 
 #include "configuration.h"
@@ -38,9 +37,9 @@ Image *Text::mBubbleArrow;
 
 Text::Text(const std::string &text, int x, int y,
            gcn::Graphics::Alignment alignment,
-           gcn::Color colour, bool isSpeech) :
+           gcn::Color color, bool isSpeech) :
     mText(text),
-    mColour(colour),
+    mColor(color),
     mIsSpeech(isSpeech)
 {
     if (textManager == 0)
@@ -48,7 +47,7 @@ Text::Text(const std::string &text, int x, int y,
         textManager = new TextManager;
         ResourceManager *resman = ResourceManager::getInstance();
         Image *sbImage = resman->getImage("graphics/gui/bubble.png|W:#"
-            + config.getValue("speechBubbleColour", "000000"));
+            + config.getValue("speechBubblecolor", "000000"));
         mBubble.grid[0] = sbImage->getSubImage(0, 0, 5, 5);
         mBubble.grid[1] = sbImage->getSubImage(5, 0, 5, 5);
         mBubble.grid[2] = sbImage->getSubImage(10, 0, 5, 5);
@@ -68,8 +67,8 @@ Text::Text(const std::string &text, int x, int y,
         sbImage->decRef();
     }
     ++mInstances;
-    mHeight = gui->getFont()->getHeight();
-    mWidth = gui->getFont()->getWidth(text);
+    mHeight = boldFont->getHeight();
+    mWidth = boldFont->getWidth(text);
 
     switch (alignment)
     {
@@ -113,9 +112,9 @@ void Text::adviseXY(int x, int y)
     textManager->moveText(this, x - mXOffset, y);
 }
 
-void Text::draw(Graphics *graphics, int xOff, int yOff)
+void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
-    graphics->setFont(gui->getFont());
+    graphics->setFont(boldFont);
 
     if (mIsSpeech) {
         static_cast<Graphics*>(graphics)->drawImageRect(
@@ -162,20 +161,20 @@ void Text::draw(Graphics *graphics, int xOff, int yOff)
                 gcn::Graphics::LEFT);
     }
 
-    graphics->setColor(mColour);
+    graphics->setColor(mColor);
     graphics->drawText(mText, mX - xOff, mY - yOff,
             gcn::Graphics::LEFT);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,
                      gcn::Graphics::Alignment alignment,
-                     gcn::Color colour) :
-    Text(text, x, y, alignment, colour),
+                     gcn::Color color) :
+    Text(text, x, y, alignment, color),
     mTime(0)
 {
 }
 
-void FlashText::draw(Graphics *graphics, int xOff, int yOff)
+void FlashText::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
     if (mTime)
     {

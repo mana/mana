@@ -22,6 +22,7 @@
 #ifndef DYE_H
 #define DYE_H
 
+#include <string>
 #include <vector>
 
 /**
@@ -36,7 +37,7 @@ class Palette
          * The string is either a file name or a sequence of hexadecimal RGB
          * values separated by ',' and starting with '#'.
          */
-        Palette(const std::string &);
+        Palette(const std::string &pallete);
 
         /**
          * Gets a pixel color depending on its intensity.
@@ -63,7 +64,7 @@ class Dye
          * The parts of string are separated by semi-colons. Each part starts
          * by an uppercase letter, followed by a colon and then a palette name.
          */
-        Dye(const std::string &);
+        Dye(const std::string &dye);
 
         /**
          * Destroys the associated palettes.

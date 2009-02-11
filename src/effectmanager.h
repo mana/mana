@@ -1,6 +1,7 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  An effects manager
+ *  Copyright (C) 2008  Fate <fate.tmw@googlemail.com>
+ *  Copyright (C) 2008  Chuck Miller <shadowmil@gmail.com>
  *
  *  This file is part of The Mana World.
  *
@@ -19,38 +20,43 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef BUDDYWINDOW_H
-#define BUDDYWINDOW_H
+#ifndef EFFECT_MANAGER_H
+#define EFFECT_MANAGER_H
 
-#include <guichan/actionlistener.hpp>
+#include <list>
+#include <string>
 
-#include "window.h"
+class Being;
 
-#include "../guichanfwd.h"
-
-class BuddyList;
-
-/**
- * Window showing buddy list.
- *
- * \ingroup Interface
- */
-class BuddyWindow : public Window, public gcn::ActionListener
+class EffectManager
 {
     public:
-        /**
-         * Constructor.
-         */
-        BuddyWindow();
+        struct EffectDescription
+        {
+             int id;
+             std::string GFX;
+             std::string SFX;
+        };
+
+        EffectManager();
+        ~EffectManager();
 
         /**
-         * Performs action.
+         * Triggers a effect with the id, at
+         * the specified being.
          */
-        void action(const gcn::ActionEvent &event);
+        bool trigger(int id, Being* being);
 
-    private:
-        BuddyList *mBuddyList;
-        gcn::ListBox *mListbox;
+        /**
+         * Triggers a effect with the id, at
+         * the specified x and y coordinate.
+         */
+        bool trigger(int id, int x, int y);
+
+   private:
+        std::list<EffectDescription> mEffects;
 };
 
-#endif /* BUDDYWINDOW_H */
+extern EffectManager *effectManager;
+
+#endif // EFFECT_MANAGER_H

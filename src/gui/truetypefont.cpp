@@ -19,11 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "truetypefont.h"
-
 #include <list>
 
 #include <guichan/exception.hpp>
+
+#include "truetypefont.h"
 
 #include "../graphics.h"
 #include "../resources/image.h"
@@ -74,7 +74,6 @@ class TextChunk
         gcn::Color color;
 };
 
-
 // Word surfaces cache
 static std::list<TextChunk> cache;
 typedef std::list<TextChunk>::iterator CacheIterator;
@@ -92,7 +91,7 @@ TrueTypeFont::TrueTypeFont(const std::string &filename, int size)
     ++fontCounter;
     mFont = TTF_OpenFont(filename.c_str(), size);
 
-    if (mFont == NULL)
+    if (!mFont)
     {
         throw GCN_EXCEPTION("SDLTrueTypeFont::SDLTrueTypeFont: " +
             std::string(TTF_GetError()));

@@ -21,8 +21,6 @@
 
 #include "animation.h"
 
-#include <algorithm>
-
 #include "../utils/dtor.h"
 
 Animation::Animation():
@@ -30,22 +28,19 @@ Animation::Animation():
 {
 }
 
-void
-Animation::addFrame(Image *image, unsigned int delay, int offsetX, int offsetY)
+void Animation::addFrame(Image *image, unsigned int delay, int offsetX, int offsetY)
 {
     Frame frame = { image, delay, offsetX, offsetY };
     mFrames.push_back(frame);
     mDuration += delay;
 }
 
-void
-Animation::addTerminator()
+void Animation::addTerminator()
 {
     addFrame(NULL, 0, 0, 0);
 }
 
-bool
-Animation::isTerminator(const Frame &candidate)
+bool Animation::isTerminator(const Frame &candidate)
 {
     return (candidate.image == NULL);
 }

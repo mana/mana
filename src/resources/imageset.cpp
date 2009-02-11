@@ -19,11 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "image.h"
 #include "imageset.h"
 
 #include "../log.h"
-
-#include "image.h"
 
 #include "../utils/dtor.h"
 
@@ -45,8 +44,7 @@ ImageSet::~ImageSet()
     delete_all(mImages);
 }
 
-Image*
-ImageSet::get(size_type i) const
+Image* ImageSet::get(size_type i) const
 {
     if (i >= mImages.size())
     {

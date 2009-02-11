@@ -23,7 +23,8 @@
 #define SHOPLISTBOX_H
 
 #include "listbox.h"
-#include "shop.h"
+
+class ShopItems;
 
 /**
  * A list box, meant to be used inside a scroll area. Same as the Guichan list
@@ -83,6 +84,8 @@ class ShopListBox : public ListBox
         ShopItems *mShopItems;
 
         unsigned int mRowHeight; /**< Row Height */
+
+        static float mAlpha;
 
         bool mPriceCheck;
 };

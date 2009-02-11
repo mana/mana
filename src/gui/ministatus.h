@@ -22,14 +22,11 @@
 #ifndef MINISTATUS_H
 #define MINISTATUS_H
 
-#include <iosfwd>
-#include <vector>
-
 #include "window.h"
 
-#include "../guichanfwd.h"
-#include "../animatedsprite.h"
+#include <vector>
 
+class AnimatedSprite;
 class ProgressBar;
 
 /**

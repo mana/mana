@@ -19,21 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "map.h"
-
 #include <queue>
 
 #include "beingmanager.h"
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"
+#include "localplayer.h"
+#include "map.h"
 #include "particle.h"
 #include "sprite.h"
 #include "tileset.h"
 
-#include "resources/resourcemanager.h"
 #include "resources/ambientoverlay.h"
 #include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -67,6 +67,7 @@ TileAnimation::TileAnimation(Animation *ani):
     mLastImage(NULL)
 {
 }
+
 
 void TileAnimation::update()
 {
@@ -136,6 +137,7 @@ void MapLayer::draw(Graphics *graphics,
         // If drawing the fringe layer, make sure all sprites above this row of
         // tiles have been drawn
         if (mIsFringeLayer) {
+            player_node->drawTargetCursor(graphics, scrollX, scrollY);
             while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32) {
                 (*si)->draw(graphics, -scrollX, -scrollY);
                 si++;
@@ -256,7 +258,8 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 
     // draw the game world
     Layers::const_iterator layeri = mLayers.begin();
-    for (; layeri != mLayers.end(); ++layeri) {
+    for (; layeri != mLayers.end(); ++layeri)
+    {
         (*layeri)->draw(graphics,
                         startX, startY, endX, endY,
                         scrollX, scrollY,
@@ -547,12 +550,15 @@ void Map::addParticleEffect(const std::string &effectFile, int x, int y)
 
 void Map::initializeParticleEffects(Particle* particleEngine)
 {
-    for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
-         i != particleEffects.end();
-         i++
-        )
+    if (config.getValue("particleeffects", 1))
     {
-        particleEngine->addEffect(i->file, i->x, i->y);
+        for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
+             i != particleEffects.end();
+             i++
+            )
+        {
+            particleEngine->addEffect(i->file, i->x, i->y);
+        }
     }
 }
 

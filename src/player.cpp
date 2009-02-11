@@ -19,19 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "player.h"
-
 #include "animatedsprite.h"
 #include "game.h"
-#include "graphics.h"
-#include "log.h"
+#include "player.h"
+#include "text.h"
 
+#include "resources/colordb.h"
 #include "resources/itemdb.h"
-#include "resources/iteminfo.h"
 
 #include "utils/strprintf.h"
-
-#include <iostream>
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
@@ -44,19 +40,25 @@ Player::Player(int id, int job, Map *map):
 
 Player::~Player()
 {
-    if (mName)
-    {
-        delete mName;
-    }
+    delete mName;
 }
 
 void Player::setName(const std::string &name)
 {
     if (mName == 0)
     {
-        mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                              gcn::Graphics::CENTER,
-                              gcn::Color(255, 255, 255));
+        if (mIsGM)
+        {
+            mNameColor = 0x009000;
+            mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+                                  gcn::Graphics::CENTER, gcn::Color(0, 255, 0));
+        }
+        else
+        {
+            mNameColor = 0x202020;
+            mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+                                  gcn::Graphics::CENTER, gcn::Color(255, 255, 255));
+        }
         Being::setName(name);
     }
 }
@@ -64,6 +66,18 @@ void Player::setName(const std::string &name)
 void Player::logic()
 {
     switch (mAction) {
+        case STAND:
+           break;
+
+        case SIT:
+           break;
+
+        case DEAD:
+           break;
+
+        case HURT:
+           break;
+
         case WALK:
             mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
             if (mFrame >= 6) {
@@ -126,13 +140,13 @@ void Player::setGender(Gender gender)
 
 void Player::setHairStyle(int style, int color)
 {
-    style = style < 0 ? mHairStyle : style % getHairStylesNr();
-    color = color < 0 ? mHairColor : color % getHairColorsNr();
+    style = style < 0 ? mHairStyle : style % mNumberOfHairstyles;
+    color = color < 0 ? mHairColor : color % ColorDB::size();
     if (style == mHairStyle && color == mHairColor) return;
 
     Being::setHairStyle(style, color);
 
-    setSprite(HAIR_SPRITE, style * -1, getHairColor(color));
+    setSprite(HAIR_SPRITE, style * -1, ColorDB::get(color));
 
     setAction(mAction);
 }
@@ -155,11 +169,12 @@ void Player::setSprite(int slot, int id, std::string color)
         std::string filename = ItemDB::get(id).getSprite(mGender);
         AnimatedSprite *equipmentSprite = NULL;
 
-        if (filename != "")
+        if (!filename.empty())
         {
-            if (color!="") filename += "|" + color;
+            if (!color.empty())
+                filename += "|" + color;
             equipmentSprite = AnimatedSprite::load(
-                "graphics/sprites/" + filename);
+                    "graphics/sprites/" + filename);
         }
 
         if (equipmentSprite)
@@ -186,5 +201,4 @@ void Player::updateCoords()
         mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
     }
 }
-
 

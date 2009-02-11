@@ -19,9 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "textparticle.h"
+#include <guichan/color.hpp>
 
 #include "graphics.h"
+#include "textparticle.h"
 
 TextParticle::TextParticle(Map *map, const std::string &text,
                            int colorR, int colorG, int colorB,

@@ -39,7 +39,7 @@ class ResizeGrip : public gcn::Widget
         /**
          * Constructor.
          */
-        ResizeGrip();
+        ResizeGrip(std::string image = "graphics/gui/resize.png");
 
         /**
          * Destructor.
@@ -54,6 +54,7 @@ class ResizeGrip : public gcn::Widget
     private:
         static Image *gripImage;   /**< Resize grip image */
         static int mInstances;     /**< Number of resize grip instances */
+        static float mAlpha;
 };
 
 #endif

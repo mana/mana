@@ -20,22 +20,22 @@
  */
 
 #include <cassert>
+
 #include <libxml/tree.h>
 
 #include "itemdb.h"
-
-#include "iteminfo.h"
-#include "resourcemanager.h"
 
 #include "../log.h"
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
+#include "../utils/trim.h"
 #include "../utils/xml.h"
 
 namespace
 {
     ItemDB::ItemInfos mItemInfos;
+    ItemDB::NamedItemInfos mNamedItemInfos;
     ItemInfo *mUnknown;
     bool mLoaded = false;
 }
@@ -52,17 +52,17 @@ void ItemDB::load()
     logger->log("Initializing item database...");
 
     mUnknown = new ItemInfo();
-    mUnknown->setName("Unknown item");
+    mUnknown->setName(_("Unknown item"));
     mUnknown->setImageName("");
     mUnknown->setSprite("error.xml", GENDER_MALE);
     mUnknown->setSprite("error.xml", GENDER_FEMALE);
 
-    XML::Document doc("items.xml");
+    XML::Document doc(_("items.xml"));
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
     {
-        logger->error("ItemDB: Error while loading items.xml!");
+        logger->error(_("ItemDB: Error while loading items.xml!"));
     }
 
     for_each_xml_child_node(node, rootNode)
@@ -82,7 +82,7 @@ void ItemDB::load()
             logger->log("ItemDB: Redefinition of item ID %d", id);
         }
 
-        int type = XML::getProperty(node, "type", 0);
+        std::string type = XML::getProperty(node, "type", "other");
         int weight = XML::getProperty(node, "weight", 0);
         int view = XML::getProperty(node, "view", 0);
 
@@ -95,6 +95,7 @@ void ItemDB::load()
         if (id)
         {
             ItemInfo *itemInfo = new ItemInfo;
+            itemInfo->setId(id);
             itemInfo->setImageName(image);
             itemInfo->setName(name.empty() ? _("Unnamed") : name);
             itemInfo->setDescription(description);
@@ -117,6 +118,27 @@ void ItemDB::load()
             }
 
             mItemInfos[id] = itemInfo;
+            if (!name.empty())
+            {
+                NamedItemInfoIterator itr = mNamedItemInfos.find(name);
+                if (itr == mNamedItemInfos.end())
+                {
+                    std::string temp = name;
+                    trim(temp);
+
+                    for (unsigned int i = 0; i < temp.size(); i++)
+                    {
+                        temp[i] = (char) tolower(temp[i]);
+                    }
+
+                    mNamedItemInfos[temp] = itemInfo;
+                }
+                else
+                {
+                    logger->log("ItemDB: Duplicate name of item found item %d",
+                                   id);
+                }
+            }
         }
 
 #define CHECK_PARAM(param, error_value) \
@@ -126,7 +148,7 @@ void ItemDB::load()
         CHECK_PARAM(name, "");
         CHECK_PARAM(image, "");
         CHECK_PARAM(description, "");
-        CHECK_PARAM(effect, "");
+        // CHECK_PARAM(effect, "");
         // CHECK_PARAM(type, 0);
         // CHECK_PARAM(weight, 0);
         // CHECK_PARAM(slot, 0);
@@ -166,6 +188,23 @@ const ItemInfo& ItemDB::get(int id)
     }
 }
 
+const ItemInfo& ItemDB::get(const std::string &name)
+{
+    assert(mLoaded && !name.empty());
+
+    NamedItemInfoIterator i = mNamedItemInfos.find(name);
+
+    if (i == mNamedItemInfos.end())
+    {
+        logger->log("ItemDB: Error, unknown item name %s", name.c_str());
+        return *mUnknown;
+    }
+    else
+    {
+        return *(i->second);
+    }
+}
+
 void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
 {
     std::string gender = XML::getProperty(node, "gender", "unisex");
@@ -175,7 +214,6 @@ void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
     {
         itemInfo->setSprite(filename, GENDER_MALE);
     }
-
     if (gender == "female" || gender == "unisex")
     {
         itemInfo->setSprite(filename, GENDER_FEMALE);

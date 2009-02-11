@@ -22,9 +22,9 @@
 #ifndef CHATINPUT_H
 #define CHATINPUT_H
 
-#include "textfield.h"
-
 #include <guichan/focuslistener.hpp>
+
+#include "textfield.h"
 
 /**
  * The chat input hides when it loses focus. It is also invisible by default.

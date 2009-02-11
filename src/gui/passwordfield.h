@@ -22,6 +22,8 @@
 #ifndef PASSWORDFIELD_H
 #define PASSWORDFIELD_H
 
+#include <string>
+
 #include "textfield.h"
 
 /**
@@ -29,7 +31,8 @@
  *
  * \ingroup GUI
  */
-class PasswordField : public TextField {
+class PasswordField : public TextField
+{
     public:
         /**
          * Constructor, initializes the password field with the given string.

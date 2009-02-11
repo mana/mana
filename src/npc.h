@@ -22,13 +22,13 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "being.h"
+#include "player.h"
 
 class Network;
 class Graphics;
 class Text;
 
-class NPC : public Being
+class NPC : public Player
 {
     public:
         NPC(Uint32 id, Uint16 job, Map *map, Network *network);
@@ -36,9 +36,10 @@ class NPC : public Being
         ~NPC();
 
         void setName(const std::string &name);
+        void setGender(Gender gender);
+        void setSprite(int slot, int id, std::string color);
 
-        virtual Type
-        getType() const;
+        virtual Type getType() const;
 
         void talk();
         void nextDialog();

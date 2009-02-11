@@ -21,9 +21,8 @@
 
 #include <SDL_image.h>
 
-#include "image.h"
-
 #include "dye.h"
+#include "image.h"
 
 #include "../log.h"
 
@@ -168,7 +167,8 @@ Image *Image::load(SDL_Surface *tmpImage)
         tmpImage = SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth, realHeight,
             32, rmask, gmask, bmask, amask);
 
-        if (!tmpImage) {
+        if (!tmpImage)
+        {
             logger->log("Error, image convert failed: out of memory");
             return NULL;
         }
@@ -179,9 +179,8 @@ Image *Image::load(SDL_Surface *tmpImage)
         glGenTextures(1, &texture);
         glBindTexture(mTextureType, texture);
 
-        if (SDL_MUSTLOCK(tmpImage)) {
+        if (SDL_MUSTLOCK(tmpImage))
             SDL_LockSurface(tmpImage);
-        }
 
         glTexImage2D(
                 mTextureType, 0, 4,
@@ -256,14 +255,13 @@ Image *Image::load(SDL_Surface *tmpImage)
     SDL_Surface *image;
 
     // Convert the surface to the current display format
-    if (hasAlpha) {
+    if (hasAlpha)
         image = SDL_DisplayFormatAlpha(tmpImage);
-    }
-    else {
+    else
         image = SDL_DisplayFormat(tmpImage);
-    }
 
-    if (!image) {
+    if (!image)
+    {
         logger->log("Error: Image convert failed.");
         return NULL;
     }
@@ -275,14 +273,16 @@ void Image::unload()
 {
     mLoaded = false;
 
-    if (mImage) {
+    if (mImage)
+    {
         // Free the image surface.
         SDL_FreeSurface(mImage);
         mImage = NULL;
     }
 
 #ifdef USE_OPENGL
-    if (mGLImage) {
+    if (mGLImage)
+    {
         glDeleteTextures(1, &mGLImage);
         mGLImage = 0;
     }
@@ -293,10 +293,9 @@ Image *Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
 #ifdef USE_OPENGL
-    if (mUseOpenGL) {
+    if (mUseOpenGL)
         return new SubImage(this, mGLImage, x, y, width, height,
                             mTexWidth, mTexHeight);
-    }
 #endif
 
     return new SubImage(this, mImage, x, y, width, height);
@@ -304,13 +303,13 @@ Image *Image::getSubImage(int x, int y, int width, int height)
 
 void Image::setAlpha(float a)
 {
-    if (mAlpha == a) {
+    if (mAlpha == a)
         return;
-    }
 
     mAlpha = a;
 
-    if (mImage) {
+    if (mImage)
+    {
         // Set the alpha value this image is drawn at
         SDL_SetAlpha(mImage, SDL_SRCALPHA, (int) (255 * mAlpha));
     }
@@ -322,14 +321,12 @@ float Image::getAlpha()
 }
 
 #ifdef USE_OPENGL
-void
-Image::setLoadAsOpenGL(bool useOpenGL)
+void Image::setLoadAsOpenGL(bool useOpenGL)
 {
     Image::mUseOpenGL = useOpenGL;
 }
 
-int
-Image::powerOfTwo(int input)
+int Image::powerOfTwo(int input)
 {
     int value;
     if (mTextureType == GL_TEXTURE_2D)
@@ -354,7 +351,8 @@ Image::powerOfTwo(int input)
 
 SubImage::SubImage(Image *parent, SDL_Surface *image,
         int x, int y, int width, int height):
-    Image(image), mParent(parent)
+    Image(image),
+    mParent(parent)
 {
     mParent->incRef();
 
@@ -369,7 +367,8 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
 SubImage::SubImage(Image *parent, GLuint image,
                    int x, int y, int width, int height,
                    int texWidth, int texHeight):
-    Image(image, width, height, texWidth, texHeight), mParent(parent)
+    Image(image, width, height, texWidth, texHeight),
+    mParent(parent)
 {
     mParent->incRef();
 
@@ -395,3 +394,4 @@ Image *SubImage::getSubImage(int x, int y, int w, int h)
 {
     return mParent->getSubImage(mBounds.x + x, mBounds.y + y, w, h);
 }
+

@@ -30,36 +30,23 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 class BrowserBox;
 class Network;
+class Recorder;
+class Party;
 class ScrollArea;
+class ItemLinkHandler;
 
 #define BY_GM         0   // those should be self-explanatory =)
 #define BY_PLAYER     1
 #define BY_OTHER      2
 #define BY_SERVER     3
+#define BY_PARTY      4
 
-#define ACT_WHISPER   4   // getting whispered at
-#define ACT_IS        5   // equivalent to "/me" on IRC
+#define ACT_WHISPER   5   // getting whispered at
+#define ACT_IS        6   // equivalent to "/me" on IRC
 
-#define BY_LOGGER     6
-
-#define IS_ANNOUNCE               "/announce "
-#define IS_ANNOUNCE_LENGTH        10
-#define IS_HELP                   "/help"
-#define IS_HELP_LENGTH            5
-#define IS_WHERE                  "/where"
-#define IS_WHERE_LENGTH           6
-#define IS_WHO                    "/who"
-#define IS_WHO_LENGTH             4
-#define IS_CLEAR                  "/clear"
-#define IS_CLEAR_LENGTH           6
-#define IS_WHISPER                "/whisper"
-#define IS_WHISPER_LENGTH         8
-#define IS_SHORT_WHISPER          "/w"
-#define IS_SHORT_WHISPER_LENGTH   2
+#define BY_LOGGER     7
 
 /**
  * gets in between usernick and message text depending on
@@ -127,14 +114,19 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ChatWindow(Network *network);
 
         /**
+         * Destructor: used to write back values to the config file
+         */
+        ~ChatWindow();
+
+        /**
          * Adds a line of text to our message list. Parameters:
          *
          * @param line Text message.
          * @parem own  Type of message (usually the owner-type).
          */
-        void chatLog(std::string line, int own);
+        void chatLog(std::string line, int own, bool ignoreRecord = false);
 
-        /*
+        /**
          * Calls original chat_log() after processing the packet.
          */
         void chatLog(CHATSKILL);
@@ -186,6 +178,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /** Called to set current text */
         void setInputText(std::string input_str);
 
+        /** Called to add item to chat */
+        void addItemText(const std::string &item);
+
         /** Override to reset mTmpVisible */
         void setVisible(bool visible);
 
@@ -199,6 +194,14 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void scroll(int amount);
 
         /**
+         * party implements the partying chat commands
+         *
+         * @param command is the party command to perform
+         * @param msg is the remainder of the message
+         */
+        void party(const std::string &command, const std::string &msg);
+
+        /**
          * help implements the /help command
          *
          * @param msg1 is the command that the player needs help on
@@ -207,10 +210,11 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void help(const std::string &msg1, const std::string &msg2);
 
     private:
+
         Network *mNetwork;
         bool mTmpVisible;
 
-        void whisper(const std::string &nick, std::string msg, int prefixlen);
+        void whisper(const std::string &nick, std::string msg);
 
         /** One item in the chat log */
         struct CHATLOG
@@ -226,13 +230,19 @@ class ChatWindow : public Window, public gcn::ActionListener,
         gcn::TextField *mChatInput; /**< Input box for typing chat messages */
         BrowserBox *mTextOutput;    /**< Text box for displaying chat history */
         ScrollArea *mScrollArea;    /**< Scroll area around text output */
-
+        ItemLinkHandler *mItemLinkHandler; /** Used for showing item popup on
+                                               clicking links **/
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;
         History mHistory;           /**< Command history */
         HistoryIterator mCurHist; /**< History iterator */
+        Recorder *mRecorder; /**< Recording class */
+        char mPartyPrefix; /**< Messages beginning with the prefix are sent to
+                              the party */
+        bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
+                                or not */
+        Party *mParty;
 };
-
 extern ChatWindow *chatWindow;
 
 #endif
