@@ -41,7 +41,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
     mMap = map;
     mParticleTarget = target;
 
-    //initializing default values
+    // Initializing default values
     mParticlePosX.set(0.0f);
     mParticlePosY.set(0.0f);
     mParticlePosZ.set(0.0f);
@@ -91,7 +91,7 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
                 std::string image = XML::getProperty(propertyNode, "value", "");
                 // Don't leak when multiple images are defined
-                if (image != "" && !mParticleImage)
+                if (!image.empty() && !mParticleImage)
                 {
                     ResourceManager *resman = ResourceManager::getInstance();
                     mParticleImage = resman->getImage(image);

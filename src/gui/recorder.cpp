@@ -1,21 +1,21 @@
 /*
- *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  A chat recorder
+ *  Copyright (C) 2008  Lloyd Bryant <lloyd_bryant@netzero.net>
  *
  *  This file is part of The Mana World.
  *
- *  The Mana World is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  The Mana World is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with The Mana World; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -40,7 +40,7 @@ Recorder::Recorder(ChatWindow *chat, const std::string &title,
 
     mChat = chat;
     Button *button = new Button(buttonTxt, "activate", this);
-    setDefaultSize(0, windowContainer->getHeight() - 123 - button->getHeight() - 
+    setDefaultSize(0, windowContainer->getHeight() - 123 - button->getHeight() -
                    offsetY,  button->getWidth() + offsetX, button->getHeight() +
                    offsetY);
 
@@ -50,6 +50,10 @@ Recorder::Recorder(ChatWindow *chat, const std::string &title,
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
+}
+
+Recorder::~Recorder()
+{
 }
 
 void Recorder::record(const std::string &msg)
@@ -65,7 +69,7 @@ void Recorder::changeRecordingStatus(const std::string &msg)
     std::string msgCopy = msg;
     trim(msgCopy);
 
-    if (msgCopy == "")
+    if (msgCopy.empty())
     {
         if (mStream.is_open())
         {
@@ -94,8 +98,9 @@ void Recorder::changeRecordingStatus(const std::string &msg)
          * recorded.
          */
         mChat->chatLog(_("Starting to record..."), BY_SERVER);
-        std::string file = std::string(PHYSFS_getUserDir()) + "/.aethyra/" + msgCopy;
-        
+        const std::string file =
+            std::string(PHYSFS_getUserDir()) + "/.tmw/" + msgCopy;
+
         mStream.open(file.c_str(), std::ios_base::trunc);
 
         if (mStream.is_open())
@@ -108,8 +113,4 @@ void Recorder::changeRecordingStatus(const std::string &msg)
 void Recorder::action(const gcn::ActionEvent &event)
 {
     changeRecordingStatus("");
-}
-
-Recorder::~Recorder()
-{
 }

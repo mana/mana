@@ -221,7 +221,7 @@ void Being::setSpeech(const std::string &text, Uint32 time)
         end = mSpeech.find(']', start);
     }
 
-    if (mSpeech != "")
+    if (!mSpeech.empty())
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 }
 
@@ -370,8 +370,8 @@ void Being::setDirection(Uint8 direction)
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-       if (mSprites[i] != NULL)
-            mSprites[i]->setDirection(dir);
+       if (mSprites[i])
+           mSprites[i]->setDirection(dir);
     }
 }
 
@@ -470,7 +470,7 @@ void Being::logic()
     // Update sprite animations
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL)
+        if (mSprites[i])
         {
             mSprites[i]->update(tick_time * 10);
         }
@@ -500,7 +500,7 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL)
+        if (mSprites[i])
         {
             mSprites[i]->draw(graphics, px, py);
         }
@@ -756,14 +756,14 @@ void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
         return;
     }
 
-    if (gfx && ed->mGFXEffect != "") {
+    if (gfx && !ed->mGFXEffect.empty()) {
         Particle *selfFX;
 
         selfFX = particleEngine->addEffect(ed->mGFXEffect, 0, 0);
         controlParticle(selfFX);
     }
 
-    if (sfx && ed->mSFXEffect != "") {
+    if (sfx && !ed->mSFXEffect.empty()) {
         sound.playSfx(ed->mSFXEffect);
     }
 }
@@ -831,7 +831,7 @@ static void initializeHair()
                 int index = atoi(XML::getProperty(node, "id", "-1").c_str());
                 std::string value = XML::getProperty(node, "value", "");
 
-                if (index >= 0 && value != "") {
+                if (index >= 0 && !value.empty()) {
                     if (index >= hairColorsNr) {
                         hairColorsNr = index + 1;
                         hairColors.resize(hairColorsNr, "#000000");

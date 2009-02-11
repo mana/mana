@@ -159,7 +159,7 @@ void ResourceManager::searchAndAddArchives(const std::string &path,
     const char *dirSep = PHYSFS_getDirSeparator();
     char **list = PHYSFS_enumerateFiles(path.c_str());
 
-    for (char **i = list; *i != NULL; i++)
+    for (char **i = list; *i; i++)
     {
         size_t len = strlen(*i);
 
@@ -207,7 +207,7 @@ std::string ResourceManager::getPath(const std::string &file)
     else
     {
         // if not found in search path return the default path
-        path = std::string(TMW_DATADIR) + std::string("data") + "/" + file;
+        path = std::string(PKG_DATADIR) + std::string("data") + "/" + file;
     }
 
     return path;

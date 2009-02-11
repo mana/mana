@@ -48,7 +48,7 @@ class Setup_Colors : public SetupTab, public gcn::ActionListener,
 
         void listen(const TextField *tf);
     private:
-        gcn::ListBox *mcolorBox;
+        gcn::ListBox *mColorBox;
         gcn::ScrollArea *mScroll;
         BrowserBox *mPreview;
         gcn::ScrollArea *mPreviewBox;

@@ -390,7 +390,7 @@ static bool saveScreenshot()
     else
     {
         chatWindow->chatLog(_("Saving screenshot failed!"), BY_SERVER);
-        logger->log(_("Error: could not save screenshot."));
+        logger->log("Error: could not save screenshot.");
     }
 
     SDL_FreeSurface(screenshot);
@@ -518,8 +518,8 @@ void Game::handleInput()
             {
                 // Input chat window
                 if (!(chatWindow->isInputFocused() ||
-                                deathNotice != NULL ||
-                                weightNotice != NULL))
+                                deathNotice ||
+                                weightNotice))
                 {
                     // Quit by pressing Enter if the exit confirm is there
                     if (exitConfirm &&
@@ -550,9 +550,9 @@ void Game::handleInput()
                              keyboard.isKeyActive(keyboard.KEY_OK))
                         npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
                     else if (!(keyboard.getKeyValue(
-                                   KeyboardConfig::KEY_TOGGLE_CHAT) == 
+                                   KeyboardConfig::KEY_TOGGLE_CHAT) ==
                                keyboard.getKeyValue(
-                                   KeyboardConfig::KEY_OK) && 
+                                   KeyboardConfig::KEY_OK) &&
                                (npcStringDialog->isVisible() ||
                                 npcTextDialog->isVisible() ||
                                 npcListDialog->isVisible() ||
@@ -595,11 +595,11 @@ void Game::handleInput()
                     break;
                // Quitting confirmation dialog
                case KeyboardConfig::KEY_QUIT:
-                    if (!exitConfirm) 
+                    if (!exitConfirm)
                     {
-                        exitConfirm = new ConfirmDialog( _("Quit"),
-                                                         _("Are you sure you "
-                                                           "want to quit?"));
+                        exitConfirm = new ConfirmDialog(_("Quit"),
+                                                        _("Are you sure you "
+                                                          "want to quit?"));
                         exitConfirm->addActionListener(&exitListener);
                         exitConfirm->requestMoveToTop();
                     }
@@ -778,7 +778,7 @@ void Game::handleInput()
             catch (gcn::Exception e)
             {
                 const char* err = e.getMessage().c_str();
-                logger->log(_("Warning: guichan input exception: %s"), err);
+                logger->log("Warning: guichan input exception: %s", err);
             }
         }
     } // End while

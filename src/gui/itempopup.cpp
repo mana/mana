@@ -108,7 +108,7 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemName->setWidth(boldFont->getWidth(item.getName()));
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);
-    mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) + 
+    mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) +
                                 _(" grams"), 196);
 
     int minWidth = mItemName->getWidth();
@@ -136,9 +136,9 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
                                     numRowsWeight * getFont()->getHeight()));
 
-    if (item.getEffect() == "")
+    if (item.getEffect().empty())
     {
-        setContentSize(minWidth, (numRowsDesc * getFont()->getHeight() + 
+        setContentSize(minWidth, (numRowsDesc * getFont()->getHeight() +
                       (3 * getFont()->getHeight())));
 
         mItemWeightScroll->setPosition(2,
@@ -147,7 +147,7 @@ void ItemPopup::setItem(const ItemInfo &item)
     }
     else
     {
-        setContentSize(minWidth, (numRowsDesc * getFont()->getHeight()) + 
+        setContentSize(minWidth, (numRowsDesc * getFont()->getHeight()) +
                       (numRowsEffect * getFont()->getHeight()) +
                       (3 * getFont()->getHeight()));
 

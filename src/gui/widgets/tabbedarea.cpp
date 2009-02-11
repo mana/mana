@@ -90,7 +90,7 @@ void TabbedArea::addTab(Tab *tab, gcn::Widget *widget)
     mTabContainer->add(tab);
     mTabs.push_back(std::pair<Tab*, gcn::Widget*>(tab, widget));
 
-    if (mSelectedTab == NULL)
+    if (!mSelectedTab)
     {
         setSelectedTab(tab);
     }

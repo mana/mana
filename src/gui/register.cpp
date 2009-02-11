@@ -152,7 +152,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "register" && canSubmit())
     {
         const std::string user = mUserField->getText();
-        logger->log(_("RegisterDialog::register Username is %s"), user.c_str());
+        logger->log("RegisterDialog::register Username is %s", user.c_str());
 
         std::string errorMsg;
         int error = 0;
@@ -249,7 +249,7 @@ bool RegisterDialog::canSubmit() const
 
 bool RegisterDialog::isUShort(const std::string &str)
 {
-    if (str == "")
+    if (str.empty())
     {
         return false;
     }

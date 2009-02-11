@@ -65,7 +65,7 @@ class Text
         int mXOffset;          /**< The offset of mX from the desired x. */
         static int mInstances; /**< Instances of text. */
         std::string mText;     /**< The text to display. */
-        gcn::Color mcolor;    /**< The color of the text. */
+        gcn::Color mColor;     /**< The color of the text. */
         bool mIsSpeech;        /**< Is this text a speech bubble? */
 
     protected:

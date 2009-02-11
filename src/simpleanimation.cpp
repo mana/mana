@@ -49,7 +49,7 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
 
     // Get animation frames
     for (   xmlNodePtr frameNode = animationNode->xmlChildrenNode;
-            frameNode != NULL;
+            frameNode;
             frameNode = frameNode->next)
     {
         int delay = XML::getProperty(frameNode, "delay", 0);

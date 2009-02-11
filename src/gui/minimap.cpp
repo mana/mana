@@ -75,7 +75,7 @@ void Minimap::setMapImage(Image *img)
 
         setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);
         setMinHeight(mapHeight);
-        setMaxWidth(mMapImage->getWidth() > titleWidth ? 
+        setMaxWidth(mMapImage->getWidth() > titleWidth ?
                     mMapImage->getWidth() + offsetX : titleWidth);
         setMaxHeight(mMapImage->getHeight() + offsetY);
 

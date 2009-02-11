@@ -47,11 +47,11 @@ Setup_Colors::Setup_Colors() :
 {
     setOpaque(false);
 
-    mcolorBox = new ListBox(textColor);
-    mcolorBox->setActionEventId("color_box");
-    mcolorBox->addActionListener(this);
+    mColorBox = new ListBox(textColor);
+    mColorBox->setActionEventId("color_box");
+    mColorBox->addActionListener(this);
 
-    mScroll = new ScrollArea(mcolorBox);
+    mScroll = new ScrollArea(mColorBox);
     mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mPreview = new BrowserBox(BrowserBox::AUTO_WRAP);
@@ -150,7 +150,7 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "color_box")
     {
-        mSelected = mcolorBox->getSelected();
+        mSelected = mColorBox->getSelected();
         int col = textColor->getColorAt(mSelected);
         char ch = textColor->getColorCharAt(mSelected);
         std::string msg;

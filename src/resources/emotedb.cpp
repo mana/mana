@@ -1,29 +1,28 @@
 /*
- *  Aethyra
- *  Copyright 2009 Aethyra Development Team
+ *  Emote database
+ *  Copyright (C) 2008  Aethyra Development Team
  *
- *  This file is part of Aethyra.
+ *  This file is part of The Mana World.
  *
- *  Aethyra is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  Aethyra is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Aethyra; if not, write to the Free Software Foundation,
- *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include "emotedb.h"
 
 #include "../log.h"
 
-#include "../utils/gettext.h"
 #include "../utils/xml.h"
 
 namespace
@@ -47,14 +46,14 @@ void EmoteDB::load()
     unknownSprite->variant = 0;
     mUnknown.sprites.push_back(unknownSprite);
 
-    logger->log(_("Initializing emote database..."));
+    logger->log("Initializing emote database...");
 
     XML::Document doc("emotes.xml");
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "emotes"))
     {
-        logger->log(_("Emote Database: Error while loading emotes.xml!"));
+        logger->log("Emote Database: Error while loading emotes.xml!");
         return;
     }
 
@@ -67,7 +66,7 @@ void EmoteDB::load()
         int id = XML::getProperty(emoteNode, "id", -1);
         if (id == -1)
         {
-            logger->log(_("Emote Database: Emote with missing ID in emotes.xml!"));
+            logger->log("Emote Database: Emote with missing ID in emotes.xml!");
             continue;
         }
 
@@ -126,7 +125,7 @@ const EmoteInfo& EmoteDB::get(int id)
 
     if (i == mEmoteInfos.end())
     {
-        logger->log(_("EmoteDB: Warning, unknown emote ID %d requested"), id);
+        logger->log("EmoteDB: Warning, unknown emote ID %d requested", id);
         return mUnknown;
     }
     else

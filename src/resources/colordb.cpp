@@ -1,22 +1,22 @@
 /*
- *  Aethyra
- *  Copyright 2008 Aethyra Development Team
+ *  Color database
+ *  Copyright (C) 2008  Aethyra Development Team
  *
- *  This file is part of Aethyra.
+ *  This file is part of The Mana World.
  *
- *  Aethyra is free software; you can redistribute it and/or modify
+ *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  Aethyra is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Aethyra; if not, write to the Free Software Foundation,
- *  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include <libxml/tree.h>
@@ -25,7 +25,6 @@
 
 #include "../log.h"
 
-#include "../utils/gettext.h"
 #include "../utils/xml.h"
 
 #define HAIR_COLOR_FILE "colors.xml"
@@ -51,7 +50,7 @@ void ColorDB::load()
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
-        logger->log(_("Trying TMW's color file, %s."), TMW_COLOR_FILE);
+        logger->log("Trying TMW's color file, %s.", TMW_COLOR_FILE);
 
         TMWHair = true;
 
@@ -61,7 +60,7 @@ void ColorDB::load()
         root = doc->rootNode();
         if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
         {
-            logger->log(_("ColorDB: Failed"));
+            logger->log("ColorDB: Failed");
             mColors[0] = mFail;
             mLoaded = true;
 
@@ -78,7 +77,7 @@ void ColorDB::load()
 
             if (mColors.find(id) != mColors.end())
             {
-                logger->log(_("ColorDB: Redefinition of dye ID %d"), id);
+                logger->log("ColorDB: Redefinition of dye ID %d", id);
             }
 
             TMWHair ? mColors[id] = XML::getProperty(node, "value", "#FFFFFF") :
@@ -93,7 +92,7 @@ void ColorDB::load()
 
 void ColorDB::unload()
 {
-    logger->log(_("Unloading color database..."));
+    logger->log("Unloading color database...");
 
     mColors.clear();
     mLoaded = false;
@@ -108,7 +107,7 @@ std::string& ColorDB::get(int id)
 
     if (i == mColors.end())
     {
-        logger->log(_("ColorDB: Error, unknown dye ID# %d"), id);
+        logger->log("ColorDB: Error, unknown dye ID# %d", id);
         return mFail;
     }
     else

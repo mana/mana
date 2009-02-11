@@ -32,8 +32,9 @@ class GuiTable;
 class PlayerTableModel;
 class StaticTableModel;
 
-class Setup_Players : public SetupTab, 
-                      public gcn::ActionListener, public PlayerRelationsListener
+class Setup_Players : public SetupTab,
+                      public gcn::ActionListener,
+                      public PlayerRelationsListener
 {
 public:
     Setup_Players();

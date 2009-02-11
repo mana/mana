@@ -343,7 +343,7 @@ void LocalPlayer::setTarget(Being *target)
         return;
     mLastTarget = tick_time;
 
-    if ((target == NULL) || target == mTarget)
+    if (!target || target == mTarget)
     {
         target = NULL;
         mKeepAttacking = false;
@@ -538,7 +538,8 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (mEquippedWeapon)
     {
         std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);
-        if (soundFile != "") sound.playSfx(soundFile);
+        if (!soundFile.empty())
+            sound.playSfx(soundFile);
     }
     else {
         sound.playSfx("sfx/fist-swish.ogg");

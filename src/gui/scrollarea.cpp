@@ -153,7 +153,7 @@ void ScrollArea::logic()
 
     // When no scrollbar in a certain direction, adapt content size to match
     // the content dimension exactly.
-    if (content != NULL)
+    if (content)
     {
         if (getHorizontalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
         {
