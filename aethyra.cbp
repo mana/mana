@@ -363,8 +363,6 @@
 		<Unit filename="src\resources\ambientoverlay.h" />
 		<Unit filename="src\resources\animation.cpp" />
 		<Unit filename="src\resources\animation.h" />
-		<Unit filename="src\resources\buddylist.cpp" />
-		<Unit filename="src\resources\buddylist.h" />
 		<Unit filename="src\resources\colordb.cpp" />
 		<Unit filename="src\resources\colordb.h" />
 		<Unit filename="src\resources\dye.cpp" />

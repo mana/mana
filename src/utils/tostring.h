@@ -1,8 +1,9 @@
 /*
- *  The Mana World
+ *  Aethyra
  *  Copyright (C) 2004  The Mana World Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra based on original code
+ *  from The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,8 +33,6 @@ std::string toString(const T &arg)
     return ss.str();
 }
 
-// TODO: Is there a good way to suppress warnings from classes which don't use
-// this function?
 inline char *iptostring(int address)
 {
     static char asciiIP[16];

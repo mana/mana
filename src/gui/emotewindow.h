@@ -2,7 +2,7 @@
  *  Extended support for activating emotes
  *  Copyright (C) 2009  Aethyra Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

@@ -1,8 +1,8 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Aethyra
+ *  Copyright (C) 2008  Douglas Boffey <dougaboffey@netscape.net>
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
