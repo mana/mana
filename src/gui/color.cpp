@@ -104,7 +104,7 @@ char Color::getColorCharAt(int i)
 
 void Color::addColor(const char c, const int rgb, const std::string &text)
 {
-    int trueRgb = config.getValue("Color" + text, rgb);
+    int trueRgb = (int) config.getValue("Color" + text, rgb);
     mColVector.push_back(ColorElem(c, trueRgb, text));
 }
 

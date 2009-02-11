@@ -135,7 +135,7 @@ void DropDown::draw(gcn::Graphics* graphics)
     }
 
     bool valid;
-    const int alpha = mAlpha * 255;
+    const int alpha = (int)(mAlpha * 255.0f);
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
     gcn::Color highlightColor = textColor->getColor('H', valid);

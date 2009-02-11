@@ -111,7 +111,7 @@ Gui::Gui(Graphics *graphics):
     std::string path = resman->getPath("fonts/dejavusans.ttf");
     try
     {
-        const int fontSize = config.getValue("fontSize", 11);
+        const int fontSize = (int)config.getValue("fontSize", 11);
         mGuiFont = new TrueTypeFont(path, fontSize);
     }
     catch (gcn::Exception e)
@@ -124,7 +124,7 @@ Gui::Gui(Graphics *graphics):
     path = resman->getPath("fonts/dejavusans-bold.ttf");
     try
     {
-        const int fontSize = config.getValue("fontSize", 11);
+        const int fontSize = (int)config.getValue("fontSize", 11);
         boldFont = new TrueTypeFont(path, fontSize);
     }
     catch (gcn::Exception e)

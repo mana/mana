@@ -117,7 +117,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
 
-    const int alpha = mAlpha * 255;
+    const int alpha = (int)(mAlpha * 255.0f);
 
     // The bar
     if (mProgress > 0) {

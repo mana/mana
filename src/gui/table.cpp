@@ -276,7 +276,7 @@ void GuiTable::draw(gcn::Graphics* graphics)
         const int red = getBackgroundColor().r;
         const int green = getBackgroundColor().g;
         const int blue = getBackgroundColor().b;
-        const int alpha = mAlpha * 255;
+        const int alpha = (int)(mAlpha * 255.0f);
         graphics->setColor(gcn::Color(red, green, blue, alpha));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
@@ -330,7 +330,7 @@ void GuiTable::draw(gcn::Graphics* graphics)
                     const int green =
                         (textColor->getColor('H', valid) >> 8) & 0xFF;
                     const int blue = textColor->getColor('H', valid) & 0xFF;
-                    const int alpha = mAlpha * 127;
+                    const int alpha = (int)(mAlpha * 127.0f);
 
                     graphics->setColor(gcn::Color(red, green, blue, alpha));
                     graphics->fillRectangle(bounds);
@@ -352,7 +352,7 @@ void GuiTable::draw(gcn::Graphics* graphics)
             const int green =
                 (textColor->getColor('H', valid) >> 8) & 0xFF;
             const int blue = textColor->getColor('H', valid) & 0xFF;
-            const int alpha = mAlpha * 127;
+            const int alpha = (int)(mAlpha * 127.0f);
 
             graphics->setColor(gcn::Color(red, green, blue, alpha));
             graphics->fillRectangle(gcn::Rectangle(0, y_offset,
