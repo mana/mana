@@ -67,7 +67,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     const int red = (textColor->getColor('H', valid) >> 16) & 0xFF;
     const int green = (textColor->getColor('H', valid) >> 8) & 0xFF;
     const int blue = textColor->getColor('H', valid) & 0xFF;
-    const int alpha = mAlpha * 255;
+    const int alpha = (int)(mAlpha * 255.0f);
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 

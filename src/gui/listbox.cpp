@@ -47,7 +47,7 @@ void ListBox::draw(gcn::Graphics *graphics)
     const int red = (textColor->getColor('H', valid) >> 16) & 0xFF;
     const int green = (textColor->getColor('H', valid) >> 8) & 0xFF;
     const int blue = textColor->getColor('H', valid) & 0xFF;
-    const int alpha = mAlpha * 255;
+    const int alpha = (int)(mAlpha * 255.0f);
 
     graphics->setColor(gcn::Color(red, green, blue, alpha));
     graphics->setFont(getFont());
