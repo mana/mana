@@ -462,9 +462,6 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 
     if (mUsedTargetCursor != NULL)
     {
-        const int width = mSprites[BASE_SPRITE]->getWidth();
-        const int height = mSprites[BASE_SPRITE]->getHeight();
-
         mUsedTargetCursor->draw(graphics, px, py);
     }
 
@@ -492,29 +489,33 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 
 void Being::drawSpeech(int offsetX, int offsetY)
 {
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
+    const int px = mPx + offsetX;
+    const int py = mPy + offsetY;
+    const int speech = config.getValue("speech", NAME_IN_BUBBLE);
 
     // Draw speech above this being
-    if (mSpeechTime > 0 && config.getValue("speechbubble", 1))
+    if (mSpeechTime > 0 && (speech == NAME_IN_BUBBLE ||
+        speech == NO_NAME_IN_BUBBLE))
     {
+        const bool showName = (speech == NAME_IN_BUBBLE);
+
         if (mText)
         {
             delete mText;
             mText = 0;
         }
 
-        mSpeechBubble->setCaption(mName, mNameColor);
+        mSpeechBubble->setCaption(showName ? mName : "", mNameColor);
 
         // Not quite centered, but close enough. However, it's not too important
         // to get it right right now, as it doesn't take bubble collision into
         // account yet.
-        mSpeechBubble->setText(mSpeech);
+        mSpeechBubble->setText(mSpeech, showName);
         mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), 
-                                   py - 70 - (mSpeechBubble->getNumRows() * 14));
+                                   py - 40 - (mSpeechBubble->getHeight()));
         mSpeechBubble->setVisible(true);
     }
-    else if (mSpeechTime > 0 && !config.getValue("speechbubble", 1))
+    else if (mSpeechTime > 0 && speech == TEXT_OVERHEAD)
     {
         mSpeechBubble->setVisible(false);
         // don't introduce a memory leak
@@ -523,6 +524,13 @@ void Being::drawSpeech(int offsetX, int offsetY)
 
         mText = new Text(mSpeech, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
                          gcn::Graphics::CENTER, gcn::Color(255, 255, 255));
+    }
+    else if (speech == NO_SPEECH)
+    {
+        mSpeechBubble->setVisible(false);
+        if (mText)
+            delete mText;
+        mText = NULL;
     }
     else if (mSpeechTime == 0)
     {

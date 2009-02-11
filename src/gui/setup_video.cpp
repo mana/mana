@@ -108,18 +108,19 @@ Setup_Video::Setup_Video():
     mOpenGLEnabled(config.getValue("opengl", false)),
     mCustomCursorEnabled(config.getValue("customcursor", true)),
     mParticleEffectsEnabled(config.getValue("particleeffects", true)),
-    mSpeechBubbleEnabled(config.getValue("speechbubble", true)),
     mNameEnabled(config.getValue("showownname", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 0)),
+    mSpeechMode(config.getValue("speech", 3)),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
     mOpenGLCheckBox(new CheckBox(_("OpenGL"), mOpenGLEnabled)),
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
-    mSpeechBubbleCheckBox(new CheckBox(_("Speech bubbles"), mSpeechBubbleEnabled)),
     mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
+    mSpeechSlider(new Slider(0, 3)),
+    mSpeechLabel(new gcn::Label("")),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
     mFpsSlider(new Slider(10, 200)),
@@ -142,6 +143,7 @@ Setup_Video::Setup_Video():
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
+    gcn::Label *speechLabel = new gcn::Label(_("Overhead text"));
     gcn::Label *alphaLabel = new gcn::Label(_("Gui opacity"));
     gcn::Label *scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
     gcn::Label *scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
@@ -167,10 +169,10 @@ Setup_Video::Setup_Video():
     mModeList->setActionEventId("videomode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
-    mSpeechBubbleCheckBox->setActionEventId("speechbubble");
     mNameCheckBox->setActionEventId("showownname");
     mAlphaSlider->setActionEventId("guialpha");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
+    mSpeechSlider->setActionEventId("speech");
     mFpsSlider->setActionEventId("fpslimitslider");
     mScrollRadiusSlider->setActionEventId("scrollradiusslider");
     mScrollRadiusField->setActionEventId("scrollradiusfield");
@@ -184,10 +186,10 @@ Setup_Video::Setup_Video():
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
-    mSpeechBubbleCheckBox->addActionListener(this);
     mNameCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
+    mSpeechSlider->addActionListener(this);
     mFpsSlider->addActionListener(this);
     mFpsField->addKeyListener(this);
     mScrollRadiusSlider->addActionListener(this);
@@ -204,6 +206,23 @@ Setup_Video::Setup_Video():
 
     mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
     mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
+
+    switch (mSpeechMode)
+    {
+        case 0:
+            mSpeechLabel->setCaption(_("No text"));
+            break;
+        case 1:
+            mSpeechLabel->setCaption(_("Text"));
+            break;
+        case 2:
+            mSpeechLabel->setCaption(_("Bubbles, no names"));
+            break;
+        case 3:
+            mSpeechLabel->setCaption(_("Bubbles with names"));
+            break;
+    }
+    mSpeechSlider->setValue(mSpeechMode);
 
     switch (mOverlayDetail)
     {
@@ -244,31 +263,33 @@ Setup_Video::Setup_Video():
     place(1, 0, mFsCheckBox, 3);
     place(1, 1, mOpenGLCheckBox, 3);
     place(1, 2, mCustomCursorCheckBox, 3);
-    place(1, 3, mSpeechBubbleCheckBox, 3);
-    place(1, 4, mNameCheckBox, 3);
-    place(1, 5, mParticleEffectsCheckBox, 3);
+    place(1, 3, mNameCheckBox, 3);
+    place(1, 4, mParticleEffectsCheckBox, 3);
 
-    place(0, 7, mAlphaSlider);
-    place(0, 8, mFpsSlider);
-    place(0, 9, mScrollRadiusSlider);
-    place(0, 10, mScrollLazinessSlider);
+    place(0, 6, mAlphaSlider);
+    place(0, 7, mFpsSlider);
+    place(0, 8, mScrollRadiusSlider);
+    place(0, 9, mScrollLazinessSlider);
+    place(0, 10, mSpeechSlider);
     place(0, 11, mOverlayDetailSlider);
     place(0, 12, mParticleDetailSlider);
 
-    place(1, 7, alphaLabel, 2);
-    place(1, 8, mFpsCheckBox).setPadding(3);
-    place(1, 9, scrollRadiusLabel);
-    place(1, 10, scrollLazinessLabel);
+    place(1, 6, alphaLabel, 2);
+    place(1, 7, mFpsCheckBox).setPadding(3);
+    place(1, 8, scrollRadiusLabel);
+    place(1, 9, scrollLazinessLabel);
+    place(1, 10, speechLabel);
     place(1, 11, overlayDetailLabel);
     place(1, 12, particleDetailLabel);
 
-    place(2, 8, mFpsField).setPadding(1);
-    place(2, 9, mScrollRadiusField).setPadding(1);
-    place(2, 10, mScrollLazinessField).setPadding(1);
+    place(2, 7, mFpsField).setPadding(1);
+    place(2, 8, mScrollRadiusField).setPadding(1);
+    place(2, 9, mScrollLazinessField).setPadding(1);
+    place(2, 10, mSpeechLabel, 2).setPadding(2);
     place(2, 11, mOverlayDetailField, 2).setPadding(2);
     place(2, 12, mParticleDetailField, 2).setPadding(2);
 
-    setDimension(gcn::Rectangle(0, 0, 295, 250));
+    setDimension(gcn::Rectangle(0, 0, 325, 280));
 }
 
 Setup_Video::~Setup_Video()
@@ -333,8 +354,8 @@ void Setup_Video::apply()
     mFullScreenEnabled = config.getValue("screen", false);
     mCustomCursorEnabled = config.getValue("customcursor", true);
     mParticleEffectsEnabled = config.getValue("particleeffects", true);
-    mSpeechBubbleEnabled = config.getValue("speechbubble", true);
     mNameEnabled = config.getValue("showownname", false);
+    mSpeechMode = config.getValue("speech", 3);
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", false);
@@ -366,7 +387,7 @@ void Setup_Video::cancel()
     mOpenGLCheckBox->setSelected(mOpenGLEnabled);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
     mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
-    mSpeechBubbleCheckBox->setSelected(mSpeechBubbleEnabled);
+    mSpeechSlider->setValue(mSpeechMode);
     mNameCheckBox->setSelected(mNameEnabled);
     mAlphaSlider->setValue(mOpacity);
     mOverlayDetailSlider->setValue(mOverlayDetail);
@@ -380,7 +401,7 @@ void Setup_Video::cancel()
     config.setValue("screen", mFullScreenEnabled ? true : false);
     config.setValue("customcursor", mCustomCursorEnabled ? true : false);
     config.setValue("particleeffects", mParticleEffectsEnabled ? true : false);
-    config.setValue("speechbubble", mSpeechBubbleEnabled ? true : false);
+    config.setValue("speech", mSpeechMode);
     config.setValue("showownname", mNameEnabled ? true : false);
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled ? true : false);
@@ -417,10 +438,26 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         new OkDialog(_("Particle effect settings changed"),
                      _("Restart your client or change maps for the change to take effect."));
     }
-    else if (event.getId() == "speechbubble")
+    else if (event.getId() == "speech")
     {
-        config.setValue("speechbubble",
-                mSpeechBubbleCheckBox->isSelected() ? true : false);
+        int val = (int) mSpeechSlider->getValue();
+        switch (val)
+        {
+            case 0:
+                mSpeechLabel->setCaption(_("No text"));
+                break;
+            case 1:
+                mSpeechLabel->setCaption(_("Text"));
+                break;
+            case 2:
+                mSpeechLabel->setCaption(_("Bubbles, no names"));
+                break;
+            case 3:
+                mSpeechLabel->setCaption(_("Bubbles with names"));
+                break;
+        }
+        mSpeechSlider->setValue(val);
+        config.setValue("speech", val);
     }
     else if (event.getId() == "showownname")
     {

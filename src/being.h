@@ -113,6 +113,15 @@ class Being : public Sprite
             NUM_TC
         };
 
+        enum Speech
+        {
+            NO_SPEECH = 0,
+            TEXT_OVERHEAD,
+            NO_NAME_IN_BUBBLE,
+            NAME_IN_BUBBLE,
+            NUM_SPEECH
+        };
+
         /**
          * Directions, to be used as bitmask values
          */
