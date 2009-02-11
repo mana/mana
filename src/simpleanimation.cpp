@@ -132,14 +132,6 @@ void SimpleAnimation::reset()
 
 void SimpleAnimation::update(unsigned int timePassed)
 {
-    // Avoid freaking out at first frame or when tick_time overflows
-    if (timePassed < mLastTime || mLastTime == 0)
-        mLastTime = timePassed;
-
-    // If not enough time has passed yet, do nothing
-    if (timePassed <= mLastTime || !mAnimation)
-        return;
-
     mAnimationTime += timePassed;
 
     while (mAnimationTime > mCurrentFrame->delay && mCurrentFrame->delay > 0)

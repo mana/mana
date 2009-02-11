@@ -64,9 +64,6 @@ class SimpleAnimation
         /** The hosted animation. */
         Animation *mAnimation;
 
-        /**< The last time update was called. */
-        unsigned int mLastTime;
-
         /** Time in game ticks the current frame is shown. */
         unsigned int mAnimationTime;
 
