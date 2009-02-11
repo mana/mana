@@ -208,6 +208,8 @@ class KeyboardConfig
             KEY_SCROLL_CHAT_DOWN,
             KEY_OK,
             KEY_QUIT,
+            KEY_IGNORE_INPUT_1,
+            KEY_IGNORE_INPUT_2,
             KEY_TOTAL
         };
 
