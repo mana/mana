@@ -143,12 +143,12 @@ Setup_Video::Setup_Video():
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    gcn::Label *speechLabel = new gcn::Label(_("Overhead text"));
-    gcn::Label *alphaLabel = new gcn::Label(_("Gui opacity"));
-    gcn::Label *scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
-    gcn::Label *scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
-    gcn::Label *overlayDetailLabel = new gcn::Label(_("Ambient FX"));
-    gcn::Label *particleDetailLabel = new gcn::Label(_("Particle Detail"));
+    speechLabel = new gcn::Label(_("Overhead text"));
+    alphaLabel = new gcn::Label(_("Gui opacity"));
+    scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
+    scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
+    overlayDetailLabel = new gcn::Label(_("Ambient FX"));
+    particleDetailLabel = new gcn::Label(_("Particle Detail"));
 
     mModeList->setEnabled(true);
 #ifndef USE_OPENGL
@@ -295,6 +295,39 @@ Setup_Video::Setup_Video():
 Setup_Video::~Setup_Video()
 {
     delete mModeListModel;
+
+    delete speechLabel;
+    delete alphaLabel;
+    delete scrollRadiusLabel;
+    delete scrollLazinessLabel;
+    delete overlayDetailLabel;
+    delete particleDetailLabel;
+
+    delete mModeList;
+    delete mFsCheckBox;
+    delete mOpenGLCheckBox;
+    delete mCustomCursorCheckBox;
+    delete mParticleEffectsCheckBox;
+    delete mNameCheckBox;
+
+    delete mSpeechSlider;
+    delete mSpeechLabel;
+    delete mAlphaSlider;
+    delete mFpsCheckBox;
+    delete mFpsSlider;
+    delete mFpsField;
+
+    delete mScrollLazinessSlider;
+    delete mScrollLazinessField;
+
+    delete mScrollRadiusSlider;
+    delete mScrollRadiusField;
+
+    delete mOverlayDetailSlider;
+    delete mOverlayDetailField;
+
+    delete mParticleDetailSlider;
+    delete mParticleDetailField;
 }
 
 void Setup_Video::apply()

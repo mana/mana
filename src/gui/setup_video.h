@@ -59,6 +59,13 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 
         class ModeListModel *mModeListModel;
 
+        gcn::Label *speechLabel;
+        gcn::Label *alphaLabel;
+        gcn::Label *scrollRadiusLabel;
+        gcn::Label *scrollLazinessLabel;
+        gcn::Label *overlayDetailLabel;
+        gcn::Label *particleDetailLabel;
+
         gcn::ListBox *mModeList;
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
