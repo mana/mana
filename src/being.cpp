@@ -250,26 +250,13 @@ void Being::takeDamage(int amount)
     // Show damage number
     particleEngine->addTextSplashEffect(damage, 255, 255, 255, font,
                                         mPx + 16, mPy + 16);
+    effectManager->trigger(26, this);
 }
 
 void Being::showCrit()
 {
-    gcn::Font *font;
-    std::string text = "crit!";
+    effectManager->trigger(28, this);
 
-    // Selecting the right color
-    if (getType() == MONSTER)
-    {
-        font = hitBlueFont;
-    }
-    else
-    {
-        font = hitRedFont;
-    }
-
-    // Show crit notice
-    particleEngine->addTextSplashEffect(text, 255, 255, 255, font,
-                                        mPx + 16, mPy + 16);
 }
 
 void Being::handleAttack(Being *victim, int damage)

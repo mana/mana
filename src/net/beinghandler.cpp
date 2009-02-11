@@ -33,7 +33,6 @@
 #include "../localplayer.h"
 #include "../log.h"
 #include "../npc.h"
-#include "../particle.h"
 #include "../player_relations.h"
 #include "../sound.h"
 
