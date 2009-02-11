@@ -47,17 +47,19 @@
 #define ROW_HEIGHT 12
 // The following column widths really shouldn't be hardcoded but should scale with the size of the widget... except
 // that, right now, the widget doesn't exactly scale either.
-#define NAME_COLUMN_WIDTH 195
+#define NAME_COLUMN_WIDTH 230
 #define RELATION_CHOICE_COLUMN_WIDTH 80
 
 #define WIDGET_AT(row, column) (((row) * COLUMNS_NR) + column)
 
-static const char *table_titles[COLUMNS_NR] = {
+static const char *table_titles[COLUMNS_NR] =
+{
     N_("Name"),
     N_("Relation")
 };
 
-static const char *RELATION_NAMES[PlayerRelation::RELATIONS_NR] = {
+static const char *RELATION_NAMES[PlayerRelation::RELATIONS_NR] =
+{
     N_("Neutral"),
     N_("Friend"),
     N_("Disregarded"),
@@ -153,9 +155,10 @@ public:
     virtual void updateModelInRow(int row)
     {
         gcn::DropDown *choicebox = dynamic_cast<gcn::DropDown *>(
-                getElementAt(row, RELATION_CHOICE_COLUMN));
+                                   getElementAt(row, RELATION_CHOICE_COLUMN));
         player_relations.setRelation(getPlayerAt(row),
-                                     static_cast<PlayerRelation::relation>(choicebox->getSelected()));
+                                   static_cast<PlayerRelation::relation>(
+                                   choicebox->getSelected()));
     }
 
 
@@ -170,7 +173,9 @@ public:
             delete mPlayers;
         mPlayers = NULL;
 
-        for (std::vector<gcn::Widget *>::const_iterator it = mWidgets.begin(); it != mWidgets.end(); it++) {
+        for (std::vector<gcn::Widget *>::const_iterator it = mWidgets.begin();
+             it != mWidgets.end(); it++)
+        {
             delete *it;
         }
 
@@ -202,9 +207,9 @@ public:
 
     virtual std::string getElementAt(int i)
     {
-        if (i >= getNumberOfElements()) {
+        if (i >= getNumberOfElements())
             return _("???");
-        }
+
         return (*player_relations.getPlayerIgnoreStrategies())[i]->mDescription;
     }
 };
@@ -230,11 +235,9 @@ Setup_Players::Setup_Players():
     setOpaque(false);
     mPlayerTable->setOpaque(false);
 
-    int table_width = NAME_COLUMN_WIDTH + RELATION_CHOICE_COLUMN_WIDTH;
     mPlayerTableTitleModel->fixColumnWidth(NAME_COLUMN, NAME_COLUMN_WIDTH);
     mPlayerTableTitleModel->fixColumnWidth(RELATION_CHOICE_COLUMN,
                                            RELATION_CHOICE_COLUMN_WIDTH);
-    mPlayerTitleTable->setDimension(gcn::Rectangle(10, 10, table_width - 1, 10));
     mPlayerTitleTable->setBackgroundColor(gcn::Color(0xbf, 0xbf, 0xbf));
 
     gcn::ListModel *ignoreChoices = new IgnoreChoicesListModel();
@@ -256,7 +259,6 @@ Setup_Players::Setup_Players():
 
     gcn::Label *ignore_action_label = new gcn::Label(_("When ignoring:"));
 
-    mIgnoreActionChoicesBox->setDimension(gcn::Rectangle(80, 132, 120, 12));
     mIgnoreActionChoicesBox->setActionEventId(ACTION_STRATEGY);
     mIgnoreActionChoicesBox->addActionListener(this);
 
@@ -304,9 +306,12 @@ void Setup_Players::reset()
     // current selection. We could use an index into the table of config
     // options in player_relations instead of strategies to sidestep this.
     int selection = 0;
-    for (unsigned int i = 0; i < player_relations.getPlayerIgnoreStrategies()->size(); ++i)
+    for (unsigned int i = 0;
+                      i < player_relations.getPlayerIgnoreStrategies()->size();
+                      ++i)
         if ((*player_relations.getPlayerIgnoreStrategies())[i] ==
-            player_relations.getPlayerIgnoreStrategy()) {
+            player_relations.getPlayerIgnoreStrategy())
+        {
 
             selection = i;
             break;
@@ -320,11 +325,14 @@ void Setup_Players::apply()
     player_relations.setPersistIgnores(mPersistIgnores->isSelected());
     player_relations.store();
 
-    unsigned int old_default_relations =
-        player_relations.getDefault() & ~(PlayerRelation::TRADE | PlayerRelation::WHISPER);
+    unsigned int old_default_relations = player_relations.getDefault() &
+                                         ~(PlayerRelation::TRADE |
+                                           PlayerRelation::WHISPER);
     player_relations.setDefault(old_default_relations
-                                | (mDefaultTrading->isSelected()? PlayerRelation::TRADE : 0)
-                                | (mDefaultWhisper->isSelected()? PlayerRelation::WHISPER : 0));
+                                | (mDefaultTrading->isSelected() ? 
+                                       PlayerRelation::TRADE : 0)
+                                | (mDefaultWhisper->isSelected() ?
+                                       PlayerRelation::WHISPER : 0));
 }
 
 void Setup_Players::cancel()
@@ -333,7 +341,8 @@ void Setup_Players::cancel()
 
 void Setup_Players::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == ACTION_TABLE) {
+    if (event.getId() == ACTION_TABLE) 
+    {
         // temporarily eliminate ourselves: we are fully aware of this change,
         // so there is no need for asynchronous updates.  (In fact, thouse
         // might destroy the widet that triggered them, which would be rather
@@ -346,7 +355,9 @@ void Setup_Players::action(const gcn::ActionEvent &event)
 
         player_relations.addListener(this);
 
-    } else if (event.getId() == ACTION_DELETE) {
+    }
+    else if (event.getId() == ACTION_DELETE)
+    {
         int player_index = mPlayerTable->getSelectedRow();
 
         if (player_index < 0)
@@ -356,7 +367,9 @@ void Setup_Players::action(const gcn::ActionEvent &event)
 
         player_relations.removePlayer(name);
 
-    } else if (event.getId() == ACTION_STRATEGY) {
+    }
+    else if (event.getId() == ACTION_STRATEGY)
+    {
         PlayerIgnoreStrategy *s =
             (*player_relations.getPlayerIgnoreStrategies())[
                 mIgnoreActionChoicesBox->getSelected()];
