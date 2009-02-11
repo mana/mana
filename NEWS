@@ -1,3 +1,12 @@
+0.0.28.1 (12 February 2009)
+- Enabled translations on Windows
+- Added command line option to set home directory path
+- Tweaked green chat color to be a bit more readable
+- Made font size configurable in the config file
+- Fixed restoring of punching animation after weapon removal
+- Fixed inability to chat while talking to NPCs
+- Updated Swedish translation
+
 0.0.28 (25 January 2009)
 - Added support for animated map tiles
 - Added support for internationalization, plus many translations
