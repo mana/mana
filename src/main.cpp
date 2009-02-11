@@ -213,7 +213,8 @@ void setUpdatesDir()
  */
 void init_engine(const Options &options)
 {
-    homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
+    if (homeDir.empty())
+        homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
@@ -451,7 +452,8 @@ void printHelp()
         << "  -D --default    : Bypass the login process with default settings" << std::endl
         << "  -p --playername : Login with this player" << std::endl
         << "  -C --configfile : Configuration file to use" << std::endl
-        << "  -H --updatehost : Use this update host" << std::endl;
+        << "  -H --updatehost : Use this update host" << std::endl
+        << "  -S --homedir    : Directory to use as home directory" << std::endl;
 }
 
 void printVersion()
@@ -466,7 +468,7 @@ void printVersion()
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvud:U:P:Dp:C:H:";
+    const char *optstring = "hvud:U:P:Dp:C:H:S:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
@@ -479,6 +481,7 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "playername", required_argument, 0, 'p' },
         { "configfile", required_argument, 0, 'C' },
         { "updatehost", required_argument, 0, 'H' },
+        { "homedir",    required_argument, 0, 'S' },
         { 0 }
     };
 
@@ -520,6 +523,9 @@ void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'H':
                 options.updateHost = optarg;
+                break;
+            case 'S':
+                homeDir = optarg;
                 break;
         }
     }
