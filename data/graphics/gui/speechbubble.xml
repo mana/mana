@@ -1,18 +1,18 @@
-<skinset name="SpeechBubble" image="speech_bubble.png">
+<skinset name="SpeechBubble" image="bubble.png">
     <widget type="Window">
         <!-- Top Row -->
-        <part type="top-left-corner" xpos="0" ypos="0" width="14" height="14" />
-		<part type="top-edge" xpos="15" ypos="0" width="1" height="14" />
-		<part type="top-right-corner" xpos="17" ypos="0" width="17" height="14" />
+        <part type="top-left-corner" xpos="0" ypos="0" width="5" height="5" />
+	<part type="top-edge" xpos="5" ypos="0" width="5" height="5" />
+	<part type="top-right-corner" xpos="10" ypos="0" width="5" height="5" />
 
-		<!-- Middle Row -->
-		<part type="left-edge" xpos="0" ypos="15" width="14" height="1" />
-		<part type="bg-quad" xpos="34" ypos="0" width="32" height="32" />
-		<part type="right-edge" xpos="17" ypos="15" width="17" height="1" />
+	<!-- Middle Row -->
+	<part type="left-edge" xpos="0" ypos="5" width="5" height="5" />
+	<part type="bg-quad" xpos="5" ypos="5" width="5" height="5" />
+	<part type="right-edge" xpos="10" ypos="5" width="5" height="5" />
 
-		<!-- Bottom Row -->
-		<part type="bottom-left-corner" xpos="0" ypos="17" width="14" height="17" />
-		<part type="bottom-edge" xpos="15" ypos="17" width="1" height="17" />
-		<part type="bottom-right-corner" xpos="17" ypos="17" width="17" height="17" />
+	<!-- Bottom Row -->
+	<part type="bottom-left-corner" xpos="0" ypos="10" width="5" height="5" />
+	<part type="bottom-edge" xpos="5" ypos="10" width="5" height="5" />
+	<part type="bottom-right-corner" xpos="10" ypos="10" width="5" height="5" />
 	</widget>
 </skinset>
