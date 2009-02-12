@@ -112,7 +112,7 @@ Setup_Video::Setup_Video():
     mNameEnabled(config.getValue("showownname", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 0)),
-    mSpeechMode(config.getValue("speech", 3)),
+    mSpeechMode((int) config.getValue("speech", 3)),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
@@ -389,7 +389,7 @@ void Setup_Video::apply()
     mCustomCursorEnabled = config.getValue("customcursor", true);
     mParticleEffectsEnabled = config.getValue("particleeffects", true);
     mNameEnabled = config.getValue("showownname", false);
-    mSpeechMode = config.getValue("speech", 3);
+    mSpeechMode = (int) config.getValue("speech", 3);
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", false);

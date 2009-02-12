@@ -1,6 +1,6 @@
 /*
  *  Aethyra
- *  Copyright (C) 2008  Douglas Boffey <dougaboffey@netscape.net>
+ *  Copyright (C) 2008  The Mana World Development Team
  *
  *  This file is part of Aethyra derived from original code
  *  from Guichan.

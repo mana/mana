@@ -13,7 +13,7 @@ FILETYPE VFT_APP {
             VALUE "CompanyName", "Aethyra Development Team"
             VALUE "FileVersion", PACKAGE_VERSION
             VALUE "FileDescription", "Aethyra Experiment"
-            VALUE "LegalCopyright", "2008 (C)"
+            VALUE "LegalCopyright", "2009 (C)"
             VALUE "OriginalFilename", "aethyra.exe"
             VALUE "ProductName", "Aethyra MMORPG"
             VALUE "ProductVersion", PACKAGE_VERSION

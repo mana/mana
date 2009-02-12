@@ -492,7 +492,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = mPx + offsetX;
     const int py = mPy + offsetY;
-    const int speech = config.getValue("speech", NAME_IN_BUBBLE);
+    const int speech = (int) config.getValue("speech", NAME_IN_BUBBLE);
 
     // Draw speech above this being
     if (mSpeechTime > 0 && (speech == NAME_IN_BUBBLE ||
