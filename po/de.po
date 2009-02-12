@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-01-25 22:01+0100\n"
-"PO-Revision-Date: 2009-01-19 20:15+0000\n"
-"Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
+"PO-Revision-Date: 2009-01-28 16:16+0000\n"
+"Last-Translator: Philipp Sehmisch <Unknown>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-01-25 22:24+0000\n"
+"X-Launchpad-Export-Date: 2009-02-12 19:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/gui/buy.cpp:43 src/gui/buy.cpp:61 src/gui/buysell.cpp:35
@@ -155,12 +155,12 @@ msgstr "Ok"
 
 #: src/gui/chat.cpp:115
 msgid "Global announcement:"
-msgstr ""
+msgstr "Globale Ansage:"
 
 #: src/gui/chat.cpp:118
 #, c-format
 msgid "Global announcement from %s:"
-msgstr ""
+msgstr "Globale Ansage von %s:"
 
 #: src/gui/chat.cpp:133 src/gui/login.cpp:46 src/gui/register.cpp:82
 msgid "Server:"
@@ -206,15 +206,15 @@ msgstr ""
 
 #: src/gui/chat.cpp:382
 msgid "You have not yet reached a high enough lvl!"
-msgstr ""
+msgstr "Dein Level ist noch nicht hoch genug!"
 
 #: src/gui/chat.cpp:385
 msgid "Insufficient HP!"
-msgstr ""
+msgstr "Nicht genug HP!"
 
 #: src/gui/chat.cpp:388
 msgid "Insufficient SP!"
-msgstr ""
+msgstr "NIcht genug SP!"
 
 #: src/gui/chat.cpp:391
 msgid "You have no memos!"
@@ -629,11 +629,12 @@ msgstr "Standard"
 
 #: src/gui/setup_keyboard.cpp:121
 msgid "Key Conflict(s) Detected."
-msgstr ""
+msgstr "Tastenkonflikte entdeckt."
 
 #: src/gui/setup_keyboard.cpp:122
 msgid "Resolve them, or gameplay may result in strange behaviour."
 msgstr ""
+"Bitte beheben, oder es wird zu merkwürdigem Verhalten im Spiel kommen."
 
 #: src/gui/setup_players.cpp:55
 msgid "Name"
@@ -709,7 +710,7 @@ msgstr "Hintergrundeffekte"
 
 #: src/gui/setup_video.cpp:144
 msgid "Particle Detail"
-msgstr ""
+msgstr "Partikeldetail"
 
 #: src/gui/setup_video.cpp:198 src/gui/setup_video.cpp:398
 msgid "off"
@@ -758,7 +759,7 @@ msgstr ""
 #: src/gui/skill.cpp:132 src/gui/skill.cpp:188
 #, c-format
 msgid "Skill points: %d"
-msgstr ""
+msgstr "Fähigkeitspunkte: %d"
 
 #: src/gui/skill.cpp:133
 msgid "Up"
@@ -843,7 +844,7 @@ msgstr "Glück"
 #: src/gui/status.cpp:305
 #, c-format
 msgid "Remaining Status Points: %d"
-msgstr ""
+msgstr "Verbleibende Statuspunkte: %d"
 
 #: src/gui/trade.cpp:61
 msgid "Add"
@@ -863,7 +864,8 @@ msgid "You give:"
 msgstr "Du gibst:"
 
 #: src/gui/trade.cpp:290
-msgid "Failed adding item. You can not overlap one kind of item on the window."
+msgid ""
+"Failed adding item. You can not overlap one kind of item on the window."
 msgstr ""
 
 #: src/gui/updatewindow.cpp:93
@@ -884,7 +886,7 @@ msgstr "Unbenannt"
 
 #: src/main.cpp:769
 msgid "Got disconnected from server!"
-msgstr ""
+msgstr "Verbindung zum Server unterbrochen!"
 
 #: src/main.cpp:956
 msgid "Connecting to map server..."
