@@ -51,8 +51,9 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
 
-static const int MAP_TELEPORT_SCROLL_DISTANCE = 8; /* Max. distance we are willing to scroll after a teleport;
-                                                    * everything beyond will reset the port hard. */
+// Max. distance we are willing to scroll after a teleport;
+// everything beyond will reset the port hard.
+static const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
 
 /**
  * Listener used for handling the overweigth message.
@@ -157,7 +158,9 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 player_node->mX = x;
                 player_node->mY = y;
 
-                logger->log("Adjust scrolling by %d:%d", (int)scrollOffsetX, (int)scrollOffsetY);
+                logger->log("Adjust scrolling by %d:%d",
+                        (int)scrollOffsetX,
+                        (int)scrollOffsetY);
 
                 viewport->scrollBy(scrollOffsetX, scrollOffsetY);
             }
@@ -191,7 +194,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                          player_node->mMaxWeight / 2)
                                  {
                                      weightNotice = new OkDialog(_("Message"),
-                                             _("You are carrying more then "
+                                             _("You are carrying more than "
                                                "half your weight. You are "
                                                "unable to regain health."));
                                      weightNotice->addActionListener(
@@ -211,37 +214,50 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     case 0x0037: player_node->mJobLevel = value; break;
                 }
 
-                if (player_node->mHp == 0 && deathNotice == NULL)
+                if (player_node->mHp == 0 && !deathNotice)
                 {
                     static char const *const deadMsg[] =
                     {
                         _("You are dead."),
-                        _("We regret to inform you that your character was killed in battle."),
+                        _("We regret to inform you that your character was "
+                          "killed in battle."),
                         _("You are not that alive anymore."),
-                        _("The cold hands of the grim reaper are grabbing for your soul."),
+                        _("The cold hands of the grim reaper are grabbing for "
+                          "your soul."),
                         _("Game Over!"),
                         _("Insert coin to continue"),
-                        _("No, kids. Your character did not really die. It... err... went to a better place."),
-                        _("Your plan of breaking your enemies weapon by bashing it with your throat failed."),
+                        _("No, kids. Your character did not really die. It... "
+                          "err... went to a better place."),
+                        _("Your plan of breaking your enemies weapon by "
+                          "bashing it with your throat failed."),
                         _("I guess this did not run too well."),
-                        _("Do you want your possessions identified?"), // Nethack reference
-                        _("Sadly, no trace of you was ever found..."), // Secret of Mana reference
-                        _("Annihilated."), // Final Fantasy VI reference
-                        _("Looks like you got your head handed to you."), //Earthbound reference
-                        _("You screwed up again, dump your body down the tubes and get you another one."), // Leisure Suit Larry 1 Reference
-                        _("You're not dead yet. You're just resting."), // Monty Python reference from a couple of skits
-                        _("You are no more."),  // Monty Python reference from the dead parrot sketch starting now
+                        // NetHack reference:
+                        _("Do you want your possessions identified?"),
+                        // Secret of Mana reference:
+                        _("Sadly, no trace of you was ever found..."),
+                        // Final Fantasy VI reference:
+                        _("Annihilated."),
+                        // Earthbound reference:
+                        _("Looks like you got your head handed to you."),
+                        // Leisure Suit Larry 1 reference:
+                        _("You screwed up again, dump your body down the tubes "
+                          "and get you another one."),
+                        // Monty Python references (Dead Parrot sketch mostly):
+                        _("You're not dead yet. You're just resting."),
+                        _("You are no more."),
                         _("You have ceased to be."),
                         _("You've expired and gone to meet your maker."),
                         _("You're a stiff."),
                         _("Bereft of life, you rest in peace."),
-                        _("If you weren't so animated, you'd be pushing up the daisies."),
+                        _("If you weren't so animated, you'd be pushing up the "
+                          "daisies."),
                         _("Your metabolic processes are now history."),
                         _("You're off the twig."),
                         _("You've kicked the bucket."),
-                        _("You've shuffled off your mortal coil, run down the curtain and joined the bleedin' choir invisibile."),
+                        _("You've shuffled off your mortal coil, run down the "
+                          "curtain and joined the bleedin' choir invisibile."),
                         _("You are an ex-player."),
-                        _("You're pining for the fjords.") // Monty Python reference from the dead parrot sketch
+                        _("You're pining for the fjords.")
                     };
                     std::string message(deadMsg[rand()%27]);
 

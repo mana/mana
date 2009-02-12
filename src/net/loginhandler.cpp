@@ -80,7 +80,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
              mUpdateHost = msg->readString(len);
 
              logger->log("Received update host \"%s\" from login server",
-                          mUpdateHost.c_str());
+                     mUpdateHost.c_str());
              break;
 
         case 0x0069:
@@ -135,14 +135,14 @@ void LoginHandler::handleMessage(MessageIn *msg)
                     break;
                 case 4:
 
-                    errorMessage = _("You have been permanently banned from the"
-                                     " game. Please contact the GM Team");
+                    errorMessage = _("You have been permanently banned from "
+                                     "the game. Please contact the GM Team.");
                     break;
                 case 6:
                     errorMessage = strprintf(_("You have been temporarily "
-                                               "banned from the game until %s.\n"
-                                               " Please contact the GM team via "
-                                               "the forums"),
+                                               "banned from the game until "
+                                               "%s.\n Please contact the GM "
+                                               "team via the forums."),
                                                msg->readString(20).c_str());
                     break;
                 case 9:
