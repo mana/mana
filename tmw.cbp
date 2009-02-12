@@ -13,6 +13,7 @@
 				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
+					<Add option="-O3" />
 					<Add option="-Wall" />
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DNOGDI" />
@@ -79,6 +80,7 @@
 		<Linker>
 			<Add directory="lib" />
 		</Linker>
+		<Unit filename="src\SDLMain.h" />
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
@@ -295,7 +297,6 @@
 		<Unit filename="src\net\network.h" />
 		<Unit filename="src\net\npchandler.cpp" />
 		<Unit filename="src\net\npchandler.h" />
-		<Unit filename="src\net\packet.h" />
 		<Unit filename="src\net\playerhandler.cpp" />
 		<Unit filename="src\net\playerhandler.h" />
 		<Unit filename="src\net\protocol.cpp" />
@@ -319,6 +320,8 @@
 		<Unit filename="src\player.h" />
 		<Unit filename="src\player_relations.cpp" />
 		<Unit filename="src\player_relations.h" />
+		<Unit filename="src\position.cpp" />
+		<Unit filename="src\position.h" />
 		<Unit filename="src\properties.h" />
 		<Unit filename="src\resources\action.cpp" />
 		<Unit filename="src\resources\action.h" />
@@ -328,8 +331,10 @@
 		<Unit filename="src\resources\animation.h" />
 		<Unit filename="src\resources\buddylist.cpp" />
 		<Unit filename="src\resources\buddylist.h" />
+		<Unit filename="src\resources\colordb.h" />
 		<Unit filename="src\resources\dye.cpp" />
 		<Unit filename="src\resources\dye.h" />
+		<Unit filename="src\resources\emotedb.h" />
 		<Unit filename="src\resources\image.cpp" />
 		<Unit filename="src\resources\image.h" />
 		<Unit filename="src\resources\imageloader.cpp" />
@@ -384,12 +389,15 @@
 		<Unit filename="src\utils\base64.h" />
 		<Unit filename="src\utils\dtor.h" />
 		<Unit filename="src\utils\fastsqrt.h" />
+		<Unit filename="src\utils\gettext.h" />
+		<Unit filename="src\utils\mutex.h" />
 		<Unit filename="src\utils\strprintf.cpp" />
 		<Unit filename="src\utils\strprintf.h" />
 		<Unit filename="src\utils\tostring.h" />
 		<Unit filename="src\utils\trim.h" />
 		<Unit filename="src\utils\xml.cpp" />
 		<Unit filename="src\utils\xml.h" />
+		<Unit filename="src\vector.cpp" />
 		<Unit filename="src\vector.h" />
 		<Unit filename="src\winver.h" />
 		<Extensions>
