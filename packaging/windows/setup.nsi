@@ -9,7 +9,7 @@ SetCompressor /SOLID lzma
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Aethyra"
-!define PRODUCT_VERSION "0.0.27.1"
+!define PRODUCT_VERSION "0.0.29"
 !define PRODUCT_PUBLISHER "Aethyra Development Team"
 !define PRODUCT_WEB_SITE "http://aethyra.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\aethyra.exe"
