@@ -525,11 +525,11 @@ void Game::handleInput()
                         done = true;
                     // Close the Browser if opened
                     else if (helpWindow->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                             keyboard.isKeyActive(keyboard.KEY_OK))
                         helpWindow->setVisible(false);
                     // Close the config window, cancelling changes if opened
                     else if (setupWindow->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                             keyboard.isKeyActive(keyboard.KEY_OK))
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
                     // Submits the text and proceeds to the next dialog
                     else if (npcStringDialog->isVisible() &&
@@ -551,7 +551,9 @@ void Game::handleInput()
                                    KeyboardConfig::KEY_TOGGLE_CHAT) ==
                                keyboard.getKeyValue(
                                    KeyboardConfig::KEY_OK) &&
-                               (npcStringDialog->isVisible() ||
+                               (helpWindow->isVisible() ||
+                                setupWindow->isVisible() ||
+                                npcStringDialog->isVisible() ||
                                 npcTextDialog->isVisible() ||
                                 npcListDialog->isVisible() ||
                                 npcIntegerDialog->isVisible())))
