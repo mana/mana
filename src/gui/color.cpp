@@ -33,7 +33,7 @@ Color::Color()
     addColor('H', 0xebc873, _("Highlight"));
     addColor('Y', 0x1fa052, _("Player"));
     addColor('W', 0x0000ff, _("Whisper"));
-    addColor('I', 0xf1dc27, _("Is"));
+    addColor('I', 0xa08527, _("Is"));
     addColor('P', 0xff00d8, _("Party"));
     addColor('S', 0x8415e2, _("Server"));
     addColor('L', 0x919191, _("Logger"));
