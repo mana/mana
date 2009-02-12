@@ -370,14 +370,15 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         return;
     }
 
-    // check for item link
+    // Check for item link
     std::string::size_type start = msg.find('[');
     while (start != std::string::npos && msg[start+1] != '@')
     {
         std::string::size_type end = msg.find(']', start);
         if (start+1 != end && end != std::string::npos)
         {
-            // Catch multiple embeds and ignore them so it doesn't crash the client.
+            // Catch multiple embeds and ignore them
+            // so it doesn't crash the client.
             while ((msg.find('[', start + 1) != std::string::npos) &&
                    (msg.find('[', start + 1) < end))
             {
@@ -664,7 +665,7 @@ std::string ChatWindow::const_msg(CHATSKILL act)
                 msg += _("You cannot do that right now!");
                 break;
             case RFAIL_ZENY:
-                msg += _("Seems you need more Zeny... ;-)");
+                msg += _("Seems you need more GP... ;-)");
                 break;
             case RFAIL_WEAPON:
                 msg += _("You cannot use this skill with that kind of weapon!");
@@ -809,17 +810,19 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog(_("/announce: Global announcement (GM only)"), BY_SERVER);
         chatLog(_("/clear: Clears this window"), BY_SERVER);
         chatLog(_("/help: Display this help"), BY_SERVER);
-        chatLog(_("/party <command> <params>: Party commands."), BY_SERVER);
-        chatLog(_("/msg <nick> <message>: Alternate form for /whisper"), BY_SERVER);
-        chatLog(_("/present: Get list of players present"), BY_SERVER);
-        chatLog(_("/record <filename>: Start recording the chat to an"
-                  " external file."), BY_SERVER);
-        chatLog(_("/toggle: Determine whether <return> toggles the chat log."),
+        chatLog(_("/me <message>: Tell something about yourself"), BY_SERVER);
+        chatLog(_("/msg <nick> <message>: Alternate form for /whisper"),
                 BY_SERVER);
-        chatLog(_("/where: Display map name"), BY_SERVER);
+        chatLog(_("/party <command> <params>: Party commands"), BY_SERVER);
+        chatLog(_("/present: Get list of players present"), BY_SERVER);
+        chatLog(_("/record <filename>: Start recording the chat to an "
+                  "external file"), BY_SERVER);
+        chatLog(_("/toggle: Determine whether <return> toggles the chat log"),
+                BY_SERVER);
         chatLog(_("/w <nick> <message>: Short form for /whisper"), BY_SERVER);
-        chatLog(_("/whisper <nick> <message>: Sends a private <message>"
-                    " to <nick>"), BY_SERVER);
+        chatLog(_("/where: Display map name"), BY_SERVER);
+        chatLog(_("/whisper <nick> <message>: Sends a private <message> "
+                    "to <nick>"), BY_SERVER);
         chatLog(_("/who: Display number of online users"), BY_SERVER);
         chatLog(_("For more information, type /help <command>"), BY_SERVER);
     }
@@ -844,6 +847,12 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog(_("Command: /help <command>"), BY_SERVER);
         chatLog(_("This command displays help on <command>."), BY_SERVER);
     }
+    else if (msg1 == "me")
+    {
+        chatLog(_("Command: /me <msg>"), BY_SERVER);
+        chatLog(_("This command tell others you are (doing) <msg>."),
+                BY_SERVER);
+    }
     else if (msg1 == "party")
     {
         mParty->help(msg2);
@@ -866,14 +875,15 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
     else if (msg1 == "toggle")
     {
         chatLog(_("Command: /toggle <state>"), BY_SERVER);
-        chatLog(_("This command sets whether the return key should toggle the"
+        chatLog(_("This command sets whether the return key should toggle the "
                   "chat log, or whether the chat log turns off automatically."),
                   BY_SERVER);
         chatLog(_("<state> can be one of \"1\", \"yes\", \"true\" to "
                   "turn the toggle on, or \"0\", \"no\", \"false\" to turn the "
                   "toggle off."), BY_SERVER);
         chatLog(_("Command: /toggle"), BY_SERVER);
-        chatLog(_("This command displays the return toggle status."), BY_SERVER);
+        chatLog(_("This command displays the return toggle status."),
+                BY_SERVER);
     }
     else if (msg1 == "where")
     {
