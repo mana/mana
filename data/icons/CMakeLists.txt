@@ -1,5 +1,5 @@
 SET(FILES
-    tmw.png
+    aethyra.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/icons)

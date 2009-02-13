@@ -23,7 +23,11 @@
 #ifndef SOUND_EFFECT_H
 #define SOUND_EFFECT_H
 
+#ifdef __APPLE__
+#include <SDL_mixer/SDL_mixer.h>
+#elif
 #include <SDL_mixer.h>
+#endif
 
 #include "resource.h"
 
