@@ -25,7 +25,7 @@
 
 #ifdef __APPLE__
 #include <SDL_mixer/SDL_mixer.h>
-#elif
+#else
 #include <SDL_mixer.h>
 #endif
 #include "resource.h"
