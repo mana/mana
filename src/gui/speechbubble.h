@@ -35,7 +35,7 @@ class SpeechBubble : public Window
 
         void setCaption(const std::string &name,
                         const gcn::Color &color = 0x000000);
-        void setText(std::string mText);
+        void setText(std::string mText, bool showName = true);
         void setLocation(int x, int y);
         unsigned int getNumRows();
 

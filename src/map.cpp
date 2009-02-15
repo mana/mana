@@ -25,9 +25,9 @@
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"
-#include "localplayer.h"
 #include "map.h"
 #include "particle.h"
+#include "simpleanimation.h"
 #include "sprite.h"
 #include "tileset.h"
 
@@ -63,30 +63,35 @@ struct Location
 };
 
 TileAnimation::TileAnimation(Animation *ani):
-    mAnimation(ani),
     mLastImage(NULL)
 {
+    mAnimation = new SimpleAnimation(ani);
 }
 
+TileAnimation::~TileAnimation()
+{
+    delete mAnimation;
+}
 
 void TileAnimation::update()
 {
+    if (!mAnimation)
+        return;
+
     //update animation
-    mAnimation.update(1);
+    mAnimation->update(1);
 
     // exchange images
-    Image *img = mAnimation.getCurrentImage();
+    Image *img = mAnimation->getCurrentImage();
     if (img != mLastImage)
     {
-        for (std::list<std::pair<MapLayer*, int> >::iterator i = mAffected.begin();
-             i != mAffected.end();
-             i++)
+        for (std::list<std::pair<MapLayer*, int> >::iterator i = 
+             mAffected.begin(); i != mAffected.end(); i++)
         {
             i->first->setTile(i->second, img);
         }
         mLastImage = img;
     }
-
 }
 
 MapLayer::MapLayer(int x, int y, int width, int height, bool isFringeLayer):
@@ -136,9 +141,10 @@ void MapLayer::draw(Graphics *graphics,
     {
         // If drawing the fringe layer, make sure all sprites above this row of
         // tiles have been drawn
-        if (mIsFringeLayer) {
-            player_node->drawTargetCursor(graphics, scrollX, scrollY);
-            while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32) {
+        if (mIsFringeLayer)
+        {
+            while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32)
+            {
                 (*si)->draw(graphics, -scrollX, -scrollY);
                 si++;
             }
@@ -147,7 +153,8 @@ void MapLayer::draw(Graphics *graphics,
         for (int x = startX; x < endX; x++)
         {
             Image *img = getTile(x, y);
-            if (img) {
+            if (img)
+            {
                 const int px = (x + mX) * 32 - scrollX;
                 const int py = (y + mY) * 32 - scrollY + 32 - img->getHeight();
                 graphics->drawImage(img, px, py);

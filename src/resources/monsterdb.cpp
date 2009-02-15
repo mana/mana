@@ -50,7 +50,7 @@ void MonsterDB::load()
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "monsters"))
     {
-        logger->error(_("Monster Database: Error while loading monster.xml!"));
+        logger->error("Monster Database: Error while loading monster.xml!");
     }
 
     //iterate <monster>s
@@ -63,7 +63,7 @@ void MonsterDB::load()
 
         MonsterInfo *currentInfo = new MonsterInfo();
 
-        currentInfo->setName (XML::getProperty(monsterNode, "name", "unnamed"));
+        currentInfo->setName(XML::getProperty(monsterNode, "name", _("unnamed")));
 
         std::string targetCursor;
         targetCursor = XML::getProperty(monsterNode, "targetCursor", "medium");

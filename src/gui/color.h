@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef COLOUR_H
-#define COLOUR_H
+#ifndef COLOR_H
+#define COLOR_H
 
 #include <string>
 #include <vector>
@@ -109,16 +109,16 @@ class Color : public gcn::ListModel
         void rollback();
 
     private:
-        struct colorElem
+        struct ColorElem
         {
-            colorElem(const char c, const int rgb, const std::string &text) :
+            ColorElem(const char c, const int rgb, const std::string &text) :
                 ch(c), rgb(rgb), text(text) {}
             char ch;
             int rgb;
             int committedRgb;
             std::string text;
         };
-        typedef std::vector<colorElem> ColVector;
+        typedef std::vector<ColorElem> ColVector;
         ColVector mColVector;
 
         /**

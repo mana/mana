@@ -22,8 +22,11 @@
 #ifndef MUSIC_H
 #define MUSIC_H
 
+#ifdef __APPLE__
+#include <SDL_mixer/SDL_mixer.h>
+#else
 #include <SDL_mixer.h>
-
+#endif
 #include "resource.h"
 
 /**

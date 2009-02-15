@@ -34,7 +34,6 @@
 #include "../log.h"
 #include "../npc.h"
 #include "../player_relations.h"
-#include "../sound.h"
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 

@@ -56,7 +56,7 @@ Setup_Joystick::Setup_Joystick():
     place = h.getPlacer(0, 1);
     place(0, 0, mCalibrateButton);
 
-    setDimension(gcn::Rectangle(0, 0, 290, 75));
+    setDimension(gcn::Rectangle(0, 0, 325, 75));
 }
 
 void Setup_Joystick::action(const gcn::ActionEvent &event)

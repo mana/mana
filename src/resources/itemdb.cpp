@@ -62,7 +62,7 @@ void ItemDB::load()
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
     {
-        logger->error(_("ItemDB: Error while loading items.xml!"));
+        logger->error("ItemDB: Error while loading items.xml!");
     }
 
     for_each_xml_child_node(node, rootNode)

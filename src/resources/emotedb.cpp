@@ -1,6 +1,6 @@
 /*
  *  Emote database
- *  Copyright (C) 2008  Aethyra Development Team
+ *  Copyright (C) 2009  Aethyra Development Team
  *
  *  This file is part of The Mana World.
  *

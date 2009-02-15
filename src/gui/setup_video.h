@@ -52,21 +52,29 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
         bool mParticleEffectsEnabled;
-        bool mSpeechBubbleEnabled;
         bool mNameEnabled;
         double mOpacity;
         int mFps;
+        int mSpeechMode;
 
         class ModeListModel *mModeListModel;
+
+        gcn::Label *speechLabel;
+        gcn::Label *alphaLabel;
+        gcn::Label *scrollRadiusLabel;
+        gcn::Label *scrollLazinessLabel;
+        gcn::Label *overlayDetailLabel;
+        gcn::Label *particleDetailLabel;
 
         gcn::ListBox *mModeList;
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
         gcn::CheckBox *mParticleEffectsCheckBox;
-        gcn::CheckBox *mSpeechBubbleCheckBox;
         gcn::CheckBox *mNameCheckBox;
 
+        gcn::Slider *mSpeechSlider;
+        gcn::Label *mSpeechLabel;
         gcn::Slider *mAlphaSlider;
         gcn::CheckBox *mFpsCheckBox;
         gcn::Slider *mFpsSlider;

@@ -255,8 +255,6 @@ SET(SRCS
     resources/ambientoverlay.h
     resources/animation.cpp
     resources/animation.h
-    resources/buddylist.cpp
-    resources/buddylist.h
     resources/colordb.cpp
     resources/colordb.h
     resources/dye.cpp

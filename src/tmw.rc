@@ -13,7 +13,7 @@ FILETYPE VFT_APP {
             VALUE "CompanyName", "The Mana World Development Team"
             VALUE "FileVersion", PACKAGE_VERSION
             VALUE "FileDescription", "The Mana World"
-            VALUE "LegalCopyright", "2004-2006 (C)"
+            VALUE "LegalCopyright", "2004-2009 (C)"
             VALUE "OriginalFilename", "tmw.exe"
             VALUE "ProductName", "The Mana World MMORPG"
             VALUE "ProductVersion", PACKAGE_VERSION

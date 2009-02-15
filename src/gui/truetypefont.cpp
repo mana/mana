@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <list>
-
 #include <guichan/exception.hpp>
 
 #include "truetypefont.h"
@@ -74,8 +72,6 @@ class TextChunk
         gcn::Color color;
 };
 
-// Word surfaces cache
-static std::list<TextChunk> cache;
 typedef std::list<TextChunk>::iterator CacheIterator;
 
 static int fontCounter;

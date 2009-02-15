@@ -50,6 +50,13 @@ class SimpleAnimation
 
         void update(unsigned int timePassed);
 
+        bool draw(Graphics* graphics, int posX, int posY) const;
+
+        /**
+         * Resets the animation.
+         */
+        void reset();
+
         Image *getCurrentImage() const;
 
     private:

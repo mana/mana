@@ -40,7 +40,8 @@
 
 static const char *SKILLS_FILE = _("skills.xml");
 
-struct SkillInfo {
+struct SkillInfo
+{
     std::string name;
     bool modifiable;
 };

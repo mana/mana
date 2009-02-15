@@ -150,20 +150,16 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
         graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawText(mText, mX - xOff + 1, mY - yOff,
                 gcn::Graphics::LEFT);
-
         graphics->drawText(mText, mX - xOff - 1, mY - yOff,
                 gcn::Graphics::LEFT);
-
         graphics->drawText(mText, mX - xOff, mY - yOff + 1,
                 gcn::Graphics::LEFT);
-
         graphics->drawText(mText, mX - xOff, mY - yOff - 1,
                 gcn::Graphics::LEFT);
     }
 
     graphics->setColor(mColor);
-    graphics->drawText(mText, mX - xOff, mY - yOff,
-            gcn::Graphics::LEFT);
+    graphics->drawText(mText, mX - xOff, mY - yOff, gcn::Graphics::LEFT);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,

@@ -48,7 +48,7 @@ Color::~Color()
          col != colEnd;
          ++col)
     {
-        config.setValue("color" + col->text, toString(col->rgb));
+        config.setValue("Color" + col->text, toString(col->rgb));
     }
 }
 
@@ -104,8 +104,8 @@ char Color::getColorCharAt(int i)
 
 void Color::addColor(const char c, const int rgb, const std::string &text)
 {
-    int trueRgb = (int)config.getValue("color" + text, rgb);
-    mColVector.push_back(colorElem(c, trueRgb, text));
+    int trueRgb = (int) config.getValue("Color" + text, rgb);
+    mColVector.push_back(ColorElem(c, trueRgb, text));
 }
 
 int Color::getColorAt(int i)

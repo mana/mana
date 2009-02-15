@@ -126,7 +126,7 @@ Setup_Colors::Setup_Colors() :
     place(2, 10, mBlueSlider);
     place(3, 10, mBlueText).setPadding(1);
 
-    setDimension(gcn::Rectangle(0, 0, 290, 250));
+    setDimension(gcn::Rectangle(0, 0, 325, 280));
 }
 
 Setup_Colors::~Setup_Colors()

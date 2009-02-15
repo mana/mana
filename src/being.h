@@ -50,6 +50,7 @@ class Map;
 class Graphics;
 class Particle;
 class Position;
+class SimpleAnimation;
 class SpeechBubble;
 class Text;
 
@@ -112,6 +113,15 @@ class Being : public Sprite
             TC_MEDIUM,
             TC_LARGE,
             NUM_TC
+        };
+
+        enum Speech
+        {
+            NO_SPEECH = 0,
+            TEXT_OVERHEAD,
+            NO_NAME_IN_BUBBLE,
+            NAME_IN_BUBBLE,
+            NUM_SPEECH
         };
 
         /**
@@ -364,6 +374,16 @@ class Being : public Sprite
          */
         void controlParticle(Particle *particle);
 
+        /**
+         * Sets the target animation for this being.
+         */
+        void setTargetAnimation(SimpleAnimation* animation);
+
+        /**
+         * Untargets the being
+         */
+        void untarget() { mUsedTargetCursor = NULL; }
+
         AnimatedSprite* getEmote(int index) { return emotionSet[index]; }
 
         void setEmote(Uint8 emotion, Uint8 emote_time)
@@ -502,6 +522,9 @@ class Being : public Sprite
 
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;
+
+        // Target cursor being used
+        SimpleAnimation* mUsedTargetCursor;
 
         static int instances;                              /**< Number of Being instances */
         static std::vector<AnimatedSprite*> emotionSet;    /**< Emoticons used by beings */

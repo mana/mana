@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef SETUP_COLOURS_H
-#define SETUP_COLOURS_H
+#ifndef SETUP_COLORS_H
+#define SETUP_COLORS_H
 
 #include <string>
 
@@ -37,7 +37,7 @@
 class BrowserBox;
 
 class Setup_Colors : public SetupTab, public gcn::ActionListener,
-                      public TextFieldListener
+                     public TextFieldListener
 {
     public:
         Setup_Colors();

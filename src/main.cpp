@@ -497,7 +497,8 @@ void printHelp()
         << _("Options: ") << std::endl
         << _("  -C --configfile : Configuration file to use") << std::endl
         << _("  -d --data       : Directory to load game data from") << std::endl
-        << _("  -D --default    : Bypass the login process with default settings") << std::endl
+        << _("  -D --default    : Bypass the login process with default settings")
+        << std::endl
         << _("  -h --help       : Display this help") << std::endl
         << _("  -S --homedir    : Directory to use as home directory") << std::endl
         << _("  -H --updatehost : Use this update host") << std::endl
@@ -514,7 +515,7 @@ void printVersion()
     std::cout << _("The Mana World version ") << PACKAGE_VERSION << std::endl;
 #else
     std::cout << _("The Mana World version ") <<
-             _"(local build?, PACKAGE_VERSION is not defined)") << std::endl;
+             _("(local build?, PACKAGE_VERSION is not defined)") << std::endl;
 #endif
 }
 
@@ -676,7 +677,8 @@ void charLogin(Network *network, LoginData *loginData)
     outMsg.writeInt32(loginData->account_ID);
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
-    // [Fate] The next word is unused by the old char server, so we squeeze in tmw client version information
+    // [Fate] The next word is unused by the old char server, so we squeeze in
+    //        tmw client version information
     outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
     outMsg.writeInt8(loginData->sex);
 

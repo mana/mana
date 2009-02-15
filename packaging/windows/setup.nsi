@@ -9,7 +9,7 @@ SetCompressor /SOLID lzma
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "The Mana World"
-!define PRODUCT_VERSION "0.0.28.1"
+!define PRODUCT_VERSION "0.0.29"
 !define PRODUCT_PUBLISHER "The Mana World Development Team"
 !define PRODUCT_WEB_SITE "http://themanaworld.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\tmw.exe"
