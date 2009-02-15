@@ -79,6 +79,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mUserField->setActionEventId("ok");
     mPassField->setActionEventId("ok");
     mServerField->setActionEventId("ok");
+    mPortField->setActionEventId("ok");
     mServerDropDown->setActionEventId("changeSelection");
 
     mUserField->addKeyListener(this);
@@ -289,7 +290,7 @@ std::string LoginDialog::DropDownList::getElementAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
     {
-      return "";
+        return "";
     }
     return getServerAt(i) + ":" + getPortAt(i);
 }
