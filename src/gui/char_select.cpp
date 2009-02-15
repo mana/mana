@@ -192,7 +192,7 @@ void CharSelectDialog::updatePlayerInfo()
         mNameLabel->setCaption(strprintf(_("Name: %s"), ""));
         mLevelLabel->setCaption(strprintf(_("Level: %d"), 0));
         mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"), 0));
-        mMoneyLabel->setCaption(strprintf(_("Money: %d"), 0));
+        mMoneyLabel->setCaption(strprintf(_("Money: %s"), ""));
         mNewDelCharButton->setCaption(_("New"));
         mSelectButton->setEnabled(false);
     }
