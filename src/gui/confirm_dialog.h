@@ -55,7 +55,6 @@ class ConfirmDialog : public Window, public gcn::ActionListener
     private:
         TextBox *mTextBox;
         ScrollArea *mTextArea;
-        gcn::Button *okButton;
 };
 
 #endif

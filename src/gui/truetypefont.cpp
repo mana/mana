@@ -131,12 +131,12 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
 
     bool found = false;
 
-    for (CacheIterator i = cache.begin(); i != cache.end(); i++)
+    for (CacheIterator i = mCache.begin(); i != mCache.end(); ++i)
     {
         if (chunk == (*i))
         {
             // Raise priority: move it to front
-            cache.splice(cache.begin(), cache, i);
+            mCache.splice(mCache.begin(), mCache, i);
             found = true;
             break;
         }
@@ -145,16 +145,16 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
     // Surface not found
     if (!found)
     {
-        if (cache.size() >= CACHE_SIZE)
+        if (mCache.size() >= CACHE_SIZE)
         {
-            cache.pop_back();
+            mCache.pop_back();
         }
-        cache.push_front(chunk);
-        cache.front().generate(mFont);
+        mCache.push_front(chunk);
+        mCache.front().generate(mFont);
     }
 
-    cache.front().img->setAlpha(alpha);
-    g->drawImage(cache.front().img, x, y);
+    mCache.front().img->setAlpha(alpha);
+    g->drawImage(mCache.front().img, x, y);
 }
 
 int TrueTypeFont::getWidth(const std::string &text) const

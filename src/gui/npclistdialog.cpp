@@ -44,9 +44,9 @@ NpcListDialog::NpcListDialog():
 
     mItemList = new ListBox(this);
     mItemList->setWrappingEnabled(true);
-    scrollArea = new ScrollArea(mItemList);
-    okButton = new Button(_("OK"), "ok", this);
-    cancelButton = new Button(_("Cancel"), "cancel", this);
+    gcn::ScrollArea *scrollArea = new ScrollArea(mItemList);
+    gcn::Button *okButton = new Button(_("OK"), "ok", this);
+    gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

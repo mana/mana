@@ -37,7 +37,7 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     mTextBox->setOpaque(false);
 
     mTextArea = new ScrollArea(mTextBox);
-    okButton = new Button(_("Ok"), "ok", this);
+    gcn::Button *okButton = new Button(_("Ok"), "ok", this);
 
     mTextArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mTextArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

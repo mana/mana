@@ -34,8 +34,8 @@ NpcStringDialog::NpcStringDialog():
 {
     mValueField = new TextField("");
 
-    okButton = new Button(_("OK"), "ok", this);
-    cancelButton = new Button(_("Cancel"), "cancel", this);
+    gcn::Button *okButton = new Button(_("OK"), "ok", this);
+    gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
 
     place(0, 0, mValueField, 3);
     place(1, 1, cancelButton);

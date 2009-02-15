@@ -78,8 +78,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         void widgetResized(const gcn::Event &event);
 
     private:
-        gcn::Button *okButton;
-        gcn::ScrollArea *scrollArea;
+        gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
 
         std::string mText;

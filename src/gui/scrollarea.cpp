@@ -35,18 +35,16 @@ ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
 Image *ScrollArea::buttons[4][2];
 
-ScrollArea::ScrollArea(bool gc, bool opaque):
+ScrollArea::ScrollArea():
     gcn::ScrollArea(),
-    mOpaque(opaque),
-    mGC(gc)
+    mOpaque(true)
 {
     init();
 }
 
-ScrollArea::ScrollArea(gcn::Widget *widget, bool gc, bool opaque):
+ScrollArea::ScrollArea(gcn::Widget *widget):
     gcn::ScrollArea(widget),
-    mOpaque(opaque),
-    mGC(gc)
+    mOpaque(true)
 {
     init();
 }
@@ -54,8 +52,7 @@ ScrollArea::ScrollArea(gcn::Widget *widget, bool gc, bool opaque):
 ScrollArea::~ScrollArea()
 {
     // Garbage collection
-    if (mGC)
-        delete getContent();
+    delete getContent();
 
     instances--;
 

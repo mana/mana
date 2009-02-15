@@ -238,8 +238,8 @@ void GuiTable::setSelectedColumn(int selected)
 
 void GuiTable::uninstallActionListeners(void)
 {
-    delete_all(action_listeners);
-    action_listeners.clear();
+    delete_all(mActionListeners);
+    mActionListeners.clear();
 }
 
 void GuiTable::installActionListeners()
@@ -254,7 +254,7 @@ void GuiTable::installActionListeners()
         for (int column = 0; column < columns; ++column)
         {
             gcn::Widget *widget = mModel->getElementAt(row, column);
-            action_listeners.push_back(new GuiTableActionListener(this, widget,
+            mActionListeners.push_back(new GuiTableActionListener(this, widget,
                                                                   row, column));
         }
 

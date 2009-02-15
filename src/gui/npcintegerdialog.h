@@ -75,9 +75,6 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener
         gcn::Button *mDecButton;
         gcn::Button *mIncButton;
         IntTextField *mValueField;
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
-        gcn::Button *resetButton;
 };
 
 #endif // GUI_NPCINTEGERDIALOG_H

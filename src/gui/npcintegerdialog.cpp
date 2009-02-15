@@ -36,9 +36,9 @@ NpcIntegerDialog::NpcIntegerDialog():
 
     mDecButton = new Button("-", "decvalue", this);
     mIncButton = new Button("+", "incvalue", this);
-    okButton = new Button(_("OK"), "ok", this);
-    cancelButton = new Button(_("Cancel"), "cancel", this);
-    resetButton = new Button(_("Reset"), "reset", this);
+    gcn::Button *okButton = new Button(_("OK"), "ok", this);
+    gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
+    gcn::Button *resetButton = new Button(_("Reset"), "reset", this);
 
     mDecButton->setSize(20, 20);
     mIncButton->setSize(20, 20);

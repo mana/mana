@@ -22,9 +22,9 @@
 #ifndef GUI_NPCSTRINGDIALOG_H
 #define GUI_NPCSTRINGDIALOG_H
 
-#include <guichan/actionlistener.hpp>
-
 #include "window.h"
+
+#include <guichan/actionlistener.hpp>
 
 /**
  * The npc integer input dialog.
@@ -70,8 +70,6 @@ class NpcStringDialog : public Window, public gcn::ActionListener
 
     private:
         gcn::TextField *mValueField;
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
 };
 
 #endif // GUI_NPCSTRINGDIALOG_H

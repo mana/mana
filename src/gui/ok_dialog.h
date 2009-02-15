@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _OK_DIALOG_H
-#define _OK_DIALOG_H
-
-#include <guichan/actionlistener.hpp>
+#ifndef OK_DIALOG_H
+#define OK_DIALOG_H
 
 #include "window.h"
+
+#include <guichan/actionlistener.hpp>
 
 class ScrollArea;
 class TextBox;
@@ -54,7 +54,6 @@ class OkDialog : public Window, public gcn::ActionListener {
     private:
         TextBox *mTextBox;
         ScrollArea *mTextArea;
-        gcn::Button *okButton;
 };
 
 #endif

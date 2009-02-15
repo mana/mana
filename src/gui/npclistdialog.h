@@ -22,12 +22,12 @@
 #ifndef GUI_NPCLISTDIALOG_H
 #define GUI_NPCLISTDIALOG_H
 
-#include <vector>
+#include "window.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
 
-#include "window.h"
+#include <vector>
 
 /**
  * The npc list dialog.
@@ -74,9 +74,6 @@ class NpcListDialog : public Window, public gcn::ActionListener,
 
     private:
         gcn::ListBox *mItemList;
-        gcn::ScrollArea *scrollArea;
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
 
         std::vector<std::string> mItems;
 };

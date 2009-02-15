@@ -30,6 +30,10 @@ class ImageRect;
 /**
  * A scroll area.
  *
+ * Contrary to Guichan's scroll area, this scroll area takes ownership over its
+ * content. However, it won't delete a previously set content widget when
+ * setContent is called!
+ *
  * \ingroup GUI
  */
 class ScrollArea : public gcn::ScrollArea
@@ -38,12 +42,12 @@ class ScrollArea : public gcn::ScrollArea
         /**
          * Constructor.
          */
-        ScrollArea(bool gc = true, bool opaque = true);
+        ScrollArea();
 
         /**
          * Constructor.
          */
-        ScrollArea(gcn::Widget *content, bool gc = true, bool opaque = true);
+        ScrollArea(gcn::Widget *content);
 
         /**
          * Destructor.
@@ -106,7 +110,6 @@ class ScrollArea : public gcn::ScrollArea
         static Image *buttons[4][2];
 
         bool mOpaque;
-        bool mGC;
 };
 
 #endif

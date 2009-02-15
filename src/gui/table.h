@@ -180,7 +180,7 @@ private:
     gcn::Widget *mTopWidget;
 
     /** Vector for compactness; used as a list in practice. */
-    std::vector<GuiTableActionListener *> action_listeners;
+    std::vector<GuiTableActionListener *> mActionListeners;
 };
 
 

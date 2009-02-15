@@ -70,7 +70,7 @@ class TrueTypeFont : public gcn::Font
         TTF_Font *mFont;
 
         // Word surfaces cache
-        std::list<TextChunk> cache;
+        std::list<TextChunk> mCache;
 };
 
 #endif
