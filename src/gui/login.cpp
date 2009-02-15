@@ -126,13 +126,6 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mOkButton->setEnabled(canSubmit());
 }
 
-LoginDialog::~LoginDialog()
-{
-    delete mServerList;
-    delete mServerListBox;
-    delete mServerScrollArea;
-}
-
 void LoginDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok" && canSubmit())

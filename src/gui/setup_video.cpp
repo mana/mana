@@ -293,44 +293,6 @@ Setup_Video::Setup_Video():
     setDimension(gcn::Rectangle(0, 0, 325, 280));
 }
 
-Setup_Video::~Setup_Video()
-{
-    delete mModeListModel;
-
-    delete speechLabel;
-    delete alphaLabel;
-    delete scrollRadiusLabel;
-    delete scrollLazinessLabel;
-    delete overlayDetailLabel;
-    delete particleDetailLabel;
-
-    delete mModeList;
-    delete mFsCheckBox;
-    delete mOpenGLCheckBox;
-    delete mCustomCursorCheckBox;
-    delete mParticleEffectsCheckBox;
-    delete mNameCheckBox;
-
-    delete mSpeechSlider;
-    delete mSpeechLabel;
-    delete mAlphaSlider;
-    delete mFpsCheckBox;
-    delete mFpsSlider;
-    delete mFpsField;
-
-    delete mScrollLazinessSlider;
-    delete mScrollLazinessField;
-
-    delete mScrollRadiusSlider;
-    delete mScrollRadiusField;
-
-    delete mOverlayDetailSlider;
-    delete mOverlayDetailField;
-
-    delete mParticleDetailSlider;
-    delete mParticleDetailField;
-}
-
 void Setup_Video::apply()
 {
     // Full screen changes

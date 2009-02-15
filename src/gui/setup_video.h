@@ -33,7 +33,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
 {
     public:
         Setup_Video();
-        ~Setup_Video();
 
         void apply();
         void cancel();
