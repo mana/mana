@@ -188,7 +188,7 @@ std::string formatUnit(const int value, const int type)
                                     pl.symbol.c_str());
             }
 
-            for (int i = 2; i < ud.levels.size(); i++)
+            for (unsigned int i = 2; i < ud.levels.size(); i++)
             {
                 pl = ul;
                 ul = ud.levels[i];
@@ -207,7 +207,7 @@ std::string formatUnit(const int value, const int type)
         }
         else
         {
-            for (int i = 0; i < ud.levels.size(); i++)
+            for (unsigned int i = 0; i < ud.levels.size(); i++)
             {
                 ul = ud.levels[i];
                 if (amount < ul.count && ul.count > 0) {

@@ -64,7 +64,8 @@ class StatusWindow : public Window, public gcn::ActionListener
          * Status Part
          */
         gcn::Label *mLvlLabel, *mJobLvlLabel;
-        gcn::Label *mGpLabel; int currency; std::string currencyS;
+        gcn::Label *mGpLabel;
+        Uint32 mCurrency;
         gcn::Label *mHpLabel, *mMpLabel, *mXpLabel, *mJobLabel;
         ProgressBar *mHpBar, *mMpBar;
         ProgressBar *mXpBar, *mJobBar;

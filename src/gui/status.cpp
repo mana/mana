@@ -38,8 +38,7 @@
 StatusWindow::StatusWindow(LocalPlayer *player):
     Window(player->getName()),
     mPlayer(player),
-    currency(-1),
-    currencyS("?")
+    mCurrency(0)
 {
     setWindowName(_("Status"));
     setCloseButton(true);
@@ -52,7 +51,8 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
     mLvlLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
     mJobLvlLabel = new gcn::Label(strprintf(_("Job: %d"), 0));
-    mGpLabel = new gcn::Label(strprintf(_("Money: %s"), ""));
+    mGpLabel = new gcn::Label(strprintf(_("Money: %s"),
+                Units::formatCurrency(mCurrency).c_str()));
 
     mHpLabel = new gcn::Label(_("HP:"));
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
@@ -174,10 +174,10 @@ void StatusWindow::update()
     mJobLvlLabel->setCaption(strprintf(_("Job: %d"), mPlayer->mJobLevel));
     mJobLvlLabel->adjustSize();
 
-    if (currency != mPlayer->mGp) {
-        currency = mPlayer->mGp;
-        currencyS = strprintf(_("Money: %s"), Units::formatCurrency(currency).c_str());
-        mGpLabel->setCaption(currencyS);
+    if (mCurrency != mPlayer->mGp) {
+        mCurrency = mPlayer->mGp;
+        mGpLabel->setCaption(strprintf(_("Money: %s"),
+                    Units::formatCurrency(mCurrency).c_str()));
         mGpLabel->adjustSize();
     }
 
