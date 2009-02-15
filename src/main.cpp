@@ -261,14 +261,18 @@ void setUpdatesDir()
 void init_engine(const Options &options)
 {
     if (homeDir.empty())
+#if defined __APPLE__
+        // Use Application Directory instead of .tmw
+        homeDir = std::string(PHYSFS_getUserDir()) +
+            "/Library/Application Support/The Mana World";
+#else
         homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
+#endif
+
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
 #elif defined __APPLE__
-    // Use Application Directory instead of .tmw
-    homeDir = std::string(PHYSFS_getUserDir()) +
-        "/Library/Application Support/The Mana World";
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
 #else
