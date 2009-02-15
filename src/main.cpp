@@ -359,24 +359,24 @@ void init_engine(const Options &options)
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
-    FILE *aethyraFile = 0;
+    FILE *configFile = 0;
     std::string configPath = options.configPath;
 
     if (configPath.empty())
         configPath = homeDir + "/config.xml";
 
-    aethyraFile = fopen(configPath.c_str(), "r");
+    configFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
-    if (aethyraFile == NULL) {
+    if (configFile == NULL) {
         // We reopen the file in write mode and we create it
-        aethyraFile = fopen(configPath.c_str(), "wt");
+        configFile = fopen(configPath.c_str(), "wt");
     }
-    if (aethyraFile == NULL) {
+    if (configFile == NULL) {
         std::cout << "Can't create " << configPath << ". "
             "Using Defaults." << std::endl;
     } else {
-        fclose(aethyraFile);
+        fclose(configFile);
         config.init(configPath);
     }
 
