@@ -93,9 +93,7 @@ EquipmentWindow::EquipmentWindow():
 
 EquipmentWindow::~EquipmentWindow()
 {
-    delete mUnequip;
     delete mItemPopup;
-    delete mPlayerBox;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)

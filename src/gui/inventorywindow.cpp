@@ -107,14 +107,7 @@ InventoryWindow::InventoryWindow(int invSize):
 
 InventoryWindow::~InventoryWindow()
 {
-    delete mWeightBar;
-    delete mSlotsBar;
-    delete mUseButton;
-    delete mDropButton;
     delete mItems;
-    delete mWeightLabel;
-    delete mSlotsLabel;
-    delete mInvenScroll;
 }
 
 void InventoryWindow::logic()

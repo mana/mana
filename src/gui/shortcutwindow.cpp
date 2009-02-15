@@ -69,7 +69,6 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
 ShortcutWindow::~ShortcutWindow()
 {
     delete mItems;
-    delete mScrollArea;
 }
 
 void ShortcutWindow::widgetResized(const gcn::Event &event)
