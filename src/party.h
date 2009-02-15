@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2008  Lloyd Bryant <lloyd_bryant@netzero.net>
+ *  Copyright (C) 2008  Lloyd Bryant <lloyd_bryant@netzero.net>
  *
  *  This file is part of The Mana World.
  *

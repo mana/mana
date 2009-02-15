@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2007 The Mana World Development Team
+ *  Copyright (C) 2007  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *

@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TEXTPARTICLE_H
-#define _TEXTPARTICLE_H
+#ifndef TEXTPARTICLE_H
+#define TEXTPARTICLE_H
 
 #include "guichanfwd.h"
 #include "particle.h"

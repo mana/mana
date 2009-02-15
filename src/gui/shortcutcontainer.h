@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2007 The Mana World Development Team
+ *  Copyright (C) 2007  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef SHORTCUTCONTAINER_H__
-#define SHORTCUTCONTAINER_H__
+#ifndef SHORTCUTCONTAINER_H
+#define SHORTCUTCONTAINER_H
 
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
