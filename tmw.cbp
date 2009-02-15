@@ -13,6 +13,7 @@
 				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
+					<Add option="-O3" />
 					<Add option="-Wall" />
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DNOGDI" />

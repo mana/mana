@@ -3,6 +3,15 @@
  
 ##3                         === RECENT CHANGES ===
  
+ 0.0.28.1 (12 February 2009)
+ - Enabled translations on Windows
+ - Added command line option to set home directory path
+ - Tweaked green chat color to be a bit more readable
+ - Made font size configurable in the config file
+ - Fixed restoring of punching animation after weapon removal
+ - Fixed inability to chat while talking to NPCs
+ - Updated Swedish translation
+ 
  0.0.28 (25 January 2009)
  - Added support for animated map tiles
  - Added support for internationalization, plus many translations
@@ -63,19 +72,4 @@
  - Fixed display of critical hits
  - Fixed multi-channel image dyeing
  - Fixed updating of money display after buying
- 
- 0.0.24.1 (7 April 2008)
- - Added /clear command to clear chat window
- - Added ability to close quit dialog by pressing ESC
- - Added key for targetting nearest player
- - Added the possibility to assign particle effects to monsters
- - Added possibility to pass through players with key controls
- - Fixed crash on exit after connection to server was lost
- - Fixed initialization of some variables
- - Fixed an error with chat messages without a sender that include a colon
- - Fixed minimap to not keep reappearing when hidden
- - Fixed a GCC 4.3 compile error
- - Fixed music loading from non-default location
- - Fixed crash on trying to show out of range emoticon
- - Updated Dev-C++ and Code::Blocks project files
  

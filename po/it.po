@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-25 22:01+0100\n"
+"POT-Creation-Date: 2009-02-12 20:22+0100\n"
 "PO-Revision-Date: 2007-12-03 01:45+0000\n"
 "Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
 "Language-Team: Italian\n"
@@ -60,7 +60,8 @@ msgstr "Vendi"
 #: src/gui/buysell.cpp:35 src/gui/char_select.cpp:85
 #: src/gui/char_select.cpp:258 src/gui/char_server.cpp:60
 #: src/gui/connection.cpp:47 src/gui/item_amount.cpp:61 src/gui/login.cpp:52
-#: src/gui/npclistdialog.cpp:45 src/gui/register.cpp:90 src/gui/setup.cpp:58
+#: src/gui/npcintegerdialog.cpp:44 src/gui/npclistdialog.cpp:45
+#: src/gui/npcstringdialog.cpp:42 src/gui/register.cpp:90 src/gui/setup.cpp:58
 #: src/gui/trade.cpp:63 src/gui/updatewindow.cpp:118
 msgid "Cancel"
 msgstr "Cancella"
@@ -106,7 +107,7 @@ msgid "Name: %s"
 msgstr "Nome : %s"
 
 #: src/gui/char_select.cpp:92 src/gui/char_select.cpp:172
-#: src/gui/char_select.cpp:184 src/gui/status.cpp:51 src/gui/status.cpp:232
+#: src/gui/char_select.cpp:184 src/gui/status.cpp:51 src/gui/status.cpp:235
 #, c-format
 msgid "Level: %d"
 msgstr "Livello: %d"
@@ -152,8 +153,9 @@ msgstr "Create"
 msgid "Select Server"
 msgstr "Scelta Personaggio"
 
-#: src/gui/char_server.cpp:59 src/gui/npclistdialog.cpp:44
-#: src/gui/npc_text.cpp:46
+#: src/gui/char_server.cpp:59 src/gui/npc_text.cpp:46
+#: src/gui/npcintegerdialog.cpp:43 src/gui/npclistdialog.cpp:44
+#: src/gui/npcstringdialog.cpp:41
 msgid "OK"
 msgstr ""
 
@@ -467,7 +469,7 @@ msgstr "Abilità"
 msgid "Shortcut"
 msgstr "Scorciatoia"
 
-#: src/gui/menuwindow.cpp:66 src/gui/setup.cpp:50 src/main.cpp:716
+#: src/gui/menuwindow.cpp:66 src/gui/setup.cpp:50 src/main.cpp:725
 msgid "Setup"
 msgstr "Impostazioni"
 
@@ -475,9 +477,22 @@ msgstr "Impostazioni"
 msgid "MiniMap"
 msgstr "Mini mappa"
 
-#: src/gui/npclistdialog.cpp:35 src/gui/npc_text.cpp:35
+#: src/gui/npc_text.cpp:35 src/gui/npclistdialog.cpp:35
 msgid "NPC"
 msgstr "NPC"
+
+#: src/gui/npcintegerdialog.cpp:38
+msgid "NPC Number Request"
+msgstr ""
+
+#: src/gui/npcintegerdialog.cpp:45
+#, fuzzy
+msgid "Reset"
+msgstr "Registra"
+
+#: src/gui/npcstringdialog.cpp:38
+msgid "NPC Text Request"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:81
 #, c-format
@@ -560,21 +575,9 @@ msgstr "La password deve contenere meno di %d caratteri."
 msgid "Passwords do not match."
 msgstr "Le password non corrispondono."
 
-#: src/gui/register.cpp:210 src/main.cpp:945
+#: src/gui/register.cpp:210 src/main.cpp:954
 msgid "Error"
 msgstr "Errore"
-
-#: src/gui/setup_audio.cpp:42
-msgid "Sound"
-msgstr "Suono"
-
-#: src/gui/setup_audio.cpp:48
-msgid "Sfx volume"
-msgstr "Volume effetti sonori"
-
-#: src/gui/setup_audio.cpp:49
-msgid "Music volume"
-msgstr "Volume musica"
 
 #: src/gui/setup.cpp:58
 msgid "Apply"
@@ -603,6 +606,18 @@ msgstr ""
 #: src/gui/setup.cpp:94
 msgid "Players"
 msgstr ""
+
+#: src/gui/setup_audio.cpp:42
+msgid "Sound"
+msgstr "Suono"
+
+#: src/gui/setup_audio.cpp:48
+msgid "Sfx volume"
+msgstr "Volume effetti sonori"
+
+#: src/gui/setup_audio.cpp:49
+msgid "Music volume"
+msgstr "Volume musica"
 
 #: src/gui/setup_joystick.cpp:39 src/gui/setup_joystick.cpp:78
 msgid "Press the button to start calibration"
@@ -769,15 +784,32 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: src/gui/status.cpp:52 src/gui/status.cpp:235
+#: src/gui/status.cpp:52 src/gui/status.cpp:238
 #, fuzzy, c-format
 msgid "Job: %d"
 msgstr "Livello: %d"
 
-#: src/gui/status.cpp:53 src/gui/status.cpp:238
+#: src/gui/status.cpp:53 src/gui/status.cpp:241
 #, fuzzy, c-format
 msgid "Money: %d GP"
 msgstr "Monete: %d"
+
+#: src/gui/status.cpp:55
+msgid "HP:"
+msgstr ""
+
+#: src/gui/status.cpp:59
+msgid "Exp:"
+msgstr ""
+
+#: src/gui/status.cpp:63
+msgid "MP:"
+msgstr ""
+
+#: src/gui/status.cpp:67
+#, fuzzy
+msgid "Job:"
+msgstr "Livello: %d"
 
 #: src/gui/status.cpp:127
 #, fuzzy
@@ -812,50 +844,51 @@ msgstr "Attacco %+d"
 msgid "M.Defense:"
 msgstr "Difesa %+d"
 
-#: src/gui/status.cpp:136
-#, c-format
+#: src/gui/status.cpp:137
+#, no-c-format
 msgid "% Accuracy:"
 msgstr ""
 
-#: src/gui/status.cpp:137
-#, c-format
+#: src/gui/status.cpp:139
+#, no-c-format
 msgid "% Evade:"
 msgstr ""
 
-#: src/gui/status.cpp:138
+#: src/gui/status.cpp:141
+#, no-c-format
 msgid "% Reflex:"
 msgstr ""
 
-#: src/gui/status.cpp:282
+#: src/gui/status.cpp:285
 #, fuzzy
 msgid "Strength"
 msgstr "Forza:"
 
-#: src/gui/status.cpp:283
+#: src/gui/status.cpp:286
 #, fuzzy
 msgid "Agility"
 msgstr "Agilità:"
 
-#: src/gui/status.cpp:284
+#: src/gui/status.cpp:287
 #, fuzzy
 msgid "Vitality"
 msgstr "Vitalità:"
 
-#: src/gui/status.cpp:285
+#: src/gui/status.cpp:288
 #, fuzzy
 msgid "Intelligence"
 msgstr "Intelligenza:"
 
-#: src/gui/status.cpp:286
+#: src/gui/status.cpp:289
 #, fuzzy
 msgid "Dexterity"
 msgstr "Destrezza:"
 
-#: src/gui/status.cpp:287
+#: src/gui/status.cpp:290
 msgid "Luck"
 msgstr ""
 
-#: src/gui/status.cpp:305
+#: src/gui/status.cpp:308
 #, c-format
 msgid "Remaining Status Points: %d"
 msgstr ""
@@ -893,25 +926,25 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: src/resources/itemdb.cpp:99
-msgid "Unnamed"
-msgstr ""
-
-#: src/main.cpp:769
+#: src/main.cpp:778
 msgid "Got disconnected from server!"
 msgstr ""
 
-#: src/main.cpp:956
+#: src/main.cpp:965
 #, fuzzy
 msgid "Connecting to map server..."
 msgstr "Connessione..."
 
-#: src/main.cpp:964
+#: src/main.cpp:973
 msgid "Connecting to character server..."
 msgstr ""
 
-#: src/main.cpp:972
+#: src/main.cpp:981
 msgid "Connecting to account server..."
+msgstr ""
+
+#: src/resources/itemdb.cpp:99
+msgid "Unnamed"
 msgstr ""
 
 #~ msgid "Unregister"
