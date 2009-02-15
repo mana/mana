@@ -75,7 +75,7 @@ gcn::Widget* TabbedArea::getWidget(const std::string &name)
 
 void TabbedArea::addTab(const std::string &caption, gcn::Widget *widget)
 {
-    Tab* tab = new Tab();
+    Tab* tab = new Tab;
     tab->setCaption(caption);
     mTabsToDelete.push_back(tab);
 

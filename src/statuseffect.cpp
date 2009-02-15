@@ -149,8 +149,8 @@ void StatusEffect::load()
             the_map = &stunEffects;
 
         if (the_map) {
-            StatusEffect *startEffect = new StatusEffect();
-            StatusEffect *endEffect = new StatusEffect();
+            StatusEffect *startEffect = new StatusEffect;
+            StatusEffect *endEffect = new StatusEffect;
 
             startEffect->mMessage = XML::getProperty(node, "start-message", "");
             startEffect->mSFXEffect = XML::getProperty(node, "start-audio", "");

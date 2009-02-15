@@ -40,7 +40,7 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
     mAnimationTime(0),
     mAnimationPhase(0)
 {
-    mAnimation = new Animation();
+    mAnimation = new Animation;
 
     ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
         XML::getProperty(animationNode, "imageset", ""),

@@ -50,7 +50,7 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData, int nextState):
     mLoginData(loginData),
     mNextState(nextState)
 {
-    mServerListModel = new ServerListModel();
+    mServerListModel = new ServerListModel;
     mServerList = new ListBox(mServerListModel);
     ScrollArea *mScrollArea = new ScrollArea(mServerList);
     mOkButton = new Button(_("OK"), "ok", this);

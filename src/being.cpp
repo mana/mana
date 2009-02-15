@@ -99,7 +99,7 @@ Being::Being(int id, int job, Map *map):
 {
     setMap(map);
 
-    mSpeechBubble = new SpeechBubble();
+    mSpeechBubble = new SpeechBubble;
 
     if (instances == 0)
     {
@@ -440,7 +440,7 @@ void Being::logic()
     }
 
     // Update sprite animations
-    if (mUsedTargetCursor != NULL)
+    if (mUsedTargetCursor)
         mUsedTargetCursor->update(tick_time * 10);
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
@@ -471,7 +471,7 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     int px = mPx + offsetX;
     int py = mPy + offsetY;
 
-    if (mUsedTargetCursor != NULL)
+    if (mUsedTargetCursor)
     {
         mUsedTargetCursor->draw(graphics, px, py);
     }

@@ -97,7 +97,7 @@ Gui::Gui(Graphics *graphics):
     mFocusHandler = new FocusHandler;
 
     // Initialize top GUI widget
-    WindowContainer *guiTop = new WindowContainer();
+    WindowContainer *guiTop = new WindowContainer;
     guiTop->setDimension(gcn::Rectangle(0, 0,
                 graphics->getWidth(), graphics->getHeight()));
     guiTop->setOpaque(false);
@@ -156,7 +156,7 @@ Gui::Gui(Graphics *graphics):
     config.addListener("customcursor", mConfigListener);
 
     // Create the viewport
-    viewport = new Viewport();
+    viewport = new Viewport;
     viewport->setDimension(gcn::Rectangle(0, 0,
                 graphics->getWidth(), graphics->getHeight()));
     guiTop->add(viewport);

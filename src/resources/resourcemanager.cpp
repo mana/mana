@@ -379,7 +379,7 @@ ResourceManager *ResourceManager::getInstance()
 {
     // Create a new instance if necessary.
     if (!instance)
-        instance = new ResourceManager();
+        instance = new ResourceManager;
     return instance;
 }
 

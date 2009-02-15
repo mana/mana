@@ -61,7 +61,7 @@ void MonsterDB::load()
             continue;
         }
 
-        MonsterInfo *currentInfo = new MonsterInfo();
+        MonsterInfo *currentInfo = new MonsterInfo;
 
         currentInfo->setName(XML::getProperty(monsterNode, "name", _("unnamed")));
 

@@ -126,7 +126,7 @@ class ConfigurationObject
         template <class IT, class T, class CONT>
         void setList(const std::string &name, IT begin, IT end, ConfigurationListManager<T, CONT> *manager)
         {
-            ConfigurationObject *nextobj = new ConfigurationObject();
+            ConfigurationObject *nextobj = new ConfigurationObject;
             deleteList(name);
             ConfigurationList *list = &(mContainerOptions[name]);
 
@@ -134,7 +134,7 @@ class ConfigurationObject
                 ConfigurationObject *wrobj = manager->writeConfigItem(*it, nextobj);
                 if (wrobj) { // wrote something
                     assert (wrobj == nextobj);
-                    nextobj = new ConfigurationObject();
+                    nextobj = new ConfigurationObject;
                     list->push_back(wrobj);
                 } else
                     nextobj->clear(); // you never know...

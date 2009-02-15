@@ -193,25 +193,25 @@ void createGuiWindows(Network *network)
 {
     // Create dialogs
     chatWindow = new ChatWindow(network);
-    menuWindow = new MenuWindow();
+    menuWindow = new MenuWindow;
     statusWindow = new StatusWindow(player_node);
-    miniStatusWindow = new MiniStatusWindow();
+    miniStatusWindow = new MiniStatusWindow;
     buyDialog = new BuyDialog(network);
     sellDialog = new SellDialog(network);
-    buySellDialog = new BuySellDialog();
-    inventoryWindow = new InventoryWindow();
-    emoteWindow = new EmoteWindow();
-    npcTextDialog = new NpcTextDialog();
-    npcIntegerDialog = new NpcIntegerDialog();
-    npcListDialog = new NpcListDialog();
-    npcStringDialog = new NpcStringDialog();
-    skillDialog = new SkillDialog();
-    setupWindow = new Setup();
-    minimap = new Minimap();
-    equipmentWindow = new EquipmentWindow();
+    buySellDialog = new BuySellDialog;
+    inventoryWindow = new InventoryWindow;
+    emoteWindow = new EmoteWindow;
+    npcTextDialog = new NpcTextDialog;
+    npcIntegerDialog = new NpcIntegerDialog;
+    npcListDialog = new NpcListDialog;
+    npcStringDialog = new NpcStringDialog;
+    skillDialog = new SkillDialog;
+    setupWindow = new Setup;
+    minimap = new Minimap;
+    equipmentWindow = new EquipmentWindow;
     tradeWindow = new TradeWindow(network);
-    helpWindow = new HelpWindow();
-    debugWindow = new DebugWindow();
+    helpWindow = new HelpWindow;
+    debugWindow = new DebugWindow;
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",new ItemShortcutContainer);
     emoteShortcutWindow = new ShortcutWindow("emoteShortcut",new EmoteShortcutContainer);
 
@@ -268,22 +268,22 @@ void destroyGuiWindows()
 Game::Game(Network *network):
     mNetwork(network),
     mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
-    mBuySellHandler(new BuySellHandler()),
-    mChatHandler(new ChatHandler()),
-    mEquipmentHandler(new EquipmentHandler()),
-    mInventoryHandler(new InventoryHandler()),
-    mItemHandler(new ItemHandler()),
-    mNpcHandler(new NPCHandler()),
-    mPlayerHandler(new PlayerHandler()),
-    mSkillHandler(new SkillHandler()),
-    mTradeHandler(new TradeHandler())
+    mBuySellHandler(new BuySellHandler),
+    mChatHandler(new ChatHandler),
+    mEquipmentHandler(new EquipmentHandler),
+    mInventoryHandler(new InventoryHandler),
+    mItemHandler(new ItemHandler),
+    mNpcHandler(new NPCHandler),
+    mPlayerHandler(new PlayerHandler),
+    mSkillHandler(new SkillHandler),
+    mTradeHandler(new TradeHandler)
 {
     createGuiWindows(network);
     engine = new Engine(network);
 
     beingManager = new BeingManager(network);
-    floorItemManager = new FloorItemManager();
-    effectManager = new EffectManager();
+    floorItemManager = new FloorItemManager;
+    effectManager = new EffectManager;
 
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();

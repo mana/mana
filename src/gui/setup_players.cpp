@@ -139,10 +139,10 @@ public:
             std::string name = (*player_names)[r];
             gcn::Widget *widget = new gcn::Label(name);
             mWidgets.push_back(widget);
-            gcn::ListModel *playerRelation = new PlayerRelationListModel();
+            gcn::ListModel *playerRelation = new PlayerRelationListModel;
 
             gcn::DropDown *choicebox = new DropDown(playerRelation,
-                                                    new ScrollArea(),
+                                                    new ScrollArea,
                                                     new ListBox(playerRelation),
                                                     false);
             choicebox->setSelected(player_relations.getRelation(name));
@@ -220,7 +220,7 @@ public:
 
 Setup_Players::Setup_Players():
     mPlayerTableTitleModel(new StaticTableModel(1, COLUMNS_NR)),
-    mPlayerTableModel(new PlayerTableModel()),
+    mPlayerTableModel(new PlayerTableModel),
     mPlayerTable(new GuiTable(mPlayerTableModel)),
     mPlayerTitleTable(new GuiTable(mPlayerTableTitleModel)),
     mPlayerScrollArea(new ScrollArea(mPlayerTable)),
@@ -240,8 +240,8 @@ Setup_Players::Setup_Players():
                                            RELATION_CHOICE_COLUMN_WIDTH);
     mPlayerTitleTable->setBackgroundColor(gcn::Color(0xbf, 0xbf, 0xbf));
 
-    gcn::ListModel *ignoreChoices = new IgnoreChoicesListModel();
-    mIgnoreActionChoicesBox = new DropDown(ignoreChoices, new ScrollArea(),
+    gcn::ListModel *ignoreChoices = new IgnoreChoicesListModel;
+    mIgnoreActionChoicesBox = new DropDown(ignoreChoices, new ScrollArea,
                                            new ListBox(ignoreChoices), false);
 
     for (int i = 0; i < COLUMNS_NR; i++)

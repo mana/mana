@@ -56,7 +56,7 @@ PopupMenu::PopupMenu():
     setTitleBarHeight(0);
     setShowTitle(false);
 
-    mBrowserBox = new BrowserBox();
+    mBrowserBox = new BrowserBox;
     mBrowserBox->setPosition(4, 4);
     mBrowserBox->setHighlightMode(BrowserBox::BACKGROUND);
     mBrowserBox->setOpaque(false);

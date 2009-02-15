@@ -51,7 +51,7 @@ ItemContainer::ItemContainer(Inventory *inventory, int offset):
     mLastSelectedItemId(NO_ITEM),
     mOffset(offset)
 {
-    mItemPopup = new ItemPopup();
+    mItemPopup = new ItemPopup;
 
     ResourceManager *resman = ResourceManager::getInstance();
 

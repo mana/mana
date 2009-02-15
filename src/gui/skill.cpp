@@ -236,7 +236,7 @@ bool SkillDialog::hasSkill(int id)
 
 void SkillDialog::addSkill(int id, int lvl, int mp)
 {
-    SKILL *tmp = new SKILL();
+    SKILL *tmp = new SKILL;
     tmp->id = id;
     tmp->lv = lvl;
     tmp->sp = mp;

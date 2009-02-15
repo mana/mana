@@ -32,7 +32,7 @@
 NpcIntegerDialog::NpcIntegerDialog():
     Window(_("NPC Number Request"))
 {
-    mValueField = new IntTextField();
+    mValueField = new IntTextField;
 
     mDecButton = new Button("-", "decvalue", this);
     mIncButton = new Button("+", "incvalue", this);

@@ -87,7 +87,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
 
     if (instances == 0)
     {
-        windowConfigListener = new WindowConfigListener();
+        windowConfigListener = new WindowConfigListener;
         // Send GUI alpha changed for initialization
         windowConfigListener->optionChanged("guialpha");
         config.addListener("guialpha", windowConfigListener);
@@ -244,7 +244,7 @@ void Window::setResizable(bool r)
 
     if (r)
     {
-        mGrip = new ResizeGrip();
+        mGrip = new ResizeGrip;
         mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
         mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
         add(mGrip);

@@ -68,7 +68,7 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     ATK_BONUS(0), MATK_BONUS(0), DEF_BONUS(0), MDEF_BONUS(0), FLEE_BONUS(0),
     mStatPoint(0), mSkillPoint(0),
     mStatsPointsToAttribute(0),
-    mEquipment(new Equipment()),
+    mEquipment(new Equipment),
     mXp(0), mNetwork(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false),
@@ -680,7 +680,7 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
     ResourceManager *resman = ResourceManager::getInstance();
 
     currentImageSet = resman->getImageSet(filename, width, height);
-    Animation *anim = new Animation();
+    Animation *anim = new Animation;
 
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)
     {

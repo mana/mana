@@ -50,7 +50,7 @@ SellDialog::SellDialog(Network *network):
     setMinHeight(230);
     setDefaultSize(0, 0, 260, 230);
 
-    mShopItems = new ShopItems();
+    mShopItems = new ShopItems;
 
     mShopItemList = new ShopListBox(mShopItems, mShopItems);
     mScrollArea = new ScrollArea(mShopItemList);

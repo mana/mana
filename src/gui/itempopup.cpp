@@ -52,7 +52,7 @@ ItemPopup::ItemPopup():
     mItemName->setPosition(2, 2);
 
     // Item Description
-    mItemDesc = new TextBox();
+    mItemDesc = new TextBox;
     mItemDesc->setEditable(false);
     mItemDescScroll = new ScrollArea(mItemDesc);
 
@@ -63,7 +63,7 @@ ItemPopup::ItemPopup():
     mItemDescScroll->setPosition(2, getFont()->getHeight());
 
     // Item Effect
-    mItemEffect = new TextBox();
+    mItemEffect = new TextBox;
     mItemEffect->setEditable(false);
     mItemEffectScroll = new ScrollArea(mItemEffect);
 
@@ -74,7 +74,7 @@ ItemPopup::ItemPopup():
     mItemEffectScroll->setPosition(2, (2 * getFont()->getHeight()) + 5);
 
     // Item Weight
-    mItemWeight = new TextBox();
+    mItemWeight = new TextBox;
     mItemWeight->setEditable(false);
     mItemWeightScroll = new ScrollArea(mItemWeight);
 

@@ -45,7 +45,7 @@ ItemShortcutContainer::ItemShortcutContainer():
     addMouseListener(this);
     addWidgetListener(this);
 
-    mItemPopup = new ItemPopup();
+    mItemPopup = new ItemPopup;
 
     ResourceManager *resman = ResourceManager::getInstance();
 

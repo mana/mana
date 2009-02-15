@@ -166,7 +166,7 @@ void SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
                 actionName.c_str(), getIdPath().c_str());
         return;
     }
-    Action *action = new Action();
+    Action *action = new Action;
     mActions[actionType] = action;
 
     // When first action set it as default direction
@@ -200,7 +200,7 @@ void SpriteDef::loadAnimation(xmlNodePtr animationNode,
         return;
     }
 
-    Animation *animation = new Animation();
+    Animation *animation = new Animation;
     action->setAnimation(directionType, animation);
 
     // Get animation frames

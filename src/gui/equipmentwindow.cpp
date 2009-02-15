@@ -61,7 +61,7 @@ EquipmentWindow::EquipmentWindow():
     Window(_("Equipment")),
     mSelected(-1)
 {
-    mItemPopup = new ItemPopup();
+    mItemPopup = new ItemPopup;
 
     // Control that shows the Player
     mPlayerBox = new PlayerBox;

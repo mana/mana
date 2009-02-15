@@ -59,7 +59,7 @@ Setup_Colors::Setup_Colors() :
 
     // Replace this later with a more appropriate link handler. For now, this'll
     // do, as it'll do nothing when clicked on.
-    mPreview->setLinkHandler(new ItemLinkHandler());
+    mPreview->setLinkHandler(new ItemLinkHandler);
 
     mPreviewBox = new ScrollArea(mPreview);
     mPreviewBox->setHeight(20);
@@ -68,7 +68,7 @@ Setup_Colors::Setup_Colors() :
 
     mRedLabel = new gcn::Label(_("Red: "));
 
-    mRedText = new TextField();
+    mRedText = new TextField;
     mRedText->setWidth(40);
     mRedText->setRange(0, 255);
     mRedText->setNumeric(true);
@@ -82,7 +82,7 @@ Setup_Colors::Setup_Colors() :
 
     mGreenLabel = new gcn::Label(_("Green: "));
 
-    mGreenText = new TextField();
+    mGreenText = new TextField;
     mGreenText->setWidth(40);
     mGreenText->setRange(0, 255);
     mGreenText->setNumeric(true);
@@ -96,7 +96,7 @@ Setup_Colors::Setup_Colors() :
 
     mBlueLabel = new gcn::Label(_("Blue: "));
 
-    mBlueText = new TextField();
+    mBlueText = new TextField;
     mBlueText->setWidth(40);
     mBlueText->setRange(0, 255);
     mBlueText->setNumeric(true);

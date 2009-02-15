@@ -62,7 +62,7 @@ Viewport::Viewport():
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
 
-    mPopupMenu = new PopupMenu();
+    mPopupMenu = new PopupMenu;
 }
 
 Viewport::~Viewport()

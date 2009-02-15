@@ -107,7 +107,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 {
     mCurlError[0] = 0;
 
-    mBrowserBox = new BrowserBox();
+    mBrowserBox = new BrowserBox;
     mScrollArea = new ScrollArea(mBrowserBox);
     mLabel = new gcn::Label(_("Connecting..."));
     mProgressBar = new ProgressBar(0.0, 310, 20, 168, 116, 31);

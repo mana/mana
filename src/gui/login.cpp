@@ -60,7 +60,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mServerList = new DropDownList("MostRecent00", dfltServer, dfltPort,
                                    MAX_SERVER_LIST_SIZE);
     mServerListBox = new ListBox(mServerList);
-    mServerScrollArea = new ScrollArea();
+    mServerScrollArea = new ScrollArea;
 
     mUserField = new TextField(mLoginData->username);
     mPassField = new PasswordField(mLoginData->password);

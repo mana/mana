@@ -410,10 +410,10 @@ void init_engine(const Options &options)
     Image::setLoadAsOpenGL(useOpenGL);
 
     // Create the graphics context
-    graphics = useOpenGL ? new OpenGLGraphics() : new Graphics();
+    graphics = useOpenGL ? new OpenGLGraphics : new Graphics;
 #else
     // Create the graphics context
-    graphics = new Graphics();
+    graphics = new Graphics;
 #endif
 
     const int width = (int) config.getValue("screenwidth", defaultScreenWidth);
@@ -435,10 +435,10 @@ void init_engine(const Options &options)
     graphics->_beginDraw();
 
     // Initialize the item shortcuts.
-    itemShortcut = new ItemShortcut();
+    itemShortcut = new ItemShortcut;
 
     // Initialize the emote shortcuts.
-    emoteShortcut = new EmoteShortcut();
+    emoteShortcut = new EmoteShortcut;
 
     gui = new Gui(graphics);
     state = LOGIN_STATE; /**< Initial game state */
@@ -724,7 +724,7 @@ extern "C" char const *_nl_locale_name_default(void);
 /** Main */
 int main(int argc, char *argv[])
 {
-    logger = new Logger();
+    logger = new Logger;
 
     Options options;
 
@@ -773,12 +773,12 @@ int main(int argc, char *argv[])
     unsigned int oldstate = !state; // We start with a status change.
 
     // Needs to be created in main, as the updater uses it
-    textColor = new Color();
+    textColor = new Color;
 
     Game *game = NULL;
     Window *currentDialog = NULL;
     Image *login_wallpaper = NULL;
-    setupWindow = new Setup();
+    setupWindow = new Setup;
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
@@ -812,7 +812,7 @@ int main(int argc, char *argv[])
     loginData.registerLogin = false;
 
     SDLNet_Init();
-    Network *network = new Network();
+    Network *network = new Network;
 
     // Set the most appropriate wallpaper, based on screen width
     int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);

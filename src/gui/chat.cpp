@@ -59,7 +59,7 @@ Window(""), mNetwork(network), mTmpVisible(false)
     setMinWidth(150);
     setMinHeight(90);
 
-    mItemLinkHandler = new ItemLinkHandler();
+    mItemLinkHandler = new ItemLinkHandler;
 
     mChatInput = new ChatInput;
     mChatInput->setActionEventId("chatinput");

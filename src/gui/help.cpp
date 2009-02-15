@@ -39,7 +39,7 @@ HelpWindow::HelpWindow():
     setWindowName(_("Help"));
     setResizable(true);
 
-    mBrowserBox = new BrowserBox();
+    mBrowserBox = new BrowserBox;
     mBrowserBox->setOpaque(false);
     mScrollArea = new ScrollArea(mBrowserBox);
     Button *okButton = new Button(_("Close"), "close", this);

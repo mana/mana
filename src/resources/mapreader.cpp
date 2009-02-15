@@ -522,7 +522,7 @@ Tileset *MapReader::readTileset(xmlNodePtr node,
                 // create animation
                 if (!set) continue;
 
-                Animation *ani = new Animation();
+                Animation *ani = new Animation;
                 for (int i = 0; ;i++)
                 {
                     std::map<std::string, int>::iterator iFrame, iDelay;

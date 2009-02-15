@@ -51,7 +51,7 @@ void ItemDB::load()
 
     logger->log("Initializing item database...");
 
-    mUnknown = new ItemInfo();
+    mUnknown = new ItemInfo;
     mUnknown->setName(_("Unknown item"));
     mUnknown->setImageName("");
     mUnknown->setSprite("error.xml", GENDER_MALE);

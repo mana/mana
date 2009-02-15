@@ -69,7 +69,7 @@ Setup::Setup():
             btn->setEnabled(statusWindow != NULL);
     }
 
-    TabbedArea *panel = new TabbedArea();
+    TabbedArea *panel = new TabbedArea;
     panel->setDimension(gcn::Rectangle(5, 5, width - 10, height - 40));
 
     SetupTab *tab;

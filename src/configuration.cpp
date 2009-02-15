@@ -106,7 +106,7 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
             {
                 if (xmlStrEqual(subnode->name, BAD_CAST name.c_str())
                     && subnode->type == XML_ELEMENT_NODE) {
-                    ConfigurationObject *cobj = new ConfigurationObject();
+                    ConfigurationObject *cobj = new ConfigurationObject;
 
                     cobj->initFromXML(subnode); // recurse
 

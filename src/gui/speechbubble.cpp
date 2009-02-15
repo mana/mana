@@ -41,7 +41,7 @@ SpeechBubble::SpeechBubble():
     mCaption->setFont(boldFont);
     mCaption->setPosition(5, 3);
 
-    mSpeechBox = new TextBox();
+    mSpeechBox = new TextBox;
     mSpeechBox->setEditable(false);
     mSpeechBox->setOpaque(false);
 

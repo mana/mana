@@ -69,7 +69,7 @@ class KeyListModel : public gcn::ListModel
 };
 
 Setup_Keyboard::Setup_Keyboard():
-    mKeyListModel(new KeyListModel()),
+    mKeyListModel(new KeyListModel),
     mKeyList(new ListBox(mKeyListModel)),
     mKeySetting(false)
 {
