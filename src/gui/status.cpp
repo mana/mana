@@ -40,7 +40,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mPlayer(player),
     mCurrency(0)
 {
-    setWindowName(_("Status"));
+    setWindowName("Status");
     setCloseButton(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
                    (windowContainer->getHeight() - 255) / 2, 400, 345);

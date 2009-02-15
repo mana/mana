@@ -34,7 +34,7 @@ Recorder::Recorder(ChatWindow *chat, const std::string &title,
                    const std::string &buttonTxt) :
     Window(title)
 {
-    setWindowName(_("Recorder"));
+    setWindowName("Recorder");
     const int offsetX = 2 * getPadding() + 10;
     const int offsetY = getTitleBarHeight() + getPadding() + 10;
 

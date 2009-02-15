@@ -35,7 +35,7 @@
 EmoteWindow::EmoteWindow():
     Window(_("Emote"))
 {
-    setWindowName(_("Emote"));
+    setWindowName("Emote");
     setResizable(true);
     setCloseButton(true);
     setMinWidth(80);

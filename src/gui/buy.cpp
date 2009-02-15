@@ -43,7 +43,7 @@ BuyDialog::BuyDialog(Network *network):
     Window(_("Buy")), mNetwork(network),
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
-    setWindowName(_("Buy"));
+    setWindowName("Buy");
     setResizable(true);
     setMinWidth(260);
     setMinHeight(230);

@@ -52,7 +52,7 @@
 ChatWindow::ChatWindow(Network * network):
 Window(""), mNetwork(network), mTmpVisible(false)
 {
-    setWindowName(_("Chat"));
+    setWindowName("Chat");
 
     setResizable(true);
     setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);

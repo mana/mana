@@ -360,7 +360,7 @@ int UpdaterWindow::downloadThread(void *ptr)
                         // Remove the corrupted file
                         ::remove(outFilename.c_str());
                         logger->log(
-                            _("Checksum for file %s failed: (%lx/%lx)"),
+                            "Checksum for file %s failed: (%lx/%lx)",
                             uw->mCurrentFile.c_str(),
                             adler, uw->mCurrentChecksum);
                         attempts++;

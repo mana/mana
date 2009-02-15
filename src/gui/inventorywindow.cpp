@@ -51,7 +51,7 @@ InventoryWindow::InventoryWindow(int invSize):
     mMaxSlots(invSize),
     mItemDesc(false)
 {
-    setWindowName(_("Inventory"));
+    setWindowName("Inventory");
     setResizable(true);
     setCloseButton(true);
 

@@ -36,7 +36,7 @@ HelpWindow::HelpWindow():
     setMinWidth(300);
     setMinHeight(250);
     setContentSize(455, 350);
-    setWindowName(_("Help"));
+    setWindowName("Help");
     setResizable(true);
 
     mBrowserBox = new BrowserBox;

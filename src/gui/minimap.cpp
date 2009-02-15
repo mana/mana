@@ -40,7 +40,7 @@ Minimap::Minimap():
     mMapImage(NULL),
     mProportion(0.5)
 {
-    setWindowName(_("MiniMap"));
+    setWindowName("MiniMap");
     mShow = config.getValue(getWindowName() + "Show", true);
     setDefaultSize(5, 25, 100, 100);
     setResizable(true);

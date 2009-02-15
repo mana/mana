@@ -52,7 +52,7 @@ TradeWindow::TradeWindow(Network *network):
     mMyInventory(new Inventory(INVENTORY_SIZE)),
     mPartnerInventory(new Inventory(INVENTORY_SIZE))
 {
-    setWindowName(_("Trade"));
+    setWindowName("Trade");
     setDefaultSize(115, 227, 342, 209);
     setResizable(true);
 
