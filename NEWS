@@ -1,3 +1,19 @@
+0.0.29 (...)
+* Added ability to record the chatlog to a file
+* Added support for dynamic emotes
+* Added speech balloons that wrap the text
+* Added item popup for showing detailed information
+* Added support for external tilesets
+* Added ability to refer to items in chat
+* Added the ability to see your own name in game
+* Made smily shortcuts customizable in more detail
+* Made chat colors customizable
+* Made it possible to change resolution
+* GUI opacity now effects more widgets
+* Redesigned equipment window and allow unequip from there
+* Next level percentage is now displayed in hundredths
+* Player and NPC names now appear in bold for better readability
+
 0.0.28.1 (12 February 2009)
 - Enabled translations on Windows
 - Added command line option to set home directory path
