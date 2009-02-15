@@ -27,6 +27,7 @@
 #include "../localplayer.h"
 #include "../log.h"
 #include "../npc.h"
+#include "../units.h"
 
 #include "../gui/buy.h"
 #include "../gui/chat.h"
@@ -281,8 +282,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                         player_node->mGp = msg->readInt32();
                         if (player_node->mGp > curGp)
                             chatWindow->chatLog(_("You picked up ") +
-                                toString(player_node->mGp - curGp) + " GP",
-                                BY_SERVER);
+                                Units::formatCurrency(player_node->mGp
+                                    - curGp), BY_SERVER);
                     }
                     break;
                 case 0x0016:

@@ -29,6 +29,7 @@
 #include "widgets/layout.h"
 
 #include "../localplayer.h"
+#include "../units.h"
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
@@ -36,7 +37,9 @@
 
 StatusWindow::StatusWindow(LocalPlayer *player):
     Window(player->getName()),
-    mPlayer(player)
+    mPlayer(player),
+    currency(-1),
+    currencyS("?")
 {
     setWindowName(_("Status"));
     setCloseButton(true);
@@ -49,7 +52,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
     mLvlLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
     mJobLvlLabel = new gcn::Label(strprintf(_("Job: %d"), 0));
-    mGpLabel = new gcn::Label(strprintf(_("Money: %d GP"), 0));
+    mGpLabel = new gcn::Label(strprintf(_("Money: %s"), ""));
 
     mHpLabel = new gcn::Label(_("HP:"));
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
@@ -171,8 +174,12 @@ void StatusWindow::update()
     mJobLvlLabel->setCaption(strprintf(_("Job: %d"), mPlayer->mJobLevel));
     mJobLvlLabel->adjustSize();
 
-    mGpLabel->setCaption(strprintf(_("Money: %d GP"), mPlayer->mGp));
-    mGpLabel->adjustSize();
+    if (currency != mPlayer->mGp) {
+        currency = mPlayer->mGp;
+        currencyS = strprintf(_("Money: %s"), Units::formatCurrency(currency).c_str());
+        mGpLabel->setCaption(currencyS);
+        mGpLabel->adjustSize();
+    }
 
     mHpBar->setText(toString(mPlayer->mHp) +
                     "/" + toString(mPlayer->mMaxHp));

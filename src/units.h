@@ -1,6 +1,6 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Support for custom units
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,14 +19,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "shopitem.h"
+#ifndef UNITS_H
+#define UNITS_H
 
-#include "units.h"
+#include <string>
 
-ShopItem::ShopItem(int id, int quantity, int price):
-    Item(id, quantity),
-    mPrice(price)
+class Units
 {
-    mDisplayName = getInfo().getName() +
-                        " (" + Units::formatCurrency(mPrice).c_str() + ")";
-}
+    public:
+        /**
+        * Loads and parses the units.xml file (if found).
+        */
+        static void loadUnits();
+
+        /**
+        * Formats the given number in the correct currency format.
+        */
+        static std::string formatCurrency(const int value);
+
+        /**
+        * Formats the given number in the correct weight/mass format.
+        */
+        static std::string formatWeight(const int value);
+};
+
+#endif // UNITS_H

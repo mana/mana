@@ -51,6 +51,7 @@
 #include "player_relations.h"
 #include "serverinfo.h"
 #include "sound.h"
+#include "units.h"
 
 #include "gui/button.h"
 #include "gui/char_server.h"
@@ -897,6 +898,8 @@ int main(int argc, char *argv[])
                     login_wallpaper->decRef();
                     login_wallpaper = ResourceManager::getInstance()->
                         getImage(wallpaperName);
+                    // Load units
+                    Units::loadUnits();
                     break;
 
                     // Those states don't cause a network disconnect

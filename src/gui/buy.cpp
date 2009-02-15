@@ -31,6 +31,7 @@
 #include "widgets/layout.h"
 
 #include "../npc.h"
+#include "../units.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
@@ -54,7 +55,8 @@ BuyDialog::BuyDialog(Network *network):
     mScrollArea = new ScrollArea(mShopItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
-    mMoneyLabel = new gcn::Label(strprintf(_("Price: %d GP / Total: %d GP"), 0, 0));
+    mMoneyLabel = new gcn::Label(strprintf(_("Price: %s / Total: %s"),
+                                            "", ""));
     mIncreaseButton = new Button("+", "+", this);
     mDecreaseButton = new Button("-", "-", this);
     mBuyButton = new Button(_("Buy"), "buy", this);
@@ -235,5 +237,7 @@ void BuyDialog::updateButtonsAndLabels()
     // Update quantity and money labels
     mQuantityLabel->setCaption(strprintf("%d / %d", mAmountItems, mMaxItems));
     mMoneyLabel->setCaption
-        (strprintf(_("Price: %d GP / Total: %d GP"), price, mMoney - price));
+        (strprintf(_("Price: %s / Total: %s"),
+                    Units::formatCurrency(price).c_str(),
+                    Units::formatCurrency(mMoney - price).c_str()));
 }

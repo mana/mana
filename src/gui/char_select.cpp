@@ -37,6 +37,7 @@
 #include "../game.h"
 #include "../localplayer.h"
 #include "../main.h"
+#include "../units.h"
 
 #include "../net/charserverhandler.h"
 #include "../net/messageout.h"
@@ -85,6 +86,9 @@ CharSelectDialog::CharSelectDialog(Network *network,
     Window(_("Select Character")), mNetwork(network),
     mCharInfo(charInfo), mGender(gender), mCharSelected(false)
 {
+    LocalPlayer *pi = mCharInfo->getEntry();
+    if (pi)
+        mMoney = Units::formatCurrency(pi->mGp);
     // Control that shows the Player
     mPlayerBox = new PlayerBox;
     mPlayerBox->setWidth(74);
@@ -92,7 +96,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
     mJobLevelLabel = new gcn::Label(strprintf(_("Job Level: %d"), 0));
-    mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
+    mMoneyLabel = new gcn::Label(strprintf(_("Money: %s"), mMoney.c_str()));
 
     const std::string tempString = getFont()->getWidth(_("New")) <
                                    getFont()->getWidth(_("Delete")) ?
@@ -163,10 +167,16 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "previous")
     {
         mCharInfo->prev();
+        LocalPlayer *pi = mCharInfo->getEntry();
+        if (pi)
+            mMoney = Units::formatCurrency(pi->mGp);
     }
     else if (event.getId() == "next")
     {
         mCharInfo->next();
+        LocalPlayer *pi = mCharInfo->getEntry();
+        if (pi)
+            mMoney = Units::formatCurrency(pi->mGp);
     }
 }
 
@@ -176,10 +186,12 @@ void CharSelectDialog::updatePlayerInfo()
 
     if (pi)
     {
-        mNameLabel->setCaption(strprintf(_("Name: %s"), pi->getName().c_str()));
+        mNameLabel->setCaption(strprintf(_("Name: %s"),
+                                          pi->getName().c_str()));
         mLevelLabel->setCaption(strprintf(_("Level: %d"), pi->mLevel));
-        mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"), pi->mJobLevel));
-        mMoneyLabel->setCaption(strprintf(_("Gold: %d"), pi->mGp));
+        mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"),
+                                              pi->mJobLevel));
+        mMoneyLabel->setCaption(strprintf(_("Money: %s"), mMoney.c_str()));
         if (!mCharSelected)
         {
             mNewDelCharButton->setCaption(_("Delete"));
@@ -191,7 +203,7 @@ void CharSelectDialog::updatePlayerInfo()
         mNameLabel->setCaption(strprintf(_("Name: %s"), ""));
         mLevelLabel->setCaption(strprintf(_("Level: %d"), 0));
         mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"), 0));
-        mMoneyLabel->setCaption(strprintf(_("Money: %d"), 0));
+        mMoneyLabel->setCaption(strprintf(_("Money: %s"), 0));
         mNewDelCharButton->setCaption(_("New"));
         mSelectButton->setEnabled(false);
     }

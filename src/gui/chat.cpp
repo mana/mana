@@ -667,7 +667,7 @@ std::string ChatWindow::const_msg(CHATSKILL act)
                 msg += _("You cannot do that right now!");
                 break;
             case RFAIL_ZENY:
-                msg += _("Seems you need more GP... ;-)");
+                msg += _("Seems you need more money... ;-)");
                 break;
             case RFAIL_WEAPON:
                 msg += _("You cannot use this skill with that kind of weapon!");

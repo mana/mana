@@ -32,6 +32,8 @@
 
 #include "widgets/layout.h"
 
+#include "../units.h"
+
 #include "../resources/iteminfo.h"
 
 #include "../utils/gettext.h"
@@ -108,8 +110,8 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemName->setWidth(boldFont->getWidth(item.getName()));
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);
-    mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) +
-                                _(" grams"), 196);
+    mItemWeight->setTextWrapped(_("Weight: ") +
+                                Units::formatWeight(item.getWeight()), 196);
 
     int minWidth = mItemName->getWidth();
 

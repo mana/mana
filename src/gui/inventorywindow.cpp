@@ -38,6 +38,7 @@
 
 #include "../inventory.h"
 #include "../item.h"
+#include "../units.h"
 
 #include "../resources/iteminfo.h"
 
@@ -76,8 +77,8 @@ InventoryWindow::InventoryWindow(int invSize):
     mInvenScroll = new ScrollArea(mItems);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mTotalWeight = toString(player_node->mTotalWeight);
-    mMaxWeight = toString(player_node->mMaxWeight);
+    mTotalWeight = -1;
+    mMaxWeight = -1;
     mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
     mSlotsLabel = new gcn::Label(_("Slots: "));
@@ -124,12 +125,12 @@ void InventoryWindow::logic()
     // redesign of InventoryWindow and ItemContainer probably.
     updateButtons();
 
-    if ((mMaxWeight != toString(player_node->mMaxWeight)) ||
-         mTotalWeight != toString(player_node->mTotalWeight) ||
+    if (mMaxWeight != player_node->mMaxWeight ||
+         mTotalWeight != player_node->mTotalWeight ||
          mUsedSlots != toString(player_node->getInventory()->getNumberOfSlotsUsed()))
     {
-        mTotalWeight = toString(player_node->mTotalWeight);
-        mMaxWeight = toString(player_node->mMaxWeight);
+        mTotalWeight = player_node->mTotalWeight;
+        mMaxWeight = player_node->mMaxWeight;
         mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
         // Weight Bar coloration
@@ -154,8 +155,9 @@ void InventoryWindow::logic()
                                         player_node->mMaxWeight);
 
         mSlotsBar->setText(strprintf("%s/%d", mUsedSlots.c_str(), mMaxSlots));
-        mWeightBar->setText(strprintf("%sg/%sg", mTotalWeight.c_str(),
-                                                 mMaxWeight.c_str()));
+        mWeightBar->setText(strprintf("%s/%s",
+                                    Units::formatWeight(mTotalWeight).c_str(),
+                                    Units::formatWeight(mMaxWeight).c_str()));
     }
 }
 

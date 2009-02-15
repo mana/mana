@@ -342,6 +342,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      textparticle.cpp \
 	      textparticle.h \
 	      tileset.h \
+	      units.cpp \
+	      units.h \
 	      vector.cpp \
 	      vector.h
 

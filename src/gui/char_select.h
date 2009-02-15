@@ -71,7 +71,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Label *mNameLabel;
         gcn::Label *mLevelLabel;
         gcn::Label *mJobLevelLabel;
-        gcn::Label *mMoneyLabel;
+        gcn::Label *mMoneyLabel; std::string mMoney;
 
         PlayerBox *mPlayerBox;
 

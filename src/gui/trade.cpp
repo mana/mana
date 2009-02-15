@@ -37,6 +37,7 @@
 #include "../inventory.h"
 #include "../item.h"
 #include "../localplayer.h"
+#include "../units.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
@@ -77,7 +78,7 @@ TradeWindow::TradeWindow(Network *network):
 
     mPartnerScroll = new ScrollArea(mPartnerItemContainer);
 
-    mMoneyLabel = new gcn::Label(strprintf(_("You get %d GP."), 0));
+    mMoneyLabel = new gcn::Label(strprintf(_("You get %s."), ""));
     mMoneyLabel2 = new gcn::Label(_("You give:"));
     mMoneyField = new TextField;
     mMoneyField->setWidth(50);
@@ -119,7 +120,8 @@ void TradeWindow::widgetResized(const gcn::Event &event)
 
 void TradeWindow::addMoney(int amount)
 {
-    mMoneyLabel->setCaption(strprintf(_("You get %d GP."), amount));
+    mMoneyLabel->setCaption(strprintf(_("You get %s."),
+                                       Units::formatCurrency(amount).c_str()));
     mMoneyLabel->adjustSize();
 }
 
@@ -169,7 +171,7 @@ void TradeWindow::reset()
     mOkButton->setEnabled(true);
     mOkOther = false;
     mOkMe = false;
-    mMoneyLabel->setCaption(strprintf(_("You get %d GP."), 0));
+    mMoneyLabel->setCaption(strprintf(_("You get %s."), ""));
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
 }
