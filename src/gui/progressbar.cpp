@@ -104,10 +104,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 {
     if (config.getValue("guialpha", 0.8) != mAlpha)
     {
-        if (config.getValue("opengl", 0))
-            mAlpha = config.getValue("guialpha", 0.8);
-        else
-            mAlpha = 1.0f;
+        mAlpha = config.getValue("guialpha", 0.8);
         for (int i = 0; i < 9; i++)
         {
             mBorder.grid[i]->setAlpha(mAlpha);
@@ -120,7 +117,8 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     const int alpha = (int)(mAlpha * 255.0f);
 
     // The bar
-    if (mProgress > 0) {
+    if (mProgress > 0)
+    {
 
         graphics->setColor(gcn::Color(mRed, mGreen, mBlue, alpha));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
@@ -129,7 +127,8 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     }
 
     // The label
-    if (!mText.empty()) {
+    if (!mText.empty())
+    {
         gcn::Font *f = boldFont;
         const int textX = getWidth() / 2;
         const int textY = (getHeight() - f->getHeight()) / 2;
