@@ -141,8 +141,6 @@ class LocalPlayer : public Player
 
         void stopAttack();
 
-        Being* getTarget() const;
-
         /**
          * Overridden to do nothing. The attacks of the local player are
          * displayed as soon as the player attacks, not when the server says
@@ -152,6 +150,12 @@ class LocalPlayer : public Player
          * @param damage The amount of damage dealt (0 means miss).
          */
         virtual void handleAttack(Being *victim, int damage) {}
+
+        /**
+         * Returns the current target of the player. Returns 0 if no being is
+         * currently targeted.
+         */
+        Being* getTarget() const;
 
         /**
          * Sets the target being of the player.

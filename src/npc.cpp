@@ -72,21 +72,17 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
 
 NPC::~NPC()
 {
-    if (mName)
-    {
-        delete mName;
+    delete mName;
+
+    if (player_node->getTarget() == this)
         player_node->setTarget(NULL);
-    }
 }
 
 void NPC::setName(const std::string &name)
 {
-    if (mName)
-    {
-        delete mName;
-    }
-    std::string displayName = name.substr(0, name.find('#', 0));
+    const std::string displayName = name.substr(0, name.find('#', 0));
 
+    delete mName;
     mName = new Text(displayName, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
                      gcn::Graphics::CENTER, gcn::Color(200, 200, 255));
     Being::setName(displayName + " (NPC)");
