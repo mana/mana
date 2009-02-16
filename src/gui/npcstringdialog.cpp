@@ -24,11 +24,11 @@
 #include "npcstringdialog.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
 #include "../npc.h"
 
 #include "../utils/gettext.h"
-
-#include "widgets/layout.h"
 
 NpcStringDialog::NpcStringDialog():
     Window(_("NPC Text Request"))
@@ -65,7 +65,7 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
 
     setVisible(false);
     current_npc->stringInput(mValueField->getText());
-    current_npc = 0;
+    current_npc = NULL;
     mValueField->setText("");
 }
 

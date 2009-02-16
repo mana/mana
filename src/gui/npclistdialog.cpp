@@ -110,6 +110,6 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
         setVisible(false);
         reset();
         current_npc->dialogChoice(choice);
-        current_npc = 0;
+        current_npc = NULL;
     }
 }

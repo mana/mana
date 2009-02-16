@@ -45,14 +45,15 @@ NpcTextDialog::NpcTextDialog():
     mTextBox->setEditable(false);
     mTextBox->setOpaque(false);
 
-    scrollArea = new ScrollArea(mTextBox);
-    okButton = new Button(_("OK"), "ok", this);
+    mScrollArea = new ScrollArea(mTextBox);
+    mButton = new Button(_("OK"), "", this);
+    mButton->setActionEventId("ok");
 
-    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    scrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mScrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
 
-    place(0, 0, scrollArea, 5).setPadding(3);
-    place(4, 1, okButton);
+    place(0, 0, mScrollArea, 5).setPadding(3);
+    place(4, 1, mButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
@@ -64,7 +65,7 @@ NpcTextDialog::NpcTextDialog():
 void NpcTextDialog::setText(const std::string &text)
 {
     mText = text;
-    mTextBox->setTextWrapped(mText, scrollArea->getWidth() - 15);
+    mTextBox->setTextWrapped(mText, mScrollArea->getWidth() - 15);
 }
 
 void NpcTextDialog::addText(const std::string &text)
@@ -78,9 +79,11 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
     {
         setText("");
         setVisible(false);
+
         if (current_npc)
             current_npc->nextDialog();
-        current_npc = 0;
+
+        current_npc = NULL;
     }
 }
 

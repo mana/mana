@@ -80,8 +80,9 @@ class NpcTextDialog : public Window, public gcn::ActionListener
 
     private:
         gcn::Button *okButton;
-        gcn::ScrollArea *scrollArea;
+        gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
+        gcn::Button *mButton;
 
         std::string mText;
 };
