@@ -144,10 +144,10 @@ void NPC::stringInput(const std::string &value)
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
-    outMsg.writeInt16(value.length() + 8);
+    outMsg.writeInt16(value.length() + 9);
     outMsg.writeInt32(mId);
     outMsg.writeString(value, value.length());
-    outMsg.writeInt8(0); // Just to be safe
+    outMsg.writeInt8(0);
 }
 
 /*

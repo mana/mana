@@ -21,6 +21,7 @@
 
 #include "button.h"
 #include "inttextfield.h"
+#include "npc_text.h"
 #include "npcintegerdialog.h"
 
 #include "widgets/layout.h"
@@ -28,6 +29,9 @@
 #include "../npc.h"
 
 #include "../utils/gettext.h"
+#include "../utils/strprintf.h"
+
+extern NpcTextDialog *npcTextDialog;
 
 NpcIntegerDialog::NpcIntegerDialog():
     Window(_("NPC Number Request"))
@@ -76,11 +80,13 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "ok")
     {
         finish = 1;
+        npcTextDialog->addText(strprintf("\n> %d\n", value));
     }
     else if (event.getId() == "cancel")
     {
         finish = 1;
         mValueField->reset();
+        npcTextDialog->addText(_("\n> Cancel\n"));
     }
     else if (event.getId() == "decvalue")
     {
@@ -99,7 +105,6 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     {
         setVisible(false);
         current_npc->integerInput(mValueField->getValue());
-        current_npc = 0;
         mValueField->reset();
     }
 }

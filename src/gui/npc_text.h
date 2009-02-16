@@ -70,6 +70,10 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          */
         void addText(const std::string &string);
 
+        void showNextButton();
+
+        void showCloseButton();
+
         /**
          * Called when resizing the window.
          *
@@ -80,6 +84,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
     private:
         gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
+        gcn::Button *mButton;
 
         std::string mText;
 };

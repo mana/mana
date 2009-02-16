@@ -20,14 +20,18 @@
  */
 
 #include "button.h"
+#include "npc_text.h"
 #include "npcstringdialog.h"
 #include "textfield.h"
 
 #include "../npc.h"
 
 #include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 
 #include "widgets/layout.h"
+
+extern NpcTextDialog *npcTextDialog;
 
 NpcStringDialog::NpcStringDialog():
     Window(_("NPC Text Request"))
@@ -60,11 +64,16 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "cancel")
     {
         mValueField->setText("");
+        npcTextDialog->addText(_("\n> Cancel\n"));
+    }
+    else
+    {
+        npcTextDialog->addText(strprintf("\n> \"%s\"\n",
+                                          mValueField->getText().c_str()));
     }
 
     setVisible(false);
     current_npc->stringInput(mValueField->getText());
-    current_npc = 0;
     mValueField->setText("");
 }
 

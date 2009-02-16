@@ -23,6 +23,7 @@
 
 #include "button.h"
 #include "listbox.h"
+#include "npc_text.h"
 #include "npclistdialog.h"
 #include "scrollarea.h"
 
@@ -31,6 +32,9 @@
 #include "../npc.h"
 
 #include "../utils/gettext.h"
+#include "../utils/strprintf.h"
+
+extern NpcTextDialog *npcTextDialog;
 
 NpcListDialog::NpcListDialog():
     Window(_("NPC"))
@@ -89,7 +93,6 @@ void NpcListDialog::reset()
 void NpcListDialog::action(const gcn::ActionEvent &event)
 {
     int choice = 0;
-
     if (event.getId() == "ok")
     {
         // Send the selected index back to the server
@@ -97,11 +100,14 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
         if (selectedIndex > -1)
         {
             choice = selectedIndex + 1;
+            npcTextDialog->addText(strprintf("\n> \"%s\"\n",
+                                              mItems[selectedIndex].c_str()));
         }
     }
     else if (event.getId() == "cancel")
     {
         choice = 0xff; // 0xff means cancel
+        npcTextDialog->addText(_("\n> Cancel\n"));
     }
 
     if (choice)
@@ -109,6 +115,5 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
         setVisible(false);
         reset();
         current_npc->dialogChoice(choice);
-        current_npc = 0;
     }
 }
