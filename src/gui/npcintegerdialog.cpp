@@ -80,7 +80,7 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "ok")
     {
         finish = 1;
-        npcTextDialog->addText(strprintf("\n> %d\n", value));
+        npcTextDialog->addText(strprintf("\n> %d\n", mValueField->getValue()));
     }
     else if (event.getId() == "cancel")
     {

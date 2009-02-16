@@ -91,7 +91,7 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "next")
     {
         current_npc->nextDialog();
-        npcTextDialog->addText("\n> Next\n");
+        addText("\n> Next\n");
     }
     else if (event.getId() == "close")
     {
