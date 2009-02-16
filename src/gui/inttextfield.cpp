@@ -57,6 +57,16 @@ void IntTextField::setRange(int min, int max)
 {
     mMin = min;
     mMax = max;
+
+    if (mValue < mMin)
+        mValue = mMin;
+    else if (mValue > mMax)
+        mValue = mMax;
+
+    if (mDefault < mMin)
+        mDefault = mMin;
+    else if (mDefault > mMax)
+        mDefault = mMax;
 }
 
 int IntTextField::getValue()
@@ -66,16 +76,26 @@ int IntTextField::getValue()
 
 void IntTextField::setValue(int i)
 {
-    if (i >= mMin && i <= mMax)
-        mValue = i;
-    else if (i < mMin)
+    if (i < mMin)
         mValue = mMin;
     else if (i > mMax)
         mValue = mMax;
+    else
+        mValue = i;
 
     const std::string valStr = toString(mValue);
     setText(valStr);
     setCaretPosition(valStr.length() + 1);
+}
+
+void IntTextField::setDefaultValue(int value)
+{
+    if (value < mMin)
+        mDefault = mMin;
+    else if (value > mMax)
+        mDefault = mMax;
+    else
+        mDefault = value;
 }
 
 void IntTextField::reset()

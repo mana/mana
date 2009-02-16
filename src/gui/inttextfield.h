@@ -56,6 +56,11 @@ class IntTextField : public TextField
         void setValue(int value);
 
         /**
+         * Set the default value of the text box to the specified value.
+         */
+        void setDefaultValue(int value);
+
+        /**
          * Responds to key presses.
          */
         void keyPressed(gcn::KeyEvent &event);
