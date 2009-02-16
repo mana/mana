@@ -109,6 +109,11 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     }
 }
 
+void NpcIntegerDialog::setDefaultValue(const int value)
+{
+    mValueField->setDefaultValue(value);
+}
+
 bool NpcIntegerDialog::isInputFocused()
 {
     return mValueField->isFocused();

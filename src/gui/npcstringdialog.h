@@ -70,6 +70,7 @@ class NpcStringDialog : public Window, public gcn::ActionListener
 
     private:
         gcn::TextField *mValueField;
+        std::string mDefault;
 };
 
 #endif // GUI_NPCSTRINGDIALOG_H

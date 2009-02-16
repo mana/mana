@@ -57,13 +57,14 @@ std::string NpcStringDialog::getValue()
 void NpcStringDialog::setValue(const std::string &value)
 {
     mValueField->setText(value);
+    mDefault = value;
 }
 
 void NpcStringDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        mValueField->setText("");
+        mValueField->setText(mDefault);
         npcTextDialog->addText(_("\n> Cancel\n"));
     }
     else

@@ -62,6 +62,13 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener
         void setRange(const int min, const int max);
 
         /**
+         * Sets the default value.
+         *
+         * @param value The new default value
+         */
+        void setDefaultValue(const int value);
+
+        /**
          * Checks whether NpcStringDialog is Focused or not.
          */
         bool isInputFocused();

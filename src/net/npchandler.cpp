@@ -94,6 +94,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             id = msg->readInt32();
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcIntegerDialog->setRange(0, 2147483647);
+            npcIntegerDialog->setDefaultValue(0);
             npcIntegerDialog->setVisible(true);
             npcIntegerDialog->requestFocus();
             break;
