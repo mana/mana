@@ -221,6 +221,37 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
         << (int) ((t / 60) % 60)
         << "] ";
 
+    // Check for item link
+    std::string::size_type start = msg.find('[');
+    while (start != std::string::npos && msg[start+1] != '@')
+    {
+        std::string::size_type end = msg.find(']', start);
+        if (start+1 != end && end != std::string::npos)
+        {
+            // Catch multiple embeds and ignore them
+            // so it doesn't crash the client.
+            while ((msg.find('[', start + 1) != std::string::npos) &&
+                   (msg.find('[', start + 1) < end))
+            {
+                start = msg.find('[', start + 1);
+            }
+
+            std::string temp = msg.substr(start + 1, end - start - 1);
+
+            toLower(trim(temp));
+
+            const ItemInfo itemInfo = ItemDB::get(temp);
+            if (itemInfo.getName() != _("Unknown item"))
+            {
+                msg.insert(end, "@@");
+                msg.insert(start+1, "|");
+                msg.insert(start+1, toString(itemInfo.getId()));
+                msg.insert(start+1, "@@");
+            }
+        }
+        start =  msg.find('[', start + 1);
+    }
+
     line = lineColor + timeStr.str() + tmp.nick + tmp.text;
 
     // We look if the Vertical Scroll Bar is set at the max before
@@ -380,37 +411,6 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         outMsg.writeInt16(length + 4);
         outMsg.writeString(msg, length);
         return;
-    }
-
-    // Check for item link
-    std::string::size_type start = msg.find('[');
-    while (start != std::string::npos && msg[start+1] != '@')
-    {
-        std::string::size_type end = msg.find(']', start);
-        if (start+1 != end && end != std::string::npos)
-        {
-            // Catch multiple embeds and ignore them
-            // so it doesn't crash the client.
-            while ((msg.find('[', start + 1) != std::string::npos) &&
-                   (msg.find('[', start + 1) < end))
-            {
-                start = msg.find('[', start + 1);
-            }
-
-            std::string temp = msg.substr(start + 1, end - start - 1);
-
-            toLower(trim(temp));
-
-            const ItemInfo itemInfo = ItemDB::get(temp);
-            if (itemInfo.getName() != _("Unknown item"))
-            {
-                msg.insert(end, "@@");
-                msg.insert(start+1, "|");
-                msg.insert(start+1, toString(itemInfo.getId()));
-                msg.insert(start+1, "@@");
-            }
-        }
-        start =  msg.find('[', start + 1);
     }
 
     // Prepare ordinary message

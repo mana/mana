@@ -164,7 +164,7 @@ void InventoryHandler::handleMessage(MessageIn *msg)
                 const std::string amountStr =
                     (amount > 1) ? toString(amount) : "a";
                 if (config.getValue("showpickupchat", true)) {
-                    chatWindow->chatLog(strprintf(_("You picked up %s %s"),
+                    chatWindow->chatLog(strprintf(_("You picked up %s [%s]"),
                         amountStr.c_str(), itemInfo.getName().c_str()),
                         BY_SERVER);
                 }
