@@ -328,6 +328,11 @@ void LocalPlayer::walk(unsigned char dir)
     }
 }
 
+Being* LocalPlayer::getTarget() const
+{
+    return mTarget;
+}
+
 void LocalPlayer::setTarget(Being *target)
 {
     if (mLastTarget != -1 || target == this)
@@ -563,11 +568,6 @@ void LocalPlayer::stopAttack()
     }
     setTarget(NULL);
     mLastTarget = -1;
-}
-
-Being* LocalPlayer::getTarget() const
-{
-    return mTarget;
 }
 
 void LocalPlayer::revive()
