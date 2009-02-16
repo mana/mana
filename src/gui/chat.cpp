@@ -117,11 +117,13 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
     // Trim whitespace
     trim(line);
 
+    if (line.empty())
+        return;
+
     CHATLOG tmp;
     tmp.own = own;
     tmp.nick = "";
     tmp.text = line;
-
 
     std::string::size_type pos = line.find(" : ");
     if (pos != std::string::npos)
