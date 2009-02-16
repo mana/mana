@@ -332,7 +332,15 @@ void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
     if (!being || being->getType() != Being::PLAYER) return;
-    handleLooks(static_cast< Player * >(being), msg);
+    Player * player = static_cast< Player * >(being);
+    handleLooks(player, msg);
+    if (msg.getUnreadLength())
+    {
+        int style = msg.readInt16();
+        int color = msg.readInt16();
+        player->setHairStyle(style, color);
+        player->setGender((Gender)msg.readInt16());
+    }
 }
 
 void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
