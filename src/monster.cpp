@@ -77,11 +77,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
 
 Monster::~Monster()
 {
-    if (mText)
-    {
-        delete mText;
-        player_node->setTarget(NULL);
-    }
+    delete mText;
 }
 
 void Monster::logic()

@@ -29,6 +29,7 @@
 #include "effectmanager.h"
 #include "game.h"
 #include "graphics.h"
+#include "localplayer.h"
 #include "log.h"
 #include "map.h"
 #include "particle.h"
@@ -127,6 +128,9 @@ Being::~Being()
     mUsedTargetCursor = NULL;
     delete_all(mSprites);
     clearPath();
+
+    if (player_node->getTarget() == this)
+        player_node->setTarget(NULL);
 
     setMap(NULL);
 
