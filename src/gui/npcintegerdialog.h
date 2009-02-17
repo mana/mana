@@ -59,14 +59,14 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener
          * @param min The minimum value to allow
          * @param max The maximum value to allow
          */
-        void setRange(const int min, const int max);
+        void setRange(int min, int max);
 
         /**
          * Sets the default value.
          *
          * @param value The new default value
          */
-        void setDefaultValue(const int value);
+        void setDefaultValue(int value);
 
         /**
          * Checks whether NpcStringDialog is Focused or not.

@@ -35,12 +35,12 @@ class Units
         /**
         * Formats the given number in the correct currency format.
         */
-        static std::string formatCurrency(const int value);
+        static std::string formatCurrency(int value);
 
         /**
         * Formats the given number in the correct weight/mass format.
         */
-        static std::string formatWeight(const int value);
+        static std::string formatWeight(int value);
 };
 
 #endif // UNITS_H

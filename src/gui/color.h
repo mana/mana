@@ -46,7 +46,7 @@ class Color : public gcn::ListModel
          * @param c charater to be replaced
          * @param rgb color to replace character
          */
-        void setColor(const char c, const int rgb);
+        void setColor(char c, int rgb);
 
         /**
          * Define the color replacement for a character
@@ -56,7 +56,7 @@ class Color : public gcn::ListModel
          * @param g green component
          * @param b blue component
          */
-        void setColor(const char c, const int r, const int g, const int b)
+        void setColor(char c, int r, int g, int b)
         {
             setColor(c, (r << 16) | (g << 8) | b);
         }
@@ -67,12 +67,12 @@ class Color : public gcn::ListModel
          * @param c character requested
          * @param valid indicate whether character is known
          */
-        int getColor(const char c, bool &valid) const;
+        int getColor(char c, bool &valid) const;
 
         /**
          * Return the number of colors known
          */
-        int getNumberOfElements() {return mColVector.size(); }
+        int getNumberOfElements() { return mColVector.size(); }
 
         /**
          * Return the name of the ith color
@@ -111,7 +111,7 @@ class Color : public gcn::ListModel
     private:
         struct ColorElem
         {
-            ColorElem(const char c, const int rgb, const std::string &text) :
+            ColorElem(char c, int rgb, const std::string &text) :
                 ch(c), rgb(rgb), text(text) {}
             char ch;
             int rgb;
@@ -128,7 +128,7 @@ class Color : public gcn::ListModel
          * @param rgb default color if not found in config
          * @param text identifier of color
          */
-        void addColor(const char c, const int rgb, const std::string &text);
+        void addColor(char c, int rgb, const std::string &text);
 };
 
 extern Color *textColor;

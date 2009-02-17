@@ -52,7 +52,7 @@ Color::~Color()
     }
 }
 
-void Color::setColor(const char c, const int rgb)
+void Color::setColor(char c, int rgb)
 {
     for (ColVector::iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -67,7 +67,7 @@ void Color::setColor(const char c, const int rgb)
     }
 }
 
-int Color::getColor(const char c, bool &valid) const
+int Color::getColor(char c, bool &valid) const
 {
     for (ColVector::const_iterator col = mColVector.begin(),
              colEnd = mColVector.end();
@@ -102,7 +102,7 @@ char Color::getColorCharAt(int i)
     return mColVector[i].ch;
 }
 
-void Color::addColor(const char c, const int rgb, const std::string &text)
+void Color::addColor(char c, int rgb, const std::string &text)
 {
     int trueRgb = (int) config.getValue("Color" + text, rgb);
     mColVector.push_back(ColorElem(c, trueRgb, text));

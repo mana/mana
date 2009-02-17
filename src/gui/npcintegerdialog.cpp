@@ -63,7 +63,7 @@ NpcIntegerDialog::NpcIntegerDialog():
     setLocationRelativeTo(getParent());
 }
 
-void NpcIntegerDialog::setRange(const int min, const int max)
+void NpcIntegerDialog::setRange(int min, int max)
 {
     mValueField->setRange(min, max);
 }
@@ -109,7 +109,7 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void NpcIntegerDialog::setDefaultValue(const int value)
+void NpcIntegerDialog::setDefaultValue(int value)
 {
     mValueField->setDefaultValue(value);
 }

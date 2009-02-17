@@ -159,7 +159,7 @@ void Units::loadUnits()
     }
 }
 
-std::string formatUnit(const int value, const int type)
+std::string formatUnit(int value, int type)
 {
     struct UnitDescription ud = units[type];
     struct UnitLevel ul;
@@ -222,12 +222,12 @@ std::string formatUnit(const int value, const int type)
     }
 }
 
-std::string Units::formatCurrency(const int value)
+std::string Units::formatCurrency(int value)
 {
     return formatUnit(value, UNIT_CURRENCY);
 }
 
-std::string Units::formatWeight(const int value)
+std::string Units::formatWeight(int value)
 {
     return formatUnit(value, UNIT_WEIGHT);
 }

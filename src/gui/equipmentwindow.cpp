@@ -156,7 +156,7 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-Item* EquipmentWindow::getItem(const int &x, const int &y)
+Item* EquipmentWindow::getItem(int x, int y) const
 {
     for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
     {

@@ -137,7 +137,7 @@ class ItemContainer : public gcn::Widget,
          * @param posY The Y Coordinate position.
          * @return The slot index on success, -1 on failure.
          */
-        int getSlotIndex(const int posX, const int posY) const;
+        int getSlotIndex(int posX, int posY) const;
 
         Inventory *mInventory;
         Image *mSelImg;

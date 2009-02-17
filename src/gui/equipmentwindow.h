@@ -89,7 +89,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         void mouseExited(gcn::MouseEvent &event);
         void mouseMoved(gcn::MouseEvent &event);
 
-        Item* getItem(const int &x, const int &y);
+        Item* getItem(int x, int y) const;
 
         Equipment *mEquipment;
         Inventory *mInventory;

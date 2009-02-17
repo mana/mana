@@ -277,7 +277,7 @@ void ItemContainer::mouseExited(gcn::MouseEvent &event)
     mItemPopup->setVisible(false);
 }
 
-int ItemContainer::getSlotIndex(const int posX, const int posY) const
+int ItemContainer::getSlotIndex(int posX, int posY) const
 {
     int columns = getWidth() / gridWidth;
     int index = posX / gridWidth + ((posY / gridHeight) * columns) + mOffset;
