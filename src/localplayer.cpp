@@ -91,7 +91,6 @@ LocalPlayer::~LocalPlayer()
 {
     delete mInventory;
     delete mStorage;
-    delete mName;
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
