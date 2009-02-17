@@ -79,7 +79,8 @@ void NPCHandler::handleMessage(MessageIn *msg)
 
          case SMSG_NPC_CLOSE:
             id = msg->readInt32();
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
+            if (current_npc == dynamic_cast<NPC*>(beingManager->findBeing(id)))
+                current_npc = NULL;
             break;
 
         case SMSG_NPC_NEXT:
