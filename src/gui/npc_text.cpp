@@ -31,7 +31,8 @@
 #include "../utils/gettext.h"
 
 NpcTextDialog::NpcTextDialog():
-    Window(_("NPC"))
+    Window(_("NPC")),
+    mState(NPC_TEXT_STATE_WAITING)
 {
     setResizable(true);
 
@@ -45,7 +46,7 @@ NpcTextDialog::NpcTextDialog():
     mTextBox->setOpaque(false);
 
     mScrollArea = new ScrollArea(mTextBox);
-    mButton = new Button(_("Waiting for server"), "", this);
+    mButton = new Button(_("Waiting for server"), "ok", this);
 
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mScrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
@@ -75,33 +76,40 @@ void NpcTextDialog::addText(const std::string &text)
 void NpcTextDialog::showNextButton()
 {
     mButton->setCaption(_("Next"));
-    mButton->setActionEventId("next");
+    mState = NPC_TEXT_STATE_NEXT;
     mButton->setEnabled(true);
 }
 
 void NpcTextDialog::showCloseButton()
 {
     mButton->setCaption(_("Close"));
-    mButton->setActionEventId("close");
+    mState = NPC_TEXT_STATE_CLOSE;
     mButton->setEnabled(true);
 }
 
 void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "next")
+    if (event.getId() == "ok")
     {
-        current_npc->nextDialog();
-        addText("\n> Next\n");
+        switch (mState) {
+            case NPC_TEXT_STATE_NEXT:
+                current_npc->nextDialog();
+                addText("\n> Next\n");
+                break;
+            case NPC_TEXT_STATE_CLOSE:
+                setText("");
+                setVisible(false);
+                current_npc = NULL;
+                break;
+            default:
+                return;
+        }
     }
-    else if (event.getId() == "close")
-    {
-        setText("");
-        setVisible(false);
-        current_npc = NULL;
-    }
+    else return;
+
     mButton->setEnabled(false);
     mButton->setCaption(_("Waiting for server"));
-    mButton->setActionEventId("");
+    mState = NPC_TEXT_STATE_WAITING;
 }
 
 void NpcTextDialog::widgetResized(const gcn::Event &event)

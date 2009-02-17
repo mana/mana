@@ -87,6 +87,13 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         gcn::Button *mButton;
 
         std::string mText;
+
+        enum NPCTextState {
+            NPC_TEXT_STATE_WAITING,
+            NPC_TEXT_STATE_NEXT,
+            NPC_TEXT_STATE_CLOSE
+        };
+        int mState;
 };
 
 #endif // NPC_TEXT_H
