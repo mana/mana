@@ -148,7 +148,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "newdel")
     {
         // Check for a character
-        if (mCharInfo->getEntry() && n_character <= MAX_SLOT )
+        if (mCharInfo->getEntry() && n_character <= MAX_SLOT + 1)
         {
             new CharDeleteConfirm(this);
         }
