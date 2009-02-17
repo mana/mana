@@ -86,6 +86,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
     Window(_("Select Character")), mNetwork(network),
     mCharInfo(charInfo), mGender(gender), mCharSelected(false)
 {
+    mCharInfo->select(0);
     LocalPlayer *pi = mCharInfo->getEntry();
     if (pi)
         mMoney = Units::formatCurrency(pi->mGp);
