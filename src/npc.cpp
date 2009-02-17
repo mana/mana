@@ -20,7 +20,6 @@
  */
 
 #include "animatedsprite.h"
-#include "localplayer.h"
 #include "npc.h"
 #include "particle.h"
 #include "text.h"
@@ -73,9 +72,6 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
 NPC::~NPC()
 {
     delete mName;
-
-    if (player_node->getTarget() == this)
-        player_node->setTarget(NULL);
 }
 
 void NPC::setName(const std::string &name)

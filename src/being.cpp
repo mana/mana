@@ -135,6 +135,9 @@ Being::~Being()
     delete_all(mSprites);
     clearPath();
 
+    if (player_node->getTarget() == this)
+        player_node->setTarget(NULL);
+
     setMap(NULL);
 
     instances--;

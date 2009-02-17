@@ -24,12 +24,12 @@
 #include "npcstringdialog.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
 #include "../npc.h"
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-
-#include "widgets/layout.h"
 
 extern NpcTextDialog *npcTextDialog;
 

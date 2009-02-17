@@ -116,11 +116,13 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
     // Trim whitespace
     trim(line);
 
+    if (line.empty())
+        return;
+
     CHATLOG tmp;
     tmp.own = own;
     tmp.nick = "";
     tmp.text = line;
-
 
     std::string::size_type pos = line.find(" : ");
     if (pos != std::string::npos)
@@ -330,6 +332,24 @@ void ChatWindow::whisper(const std::string &nick, std::string msg)
             msg.erase(0, pos + 1);
         }
     }
+
+    trim(msg);
+
+    std::string playerName = player_node->getName();
+    std::string tempNick = recvnick;
+
+    for (unsigned int i = 0; i < playerName.size(); i++)
+    {
+        playerName[i] = (char) tolower(playerName[i]);
+    }
+
+    for (unsigned int i = 0; i < tempNick.size(); i++)
+    {
+        tempNick[i] = (char) tolower(tempNick[i]);
+    }
+
+    if (tempNick.compare(playerName) == 0 || msg.empty())
+        return;
 
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_CHAT_WHISPER);
