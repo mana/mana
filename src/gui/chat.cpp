@@ -310,6 +310,11 @@ bool ChatWindow::isInputFocused()
 
 void ChatWindow::whisper(const std::string &nick, std::string msg)
 {
+    trim(msg);
+
+    if (msg.empty())
+        return;
+
     std::string recvnick = "";
 
     if (msg.substr(0, 1) == "\"")
@@ -330,6 +335,22 @@ void ChatWindow::whisper(const std::string &nick, std::string msg)
             msg.erase(0, pos + 1);
         }
     }
+
+    std::string playerName = player_node->getName();
+    std::string tempNick = recvnick;
+
+    for (unsigned int i = 0; i < playerName.size(); i++)
+    {
+        playerName[i] = (char) tolower(playerName[i]);
+    }
+
+    for (unsigned int i = 0; i < tempNick.size(); i++)
+    {
+        tempNick[i] = (char) tolower(tempNick[i]);
+    }
+
+    if (tempNick.compare(playerName) == 0)
+        return;
 
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_CHAT_WHISPER);
