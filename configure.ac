@@ -88,9 +88,6 @@ AC_MSG_ERROR([ *** Unable to find SDL_mixer library (http://www.libsdl.org/proje
 AC_CHECK_LIB([guichan_sdl], [gcnSDL], ,
 AC_MSG_ERROR([ *** Unable to find Guichan SDL library (http://guichan.sf.net/)]))
 
-AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
-AC_MSG_ERROR([ *** Unable to find SDL_net library]))
-
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
@@ -105,6 +102,40 @@ else
     AC_MSG_ERROR([ *** Unable to find OpenGL library]))
     AC_DEFINE(USE_OPENGL, 1, [Defines if tmw should use an OpenGL display])
 fi
+
+# Enable either tmwserv or eAthena
+AC_ARG_WITH(
+    [server],
+    AS_HELP_STRING(
+        [--with-server=ARG],
+        [which server to use [[ARG=tmwserv,eathena]]
+        [(default=eathena)]]
+    ),
+    [if test "$withval" = "yes"; then
+        # default is eathena
+        with_server="eathena"
+     elif test "$withval" = "no"; then
+        AC_MSG_ERROR([$PACKAGE_NAME cannot run without a server.])
+     else
+         with_server="$withval"
+     fi],
+    [with_server="eathena"]
+)
+
+if test "$with_server" = "tmwserv"; then
+    AC_CHECK_LIB([enet], [enet_initialize], ,
+    AC_MSG_ERROR([ *** Unable to find enet library (http://enet.bespin.org/)]))
+    AC_DEFINE(TMWSERV_SUPPORT, 1, [Defines if tmwserv support is enabled])
+elif test "$with_server" = "eathena"; then
+    AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
+    AC_MSG_ERROR([ *** Unable to find SDL_net library]))
+    AC_DEFINE(EATHENA_SUPPORT, 1, [Defines if eAthena support is enabled])
+else
+    AC_MSG_ERROR([unknown server: $with_server])
+fi
+
+AM_CONDITIONAL(SERVER_TMWSERV, test "$with_server" = "tmwserv")
+AM_CONDITIONAL(SERVER_EATHENA, test "$with_server" = "eathena")
 
 AC_CONFIG_FILES([
 Makefile
@@ -123,7 +154,8 @@ po/Makefile.in
 AC_OUTPUT
 
 echo
-echo Build with OpenGL: $with_opengl
+echo "Build with OpenGL: $with_opengl"
+echo "Supported server:  $with_server"
 echo
-echo configure complete, now type \"make\"
+echo "configure complete, now type \"make\""
 echo
