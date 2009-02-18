@@ -24,7 +24,7 @@
 #include "configuration.h"
 #include "log.h"
 
-#include "utils/tostring.h"
+#include "utils/stringutils.h"
 #include "utils/xml.h"
 
 void ConfigurationObject::setValue(const std::string &key, std::string value)

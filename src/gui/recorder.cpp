@@ -28,7 +28,7 @@
 
 #include "widgets/layout.h"
 
-#include "../utils/trim.h"
+#include "../utils/stringutils.h"
 
 Recorder::Recorder(ChatWindow *chat, const std::string &title,
                    const std::string &buttonTxt) :

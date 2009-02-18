@@ -20,33 +20,50 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef UTILS_TRIM_H
-#define UTILS_TRIM_H
+#ifndef UTILS_STRINGUTILS_H
+#define UTILS_STRINGUTILS_H
 
 #include <string>
+#include <sstream>
 
 /**
  * Trims spaces off the end and the beginning of the given string.
  *
  * @param str the string to trim spaces off
+ * @return a reference to the trimmed string
  */
-inline void trim(std::string &str)
+std::string &trim(std::string &str);
+
+/**
+ * Converts the given string to lower case.
+ *
+ * @param str the string to convert to lower case
+ * @return a reference to the given string converted to lower case
+ */
+std::string &toLower(std::string &str);
+
+/**
+ * Converts the given value to a string using std::stringstream.
+ *
+ * @param arg the value to convert to a string
+ * @return the string representation of arg
+ */
+template<typename T> std::string toString(const T &arg)
 {
-    std::string::size_type pos = str.find_last_not_of(' ');
-    if (pos != std::string::npos)
-    {
-        str.erase(pos + 1);
-        pos = str.find_first_not_of(' ');
-        if (pos != std::string::npos)
-        {
-            str.erase(0, pos);
-        }
-    }
-    else
-    {
-        // There is nothing else but whitespace in the string
-        str.clear();
-    }
+    std::stringstream ss;
+    ss << arg;
+    return ss.str();
 }
 
-#endif
+/**
+ * Converts the given IP address to a string.
+ *
+ * The returned string is statically allocated, and shouldn't be freed. It is
+ * changed upon the next use of this method.
+ *
+ * @param address the address to convert to a string
+ * @return the string representation of the address
+ */
+const char *ipToString(int address);
+
+#endif // UTILS_STRINGUTILS_H

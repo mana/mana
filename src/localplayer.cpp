@@ -45,7 +45,7 @@
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
-#include "utils/tostring.h"
+#include "utils/stringutils.h"
 
 LocalPlayer *player_node = NULL;
 

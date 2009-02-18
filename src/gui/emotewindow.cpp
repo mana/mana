@@ -30,7 +30,7 @@
 #include "../localplayer.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 EmoteWindow::EmoteWindow():
     Window(_("Emote"))

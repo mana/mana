@@ -22,7 +22,7 @@
 #include "inttextfield.h"
 #include "sdlinput.h"
 
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 IntTextField::IntTextField(int def):
     TextField(toString(def)),

@@ -39,7 +39,7 @@
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 const int EmoteContainer::gridWidth = 34;  // emote icon width + 4
 const int EmoteContainer::gridHeight = 36; // emote icon height + 4

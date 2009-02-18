@@ -25,7 +25,7 @@
 #include "configuration.h"
 #include "localplayer.h"
 
-#include "utils/tostring.h"
+#include "utils/stringutils.h"
 
 EmoteShortcut::EmoteShortcut *emoteShortcut;
 

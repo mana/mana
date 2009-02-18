@@ -39,7 +39,7 @@
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 static const int MAX_ITEMS = 12;
 

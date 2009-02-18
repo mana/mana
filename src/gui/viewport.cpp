@@ -37,7 +37,7 @@
 #include "../resources/monsterinfo.h"
 #include "../resources/resourcemanager.h"
 
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 extern volatile int tick_time;
 

@@ -30,7 +30,7 @@
 #include "../serverinfo.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 extern SERVER_INFO **server_info;
 
@@ -102,7 +102,7 @@ void ServerSelectDialog::action(const gcn::ActionEvent &event)
     {
         mOkButton->setEnabled(false);
         const SERVER_INFO *si = server_info[mServerList->getSelected()];
-        mLoginData->hostname = iptostring(si->address);
+        mLoginData->hostname = ipToString(si->address);
         mLoginData->port = si->port;
         mLoginData->updateHost = si->updateHost;
         state = mNextState;

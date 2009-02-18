@@ -36,7 +36,7 @@
 #include "../keyboardconfig.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 /**
  * The list model for key function list.

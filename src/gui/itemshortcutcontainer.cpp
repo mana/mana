@@ -36,7 +36,7 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 ItemShortcutContainer::ItemShortcutContainer():
     ShortcutContainer(),

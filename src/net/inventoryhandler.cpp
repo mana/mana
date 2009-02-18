@@ -38,7 +38,7 @@
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 InventoryHandler::InventoryHandler()
 {

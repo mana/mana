@@ -46,7 +46,7 @@
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/trim.h"
+#include "../utils/stringutils.h"
 
 // Defined in main.cpp, used here for setting the char create dialog
 extern CharServerHandler charServerHandler;

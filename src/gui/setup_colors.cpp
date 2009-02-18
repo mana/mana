@@ -40,7 +40,7 @@
 #include "../configuration.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 Setup_Colors::Setup_Colors() :
     mSelected(-1)

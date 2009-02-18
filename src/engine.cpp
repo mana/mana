@@ -40,9 +40,7 @@
 #include "resources/mapreader.h"
 #include "resources/resourcemanager.h"
 
-#include "utils/tostring.h"
-
-char itemCurrenyQ[10] = "0";
+#include "utils/stringutils.h"
 
 Engine::Engine(Network *network):
     mCurrentMap(NULL),

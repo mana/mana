@@ -37,7 +37,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
-#include "utils/tostring.h"
+#include "utils/stringutils.h"
 
 extern volatile int tick_time;
 

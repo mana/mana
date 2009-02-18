@@ -28,7 +28,7 @@
 #include "../graphics.h"
 #include "../localplayer.h"
 
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 MiniStatusWindow::MiniStatusWindow():
     Window("")
