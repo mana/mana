@@ -35,7 +35,7 @@ static const int NAME_Y_OFFSET = 30;
 Player::Player(int id, int job, Map *map):
     Being(id, job, map)
 {
-    mName = 0;
+    mName = NULL;
 }
 
 Player::~Player()
@@ -45,19 +45,21 @@ Player::~Player()
 
 void Player::setName(const std::string &name)
 {
-    if (mName == 0)
+    if (mName == NULL)
     {
         if (mIsGM)
         {
             mNameColor = 0x009000;
-            mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                                  gcn::Graphics::CENTER, gcn::Color(0, 255, 0));
+            mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy +
+                                  NAME_Y_OFFSET, gcn::Graphics::CENTER,
+                                  gcn::Color(0, 255, 0));
         }
         else
         {
             mNameColor = 0x202020;
             mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                                  gcn::Graphics::CENTER, gcn::Color(255, 255, 255));
+                                  gcn::Graphics::CENTER,
+                                  gcn::Color(255, 255, 255));
         }
         Being::setName(name);
     }
@@ -65,7 +67,8 @@ void Player::setName(const std::string &name)
 
 void Player::logic()
 {
-    switch (mAction) {
+    switch (mAction)
+    {
         case STAND:
            break;
 
@@ -80,22 +83,25 @@ void Player::logic()
 
         case WALK:
             mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
-            if (mFrame >= 6) {
+
+            if (mFrame >= 6)
                 nextStep();
-            }
+
             break;
 
         case ATTACK:
             int frames = 4;
-            if (    mEquippedWeapon
-                &&  mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
+            if (mEquippedWeapon &&
+                mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
             {
                 frames = 5;
             }
+
             mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
-            if (mFrame >= frames) {
+
+            if (mFrame >= frames)
                 nextStep();
-            }
+
             break;
     }
 
@@ -110,9 +116,7 @@ Being::Type Player::getType() const
 void Player::flash(int time)
 {
     if (mName)
-    {
         mName->flash(time);
-    }
 }
 
 void Player::setGender(Gender gender)
@@ -131,9 +135,7 @@ void Player::setGender(Gender gender)
         for (int i = 1; i < VECTOREND_SPRITE; i++)
         {
             if (mSpriteIDs.at(i) != 0)
-            {
                 setSprite(i, mSpriteIDs.at(i), mSpriteColors.at(i));
-            }
         }
     }
 }
@@ -160,9 +162,7 @@ void Player::setSprite(int slot, int id, std::string color)
         mSprites[slot] = NULL;
 
         if (slot == WEAPON_SPRITE)
-        {
             mEquippedWeapon = NULL;
-        }
     }
     else
     {
@@ -173,8 +173,9 @@ void Player::setSprite(int slot, int id, std::string color)
         {
             if (!color.empty())
                 filename += "|" + color;
-            equipmentSprite = AnimatedSprite::load(
-                    "graphics/sprites/" + filename);
+
+            equipmentSprite = AnimatedSprite::load("graphics/sprites/" +
+                                                   filename);
         }
 
         if (equipmentSprite)
@@ -184,9 +185,7 @@ void Player::setSprite(int slot, int id, std::string color)
         mSprites[slot] = equipmentSprite;
 
         if (slot == WEAPON_SPRITE)
-        {
             mEquippedWeapon = &ItemDB::get(id);
-        }
 
         setAction(mAction);
     }
@@ -197,8 +196,6 @@ void Player::setSprite(int slot, int id, std::string color)
 void Player::updateCoords()
 {
     if (mName)
-    {
         mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
-    }
 }
 
