@@ -46,8 +46,7 @@
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/tostring.h"
-#include "../utils/trim.h"
+#include "../utils/stringutils.h"
 
 ChatWindow::ChatWindow(Network * network):
 Window(""), mNetwork(network), mTmpVisible(false)
@@ -338,15 +337,8 @@ void ChatWindow::whisper(const std::string &nick, std::string msg)
     std::string playerName = player_node->getName();
     std::string tempNick = recvnick;
 
-    for (unsigned int i = 0; i < playerName.size(); i++)
-    {
-        playerName[i] = (char) tolower(playerName[i]);
-    }
-
-    for (unsigned int i = 0; i < tempNick.size(); i++)
-    {
-        tempNick[i] = (char) tolower(tempNick[i]);
-    }
+    toLower(playerName);
+    toLower(tempNick);
 
     if (tempNick.compare(playerName) == 0 || msg.empty())
         return;
@@ -407,14 +399,9 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
                 start = msg.find('[', start + 1);
             }
 
-            std::string temp = msg.substr(start+1, end - start - 1);
+            std::string temp = msg.substr(start + 1, end - start - 1);
 
-            trim(temp);
-
-            for (unsigned int i = 0; i < temp.size(); i++)
-            {
-                temp[i] = (char) tolower(temp[i]);
-            }
+            toLower(trim(temp));
 
             const ItemInfo itemInfo = ItemDB::get(temp);
             if (itemInfo.getName() != _("Unknown item"))

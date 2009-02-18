@@ -44,7 +44,7 @@
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 TradeWindow::TradeWindow(Network *network):
     Window(_("Trade: You")),

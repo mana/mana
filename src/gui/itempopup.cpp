@@ -37,7 +37,7 @@
 #include "../resources/iteminfo.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 ItemPopup::ItemPopup():
     Window()

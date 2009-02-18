@@ -44,7 +44,7 @@
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 InventoryWindow::InventoryWindow(int invSize):
     Window(_("Inventory")),

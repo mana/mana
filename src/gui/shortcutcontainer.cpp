@@ -25,7 +25,7 @@
 
 #include "../resources/image.h"
 
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 float ShortcutContainer::mAlpha = config.getValue("guialpha", 0.8);
 

@@ -33,7 +33,7 @@
 #include "../gui/ok_dialog.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
@@ -165,7 +165,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             slot = mCharInfo->getPos();
             msg->skip(4); // CharID, must be the same as player_node->charID
             map_path = msg->readString(16);
-            mLoginData->hostname = iptostring(msg->readInt32());
+            mLoginData->hostname = ipToString(msg->readInt32());
             mLoginData->port = msg->readInt16();
             mCharInfo->unlock();
             mCharInfo->select(0);

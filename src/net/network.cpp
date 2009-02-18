@@ -26,7 +26,7 @@
 #include "network.h"
 
 #include "../log.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
@@ -326,7 +326,7 @@ bool Network::realConnect()
     }
 
     logger->log("Network::Started session with %s:%i",
-                iptostring(ipAddress.host), ipAddress.port);
+                ipToString(ipAddress.host), ipAddress.port);
 
     mState = CONNECTED;
 

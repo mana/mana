@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2007  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,20 +19,37 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef UTILS_TOSTRING_H
-#define UTILS_TOSTRING_H
+#include "stringutils.h"
 
-#include <sstream>
+#include <algorithm>
 
-template<typename T>
-std::string toString(const T &arg)
+std::string &trim(std::string &str)
 {
-    std::stringstream ss;
-    ss << arg;
-    return ss.str();
+    std::string::size_type pos = str.find_last_not_of(' ');
+    if (pos != std::string::npos)
+    {
+        str.erase(pos + 1);
+        pos = str.find_first_not_of(' ');
+        if (pos != std::string::npos)
+        {
+            str.erase(0, pos);
+        }
+    }
+    else
+    {
+        // There is nothing else but whitespace in the string
+        str.clear();
+    }
+    return str;
 }
 
-inline char *iptostring(int address)
+std::string &toLower(std::string &str)
+{
+    std::transform(str.begin(), str.end(), str.begin(), tolower);
+    return str;
+}
+
+const char *ipToString(int address)
 {
     static char asciiIP[16];
 
@@ -44,5 +61,3 @@ inline char *iptostring(int address)
 
     return asciiIP;
 }
-
-#endif

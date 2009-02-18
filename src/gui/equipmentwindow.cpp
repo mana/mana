@@ -40,7 +40,7 @@
 #include "../resources/resourcemanager.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 // Positions of the boxes, 2nd dimension is X and Y respectively.
 static const int boxPosition[][2] = {

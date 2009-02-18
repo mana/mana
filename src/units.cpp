@@ -28,8 +28,7 @@
 #include "log.h"
 
 #include "utils/strprintf.h"
-#include "utils/tostring.h"
-#include "utils/trim.h"
+#include "utils/stringutils.h"
 #include "utils/xml.h"
 
 struct UnitLevel {

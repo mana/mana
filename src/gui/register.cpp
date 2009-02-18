@@ -39,7 +39,7 @@
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 /**
  * Listener used while dealing with wrong data. It is used to direct the focus

@@ -24,7 +24,7 @@
 #include "../configuration.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 Color::Color()
 {

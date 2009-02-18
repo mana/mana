@@ -44,7 +44,7 @@
 #include "../resources/resourcemanager.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 /**
  * Calculates the Alder-32 checksum for the given file.

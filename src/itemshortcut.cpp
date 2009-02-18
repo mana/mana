@@ -25,7 +25,7 @@
 #include "itemshortcut.h"
 #include "localplayer.h"
 
-#include "utils/tostring.h"
+#include "utils/stringutils.h"
 
 ItemShortcut::ItemShortcut *itemShortcut;
 

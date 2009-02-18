@@ -38,7 +38,7 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 const int ItemContainer::gridWidth = 36;  // item icon width + 4
 const int ItemContainer::gridHeight = 42; // item icon height + 10

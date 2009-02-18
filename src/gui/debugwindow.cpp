@@ -33,7 +33,7 @@
 #include "../particle.h"
 #include "../map.h"
 
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 DebugWindow::DebugWindow():
     Window("Debug")

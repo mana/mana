@@ -39,7 +39,7 @@
 #include "resources/mapreader.h"
 #include "resources/resourcemanager.h"
 
-#include "utils/tostring.h"
+#include "utils/stringutils.h"
 
 char itemCurrenyQ[10] = "0";
 

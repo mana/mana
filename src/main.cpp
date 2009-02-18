@@ -81,7 +81,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
-#include "utils/tostring.h"
+#include "utils/stringutils.h"
 
 #ifdef __APPLE__
 #include <CoreFoundation/CFBundle.h>
@@ -976,7 +976,7 @@ int main(int argc, char *argv[])
                     if (n_server == 1)
                     {
                         SERVER_INFO *si = *server_info;
-                        loginData.hostname = iptostring(si->address);
+                        loginData.hostname = ipToString(si->address);
                         loginData.port = si->port;
                         loginData.updateHost = si->updateHost;
                         state = UPDATE_STATE;

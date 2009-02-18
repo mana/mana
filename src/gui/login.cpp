@@ -38,7 +38,7 @@
 #include "../configuration.h"
 
 #include "../utils/gettext.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 static const int MAX_SERVER_LIST_SIZE = 5;
 static const int LOGIN_DIALOG_WIDTH = 220;

@@ -33,7 +33,7 @@
 #include "../tileset.h"
 
 #include "../utils/base64.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 #include "../utils/xml.h"
 
 const unsigned int DEFAULT_TILE_WIDTH = 32;

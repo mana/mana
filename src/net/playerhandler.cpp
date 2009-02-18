@@ -39,7 +39,7 @@
 #include "../gui/skill.h"
 #include "../gui/viewport.h"
 
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 #include "../utils/gettext.h"
 
 // TODO Move somewhere else

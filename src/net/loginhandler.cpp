@@ -30,7 +30,7 @@
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/tostring.h"
+#include "../utils/stringutils.h"
 
 extern SERVER_INFO **server_info;
 
@@ -110,7 +110,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
 
                 logger->log("Network: Server: %s (%s:%d)",
                         server_info[i]->name.c_str(),
-                        iptostring(server_info[i]->address),
+                        ipToString(server_info[i]->address),
                         server_info[i]->port);
             }
             state = CHAR_SERVER_STATE;
