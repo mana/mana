@@ -30,3 +30,4 @@ ShopItem::ShopItem(int id, int quantity, int price):
 {
     mDisplayName = getInfo().getName() + " (" + toString(mPrice) + " GP)";
 }
+
