@@ -22,7 +22,7 @@
 
 #include "shopitem.h"
 
-#include "utils/tostring.h"
+#include "utils/stringutils.h"
 
 ShopItem::ShopItem(int id, int quantity, int price):
     Item(id, quantity),
