@@ -58,7 +58,7 @@ void BuySellDialog::action(const gcn::ActionEvent &event)
     } else if (event.getId() == "Sell") {
         current_npc->sell();
     } else if (event.getId() == "Cancel") {
-        current_npc = 0;
+        if (current_npc) current_npc->handleDeath();
     }
     setVisible(false);
 }

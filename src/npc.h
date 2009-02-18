@@ -50,6 +50,11 @@ class NPC : public Player
         void buy();
         void sell();
 
+        /**
+         * Call this to ease clean up of the current NPC, without causing
+         * interface problems
+         */
+        void handleDeath();
     protected:
         Network *mNetwork;
         void updateCoords();

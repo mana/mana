@@ -24,12 +24,16 @@
 #include "particle.h"
 #include "text.h"
 
+#include "gui/npc_text.h"
+
 #include "net/messageout.h"
 #include "net/protocol.h"
 
 #include "resources/npcdb.h"
 
-NPC *current_npc = 0;
+extern NpcTextDialog *npcTextDialog;
+
+NPC *current_npc = NULL;
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
@@ -72,6 +76,8 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
 NPC::~NPC()
 {
     delete mName;
+
+    if (current_npc == this) handleDeath();
 }
 
 void NPC::setName(const std::string &name)
@@ -168,4 +174,14 @@ void NPC::updateCoords()
     {
         mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
     }
+}
+
+void NPC::handleDeath()
+{
+    printf("NPC::handleDeath\n");
+    if (this != current_npc) return;
+
+    if (npcTextDialog->isVisible())
+        npcTextDialog->showCloseButton();
+    else current_npc = NULL;
 }

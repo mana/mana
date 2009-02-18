@@ -131,7 +131,7 @@ void SellDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "quit")
     {
         setVisible(false);
-        current_npc = 0;
+        if (current_npc) current_npc->handleDeath();
         return;
     }
 

@@ -107,7 +107,7 @@ void BuySellHandler::handleMessage(MessageIn *msg)
             }
             else {
                 chatWindow->chatLog(_("Nothing to sell"), BY_SERVER);
-                current_npc = 0;
+                if (current_npc) current_npc->handleDeath();
             }
             break;
 

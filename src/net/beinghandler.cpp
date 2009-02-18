@@ -214,7 +214,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 player_node->stopAttack();
 
             if (dstBeing == current_npc)
-                current_npc = NULL;
+                    current_npc->handleDeath();
 
             if (msg->readInt8() == 1)
                 dstBeing->setAction(Being::DEAD);

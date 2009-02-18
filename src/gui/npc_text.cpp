@@ -91,19 +91,15 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        switch (mState) {
-            case NPC_TEXT_STATE_NEXT:
-                current_npc->nextDialog();
-                addText("\n> Next\n");
-                break;
-            case NPC_TEXT_STATE_CLOSE:
-                setText("");
-                setVisible(false);
-                current_npc = NULL;
-                break;
-            default:
-                return;
-        }
+        if (mState == NPC_TEXT_STATE_NEXT && current_npc) {
+            current_npc->nextDialog();
+            addText("\n> Next\n");
+        } else if (mState == NPC_TEXT_STATE_CLOSE ||
+                mState == NPC_TEXT_STATE_NEXT && !current_npc) {
+            setText("");
+            setVisible(false);
+            if (current_npc) current_npc->handleDeath();
+        } else return;
     }
     else return;
 
