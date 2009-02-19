@@ -65,6 +65,8 @@ class Game : public ConfigListener
         MessageHandlerPtr mPlayerHandler;
         MessageHandlerPtr mSkillHandler;
         MessageHandlerPtr mTradeHandler;
+
+        int mLastTarget;
 };
 
 /**

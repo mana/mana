@@ -276,7 +276,8 @@ Game::Game(Network *network):
     mNpcHandler(new NPCHandler),
     mPlayerHandler(new PlayerHandler),
     mSkillHandler(new SkillHandler),
-    mTradeHandler(new TradeHandler)
+    mTradeHandler(new TradeHandler),
+    mLastTarget(Being::UNKNOWN)
 {
     createGuiWindows(network);
     engine = new Engine(network);
@@ -865,35 +866,32 @@ void Game::handleInput()
             player_node->attack(target, newTarget);
         }
 
-        // Target the nearest player if 'q' is pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) &&
-                !keyboard.isKeyActive(keyboard.KEY_TARGET) )
-        {
-            Being *target = beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
-
-            player_node->setTarget(target);
-        }
-
-        // Target the nearest monster if 'a' pressed
-        if ((keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+        // Target the nearest player/monster/npc
+        if ((keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) ||
+            keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+            keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) ||
                     (joystick && joystick->buttonPressed(3))) &&
                 !keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
-            Being *target = beingManager->findNearestLivingBeing(
-                    x, y, 20, Being::MONSTER);
+            Being::Type currentTarget = Being::UNKNOWN;
+            if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
+                currentTarget = Being::PLAYER;
+            else if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+                    (joystick && joystick->buttonPressed(3)))
+                currentTarget = Being::MONSTER;
+            else if (keyboard.isKeyActive(keyboard.KEY_TARGET_NPC))
+                currentTarget = Being::NPC;
 
-            player_node->setTarget(target);
-        }
+            Being *target = beingManager->findNearestLivingBeing(player_node,
+                                                    20, currentTarget);
 
-        // Target the nearest npc if 'n' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) &&
-                !keyboard.isKeyActive(keyboard.KEY_TARGET) )
-        {
-            Being *target = beingManager->findNearestLivingBeing(
-                    x, y, 20, Being::NPC);
-
-            player_node->setTarget(target);
-        }
+            if (target && (target != player_node->getTarget() ||
+                    currentTarget != mLastTarget))
+            {
+                player_node->setTarget(target);
+                mLastTarget = currentTarget;
+            }
+        } else mLastTarget = Being::UNKNOWN; // Reset last target
 
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
