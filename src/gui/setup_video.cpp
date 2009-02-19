@@ -109,6 +109,8 @@ Setup_Video::Setup_Video():
     mCustomCursorEnabled(config.getValue("customcursor", true)),
     mParticleEffectsEnabled(config.getValue("particleeffects", true)),
     mNameEnabled(config.getValue("showownname", false)),
+    mPickupChatEnabled(config.getValue("showpickupchat", true)),
+    mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 0)),
     mSpeechMode((int) config.getValue("speech", 3)),
@@ -136,7 +138,11 @@ Setup_Video::Setup_Video():
     mOverlayDetailField(new gcn::Label("")),
     mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
-    mParticleDetailField(new gcn::Label(""))
+    mParticleDetailField(new gcn::Label("")),
+    mPickupNotifyLabel(new gcn::Label(_("Show pickup notification"))),
+    mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
+    mPickupParticleCheckBox(new CheckBox(_("as particle"),
+                           mPickupParticleEnabled))
 {
     setOpaque(false);
 
@@ -169,6 +175,8 @@ Setup_Video::Setup_Video():
     mModeList->setActionEventId("videomode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
+    mPickupChatCheckBox->setActionEventId("pickupchat");
+    mPickupParticleCheckBox->setActionEventId("pickupparticle");
     mNameCheckBox->setActionEventId("showownname");
     mAlphaSlider->setActionEventId("guialpha");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
@@ -186,6 +194,8 @@ Setup_Video::Setup_Video():
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
+    mPickupChatCheckBox->addActionListener(this);
+    mPickupParticleCheckBox->addActionListener(this);
     mNameCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
@@ -260,11 +270,14 @@ Setup_Video::Setup_Video():
     ContainerPlacer place = h.getPlacer(0, 0);
 
     place(0, 0, scrollArea, 1, 6).setPadding(2);
-    place(1, 0, mFsCheckBox, 3);
-    place(1, 1, mOpenGLCheckBox, 3);
-    place(1, 2, mCustomCursorCheckBox, 3);
-    place(1, 3, mNameCheckBox, 3);
-    place(1, 4, mParticleEffectsCheckBox, 3);
+    place(1, 0, mFsCheckBox, 2);
+    place(3, 0, mOpenGLCheckBox, 1);
+    place(1, 1, mCustomCursorCheckBox, 3);
+    place(1, 2, mNameCheckBox, 3);
+    place(1, 3, mParticleEffectsCheckBox, 3);
+    place(1, 4, mPickupNotifyLabel, 3);
+    place(1, 5, mPickupChatCheckBox, 1);
+    place(2, 5, mPickupParticleCheckBox, 2);
 
     place(0, 6, mAlphaSlider);
     place(0, 7, mFpsSlider);
@@ -354,6 +367,8 @@ void Setup_Video::apply()
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", false);
+    mPickupChatEnabled = config.getValue("showpickupchat", true);
+    mPickupParticleEnabled = config.getValue("showpickupparticle", false);
 }
 
 int Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
@@ -400,6 +415,9 @@ void Setup_Video::cancel()
     config.setValue("showownname", mNameEnabled ? true : false);
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled ? true : false);
+    config.setValue("showpickupchat", mPickupChatEnabled ? true : false);
+    config.setValue("showpickupparticle", mPickupParticleEnabled ?
+                    true : false);
 }
 
 void Setup_Video::action(const gcn::ActionEvent &event)
@@ -432,6 +450,17 @@ void Setup_Video::action(const gcn::ActionEvent &event)
                 mParticleEffectsCheckBox->isSelected() ? true : false);
         new OkDialog(_("Particle effect settings changed"),
                      _("Restart your client or change maps for the change to take effect."));
+    }
+    else if (event.getId() == "pickupchat")
+    {
+        config.setValue("showpickupchat", mPickupChatCheckBox->isSelected()
+                        ? true : false);
+    }
+    else if (event.getId() == "pickupparticle")
+    {
+        config.setValue("showpickupparticle",
+                        mPickupParticleCheckBox->isSelected()
+                        ? true : false);
     }
     else if (event.getId() == "speech")
     {

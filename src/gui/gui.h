@@ -77,6 +77,13 @@ class Gui : public gcn::Gui
         { return mGuiFont; }
 
         /**
+         * Return the Font used for "Info Particles", i.e. ones showing, what
+         * you picked up, etc.
+         */
+        gcn::Font* getInfoParticleFont() const
+        { return mInfoParicleFont; }
+
+        /**
          * Sets whether a custom cursor should be rendered.
          */
         void setUseCustomCursor(bool customCursor);
@@ -107,6 +114,7 @@ class Gui : public gcn::Gui
     private:
         GuiConfigListener *mConfigListener;
         gcn::Font *mGuiFont;                  /**< The global GUI font */
+        gcn::Font *mInfoParicleFont;          /**< Font for Info Paricles*/
         bool mCustomCursor;                   /**< Show custom cursor */
         ImageSet *mMouseCursors;              /**< Mouse cursor images */
         float mMouseCursorAlpha;

@@ -112,6 +112,7 @@ Gui::Gui(Graphics *graphics):
     {
         const int fontSize = (int)config.getValue("fontSize", 11);
         mGuiFont = new TrueTypeFont(path, fontSize);
+        mInfoParicleFont = new TrueTypeFont(path, fontSize, 1);
     }
     catch (gcn::Exception e)
     {

@@ -587,6 +587,18 @@ void LocalPlayer::setXp(int xp)
     mXp = xp;
 }
 
+void LocalPlayer::pickedUp(std::string item)
+{
+    if (mMap)
+    {
+        // Show pickup notification
+        particleEngine->addTextRiseFadeOutEffect(item,
+                                                 gui->getInfoParticleFont (),
+                                                 mPx + 16, mPy - 16,
+                                                 40, 220, 40, true);
+    }
+}
+
 bool LocalPlayer::withinAttackRange(Being *target)
 {
     int dist_x = abs(target->mX - mX);

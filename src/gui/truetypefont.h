@@ -48,7 +48,7 @@ class TrueTypeFont : public gcn::Font
          * @param filename  Font filename.
          * @param size      Font size.
          */
-        TrueTypeFont(const std::string &filename, int size);
+        TrueTypeFont(const std::string &filename, int size, int style = 0);
 
         /**
          * Destructor.

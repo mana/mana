@@ -23,16 +23,18 @@
 
 #include "graphics.h"
 #include "textparticle.h"
+#include <SDL/SDL_ttf.h>
 
 TextParticle::TextParticle(Map *map, const std::string &text,
                            int colorR, int colorG, int colorB,
-                           gcn::Font *font):
+                           gcn::Font *font, bool outline):
     Particle(map),
     mText(text),
     mTextFont(font),
     mColorR(colorR),
     mColorG(colorG),
-    mColorB(colorB)
+    mColorB(colorB),
+    mOutline(outline)
 {
 }
 
@@ -59,6 +61,23 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     }
 
     graphics->setFont(mTextFont);
+    if (mOutline)
+    {
+        graphics->setColor(gcn::Color(0, 0, 0, (int)(alpha/4)));
+        // Text outline
+        graphics->setColor(gcn::Color(0, 0, 0, (int)alpha));
+        graphics->drawText(mText, screenX + 1, screenY,
+                gcn::Graphics::CENTER);
+
+        graphics->drawText(mText, screenX - 1, screenY,
+                gcn::Graphics::CENTER);
+
+        graphics->drawText(mText, screenX, screenY + 1,
+                gcn::Graphics::CENTER);
+
+        graphics->drawText(mText, screenX, screenY - 1,
+                gcn::Graphics::CENTER);
+    }
     graphics->setColor(gcn::Color(mColorR, mColorG, mColorB, (int)alpha));
     graphics->drawText(mText, screenX, screenY, gcn::Graphics::CENTER);
 }

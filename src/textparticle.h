@@ -33,7 +33,7 @@ class TextParticle : public Particle
          */
         TextParticle(Map *map, const std::string &text,
                      int colorR, int colorG, int colorB,
-                     gcn::Font *font);
+                     gcn::Font *font, bool outline = false);
 
         /**
          * Draws the particle image.
@@ -48,6 +48,8 @@ class TextParticle : public Particle
         std::string mText;             /**< Text of the particle. */
         gcn::Font *mTextFont;          /**< Font used for drawing the text. */
         int mColorR, mColorG, mColorB; /**< Color used for drawing the text. */
+        bool mOutline;                 /**< Make the text readable - draw it the way
+	                                    a Text is usually drawn: with outline */
 };
 
 #endif

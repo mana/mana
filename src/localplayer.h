@@ -203,6 +203,11 @@ class LocalPlayer : public Player
         void setXp(int xp);
 
         /**
+         * Shows item pickup effect if the player is on a map.
+         */
+        void pickedUp(std::string item);
+
+        /**
          * Returns the amount of experience points.
          */
         int getXp() const { return mXp; }
