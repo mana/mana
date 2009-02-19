@@ -53,6 +53,8 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mCustomCursorEnabled;
         bool mParticleEffectsEnabled;
         bool mNameEnabled;
+        bool mPickupChatEnabled;
+        bool mPickupParticleEnabled;
         double mOpacity;
         int mFps;
         int mSpeechMode;
@@ -95,6 +97,10 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         int mParticleDetail;
         gcn::Slider *mParticleDetailSlider;
         gcn::Label *mParticleDetailField;
+
+        gcn::Label *mPickupNotifyLabel;
+        gcn::CheckBox *mPickupChatCheckBox;
+        gcn::CheckBox *mPickupParticleCheckBox;
 };
 
 #endif

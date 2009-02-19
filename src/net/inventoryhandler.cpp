@@ -26,6 +26,7 @@
 #include "messagein.h"
 #include "protocol.h"
 
+#include "../configuration.h"
 #include "../inventory.h"
 #include "../item.h"
 #include "../itemshortcut.h"
@@ -142,13 +143,21 @@ void InventoryHandler::handleMessage(MessageIn *msg)
             itemType = msg->readInt8();
 
             if (msg->readInt8() > 0) {
-                chatWindow->chatLog(_("Unable to pick up item"), BY_SERVER);
+                if (config.getValue("showpickupchat", true)) {
+                    chatWindow->chatLog(_("Unable to pick up item"), BY_SERVER);
+                }
             } else {
                 const ItemInfo &itemInfo = ItemDB::get(itemId);
                 const std::string amountStr =
                     (amount > 1) ? toString(amount) : "a";
-                chatWindow->chatLog(strprintf(_("You picked up %s %s"),
-                        amountStr.c_str(), itemInfo.getName().c_str()), BY_SERVER);
+                if (config.getValue("showpickupchat", true)) {
+                    chatWindow->chatLog(strprintf(_("You picked up %s %s"),
+                        amountStr.c_str(), itemInfo.getName().c_str()),
+                        BY_SERVER);
+                }
+                if (config.getValue("showpickupparticle", false)) {
+                    player_node->pickedUp(itemInfo.getName());
+                }
 
                 if (Item *item = inventory->getItem(index)) {
                     item->setId(itemId);

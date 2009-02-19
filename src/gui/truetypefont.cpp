@@ -78,7 +78,7 @@ typedef std::list<TextChunk>::iterator CacheIterator;
 
 static int fontCounter;
 
-TrueTypeFont::TrueTypeFont(const std::string& filename, int size)
+TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
 {
     if (fontCounter == 0 && TTF_Init() == -1)
     {
@@ -88,6 +88,7 @@ TrueTypeFont::TrueTypeFont(const std::string& filename, int size)
 
     ++fontCounter;
     mFont = TTF_OpenFont(filename.c_str(), size);
+    TTF_SetFontStyle (mFont, style);
 
     if (!mFont)
     {
