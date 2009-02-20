@@ -113,7 +113,7 @@ Gui::Gui(Graphics *graphics):
     {
         const int fontSize = (int)config.getValue("fontSize", 11);
         mGuiFont = new TrueTypeFont(path, fontSize);
-        mInfoParicleFont = new TrueTypeFont(path, fontSize, 1);
+        mInfoParticleFont = new TrueTypeFont(path, fontSize, 1);
     }
     catch (gcn::Exception e)
     {
@@ -136,22 +136,6 @@ Gui::Gui(Graphics *graphics):
 
     gcn::Widget::setGlobalFont(mGuiFont);
 
-    // Load hits' colorful fonts
-    try
-    {
-        hitRedFont = new gcn::ImageFont("graphics/gui/hits_red.png",
-                "0123456789crit! ");
-        hitBlueFont = new gcn::ImageFont("graphics/gui/hits_blue.png",
-                "0123456789crit! ");
-        hitYellowFont = new gcn::ImageFont("graphics/gui/hits_yellow.png",
-                "0123456789misxp ");
-    }
-    catch (gcn::Exception e)
-    {
-        logger->error(std::string("Unable to load colored hits' fonts: ")
-                + e.getMessage());
-    }
-
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getValue("customcursor", 1) == 1);
     mConfigListener = new GuiConfigListener(this);
@@ -169,16 +153,12 @@ Gui::~Gui()
     config.removeListener("customcursor", mConfigListener);
     delete mConfigListener;
 
-    // Fonts used in showing hits
-    delete hitRedFont;
-    delete hitBlueFont;
-    delete hitYellowFont;
-
     if (mMouseCursors)
         mMouseCursors->decRef();
 
     delete mGuiFont;
     delete boldFont;
+    delete mInfoParticleFont;
     delete viewport;
     delete getTop();
 

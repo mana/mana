@@ -82,7 +82,7 @@ class Gui : public gcn::Gui
          * you picked up, etc.
          */
         gcn::Font* getInfoParticleFont() const
-        { return mInfoParicleFont; }
+        { return mInfoParticleFont; }
 
         /**
          * Sets whether a custom cursor should be rendered.
@@ -115,7 +115,7 @@ class Gui : public gcn::Gui
     private:
         GuiConfigListener *mConfigListener;
         gcn::Font *mGuiFont;                  /**< The global GUI font */
-        gcn::Font *mInfoParicleFont;          /**< Font for Info Paricles*/
+        gcn::Font *mInfoParticleFont;         /**< Font for Info Paricles*/
         bool mCustomCursor;                   /**< Show custom cursor */
         ImageSet *mMouseCursors;              /**< Mouse cursor images */
         float mMouseCursorAlpha;
@@ -125,13 +125,6 @@ class Gui : public gcn::Gui
 
 extern Gui *gui;                              /**< The GUI system */
 extern SDLInput *guiInput;                    /**< GUI input */
-
-/**
- * Fonts used in showing hits
- */
-extern gcn::Font *hitRedFont;
-extern gcn::Font *hitBlueFont;
-extern gcn::Font *hitYellowFont;
 
 /**
  * Bolded text font
