@@ -336,7 +336,8 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     else if (event.getButton() == gcn::MouseEvent::MIDDLE)
     {
         // Find the being nearest to the clicked position
-        Being *target = beingManager->findBeingByPixel(x, y);
+        Being *target = beingManager->findNearestLivingBeing(tilex, tiley, 20,
+                                                              Being::MONSTER);
 
         if (target)
         {
