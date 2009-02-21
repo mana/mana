@@ -22,6 +22,7 @@
 #include "gui.h"
 #include "ministatus.h"
 #include "progressbar.h"
+#include "status.h"
 
 #include "../animatedsprite.h"
 #include "../configuration.h"
@@ -76,36 +77,9 @@ extern volatile int tick_time;
 
 void MiniStatusWindow::update()
 {
-    // HP Bar coloration
-    if (player_node->mHp < int(player_node->mMaxHp / 3))
-    {
-        mHpBar->setColor(223, 32, 32); // Red
-    }
-    else if (player_node->mHp < int((player_node->mMaxHp / 3) * 2))
-    {
-        mHpBar->setColor(230, 171, 34); // Orange
-    }
-    else
-    {
-        mHpBar->setColor(0, 171, 34); // Green
-    }
-
-    float xp = (float) player_node->getXp() / player_node->mXpForNextLevel;
-
-    if (xp != xp) xp = 0.0f; // check for NaN
-    if (xp < 0.0f) xp = 0.0f; // make sure the experience isn't negative (uninitialized pointer most likely)
-    if (xp > 1.0f) xp = 1.0f;
-
-    mHpBar->setProgress((float) player_node->mHp / player_node->mMaxHp);
-    mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
-    mXpBar->setProgress(xp);
-
-    // Update labels
-    mHpBar->setText(toString(player_node->mHp));
-    mMpBar->setText(toString(player_node->mMp));
-
-    std::stringstream updatedText;
-    updatedText << (float) ((int) (xp * 10000.0f)) / 100.0f << "%";
+    StatusWindow::updateHPBar(mHpBar);
+    StatusWindow::updateMPBar(mMpBar);
+    StatusWindow::updateXPBar(mXpBar);
 
     // Displays the number of monsters to next lvl
     // (disabled for now but interesting idea)
@@ -119,8 +93,6 @@ void MiniStatusWindow::update()
             << config.getValue("xpBarMonsterCounterName", "Monsters") <<" left...";
     }
     */
-
-    mXpBar->setText(updatedText.str());
 
     for (unsigned int i = 0; i < mIcons.size(); i++)
         if (mIcons[i])

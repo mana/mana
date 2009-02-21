@@ -181,39 +181,13 @@ void StatusWindow::update()
         mGpLabel->adjustSize();
     }
 
-    mHpBar->setText(toString(mPlayer->mHp) +
-                    "/" + toString(mPlayer->mMaxHp));
+    updateHPBar(mHpBar, true);
 
-    mMpBar->setText(toString(mPlayer->mMp) +
-                    "/" + toString(mPlayer->mMaxMp));
+    updateMPBar(mMpBar, true);
 
-    mXpBar->setText(toString(mPlayer->getXp()) +
-                    "/" + toString(mPlayer->mXpForNextLevel));
+    updateXPBar(mXpBar);
 
-    mJobBar->setText(toString(mPlayer->mJobXp) +
-                     "/" + toString(mPlayer->mJobXpForNextLevel));
-
-    // HP Bar coloration
-    if (mPlayer->mHp < int(mPlayer->mMaxHp / 3))
-    {
-        mHpBar->setColor(223, 32, 32); // Red
-    }
-    else if (mPlayer->mHp < int((mPlayer->mMaxHp / 3) * 2))
-    {
-        mHpBar->setColor(230, 171, 34); // Orange
-    }
-    else
-    {
-        mHpBar->setColor(0, 171, 34); // Green
-    }
-
-    mHpBar->setProgress((float) mPlayer->mHp / (float) mPlayer->mMaxHp);
-    mMpBar->setProgress((float) mPlayer->mMp / (float) mPlayer->mMaxMp);
-
-    mXpBar->setProgress(
-            (float) mPlayer->getXp() / (float) mPlayer->mXpForNextLevel);
-    mJobBar->setProgress(
-            (float) mPlayer->mJobXp / (float) mPlayer->mJobXpForNextLevel);
+    updateJobBar(mJobBar);
 
     // Stats Part
     // ----------
@@ -318,3 +292,67 @@ void StatusWindow::action(const gcn::ActionEvent &event)
     }
 }
 
+void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
+{
+    if (showMax)
+        bar->setText(toString(player_node->mHp) +
+                    "/" + toString(player_node->mMaxHp));
+    else
+        bar->setText(toString(player_node->mHp));
+
+    // HP Bar coloration
+    if (player_node->mHp < player_node->mMaxHp / 3)
+    {
+        bar->setColor(223, 32, 32); // Red
+    }
+    else if (player_node->mHp < (player_node->mMaxHp / 3) * 2)
+    {
+        bar->setColor(230, 171, 34); // Orange
+    }
+    else
+    {
+        bar->setColor(0, 171, 34); // Green
+    }
+
+    bar->setProgress((float) player_node->mHp / (float) player_node->mMaxHp);
+}
+
+void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
+{
+    if (showMax)
+        bar->setText(toString(player_node->mMp) +
+                    "/" + toString(player_node->mMaxMp));
+    else
+        bar->setText(toString(player_node->mMp));
+
+
+    bar->setProgress((float) player_node->mMp / (float) player_node->mMaxMp);
+}
+
+void StatusWindow::updateXPBar(ProgressBar *bar)
+{
+    if (player_node->mXpForNextLevel == 0) {
+        bar->setText(_("Max level"));
+        bar->setProgress(1.0);
+    } else {
+        bar->setText(toString(player_node->getXp()) +
+                        "/" + toString(player_node->mXpForNextLevel));
+
+        bar->setProgress((float) player_node->getXp() /
+                         (float) player_node->mXpForNextLevel);
+    }
+}
+
+void StatusWindow::updateJobBar(ProgressBar *bar)
+{
+    if (player_node->mXpForNextLevel == 0) {
+        bar->setText(_("Max level"));
+        bar->setProgress(1.0);
+    } else {
+        bar->setText(toString(player_node->mJobXp) +
+                            "/" + toString(player_node->mJobXpForNextLevel));
+
+        bar->setProgress((float) player_node->mJobXp /
+                            (float) player_node->mJobXpForNextLevel);
+    }
+}
