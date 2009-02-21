@@ -288,7 +288,7 @@ Setup_Video::Setup_Video():
     place(0, 11, mOverlayDetailSlider);
     place(0, 12, mParticleDetailSlider);
 
-    place(1, 6, alphaLabel, 2);
+    place(1, 6, alphaLabel, 3);
     place(1, 7, mFpsCheckBox).setPadding(3);
     place(1, 8, scrollRadiusLabel);
     place(1, 9, scrollLazinessLabel);
@@ -299,9 +299,9 @@ Setup_Video::Setup_Video():
     place(2, 7, mFpsField).setPadding(1);
     place(2, 8, mScrollRadiusField).setPadding(1);
     place(2, 9, mScrollLazinessField).setPadding(1);
-    place(2, 10, mSpeechLabel, 2).setPadding(2);
-    place(2, 11, mOverlayDetailField, 2).setPadding(2);
-    place(2, 12, mParticleDetailField, 2).setPadding(2);
+    place(2, 10, mSpeechLabel, 3).setPadding(2);
+    place(2, 11, mOverlayDetailField, 3).setPadding(2);
+    place(2, 12, mParticleDetailField, 3).setPadding(2);
 
     setDimension(gcn::Rectangle(0, 0, 325, 280));
 }
