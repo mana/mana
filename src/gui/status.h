@@ -59,8 +59,8 @@ class StatusWindow : public Window, public gcn::ActionListener
 
         static void updateHPBar(ProgressBar *bar, bool showMax = false);
         static void updateMPBar(ProgressBar *bar, bool showMax = false);
-        static void updateXPBar(ProgressBar *bar);
-        static void updateJobBar(ProgressBar *bar);
+        static void updateXPBar(ProgressBar *bar, bool percent = true);
+        static void updateJobBar(ProgressBar *bar, bool percent = true);
 
     private:
         LocalPlayer *mPlayer;

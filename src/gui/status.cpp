@@ -185,9 +185,9 @@ void StatusWindow::update()
 
     updateMPBar(mMpBar, true);
 
-    updateXPBar(mXpBar);
+    updateXPBar(mXpBar, false);
 
-    updateJobBar(mJobBar);
+    updateJobBar(mJobBar, false);
 
     // Stats Part
     // ----------
@@ -329,13 +329,21 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
     bar->setProgress((float) player_node->mMp / (float) player_node->mMaxMp);
 }
 
-void StatusWindow::updateXPBar(ProgressBar *bar)
+void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
 {
     if (player_node->mXpForNextLevel == 0) {
         bar->setText(_("Max level"));
         bar->setProgress(1.0);
     } else {
-        bar->setText(toString(player_node->getXp()) +
+        if (percent)
+        {
+            float xp = (float) player_node->getXp() /
+                                player_node->mXpForNextLevel;
+            bar->setText(toString((float) ((int) (xp * 10000.0f)) / 100.0f) +
+                        "%");
+        }
+        else
+            bar->setText(toString(player_node->getXp()) +
                         "/" + toString(player_node->mXpForNextLevel));
 
         bar->setProgress((float) player_node->getXp() /
@@ -343,14 +351,22 @@ void StatusWindow::updateXPBar(ProgressBar *bar)
     }
 }
 
-void StatusWindow::updateJobBar(ProgressBar *bar)
+void StatusWindow::updateJobBar(ProgressBar *bar, bool percent)
 {
     if (player_node->mXpForNextLevel == 0) {
         bar->setText(_("Max level"));
         bar->setProgress(1.0);
     } else {
-        bar->setText(toString(player_node->mJobXp) +
-                            "/" + toString(player_node->mJobXpForNextLevel));
+        if (percent)
+        {
+            float xp = (float) player_node->mJobXp /
+                                player_node->mJobXpForNextLevel;
+            bar->setText(toString((float) ((int) (xp * 10000.0f)) / 100.0f) +
+                        "%");
+        }
+        else
+            bar->setText(toString(player_node->mJobXp) +
+                                "/" + toString(player_node->mJobXpForNextLevel));
 
         bar->setProgress((float) player_node->mJobXp /
                             (float) player_node->mJobXpForNextLevel);
