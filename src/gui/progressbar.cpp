@@ -134,13 +134,13 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 
         graphics->setFont(f);
 
-        graphics->setColor(gcn::Color(0, 0, 0, alpha));
+        graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawText(mText, textX + 1, textY, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX, textY - 1, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX, textY + 1, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX - 1, textY, gcn::Graphics::CENTER);
 
-        graphics->setColor(gcn::Color(255, 255, 255, alpha));
+        graphics->setColor(gcn::Color(255, 255, 255));
         graphics->drawText(mText, textX, textY, gcn::Graphics::CENTER);
 
         graphics->setColor(gcn::Color(0, 0, 0));
