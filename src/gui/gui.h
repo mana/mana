@@ -115,7 +115,7 @@ class Gui : public gcn::Gui
     private:
         GuiConfigListener *mConfigListener;
         gcn::Font *mGuiFont;                  /**< The global GUI font */
-        gcn::Font *mInfoParticleFont;         /**< Font for Info Paricles*/
+        gcn::Font *mInfoParticleFont;         /**< Font for Info Particles*/
         bool mCustomCursor;                   /**< Show custom cursor */
         ImageSet *mMouseCursors;              /**< Mouse cursor images */
         float mMouseCursorAlpha;
