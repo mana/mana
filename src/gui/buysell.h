@@ -43,6 +43,11 @@ class BuySellDialog : public Window, public gcn::ActionListener
         BuySellDialog();
 
         /**
+         * Check for current NPC
+         */
+        void logic();
+
+        /**
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);

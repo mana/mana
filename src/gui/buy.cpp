@@ -241,3 +241,10 @@ void BuyDialog::updateButtonsAndLabels()
                     Units::formatCurrency(price).c_str(),
                     Units::formatCurrency(mMoney - price).c_str()));
 }
+
+void BuyDialog::logic()
+{
+    Window::logic();
+
+    if (!current_npc) setVisible(false);
+}

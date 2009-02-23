@@ -254,3 +254,10 @@ void SellDialog::updateButtonsAndLabels()
                     Units::formatCurrency(income).c_str(),
                     Units::formatCurrency(mPlayerMoney - income).c_str()));
 }
+
+void SellDialog::logic()
+{
+    Window::logic();
+
+    if (!current_npc) setVisible(false);
+}

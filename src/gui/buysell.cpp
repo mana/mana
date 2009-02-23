@@ -51,6 +51,13 @@ BuySellDialog::BuySellDialog():
     requestFocus();
 }
 
+void BuySellDialog::logic()
+{
+    Window::logic();
+
+    if (!current_npc) setVisible(false);
+}
+
 void BuySellDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "Buy") {

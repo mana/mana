@@ -81,6 +81,11 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void setMoney(int amount);
 
+        /**
+         * Check for current NPC
+         */
+        void logic();
+
     private:
         /**
          * Updates the state of buttons and labels.

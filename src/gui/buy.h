@@ -95,6 +95,11 @@ class BuyDialog : public Window, public gcn::ActionListener,
          */
         void updateButtonsAndLabels();
 
+        /**
+         * Check for current NPC
+         */
+        void logic();
+
     private:
         Network *mNetwork;
         gcn::Button *mBuyButton;
