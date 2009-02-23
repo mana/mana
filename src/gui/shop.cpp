@@ -24,6 +24,11 @@
 
 #include "../utils/dtor.h"
 
+ShopItems::ShopItems(bool mergeDuplicates) :
+    mMergeDuplicates(mergeDuplicates)
+{
+}
+
 ShopItems::~ShopItems()
 {
     clear();
@@ -39,21 +44,39 @@ std::string ShopItems::getElementAt(int i)
     return mShopItems.at(i)->getDisplayName();
 }
 
-void ShopItems::addItem(int inventoryIndex, short id, int amount, int price)
+void ShopItems::addItem(int inventoryIndex, int id, int quantity,
+        int price)
 {
-    ShopItem *item = new ShopItem(id, amount, price);
-    item->setInvIndex(inventoryIndex);
-    mShopItems.push_back(item);
+    ShopItem* item = 0;
+    if (mMergeDuplicates)
+    {
+        item = findItem(id);
+    }
+
+    if (item)
+    {
+        item->addDuplicate (inventoryIndex, quantity);
+    }
+    else
+    {
+        item = new ShopItem(inventoryIndex, id, quantity, price);
+        mShopItems.push_back(item);
+    }
 }
 
-void ShopItems::addItem(short id, int price)
+void ShopItems::addItem(int id, int price)
 {
-    mShopItems.push_back(new ShopItem(id, 0, price));
+    addItem(-1, id, 0, price);
 }
 
 ShopItem* ShopItems::at(int i) const
 {
     return mShopItems.at(i);
+}
+
+void ShopItems::erase(int i)
+{
+    mShopItems.erase(mShopItems.begin() + i);
 }
 
 void ShopItems::clear()
@@ -62,7 +85,19 @@ void ShopItems::clear()
     mShopItems.clear();
 }
 
-std::vector<ShopItem*>* ShopItems::getShop()
+ShopItem* ShopItems::findItem(int id)
 {
-    return &mShopItems;
+    ShopItem *item;
+
+    std::vector<ShopItem*>::iterator it;
+    for(it = mShopItems.begin(); it != mShopItems.end(); it++)
+    {
+        item = *(it);
+        if (item->getId() == id)
+        {
+            return item;
+        }
+    }
+
+    return 0;
 }

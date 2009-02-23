@@ -50,7 +50,8 @@ SellDialog::SellDialog(Network *network):
     setMinHeight(230);
     setDefaultSize(0, 0, 260, 230);
 
-    mShopItems = new ShopItems();
+    // Create a ShopItems instance, that is aware of duplicate entries.
+    mShopItems = new ShopItems(true);
 
     mShopItemList = new ShopListBox(mShopItems, mShopItems);
     mScrollArea = new ScrollArea(mShopItemList);
@@ -115,10 +116,11 @@ void SellDialog::reset()
 void SellDialog::addItem(const Item *item, int price)
 {
     if (!item)
+    {
         return;
+    }
 
-    mShopItems->addItem(
-            item->getInvIndex(), item->getId(),
+    mShopItems->addItem(item->getInvIndex(), item->getId(),
             item->getQuantity(), price);
 
     mShopItemList->adjustSize();
@@ -164,23 +166,34 @@ void SellDialog::action(const gcn::ActionEvent &event)
     {
         // Attempt sell
         MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
-        outMsg.writeInt16(8);
-        outMsg.writeInt16(mShopItems->at(selectedItem)->getInvIndex());
-        outMsg.writeInt16(mAmountItems);
 
+        ShopItem* item = mShopItems->at(selectedItem);
+        int sellCount;
+        mPlayerMoney +=
+            mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mMaxItems -= mAmountItems;
-        mShopItems->getShop()->at(selectedItem)->setQuantity(mMaxItems);
+        while (mAmountItems > 0) {
+            outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
+            outMsg.writeInt16(8);
+            outMsg.writeInt16(item->getCurrentInvIndex());
+            // This order is important, item->getCurrentInvIndex() would return
+            // the inventory index of the next Duplicate otherwise.
+            sellCount = item->sellCurrentDuplicate(mAmountItems);
+            mAmountItems -= sellCount;
+            outMsg.writeInt16(sellCount);
+        }
+
         mPlayerMoney +=
             mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mAmountItems = 1;
+        mSlider->setValue(0);
 
         if (!mMaxItems)
         {
             // All were sold
             mShopItemList->setSelected(-1);
-            mShopItems->getShop()->erase(
-                    mShopItems->getShop()->begin() + selectedItem);
+            delete mShopItems->at(selectedItem);
+            mShopItems->erase(selectedItem);
 
             gcn::Rectangle scroll;
             scroll.y = mShopItemList->getRowHeight() * (selectedItem + 1);
