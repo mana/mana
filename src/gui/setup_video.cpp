@@ -414,6 +414,8 @@ void Setup_Video::cancel()
     config.setValue("particleeffects", mParticleEffectsEnabled ? true : false);
     config.setValue("speech", mSpeechMode);
     config.setValue("showownname", mNameEnabled ? true : false);
+    if (player_node)
+        player_node->mUpdateName = true;
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled ? true : false);
     config.setValue("showpickupchat", mPickupChatEnabled ? true : false);
