@@ -80,15 +80,14 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     {
         gcn::Color backgroundColor = gcn::Color(255, 255, 255, alpha);
 
-        if (i == mSelected)
-        {
-            backgroundColor = gcn::Color(red, green, blue, alpha);
-        }
-        else if (mShopItems &&
+        if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
-        {
-            backgroundColor = gcn::Color(145, 145, 145, alpha);
-        }
+            if (i == mSelected)
+                backgroundColor = gcn::Color(145, 0, 0, alpha);
+            else
+                backgroundColor = gcn::Color(145, 145, 145, alpha);
+        else if (i == mSelected)
+            backgroundColor = gcn::Color(red, green, blue, alpha);
 
         graphics->setColor(backgroundColor);
         graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
