@@ -108,6 +108,7 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     {
         choice = 0xff; // 0xff means cancel
         npcTextDialog->addText(_("\n> Cancel\n"));
+        npcTextDialog->showCloseButton();
     }
 
     if (choice)
