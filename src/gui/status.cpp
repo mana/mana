@@ -353,7 +353,7 @@ void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
 
 void StatusWindow::updateJobBar(ProgressBar *bar, bool percent)
 {
-    if (player_node->mXpForNextLevel == 0) {
+    if (player_node->mJobXpForNextLevel == 0) {
         bar->setText(_("Max level"));
         bar->setProgress(1.0);
     } else {
