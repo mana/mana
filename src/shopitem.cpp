@@ -23,10 +23,62 @@
 
 #include "units.h"
 
-ShopItem::ShopItem(int id, int quantity, int price):
-    Item(id, quantity),
-    mPrice(price)
+ShopItem::ShopItem (int inventoryIndex, int id,
+        int quantity, int price) :
+        Item (id, 0), mPrice(price)
 {
     mDisplayName = getInfo().getName() +
                         " (" + Units::formatCurrency(mPrice).c_str() + ")";
+    setInvIndex(inventoryIndex);
+    addDuplicate(inventoryIndex, quantity);
+}
+
+ShopItem::ShopItem (int id, int price) : Item (id, 0), mPrice(price)
+{
+    mDisplayName = getInfo().getName() +
+                        " (" + Units::formatCurrency(mPrice).c_str() + ")";
+    setInvIndex(-1);
+    addDuplicate(-1, 0);
+}
+
+ShopItem::~ShopItem()
+{
+    /** Clear all remaining duplicates on Object destruction. */
+    while (!mDuplicates.empty())
+    {
+        delete mDuplicates.top();
+        mDuplicates.pop();
+    }
+}
+
+void ShopItem::addDuplicate(int inventoryIndex,
+        int quantity)
+{
+    DuplicateItem* di = new DuplicateItem;
+    di->inventoryIndex = inventoryIndex;
+    di->quantity = quantity;
+    mDuplicates.push(di);
+    mQuantity += quantity;
+}
+
+
+void ShopItem::addDuplicate()
+{
+    DuplicateItem* di = new DuplicateItem;
+    di->inventoryIndex = -1;
+    di->quantity = 0;
+    mDuplicates.push(di);
+}
+
+int ShopItem::sellCurrentDuplicate(int quantity)
+{
+    DuplicateItem* dupl = mDuplicates.top();
+    int sellCount = quantity <= dupl->quantity ? quantity : dupl->quantity;
+    dupl->quantity -= sellCount;
+    mQuantity -= sellCount;
+    if (dupl->quantity == 0) {
+        delete dupl;
+        mDuplicates.pop();
+    }
+    return sellCount;
 }
