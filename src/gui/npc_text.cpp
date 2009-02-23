@@ -73,6 +73,11 @@ void NpcTextDialog::addText(const std::string &text)
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
 }
 
+void NpcTextDialog::clearText()
+{
+    setText("");
+}
+
 void NpcTextDialog::showNextButton()
 {
     mButton->setCaption(_("Next"));
