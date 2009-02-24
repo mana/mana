@@ -595,6 +595,7 @@ void parseOptions(int argc, char *argv[], Options &options)
  */
 void loadUpdates()
 {
+    if (updatesDir.empty()) return;
     const std::string updatesFile = "/" + updatesDir + "/resources2.txt";
     ResourceManager *resman = ResourceManager::getInstance();
     std::vector<std::string> lines = resman->loadTextFile(updatesFile);
@@ -983,8 +984,7 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        int nextState = (options.skipUpdate) ?
-                            LOADDATA_STATE : UPDATE_STATE;
+                        int nextState = UPDATE_STATE;
                         currentDialog = new ServerSelectDialog(&loginData,
                                                                 nextState);
                         positionDialog(currentDialog, screenWidth,
@@ -1044,18 +1044,18 @@ int main(int argc, char *argv[])
                     break;
 
                 case UPDATE_STATE:
-                    // Determine which source to use for the update host
-                    if (!options.updateHost.empty())
-                        updateHost = options.updateHost;
-                    else
-                        updateHost = loginData.updateHost;
-
-                    setUpdatesDir();
-                    logger->log("State: UPDATE");
-
                     if (options.skipUpdate) {
                         state = LOADDATA_STATE;
                     } else {
+                        // Determine which source to use for the update host
+                        if (!options.updateHost.empty())
+                            updateHost = options.updateHost;
+                        else
+                            updateHost = loginData.updateHost;
+
+                        setUpdatesDir();
+                        logger->log("State: UPDATE");
+
                         currentDialog = new UpdaterWindow(updateHost,
                                                 homeDir + "/" + updatesDir);
                         positionDialog(currentDialog, screenWidth,
