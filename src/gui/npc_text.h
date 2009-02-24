@@ -93,7 +93,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
             NPC_TEXT_STATE_NEXT,
             NPC_TEXT_STATE_CLOSE
         };
-        int mState;
+        NPCTextState mState;
 };
 
 #endif // NPC_TEXT_H

@@ -121,6 +121,10 @@ Setup_Video::Setup_Video():
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
+    mPickupNotifyLabel(new gcn::Label(_("Show pickup notification"))),
+    mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
+    mPickupParticleCheckBox(new CheckBox(_("as particle"),
+                           mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),
     mSpeechLabel(new gcn::Label("")),
     mAlphaSlider(new Slider(0.2, 1.0)),
@@ -138,11 +142,7 @@ Setup_Video::Setup_Video():
     mOverlayDetailField(new gcn::Label("")),
     mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
-    mParticleDetailField(new gcn::Label("")),
-    mPickupNotifyLabel(new gcn::Label(_("Show pickup notification"))),
-    mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
-    mPickupParticleCheckBox(new CheckBox(_("as particle"),
-                           mPickupParticleEnabled))
+    mParticleDetailField(new gcn::Label(""))
 {
     setOpaque(false);
 
