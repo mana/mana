@@ -75,12 +75,6 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
 
 NPC::~NPC()
 {
-    if (current_npc == this) // Don't delete if current NPC
-    {
-        handleDeath();
-        return;
-    }
-
     delete mName;
 }
 
@@ -112,7 +106,7 @@ Being::Type NPC::getType() const
 
 void NPC::talk()
 {
-    if (!mNetwork) return;
+    if (!this || !mNetwork) return;
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
@@ -121,7 +115,7 @@ void NPC::talk()
 
 void NPC::nextDialog()
 {
-    if (!mNetwork) return;
+    if (!this || !mNetwork) return;
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(mId);
@@ -187,7 +181,7 @@ void NPC::handleDeath()
 
     if (npcTextDialog->isVisible())
         npcTextDialog->showCloseButton();
-    else {
+    else if (current_npc) {
         NPC *temp = current_npc;
         current_npc = NULL;
         delete temp;

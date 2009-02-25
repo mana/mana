@@ -94,7 +94,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             // If we're talking to that NPC, show the next button
             if (temporaryNPC == current_npc)
                 npcTextDialog->showNextButton();
-            else
+            else if (temporaryNPC)
             // Otherwise, move on as an empty dialog doesn't help
                 temporaryNPC->nextDialog();
             break;

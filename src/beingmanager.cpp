@@ -96,7 +96,10 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
 void BeingManager::destroyBeing(Being *being)
 {
     mBeings.remove(being);
-    delete being;
+    if (being == current_npc)
+        current_npc->handleDeath();
+    else
+        delete being;
 }
 
 Being* BeingManager::findBeing(Uint32 id)
@@ -191,6 +194,12 @@ void BeingManager::clear()
     if (player_node)
     {
         mBeings.remove(player_node);
+    }
+
+    if (current_npc)
+    {
+        mBeings.remove(current_npc);
+        current_npc->handleDeath();
     }
 
     delete_all(mBeings);
