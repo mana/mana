@@ -181,9 +181,6 @@ void NPC::handleDeath()
 
     if (npcTextDialog->isVisible())
         npcTextDialog->showCloseButton();
-    else if (current_npc) {
-        NPC *temp = current_npc;
+    else
         current_npc = NULL;
-        delete temp;
-    }
 }
