@@ -102,6 +102,7 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
         } else if (mState == NPC_TEXT_STATE_CLOSE ||
                 (mState == NPC_TEXT_STATE_NEXT && !current_npc)) {
             setText("");
+            if (current_npc) current_npc->nextDialog();
             setVisible(false);
             if (current_npc) current_npc->handleDeath();
         } else return;
