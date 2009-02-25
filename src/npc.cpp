@@ -75,9 +75,13 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
 
 NPC::~NPC()
 {
-    delete mName;
+    if (current_npc == this) // Don't delete if current NPC
+    {
+        handleDeath();
+        return;
+    }
 
-    if (current_npc == this) handleDeath();
+    delete mName;
 }
 
 void NPC::setName(const std::string &name)
@@ -181,5 +185,9 @@ void NPC::handleDeath()
 
     if (npcTextDialog->isVisible())
         npcTextDialog->showCloseButton();
-    else current_npc = NULL;
+    else {
+        NPC *temp = current_npc;
+        current_npc = NULL;
+        delete temp;
+    }
 }
