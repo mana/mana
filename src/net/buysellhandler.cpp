@@ -65,7 +65,7 @@ void BuySellHandler::handleMessage(MessageIn *msg)
             sellDialog->setVisible(false);
             sellDialog->reset();
             buySellDialog->setVisible(true);
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg->readInt32()));
+            current_npc = msg->readInt32();
             break;
 
         case SMSG_NPC_BUY:
@@ -107,7 +107,7 @@ void BuySellHandler::handleMessage(MessageIn *msg)
             }
             else {
                 chatWindow->chatLog(_("Nothing to sell"), BY_SERVER);
-                if (current_npc) current_npc->handleDeath();
+                current_npc = 0;
             }
             break;
 

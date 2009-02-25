@@ -26,6 +26,8 @@
 
 #include <guichan/actionlistener.hpp>
 
+class Network;
+
 /**
  * The npc integer input dialog.
  *
@@ -39,7 +41,7 @@ class NpcStringDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        NpcStringDialog();
+        NpcStringDialog(Network *network);
 
         /**
          * Called when receiving actions from the widgets.
@@ -71,6 +73,7 @@ class NpcStringDialog : public Window, public gcn::ActionListener
         void setVisible(bool visible);
 
     private:
+        Network *mNetwork;
         gcn::TextField *mValueField;
         std::string mDefault;
 };

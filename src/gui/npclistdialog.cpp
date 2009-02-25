@@ -31,13 +31,16 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#include "../net/protocol.h"
+
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
 extern NpcTextDialog *npcTextDialog;
 
-NpcListDialog::NpcListDialog():
-    Window(_("NPC"))
+NpcListDialog::NpcListDialog(Network *network):
+    Window(_("NPC")), mNetwork(network)
 {
     setResizable(true);
 
@@ -115,7 +118,10 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     {
         setVisible(false);
         reset();
-        current_npc->dialogChoice(choice);
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
+        outMsg.writeInt32(current_npc);
+        outMsg.writeInt8(choice);
     }
 }
 

@@ -96,10 +96,7 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
 void BeingManager::destroyBeing(Being *being)
 {
     mBeings.remove(being);
-    if (being == current_npc)
-        current_npc->handleDeath();
-    else
-        delete being;
+    delete being;
 }
 
 Being* BeingManager::findBeing(Uint32 id)
@@ -196,12 +193,6 @@ void BeingManager::clear()
         mBeings.remove(player_node);
     }
 
-    if (current_npc)
-    {
-        mBeings.remove(current_npc);
-        current_npc->handleDeath();
-    }
-
     delete_all(mBeings);
     mBeings.clear();
 
@@ -263,4 +254,14 @@ Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
     }
 
     return (maxdist >= dist) ? closestBeing : NULL;
+}
+
+bool BeingManager::hasBeing(Being *being)
+{
+    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    {
+        if (being == *i) return true;
+    }
+
+    return false;
 }

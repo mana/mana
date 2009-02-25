@@ -28,10 +28,13 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#include "../net/protocol.h"
+
 #include "../utils/gettext.h"
 
-NpcTextDialog::NpcTextDialog():
-    Window(_("NPC")),
+NpcTextDialog::NpcTextDialog(Network *network):
+    Window(_("NPC")), mNetwork(network),
     mState(NPC_TEXT_STATE_WAITING)
 {
     setResizable(true);
@@ -97,14 +100,14 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "ok")
     {
         if (mState == NPC_TEXT_STATE_NEXT && current_npc) {
-            current_npc->nextDialog();
+            nextDialog();
             addText("\n> Next\n");
         } else if (mState == NPC_TEXT_STATE_CLOSE ||
                 (mState == NPC_TEXT_STATE_NEXT && !current_npc)) {
             setText("");
-            if (current_npc) current_npc->nextDialog();
+            if (current_npc) nextDialog();
             setVisible(false);
-            if (current_npc) current_npc->handleDeath();
+            current_npc = 0;
         } else return;
     }
     else return;
@@ -114,10 +117,16 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
     mState = NPC_TEXT_STATE_WAITING;
 }
 
+void NpcTextDialog::nextDialog(int npcID)
+{
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeInt32(npcID);
+}
+
 void NpcTextDialog::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
 
     setText(mText);
 }
-

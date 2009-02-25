@@ -42,19 +42,6 @@ class NPC : public Player
         virtual Type getType() const;
 
         void talk();
-        void nextDialog();
-        void dialogChoice(char choice);
-        void integerInput(int value);
-        void stringInput(const std::string &value);
-
-        void buy();
-        void sell();
-
-        /**
-         * Call this to ease clean up of the current NPC, without causing
-         * interface problems
-         */
-        void handleDeath();
     protected:
         Network *mNetwork;
         void updateCoords();
@@ -62,6 +49,6 @@ class NPC : public Player
         Text *mName;
 };
 
-extern NPC *current_npc;
+extern int current_npc;
 
 #endif

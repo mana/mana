@@ -24,10 +24,13 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#include "../net/protocol.h"
+
 #include "../utils/gettext.h"
 
-BuySellDialog::BuySellDialog():
-    Window(_("Shop"))
+BuySellDialog::BuySellDialog(Network *network):
+    Window(_("Shop")), mNetwork(network)
 {
     Button *buyButton = 0;
     static const char *buttonNames[] = {
@@ -60,12 +63,19 @@ void BuySellDialog::logic()
 
 void BuySellDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "Buy") {
-        current_npc->buy();
-    } else if (event.getId() == "Sell") {
-        current_npc->sell();
-    } else if (event.getId() == "Cancel") {
-        if (current_npc) current_npc->handleDeath();
-    }
     setVisible(false);
+    int action;
+    if (event.getId() == "Buy") {
+        action = 0;
+    } else if (event.getId() == "Sell") {
+        action = 1;
+    } else if (event.getId() == "Cancel") {
+        current_npc = 0;
+        return;
+    }
+
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
+    outMsg.writeInt32(current_npc);
+    outMsg.writeInt8(action);
 }

@@ -93,7 +93,7 @@ namespace {
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);
             buySellDialog->setVisible(false);
-            if (current_npc) current_npc->handleDeath();
+            current_npc = 0;
         }
     } deathListener;
 }
@@ -146,8 +146,6 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
                 // Switch the actual map, deleting the previous one if necessary
                 engine->changeMap(mapPath);
-
-                if (current_npc) current_npc->handleDeath();
 
                 float scrollOffsetX = 0.0f;
                 float scrollOffsetY = 0.0f;

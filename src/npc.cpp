@@ -20,6 +20,7 @@
  */
 
 #include "animatedsprite.h"
+#include "beingmanager.h"
 #include "npc.h"
 #include "particle.h"
 #include "text.h"
@@ -33,7 +34,7 @@
 
 extern NpcTextDialog *npcTextDialog;
 
-NPC *current_npc = NULL;
+int current_npc = NULL;
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
@@ -113,74 +114,10 @@ void NPC::talk()
     outMsg.writeInt8(0);
 }
 
-void NPC::nextDialog()
-{
-    if (!this || !mNetwork) return;
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
-    outMsg.writeInt32(mId);
-}
-
-void NPC::dialogChoice(char choice)
-{
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(choice);
-}
-
-void NPC::integerInput(int value)
-{
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_INT_RESPONSE);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt32(value);
-}
-
-void NPC::stringInput(const std::string &value)
-{
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
-    outMsg.writeInt16(value.length() + 9);
-    outMsg.writeInt32(mId);
-    outMsg.writeString(value, value.length());
-    outMsg.writeInt8(0);
-}
-
-/*
- * TODO Unify the buy() and sell() methods, without sacrificing readability of
- * the code calling the method. buy(bool buySell) would be bad...
- */
-void NPC::buy()
-{
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(0);
-}
-
-void NPC::sell()
-{
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(1);
-}
-
 void NPC::updateCoords()
 {
     if (mName)
     {
         mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
     }
-}
-
-void NPC::handleDeath()
-{
-    if (this != current_npc) return;
-
-    if (npcTextDialog->isVisible())
-        npcTextDialog->showCloseButton();
-    else
-        current_npc = NULL;
 }

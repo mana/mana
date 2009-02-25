@@ -54,24 +54,21 @@ NPCHandler::NPCHandler()
 void NPCHandler::handleMessage(MessageIn *msg)
 {
     int id;
-    NPC *temporaryNPC;
 
     switch (msg->getId())
     {
         case SMSG_NPC_CHOICE:
             msg->readInt16();  // length
-            id = msg->readInt32();
+            current_npc = msg->readInt32();
             player_node->setAction(LocalPlayer::STAND);
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcListDialog->parseItems(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(true);
             break;
 
         case SMSG_NPC_MESSAGE:
             msg->readInt16();  // length
-            id = msg->readInt32();
+            current_npc = msg->readInt32();
             player_node->setAction(LocalPlayer::STAND);
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcTextDialog->addText(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);
@@ -79,30 +76,28 @@ void NPCHandler::handleMessage(MessageIn *msg)
 
          case SMSG_NPC_CLOSE:
             id = msg->readInt32();
-            temporaryNPC = dynamic_cast<NPC*>(beingManager->findBeing(id));
             // If we're talking to that NPC, show the close button
-            if (temporaryNPC == current_npc)
+            if (id == current_npc)
                 npcTextDialog->showCloseButton();
             // Otherwise, move on as an empty dialog doesn't help
             else
-                temporaryNPC->nextDialog();
+                npcTextDialog->nextDialog(id);
             break;
 
         case SMSG_NPC_NEXT:
             id = msg->readInt32();
-            temporaryNPC = dynamic_cast<NPC*>(beingManager->findBeing(id));
             // If we're talking to that NPC, show the next button
-            if (temporaryNPC == current_npc)
+            if (id == current_npc)
                 npcTextDialog->showNextButton();
-            else if (temporaryNPC)
             // Otherwise, move on as an empty dialog doesn't help
-                temporaryNPC->nextDialog();
+            else
+                npcTextDialog->nextDialog(id);
             break;
 
         case SMSG_NPC_INT_INPUT:
             // Request for an integer
-            id = msg->readInt32();
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
+            current_npc = msg->readInt32();
+            player_node->setAction(LocalPlayer::STAND);
             npcIntegerDialog->setRange(0, 2147483647);
             npcIntegerDialog->setDefaultValue(0);
             npcIntegerDialog->setVisible(true);
@@ -111,8 +106,8 @@ void NPCHandler::handleMessage(MessageIn *msg)
 
         case SMSG_NPC_STR_INPUT:
             // Request for a string
-            id = msg->readInt32();
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
+            current_npc = msg->readInt32();
+            player_node->setAction(LocalPlayer::STAND);
             npcStringDialog->setValue("");
             npcStringDialog->setVisible(true);
             npcStringDialog->requestFocus();

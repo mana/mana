@@ -99,12 +99,20 @@ class BeingManager
         Beings& getAll();
 
         /**
+         * Returns true if the given being is in the manager's list, false
+         * otherwise.
+         *
+         * \param being the being to search for
+         */
+        bool hasBeing(Being *being);
+
+        /**
          * Logic.
          */
         void logic();
 
         /**
-         * Destroys all beings except the local player
+         * Destroys all beings except the local player and current NPC (if any)
          */
         void clear();
 
