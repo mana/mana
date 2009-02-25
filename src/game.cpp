@@ -873,11 +873,11 @@ void Game::handleInput()
                 !keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
             Being::Type currentTarget = Being::UNKNOWN;
-            if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
-                currentTarget = Being::PLAYER;
-            else if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+            if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
                     (joystick && joystick->buttonPressed(3)))
                 currentTarget = Being::MONSTER;
+            else if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
+                currentTarget = Being::PLAYER;
             else if (keyboard.isKeyActive(keyboard.KEY_TARGET_NPC))
                 currentTarget = Being::NPC;
 
