@@ -112,6 +112,7 @@ Being::Type NPC::getType() const
 
 void NPC::talk()
 {
+    if (!mNetwork) return;
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
@@ -120,6 +121,7 @@ void NPC::talk()
 
 void NPC::nextDialog()
 {
+    if (!mNetwork) return;
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(mId);
