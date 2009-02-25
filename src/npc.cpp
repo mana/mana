@@ -112,7 +112,6 @@ void NPC::talk()
     outMsg.writeInt16(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(0);
-    current_npc = this;
 }
 
 void NPC::nextDialog()
