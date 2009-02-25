@@ -107,7 +107,7 @@ Being::Type NPC::getType() const
 
 void NPC::talk()
 {
-    if (mTalking)
+    if (mTalking || !mNetwork)
         return;
 
     mTalking = true;
@@ -119,6 +119,9 @@ void NPC::talk()
 
 void NPC::nextDialog()
 {
+    if (!mNetwork)
+        return;
+
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(mId);
@@ -156,6 +159,9 @@ void NPC::stringInput(const std::string &value)
  */
 void NPC::buy()
 {
+    if (!mNetwork)
+        return;
+
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(mId);
@@ -164,6 +170,9 @@ void NPC::buy()
 
 void NPC::sell()
 {
+    if (!mNetwork)
+        return;
+
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(mId);
