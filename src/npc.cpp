@@ -34,7 +34,8 @@
 
 extern NpcTextDialog *npcTextDialog;
 
-int current_npc = NULL;
+int current_npc = 0;
+bool NPC::isTalking = false;
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
@@ -107,7 +108,9 @@ Being::Type NPC::getType() const
 
 void NPC::talk()
 {
-    if (!this || !mNetwork) return;
+    if (isTalking || !this || !mNetwork) return;
+
+    isTalking = true;
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);

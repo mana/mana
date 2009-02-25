@@ -42,6 +42,8 @@ class NPC : public Player
         virtual Type getType() const;
 
         void talk();
+
+        static bool isTalking;
     protected:
         Network *mNetwork;
         void updateCoords();
