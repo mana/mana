@@ -81,6 +81,7 @@ namespace {
         {
             player_node->revive();
             deathNotice = NULL;
+            npcIntegerDialog->reset();
             npcIntegerDialog->setVisible(false);
             npcListDialog->reset();
             npcListDialog->setVisible(false);
