@@ -118,3 +118,10 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
         current_npc->dialogChoice(choice);
     }
 }
+
+void NpcListDialog::setVisible(bool visible)
+{
+    if (visible) npcTextDialog->setVisible(true);
+
+    Window::setVisible(visible);
+}

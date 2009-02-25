@@ -123,3 +123,10 @@ void NpcIntegerDialog::requestFocus()
 {
     mValueField->requestFocus();
 }
+
+void NpcIntegerDialog::setVisible(bool visible)
+{
+    if (visible) npcTextDialog->setVisible(true);
+
+    Window::setVisible(visible);
+}

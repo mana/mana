@@ -78,6 +78,8 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener
          */
         void requestFocus();
 
+        void setVisible(bool visible);
+
     private:
         gcn::Button *mDecButton;
         gcn::Button *mIncButton;

@@ -72,6 +72,8 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          */
         void reset();
 
+        void setVisible(bool visible);
+
     private:
         gcn::ListBox *mItemList;
 

@@ -68,6 +68,8 @@ class NpcStringDialog : public Window, public gcn::ActionListener
          */
         void requestFocus();
 
+        void setVisible(bool visible);
+
     private:
         gcn::TextField *mValueField;
         std::string mDefault;

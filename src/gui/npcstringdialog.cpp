@@ -87,3 +87,10 @@ void NpcStringDialog::requestFocus()
 {
     mValueField->requestFocus();
 }
+
+void NpcStringDialog::setVisible(bool visible)
+{
+    if (visible) npcTextDialog->setVisible(true);
+
+    Window::setVisible(visible);
+}
