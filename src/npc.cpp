@@ -178,7 +178,6 @@ void NPC::updateCoords()
 
 void NPC::handleDeath()
 {
-    printf("NPC::handleDeath\n");
     if (this != current_npc) return;
 
     if (npcTextDialog->isVisible())
