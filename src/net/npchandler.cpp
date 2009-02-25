@@ -54,6 +54,7 @@ NPCHandler::NPCHandler()
 void NPCHandler::handleMessage(MessageIn *msg)
 {
     int id;
+    NPC *temporaryNPC;
 
     switch (msg->getId())
     {
@@ -78,15 +79,24 @@ void NPCHandler::handleMessage(MessageIn *msg)
 
          case SMSG_NPC_CLOSE:
             id = msg->readInt32();
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
-            npcTextDialog->showCloseButton();
+            temporaryNPC = dynamic_cast<NPC*>(beingManager->findBeing(id));
+            // If we're talking to that NPC, show the close button
+            if (temporaryNPC == current_npc)
+                npcTextDialog->showCloseButton();
+            // Otherwise, move on as an empty dialog doesn't help
+            else
+                temporaryNPC->nextDialog();
             break;
 
         case SMSG_NPC_NEXT:
-            // Next button in NPC dialog, currently unused
             id = msg->readInt32();
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
-            npcTextDialog->showNextButton();
+            temporaryNPC = dynamic_cast<NPC*>(beingManager->findBeing(id));
+            // If we're talking to that NPC, show the next button
+            if (temporaryNPC == current_npc)
+                npcTextDialog->showNextButton();
+            else
+            // Otherwise, move on as an empty dialog doesn't help
+                temporaryNPC->nextDialog();
             break;
 
         case SMSG_NPC_INT_INPUT:
