@@ -55,6 +55,11 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener
         int getValue();
 
         /**
+         * Resets the integer input field.
+         */
+        void reset();
+
+        /**
          * Prepares the NPC dialog.
          *
          * @param min The minimum value to allow

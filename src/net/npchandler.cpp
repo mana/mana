@@ -76,12 +76,10 @@ void NPCHandler::handleMessage(MessageIn *msg)
             id = msg->readInt32();
             if (current_npc == dynamic_cast<NPC*>(beingManager->findBeing(id)))
                 current_npc = NULL;
-            NPC::mTalking = false;
             break;
 
         case SMSG_NPC_NEXT:
             // Next button in NPC dialog, currently unused
-            NPC::mTalking = false;
             break;
 
         case SMSG_NPC_INT_INPUT:

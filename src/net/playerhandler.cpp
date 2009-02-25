@@ -82,14 +82,16 @@ namespace {
             player_node->revive();
             deathNotice = NULL;
             npcIntegerDialog->setVisible(false);
+            npcListDialog->reset();
             npcListDialog->setVisible(false);
+            npcStringDialog->setValue("");
             npcStringDialog->setVisible(false);
             npcTextDialog->clearText();
             npcTextDialog->setVisible(false);
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);
             buySellDialog->setVisible(false);
-            current_npc = 0;
+            current_npc = NULL;
         }
     } deathListener;
 }

@@ -70,6 +70,11 @@ int NpcIntegerDialog::getValue()
     return mValueField->getValue();
 }
 
+void NpcIntegerDialog::reset()
+{
+    mValueField->reset();
+}
+
 void NpcIntegerDialog::action(const gcn::ActionEvent &event)
 {
     bool finish = false;

@@ -86,6 +86,7 @@ void NpcListDialog::parseItems(const std::string &itemString)
 
 void NpcListDialog::reset()
 {
+    mItemList->setSelected(-1);
     mItems.clear();
 }
 

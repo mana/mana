@@ -75,6 +75,7 @@ void NpcTextDialog::addText(const std::string &text)
 
 void NpcTextDialog::clearText()
 {
+    NPC::mTalking = false;
     setText("");
 }
 
