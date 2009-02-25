@@ -60,6 +60,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcListDialog->parseItems(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(true);
+            npcListDialog->requestFocus();
             break;
 
         case SMSG_NPC_MESSAGE:
@@ -68,7 +69,6 @@ void NPCHandler::handleMessage(MessageIn *msg)
             player_node->setAction(LocalPlayer::STAND);
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
             npcTextDialog->addText(msg->readString(msg->getLength() - 8));
-            npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);
             break;
 

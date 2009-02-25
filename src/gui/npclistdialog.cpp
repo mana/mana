@@ -45,7 +45,9 @@ NpcListDialog::NpcListDialog():
 
     mItemList = new ListBox(this);
     mItemList->setWrappingEnabled(true);
+
     scrollArea = new ScrollArea(mItemList);
+
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
 
@@ -95,10 +97,9 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     {
         // Send the selected index back to the server
         int selectedIndex = mItemList->getSelected();
+
         if (selectedIndex > -1)
-        {
             choice = selectedIndex + 1;
-        }
     }
     else if (event.getId() == "cancel")
     {
@@ -109,7 +110,16 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     {
         setVisible(false);
         reset();
-        current_npc->dialogChoice(choice);
+
+        if (current_npc)
+            current_npc->dialogChoice(choice);
+
         current_npc = NULL;
     }
+}
+
+void NpcListDialog::requestFocus()
+{
+    mItemList->requestFocus();
+    mItemList->setSelected(0);
 }

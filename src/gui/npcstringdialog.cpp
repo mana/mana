@@ -64,7 +64,10 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     }
 
     setVisible(false);
-    current_npc->stringInput(mValueField->getText());
+
+    if (current_npc)
+        current_npc->stringInput(mValueField->getText());
+
     current_npc = NULL;
     mValueField->setText("");
 }

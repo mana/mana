@@ -72,15 +72,15 @@ int NpcIntegerDialog::getValue()
 
 void NpcIntegerDialog::action(const gcn::ActionEvent &event)
 {
-    int finish = 0;
+    bool finish = false;
 
     if (event.getId() == "ok")
     {
-        finish = 1;
+        finish = true;
     }
     else if (event.getId() == "cancel")
     {
-        finish = 1;
+        finish = true;
         mValueField->reset();
     }
     else if (event.getId() == "decvalue")
@@ -99,7 +99,10 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     if (finish)
     {
         setVisible(false);
-        current_npc->integerInput(mValueField->getValue());
+
+        if (current_npc)
+            current_npc->integerInput(mValueField->getValue());
+
         current_npc = NULL;
         mValueField->reset();
     }

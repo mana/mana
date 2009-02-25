@@ -22,6 +22,7 @@
 
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
+#include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
 
 #include "color.h"
@@ -66,6 +67,90 @@ void ListBox::draw(gcn::Graphics *graphics)
          ++i, y += fontHeight)
     {
         graphics->drawText(mListModel->getElementAt(i), 1, y);
+    }
+}
+
+void ListBox::setSelected(int selected)
+{
+    if (!mListModel)
+    {
+        mSelected = -1;
+    }
+    else
+    {
+        if (selected < 0 && !mWrappingEnabled)
+        {
+            mSelected = -1;
+        }
+        else if (selected >= mListModel->getNumberOfElements() &&
+                 mWrappingEnabled)
+        {
+            mSelected = 0;
+        }
+        else if ((selected >= mListModel->getNumberOfElements() &&
+                 !mWrappingEnabled) || (selected < 0 && mWrappingEnabled))
+        {
+            mSelected = mListModel->getNumberOfElements() - 1;
+        }
+        else
+        {
+            mSelected = selected;
+        }
+    }
+}
+
+// -- KeyListener notifications
+void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
+{
+    gcn::Key key = keyEvent.getKey();
+
+    if (key.getValue() == gcn::Key::ENTER || key.getValue() == gcn::Key::SPACE)
+    {
+        distributeActionEvent();
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::UP)
+    {
+        setSelected(mSelected - 1);      
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::DOWN)
+    {
+        setSelected(mSelected + 1);
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::HOME)
+    {
+        setSelected(0);
+        keyEvent.consume();
+    }
+    else if (key.getValue() == gcn::Key::END)
+    {
+        setSelected(getListModel()->getNumberOfElements() - 1);
+        keyEvent.consume();
+    }
+}
+
+void ListBox::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
+{
+    if (isFocused())
+    {
+        if (getSelected() > 0 || (getSelected() == 0 && mWrappingEnabled))
+        {
+            setSelected(getSelected() - 1);
+        }
+
+        mouseEvent.consume();
+    }
+}
+
+void ListBox::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
+{
+    if (isFocused())
+    {
+        setSelected(getSelected() + 1);
+
+        mouseEvent.consume();
     }
 }
 

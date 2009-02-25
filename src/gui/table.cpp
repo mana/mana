@@ -402,25 +402,21 @@ void GuiTable::keyPressed(gcn::KeyEvent& keyEvent)
     else if (key.getValue() == gcn::Key::UP)
     {
         setSelectedRow(mSelectedRow - 1);
-            
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::DOWN)
     {
         setSelectedRow(mSelectedRow + 1);
-            
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::LEFT)
     {
         setSelectedColumn(mSelectedColumn - 1);
-            
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::RIGHT)
     {
         setSelectedColumn(mSelectedColumn + 1);
-            
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::HOME)
@@ -460,7 +456,7 @@ void GuiTable::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
     if (isFocused())
     {
-        if (getSelectedRow() >= 0 )
+        if (getSelectedRow() > 0 || (getSelectedRow() == 0 && mWrappingEnabled))
         {
             setSelectedRow(getSelectedRow() - 1);
         }

@@ -490,7 +490,7 @@ void Game::handleInput()
             gcn::Window *requestedWindow = NULL;
 
             if (setupWindow->isVisible() &&
-                    keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
+                keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
             {
                 keyboard.setNewKey((int) event.key.keysym.sym);
                 keyboard.callbackNewKey();
