@@ -73,11 +73,16 @@ void NpcTextDialog::addText(const std::string &text)
     setText(mText + text + "\n");
 }
 
+void NpcTextDialog::clearText()
+{
+    setText("");
+}
+
 void NpcTextDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        setText("");
+        clearText();
         setVisible(false);
 
         if (current_npc)

@@ -25,12 +25,15 @@
 #include "particle.h"
 #include "text.h"
 
+#include "gui/npc_text.h"
+
 #include "net/messageout.h"
 #include "net/protocol.h"
 
 #include "resources/npcdb.h"
 
 NPC *current_npc = 0;
+bool NPC::mTalking = false;
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
@@ -46,7 +49,8 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
          i != info.sprites.end();
          i++)
     {
-        if (c == VECTOREND_SPRITE) break;
+        if (c == VECTOREND_SPRITE)
+            break;
 
         std::string file = "graphics/sprites/" + (*i)->sprite;
         int variant = (*i)->variant;
@@ -103,6 +107,10 @@ Being::Type NPC::getType() const
 
 void NPC::talk()
 {
+    if (mTalking)
+        return;
+
+    mTalking = true;
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
@@ -165,7 +173,5 @@ void NPC::sell()
 void NPC::updateCoords()
 {
     if (mName)
-    {
         mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
-    }
 }

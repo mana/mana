@@ -81,4 +81,6 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener
         gcn::Button *resetButton;
 };
 
+extern NpcIntegerDialog *npcIntegerDialog;
+
 #endif // GUI_NPCINTEGERDIALOG_H

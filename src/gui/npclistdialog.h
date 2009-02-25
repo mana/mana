@@ -82,4 +82,6 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         std::vector<std::string> mItems;
 };
 
+extern NpcListDialog *npcListDialog;
+
 #endif // GUI_NPCLISTDIALOG_H

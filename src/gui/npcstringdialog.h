@@ -75,4 +75,6 @@ class NpcStringDialog : public Window, public gcn::ActionListener
         gcn::Button *cancelButton;
 };
 
+extern NpcStringDialog *npcStringDialog;
+
 #endif // GUI_NPCSTRINGDIALOG_H

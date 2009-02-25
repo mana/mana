@@ -51,6 +51,8 @@ class NPC : public Player
         void buy();
         void sell();
 
+        static bool mTalking;
+
     protected:
         Network *mNetwork;
         void updateCoords();

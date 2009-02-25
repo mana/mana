@@ -87,4 +87,6 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         std::string mText;
 };
 
+extern NpcTextDialog *npcTextDialog;
+
 #endif // NPC_TEXT_H
