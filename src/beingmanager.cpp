@@ -79,7 +79,7 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
         being = new Being(id, job, mMap);
 
     // Player or NPC
-    if (job < 200)
+    if (job <= 1000 || (job >= 4001 && job <= 4049))
     {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(0x0094);
