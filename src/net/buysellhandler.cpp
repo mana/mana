@@ -66,7 +66,7 @@ void BuySellHandler::handleMessage(MessageIn *msg)
             sellDialog->setVisible(false);
             sellDialog->reset();
             buySellDialog->setVisible(true);
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg->readInt32()));
+            current_npc = msg->readInt32();
             break;
 
         case SMSG_NPC_BUY:
@@ -89,7 +89,8 @@ void BuySellHandler::handleMessage(MessageIn *msg)
         case SMSG_NPC_SELL:
             msg->readInt16();  // length
             n_items = (msg->getLength() - 4) / 10;
-            if (n_items > 0) {
+            if (n_items > 0)
+            {
                 sellDialog->setMoney(player_node->mGp);
                 sellDialog->reset();
                 sellDialog->setVisible(true);
@@ -101,21 +102,25 @@ void BuySellHandler::handleMessage(MessageIn *msg)
                     msg->readInt32();  // OCvalue
 
                     Item *item = player_node->getInventory()->getItem(index);
-                    if (item && !(item->isEquipped())) {
+
+                    if (item && !(item->isEquipped()))
                         sellDialog->addItem(item, value);
-                    }
                 }
             }
-            else {
+            else
+            {
                 chatWindow->chatLog(_("Nothing to sell"), BY_SERVER);
                 current_npc = 0;
             }
             break;
 
         case SMSG_NPC_BUY_RESPONSE:
-            if (msg->readInt8() == 0) {
+            if (msg->readInt8() == 0)
+            {
                 chatWindow->chatLog(_("Thanks for buying"), BY_SERVER);
-            } else {
+            }
+            else
+            {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
                 buyDialog->setMoney(player_node->mGp);
@@ -124,11 +129,11 @@ void BuySellHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_NPC_SELL_RESPONSE:
-            if (msg->readInt8() == 0) {
+            if (msg->readInt8() == 0)
                 chatWindow->chatLog(_("Thanks for selling"), BY_SERVER);
-            } else {
+            else
                 chatWindow->chatLog(_("Unable to sell"), BY_SERVER);
-            }
+
             break;
     }
 }

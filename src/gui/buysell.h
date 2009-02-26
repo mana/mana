@@ -27,6 +27,8 @@
 
 #include "window.h"
 
+class Network;
+
 /**
  * A dialog to choose between buying or selling at a shop.
  *
@@ -41,12 +43,15 @@ class BuySellDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        BuySellDialog();
+        BuySellDialog(Network *network);
 
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+    private:
+        Network *mNetwork;
 };
 
 #endif

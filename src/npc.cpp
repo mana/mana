@@ -21,6 +21,7 @@
  */
 
 #include "animatedsprite.h"
+#include "beingmanager.h"
 #include "npc.h"
 #include "particle.h"
 #include "text.h"
@@ -32,8 +33,8 @@
 
 #include "resources/npcdb.h"
 
-NPC *current_npc = 0;
 bool NPC::mTalking = false;
+Uint32 current_npc = 0;
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
@@ -115,68 +116,6 @@ void NPC::talk()
     outMsg.writeInt16(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(0);
-}
-
-void NPC::nextDialog()
-{
-    if (!mNetwork)
-        return;
-
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
-    outMsg.writeInt32(mId);
-}
-
-void NPC::dialogChoice(char choice)
-{
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(choice);
-}
-
-void NPC::integerInput(int value)
-{
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_INT_RESPONSE);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt32(value);
-}
-
-void NPC::stringInput(const std::string &value)
-{
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
-    outMsg.writeInt16(value.length() + 9);
-    outMsg.writeInt32(mId);
-    outMsg.writeString(value, value.length());
-    outMsg.writeInt8(0);
-}
-
-/*
- * TODO Unify the buy() and sell() methods, without sacrificing readability of
- * the code calling the method. buy(bool buySell) would be bad...
- */
-void NPC::buy()
-{
-    if (!mNetwork)
-        return;
-
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(0);
-}
-
-void NPC::sell()
-{
-    if (!mNetwork)
-        return;
-
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(1);
 }
 
 void NPC::updateCoords()

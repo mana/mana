@@ -30,6 +30,8 @@
 
 #include "window.h"
 
+class Network;
+
 /**
  * The npc list dialog.
  *
@@ -44,7 +46,7 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        NpcListDialog();
+        NpcListDialog(Network *network);
 
         /**
          * Called when receiving actions from the widgets.
@@ -79,6 +81,7 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         void requestFocus();
 
     private:
+        Network *mNetwork;
         gcn::ListBox *mItemList;
         gcn::ScrollArea *scrollArea;
         gcn::Button *okButton;

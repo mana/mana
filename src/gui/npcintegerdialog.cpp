@@ -28,10 +28,13 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#include "../net/protocol.h"
+
 #include "../utils/gettext.h"
 
-NpcIntegerDialog::NpcIntegerDialog():
-    Window(_("NPC Number Request"))
+NpcIntegerDialog::NpcIntegerDialog(Network *network):
+    Window(_("NPC Number Request")), mNetwork(network)
 {
     mValueField = new IntTextField();
 
@@ -104,11 +107,14 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     if (finish)
     {
         setVisible(false);
+        NPC::mTalking = false;
 
-        if (current_npc)
-            current_npc->integerInput(mValueField->getValue());
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(CMSG_NPC_INT_RESPONSE);
+        outMsg.writeInt32(current_npc);
+        outMsg.writeInt32(mValueField->getValue());
 
-        current_npc = NULL;
+        current_npc = 0;
         mValueField->reset();
     }
 }

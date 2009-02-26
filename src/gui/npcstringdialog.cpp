@@ -28,10 +28,13 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#include "../net/protocol.h"
+
 #include "../utils/gettext.h"
 
-NpcStringDialog::NpcStringDialog():
-    Window(_("NPC Text Request"))
+NpcStringDialog::NpcStringDialog(Network *network):
+    Window(_("NPC Text Request")), mNetwork(network)
 {
     mValueField = new TextField("");
 
@@ -64,12 +67,19 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     }
 
     setVisible(false);
+    NPC::mTalking = false;
 
-    if (current_npc)
-        current_npc->stringInput(mValueField->getText());
-
-    current_npc = NULL;
+    std::string text = mValueField->getText();
     mValueField->setText("");
+
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
+    outMsg.writeInt16(text.length() + 9);
+    outMsg.writeInt32(current_npc);
+    outMsg.writeString(text, text.length());
+    outMsg.writeInt8(0);
+
+    current_npc = 0;
 }
 
 bool NpcStringDialog::isInputFocused()

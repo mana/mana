@@ -27,6 +27,8 @@
 
 #include "window.h"
 
+class Network;
+
 /**
  * The npc integer input dialog.
  *
@@ -40,7 +42,7 @@ class NpcStringDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        NpcStringDialog();
+        NpcStringDialog(Network *network);
 
         /**
          * Called when receiving actions from the widgets.
@@ -70,6 +72,7 @@ class NpcStringDialog : public Window, public gcn::ActionListener
         void requestFocus();
 
     private:
+        Network *mNetwork;
         gcn::TextField *mValueField;
         gcn::Button *okButton;
         gcn::Button *cancelButton;

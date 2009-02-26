@@ -23,6 +23,8 @@
 #ifndef NPC_H
 #define NPC_H
 
+#include <SDL_types.h>
+
 #include "player.h"
 
 class Network;
@@ -42,14 +44,7 @@ class NPC : public Player
 
         virtual Type getType() const;
 
-        void talk();
-        void nextDialog();
-        void dialogChoice(char choice);
-        void integerInput(int value);
-        void stringInput(const std::string &value);
-
-        void buy();
-        void sell();
+        void talk();;
 
         static bool mTalking;
 
@@ -60,6 +55,6 @@ class NPC : public Player
         Text *mName;
 };
 
-extern NPC *current_npc;
+extern Uint32 current_npc;
 
 #endif

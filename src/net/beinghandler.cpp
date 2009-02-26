@@ -196,7 +196,11 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
         case SMSG_BEING_REMOVE:
             // A being should be removed or has died
-            dstBeing = beingManager->findBeing(msg->readInt32());
+            id = msg->readInt32();
+            dstBeing = beingManager->findBeing(id);
+
+            if (id == current_npc)
+                current_npc = 0;
 
             if (!dstBeing)
                 break;
@@ -205,12 +209,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             if (dstBeing == player_node->getTarget())
                 player_node->stopAttack();
 
-            if (dstBeing == current_npc)
-                current_npc = NULL;
-
-            if (msg->readInt8() == 1)
-                dstBeing->setAction(Being::DEAD);
-            else
+            if (!(msg->readInt8() == 1))
                 beingManager->destroyBeing(dstBeing);
 
             break;

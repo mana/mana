@@ -92,7 +92,7 @@ namespace {
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);
             buySellDialog->setVisible(false);
-            current_npc = NULL;
+            current_npc = 0;
         }
     } deathListener;
 }

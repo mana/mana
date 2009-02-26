@@ -29,6 +29,9 @@
 
 #include "window.h"
 
+#include "../npc.h"
+
+class Network;
 class TextBox;
 
 /**
@@ -44,7 +47,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        NpcTextDialog();
+        NpcTextDialog(Network *network);
 
         /**
          * Called when receiving actions from the widgets.
@@ -71,6 +74,8 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          */
         void addText(const std::string &string);
 
+        void nextDialog(int npcID = current_npc);
+
         /**
          * Called when resizing the window.
          *
@@ -79,7 +84,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         void widgetResized(const gcn::Event &event);
 
     private:
-        gcn::Button *okButton;
+        Network *mNetwork;
         gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
         gcn::Button *mButton;

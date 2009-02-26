@@ -31,10 +31,13 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#include "../net/protocol.h"
+
 #include "../utils/gettext.h"
 
-NpcListDialog::NpcListDialog():
-    Window(_("NPC"))
+NpcListDialog::NpcListDialog(Network *network):
+    Window(_("NPC")), mNetwork(network)
 {
     setResizable(true);
 
@@ -86,6 +89,7 @@ void NpcListDialog::parseItems(const std::string &itemString)
 
 void NpcListDialog::reset()
 {
+    NPC::mTalking = false;
     mItemList->setSelected(-1);
     mItems.clear();
 }
@@ -112,10 +116,12 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
         setVisible(false);
         reset();
 
-        if (current_npc)
-            current_npc->dialogChoice(choice);
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
+        outMsg.writeInt32(current_npc);
+        outMsg.writeInt8(choice);
 
-        current_npc = NULL;
+        current_npc = 0;
     }
 }
 

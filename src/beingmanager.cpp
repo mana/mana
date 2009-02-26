@@ -253,3 +253,13 @@ Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
 
     return (maxdist >= dist) ? closestBeing : NULL;
 }
+
+bool BeingManager::hasBeing(Being *being)
+{
+    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    {
+        if (being == *i) return true;
+    }
+
+    return false;
+}

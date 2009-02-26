@@ -29,10 +29,13 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#include "../net/protocol.h"
+
 #include "../utils/gettext.h"
 
-NpcTextDialog::NpcTextDialog():
-    Window(_("NPC"))
+NpcTextDialog::NpcTextDialog(Network *network):
+    Window(_("NPC")), mNetwork(network)
 {
     setResizable(true);
 
@@ -87,10 +90,17 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
         setVisible(false);
 
         if (current_npc)
-            current_npc->nextDialog();
+            nextDialog();
 
-        current_npc = NULL;
+        current_npc = 0;
     }
+}
+
+void NpcTextDialog::nextDialog(int npcID)
+{
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeInt32(npcID);
 }
 
 void NpcTextDialog::widgetResized(const gcn::Event &event)
