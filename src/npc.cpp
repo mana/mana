@@ -32,10 +32,8 @@
 
 #include "resources/npcdb.h"
 
-extern NpcTextDialog *npcTextDialog;
-
-int current_npc = 0;
 bool NPC::isTalking = false;
+int current_npc = 0;
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
@@ -51,7 +49,8 @@ NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
          i != info.sprites.end();
          i++)
     {
-        if (c == VECTOREND_SPRITE) break;
+        if (c == VECTOREND_SPRITE)
+            break;
 
         std::string file = "graphics/sprites/" + (*i)->sprite;
         int variant = (*i)->variant;
@@ -108,7 +107,7 @@ Being::Type NPC::getType() const
 
 void NPC::talk()
 {
-    if (isTalking || !this || !mNetwork) return;
+    if (isTalking || !mNetwork) return;
 
     isTalking = true;
     MessageOut outMsg(mNetwork);
@@ -120,7 +119,5 @@ void NPC::talk()
 void NPC::updateCoords()
 {
     if (mName)
-    {
         mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
-    }
 }

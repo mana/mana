@@ -48,10 +48,6 @@
 OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
 
-extern NpcIntegerDialog *npcIntegerDialog;
-extern NpcListDialog *npcListDialog;
-extern NpcStringDialog *npcStringDialog;
-extern NpcTextDialog *npcTextDialog;
 extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
@@ -85,8 +81,11 @@ namespace {
         {
             player_node->revive();
             deathNotice = NULL;
+            npcIntegerDialog->reset();
             npcIntegerDialog->setVisible(false);
+            npcListDialog->reset();
             npcListDialog->setVisible(false);
+            npcStringDialog->setValue("");
             npcStringDialog->setVisible(false);
             npcTextDialog->clearText();
             npcTextDialog->setVisible(false);

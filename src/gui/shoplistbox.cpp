@@ -106,15 +106,6 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     }
 }
 
-void ShopListBox::mousePressed(gcn::MouseEvent &event)
-{
-    if (event.getButton() == gcn::MouseEvent::LEFT)
-    {
-        setSelected(event.getY() / mRowHeight);
-        distributeActionEvent();
-    }
-}
-
 void ShopListBox::adjustSize()
 {
     if (mListModel)

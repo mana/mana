@@ -41,8 +41,6 @@
 
 #include "utils/stringutils.h"
 
-char itemCurrenyQ[10] = "0";
-
 Engine::Engine(Network *network):
     mCurrentMap(NULL),
     mNetwork(network)

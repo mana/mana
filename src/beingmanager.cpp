@@ -71,17 +71,17 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
 {
     Being *being;
 
-    if (job < 10)
+    if (job <= 25 || (job >= 4001 && job <= 4049))
         being = new Player(id, job, mMap);
-    else if (job >= 50 && job < 1002)
+    else if (job >= 46 && job <= 1000)
         being = new NPC(id, job, mMap, mNetwork);
-    else if (job >= 1002 && job < 1500)
+    else if (job > 1000 && job <= 2000)
         being = new Monster(id, job, mMap);
     else
         being = new Being(id, job, mMap);
 
     // Player or NPC
-    if (job < 1002)
+    if (job <= 1000 || (job >= 4001 && job <= 4049))
     {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(0x0094);

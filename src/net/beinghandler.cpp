@@ -211,7 +211,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             id = msg->readInt32();
 
             if (id == current_npc)
-                    npcTextDialog->showCloseButton();
+                npcTextDialog->showCloseButton();
 
             dstBeing = beingManager->findBeing(id);
 
@@ -456,11 +456,6 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 switch (msg->readInt8())
                 {
-                    case 1:
-                        if (dstBeing->getType() != Being::NPC)
-                            dstBeing->setAction(Being::DEAD);
-                        break;
-
                     case 2:
                         dstBeing->setAction(Being::SIT);
                         break;

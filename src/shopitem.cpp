@@ -51,8 +51,7 @@ ShopItem::~ShopItem()
     }
 }
 
-void ShopItem::addDuplicate(int inventoryIndex,
-        int quantity)
+void ShopItem::addDuplicate(int inventoryIndex, int quantity)
 {
     DuplicateItem* di = new DuplicateItem;
     di->inventoryIndex = inventoryIndex;
@@ -76,7 +75,8 @@ int ShopItem::sellCurrentDuplicate(int quantity)
     int sellCount = quantity <= dupl->quantity ? quantity : dupl->quantity;
     dupl->quantity -= sellCount;
     mQuantity -= sellCount;
-    if (dupl->quantity == 0) {
+    if (dupl->quantity == 0)
+    {
         delete dupl;
         mDuplicates.pop();
     }

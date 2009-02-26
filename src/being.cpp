@@ -232,20 +232,36 @@ void Being::takeDamage(int amount)
     gcn::Font *font;
     std::string damage = amount ? toString(amount) : "miss";
 
+    int red, green, blue;
+
+    font = gui->getInfoParticleFont();
+
     // Selecting the right color
     if (damage == "miss")
-        font = hitYellowFont;
+    {
+        red = 255;
+        green = 255;
+        blue = 0;
+    }
     else
     {
         if (getType() == MONSTER)
-            font = hitBlueFont;
+        {
+            red = 0;
+            green = 100;
+            blue = 255;
+        }
         else
-            font = hitRedFont;
+        {
+            red = 255;
+            green = 50;
+            blue = 50;
+        }
     }
 
     // Show damage number
-    particleEngine->addTextSplashEffect(damage, 255, 255, 255, font,
-                                        mPx + 16, mPy + 16);
+    particleEngine->addTextSplashEffect(damage, red, green, blue, font,
+                                        mPx + 16, mPy + 16, true);
     effectManager->trigger(26, this);
 }
 

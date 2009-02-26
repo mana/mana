@@ -113,19 +113,23 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     {
         if (player_x > mPixelViewX + mScrollRadius)
         {
-            mPixelViewX += (player_x - mPixelViewX - mScrollRadius) / mScrollLaziness;
+            mPixelViewX += (player_x - mPixelViewX - mScrollRadius) /
+                            mScrollLaziness;
         }
         if (player_x < mPixelViewX - mScrollRadius)
         {
-            mPixelViewX += (player_x - mPixelViewX + mScrollRadius) / mScrollLaziness;
+            mPixelViewX += (player_x - mPixelViewX + mScrollRadius) /
+                            mScrollLaziness;
         }
         if (player_y > mPixelViewY + mScrollRadius)
         {
-            mPixelViewY += (player_y - mPixelViewY - mScrollRadius) / mScrollLaziness;
+            mPixelViewY += (player_y - mPixelViewY - mScrollRadius) /
+                            mScrollLaziness;
         }
         if (player_y < mPixelViewY - mScrollRadius)
         {
-            mPixelViewY += (player_y - mPixelViewY + mScrollRadius) / mScrollLaziness;
+            mPixelViewY += (player_y - mPixelViewY + mScrollRadius) /
+                            mScrollLaziness;
         }
         lastTick++;
     }
@@ -168,8 +172,8 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     {
         mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
 
-        // Find a path from the player to the mouse, and draw it. This is for debug
-        // purposes.
+        // Find a path from the player to the mouse, and draw it. This is for
+        // debug purposes.
         if (mShowDebugPath)
         {
             // Get the current mouse position
@@ -179,7 +183,8 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             int mouseTileX = mouseX / 32 + mTileViewX;
             int mouseTileY = mouseY / 32 + mTileViewY;
 
-            Path debugPath = mMap->findPath(player_node->mX, player_node->mY, mouseTileX, mouseTileY);
+            Path debugPath = mMap->findPath(player_node->mX, player_node->mY,
+                                            mouseTileX, mouseTileY);
 
             graphics->setColor(gcn::Color(255, 0, 0));
             for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
@@ -188,7 +193,9 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
                 int squareY = i->y * 32 - (int) mPixelViewY + 12;
 
                 graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-                graphics->drawText(toString(mMap->getMetaTile(i->x, i->y)->Gcost), squareX + 4, squareY + 12, gcn::Graphics::CENTER);
+                graphics->drawText(toString(mMap->getMetaTile(i->x, i->y)->Gcost),
+                                   squareX + 4, squareY + 12,
+                                   gcn::Graphics::CENTER);
             }
         }
     }
@@ -305,10 +312,12 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                     if (being->mAction == Being::DEAD)
                         break;
 
-                    if (player_node->withinAttackRange(being) || keyboard.isKeyActive(keyboard.KEY_ATTACK))
+                    if (player_node->withinAttackRange(being) ||
+                        keyboard.isKeyActive(keyboard.KEY_ATTACK))
                     {
                         player_node->setGotoTarget(being);
-                        player_node->attack(being, !keyboard.isKeyActive(keyboard.KEY_TARGET));
+                        player_node->attack(being,
+                            !keyboard.isKeyActive(keyboard.KEY_TARGET));
                     }
                     else
                     {

@@ -51,7 +51,9 @@ NpcListDialog::NpcListDialog(Network *network):
 
     mItemList = new ListBox(this);
     mItemList->setWrappingEnabled(true);
+
     gcn::ScrollArea *scrollArea = new ScrollArea(mItemList);
+
     gcn::Button *okButton = new Button(_("OK"), "ok", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
 
@@ -90,6 +92,8 @@ void NpcListDialog::parseItems(const std::string &itemString)
 
 void NpcListDialog::reset()
 {
+    NPC::isTalking = false;
+    mItemList->setSelected(-1);
     mItems.clear();
 }
 
@@ -100,6 +104,7 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     {
         // Send the selected index back to the server
         int selectedIndex = mItemList->getSelected();
+
         if (selectedIndex > -1)
         {
             choice = selectedIndex + 1;
@@ -118,10 +123,13 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     {
         setVisible(false);
         reset();
+
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
         outMsg.writeInt32(current_npc);
         outMsg.writeInt8(choice);
+
+        current_npc = 0;
     }
 }
 
@@ -130,4 +138,10 @@ void NpcListDialog::setVisible(bool visible)
     if (visible) npcTextDialog->setVisible(true);
 
     Window::setVisible(visible);
+}
+
+void NpcListDialog::requestFocus()
+{
+    mItemList->requestFocus();
+    mItemList->setSelected(0);
 }

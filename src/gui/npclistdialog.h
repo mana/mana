@@ -76,11 +76,18 @@ class NpcListDialog : public Window, public gcn::ActionListener,
 
         void setVisible(bool visible);
 
+        /**
+         * Requests the listbox to take focus for input.
+         */
+        void requestFocus();
+
     private:
         Network *mNetwork;
         gcn::ListBox *mItemList;
 
         std::vector<std::string> mItems;
 };
+
+extern NpcListDialog *npcListDialog;
 
 #endif // GUI_NPCLISTDIALOG_H

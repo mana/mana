@@ -581,8 +581,10 @@ void LocalPlayer::setXp(int xp)
         const std::string text = toString(xp - mXp) + " xp";
 
         // Show XP number
-        particleEngine->addTextRiseFadeOutEffect(text, hitYellowFont,
-                                                 mPx + 16, mPy - 16);
+        particleEngine->addTextRiseFadeOutEffect(text,
+                                                 gui->getInfoParticleFont(),
+                                                 mPx + 16, mPy - 16,
+                                                 255, 255, 0, true);
     }
     mXp = xp;
 }

@@ -102,4 +102,6 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         NPCTextState mState;
 };
 
+extern NpcTextDialog *npcTextDialog;
+
 #endif // NPC_TEXT_H

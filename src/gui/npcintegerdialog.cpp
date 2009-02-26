@@ -76,18 +76,23 @@ int NpcIntegerDialog::getValue()
     return mValueField->getValue();
 }
 
+void NpcIntegerDialog::reset()
+{
+    mValueField->reset();
+}
+
 void NpcIntegerDialog::action(const gcn::ActionEvent &event)
 {
-    int finish = 0;
+    bool finish = false;
 
     if (event.getId() == "ok")
     {
-        finish = 1;
+        finish = true;
         npcTextDialog->addText(strprintf("\n> %d\n", mValueField->getValue()));
     }
     else if (event.getId() == "cancel")
     {
-        finish = 1;
+        finish = true;
         mValueField->reset();
         npcTextDialog->addText(_("\n> Cancel\n"));
     }
@@ -107,12 +112,14 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     if (finish)
     {
         setVisible(false);
+        NPC::isTalking = false;
 
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_INT_RESPONSE);
         outMsg.writeInt32(current_npc);
         outMsg.writeInt32(mValueField->getValue());
 
+        current_npc = 0;
         mValueField->reset();
     }
 }

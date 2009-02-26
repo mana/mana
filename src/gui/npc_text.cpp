@@ -64,6 +64,12 @@ NpcTextDialog::NpcTextDialog(Network *network):
     setLocationRelativeTo(getParent());
 }
 
+void NpcTextDialog::clearText()
+{
+    NPC::isTalking = false;
+    setText("");
+}
+
 void NpcTextDialog::setText(const std::string &text)
 {
     mText = text;
@@ -74,11 +80,6 @@ void NpcTextDialog::addText(const std::string &text)
 {
     setText(mText + text + "\n");
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
-}
-
-void NpcTextDialog::clearText()
-{
-    setText("");
 }
 
 void NpcTextDialog::showNextButton()

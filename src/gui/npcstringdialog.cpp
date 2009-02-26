@@ -77,6 +77,8 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     }
 
     setVisible(false);
+    NPC::isTalking = false;
+
     std::string text = mValueField->getText();
     mValueField->setText("");
 
@@ -86,6 +88,8 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     outMsg.writeInt32(current_npc);
     outMsg.writeString(text, text.length());
     outMsg.writeInt8(0);
+
+    current_npc = 0;
 }
 
 bool NpcStringDialog::isInputFocused()

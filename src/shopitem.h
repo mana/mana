@@ -88,7 +88,7 @@ class ShopItem : public Item
          */
         int getCurrentInvIndex() {
             return mDuplicates.empty() ? mInvIndex :
-                    mDuplicates.top()->inventoryIndex;
+                   mDuplicates.top()->inventoryIndex;
         }
 
         /**

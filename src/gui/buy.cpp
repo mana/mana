@@ -119,7 +119,7 @@ void BuyDialog::reset()
     setMoney(0);
 }
 
-void BuyDialog::addItem(short id, int price)
+void BuyDialog::addItem(int id, int price)
 {
     mShopItems->addItem(id, price);
     mShopItemList->adjustSize();

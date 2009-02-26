@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <SDL_types.h>
+
 #include "messagein.h"
 #include "npchandler.h"
 #include "protocol.h"
@@ -31,11 +33,6 @@
 #include "../gui/npcintegerdialog.h"
 #include "../gui/npclistdialog.h"
 #include "../gui/npcstringdialog.h"
-
-extern NpcIntegerDialog *npcIntegerDialog;
-extern NpcListDialog *npcListDialog;
-extern NpcTextDialog *npcTextDialog;
-extern NpcStringDialog *npcStringDialog;
 
 NPCHandler::NPCHandler()
 {
@@ -53,7 +50,7 @@ NPCHandler::NPCHandler()
 
 void NPCHandler::handleMessage(MessageIn *msg)
 {
-    int id;
+    Uint32 id;
 
     switch (msg->getId())
     {
@@ -63,6 +60,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             player_node->setAction(LocalPlayer::STAND);
             npcListDialog->parseItems(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(true);
+            npcListDialog->requestFocus();
             break;
 
         case SMSG_NPC_MESSAGE:
@@ -70,7 +68,6 @@ void NPCHandler::handleMessage(MessageIn *msg)
             current_npc = msg->readInt32();
             player_node->setAction(LocalPlayer::STAND);
             npcTextDialog->addText(msg->readString(msg->getLength() - 8));
-            npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);
             break;
 

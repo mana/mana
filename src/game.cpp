@@ -144,9 +144,9 @@ namespace {
     {
         void action(const gcn::ActionEvent &event)
         {
-            if (event.getId() == "yes" || event.getId() == "ok") {
+            if (event.getId() == "yes" || event.getId() == "ok")
                 done = true;
-            }
+
             exitConfirm = NULL;
             disconnectedDialog = NULL;
         }
@@ -177,13 +177,9 @@ Uint32 nextSecond(Uint32 interval, void *param)
 int get_elapsed_time(int start_time)
 {
     if (start_time <= tick_time)
-    {
         return (tick_time - start_time) * 10;
-    }
     else
-    {
         return (tick_time + (MAX_TIME - start_time)) * 10;
-    }
 }
 
 /**
@@ -212,8 +208,10 @@ void createGuiWindows(Network *network)
     tradeWindow = new TradeWindow(network);
     helpWindow = new HelpWindow;
     debugWindow = new DebugWindow;
-    itemShortcutWindow = new ShortcutWindow("ItemShortcut",new ItemShortcutContainer);
-    emoteShortcutWindow = new ShortcutWindow("emoteShortcut",new EmoteShortcutContainer);
+    itemShortcutWindow = new ShortcutWindow("ItemShortcut",
+                                            new ItemShortcutContainer);
+    emoteShortcutWindow = new ShortcutWindow("emoteShortcut",
+                                             new EmoteShortcutContainer);
 
     // Set initial window visibility
     chatWindow->setVisible((bool) config.getValue(
@@ -467,8 +465,9 @@ void Game::logic()
             if (!disconnectedDialog)
             {
                 disconnectedDialog = new OkDialog(_("Network Error"),
-                        _("The connection to the server was lost, "
-                          "the program will now quit"));
+                                                  _("The connection to the "
+                                                    "server was lost, the "
+                                                    "program will now quit"));
                 disconnectedDialog->addActionListener(&exitListener);
                 disconnectedDialog->requestMoveToTop();
             }
@@ -493,7 +492,7 @@ void Game::handleInput()
             gcn::Window *requestedWindow = NULL;
 
             if (setupWindow->isVisible() &&
-                    keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
+                keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
             {
                 keyboard.setNewKey((int) event.key.keysym.sym);
                 keyboard.callbackNewKey();
@@ -857,9 +856,11 @@ void Game::handleInput()
                 }
 
                 // Attack priorioty is: Monster, Player, auto target
-                target = beingManager->findBeing(targetX, targetY, Being::MONSTER);
+                target = beingManager->findBeing(targetX, targetY,
+                         Being::MONSTER);
                 if (!target)
-                    target = beingManager->findBeing(targetX, targetY, Being::PLAYER);
+                    target = beingManager->findBeing(targetX, targetY,
+                             Being::PLAYER);
             }
 
             player_node->attack(target, newTarget);
@@ -895,14 +896,15 @@ void Game::handleInput()
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
         {
-            if (!npcTextDialog->isVisible() && !npcListDialog->isVisible())
+            if (!npcTextDialog->isVisible()   && !npcListDialog->isVisible() &&
+                !npcStringDialog->isVisible() && !npcIntegerDialog->isVisible())
             {
                 Being *target = player_node->getTarget();
 
                 if (!target)
                 {
                     target = beingManager->findNearestLivingBeing(
-                            x, y, 20, Being::NPC);
+                             x, y, 20, Being::NPC);
                 }
 
                 if (target)

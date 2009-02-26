@@ -64,12 +64,20 @@ void BuySellDialog::logic()
 void BuySellDialog::action(const gcn::ActionEvent &event)
 {
     setVisible(false);
-    int action;
-    if (event.getId() == "Buy") {
+    int action = 0;
+
+    NPC::isTalking = false;
+
+    if (event.getId() == "Buy")
+    {
         action = 0;
-    } else if (event.getId() == "Sell") {
+    }
+    else if (event.getId() == "Sell")
+    {
         action = 1;
-    } else if (event.getId() == "Cancel") {
+    }
+    else if (event.getId() == "Cancel")
+    {
         current_npc = 0;
         return;
     }

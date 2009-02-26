@@ -28,6 +28,8 @@
 
 class Network;
 
+class Network;
+
 /**
  * The npc integer input dialog.
  *
@@ -77,5 +79,7 @@ class NpcStringDialog : public Window, public gcn::ActionListener
         gcn::TextField *mValueField;
         std::string mDefault;
 };
+
+extern NpcStringDialog *npcStringDialog;
 
 #endif // GUI_NPCSTRINGDIALOG_H

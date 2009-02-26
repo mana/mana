@@ -22,6 +22,8 @@
 #ifndef NPC_H
 #define NPC_H
 
+#include <SDL_types.h>
+
 #include "player.h"
 
 class Network;

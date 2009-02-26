@@ -121,7 +121,7 @@ void SellDialog::addItem(const Item *item, int price)
     }
 
     mShopItems->addItem(item->getInvIndex(), item->getId(),
-            item->getQuantity(), price);
+                        item->getQuantity(), price);
 
     mShopItemList->adjustSize();
 }
