@@ -209,7 +209,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             if (dstBeing == player_node->getTarget())
                 player_node->stopAttack();
 
-            if (!(msg->readInt8() == 1))
+            if (msg->readInt8() == 1)
+                dstBeing->setAction(Being::DEAD);
+            else
                 beingManager->destroyBeing(dstBeing);
 
             break;
@@ -443,11 +445,6 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 switch (msg->readInt8())
                 {
-                    case 1:
-                        if (dstBeing->getType() != Being::NPC)
-                            dstBeing->setAction(Being::DEAD);
-                        break;
-
                     case 2:
                         dstBeing->setAction(Being::SIT);
                         break;
