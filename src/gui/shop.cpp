@@ -44,8 +44,7 @@ std::string ShopItems::getElementAt(int i)
     return mShopItems.at(i)->getDisplayName();
 }
 
-void ShopItems::addItem(int inventoryIndex, int id, int quantity,
-        int price)
+void ShopItems::addItem(int inventoryIndex, int id, int quantity, int price)
 {
     ShopItem* item = 0;
     if (mMergeDuplicates)

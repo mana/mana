@@ -57,8 +57,6 @@ class ShopListBox : public ListBox
          */
         unsigned int getRowHeight() const { return mRowHeight; }
 
-        void mousePressed(gcn::MouseEvent &event);
-
         /**
          * gives information about the current player's money
          */

@@ -56,7 +56,7 @@ void ListBox::draw(gcn::Graphics *graphics)
 
     const int fontHeight = getFont()->getHeight();
 
-    // Draw rectangle below the selected list element
+    // Draw filled rectangle around the selected list element
     if (mSelected >= 0)
         graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
                                                getWidth(), fontHeight));
@@ -97,6 +97,7 @@ void ListBox::setSelected(int selected)
             mSelected = selected;
         }
     }
+    gcn::ListBox::setSelected(mSelected);
 }
 
 // -- KeyListener notifications

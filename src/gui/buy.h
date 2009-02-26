@@ -69,7 +69,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         /**
          * Adds an item to the shop inventory.
          */
-        void addItem(short id, int price);
+        void addItem(int id, int price);
 
         /**
          * Called when receiving actions from the widgets.

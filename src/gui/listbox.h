@@ -47,17 +47,17 @@ class ListBox : public gcn::ListBox
          */
         void draw(gcn::Graphics *graphics);
 
-        void mouseDragged(gcn::MouseEvent &event);
-
         // Inherited from KeyListener
 
-        virtual void keyPressed(gcn::KeyEvent& keyEvent);
+        void keyPressed(gcn::KeyEvent& keyEvent);
 
         // Inherited from MouseListener
 
-        virtual void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
+        void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
 
-        virtual void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
+        void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
+
+        void mouseDragged(gcn::MouseEvent &event);
 
          /**
          * Sets the selected item. The selected item is represented by
