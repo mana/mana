@@ -23,8 +23,6 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include <SDL_types.h>
-
 #include "player.h"
 
 class Network;
@@ -34,7 +32,7 @@ class Text;
 class NPC : public Player
 {
     public:
-        NPC(Uint32 id, Uint16 job, Map *map, Network *network);
+        NPC(int id, Uint16 job, Map *map, Network *network);
 
         ~NPC();
 
@@ -55,6 +53,6 @@ class NPC : public Player
         Text *mName;
 };
 
-extern Uint32 current_npc;
+extern int current_npc;
 
 #endif

@@ -62,9 +62,9 @@ InventoryHandler::InventoryHandler()
 
 void InventoryHandler::handleMessage(MessageIn *msg)
 {
-    Sint32 number;
-    Sint16 index, amount, itemId, equipType, arrow;
-    Sint16 identified, cards[4], itemType;
+    int number;
+    int index, amount, itemId, equipType, arrow;
+    int identified, cards[4], itemType;
     Inventory *inventory = player_node->getInventory();
     Inventory *storage = player_node->getStorage();
 

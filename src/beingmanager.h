@@ -50,7 +50,7 @@ class BeingManager
         /**
          * Create a being and add it to the list of beings.
          */
-        Being *createBeing(Uint32 id, Uint16 job);
+        Being *createBeing(int id, Uint16 job);
 
         /**
          * Remove a Being.
@@ -60,13 +60,13 @@ class BeingManager
         /**
          * Return a specific id Being.
          */
-        Being* findBeing(Uint32 id);
-        Being* findBeingByPixel(Uint16 x, Uint16 y);
+        Being *findBeing(int id);
+        Being *findBeingByPixel(int x, int y);
 
         /**
          * Returns a being at specific coordinates.
          */
-        Being* findBeing(Uint16 x, Uint16 y, Being::Type type = Being::UNKNOWN);
+        Being *findBeing(int x, int y, Being::Type type = Being::UNKNOWN);
 
        /**
         * Returns a being nearest to specific coordinates.
@@ -77,13 +77,13 @@ class BeingManager
         *                no being is returned.
         * @param type    The type of being to look for.
         */
-        Being* findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
+        Being *findNearestLivingBeing(int x, int y, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 
        /**
         * Finds a being by name and (optionally) by type.
         */
-        Being* findBeingByName(std::string name, Being::Type type = Being::UNKNOWN);
+        Being *findBeingByName(std::string name, Being::Type type = Being::UNKNOWN);
 
        /**
         * Returns a being nearest to another being.
@@ -91,7 +91,7 @@ class BeingManager
         * \param maxdist maximal distance. If minimal distance is larger,
         *                no being is returned
         */
-        Being* findNearestLivingBeing(Being *aroundBeing, int maxdist,
+        Being *findNearestLivingBeing(Being *aroundBeing, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 
         /**

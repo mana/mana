@@ -28,7 +28,7 @@
 
 #include "window.h"
 
-#include "../localplayer.h"
+#include "../inventory.h"
 
 class Item;
 class ItemContainer;

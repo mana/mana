@@ -43,11 +43,7 @@ class FloorItem : public Sprite
         /**
          * Constructor.
          */
-        FloorItem(unsigned int id,
-                  unsigned int itemId,
-                  unsigned short x,
-                  unsigned short y,
-                  Map *map);
+        FloorItem(int id, int itemId, int x, int y, Map *map);
 
         /**
          * Destructor.
@@ -57,22 +53,22 @@ class FloorItem : public Sprite
         /**
          * Returns instance id of this item.
          */
-        unsigned int getId() const { return mId; }
+        int getId() const { return mId; }
 
         /**
          * Returns the item id.
          */
-        unsigned int getItemId() const;
+        int getItemId() const;
 
         /**
          * Returns the x coordinate.
          */
-        unsigned short getX() const { return mX; }
+        int getX() const { return mX; }
 
         /**
          * Returns the y coordinate.
          */
-        unsigned short getY() const { return mY; }
+        int getY() const { return mY; }
 
         /**
          * Returns the pixel y coordinate.
@@ -89,8 +85,8 @@ class FloorItem : public Sprite
         void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
     private:
-        unsigned int mId;
-        unsigned short mX, mY;
+        int mId;
+        int mX, mY;
         Item *mItem;
         Sprites::iterator mSpriteIterator;
         Map *mMap;

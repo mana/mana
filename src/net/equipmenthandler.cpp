@@ -49,9 +49,9 @@ EquipmentHandler::EquipmentHandler()
 
 void EquipmentHandler::handleMessage(MessageIn *msg)
 {
-    Sint32 itemCount;
-    Sint16 index, equipPoint, itemId;
-    Sint8 type;
+    int itemCount;
+    int index, equipPoint, itemId;
+    int type;
     int mask, position;
     Item *item;
     Inventory *inventory = player_node->getInventory();

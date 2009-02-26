@@ -34,12 +34,12 @@
 #include "resources/npcdb.h"
 
 bool NPC::mTalking = false;
-Uint32 current_npc = 0;
+int current_npc = 0;
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
 
-NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
+NPC::NPC(int id, Uint16 job, Map *map, Network *network):
     Player(id, job, map), mNetwork(network)
 {
     NPCInfo info = NPCDB::get(job);

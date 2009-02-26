@@ -179,7 +179,7 @@ void Being::setSprite(int slot, int id, std::string color)
     mSpriteColors[slot] = color;
 }
 
-void Being::setSpeech(const std::string &text, Uint32 time)
+void Being::setSpeech(const std::string &text, int time)
 {
     mSpeech = text;
 

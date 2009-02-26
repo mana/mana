@@ -318,7 +318,7 @@ void LocalPlayer::walk(unsigned char dir)
         return;
     }
 
-    Sint16 dx = 0, dy = 0;
+    int dx = 0, dy = 0;
     if (dir & UP)
         dy--;
     if (dir & DOWN)

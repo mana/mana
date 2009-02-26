@@ -31,7 +31,7 @@ class Text;
 class Monster : public Being
 {
     public:
-        Monster(Uint32 id, Uint16 job, Map *map);
+        Monster(int id, Uint16 job, Map *map);
 
         ~Monster();
 

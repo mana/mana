@@ -141,8 +141,8 @@ void TradeHandler::handleMessage(MessageIn *msg)
 
         case SMSG_TRADE_ITEM_ADD:
             {
-                Sint32 amount = msg->readInt32();
-                Sint16 type = msg->readInt16();
+                int amount = msg->readInt32();
+                int type = msg->readInt16();
                 msg->readInt8();  // identified flag
                 msg->readInt8();  // attribute
                 msg->readInt8();  // refine
@@ -167,7 +167,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
                     tradeWindow->receivedOk(true);
                     return;
                 }
-                Sint16 quantity = msg->readInt16();
+                int quantity = msg->readInt16();
 
                 switch (msg->readInt8())
                 {

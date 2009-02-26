@@ -39,6 +39,7 @@
 
 #include "../inventory.h"
 #include "../item.h"
+#include "../localplayer.h"
 
 #include "../resources/iteminfo.h"
 

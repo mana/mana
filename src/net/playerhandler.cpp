@@ -166,8 +166,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 player_node->mY = y;
 
                 logger->log("Adjust scrolling by %d:%d",
-                        (int)scrollOffsetX,
-                        (int)scrollOffsetY);
+                        (int) scrollOffsetX,
+                        (int) scrollOffsetY);
 
                 viewport->scrollBy(scrollOffsetX, scrollOffsetY);
             }
@@ -175,7 +175,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
-                Sint16 type = msg->readInt16();
+                int type = msg->readInt16();
                 Uint32 value = msg->readInt32();
 
                 switch (type)
@@ -303,10 +303,10 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_STAT_UPDATE_3:
             {
-                Sint32 type = msg->readInt32();
-                Sint32 base = msg->readInt32();
-                Sint32 bonus = msg->readInt32();
-                Sint32 total = base + bonus;
+                int type = msg->readInt32();
+                int base = msg->readInt32();
+                int bonus = msg->readInt32();
+                int total = base + bonus;
 
                 switch (type) {
                     case 0x000d: player_node->mAttr[LocalPlayer::STR] = total;
@@ -327,9 +327,9 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_STAT_UPDATE_4:
             {
-                Sint16 type = msg->readInt16();
-                Sint8 fail = msg->readInt8();
-                Sint8 value = msg->readInt8();
+                int type = msg->readInt16();
+                int fail = msg->readInt8();
+                int value = msg->readInt8();
 
                 if (fail != 1)
                     break;
@@ -406,7 +406,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_ARROW_MESSAGE:
             {
-                Sint16 type = msg->readInt16();
+                int type = msg->readInt16();
 
                 switch (type) {
                     case 0:

@@ -65,7 +65,7 @@ void BeingManager::setPlayer(LocalPlayer *player)
     mBeings.push_back(player);
 }
 
-Being* BeingManager::createBeing(Uint32 id, Uint16 job)
+Being *BeingManager::createBeing(int id, Uint16 job)
 {
     Being *being;
 
@@ -97,7 +97,7 @@ void BeingManager::destroyBeing(Being *being)
     delete being;
 }
 
-Being* BeingManager::findBeing(Uint32 id)
+Being *BeingManager::findBeing(int id)
 {
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
@@ -109,7 +109,7 @@ Being* BeingManager::findBeing(Uint32 id)
     return NULL;
 }
 
-Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
+Being *BeingManager::findBeing(int x, int y, Being::Type type)
 {
     beingFinder.x = x;
     beingFinder.y = y;
@@ -120,7 +120,7 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     return (i == mBeings.end()) ? NULL : *i;
 }
 
-Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
+Being *BeingManager::findBeingByPixel(int x, int y)
 {
     BeingIterator itr = mBeings.begin();
     BeingIterator itr_end = mBeings.end();
@@ -146,7 +146,7 @@ Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
     return NULL;
 }
 
-Being* BeingManager::findBeingByName(std::string name, Being::Type type)
+Being *BeingManager::findBeingByName(std::string name, Being::Type type)
 {
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
@@ -159,7 +159,7 @@ Being* BeingManager::findBeingByName(std::string name, Being::Type type)
     return NULL;
 }
 
-Beings& BeingManager::getAll()
+Beings &BeingManager::getAll()
 {
     return mBeings;
 }
@@ -200,7 +200,7 @@ void BeingManager::clear()
     }
 }
 
-Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
+Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
                                             Being::Type type)
 {
     Being *closestBeing = NULL;
@@ -227,7 +227,7 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
     return (maxdist >= dist) ? closestBeing : NULL;
 }
 
-Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
+Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
                                             Being::Type type)
 {
     Being *closestBeing = NULL;

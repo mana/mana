@@ -67,7 +67,7 @@ class PopupMenu : public Window, public LinkHandler
     private:
         BrowserBox* mBrowserBox;
 
-        Being* mBeing;
+        int mBeingId;
         FloorItem* mFloorItem;
         Item *mItem;
 

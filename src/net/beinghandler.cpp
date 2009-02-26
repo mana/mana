@@ -65,14 +65,14 @@ BeingHandler::BeingHandler(bool enableSync):
 
 void BeingHandler::handleMessage(MessageIn *msg)
 {
-    Uint32 id;
+    int id;
     Uint16 job, speed;
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves, cape, misc1, misc2;
     Uint16 weapon, shield;
     Uint16 gmstatus;
-    Sint16 param1;
-    Sint8 type;
+    int param1;
+    int type;
     Being *srcBeing, *dstBeing;
     int hairStyle, hairColor;
 

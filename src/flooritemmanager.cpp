@@ -30,8 +30,7 @@ FloorItemManager::~FloorItemManager()
     clear();
 }
 
-FloorItem* FloorItemManager::create(unsigned int id, unsigned int itemId,
-        unsigned short x, unsigned short y, Map *map)
+FloorItem* FloorItemManager::create(int id, int itemId, int x, int y, Map *map)
 {
     FloorItem *floorItem = new FloorItem(id, itemId, x, y, map);
     mFloorItems.push_back(floorItem);
@@ -50,7 +49,7 @@ void FloorItemManager::clear()
     mFloorItems.clear();
 }
 
-FloorItem* FloorItemManager::findById(unsigned int id)
+FloorItem *FloorItemManager::findById(int id)
 {
     FloorItemIterator i;
     for (i = mFloorItems.begin(); i != mFloorItems.end(); i++)
@@ -64,8 +63,7 @@ FloorItem* FloorItemManager::findById(unsigned int id)
     return NULL;
 }
 
-FloorItem* FloorItemManager::findByCoordinates(unsigned short x,
-        unsigned short y)
+FloorItem *FloorItemManager::findByCoordinates(int x, int y)
 {
     FloorItemIterator i;
     for (i = mFloorItems.begin(); i != mFloorItems.end(); i++)
