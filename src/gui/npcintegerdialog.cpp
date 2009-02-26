@@ -119,7 +119,6 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
         outMsg.writeInt32(current_npc);
         outMsg.writeInt32(mValueField->getValue());
 
-        current_npc = 0;
         mValueField->reset();
     }
 }

@@ -128,8 +128,6 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
         outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
         outMsg.writeInt32(current_npc);
         outMsg.writeInt8(choice);
-
-        current_npc = 0;
     }
 }
 
