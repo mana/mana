@@ -33,7 +33,7 @@ class Text;
 class NPC : public Player
 {
     public:
-        NPC(Uint32 id, Uint16 job, Map *map, Network *network);
+        NPC(int id, Uint16 job, Map *map, Network *network);
 
         ~NPC();
 

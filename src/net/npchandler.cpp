@@ -50,7 +50,7 @@ NPCHandler::NPCHandler()
 
 void NPCHandler::handleMessage(MessageIn *msg)
 {
-    Uint32 id;
+    int id;
 
     switch (msg->getId())
     {

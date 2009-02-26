@@ -77,10 +77,10 @@ void BuySellHandler::handleMessage(MessageIn *msg)
 
             for (int k = 0; k < n_items; k++)
             {
-                Sint32 value = msg->readInt32();
+                int value = msg->readInt32();
                 msg->readInt32();  // DCvalue
                 msg->readInt8();  // type
-                Sint16 itemId = msg->readInt16();
+                int itemId = msg->readInt16();
                 buyDialog->addItem(itemId, value);
             }
             break;
@@ -96,8 +96,8 @@ void BuySellHandler::handleMessage(MessageIn *msg)
 
                 for (int k = 0; k < n_items; k++)
                 {
-                    Sint16 index = msg->readInt16();
-                    Sint32 value = msg->readInt32();
+                    int index = msg->readInt16();
+                    int value = msg->readInt32();
                     msg->readInt32();  // OCvalue
 
                     Item *item = player_node->getInventory()->getItem(index);

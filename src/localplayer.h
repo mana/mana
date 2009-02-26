@@ -228,8 +228,8 @@ class LocalPlayer : public Player
         Uint8 mAttr[6];
         Uint8 mAttrUp[6];
 
-        Sint16 ATK, MATK, DEF, MDEF, HIT, FLEE;
-        Sint16 ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
+        int ATK, MATK, DEF, MDEF, HIT, FLEE;
+        int ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
 
         Uint16 mStatPoint, mSkillPoint;
         Uint16 mStatsPointsToAttribute;

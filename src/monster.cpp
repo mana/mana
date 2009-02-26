@@ -33,7 +33,7 @@
 static const int NAME_X_OFFSET = 16;
 static const int NAME_Y_OFFSET = 16;
 
-Monster::Monster(Uint32 id, Uint16 job, Map *map):
+Monster::Monster(int id, Uint16 job, Map *map):
     Being(id, job, map),
     mText(0)
 {

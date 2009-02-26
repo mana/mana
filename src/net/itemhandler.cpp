@@ -41,7 +41,7 @@ void ItemHandler::handleMessage(MessageIn *msg)
 {
     Uint32 id;
     Uint16 x, y;
-    Sint16 itemId;
+    int itemId;
 
     switch (msg->getId())
     {

@@ -166,7 +166,7 @@ class Being : public Sprite
          * @param text The text that should appear.
          * @param time The amount of time the text should stay in milliseconds.
          */
-        void setSpeech(const std::string &text, Uint32 time = 500);
+        void setSpeech(const std::string &text, int time = 500);
 
         /**
          * Puts a damage bubble above this being.
@@ -285,12 +285,12 @@ class Being : public Sprite
         /**
          * Gets the sprite id.
          */
-        Uint32 getId() const { return mId; }
+        int getId() const { return mId; }
 
         /**
          * Sets the sprite id.
          */
-        void setId(Uint32 id) { mId = id; }
+        void setId(int id) { mId = id; }
 
         /**
          * Sets the map the being is on
@@ -477,7 +477,7 @@ class Being : public Sprite
          */
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
-        Uint32 mId;                     /**< Unique sprite id */
+        int mId;                        /**< Unique sprite id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint8 mDirection;               /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
@@ -496,8 +496,8 @@ class Being : public Sprite
         Text *mText;
         Uint16 mHairStyle, mHairColor;
         Gender mGender;
-        Uint32 mSpeechTime;
-        Sint32 mPx, mPy;                /**< Pixel coordinates */
+        int mSpeechTime;
+        int mPx, mPy;                   /**< Pixel coordinates */
         Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
 

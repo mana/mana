@@ -26,10 +26,10 @@
 
 #include "resources/image.h"
 
-FloorItem::FloorItem(unsigned int id,
-                     unsigned int itemId,
-                     unsigned short x,
-                     unsigned short y,
+FloorItem::FloorItem(int id,
+                     int itemId,
+                     int x,
+                     int y,
                      Map *map):
     mId(id),
     mX(x),
@@ -51,7 +51,7 @@ FloorItem::~FloorItem()
     delete mItem;
 }
 
-unsigned int FloorItem::getItemId() const
+int FloorItem::getItemId() const
 {
     return mItem->getId();
 }
