@@ -508,10 +508,8 @@ void LocalPlayer::attack(Being *target, bool keep)
     int dist_x = target->mX - mX;
     int dist_y = target->mY - mY;
 
-    // Must be standing and be within attack range to continue
-    if ((mAction != STAND) || (mAttackRange < abs(dist_x)) ||
-        (mAttackRange < abs(dist_y)))
-        return;
+    // Must be standing to attack
+    if (mAction != STAND) return;
 
     if (abs(dist_y) >= abs(dist_x))
     {
