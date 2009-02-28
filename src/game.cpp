@@ -513,58 +513,42 @@ void Game::handleInput()
                 }
             }
 
-            if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT) ||
-                keyboard.isKeyActive(keyboard.KEY_OK))
-            {
-                // Input chat window
-                if (!(chatWindow->isInputFocused() ||
-                                deathNotice ||
-                                weightNotice))
+            if (!(chatWindow->isInputFocused() || deathNotice || weightNotice))
+                if (keyboard.isKeyActive(keyboard.KEY_OK))
                 {
-                    // Quit by pressing Enter if the exit confirm is there
                     if (exitConfirm &&
                         keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
                         done = true;
                     // Close the Browser if opened
                     else if (helpWindow->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         helpWindow->setVisible(false);
                     // Close the config window, cancelling changes if opened
                     else if (setupWindow->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
                     // Submits the text and proceeds to the next dialog
                     else if (npcStringDialog->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
                     // Proceed to the next dialog option, or close the window
                     else if (npcTextDialog->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
                     // Choose the currently highlighted dialogue option
                     else if (npcListDialog->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
                     // Submits the text and proceeds to the next dialog
                     else if (npcIntegerDialog->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    else if (!(keyboard.getKeyValue(
-                                   KeyboardConfig::KEY_TOGGLE_CHAT) ==
-                               keyboard.getKeyValue(
-                                   KeyboardConfig::KEY_OK) &&
-                               (helpWindow->isVisible() ||
-                                setupWindow->isVisible() ||
-                                npcStringDialog->isVisible() ||
-                                npcTextDialog->isVisible() ||
-                                npcListDialog->isVisible() ||
-                                npcIntegerDialog->isVisible())))
-                    {
-                        chatWindow->requestChatFocus();
-                        used = true;
-                    }
                 }
-            }
+                if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                {
+                    if (chatWindow->requestChatFocus())
+                        used = true;
+                }
 
             const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
             switch (tKey)

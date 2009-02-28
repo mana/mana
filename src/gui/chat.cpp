@@ -284,7 +284,7 @@ void ChatWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void ChatWindow::requestChatFocus()
+bool ChatWindow::requestChatFocus()
 {
     // Make sure chatWindow is visible
     if (!isVisible())
@@ -299,9 +299,14 @@ void ChatWindow::requestChatFocus()
         mTmpVisible = true;
     }
 
+    // Don't do anything else if the input is already visible and has focus
+    if (mChatInput->isVisible() && mChatInput->isFocused())
+        return false;
+
     // Give focus to the chat input
     mChatInput->setVisible(true);
     mChatInput->requestFocus();
+    return true;
 }
 
 bool ChatWindow::isInputFocused()

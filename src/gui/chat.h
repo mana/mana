@@ -138,8 +138,11 @@ class ChatWindow : public Window, public gcn::ActionListener,
 
         /**
          * Request focus for typing chat message.
+         *
+         * \returns true if the input was shown
+         *          false otherwise
          */
-        void requestChatFocus();
+        bool requestChatFocus();
 
         /**
          * Checks whether ChatWindow is Focused or not.
