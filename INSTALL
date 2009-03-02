@@ -35,6 +35,11 @@ compile:
 * GNU gettext       http://www.gnu.org/software/gettext/
 * CVS               http://www.nongnu.org/cvs/ (needed to run autopoint)
 
+On some machines, it's been reported that this package is also needed. However,
+you might not need it:
+
+* GNU libtool       http://www.gnu.org/software/libtool/
+
 Installing these dependencies is distributions-specific, and we'll leave it to
 you to figure this out.
 
