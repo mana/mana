@@ -839,12 +839,9 @@ void Game::handleInput()
                     default: break;
                 }
 
-                // Attack priorioty is: Monster, Player, auto target
-                target = beingManager->findBeing(targetX, targetY,
-                         Being::MONSTER);
-                if (!target)
-                    target = beingManager->findBeing(targetX, targetY,
-                             Being::PLAYER);
+                // Only auto target Monsters
+                target = beingManager->findNearestLivingBeing(targetX, targetY,
+                         20, Being::MONSTER);
             }
 
             player_node->attack(target, newTarget);
