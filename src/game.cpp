@@ -885,12 +885,6 @@ void Game::handleInput()
             {
                 Being *target = player_node->getTarget();
 
-                if (!target)
-                {
-                    target = beingManager->findNearestLivingBeing(
-                             x, y, 20, Being::NPC);
-                }
-
                 if (target)
                 {
                     if (target->getType() == Being::NPC)
