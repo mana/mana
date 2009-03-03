@@ -22,6 +22,7 @@
 
 #include "animatedsprite.h"
 #include "game.h"
+#include "particle.h"
 #include "player.h"
 #include "text.h"
 
@@ -91,7 +92,10 @@ void Player::logic()
             break;
 
         case ATTACK:
+            int rotation = 0;
+            std::string particleEffect = "";
             int frames = 4;
+
             if (mEquippedWeapon &&
                 mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
             {
@@ -99,6 +103,26 @@ void Player::logic()
             }
 
             mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
+
+            //attack particle effect
+            if (mEquippedWeapon)
+                particleEffect = mEquippedWeapon->getParticleEffect();
+
+            if (!particleEffect.empty() && mParticleEffects)
+            {
+                switch (mDirection)
+                {
+                    case DOWN: rotation = 0; break;
+                    case LEFT: rotation = 90; break;
+                    case UP: rotation = 180; break;
+                    case RIGHT: rotation = 270; break;
+                    default: break;
+                }
+                Particle *p;
+                p = particleEngine->addEffect("graphics/particles/" +
+                                              particleEffect, 0, 0, rotation);
+                controlParticle(p);
+            }
 
             if (mFrame >= frames)
                 nextStep();

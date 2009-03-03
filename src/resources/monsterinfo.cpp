@@ -36,7 +36,6 @@ MonsterInfo::~MonsterInfo()
     mSounds.clear();
 }
 
-
 void MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
 {
     if (mSounds.find(event) == mSounds.end())

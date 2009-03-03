@@ -110,6 +110,10 @@ void ItemDB::load()
             {
                 if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
                 {
+                    std::string attackParticle = XML::getProperty(
+                        itemChild, "particle-effect", "");
+                    itemInfo->setParticleEffect(attackParticle);
+
                     loadSpriteRef(itemInfo, itemChild);
                 }
                 else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
