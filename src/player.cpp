@@ -108,7 +108,7 @@ void Player::logic()
             if (mEquippedWeapon)
                 particleEffect = mEquippedWeapon->getParticleEffect();
 
-            if (!particleEffect.empty() && mParticleEffects)
+            if (!particleEffect.empty() && mParticleEffects && mFrame == 1)
             {
                 switch (mDirection)
                 {
