@@ -38,6 +38,7 @@
 
 #include "../inventory.h"
 #include "../item.h"
+#include "../localplayer.h"
 #include "../units.h"
 
 #include "../resources/iteminfo.h"

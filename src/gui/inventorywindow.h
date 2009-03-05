@@ -22,12 +22,12 @@
 #ifndef INVENTORYWINDOW_H
 #define INVENTORYWINDOW_H
 
-#include <guichan/actionlistener.hpp>
-#include <guichan/selectionlistener.hpp>
-
 #include "window.h"
 
-#include "../localplayer.h"
+#include "../inventory.h"
+
+#include <guichan/actionlistener.hpp>
+#include <guichan/selectionlistener.hpp>
 
 class Item;
 class ItemContainer;
