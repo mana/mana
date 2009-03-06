@@ -147,15 +147,6 @@ void PopupMenu::handleLink(const std::string& link)
 {
     Being *being = beingManager->findBeing(mBeingId);
 
-    if (!being)
-    {
-        mBeingId = 0;
-        mFloorItem = NULL;
-        mItem = NULL;
-        setVisible(false);
-        return;
-    }
-
     // Talk To action
     if (link == "talk" && being && being->getType() == Being::NPC &&
         current_npc == 0)
