@@ -42,7 +42,6 @@ DebugWindow::DebugWindow():
     setResizable(true);
     setCloseButton(true);
     setDefaultSize(0, 0, 400, 60);
-    loadWindowState();
 
     mFPSLabel = new gcn::Label("0 FPS");
     mMusicFileLabel = new gcn::Label("Music: ");
@@ -51,14 +50,14 @@ DebugWindow::DebugWindow():
     mTileMouseLabel = new gcn::Label("Mouse: 0, 0");
     mParticleCountLabel = new gcn::Label("Particle count: 0");
 
-    place(0, 0, mFPSLabel);
+    place(0, 0, mFPSLabel, 3);
     place(3, 0, mTileMouseLabel);
     place(0, 1, mMusicFileLabel, 3);
     place(3, 1, mParticleCountLabel);
     place(0, 2, mMapLabel, 4);
     place(0, 3, mMiniMapLabel, 4);
 
-    reflowLayout(375, 0);
+    loadWindowState();
 }
 
 void DebugWindow::logic()
