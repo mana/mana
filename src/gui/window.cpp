@@ -569,7 +569,7 @@ void Window::loadSkin(const std::string &filename)
     if (!skinSetImage.empty())
     {
         logger->log("Window::loadSkin(): <skinset> defines '%s' as a skin image.", skinSetImage.c_str());
-        dBorders = resman->getImage("graphics/gui/" + skinSetImage);//"graphics/gui/speech_bubble.png");
+        dBorders = resman->getImage("graphics/gui/" + skinSetImage);
     }
     else
     {
@@ -593,104 +593,42 @@ void Window::loadSkin(const std::string &filename)
             for_each_xml_child_node(partNode, widgetNode)
             {
                 if (!xmlStrEqual(partNode->name, BAD_CAST "part"))
-                {
                     continue;
-                }
 
                 std::string partType;
                 partType = XML::getProperty(partNode, "type", "unknown");
                 // TOP ROW
+                const int xPos = XML::getProperty(partNode, "xpos", 0);
+                const int yPos = XML::getProperty(partNode, "ypos", 0);
+                const int width = XML::getProperty(partNode, "width", 1);
+                const int height = XML::getProperty(partNode, "height", 1);
+
                 if (partType == "top-left-corner")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
                 else if (partType == "top-edge")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[1] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
                 else if (partType == "top-right-corner")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[2] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
 
                 // MIDDLE ROW
                 else if (partType == "left-edge")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[3] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
                 else if (partType == "bg-quad")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[4] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
                 else if (partType == "right-edge")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[5] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
 
                 // BOTTOM ROW
                 else if (partType == "bottom-left-corner")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[6] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
                 else if (partType == "bottom-edge")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[7] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
                 else if (partType == "bottom-right-corner")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
                     border.grid[8] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
 
                 // Part is of an uknown type.
                 else
-                {
                     logger->log("Window::loadSkin(): Unknown Part Type '%s'", partType.c_str());
-                }
             }
         }
         // Widget is of an uknown type.
