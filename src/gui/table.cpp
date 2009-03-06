@@ -265,7 +265,7 @@ void GuiTable::installActionListeners(void)
 // -- widget ops
 void GuiTable::draw(gcn::Graphics* graphics)
 {
-    if (!mModel)
+    if (!mModel || !isVisible())
         return;
 
     if (config.getValue("guialpha", 0.8) != mAlpha)

@@ -36,7 +36,7 @@
 int Tab::mInstances = 0;
 float Tab::mAlpha = config.getValue("guialpha", 0.8);
 
-enum{
+enum {
     TAB_STANDARD,    // 0
     TAB_HIGHLIGHTED, // 1
     TAB_SELECTED,     // 2
@@ -95,8 +95,10 @@ void Tab::init()
         {
             tab[mode] = resman->getImage(data[mode].file);
             a = 0;
-            for (y = 0; y < 3; y++) {
-                for (x = 0; x < 3; x++) {
+            for (y = 0; y < 3; y++)
+            {
+                for (x = 0; x < 3; x++)
+                {
                     tabImg[mode].grid[a] = tab[mode]->getSubImage(
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,

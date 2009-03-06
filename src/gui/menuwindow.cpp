@@ -90,7 +90,6 @@ void MenuWindow::draw(gcn::Graphics *graphics)
     drawChildren(graphics);
 }
 
-
 void MenuWindowListener::action(const gcn::ActionEvent &event)
 {
     Window *window = NULL;

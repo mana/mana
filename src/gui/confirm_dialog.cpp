@@ -24,6 +24,7 @@
 
 #include "button.h"
 #include "confirm_dialog.h"
+#include "gui.h"
 #include "scrollarea.h"
 #include "textbox.h"
 
@@ -50,14 +51,16 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     int numRows = mTextBox->getNumberOfRows();
     int width = getFont()->getWidth(title);
     int inWidth = yesButton->getWidth() + noButton->getWidth() + 5;
+    const int fontHeight = getFont()->getHeight();
 
     if (numRows > 1)
     {
-        // 15 == height of each line of text (based on font heights)
+        // fontHeight == height of each line of text (based on font heights)
         // 14 == row top + bottom graphic pixel heights
-        setContentSize(mTextBox->getMinWidth() + 15, 15 + (numRows * 15) + noButton->getHeight());
+        setContentSize(mTextBox->getMinWidth() + fontHeight, ((numRows + 1) * 
+                       fontHeight) + noButton->getHeight());
         mTextArea->setDimension(gcn::Rectangle(4, 5, mTextBox->getMinWidth() + 5,
-                                               3 + (numRows * 14)));
+                                               3 + (numRows * fontHeight)));
     }
     else
     {
@@ -65,16 +68,17 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
             width = getFont()->getWidth(msg);
         if (width < inWidth)
             width = inWidth;
-        setContentSize(width + 15, 30 + noButton->getHeight());
+        setContentSize(width + fontHeight, (2 * fontHeight) + 
+                       noButton->getHeight());
         mTextArea->setDimension(gcn::Rectangle(4, 5, width + 5, 17));
     }
 
     yesButton->setPosition(
             (mTextBox->getMinWidth() - inWidth) / 2,
-            (numRows * 14) + noButton->getHeight() - 8);
+            ((numRows - 1) * fontHeight) + noButton->getHeight() + 2);
     noButton->setPosition(
             yesButton->getX() + yesButton->getWidth() + 5,
-            (numRows * 14) + noButton->getHeight() - 8);
+            ((numRows - 1) * fontHeight) + noButton->getHeight() + 2);
 
     add(mTextArea);
     add(yesButton);
@@ -105,7 +109,5 @@ void ConfirmDialog::action(const gcn::ActionEvent &event)
 
     // Can we receive anything else anyway?
     if (event.getId() == "yes" || event.getId() == "no")
-    {
         scheduleDelete();
-    }
 }

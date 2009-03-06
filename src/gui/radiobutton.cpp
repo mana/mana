@@ -70,6 +70,9 @@ RadioButton::~RadioButton()
 
 void RadioButton::drawBox(gcn::Graphics* graphics)
 {
+    if (!isVisible())
+        return;
+
     if (config.getValue("guialpha", 0.8) != mAlpha)
     {
         mAlpha = config.getValue("guialpha", 0.8);

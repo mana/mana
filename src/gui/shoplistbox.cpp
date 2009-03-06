@@ -58,7 +58,7 @@ void ShopListBox::setPlayersMoney(int money)
 
 void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 {
-    if (!mListModel)
+    if (!mListModel || !isVisible())
         return;
 
     if (config.getValue("guialpha", 0.8) != mAlpha)

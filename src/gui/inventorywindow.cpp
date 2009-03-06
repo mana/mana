@@ -113,6 +113,9 @@ InventoryWindow::~InventoryWindow()
 
 void InventoryWindow::logic()
 {
+    if (!isVisible())
+        return;
+
     Window::logic();
 
     // It would be nicer if this update could be event based, needs some

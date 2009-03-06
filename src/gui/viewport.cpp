@@ -43,6 +43,8 @@ extern volatile int tick_time;
 
 Viewport::Viewport():
     mMap(0),
+    mMouseX(0),
+    mMouseY(0),
     mPixelViewX(0.0f),
     mPixelViewY(0.0f),
     mTileViewX(0),
@@ -148,18 +150,14 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     int viewYmax = (mMap->getHeight() * 32) - graphics->getHeight();
     if (mMap)
     {
-        if (mPixelViewX < 0) {
+        if (mPixelViewX < 0)
             mPixelViewX = 0;
-        }
-        if (mPixelViewY < 0) {
+        if (mPixelViewY < 0)
             mPixelViewY = 0;
-        }
-        if (mPixelViewX > viewXmax) {
+        if (mPixelViewX > viewXmax)
             mPixelViewX = viewXmax;
-        }
-        if (mPixelViewY > viewYmax) {
+        if (mPixelViewY > viewYmax)
             mPixelViewY = viewYmax;
-        }
     }
 
     mTileViewX = (int) (mPixelViewX + 16) / 32;
@@ -175,11 +173,10 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         if (mShowDebugPath)
         {
             // Get the current mouse position
-            int mouseX, mouseY;
-            SDL_GetMouseState(&mouseX, &mouseY);
+            SDL_GetMouseState(&mMouseX, &mMouseY);
 
-            int mouseTileX = mouseX / 32 + mTileViewX;
-            int mouseTileY = mouseY / 32 + mTileViewY;
+            int mouseTileX = mMouseX / 32 + mTileViewX;
+            int mouseTileY = mMouseY / 32 + mTileViewY;
 
             Path debugPath = mMap->findPath(player_node->mX, player_node->mY,
                                             mouseTileX, mouseTileY);
@@ -204,7 +201,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         player_node->setName(player_node->getName());
     }
 
-
     // Draw text
     if (textManager)
     {
@@ -215,8 +211,8 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
-        (*i)->drawSpeech(-(int) mPixelViewX, -(int) mPixelViewY);
-        (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
+        (*i)->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
+        (*i)->drawEmotion(graphics, (int) mPixelViewX, (int) mPixelViewY);
     }
 
     // Draw contained widgets
@@ -230,14 +226,13 @@ void Viewport::logic()
     if (!mMap || !player_node)
         return;
 
-    int mouseX, mouseY;
-    Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
+    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
 
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
             mWalkTime != player_node->mWalkTime)
     {
-        player_node->setDestination(mouseX / 32 + mTileViewX,
-                                    mouseY / 32 + mTileViewY);
+        player_node->setDestination(mMouseX / 32 + mTileViewX,
+                                    mMouseY / 32 + mTileViewY);
         mWalkTime = player_node->mWalkTime;
     }
 }
@@ -343,9 +338,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         Being *target = beingManager->findBeingByPixel(x, y);
 
         if (target)
-        {
              player_node->setTarget(target);
-        }
     }
 }
 

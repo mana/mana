@@ -104,6 +104,9 @@ ItemPopup::~ItemPopup()
 
 void ItemPopup::setItem(const ItemInfo &item)
 {
+    if (item.getName() == mItemName->getCaption())
+        return;
+
     mItemName->setCaption(item.getName());
     mItemName->setForegroundColor(getColor(item.getType()));
     mItemName->setWidth(boldFont->getWidth(item.getName()));

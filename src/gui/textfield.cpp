@@ -84,7 +84,11 @@ TextField::~TextField()
 
 void TextField::draw(gcn::Graphics *graphics)
 {
-    if (isFocused()) {
+    if (!isVisible())
+        return;
+
+    if (isFocused())
+    {
         drawCaret(graphics,
                 getFont()->getWidth(mText.substr(0, mCaretPosition)) -
                 mXScroll);

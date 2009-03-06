@@ -41,9 +41,8 @@ Tab* TabbedArea::getTab(const std::string &name)
     while (itr != itr_end)
     {
         if ((*itr).first->getCaption() == name)
-        {
             return static_cast<Tab*>((*itr).first);
-        }
+
         ++itr;
     }
     return NULL;
@@ -52,9 +51,7 @@ Tab* TabbedArea::getTab(const std::string &name)
 void TabbedArea::draw(gcn::Graphics *graphics)
 {
     if (mTabs.empty())
-    {
         return;
-    }
 
     drawChildren(graphics);
 }
@@ -65,9 +62,8 @@ gcn::Widget* TabbedArea::getWidget(const std::string &name)
     while (itr != itr_end)
     {
         if ((*itr).first->getCaption() == name)
-        {
             return (*itr).second;
-        }
+
         ++itr;
     }
 
@@ -92,9 +88,7 @@ void TabbedArea::addTab(Tab *tab, gcn::Widget *widget)
     mTabs.push_back(std::pair<Tab*, gcn::Widget*>(tab, widget));
 
     if (!mSelectedTab)
-    {
         setSelectedTab(tab);
-    }
 
     adjustTabPositions();
     adjustSize();
@@ -108,15 +102,10 @@ void TabbedArea::removeTab(Tab *tab)
     {
         int index = getSelectedTabIndex();
 
-        if (index == (int)mTabs.size() - 1
-                 && mTabs.size() == 1)
-        {
+        if (index == (int)mTabs.size() - 1 && mTabs.size() == 1)
             tabIndexToBeSelected = -1;
-        }
         else
-        {
             tabIndexToBeSelected = index - 1;
-        }
     }
 
     TabContainer::iterator iter;

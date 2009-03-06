@@ -108,6 +108,7 @@ class ProgressBar : public gcn::Widget
         Uint8 mRed, mGreen, mBlue;
         Uint8 mRedToGo, mGreenToGo, mBlueToGo;
         std::string mText;
+        bool mUpdated;
 
         static ImageRect mBorder;
         static int mInstances;

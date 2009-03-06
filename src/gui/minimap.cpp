@@ -113,6 +113,9 @@ void Minimap::draw(gcn::Graphics *graphics)
 {
     setVisible(mShow);
 
+    if (!isVisible())
+        return;
+
     Window::draw(graphics);
 
     if (!mShow)
