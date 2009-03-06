@@ -255,6 +255,9 @@ void StatusWindow::update()
 
 void StatusWindow::draw(gcn::Graphics *g)
 {
+    if (!isVisible())
+        return;
+
     update();
 
     Window::draw(g);

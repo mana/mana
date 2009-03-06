@@ -38,7 +38,7 @@ ListBox::ListBox(gcn::ListModel *listModel):
 
 void ListBox::draw(gcn::Graphics *graphics)
 {
-    if (!mListModel)
+    if (!mListModel || !isVisible())
         return;
 
     if (config.getValue("guialpha", 0.8) != mAlpha)

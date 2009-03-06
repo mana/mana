@@ -74,6 +74,7 @@ Being::Being(int id, int job, Map *map):
     mAction(STAND),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
+    mSpeechTime(0),
     mAttackSpeed(350),
     mId(id),
     mWalkSpeed(150),
@@ -85,7 +86,6 @@ Being::Being(int id, int job, Map *map):
     mEquippedWeapon(NULL),
     mHairStyle(1), mHairColor(0),
     mGender(GENDER_UNSPECIFIED),
-    mSpeechTime(0),
     mPx(0), mPy(0),
     mStunMode(0),
     mSprites(VECTOREND_SPRITE, NULL),
@@ -142,9 +142,7 @@ Being::~Being()
     instances--;
 
     if (instances == 0)
-    {
         delete_all(emotionSet);
-    }
 
     delete mSpeechBubble;
     delete mText;
@@ -314,13 +312,10 @@ void Being::setAction(Action action)
             break;
         case ATTACK:
             if (mEquippedWeapon)
-            {
                 currentAction = mEquippedWeapon->getAttackType();
-            }
             else
-            {
                 currentAction = ACTION_ATTACK;
-            }
+
             for (int i = 0; i < VECTOREND_SPRITE; i++)
             {
                 if (mSprites[i])
@@ -371,21 +366,13 @@ SpriteDirection Being::getSpriteDirection() const
     SpriteDirection dir;
 
     if (mDirection & UP)
-    {
         dir = DIRECTION_UP;
-    }
     else if (mDirection & DOWN)
-    {
         dir = DIRECTION_DOWN;
-    }
     else if (mDirection & RIGHT)
-    {
         dir = DIRECTION_RIGHT;
-    }
     else
-    {
-         dir = DIRECTION_LEFT;
-    }
+        dir = DIRECTION_LEFT;
 
     return dir;
 }
@@ -431,7 +418,7 @@ void Being::logic()
     if (mSpeechTime > 0)
          mSpeechTime--;
 
-    // Remove text if speech boxes aren't being used
+    // Remove text and speechbubbles if speech boxes aren't being used
     if (mSpeechTime == 0 && mText)
     {
         delete mText;
@@ -479,9 +466,7 @@ void Being::logic()
     }
 
     // Update particle effects
-    mChildParticleEffects.moveTo((float) mPx + 16.0f,
-                                 (float) mPy + 32.0f);
-
+    mChildParticleEffects.moveTo((float) mPx + 16.0f, (float) mPy + 32.0f);
 }
 
 void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
@@ -490,16 +475,12 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     int py = mPy + offsetY;
 
     if (mUsedTargetCursor)
-    {
         mUsedTargetCursor->draw(graphics, px, py);
-    }
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
         if (mSprites[i])
-        {
             mSprites[i]->draw(graphics, px, py);
-        }
     }
 }
 
@@ -508,8 +489,8 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     if (!mEmotion)
         return;
 
-    const int px = mPx + offsetX + 3;
-    const int py = mPy + offsetY - 60;
+    const int px = mPx - offsetX;
+    const int py = mPy - offsetY - 64;
     const int emotionIndex = mEmotion - 1;
 
     if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
@@ -518,20 +499,25 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 
 void Being::drawSpeech(int offsetX, int offsetY)
 {
-    const int px = mPx + offsetX;
-    const int py = mPy + offsetY;
+    const int px = mPx - offsetX;
+    const int py = mPy - offsetY;
     const int speech = (int) config.getValue("speech", NAME_IN_BUBBLE);
 
     // Draw speech above this being
-    if (mSpeechTime > 0 && (speech == NAME_IN_BUBBLE ||
-        speech == NO_NAME_IN_BUBBLE))
+    if (mSpeechTime == 0)
+    {
+        if (mSpeechBubble->isVisible())
+            mSpeechBubble->setVisible(false);
+    }
+    else if (mSpeechTime > 0 && (speech == NAME_IN_BUBBLE ||
+             speech == NO_NAME_IN_BUBBLE))
     {
         const bool showName = (speech == NAME_IN_BUBBLE);
 
         if (mText)
         {
             delete mText;
-            mText = 0;
+            mText = NULL;
         }
 
         mSpeechBubble->setCaption(showName ? mName : "", mNameColor);
@@ -547,6 +533,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
     else if (mSpeechTime > 0 && speech == TEXT_OVERHEAD)
     {
         mSpeechBubble->setVisible(false);
+
         // don't introduce a memory leak
         if (mText)
             delete mText;
@@ -557,13 +544,11 @@ void Being::drawSpeech(int offsetX, int offsetY)
     else if (speech == NO_SPEECH)
     {
         mSpeechBubble->setVisible(false);
+
         if (mText)
             delete mText;
+
         mText = NULL;
-    }
-    else if (mSpeechTime == 0)
-    {
-        mSpeechBubble->setVisible(false);
     }
 }
 
@@ -632,24 +617,18 @@ int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
     if (mAction != WALK ||  !(mDirection & (pos | neg)))
-    {
         return 0;
-    }
 
     int offset = (get_elapsed_time(mWalkTime) * 32) / mWalkSpeed;
 
     // We calculate the offset _from_ the _target_ location
     offset -= 32;
     if (offset > 0)
-    {
         offset = 0;
-    }
 
     // Going into negative direction? Invert the offset.
     if (mDirection & pos)
-    {
         offset = -offset;
-    }
 
     return offset;
 }

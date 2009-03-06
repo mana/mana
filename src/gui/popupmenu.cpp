@@ -73,7 +73,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     {
         case Being::PLAYER:
             {
-                // Players can be traded with. Later also attack, follow and
+                // Players can be traded with. Later also follow and
                 // add as buddy will be options in this menu.
                 const std::string &name = being->getName();
                 mBrowserBox->addRow(strprintf(_("@@trade|Trade With %s@@"), name.c_str()));

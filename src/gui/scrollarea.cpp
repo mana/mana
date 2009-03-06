@@ -145,6 +145,9 @@ void ScrollArea::init()
 
 void ScrollArea::logic()
 {
+    if (!isVisible())
+        return;
+
     gcn::ScrollArea::logic();
     gcn::Widget *content = getContent();
 
@@ -167,6 +170,9 @@ void ScrollArea::logic()
 
 void ScrollArea::draw(gcn::Graphics *graphics)
 {
+    if (!isVisible())
+        return;
+
     if (mVBarVisible)
     {
         drawUpButton(graphics);

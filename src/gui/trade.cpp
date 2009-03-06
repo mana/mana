@@ -117,7 +117,6 @@ void TradeWindow::widgetResized(const gcn::Event &event)
     Window::widgetResized(event);
 }
 
-
 void TradeWindow::addMoney(int amount)
 {
     mMoneyLabel->setCaption(strprintf(_("You get %s."),

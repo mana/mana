@@ -129,15 +129,16 @@ class Being : public Sprite
          */
         enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
-        Uint16 mJob;            /**< Job (player job, npc, monster, ) */
-        Uint16 mX, mY;          /**< Tile coordinates */
-        Action mAction;          /**< Action the being is performing */
-        Uint16 mFrame;
-        Uint16 mWalkTime;
-        Uint8 mEmotion;         /**< Currently showing emotion */
-        Uint8 mEmotionTime;     /**< Time until emotion disappears */
+        Uint16 mJob;          /**< Job (player job, npc, monster, ) */
+        Uint16 mX, mY;        /**< Tile coordinates */
+        Action mAction;       /**< Action the being is performing */
+        int mFrame;
+        int mWalkTime;
+        int mEmotion;         /**< Currently showing emotion */
+        int mEmotionTime;     /**< Time until emotion disappears */
+        int mSpeechTime;
 
-        Uint16 mAttackSpeed;    /**< Attack speed */
+        int mAttackSpeed;     /**< Attack speed */
 
         /**
          * Constructor.
@@ -496,9 +497,8 @@ class Being : public Sprite
         Text *mText;
         Uint16 mHairStyle, mHairColor;
         Gender mGender;
-        int mSpeechTime;
         int mPx, mPy;                   /**< Pixel coordinates */
-        Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
+        Uint16 mStunMode;		/**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
 
         gcn::Color mNameColor;

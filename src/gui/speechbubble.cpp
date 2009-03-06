@@ -31,7 +31,8 @@
 #include "../utils/gettext.h"
 
 SpeechBubble::SpeechBubble():
-    Window(_("Speech"), false, NULL, "graphics/gui/speechbubble.xml")
+    Window(_("Speech"), false, NULL, "graphics/gui/speechbubble.xml"),
+    mText("")
 {
     setContentSize(140, 46);
     setShowTitle(false);
@@ -66,10 +67,13 @@ void SpeechBubble::setCaption(const std::string &name, const gcn::Color &color)
     mCaption->setForegroundColor(color);
 }
 
-void SpeechBubble::setText(std::string mText, bool showName)
+void SpeechBubble::setText(std::string text, bool showName)
 {
+    if ((text == mText) && (mCaption->getWidth() <= mSpeechBox->getMinWidth()))
+        return;
+
     int width = mCaption->getWidth();
-    mSpeechBox->setTextWrapped(mText, 130 > width ? 130 : width);
+    mSpeechBox->setTextWrapped(text, 130 > width ? 130 : width);
 
     const int fontHeight = getFont()->getHeight();
     const int numRows = showName ? mSpeechBox->getNumberOfRows() + 1 :

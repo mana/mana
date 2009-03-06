@@ -75,6 +75,15 @@ EmoteShortcutContainer::~EmoteShortcutContainer()
 
 void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 {
+    if (!isVisible())
+        return;
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        mBackgroundImg->setAlpha(mAlpha);
+    }
+
     Graphics *g = static_cast<Graphics*>(graphics);
 
     graphics->setFont(getFont());
@@ -94,7 +103,8 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
 
         if (emoteShortcut->getEmote(i))
         {
-            mEmoteImg[emoteShortcut->getEmote(i) - 1]->draw(g, emoteX + 2, emoteY + 10);
+            mEmoteImg[emoteShortcut->getEmote(i) - 1]->draw(g, emoteX + 2,
+                                                            emoteY + 10);
         }
 
     }
@@ -111,12 +121,6 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
             sprite->draw(g, tPosX, tPosY);
         }
     }
-
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mAlpha = config.getValue("guialpha", 0.8);
-        mBackgroundImg->setAlpha(mAlpha);
-    }
 }
 
 void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
@@ -129,9 +133,7 @@ void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
             const int emoteId = emoteShortcut->getEmote(index);
 
             if (index == -1)
-            {
                 return;
-            }
 
             if (emoteId)
             {
@@ -152,19 +154,17 @@ void EmoteShortcutContainer::mousePressed(gcn::MouseEvent &event)
     const int index = getIndexFromGrid(event.getX(), event.getY());
 
     if (index == -1)
-    {
-         return;
-    }
+        return;
 
     // Stores the selected emote if there is one.
     if (emoteShortcut->isEmoteSelected())
     {
-         emoteShortcut->setEmote(index);
-         emoteShortcut->setEmoteSelected(0);
+        emoteShortcut->setEmote(index);
+        emoteShortcut->setEmoteSelected(0);
     }
     else if (emoteShortcut->getEmote(index))
     {
-         mEmoteClicked = true;
+        mEmoteClicked = true;
     }
 }
 
@@ -175,9 +175,7 @@ void EmoteShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         const int index = getIndexFromGrid(event.getX(), event.getY());
 
         if (emoteShortcut->isEmoteSelected())
-        {
             emoteShortcut->setEmoteSelected(0);
-        }
 
         if (index == -1)
         {
@@ -196,9 +194,7 @@ void EmoteShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         }
 
         if (mEmoteClicked)
-        {
             mEmoteClicked = false;
-        }
     }
 }
 

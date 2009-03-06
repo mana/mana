@@ -153,9 +153,8 @@ Being *BeingManager::findBeingByName(std::string name, Being::Type type)
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
         Being *being = (*i);
-        if (being->getName() == name
-            && (type == Being::UNKNOWN
-                || type == being->getType()))
+        if (being->getName() == name &&
+           (type == Being::UNKNOWN || type == being->getType()))
             return being;
     }
     return NULL;
@@ -189,17 +188,13 @@ void BeingManager::logic()
 void BeingManager::clear()
 {
     if (player_node)
-    {
         mBeings.remove(player_node);
-    }
 
     delete_all(mBeings);
     mBeings.clear();
 
     if (player_node)
-    {
         mBeings.push_back(player_node);
-    }
 }
 
 Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
@@ -218,8 +213,7 @@ Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
 
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer
-                && being->mAction != Being::DEAD        // no dead beings
-           )
+                && being->mAction != Being::DEAD)       // no dead beings
         {
             dist = d;
             closestBeing = being;
@@ -245,8 +239,7 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer
                 && being->mAction != Being::DEAD        // no dead beings
-                && being != aroundBeing
-           )
+                && being != aroundBeing)
         {
             dist = d;
             closestBeing = being;

@@ -19,14 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itemcontainer.h"
-
-#include "itempopup.h"
-
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
 
-#include <SDL_mouse.h>
+#include "itemcontainer.h"
+#include "itempopup.h"
+#include "viewport.h"
 
 #include "../graphics.h"
 #include "../inventory.h"
@@ -72,6 +70,9 @@ ItemContainer::~ItemContainer()
 
 void ItemContainer::logic()
 {
+    if (!isVisible())
+        return;
+
     gcn::Widget::logic();
 
     int i = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
@@ -85,18 +86,19 @@ void ItemContainer::logic()
 
 void ItemContainer::draw(gcn::Graphics *graphics)
 {
+    if (!isVisible())
+        return;
+
     int columns = getWidth() / gridWidth;
 
     // Have at least 1 column
     if (columns < 1)
-    {
         columns = 1;
-    }
 
     /*
-     * mOffset is used to compensate for some weirdness that eAthena inherited from
-     * Ragnarok Online.  Inventory slots and cart slots are +2 from their actual index,
-     * while storage slots are +1.
+     * mOffset is used to compensate for some weirdness that eAthena inherited
+     * from Ragnarok Online.  Inventory slots and cart slots are +2 from their
+     * actual index, while storage slots are +1.
      */
     for (int i = mOffset; i < mInventory->getSize(); i++)
     {
@@ -105,31 +107,25 @@ void ItemContainer::draw(gcn::Graphics *graphics)
         if (!item || item->getQuantity() <= 0)
             continue;
 
-        int itemX = ((i - 2) % columns) * gridWidth;
-        int itemY = ((i - 2) / columns) * gridHeight;
+        int itemX = ((i - mOffset) % columns) * gridWidth;
+        int itemY = ((i - mOffset) / columns) * gridHeight;
 
         // Draw selection image below selected item
         if (mSelectedItemIndex == i)
-        {
-            static_cast<Graphics*>(graphics)->drawImage(
-                    mSelImg, itemX, itemY);
-        }
+            static_cast<Graphics*>(graphics)->drawImage(mSelImg, itemX, itemY);
 
         // Draw item icon
         Image* image = item->getImage();
+
         if (image)
-        {
-            static_cast<Graphics*>(graphics)->drawImage(
-                    image, itemX, itemY);
-        }
+            static_cast<Graphics*>(graphics)->drawImage(image, itemX, itemY);
 
         // Draw item caption
         graphics->setFont(getFont());
         graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawText(
                 (item->isEquipped() ? "Eq." : toString(item->getQuantity())),
-                itemX + gridWidth / 2,
-                itemY + gridHeight - 11,
+                itemX + gridWidth / 2, itemY + gridHeight - 11,
                 gcn::Graphics::CENTER);
     }
 }
@@ -258,12 +254,9 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
 
     if (item)
     {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-
         mItemPopup->setItem(item->getInfo());
         mItemPopup->setOpaque(false);
-        mItemPopup->view(mouseX, mouseY);
+        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
     }
     else
     {

@@ -74,12 +74,15 @@ DropDown::DropDown(gcn::ListModel *listModel, gcn::ScrollArea *scrollArea,
         int gridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
 
-        for (y = 0; y < 3; y++) {
-            for (x = 0; x < 3; x++) {
-                skin.grid[a] = boxBorder->getSubImage(
-                        gridx[x], gridy[y],
-                        gridx[x + 1] - gridx[x] + 1,
-                        gridy[y + 1] - gridy[y] + 1);
+        for (y = 0; y < 3; y++)
+        {
+            for (x = 0; x < 3; x++)
+            {
+                skin.grid[a] = boxBorder->getSubImage(gridx[x], gridy[y], 
+                                                      gridx[x + 1] - 
+                                                      gridx[x] + 1,
+                                                      gridy[y + 1] - 
+                                                      gridy[y] + 1);
                 skin.grid[a]->setAlpha(mAlpha);
                 a++;
             }
@@ -108,16 +111,15 @@ DropDown::~DropDown()
 
 void DropDown::draw(gcn::Graphics* graphics)
 {
+    if (!isVisible())
+        return;
+
     int h;
 
     if (mDroppedDown)
-    {
         h = mFoldedUpHeight;
-    }
     else
-    {
         h = getHeight();
-    }
 
     if (config.getValue("guialpha", 0.8) != mAlpha)
     {

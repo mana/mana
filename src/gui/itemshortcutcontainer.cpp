@@ -18,7 +18,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-#include <SDL_mouse.h>
 
 #include "itemshortcutcontainer.h"
 #include "itempopup.h"
@@ -66,6 +65,9 @@ ItemShortcutContainer::~ItemShortcutContainer()
 
 void ItemShortcutContainer::logic()
 {
+    if (!isVisible())
+        return;
+
     gcn::Widget::logic();
 
     int i = itemShortcut->getItemCount();
@@ -79,6 +81,15 @@ void ItemShortcutContainer::logic()
 
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
+    if (!isVisible())
+        return;
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        mBackgroundImg->setAlpha(mAlpha);
+    }
+
     Graphics *g = static_cast<Graphics*>(graphics);
 
     graphics->setColor(gcn::Color(0, 0, 0));
@@ -102,23 +113,23 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
         Item *item =
             player_node->getInventory()->findItem(itemShortcut->getItem(i));
-        if (item) {
+
+        if (item)
+        {
             // Draw item icon.
-            const std::string label =
-                item->isEquipped() ? "Eq." : toString(item->getQuantity());
             Image* image = item->getImage();
-            if (image) {
+
+            if (image)
+            {
                 const std::string label =
                     item->isEquipped() ? "Eq." : toString(item->getQuantity());
                 g->drawImage(image, itemX, itemY);
-                g->drawText(
-                        label,
-                        itemX + mBoxWidth / 2,
-                        itemY + mBoxHeight - 14,
-                        gcn::Graphics::CENTER);
+                g->drawText(label, itemX + mBoxWidth / 2,
+                            itemY + mBoxHeight - 14, gcn::Graphics::CENTER);
             }
         }
     }
+
     if (mItemMoved)
     {
         // Draw the item image being dragged by the cursor.
@@ -129,17 +140,10 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
             const int tPosY = mCursorPosY - (image->getHeight() / 2);
 
             g->drawImage(image, tPosX, tPosY);
-            g->drawText(
-                    toString(mItemMoved->getQuantity()),
-                    tPosX + mBoxWidth / 2,
-                    tPosY + mBoxHeight - 14,
-                    gcn::Graphics::CENTER);
+            g->drawText(toString(mItemMoved->getQuantity()),
+                        tPosX + mBoxWidth / 2, tPosY + mBoxHeight - 14,
+                        gcn::Graphics::CENTER);
         }
-    }
-
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
     }
 }
 
@@ -152,10 +156,7 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
             const int index = getIndexFromGrid(event.getX(), event.getY());
             const int itemId = itemShortcut->getItem(index);
 
-            if (index == -1)
-                return;
-
-            if (itemId < 0)
+            if (index == -1 || itemId < 0)
                 return;
 
             Item *item = player_node->getInventory()->findItem(itemId);
@@ -166,7 +167,8 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
                 itemShortcut->removeItem(index);
             }
         }
-        if (mItemMoved) {
+        if (mItemMoved)
+        {
             mCursorPosX = event.getX();
             mCursorPosY = event.getY();
         }
@@ -176,6 +178,7 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
 {
     const int index = getIndexFromGrid(event.getX(), event.getY());
+
     if (index == -1)
         return;
 
@@ -199,12 +202,9 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
         if (!item)
             return;
 
-        /* Convert relative to the window coordinates to absolute screen
-         * coordinates.
-         */
-        int mx, my;
-        SDL_GetMouseState(&mx, &my);
-        viewport->showPopup(mx, my, item);
+        // Convert relative to the window coordinates to absolute screen
+        // coordinates.
+        viewport->showPopup(viewport->getMouseX(), viewport->getMouseY(), item);
     }
 }
 
@@ -230,6 +230,7 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         {
             itemShortcut->useItem(index);
         }
+
         if (mItemClicked)
             mItemClicked = false;
     }
@@ -241,22 +242,16 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
     const int index = getIndexFromGrid(event.getX(), event.getY());
     const int itemId = itemShortcut->getItem(index);
 
-    if (index == -1)
-         return;
-
-    if (itemId < 0)
+    if (index == -1 || itemId < 0)
         return;
 
     Item *item = player_node->getInventory()->findItem(itemId);
 
     if (item)
     {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-
         mItemPopup->setItem(item->getInfo());
         mItemPopup->setOpaque(false);
-        mItemPopup->view(mouseX, mouseY);
+        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
     }
     else
     {
