@@ -414,6 +414,8 @@
 		<Unit filename="src\tmw.rc">
 			<Option compilerVar="CPP" />
 		</Unit>
+		<Unit filename="src\units.cpp" />
+		<Unit filename="src\units.h" />
 		<Unit filename="src\utils\base64.cpp" />
 		<Unit filename="src\utils\base64.h" />
 		<Unit filename="src\utils\dtor.h" />
