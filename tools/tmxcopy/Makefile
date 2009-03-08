@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c `pkg-config --cflags libxml-2.0`
+CFLAGS=-g -ggdb -O0 -Wall -c `pkg-config --cflags libxml-2.0`
 LDFLAGS=`pkg-config --libs libxml-2.0`
 SOURCES=base64.cpp main.cpp map.cpp xmlutils.cpp zlibutils.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
