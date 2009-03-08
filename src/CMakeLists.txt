@@ -389,6 +389,8 @@ SET(SRCS
     textparticle.cpp
     textparticle.h
     tileset.h
+    units.cpp
+    units.h
     vector.cpp
     vector.h
     )
