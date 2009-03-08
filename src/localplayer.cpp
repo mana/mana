@@ -179,20 +179,30 @@ void LocalPlayer::logic()
 
     if (mTarget)
     {
-        // Find whether target is in range
-        const int rangeX = abs(mTarget->mX - mX);
-        const int rangeY = abs(mTarget->mY - mY);
-        const int attackRange = getAttackRange();
-        const int inRange = rangeX > attackRange || rangeY > attackRange ? 1 : 0;
+        if (mTarget->getType() == Being::NPC)
+        {
+            // NPCs are always in range
+            mTarget->setTargetAnimation(
+                mTargetCursor[0][mTarget->getTargetCursorSize()]);
+        }
+        else
+        {
+            // Find whether target is in range
+            const int rangeX = abs(mTarget->mX - mX);
+            const int rangeY = abs(mTarget->mY - mY);
+            const int attackRange = getAttackRange();
+            const int inRange = rangeX > attackRange || rangeY > attackRange
+                                                                    ? 1 : 0;
 
-        mTarget->setTargetAnimation(
-            mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
+            mTarget->setTargetAnimation(
+                mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
 
-        if (mTarget->mAction == DEAD)
-            stopAttack();
+            if (mTarget->mAction == DEAD)
+                stopAttack();
 
-        if (mKeepAttacking && mTarget)
-            attack(mTarget, true);
+            if (mKeepAttacking && mTarget)
+                attack(mTarget, true);
+        }
     }
 
     Being::logic();
@@ -520,7 +530,7 @@ void LocalPlayer::attack(Being *target, bool keep)
 {
     mKeepAttacking = keep;
 
-    if (!target)
+    if (!target || target->getType() == Being::NPC)
         return;
 
     if ((mTarget != target) || !mTarget)
