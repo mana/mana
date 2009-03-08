@@ -155,7 +155,7 @@ Map::Map(std::string filename):
                         {
                             for (int s = mTilesets.size()-1; s >= 0; s--)
                             {
-                                if (mTilesets.at(s)->firstgid < gid)
+                                if (mTilesets.at(s)->firstgid <= gid)
                                 {
                                     layer->at(c).tileset = s;
                                     layer->at(c).index = gid - mTilesets.at(s)->firstgid;
@@ -202,6 +202,10 @@ bool Map::overwrite(  Map* srcMap,
     }
     if (destY + srcHeight > mHeight) {
         std::cerr<<"Error: Area exceeds lower map border of target map!"<<std::endl;
+        checkPassed = false;
+    }
+    if (srcMap->getNumberOfLayers() > mLayers.size()) {
+        std::cerr<<"Error: Source has more layers than target map"<<std::endl;
         checkPassed = false;
     }
     if (!checkPassed) return false;
