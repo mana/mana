@@ -39,6 +39,7 @@
 #include "../gui/ok_dialog.h"
 #include "../gui/sell.h"
 #include "../gui/skill.h"
+#include "../gui/storagewindow.h"
 #include "../gui/viewport.h"
 
 #include "../utils/stringutils.h"
@@ -92,7 +93,8 @@ namespace {
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);
             buySellDialog->setVisible(false);
-            current_npc = 0;
+
+            if (storageWindow->isVisible()) storageWindow->close();
         }
     } deathListener;
 }
