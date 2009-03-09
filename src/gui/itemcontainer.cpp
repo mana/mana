@@ -57,7 +57,7 @@ ItemContainer::ItemContainer(Inventory *inventory, int offset):
     mSelImg = resman->getImage("graphics/gui/selection.png");
     if (!mSelImg) logger->error("Unable to load selection.png");
 
-    mMaxItems = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
+    mMaxItems = mInventory->getLastUsedSlot() - (mOffset - 1); // Count from 0, usage from 2
 
     addMouseListener(this);
     addWidgetListener(this);
@@ -76,7 +76,7 @@ void ItemContainer::logic()
 
     gcn::Widget::logic();
 
-    int i = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
+    int i = mInventory->getLastUsedSlot() - (mOffset - 1); // Count from 0, usage from 2
 
     if (i != mMaxItems)
     {

@@ -26,6 +26,7 @@
 class Item;
 
 #define INVENTORY_SIZE 102
+#define STORAGE_SIZE 301
 
 class Inventory
 {
@@ -33,7 +34,7 @@ class Inventory
         /**
          * Constructor.
          */
-        Inventory(int size);
+        Inventory(int size, int offset);
 
         /**
          * Destructor.
@@ -111,6 +112,7 @@ class Inventory
     protected:
         Item **mItems;  /**< The holder of items */
         int mSize;      /**< The max number of inventory items */
+        int mOffset;    /**< Offset used by the inventory */
 };
 
 #endif

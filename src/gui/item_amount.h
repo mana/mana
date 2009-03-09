@@ -32,6 +32,8 @@ class Item;
 
 #define AMOUNT_TRADE_ADD 1
 #define AMOUNT_ITEM_DROP 2
+#define AMOUNT_STORE_ADD 3
+#define AMOUNT_STORE_REMOVE 4
 
 /**
  * Window used for selecting the amount of items to drop or trade.

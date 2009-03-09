@@ -64,22 +64,6 @@ ItemShortcutContainer::~ItemShortcutContainer()
     delete mItemPopup;
 }
 
-void ItemShortcutContainer::logic()
-{
-    if (!isVisible())
-        return;
-
-    gcn::Widget::logic();
-
-    int i = itemShortcut->getItemCount();
-
-    if (i != mMaxItems)
-    {
-        mMaxItems = i;
-        setWidth(getWidth());
-    }
-}
-
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
     if (!isVisible())

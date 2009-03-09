@@ -63,7 +63,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          * @param skin    The location where the window's skin XML can be found.
          */
         Window(const std::string &caption = "Window", bool modal = false,
-                Window *parent = NULL, const std::string &skin = "graphics/gui/gui.xml");
+               Window *parent = NULL, const std::string &skin = "graphics/gui/gui.xml");
 
         /**
          * Destructor. Deletes all the added widgets.
@@ -153,8 +153,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Sets flag to show a title or not.
          */
-        void setShowTitle(bool flag)
-        { mShowTitle = flag; }
+        void setShowTitle(bool flag) { mShowTitle = flag; }
 
         /**
           * Sets whether the window is sticky. A sticky window will not have

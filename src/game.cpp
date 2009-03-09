@@ -70,6 +70,7 @@
 #include "gui/setup.h"
 #include "gui/skill.h"
 #include "gui/status.h"
+#include "gui/storagewindow.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
 
@@ -129,6 +130,7 @@ HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 ShortcutWindow *itemShortcutWindow;
 ShortcutWindow *emoteShortcutWindow;
+StorageWindow *storageWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
@@ -213,6 +215,7 @@ void createGuiWindows(Network *network)
                                             new ItemShortcutContainer);
     emoteShortcutWindow = new ShortcutWindow("emoteShortcut",
                                              new EmoteShortcutContainer);
+    storageWindow = new StorageWindow(network);
 
     // Set initial window visibility
     chatWindow->setVisible((bool) config.getValue(
@@ -230,6 +233,7 @@ void createGuiWindows(Network *network)
         emoteShortcutWindow->getWindowName() + "Visible", true));
     minimap->setVisible((bool) config.getValue(
         minimap->getWindowName() + "Visible", true));
+    storageWindow->setVisible(false);
 }
 
 /**
@@ -260,6 +264,7 @@ void destroyGuiWindows()
     delete debugWindow;
     delete itemShortcutWindow;
     delete emoteShortcutWindow;
+    delete storageWindow;
 }
 
 Game::Game(Network *network):
