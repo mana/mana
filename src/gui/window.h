@@ -276,6 +276,8 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         ContainerPlacer getPlacer(int x, int y);
 
+        virtual void close();
+
     protected:
         /** The window container windows add themselves to. */
         static WindowContainer *windowContainer;

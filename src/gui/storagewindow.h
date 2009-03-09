@@ -88,7 +88,7 @@ class StorageWindow : public Window, gcn::ActionListener, gcn::SelectionListener
 
         std::string mSlots;
         std::string mUsedSlots;
-        gcn::Button *mCancelButton, *mStoreButton, *mRetrieveButton;
+        gcn::Button *mStoreButton, *mRetrieveButton;
         gcn::ScrollArea *mInvenScroll;
 
         gcn::Label *mSlotsLabel;

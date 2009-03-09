@@ -59,11 +59,11 @@ StorageWindow::StorageWindow(Network *network, int invSize):
 {
     setWindowName("Storage");
     setResizable(true);
+    setCloseButton(true);
 
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(115, 25, 375, 300);
 
-    mCancelButton = new Button(_("Close"), "close", this);
     mStoreButton = new Button(_("Store"), "store", this);
     mRetrieveButton = new Button(_("Retrieve"), "retrieve", this);
 
@@ -85,7 +85,6 @@ StorageWindow::StorageWindow(Network *network, int invSize):
     place(0, 0, mSlotsLabel).setPadding(3);
     place(1, 0, mSlotsBar, 3);
     place(0, 1, mInvenScroll, 4, 4);
-    place(0, 5, mCancelButton);
     place(2, 5, mStoreButton);
     place(3, 5, mRetrieveButton);
 
@@ -121,11 +120,7 @@ void StorageWindow::logic()
 
 void StorageWindow::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "close")
-    {
-        close();
-    }
-    else if (event.getId() == "store")
+    if (event.getId() == "store")
     {
         Item *item = inventoryWindow->getSelectedItem();
 

@@ -328,13 +328,18 @@ void Window::mousePressed(gcn::MouseEvent &event)
 
             if (closeButtonRect.isPointInRect(x, y))
             {
-                setVisible(false);
+                close();
             }
         }
 
         // Handle window resizing
         mouseResize = getResizeHandles(event);
     }
+}
+
+void Window::close()
+{
+    setVisible(false);
 }
 
 void Window::mouseReleased(gcn::MouseEvent &event)

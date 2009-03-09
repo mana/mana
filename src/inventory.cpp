@@ -128,7 +128,7 @@ bool Inventory::contains(Item *item) const
 
 int Inventory::getFreeSlot() const
 {
-    Item **i = std::find_if(mItems, mItems + mSize,
+    Item **i = std::find_if(mItems + mOffset, mItems + mSize,
             std::not1(SlotUsed()));
     return (i == mItems + mSize) ? -1 : (i - mItems);
 }
