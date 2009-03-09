@@ -76,6 +76,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             id = msg->readInt32();
             if (current_npc == id)
                 current_npc = 0;
+            npcTextDialog->closeDialog(id);
             break;
 
         case SMSG_NPC_NEXT:

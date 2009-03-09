@@ -38,6 +38,7 @@ NpcTextDialog::NpcTextDialog(Network *network):
     Window(_("NPC")), mNetwork(network)
 {
     setResizable(true);
+    setCloseButton(true);
 
     setMinWidth(200);
     setMinHeight(150);
@@ -100,6 +101,13 @@ void NpcTextDialog::nextDialog(int npcID)
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeInt32(npcID);
+}
+
+void NpcTextDialog::closeDialog(int npcID)
+{
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_CLOSE);
     outMsg.writeInt32(npcID);
 }
 

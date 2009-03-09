@@ -58,8 +58,8 @@ NpcListDialog::NpcListDialog(Network *network):
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     place(0, 0, scrollArea, 5).setPadding(3);
-    place(3, 1, okButton);
-    place(4, 1, cancelButton);
+    place(3, 1, cancelButton);
+    place(4, 1, okButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
