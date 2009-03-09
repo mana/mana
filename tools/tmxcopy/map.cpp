@@ -1,6 +1,7 @@
 /*
  *  TMXCopy
  *  Copyright (C) 2007  Philipp Sehmisch
+ *  Copyright (C) 2009  Steve Cotton
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,6 +25,7 @@
 
 #include <string.h>
 #include <zlib.h>
+#include <cassert>
 
 #include "xmlutils.h"
 #include "zlibutils.h"
@@ -80,9 +82,19 @@ Map::Map(std::string filename):
     {
         if (xmlStrEqual(node->name, BAD_CAST "layer"))
         {
-            Layer* layer = new Layer;
-            layer->resize(mWidth * mHeight);
             //build layer information
+            std::string name = XML::getProperty(node, "name", "");
+            Layer* layer = new Layer(name, mWidth * mHeight);
+            if (
+                (mWidth  != XML::getProperty(node, "width" , 0)) ||
+                (mHeight != XML::getProperty(node, "height", 0)) ||
+                (0       != XML::getProperty(node, "x"     , 0)) ||
+                (0       != XML::getProperty(node, "y"     , 0)))
+            {
+                std::cerr<<"Error: layer size does not match map size for layer \""<<name<<"\" in "<<filename<<std::endl;
+                throw 1;
+            }
+
             for_each_xml_child_node(dataNode, node)
             {
                 if (!xmlStrEqual(dataNode->name, BAD_CAST "data")) continue;
@@ -184,7 +196,8 @@ Map::Map(std::string filename):
 
 bool Map::overwrite(  Map* srcMap,
                     int srcX, int srcY, int srcWidth, int srcHeight,
-                    int destX, int destY)
+                    int destX, int destY,
+                    const ConfigurationOptions& config)
 {
     //plausibility check of coordinates
     bool checkPassed = true;
@@ -204,10 +217,32 @@ bool Map::overwrite(  Map* srcMap,
         std::cerr<<"Error: Area exceeds lower map border of target map!"<<std::endl;
         checkPassed = false;
     }
-    if (srcMap->getNumberOfLayers() > mLayers.size()) {
-        std::cerr<<"Error: Source has more layers than target map"<<std::endl;
-        checkPassed = false;
+    if (!config.createMissingLayers)
+    {
+        if (config.copyLayersByOrdinal)
+        {
+            if (srcMap->getNumberOfLayers() > mLayers.size()) {
+                std::cerr<<"Error: Source has more layers than target map"<<std::endl
+                         <<"(and the command-line \"create layers\" option was not used)"<<std::endl;
+                checkPassed = false;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < srcMap->getNumberOfLayers(); i++)
+            {
+                Layer* srcLayer = srcMap->getLayer(i);
+                Layer* destLayer = getLayer(srcLayer->getName());
+                if (!destLayer)
+                {
+                    std::cerr<<"Error: target map has no layer named \""<<srcLayer->getName()<<"\""<<std::endl
+                         <<"(and the command-line \"create layers\" option was not used)"<<std::endl;
+                    checkPassed = false;
+                }
+            }
+        }
     }
+
     if (!checkPassed) return false;
 
     std::map<int, int> translation;
@@ -238,7 +273,43 @@ bool Map::overwrite(  Map* srcMap,
     for (int i = 0; i < srcMap->getNumberOfLayers(); i++)
     {
         Layer* srcLayer = srcMap->getLayer(i);
-        Layer* destLayer = mLayers.at(i);
+        Layer* destLayer = NULL;
+        if (config.copyLayersByOrdinal)
+        {
+            if (i < mLayers.size())
+            {
+                destLayer = mLayers.at(i);
+            }
+        }
+        else
+        {
+            destLayer = getLayer(srcLayer->getName());
+        }
+
+        if (!destLayer)
+        {
+            assert(config.createMissingLayers); /* Tested earlier, in the checkPassed section */
+            /* Generate a name for the new layer, which must be
+             * unique in the target map, and should be unique in
+             * the source map (to avoid collisions later in the
+             * copying process).
+             * Start by trying the name of the source layer.
+             */
+            std::string name = srcLayer->getName();
+            if (getLayer(name))
+            {
+                int k=0;
+                do
+                {
+                    name = "Layer" + toString(k);
+                    k++;
+                } while (getLayer(name) || srcMap->getLayer(name));
+            }
+
+            destLayer = new Layer(name, mWidth * mHeight);
+            mLayers.push_back(destLayer);
+            std::cout<<"Created new layer "<<name<<std::endl;
+        }
 
         for (int y=0; y<srcHeight; y++)
         {
@@ -344,7 +415,7 @@ int Map::save(std::string filename)
         xmlNodePtr newNode;
         xmlAddChild(rootNode, xmlNewDocText(mXmlDoc, BAD_CAST " "));
         newNode = xmlNewNode(NULL, BAD_CAST "layer");
-        xmlNewProp(newNode, BAD_CAST "name", BAD_CAST ("Layer" + toString(i)).c_str());
+        xmlNewProp(newNode, BAD_CAST "name", BAD_CAST (mLayers.at(i)->getName()).c_str());
         xmlNewProp(newNode, BAD_CAST "width", BAD_CAST toString(mWidth).c_str());
         xmlNewProp(newNode, BAD_CAST "height", BAD_CAST toString(mHeight).c_str());
         xmlAddChild(newNode, xmlNewDocText(mXmlDoc, BAD_CAST "\n  "));
@@ -358,6 +429,9 @@ int Map::save(std::string filename)
         xmlAddChild(newNode, xmlNewDocText(mXmlDoc, BAD_CAST "\n "));
         xmlAddChild(rootNode, newNode);
         xmlAddChild(rootNode, xmlNewDocText(mXmlDoc, BAD_CAST "\n"));
+
+        free(base64Data);
+        free(binData);
     }
 
     //save XML tree
@@ -373,4 +447,35 @@ int Map::save(std::string filename)
         std::cout<<"File saved successfully to "<<filename<<std::endl;
         return true;
     }
+}
+
+Layer* Map::getLayer(std::string name)
+{
+    for (std::vector<Layer*>::iterator layer = mLayers.begin();
+         layer != mLayers.end();
+         layer++)
+    {
+        if ((*layer)->getName() == name)
+            return *layer;
+    }
+    return NULL;
+}
+
+Map::~Map()
+{
+    for (std::vector<Layer*>::iterator layer = mLayers.begin();
+         layer != mLayers.end();
+         layer++)
+    {
+         delete *layer;
+    }
+
+    for (std::vector<Tileset*>::iterator tileset = mTilesets.begin();
+         tileset != mTilesets.end();
+         tileset++)
+    {
+         delete *tileset;
+    }
+
+    xmlFreeDoc(mXmlDoc);
 }

@@ -1,7 +1,7 @@
 /*
  *  TMXCopy
  *  Copyright 2007 Philipp Sehmisch
- *
+ *  Copyright 2009  Steve Cotton
  *
  *  TMXCopy is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,22 @@
 #include <vector>
 #include <set>
 #include <libxml/parser.h>
+
+struct ConfigurationOptions
+{
+    /* When copying map layers, how to match source layer to
+     * destination layer.
+     *
+     * True: Pair the first layer to the first layer, the second
+     * to the second, etc.
+     *
+     * False: Pair up layers with matching names.
+     */
+    bool copyLayersByOrdinal;
+
+    /* Create extra layers in the target as necessary. */
+    bool createMissingLayers;
+};
 
 struct Tileset
 {
@@ -46,22 +62,50 @@ struct Tile
     size_t index; // index in said tileset
 };
 
-typedef std::vector<Tile> Layer;
+typedef std::vector<Tile> LayerTiles;
+
+/* This represents an empty tile in the layer.
+ * Note that {0,0} would be the first tile in the first tileset.
+ */
+const Tile defaultTile = {-1, 0};
+
+class Layer
+{
+    public:
+        /* name - the name of the layer, as shown in Tiled
+         * tileCount - total number of tiles (width*height)
+         */
+        Layer(std::string name, LayerTiles::size_type tileCount)
+            : mTiles(tileCount, defaultTile),
+            mName (name)
+        {
+        }
+
+        std::string getName() { return mName; }
+        Tile& at(LayerTiles::size_type c) { return mTiles.at(c); }
+
+    private:
+        LayerTiles mTiles;
+        std::string mName;
+};
 
 class Map
 {
     public:
         Map(std::string filename);
+        ~Map();
 
-        bool overwrite(  Map* srcMap,
+        bool overwrite(Map* srcMap,
                     int srcX, int srcY, int srcWidth, int srcHeight,
-                    int destX, int destY);
+                    int destX, int destY,
+                    const ConfigurationOptions& config);
 
         int save(std::string filename);
 
         int getNumberOfLayers() { return mLayers.size(); }
 
         Layer* getLayer(size_t num) { return mLayers.at(num); }
+        Layer* getLayer(std::string name);
 
         std::vector<Tileset*>* getTilesets() { return &mTilesets; }
 
