@@ -126,6 +126,13 @@ void NpcTextDialog::nextDialog(int npcID)
     outMsg.writeInt32(npcID);
 }
 
+void NpcTextDialog::closeDialog(int npcID)
+{
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_CLOSE);
+    outMsg.writeInt32(npcID);
+}
+
 void NpcTextDialog::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);

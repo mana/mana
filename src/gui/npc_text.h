@@ -79,6 +79,8 @@ class NpcTextDialog : public Window, public gcn::ActionListener
 
         void nextDialog(int npcID = current_npc);
 
+        void closeDialog(int npcID = current_npc);
+
         /**
          * Called when resizing the window.
          *

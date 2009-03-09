@@ -78,7 +78,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
                 npcTextDialog->showCloseButton();
             // Otherwise, move on as an empty dialog doesn't help
             else
-                npcTextDialog->nextDialog(id);
+                npcTextDialog->closeDialog(id);
             break;
 
         case SMSG_NPC_NEXT:
