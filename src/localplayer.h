@@ -30,9 +30,6 @@
 // TODO move into some sane place...
 #define MAX_SLOT 2
 
-#define INVENTORY_SIZE 102
-#define STORAGE_SIZE 301
-
 class Equipment;
 class FloorItem;
 class ImageSet;
@@ -194,7 +191,7 @@ class LocalPlayer : public Player
          * Accessors for mInStorage
          */
         bool getInStorage() { return mInStorage; }
-        void setInStorage(bool inStorage) { mInStorage = inStorage; }
+        void setInStorage(bool inStorage);
 
         /**
          * Sets the amount of XP. Shows XP gaining effect if the player is on

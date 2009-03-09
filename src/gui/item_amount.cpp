@@ -23,6 +23,7 @@
 #include "inttextfield.h"
 #include "item_amount.h"
 #include "slider.h"
+#include "storagewindow.h"
 #include "trade.h"
 
 #include "widgets/layout.h"
@@ -80,6 +81,14 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
             setCaption(_("Select amount of items to drop."));
             okButton->setActionEventId("Drop");
             break;
+        case AMOUNT_STORE_ADD:
+            setCaption(_("Select amount of items to store."));
+            okButton->setActionEventId("AddStore");
+            break;
+        case AMOUNT_STORE_REMOVE:
+            setCaption(_("Select amount of items to remove from storage."));
+            okButton->setActionEventId("RemoveStore");
+            break;
         default:
             break;
     }
@@ -121,6 +130,16 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "AddTrade")
     {
         tradeWindow->tradeItem(mItem, mItemAmountTextField->getValue());
+        scheduleDelete();
+    }
+    else if (event.getId() == "AddStore")
+    {
+        storageWindow->addStore(mItem, mItemAmountTextField->getValue());
+        scheduleDelete();
+    }
+    else if (event.getId() == "RemoveStore")
+    {
+        storageWindow->removeStore(mItem, mItemAmountTextField->getValue());
         scheduleDelete();
     }
     mItemAmountTextField->setValue(amount);

@@ -38,6 +38,7 @@
 
 #include "gui/gui.h"
 #include "gui/ministatus.h"
+#include "gui/storagewindow.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
@@ -742,3 +743,9 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
     mTargetCursor[index][size] = currentCursor;
 }
 
+void LocalPlayer::setInStorage(bool inStorage)
+{
+    mInStorage = inStorage;
+
+    storageWindow->setVisible(inStorage);
+}

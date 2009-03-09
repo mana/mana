@@ -141,6 +141,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/speechbubble.h \
 	      gui/status.cpp \
 	      gui/status.h \
+	      gui/storagewindow.cpp \
+	      gui/storagewindow.h \
 	      gui/table.cpp \
 	      gui/table.h \
 	      gui/table_model.cpp \

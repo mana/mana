@@ -236,6 +236,8 @@
 		<Unit filename="src\gui\speechbubble.h" />
 		<Unit filename="src\gui\status.cpp" />
 		<Unit filename="src\gui\status.h" />
+		<Unit filename="src\gui\storagewindow.cpp" />
+		<Unit filename="src\gui\storagewindow.h" />
 		<Unit filename="src\gui\table.cpp" />
 		<Unit filename="src\gui\table.h" />
 		<Unit filename="src\gui\table_model.cpp" />
