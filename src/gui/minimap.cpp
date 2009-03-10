@@ -80,7 +80,6 @@ void Minimap::setMapImage(Image *img)
                     mMapImage->getWidth() + offsetX : titleWidth);
         setMaxHeight(mMapImage->getHeight() + offsetY);
 
-        setContentSize(getWidth() - offsetX, getHeight() - offsetY);
         setDefaultSize(getX(), getY(), getWidth(), getHeight());
         resetToDefaultSize();
 
