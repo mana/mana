@@ -39,6 +39,7 @@ extern NpcTextDialog *npcTextDialog;
 NpcStringDialog::NpcStringDialog(Network *network):
     Window(_("NPC Text Request")), mNetwork(network)
 {
+    setWindowName("NPCList");
     mValueField = new TextField("");
 
     gcn::Button *okButton = new Button(_("OK"), "ok", this);
@@ -48,8 +49,6 @@ NpcStringDialog::NpcStringDialog(Network *network):
     place(1, 1, cancelButton);
     place(2, 1, okButton);
     reflowLayout(175, 0);
-
-    setLocationRelativeTo(getParent());
 }
 
 std::string NpcStringDialog::getValue()

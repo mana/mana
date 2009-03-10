@@ -93,7 +93,6 @@ StorageWindow::StorageWindow(Network *network, int invSize):
     layout.setRowHeight(0, mStoreButton->getHeight());
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 StorageWindow::~StorageWindow()

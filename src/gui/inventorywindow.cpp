@@ -103,7 +103,6 @@ InventoryWindow::InventoryWindow(int invSize):
     layout.setRowHeight(0, mDropButton->getHeight());
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 InventoryWindow::~InventoryWindow()

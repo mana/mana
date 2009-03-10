@@ -94,7 +94,6 @@ SellDialog::SellDialog(Network *network):
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 SellDialog::~SellDialog()

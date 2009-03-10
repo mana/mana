@@ -39,6 +39,7 @@ extern NpcTextDialog *npcTextDialog;
 NpcIntegerDialog::NpcIntegerDialog(Network *network):
     Window(_("NPC Number Request")), mNetwork(network)
 {
+    setWindowName("NPCInteger");
     mValueField = new IntTextField;
 
     mDecButton = new Button("-", "decvalue", this);
@@ -62,8 +63,6 @@ NpcIntegerDialog::NpcIntegerDialog(Network *network):
     place(2, 0, cancelButton);
     place(3, 0, okButton);
     reflowLayout(175, 0);
-
-    setLocationRelativeTo(getParent());
 }
 
 void NpcIntegerDialog::setRange(int min, int max)

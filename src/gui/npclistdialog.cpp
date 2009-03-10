@@ -42,6 +42,7 @@ extern NpcTextDialog *npcTextDialog;
 NpcListDialog::NpcListDialog(Network *network):
     Window(_("NPC")), mNetwork(network)
 {
+    setWindowName("NPCList");
     setResizable(true);
 
     setMinWidth(200);
@@ -69,7 +70,6 @@ NpcListDialog::NpcListDialog(Network *network):
 
     loadWindowState();
     resetToDefaultSize();
-    setLocationRelativeTo(getParent());
 }
 
 int NpcListDialog::getNumberOfElements()

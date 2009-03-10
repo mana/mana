@@ -37,6 +37,7 @@ NpcTextDialog::NpcTextDialog(Network *network):
     Window(_("NPC")), mNetwork(network),
     mState(NPC_TEXT_STATE_WAITING)
 {
+    setWindowName("NPCText");
     setResizable(true);
 
     setMinWidth(200);
@@ -61,7 +62,6 @@ NpcTextDialog::NpcTextDialog(Network *network):
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 void NpcTextDialog::clearText()

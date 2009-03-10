@@ -91,7 +91,6 @@ BuyDialog::BuyDialog(Network *network):
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 BuyDialog::~BuyDialog()

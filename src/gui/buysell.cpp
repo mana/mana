@@ -49,7 +49,6 @@ BuySellDialog::BuySellDialog(Network *network):
     buyButton->requestFocus();
 
     setContentSize(x, 2 * y + buyButton->getHeight());
-    setLocationRelativeTo(getParent());
 
     requestFocus();
 }
