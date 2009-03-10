@@ -57,8 +57,9 @@ Setup_Colors::Setup_Colors() :
     mPreview = new BrowserBox(BrowserBox::AUTO_WRAP);
     mPreview->setOpaque(false);
 
-    // don't do anything with links
-    mPreview->setLinkHandler(NULL);
+    // Replace this later with a more appropriate link handler. For now, this'll
+    // do, as it'll do nothing when clicked on.
+    mPreview->setLinkHandler(new ItemLinkHandler());
 
     mPreviewBox = new ScrollArea(mPreview);
     mPreviewBox->setHeight(20);

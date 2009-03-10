@@ -29,8 +29,6 @@
 #include "player.h"
 #include "player_relations.h"
 
-#include "utils/dtor.h"
-
 #define PLAYER_IGNORE_STRATEGY_NOP "nop"
 #define PLAYER_IGNORE_STRATEGY_EMOTE0 "emote0"
 #define DEFAULT_IGNORE_STRATEGY PLAYER_IGNORE_STRATEGY_EMOTE0
@@ -39,6 +37,7 @@
 #define RELATION "relation" // constant for xml serialisation
 
 #define IGNORE_EMOTE_TIME 100
+
 
 // (De)serialisation class
 class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::string, PlayerRelation *>,
@@ -92,11 +91,6 @@ PlayerRelationsManager::PlayerRelationsManager() :
     mDefaultPermissions(PlayerRelation::DEFAULT),
     mIgnoreStrategy(NULL)
 {
-}
-
-PlayerRelationsManager::~PlayerRelationsManager()
-{
-    delete_all(mIgnoreStrategies);
 }
 
 void PlayerRelationsManager::clear()
@@ -352,22 +346,24 @@ private:
 
 
 
+static std::vector<PlayerIgnoreStrategy *> player_ignore_strategies;
+
 std::vector<PlayerIgnoreStrategy *> *
 PlayerRelationsManager::getPlayerIgnoreStrategies()
 {
-    if (mIgnoreStrategies.size() == 0) {
+    if (player_ignore_strategies.size() == 0) {
         // not initialised yet?
-        mIgnoreStrategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE,
+        player_ignore_strategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE,
                                                          "floating '...' bubble",
                                                          PLAYER_IGNORE_STRATEGY_EMOTE0));
-        mIgnoreStrategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE + 1,
+        player_ignore_strategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE + 1,
                                                          "floating bubble",
                                                          "emote1"));
-        mIgnoreStrategies.push_back(new PIS_nothing());
-        mIgnoreStrategies.push_back(new PIS_dotdotdot());
-        mIgnoreStrategies.push_back(new PIS_blinkname());
+        player_ignore_strategies.push_back(new PIS_nothing());
+        player_ignore_strategies.push_back(new PIS_dotdotdot());
+        player_ignore_strategies.push_back(new PIS_blinkname());
     }
-    return &mIgnoreStrategies;
+    return &player_ignore_strategies;
 }
 
 

@@ -162,7 +162,7 @@ SkillDialog::SkillDialog():
 
 SkillDialog::~SkillDialog()
 {
-    delete_all(mSkillList);
+    delete mTable;
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)

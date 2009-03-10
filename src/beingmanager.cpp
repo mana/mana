@@ -52,11 +52,6 @@ BeingManager::BeingManager(Network *network):
 {
 }
 
-BeingManager::~BeingManager()
-{
-    clear();
-}
-
 void BeingManager::setMap(Map *map)
 {
     mMap = map;

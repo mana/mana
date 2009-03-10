@@ -65,9 +65,9 @@ Setup::Setup():
         btn->setPosition(x, height - btn->getHeight() - 5);
         add(btn);
 
-        // Store this button, as it needs to be enabled/disabled
+        // Disable this button when the windows aren't created yet
         if (!strcmp(*curBtn, "Reset Windows"))
-            mResetWindows = btn;
+            btn->setEnabled(statusWindow != NULL);
     }
 
     TabbedArea *panel = new TabbedArea();
@@ -102,8 +102,6 @@ Setup::Setup():
     add(panel);
 
     setLocationRelativeTo(getParent());
-
-    setInGame(false);
 }
 
 Setup::~Setup()
@@ -142,9 +140,4 @@ void Setup::action(const gcn::ActionEvent &event)
         emoteWindow->resetToDefaultSize();
         tradeWindow->resetToDefaultSize();
     }
-}
-
-void Setup::setInGame(bool inGame)
-{
-    mResetWindows->setEnabled(inGame);
 }
