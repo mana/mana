@@ -101,7 +101,10 @@ void NpcStringDialog::requestFocus()
 
 void NpcStringDialog::setVisible(bool visible)
 {
-    if (visible) npcTextDialog->setVisible(true);
+    if (visible) {
+        npcTextDialog->setVisible(true);
+        requestFocus();
+    }
 
     Window::setVisible(visible);
 }

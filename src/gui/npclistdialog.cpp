@@ -134,7 +134,10 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
 
 void NpcListDialog::setVisible(bool visible)
 {
-    if (visible) npcTextDialog->setVisible(true);
+    if (visible) {
+        npcTextDialog->setVisible(true);
+        requestFocus();
+    }
 
     Window::setVisible(visible);
 }

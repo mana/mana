@@ -139,7 +139,10 @@ void NpcIntegerDialog::requestFocus()
 
 void NpcIntegerDialog::setVisible(bool visible)
 {
-    if (visible) npcTextDialog->setVisible(true);
+    if (visible) {
+        npcTextDialog->setVisible(true);
+        requestFocus();
+    }
 
     Window::setVisible(visible);
 }
