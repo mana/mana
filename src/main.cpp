@@ -1027,7 +1027,6 @@ int main(int argc, char *argv[])
                     delete progressBar;
                     delete progressLabel;
                     delete setup;
-                    delete setupWindow;
                     progressBar = NULL;
                     progressLabel = NULL;
                     currentDialog = NULL;

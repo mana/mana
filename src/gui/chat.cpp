@@ -108,6 +108,8 @@ ChatWindow::~ChatWindow()
     config.setValue("PartyPrefix", partyPrefix);
     config.setValue("ReturnToggles", mReturnToggles ? "1" : "0");
     delete mRecorder;
+    delete mItemLinkHandler;
+    delete mParty;
 }
 
 void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)

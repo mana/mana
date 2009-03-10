@@ -98,6 +98,7 @@ GuiTable::GuiTable(TableModel *initial_model, gcn::Color background,
 
 GuiTable::~GuiTable()
 {
+    uninstallActionListeners();
     delete mModel;
 }
 

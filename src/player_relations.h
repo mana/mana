@@ -94,6 +94,7 @@ class PlayerRelationsManager
 {
 public:
     PlayerRelationsManager();
+    ~PlayerRelationsManager();
 
     /**
      * Initialise player relations manager (load config file etc.)
@@ -232,6 +233,7 @@ private:
     PlayerIgnoreStrategy *mIgnoreStrategy;
     std::map<std::string, PlayerRelation *> mRelations;
     std::list<PlayerRelationsListener *> mListeners;
+    std::vector<PlayerIgnoreStrategy *> mIgnoreStrategies;
 };
 
 
