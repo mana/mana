@@ -242,14 +242,17 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             switch (type)
             {
-                case 0x0a: // Critical Damage
+                case Being::HIT: // Damage
+                case Being::CRITICAL: // Critical Damage
+                case Being::MULTI: // Critical Damage
+                case Being::REFLECT: // Reflected Damage
+                case Being::FLEE: // Lucky Dodge
                     if (dstBeing)
-                         dstBeing->showCrit();
-                case 0x00: // Damage
-                    if (dstBeing)
-                        dstBeing->takeDamage(param1);
+                        dstBeing->takeDamage(srcBeing, param1,
+                                (Being::AttackType)type);
                     if (srcBeing)
-                        srcBeing->handleAttack(dstBeing, param1);
+                        srcBeing->handleAttack(dstBeing, param1,
+                                (Being::AttackType)type);
                     break;
 
                 case 0x02: // Sit

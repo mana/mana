@@ -225,26 +225,29 @@ void Being::setSpeech(const std::string &text, int time)
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 }
 
-void Being::takeDamage(int amount)
+void Being::takeDamage(Being *attacker, int amount, AttackType type)
 {
     gcn::Font *font;
-    std::string damage = amount ? toString(amount) : "miss";
+    std::string damage = amount ? toString(amount) : type == FLEE ?
+            "dodge" : "miss";
 
     int red, green, blue;
 
     font = gui->getInfoParticleFont();
 
     // Selecting the right color
-    if (damage == "miss")
+    if (type == CRITICAL || type == FLEE)
     {
         red = 255;
-        green = 255;
+        green = 128;
         blue = 0;
     }
-    else
-    {
-        if (getType() == MONSTER)
+    else if (!amount)
+     {
+        if (attacker == player_node)
         {
+            // This is intended to be the wrong direction to visually
+            // differentiate between hits and misses
             red = 0;
             green = 100;
             blue = 255;
@@ -252,24 +255,41 @@ void Being::takeDamage(int amount)
         else
         {
             red = 255;
-            green = 50;
-            blue = 50;
-        }
+            green = 255;
+            blue = 0;
+         }
+     }
+    else if (getType() == MONSTER)
+    {
+        red = 0;
+        green = 100;
+        blue = 255;
+    }
+    else
+    {
+        red = 255;
+        green = 50;
+        blue = 50;
     }
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage, red, green, blue, font,
                                         mPx + 16, mPy + 16, true);
-    effectManager->trigger(26, this);
+
+    if (amount > 0)
+    {
+        if (type != CRITICAL)
+        {
+            effectManager->trigger(26, this);
+        }
+        else
+        {
+            effectManager->trigger(28, this);
+        }
+    }
 }
 
-void Being::showCrit()
-{
-    effectManager->trigger(28, this);
-
-}
-
-void Being::handleAttack(Being *victim, int damage)
+void Being::handleAttack(Being *victim, int damage, AttackType type)
 {
     setAction(Being::ATTACK);
     mFrame = 0;
