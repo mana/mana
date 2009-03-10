@@ -112,7 +112,7 @@ void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
     }
     else if (key.getValue() == gcn::Key::UP)
     {
-        setSelected(mSelected - 1);      
+        setSelected(mSelected - 1);
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::DOWN)

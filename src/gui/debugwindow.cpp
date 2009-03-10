@@ -71,7 +71,7 @@ void DebugWindow::logic()
 
     mFPSLabel->setCaption(toString(fps) + " FPS");
 
-    mTileMouseLabel->setCaption("Tile: (" + toString(mouseTileX) + ", " + 
+    mTileMouseLabel->setCaption("Tile: (" + toString(mouseTileX) + ", " +
                                 toString(mouseTileY) + ")");
 
     Map *currentMap = engine->getCurrentMap();

@@ -53,10 +53,10 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     if (numRows > 1)
     {
         // 14 == row top + bottom graphic pixel heights
-        setContentSize(mTextBox->getMinWidth() + fontHeight, ((numRows + 1) * 
+        setContentSize(mTextBox->getMinWidth() + fontHeight, ((numRows + 1) *
                        fontHeight) + okButton->getHeight());
-        mTextArea->setDimension(gcn::Rectangle(4, 5, mTextBox->getMinWidth() + 5,
-                                               3 + (numRows * fontHeight)));
+        mTextArea->setDimension(gcn::Rectangle(4, 5,
+                    mTextBox->getMinWidth() + 5, 3 + (numRows * fontHeight)));
     }
     else
     {
