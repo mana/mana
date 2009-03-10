@@ -68,6 +68,7 @@ NpcListDialog::NpcListDialog(Network *network):
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
+    resetToDefaultSize();
     setLocationRelativeTo(getParent());
 }
 
