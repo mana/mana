@@ -92,7 +92,8 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Sets the location relative to the given enumerated position.
          */
-        void setLocationRelativeTo(ImageRect::ImagePosition position);
+        void setLocationRelativeTo(ImageRect::ImagePosition position,
+                                   int offsetX = 0, int offsetY = 0);
 
         /**
          * Sets whether or not the window can be resized.

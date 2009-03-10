@@ -220,51 +220,50 @@ void Window::setLocationRelativeTo(gcn::Widget *widget)
                 getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
 }
 
-void Window::setLocationRelativeTo(ImageRect::ImagePosition position)
+void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
+                                   int offsetX, int offsetY)
 {
-    int x = 0, y = 0;
-
     if (position == ImageRect::UPPER_LEFT)
     {
     }
     else if (position == ImageRect::UPPER_CENTER)
     {
-        x = (windowContainer->getWidth() - getWidth()) / 2;
+        offsetX += (windowContainer->getWidth() - getWidth()) / 2;
     }
     else if (position == ImageRect::UPPER_RIGHT)
     {
-        x = windowContainer->getWidth() - getWidth();
+        offsetX += windowContainer->getWidth() - getWidth();
     }
     else if (position == ImageRect::LEFT)
     {
-        y = (windowContainer->getHeight() - getHeight()) / 2;
+        offsetY += (windowContainer->getHeight() - getHeight()) / 2;
     }
     else if (position == ImageRect::CENTER)
     {
-        x = (windowContainer->getWidth() - getWidth()) / 2;
-        y = (windowContainer->getHeight() - getHeight()) / 2;
+        offsetX += (windowContainer->getWidth() - getWidth()) / 2;
+        offsetY += (windowContainer->getHeight() - getHeight()) / 2;
     }
     else if (position == ImageRect::RIGHT)
     {
-        x = windowContainer->getWidth() - getWidth();
-        y = (windowContainer->getHeight() - getHeight()) / 2;
+        offsetX += windowContainer->getWidth() - getWidth();
+        offsetY += (windowContainer->getHeight() - getHeight()) / 2;
     }
     else if (position == ImageRect::LOWER_LEFT)
     {
-        y = windowContainer->getHeight() - getHeight();
+        offsetY += windowContainer->getHeight() - getHeight();
     }
     else if (position == ImageRect::LOWER_CENTER)
     {
-        x = (windowContainer->getWidth() - getWidth()) / 2;
-        y = windowContainer->getHeight() - getHeight();
+        offsetX += (windowContainer->getWidth() - getWidth()) / 2;
+        offsetY += windowContainer->getHeight() - getHeight();
     }
     else if (position == ImageRect::LOWER_RIGHT)
     {
-        x = windowContainer->getWidth() - getWidth();
-        y = windowContainer->getHeight() - getHeight();
+        offsetX += windowContainer->getWidth() - getWidth();
+        offsetY += windowContainer->getHeight() - getHeight();
     }
 
-    setPosition(x, y);
+    setPosition(offsetX, offsetY);
 }
 
 void Window::setMinWidth(unsigned int width)
