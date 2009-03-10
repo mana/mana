@@ -40,15 +40,15 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/dtor.h"
 #include "../utils/xml.h"
 
 ConfigListener *Window::windowConfigListener = 0;
 WindowContainer *Window::windowContainer = 0;
 int Window::instances = 0;
 int Window::mouseResize = 0;
-//ImageRect Window::border;
-Image *Window::closeImage = NULL;
 bool Window::mAlphaChanged = false;
+Window::Skins mSkins;
 
 class WindowConfigListener : public ConfigListener
 {
@@ -57,6 +57,24 @@ class WindowConfigListener : public ConfigListener
         Window::mAlphaChanged = true;
     }
 };
+
+Skin::Skin():
+    closeImage(NULL),
+    instances(0)
+{
+}
+
+Skin::~Skin()
+{
+    // Clean up static resources
+    for (int i = 0; i < 9; i++)
+    {
+        delete border.grid[i];
+        border.grid[i] = NULL;
+    }
+
+    closeImage->decRef();
+}
 
 Window::Window(const std::string& caption, bool modal, Window *parent, const std::string& skin):
     gcn::Window(caption),
@@ -71,8 +89,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     mMinWinWidth(100),
     mMinWinHeight(40),
     mMaxWinWidth(INT_MAX),
-    mMaxWinHeight(INT_MAX),
-    mSkin(skin)
+    mMaxWinHeight(INT_MAX)
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
@@ -82,7 +99,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     }
 
     // Loads the skin
-    loadSkin(mSkin);
+    loadSkin(skin);
 
     setGuiAlpha();
 
@@ -132,20 +149,14 @@ Window::~Window()
 
     instances--;
 
-    // Clean up static resources
-    for (int i = 0; i < 9; i++)
-    {
-        delete border.grid[i];
-        border.grid[i] = NULL;
-    }
+    mSkin->instances--;
 
     if (instances == 0)
     {
         config.removeListener("guialpha", windowConfigListener);
         delete windowConfigListener;
         windowConfigListener = NULL;
-
-        closeImage->decRef();
+        delete_all(mSkins);
     }
 }
 
@@ -161,7 +172,7 @@ void Window::draw(gcn::Graphics *graphics)
 
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    g->drawImageRect(0, 0, getWidth(), getHeight(), border);
+    g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->border);
 
     // Draw title
     if (mShowTitle)
@@ -174,8 +185,8 @@ void Window::draw(gcn::Graphics *graphics)
     // Draw Close Button
     if (mCloseButton)
     {
-        g->drawImage(closeImage,
-            getWidth() - closeImage->getWidth() - getPadding(),
+        g->drawImage(mSkin->closeImage,
+            getWidth() - mSkin->closeImage->getWidth() - getPadding(),
             getPadding()
         );
     }
@@ -183,10 +194,10 @@ void Window::draw(gcn::Graphics *graphics)
     // Update window alpha values
     if (mAlphaChanged)
     {
-        for_each(border.grid, border.grid + 9,
+        for_each(mSkin->border.grid, mSkin->border.grid + 9,
                  std::bind2nd(std::mem_fun(&Image::setAlpha),
                  config.getValue("guialpha", 0.8)));
-        closeImage->setAlpha(config.getValue("guialpha", 0.8));
+        mSkin->closeImage->setAlpha(config.getValue("guialpha", 0.8));
     }
     drawChildren(graphics);
 }
@@ -365,10 +376,10 @@ void Window::mousePressed(gcn::MouseEvent &event)
         if (mCloseButton)
         {
             gcn::Rectangle closeButtonRect(
-                getWidth() - closeImage->getWidth() - getPadding(),
+                getWidth() - mSkin->closeImage->getWidth() - getPadding(),
                 getPadding(),
-                closeImage->getWidth(),
-                closeImage->getHeight());
+                mSkin->closeImage->getWidth(),
+                mSkin->closeImage->getHeight());
 
             if (closeButtonRect.isPointInRect(x, y))
             {
@@ -679,7 +690,7 @@ void Window::setGuiAlpha()
     for (int i = 0; i < 9; i++)
     {
         //logger->log("Window::setGuiAlpha: Border Image (%i)", i);
-        border.grid[i]->setAlpha(config.getValue("guialpha", 0.8));
+        mSkin->border.grid[i]->setAlpha(config.getValue("guialpha", 0.8));
     }
 
     mAlphaChanged = false;
@@ -687,13 +698,23 @@ void Window::setGuiAlpha()
 
 void Window::loadSkin(const std::string &filename)
 {
+    SkinIterator skinIterator = mSkins.find(filename);
+
+    if (mSkins.end() != skinIterator)
+    {
+        skinIterator->second->instances++;
+        mSkin = skinIterator->second;
+        return;
+    }
+
     const std::string windowId = Window::getId();
+
+    mSkin = new Skin();
 
     ResourceManager *resman = ResourceManager::getInstance();
 
     logger->log("Loading Window Skin '%s'.", filename.c_str());
     logger->log("Loading Window ID '%s'.", windowId.c_str());
-
 
     if (filename.empty())
         logger->error("Window::loadSkin(): Invalid File Name.");
@@ -706,16 +727,15 @@ void Window::loadSkin(const std::string &filename)
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
-    {
         logger->error("Widget Skinning error");
-    }
 
     std::string skinSetImage;
     skinSetImage = XML::getProperty(rootNode, "image", "");
     Image *dBorders = NULL;
     if (!skinSetImage.empty())
     {
-        logger->log("Window::loadSkin(): <skinset> defines '%s' as a skin image.", skinSetImage.c_str());
+        logger->log("Window::loadSkin(): <skinset> defines "
+                    "'%s' as a skin image.", skinSetImage.c_str());
         dBorders = resman->getImage("graphics/gui/" + skinSetImage);
     }
     else
@@ -735,8 +755,8 @@ void Window::loadSkin(const std::string &filename)
         {
             // Iterate through <part>'s
             // LEEOR / TODO:
-            // We need to make provisions to load in a CloseButton image. For now it
-            // can just be hard-coded.
+            // We need to make provisions to load in a CloseButton image. For 
+            // now it can just be hard-coded.
             for_each_xml_child_node(partNode, widgetNode)
             {
                 if (!xmlStrEqual(partNode->name, BAD_CAST "part"))
@@ -751,27 +771,27 @@ void Window::loadSkin(const std::string &filename)
                 const int height = XML::getProperty(partNode, "height", 1);
 
                 if (partType == "top-left-corner")
-                    border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "top-edge")
-                    border.grid[1] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[1] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "top-right-corner")
-                    border.grid[2] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[2] = dBorders->getSubImage(xPos, yPos, width, height);
 
                 // MIDDLE ROW
                 else if (partType == "left-edge")
-                    border.grid[3] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[3] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "bg-quad")
-                    border.grid[4] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[4] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "right-edge")
-                    border.grid[5] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[5] = dBorders->getSubImage(xPos, yPos, width, height);
 
                 // BOTTOM ROW
                 else if (partType == "bottom-left-corner")
-                    border.grid[6] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[6] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "bottom-edge")
-                    border.grid[7] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[7] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "bottom-right-corner")
-                    border.grid[8] = dBorders->getSubImage(xPos, yPos, width, height);
+                    mSkin->border.grid[8] = dBorders->getSubImage(xPos, yPos, width, height);
 
                 // Part is of an uknown type.
                 else
@@ -789,7 +809,8 @@ void Window::loadSkin(const std::string &filename)
     logger->log("Finished loading Window Skin.");
 
     // Hard-coded for now until we update the above code to look for window buttons.
-    closeImage = resman->getImage("graphics/gui/close_button.png");
+    mSkin->closeImage = resman->getImage("graphics/gui/close_button.png");
+    mSkins[filename] = mSkin;
 }
 
 Layout &Window::getLayout()

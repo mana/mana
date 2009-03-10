@@ -23,6 +23,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <map>
+
 #include <guichan/widgetlistener.hpp>
 
 #include <guichan/widgets/window.hpp>
@@ -38,6 +40,18 @@ class Layout;
 class LayoutCell;
 class ResizeGrip;
 class WindowContainer;
+
+class Skin
+{
+    public:
+        Skin();
+        ~Skin();
+
+        std::string mName;         /**< Name of the skin to use */
+        ImageRect border;          /**< The window border and background */
+        Image *closeImage;  /**< Close Button Image */
+        int instances;
+};
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
@@ -297,7 +311,23 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         ContainerPlacer getPlacer(int x, int y);
 
+        /**
+         * Overrideable functionality for when the window is to close. This
+         * allows for class implementations to clean up or do certain actions
+         * on window close they couldn't do otherwise.
+         */
         virtual void close();
+        
+        /**
+         * Map containing all window skins
+         */
+        typedef std::map<std::string, Skin*> Skins;
+
+        /**
+         * Iterator for window skins
+         */
+        typedef Skins::iterator SkinIterator;
+
 
     protected:
         /** The window container windows add themselves to. */
@@ -341,7 +371,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */
         int mDefaultHeight;        /**< Default window height */
-        std::string mSkin;         /**< Name of the skin to use */
 
         /**
          * The config listener that listens to changes relevant to all windows.
@@ -350,8 +379,8 @@ class Window : public gcn::Window, gcn::WidgetListener
 
         static int mouseResize;    /**< Active resize handles */
         static int instances;      /**< Number of Window instances */
-        ImageRect border;   /**< The window border and background */
-        static Image *closeImage;  /**< Close Button Image */
+
+        Skin* mSkin;               /**< Skin in use by this window */
 
         /**
          * The width of the resize border. Is independent of the actual window
