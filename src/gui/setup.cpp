@@ -108,6 +108,8 @@ Setup::Setup():
     add(panel);
 
     setLocationRelativeTo(getParent());
+
+    setInGame(false);
 }
 
 Setup::~Setup()
