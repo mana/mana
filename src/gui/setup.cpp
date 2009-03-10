@@ -67,11 +67,8 @@ Setup::Setup():
         // Store this button, as it needs to be enabled/disabled
         if (!strcmp(*curBtn, "Reset Windows")) {
             mResetWindows = btn;
-            printf("!\n");
         }
     }
-
-    if (mResetWindows) printf("!\n");
 
     TabbedArea *panel = new TabbedArea;
     panel->setDimension(gcn::Rectangle(5, 5, width - 10, height - 40));

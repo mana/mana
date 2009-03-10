@@ -347,11 +347,11 @@ Game::~Game()
     destroyGuiWindows();
 
     delete beingManager;
+    delete player_node;
     delete floorItemManager;
     delete joystick;
     delete particleEngine;
     delete engine;
-    delete player_node;
 
     beingManager = NULL;
     floorItemManager = NULL;
