@@ -41,7 +41,7 @@ DebugWindow::DebugWindow():
 
     setResizable(true);
     setCloseButton(true);
-    setDefaultSize(0, 0, 400, 60);
+    setDefaultSize(400, 60, ImageRect::CENTER);
 
     mFPSLabel = new gcn::Label("0 FPS");
     mMusicFileLabel = new gcn::Label("Music: ");

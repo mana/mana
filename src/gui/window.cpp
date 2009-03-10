@@ -220,6 +220,53 @@ void Window::setLocationRelativeTo(gcn::Widget *widget)
                 getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
 }
 
+void Window::setLocationRelativeTo(ImageRect::ImagePosition position)
+{
+    int x = 0, y = 0;
+
+    if (position == ImageRect::UPPER_LEFT)
+    {
+    }
+    else if (position == ImageRect::UPPER_CENTER)
+    {
+        x = (windowContainer->getWidth() - getWidth()) / 2;
+    }
+    else if (position == ImageRect::UPPER_RIGHT)
+    {
+        x = windowContainer->getWidth() - getWidth();
+    }
+    else if (position == ImageRect::LEFT)
+    {
+        y = (windowContainer->getHeight() - getHeight()) / 2;
+    }
+    else if (position == ImageRect::CENTER)
+    {
+        x = (windowContainer->getWidth() - getWidth()) / 2;
+        y = (windowContainer->getHeight() - getHeight()) / 2;
+    }
+    else if (position == ImageRect::RIGHT)
+    {
+        x = windowContainer->getWidth() - getWidth();
+        y = (windowContainer->getHeight() - getHeight()) / 2;
+    }
+    else if (position == ImageRect::LOWER_LEFT)
+    {
+        y = windowContainer->getHeight() - getHeight();
+    }
+    else if (position == ImageRect::LOWER_CENTER)
+    {
+        x = (windowContainer->getWidth() - getWidth()) / 2;
+        y = windowContainer->getHeight() - getHeight();
+    }
+    else if (position == ImageRect::LOWER_RIGHT)
+    {
+        x = windowContainer->getWidth() - getWidth();
+        y = windowContainer->getHeight() - getHeight();
+    }
+
+    setPosition(x, y);
+}
+
 void Window::setMinWidth(unsigned int width)
 {
     mMinWinWidth = width;
@@ -536,6 +583,58 @@ void Window::setDefaultSize(int defaultX, int defaultY,
 
     mDefaultX = defaultX;
     mDefaultY = defaultY;
+    mDefaultWidth = defaultWidth;
+    mDefaultHeight = defaultHeight;
+}
+
+void Window::setDefaultSize(int defaultWidth, int defaultHeight,
+                            ImageRect::ImagePosition position,
+                            int offsetX, int offsetY)
+{
+    int x = 0, y = 0;
+
+    if (position == ImageRect::UPPER_LEFT)
+    {
+    }
+    else if (position == ImageRect::UPPER_CENTER)
+    {
+        x = (windowContainer->getWidth() - defaultWidth) / 2;
+    }
+    else if (position == ImageRect::UPPER_RIGHT)
+    {
+        x = windowContainer->getWidth() - defaultWidth;
+    }
+    else if (position == ImageRect::LEFT)
+    {
+        y = (windowContainer->getHeight() - defaultHeight) / 2;
+    }
+    else if (position == ImageRect::CENTER)
+    {
+        x = (windowContainer->getWidth() - defaultWidth) / 2;
+        y = (windowContainer->getHeight() - defaultHeight) / 2;
+    }
+    else if (position == ImageRect::RIGHT)
+    {
+        x = windowContainer->getWidth() - defaultWidth;
+        y = (windowContainer->getHeight() - defaultHeight) / 2;
+    }
+    else if (position == ImageRect::LOWER_LEFT)
+    {
+        y = windowContainer->getHeight() - defaultHeight;
+    }
+    else if (position == ImageRect::LOWER_CENTER)
+    {
+        x = (windowContainer->getWidth() - defaultWidth) / 2;
+        y = windowContainer->getHeight() - defaultHeight;
+    }
+    else if (position == ImageRect::LOWER_RIGHT)
+    {
+        x = windowContainer->getWidth() - defaultWidth;
+        y = windowContainer->getHeight() - defaultHeight;
+    }
+
+    mDefaultX = x - offsetX;
+    mDefaultY = y - offsetY;
     mDefaultWidth = defaultWidth;
     mDefaultHeight = defaultHeight;
 }

@@ -49,6 +49,19 @@ struct SDL_Surface;
  */
 struct ImageRect
 {
+    enum ImagePosition
+    {
+        UPPER_LEFT = 0,
+        UPPER_CENTER = 1,
+        UPPER_RIGHT = 2,
+        LEFT = 3,
+        CENTER = 4,
+        RIGHT = 5,
+        LOWER_LEFT = 6,
+        LOWER_CENTER = 7,
+        LOWER_RIGHT = 8,
+    };
+
     Image *grid[9];
 };
 

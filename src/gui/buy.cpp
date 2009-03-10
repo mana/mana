@@ -47,7 +47,7 @@ BuyDialog::BuyDialog(Network *network):
     setResizable(true);
     setMinWidth(260);
     setMinHeight(230);
-    setDefaultSize(0, 0, 260, 230);
+    setDefaultSize(260, 230, ImageRect::CENTER);
 
     mShopItems = new ShopItems;
 
@@ -90,7 +90,6 @@ BuyDialog::BuyDialog(Network *network):
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 BuyDialog::~BuyDialog()

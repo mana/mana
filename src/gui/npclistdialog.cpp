@@ -45,7 +45,7 @@ NpcListDialog::NpcListDialog(Network *network):
     setMinWidth(200);
     setMinHeight(150);
 
-    setDefaultSize(0, 0, 260, 200);
+    setDefaultSize(260, 200, ImageRect::CENTER);
 
     mItemList = new ListBox(this);
     mItemList->setWrappingEnabled(true);
@@ -66,7 +66,6 @@ NpcListDialog::NpcListDialog(Network *network):
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 int NpcListDialog::getNumberOfElements()

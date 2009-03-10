@@ -62,7 +62,7 @@ StorageWindow::StorageWindow(Network *network, int invSize):
     setCloseButton(true);
 
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 375, 300);
+    setDefaultSize(375, 300, ImageRect::CENTER);
 
     mStoreButton = new Button(_("Store"), "store", this);
     mRetrieveButton = new Button(_("Retrieve"), "retrieve", this);
@@ -92,7 +92,6 @@ StorageWindow::StorageWindow(Network *network, int invSize):
     layout.setRowHeight(0, mStoreButton->getHeight());
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 StorageWindow::~StorageWindow()

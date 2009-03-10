@@ -71,7 +71,7 @@ EquipmentWindow::EquipmentWindow():
 
     setWindowName("Equipment");
     setCloseButton(true);
-    setDefaultSize(5, 195, 180, 300);
+    setDefaultSize(180, 300, ImageRect::CENTER);
     loadWindowState();
 
     mUnequip = new Button(_("Unequip"), "unequip", this);

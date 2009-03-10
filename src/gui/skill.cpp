@@ -135,7 +135,7 @@ SkillDialog::SkillDialog():
 
     setWindowName(_("Skills"));
     setCloseButton(true);
-    setDefaultSize(windowContainer->getWidth() - 260, 25, 255, 260);
+    setDefaultSize(255, 260, ImageRect::CENTER);
 
     setMinHeight(50 + mTableModel->getHeight());
     setMinWidth(200);

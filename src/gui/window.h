@@ -34,7 +34,6 @@ class ConfigListener;
 class GCContainer;
 class ContainerPlacer;
 class Image;
-class ImageRect;
 class Layout;
 class LayoutCell;
 class ResizeGrip;
@@ -89,6 +88,11 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Sets the location relative to the given widget.
          */
         void setLocationRelativeTo(gcn::Widget *widget);
+
+        /**
+         * Sets the location relative to the given enumerated position.
+         */
+        void setLocationRelativeTo(ImageRect::ImagePosition position);
 
         /**
          * Sets whether or not the window can be resized.
@@ -245,6 +249,16 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         void setDefaultSize(int defaultX, int defaultY,
                             int defaultWidth, int defaultHeight);
+
+        /**
+         * Set the default win pos and size.
+         * (which can be different of the actual ones.)
+         * This version of setDefaultSize sets the window's position based
+         * on a relative enumerated position, rather than a coordinate position.
+         */
+        void setDefaultSize(int defaultWidth, int defaultHeight,
+                            ImageRect::ImagePosition position,
+                            int offsetx = 0, int offsetY = 0);
 
         /**
          * Reset the win pos and size to default. Don't forget to set defaults

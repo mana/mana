@@ -57,7 +57,7 @@ InventoryWindow::InventoryWindow(int invSize):
     setCloseButton(true);
 
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 375, 300);
+    setDefaultSize(375, 300, ImageRect::CENTER);
 
     std::string longestUseString = getFont()->getWidth(_("Equip")) >
                                    getFont()->getWidth(_("Use")) ?
@@ -103,7 +103,6 @@ InventoryWindow::InventoryWindow(int invSize):
     layout.setRowHeight(0,  mDropButton->getHeight());
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 InventoryWindow::~InventoryWindow()

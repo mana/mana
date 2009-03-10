@@ -48,7 +48,7 @@ SellDialog::SellDialog(Network *network):
     setResizable(true);
     setMinWidth(260);
     setMinHeight(230);
-    setDefaultSize(0, 0, 260, 230);
+    setDefaultSize(260, 230, ImageRect::CENTER);
 
     // Create a ShopItems instance, that is aware of duplicate entries.
     mShopItems = new ShopItems(true);
@@ -94,7 +94,6 @@ SellDialog::SellDialog(Network *network):
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 SellDialog::~SellDialog()

@@ -55,7 +55,7 @@ Window(""), mNetwork(network), mTmpVisible(false)
     setWindowName(_("Chat"));
 
     setResizable(true);
-    setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
+    setDefaultSize(600, 123, ImageRect::LOWER_LEFT);
     setMinWidth(150);
     setMinHeight(90);
 

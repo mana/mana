@@ -41,8 +41,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 {
     setWindowName(_("Status"));
     setCloseButton(true);
-    setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 400, 345);
+    setDefaultSize(400, 345, ImageRect::CENTER);
 
     // ----------------------
     // Status Part

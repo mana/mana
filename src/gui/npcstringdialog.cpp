@@ -36,7 +36,10 @@
 NpcStringDialog::NpcStringDialog(Network *network):
     Window(_("NPC Text Request")), mNetwork(network)
 {
+    setWindowName("NPCInput");
     mValueField = new TextField("");
+
+    setDefaultSize(175, 75, ImageRect::CENTER);
 
     okButton = new Button(_("OK"), "ok", this);
     cancelButton = new Button(_("Cancel"), "cancel", this);
@@ -44,9 +47,9 @@ NpcStringDialog::NpcStringDialog(Network *network):
     place(0, 0, mValueField, 3);
     place(1, 1, cancelButton);
     place(2, 1, okButton);
-    reflowLayout(175, 0);
+    //reflowLayout(175, 0);
 
-    setLocationRelativeTo(getParent());
+    loadWindowState();
 }
 
 std::string NpcStringDialog::getValue()

@@ -63,18 +63,17 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     mFullscreen = fs;
     mHWAccel = hwaccel;
 
-    if (fs) {
+    if (fs)
         displayFlags |= SDL_FULLSCREEN;
-    }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    if (!(mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags))) {
+    if (!(mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags)))
         return false;
-    }
 
 #ifdef __APPLE__
-    if (mSync) {
+    if (mSync)
+    {
         const GLint VBL = 1;
         CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
     }
@@ -158,9 +157,7 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
     glEnd();
 
     if (!useColor)
-    {
         glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
-    }
 
     return true;
 }
@@ -206,9 +203,8 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
             w, h, 24,
             0xff0000, 0x00ff00, 0x0000ff, 0x000000);
 
-    if (SDL_MUSTLOCK(screenshot)) {
+    if (SDL_MUSTLOCK(screenshot))
         SDL_LockSurface(screenshot);
-    }
 
     // Grap the pixel buffer and write it to the SDL surface
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -230,9 +226,8 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
 
     free(buf);
 
-    if (SDL_MUSTLOCK(screenshot)) {
+    if (SDL_MUSTLOCK(screenshot))
         SDL_UnlockSurface(screenshot);
-    }
 
     return screenshot;
 }
@@ -242,7 +237,8 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
     int transX = 0;
     int transY = 0;
 
-    if (!mClipStack.empty()) {
+    if (!mClipStack.empty())
+    {
         transX = -mClipStack.top().xOffset;
         transY = -mClipStack.top().yOffset;
     }
@@ -267,9 +263,7 @@ void OpenGLGraphics::popClipArea()
     gcn::Graphics::popClipArea();
 
     if (mClipStack.empty())
-    {
         return;
-    }
 
     glPopMatrix();
     glScissor(mClipStack.top().x,
@@ -325,8 +319,10 @@ void OpenGLGraphics::setTargetPlane(int width, int height)
 
 void OpenGLGraphics::setTexturingAndBlending(bool enable)
 {
-    if (enable) {
-        if (!mTexture) {
+    if (enable)
+    {
+        if (!mTexture)
+        {
             glEnable(Image::mTextureType);
             mTexture = true;
         }
@@ -336,16 +332,22 @@ void OpenGLGraphics::setTexturingAndBlending(bool enable)
             glEnable(GL_BLEND);
             mAlpha = true;
         }
-    } else {
-        if (mAlpha && !mColorAlpha) {
+    }
+    else
+    {
+        if (mAlpha && !mColorAlpha)
+        {
             glDisable(GL_BLEND);
             mAlpha = false;
-        } else if (!mAlpha && mColorAlpha) {
+        }
+        else if (!mAlpha && mColorAlpha)
+        {
             glEnable(GL_BLEND);
             mAlpha = true;
         }
 
-        if (mTexture) {
+        if (mTexture)
+        {
             glDisable(Image::mTextureType);
             mTexture = false;
         }
