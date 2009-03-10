@@ -65,9 +65,13 @@ Setup::Setup():
         add(btn);
 
         // Store this button, as it needs to be enabled/disabled
-        if (!strcmp(*curBtn, "Reset Windows"))
+        if (!strcmp(*curBtn, "Reset Windows")) {
             mResetWindows = btn;
+            printf("!\n");
+        }
     }
+
+    if (mResetWindows) printf("!\n");
 
     TabbedArea *panel = new TabbedArea;
     panel->setDimension(gcn::Rectangle(5, 5, width - 10, height - 40));
@@ -147,3 +151,5 @@ void Setup::setInGame(bool inGame)
 {
     mResetWindows->setEnabled(inGame);
 }
+
+Setup* setupWindow;

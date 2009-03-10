@@ -63,4 +63,6 @@ class Setup : public Window, public gcn::ActionListener
         gcn::Button *mResetWindows;
 };
 
+extern Setup* setupWindow;
+
 #endif

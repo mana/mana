@@ -101,8 +101,6 @@
 
 namespace
 {
-    Window *setupWindow = 0;
-
     struct SetupListener : public gcn::ActionListener
     {
         /**
@@ -1031,7 +1029,6 @@ int main(int argc, char *argv[])
                     progressLabel = NULL;
                     currentDialog = NULL;
                     setup = NULL;
-                    setupWindow = NULL;
                     login_wallpaper->decRef();
                     login_wallpaper = NULL;
 

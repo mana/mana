@@ -121,7 +121,6 @@ NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 NpcStringDialog *npcStringDialog;
 SkillDialog *skillDialog;
-Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 TradeWindow *tradeWindow;
@@ -261,7 +260,6 @@ void destroyGuiWindows()
     delete npcTextDialog;
     delete npcStringDialog;
     delete skillDialog;
-    delete setupWindow;
     delete minimap;
     delete equipmentWindow;
     delete tradeWindow;
