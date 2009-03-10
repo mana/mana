@@ -193,8 +193,19 @@ void Window::draw(gcn::Graphics *graphics)
 
 void Window::setContentSize(int width, int height)
 {
-    setSize(width + 2 * getPadding(),
-            height + getPadding() + getTitleBarHeight());
+    width = width + 2 * getPadding();
+    height = height + getPadding() + getTitleBarHeight();
+
+    if (getMinWidth() > width)
+        width = getMinWidth();
+    else if (getMaxWidth() < width)
+        width = getMaxWidth();
+    if (getMinHeight() > height)
+        height = getMinHeight();
+    else if (getMaxHeight() < height)
+        height = getMaxHeight();
+
+    setSize(width, height);
 }
 
 void Window::setLocationRelativeTo(gcn::Widget *widget)
@@ -465,13 +476,19 @@ void Window::loadWindowState()
 
     if (mGrip)
     {
-        const int width = (int) config.getValue(name + "WinWidth",
-                                                mDefaultWidth);
-        const int height = (int) config.getValue(name + "WinHeight",
-                                                 mDefaultHeight);
+        int width = (int) config.getValue(name + "WinWidth", mDefaultWidth);
+        int height = (int) config.getValue(name + "WinHeight", mDefaultHeight);
 
-        setSize(width < getMinWidth() ? getMinWidth() : width,
-                height < getMinHeight() ? getMinHeight() : height);
+        if (getMinWidth() > width)
+            width = getMinWidth();
+        else if (getMaxWidth() < width)
+            width = getMaxWidth();
+        if (getMinHeight() > height)
+            height = getMinHeight();
+        else if (getMaxHeight() < height)
+            height = getMaxHeight();
+
+        setSize(width, height);
     }
     else
     {
@@ -490,6 +507,15 @@ void Window::saveWindowState()
 
         if (mGrip)
         {
+            if (getMinWidth() > getWidth())
+                setWidth(getMinWidth());
+            else if (getMaxWidth() < getWidth())
+                setWidth(getMaxWidth());
+            if (getMinHeight() > getHeight())
+                setHeight(getMinHeight());
+            else if (getMaxHeight() < getHeight())
+                setHeight(getMaxHeight());
+
             config.setValue(mWindowName + "WinWidth", getWidth());
             config.setValue(mWindowName + "WinHeight", getHeight());
         }
@@ -499,6 +525,15 @@ void Window::saveWindowState()
 void Window::setDefaultSize(int defaultX, int defaultY,
                             int defaultWidth, int defaultHeight)
 {
+    if (getMinWidth() > defaultWidth)
+        defaultWidth = getMinWidth();
+    else if (getMaxWidth() < defaultWidth)
+        defaultWidth = getMaxWidth();
+    if (getMinHeight() > defaultHeight)
+        defaultHeight = getMinHeight();
+    else if (getMaxHeight() < defaultHeight)
+        defaultHeight = getMaxHeight();
+
     mDefaultX = defaultX;
     mDefaultY = defaultY;
     mDefaultWidth = defaultWidth;

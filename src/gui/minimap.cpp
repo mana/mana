@@ -80,18 +80,6 @@ void Minimap::setMapImage(Image *img)
                     mMapImage->getWidth() + offsetX : titleWidth);
         setMaxHeight(mMapImage->getHeight() + offsetY);
 
-        // Make sure the window is within the minimum and maximum boundaries
-        // TODO: Shouldn't this be happening automatically within the Window
-        // class?
-        if (getMinWidth() > getWidth())
-            setWidth(getMinWidth());
-        else if (getMaxWidth() < getWidth())
-            setWidth(getMaxWidth());
-        if (getMinHeight() > getHeight())
-            setHeight(getMinHeight());
-        else if (getMaxHeight() < getHeight())
-            setHeight(getMaxHeight());
-
         setContentSize(getWidth() - offsetX, getHeight() - offsetY);
         setDefaultSize(getX(), getY(), getWidth(), getHeight());
         resetToDefaultSize();

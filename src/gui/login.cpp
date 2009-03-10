@@ -117,11 +117,10 @@ LoginDialog::LoginDialog(LoginData *loginData):
     setLocationRelativeTo(getParent());
     setVisible(true);
 
-    if (mUserField->getText().empty()) {
+    if (mUserField->getText().empty())
         mUserField->requestFocus();
-    } else {
+    else
         mPassField->requestFocus();
-    }
 
     mOkButton->setEnabled(canSubmit());
 }
@@ -156,14 +155,12 @@ void LoginDialog::action(const gcn::ActionEvent &event)
     {
         // Transfer these fields on to the register dialog
         mLoginData->hostname = mServerField->getText();
+
         if (isUShort(mPortField->getText()))
-        {
             mLoginData->port = getUShort(mPortField->getText());
-        }
         else
-        {
             mLoginData->port = 6901;
-        }
+
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
 
@@ -196,14 +193,12 @@ bool LoginDialog::isUShort(const std::string &str)
          strPtr != strEnd; ++strPtr)
     {
         if (*strPtr < '0' || *strPtr > '9')
-        {
             return false;
-        }
+
         l = l * 10 + (*strPtr - '0'); // *strPtr - '0' will never be negative
+
         if (l > 65535)
-        {
             return false;
-        }
     }
     return true;
 }
@@ -279,9 +274,7 @@ void LoginDialog::DropDownList::save(const std::string &server,
          ++sPtr, ++pPtr)
     {
         if (*sPtr != server || *pPtr != port)
-        {
             saveEntry(*sPtr, *pPtr, position);
-        }
     }
 }
 
@@ -293,26 +286,23 @@ int LoginDialog::DropDownList::getNumberOfElements()
 std::string LoginDialog::DropDownList::getElementAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
-    {
       return "";
-    }
+
     return getServerAt(i) + ":" + getPortAt(i);
 }
 
 std::string LoginDialog::DropDownList::getServerAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
-    {
         return "";
-    }
+
     return mServers.at(i);
 }
 
 std::string LoginDialog::DropDownList::getPortAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
-    {
         return "";
-    }
+
     return mPorts.at(i);
 }
