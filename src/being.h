@@ -123,6 +123,15 @@ class Being : public Sprite
             NUM_SPEECH
         };
 
+        enum AttackType
+        {
+            HIT = 0x00,
+            CRITICAL = 0x0a,
+            MULTI = 0x08,
+            REFLECT = 0x04,
+            FLEE = 0x0b
+        };
+
         /**
          * Directions, to be used as bitmask values
          */
@@ -171,22 +180,20 @@ class Being : public Sprite
         /**
          * Puts a damage bubble above this being.
          *
-         * @param amount The amount of damage.
+         * @param attacker the attacking being
+         * @param damage the amount of damage recieved (0 means miss)
+         * @param type the attack type
          */
-        virtual void takeDamage(int amount);
-
-        /**
-         * Puts a crit notification bubble above this being.
-         */
-        virtual void showCrit();
+        virtual void takeDamage(Being *attacker, int damage, AttackType type);
 
         /**
          * Handles an attack of another being by this being.
          *
-         * @param victim The attacked being.
-         * @param damage The amount of damage dealt (0 means miss).
+         * @param victim the victim being
+         * @param damage the amount of damage dealt (0 means miss)
+         * @param type the attack type
          */
-        virtual void handleAttack(Being *victim, int damage);
+        virtual void handleAttack(Being *victim, int damage, AttackType type);
 
         /**
          * Returns the name of the being.

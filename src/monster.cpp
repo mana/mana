@@ -161,19 +161,19 @@ void Monster::setAction(Action action)
     }
 }
 
-void Monster::handleAttack(Being *victim, int damage)
+void Monster::handleAttack(Being *victim, int damage, AttackType type)
 {
-    Being::handleAttack(victim, damage);
+    Being::handleAttack(victim, damage, type);
 
     const MonsterInfo &mi = getInfo();
     sound.playSfx(mi.getSound((damage > 0) ?
                 MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
 }
 
-void Monster::takeDamage(int amount)
+void Monster::takeDamage(Being *attacker, int amount, AttackType type)
 {
     if (amount > 0) sound.playSfx(getInfo().getSound(MONSTER_EVENT_HURT));
-    Being::takeDamage(amount);
+    Being::takeDamage(attacker, amount, type);
 }
 
 Being::TargetCursorSize Monster::getTargetCursorSize() const

@@ -219,26 +219,29 @@ void Being::setSpeech(const std::string &text, int time)
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 }
 
-void Being::takeDamage(int amount)
+void Being::takeDamage(Being *attacker, int amount, AttackType type)
 {
     gcn::Font *font;
-    std::string damage = amount ? toString(amount) : "miss";
+    std::string damage = amount ? toString(amount) : type == FLEE ?
+            "dodge" : "miss";
 
     int red, green, blue;
 
     font = gui->getInfoParticleFont();
 
     // Selecting the right color
-    if (damage == "miss")
+    if (type == CRITICAL || type == FLEE)
     {
         red = 255;
-        green = 255;
+        green = 128;
         blue = 0;
     }
-    else
-    {
-        if (getType() == MONSTER)
+    else if (!amount)
+     {
+        if (attacker == player_node)
         {
+            // This is intended to be the wrong direction to visually
+            // differentiate between hits and misses
             red = 0;
             green = 100;
             blue = 255;
@@ -246,27 +249,11 @@ void Being::takeDamage(int amount)
         else
         {
             red = 255;
-            green = 50;
-            blue = 50;
-        }
-    }
-
-    // Show damage number
-    particleEngine->addTextSplashEffect(damage, red, green, blue, font,
-                                        mPx + 16, mPy + 16, true);
-}
-
-void Being::showCrit()
-{
-    gcn::Font *font;
-    std::string text = "crit!";
-
-    int red, green, blue;
-
-    font = gui->getInfoParticleFont();
-
-    // Selecting the right color
-    if (getType() == MONSTER)
+            green = 255;
+            blue = 0;
+         }
+     }
+    else if (getType() == MONSTER)
     {
         red = 0;
         green = 100;
@@ -279,12 +266,18 @@ void Being::showCrit()
         blue = 50;
     }
 
-    // Show crit notice
-    particleEngine->addTextSplashEffect(text, red, green, blue, font,
+    if (amount > 0 && type == CRITICAL)
+    {
+        particleEngine->addTextSplashEffect("crit!", red, green, blue, font,
+                                            mPx + 16, mPy + 16, true);
+    }
+
+    // Show damage number
+    particleEngine->addTextSplashEffect(damage, red, green, blue, font,
                                         mPx + 16, mPy + 16, true);
 }
 
-void Being::handleAttack(Being *victim, int damage)
+void Being::handleAttack(Being *victim, int damage, AttackType type)
 {
     setAction(Being::ATTACK);
     mFrame = 0;

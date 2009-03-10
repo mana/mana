@@ -48,17 +48,20 @@ class Monster : public Being
          * Handles an attack of another being by this monster. Plays a hit or
          * miss sound when appropriate.
          *
-         * @param victim The attacked being.
-         * @param damage The amount of damage dealt (0 means miss).
+         * @param victim the victim being
+         * @param damage the amount of damage dealt (0 means miss)
+         * @param type the attack type
          */
-        virtual void handleAttack(Being *victim, int damage);
+        virtual void handleAttack(Being *victim, int damage, AttackType type);
 
         /**
          * Puts a damage bubble above this monster and plays the hurt sound
          *
-         * @param amount The amount of damage.
+         * @param attacker the attacking being
+         * @param damage the amount of damage recieved (0 means miss)
+         * @param type the attack type
          */
-        virtual void takeDamage(int amount);
+        virtual void takeDamage(Being *attacker, int amount, AttackType type);
 
         /**
          * Returns the MonsterInfo, with static data about this monster.
