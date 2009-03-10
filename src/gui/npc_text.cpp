@@ -35,10 +35,10 @@
 #include "../utils/gettext.h"
 
 NpcTextDialog::NpcTextDialog(Network *network):
-    Window(_("NPC")), mNetwork(network)
+    Window("NPC"), mNetwork(network)
 {
+    setWindowName(_("NPC"));
     setResizable(true);
-    setCloseButton(true);
 
     setMinWidth(200);
     setMinHeight(150);
@@ -89,6 +89,7 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
     {
         clearText();
         setVisible(false);
+        saveWindowState();
 
         if (current_npc)
             nextDialog();
@@ -116,5 +117,11 @@ void NpcTextDialog::widgetResized(const gcn::Event &event)
     Window::widgetResized(event);
 
     setText(mText);
+}
+
+void NpcTextDialog::requestFocus()
+{
+    loadWindowState();
+    setVisible(true);
 }
 

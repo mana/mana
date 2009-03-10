@@ -76,7 +76,8 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         void reset();
 
         /**
-         * Requests the listbox to take focus for input.
+         * Requests the listbox to take focus for input and sets window width
+         * to the last known setting.
          */
         void requestFocus();
 

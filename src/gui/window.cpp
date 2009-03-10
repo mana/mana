@@ -118,21 +118,8 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
 Window::~Window()
 {
     logger->log("Window::~Window(\"%s\")", getCaption().c_str());
-    const std::string &name = mWindowName;
 
-    // Saving X, Y and Width and Height for resizables in the config
-    if (!name.empty())
-    {
-        config.setValue(name + "WinX", getX());
-        config.setValue(name + "WinY", getY());
-        config.setValue(name + "Visible", isVisible());
-
-        if (mGrip)
-        {
-            config.setValue(name + "WinWidth", getWidth());
-            config.setValue(name + "WinHeight", getHeight());
-        }
-    }
+    saveWindowState();
 
     delete mLayout;
 
@@ -478,12 +465,34 @@ void Window::loadWindowState()
 
     if (mGrip)
     {
-        setSize((int) config.getValue(name + "WinWidth", mDefaultWidth),
-                (int) config.getValue(name + "WinHeight", mDefaultHeight));
+        const int width = (int) config.getValue(name + "WinWidth",
+                                                mDefaultWidth);
+        const int height = (int) config.getValue(name + "WinHeight",
+                                                 mDefaultHeight);
+
+        setSize(width < getMinWidth() ? getMinWidth() : width,
+                height < getMinHeight() ? getMinHeight() : height);
     }
     else
     {
         setSize(mDefaultWidth, mDefaultHeight);
+    }
+}
+
+void Window::saveWindowState()
+{
+    // Saving X, Y and Width and Height for resizables in the config
+    if (!mWindowName.empty())
+    {
+        config.setValue(mWindowName + "WinX", getX());
+        config.setValue(mWindowName + "WinY", getY());
+        config.setValue(mWindowName + "Visible", isVisible());
+
+        if (mGrip)
+        {
+            config.setValue(mWindowName + "WinWidth", getWidth());
+            config.setValue(mWindowName + "WinHeight", getHeight());
+        }
     }
 }
 

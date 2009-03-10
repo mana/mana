@@ -234,6 +234,12 @@ class Window : public gcn::Window, gcn::WidgetListener
         void loadWindowState();
 
         /**
+         * Saves the window state so that when the window is reloaded, it'll
+         * maintain its previous state and location.
+         */
+        void saveWindowState();
+
+        /**
          * Set the default win pos and size.
          * (which can be different of the actual ones.)
          */

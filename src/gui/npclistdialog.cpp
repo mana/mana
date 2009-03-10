@@ -37,8 +37,9 @@
 #include "../utils/gettext.h"
 
 NpcListDialog::NpcListDialog(Network *network):
-    Window(_("NPC")), mNetwork(network)
+    Window("NPC"), mNetwork(network)
 {
+    setWindowName(_("NPC"));
     setResizable(true);
 
     setMinWidth(200);
@@ -114,6 +115,7 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     if (choice)
     {
         setVisible(false);
+        saveWindowState();
         reset();
 
         MessageOut outMsg(mNetwork);
@@ -129,4 +131,6 @@ void NpcListDialog::requestFocus()
 {
     mItemList->requestFocus();
     mItemList->setSelected(0);
+    loadWindowState();
+    setVisible(true);
 }
