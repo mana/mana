@@ -130,6 +130,8 @@ Window::~Window()
         delete(w);
     }
 
+    removeWidgetListener(this);
+
     instances--;
 
     // Clean up static resources

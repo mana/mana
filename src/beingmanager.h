@@ -37,6 +37,8 @@ class BeingManager
     public:
         BeingManager(Network *network);
 
+        ~BeingManager();
+
         /**
          * Sets the map on which beings are created
          */
@@ -113,7 +115,7 @@ class BeingManager
         void logic();
 
         /**
-         * Destroys all beings except the local player and current NPC (if any)
+         * Destroys all beings except the local player
          */
         void clear();
 

@@ -205,7 +205,6 @@ void createGuiWindows(Network *network)
     npcListDialog = new NpcListDialog(network);
     npcStringDialog = new NpcStringDialog(network);
     skillDialog = new SkillDialog();
-    setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow();
     tradeWindow = new TradeWindow(network);
@@ -339,11 +338,12 @@ Game::Game(Network *network):
     msg.writeInt32(tick_time);
 
     engine->changeMap(map_path);
+
+    setupWindow->setInGame(true);
 }
 
 Game::~Game()
 {
-    delete player_node;
     destroyGuiWindows();
 
     delete beingManager;
@@ -351,6 +351,7 @@ Game::~Game()
     delete joystick;
     delete particleEngine;
     delete engine;
+    delete player_node;
 
     beingManager = NULL;
     floorItemManager = NULL;

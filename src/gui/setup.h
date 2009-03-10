@@ -32,6 +32,7 @@
 #include "../guichanfwd.h"
 
 class SetupTab;
+class Button;
 
 /**
  * The setup dialog.
@@ -51,6 +52,8 @@ class Setup : public Window, public gcn::ActionListener
          */
         ~Setup();
 
+        void setInGame(bool inGame);
+
         /**
          * Event handling method.
          */
@@ -58,6 +61,7 @@ class Setup : public Window, public gcn::ActionListener
 
     private:
         std::list<SetupTab*> mTabs;
+        gcn::Button *mResetWindows;
 };
 
 #endif
