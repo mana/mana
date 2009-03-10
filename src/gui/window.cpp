@@ -490,9 +490,9 @@ void Window::setDefaultSize(int defaultX, int defaultY,
     mDefaultHeight = defaultHeight;
 }
 
-void Window::resetToDefaultSize()
+void Window::resetToDefaultSize(bool changePosition)
 {
-    setPosition(mDefaultX, mDefaultY);
+    if (changePosition) setPosition(mDefaultX, mDefaultY);
     setSize(mDefaultWidth, mDefaultHeight);
 }
 
