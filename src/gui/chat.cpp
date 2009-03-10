@@ -224,34 +224,39 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
         << "] ";
 
     // Check for item link
-    std::string::size_type start = msg.find('[');
-    while (start != std::string::npos && msg[start+1] != '@')
+    std::string::size_type start = tmp.text.find('[');
+    while (start != std::string::npos && tmp.text[start+1] != '@')
     {
-        std::string::size_type end = msg.find(']', start);
+        std::string::size_type end = tmp.text.find(']', start);
         if (start+1 != end && end != std::string::npos)
         {
             // Catch multiple embeds and ignore them
             // so it doesn't crash the client.
-            while ((msg.find('[', start + 1) != std::string::npos) &&
-                   (msg.find('[', start + 1) < end))
+            while ((tmp.text.find('[', start + 1) != std::string::npos) &&
+                   (tmp.text.find('[', start + 1) < end))
             {
-                start = msg.find('[', start + 1);
+                start = tmp.text.find('[', start + 1);
             }
 
-            std::string temp = msg.substr(start + 1, end - start - 1);
+            std::string temp = tmp.text.substr(start+1, end - start - 1);
 
-            toLower(trim(temp));
+            trim(temp);
+
+            for (unsigned int i = 0; i < temp.size(); i++)
+            {
+                temp[i] = (char) tolower(temp[i]);
+            }
 
             const ItemInfo itemInfo = ItemDB::get(temp);
             if (itemInfo.getName() != _("Unknown item"))
             {
-                msg.insert(end, "@@");
-                msg.insert(start+1, "|");
-                msg.insert(start+1, toString(itemInfo.getId()));
-                msg.insert(start+1, "@@");
+                tmp.text.insert(end, "@@");
+                tmp.text.insert(start+1, "|");
+                tmp.text.insert(start+1, toString(itemInfo.getId()));
+                tmp.text.insert(start+1, "@@");
             }
         }
-        start =  msg.find('[', start + 1);
+        start = tmp.text.find('[', start + 1);
     }
 
     line = lineColor + timeStr.str() + tmp.nick + tmp.text;
