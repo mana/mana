@@ -39,6 +39,9 @@ SpeechBubble::SpeechBubble():
     setShowTitle(false);
     setTitleBarHeight(0);
 
+    setMinWidth(29);
+    setMinHeight(29);
+
     mCaption = new gcn::Label("");
     mCaption->setFont(boldFont);
     mCaption->setPosition(5, 3);
