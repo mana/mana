@@ -56,8 +56,16 @@ class Setup : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        /**
+         * Enables the reset button when in game.
+         */
+        void setInGame(bool inGame);
+
     private:
         std::list<SetupTab*> mTabs;
+        gcn::Button* mResetWindows;
 };
+
+extern Setup* setupWindow;
 
 #endif

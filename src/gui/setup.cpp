@@ -65,12 +65,12 @@ Setup::Setup():
         btn->setPosition(x, height - btn->getHeight() - 5);
         add(btn);
 
-        // Disable this button when the windows aren't created yet
+        // Store this button, as it needs to be enabled/disabled
         if (!strcmp(*curBtn, "Reset Windows"))
-            btn->setEnabled(statusWindow != NULL);
+            mResetWindows = btn;
     }
 
-    TabbedArea *panel = new TabbedArea();
+    TabbedArea *panel = new TabbedArea;
     panel->setDimension(gcn::Rectangle(5, 5, width - 10, height - 40));
 
     SetupTab *tab;
@@ -141,3 +141,10 @@ void Setup::action(const gcn::ActionEvent &event)
         tradeWindow->resetToDefaultSize();
     }
 }
+
+void Setup::setInGame(bool inGame)
+{
+    mResetWindows->setEnabled(inGame);
+}
+
+Setup* setupWindow;
