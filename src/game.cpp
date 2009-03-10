@@ -234,6 +234,11 @@ void createGuiWindows(Network *network)
         emoteShortcutWindow->getWindowName() + "Visible", true));
     minimap->setVisible((bool) config.getValue(
         minimap->getWindowName() + "Visible", true));
+    buySellDialog->setVisible(false);
+    npcTextDialog->setVisible(false);
+    npcIntegerDialog->setVisible(false);
+    npcListDialog->setVisible(false);
+    npcStringDialog->setVisible(false);
     storageWindow->setVisible(false);
 }
 
