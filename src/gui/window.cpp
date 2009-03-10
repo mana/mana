@@ -196,13 +196,9 @@ void Window::setContentSize(int width, int height)
     width = width + 2 * getPadding();
     height = height + getPadding() + getTitleBarHeight();
 
-    if (getMinWidth() > width)
-        width = getMinWidth();
-    else if (getMaxWidth() < width)
+    if (getMaxWidth() < width)
         width = getMaxWidth();
-    if (getMinHeight() > height)
-        height = getMinHeight();
-    else if (getMaxHeight() < height)
+    if (getMaxHeight() < height)
         height = getMaxHeight();
 
     setSize(width, height);
