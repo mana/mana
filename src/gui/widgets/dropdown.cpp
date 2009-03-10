@@ -78,10 +78,10 @@ DropDown::DropDown(gcn::ListModel *listModel, gcn::ScrollArea *scrollArea,
         {
             for (x = 0; x < 3; x++)
             {
-                skin.grid[a] = boxBorder->getSubImage(gridx[x], gridy[y], 
-                                                      gridx[x + 1] - 
+                skin.grid[a] = boxBorder->getSubImage(gridx[x], gridy[y],
+                                                      gridx[x + 1] -
                                                       gridx[x] + 1,
-                                                      gridy[y + 1] - 
+                                                      gridy[y + 1] -
                                                       gridy[y] + 1);
                 skin.grid[a]->setAlpha(mAlpha);
                 a++;

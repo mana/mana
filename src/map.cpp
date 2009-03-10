@@ -85,7 +85,7 @@ void TileAnimation::update()
     Image *img = mAnimation->getCurrentImage();
     if (img != mLastImage)
     {
-        for (std::list<std::pair<MapLayer*, int> >::iterator i = 
+        for (std::list<std::pair<MapLayer*, int> >::iterator i =
              mAffected.begin(); i != mAffected.end(); i++)
         {
             i->first->setTile(i->second, img);

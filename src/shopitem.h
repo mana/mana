@@ -95,7 +95,7 @@ class ShopItem : public Item
          * Reduces the quantity of the topmost duplicate by the specified
          * amount. Also reduces the total quantity of this DuplicateItem.
          * Empty duplicates are automatically removed.
-         * 
+         *
          * If the amount is bigger than the quantity of the current topmost,
          * only sell as much as possible. Returns the amount actually sold (do
          * not ignore the return value!)

@@ -37,7 +37,7 @@ class ShopItem;
  * The addItem routine can automatically check, if an item already exists and
  * only adds duplicates to the old item, if one is found. The original
  * distribution of the duplicates can be retrieved from the item.
- * 
+ *
  * This functionality can be enabled in the constructor.
  */
 class ShopItems : public gcn::ListModel
