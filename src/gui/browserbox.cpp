@@ -226,6 +226,7 @@ struct MouseOverLink
 
 void BrowserBox::mousePressed(gcn::MouseEvent &event)
 {
+    if (!mLinkHandler) return;
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
 
