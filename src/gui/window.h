@@ -23,8 +23,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <map>
-
 #include <guichan/widgetlistener.hpp>
 
 #include <guichan/widgets/window.hpp>
@@ -35,23 +33,12 @@
 class ConfigListener;
 class GCContainer;
 class ContainerPlacer;
-class Image;
 class Layout;
 class LayoutCell;
 class ResizeGrip;
+class Skin;
+class SkinLoader;
 class WindowContainer;
-
-class Skin
-{
-    public:
-        Skin();
-        ~Skin();
-
-        std::string mName;         /**< Name of the skin to use */
-        ImageRect border;          /**< The window border and background */
-        Image *closeImage;  /**< Close Button Image */
-        int instances;
-};
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
@@ -297,11 +284,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         void reflowLayout(int w = 0, int h = 0);
 
         /**
-         * Loads a window skin
-         */
-        void loadSkin(const std::string &filename);
-
-        /**
          * Adds a widget to the window and sets it at given cell.
          */
         LayoutCell &place(int x, int y, gcn::Widget *, int w = 1, int h = 1);
@@ -317,17 +299,6 @@ class Window : public gcn::Window, gcn::WidgetListener
          * on window close they couldn't do otherwise.
          */
         virtual void close();
-        
-        /**
-         * Map containing all window skins
-         */
-        typedef std::map<std::string, Skin*> Skins;
-
-        /**
-         * Iterator for window skins
-         */
-        typedef Skins::iterator SkinIterator;
-
 
     protected:
         /** The window container windows add themselves to. */

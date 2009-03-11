@@ -135,6 +135,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/shortcutcontainer.h \
 	      gui/skill.cpp \
 	      gui/skill.h \
+	      gui/skin.cpp \
+	      gui/skin.h \
 	      gui/slider.cpp \
 	      gui/slider.h \
 	      gui/speechbubble.cpp \

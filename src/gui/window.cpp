@@ -27,6 +27,7 @@
 #include <guichan/exception.hpp>
 
 #include "gui.h"
+#include "skin.h"
 #include "window.h"
 #include "windowcontainer.h"
 
@@ -38,17 +39,12 @@
 #include "../log.h"
 
 #include "../resources/image.h"
-#include "../resources/resourcemanager.h"
-
-#include "../utils/dtor.h"
-#include "../utils/xml.h"
 
 ConfigListener *Window::windowConfigListener = 0;
 WindowContainer *Window::windowContainer = 0;
 int Window::instances = 0;
 int Window::mouseResize = 0;
 bool Window::mAlphaChanged = false;
-Window::Skins mSkins;
 
 class WindowConfigListener : public ConfigListener
 {
@@ -57,24 +53,6 @@ class WindowConfigListener : public ConfigListener
         Window::mAlphaChanged = true;
     }
 };
-
-Skin::Skin():
-    closeImage(NULL),
-    instances(0)
-{
-}
-
-Skin::~Skin()
-{
-    // Clean up static resources
-    for (int i = 0; i < 9; i++)
-    {
-        delete border.grid[i];
-        border.grid[i] = NULL;
-    }
-
-    closeImage->decRef();
-}
 
 Window::Window(const std::string& caption, bool modal, Window *parent, const std::string& skin):
     gcn::Window(caption),
@@ -94,17 +72,11 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
     if (!windowContainer)
-    {
         throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
-    }
-
-    // Loads the skin
-    loadSkin(skin);
-
-    setGuiAlpha();
 
     if (instances == 0)
     {
+        skinLoader = new SkinLoader();
         windowConfigListener = new WindowConfigListener();
         // Send GUI alpha changed for initialization
         windowConfigListener->optionChanged("guialpha");
@@ -116,6 +88,11 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     setFrameSize(0);
     setPadding(3);
     setTitleBarHeight(20);
+
+    // Loads the skin
+    mSkin = skinLoader->load(skin);
+
+    setGuiAlpha();
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -153,10 +130,10 @@ Window::~Window()
 
     if (instances == 0)
     {
+        delete skinLoader;
         config.removeListener("guialpha", windowConfigListener);
         delete windowConfigListener;
         windowConfigListener = NULL;
-        delete_all(mSkins);
     }
 }
 
@@ -694,123 +671,6 @@ void Window::setGuiAlpha()
     }
 
     mAlphaChanged = false;
-}
-
-void Window::loadSkin(const std::string &filename)
-{
-    SkinIterator skinIterator = mSkins.find(filename);
-
-    if (mSkins.end() != skinIterator)
-    {
-        skinIterator->second->instances++;
-        mSkin = skinIterator->second;
-        return;
-    }
-
-    const std::string windowId = Window::getId();
-
-    mSkin = new Skin();
-
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    logger->log("Loading Window Skin '%s'.", filename.c_str());
-    logger->log("Loading Window ID '%s'.", windowId.c_str());
-
-    if (filename.empty())
-        logger->error("Window::loadSkin(): Invalid File Name.");
-
-    // TODO:
-    // If there is an error loading the specified file, we should try to revert
-    // to a 'default' skin file. Only if the 'default' skin file can't be loaded
-    // should we have a terminating error.
-    XML::Document doc(filename);
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
-        logger->error("Widget Skinning error");
-
-    std::string skinSetImage;
-    skinSetImage = XML::getProperty(rootNode, "image", "");
-    Image *dBorders = NULL;
-    if (!skinSetImage.empty())
-    {
-        logger->log("Window::loadSkin(): <skinset> defines "
-                    "'%s' as a skin image.", skinSetImage.c_str());
-        dBorders = resman->getImage("graphics/gui/" + skinSetImage);
-    }
-    else
-    {
-        logger->error("Window::loadSkin(): Skinset does not define an image!");
-    }
-
-    //iterate <widget>'s
-    for_each_xml_child_node(widgetNode, rootNode)
-    {
-        if (!xmlStrEqual(widgetNode->name, BAD_CAST "widget"))
-            continue;
-
-        std::string widgetType;
-        widgetType = XML::getProperty(widgetNode, "type", "unknown");
-        if (widgetType == "Window")
-        {
-            // Iterate through <part>'s
-            // LEEOR / TODO:
-            // We need to make provisions to load in a CloseButton image. For 
-            // now it can just be hard-coded.
-            for_each_xml_child_node(partNode, widgetNode)
-            {
-                if (!xmlStrEqual(partNode->name, BAD_CAST "part"))
-                    continue;
-
-                std::string partType;
-                partType = XML::getProperty(partNode, "type", "unknown");
-                // TOP ROW
-                const int xPos = XML::getProperty(partNode, "xpos", 0);
-                const int yPos = XML::getProperty(partNode, "ypos", 0);
-                const int width = XML::getProperty(partNode, "width", 1);
-                const int height = XML::getProperty(partNode, "height", 1);
-
-                if (partType == "top-left-corner")
-                    mSkin->border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
-                else if (partType == "top-edge")
-                    mSkin->border.grid[1] = dBorders->getSubImage(xPos, yPos, width, height);
-                else if (partType == "top-right-corner")
-                    mSkin->border.grid[2] = dBorders->getSubImage(xPos, yPos, width, height);
-
-                // MIDDLE ROW
-                else if (partType == "left-edge")
-                    mSkin->border.grid[3] = dBorders->getSubImage(xPos, yPos, width, height);
-                else if (partType == "bg-quad")
-                    mSkin->border.grid[4] = dBorders->getSubImage(xPos, yPos, width, height);
-                else if (partType == "right-edge")
-                    mSkin->border.grid[5] = dBorders->getSubImage(xPos, yPos, width, height);
-
-                // BOTTOM ROW
-                else if (partType == "bottom-left-corner")
-                    mSkin->border.grid[6] = dBorders->getSubImage(xPos, yPos, width, height);
-                else if (partType == "bottom-edge")
-                    mSkin->border.grid[7] = dBorders->getSubImage(xPos, yPos, width, height);
-                else if (partType == "bottom-right-corner")
-                    mSkin->border.grid[8] = dBorders->getSubImage(xPos, yPos, width, height);
-
-                // Part is of an uknown type.
-                else
-                    logger->log("Window::loadSkin(): Unknown Part Type '%s'", partType.c_str());
-            }
-        }
-        // Widget is of an uknown type.
-        else
-        {
-            logger->log("Window::loadSkin(): Unknown Widget Type '%s'", widgetType.c_str());
-        }
-    }
-    dBorders->decRef();
-
-    logger->log("Finished loading Window Skin.");
-
-    // Hard-coded for now until we update the above code to look for window buttons.
-    mSkin->closeImage = resman->getImage("graphics/gui/close_button.png");
-    mSkins[filename] = mSkin;
 }
 
 Layout &Window::getLayout()

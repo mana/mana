@@ -27,6 +27,7 @@
 #include "focushandler.h"
 #include "gui.h"
 #include "sdlinput.h"
+#include "skin.h"
 #include "truetypefont.h"
 #include "viewport.h"
 #include "window.h"

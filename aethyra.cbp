@@ -236,6 +236,8 @@
 		<Unit filename="src\gui\shortcutwindow.h" />
 		<Unit filename="src\gui\skill.cpp" />
 		<Unit filename="src\gui\skill.h" />
+		<Unit filename="src\gui\skin.cpp" />
+		<Unit filename="src\gui\skin.h" />
 		<Unit filename="src\gui\slider.cpp" />
 		<Unit filename="src\gui\slider.h" />
 		<Unit filename="src\gui\speechbubble.cpp" />
