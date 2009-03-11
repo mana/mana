@@ -945,6 +945,7 @@ int main(int argc, char *argv[])
                     ItemDB::load();
                     MonsterDB::load();
                     NPCDB::load();
+                    Being::load(); // Hairstyles and emotions
                     EmoteDB::load();
 
                     state = CHAR_CONNECT_STATE;
@@ -1115,6 +1116,8 @@ int main(int argc, char *argv[])
     delete progressLabel;
     delete setup;
     delete setupWindow;
+
+    Being::cleanup();
 
     delete network;
     SDLNet_Quit();
