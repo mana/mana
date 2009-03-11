@@ -80,7 +80,7 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 
     TextRenderer::renderText(graphics, mText,
             mX - xOff, mY - yOff, gcn::Graphics::LEFT,
-            &mColor, boldFont, !mIsSpeech, true);
+            &mColor, boldFont, true, true);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,

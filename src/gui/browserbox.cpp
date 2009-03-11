@@ -25,8 +25,8 @@
 #include <guichan/graphics.hpp>
 
 #include "browserbox.h"
-#include "color.h"
 #include "linkhandler.h"
+#include "palette.h"
 #include "truetypefont.h"
 
 BrowserBox::BrowserBox(unsigned int mode, bool opaque):
@@ -250,16 +250,15 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
     if (mOpaque)
     {
-        graphics->setColor(gcn::Color(BGCOLOR));
+        graphics->setColor(guiPalette->getColor(Palette::BACKGROUND));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
 
     if (mSelectedLink >= 0)
     {
-        bool valid;
         if ((mHighMode & BACKGROUND))
         {
-            graphics->setColor(gcn::Color(textColor->getColor('H', valid)));
+            graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT));
             graphics->fillRectangle(gcn::Rectangle(
                         mLinks[mSelectedLink].x1,
                         mLinks[mSelectedLink].y1,
@@ -270,7 +269,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
         if ((mHighMode & UNDERLINE))
         {
-            graphics->setColor(gcn::Color(textColor->getColor('<', valid)));
+            graphics->setColor(guiPalette->getColor(Palette::HYPERLINK));
             graphics->drawLine(
                     mLinks[mSelectedLink].x1,
                     mLinks[mSelectedLink].y2,
@@ -284,11 +283,11 @@ void BrowserBox::draw(gcn::Graphics *graphics)
     int link = 0;
     TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
-    graphics->setColor(BLACK);
+    graphics->setColor(guiPalette->getColor(Palette::TEXT));
     for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
     {
-        int selColor = BLACK;
-        int prevColor = selColor;
+        const gcn::Color *selColor = &guiPalette->getColor(Palette::TEXT);
+        const gcn::Color *prevColor = selColor;
         std::string row = *(i);
         bool wrapped = false;
         x = 0;
@@ -336,7 +335,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                     else
                     {
                         bool valid;
-                        int rgb = textColor->getColor(c, valid);
+                        const gcn::Color *col = &guiPalette->getColor(c, valid);
                         if (c == '<')
                         {
                             const int size = mLinks[link].x2 - mLinks[link].x1;
@@ -349,7 +348,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                         }
                         if (valid)
                         {
-                            selColor = rgb;
+                            selColor = col;
                         }
                     }
                     start += 3;
@@ -359,7 +358,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                         break;
                     }
                 }
-                graphics->setColor(gcn::Color(selColor));
+                graphics->setColor(*selColor);
             }
 
             std::string::size_type len =

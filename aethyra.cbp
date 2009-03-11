@@ -132,8 +132,6 @@
 		<Unit filename="src\gui\chatinput.h" />
 		<Unit filename="src\gui\checkbox.cpp" />
 		<Unit filename="src\gui\checkbox.h" />
-		<Unit filename="src\gui\color.cpp" />
-		<Unit filename="src\gui\color.h" />
 		<Unit filename="src\gui\confirm_dialog.cpp" />
 		<Unit filename="src\gui\confirm_dialog.h" />
 		<Unit filename="src\gui\connection.cpp" />
@@ -191,6 +189,8 @@
 		<Unit filename="src\gui\npcstringdialog.h" />
 		<Unit filename="src\gui\ok_dialog.cpp" />
 		<Unit filename="src\gui\ok_dialog.h" />
+		<Unit filename="src\gui\palette.cpp" />
+		<Unit filename="src\gui\palette.h" />
 		<Unit filename="src\gui\passwordfield.cpp" />
 		<Unit filename="src\gui\passwordfield.h" />
 		<Unit filename="src\gui\playerbox.cpp" />
@@ -256,6 +256,7 @@
 		<Unit filename="src\gui\textbox.h" />
 		<Unit filename="src\gui\textfield.cpp" />
 		<Unit filename="src\gui\textfield.h" />
+		<Unit filename="src\gui\textrenderer.h" />
 		<Unit filename="src\gui\trade.cpp" />
 		<Unit filename="src\gui\trade.h" />
 		<Unit filename="src\gui\truetypefont.cpp" />

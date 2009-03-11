@@ -25,8 +25,8 @@
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
 
-#include "color.h"
 #include "listbox.h"
+#include "palette.h"
 
 #include "../configuration.h"
 
@@ -45,13 +45,8 @@ void ListBox::draw(gcn::Graphics *graphics)
     if (config.getValue("guialpha", 0.8) != mAlpha)
         mAlpha = config.getValue("guialpha", 0.8);
 
-    bool valid;
-    const int red = (textColor->getColor('H', valid) >> 16) & 0xFF;
-    const int green = (textColor->getColor('H', valid) >> 8) & 0xFF;
-    const int blue = textColor->getColor('H', valid) & 0xFF;
-    const int alpha = (int)(mAlpha * 255.0f);
-
-    graphics->setColor(gcn::Color(red, green, blue, alpha));
+    graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
+            (int)(mAlpha * 255.0f)));
     graphics->setFont(getFont());
 
     const int fontHeight = getFont()->getHeight();

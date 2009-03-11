@@ -48,6 +48,8 @@ class Setup_Colors : public SetupTab, public gcn::ActionListener,
 
         void listen(const TextField *tf);
     private:
+        static const std::string rawmsg;
+
         gcn::ListBox *mColorBox;
         gcn::ScrollArea *mScroll;
         BrowserBox *mPreview;
