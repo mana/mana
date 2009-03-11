@@ -436,9 +436,9 @@ class Being : public Sprite
         // Target cursor being used by the being
         Image *mTargetCursor;
 
-        static int getHairColorsNr();
+        static int getHairColorCount();
 
-        static int getHairStylesNr();
+        static int getHairStyleCount();
 
         static std::string getHairColor(int index);
 
@@ -501,6 +501,8 @@ class Being : public Sprite
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
 
+        static std::vector<std::string> hairColors;
+        static int mNumberOfHairColors;          /** Number of hair colors in use */
         static int mNumberOfHairstyles;          /** Number of hair styles in use */
 
         Path mPath;
@@ -522,6 +524,8 @@ class Being : public Sprite
         ParticleList mChildParticleEffects;
 
     private:
+        static void initializeHair();
+
         /**
          * Calculates the offset in the given directions.
          * If walking in direction 'neg' the value is negated.

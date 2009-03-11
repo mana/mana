@@ -58,7 +58,9 @@
 #define BEING_EFFECTS_FILE "effects.xml"
 #define HAIR_FILE "hair.xml"
 
+int Being::mNumberOfHairColors = 1;
 int Being::mNumberOfHairstyles = 1;
+std::vector<std::string> Being::hairColors;
 std::vector<AnimatedSprite*> Being::emotionSet;
 
 static const int X_SPEECH_OFFSET = 18;
@@ -750,57 +752,40 @@ void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
     }
 }
 
-
-
-
-static int hairStylesNr;
-static int hairColorsNr;
-static std::vector<std::string> hairColors;
-
-static void initializeHair();
-
-int Being::getHairStylesNr()
+int Being::getHairStyleCount()
 {
-    initializeHair();
-    return hairStylesNr;
+    return mNumberOfHairstyles;
 }
 
-int Being::getHairColorsNr()
+int Being::getHairColorCount()
 {
-    initializeHair();
-    return hairColorsNr;
+    return mNumberOfHairColors;
 }
 
 std::string Being::getHairColor(int index)
 {
-    initializeHair();
-    if (index < 0 || index >= hairColorsNr)
+    if (index < 0 || index >= mNumberOfHairColors)
         return "#000000";
 
     return hairColors[index];
 }
 
-static bool hairInitialized = false;
-
-static void initializeHair()
+void Being::initializeHair()
 {
-    if (hairInitialized)
-        return;
-
-    // Hairstyles are encoded as negative numbers. Count how far negative we
-    // can go.
-    int hairstylesCtr = -1;
-    while (ItemDB::get(hairstylesCtr).getSprite(GENDER_MALE) != "error.xml")
-        --hairstylesCtr;
-
-    hairStylesNr = -hairstylesCtr; // done.
-    if (hairStylesNr == 0)
-        hairStylesNr = 1; // No hair style -> no hair
-
-    hairColorsNr = 0;
+    // Hairstyles are encoded as negative numbers.  Count how far negative
+    // we can go.
+    int hairstyles = -1;
+    while (ItemDB::get(hairstyles).getSprite(GENDER_MALE) != "error.xml")
+    {
+        hairstyles--;
+    }
+    mNumberOfHairstyles = -hairstyles;
 
     XML::Document doc(HAIR_FILE);
     xmlNodePtr root = doc.rootNode();
+
+    // Add an initial hair color
+    hairColors.resize(1, "#000000");
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
@@ -814,22 +799,15 @@ static void initializeHair()
                 std::string value = XML::getProperty(node, "value", "");
 
                 if (index >= 0 && !value.empty()) {
-                    if (index >= hairColorsNr) {
-                        hairColorsNr = index + 1;
-                        hairColors.resize(hairColorsNr, "#000000");
+                    if (index >= mNumberOfHairColors) {
+                        mNumberOfHairColors = index + 1;
+                        hairColors.resize(mNumberOfHairColors, "#000000");
                     }
                     hairColors[index] = value;
                 }
             }
         }
-    } // done initializing
-
-    if (hairColorsNr == 0) { // No colors -> black only
-        hairColorsNr = 1;
-        hairColors.resize(hairColorsNr, "#000000");
     }
-
-    hairInitialized = 1;
 }
 
 void Being::load()
@@ -844,14 +822,7 @@ void Being::load()
         emotionSet.push_back(AnimatedSprite::load(file, variant));
     }
 
-    // Hairstyles are encoded as negative numbers.  Count how far negative
-    // we can go.
-    int hairstyles = 1;
-    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
-    {
-        hairstyles++;
-    }
-    mNumberOfHairstyles = hairstyles;
+    initializeHair();
 }
 
 void Being::cleanup()
