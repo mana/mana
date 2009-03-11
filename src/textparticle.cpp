@@ -21,9 +21,11 @@
 
 #include <guichan/color.hpp>
 
-#include "graphics.h"
-#include "textparticle.h"
 #include <SDL/SDL_ttf.h>
+
+#include "textparticle.h"
+
+#include "gui/textrenderer.h"
 
 TextParticle::TextParticle(Map *map, const std::string &text,
                            int colorR, int colorG, int colorB,
@@ -60,24 +62,8 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
         alpha /= mFadeIn;
     }
 
-    graphics->setFont(mTextFont);
-    if (mOutline)
-    {
-        graphics->setColor(gcn::Color(0, 0, 0, (int)(alpha/4)));
-        // Text outline
-        graphics->setColor(gcn::Color(0, 0, 0, (int)alpha));
-        graphics->drawText(mText, screenX + 1, screenY,
-                gcn::Graphics::CENTER);
-
-        graphics->drawText(mText, screenX - 1, screenY,
-                gcn::Graphics::CENTER);
-
-        graphics->drawText(mText, screenX, screenY + 1,
-                gcn::Graphics::CENTER);
-
-        graphics->drawText(mText, screenX, screenY - 1,
-                gcn::Graphics::CENTER);
-    }
-    graphics->setColor(gcn::Color(mColorR, mColorG, mColorB, (int)alpha));
-    graphics->drawText(mText, screenX, screenY, gcn::Graphics::CENTER);
+    TextRenderer::renderText(graphics, mText,
+            screenX, screenY, gcn::Graphics::CENTER,
+            &gcn::Color(mColorR, mColorG, mColorB), mTextFont, mOutline, false,
+            (int)alpha);
 }
