@@ -240,6 +240,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "add")
     {
+        if (!inventoryWindow->isVisible()) return;
+
         if (!item)
             return;
 

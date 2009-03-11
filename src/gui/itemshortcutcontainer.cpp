@@ -19,6 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "inventorywindow.h"
 #include "itemshortcutcontainer.h"
 #include "itempopup.h"
 #include "viewport.h"
@@ -184,9 +185,8 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-
         // Stores the selected item if theirs one.
-        if (itemShortcut->isItemSelected())
+        if (itemShortcut->isItemSelected() && inventoryWindow->isVisible())
         {
             itemShortcut->setItem(index);
             itemShortcut->setItemSelected(-1);
@@ -247,7 +247,7 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
 
     Item *item = player_node->getInventory()->findItem(itemId);
 
-    if (item)
+    if (item && inventoryWindow->isVisible())
     {
         mItemPopup->setItem(item->getInfo());
         mItemPopup->setOpaque(false);
