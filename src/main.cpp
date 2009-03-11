@@ -482,6 +482,8 @@ void exit_engine()
     // Shutdown sound
     sound.close();
 
+    Being::cleanup();
+
     // Unload XML databases
     ColorDB::unload();
     EmoteDB::unload();
@@ -945,8 +947,8 @@ int main(int argc, char *argv[])
                     ItemDB::load();
                     MonsterDB::load();
                     NPCDB::load();
-                    Being::load(); // Hairstyles and emotions
                     EmoteDB::load();
+                    Being::load(); // Hairstyles and emotions
 
                     state = CHAR_CONNECT_STATE;
                     break;
@@ -1116,8 +1118,6 @@ int main(int argc, char *argv[])
     delete progressLabel;
     delete setup;
     delete setupWindow;
-
-    Being::cleanup();
 
     delete network;
     SDLNet_Quit();
