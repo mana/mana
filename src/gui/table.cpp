@@ -23,7 +23,7 @@
 #include <guichan/graphics.hpp>
 #include <guichan/key.hpp>
 
-#include "color.h"
+#include "palette.h"
 #include "table.h"
 
 #include "../configuration.h"
@@ -273,11 +273,8 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
     if (mOpaque)
     {
-        const int red = getBackgroundColor().r;
-        const int green = getBackgroundColor().g;
-        const int blue = getBackgroundColor().b;
-        const int alpha = (int)(mAlpha * 255.0f);
-        graphics->setColor(gcn::Color(red, green, blue, alpha));
+        graphics->setColor(guiPalette->getColor(Palette::BACKGROUND,
+                (int)(mAlpha * 255.0f)));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
 
@@ -324,15 +321,8 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
                 if (!mLinewiseMode && c == mSelectedColumn && r == mSelectedRow)
                 {
-                    bool valid;
-                    const int red =
-                        (textColor->getColor('H', valid) >> 16) & 0xFF;
-                    const int green =
-                        (textColor->getColor('H', valid) >> 8) & 0xFF;
-                    const int blue = textColor->getColor('H', valid) & 0xFF;
-                    const int alpha = (int)(mAlpha * 127.0f);
-
-                    graphics->setColor(gcn::Color(red, green, blue, alpha));
+                    graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
+                            (int)(mAlpha * 127.0f)));
                     graphics->fillRectangle(bounds);
                 }
 
@@ -346,17 +336,8 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
         if (mLinewiseMode && r == mSelectedRow)
         {
-            bool valid;
-            const int red =
-                (textColor->getColor('H', valid) >> 16) & 0xFF;
-            const int green =
-                (textColor->getColor('H', valid) >> 8) & 0xFF;
-            const int blue = textColor->getColor('H', valid) & 0xFF;
-            const int alpha = (int)(mAlpha * 127.0f);
-
-            graphics->setColor(gcn::Color(red, green, blue, alpha));
-            graphics->fillRectangle(gcn::Rectangle(0, y_offset,
-                                                   x_offset, height));
+            graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
+                    (int)(mAlpha * 127.0f)));
         }
 
         y_offset += height;

@@ -57,10 +57,10 @@
 #include "gui/button.h"
 #include "gui/char_server.h"
 #include "gui/char_select.h"
-#include "gui/color.h"
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
+#include "gui/palette.h"
 #include "gui/progressbar.h"
 #include "gui/register.h"
 #include "gui/sdlinput.h"
@@ -135,7 +135,7 @@ CharServerHandler charServerHandler;
 LoginData loginData;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
-Color *textColor;
+Palette *guiPalette;
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {
@@ -774,7 +774,7 @@ int main(int argc, char *argv[])
     unsigned int oldstate = !state; // We start with a status change.
 
     // Needs to be created in main, as the updater uses it
-    textColor = new Color;
+    guiPalette = new Palette;
 
     Game *game = NULL;
     Window *currentDialog = NULL;
@@ -1111,7 +1111,7 @@ int main(int argc, char *argv[])
         usleep(50000);
     }
 
-    delete textColor;
+    delete guiPalette;
 #ifdef PACKAGE_VERSION
     delete versionLabel;
 #endif

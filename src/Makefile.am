@@ -31,8 +31,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/chatinput.h \
 	      gui/checkbox.cpp \
 	      gui/checkbox.h \
-	      gui/color.cpp \
-	      gui/color.h \
+	      gui/palette.cpp \
+	      gui/palette.h \
 	      gui/confirm_dialog.cpp \
 	      gui/confirm_dialog.h \
 	      gui/connection.cpp \

@@ -23,8 +23,8 @@
 
 #include "dropdown.h"
 
-#include "../color.h"
 #include "../listbox.h"
+#include "../palette.h"
 #include "../scrollarea.h"
 
 #include "../../configuration.h"
@@ -139,27 +139,24 @@ void DropDown::draw(gcn::Graphics* graphics)
         }
     }
 
-    bool valid;
+//    bool valid;
     const int alpha = (int)(mAlpha * 255.0f);
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
-    gcn::Color highlightColor = textColor->getColor('H', valid);
-    highlightColor.a = alpha;
+    gcn::Color highlightColor = guiPalette->getColor(Palette::HIGHLIGHT, alpha);
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;
 
     if (mOpaque)
     {
-        int red = getBackgroundColor().r;
-        int green = getBackgroundColor().g;
-        int blue = getBackgroundColor().b;
-        graphics->setColor(gcn::Color(red, green, blue, alpha));
+        gcn::Color col = getBackgroundColor();
+        col.a = alpha;
+        graphics->setColor(col);
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), h));
 
-        red = getForegroundColor().r;
-        green = getForegroundColor().g;
-        blue = getForegroundColor().b;
-        graphics->setColor(gcn::Color(red, green, blue, alpha));
+        col = getForegroundColor();
+        col.a = alpha;
+        graphics->setColor(col);
     }
 
     graphics->setFont(getFont());

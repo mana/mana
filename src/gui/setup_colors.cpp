@@ -27,9 +27,9 @@
 #include <guichan/widgets/slider.hpp>
 
 #include "browserbox.h"
-#include "color.h"
 #include "itemlinkhandler.h"
 #include "listbox.h"
+#include "palette.h"
 #include "scrollarea.h"
 #include "setup_colors.h"
 #include "slider.h"
@@ -42,12 +42,14 @@
 #include "../utils/gettext.h"
 #include "../utils/stringutils.h"
 
+const std::string Setup_Colors::rawmsg = _("This is what the color looks like");
+
 Setup_Colors::Setup_Colors() :
     mSelected(-1)
 {
     setOpaque(false);
 
-    mColorBox = new ListBox(textColor);
+    mColorBox = new ListBox(guiPalette);
     mColorBox->setActionEventId("color_box");
     mColorBox->addActionListener(this);
 
@@ -130,6 +132,9 @@ Setup_Colors::Setup_Colors() :
 
 Setup_Colors::~Setup_Colors()
 {
+    delete mPreview;
+    delete mPreviewBox;
+
     delete mRedLabel;
     delete mRedSlider;
     delete mRedText;
@@ -142,6 +147,7 @@ Setup_Colors::~Setup_Colors()
     delete mBlueSlider;
     delete mBlueText;
 
+    delete mColorBox;
     delete mScroll;
 }
 
@@ -150,22 +156,22 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
     if (event.getId() == "color_box")
     {
         mSelected = mColorBox->getSelected();
-        int col = textColor->getColorAt(mSelected);
-        char ch = textColor->getColorCharAt(mSelected);
+        Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
+        const gcn::Color *col = &guiPalette->getColor(type);
+
         std::string msg;
 
-        if (ch == '<')
-            msg = toString("@@|") +
-                  _("This is what the color looks like") + "@@";
-        else
-            msg = "##" + toString(ch) +
-                  _("This is what the color looks like");
-
         mPreview->clearRows();
+        char ch = guiPalette->getColorChar(type);
+        if (ch == '<')
+            msg = toString("@@|") + rawmsg + "@@";
+        else
+            msg = "##" + toString(ch) + rawmsg;
         mPreview->addRow(msg);
-        setEntry(mRedSlider, mRedText, col >> 16);
-        setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
-        setEntry(mBlueSlider, mBlueText, col & 0xff);
+
+        setEntry(mRedSlider, mRedText, col->r);
+        setEntry(mGreenSlider, mGreenText, col->g);
+        setEntry(mBlueSlider, mBlueText, col->b);
         return;
     }
 
@@ -201,16 +207,17 @@ void Setup_Colors::setEntry(gcn::Slider *s, TextField *t, int value)
 
 void Setup_Colors::apply()
 {
-    textColor->commit();
+    guiPalette->commit();
 }
 
 void Setup_Colors::cancel()
 {
-    textColor->rollback();
-    int col = textColor->getColorAt(mSelected);
-    setEntry(mRedSlider, mRedText, col >> 16);
-    setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
-    setEntry(mBlueSlider, mBlueText, col & 0xff);
+    guiPalette->rollback();
+    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
+    const gcn::Color *col = &guiPalette->getColor(type);
+    setEntry(mRedSlider, mRedText, col->r);
+    setEntry(mGreenSlider, mGreenText, col->g);
+    setEntry(mBlueSlider, mBlueText, col->b);
 }
 
 void Setup_Colors::listen(const TextField *tf)
@@ -241,8 +248,10 @@ void Setup_Colors::updateColor()
     {
         return;
     }
-    int rgb = static_cast<int>(mRedSlider->getValue()) << 16 |
-              static_cast<int>(mGreenSlider->getValue()) << 8 |
-              static_cast<int>(mBlueSlider->getValue());
-    textColor->setColorAt(mSelected, rgb);
+
+    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
+    guiPalette->setColor(type,
+            static_cast<int>(mRedSlider->getValue()),
+            static_cast<int>(mGreenSlider->getValue()),
+            static_cast<int>(mBlueSlider->getValue()));
 }
