@@ -121,6 +121,8 @@ void StorageWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "store")
     {
+        if (!inventoryWindow->isVisible()) return;
+
         Item *item = inventoryWindow->getSelectedItem();
 
         if (!item)
