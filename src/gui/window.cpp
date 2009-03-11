@@ -630,6 +630,7 @@ void Window::resetToDefaultSize()
 {
     setPosition(mDefaultX, mDefaultY);
     setSize(mDefaultWidth, mDefaultHeight);
+    saveWindowState();
 }
 
 int Window::getResizeHandles(gcn::MouseEvent &event)
