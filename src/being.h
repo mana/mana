@@ -404,6 +404,10 @@ class Being : public Sprite
         virtual AnimatedSprite* getSprite(int index) const
             { return mSprites[index]; }
 
+        static void load();
+
+        static void cleanup();
+
     protected:
         /**
          * Sets the new path for this being.
@@ -471,7 +475,6 @@ class Being : public Sprite
         // Target cursor being used
         SimpleAnimation* mUsedTargetCursor;
 
-        static int instances;                              /**< Number of Being instances */
         static std::vector<AnimatedSprite*> emotionSet;    /**< Emoticons used by beings */
 };
 
