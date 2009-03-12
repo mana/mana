@@ -13,6 +13,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/widgets/tab.h \
 	      gui/widgets/tabbedarea.cpp \
 	      gui/widgets/tabbedarea.h \
+	      gui/widgets/textpreview.cpp \
+	      gui/widgets/textpreview.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/button.cpp \
@@ -151,6 +153,7 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/textbox.h \
 	      gui/textfield.cpp \
 	      gui/textfield.h \
+	      gui/textrenderer.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
 	      gui/truetypefont.cpp \

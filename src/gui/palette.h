@@ -108,7 +108,7 @@ class Palette : public gcn::ListModel
         const gcn::Color& getColor(char c, bool &valid);
 
         /**
-         * Gets the color with the associated type. Sets the alpha channel
+         * Gets the color associated with the type. Sets the alpha channel
          * before returning.
          *
          * @param type the color type requested
@@ -124,12 +124,24 @@ class Palette : public gcn::ListModel
         }
 
         /**
-        * Gets the GradientType used by the specified color.
-        *
-        * @param type the color type of the color
-        *
-        * @return the gradient type of the color with the given index
-        */
+         * Gets the committed color associated with the specified type.
+         *
+         * @param type the color type requested
+         *
+         * @return the requested committed color
+         */
+        inline const gcn::Color& getCommittedColor(ColorType type)
+        {
+            return mColVector[type].committedColor;
+        }
+
+        /**
+         * Gets the GradientType associated with the specified type.
+         *
+         * @param type the color type of the color
+         *
+         * @return the gradient type of the color with the given index
+         */
         inline GradientType getGradientType(ColorType type)
         {
             return mColVector[type].grad;
