@@ -60,7 +60,7 @@ EmoteShortcutContainer::EmoteShortcutContainer():
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); i++)
     {
-        mEmoteImg.push_back(player_node->getEmote(i));
+        mEmoteImg.push_back(EmoteDB::getAnimation(i));
     }
 
     mMaxItems = EmoteDB::getLast() < MAX_ITEMS ? EmoteDB::getLast() : MAX_ITEMS;
@@ -113,7 +113,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
     if (mEmoteMoved)
     {
         // Draw the emote image being dragged by the cursor.
-        AnimatedSprite* sprite = mEmoteImg[mEmoteMoved - 1];
+        const AnimatedSprite* sprite = mEmoteImg[mEmoteMoved - 1];
         if (sprite)
         {
             const int tPosX = mCursorPosX - (sprite->getWidth() / 2);

@@ -52,10 +52,8 @@
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-#include "utils/xml.h"
 
 int Being::mNumberOfHairstyles = 1;
-std::vector<AnimatedSprite*> Being::emotionSet;
 
 static const int X_SPEECH_OFFSET = 18;
 static const int Y_SPEECH_OFFSET = 60;
@@ -461,7 +459,7 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     const int emotionIndex = mEmotion - 1;
 
     if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
-        emotionSet[emotionIndex]->draw(graphics, px, py);
+        EmoteDB::getAnimation(emotionIndex)->draw(graphics, px, py);
 }
 
 void Being::drawSpeech(int offsetX, int offsetY)
@@ -580,29 +578,3 @@ void Being::setTargetAnimation(SimpleAnimation* animation)
     mUsedTargetCursor->reset();
 }
 
-void Being::load()
-{
-    // Setup emote sprites
-    for (int i = 0; i <= EmoteDB::getLast(); i++)
-    {
-        EmoteInfo info = EmoteDB::get(i);
-
-        std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
-        int variant = info.sprites.front()->variant;
-        emotionSet.push_back(AnimatedSprite::load(file, variant));
-    }
-
-    // Hairstyles are encoded as negative numbers.  Count how far negative
-    // we can go.
-    int hairstyles = 1;
-    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
-    {
-        hairstyles++;
-    }
-    mNumberOfHairstyles = hairstyles;
-}
-
-void Being::cleanup()
-{
-    delete_all(emotionSet);
-}

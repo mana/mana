@@ -479,8 +479,6 @@ void exit_engine()
     // Shutdown sound
     sound.close();
 
-    Being::cleanup();
-
     // Unload XML databases
     ColorDB::unload();
     EmoteDB::unload();
@@ -941,7 +939,6 @@ int main(int argc, char *argv[])
                     MonsterDB::load();
                     NPCDB::load();
                     EmoteDB::load();
-                    Being::load(); // Hairstyles and emotions
 
                     state = CHAR_CONNECT_STATE;
                     break;

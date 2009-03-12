@@ -26,11 +26,12 @@
 #include <map>
 #include <string>
 
+class AnimatedSprite;
+
 struct EmoteSprite
 {
-    std::string sprite;
+    const AnimatedSprite *sprite;
     std::string name;
-    int variant;
 };
 
 struct EmoteInfo
@@ -50,7 +51,9 @@ namespace EmoteDB
 
     void unload();
 
-    const EmoteInfo& get(int id);
+    const EmoteInfo *get(int id);
+
+    const AnimatedSprite *getAnimation(int id);
 
     const int& getLast();
 
