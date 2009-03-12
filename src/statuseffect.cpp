@@ -92,7 +92,6 @@ static std::map<int, int> blockEffectIndexMap;
 
 int StatusEffect::blockEffectIndexToEffectIndex(int blockIndex)
 {
-    load();
     if (blockEffectIndexMap.find(blockIndex) == blockEffectIndexMap.end())
         return -1;
     return blockEffectIndexMap[blockIndex];
@@ -100,27 +99,16 @@ int StatusEffect::blockEffectIndexToEffectIndex(int blockIndex)
 
 StatusEffect *StatusEffect::getStatusEffect(int index, bool enabling)
 {
-    load();
     return statusEffects[enabling][index];
 }
 
 StatusEffect *StatusEffect::getStunEffect(int index, bool enabling)
 {
-    load();
     return stunEffects[enabling][index];
 }
 
-static bool status_effects_loaded = false;
-
-
-
 void StatusEffect::load()
 {
-    if (status_effects_loaded)
-        return;
-
-    status_effects_loaded = true;
-
     XML::Document doc(STATUS_EFFECTS_FILE);
     xmlNodePtr rootNode = doc.rootNode();
 
@@ -167,4 +155,20 @@ void StatusEffect::load()
             (*the_map)[0][index] = endEffect;
         }
     }
+}
+
+void unloadMap(std::map<int, StatusEffect *> map)
+{
+    std::map<int, StatusEffect *>::iterator it;
+
+    for (it = map.begin(); it != map.end(); it++)
+        delete (*it).second;
+}
+
+void StatusEffect::unload()
+{
+    unloadMap(statusEffects[0]);
+    unloadMap(statusEffects[1]);
+    unloadMap(stunEffects[0]);
+    unloadMap(stunEffects[1]);
 }

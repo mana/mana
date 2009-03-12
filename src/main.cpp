@@ -51,6 +51,7 @@
 #include "player_relations.h"
 #include "serverinfo.h"
 #include "sound.h"
+#include "statuseffect.h"
 #include "units.h"
 
 #include "gui/button.h"
@@ -488,6 +489,7 @@ void exit_engine()
     ItemDB::unload();
     MonsterDB::unload();
     NPCDB::unload();
+    StatusEffect::unload();
 
     ResourceManager::deleteInstance();
     delete logger;
@@ -946,7 +948,8 @@ int main(int argc, char *argv[])
                     MonsterDB::load();
                     NPCDB::load();
                     EmoteDB::load();
-                    Being::load(); // Hairstyles and emotions
+                    StatusEffect::load();
+                    Being::load(); // Hairstyles
 
                     state = CHAR_CONNECT_STATE;
                     break;
