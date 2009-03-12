@@ -26,6 +26,7 @@
 #include "text.h"
 
 #include "gui/npc_text.h"
+#include "gui/palette.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
@@ -71,7 +72,7 @@ NPC::NPC(int id, Uint16 job, Map *map, Network *network):
     }
     mName = 0;
 
-    mNameColor = 0x21bbbb;
+    mNameColor = &guiPalette->getColor(Palette::NPC);
 }
 
 NPC::~NPC()
@@ -85,7 +86,8 @@ void NPC::setName(const std::string &name)
 
     delete mName;
     mName = new Text(displayName, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
-                     gcn::Graphics::CENTER, gcn::Color(200, 200, 255));
+                     gcn::Graphics::CENTER,
+                     &guiPalette->getColor(Palette::NPC));
     Being::setName(displayName + " (NPC)");
 }
 

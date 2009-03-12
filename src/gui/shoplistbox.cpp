@@ -78,7 +78,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     {
         gcn::Color temp;
         const gcn::Color* backgroundColor =
-        &guiPalette->getColor(Palette::BACKGROUND, alpha);
+                &guiPalette->getColor(Palette::BACKGROUND, alpha);
 
         if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)

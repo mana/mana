@@ -338,6 +338,8 @@ void GuiTable::draw(gcn::Graphics* graphics)
         {
             graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
                     (int)(mAlpha * 127.0f)));
+            graphics->fillRectangle(gcn::Rectangle(0, y_offset,
+                                                   x_offset, height));
         }
 
         y_offset += height;

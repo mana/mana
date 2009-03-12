@@ -46,11 +46,6 @@
 Gui *gui = 0;
 Viewport *viewport = 0;                    /**< Viewport on the map. */
 SDLInput *guiInput = 0;
-/*
-// Fonts used in showing hits
-gcn::Font *hitRedFont = 0;
-gcn::Font *hitBlueFont = 0;
-gcn::Font *hitYellowFont = 0;*/
 
 // Bolded font
 gcn::Font *boldFont = 0;

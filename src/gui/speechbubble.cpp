@@ -45,6 +45,7 @@ SpeechBubble::SpeechBubble():
     mSpeechBox = new TextBox;
     mSpeechBox->setEditable(false);
     mSpeechBox->setOpaque(false);
+    mSpeechBox->setTextColor(&guiPalette->getColor(Palette::CHAT));
 
     mSpeechArea = new ScrollArea(mSpeechBox);
 
@@ -60,11 +61,11 @@ SpeechBubble::SpeechBubble():
     setLocationRelativeTo(getParent());
 }
 
-void SpeechBubble::setCaption(const std::string &name, const gcn::Color &color)
+void SpeechBubble::setCaption(const std::string &name, const gcn::Color *color)
 {
     mCaption->setCaption(name);
     mCaption->adjustSize();
-    mCaption->setForegroundColor(color);
+    mCaption->setForegroundColor(*color);
 }
 
 void SpeechBubble::setText(std::string text, bool showName)

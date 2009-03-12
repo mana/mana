@@ -27,6 +27,8 @@
 #include "sound.h"
 #include "text.h"
 
+#include "gui/palette.h"
+
 #include "resources/monsterdb.h"
 #include "resources/monsterinfo.h"
 
@@ -71,7 +73,7 @@ Monster::Monster(int id, Uint16 job, Map *map):
         }
     }
 
-    mNameColor = 0xff2020;
+    mNameColor = &guiPalette->getColor(Palette::MONSTER);
 }
 
 Monster::~Monster()
@@ -195,7 +197,8 @@ void Monster::showName(bool show)
     {
         mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,
                          mPy + NAME_Y_OFFSET - getHeight(),
-                         gcn::Graphics::CENTER, gcn::Color(255, 64, 64));
+                         gcn::Graphics::CENTER,
+                         &guiPalette->getColor(Palette::MONSTER));
     }
     else
     {

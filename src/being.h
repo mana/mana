@@ -510,7 +510,7 @@ class Being : public Sprite
         Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
 
-        gcn::Color mNameColor;
+        const gcn::Color* mNameColor;
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
