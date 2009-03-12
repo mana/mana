@@ -195,6 +195,8 @@
 		<Unit filename="src\gui\passwordfield.h" />
 		<Unit filename="src\gui\playerbox.cpp" />
 		<Unit filename="src\gui\playerbox.h" />
+		<Unit filename="src\gui\popup.cpp" />
+		<Unit filename="src\gui\popup.h" />
 		<Unit filename="src\gui\popupmenu.cpp" />
 		<Unit filename="src\gui\popupmenu.h" />
 		<Unit filename="src\gui\progressbar.cpp" />

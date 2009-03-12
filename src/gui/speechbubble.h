@@ -23,12 +23,12 @@
 #ifndef SPEECHBUBBLE_H
 #define SPEECHBUBBLE_H
 
-#include "window.h"
+#include "popup.h"
 
 class ScrollArea;
 class TextBox;
 
-class SpeechBubble : public Window
+class SpeechBubble : public Popup
 {
     public:
         SpeechBubble();

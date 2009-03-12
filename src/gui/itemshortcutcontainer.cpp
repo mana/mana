@@ -231,7 +231,7 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
 
     Item *item = player_node->getInventory()->findItem(itemId);
 
-    if (item && inventoryWindow->isVisible())
+    if (item)
     {
         mItemPopup->setItem(item->getInfo());
         mItemPopup->setOpaque(false);

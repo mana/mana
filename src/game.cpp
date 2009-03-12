@@ -220,12 +220,12 @@ void createGuiWindows(Network *network)
     chatWindow->setVisible((bool) config.getValue(
         chatWindow->getWindowName() + "Visible", true));
     miniStatusWindow->setVisible((bool) config.getValue(
-        miniStatusWindow->getWindowName() + "Visible", true));
+        miniStatusWindow->getPopupName() + "Visible", true));
     buyDialog->setVisible(false);
     sellDialog->setVisible(false);
     tradeWindow->setVisible(false);
     menuWindow->setVisible((bool) config.getValue(
-        menuWindow->getWindowName() + "Visible", true));
+        menuWindow->getPopupName() + "Visible", true));
     itemShortcutWindow->setVisible((bool) config.getValue(
         itemShortcutWindow->getWindowName() + "Visible", true));
     emoteShortcutWindow->setVisible((bool) config.getValue(

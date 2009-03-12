@@ -24,13 +24,13 @@
 #ifndef ITEMPOPUP_H
 #define ITEMPOPUP_H
 
-#include "window.h"
+#include "popup.h"
 
 class ItemInfo;
 class ScrollArea;
 class TextBox;
 
-class ItemPopup : public Window
+class ItemPopup : public Popup
 {
     public:
         ItemPopup();

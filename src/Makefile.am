@@ -94,6 +94,8 @@ aethyra_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
 	      gui/playerbox.h \
+	      gui/popup.cpp \
+	      gui/popup.h \
 	      gui/popupmenu.cpp \
 	      gui/popupmenu.h \
 	      gui/progressbar.cpp \

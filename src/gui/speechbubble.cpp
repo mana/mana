@@ -32,13 +32,10 @@
 #include "../utils/gettext.h"
 
 SpeechBubble::SpeechBubble():
-    Window(_("Speech"), false, NULL, "graphics/gui/speechbubble.xml"),
+    Popup("Speech", NULL, "graphics/gui/speechbubble.xml"),
     mText("")
 {
     setContentSize(140, 46);
-    setShowTitle(false);
-    setTitleBarHeight(0);
-
     setMinWidth(29);
     setMinHeight(29);
 

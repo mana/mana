@@ -41,7 +41,6 @@
 #include "../resources/image.h"
 
 ConfigListener *Window::windowConfigListener = 0;
-WindowContainer *Window::windowContainer = 0;
 int Window::instances = 0;
 int Window::mouseResize = 0;
 bool Window::mAlphaChanged = false;
@@ -216,39 +215,39 @@ void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
     }
     else if (position == ImageRect::UPPER_CENTER)
     {
-        offsetX += (windowContainer->getWidth() - getWidth()) / 2;
+        offsetX += (graphics->getWidth() - getWidth()) / 2;
     }
     else if (position == ImageRect::UPPER_RIGHT)
     {
-        offsetX += windowContainer->getWidth() - getWidth();
+        offsetX += graphics->getWidth() - getWidth();
     }
     else if (position == ImageRect::LEFT)
     {
-        offsetY += (windowContainer->getHeight() - getHeight()) / 2;
+        offsetY += (graphics->getHeight() - getHeight()) / 2;
     }
     else if (position == ImageRect::CENTER)
     {
-        offsetX += (windowContainer->getWidth() - getWidth()) / 2;
-        offsetY += (windowContainer->getHeight() - getHeight()) / 2;
+        offsetX += (graphics->getWidth() - getWidth()) / 2;
+        offsetY += (graphics->getHeight() - getHeight()) / 2;
     }
     else if (position == ImageRect::RIGHT)
     {
-        offsetX += windowContainer->getWidth() - getWidth();
-        offsetY += (windowContainer->getHeight() - getHeight()) / 2;
+        offsetX += graphics->getWidth() - getWidth();
+        offsetY += (graphics->getHeight() - getHeight()) / 2;
     }
     else if (position == ImageRect::LOWER_LEFT)
     {
-        offsetY += windowContainer->getHeight() - getHeight();
+        offsetY += graphics->getHeight() - getHeight();
     }
     else if (position == ImageRect::LOWER_CENTER)
     {
-        offsetX += (windowContainer->getWidth() - getWidth()) / 2;
-        offsetY += windowContainer->getHeight() - getHeight();
+        offsetX += (graphics->getWidth() - getWidth()) / 2;
+        offsetY += graphics->getHeight() - getHeight();
     }
     else if (position == ImageRect::LOWER_RIGHT)
     {
-        offsetX += windowContainer->getWidth() - getWidth();
-        offsetY += windowContainer->getHeight() - getHeight();
+        offsetX += graphics->getWidth() - getWidth();
+        offsetY += graphics->getHeight() - getHeight();
     }
 
     setPosition(offsetX, offsetY);
@@ -429,8 +428,8 @@ void Window::mouseDragged(gcn::MouseEvent &event)
     {
         int newX = std::max(0, getX());
         int newY = std::max(0, getY());
-        newX = std::min(windowContainer->getWidth() - getWidth(), newX);
-        newY = std::min(windowContainer->getHeight() - getHeight(), newY);
+        newX = std::min(graphics->getWidth() - getWidth(), newX);
+        newY = std::min(graphics->getHeight() - getHeight(), newY);
         setPosition(newX, newY);
     }
 
@@ -475,13 +474,13 @@ void Window::mouseDragged(gcn::MouseEvent &event)
             newDim.height += newDim.y;
             newDim.y = 0;
         }
-        if (newDim.x + newDim.width > windowContainer->getWidth())
+        if (newDim.x + newDim.width > graphics->getWidth())
         {
-            newDim.width = windowContainer->getWidth() - newDim.x;
+            newDim.width = graphics->getWidth() - newDim.x;
         }
-        if (newDim.y + newDim.height > windowContainer->getHeight())
+        if (newDim.y + newDim.height > graphics->getHeight())
         {
-            newDim.height = windowContainer->getHeight() - newDim.y;
+            newDim.height = graphics->getHeight() - newDim.y;
         }
 
         // Update mouse offset when dragging bottom or right border
@@ -585,39 +584,39 @@ void Window::setDefaultSize(int defaultWidth, int defaultHeight,
     }
     else if (position == ImageRect::UPPER_CENTER)
     {
-        x = (windowContainer->getWidth() - defaultWidth) / 2;
+        x = (graphics->getWidth() - defaultWidth) / 2;
     }
     else if (position == ImageRect::UPPER_RIGHT)
     {
-        x = windowContainer->getWidth() - defaultWidth;
+        x = graphics->getWidth() - defaultWidth;
     }
     else if (position == ImageRect::LEFT)
     {
-        y = (windowContainer->getHeight() - defaultHeight) / 2;
+        y = (graphics->getHeight() - defaultHeight) / 2;
     }
     else if (position == ImageRect::CENTER)
     {
-        x = (windowContainer->getWidth() - defaultWidth) / 2;
-        y = (windowContainer->getHeight() - defaultHeight) / 2;
+        x = (graphics->getWidth() - defaultWidth) / 2;
+        y = (graphics->getHeight() - defaultHeight) / 2;
     }
     else if (position == ImageRect::RIGHT)
     {
-        x = windowContainer->getWidth() - defaultWidth;
-        y = (windowContainer->getHeight() - defaultHeight) / 2;
+        x = graphics->getWidth() - defaultWidth;
+        y = (graphics->getHeight() - defaultHeight) / 2;
     }
     else if (position == ImageRect::LOWER_LEFT)
     {
-        y = windowContainer->getHeight() - defaultHeight;
+        y = graphics->getHeight() - defaultHeight;
     }
     else if (position == ImageRect::LOWER_CENTER)
     {
-        x = (windowContainer->getWidth() - defaultWidth) / 2;
-        y = windowContainer->getHeight() - defaultHeight;
+        x = (graphics->getWidth() - defaultWidth) / 2;
+        y = graphics->getHeight() - defaultHeight;
     }
     else if (position == ImageRect::LOWER_RIGHT)
     {
-        x = windowContainer->getWidth() - defaultWidth;
-        y = windowContainer->getHeight() - defaultHeight;
+        x = graphics->getWidth() - defaultWidth;
+        y = graphics->getHeight() - defaultHeight;
     }
 
     mDefaultX = x - offsetX;

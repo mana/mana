@@ -300,10 +300,6 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         virtual void close();
 
-    protected:
-        /** The window container windows add themselves to. */
-        static WindowContainer *windowContainer;
-
     private:
         enum ResizeHandles
         {

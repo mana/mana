@@ -29,9 +29,8 @@
 #include "itempopup.h"
 #include "scrollarea.h"
 #include "textbox.h"
-#include "windowcontainer.h"
 
-#include "widgets/layout.h"
+#include "../graphics.h"
 
 #include "../resources/iteminfo.h"
 
@@ -39,12 +38,8 @@
 #include "../utils/stringutils.h"
 
 ItemPopup::ItemPopup():
-    Window()
+    Popup()
 {
-    setResizable(false);
-    setShowTitle(false);
-    setTitleBarHeight(0);
-
     // Item Name
     mItemName = new gcn::Label("Label");
     mItemName->setFont(boldFont);
@@ -208,8 +203,8 @@ unsigned int ItemPopup::getNumRows()
 
 void ItemPopup::view(int x, int y)
 {
-    if (windowContainer->getWidth() < (x + getWidth() + 5))
-	x = windowContainer->getWidth() - getWidth();
+    if (graphics->getWidth() < (x + getWidth() + 5))
+	x = graphics->getWidth() - getWidth();
     if ((y - getHeight() - 10) < 0)
 	y = 0;
     else

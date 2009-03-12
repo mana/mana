@@ -46,6 +46,11 @@ class WindowContainer : public gcn::Container
          */
         void scheduleDelete(gcn::Widget *widget);
 
+        /**
+         * Get the number of widget instances
+         */
+        int getNumberOfInstances() { return mDeathList.size(); }
+
     private:
         /**
          * List of widgets that are scheduled to be deleted.
@@ -54,5 +59,7 @@ class WindowContainer : public gcn::Container
         typedef Widgets::iterator WidgetIterator;
         Widgets mDeathList;
 };
+
+extern WindowContainer* windowContainer;
 
 #endif

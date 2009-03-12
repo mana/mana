@@ -24,6 +24,8 @@
 
 #include "../utils/dtor.h"
 
+WindowContainer *windowContainer = NULL;
+
 void WindowContainer::logic()
 {
     delete_all(mDeathList);
