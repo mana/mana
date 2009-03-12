@@ -51,13 +51,13 @@ Skin::~Skin()
     closeImage->decRef();
 }
 
-int Skin::getMinWidth()
+unsigned int Skin::getMinWidth()
 {
     return (border.grid[0]->getWidth() + border.grid[1]->getWidth()) +
             border.grid[2]->getWidth();
 }
 
-int Skin::getMinHeight()
+unsigned int Skin::getMinHeight()
 {
     return (border.grid[0]->getHeight() + border.grid[3]->getHeight()) +
             border.grid[6]->getHeight();
