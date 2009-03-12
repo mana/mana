@@ -86,8 +86,6 @@ Popup::Popup(const std::string& name, Window *parent,
 
     // Popups are invisible by default
     setVisible(false);
-
-    addWidgetListener(this);
 }
 
 Popup::~Popup()

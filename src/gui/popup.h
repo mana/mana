@@ -23,8 +23,6 @@
 #ifndef POPUP_H
 #define POPUP_H
 
-#include <guichan/widgetlistener.hpp>
-
 #include <guichan/widgets/container.hpp>
 
 #include "../graphics.h"
@@ -42,7 +40,7 @@ class WindowContainer;
  *
  * \ingroup GUI
  */
-class Popup : public gcn::Container, gcn::WidgetListener
+class Popup : public gcn::Container
 {
     public:
         friend class PopupConfigListener;
