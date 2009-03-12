@@ -37,6 +37,7 @@
 #include "text.h"
 
 #include "gui/gui.h"
+#include "gui/palette.h"
 #include "gui/storagewindow.h"
 
 #include "net/messageout.h"
@@ -201,7 +202,9 @@ void LocalPlayer::logic()
 void LocalPlayer::setGM()
 {
     mIsGM = !mIsGM;
-    mNameColor = mIsGM ? 0x009000: 0x202020;
+    mNameColor = mIsGM ?
+            &guiPalette->getColor(Palette::GM) :
+            &guiPalette->getColor(Palette::PLAYER);
     setName(getName());
     config.setValue(getName() + "GMassert", mIsGM);
 }
@@ -608,10 +611,9 @@ void LocalPlayer::setXp(int xp)
         const std::string text = toString(xp - mXp) + " xp";
 
         // Show XP number
-        particleEngine->addTextRiseFadeOutEffect(text,
-                                                 gui->getInfoParticleFont(),
-                                                 mPx + 16, mPy - 16,
-                                                 255, 255, 0, true);
+        particleEngine->addTextRiseFadeOutEffect(text, mPx + 16, mPy - 16,
+                &guiPalette->getColor(Palette::EXP_INFO),
+                gui->getInfoParticleFont(), true);
     }
     mXp = xp;
 }
@@ -621,10 +623,9 @@ void LocalPlayer::pickedUp(std::string item)
     if (mMap)
     {
         // Show pickup notification
-        particleEngine->addTextRiseFadeOutEffect(item,
-                                                 gui->getInfoParticleFont (),
-                                                 mPx + 16, mPy - 16,
-                                                 40, 220, 40, true);
+        particleEngine->addTextRiseFadeOutEffect(item, mPx + 16, mPy - 16,
+                &guiPalette->getColor(Palette::PICKUP_INFO),
+                gui->getInfoParticleFont (), true);
     }
 }
 

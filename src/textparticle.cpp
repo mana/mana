@@ -22,21 +22,17 @@
 
 #include <guichan/color.hpp>
 
-#include <SDL/SDL_ttf.h>
-
 #include "textparticle.h"
 
 #include "gui/textrenderer.h"
 
 TextParticle::TextParticle(Map *map, const std::string &text,
-                           int colorR, int colorG, int colorB,
+                           const gcn::Color* color,
                            gcn::Font *font, bool outline):
     Particle(map),
     mText(text),
     mTextFont(font),
-    mColorR(colorR),
-    mColorG(colorG),
-    mColorB(colorB),
+    mColor(color),
     mOutline(outline)
 {
 }
@@ -65,6 +61,5 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
 
     TextRenderer::renderText(graphics, mText,
             screenX, screenY, gcn::Graphics::CENTER,
-            &gcn::Color(mColorR, mColorG, mColorB), mTextFont, mOutline, false,
-            (int) alpha);
+            mColor, mTextFont, mOutline, false, (int) alpha);
 }

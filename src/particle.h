@@ -106,19 +106,17 @@ class Particle : public Sprite
         /**
          * Creates a standalone text particle.
          */
-        Particle *addTextSplashEffect(const std::string &text,
-                                      int colorR, int colorG, int colorB,
-                                      gcn::Font *font, int x, int y,
-                                      bool outline = false);
+        Particle *addTextSplashEffect(const std::string &text, int x, int y,
+                const gcn::Color *color, gcn::Font *font,
+                bool outline = false);
 
         /**
          * Creates a standalone text particle.
          */
         Particle *addTextRiseFadeOutEffect(const std::string &text,
-                                           gcn::Font *font,
-                                           int x, int y, int colorR = 255,
-                                           int colorG = 255, int colorB = 255,
-                                           bool outline = false);
+                int x, int y, const gcn::Color *color, gcn::Font *font,
+                bool outline = false);
+
         /**
          * Adds an emitter to the particle.
          */

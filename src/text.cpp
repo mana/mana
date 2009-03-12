@@ -32,8 +32,9 @@
 int Text::mInstances = 0;
 
 Text::Text(const std::string &text, int x, int y,
-           gcn::Graphics::Alignment alignment, gcn::Color color) :
-    mText(text), mColor(color)
+           gcn::Graphics::Alignment alignment, const gcn::Color* color) :
+    mText(text),
+    mColor(color)
 {
     if (textManager == 0)
     {
@@ -80,11 +81,12 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 
     TextRenderer::renderText(graphics, mText,
             mX - xOff, mY - yOff, gcn::Graphics::LEFT,
-            &mColor, boldFont, true, true);
+            mColor, boldFont, true);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,
-                     gcn::Graphics::Alignment alignment, gcn::Color color) :
+                     gcn::Graphics::Alignment alignment,
+                     const gcn::Color *color) :
     Text(text, x, y, alignment, color),
     mTime(0)
 {

@@ -140,24 +140,20 @@ void DropDown::draw(gcn::Graphics* graphics)
         }
     }
 
-//    bool valid;
     const int alpha = (int)(mAlpha * 255.0f);
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
-    gcn::Color highlightColor = guiPalette->getColor(Palette::HIGHLIGHT, alpha);
+    const gcn::Color* highlightColor = &guiPalette->getColor(Palette::HIGHLIGHT,
+            alpha);
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;
 
     if (mOpaque)
     {
-        gcn::Color col = getBackgroundColor();
-        col.a = alpha;
-        graphics->setColor(col);
+        graphics->setColor(guiPalette->getColor(Palette::BACKGROUND, alpha));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), h));
 
-        col = getForegroundColor();
-        col.a = alpha;
-        graphics->setColor(col);
+        graphics->setColor(guiPalette->getColor(Palette::TEXT, alpha));
     }
 
     graphics->setFont(getFont());
@@ -169,7 +165,7 @@ void DropDown::draw(gcn::Graphics* graphics)
 
     if (isFocused())
     {
-        graphics->setColor(highlightColor);
+        graphics->setColor(*highlightColor);
         graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth() - h, h));
     }
 
@@ -181,7 +177,7 @@ void DropDown::draw(gcn::Graphics* graphics)
 
         // Draw two lines separating the ListBox with selected
         // element view.
-        graphics->setColor(highlightColor);
+        graphics->setColor(*highlightColor);
         graphics->drawLine(0, h, getWidth(), h);
         graphics->setColor(shadowColor);
         graphics->drawLine(0, h + 1, getWidth(), h + 1);

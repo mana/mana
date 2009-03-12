@@ -428,7 +428,7 @@ class Being : public Sprite
         Gender mGender;
         int mPx, mPy;                   /**< Pixel coordinates */
 
-        gcn::Color mNameColor;
+        const gcn::Color* mNameColor;
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
