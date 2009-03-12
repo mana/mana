@@ -123,12 +123,12 @@ void Popup::draw(gcn::Graphics *graphics)
 
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->border);
+    g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
 
     // Update Popup alpha values
     if (mAlphaChanged)
     {
-        for_each(mSkin->border.grid, mSkin->border.grid + 9,
+        for_each(mSkin->getBorder().grid, mSkin->getBorder().grid + 9,
                  std::bind2nd(std::mem_fun(&Image::setAlpha),
                  config.getValue("guialpha", 0.8)));
     }
@@ -201,7 +201,7 @@ void Popup::setGuiAlpha()
     for (int i = 0; i < 9; i++)
     {
         //logger->log("Popup::setGuiAlpha: Border Image (%i)", i);
-        mSkin->border.grid[i]->setAlpha(config.getValue("guialpha", 0.8));
+        mSkin->getBorder().grid[i]->setAlpha(config.getValue("guialpha", 0.8));
     }
 
     mAlphaChanged = false;

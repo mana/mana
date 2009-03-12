@@ -31,9 +31,11 @@
 
 SkinLoader* skinLoader = NULL;
 
-Skin::Skin():
-    closeImage(NULL),
-    instances(0)
+Skin::Skin(ImageRect skin, Image* close, std::string name):
+    instances(0),
+    mName(name),
+    border(skin),
+    closeImage(close)
 {
 }
 
@@ -49,6 +51,18 @@ Skin::~Skin()
     closeImage->decRef();
 }
 
+int Skin::getMinWidth()
+{
+    return (border.grid[0]->getWidth() + border.grid[1]->getWidth()) +
+            border.grid[2]->getWidth();
+}
+
+int Skin::getMinHeight()
+{
+    return (border.grid[0]->getHeight() + border.grid[3]->getHeight()) +
+            border.grid[6]->getHeight();
+}
+
 Skin* SkinLoader::load(const std::string &filename)
 {
     SkinIterator skinIterator = mSkins.find(filename);
@@ -58,8 +72,6 @@ Skin* SkinLoader::load(const std::string &filename)
         skinIterator->second->instances++;
         return skinIterator->second;
     }
-
-    Skin* skin = new Skin();
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -81,6 +93,8 @@ Skin* SkinLoader::load(const std::string &filename)
     std::string skinSetImage;
     skinSetImage = XML::getProperty(rootNode, "image", "");
     Image *dBorders = NULL;
+    ImageRect border;
+
     if (!skinSetImage.empty())
     {
         logger->log("SkinLoader::load(): <skinset> defines "
@@ -120,27 +134,27 @@ Skin* SkinLoader::load(const std::string &filename)
                 const int height = XML::getProperty(partNode, "height", 1);
 
                 if (partType == "top-left-corner")
-                    skin->border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "top-edge")
-                    skin->border.grid[1] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[1] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "top-right-corner")
-                    skin->border.grid[2] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[2] = dBorders->getSubImage(xPos, yPos, width, height);
 
                 // MIDDLE ROW
                 else if (partType == "left-edge")
-                    skin->border.grid[3] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[3] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "bg-quad")
-                    skin->border.grid[4] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[4] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "right-edge")
-                    skin->border.grid[5] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[5] = dBorders->getSubImage(xPos, yPos, width, height);
 
                 // BOTTOM ROW
                 else if (partType == "bottom-left-corner")
-                    skin->border.grid[6] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[6] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "bottom-edge")
-                    skin->border.grid[7] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[7] = dBorders->getSubImage(xPos, yPos, width, height);
                 else if (partType == "bottom-right-corner")
-                    skin->border.grid[8] = dBorders->getSubImage(xPos, yPos, width, height);
+                    border.grid[8] = dBorders->getSubImage(xPos, yPos, width, height);
 
                 // Part is of an uknown type.
                 else
@@ -158,7 +172,10 @@ Skin* SkinLoader::load(const std::string &filename)
     logger->log("Finished loading Skin.");
 
     // Hard-coded for now until we update the above code to look for window buttons.
-    skin->closeImage = resman->getImage("graphics/gui/close_button.png");
+    Image* closeImage = resman->getImage("graphics/gui/close_button.png");
+
+    Skin* skin = new Skin(border, closeImage);
+
     mSkins[filename] = skin;
     return skin;
 }

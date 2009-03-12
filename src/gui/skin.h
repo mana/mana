@@ -32,13 +32,47 @@ class Image;
 class Skin
 {
     public:
-        Skin();
+        Skin(ImageRect skin, Image* close, std::string name = "");
         ~Skin();
 
+        /**
+         * Returns the skin's name. Useful for giving a human friendly skin
+         * name if a dialog for skin selection for a specific window type is
+         * done.
+         */
+        std::string getName() { return mName; }
+
+        /**
+         * Returns the background skin.
+         */
+        ImageRect getBorder() { return border; }
+
+        /**
+         * Returns the image used by a close button for this skin.
+         */
+        Image* getCloseImage() { return closeImage; }
+
+        /**
+         * Returns the number of instances which use this skin.
+         */
+        int getNumberOfInstances() { return instances; }
+
+        /**
+         * Returns the minimum width which can be used with this skin.
+         */
+        int getMinWidth();
+
+        /**
+         * Returns the minimum height which can be used with this skin.
+         */
+        int getMinHeight();
+
+        int instances;
+
+    private:
         std::string mName;         /**< Name of the skin to use */
         ImageRect border;          /**< The window border and background */
         Image *closeImage;         /**< Close Button Image */
-        int instances;
 };
 
 // Map containing all window skins
@@ -47,7 +81,7 @@ typedef std::map<std::string, Skin*> Skins;
 // Iterator for window skins
 typedef Skins::iterator SkinIterator;
 
-class SkinLoader
+class SkinLoader 
 {
     public:
         SkinLoader();

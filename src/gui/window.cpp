@@ -148,7 +148,7 @@ void Window::draw(gcn::Graphics *graphics)
 
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->border);
+    g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
 
     // Draw title
     if (mShowTitle)
@@ -161,8 +161,8 @@ void Window::draw(gcn::Graphics *graphics)
     // Draw Close Button
     if (mCloseButton)
     {
-        g->drawImage(mSkin->closeImage,
-            getWidth() - mSkin->closeImage->getWidth() - getPadding(),
+        g->drawImage(mSkin->getCloseImage(),
+            getWidth() - mSkin->getCloseImage()->getWidth() - getPadding(),
             getPadding()
         );
     }
@@ -170,10 +170,10 @@ void Window::draw(gcn::Graphics *graphics)
     // Update window alpha values
     if (mAlphaChanged)
     {
-        for_each(mSkin->border.grid, mSkin->border.grid + 9,
+        for_each(mSkin->getBorder().grid, mSkin->getBorder().grid + 9,
                  std::bind2nd(std::mem_fun(&Image::setAlpha),
                  config.getValue("guialpha", 0.8)));
-        mSkin->closeImage->setAlpha(config.getValue("guialpha", 0.8));
+        mSkin->getCloseImage()->setAlpha(config.getValue("guialpha", 0.8));
     }
     drawChildren(graphics);
 }
@@ -352,10 +352,10 @@ void Window::mousePressed(gcn::MouseEvent &event)
         if (mCloseButton)
         {
             gcn::Rectangle closeButtonRect(
-                getWidth() - mSkin->closeImage->getWidth() - getPadding(),
+                getWidth() - mSkin->getCloseImage()->getWidth() - getPadding(),
                 getPadding(),
-                mSkin->closeImage->getWidth(),
-                mSkin->closeImage->getHeight());
+                mSkin->getCloseImage()->getWidth(),
+                mSkin->getCloseImage()->getHeight());
 
             if (closeButtonRect.isPointInRect(x, y))
             {
@@ -666,7 +666,7 @@ void Window::setGuiAlpha()
     for (int i = 0; i < 9; i++)
     {
         //logger->log("Window::setGuiAlpha: Border Image (%i)", i);
-        mSkin->border.grid[i]->setAlpha(config.getValue("guialpha", 0.8));
+        mSkin->getBorder().grid[i]->setAlpha(config.getValue("guialpha", 0.8));
     }
 
     mAlphaChanged = false;
