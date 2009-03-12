@@ -392,8 +392,6 @@ class Being : public Sprite
          */
         void untarget() { mUsedTargetCursor = NULL; }
 
-        AnimatedSprite* getEmote(int index) { return emotionSet[index]; }
-
         void setEmote(Uint8 emotion, Uint8 emote_time)
         {
             mEmotion = emotion;
@@ -446,8 +444,6 @@ class Being : public Sprite
             { return mSprites[index]; }
 
         static void load();
-
-        static void cleanup();
 
     protected:
         /**
@@ -511,7 +507,7 @@ class Being : public Sprite
         Uint16 mHairStyle, mHairColor;
         Gender mGender;
         int mPx, mPy;                   /**< Pixel coordinates */
-        Uint16 mStunMode;		/**< Stun mode; zero if not stunned */
+        Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
 
         gcn::Color mNameColor;
@@ -524,8 +520,6 @@ class Being : public Sprite
         ParticleList mChildParticleEffects;
 
     private:
-        static void initializeHair();
-
         /**
          * Calculates the offset in the given directions.
          * If walking in direction 'neg' the value is negated.
@@ -540,8 +534,6 @@ class Being : public Sprite
 
         // Target cursor being used
         SimpleAnimation* mUsedTargetCursor;
-
-        static std::vector<AnimatedSprite*> emotionSet;    /**< Emoticons used by beings */
 };
 
 #endif

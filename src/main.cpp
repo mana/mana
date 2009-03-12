@@ -482,8 +482,6 @@ void exit_engine()
     // Shutdown sound
     sound.close();
 
-    Being::cleanup();
-
     // Unload XML databases
     ColorDB::unload();
     EmoteDB::unload();

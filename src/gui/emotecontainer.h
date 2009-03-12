@@ -121,7 +121,7 @@ class EmoteContainer : public gcn::Widget,
          */
         void distributeValueChangedEvent(void);
 
-        std::vector<AnimatedSprite*> mEmoteImg;
+        std::vector<const AnimatedSprite*> mEmoteImg;
         Image *mSelImg;
         int mSelectedEmoteIndex;
 

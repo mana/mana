@@ -68,7 +68,7 @@ class EmoteShortcutContainer : public ShortcutContainer
         void mouseReleased(gcn::MouseEvent &event);
 
     private:
-        std::vector<AnimatedSprite*> mEmoteImg;
+        std::vector<const AnimatedSprite*> mEmoteImg;
 
         bool mEmoteClicked;
         int mEmoteMoved;

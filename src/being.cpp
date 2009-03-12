@@ -61,7 +61,6 @@
 int Being::mNumberOfHairColors = 1;
 int Being::mNumberOfHairstyles = 1;
 std::vector<std::string> Being::hairColors;
-std::vector<AnimatedSprite*> Being::emotionSet;
 
 static const int X_SPEECH_OFFSET = 18;
 static const int Y_SPEECH_OFFSET = 60;
@@ -487,7 +486,7 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     const int emotionIndex = mEmotion - 1;
 
     if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
-        emotionSet[emotionIndex]->draw(graphics, px, py);
+        EmoteDB::getAnimation(emotionIndex)->draw(graphics, px, py);
 }
 
 void Being::drawSpeech(int offsetX, int offsetY)
@@ -770,7 +769,7 @@ std::string Being::getHairColor(int index)
     return hairColors[index];
 }
 
-void Being::initializeHair()
+void Being::load()
 {
     // Hairstyles are encoded as negative numbers.  Count how far negative
     // we can go.
@@ -808,24 +807,4 @@ void Being::initializeHair()
             }
         }
     }
-}
-
-void Being::load()
-{
-    // Setup emote sprites
-    for (int i = 0; i <= EmoteDB::getLast(); i++)
-    {
-        EmoteInfo info = EmoteDB::get(i);
-
-        std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
-        int variant = info.sprites.front()->variant;
-        emotionSet.push_back(AnimatedSprite::load(file, variant));
-    }
-
-    initializeHair();
-}
-
-void Being::cleanup()
-{
-    delete_all(emotionSet);
 }
