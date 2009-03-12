@@ -939,6 +939,7 @@ int main(int argc, char *argv[])
                     MonsterDB::load();
                     NPCDB::load();
                     EmoteDB::load();
+                    Being::load(); // Hairstyles
 
                     state = CHAR_CONNECT_STATE;
                     break;

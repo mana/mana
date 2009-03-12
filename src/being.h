@@ -402,6 +402,8 @@ class Being : public Sprite
         virtual AnimatedSprite* getSprite(int index) const
             { return mSprites[index]; }
 
+        static void load();
+
     protected:
         /**
          * Sets the new path for this being.
@@ -450,8 +452,6 @@ class Being : public Sprite
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
         std::vector<std::string> mSpriteColors;
-        ParticleList mStunParticleEffects;
-        ParticleVector mStatusParticleEffects;
         ParticleList mChildParticleEffects;
 
     private:

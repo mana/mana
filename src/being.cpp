@@ -83,8 +83,7 @@ Being::Being(int id, int job, Map *map):
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
     mSpriteColors(VECTOREND_SPRITE, ""),
-    mStatusParticleEffects(&mStunParticleEffects, false),
-    mChildParticleEffects(&mStatusParticleEffects, false),
+    mChildParticleEffects(),
     mUsedTargetCursor(NULL)
 {
     setMap(map);
@@ -576,5 +575,18 @@ void Being::setTargetAnimation(SimpleAnimation* animation)
 {
     mUsedTargetCursor = animation;
     mUsedTargetCursor->reset();
+}
+
+void Being::load()
+{
+    // Hairstyles are encoded as negative numbers. Count how far negative
+    // we can go.
+    int hairstyles = 1;
+
+    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
+    {
+        hairstyles++;
+    }
+    mNumberOfHairstyles = hairstyles;
 }
 
