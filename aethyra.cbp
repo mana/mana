@@ -256,6 +256,8 @@
 		<Unit filename="src\gui\textbox.h" />
 		<Unit filename="src\gui\textfield.cpp" />
 		<Unit filename="src\gui\textfield.h" />
+		<Unit filename="src\gui\textpreview.cpp" />
+		<Unit filename="src\gui\textpreview.h" />
 		<Unit filename="src\gui\textrenderer.h" />
 		<Unit filename="src\gui\trade.cpp" />
 		<Unit filename="src\gui\trade.h" />

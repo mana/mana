@@ -205,6 +205,8 @@ SET(SRCS
     gui/textbox.h
     gui/textfield.cpp
     gui/textfield.h
+    gui/textpreview.cpp
+    gui/textpreview.h
     gui/textrenderer.h
     gui/trade.cpp
     gui/trade.h

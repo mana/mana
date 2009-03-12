@@ -34,6 +34,8 @@
 
 #include "../guichanfwd.h"
 
+#include "widgets/textpreview.h"
+
 class BrowserBox;
 
 class Setup_Colors : public SetupTab, public gcn::ActionListener,
@@ -53,8 +55,13 @@ class Setup_Colors : public SetupTab, public gcn::ActionListener,
         gcn::ListBox *mColorBox;
         gcn::ScrollArea *mScroll;
         BrowserBox *mPreview;
+        TextPreview *mTextPreview;
         gcn::ScrollArea *mPreviewBox;
         int mSelected;
+
+        gcn::Label *mGradTypeLabel;
+        gcn::Slider *mGradTypeSlider;
+        gcn::Label *mGradTypeText;
 
         gcn::Label *mRedLabel;
         gcn::Slider *mRedSlider;
@@ -73,5 +80,6 @@ class Setup_Colors : public SetupTab, public gcn::ActionListener,
 
         void setEntry(gcn::Slider *s, TextField *t, int value);
         void updateColor();
+        void updateGradType();
 };
 #endif

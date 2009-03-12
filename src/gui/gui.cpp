@@ -26,6 +26,7 @@
 
 #include "focushandler.h"
 #include "gui.h"
+#include "palette.h"
 #include "sdlinput.h"
 #include "skin.h"
 #include "truetypefont.h"
@@ -47,11 +48,6 @@
 Gui *gui = 0;
 Viewport *viewport = 0;                    /**< Viewport on the map. */
 SDLInput *guiInput = 0;
-
-// Fonts used in showing hits
-gcn::Font *hitRedFont = 0;
-gcn::Font *hitBlueFont = 0;
-gcn::Font *hitYellowFont = 0;
 
 // Bolded font
 gcn::Font *boldFont = 0;
@@ -176,6 +172,8 @@ void Gui::logic()
     }
     else
         mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
+
+    guiPalette->advanceGradient();
 
     gcn::Gui::logic();
 }
