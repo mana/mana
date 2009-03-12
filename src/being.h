@@ -210,14 +210,12 @@ class Being : public Sprite
         /**
          * Gets the hair color for this being.
          */
-        int getHairColor() const
-        { return mHairColor; }
+        int getHairColor() const { return mHairColor; }
 
         /**
          * Gets the hair style for this being.
          */
-        int getHairStyle() const
-        { return mHairStyle; }
+        int getHairStyle() const { return mHairStyle; }
 
         /**
          * Get the number of hairstyles implemented
@@ -393,12 +391,6 @@ class Being : public Sprite
             mEmotionTime = emote_time;
         }
 
-        static int getHairColorsNr(void);
-
-        static int getHairStylesNr(void);
-
-        static std::string getHairColor(int index);
-
         virtual AnimatedSprite* getSprite(int index) const
             { return mSprites[index]; }
 
@@ -415,15 +407,6 @@ class Being : public Sprite
          */
         virtual void updateCoords() {}
 
-        /**
-         * Trigger visual effect, with components
-         *
-         * \param effectId ID of the effect to trigger
-         * \param sfx Whether to trigger sound effects
-         * \param gfx Whether to trigger graphical effects
-         */
-        void internalTriggerEffect(int effectId, bool sfx, bool gfx);
-
         int mId;                        /**< Unique sprite id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint8 mDirection;               /**< Facing direction */
@@ -433,12 +416,10 @@ class Being : public Sprite
         bool mIsGM;
         bool mParticleEffects;          /**< Whether to display particles or not */
 
-        typedef std::bitset<STATUS_EFFECTS> StatusEffects;
-
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
 
-        static int mNumberOfHairstyles;          /** Number of hair styles in use */
+        static int mNumberOfHairstyles; /** Number of hair styles in use */
 
         Path mPath;
         std::string mSpeech;
