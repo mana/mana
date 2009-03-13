@@ -2,7 +2,7 @@
  *  The Mana World
  *  Copyright (C) 2006  The Mana World Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra based on code from The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -102,12 +102,27 @@ class TextPreview : public gcn::Widget
          */
         void draw(gcn::Graphics *graphics);
 
+        /**
+         * Set opacity for this widget (whether or not to show the background
+         * color)
+         *
+         * @param opaque Whether the widget should be opaque or not
+         */
+        void setOpaque(bool opaque) { mOpaque = opaque; }
+
+        /**
+         * Gets opacity for this widget (whether or not the background color
+         * is shown below the widget)
+         */
+        bool isOpaque() { return mOpaque; }
+
     private:
         gcn::Font *mFont;
         const std::string* mText;
         const gcn::Color* mTextColor;
         const gcn::Color* mBGColor;
         const gcn::Color* mTextBGColor;
+        bool mOpaque;
         bool mShadow;
         bool mOutline;
 };

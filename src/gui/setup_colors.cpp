@@ -60,7 +60,7 @@ Setup_Colors::Setup_Colors() :
     mTextPreview = new TextPreview(&rawmsg);
 
     mPreview = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mPreview->setOpaque(true);
+    mPreview->setOpaque(false);
 
     // Replace this later with a more appropriate link handler. For now, this'll
     // do, as it'll do nothing when clicked on.
@@ -212,8 +212,6 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::HYPERLINK:
                 mPreviewBox->setContent(mPreview);
                 mPreview->clearRows();
-                //char ch = guiPalette->getColorCharAt(mSelected);
-                //std::string msg;
 
                 if (ch == '<')
                 {

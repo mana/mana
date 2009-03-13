@@ -2,7 +2,7 @@
  *  The Mana World
  *  Copyright (C) 2006  The Mana World Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra based on code from The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,12 +35,16 @@ TextPreview::TextPreview(const std::string* text)
     mTextColor = &guiPalette->getColor(Palette::TEXT);
     mTextBGColor = NULL;
     mBGColor = &guiPalette->getColor(Palette::BACKGROUND);
+    mOpaque = false;
 }
 
 void TextPreview::draw(gcn::Graphics* graphics)
 {
-    graphics->setColor(*mBGColor);
-    graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+    if (mOpaque)
+    {
+        graphics->setColor(*mBGColor);
+        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+    }
 
     const std::string ttf = "TrueTypeFont";
 
@@ -50,7 +54,8 @@ void TextPreview::draw(gcn::Graphics* graphics)
         graphics->setColor(*mTextBGColor);
         int x = font->getWidth(*mText) + 1 + 2 * ((mOutline || mShadow) ? 1 :0);
         int y = font->getHeight() + 1 + 2 * ((mOutline || mShadow) ? 1 : 0);
-        graphics->fillRectangle(gcn::Rectangle(1, 1, x, y));
+        if (mOpaque)
+            graphics->fillRectangle(gcn::Rectangle(1, 1, x, y));
     }
 
     TextRenderer::renderText(graphics, *mText, 2, 2,  gcn::Graphics::LEFT,
