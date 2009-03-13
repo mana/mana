@@ -28,6 +28,10 @@
 #include "../textrenderer.h"
 #include "../truetypefont.h"
 
+#include "../../configuration.h"
+
+float TextPreview::mAlpha = config.getValue("guialpha", 0.8);
+
 TextPreview::TextPreview(const std::string* text)
 {
     mText = text;
@@ -40,22 +44,28 @@ TextPreview::TextPreview(const std::string* text)
 
 void TextPreview::draw(gcn::Graphics* graphics)
 {
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+        mAlpha = config.getValue("guialpha", 0.8);
+
     if (mOpaque)
     {
-        graphics->setColor(*mBGColor);
+        graphics->setColor(gcn::Color((int) mBGColor->r,
+                                      (int) mBGColor->g,
+                                      (int) mBGColor->b,
+                                      (int)(mAlpha * 255.0f)));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
 
-    const std::string ttf = "TrueTypeFont";
-
-    if (mTextBGColor && typeid(*mFont).name() == ttf)
+    if (mTextBGColor && typeid(*mFont) == typeid(TrueTypeFont))
     {
         TrueTypeFont *font = static_cast<TrueTypeFont*>(mFont);
-        graphics->setColor(*mTextBGColor);
         int x = font->getWidth(*mText) + 1 + 2 * ((mOutline || mShadow) ? 1 :0);
         int y = font->getHeight() + 1 + 2 * ((mOutline || mShadow) ? 1 : 0);
-        if (mOpaque)
-            graphics->fillRectangle(gcn::Rectangle(1, 1, x, y));
+        graphics->setColor(gcn::Color((int) mTextBGColor->r,
+                                      (int) mTextBGColor->g,
+                                      (int) mTextBGColor->b,
+                                      (int)(mAlpha * 255.0f)));
+        graphics->fillRectangle(gcn::Rectangle(1, 1, x, y));
     }
 
     TextRenderer::renderText(graphics, *mText, 2, 2,  gcn::Graphics::LEFT,

@@ -180,6 +180,7 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
         mTextPreview->setTextColor(
                 &guiPalette->getColor(Palette::TEXT));
         mTextPreview->setTextBGColor(NULL);
+         mTextPreview->setOpaque(false);
         mTextPreview->setShadow(true);
         mTextPreview->setOutline(true);
 
@@ -197,6 +198,7 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::HIGHLIGHT:
             case Palette::SHOP_WARNING:
                 mTextPreview->setTextBGColor(col);
+                //mTextPreview->setOpaque(true);
                 mTextPreview->setOutline(false);
                 mTextPreview->setShadow(false);
                 mPreview->addRow(rawmsg);
@@ -221,7 +223,6 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 {
                     msg = "##" + toString(ch) + rawmsg;
                 }
-                //std::cout << msg << std::endl;
                 mPreview->addRow(msg);
                 break;
             case Palette::PARTICLE:
