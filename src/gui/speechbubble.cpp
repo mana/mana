@@ -25,9 +25,12 @@
 #include <guichan/widgets/label.hpp>
 
 #include "gui.h"
+#include "palette.h"
 #include "scrollarea.h"
 #include "speechbubble.h"
 #include "textbox.h"
+
+#include "../graphics.h"
 
 #include "../utils/gettext.h"
 
@@ -73,6 +76,8 @@ void SpeechBubble::setText(std::string text, bool showName)
 {
     if ((text == mText) && (mCaption->getWidth() <= mSpeechBox->getMinWidth()))
         return;
+
+    graphics->setColor(guiPalette->getColor(Palette::TEXT));
 
     int width = mCaption->getWidth();
     mSpeechBox->setTextWrapped(text, 130 > width ? 130 : width);

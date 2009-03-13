@@ -57,7 +57,7 @@ void Player::setName(const std::string &name)
             mNameColor = &guiPalette->getColor(Palette::GM);
             mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy +
                                   NAME_Y_OFFSET, gcn::Graphics::CENTER,
-                                  &guiPalette->getColor(Palette::GM));
+                                  &guiPalette->getColor(Palette::GM_NAME));
         }
         else
         {
