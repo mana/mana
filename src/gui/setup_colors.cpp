@@ -225,6 +225,22 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 }
                 mPreview->addRow(msg);
                 break;
+            case Palette::UNKNOWN_ITEM:
+            case Palette::GENERIC:
+            case Palette::HEAD:
+            case Palette::USABLE:
+            case Palette::TORSO:
+            case Palette::ONEHAND:
+            case Palette::LEGS:
+            case Palette::FEET:
+            case Palette::TWOHAND:
+            case Palette::SHIELD:
+            case Palette::RING:
+            case Palette::ARMS:
+            case Palette::AMMO:
+                mTextPreview->setFont(boldFont);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
             case Palette::PARTICLE:
             case Palette::EXP_INFO:
             case Palette::PICKUP_INFO:
@@ -241,6 +257,7 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::MONSTER:
                 mTextPreview->setFont(boldFont);
                 mTextPreview->setTextColor(col);
+            case Palette::TYPE_COUNT:
                 break;
         }
 

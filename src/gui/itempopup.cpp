@@ -27,6 +27,7 @@
 
 #include "gui.h"
 #include "itempopup.h"
+#include "palette.h"
 #include "scrollarea.h"
 #include "textbox.h"
 
@@ -166,31 +167,31 @@ gcn::Color ItemPopup::getColor(const std::string& type)
     gcn::Color color;
 
     if (type.compare("generic") == 0)
-        color = 0x21a5b1;
+        color = guiPalette->getColor(Palette::GENERIC);
     else if (type.compare("equip-head") == 0)
-        color = 0x527fa4;
+        color = guiPalette->getColor(Palette::HEAD);
     else if (type.compare("usable") == 0)
-        color = 0x268d24;
+        color = guiPalette->getColor(Palette::USABLE);
     else if (type.compare("equip-torso") == 0)
-        color = 0xd12aa4;
+        color = guiPalette->getColor(Palette::TORSO);
     else if (type.compare("equip-1hand") == 0)
-        color = 0xf42a2a;
+        color = guiPalette->getColor(Palette::ONEHAND);
     else if (type.compare("equip-legs") == 0)
-        color = 0x699900;
+        color = guiPalette->getColor(Palette::LEGS);
     else if (type.compare("equip-feet") == 0)
-        color = 0xaa1d48;
+        color = guiPalette->getColor(Palette::FEET);
     else if (type.compare("equip-2hand") == 0)
-        color = 0xf46d0e;
+        color = guiPalette->getColor(Palette::TWOHAND);
     else if (type.compare("equip-shield") == 0)
-        color = 0x9c2424;
+        color = guiPalette->getColor(Palette::SHIELD);
     else if (type.compare("equip-ring") == 0)
-        color = 0x0000ff;
+        color = guiPalette->getColor(Palette::RING);
     else if (type.compare("equip-arms") == 0)
-        color = 0x9c24e8;
+        color = guiPalette->getColor(Palette::ARMS);
     else if (type.compare("equip-ammo") == 0)
-        color = 0x8b6311;
+        color = guiPalette->getColor(Palette::AMMO);
     else
-        color = 0x000000;
+        color = guiPalette->getColor(Palette::UNKNOWN_ITEM);
 
     return color;
 }

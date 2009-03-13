@@ -69,6 +69,19 @@ class Palette : public gcn::ListModel
             ENTRY(GM_NAME)\
             ENTRY(NPC)\
             ENTRY(MONSTER)\
+            ENTRY(UNKNOWN_ITEM)\
+            ENTRY(GENERIC)\
+            ENTRY(HEAD)\
+            ENTRY(USABLE)\
+            ENTRY(TORSO)\
+            ENTRY(ONEHAND)\
+            ENTRY(LEGS)\
+            ENTRY(FEET)\
+            ENTRY(TWOHAND)\
+            ENTRY(SHIELD)\
+            ENTRY(RING)\
+            ENTRY(ARMS)\
+            ENTRY(AMMO)\
             ENTRY(PARTICLE)\
             ENTRY(EXP_INFO)\
             ENTRY(PICKUP_INFO)\
