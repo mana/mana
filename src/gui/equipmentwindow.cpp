@@ -28,6 +28,7 @@
 #include "button.h"
 #include "equipmentwindow.h"
 #include "itempopup.h"
+#include "palette.h"
 #include "playerbox.h"
 #include "viewport.h"
 
@@ -114,6 +115,22 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
     for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
     {
+        if (i == mSelected)
+        {
+            const gcn::Color color = guiPalette->getColor(Palette::HIGHLIGHT);
+
+            // Set color to the highligh color
+            g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
+            g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
+                                        BOX_WIDTH, BOX_HEIGHT));
+        }
+
+        // Set color black.
+        g->setColor(gcn::Color(0, 0, 0));
+        // Draw box border.
+        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
+                                        BOX_WIDTH, BOX_HEIGHT));
+
         item = (i != EQUIP_AMMO_SLOT) ?
                mInventory->getItem(mEquipment->getEquipment(i)) :
                mInventory->getItem(mEquipment->getArrows());
@@ -124,28 +141,13 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
             g->drawImage(image, mEquipBox[i].posX, mEquipBox[i].posY);
             if (i == EQUIP_AMMO_SLOT)
             {
-                g->setColor(gcn::Color(0, 0, 0));
+                g->setColor(guiPalette->getColor(Palette::TEXT));
                 graphics->drawText(toString(item->getQuantity()),
                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
                                    mEquipBox[i].posY - getFont()->getHeight(),
                                    gcn::Graphics::CENTER);
             }
         }
-
-        if (i == mSelected)
-        {
-            // Set color red.
-            g->setColor(gcn::Color(255, 0, 0));
-        }
-        else
-        {
-            // Set color black.
-            g->setColor(gcn::Color(0, 0, 0));
-        }
-
-        // Draw box border.
-        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
-            BOX_WIDTH, BOX_HEIGHT));
     }
 }
 
