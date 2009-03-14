@@ -21,6 +21,7 @@
  */
 
 #include "emoteshortcutcontainer.h"
+#include "palette.h"
 
 #include "../animatedsprite.h"
 #include "../configuration.h"
@@ -99,7 +100,7 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
         // Draw emote keyboard shortcut.
         const char *key = SDL_GetKeyName(
                          (SDLKey) keyboard.getKeyValue(keyboard.KEY_EMOTE_1 + i));
-        graphics->setColor(0x000000);
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
         g->drawText(key, emoteX + 2, emoteY + 2, gcn::Graphics::LEFT);
 
         if (emoteShortcut->getEmote(i))

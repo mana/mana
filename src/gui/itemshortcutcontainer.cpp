@@ -23,6 +23,7 @@
 #include "inventorywindow.h"
 #include "itemshortcutcontainer.h"
 #include "itempopup.h"
+#include "palette.h"
 #include "viewport.h"
 
 #include "../configuration.h"
@@ -91,7 +92,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
             (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_1 + i));
-        graphics->setColor(0x000000);
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 
         if (itemShortcut->getItem(i) < 0)
