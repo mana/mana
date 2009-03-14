@@ -33,11 +33,39 @@ class TextBox;
 class ItemPopup : public Popup
 {
     public:
+        /**
+         * Constructor. Initializes the item popup.
+         */
         ItemPopup();
+
+        /**
+         * Destructor. Cleans up the item popup on deletion.
+         */
         ~ItemPopup();
 
+        /**
+         * Sets the info to be displayed given a particular item.
+         */
         void setItem(const ItemInfo &item);
+
+        /**
+         * Gets the number of rows that the item popup currently has.
+         */
         unsigned int getNumRows();
+
+        /**
+         * Gets the name of the currently stored item in this popup.
+         */
+        std::string getItemName();
+
+        /**
+         * Updates the colors used within the item popup.
+         */
+        void updateColors();
+
+        /**
+         * Sets the location to display the item popup.
+         */
         void view(int x, int y);
 
     private:
@@ -45,6 +73,7 @@ class ItemPopup : public Popup
         TextBox *mItemDesc;
         TextBox *mItemEffect;
         TextBox *mItemWeight;
+        std::string mItemType;
         ScrollArea *mItemDescScroll;
         ScrollArea *mItemEffectScroll;
         ScrollArea *mItemWeightScroll;

@@ -25,6 +25,7 @@
 
 #include "itemcontainer.h"
 #include "itempopup.h"
+#include "palette.h"
 #include "viewport.h"
 
 #include "../graphics.h"
@@ -51,6 +52,7 @@ ItemContainer::ItemContainer(Inventory *inventory, int offset):
     mOffset(offset)
 {
     mItemPopup = new ItemPopup();
+    mItemPopup->setOpaque(false);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -123,7 +125,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
 
         // Draw item caption
         graphics->setFont(getFont());
-        graphics->setColor(0x000000);
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
         graphics->drawText(
                 (item->isEquipped() ? "Eq." : toString(item->getQuantity())),
                 itemX + gridWidth / 2, itemY + gridHeight - 11,
@@ -255,8 +257,9 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
 
     if (item)
     {
-        mItemPopup->setItem(item->getInfo());
-        mItemPopup->setOpaque(false);
+        if (item->getInfo().getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(item->getInfo());
+        mItemPopup->updateColors();
         mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
     }
     else

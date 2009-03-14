@@ -41,8 +41,10 @@
 ItemPopup::ItemPopup():
     Popup()
 {
+    mItemType = "";
+
     // Item Name
-    mItemName = new gcn::Label("Label");
+    mItemName = new gcn::Label("");
     mItemName->setFont(boldFont);
     mItemName->setPosition(2, 2);
 
@@ -104,12 +106,12 @@ void ItemPopup::setItem(const ItemInfo &item)
         return;
 
     mItemName->setCaption(item.getName());
-    mItemName->setForegroundColor(getColor(item.getType()));
     mItemName->setWidth(boldFont->getWidth(item.getName()));
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);
     mItemWeight->setTextWrapped(_("Weight: ") + toString(item.getWeight()) +
                                 _(" grams"), 196);
+    mItemType = item.getType();
 
     int minWidth = mItemName->getWidth();
 
@@ -162,6 +164,12 @@ void ItemPopup::setItem(const ItemInfo &item)
                       (2 * getFont()->getHeight()));
 }
 
+void ItemPopup::updateColors()
+{
+    mItemName->setForegroundColor(getColor(mItemType));
+    graphics->setColor(guiPalette->getColor(Palette::TEXT));
+}
+
 gcn::Color ItemPopup::getColor(const std::string& type)
 {
     gcn::Color color;
@@ -194,6 +202,11 @@ gcn::Color ItemPopup::getColor(const std::string& type)
         color = guiPalette->getColor(Palette::UNKNOWN_ITEM);
 
     return color;
+}
+
+std::string ItemPopup::getItemName()
+{
+    return mItemName->getCaption();
 }
 
 unsigned int ItemPopup::getNumRows()

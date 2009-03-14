@@ -25,7 +25,6 @@
 #include <guichan/widgets/label.hpp>
 
 #include "gui.h"
-#include "palette.h"
 #include "scrollarea.h"
 #include "speechbubble.h"
 #include "textbox.h"

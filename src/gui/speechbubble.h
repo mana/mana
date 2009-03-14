@@ -32,13 +32,31 @@ class TextBox;
 class SpeechBubble : public Popup
 {
     public:
+        /**
+         * Constructor. Initializes the speech bubble.
+         */
         SpeechBubble();
 
+        /**
+         * Sets the name displayed for the speech bubble, and in what color.
+         */
         void setCaption(const std::string &name,
                         const gcn::Color *color =
                         &guiPalette->getColor(Palette::TEXT));
+
+        /**
+         * Sets the text to be displayed.
+         */
         void setText(std::string text, bool showName = true);
+
+        /**
+         * Sets the location in which the speech bubble will be displayed.
+         */
         void setLocation(int x, int y);
+
+        /**
+         * Gets the number of rows the speech bubble has.
+         */
         unsigned int getNumRows();
 
     private:
