@@ -45,6 +45,16 @@ class TextPreview : public gcn::Widget
         }
 
         /**
+         * Sets the text to use the set alpha value.
+         *
+         * @param alpha whether to use alpha values for the text or not
+         */
+        inline void useTextAlpha(bool alpha) 
+        {
+            mTextAlpha = alpha;
+        }
+
+        /**
          * Sets the color the text background is drawn in. This is only the
          * rectangle directly behind the text, not to full widget.
          *
@@ -123,6 +133,7 @@ class TextPreview : public gcn::Widget
         const gcn::Color* mBGColor;
         const gcn::Color* mTextBGColor;
         static float mAlpha;
+        bool mTextAlpha;
         bool mOpaque;
         bool mShadow;
         bool mOutline;

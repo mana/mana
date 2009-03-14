@@ -61,5 +61,5 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
 
     TextRenderer::renderText(graphics, mText,
             screenX, screenY, gcn::Graphics::CENTER,
-            mColor, mTextFont, mOutline, false, (int) alpha);
+            *mColor, mTextFont, mOutline, false, (int) alpha);
 }

@@ -300,6 +300,11 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         virtual void close();
 
+        /**
+         * Gets the alpha value used by the window, in a GUIChan usable format.
+         */
+        int getGuiAlpha();
+
     private:
         enum ResizeHandles
         {

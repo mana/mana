@@ -177,12 +177,12 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
         mPreview->clearRows();
         mPreviewBox->setContent(mTextPreview);
         mTextPreview->setFont(gui->getFont());
-        mTextPreview->setTextColor(
-                &guiPalette->getColor(Palette::TEXT));
+        mTextPreview->setTextColor(&guiPalette->getColor(Palette::TEXT));
         mTextPreview->setTextBGColor(NULL);
-         mTextPreview->setOpaque(false);
+        mTextPreview->setOpaque(false);
         mTextPreview->setShadow(true);
         mTextPreview->setOutline(true);
+        mTextPreview->useTextAlpha(false);
 
         switch (type)
         {
@@ -190,9 +190,15 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::SHADOW:
             case Palette::OUTLINE:
                 mTextPreview->setFont(gui->getFont());
-                mTextPreview->setOutline(true);
                 mTextPreview->setShadow(type == Palette::SHADOW);
                 mTextPreview->setOutline(type == Palette::OUTLINE);
+                break;
+            case Palette::PROGRESS_BAR:
+                mTextPreview->useTextAlpha(true);
+                mTextPreview->setFont(boldFont);
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(true);
+                mTextPreview->setShadow(false);
                 break;
             case Palette::TAB_HIGHLIGHT:
                 mTextPreview->setFont(gui->getFont());
@@ -201,8 +207,13 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 mTextPreview->setShadow(false);
                 break;
             case Palette::BACKGROUND:
-            case Palette::HIGHLIGHT:
             case Palette::SHOP_WARNING:
+                mTextPreview->setBGColor(col);
+                mTextPreview->setOpaque(true);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
+                break;
+            case Palette::HIGHLIGHT:
                 mTextPreview->setTextBGColor(col);
                 mTextPreview->setOutline(false);
                 mTextPreview->setShadow(false);
@@ -221,13 +232,10 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 mPreview->clearRows();
 
                 if (ch == '<')
-                {
                     msg = toString("@@|") + rawmsg + "@@";
-                }
                 else
-                {
                     msg = "##" + toString(ch) + rawmsg;
-                }
+
                 mPreview->addRow(msg);
                 break;
             case Palette::UNKNOWN_ITEM:
@@ -246,6 +254,7 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 mTextPreview->setFont(boldFont);
                 mTextPreview->setOutline(false);
                 mTextPreview->setShadow(false);
+                break;
             case Palette::PARTICLE:
             case Palette::EXP_INFO:
             case Palette::PICKUP_INFO:

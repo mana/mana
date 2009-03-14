@@ -84,6 +84,7 @@ Palette::Palette() :
     addColor(TEXT, 0x000000, STATIC, _("Text"));
     addColor(SHADOW, 0x000000, STATIC, indent + _("Text Shadow"));
     addColor(OUTLINE, 0x000000, STATIC, indent + _("Text Outline"));
+    addColor(PROGRESS_BAR, 0xffffff, STATIC, indent + _("Progress Bar Labels"));
 
     addColor(BACKGROUND, 0xffffff, STATIC, _("Background"));
 

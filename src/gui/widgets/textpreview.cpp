@@ -35,6 +35,7 @@ float TextPreview::mAlpha = config.getValue("guialpha", 0.8);
 TextPreview::TextPreview(const std::string* text)
 {
     mText = text;
+    mTextAlpha = false;
     mFont = gui->getFont();
     mTextColor = &guiPalette->getColor(Palette::TEXT);
     mTextBGColor = NULL;
@@ -46,6 +47,11 @@ void TextPreview::draw(gcn::Graphics* graphics)
 {
     if (config.getValue("guialpha", 0.8) != mAlpha)
         mAlpha = config.getValue("guialpha", 0.8);
+
+    int alpha = (int) (mAlpha * 255.0f);
+
+    if (!mTextAlpha)
+        alpha = 255;
 
     if (mOpaque)
     {
@@ -69,5 +75,7 @@ void TextPreview::draw(gcn::Graphics* graphics)
     }
 
     TextRenderer::renderText(graphics, *mText, 2, 2,  gcn::Graphics::LEFT,
-            mTextColor, mFont, mOutline, mShadow);
+                             gcn::Color(mTextColor->r, mTextColor->g,
+                                        mTextColor->b, alpha),
+                             mFont, mOutline, mShadow, alpha);
 }

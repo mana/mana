@@ -23,6 +23,7 @@
 #include <guichan/font.hpp>
 
 #include "gui.h"
+#include "palette.h"
 #include "progressbar.h"
 
 #include "../configuration.h"
@@ -133,18 +134,24 @@ void ProgressBar::draw(gcn::Graphics *graphics)
         const int textX = getWidth() / 2;
         const int textY = (getHeight() - f->getHeight()) / 2;
 
+        gcn::Color tempColor = guiPalette->getColor(Palette::OUTLINE);
+
         graphics->setFont(f);
 
-        graphics->setColor(gcn::Color(0, 0, 0, alpha));
+        graphics->setColor(gcn::Color((int) tempColor.r, (int) tempColor.g,
+                                      (int) tempColor.b, alpha));
         graphics->drawText(mText, textX + 1, textY, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX, textY - 1, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX, textY + 1, gcn::Graphics::CENTER);
         graphics->drawText(mText, textX - 1, textY, gcn::Graphics::CENTER);
 
-        graphics->setColor(gcn::Color(255, 255, 255, alpha));
+        tempColor = guiPalette->getColor(Palette::PROGRESS_BAR);
+
+        graphics->setColor(gcn::Color((int) tempColor.r, (int) tempColor.g,
+                                      (int) tempColor.b, alpha));
         graphics->drawText(mText, textX, textY, gcn::Graphics::CENTER);
 
-        graphics->setColor(gcn::Color(0, 0, 0));
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
     }
 }
 

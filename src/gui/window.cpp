@@ -675,6 +675,12 @@ void Window::setGuiAlpha()
     mAlphaChanged = false;
 }
 
+int Window::getGuiAlpha()
+{
+    float alpha = config.getValue("guialpha", 0.8);
+    return (int) (alpha * 255.0f);
+}
+
 Layout &Window::getLayout()
 {
     if (!mLayout) mLayout = new Layout;
