@@ -155,7 +155,6 @@ Setup_Colors::Setup_Colors() :
 
 Setup_Colors::~Setup_Colors()
 {
-    //delete mPreview;
     if (mPreviewBox->getContent() == mPreview)
     {
         delete mTextPreview;
@@ -164,27 +163,6 @@ Setup_Colors::~Setup_Colors()
     {
         delete mPreview;
     }
-    //    delete mTextPreview;
-//    delete mPreviewBox;
-
-/*    delete mGradTypeLabel;
-    delete mGradTypeSlider;
-    delete mGradTypeText;
-
-    delete mRedLabel;
-    delete mRedSlider;
-    delete mRedText;
-
-    delete mGreenLabel;
-    delete mGreenSlider;
-    delete mGreenText;
-
-    delete mBlueLabel;
-    delete mBlueSlider;
-    delete mBlueText;
-
-    delete mColorBox;
-    delete mScroll;*/
 }
 
 void Setup_Colors::action(const gcn::ActionEvent &event)
@@ -237,8 +215,6 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::HYPERLINK:
                 mPreviewBox->setContent(mPreview);
                 mPreview->clearRows();
-                //char ch = guiPalette->getColorCharAt(mSelected);
-                //std::string msg;
 
                 if (ch == '<')
                 {
@@ -248,7 +224,6 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 {
                     msg = "##" + toString(ch) + rawmsg;
                 }
-                //std::cout << msg << std::endl;
                 mPreview->addRow(msg);
                 break;
             case Palette::PARTICLE:

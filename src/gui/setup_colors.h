@@ -62,7 +62,6 @@ class Setup_Colors : public SetupTab, public gcn::ActionListener,
         gcn::Label *mGradTypeLabel;
         gcn::Slider *mGradTypeSlider;
         gcn::Label *mGradTypeText;
-//         Palette::GradientType mGradType;
 
         gcn::Label *mRedLabel;
         gcn::Slider *mRedSlider;

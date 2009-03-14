@@ -79,8 +79,8 @@ Palette::Palette() : mColVector(ColVector(TYPE_COUNT)), mGradVector(),
 {
     std::string indent = "  ";
     addColor(TEXT, 0x000000, STATIC, _("Text"));
-    addColor(SHADOW, 0x000000, STATIC, indent + _("Text Shadow"), 0);
-    addColor(OUTLINE, 0x000000, STATIC, indent + _("Text Outline"), 0);
+    addColor(SHADOW, 0x000000, STATIC, indent + _("Text Shadow"));
+    addColor(OUTLINE, 0x000000, STATIC, indent + _("Text Outline"));
 
     addColor(BACKGROUND, 0xffffff, STATIC, _("Background"));
 
@@ -98,24 +98,22 @@ Palette::Palette() : mColVector(ColVector(TYPE_COUNT)), mGradVector(),
     addColor(LOGGER, 0x919191, STATIC, indent + _("Logger"), 'L');
     addColor(HYPERLINK, 0xe50d0d, STATIC, indent + _("Hyperlink"), '<');
 
-    addColor(BEING, 0xffffff, STATIC, _("Being"), 0);
-    addColor(PC, 0xffffff, STATIC, indent + _("Other Player's Names"), 0);
-    addColor(SELF, 0xff8040, STATIC, indent + _("Own Name"), 0);
-    addColor(GM_NAME, 0x00ff00, STATIC, indent + _("GM Names"), 0);
-    addColor(NPC, 0xc8c8ff, STATIC, indent + _("NPCs"), 0);
-    addColor(MONSTER, 0xff4040, STATIC, indent + _("Monsters"), 0);
+    addColor(BEING, 0xffffff, STATIC, _("Being"));
+    addColor(PC, 0xffffff, STATIC, indent + _("Other Player's Names"));
+    addColor(SELF, 0xff8040, STATIC, indent + _("Own Name"));
+    addColor(GM_NAME, 0x00ff00, STATIC, indent + _("GM Names"));
+    addColor(NPC, 0xc8c8ff, STATIC, indent + _("NPCs"));
+    addColor(MONSTER, 0xff4040, STATIC, indent + _("Monsters"));
 
-    addColor(PARTICLE, 0xffffff, STATIC, _("Particle Effects"), 0);
-    addColor(PICKUP_INFO, 0x28dc28, STATIC, indent + _("Pickup Notification"),
-            0);
-    addColor(EXP_INFO, 0xffff00, STATIC, indent + _("Exp Notification"),0);
+    addColor(PARTICLE, 0xffffff, STATIC, _("Particle Effects"));
+    addColor(PICKUP_INFO, 0x28dc28, STATIC, indent + _("Pickup Notification"));
+    addColor(EXP_INFO, 0xffff00, STATIC, indent + _("Exp Notification"));
     addColor(HIT_PLAYER_MONSTER, 0x0064ff, STATIC,
-            indent + _("Player hits Monster"), 0);
+            indent + _("Player hits Monster"));
     addColor(HIT_MONSTER_PLAYER, 0xff3232, STATIC,
-            indent + _("Monster hits Player"), 0);
-    addColor(HIT_CRITICAL, 0xff0000, RAINBOW,
-            indent + _("Critical Hit"), 0);
-    addColor(MISS, 0xffff00, STATIC, indent + _("Misses"), 0);
+            indent + _("Monster hits Player"));
+    addColor(HIT_CRITICAL, 0xff0000, RAINBOW, indent + _("Critical Hit"));
+    addColor(MISS, 0xffff00, STATIC, indent + _("Misses"));
     commit(true);
 }
 
