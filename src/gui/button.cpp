@@ -24,6 +24,7 @@
 #include <guichan/font.hpp>
 
 #include "button.h"
+#include "palette.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -151,7 +152,7 @@ void Button::draw(gcn::Graphics *graphics)
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), button[mode]);
 
-    graphics->setColor(getForegroundColor());
+    graphics->setColor(guiPalette->getColor(Palette::TEXT));
 
     int textX;
     int textY = getHeight() / 2 - getFont()->getHeight() / 2;

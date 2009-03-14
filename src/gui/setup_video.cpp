@@ -27,9 +27,8 @@
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "checkbox.h"
+#include "label.h"
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
@@ -123,7 +122,7 @@ Setup_Video::Setup_Video():
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
     mSpeechSlider(new Slider(0, 3)),
-    mSpeechLabel(new gcn::Label("")),
+    mSpeechLabel(new Label("")),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
     mFpsSlider(new Slider(10, 200)),
@@ -136,11 +135,11 @@ Setup_Video::Setup_Video():
     mScrollRadiusField(new TextField),
     mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
     mOverlayDetailSlider(new Slider(0, 2)),
-    mOverlayDetailField(new gcn::Label("")),
+    mOverlayDetailField(new Label("")),
     mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
-    mParticleDetailField(new gcn::Label("")),
-    mPickupNotifyLabel(new gcn::Label(_("Show pickup notification"))),
+    mParticleDetailField(new Label("")),
+    mPickupNotifyLabel(new Label(_("Show pickup notification"))),
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
                            mPickupParticleEnabled))
@@ -150,12 +149,12 @@ Setup_Video::Setup_Video():
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    speechLabel = new gcn::Label(_("Overhead text"));
-    alphaLabel = new gcn::Label(_("Gui opacity"));
-    scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
-    scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
-    overlayDetailLabel = new gcn::Label(_("Ambient FX"));
-    particleDetailLabel = new gcn::Label(_("Particle Detail"));
+    speechLabel = new Label(_("Overhead text"));
+    alphaLabel = new Label(_("Gui opacity"));
+    scrollRadiusLabel = new Label(_("Scroll radius"));
+    scrollLazinessLabel = new Label(_("Scroll laziness"));
+    overlayDetailLabel = new Label(_("Ambient FX"));
+    particleDetailLabel = new Label(_("Particle Detail"));
 
     mModeList->setEnabled(true);
 #ifndef USE_OPENGL

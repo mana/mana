@@ -88,6 +88,7 @@ Palette::Palette() :
     addColor(BACKGROUND, 0xffffff, STATIC, _("Background"));
 
     addColor(HIGHLIGHT, 0xebc873, STATIC, _("Highlight"), 'H');
+    addColor(TAB_HIGHLIGHT, 0xff0000, STATIC, indent + _("Tab Highlight"));
     addColor(SHOP_WARNING, 0x910000, STATIC, indent +
             _("Item too expensive"));
 

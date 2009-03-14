@@ -53,6 +53,7 @@ class Palette : public gcn::ListModel
             ENTRY(OUTLINE)\
             ENTRY(BACKGROUND)\
             ENTRY(HIGHLIGHT)\
+            ENTRY(TAB_HIGHLIGHT)\
             ENTRY(SHOP_WARNING)\
             ENTRY(CHAT)\
             ENTRY(GM)\

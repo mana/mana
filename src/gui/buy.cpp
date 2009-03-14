@@ -20,10 +20,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "buy.h"
+#include "label.h"
 #include "scrollarea.h"
 #include "shop.h"
 #include "shoplistbox.h"
@@ -54,14 +53,14 @@ BuyDialog::BuyDialog(Network *network):
     mShopItemList = new ShopListBox(mShopItems, mShopItems);
     mScrollArea = new ScrollArea(mShopItemList);
     mSlider = new Slider(1.0);
-    mQuantityLabel = new gcn::Label("0");
-    mMoneyLabel = new gcn::Label(strprintf(_("Price: %d GP / Total: %d GP"), 0, 0));
+    mQuantityLabel = new Label("0");
+    mMoneyLabel = new Label(strprintf(_("Price: %d GP / Total: %d GP"), 0, 0));
     mIncreaseButton = new Button("+", "+", this);
     mDecreaseButton = new Button("-", "-", this);
     mBuyButton = new Button(_("Buy"), "buy", this);
     mQuitButton = new Button(_("Quit"), "quit", this);
-    mItemDescLabel = new gcn::Label(strprintf(_("Description: %s"), ""));
-    mItemEffectLabel = new gcn::Label(strprintf(_("Effect: %s"), ""));
+    mItemDescLabel = new Label(strprintf(_("Description: %s"), ""));
+    mItemEffectLabel = new Label(strprintf(_("Effect: %s"), ""));
 
     mIncreaseButton->setSize(20, 20);
     mDecreaseButton->setSize(20, 20);

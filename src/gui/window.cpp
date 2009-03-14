@@ -27,6 +27,7 @@
 #include <guichan/exception.hpp>
 
 #include "gui.h"
+#include "palette.h"
 #include "skin.h"
 #include "window.h"
 #include "windowcontainer.h"
@@ -153,7 +154,7 @@ void Window::draw(gcn::Graphics *graphics)
     // Draw title
     if (mShowTitle)
     {
-        g->setColor(gcn::Color(0, 0, 0));
+        g->setColor(guiPalette->getColor(Palette::TEXT));
         g->setFont(getFont());
         g->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }

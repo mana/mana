@@ -20,9 +20,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
+#include "label.h"
 #include "progressbar.h"
 #include "status.h"
 #include "windowcontainer.h"
@@ -47,20 +46,20 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // Status Part
     // ----------------------
 
-    mLvlLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
-    mJobLvlLabel = new gcn::Label(strprintf(_("Job: %d"), 0));
-    mGpLabel = new gcn::Label(strprintf(_("Money: %d GP"), 0));
+    mLvlLabel = new Label(strprintf(_("Level: %d"), 0));
+    mJobLvlLabel = new Label(strprintf(_("Job: %d"), 0));
+    mGpLabel = new Label(strprintf(_("Money: %d GP"), 0));
 
-    mHpLabel = new gcn::Label(_("HP:"));
+    mHpLabel = new Label(_("HP:"));
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
 
-    mXpLabel = new gcn::Label(_("Exp:"));
+    mXpLabel = new Label(_("Exp:"));
     mXpBar = new ProgressBar(1.0f, 80, 15, 143, 192, 211);
 
-    mMpLabel = new gcn::Label(_("MP:"));
+    mMpLabel = new Label(_("MP:"));
     mMpBar = new ProgressBar(1.0f, 80, 15, 26, 102, 230);
 
-    mJobLabel = new gcn::Label(_("Job:"));
+    mJobLabel = new Label(_("Job:"));
     mJobBar = new ProgressBar(1.0f, 80, 15, 220, 135, 203);
 
     // ----------------------
@@ -68,35 +67,35 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // ----------------------
 
     // Static Labels
-    gcn::Label *mStatsTitleLabel = new gcn::Label(_("Stats"));
-    gcn::Label *mStatsTotalLabel = new gcn::Label(_("Total"));
-    gcn::Label *mStatsCostLabel = new gcn::Label(_("Cost"));
+    gcn::Label *mStatsTitleLabel = new Label(_("Stats"));
+    gcn::Label *mStatsTotalLabel = new Label(_("Total"));
+    gcn::Label *mStatsCostLabel = new Label(_("Cost"));
     mStatsTotalLabel->setAlignment(gcn::Graphics::CENTER);
 
     // Derived Stats
-    mStatsAttackLabel = new gcn::Label(_("Attack:"));
-    mStatsDefenseLabel= new gcn::Label(_("Defense:"));
-    mStatsMagicAttackLabel = new gcn::Label(_("M.Attack:"));
-    mStatsMagicDefenseLabel = new gcn::Label(_("M.Defense:"));
-    mStatsAccuracyLabel = new gcn::Label(_("% Accuracy:"));
-    mStatsEvadeLabel = new gcn::Label(_("% Evade:"));
-    mStatsReflexLabel = new gcn::Label(_("% Reflex:"));
+    mStatsAttackLabel = new Label(_("Attack:"));
+    mStatsDefenseLabel= new Label(_("Defense:"));
+    mStatsMagicAttackLabel = new Label(_("M.Attack:"));
+    mStatsMagicDefenseLabel = new Label(_("M.Defense:"));
+    mStatsAccuracyLabel = new Label(_("% Accuracy:"));
+    mStatsEvadeLabel = new Label(_("% Evade:"));
+    mStatsReflexLabel = new Label(_("% Reflex:"));
 
-    mStatsAttackPoints = new gcn::Label;
-    mStatsDefensePoints = new gcn::Label;
-    mStatsMagicAttackPoints = new gcn::Label;
-    mStatsMagicDefensePoints = new gcn::Label;
-    mStatsAccuracyPoints = new gcn::Label;
-    mStatsEvadePoints = new gcn::Label;
-    mStatsReflexPoints = new gcn::Label;
+    mStatsAttackPoints = new Label;
+    mStatsDefensePoints = new Label;
+    mStatsMagicAttackPoints = new Label;
+    mStatsMagicDefensePoints = new Label;
+    mStatsAccuracyPoints = new Label;
+    mStatsEvadePoints = new Label;
+    mStatsReflexPoints = new Label;
 
     // New labels
     for (int i = 0; i < 6; i++)
     {
-        mStatsLabel[i] = new gcn::Label("0");
+        mStatsLabel[i] = new Label("0");
         mStatsLabel[i]->setAlignment(gcn::Graphics::CENTER);
-        mStatsDisplayLabel[i] = new gcn::Label;
-        mPointsLabel[i] = new gcn::Label("0");
+        mStatsDisplayLabel[i] = new Label;
+        mPointsLabel[i] = new Label("0");
         mPointsLabel[i]->setAlignment(gcn::Graphics::CENTER);
     }
     mRemainingStatsPointsLabel = new gcn::Label;
@@ -185,17 +184,11 @@ void StatusWindow::update()
 
     // HP Bar coloration
     if (mPlayer->mHp < int(mPlayer->mMaxHp / 3))
-    {
         mHpBar->setColor(223, 32, 32); // Red
-    }
     else if (mPlayer->mHp < int((mPlayer->mMaxHp / 3) * 2))
-    {
         mHpBar->setColor(230, 171, 34); // Orange
-    }
     else
-    {
         mHpBar->setColor(0, 171, 34); // Green
-    }
 
     mHpBar->setProgress((float) mPlayer->mHp / (float) mPlayer->mMaxHp);
     mMpBar->setProgress((float) mPlayer->mMp / (float) mPlayer->mMaxMp);
@@ -285,28 +278,16 @@ void StatusWindow::action(const gcn::ActionEvent &event)
     if (event.getId().length() == 3)
     {
         if (event.getId() == "STR")
-        {
             player_node->raiseAttribute(LocalPlayer::STR);
-        }
         if (event.getId() == "AGI")
-        {
             player_node->raiseAttribute(LocalPlayer::AGI);
-        }
         if (event.getId() == "VIT")
-        {
             player_node->raiseAttribute(LocalPlayer::VIT);
-        }
         if (event.getId() == "INT")
-        {
             player_node->raiseAttribute(LocalPlayer::INT);
-        }
         if (event.getId() == "DEX")
-        {
             player_node->raiseAttribute(LocalPlayer::DEX);
-        }
         if (event.getId() == "LUK")
-        {
             player_node->raiseAttribute(LocalPlayer::LUK);
-        }
     }
 }

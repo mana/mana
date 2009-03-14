@@ -25,6 +25,8 @@
 #include "tab.h"
 #include "tabbedarea.h"
 
+#include "../palette.h"
+
 #include "../../configuration.h"
 #include "../../graphics.h"
 
@@ -124,13 +126,17 @@ void Tab::draw(gcn::Graphics *graphics)
         {
             mode = TAB_SELECTED;
             // if tab is selected, it doesnt need to highlight activity
-            mLabel->setForegroundColor(gcn::Color(0, 0, 0));
+            mLabel->setForegroundColor(guiPalette->getColor(Palette::TEXT));
             mHighlighted = false;
         }
         else if (mHighlighted)
         {
             mode = TAB_HIGHLIGHTED;
-            mLabel->setForegroundColor(gcn::Color(255, 0, 0));
+            mLabel->setForegroundColor(guiPalette->getColor(Palette::TAB_HIGHLIGHT));
+        }
+        else
+        {
+            mLabel->setForegroundColor(guiPalette->getColor(Palette::TEXT));
         }
     }
 

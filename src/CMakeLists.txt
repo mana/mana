@@ -117,6 +117,8 @@ SET(SRCS
     gui/itemshortcutcontainer.h\
     gui/item_amount.cpp
     gui/item_amount.h
+    gui/label.cpp
+    gui/label.h
     gui/linkhandler.h
     gui/listbox.cpp
     gui/listbox.h

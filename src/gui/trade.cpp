@@ -22,13 +22,12 @@
 
 #include <sstream>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "chat.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "label.h"
 #include "scrollarea.h"
 #include "textfield.h"
 #include "trade.h"
@@ -47,7 +46,7 @@
 #include "../utils/stringutils.h"
 
 TradeWindow::TradeWindow(Network *network):
-    Window(_("Trade: You")),
+    Window("Trade"),
     mNetwork(network),
     mMyInventory(new Inventory(INVENTORY_SIZE, 2)),
     mPartnerInventory(new Inventory(INVENTORY_SIZE, 2))
@@ -78,8 +77,8 @@ TradeWindow::TradeWindow(Network *network):
 
     mPartnerScroll = new ScrollArea(mPartnerItemContainer);
 
-    mMoneyLabel = new gcn::Label(strprintf(_("You get %d GP."), 0));
-    mMoneyLabel2 = new gcn::Label(_("You give:"));
+    mMoneyLabel = new Label(strprintf(_("You get %d GP."), 0));
+    mMoneyLabel2 = new Label(_("You give:"));
     mMoneyField = new TextField;
     mMoneyField->setWidth(50);
 

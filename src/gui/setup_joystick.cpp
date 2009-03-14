@@ -20,10 +20,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "checkbox.h"
+#include "label.h"
 #include "setup_joystick.h"
 
 #include "widgets/layouthelper.h"
@@ -36,7 +35,7 @@
 extern Joystick *joystick;
 
 Setup_Joystick::Setup_Joystick():
-    mCalibrateLabel(new gcn::Label(_("Press the button to start calibration"))),
+    mCalibrateLabel(new Label(_("Press the button to start calibration"))),
     mCalibrateButton(new Button(_("Calibrate"), "calibrate", this)),
     mJoystickEnabled(new CheckBox(_("Enable joystick")))
 {

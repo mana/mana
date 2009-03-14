@@ -23,12 +23,12 @@
 #include <cmath>
 
 #include <guichan/listmodel.hpp>
-#include <guichan/widgets/label.hpp>
 #include <guichan/widgets/slider.hpp>
 
 #include "browserbox.h"
 #include "gui.h"
 #include "itemlinkhandler.h"
+#include "label.h"
 #include "listbox.h"
 #include "palette.h"
 #include "scrollarea.h"
@@ -71,7 +71,7 @@ Setup_Colors::Setup_Colors() :
     mPreviewBox->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_NEVER);
 
-    mGradTypeLabel = new gcn::Label(_("Type: "));
+    mGradTypeLabel = new Label(_("Type: "));
 
     mGradTypeSlider = new Slider(0, 2);
     mGradTypeSlider->setWidth(160);
@@ -80,9 +80,9 @@ Setup_Colors::Setup_Colors() :
     mGradTypeSlider->addActionListener(this);
     mGradTypeSlider->setEnabled(false);
 
-    mGradTypeText = new gcn::Label();
+    mGradTypeText = new Label();
 
-    mRedLabel = new gcn::Label(_("Red: "));
+    mRedLabel = new Label(_("Red: "));
 
     mRedText = new TextField();
     mRedText->setWidth(40);
@@ -98,7 +98,7 @@ Setup_Colors::Setup_Colors() :
     mRedSlider->addActionListener(this);
     mRedSlider->setEnabled(false);
 
-    mGreenLabel = new gcn::Label(_("Green: "));
+    mGreenLabel = new Label(_("Green: "));
 
     mGreenText = new TextField();
     mGreenText->setWidth(40);
@@ -114,7 +114,7 @@ Setup_Colors::Setup_Colors() :
     mGreenSlider->addActionListener(this);
     mGreenSlider->setEnabled(false);
 
-    mBlueLabel = new gcn::Label(_("Blue: "));
+    mBlueLabel = new Label(_("Blue: "));
 
     mBlueText = new TextField();
     mBlueText->setWidth(40);
@@ -193,6 +193,12 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 mTextPreview->setOutline(true);
                 mTextPreview->setShadow(type == Palette::SHADOW);
                 mTextPreview->setOutline(type == Palette::OUTLINE);
+                break;
+            case Palette::TAB_HIGHLIGHT:
+                mTextPreview->setFont(gui->getFont());
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
                 break;
             case Palette::BACKGROUND:
             case Palette::HIGHLIGHT:

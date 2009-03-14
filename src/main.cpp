@@ -29,8 +29,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include <libxml/parser.h>
 
 #include <SDL/SDL_ttf.h>
@@ -57,6 +55,7 @@
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/gui.h"
+#include "gui/label.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
 #include "gui/palette.h"
@@ -776,11 +775,11 @@ int main(int argc, char *argv[])
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
-    gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
+    gcn::Label *versionLabel = new Label(PACKAGE_VERSION);
     top->add(versionLabel, 2, 2);
 #endif
     ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
-    gcn::Label *progressLabel = new gcn::Label();
+    gcn::Label *progressLabel = new Label();
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);

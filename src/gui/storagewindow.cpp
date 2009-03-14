@@ -24,12 +24,11 @@
 #include <guichan/font.hpp>
 #include <guichan/mouseinput.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "label.h"
 #include "progressbar.h"
 #include "scrollarea.h"
 #include "storagewindow.h"
@@ -75,7 +74,7 @@ StorageWindow::StorageWindow(Network *network, int invSize):
 
     mUsedSlots = toString(player_node->getStorage()->getNumberOfSlotsUsed());
 
-    mSlotsLabel = new gcn::Label(_("Slots: "));
+    mSlotsLabel = new Label(_("Slots: "));
 
     mSlotsBar = new ProgressBar(1.0f, 100, 20, 225, 200, 25);
 

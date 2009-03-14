@@ -23,10 +23,9 @@
 #include <string>
 #include <vector>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "checkbox.h"
+#include "label.h"
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
@@ -138,7 +137,7 @@ public:
         for (unsigned int r = 0; r < player_names->size(); ++r)
         {
             std::string name = (*player_names)[r];
-            gcn::Widget *widget = new gcn::Label(name);
+            gcn::Widget *widget = new Label(name);
             mWidgets.push_back(widget);
             gcn::ListModel *playerRelation = new PlayerRelationListModel();
 
@@ -248,7 +247,7 @@ Setup_Players::Setup_Players():
     for (int i = 0; i < COLUMNS_NR; i++)
     {
         mPlayerTableTitleModel->set(0, i,
-                new gcn::Label(gettext(table_titles[i])));
+                new Label(gettext(table_titles[i])));
     }
 
     mPlayerTitleTable->setLinewiseSelection(true);
@@ -258,7 +257,7 @@ Setup_Players::Setup_Players():
     mPlayerTable->setLinewiseSelection(true);
     mPlayerTable->addActionListener(this);
 
-    gcn::Label *ignore_action_label = new gcn::Label(_("When ignoring:"));
+    gcn::Label *ignore_action_label = new Label(_("When ignoring:"));
 
     mIgnoreActionChoicesBox->setActionEventId(ACTION_STRATEGY);
     mIgnoreActionChoicesBox->addActionListener(this);

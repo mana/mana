@@ -20,10 +20,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "checkbox.h"
+#include "label.h"
 #include "listbox.h"
 #include "login.h"
 #include "ok_dialog.h"
@@ -49,11 +48,11 @@ static const int FIELD_WIDTH = LOGIN_DIALOG_WIDTH - 70;
 LoginDialog::LoginDialog(LoginData *loginData):
     Window(_("Login")), mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label(_("Name:"));
-    gcn::Label *passLabel = new gcn::Label(_("Password:"));
-    gcn::Label *serverLabel = new gcn::Label(_("Server:"));
-    gcn::Label *portLabel = new gcn::Label(_("Port:"));
-    gcn::Label *dropdownLabel = new gcn::Label(_("Recent:"));
+    gcn::Label *userLabel = new Label(_("Name:"));
+    gcn::Label *passLabel = new Label(_("Password:"));
+    gcn::Label *serverLabel = new Label(_("Server:"));
+    gcn::Label *portLabel = new Label(_("Port:"));
+    gcn::Label *dropdownLabel = new Label(_("Recent:"));
     std::vector<std::string> dfltServer;
     dfltServer.push_back("www.aethyra.org"); 
     dfltServer.push_back("www.aethyra.org");

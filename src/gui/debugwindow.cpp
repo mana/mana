@@ -20,9 +20,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "debugwindow.h"
+#include "label.h"
 #include "viewport.h"
 
 #include "widgets/layout.h"
@@ -43,12 +42,12 @@ DebugWindow::DebugWindow():
     setCloseButton(true);
     setDefaultSize(400, 60, ImageRect::CENTER);
 
-    mFPSLabel = new gcn::Label("0 FPS");
-    mMusicFileLabel = new gcn::Label("Music: ");
-    mMapLabel = new gcn::Label("Map: ");
-    mMiniMapLabel = new gcn::Label("Mini-Map: ");
-    mTileMouseLabel = new gcn::Label("Mouse: 0, 0");
-    mParticleCountLabel = new gcn::Label("Particle count: 0");
+    mFPSLabel = new Label("0 FPS");
+    mMusicFileLabel = new Label("Music: ");
+    mMapLabel = new Label("Map: ");
+    mMiniMapLabel = new Label("Mini-Map: ");
+    mTileMouseLabel = new Label("Mouse: 0, 0");
+    mParticleCountLabel = new Label("Particle count: 0");
 
     place(0, 0, mFPSLabel, 3);
     place(3, 0, mTileMouseLabel);
