@@ -127,7 +127,7 @@ Palette::~Palette()
          col != colEnd; ++col)
     {
         configName = &ColorTypeNames[col->type];
-        config.setValue(*configName + "Gradient", col->comittedGrad);
+        config.setValue(*configName + "Gradient", col->committedGrad);
         if (col->grad == STATIC)
         {
             config.setValue(*configName, toString(col->getRGB()));
