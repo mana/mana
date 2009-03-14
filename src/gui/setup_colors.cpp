@@ -198,7 +198,6 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::HIGHLIGHT:
             case Palette::SHOP_WARNING:
                 mTextPreview->setTextBGColor(col);
-                //mTextPreview->setOpaque(true);
                 mTextPreview->setOutline(false);
                 mTextPreview->setShadow(false);
                 mPreview->addRow(rawmsg);
