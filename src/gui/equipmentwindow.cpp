@@ -63,6 +63,7 @@ EquipmentWindow::EquipmentWindow():
     mSelected(-1)
 {
     mItemPopup = new ItemPopup();
+    mItemPopup->setOpaque(false);
 
     // Control that shows the Player
     mPlayerBox = new PlayerBox;
@@ -235,8 +236,9 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        mItemPopup->setItem(item->getInfo());
-        mItemPopup->setOpaque(false);
+        if (item->getInfo().getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(item->getInfo());
+        mItemPopup->updateColors();
         mItemPopup->view(x + getX(), y + getY());
     }
     else
