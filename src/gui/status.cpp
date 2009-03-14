@@ -98,7 +98,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
         mPointsLabel[i] = new Label("0");
         mPointsLabel[i]->setAlignment(gcn::Graphics::CENTER);
     }
-    mRemainingStatsPointsLabel = new gcn::Label;
+    mRemainingStatsPointsLabel = new Label;
 
     // Set button events Id
     mStatsButton[0] = new Button("+", "STR", this);
