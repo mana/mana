@@ -96,6 +96,16 @@ void Slider::init()
         vGrip = slider->getSubImage(x, y, w, h);
 
         slider->decRef();
+
+        hStart->setAlpha(mAlpha);
+        hMid->setAlpha(mAlpha);
+        hEnd->setAlpha(mAlpha);
+        hGrip->setAlpha(mAlpha);
+
+        vStart->setAlpha(mAlpha);
+        vMid->setAlpha(mAlpha);
+        vEnd->setAlpha(mAlpha);
+        vGrip->setAlpha(mAlpha);
     }
 
     mInstances++;
