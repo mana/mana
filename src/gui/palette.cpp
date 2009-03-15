@@ -296,9 +296,9 @@ void Palette::advanceGradient ()
 
                 const gcn::Color* col = &mGradVector[i]->testColor;
 
-                mGradVector[i]->color.r = (colVal) % (col->r + 1);
-                mGradVector[i]->color.g = (colVal) % (col->g + 1);
-                mGradVector[i]->color.b = (colVal) % (col->b + 1);
+                mGradVector[i]->color.r = ((colVal * col->r) / 255) % (col->r + 1);
+                mGradVector[i]->color.g = ((colVal * col->g) / 255) % (col->g + 1);
+                mGradVector[i]->color.b = ((colVal * col->b) / 255) % (col->b + 1);
             }
             if (mGradVector[i]->grad == SPECTRUM)
             {
