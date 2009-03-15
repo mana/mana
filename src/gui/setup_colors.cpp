@@ -275,10 +275,14 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 break;
         }
 
-        if (grad != Palette::STATIC)
+        if (grad != Palette::STATIC && grad != Palette::PULSE)
         { // If nonstatic color, don't display the current, but the committed
           // color at the sliders
             col = &guiPalette->getCommittedColor(type);
+        }
+        else if (grad == Palette::PULSE)
+        {
+            col = &guiPalette->getTestColor(type);
         }
 
         setEntry(mRedSlider, mRedText, col->r);
@@ -381,7 +385,7 @@ void Setup_Colors::updateGradType()
             (grad == Palette::PULSE) ? _("Pulse") :
             (grad == Palette::RAINBOW) ? _("Rainbow") : _("Spectrum"));
 
-    bool enable = (grad == Palette::STATIC);
+    bool enable = (grad == Palette::STATIC || grad == Palette::PULSE);
     mRedText->setEnabled(enable);
     mRedSlider->setEnabled(enable);
     mGreenText->setEnabled(enable);
@@ -406,5 +410,12 @@ void Setup_Colors::updateColor()
                 static_cast<int>(mRedSlider->getValue()),
                 static_cast<int>(mGreenSlider->getValue()),
                 static_cast<int>(mBlueSlider->getValue()));
+    }
+    else if (grad == Palette::PULSE)
+    {
+        guiPalette->setTestColor(type, gcn::Color(
+                static_cast<int>(mRedSlider->getValue()),
+                static_cast<int>(mGreenSlider->getValue()),
+                static_cast<int>(mBlueSlider->getValue())));
     }
 }

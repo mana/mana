@@ -151,6 +151,25 @@ class Palette : public gcn::ListModel
             { return mColVector[type].committedColor; }
 
         /**
+         * Gets the test color associated with the specified type.
+         *
+         * @param type the color type requested
+         *
+         * @return the requested test color
+         */
+        inline const gcn::Color& getTestColor(ColorType type)
+            { return mColVector[type].testColor; }
+
+        /**
+         * Sets the test color associated with the specified type.
+         *
+         * @param type the color type requested
+         * @param color the color that should be tested
+         */
+        inline void setTestColor(ColorType type, gcn::Color color)
+            { mColVector[type].testColor = color; }
+
+        /**
          * Gets the GradientType associated with the specified type.
          *
          * @param type the color type of the color
@@ -259,6 +278,7 @@ class Palette : public gcn::ListModel
         {
             ColorType type;
             gcn::Color color;
+            gcn::Color testColor;
             gcn::Color committedColor;
             std::string text;
             char ch;

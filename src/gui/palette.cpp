@@ -52,12 +52,11 @@ std::string Palette::getConfigName(const std::string& typeName)
     int pos = 5;
     for (unsigned int i = 0; i < typeName.length(); i++)
     {
-        if (i==0 || typeName[i] == '_')
+        if (i == 0 || typeName[i] == '_')
         {
             if (i > 0)
-            {
                 i++;
-            }
+
             res[pos] = typeName[i];
         }
         else
@@ -144,7 +143,7 @@ Palette::~Palette()
     {
         configName = &ColorTypeNames[col->type];
         config.setValue(*configName + "Gradient", col->committedGrad);
-        if (col->grad == STATIC)
+        if (col->grad == STATIC || col->grad == PULSE)
         {
             config.setValue(*configName, toString(col->getRGB()));
         }
@@ -154,7 +153,7 @@ Palette::~Palette()
 const gcn::Color& Palette::getColor(char c, bool &valid)
  {
     for (ColVector::const_iterator col = mColVector.begin(),
-            colEnd = mColVector.end(); col != colEnd; ++col)
+         colEnd = mColVector.end(); col != colEnd; ++col)
     {
         if (col->ch == c)
         {
@@ -222,9 +221,13 @@ void Palette::commit(bool commitNonStatic)
          i != iEnd; ++i)
     {
         i->committedGrad = i->grad;
-        if (commitNonStatic || i->grad == STATIC || i->grad == PULSE)
+        if (commitNonStatic || i->grad == STATIC)
         {
             i->committedColor = i->color;
+        }
+        else if (i->grad == PULSE)
+        {
+            i->committedColor = i->testColor;
         }
     }
 }
@@ -240,7 +243,13 @@ void Palette::rollback()
             setGradient(i->type, i->committedGrad);
         }
         setColor(i->type, i->committedColor.r, i->committedColor.g,
-                i->committedColor.b);
+                 i->committedColor.b);
+        if (i->grad == PULSE)
+        {
+            i->testColor.r = i->committedColor.r;
+            i->testColor.g = i->committedColor.g;
+            i->testColor.b = i->committedColor.b;
+        }
     }
 }
 
@@ -282,9 +291,10 @@ void Palette::advanceGradient ()
 
             if (mGradVector[i]->grad == PULSE)
             {
-                colVal =  (int) (255.0 * (sin(M_PI * (mGradVector[i]->gradientIndex) / 255) + 1) / 2);
+                colVal = (int) (255.0 * (sin(M_PI * 
+                         (mGradVector[i]->gradientIndex) / 255) + 1) / 2);
 
-                const gcn::Color* col = &mGradVector[i]->committedColor;
+                const gcn::Color* col = &mGradVector[i]->testColor;
 
                 mGradVector[i]->color.r = (colVal) % (col->r + 1);
                 mGradVector[i]->color.g = (colVal) % (col->g + 1);
@@ -294,11 +304,13 @@ void Palette::advanceGradient ()
             {
                 if (colIndex % 2)
                 { // falling curve
-                    colVal = (int)(255.0 * (cos(M_PI * pos / GRADIENT_DELAY) + 1) / 2);
+                    colVal = (int)(255.0 * (cos(M_PI * pos / GRADIENT_DELAY) +
+                             1) / 2);
                 }
                 else
                 { // ascending curve
-                    colVal = (int)(255.0 * (cos(M_PI * (GRADIENT_DELAY-pos) / GRADIENT_DELAY) + 1) / 2);
+                    colVal = (int)(255.0 * (cos(M_PI * (GRADIENT_DELAY-pos) /
+                             GRADIENT_DELAY) + 1) / 2);
                 }
 
                 mGradVector[i]->color.r =
