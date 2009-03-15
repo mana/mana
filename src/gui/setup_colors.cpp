@@ -251,6 +251,7 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::ARMS:
             case Palette::AMMO:
                 mTextPreview->setFont(boldFont);
+                mTextPreview->setTextColor(col);
                 mTextPreview->setOutline(false);
                 mTextPreview->setShadow(false);
                 break;
