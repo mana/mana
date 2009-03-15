@@ -98,6 +98,7 @@ class Palette : public gcn::ListModel
         /** Colors can be static or can alter over time. */
         enum GradientType {
             STATIC,
+            PULSE,
             SPECTRUM,
             RAINBOW
         };
@@ -147,9 +148,7 @@ class Palette : public gcn::ListModel
          * @return the requested committed color
          */
         inline const gcn::Color& getCommittedColor(ColorType type)
-        {
-            return mColVector[type].committedColor;
-        }
+            { return mColVector[type].committedColor; }
 
         /**
          * Gets the GradientType associated with the specified type.
@@ -159,9 +158,7 @@ class Palette : public gcn::ListModel
          * @return the gradient type of the color with the given index
          */
         inline GradientType getGradientType(ColorType type)
-        {
-            return mColVector[type].grad;
-        }
+            { return mColVector[type].grad; }
 
         /**
         * Get the character used by the specified color.
@@ -170,10 +167,7 @@ class Palette : public gcn::ListModel
         *
         * @return the color char of the color with the given index
         */
-        inline char getColorChar(ColorType type)
-        {
-            return mColVector[type].ch;
-        }
+        inline char getColorChar(ColorType type) { return mColVector[type].ch; }
 
         /**
          * Sets the color for the specified type.
@@ -221,10 +215,7 @@ class Palette : public gcn::ListModel
         /**
          * Commit the colors
          */
-        inline void commit()
-        {
-            commit(false);
-        }
+        inline void commit() { commit(false); }
 
         /**
          * Rollback the colors
@@ -286,7 +277,8 @@ class Palette : public gcn::ListModel
                 ColorElem::gradientIndex = rand();
             }
 
-            inline int getRGB() {
+            inline int getRGB()
+            {
                 return (committedColor.r << 16) | (committedColor.g << 8) |
                         committedColor.b;
             }

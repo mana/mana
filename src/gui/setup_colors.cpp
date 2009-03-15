@@ -73,7 +73,7 @@ Setup_Colors::Setup_Colors() :
 
     mGradTypeLabel = new Label(_("Type: "));
 
-    mGradTypeSlider = new Slider(0, 2);
+    mGradTypeSlider = new Slider(0, 3);
     mGradTypeSlider->setWidth(160);
     mGradTypeSlider->setActionEventId("slider_grad");
     mGradTypeSlider->setValue(0);
@@ -378,6 +378,7 @@ void Setup_Colors::updateGradType()
 
     mGradTypeText->setCaption(
             (grad == Palette::STATIC) ? _("Static") :
+            (grad == Palette::PULSE) ? _("Pulse") :
             (grad == Palette::RAINBOW) ? _("Rainbow") : _("Spectrum"));
 
     bool enable = (grad == Palette::STATIC);

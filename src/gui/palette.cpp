@@ -33,7 +33,7 @@
 
 const gcn::Color Palette::BLACK = gcn::Color(0, 0, 0);
 
-const gcn::Color Palette::RAINBOW_COLORS[8] = {
+const gcn::Color Palette::RAINBOW_COLORS[7] = {
     gcn::Color(255, 0, 0),
     gcn::Color(255, 153, 0),
     gcn::Color(255, 255, 0),
@@ -73,7 +73,7 @@ std::string Palette::getConfigName(const std::string& typeName)
 
 DEFENUMNAMES(ColorType, COLOR_TYPE);
 
-const int Palette::GRADIENT_DELAY = 20;
+const int Palette::GRADIENT_DELAY = 40;
 
 Palette::Palette() : 
     mRainbowTime(tick_time),
@@ -89,7 +89,7 @@ Palette::Palette() :
     addColor(BACKGROUND, 0xffffff, STATIC, _("Background"));
 
     addColor(HIGHLIGHT, 0xebc873, STATIC, _("Highlight"), 'H');
-    addColor(TAB_HIGHLIGHT, 0xff0000, STATIC, indent + _("Tab Highlight"));
+    addColor(TAB_HIGHLIGHT, 0xff0000, PULSE, indent + _("Tab Highlight"));
     addColor(SHOP_WARNING, 0x910000, STATIC, indent +
             _("Item too expensive"));
 
@@ -222,7 +222,7 @@ void Palette::commit(bool commitNonStatic)
          i != iEnd; ++i)
     {
         i->committedGrad = i->grad;
-        if (commitNonStatic || i->grad == STATIC)
+        if (commitNonStatic || i->grad == STATIC || i->grad == PULSE)
         {
             i->committedColor = i->color;
         }
@@ -245,8 +245,8 @@ void Palette::rollback()
 }
 
 void Palette::addColor(Palette::ColorType type, int rgb,
-        Palette::GradientType grad,
-        const std::string &text, char c)
+                       Palette::GradientType grad,
+                       const std::string &text, char c)
 {
     const std::string *configName = &ColorTypeNames[type];
     gcn::Color trueCol = (int)config.getValue(*configName, rgb);
@@ -263,7 +263,7 @@ void Palette::advanceGradient ()
     if (get_elapsed_time(mRainbowTime) > 5)
     {
         int pos, colIndex, colVal;
-        // For slower systems, advance can be greater than one (adcanve > 1
+        // For slower systems, advance can be greater than one (advance > 1
         // skips advance-1 steps). Should make gradient look the same
         // independent of the framerate.
         int advance = get_elapsed_time(mRainbowTime) / 5;
@@ -273,25 +273,32 @@ void Palette::advanceGradient ()
         {
             mGradVector[i]->gradientIndex =
                     (mGradVector[i]->gradientIndex + advance) %
-                    (GRADIENT_DELAY *
-                    ((mGradVector[i]->grad == SPECTRUM) ? 6 :
-                    RAINBOW_COLOR_COUNT));
+                    (GRADIENT_DELAY * ((mGradVector[i]->grad == SPECTRUM) ?
+                    (mGradVector[i]->grad == PULSE) ? 255 : 6 :
+                     RAINBOW_COLOR_COUNT));
 
             pos = mGradVector[i]->gradientIndex % GRADIENT_DELAY;
             colIndex = mGradVector[i]->gradientIndex / GRADIENT_DELAY;
 
+            if (mGradVector[i]->grad == PULSE)
+            {
+                colVal =  (int) (255.0 * (sin(M_PI * (mGradVector[i]->gradientIndex) / 255) + 1) / 2);
+
+                const gcn::Color* col = &mGradVector[i]->committedColor;
+
+                mGradVector[i]->color.r = (colVal) % (col->r + 1);
+                mGradVector[i]->color.g = (colVal) % (col->g + 1);
+                mGradVector[i]->color.b = (colVal) % (col->b + 1);
+            }
             if (mGradVector[i]->grad == SPECTRUM)
             {
                 if (colIndex % 2)
                 { // falling curve
-                    colVal = (int)(255.0 *
-                            (cos(M_PI * pos / GRADIENT_DELAY) + 1) / 2);
+                    colVal = (int)(255.0 * (cos(M_PI * pos / GRADIENT_DELAY) + 1) / 2);
                 }
                 else
                 { // ascending curve
-                    colVal = (int)(255.0 *
-                            (cos(M_PI * (GRADIENT_DELAY-pos) / GRADIENT_DELAY) +
-                            1) / 2);
+                    colVal = (int)(255.0 * (cos(M_PI * (GRADIENT_DELAY-pos) / GRADIENT_DELAY) + 1) / 2);
                 }
 
                 mGradVector[i]->color.r =
@@ -304,7 +311,7 @@ void Palette::advanceGradient ()
                         (colIndex == 3 || colIndex == 4) ? 255 :
                         (colIndex == 2 || colIndex == 5) ? colVal : 0;
             }
-            else
+            else if (mGradVector[i]->grad == RAINBOW)
             {
                 const gcn::Color* startCol = &RAINBOW_COLORS[colIndex];
                 const gcn::Color* destCol =
@@ -313,20 +320,18 @@ void Palette::advanceGradient ()
                 startColVal = (cos(M_PI * pos / GRADIENT_DELAY) + 1) / 2;
                 destColVal = 1 - startColVal;
 
-                mGradVector[i]->color.r =(int)(
-                        startColVal * startCol->r +
-                        destColVal * destCol->r);
+                mGradVector[i]->color.r =(int)(startColVal * startCol->r +
+                                               destColVal * destCol->r);
 
-                mGradVector[i]->color.g =(int)(
-                        startColVal * startCol->g +
-                        destColVal * destCol->g);
+                mGradVector[i]->color.g =(int)(startColVal * startCol->g +
+                                               destColVal * destCol->g);
 
-                mGradVector[i]->color.b =(int)(
-                        startColVal * startCol->b +
-                        destColVal * destCol->b);
+                mGradVector[i]->color.b =(int)(startColVal * startCol->b +
+                                               destColVal * destCol->b);
             }
         }
 
         mRainbowTime = tick_time;
     }
 }
+
