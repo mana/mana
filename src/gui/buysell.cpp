@@ -33,6 +33,7 @@
 BuySellDialog::BuySellDialog(Network *network):
     Window(_("Shop")), mNetwork(network)
 {
+    setWindowName("BuySell");
     Button *buyButton = 0;
     static const char *buttonNames[] = {
         N_("Buy"), N_("Sell"), N_("Cancel"), 0
