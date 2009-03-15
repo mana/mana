@@ -40,7 +40,7 @@ DebugWindow::DebugWindow():
 
     setResizable(true);
     setCloseButton(true);
-    setDefaultSize(400, 60, ImageRect::CENTER);
+    setDefaultSize(400, 100, ImageRect::CENTER);
 
     mFPSLabel = new Label("0 FPS");
     mMusicFileLabel = new Label("Music: ");
