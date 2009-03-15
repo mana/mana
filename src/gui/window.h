@@ -266,7 +266,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Reset the win pos and size to default. Don't forget to set defaults
          * first.
          */
-        void resetToDefaultSize();
+        virtual void resetToDefaultSize();
 
         /**
          * Gets the layout handler for this window.

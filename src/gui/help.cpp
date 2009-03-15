@@ -40,16 +40,17 @@ HelpWindow::HelpWindow():
     setWindowName(_("Help"));
     setResizable(true);
 
+    setDefaultSize(500, 400, ImageRect::CENTER);
+
     mBrowserBox = new BrowserBox();
     mBrowserBox->setOpaque(false);
     mScrollArea = new ScrollArea(mBrowserBox);
     Button *okButton = new Button(_("Close"), "close", this);
 
-    mScrollArea->setDimension(gcn::Rectangle(
-                5, 5, 445, 335 - okButton->getHeight()));
-    okButton->setPosition(
-            450 - okButton->getWidth(),
-            345 - okButton->getHeight());
+    mScrollArea->setDimension(gcn::Rectangle(5, 5, 445,
+                                             335 - okButton->getHeight()));
+    okButton->setPosition(450 - okButton->getWidth(),
+                          345 - okButton->getHeight());
 
     mBrowserBox->setLinkHandler(this);
 
@@ -59,7 +60,7 @@ HelpWindow::HelpWindow():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    setLocationRelativeTo(getParent());
+    loadWindowState();
 }
 
 void HelpWindow::action(const gcn::ActionEvent &event)

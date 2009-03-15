@@ -49,9 +49,10 @@ BuySellDialog::BuySellDialog(Network *network):
     }
     buyButton->requestFocus();
 
-    setContentSize(x, 2 * y + buyButton->getHeight());
+    setDefaultSize(x + getPadding(), (2 * y + buyButton->getHeight() +
+                   getTitleBarHeight()), ImageRect::CENTER);
 
-    setLocationRelativeTo(ImageRect::CENTER);
+    loadWindowState();
 
     requestFocus();
 }

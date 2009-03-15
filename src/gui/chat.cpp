@@ -113,6 +113,12 @@ ChatWindow::~ChatWindow()
     delete mParty;
 }
 
+void ChatWindow::resetToDefaultSize()
+{
+    mRecorder->resetToDefaultSize();
+    Window::resetToDefaultSize();
+}
+
 void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
 {
     // Trim whitespace

@@ -120,6 +120,12 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ~ChatWindow();
 
         /**
+         * Reset the chat window and recorder window attached to it to their
+         * default positions.
+         */
+        void resetToDefaultSize();
+
+        /**
          * Adds a line of text to our message list. Parameters:
          *
          * @param line Text message.

@@ -54,4 +54,6 @@ class BuySellDialog : public Window, public gcn::ActionListener
         Network *mNetwork;
 };
 
+extern BuySellDialog *buySellDialog;
+
 #endif

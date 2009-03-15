@@ -38,6 +38,7 @@ extern Window *chatWindow;
 extern Window *statusWindow;
 extern Window *buyDialog;
 extern Window *sellDialog;
+extern Window *buySellDialog;
 extern Window *inventoryWindow;
 extern Window *emoteWindow;
 extern Window *npcTextDialog;
@@ -140,6 +141,7 @@ void Setup::action(const gcn::ActionEvent &event)
         statusWindow->resetToDefaultSize();
         buyDialog->resetToDefaultSize();
         sellDialog->resetToDefaultSize();
+        buySellDialog->resetToDefaultSize();
         inventoryWindow->resetToDefaultSize();
         emoteWindow->resetToDefaultSize();
         npcTextDialog->resetToDefaultSize();
