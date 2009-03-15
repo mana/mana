@@ -46,11 +46,6 @@ class ShortcutWindow : public Window
          */
         ~ShortcutWindow();
 
-        /**
-         * Called whenever the widget changes size.
-         */
-        void widgetResized(const gcn::Event &event);
-
     private:
         ShortcutWindow();
         ShortcutContainer *mItems;

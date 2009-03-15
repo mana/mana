@@ -24,6 +24,8 @@
 #include "shortcutcontainer.h"
 #include "shortcutwindow.h"
 
+#include "widgets/layout.h"
+
 #include "../configuration.h"
 
 static const int SCROLL_PADDING = 0;
@@ -57,7 +59,11 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mScrollArea->setOpaque(false);
 
-    add(mScrollArea);
+    place(0, 0, mScrollArea, 5, 5).setPadding(0);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
+    layout.setMargin(0);
 
     loadWindowState();
 }
@@ -67,13 +73,3 @@ ShortcutWindow::~ShortcutWindow()
     delete mItems;
 }
 
-void ShortcutWindow::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-
-    mScrollArea->setSize(
-            area.width - SCROLL_PADDING,
-            area.height - SCROLL_PADDING);
-}
