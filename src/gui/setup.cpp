@@ -35,18 +35,21 @@
 #include "../utils/gettext.h"
 
 extern Window *chatWindow;
-extern Window *equipmentWindow;
-extern Window *helpWindow;
-extern Window *inventoryWindow;
-extern Window *minimap;
-extern Window *skillDialog;
 extern Window *statusWindow;
-extern Window *itemShortcutWindow;
-extern Window *emoteShortcutWindow;
+extern Window *buyDialog;
+extern Window *sellDialog;
+extern Window *inventoryWindow;
 extern Window *emoteWindow;
-extern Window *tradeWindow;
 extern Window *npcTextDialog;
 extern Window *npcStringDialog;
+extern Window *skillDialog;
+extern Window *minimap;
+extern Window *equipmentWindow;
+extern Window *tradeWindow;
+extern Window *helpWindow;
+extern Window *debugWindow;
+extern Window *itemShortcutWindow;
+extern Window *emoteShortcutWindow;
 extern Window *storageWindow;
 
 Setup::Setup():
@@ -131,19 +134,22 @@ void Setup::action(const gcn::ActionEvent &event)
         if (!statusWindow)
             return;
 
-        statusWindow->resetToDefaultSize();
-        minimap->resetToDefaultSize();
         chatWindow->resetToDefaultSize();
+        statusWindow->resetToDefaultSize();
+        buyDialog->resetToDefaultSize();
+        sellDialog->resetToDefaultSize();
         inventoryWindow->resetToDefaultSize();
-        equipmentWindow->resetToDefaultSize();
-        helpWindow->resetToDefaultSize();
-        skillDialog->resetToDefaultSize();
-        itemShortcutWindow->resetToDefaultSize();
-        emoteShortcutWindow->resetToDefaultSize();
         emoteWindow->resetToDefaultSize();
-        tradeWindow->resetToDefaultSize();
         npcTextDialog->resetToDefaultSize();
         npcStringDialog->resetToDefaultSize();
+        skillDialog->resetToDefaultSize();
+        minimap->resetToDefaultSize();
+        equipmentWindow->resetToDefaultSize();
+        tradeWindow->resetToDefaultSize();
+        helpWindow->resetToDefaultSize();
+        debugWindow->resetToDefaultSize();
+        itemShortcutWindow->resetToDefaultSize();
+        emoteShortcutWindow->resetToDefaultSize();
         storageWindow->resetToDefaultSize();
     }
 }

@@ -117,4 +117,6 @@ class BuyDialog : public Window, public gcn::ActionListener,
         Uint32 mMaxItems;
 };
 
+extern BuyDialog *buyDialog;
+
 #endif
