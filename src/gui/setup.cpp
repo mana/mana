@@ -45,6 +45,9 @@ extern Window *itemShortcutWindow;
 extern Window *emoteShortcutWindow;
 extern Window *emoteWindow;
 extern Window *tradeWindow;
+extern Window *npcTextDialog;
+extern Window *npcStringDialog;
+extern Window *storageWindow;
 
 Setup::Setup():
     Window(_("Setup"))
@@ -139,6 +142,9 @@ void Setup::action(const gcn::ActionEvent &event)
         emoteShortcutWindow->resetToDefaultSize();
         emoteWindow->resetToDefaultSize();
         tradeWindow->resetToDefaultSize();
+        npcTextDialog->resetToDefaultSize();
+        npcStringDialog->resetToDefaultSize();
+        storageWindow->resetToDefaultSize();
     }
 }
 

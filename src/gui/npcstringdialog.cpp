@@ -47,7 +47,6 @@ NpcStringDialog::NpcStringDialog(Network *network):
     place(0, 0, mValueField, 3);
     place(1, 1, cancelButton);
     place(2, 1, okButton);
-    //reflowLayout(175, 0);
 
     loadWindowState();
 }
