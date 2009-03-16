@@ -162,6 +162,59 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
     return true;
 }
 
+/* Optimising the functions that Graphics::drawImagePattern would call,
+ * so that glBegin...glEnd are outside the main loop. */
+void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
+{
+    if (Image::mTextureType == GL_TEXTURE_2D)
+    {
+        /* I'm not seeing this get called at all, so no point in optimising it. */
+        Graphics::drawImagePattern(image, x, y, w, h);
+        return;
+    }
+
+    const int srcX = image->mBounds.x;
+    const int srcY = image->mBounds.y;
+
+    int iw = image->getWidth();
+    int ih = image->getHeight();
+    if (iw == 0 || ih == 0)
+        return;
+
+    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
+
+    glBindTexture(Image::mTextureType, image->mGLImage);
+    setTexturingAndBlending(true);
+
+    // Draw a set of textured rectangles
+    glBegin(GL_QUADS);
+
+    for (int py = 0; py < h; py += ih)
+    {
+        int height = (py + ih >= h) ? h - py : ih;
+        int dstY = y+py;
+        for (int px = 0; px < w; px += iw)
+        {
+            int width = (px + iw >= w) ? w - px : iw;
+            int dstX = x+px;
+
+            glTexCoord2i(srcX, srcY);
+            glVertex2i(dstX, dstY);
+            glTexCoord2i(srcX + width, srcY);
+            glVertex2i(dstX + width, dstY);
+            glTexCoord2i(srcX + width, srcY + height);
+            glVertex2i(dstX + width, dstY + height);
+            glTexCoord2i(srcX, srcY + height);
+            glVertex2i(dstX, dstY + height);
+        }
+    }
+
+    glEnd();
+
+    glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+}
+
+
 void OpenGLGraphics::updateScreen()
 {
     glFlush();
