@@ -38,7 +38,7 @@ class Palette
          * The string is either a file name or a sequence of hexadecimal RGB
          * values separated by ',' and starting with '#'.
          */
-        Palette(std::string const &pallete);
+        Palette(const std::string &pallete);
 
         /**
          * Gets a pixel color depending on its intensity.
@@ -65,7 +65,7 @@ class Dye
          * The parts of string are separated by semi-colons. Each part starts
          * by an uppercase letter, followed by a colon and then a palette name.
          */
-        Dye(std::string const &dye);
+        Dye(const std::string &dye);
 
         /**
          * Destroys the associated palettes.
@@ -81,7 +81,7 @@ class Dye
          * Fills the blank in a dye placeholder with some palette names.
          */
         static void instantiate(std::string &target,
-                                std::string const &palettes);
+                                const std::string &palettes);
 
     private:
 

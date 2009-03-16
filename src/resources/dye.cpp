@@ -26,7 +26,7 @@
 
 #include "../log.h"
 
-Palette::Palette(std::string const &description)
+Palette::Palette(const std::string &description)
 {
     int size = description.length();
     if (size == 0) return;
@@ -109,7 +109,7 @@ void Palette::getColor(int intensity, int color[3]) const
     color[2] = ((255 - t) * b1 + t * b2) / 255;
 }
 
-Dye::Dye(std::string const &description)
+Dye::Dye(const std::string &description)
 {
     for (int i = 0; i < 7; ++i)
         mPalettes[i] = 0;
@@ -175,7 +175,7 @@ void Dye::update(int color[3]) const
         mPalettes[i - 1]->getColor(cmax, color);
 }
 
-void Dye::instantiate(std::string &target, std::string const &palettes)
+void Dye::instantiate(std::string &target, const std::string &palettes)
 {
     std::string::size_type next_pos = target.find('|');
     if (next_pos == std::string::npos || palettes.empty()) return;
