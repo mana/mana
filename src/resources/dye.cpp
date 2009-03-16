@@ -26,7 +26,7 @@
 
 #include "../log.h"
 
-Palette::Palette(const std::string &description)
+DyePalette::DyePalette(const std::string &description)
 {
     int size = description.length();
     if (size == 0) return;
@@ -63,7 +63,7 @@ Palette::Palette(const std::string &description)
     logger->log("Error, invalid embedded palette: %s", description.c_str());
 }
 
-void Palette::getColor(int intensity, int color[3]) const
+void DyePalette::getColor(int intensity, int color[3]) const
 {
     if (intensity == 0)
     {
@@ -112,7 +112,7 @@ void Palette::getColor(int intensity, int color[3]) const
 Dye::Dye(const std::string &description)
 {
     for (int i = 0; i < 7; ++i)
-        mPalettes[i] = 0;
+        mDyePalettes[i] = 0;
 
     if (description.empty()) return;
 
@@ -142,7 +142,7 @@ Dye::Dye(const std::string &description)
                 logger->log("Error, invalid dye: %s", description.c_str());
                 return;
         }
-        mPalettes[i] = new Palette(description.substr(pos + 2, next_pos - pos - 2));
+        mDyePalettes[i] = new DyePalette(description.substr(pos + 2, next_pos - pos - 2));
         ++next_pos;
     }
     while (next_pos < length);
@@ -151,7 +151,7 @@ Dye::Dye(const std::string &description)
 Dye::~Dye()
 {
     for (int i = 0; i < 7; ++i)
-        delete mPalettes[i];
+        delete mDyePalettes[i];
 }
 
 void Dye::update(int color[3]) const
@@ -171,8 +171,8 @@ void Dye::update(int color[3]) const
 
     int i = (color[0] != 0) | ((color[1] != 0) << 1) | ((color[2] != 0) << 2);
 
-    if (mPalettes[i - 1])
-        mPalettes[i - 1]->getColor(cmax, color);
+    if (mDyePalettes[i - 1])
+        mDyePalettes[i - 1]->getColor(cmax, color);
 }
 
 void Dye::instantiate(std::string &target, const std::string &palettes)

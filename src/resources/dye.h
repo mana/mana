@@ -29,7 +29,7 @@
 /**
  * Class for performing a linear interpolation between colors.
  */
-class Palette
+class DyePalette
 {
     public:
 
@@ -38,7 +38,7 @@ class Palette
          * The string is either a file name or a sequence of hexadecimal RGB
          * values separated by ',' and starting with '#'.
          */
-        Palette(const std::string &pallete);
+        DyePalette(const std::string &pallete);
 
         /**
          * Gets a pixel color depending on its intensity.
@@ -90,7 +90,7 @@ class Dye
          *
          * Red, Green, Yellow, Blue, Magenta, White (or rather gray).
          */
-        Palette *mPalettes[7];
+        DyePalette *mDyePalettes[7];
 };
 
 #endif
