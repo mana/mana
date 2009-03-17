@@ -154,24 +154,34 @@ void Graphics::drawImage(gcn::Image const *image, int srcX, int srcY,
 
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
 {
-    int iw = image->getWidth();
-    int ih = image->getHeight();
-    if (iw == 0 || ih == 0) return;
+    // Check that preconditions for blitting are met.
+    if (!mScreen || !image || !image->mImage) return;
 
-    int px = 0;                       // X position on pattern plane
-    int py = 0;                       // Y position on pattern plane
+    const int iw = image->getWidth();
+    const int ih = image->getHeight();
+ 
+    if (iw == 0 || ih == 0) return;                         
 
-    while (py < h)
+    for (int py = 0; py < h; py += ih)     // Y position on pattern plane
     {
-        while (px < w)
+        int dh = (py + ih >= h) ? h - py : ih;
+        int srcY = image->mBounds.y;
+        int dstY = y + py + mClipStack.top().yOffset;
+
+        for (int px = 0; px < w; px += iw) // X position on pattern plane  
         {
             int dw = (px + iw >= w) ? w - px : iw;
-            int dh = (py + ih >= h) ? h - py : ih;
-            drawImage(image, 0, 0, x + px, y + py, dw, dh);
-            px += iw;
+            int srcX = image->mBounds.x;
+            int dstX = x + px + mClipStack.top().xOffset;
+
+            SDL_Rect dstRect;
+            SDL_Rect srcRect;
+            dstRect.x = dstX; dstRect.y = dstY;
+            srcRect.x = srcX; srcRect.y = srcY;
+            srcRect.w = dw;   srcRect.h = dh;
+
+            SDL_BlitSurface(image->mImage, &srcRect, mScreen, &dstRect);
         }
-        py += ih;
-        px = 0;
     }
 }
 

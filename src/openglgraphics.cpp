@@ -110,6 +110,8 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
         int dstX, int dstY, int width, int height, bool useColor)
 {
+    if (!image) return false;
+
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
 
@@ -166,15 +168,13 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
  * so that glBegin...glEnd are outside the main loop. */
 void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
 {
-    if (Image::mTextureType == GL_TEXTURE_2D)
-    {
-        /* I'm not seeing this get called at all, so no point in optimising it. */
-        Graphics::drawImagePattern(image, x, y, w, h);
-        return;
-    }
+    if (!image) return;
 
     const int srcX = image->mBounds.x;
     const int srcY = image->mBounds.y;
+
+    const float texX1 = srcX / (float)image->mTexWidth;
+    const float texY1 = srcY / (float)image->mTexHeight;
 
     int iw = image->getWidth();
     int ih = image->getHeight();
@@ -184,6 +184,7 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
 
     glBindTexture(Image::mTextureType, image->mGLImage);
+
     setTexturingAndBlending(true);
 
     // Draw a set of textured rectangles
@@ -192,20 +193,38 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     for (int py = 0; py < h; py += ih)
     {
         int height = (py + ih >= h) ? h - py : ih;
-        int dstY = y+py;
+        int dstY = y + py;
         for (int px = 0; px < w; px += iw)
         {
             int width = (px + iw >= w) ? w - px : iw;
-            int dstX = x+px;
+            int dstX = x + px;
 
-            glTexCoord2i(srcX, srcY);
-            glVertex2i(dstX, dstY);
-            glTexCoord2i(srcX + width, srcY);
-            glVertex2i(dstX + width, dstY);
-            glTexCoord2i(srcX + width, srcY + height);
-            glVertex2i(dstX + width, dstY + height);
-            glTexCoord2i(srcX, srcY + height);
-            glVertex2i(dstX, dstY + height);
+            if (Image::mTextureType == GL_TEXTURE_2D)
+            {
+                // Find OpenGL normalized texture coordinates.
+                float texX2 = (srcX + width) / (float) image->mTexWidth;
+                float texY2 = (srcY + height) / (float) image->mTexHeight;
+
+                glTexCoord2f(texX1, texY1);
+                glVertex2i(dstX, dstY);
+                glTexCoord2f(texX2, texY1);
+                glVertex2i(dstX + width, dstY);
+                glTexCoord2f(texX2, texY2);
+                glVertex2i(dstX + width, dstY + height);
+                glTexCoord2f(texX1, texY2);
+                glVertex2i(dstX, dstY + height);
+            }
+            else
+            {
+                glTexCoord2i(srcX, srcY);
+                glVertex2i(dstX, dstY);
+                glTexCoord2i(srcX + width, srcY);
+                glVertex2i(dstX + width, dstY);
+                glTexCoord2i(srcX + width, srcY + height);
+                glVertex2i(dstX + width, dstY + height);
+                glTexCoord2i(srcX, srcY + height);
+                glVertex2i(dstX, dstY + height);
+            }
         }
     }
 
