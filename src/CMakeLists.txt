@@ -81,8 +81,6 @@ SET(SRCS
     gui/chatinput.h
     gui/checkbox.cpp
     gui/checkbox.h
-    gui/color.cpp
-    gui/color.h
     gui/confirm_dialog.cpp
     gui/confirm_dialog.h
     gui/connection.cpp
@@ -140,6 +138,8 @@ SET(SRCS
     gui/npc_text.h
     gui/ok_dialog.cpp
     gui/ok_dialog.h
+    gui/palette.cpp
+    gui/palette.h
     gui/passwordfield.cpp
     gui/passwordfield.h
     gui/playerbox.cpp
