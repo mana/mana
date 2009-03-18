@@ -26,11 +26,11 @@
 
 #include "resources/image.h"
 
+#ifdef USE_OPENGL
+
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>
 #endif
-
-#ifdef USE_OPENGL
 
 #ifndef GL_TEXTURE_RECTANGLE_ARB
 #define GL_TEXTURE_RECTANGLE_ARB 0x84F5
