@@ -26,6 +26,7 @@
 #include "image.h"
 
 #include "../log.h"
+#include "../position.h"
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
@@ -47,8 +48,7 @@ Image::Image(SDL_Surface *image):
 }
 
 #ifdef USE_OPENGL
-Image::Image(GLuint glimage, int width, int height,
-             int texWidth, int texHeight):
+Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight),
@@ -314,6 +314,81 @@ void Image::setAlpha(float a)
         // Set the alpha value this image is drawn at
         SDL_SetAlpha(mImage, SDL_SRCALPHA, (int) (255 * mAlpha));
     }
+}
+
+Image* Image::merge(Image* image, const Position& pos)
+{
+    SDL_Surface* surface = new SDL_Surface(*(image->mImage));
+
+    Uint32 surface_pix, cur_pix;
+    Uint8 r, g, b, a, p_r, p_g, p_b, p_a;
+    double f_a, f_ca, f_pa;
+    SDL_PixelFormat *current_fmt = mImage->format;
+    SDL_PixelFormat *surface_fmt = surface->format;
+    int current_offset, surface_offset;
+    Position offset(0, 0);
+
+    SDL_LockSurface(surface);
+    SDL_LockSurface(mImage);
+    // for each pixel lines of a source image
+    for (offset.x = (pos.x > 0 ? 0 : -pos.x); offset.x < image->getWidth() &&
+                     pos.x + offset.x < getWidth(); offset.x++)
+    {
+        for (offset.y = (pos.y > 0 ? 0 : -pos.y); offset.y < image->getHeight()
+                        && pos.y + offset.y < getHeight(); offset.y++)
+        {
+            // Computing offset on both images
+            current_offset = (pos.y + offset.y) * getWidth() + pos.x + offset.x;
+            surface_offset = offset.y * surface->w + offset.x;
+
+            // Retrieving a pixel to merge
+            surface_pix = ((Uint32*) surface->pixels)[surface_offset];
+            cur_pix = ((Uint32*) mImage->pixels)[current_offset];
+
+            // Retreiving each channel of the pixel using pixel format
+            r = (Uint8)(((surface_pix & surface_fmt->Rmask) >> 
+                          surface_fmt->Rshift) << surface_fmt->Rloss);
+            g = (Uint8)(((surface_pix & surface_fmt->Gmask) >>
+                          surface_fmt->Gshift) << surface_fmt->Gloss);
+            b = (Uint8)(((surface_pix & surface_fmt->Bmask) >>
+                          surface_fmt->Bshift) << surface_fmt->Bloss);
+            a = (Uint8)(((surface_pix & surface_fmt->Amask) >>
+                          surface_fmt->Ashift) << surface_fmt->Aloss);
+
+            // Retreiving previous alpha value
+            p_a = (Uint8)(((cur_pix & current_fmt->Amask) >>
+                            current_fmt->Ashift) << current_fmt->Aloss);
+
+            // new pixel with no alpha or nothing on previous pixel
+            if (a == SDL_ALPHA_OPAQUE || (p_a == 0 && a > 0))
+                ((Uint32 *)(surface->pixels))[current_offset] = 
+                    SDL_MapRGBA(current_fmt, r, g, b, a);
+            else if (a > 0) 
+            { // alpha is lower => merge color with previous value
+                f_a = (double) a / 255.0;
+                f_ca = 1.0 - f_a;
+                f_pa = (double) p_a / 255.0;
+                p_r = (Uint8)(((cur_pix & current_fmt->Rmask) >> 
+                                current_fmt->Rshift) << current_fmt->Rloss);
+                p_g = (Uint8)(((cur_pix & current_fmt->Gmask) >>
+                                current_fmt->Gshift) << current_fmt->Gloss);
+                p_b = (Uint8)(((cur_pix & current_fmt->Bmask) >>
+                                current_fmt->Bshift) << current_fmt->Bloss);
+                r = (Uint8)((double) p_r * f_ca * f_pa + (double)r * f_a);
+                g = (Uint8)((double) p_g * f_ca * f_pa + (double)g * f_a);
+                b = (Uint8)((double) p_b * f_ca * f_pa + (double)b * f_a);
+                a = (a > p_a ? a : p_a);
+               ((Uint32 *)(surface->pixels))[current_offset] =
+                   SDL_MapRGBA(current_fmt, r, g, b, a);
+            }
+        }
+    }
+    SDL_UnlockSurface(surface);
+    SDL_UnlockSurface(mImage);
+
+    Image* newImage = new Image(surface);
+
+    return newImage;
 }
 
 float Image::getAlpha()

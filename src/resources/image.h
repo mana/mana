@@ -41,6 +41,7 @@
 #include "resource.h"
 
 class Dye;
+class Position;
 class SDL_Rect;
 class SDL_Surface;
 
@@ -131,6 +132,15 @@ class Image : public Resource
          */
         static void setLoadAsOpenGL(bool useOpenGL);
 #endif
+
+        /**
+         * Merges two image SDL_Surfaces together. This is for SDL use only, as
+         * reducing the number of surfaces that SDL has to render can cut down
+         * on the number of blit operations necessary, which in turn can help
+         * improve overall framerates. Don't use unless you are using it to
+         * reduce the number of overall layers that need to be drawn through SDL.
+         */
+        Image* merge(Image* image, const Position& pos);
 
     protected:
         /**

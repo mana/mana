@@ -177,7 +177,8 @@ bool Particle::update()
                 mVelocity *= mBounce;
                 mVelocity.z = -mVelocity.z;
             }
-            else {
+            else
+            {
                 mAlive = false;
             }
         }
@@ -185,16 +186,12 @@ bool Particle::update()
         // Update child emitters
         if ((mLifetimePast-1)%Particle::emitterSkip == 0)
         {
-            for (   EmitterIterator e = mChildEmitters.begin();
-                    e != mChildEmitters.end();
-                    e++
-                )
+            for (EmitterIterator e = mChildEmitters.begin();
+                 e != mChildEmitters.end(); e++)
             {
                 Particles newParticles = (*e)->createParticles(mLifetimePast);
-                for (   ParticleIterator p = newParticles.begin();
-                        p != newParticles.end();
-                        p++
-                    )
+                for (ParticleIterator p = newParticles.begin();
+                     p != newParticles.end(); p++)
                 {
                     (*p)->moveBy(mPos);
                     mChildParticles.push_back (*p);
@@ -219,7 +216,9 @@ bool Particle::update()
         if ((*p)->update())
         {
             p++;
-        } else {
+        }
+        else
+        {
             delete (*p);
             p = mChildParticles.erase(p);
         }
@@ -237,8 +236,7 @@ void Particle::moveBy(const Vector &change)
 {
     mPos += change;
     for (ParticleIterator p = mChildParticles.begin();
-         p != mChildParticles.end();
-         p++)
+         p != mChildParticles.end(); p++)
     {
         if ((*p)->doesFollow())
         {
@@ -279,20 +277,21 @@ Particle* Particle::addEffect(const std::string &particleEffectFile,
         xmlNodePtr node;
 
         // Animation
-        if ((node = XML::findFirstChildByName(
-                        effectChildNode, "animation"))) {
+        if ((node = XML::findFirstChildByName(effectChildNode, "animation")))
+        {
             newParticle = new AnimationParticle(mMap, node);
         }
         // Image
-        else if ((node = XML::findFirstChildByName(
-                        effectChildNode, "image"))) {
+        else if ((node = XML::findFirstChildByName(effectChildNode, "image")))
+        {
             Image *img= resman->getImage((const char*)
                     node->xmlChildrenNode->content);
 
             newParticle = new ImageParticle(mMap, img);
         }
         // Other
-        else {
+        else
+        {
             newParticle = new Particle(mMap);
         }
 
@@ -315,7 +314,8 @@ Particle* Particle::addEffect(const std::string &particleEffectFile,
                 continue;
 
             ParticleEmitter *newEmitter;
-            newEmitter = new ParticleEmitter(emitterNode, newParticle, mMap, rotation);
+            newEmitter = new ParticleEmitter(emitterNode, newParticle, mMap,
+                                             rotation);
             newParticle->addEmitter(newEmitter);
         }
 
@@ -326,7 +326,8 @@ Particle* Particle::addEffect(const std::string &particleEffectFile,
 }
 
 Particle *Particle::addTextSplashEffect(const std::string &text, int x, int y,
-        const gcn::Color *color, gcn::Font *font, bool outline)
+                                        const gcn::Color *color,
+                                        gcn::Font *font, bool outline)
 {
     Particle *newParticle = new TextParticle(mMap, text, color, font, outline);
     newParticle->moveTo(x, y);
@@ -344,7 +345,10 @@ Particle *Particle::addTextSplashEffect(const std::string &text, int x, int y,
 }
 
 Particle *Particle::addTextRiseFadeOutEffect(const std::string &text,
-        int x, int y, const gcn::Color *color, gcn::Font *font, bool outline){
+                                             int x, int y,
+                                             const gcn::Color *color,
+                                             gcn::Font *font, bool outline)
+{
     Particle *newParticle = new TextParticle(mMap, text, color, font, outline);
     newParticle->moveTo(x, y);
     newParticle->setVelocity(0.0f, 0.0f, 0.5f);

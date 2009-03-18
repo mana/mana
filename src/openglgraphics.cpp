@@ -233,7 +233,6 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
 }
 
-
 void OpenGLGraphics::updateScreen()
 {
     glFlush();
