@@ -61,6 +61,8 @@ SET(SRCS
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp
     gui/widgets/tabbedarea.h
+    gui/widgets/textpreview.cpp
+    gui/widgets/textpreview.h
     gui/browserbox.cpp
     gui/browserbox.h
     gui/buddywindow.cpp

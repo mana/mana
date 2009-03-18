@@ -266,6 +266,8 @@
 		<Unit filename="src\gui\widgets\tab.h" />
 		<Unit filename="src\gui\widgets\tabbedarea.cpp" />
 		<Unit filename="src\gui\widgets\tabbedarea.h" />
+		<Unit filename="src\gui\widgets\textpreview.cpp" />
+		<Unit filename="src\gui\widgets\textpreview.h" />
 		<Unit filename="src\gui\window.cpp" />
 		<Unit filename="src\gui\window.h" />
 		<Unit filename="src\gui\windowcontainer.cpp" />
