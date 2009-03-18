@@ -265,3 +265,10 @@ void SellDialog::updateButtonsAndLabels()
         (strprintf(_("Price: %d GP / Total: %d GP"),
                    income, mPlayerMoney + income));
 }
+
+void SellDialog::setVisible(bool visible)
+{
+    Window::setVisible(visible);
+
+    if (visible) requestFocus();
+}

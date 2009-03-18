@@ -96,6 +96,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
          */
         void updateButtonsAndLabels();
 
+        void setVisible(bool visible);
     private:
         Network *mNetwork;
         gcn::Button *mBuyButton;

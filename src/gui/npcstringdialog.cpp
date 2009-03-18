@@ -64,9 +64,7 @@ void NpcStringDialog::setValue(const std::string &value)
 void NpcStringDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
-    {
         mValueField->setText("");
-    }
 
     setVisible(false);
     NPC::mTalking = false;

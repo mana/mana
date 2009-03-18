@@ -30,6 +30,7 @@
 #include "../npc.h"
 
 #include "../gui/buy.h"
+#include "../gui/buysell.h"
 #include "../gui/chat.h"
 #include "../gui/gui.h"
 #include "../gui/npc_text.h"
@@ -48,10 +49,6 @@
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
-
-extern BuyDialog *buyDialog;
-extern SellDialog *sellDialog;
-extern Window *buySellDialog;
 
 // Max. distance we are willing to scroll after a teleport;
 // everything beyond will reset the port hard.

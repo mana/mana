@@ -236,3 +236,10 @@ void BuyDialog::updateButtonsAndLabels()
     mMoneyLabel->setCaption
         (strprintf(_("Price: %d GP / Total: %d GP"), price, mMoney - price));
 }
+
+void BuyDialog::setVisible(bool visible)
+{
+    Window::setVisible(visible);
+
+    if (visible) requestFocus();
+}

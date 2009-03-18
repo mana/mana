@@ -54,8 +54,22 @@ BuySellDialog::BuySellDialog(Network *network):
                    getTitleBarHeight()), ImageRect::CENTER);
 
     loadWindowState();
+}
 
-    requestFocus();
+void BuySellDialog::logic()
+{
+    Window::logic();
+
+    if (isVisible() && !current_npc)
+        setVisible(false);
+}
+
+void BuySellDialog::setVisible(bool visible)
+{
+    Window::setVisible(visible);
+
+    if (visible)
+        requestFocus();
 }
 
 void BuySellDialog::action(const gcn::ActionEvent &event)

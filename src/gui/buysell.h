@@ -46,6 +46,16 @@ class BuySellDialog : public Window, public gcn::ActionListener
         BuySellDialog(Network *network);
 
         /**
+<<<<<<< HEAD:src/gui/buysell.h
+=======
+         * Check for current NPC
+         */
+        void logic();
+
+        void setVisible(bool visible);
+
+        /**
+>>>>>>> f64903f... Fix up the NPC interraction widnows a bit:src/gui/buysell.h
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);

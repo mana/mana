@@ -80,6 +80,10 @@ class StorageWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void removeStore(Item* item, int ammount);
 
+        /**
+         * Closes the Storage Window, as well as telling the server that the
+         * window has been closed.
+         */
         void close();
 
     private:

@@ -536,7 +536,7 @@ void Window::loadWindowState()
 void Window::saveWindowState()
 {
     // Saving X, Y and Width and Height for resizables in the config
-    if (!mWindowName.empty())
+    if (!mWindowName.empty() && mWindowName != "window")
     {
         config.setValue(mWindowName + "WinX", getX());
         config.setValue(mWindowName + "WinY", getY());

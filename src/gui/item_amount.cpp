@@ -36,7 +36,9 @@
 
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Window("", true, parent),
-    mItem(item), mUsage(usage), mMax(mItem->getQuantity())
+    mItem(item),
+    mMax(item->getQuantity()),
+    mUsage(usage)
 {
     // Integer field
     mItemAmountTextField = new IntTextField(1);
@@ -53,10 +55,8 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
 
     // Buttons
     Button *minusButton = new Button("-", "Minus", this);
-    minusButton->setSize(20, 20);
     Button *plusButton = new Button("+", "Plus", this);
-    plusButton->setSize(20, 20);
-    Button *okButton = new Button(_("Ok"), "Drop", this);
+    Button *okButton = new Button(_("Ok"), "Ok", this);
     Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
     Button *addAllButton = new Button(_("All"), "All", this);
 
@@ -64,10 +64,10 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     place(0, 0, minusButton);
     place(1, 0, mItemAmountTextField).setPadding(2);
     place(2, 0, plusButton);
-    place(4, 0, addAllButton, 2);
+    place(5, 0, addAllButton);
     place(0, 1, mItemAmountSlide, 6);
-    place(4, 2, okButton);
-    place(5, 2, cancelButton);
+    place(4, 2, cancelButton);
+    place(5, 2, okButton);
     reflowLayout(250, 0);
 
     resetAmount();
@@ -101,17 +101,17 @@ void ItemAmountWindow::resetAmount()
 
 void ItemAmountWindow::action(const gcn::ActionEvent &event)
 {
-    int amount = mItemAmountTextField->getValue();
+    int amount = mItemAmountSlide->getValue();
 
     if (event.getId() == "Cancel")
     {
         scheduleDelete();
     }
-    else if (event.getId() == "Plus")
+    else if (event.getId() == "Plus" && amount < mMax)
     {
         amount++;
     }
-    else if (event.getId() == "Minus")
+    else if (event.getId() == "Minus" && amount > 0)
     {
         amount--;
     }
@@ -121,9 +121,8 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "Ok" || event.getId() == "All")
     {
-        if (event.getId() == "All") {
+        if (event.getId() == "All") 
             amount = mMax;
-        }
 
         switch (mUsage)
         {
@@ -145,6 +144,7 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
         }
 
         scheduleDelete();
+        return;
     }
 
     mItemAmountTextField->setValue(amount);

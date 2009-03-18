@@ -57,13 +57,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         ~TradeWindow();
 
         /**
-         * Called when resizing the window.
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
-
-        /**
          * Add money to the trade window.
          */
         void addMoney(int quantity);
@@ -118,6 +111,12 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+        /**
+         * Closes the Trade Window, as well as telling the server that the
+         * window has been closed.
+         */
+        void close();
 
     private:
         Network *mNetwork;

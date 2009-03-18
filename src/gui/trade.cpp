@@ -54,6 +54,7 @@ TradeWindow::TradeWindow(Network *network):
     setWindowName(_("Trade"));
     setDefaultSize(342, 209, ImageRect::CENTER);
     setResizable(true);
+    setCloseButton(true);
 
     setMinWidth(342);
     setMinHeight(209);
@@ -90,10 +91,10 @@ TradeWindow::TradeWindow(Network *network):
     place(0, 0, mMoneyLabel2);
     place(1, 0, mMoneyField);
     place = getPlacer(0, 2);
-    place(0, 0, mAddButton);
-    place(1, 0, mOkButton);
-    place(2, 0, mTradeButton);
-    place(3, 0, mCancelButton);
+    place(4, 0, mCancelButton);
+    place(5, 0, mTradeButton);
+    place(6, 0, mAddButton);
+    place(7, 0, mOkButton);
     Layout &layout = getLayout();
     layout.extend(0, 2, 2, 1);
     layout.setRowHeight(1, Layout::AUTO_SET);
@@ -106,14 +107,6 @@ TradeWindow::TradeWindow(Network *network):
 
 TradeWindow::~TradeWindow()
 {
-}
-
-void TradeWindow::widgetResized(const gcn::Event &event)
-{
-    mMyItemContainer->setWidth(mMyScroll->getWidth());
-    mPartnerItemContainer->setWidth(mPartnerScroll->getWidth());
-
-    Window::widgetResized(event);
 }
 
 void TradeWindow::addMoney(int amount)
@@ -212,6 +205,7 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
+    addItem(item->getId(), true, quantity, item->isEquipment());
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(item->getInvIndex());
@@ -249,7 +243,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         if (mMyInventory->contains(item))
         {
             chatWindow->chatLog(_("Failed adding item. You can not "
-                        "overlap one kind of item on the window."), BY_SERVER);
+                                  "overlap one kind of item on the window."),
+                                  BY_SERVER);
             return;
         }
 
@@ -294,4 +289,10 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_OK);
     }
+}
+
+void TradeWindow::close()
+{
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
 }
