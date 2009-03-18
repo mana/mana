@@ -37,8 +37,6 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-extern NpcTextDialog *npcTextDialog;
-
 NpcListDialog::NpcListDialog(Network *network):
     Window(_("NPC")), mNetwork(network)
 {
@@ -69,7 +67,6 @@ NpcListDialog::NpcListDialog(Network *network):
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
-    resetToDefaultSize(false);
 }
 
 int NpcListDialog::getNumberOfElements()

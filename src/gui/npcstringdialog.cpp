@@ -34,12 +34,10 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-extern NpcTextDialog *npcTextDialog;
-
 NpcStringDialog::NpcStringDialog(Network *network):
     Window(_("NPC Text Request")), mNetwork(network)
 {
-    setWindowName("NPCList");
+    setWindowName("NPCString");
     mValueField = new TextField("");
 
     gcn::Button *okButton = new Button(_("OK"), "ok", this);

@@ -34,8 +34,6 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-extern NpcTextDialog *npcTextDialog;
-
 NpcIntegerDialog::NpcIntegerDialog(Network *network):
     Window(_("NPC Number Request")), mNetwork(network)
 {

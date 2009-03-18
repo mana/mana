@@ -49,6 +49,8 @@ class BuySellDialog : public Window, public gcn::ActionListener
          */
         void logic();
 
+        void setVisible(bool visible);
+
         /**
          * Called when receiving actions from the widgets.
          */
@@ -57,5 +59,7 @@ class BuySellDialog : public Window, public gcn::ActionListener
     private:
         Network *mNetwork;
 };
+
+extern BuySellDialog *buySellDialog;
 
 #endif

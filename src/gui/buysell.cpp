@@ -32,6 +32,7 @@
 BuySellDialog::BuySellDialog(Network *network):
     Window(_("Shop")), mNetwork(network)
 {
+    setWindowName("BuySell");
     Button *buyButton = 0;
     static const char *buttonNames[] = {
         N_("Buy"), N_("Sell"), N_("Cancel"), 0
@@ -48,16 +49,25 @@ BuySellDialog::BuySellDialog(Network *network):
     }
     buyButton->requestFocus();
 
-    setContentSize(x, 2 * y + buyButton->getHeight());
+    loadWindowState();
 
-    requestFocus();
+    setContentSize(x, 2 * y + buyButton->getHeight());
 }
 
 void BuySellDialog::logic()
 {
     Window::logic();
 
-    if (!current_npc) setVisible(false);
+    if (isVisible() && !current_npc) {
+        setVisible(false);
+    }
+}
+
+void BuySellDialog::setVisible(bool visible)
+{
+    Window::setVisible(visible);
+
+    if (visible) requestFocus();
 }
 
 void BuySellDialog::action(const gcn::ActionEvent &event)

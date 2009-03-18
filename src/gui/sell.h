@@ -86,6 +86,8 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void logic();
 
+        void setVisible(bool visible);
+
     private:
         /**
          * Updates the state of buttons and labels.
@@ -111,5 +113,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         int mMaxItems;
         int mAmountItems;
 };
+
+extern SellDialog *sellDialog;
 
 #endif

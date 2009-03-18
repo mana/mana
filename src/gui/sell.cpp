@@ -273,3 +273,10 @@ void SellDialog::logic()
 
     if (!current_npc) setVisible(false);
 }
+
+void SellDialog::setVisible(bool visible)
+{
+    Window::setVisible(visible);
+
+    if (visible) requestFocus();
+}

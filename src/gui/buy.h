@@ -100,6 +100,8 @@ class BuyDialog : public Window, public gcn::ActionListener,
          */
         void logic();
 
+        void setVisible(bool visible);
+
     private:
         Network *mNetwork;
         gcn::Button *mBuyButton;
@@ -120,5 +122,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         Uint32 mAmountItems;
         Uint32 mMaxItems;
 };
+
+extern BuyDialog *buyDialog;
 
 #endif

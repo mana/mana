@@ -32,14 +32,11 @@
 #include "../npc.h"
 
 #include "../gui/buy.h"
+#include "../gui/buysell.h"
 #include "../gui/chat.h"
 #include "../gui/sell.h"
 
 #include "../utils/gettext.h"
-
-extern BuyDialog *buyDialog;
-extern Window *buySellDialog;
-extern SellDialog *sellDialog;
 
 BuySellHandler::BuySellHandler()
 {
@@ -64,8 +61,8 @@ void BuySellHandler::handleMessage(MessageIn *msg)
             buyDialog->reset();
             sellDialog->setVisible(false);
             sellDialog->reset();
-            buySellDialog->setVisible(true);
             current_npc = msg->readInt32();
+            buySellDialog->setVisible(true);
             break;
 
         case SMSG_NPC_BUY:

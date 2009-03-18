@@ -120,7 +120,7 @@ Window::~Window()
     const std::string &name = mWindowName;
 
     // Saving X, Y and Width and Height for resizables in the config
-    if (!name.empty())
+    if (!name.empty() && name != "window")
     {
         config.setValue(name + "WinX", getX());
         config.setValue(name + "WinY", getY());

@@ -247,3 +247,10 @@ void BuyDialog::logic()
 
     if (!current_npc) setVisible(false);
 }
+
+void BuyDialog::setVisible(bool visible)
+{
+    Window::setVisible(visible);
+
+    if (visible) requestFocus();
+}
