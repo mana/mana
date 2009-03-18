@@ -23,10 +23,11 @@
 
 #include <guichan/font.hpp>
 
+#include "palette.h"
 #include "textbox.h"
 
-TextBox::TextBox():
-    gcn::TextBox()
+TextBox::TextBox() :
+        gcn::TextBox(), mTextColor(&guiPalette->getColor(Palette::TEXT))
 {
     setOpaque(false);
     setFrameSize(0);

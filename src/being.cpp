@@ -45,6 +45,7 @@
 #include "resources/resourcemanager.h"
 
 #include "gui/gui.h"
+#include "gui/palette.h"
 #include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
@@ -61,7 +62,6 @@
 int Being::mNumberOfHairColors = 1;
 int Being::mNumberOfHairstyles = 1;
 std::vector<std::string> Being::hairColors;
-std::vector<AnimatedSprite*> Being::emotionSet;
 
 static const int X_SPEECH_OFFSET = 18;
 static const int Y_SPEECH_OFFSET = 60;
@@ -102,7 +102,7 @@ Being::Being(int id, int job, Map *map):
     mSpeechBubble = new SpeechBubble;
 
     mSpeech = "";
-    mNameColor = 0x202020;
+    mNameColor = &guiPalette->getColor(Palette::CHAT);
     mText = 0;
 }
 
@@ -203,17 +203,14 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     gcn::Font *font;
     std::string damage = amount ? toString(amount) : type == FLEE ?
             "dodge" : "miss";
-
-    int red, green, blue;
+    const gcn::Color* color;
 
     font = gui->getInfoParticleFont();
 
     // Selecting the right color
     if (type == CRITICAL || type == FLEE)
     {
-        red = 255;
-        green = 128;
-        blue = 0;
+        color = &guiPalette->getColor(Palette::HIT_CRITICAL);
     }
     else if (!amount)
      {
@@ -221,33 +218,25 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
         {
             // This is intended to be the wrong direction to visually
             // differentiate between hits and misses
-            red = 0;
-            green = 100;
-            blue = 255;
+            color = &guiPalette->getColor(Palette::HIT_MONSTER_PLAYER);
         }
         else
         {
-            red = 255;
-            green = 255;
-            blue = 0;
-         }
-     }
+            color = &guiPalette->getColor(Palette::MISS);
+        }
+    }
     else if (getType() == MONSTER)
     {
-        red = 0;
-        green = 100;
-        blue = 255;
+        color = &guiPalette->getColor(Palette::HIT_PLAYER_MONSTER);
     }
     else
     {
-        red = 255;
-        green = 50;
-        blue = 50;
+        color = &guiPalette->getColor(Palette::HIT_MONSTER_PLAYER);
     }
 
     // Show damage number
-    particleEngine->addTextSplashEffect(damage, red, green, blue, font,
-                                        mPx + 16, mPy + 16, true);
+    particleEngine->addTextSplashEffect(damage, mPx + 16, mPy + 16,
+            color, font, true);
 
     if (amount > 0)
     {
@@ -487,7 +476,7 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     const int emotionIndex = mEmotion - 1;
 
     if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
-        emotionSet[emotionIndex]->draw(graphics, px, py);
+        EmoteDB::getAnimation(emotionIndex)->draw(graphics, px, py);
 }
 
 void Being::drawSpeech(int offsetX, int offsetY)
@@ -532,7 +521,8 @@ void Being::drawSpeech(int offsetX, int offsetY)
             delete mText;
 
         mText = new Text(mSpeech, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
-                         gcn::Graphics::CENTER, gcn::Color(255, 255, 255));
+                         gcn::Graphics::CENTER,
+                         &guiPalette->getColor(Palette::PARTICLE));
     }
     else if (speech == NO_SPEECH)
     {
@@ -770,7 +760,7 @@ std::string Being::getHairColor(int index)
     return hairColors[index];
 }
 
-void Being::initializeHair()
+void Being::load()
 {
     // Hairstyles are encoded as negative numbers.  Count how far negative
     // we can go.
@@ -808,24 +798,4 @@ void Being::initializeHair()
             }
         }
     }
-}
-
-void Being::load()
-{
-    // Setup emote sprites
-    for (int i = 0; i <= EmoteDB::getLast(); i++)
-    {
-        EmoteInfo info = EmoteDB::get(i);
-
-        std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
-        int variant = info.sprites.front()->variant;
-        emotionSet.push_back(AnimatedSprite::load(file, variant));
-    }
-
-    initializeHair();
-}
-
-void Being::cleanup()
-{
-    delete_all(emotionSet);
 }

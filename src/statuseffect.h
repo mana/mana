@@ -94,8 +94,10 @@ public:
      */
     static int blockEffectIndexToEffectIndex(int blocKIndex);
 
-private:
     static void load();
+
+    static void unload();
+private:
 
     std::string mMessage;
     std::string mSFXEffect;

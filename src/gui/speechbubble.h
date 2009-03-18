@@ -22,6 +22,7 @@
 #ifndef SPEECHBUBBLE_H
 #define SPEECHBUBBLE_H
 
+#include "palette.h"
 #include "window.h"
 
 class ScrollArea;
@@ -33,7 +34,8 @@ class SpeechBubble : public Window
         SpeechBubble();
 
         void setCaption(const std::string &name,
-                        const gcn::Color &color = 0x000000);
+                        const gcn::Color *color =
+                        &guiPalette->getColor(Palette::TEXT));
         void setText(std::string text, bool showName = true);
         void setLocation(int x, int y);
         unsigned int getNumRows();

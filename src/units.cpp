@@ -164,8 +164,8 @@ std::string formatUnit(int value, int type)
     struct UnitLevel ul;
     double amount = ud.conversion * value;
 
-    // Shortcut for 0
-    if (value == 0) {
+    // Shortcut for 0; do the same for values less than 0  (for now)
+    if (value <= 0) {
         ul = ud.levels[0];
         return strprintf("0%s", ul.symbol.c_str());
     } else {

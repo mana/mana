@@ -22,7 +22,7 @@
 #include <guichan/font.hpp>
 #include <guichan/listmodel.hpp>
 
-#include "color.h"
+#include "palette.h"
 #include "shop.h"
 #include "shoplistbox.h"
 
@@ -63,11 +63,9 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     if (config.getValue("guialpha", 0.8) != mAlpha)
         mAlpha = config.getValue("guialpha", 0.8);
 
-    bool valid;
-    const int red = (textColor->getColor('H', valid) >> 16) & 0xFF;
-    const int green = (textColor->getColor('H', valid) >> 8) & 0xFF;
-    const int blue = textColor->getColor('H', valid) & 0xFF;
-    const int alpha = (int)(mAlpha * 255.0f);
+    int alpha = (int)(mAlpha * 255.0f);
+    const gcn::Color* highlightColor =
+            &guiPalette->getColor(Palette::HIGHLIGHT, alpha);
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
@@ -78,18 +76,27 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
          i < mListModel->getNumberOfElements();
          ++i, y += mRowHeight)
     {
-        gcn::Color backgroundColor = gcn::Color(255, 255, 255, alpha);
+        gcn::Color temp;
+        const gcn::Color* backgroundColor =
+                &guiPalette->getColor(Palette::BACKGROUND, alpha);
 
         if (mShopItems &&
                 mPlayerMoney < mShopItems->at(i)->getPrice() && mPriceCheck)
-            if (i == mSelected)
-                backgroundColor = gcn::Color(145, 0, 0, alpha);
+            if (i != mSelected)
+                backgroundColor = &guiPalette->getColor(Palette::SHOP_WARNING,
+                        alpha);
             else
-                backgroundColor = gcn::Color(145, 145, 145, alpha);
+            {
+                temp = guiPalette->getColor(Palette::SHOP_WARNING, alpha);
+                temp.r = (temp.r + highlightColor->r) / 2;
+                temp.g = (temp.g + highlightColor->g) / 2;
+                temp.b = (temp.g + highlightColor->b) / 2;
+                backgroundColor = &temp;
+            }
         else if (i == mSelected)
-            backgroundColor = gcn::Color(red, green, blue, alpha);
+            backgroundColor = highlightColor;
 
-        graphics->setColor(backgroundColor);
+        graphics->setColor(*backgroundColor);
         graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
 
         if (mShopItems)
@@ -100,7 +107,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
                 graphics->drawImage(icon, 1, y);
             }
         }
-        graphics->setColor(gcn::Color(0, 0, 0));
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
         graphics->drawText(mListModel->getElementAt(i), ITEM_ICON_SIZE + 5,
                 y + (ITEM_ICON_SIZE - getFont()->getHeight()) / 2);
     }

@@ -30,6 +30,8 @@
 #include "resources/image.h"
 
 #include "gui/gui.h"
+#include "gui/palette.h"
+#include "gui/textrenderer.h"
 
 int Text::mInstances = 0;
 ImageRect Text::mBubble;
@@ -37,7 +39,7 @@ Image *Text::mBubbleArrow;
 
 Text::Text(const std::string &text, int x, int y,
            gcn::Graphics::Alignment alignment,
-           gcn::Color color, bool isSpeech) :
+           const gcn::Color* color, bool isSpeech) :
     mText(text),
     mColor(color),
     mIsSpeech(isSpeech)
@@ -129,42 +131,14 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
         */
     }
 
-    // Text shadow
-    graphics->setColor(gcn::Color(0, 0, 0));
-    graphics->drawText(mText, mX - xOff + 1, mY - yOff + 1,
-            gcn::Graphics::LEFT);
-
-    if (!mIsSpeech) {
-        graphics->setColor(gcn::Color(0, 0, 0, 64));
-        /*
-        // TODO: Reanable when we can draw it nicely in software mode
-        graphics->drawText(mText, mX - xOff + 2, mY - yOff + 2,
-                gcn::Graphics::LEFT);
-        graphics->drawText(mText, mX - xOff + 1, mY - yOff + 2,
-                gcn::Graphics::LEFT);
-        graphics->drawText(mText, mX - xOff + 2, mY - yOff + 1,
-                gcn::Graphics::LEFT);
-        */
-
-        // Text outline
-        graphics->setColor(gcn::Color(0, 0, 0));
-        graphics->drawText(mText, mX - xOff + 1, mY - yOff,
-                gcn::Graphics::LEFT);
-        graphics->drawText(mText, mX - xOff - 1, mY - yOff,
-                gcn::Graphics::LEFT);
-        graphics->drawText(mText, mX - xOff, mY - yOff + 1,
-                gcn::Graphics::LEFT);
-        graphics->drawText(mText, mX - xOff, mY - yOff - 1,
-                gcn::Graphics::LEFT);
-    }
-
-    graphics->setColor(mColor);
-    graphics->drawText(mText, mX - xOff, mY - yOff, gcn::Graphics::LEFT);
+    TextRenderer::renderText(graphics, mText,
+            mX - xOff, mY - yOff, gcn::Graphics::LEFT,
+            mColor, boldFont, !mIsSpeech, true);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,
                      gcn::Graphics::Alignment alignment,
-                     gcn::Color color) :
+                     const gcn::Color *color) :
     Text(text, x, y, alignment, color),
     mTime(0)
 {

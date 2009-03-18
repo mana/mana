@@ -21,9 +21,12 @@
 
 #include "animatedsprite.h"
 #include "game.h"
+#include "localplayer.h"
 #include "particle.h"
 #include "player.h"
 #include "text.h"
+
+#include "gui/palette.h"
 
 #include "resources/colordb.h"
 #include "resources/itemdb.h"
@@ -50,17 +53,19 @@ void Player::setName(const std::string &name)
     {
         if (mIsGM)
         {
-            mNameColor = 0x009000;
+            mNameColor = &guiPalette->getColor(Palette::GM);
             mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy +
                                   NAME_Y_OFFSET, gcn::Graphics::CENTER,
-                                  gcn::Color(0, 255, 0));
+                                  &guiPalette->getColor(Palette::GM));
         }
         else
         {
-            mNameColor = 0x202020;
+            mNameColor = &guiPalette->getColor(Palette::PLAYER);
             mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
                                   gcn::Graphics::CENTER,
-                                  gcn::Color(255, 255, 255));
+                                  (this == player_node) ?
+                                  &guiPalette->getColor(Palette::SELF) :
+                                  &guiPalette->getColor(Palette::PC));
         }
         Being::setName(name);
     }

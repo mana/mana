@@ -53,7 +53,7 @@ EmoteContainer::EmoteContainer():
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); i++)
     {
-        mEmoteImg.push_back(player_node->getEmote(i));
+        mEmoteImg.push_back(EmoteDB::getAnimation(i));
     }
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
