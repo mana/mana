@@ -428,6 +428,8 @@
 		<Unit filename="src\utils\stringutils.h" />
 		<Unit filename="src\utils\strprintf.cpp" />
 		<Unit filename="src\utils\strprintf.h" />
+		<Unit filename="src\utils\tostring.h" />
+		<Unit filename="src\utils\trim.h" />
 		<Unit filename="src\utils\xml.cpp" />
 		<Unit filename="src\utils\xml.h" />
 		<Unit filename="src\vector.cpp" />
