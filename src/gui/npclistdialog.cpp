@@ -66,6 +66,7 @@ NpcListDialog::NpcListDialog(Network *network):
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
+    center();
     loadWindowState();
 }
 

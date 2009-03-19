@@ -49,9 +49,11 @@ BuySellDialog::BuySellDialog(Network *network):
     }
     buyButton->requestFocus();
 
-    loadWindowState();
-
     setContentSize(x, 2 * y + buyButton->getHeight());
+
+    center();
+    setDefaultSize();
+    loadWindowState();
 }
 
 void BuySellDialog::logic()

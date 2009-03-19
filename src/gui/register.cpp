@@ -130,7 +130,7 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mServerField->addActionListener(this);
     mPortField->addActionListener(this);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mUserField->requestFocus();
     mUserField->setCaretPosition(mUserField->getText().length());

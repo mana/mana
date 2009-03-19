@@ -61,6 +61,10 @@ NpcIntegerDialog::NpcIntegerDialog(Network *network):
     place(2, 0, cancelButton);
     place(3, 0, okButton);
     reflowLayout(175, 0);
+
+    center();
+    setDefaultSize();
+    loadWindowState();
 }
 
 void NpcIntegerDialog::setRange(int min, int max)

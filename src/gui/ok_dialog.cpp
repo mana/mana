@@ -74,7 +74,7 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     add(mTextArea);
     add(okButton);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     okButton->requestFocus();
 }

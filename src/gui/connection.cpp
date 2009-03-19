@@ -56,7 +56,7 @@ ConnectionDialog::ConnectionDialog():
     add(cancelButton);
     add(mProgressBar);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
 }
 

@@ -131,7 +131,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mCancelButton->requestFocus();
 

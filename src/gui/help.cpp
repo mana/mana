@@ -58,7 +58,7 @@ HelpWindow::HelpWindow():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    setLocationRelativeTo(getParent());
+    center();
 }
 
 void HelpWindow::action(const gcn::ActionEvent &event)

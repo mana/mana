@@ -110,7 +110,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     place(3, 6, mOkButton);
     reflowLayout(250, 0);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
 
     if (mUserField->getText().empty()) {

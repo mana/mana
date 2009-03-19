@@ -47,6 +47,10 @@ NpcStringDialog::NpcStringDialog(Network *network):
     place(1, 1, cancelButton);
     place(2, 1, okButton);
     reflowLayout(175, 0);
+
+    center();
+    setDefaultSize();
+    loadWindowState();
 }
 
 std::string NpcStringDialog::getValue()

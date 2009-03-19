@@ -58,7 +58,7 @@ SpeechBubble::SpeechBubble():
     add(mCaption);
     add(mSpeechArea);
 
-    setLocationRelativeTo(getParent());
+    center();
 }
 
 void SpeechBubble::setCaption(const std::string &name, const gcn::Color *color)

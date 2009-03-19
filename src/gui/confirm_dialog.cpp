@@ -85,7 +85,7 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
 
     if (getParent())
     {
-        setLocationRelativeTo(getParent());
+        center();
         getParent()->moveToTop(this);
     }
     setVisible(true);

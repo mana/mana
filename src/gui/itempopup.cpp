@@ -89,7 +89,7 @@ ItemPopup::ItemPopup():
     add(mItemEffectScroll);
     add(mItemWeightScroll);
 
-    setLocationRelativeTo(getParent());
+    center();
 }
 
 ItemPopup::~ItemPopup()

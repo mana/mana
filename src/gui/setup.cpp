@@ -101,7 +101,7 @@ Setup::Setup():
 
     add(panel);
 
-    setLocationRelativeTo(getParent());
+    center();
 
     setInGame(false);
 }

@@ -157,7 +157,7 @@ SkillDialog::SkillDialog():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    setLocationRelativeTo(getParent());
+    center();
     loadWindowState();
 }
 

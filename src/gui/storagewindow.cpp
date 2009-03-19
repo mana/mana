@@ -92,6 +92,7 @@ StorageWindow::StorageWindow(Network *network, int invSize):
     Layout &layout = getLayout();
     layout.setRowHeight(0, mStoreButton->getHeight());
 
+    center();
     loadWindowState();
 }
 

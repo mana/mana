@@ -240,6 +240,11 @@ class Window : public gcn::Window, gcn::WidgetListener
                             int defaultWidth, int defaultHeight);
 
         /**
+         * Set the default win pos and size tot he current ones.
+         */
+        void setDefaultSize();
+
+        /**
          * Reset the win pos and size to default. Don't forget to set defaults
          * first.
          */
@@ -274,6 +279,11 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Returns a proxy for adding widgets in an inner table of the layout.
          */
         ContainerPlacer getPlacer(int x, int y);
+
+        /**
+         * Positions the window in the center of it's parent.
+         */
+        void center();
 
     protected:
         /** The window container windows add themselves to. */

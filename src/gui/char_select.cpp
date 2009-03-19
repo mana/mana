@@ -127,7 +127,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
 
     reflowLayout(250, 0);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mSelectButton->requestFocus();
     updatePlayerInfo();
@@ -306,7 +306,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
 
     reflowLayout(225, 0);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mNameField->requestFocus();
 }

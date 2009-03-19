@@ -67,10 +67,9 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     mModal(modal),
     mCloseButton(false),
     mSticky(false),
-    mMinWinWidth(100),
-    mMinWinHeight(40),
-    mMaxWinWidth(INT_MAX),
-    mMaxWinHeight(INT_MAX),
+    mMinWinWidth(100), mDefaultWidth(100), mMaxWinWidth(INT_MAX),
+    mMinWinHeight(40), mDefaultHeight(40), mMaxWinHeight(INT_MAX),
+    mDefaultX(100), mDefaultY(100),
     mSkin(skin)
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
@@ -492,6 +491,14 @@ void Window::setDefaultSize(int defaultX, int defaultY,
     mDefaultHeight = defaultHeight;
 }
 
+void Window::setDefaultSize()
+{
+    mDefaultX = getX();
+    mDefaultY = getY();
+    mDefaultWidth = getWidth();
+    mDefaultHeight = getHeight();
+}
+
 void Window::resetToDefaultSize(bool changePosition)
 {
     if (changePosition) setPosition(mDefaultX, mDefaultY);
@@ -732,4 +739,9 @@ void Window::reflowLayout(int w, int h)
     delete mLayout;
     mLayout = NULL;
     setContentSize(w, h);
+}
+
+void Window::center()
+{
+    setLocationRelativeTo(getParent());
 }
