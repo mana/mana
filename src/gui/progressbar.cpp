@@ -25,6 +25,7 @@
 #include "gui.h"
 #include "palette.h"
 #include "progressbar.h"
+#include "textrenderer.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -120,38 +121,22 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     // The bar
     if (mProgress > 0)
     {
-
         graphics->setColor(gcn::Color(mRed, mGreen, mBlue, alpha));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
-                    (int) (mProgress * (getWidth() - 8)),
-                    getHeight() - 8));
+                               (int) (mProgress * (getWidth() - 8)),
+                                getHeight() - 8));
     }
 
     // The label
     if (!mText.empty())
     {
-        gcn::Font *f = boldFont;
         const int textX = getWidth() / 2;
-        const int textY = (getHeight() - f->getHeight()) / 2;
+        const int textY = (getHeight() - boldFont->getHeight()) / 2;
 
-        gcn::Color tempColor = guiPalette->getColor(Palette::OUTLINE);
-
-        graphics->setFont(f);
-
-        graphics->setColor(gcn::Color((int) tempColor.r, (int) tempColor.g,
-                                      (int) tempColor.b, alpha));
-        graphics->drawText(mText, textX + 1, textY, gcn::Graphics::CENTER);
-        graphics->drawText(mText, textX, textY - 1, gcn::Graphics::CENTER);
-        graphics->drawText(mText, textX, textY + 1, gcn::Graphics::CENTER);
-        graphics->drawText(mText, textX - 1, textY, gcn::Graphics::CENTER);
-
-        tempColor = guiPalette->getColor(Palette::PROGRESS_BAR);
-
-        graphics->setColor(gcn::Color((int) tempColor.r, (int) tempColor.g,
-                                      (int) tempColor.b, alpha));
-        graphics->drawText(mText, textX, textY, gcn::Graphics::CENTER);
-
-        graphics->setColor(guiPalette->getColor(Palette::TEXT));
+        TextRenderer::renderText(graphics, mText, textX, textY,
+                                 gcn::Graphics::CENTER,
+                                 guiPalette->getColor(Palette::PROGRESS_BAR,
+                                 alpha), boldFont, true, false);
     }
 }
 
