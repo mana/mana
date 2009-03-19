@@ -55,7 +55,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     minusButton->setSize(20, 20);
     Button *plusButton = new Button("+", "Plus", this);
     plusButton->setSize(20, 20);
-    Button *okButton = new Button(_("Ok"), "Drop", this);
+    Button *okButton = new Button(_("Ok"), "Ok", this);
     Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
     Button *addAllButton = new Button(_("All"), "All", this);
 
@@ -144,7 +144,11 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
         }
 
         scheduleDelete();
+        return;
     }
+
+    if (amount < 0) amount = 0;
+    else if (amount > mMax) amount = mMax;
 
     mItemAmountTextField->setValue(amount);
     mItemAmountSlide->setValue(amount);
