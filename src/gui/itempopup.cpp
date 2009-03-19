@@ -85,8 +85,6 @@ ItemPopup::ItemPopup():
     add(mItemDescScroll);
     add(mItemEffectScroll);
     add(mItemWeightScroll);
-
-    setLocationRelativeTo(getParent());
 }
 
 ItemPopup::~ItemPopup()

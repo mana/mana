@@ -61,10 +61,10 @@ SET(SRCS
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp
     gui/widgets/tabbedarea.h
+    gui/widgets/textpreview.cpp
+    gui/widgets/textpreview.h
     gui/browserbox.cpp
     gui/browserbox.h
-    gui/buddywindow.cpp
-    gui/buddywindow.h
     gui/button.cpp
     gui/button.h
     gui/buy.cpp
@@ -114,7 +114,7 @@ SET(SRCS
     gui/itempopup.cpp
     gui/itempopup.h
     gui/itemshortcutcontainer.cpp
-    gui/itemshortcutcontainer.h\
+    gui/itemshortcutcontainer.h
     gui/item_amount.cpp
     gui/item_amount.h
     gui/label.cpp
@@ -207,8 +207,6 @@ SET(SRCS
     gui/textbox.h
     gui/textfield.cpp
     gui/textfield.h
-    gui/textpreview.cpp
-    gui/textpreview.h
     gui/textrenderer.h
     gui/trade.cpp
     gui/trade.h
