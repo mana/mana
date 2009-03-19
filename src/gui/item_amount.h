@@ -62,6 +62,8 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         IntTextField *mItemAmountTextField;   /**< Item amount caption. */
         Item *mItem;
 
+        int mMax, mUsage;
+
         /**
          * Item Amount buttons.
          */

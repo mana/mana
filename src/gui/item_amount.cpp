@@ -36,19 +36,17 @@
 
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Window("", true, parent),
-    mItem(item)
+    mItem(item), mUsage(usage), mMax(mItem->getQuantity())
 {
-    const int maxRange = mItem->getQuantity();
-
     // Integer field
     mItemAmountTextField = new IntTextField(1);
-    mItemAmountTextField->setRange(1, maxRange);
+    mItemAmountTextField->setRange(1, mMax);
     mItemAmountTextField->setWidth(30);
     mItemAmountTextField->setActionEventId("Dummy");
     mItemAmountTextField->addActionListener(this);
 
     // Slider
-    mItemAmountSlide = new Slider(1.0, maxRange);
+    mItemAmountSlide = new Slider(1.0, mMax);
     mItemAmountSlide->setHeight(10);
     mItemAmountSlide->setActionEventId("Slide");
     mItemAmountSlide->addActionListener(this);
@@ -60,11 +58,13 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     plusButton->setSize(20, 20);
     Button *okButton = new Button(_("Ok"), "Drop", this);
     Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
+    Button *addAllButton = new Button(_("All"), "All", this);
 
     // Set positions
     place(0, 0, minusButton);
     place(1, 0, mItemAmountTextField).setPadding(2);
     place(2, 0, plusButton);
+    place(4, 0, addAllButton, 2);
     place(0, 1, mItemAmountSlide, 6);
     place(4, 2, okButton);
     place(5, 2, cancelButton);
@@ -76,19 +76,15 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     {
         case AMOUNT_TRADE_ADD:
             setCaption(_("Select amount of items to trade."));
-            okButton->setActionEventId("AddTrade");
             break;
         case AMOUNT_ITEM_DROP:
             setCaption(_("Select amount of items to drop."));
-            okButton->setActionEventId("Drop");
             break;
         case AMOUNT_STORE_ADD:
             setCaption(_("Select amount of items to store."));
-            okButton->setActionEventId("AddStore");
             break;
         case AMOUNT_STORE_REMOVE:
-            setCaption(_("Select amount of items to remove from storage."));
-            okButton->setActionEventId("RemoveStore");
+            setCaption(_("Select amount of items to retrieve."));
             break;
         default:
             break;
@@ -123,26 +119,34 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     {
         amount = static_cast<int>(mItemAmountSlide->getValue());
     }
-    else if (event.getId() == "Drop")
+    else if (event.getId() == "Ok" || event.getId() == "All")
     {
-        player_node->dropItem(mItem, mItemAmountTextField->getValue());
+        if (event.getId() == "All") {
+            amount = mMax;
+        }
+
+        switch (mUsage)
+        {
+            case AMOUNT_TRADE_ADD:
+                tradeWindow->tradeItem(mItem, amount);
+                break;
+            case AMOUNT_ITEM_DROP:
+                player_node->dropItem(mItem, amount);
+                break;
+            case AMOUNT_STORE_ADD:
+                storageWindow->addStore(mItem, amount);
+                break;
+            case AMOUNT_STORE_REMOVE:
+                storageWindow->removeStore(mItem, amount);
+                break;
+            default:
+                return;
+                break;
+        }
+
         scheduleDelete();
     }
-    else if (event.getId() == "AddTrade")
-    {
-        tradeWindow->tradeItem(mItem, mItemAmountTextField->getValue());
-        scheduleDelete();
-    }
-    else if (event.getId() == "AddStore")
-    {
-        storageWindow->addStore(mItem, mItemAmountTextField->getValue());
-        scheduleDelete();
-    }
-    else if (event.getId() == "RemoveStore")
-    {
-        storageWindow->removeStore(mItem, mItemAmountTextField->getValue());
-        scheduleDelete();
-    }
+
     mItemAmountTextField->setValue(amount);
     mItemAmountSlide->setValue(amount);
 }
