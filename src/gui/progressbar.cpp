@@ -23,6 +23,7 @@
 
 #include "gui.h"
 #include "progressbar.h"
+#include "textrenderer.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -33,6 +34,8 @@
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;
 float ProgressBar::mAlpha = config.getValue("guialpha", 0.8);
+
+const gcn::Color ProgressBar::TEXT_COLOR = gcn::Color(255, 255, 255);
 
 ProgressBar::ProgressBar(float progress,
                          unsigned int width, unsigned int height,
@@ -129,21 +132,12 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     if (!mText.empty())
     {
         gcn::Font *f = boldFont;
-        const int textX = getWidth() / 2;
-        const int textY = (getHeight() - f->getHeight()) / 2;
+        int textX = getWidth() / 2;
+        int textY = (getHeight() - f->getHeight()) / 2;
 
-        graphics->setFont(f);
-
-        graphics->setColor(gcn::Color(0, 0, 0));
-        graphics->drawText(mText, textX + 1, textY, gcn::Graphics::CENTER);
-        graphics->drawText(mText, textX, textY - 1, gcn::Graphics::CENTER);
-        graphics->drawText(mText, textX, textY + 1, gcn::Graphics::CENTER);
-        graphics->drawText(mText, textX - 1, textY, gcn::Graphics::CENTER);
-
-        graphics->setColor(gcn::Color(255, 255, 255));
-        graphics->drawText(mText, textX, textY, gcn::Graphics::CENTER);
-
-        graphics->setColor(gcn::Color(0, 0, 0));
+        TextRenderer::renderText(graphics, mText, textX, textY,
+                gcn::Graphics::CENTER, &TEXT_COLOR, f, true,
+                false); 
     }
 }
 
