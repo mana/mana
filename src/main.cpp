@@ -147,6 +147,8 @@ std::string updatesDir;
 LoginHandler loginHandler;
 MapLoginHandler mapLoginHandler;
 
+SDL_Surface *icon;
+
 /**
  * A structure holding the values of various options that can be passed from
  * the command line.
@@ -394,7 +396,7 @@ void init_engine(const Options &options)
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
     }
 #else
-    SDL_Surface *icon = IMG_Load(PKG_DATADIR "data/icons/tmw.png");
+    icon = IMG_Load(PKG_DATADIR "data/icons/tmw.png");
     if (icon)
     {
         SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -493,6 +495,8 @@ void exit_engine()
 
     ResourceManager::deleteInstance();
     delete logger;
+
+    SDL_FreeSurface(icon);
 }
 
 void printHelp()
