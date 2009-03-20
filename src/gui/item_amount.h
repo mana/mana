@@ -58,8 +58,13 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
          */
         void resetAmount();
 
+        /**
+         * Schedules the Item Amount window for deletion.
+         */
+        void close();
+
     private:
-        IntTextField *mItemAmountTextField;   /**< Item amount caption. */
+        gcn::Label *mItemAmountLabel;   /**< Item amount caption. */
         Item *mItem;
 
         int mMax, mUsage;

@@ -21,6 +21,7 @@
  */
 
 #include "button.h"
+#include "gui.h"
 #include "inttextfield.h"
 #include "npcintegerdialog.h"
 
@@ -47,8 +48,8 @@ NpcIntegerDialog::NpcIntegerDialog(Network *network):
     cancelButton = new Button(_("Cancel"), "cancel", this);
     resetButton = new Button(_("Reset"), "reset", this);
 
-    mDecButton->setSize(20, 20);
-    mIncButton->setSize(20, 20);
+    mIncButton->setSize(gui->getFontHeight(), gui->getFontHeight());
+    mDecButton->setSize(gui->getFontHeight(), gui->getFontHeight());
 
     ContainerPlacer place;
     place = getPlacer(0, 0);

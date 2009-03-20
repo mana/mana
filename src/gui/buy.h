@@ -96,11 +96,20 @@ class BuyDialog : public Window, public gcn::ActionListener,
          */
         void updateButtonsAndLabels();
 
+        /**
+         * Sets the visibility of this window.
+         */
         void setVisible(bool visible);
+
+        /**
+         * Closes the Buy Window, as well as resetting the current npc.
+         */
+        void close();
     private:
         Network *mNetwork;
         gcn::Button *mBuyButton;
         gcn::Button *mQuitButton;
+        gcn::Button *mAddMaxButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
         ShopListBox *mShopItemList;

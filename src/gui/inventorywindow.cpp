@@ -99,7 +99,7 @@ InventoryWindow::InventoryWindow(int invSize):
     place(6, 5, mUseButton);
 
     Layout &layout = getLayout();
-    layout.setRowHeight(0,  mDropButton->getHeight());
+    layout.setRowHeight(0, mDropButton->getHeight());
 
     loadWindowState();
 }

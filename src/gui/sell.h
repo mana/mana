@@ -82,7 +82,15 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void setMoney(int amount);
 
+        /**
+         * Sets the visibility of this window.
+         */
         void setVisible(bool visible);
+
+        /**
+         * Closes the Buy Window, as well as resetting the current npc.
+         */
+        void close();
     private:
         /**
          * Updates the state of buttons and labels.
@@ -92,6 +100,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         Network *mNetwork;
         gcn::Button *mSellButton;
         gcn::Button *mQuitButton;
+        gcn::Button *mAddMaxButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
         ShopListBox *mShopItemList;
