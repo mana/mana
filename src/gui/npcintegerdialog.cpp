@@ -21,7 +21,6 @@
  */
 
 #include "button.h"
-#include "gui.h"
 #include "inttextfield.h"
 #include "npcintegerdialog.h"
 

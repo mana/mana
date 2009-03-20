@@ -21,7 +21,6 @@
  */
 
 #include "button.h"
-#include "gui.h"
 #include "label.h"
 #include "scrollarea.h"
 #include "sell.h"

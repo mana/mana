@@ -22,7 +22,6 @@
 
 #include "button.h"
 #include "buy.h"
-#include "gui.h"
 #include "label.h"
 #include "scrollarea.h"
 #include "shop.h"

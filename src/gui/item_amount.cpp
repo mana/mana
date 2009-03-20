@@ -21,7 +21,6 @@
  */
 
 #include "button.h"
-#include "gui.h"
 #include "item_amount.h"
 #include "label.h"
 #include "slider.h"
