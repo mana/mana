@@ -95,8 +95,10 @@ void Button::init()
         {
             btn[mode] = resman->getImage(data[mode].file);
             a = 0;
-            for (y = 0; y < 3; y++) {
-                for (x = 0; x < 3; x++) {
+            for (y = 0; y < 3; y++)
+            {
+                for (x = 0; x < 3; x++)
+                {
                     button[mode].grid[a] = btn[mode]->getSubImage(
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,

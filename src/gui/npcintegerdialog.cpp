@@ -48,8 +48,8 @@ NpcIntegerDialog::NpcIntegerDialog(Network *network):
     cancelButton = new Button(_("Cancel"), "cancel", this);
     resetButton = new Button(_("Reset"), "reset", this);
 
-    mIncButton->setSize(gui->getFontHeight(), gui->getFontHeight());
-    mDecButton->setSize(gui->getFontHeight(), gui->getFontHeight());
+    mDecButton->adjustSize();
+    mDecButton->setWidth(mIncButton->getWidth());
 
     ContainerPlacer place;
     place = getPlacer(0, 0);

@@ -70,8 +70,8 @@ BuyDialog::BuyDialog(Network *network):
     mItemDescLabel = new Label(strprintf(_("Description: %s"), ""));
     mItemEffectLabel = new Label(strprintf(_("Effect: %s"), ""));
 
-    mIncreaseButton->setSize(gui->getFontHeight(), gui->getFontHeight());
-    mDecreaseButton->setSize(gui->getFontHeight(), gui->getFontHeight());
+    mDecreaseButton->adjustSize();
+    mDecreaseButton->setWidth(mIncreaseButton->getWidth());
 
     mIncreaseButton->setEnabled(false);
     mDecreaseButton->setEnabled(false);

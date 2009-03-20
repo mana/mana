@@ -62,8 +62,8 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
     Button *addAllButton = new Button(_("All"), "All", this);
 
-    minusButton->setSize(gui->getFontHeight(), gui->getFontHeight());
-    plusButton->setSize(gui->getFontHeight(), gui->getFontHeight());
+    minusButton->adjustSize();
+    minusButton->setWidth(plusButton->getWidth());
 
     // Set positions
     ContainerPlacer place;
