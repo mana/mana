@@ -88,13 +88,15 @@ ModeListModel::ModeListModel()
     SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
 
     /* Check which modes are available */
-    if (modes == (SDL_Rect **)0) {
+    if (modes == (SDL_Rect **)0)
         logger->log("No modes available");
-    } else if (modes == (SDL_Rect **)-1) {
+    else if (modes == (SDL_Rect **)-1)
         logger->log("All resolutions available");
-    } else {
+    else 
+    {
         //logger->log("Available Modes");
-        for (int i = 0; modes[i]; ++i) {
+        for (int i = 0; modes[i]; ++i)
+        {
             const std::string modeString =
                 toString((int)modes[i]->w) + "x" + toString((int)modes[i]->h);
             //logger->log(modeString.c_str());
@@ -125,7 +127,7 @@ Setup_Video::Setup_Video():
     mSpeechLabel(new Label("")),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
-    mFpsSlider(new Slider(10, 200)),
+    mFpsSlider(new Slider(10, 120)),
     mFpsField(new TextField),
     mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 16)),
     mScrollLazinessSlider(new Slider(1, 64)),
@@ -337,9 +339,11 @@ void Setup_Video::apply()
                 }
             }
 #ifdef WIN32
-        } else {
+        }
+        else
+        {
             new OkDialog(_("Switching to full screen"),
-                    _("Restart needed for changes to take effect."));
+                         _("Restart needed for changes to take effect."));
         }
 #endif
         config.setValue("screen", fullscreen ? true : false);
@@ -352,7 +356,7 @@ void Setup_Video::apply()
 
         // OpenGL can currently only be changed by restarting, notify user.
         new OkDialog(_("Changing OpenGL"),
-                _("Applying change to OpenGL requires restart."));
+                     _("Applying change to OpenGL requires restart."));
     }
 
     // FPS change
@@ -450,8 +454,9 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("particleeffects",
                 mParticleEffectsCheckBox->isSelected() ? true : false);
-        new OkDialog(_("Particle effect settings changed"),
-                     _("Restart your client or change maps for the change to take effect."));
+        new OkDialog(_("Particle effect settings changed."),
+                     _("Restart your client or change maps "
+                       "for the change to take effect."));
     }
     else if (event.getId() == "pickupchat")
     {
@@ -461,8 +466,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     else if (event.getId() == "pickupparticle")
     {
         config.setValue("showpickupparticle",
-                        mPickupParticleCheckBox->isSelected()
-                        ? true : false);
+                        mPickupParticleCheckBox->isSelected() ? true : false);
     }
     else if (event.getId() == "speech")
     {
@@ -576,9 +580,9 @@ void Setup_Video::keyPressed(gcn::KeyEvent &event)
         {
             mFps = 10;
         }
-        else if (mFps > 200)
+        else if (mFps > 120)
         {
-            mFps = 200;
+            mFps = 120;
         }
         mFpsField->setText(toString(mFps));
         mFpsSlider->setValue(mFps);

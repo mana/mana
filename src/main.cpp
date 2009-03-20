@@ -1101,9 +1101,9 @@ int main(int argc, char *argv[])
         /*
          * This loop can really stress the CPU, for no reason since it's
          * just constantly redrawing the wallpaper.  Added the following
-         * usleep to limit it to 20 FPS during the login sequence
+         * usleep to limit it to 40 FPS during the login sequence
          */
-        usleep(50000);
+        usleep(25000);
     }
 
     delete guiPalette;
