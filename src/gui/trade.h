@@ -87,11 +87,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         void increaseQuantity(int index, bool own, int quantity);
 
         /**
-         * Set trade Button disabled
-         */
-        void setTradeButton(bool enabled);
-
-        /**
          * Player received ok message from server
          */
         void receivedOk(bool own);
@@ -130,7 +125,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
 
         gcn::Label *mMoneyLabel;
         gcn::Label *mMoneyLabel2;
-        gcn::Button *mAddButton, *mOkButton, *mCancelButton, *mTradeButton;
+        gcn::Button *mAddButton, *mOkButton;
         ScrollArea *mMyScroll, *mPartnerScroll;
         gcn::TextField *mMoneyField;
         bool mOkOther, mOkMe;

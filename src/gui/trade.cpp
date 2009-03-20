@@ -22,6 +22,8 @@
 
 #include <sstream>
 
+#include <guichan/font.hpp>
+
 #include "button.h"
 #include "chat.h"
 #include "inventorywindow.h"
@@ -59,12 +61,12 @@ TradeWindow::TradeWindow(Network *network):
     setMinWidth(342);
     setMinHeight(209);
 
-    mAddButton = new Button(_("Add"), "add", this);
-    mOkButton = new Button(_("Ok"), "ok", this);
-    mCancelButton = new Button(_("Cancel"), "cancel", this);
-    mTradeButton = new Button(_("Trade"), "trade", this);
+    std::string longestName = getFont()->getWidth(_("OK")) >
+                                   getFont()->getWidth(_("Trade")) ?
+                                   _("OK") : _("Trade");
 
-    mTradeButton->setEnabled(false);
+    mAddButton = new Button(_("Add"), "add", this);
+    mOkButton = new Button(longestName, "ok", this);
 
     mMyItemContainer = new ItemContainer(mMyInventory.get(), 2);
     mMyItemContainer->setWidth(160);
@@ -91,8 +93,6 @@ TradeWindow::TradeWindow(Network *network):
     place(0, 0, mMoneyLabel2);
     place(1, 0, mMoneyField);
     place = getPlacer(0, 2);
-    place(4, 0, mCancelButton);
-    place(5, 0, mTradeButton);
     place(6, 0, mAddButton);
     place(7, 0, mOkButton);
     Layout &layout = getLayout();
@@ -101,6 +101,8 @@ TradeWindow::TradeWindow(Network *network):
     layout.setRowHeight(2, 0);
     layout.setColWidth(0, Layout::AUTO_SET);
     layout.setColWidth(1, Layout::AUTO_SET);
+
+    mOkButton->setCaption(_("OK"));
 
     loadWindowState();
 }
@@ -157,18 +159,14 @@ void TradeWindow::reset()
 {
     mMyInventory->clear();
     mPartnerInventory->clear();
-    mTradeButton->setEnabled(false);
+    mOkButton->setCaption(_("OK"));
+    mOkButton->setActionEventId("ok");
     mOkButton->setEnabled(true);
     mOkOther = false;
     mOkMe = false;
     mMoneyLabel->setCaption(strprintf(_("You get %d GP."), 0));
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
-}
-
-void TradeWindow::setTradeButton(bool enabled)
-{
-    mTradeButton->setEnabled(enabled);
 }
 
 void TradeWindow::receivedOk(bool own)
@@ -178,13 +176,8 @@ void TradeWindow::receivedOk(bool own)
         mOkMe = true;
         if (mOkOther)
         {
-            mTradeButton->setEnabled(true);
-            mOkButton->setEnabled(false);
-        }
-        else
-        {
-            mTradeButton->setEnabled(false);
-            mOkButton->setEnabled(false);
+            mOkButton->setCaption(_("Trade"));
+            mOkButton->setActionEventId("trade");
         }
     }
     else
@@ -192,20 +185,18 @@ void TradeWindow::receivedOk(bool own)
         mOkOther = true;
         if (mOkMe)
         {
-            mTradeButton->setEnabled(true);
-            mOkButton->setEnabled(false);
-        }
-        else
-        {
-            mTradeButton->setEnabled(false);
-            mOkButton->setEnabled(true);
+            mOkButton->setCaption(_("Trade"));
+            mOkButton->setActionEventId("trade");
         }
     }
 }
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
-    addItem(item->getId(), true, quantity, item->isEquipment());
+    // TODO: Our newer version of eAthena doesn't register this following
+    //       function. Detect the actual server version, and re-enable this
+    //       for that version only.
+    //addItem(item->getId(), true, quantity, item->isEquipment());
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(item->getInvIndex());

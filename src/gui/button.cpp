@@ -74,9 +74,9 @@ Button::Button(const std::string& caption, const std::string &actionEventId,
 {
     init();
     setActionEventId(actionEventId);
-    if (listener) {
+
+    if (listener)
         addActionListener(listener);
-    }
 }
 
 void Button::init()
