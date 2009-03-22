@@ -77,7 +77,7 @@ class Palette : public gcn::ListModel
             ENTRY(MISS)\
             ENTRY(TYPE_COUNT)\
 
-        TEXTENUM(ColorType, COLOR_TYPE);
+        TEXTENUM(ColorType, COLOR_TYPE)
 
         /** Colors can be static or can alter over time. */
         enum GradientType {

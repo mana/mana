@@ -44,14 +44,14 @@ const gcn::Color Palette::RAINBOW_COLORS[8] = {
 /** Number of Elemets of RAINBOW_COLORS */
 const int Palette::RAINBOW_COLOR_COUNT = 7;
 
-std::string Palette::getConfigName(const std::string& typeName)
+std::string Palette::getConfigName(const std::string &typeName)
 {
     std::string res = "Color" + typeName;
 
     int pos = 5;
-    for (int i = 0; i < typeName.length(); i++)
+    for (size_t i = 0; i < typeName.length(); i++)
     {
-        if (i==0 || typeName[i] == '_')
+        if (i == 0 || typeName[i] == '_')
         {
             if (i > 0)
             {
@@ -70,12 +70,13 @@ std::string Palette::getConfigName(const std::string& typeName)
     return res;
 }
 
-DEFENUMNAMES(ColorType, COLOR_TYPE);
+DEFENUMNAMES(ColorType, COLOR_TYPE)
 
 const int Palette::GRADIENT_DELAY = 20;
 
-Palette::Palette() : mColVector(ColVector(TYPE_COUNT)), mGradVector(),
-       mRainbowTime(tick_time)
+Palette::Palette() :
+    mRainbowTime(tick_time),
+    mColVector(ColVector(TYPE_COUNT))
 {
     std::string indent = "  ";
     addColor(TEXT, 0x000000, STATIC, _("Text"));
@@ -160,7 +161,7 @@ void Palette::setGradient(ColorType type, GradientType grad)
     ColorElem *elem = &mColVector[type];
     if (elem->grad != STATIC && grad == STATIC)
     {
-        for (int i = 0; i < mGradVector.size(); i++)
+        for (size_t i = 0; i < mGradVector.size(); i++)
         {
             if (mGradVector[i] == elem)
             {
@@ -251,7 +252,7 @@ void Palette::advanceGradient ()
         int advance = get_elapsed_time(mRainbowTime) / 5;
         double startColVal, destColVal;
 
-        for (int i = 0; i < mGradVector.size(); i++)
+        for (size_t i = 0; i < mGradVector.size(); i++)
         {
             mGradVector[i]->gradientIndex =
                     (mGradVector[i]->gradientIndex + advance) %

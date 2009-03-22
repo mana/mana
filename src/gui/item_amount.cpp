@@ -35,7 +35,9 @@
 
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Window("", true, parent),
-    mItem(item), mUsage(usage), mMax(mItem->getQuantity())
+    mItem(item),
+    mMax(mItem->getQuantity()),
+    mUsage(usage)
 {
     // Integer field
     mItemAmountTextField = new IntTextField(1);
