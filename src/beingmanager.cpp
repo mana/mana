@@ -107,9 +107,8 @@ Being *BeingManager::findBeing(int id)
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
         Being *being = (*i);
-        if (being->getId() == id) {
+        if (being->getId() == id)
             return being;
-        }
     }
     return NULL;
 }
@@ -182,7 +181,8 @@ void BeingManager::logic()
             delete being;
             i = mBeings.erase(i);
         }
-        else {
+        else
+        {
             i++;
         }
     }

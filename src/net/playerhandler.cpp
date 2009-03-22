@@ -164,9 +164,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 player_node->mX = x;
                 player_node->mY = y;
 
-                logger->log("Adjust scrolling by %d:%d",
-                        (int) scrollOffsetX,
-                        (int) scrollOffsetY);
+                logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
+                           (int) scrollOffsetY);
 
                 viewport->scrollBy(scrollOffsetX, scrollOffsetY);
             }

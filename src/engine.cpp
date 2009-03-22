@@ -66,6 +66,8 @@ void Engine::changeMap(const std::string &mapPath)
 
     particleEngine->clear();
 
+    mMapName = mapPath;
+
     // Store full map path in global var
     map_path = "maps/" + mapPath.substr(0, mapPath.rfind(".")) + ".tmx";
     ResourceManager *resman = ResourceManager::getInstance();
@@ -128,7 +130,6 @@ void Engine::changeMap(const std::string &mapPath)
         sound.playMusic(newMusic, -1);
 
     mCurrentMap = newMap;
-    mMapName = mapPath;
 
     // Send "map loaded"
     MessageOut outMsg(mNetwork);
