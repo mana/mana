@@ -1548,8 +1548,6 @@ int main(int argc, char *argv[])
                     login_wallpaper->decRef();
                     login_wallpaper = ResourceManager::getInstance()->
                         getImage(wallpaperName);
-                    // Load units
-                    Units::loadUnits();
                     break;
 
                     // Those states don't cause a network disconnect
@@ -1593,6 +1591,9 @@ int main(int argc, char *argv[])
                     MonsterDB::load();
                     NPCDB::load();
                     EmoteDB::load();
+
+                    // Load units
+                    Units::loadUnits();
 
                     state = STATE_CHAR_CONNECT;
                     break;
