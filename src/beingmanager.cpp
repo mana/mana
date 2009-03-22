@@ -26,8 +26,12 @@
 #include "npc.h"
 #include "player.h"
 
+#ifdef EATHENA_SUPPORT
 #include "net/messageout.h"
+#include "net/ea/protocol.h"
+#else
 #include "net/protocol.h"
+#endif
 
 #include "utils/dtor.h"
 
@@ -39,8 +43,14 @@ class FindBeingFunctor
         bool operator() (Being *being)
         {
             Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
+#ifdef TMWSERV_SUPPORT
+            const Vector &pos = being->getPosition();
+            return ((int) pos.x / 32 == x &&
+                    ((int) pos.y / 32 == y || (int) pos.y / 32 == other_y) &&
+#else
             return (being->mX == x &&
                     (being->mY == y || being->mY == other_y) &&
+#endif
                     being->mAction != Being::DEAD &&
                     (type == Being::UNKNOWN || being->getType() == type));
         }
@@ -49,10 +59,12 @@ class FindBeingFunctor
         Being::Type type;
 } beingFinder;
 
+#ifdef EATHENA_SUPPORT
 BeingManager::BeingManager(Network *network):
     mNetwork(network)
 {
 }
+#endif
 
 void BeingManager::setMap(Map *map)
 {
@@ -67,10 +79,30 @@ void BeingManager::setPlayer(LocalPlayer *player)
     mBeings.push_back(player);
 }
 
+#ifdef TMWSERV_SUPPORT
+Being* BeingManager::createBeing(int id, int type, int subtype)
+#else
 Being* BeingManager::createBeing(Uint32 id, Uint16 job)
+#endif
 {
     Being *being;
 
+#ifdef TMWSERV_SUPPORT
+    switch (type)
+    {
+        case OBJECT_PLAYER:
+            being = new Player(id, subtype, mMap);
+            break;
+        case OBJECT_NPC:
+            being = new NPC(id, subtype, mMap);
+            break;
+        case OBJECT_MONSTER:
+            being = new Monster(id, subtype, mMap);
+            break;
+        default:
+            assert(false);
+    }
+#else
     if (job < 10)
         being = new Player(id, job, mMap);
     else if (job >= 50 && job < 1002)
@@ -87,15 +119,19 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
         outMsg.writeInt16(0x0094);
         outMsg.writeInt32(id);//readLong(2));
     }
+#endif
 
     mBeings.push_back(being);
-
     return being;
 }
 
 void BeingManager::destroyBeing(Being *being)
 {
     mBeings.remove(being);
+#ifdef TMWSERV_SUPPORT
+    if(being == player_node->getTarget())
+        player_node->setTarget(NULL);
+#endif
     delete being;
 }
 
@@ -131,15 +167,15 @@ Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
     {
         Being *being = (*itr);
 
-        int xtol = being->getWidth();
-        int uptol = being->getHeight() / 2;
+        int xtol = being->getWidth() / 2;
+        int uptol = being->getHeight();
 
         if ((being->mAction != Being::DEAD) &&
             (being != player_node) &&
-            (being->getPixelX() <= x) &&
+            (being->getPixelX() - xtol <= x) &&
             (being->getPixelX() + xtol >= x) &&
             (being->getPixelY() - uptol <= y) &&
-            (being->getPixelY() + uptol >= y))
+            (being->getPixelY() >= y))
         {
             return being;
         }
@@ -175,12 +211,15 @@ void BeingManager::logic()
 
         being->logic();
 
+#ifdef EATHENA_SUPPORT
         if (being->mAction == Being::DEAD && being->mFrame >= 20)
         {
             delete being;
             i = mBeings.erase(i);
         }
-        else {
+        else
+#endif
+        {
             i++;
         }
     }
@@ -208,13 +247,30 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
     Being *closestBeing = NULL;
     int dist = 0;
 
+#ifdef TMWSERV_SUPPORT
+    //Why do we do this:
+    //For some reason x,y passed to this function is always
+    //in map coords, while down below its in pixels
+    //
+    //I believe there is a deeper problem under this, but
+    //for a temp solution we'll convert to coords to pixels
+    x = x * 32;
+    y = y * 32;
+    maxdist = maxdist * 32;
+#endif
+
     BeingIterator itr = mBeings.begin();
     BeingIterator itr_end = mBeings.end();
 
     for (; itr != itr_end; ++itr)
     {
         Being *being = (*itr);
+#ifdef TMWSERV_SUPPORT
+        const Vector &pos = being->getPosition();
+        int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
+#else
         int d = abs(being->mX - x) + abs(being->mY - y);
+#endif
 
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer
@@ -234,13 +290,25 @@ Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
 {
     Being *closestBeing = NULL;
     int dist = 0;
+#ifdef TMWSERV_SUPPORT
+    const Vector &apos = aroundBeing->getPosition();
+    int x = apos.x;
+    int y = apos.y;
+    maxdist = maxdist * 32;
+#else
     int x = aroundBeing->mX;
     int y = aroundBeing->mY;
+#endif
 
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
         Being *being = (*i);
+#ifdef TMWSERV_SUPPORT
+        const Vector &pos = being->getPosition();
+        int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
+#else
         int d = abs(being->mX - x) + abs(being->mY - y);
+#endif
 
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer

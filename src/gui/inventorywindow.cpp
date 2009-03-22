@@ -32,31 +32,39 @@
 #include "itemcontainer.h"
 #include "progressbar.h"
 #include "scrollarea.h"
+#include "sdlinput.h"
 #include "viewport.h"
 
 #include "widgets/layout.h"
 
 #include "../inventory.h"
 #include "../item.h"
+#include "../localplayer.h"
+#include "../log.h"
 #include "../units.h"
 
 #include "../resources/iteminfo.h"
 
 #include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 #include "../utils/stringutils.h"
+#include "../utils/strprintf.h"
 
 InventoryWindow::InventoryWindow(int invSize):
     Window(_("Inventory")),
     mMaxSlots(invSize),
+    mSplit(false),
     mItemDesc(false)
 {
     setWindowName("Inventory");
-    setResizable(true);
+    setResizable(false);
     setCloseButton(true);
-
+    // LEEOR/TODO: Since this window is not resizable, do we really need to set these
+    // values or can we drop them?
+    setMinWidth(375);
+    setMinHeight(283);
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 375, 300);
+    setDefaultSize(115, 30, 375, 283);
+    addKeyListener(this);
 
     std::string longestUseString = getFont()->getWidth(_("Equip")) >
                                    getFont()->getWidth(_("Use")) ?
@@ -70,8 +78,15 @@ InventoryWindow::InventoryWindow(int invSize):
 
     mUseButton = new Button(longestUseString, "use", this);
     mDropButton = new Button(_("Drop"), "drop", this);
+#ifdef TMWSERV_SUPPORT
+    mSplitButton = new Button(_("Split"), "split", this);
+#endif
 
-    mItems = new ItemContainer(player_node->getInventory(), 2);
+#ifdef TMWSERV_SUPPORT
+    mItems = new ItemContainer(player_node->getInventory(), 10, 5);
+#else
+    mItems = new ItemContainer(player_node->getInventory(), 10, 5, 2);
+#endif
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);
@@ -94,15 +109,17 @@ InventoryWindow::InventoryWindow(int invSize):
     place(1, 0, mWeightBar, 3);
     place(4, 0, mSlotsLabel).setPadding(3);
     place(5, 0, mSlotsBar, 2);
-    place(0, 1, mInvenScroll, 7, 4);
-    place(5, 5, mDropButton);
-    place(6, 5, mUseButton);
+    place(0, 1, mInvenScroll, 100).setPadding(3);
+    place(0, 2, mUseButton);
+    place(1, 2, mDropButton);
+#ifdef TMWSERV_SUPPORT
+    place(2, 2, mSplitButton);
+#endif
 
     Layout &layout = getLayout();
-    layout.setRowHeight(0, mDropButton->getHeight());
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 InventoryWindow::~InventoryWindow()
@@ -118,21 +135,21 @@ void InventoryWindow::logic()
     // redesign of InventoryWindow and ItemContainer probably.
     updateButtons();
 
-    if (mMaxWeight != player_node->mMaxWeight ||
-         mTotalWeight != player_node->mTotalWeight ||
+    if (mMaxWeight != player_node->getMaxWeight() ||
+         mTotalWeight != player_node->getTotalWeight() ||
          mUsedSlots != toString(player_node->getInventory()->getNumberOfSlotsUsed()))
     {
-        mTotalWeight = player_node->mTotalWeight;
-        mMaxWeight = player_node->mMaxWeight;
+        mTotalWeight = player_node->getTotalWeight();
+        mMaxWeight = player_node->getMaxWeight();
         mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
         // Weight Bar coloration
-        if (int(player_node->mTotalWeight) < int(player_node->mMaxWeight / 3))
+        if (int(player_node->getTotalWeight()) < int(player_node->getMaxWeight() / 3))
         {
             mWeightBar->setColor(0, 0, 255); // Blue
         }
-        else if (int(player_node->mTotalWeight) <
-                 int((player_node->mMaxWeight / 3) * 2))
+        else if (int(player_node->getTotalWeight()) <
+                 int((player_node->getMaxWeight() / 3) * 2))
         {
             mWeightBar->setColor(255, 255, 0); // Yellow
         }
@@ -144,8 +161,8 @@ void InventoryWindow::logic()
         // Adjust progress bars
         mSlotsBar->setProgress((float)
                player_node->getInventory()->getNumberOfSlotsUsed() / mMaxSlots);
-        mWeightBar->setProgress((float) player_node->mTotalWeight /
-                                        player_node->mMaxWeight);
+        mWeightBar->setProgress((float) player_node->getTotalWeight() /
+                                        player_node->getMaxWeight());
 
         mSlotsBar->setText(strprintf("%s/%d", mUsedSlots.c_str(), mMaxSlots));
         mWeightBar->setText(strprintf("%s/%s",
@@ -163,6 +180,14 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "use")
     {
+#ifdef TMWSERV_SUPPORT
+        if (item->isEquipment()) {
+            player_node->equipItem(item);
+        }
+        else {
+            player_node->useItem(item->getInvIndex());
+        }
+#else
         if (item->isEquipment())
         {
             if (item->isEquipped())
@@ -172,17 +197,31 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         }
         else
             player_node->useItem(item);
+#endif
     }
     else if (event.getId() == "drop")
     {
-        if (item->getQuantity() == 1)
-            player_node->dropItem(item, 1);
-        else
-        {
+        if (item->getQuantity() > 1) {
             // Choose amount of items to drop
             new ItemAmountWindow(AMOUNT_ITEM_DROP, this, item);
         }
+        else {
+            player_node->dropItem(item, 1);
+        }
+        mItems->selectNone();
     }
+    else if (event.getId() == "split")
+    {
+        if (item && !item->isEquipment() && item->getQuantity() > 1) {
+            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item,
+                (item->getQuantity() - 1));
+        }
+    }
+}
+
+Item* InventoryWindow::getSelectedItem() const
+{
+    return mItems->getSelectedItem();
 }
 
 void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
@@ -205,15 +244,55 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
+#ifdef TMWSERV_SUPPORT
+void InventoryWindow::keyPressed(gcn::KeyEvent &event)
+{
+    switch (event.getKey().getValue())
+    {
+        case Key::LEFT_SHIFT:
+        case Key::RIGHT_SHIFT:
+            mSplit = true;
+            break;
+    }
+}
+
+void InventoryWindow::keyReleased(gcn::KeyEvent &event)
+{
+    switch (event.getKey().getValue())
+    {
+        case Key::LEFT_SHIFT:
+        case Key::RIGHT_SHIFT:
+            mSplit = false;
+            break;
+    }
+}
+#endif
+
+void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
+{
+    if (mSplit)
+    {
+        Item *item = mItems->getSelectedItem();
+
+        if (item && !item->isEquipment() && item->getQuantity() > 1)
+        {
+            mSplit = false;
+            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item, (item->getQuantity() - 1));
+        }
+    }
+}
+
 void InventoryWindow::updateButtons()
 {
     const Item *selectedItem = mItems->getSelectedItem();
 
     if (selectedItem && selectedItem->isEquipment())
     {
+#ifdef EATHENA_SUPPORT
         if (selectedItem->isEquipped())
             mUseButton->setCaption(_("Unequip"));
         else
+#endif
             mUseButton->setCaption(_("Equip"));
     }
     else
@@ -221,9 +300,15 @@ void InventoryWindow::updateButtons()
 
     mUseButton->setEnabled(selectedItem != 0);
     mDropButton->setEnabled(selectedItem != 0);
-}
 
-Item* InventoryWindow::getSelectedItem() const
-{
-    return mItems->getSelectedItem();
+#ifdef TMWSERV_SUPPORT
+    if (selectedItem && !selectedItem->isEquipment() &&
+        selectedItem->getQuantity() > 1)
+    {
+        mSplitButton->setEnabled(true);
+    }
+    else {
+        mSplitButton->setEnabled(false);
+    }
+#endif
 }

@@ -35,8 +35,11 @@ class Item
         /**
          * Constructor.
          */
-        Item(int id = -1, int quantity = 0,
-             bool equipment = false, bool equipped = false);
+        Item(int id = -1, int quantity = 0, bool equipment = false
+#ifdef EATHENA_SUPPORT
+             , bool equipped = false
+#endif
+            );
 
         /**
          * Destructor.
@@ -83,6 +86,7 @@ class Item
          */
         bool isEquipment() const { return mEquipment; }
 
+#ifdef EATHENA_SUPPORT
         /**
          * Sets whether this item is equipped.
          */
@@ -92,6 +96,7 @@ class Item
          * Returns whether this item is equipped.
          */
         bool isEquipped() const { return mEquipped; }
+#endif
 
         /**
          * Sets the inventory index of this item.
@@ -113,7 +118,9 @@ class Item
         Image *mImage;        /**< Item image. */
         int mQuantity;        /**< Number of items. */
         bool mEquipment;      /**< Item is equipment. */
+#ifdef EATHENA_SUPPORT
         bool mEquipped;       /**< Item is equipped. */
+#endif
         int mInvIndex;        /**< Inventory index. */
 };
 

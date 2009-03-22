@@ -66,8 +66,10 @@ class MiniStatusWindow : public Window
          * Mini Status Bars
          */
         ProgressBar *mHpBar;
+#ifdef EATHENA_SUPPORT
         ProgressBar *mMpBar;
         ProgressBar *mXpBar;
+#endif
 
         std::vector<AnimatedSprite *> mIcons;
 };

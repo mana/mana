@@ -19,11 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#include "messagein.h"
+
+#ifdef TMWSERV_SUPPORT
+#include <enet/enet.h>
+#else
 #include <SDL.h>
 #include <SDL_endian.h>
+#endif
 
-#include "messagein.h"
+#include <cassert>
 
 #define MAKEWORD(low,high) \
     ((unsigned short)(((unsigned char)(low)) | \
@@ -38,32 +43,68 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mId = readInt16();
 }
 
-Sint8 MessageIn::readInt8()
+int MessageIn::readInt8()
 {
-    assert(mPos < mLength);
-    return mData[mPos++];
+    int value = -1;
+    if (mPos < mLength)
+    {
+        value = (unsigned char) mData[mPos];
+    }
+    mPos += 1;
+    return value;
 }
 
-Sint16 MessageIn::readInt16()
+int MessageIn::readInt16()
 {
-    assert(mPos + 2 <= mLength);
+    int value = -1;
+    if (mPos + 2 <= mLength)
+    {
+#ifdef TMWSERV_SUPPORT
+        uint16_t t;
+        memcpy(&t, mData + mPos, 2);
+        value = (unsigned short) ENET_NET_TO_HOST_16(t);
+#else
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        value = SDL_Swap16(*(Sint16*)(mData + mPos));
+#else
+        value = (*(Sint16*)(mData + mPos));
+#endif
+#endif // TMWSERV_SUPPORT
+    }
     mPos += 2;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return SDL_Swap16(*(Sint16*)(mData + (mPos - 2)));
-#else
-    return (*(Sint16*)(mData + (mPos - 2)));
-#endif
+    return value;
 }
 
-Sint32 MessageIn::readInt32()
+int MessageIn::readInt32()
 {
-    assert(mPos + 4 <= mLength);
-    mPos += 4;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return SDL_Swap32(*(Sint32*)(mData + (mPos - 4)));
+    int value = -1;
+    if (mPos + 4 <= mLength)
+    {
+#ifdef TMWSERV_SUPPORT
+        uint32_t t;
+        memcpy(&t, mData + mPos, 4);
+        value = ENET_NET_TO_HOST_32(t);
 #else
-    return (*(Sint32*)(mData + (mPos - 4)));
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        value = SDL_Swap32(*(Sint32*)(mData + mPos));
+#else
+        value = (*(Sint32*)(mData + mPos));
 #endif
+#endif // TMWSERV_SUPPORT
+    }
+    mPos += 4;
+    return value;
+}
+
+void MessageIn::readCoordinates(Uint16 &x, Uint16 &y)
+{
+    if (mPos + 3 <= mLength)
+    {
+        unsigned char const *p = reinterpret_cast< unsigned char const * >(mData + mPos);
+        x = p[0] | ((p[1] & 0x07) << 8);
+        y = (p[1] >> 3) | ((p[2] & 0x3F) << 5);
+    }
+    mPos += 3;
 }
 
 void MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
@@ -163,22 +204,4 @@ std::string MessageIn::readString(int length)
                            stringEnd ? stringEnd - stringBeg : length);
     mPos += length;
     return readString;
-}
-
-Sint8& operator<<(Sint8 &lhs, MessageIn &msg)
-{
-    lhs = msg.readInt8();
-    return lhs;
-}
-
-Sint16& operator<<(Sint16 &lhs, MessageIn &msg)
-{
-    lhs = msg.readInt16();
-    return lhs;
-}
-
-Sint32& operator<<(Sint32 &lhs, MessageIn &msg)
-{
-    lhs = msg.readInt32();
-    return lhs;
 }

@@ -1,25 +1,27 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  The Mana World is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  The Mana World is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
+ *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include "charserverhandler.h"
+
+#include "connection.h"
 #include "messagein.h"
 #include "protocol.h"
 
@@ -29,107 +31,73 @@
 #include "../logindata.h"
 #include "../main.h"
 
-#include "../gui/char_select.h"
 #include "../gui/ok_dialog.h"
+#include "../gui/char_select.h"
 
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
+extern Net::Connection *gameServerConnection;
+extern Net::Connection *chatServerConnection;
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
-        SMSG_CONNECTION_PROBLEM,
-        0x006b,
-        0x006c,
-        0x006d,
-        0x006e,
-        0x006f,
-        0x0070,
-        0x0071,
+        APMSG_CHAR_CREATE_RESPONSE,
+        APMSG_CHAR_DELETE_RESPONSE,
+        APMSG_CHAR_INFO,
+        APMSG_CHAR_SELECT_RESPONSE,
         0
     };
     handledMessages = _messages;
 }
 
-void CharServerHandler::handleMessage(MessageIn *msg)
+void CharServerHandler::handleMessage(MessageIn &msg)
 {
-    int slot, flags, code;
+    int slot;
     LocalPlayer *tempPlayer;
 
-    logger->log("CharServerHandler: Packet ID: %x, Length: %d",
-            msg->getId(), msg->getLength());
-    switch (msg->getId())
+    switch (msg.getId())
     {
-        case SMSG_CONNECTION_PROBLEM:
-            code = msg->readInt8();
-            logger->log("Connection problem: %i", code);
-
-            switch (code) {
-                case 0:
-                    errorMessage = _("Authentication failed");
-                    break;
-                case 1:
-                    errorMessage = _("Map server(s) offline");
-                    break;
-                case 2:
-                    errorMessage = _("This account is already logged in");
-                    break;
-                case 3:
-                    errorMessage = _("Speed hack detected");
-                    break;
-                case 8:
-                    errorMessage = _("Duplicated login");
-                    break;
-                default:
-                    errorMessage = _("Unknown connection error");
-                    break;
-            }
-            state = ERROR_STATE;
+        case APMSG_CHAR_CREATE_RESPONSE:
+            handleCharCreateResponse(msg);
             break;
 
-        case 0x006b:
-            msg->skip(2); // Length word
-            flags = msg->readInt32(); // Aethyra extensions flags
-            logger->log("Server flags are: %x", flags);
-            msg->skip(16); // Unused
-
-            // Derive number of characters from message length
-            n_character = (msg->getLength() - 24) / 106;
-
-            for (int i = 0; i < n_character; i++)
+        case APMSG_CHAR_DELETE_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
+            // Character deletion successful
+            if (errMsg == ERRMSG_OK)
             {
-                tempPlayer = readPlayerData(*msg, slot);
-                mCharInfo->select(slot);
-                mCharInfo->setEntry(tempPlayer);
-                logger->log("CharServer: Player: %s (%d)",
-                tempPlayer->getName().c_str(), slot);
+                delete mCharInfo->getEntry();
+                mCharInfo->setEntry(0);
+                mCharInfo->unlock();
+                new OkDialog("Info", "Player deleted");
             }
-
-            state = CHAR_SELECT_STATE;
+            // Character deletion failed
+            else
+            {
+                std::string message = "";
+                switch (errMsg)
+                {
+                    case ERRMSG_NO_LOGIN:
+                        message = "Not logged in";
+                        break;
+                    case ERRMSG_INVALID_ARGUMENT:
+                        message = "Selection out of range";
+                        break;
+                    default:
+                        message = "Unknown error";
+                }
+                mCharInfo->unlock();
+                new OkDialog("Error", message);
+            }
+        }
             break;
 
-        case 0x006c:
-            switch (msg->readInt8()) {
-                case 0:
-                    errorMessage = _("Access denied");
-                    break;
-                case 1:
-                    errorMessage = _("Cannot use this ID");
-                    break;
-                default:
-                    errorMessage = _("Unknown failure to select character");
-                    break;
-            }
-            mCharInfo->unlock();
-            break;
-
-        case 0x006d:
-            tempPlayer = readPlayerData(*msg, slot);
+        case APMSG_CHAR_INFO:
+            tempPlayer = readPlayerData(msg, slot);
             mCharInfo->unlock();
             mCharInfo->select(slot);
             mCharInfo->setEntry(tempPlayer);
-            n_character++;
 
             // Close the character create dialog
             if (mCharCreateDialog)
@@ -139,97 +107,121 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             }
             break;
 
-        case 0x006e:
-            new OkDialog(_("Error"), _("Failed to create character. Most likely"
-                                       " the name is already taken."));
-
-            if (mCharCreateDialog)
-                mCharCreateDialog->unlock();
-            break;
-
-        case 0x006f:
-            delete mCharInfo->getEntry();
-            mCharInfo->setEntry(0);
-            mCharInfo->unlock();
-            n_character--;
-            new OkDialog(_("Info"), _("Player deleted"));
-            break;
-
-        case 0x0070:
-            mCharInfo->unlock();
-            new OkDialog(_("Error"), _("Failed to delete character."));
-            break;
-
-        case 0x0071:
-            player_node = mCharInfo->getEntry();
-            slot = mCharInfo->getPos();
-            msg->skip(4); // CharID, must be the same as player_node->charID
-            map_path = msg->readString(16);
-            mLoginData->hostname = ipToString(msg->readInt32());
-            mLoginData->port = msg->readInt16();
-            mCharInfo->unlock();
-            mCharInfo->select(0);
-            // Clear unselected players infos
-            do
-            {
-                LocalPlayer *tmp = mCharInfo->getEntry();
-                if (tmp != player_node)
-                {
-                    delete tmp;
-                    mCharInfo->setEntry(0);
-                }
-                mCharInfo->next();
-            } while (mCharInfo->getPos());
-
-            mCharInfo->select(slot);
-            state = CONNECTING_STATE;
+        case APMSG_CHAR_SELECT_RESPONSE:
+            handleCharSelectResponse(msg);
             break;
     }
 }
 
-LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
+void CharServerHandler::handleCharCreateResponse(MessageIn &msg)
 {
-    LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
-    tempPlayer->setGender(
-            (mLoginData->sex == 0) ? GENDER_FEMALE : GENDER_MALE);
+    int errMsg = msg.readInt8();
 
-    tempPlayer->mCharId = msg.readInt32();
-    tempPlayer->setXp(msg.readInt32());
-    tempPlayer->mGp = msg.readInt32();
-    tempPlayer->mJobXp = msg.readInt32();
-    tempPlayer->mJobLevel = msg.readInt32();
-    tempPlayer->setSprite(Being::SHOE_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Being::GLOVES_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Being::CAPE_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Being::MISC1_SPRITE, msg.readInt16());
-    msg.readInt32();                       // option
-    msg.readInt32();                       // karma
-    msg.readInt32();                       // manner
-    msg.skip(2);                          // unknown
-    tempPlayer->mHp = msg.readInt16();
-    tempPlayer->mMaxHp = msg.readInt16();
-    tempPlayer->mMp = msg.readInt16();
-    tempPlayer->mMaxMp = msg.readInt16();
-    msg.readInt16();                       // speed
-    msg.readInt16();                       // class
-    int hairStyle = msg.readInt16();
-    Uint16 weapon = msg.readInt16();
-    tempPlayer->setSprite(Being::WEAPON_SPRITE, weapon);
-    tempPlayer->mLevel = msg.readInt16();
-    msg.readInt16();                       // skill point
-    tempPlayer->setSprite(Being::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
-    tempPlayer->setSprite(Being::SHIELD_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Being::HAT_SPRITE, msg.readInt16()); // head option top
-    tempPlayer->setSprite(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
-    int hairColor = msg.readInt16();
-    tempPlayer->setHairStyle(hairStyle, hairColor);
-    tempPlayer->setSprite(Being::MISC2_SPRITE, msg.readInt16());
-    tempPlayer->setName(msg.readString(24));
-    for (int i = 0; i < 6; i++) {
-        tempPlayer->mAttr[i] = msg.readInt8();
+    // Character creation failed
+    if (errMsg != ERRMSG_OK)
+    {
+        std::string message = "";
+        switch (errMsg)
+        {
+            case ERRMSG_NO_LOGIN:
+                message = "Not logged in";
+                break;
+            case CREATE_TOO_MUCH_CHARACTERS:
+                message = "No empty slot";
+                break;
+            case ERRMSG_INVALID_ARGUMENT:
+                message = "Invalid name";
+                break;
+            case CREATE_EXISTS_NAME:
+                message = "Character's name already exists";
+                break;
+            case CREATE_INVALID_HAIRSTYLE:
+                message = "Invalid hairstyle";
+                break;
+            case CREATE_INVALID_HAIRCOLOR:
+                message = "Invalid hair color";
+                break;
+            case CREATE_INVALID_GENDER:
+                message = "Invalid gender";
+                break;
+            case CREATE_RAW_STATS_TOO_HIGH:
+                message = "Character's stats are too high";
+                break;
+            case CREATE_RAW_STATS_TOO_LOW:
+                message = "Character's stats are too low";
+                break;
+            case CREATE_RAW_STATS_EQUAL_TO_ZERO:
+                message = "One stat is zero";
+                break;
+            default:
+                message = "Unknown error";
+                break;
+        }
+        new OkDialog("Error", message);
     }
+
+    if (mCharCreateDialog)
+        mCharCreateDialog->unlock();
+}
+
+void CharServerHandler::handleCharSelectResponse(MessageIn &msg)
+{
+    int errMsg = msg.readInt8();
+
+    if (errMsg == ERRMSG_OK)
+    {
+        token = msg.readString(32);
+        std::string gameServer = msg.readString();
+        unsigned short gameServerPort = msg.readInt16();
+        std::string chatServer = msg.readString();
+        unsigned short chatServerPort = msg.readInt16();
+
+        logger->log("Game server: %s:%d", gameServer.c_str(), gameServerPort);
+        logger->log("Chat server: %s:%d", chatServer.c_str(), chatServerPort);
+
+        gameServerConnection->connect(gameServer, gameServerPort);
+        chatServerConnection->connect(chatServer, chatServerPort);
+
+        // Keep the selected character and delete the others
+        player_node = mCharInfo->getEntry();
+        int slot = mCharInfo->getPos();
+        mCharInfo->unlock();
+        mCharInfo->select(0);
+
+        do {
+            LocalPlayer *tmp = mCharInfo->getEntry();
+            if (tmp != player_node)
+            {
+                delete tmp;
+                mCharInfo->setEntry(0);
+            }
+            mCharInfo->next();
+        } while (mCharInfo->getPos());
+        mCharInfo->select(slot);
+
+        mCharInfo->clear(); //player_node will be deleted by ~Game
+
+        state = STATE_CONNECT_GAME;
+    }
+}
+
+LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
+{
+    LocalPlayer *tempPlayer = new LocalPlayer;
     slot = msg.readInt8(); // character slot
-    msg.readInt8();                        // unknown
+    tempPlayer->setName(msg.readString());
+    tempPlayer->setGender(msg.readInt8() == GENDER_MALE ? GENDER_MALE : GENDER_FEMALE);
+    int hs = msg.readInt8(), hc = msg.readInt8();
+    tempPlayer->setHairStyle(hs, hc);
+    tempPlayer->setLevel(msg.readInt16());
+    tempPlayer->setCharacterPoints(msg.readInt16());
+    tempPlayer->setCorrectionPoints(msg.readInt16());
+    tempPlayer->setMoney(msg.readInt32());
+
+    for (int i = 0; i < 7; i++)
+    {
+        tempPlayer->setAttributeBase(i, msg.readInt8());
+    }
 
     return tempPlayer;
 }

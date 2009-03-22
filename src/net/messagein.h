@@ -27,13 +27,11 @@
 
 /**
  * Used for parsing an incoming message.
+ *
+ * \ingroup Network
  */
 class MessageIn
 {
-    friend Sint8& operator<<(Sint8 &lhs, MessageIn &msg);
-    friend Sint16& operator<<(Sint16 &lhs, MessageIn &msg);
-    friend Sint32& operator<<(Sint32 &lhs, MessageIn &msg);
-
     public:
         /**
          * Constructor.
@@ -43,16 +41,27 @@ class MessageIn
         /**
          * Returns the message ID.
          */
-        short getId() { return mId; }
+        int getId() const { return mId; }
 
         /**
          * Returns the message length.
          */
-        unsigned int getLength() { return mLength; }
+        unsigned int getLength() const { return mLength; }
 
-        Sint8 readInt8();               /**< Reads a byte. */
-        Sint16 readInt16();             /**< Reads a short. */
-        Sint32 readInt32();               /**< Reads a long. */
+        /**
+         * Returns the length of unread data.
+         */
+        unsigned int getUnreadLength() const { return mLength - mPos; }
+
+        int readInt8();             /**< Reads a byte. */
+        int readInt16();            /**< Reads a short. */
+        int readInt32();            /**< Reads a long. */
+
+        /**
+         * Reads a 3-byte block containing tile-based coordinates. Used by
+         * tmwserv.
+         */
+        void readCoordinates(Uint16 &x, Uint16 &y);
 
         /**
          * Reads a special 3 byte block used by eAthena, containing x and y
@@ -82,8 +91,14 @@ class MessageIn
     private:
         const char* mData;             /**< The message data. */
         unsigned int mLength;          /**< The length of the data. */
-        unsigned int mPos;             /**< The position in the data. */
-        short mId;                     /**< The message ID. */
+        unsigned short mId;            /**< The message ID. */
+
+        /**
+         * Actual position in the packet. From 0 to packet->length.
+         * A value bigger than packet->length means EOP was reached when
+         * reading it.
+         */
+        unsigned int mPos;
 };
 
 #endif

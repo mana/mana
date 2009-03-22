@@ -24,6 +24,8 @@
 
 #include <string>
 
+#include <string>
+
 /**
  * A simple interface to windows that need to handle links from BrowserBox
  * widget.

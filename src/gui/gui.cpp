@@ -107,7 +107,8 @@ Gui::Gui(Graphics *graphics):
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Set global font
-    std::string path = resman->getPath("fonts/dejavusans.ttf");
+    std::string path = resman->getPath(
+            branding.getValue("font", "fonts/dejavusans.ttf"));
     try
     {
         const int fontSize = (int)config.getValue("fontSize", 11);
@@ -120,7 +121,8 @@ Gui::Gui(Graphics *graphics):
     }
 
     // Set bold font
-    path = resman->getPath("fonts/dejavusans-bold.ttf");
+    path = resman->getPath(
+            branding.getValue("boldFont", "fonts/dejavusans.ttf"));
     try
     {
         const int fontSize = (int)config.getValue("fontSize", 11);

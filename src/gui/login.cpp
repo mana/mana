@@ -50,6 +50,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
 {
     gcn::Label *userLabel = new gcn::Label(_("Name:"));
     gcn::Label *passLabel = new gcn::Label(_("Password:"));
+#ifdef EATHENA_SUPPORT
     gcn::Label *serverLabel = new gcn::Label(_("Server:"));
     gcn::Label *portLabel = new gcn::Label(_("Port:"));
     gcn::Label *dropdownLabel = new gcn::Label(_("Recent:"));
@@ -61,15 +62,18 @@ LoginDialog::LoginDialog(LoginData *loginData):
                                    MAX_SERVER_LIST_SIZE);
     mServerListBox = new ListBox(mServerList);
     mServerScrollArea = new ScrollArea;
+#endif
 
     mUserField = new TextField(mLoginData->username);
     mPassField = new PasswordField(mLoginData->password);
+#ifdef EATHENA_SUPPORT
     mServerField = new TextField(mServerList->getServerAt(0));
     mPortField = new TextField(mServerList->getPortAt(0));
     mServerDropDown = new DropDown(mServerList,
                                    mServerScrollArea,
                                    mServerListBox);
     mServerDropDown->setOpaque(false);
+#endif
 
     mKeepCheck = new CheckBox(_("Remember Username"), mLoginData->remember);
     mOkButton = new Button(_("OK"), "ok", this);
@@ -78,32 +82,42 @@ LoginDialog::LoginDialog(LoginData *loginData):
 
     mUserField->setActionEventId("ok");
     mPassField->setActionEventId("ok");
+#ifdef EATHENA_SUPPORT
     mServerField->setActionEventId("ok");
     mPortField->setActionEventId("ok");
     mServerDropDown->setActionEventId("changeSelection");
+#endif
 
     mUserField->addKeyListener(this);
     mPassField->addKeyListener(this);
+#ifdef EATHENA_SUPPORT
     mServerField->addKeyListener(this);
     mPortField->addKeyListener(this);
     mServerDropDown->addKeyListener(this);
+#endif
     mUserField->addActionListener(this);
     mPassField->addActionListener(this);
+#ifdef EATHENA_SUPPORT
     mServerField->addActionListener(this);
     mPortField->addActionListener(this);
     mServerDropDown->addActionListener(this);
     mKeepCheck->addActionListener(this);
+#endif
 
     place(0, 0, userLabel);
     place(0, 1, passLabel);
+#ifdef EATHENA_SUPPORT
     place(0, 2, serverLabel);
     place(0, 3, portLabel);
     place(0, 4, dropdownLabel);
+#endif
     place(1, 0, mUserField, 3).setPadding(1);
     place(1, 1, mPassField, 3).setPadding(1);
+#ifdef EATHENA_SUPPORT
     place(1, 2, mServerField, 3).setPadding(1);
     place(1, 3, mPortField, 3).setPadding(1);
     place(1, 4, mServerDropDown, 3).setPadding(1);
+#endif
     place(0, 5, mKeepCheck, 4);
     place(0, 6, mRegisterButton).setHAlign(LayoutCell::LEFT);
     place(2, 6, mCancelButton);
@@ -126,8 +140,10 @@ void LoginDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok" && canSubmit())
     {
+#ifdef EATHENA_SUPPORT
         mLoginData->hostname = mServerField->getText();
         mLoginData->port = getUShort(mPortField->getText());
+#endif
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
         mLoginData->remember = mKeepCheck->isSelected();
@@ -135,21 +151,32 @@ void LoginDialog::action(const gcn::ActionEvent &event)
 
         mOkButton->setEnabled(false);
         mRegisterButton->setEnabled(false);
+#ifdef EATHENA_SUPPORT
         mServerList->save(mServerField->getText(), mPortField->getText());
-        state = ACCOUNT_STATE;
+        state = STATE_ACCOUNT;
+#else
+        state = STATE_LOGIN_ATTEMPT;
+#endif
     }
+#ifdef EATHENA_SUPPORT
     else if (event.getId() == "changeSelection")
     {
         int selected = mServerListBox->getSelected();
         mServerField->setText(mServerList->getServerAt(selected));
         mPortField->setText(mServerList->getPortAt(selected));
     }
+#endif
     else if (event.getId() == "cancel")
     {
-        state = EXIT_STATE;
+#ifdef TMWSERV_SUPPORT
+        state = STATE_SWITCH_ACCOUNTSERVER;
+#else
+        state = STATE_EXIT;
+#endif
     }
     else if (event.getId() == "register")
     {
+#ifdef EATHENA_SUPPORT
         // Transfer these fields on to the register dialog
         mLoginData->hostname = mServerField->getText();
         if (isUShort(mPortField->getText()))
@@ -160,10 +187,11 @@ void LoginDialog::action(const gcn::ActionEvent &event)
         {
             mLoginData->port = 6901;
         }
+#endif
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
 
-        state = REGISTER_STATE;
+        state = STATE_REGISTER;
     }
 }
 
@@ -176,11 +204,14 @@ bool LoginDialog::canSubmit()
 {
     return !mUserField->getText().empty() &&
            !mPassField->getText().empty() &&
+#ifdef EATHENA_SUPPORT
            !mServerField->getText().empty() &&
            isUShort(mPortField->getText()) &&
-           state == LOGIN_STATE;
+#endif
+           state == STATE_LOGIN;
 }
 
+#ifdef EATHENA_SUPPORT
 bool LoginDialog::isUShort(const std::string &str)
 {
     if (str.empty())
@@ -312,3 +343,4 @@ std::string LoginDialog::DropDownList::getPortAt(int i)
     }
     return mPorts.at(i);
 }
+#endif

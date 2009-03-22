@@ -102,14 +102,18 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
         Item *item =
             player_node->getInventory()->findItem(itemShortcut->getItem(i));
-        if (item) {
+        if (item)
+        {
             // Draw item icon.
-            const std::string label =
-                item->isEquipped() ? "Eq." : toString(item->getQuantity());
             Image* image = item->getImage();
-            if (image) {
+
+            if (image)
+            {
                 const std::string label =
-                    item->isEquipped() ? "Eq." : toString(item->getQuantity());
+#ifdef EATHENA_SUPPORT
+                    item->isEquipped() ? "Eq." :
+#endif
+                    toString(item->getQuantity());
                 g->drawImage(image, itemX, itemY);
                 g->drawText(
                         label,

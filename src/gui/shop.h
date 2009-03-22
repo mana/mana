@@ -40,14 +40,16 @@ class ShopItems : public gcn::ListModel
         ~ShopItems();
 
         /**
-         * Adds an item to the list (used by sell dialog).
+         * Adds an item to the list.
          */
-        void addItem(int inventoryIndex, short id, int amount, int price);
+        void addItem(int id, int amount, int price);
 
+#ifdef EATHENA_SUPPORT
         /**
-         * Adds an item to the list (used by buy dialog).
+         * Adds an item to the list (used by eAthena sell dialog).
          */
-        void addItem(short id, int price);
+        void addItem(int inventoryIndex, int id, int amount, int price);
+#endif
 
         /**
          * Returns the number of items in the shop.

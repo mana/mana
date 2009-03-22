@@ -34,9 +34,11 @@ class Monster : public Being
 
         ~Monster();
 
+#ifdef EATHENA_SUPPORT
         virtual void logic();
+#endif
 
-        virtual void setAction(Action action);
+        virtual void setAction(Action action, int attackType = 0);
 
         virtual Type getType() const;
 
@@ -50,7 +52,11 @@ class Monster : public Being
          * @param victim The attacked being.
          * @param damage The amount of damage dealt (0 means miss).
          */
+#ifdef TMWSERV_SUPPORT
+        virtual void handleAttack();
+#else
         virtual void handleAttack(Being *victim, int damage);
+#endif
 
         /**
          * Puts a damage bubble above this monster and plays the hurt sound
@@ -69,7 +75,19 @@ class Monster : public Being
          */
         void showName(bool show);
 
+        /**
+         * Gets the way the monster is blocked by other objects
+         */
+        virtual unsigned char getWalkMask() const
+        { return 0x83; } // blocked by walls, other monsters and players ( bin 1000 0011)
+
     protected:
+        /**
+         * Gets the way the monster blocks pathfinding for other objects
+         */
+        virtual Map::BlockType getBlockType() const
+        { return Map::BLOCKTYPE_MONSTER; }
+
         /**
          * Update the text when the monster moves
          */

@@ -31,25 +31,44 @@
 #include "windowcontainer.h"
 
 #include "widgets/layout.h"
+#include "widgets/tab.h"
+#include "widgets/tabbedarea.h"
 
 #include "../beingmanager.h"
+#ifdef TMWSERV_SUPPORT
+#include "../commandhandler.h"
+#endif
+#include "../channelmanager.h"
+#include "../channel.h"
 #include "../configuration.h"
 #include "../game.h"
 #include "../localplayer.h"
-#include "../party.h"
 
+#ifdef TMWSERV_SUPPORT
+#include "../net/chatserver/chatserver.h"
+#include "../net/gameserver/player.h"
+#else
+#include "../party.h"
 #include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../net/ea/protocol.h"
+#endif
 
 #include "../resources/iteminfo.h"
 #include "../resources/itemdb.h"
 
+#include "../utils/dtor.h"
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 #include "../utils/stringutils.h"
 
+#ifdef TMWSERV_SUPPORT
+ChatWindow::ChatWindow():
+    Window("Chat"),
+#else
 ChatWindow::ChatWindow(Network * network):
-Window(""), mNetwork(network), mTmpVisible(false)
+    Window(""), mNetwork(network),
+#endif
+    mTmpVisible(false)
 {
     setWindowName("Chat");
 
@@ -64,18 +83,21 @@ Window(""), mNetwork(network), mTmpVisible(false)
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
-    mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mTextOutput->setOpaque(false);
-    mTextOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
-    mTextOutput->setLinkHandler(mItemLinkHandler);
+    BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
+    textOutput->setOpaque(false);
+    textOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
+    textOutput->setLinkHandler(mItemLinkHandler);
 
-    mScrollArea = new ScrollArea(mTextOutput);
-    mScrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
+    ScrollArea *scrollArea = new ScrollArea(textOutput);
+    scrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_ALWAYS);
-    mScrollArea->setScrollAmount(0, 1);
-    mScrollArea->setOpaque(false);
+    scrollArea->setScrollAmount(0, 1);
+    scrollArea->setOpaque(false);
 
-    place(0, 0, mScrollArea, 5, 5).setPadding(0);
+    mChatTabs = new TabbedArea();
+    mChatTabs->addTab("General", scrollArea);
+
+    place(0, 0, mChatTabs, 5, 5).setPadding(0);
     place(0, 5, mChatInput, 5).setPadding(1);
 
     Layout &layout = getLayout();
@@ -88,6 +110,7 @@ Window(""), mNetwork(network), mTmpVisible(false)
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
 
+#ifdef EATHENA_SUPPORT
     // Read the party prefix
     std::string partyPrefix = config.getValue("PartyPrefix", "$");
     mPartyPrefix = (partyPrefix.empty() ? '$' : partyPrefix.at(0));
@@ -99,19 +122,75 @@ Window(""), mNetwork(network), mTmpVisible(false)
     // run the @assert command for the player again. Convenience for GMs.
     if (config.getValue(player_node->getName() + "GMassert", 0))
         chatSend(player_node->getName(), "@assert");
+#endif
 }
 
 ChatWindow::~ChatWindow()
 {
+#ifdef EATHENA_SUPPORT
     char partyPrefix[2] = ".";
     *partyPrefix = mPartyPrefix;
     config.setValue("PartyPrefix", partyPrefix);
     config.setValue("ReturnToggles", mReturnToggles ? "1" : "0");
     delete mRecorder;
+#endif
 }
 
-void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
+void ChatWindow::widgetResized(const gcn::Event &event)
 {
+    Window::widgetResized(event);
+
+    const gcn::Rectangle area = getChildrenArea();
+
+    mChatInput->setPosition(mChatInput->getFrameSize(),
+                            area.height - mChatInput->getHeight() -
+                                mChatInput->getFrameSize());
+    mChatInput->setWidth(area.width - 2 * mChatInput->getFrameSize());
+
+    mChatTabs->setWidth(area.width - 2 * mChatTabs->getFrameSize());
+    mChatTabs->setHeight(area.height - 2 * mChatTabs->getFrameSize());
+
+    const std::string &channelName = getFocused();
+    ChannelMap::const_iterator chan = mChannels.find(channelName);
+    if (chan != mChannels.end()) {
+        ScrollArea *scroll = chan->second.scroll;
+        scroll->setWidth(area.width - 2 * scroll->getFrameSize());
+        scroll->setHeight(area.height - 2 * scroll->getFrameSize() -
+                mChatInput->getHeight() - 5);
+        scroll->logic();
+    }
+}
+
+void ChatWindow::logic()
+{
+    Window::logic();
+
+    const gcn::Rectangle area = getChildrenArea();
+
+    const std::string &channelName = getFocused();
+    ChannelMap::const_iterator chan = mChannels.find(channelName);
+    if (chan != mChannels.end()) {
+        ScrollArea *scroll = chan->second.scroll;
+        scroll->setWidth(area.width - 2 * scroll->getFrameSize());
+        scroll->setHeight(area.height - 2 * scroll->getFrameSize() -
+                mChatInput->getHeight() - 5);
+        scroll->logic();
+    }
+}
+
+void ChatWindow::chatLog(std::string line, int own, std::string channelName,
+                         bool ignoreRecord)
+{
+    if(channelName.empty())
+        channelName = getFocused();
+
+    ChannelMap::const_iterator chan = mChannels.find(channelName);
+    if (chan == mChannels.end())
+        return;
+
+    BrowserBox * const output = chan->second.browser;
+    ScrollArea * const scroll = chan->second.scroll;
+
     // Trim whitespace
     trim(line);
 
@@ -180,10 +259,17 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
             tmp.text = line;
             lineColor = "##S";
             break;
+        case BY_CHANNEL:
+            tmp.nick = "";
+            // TODO: Use a predefined color
+            lineColor = "##2"; // Equiv. to BrowserBox::GREEN
+            break;
+#ifdef EATHENA_SUPPORT
         case BY_PARTY:
             tmp.nick += CAT_NORMAL;
             lineColor = "##P";
             break;
+#endif
         case ACT_WHISPER:
             tmp.nick = strprintf(_("%s whispers:"), tmp.nick.c_str());
             tmp.nick += " ";
@@ -206,10 +292,12 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
         lineColor = "##S";
     }
 
+#ifdef EATHENA_SUPPORT
     if (tmp.nick.empty() && tmp.text.substr(0, 17) == "Visible GM status")
     {
         player_node->setGM();
     }
+#endif
 
     // Get the current system time
     time_t t;
@@ -228,24 +316,37 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
     // We look if the Vertical Scroll Bar is set at the max before
     // adding a row, otherwise the max will always be a row higher
     // at comparison.
-    if (mScrollArea->getVerticalScrollAmount() ==
-        mScrollArea->getVerticalMaxScroll())
+    if (scroll->getVerticalScrollAmount() >= scroll->getVerticalMaxScroll())
     {
-        mTextOutput->addRow(line);
-        mScrollArea->setVerticalScrollAmount(mScrollArea->
-                                             getVerticalMaxScroll());
+        output->addRow(line);
+        scroll->setVerticalScrollAmount(scroll->getVerticalMaxScroll());
     }
     else
     {
-        mTextOutput->addRow(line);
+        output->addRow(line);
     }
 
+    scroll->logic();
     mRecorder->record(line.substr(3));
 }
 
+#ifdef EATHENA_SUPPORT
 void ChatWindow::chatLog(CHATSKILL act)
 {
     chatLog(const_msg(act), BY_SERVER);
+}
+#endif
+
+const std::string &ChatWindow::getFocused() const
+{
+    return mChatTabs->getSelectedTab()->getCaption();
+}
+
+void ChatWindow::clearTab(const std::string &tab)
+{
+    ChannelMap::const_iterator chan = mChannels.find(tab);
+    if (chan != mChannels.end())
+    chan->second.browser->clearRows();
 }
 
 void ChatWindow::action(const gcn::ActionEvent &event)
@@ -265,7 +366,11 @@ void ChatWindow::action(const gcn::ActionEvent &event)
             mCurHist = mHistory.end();
 
             // Send the message to the server
+#ifdef TMWSERV_SUPPORT
+            chatSend(message);
+#else
             chatSend(player_node->getName(), message);
+#endif
 
             // Clear the text from the chat input
             mChatInput->setText("");
@@ -343,6 +448,8 @@ void ChatWindow::whisper(const std::string &nick, std::string msg)
     if (tempNick.compare(playerName) == 0 || msg.empty())
         return;
 
+    // TODO: Implement whispering on tmwserv
+#ifdef EATHENA_SUPPORT
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_CHAT_WHISPER);
     outMsg.writeInt16(msg.length() + 28);
@@ -352,7 +459,122 @@ void ChatWindow::whisper(const std::string &nick, std::string msg)
     chatLog(strprintf(_("Whispering to %s: %s"),
                         recvnick.c_str(), msg.c_str()),
                         BY_PLAYER);
+#endif
 }
+
+#ifdef TMWSERV_SUPPORT
+
+void ChatWindow::chatSend(std::string &msg)
+{
+    if (msg.empty()) return;
+
+    // check for item link
+    std::string::size_type start = msg.find('[');
+    if (start != std::string::npos && msg[start+1] != '@')
+    {
+        std::string::size_type end = msg.find(']', start);
+        if (end != std::string::npos)
+        {
+            std::string temp = msg.substr(start+1, end-1);
+            ItemInfo itemInfo = ItemDB::get(temp);
+            msg.insert(end, "@@");
+            msg.insert(start+1, "|");
+            msg.insert(start+1, toString(itemInfo.getId()));
+            msg.insert(start+1, "@@");
+
+        }
+    }
+
+
+    // Prepare ordinary message
+    if (msg[0] != '/')
+    {
+        if (getFocused() == "General")
+        {
+            Net::GameServer::Player::say(msg);
+        }
+        else
+        {
+            Channel *channel = channelManager->findByName(getFocused());
+            if (channel)
+            {
+                Net::ChatServer::chat(channel->getId(), msg);
+            }
+        }
+    }
+    else
+    {
+        commandHandler->handleCommand(std::string(msg, 1));
+    }
+}
+
+void ChatWindow::removeChannel(short channelId)
+{
+    removeChannel(channelManager->findById(channelId));
+}
+
+void ChatWindow::removeChannel(const std::string &channelName)
+{
+    removeChannel(channelManager->findByName(channelName));
+}
+
+void ChatWindow::removeChannel(Channel *channel)
+{
+    if (channel)
+    {
+        Tab *tab = mChatTabs->getTab(channel->getName());
+        if (!tab)
+            return;
+        clearTab(channel->getName());
+        mChatTabs->removeTab(tab);
+        mChannels.erase(channel->getName());
+        channelManager->removeChannel(channel);
+
+        logic();
+    }
+}
+
+void ChatWindow::createNewChannelTab(const std::string &channelName)
+{
+    // Create new channel
+    BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
+    textOutput->setOpaque(false);
+    textOutput->disableLinksAndUserColors();
+    textOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
+    ScrollArea *scrollArea = new ScrollArea(textOutput);
+    scrollArea->setPosition(scrollArea->getFrameSize(), scrollArea->getFrameSize());
+    scrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
+    scrollArea->setOpaque(false);
+    scrollArea->setWidth(getChildrenArea().width - 2 * scrollArea->getFrameSize());
+    scrollArea->setHeight(getChildrenArea().height - 2 * scrollArea->getFrameSize() -
+                mChatInput->getHeight() - 5);
+    scrollArea->logic();
+    textOutput->setWidth(scrollArea->getChildrenArea().width);
+    textOutput->setHeight(scrollArea->getChildrenArea().height);
+
+    // Add channel to the tabbed area
+    mChatTabs->addTab(channelName, scrollArea);
+    mChannels.insert(
+            std::make_pair(channelName, ChatArea(textOutput, scrollArea)));
+
+    // Update UI
+    logic();
+}
+
+void ChatWindow::sendToChannel(short channelId,
+                               const std::string &user,
+                               const std::string &msg)
+{
+    Channel *channel = channelManager->findById(channelId);
+    if (channel)
+    {
+        std::string channelName = channel->getName();
+        chatLog(user + ": " + msg, user == player_node->getName() ? BY_PLAYER : BY_OTHER, channelName);
+        mChatTabs->getTab(channelName)->setHighlighted(true);
+    }
+}
+
+#else
 
 void ChatWindow::chatSend(const std::string &nick, std::string msg)
 {
@@ -488,7 +710,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
         outMsg.writeInt16(0x00c1);
     }
     else if (command == "clear")
-        mTextOutput->clearRows();
+        clearTab(getFocused());
     else if (command == "whisper" || command == "msg" || command == "w")
         whisper(nick, msg);
     else if (command == "record")
@@ -608,7 +830,7 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
 
 
             mRecorder->record(timeStr.str() + _("Present: ") + response + ".");
-            chatLog(_("Attendance written to record log."), BY_SERVER, true);
+            chatLog(_("Attendance written to record log."), BY_SERVER, std::string(), true);
         }
         else
         {
@@ -712,16 +934,25 @@ std::string ChatWindow::const_msg(CHATSKILL act)
     return msg;
 }
 
+#endif
+
 void ChatWindow::scroll(int amount)
 {
     if (!isVisible())
         return;
 
-    int range = mScrollArea->getHeight() / 8 * amount;
+    ChannelMap::const_iterator chan = mChannels.find(getFocused());
+    if (chan == mChannels.end())
+        return;
+
+    BrowserBox *browser = chan->second.browser;
+    ScrollArea *scroll = chan->second.scroll;
+
+    int range = scroll->getHeight() / 8 * amount;
     gcn::Rectangle scr;
-    scr.y = mScrollArea->getVerticalScrollAmount() + range;
+    scr.y = scroll->getVerticalScrollAmount() + range;
     scr.height = abs(range);
-    mTextOutput->showPart(scr);
+    browser->showPart(scr);
 }
 
 void ChatWindow::keyPressed(gcn::KeyEvent &event)
@@ -774,10 +1005,10 @@ void ChatWindow::setVisible(bool isVisible)
      * For whatever reason, if setVisible is called, the mTmpVisible effect
      * should be disabled.
      */
-
     mTmpVisible = false;
 }
 
+#ifdef EATHENA_SUPPORT
 void ChatWindow::party(const std::string & command, const std::string & rest)
 {
     if (command == "prefix")
@@ -809,6 +1040,7 @@ void ChatWindow::party(const std::string & command, const std::string & rest)
     else
         mParty->respond(command, rest);
 }
+#endif
 
 void ChatWindow::help(const std::string & msg1, const std::string & msg2)
 {
@@ -861,10 +1093,12 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog(_("This command tell others you are (doing) <msg>."),
                 BY_SERVER);
     }
+#ifdef EATHENA_SUPPORT
     else if (msg1 == "party")
     {
         mParty->help(msg2);
     }
+#endif
     else if (msg1 == "present")
     {
         chatLog(_("Command: /present"), BY_SERVER);
@@ -920,4 +1154,10 @@ void ChatWindow::help(const std::string & msg1, const std::string & msg2)
         chatLog(_("Unknown command."), BY_SERVER);
         chatLog(_("Type /help for a list of commands."), BY_SERVER);
     }
+}
+
+bool ChatWindow::tabExists(const std::string &tabName)
+{
+    Tab *tab = mChatTabs->getTab(tabName);
+    return tab != 0;
 }

@@ -37,6 +37,11 @@ extern Window *emoteWindow;
 extern Window *setupWindow;
 extern Window *skillDialog;
 extern Window *statusWindow;
+#ifdef TMWSERV_SUPPORT
+extern Window *buddyWindow;
+extern Window *guildWindow;
+extern Window *magicDialog;
+#endif
 
 namespace {
     struct MenuWindowListener : public gcn::ActionListener
@@ -49,7 +54,7 @@ namespace {
 }
 
 MenuWindow::MenuWindow():
-    Window("")
+    Window()
 {
     setResizable(false);
     setWindowName("Menu");
@@ -59,14 +64,19 @@ MenuWindow::MenuWindow():
     // Buttons
     static const char *buttonNames[] =
     {
-        _("Chat"),
-        _("Status"),
-        _("Equipment"),
-        _("Inventory"),
-        _("Skills"),
-        _("Shortcut"),
-        _("Emote"),
-        _("Setup"),
+        N_("Chat"),
+        N_("Status"),
+        N_("Equipment"),
+        N_("Inventory"),
+        N_("Skills"),
+#ifdef TMWSERV_SUPPORT
+        N_("Magic"),
+        N_("Guilds"),
+        N_("Buddys"),
+#endif
+        N_("Shortcut"),
+        N_("Emote"),
+        N_("Setup"),
         0
     };
     int x = 0, h = 0;
@@ -94,35 +104,49 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
 {
     Window *window = NULL;
 
-    if (event.getId() == _("Chat"))
+    if (event.getId() == "Chat")
     {
         window = chatWindow;
     }
-    else if (event.getId() == _("Status"))
+    else if (event.getId() == "Status")
     {
         window = statusWindow;
     }
-    else if (event.getId() == _("Equipment"))
+    else if (event.getId() == "Equipment")
     {
         window = equipmentWindow;
     }
-    else if (event.getId() == _("Inventory"))
+    else if (event.getId() == "Inventory")
     {
         window = inventoryWindow;
     }
-    else if (event.getId() == _("Skills"))
+    else if (event.getId() == "Skills")
     {
         window = skillDialog;
     }
-    else if (event.getId() == _("Shortcut"))
+#ifdef TMWSERV_SUPPORT
+    else if (event.getId() == "Magic")
+    {
+        window = magicDialog;
+    }
+    else if (event.getId() == "Guilds")
+    {
+        window = guildWindow;
+    }
+    else if (event.getId() == "Buddys")
+    {
+        window = buddyWindow;
+    }
+#endif
+    else if (event.getId() == "Shortcut")
     {
         window = itemShortcutWindow;
     }
-    else if (event.getId() == _("Emote"))
+    else if (event.getId() == "Emote")
     {
         window = emoteWindow;
     }
-    else if (event.getId() == _("Setup"))
+    else if (event.getId() == "Setup")
     {
         window = setupWindow;
     }

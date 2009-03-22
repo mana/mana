@@ -6,9 +6,12 @@ SET (FILES
     buttonhi.png
     buttonpress.png
     checkbox.png
+    circle-gray.png
+    circle-green.png
     close_button.png
     deepbox.png
     default.png
+    equip_bg.png
     gui.xml
     hits_blue.png
     hits_red.png

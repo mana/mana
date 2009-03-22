@@ -2,6 +2,8 @@ FIND_PACKAGE(SDL REQUIRED)
 FIND_PACKAGE(SDL_image REQUIRED)
 FIND_PACKAGE(SDL_mixer REQUIRED)
 FIND_PACKAGE(SDL_net REQUIRED)
+FIND_PACKAGE(SDL_ttf REQUIRED)
+FIND_PACKAGE(ENet REQUIRED)
 FIND_PACKAGE(CURL REQUIRED)
 FIND_PACKAGE(LibXml2 REQUIRED)
 FIND_PACKAGE(PhysFS REQUIRED)
@@ -28,6 +30,8 @@ INCLUDE_DIRECTORIES(
     ${SDLIMAGE_INCLUDE_DIR}
     ${SDLMIXER_INCLUDE_DIR}
     ${SDLNET_INCLUDE_DIR}
+    ${SDLTTF_INCLUDE_DIR}
+    ${ENET_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
     ${PHYSFS_INCLUDE_DIR}
     ${CURL_INCLUDE_DIR}
@@ -49,6 +53,8 @@ MARK_AS_ADVANCED(SDL_INCLUDE_DIR)
 MARK_AS_ADVANCED(SDL_LIBRARY)
 
 SET(SRCS
+    gui/widgets/avatar.cpp
+    gui/widgets/avatar.h
     gui/widgets/dropdown.cpp
     gui/widgets/dropdown.h
     gui/widgets/resizegrip.cpp
@@ -71,6 +77,10 @@ SET(SRCS
     gui/buy.h
     gui/buysell.cpp
     gui/buysell.h
+    gui/changeemaildialog.cpp
+    gui/changeemaildialog.h
+    gui/changepassworddialog.cpp
+    gui/changepassworddialog.h
     gui/char_server.cpp
     gui/char_server.h
     gui/char_select.cpp
@@ -103,8 +113,14 @@ SET(SRCS
     gui/gccontainer.h
     gui/gui.cpp
     gui/gui.h
+    gui/guildlistbox.cpp
+    gui/guildlistbox.h
+    gui/guildwindow.cpp
+    gui/guildwindow.h
     gui/help.cpp
     gui/help.h
+    gui/icon.cpp
+    gui/icon.h
     gui/inttextfield.cpp
     gui/inttextfield.h
     gui/inventorywindow.cpp
@@ -124,6 +140,8 @@ SET(SRCS
     gui/listbox.h
     gui/login.cpp
     gui/login.h
+    gui/magic.cpp
+    gui/magic.h
     gui/menuwindow.cpp
     gui/menuwindow.h
     gui/minimap.cpp
@@ -136,10 +154,14 @@ SET(SRCS
     gui/npclistdialog.h
     gui/npcstringdialog.cpp
     gui/npcstringdialog.h
+    gui/npcpostdialog.cpp
+    gui/npcpostdialog.h
     gui/npc_text.cpp
     gui/npc_text.h
     gui/ok_dialog.cpp
     gui/ok_dialog.h
+    gui/partywindow.h
+    gui/partywindow.cpp
     gui/passwordfield.cpp
     gui/passwordfield.h
     gui/playerbox.cpp
@@ -148,6 +170,8 @@ SET(SRCS
     gui/popupmenu.h
     gui/progressbar.cpp
     gui/progressbar.h
+    gui/quitdialog.cpp
+    gui/quitdialog.h
     gui/radiobutton.cpp
     gui/radiobutton.h
     gui/recorder.cpp
@@ -160,6 +184,8 @@ SET(SRCS
     gui/sdlinput.h
     gui/sell.cpp
     gui/sell.h
+    gui/serverdialog.cpp
+    gui/serverdialog.h
     gui/setup.cpp
     gui/setup.h
     gui/setup_audio.cpp
@@ -197,36 +223,48 @@ SET(SRCS
     gui/table_model.h
     gui/textbox.cpp
     gui/textbox.h
+    gui/textdialog.cpp
+    gui/textdialog.h
     gui/textfield.cpp
     gui/textfield.h
     gui/trade.cpp
     gui/trade.h
     gui/truetypefont.cpp
     gui/truetypefont.h
-    gui/updatewindow.h
+    gui/unregisterdialog.cpp
+    gui/unregisterdialog.h
     gui/updatewindow.cpp
+    gui/updatewindow.h
     gui/viewport.cpp
     gui/viewport.h
     gui/window.cpp
     gui/window.h
     gui/windowcontainer.cpp
     gui/windowcontainer.h
-    net/beinghandler.h
     net/beinghandler.cpp
-    net/buysellhandler.h
+    net/beinghandler.h
     net/buysellhandler.cpp
-    net/charserverhandler.h
+    net/buysellhandler.h
     net/charserverhandler.cpp
-    net/chathandler.h
+    net/charserverhandler.h
     net/chathandler.cpp
-    net/equipmenthandler.h
+    net/chathandler.h
+    net/connection.cpp
+    net/connection.h
     net/equipmenthandler.cpp
-    net/inventoryhandler.h
+    net/equipmenthandler.h
+    net/guildhandler.cpp
+    net/guildhandler.h
+    net/internal.cpp
+    net/internal.h
     net/inventoryhandler.cpp
-    net/itemhandler.h
+    net/inventoryhandler.h
     net/itemhandler.cpp
-    net/loginhandler.h
+    net/itemhandler.h
     net/loginhandler.cpp
+    net/loginhandler.h
+    net/logouthandler.cpp
+    net/logouthandler.h
     net/maploginhandler.cpp
     net/maploginhandler.h
     net/messagehandler.cpp
@@ -249,12 +287,36 @@ SET(SRCS
     net/skillhandler.h
     net/tradehandler.cpp
     net/tradehandler.h
+    net/effecthandler.cpp
+    net/effecthandler.h
+    net/accountserver/account.cpp
+    net/accountserver/account.h
+    net/accountserver/accountserver.cpp
+    net/accountserver/accountserver.h
+    net/accountserver/internal.cpp
+    net/accountserver/internal.h
+    net/chatserver/chatserver.cpp
+    net/chatserver/chatserver.h
+    net/chatserver/guild.cpp
+    net/chatserver/guild.h
+    net/chatserver/internal.cpp
+    net/chatserver/internal.h
+    net/chatserver/party.cpp
+    net/chatserver/party.h
+    net/gameserver/gameserver.cpp
+    net/gameserver/gameserver.h
+    net/gameserver/internal.cpp
+    net/gameserver/internal.h
+    net/gameserver/player.cpp
+    net/gameserver/player.h
     resources/action.cpp
     resources/action.h
     resources/ambientoverlay.cpp
     resources/ambientoverlay.h
     resources/animation.cpp
     resources/animation.h
+    resources/buddylist.cpp
+    resources/buddylist.h
     resources/colordb.cpp
     resources/colordb.h
     resources/dye.cpp
@@ -296,6 +358,8 @@ SET(SRCS
     utils/dtor.h
     utils/fastsqrt.h
     utils/gettext.h
+    utils/sha256.h
+    utils/sha256.cpp
     utils/stringutils.cpp
     utils/stringutils.h
     utils/strprintf.cpp
@@ -310,6 +374,12 @@ SET(SRCS
     being.h
     beingmanager.cpp
     beingmanager.h
+    channel.cpp
+    channel.h
+    channelmanager.cpp
+    channelmanager.h
+    commandhandler.cpp
+    commandhandler.h
     configlistener.h
     configuration.cpp
     configuration.h
@@ -330,6 +400,8 @@ SET(SRCS
     graphics.cpp
     graphics.h
     guichanfwd.h
+    guild.cpp
+    guild.h
     imageparticle.cpp
     imageparticle.h
     inventory.cpp
@@ -391,6 +463,8 @@ SET(SRCS
     tileset.h
     vector.cpp
     vector.h
+    effectmanager.cpp
+    effectmanager.h
     )
 
 ADD_EXECUTABLE(tmw ${SRCS})
@@ -400,6 +474,8 @@ TARGET_LINK_LIBRARIES(tmw
     ${SDLIMAGE_LIBRARY}
     ${SDLMIXER_LIBRARY}
     ${SDLNET_LIBRARY}
+    ${SDLTTF_LIBRARY}
+    ${ENET_LIBRARIES}
     ${PNG_LIBRARIES}
     ${PHYSFS_LIBRARY}
     ${CURL_LIBRARIES}

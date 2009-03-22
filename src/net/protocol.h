@@ -1,162 +1,295 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  The Mana World is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  The Mana World is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
+ *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef PROTOCOL_
-#define PROTOCOL_
+#ifndef _TMW_PROTOCOL_
+#define _TMW_PROTOCOL_
 
-/*********************************
- * Packets from server to client *
- *********************************/
-#define SMSG_LOGIN_SUCCESS           0x0073 /**< Contains starting location */
-#define SMSG_SERVER_PING             0x007f /**< Contains server tick */
-#define SMSG_CONNECTION_PROBLEM      0x0081
-#define SMSG_UPDATE_HOST             0x0063 /**< Custom update host packet */
-#define SMSG_PLAYER_UPDATE_1         0x01d8
-#define SMSG_PLAYER_UPDATE_2         0x01d9
-#define SMSG_PLAYER_MOVE             0x01da /**< A nearby player moves */
-#define SMSG_PLAYER_STOP             0x0088 /**< Stop walking, set position */
-#define SMSG_PLAYER_MOVE_TO_ATTACK   0x0139 /**< Move to within attack range */
-#define SMSG_PLAYER_STAT_UPDATE_1    0x00b0
-#define SMSG_PLAYER_STAT_UPDATE_2    0x00b1
-#define SMSG_PLAYER_STAT_UPDATE_3    0x0141
-#define SMSG_PLAYER_STAT_UPDATE_4    0x00bc
-#define SMSG_PLAYER_STAT_UPDATE_5    0x00bd
-#define SMSG_PLAYER_STAT_UPDATE_6    0x00be
-#define SMSG_WHO_ANSWER              0x00c2
-#define SMSG_PLAYER_WARP             0x0091 /**< Warp player to map/location */
-#define SMSG_PLAYER_INVENTORY        0x01ee
-#define SMSG_PLAYER_INVENTORY_ADD    0x00a0
-#define SMSG_PLAYER_INVENTORY_REMOVE 0x00af
-#define SMSG_PLAYER_INVENTORY_USE    0x01c8
-#define SMSG_PLAYER_EQUIPMENT        0x00a4
-#define SMSG_PLAYER_EQUIP            0x00aa
-#define SMSG_PLAYER_UNEQUIP          0x00ac
-#define SMSG_PLAYER_ATTACK_RANGE     0x013a
-#define SMSG_PLAYER_ARROW_EQUIP      0x013c
-#define SMSG_PLAYER_ARROW_MESSAGE    0x013b
-#define SMSG_PLAYER_SKILLS           0x010f
-#define SMSG_SKILL_FAILED            0x0110
-#define SMSG_ITEM_USE_RESPONSE       0x00a8
-#define SMSG_ITEM_VISIBLE            0x009d /**< An item is on the floor */
-#define SMSG_ITEM_DROPPED            0x009e /**< An item is dropped */
-#define SMSG_ITEM_REMOVE             0x00a1 /**< An item disappers */
-#define SMSG_BEING_VISIBLE           0x0078
-#define SMSG_BEING_MOVE              0x007b /**< A nearby monster moves */
-#define SMSG_BEING_SPAWN             0x007c /**< A being spawns nearby */
-#define SMSG_BEING_MOVE2             0x0086 /**< New eAthena being moves */
-#define SMSG_BEING_REMOVE            0x0080
-#define SMSG_BEING_CHANGE_LOOKS      0x00c3
-#define SMSG_BEING_CHANGE_LOOKS2     0x01d7 /**< Same as 0x00c3, but 16 bit ID */
-#define SMSG_BEING_SELFEFFECT        0x019b
-#define SMSG_BEING_EMOTION           0x00c0
-#define SMSG_BEING_ACTION            0x008a /**< Attack, sit, stand up, ... */
-#define SMSG_BEING_CHAT              0x008d /**< A being talks */
-#define SMSG_BEING_NAME_RESPONSE     0x0095 /**< Has to be requested */
+/**
+ * Enumerated type for communicated messages:
+ *
+ * - PAMSG_*: from client to account server
+ * - APMSG_*: from account server to client
+ * - PCMSG_*: from client to chat server
+ * - CPMSG_*: from chat server to client
+ * - PGMSG_*: from client to game server
+ * - GPMSG_*: from game server to client
+ *
+ * Components: B byte, W word, D double word, S variable-size string
+ *             C tile-based coordinates (B*3)
+ *
+ * Hosts:      P (player's client), A (account server), C (char server),
+ *             G (game server)
+ */
+enum {
+    // Login/Register
+    PAMSG_REGISTER                 = 0x0000, // L version, S username, S password, S email
+    APMSG_REGISTER_RESPONSE        = 0x0002, // B error [, S updatehost]
+    PAMSG_UNREGISTER               = 0x0003, // -
+    APMSG_UNREGISTER_RESPONSE      = 0x0004, // B error
+    PAMSG_LOGIN                    = 0x0010, // L version, S username, S password
+    APMSG_LOGIN_RESPONSE           = 0x0012, // B error [, S updatehost]
+    PAMSG_LOGOUT                   = 0x0013, // -
+    APMSG_LOGOUT_RESPONSE          = 0x0014, // B error
+    PAMSG_CHAR_CREATE              = 0x0020, // S name, B hair style, B hair color, B gender, W*6 stats
+    APMSG_CHAR_CREATE_RESPONSE     = 0x0021, // B error
+    PAMSG_CHAR_DELETE              = 0x0022, // B index
+    APMSG_CHAR_DELETE_RESPONSE     = 0x0023, // B error
+    APMSG_CHAR_INFO                = 0x0024, // B index, S name, B gender, B hair style, B hair color, W level, W character points, W correction points, D money, W*6 stats
+    PAMSG_CHAR_SELECT              = 0x0026, // B index
+    APMSG_CHAR_SELECT_RESPONSE     = 0x0027, // B error, B*32 token, S game address, W game port, S chat address, W chat port
+    PAMSG_EMAIL_CHANGE             = 0x0030, // S email
+    APMSG_EMAIL_CHANGE_RESPONSE    = 0x0031, // B error
+    PAMSG_PASSWORD_CHANGE          = 0x0034, // S old password, S new password
+    APMSG_PASSWORD_CHANGE_RESPONSE = 0x0035, // B error
 
-#define SMSG_NPC_MESSAGE             0x00b4
-#define SMSG_NPC_NEXT                0x00b5
-#define SMSG_NPC_CLOSE               0x00b6
-#define SMSG_NPC_CHOICE              0x00b7 /**< Display a choice */
-#define SMSG_NPC_BUY_SELL_CHOICE     0x00c4
-#define SMSG_NPC_BUY                 0x00c6
-#define SMSG_NPC_SELL                0x00c7
-#define SMSG_NPC_BUY_RESPONSE        0x00ca
-#define SMSG_NPC_SELL_RESPONSE       0x00cb
-#define SMSG_NPC_INT_INPUT           0x0142 /**< Integer input */
-#define SMSG_NPC_STR_INPUT           0x01d4 /**< String input */
-#define SMSG_PLAYER_CHAT             0x008e /**< Player talks */
-#define SMSG_WHISPER                 0x0097 /**< Whisper Recieved */
-#define SMSG_WHISPER_RESPONSE        0x0098
-#define SMSG_GM_CHAT                 0x009a /**< GM announce */
-#define SMSG_WALK_RESPONSE           0x0087
+    PGMSG_CONNECT                  = 0x0050, // B*32 token
+    GPMSG_CONNECT_RESPONSE         = 0x0051, // B error
+    PCMSG_CONNECT                  = 0x0053, // B*32 token
+    CPMSG_CONNECT_RESPONSE         = 0x0054, // B error
 
-#define SMSG_TRADE_REQUEST           0x00e5 /**< Receiving a request to trade */
-#define SMSG_TRADE_RESPONSE          0x00e7
-#define SMSG_TRADE_ITEM_ADD          0x00e9
-#define SMSG_TRADE_ITEM_ADD_RESPONSE 0x01b1 /**< Not standard eAthena! */
-#define SMSG_TRADE_OK                0x00ec
-#define SMSG_TRADE_CANCEL            0x00ee
-#define SMSG_TRADE_COMPLETE          0x00f0
+    PGMSG_DISCONNECT               = 0x0060, // B reconnect account
+    GPMSG_DISCONNECT_RESPONSE      = 0x0061, // B error, B*32 token
+    PCMSG_DISCONNECT               = 0x0063, // -
+    CPMSG_DISCONNECT_RESPONSE      = 0x0064, // B error
 
-#define SMSG_PARTY_CREATE            0x00fa
-#define SMSG_PARTY_INFO              0x00fb
-#define SMSG_PARTY_INVITE            0x00fd
-#define SMSG_PARTY_INVITED           0x00fe
-#define SMSG_PARTY_SETTINGS          0x0102
-#define SMSG_PARTY_MEMBER_INFO       0x0104
-#define SMSG_PARTY_LEAVE             0x0105
-#define SMSG_PARTY_UPDATE_HP         0x0106
-#define SMSG_PARTY_UPDATE_COORDS     0x0107
-#define SMSG_PARTY_MESSAGE           0x0109
+    PAMSG_RECONNECT                = 0x0065, // B*32 token
+    APMSG_RECONNECT_RESPONSE       = 0x0066, // B error
 
-#define SMSG_PLAYER_STORAGE_ITEMS    0x01f0 /**< Item list for storage */
-#define SMSG_PLAYER_STORAGE_EQUIP    0x00a6 /**< Equipment list for storage */
-#define SMSG_PLAYER_STORAGE_STATUS   0x00f2 /**< Slots used and total slots */
-#define SMSG_PLAYER_STORAGE_ADD      0x00f4 /**< Add item/equip to storage */
-#define SMSG_PLAYER_STORAGE_REMOVE   0x00f6 /**< Remove item/equip from storage */
-#define SMSG_PLAYER_STORAGE_CLOSE    0x00f8 /**< Storage access closed */
+    // Game
+    GPMSG_PLAYER_MAP_CHANGE        = 0x0100, // S filename, W x, W y
+    GPMSG_PLAYER_SERVER_CHANGE     = 0x0101, // B*32 token, S game address, W game port
+    PGMSG_PICKUP                   = 0x0110, // W*2 position
+    PGMSG_DROP                     = 0x0111, // B slot, B amount
+    PGMSG_EQUIP                    = 0x0112, // B slot
+    PGMSG_UNEQUIP                  = 0x0113, // B slot
+    PGMSG_MOVE_ITEM                = 0x0114, // B slot1, B slot2, B amount
+    GPMSG_INVENTORY                = 0x0120, // { B slot, W item id [, B amount] }*
+    GPMSG_INVENTORY_FULL           = 0x0121, // { B slot, W item id [, B amount] }*
+    GPMSG_PLAYER_ATTRIBUTE_CHANGE  = 0x0130, // { B attribute, W base value, W modified value }*
+    GPMSG_PLAYER_EXP_CHANGE        = 0x0140, // { B skill, D exp got, D exp needed }*
+    GPMSG_LEVELUP                  = 0x0150, // W new level
+    GPMSG_LEVEL_PROGRESS           = 0x0151, // B percent completed to next levelup
+    PGMSG_RAISE_ATTRIBUTE          = 0x0160, // B attribute
+    GPMSG_RAISE_ATTRIBUTE_RESPONSE = 0x0161, // B error, B attribute
+    PGMSG_LOWER_ATTRIBUTE          = 0x0170, // B attribute
+    GPMSG_LOWER_ATTRIBUTE_RESPONSE = 0x0171, // B error, B attribute
+    PGMSG_RESPAWN                  = 0x0180, // -
+    GPMSG_BEING_ENTER              = 0x0200, // B type, W being id, B action, W*2 position
+                                             // player: S name, B hair style, B hair color, B gender, B item bitmask, { W item id }*
+                                             // monster: W type id
+                                             // npc: W type id
+    GPMSG_BEING_LEAVE              = 0x0201, // W being id
+    GPMSG_ITEM_APPEAR              = 0x0202, // W item id, W*2 position
+    GPMSG_BEING_LOOKS_CHANGE       = 0x0210, // W weapon, W hat, W top clothes, W bottom clothes
+    PGMSG_WALK                     = 0x0260, // W*2 destination
+    PGMSG_ACTION_CHANGE            = 0x0270, // B Action
+    GPMSG_BEING_ACTION_CHANGE      = 0x0271, // W being id, B action
+    PGMSG_DIRECTION_CHANGE         = 0x0272, // B Direction
+    GPMSG_BEING_DIR_CHANGE         = 0x0273, // W being id, B direction
+    GPMSG_BEINGS_MOVE              = 0x0280, // { W being id, B flags [, C position, B speed] [, W*2 destination] }*
+    GPMSG_ITEMS                    = 0x0281, // { W item id, W*2 position }*
+    PGMSG_ATTACK                   = 0x0290, // B direction
+    PGMSG_USE_SPECIAL              = 0x0292, // B specialID
+    GPMSG_BEING_ATTACK             = 0x0291, // W being id
+    PGMSG_SAY                      = 0x02A0, // S text
+    GPMSG_SAY                      = 0x02A1, // W being id, S text
+    GPMSG_NPC_CHOICE               = 0x02B0, // W being id, { S text }*
+    GPMSG_NPC_MESSAGE              = 0x02B1, // W being id, B* text
+    PGMSG_NPC_TALK                 = 0x02B2, // W being id
+    PGMSG_NPC_TALK_NEXT            = 0x02B3, // W being id
+    PGMSG_NPC_SELECT               = 0x02B4, // W being id, B choice
+    GPMSG_NPC_BUY                  = 0x02B5, // W being id, { W item id, W amount, W cost }*
+    GPMSG_NPC_SELL                 = 0x02B6, // W being id, { W item id, W amount, W cost }*
+    PGMSG_NPC_BUYSELL              = 0x02B7, // W item id, W amount
+    GPMSG_NPC_ERROR                = 0x02B8, // B error
+    GPMSG_NPC_POST                 = 0x02D0, // W being id
+    PGMSG_NPC_POST_SEND            = 0x02D1, // S name, S text, W item id
+    GPMSG_NPC_POST_GET             = 0x02D2, // W being id, { S name, S text, W item id }
+    PGMSG_TRADE_REQUEST            = 0x02C0, // W being id
+    GPMSG_TRADE_REQUEST            = 0x02C1, // W being id
+    GPMSG_TRADE_START              = 0x02C2, // -
+    GPMSG_TRADE_COMPLETE           = 0x02C3, // -
+    PGMSG_TRADE_CANCEL             = 0x02C4, // -
+    GPMSG_TRADE_CANCEL             = 0x02C5, // -
+    PGMSG_TRADE_ACCEPT             = 0x02C6, // -
+    GPMSG_TRADE_ACCEPT             = 0x02C7, // -
+    PGMSG_TRADE_ADD_ITEM           = 0x02C8, // B slot, B amount
+    GPMSG_TRADE_ADD_ITEM           = 0x02C9, // W item id, B amount
+    PGMSG_TRADE_SET_MONEY          = 0x02CA, // L amount
+    GPMSG_TRADE_SET_MONEY          = 0x02CB, // L amount
+    PGMSG_USE_ITEM                 = 0x0300, // B slot
+    GPMSG_USE_RESPONSE             = 0x0301, // B error
+    GPMSG_BEINGS_DAMAGE            = 0x0310, // { W being id, W amount }*
+    GPMSG_CREATE_EFFECT            = 0x0320, // W effect id, W*2 position
 
-/**********************************
- *  Packets from client to server *
- **********************************/
-#define CMSG_CLIENT_PING             0x007e /**< Send to server with tick */
-#define CMSG_TRADE_RESPONSE          0x00e6
-#define CMSG_ITEM_PICKUP             0x009f
-#define CMSG_MAP_LOADED              0x007d
-#define CMSG_NPC_BUY_REQUEST         0x00c8
-#define CMSG_NPC_BUY_SELL_REQUEST    0x00c5
-#define CMSG_CHAT_MESSAGE            0x008c
-#define CMSG_CHAT_WHISPER            0x0096
-#define CMSG_CHAT_ANNOUNCE           0x0099
-#define CMSG_CHAT_WHO                0x00c1
-#define CMSG_NPC_LIST_CHOICE         0x00b8
-#define CMSG_NPC_NEXT_REQUEST        0x00b9
-#define CMSG_NPC_SELL_REQUEST        0x00c9
-#define CMSG_NPC_INT_RESPONSE        0x0143
-#define CMSG_NPC_STR_RESPONSE        0x01d5
-#define CMSG_SKILL_LEVELUP_REQUEST   0x0112
-#define CMSG_STAT_UPDATE_REQUEST     0x00bb
-#define CMSG_TRADE_ITEM_ADD_REQUEST  0x00e8
-#define CMSG_TRADE_CANCEL_REQUEST    0x00ed
-#define CMSG_TRADE_ADD_COMPLETE      0x00eb
-#define CMSG_TRADE_OK                0x00ef
-#define CMSG_NPC_TALK                0x0090
-#define CMSG_TRADE_REQUEST           0x00e4
-#define CMSG_PLAYER_INVENTORY_USE    0x00a7
-#define CMSG_PLAYER_INVENTORY_DROP   0x00a2
-#define CMSG_PLAYER_EQUIP            0x00a9
-#define CMSG_PLAYER_UNEQUIP          0x00ab
+    // Guild
+    PCMSG_GUILD_CREATE                  = 0x0350, // S name
+    CPMSG_GUILD_CREATE_RESPONSE         = 0x0351, // B error, W guild, B rights, W channel
+    PCMSG_GUILD_INVITE                  = 0x0352, // W id, S name
+    CPMSG_GUILD_INVITE_RESPONSE         = 0x0353, // B error
+    PCMSG_GUILD_ACCEPT                  = 0x0354, // W id
+    CPMSG_GUILD_ACCEPT_RESPONSE         = 0x0355, // B error, W guild, B rights, W channel
+    PCMSG_GUILD_GET_MEMBERS             = 0x0356, // W id
+    CPMSG_GUILD_GET_MEMBERS_RESPONSE    = 0x0357, // S names, B online
+    CPMSG_GUILD_UPDATE_LIST             = 0x0358, // W id, S name, B event
+    PCMSG_GUILD_QUIT                    = 0x0360, // W id
+    CPMSG_GUILD_QUIT_RESPONSE           = 0x0361, // B error
+    PCMSG_GUILD_PROMOTE_MEMBER          = 0x0365, // W guild, S name, B rights
+    CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE = 0x0366, // B error
 
-#define CMSG_PARTY_CREATE            0x00f9
-#define CMSG_PARTY_INVITE            0x00fc
-#define CMSG_PARTY_INVITED           0x00ff
-#define CMSG_PARTY_LEAVE             0x0100 /** Undocumented */
-#define CMSG_PARTY_SETTINGS          0x0101
-#define CMSG_PARTY_MESSAGE           0x0108
+    CPMSG_GUILD_INVITED                 = 0x0370, // S char name, S  guild name, W id
+    CPMSG_GUILD_REJOIN                  = 0x0371, // S name, W guild, W rights, W channel, S announce
 
-#define CMSG_MOVE_TO_STORAGE         0x00f3 /** Move item to storage */
-#define CSMG_MOVE_FROM_STORAGE       0x00f5 /** Remove item from storage */
-#define CMSG_CLOSE_STORAGE           0x00f7 /** Request storage close */
+    // Party
+    PCMSG_PARTY_INVITE                  = 0x03A0, // S name
+    CPMSG_PARTY_INVITE_RESPONSE         = 0x03A1, // B error
+    CPMSG_PARTY_INVITED                 = 0x03A2, // S name
+    PCMSG_PARTY_ACCEPT_INVITE           = 0x03A5, // S name
+    CPMSG_PARTY_ACCEPT_INVITE_RESPONSE  = 0x03A6, // B error, { S name }
+    PCMSG_PARTY_QUIT                    = 0x03AA, // -
+    CPMSG_PARTY_QUIT_RESPONSE           = 0x03AB, // B error
+    CPMSG_PARTY_NEW_MEMBER              = 0x03B0, // W being id, S name
+    CPMSG_PARTY_MEMBER_LEFT             = 0x03B1, // W being id
 
-/** Encodes coords and direction in 3 bytes data */
-void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);
+    // Chat
+    CPMSG_ERROR                    = 0x0401, // B error
+    CPMSG_ANNOUNCEMENT             = 0x0402, // S text
+    CPMSG_PRIVMSG                  = 0x0403, // S user, S text
+    CPMSG_PUBMSG                   = 0x0404, // W channel, S user, S text
+    PCMSG_CHAT                     = 0x0410, // S text, W channel
+    PCMSG_ANNOUNCE                 = 0x0411, // S text
+    PCMSG_PRIVMSG                  = 0x0412, // S user, S text
+    // -- Channeling
+    CPMSG_CHANNEL_EVENT               = 0x0430, // W channel, B event, S info
+    PCMSG_ENTER_CHANNEL               = 0x0440, // S channel, S password
+    CPMSG_ENTER_CHANNEL_RESPONSE      = 0x0441, // B error, W id, S name, S topic, S userlist
+    PCMSG_QUIT_CHANNEL                = 0x0443, // W channel id
+    CPMSG_QUIT_CHANNEL_RESPONSE       = 0x0444, // B error, W channel id
+    PCMSG_LIST_CHANNELS               = 0x0445, // -
+    CPMSG_LIST_CHANNELS_RESPONSE      = 0x0446, // S names, W number of users
+    PCMSG_LIST_CHANNELUSERS           = 0x0460, // S channel
+    CPMSG_LIST_CHANNELUSERS_RESPONSE  = 0x0461, // S channel, { S user, B mode }
+    PCMSG_TOPIC_CHANGE                = 0x0462, // W channel id, S topic
+    // -- User mode
+    PCMSG_USER_MODE                   = 0x0465, // W channel id, S name, B mode
+    PCMSG_KICK_USER                   = 0x0466, // W channel id, S name
+
+    XXMSG_INVALID = 0x7FFF
+};
+
+// Generic return values
+
+enum {
+    ERRMSG_OK = 0,                      // everything is fine
+    ERRMSG_FAILURE,                     // the action failed
+    ERRMSG_NO_LOGIN,                    // the user is not yet logged
+    ERRMSG_NO_CHARACTER_SELECTED,       // the user needs a character
+    ERRMSG_INSUFFICIENT_RIGHTS,         // the user is not privileged
+    ERRMSG_INVALID_ARGUMENT,            // part of the received message was invalid
+    ERRMSG_EMAIL_ALREADY_EXISTS,        // The Email Address already exists
+    ERRMSG_ALREADY_TAKEN,               // name used was already taken
+    ERRMSG_SERVER_FULL,                 // the server is overloaded
+    ERRMSG_TIME_OUT                     // data failed to arrive in due time
+};
+
+// Login specific return values
+enum {
+    LOGIN_INVALID_VERSION = 0x40,       // the user is using an incompatible protocol
+    LOGIN_SERVER_FULL                   // the server is overloaded
+};
+
+// Account register specific return values
+enum {
+    REGISTER_INVALID_VERSION = 0x40,    // the user is using an incompatible protocol
+    REGISTER_EXISTS_USERNAME,           // there already is an account with this username
+    REGISTER_EXISTS_EMAIL               // there already is an account with this email address
+};
+
+// Character creation specific return values
+enum {
+    CREATE_INVALID_HAIRSTYLE = 0x40,
+    CREATE_INVALID_HAIRCOLOR,
+    CREATE_INVALID_GENDER,
+    CREATE_RAW_STATS_TOO_HIGH,
+    CREATE_RAW_STATS_TOO_LOW,
+    CREATE_RAW_STATS_EQUAL_TO_ZERO,
+    CREATE_EXISTS_NAME,
+    CREATE_TOO_MUCH_CHARACTERS
+};
+
+// Character attribute modification specific return value
+enum AttribmodResponseCode {
+    ATTRIBMOD_OK = ERRMSG_OK,
+    ATTRIBMOD_INVALID_ATTRIBUTE = 0x40,
+    ATTRIBMOD_NO_POINTS_LEFT,
+    ATTRIBMOD_DENIED
+};
+// Object type enumeration
+enum {
+    // A simple item
+    OBJECT_ITEM = 0,
+    // An item that can be activated (doors, switchs, sign, ...)
+    OBJECT_ACTOR,
+    // Non-Playable-Character is an actor capable of movement and maybe actions
+    OBJECT_NPC,
+    // A monster (moving actor with AI. able to toggle map/quest actions, too)
+    OBJECT_MONSTER,
+    // A player
+    OBJECT_PLAYER
+};
+
+// Moving object flags
+enum {
+    // Payload contains the current position.
+    MOVING_POSITION = 1,
+    // Payload contains the destination.
+    MOVING_DESTINATION = 2
+};
+
+// Email change specific return values
+enum {
+    EMAILCHG_EXISTS_EMAIL = 0x40
+};
+
+// Chat errors return values
+enum {
+    CHAT_USING_BAD_WORDS = 0x40,
+    CHAT_UNHANDLED_COMMAND
+};
+
+// Chat channels event values
+enum {
+    CHAT_EVENT_NEW_PLAYER = 0,
+    CHAT_EVENT_LEAVING_PLAYER,
+    CHAT_EVENT_TOPIC_CHANGE,
+    CHAT_EVENT_MODE_CHANGE,
+    CHAT_EVENT_KICKED_PLAYER
+};
+
+// Guild member event values
+enum {
+    GUILD_EVENT_NEW_PLAYER = 0,
+    GUILD_EVENT_LEAVING_PLAYER,
+    GUILD_EVENT_ONLINE_PLAYER,
+    GUILD_EVENT_OFFLINE_PLAYER
+};
 
 #endif

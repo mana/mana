@@ -34,7 +34,9 @@
 class Inventory;
 class Item;
 class ItemContainer;
+#ifdef EATHENA_SUPPORT
 class Network;
+#endif
 class ScrollArea;
 
 /**
@@ -48,7 +50,11 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         /**
          * Constructor.
          */
+#ifdef TMWSERV_SUPPORT
+        TradeWindow();
+#else
         TradeWindow(Network *network);
+#endif
 
         /**
          * Destructor.
@@ -56,31 +62,25 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         ~TradeWindow();
 
         /**
-         * Called when resizing the window.
-         *
-         * @param event The calling event
+         * Displays expected money in the trade window.
          */
-        void widgetResized(const gcn::Event &event);
-
-        /**
-         * Add money to the trade window.
-         */
-        void addMoney(int quantity);
+        void setMoney(int quantity);
 
         /**
          * Add an item to the trade window.
          */
-        void addItem(int id, bool own, int quantity, bool equipment);
-
-        /**
-         * Remove a item from the trade window.
-         */
-        void removeItem(int id, bool own);
+        void addItem(int id, bool own, int quantity);
 
         /**
          * Reset both item containers
          */
         void reset();
+
+#ifdef EATHENA_SUPPORT
+        /**
+         * Add an item to the trade window.
+         */
+        void addItem(int id, bool own, int quantity, bool equipment);
 
         /**
          * Change quantity of an item.
@@ -96,11 +96,16 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          * Set trade Button disabled
          */
         void setTradeButton(bool enabled);
+#endif
 
         /**
          * Player received ok message from server
          */
+#ifdef TMWSERV_SUPPORT
+        void receivedOk();
+#else
         void receivedOk(bool own);
+#endif
 
         /**
          * Send trade packet.
@@ -119,7 +124,23 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         void action(const gcn::ActionEvent &event);
 
     private:
+#ifdef TMWSERV_SUPPORT
+        enum Status
+        {
+            PREPARING, /**< Players are adding items. */
+            PROPOSING, /**< Local player is proposing a trade. */
+            ACCEPTING  /**< Distant player is proposing a trade. */
+        };
+
+        /**
+         * Sets the current status of the trade.
+         */
+        void setStatus(Status);
+#endif
+
+#ifdef EATHENA_SUPPORT
         Network *mNetwork;
+#endif
 
         typedef const std::auto_ptr<Inventory> InventoryPtr;
         InventoryPtr mMyInventory;
@@ -129,11 +150,17 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         ItemContainer *mPartnerItemContainer;
 
         gcn::Label *mMoneyLabel;
-        gcn::Label *mMoneyLabel2;
-        gcn::Button *mAddButton, *mOkButton, *mCancelButton, *mTradeButton;
-        ScrollArea *mMyScroll, *mPartnerScroll;
+        gcn::Button *mTradeButton;
+#ifdef EATHENA_SUPPORT
+        gcn::Button *mOkButton;
+#endif
         gcn::TextField *mMoneyField;
+
+#ifdef TMWSERV_SUPPORT
+        Status mStatus;
+#else
         bool mOkOther, mOkMe;
+#endif
 };
 
 extern TradeWindow *tradeWindow;

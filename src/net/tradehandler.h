@@ -24,14 +24,30 @@
 
 #include "messagehandler.h"
 
-class Network;
-
 class TradeHandler : public MessageHandler
 {
     public:
         TradeHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
+
+        /**
+         * Returns whether trade requests are accepted.
+         *
+         * @see setAcceptTradeRequests
+         */
+        bool acceptTradeRequests() const
+        { return mAcceptTradeRequests; }
+
+        /**
+         * Sets whether trade requests are accepted. When set to false, trade
+         * requests are automatically denied. When true, a popup will ask the
+         * player whether he wants to trade.
+         */
+        void setAcceptTradeRequests(bool acceptTradeRequests);
+
+    private:
+        bool mAcceptTradeRequests;
 };
 
 #endif

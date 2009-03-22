@@ -22,21 +22,33 @@
 #include <cassert>
 
 #include "messagehandler.h"
+#ifdef TMWSERV_SUPPORT
 #include "network.h"
+#else
+#include "ea/network.h"
+#endif
 
-MessageHandler::MessageHandler():
-    mNetwork(0)
+MessageHandler::MessageHandler()
+#ifdef EATHENA_SUPPORT
+    : mNetwork(0)
+#endif
 {
 }
 
 MessageHandler::~MessageHandler()
 {
+#ifdef TMWSERV_SUPPORT
+    Net::unregisterHandler(this);
+#else
     if (mNetwork)
         mNetwork->unregisterHandler(this);
+#endif
 }
 
+#ifdef EATHENA_SUPPORT
 void MessageHandler::setNetwork(Network *network)
 {
     assert(!(network && mNetwork));
     mNetwork = network;
 }
+#endif

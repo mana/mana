@@ -26,6 +26,7 @@
 #include "../beingmanager.h"
 #include "../configuration.h"
 #include "../flooritemmanager.h"
+#include "../game.h"
 #include "../graphics.h"
 #include "../keyboardconfig.h"
 #include "../localplayer.h"
@@ -48,8 +49,13 @@ Viewport::Viewport():
     mTileViewX(0),
     mTileViewY(0),
     mShowDebugPath(false),
+    mVisibleNames(false),
     mPlayerFollowMouse(false),
+#ifdef TMWSERV_SUPPORT
+    mLocalWalkTime(-1)
+#else
     mWalkTime(0)
+#endif
 {
     setOpaque(false);
     addMouseListener(this);
@@ -58,9 +64,11 @@ Viewport::Viewport():
     mScrollRadius = (int) config.getValue("ScrollRadius", 0);
     mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
     mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
+    mVisibleNames = config.getValue("visiblenames", 1);
 
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
+    config.addListener("visiblenames", this);
 
     mPopupMenu = new PopupMenu;
 }
@@ -68,6 +76,8 @@ Viewport::Viewport():
 Viewport::~Viewport()
 {
     delete mPopupMenu;
+
+    config.removeListener("visiblenames", this);
 }
 
 void Viewport::setMap(Map *map)
@@ -97,6 +107,14 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     // Calculate viewpoint
+#ifdef TMWSERV_SUPPORT
+    int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 2;
+    int midTileY = (graphics->getHeight() + mScrollCenterOffsetX) / 2;
+
+    const Vector &playerPos = player_node->getPosition();
+    const int player_x = (int) playerPos.x - midTileX;
+    const int player_y = (int) playerPos.y - midTileY;
+#else
     int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 32 / 2;
     int midTileY = (graphics->getHeight() + mScrollCenterOffsetY) / 32 / 2;
 
@@ -104,6 +122,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
                     player_node->getXOffset();
     int player_y = (player_node->mY - midTileY) * 32 +
                     player_node->getYOffset();
+#endif
 
     if (mScrollLaziness < 1)
         mScrollLaziness = 1; // Avoids division by zero
@@ -142,8 +161,10 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     };
 
     // Don't move camera so that the end of the map is on screen
-    int viewXmax = (mMap->getWidth() * 32) - graphics->getWidth();
-    int viewYmax = (mMap->getHeight() * 32) - graphics->getHeight();
+    const int viewXmax =
+        mMap->getWidth() * mMap->getTileWidth() - graphics->getWidth();
+    const int viewYmax =
+        mMap->getHeight() * mMap->getTileHeight() - graphics->getHeight();
     if (mMap)
     {
         if (mPixelViewX < 0) {
@@ -168,28 +189,13 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     {
         mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
 
-        // Find a path from the player to the mouse, and draw it. This is for debug
-        // purposes.
-        if (mShowDebugPath)
-        {
-            // Get the current mouse position
-            int mouseX, mouseY;
-            SDL_GetMouseState(&mouseX, &mouseY);
-
-            int mouseTileX = mouseX / 32 + mTileViewX;
-            int mouseTileY = mouseY / 32 + mTileViewY;
-
-            Path debugPath = mMap->findPath(player_node->mX, player_node->mY, mouseTileX, mouseTileY);
-
-            graphics->setColor(gcn::Color(255, 0, 0));
-            for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
-            {
-                int squareX = i->x * 32 - (int) mPixelViewX + 12;
-                int squareY = i->y * 32 - (int) mPixelViewY + 12;
-
-                graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-                graphics->drawText(toString(mMap->getMetaTile(i->x, i->y)->Gcost), squareX + 4, squareY + 12, gcn::Graphics::CENTER);
-            }
+        if (mShowDebugPath) {
+            mMap->drawCollision(graphics,
+                                (int) mPixelViewX,
+                                (int) mPixelViewY);
+#if 0
+            drawDebugPath(graphics);
+#endif
         }
     }
 
@@ -232,11 +238,52 @@ void Viewport::logic()
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
 
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
+#ifdef TMWSERV_SUPPORT
+            get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
+    {
+            mLocalWalkTime = tick_time;
+            player_node->setDestination(mouseX + (int) mPixelViewX,
+                                        mouseY + (int) mPixelViewY);
+#else
             mWalkTime != player_node->mWalkTime)
     {
         player_node->setDestination(mouseX / 32 + mTileViewX,
                                     mouseY / 32 + mTileViewY);
         mWalkTime = player_node->mWalkTime;
+#endif
+    }
+}
+
+void Viewport::drawDebugPath(Graphics *graphics)
+{
+    // Get the current mouse position
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+
+    const int mouseTileX = (mouseX + (int) mPixelViewX) / 32;
+    const int mouseTileY = (mouseY + (int) mPixelViewY) / 32;
+    const Vector &playerPos = player_node->getPosition();
+
+    Path debugPath = mMap->findPath(
+            (int) playerPos.x / 32,
+            (int) playerPos.y / 32,
+            mouseTileX, mouseTileY, 0xFF);
+
+    drawPath(graphics, debugPath);
+}
+
+void Viewport::drawPath(Graphics *graphics, const Path &path)
+{
+    graphics->setColor(gcn::Color(255, 0, 0));
+    for (Path::const_iterator i = path.begin(); i != path.end(); ++i)
+    {
+        int squareX = i->x * 32 - (int) mPixelViewX + 12;
+        int squareY = i->y * 32 - (int) mPixelViewY + 12;
+
+        graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+        graphics->drawText(
+                toString(mMap->getMetaTile(i->x, i->y)->Gcost),
+                squareX + 4, squareY + 12, gcn::Graphics::CENTER);
     }
 }
 
@@ -252,10 +299,10 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
 
     mPlayerFollowMouse = false;
 
-    const int tilex = event.getX() / 32 + mTileViewX;
-    const int tiley = event.getY() / 32 + mTileViewY;
-    const int x = (int)((float) event.getX() + mPixelViewX);
-    const int y = (int)((float) event.getY() + mPixelViewY);
+    const int pixelx = event.getX() + (int) mPixelViewX;
+    const int pixely = event.getY() + (int) mPixelViewY;
+    const int tilex = pixelx / mMap->getTileWidth();
+    const int tiley = pixely / mMap->getTileHeight();
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
@@ -263,7 +310,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = beingManager->findBeingByPixel(x, y)) &&
+        if ((being = beingManager->findBeingByPixel(pixelx, pixely)) &&
              being != player_node)
         {
            mPopupMenu->showPopup(event.getX(), event.getY(), being);
@@ -287,12 +334,13 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     // Left click can cause different actions
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        Being *being;
         FloorItem *item;
+#ifdef EATHENA_SUPPORT
+        Being *being;
 
         // Interact with some being
 //        if ((being = beingManager->findBeing(tilex, tiley)))
-        if ((being = beingManager->findBeingByPixel(x, y)))
+        if ((being = beingManager->findBeingByPixel(pixelx, pixely)))
         {
             switch (being->getType())
             {
@@ -321,26 +369,42 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
              }
         }
         // Pick up some item
-        else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
+        else
+#endif
+        if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
         {
             player_node->pickUp(item);
         }
         // Just walk around
         else
         {
+#ifdef TMWSERV_SUPPORT
+            // FIXME: REALLY UGLY!
+            Uint8 *keys = SDL_GetKeyState(NULL);
+            if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) &&
+                get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
+            {
+                mLocalWalkTime = tick_time;
+                player_node->setDestination(event.getX() + (int) mPixelViewX,
+                                            event.getY() + (int) mPixelViewY);
+            }
+#else
             player_node->stopAttack();
             player_node->setDestination(tilex, tiley);
+#endif
             mPlayerFollowMouse = true;
         }
     }
     else if (event.getButton() == gcn::MouseEvent::MIDDLE)
     {
         // Find the being nearest to the clicked position
-        Being *target = beingManager->findBeingByPixel(x, y);
+        Being *target = beingManager->findNearestLivingBeing(
+                tilex, tiley,
+                20, Being::MONSTER);
 
         if (target)
         {
-             player_node->setTarget(target);
+            player_node->setTarget(target);
         }
     }
 }
@@ -350,12 +414,22 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
     if (!mMap || !player_node)
         return;
 
+#ifdef TMWSERV_SUPPORT
+    if (mPlayerFollowMouse
+        && get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
+    {
+        mLocalWalkTime = tick_time;
+        player_node->setDestination(event.getX() + (int) mPixelViewX,
+                                    event.getY() + (int) mPixelViewY);
+    }
+#else
     if (mPlayerFollowMouse && mWalkTime == player_node->mWalkTime)
     {
         int destX = event.getX() / 32 + mTileViewX;
         int destY = event.getY() / 32 + mTileViewY;
         player_node->setDestination(destX, destY);
     }
+#endif
 }
 
 void Viewport::mouseReleased(gcn::MouseEvent &event)
@@ -372,4 +446,20 @@ void Viewport::optionChanged(const std::string &name)
 {
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
+
+    if (name == "visiblenames") {
+        mVisibleNames = config.getValue("visiblenames", 1);
+    }
+}
+
+void Viewport::mouseMoved(gcn::MouseEvent &event)
+{
+    // Check if we are on the map
+    if (!mMap || !player_node)
+        return;
+
+    const int tilex = (event.getX() + (int) mPixelViewX) / 32;
+    const int tiley = (event.getY() + (int) mPixelViewY) / 32;
+
+    mSelectedBeing = beingManager->findBeing(tilex, tiley);
 }

@@ -22,8 +22,6 @@
 #ifndef PASSWORDFIELD_H
 #define PASSWORDFIELD_H
 
-#include <string>
-
 #include "textfield.h"
 
 /**

@@ -21,6 +21,9 @@
 
 #include "animatedsprite.h"
 #include "game.h"
+#ifdef TMWSERV_SUPPORT
+#include "guild.h"
+#endif
 #include "player.h"
 #include "text.h"
 
@@ -65,6 +68,7 @@ void Player::setName(const std::string &name)
     }
 }
 
+#ifdef EATHENA_SUPPORT
 void Player::logic()
 {
     switch (mAction)
@@ -82,7 +86,7 @@ void Player::logic()
            break;
 
         case WALK:
-            mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
+            mFrame = (get_elapsed_time(mWalkTime) * 6) / getWalkSpeed();
 
             if (mFrame >= 6)
                 nextStep();
@@ -107,6 +111,7 @@ void Player::logic()
 
     Being::logic();
 }
+#endif
 
 Being::Type Player::getType() const
 {
@@ -153,7 +158,7 @@ void Player::setHairStyle(int style, int color)
     setAction(mAction);
 }
 
-void Player::setSprite(int slot, int id, std::string color)
+void Player::setSprite(int slot, int id, const std::string &color)
 {
     // id = 0 means unequip
     if (id == 0)
@@ -161,8 +166,10 @@ void Player::setSprite(int slot, int id, std::string color)
         delete mSprites[slot];
         mSprites[slot] = NULL;
 
+#ifdef EATHENA_SUPPORT
         if (slot == WEAPON_SPRITE)
             mEquippedWeapon = NULL;
+#endif
     }
     else
     {
@@ -199,3 +206,55 @@ void Player::updateCoords()
         mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
 }
 
+#ifdef TMWSERV_SUPPORT
+
+Guild* Player::addGuild(short guildId, short rights)
+{
+    Guild *guild = new Guild(guildId, rights);
+    mGuilds.insert(std::pair<int, Guild*>(guildId, guild));
+    return guild;
+}
+
+void Player::removeGuild(int id)
+{
+    mGuilds.erase(id);
+}
+
+Guild* Player::getGuild(const std::string &guildName)
+{
+    std::map<int, Guild*>::iterator itr, itr_end = mGuilds.end();
+    for (itr = mGuilds.begin(); itr != itr_end; ++itr)
+    {
+        Guild *guild = itr->second;
+        if (guild->getName() == guildName)
+        {
+            return guild;
+        }
+    }
+
+    return NULL;
+}
+
+Guild* Player::getGuild(int id)
+{
+    std::map<int, Guild*>::iterator itr;
+    itr = mGuilds.find(id);
+    if (itr != mGuilds.end())
+    {
+        return itr->second;
+    }
+
+    return NULL;
+}
+
+short Player::getNumberOfGuilds()
+{
+    return mGuilds.size();
+}
+
+void Player::setInParty(bool value)
+{
+    mInParty = value;
+}
+
+#endif

@@ -25,8 +25,13 @@
 #include <SDL_types.h>
 
 class MessageIn;
+#ifdef EATHENA_SUPPORT
 class Network;
+#endif
 
+/**
+ * \ingroup Network
+ */
 class MessageHandler
 {
     public:
@@ -35,12 +40,14 @@ class MessageHandler
         MessageHandler();
         virtual ~MessageHandler();
 
-        virtual void handleMessage(MessageIn *msg) =0;
+        virtual void handleMessage(MessageIn &msg) = 0;
 
+#ifdef EATHENA_SUPPORT
         void setNetwork(Network *network);
 
     protected:
         Network *mNetwork;
+#endif
 };
 
 #endif

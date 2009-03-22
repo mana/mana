@@ -72,14 +72,20 @@ void ItemShortcut::useItem(int index)
         {
             if (item->isEquipment())
             {
+#ifdef EATHENA_SUPPORT
                 if (item->isEquipped())
                     player_node->unequipItem(item);
                 else
+#endif
                     player_node->equipItem(item);
             }
             else
             {
+#ifdef TMWSERV_SUPPORT
+                player_node->useItem(item->getInvIndex());
+#else
                 player_node->useItem(item);
+#endif
             }
         }
     }

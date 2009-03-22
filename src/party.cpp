@@ -27,7 +27,7 @@
 #include "gui/confirm_dialog.h"
 
 #include "net/messageout.h"
-#include "net/protocol.h"
+#include "net/ea/protocol.h"
 
 #include "utils/gettext.h"
 #include "utils/strprintf.h"

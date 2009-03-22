@@ -1,158 +1,225 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
- *  This program is free software; you can redistribute it and/or modify
+ *  The Mana World is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  The Mana World is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
+ *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include "loginhandler.h"
+
 #include "messagein.h"
 #include "protocol.h"
 
-#include "../log.h"
 #include "../logindata.h"
 #include "../main.h"
-#include "../serverinfo.h"
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
-#include "../utils/stringutils.h"
-
-extern SERVER_INFO **server_info;
 
 LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_CONNECTION_PROBLEM,
-        SMSG_UPDATE_HOST,
-        0x0069,
-        0x006a,
+        APMSG_LOGIN_RESPONSE,
+        APMSG_REGISTER_RESPONSE,
+        APMSG_RECONNECT_RESPONSE,
+        APMSG_PASSWORD_CHANGE_RESPONSE,
+        APMSG_EMAIL_CHANGE_RESPONSE,
         0
     };
     handledMessages = _messages;
 }
 
-void LoginHandler::handleMessage(MessageIn *msg)
+void LoginHandler::setLoginData(LoginData *loginData)
 {
-    int code;
+    mLoginData = loginData;
+}
 
-    switch (msg->getId())
+void LoginHandler::handleMessage(MessageIn &msg)
+{
+    switch (msg.getId())
     {
-        case SMSG_CONNECTION_PROBLEM:
-            code = msg->readInt8();
-            logger->log("Connection problem: %i", code);
-
-            switch (code) {
-                case 0:
-                    errorMessage = _("Authentication failed");
-                    break;
-                case 1:
-                    errorMessage = _("No servers available");
-                    break;
-                case 2:
-                    errorMessage = _("This account is already logged in");
-                    break;
-                default:
-                    errorMessage = _("Unknown connection error");
-                    break;
-            }
-            state = ERROR_STATE;
+        case APMSG_LOGIN_RESPONSE:
+            handleLoginResponse(msg);
             break;
-
-        case SMSG_UPDATE_HOST:
-             int len;
-
-             len = msg->readInt16() - 4;
-             mUpdateHost = msg->readString(len);
-
-             logger->log("Received update host \"%s\" from login server",
-                     mUpdateHost.c_str());
-             break;
-
-        case 0x0069:
-            // Skip the length word
-            msg->skip(2);
-
-            n_server = (msg->getLength() - 47) / 32;
-            server_info =
-                (SERVER_INFO**) malloc(sizeof(SERVER_INFO*) * n_server);
-
-            mLoginData->session_ID1 = msg->readInt32();
-            mLoginData->account_ID = msg->readInt32();
-            mLoginData->session_ID2 = msg->readInt32();
-            msg->skip(30);                           // unknown
-            mLoginData->sex = msg->readInt8();
-
-            for (int i = 0; i < n_server; i++)
+        case APMSG_REGISTER_RESPONSE:
+            handleRegisterResponse(msg);
+            break;
+        case APMSG_RECONNECT_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
+            // Successful login
+            if (errMsg == ERRMSG_OK)
             {
-                server_info[i] = new SERVER_INFO;
-
-                server_info[i]->address = msg->readInt32();
-                server_info[i]->port = msg->readInt16();
-                server_info[i]->name = msg->readString(20);
-                server_info[i]->online_users = msg->readInt32();
-                server_info[i]->updateHost = mUpdateHost;
-                msg->skip(2);                        // unknown
-
-                logger->log("Network: Server: %s (%s:%d)",
-                        server_info[i]->name.c_str(),
-                        ipToString(server_info[i]->address),
-                        server_info[i]->port);
+                state = STATE_CHAR_SELECT;
             }
-            state = CHAR_SERVER_STATE;
+            // Login failed
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_INVALID_ARGUMENT:
+                        errorMessage = "Wrong magic_token";
+                        break;
+                    case ERRMSG_FAILURE:
+                        errorMessage = "Already logged in";
+                        break;
+                    case LOGIN_SERVER_FULL:
+                        errorMessage = "Server is full";
+                        break;
+                    default:
+                        errorMessage = "Unknown error";
+                        break;
+                }
+                state = STATE_ERROR;
+            }
+        }
             break;
 
-        case 0x006a:
-            code = msg->readInt8();
-            logger->log("Login::error code: %i", code);
-
-            switch (code) {
-                case 0:
-                    errorMessage = _("Unregistered ID");
-                    break;
-                case 1:
-                    errorMessage = _("Wrong password");
-                    break;
-                case 2:
-                    errorMessage = _("Account expired");
-                    break;
-                case 3:
-                    errorMessage = _("Rejected from server");
-                    break;
-                case 4:
-
-                    errorMessage = _("You have been permanently banned from "
-                                     "the game. Please contact the GM Team.");
-                    break;
-                case 6:
-                    errorMessage = strprintf(_("You have been temporarily "
-                                               "banned from the game until "
-                                               "%s.\n Please contact the GM "
-                                               "team via the forums."),
-                                               msg->readString(20).c_str());
-                    break;
-                case 9:
-                    errorMessage = _("This user name is already taken");
-                    break;
-                default:
-                    errorMessage = _("Unknown error");
-                    break;
+        case APMSG_PASSWORD_CHANGE_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
+            // Successful pass change
+            if (errMsg == ERRMSG_OK)
+            {
+                state = STATE_CHANGEPASSWORD;
             }
-            state = ERROR_STATE;
+            // pass change failed
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_INVALID_ARGUMENT:
+                        errorMessage = "New password incorrect";
+                        break;
+                    case ERRMSG_FAILURE:
+                        errorMessage = "Old password incorrect";
+                        break;
+                    case ERRMSG_NO_LOGIN:
+                        errorMessage = "Account not connected. Please login first.";
+                        break;
+                    default:
+                        errorMessage = "Unknown error";
+                        break;
+                }
+                state = STATE_ACCOUNTCHANGE_ERROR;
+            }
+        }
             break;
+
+        case APMSG_EMAIL_CHANGE_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
+            // Successful pass change
+            if (errMsg == ERRMSG_OK)
+            {
+                state = STATE_CHANGEEMAIL;
+            }
+            // pass change failed
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_INVALID_ARGUMENT:
+                        errorMessage = "New email address incorrect";
+                        break;
+                    case ERRMSG_FAILURE:
+                        errorMessage = "Old email address incorrect";
+                        break;
+                    case ERRMSG_NO_LOGIN:
+                        errorMessage = "Account not connected. Please login first.";
+                        break;
+                    case ERRMSG_EMAIL_ALREADY_EXISTS:
+                        errorMessage = "The new Email Address already exists.";
+                        break;
+                    default:
+                        errorMessage = "Unknown error";
+                        break;
+                }
+                state = STATE_ACCOUNTCHANGE_ERROR;
+            }
+        }
+            break;
+
+    }
+}
+
+void LoginHandler::handleLoginResponse(MessageIn &msg)
+{
+    const int errMsg = msg.readInt8();
+
+    if (errMsg == ERRMSG_OK)
+    {
+        readUpdateHost(msg);
+        state = STATE_CHAR_SELECT;
+    }
+    else
+    {
+        switch (errMsg) {
+            case LOGIN_INVALID_VERSION:
+                errorMessage = "Client version is too old";
+                break;
+            case ERRMSG_INVALID_ARGUMENT:
+                errorMessage = "Wrong username or password";
+                break;
+            case ERRMSG_FAILURE:
+                errorMessage = "Already logged in";
+                break;
+            case LOGIN_SERVER_FULL:
+                errorMessage = "Server is full";
+                break;
+            default:
+                errorMessage = "Unknown error";
+                break;
+        }
+        state = STATE_LOGIN_ERROR;
+    }
+}
+
+void LoginHandler::handleRegisterResponse(MessageIn &msg)
+{
+    const int errMsg = msg.readInt8();
+
+    if (errMsg == ERRMSG_OK)
+    {
+        readUpdateHost(msg);
+        state = STATE_CHAR_SELECT;
+    }
+    else
+    {
+        switch (errMsg) {
+            case REGISTER_INVALID_VERSION:
+                errorMessage = "Client version is too old";
+                break;
+            case ERRMSG_INVALID_ARGUMENT:
+                errorMessage = "Wrong username, password or email address";
+                break;
+            case REGISTER_EXISTS_USERNAME:
+                errorMessage = "Username already exists";
+                break;
+            case REGISTER_EXISTS_EMAIL:
+                errorMessage = "Email address already exists";
+                break;
+            default:
+                errorMessage = "Unknown error";
+                break;
+        }
+        state = STATE_LOGIN_ERROR;
+    }
+}
+
+void LoginHandler::readUpdateHost(MessageIn &msg)
+{
+    // Set the update host when included in the message
+    if (msg.getUnreadLength() > 0)
+    {
+        mLoginData->updateHost = msg.readString();
     }
 }

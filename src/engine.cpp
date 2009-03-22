@@ -33,19 +33,27 @@
 #include "gui/minimap.h"
 #include "gui/viewport.h"
 
+#ifdef EATHENA_SUPPORT
 #include "net/messageout.h"
-#include "net/protocol.h"
+#include "net/ea/protocol.h"
+#endif
 
 #include "resources/mapreader.h"
+#include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/stringutils.h"
 
 char itemCurrenyQ[10] = "0";
 
+#ifdef TMWSERV_SUPPORT
+Engine::Engine():
+    mCurrentMap(NULL)
+#else
 Engine::Engine(Network *network):
     mCurrentMap(NULL),
     mNetwork(network)
+#endif
 {
 }
 
@@ -59,6 +67,7 @@ void Engine::changeMap(const std::string &mapPath)
     // Clean up floor items, beings and particles
     floorItemManager->clear();
     beingManager->clear();
+    particleEngine->clear();
 
     // Unset the map of the player so that its particles are cleared before
     // being deleted in the next step
@@ -68,7 +77,11 @@ void Engine::changeMap(const std::string &mapPath)
     particleEngine->clear();
 
     // Store full map path in global var
+#ifdef TMWSERV_SUPPORT
+    map_path = "maps/" + mapPath + ".tmx";
+#else
     map_path = "maps/" + mapPath.substr(0, mapPath.rfind(".")) + ".tmx";
+#endif
     ResourceManager *resman = ResourceManager::getInstance();
     if (!resman->exists(map_path))
         map_path += ".gz";
@@ -106,6 +119,12 @@ void Engine::changeMap(const std::string &mapPath)
         else
              minimap->setProportion(0.5);
     }
+    if (newMap->hasProperty("name"))
+    {
+        minimap->setCaption(newMap->getProperty("name"));
+    } else {
+        minimap->setCaption("Map");
+    }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
     particleEngine->setMap(newMap);
@@ -131,15 +150,18 @@ void Engine::changeMap(const std::string &mapPath)
     mCurrentMap = newMap;
     mMapName = mapPath;
 
+#ifdef EATHENA_SUPPORT
     // Send "map loaded"
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_MAP_LOADED);
+#endif
 }
 
 void Engine::logic()
 {
     beingManager->logic();
     particleEngine->update();
-    mCurrentMap->update();
+    if (mCurrentMap)
+        mCurrentMap->update();
     gui->logic();
 }

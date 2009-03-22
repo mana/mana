@@ -29,12 +29,16 @@
 #include "../configlistener.h"
 #include "../position.h"
 
+class Being;
 class FloorItem;
 class Graphics;
 class ImageSet;
 class Item;
 class Map;
 class PopupMenu;
+
+/** Delay between two mouse calls when dragging mouse and move the player */
+const int walkingMouseDelay = 500;
 
 /**
  * The viewport on the map. Displays the current map and handles mouse input
@@ -94,6 +98,11 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void mouseReleased(gcn::MouseEvent &event);
 
         /**
+         * Handles mouse move on map.
+         */
+        void mouseMoved(gcn::MouseEvent &event);
+
+        /**
          * Shows a popup for an item.
          * TODO Find some way to get rid of Item here
          */
@@ -120,6 +129,17 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void scrollBy(float x, float y) { mPixelViewX += x; mPixelViewY += y; }
 
     private:
+        /**
+         * Finds a path from the player to the mouse, and draws it. This is for
+         * debug purposes.
+         */
+        void drawDebugPath(Graphics *graphics);
+
+        /**
+         * Draws the given path.
+         */
+        void drawPath(Graphics *graphics, const Path &path);
+
         Map *mMap;                 /**< The current map. */
 
         int mScrollRadius;
@@ -131,11 +151,18 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mTileViewX;              /**< Current viewpoint in tiles. */
         int mTileViewY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
+        bool mVisibleNames;        /**< Show target names. */
 
         bool mPlayerFollowMouse;
+#ifdef TMWSERV_SUPPORT
+        int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
+#else
         int mWalkTime;
+#endif
 
         PopupMenu *mPopupMenu;     /**< Popup menu. */
+        Being *mSelectedBeing;     /**< Current selected being. */
+
 };
 
 extern Viewport *viewport;                    /**< The viewport */

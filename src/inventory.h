@@ -24,8 +24,6 @@
 
 class Item;
 
-#define INVENTORY_SIZE 102
-
 class Inventory
 {
     public:
@@ -60,12 +58,12 @@ class Inventory
         /**
          * Adds a new item in a free slot.
          */
-        void addItem(int id, int quantity, bool equipment);
+        void addItem(int id, int quantity, bool equipment = false);
 
         /**
          * Sets the item at the given position.
          */
-        void setItem(int index, int id, int quantity, bool equipment);
+        void setItem(int index, int id, int quantity, bool equipment = false);
 
         /**
          * Remove a item from the inventory.
@@ -102,11 +100,7 @@ class Inventory
          */
         int getLastUsedSlot() const;
 
-        /**
-         * Returns the number of slots available in the inventory.
-         */
-        int getInventorySize() const;
-
+        static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
     protected:
         Item **mItems;  /**< The holder of items */
         int mSize;      /**< The max number of inventory items */

@@ -22,6 +22,35 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+/**
+ * \mainpage
+ *
+ * \section Introduction Introduction
+ *
+ * This is the documentation for the client of The Mana World
+ * (http://themanaworld.org). It is always a work in progress, with the intent
+ * to make it easier for new developers to grow familiar with the source code.
+ *
+ * \section General General information
+ *
+ * During the game, the current Map is displayed by the main Viewport, which
+ * is the bottom-most widget in the WindowContainer. Aside the viewport, the
+ * window container keeps track of all the \link Window Windows\endlink
+ * displayed during the game. It is the <i>top</i> widget for Guichan.
+ *
+ * A Map is composed of several layers of \link Image Images\endlink (tiles),
+ * a layer with collision information and \link Sprite Sprites\endlink. The
+ * sprites define the visible part of \link Being Beings\endlink and
+ * \link FloorItem FloorItems\endlink, they are drawn from top to bottom
+ * by the map, interleaved with the tiles in the fringe layer.
+ *
+ * The server is split up into an \link Net::AccountServer account
+ * server\endlink, a \link Net::ChatServer chat server\endlink and a \link
+ * Net::GameServer game server\endlink. There may be multiple game servers.
+ * Handling of incoming messages is spread over several \link MessageHandler
+ * MessageHanders\endlink.
+ */
+
 #include <string>
 
 #ifdef HAVE_CONFIG_H
@@ -29,7 +58,7 @@
 #elif defined WIN32
 #include "winver.h"
 #elif defined __APPLE__
-#define PACKAGE_VERSION "0.0.29"
+#define PACKAGE_VERSION "0.1.0"
 #endif
 
 #ifndef PKG_DATADIR
@@ -40,20 +69,43 @@
  * Client different States
  */
 enum {
-    EXIT_STATE,
-    LOADDATA_STATE,
-    LOGIN_STATE,
-    ACCOUNT_STATE,
-    REGISTER_STATE,
-    CHAR_CONNECT_STATE,
-    CHAR_SERVER_STATE,
-    CHAR_SELECT_STATE,
-    CHAR_NEW_STATE,
-    CHAR_DEL_STATE,
-    GAME_STATE,
-    ERROR_STATE,
-    UPDATE_STATE,
-    CONNECTING_STATE
+    STATE_EXIT,
+    STATE_LOADDATA,
+    STATE_LOGIN,
+    STATE_REGISTER,
+    STATE_CHAR_SELECT,
+    STATE_GAME,
+    STATE_ERROR,
+    STATE_UPDATE,
+#ifdef TMWSERV_SUPPORT
+    STATE_CHOOSE_SERVER,
+    STATE_CONNECT_ACCOUNT,
+    STATE_LOGIN_ATTEMPT,
+    STATE_LOGIN_ERROR,
+    STATE_REGISTER_ATTEMPT,
+    STATE_ACCOUNTCHANGE_ERROR,
+    STATE_CHANGEEMAIL_ATTEMPT,
+    STATE_CHANGEEMAIL,
+    STATE_CHANGEPASSWORD_ATTEMPT,
+    STATE_CHANGEPASSWORD,
+    STATE_UNREGISTER_ATTEMPT,
+    STATE_UNREGISTER,
+    STATE_SWITCH_CHARACTER,
+    STATE_RECONNECT_ACCOUNT,
+    STATE_SWITCH_ACCOUNTSERVER_ATTEMPT,
+    STATE_SWITCH_ACCOUNTSERVER,
+    STATE_LOGOUT_ATTEMPT,
+    STATE_CONNECT_GAME,
+    STATE_WAIT,
+    STATE_FORCE_QUIT
+#else
+    STATE_ACCOUNT,
+    STATE_CHAR_CONNECT,
+    STATE_CHAR_SERVER,
+    STATE_CHAR_NEW,
+    STATE_CHAR_DEL,
+    STATE_CONNECTING
+#endif
 };
 
 /* length definitions for several char[]s in order
@@ -76,7 +128,15 @@ const short defaultScreenHeight = 600;
 const short defaultSfxVolume = 100;
 const short defaultMusicVolume = 60;
 
+// Defines the number of usable player slots
+const short maxSlot = 2;
+
+#ifdef TMWSERV_SUPPORT
+extern std::string token;
+#else
 extern char n_server, n_character;
+#endif
+
 extern unsigned char state;
 extern std::string errorMessage;
 

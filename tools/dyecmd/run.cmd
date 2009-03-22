@@ -1,0 +1,1 @@
+bin\debug\dyecmd "armor-legs-shorts.png" "armor-legs-shorts2.png" "W:#222255,6666ff"

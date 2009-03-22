@@ -1,6 +1,7 @@
 /*
  *  Speech bubbles
  *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
+ *  Copyright (C) 2008  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *

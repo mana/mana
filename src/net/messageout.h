@@ -25,26 +25,38 @@
 #include <iosfwd>
 #include <SDL_types.h>
 
+#ifdef EATHENA_SUPPORT
 class Network;
+#endif
 
 /**
  * Used for building an outgoing message.
+ *
+ * With tmwserv, the message is sent using Net::Connection::send() when
+ * finished.
+ *
+ * \ingroup Network
  */
 class MessageOut
 {
-    friend MessageOut& operator<<(MessageOut &msg, const Sint8 &rhs);
-    friend MessageOut& operator<<(MessageOut &msg, const Sint16 &rhs);
-    friend MessageOut& operator<<(MessageOut &msg, const Sint32 &rhs);
-
     public:
         /**
          * Constructor.
          */
+#ifdef TMWSERV_SUPPORT
+        MessageOut(short id);
+
+        /**
+         * Destructor.
+         */
+        ~MessageOut();
+#else
         MessageOut(Network *network);
+#endif
 
         void writeInt8(Sint8 value);          /**< Writes a byte. */
         void writeInt16(Sint16 value);        /**< Writes a short. */
-        void writeInt32(Sint32 value);          /**< Writes a long. */
+        void writeInt32(Sint32 value);        /**< Writes a long. */
 
         /**
          * Writes a string. If a fixed length is not given (-1), it is stored
@@ -52,8 +64,29 @@ class MessageOut
          */
         void writeString(const std::string &string, int length = -1);
 
+        /**
+         * Returns the content of the message.
+         */
+        char *getData() const;
+
+        /**
+         * Returns the length of the data.
+         */
+        unsigned int getDataSize() const;
+
     private:
+#ifdef TMWSERV_SUPPORT
+        /**
+         * Expand the packet data to be able to hold more data.
+         *
+         * NOTE: For performance enhancements this method could allocate extra
+         * memory in advance instead of expanding size every time more data is
+         * added.
+         */
+        void expand(size_t size);
+#else
         Network *mNetwork;
+#endif
 
         char *mData;                         /**< Data building up. */
         unsigned int mDataSize;              /**< Size of data. */

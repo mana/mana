@@ -21,14 +21,50 @@
 
 #include "equipment.h"
 #include "item.h"
+#ifdef EATHENA_SUPPORT
 #include "inventory.h"
 #include "localplayer.h"
+#endif
 
-Equipment::Equipment():
-    mArrows(0)
+#include <algorithm>
+
+Equipment::Equipment()
+#ifdef EATHENA_SUPPORT
+    : mArrows(0)
+#endif
 {
+#ifdef TMWSERV_SUPPORT
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
+#else
     std::fill_n(mEquipment, EQUIPMENT_SIZE, 0);
+#endif
 }
+
+#ifdef TMWSERV_SUPPORT
+
+Equipment::~Equipment()
+{
+    clear();
+}
+
+void Equipment::clear()
+{
+    for (int i = 0; i < EQUIPMENT_SIZE; ++i)
+        delete mEquipment[i];
+
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
+}
+
+void Equipment::setEquipment(int index, int id)
+{
+    if (mEquipment[index] && mEquipment[index]->getId() == id)
+        return;
+
+    delete mEquipment[index];
+    mEquipment[index] = (id > 0) ? new Item(id) : 0;
+}
+
+#else
 
 void Equipment::setEquipment(int index, int inventoryIndex)
 {
@@ -37,3 +73,5 @@ void Equipment::setEquipment(int index, int inventoryIndex)
     if (item)
         item->setEquipped(true);
 }
+
+#endif

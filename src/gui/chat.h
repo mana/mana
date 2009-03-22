@@ -24,6 +24,7 @@
 
 #include <list>
 #include <string>
+#include <map>
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
@@ -31,22 +32,30 @@
 #include "window.h"
 
 class BrowserBox;
-class Network;
+class Channel;
 class Recorder;
-class Party;
 class ScrollArea;
+class TabbedArea;
 class ItemLinkHandler;
+#ifdef EATHENA_SUPPORT
+class Network;
+class Party;
+#endif
 
-#define BY_GM         0   // those should be self-explanatory =)
-#define BY_PLAYER     1
-#define BY_OTHER      2
-#define BY_SERVER     3
-#define BY_PARTY      4
-
-#define ACT_WHISPER   5   // getting whispered at
-#define ACT_IS        6   // equivalent to "/me" on IRC
-
-#define BY_LOGGER     7
+enum
+{
+    BY_GM,
+#ifdef EATHENA_SUPPORT
+    BY_PARTY,
+#endif
+    BY_PLAYER,
+    BY_OTHER,
+    BY_SERVER,
+    BY_CHANNEL,
+    ACT_WHISPER,      // getting whispered at
+    ACT_IS,           // equivalent to "/me" on IRC
+    BY_LOGGER
+};
 
 /**
  * gets in between usernick and message text depending on
@@ -56,6 +65,7 @@ class ItemLinkHandler;
 #define CAT_IS            ""
 #define CAT_WHISPER       " whispers: "
 
+#ifdef EATHENA_SUPPORT
 /** job dependend identifiers (?)  */
 #define SKILL_BASIC       0x0001
 #define SKILL_WARP        0x001b
@@ -88,8 +98,6 @@ class ItemLinkHandler;
 /** should always be zero if failed */
 #define SKILL_FAILED      0x00
 
-#define DEFAULT_CHAT_WINDOW_SCROLL 7 // 1 means `1/8th of the window size'.
-
 struct CHATSKILL
 {
     short skill;
@@ -98,20 +106,28 @@ struct CHATSKILL
     char success;
     char reason;
 };
+#endif
+
+#define DEFAULT_CHAT_WINDOW_SCROLL 7 // 1 means `1/8th of the window size'.
 
 /**
  * The chat window.
  *
  * \ingroup Interface
  */
-class ChatWindow : public Window, public gcn::ActionListener,
+class ChatWindow : public Window,
+                   public gcn::ActionListener,
                    public gcn::KeyListener
 {
     public:
         /**
          * Constructor.
          */
+#ifdef TMWSERV_SUPPORT
+        ChatWindow();
+#else
         ChatWindow(Network *network);
+#endif
 
         /**
          * Destructor: used to write back values to the config file
@@ -119,17 +135,41 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ~ChatWindow();
 
         /**
+         * Called when the widget changes size. Used for adapting the size of
+         * the tabbed area.
+         */
+        void widgetResized(const gcn::Event &event);
+
+        void logic();
+
+        /**
          * Adds a line of text to our message list. Parameters:
          *
          * @param line Text message.
          * @parem own  Type of message (usually the owner-type).
+         * @param channelName which channel to send the message to.
          */
-        void chatLog(std::string line, int own, bool ignoreRecord = false);
+        void chatLog(std::string line,
+                     int own = BY_SERVER,
+                     std::string channelName = "",
+                     bool ignoreRecord = false);
 
+#ifdef EATHENA_SUPPORT
         /**
          * Calls original chat_log() after processing the packet.
          */
         void chatLog(CHATSKILL);
+#endif
+
+        /**
+         * Gets the focused tab's name
+         */
+        const std::string& getFocused() const;
+
+        /**
+         * Clear the tab with the given name
+         */
+        void clearTab(const std::string &tab);
 
         /**
          * Performs action.
@@ -146,6 +186,32 @@ class ChatWindow : public Window, public gcn::ActionListener,
          */
         bool isInputFocused();
 
+#ifdef TMWSERV_SUPPORT
+        /**
+         * Determines whether the message is a command or message, then
+         * sends the given message to the game server to be said, or to the
+         * command handler
+         *
+         * @param msg  The message text which is to be sent.
+         *
+         */
+        void chatSend(std::string &msg);
+
+        /** Called to remove the channel from the channel manager */
+        void removeChannel(short channelId);
+
+        void removeChannel(const std::string &channelName);
+
+        void removeChannel(Channel *channel);
+
+        /** Called to create a new channel tab */
+        void createNewChannelTab(const std::string &channelName);
+
+        /** Called to output text to a specific channel */
+        void sendToChannel(short channel,
+                           const std::string &user,
+                           const std::string &msg);
+#else
         /**
          * Determines whether to send a command or an ordinary message, then
          * contructs packets & sends them.
@@ -171,6 +237,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
          */
         void chatSend(const std::string &nick, std::string msg);
+#endif
 
         /** Called when key is pressed */
         void keyPressed(gcn::KeyEvent &event);
@@ -184,15 +251,19 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /** Override to reset mTmpVisible */
         void setVisible(bool visible);
 
-       /**
-        * Scrolls the chat window
-        *
-        * @param amount direction and amount to scroll.  Negative numbers scroll
-        * up, positive numbers scroll down.  The absolute amount indicates the
-        * amount of 1/8ths of chat window real estate that should be scrolled.
-        */
+        /** Check if tab with that name already exists */
+        bool tabExists(const std::string &tabName);
+
+        /**
+         * Scrolls the chat window
+         *
+         * @param amount direction and amount to scroll.  Negative numbers scroll
+         * up, positive numbers scroll down.  The absolute amount indicates the
+         * amount of 1/8ths of chat window real estate that should be scrolled.
+         */
         void scroll(int amount);
 
+#ifdef EATHENA_SUPPORT
         /**
          * party implements the partying chat commands
          *
@@ -200,6 +271,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * @param msg is the remainder of the message
          */
         void party(const std::string &command, const std::string &msg);
+#endif
 
         /**
          * help implements the /help command
@@ -210,9 +282,13 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void help(const std::string &msg1, const std::string &msg2);
 
     private:
-
+#ifdef EATHENA_SUPPORT
         Network *mNetwork;
+#endif
         bool mTmpVisible;
+
+        int mItems;
+        int mItemsKeep;
 
         void whisper(const std::string &nick, std::string msg);
 
@@ -224,25 +300,51 @@ class ChatWindow : public Window, public gcn::ActionListener,
             int own;
         };
 
+#ifdef EATHENA_SUPPORT
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
+#endif
 
-        gcn::TextField *mChatInput; /**< Input box for typing chat messages */
-        BrowserBox *mTextOutput;    /**< Text box for displaying chat history */
-        ScrollArea *mScrollArea;    /**< Scroll area around text output */
-        ItemLinkHandler *mItemLinkHandler; /** Used for showing item popup on
-                                               clicking links **/
+        /**
+         * A structure combining a BrowserBox with its ScrollArea.
+         */
+        struct ChatArea
+        {
+            ChatArea(BrowserBox *b, ScrollArea *s):
+                browser(b), scroll(s)
+            {}
+
+            BrowserBox *browser;
+            ScrollArea *scroll;
+        };
+
+        /** Used for showing item popup on clicking links **/
+        ItemLinkHandler *mItemLinkHandler;
+
+        /** Tabbed area for holding each channel. */
+        TabbedArea *mChatTabs;
+
+        /** Input box for typing chat messages. */
+        gcn::TextField *mChatInput;
+
+        typedef std::map<const std::string, ChatArea> ChannelMap;
+        /** Map each tab to its browser and scroll area. */
+        ChannelMap mChannels;
+
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;
-        History mHistory;           /**< Command history */
-        HistoryIterator mCurHist; /**< History iterator */
+        History mHistory;           /**< Command history. */
+        HistoryIterator mCurHist;   /**< History iterator. */
         Recorder *mRecorder; /**< Recording class */
-        char mPartyPrefix; /**< Messages beginning with the prefix are sent to
-                              the party */
         bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
                                 or not */
+#ifdef EATHENA_SUPPORT
+        char mPartyPrefix; /**< Messages beginning with the prefix are sent to
+                              the party */
         Party *mParty;
+#endif
 };
+
 extern ChatWindow *chatWindow;
 
 #endif

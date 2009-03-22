@@ -25,7 +25,6 @@
 
 MonsterInfo::MonsterInfo()
 {
-
 }
 
 MonsterInfo::~MonsterInfo()
@@ -35,8 +34,7 @@ MonsterInfo::~MonsterInfo()
     mSounds.clear();
 }
 
-
-void MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
+void MonsterInfo::addSound(MonsterSoundEvent event, const std::string &filename)
 {
     if (mSounds.find(event) == mSounds.end())
     {
@@ -46,24 +44,41 @@ void MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
     mSounds[event]->push_back("sfx/" + filename);
 }
 
-
-std::string MonsterInfo::getSound(MonsterSoundEvent event) const
+const std::string &MonsterInfo::getSound(MonsterSoundEvent event) const
 {
-    std::map<MonsterSoundEvent, std::vector<std::string>* >::const_iterator i;
-
-    i = mSounds.find(event);
-
-    if (i == mSounds.end())
-    {
-        return "";
-    }
-    else
-    {
-        return i->second->at(rand()%i->second->size());
-    }
+    static std::string empty("");
+    std::map<MonsterSoundEvent, std::vector<std::string>* >::const_iterator i =
+        mSounds.find(event);
+    return (i == mSounds.end()) ? empty :
+                                  i->second->at(rand() % i->second->size());
 }
 
-void MonsterInfo::addParticleEffect(std::string filename)
+const std::string &MonsterInfo::getAttackParticleEffect(int attackType) const
+{
+    static std::string empty("");
+    std::map<int, MonsterAttack*>::const_iterator i =
+        mMonsterAttacks.find(attackType);
+    return (i == mMonsterAttacks.end()) ? empty : (*i).second->particleEffect;
+}
+
+SpriteAction MonsterInfo::getAttackAction(int attackType) const
+{
+    std::map<int, MonsterAttack*>::const_iterator i =
+        mMonsterAttacks.find(attackType);
+    return (i == mMonsterAttacks.end()) ? ACTION_ATTACK : (*i).second->action;
+}
+
+void MonsterInfo::addMonsterAttack(int id,
+                                   const std::string &particleEffect,
+                                   SpriteAction action)
+{
+    MonsterAttack *a = new MonsterAttack;
+    a->particleEffect = particleEffect;
+    a->action = action;
+    mMonsterAttacks[id] = a;
+}
+
+void MonsterInfo::addParticleEffect(const std::string &filename)
 {
     mParticleEffects.push_back(filename);
 }

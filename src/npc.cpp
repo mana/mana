@@ -26,20 +26,30 @@
 
 #include "gui/npc_text.h"
 
+#ifdef TMWSERV_SUPPORT
+#include "net/gameserver/player.h"
+#else
 #include "net/messageout.h"
-#include "net/protocol.h"
+#include "net/ea/protocol.h"
+#endif
 
 #include "resources/npcdb.h"
 
 extern NpcTextDialog *npcTextDialog;
 
-NPC *current_npc = NULL;
+NPC *current_npc = 0;
 
 static const int NAME_X_OFFSET = 15;
 static const int NAME_Y_OFFSET = 30;
 
+#ifdef TMWSERV_SUPPORT
+NPC::NPC(Uint16 id, int job, Map *map):
+    Player(id, job, map)
+#else
 NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
-    Player(id, job, map), mNetwork(network)
+    Player(id, job, map),
+    mNetwork(network)
+#endif
 {
     NPCInfo info = NPCDB::get(job);
 
@@ -108,44 +118,60 @@ Being::Type NPC::getType() const
 
 void NPC::talk()
 {
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::talkToNPC(mId, true);
+#else
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(0);
+#endif
     current_npc = this;
 }
 
 void NPC::nextDialog()
 {
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::talkToNPC(mId, false);
+#else
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(mId);
+#endif
 }
 
 void NPC::dialogChoice(char choice)
 {
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::selectFromNPC(mId, choice);
+#else
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(choice);
+#endif
 }
 
 void NPC::integerInput(int value)
 {
+#ifdef EATHENA_SUPPORT
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_INT_RESPONSE);
     outMsg.writeInt32(mId);
     outMsg.writeInt32(value);
+#endif
 }
 
 void NPC::stringInput(const std::string &value)
 {
+#ifdef EATHENA_SUPPORT
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
     outMsg.writeInt16(value.length() + 9);
     outMsg.writeInt32(mId);
     outMsg.writeString(value, value.length());
     outMsg.writeInt8(0);
+#endif
 }
 
 /*
@@ -154,25 +180,39 @@ void NPC::stringInput(const std::string &value)
  */
 void NPC::buy()
 {
+    // XXX Convert for new server
+#ifdef EATHENA_SUPPORT
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(0);
+#endif
 }
 
 void NPC::sell()
 {
+    // XXX Convert for new server
+#ifdef EATHENA_SUPPORT
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(1);
+#endif
 }
 
 void NPC::updateCoords()
 {
     if (mName)
     {
-        mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
+#ifdef TMWSERV_SUPPORT
+        const Vector &pos = getPosition();
+        const int px = (int) pos.x + NAME_X_OFFSET;
+        const int py = (int) pos.y + NAME_Y_OFFSET;
+#else
+        const int px = mPx + NAME_X_OFFSET;
+        const int py = mPy + NAME_Y_OFFSET;
+#endif
+        mName->adviseXY(px, py);
     }
 }
 

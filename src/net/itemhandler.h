@@ -29,7 +29,7 @@ class ItemHandler : public MessageHandler
     public:
         ItemHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

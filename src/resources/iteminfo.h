@@ -36,6 +36,74 @@ enum EquipmentSoundEvent
     EQUIP_EVENT_HIT
 };
 
+enum EquipmentSlot
+{
+    // Equipment rules:
+    // 1 Brest equipment
+    EQUIP_TORSO_SLOT = 0,
+    // 1 arms equipment
+    EQUIP_ARMS_SLOT = 1,
+    // 1 head equipment
+    EQUIP_HEAD_SLOT = 2,
+    // 1 legs equipment
+    EQUIP_LEGS_SLOT = 3,
+    // 1 feet equipment
+    EQUIP_FEET_SLOT = 4,
+    // 2 rings
+    EQUIP_RING1_SLOT = 5,
+    EQUIP_RING2_SLOT = 6,
+    // 1 necklace
+    EQUIP_NECKLACE_SLOT = 7,
+    // Fight:
+    //   2 one-handed weapons
+    //   or 1 two-handed weapon
+    //   or 1 one-handed weapon + 1 shield.
+    EQUIP_FIGHT1_SLOT = 8,
+    EQUIP_FIGHT2_SLOT = 9,
+    // Projectile:
+    //   this item does not amount to one, it only indicates the chosen projectile.
+    EQUIP_PROJECTILE_SLOT = 10
+};
+
+
+/**
+ * Enumeration of available Item types.
+ */
+enum ItemType
+{
+    ITEM_UNUSABLE = 0,
+    ITEM_USABLE, //                     1
+    ITEM_EQUIPMENT_ONE_HAND_WEAPON, //  2
+    ITEM_EQUIPMENT_TWO_HANDS_WEAPON,//  3
+    ITEM_EQUIPMENT_TORSO,//             4
+    ITEM_EQUIPMENT_ARMS,//              5
+    ITEM_EQUIPMENT_HEAD,//              6
+    ITEM_EQUIPMENT_LEGS,//              7
+    ITEM_EQUIPMENT_SHIELD,//            8
+    ITEM_EQUIPMENT_RING,//              9
+    ITEM_EQUIPMENT_NECKLACE,//         10
+    ITEM_EQUIPMENT_FEET,//             11
+    ITEM_EQUIPMENT_AMMO//              12
+};
+
+/**
+ * Enumeration of available weapon's types.
+ */
+enum WeaponType
+{
+    WPNTYPE_NONE = 0,
+    WPNTYPE_KNIFE,
+    WPNTYPE_SWORD,
+    WPNTYPE_POLEARM,
+    WPNTYPE_STAFF,
+    WPNTYPE_WHIP,
+    WPNTYPE_BOW,
+    WPNTYPE_SHOOTING,
+    WPNTYPE_MACE,
+    WPNTYPE_AXE,
+    WPNTYPE_THROWN
+};
+
 /**
  * Defines a class for storing item infos. This includes information used when
  * the item is equipped.
@@ -47,7 +115,11 @@ class ItemInfo
          * Constructor.
          */
         ItemInfo():
+#ifdef TMWSERV_SUPPORT
+            mType(ITEM_UNUSABLE),
+#else
             mType(""),
+#endif
             mWeight(0),
             mView(0),
             mAttackType(ACTION_DEFAULT)
@@ -83,10 +155,18 @@ class ItemInfo
 
         const std::string& getEffect() const { return mEffect; }
 
+#ifdef TMWSERV_SUPPORT
+        void setType(short type)
+        { mType = type; }
+
+        short getType() const
+        { return mType; }
+#else
         void setType(const std::string& type)
         { mType = type; }
 
         const std::string& getType() const { return mType; }
+#endif
 
         void setWeight(short weight)
         { mWeight = weight; }
@@ -107,6 +187,12 @@ class ItemInfo
         SpriteAction getAttackType() const
         { return mAttackType; }
 
+        int getAttackRange() const
+        { return mAttackRange; }
+
+        void setAttackRange(int r)
+        { mAttackRange = r; }
+
         void addSound(EquipmentSoundEvent event, const std::string &filename);
 
         const std::string& getSound(EquipmentSoundEvent event) const;
@@ -116,13 +202,18 @@ class ItemInfo
         std::string mName;
         std::string mDescription;      /**< Short description. */
         std::string mEffect;           /**< Description of effects. */
+#ifdef TMWSERV_SUPPORT
+        char mType;                    /**< Item type. */
+#else
         std::string mType;             /**< Item type. */
+#endif
         short mWeight;                 /**< Weight in grams. */
         int mView;                     /**< Item ID of how this item looks. */
         int mId;                       /**< Item ID */
 
         // Equipment related members
         SpriteAction mAttackType;      /**< Attack type, in case of weapon. */
+        int mAttackRange;              /**< Attack range, will be zero if non weapon. */
 
         /** Maps gender to sprite filenames. */
         std::map<int, std::string> mAnimationFiles;

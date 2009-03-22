@@ -31,9 +31,10 @@ class Item;
 
 #define AMOUNT_TRADE_ADD 1
 #define AMOUNT_ITEM_DROP 2
+#define AMOUNT_ITEM_SPLIT 3
 
 /**
- * Window used for selecting the amount of items to drop or trade.
+ * Window used for selecting the amount of items to drop, trade or split.
  *
  * \ingroup Interface
  */
@@ -43,7 +44,7 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        ItemAmountWindow(int usage, Window *parent, Item *item);
+        ItemAmountWindow(int usage, Window *parent, Item *item, int maxRange = 0);
 
         /**
          * Called when receiving actions from widget.

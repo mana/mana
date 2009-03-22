@@ -348,6 +348,38 @@ SpriteAction SpriteDef::makeSpriteAction(const std::string &action)
     else if (action == "attack_throw") {
         return ACTION_ATTACK_THROW;
     }
+#ifdef TMWSERV_SUPPORT
+    else if (action == "special0") {
+        return ACTION_SPECIAL_0;
+    }
+    else if (action == "special1") {
+        return ACTION_SPECIAL_1;
+    }
+    else if (action == "special2") {
+        return ACTION_SPECIAL_2;
+    }
+    else if (action == "special3") {
+        return ACTION_SPECIAL_3;
+    }
+    else if (action == "special4") {
+        return ACTION_SPECIAL_4;
+    }
+    else if (action == "special5") {
+        return ACTION_SPECIAL_5;
+    }
+    else if (action == "special6") {
+        return ACTION_SPECIAL_6;
+    }
+    else if (action == "special7") {
+        return ACTION_SPECIAL_7;
+    }
+    else if (action == "special8") {
+        return ACTION_SPECIAL_8;
+    }
+    else if (action == "special9") {
+        return ACTION_SPECIAL_9;
+    }
+#endif
     else if (action == "cast_magic") {
         return ACTION_CAST_MAGIC;
     }

@@ -27,6 +27,10 @@
 #include <guichan/exception.hpp>
 
 #include "beingmanager.h"
+#ifdef TMWSERV_SUPPORT
+#include "channelmanager.h"
+#include "commandhandler.h"
+#endif
 #include "configuration.h"
 #include "effectmanager.h"
 #include "emoteshortcut.h"
@@ -71,20 +75,38 @@
 #include "gui/status.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
+#ifdef TMWSERV_SUPPORT
+#include "gui/buddywindow.h"
+#include "gui/guildwindow.h"
+#include "gui/magic.h"
+#include "gui/npcpostdialog.h"
+#include "gui/partywindow.h"
+#include "gui/quitdialog.h"
+#endif
 
-#include "net/beinghandler.h"
-#include "net/buysellhandler.h"
 #include "net/chathandler.h"
-#include "net/equipmenthandler.h"
-#include "net/inventoryhandler.h"
 #include "net/itemhandler.h"
-#include "net/messageout.h"
-#include "net/network.h"
 #include "net/npchandler.h"
 #include "net/playerhandler.h"
-#include "net/protocol.h"
-#include "net/skillhandler.h"
 #include "net/tradehandler.h"
+#ifdef TMWSERV_SUPPORT
+#include "net/network.h"
+#include "net/beinghandler.h"
+#include "net/buysellhandler.h"
+#include "net/effecthandler.h"
+#include "net/guildhandler.h"
+#include "net/inventoryhandler.h"
+#include "net/partyhandler.h"
+#else
+#include "net/ea/network.h"
+#include "net/ea/beinghandler.h"
+#include "net/ea/buysellhandler.h"
+#include "net/ea/equipmenthandler.h"
+#include "net/ea/inventoryhandler.h"
+#include "net/ea/protocol.h"
+#include "net/ea/skillhandler.h"
+#include "net/messageout.h"
+#endif
 
 #include "resources/imagewriter.h"
 
@@ -103,7 +125,11 @@ Joystick *joystick = NULL;
 
 extern Window *weightNotice;
 extern Window *deathNotice;
+#ifdef TMWSERV_SUPPORT
+QuitDialog *quitDialog = NULL;
+#else
 ConfirmDialog *exitConfirm = NULL;
+#endif
 OkDialog *disconnectedDialog = NULL;
 
 ChatWindow *chatWindow;
@@ -120,6 +146,13 @@ NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 NpcStringDialog *npcStringDialog;
 SkillDialog *skillDialog;
+#ifdef TMWSERV_SUPPORT
+BuddyWindow *buddyWindow;
+GuildWindow *guildWindow;
+MagicDialog *magicDialog;
+NpcPostDialog *npcPostDialog;
+PartyWindow *partyWindow;
+#endif
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
@@ -131,6 +164,10 @@ ShortcutWindow *emoteShortcutWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
+#ifdef TMWSERV_SUPPORT
+ChannelManager *channelManager = NULL;
+CommandHandler *commandHandler = NULL;
+#endif
 Particle* particleEngine = NULL;
 EffectManager *effectManager = NULL;
 
@@ -147,7 +184,9 @@ namespace {
             if (event.getId() == "yes" || event.getId() == "ok") {
                 done = true;
             }
+#ifdef EATHENA_SUPPORT
             exitConfirm = NULL;
+#endif
             disconnectedDialog = NULL;
         }
     } exitListener;
@@ -189,15 +228,34 @@ int get_elapsed_time(int start_time)
 /**
  * Create all the various globally accessible gui windows
  */
+#ifdef TMWSERV_SUPPORT
+void createGuiWindows()
+#else
 void createGuiWindows(Network *network)
+#endif
 {
     // Create dialogs
+#ifdef TMWSERV_SUPPORT
+    chatWindow = new ChatWindow;
+    buyDialog = new BuyDialog;
+    sellDialog = new SellDialog;
+    tradeWindow = new TradeWindow;
+    npcPostDialog = new NpcPostDialog();
+    magicDialog = new MagicDialog();
+    equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
+    buddyWindow = new BuddyWindow();
+    guildWindow = new GuildWindow();
+    partyWindow = new PartyWindow();
+#else
     chatWindow = new ChatWindow(network);
+    buyDialog = new BuyDialog(network);
+    sellDialog = new SellDialog(network);
+    tradeWindow = new TradeWindow(network);
+    equipmentWindow = new EquipmentWindow;
+#endif
     menuWindow = new MenuWindow;
     statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow;
-    buyDialog = new BuyDialog(network);
-    sellDialog = new SellDialog(network);
     buySellDialog = new BuySellDialog;
     inventoryWindow = new InventoryWindow;
     emoteWindow = new EmoteWindow;
@@ -208,8 +266,6 @@ void createGuiWindows(Network *network)
     skillDialog = new SkillDialog;
     setupWindow = new Setup;
     minimap = new Minimap;
-    equipmentWindow = new EquipmentWindow;
-    tradeWindow = new TradeWindow(network);
     helpWindow = new HelpWindow;
     debugWindow = new DebugWindow;
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",new ItemShortcutContainer);
@@ -233,6 +289,11 @@ void createGuiWindows(Network *network)
         emoteShortcutWindow->getWindowName() + "Visible", true));
     minimap->setVisible((bool) config.getValue(
         minimap->getWindowName() + "Visible", true));
+
+    if (config.getValue("logToChat", 0))
+    {
+        logger->setChatWindow(chatWindow);
+    }
 }
 
 /**
@@ -254,6 +315,13 @@ void destroyGuiWindows()
     delete npcListDialog;
     delete npcTextDialog;
     delete npcStringDialog;
+#ifdef TMWSERV_SUPPORT
+    delete npcPostDialog;
+    delete magicDialog;
+    delete buddyWindow;
+    delete guildWindow;
+    delete partyWindow;
+#endif
     delete skillDialog;
     delete setupWindow;
     delete minimap;
@@ -265,33 +333,56 @@ void destroyGuiWindows()
     delete emoteShortcutWindow;
 }
 
+#ifdef TMWSERV_SUPPORT
+Game::Game():
+    mBeingHandler(new BeingHandler()),
+    mGuildHandler(new GuildHandler()),
+    mPartyHandler(new PartyHandler()),
+    mEffectHandler(new EffectHandler()),
+#else
 Game::Game(Network *network):
     mNetwork(network),
     mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
+    mEquipmentHandler(new EquipmentHandler),
+    mSkillHandler(new SkillHandler),
+#endif
     mBuySellHandler(new BuySellHandler),
     mChatHandler(new ChatHandler),
-    mEquipmentHandler(new EquipmentHandler),
     mInventoryHandler(new InventoryHandler),
     mItemHandler(new ItemHandler),
     mNpcHandler(new NPCHandler),
     mPlayerHandler(new PlayerHandler),
-    mSkillHandler(new SkillHandler),
-    mTradeHandler(new TradeHandler)
+    mTradeHandler(new TradeHandler),
+    mLogicCounterId(0), mSecondsCounterId(0)
 {
+    done = false;
+
+#ifdef TMWSERV_SUPPORT
+    createGuiWindows();
+    engine = new Engine;
+
+    beingManager = new BeingManager;
+#else
     createGuiWindows(network);
     engine = new Engine(network);
 
     beingManager = new BeingManager(network);
+#endif
+
     floorItemManager = new FloorItemManager;
+#ifdef TMWSERV_SUPPORT
+    channelManager = new ChannelManager();
+    commandHandler = new CommandHandler();
+#endif
     effectManager = new EffectManager;
 
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();
 
-    // Initialize timers
+    // Initialize logic and seconds counters
     tick_time = 0;
-    SDL_AddTimer(10, nextTick, NULL);                     // Logic counter
-    SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
+    mLogicCounterId = SDL_AddTimer(10, nextTick, NULL);
+    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
 
     // Initialize frame limiting
     config.addListener("fpslimit", this);
@@ -299,7 +390,9 @@ Game::Game(Network *network):
 
     // Initialize beings
     beingManager->setPlayer(player_node);
+#ifdef EATHENA_SUPPORT
     player_node->setNetwork(network);
+#endif
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use
@@ -307,6 +400,19 @@ Game::Game(Network *network):
     if (Joystick::getNumberOfJoysticks() > 0)
         joystick = new Joystick(0);
 
+#ifdef TMWSERV_SUPPORT
+    Net::registerHandler(mBeingHandler.get());
+    Net::registerHandler(mBuySellHandler.get());
+    Net::registerHandler(mChatHandler.get());
+    Net::registerHandler(mGuildHandler.get());
+    Net::registerHandler(mInventoryHandler.get());
+    Net::registerHandler(mItemHandler.get());
+    Net::registerHandler(mNpcHandler.get());
+    Net::registerHandler(mPartyHandler.get());
+    Net::registerHandler(mPlayerHandler.get());
+    Net::registerHandler(mTradeHandler.get());
+    Net::registerHandler(mEffectHandler.get());
+#else
     network->registerHandler(mBeingHandler.get());
     network->registerHandler(mBuySellHandler.get());
     network->registerHandler(mChatHandler.get());
@@ -332,22 +438,36 @@ Game::Game(Network *network):
     msg.writeInt32(tick_time);
 
     engine->changeMap(map_path);
+#endif
 }
 
 Game::~Game()
 {
+#ifdef TMWSERV_SUPPORT
+    Net::clearHandlers();
+#endif
+
     delete player_node;
     destroyGuiWindows();
 
     delete beingManager;
     delete floorItemManager;
+#ifdef TMWSERV_SUPPORT
+    delete channelManager;
+    delete commandHandler;
+#endif
     delete joystick;
     delete particleEngine;
     delete engine;
 
+    viewport->setMap(NULL);
+    player_node = NULL;
     beingManager = NULL;
     floorItemManager = NULL;
     joystick = NULL;
+
+    SDL_RemoveTimer(mLogicCounterId);
+    SDL_RemoveTimer(mSecondsCounterId);
 }
 
 static bool saveScreenshot()
@@ -458,6 +578,10 @@ void Game::logic()
         }
 
         // Handle network stuff
+#ifdef TMWSERV_SUPPORT
+        Net::flush();
+        // TODO: Fix notification when the connection is lost
+#else
         mNetwork->flush();
         mNetwork->dispatchMessages();
 
@@ -472,6 +596,7 @@ void Game::logic()
                 disconnectedDialog->requestMoveToTop();
             }
         }
+#endif
     }
 }
 
@@ -500,6 +625,23 @@ void Game::handleInput()
                 return;
             }
 
+#ifdef TMWSERV_SUPPORT
+            // send straight to gui for certain windows
+            if (npcPostDialog->isVisible())
+            {
+                try
+                {
+                    guiInput->pushInput(event);
+                }
+                catch (gcn::Exception e)
+                {
+                    const char* err = e.getMessage().c_str();
+                    logger->log("Warning: guichan input exception: %s", err);
+                }
+                return;
+            }
+#endif
+
             // Mode switch to emotes
             if (keyboard.isKeyActive(keyboard.KEY_EMOTE))
             {
@@ -521,10 +663,16 @@ void Game::handleInput()
                                 deathNotice ||
                                 weightNotice))
                 {
+#ifdef TMWSERV_SUPPORT
+                    // Don not focus chat input when quit dialog is active
+                    if (quitDialog != NULL && quitDialog->isVisible())
+                        continue;
+#else
                     // Quit by pressing Enter if the exit confirm is there
                     if (exitConfirm &&
                         keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
                         done = true;
+#endif
                     // Close the Browser if opened
                     else if (helpWindow->isVisible() &&
                              keyboard.isKeyActive(keyboard.KEY_OK))
@@ -549,6 +697,12 @@ void Game::handleInput()
                     else if (npcIntegerDialog->isVisible() &&
                              keyboard.isKeyActive(keyboard.KEY_OK))
                         npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
+                    /*
+                    else if (guildWindow->isVisible())
+                    {
+                        // TODO: Check if a dialog is open and close it if so
+                    }
+                    */
                     else if (!(keyboard.getKeyValue(
                                    KeyboardConfig::KEY_TOGGLE_CHAT) ==
                                keyboard.getKeyValue(
@@ -597,6 +751,17 @@ void Game::handleInput()
                     break;
                // Quitting confirmation dialog
                case KeyboardConfig::KEY_QUIT:
+#ifdef TMWSERV_SUPPORT
+                    if (!quitDialog)
+                    {
+                        quitDialog = new QuitDialog(&done, &quitDialog);
+                        quitDialog->requestMoveToTop();
+                    }
+                    else
+                    {
+                        quitDialog->action(gcn::ActionEvent(NULL, "cancel"));
+                    }
+#else
                     if (!exitConfirm)
                     {
                         exitConfirm = new ConfirmDialog(_("Quit"),
@@ -609,6 +774,7 @@ void Game::handleInput()
                     {
                         exitConfirm->action(gcn::ActionEvent(NULL, _("no")));
                     }
+#endif
                     break;
                 default:
                     break;
@@ -639,24 +805,31 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
+#ifdef TMWSERV_SUPPORT
+                            const Vector &pos = player_node->getPosition();
+                            Uint16 x = (int) pos.x / 32;
+                            Uint16 y = (int) pos.y / 32;
+#else
+                            Uint16 x = player_node->mX;
+                            Uint16 y = player_node->mY;
+#endif
                             FloorItem *item =
-                                floorItemManager->findByCoordinates(
-                                        player_node->mX, player_node->mY);
+                                floorItemManager->findByCoordinates(x, y);
 
                             // If none below the player, try the tile in front
                             // of the player
                             if (!item)
                             {
-                                Uint16 x = player_node->mX;
-                                Uint16 y = player_node->mY;
-                                if (player_node->getDirection() & Being::UP)
-                                    y--;
-                                if (player_node->getDirection() & Being::DOWN)
-                                    y++;
-                                if (player_node->getDirection() & Being::LEFT)
-                                    x--;
-                                if (player_node->getDirection() & Being::RIGHT)
-                                    x++;
+                                // Temporary until tile-based picking is
+                                // removed.
+                                switch (player_node->getSpriteDirection())
+                                {
+                                    case DIRECTION_UP   : --y; break;
+                                    case DIRECTION_DOWN : ++y; break;
+                                    case DIRECTION_LEFT : --x; break;
+                                    case DIRECTION_RIGHT: ++x; break;
+                                    default: break;
+                                }
 
                                 item = floorItemManager->findByCoordinates(
                                         x, y);
@@ -685,6 +858,10 @@ void Game::handleInput()
                             equipmentWindow->setVisible(false);
                             helpWindow->setVisible(false);
                             debugWindow->setVisible(false);
+#ifdef TMWSERV_SUPPORT
+                            guildWindow->setVisible(false);
+                            buddyWindow->setVisible(false);
+#endif
                         }
                         break;
                     case KeyboardConfig::KEY_WINDOW_STATUS:
@@ -783,6 +960,7 @@ void Game::handleInput()
                 logger->log("Warning: guichan input exception: %s", err);
             }
         }
+
     } // End while
 
     // If the user is configuring the keys then don't respond.
@@ -791,7 +969,10 @@ void Game::handleInput()
 
     // Moving player around
     if (player_node->mAction != Being::DEAD &&
-        current_npc == 0 && !chatWindow->isInputFocused())
+#ifdef EATHENA_SUPPORT
+        current_npc == 0 &&
+#endif
+        !chatWindow->isInputFocused())
     {
         // Get the state of the keyboard keys
         keyboard.refreshActiveKeys();
@@ -805,33 +986,60 @@ void Game::handleInput()
             return;
         }
 
+#ifdef TMWSERV_SUPPORT
+        const Vector &pos = player_node->getPosition();
+        const Uint16 x = (int) pos.x / 32;
+        const Uint16 y = (int) pos.y / 32;
+#else
         const Uint16 x = player_node->mX;
         const Uint16 y = player_node->mY;
+#endif
         unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction
         if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
-           (joystick && joystick->isUp()))
+            (joystick && joystick->isUp()))
         {
             direction |= Being::UP;
         }
         else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
-                (joystick && joystick->isDown()))
+                 (joystick && joystick->isDown()))
         {
             direction |= Being::DOWN;
         }
 
         if (keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
-           (joystick && joystick->isLeft()))
+            (joystick && joystick->isLeft()))
         {
             direction |= Being::LEFT;
         }
         else if (keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
-                (joystick && joystick->isRight()))
+                 (joystick && joystick->isRight()))
         {
             direction |= Being::RIGHT;
         }
 
+#ifdef TMWSERV_SUPPORT
+        // First if player is pressing key for the direction he is already
+        // going
+        if (direction == player_node->getWalkingDir())
+        {
+            player_node->setWalkingDir(direction);
+        }
+        // Else if he is pressing a key, and its different from what he has
+        // been pressing, stop (do not send this stop to the server) and
+        // start in the new direction
+        else if (direction && direction != player_node->getWalkingDir())
+        {
+            player_node->stopWalking(false);
+            player_node->setWalkingDir(direction);
+        }
+        // Else, he is not pressing a key, stop (sending to server)
+        else
+        {
+            player_node->stopWalking(true);
+        }
+#else
         player_node->setWalkingDir(direction);
 
         // Attacking monsters
@@ -864,6 +1072,7 @@ void Game::handleInput()
 
             player_node->attack(target, newTarget);
         }
+#endif
 
         // Target the nearest player if 'q' is pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) &&
@@ -916,11 +1125,13 @@ void Game::handleInput()
             }
         }
 
+#ifdef EATHENA_SUPPORT
         // Stop attacking if shift is pressed
         if (keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
             player_node->stopAttack();
         }
+#endif
 
         if (joystick)
         {

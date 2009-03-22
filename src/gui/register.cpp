@@ -41,19 +41,6 @@
 #include "../utils/strprintf.h"
 #include "../utils/stringutils.h"
 
-/**
- * Listener used while dealing with wrong data. It is used to direct the focus
- * to the field which contained wrong data when the Ok button was pressed on
- * the error notice.
- */
-class WrongDataNoticeListener : public gcn::ActionListener {
-    public:
-        void setTarget(gcn::TextField *textField);
-        void action(const gcn::ActionEvent &event);
-    private:
-        gcn::TextField *mTarget;
-};
-
 void WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 {
     mTarget = textField;
@@ -76,15 +63,19 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     gcn::Label *userLabel = new gcn::Label(_("Name:"));
     gcn::Label *passwordLabel = new gcn::Label(_("Password:"));
     gcn::Label *confirmLabel = new gcn::Label(_("Confirm:"));
+#ifdef EATHENA_SUPPORT
     gcn::Label *serverLabel = new gcn::Label(_("Server:"));
     gcn::Label *portLabel = new gcn::Label(_("Port:"));
+#endif
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField;
+#ifdef EATHENA_SUPPORT
     mServerField = new TextField(loginData->hostname);
     mPortField = new TextField(toString(loginData->port));
     mMaleButton = new RadioButton(_("Male"), "sex", true);
     mFemaleButton = new RadioButton(_("Female"), "sex", false);
+#endif
     mRegisterButton = new Button(_("Register"), "register", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
@@ -93,15 +84,19 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     place(0, 0, userLabel);
     place(0, 1, passwordLabel);
     place(0, 2, confirmLabel);
+#ifdef EATHENA_SUPPORT
     place(1, 3, mMaleButton);
     place(2, 3, mFemaleButton);
     place(0, 4, serverLabel);
     place(0, 5, portLabel);
+#endif
     place(1, 0, mUserField, 3).setPadding(2);
     place(1, 1, mPasswordField, 3).setPadding(2);
     place(1, 2, mConfirmField, 3).setPadding(2);
+#ifdef EATHENA_SUPPORT
     place(1, 4, mServerField, 3).setPadding(2);
     place(1, 5, mPortField, 3).setPadding(2);
+#endif
     place = getPlacer(0, 2);
     place(1, 0, mRegisterButton);
     place(2, 0, mCancelButton);
@@ -110,8 +105,10 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mUserField->addKeyListener(this);
     mPasswordField->addKeyListener(this);
     mConfirmField->addKeyListener(this);
+#ifdef EATHENA_SUPPORT
     mServerField->addKeyListener(this);
     mPortField->addKeyListener(this);
+#endif
 
     /* TODO:
      * This is a quick and dirty way to respond to the ENTER key, regardless of
@@ -121,14 +118,18 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mUserField->setActionEventId("register");
     mPasswordField->setActionEventId("register");
     mConfirmField->setActionEventId("register");
-    mServerField->setActionEventId("register");
-    mPortField->setActionEventId("register");
 
     mUserField->addActionListener(this);
     mPasswordField->addActionListener(this);
     mConfirmField->addActionListener(this);
+
+#ifdef EATHENA_SUPPORT
+    mServerField->setActionEventId("register");
+    mPortField->setActionEventId("register");
+
     mServerField->addActionListener(this);
     mPortField->addActionListener(this);
+#endif
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -147,7 +148,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        state = LOGIN_STATE;
+        state = STATE_LOGIN;
     }
     else if (event.getId() == "register" && canSubmit())
     {
@@ -196,6 +197,8 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
             error = 2;
         }
 
+        // TODO: Check if a valid email address was given
+
         if (error > 0)
         {
             if (error == 1)
@@ -211,23 +214,30 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
                 mWrongDataNoticeListener->setTarget(this->mPasswordField);
             }
 
-            OkDialog *mWrongRegisterNotice =
-                new OkDialog(_("Error"), errorMsg);
-            mWrongRegisterNotice->addActionListener(mWrongDataNoticeListener);
+            OkDialog *dlg = new OkDialog(_("Error"), errorMsg);
+            dlg->addActionListener(mWrongDataNoticeListener);
         }
         else
         {
             // No errors detected, register the new user.
             mRegisterButton->setEnabled(false);
 
-            mLoginData->hostname = mServerField->getText();
-            mLoginData->port = getUShort(mPortField->getText());
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
+#ifdef EATHENA_SUPPORT
+            mLoginData->hostname = mServerField->getText();
+            mLoginData->port = getUShort(mPortField->getText());
             mLoginData->username += mFemaleButton->isSelected() ? "_F" : "_M";
+#else
+            mLoginData->email = mEmailField->getText();
+#endif
             mLoginData->registerLogin = true;
 
-            state = ACCOUNT_STATE;
+#ifdef TMWSERV_SUPPORT
+            state = STATE_REGISTER_ATTEMPT;
+#else
+            state = STATE_ACCOUNT;
+#endif
         }
     }
 }
@@ -242,11 +252,14 @@ bool RegisterDialog::canSubmit() const
     return !mUserField->getText().empty() &&
            !mPasswordField->getText().empty() &&
            !mConfirmField->getText().empty() &&
+#ifdef EATHENA_SUPPORT
            !mServerField->getText().empty() &&
            isUShort(mPortField->getText()) &&
-           state == REGISTER_STATE;
+#endif
+           state == STATE_REGISTER;
 }
 
+#ifdef EATHENA_SUPPORT
 bool RegisterDialog::isUShort(const std::string &str)
 {
     if (str.empty())
@@ -280,3 +293,4 @@ unsigned short RegisterDialog::getUShort(const std::string &str)
     }
     return static_cast<unsigned short>(l);
 }
+#endif

@@ -26,6 +26,8 @@
 
 #include "textfield.h"
 
+#include <guichan/focuslistener.hpp>
+
 /**
  * The chat input hides when it loses focus. It is also invisible by default.
  */

@@ -24,11 +24,13 @@
 #include <libxml/tree.h>
 
 #include "itemdb.h"
+#include "resourcemanager.h"
 
 #include "../log.h"
 
 #include "../utils/dtor.h"
 #include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/stringutils.h"
 #include "../utils/xml.h"
 
@@ -43,6 +45,48 @@ namespace
 // Forward declarations
 static void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
 static void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
+
+static char const *const fields[][2] =
+{
+    { "attack",    N_("Attack %+d")    },
+    { "defense",   N_("Defense %+d")   },
+    { "hp",        N_("HP %+d")        },
+    { "mp",        N_("MP %+d")        }
+};
+
+static ItemType itemTypeFromString(const std::string &name, int id = 0)
+{
+    if      (name=="generic")           return ITEM_UNUSABLE;
+    else if (name=="usable")            return ITEM_USABLE;
+    else if (name=="equip-1hand")       return ITEM_EQUIPMENT_ONE_HAND_WEAPON;
+    else if (name=="equip-2hand")       return ITEM_EQUIPMENT_TWO_HANDS_WEAPON;
+    else if (name=="equip-torso")       return ITEM_EQUIPMENT_TORSO;
+    else if (name=="equip-arms")        return ITEM_EQUIPMENT_ARMS;
+    else if (name=="equip-head")        return ITEM_EQUIPMENT_HEAD;
+    else if (name=="equip-legs")        return ITEM_EQUIPMENT_LEGS;
+    else if (name=="equip-shield")      return ITEM_EQUIPMENT_SHIELD;
+    else if (name=="equip-ring")        return ITEM_EQUIPMENT_RING;
+    else if (name=="equip-necklace")    return ITEM_EQUIPMENT_NECKLACE;
+    else if (name=="equip-feet")        return ITEM_EQUIPMENT_FEET;
+    else if (name=="equip-ammo")        return ITEM_EQUIPMENT_AMMO;
+    else return ITEM_UNUSABLE;
+}
+
+static WeaponType weaponTypeFromString(const std::string &name, int id = 0)
+{
+    if      (name=="knife")      return WPNTYPE_KNIFE;
+    else if (name=="sword")      return WPNTYPE_SWORD;
+    else if (name=="polearm")    return WPNTYPE_POLEARM;
+    else if (name=="staff")      return WPNTYPE_STAFF;
+    else if (name=="whip")       return WPNTYPE_WHIP;
+    else if (name=="bow")        return WPNTYPE_BOW;
+    else if (name=="shooting")   return WPNTYPE_SHOOTING;
+    else if (name=="mace")       return WPNTYPE_MACE;
+    else if (name=="axe")        return WPNTYPE_AXE;
+    else if (name=="thrown")     return WPNTYPE_THROWN;
+
+    else return WPNTYPE_NONE;
+}
 
 void ItemDB::load()
 {
@@ -82,57 +126,77 @@ void ItemDB::load()
             logger->log("ItemDB: Redefinition of item ID %d", id);
         }
 
-        std::string type = XML::getProperty(node, "type", "other");
+        std::string typeStr = XML::getProperty(node, "type", "other");
         int weight = XML::getProperty(node, "weight", 0);
         int view = XML::getProperty(node, "view", 0);
 
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-        std::string effect = XML::getProperty(node, "effect", "");
+#ifdef TMWSERV_SUPPORT
+        int weaponType = weaponTypeFromString(XML::getProperty(node, "weapon-type", ""));
+#else
         int weaponType = XML::getProperty(node, "weapon_type", 0);
+#endif
+        int attackRange = XML::getProperty(node, "attack-range", 0);
 
-        if (id)
+        ItemInfo *itemInfo = new ItemInfo;
+        itemInfo->setId(id);
+        itemInfo->setImageName(image);
+        itemInfo->setName(name.empty() ? _("Unnamed") : name);
+        itemInfo->setDescription(description);
+#ifdef TMWSERV_SUPPORT
+        int type = itemTypeFromString(typeStr);
+        itemInfo->setType(type);
+#else
+        itemInfo->setType(typeStr);
+#endif
+        itemInfo->setView(view);
+        itemInfo->setWeight(weight);
+        itemInfo->setWeaponType(weaponType);
+        itemInfo->setAttackRange(attackRange);
+
+#ifdef TMWSERV_SUPPORT
+        std::string effect;
+        for (int i = 0; i < int(sizeof(fields) / sizeof(fields[0])); ++i)
         {
-            ItemInfo *itemInfo = new ItemInfo;
-            itemInfo->setId(id);
-            itemInfo->setImageName(image);
-            itemInfo->setName(name.empty() ? _("Unnamed") : name);
-            itemInfo->setDescription(description);
-            itemInfo->setEffect(effect);
-            itemInfo->setType(type);
-            itemInfo->setView(view);
-            itemInfo->setWeight(weight);
-            itemInfo->setWeaponType(weaponType);
+            int value = XML::getProperty(node, fields[i][0], 0);
+            if (!value) continue;
+            if (!effect.empty()) effect += " / ";
+            effect += strprintf(gettext(fields[i][1]), value);
+        }
+#else
+        std::string effect = XML::getProperty(node, "effect", "");
+#endif
+        itemInfo->setEffect(effect);
 
-            for_each_xml_child_node(itemChild, node)
+
+        for_each_xml_child_node(itemChild, node)
+        {
+            if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
             {
-                if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
-                {
-                    loadSpriteRef(itemInfo, itemChild);
-                }
-                else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
-                {
-                    loadSoundRef(itemInfo, itemChild);
-                }
+                loadSpriteRef(itemInfo, itemChild);
             }
-
-            mItemInfos[id] = itemInfo;
-            if (!name.empty())
+            else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
             {
-                NamedItemInfoIterator itr = mNamedItemInfos.find(name);
-                if (itr == mNamedItemInfos.end())
-                {
-                    std::string temp = name;
-                    toLower(trim(temp));
+                loadSoundRef(itemInfo, itemChild);
+            }
+        }
 
-                    mNamedItemInfos[temp] = itemInfo;
-                }
-                else
-                {
-                    logger->log("ItemDB: Duplicate name of item found item %d",
-                                   id);
-                }
+        mItemInfos[id] = itemInfo;
+        if (!name.empty())
+        {
+            NamedItemInfoIterator itr = mNamedItemInfos.find(name);
+            if (itr == mNamedItemInfos.end())
+            {
+                std::string temp = name;
+                toLower(trim(temp));
+
+                mNamedItemInfos[temp] = itemInfo;
+            }
+            else
+            {
+                logger->log("ItemDB: Duplicate name of item found item %d", id);
             }
         }
 

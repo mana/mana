@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/actionlistener.hpp>
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
@@ -28,23 +26,16 @@
 #include "progressbar.h"
 
 #include "../main.h"
+#include "../log.h"
 
 #include "../utils/gettext.h"
 
-namespace
-{
-    struct ConnectionActionListener : public gcn::ActionListener
-    {
-        void action(const gcn::ActionEvent &event) { state = EXIT_STATE; }
-    } listener;
-}
-
-ConnectionDialog::ConnectionDialog():
-    Window("Info"), mProgress(0)
+ConnectionDialog::ConnectionDialog(int previousState):
+    Window("Info"), mProgress(0), mPreviousState(previousState)
 {
     setContentSize(200, 100);
 
-    Button *cancelButton = new Button(_("Cancel"), "cancelButton", &listener);
+    Button *cancelButton = new Button(_("Cancel"), "cancelButton", this);
     mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
     gcn::Label *label = new gcn::Label(_("Connecting..."));
 
@@ -58,6 +49,12 @@ ConnectionDialog::ConnectionDialog():
 
     setLocationRelativeTo(getParent());
     setVisible(true);
+}
+
+void ConnectionDialog::action(gcn::ActionEvent const &)
+{
+    logger->log("Cancel pressed");
+    state = mPreviousState;
 }
 
 void ConnectionDialog::logic()

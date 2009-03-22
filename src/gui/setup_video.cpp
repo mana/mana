@@ -107,6 +107,7 @@ Setup_Video::Setup_Video():
     mFullScreenEnabled(config.getValue("screen", false)),
     mOpenGLEnabled(config.getValue("opengl", false)),
     mCustomCursorEnabled(config.getValue("customcursor", true)),
+    mVisibleNamesEnabled(config.getValue("visiblenames", 1)),
     mParticleEffectsEnabled(config.getValue("particleeffects", true)),
     mNameEnabled(config.getValue("showownname", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
@@ -117,6 +118,7 @@ Setup_Video::Setup_Video():
     mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
     mOpenGLCheckBox(new CheckBox(_("OpenGL"), mOpenGLEnabled)),
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
+    mVisibleNamesCheckBox(new CheckBox(_("Visible names"), mVisibleNamesEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
     mSpeechSlider(new Slider(0, 3)),
@@ -168,6 +170,7 @@ Setup_Video::Setup_Video():
 
     mModeList->setActionEventId("videomode");
     mCustomCursorCheckBox->setActionEventId("customcursor");
+    mVisibleNamesCheckBox->setActionEventId("visiblenames");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
     mNameCheckBox->setActionEventId("showownname");
     mAlphaSlider->setActionEventId("guialpha");
@@ -185,6 +188,7 @@ Setup_Video::Setup_Video():
 
     mModeList->addActionListener(this);
     mCustomCursorCheckBox->addActionListener(this);
+    mVisibleNamesCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
     mNameCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
@@ -263,8 +267,9 @@ Setup_Video::Setup_Video():
     place(1, 0, mFsCheckBox, 3);
     place(1, 1, mOpenGLCheckBox, 3);
     place(1, 2, mCustomCursorCheckBox, 3);
-    place(1, 3, mNameCheckBox, 3);
-    place(1, 4, mParticleEffectsCheckBox, 3);
+    place(1, 3, mVisibleNamesCheckBox, 3);
+    place(1, 4, mNameCheckBox, 3);
+    place(1, 5, mParticleEffectsCheckBox, 3);
 
     place(0, 6, mAlphaSlider);
     place(0, 7, mFpsSlider);
@@ -348,6 +353,7 @@ void Setup_Video::apply()
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getValue("screen", false);
     mCustomCursorEnabled = config.getValue("customcursor", true);
+    mVisibleNamesEnabled = config.getValue("visiblenames", 1);
     mParticleEffectsEnabled = config.getValue("particleeffects", true);
     mNameEnabled = config.getValue("showownname", false);
     mSpeechMode = (int) config.getValue("speech", 3);
@@ -381,6 +387,7 @@ void Setup_Video::cancel()
     mFsCheckBox->setSelected(mFullScreenEnabled);
     mOpenGLCheckBox->setSelected(mOpenGLEnabled);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
+    mVisibleNamesCheckBox->setSelected(mVisibleNamesEnabled);
     mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
     mSpeechSlider->setValue(mSpeechMode);
     mNameCheckBox->setSelected(mNameEnabled);
@@ -395,6 +402,7 @@ void Setup_Video::cancel()
 
     config.setValue("screen", mFullScreenEnabled ? true : false);
     config.setValue("customcursor", mCustomCursorEnabled ? true : false);
+    config.setValue("visiblenames", mVisibleNamesEnabled ? 1 : 0);
     config.setValue("particleeffects", mParticleEffectsEnabled ? true : false);
     config.setValue("speech", mSpeechMode);
     config.setValue("showownname", mNameEnabled ? true : false);
@@ -425,6 +433,11 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("customcursor",
                 mCustomCursorCheckBox->isSelected() ? true : false);
+    }
+    else if (event.getId() == "visiblenames")
+    {
+        config.setValue("visiblenames",
+                mVisibleNamesCheckBox->isSelected() ? 1 : 0);
     }
     else if (event.getId() == "particleeffects")
     {

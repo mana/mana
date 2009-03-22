@@ -22,12 +22,11 @@
 #include <getopt.h>
 #include <iostream>
 #include <physfs.h>
-#include <SDL_image.h>
 #include <unistd.h>
 #include <vector>
+#include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
-
 #include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
@@ -54,7 +53,9 @@
 #include "units.h"
 
 #include "gui/button.h"
+#ifdef EATHENA_SUPPORT
 #include "gui/char_server.h"
+#endif
 #include "gui/char_select.h"
 #include "gui/color.h"
 #include "gui/gui.h"
@@ -64,13 +65,35 @@
 #include "gui/register.h"
 #include "gui/sdlinput.h"
 #include "gui/setup.h"
+#ifdef TMWSERV_SUPPORT
+#include "gui/connection.h"
+#include "gui/quitdialog.h"
+#include "gui/serverdialog.h"
+#endif
 #include "gui/updatewindow.h"
 
+#ifdef TMWSERV_SUPPORT
 #include "net/charserverhandler.h"
+#include "net/connection.h"
 #include "net/loginhandler.h"
-#include "net/maploginhandler.h"
-#include "net/messageout.h"
 #include "net/network.h"
+#else
+#include "net/ea/charserverhandler.h"
+#include "net/ea/loginhandler.h"
+#include "net/ea/network.h"
+#include "net/ea/maploginhandler.h"
+#include "net/messageout.h"
+#endif
+#include "net/logouthandler.h"
+
+#ifdef TMWSERV_SUPPORT
+#include "net/accountserver/accountserver.h"
+#include "net/accountserver/account.h"
+
+#include "net/chatserver/chatserver.h"
+
+#include "net/gameserver/gameserver.h"
+#endif
 
 #include "resources/colordb.h"
 #include "resources/emotedb.h"
@@ -80,6 +103,9 @@
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
 
+#ifdef TMWSERV_SUPPORT
+#include "utils/dtor.h"
+#endif
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -112,29 +138,43 @@ namespace
     } listener;
 }
 
+#ifdef TMWSERV_SUPPORT
+std::string token; //used to store magic_token
+#else
 // Account infos
 char n_server, n_character;
-
-Graphics *graphics;
 
 // TODO Anyone knows a good location for this? Or a way to make it non-global?
 class SERVER_INFO;
 SERVER_INFO **server_info;
+#endif
+
+Graphics *graphics;
 
 unsigned char state;
 std::string errorMessage;
-unsigned char screen_mode;
 
 Sound sound;
 Music *bgm;
 
 Configuration config;         /**< XML file configuration reader */
+Configuration branding;       /**< XML branding information reader */
 Logger *logger;               /**< Log object */
 KeyboardConfig keyboard;
 
+#ifdef TMWSERV_SUPPORT
+Net::Connection *gameServerConnection = 0;
+Net::Connection *chatServerConnection = 0;
+Net::Connection *accountServerConnection = 0;
+#endif
+
 CharServerHandler charServerHandler;
 LoginData loginData;
-LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
+#ifdef TMWSERV_SUPPORT
+LoginHandler loginHandler;
+LogoutHandler logoutHandler;
+#endif
+LockedArray<LocalPlayer*> charInfo(maxSlot + 1);
 
 Color *textColor;
 
@@ -145,8 +185,10 @@ std::string homeDir;
 std::string updateHost;
 std::string updatesDir;
 
+#ifdef EATHENA_SUPPORT
 LoginHandler loginHandler;
 MapLoginHandler mapLoginHandler;
+#endif
 
 /**
  * A structure holding the values of various options that can be passed from
@@ -161,7 +203,8 @@ struct Options
         printHelp(false),
         printVersion(false),
         skipUpdate(false),
-        chooseDefault(false)
+        chooseDefault(false),
+        serverPort(0)
     {};
 
     bool printHelp;
@@ -170,10 +213,13 @@ struct Options
     bool chooseDefault;
     std::string username;
     std::string password;
-    std::string playername;
+    std::string character;
     std::string configPath;
     std::string updateHost;
     std::string dataPath;
+
+    std::string serverName;
+    short serverPort;
 };
 
 /**
@@ -210,7 +256,7 @@ void setUpdatesDir()
         {
             logger->log("Error: Invalid update host: %s", updateHost.c_str());
             errorMessage = _("Invalid update host: ") + updateHost;
-            state = ERROR_STATE;
+            state = STATE_ERROR;
         }
     }
     else
@@ -243,36 +289,35 @@ void setUpdatesDir()
                 logger->log("Error: %s can't be made, but doesn't exist!",
                             newDir.c_str());
                 errorMessage = _("Error creating updates directory!");
-                state = ERROR_STATE;
+                state = STATE_ERROR;
             }
 #else
             logger->log("Error: %s/%s can't be made, but doesn't exist!",
                         homeDir.c_str(), updatesDir.c_str());
             errorMessage = _("Error creating updates directory!");
-            state = ERROR_STATE;
+            state = STATE_ERROR;
 #endif
         }
     }
 }
 
 /**
- * Do all initialization stuff
+ * Initializes the home directory. On UNIX and FreeBSD, ~/.tmw is used. On
+ * Windows and other systems we use the current working directory.
  */
-void init_engine(const Options &options)
+void initHomeDir()
 {
-    if (homeDir.empty())
-#if defined __APPLE__
-        // Use Application Directory instead of .tmw
-        homeDir = std::string(PHYSFS_getUserDir()) +
-            "/Library/Application Support/The Mana World";
-#else
-        homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
-#endif
-
+    homeDir = std::string(PHYSFS_getUserDir()) +
+        "/." +
+        branding.getValue("appShort", "tmw");
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
 #elif defined __APPLE__
+    // Use Application Directory instead of .tmw
+    homeDir = std::string(PHYSFS_getUserDir()) +
+        "/Library/Application Support/" +
+        branding.getValue("appName", "The Mana World");
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
 #else
@@ -286,20 +331,76 @@ void init_engine(const Options &options)
                   << std::endl;
         exit(1);
     }
+}
 
-    // Set log file
-    logger->setLogFile(homeDir + std::string("/tmw.log"));
+/**
+ * Initialize configuration.
+ */
+void initConfiguration(const Options &options)
+{
+    // Fill configuration with defaults
+    logger->log("Initializing configuration...");
+    std::string defaultHost = branding.getValue("defaultServer",
+        "server.themanaworld.org");
+    config.setValue("host", defaultHost);
+#ifdef TWMSERV_SUPPORT
+    int defaultPort = (int)branding.getValue("defaultPort", 9601);
+#else
+    int defaultPort = (int)branding.getValue("defaultPort", 6901);
+#endif
+    config.setValue("port", defaultPort);
+    config.setValue("hwaccel", 0);
+#if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
+    config.setValue("opengl", 1);
+#else
+    config.setValue("opengl", 0);
+#endif
+    config.setValue("screen", 0);
+    config.setValue("sound", 1);
+    config.setValue("guialpha", 0.8f);
+    config.setValue("remember", 1);
+    config.setValue("sfxVolume", 100);
+    config.setValue("musicVolume", 60);
+    config.setValue("fpslimit", 0);
+    std::string defaultUpdateHost = branding.getValue("defaultUpdateHost",
+        "http://updates.themanaworld.org");
+    config.setValue("updatehost", defaultUpdateHost);
+    config.setValue("customcursor", 1);
+    config.setValue("ChatLogLength", 128);
 
-    #ifdef PACKAGE_VERSION
-        logger->log("Starting The Mana World Version %s", PACKAGE_VERSION);
-    #else
-        logger->log("Starting The Mana World - Version not defined");
-    #endif
+    // Checking if the configuration file exists... otherwise create it with
+    // default options.
+    FILE *configFile = 0;
+    std::string configPath = options.configPath;
 
+    if (configPath.empty())
+        configPath = homeDir + "/config.xml";
+
+    configFile = fopen(configPath.c_str(), "r");
+
+    // If we can't read it, it doesn't exist !
+    if (configFile == NULL) {
+        // We reopen the file in write mode and we create it
+        configFile = fopen(configPath.c_str(), "wt");
+    }
+    if (configFile == NULL) {
+        std::cout << "Can't create " << configPath << ". "
+                  << "Using Defaults." << std::endl;
+    } else {
+        fclose(configFile);
+        config.init(configPath);
+    }
+}
+
+/**
+ * Do all initialization stuff.
+ */
+void initEngine(const Options &options)
+{
     // Initialize SDL
     logger->log("Initializing SDL...");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-        std::cerr << _("Could not initialize SDL: ") <<
+        std::cerr << "Could not initialize SDL: " <<
             SDL_GetError() << std::endl;
         exit(1);
     }
@@ -308,11 +409,13 @@ void init_engine(const Options &options)
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
+    SDL_WM_SetCaption(branding.getValue("appName", "The Mana World").c_str(), NULL);
+
     ResourceManager *resman = ResourceManager::getInstance();
 
     if (!resman->setWriteDir(homeDir)) {
         std::cout << homeDir
-                  << _(" couldn't be set as home directory! Exiting.")
+                  << " couldn't be set as home directory! Exiting."
                   << std::endl;
         exit(1);
     }
@@ -332,7 +435,7 @@ void init_engine(const Options &options)
     if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path,
                                           PATH_MAX))
     {
-        fprintf(stderr, _("Can't find Resources directory\n"));
+        fprintf(stderr, "Can't find Resources directory\n");
     }
     CFRelease(resourcesURL);
     strncat(path, "/data", PATH_MAX - 1);
@@ -341,51 +444,6 @@ void init_engine(const Options &options)
     resman->addToSearchPath(PKG_DATADIR "data", true);
 #endif
 
-    // Fill configuration with defaults
-    logger->log("Initializing configuration...");
-    config.setValue("host", "www.themanaworld.org");
-    config.setValue("port", 6901);
-    config.setValue("hwaccel", 0);
-#if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
-    config.setValue("opengl", 1);
-#else
-    config.setValue("opengl", 0);
-#endif
-    config.setValue("screen", 0);
-    config.setValue("sound", 1);
-    config.setValue("guialpha", 0.8f);
-    config.setValue("remember", 1);
-    config.setValue("sfxVolume", 100);
-    config.setValue("musicVolume", 60);
-    config.setValue("fpslimit", 0);
-    config.setValue("updatehost", "http://updates.themanaworld.org");
-    config.setValue("customcursor", 1);
-    config.setValue("ChatLogLength", 128);
-
-    // Checking if the configuration file exists... otherwise creates it with
-    // default options !
-    FILE *configFile = 0;
-    std::string configPath = options.configPath;
-
-    if (configPath.empty())
-        configPath = homeDir + "/config.xml";
-
-    configFile = fopen(configPath.c_str(), "r");
-
-    // If we can't read it, it doesn't exist !
-    if (configFile == NULL) {
-        // We reopen the file in write mode and we create it
-        configFile = fopen(configPath.c_str(), "wt");
-    }
-    if (configFile == NULL) {
-        std::cout << "Can't create " << configPath << ". "
-            "Using Defaults." << std::endl;
-    } else {
-        fclose(configFile);
-        config.init(configPath);
-    }
-
-    SDL_WM_SetCaption("The Mana World", NULL);
 #ifdef WIN32
     static SDL_SysWMinfo pInfo;
     SDL_GetWMInfo(&pInfo);
@@ -395,7 +453,7 @@ void init_engine(const Options &options)
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
     }
 #else
-    SDL_Surface *icon = IMG_Load(PKG_DATADIR "data/icons/tmw.png");
+    SDL_Surface *icon = IMG_Load(resman->getPath(branding.getValue("appIcon", "data/icons/tmw.png")).c_str());
     if (icon)
     {
         SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -441,7 +499,11 @@ void init_engine(const Options &options)
     emoteShortcut = new EmoteShortcut;
 
     gui = new Gui(graphics);
-    state = LOGIN_STATE; /**< Initial game state */
+#ifdef TMWSERV_SUPPORT
+    state = STATE_CHOOSE_SERVER; /**< Initial game state */
+#else
+    state = STATE_LOGIN; /**< Initial game state */
+#endif
 
     // Initialize sound engine
     try {
@@ -454,7 +516,7 @@ void init_engine(const Options &options)
                     defaultMusicVolume));
     }
     catch (const char *err) {
-        state = ERROR_STATE;
+        state = STATE_ERROR;
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
@@ -492,7 +554,6 @@ void exit_engine()
     NPCDB::unload();
 
     ResourceManager::deleteInstance();
-    delete logger;
 }
 
 void printHelp()
@@ -507,8 +568,10 @@ void printHelp()
         << _("  -h --help       : Display this help") << std::endl
         << _("  -S --homedir    : Directory to use as home directory") << std::endl
         << _("  -H --updatehost : Use this update host") << std::endl
-        << _("  -p --playername : Login with this player") << std::endl
         << _("  -P --password   : Login with this password") << std::endl
+        << _("  -c --character  : Login with this character") << std::endl
+        << _("  -o --port       : Login Server Port") << std::endl
+        << _("  -s --server     : Login Server name or IP") << std::endl
         << _("  -u --skipupdate : Skip the update downloads") << std::endl
         << _("  -U --username   : Login with this username") << std::endl
         << _("  -v --version    : Display the version") << std::endl;
@@ -526,17 +589,19 @@ void printVersion()
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvud:U:P:Dp:C:H:S:";
+    const char *optstring = "hvud:U:P:Dc:s:o:C:H:S:";
 
     const struct option long_options[] = {
         { "configfile", required_argument, 0, 'C' },
         { "data",       required_argument, 0, 'd' },
         { "default",    no_argument,       0, 'D' },
-        { "playername", required_argument, 0, 'p' },
         { "password",   required_argument, 0, 'P' },
+        { "character",  required_argument, 0, 'c' },
         { "help",       no_argument,       0, 'h' },
         { "homedir",    required_argument, 0, 'S' },
         { "updatehost", required_argument, 0, 'H' },
+        { "port",       required_argument, 0, 'o' },
+        { "server",     required_argument, 0, 's' },
         { "skipupdate", no_argument,       0, 'u' },
         { "username",   required_argument, 0, 'U' },
         { "version",    no_argument,       0, 'v' },
@@ -567,11 +632,17 @@ void parseOptions(int argc, char *argv[], Options &options)
             case 'H':
                 options.updateHost = optarg;
                 break;
-            case 'p':
-                options.playername = optarg;
+            case 'c':
+                options.character = optarg;
                 break;
             case 'P':
                 options.password = optarg;
+                break;
+            case 's':
+                options.serverName = optarg;
+                break;
+            case 'o':
+                options.serverPort = (short)atoi(optarg);
                 break;
             case 'u':
                 options.skipUpdate = true;
@@ -613,20 +684,62 @@ struct ErrorListener : public gcn::ActionListener
 {
     void action(const gcn::ActionEvent &event)
     {
-        state = loginData.registerLogin ? REGISTER_STATE : LOGIN_STATE;
+#ifdef TMWSERV_SUPPORT
+        state = STATE_CHOOSE_SERVER;
+#else
+        state = loginData.registerLogin ? STATE_REGISTER : STATE_LOGIN;
+#endif
     }
 } errorListener;
 
-// TODO Find some nice place for these functions
-void accountLogin(Network *network, LoginData *loginData)
+#ifdef TMWSERV_SUPPORT
+struct AccountListener : public gcn::ActionListener
 {
+    void action(const gcn::ActionEvent &event)
+    {
+        state = STATE_CHAR_SELECT;
+    }
+} accountListener;
+
+struct LoginListener : public gcn::ActionListener
+{
+    void action(const gcn::ActionEvent &event)
+    {
+        state = STATE_LOGIN;
+    }
+} loginListener;
+#endif
+
+// TODO Find some nice place for these functions
+#ifdef TMWSERV_SUPPORT
+void accountLogin(LoginData *loginData)
+#else
+void accountLogin(Network *network, LoginData *loginData)
+#endif
+{
+#ifdef EATHENA_SUPPORT
     logger->log("Trying to connect to account server...");
+#endif
     logger->log("Username is %s", loginData->username.c_str());
+#ifdef EATHENA_SUPPORT
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
+#endif
     loginHandler.setLoginData(loginData);
+#ifdef TMWSERV_SUPPORT
+    Net::registerHandler(&loginHandler);
+
+    charServerHandler.setCharInfo(&charInfo);
+    Net::registerHandler(&charServerHandler);
+#endif
 
     // Send login infos
+#ifdef TMWSERV_SUPPORT
+    Net::AccountServer::login(accountServerConnection,
+            0,  // client version
+            loginData->username,
+            loginData->password);
+#else
     MessageOut outMsg(network);
     outMsg.writeInt16(0x0064);
     outMsg.writeInt32(0); // client version
@@ -640,16 +753,19 @@ void accountLogin(Network *network, LoginData *loginData)
      * 0 here.
      */
     outMsg.writeInt8(0x01);
+#endif
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
 
+#ifdef EATHENA_SUPPORT
     // Remove _M or _F from username after a login for registration purpose
     if (loginData->registerLogin)
     {
         loginData->username =
             loginData->username.substr(0, loginData->username.length() - 2);
     }
+#endif
 
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
@@ -660,6 +776,8 @@ void accountLogin(Network *network, LoginData *loginData)
     }
     config.setValue("remember", loginData->remember);
 }
+
+#ifdef EATHENA_SUPPORT
 
 static void positionDialog(Window *dialog, int screenWidth, int screenHeight)
 {
@@ -717,6 +835,160 @@ void mapLogin(Network *network, LoginData *loginData)
     network->skip(4);
 }
 
+#else
+
+void accountRegister(LoginData *loginData)
+{
+    logger->log("Username is %s", loginData->username.c_str());
+
+    Net::registerHandler(&loginHandler);
+
+    charServerHandler.setCharInfo(&charInfo);
+    Net::registerHandler(&charServerHandler);
+
+    Net::AccountServer::registerAccount(accountServerConnection,
+            0, // client version
+            loginData->username,
+            loginData->password,
+            loginData->email);
+}
+
+void accountUnRegister(LoginData *loginData)
+{
+    Net::registerHandler(&logoutHandler);
+
+    Net::AccountServer::Account::unregister(loginData->username,
+                                            loginData->password);
+
+}
+
+void accountChangePassword(LoginData *loginData)
+{
+    Net::registerHandler(&loginHandler);
+
+    Net::AccountServer::Account::changePassword(loginData->username,
+                                                loginData->password,
+                                                loginData->newPassword);
+}
+
+void accountChangeEmail(LoginData *loginData)
+{
+    Net::registerHandler(&loginHandler);
+
+    Net::AccountServer::Account::changeEmail(loginData->newEmail);
+}
+
+void switchCharacter(std::string* passToken)
+{
+    Net::registerHandler(&logoutHandler);
+
+    logoutHandler.reset();
+    logoutHandler.setScenario(LOGOUT_SWITCH_CHARACTER, passToken);
+
+    Net::GameServer::logout(true);
+    Net::ChatServer::logout();
+}
+
+void switchAccountServer()
+{
+    Net::registerHandler(&logoutHandler);
+
+    logoutHandler.reset();
+    logoutHandler.setScenario(LOGOUT_SWITCH_ACCOUNTSERVER);
+
+    //Can't logout if we were not logged in ...
+    if (accountServerConnection->isConnected())
+    {
+        Net::AccountServer::logout();
+    }
+    else
+    {
+        logoutHandler.setAccountLoggedOut();
+    }
+
+    if (gameServerConnection->isConnected())
+    {
+        Net::GameServer::logout(false);
+    }
+    else
+    {
+        logoutHandler.setGameLoggedOut();
+    }
+
+    if (chatServerConnection->isConnected())
+    {
+        Net::ChatServer::logout();
+    }
+    else
+    {
+        logoutHandler.setChatLoggedOut();
+    }
+}
+
+void logoutThenExit()
+{
+    Net::registerHandler(&logoutHandler);
+
+    logoutHandler.reset();
+    logoutHandler.setScenario(LOGOUT_EXIT);
+
+    // Can't logout if we were not logged in ...
+    if (accountServerConnection->isConnected())
+    {
+        Net::AccountServer::logout();
+    }
+    else
+    {
+        logoutHandler.setAccountLoggedOut();
+    }
+
+    if (gameServerConnection->isConnected())
+    {
+        Net::GameServer::logout(false);
+    }
+    else
+    {
+        logoutHandler.setGameLoggedOut();
+    }
+
+    if (chatServerConnection->isConnected())
+    {
+        Net::ChatServer::logout();
+    }
+    else
+    {
+        logoutHandler.setChatLoggedOut();
+    }
+}
+
+void reconnectAccount(const std::string& passToken)
+{
+    Net::registerHandler(&loginHandler);
+
+    charServerHandler.setCharInfo(&charInfo);
+    Net::registerHandler(&charServerHandler);
+
+    Net::AccountServer::reconnectAccount(accountServerConnection, passToken);
+}
+
+#endif
+
+void xmlNullLogger(void *ctx, const char *msg, ...)
+{
+    // Does nothing, that's the whole point of it
+}
+
+// Initialize libxml2 and check for potential ABI mismatches between
+// compiled version and the shared library actually used.
+void initXML()
+{
+    xmlInitParser();
+    LIBXML_TEST_VERSION;
+
+    // Suppress libxml2 error messages
+    xmlSetGenericErrorFunc(NULL, xmlNullLogger);
+}
+
 } // namespace
 
 extern "C" char const *_nl_locale_name_default(void);
@@ -724,12 +996,9 @@ extern "C" char const *_nl_locale_name_default(void);
 /** Main */
 int main(int argc, char *argv[])
 {
-    logger = new Logger;
-
+    // Parse command line options
     Options options;
-
     parseOptions(argc, argv, options);
-
     if (options.printHelp)
     {
         printHelp();
@@ -743,47 +1012,57 @@ int main(int argc, char *argv[])
 
 #if ENABLE_NLS
 #ifdef WIN32
-        putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
-        // mingw doesn't like LOCALEDIR to be defined for some reason
-        bindtextdomain("tmw", "translations/");
+    putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+    // mingw doesn't like LOCALEDIR to be defined for some reason
+    bindtextdomain("tmw", "translations/");
 #else
-        bindtextdomain("tmw", LOCALEDIR);
+    bindtextdomain("tmw", LOCALEDIR);
 #endif
-        setlocale(LC_MESSAGES, "");
-        bind_textdomain_codeset("tmw", "UTF-8");
-        textdomain("tmw");
+    setlocale(LC_MESSAGES, "");
+    bind_textdomain_codeset("tmw", "UTF-8");
+    textdomain("tmw");
 #endif
-
-    // Initialize libxml2 and check for potential ABI mismatches between
-    // compiled version and the shared library actually used.
-    xmlInitParser();
-    LIBXML_TEST_VERSION;
-
-    // Redirect libxml errors to /dev/null
-    FILE *nullFile = fopen("/dev/null", "w");
-    xmlSetGenericErrorFunc(nullFile, NULL);
 
     // Initialize PhysicsFS
     PHYSFS_init(argv[0]);
 
-    init_engine(options);
+    initXML();
 
-    SDL_Event event;
+    // load branding information
+    branding.init("data/branding.xml");
 
-    unsigned int oldstate = !state; // We start with a status change.
+    initHomeDir();
+    // Configure logger
+    logger = new Logger();
+    logger->setLogFile(homeDir + std::string("/tmw.log"));
+    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
+
+    // Log the tmw version
+#ifdef PACKAGE_VERSION
+    logger->log("The Mana World v%s", PACKAGE_VERSION);
+#else
+    logger->log("The Mana World - version not defined");
+#endif
+
+    initConfiguration(options);
+
+    initEngine(options);
 
     // Needs to be created in main, as the updater uses it
     textColor = new Color;
 
     Game *game = NULL;
     Window *currentDialog = NULL;
+#ifdef TMWSERV_SUPPORT
+    QuitDialog* quitDialog = NULL;
+#endif
     Image *login_wallpaper = NULL;
     setupWindow = new Setup;
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
     gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
-    top->add(versionLabel, 2, 2);
+    top->add(versionLabel, 25, 2);
 #endif
     ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
     gcn::Label *progressLabel = new gcn::Label();
@@ -795,7 +1074,22 @@ int main(int argc, char *argv[])
     setup->setPosition(top->getWidth() - setup->getWidth() - 3, 3);
     top->add(setup);
 
-    sound.playMusic("Magick - Real.ogg");
+    sound.playMusic(branding.getValue("loginMusic", ""));
+
+    // Server choice
+    if (options.serverName.empty()) {
+        loginData.hostname = config.getValue("MostUsedServerName0",
+                branding.getValue("defaultServer", "server.themanaworld.org").c_str());
+    }
+    else {
+        loginData.hostname = options.serverName;
+    }
+    if (options.serverPort == 0) {
+        loginData.port = (short)config.getValue("MostUsedServerPort0",
+                branding.getValue("defaultPort", 9601));
+    } else {
+        loginData.port = options.serverPort;
+    }
 
     loginData.username = options.username;
     if (loginData.username.empty()) {
@@ -806,18 +1100,30 @@ int main(int argc, char *argv[])
     if (!options.password.empty()) {
         loginData.password = options.password;
     }
+
+#ifdef EATHENA_SUPPORT
     loginData.hostname = config.getValue("host", "server.themanaworld.org");
     loginData.port = (short)config.getValue("port", 6901);
+#endif
     loginData.remember = config.getValue("remember", 0);
     loginData.registerLogin = false;
 
+#ifdef TMWSERV_SUPPORT
+    Net::initialize();
+    accountServerConnection = Net::getConnection();
+    gameServerConnection = Net::getConnection();
+    chatServerConnection = Net::getConnection();
+#else
     SDLNet_Init();
     Network *network = new Network;
+#endif
 
     // Set the most appropriate wallpaper, based on screen width
     int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);
+#ifdef EATHENA_SUPPORT
     int screenHeight = static_cast<int>(config.getValue("screenheight",
                                                         defaultScreenHeight));
+#endif
     std::string wallpaperName;
 
     wallpaperName = "graphics/images/login_wallpaper.png";
@@ -838,19 +1144,43 @@ int main(int argc, char *argv[])
     if (!login_wallpaper)
         logger->log("Couldn't load %s as wallpaper", wallpaperName.c_str());
 
-    while (state != EXIT_STATE)
+    unsigned int oldstate = !state; // We start with a status change.
+
+    SDL_Event event;
+#ifdef TMWSERV_SUPPORT
+    while (state != STATE_FORCE_QUIT)
+#else
+    while (state != STATE_EXIT)
+#endif
     {
         // Handle SDL events
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
                 case SDL_QUIT:
-                    state = EXIT_STATE;
+#ifdef TMWSERV_SUPPORT
+                    state = STATE_FORCE_QUIT;
+#else
+                    state = STATE_EXIT;
+#endif
                     break;
 
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
                     {
-                        state = EXIT_STATE;
+#ifdef TMWSERV_SUPPORT
+                        if (!quitDialog)
+                        {
+                            quitDialog = new QuitDialog(NULL, &quitDialog);
+                        }
+                        else
+                        {
+                            quitDialog->requestMoveToTop();
+                        }
+#else
+                        state = STATE_EXIT;
+#endif
                     }
                     break;
             }
@@ -858,13 +1188,18 @@ int main(int argc, char *argv[])
             guiInput->pushInput(event);
         }
 
+#ifdef TMWSERV_SUPPORT
+        Net::flush();
+#else
         network->flush();
         network->dispatchMessages();
+#endif
         gui->logic();
 
+#ifdef EATHENA_SUPPORT
         if (network->getState() == Network::NET_ERROR)
         {
-            state = ERROR_STATE;
+            state = STATE_ERROR;
 
             if (!network->getError().empty()) {
                 errorMessage = network->getError();
@@ -872,6 +1207,7 @@ int main(int argc, char *argv[])
                 errorMessage = _("Got disconnected from server!");
             }
         }
+#endif
 
         if (progressBar->isVisible())
         {
@@ -893,10 +1229,320 @@ int main(int argc, char *argv[])
         gui->draw();
         graphics->updateScreen();
 
+#ifdef TMWSERV_SUPPORT
+        // TODO: Add connect timeouts
+        if (state == STATE_CONNECT_ACCOUNT &&
+                accountServerConnection->isConnected())
+        {
+            if (options.skipUpdate) {
+                state = STATE_LOADDATA;
+            } else {
+                state = STATE_UPDATE;
+            }
+        }
+        else if (state == STATE_CONNECT_GAME &&
+                gameServerConnection->isConnected() &&
+                chatServerConnection->isConnected())
+        {
+            accountServerConnection->disconnect();
+            Net::clearHandlers();
+
+            state = STATE_GAME;
+        }
+        else if (state == STATE_RECONNECT_ACCOUNT &&
+                 accountServerConnection->isConnected())
+        {
+            reconnectAccount(token);
+            state = STATE_WAIT;
+        }
+#endif
+
+#ifdef TMWSERV_SUPPORT
+        if (state != oldstate) {
+            // Load updates after exiting the update state
+            if (oldstate == STATE_UPDATE)
+            {
+                loadUpdates();
+                // Reload the wallpaper in case that it was updated
+                login_wallpaper->decRef();
+                login_wallpaper = ResourceManager::getInstance()->getImage(
+                        branding.getValue("loginWallpaper",
+                            "graphics/images/login_wallpaper.png"));
+            }
+
+            oldstate = state;
+
+            // Get rid of the dialog of the previous state
+            if (currentDialog) {
+                delete currentDialog;
+                currentDialog = NULL;
+            }
+            // State has changed, while the quitDialog was active, it might
+            // not be correct anymore
+            if (quitDialog) {
+                quitDialog->scheduleDelete();
+            }
+
+            switch (state) {
+                case STATE_CHOOSE_SERVER:
+                    logger->log("State: CHOOSE_SERVER");
+
+                    // Allow changing this using a server choice dialog
+                    // We show the dialog box only if the command-line
+                    // options weren't set.
+                    if (options.serverName.empty() && options.serverPort == 0) {
+                        currentDialog = new ServerDialog(&loginData);
+                    } else {
+                        state = STATE_CONNECT_ACCOUNT;
+
+                        // Reset options so that cancelling or connect
+                        // timeout will show the server dialog.
+                        options.serverName.clear();
+                        options.serverPort = 0;
+                    }
+                    break;
+
+                case STATE_CONNECT_ACCOUNT:
+                    logger->log("State: CONNECT_ACCOUNT");
+                    logger->log("Trying to connect to account server...");
+                    accountServerConnection->connect(loginData.hostname,
+                            loginData.port);
+                    currentDialog = new ConnectionDialog(
+                            STATE_SWITCH_ACCOUNTSERVER_ATTEMPT);
+                    break;
+
+                case STATE_UPDATE:
+                    // Determine which source to use for the update host
+                    if (!options.updateHost.empty())
+                        updateHost = options.updateHost;
+                    else
+                        updateHost = loginData.updateHost;
+
+                    setUpdatesDir();
+                    logger->log("State: UPDATE");
+                    currentDialog = new UpdaterWindow(updateHost,
+                            homeDir + "/" + updatesDir);
+                    break;
+
+                case STATE_LOGIN:
+                    logger->log("State: LOGIN");
+                    if (options.username.empty()
+                            || options.password.empty()) {
+                        currentDialog = new LoginDialog(&loginData);
+                    } else {
+                        state = STATE_LOGIN_ATTEMPT;
+                        // Clear the password so that when login fails, the
+                        // dialog will show up next time.
+                        options.password.clear();
+                    }
+                    break;
+
+                case STATE_LOADDATA:
+                    logger->log("State: LOADDATA");
+
+                    // Add customdata directory
+                    ResourceManager::getInstance()->searchAndAddArchives(
+                            "customdata/",
+                            "zip",
+                            false);
+
+                    // Load XML databases
+                    ColorDB::load();
+                    ItemDB::load();
+                    MonsterDB::load();
+                    NPCDB::load();
+                    EmoteDB::load();
+                    Units::loadUnits();
+
+                    state = STATE_LOGIN;
+                    break;
+
+                case STATE_LOGIN_ATTEMPT:
+                    accountLogin(&loginData);
+                    break;
+
+                case STATE_LOGIN_ERROR:
+                    logger->log("State: LOGIN ERROR");
+                    currentDialog = new OkDialog("Error ", errorMessage);
+                    currentDialog->addActionListener(&loginListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    break;
+
+                case STATE_SWITCH_ACCOUNTSERVER:
+                    logger->log("State: SWITCH_ACCOUNTSERVER");
+
+                    gameServerConnection->disconnect();
+                    chatServerConnection->disconnect();
+                    accountServerConnection->disconnect();
+
+                    state = STATE_CHOOSE_SERVER;
+                    break;
+
+                case STATE_SWITCH_ACCOUNTSERVER_ATTEMPT:
+                    logger->log("State: SWITCH_ACCOUNTSERVER_ATTEMPT");
+                    switchAccountServer();
+
+                    state = STATE_SWITCH_ACCOUNTSERVER;
+                    break;
+
+                case STATE_REGISTER:
+                    logger->log("State: REGISTER");
+                    currentDialog = new RegisterDialog(&loginData);
+                    break;
+
+                case STATE_REGISTER_ATTEMPT:
+                    accountRegister(&loginData);
+                    break;
+
+                case STATE_CHAR_SELECT:
+                    logger->log("State: CHAR_SELECT");
+                    currentDialog =
+                        new CharSelectDialog(&charInfo, &loginData);
+
+                    if (((CharSelectDialog*) currentDialog)->
+                            selectByName(options.character)) {
+                        ((CharSelectDialog*) currentDialog)->action(
+                            gcn::ActionEvent(NULL, "ok"));
+                    } else {
+                        ((CharSelectDialog*) currentDialog)->selectByName(
+                            config.getValue("lastCharacter", ""));
+                    }
+
+                    break;
+
+                case STATE_CHANGEEMAIL_ATTEMPT:
+                    logger->log("State: CHANGE EMAIL ATTEMPT");
+                    accountChangeEmail(&loginData);
+                    break;
+
+                case STATE_CHANGEEMAIL:
+                    logger->log("State: CHANGE EMAIL");
+                    currentDialog = new OkDialog("Email Address change",
+                            "Email Address changed successfully!");
+                    currentDialog->addActionListener(&accountListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    loginData.email = loginData.newEmail;
+                    loginData.newEmail = "";
+                    break;
+
+                case STATE_CHANGEPASSWORD_ATTEMPT:
+                    logger->log("State: CHANGE PASSWORD ATTEMPT");
+                    accountChangePassword(&loginData);
+                    break;
+
+                case STATE_CHANGEPASSWORD:
+                    logger->log("State: CHANGE PASSWORD");
+                    currentDialog = new OkDialog("Password change",
+                            "Password changed successfully!");
+                    currentDialog->addActionListener(&accountListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    loginData.password = loginData.newPassword;
+                    loginData.newPassword = "";
+                    break;
+
+                case STATE_UNREGISTER_ATTEMPT:
+                    logger->log("State: UNREGISTER ATTEMPT");
+                    accountUnRegister(&loginData);
+                    break;
+
+                case STATE_UNREGISTER:
+                    logger->log("State: UNREGISTER");
+                    accountServerConnection->disconnect();
+                    currentDialog = new OkDialog("Unregister successful",
+                            "Farewell, come back any time ....");
+                    loginData.clear();
+                    //The errorlistener sets the state to STATE_CHOOSE_SERVER
+                    currentDialog->addActionListener(&errorListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    break;
+
+                case STATE_ACCOUNTCHANGE_ERROR:
+                    logger->log("State: ACCOUNT CHANGE ERROR");
+                    currentDialog = new OkDialog("Error ", errorMessage);
+                    currentDialog->addActionListener(&accountListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    break;
+
+
+                case STATE_ERROR:
+                    logger->log("State: ERROR");
+                    currentDialog = new OkDialog("Error", errorMessage);
+                    currentDialog->addActionListener(&errorListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    gameServerConnection->disconnect();
+                    chatServerConnection->disconnect();
+                    Net::clearHandlers();
+                    break;
+
+                case STATE_CONNECT_GAME:
+                    logger->log("State: CONNECT_GAME");
+                    currentDialog = new ConnectionDialog(STATE_SWITCH_ACCOUNTSERVER_ATTEMPT);
+                    break;
+
+                case STATE_GAME:
+                    logger->log("Memorizing selected character %s",
+                            player_node->getName().c_str());
+                    config.setValue("lastCharacter", player_node->getName());
+
+                    Net::GameServer::connect(gameServerConnection, token);
+                    Net::ChatServer::connect(chatServerConnection, token);
+                    sound.fadeOutMusic(1000);
+
+#ifdef PACKAGE_VERSION
+                    delete versionLabel;
+                    versionLabel = NULL;
+#endif
+                    currentDialog = NULL;
+
+                    logger->log("State: GAME");
+                    game = new Game;
+                    game->logic();
+                    delete game;
+
+                    // If the quitdialog didn't set the next state
+                    if (state == STATE_GAME)
+                    {
+                        state = STATE_EXIT;
+                    }
+                    break;
+
+                case STATE_SWITCH_CHARACTER:
+                    logger->log("State: SWITCH_CHARACTER");
+                    switchCharacter(&token);
+                    break;
+
+                case STATE_RECONNECT_ACCOUNT:
+                    logger->log("State: RECONNECT_ACCOUNT");
+
+                    // Done with game & chat
+                    gameServerConnection->disconnect();
+                    chatServerConnection->disconnect();
+
+                    accountServerConnection->connect(
+                            loginData.hostname,
+                            loginData.port);
+                    break;
+
+                case STATE_WAIT:
+                    break;
+
+                case STATE_EXIT:
+                    logger->log("State: EXIT");
+                    logoutThenExit();
+                    break;
+
+                default:
+                    state = STATE_FORCE_QUIT;
+                    break;
+            }
+        }
+
+#else // no TMWSERV_SUPPORT
+
         if (state != oldstate) {
             switch (oldstate)
             {
-                case UPDATE_STATE:
+                case STATE_UPDATE:
                     loadUpdates();
                     // Reload the wallpaper in case that it was updated
                     login_wallpaper->decRef();
@@ -907,12 +1553,12 @@ int main(int argc, char *argv[])
                     break;
 
                     // Those states don't cause a network disconnect
-                case LOADDATA_STATE:
+                case STATE_LOADDATA:
                     break;
 
-                case ACCOUNT_STATE:
-                case CHAR_CONNECT_STATE:
-                case CONNECTING_STATE:
+                case STATE_ACCOUNT:
+                case STATE_CHAR_CONNECT:
+                case STATE_CONNECTING:
                     progressBar->setVisible(false);
                     progressLabel->setCaption("");
                     break;
@@ -925,14 +1571,14 @@ int main(int argc, char *argv[])
 
             oldstate = state;
 
-            if (currentDialog && state != ACCOUNT_STATE &&
-                    state != CHAR_CONNECT_STATE) {
+            if (currentDialog && state != STATE_ACCOUNT &&
+                    state != STATE_CHAR_CONNECT) {
                 delete currentDialog;
                 currentDialog = NULL;
             }
 
             switch (state) {
-                case LOADDATA_STATE:
+                case STATE_LOADDATA:
                     logger->log("State: LOADDATA");
 
                     // Add customdata directory
@@ -948,15 +1594,15 @@ int main(int argc, char *argv[])
                     NPCDB::load();
                     EmoteDB::load();
 
-                    state = CHAR_CONNECT_STATE;
+                    state = STATE_CHAR_CONNECT;
                     break;
 
-                case LOGIN_STATE:
+                case STATE_LOGIN:
                     logger->log("State: LOGIN");
 
                     if (!loginData.password.empty()) {
                         loginData.registerLogin = false;
-                        state = ACCOUNT_STATE;
+                        state = STATE_ACCOUNT;
                     } else {
                         currentDialog = new LoginDialog(&loginData);
                         positionDialog(currentDialog, screenWidth,
@@ -964,13 +1610,13 @@ int main(int argc, char *argv[])
                     }
                     break;
 
-                case REGISTER_STATE:
+                case STATE_REGISTER:
                     logger->log("State: REGISTER");
                     currentDialog = new RegisterDialog(&loginData);
                     positionDialog(currentDialog, screenWidth, screenHeight);
                     break;
 
-                case CHAR_SERVER_STATE:
+                case STATE_CHAR_SERVER:
                     logger->log("State: CHAR_SERVER");
 
                     if (n_server == 1)
@@ -979,25 +1625,25 @@ int main(int argc, char *argv[])
                         loginData.hostname = ipToString(si->address);
                         loginData.port = si->port;
                         loginData.updateHost = si->updateHost;
-                        state = UPDATE_STATE;
+                        state = STATE_UPDATE;
                     }
                     else
                     {
                         int nextState = (options.skipUpdate) ?
-                            LOADDATA_STATE : UPDATE_STATE;
+                            STATE_LOADDATA : STATE_UPDATE;
                         currentDialog = new ServerSelectDialog(&loginData,
                                                                 nextState);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
                         if (options.chooseDefault
-                                || !options.playername.empty())
+                                || !options.character.empty())
                         {
                             ((ServerSelectDialog*) currentDialog)->action(
                                 gcn::ActionEvent(NULL, "ok"));
                         }
                     }
                     break;
-                case CHAR_SELECT_STATE:
+                case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
                             (loginData.sex == 0) ?
@@ -1005,7 +1651,7 @@ int main(int argc, char *argv[])
                     positionDialog(currentDialog, screenWidth, screenHeight);
 
                     if (((CharSelectDialog*) currentDialog)->
-                            selectByName(options.playername))
+                            selectByName(options.character))
                         options.chooseDefault = true;
                     else
                         ((CharSelectDialog*) currentDialog)->selectByName(
@@ -1017,7 +1663,7 @@ int main(int argc, char *argv[])
 
                     break;
 
-                case GAME_STATE:
+                case STATE_GAME:
                     sound.fadeOutMusic(1000);
 
 #ifdef PACKAGE_VERSION
@@ -1040,10 +1686,10 @@ int main(int argc, char *argv[])
                     game = new Game(network);
                     game->logic();
                     delete game;
-                    state = EXIT_STATE;
+                    state = STATE_EXIT;
                     break;
 
-                case UPDATE_STATE:
+                case STATE_UPDATE:
                     // Determine which source to use for the update host
                     if (!options.updateHost.empty())
                         updateHost = options.updateHost;
@@ -1054,7 +1700,7 @@ int main(int argc, char *argv[])
                     logger->log("State: UPDATE");
 
                     if (options.skipUpdate) {
-                        state = LOADDATA_STATE;
+                        state = STATE_LOADDATA;
                     } else {
                         currentDialog = new UpdaterWindow(updateHost,
                                                 homeDir + "/" + updatesDir);
@@ -1063,7 +1709,7 @@ int main(int argc, char *argv[])
                     }
                     break;
 
-                case ERROR_STATE:
+                case STATE_ERROR:
                     logger->log("State: ERROR");
                     currentDialog = new OkDialog(_("Error"), errorMessage);
                     positionDialog(currentDialog, screenWidth, screenHeight);
@@ -1073,7 +1719,7 @@ int main(int argc, char *argv[])
                     network->clearHandlers();
                     break;
 
-                case CONNECTING_STATE:
+                case STATE_CONNECTING:
                     logger->log("State: CONNECTING");
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
@@ -1082,7 +1728,7 @@ int main(int argc, char *argv[])
                     mapLogin(network, &loginData);
                     break;
 
-                case CHAR_CONNECT_STATE:
+                case STATE_CHAR_CONNECT:
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
                             _("Connecting to character server..."));
@@ -1090,7 +1736,7 @@ int main(int argc, char *argv[])
                     charLogin(network, &loginData);
                     break;
 
-                case ACCOUNT_STATE:
+                case STATE_ACCOUNT:
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
                             _("Connecting to account server..."));
@@ -1099,10 +1745,11 @@ int main(int argc, char *argv[])
                     break;
 
                 default:
-                    state = EXIT_STATE;
+                    state = STATE_EXIT;
                     break;
             }
         }
+#endif
         /*
          * This loop can really stress the CPU, for no reason since it's
          * just constantly redrawing the wallpaper.  Added the following
@@ -1120,16 +1767,28 @@ int main(int argc, char *argv[])
     delete setup;
     delete setupWindow;
 
+#ifdef TMWSERV_SUPPORT
+    if (accountServerConnection)
+        accountServerConnection->disconnect();
+    if (gameServerConnection)
+        gameServerConnection->disconnect();
+    if (chatServerConnection)
+        chatServerConnection->disconnect();
+
+    delete accountServerConnection;
+    delete gameServerConnection;
+    delete chatServerConnection;
+    Net::finalize();
+#else
     delete network;
     SDLNet_Quit();
+#endif
 
-    if (nullFile)
-    {
-        fclose(nullFile);
-    }
-    logger->log("State: EXIT");
+    logger->log("Quitting");
     exit_engine();
     PHYSFS_deinit();
+    delete logger;
+
     return 0;
 }
 

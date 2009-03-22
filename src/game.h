@@ -24,10 +24,14 @@
 
 #include <memory>
 
+#include "SDL.h"
+
 #include "configlistener.h"
 
 class MessageHandler;
+#ifdef EATHENA_SUPPORT
 class Network;
+#endif
 
 extern std::string map_path;
 extern volatile int fps;
@@ -36,7 +40,11 @@ extern volatile int tick_time;
 class Game : public ConfigListener
 {
     public:
+#ifdef TMWSERV_SUPPORT
+        Game();
+#else
         Game(Network *network);
+#endif
         ~Game();
 
         void logic();
@@ -46,7 +54,9 @@ class Game : public ConfigListener
         void optionChanged(const std::string &name);
 
     private:
+#ifdef EATHENA_SUPPORT
         Network *mNetwork;
+#endif
 
         /** Used to determine whether to draw the next frame. */
         int mDrawTime;
@@ -56,15 +66,25 @@ class Game : public ConfigListener
 
         typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
         MessageHandlerPtr mBeingHandler;
+#ifdef TMWSERV_SUPPORT
+        MessageHandlerPtr mGuildHandler;
+        MessageHandlerPtr mPartyHandler;
+        MessageHandlerPtr mEffectHandler;
+#else
+        MessageHandlerPtr mEquipmentHandler;
+        MessageHandlerPtr mSkillHandler;
+#endif
         MessageHandlerPtr mBuySellHandler;
         MessageHandlerPtr mChatHandler;
-        MessageHandlerPtr mEquipmentHandler;
         MessageHandlerPtr mInventoryHandler;
         MessageHandlerPtr mItemHandler;
         MessageHandlerPtr mNpcHandler;
         MessageHandlerPtr mPlayerHandler;
-        MessageHandlerPtr mSkillHandler;
+        MessageHandlerPtr mPostHandler;
         MessageHandlerPtr mTradeHandler;
+
+        SDL_TimerID mLogicCounterId;
+        SDL_TimerID mSecondsCounterId;
 };
 
 /**

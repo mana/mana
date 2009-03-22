@@ -107,7 +107,7 @@ void ServerSelectDialog::action(const gcn::ActionEvent &event)
         state = mNextState;
     }
     else if (event.getId() == "cancel")
-        state = LOGIN_STATE;
+        state = STATE_LOGIN;
 }
 
 int ServerListModel::getNumberOfElements()

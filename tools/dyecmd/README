@@ -1,0 +1,12 @@
+DYECMD
+=======
+
+This tool is used to dye item graphics used by the tmw client according to the
+specification described here: http://wiki.themanaworld.org/index.php/Image_dyeing
+
+The tool expects 3 parameters:
+
+dyecmd <source_image> <target_image> <dye_string>
+e.g.:
+dyecmd "armor-legs-shorts.png" "armor-legs-shorts2.png" "W:#222255,6666ff"
+

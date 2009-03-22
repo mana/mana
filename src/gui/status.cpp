@@ -168,21 +168,21 @@ void StatusWindow::update()
 {
     // Status Part
     // -----------
-    mLvlLabel->setCaption(strprintf(_("Level: %d"), mPlayer->mLevel));
+    mLvlLabel->setCaption(strprintf(_("Level: %d"), mPlayer->getLevel()));
     mLvlLabel->adjustSize();
 
     mJobLvlLabel->setCaption(strprintf(_("Job: %d"), mPlayer->mJobLevel));
     mJobLvlLabel->adjustSize();
 
-    if (mCurrency != mPlayer->mGp) {
-        mCurrency = mPlayer->mGp;
+    if (mCurrency != mPlayer->getMoney()) {
+        mCurrency = mPlayer->getMoney();
         mGpLabel->setCaption(strprintf(_("Money: %s"),
                     Units::formatCurrency(mCurrency).c_str()));
         mGpLabel->adjustSize();
     }
 
-    mHpBar->setText(toString(mPlayer->mHp) +
-                    "/" + toString(mPlayer->mMaxHp));
+    mHpBar->setText(toString(mPlayer->getHp()) +
+                    "/" + toString(mPlayer->getMaxHp()));
 
     mMpBar->setText(toString(mPlayer->mMp) +
                     "/" + toString(mPlayer->mMaxMp));
@@ -194,11 +194,11 @@ void StatusWindow::update()
                      "/" + toString(mPlayer->mJobXpForNextLevel));
 
     // HP Bar coloration
-    if (mPlayer->mHp < int(mPlayer->mMaxHp / 3))
+    if (mPlayer->getHp() < int(mPlayer->getMaxHp() / 3))
     {
         mHpBar->setColor(223, 32, 32); // Red
     }
-    else if (mPlayer->mHp < int((mPlayer->mMaxHp / 3) * 2))
+    else if (mPlayer->getHp() < int((mPlayer->getMaxHp() / 3) * 2))
     {
         mHpBar->setColor(230, 171, 34); // Orange
     }
@@ -207,7 +207,7 @@ void StatusWindow::update()
         mHpBar->setColor(0, 171, 34); // Green
     }
 
-    mHpBar->setProgress((float) mPlayer->mHp / (float) mPlayer->mMaxHp);
+    mHpBar->setProgress((float) mPlayer->getHp() / (float) mPlayer->getMaxHp());
     mMpBar->setProgress((float) mPlayer->mMp / (float) mPlayer->mMaxMp);
 
     mXpBar->setProgress(

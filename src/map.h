@@ -53,7 +53,7 @@ struct MetaTile
     /**
      * Constructor.
      */
-    MetaTile():whichList(0) {};
+    MetaTile():whichList(0), blockmask(0) {};
 
     // Pathfinding members
     int Fcost;               /**< Estimation of total path cost */
@@ -62,7 +62,7 @@ struct MetaTile
     int whichList;           /**< No list, open list or closed list */
     int parentX;             /**< X coordinate of parent tile */
     int parentY;             /**< Y coordinate of parent tile */
-    bool walkable;           /**< Can beings walk on this tile */
+    unsigned char blockmask; /**< Blocking properties of this tile */
 };
 
 /**
@@ -143,6 +143,15 @@ class MapLayer
 class Map : public Properties
 {
     public:
+        enum BlockType
+        {
+            BLOCKTYPE_NONE = -1,
+            BLOCKTYPE_WALL,
+            BLOCKTYPE_CHARACTER,
+            BLOCKTYPE_MONSTER,
+            NB_BLOCKTYPES
+        };
+
         /**
          * Constructor, taking map and tile size as parameters.
          */
@@ -175,6 +184,11 @@ class Map : public Properties
         void draw(Graphics *graphics, int scrollX, int scrollY);
 
         /**
+         * Visualizes collision layer for debugging
+         */
+        void drawCollision(Graphics *graphics, int scrollX, int scrollY);
+
+        /**
          * Adds a layer to this map. The map takes ownership of the layer.
          */
         void addLayer(MapLayer *layer);
@@ -192,17 +206,18 @@ class Map : public Properties
         /**
          * Get tile reference.
          */
-        MetaTile *getMetaTile(int x, int y);
+        MetaTile *getMetaTile(int x, int y) const;
 
         /**
-         * Set walkability flag for a tile.
+         * Marks a tile as occupied
          */
-        void setWalk(int x, int y, bool walkable);
+        void blockTile(int x, int y, BlockType type);
 
         /**
-         * Tell if a tile collides, not including a check on beings.
+         * Gets walkability for a tile with a blocking bitmask. When called
+         * without walkmask, only blocks against colliding tiles.
          */
-        bool tileCollides(int x, int y) const;
+        bool getWalk(int x, int y, char walkmask = BLOCKMASK_WALL) const;
 
         /**
          * Returns the width of this map.
@@ -227,7 +242,8 @@ class Map : public Properties
         /**
          * Find a path from one location to the next.
          */
-        Path findPath(int startX, int startY, int destX, int destY);
+        Path findPath(int startX, int startY, int destX, int destY,
+                      unsigned char walkmask, int maxCost = 20);
 
         /**
          * Adds a sprite to the map.
@@ -268,14 +284,17 @@ class Map : public Properties
                          int detail);
 
         /**
-         * Tells whether a tile is occupied by a being.
-         */
-        bool occupied(int x, int y) const;
-
-        /**
          * Tells whether the given coordinates fall within the map boundaries.
          */
         bool contains(int x, int y) const;
+
+        /**
+         * Blockmasks for different entities
+         */
+        static const unsigned char BLOCKMASK_WALL = 0x80;     // = bin 1000 0000
+        static const unsigned char BLOCKMASK_CHARACTER = 0x01;// = bin 0000 0001
+        static const unsigned char BLOCKMASK_MONSTER = 0x02;  // = bin 0000 0010
+        int *mOccupation[NB_BLOCKTYPES];
 
         int mWidth, mHeight;
         int mTileWidth, mTileHeight;

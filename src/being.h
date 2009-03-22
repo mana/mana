@@ -30,9 +30,11 @@
 #include <string>
 #include <vector>
 
+#include "map.h"
 #include "particlecontainer.h"
 #include "position.h"
 #include "sprite.h"
+#include "vector.h"
 
 #include "resources/spritedef.h"
 
@@ -78,7 +80,9 @@ class Being : public Sprite
         };
 
         /**
-         * Action the being is currently performing.
+         * Action the being is currently performing
+         * WARNING: Has to be in sync with the same enum in the Being class
+         * of the server!
          */
         enum Action
         {
@@ -96,14 +100,20 @@ class Being : public Sprite
             SHOE_SPRITE,
             BOTTOMCLOTHES_SPRITE,
             TOPCLOTHES_SPRITE,
+#ifdef EATHENA_SUPPORT
             MISC1_SPRITE,
             MISC2_SPRITE,
+#endif
             HAIR_SPRITE,
             HAT_SPRITE,
+#ifdef EATHENA_SUPPORT
             CAPE_SPRITE,
             GLOVES_SPRITE,
+#endif
             WEAPON_SPRITE,
+#ifdef EATHENA_SUPPORT
             SHIELD_SPRITE,
+#endif
             VECTOREND_SPRITE
         };
 
@@ -129,15 +139,17 @@ class Being : public Sprite
          */
         enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
-        Uint16 mJob;            /**< Job (player job, npc, monster, ) */
+#ifdef EATHENA_SUPPORT
         Uint16 mX, mY;          /**< Tile coordinates */
-        Action mAction;          /**< Action the being is performing */
         Uint16 mFrame;
         Uint16 mWalkTime;
+#endif
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
 
         Uint16 mAttackSpeed;    /**< Attack speed */
+        Action mAction;         /**< Action the being is performing */
+        Uint16 mJob;            /**< Job (player job, npc, monster, creature ) */
 
         /**
          * Constructor.
@@ -157,7 +169,26 @@ class Being : public Sprite
         /**
          * Sets a new destination for this being to walk to.
          */
+#ifdef EATHENA_SUPPORT
         virtual void setDestination(Uint16 destX, Uint16 destY);
+#else
+        void setDestination(int x, int y);
+
+        /**
+         * Returns the destination for this being.
+         */
+        const Vector &getDestination() const { return mDest; }
+
+        /**
+         * Adjusts course to expected start point.
+         */
+        void adjustCourse(int srcX, int srcY);
+
+        /**
+         * Adjusts course to expected start and end points.
+         */
+        void adjustCourse(int srcX, int srcY, int destX, int destY);
+#endif
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -186,7 +217,11 @@ class Being : public Sprite
          * @param victim The attacked being.
          * @param damage The amount of damage dealt (0 means miss).
          */
+#ifdef TMWSERV_SUPPORT
+        virtual void handleAttack();
+#else
         virtual void handleAttack(Being *victim, int damage);
+#endif
 
         /**
          * Returns the name of the being.
@@ -227,7 +262,8 @@ class Being : public Sprite
         /**
          * Sets visible equipments for this being.
          */
-        virtual void setSprite(int slot, int id, std::string color = "");
+        virtual void setSprite(int slot, int id,
+                               const std::string &color = "");
 
         /**
          * Sets the gender of this being.
@@ -239,10 +275,12 @@ class Being : public Sprite
          */
         Gender getGender() const { return mGender; }
 
+#ifdef EATHENA_SUPPORT
         /**
          * Makes this being take the next step of his path.
          */
         virtual void nextStep();
+#endif
 
         /**
          * Triggers whether or not to show the name as a GM name.
@@ -274,16 +312,17 @@ class Being : public Sprite
 
         /**
          * Gets the walk speed.
+         * @see setWalkSpeed(int)
          */
-        Uint16 getWalkSpeed() const { return mWalkSpeed; }
+        int getWalkSpeed() const { return mWalkSpeed; }
 
         /**
-         * Sets the walk speed.
+         * Sets the walk speed (in pixels per second).
          */
-        void setWalkSpeed(Uint16 speed) { mWalkSpeed = speed; }
+        void setWalkSpeed(int speed) { mWalkSpeed = speed; }
 
         /**
-         * Gets the sprite id.
+         * Gets the being id.
          */
         Uint32 getId() const { return mId; }
 
@@ -300,7 +339,12 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        virtual void setAction(Action action);
+        virtual void setAction(Action action, int attackType = 0);
+
+        /**
+         * Gets the current action.
+         */
+        bool isAlive() { return mAction != DEAD; }
 
         /**
          * Returns the current direction.
@@ -312,15 +356,22 @@ class Being : public Sprite
          */
         void setDirection(Uint8 direction);
 
+#ifdef EATHENA_SUPPORT
         /**
          * Gets the current action.
          */
         int getWalkTime() { return mWalkTime; }
+#endif
 
         /**
          * Returns the direction the being is facing.
          */
+#ifdef TMWSERV_SUPPORT
+        SpriteDirection getSpriteDirection() const
+        { return SpriteDirection(mSpriteDirection); }
+#else
         SpriteDirection getSpriteDirection() const;
+#endif
 
         /**
          * Draws this being to the given graphics context.
@@ -332,15 +383,24 @@ class Being : public Sprite
         /**
          * Returns the pixel X coordinate.
          */
+#ifdef TMWSERV_SUPPORT
+        int getPixelX() const { return (int) mPos.x; }
+#else
         int getPixelX() const { return mPx; }
+#endif
 
         /**
          * Returns the pixel Y coordinate.
          *
          * @see Sprite::getPixelY()
          */
+#ifdef TMWSERV_SUPPORT
+        int getPixelY() const { return (int) mPos.y; }
+#else
         int getPixelY() const { return mPy; }
+#endif
 
+#ifdef EATHENA_SUPPORT
         /**
          * Get the current X pixel offset.
          */
@@ -352,14 +412,37 @@ class Being : public Sprite
          */
         int getYOffset() const
         { return getOffset(UP, DOWN); }
+#endif
 
         /**
-         * Returns the horizontal size of the current base sprite of the being
+         * Sets the position of this being. When the being was walking, it also
+         * clears the destination and the path.
+         */
+        void setPosition(const Vector &pos);
+
+        /**
+         * Overloaded method provided for convenience.
+         *
+         * @see setPosition(const Vector &pos)
+         */
+        void setPosition(float x, float y, float z = 0.0f)
+        {
+            setPosition(Vector(x, y, z));
+        }
+
+        /**
+         * Returns the position of this being.
+         */
+        const Vector &getPosition() const { return mPos; }
+
+
+        /**
+         * Returns the horizontal size of the current base sprite of the being.
          */
         virtual int getWidth() const;
 
         /**
-         * Returns the vertical size of the current base sprite of the being
+         * Returns the vertical size of the current base sprite of the being.
          */
         virtual int getHeight() const;
 
@@ -373,6 +456,18 @@ class Being : public Sprite
          * Take control of a particle.
          */
         void controlParticle(Particle *particle);
+
+        /**
+         * Gets the way the object is blocked by other objects.
+         */
+        virtual unsigned char getWalkMask() const
+        { return 0x00; } //can walk through everything
+
+        /**
+         * Returns the path this being is following. An empty path is returned
+         * when this being isn't following any path currently.
+         */
+        const Path &getPath() const { return mPath; }
 
         /**
          * Sets the target animation for this being.
@@ -449,6 +544,12 @@ class Being : public Sprite
         virtual void updateCoords() {}
 
         /**
+         * Gets the way the object blocks pathfinding for other objects
+         */
+        virtual Map::BlockType getBlockType() const
+        { return Map::BLOCKTYPE_NONE; }
+
+        /**
          * Trigger visual effect, with components
          *
          * \param effectId ID of the effect to trigger
@@ -478,8 +579,10 @@ class Being : public Sprite
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
         Uint32 mId;                     /**< Unique sprite id */
-        Uint16 mWalkSpeed;              /**< Walking speed */
         Uint8 mDirection;               /**< Facing direction */
+#ifdef TMWSERV_SUPPORT
+        Uint8 mSpriteDirection;         /**< Facing direction */
+#endif
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
@@ -494,7 +597,8 @@ class Being : public Sprite
         Path mPath;
         std::string mSpeech;
         Text *mText;
-        Uint16 mHairStyle, mHairColor;
+        int mHairStyle;
+        int mHairColor;
         Gender mGender;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
@@ -511,17 +615,29 @@ class Being : public Sprite
         ParticleList mChildParticleEffects;
 
     private:
+#ifdef EATHENA_SUPPORT
         /**
          * Calculates the offset in the given directions.
          * If walking in direction 'neg' the value is negated.
          */
         int getOffset(char pos, char neg) const;
+#endif
 
         /** Reset particle status effects on next redraw? */
         bool mMustResetParticles;
 
+#ifdef TMWSERV_SUPPORT
+        static const int DEFAULT_WIDTH = 32;
+        static const int DEFAULT_HEIGHT = 32;
+#endif
+
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;
+
+        int mWalkSpeed;                 /**< Walking speed (pixels/sec) */
+
+        Vector mPos;
+        Vector mDest;
 
         // Target cursor being used
         SimpleAnimation* mUsedTargetCursor;

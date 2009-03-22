@@ -36,6 +36,7 @@
 #include "../item.h"
 #include "../localplayer.h"
 
+#include "../resources/image.h"
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
@@ -57,8 +58,16 @@ static const int boxPosition[][2] = {
     {129, 78}    // EQUIP_AMMO_SLOT
 };
 
+#ifdef TMWSERV_SUPPORT
+EquipmentWindow::EquipmentWindow(Equipment *equipment):
+#else
 EquipmentWindow::EquipmentWindow():
+#endif
     Window(_("Equipment")),
+#ifdef TMWSERV_SUPPORT
+    mEquipment(equipment),
+#endif
+    mBackground(NULL),
     mSelected(-1)
 {
     mItemPopup = new ItemPopup;
@@ -81,19 +90,31 @@ EquipmentWindow::EquipmentWindow():
     add(mPlayerBox);
     add(mUnequip);
 
+#ifdef TMWSERV_SUPPORT
+    for (int i = 0; i < EQUIPMENT_SIZE; i++)
+#else
     for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+#endif
     {
         mEquipBox[i].posX = boxPosition[i][0] + getPadding();
         mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
     }
 
+    ResourceManager *resman = ResourceManager::getInstance();
+    mBackground = resman->getImage("graphics/gui/equip_bg.png");
+    mBackground->setAlpha(0.3);
+
+#ifdef EATHENA_SUPPORT
     mEquipment = player_node->mEquipment.get();
     mInventory = player_node->getInventory();
+#endif
 }
 
 EquipmentWindow::~EquipmentWindow()
 {
+    mBackground->decRef();
     delete mItemPopup;
+    delete mUnequip;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
@@ -101,22 +122,29 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Draw window graphics
     Window::draw(graphics);
 
-    Item* item;
-
     Graphics *g = static_cast<Graphics*>(graphics);
 
     Window::drawChildren(graphics);
 
+#ifdef TMWSERV_SUPPORT
+    for (int i = 0; i < EQUIPMENT_SIZE; i++)
+#else
     for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+#endif
     {
-        item = (i != EQUIP_AMMO_SLOT) ?
+#ifdef TMWSERV_SUPPORT
+        Item *item = mEquipment->getEquipment(i);
+#else
+        Item *item = (i != EQUIP_AMMO_SLOT) ?
                mInventory->getItem(mEquipment->getEquipment(i)) :
                mInventory->getItem(mEquipment->getArrows());
+#endif
         if (item)
         {
             // Draw Item.
-            Image* image = item->getImage();
+            Image *image = item->getImage();
             g->drawImage(image, mEquipBox[i].posX, mEquipBox[i].posY);
+#ifdef EATHENA_SUPPORT
             if (i == EQUIP_AMMO_SLOT)
             {
                 g->setColor(gcn::Color(0, 0, 0));
@@ -125,6 +153,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
                                    mEquipBox[i].posY - getFont()->getHeight(),
                                    gcn::Graphics::CENTER);
             }
+#endif
         }
 
         if (i == mSelected)
@@ -148,26 +177,38 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "unequip" && mSelected > -1)
     {
+#ifdef TMWSERV_SUPPORT
+        player_node->unequipItem(mSelected);
+#else
         Item* item = (mSelected != EQUIP_AMMO_SLOT) ?
                      mInventory->getItem(mEquipment->getEquipment(mSelected)) :
                      mInventory->getItem(mEquipment->getArrows());
         player_node->unequipItem(item);
+#endif
         mSelected = -1;
     }
 }
 
 Item* EquipmentWindow::getItem(int x, int y) const
 {
+#ifdef TMWSERV_SUPPORT
+    for (int i = 0; i < EQUIPMENT_SIZE; i++)
+#else
     for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+#endif
     {
         gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
                              BOX_WIDTH, BOX_HEIGHT);
 
         if (tRect.isPointInRect(x, y))
         {
+#ifdef TMWSERV_SUPPORT
+            return mEquipment->getEquipment(i);
+#else
             return (i != EQUIP_AMMO_SLOT) ?
                     mInventory->getItem(mEquipment->getEquipment(i)) :
                     mInventory->getItem(mEquipment->getArrows());
+#endif
         }
     }
     return NULL;
@@ -185,11 +226,19 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
     {
         // Checks if any of the presses were in the equip boxes.
+#ifdef TMWSERV_SUPPORT
+        for (int i = 0; i < EQUIPMENT_SIZE; i++)
+#else
         for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
+#endif
         {
+#ifdef TMWSERV_SUPPORT
+            item = mEquipment->getEquipment(i);
+#else
             item = (i != EQUIP_AMMO_SLOT) ?
                     mInventory->getItem(mEquipment->getEquipment(i)) :
                     mInventory->getItem(mEquipment->getArrows());
+#endif
             gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
                                  BOX_WIDTH, BOX_HEIGHT);
 

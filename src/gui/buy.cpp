@@ -33,14 +33,25 @@
 #include "../npc.h"
 #include "../units.h"
 
+#ifdef TMWSERV_SUPPORT
+#include "../net/gameserver/player.h"
+#else
 #include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../net/ea/protocol.h"
+#endif
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
+#ifdef TMWSERV_SUPPORT
+BuyDialog::BuyDialog():
+#else
 BuyDialog::BuyDialog(Network *network):
-    Window(_("Buy")), mNetwork(network),
+#endif
+    Window(_("Buy")),
+#ifndef TMWSERV_SUPPORT
+    mNetwork(network),
+#endif
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     setWindowName("Buy");
@@ -119,9 +130,9 @@ void BuyDialog::reset()
     setMoney(0);
 }
 
-void BuyDialog::addItem(short id, int price)
+void BuyDialog::addItem(int id, int amount, int price)
 {
-    mShopItems->addItem(id, price);
+    mShopItems->addItem(id, amount, price);
     mShopItemList->adjustSize();
 }
 
@@ -166,11 +177,16 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "buy" && mAmountItems > 0 &&
                 mAmountItems <= mMaxItems)
     {
+#ifdef TMWSERV_SUPPORT
+        Net::GameServer::Player::tradeWithNPC
+            (mShopItems->at(selectedItem)->getId(), mAmountItems);
+#else
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
         outMsg.writeInt16(8);
         outMsg.writeInt16(mAmountItems);
         outMsg.writeInt16(mShopItems->at(selectedItem)->getId());
+#endif
 
         // Update money and adjust the max number of items that can be bought
         mMaxItems -= mAmountItems;

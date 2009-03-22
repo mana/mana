@@ -162,4 +162,3 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
 };
 
 #endif
-

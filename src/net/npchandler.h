@@ -29,7 +29,7 @@ class NPCHandler : public MessageHandler
     public:
         NPCHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

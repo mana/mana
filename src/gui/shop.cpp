@@ -38,17 +38,19 @@ std::string ShopItems::getElementAt(int i)
     return mShopItems.at(i)->getDisplayName();
 }
 
-void ShopItems::addItem(int inventoryIndex, short id, int amount, int price)
+void ShopItems::addItem(int id, int amount, int price)
+{
+    mShopItems.push_back(new ShopItem(id, amount, price));
+}
+
+#ifdef EATHENA_SUPPORT
+void ShopItems::addItem(int inventoryIndex, int id, int amount, int price)
 {
     ShopItem *item = new ShopItem(id, amount, price);
     item->setInvIndex(inventoryIndex);
     mShopItems.push_back(item);
 }
-
-void ShopItems::addItem(short id, int price)
-{
-    mShopItems.push_back(new ShopItem(id, 0, price));
-}
+#endif
 
 ShopItem* ShopItems::at(int i) const
 {

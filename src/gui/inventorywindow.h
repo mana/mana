@@ -24,6 +24,7 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
+#include <guichan/keylistener.hpp>
 
 #include "window.h"
 
@@ -39,14 +40,20 @@ class TextBox;
  *
  * \ingroup Interface
  */
-class InventoryWindow : public Window, gcn::ActionListener,
-                                       gcn::SelectionListener
+class InventoryWindow : public Window,
+                        public gcn::ActionListener,
+                        public gcn::KeyListener,
+                        public gcn::SelectionListener
 {
     public:
         /**
          * Constructor.
          */
+#ifdef TMWSERV_SUPPORT
+        InventoryWindow(int invSize = (INVENTORY_SIZE));
+#else
         InventoryWindow(int invSize = (INVENTORY_SIZE - 2));
+#endif
 
         /**
          * Destructor.
@@ -68,7 +75,27 @@ class InventoryWindow : public Window, gcn::ActionListener,
          */
         Item* getSelectedItem() const;
 
+        /**
+         * Handles the mouse clicks.
+         */
         void mouseClicked(gcn::MouseEvent &event);
+
+#ifdef TMWSERV_SUPPORT
+        /**
+         * Handles the key presses.
+         */
+        void keyPressed(gcn::KeyEvent &event);
+
+        /**
+         * Handles the key releases.
+         */
+        void keyReleased(gcn::KeyEvent &event);
+#endif
+
+        /**
+         * Updates labels to currently selected item.
+         */
+        void valueChanged(const gcn::SelectionEvent &event);
 
     private:
         void updateButtons();    /**< Updates button states. */
@@ -78,10 +105,13 @@ class InventoryWindow : public Window, gcn::ActionListener,
         std::string mWeight;
         std::string mSlots;
         std::string mUsedSlots;
-        Uint32 mTotalWeight, mMaxWeight;
-        gcn::Button *mUseButton, *mDropButton;
-        gcn::ScrollArea *mInvenScroll;
-
+        int mTotalWeight, mMaxWeight;
+        gcn::Button *mUseButton;
+        gcn::Button *mDropButton;
+#ifdef TMWSERV_SUPPORT
+        gcn::Button *mSplitButton;
+#endif
+        gcn::ScrollArea *mInvenScroll;         /**< Inventory Scroll Area. */
         gcn::Label *mWeightLabel;
         gcn::Label *mSlotsLabel;
 
@@ -90,6 +120,7 @@ class InventoryWindow : public Window, gcn::ActionListener,
 
         int mMaxSlots;
 
+        bool mSplit;
         bool mItemDesc;
 };
 

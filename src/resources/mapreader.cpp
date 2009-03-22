@@ -310,7 +310,8 @@ static void setTile(Map *map, MapLayer *layer, int x, int y, int gid)
         layer->setTile(x, y, img);
     } else {
         // Set collision tile
-        map->setWalk(x, y, (!set || (gid - set->getFirstGid() == 0)));
+        if (set && (gid - set->getFirstGid() != 0))
+            map->blockTile(x, y, Map::BLOCKTYPE_WALL);
     }
 }
 

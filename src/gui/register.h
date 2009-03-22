@@ -31,7 +31,19 @@
 
 class LoginData;
 class OkDialog;
-class WrongDataNoticeListener;
+
+/**
+ * Listener used while dealing with wrong data. It is used to direct the focus
+ * to the field which contained wrong data when the Ok button was pressed on
+ * the error notice.
+ */
+class WrongDataNoticeListener : public gcn::ActionListener {
+    public:
+        void setTarget(gcn::TextField *textField);
+        void action(const gcn::ActionEvent &event);
+    private:
+        gcn::TextField *mTarget;
+};
 
 /**
  * The registration dialog.
@@ -72,6 +84,7 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          */
         bool canSubmit() const;
 
+#ifdef EATHENA_SUPPORT 
         /**
          * Function to decide whether string is an unsigned short or not
          *
@@ -89,17 +102,24 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          * @return the value str represents
          */
         static unsigned short getUShort(const std::string &str);
+#endif
 
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;
+#ifdef EATHENA_SUPPORT 
         gcn::TextField *mServerField;
         gcn::TextField *mPortField;
+#else
+        gcn::TextField *mEmailField;
+#endif
 
         gcn::Button *mRegisterButton;
         gcn::Button *mCancelButton;
+#ifdef EATHENA_SUPPORT 
         gcn::RadioButton *mMaleButton;
         gcn::RadioButton *mFemaleButton;
+#endif
 
         WrongDataNoticeListener *mWrongDataNoticeListener;
 

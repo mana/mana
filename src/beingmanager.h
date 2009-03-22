@@ -26,7 +26,9 @@
 
 class LocalPlayer;
 class Map;
+#ifdef EATHENA_SUPPORT
 class Network;
+#endif
 
 typedef std::list<Being*> Beings;
 typedef Beings::iterator BeingIterator;
@@ -34,7 +36,9 @@ typedef Beings::iterator BeingIterator;
 class BeingManager
 {
     public:
+#ifdef EATHENA_SUPPORT
         BeingManager(Network *network);
+#endif
 
         /**
          * Sets the map on which beings are created
@@ -49,7 +53,11 @@ class BeingManager
         /**
          * Create a being and add it to the list of beings.
          */
+#ifdef TMWSERV_SUPPORT
+        Being *createBeing(int id, int type, int subtype);
+#else
         Being *createBeing(Uint32 id, Uint16 job);
+#endif
 
         /**
          * Remove a Being.
@@ -57,39 +65,39 @@ class BeingManager
         void destroyBeing(Being *being);
 
         /**
-         * Return a specific id Being.
+         * Returns a specific id Being.
          */
         Being* findBeing(Uint32 id);
-        Being* findBeingByPixel(Uint16 x, Uint16 y);
 
         /**
          * Returns a being at specific coordinates.
          */
         Being* findBeing(Uint16 x, Uint16 y, Being::Type type = Being::UNKNOWN);
+        Being* findBeingByPixel(Uint16 x, Uint16 y);
 
-       /**
-        * Returns a being nearest to specific coordinates.
-        *
-        * @param x       X coordinate.
-        * @param y       Y coordinate.
-        * @param maxdist Maximal distance. If minimal distance is larger,
-        *                no being is returned.
-        * @param type    The type of being to look for.
-        */
+        /**
+         * Returns a being nearest to specific coordinates.
+         *
+         * @param x       X coordinate.
+         * @param y       Y coordinate.
+         * @param maxdist Maximal distance. If minimal distance is larger,
+         *                no being is returned.
+         * @param type    The type of being to look for.
+         */
         Being* findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 
-       /**
-        * Finds a being by name and (optionally) by type.
-        */
+        /**
+         * Finds a being by name and (optionally) by type.
+         */
         Being* findBeingByName(std::string name, Being::Type type = Being::UNKNOWN);
 
-       /**
-        * Returns a being nearest to another being.
-        *
-        * \param maxdist maximal distance. If minimal distance is larger,
-        *                no being is returned
-        */
+        /**
+         * Returns a being nearest to another being.
+         *
+         * \param maxdist maximal distance. If minimal distance is larger,
+         *                no being is returned
+         */
         Being* findNearestLivingBeing(Being *aroundBeing, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 
@@ -111,7 +119,9 @@ class BeingManager
     protected:
         Beings mBeings;
         Map *mMap;
+#ifdef EATHENA_SUPPORT
         Network *mNetwork;
+#endif
 };
 
 extern BeingManager *beingManager;

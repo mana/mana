@@ -32,11 +32,15 @@
 
 #include "../utils/gettext.h"
 
-ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
+ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item,
+    int maxRange):
     Window("", true, parent),
     mItem(item)
 {
-    const int maxRange = mItem->getQuantity();
+    if (!maxRange)
+    {
+        maxRange = mItem->getQuantity();
+    }
 
     // Integer field
     mItemAmountTextField = new IntTextField(1);
@@ -79,6 +83,10 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
         case AMOUNT_ITEM_DROP:
             setCaption(_("Select amount of items to drop."));
             okButton->setActionEventId("Drop");
+            break;
+        case AMOUNT_ITEM_SPLIT:
+            setCaption(_("Select amount of items to split."));
+            okButton->setActionEventId("Split");
             break;
         default:
             break;
@@ -123,6 +131,13 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
         tradeWindow->tradeItem(mItem, mItemAmountTextField->getValue());
         scheduleDelete();
     }
+#ifdef TMWSERV_SUPPORT
+    else if (event.getId() == "Split")
+    {
+        player_node->splitItem(mItem, mItemAmountTextField->getValue());
+        scheduleDelete();
+    }
+#endif
     mItemAmountTextField->setValue(amount);
     mItemAmountSlide->setValue(amount);
 }

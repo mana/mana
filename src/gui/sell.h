@@ -30,7 +30,9 @@
 #include "window.h"
 
 class Item;
+#ifdef EATHENA_SUPPORT
 class Network;
+#endif
 class ShopItems;
 class ShopListBox;
 
@@ -47,7 +49,11 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          *
          * @see Window::Window
          */
+#ifdef TMWSERV_SUPPORT
+        SellDialog();
+#else
         SellDialog(Network *network);
+#endif
 
         /**
          * Destructor
@@ -62,7 +68,11 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         /**
          * Adds an item to the inventory.
          */
+#ifdef TMWSERV_SUPPORT
+        void addItem(int item, int amount, int price);
+#else
         void addItem(const Item *item, int price);
+#endif
 
         /**
          * Called when receiving actions from the widgets.
@@ -87,7 +97,9 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void updateButtonsAndLabels();
 
+#ifdef EATHENA_SUPPORT
         Network *mNetwork;
+#endif
         gcn::Button *mSellButton;
         gcn::Button *mQuitButton;
         gcn::Button *mIncreaseButton;

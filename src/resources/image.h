@@ -40,8 +40,6 @@
 #include "resource.h"
 
 class Dye;
-class SDL_Rect;
-class SDL_Surface;
 
 /**
  * Defines a class for loading and storing images.

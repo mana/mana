@@ -24,9 +24,9 @@
 
 #include <list>
 
+#include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
-#include <guichan/widgetlistener.hpp>
 
 class Image;
 class Inventory;
@@ -43,14 +43,19 @@ namespace gcn {
  * \ingroup GUI
  */
 class ItemContainer : public gcn::Widget,
-                      public gcn::MouseListener,
-                      public gcn::WidgetListener
+                      public gcn::KeyListener,
+                      public gcn::MouseListener
 {
     public:
         /**
          * Constructor. Initializes the graphic.
+         * @param inventory
+         * @param gridColumns Amount of columns in grid.
+         * @param gridRows    Amount of rows in grid.
+         * @param offset      Index offset
          */
-        ItemContainer(Inventory *inventory, int offset);
+        ItemContainer(Inventory *inventory, int gridColumns, int gridRows,
+                      int offset = 0);
 
         /**
          * Destructor.
@@ -58,19 +63,19 @@ class ItemContainer : public gcn::Widget,
         virtual ~ItemContainer();
 
         /**
-         * Handles the logic of the ItemContainer
-         */
-        void logic();
-
-        /**
          * Draws the items.
          */
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Called whenever the widget changes size.
+         * Handles the key presses.
          */
-        void widgetResized(const gcn::Event &event);
+        void keyPressed(gcn::KeyEvent &event);
+
+        /**
+         * Handles the key releases.
+         */
+        void keyReleased(gcn::KeyEvent &event);
 
         /**
          * Handles mouse click.
@@ -78,9 +83,20 @@ class ItemContainer : public gcn::Widget,
         void mousePressed(gcn::MouseEvent &event);
 
         /**
+         * Handles mouse dragged.
+         */
+        void mouseDragged(gcn::MouseEvent &event);
+
+        /**
+         * Handles mouse released.
+         */
+        void mouseReleased(gcn::MouseEvent &event);
+
+        /**
          * Returns the selected item.
          */
-        Item* getSelectedItem();
+        Item* getSelectedItem() const
+        { return mSelectedItem; }
 
         /**
          * Sets selected item to NULL.
@@ -93,7 +109,7 @@ class ItemContainer : public gcn::Widget,
          */
         void addSelectionListener(gcn::SelectionListener *listener)
         {
-            mListeners.push_back(listener);
+            mSelectionListeners.push_back(listener);
         }
 
         /**
@@ -102,18 +118,35 @@ class ItemContainer : public gcn::Widget,
          */
         void removeSelectionListener(gcn::SelectionListener *listener)
         {
-            mListeners.remove(listener);
+            mSelectionListeners.remove(listener);
         }
 
+        enum {
+            MOVE_SELECTED_LEFT,  // 0
+            MOVE_SELECTED_RIGHT, // 1
+            MOVE_SELECTED_UP,    // 2
+            MOVE_SELECTED_DOWN   // 3
+        };
     private:
+        /**
+         * Execute all the functionality associated with the action key.
+         */
+        void keyAction();
+
         void mouseExited(gcn::MouseEvent &event);
         void mouseMoved(gcn::MouseEvent &event);
 
         /**
-
-         * Sets the currently selected item.  Invalid (e.g., negative) indices set `no item'.
+         * Moves the highlight in the direction specified.
+         *
+         * @param direction The move direction of the highlighter.
          */
-        void setSelectedItemIndex(int index);
+        void moveHighlight(int direction);
+
+        /**
+         * Sets the currently selected item.
+         */
+        void setSelectedItem(Item *item);
 
         /**
          * Find the current item index by the most recently used item ID
@@ -140,19 +173,21 @@ class ItemContainer : public gcn::Widget,
         int getSlotIndex(int posX, int posY) const;
 
         Inventory *mInventory;
-        Image *mSelImg;
-
-        int mSelectedItemIndex;
-        int mLastSelectedItemId;  // last selected item ID. If we lose the item, find again by ID.
-        int mMaxItems;
+        int mGridColumns, mGridRows;
         int mOffset;
+        Image *mSelImg;
+        Item *mSelectedItem, *mHighlightedItem;
+        int mSelectionStatus;
+        bool mSwapItems;
+        bool mDescItems;
+        int mDragPosX, mDragPosY;
 
         ItemPopup *mItemPopup;
 
-        std::list<gcn::SelectionListener*> mListeners;
+        typedef std::list<gcn::SelectionListener*> SelectionListenerList;
+        typedef SelectionListenerList::iterator SelectionListenerIterator;
 
-        static const int gridWidth;
-        static const int gridHeight;
+        SelectionListenerList mSelectionListeners;
 };
 
 #endif

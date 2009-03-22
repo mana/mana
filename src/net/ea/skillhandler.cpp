@@ -19,14 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "messagein.h"
+#include "../messagein.h"
 #include "protocol.h"
 #include "skillhandler.h"
 
-#include "../log.h"
+#include "../../log.h"
 
-#include "../gui/chat.h"
-#include "../gui/skill.h"
+#include "../../gui/chat.h"
+#include "../../gui/skill.h"
 
 SkillHandler::SkillHandler()
 {
@@ -38,27 +38,27 @@ SkillHandler::SkillHandler()
     handledMessages = _messages;
 }
 
-void SkillHandler::handleMessage(MessageIn *msg)
+void SkillHandler::handleMessage(MessageIn &msg)
 {
     int skillCount;
 
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case SMSG_PLAYER_SKILLS:
-            msg->readInt16();  // length
-            skillCount = (msg->getLength() - 4) / 37;
+            msg.readInt16();  // length
+            skillCount = (msg.getLength() - 4) / 37;
             skillDialog->cleanList();
 
             for (int k = 0; k < skillCount; k++)
             {
-                Sint16 skillId = msg->readInt16();
-                msg->readInt16();  // target type
-                msg->readInt16();  // unknown
-                Sint16 level = msg->readInt16();
-                Sint16 sp = msg->readInt16();
-                msg->readInt16();  // range
-                std::string skillName = msg->readString(24);
-                Sint8 up = msg->readInt8();
+                Sint16 skillId = msg.readInt16();
+                msg.readInt16();  // target type
+                msg.readInt16();  // unknown
+                Sint16 level = msg.readInt16();
+                Sint16 sp = msg.readInt16();
+                msg.readInt16();  // range
+                std::string skillName = msg.readString(24);
+                Sint8 up = msg.readInt8();
 
                 if (level != 0 || up != 0)
                 {
@@ -77,11 +77,11 @@ void SkillHandler::handleMessage(MessageIn *msg)
             // Action failed (ex. sit because you have not reached the
             // right level)
             CHATSKILL action;
-            action.skill   = msg->readInt16();
-            action.bskill  = msg->readInt16();
-            action.unused  = msg->readInt16(); // unknown
-            action.success = msg->readInt8();
-            action.reason  = msg->readInt8();
+            action.skill   = msg.readInt16();
+            action.bskill  = msg.readInt16();
+            action.unused  = msg.readInt16(); // unknown
+            action.success = msg.readInt8();
+            action.reason  = msg.readInt8();
             if (action.success != SKILL_FAILED &&
                 action.bskill == BSKILL_EMOTE)
             {

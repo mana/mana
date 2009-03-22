@@ -29,7 +29,7 @@
 class ItemInfo;
 
 /**
- * The namespace that holds the item information.
+ * Item information database.
  */
 namespace ItemDB
 {

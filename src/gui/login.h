@@ -27,13 +27,17 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
+#ifdef EATHENA_SUPPORT
 #include <guichan/listmodel.hpp>
+#endif
 
 #include "window.h"
 
-class DropDown;
 class LoginData;
+#ifdef EATHENA_SUPPORT
+class DropDown;
 class ScrollArea;
+#endif
 
 /**
  * The login dialog.
@@ -68,6 +72,7 @@ class LoginDialog : public Window, public gcn::ActionListener,
          */
         bool canSubmit();
 
+#ifdef EATHENA_SUPPORT
         /**
          * Function to decide whether string is an unsigned short or not
          *
@@ -86,11 +91,14 @@ class LoginDialog : public Window, public gcn::ActionListener,
          */
         static unsigned short getUShort(const std::string &str);
 
-        DropDown *mServerDropDown;
+#endif
         gcn::TextField *mUserField;
         gcn::TextField *mPassField;
+#ifdef EATHENA_SUPPORT
         gcn::TextField *mServerField;
         gcn::TextField *mPortField;
+        DropDown *mServerDropDown;
+#endif
         gcn::CheckBox *mKeepCheck;
         gcn::Button *mOkButton;
         gcn::Button *mCancelButton;
@@ -98,6 +106,7 @@ class LoginDialog : public Window, public gcn::ActionListener,
 
         LoginData *mLoginData;
 
+#ifdef EATHENA_SUPPORT
         /**
          * Helper class to keep a list of all the recent entries for the
          * dropdown
@@ -125,6 +134,7 @@ class LoginDialog : public Window, public gcn::ActionListener,
         DropDownList *mServerList;
         gcn::ListBox *mServerListBox;
         gcn::ScrollArea *mServerScrollArea;
+#endif
 };
 
 #endif

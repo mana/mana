@@ -45,8 +45,6 @@ EffectManager::EffectManager()
 
     for_each_xml_child_node(node, root)
     {
-        //int id;
-
         if (xmlStrEqual(node->name, BAD_CAST "effect"))
         {
             EffectDescription ed;
@@ -60,7 +58,6 @@ EffectManager::EffectManager()
 
 EffectManager::~EffectManager()
 {
-
 }
 
 bool EffectManager::trigger(int id, Being* being)

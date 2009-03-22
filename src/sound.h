@@ -29,6 +29,8 @@
 #endif
 #include <string>
 
+#include <string>
+
 /** Sound engine
  *
  * \ingroup CORE

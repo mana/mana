@@ -50,6 +50,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
+        bool mVisibleNamesEnabled;
         bool mParticleEffectsEnabled;
         bool mNameEnabled;
         double mOpacity;
@@ -69,6 +70,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
+        gcn::CheckBox *mVisibleNamesCheckBox;
         gcn::CheckBox *mParticleEffectsCheckBox;
         gcn::CheckBox *mNameCheckBox;
 

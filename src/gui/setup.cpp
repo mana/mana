@@ -44,6 +44,10 @@ extern Window *itemShortcutWindow;
 extern Window *emoteShortcutWindow;
 extern Window *emoteWindow;
 extern Window *tradeWindow;
+#ifdef TMWSERV_SUPPORT
+extern Window *magicDialog;
+extern Window *guildWindow;
+#endif
 
 Setup::Setup():
     Window(_("Setup"))
@@ -138,5 +142,9 @@ void Setup::action(const gcn::ActionEvent &event)
         emoteShortcutWindow->resetToDefaultSize();
         emoteWindow->resetToDefaultSize();
         tradeWindow->resetToDefaultSize();
+#ifdef TMWSERV_SUPPORT
+        magicDialog->resetToDefaultSize();
+        guildWindow->resetToDefaultSize();
+#endif
     }
 }

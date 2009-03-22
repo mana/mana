@@ -20,18 +20,18 @@
  */
 
 #include "equipmenthandler.h"
-#include "messagein.h"
+#include "../messagein.h"
 #include "protocol.h"
 
-#include "../equipment.h"
-#include "../inventory.h"
-#include "../item.h"
-#include "../localplayer.h"
-#include "../log.h"
+#include "../../equipment.h"
+#include "../../inventory.h"
+#include "../../item.h"
+#include "../../localplayer.h"
+#include "../../log.h"
 
-#include "../gui/chat.h"
+#include "../../gui/chat.h"
 
-#include "../utils/gettext.h"
+#include "../../utils/gettext.h"
 
 EquipmentHandler::EquipmentHandler()
 {
@@ -46,7 +46,7 @@ EquipmentHandler::EquipmentHandler()
     handledMessages = _messages;
 }
 
-void EquipmentHandler::handleMessage(MessageIn *msg)
+void EquipmentHandler::handleMessage(MessageIn &msg)
 {
     Sint32 itemCount;
     Sint16 index, equipPoint, itemId;
@@ -55,23 +55,23 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
     Item *item;
     Inventory *inventory = player_node->getInventory();
 
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case SMSG_PLAYER_EQUIPMENT:
-            msg->readInt16(); // length
-            itemCount = (msg->getLength() - 4) / 20;
+            msg.readInt16(); // length
+            itemCount = (msg.getLength() - 4) / 20;
 
             for (int loop = 0; loop < itemCount; loop++)
             {
-                index = msg->readInt16();
-                itemId = msg->readInt16();
-                msg->readInt8();  // type
-                msg->readInt8();  // identify flag
-                msg->readInt16(); // equip type
-                equipPoint = msg->readInt16();
-                msg->readInt8();  // attribute
-                msg->readInt8();  // refine
-                msg->skip(8);     // card
+                index = msg.readInt16();
+                itemId = msg.readInt16();
+                msg.readInt8();  // type
+                msg.readInt8();  // identify flag
+                msg.readInt16(); // equip type
+                equipPoint = msg.readInt16();
+                msg.readInt8();  // attribute
+                msg.readInt8();  // refine
+                msg.skip(8);     // card
 
                 inventory->setItem(index, itemId, 1, true);
 
@@ -91,9 +91,9 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_EQUIP:
-            index = msg->readInt16();
-            equipPoint = msg->readInt16();
-            type = msg->readInt8();
+            index = msg.readInt16();
+            equipPoint = msg.readInt16();
+            type = msg.readInt8();
 
             logger->log("Equipping: %i %i %i", index, equipPoint, type);
 
@@ -131,9 +131,9 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_UNEQUIP:
-            index = msg->readInt16();
-            equipPoint = msg->readInt16();
-            type = msg->readInt8();
+            index = msg.readInt16();
+            equipPoint = msg.readInt16();
+            type = msg.readInt8();
 
             if (!type) {
                 chatWindow->chatLog(_("Unable to unequip."), BY_SERVER);
@@ -169,11 +169,11 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_ATTACK_RANGE:
-            player_node->setAttackRange(msg->readInt16());
+            player_node->setAttackRange(msg.readInt16());
             break;
 
         case SMSG_PLAYER_ARROW_EQUIP:
-            index = msg->readInt16();
+            index = msg.readInt16();
 
             if (index <= 1)
                 break;

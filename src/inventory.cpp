@@ -29,7 +29,11 @@ struct SlotUsed : public std::unary_function<Item*, bool>
 {
     bool operator()(const Item *item) const
     {
+#ifdef TMWSERV_SUPPORT
+        return item && item->getId() && item->getQuantity();
+#else
         return item && item->getId() != -1 && item->getQuantity() > 0;
+#endif
     }
 };
 
@@ -50,7 +54,11 @@ Inventory::~Inventory()
 
 Item* Inventory::getItem(int index) const
 {
-    if (index < 0 || index >= INVENTORY_SIZE || !mItems[index] || mItems[index]->getQuantity() <= 0)
+#ifdef TMWSERV_SUPPORT
+    if (index < 0 || index >= mSize)
+#else
+    if (index < 0 || index >= mSize || !mItems[index] || mItems[index]->getQuantity() <= 0)
+#endif
         return 0;
 
     return mItems[index];
@@ -126,7 +134,11 @@ bool Inventory::contains(Item *item) const
 
 int Inventory::getFreeSlot() const
 {
+#ifdef TMWSERV_SUPPORT
+    Item **i = std::find_if(mItems, mItems + mSize,
+#else
     Item **i = std::find_if(mItems + 2, mItems + mSize,
+#endif
             std::not1(SlotUsed()));
     return (i == mItems + mSize) ? -1 : (i - mItems);
 }
@@ -143,9 +155,4 @@ int Inventory::getLastUsedSlot() const
             return i;
 
     return -1;
-}
-
-int Inventory::getInventorySize() const
-{
-    return INVENTORY_SIZE - 2;
 }

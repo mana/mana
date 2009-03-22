@@ -106,7 +106,9 @@ ItemPopup::~ItemPopup()
 void ItemPopup::setItem(const ItemInfo &item)
 {
     mItemName->setCaption(item.getName());
+#ifdef EATHENA_SUPPORT
     mItemName->setForegroundColor(getColor(item.getType()));
+#endif
     mItemName->setWidth(boldFont->getWidth(item.getName()));
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);

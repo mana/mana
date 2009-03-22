@@ -20,14 +20,14 @@
  */
 
 #include "maploginhandler.h"
-#include "messagein.h"
+#include "../messagein.h"
 #include "protocol.h"
 
-#include "../localplayer.h"
-#include "../log.h"
-#include "../main.h"
+#include "../../localplayer.h"
+#include "../../log.h"
+#include "../../main.h"
 
-#include "../utils/gettext.h"
+#include "../../utils/gettext.h"
 
 MapLoginHandler::MapLoginHandler()
 {
@@ -39,15 +39,15 @@ MapLoginHandler::MapLoginHandler()
     handledMessages = _messages;
 }
 
-void MapLoginHandler::handleMessage(MessageIn *msg)
+void MapLoginHandler::handleMessage(MessageIn &msg)
 {
     int code;
     unsigned char direction;
 
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case SMSG_CONNECTION_PROBLEM:
-            code = msg->readInt8();
+            code = msg.readInt8();
             logger->log("Connection problem: %i", code);
 
             switch (code) {
@@ -61,16 +61,16 @@ void MapLoginHandler::handleMessage(MessageIn *msg)
                     errorMessage = _("Unknown connection error");
                     break;
             }
-            state = ERROR_STATE;
+            state = STATE_ERROR;
             break;
 
         case SMSG_LOGIN_SUCCESS:
-            msg->readInt32();   // server tick
-            msg->readCoordinates(player_node->mX, player_node->mY, direction);
-            msg->skip(2);      // unknown
+            msg.readInt32();   // server tick
+            msg.readCoordinates(player_node->mX, player_node->mY, direction);
+            msg.skip(2);      // unknown
             logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
                     player_node->mX, player_node->mY, direction);
-            state = GAME_STATE;
+            state = STATE_GAME;
             break;
     }
 }

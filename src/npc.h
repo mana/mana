@@ -24,14 +24,20 @@
 
 #include "player.h"
 
+#ifdef EATHENA_SUPPORT
 class Network;
+#endif
 class Graphics;
 class Text;
 
 class NPC : public Player
 {
     public:
+#ifdef TMWSERV_SUPPORT
+        NPC(Uint16 id, int sprite, Map *map);
+#else
         NPC(Uint32 id, Uint16 job, Map *map, Network *network);
+#endif
 
         ~NPC();
 
@@ -55,8 +61,23 @@ class NPC : public Player
          * interface problems
          */
         void handleDeath();
+
+        /**
+         * Gets the way an NPC is blocked by other things on the map
+         */
+        virtual unsigned char getWalkMask() const
+        { return 0x83; } // blocked like a monster by walls, monsters and characters ( bin 1000 0011)
+
     protected:
+        /**
+         * Gets the way a monster blocks pathfinding for other objects
+         */
+        virtual Map::BlockType getBlockType() const
+        { return Map::BLOCKTYPE_CHARACTER; } //blocks like a player character
+
+#ifdef EATHENA_SUPPORT
         Network *mNetwork;
+#endif
         void updateCoords();
     private:
         Text *mName;

@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2007  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,17 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_MAPLOGINHANDLER_H
-#define NET_MAPLOGINHANDLER_H
+#ifndef UTILS_SHA256_H
+#define UTILS_SHA256_H
 
-#include "messagehandler.h"
+#include <string>
 
-class MapLoginHandler : public MessageHandler
-{
-    public:
-        MapLoginHandler();
+/**
+ * Returns the SHA-256 hash for the given string.
+ *
+ * @param string the string to create the SHA-256 hash for
+ * @return the SHA-256 hash for the given string.
+ */
+std::string sha256(const std::string& string);
 
-        void handleMessage(MessageIn *msg);
-};
-
-#endif
+#endif // UTILS_SHA256_H

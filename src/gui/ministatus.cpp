@@ -30,8 +30,7 @@
 
 #include "../utils/stringutils.h"
 
-MiniStatusWindow::MiniStatusWindow():
-    Window("")
+MiniStatusWindow::MiniStatusWindow()
 {
     setWindowName("MiniStatus");
     setResizable(false);
@@ -39,19 +38,30 @@ MiniStatusWindow::MiniStatusWindow():
     setTitleBarHeight(0);
 
     mHpBar = new ProgressBar(1.0f, 100, 20, 0, 171, 34);
+#ifdef EATHENA_SUPPORT
     mMpBar = new ProgressBar(1.0f, 100, 20, 26, 102, 230);
     mXpBar = new ProgressBar(1.0f, 100, 20, 143, 192, 211);
+#endif
 
     mHpBar->setPosition(0, 3);
+#ifdef EATHENA_SUPPORT
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
     mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);
+#endif
 
     add(mHpBar);
+#ifdef EATHENA_SUPPORT
     add(mMpBar);
     add(mXpBar);
+#endif
 
+#ifdef EATHENA_SUPPORT
     setContentSize(mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
+#else
+    setContentSize(mHpBar->getX() + mHpBar->getWidth(),
+                   mHpBar->getY() + mHpBar->getHeight());
+#endif
     setDefaultSize(0, 0, getWidth(), getHeight());
     loadWindowState();
 }
@@ -77,11 +87,13 @@ extern volatile int tick_time;
 void MiniStatusWindow::update()
 {
     // HP Bar coloration
-    if (player_node->mHp < int(player_node->mMaxHp / 3))
+    int maxHp = player_node->getMaxHp();
+    int hp = player_node->getHp();
+    if (hp < int(maxHp / 3))
     {
         mHpBar->setColor(223, 32, 32); // Red
     }
-    else if (player_node->mHp < int((player_node->mMaxHp / 3) * 2))
+    else if (hp < int((maxHp / 3) * 2))
     {
         mHpBar->setColor(230, 171, 34); // Orange
     }
@@ -90,18 +102,23 @@ void MiniStatusWindow::update()
         mHpBar->setColor(0, 171, 34); // Green
     }
 
+#ifdef EATHENA_SUPPORT
     float xp = (float) player_node->getXp() / player_node->mXpForNextLevel;
 
     if (xp != xp) xp = 0.0f; // check for NaN
     if (xp < 0.0f) xp = 0.0f; // make sure the experience isn't negative (uninitialized pointer most likely)
     if (xp > 1.0f) xp = 1.0f;
+#endif
 
-    mHpBar->setProgress((float) player_node->mHp / player_node->mMaxHp);
+    mHpBar->setProgress((float) hp / maxHp);
+#ifdef EATHENA_SUPPORT
     mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
     mXpBar->setProgress(xp);
+#endif
 
     // Update labels
-    mHpBar->setText(toString(player_node->mHp));
+    mHpBar->setText(toString(player_node->getHp()));
+#ifdef EATHENA_SUPPORT
     mMpBar->setText(toString(player_node->mMp));
 
     std::stringstream updatedText;
@@ -121,11 +138,11 @@ void MiniStatusWindow::update()
     */
 
     mXpBar->setText(updatedText.str());
+#endif
 
     for (unsigned int i = 0; i < mIcons.size(); i++)
         if (mIcons[i])
             mIcons[i]->update(tick_time * 10);
-
 }
 
 void MiniStatusWindow::draw(gcn::Graphics *graphics)
@@ -137,7 +154,11 @@ void MiniStatusWindow::draw(gcn::Graphics *graphics)
 void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
     // Draw icons
+#ifdef TMWSERV_SUPPORT
+    int icon_x = mHpBar->getX() + mHpBar->getWidth() + 4;
+#else
     int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
+#endif
     for (unsigned int i = 0; i < mIcons.size(); i++) {
         if (mIcons[i]) {
             mIcons[i]->draw(graphics, icon_x, 3);

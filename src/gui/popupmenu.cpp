@@ -36,8 +36,10 @@
 #include "../npc.h"
 #include "../player_relations.h"
 
+#ifdef EATHENA_SUPPORT
 #include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../net/ea/protocol.h"
+#endif
 
 #include "../resources/itemdb.h"
 
@@ -102,6 +104,8 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
                 //mBrowserBox->addRow(_("@@follow|Follow ") + name + "@@");
                 //mBrowserBox->addRow(_("@@buddy|Add ") + name + " to Buddy List@@");
+                mBrowserBox->addRow(strprintf(_("@@guild|Invite %s@@"), name.c_str()));
+                mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
 
                 mBrowserBox->addRow("##3---");
                 mBrowserBox->addRow(strprintf(_("@@party-invite|Invite %s to party@@"), name.c_str()));
@@ -163,7 +167,7 @@ void PopupMenu::handleLink(const std::string& link)
         player_node->trade(being);
         tradePartnerName = being->getName();
     }
-
+#ifdef EATHENA_SUPPORT
     // Attack action
     else if (link == "attack" &&
              being &&
@@ -171,7 +175,7 @@ void PopupMenu::handleLink(const std::string& link)
     {
         player_node->attack(being, true);
     }
-
+#endif
     else if (link == "unignore" &&
              being &&
              being->getType() == Being::PLAYER)
@@ -199,7 +203,21 @@ void PopupMenu::handleLink(const std::string& link)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::FRIEND);
     }
+#ifdef TMWSERV_SUPPORT
+    // Guild action
+    else if (link == "guild" &&
+             being != NULL &&
+             being->getType() == Being::PLAYER)
+    {
+        player_node->inviteToGuild(being);
+    }
 
+    // Add player to your party
+    else if (link == "party")
+    {
+        player_node->inviteToParty(being->getName());
+    }
+#endif
     /*
     // Follow Player action
     else if (link == "follow")
@@ -232,6 +250,9 @@ void PopupMenu::handleLink(const std::string& link)
         assert(mItem);
         if (mItem->isEquipment())
         {
+#ifdef TMWSERV_SUPPORT
+            player_node->equipItem(mItem);
+#else
             if (mItem->isEquipped())
             {
                 player_node->unequipItem(mItem);
@@ -240,10 +261,15 @@ void PopupMenu::handleLink(const std::string& link)
             {
                 player_node->equipItem(mItem);
             }
+#endif
         }
         else
         {
+#ifdef TMWSERV_SUPPORT
+            player_node->useItem(mItem->getInvIndex());
+#else
             player_node->useItem(mItem);
+#endif
         }
     }
 
@@ -252,10 +278,15 @@ void PopupMenu::handleLink(const std::string& link)
         chatWindow->addItemText(mItem->getInfo().getName());
     }
 
+    else if (link == "split")
+    {
+        new ItemAmountWindow(AMOUNT_ITEM_SPLIT, inventoryWindow, mItem);
+    }
     else if (link == "drop")
     {
         new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, mItem);
     }
+#ifdef EATHENA_SUPPORT
     else if (link == "party-invite" &&
              being &&
              being->getType() == Being::PLAYER)
@@ -264,6 +295,7 @@ void PopupMenu::handleLink(const std::string& link)
         outMsg.writeInt16(CMSG_PARTY_INVITE);
         outMsg.writeInt32(being->getId());
     }
+#endif
 
     // Unknown actions
     else
@@ -286,15 +318,23 @@ void PopupMenu::showPopup(int x, int y, Item *item)
 
     if (item->isEquipment())
     {
+#ifdef TMWSERV_SUPPORT
+        mBrowserBox->addRow(_("@@use|Equip@@"));
+#else
         if (item->isEquipped())
             mBrowserBox->addRow(_("@@use|Unequip@@"));
         else
             mBrowserBox->addRow(_("@@use|Equip@@"));
+#endif
     }
     else
         mBrowserBox->addRow(_("@@use|Use@@"));
 
     mBrowserBox->addRow(_("@@drop|Drop@@"));
+#ifdef TMWSERV_SUPPORT
+    if (!item->isEquipment())
+        mBrowserBox->addRow(_("@@split|Split@@"));
+#endif
     mBrowserBox->addRow(_("@@chat|Add to Chat@@"));
     mBrowserBox->addRow("##3---");
     mBrowserBox->addRow(_("@@cancel|Cancel@@"));

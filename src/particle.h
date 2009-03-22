@@ -113,6 +113,7 @@ class Particle : public Sprite
          * Creates a standalone text particle.
          */
         Particle *addTextRiseFadeOutEffect(const std::string &text,
+                                           int colorR, int colorG, int colorB,
                                            gcn::Font *font,
                                            int x, int y);
 
@@ -284,7 +285,7 @@ class Particle : public Sprite
 
         // follow-point particles
         Particle *mTarget;          /**< The particle that attracts this particle*/
-        float mAcceleration;        /**< Acceleration towards the target particle in pixels per game-tickÂ²*/
+        float mAcceleration;        /**< Acceleration towards the target particle in pixels per game-tick²*/
         float mInvDieDistance;      /**< Distance in pixels from the target particle that causes the destruction of the particle*/
         float mMomentum;            /**< How much speed the particle retains after each game tick*/
 };

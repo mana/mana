@@ -22,6 +22,8 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 
 class ProgressBar;
@@ -31,7 +33,7 @@ class ProgressBar;
  *
  * \ingroup Interface
  */
-class ConnectionDialog : public Window
+class ConnectionDialog : public Window, gcn::ActionListener
 {
     public:
         /**
@@ -39,13 +41,20 @@ class ConnectionDialog : public Window
          *
          * @see Window::Window
          */
-        ConnectionDialog();
+        ConnectionDialog(int previousState);
+
+        /**
+         * Called when the user presses Cancel. Restores the global state to
+         * the previous one.
+         */
+        void action(gcn::ActionEvent const &);
 
         void logic();
 
     private:
         ProgressBar *mProgressBar;
         float mProgress;
+        int mPreviousState;
 };
 
 #endif

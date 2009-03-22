@@ -24,11 +24,17 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
-Item::Item(int id, int quantity, bool equipment, bool equipped):
+Item::Item(int id, int quantity, bool equipment
+#ifdef EATHENA_SUPPORT
+           , bool equipped
+#endif
+           ):
     mImage(0),
     mQuantity(quantity),
-    mEquipment(equipment),
-    mEquipped(equipped)
+    mEquipment(equipment)
+#ifdef EATHENA_SUPPORT
+    , mEquipped(equipped)
+#endif
 {
     setId(id);
 }
@@ -42,6 +48,11 @@ Item::~Item()
 void Item::setId(int id)
 {
     mId = id;
+
+#ifdef TMWSERV_SUPPORT
+    // Types 0 and 1 are not equippable items.
+    mEquipment = id && getInfo().getType() >= 2;
+#endif
 
     // Load the associated image
     if (mImage)

@@ -27,10 +27,16 @@
 #include "window.h"
 
 #include "../being.h"
+#include "../guichanfwd.h"
 #include "../lockedarray.h"
 
-class LocalPlayer;
+#ifdef TMWSERV_SUPPORT
+#include "../logindata.h"
+#else
 class Network;
+#endif
+
+class LocalPlayer;
 class Player;
 class PlayerBox;
 
@@ -46,9 +52,14 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
+#ifdef TMWSERV_SUPPORT
+        CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
+                         LoginData *loginData);
+#else
         CharSelectDialog(Network *network,
                          LockedArray<LocalPlayer*> *charInfo,
                          Gender gender);
+#endif
 
         void action(const gcn::ActionEvent &event);
 
@@ -59,24 +70,39 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         bool selectByName(const std::string &name);
 
     private:
+#ifdef EATHENA_SUPPORT
         Network *mNetwork;
+#endif
         LockedArray<LocalPlayer*> *mCharInfo;
 
         gcn::Button *mSelectButton;
         gcn::Button *mCancelButton;
-        gcn::Button *mNewDelCharButton;
         gcn::Button *mPreviousButton;
         gcn::Button *mNextButton;
 
         gcn::Label *mNameLabel;
         gcn::Label *mLevelLabel;
-        gcn::Label *mJobLevelLabel;
-        gcn::Label *mMoneyLabel; std::string mMoney;
+        gcn::Label *mMoneyLabel;
+        std::string mMoney;
 
         PlayerBox *mPlayerBox;
 
-        Gender mGender;
         bool mCharSelected;
+
+#ifdef TMWSERV_SUPPORT
+        gcn::Button *mNewCharButton;
+        gcn::Button *mDelCharButton;
+        gcn::Button *mUnRegisterButton;
+        gcn::Button *mChangePasswordButton;
+        gcn::Button *mChangeEmailButton;
+        gcn::Label *mAccountNameLabel;
+
+        LoginData *mLoginData;
+#else
+        gcn::Button *mNewDelCharButton;
+        gcn::Label *mJobLevelLabel;
+        Gender mGender;
+#endif
 
         /**
          * Communicate character deletion to the server.
@@ -92,7 +118,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 /**
  * Character creation dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class CharCreateDialog : public Window, public gcn::ActionListener
 {
@@ -100,8 +126,12 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
+#ifdef TMWSERV_SUPPORT
+        CharCreateDialog(Window *parent, int slot);
+#else
         CharCreateDialog(Window *parent, int slot, Network *network,
                          Gender gender);
+#endif
 
         /**
          * Destructor.
@@ -116,6 +146,12 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         void unlock();
 
     private:
+#ifdef TMWSERV_SUPPORT
+        int getDistributedPoints();
+
+        void UpdateSliders();
+#endif
+
         /**
          * Returns the name of the character to create.
          */
@@ -126,7 +162,9 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         void attemptCharCreate();
 
+#ifdef EATHENA_SUPPORT
         Network *mNetwork;
+#endif
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;
         gcn::Button *mNextHairColorButton;
@@ -135,6 +173,20 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Button *mNextHairStyleButton;
         gcn::Button *mPrevHairStyleButton;
         gcn::Label *mHairStyleLabel;
+
+#ifdef TMWSERV_SUPPORT
+        gcn::RadioButton *mMale;
+        gcn::RadioButton *mFemale;
+
+        gcn::Slider *mAttributeSlider[6];
+        gcn::Label *mAttributeLabel[6];
+        gcn::Label *mAttributeValue[6];
+        gcn::Label *mAttributesLeft;
+
+        static const int mMaxPoints = 60;
+        int mUsedPoints;
+#endif
+
         gcn::Button *mCreateButton;
         gcn::Button *mCancelButton;
 

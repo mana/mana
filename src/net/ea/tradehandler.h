@@ -19,17 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_SKILLHANDLER_H
-#define NET_SKILLHANDLER_H
+#ifndef NET_TRADEHANDLER_H
+#define NET_TRADEHANDLER_H
 
-#include "messagehandler.h"
+#include "../messagehandler.h"
 
-class SkillHandler : public MessageHandler
+class Network;
+
+class TradeHandler : public MessageHandler
 {
     public:
-        SkillHandler();
+        TradeHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

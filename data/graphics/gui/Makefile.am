@@ -9,6 +9,8 @@ gui_DATA =				\
 	buttonhi.png			\
 	buttonpress.png			\
 	checkbox.png			\
+	circle-gray.png			\
+	circle-green.png		\
 	close_button.png		\
 	deepbox.png			\
 	default.png			\

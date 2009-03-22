@@ -27,6 +27,9 @@
 class FlashText;
 class Graphics;
 class Map;
+#ifdef TMWSERV_SUPPORT
+class Guild;
+#endif
 
 /**
  * A player being. Players have their name drawn beneath them. This class also
@@ -36,6 +39,9 @@ class Map;
 class Player : public Being
 {
     public:
+        /**
+         * Constructor.
+         */
         Player(int id, int job, Map *map);
 
         ~Player();
@@ -45,7 +51,9 @@ class Player : public Being
          */
         virtual void setName(const std::string &name);
 
+#ifdef EATHENA_SUPPORT
         virtual void logic();
+#endif
 
         virtual Type getType() const;
 
@@ -66,17 +74,76 @@ class Player : public Being
         /**
          * Sets visible equipments for this player.
          */
-        virtual void setSprite(int slot, int id, std::string color = "");
+        virtual void setSprite(int slot, int id, const std::string &color = "");
 
         /**
          * Flash the player's name
          */
         void flash(int time);
 
+#ifdef TMWSERV_SUPPORT
+        /**
+         * Adds a guild to the player.
+         */
+        Guild* addGuild(short guildId, short rights);
+
+        /**
+         * Removers a guild from the player.
+         */
+        void removeGuild(int id);
+
+        /**
+         * Returns a pointer to the specified guild.
+         */
+        Guild* getGuild(const std::string &guildName);
+
+        /**
+         * Returns a pointer to the guild with matching id.
+         */
+        Guild* getGuild(int id);
+
+        /**
+         * Get number of guilds the player belongs to.
+         */
+        short getNumberOfGuilds();
+
+        /**
+         * Set the player in party
+         */
+        void setInParty(bool value);
+
+        /**
+         * Returns whether player is in the party
+         */
+        bool getInParty() const { return mInParty; }
+#endif
+
+        /**
+         * Gets the way the character is blocked by other objects.
+         */
+        virtual unsigned char getWalkMask() const
+        { return 0x82; } // blocked by walls and monsters (bin 1000 0010)
+
     protected:
+        /**
+         * Gets the way the monster blocks pathfinding for other objects.
+         */
+        virtual Map::BlockType getBlockType() const
+        { return Map::BLOCKTYPE_CHARACTER; }
+
         virtual void updateCoords();
 
+#ifdef TMWSERV_SUPPORT
+        // Character guild information
+        std::map<int, Guild*> mGuilds;
+#endif
+
         FlashText *mName;
+
+#ifdef TMWSERV_SUPPORT
+    private:
+        bool mInParty;
+#endif
 };
 
 #endif

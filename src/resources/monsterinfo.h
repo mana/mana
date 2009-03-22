@@ -37,6 +37,12 @@ enum MonsterSoundEvent
     MONSTER_EVENT_DIE
 };
 
+struct MonsterAttack
+{
+    std::string particleEffect;
+    SpriteAction action;
+};
+
 /**
  * Holds information about a certain type of monster. This includes the name
  * of the monster, the sprite to display and the sounds the monster makes.
@@ -56,16 +62,17 @@ class MonsterInfo
          */
         ~MonsterInfo();
 
-        void setName(std::string name) { mName = name; }
+        void setName(const std::string &name) { mName = name; }
 
-        void addSprite(std::string filename) { mSprites.push_back(filename); }
+        void addSprite(const std::string &filename)
+        { mSprites.push_back(filename); }
 
         void setTargetCursorSize(Being::TargetCursorSize targetCursorSize)
         { mTargetCursorSize = targetCursorSize; }
 
-        void addSound(MonsterSoundEvent event, std::string filename);
+        void addSound(MonsterSoundEvent event, const std::string &filename);
 
-        void addParticleEffect(std::string filename);
+        void addParticleEffect(const std::string &filename);
 
         const std::string& getName() const
         { return mName; }
@@ -76,22 +83,25 @@ class MonsterInfo
         Being::TargetCursorSize getTargetCursorSize() const
         { return mTargetCursorSize; }
 
-        std::string getSound(MonsterSoundEvent event) const;
+        const std::string &getSound(MonsterSoundEvent event) const;
 
-        std::string getAttackParticleEffect() const { return mAttackParticle; }
+        void addMonsterAttack(int id,
+                              const std::string &particleEffect,
+                              SpriteAction action);
 
-        void addAttackParticleEffect(const std::string &particleEffect)
-        { mAttackParticle = particleEffect; }
+        const std::string &getAttackParticleEffect(int attackType) const;
+
+        SpriteAction getAttackAction(int attackType) const;
 
         const std::list<std::string>& getParticleEffects() const
         { return mParticleEffects; }
 
     private:
         std::string mName;
-        std::string mAttackParticle;
         std::list<std::string> mSprites;
         Being::TargetCursorSize mTargetCursorSize;
         std::map<MonsterSoundEvent, std::vector<std::string>* > mSounds;
+        std::map<int, MonsterAttack*> mMonsterAttacks;
         std::list<std::string> mParticleEffects;
 };
 

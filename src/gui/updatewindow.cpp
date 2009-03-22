@@ -185,7 +185,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "play")
     {
-        state = LOADDATA_STATE;
+        state = STATE_LOADDATA;
     }
 }
 
@@ -232,7 +232,7 @@ int UpdaterWindow::updateProgress(void *ptr,
             uw->mCurrentFile + " (" + toString((int) (progress * 100)) + "%)");
     uw->setProgress(progress);
 
-    if (state != UPDATE_STATE || uw->mDownloadStatus == UPDATE_ERROR)
+    if (state != STATE_UPDATE || uw->mDownloadStatus == UPDATE_ERROR)
     {
         // If the action was canceled return an error code to stop the mThread
         return -1;

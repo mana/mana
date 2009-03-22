@@ -31,6 +31,8 @@
 
 #include "../utils/mutex.h"
 
+#include "../utils/mutex.h"
+
 class BrowserBox;
 class Button;
 class ProgressBar;

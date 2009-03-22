@@ -34,14 +34,23 @@
 #include "../units.h"
 
 #include "../net/messageout.h"
-#include "../net/protocol.h"
+#ifdef TMWSERV_SUPPORT
+#include "../net/gameserver/player.h"
+#else
+#include "../net/ea/protocol.h"
+#endif
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
+#ifdef TMWSERV_SUPPORT
+SellDialog::SellDialog():
+    Window(_("Sell")),
+#else
 SellDialog::SellDialog(Network *network):
     Window(_("Sell")),
     mNetwork(network),
+#endif
     mMaxItems(0), mAmountItems(0)
 {
     setWindowName("Sell");
@@ -112,6 +121,16 @@ void SellDialog::reset()
     updateButtonsAndLabels();
 }
 
+#ifdef TMWSERV_SUPPORT
+
+void SellDialog::addItem(int item, int amount, int price)
+{
+    mShopItems->addItem(item, amount, price);
+    mShopItemList->adjustSize();
+}
+
+#else
+
 void SellDialog::addItem(const Item *item, int price)
 {
     if (!item)
@@ -123,6 +142,8 @@ void SellDialog::addItem(const Item *item, int price)
 
     mShopItemList->adjustSize();
 }
+
+#endif
 
 void SellDialog::action(const gcn::ActionEvent &event)
 {
@@ -162,12 +183,17 @@ void SellDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "sell" && mAmountItems > 0
             && mAmountItems <= mMaxItems)
     {
+#ifdef TMWSERV_SUPPORT
+        Net::GameServer::Player::tradeWithNPC
+            (mShopItems->at(selectedItem)->getId(), mAmountItems);
+#else
         // Attempt sell
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
         outMsg.writeInt16(8);
         outMsg.writeInt16(mShopItems->at(selectedItem)->getInvIndex());
         outMsg.writeInt16(mAmountItems);
+#endif
 
         mMaxItems -= mAmountItems;
         mShopItems->getShop()->at(selectedItem)->setQuantity(mMaxItems);

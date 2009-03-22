@@ -1,0 +1,43 @@
+How to build a .deb for TMW on Ubuntu
+=====================================
+
+This documentation is for those who are interested in building the .deb files
+of The Mana World. Most people do not need to do this, but can instead use the
+repository. You can find information about how to use the repository on our
+downloads page.
+
+
+1. Installing the dependencies
+==============================
+
+First of all you need a working compiler and package building environment. If
+you don't have this yet, install the following packages:
+
+   apt-get install gcc g++ dh-make fakeroot dpkg-dev build-essentials
+
+In order to compile The Mana World, you'll need the developer packages for
+SDL, SDL_mixer, SDL_image, SDL_net, libxml2, libphysfs and libguichan0.
+
+   apt-get install libsdl1.2-dev libsdl-mixer1.2-dev libsdl-image1.2-dev ...
+
+(todo: add missing entries)
+(todo: include information about installing Guichan development package)
+
+
+2. Creating the .debs using DebHelper Tools
+===========================================
+
+Either download the source release of TMW that you want to build a package for,
+or check out the appropriate version from Subversion, for example by using the
+tag.
+
+Make sure the files in the debian directory are up to date. You can do this by
+checking out the appropriate directory from Subversion (will be either
+tmw/branches/0.0/debian or tmw/trunk/debian for the latest release).
+
+Now we can build the packages using the following command.
+
+   fakeroot dpkg-buildpackage
+
+The packages will be created in the parent folder.
+

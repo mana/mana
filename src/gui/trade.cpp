@@ -21,6 +21,7 @@
 
 #include <sstream>
 
+#include <guichan/font.hpp>
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
@@ -39,49 +40,67 @@
 #include "../localplayer.h"
 #include "../units.h"
 
+#ifdef TMWSERV_SUPPORT
+#include "../net/gameserver/player.h"
+#else
 #include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../net/ea/protocol.h"
+#endif
 
 #include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 #include "../utils/stringutils.h"
+#include "../utils/strprintf.h"
 
+#ifdef TMWSERV_SUPPORT
+TradeWindow::TradeWindow():
+#else
 TradeWindow::TradeWindow(Network *network):
+#endif
     Window(_("Trade: You")),
+#ifdef EATHENA_SUPPORT
     mNetwork(network),
+#endif
     mMyInventory(new Inventory(INVENTORY_SIZE)),
     mPartnerInventory(new Inventory(INVENTORY_SIZE))
+#ifdef TMWSERV_SUPPORT
+    , mStatus(PREPARING)
+#endif
 {
     setWindowName("Trade");
-    setDefaultSize(115, 227, 342, 209);
     setResizable(true);
+    setDefaultSize(115, 197, 332, 209);
 
-    setMinWidth(342);
-    setMinHeight(209);
-
-    mAddButton = new Button(_("Add"), "add", this);
+    Button *mAddButton = new Button(_("Add"), "add", this);
+#ifdef EATHENA_SUPPORT
     mOkButton = new Button(_("Ok"), "ok", this);
-    mCancelButton = new Button(_("Cancel"), "cancel", this);
-    mTradeButton = new Button(_("Trade"), "trade", this);
+#endif
+    Button *mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mTradeButton = new Button(_("Propose trade"), "trade", this);
+    mTradeButton->setWidth(8 + std::max(
+        mTradeButton->getFont()->getWidth(_("Propose trade")),
+        mTradeButton->getFont()->getWidth(_("Confirm trade"))));
 
-    mTradeButton->setEnabled(false);
-
-    mMyItemContainer = new ItemContainer(mMyInventory.get(), 2);
-    mMyItemContainer->setWidth(160);
+#ifdef TMWSERV_SUPPORT
+    mMyItemContainer = new ItemContainer(mMyInventory.get(), 4, 3, 0);
+#else
+    mMyItemContainer = new ItemContainer(mMyInventory.get(), 4, 3, 2);
+#endif
     mMyItemContainer->addSelectionListener(this);
+    ScrollArea *mMyScroll = new ScrollArea(mMyItemContainer);
 
-    mMyScroll = new ScrollArea(mMyItemContainer);
-
-    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 2);
-    mPartnerItemContainer->setWidth(160);
+#ifdef TMWSERV_SUPPORT
+    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 4, 3, 0);
+#else
+    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 4, 3, 2);
+#endif
     mPartnerItemContainer->addSelectionListener(this);
+    ScrollArea *mPartnerScroll = new ScrollArea(mPartnerItemContainer);
 
-    mPartnerScroll = new ScrollArea(mPartnerItemContainer);
-
-    mMoneyLabel = new gcn::Label(strprintf(_("You get %s."), ""));
-    mMoneyLabel2 = new gcn::Label(_("You give:"));
+    mMoneyLabel = new gcn::Label(strprintf(_("You get %d GP."), 0));
+    gcn::Label *mMoneyLabel2 = new gcn::Label(_("You give:"));
     mMoneyField = new TextField;
-    mMoneyField->setWidth(50);
+    mMoneyField->setWidth(40);
+    Button *mMoneyChange = new Button(_("Change"), "money", this);
 
     place(1, 0, mMoneyLabel);
     place(0, 1, mMyScroll).setPadding(3);
@@ -90,9 +109,12 @@ TradeWindow::TradeWindow(Network *network):
     place = getPlacer(0, 0);
     place(0, 0, mMoneyLabel2);
     place(1, 0, mMoneyField);
+    place(2, 0, mMoneyChange).setHAlign(LayoutCell::LEFT);
     place = getPlacer(0, 2);
     place(0, 0, mAddButton);
+#ifdef EATHENA_SUPPORT
     place(1, 0, mOkButton);
+#endif
     place(2, 0, mTradeButton);
     place(3, 0, mCancelButton);
     Layout &layout = getLayout();
@@ -109,42 +131,35 @@ TradeWindow::~TradeWindow()
 {
 }
 
-void TradeWindow::widgetResized(const gcn::Event &event)
-{
-    mMyItemContainer->setWidth(mMyScroll->getWidth());
-    mPartnerItemContainer->setWidth(mPartnerScroll->getWidth());
-
-    Window::widgetResized(event);
-}
-
-
-void TradeWindow::addMoney(int amount)
+void TradeWindow::setMoney(int amount)
 {
     mMoneyLabel->setCaption(strprintf(_("You get %s."),
                                        Units::formatCurrency(amount).c_str()));
     mMoneyLabel->adjustSize();
+#ifdef TMWSERV_SUPPORT
+    setStatus(PREPARING);
+#endif
 }
 
+#ifdef TMWSERV_SUPPORT
+void TradeWindow::addItem(int id, bool own, int quantity)
+{
+    (own ? mMyInventory : mPartnerInventory)->addItem(id, quantity);
+    setStatus(PREPARING);
+}
+#endif
+
+#ifdef EATHENA_SUPPORT
 void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
 {
     if (own)
     {
-        mMyItemContainer->setWidth(mMyScroll->getWidth());
         mMyInventory->addItem(id, quantity, equipment);
     }
     else
     {
-        mPartnerItemContainer->setWidth(mPartnerScroll->getWidth());
         mPartnerInventory->addItem(id, quantity, equipment);
     }
-}
-
-void TradeWindow::removeItem(int id, bool own)
-{
-    if (own)
-        mMyInventory->removeItem(id);
-    else
-        mPartnerInventory->removeItem(id);
 }
 
 void TradeWindow::changeQuantity(int index, bool own, int quantity)
@@ -162,19 +177,34 @@ void TradeWindow::increaseQuantity(int index, bool own, int quantity)
     else
         mPartnerInventory->getItem(index)->increaseQuantity(quantity);
 }
+#endif
 
 void TradeWindow::reset()
 {
     mMyInventory->clear();
     mPartnerInventory->clear();
+#ifdef EATHENA_SUPPORT
     mTradeButton->setEnabled(false);
     mOkButton->setEnabled(true);
     mOkOther = false;
     mOkMe = false;
+#endif
     mMoneyLabel->setCaption(strprintf(_("You get %s."), ""));
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
+#ifdef TMWSERV_SUPPORT
+    setStatus(PREPARING);
+#endif
 }
+
+#ifdef TMWSERV_SUPPORT
+
+void TradeWindow::receivedOk()
+{
+    setStatus(ACCEPTING);
+}
+
+#else
 
 void TradeWindow::setTradeButton(bool enabled)
 {
@@ -213,12 +243,20 @@ void TradeWindow::receivedOk(bool own)
     }
 }
 
+#endif
+
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::tradeItem(item->getInvIndex(), quantity);
+    addItem(item->getId(), true, quantity);
+    item->increaseQuantity(-quantity);
+#else
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(item->getInvIndex());
     outMsg.writeInt32(quantity);
+#endif
 }
 
 void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
@@ -235,6 +273,18 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
         mMyItemContainer->selectNone();
 }
 
+#ifdef TMWSERV_SUPPORT
+void TradeWindow::setStatus(Status s)
+{
+    if (s == mStatus) return;
+    mStatus = s;
+
+    mTradeButton->setCaption
+        (s == PREPARING ? _("Propose trade") : _("Confirm trade"));
+    mTradeButton->setEnabled(s != PROPOSING);
+}
+#endif
+
 void TradeWindow::action(const gcn::ActionEvent &event)
 {
     Item *item = inventoryWindow->getSelectedItem();
@@ -247,10 +297,9 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         if (mMyInventory->getFreeSlot() < 1)
             return;
 
-        if (mMyInventory->contains(item))
-        {
-            chatWindow->chatLog(_("Failed adding item. You can not "
-                        "overlap one kind of item on the window."), BY_SERVER);
+        if (mMyInventory->contains(item)) {
+            chatWindow->chatLog("Failed adding item. You can not "
+                    "overlap one kind of item on the window.", BY_SERVER);
             return;
         }
 
@@ -263,12 +312,24 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             // Choose amount of items to trade
             new ItemAmountWindow(AMOUNT_TRADE_ADD, this, item);
         }
+
+#ifdef TMWSERV_SUPPORT
+        setStatus(PREPARING);
+#endif
     }
     else if (event.getId() == "cancel")
     {
+        setVisible(false);
+        reset();
+        player_node->setTrading(false);
+#ifdef TMWSERV_SUPPORT
+        Net::GameServer::Player::acceptTrade(false);
+#else
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
+#endif
     }
+#ifdef EATHENA_SUPPORT
     else if (event.getId() == "ok")
     {
         std::stringstream tempMoney(mMoneyField->getText());
@@ -290,9 +351,24 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_ADD_COMPLETE);
     }
+#endif
     else if (event.getId() == "trade")
     {
+#ifdef TMWSERV_SUPPORT
+        Net::GameServer::Player::acceptTrade(true);
+        setStatus(PROPOSING);
+#else
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_OK);
+#endif
     }
+#ifdef TMWSERV_SUPPORT
+    else if (event.getId() == "money")
+    {
+        int v = atoi(mMoneyField->getText().c_str());
+        Net::GameServer::Player::tradeMoney(v);
+        mMoneyField->setText(strprintf("%d", v));
+        setStatus(PREPARING);
+    }
+#endif
 }

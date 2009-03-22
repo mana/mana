@@ -95,8 +95,7 @@ void MonsterDB::load()
                 currentInfo->addSprite(
                         (const char*) spriteNode->xmlChildrenNode->content);
             }
-
-            if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
+            else if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
             {
                 std::string event = XML::getProperty(spriteNode, "event", "");
                 const char *filename;
@@ -126,15 +125,16 @@ void MonsterDB::load()
                                 currentInfo->getName().c_str());
                 }
             }
-
-            if (xmlStrEqual(spriteNode->name, BAD_CAST "attack"))
+            else if (xmlStrEqual(spriteNode->name, BAD_CAST "attack"))
             {
-                std::string event = XML::getProperty(
+                const int id = XML::getProperty(spriteNode, "id", 0);
+                const std::string particleEffect = XML::getProperty(
                         spriteNode, "particle-effect", "");
-                currentInfo->addAttackParticleEffect(event);
+                SpriteAction spriteAction = SpriteDef::makeSpriteAction(
+                        XML::getProperty(spriteNode, "action", "attack"));
+                currentInfo->addMonsterAttack(id, particleEffect, spriteAction);
             }
-
-            if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
+            else if (xmlStrEqual(spriteNode->name, BAD_CAST "particlefx"))
             {
                 currentInfo->addParticleEffect(
                     (const char*) spriteNode->xmlChildrenNode->content);

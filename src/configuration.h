@@ -226,6 +226,7 @@ class Configuration : public ConfigurationObject
         std::string mConfigPath;         /**< Location of config file */
 };
 
+extern Configuration branding;
 extern Configuration config;
 
 #endif

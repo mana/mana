@@ -37,7 +37,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map),
     mText(0)
 {
-    const MonsterInfo&  info = MonsterDB::get(job - 1002);
+    const MonsterInfo& info = getInfo();
 
     // Setup Monster sprites
     int c = BASE_SPRITE;
@@ -79,11 +79,12 @@ Monster::~Monster()
     delete mText;
 }
 
+#ifdef EATHENA_SUPPORT
 void Monster::logic()
 {
     if (mAction != STAND)
     {
-        mFrame = (get_elapsed_time(mWalkTime) * 4) / mWalkSpeed;
+        mFrame = (get_elapsed_time(mWalkTime) * 4) / getWalkSpeed();
 
         if (mFrame >= 4 && mAction != DEAD)
         {
@@ -93,13 +94,14 @@ void Monster::logic()
 
     Being::logic();
 }
+#endif
 
 Being::Type Monster::getType() const
 {
     return MONSTER;
 }
 
-void Monster::setAction(Action action)
+void Monster::setAction(Action action, int attackType)
 {
     SpriteAction currentAction = ACTION_INVALID;
     int rotation = 0;
@@ -115,11 +117,11 @@ void Monster::setAction(Action action)
             sound.playSfx(getInfo().getSound(MONSTER_EVENT_DIE));
             break;
         case ATTACK:
-            currentAction = ACTION_ATTACK;
+            currentAction = getInfo().getAttackAction(attackType);
             mSprites[BASE_SPRITE]->reset();
 
             //attack particle effect
-            particleEffect = getInfo().getAttackParticleEffect();
+            particleEffect = getInfo().getAttackParticleEffect(attackType);
             if (!particleEffect.empty() && mParticleEffects)
             {
                 switch (mDirection)
@@ -160,6 +162,22 @@ void Monster::setAction(Action action)
     }
 }
 
+#ifdef TMWSERV_SUPPORT
+
+void Monster::handleAttack()
+{
+    Being::handleAttack();
+
+    const MonsterInfo &mi = getInfo();
+
+    // TODO: It's not possible to determine hit or miss here, so this stuff
+    // probably needs to be moved somewhere else. We may lose synchronization
+    // between attack animation and the sound, unless we adapt the protocol...
+    sound.playSfx(mi.getSound(MONSTER_EVENT_HIT));
+}
+
+#else
+
 void Monster::handleAttack(Being *victim, int damage)
 {
     Being::handleAttack(victim, damage);
@@ -168,6 +186,8 @@ void Monster::handleAttack(Being *victim, int damage)
     sound.playSfx(mi.getSound((damage > 0) ?
                 MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
 }
+
+#endif
 
 void Monster::takeDamage(int amount)
 {
@@ -182,7 +202,11 @@ Being::TargetCursorSize Monster::getTargetCursorSize() const
 
 const MonsterInfo &Monster::getInfo() const
 {
+#ifdef TMWSERV_SUPPORT
+    return MonsterDB::get(mJob);
+#else
     return MonsterDB::get(mJob - 1002);
+#endif
 }
 
 void Monster::showName(bool show)

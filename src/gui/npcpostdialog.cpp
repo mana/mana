@@ -1,0 +1,101 @@
+/*
+ *  The Mana World
+ *  Copyright 2008 The Mana World Development Team
+ *
+ *  This file is part of The Mana World.
+ *
+ *  The Mana World is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  any later version.
+ *
+ *  The Mana World is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with The Mana World; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#include "npcpostdialog.h"
+#include "textbox.h"
+#include "textfield.h"
+#include "button.h"
+#include "scrollarea.h"
+#include "chat.h"
+
+#include "../net/gameserver/player.h"
+#include "../utils/gettext.h"
+
+#include <guichan/widgets/label.hpp>
+
+NpcPostDialog::NpcPostDialog():
+    Window(_("NPC"))
+{
+    setContentSize(400, 180);
+
+    // create text field for receiver
+    gcn::Label *senderText = new gcn::Label("To:");
+    senderText->setPosition(5, 5);
+    mSender = new TextField();
+    mSender->setPosition(senderText->getWidth() + 5, 5);
+    mSender->setWidth(65);
+
+    // create button for sending
+    Button *sendButton = new Button(_("Send"), "send", this);
+    sendButton->setPosition(400-sendButton->getWidth(),
+                            170-sendButton->getHeight());
+    Button *cancelButton = new Button(_("Cancel"), "cancel", this);
+    cancelButton->setPosition(sendButton->getX() - (cancelButton->getWidth() + 2),
+                              sendButton->getY());
+
+    // create textfield for letter
+    mText = new TextBox();
+    mText->setHeight(400 - (mSender->getHeight() + sendButton->getHeight()));
+    mText->setEditable(true);
+
+    // create scroll box for letter text
+    ScrollArea *scrollArea = new ScrollArea(mText);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    scrollArea->setDimension(gcn::Rectangle(
+                5, mSender->getHeight() + 5,
+                380, 140 - (mSender->getHeight() + sendButton->getHeight())));
+
+    add(senderText);
+    add(mSender);
+    add(scrollArea);
+    add(sendButton);
+    add(cancelButton);
+
+    setLocationRelativeTo(getParent());
+}
+
+void NpcPostDialog::action(const gcn::ActionEvent &event)
+{
+    if (event.getId() == "send")
+    {
+        if (mSender->getText().empty() || mText->getText().empty())
+        {
+            chatWindow->chatLog("Failed to send as sender or letter invalid");
+        }
+        else
+        {
+            Net::GameServer::Player::sendLetter(mSender->getText(), mText->getText());
+        }
+        setVisible(false);
+        clear();
+    }
+    else if (event.getId() == "cancel")
+    {
+        setVisible(false);
+        clear();
+    }
+}
+
+void NpcPostDialog::clear()
+{
+    mSender->setText("");
+    mText->setText("");
+}
