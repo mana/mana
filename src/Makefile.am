@@ -239,6 +239,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      channel.h \
 	      channelmanager.cpp \
 	      channelmanager.h \
+          commandhandler.cpp \
+          commandhandler.h \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \
@@ -409,8 +411,6 @@ tmw_SOURCES += \
 	      net/tradehandler.h \
 	      resources/buddylist.cpp \
 	      resources/buddylist.h \
-	      commandhandler.cpp \
-	      commandhandler.h \
 	      guild.cpp \
 	      guild.h
 endif

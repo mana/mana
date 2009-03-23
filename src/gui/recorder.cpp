@@ -64,7 +64,7 @@ void Recorder::record(const std::string &msg)
     }
 }
 
-void Recorder::changeRecordingStatus(const std::string &msg)
+void Recorder::setRecordingFile(const std::string &msg)
 {
     std::string msgCopy = msg;
     trim(msgCopy);
@@ -112,5 +112,5 @@ void Recorder::changeRecordingStatus(const std::string &msg)
 
 void Recorder::action(const gcn::ActionEvent &event)
 {
-    changeRecordingStatus("");
+    setRecordingFile("");
 }

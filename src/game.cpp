@@ -28,9 +28,7 @@
 
 #include "beingmanager.h"
 #include "channelmanager.h"
-#ifdef TMWSERV_SUPPORT
 #include "commandhandler.h"
-#endif
 #include "configuration.h"
 #include "effectmanager.h"
 #include "emoteshortcut.h"
@@ -45,6 +43,9 @@
 #include "log.h"
 #include "npc.h"
 #include "particle.h"
+#ifdef EATHENA_SUPPORT
+#include "party.h"
+#endif
 #include "player_relations.h"
 
 #include "gui/buy.h"
@@ -165,11 +166,13 @@ ShortcutWindow *emoteShortcutWindow;
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
 ChannelManager *channelManager = NULL;
-#ifdef TMWSERV_SUPPORT
 CommandHandler *commandHandler = NULL;
-#endif
 Particle* particleEngine = NULL;
 EffectManager *effectManager = NULL;
+
+#ifdef EATHENA_SUPPORT
+Party *playerParty = NULL;
+#endif
 
 const int MAX_TIME = 10000;
 
@@ -362,18 +365,17 @@ Game::Game(Network *network):
     engine = new Engine;
 
     beingManager = new BeingManager;
+    commandHandler = new CommandHandler();
 #else
     createGuiWindows(network);
     engine = new Engine(network);
 
     beingManager = new BeingManager(network);
+    commandHandler = new CommandHandler(network);
 #endif
 
     floorItemManager = new FloorItemManager;
     channelManager = new ChannelManager();
-#ifdef TMWSERV_SUPPORT
-    commandHandler = new CommandHandler();
-#endif
     effectManager = new EffectManager;
 
     particleEngine = new Particle(NULL);
@@ -392,6 +394,7 @@ Game::Game(Network *network):
     beingManager->setPlayer(player_node);
 #ifdef EATHENA_SUPPORT
     player_node->setNetwork(network);
+    playerParty = new Party(network);
 #endif
 
     Joystick::init();
@@ -445,6 +448,8 @@ Game::~Game()
 {
 #ifdef TMWSERV_SUPPORT
     Net::clearHandlers();
+#else
+    delete playerParty;
 #endif
 
     delete player_node;
@@ -453,9 +458,7 @@ Game::~Game()
     delete beingManager;
     delete floorItemManager;
     delete channelManager;
-#ifdef TMWSERV_SUPPORT
     delete commandHandler;
-#endif
     delete joystick;
     delete particleEngine;
     delete engine;

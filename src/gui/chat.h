@@ -152,7 +152,6 @@ class ChatWindow : public Window,
                            const std::string &user,
                            const std::string &msg);
 
-#ifdef TMWSERV_SUPPORT
         /**
          * Determines whether the message is a command or message, then
          * sends the given message to the game server to be said, or to the
@@ -162,33 +161,6 @@ class ChatWindow : public Window,
          *
          */
         void chatSend(std::string &msg);
-#else
-        /**
-         * Determines whether to send a command or an ordinary message, then
-         * contructs packets & sends them.
-         *
-         * @param nick The character's name to display in front.
-         * @param msg  The message text which is to be send.
-         *
-         * NOTE:
-         * The nickname is required by the server, if not specified
-         * the message may not be sent unless a command was intended
-         * which requires another packet to be constructed! you can
-         * achieve this by putting a slash ("/") infront of the
-         * message followed by the command name and the message.
-         * of course all slash-commands need implemented handler-
-         * routines. ;-)
-         * remember, a line starting with "@" is not a command that needs
-         * to be parsed rather is sent using the normal chat-packet.
-         *
-         * EXAMPLE:
-         * // for an global announcement   /- command
-         * chatlog.chat_send("", "/announce Hello to all logged in users!");
-         * // for simple message by a user /- message
-         * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
-         */
-        void chatSend(const std::string &nick, std::string msg);
-#endif
 
         /** Called when key is pressed */
         void keyPressed(gcn::KeyEvent &event);
@@ -215,22 +187,21 @@ class ChatWindow : public Window,
         void scroll(int amount);
 
 #ifdef EATHENA_SUPPORT
-        /**
-         * party implements the partying chat commands
-         *
-         * @param command is the party command to perform
-         * @param msg is the remainder of the message
-         */
-        void party(const std::string &command, const std::string &msg);
+        char getPartyPrefix() { return mPartyPrefix; }
+        void setPartyPrefix(char prefix) { mPartyPrefix = prefix; }
 #endif
 
         /**
-         * help implements the /help command
+         * Sets the file being recorded to
          *
-         * @param msg1 is the command that the player needs help on
-         * @param msg2 is the sub-command relating to the command
+         * @param msg The file to write out to. If null, then stop recording.
          */
-        void help(const std::string &msg1, const std::string &msg2);
+        void setRecordingFile(const std::string &msg);
+
+        bool getReturnTogglesChat() { return mReturnToggles; }
+        void setReturnTogglesChat(bool toggles) { mReturnToggles = toggles; }
+
+        void doPresent();
 
     private:
 #ifdef EATHENA_SUPPORT
@@ -240,8 +211,6 @@ class ChatWindow : public Window,
 
         int mItems;
         int mItemsKeep;
-
-        void whisper(const std::string &nick, std::string msg);
 
         /** One item in the chat log */
         struct CHATLOG
@@ -287,7 +256,6 @@ class ChatWindow : public Window,
 #ifdef EATHENA_SUPPORT
         char mPartyPrefix; /**< Messages beginning with the prefix are sent to
                               the party */
-        Party *mParty;
 #endif
 };
 

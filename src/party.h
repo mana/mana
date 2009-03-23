@@ -34,7 +34,7 @@ class Network;
 class Party
 {
     public:
-        Party(ChatWindow *chat, Network *network);
+        Party(Network *network);
         void respond(const std::string &command, const std::string &args);
 
         void create(const std::string &party);
@@ -47,10 +47,9 @@ class Party
         void leftResponse(const std::string &nick);
         void receiveChat(Being *being, const std::string &msg);
 
-        void help(const std::string &msg);
+        void help(const std::string &args);
 
     private:
-        ChatWindow *mChat;
         std::string mPartyName;
         Network *mNetwork;
         bool mInParty;
@@ -72,5 +71,7 @@ class Party
         };
         InviteListener mInviteListener;
 };
+
+extern Party *playerParty;
 
 #endif

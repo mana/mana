@@ -41,26 +41,26 @@ class Recorder : public Window, public gcn::ActionListener
 
         virtual ~Recorder();
 
-        /*
+        /**
          * Outputs the message to the recorder file
          *
          * @param msg the line to write to the recorded file.
          */
         void record(const std::string &msg);
 
-        /*
-         * Outputs the message to the recorder file
+        /**
+         * Sets the file being recorded to
          *
          * @param msg The file to write out to. If null, then stop recording.
          */
-        void changeRecordingStatus(const std::string &msg);
+        void setRecordingFile(const std::string &msg);
 
-        /*
+        /**
          * Whether or not the recorder is in use.
          */
         bool isRecording() {return (bool) mStream.is_open();}
 
-        /*
+        /**
          * called when the button is pressed
          *
          * @param event is the event that is generated
