@@ -21,13 +21,14 @@
 
 #include <sstream>
 
-#include <guichan/widgets/label.hpp>
+#include <guichan/font.hpp>
 
 #include "button.h"
 #include "chat.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "label.h"
 #include "scrollarea.h"
 #include "textfield.h"
 #include "trade.h"
@@ -47,24 +48,25 @@
 #include "../utils/stringutils.h"
 
 TradeWindow::TradeWindow(Network *network):
-    Window(_("Trade: You")),
+    Window("Trade"),
     mNetwork(network),
-    mMyInventory(new Inventory(INVENTORY_SIZE)),
-    mPartnerInventory(new Inventory(INVENTORY_SIZE))
+    mMyInventory(new Inventory(INVENTORY_SIZE, 2)),
+    mPartnerInventory(new Inventory(INVENTORY_SIZE, 2))
 {
-    setWindowName("Trade");
-    setDefaultSize(115, 227, 342, 209);
+    setWindowName(_("Trade"));
+    setDefaultSize(342, 209, ImageRect::CENTER);
     setResizable(true);
+    setCloseButton(true);
 
     setMinWidth(342);
     setMinHeight(209);
 
-    mAddButton = new Button(_("Add"), "add", this);
-    mOkButton = new Button(_("Ok"), "ok", this);
-    mCancelButton = new Button(_("Cancel"), "cancel", this);
-    mTradeButton = new Button(_("Trade"), "trade", this);
+    std::string longestName = getFont()->getWidth(_("OK")) >
+                                   getFont()->getWidth(_("Trade")) ?
+                                   _("OK") : _("Trade");
 
-    mTradeButton->setEnabled(false);
+    mAddButton = new Button(_("Add"), "add", this);
+    mOkButton = new Button(longestName, "ok", this);
 
     mMyItemContainer = new ItemContainer(mMyInventory.get(), 2);
     mMyItemContainer->setWidth(160);
@@ -78,8 +80,8 @@ TradeWindow::TradeWindow(Network *network):
 
     mPartnerScroll = new ScrollArea(mPartnerItemContainer);
 
-    mMoneyLabel = new gcn::Label(strprintf(_("You get %s."), ""));
-    mMoneyLabel2 = new gcn::Label(_("You give:"));
+    mMoneyLabel = new Label(strprintf(_("You get %s."), ""));
+    mMoneyLabel2 = new Label(_("You give:"));
     mMoneyField = new TextField;
     mMoneyField->setWidth(50);
 
@@ -91,10 +93,8 @@ TradeWindow::TradeWindow(Network *network):
     place(0, 0, mMoneyLabel2);
     place(1, 0, mMoneyField);
     place = getPlacer(0, 2);
-    place(0, 0, mAddButton);
-    place(1, 0, mOkButton);
-    place(2, 0, mTradeButton);
-    place(3, 0, mCancelButton);
+    place(6, 0, mAddButton);
+    place(7, 0, mOkButton);
     Layout &layout = getLayout();
     layout.extend(0, 2, 2, 1);
     layout.setRowHeight(1, Layout::AUTO_SET);
@@ -102,19 +102,13 @@ TradeWindow::TradeWindow(Network *network):
     layout.setColWidth(0, Layout::AUTO_SET);
     layout.setColWidth(1, Layout::AUTO_SET);
 
+    mOkButton->setCaption(_("OK"));
+
     loadWindowState();
 }
 
 TradeWindow::~TradeWindow()
 {
-}
-
-void TradeWindow::widgetResized(const gcn::Event &event)
-{
-    mMyItemContainer->setWidth(mMyScroll->getWidth());
-    mPartnerItemContainer->setWidth(mPartnerScroll->getWidth());
-
-    Window::widgetResized(event);
 }
 
 void TradeWindow::addMoney(int amount)
@@ -166,18 +160,14 @@ void TradeWindow::reset()
 {
     mMyInventory->clear();
     mPartnerInventory->clear();
-    mTradeButton->setEnabled(false);
+    mOkButton->setCaption(_("OK"));
+    mOkButton->setActionEventId("ok");
     mOkButton->setEnabled(true);
     mOkOther = false;
     mOkMe = false;
     mMoneyLabel->setCaption(strprintf(_("You get %s."), ""));
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
-}
-
-void TradeWindow::setTradeButton(bool enabled)
-{
-    mTradeButton->setEnabled(enabled);
 }
 
 void TradeWindow::receivedOk(bool own)
@@ -187,13 +177,8 @@ void TradeWindow::receivedOk(bool own)
         mOkMe = true;
         if (mOkOther)
         {
-            mTradeButton->setEnabled(true);
-            mOkButton->setEnabled(false);
-        }
-        else
-        {
-            mTradeButton->setEnabled(false);
-            mOkButton->setEnabled(false);
+            mOkButton->setCaption(_("Trade"));
+            mOkButton->setActionEventId("trade");
         }
     }
     else
@@ -201,19 +186,18 @@ void TradeWindow::receivedOk(bool own)
         mOkOther = true;
         if (mOkMe)
         {
-            mTradeButton->setEnabled(true);
-            mOkButton->setEnabled(false);
-        }
-        else
-        {
-            mTradeButton->setEnabled(false);
-            mOkButton->setEnabled(true);
+            mOkButton->setCaption(_("Trade"));
+            mOkButton->setActionEventId("trade");
         }
     }
 }
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
+    // TODO: Our newer version of eAthena doesn't register this following
+    //       function. Detect the actual server version, and re-enable this
+    //       for that version only.
+    //addItem(item->getId(), true, quantity, item->isEquipment());
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(item->getInvIndex());
@@ -251,7 +235,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         if (mMyInventory->contains(item))
         {
             chatWindow->chatLog(_("Failed adding item. You can not "
-                        "overlap one kind of item on the window."), BY_SERVER);
+                                  "overlap one kind of item on the window."),
+                                  BY_SERVER);
             return;
         }
 
@@ -296,4 +281,10 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_OK);
     }
+}
+
+void TradeWindow::close()
+{
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
 }

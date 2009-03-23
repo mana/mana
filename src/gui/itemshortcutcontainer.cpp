@@ -22,6 +22,7 @@
 #include "inventorywindow.h"
 #include "itemshortcutcontainer.h"
 #include "itempopup.h"
+#include "palette.h"
 #include "viewport.h"
 
 #include "../configuration.h"
@@ -46,6 +47,7 @@ ItemShortcutContainer::ItemShortcutContainer():
     addWidgetListener(this);
 
     mItemPopup = new ItemPopup;
+    mItemPopup->setOpaque(false);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -64,22 +66,6 @@ ItemShortcutContainer::~ItemShortcutContainer()
     delete mItemPopup;
 }
 
-void ItemShortcutContainer::logic()
-{
-    if (!isVisible())
-        return;
-
-    gcn::Widget::logic();
-
-    int i = itemShortcut->getItemCount();
-
-    if (i != mMaxItems)
-    {
-        mMaxItems = i;
-        setWidth(getWidth());
-    }
-}
-
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
     if (!isVisible())
@@ -93,7 +79,6 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    graphics->setColor(gcn::Color(0, 0, 0));
     graphics->setFont(getFont());
 
     for (int i = 0; i < mMaxItems; i++)
@@ -106,7 +91,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
             (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_1 + i));
-        graphics->setColor(0x000000);
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 
         if (itemShortcut->getItem(i) < 0)
@@ -249,8 +234,9 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
 
     if (item && inventoryWindow->isVisible())
     {
-        mItemPopup->setItem(item->getInfo());
-        mItemPopup->setOpaque(false);
+        if (item->getInfo().getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(item->getInfo());
+        mItemPopup->updateColors();
         mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
     }
     else

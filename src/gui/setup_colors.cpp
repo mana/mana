@@ -23,12 +23,12 @@
 #include <cmath>
 
 #include <guichan/listmodel.hpp>
-#include <guichan/widgets/label.hpp>
 #include <guichan/widgets/slider.hpp>
 
 #include "browserbox.h"
 #include "gui.h"
 #include "itemlinkhandler.h"
+#include "label.h"
 #include "listbox.h"
 #include "palette.h"
 #include "scrollarea.h"
@@ -60,7 +60,7 @@ Setup_Colors::Setup_Colors() :
     mTextPreview = new TextPreview(&rawmsg);
 
     mPreview = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mPreview->setOpaque(true);
+    mPreview->setOpaque(false);
 
     // don't do anything with links
     mPreview->setLinkHandler(NULL);
@@ -70,18 +70,18 @@ Setup_Colors::Setup_Colors() :
     mPreviewBox->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_NEVER);
 
-    mGradTypeLabel = new gcn::Label(_("Type: "));
+    mGradTypeLabel = new Label(_("Type: "));
 
-    mGradTypeSlider = new Slider(0, 2);
+    mGradTypeSlider = new Slider(0, 3);
     mGradTypeSlider->setWidth(160);
     mGradTypeSlider->setActionEventId("slider_grad");
     mGradTypeSlider->setValue(0);
     mGradTypeSlider->addActionListener(this);
     mGradTypeSlider->setEnabled(false);
 
-    mGradTypeText = new gcn::Label();
+    mGradTypeText = new Label();
 
-    mRedLabel = new gcn::Label(_("Red: "));
+    mRedLabel = new Label(_("Red: "));
 
     mRedText = new TextField;
     mRedText->setWidth(40);
@@ -97,7 +97,7 @@ Setup_Colors::Setup_Colors() :
     mRedSlider->addActionListener(this);
     mRedSlider->setEnabled(false);
 
-    mGreenLabel = new gcn::Label(_("Green: "));
+    mGreenLabel = new Label(_("Green: "));
 
     mGreenText = new TextField;
     mGreenText->setWidth(40);
@@ -113,7 +113,7 @@ Setup_Colors::Setup_Colors() :
     mGreenSlider->addActionListener(this);
     mGreenSlider->setEnabled(false);
 
-    mBlueLabel = new gcn::Label(_("Blue: "));
+    mBlueLabel = new Label(_("Blue: "));
 
     mBlueText = new TextField;
     mBlueText->setWidth(40);
@@ -156,13 +156,9 @@ Setup_Colors::Setup_Colors() :
 Setup_Colors::~Setup_Colors()
 {
     if (mPreviewBox->getContent() == mPreview)
-    {
         delete mTextPreview;
-    }
     else
-    {
         delete mPreview;
-    }
 }
 
 void Setup_Colors::action(const gcn::ActionEvent &event)
@@ -180,11 +176,12 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
         mPreview->clearRows();
         mPreviewBox->setContent(mTextPreview);
         mTextPreview->setFont(gui->getFont());
-        mTextPreview->setTextColor(
-                &guiPalette->getColor(Palette::TEXT));
+        mTextPreview->setTextColor(&guiPalette->getColor(Palette::TEXT));
         mTextPreview->setTextBGColor(NULL);
+        mTextPreview->setOpaque(false);
         mTextPreview->setShadow(true);
         mTextPreview->setOutline(true);
+        mTextPreview->useTextAlpha(false);
 
         switch (type)
         {
@@ -192,13 +189,30 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::SHADOW:
             case Palette::OUTLINE:
                 mTextPreview->setFont(gui->getFont());
-                mTextPreview->setOutline(true);
                 mTextPreview->setShadow(type == Palette::SHADOW);
                 mTextPreview->setOutline(type == Palette::OUTLINE);
                 break;
+            case Palette::PROGRESS_BAR:
+                mTextPreview->useTextAlpha(true);
+                mTextPreview->setFont(boldFont);
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(true);
+                mTextPreview->setShadow(false);
+                break;
+            case Palette::TAB_HIGHLIGHT:
+                mTextPreview->setFont(gui->getFont());
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
+                break;
             case Palette::BACKGROUND:
-            case Palette::HIGHLIGHT:
             case Palette::SHOP_WARNING:
+                mTextPreview->setBGColor(col);
+                mTextPreview->setOpaque(true);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
+                break;
+            case Palette::HIGHLIGHT:
                 mTextPreview->setTextBGColor(col);
                 mTextPreview->setOutline(false);
                 mTextPreview->setShadow(false);
@@ -217,14 +231,29 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 mPreview->clearRows();
 
                 if (ch == '<')
-                {
                     msg = toString("@@|") + rawmsg + "@@";
-                }
                 else
-                {
                     msg = "##" + toString(ch) + rawmsg;
-                }
+
                 mPreview->addRow(msg);
+                break;
+            case Palette::UNKNOWN_ITEM:
+            case Palette::GENERIC:
+            case Palette::HEAD:
+            case Palette::USABLE:
+            case Palette::TORSO:
+            case Palette::ONEHAND:
+            case Palette::LEGS:
+            case Palette::FEET:
+            case Palette::TWOHAND:
+            case Palette::SHIELD:
+            case Palette::RING:
+            case Palette::ARMS:
+            case Palette::AMMO:
+                mTextPreview->setFont(boldFont);
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
                 break;
             case Palette::PARTICLE:
             case Palette::EXP_INFO:
@@ -242,13 +271,18 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::MONSTER:
                 mTextPreview->setFont(boldFont);
                 mTextPreview->setTextColor(col);
+            case Palette::TYPE_COUNT:
                 break;
         }
 
-        if (grad != Palette::STATIC)
+        if (grad != Palette::STATIC && grad != Palette::PULSE)
         { // If nonstatic color, don't display the current, but the committed
           // color at the sliders
             col = &guiPalette->getCommittedColor(type);
+        }
+        else if (grad == Palette::PULSE)
+        {
+            col = &guiPalette->getTestColor(type);
         }
 
         setEntry(mRedSlider, mRedText, col->r);
@@ -337,11 +371,10 @@ void Setup_Colors::listen(const TextField *tf)
     }
 }
 
-void Setup_Colors::updateGradType() {
+void Setup_Colors::updateGradType()
+{
     if (mSelected == -1)
-    {
         return;
-    }
 
     mSelected = mColorBox->getSelected();
     Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
@@ -349,9 +382,10 @@ void Setup_Colors::updateGradType() {
 
     mGradTypeText->setCaption(
             (grad == Palette::STATIC) ? _("Static") :
+            (grad == Palette::PULSE) ? _("Pulse") :
             (grad == Palette::RAINBOW) ? _("Rainbow") : _("Spectrum"));
 
-    bool enable = (grad == Palette::STATIC);
+    bool enable = (grad == Palette::STATIC || grad == Palette::PULSE);
     mRedText->setEnabled(enable);
     mRedSlider->setEnabled(enable);
     mGreenText->setEnabled(enable);
@@ -363,13 +397,11 @@ void Setup_Colors::updateGradType() {
 void Setup_Colors::updateColor()
 {
     if (mSelected == -1)
-    {
         return;
-    }
 
     Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
     Palette::GradientType grad =
-            static_cast<Palette::GradientType>((int)mGradTypeSlider->getValue());
+            static_cast<Palette::GradientType>(mGradTypeSlider->getValue());
     guiPalette->setGradient(type, grad);
 
     if (grad == Palette::STATIC)
@@ -378,5 +410,12 @@ void Setup_Colors::updateColor()
                 static_cast<int>(mRedSlider->getValue()),
                 static_cast<int>(mGreenSlider->getValue()),
                 static_cast<int>(mBlueSlider->getValue()));
+    }
+    else if (grad == Palette::PULSE)
+    {
+        guiPalette->setTestColor(type, gcn::Color(
+                static_cast<int>(mRedSlider->getValue()),
+                static_cast<int>(mGreenSlider->getValue()),
+                static_cast<int>(mBlueSlider->getValue())));
     }
 }

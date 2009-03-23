@@ -19,10 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "checkbox.h"
+#include "label.h"
 #include "listbox.h"
 #include "login.h"
 #include "ok_dialog.h"
@@ -48,11 +47,11 @@ static const int FIELD_WIDTH = LOGIN_DIALOG_WIDTH - 70;
 LoginDialog::LoginDialog(LoginData *loginData):
     Window(_("Login")), mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label(_("Name:"));
-    gcn::Label *passLabel = new gcn::Label(_("Password:"));
-    gcn::Label *serverLabel = new gcn::Label(_("Server:"));
-    gcn::Label *portLabel = new gcn::Label(_("Port:"));
-    gcn::Label *dropdownLabel = new gcn::Label(_("Recent:"));
+    gcn::Label *userLabel = new Label(_("Name:"));
+    gcn::Label *passLabel = new Label(_("Password:"));
+    gcn::Label *serverLabel = new Label(_("Server:"));
+    gcn::Label *portLabel = new Label(_("Port:"));
+    gcn::Label *dropdownLabel = new Label(_("Recent:"));
     std::vector<std::string> dfltServer;
     dfltServer.push_back("server.themanaworld.org");
     std::vector<std::string> dfltPort;
@@ -113,11 +112,10 @@ LoginDialog::LoginDialog(LoginData *loginData):
     center();
     setVisible(true);
 
-    if (mUserField->getText().empty()) {
+    if (mUserField->getText().empty())
         mUserField->requestFocus();
-    } else {
+    else
         mPassField->requestFocus();
-    }
 
     mOkButton->setEnabled(canSubmit());
 }
@@ -152,14 +150,12 @@ void LoginDialog::action(const gcn::ActionEvent &event)
     {
         // Transfer these fields on to the register dialog
         mLoginData->hostname = mServerField->getText();
+
         if (isUShort(mPortField->getText()))
-        {
             mLoginData->port = getUShort(mPortField->getText());
-        }
         else
-        {
             mLoginData->port = 6901;
-        }
+
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
 
@@ -192,14 +188,12 @@ bool LoginDialog::isUShort(const std::string &str)
          strPtr != strEnd; ++strPtr)
     {
         if (*strPtr < '0' || *strPtr > '9')
-        {
             return false;
-        }
+
         l = l * 10 + (*strPtr - '0'); // *strPtr - '0' will never be negative
+
         if (l > 65535)
-        {
             return false;
-        }
     }
     return true;
 }
@@ -275,9 +269,7 @@ void LoginDialog::DropDownList::save(const std::string &server,
          ++sPtr, ++pPtr)
     {
         if (*sPtr != server || *pPtr != port)
-        {
             saveEntry(*sPtr, *pPtr, position);
-        }
     }
 }
 
@@ -289,26 +281,23 @@ int LoginDialog::DropDownList::getNumberOfElements()
 std::string LoginDialog::DropDownList::getElementAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
-    {
-        return "";
-    }
+      return "";
+
     return getServerAt(i) + ":" + getPortAt(i);
 }
 
 std::string LoginDialog::DropDownList::getServerAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
-    {
         return "";
-    }
+
     return mServers.at(i);
 }
 
 std::string LoginDialog::DropDownList::getPortAt(int i)
 {
     if (i < 0 || i >= getNumberOfElements())
-    {
         return "";
-    }
+
     return mPorts.at(i);
 }

@@ -319,11 +319,19 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
                 widget->setDimension(bounds);
 
-                if (!mLinewiseMode && c == mSelectedColumn && r == mSelectedRow)
+                graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
+                                                       (int)(mAlpha * 255.0f)));
+
+                if (mLinewiseMode && r == mSelectedRow && c == 0)
                 {
-                    graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
-                            (int)(mAlpha * 127.0f)));
-                    graphics->fillRectangle(bounds);
+                    graphics->fillRectangle(gcn::Rectangle(0, y_offset,
+                                                           getWidth(), height));
+                }
+                else if (!mLinewiseMode &&
+                          c == mSelectedColumn && r == mSelectedRow)
+                {
+                    graphics->fillRectangle(gcn::Rectangle(x_offset, y_offset,
+                                                           width, height));
                 }
 
                 graphics->pushClipArea(bounds);
@@ -332,14 +340,6 @@ void GuiTable::draw(gcn::Graphics* graphics)
             }
 
             x_offset += width;
-        }
-
-        if (mLinewiseMode && r == mSelectedRow)
-        {
-            graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
-                    (int)(mAlpha * 127.0f)));
-            graphics->fillRectangle(gcn::Rectangle(0, y_offset,
-                                                   x_offset, height));
         }
 
         y_offset += height;

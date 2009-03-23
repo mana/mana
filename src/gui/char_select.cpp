@@ -23,11 +23,10 @@
 
 #include <guichan/font.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "char_select.h"
 #include "confirm_dialog.h"
+#include "label.h"
 #include "ok_dialog.h"
 #include "playerbox.h"
 #include "textfield.h"
@@ -94,10 +93,10 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mPlayerBox = new PlayerBox;
     mPlayerBox->setWidth(74);
 
-    mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
-    mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
-    mJobLevelLabel = new gcn::Label(strprintf(_("Job Level: %d"), 0));
-    mMoneyLabel = new gcn::Label(strprintf(_("Money: %s"), mMoney.c_str()));
+    mNameLabel = new Label(strprintf(_("Name: %s"), ""));
+    mLevelLabel = new Label(strprintf(_("Level: %d"), 0));
+    mJobLevelLabel = new Label(strprintf(_("Job Level: %d"), 0));
+    mMoneyLabel = new Label(strprintf(_("Money: %s"), mMoney.c_str()));
 
     const std::string tempString = getFont()->getWidth(_("New")) <
                                    getFont()->getWidth(_("Delete")) ?
@@ -271,13 +270,13 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     mPlayer->setHairStyle(rand() % mPlayer->getNumOfHairstyles(), rand() % numberOfHairColors);
 
     mNameField = new TextField("");
-    mNameLabel = new gcn::Label(_("Name:"));
+    mNameLabel = new Label(_("Name:"));
     mNextHairColorButton = new Button(">", "nextcolor", this);
     mPrevHairColorButton = new Button("<", "prevcolor", this);
-    mHairColorLabel = new gcn::Label(_("Hair Color:"));
+    mHairColorLabel = new Label(_("Hair Color:"));
     mNextHairStyleButton = new Button(">", "nextstyle", this);
     mPrevHairStyleButton = new Button("<", "prevstyle", this);
-    mHairStyleLabel = new gcn::Label(_("Hair Style:"));
+    mHairStyleLabel = new Label(_("Hair Style:"));
     mCreateButton = new Button(_("Create"), "create", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayerBox = new PlayerBox(mPlayer);

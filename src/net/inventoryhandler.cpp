@@ -216,7 +216,7 @@ void InventoryHandler::handleMessage(MessageIn *msg)
         case SMSG_PLAYER_STORAGE_STATUS:
             /*
              * This is the closest we get to an "Open Storage" packet from the
-             * server.  It always comes after the two SMSG_PLAYER_STORAGE_...
+             * server. It always comes after the two SMSG_PLAYER_STORAGE_...
              * packets that update storage contents.
              */
             player_node->setInStorage(true);

@@ -23,6 +23,8 @@
 #include "shortcutcontainer.h"
 #include "shortcutwindow.h"
 
+#include "widgets/layout.h"
+
 #include "../configuration.h"
 
 static const int SCROLL_PADDING = 0;
@@ -39,29 +41,28 @@ ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
 
     mItems = content;
 
-    mInstances++;
-
     const int border = SCROLL_PADDING * 2 + getPadding() * 2;
     setMinWidth(mItems->getBoxWidth() + border);
     setMinHeight(mItems->getBoxHeight() + border);
     setMaxWidth(mItems->getBoxWidth() * mItems->getMaxItems() + border);
     setMaxHeight(mItems->getBoxHeight() * mItems->getMaxItems() + border);
 
-    const int width = (int) config.getValue("screenwidth", 800);
-    const int height = (int) config.getValue("screenheight", 600);
+    setDefaultSize(mItems->getBoxWidth() + border, (mItems->getBoxHeight() *
+                   mItems->getMaxItems()) + border, ImageRect::LOWER_RIGHT,
+                   mInstances * mItems->getBoxWidth(), 0);
 
-    setDefaultSize(width - (mInstances * mItems->getBoxWidth()) -
-                   (mInstances * border),  height - (mItems->getBoxHeight() *
-                   mItems->getMaxItems()) - border, mItems->getBoxWidth() +
-                   border, (mItems->getBoxHeight() * mItems->getMaxItems()) +
-                   border);
+    mInstances++;
 
     mScrollArea = new ScrollArea(mItems);
     mScrollArea->setPosition(SCROLL_PADDING, SCROLL_PADDING);
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mScrollArea->setOpaque(false);
 
-    add(mScrollArea);
+    place(0, 0, mScrollArea, 5, 5).setPadding(0);
+
+    Layout &layout = getLayout();
+    layout.setRowHeight(0, Layout::AUTO_SET);
+    layout.setMargin(0);
 
     loadWindowState();
 }
@@ -71,13 +72,3 @@ ShortcutWindow::~ShortcutWindow()
     delete mItems;
 }
 
-void ShortcutWindow::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    const gcn::Rectangle &area = getChildrenArea();
-
-    mScrollArea->setSize(
-            area.width - SCROLL_PADDING,
-            area.height - SCROLL_PADDING);
-}

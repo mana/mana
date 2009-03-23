@@ -40,14 +40,16 @@ NpcIntegerDialog::NpcIntegerDialog(Network *network):
     setWindowName("NPCInteger");
     mValueField = new IntTextField;
 
+    setDefaultSize(175, 75, ImageRect::CENTER);
+
     mDecButton = new Button("-", "decvalue", this);
     mIncButton = new Button("+", "incvalue", this);
     gcn::Button *okButton = new Button(_("OK"), "ok", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
     gcn::Button *resetButton = new Button(_("Reset"), "reset", this);
 
-    mDecButton->setSize(20, 20);
-    mIncButton->setSize(20, 20);
+    mDecButton->adjustSize();
+    mDecButton->setWidth(mIncButton->getWidth());
 
     ContainerPlacer place;
     place = getPlacer(0, 0);

@@ -49,11 +49,6 @@ class ItemShortcutContainer : public ShortcutContainer
         virtual ~ItemShortcutContainer();
 
         /**
-         * Handles the logic of the ItemContainer
-         */
-        void logic();
-
-        /**
          * Draws the items.
          */
         void draw(gcn::Graphics *graphics);

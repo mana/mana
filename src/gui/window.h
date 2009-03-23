@@ -31,11 +31,11 @@
 
 class ConfigListener;
 class ContainerPlacer;
-class Image;
-class ImageRect;
 class Layout;
 class LayoutCell;
 class ResizeGrip;
+class Skin;
+class SkinLoader;
 class WindowContainer;
 
 /**
@@ -61,7 +61,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          * @param skin    The location where the window's skin XML can be found.
          */
         Window(const std::string &caption = "Window", bool modal = false,
-                Window *parent = NULL, const std::string &skin = "graphics/gui/gui.xml");
+               Window *parent = NULL, const std::string &skin = "graphics/gui/gui.xml");
 
         /**
          * Destructor. Deletes all the added widgets.
@@ -87,6 +87,12 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Sets the location relative to the given widget.
          */
         void setLocationRelativeTo(gcn::Widget *widget);
+
+        /**
+         * Sets the location relative to the given enumerated position.
+         */
+        void setLocationRelativeTo(ImageRect::ImagePosition position,
+                                   int offsetX = 0, int offsetY = 0);
 
         /**
          * Sets whether or not the window can be resized.
@@ -151,8 +157,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Sets flag to show a title or not.
          */
-        void setShowTitle(bool flag)
-        { mShowTitle = flag; }
+        void setShowTitle(bool flag) { mShowTitle = flag; }
 
         /**
           * Sets whether the window is sticky. A sticky window will not have
@@ -233,6 +238,12 @@ class Window : public gcn::Window, gcn::WidgetListener
         void loadWindowState();
 
         /**
+         * Saves the window state so that when the window is reloaded, it'll
+         * maintain its previous state and location.
+         */
+        void saveWindowState();
+
+        /**
          * Set the default win pos and size.
          * (which can be different of the actual ones.)
          */
@@ -245,10 +256,20 @@ class Window : public gcn::Window, gcn::WidgetListener
         void setDefaultSize();
 
         /**
+         * Set the default win pos and size.
+         * (which can be different of the actual ones.)
+         * This version of setDefaultSize sets the window's position based
+         * on a relative enumerated position, rather than a coordinate position.
+         */
+        void setDefaultSize(int defaultWidth, int defaultHeight,
+                            ImageRect::ImagePosition position,
+                            int offsetx = 0, int offsetY = 0);
+
+        /**
          * Reset the win pos and size to default. Don't forget to set defaults
          * first.
          */
-        void resetToDefaultSize(bool changePosition = true);
+        virtual void resetToDefaultSize();
 
         /**
          * Gets the layout handler for this window.
@@ -266,11 +287,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         void reflowLayout(int w = 0, int h = 0);
 
         /**
-         * Loads a window skin
-         */
-        void loadSkin(const std::string &filename);
-
-        /**
          * Adds a widget to the window and sets it at given cell.
          */
         LayoutCell &place(int x, int y, gcn::Widget *, int w = 1, int h = 1);
@@ -285,9 +301,17 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         void center();
 
-    protected:
-        /** The window container windows add themselves to. */
-        static WindowContainer *windowContainer;
+        /**
+         * Overrideable functionality for when the window is to close. This
+         * allows for class implementations to clean up or do certain actions
+         * on window close they couldn't do otherwise.
+         */
+        virtual void close();
+
+        /**
+         * Gets the alpha value used by the window, in a GUIChan usable format.
+         */
+        int getGuiAlpha();
 
     private:
         enum ResizeHandles
@@ -326,7 +350,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */
         int mDefaultHeight;        /**< Default window height */
-        std::string mSkin;         /**< Name of the skin to use */
 
         /**
          * The config listener that listens to changes relevant to all windows.
@@ -335,8 +358,8 @@ class Window : public gcn::Window, gcn::WidgetListener
 
         static int mouseResize;    /**< Active resize handles */
         static int instances;      /**< Number of Window instances */
-        ImageRect border;   /**< The window border and background */
-        static Image *closeImage;  /**< Close Button Image */
+
+        Skin* mSkin;               /**< Skin in use by this window */
 
         /**
          * The width of the resize border. Is independent of the actual window

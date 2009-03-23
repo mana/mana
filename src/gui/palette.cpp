@@ -1,6 +1,7 @@
 /*
  *  Configurable text colors
  *  Copyright (C) 2008  Douglas Boffey <dougaboffey@netscape.net>
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -32,7 +33,7 @@
 
 const gcn::Color Palette::BLACK = gcn::Color(0, 0, 0);
 
-const gcn::Color Palette::RAINBOW_COLORS[8] = {
+const gcn::Color Palette::RAINBOW_COLORS[7] = {
     gcn::Color(255, 0, 0),
     gcn::Color(255, 153, 0),
     gcn::Color(255, 255, 0),
@@ -54,9 +55,8 @@ std::string Palette::getConfigName(const std::string &typeName)
         if (i == 0 || typeName[i] == '_')
         {
             if (i > 0)
-            {
                 i++;
-            }
+
             res[pos] = typeName[i];
         }
         else
@@ -72,9 +72,9 @@ std::string Palette::getConfigName(const std::string &typeName)
 
 DEFENUMNAMES(ColorType, COLOR_TYPE)
 
-const int Palette::GRADIENT_DELAY = 20;
+const int Palette::GRADIENT_DELAY = 40;
 
-Palette::Palette() :
+Palette::Palette() : 
     mRainbowTime(tick_time),
     mColVector(ColVector(TYPE_COUNT))
 {
@@ -82,10 +82,12 @@ Palette::Palette() :
     addColor(TEXT, 0x000000, STATIC, _("Text"));
     addColor(SHADOW, 0x000000, STATIC, indent + _("Text Shadow"));
     addColor(OUTLINE, 0x000000, STATIC, indent + _("Text Outline"));
+    addColor(PROGRESS_BAR, 0xffffff, STATIC, indent + _("Progress Bar Labels"));
 
     addColor(BACKGROUND, 0xffffff, STATIC, _("Background"));
 
     addColor(HIGHLIGHT, 0xebc873, STATIC, _("Highlight"), 'H');
+    addColor(TAB_HIGHLIGHT, 0xff0000, PULSE, indent + _("Tab Highlight"));
     addColor(SHOP_WARNING, 0x910000, STATIC, indent +
             _("Item too expensive"));
 
@@ -106,6 +108,20 @@ Palette::Palette() :
     addColor(NPC, 0xc8c8ff, STATIC, indent + _("NPCs"));
     addColor(MONSTER, 0xff4040, STATIC, indent + _("Monsters"));
 
+    addColor(UNKNOWN_ITEM, 0x000000, STATIC, _("Unknown Item Type"));
+    addColor(GENERIC, 0x21a5b1, STATIC, indent + _("Generic"));
+    addColor(HEAD, 0x527fa4, STATIC, indent + _("Hat"));
+    addColor(USABLE, 0x268d24, STATIC, indent + _("Usable"));
+    addColor(TORSO, 0xd12aa4, STATIC, indent + _("Shirt"));
+    addColor(ONEHAND, 0xf42a2a, STATIC, indent + _("1 Handed Weapons"));
+    addColor(LEGS, 0x699900, STATIC, indent + _("Pants"));
+    addColor(FEET, 0xaa1d48, STATIC, indent + _("Shoes"));
+    addColor(TWOHAND, 0xf46d0e, STATIC, indent + _("2 Handed Weapons"));
+    addColor(SHIELD, 0x9c2424, STATIC, indent + _("Shield"));
+    addColor(RING, 0x0000ff, STATIC, indent + _("Ring"));
+    addColor(ARMS, 0x9c24e8, STATIC, indent + _("Arms"));
+    addColor(AMMO, 0x8b6311, STATIC, indent + _("Ammo"));
+
     addColor(PARTICLE, 0xffffff, STATIC, _("Particle Effects"));
     addColor(PICKUP_INFO, 0x28dc28, STATIC, indent + _("Pickup Notification"));
     addColor(EXP_INFO, 0xffff00, STATIC, indent + _("Exp Notification"));
@@ -122,12 +138,11 @@ Palette::~Palette()
 {
     const std::string *configName;
     for (ColVector::iterator col = mColVector.begin(),
-             colEnd = mColVector.end();
-         col != colEnd; ++col)
+         colEnd = mColVector.end(); col != colEnd; ++col)
     {
         configName = &ColorTypeNames[col->type];
         config.setValue(*configName + "Gradient", col->committedGrad);
-        if (col->grad == STATIC)
+        if (col->grad == STATIC || col->grad == PULSE)
         {
             config.setValue(*configName, toString(col->getRGB()));
         }
@@ -137,7 +152,7 @@ Palette::~Palette()
 const gcn::Color& Palette::getColor(char c, bool &valid)
  {
     for (ColVector::const_iterator col = mColVector.begin(),
-            colEnd = mColVector.end(); col != colEnd; ++col)
+         colEnd = mColVector.end(); col != colEnd; ++col)
     {
         if (col->ch == c)
         {
@@ -209,6 +224,10 @@ void Palette::commit(bool commitNonStatic)
         {
             i->committedColor = i->color;
         }
+        else if (i->grad == PULSE)
+        {
+            i->committedColor = i->testColor;
+        }
     }
 }
 
@@ -223,13 +242,19 @@ void Palette::rollback()
             setGradient(i->type, i->committedGrad);
         }
         setColor(i->type, i->committedColor.r, i->committedColor.g,
-                i->committedColor.b);
+                 i->committedColor.b);
+        if (i->grad == PULSE)
+        {
+            i->testColor.r = i->committedColor.r;
+            i->testColor.g = i->committedColor.g;
+            i->testColor.b = i->committedColor.b;
+        }
     }
 }
 
 void Palette::addColor(Palette::ColorType type, int rgb,
-        Palette::GradientType grad,
-        const std::string &text, char c)
+                       Palette::GradientType grad,
+                       const std::string &text, char c)
 {
     const std::string *configName = &ColorTypeNames[type];
     gcn::Color trueCol = (int)config.getValue(*configName, rgb);
@@ -246,7 +271,7 @@ void Palette::advanceGradient ()
     if (get_elapsed_time(mRainbowTime) > 5)
     {
         int pos, colIndex, colVal;
-        // For slower systems, advance can be greater than one (adcanve > 1
+        // For slower systems, advance can be greater than one (advance > 1
         // skips advance-1 steps). Should make gradient look the same
         // independent of the framerate.
         int advance = get_elapsed_time(mRainbowTime) / 5;
@@ -256,25 +281,35 @@ void Palette::advanceGradient ()
         {
             mGradVector[i]->gradientIndex =
                     (mGradVector[i]->gradientIndex + advance) %
-                    (GRADIENT_DELAY *
-                    ((mGradVector[i]->grad == SPECTRUM) ? 6 :
-                    RAINBOW_COLOR_COUNT));
+                    (GRADIENT_DELAY * ((mGradVector[i]->grad == SPECTRUM) ?
+                    (mGradVector[i]->grad == PULSE) ? 255 : 6 :
+                     RAINBOW_COLOR_COUNT));
 
             pos = mGradVector[i]->gradientIndex % GRADIENT_DELAY;
             colIndex = mGradVector[i]->gradientIndex / GRADIENT_DELAY;
 
+            if (mGradVector[i]->grad == PULSE)
+            {
+                colVal = (int) (255.0 * (sin(M_PI * 
+                         (mGradVector[i]->gradientIndex) / 255) + 1) / 2);
+
+                const gcn::Color* col = &mGradVector[i]->testColor;
+
+                mGradVector[i]->color.r = ((colVal * col->r) / 255) % (col->r + 1);
+                mGradVector[i]->color.g = ((colVal * col->g) / 255) % (col->g + 1);
+                mGradVector[i]->color.b = ((colVal * col->b) / 255) % (col->b + 1);
+            }
             if (mGradVector[i]->grad == SPECTRUM)
             {
                 if (colIndex % 2)
                 { // falling curve
-                    colVal = (int)(255.0 *
-                            (cos(M_PI * pos / GRADIENT_DELAY) + 1) / 2);
+                    colVal = (int)(255.0 * (cos(M_PI * pos / GRADIENT_DELAY) +
+                             1) / 2);
                 }
                 else
                 { // ascending curve
-                    colVal = (int)(255.0 *
-                            (cos(M_PI * (GRADIENT_DELAY-pos) / GRADIENT_DELAY) +
-                            1) / 2);
+                    colVal = (int)(255.0 * (cos(M_PI * (GRADIENT_DELAY-pos) /
+                             GRADIENT_DELAY) + 1) / 2);
                 }
 
                 mGradVector[i]->color.r =
@@ -287,7 +322,7 @@ void Palette::advanceGradient ()
                         (colIndex == 3 || colIndex == 4) ? 255 :
                         (colIndex == 2 || colIndex == 5) ? colVal : 0;
             }
-            else
+            else if (mGradVector[i]->grad == RAINBOW)
             {
                 const gcn::Color* startCol = &RAINBOW_COLORS[colIndex];
                 const gcn::Color* destCol =
@@ -296,17 +331,14 @@ void Palette::advanceGradient ()
                 startColVal = (cos(M_PI * pos / GRADIENT_DELAY) + 1) / 2;
                 destColVal = 1 - startColVal;
 
-                mGradVector[i]->color.r =(int)(
-                        startColVal * startCol->r +
-                        destColVal * destCol->r);
+                mGradVector[i]->color.r =(int)(startColVal * startCol->r +
+                                               destColVal * destCol->r);
 
-                mGradVector[i]->color.g =(int)(
-                        startColVal * startCol->g +
-                        destColVal * destCol->g);
+                mGradVector[i]->color.g =(int)(startColVal * startCol->g +
+                                               destColVal * destCol->g);
 
-                mGradVector[i]->color.b =(int)(
-                        startColVal * startCol->b +
-                        destColVal * destCol->b);
+                mGradVector[i]->color.b =(int)(startColVal * startCol->b +
+                                               destColVal * destCol->b);
             }
         }
 

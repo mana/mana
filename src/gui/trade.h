@@ -56,13 +56,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         ~TradeWindow();
 
         /**
-         * Called when resizing the window.
-         *
-         * @param event The calling event
-         */
-        void widgetResized(const gcn::Event &event);
-
-        /**
          * Add money to the trade window.
          */
         void addMoney(int quantity);
@@ -93,11 +86,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         void increaseQuantity(int index, bool own, int quantity);
 
         /**
-         * Set trade Button disabled
-         */
-        void setTradeButton(bool enabled);
-
-        /**
          * Player received ok message from server
          */
         void receivedOk(bool own);
@@ -118,6 +106,12 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        /**
+         * Closes the Trade Window, as well as telling the server that the
+         * window has been closed.
+         */
+        void close();
+
     private:
         Network *mNetwork;
 
@@ -130,7 +124,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
 
         gcn::Label *mMoneyLabel;
         gcn::Label *mMoneyLabel2;
-        gcn::Button *mAddButton, *mOkButton, *mCancelButton, *mTradeButton;
+        gcn::Button *mAddButton, *mOkButton;
         ScrollArea *mMyScroll, *mPartnerScroll;
         gcn::TextField *mMoneyField;
         bool mOkOther, mOkMe;

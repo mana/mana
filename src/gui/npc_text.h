@@ -77,9 +77,22 @@ class NpcTextDialog : public Window, public gcn::ActionListener
 
         void showCloseButton();
 
+        /**
+         * Notifies the server that the client has performed a next action.
+         */
         void nextDialog(int npcID = current_npc);
 
+        /**
+         * Notifies the server that the client has performed a close action.
+         */
         void closeDialog(int npcID = current_npc);
+
+        /**
+         * Initializes window width to the last known setting. Since the dialog
+         * doesn't need any extra focus outside of what it's given in the Game
+         * class, this is all it does for now.
+         */
+        void requestFocus();
 
         /**
          * Called when resizing the window.

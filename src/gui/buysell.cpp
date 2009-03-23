@@ -60,16 +60,16 @@ void BuySellDialog::logic()
 {
     Window::logic();
 
-    if (isVisible() && !current_npc) {
+    if (isVisible() && !current_npc)
         setVisible(false);
-    }
 }
 
 void BuySellDialog::setVisible(bool visible)
 {
     Window::setVisible(visible);
 
-    if (visible) requestFocus();
+    if (visible)
+        requestFocus();
 }
 
 void BuySellDialog::action(const gcn::ActionEvent &event)

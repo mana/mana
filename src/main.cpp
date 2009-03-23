@@ -28,8 +28,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include <libxml/parser.h>
 
 #include <SDL/SDL_ttf.h>
@@ -58,6 +56,7 @@
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/gui.h"
+#include "gui/label.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
 #include "gui/palette.h"
@@ -445,16 +444,18 @@ void init_engine(const Options &options)
     state = LOGIN_STATE; /**< Initial game state */
 
     // Initialize sound engine
-    try {
-        if (config.getValue("sound", 0) == 1) {
+    try
+    {
+        if (config.getValue("sound", 0) == 1)
             sound.init();
-        }
+
         sound.setSfxVolume((int) config.getValue("sfxVolume",
                     defaultSfxVolume));
         sound.setMusicVolume((int) config.getValue("musicVolume",
                     defaultMusicVolume));
     }
-    catch (const char *err) {
+    catch (const char *err)
+    {
         state = ERROR_STATE;
         errorMessage = err;
         logger->log("Warning: %s", err);
@@ -787,11 +788,11 @@ int main(int argc, char *argv[])
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
-    gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
+    gcn::Label *versionLabel = new Label(PACKAGE_VERSION);
     top->add(versionLabel, 2, 2);
 #endif
     ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
-    gcn::Label *progressLabel = new gcn::Label();
+    gcn::Label *progressLabel = new Label();
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
@@ -846,17 +847,18 @@ int main(int argc, char *argv[])
     while (state != EXIT_STATE)
     {
         // Handle SDL events
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
                 case SDL_QUIT:
                     state = EXIT_STATE;
                     break;
 
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
-                    {
                         state = EXIT_STATE;
-                    }
+
                     break;
             }
 
@@ -871,11 +873,10 @@ int main(int argc, char *argv[])
         {
             state = ERROR_STATE;
 
-            if (!network->getError().empty()) {
+            if (!network->getError().empty()) 
                 errorMessage = network->getError();
-            } else {
+            else
                 errorMessage = _("Got disconnected from server!");
-            }
         }
 
         if (progressBar->isVisible())
@@ -898,7 +899,8 @@ int main(int argc, char *argv[])
         gui->draw();
         graphics->updateScreen();
 
-        if (state != oldstate) {
+        if (state != oldstate)
+        {
             switch (oldstate)
             {
                 case UPDATE_STATE:
@@ -931,12 +933,14 @@ int main(int argc, char *argv[])
             oldstate = state;
 
             if (currentDialog && state != ACCOUNT_STATE &&
-                    state != CHAR_CONNECT_STATE) {
+                    state != CHAR_CONNECT_STATE)
+            {
                 delete currentDialog;
                 currentDialog = NULL;
             }
 
-            switch (state) {
+            switch (state)
+            {
                 case LOADDATA_STATE:
                     logger->log("State: LOADDATA");
 
@@ -961,10 +965,13 @@ int main(int argc, char *argv[])
                 case LOGIN_STATE:
                     logger->log("State: LOGIN");
 
-                    if (!loginData.password.empty()) {
+                    if (!loginData.password.empty())
+                    {
                         loginData.registerLogin = false;
                         state = ACCOUNT_STATE;
-                    } else {
+                    }
+                    else
+                    {
                         currentDialog = new LoginDialog(&loginData);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
@@ -1048,9 +1055,12 @@ int main(int argc, char *argv[])
                     break;
 
                 case UPDATE_STATE:
-                    if (options.skipUpdate) {
+                    if (options.skipUpdate)
+                    {
                         state = LOADDATA_STATE;
-                    } else {
+                    }
+                    else
+                    {
                         // Determine which source to use for the update host
                         if (!options.updateHost.empty())
                             updateHost = options.updateHost;
@@ -1110,9 +1120,9 @@ int main(int argc, char *argv[])
         /*
          * This loop can really stress the CPU, for no reason since it's
          * just constantly redrawing the wallpaper.  Added the following
-         * usleep to limit it to 20 FPS during the login sequence
+         * usleep to limit it to 40 FPS during the login sequence
          */
-        usleep(50000);
+        usleep(25000);
     }
 
     delete guiPalette;
@@ -1128,9 +1138,8 @@ int main(int argc, char *argv[])
     SDLNet_Quit();
 
     if (nullFile)
-    {
         fclose(nullFile);
-    }
+
     logger->log("State: EXIT");
     exit_engine();
     PHYSFS_deinit();
@@ -1142,16 +1151,12 @@ void SetupListener::action(const gcn::ActionEvent &event)
     Window *window = NULL;
 
     if (event.getId() == "Setup")
-    {
         window = setupWindow;
-    }
 
     if (window)
     {
         window->setVisible(!window->isVisible());
         if (window->isVisible())
-        {
             window->requestMoveToTop();
-        }
     }
 }

@@ -33,8 +33,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/chatinput.h \
 	      gui/checkbox.cpp \
 	      gui/checkbox.h \
-	      gui/palette.cpp \
-	      gui/palette.h \
 	      gui/confirm_dialog.cpp \
 	      gui/confirm_dialog.h \
 	      gui/connection.cpp \
@@ -71,6 +69,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/itemshortcutcontainer.h \
 	      gui/item_amount.cpp \
 	      gui/item_amount.h \
+	      gui/label.cpp \
+	      gui/label.h \
 	      gui/linkhandler.h \
 	      gui/listbox.cpp \
 	      gui/listbox.h \
@@ -92,10 +92,14 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
 	      gui/ok_dialog.h \
+	      gui/palette.cpp \
+	      gui/palette.h \
 	      gui/passwordfield.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
 	      gui/playerbox.h \
+	      gui/popup.cpp \
+	      gui/popup.h \
 	      gui/popupmenu.cpp \
 	      gui/popupmenu.h \
 	      gui/progressbar.cpp \
@@ -137,6 +141,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/shortcutcontainer.h \
 	      gui/skill.cpp \
 	      gui/skill.h \
+	      gui/skin.cpp \
+	      gui/skin.h \
 	      gui/slider.cpp \
 	      gui/slider.h \
 	      gui/speechbubble.cpp \

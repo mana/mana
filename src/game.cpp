@@ -218,14 +218,14 @@ void createGuiWindows(Network *network)
     chatWindow->setVisible((bool) config.getValue(
         chatWindow->getWindowName() + "Visible", true));
     miniStatusWindow->setVisible((bool) config.getValue(
-        miniStatusWindow->getWindowName() + "Visible", true));
+        miniStatusWindow->getPopupName() + "Visible", true));
     buyDialog->setVisible(false);
     sellDialog->setVisible(false);
     minimap->setVisible((bool) config.getValue(
         minimap->getWindowName() + "Visible", true));
     tradeWindow->setVisible(false);
     menuWindow->setVisible((bool) config.getValue(
-        menuWindow->getWindowName() + "Visible", true));
+        menuWindow->getPopupName() + "Visible", true));
     itemShortcutWindow->setVisible((bool) config.getValue(
         itemShortcutWindow->getWindowName() + "Visible", true));
     emoteShortcutWindow->setVisible((bool) config.getValue(
@@ -410,8 +410,11 @@ void Game::optionChanged(const std::string &name)
 {
     int fpsLimit = (int) config.getValue("fpslimit", 0);
 
-    // Calculate new minimum frame time
-    mMinFrameTime = fpsLimit ? 1000 / fpsLimit : 0;
+    // Calculate new minimum frame time. If one isn't set, use 60 FPS.
+    // (1000 / 60 is 16.66) Since the client can go well above the refresh
+    // rates for monitors now in OpenGL mode, this cutoff is done to help
+    // conserve on CPU time.
+    mMinFrameTime = fpsLimit ? 1000 / fpsLimit : 16;
 
     // Reset draw time to current time
     mDrawTime = tick_time * 10;

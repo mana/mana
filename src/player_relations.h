@@ -143,7 +143,6 @@ public:
      */
     void removePlayer(const std::string &name);
 
-
     /**
      * Retrieves the default permissions.
      */
@@ -153,8 +152,6 @@ public:
      * Sets the default permissions.
      */
     void setDefault(unsigned int permissions);
-
-
 
     /**
      * Retrieves all known player ignore strategies.

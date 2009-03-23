@@ -24,6 +24,7 @@
 
 #include "itemcontainer.h"
 #include "itempopup.h"
+#include "palette.h"
 #include "viewport.h"
 
 #include "../graphics.h"
@@ -50,13 +51,14 @@ ItemContainer::ItemContainer(Inventory *inventory, int offset):
     mOffset(offset)
 {
     mItemPopup = new ItemPopup;
+    mItemPopup->setOpaque(false);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
     if (!mSelImg) logger->error("Unable to load selection.png");
 
-    mMaxItems = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
+    mMaxItems = mInventory->getLastUsedSlot() - (mOffset - 1); // Count from 0, usage from 2
 
     addMouseListener(this);
     addWidgetListener(this);
@@ -75,7 +77,7 @@ void ItemContainer::logic()
 
     gcn::Widget::logic();
 
-    int i = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
+    int i = mInventory->getLastUsedSlot() - (mOffset - 1); // Count from 0, usage from 2
 
     if (i != mMaxItems)
     {
@@ -122,7 +124,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
 
         // Draw item caption
         graphics->setFont(getFont());
-        graphics->setColor(gcn::Color(0, 0, 0));
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
         graphics->drawText(
                 (item->isEquipped() ? "Eq." : toString(item->getQuantity())),
                 itemX + gridWidth / 2, itemY + gridHeight - 11,
@@ -254,8 +256,9 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
 
     if (item)
     {
-        mItemPopup->setItem(item->getInfo());
-        mItemPopup->setOpaque(false);
+        if (item->getInfo().getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(item->getInfo());
+        mItemPopup->updateColors();
         mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
     }
     else

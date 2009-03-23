@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "../configuration.h"
 #include "../log.h"
 #include "../logindata.h"
@@ -28,6 +26,7 @@
 
 #include "button.h"
 #include "checkbox.h"
+#include "label.h"
 #include "login.h"
 #include "ok_dialog.h"
 #include "passwordfield.h"
@@ -46,7 +45,8 @@
  * to the field which contained wrong data when the Ok button was pressed on
  * the error notice.
  */
-class WrongDataNoticeListener : public gcn::ActionListener {
+class WrongDataNoticeListener : public gcn::ActionListener
+{
     public:
         void setTarget(gcn::TextField *textField);
         void action(const gcn::ActionEvent &event);
@@ -62,22 +62,19 @@ void WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 void WrongDataNoticeListener::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
-    {
         mTarget->requestFocus();
-    }
 }
-
 
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window(_("Register")),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label(_("Name:"));
-    gcn::Label *passwordLabel = new gcn::Label(_("Password:"));
-    gcn::Label *confirmLabel = new gcn::Label(_("Confirm:"));
-    gcn::Label *serverLabel = new gcn::Label(_("Server:"));
-    gcn::Label *portLabel = new gcn::Label(_("Port:"));
+    gcn::Label *userLabel = new Label(_("Name:"));
+    gcn::Label *passwordLabel = new Label(_("Password:"));
+    gcn::Label *confirmLabel = new Label(_("Confirm:"));
+    gcn::Label *serverLabel = new Label(_("Server:"));
+    gcn::Label *portLabel = new Label(_("Port:"));
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField;

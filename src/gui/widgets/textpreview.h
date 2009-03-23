@@ -29,7 +29,8 @@
 /**
  * Preview widget for particle colors, etc.
  */
-class TextPreview : public gcn::Widget {
+class TextPreview : public gcn::Widget
+{
     public:
         TextPreview(const std::string* text);
 
@@ -41,6 +42,16 @@ class TextPreview : public gcn::Widget {
         inline void setTextColor(const gcn::Color* color)
         {
             mTextColor = color;
+        }
+
+        /**
+         * Sets the text to use the set alpha value.
+         *
+         * @param alpha whether to use alpha values for the text or not
+         */
+        inline void useTextAlpha(bool alpha) 
+        {
+            mTextAlpha = alpha;
         }
 
         /**
@@ -101,12 +112,29 @@ class TextPreview : public gcn::Widget {
          */
         void draw(gcn::Graphics *graphics);
 
+        /**
+         * Set opacity for this widget (whether or not to show the background
+         * color)
+         *
+         * @param opaque Whether the widget should be opaque or not
+         */
+        void setOpaque(bool opaque) { mOpaque = opaque; }
+
+        /**
+         * Gets opacity for this widget (whether or not the background color
+         * is shown below the widget)
+         */
+        bool isOpaque() { return mOpaque; }
+
     private:
         gcn::Font *mFont;
         const std::string* mText;
         const gcn::Color* mTextColor;
         const gcn::Color* mBGColor;
         const gcn::Color* mTextBGColor;
+        static float mAlpha;
+        bool mTextAlpha;
+        bool mOpaque;
         bool mShadow;
         bool mOutline;
 };

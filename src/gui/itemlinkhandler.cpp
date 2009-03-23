@@ -32,6 +32,7 @@
 ItemLinkHandler::ItemLinkHandler()
 {
     mItemPopup = new ItemPopup;
+    mItemPopup->setOpaque(false);
 }
 
 ItemLinkHandler::~ItemLinkHandler()
@@ -49,11 +50,17 @@ void ItemLinkHandler::handleLink(const std::string &link)
     {
         const ItemInfo &iteminfo = ItemDB::get(id);
 
-        mItemPopup->setItem(iteminfo);
+        if (iteminfo.getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(iteminfo);
 
         if (mItemPopup->isVisible())
+        {
             mItemPopup->setVisible(false);
+        }
         else
+        {
+            mItemPopup->updateColors();
             mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
+        }
     }
 }

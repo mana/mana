@@ -119,10 +119,8 @@ Image* MapLayer::getTile(int x, int y) const
     return mTiles[x + y * mWidth];
 }
 
-void MapLayer::draw(Graphics *graphics,
-                    int startX, int startY,
-                    int endX, int endY,
-                    int scrollX, int scrollY,
+void MapLayer::draw(Graphics *graphics, int startX, int startY,
+                    int endX, int endY, int scrollX, int scrollY,
                     const Sprites &sprites) const
 {
     startX -= mX;
@@ -163,8 +161,10 @@ void MapLayer::draw(Graphics *graphics,
     }
 
     // Draw any remaining sprites
-    if (mIsFringeLayer) {
-        while (si != sprites.end()) {
+    if (mIsFringeLayer)
+    {
+        while (si != sprites.end())
+        {
             (*si)->draw(graphics, -scrollX, -scrollY);
             si++;
         }

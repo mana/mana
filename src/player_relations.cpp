@@ -354,14 +354,15 @@ private:
 std::vector<PlayerIgnoreStrategy *> *
 PlayerRelationsManager::getPlayerIgnoreStrategies()
 {
-    if (mIgnoreStrategies.size() == 0) {
+    if (mIgnoreStrategies.size() == 0)
+    {
         // not initialised yet?
         mIgnoreStrategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE,
-                                                         "floating '...' bubble",
-                                                         PLAYER_IGNORE_STRATEGY_EMOTE0));
+                                                  "floating '...' bubble",
+                                                   PLAYER_IGNORE_STRATEGY_EMOTE0));
         mIgnoreStrategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE + 1,
-                                                         "floating bubble",
-                                                         "emote1"));
+                                                  "floating bubble",
+                                                  "emote1"));
         mIgnoreStrategies.push_back(new PIS_nothing());
         mIgnoreStrategies.push_back(new PIS_dotdotdot());
         mIgnoreStrategies.push_back(new PIS_blinkname());

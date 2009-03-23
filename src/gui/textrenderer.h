@@ -37,7 +37,7 @@ class TextRenderer
      */
     static inline void renderText(gcn::Graphics *graphics, const std::string&
             text, int x, int y, gcn::Graphics::Alignment align,
-            const gcn::Color* color, gcn::Font *font, bool outline = false,
+            const gcn::Color color, gcn::Font *font, bool outline = false,
             bool shadow = false, int alpha = 255)
     {
         graphics->setFont(font);
@@ -73,7 +73,7 @@ class TextRenderer
             graphics->drawText(text, x, y - 1, align);
         }
 
-        graphics->setColor(*color);
+        graphics->setColor(color);
         graphics->drawText(text, x, y, align);
     }
 };

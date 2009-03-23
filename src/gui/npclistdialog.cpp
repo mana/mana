@@ -38,7 +38,7 @@
 #include "../utils/strprintf.h"
 
 NpcListDialog::NpcListDialog(Network *network):
-    Window(_("NPC")), mNetwork(network)
+    Window("NPC"), mNetwork(network)
 {
     setWindowName("NPCList");
     setResizable(true);
@@ -46,7 +46,7 @@ NpcListDialog::NpcListDialog(Network *network):
     setMinWidth(200);
     setMinHeight(150);
 
-    setDefaultSize(0, 0, 260, 200);
+    setDefaultSize(260, 200, ImageRect::CENTER);
 
     mItemList = new ListBox(this);
     mItemList->setWrappingEnabled(true);
@@ -60,8 +60,8 @@ NpcListDialog::NpcListDialog(Network *network):
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     place(0, 0, scrollArea, 5).setPadding(3);
-    place(3, 1, okButton);
-    place(4, 1, cancelButton);
+    place(3, 1, cancelButton);
+    place(4, 1, okButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
@@ -121,6 +121,7 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     if (choice)
     {
         setVisible(false);
+        saveWindowState();
         reset();
 
         MessageOut outMsg(mNetwork);
@@ -144,4 +145,6 @@ void NpcListDialog::requestFocus()
 {
     mItemList->requestFocus();
     mItemList->setSelected(0);
+    loadWindowState();
+    setVisible(true);
 }

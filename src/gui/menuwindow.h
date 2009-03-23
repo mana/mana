@@ -22,14 +22,14 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "window.h"
+#include "popup.h"
 
 /**
  * The Button Menu.
  *
  * \ingroup Interface
  */
-class MenuWindow : public Window
+class MenuWindow : public Popup
 {
     public:
         /**

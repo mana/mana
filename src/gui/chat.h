@@ -119,6 +119,12 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ~ChatWindow();
 
         /**
+         * Reset the chat window and recorder window attached to it to their
+         * default positions.
+         */
+        void resetToDefaultSize();
+
+        /**
          * Adds a line of text to our message list. Parameters:
          *
          * @param line Text message.
@@ -238,12 +244,12 @@ class ChatWindow : public Window, public gcn::ActionListener,
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;
         History mHistory;           /**< Command history */
-        HistoryIterator mCurHist; /**< History iterator */
-        Recorder *mRecorder; /**< Recording class */
-        char mPartyPrefix; /**< Messages beginning with the prefix are sent to
-                              the party */
-        bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
-                                or not */
+        HistoryIterator mCurHist;   /**< History iterator */
+        Recorder *mRecorder;        /**< Recording class */
+        char mPartyPrefix;          /**< Messages beginning with the prefix are
+                                         sent to the party */
+        bool mReturnToggles;        /**< Marks whether <Return> toggles the chat
+                                         log or not */
         Party *mParty;
 };
 extern ChatWindow *chatWindow;

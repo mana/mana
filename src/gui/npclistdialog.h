@@ -77,7 +77,8 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         void setVisible(bool visible);
 
         /**
-         * Requests the listbox to take focus for input.
+         * Requests the listbox to take focus for input and sets window width
+         * to the last known setting.
          */
         void requestFocus();
 

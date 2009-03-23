@@ -59,7 +59,6 @@ void NPCHandler::handleMessage(MessageIn *msg)
             current_npc = msg->readInt32();
             player_node->setAction(LocalPlayer::STAND);
             npcListDialog->parseItems(msg->readString(msg->getLength() - 8));
-            npcListDialog->setVisible(true);
             npcListDialog->requestFocus();
             break;
 
@@ -68,7 +67,7 @@ void NPCHandler::handleMessage(MessageIn *msg)
             current_npc = msg->readInt32();
             player_node->setAction(LocalPlayer::STAND);
             npcTextDialog->addText(msg->readString(msg->getLength() - 8));
-            npcTextDialog->setVisible(true);
+            npcTextDialog->requestFocus();
             break;
 
          case SMSG_NPC_CLOSE:

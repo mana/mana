@@ -54,7 +54,7 @@ Window(""), mNetwork(network), mTmpVisible(false)
     setWindowName("Chat");
 
     setResizable(true);
-    setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
+    setDefaultSize(600, 123, ImageRect::LOWER_LEFT);
     setMinWidth(150);
     setMinHeight(90);
 
@@ -112,6 +112,12 @@ ChatWindow::~ChatWindow()
     delete mParty;
 }
 
+void ChatWindow::resetToDefaultSize()
+{
+    mRecorder->resetToDefaultSize();
+    Window::resetToDefaultSize();
+}
+
 void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
 {
     // Trim whitespace
@@ -142,12 +148,12 @@ void ChatWindow::chatLog(std::string line, int own, bool ignoreRecord)
 
     // *implements actions in a backwards compatible way*
     if (own == BY_PLAYER &&
-    tmp.text.at(0) == '*' &&
-    tmp.text.at(tmp.text.length()-1) == '*')
+        tmp.text.at(0) == '*' &&
+        tmp.text.at(tmp.text.length()-1) == '*')
     {
-    tmp.text[0] = ' ';
-    tmp.text.erase(tmp.text.length() - 1);
-    own = ACT_IS;
+        tmp.text[0] = ' ';
+        tmp.text.erase(tmp.text.length() - 1);
+        own = ACT_IS;
     }
 
     std::string lineColor = "##C";
@@ -629,9 +635,9 @@ void ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (command == "me")
     {
-    std::stringstream actionStr;
-    actionStr << "*" << msg << "*";
-    chatSend(player_node->getName(), actionStr.str());
+        std::stringstream actionStr;
+        actionStr << "*" << msg << "*";
+        chatSend(player_node->getName(), actionStr.str());
     }
     else
     {

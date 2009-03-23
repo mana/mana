@@ -46,6 +46,10 @@ class OpenGLGraphics : public Graphics
                        int width, int height,
                        bool useColor);
 
+        void drawImagePattern(Image *image,
+                              int x, int y,
+                              int w, int h);
+
         void updateScreen();
 
         void _beginDraw();

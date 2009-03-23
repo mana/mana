@@ -22,6 +22,7 @@
 #include <guichan/font.hpp>
 
 #include "gui.h"
+#include "palette.h"
 #include "progressbar.h"
 #include "textrenderer.h"
 
@@ -34,8 +35,6 @@
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;
 float ProgressBar::mAlpha = config.getValue("guialpha", 0.8);
-
-const gcn::Color ProgressBar::TEXT_COLOR = gcn::Color(255, 255, 255);
 
 ProgressBar::ProgressBar(float progress,
                          unsigned int width, unsigned int height,
@@ -121,23 +120,22 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     // The bar
     if (mProgress > 0)
     {
-
         graphics->setColor(gcn::Color(mRed, mGreen, mBlue, alpha));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
-                    (int) (mProgress * (getWidth() - 8)),
-                    getHeight() - 8));
+                               (int) (mProgress * (getWidth() - 8)),
+                                getHeight() - 8));
     }
 
     // The label
     if (!mText.empty())
     {
-        gcn::Font *f = boldFont;
-        int textX = getWidth() / 2;
-        int textY = (getHeight() - f->getHeight()) / 2;
+        const int textX = getWidth() / 2;
+        const int textY = (getHeight() - boldFont->getHeight()) / 2;
 
         TextRenderer::renderText(graphics, mText, textX, textY,
-                gcn::Graphics::CENTER, &TEXT_COLOR, f, true,
-                false); 
+                                 gcn::Graphics::CENTER,
+                                 guiPalette->getColor(Palette::PROGRESS_BAR,
+                                 alpha), boldFont, true, false);
     }
 }
 

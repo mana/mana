@@ -62,18 +62,17 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     mFullscreen = fs;
     mHWAccel = hwaccel;
 
-    if (fs) {
+    if (fs)
         displayFlags |= SDL_FULLSCREEN;
-    }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    if (!(mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags))) {
+    if (!(mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags)))
         return false;
-    }
 
 #ifdef __APPLE__
-    if (mSync) {
+    if (mSync)
+    {
         const GLint VBL = 1;
         CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
     }
@@ -110,6 +109,8 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
         int dstX, int dstY, int width, int height, bool useColor)
 {
+    if (!image) return false;
+
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
 
@@ -157,11 +158,78 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
     glEnd();
 
     if (!useColor)
-    {
         glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
-    }
 
     return true;
+}
+
+/* Optimising the functions that Graphics::drawImagePattern would call,
+ * so that glBegin...glEnd are outside the main loop. */
+void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
+{
+    if (!image) return;
+
+    const int srcX = image->mBounds.x;
+    const int srcY = image->mBounds.y;
+
+    const float texX1 = srcX / (float)image->mTexWidth;
+    const float texY1 = srcY / (float)image->mTexHeight;
+
+    int iw = image->getWidth();
+    int ih = image->getHeight();
+    if (iw == 0 || ih == 0)
+        return;
+
+    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
+
+    glBindTexture(Image::mTextureType, image->mGLImage);
+
+    setTexturingAndBlending(true);
+
+    // Draw a set of textured rectangles
+    glBegin(GL_QUADS);
+
+    for (int py = 0; py < h; py += ih)
+    {
+        int height = (py + ih >= h) ? h - py : ih;
+        int dstY = y + py;
+        for (int px = 0; px < w; px += iw)
+        {
+            int width = (px + iw >= w) ? w - px : iw;
+            int dstX = x + px;
+
+            if (Image::mTextureType == GL_TEXTURE_2D)
+            {
+                // Find OpenGL normalized texture coordinates.
+                float texX2 = (srcX + width) / (float) image->mTexWidth;
+                float texY2 = (srcY + height) / (float) image->mTexHeight;
+
+                glTexCoord2f(texX1, texY1);
+                glVertex2i(dstX, dstY);
+                glTexCoord2f(texX2, texY1);
+                glVertex2i(dstX + width, dstY);
+                glTexCoord2f(texX2, texY2);
+                glVertex2i(dstX + width, dstY + height);
+                glTexCoord2f(texX1, texY2);
+                glVertex2i(dstX, dstY + height);
+            }
+            else
+            {
+                glTexCoord2i(srcX, srcY);
+                glVertex2i(dstX, dstY);
+                glTexCoord2i(srcX + width, srcY);
+                glVertex2i(dstX + width, dstY);
+                glTexCoord2i(srcX + width, srcY + height);
+                glVertex2i(dstX + width, dstY + height);
+                glTexCoord2i(srcX, srcY + height);
+                glVertex2i(dstX, dstY + height);
+            }
+        }
+    }
+
+    glEnd();
+
+    glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
 }
 
 void OpenGLGraphics::updateScreen()
@@ -205,9 +273,8 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
             w, h, 24,
             0xff0000, 0x00ff00, 0x0000ff, 0x000000);
 
-    if (SDL_MUSTLOCK(screenshot)) {
+    if (SDL_MUSTLOCK(screenshot))
         SDL_LockSurface(screenshot);
-    }
 
     // Grap the pixel buffer and write it to the SDL surface
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -229,9 +296,8 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
 
     free(buf);
 
-    if (SDL_MUSTLOCK(screenshot)) {
+    if (SDL_MUSTLOCK(screenshot))
         SDL_UnlockSurface(screenshot);
-    }
 
     return screenshot;
 }
@@ -241,7 +307,8 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
     int transX = 0;
     int transY = 0;
 
-    if (!mClipStack.empty()) {
+    if (!mClipStack.empty())
+    {
         transX = -mClipStack.top().xOffset;
         transY = -mClipStack.top().yOffset;
     }
@@ -266,9 +333,7 @@ void OpenGLGraphics::popClipArea()
     gcn::Graphics::popClipArea();
 
     if (mClipStack.empty())
-    {
         return;
-    }
 
     glPopMatrix();
     glScissor(mClipStack.top().x,
@@ -324,8 +389,10 @@ void OpenGLGraphics::setTargetPlane(int width, int height)
 
 void OpenGLGraphics::setTexturingAndBlending(bool enable)
 {
-    if (enable) {
-        if (!mTexture) {
+    if (enable)
+    {
+        if (!mTexture)
+        {
             glEnable(Image::mTextureType);
             mTexture = true;
         }
@@ -335,16 +402,22 @@ void OpenGLGraphics::setTexturingAndBlending(bool enable)
             glEnable(GL_BLEND);
             mAlpha = true;
         }
-    } else {
-        if (mAlpha && !mColorAlpha) {
+    }
+    else
+    {
+        if (mAlpha && !mColorAlpha)
+        {
             glDisable(GL_BLEND);
             mAlpha = false;
-        } else if (!mAlpha && mColorAlpha) {
+        }
+        else if (!mAlpha && mColorAlpha)
+        {
             glEnable(GL_BLEND);
             mAlpha = true;
         }
 
-        if (mTexture) {
+        if (mTexture)
+        {
             glDisable(Image::mTextureType);
             mTexture = false;
         }

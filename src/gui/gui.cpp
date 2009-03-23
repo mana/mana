@@ -27,6 +27,7 @@
 #include "gui.h"
 #include "palette.h"
 #include "sdlinput.h"
+#include "skin.h"
 #include "truetypefont.h"
 #include "viewport.h"
 #include "window.h"
@@ -238,4 +239,9 @@ void Gui::handleMouseMoved(const gcn::MouseInput &mouseInput)
 {
     gcn::Gui::handleMouseMoved(mouseInput);
     mMouseInactivityTimer = 0;
+}
+
+const int Gui::getFontHeight() const
+{
+    return mGuiFont->getHeight();
 }

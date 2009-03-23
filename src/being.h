@@ -213,14 +213,12 @@ class Being : public Sprite
         /**
          * Gets the hair color for this being.
          */
-        int getHairColor() const
-        { return mHairColor; }
+        int getHairColor() const { return mHairColor; }
 
         /**
          * Gets the hair style for this being.
          */
-        int getHairStyle() const
-        { return mHairStyle; }
+        int getHairStyle() const { return mHairStyle; }
 
         /**
          * Get the number of hairstyles implemented

@@ -1,6 +1,7 @@
 /*
  *  Configurable text colors
  *  Copyright (C) 2008  Douglas Boffey <dougaboffey@netscape.net>
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -50,8 +51,10 @@ class Palette : public gcn::ListModel
             ENTRY(TEXT)\
             ENTRY(SHADOW)\
             ENTRY(OUTLINE)\
+            ENTRY(PROGRESS_BAR)\
             ENTRY(BACKGROUND)\
             ENTRY(HIGHLIGHT)\
+            ENTRY(TAB_HIGHLIGHT)\
             ENTRY(SHOP_WARNING)\
             ENTRY(CHAT)\
             ENTRY(GM)\
@@ -68,6 +71,19 @@ class Palette : public gcn::ListModel
             ENTRY(GM_NAME)\
             ENTRY(NPC)\
             ENTRY(MONSTER)\
+            ENTRY(UNKNOWN_ITEM)\
+            ENTRY(GENERIC)\
+            ENTRY(HEAD)\
+            ENTRY(USABLE)\
+            ENTRY(TORSO)\
+            ENTRY(ONEHAND)\
+            ENTRY(LEGS)\
+            ENTRY(FEET)\
+            ENTRY(TWOHAND)\
+            ENTRY(SHIELD)\
+            ENTRY(RING)\
+            ENTRY(ARMS)\
+            ENTRY(AMMO)\
             ENTRY(PARTICLE)\
             ENTRY(EXP_INFO)\
             ENTRY(PICKUP_INFO)\
@@ -82,6 +98,7 @@ class Palette : public gcn::ListModel
         /** Colors can be static or can alter over time. */
         enum GradientType {
             STATIC,
+            PULSE,
             SPECTRUM,
             RAINBOW
         };
@@ -133,6 +150,29 @@ class Palette : public gcn::ListModel
         inline const gcn::Color& getCommittedColor(ColorType type)
         {
             return mColVector[type].committedColor;
+        }
+
+        /**
+         * Gets the test color associated with the specified type.
+         *
+         * @param type the color type requested
+         *
+         * @return the requested test color
+         */
+        inline const gcn::Color& getTestColor(ColorType type)
+        {
+            return mColVector[type].testColor;
+        }
+
+        /**
+         * Sets the test color associated with the specified type.
+         *
+         * @param type the color type requested
+         * @param color the color that should be tested
+         */
+        inline void setTestColor(ColorType type, gcn::Color color)
+        {
+            mColVector[type].testColor = color;
         }
 
         /**
@@ -252,6 +292,7 @@ class Palette : public gcn::ListModel
         {
             ColorType type;
             gcn::Color color;
+            gcn::Color testColor;
             gcn::Color committedColor;
             std::string text;
             char ch;
@@ -270,7 +311,8 @@ class Palette : public gcn::ListModel
                 ColorElem::gradientIndex = rand();
             }
 
-            inline int getRGB() {
+            inline int getRGB()
+            {
                 return (committedColor.r << 16) | (committedColor.g << 8) |
                         committedColor.b;
             }

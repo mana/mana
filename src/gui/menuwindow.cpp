@@ -25,7 +25,9 @@
 
 #include "button.h"
 #include "menuwindow.h"
-#include "windowcontainer.h"
+#include "window.h"
+
+#include "../graphics.h"
 
 #include "../utils/gettext.h"
 
@@ -49,13 +51,8 @@ namespace {
 }
 
 MenuWindow::MenuWindow():
-    Window("")
+    Popup("Menu")
 {
-    setResizable(false);
-    setWindowName("Menu");
-    setMovable(false);
-    setTitleBarHeight(0);
-
     // Buttons
     static const char *buttonNames[] =
     {
@@ -80,7 +77,7 @@ MenuWindow::MenuWindow():
         h = btn->getHeight();
     }
 
-    setPosition(windowContainer->getWidth() - x - 3, 3);
+    setPosition(graphics->getWidth() - x - 3, 3);
     setContentSize(x - 3, h);
 }
 

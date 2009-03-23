@@ -24,12 +24,11 @@
 #include <guichan/font.hpp>
 #include <guichan/mouseinput.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "label.h"
 #include "progressbar.h"
 #include "scrollarea.h"
 #include "viewport.h"
@@ -57,7 +56,7 @@ InventoryWindow::InventoryWindow(int invSize):
     setCloseButton(true);
 
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 375, 300);
+    setDefaultSize(375, 300, ImageRect::CENTER);
 
     std::string longestUseString = getFont()->getWidth(_("Equip")) >
                                    getFont()->getWidth(_("Use")) ?
@@ -82,8 +81,8 @@ InventoryWindow::InventoryWindow(int invSize):
     mMaxWeight = -1;
     mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
 
-    mSlotsLabel = new gcn::Label(_("Slots: "));
-    mWeightLabel = new gcn::Label(_("Weight: "));
+    mSlotsLabel = new Label(_("Slots: "));
+    mWeightLabel = new Label(_("Weight: "));
 
     mSlotsBar = new ProgressBar(1.0f, 100, 20, 225, 200, 25);
     mWeightBar = new ProgressBar(1.0f, 100, 20, 0, 0, 255);

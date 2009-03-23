@@ -21,10 +21,9 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "connection.h"
+#include "label.h"
 #include "progressbar.h"
 
 #include "../main.h"
@@ -46,7 +45,7 @@ ConnectionDialog::ConnectionDialog():
 
     Button *cancelButton = new Button(_("Cancel"), "cancelButton", &listener);
     mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
-    gcn::Label *label = new gcn::Label(_("Connecting..."));
+    gcn::Label *label = new Label(_("Connecting..."));
 
     cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
     mProgressBar->setPosition(5, cancelButton->getY() - 25);

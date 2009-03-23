@@ -40,6 +40,8 @@ NpcStringDialog::NpcStringDialog(Network *network):
     setWindowName("NPCString");
     mValueField = new TextField("");
 
+    setDefaultSize(175, 75, ImageRect::CENTER);
+
     gcn::Button *okButton = new Button(_("OK"), "ok", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
 

@@ -26,9 +26,8 @@
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "checkbox.h"
+#include "label.h"
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
@@ -88,13 +87,15 @@ ModeListModel::ModeListModel()
     SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
 
     /* Check which modes are available */
-    if (modes == (SDL_Rect **)0) {
+    if (modes == (SDL_Rect **)0)
         logger->log("No modes available");
-    } else if (modes == (SDL_Rect **)-1) {
+    else if (modes == (SDL_Rect **)-1)
         logger->log("All resolutions available");
-    } else {
+    else 
+    {
         //logger->log("Available Modes");
-        for (int i = 0; modes[i]; ++i) {
+        for (int i = 0; modes[i]; ++i)
+        {
             const std::string modeString =
                 toString((int)modes[i]->w) + "x" + toString((int)modes[i]->h);
             //logger->log(modeString.c_str());
@@ -121,15 +122,15 @@ Setup_Video::Setup_Video():
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
-    mPickupNotifyLabel(new gcn::Label(_("Show pickup notification"))),
+    mPickupNotifyLabel(new Label(_("Show pickup notification"))),
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
                            mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),
-    mSpeechLabel(new gcn::Label("")),
+    mSpeechLabel(new Label("")),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
-    mFpsSlider(new Slider(10, 200)),
+    mFpsSlider(new Slider(10, 120)),
     mFpsField(new TextField),
     mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 16)),
     mScrollLazinessSlider(new Slider(1, 64)),
@@ -139,22 +140,22 @@ Setup_Video::Setup_Video():
     mScrollRadiusField(new TextField),
     mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
     mOverlayDetailSlider(new Slider(0, 2)),
-    mOverlayDetailField(new gcn::Label("")),
+    mOverlayDetailField(new Label("")),
     mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
-    mParticleDetailField(new gcn::Label(""))
+    mParticleDetailField(new Label(""))
 {
     setOpaque(false);
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    speechLabel = new gcn::Label(_("Overhead text"));
-    alphaLabel = new gcn::Label(_("Gui opacity"));
-    scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
-    scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
-    overlayDetailLabel = new gcn::Label(_("Ambient FX"));
-    particleDetailLabel = new gcn::Label(_("Particle Detail"));
+    speechLabel = new Label(_("Overhead text"));
+    alphaLabel = new Label(_("Gui opacity"));
+    scrollRadiusLabel = new Label(_("Scroll radius"));
+    scrollLazinessLabel = new Label(_("Scroll laziness"));
+    overlayDetailLabel = new Label(_("Ambient FX"));
+    particleDetailLabel = new Label(_("Particle Detail"));
 
     mModeList->setEnabled(true);
 #ifndef USE_OPENGL
@@ -337,9 +338,11 @@ void Setup_Video::apply()
                 }
             }
 #if defined(WIN32) || defined(__APPLE__)
-        } else {
+        }
+        else
+        {
             new OkDialog(_("Switching to full screen"),
-                    _("Restart needed for changes to take effect."));
+                         _("Restart needed for changes to take effect."));
         }
 #endif
         config.setValue("screen", fullscreen ? true : false);
@@ -352,7 +355,7 @@ void Setup_Video::apply()
 
         // OpenGL can currently only be changed by restarting, notify user.
         new OkDialog(_("Changing OpenGL"),
-                _("Applying change to OpenGL requires restart."));
+                     _("Applying change to OpenGL requires restart."));
     }
 
     // FPS change
@@ -450,8 +453,9 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("particleeffects",
                 mParticleEffectsCheckBox->isSelected() ? true : false);
-        new OkDialog(_("Particle effect settings changed"),
-                     _("Restart your client or change maps for the change to take effect."));
+        new OkDialog(_("Particle effect settings changed."),
+                     _("Restart your client or change maps "
+                       "for the change to take effect."));
     }
     else if (event.getId() == "pickupchat")
     {
@@ -461,8 +465,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     else if (event.getId() == "pickupparticle")
     {
         config.setValue("showpickupparticle",
-                        mPickupParticleCheckBox->isSelected()
-                        ? true : false);
+                        mPickupParticleCheckBox->isSelected() ? true : false);
     }
     else if (event.getId() == "speech")
     {
@@ -576,9 +579,9 @@ void Setup_Video::keyPressed(gcn::KeyEvent &event)
         {
             mFps = 10;
         }
-        else if (mFps > 200)
+        else if (mFps > 120)
         {
-            mFps = 200;
+            mFps = 120;
         }
         mFpsField->setText(toString(mFps));
         mFpsSlider->setValue(mFps);

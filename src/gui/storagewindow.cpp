@@ -24,12 +24,11 @@
 #include <guichan/font.hpp>
 #include <guichan/mouseinput.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "label.h"
 #include "progressbar.h"
 #include "scrollarea.h"
 #include "storagewindow.h"
@@ -59,11 +58,11 @@ StorageWindow::StorageWindow(Network *network, int invSize):
 {
     setWindowName("Storage");
     setResizable(true);
+    setCloseButton(true);
 
     // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(115, 25, 375, 300);
+    setDefaultSize(375, 300, ImageRect::CENTER);
 
-    mCancelButton = new Button(_("Close"), "close", this);
     mStoreButton = new Button(_("Store"), "store", this);
     mRetrieveButton = new Button(_("Retrieve"), "retrieve", this);
 
@@ -75,7 +74,7 @@ StorageWindow::StorageWindow(Network *network, int invSize):
 
     mUsedSlots = toString(player_node->getStorage()->getNumberOfSlotsUsed());
 
-    mSlotsLabel = new gcn::Label(_("Slots: "));
+    mSlotsLabel = new Label(_("Slots: "));
 
     mSlotsBar = new ProgressBar(1.0f, 100, 20, 225, 200, 25);
 
@@ -85,14 +84,12 @@ StorageWindow::StorageWindow(Network *network, int invSize):
     place(0, 0, mSlotsLabel).setPadding(3);
     place(1, 0, mSlotsBar, 3);
     place(0, 1, mInvenScroll, 4, 4);
-    place(0, 5, mCancelButton);
     place(2, 5, mStoreButton);
     place(3, 5, mRetrieveButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, mStoreButton->getHeight());
 
-    center();
     loadWindowState();
 }
 
@@ -121,11 +118,7 @@ void StorageWindow::logic()
 
 void StorageWindow::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "close")
-    {
-        close();
-    }
-    else if (event.getId() == "store")
+    if (event.getId() == "store")
     {
         if (!inventoryWindow->isVisible()) return;
 

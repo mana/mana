@@ -133,7 +133,7 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 
     TextRenderer::renderText(graphics, mText,
             mX - xOff, mY - yOff, gcn::Graphics::LEFT,
-            mColor, boldFont, !mIsSpeech, true);
+            *mColor, boldFont, !mIsSpeech, true);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,
@@ -149,9 +149,7 @@ void FlashText::draw(gcn::Graphics *graphics, int xOff, int yOff)
     if (mTime)
     {
         if ((--mTime & 4) == 0)
-        {
             return;
-        }
     }
     Text::draw(graphics, xOff, yOff);
 }

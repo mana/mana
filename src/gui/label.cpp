@@ -1,8 +1,10 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Aethyra
+ *  Copyright (c) 2004 - 2008 Olof Naessén and Per Larsson
+ *  Copyright (c) 2009  Aethyra Development Team 
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra based on original code
+ *  from GUIChan.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,38 +20,21 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+#include "label.h"
+#include "palette.h"
 
-#ifndef DEBUGWINDOW_H
-#define DEBUGWINDOW_H
-
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
-
-/**
- * The debug window.
- *
- * \ingroup Interface
- */
-class DebugWindow : public Window
+Label::Label() :
+    gcn::Label()
 {
-    public:
-        /**
-         * Constructor.
-         */
-        DebugWindow();
+}
 
-        /**
-         * Logic (updates components' size and infos)
-         */
-        void logic();
+Label::Label(const std::string& caption) :
+    gcn::Label(caption)
+{
+}
 
-    private:
-        gcn::Label *mMusicFileLabel, *mMapLabel, *mMiniMapLabel;
-        gcn::Label *mTileMouseLabel, *mFPSLabel;
-        gcn::Label *mParticleCountLabel;
-};
-
-extern DebugWindow *debugWindow;
-
-#endif
+void Label::draw(gcn::Graphics* graphics)
+{
+    setForegroundColor(guiPalette->getColor(Palette::TEXT));
+    gcn::Label::draw(static_cast<gcn::Graphics*>(graphics));
+}

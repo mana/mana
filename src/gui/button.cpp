@@ -23,6 +23,7 @@
 #include <guichan/font.hpp>
 
 #include "button.h"
+#include "palette.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -72,9 +73,9 @@ Button::Button(const std::string& caption, const std::string &actionEventId,
 {
     init();
     setActionEventId(actionEventId);
-    if (listener) {
+
+    if (listener)
         addActionListener(listener);
-    }
 }
 
 void Button::init()
@@ -93,8 +94,10 @@ void Button::init()
         {
             btn[mode] = resman->getImage(data[mode].file);
             a = 0;
-            for (y = 0; y < 3; y++) {
-                for (x = 0; x < 3; x++) {
+            for (y = 0; y < 3; y++)
+            {
+                for (x = 0; x < 3; x++)
+                {
                     button[mode].grid[a] = btn[mode]->getSubImage(
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,
@@ -150,7 +153,7 @@ void Button::draw(gcn::Graphics *graphics)
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), button[mode]);
 
-    graphics->setColor(getForegroundColor());
+    graphics->setColor(guiPalette->getColor(Palette::TEXT));
 
     int textX;
     int textY = getHeight() / 2 - getFont()->getHeight() / 2;

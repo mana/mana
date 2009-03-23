@@ -43,7 +43,7 @@ NpcTextDialog::NpcTextDialog(Network *network):
     setMinWidth(200);
     setMinHeight(150);
 
-    setDefaultSize(0, 0, 260, 200);
+    setDefaultSize(260, 200, ImageRect::CENTER);
 
     mTextBox = new TextBox;
     mTextBox->setEditable(false);
@@ -139,4 +139,10 @@ void NpcTextDialog::widgetResized(const gcn::Event &event)
     Window::widgetResized(event);
 
     setText(mText);
+}
+
+void NpcTextDialog::requestFocus()
+{
+    loadWindowState();
+    setVisible(true);
 }

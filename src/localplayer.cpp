@@ -77,8 +77,8 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mTargetTime(-1), mLastAction(-1),
     mLastTarget(-1), mWalkingDir(0),
     mDestX(0), mDestY(0),
-    mInventory(new Inventory(INVENTORY_SIZE)),
-    mStorage(new Inventory(STORAGE_SIZE))
+    mInventory(new Inventory(INVENTORY_SIZE, 2)),
+    mStorage(new Inventory(STORAGE_SIZE, 1))
 {
     // Variable to keep the local player from doing certain actions before a map
     // is initialized. e.g. drawing a player's name using the TextManager, since

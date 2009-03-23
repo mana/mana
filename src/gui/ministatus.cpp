@@ -32,13 +32,8 @@
 #include "../utils/stringutils.h"
 
 MiniStatusWindow::MiniStatusWindow():
-    Window("")
+    Popup("MiniStatus")
 {
-    setWindowName("MiniStatus");
-    setResizable(false);
-    setMovable(false);
-    setTitleBarHeight(0);
-
     mHpBar = new ProgressBar(1.0f, 100, 20, 0, 171, 34);
     mMpBar = new ProgressBar(1.0f, 100, 20, 26, 102, 230);
     mXpBar = new ProgressBar(1.0f, 100, 20, 143, 192, 211);
@@ -53,8 +48,6 @@ MiniStatusWindow::MiniStatusWindow():
 
     setContentSize(mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
-    setDefaultSize(0, 0, getWidth(), getHeight());
-    loadWindowState();
 }
 
 void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)

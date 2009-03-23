@@ -762,14 +762,15 @@ std::string Being::getHairColor(int index)
 
 void Being::load()
 {
-    // Hairstyles are encoded as negative numbers.  Count how far negative
+    // Hairstyles are encoded as negative numbers. Count how far negative
     // we can go.
-    int hairstyles = -1;
-    while (ItemDB::get(hairstyles).getSprite(GENDER_MALE) != "error.xml")
+    int hairstyles = 1;
+
+    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
     {
-        hairstyles--;
+        hairstyles++;
     }
-    mNumberOfHairstyles = -hairstyles;
+    mNumberOfHairstyles = hairstyles;
 
     XML::Document doc(HAIR_FILE);
     xmlNodePtr root = doc.rootNode();

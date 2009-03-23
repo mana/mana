@@ -162,6 +162,8 @@
 		<Unit filename="src\gui\itempopup.h" />
 		<Unit filename="src\gui\itemshortcutcontainer.cpp" />
 		<Unit filename="src\gui\itemshortcutcontainer.h" />
+		<Unit filename="src\gui\label.cpp" />
+		<Unit filename="src\gui\label.h" />
 		<Unit filename="src\gui\linkhandler.h" />
 		<Unit filename="src\gui\listbox.cpp" />
 		<Unit filename="src\gui\listbox.h" />
@@ -189,6 +191,8 @@
 		<Unit filename="src\gui\passwordfield.h" />
 		<Unit filename="src\gui\playerbox.cpp" />
 		<Unit filename="src\gui\playerbox.h" />
+		<Unit filename="src\gui\popup.cpp" />
+		<Unit filename="src\gui\popup.h" />
 		<Unit filename="src\gui\popupmenu.cpp" />
 		<Unit filename="src\gui\popupmenu.h" />
 		<Unit filename="src\gui\progressbar.cpp" />
@@ -230,6 +234,8 @@
 		<Unit filename="src\gui\shortcutwindow.h" />
 		<Unit filename="src\gui\skill.cpp" />
 		<Unit filename="src\gui\skill.h" />
+		<Unit filename="src\gui\skin.cpp" />
+		<Unit filename="src\gui\skin.h" />
 		<Unit filename="src\gui\slider.cpp" />
 		<Unit filename="src\gui\slider.h" />
 		<Unit filename="src\gui\speechbubble.cpp" />
@@ -246,6 +252,7 @@
 		<Unit filename="src\gui\textbox.h" />
 		<Unit filename="src\gui\textfield.cpp" />
 		<Unit filename="src\gui\textfield.h" />
+		<Unit filename="src\gui\textrenderer.h" />
 		<Unit filename="src\gui\trade.cpp" />
 		<Unit filename="src\gui\trade.h" />
 		<Unit filename="src\gui\truetypefont.cpp" />

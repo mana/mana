@@ -26,13 +26,12 @@
 
 #include "../inventory.h"
 
-#include "../net/network.h"
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
 class Item;
 class ItemContainer;
+class Network;
 class ProgressBar;
 class TextBox;
 
@@ -82,6 +81,10 @@ class StorageWindow : public Window, gcn::ActionListener,
          */
         void removeStore(Item* item, int ammount);
 
+        /**
+         * Closes the Storage Window, as well as telling the server that the
+         * window has been closed.
+         */
         void close();
 
     private:
@@ -90,7 +93,7 @@ class StorageWindow : public Window, gcn::ActionListener,
 
         std::string mSlots;
         std::string mUsedSlots;
-        gcn::Button *mCancelButton, *mStoreButton, *mRetrieveButton;
+        gcn::Button *mStoreButton, *mRetrieveButton;
         gcn::ScrollArea *mInvenScroll;
 
         gcn::Label *mSlotsLabel;

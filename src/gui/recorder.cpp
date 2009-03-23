@@ -40,9 +40,11 @@ Recorder::Recorder(ChatWindow *chat, const std::string &title,
 
     mChat = chat;
     Button *button = new Button(buttonTxt, "activate", this);
-    setDefaultSize(0, windowContainer->getHeight() - 123 - button->getHeight() -
-                   offsetY,  button->getWidth() + offsetX, button->getHeight() +
-                   offsetY);
+
+    // 123 is the default chat window height. If you change this in Chat, please
+    // change it here as well
+    setDefaultSize(button->getWidth() + offsetX, button->getHeight() +
+                   offsetY, ImageRect::LOWER_LEFT, 0, 123);
 
     place(0, 0, button);
 

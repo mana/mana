@@ -1,8 +1,10 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Aethyra
+ *  Copyright (c) 2004 - 2008 Olof Naessén and Per Larsson
+ *  Copyright (c) 2009  Aethyra Development Team 
  *
- *  This file is part of The Mana World.
+ *  This file is part of Aethyra based on original code
+ *  from GUIChan.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,52 +21,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef SETUP_H
-#define SETUP_H
+#ifndef LABEL_H
+#define LABEL_H
 
-#include <list>
-
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
-
-#include "../guichanfwd.h"
-
-class SetupTab;
+#include <guichan/widgets/label.hpp>
 
 /**
- * The setup dialog.
+ * Label widget. Same as the Guichan label but modified to use the palette
+ * system.
  *
  * \ingroup GUI
  */
-class Setup : public Window, public gcn::ActionListener
+class Label : public gcn::Label
 {
     public:
         /**
          * Constructor.
          */
-        Setup();
+        Label();
 
         /**
-         * Destructor.
+         * Constructor. This version of the constructor sets the label with an
+         * inintialization string.
          */
-        ~Setup();
+        Label(const std::string& caption);
 
         /**
-         * Event handling method.
+         * Draws the label.
          */
-        void action(const gcn::ActionEvent &event);
-
-        /**
-         * Enables the reset button when in game.
-         */
-        void setInGame(bool inGame);
-
-    private:
-        std::list<SetupTab*> mTabs;
-        gcn::Button *mResetWindows;
+        void draw(gcn::Graphics* graphics);
 };
-
-extern Setup* setupWindow;
 
 #endif

@@ -20,8 +20,8 @@
  */
 
 #include "button.h"
-#include "inttextfield.h"
 #include "item_amount.h"
+#include "label.h"
 #include "slider.h"
 #include "storagewindow.h"
 #include "trade.h"
@@ -32,19 +32,20 @@
 #include "../localplayer.h"
 
 #include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Window("", true, parent),
     mItem(item),
-    mMax(mItem->getQuantity()),
+    mMax(item->getQuantity()),
     mUsage(usage)
 {
+    setCloseButton(true);
+
     // Integer field
-    mItemAmountTextField = new IntTextField(1);
-    mItemAmountTextField->setRange(1, mMax);
-    mItemAmountTextField->setWidth(30);
-    mItemAmountTextField->setActionEventId("Dummy");
-    mItemAmountTextField->addActionListener(this);
+
+    mItemAmountLabel = new Label(strprintf("%d / %d", 1, mMax));
+    mItemAmountLabel->setAlignment(gcn::Graphics::CENTER);
 
     // Slider
     mItemAmountSlide = new Slider(1.0, mMax);
@@ -54,22 +55,27 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
 
     // Buttons
     Button *minusButton = new Button("-", "Minus", this);
-    minusButton->setSize(20, 20);
     Button *plusButton = new Button("+", "Plus", this);
-    plusButton->setSize(20, 20);
     Button *okButton = new Button(_("Ok"), "Ok", this);
     Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
     Button *addAllButton = new Button(_("All"), "All", this);
 
+    minusButton->adjustSize();
+    minusButton->setWidth(plusButton->getWidth());
+
     // Set positions
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+
     place(0, 0, minusButton);
-    place(1, 0, mItemAmountTextField).setPadding(2);
-    place(2, 0, plusButton);
-    place(4, 0, addAllButton, 2);
-    place(0, 1, mItemAmountSlide, 6);
-    place(4, 2, okButton);
-    place(5, 2, cancelButton);
-    reflowLayout(250, 0);
+    place(1, 0, mItemAmountSlide, 3);
+    place(4, 0, plusButton);
+    place(5, 0, mItemAmountLabel, 2);
+    place(7, 0, addAllButton);
+    place = getPlacer(0, 1);
+    place(4, 0, cancelButton);
+    place(5, 0, okButton);
+    reflowLayout(225, 0);
 
     resetAmount();
 
@@ -97,22 +103,22 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
 
 void ItemAmountWindow::resetAmount()
 {
-    mItemAmountTextField->setValue(1);
+    mItemAmountLabel->setCaption(strprintf("%d / %d", 1, mMax));
 }
 
 void ItemAmountWindow::action(const gcn::ActionEvent &event)
 {
-    int amount = mItemAmountTextField->getValue();
+    int amount = mItemAmountSlide->getValue();
 
     if (event.getId() == "Cancel")
     {
-        scheduleDelete();
+        close();
     }
-    else if (event.getId() == "Plus")
+    else if (event.getId() == "Plus" && amount < mMax)
     {
         amount++;
     }
-    else if (event.getId() == "Minus")
+    else if (event.getId() == "Minus" && amount > 1)
     {
         amount--;
     }
@@ -122,9 +128,8 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "Ok" || event.getId() == "All")
     {
-        if (event.getId() == "All") {
+        if (event.getId() == "All") 
             amount = mMax;
-        }
 
         switch (mUsage)
         {
@@ -149,9 +154,11 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
         return;
     }
 
-    if (amount < 0) amount = 0;
-    else if (amount > mMax) amount = mMax;
-
-    mItemAmountTextField->setValue(amount);
+    mItemAmountLabel->setCaption(strprintf("%d / %d", amount, mMax));
     mItemAmountSlide->setValue(amount);
+}
+
+void ItemAmountWindow::close()
+{
+    scheduleDelete();
 }
