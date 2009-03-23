@@ -71,91 +71,6 @@ struct CHATSKILL
     char reason;
 };
 
-std::string const_msg(CHATSKILL act)
-{
-    std::string msg;
-    if (act.success == SKILL_FAILED && act.skill == SKILL_BASIC)
-    {
-        switch (act.bskill)
-        {
-            case BSKILL_TRADE:
-                msg = _("Trade failed!");
-                break;
-            case BSKILL_EMOTE:
-                msg = _("Emote failed!");
-                break;
-            case BSKILL_SIT:
-                msg = _("Sit failed!");
-                break;
-            case BSKILL_CREATECHAT:
-                msg = _("Chat creating failed!");
-                break;
-            case BSKILL_JOINPARTY:
-                msg = _("Could not join party!");
-                break;
-            case BSKILL_SHOUT:
-                msg = _("Cannot shout!");
-                break;
-        }
-
-        msg += " ";
-
-        switch (act.reason)
-        {
-            case RFAIL_SKILLDEP:
-                msg += _("You have not yet reached a high enough lvl!");
-                break;
-            case RFAIL_INSUFHP:
-                msg += _("Insufficient HP!");
-                break;
-            case RFAIL_INSUFSP:
-                msg += _("Insufficient SP!");
-                break;
-            case RFAIL_NOMEMO:
-                msg += _("You have no memos!");
-                break;
-            case RFAIL_SKILLDELAY:
-                msg += _("You cannot do that right now!");
-                break;
-            case RFAIL_ZENY:
-                msg += _("Seems you need more money... ;-)");
-                break;
-            case RFAIL_WEAPON:
-                msg += _("You cannot use this skill with that kind of weapon!");
-                break;
-            case RFAIL_REDGEM:
-                msg += _("You need another red gem!");
-                break;
-            case RFAIL_BLUEGEM:
-                msg += _("You need another blue gem!");
-                break;
-            case RFAIL_OVERWEIGHT:
-                msg += _("You're carrying to much to do this!");
-                break;
-            default:
-                msg += _("Huh? What's that?");
-                break;
-        }
-    }
-    else
-    {
-        switch (act.skill)
-        {
-            case SKILL_WARP :
-                msg = _("Warp failed...");
-                break;
-            case SKILL_STEAL :
-                msg = _("Could not steal anything...");
-                break;
-            case SKILL_ENVENOM :
-                msg = _("Poison had no effect...");
-                break;
-        }
-    }
-
-    return msg;
-}
-
 SkillHandler::SkillHandler()
 {
     static const Uint16 _messages[] = {
@@ -204,18 +119,97 @@ void SkillHandler::handleMessage(MessageIn &msg)
         case SMSG_SKILL_FAILED:
             // Action failed (ex. sit because you have not reached the
             // right level)
-            CHATSKILL action;
-            action.skill   = msg.readInt16();
-            action.bskill  = msg.readInt16();
-            action.unused  = msg.readInt16(); // unknown
-            action.success = msg.readInt8();
-            action.reason  = msg.readInt8();
-            if (action.success != SKILL_FAILED &&
-                action.bskill == BSKILL_EMOTE)
+            short skill   = msg.readInt16();
+            short bskill  = msg.readInt16();
+            short unused  = msg.readInt16(); // unknown
+            char success = msg.readInt8();
+            char reason  = msg.readInt8();
+            if (success != SKILL_FAILED && bskill == BSKILL_EMOTE)
             {
-                logger->log("Action: %d/%d", action.bskill, action.success);
+                logger->log("Action: %d/%d", bskill, success);
             }
-            chatWindow->chatLog(const_msg(action));
+
+            std::string msg;
+            if (success == SKILL_FAILED && skill == SKILL_BASIC)
+            {
+                switch (bskill)
+                {
+                    case BSKILL_TRADE:
+                        msg = _("Trade failed!");
+                        break;
+                    case BSKILL_EMOTE:
+                        msg = _("Emote failed!");
+                        break;
+                    case BSKILL_SIT:
+                        msg = _("Sit failed!");
+                        break;
+                    case BSKILL_CREATECHAT:
+                        msg = _("Chat creating failed!");
+                        break;
+                    case BSKILL_JOINPARTY:
+                        msg = _("Could not join party!");
+                        break;
+                    case BSKILL_SHOUT:
+                        msg = _("Cannot shout!");
+                        break;
+                }
+
+                msg += " ";
+
+                switch (reason)
+                {
+                    case RFAIL_SKILLDEP:
+                        msg += _("You have not yet reached a high enough lvl!");
+                        break;
+                    case RFAIL_INSUFHP:
+                        msg += _("Insufficient HP!");
+                        break;
+                    case RFAIL_INSUFSP:
+                        msg += _("Insufficient SP!");
+                        break;
+                    case RFAIL_NOMEMO:
+                        msg += _("You have no memos!");
+                        break;
+                    case RFAIL_SKILLDELAY:
+                        msg += _("You cannot do that right now!");
+                        break;
+                    case RFAIL_ZENY:
+                        msg += _("Seems you need more money... ;-)");
+                        break;
+                    case RFAIL_WEAPON:
+                        msg += _("You cannot use this skill with that kind of weapon!");
+                        break;
+                    case RFAIL_REDGEM:
+                        msg += _("You need another red gem!");
+                        break;
+                    case RFAIL_BLUEGEM:
+                        msg += _("You need another blue gem!");
+                        break;
+                    case RFAIL_OVERWEIGHT:
+                        msg += _("You're carrying to much to do this!");
+                        break;
+                    default:
+                        msg += _("Huh? What's that?");
+                        break;
+                }
+            }
+            else
+            {
+                switch (skill)
+                {
+                    case SKILL_WARP :
+                        msg = _("Warp failed...");
+                        break;
+                    case SKILL_STEAL :
+                        msg = _("Could not steal anything...");
+                        break;
+                    case SKILL_ENVENOM :
+                        msg = _("Poison had no effect...");
+                        break;
+                }
+            }
+
+            chatWindow->chatLog(msg);
             break;
     }
 }
