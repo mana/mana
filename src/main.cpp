@@ -108,6 +108,7 @@
 #endif
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+#include "utils/strprintf.h"
 
 #ifdef __APPLE__
 #include <CoreFoundation/CFBundle.h>
@@ -1039,7 +1040,11 @@ int main(int argc, char *argv[])
 
     // Log the tmw version
 #ifdef PACKAGE_VERSION
-    logger->log("The Mana World v%s", PACKAGE_VERSION);
+#ifdef TMWSERV_SUPPORT
+    logger->log("The Mana World v%s TMWServ", PACKAGE_VERSION);
+#else
+    logger->log("The Mana World v%s eAthena", PACKAGE_VERSION);
+#endif
 #else
     logger->log("The Mana World - version not defined");
 #endif
@@ -1061,7 +1066,11 @@ int main(int argc, char *argv[])
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
-    gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
+#ifdef TMWSERV_SUPPORT
+    gcn::Label *versionLabel = new gcn::Label(strprintf("%s TMWserv", PACKAGE_VERSION));
+#else
+    gcn::Label *versionLabel = new gcn::Label(strprintf("%s eAthena", PACKAGE_VERSION));
+#endif
     top->add(versionLabel, 25, 2);
 #endif
     ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
