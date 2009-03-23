@@ -187,7 +187,7 @@ class ChatWindow : public Window,
         void scroll(int amount);
 
 #ifdef EATHENA_SUPPORT
-        char getPartyPrefix() { return mPartyPrefix; }
+        char getPartyPrefix() const { return mPartyPrefix; }
         void setPartyPrefix(char prefix) { mPartyPrefix = prefix; }
 #endif
 
@@ -198,7 +198,7 @@ class ChatWindow : public Window,
          */
         void setRecordingFile(const std::string &msg);
 
-        bool getReturnTogglesChat() { return mReturnToggles; }
+        bool getReturnTogglesChat() const { return mReturnToggles; }
         void setReturnTogglesChat(bool toggles) { mReturnToggles = toggles; }
 
         void doPresent();

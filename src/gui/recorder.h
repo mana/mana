@@ -58,7 +58,7 @@ class Recorder : public Window, public gcn::ActionListener
         /**
          * Whether or not the recorder is in use.
          */
-        bool isRecording() {return (bool) mStream.is_open();}
+        bool isRecording() { return (bool) mStream.is_open(); }
 
         /**
          * called when the button is pressed
