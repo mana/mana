@@ -62,15 +62,6 @@
 /** should always be zero if failed */
 #define SKILL_FAILED      0x00
 
-struct CHATSKILL
-{
-    short skill;
-    short bskill;
-    short unused;
-    char success;
-    char reason;
-};
-
 SkillHandler::SkillHandler()
 {
     static const Uint16 _messages[] = {
