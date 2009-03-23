@@ -26,7 +26,7 @@
 #include "scrollarea.h"
 #include "chat.h"
 
-#include "../net/gameserver/player.h"
+#include "../net/tmwserv/gameserver/player.h"
 #include "../utils/gettext.h"
 
 #include <guichan/widgets/label.hpp>

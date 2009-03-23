@@ -73,10 +73,11 @@
 #include "gui/updatewindow.h"
 
 #ifdef TMWSERV_SUPPORT
-#include "net/charserverhandler.h"
-#include "net/connection.h"
-#include "net/loginhandler.h"
-#include "net/network.h"
+#include "net/tmwserv/charserverhandler.h"
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/loginhandler.h"
+#include "net/tmwserv/logouthandler.h"
+#include "net/tmwserv/network.h"
 #else
 #include "net/ea/charserverhandler.h"
 #include "net/ea/loginhandler.h"
@@ -84,15 +85,14 @@
 #include "net/ea/maploginhandler.h"
 #include "net/messageout.h"
 #endif
-#include "net/logouthandler.h"
 
 #ifdef TMWSERV_SUPPORT
-#include "net/accountserver/accountserver.h"
-#include "net/accountserver/account.h"
+#include "net/tmwserv/accountserver/accountserver.h"
+#include "net/tmwserv/accountserver/account.h"
 
-#include "net/chatserver/chatserver.h"
+#include "net/tmwserv/chatserver/chatserver.h"
 
-#include "net/gameserver/gameserver.h"
+#include "net/tmwserv/gameserver/gameserver.h"
 #endif
 
 #include "resources/colordb.h"

@@ -35,7 +35,7 @@
 
 #include "../net/messageout.h"
 #ifdef TMWSERV_SUPPORT
-#include "../net/gameserver/player.h"
+#include "../net/tmwserv/gameserver/player.h"
 #else
 #include "../net/ea/protocol.h"
 #endif

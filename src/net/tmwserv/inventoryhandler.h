@@ -19,36 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#ifndef NET_INVENTORYHANDLER_H
+#define NET_INVENTORYHANDLER_H
 
-#include "messagehandler.h"
-#ifdef TMWSERV_SUPPORT
-#include "tmwserv/network.h"
-#else
-#include "ea/network.h"
-#endif
+#include "../messagehandler.h"
 
-MessageHandler::MessageHandler()
-#ifdef EATHENA_SUPPORT
-    : mNetwork(0)
-#endif
+class InventoryHandler : public MessageHandler
 {
-}
+    public:
+        InventoryHandler();
 
-MessageHandler::~MessageHandler()
-{
-#ifdef TMWSERV_SUPPORT
-    Net::unregisterHandler(this);
-#else
-    if (mNetwork)
-        mNetwork->unregisterHandler(this);
-#endif
-}
+        void handleMessage(MessageIn &msg);
+};
 
-#ifdef EATHENA_SUPPORT
-void MessageHandler::setNetwork(Network *network)
-{
-    assert(!(network && mNetwork));
-    mNetwork = network;
-}
 #endif

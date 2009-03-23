@@ -25,7 +25,7 @@
 #include "widgets/avatar.h"
 
 #include "../utils/gettext.h"
-#include "../net/chatserver/party.h"
+#include "../net/tmwserv/chatserver/party.h"
 
 PartyWindow::PartyWindow() : Window(_("Party"))
 {

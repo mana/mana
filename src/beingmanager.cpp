@@ -30,7 +30,7 @@
 #include "net/messageout.h"
 #include "net/ea/protocol.h"
 #else
-#include "net/protocol.h"
+#include "net/tmwserv/protocol.h"
 #endif
 
 #include "utils/dtor.h"

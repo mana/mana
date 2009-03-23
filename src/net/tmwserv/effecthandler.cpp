@@ -19,36 +19,40 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#include "effecthandler.h"
 
-#include "messagehandler.h"
-#ifdef TMWSERV_SUPPORT
-#include "tmwserv/network.h"
-#else
-#include "ea/network.h"
-#endif
+#include "../messagein.h"
+#include "protocol.h"
 
-MessageHandler::MessageHandler()
-#ifdef EATHENA_SUPPORT
-    : mNetwork(0)
-#endif
+#include "../../effectmanager.h"
+
+
+EffectHandler::EffectHandler()
 {
+    static const Uint16 _messages[] = {
+        GPMSG_CREATE_EFFECT,
+        0
+    };
+    handledMessages = _messages;
 }
 
-MessageHandler::~MessageHandler()
+void EffectHandler::handleMessage(MessageIn &msg)
 {
-#ifdef TMWSERV_SUPPORT
-    Net::unregisterHandler(this);
-#else
-    if (mNetwork)
-        mNetwork->unregisterHandler(this);
-#endif
+    switch (msg.getId())
+    {
+        case GPMSG_CREATE_EFFECT:
+            handleCreateEffects(msg);
+            break;
+        default:
+            break;
+    }
 }
 
-#ifdef EATHENA_SUPPORT
-void MessageHandler::setNetwork(Network *network)
+void EffectHandler::handleCreateEffects(MessageIn &msg)
 {
-    assert(!(network && mNetwork));
-    mNetwork = network;
+     int id = msg.readInt16();
+     Uint16 x = msg.readInt16();
+     Uint16 y = msg.readInt16();
+     effectManager->trigger(id, x, y);
 }
-#endif
+

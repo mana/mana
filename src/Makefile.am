@@ -163,8 +163,6 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
-	      net/itemhandler.h \
-	      net/itemhandler.cpp \
 	      net/messagehandler.cpp \
 	      net/messagehandler.h \
 	      net/messagein.cpp \
@@ -239,8 +237,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      channel.h \
 	      channelmanager.cpp \
 	      channelmanager.h \
-          commandhandler.cpp \
-          commandhandler.h \
+	      commandhandler.cpp \
+	      commandhandler.h \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \
@@ -356,59 +354,61 @@ tmw_SOURCES += \
 	      gui/statuswindow.h \
 	      gui/unregisterdialog.cpp \
 	      gui/unregisterdialog.h \
-	      net/accountserver/account.cpp \
-	      net/accountserver/account.h \
-	      net/accountserver/accountserver.cpp \
-	      net/accountserver/accountserver.h \
-	      net/accountserver/internal.cpp \
-	      net/accountserver/internal.h \
-	      net/chatserver/chatserver.cpp \
-	      net/chatserver/chatserver.h \
-	      net/chatserver/guild.cpp \
-	      net/chatserver/guild.h \
-	      net/chatserver/internal.cpp \
-	      net/chatserver/internal.h \
-	      net/chatserver/party.cpp \
-	      net/chatserver/party.h \
-	      net/gameserver/gameserver.cpp \
-	      net/gameserver/gameserver.h \
-	      net/gameserver/internal.cpp \
-	      net/gameserver/internal.h \
-	      net/gameserver/player.cpp \
-	      net/gameserver/player.h \
-	      net/beinghandler.cpp \
-	      net/beinghandler.h \
-	      net/buysellhandler.cpp \
-	      net/buysellhandler.h \
-	      net/charserverhandler.cpp \
-	      net/charserverhandler.h \
-	      net/chathandler.cpp \
-	      net/chathandler.h \
-	      net/connection.cpp \
-	      net/connection.h \
-	      net/effecthandler.cpp \
-	      net/effecthandler.h \
-	      net/guildhandler.cpp \
-	      net/guildhandler.h \
-	      net/internal.cpp \
-	      net/internal.h \
-	      net/inventoryhandler.cpp \
-	      net/inventoryhandler.h \
-	      net/loginhandler.cpp \
-	      net/loginhandler.h \
-	      net/logouthandler.cpp \
-	      net/logouthandler.h \
-	      net/network.cpp \
-	      net/network.h \
-	      net/npchandler.cpp \
-	      net/npchandler.h \
-	      net/partyhandler.cpp \
-	      net/partyhandler.h \
-	      net/playerhandler.cpp \
-	      net/playerhandler.h \
-	      net/protocol.h \
-	      net/tradehandler.cpp \
-	      net/tradehandler.h \
+	      net/tmwserv/accountserver/account.cpp \
+	      net/tmwserv/accountserver/account.h \
+	      net/tmwserv/accountserver/accountserver.cpp \
+	      net/tmwserv/accountserver/accountserver.h \
+	      net/tmwserv/accountserver/internal.cpp \
+	      net/tmwserv/accountserver/internal.h \
+	      net/tmwserv/chatserver/chatserver.cpp \
+	      net/tmwserv/chatserver/chatserver.h \
+	      net/tmwserv/chatserver/guild.cpp \
+	      net/tmwserv/chatserver/guild.h \
+	      net/tmwserv/chatserver/internal.cpp \
+	      net/tmwserv/chatserver/internal.h \
+	      net/tmwserv/chatserver/party.cpp \
+	      net/tmwserv/chatserver/party.h \
+	      net/tmwserv/gameserver/gameserver.cpp \
+	      net/tmwserv/gameserver/gameserver.h \
+	      net/tmwserv/gameserver/internal.cpp \
+	      net/tmwserv/gameserver/internal.h \
+	      net/tmwserv/gameserver/player.cpp \
+	      net/tmwserv/gameserver/player.h \
+	      net/tmwserv/beinghandler.cpp \
+	      net/tmwserv/beinghandler.h \
+	      net/tmwserv/buysellhandler.cpp \
+	      net/tmwserv/buysellhandler.h \
+	      net/tmwserv/charserverhandler.cpp \
+	      net/tmwserv/charserverhandler.h \
+	      net/tmwserv/chathandler.cpp \
+	      net/tmwserv/chathandler.h \
+	      net/tmwserv/connection.cpp \
+	      net/tmwserv/connection.h \
+	      net/tmwserv/effecthandler.cpp \
+	      net/tmwserv/effecthandler.h \
+	      net/tmwserv/guildhandler.cpp \
+	      net/tmwserv/guildhandler.h \
+	      net/tmwserv/internal.cpp \
+	      net/tmwserv/internal.h \
+	      net/tmwserv/inventoryhandler.cpp \
+	      net/tmwserv/inventoryhandler.h \
+	      net/tmwserv/itemhandler.h \
+	      net/tmwserv/itemhandler.cpp \
+	      net/tmwserv/loginhandler.cpp \
+	      net/tmwserv/loginhandler.h \
+	      net/tmwserv/logouthandler.cpp \
+	      net/tmwserv/logouthandler.h \
+	      net/tmwserv/network.cpp \
+	      net/tmwserv/network.h \
+	      net/tmwserv/npchandler.cpp \
+	      net/tmwserv/npchandler.h \
+	      net/tmwserv/partyhandler.cpp \
+	      net/tmwserv/partyhandler.h \
+	      net/tmwserv/playerhandler.cpp \
+	      net/tmwserv/playerhandler.h \
+	      net/tmwserv/protocol.h \
+	      net/tmwserv/tradehandler.cpp \
+	      net/tmwserv/tradehandler.h \
 	      resources/buddylist.cpp \
 	      resources/buddylist.h \
 	      guild.cpp \
@@ -436,6 +436,8 @@ tmw_SOURCES += \
 	      net/ea/equipmenthandler.h \
 	      net/ea/inventoryhandler.cpp \
 	      net/ea/inventoryhandler.h \
+	      net/ea/itemhandler.cpp \
+	      net/ea/itemhandler.h \
 	      net/ea/loginhandler.cpp \
 	      net/ea/loginhandler.h \
 	      net/ea/maploginhandler.cpp \

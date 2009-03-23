@@ -19,36 +19,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#ifndef NET_TRADEHANDLER_H
+#define NET_TRADEHANDLER_H
 
-#include "messagehandler.h"
-#ifdef TMWSERV_SUPPORT
-#include "tmwserv/network.h"
-#else
-#include "ea/network.h"
-#endif
+#include "../messagehandler.h"
 
-MessageHandler::MessageHandler()
-#ifdef EATHENA_SUPPORT
-    : mNetwork(0)
-#endif
+class TradeHandler : public MessageHandler
 {
-}
+    public:
+        TradeHandler();
 
-MessageHandler::~MessageHandler()
-{
-#ifdef TMWSERV_SUPPORT
-    Net::unregisterHandler(this);
-#else
-    if (mNetwork)
-        mNetwork->unregisterHandler(this);
-#endif
-}
+        void handleMessage(MessageIn &msg);
 
-#ifdef EATHENA_SUPPORT
-void MessageHandler::setNetwork(Network *network)
-{
-    assert(!(network && mNetwork));
-    mNetwork = network;
-}
+        /**
+         * Returns whether trade requests are accepted.
+         *
+         * @see setAcceptTradeRequests
+         */
+        bool acceptTradeRequests() const
+        { return mAcceptTradeRequests; }
+
+        /**
+         * Sets whether trade requests are accepted. When set to false, trade
+         * requests are automatically denied. When true, a popup will ask the
+         * player whether he wants to trade.
+         */
+        void setAcceptTradeRequests(bool acceptTradeRequests);
+
+    private:
+        bool mAcceptTradeRequests;
+};
+
 #endif

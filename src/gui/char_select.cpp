@@ -42,7 +42,10 @@
 
 #include "../logindata.h"
 
-#include "../net/accountserver/account.h"
+#include "../net/tmwserv/accountserver/account.h"
+#include "../net/tmwserv/charserverhandler.h"
+#else
+#include "../net/ea/charserverhandler.h"
 #endif
 
 #include "widgets/layout.h"
@@ -52,7 +55,6 @@
 #include "../main.h"
 #include "../units.h"
 
-#include "../net/charserverhandler.h"
 #include "../net/messageout.h"
 
 #include "../resources/colordb.h"

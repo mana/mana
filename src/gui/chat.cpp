@@ -43,8 +43,8 @@
 #include "../localplayer.h"
 
 #ifdef TMWSERV_SUPPORT
-#include "../net/chatserver/chatserver.h"
-#include "../net/gameserver/player.h"
+#include "../net/tmwserv/chatserver/chatserver.h"
+#include "../net/tmwserv/gameserver/player.h"
 #else
 #include "../party.h"
 #include "../net/messageout.h"

@@ -43,9 +43,9 @@
 #include "effectmanager.h"
 #include "guild.h"
 
-#include "net/gameserver/player.h"
-#include "net/chatserver/guild.h"
-#include "net/chatserver/party.h"
+#include "net/tmwserv/gameserver/player.h"
+#include "net/tmwserv/chatserver/guild.h"
+#include "net/tmwserv/chatserver/party.h"
 #endif
 
 #ifdef EATHENA_SUPPORT
