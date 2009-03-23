@@ -27,8 +27,8 @@
 #include <guichan/exception.hpp>
 
 #include "beingmanager.h"
-#ifdef TMWSERV_SUPPORT
 #include "channelmanager.h"
+#ifdef TMWSERV_SUPPORT
 #include "commandhandler.h"
 #endif
 #include "configuration.h"
@@ -164,8 +164,8 @@ ShortcutWindow *emoteShortcutWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
-#ifdef TMWSERV_SUPPORT
 ChannelManager *channelManager = NULL;
+#ifdef TMWSERV_SUPPORT
 CommandHandler *commandHandler = NULL;
 #endif
 Particle* particleEngine = NULL;
@@ -370,8 +370,8 @@ Game::Game(Network *network):
 #endif
 
     floorItemManager = new FloorItemManager;
-#ifdef TMWSERV_SUPPORT
     channelManager = new ChannelManager();
+#ifdef TMWSERV_SUPPORT
     commandHandler = new CommandHandler();
 #endif
     effectManager = new EffectManager;
@@ -452,8 +452,8 @@ Game::~Game()
 
     delete beingManager;
     delete floorItemManager;
-#ifdef TMWSERV_SUPPORT
     delete channelManager;
+#ifdef TMWSERV_SUPPORT
     delete commandHandler;
 #endif
     delete joystick;

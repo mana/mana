@@ -83,19 +83,8 @@ ChatWindow::ChatWindow(Network * network):
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
-    BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
-    textOutput->setOpaque(false);
-    textOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
-    textOutput->setLinkHandler(mItemLinkHandler);
-
-    ScrollArea *scrollArea = new ScrollArea(textOutput);
-    scrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
-                                 gcn::ScrollArea::SHOW_ALWAYS);
-    scrollArea->setScrollAmount(0, 1);
-    scrollArea->setOpaque(false);
-
     mChatTabs = new TabbedArea();
-    mChatTabs->addTab("General", scrollArea);
+    createNewChannelTab("General");
 
     place(0, 0, mChatTabs, 5, 5).setPadding(0);
     place(0, 5, mChatInput, 5).setPadding(1);
@@ -182,7 +171,11 @@ void ChatWindow::chatLog(std::string line, int own, std::string channelName,
                          bool ignoreRecord)
 {
     if(channelName.empty())
+#ifdef TMWSERV_SUPPORT
         channelName = getFocused();
+#else
+        channelName = "General";
+#endif
 
     ChannelMap::const_iterator chan = mChannels.find(channelName);
     if (chan == mChannels.end())
@@ -219,12 +212,12 @@ void ChatWindow::chatLog(std::string line, int own, std::string channelName,
 
     // *implements actions in a backwards compatible way*
     if (own == BY_PLAYER &&
-	tmp.text.at(0) == '*' &&
-	tmp.text.at(tmp.text.length()-1) == '*')
+        tmp.text.at(0) == '*' &&
+        tmp.text.at(tmp.text.length()-1) == '*')
     {
-	tmp.text[0] = ' ';
-	tmp.text.erase(tmp.text.length() - 1);
-	own = ACT_IS;
+        tmp.text[0] = ' ';
+        tmp.text.erase(tmp.text.length() - 1);
+        own = ACT_IS;
     }
 
     std::string lineColor = "##C";
@@ -462,52 +455,6 @@ void ChatWindow::whisper(const std::string &nick, std::string msg)
 #endif
 }
 
-#ifdef TMWSERV_SUPPORT
-
-void ChatWindow::chatSend(std::string &msg)
-{
-    if (msg.empty()) return;
-
-    // check for item link
-    std::string::size_type start = msg.find('[');
-    if (start != std::string::npos && msg[start+1] != '@')
-    {
-        std::string::size_type end = msg.find(']', start);
-        if (end != std::string::npos)
-        {
-            std::string temp = msg.substr(start+1, end-1);
-            ItemInfo itemInfo = ItemDB::get(temp);
-            msg.insert(end, "@@");
-            msg.insert(start+1, "|");
-            msg.insert(start+1, toString(itemInfo.getId()));
-            msg.insert(start+1, "@@");
-
-        }
-    }
-
-
-    // Prepare ordinary message
-    if (msg[0] != '/')
-    {
-        if (getFocused() == "General")
-        {
-            Net::GameServer::Player::say(msg);
-        }
-        else
-        {
-            Channel *channel = channelManager->findByName(getFocused());
-            if (channel)
-            {
-                Net::ChatServer::chat(channel->getId(), msg);
-            }
-        }
-    }
-    else
-    {
-        commandHandler->handleCommand(std::string(msg, 1));
-    }
-}
-
 void ChatWindow::removeChannel(short channelId)
 {
     removeChannel(channelManager->findById(channelId));
@@ -571,6 +518,52 @@ void ChatWindow::sendToChannel(short channelId,
         std::string channelName = channel->getName();
         chatLog(user + ": " + msg, user == player_node->getName() ? BY_PLAYER : BY_OTHER, channelName);
         mChatTabs->getTab(channelName)->setHighlighted(true);
+    }
+}
+
+#ifdef TMWSERV_SUPPORT
+
+void ChatWindow::chatSend(std::string &msg)
+{
+    if (msg.empty()) return;
+
+    // check for item link
+    std::string::size_type start = msg.find('[');
+    if (start != std::string::npos && msg[start+1] != '@')
+    {
+        std::string::size_type end = msg.find(']', start);
+        if (end != std::string::npos)
+        {
+            std::string temp = msg.substr(start+1, end-1);
+            ItemInfo itemInfo = ItemDB::get(temp);
+            msg.insert(end, "@@");
+            msg.insert(start+1, "|");
+            msg.insert(start+1, toString(itemInfo.getId()));
+            msg.insert(start+1, "@@");
+
+        }
+    }
+
+
+    // Prepare ordinary message
+    if (msg[0] != '/')
+    {
+        if (getFocused() == "General")
+        {
+            Net::GameServer::Player::say(msg);
+        }
+        else
+        {
+            Channel *channel = channelManager->findByName(getFocused());
+            if (channel)
+            {
+                Net::ChatServer::chat(channel->getId(), msg);
+            }
+        }
+    }
+    else
+    {
+        commandHandler->handleCommand(std::string(msg, 1));
     }
 }
 
