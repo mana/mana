@@ -21,15 +21,15 @@
 
 #include "units.h"
 
-#include <cmath>
-#include <climits>
-#include <vector>
-
 #include "log.h"
 
 #include "utils/strprintf.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
+
+#include <cmath>
+#include <climits>
+#include <vector>
 
 struct UnitLevel {
     std::string symbol;
@@ -53,11 +53,6 @@ struct UnitDescription units[UNIT_END];
 
 void Units::loadUnits()
 {
-    int level;
-    std::string type;
-    XML::Document doc("units.xml");
-    xmlNodePtr root = doc.rootNode();
-
     { // Setup default weight
         struct UnitDescription ud;
 
@@ -97,6 +92,9 @@ void Units::loadUnits()
         units[UNIT_CURRENCY] = ud;
     }
 
+    XML::Document doc("units.xml");
+    xmlNodePtr root = doc.rootNode();
+
     if (!root || !xmlStrEqual(root->name, BAD_CAST "units"))
     {
         logger->log("Error loading unit definition file: units.xml");
@@ -108,8 +106,8 @@ void Units::loadUnits()
         if (xmlStrEqual(node->name, BAD_CAST "unit"))
         {
             struct UnitDescription ud;
-            level = 1;
-            type = XML::getProperty(node, "type", "");
+            int level = 1;
+            const std::string type = XML::getProperty(node, "type", "");
             ud.conversion = XML::getProperty(node, "conversion", 1.0);
             ud.mix = XML::getProperty(node, "mix", "no") == "yes";
 
@@ -151,9 +149,12 @@ void Units::loadUnits()
 
             ud.levels.push_back(ll);
 
-            if (type == "weight") units[UNIT_WEIGHT] = ud;
-            else if (type =="currency") units[UNIT_CURRENCY] = ud;
-            else logger->log("Error unknown unit type: %s", type.c_str());
+            if (type == "weight")
+                units[UNIT_WEIGHT] = ud;
+            else if (type == "currency")
+                units[UNIT_CURRENCY] = ud;
+            else
+                logger->log("Error unknown unit type: %s", type.c_str());
         }
     }
 }
@@ -162,13 +163,14 @@ std::string formatUnit(int value, int type)
 {
     struct UnitDescription ud = units[type];
     struct UnitLevel ul;
-    double amount = ud.conversion * value;
 
     // Shortcut for 0; do the same for values less than 0  (for now)
     if (value <= 0) {
         ul = ud.levels[0];
         return strprintf("0%s", ul.symbol.c_str());
     } else {
+        double amount = ud.conversion * value;
+
         // If only the first level is needed, act like mix if false
         if (ud.mix && ud.levels.size() > 0 && ud.levels[1].count < amount)
         {

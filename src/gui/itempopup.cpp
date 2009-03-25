@@ -42,10 +42,8 @@
 ItemPopup::ItemPopup():
     Popup()
 {
-    mItemType = "";
-
     // Item Name
-    mItemName = new gcn::Label("");
+    mItemName = new gcn::Label;
     mItemName->setFont(boldFont);
     mItemName->setPosition(2, 2);
 

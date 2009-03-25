@@ -35,61 +35,7 @@
 
 class ProgressBar;
 class Icon;
-
-class Skill_Tab : public GCContainer, public gcn::ActionListener
-{
-    public:
-        /**
-         * The type of this skill tab
-         */
-        const std::string type;
-
-        /**
-         * Constructor
-         */
-        Skill_Tab(const std::string &type);
-
-        /**
-         * Update this tab
-         */
-        void update();
-
-        /**
-         * Called when receiving actions from widget.
-         */
-        void action(const gcn::ActionEvent &event) {}
-
-    private:
-         /**
-         * Update the information of a skill at
-         * the given index
-         */
-        void updateSkill(int index);
-
-        /**
-         * Gets the number of skills in this particular
-         * type of tab.
-         */
-        int getSkillNum();
-
-        /**
-         * Get the first enumeration of this skill tab's
-         * skill type.
-         */
-        int getSkillBegin();
-
-        /**
-         * Get the icon associated with the given index
-         */
-        Icon* getIcon(int index);
-
-        std::vector<Icon *> mSkillIcons;
-        std::vector<gcn::Label *> mSkillNameLabels;
-        std::vector<gcn::Label *> mSkillLevelLabels;
-        std::vector<gcn::Label *> mSkillExpLabels;
-        std::vector<ProgressBar *> mSkillProgress;
-};
-
+class Skill_Tab;
 
 /**
  * The skill dialog.
@@ -125,14 +71,8 @@ class SkillDialog : public Window, public gcn::ActionListener
         void draw(gcn::Graphics *g);
 
     private:
-
-
         std::list<Skill_Tab*> mTabs;
-
 };
-
-
-
 
 extern SkillDialog *skillDialog;
 

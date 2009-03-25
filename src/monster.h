@@ -76,7 +76,7 @@ class Monster : public Being
         /**
          * Determine whether the mob should show it's name
          */
-        void showName(bool show);
+        void setShowName(bool show);
 
         /**
          * Gets the way the monster is blocked by other objects

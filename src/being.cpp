@@ -90,7 +90,6 @@ Being::Being(int id, int job, Map *map):
     mSpriteDirection(DIRECTION_DOWN),
 #endif
     mMap(NULL),
-    mName(""),
     mIsGM(false),
     mParticleEffects(config.getValue("particleeffects", 1)),
     mEquippedWeapon(NULL),
@@ -120,7 +119,6 @@ Being::Being(int id, int job, Map *map):
 
     mSpeechBubble = new SpeechBubble;
 
-    mSpeech = "";
     mNameColor = &guiPalette->getColor(Palette::CHAT);
     mText = 0;
 }
@@ -916,32 +914,18 @@ int Being::getOffset(char pos, char neg) const
 
 int Being::getWidth() const
 {
-    if (mSprites[BASE_SPRITE])
-    {
-        const int width = mSprites[BASE_SPRITE]->getWidth() > DEFAULT_WIDTH ?
-                                   mSprites[BASE_SPRITE]->getWidth() :
-                                   DEFAULT_WIDTH;
-        return width;
-    }
+    if (AnimatedSprite *base = mSprites[BASE_SPRITE])
+        return std::max(base->getWidth(), DEFAULT_WIDTH);
     else
-    {
         return DEFAULT_WIDTH;
-    }
 }
 
 int Being::getHeight() const
 {
-    if (mSprites[BASE_SPRITE])
-    {
-        const int height = mSprites[BASE_SPRITE]->getHeight() > DEFAULT_HEIGHT ?
-                                   mSprites[BASE_SPRITE]->getHeight() :
-                                   DEFAULT_HEIGHT;
-        return height;
-    }
+    if (AnimatedSprite *base = mSprites[BASE_SPRITE])
+        return std::max(base->getHeight(), DEFAULT_HEIGHT);
     else
-    {
         return DEFAULT_HEIGHT;
-    }
 }
 
 void Being::setTargetAnimation(SimpleAnimation* animation)

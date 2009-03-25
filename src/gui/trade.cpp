@@ -79,11 +79,12 @@ TradeWindow::TradeWindow(Network *network):
                                    getFont()->getWidth(_("Trade")) ?
                                    _("OK") : _("Trade");
 
-    Button *mAddButton = new Button(_("Add"), "add", this);
+    Button *addButton = new Button(_("Add"), "add", this);
 #ifdef EATHENA_SUPPORT
     mOkButton = new Button(longestName, "ok", this);
+#else
+    Button *cancelButton = new Button(_("Cancel"), "cancel", this);
 #endif
-    Button *mCancelButton = new Button(_("Cancel"), "cancel", this);
     mTradeButton = new Button(_("Propose trade"), "trade", this);
     mTradeButton->setWidth(8 + std::max(
         mTradeButton->getFont()->getWidth(_("Propose trade")),
@@ -96,7 +97,7 @@ TradeWindow::TradeWindow(Network *network):
 #endif
     mMyItemContainer->addSelectionListener(this);
 
-    ScrollArea *mMyScroll = new ScrollArea(mMyItemContainer);
+    ScrollArea *myScroll = new ScrollArea(mMyItemContainer);
 
 #ifdef TMWSERV_SUPPORT
     mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 4, 3, 0);
@@ -105,30 +106,30 @@ TradeWindow::TradeWindow(Network *network):
 #endif
     mPartnerItemContainer->addSelectionListener(this);
 
-    ScrollArea *mPartnerScroll = new ScrollArea(mPartnerItemContainer);
+    ScrollArea *partnerScroll = new ScrollArea(mPartnerItemContainer);
 
     mMoneyLabel = new Label(strprintf(_("You get %s."), ""));
     gcn::Label *mMoneyLabel2 = new Label(_("You give:"));
 
     mMoneyField = new TextField;
     mMoneyField->setWidth(40);
-    Button *mMoneyChange = new Button(_("Change"), "money", this);
+    Button *moneyChange = new Button(_("Change"), "money", this);
 
     place(1, 0, mMoneyLabel);
-    place(0, 1, mMyScroll).setPadding(3);
-    place(1, 1, mPartnerScroll).setPadding(3);
+    place(0, 1, myScroll).setPadding(3);
+    place(1, 1, partnerScroll).setPadding(3);
     ContainerPlacer place;
     place = getPlacer(0, 0);
     place(0, 0, mMoneyLabel2);
     place(1, 0, mMoneyField);
-    place(2, 0, mMoneyChange).setHAlign(LayoutCell::LEFT);
+    place(2, 0, moneyChange).setHAlign(LayoutCell::LEFT);
     place = getPlacer(0, 2);
-    place(0, 0, mAddButton);
+    place(0, 0, addButton);
 #ifdef EATHENA_SUPPORT
     place(1, 0, mOkButton);
 #else
     place(2, 0, mTradeButton);
-    place(3, 0, mCancelButton);
+    place(3, 0, cancelButton);
 #endif
     Layout &layout = getLayout();
     layout.extend(0, 2, 2, 1);
@@ -276,7 +277,7 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
     if (event.getSource() == mMyItemContainer &&
             (item = mMyItemContainer->getSelectedItem()))
         mPartnerItemContainer->selectNone();
-    else if ((item = mPartnerItemContainer->getSelectedItem()))
+    else if (item = mPartnerItemContainer->getSelectedItem())
         mMyItemContainer->selectNone();
 }
 

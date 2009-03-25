@@ -34,14 +34,13 @@
 #include "../utils/gettext.h"
 
 SpeechBubble::SpeechBubble():
-    Popup("Speech", NULL, "graphics/gui/speechbubble.xml"),
-    mText("")
+    Popup("Speech", NULL, "graphics/gui/speechbubble.xml")
 {
     setContentSize(140, 46);
     setMinWidth(29);
     setMinHeight(29);
 
-    mCaption = new gcn::Label("");
+    mCaption = new gcn::Label;
     mCaption->setFont(boldFont);
     mCaption->setPosition(5, 3);
 

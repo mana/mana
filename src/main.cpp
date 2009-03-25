@@ -207,7 +207,7 @@ struct Options
         skipUpdate(false),
         chooseDefault(false),
         serverPort(0)
-    {};
+    {}
 
     bool printHelp;
     bool printVersion;
@@ -228,7 +228,7 @@ struct Options
  * Parse the update host and determine the updates directory
  * Then verify that the directory exists (creating if needed).
  */
-void setUpdatesDir()
+static void setUpdatesDir()
 {
     std::stringstream updates;
 
@@ -307,7 +307,7 @@ void setUpdatesDir()
  * Initializes the home directory. On UNIX and FreeBSD, ~/.tmw is used. On
  * Windows and other systems we use the current working directory.
  */
-void initHomeDir()
+static void initHomeDir()
 {
     homeDir = std::string(PHYSFS_getUserDir()) +
         "/." +
@@ -338,7 +338,7 @@ void initHomeDir()
 /**
  * Initialize configuration.
  */
-void initConfiguration(const Options &options)
+static void initConfiguration(const Options &options)
 {
     // Fill configuration with defaults
     logger->log("Initializing configuration...");
@@ -397,7 +397,7 @@ void initConfiguration(const Options &options)
 /**
  * Do all initialization stuff.
  */
-void initEngine(const Options &options)
+static void initEngine(const Options &options)
 {
     // Initialize SDL
     logger->log("Initializing SDL...");
@@ -533,7 +533,7 @@ void initEngine(const Options &options)
 }
 
 /** Clear the engine */
-void exit_engine()
+static void exitEngine()
 {
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
@@ -563,7 +563,7 @@ void exit_engine()
     SDL_FreeSurface(icon);
 }
 
-void printHelp()
+static void printHelp()
 {
     std::cout
         << _("tmw") << std::endl << std::endl
@@ -584,7 +584,7 @@ void printHelp()
         << _("  -v --version    : Display the version") << std::endl;
 }
 
-void printVersion()
+static void printVersion()
 {
 #ifdef PACKAGE_VERSION
     std::cout << _("The Mana World version ") << PACKAGE_VERSION << std::endl;
@@ -594,7 +594,7 @@ void printVersion()
 #endif
 }
 
-void parseOptions(int argc, char *argv[], Options &options)
+static void parseOptions(int argc, char *argv[], Options &options)
 {
     const char *optstring = "hvud:U:P:Dc:s:o:C:H:S:";
 
@@ -671,7 +671,7 @@ void parseOptions(int argc, char *argv[], Options &options)
  * Reads the file "{Updates Directory}/resources2.txt" and attempts to load
  * each update mentioned in it.
  */
-void loadUpdates()
+static void loadUpdates()
 {
     if (updatesDir.empty()) return;
     const std::string updatesFile = "/" + updatesDir + "/resources2.txt";
@@ -718,11 +718,13 @@ struct LoginListener : public gcn::ActionListener
 } loginListener;
 #endif
 
+} // namespace
+
 // TODO Find some nice place for these functions
 #ifdef TMWSERV_SUPPORT
-void accountLogin(LoginData *loginData)
+static void accountLogin(LoginData *loginData)
 #else
-void accountLogin(Network *network, LoginData *loginData)
+static void accountLogin(Network *network, LoginData *loginData)
 #endif
 {
 #ifdef EATHENA_SUPPORT
@@ -794,7 +796,7 @@ static void positionDialog(Window *dialog, int screenWidth, int screenHeight)
             (screenHeight - dialog->getHeight()) / 2);
 }
 
-void charLogin(Network *network, LoginData *loginData)
+static void charLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to char server...");
     network->connect(loginData->hostname, loginData->port);
@@ -817,7 +819,7 @@ void charLogin(Network *network, LoginData *loginData)
     network->skip(4);
 }
 
-void mapLogin(Network *network, LoginData *loginData)
+static void mapLogin(Network *network, LoginData *loginData)
 {
     logger->log("Memorizing selected character %s",
             player_node->getName().c_str());
@@ -845,7 +847,7 @@ void mapLogin(Network *network, LoginData *loginData)
 
 #else
 
-void accountRegister(LoginData *loginData)
+static void accountRegister(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
 
@@ -861,7 +863,7 @@ void accountRegister(LoginData *loginData)
             loginData->email);
 }
 
-void accountUnRegister(LoginData *loginData)
+static void accountUnRegister(LoginData *loginData)
 {
     Net::registerHandler(&logoutHandler);
 
@@ -870,7 +872,7 @@ void accountUnRegister(LoginData *loginData)
 
 }
 
-void accountChangePassword(LoginData *loginData)
+static void accountChangePassword(LoginData *loginData)
 {
     Net::registerHandler(&loginHandler);
 
@@ -879,14 +881,14 @@ void accountChangePassword(LoginData *loginData)
                                                 loginData->newPassword);
 }
 
-void accountChangeEmail(LoginData *loginData)
+static void accountChangeEmail(LoginData *loginData)
 {
     Net::registerHandler(&loginHandler);
 
     Net::AccountServer::Account::changeEmail(loginData->newEmail);
 }
 
-void switchCharacter(std::string *passToken)
+static void switchCharacter(std::string *passToken)
 {
     Net::registerHandler(&logoutHandler);
 
@@ -897,7 +899,7 @@ void switchCharacter(std::string *passToken)
     Net::ChatServer::logout();
 }
 
-void switchAccountServer()
+static void switchAccountServer()
 {
     Net::registerHandler(&logoutHandler);
 
@@ -933,7 +935,7 @@ void switchAccountServer()
     }
 }
 
-void logoutThenExit()
+static void logoutThenExit()
 {
     Net::registerHandler(&logoutHandler);
 
@@ -969,7 +971,7 @@ void logoutThenExit()
     }
 }
 
-void reconnectAccount(const std::string &passToken)
+static void reconnectAccount(const std::string &passToken)
 {
     Net::registerHandler(&loginHandler);
 
@@ -981,14 +983,30 @@ void reconnectAccount(const std::string &passToken)
 
 #endif
 
-void xmlNullLogger(void *ctx, const char *msg, ...)
+static void initInternationalization()
+{
+#if ENABLE_NLS
+#ifdef WIN32
+    putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+    // mingw doesn't like LOCALEDIR to be defined for some reason
+    bindtextdomain("tmw", "translations/");
+#else
+    bindtextdomain("tmw", LOCALEDIR);
+#endif
+    setlocale(LC_MESSAGES, "");
+    bind_textdomain_codeset("tmw", "UTF-8");
+    textdomain("tmw");
+#endif
+}
+
+static void xmlNullLogger(void *ctx, const char *msg, ...)
 {
     // Does nothing, that's the whole point of it
 }
 
 // Initialize libxml2 and check for potential ABI mismatches between
 // compiled version and the shared library actually used.
-void initXML()
+static void initXML()
 {
     xmlInitParser();
     LIBXML_TEST_VERSION;
@@ -996,8 +1014,6 @@ void initXML()
     // Suppress libxml2 error messages
     xmlSetGenericErrorFunc(NULL, xmlNullLogger);
 }
-
-} // namespace
 
 extern "C" char const *_nl_locale_name_default(void);
 
@@ -1018,18 +1034,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-#if ENABLE_NLS
-#ifdef WIN32
-    putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
-    // mingw doesn't like LOCALEDIR to be defined for some reason
-    bindtextdomain("tmw", "translations/");
-#else
-    bindtextdomain("tmw", LOCALEDIR);
-#endif
-    setlocale(LC_MESSAGES, "");
-    bind_textdomain_codeset("tmw", "UTF-8");
-    textdomain("tmw");
-#endif
+    initInternationalization();
 
     // Initialize PhysicsFS
     PHYSFS_init(argv[0]);
@@ -1804,7 +1809,7 @@ int main(int argc, char *argv[])
 #endif
 
     logger->log("Quitting");
-    exit_engine();
+    exitEngine();
     PHYSFS_deinit();
     delete logger;
 

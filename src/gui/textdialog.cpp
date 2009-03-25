@@ -20,41 +20,41 @@
  */
 
 #include "textdialog.h"
+#include "button.h"
+
+#include "../utils/gettext.h"
 
 #include <guichan/widgets/label.hpp>
 #include <guichan/widgets/textfield.hpp>
 
-#include "button.h"
-
 TextDialog::TextDialog(const std::string &title, const std::string &msg,
-                             Window *parent):
+                       Window *parent):
     Window(title, true, parent),
-    textField(new TextField(""))
+    mTextField(new TextField)
 {
     gcn::Label *textLabel = new gcn::Label(msg);
-    okButton = new Button("OK", "OK", this);
-    gcn::Button *cancelButton = new Button("Cancel", "CANCEL", this);
+    mOkButton = new Button(_("OK"), "OK", this);
+    gcn::Button *cancelButton = new Button(_("Cancel"), "CANCEL", this);
 
     int w = textLabel->getWidth() + 20;
-    int inWidth = okButton->getWidth() + cancelButton->getWidth() + 5;
-    int h = textLabel->getHeight() + 25 + okButton->getHeight() + textField->getHeight();
+    int inWidth = mOkButton->getWidth() + cancelButton->getWidth() + 5;
+    int h = textLabel->getHeight() + 25 + mOkButton->getHeight() + mTextField->getHeight();
 
-    if (w < inWidth + 10) {
+    if (w < inWidth + 10)
         w = inWidth + 10;
-    }
 
     setContentSize(w, h);
     textLabel->setPosition(10, 10);
-    textField->setWidth(85);
-    textField->setPosition(10,20 + textLabel->getHeight());
-    okButton->setPosition((w - inWidth) / 2,
+    mTextField->setWidth(85);
+    mTextField->setPosition(10,20 + textLabel->getHeight());
+    mOkButton->setPosition((w - inWidth) / 2,
                            h - 5 - cancelButton->getHeight());
-    cancelButton->setPosition(okButton->getX() + okButton->getWidth() + 5,
+    cancelButton->setPosition(mOkButton->getX() + mOkButton->getWidth() + 5,
                           h - 5 - cancelButton->getHeight());
 
     add(textLabel);
-    add(textField);
-    add(okButton);
+    add(mTextField);
+    add(mOkButton);
     add(cancelButton);
 
     if (getParent()) {
@@ -62,7 +62,7 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
         getParent()->moveToTop(this);
     }
     setVisible(true);
-    textField->requestFocus();
+    mTextField->requestFocus();
 }
 
 void TextDialog::action(const gcn::ActionEvent &event)
@@ -74,7 +74,7 @@ void TextDialog::action(const gcn::ActionEvent &event)
         (*i)->action(event);
     }
 
-    if(event.getId() == "CANCEL" || event.getId() == "OK")
+    if (event.getId() == "CANCEL" || event.getId() == "OK")
     {
         scheduleDelete();
     }
@@ -82,10 +82,10 @@ void TextDialog::action(const gcn::ActionEvent &event)
 
 const std::string &TextDialog::getText() const
 {
-    return textField->getText();
+    return mTextField->getText();
 }
 
 void TextDialog::setOKButtonActionId(const std::string &name)
 {
-    okButton->setActionEventId(name);
+    mOkButton->setActionEventId(name);
 }

@@ -22,8 +22,10 @@
 #ifndef TMW_GUILD_H
 #define TMW_GUILD_H
 
-#include <string>
 #include <guichan/listmodel.hpp>
+
+#include <string>
+#include <vector>
 
 class Guild : public gcn::ListModel
 {

@@ -633,11 +633,6 @@ class Being : public Sprite
         /** Reset particle status effects on next redraw? */
         bool mMustResetParticles;
 
-#ifdef TMWSERV_SUPPORT
-        static const int DEFAULT_WIDTH = 32;
-        static const int DEFAULT_HEIGHT = 32;
-#endif
-
         // Speech Bubble components
         SpeechBubble *mSpeechBubble;
 

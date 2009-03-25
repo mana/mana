@@ -211,12 +211,10 @@ const MonsterInfo &Monster::getInfo() const
 #endif
 }
 
-void Monster::showName(bool show)
+void Monster::setShowName(bool show)
 {
-    if (mText)
-    {
-        delete mText;
-    }
+    delete mText;
+
     if (show)
     {
         mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,

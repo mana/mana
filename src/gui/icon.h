@@ -27,13 +27,13 @@
 
 class Image;
 
-
 /**
  * An icon.
  *
  * \ingroup GUI
  */
-class Icon : public gcn::Widget {
+class Icon : public gcn::Widget
+{
     public:
         /**
          * Constructor.
@@ -48,7 +48,7 @@ class Icon : public gcn::Widget {
         /** 
          * Gets the current Image.
          */
-        Image* getImage() { return mImage; }
+        Image *getImage() const { return mImage; }
 
         /**
          * Sets the image to display.

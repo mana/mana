@@ -27,13 +27,13 @@
 
 #include "window.h"
 
-
 /**
 * An option dialog.
  *
  * \ingroup GUI
  */
-class TextDialog : public Window, public gcn::ActionListener {
+class TextDialog : public Window, public gcn::ActionListener
+{
 public:
     /**
      * Constructor.
@@ -59,8 +59,8 @@ public:
     void setOKButtonActionId(const std::string &name);
 
 private:
-    TextField *textField;
-    gcn::Button *okButton;
+    TextField *mTextField;
+    gcn::Button *mOkButton;
 };
 
 #endif

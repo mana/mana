@@ -368,7 +368,7 @@ class LocalPlayer : public Player
         /**
          * Shows item pickup effect if the player is on a map.
          */
-        void pickedUp(std::string item);
+        void pickedUp(const std::string &item);
 
 #ifdef EATHENA_SUPPORT
         /**

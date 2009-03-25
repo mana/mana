@@ -136,34 +136,28 @@ void InventoryWindow::logic()
     // redesign of InventoryWindow and ItemContainer probably.
     updateButtons();
 
+    const int usedSlots = player_node->getInventory()->getNumberOfSlotsUsed();
+    const std::string usedSlotsStr = toString(usedSlots);
+
     if (mMaxWeight != player_node->getMaxWeight() ||
          mTotalWeight != player_node->getTotalWeight() ||
-         mUsedSlots != toString(player_node->getInventory()->getNumberOfSlotsUsed()))
+         mUsedSlots != usedSlotsStr)
     {
         mTotalWeight = player_node->getTotalWeight();
         mMaxWeight = player_node->getMaxWeight();
-        mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
+        mUsedSlots = usedSlotsStr;
 
         // Weight Bar coloration
-        if (int(player_node->getTotalWeight()) < int(player_node->getMaxWeight() / 3))
-        {
+        if (mTotalWeight < (int) (mMaxWeight / 3))
             mWeightBar->setColor(0, 0, 255); // Blue
-        }
-        else if (int(player_node->getTotalWeight()) <
-                 int((player_node->getMaxWeight() / 3) * 2))
-        {
+        else if (mTotalWeight < (int) ((mMaxWeight * 2) / 3))
             mWeightBar->setColor(255, 255, 0); // Yellow
-        }
         else
-        {
             mWeightBar->setColor(255, 0, 0); // Red
-        }
 
         // Adjust progress bars
-        mSlotsBar->setProgress((float)
-               player_node->getInventory()->getNumberOfSlotsUsed() / mMaxSlots);
-        mWeightBar->setProgress((float) player_node->getTotalWeight() /
-                                        player_node->getMaxWeight());
+        mSlotsBar->setProgress((float) usedSlots / mMaxSlots);
+        mWeightBar->setProgress((float) mTotalWeight / mMaxWeight);
 
         mSlotsBar->setText(strprintf("%s/%d", mUsedSlots.c_str(), mMaxSlots));
         mWeightBar->setText(strprintf("%s/%s",

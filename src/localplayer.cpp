@@ -645,12 +645,12 @@ void LocalPlayer::setTarget(Being *target)
         mTarget->untarget();
 
     if (mTarget && mTarget->getType() == Being::MONSTER)
-        static_cast<Monster *>(mTarget)->showName(false);
+        static_cast<Monster *>(mTarget)->setShowName(false);
 
     mTarget = target;
 
     if (target && target->getType() == Being::MONSTER)
-        static_cast<Monster *>(target)->showName(true);
+        static_cast<Monster *>(target)->setShowName(true);
 }
 
 #ifdef TMWSERV_SUPPORT
@@ -943,9 +943,6 @@ void LocalPlayer::attack(Being *target, bool keep)
             setDirection(LEFT);
     }
 
-    // Implement charging attacks here
-    mLastAttackTime = 0;
-
     mWalkTime = tick_time;
     mTargetTime = tick_time;
 
@@ -1079,7 +1076,7 @@ void LocalPlayer::setXp(int xp)
 
 #endif
 
-void LocalPlayer::pickedUp(std::string item)
+void LocalPlayer::pickedUp(const std::string &item)
 {
     if (mMap)
     {

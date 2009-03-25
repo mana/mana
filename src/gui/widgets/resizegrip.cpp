@@ -33,7 +33,7 @@ Image *ResizeGrip::gripImage = 0;
 int ResizeGrip::mInstances = 0;
 float ResizeGrip::mAlpha = config.getValue("guialpha", 0.8);
 
-ResizeGrip::ResizeGrip(std::string image)
+ResizeGrip::ResizeGrip(const std::string &image)
 {
     if (mInstances == 0)
     {

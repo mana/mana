@@ -43,8 +43,8 @@ class LoginData;
  */
 struct Server {
     Server():
-        serverName(""),
-        port(0) {};
+        port(0)
+    {}
 
     std::string serverName;
     short port;

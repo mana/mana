@@ -37,7 +37,8 @@ class WrongDataNoticeListener;
  *
  * \ingroup Interface
  */
-class ChangeEmailDialog : public Window, public gcn::ActionListener {
+class ChangeEmailDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor.
