@@ -42,6 +42,7 @@ Popup::Popup(const std::string& name, Window *parent,
              const std::string& skin):
     mParent(parent),
     mPopupName(name),
+    mDefaultSkinPath(skin),
     mMinWidth(100),
     mMinHeight(40),
     mMaxWidth(INT_MAX),
@@ -57,7 +58,7 @@ Popup::Popup(const std::string& name, Window *parent,
     instances++;
 
     // Loads the skin
-    mSkin = skinLoader->load(skin);
+    mSkin = skinLoader->load(skin, mDefaultSkinPath);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -69,6 +70,8 @@ Popup::Popup(const std::string& name, Window *parent,
 Popup::~Popup()
 {
     logger->log("Popup::~Popup(\"%s\")", mPopupName.c_str());
+
+    savePopupConfiguration();
 
     while (!mWidgets.empty())
     {
@@ -85,6 +88,34 @@ Popup::~Popup()
 void Popup::setWindowContainer(WindowContainer *wc)
 {
     windowContainer = wc;
+}
+
+void Popup::loadPopupConfiguration()
+{
+    if (mPopupName.empty())
+        return;
+
+    const std::string &name = mPopupName;
+    const std::string &skinName = config.getValue(name + "Skin",
+                                                  mSkin->getFilePath());
+
+    if (skinName.compare(mSkin->getFilePath()) != 0)
+    {
+        mSkin->instances--;
+        mSkin = skinLoader->load(skinName, mDefaultSkinPath);
+    }
+}
+
+void Popup::savePopupConfiguration()
+{
+    if (mPopupName.empty())
+        return;
+
+    const std::string &name = mPopupName;
+
+    // Saves the skin path in a config file (which allows for skins to be
+    // changed from the default path)
+    config.setValue(name + "Skin", mSkin->getFilePath());
 }
 
 void Popup::draw(gcn::Graphics *graphics)

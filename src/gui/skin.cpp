@@ -31,6 +31,7 @@
 #include "../resources/resourcemanager.h"
 
 #include "../utils/dtor.h"
+#include "../utils/strprintf.h"
 #include "../utils/xml.h"
 
 SkinLoader* skinLoader = NULL;
@@ -45,8 +46,9 @@ class SkinConfigListener : public ConfigListener
     }
 };
 
-Skin::Skin(ImageRect skin, Image* close, std::string name):
+Skin::Skin(ImageRect skin, Image* close, std::string filePath, std::string name):
     instances(0),
+    mFilePath(filePath),
     mName(name),
     border(skin),
     closeImage(close)
@@ -86,32 +88,47 @@ unsigned int Skin::getMinHeight()
             border.grid[6]->getHeight();
 }
 
-Skin* SkinLoader::load(const std::string &filename)
+Skin* SkinLoader::load(const std::string &filename,
+                       const std::string &defaultPath)
 {
-    SkinIterator skinIterator = mSkins.find(filename);
+    std::string filePath = filename;
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    logger->log("Loading Skin '%s'.", filename.c_str());
+
+    if (filename.empty() && defaultPath.empty())
+        logger->error("SkinLoader::load(): Invalid File Name.");
+
+    XML::Document *doc = new XML::Document(filePath);
+    xmlNodePtr rootNode = doc->rootNode();
+
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
+    {
+        filePath = defaultPath;
+
+        logger->log("Widget Skinning error. Loading '%s' instead.",
+                    filePath.c_str());
+
+        delete doc;
+
+        doc = new XML::Document(filePath);
+        rootNode = doc->rootNode();
+        if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
+        {
+            logger->error(strprintf("Skinning failed. Check this skin file "
+                                    "to make sure it's valid: %s",
+                                    filePath.c_str()));
+        }
+    }
+
+    SkinIterator skinIterator = mSkins.find(filePath);
 
     if (mSkins.end() != skinIterator)
     {
         skinIterator->second->instances++;
         return skinIterator->second;
     }
-
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    logger->log("Loading Skin '%s'.", filename.c_str());
-
-    if (filename.empty())
-        logger->error("SkinLoader::load(): Invalid File Name.");
-
-    // TODO:
-    // If there is an error loading the specified file, we should try to revert
-    // to a 'default' skin file. Only if the 'default' skin file can't be loaded
-    // should we have a terminating error.
-    XML::Document doc(filename);
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
-        logger->error("Widget Skinning error");
 
     std::string skinSetImage;
     skinSetImage = XML::getProperty(rootNode, "image", "");
@@ -197,7 +214,7 @@ Skin* SkinLoader::load(const std::string &filename)
     // Hard-coded for now until we update the above code to look for window buttons.
     Image* closeImage = resman->getImage("graphics/gui/close_button.png");
 
-    Skin* skin = new Skin(border, closeImage);
+    Skin* skin = new Skin(border, closeImage, filename);
 
     mSkins[filename] = skin;
 

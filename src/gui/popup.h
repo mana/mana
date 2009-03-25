@@ -67,6 +67,18 @@ class Popup : public gcn::Container
         static void setWindowContainer(WindowContainer *windowContainer);
 
         /**
+         * Changes the popup's skin to use the skin defined in the saved
+         * configuration file.
+         */
+        void loadPopupConfiguration();
+
+        /**
+         * Currently only saves the skin used by the popup so that when the
+         * client is reloaded, it can use the saved skin.
+         */
+        void savePopupConfiguration();
+
+        /**
          * Draws the popup.
          */
         void draw(gcn::Graphics *graphics);
@@ -167,17 +179,18 @@ class Popup : public gcn::Container
         virtual gcn::Rectangle getChildrenArea();
 
     private:
-        Window *mParent;           /**< The parent Window (if there is one) */
-        std::string mPopupName;    /**< Name of the Popup */
-        int mMinWidth;             /**< Minimum Popup width */
-        int mMinHeight;            /**< Minimum Popup height */
-        int mMaxWidth;             /**< Maximum Popup width */
-        int mMaxHeight;            /**< Maximum Popup height */
-        unsigned int mPadding;     /**< Holds the padding of the window. */
+        Window *mParent;              /**< The parent Window (if there is one) */
+        std::string mPopupName;       /**< Name of the popup */
+        std::string mDefaultSkinPath; /**< Default skin path for this popup */
+        int mMinWidth;                /**< Minimum popup width */
+        int mMinHeight;               /**< Minimum popup height */
+        int mMaxWidth;                /**< Maximum popup width */
+        int mMaxHeight;               /**< Maximum popup height */
+        unsigned int mPadding;        /**< Holds the padding of the popup. */
 
-        static int instances;      /**< Number of Popup instances */
+        static int instances;         /**< Number of popup instances */
 
-        Skin* mSkin;               /**< Skin in use by this Popup */
+        Skin* mSkin;                  /**< Skin in use by this popup */
 };
 
 #endif

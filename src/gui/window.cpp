@@ -48,6 +48,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     mParent(parent),
     mLayout(NULL),
     mWindowName("window"),
+    mDefaultSkinPath(skin),
     mShowTitle(true),
     mModal(modal),
     mCloseButton(false),
@@ -74,7 +75,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     setTitleBarHeight(20);
 
     // Loads the skin
-    mSkin = skinLoader->load(skin);
+    mSkin = skinLoader->load(skin, mDefaultSkinPath);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -476,11 +477,19 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 void Window::loadWindowState()
 {
     const std::string &name = mWindowName;
+    const std::string skinName = config.getValue(name + "Skin",
+                                                 mSkin->getFilePath());
     assert(!name.empty());
 
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
                 (int) config.getValue(name + "WinY", mDefaultY));
     setVisible((bool) config.getValue(name + "Visible", false));
+
+    if (skinName.compare(mSkin->getFilePath()) != 0)
+    {
+        mSkin->instances--;
+        mSkin = skinLoader->load(skinName, mDefaultSkinPath);
+    }
 
     if (mGrip)
     {
@@ -512,6 +521,7 @@ void Window::saveWindowState()
         config.setValue(mWindowName + "WinX", getX());
         config.setValue(mWindowName + "WinY", getY());
         config.setValue(mWindowName + "Visible", isVisible());
+        config.setValue(mWindowName + "Skin", mSkin->getFilePath());
 
         if (mGrip)
         {

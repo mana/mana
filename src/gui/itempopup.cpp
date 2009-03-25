@@ -39,7 +39,7 @@
 #include "../utils/stringutils.h"
 
 ItemPopup::ItemPopup():
-    Popup()
+    Popup("ItemPopup")
 {
     mItemType = "";
 
@@ -85,6 +85,8 @@ ItemPopup::ItemPopup():
     add(mItemDescScroll);
     add(mItemEffectScroll);
     add(mItemWeightScroll);
+
+    loadPopupConfiguration();
 }
 
 ItemPopup::~ItemPopup()

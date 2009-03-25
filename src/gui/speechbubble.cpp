@@ -60,6 +60,8 @@ SpeechBubble::SpeechBubble():
 
     add(mCaption);
     add(mSpeechArea);
+
+    loadPopupConfiguration();
 }
 
 void SpeechBubble::setCaption(const std::string &name, const gcn::Color *color)

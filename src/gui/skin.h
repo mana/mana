@@ -33,7 +33,8 @@ class Image;
 class Skin
 {
     public:
-        Skin(ImageRect skin, Image* close, std::string name = "");
+        Skin(ImageRect skin, Image* close, std::string filePath,
+             std::string name = "");
         ~Skin();
 
         /**
@@ -42,6 +43,11 @@ class Skin
          * done.
          */
         std::string getName() { return mName; }
+
+        /**
+         * Returns the skin's xml file path.
+         */
+        std::string getFilePath() { return mFilePath; }
 
         /**
          * Returns the background skin.
@@ -76,6 +82,7 @@ class Skin
         int instances;
 
     private:
+        std::string mFilePath;     /**< File name path for the skin */
         std::string mName;         /**< Name of the skin to use */
         ImageRect border;          /**< The window border and background */
         Image *closeImage;         /**< Close Button Image */
@@ -98,7 +105,7 @@ class SkinLoader
         /**
          * Loads a skin
          */
-        Skin* load(const std::string &filename);
+        Skin* load(const std::string &filename, const std::string &defaultPath);
 
         /**
          * Updates the alpha values of all of the skins
