@@ -107,9 +107,6 @@ DropDown::~DropDown()
 
         for_each(skin.grid, skin.grid + 9, dtor<Image*>());
     }
-
-    gcn::ListModel *listModel = getListModel();
-    if (listModel) delete listModel;
 }
 
 void DropDown::draw(gcn::Graphics* graphics)
