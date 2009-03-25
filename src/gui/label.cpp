@@ -1,10 +1,8 @@
 /*
- *  Aethyra
- *  Copyright (c) 2004 - 2008 Olof Naessén and Per Larsson
+ *  The Mana World
  *  Copyright (c) 2009  Aethyra Development Team 
  *
- *  This file is part of Aethyra based on original code
- *  from GUIChan.
+ *  This file is part of The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
