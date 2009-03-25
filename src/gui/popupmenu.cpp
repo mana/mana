@@ -48,7 +48,7 @@
 extern std::string tradePartnerName;
 
 PopupMenu::PopupMenu():
-    Window(),
+    Window("PopupMenu"),
     mBeingId(0),
     mFloorItem(NULL),
     mItem(NULL)

@@ -322,10 +322,11 @@ void MapReader::readLayer(xmlNodePtr node, Map *map)
     const int h = XML::getProperty(node, "height", map->getHeight());
     const int offsetX = XML::getProperty(node, "x", 0);
     const int offsetY = XML::getProperty(node, "y", 0);
-    const std::string name = XML::getProperty(node, "name", "");
+    std::string name = XML::getProperty(node, "name", "");
+    name = toLower(name);
 
-    const bool isFringeLayer = (name.substr(0,6) == "Fringe");
-    const bool isCollisionLayer = (name.substr(0,9) == "Collision");
+    const bool isFringeLayer = (name.substr(0,6) == "fringe");
+    const bool isCollisionLayer = (name.substr(0,9) == "collision");
 
     MapLayer *layer = 0;
 
