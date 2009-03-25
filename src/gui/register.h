@@ -37,7 +37,8 @@ class OkDialog;
  * to the field which contained wrong data when the Ok button was pressed on
  * the error notice.
  */
-class WrongDataNoticeListener : public gcn::ActionListener {
+class WrongDataNoticeListener : public gcn::ActionListener
+{
     public:
         void setTarget(gcn::TextField *textField);
         void action(const gcn::ActionEvent &event);

@@ -19,15 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itemcontainer.h"
-#include "chat.h"
-
-#include "itempopup.h"
 
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
 
+#include "chat.h"
+#include "itemcontainer.h"
+#include "itempopup.h"
+#include "palette.h"
 #include "sdlinput.h"
+#include "viewport.h"
 
 #include "../graphics.h"
 #include "../inventory.h"
@@ -306,12 +307,10 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
 
     if (item)
     {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-
-        mItemPopup->setItem(item->getInfo());
-        mItemPopup->setOpaque(false);
-        mItemPopup->view(mouseX, mouseY);
+        if (item->getInfo().getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(item->getInfo());
+        mItemPopup->updateColors();
+        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
     }
     else
     {

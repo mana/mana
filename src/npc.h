@@ -36,7 +36,7 @@ class NPC : public Player
 #ifdef TMWSERV_SUPPORT
         NPC(Uint16 id, int sprite, Map *map);
 #else
-        NPC(Uint32 id, Uint16 job, Map *map, Network *network);
+        NPC(int id, Uint16 job, Map *map, Network *network);
 #endif
 
         ~NPC();
@@ -48,19 +48,6 @@ class NPC : public Player
         virtual Type getType() const;
 
         void talk();
-        void nextDialog();
-        void dialogChoice(char choice);
-        void integerInput(int value);
-        void stringInput(const std::string &value);
-
-        void buy();
-        void sell();
-
-        /**
-         * Call this to ease clean up of the current NPC, without causing
-         * interface problems
-         */
-        void handleDeath();
 
         /**
          * Gets the way an NPC is blocked by other things on the map
@@ -68,6 +55,7 @@ class NPC : public Player
         virtual unsigned char getWalkMask() const
         { return 0x83; } // blocked like a monster by walls, monsters and characters ( bin 1000 0011)
 
+        static bool isTalking;
     protected:
         /**
          * Gets the way a monster blocks pathfinding for other objects
@@ -83,6 +71,6 @@ class NPC : public Player
         Text *mName;
 };
 
-extern NPC *current_npc;
+extern int current_npc;
 
 #endif

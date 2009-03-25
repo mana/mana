@@ -26,6 +26,10 @@
 
 #include <guichan/actionlistener.hpp>
 
+#ifdef EATHENA_SUPPORT
+class Network;
+#endif
+
 /**
  * The npc integer input dialog.
  *
@@ -39,7 +43,11 @@ class NpcStringDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
+#ifdef TMWSERV_SUPPORT
         NpcStringDialog();
+#else
+        NpcStringDialog(Network *network);
+#endif
 
         /**
          * Called when receiving actions from the widgets.
@@ -68,9 +76,16 @@ class NpcStringDialog : public Window, public gcn::ActionListener
          */
         void requestFocus();
 
+        void setVisible(bool visible);
+
     private:
+#ifdef EATHENA_SUPPORT
+        Network *mNetwork;
+#endif
         gcn::TextField *mValueField;
         std::string mDefault;
 };
+
+extern NpcStringDialog *npcStringDialog;
 
 #endif // GUI_NPCSTRINGDIALOG_H

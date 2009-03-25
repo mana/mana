@@ -38,6 +38,10 @@
 
 #include "gui/gui.h"
 #include "gui/ministatus.h"
+#include "gui/palette.h"
+#ifdef EATHENA_SUPPORT
+#include "gui/storagewindow.h"
+#endif
 
 #ifdef TMWSERV_SUPPORT
 #include "effectmanager.h"
@@ -111,12 +115,11 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mDestX(0), mDestY(0),
 #ifdef TMWSERV_SUPPORT
     mLocalWalkTime(-1),
-#endif
-    mInventory(new Inventory(INVENTORY_SIZE))
-#ifdef EATHENA_SUPPORT
-    , mStorage(new Inventory(STORAGE_SIZE))
+    mInventory(new Inventory(INVENTORY_SIZE)),
+    mExpMessageTime(0)
 #else
-    , mExpMessageTime(0)
+    mInventory(new Inventory(INVENTORY_SIZE, 2)),
+    mStorage(new Inventory(STORAGE_SIZE, 1))
 #endif
 {
     // Variable to keep the local player from doing certain actions before a map
@@ -148,7 +151,8 @@ LocalPlayer::~LocalPlayer()
 void LocalPlayer::logic()
 {
 #ifdef EATHENA_SUPPORT
-    switch (mAction) {
+    switch (mAction)
+    {
         case STAND:
            break;
 
@@ -168,12 +172,35 @@ void LocalPlayer::logic()
             break;
 
         case ATTACK:
+            int rotation = 0;
+            std::string particleEffect = "";
             int frames = 4;
+
             if (mEquippedWeapon &&
                 mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
                 frames = 5;
 
             mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
+
+            //attack particle effect
+            if (mEquippedWeapon)
+                particleEffect = mEquippedWeapon->getParticleEffect();
+
+            if (!particleEffect.empty() && mParticleEffects && mFrame == 1)
+            {
+                switch (mDirection)
+                {
+                    case DOWN: rotation = 0; break;
+                    case LEFT: rotation = 90; break;
+                    case UP: rotation = 180; break;
+                    case RIGHT: rotation = 270; break;
+                    default: break;
+                }
+                Particle *p;
+                p = particleEngine->addEffect("graphics/particles/" +
+                                              particleEffect, 0, 0, rotation);
+                controlParticle(p);
+            }
 
             if (mFrame >= frames)
                 nextStep();
@@ -193,11 +220,14 @@ void LocalPlayer::logic()
         if (mExpMessageTime == 0)
         {
             const Vector &pos = getPosition();
-            particleEngine->addTextRiseFadeOutEffect(mExpMessages.front(),
-                                                     0, 128, 255,
-                                                     gui->getFont(),
-                                                     (int) pos.x + 16,
-                                                     (int) pos.y - 16);
+
+            particleEngine->addTextRiseFadeOutEffect(
+                    mExpMessages.front(),
+                    (int) pos.x + 16,
+                    (int) pos.y - 16,
+                    &guiPalette->getColor(Palette::EXP_INFO),
+                    gui->getInfoParticleFont(), true);
+
             mExpMessages.pop_front();
             mExpMessageTime = 30;
         }
@@ -218,20 +248,30 @@ void LocalPlayer::logic()
 
     if (mTarget)
     {
-        // Find whether target is in range
-        const int rangeX = abs(mTarget->mX - mX);
-        const int rangeY = abs(mTarget->mY - mY);
-        const int attackRange = getAttackRange();
-        const int inRange = rangeX > attackRange || rangeY > attackRange ? 1 : 0;
+        if (mTarget->getType() == Being::NPC)
+        {
+            // NPCs are always in range
+            mTarget->setTargetAnimation(
+                mTargetCursor[0][mTarget->getTargetCursorSize()]);
+        }
+        else
+        {
+            // Find whether target is in range
+            const int rangeX = abs(mTarget->mX - mX);
+            const int rangeY = abs(mTarget->mY - mY);
+            const int attackRange = getAttackRange();
+            const int inRange = rangeX > attackRange || rangeY > attackRange
+                                                                    ? 1 : 0;
 
-        mTarget->setTargetAnimation(
-            mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
+            mTarget->setTargetAnimation(
+                mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
 
-        if (mTarget->mAction == DEAD)
-            stopAttack();
+            if (mTarget->mAction == DEAD)
+                stopAttack();
 
-        if (mKeepAttacking && mTarget)
-            attack(mTarget, true);
+            if (mKeepAttacking && mTarget)
+                attack(mTarget, true);
+        }
     }
 #endif
 
@@ -241,7 +281,9 @@ void LocalPlayer::logic()
 void LocalPlayer::setGM()
 {
     mIsGM = !mIsGM;
-    mNameColor = mIsGM ? 0x009000: 0x202020;
+    mNameColor = mIsGM ?
+            &guiPalette->getColor(Palette::GM) :
+            &guiPalette->getColor(Palette::PLAYER);
     setName(getName());
     config.setValue(getName() + "GMassert", mIsGM);
 }
@@ -871,7 +913,7 @@ void LocalPlayer::attack(Being *target, bool keep)
 {
     mKeepAttacking = keep;
 
-    if (!target)
+    if (!target || target->getType() == Being::NPC)
         return;
 
     if ((mTarget != target) || !mTarget)
@@ -883,10 +925,8 @@ void LocalPlayer::attack(Being *target, bool keep)
     int dist_x = target->mX - mX;
     int dist_y = target->mY - mY;
 
-    // Must be standing and be within attack range to continue
-    if ((mAction != STAND) || (mAttackRange < abs(dist_x)) ||
-        (mAttackRange < abs(dist_y)))
-        return;
+    // Must be standing to attack
+    if (mAction != STAND) return;
 
     if (abs(dist_y) >= abs(dist_x))
     {
@@ -1030,15 +1070,25 @@ void LocalPlayer::setXp(int xp)
         const std::string text = toString(xp - mXp) + " xp";
 
         // Show XP number
-        particleEngine->addTextRiseFadeOutEffect(text,
-                                                 255, 255, 0,
-                                                 hitYellowFont,
-                                                 mPx + 16, mPy - 16);
+        particleEngine->addTextRiseFadeOutEffect(text, mPx + 16, mPy - 16,
+                &guiPalette->getColor(Palette::EXP_INFO),
+                gui->getInfoParticleFont(), true);
     }
     mXp = xp;
 }
 
 #endif
+
+void LocalPlayer::pickedUp(std::string item)
+{
+    if (mMap)
+    {
+        // Show pickup notification
+        particleEngine->addTextRiseFadeOutEffect(item, mPx + 16, mPy - 16,
+                &guiPalette->getColor(Palette::PICKUP_INFO),
+                gui->getInfoParticleFont (), true);
+    }
+}
 
 int LocalPlayer::getAttackRange()
 {
@@ -1181,3 +1231,11 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
     mTargetCursor[index][size] = currentCursor;
 }
 
+#ifdef EATHENA_SUPPORT
+void LocalPlayer::setInStorage(bool inStorage)
+{
+    mInStorage = inStorage;
+
+    storageWindow->setVisible(inStorage);
+}
+#endif

@@ -29,6 +29,10 @@
 
 #include <vector>
 
+#ifdef EATHENA_SUPPORT
+class Network;
+#endif
+
 /**
  * The npc list dialog.
  *
@@ -43,7 +47,11 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
+#ifdef TMWSERV_SUPPORT
         NpcListDialog();
+#else
+        NpcListDialog(Network *network);
+#endif
 
         /**
          * Called when receiving actions from the widgets.
@@ -77,10 +85,23 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          */
         void reset();
 
+        void setVisible(bool visible);
+
+        /**
+         * Requests the listbox to take focus for input and sets window width
+         * to the last known setting.
+         */
+        void requestFocus();
+
     private:
+#ifdef EATHENA_SUPPORT
+        Network *mNetwork;
+#endif
         gcn::ListBox *mItemList;
 
         std::vector<std::string> mItems;
 };
+
+extern NpcListDialog *npcListDialog;
 
 #endif // GUI_NPCLISTDIALOG_H

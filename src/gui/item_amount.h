@@ -31,7 +31,9 @@ class Item;
 
 #define AMOUNT_TRADE_ADD 1
 #define AMOUNT_ITEM_DROP 2
-#define AMOUNT_ITEM_SPLIT 3
+#define AMOUNT_STORE_ADD 3
+#define AMOUNT_STORE_REMOVE 4
+#define AMOUNT_ITEM_SPLIT 5
 
 /**
  * Window used for selecting the amount of items to drop, trade or split.
@@ -56,9 +58,16 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
          */
         void resetAmount();
 
+        /**
+         * Schedules the Item Amount window for deletion.
+         */
+        void close();
+
     private:
-        IntTextField *mItemAmountTextField;   /**< Item amount caption. */
+        gcn::Label *mItemAmountLabel;   /**< Item amount caption. */
         Item *mItem;
+
+        int mMax, mUsage;
 
         /**
          * Item Amount buttons.

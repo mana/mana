@@ -46,7 +46,26 @@ class ListBox : public gcn::ListBox
          */
         void draw(gcn::Graphics *graphics);
 
+        // Inherited from KeyListener
+
+        void keyPressed(gcn::KeyEvent& keyEvent);
+
+        // Inherited from MouseListener
+
+        void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
+
+        void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
+
         void mouseDragged(gcn::MouseEvent &event);
+
+         /**
+         * Sets the selected item. The selected item is represented by
+         * an index from the list model.
+         *
+         * @param selected the selected item as an index from the list model.
+         * @see getSelected
+         */
+        void setSelected(int selected);
 
     private:
         static float mAlpha;

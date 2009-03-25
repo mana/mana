@@ -27,7 +27,6 @@
 #include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
-#include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
 
@@ -50,6 +49,7 @@
 #include "player_relations.h"
 #include "serverinfo.h"
 #include "sound.h"
+#include "statuseffect.h"
 #include "units.h"
 
 #include "gui/button.h"
@@ -57,10 +57,11 @@
 #include "gui/char_server.h"
 #endif
 #include "gui/char_select.h"
-#include "gui/color.h"
 #include "gui/gui.h"
+#include "gui/label.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
+#include "gui/palette.h"
 #include "gui/progressbar.h"
 #include "gui/register.h"
 #include "gui/sdlinput.h"
@@ -128,8 +129,6 @@
 
 namespace
 {
-    Window *setupWindow = 0;
-
     struct SetupListener : public gcn::ActionListener
     {
         /**
@@ -177,7 +176,7 @@ LogoutHandler logoutHandler;
 #endif
 LockedArray<LocalPlayer*> charInfo(maxSlot + 1);
 
-Color *textColor;
+Palette *guiPalette;
 
 // This anonymous namespace hides whatever is inside from other modules.
 namespace {
@@ -190,6 +189,8 @@ std::string updatesDir;
 LoginHandler loginHandler;
 MapLoginHandler mapLoginHandler;
 #endif
+
+SDL_Surface *icon;
 
 /**
  * A structure holding the values of various options that can be passed from
@@ -454,7 +455,7 @@ void initEngine(const Options &options)
         SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
     }
 #else
-    SDL_Surface *icon = IMG_Load(resman->getPath(branding.getValue("appIcon", "data/icons/tmw.png")).c_str());
+    icon = IMG_Load(resman->getPath(branding.getValue("appIcon", "data/icons/tmw.png")).c_str());
     if (icon)
     {
         SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -507,16 +508,18 @@ void initEngine(const Options &options)
 #endif
 
     // Initialize sound engine
-    try {
-        if (config.getValue("sound", 0) == 1) {
+    try
+    {
+        if (config.getValue("sound", 0) == 1)
             sound.init();
-        }
+
         sound.setSfxVolume((int) config.getValue("sfxVolume",
                     defaultSfxVolume));
         sound.setMusicVolume((int) config.getValue("musicVolume",
                     defaultMusicVolume));
     }
-    catch (const char *err) {
+    catch (const char *err)
+    {
         state = STATE_ERROR;
         errorMessage = err;
         logger->log("Warning: %s", err);
@@ -553,8 +556,11 @@ void exit_engine()
     ItemDB::unload();
     MonsterDB::unload();
     NPCDB::unload();
+    StatusEffect::unload();
 
     ResourceManager::deleteInstance();
+
+    SDL_FreeSurface(icon);
 }
 
 void printHelp()
@@ -667,6 +673,7 @@ void parseOptions(int argc, char *argv[], Options &options)
  */
 void loadUpdates()
 {
+    if (updatesDir.empty()) return;
     const std::string updatesFile = "/" + updatesDir + "/resources2.txt";
     ResourceManager *resman = ResourceManager::getInstance();
     std::vector<std::string> lines = resman->loadTextFile(updatesFile);
@@ -1054,7 +1061,7 @@ int main(int argc, char *argv[])
     initEngine(options);
 
     // Needs to be created in main, as the updater uses it
-    textColor = new Color;
+    guiPalette = new Palette;
 
     Game *game = NULL;
     Window *currentDialog = NULL;
@@ -1067,14 +1074,14 @@ int main(int argc, char *argv[])
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
 #ifdef TMWSERV_SUPPORT
-    gcn::Label *versionLabel = new gcn::Label(strprintf("%s TMWserv", PACKAGE_VERSION));
+    gcn::Label *versionLabel = new Label(strprintf("%s TMWserv", PACKAGE_VERSION));
 #else
-    gcn::Label *versionLabel = new gcn::Label(strprintf("%s eAthena", PACKAGE_VERSION));
+    gcn::Label *versionLabel = new Label(strprintf("%s eAthena", PACKAGE_VERSION));
 #endif
     top->add(versionLabel, 25, 2);
 #endif
     ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
-    gcn::Label *progressLabel = new gcn::Label();
+    gcn::Label *progressLabel = new Label();
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
@@ -1180,13 +1187,9 @@ int main(int argc, char *argv[])
                     {
 #ifdef TMWSERV_SUPPORT
                         if (!quitDialog)
-                        {
                             quitDialog = new QuitDialog(NULL, &quitDialog);
-                        }
                         else
-                        {
                             quitDialog->requestMoveToTop();
-                        }
 #else
                         state = STATE_EXIT;
 #endif
@@ -1210,11 +1213,10 @@ int main(int argc, char *argv[])
         {
             state = STATE_ERROR;
 
-            if (!network->getError().empty()) {
+            if (!network->getError().empty()) 
                 errorMessage = network->getError();
-            } else {
+            else
                 errorMessage = _("Got disconnected from server!");
-            }
         }
 #endif
 
@@ -1264,10 +1266,9 @@ int main(int argc, char *argv[])
             reconnectAccount(token);
             state = STATE_WAIT;
         }
-#endif
 
-#ifdef TMWSERV_SUPPORT
-        if (state != oldstate) {
+        if (state != oldstate)
+        {
             // Load updates after exiting the update state
             if (oldstate == STATE_UPDATE)
             {
@@ -1548,7 +1549,8 @@ int main(int argc, char *argv[])
 
 #else // no TMWSERV_SUPPORT
 
-        if (state != oldstate) {
+        if (state != oldstate)
+        {
             switch (oldstate)
             {
                 case STATE_UPDATE:
@@ -1579,12 +1581,14 @@ int main(int argc, char *argv[])
             oldstate = state;
 
             if (currentDialog && state != STATE_ACCOUNT &&
-                    state != STATE_CHAR_CONNECT) {
+                    state != STATE_CHAR_CONNECT)
+            {
                 delete currentDialog;
                 currentDialog = NULL;
             }
 
-            switch (state) {
+            switch (state)
+            {
                 case STATE_LOADDATA:
                     logger->log("State: LOADDATA");
 
@@ -1600,6 +1604,8 @@ int main(int argc, char *argv[])
                     MonsterDB::load();
                     NPCDB::load();
                     EmoteDB::load();
+                    StatusEffect::load();
+                    Being::load(); // Hairstyles
 
                     // Load units
                     Units::loadUnits();
@@ -1610,10 +1616,13 @@ int main(int argc, char *argv[])
                 case STATE_LOGIN:
                     logger->log("State: LOGIN");
 
-                    if (!loginData.password.empty()) {
+                    if (!loginData.password.empty())
+                    {
                         loginData.registerLogin = false;
                         state = STATE_ACCOUNT;
-                    } else {
+                    }
+                    else
+                    {
                         currentDialog = new LoginDialog(&loginData);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
@@ -1639,8 +1648,7 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        int nextState = (options.skipUpdate) ?
-                            STATE_LOADDATA : STATE_UPDATE;
+                        int nextState = STATE_UPDATE;
                         currentDialog = new ServerSelectDialog(&loginData,
                                                                 nextState);
                         positionDialog(currentDialog, screenWidth,
@@ -1683,12 +1691,10 @@ int main(int argc, char *argv[])
                     delete progressBar;
                     delete progressLabel;
                     delete setup;
-                    delete setupWindow;
                     progressBar = NULL;
                     progressLabel = NULL;
                     currentDialog = NULL;
                     setup = NULL;
-                    setupWindow = NULL;
                     login_wallpaper->decRef();
                     login_wallpaper = NULL;
 
@@ -1700,18 +1706,21 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_UPDATE:
-                    // Determine which source to use for the update host
-                    if (!options.updateHost.empty())
-                        updateHost = options.updateHost;
-                    else
-                        updateHost = loginData.updateHost;
-
-                    setUpdatesDir();
-                    logger->log("State: UPDATE");
-
-                    if (options.skipUpdate) {
+                    if (options.skipUpdate)
+                    {
                         state = STATE_LOADDATA;
-                    } else {
+                    }
+                    else
+                    {
+                        // Determine which source to use for the update host
+                        if (!options.updateHost.empty())
+                            updateHost = options.updateHost;
+                        else
+                            updateHost = loginData.updateHost;
+
+                        setUpdatesDir();
+                        logger->log("State: UPDATE");
+
                         currentDialog = new UpdaterWindow(updateHost,
                                                 homeDir + "/" + updatesDir);
                         positionDialog(currentDialog, screenWidth,
@@ -1763,12 +1772,12 @@ int main(int argc, char *argv[])
         /*
          * This loop can really stress the CPU, for no reason since it's
          * just constantly redrawing the wallpaper.  Added the following
-         * usleep to limit it to 20 FPS during the login sequence
+         * usleep to limit it to 40 FPS during the login sequence
          */
-        usleep(50000);
+        usleep(25000);
     }
 
-    delete textColor;
+    delete guiPalette;
 #ifdef PACKAGE_VERSION
     delete versionLabel;
 #endif
@@ -1807,16 +1816,12 @@ void SetupListener::action(const gcn::ActionEvent &event)
     Window *window = NULL;
 
     if (event.getId() == "Setup")
-    {
         window = setupWindow;
-    }
 
     if (window)
     {
         window->setVisible(!window->isVisible());
         if (window->isVisible())
-        {
             window->requestMoveToTop();
-        }
     }
 }

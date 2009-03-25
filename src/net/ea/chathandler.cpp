@@ -60,7 +60,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
     Being *being;
     std::string chatMsg;
     std::string nick;
-    Sint16 chatMsgLength;
+    int chatMsgLength;
 
     switch (msg.getId())
     {

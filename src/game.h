@@ -83,6 +83,8 @@ class Game : public ConfigListener
         MessageHandlerPtr mPostHandler;
         MessageHandlerPtr mTradeHandler;
 
+        int mLastTarget;
+
         SDL_TimerID mLogicCounterId;
         SDL_TimerID mSecondsCounterId;
 };

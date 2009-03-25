@@ -84,7 +84,9 @@ namespace {
             npcTextDialog->setVisible(false);
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);
+#ifdef EATHENA_SUPPORT
             buySellDialog->setVisible(false);
+#endif
             current_npc = 0;
         }
     } deathListener;

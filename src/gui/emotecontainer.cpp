@@ -53,7 +53,7 @@ EmoteContainer::EmoteContainer():
     // Setup emote sprites
     for (int i = 0; i <= EmoteDB::getLast(); i++)
     {
-        mEmoteImg.push_back(player_node->getEmote(i));
+        mEmoteImg.push_back(EmoteDB::getAnimation(i));
     }
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
@@ -78,13 +78,14 @@ EmoteContainer::~EmoteContainer()
 
 void EmoteContainer::draw(gcn::Graphics *graphics)
 {
+    if (!isVisible())
+        return;
+
     int columns = getWidth() / gridWidth;
 
     // Have at least 1 column
     if (columns < 1)
-    {
         columns = 1;
-    }
 
     for (int i = 0; i < mMaxEmote ; i++)
     {

@@ -134,22 +134,32 @@ class Being : public Sprite
             NUM_SPEECH
         };
 
+        enum AttackType
+        {
+            HIT = 0x00,
+            CRITICAL = 0x0a,
+            MULTI = 0x08,
+            REFLECT = 0x04,
+            FLEE = 0x0b
+        };
+
         /**
          * Directions, to be used as bitmask values
          */
         enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
 #ifdef EATHENA_SUPPORT
-        Uint16 mX, mY;          /**< Tile coordinates */
-        Uint16 mFrame;
-        Uint16 mWalkTime;
+        Uint16 mX, mY;        /**< Tile coordinates */
+        int mFrame;
+        int mWalkTime;
 #endif
-        Uint8 mEmotion;         /**< Currently showing emotion */
-        Uint8 mEmotionTime;     /**< Time until emotion disappears */
+        int mEmotion;         /**< Currently showing emotion */
+        int mEmotionTime;     /**< Time until emotion disappears */
+        int mSpeechTime;
 
-        Uint16 mAttackSpeed;    /**< Attack speed */
-        Action mAction;         /**< Action the being is performing */
-        Uint16 mJob;            /**< Job (player job, npc, monster, creature ) */
+        int mAttackSpeed;     /**< Attack speed */
+        Action mAction;       /**< Action the being is performing */
+        Uint16 mJob;          /**< Job (player job, npc, monster, creature ) */
 
         /**
          * Constructor.
@@ -197,30 +207,28 @@ class Being : public Sprite
          * @param text The text that should appear.
          * @param time The amount of time the text should stay in milliseconds.
          */
-        void setSpeech(const std::string &text, Uint32 time = 500);
+        void setSpeech(const std::string &text, int time = 500);
 
         /**
          * Puts a damage bubble above this being.
          *
-         * @param amount The amount of damage.
+         * @param attacker the attacking being
+         * @param damage the amount of damage recieved (0 means miss)
+         * @param type the attack type
          */
-        virtual void takeDamage(int amount);
-
-        /**
-         * Puts a crit notification bubble above this being.
-         */
-        virtual void showCrit();
+        virtual void takeDamage(Being *attacker, int damage, AttackType type);
 
         /**
          * Handles an attack of another being by this being.
          *
-         * @param victim The attacked being.
-         * @param damage The amount of damage dealt (0 means miss).
+         * @param victim the victim being
+         * @param damage the amount of damage dealt (0 means miss)
+         * @param type the attack type
          */
 #ifdef TMWSERV_SUPPORT
         virtual void handleAttack();
 #else
-        virtual void handleAttack(Being *victim, int damage);
+        virtual void handleAttack(Being *victim, int damage, AttackType type);
 #endif
 
         /**
@@ -240,14 +248,12 @@ class Being : public Sprite
         /**
          * Gets the hair color for this being.
          */
-        int getHairColor() const
-        { return mHairColor; }
+        int getHairColor() const { return mHairColor; }
 
         /**
          * Gets the hair style for this being.
          */
-        int getHairStyle() const
-        { return mHairStyle; }
+        int getHairStyle() const { return mHairStyle; }
 
         /**
          * Get the number of hairstyles implemented
@@ -324,12 +330,12 @@ class Being : public Sprite
         /**
          * Gets the being id.
          */
-        Uint32 getId() const { return mId; }
+        int getId() const { return mId; }
 
         /**
          * Sets the sprite id.
          */
-        void setId(Uint32 id) { mId = id; }
+        void setId(int id) { mId = id; }
 
         /**
          * Sets the map the being is on
@@ -479,8 +485,6 @@ class Being : public Sprite
          */
         void untarget() { mUsedTargetCursor = NULL; }
 
-        AnimatedSprite* getEmote(int index) { return emotionSet[index]; }
-
         void setEmote(Uint8 emotion, Uint8 emote_time)
         {
             mEmotion = emotion;
@@ -523,14 +527,16 @@ class Being : public Sprite
         // Target cursor being used by the being
         Image *mTargetCursor;
 
-        static int getHairColorsNr();
+        static int getHairColorCount();
 
-        static int getHairStylesNr();
+        static int getHairStyleCount();
 
         static std::string getHairColor(int index);
 
         virtual AnimatedSprite* getSprite(int index) const
             { return mSprites[index]; }
+
+        static void load();
 
     protected:
         /**
@@ -578,7 +584,7 @@ class Being : public Sprite
          */
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
-        Uint32 mId;                     /**< Unique sprite id */
+        int mId;                        /**< Unique sprite id */
         Uint8 mDirection;               /**< Facing direction */
 #ifdef TMWSERV_SUPPORT
         Uint8 mSpriteDirection;         /**< Facing direction */
@@ -592,6 +598,8 @@ class Being : public Sprite
         /** Engine-related infos about weapon. */
         const ItemInfo* mEquippedWeapon;
 
+        static std::vector<std::string> hairColors;
+        static int mNumberOfHairColors;          /** Number of hair colors in use */
         static int mNumberOfHairstyles;          /** Number of hair styles in use */
 
         Path mPath;
@@ -600,12 +608,11 @@ class Being : public Sprite
         int mHairStyle;
         int mHairColor;
         Gender mGender;
-        Uint32 mSpeechTime;
-        Sint32 mPx, mPy;                /**< Pixel coordinates */
+        int mPx, mPy;                   /**< Pixel coordinates */
         Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
 
-        gcn::Color mNameColor;
+        const gcn::Color* mNameColor;
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mSpriteIDs;
@@ -641,9 +648,6 @@ class Being : public Sprite
 
         // Target cursor being used
         SimpleAnimation* mUsedTargetCursor;
-
-        static int instances;                              /**< Number of Being instances */
-        static std::vector<AnimatedSprite*> emotionSet;    /**< Emoticons used by beings */
 };
 
 #endif

@@ -124,6 +124,16 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int getCameraY() const { return (int) mPixelViewY; }
 
         /**
+         * Returns mouse x in pixels.
+         */
+        int getMouseX() const { return mMouseX; }
+
+        /**
+         * Returns mouse y in pixels.
+         */
+        int getMouseY() const { return mMouseY; }
+
+        /**
          * Changes viewpoint by relative pixel coordinates.
          */
         void scrollBy(float x, float y) { mPixelViewX += x; mPixelViewY += y; }
@@ -140,18 +150,20 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void drawPath(Graphics *graphics, const Path &path);
 
-        Map *mMap;                 /**< The current map. */
+        Map *mMap;                   /**< The current map. */
 
         int mScrollRadius;
         int mScrollLaziness;
         int mScrollCenterOffsetX;
         int mScrollCenterOffsetY;
-        float mPixelViewX;              /**< Current viewpoint in pixels. */
-        float mPixelViewY;              /**< Current viewpoint in pixels. */
+        int mMouseX;                 /**< Current mouse position in pixels. */
+        int mMouseY;                 /**< Current mouse position in pixels. */
+        float mPixelViewX;           /**< Current viewpoint in pixels. */
+        float mPixelViewY;           /**< Current viewpoint in pixels. */
         int mTileViewX;              /**< Current viewpoint in tiles. */
         int mTileViewY;              /**< Current viewpoint in tiles. */
-        bool mShowDebugPath;       /**< Show a path from player to pointer. */
-        bool mVisibleNames;        /**< Show target names. */
+        bool mShowDebugPath;         /**< Show a path from player to pointer. */
+        bool mVisibleNames;          /**< Show target names. */
 
         bool mPlayerFollowMouse;
 #ifdef TMWSERV_SUPPORT
@@ -160,11 +172,10 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mWalkTime;
 #endif
 
-        PopupMenu *mPopupMenu;     /**< Popup menu. */
-        Being *mSelectedBeing;     /**< Current selected being. */
-
+        PopupMenu *mPopupMenu;       /**< Popup menu. */
+        Being *mSelectedBeing;       /**< Current selected being. */
 };
 
-extern Viewport *viewport;                    /**< The viewport */
+extern Viewport *viewport;           /**< The viewport */
 
 #endif

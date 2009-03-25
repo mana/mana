@@ -91,11 +91,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          * Increase quantity of an item.
          */
         void increaseQuantity(int index, bool own, int quantity);
-
-        /**
-         * Set trade Button disabled
-         */
-        void setTradeButton(bool enabled);
 #endif
 
         /**
@@ -122,6 +117,12 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+        /**
+         * Closes the Trade Window, as well as telling the server that the
+         * window has been closed.
+         */
+        void close();
 
     private:
 #ifdef TMWSERV_SUPPORT
@@ -152,6 +153,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         gcn::Label *mMoneyLabel;
         gcn::Button *mTradeButton;
 #ifdef EATHENA_SUPPORT
+        gcn::Button *mAddButton;
         gcn::Button *mOkButton;
 #endif
         gcn::TextField *mMoneyField;

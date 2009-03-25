@@ -23,11 +23,10 @@
 
 #include <guichan/font.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "char_select.h"
 #include "confirm_dialog.h"
+#include "label.h"
 #include "ok_dialog.h"
 #include "playerbox.h"
 #include "textfield.h"
@@ -62,6 +61,8 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 #include "../utils/stringutils.h"
+
+#define MAX_SLOT 2
 
 // Defined in main.cpp, used here for setting the char create dialog
 extern CharServerHandler charServerHandler;
@@ -114,8 +115,8 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPreviousButton = new Button(_("Previous"), "previous", this);
     mNextButton = new Button(_("Next"), "next", this);
-    mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
-    mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
+    mNameLabel = new Label(strprintf(_("Name: %s"), ""));
+    mLevelLabel = new Label(strprintf(_("Level: %d"), 0));
 #ifdef TMWSERV_SUPPORT
     mNewCharButton = new Button(_("New"), "new", this);
     mDelCharButton = new Button(_("Delete"), "delete", this);
@@ -123,10 +124,10 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mChangePasswordButton = new Button(_("Change Password"), "change_password", this);
     mChangeEmailButton = new Button(_("Change Email Address"), "change_email", this);
 
-    mAccountNameLabel = new gcn::Label(strprintf(_("Account: %s"), mLoginData->username.c_str()));
-    mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
-    mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
-    mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
+    mAccountNameLabel = new Label(strprintf(_("Account: %s"), mLoginData->username.c_str()));
+    mNameLabel = new Label(strprintf(_("Name: %s"), ""));
+    mLevelLabel = new Label(strprintf(_("Level: %d"), 0));
+    mMoneyLabel = new Label(strprintf(_("Money: %d"), 0));
 
     // Control that shows the Player
     mPlayerBox = new PlayerBox;
@@ -161,8 +162,8 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mPlayerBox = new PlayerBox;
     mPlayerBox->setWidth(74);
 
-    mJobLevelLabel = new gcn::Label(strprintf(_("Job Level: %d"), 0));
-    mMoneyLabel = new gcn::Label(strprintf(_("Money: %s"), mMoney.c_str()));
+    mJobLevelLabel = new Label(strprintf(_("Job Level: %d"), 0));
+    mMoneyLabel = new Label(strprintf(_("Money: %s"), mMoney.c_str()));
 
     const std::string tempString = getFont()->getWidth(_("New")) <
                                    getFont()->getWidth(_("Delete")) ?
@@ -189,7 +190,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
     reflowLayout(250, 0);
 #endif
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mSelectButton->requestFocus();
     updatePlayerInfo();
@@ -252,11 +253,11 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "newdel")
     {
         // Check for a character
-        if (mCharInfo->getEntry() && n_character <= MAX_SLOT + 1)
+        if (mCharInfo->getEntry())
         {
             new CharDeleteConfirm(this);
         }
-        else
+        else if (n_character <= MAX_SLOT)
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
@@ -421,13 +422,13 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
                           rand() % numberOfHairColors);
 
     mNameField = new TextField("");
-    mNameLabel = new gcn::Label(_("Name:"));
+    mNameLabel = new Label(_("Name:"));
     mNextHairColorButton = new Button(">", "nextcolor", this);
     mPrevHairColorButton = new Button("<", "prevcolor", this);
-    mHairColorLabel = new gcn::Label(_("Hair Color:"));
+    mHairColorLabel = new Label(_("Hair Color:"));
     mNextHairStyleButton = new Button(">", "nextstyle", this);
     mPrevHairStyleButton = new Button("<", "prevstyle", this);
-    mHairStyleLabel = new gcn::Label(_("Hair Style:"));
+    mHairStyleLabel = new Label(_("Hair Style:"));
     mCreateButton = new Button(_("Create"), "create", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 #ifdef TMWSERV_SUPPORT
@@ -545,7 +546,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     reflowLayout(225, 0);
 #endif
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mNameField->requestFocus();
 }

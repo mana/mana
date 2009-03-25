@@ -19,9 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
+#include "label.h"
 #include "progressbar.h"
 #include "status.h"
 #include "windowcontainer.h"
@@ -42,28 +41,27 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 {
     setWindowName("Status");
     setCloseButton(true);
-    setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 400, 345);
+    setDefaultSize(400, 345, ImageRect::CENTER);
 
     // ----------------------
     // Status Part
     // ----------------------
 
-    mLvlLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
-    mJobLvlLabel = new gcn::Label(strprintf(_("Job: %d"), 0));
-    mGpLabel = new gcn::Label(strprintf(_("Money: %s"),
+    mLvlLabel = new Label(strprintf(_("Level: %d"), 0));
+    mJobLvlLabel = new Label(strprintf(_("Job: %d"), 0));
+    mGpLabel = new Label(strprintf(_("Money: %s"),
                 Units::formatCurrency(mCurrency).c_str()));
 
-    mHpLabel = new gcn::Label(_("HP:"));
+    mHpLabel = new Label(_("HP:"));
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
 
-    mXpLabel = new gcn::Label(_("Exp:"));
+    mXpLabel = new Label(_("Exp:"));
     mXpBar = new ProgressBar(1.0f, 80, 15, 143, 192, 211);
 
-    mMpLabel = new gcn::Label(_("MP:"));
+    mMpLabel = new Label(_("MP:"));
     mMpBar = new ProgressBar(1.0f, 80, 15, 26, 102, 230);
 
-    mJobLabel = new gcn::Label(_("Job:"));
+    mJobLabel = new Label(_("Job:"));
     mJobBar = new ProgressBar(1.0f, 80, 15, 220, 135, 203);
 
     // ----------------------
@@ -71,41 +69,41 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // ----------------------
 
     // Static Labels
-    gcn::Label *mStatsTitleLabel = new gcn::Label(_("Stats"));
-    gcn::Label *mStatsTotalLabel = new gcn::Label(_("Total"));
-    gcn::Label *mStatsCostLabel = new gcn::Label(_("Cost"));
+    gcn::Label *mStatsTitleLabel = new Label(_("Stats"));
+    gcn::Label *mStatsTotalLabel = new Label(_("Total"));
+    gcn::Label *mStatsCostLabel = new Label(_("Cost"));
     mStatsTotalLabel->setAlignment(gcn::Graphics::CENTER);
 
     // Derived Stats
-    mStatsAttackLabel = new gcn::Label(_("Attack:"));
-    mStatsDefenseLabel= new gcn::Label(_("Defense:"));
-    mStatsMagicAttackLabel = new gcn::Label(_("M.Attack:"));
-    mStatsMagicDefenseLabel = new gcn::Label(_("M.Defense:"));
+    mStatsAttackLabel = new Label(_("Attack:"));
+    mStatsDefenseLabel= new Label(_("Defense:"));
+    mStatsMagicAttackLabel = new Label(_("M.Attack:"));
+    mStatsMagicDefenseLabel = new Label(_("M.Defense:"));
     // Gettext flag for next line: xgettext:no-c-format
-    mStatsAccuracyLabel = new gcn::Label(_("% Accuracy:"));
+    mStatsAccuracyLabel = new Label(_("% Accuracy:"));
     // Gettext flag for next line: xgettext:no-c-format
-    mStatsEvadeLabel = new gcn::Label(_("% Evade:"));
+    mStatsEvadeLabel = new Label(_("% Evade:"));
     // Gettext flag for next line: xgettext:no-c-format
-    mStatsReflexLabel = new gcn::Label(_("% Reflex:"));
+    mStatsReflexLabel = new Label(_("% Reflex:"));
 
-    mStatsAttackPoints = new gcn::Label;
-    mStatsDefensePoints = new gcn::Label;
-    mStatsMagicAttackPoints = new gcn::Label;
-    mStatsMagicDefensePoints = new gcn::Label;
-    mStatsAccuracyPoints = new gcn::Label;
-    mStatsEvadePoints = new gcn::Label;
-    mStatsReflexPoints = new gcn::Label;
+    mStatsAttackPoints = new Label;
+    mStatsDefensePoints = new Label;
+    mStatsMagicAttackPoints = new Label;
+    mStatsMagicDefensePoints = new Label;
+    mStatsAccuracyPoints = new Label;
+    mStatsEvadePoints = new Label;
+    mStatsReflexPoints = new Label;
 
     // New labels
     for (int i = 0; i < 6; i++)
     {
-        mStatsLabel[i] = new gcn::Label("0");
+        mStatsLabel[i] = new Label("0");
         mStatsLabel[i]->setAlignment(gcn::Graphics::CENTER);
-        mStatsDisplayLabel[i] = new gcn::Label;
-        mPointsLabel[i] = new gcn::Label("0");
+        mStatsDisplayLabel[i] = new Label;
+        mPointsLabel[i] = new Label("0");
         mPointsLabel[i]->setAlignment(gcn::Graphics::CENTER);
     }
-    mRemainingStatsPointsLabel = new gcn::Label;
+    mRemainingStatsPointsLabel = new Label;
 
     // Set button events Id
     mStatsButton[0] = new Button("+", "STR", this);
@@ -181,39 +179,13 @@ void StatusWindow::update()
         mGpLabel->adjustSize();
     }
 
-    mHpBar->setText(toString(mPlayer->getHp()) +
-                    "/" + toString(mPlayer->getMaxHp()));
+    updateHPBar(mHpBar, true);
 
-    mMpBar->setText(toString(mPlayer->mMp) +
-                    "/" + toString(mPlayer->mMaxMp));
+    updateMPBar(mMpBar, true);
 
-    mXpBar->setText(toString(mPlayer->getXp()) +
-                    "/" + toString(mPlayer->mXpForNextLevel));
+    updateXPBar(mXpBar, false);
 
-    mJobBar->setText(toString(mPlayer->mJobXp) +
-                     "/" + toString(mPlayer->mJobXpForNextLevel));
-
-    // HP Bar coloration
-    if (mPlayer->getHp() < int(mPlayer->getMaxHp() / 3))
-    {
-        mHpBar->setColor(223, 32, 32); // Red
-    }
-    else if (mPlayer->getHp() < int((mPlayer->getMaxHp() / 3) * 2))
-    {
-        mHpBar->setColor(230, 171, 34); // Orange
-    }
-    else
-    {
-        mHpBar->setColor(0, 171, 34); // Green
-    }
-
-    mHpBar->setProgress((float) mPlayer->getHp() / (float) mPlayer->getMaxHp());
-    mMpBar->setProgress((float) mPlayer->mMp / (float) mPlayer->mMaxMp);
-
-    mXpBar->setProgress(
-            (float) mPlayer->getXp() / (float) mPlayer->mXpForNextLevel);
-    mJobBar->setProgress(
-            (float) mPlayer->mJobXp / (float) mPlayer->mJobXpForNextLevel);
+    updateJobBar(mJobBar, false);
 
     // Stats Part
     // ----------
@@ -281,6 +253,9 @@ void StatusWindow::update()
 
 void StatusWindow::draw(gcn::Graphics *g)
 {
+    if (!isVisible())
+        return;
+
     update();
 
     Window::draw(g);
@@ -292,29 +267,97 @@ void StatusWindow::action(const gcn::ActionEvent &event)
     if (event.getId().length() == 3)
     {
         if (event.getId() == "STR")
-        {
             player_node->raiseAttribute(LocalPlayer::STR);
-        }
         if (event.getId() == "AGI")
-        {
             player_node->raiseAttribute(LocalPlayer::AGI);
-        }
         if (event.getId() == "VIT")
-        {
             player_node->raiseAttribute(LocalPlayer::VIT);
-        }
         if (event.getId() == "INT")
-        {
             player_node->raiseAttribute(LocalPlayer::INT);
-        }
         if (event.getId() == "DEX")
-        {
             player_node->raiseAttribute(LocalPlayer::DEX);
-        }
         if (event.getId() == "LUK")
-        {
             player_node->raiseAttribute(LocalPlayer::LUK);
-        }
     }
 }
 
+void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
+{
+    if (showMax)
+        bar->setText(toString(player_node->getHp()) +
+                    "/" + toString(player_node->getMaxHp()));
+    else
+        bar->setText(toString(player_node->getHp()));
+
+    // HP Bar coloration
+    if (player_node->getHp() < player_node->getMaxHp() / 3)
+    {
+        bar->setColor(223, 32, 32); // Red
+    }
+    else if (player_node->getHp() < (player_node->getMaxHp() / 3) * 2)
+    {
+        bar->setColor(230, 171, 34); // Orange
+    }
+    else
+    {
+        bar->setColor(0, 171, 34); // Green
+    }
+
+    bar->setProgress((float) player_node->getHp() / (float) player_node->getMaxHp());
+}
+
+void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
+{
+    if (showMax)
+        bar->setText(toString(player_node->mMp) +
+                    "/" + toString(player_node->mMaxMp));
+    else
+        bar->setText(toString(player_node->mMp));
+
+
+    bar->setProgress((float) player_node->mMp / (float) player_node->mMaxMp);
+}
+
+void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
+{
+    if (player_node->mXpForNextLevel == 0) {
+        bar->setText(_("Max level"));
+        bar->setProgress(1.0);
+    } else {
+        if (percent)
+        {
+            float xp = (float) player_node->getXp() /
+                                player_node->mXpForNextLevel;
+            bar->setText(toString((float) ((int) (xp * 10000.0f)) / 100.0f) +
+                        "%");
+        }
+        else
+            bar->setText(toString(player_node->getXp()) +
+                        "/" + toString(player_node->mXpForNextLevel));
+
+        bar->setProgress((float) player_node->getXp() /
+                         (float) player_node->mXpForNextLevel);
+    }
+}
+
+void StatusWindow::updateJobBar(ProgressBar *bar, bool percent)
+{
+    if (player_node->mJobXpForNextLevel == 0) {
+        bar->setText(_("Max level"));
+        bar->setProgress(1.0);
+    } else {
+        if (percent)
+        {
+            float xp = (float) player_node->mJobXp /
+                                player_node->mJobXpForNextLevel;
+            bar->setText(toString((float) ((int) (xp * 10000.0f)) / 100.0f) +
+                        "%");
+        }
+        else
+            bar->setText(toString(player_node->mJobXp) +
+                                "/" + toString(player_node->mJobXpForNextLevel));
+
+        bar->setProgress((float) player_node->mJobXp /
+                            (float) player_node->mJobXpForNextLevel);
+    }
+}

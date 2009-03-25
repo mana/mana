@@ -175,6 +175,10 @@ void ItemDB::load()
         {
             if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
             {
+                std::string attackParticle = XML::getProperty(
+                    itemChild, "particle-effect", "");
+                itemInfo->setParticleEffect(attackParticle);
+
                 loadSpriteRef(itemInfo, itemChild);
             }
             else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
@@ -204,9 +208,12 @@ void ItemDB::load()
         if (param == error_value) \
             logger->log("ItemDB: Missing " #param " attribute for item %i!",id)
 
-        CHECK_PARAM(name, "");
+        if (id >= 0)
+        {
+            CHECK_PARAM(name, "");
+            CHECK_PARAM(description, "");
+        }
         CHECK_PARAM(image, "");
-        CHECK_PARAM(description, "");
         // CHECK_PARAM(effect, "");
         // CHECK_PARAM(type, 0);
         // CHECK_PARAM(weight, 0);

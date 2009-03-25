@@ -67,10 +67,10 @@ SET(SRCS
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp
     gui/widgets/tabbedarea.h
+    gui/widgets/textpreview.cpp
+    gui/widgets/textpreview.h
     gui/browserbox.cpp
     gui/browserbox.h
-    gui/buddywindow.cpp
-    gui/buddywindow.h
     gui/button.cpp
     gui/button.h
     gui/buy.cpp
@@ -91,8 +91,6 @@ SET(SRCS
     gui/chatinput.h
     gui/checkbox.cpp
     gui/checkbox.h
-    gui/color.cpp
-    gui/color.h
     gui/confirm_dialog.cpp
     gui/confirm_dialog.h
     gui/connection.cpp
@@ -132,9 +130,11 @@ SET(SRCS
     gui/itempopup.cpp
     gui/itempopup.h
     gui/itemshortcutcontainer.cpp
-    gui/itemshortcutcontainer.h\
+    gui/itemshortcutcontainer.h
     gui/item_amount.cpp
     gui/item_amount.h
+    gui/label.cpp
+    gui/label.h
     gui/linkhandler.h
     gui/listbox.cpp
     gui/listbox.h
@@ -160,12 +160,16 @@ SET(SRCS
     gui/npc_text.h
     gui/ok_dialog.cpp
     gui/ok_dialog.h
+    gui/palette.cpp
+    gui/palette.h
     gui/partywindow.h
     gui/partywindow.cpp
     gui/passwordfield.cpp
     gui/passwordfield.h
     gui/playerbox.cpp
     gui/playerbox.h
+    gui/popup.cpp
+    gui/popup.h
     gui/popupmenu.cpp
     gui/popupmenu.h
     gui/progressbar.cpp
@@ -211,12 +215,16 @@ SET(SRCS
     gui/shortcutcontainer.h
     gui/skill.cpp
     gui/skill.h
+    gui/skin.cpp
+    gui/skin.h
     gui/slider.cpp
     gui/slider.h
     gui/speechbubble.cpp
     gui/speechbubble.h
     gui/status.cpp
     gui/status.h
+    gui/storagewindow.cpp
+    gui/storagewindow.h
     gui/table.cpp
     gui/table.h
     gui/table_model.cpp
@@ -227,6 +235,7 @@ SET(SRCS
     gui/textdialog.h
     gui/textfield.cpp
     gui/textfield.h
+    gui/textrenderer.h
     gui/trade.cpp
     gui/trade.h
     gui/truetypefont.cpp
@@ -461,6 +470,8 @@ SET(SRCS
     textparticle.cpp
     textparticle.h
     tileset.h
+    units.cpp
+    units.h
     vector.cpp
     vector.h
     effectmanager.cpp

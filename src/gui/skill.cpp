@@ -19,9 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
+#include "label.h"
 #include "listbox.h"
 #include "scrollarea.h"
 #include "skill.h"
@@ -102,13 +101,13 @@ public:
                 info = &fakeSkillInfo;
 
             sprintf(tmp, "%c%s", info->modifiable? ' ' : '*', info->name.c_str());
-            gcn::Label *name_label = new gcn::Label(tmp);
+            gcn::Label *name_label = new Label(tmp);
 
             sprintf(tmp, "Lv:%i", skill->lv);
-            gcn::Label *lv_label = new gcn::Label(tmp);
+            gcn::Label *lv_label = new Label(tmp);
 
             sprintf(tmp, "Sp:%i", skill->sp);
-            gcn::Label *sp_label = new gcn::Label(tmp);
+            gcn::Label *sp_label = new Label(tmp);
 
             set(i, 0, name_label);
             set(i, 1, lv_label);
@@ -136,13 +135,13 @@ SkillDialog::SkillDialog():
 
     setWindowName("Skills");
     setCloseButton(true);
-    setDefaultSize(windowContainer->getWidth() - 260, 25, 255, 260);
+    setDefaultSize(255, 260, ImageRect::CENTER);
 
     setMinHeight(50 + mTableModel->getHeight());
     setMinWidth(200);
 
     ScrollArea *skillScrollArea = new ScrollArea(mTable);
-    mPointsLabel = new gcn::Label(strprintf(_("Skill points: %d"), 0));
+    mPointsLabel = new Label(strprintf(_("Skill points: %d"), 0));
     mIncButton = new Button(_("Up"), _("inc"), this);
     mUseButton = new Button(_("Use"), _("use"), this);
     mUseButton->setEnabled(false);
@@ -157,13 +156,13 @@ SkillDialog::SkillDialog():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    setLocationRelativeTo(getParent());
+    center();
     loadWindowState();
 }
 
 SkillDialog::~SkillDialog()
 {
-    delete mTable;
+    delete_all(mSkillList);
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)

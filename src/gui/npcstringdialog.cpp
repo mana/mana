@@ -28,15 +28,28 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#ifdef EATHENA_SUPPORT
+#include "../net/ea/protocol.h"
+#endif
+
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-extern NpcTextDialog *npcTextDialog;
-
-NpcStringDialog::NpcStringDialog():
-    Window(_("NPC Text Request"))
+#ifdef TMWSERV_SUPPORT
+NpcStringDialog::NpcStringDialog()
+#else
+NpcStringDialog::NpcStringDialog(Network *network)
+#endif
+    : Window(_("NPC Text Request"))
+#ifdef EATHENA_SUPPORT
+    , mNetwork(network)
+#endif
 {
+    setWindowName("NPCString");
     mValueField = new TextField("");
+
+    setDefaultSize(175, 75, ImageRect::CENTER);
 
     gcn::Button *okButton = new Button(_("OK"), "ok", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
@@ -46,7 +59,9 @@ NpcStringDialog::NpcStringDialog():
     place(2, 1, okButton);
     reflowLayout(175, 0);
 
-    setLocationRelativeTo(getParent());
+    center();
+    setDefaultSize();
+    loadWindowState();
 }
 
 std::string NpcStringDialog::getValue()
@@ -74,8 +89,19 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     }
 
     setVisible(false);
-    current_npc->stringInput(mValueField->getText());
+    NPC::isTalking = false;
+
+    std::string text = mValueField->getText();
     mValueField->setText("");
+
+#ifdef EATHENA_SUPPORT
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
+    outMsg.writeInt16(text.length() + 9);
+    outMsg.writeInt32(current_npc);
+    outMsg.writeString(text, text.length());
+    outMsg.writeInt8(0);
+#endif
 }
 
 bool NpcStringDialog::isInputFocused()
@@ -86,4 +112,14 @@ bool NpcStringDialog::isInputFocused()
 void NpcStringDialog::requestFocus()
 {
     mValueField->requestFocus();
+}
+
+void NpcStringDialog::setVisible(bool visible)
+{
+    if (visible) {
+        npcTextDialog->setVisible(true);
+        requestFocus();
+    }
+
+    Window::setVisible(visible);
 }

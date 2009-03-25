@@ -22,10 +22,9 @@
 #include <sstream>
 #include <string>
 
-#include <SDL_mouse.h>
-
 #include "itemlinkhandler.h"
 #include "itempopup.h"
+#include "viewport.h"
 
 #include "../resources/iteminfo.h"
 #include "../resources/itemdb.h"
@@ -33,6 +32,7 @@
 ItemLinkHandler::ItemLinkHandler()
 {
     mItemPopup = new ItemPopup;
+    mItemPopup->setOpaque(false);
 }
 
 ItemLinkHandler::~ItemLinkHandler()
@@ -49,15 +49,18 @@ void ItemLinkHandler::handleLink(const std::string &link)
     if (id > 0)
     {
         const ItemInfo &iteminfo = ItemDB::get(id);
-        int mouseX, mouseY;
 
-        SDL_GetMouseState(&mouseX, &mouseY);
-
-        mItemPopup->setItem(iteminfo);
+        if (iteminfo.getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(iteminfo);
 
         if (mItemPopup->isVisible())
+        {
             mItemPopup->setVisible(false);
+        }
         else
-            mItemPopup->view(mouseX, mouseY);
+        {
+            mItemPopup->updateColors();
+            mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
+        }
     }
 }

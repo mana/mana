@@ -28,6 +28,11 @@
 
 #include "window.h"
 
+#include "../npc.h"
+
+#ifdef EATHENA_SUPPORT
+class Network;
+#endif
 class TextBox;
 
 /**
@@ -43,7 +48,11 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
+#ifdef TMWSERV_SUPPORT
         NpcTextDialog();
+#else
+        NpcTextDialog(Network *network);
+#endif
 
         /**
          * Called when receiving actions from the widgets.
@@ -75,6 +84,23 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         void showCloseButton();
 
         /**
+         * Notifies the server that the client has performed a next action.
+         */
+        void nextDialog(int npcID = current_npc);
+
+        /**
+         * Notifies the server that the client has performed a close action.
+         */
+        void closeDialog(int npcID = current_npc);
+
+        /**
+         * Initializes window width to the last known setting. Since the dialog
+         * doesn't need any extra focus outside of what it's given in the Game
+         * class, this is all it does for now.
+         */
+        void requestFocus();
+
+        /**
          * Called when resizing the window.
          *
          * @param event The calling event
@@ -82,6 +108,9 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         void widgetResized(const gcn::Event &event);
 
     private:
+#ifdef EATHENA_SUPPORT
+        Network *mNetwork;
+#endif
         gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
         gcn::Button *mButton;
@@ -93,7 +122,9 @@ class NpcTextDialog : public Window, public gcn::ActionListener
             NPC_TEXT_STATE_NEXT,
             NPC_TEXT_STATE_CLOSE
         };
-        int mState;
+        NPCTextState mState;
 };
+
+extern NpcTextDialog *npcTextDialog;
 
 #endif // NPC_TEXT_H

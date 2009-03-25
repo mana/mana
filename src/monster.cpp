@@ -27,13 +27,15 @@
 #include "sound.h"
 #include "text.h"
 
+#include "gui/palette.h"
+
 #include "resources/monsterdb.h"
 #include "resources/monsterinfo.h"
 
 static const int NAME_X_OFFSET = 16;
 static const int NAME_Y_OFFSET = 16;
 
-Monster::Monster(Uint32 id, Uint16 job, Map *map):
+Monster::Monster(int id, Uint16 job, Map *map):
     Being(id, job, map),
     mText(0)
 {
@@ -71,7 +73,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
         }
     }
 
-    mNameColor = 0xff2020;
+    mNameColor = &guiPalette->getColor(Palette::MONSTER);
 }
 
 Monster::~Monster()
@@ -178,9 +180,9 @@ void Monster::handleAttack()
 
 #else
 
-void Monster::handleAttack(Being *victim, int damage)
+void Monster::handleAttack(Being *victim, int damage, AttackType type)
 {
-    Being::handleAttack(victim, damage);
+    Being::handleAttack(victim, damage, type);
 
     const MonsterInfo &mi = getInfo();
     sound.playSfx(mi.getSound((damage > 0) ?
@@ -189,10 +191,10 @@ void Monster::handleAttack(Being *victim, int damage)
 
 #endif
 
-void Monster::takeDamage(int amount)
+void Monster::takeDamage(Being *attacker, int amount, AttackType type)
 {
     if (amount > 0) sound.playSfx(getInfo().getSound(MONSTER_EVENT_HURT));
-    Being::takeDamage(amount);
+    Being::takeDamage(attacker, amount, type);
 }
 
 Being::TargetCursorSize Monster::getTargetCursorSize() const
@@ -219,7 +221,8 @@ void Monster::showName(bool show)
     {
         mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,
                          mPy + NAME_Y_OFFSET - getHeight(),
-                         gcn::Graphics::CENTER, gcn::Color(255, 64, 64));
+                         gcn::Graphics::CENTER,
+                         &guiPalette->getColor(Palette::MONSTER));
     }
     else
     {

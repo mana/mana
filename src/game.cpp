@@ -83,6 +83,8 @@
 #include "gui/npcpostdialog.h"
 #include "gui/partywindow.h"
 #include "gui/quitdialog.h"
+#else
+#include "gui/storagewindow.h"
 #endif
 
 #ifdef TMWSERV_SUPPORT
@@ -144,7 +146,9 @@ StatusWindow *statusWindow;
 MiniStatusWindow *miniStatusWindow;
 BuyDialog *buyDialog;
 SellDialog *sellDialog;
+#ifdef EATHENA_SUPPORT
 BuySellDialog *buySellDialog;
+#endif
 InventoryWindow *inventoryWindow;
 EmoteWindow *emoteWindow;
 NpcIntegerDialog *npcIntegerDialog;
@@ -158,8 +162,9 @@ GuildWindow *guildWindow;
 MagicDialog *magicDialog;
 NpcPostDialog *npcPostDialog;
 PartyWindow *partyWindow;
+#else
+StorageWindow *storageWindow;
 #endif
-Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 TradeWindow *tradeWindow;
@@ -189,9 +194,9 @@ namespace {
     {
         void action(const gcn::ActionEvent &event)
         {
-            if (event.getId() == "yes" || event.getId() == "ok") {
+            if (event.getId() == "yes" || event.getId() == "ok")
                 done = true;
-            }
+
 #ifdef EATHENA_SUPPORT
             exitConfirm = NULL;
 #endif
@@ -224,13 +229,9 @@ Uint32 nextSecond(Uint32 interval, void *param)
 int get_elapsed_time(int start_time)
 {
     if (start_time <= tick_time)
-    {
         return (tick_time - start_time) * 10;
-    }
     else
-    {
         return (tick_time + (MAX_TIME - start_time)) * 10;
-    }
 }
 
 /**
@@ -248,6 +249,10 @@ void createGuiWindows(Network *network)
     buyDialog = new BuyDialog;
     sellDialog = new SellDialog;
     tradeWindow = new TradeWindow;
+    npcTextDialog = new NpcTextDialog;
+    npcIntegerDialog = new NpcIntegerDialog;
+    npcListDialog = new NpcListDialog;
+    npcStringDialog = new NpcStringDialog;
     npcPostDialog = new NpcPostDialog();
     magicDialog = new MagicDialog();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
@@ -258,45 +263,57 @@ void createGuiWindows(Network *network)
     chatWindow = new ChatWindow(network);
     buyDialog = new BuyDialog(network);
     sellDialog = new SellDialog(network);
+    buySellDialog = new BuySellDialog(network);
     tradeWindow = new TradeWindow(network);
     equipmentWindow = new EquipmentWindow;
+    npcTextDialog = new NpcTextDialog(network);
+    npcIntegerDialog = new NpcIntegerDialog(network);
+    npcListDialog = new NpcListDialog(network);
+    npcStringDialog = new NpcStringDialog(network);
+    storageWindow = new StorageWindow(network);
 #endif
     menuWindow = new MenuWindow;
     statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow;
-    buySellDialog = new BuySellDialog;
     inventoryWindow = new InventoryWindow;
     emoteWindow = new EmoteWindow;
-    npcTextDialog = new NpcTextDialog;
-    npcIntegerDialog = new NpcIntegerDialog;
-    npcListDialog = new NpcListDialog;
-    npcStringDialog = new NpcStringDialog;
     skillDialog = new SkillDialog;
-    setupWindow = new Setup;
     minimap = new Minimap;
     helpWindow = new HelpWindow;
     debugWindow = new DebugWindow;
-    itemShortcutWindow = new ShortcutWindow("ItemShortcut",new ItemShortcutContainer);
-    emoteShortcutWindow = new ShortcutWindow("emoteShortcut",new EmoteShortcutContainer);
+    itemShortcutWindow = new ShortcutWindow("ItemShortcut",
+                                            new ItemShortcutContainer);
+    emoteShortcutWindow = new ShortcutWindow("emoteShortcut",
+                                             new EmoteShortcutContainer);
 
     // Set initial window visibility
     chatWindow->setVisible((bool) config.getValue(
         chatWindow->getWindowName() + "Visible", true));
     miniStatusWindow->setVisible((bool) config.getValue(
-        miniStatusWindow->getWindowName() + "Visible", true));
+        miniStatusWindow->getPopupName() + "Visible", true));
     buyDialog->setVisible(false);
     sellDialog->setVisible(false);
     minimap->setVisible((bool) config.getValue(
         minimap->getWindowName() + "Visible", true));
     tradeWindow->setVisible(false);
     menuWindow->setVisible((bool) config.getValue(
-        menuWindow->getWindowName() + "Visible", true));
+        menuWindow->getPopupName() + "Visible", true));
     itemShortcutWindow->setVisible((bool) config.getValue(
         itemShortcutWindow->getWindowName() + "Visible", true));
     emoteShortcutWindow->setVisible((bool) config.getValue(
         emoteShortcutWindow->getWindowName() + "Visible", true));
     minimap->setVisible((bool) config.getValue(
         minimap->getWindowName() + "Visible", true));
+#ifdef EATHENA_SUPPORT
+    buySellDialog->setVisible(false);
+#endif
+    npcTextDialog->setVisible(false);
+    npcIntegerDialog->setVisible(false);
+    npcListDialog->setVisible(false);
+    npcStringDialog->setVisible(false);
+#ifdef EATHENA_SUPPORT
+    storageWindow->setVisible(false);
+#endif
 
     if (config.getValue("logToChat", 0))
     {
@@ -316,7 +333,9 @@ void destroyGuiWindows()
     delete menuWindow;
     delete buyDialog;
     delete sellDialog;
+#ifdef EATHENA_SUPPORT
     delete buySellDialog;
+#endif
     delete inventoryWindow;
     delete emoteWindow;
     delete npcIntegerDialog;
@@ -331,7 +350,6 @@ void destroyGuiWindows()
     delete partyWindow;
 #endif
     delete skillDialog;
-    delete setupWindow;
     delete minimap;
     delete equipmentWindow;
     delete tradeWindow;
@@ -339,6 +357,9 @@ void destroyGuiWindows()
     delete debugWindow;
     delete itemShortcutWindow;
     delete emoteShortcutWindow;
+#ifdef EATHENA_SUPPORT
+    delete storageWindow;
+#endif
 }
 
 #ifdef TMWSERV_SUPPORT
@@ -361,6 +382,7 @@ Game::Game(Network *network):
     mNpcHandler(new NPCHandler),
     mPlayerHandler(new PlayerHandler),
     mTradeHandler(new TradeHandler),
+    mLastTarget(Being::UNKNOWN),
     mLogicCounterId(0), mSecondsCounterId(0)
 {
     done = false;
@@ -447,6 +469,8 @@ Game::Game(Network *network):
 
     engine->changeMap(map_path);
 #endif
+
+    setupWindow->setInGame(true);
 }
 
 Game::~Game()
@@ -457,10 +481,10 @@ Game::~Game()
     delete playerParty;
 #endif
 
-    delete player_node;
     destroyGuiWindows();
 
     delete beingManager;
+    delete player_node;
     delete floorItemManager;
     delete channelManager;
     delete commandHandler;
@@ -530,8 +554,11 @@ void Game::optionChanged(const std::string &name)
 {
     int fpsLimit = (int) config.getValue("fpslimit", 0);
 
-    // Calculate new minimum frame time
-    mMinFrameTime = fpsLimit ? 1000 / fpsLimit : 0;
+    // Calculate new minimum frame time. If one isn't set, use 60 FPS.
+    // (1000 / 60 is 16.66) Since the client can go well above the refresh
+    // rates for monitors now in OpenGL mode, this cutoff is done to help
+    // conserve on CPU time.
+    mMinFrameTime = fpsLimit ? 1000 / fpsLimit : 16;
 
     // Reset draw time to current time
     mDrawTime = tick_time * 10;
@@ -598,8 +625,9 @@ void Game::logic()
             if (!disconnectedDialog)
             {
                 disconnectedDialog = new OkDialog(_("Network Error"),
-                        _("The connection to the server was lost, "
-                          "the program will now quit"));
+                                                  _("The connection to the "
+                                                    "server was lost, the "
+                                                    "program will now quit"));
                 disconnectedDialog->addActionListener(&exitListener);
                 disconnectedDialog->requestMoveToTop();
             }
@@ -625,7 +653,7 @@ void Game::handleInput()
             gcn::Window *requestedWindow = NULL;
 
             if (setupWindow->isVisible() &&
-                    keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
+                keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
             {
                 keyboard.setNewKey((int) event.key.keysym.sym);
                 keyboard.callbackNewKey();
@@ -663,47 +691,41 @@ void Game::handleInput()
                 }
             }
 
-            if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT) ||
-                keyboard.isKeyActive(keyboard.KEY_OK))
-            {
-                // Input chat window
-                if (!(chatWindow->isInputFocused() ||
-                                deathNotice ||
-                                weightNotice))
+            if (!(chatWindow->isInputFocused() || deathNotice || weightNotice))
+                if (keyboard.isKeyActive(keyboard.KEY_OK))
                 {
 #ifdef TMWSERV_SUPPORT
                     // Don not focus chat input when quit dialog is active
                     if (quitDialog != NULL && quitDialog->isVisible())
                         continue;
 #else
-                    // Quit by pressing Enter if the exit confirm is there
                     if (exitConfirm &&
                         keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
                         done = true;
 #endif
                     // Close the Browser if opened
                     else if (helpWindow->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         helpWindow->setVisible(false);
                     // Close the config window, cancelling changes if opened
                     else if (setupWindow->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
                     // Submits the text and proceeds to the next dialog
                     else if (npcStringDialog->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
                     // Proceed to the next dialog option, or close the window
                     else if (npcTextDialog->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
                     // Choose the currently highlighted dialogue option
                     else if (npcListDialog->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
                     // Submits the text and proceeds to the next dialog
                     else if (npcIntegerDialog->isVisible() &&
-                             keyboard.isKeyActive(keyboard.KEY_OK))
+                                keyboard.isKeyActive(keyboard.KEY_OK))
                         npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
                     /*
                     else if (guildWindow->isVisible())
@@ -711,22 +733,12 @@ void Game::handleInput()
                         // TODO: Check if a dialog is open and close it if so
                     }
                     */
-                    else if (!(keyboard.getKeyValue(
-                                   KeyboardConfig::KEY_TOGGLE_CHAT) ==
-                               keyboard.getKeyValue(
-                                   KeyboardConfig::KEY_OK) &&
-                               (helpWindow->isVisible() ||
-                                setupWindow->isVisible() ||
-                                npcStringDialog->isVisible() ||
-                                npcTextDialog->isVisible() ||
-                                npcListDialog->isVisible() ||
-                                npcIntegerDialog->isVisible())))
-                    {
-                        chatWindow->requestChatFocus();
-                        used = true;
-                    }
                 }
-            }
+                if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                {
+                    if (chatWindow->requestChatFocus())
+                        used = true;
+                }
 
             const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
             switch (tKey)
@@ -1054,8 +1066,7 @@ void Game::handleInput()
         if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
            (joystick && joystick->buttonPressed(0)))
         {
-            Being *target = beingManager->findNearestLivingBeing(x, y, 20,
-                                                                 Being::MONSTER);
+            Being *target = NULL;
 
             bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
             // A set target has highest priority
@@ -1072,58 +1083,49 @@ void Game::handleInput()
                     default: break;
                 }
 
-                // Attack priorioty is: Monster, Player, auto target
-                target = beingManager->findBeing(targetX, targetY, Being::MONSTER);
-                if (!target)
-                    target = beingManager->findBeing(targetX, targetY, Being::PLAYER);
+                // Only auto target Monsters
+                target = beingManager->findNearestLivingBeing(targetX, targetY,
+                         20, Being::MONSTER);
             }
 
             player_node->attack(target, newTarget);
         }
 #endif
 
-        // Target the nearest player if 'q' is pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) &&
-                !keyboard.isKeyActive(keyboard.KEY_TARGET) )
-        {
-            Being *target = beingManager->findNearestLivingBeing(player_node, 20, Being::PLAYER);
-
-            player_node->setTarget(target);
-        }
-
-        // Target the nearest monster if 'a' pressed
-        if ((keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+        // Target the nearest player/monster/npc
+        if ((keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) ||
+            keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+            keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) ||
                     (joystick && joystick->buttonPressed(3))) &&
                 !keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
-            Being *target = beingManager->findNearestLivingBeing(
-                    x, y, 20, Being::MONSTER);
+            Being::Type currentTarget = Being::UNKNOWN;
+            if (keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) ||
+                    (joystick && joystick->buttonPressed(3)))
+                currentTarget = Being::MONSTER;
+            else if (keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER))
+                currentTarget = Being::PLAYER;
+            else if (keyboard.isKeyActive(keyboard.KEY_TARGET_NPC))
+                currentTarget = Being::NPC;
 
-            player_node->setTarget(target);
-        }
+            Being *target = beingManager->findNearestLivingBeing(player_node,
+                                                    20, currentTarget);
 
-        // Target the nearest npc if 'n' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_NPC) &&
-                !keyboard.isKeyActive(keyboard.KEY_TARGET) )
-        {
-            Being *target = beingManager->findNearestLivingBeing(
-                    x, y, 20, Being::NPC);
-
-            player_node->setTarget(target);
-        }
+            if (target && (target != player_node->getTarget() ||
+                    currentTarget != mLastTarget))
+            {
+                player_node->setTarget(target);
+                mLastTarget = currentTarget;
+            }
+        } else mLastTarget = Being::UNKNOWN; // Reset last target
 
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
         {
-            if (!npcTextDialog->isVisible() && !npcListDialog->isVisible())
+            if (!npcTextDialog->isVisible()   && !npcListDialog->isVisible() &&
+                !npcStringDialog->isVisible() && !npcIntegerDialog->isVisible())
             {
                 Being *target = player_node->getTarget();
-
-                if (!target)
-                {
-                    target = beingManager->findNearestLivingBeing(
-                            x, y, 20, Being::NPC);
-                }
 
                 if (target)
                 {

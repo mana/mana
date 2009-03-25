@@ -20,9 +20,12 @@
  */
 
 #include "button.h"
-#include "inttextfield.h"
 #include "item_amount.h"
+#include "label.h"
 #include "slider.h"
+#ifdef EATHENA_SUPPORT
+#include "storagewindow.h"
+#endif
 #include "trade.h"
 
 #include "widgets/layout.h"
@@ -31,46 +34,54 @@
 #include "../localplayer.h"
 
 #include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item,
     int maxRange):
     Window("", true, parent),
-    mItem(item)
+    mItem(item),
+    mMax(maxRange),
+    mUsage(usage)
 {
-    if (!maxRange)
-    {
-        maxRange = mItem->getQuantity();
-    }
+    if (!mMax)
+        mMax = mItem->getQuantity();
+
+    setCloseButton(true);
 
     // Integer field
-    mItemAmountTextField = new IntTextField(1);
-    mItemAmountTextField->setRange(1, maxRange);
-    mItemAmountTextField->setWidth(30);
-    mItemAmountTextField->setActionEventId("Dummy");
-    mItemAmountTextField->addActionListener(this);
+
+    mItemAmountLabel = new Label(strprintf("%d / %d", 1, mMax));
+    mItemAmountLabel->setAlignment(gcn::Graphics::CENTER);
 
     // Slider
-    mItemAmountSlide = new Slider(1.0, maxRange);
+    mItemAmountSlide = new Slider(1.0, mMax);
     mItemAmountSlide->setHeight(10);
     mItemAmountSlide->setActionEventId("Slide");
     mItemAmountSlide->addActionListener(this);
 
     // Buttons
     Button *minusButton = new Button("-", "Minus", this);
-    minusButton->setSize(20, 20);
     Button *plusButton = new Button("+", "Plus", this);
-    plusButton->setSize(20, 20);
-    Button *okButton = new Button(_("Ok"), "Drop", this);
+    Button *okButton = new Button(_("Ok"), "Ok", this);
     Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
+    Button *addAllButton = new Button(_("All"), "All", this);
+
+    minusButton->adjustSize();
+    minusButton->setWidth(plusButton->getWidth());
 
     // Set positions
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
+
     place(0, 0, minusButton);
-    place(1, 0, mItemAmountTextField).setPadding(2);
-    place(2, 0, plusButton);
-    place(0, 1, mItemAmountSlide, 6);
-    place(4, 2, okButton);
-    place(5, 2, cancelButton);
-    reflowLayout(250, 0);
+    place(1, 0, mItemAmountSlide, 3);
+    place(4, 0, plusButton);
+    place(5, 0, mItemAmountLabel, 2);
+    place(7, 0, addAllButton);
+    place = getPlacer(0, 1);
+    place(4, 0, cancelButton);
+    place(5, 0, okButton);
+    reflowLayout(225, 0);
 
     resetAmount();
 
@@ -78,15 +89,18 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item,
     {
         case AMOUNT_TRADE_ADD:
             setCaption(_("Select amount of items to trade."));
-            okButton->setActionEventId("AddTrade");
             break;
         case AMOUNT_ITEM_DROP:
             setCaption(_("Select amount of items to drop."));
-            okButton->setActionEventId("Drop");
+            break;
+        case AMOUNT_STORE_ADD:
+            setCaption(_("Select amount of items to store."));
+            break;
+        case AMOUNT_STORE_REMOVE:
+            setCaption(_("Select amount of items to retrieve."));
             break;
         case AMOUNT_ITEM_SPLIT:
             setCaption(_("Select amount of items to split."));
-            okButton->setActionEventId("Split");
             break;
         default:
             break;
@@ -98,22 +112,22 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item,
 
 void ItemAmountWindow::resetAmount()
 {
-    mItemAmountTextField->setValue(1);
+    mItemAmountLabel->setCaption(strprintf("%d / %d", 1, mMax));
 }
 
 void ItemAmountWindow::action(const gcn::ActionEvent &event)
 {
-    int amount = mItemAmountTextField->getValue();
+    int amount = mItemAmountSlide->getValue();
 
     if (event.getId() == "Cancel")
     {
-        scheduleDelete();
+        close();
     }
-    else if (event.getId() == "Plus")
+    else if (event.getId() == "Plus" && amount < mMax)
     {
         amount++;
     }
-    else if (event.getId() == "Minus")
+    else if (event.getId() == "Minus" && amount > 1)
     {
         amount--;
     }
@@ -121,23 +135,45 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     {
         amount = static_cast<int>(mItemAmountSlide->getValue());
     }
-    else if (event.getId() == "Drop")
+    else if (event.getId() == "Ok" || event.getId() == "All")
     {
-        player_node->dropItem(mItem, mItemAmountTextField->getValue());
-        scheduleDelete();
-    }
-    else if (event.getId() == "AddTrade")
-    {
-        tradeWindow->tradeItem(mItem, mItemAmountTextField->getValue());
-        scheduleDelete();
-    }
+        if (event.getId() == "All") 
+            amount = mMax;
+
+        switch (mUsage)
+        {
+            case AMOUNT_TRADE_ADD:
+                tradeWindow->tradeItem(mItem, amount);
+                break;
+            case AMOUNT_ITEM_DROP:
+                player_node->dropItem(mItem, amount);
+                break;
 #ifdef TMWSERV_SUPPORT
-    else if (event.getId() == "Split")
-    {
-        player_node->splitItem(mItem, mItemAmountTextField->getValue());
-        scheduleDelete();
-    }
+            case AMOUNT_ITEM_SPLIT:
+                player_node->splitItem(mItem, amount);
+                break;
+#else
+            case AMOUNT_STORE_ADD:
+                storageWindow->addStore(mItem, amount);
+                break;
+            case AMOUNT_STORE_REMOVE:
+                storageWindow->removeStore(mItem, amount);
+                break;
 #endif
-    mItemAmountTextField->setValue(amount);
+            default:
+                return;
+                break;
+        }
+
+        scheduleDelete();
+        return;
+    }
+
+    mItemAmountLabel->setCaption(strprintf("%d / %d", amount, mMax));
     mItemAmountSlide->setValue(amount);
+}
+
+void ItemAmountWindow::close()
+{
+    scheduleDelete();
 }

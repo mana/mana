@@ -32,14 +32,11 @@
 #include "../../npc.h"
 
 #include "../../gui/buy.h"
+#include "../../gui/buysell.h"
 #include "../../gui/chat.h"
 #include "../../gui/sell.h"
 
 #include "../../utils/gettext.h"
-
-extern BuyDialog *buyDialog;
-extern Window *buySellDialog;
-extern SellDialog *sellDialog;
 
 BuySellHandler::BuySellHandler()
 {
@@ -64,8 +61,8 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             buyDialog->reset();
             sellDialog->setVisible(false);
             sellDialog->reset();
+            current_npc = msg.readInt32();
             buySellDialog->setVisible(true);
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg.readInt32()));
             break;
 
         case SMSG_NPC_BUY:
@@ -77,10 +74,10 @@ void BuySellHandler::handleMessage(MessageIn &msg)
 
             for (int k = 0; k < n_items; k++)
             {
-                Sint32 value = msg.readInt32();
+                int value = msg.readInt32();
                 msg.readInt32();  // DCvalue
                 msg.readInt8();  // type
-                Sint16 itemId = msg.readInt16();
+                int itemId = msg.readInt16();
                 buyDialog->addItem(itemId, 0, value);
             }
             break;
@@ -88,33 +85,38 @@ void BuySellHandler::handleMessage(MessageIn &msg)
         case SMSG_NPC_SELL:
             msg.readInt16();  // length
             n_items = (msg.getLength() - 4) / 10;
-            if (n_items > 0) {
+            if (n_items > 0)
+            {
                 sellDialog->setMoney(player_node->getMoney());
                 sellDialog->reset();
                 sellDialog->setVisible(true);
 
                 for (int k = 0; k < n_items; k++)
                 {
-                    Sint16 index = msg.readInt16();
-                    Sint32 value = msg.readInt32();
+                    int index = msg.readInt16();
+                    int value = msg.readInt32();
                     msg.readInt32();  // OCvalue
 
                     Item *item = player_node->getInventory()->getItem(index);
-                    if (item && !(item->isEquipped())) {
+
+                    if (item && !(item->isEquipped()))
                         sellDialog->addItem(item, value);
-                    }
                 }
             }
-            else {
+            else
+            {
                 chatWindow->chatLog(_("Nothing to sell"), BY_SERVER);
-                if (current_npc) current_npc->handleDeath();
+                current_npc = 0;
             }
             break;
 
         case SMSG_NPC_BUY_RESPONSE:
-            if (msg.readInt8() == 0) {
+            if (msg.readInt8() == 0)
+            {
                 chatWindow->chatLog(_("Thanks for buying"), BY_SERVER);
-            } else {
+            }
+            else
+            {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
                 buyDialog->setMoney(player_node->getMoney());
@@ -123,11 +125,11 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_NPC_SELL_RESPONSE:
-            if (msg.readInt8() == 0) {
+            if (msg.readInt8() == 0)
                 chatWindow->chatLog(_("Thanks for selling"), BY_SERVER);
-            } else {
+            else
                 chatWindow->chatLog(_("Unable to sell"), BY_SERVER);
-            }
+
             break;
     }
 }

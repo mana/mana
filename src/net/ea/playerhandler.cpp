@@ -30,13 +30,17 @@
 #include "../../units.h"
 
 #include "../../gui/buy.h"
+#include "../../gui/buysell.h"
 #include "../../gui/chat.h"
 #include "../../gui/gui.h"
-#include "../../gui/npclistdialog.h"
 #include "../../gui/npc_text.h"
+#include "../../gui/npcintegerdialog.h"
+#include "../../gui/npclistdialog.h"
+#include "../../gui/npcstringdialog.h"
 #include "../../gui/ok_dialog.h"
 #include "../../gui/sell.h"
 #include "../../gui/skill.h"
+#include "../../gui/storagewindow.h"
 #include "../../gui/viewport.h"
 
 #include "../../utils/stringutils.h"
@@ -45,12 +49,6 @@
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
-
-extern NpcListDialog *npcListDialog;
-extern NpcTextDialog *npcTextDialog;
-extern BuyDialog *buyDialog;
-extern SellDialog *sellDialog;
-extern Window *buySellDialog;
 
 // Max. distance we are willing to scroll after a teleport;
 // everything beyond will reset the port hard.
@@ -81,12 +79,19 @@ namespace {
         {
             player_node->revive();
             deathNotice = NULL;
+            npcIntegerDialog->reset();
+            npcIntegerDialog->setVisible(false);
+            npcListDialog->reset();
             npcListDialog->setVisible(false);
+            npcStringDialog->setValue("");
+            npcStringDialog->setVisible(false);
+            npcTextDialog->clearText();
             npcTextDialog->setVisible(false);
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);
             buySellDialog->setVisible(false);
-            if (current_npc) current_npc->handleDeath();
+
+            if (storageWindow->isVisible()) storageWindow->close();
         }
     } deathListener;
 }
@@ -140,8 +145,6 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 // Switch the actual map, deleting the previous one if necessary
                 engine->changeMap(mapPath);
 
-                if (current_npc) current_npc->handleDeath();
-
                 float scrollOffsetX = 0.0f;
                 float scrollOffsetY = 0.0f;
 
@@ -160,8 +163,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 player_node->mY = y;
 
                 logger->log("Adjust scrolling by %d:%d",
-                        (int)scrollOffsetX,
-                        (int)scrollOffsetY);
+                        (int) scrollOffsetX,
+                        (int) scrollOffsetY);
 
                 viewport->scrollBy(scrollOffsetX, scrollOffsetY);
             }
@@ -169,7 +172,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
-                Sint16 type = msg.readInt16();
+                int type = msg.readInt16();
                 Uint32 value = msg.readInt32();
 
                 switch (type)
@@ -297,10 +300,10 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
         case SMSG_PLAYER_STAT_UPDATE_3:
             {
-                Sint32 type = msg.readInt32();
-                Sint32 base = msg.readInt32();
-                Sint32 bonus = msg.readInt32();
-                Sint32 total = base + bonus;
+                int type = msg.readInt32();
+                int base = msg.readInt32();
+                int bonus = msg.readInt32();
+                int total = base + bonus;
 
                 switch (type) {
                     case 0x000d: player_node->mAttr[LocalPlayer::STR] = total;
@@ -321,9 +324,9 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
         case SMSG_PLAYER_STAT_UPDATE_4:
             {
-                Sint16 type = msg.readInt16();
-                Sint8 fail = msg.readInt8();
-                Sint8 value = msg.readInt8();
+                int type = msg.readInt16();
+                int fail = msg.readInt8();
+                int value = msg.readInt8();
 
                 if (fail != 1)
                     break;
@@ -400,7 +403,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
         case SMSG_PLAYER_ARROW_MESSAGE:
             {
-                Sint16 type = msg.readInt16();
+                int type = msg.readInt16();
 
                 switch (type) {
                     case 0:

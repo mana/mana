@@ -23,23 +23,44 @@
 #ifndef SPEECHBUBBLE_H
 #define SPEECHBUBBLE_H
 
-#include "window.h"
+#include "palette.h"
+#include "popup.h"
 
 class ScrollArea;
 class TextBox;
 
-class SpeechBubble : public Window
+class SpeechBubble : public Popup
 {
     public:
+        /**
+         * Constructor. Initializes the speech bubble.
+         */
         SpeechBubble();
 
+        /**
+         * Sets the name displayed for the speech bubble, and in what color.
+         */
         void setCaption(const std::string &name,
-                        const gcn::Color &color = 0x000000);
-        void setText(std::string mText, bool showName = true);
+                        const gcn::Color *color =
+                        &guiPalette->getColor(Palette::TEXT));
+
+        /**
+         * Sets the text to be displayed.
+         */
+        void setText(std::string text, bool showName = true);
+
+        /**
+         * Sets the location in which the speech bubble will be displayed.
+         */
         void setLocation(int x, int y);
+
+        /**
+         * Gets the number of rows the speech bubble has.
+         */
         unsigned int getNumRows();
 
     private:
+        std::string mText;
         gcn::Label *mCaption;
         TextBox *mSpeechBox;
         ScrollArea *mSpeechArea;

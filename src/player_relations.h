@@ -94,6 +94,7 @@ class PlayerRelationsManager
 {
 public:
     PlayerRelationsManager();
+    ~PlayerRelationsManager();
 
     /**
      * Initialise player relations manager (load config file etc.)
@@ -142,7 +143,6 @@ public:
      */
     void removePlayer(const std::string &name);
 
-
     /**
      * Retrieves the default permissions.
      */
@@ -152,8 +152,6 @@ public:
      * Sets the default permissions.
      */
     void setDefault(unsigned int permissions);
-
-
 
     /**
      * Retrieves all known player ignore strategies.
@@ -232,6 +230,7 @@ private:
     PlayerIgnoreStrategy *mIgnoreStrategy;
     std::map<std::string, PlayerRelation *> mRelations;
     std::list<PlayerRelationsListener *> mListeners;
+    std::vector<PlayerIgnoreStrategy *> mIgnoreStrategies;
 };
 
 

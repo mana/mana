@@ -40,6 +40,8 @@ class BeingManager
         BeingManager(Network *network);
 #endif
 
+        ~BeingManager();
+
         /**
          * Sets the map on which beings are created
          */
@@ -56,7 +58,7 @@ class BeingManager
 #ifdef TMWSERV_SUPPORT
         Being *createBeing(int id, int type, int subtype);
 #else
-        Being *createBeing(Uint32 id, Uint16 job);
+        Being *createBeing(int id, Uint16 job);
 #endif
 
         /**
@@ -67,13 +69,13 @@ class BeingManager
         /**
          * Returns a specific id Being.
          */
-        Being* findBeing(Uint32 id);
+        Being *findBeing(int id);
 
         /**
          * Returns a being at specific coordinates.
          */
-        Being* findBeing(Uint16 x, Uint16 y, Being::Type type = Being::UNKNOWN);
-        Being* findBeingByPixel(Uint16 x, Uint16 y);
+        Being *findBeing(int x, int y, Being::Type type = Being::UNKNOWN);
+        Being *findBeingByPixel(int x, int y);
 
         /**
          * Returns a being nearest to specific coordinates.
@@ -84,27 +86,35 @@ class BeingManager
          *                no being is returned.
          * @param type    The type of being to look for.
          */
-        Being* findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
+        Being *findNearestLivingBeing(int x, int y, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 
-        /**
-         * Finds a being by name and (optionally) by type.
-         */
-        Being* findBeingByName(std::string name, Being::Type type = Being::UNKNOWN);
+       /**
+        * Finds a being by name and (optionally) by type.
+        */
+        Being *findBeingByName(std::string name, Being::Type type = Being::UNKNOWN);
 
-        /**
-         * Returns a being nearest to another being.
-         *
-         * \param maxdist maximal distance. If minimal distance is larger,
-         *                no being is returned
-         */
-        Being* findNearestLivingBeing(Being *aroundBeing, int maxdist,
+       /**
+        * Returns a being nearest to another being.
+        *
+        * \param maxdist maximal distance. If minimal distance is larger,
+        *                no being is returned
+        */
+        Being *findNearestLivingBeing(Being *aroundBeing, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
 
         /**
          * Returns the whole list of beings
          */
         Beings& getAll();
+
+        /**
+         * Returns true if the given being is in the manager's list, false
+         * otherwise.
+         *
+         * \param being the being to search for
+         */
+        bool hasBeing(Being *being);
 
         /**
          * Logic.

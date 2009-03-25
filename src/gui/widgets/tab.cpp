@@ -24,6 +24,8 @@
 #include "tab.h"
 #include "tabbedarea.h"
 
+#include "../palette.h"
+
 #include "../../configuration.h"
 #include "../../graphics.h"
 
@@ -35,7 +37,7 @@
 int Tab::mInstances = 0;
 float Tab::mAlpha = config.getValue("guialpha", 0.8);
 
-enum{
+enum {
     TAB_STANDARD,    // 0
     TAB_HIGHLIGHTED, // 1
     TAB_SELECTED,     // 2
@@ -94,8 +96,10 @@ void Tab::init()
         {
             tab[mode] = resman->getImage(data[mode].file);
             a = 0;
-            for (y = 0; y < 3; y++) {
-                for (x = 0; x < 3; x++) {
+            for (y = 0; y < 3; y++)
+            {
+                for (x = 0; x < 3; x++)
+                {
                     tabImg[mode].grid[a] = tab[mode]->getSubImage(
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,
@@ -121,13 +125,17 @@ void Tab::draw(gcn::Graphics *graphics)
         {
             mode = TAB_SELECTED;
             // if tab is selected, it doesnt need to highlight activity
-            mLabel->setForegroundColor(gcn::Color(0, 0, 0));
+            mLabel->setForegroundColor(guiPalette->getColor(Palette::TEXT));
             mHighlighted = false;
         }
         else if (mHighlighted)
         {
             mode = TAB_HIGHLIGHTED;
-            mLabel->setForegroundColor(gcn::Color(255, 0, 0));
+            mLabel->setForegroundColor(guiPalette->getColor(Palette::TAB_HIGHLIGHT));
+        }
+        else
+        {
+            mLabel->setForegroundColor(guiPalette->getColor(Palette::TEXT));
         }
     }
 

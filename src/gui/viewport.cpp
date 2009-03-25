@@ -44,6 +44,8 @@ extern volatile int tick_time;
 
 Viewport::Viewport():
     mMap(0),
+    mMouseX(0),
+    mMouseY(0),
     mPixelViewX(0.0f),
     mPixelViewY(0.0f),
     mTileViewX(0),
@@ -132,19 +134,23 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     {
         if (player_x > mPixelViewX + mScrollRadius)
         {
-            mPixelViewX += (player_x - mPixelViewX - mScrollRadius) / mScrollLaziness;
+            mPixelViewX += (player_x - mPixelViewX - mScrollRadius) /
+                            mScrollLaziness;
         }
         if (player_x < mPixelViewX - mScrollRadius)
         {
-            mPixelViewX += (player_x - mPixelViewX + mScrollRadius) / mScrollLaziness;
+            mPixelViewX += (player_x - mPixelViewX + mScrollRadius) /
+                            mScrollLaziness;
         }
         if (player_y > mPixelViewY + mScrollRadius)
         {
-            mPixelViewY += (player_y - mPixelViewY - mScrollRadius) / mScrollLaziness;
+            mPixelViewY += (player_y - mPixelViewY - mScrollRadius) /
+                            mScrollLaziness;
         }
         if (player_y < mPixelViewY - mScrollRadius)
         {
-            mPixelViewY += (player_y - mPixelViewY + mScrollRadius) / mScrollLaziness;
+            mPixelViewY += (player_y - mPixelViewY + mScrollRadius) /
+                            mScrollLaziness;
         }
         lastTick++;
     }
@@ -167,18 +173,14 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         mMap->getHeight() * mMap->getTileHeight() - graphics->getHeight();
     if (mMap)
     {
-        if (mPixelViewX < 0) {
+        if (mPixelViewX < 0)
             mPixelViewX = 0;
-        }
-        if (mPixelViewY < 0) {
+        if (mPixelViewY < 0)
             mPixelViewY = 0;
-        }
-        if (mPixelViewX > viewXmax) {
+        if (mPixelViewX > viewXmax)
             mPixelViewX = viewXmax;
-        }
-        if (mPixelViewY > viewYmax) {
+        if (mPixelViewY > viewYmax)
             mPixelViewY = viewYmax;
-        }
     }
 
     mTileViewX = (int) (mPixelViewX + 16) / 32;
@@ -205,7 +207,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         player_node->setName(player_node->getName());
     }
 
-
     // Draw text
     if (textManager)
     {
@@ -216,8 +217,8 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
-        (*i)->drawSpeech(-(int) mPixelViewX, -(int) mPixelViewY);
-        (*i)->drawEmotion(graphics, -(int) mPixelViewX, -(int) mPixelViewY);
+        (*i)->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
+        (*i)->drawEmotion(graphics, (int) mPixelViewX, (int) mPixelViewY);
     }
 
     if (miniStatusWindow)
@@ -234,21 +235,20 @@ void Viewport::logic()
     if (!mMap || !player_node)
         return;
 
-    int mouseX, mouseY;
-    Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
+    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
 
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
 #ifdef TMWSERV_SUPPORT
             get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
     {
             mLocalWalkTime = tick_time;
-            player_node->setDestination(mouseX + (int) mPixelViewX,
-                                        mouseY + (int) mPixelViewY);
+            player_node->setDestination(mMouseX + (int) mPixelViewX,
+                                        mMouseY + (int) mPixelViewY);
 #else
             mWalkTime != player_node->mWalkTime)
     {
-        player_node->setDestination(mouseX / 32 + mTileViewX,
-                                    mouseY / 32 + mTileViewY);
+        player_node->setDestination(mMouseX / 32 + mTileViewX,
+                                    mMouseY / 32 + mTileViewY);
         mWalkTime = player_node->mWalkTime;
 #endif
     }
@@ -257,11 +257,10 @@ void Viewport::logic()
 void Viewport::drawDebugPath(Graphics *graphics)
 {
     // Get the current mouse position
-    int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
+    SDL_GetMouseState(&mMouseX, &mMouseY);
 
-    const int mouseTileX = (mouseX + (int) mPixelViewX) / 32;
-    const int mouseTileY = (mouseY + (int) mPixelViewY) / 32;
+    const int mouseTileX = (mMouseX + (int) mPixelViewX) / 32;
+    const int mouseTileY = (mMouseY + (int) mPixelViewY) / 32;
     const Vector &playerPos = player_node->getPosition();
 
     Path debugPath = mMap->findPath(
@@ -353,10 +352,12 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                     if (being->mAction == Being::DEAD)
                         break;
 
-                    if (player_node->withinAttackRange(being) || keyboard.isKeyActive(keyboard.KEY_ATTACK))
+                    if (player_node->withinAttackRange(being) ||
+                        keyboard.isKeyActive(keyboard.KEY_ATTACK))
                     {
                         player_node->setGotoTarget(being);
-                        player_node->attack(being, !keyboard.isKeyActive(keyboard.KEY_TARGET));
+                        player_node->attack(being,
+                            !keyboard.isKeyActive(keyboard.KEY_TARGET));
                     }
                     else
                     {
@@ -403,9 +404,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                 20, Being::MONSTER);
 
         if (target)
-        {
-            player_node->setTarget(target);
-        }
+             player_node->setTarget(target);
     }
 }
 

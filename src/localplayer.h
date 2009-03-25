@@ -27,16 +27,6 @@
 
 #include "player.h"
 
-#ifdef EATHENA_SUPPORT
-// TODO move into some sane place...
-#define MAX_SLOT 2
-
-#define INVENTORY_SIZE 102
-#define STORAGE_SIZE 301
-#else
-#define INVENTORY_SIZE 50
-#endif
-
 class Equipment;
 class FloorItem;
 class ImageSet;
@@ -300,10 +290,11 @@ class LocalPlayer : public Player
          * displayed as soon as the player attacks, not when the server says
          * the player does.
          *
-         * @param victim The attacked being.
-         * @param damage The amount of damage dealt (0 means miss).
+         * @param victim the victim being
+         * @param damage the amount of damage dealt (0 means miss)
+         * @param type the attack type
          */
-        virtual void handleAttack(Being *victim, int damage) {}
+        virtual void handleAttack(Being *victim, int damage, AttackType type) {}
         virtual void handleAttack() {}
 
         /**
@@ -374,12 +365,17 @@ class LocalPlayer : public Player
 
         void revive();
 
+        /**
+         * Shows item pickup effect if the player is on a map.
+         */
+        void pickedUp(std::string item);
+
 #ifdef EATHENA_SUPPORT
         /**
          * Accessors for mInStorage
          */
         bool getInStorage() { return mInStorage; }
-        void setInStorage(bool inStorage) { mInStorage = inStorage; }
+        void setInStorage(bool inStorage);
 
         /**
          * Sets the amount of XP. Shows XP gaining effect if the player is on
@@ -404,8 +400,8 @@ class LocalPlayer : public Player
         Uint8 mAttr[6];
         Uint8 mAttrUp[6];
 
-        Sint16 ATK, MATK, DEF, MDEF, HIT, FLEE;
-        Sint16 ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
+        int ATK, MATK, DEF, MDEF, HIT, FLEE;
+        int ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
 
         Uint16 mStatPoint, mSkillPoint;
         Uint16 mStatsPointsToAttribute;

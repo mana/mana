@@ -23,7 +23,7 @@
 #include <guichan/graphics.hpp>
 #include <guichan/key.hpp>
 
-#include "color.h"
+#include "palette.h"
 #include "table.h"
 
 #include "../configuration.h"
@@ -98,6 +98,7 @@ GuiTable::GuiTable(TableModel *initial_model, gcn::Color background,
 
 GuiTable::~GuiTable()
 {
+    uninstallActionListeners();
     delete mModel;
 }
 
@@ -264,7 +265,7 @@ void GuiTable::installActionListeners()
 // -- widget ops
 void GuiTable::draw(gcn::Graphics* graphics)
 {
-    if (!mModel)
+    if (!mModel || !isVisible())
         return;
 
     if (config.getValue("guialpha", 0.8) != mAlpha)
@@ -272,11 +273,8 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
     if (mOpaque)
     {
-        const int red = getBackgroundColor().r;
-        const int green = getBackgroundColor().g;
-        const int blue = getBackgroundColor().b;
-        const int alpha = (int)(mAlpha * 255.0f);
-        graphics->setColor(gcn::Color(red, green, blue, alpha));
+        graphics->setColor(guiPalette->getColor(Palette::BACKGROUND,
+                (int)(mAlpha * 255.0f)));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
 
@@ -321,18 +319,19 @@ void GuiTable::draw(gcn::Graphics* graphics)
 
                 widget->setDimension(bounds);
 
-                if (!mLinewiseMode && c == mSelectedColumn && r == mSelectedRow)
-                {
-                    bool valid;
-                    const int red =
-                        (textColor->getColor('H', valid) >> 16) & 0xFF;
-                    const int green =
-                        (textColor->getColor('H', valid) >> 8) & 0xFF;
-                    const int blue = textColor->getColor('H', valid) & 0xFF;
-                    const int alpha = (int)(mAlpha * 127.0f);
+                graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
+                                                       (int)(mAlpha * 255.0f)));
 
-                    graphics->setColor(gcn::Color(red, green, blue, alpha));
-                    graphics->fillRectangle(bounds);
+                if (mLinewiseMode && r == mSelectedRow && c == 0)
+                {
+                    graphics->fillRectangle(gcn::Rectangle(0, y_offset,
+                                                           getWidth(), height));
+                }
+                else if (!mLinewiseMode &&
+                          c == mSelectedColumn && r == mSelectedRow)
+                {
+                    graphics->fillRectangle(gcn::Rectangle(x_offset, y_offset,
+                                                           width, height));
                 }
 
                 graphics->pushClipArea(bounds);
@@ -341,21 +340,6 @@ void GuiTable::draw(gcn::Graphics* graphics)
             }
 
             x_offset += width;
-        }
-
-        if (mLinewiseMode && r == mSelectedRow)
-        {
-            bool valid;
-            const int red =
-                (textColor->getColor('H', valid) >> 16) & 0xFF;
-            const int green =
-                (textColor->getColor('H', valid) >> 8) & 0xFF;
-            const int blue = textColor->getColor('H', valid) & 0xFF;
-            const int alpha = (int)(mAlpha * 127.0f);
-
-            graphics->setColor(gcn::Color(red, green, blue, alpha));
-            graphics->fillRectangle(gcn::Rectangle(0, y_offset,
-                                                   x_offset, height));
         }
 
         y_offset += height;
@@ -401,25 +385,21 @@ void GuiTable::keyPressed(gcn::KeyEvent& keyEvent)
     else if (key.getValue() == gcn::Key::UP)
     {
         setSelectedRow(mSelectedRow - 1);
-
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::DOWN)
     {
         setSelectedRow(mSelectedRow + 1);
-
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::LEFT)
     {
         setSelectedColumn(mSelectedColumn - 1);
-
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::RIGHT)
     {
         setSelectedColumn(mSelectedColumn + 1);
-
         keyEvent.consume();
     }
     else if (key.getValue() == gcn::Key::HOME)
@@ -459,7 +439,7 @@ void GuiTable::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
     if (isFocused())
     {
-        if (getSelectedRow() >= 0 )
+        if (getSelectedRow() > 0 || (getSelectedRow() == 0 && mWrappingEnabled))
         {
             setSelectedRow(getSelectedRow() - 1);
         }

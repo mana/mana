@@ -44,8 +44,6 @@
 
 #include "utils/stringutils.h"
 
-char itemCurrenyQ[10] = "0";
-
 #ifdef TMWSERV_SUPPORT
 Engine::Engine():
     mCurrentMap(NULL)

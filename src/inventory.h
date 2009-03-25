@@ -24,13 +24,20 @@
 
 class Item;
 
+#ifdef EATHENA_SUPPORT
+#define INVENTORY_SIZE 102
+#define STORAGE_SIZE 301
+#else
+#define INVENTORY_SIZE 50
+#endif
+
 class Inventory
 {
     public:
         /**
          * Constructor.
          */
-        Inventory(int size);
+        Inventory(int size, int offset = 0);
 
         /**
          * Destructor.
@@ -100,10 +107,16 @@ class Inventory
          */
         int getLastUsedSlot() const;
 
+        /**
+         * Returns the number of slots available in the inventory.
+         */
+        int getInventorySize() const;
+
         static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
     protected:
         Item **mItems;  /**< The holder of items */
         int mSize;      /**< The max number of inventory items */
+        int mOffset;    /**< Offset used by the inventory */
 };
 
 #endif

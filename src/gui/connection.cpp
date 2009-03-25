@@ -19,10 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "connection.h"
+#include "label.h"
 #include "progressbar.h"
 
 #include "../main.h"
@@ -37,7 +36,7 @@ ConnectionDialog::ConnectionDialog(int previousState):
 
     Button *cancelButton = new Button(_("Cancel"), "cancelButton", this);
     mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
-    gcn::Label *label = new gcn::Label(_("Connecting..."));
+    gcn::Label *label = new Label(_("Connecting..."));
 
     cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
     mProgressBar->setPosition(5, cancelButton->getY() - 25);
@@ -47,7 +46,7 @@ ConnectionDialog::ConnectionDialog(int previousState):
     add(cancelButton);
     add(mProgressBar);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
 }
 

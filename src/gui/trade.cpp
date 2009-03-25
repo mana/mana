@@ -22,13 +22,13 @@
 #include <sstream>
 
 #include <guichan/font.hpp>
-#include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "chat.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
+#include "label.h"
 #include "scrollarea.h"
 #include "textfield.h"
 #include "trade.h"
@@ -59,20 +59,29 @@ TradeWindow::TradeWindow(Network *network):
     Window(_("Trade: You")),
 #ifdef EATHENA_SUPPORT
     mNetwork(network),
-#endif
+    mMyInventory(new Inventory(INVENTORY_SIZE, 2)),
+    mPartnerInventory(new Inventory(INVENTORY_SIZE, 2))
+#else
     mMyInventory(new Inventory(INVENTORY_SIZE)),
-    mPartnerInventory(new Inventory(INVENTORY_SIZE))
-#ifdef TMWSERV_SUPPORT
-    , mStatus(PREPARING)
+    mPartnerInventory(new Inventory(INVENTORY_SIZE)),
+    mStatus(PREPARING)
 #endif
 {
     setWindowName("Trade");
     setResizable(true);
-    setDefaultSize(115, 197, 332, 209);
+    setCloseButton(true);
+    setDefaultSize(342, 209, ImageRect::CENTER);
+
+    setMinWidth(342);
+    setMinHeight(209);
+
+    std::string longestName = getFont()->getWidth(_("OK")) >
+                                   getFont()->getWidth(_("Trade")) ?
+                                   _("OK") : _("Trade");
 
     Button *mAddButton = new Button(_("Add"), "add", this);
 #ifdef EATHENA_SUPPORT
-    mOkButton = new Button(_("Ok"), "ok", this);
+    mOkButton = new Button(longestName, "ok", this);
 #endif
     Button *mCancelButton = new Button(_("Cancel"), "cancel", this);
     mTradeButton = new Button(_("Propose trade"), "trade", this);
@@ -86,6 +95,7 @@ TradeWindow::TradeWindow(Network *network):
     mMyItemContainer = new ItemContainer(mMyInventory.get(), 4, 3, 2);
 #endif
     mMyItemContainer->addSelectionListener(this);
+
     ScrollArea *mMyScroll = new ScrollArea(mMyItemContainer);
 
 #ifdef TMWSERV_SUPPORT
@@ -94,10 +104,12 @@ TradeWindow::TradeWindow(Network *network):
     mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 4, 3, 2);
 #endif
     mPartnerItemContainer->addSelectionListener(this);
+
     ScrollArea *mPartnerScroll = new ScrollArea(mPartnerItemContainer);
 
-    mMoneyLabel = new gcn::Label(strprintf(_("You get %d GP."), 0));
-    gcn::Label *mMoneyLabel2 = new gcn::Label(_("You give:"));
+    mMoneyLabel = new Label(strprintf(_("You get %s."), ""));
+    gcn::Label *mMoneyLabel2 = new Label(_("You give:"));
+
     mMoneyField = new TextField;
     mMoneyField->setWidth(40);
     Button *mMoneyChange = new Button(_("Change"), "money", this);
@@ -114,15 +126,20 @@ TradeWindow::TradeWindow(Network *network):
     place(0, 0, mAddButton);
 #ifdef EATHENA_SUPPORT
     place(1, 0, mOkButton);
-#endif
+#else
     place(2, 0, mTradeButton);
     place(3, 0, mCancelButton);
+#endif
     Layout &layout = getLayout();
     layout.extend(0, 2, 2, 1);
     layout.setRowHeight(1, Layout::AUTO_SET);
     layout.setRowHeight(2, 0);
     layout.setColWidth(0, Layout::AUTO_SET);
     layout.setColWidth(1, Layout::AUTO_SET);
+
+#ifdef EATHENA_SUPPORT
+    mOkButton->setCaption(_("OK"));
+#endif
 
     loadWindowState();
 }
@@ -184,7 +201,8 @@ void TradeWindow::reset()
     mMyInventory->clear();
     mPartnerInventory->clear();
 #ifdef EATHENA_SUPPORT
-    mTradeButton->setEnabled(false);
+    mOkButton->setCaption(_("OK"));
+    mOkButton->setActionEventId("ok");
     mOkButton->setEnabled(true);
     mOkOther = false;
     mOkMe = false;
@@ -206,11 +224,6 @@ void TradeWindow::receivedOk()
 
 #else
 
-void TradeWindow::setTradeButton(bool enabled)
-{
-    mTradeButton->setEnabled(enabled);
-}
-
 void TradeWindow::receivedOk(bool own)
 {
     if (own)
@@ -218,13 +231,8 @@ void TradeWindow::receivedOk(bool own)
         mOkMe = true;
         if (mOkOther)
         {
-            mTradeButton->setEnabled(true);
-            mOkButton->setEnabled(false);
-        }
-        else
-        {
-            mTradeButton->setEnabled(false);
-            mOkButton->setEnabled(false);
+            mOkButton->setCaption(_("Trade"));
+            mOkButton->setActionEventId("trade");
         }
     }
     else
@@ -232,13 +240,8 @@ void TradeWindow::receivedOk(bool own)
         mOkOther = true;
         if (mOkMe)
         {
-            mTradeButton->setEnabled(true);
-            mOkButton->setEnabled(false);
-        }
-        else
-        {
-            mTradeButton->setEnabled(false);
-            mOkButton->setEnabled(true);
+            mOkButton->setCaption(_("Trade"));
+            mOkButton->setActionEventId("trade");
         }
     }
 }
@@ -252,6 +255,10 @@ void TradeWindow::tradeItem(Item *item, int quantity)
     addItem(item->getId(), true, quantity);
     item->increaseQuantity(-quantity);
 #else
+    // TODO: Our newer version of eAthena doesn't register this following
+    //       function. Detect the actual server version, and re-enable this
+    //       for that version only.
+    //addItem(item->getId(), true, quantity, item->isEquipment());
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(item->getInvIndex());
@@ -291,15 +298,19 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "add")
     {
+        if (!inventoryWindow->isVisible()) return;
+
         if (!item)
             return;
 
         if (mMyInventory->getFreeSlot() < 1)
             return;
 
-        if (mMyInventory->contains(item)) {
-            chatWindow->chatLog("Failed adding item. You can not "
-                    "overlap one kind of item on the window.", BY_SERVER);
+        if (mMyInventory->contains(item))
+        {
+            chatWindow->chatLog(_("Failed adding item. You can not "
+                                  "overlap one kind of item on the window."),
+                                  BY_SERVER);
             return;
         }
 
@@ -370,5 +381,15 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         mMoneyField->setText(strprintf("%d", v));
         setStatus(PREPARING);
     }
+#endif
+}
+
+void TradeWindow::close()
+{
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::acceptTrade(false);
+#else
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
 #endif
 }

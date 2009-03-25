@@ -19,6 +19,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/widgets/tab.h \
 	      gui/widgets/tabbedarea.cpp \
 	      gui/widgets/tabbedarea.h \
+	      gui/widgets/textpreview.cpp \
+	      gui/widgets/textpreview.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/button.cpp \
@@ -35,8 +37,6 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/chatinput.h \
 	      gui/checkbox.cpp \
 	      gui/checkbox.h \
-	      gui/color.cpp \
-	      gui/color.h \
 	      gui/confirm_dialog.cpp \
 	      gui/confirm_dialog.h \
 	      gui/debugwindow.cpp \
@@ -73,6 +73,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/itemshortcutcontainer.h \
 	      gui/item_amount.cpp \
 	      gui/item_amount.h \
+	      gui/label.cpp \
+	      gui/label.h \
 	      gui/linkhandler.h \
 	      gui/listbox.cpp \
 	      gui/listbox.h \
@@ -94,10 +96,14 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
 	      gui/ok_dialog.h \
+	      gui/palette.cpp \
+	      gui/palette.h \
 	      gui/passwordfield.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
 	      gui/playerbox.h \
+	      gui/popup.cpp \
+	      gui/popup.h \
 	      gui/popupmenu.cpp \
 	      gui/popupmenu.h \
 	      gui/progressbar.cpp \
@@ -137,6 +143,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/shortcutwindow.h \
 	      gui/shortcutcontainer.cpp \
 	      gui/shortcutcontainer.h \
+	      gui/skin.cpp \
+	      gui/skin.h \
 	      gui/slider.cpp \
 	      gui/slider.h \
 	      gui/speechbubble.cpp \
@@ -151,6 +159,7 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/textdialog.h \
 	      gui/textfield.cpp \
 	      gui/textfield.h \
+	      gui/textrenderer.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
 	      gui/truetypefont.cpp \
@@ -424,6 +433,8 @@ tmw_SOURCES += \
 	      gui/skill.h \
 	      gui/status.cpp \
 	      gui/status.h \
+	      gui/storagewindow.cpp \
+	      gui/storagewindow.h \
 	      net/ea/beinghandler.cpp \
 	      net/ea/beinghandler.h \
 	      net/ea/buysellhandler.cpp \

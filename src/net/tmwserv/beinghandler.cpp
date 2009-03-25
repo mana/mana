@@ -289,7 +289,7 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
         int damage = msg.readInt16();
         if (being)
         {
-            being->takeDamage(damage);
+            being->takeDamage(0, damage, Being::HIT);
         }
     }
 }

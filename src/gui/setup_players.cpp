@@ -22,10 +22,9 @@
 #include <string>
 #include <vector>
 
-#include <guichan/widgets/label.hpp>
-
 #include "button.h"
 #include "checkbox.h"
+#include "label.h"
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
@@ -137,7 +136,7 @@ public:
         for (unsigned int r = 0; r < player_names->size(); ++r)
         {
             std::string name = (*player_names)[r];
-            gcn::Widget *widget = new gcn::Label(name);
+            gcn::Widget *widget = new Label(name);
             mWidgets.push_back(widget);
             gcn::ListModel *playerRelation = new PlayerRelationListModel;
 
@@ -247,7 +246,7 @@ Setup_Players::Setup_Players():
     for (int i = 0; i < COLUMNS_NR; i++)
     {
         mPlayerTableTitleModel->set(0, i,
-                new gcn::Label(gettext(table_titles[i])));
+                new Label(gettext(table_titles[i])));
     }
 
     mPlayerTitleTable->setLinewiseSelection(true);
@@ -257,7 +256,7 @@ Setup_Players::Setup_Players():
     mPlayerTable->setLinewiseSelection(true);
     mPlayerTable->addActionListener(this);
 
-    gcn::Label *ignore_action_label = new gcn::Label(_("When ignoring:"));
+    gcn::Label *ignore_action_label = new Label(_("When ignoring:"));
 
     mIgnoreActionChoicesBox->setActionEventId(ACTION_STRATEGY);
     mIgnoreActionChoicesBox->addActionListener(this);
@@ -329,7 +328,7 @@ void Setup_Players::apply()
                                          ~(PlayerRelation::TRADE |
                                            PlayerRelation::WHISPER);
     player_relations.setDefault(old_default_relations
-                                | (mDefaultTrading->isSelected() ? 
+                                | (mDefaultTrading->isSelected() ?
                                        PlayerRelation::TRADE : 0)
                                 | (mDefaultWhisper->isSelected() ?
                                        PlayerRelation::WHISPER : 0));
@@ -341,7 +340,7 @@ void Setup_Players::cancel()
 
 void Setup_Players::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == ACTION_TABLE) 
+    if (event.getId() == ACTION_TABLE)
     {
         // temporarily eliminate ourselves: we are fully aware of this change,
         // so there is no need for asynchronous updates.  (In fact, thouse

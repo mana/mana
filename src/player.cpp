@@ -24,8 +24,12 @@
 #ifdef TMWSERV_SUPPORT
 #include "guild.h"
 #endif
+#include "localplayer.h"
+#include "particle.h"
 #include "player.h"
 #include "text.h"
+
+#include "gui/palette.h"
 
 #include "resources/colordb.h"
 #include "resources/itemdb.h"
@@ -52,17 +56,19 @@ void Player::setName(const std::string &name)
     {
         if (mIsGM)
         {
-            mNameColor = 0x009000;
+            mNameColor = &guiPalette->getColor(Palette::GM);
             mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy +
                                   NAME_Y_OFFSET, gcn::Graphics::CENTER,
-                                  gcn::Color(0, 255, 0));
+                                  &guiPalette->getColor(Palette::GM_NAME));
         }
         else
         {
-            mNameColor = 0x202020;
+            mNameColor = &guiPalette->getColor(Palette::PLAYER);
             mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
                                   gcn::Graphics::CENTER,
-                                  gcn::Color(255, 255, 255));
+                                  (this == player_node) ?
+                                  &guiPalette->getColor(Palette::SELF) :
+                                  &guiPalette->getColor(Palette::PC));
         }
         Being::setName(name);
     }
@@ -94,7 +100,10 @@ void Player::logic()
             break;
 
         case ATTACK:
+            int rotation = 0;
+            std::string particleEffect = "";
             int frames = 4;
+
             if (mEquippedWeapon &&
                 mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
             {
@@ -102,6 +111,26 @@ void Player::logic()
             }
 
             mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
+
+            //attack particle effect
+            if (mEquippedWeapon)
+                particleEffect = mEquippedWeapon->getParticleEffect();
+
+            if (!particleEffect.empty() && mParticleEffects && mFrame == 1)
+            {
+                switch (mDirection)
+                {
+                    case DOWN: rotation = 0; break;
+                    case LEFT: rotation = 90; break;
+                    case UP: rotation = 180; break;
+                    case RIGHT: rotation = 270; break;
+                    default: break;
+                }
+                Particle *p;
+                p = particleEngine->addEffect("graphics/particles/" +
+                                              particleEffect, 0, 0, rotation);
+                controlParticle(p);
+            }
 
             if (mFrame >= frames)
                 nextStep();

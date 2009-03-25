@@ -45,6 +45,7 @@
 #include "resources/resourcemanager.h"
 
 #include "gui/gui.h"
+#include "gui/palette.h"
 #include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
@@ -63,9 +64,9 @@ const bool debug_movement = true;
 #define BEING_EFFECTS_FILE "effects.xml"
 #define HAIR_FILE "hair.xml"
 
-int Being::instances = 0;
+int Being::mNumberOfHairColors = 1;
 int Being::mNumberOfHairstyles = 1;
-std::vector<AnimatedSprite*> Being::emotionSet;
+std::vector<std::string> Being::hairColors;
 
 static const int X_SPEECH_OFFSET = 18;
 static const int Y_SPEECH_OFFSET = 60;
@@ -79,6 +80,7 @@ Being::Being(int id, int job, Map *map):
     mWalkTime(0),
 #endif
     mEmotion(0), mEmotionTime(0),
+    mSpeechTime(0),
     mAttackSpeed(350),
     mAction(STAND),
     mJob(job),
@@ -99,7 +101,6 @@ Being::Being(int id, int job, Map *map):
 #endif
     mHairColor(0),
     mGender(GENDER_UNSPECIFIED),
-    mSpeechTime(0),
     mPx(0), mPy(0),
     mStunMode(0),
     mSprites(VECTOREND_SPRITE, NULL),
@@ -119,31 +120,8 @@ Being::Being(int id, int job, Map *map):
 
     mSpeechBubble = new SpeechBubble;
 
-    if (instances == 0)
-    {
-        // Setup emote sprites
-        for (int i = 0; i <= EmoteDB::getLast(); i++)
-        {
-            EmoteInfo info = EmoteDB::get(i);
-
-            std::string file = "graphics/sprites/" + info.sprites.front()->sprite;
-            int variant = info.sprites.front()->variant;
-            emotionSet.push_back(AnimatedSprite::load(file, variant));
-        }
-
-        // Hairstyles are encoded as negative numbers.  Count how far negative
-        // we can go.
-        int hairstyles = 1;
-        while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
-        {
-            hairstyles++;
-        }
-        mNumberOfHairstyles = hairstyles;
-    }
-
-    instances++;
     mSpeech = "";
-    mNameColor = 0x202020;
+    mNameColor = &guiPalette->getColor(Palette::CHAT);
     mText = 0;
 }
 
@@ -157,13 +135,6 @@ Being::~Being()
         player_node->setTarget(NULL);
 
     setMap(NULL);
-
-    instances--;
-
-    if (instances == 0)
-    {
-        delete_all(emotionSet);
-    }
 
     delete mSpeechBubble;
     delete mText;
@@ -383,7 +354,7 @@ void Being::setSprite(int slot, int id, const std::string &color)
     mSpriteColors[slot] = color;
 }
 
-void Being::setSpeech(const std::string &text, Uint32 time)
+void Being::setSpeech(const std::string &text, int time)
 {
     mSpeech = text;
 
@@ -425,43 +396,69 @@ void Being::setSpeech(const std::string &text, Uint32 time)
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 }
 
-void Being::takeDamage(int amount)
+void Being::takeDamage(Being *attacker, int amount, AttackType type)
 {
     gcn::Font *font;
-    std::string damage = amount ? toString(amount) : "miss";
+    std::string damage = amount ? toString(amount) : type == FLEE ?
+            "dodge" : "miss";
+    const gcn::Color* color;
+
+    font = gui->getInfoParticleFont();
 
     // Selecting the right color
-    if (damage == "miss")
-        font = hitYellowFont;
+    if (type == CRITICAL || type == FLEE)
+    {
+        color = &guiPalette->getColor(Palette::HIT_CRITICAL);
+    }
+    else if (!amount)
+     {
+        if (attacker == player_node)
+        {
+            // This is intended to be the wrong direction to visually
+            // differentiate between hits and misses
+            color = &guiPalette->getColor(Palette::HIT_MONSTER_PLAYER);
+        }
+        else
+        {
+            color = &guiPalette->getColor(Palette::MISS);
+        }
+    }
+    else if (getType() == MONSTER)
+    {
+        color = &guiPalette->getColor(Palette::HIT_PLAYER_MONSTER);
+    }
     else
     {
-        if (getType() == MONSTER)
-            font = hitBlueFont;
-        else
-            font = hitRedFont;
+        color = &guiPalette->getColor(Palette::HIT_MONSTER_PLAYER);
     }
 
     // Show damage number
-    particleEngine->addTextSplashEffect(damage, 255, 255, 255, font,
+    particleEngine->addTextSplashEffect(damage,
 #ifdef TMWSERV_SUPPORT
                                         (int) mPos.x + 16,
-                                        (int) mPos.y + 16);
+                                        (int) mPos.y + 16,
 #else
-                                        mPx + 16, mPy + 16);
+                                        mPx + 16, mPy + 16,
 #endif
-    effectManager->trigger(26, this);
-}
+            color, font, true);
 
-void Being::showCrit()
-{
-    effectManager->trigger(28, this);
-
+    if (amount > 0)
+    {
+        if (type != CRITICAL)
+        {
+            effectManager->trigger(26, this);
+        }
+        else
+        {
+            effectManager->trigger(28, this);
+        }
+    }
 }
 
 #ifdef TMWSERV_SUPPORT
 void Being::handleAttack()
 #else
-void Being::handleAttack(Being *victim, int damage)
+void Being::handleAttack(Being *victim, int damage, AttackType type)
 #endif
 {
     setAction(Being::ATTACK);
@@ -507,13 +504,10 @@ void Being::setAction(Action action, int attackType)
             break;
         case ATTACK:
             if (mEquippedWeapon)
-            {
                 currentAction = mEquippedWeapon->getAttackType();
-            }
             else
-            {
                 currentAction = ACTION_ATTACK;
-            }
+
             for (int i = 0; i < VECTOREND_SPRITE; i++)
             {
                 if (mSprites[i])
@@ -584,21 +578,13 @@ SpriteDirection Being::getSpriteDirection() const
     SpriteDirection dir;
 
     if (mDirection & UP)
-    {
         dir = DIRECTION_UP;
-    }
     else if (mDirection & DOWN)
-    {
         dir = DIRECTION_DOWN;
-    }
     else if (mDirection & RIGHT)
-    {
         dir = DIRECTION_RIGHT;
-    }
     else
-    {
-         dir = DIRECTION_LEFT;
-    }
+        dir = DIRECTION_LEFT;
 
     return dir;
 }
@@ -645,7 +631,7 @@ void Being::logic()
     if (mSpeechTime > 0)
         mSpeechTime--;
 
-    // Remove text if speech boxes aren't being used
+    // Remove text and speechbubbles if speech boxes aren't being used
     if (mSpeechTime == 0 && mText)
     {
         delete mText;
@@ -749,9 +735,7 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 #endif
 
     if (mUsedTargetCursor)
-    {
         mUsedTargetCursor->draw(graphics, px, py);
-    }
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
@@ -774,39 +758,44 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
         return;
 
 #ifdef TMWSERV_SUPPORT
-    const int px = (int) mPos.x + offsetX + 3;
-    const int py = (int) mPos.y + offsetY - 60;
+    const int px = (int) mPos.x + offsetX;
+    const int py = (int) mPos.y + offsetY - 64;
 #else
-    const int px = mPx + offsetX + 3;
-    const int py = mPy + offsetY - 60;
+    const int px = mPx - offsetX;
+    const int py = mPy - offsetY - 64;
 #endif
     const int emotionIndex = mEmotion - 1;
 
     if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
-        emotionSet[emotionIndex]->draw(graphics, px, py);
+        EmoteDB::getAnimation(emotionIndex)->draw(graphics, px, py);
 }
 
 void Being::drawSpeech(int offsetX, int offsetY)
 {
 #ifdef TMWSERV_SUPPORT
-    int px = (int) mPos.x + offsetX;
-    int py = (int) mPos.y + offsetY;
+    int px = (int) mPos.x - offsetX;
+    int py = (int) mPos.y - offsetY;
 #else
-    const int px = mPx + offsetX;
-    const int py = mPy + offsetY;
+    const int px = mPx - offsetX;
+    const int py = mPy - offsetY;
 #endif
     const int speech = (int) config.getValue("speech", NAME_IN_BUBBLE);
 
     // Draw speech above this being
-    if (mSpeechTime > 0 && (speech == NAME_IN_BUBBLE ||
-        speech == NO_NAME_IN_BUBBLE))
+    if (mSpeechTime == 0)
+    {
+        if (mSpeechBubble->isVisible())
+            mSpeechBubble->setVisible(false);
+    }
+    else if (mSpeechTime > 0 && (speech == NAME_IN_BUBBLE ||
+             speech == NO_NAME_IN_BUBBLE))
     {
         const bool showName = (speech == NAME_IN_BUBBLE);
 
         if (mText)
         {
             delete mText;
-            mText = 0;
+            mText = NULL;
         }
 
         mSpeechBubble->setCaption(showName ? mName : "", mNameColor);
@@ -822,23 +811,23 @@ void Being::drawSpeech(int offsetX, int offsetY)
     else if (mSpeechTime > 0 && speech == TEXT_OVERHEAD)
     {
         mSpeechBubble->setVisible(false);
+
         // don't introduce a memory leak
         if (mText)
             delete mText;
 
         mText = new Text(mSpeech, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
-                         gcn::Graphics::CENTER, gcn::Color(255, 255, 255));
+                         gcn::Graphics::CENTER,
+                         &guiPalette->getColor(Palette::PARTICLE));
     }
     else if (speech == NO_SPEECH)
     {
         mSpeechBubble->setVisible(false);
+
         if (mText)
             delete mText;
+
         mText = NULL;
-    }
-    else if (mSpeechTime == 0)
-    {
-        mSpeechBubble->setVisible(false);
     }
 }
 
@@ -908,24 +897,18 @@ int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
     if (mAction != WALK ||  !(mDirection & (pos | neg)))
-    {
         return 0;
-    }
 
     int offset = (get_elapsed_time(mWalkTime) * 32) / mWalkSpeed;
 
     // We calculate the offset _from_ the _target_ location
     offset -= 32;
     if (offset > 0)
-    {
         offset = 0;
-    }
 
     // Going into negative direction? Invert the offset.
     if (mDirection & pos)
-    {
         offset = -offset;
-    }
 
     return offset;
 }
@@ -1057,57 +1040,41 @@ void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
     }
 }
 
-
-
-
-static int hairStylesNr;
-static int hairColorsNr;
-static std::vector<std::string> hairColors;
-
-static void initializeHair();
-
-int Being::getHairStylesNr()
+int Being::getHairStyleCount()
 {
-    initializeHair();
-    return hairStylesNr;
+    return mNumberOfHairstyles;
 }
 
-int Being::getHairColorsNr()
+int Being::getHairColorCount()
 {
-    initializeHair();
-    return hairColorsNr;
+    return mNumberOfHairColors;
 }
 
 std::string Being::getHairColor(int index)
 {
-    initializeHair();
-    if (index < 0 || index >= hairColorsNr)
+    if (index < 0 || index >= mNumberOfHairColors)
         return "#000000";
 
     return hairColors[index];
 }
 
-static bool hairInitialized = false;
-
-static void initializeHair()
+void Being::load()
 {
-    if (hairInitialized)
-        return;
+    // Hairstyles are encoded as negative numbers. Count how far negative
+    // we can go.
+    int hairstyles = 1;
 
-    // Hairstyles are encoded as negative numbers. Count how far negative we
-    // can go.
-    int hairstylesCtr = -1;
-    while (ItemDB::get(hairstylesCtr).getSprite(GENDER_MALE) != "error.xml")
-        --hairstylesCtr;
-
-    hairStylesNr = -hairstylesCtr; // done.
-    if (hairStylesNr == 0)
-        hairStylesNr = 1; // No hair style -> no hair
-
-    hairColorsNr = 0;
+    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
+    {
+        hairstyles++;
+    }
+    mNumberOfHairstyles = hairstyles;
 
     XML::Document doc(HAIR_FILE);
     xmlNodePtr root = doc.rootNode();
+
+    // Add an initial hair color
+    hairColors.resize(1, "#000000");
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
@@ -1121,20 +1088,13 @@ static void initializeHair()
                 std::string value = XML::getProperty(node, "value", "");
 
                 if (index >= 0 && !value.empty()) {
-                    if (index >= hairColorsNr) {
-                        hairColorsNr = index + 1;
-                        hairColors.resize(hairColorsNr, "#000000");
+                    if (index >= mNumberOfHairColors) {
+                        mNumberOfHairColors = index + 1;
+                        hairColors.resize(mNumberOfHairColors, "#000000");
                     }
                     hairColors[index] = value;
                 }
             }
         }
-    } // done initializing
-
-    if (hairColorsNr == 0) { // No colors -> black only
-        hairColorsNr = 1;
-        hairColors.resize(hairColorsNr, "#000000");
     }
-
-    hairInitialized = 1;
 }

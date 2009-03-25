@@ -13,9 +13,6 @@ SET (FILES
     default.png
     equip_bg.png
     gui.xml
-    hits_blue.png
-    hits_red.png
-    hits_yellow.png
     hscroll_left_default.png
     hscroll_left_highlight.png
     hscroll_left_pressed.png

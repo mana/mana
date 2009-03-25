@@ -208,28 +208,7 @@ void StatusWindow::update()
     mMoneyLabel->setCaption("Money: " + toString(mPlayer->getMoney()) + " GP");
     mMoneyLabel->adjustSize();
 
-    int hp = mPlayer->getHp();
-    int maxHp = mPlayer->getMaxHp();
-
-    mHpValueLabel->setCaption(toString(hp) +
-            " / " + toString(maxHp));
-    mHpValueLabel->adjustSize();
-
-    // HP Bar coloration
-    if (hp < int(maxHp / 3))
-    {
-        mHpBar->setColor(223, 32, 32); // Red
-    }
-    else if (hp < int((maxHp / 3) * 2))
-    {
-        mHpBar->setColor(230, 171, 34); // Orange
-    }
-    else
-    {
-        mHpBar->setColor(0, 171, 34); // Green
-    }
-
-    mHpBar->setProgress((float) hp / maxHp);
+    updateHPBar(mHpBar, true);
 
     // Stats Part
     // ----------
@@ -367,4 +346,31 @@ void StatusWindow::action(const gcn::ActionEvent &event)
     {
         mPlayer->lowerAttribute(LocalPlayer::WIL);
     }
+}
+
+// WARNING: Duplicated method!
+
+void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
+{
+    if (showMax)
+        bar->setText(toString(player_node->getHp()) +
+                    "/" + toString(player_node->getMaxHp()));
+    else
+        bar->setText(toString(player_node->getHp()));
+
+    // HP Bar coloration
+    if (player_node->getHp() < player_node->getMaxHp() / 3)
+    {
+        bar->setColor(223, 32, 32); // Red
+    }
+    else if (player_node->getHp() < (player_node->getMaxHp() / 3) * 2)
+    {
+        bar->setColor(230, 171, 34); // Orange
+    }
+    else
+    {
+        bar->setColor(0, 171, 34); // Green
+    }
+
+    bar->setProgress((float) player_node->getHp() / (float) player_node->getMaxHp());
 }

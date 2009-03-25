@@ -39,6 +39,11 @@ class TextBox : public gcn::TextBox
          */
         TextBox();
 
+        inline void setTextColor(const gcn::Color* color)
+        {
+            mTextColor = color;
+        }
+
         /**
          * Sets the text after wrapping it to the current width of the widget.
          */
@@ -49,8 +54,18 @@ class TextBox : public gcn::TextBox
          */
         int getMinWidth() { return mMinWidth; }
 
+        /**
+         * Draws the text.
+         */
+        inline void draw(gcn::Graphics *graphics)
+        {
+            setForegroundColor(*mTextColor);
+            gcn::TextBox::draw(graphics);
+        }
+
     private:
         int mMinWidth;
+        const gcn::Color* mTextColor;
 };
 
 #endif

@@ -26,6 +26,8 @@
 #include <guichan/exception.hpp>
 
 #include "gui.h"
+#include "palette.h"
+#include "skin.h"
 #include "window.h"
 #include "windowcontainer.h"
 
@@ -37,16 +39,10 @@
 #include "../log.h"
 
 #include "../resources/image.h"
-#include "../resources/resourcemanager.h"
-
-#include "../utils/xml.h"
 
 ConfigListener *Window::windowConfigListener = 0;
-WindowContainer *Window::windowContainer = 0;
 int Window::instances = 0;
 int Window::mouseResize = 0;
-//ImageRect Window::border;
-Image *Window::closeImage = NULL;
 bool Window::mAlphaChanged = false;
 
 class WindowConfigListener : public ConfigListener
@@ -70,23 +66,16 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     mMinWinWidth(100),
     mMinWinHeight(40),
     mMaxWinWidth(INT_MAX),
-    mMaxWinHeight(INT_MAX),
-    mSkin(skin)
+    mMaxWinHeight(INT_MAX)
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
     if (!windowContainer)
-    {
         throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
-    }
-
-    // Loads the skin
-    loadSkin(mSkin);
-
-    setGuiAlpha();
 
     if (instances == 0)
     {
+        skinLoader = new SkinLoader();
         windowConfigListener = new WindowConfigListener;
         // Send GUI alpha changed for initialization
         windowConfigListener->optionChanged("guialpha");
@@ -98,6 +87,11 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     setFrameSize(0);
     setPadding(3);
     setTitleBarHeight(20);
+
+    // Loads the skin
+    mSkin = skinLoader->load(skin);
+
+    setGuiAlpha();
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -117,21 +111,8 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
 Window::~Window()
 {
     logger->log("Window::~Window(\"%s\")", getCaption().c_str());
-    const std::string &name = mWindowName;
 
-    // Saving X, Y and Width and Height for resizables in the config
-    if (!name.empty())
-    {
-        config.setValue(name + "WinX", getX());
-        config.setValue(name + "WinY", getY());
-        config.setValue(name + "Visible", isVisible());
-
-        if (mGrip)
-        {
-            config.setValue(name + "WinWidth", getWidth());
-            config.setValue(name + "WinHeight", getHeight());
-        }
-    }
+    saveWindowState();
 
     delete mLayout;
 
@@ -142,22 +123,18 @@ Window::~Window()
         delete(w);
     }
 
+    removeWidgetListener(this);
+
     instances--;
 
-    // Clean up static resources
-    for (int i = 0; i < 9; i++)
-    {
-        delete border.grid[i];
-        border.grid[i] = NULL;
-    }
+    mSkin->instances--;
 
     if (instances == 0)
     {
+        delete skinLoader;
         config.removeListener("guialpha", windowConfigListener);
         delete windowConfigListener;
         windowConfigListener = NULL;
-
-        closeImage->decRef();
     }
 }
 
@@ -168,14 +145,17 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics *graphics)
 {
+    if (!isVisible())
+        return;
+
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    g->drawImageRect(0, 0, getWidth(), getHeight(), border);
+    g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
 
     // Draw title
     if (mShowTitle)
     {
-        g->setColor(gcn::Color(0, 0, 0));
+        g->setColor(guiPalette->getColor(Palette::TEXT));
         g->setFont(getFont());
         g->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }
@@ -183,8 +163,8 @@ void Window::draw(gcn::Graphics *graphics)
     // Draw Close Button
     if (mCloseButton)
     {
-        g->drawImage(closeImage,
-            getWidth() - closeImage->getWidth() - getPadding(),
+        g->drawImage(mSkin->getCloseImage(),
+            getWidth() - mSkin->getCloseImage()->getWidth() - getPadding(),
             getPadding()
         );
     }
@@ -192,18 +172,29 @@ void Window::draw(gcn::Graphics *graphics)
     // Update window alpha values
     if (mAlphaChanged)
     {
-        for_each(border.grid, border.grid + 9,
+        for_each(mSkin->getBorder().grid, mSkin->getBorder().grid + 9,
                  std::bind2nd(std::mem_fun(&Image::setAlpha),
                  config.getValue("guialpha", 0.8)));
-        closeImage->setAlpha(config.getValue("guialpha", 0.8));
+        mSkin->getCloseImage()->setAlpha(config.getValue("guialpha", 0.8));
     }
     drawChildren(graphics);
 }
 
 void Window::setContentSize(int width, int height)
 {
-    setSize(width + 2 * getPadding(),
-            height + getPadding() + getTitleBarHeight());
+    width = width + 2 * getPadding();
+    height = height + getPadding() + getTitleBarHeight();
+
+    if (getMinWidth() > width)
+        width = getMinWidth();
+    else if (getMaxWidth() < width)
+        width = getMaxWidth();
+    if (getMinHeight() > height)
+        height = getMinHeight();
+    else if (getMaxHeight() < height)
+        height = getMaxHeight();
+
+    setSize(width, height);
 }
 
 void Window::setLocationRelativeTo(gcn::Widget *widget)
@@ -218,14 +209,61 @@ void Window::setLocationRelativeTo(gcn::Widget *widget)
                 getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
 }
 
+void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
+                                   int offsetX, int offsetY)
+{
+    if (position == ImageRect::UPPER_LEFT)
+    {
+    }
+    else if (position == ImageRect::UPPER_CENTER)
+    {
+        offsetX += (graphics->getWidth() - getWidth()) / 2;
+    }
+    else if (position == ImageRect::UPPER_RIGHT)
+    {
+        offsetX += graphics->getWidth() - getWidth();
+    }
+    else if (position == ImageRect::LEFT)
+    {
+        offsetY += (graphics->getHeight() - getHeight()) / 2;
+    }
+    else if (position == ImageRect::CENTER)
+    {
+        offsetX += (graphics->getWidth() - getWidth()) / 2;
+        offsetY += (graphics->getHeight() - getHeight()) / 2;
+    }
+    else if (position == ImageRect::RIGHT)
+    {
+        offsetX += graphics->getWidth() - getWidth();
+        offsetY += (graphics->getHeight() - getHeight()) / 2;
+    }
+    else if (position == ImageRect::LOWER_LEFT)
+    {
+        offsetY += graphics->getHeight() - getHeight();
+    }
+    else if (position == ImageRect::LOWER_CENTER)
+    {
+        offsetX += (graphics->getWidth() - getWidth()) / 2;
+        offsetY += graphics->getHeight() - getHeight();
+    }
+    else if (position == ImageRect::LOWER_RIGHT)
+    {
+        offsetX += graphics->getWidth() - getWidth();
+        offsetY += graphics->getHeight() - getHeight();
+    }
+
+    setPosition(offsetX, offsetY);
+}
+
 void Window::setMinWidth(unsigned int width)
 {
-    mMinWinWidth = width;
+    mMinWinWidth = width > mSkin->getMinWidth() ? width : mSkin->getMinWidth();
 }
 
 void Window::setMinHeight(unsigned int height)
 {
-    mMinWinHeight = height;
+    mMinWinHeight = height > mSkin->getMinHeight() ?
+                        height : mSkin->getMinHeight();
 }
 
 void Window::setMaxWidth(unsigned int width)
@@ -317,20 +355,25 @@ void Window::mousePressed(gcn::MouseEvent &event)
         if (mCloseButton)
         {
             gcn::Rectangle closeButtonRect(
-                getWidth() - closeImage->getWidth() - getPadding(),
+                getWidth() - mSkin->getCloseImage()->getWidth() - getPadding(),
                 getPadding(),
-                closeImage->getWidth(),
-                closeImage->getHeight());
+                mSkin->getCloseImage()->getWidth(),
+                mSkin->getCloseImage()->getHeight());
 
             if (closeButtonRect.isPointInRect(x, y))
             {
-                setVisible(false);
+                close();
             }
         }
 
         // Handle window resizing
         mouseResize = getResizeHandles(event);
     }
+}
+
+void Window::close()
+{
+    setVisible(false);
 }
 
 void Window::mouseReleased(gcn::MouseEvent &event)
@@ -388,8 +431,8 @@ void Window::mouseDragged(gcn::MouseEvent &event)
     {
         int newX = std::max(0, getX());
         int newY = std::max(0, getY());
-        newX = std::min(windowContainer->getWidth() - getWidth(), newX);
-        newY = std::min(windowContainer->getHeight() - getHeight(), newY);
+        newX = std::min(graphics->getWidth() - getWidth(), newX);
+        newY = std::min(graphics->getHeight() - getHeight(), newY);
         setPosition(newX, newY);
     }
 
@@ -434,13 +477,13 @@ void Window::mouseDragged(gcn::MouseEvent &event)
             newDim.height += newDim.y;
             newDim.y = 0;
         }
-        if (newDim.x + newDim.width > windowContainer->getWidth())
+        if (newDim.x + newDim.width > graphics->getWidth())
         {
-            newDim.width = windowContainer->getWidth() - newDim.x;
+            newDim.width = graphics->getWidth() - newDim.x;
         }
-        if (newDim.y + newDim.height > windowContainer->getHeight())
+        if (newDim.y + newDim.height > graphics->getHeight())
         {
-            newDim.height = windowContainer->getHeight() - newDim.y;
+            newDim.height = graphics->getHeight() - newDim.y;
         }
 
         // Update mouse offset when dragging bottom or right border
@@ -469,8 +512,19 @@ void Window::loadWindowState()
 
     if (mGrip)
     {
-        setSize((int) config.getValue(name + "WinWidth", mDefaultWidth),
-                (int) config.getValue(name + "WinHeight", mDefaultHeight));
+        int width = (int) config.getValue(name + "WinWidth", mDefaultWidth);
+        int height = (int) config.getValue(name + "WinHeight", mDefaultHeight);
+
+        if (getMinWidth() > width)
+            width = getMinWidth();
+        else if (getMaxWidth() < width)
+            width = getMaxWidth();
+        if (getMinHeight() > height)
+            height = getMinHeight();
+        else if (getMaxHeight() < height)
+            height = getMaxHeight();
+
+        setSize(width, height);
     }
     else
     {
@@ -478,11 +532,106 @@ void Window::loadWindowState()
     }
 }
 
+void Window::saveWindowState()
+{
+    // Saving X, Y and Width and Height for resizables in the config
+    if (!mWindowName.empty() && mWindowName != "window")
+    {
+        config.setValue(mWindowName + "WinX", getX());
+        config.setValue(mWindowName + "WinY", getY());
+        config.setValue(mWindowName + "Visible", isVisible());
+
+        if (mGrip)
+        {
+            if (getMinWidth() > getWidth())
+                setWidth(getMinWidth());
+            else if (getMaxWidth() < getWidth())
+                setWidth(getMaxWidth());
+            if (getMinHeight() > getHeight())
+                setHeight(getMinHeight());
+            else if (getMaxHeight() < getHeight())
+                setHeight(getMaxHeight());
+
+            config.setValue(mWindowName + "WinWidth", getWidth());
+            config.setValue(mWindowName + "WinHeight", getHeight());
+        }
+    }
+}
+
 void Window::setDefaultSize(int defaultX, int defaultY,
                             int defaultWidth, int defaultHeight)
 {
+    if (getMinWidth() > defaultWidth)
+        defaultWidth = getMinWidth();
+    else if (getMaxWidth() < defaultWidth)
+        defaultWidth = getMaxWidth();
+    if (getMinHeight() > defaultHeight)
+        defaultHeight = getMinHeight();
+    else if (getMaxHeight() < defaultHeight)
+        defaultHeight = getMaxHeight();
+
     mDefaultX = defaultX;
     mDefaultY = defaultY;
+    mDefaultWidth = defaultWidth;
+    mDefaultHeight = defaultHeight;
+}
+
+void Window::setDefaultSize()
+{
+    mDefaultX = getX();
+    mDefaultY = getY();
+    mDefaultWidth = getWidth();
+    mDefaultHeight = getHeight();
+}
+
+void Window::setDefaultSize(int defaultWidth, int defaultHeight,
+                            ImageRect::ImagePosition position,
+                            int offsetX, int offsetY)
+{
+    int x = 0, y = 0;
+
+    if (position == ImageRect::UPPER_LEFT)
+    {
+    }
+    else if (position == ImageRect::UPPER_CENTER)
+    {
+        x = (graphics->getWidth() - defaultWidth) / 2;
+    }
+    else if (position == ImageRect::UPPER_RIGHT)
+    {
+        x = graphics->getWidth() - defaultWidth;
+    }
+    else if (position == ImageRect::LEFT)
+    {
+        y = (graphics->getHeight() - defaultHeight) / 2;
+    }
+    else if (position == ImageRect::CENTER)
+    {
+        x = (graphics->getWidth() - defaultWidth) / 2;
+        y = (graphics->getHeight() - defaultHeight) / 2;
+    }
+    else if (position == ImageRect::RIGHT)
+    {
+        x = graphics->getWidth() - defaultWidth;
+        y = (graphics->getHeight() - defaultHeight) / 2;
+    }
+    else if (position == ImageRect::LOWER_LEFT)
+    {
+        y = graphics->getHeight() - defaultHeight;
+    }
+    else if (position == ImageRect::LOWER_CENTER)
+    {
+        x = (graphics->getWidth() - defaultWidth) / 2;
+        y = graphics->getHeight() - defaultHeight;
+    }
+    else if (position == ImageRect::LOWER_RIGHT)
+    {
+        x = graphics->getWidth() - defaultWidth;
+        y = graphics->getHeight() - defaultHeight;
+    }
+
+    mDefaultX = x - offsetX;
+    mDefaultY = y - offsetY;
     mDefaultWidth = defaultWidth;
     mDefaultHeight = defaultHeight;
 }
@@ -491,6 +640,7 @@ void Window::resetToDefaultSize()
 {
     setPosition(mDefaultX, mDefaultY);
     setSize(mDefaultWidth, mDefaultHeight);
+    saveWindowState();
 }
 
 int Window::getResizeHandles(gcn::MouseEvent &event)
@@ -528,179 +678,16 @@ void Window::setGuiAlpha()
     for (int i = 0; i < 9; i++)
     {
         //logger->log("Window::setGuiAlpha: Border Image (%i)", i);
-        border.grid[i]->setAlpha(config.getValue("guialpha", 0.8));
+        mSkin->getBorder().grid[i]->setAlpha(config.getValue("guialpha", 0.8));
     }
 
     mAlphaChanged = false;
 }
 
-void Window::loadSkin(const std::string &fileName)
+int Window::getGuiAlpha()
 {
-    const std::string windowId = Window::getId();
-
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    logger->log("Loading Window Skin '%s'.", fileName.c_str());
-    logger->log("Loading Window ID '%s'.", windowId.c_str());
-
-
-    if (fileName.empty())
-        logger->error("Window::loadSkin(): Invalid File Name.");
-
-    // TODO:
-    // If there is an error loading the specified file, we should try to revert
-    // to a 'default' skin file. Only if the 'default' skin file can't be loaded
-    // should we have a terminating error.
-    XML::Document doc(fileName);
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
-    {
-        logger->error("Widget Skinning error");
-    }
-
-    std::string skinSetImage;
-    skinSetImage = XML::getProperty(rootNode, "image", "");
-    Image *dBorders = NULL;
-    if (!skinSetImage.empty())
-    {
-        logger->log("Window::loadSkin(): <skinset> defines '%s' as a skin image.", skinSetImage.c_str());
-        dBorders = resman->getImage("graphics/gui/" + skinSetImage);//"graphics/gui/speech_bubble.png");
-    }
-    else
-    {
-        logger->error("Window::loadSkin(): Skinset does not define an image!");
-    }
-
-    //iterate <widget>'s
-    for_each_xml_child_node(widgetNode, rootNode)
-    {
-        if (!xmlStrEqual(widgetNode->name, BAD_CAST "widget"))
-            continue;
-
-        std::string widgetType;
-        widgetType = XML::getProperty(widgetNode, "type", "unknown");
-        if (widgetType == "Window")
-        {
-            // Iterate through <part>'s
-            // LEEOR / TODO:
-            // We need to make provisions to load in a CloseButton image. For now it
-            // can just be hard-coded.
-            for_each_xml_child_node(partNode, widgetNode)
-            {
-                if (!xmlStrEqual(partNode->name, BAD_CAST "part"))
-                {
-                    continue;
-                }
-
-                std::string partType;
-                partType = XML::getProperty(partNode, "type", "unknown");
-                // TOP ROW
-                if (partType == "top-left-corner")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[0] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-                else if (partType == "top-edge")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[1] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-                else if (partType == "top-right-corner")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[2] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-
-                // MIDDLE ROW
-                else if (partType == "left-edge")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[3] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-                else if (partType == "bg-quad")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[4] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-                else if (partType == "right-edge")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[5] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-
-                // BOTTOM ROW
-                else if (partType == "bottom-left-corner")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[6] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-                else if (partType == "bottom-edge")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[7] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-                else if (partType == "bottom-right-corner")
-                {
-                    const int xPos = XML::getProperty(partNode, "xpos", 0);
-                    const int yPos = XML::getProperty(partNode, "ypos", 0);
-                    const int width = XML::getProperty(partNode, "width", 1);
-                    const int height = XML::getProperty(partNode, "height", 1);
-
-                    border.grid[8] = dBorders->getSubImage(xPos, yPos, width, height);
-                }
-
-                // Part is of an uknown type.
-                else
-                {
-                    logger->log("Window::loadSkin(): Unknown Part Type '%s'", partType.c_str());
-                }
-            }
-        }
-        // Widget is of an uknown type.
-        else
-        {
-            logger->log("Window::loadSkin(): Unknown Widget Type '%s'", widgetType.c_str());
-        }
-    }
-    dBorders->decRef();
-
-    logger->log("Finished loading Window Skin.");
-
-    // Hard-coded for now until we update the above code to look for window buttons.
-    closeImage = resman->getImage("graphics/gui/close_button.png");
+    float alpha = config.getValue("guialpha", 0.8);
+    return (int) (alpha * 255.0f);
 }
 
 Layout &Window::getLayout()
@@ -727,4 +714,9 @@ void Window::reflowLayout(int w, int h)
     delete mLayout;
     mLayout = NULL;
     setContentSize(w, h);
+}
+
+void Window::center()
+{
+    setLocationRelativeTo(getParent());
 }

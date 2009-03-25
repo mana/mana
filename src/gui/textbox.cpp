@@ -23,10 +23,11 @@
 
 #include <guichan/font.hpp>
 
+#include "palette.h"
 #include "textbox.h"
 
-TextBox::TextBox():
-    gcn::TextBox()
+TextBox::TextBox() :
+        gcn::TextBox(), mTextColor(&guiPalette->getColor(Palette::TEXT))
 {
     setOpaque(false);
     setFrameSize(0);
@@ -37,17 +38,26 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
 {
     // Make sure parent scroll area sets width of this widget
     if (getParent())
-    {
         getParent()->logic();
-    }
 
     // Take the supplied minimum dimension as a starting point and try to beat it
     mMinWidth = minDimension;
 
     std::stringstream wrappedStream;
-    std::string::size_type newlinePos, lastNewlinePos = 0;
+    std::string::size_type spacePos, newlinePos, lastNewlinePos = 0;
     int minWidth = 0;
     int xpos;
+
+    spacePos = text.rfind(" ", text.size());
+
+    if (spacePos != std::string::npos)
+    {
+        const std::string word = text.substr(spacePos + 1);
+        const int length = getFont()->getWidth(word);
+
+        if (length > mMinWidth)
+            mMinWidth = length;
+    }
 
     do
     {
@@ -55,34 +65,19 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
         newlinePos = text.find("\n", lastNewlinePos);
 
         if (newlinePos == std::string::npos)
-        {
             newlinePos = text.size();
-        }
 
         std::string line =
             text.substr(lastNewlinePos, newlinePos - lastNewlinePos);
-        std::string::size_type spacePos, lastSpacePos = 0;
+        std::string::size_type lastSpacePos = 0;
         xpos = 0;
-
-        spacePos = text.rfind(" ", text.size());
-
-        if (spacePos != std::string::npos)
-        {
-            const std::string word = text.substr(spacePos + 1);
-            const int length = getFont()->getWidth(word);
-
-            if (length > mMinWidth)
-                mMinWidth = length;
-        }
 
         do
         {
             spacePos = line.find(" ", lastSpacePos);
 
             if (spacePos == std::string::npos)
-            {
                 spacePos = line.size();
-            }
 
             std::string word =
                 line.substr(lastSpacePos, spacePos - lastSpacePos);

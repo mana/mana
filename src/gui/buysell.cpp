@@ -24,11 +24,17 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#ifdef EATHENA_SUPPORT
+#include "../net/ea/protocol.h"
+#endif
+
 #include "../utils/gettext.h"
 
-BuySellDialog::BuySellDialog():
-    Window(_("Shop"))
+BuySellDialog::BuySellDialog(Network *network):
+    Window(_("Shop")), mNetwork(network)
 {
+    setWindowName("BuySell");
     Button *buyButton = 0;
     static const char *buttonNames[] = {
         N_("Buy"), N_("Sell"), N_("Cancel"), 0
@@ -46,19 +52,53 @@ BuySellDialog::BuySellDialog():
     buyButton->requestFocus();
 
     setContentSize(x, 2 * y + buyButton->getHeight());
-    setLocationRelativeTo(getParent());
 
-    requestFocus();
+    center();
+    setDefaultSize();
+    loadWindowState();
+}
+
+void BuySellDialog::logic()
+{
+    Window::logic();
+
+    if (isVisible() && !current_npc)
+        setVisible(false);
+}
+
+void BuySellDialog::setVisible(bool visible)
+{
+    Window::setVisible(visible);
+
+    if (visible)
+        requestFocus();
 }
 
 void BuySellDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "Buy") {
-        current_npc->buy();
-    } else if (event.getId() == "Sell") {
-        current_npc->sell();
-    } else if (event.getId() == "Cancel") {
-        if (current_npc) current_npc->handleDeath();
-    }
     setVisible(false);
+    int action = 0;
+
+    NPC::isTalking = false;
+
+    if (event.getId() == "Buy")
+    {
+        action = 0;
+    }
+    else if (event.getId() == "Sell")
+    {
+        action = 1;
+    }
+    else if (event.getId() == "Cancel")
+    {
+        current_npc = 0;
+        return;
+    }
+
+#ifdef EATHENA_SUPPORT
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
+    outMsg.writeInt32(current_npc);
+    outMsg.writeInt8(action);
+#endif
 }

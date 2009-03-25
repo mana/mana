@@ -22,6 +22,7 @@
 #include <guichan/font.hpp>
 
 #include "button.h"
+#include "gui.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
 #include "textbox.h"
@@ -46,14 +47,15 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     mTextBox->setTextWrapped(msg, 260);
 
     int numRows = mTextBox->getNumberOfRows();
+    const int fontHeight = getFont()->getHeight();
 
     if (numRows > 1)
     {
-        // 15 == height of each line of text (based on font heights)
         // 14 == row top + bottom graphic pixel heights
-        setContentSize(mTextBox->getMinWidth() + 15, 15 + (numRows * 15) + okButton->getHeight());
-        mTextArea->setDimension(gcn::Rectangle(4, 5, mTextBox->getMinWidth() + 5,
-                                               3 + (numRows * 14)));
+        setContentSize(mTextBox->getMinWidth() + fontHeight, ((numRows + 1) *
+                       fontHeight) + okButton->getHeight());
+        mTextArea->setDimension(gcn::Rectangle(4, 5,
+                    mTextBox->getMinWidth() + 5, 3 + (numRows * fontHeight)));
     }
     else
     {
@@ -62,17 +64,17 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
             width = getFont()->getWidth(msg);
         if (width < okButton->getWidth())
             width = okButton->getWidth();
-        setContentSize(width + 15, 30 + okButton->getHeight());
+        setContentSize(width + fontHeight, 30 + okButton->getHeight());
         mTextArea->setDimension(gcn::Rectangle(4, 5, width + 5, 17));
     }
 
     okButton->setPosition((mTextBox->getMinWidth() - okButton->getWidth()) / 2,
-                          (numRows * 14) + okButton->getHeight() - 8);
+                          ((numRows - 1) * fontHeight) + okButton->getHeight() + 2);
 
     add(mTextArea);
     add(okButton);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     okButton->requestFocus();
 }
@@ -92,7 +94,6 @@ void OkDialog::action(const gcn::ActionEvent &event)
     }
 
     // Can we receive anything else anyway?
-    if (event.getId() == "ok") {
+    if (event.getId() == "ok")
         scheduleDelete();
-    }
 }

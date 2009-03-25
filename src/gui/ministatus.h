@@ -22,7 +22,7 @@
 #ifndef MINISTATUS_H
 #define MINISTATUS_H
 
-#include "window.h"
+#include "popup.h"
 
 #include <vector>
 
@@ -34,7 +34,7 @@ class ProgressBar;
  *
  * \ingroup Interface
  */
-class MiniStatusWindow : public Window
+class MiniStatusWindow : public Popup
 {
     public:
         /**

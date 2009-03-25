@@ -20,6 +20,7 @@
  */
 
 #include "checkbox.h"
+#include "palette.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -66,6 +67,18 @@ CheckBox::~CheckBox()
         delete checkBoxDisabled;
         delete checkBoxDisabledChecked;
     }
+}
+
+void CheckBox::draw(gcn::Graphics* graphics)
+{
+    drawBox(graphics);
+
+    graphics->setFont(getFont());
+    graphics->setColor(guiPalette->getColor(Palette::TEXT));
+
+    const int h = getHeight() + getHeight() / 2;
+
+    graphics->drawText(getCaption(), h - 2, 0);
 }
 
 void CheckBox::drawBox(gcn::Graphics* graphics)

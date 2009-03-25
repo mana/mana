@@ -66,6 +66,11 @@ BeingManager::BeingManager(Network *network):
 }
 #endif
 
+BeingManager::~BeingManager()
+{
+    clear();
+}
+
 void BeingManager::setMap(Map *map)
 {
     mMap = map;
@@ -82,7 +87,7 @@ void BeingManager::setPlayer(LocalPlayer *player)
 #ifdef TMWSERV_SUPPORT
 Being* BeingManager::createBeing(int id, int type, int subtype)
 #else
-Being* BeingManager::createBeing(Uint32 id, Uint16 job)
+Being *BeingManager::createBeing(int id, Uint16 job)
 #endif
 {
     Being *being;
@@ -103,17 +108,17 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
             assert(false);
     }
 #else
-    if (job < 10)
+    if (job <= 25 || (job >= 4001 && job <= 4049))
         being = new Player(id, job, mMap);
-    else if (job >= 50 && job < 1002)
+    else if (job >= 46 && job <= 1000)
         being = new NPC(id, job, mMap, mNetwork);
-    else if (job >= 1002 && job < 1500)
+    else if (job > 1000 && job <= 2000)
         being = new Monster(id, job, mMap);
     else
         being = new Being(id, job, mMap);
 
     // Player or NPC
-    if (job < 1002)
+    if (job <= 1000 || (job >= 4001 && job <= 4049))
     {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(0x0094);
@@ -135,7 +140,7 @@ void BeingManager::destroyBeing(Being *being)
     delete being;
 }
 
-Being* BeingManager::findBeing(Uint32 id)
+Being *BeingManager::findBeing(int id)
 {
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
@@ -147,7 +152,7 @@ Being* BeingManager::findBeing(Uint32 id)
     return NULL;
 }
 
-Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
+Being *BeingManager::findBeing(int x, int y, Being::Type type)
 {
     beingFinder.x = x;
     beingFinder.y = y;
@@ -158,7 +163,7 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     return (i == mBeings.end()) ? NULL : *i;
 }
 
-Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
+Being *BeingManager::findBeingByPixel(int x, int y)
 {
     BeingIterator itr = mBeings.begin();
     BeingIterator itr_end = mBeings.end();
@@ -184,20 +189,19 @@ Being* BeingManager::findBeingByPixel(Uint16 x, Uint16 y)
     return NULL;
 }
 
-Being* BeingManager::findBeingByName(std::string name, Being::Type type)
+Being *BeingManager::findBeingByName(std::string name, Being::Type type)
 {
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
         Being *being = (*i);
-        if (being->getName() == name
-            && (type == Being::UNKNOWN
-                || type == being->getType()))
+        if (being->getName() == name &&
+           (type == Being::UNKNOWN || type == being->getType()))
             return being;
     }
     return NULL;
 }
 
-Beings& BeingManager::getAll()
+Beings &BeingManager::getAll()
 {
     return mBeings;
 }
@@ -228,20 +232,16 @@ void BeingManager::logic()
 void BeingManager::clear()
 {
     if (player_node)
-    {
         mBeings.remove(player_node);
-    }
 
     delete_all(mBeings);
     mBeings.clear();
 
     if (player_node)
-    {
         mBeings.push_back(player_node);
-    }
 }
 
-Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
+Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
                                             Being::Type type)
 {
     Being *closestBeing = NULL;
@@ -274,8 +274,7 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
 
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer
-                && being->mAction != Being::DEAD        // no dead beings
-           )
+                && being->mAction != Being::DEAD)       // no dead beings
         {
             dist = d;
             closestBeing = being;
@@ -285,7 +284,7 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
     return (maxdist >= dist) ? closestBeing : NULL;
 }
 
-Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
+Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
                                             Being::Type type)
 {
     Being *closestBeing = NULL;
@@ -313,8 +312,7 @@ Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer
                 && being->mAction != Being::DEAD        // no dead beings
-                && being != aroundBeing
-           )
+                && being != aroundBeing)
         {
             dist = d;
             closestBeing = being;
@@ -322,4 +320,14 @@ Being* BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
     }
 
     return (maxdist >= dist) ? closestBeing : NULL;
+}
+
+bool BeingManager::hasBeing(Being *being)
+{
+    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    {
+        if (being == *i) return true;
+    }
+
+    return false;
 }

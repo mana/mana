@@ -25,6 +25,7 @@
 #include "../messagein.h"
 #include "protocol.h"
 
+#include "../../configuration.h"
 #include "../../inventory.h"
 #include "../../item.h"
 #include "../../itemshortcut.h"
@@ -32,6 +33,7 @@
 #include "../../log.h"
 
 #include "../../gui/chat.h"
+#include "../../gui/storagewindow.h"
 
 #include "../../resources/iteminfo.h"
 
@@ -60,9 +62,9 @@ InventoryHandler::InventoryHandler()
 
 void InventoryHandler::handleMessage(MessageIn &msg)
 {
-    Sint32 number;
-    Sint16 index, amount, itemId, equipType, arrow;
-    Sint16 identified, cards[4], itemType;
+    int number;
+    int index, amount, itemId, equipType, arrow;
+    int identified, cards[4], itemType;
     Inventory *inventory = player_node->getInventory();
     Inventory *storage = player_node->getStorage();
 
@@ -70,7 +72,6 @@ void InventoryHandler::handleMessage(MessageIn &msg)
     {
         case SMSG_PLAYER_INVENTORY:
         case SMSG_PLAYER_STORAGE_ITEMS:
-        case SMSG_PLAYER_STORAGE_EQUIP:
             switch (msg.getId()) {
                 case SMSG_PLAYER_INVENTORY:
                     // Clear inventory - this will be a complete refresh
@@ -84,11 +85,10 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                      * clear storage here
                      */
                     storage->clear();
-                    logger->log("Received SMSG_PLAYER_STORAGE_ITEMS");
                     break;
                 default:
-                    logger->log("Received SMSG_PLAYER_STORAGE_EQUIP");
-                    break;
+                    logger->log("HOW DID WE GET HERE?");
+                    return;
             }
             msg.readInt16();  // length
             number = (msg.getLength() - 4) / 18;
@@ -98,17 +98,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 itemId = msg.readInt16();
                 itemType = msg.readInt8();
                 identified = msg.readInt8();
-                if (msg.getId() == SMSG_PLAYER_STORAGE_EQUIP) {
-                    amount = 1;
-                    msg.readInt16();    // Equip Point?
-                } else {
-                    amount = msg.readInt16();
-                }
+                amount = msg.readInt16();
                 arrow = msg.readInt16();
-                if (msg.getId() == SMSG_PLAYER_STORAGE_EQUIP) {
-                    msg.readInt8();   // Attribute (broken)
-                    msg.readInt8();   // Refine level
-                }
                 for (int i = 0; i < 4; i++)
                     cards[i] = msg.readInt16();
 
@@ -128,6 +119,29 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             }
             break;
 
+        case SMSG_PLAYER_STORAGE_EQUIP:
+            msg.readInt16();  // length
+            number = (msg.getLength() - 4) / 20;
+
+            for (int loop = 0; loop < number; loop++) {
+                index = msg.readInt16();
+                itemId = msg.readInt16();
+                itemType = msg.readInt8();
+                identified = msg.readInt8();
+                amount = 1;
+                msg.readInt16();    // Equip Point?
+                msg.readInt16();    // Another Equip Point?
+                msg.readInt8();   // Attribute (broken)
+                msg.readInt8();   // Refine level
+                for (int i = 0; i < 4; i++)
+                    cards[i] = msg.readInt16();
+
+                logger->log("Index:%d, ID:%d, Type:%d, Identified:%d, Qty:%d, Cards:%d, %d, %d, %d",
+                    index, itemId, itemType, identified, amount, cards[0], cards[1], cards[2], cards[3]);
+                storage->setItem(index, itemId, amount, false);
+            }
+            break;
+
         case SMSG_PLAYER_INVENTORY_ADD:
             index = msg.readInt16();
             amount = msg.readInt16();
@@ -141,13 +155,21 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             itemType = msg.readInt8();
 
             if (msg.readInt8() > 0) {
-                chatWindow->chatLog(_("Unable to pick up item"), BY_SERVER);
+                if (config.getValue("showpickupchat", true)) {
+                    chatWindow->chatLog(_("Unable to pick up item"), BY_SERVER);
+                }
             } else {
                 const ItemInfo &itemInfo = ItemDB::get(itemId);
                 const std::string amountStr =
                     (amount > 1) ? toString(amount) : "a";
-                chatWindow->chatLog(strprintf(_("You picked up %s %s"),
-                        amountStr.c_str(), itemInfo.getName().c_str()), BY_SERVER);
+                if (config.getValue("showpickupchat", true)) {
+                    chatWindow->chatLog(strprintf(_("You picked up %s [%s]"),
+                        amountStr.c_str(), itemInfo.getName().c_str()),
+                        BY_SERVER);
+                }
+                if (config.getValue("showpickupparticle", false)) {
+                    player_node->pickedUp(itemInfo.getName());
+                }
 
                 if (Item *item = inventory->getItem(index)) {
                     item->setId(itemId);
@@ -193,35 +215,54 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
         case SMSG_PLAYER_STORAGE_STATUS:
             /*
-             * Basic slots used vs total slots info
-             * We don't really need this information, but this is
-             * the closest we get to an "Open Storage" packet
-             * from the server.  It always comes after the two
-             * SMSG_PLAYER_STORAGE_... packets that update
-             * storage contents.
+             * This is the closest we get to an "Open Storage" packet from the
+             * server. It always comes after the two SMSG_PLAYER_STORAGE_...
+             * packets that update storage contents.
              */
-            logger->log("Received SMSG_PLAYER_STORAGE_STATUS");
             player_node->setInStorage(true);
+            msg.readInt16(); // Storage capacity
+            msg.readInt16(); // Used count
             break;
 
         case SMSG_PLAYER_STORAGE_ADD:
             /*
              * Move an item into storage
              */
+            index = msg.readInt16();
+            amount = msg.readInt32();
+            itemId = msg.readInt16();
+            identified = msg.readInt8();
+            msg.readInt8();  // attribute
+            msg.readInt8();  // refine
+            for (int i = 0; i < 4; i++)
+                cards[i] = msg.readInt16();
+
+            if (Item *item = storage->getItem(index)) {
+                item->setId(itemId);
+                item->increaseQuantity(amount);
+            } else {
+                storage->setItem(index, itemId, amount, false);
+            }
             break;
 
         case SMSG_PLAYER_STORAGE_REMOVE:
             /*
-              * Move an item out of storage
-              */
+             * Move an item out of storage
+             */
+            index = msg.readInt16();
+            amount = msg.readInt16();
+            if (Item *item = storage->getItem(index)) {
+                item->increaseQuantity(-amount);
+                if (item->getQuantity() == 0)
+                    storage->removeItemAt(index);
+            }
             break;
 
         case SMSG_PLAYER_STORAGE_CLOSE:
             /*
-              * Storage access has been closed
-              */
+             * Storage access has been closed
+             */
             player_node->setInStorage(false);
-            logger->log("Received SMSG_PLAYER_STORAGE_CLOSE");
             break;
     }
 }

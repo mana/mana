@@ -62,6 +62,8 @@ class StatusWindow : public Window, public gcn::ActionListener
          */
         void update();
 
+        static void updateHPBar(ProgressBar *bar, bool showMax = false);
+
     private:
         LocalPlayer *mPlayer;
 

@@ -27,6 +27,7 @@
 #include "button.h"
 #include "equipmentwindow.h"
 #include "itempopup.h"
+#include "palette.h"
 #include "playerbox.h"
 #include "viewport.h"
 
@@ -71,6 +72,7 @@ EquipmentWindow::EquipmentWindow():
     mSelected(-1)
 {
     mItemPopup = new ItemPopup;
+    mItemPopup->setOpaque(false);
 
     // Control that shows the Player
     mPlayerBox = new PlayerBox;
@@ -79,7 +81,7 @@ EquipmentWindow::EquipmentWindow():
 
     setWindowName("Equipment");
     setCloseButton(true);
-    setDefaultSize(5, 195, 180, 300);
+    setDefaultSize(180, 300, ImageRect::CENTER);
     loadWindowState();
 
     mUnequip = new Button(_("Unequip"), "unequip", this);
@@ -119,6 +121,9 @@ EquipmentWindow::~EquipmentWindow()
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
 {
+    if (!isVisible())
+        return;
+
     // Draw window graphics
     Window::draw(graphics);
 
@@ -132,6 +137,22 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
 #endif
     {
+        if (i == mSelected)
+        {
+            const gcn::Color color = guiPalette->getColor(Palette::HIGHLIGHT);
+
+            // Set color to the highligh color
+            g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
+            g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
+                                        BOX_WIDTH, BOX_HEIGHT));
+        }
+
+        // Set color black.
+        g->setColor(gcn::Color(0, 0, 0));
+        // Draw box border.
+        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
+                                        BOX_WIDTH, BOX_HEIGHT));
+
 #ifdef TMWSERV_SUPPORT
         Item *item = mEquipment->getEquipment(i);
 #else
@@ -147,7 +168,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 #ifdef EATHENA_SUPPORT
             if (i == EQUIP_AMMO_SLOT)
             {
-                g->setColor(gcn::Color(0, 0, 0));
+                g->setColor(guiPalette->getColor(Palette::TEXT));
                 graphics->drawText(toString(item->getQuantity()),
                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
                                    mEquipBox[i].posY - getFont()->getHeight(),
@@ -155,21 +176,6 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
             }
 #endif
         }
-
-        if (i == mSelected)
-        {
-            // Set color red.
-            g->setColor(gcn::Color(255, 0, 0));
-        }
-        else
-        {
-            // Set color black.
-            g->setColor(gcn::Color(0, 0, 0));
-        }
-
-        // Draw box border.
-        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
-            BOX_WIDTH, BOX_HEIGHT));
     }
 }
 
@@ -280,8 +286,9 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        mItemPopup->setItem(item->getInfo());
-        mItemPopup->setOpaque(false);
+        if (item->getInfo().getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(item->getInfo());
+        mItemPopup->updateColors();
         mItemPopup->view(x + getX(), y + getY());
     }
     else

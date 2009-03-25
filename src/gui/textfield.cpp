@@ -21,6 +21,7 @@
 
 #include <guichan/font.hpp>
 
+#include "palette.h"
 #include "sdlinput.h"
 #include "textfield.h"
 
@@ -54,8 +55,10 @@ TextField::TextField(const std::string& text):
         int gridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
 
-        for (y = 0; y < 3; y++) {
-            for (x = 0; x < 3; x++) {
+        for (y = 0; y < 3; y++)
+        {
+            for (x = 0; x < 3; x++)
+            {
                 skin.grid[a] = textbox->getSubImage(
                         gridx[x], gridy[y],
                         gridx[x + 1] - gridx[x] + 1,
@@ -76,20 +79,22 @@ TextField::~TextField()
     instances--;
 
     if (instances == 0)
-    {
         for_each(skin.grid, skin.grid + 9, dtor<Image*>());
-    }
 }
 
 void TextField::draw(gcn::Graphics *graphics)
 {
-    if (isFocused()) {
+    if (!isVisible())
+        return;
+
+    if (isFocused())
+    {
         drawCaret(graphics,
-                getFont()->getWidth(mText.substr(0, mCaretPosition)) -
-                mXScroll);
+                  getFont()->getWidth(mText.substr(0, mCaretPosition)) -
+                  mXScroll);
     }
 
-    graphics->setColor(getForegroundColor());
+    graphics->setColor(guiPalette->getColor(Palette::TEXT));
     graphics->setFont(getFont());
     graphics->drawText(mText, 1 - mXScroll, 1);
 
@@ -97,9 +102,7 @@ void TextField::draw(gcn::Graphics *graphics)
     {
         mAlpha = config.getValue("guialpha", 0.8);
         for (int a = 0; a < 9; a++)
-        {
             skin.grid[a]->setAlpha(mAlpha);
-        }
     }
 }
 
@@ -117,9 +120,8 @@ void TextField::setNumeric(bool numeric)
 {
     mNumeric = numeric;
     if (!numeric)
-    {
         return;
-    }
+
     const char *text = mText.c_str();
     for (const char *textPtr = text; *textPtr; ++textPtr)
     {
@@ -134,18 +136,15 @@ void TextField::setNumeric(bool numeric)
 int TextField::getValue() const
 {
     if (!mNumeric)
-    {
         return 0;
-    }
+
     int value = atoi(mText.c_str());
     if (value < mMinimum)
-    {
         return mMinimum;
-    }
+
     if (value > mMaximum)
-    {
         return mMaximum;
-    }
+
     return value;
 }
 

@@ -23,13 +23,14 @@
 #include <cmath>
 
 #include <guichan/listmodel.hpp>
-#include <guichan/widgets/label.hpp>
 #include <guichan/widgets/slider.hpp>
 
 #include "browserbox.h"
-#include "color.h"
+#include "gui.h"
 #include "itemlinkhandler.h"
+#include "label.h"
 #include "listbox.h"
+#include "palette.h"
 #include "scrollarea.h"
 #include "setup_colors.h"
 #include "slider.h"
@@ -42,71 +43,91 @@
 #include "../utils/gettext.h"
 #include "../utils/stringutils.h"
 
+const std::string Setup_Colors::rawmsg = _("This is what the color looks like");
+
 Setup_Colors::Setup_Colors() :
     mSelected(-1)
 {
     setOpaque(false);
 
-    mColorBox = new ListBox(textColor);
+    mColorBox = new ListBox(guiPalette);
     mColorBox->setActionEventId("color_box");
     mColorBox->addActionListener(this);
 
     mScroll = new ScrollArea(mColorBox);
     mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
+    mTextPreview = new TextPreview(&rawmsg);
+
     mPreview = new BrowserBox(BrowserBox::AUTO_WRAP);
     mPreview->setOpaque(false);
 
-    // Replace this later with a more appropriate link handler. For now, this'll
-    // do, as it'll do nothing when clicked on.
-    mPreview->setLinkHandler(new ItemLinkHandler);
+    // don't do anything with links
+    mPreview->setLinkHandler(NULL);
 
     mPreviewBox = new ScrollArea(mPreview);
     mPreviewBox->setHeight(20);
     mPreviewBox->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_NEVER);
 
-    mRedLabel = new gcn::Label(_("Red: "));
+    mGradTypeLabel = new Label(_("Type: "));
+
+    mGradTypeSlider = new Slider(0, 3);
+    mGradTypeSlider->setWidth(160);
+    mGradTypeSlider->setActionEventId("slider_grad");
+    mGradTypeSlider->setValue(0);
+    mGradTypeSlider->addActionListener(this);
+    mGradTypeSlider->setEnabled(false);
+
+    mGradTypeText = new Label();
+
+    mRedLabel = new Label(_("Red: "));
 
     mRedText = new TextField;
     mRedText->setWidth(40);
     mRedText->setRange(0, 255);
     mRedText->setNumeric(true);
     mRedText->addListener(this);
+    mRedText->setEnabled(false);
 
     mRedSlider = new Slider(0, 255);
     mRedSlider->setWidth(160);
     mRedSlider->setValue(mRedText->getValue());
     mRedSlider->setActionEventId("slider_red");
     mRedSlider->addActionListener(this);
+    mRedSlider->setEnabled(false);
 
-    mGreenLabel = new gcn::Label(_("Green: "));
+    mGreenLabel = new Label(_("Green: "));
 
     mGreenText = new TextField;
     mGreenText->setWidth(40);
     mGreenText->setRange(0, 255);
     mGreenText->setNumeric(true);
     mGreenText->addListener(this);
+    mGreenText->setEnabled(false);
 
     mGreenSlider = new Slider(0, 255);
     mGreenSlider->setWidth(160);
     mGreenSlider->setValue(mGreenText->getValue());
     mGreenSlider->setActionEventId("slider_green");
     mGreenSlider->addActionListener(this);
+    mGreenSlider->setEnabled(false);
 
-    mBlueLabel = new gcn::Label(_("Blue: "));
+    mBlueLabel = new Label(_("Blue: "));
 
     mBlueText = new TextField;
     mBlueText->setWidth(40);
     mBlueText->setRange(0, 255);
     mBlueText->setNumeric(true);
     mBlueText->addListener(this);
+    mBlueText->setEnabled(false);
 
     mBlueSlider = new Slider(0, 255);
     mBlueSlider->setWidth(160);
     mBlueSlider->setValue(mBlueText->getValue());
     mBlueSlider->setActionEventId("slider_blue");
     mBlueSlider->addActionListener(this);
+    mBlueSlider->setEnabled(false);
 
     setOpaque(false);
 
@@ -114,8 +135,11 @@ Setup_Colors::Setup_Colors() :
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, mScroll, 4, 7).setPadding(2);
-    place(0, 7, mPreviewBox, 4).setPadding(2);
+    place(0, 0, mScroll, 4, 6).setPadding(2);
+    place(0, 6, mPreviewBox, 4).setPadding(2);
+    place(0, 7, mGradTypeLabel, 2);
+    place(2, 7, mGradTypeSlider);
+    place(3, 7, mGradTypeText);
     place(0, 8, mRedLabel, 2);
     place(2, 8, mRedSlider);
     place(3, 8, mRedText).setPadding(1);
@@ -131,19 +155,10 @@ Setup_Colors::Setup_Colors() :
 
 Setup_Colors::~Setup_Colors()
 {
-    delete mRedLabel;
-    delete mRedSlider;
-    delete mRedText;
-
-    delete mGreenLabel;
-    delete mGreenSlider;
-    delete mGreenText;
-
-    delete mBlueLabel;
-    delete mBlueSlider;
-    delete mBlueText;
-
-    delete mScroll;
+    if (mPreviewBox->getContent() == mPreview)
+        delete mTextPreview;
+    else
+        delete mPreview;
 }
 
 void Setup_Colors::action(const gcn::ActionEvent &event)
@@ -151,22 +166,140 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
     if (event.getId() == "color_box")
     {
         mSelected = mColorBox->getSelected();
-        int col = textColor->getColorAt(mSelected);
-        char ch = textColor->getColorCharAt(mSelected);
-        std::string msg;
+        Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
+        const gcn::Color *col = &guiPalette->getColor(type);
+        Palette::GradientType grad = guiPalette->getGradientType(type);
 
-        if (ch == '<')
-            msg = toString("@@|") +
-                  _("This is what the color looks like") + "@@";
-        else
-            msg = "##" + toString(ch) +
-                  _("This is what the color looks like");
+        std::string msg;
+        char ch = guiPalette->getColorChar(type);
 
         mPreview->clearRows();
-        mPreview->addRow(msg);
-        setEntry(mRedSlider, mRedText, col >> 16);
-        setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
-        setEntry(mBlueSlider, mBlueText, col & 0xff);
+        mPreviewBox->setContent(mTextPreview);
+        mTextPreview->setFont(gui->getFont());
+        mTextPreview->setTextColor(&guiPalette->getColor(Palette::TEXT));
+        mTextPreview->setTextBGColor(NULL);
+        mTextPreview->setOpaque(false);
+        mTextPreview->setShadow(true);
+        mTextPreview->setOutline(true);
+        mTextPreview->useTextAlpha(false);
+
+        switch (type)
+        {
+            case Palette::TEXT:
+            case Palette::SHADOW:
+            case Palette::OUTLINE:
+                mTextPreview->setFont(gui->getFont());
+                mTextPreview->setShadow(type == Palette::SHADOW);
+                mTextPreview->setOutline(type == Palette::OUTLINE);
+                break;
+            case Palette::PROGRESS_BAR:
+                mTextPreview->useTextAlpha(true);
+                mTextPreview->setFont(boldFont);
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(true);
+                mTextPreview->setShadow(false);
+                break;
+            case Palette::TAB_HIGHLIGHT:
+                mTextPreview->setFont(gui->getFont());
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
+                break;
+            case Palette::BACKGROUND:
+            case Palette::SHOP_WARNING:
+                mTextPreview->setBGColor(col);
+                mTextPreview->setOpaque(true);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
+                break;
+            case Palette::HIGHLIGHT:
+                mTextPreview->setTextBGColor(col);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
+                mPreview->addRow(rawmsg);
+                break;
+            case Palette::CHAT:
+            case Palette::GM:
+            case Palette::PLAYER:
+            case Palette::WHISPER:
+            case Palette::IS:
+            case Palette::PARTY:
+            case Palette::SERVER:
+            case Palette::LOGGER:
+            case Palette::HYPERLINK:
+                mPreviewBox->setContent(mPreview);
+                mPreview->clearRows();
+
+                if (ch == '<')
+                    msg = toString("@@|") + rawmsg + "@@";
+                else
+                    msg = "##" + toString(ch) + rawmsg;
+
+                mPreview->addRow(msg);
+                break;
+            case Palette::UNKNOWN_ITEM:
+            case Palette::GENERIC:
+            case Palette::HEAD:
+            case Palette::USABLE:
+            case Palette::TORSO:
+            case Palette::ONEHAND:
+            case Palette::LEGS:
+            case Palette::FEET:
+            case Palette::TWOHAND:
+            case Palette::SHIELD:
+            case Palette::RING:
+            case Palette::ARMS:
+            case Palette::AMMO:
+                mTextPreview->setFont(boldFont);
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
+                break;
+            case Palette::PARTICLE:
+            case Palette::EXP_INFO:
+            case Palette::PICKUP_INFO:
+            case Palette::HIT_PLAYER_MONSTER:
+            case Palette::HIT_MONSTER_PLAYER:
+            case Palette::HIT_CRITICAL:
+            case Palette::MISS:
+                mTextPreview->setShadow(false);
+            case Palette::BEING:
+            case Palette::PC:
+            case Palette::SELF:
+            case Palette::GM_NAME:
+            case Palette::NPC:
+            case Palette::MONSTER:
+                mTextPreview->setFont(boldFont);
+                mTextPreview->setTextColor(col);
+            case Palette::TYPE_COUNT:
+                break;
+        }
+
+        if (grad != Palette::STATIC && grad != Palette::PULSE)
+        { // If nonstatic color, don't display the current, but the committed
+          // color at the sliders
+            col = &guiPalette->getCommittedColor(type);
+        }
+        else if (grad == Palette::PULSE)
+        {
+            col = &guiPalette->getTestColor(type);
+        }
+
+        setEntry(mRedSlider, mRedText, col->r);
+        setEntry(mGreenSlider, mGreenText, col->g);
+        setEntry(mBlueSlider, mBlueText, col->b);
+
+        mGradTypeSlider->setValue(grad);
+        updateGradType();
+        mGradTypeSlider->setEnabled(true);
+
+        return;
+    }
+
+    if (event.getId() == "slider_grad")
+    {
+        updateGradType();
+        updateColor();
         return;
     }
 
@@ -202,16 +335,18 @@ void Setup_Colors::setEntry(gcn::Slider *s, TextField *t, int value)
 
 void Setup_Colors::apply()
 {
-    textColor->commit();
+    guiPalette->commit();
 }
 
 void Setup_Colors::cancel()
 {
-    textColor->rollback();
-    int col = textColor->getColorAt(mSelected);
-    setEntry(mRedSlider, mRedText, col >> 16);
-    setEntry(mGreenSlider, mGreenText, (col >> 8) & 0xff);
-    setEntry(mBlueSlider, mBlueText, col & 0xff);
+    guiPalette->rollback();
+    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
+    const gcn::Color *col = &guiPalette->getColor(type);
+    mGradTypeSlider->setValue(guiPalette->getGradientType(type));
+    setEntry(mRedSlider, mRedText, col->r);
+    setEntry(mGreenSlider, mGreenText, col->g);
+    setEntry(mBlueSlider, mBlueText, col->b);
 }
 
 void Setup_Colors::listen(const TextField *tf)
@@ -236,14 +371,51 @@ void Setup_Colors::listen(const TextField *tf)
     }
 }
 
+void Setup_Colors::updateGradType()
+{
+    if (mSelected == -1)
+        return;
+
+    mSelected = mColorBox->getSelected();
+    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
+    Palette::GradientType grad = guiPalette->getGradientType(type);
+
+    mGradTypeText->setCaption(
+            (grad == Palette::STATIC) ? _("Static") :
+            (grad == Palette::PULSE) ? _("Pulse") :
+            (grad == Palette::RAINBOW) ? _("Rainbow") : _("Spectrum"));
+
+    bool enable = (grad == Palette::STATIC || grad == Palette::PULSE);
+    mRedText->setEnabled(enable);
+    mRedSlider->setEnabled(enable);
+    mGreenText->setEnabled(enable);
+    mGreenSlider->setEnabled(enable);
+    mBlueText->setEnabled(enable);
+    mBlueSlider->setEnabled(enable);
+}
+
 void Setup_Colors::updateColor()
 {
     if (mSelected == -1)
-    {
         return;
+
+    Palette::ColorType type = guiPalette->getColorTypeAt(mSelected);
+    Palette::GradientType grad =
+            static_cast<Palette::GradientType>(mGradTypeSlider->getValue());
+    guiPalette->setGradient(type, grad);
+
+    if (grad == Palette::STATIC)
+    {
+        guiPalette->setColor(type,
+                static_cast<int>(mRedSlider->getValue()),
+                static_cast<int>(mGreenSlider->getValue()),
+                static_cast<int>(mBlueSlider->getValue()));
     }
-    int rgb = static_cast<int>(mRedSlider->getValue()) << 16 |
-              static_cast<int>(mGreenSlider->getValue()) << 8 |
-              static_cast<int>(mBlueSlider->getValue());
-    textColor->setColorAt(mSelected, rgb);
+    else if (grad == Palette::PULSE)
+    {
+        guiPalette->setTestColor(type, gcn::Color(
+                static_cast<int>(mRedSlider->getValue()),
+                static_cast<int>(mGreenSlider->getValue()),
+                static_cast<int>(mBlueSlider->getValue())));
+    }
 }

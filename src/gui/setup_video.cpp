@@ -26,9 +26,8 @@
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
 
-#include <guichan/widgets/label.hpp>
-
 #include "checkbox.h"
+#include "label.h"
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
@@ -88,13 +87,15 @@ ModeListModel::ModeListModel()
     SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
 
     /* Check which modes are available */
-    if (modes == (SDL_Rect **)0) {
+    if (modes == (SDL_Rect **)0)
         logger->log("No modes available");
-    } else if (modes == (SDL_Rect **)-1) {
+    else if (modes == (SDL_Rect **)-1)
         logger->log("All resolutions available");
-    } else {
+    else 
+    {
         //logger->log("Available Modes");
-        for (int i = 0; modes[i]; ++i) {
+        for (int i = 0; modes[i]; ++i)
+        {
             const std::string modeString =
                 toString((int)modes[i]->w) + "x" + toString((int)modes[i]->h);
             //logger->log(modeString.c_str());
@@ -110,6 +111,8 @@ Setup_Video::Setup_Video():
     mVisibleNamesEnabled(config.getValue("visiblenames", 1)),
     mParticleEffectsEnabled(config.getValue("particleeffects", true)),
     mNameEnabled(config.getValue("showownname", false)),
+    mPickupChatEnabled(config.getValue("showpickupchat", true)),
+    mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 0)),
     mSpeechMode((int) config.getValue("speech", 3)),
@@ -121,11 +124,15 @@ Setup_Video::Setup_Video():
     mVisibleNamesCheckBox(new CheckBox(_("Visible names"), mVisibleNamesEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
+    mPickupNotifyLabel(new Label(_("Show pickup notification"))),
+    mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
+    mPickupParticleCheckBox(new CheckBox(_("as particle"),
+                           mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),
-    mSpeechLabel(new gcn::Label("")),
+    mSpeechLabel(new Label("")),
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
-    mFpsSlider(new Slider(10, 200)),
+    mFpsSlider(new Slider(10, 120)),
     mFpsField(new TextField),
     mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 16)),
     mScrollLazinessSlider(new Slider(1, 64)),
@@ -135,22 +142,22 @@ Setup_Video::Setup_Video():
     mScrollRadiusField(new TextField),
     mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
     mOverlayDetailSlider(new Slider(0, 2)),
-    mOverlayDetailField(new gcn::Label("")),
+    mOverlayDetailField(new Label("")),
     mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
-    mParticleDetailField(new gcn::Label(""))
+    mParticleDetailField(new Label(""))
 {
     setOpaque(false);
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    speechLabel = new gcn::Label(_("Overhead text"));
-    alphaLabel = new gcn::Label(_("Gui opacity"));
-    scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
-    scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
-    overlayDetailLabel = new gcn::Label(_("Ambient FX"));
-    particleDetailLabel = new gcn::Label(_("Particle Detail"));
+    speechLabel = new Label(_("Overhead text"));
+    alphaLabel = new Label(_("Gui opacity"));
+    scrollRadiusLabel = new Label(_("Scroll radius"));
+    scrollLazinessLabel = new Label(_("Scroll laziness"));
+    overlayDetailLabel = new Label(_("Ambient FX"));
+    particleDetailLabel = new Label(_("Particle Detail"));
 
     mModeList->setEnabled(true);
 #ifndef USE_OPENGL
@@ -172,6 +179,8 @@ Setup_Video::Setup_Video():
     mCustomCursorCheckBox->setActionEventId("customcursor");
     mVisibleNamesCheckBox->setActionEventId("visiblenames");
     mParticleEffectsCheckBox->setActionEventId("particleeffects");
+    mPickupChatCheckBox->setActionEventId("pickupchat");
+    mPickupParticleCheckBox->setActionEventId("pickupparticle");
     mNameCheckBox->setActionEventId("showownname");
     mAlphaSlider->setActionEventId("guialpha");
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
@@ -190,6 +199,8 @@ Setup_Video::Setup_Video():
     mCustomCursorCheckBox->addActionListener(this);
     mVisibleNamesCheckBox->addActionListener(this);
     mParticleEffectsCheckBox->addActionListener(this);
+    mPickupChatCheckBox->addActionListener(this);
+    mPickupParticleCheckBox->addActionListener(this);
     mNameCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
@@ -264,12 +275,15 @@ Setup_Video::Setup_Video():
     ContainerPlacer place = h.getPlacer(0, 0);
 
     place(0, 0, scrollArea, 1, 6).setPadding(2);
-    place(1, 0, mFsCheckBox, 3);
-    place(1, 1, mOpenGLCheckBox, 3);
-    place(1, 2, mCustomCursorCheckBox, 3);
-    place(1, 3, mVisibleNamesCheckBox, 3);
-    place(1, 4, mNameCheckBox, 3);
-    place(1, 5, mParticleEffectsCheckBox, 3);
+    place(1, 0, mFsCheckBox, 2);
+    place(3, 0, mOpenGLCheckBox, 1);
+    place(1, 1, mCustomCursorCheckBox, 3);
+    place(1, 2, mVisibleNamesCheckBox, 3);
+    place(3, 2, mNameCheckBox, 1);
+    place(1, 3, mParticleEffectsCheckBox, 3);
+    place(1, 4, mPickupNotifyLabel, 3);
+    place(1, 5, mPickupChatCheckBox, 1);
+    place(2, 5, mPickupParticleCheckBox, 2);
 
     place(0, 6, mAlphaSlider);
     place(0, 7, mFpsSlider);
@@ -279,7 +293,7 @@ Setup_Video::Setup_Video():
     place(0, 11, mOverlayDetailSlider);
     place(0, 12, mParticleDetailSlider);
 
-    place(1, 6, alphaLabel, 2);
+    place(1, 6, alphaLabel, 3);
     place(1, 7, mFpsCheckBox).setPadding(3);
     place(1, 8, scrollRadiusLabel);
     place(1, 9, scrollLazinessLabel);
@@ -290,9 +304,9 @@ Setup_Video::Setup_Video():
     place(2, 7, mFpsField).setPadding(1);
     place(2, 8, mScrollRadiusField).setPadding(1);
     place(2, 9, mScrollLazinessField).setPadding(1);
-    place(2, 10, mSpeechLabel, 2).setPadding(2);
-    place(2, 11, mOverlayDetailField, 2).setPadding(2);
-    place(2, 12, mParticleDetailField, 2).setPadding(2);
+    place(2, 10, mSpeechLabel, 3).setPadding(2);
+    place(2, 11, mOverlayDetailField, 3).setPadding(2);
+    place(2, 12, mParticleDetailField, 3).setPadding(2);
 
     setDimension(gcn::Rectangle(0, 0, 325, 280));
 }
@@ -329,9 +343,11 @@ void Setup_Video::apply()
                 }
             }
 #if defined(WIN32) || defined(__APPLE__)
-        } else {
+        }
+        else
+        {
             new OkDialog(_("Switching to full screen"),
-                    _("Restart needed for changes to take effect."));
+                         _("Restart needed for changes to take effect."));
         }
 #endif
         config.setValue("screen", fullscreen ? true : false);
@@ -344,7 +360,7 @@ void Setup_Video::apply()
 
         // OpenGL can currently only be changed by restarting, notify user.
         new OkDialog(_("Changing OpenGL"),
-                _("Applying change to OpenGL requires restart."));
+                     _("Applying change to OpenGL requires restart."));
     }
 
     // FPS change
@@ -360,6 +376,8 @@ void Setup_Video::apply()
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", false);
+    mPickupChatEnabled = config.getValue("showpickupchat", true);
+    mPickupParticleEnabled = config.getValue("showpickupparticle", false);
 }
 
 int Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
@@ -406,8 +424,13 @@ void Setup_Video::cancel()
     config.setValue("particleeffects", mParticleEffectsEnabled ? true : false);
     config.setValue("speech", mSpeechMode);
     config.setValue("showownname", mNameEnabled ? true : false);
+    if (player_node)
+        player_node->mUpdateName = true;
     config.setValue("guialpha", mOpacity);
     config.setValue("opengl", mOpenGLEnabled ? true : false);
+    config.setValue("showpickupchat", mPickupChatEnabled ? true : false);
+    config.setValue("showpickupparticle", mPickupParticleEnabled ?
+                    true : false);
 }
 
 void Setup_Video::action(const gcn::ActionEvent &event)
@@ -443,8 +466,19 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("particleeffects",
                 mParticleEffectsCheckBox->isSelected() ? true : false);
-        new OkDialog(_("Particle effect settings changed"),
-                     _("Restart your client or change maps for the change to take effect."));
+        new OkDialog(_("Particle effect settings changed."),
+                     _("Restart your client or change maps "
+                       "for the change to take effect."));
+    }
+    else if (event.getId() == "pickupchat")
+    {
+        config.setValue("showpickupchat", mPickupChatCheckBox->isSelected()
+                        ? true : false);
+    }
+    else if (event.getId() == "pickupparticle")
+    {
+        config.setValue("showpickupparticle",
+                        mPickupParticleCheckBox->isSelected() ? true : false);
     }
     else if (event.getId() == "speech")
     {
@@ -558,9 +592,9 @@ void Setup_Video::keyPressed(gcn::KeyEvent &event)
         {
             mFps = 10;
         }
-        else if (mFps > 200)
+        else if (mFps > 120)
         {
-            mFps = 200;
+            mFps = 120;
         }
         mFpsField->setText(toString(mFps));
         mFpsSlider->setValue(mFps);

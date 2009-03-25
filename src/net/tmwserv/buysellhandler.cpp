@@ -57,7 +57,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
         return;
     }
 
-    current_npc = static_cast< NPC * >(being);
+    current_npc = being->getId();
 
     switch (msg.getId())
     {

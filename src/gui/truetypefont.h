@@ -26,8 +26,8 @@
 #include <string>
 
 #include <guichan/font.hpp>
-#ifndef __APPLE__
-#include <SDL/SDL_ttf.h>
+#ifdef __APPLE__
+#include <SDL_ttf/SDL_ttf.h>
 #else
 #include <SDL_ttf.h>
 #endif
@@ -48,7 +48,7 @@ class TrueTypeFont : public gcn::Font
          * @param filename  Font filename.
          * @param size      Font size.
          */
-        TrueTypeFont(const std::string &filename, int size);
+        TrueTypeFont(const std::string &filename, int size, int style = 0);
 
         /**
          * Destructor.

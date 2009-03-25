@@ -50,4 +50,6 @@ class DebugWindow : public Window
         gcn::Label *mParticleCountLabel;
 };
 
+extern DebugWindow *debugWindow;
+
 #endif

@@ -22,8 +22,6 @@
 #ifndef POPUP_MENU_H
 #define POPUP_MENU_H
 
-#include <SDL.h> // for Uint32
-
 #include "linkhandler.h"
 #include "window.h"
 
@@ -68,7 +66,7 @@ class PopupMenu : public Window, public LinkHandler
     private:
         BrowserBox* mBrowserBox;
 
-        Uint32 mBeingId;
+        int mBeingId;
         FloorItem* mFloorItem;
         Item *mItem;
 

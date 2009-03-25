@@ -23,6 +23,22 @@ But when you enter this command the mapB will be overwritten. This could be a pr
 Now we can check temp.tmx to see if the copying worked correctly. 
 
 
+Which layer gets copied to which:
+By default layers are copied to layers of the same name.  The -n option will make it copy by layer number instead.
+
+  mapA: Ground, Fringe, Over, Collision, Object
+  mapB: Ground, Fencing, Fringe, Over, Collision, Object
+  The default copies Ground->Ground, Fringe->Fringe, Over->Over, Collision->Collision (the object layer is not affected)
+  -n copies Ground->Ground, Fringe->Fencing, Over->Fringe, Collision->Over (mapB's collision and object layers are not affected)
+
+  mapA: Ground, Fringe, Over, Collision, Object
+  mapC: Ground, Fringe, Overhead, Collision, Object
+  The default quits with an error
+  -n copies Over->Overhead
+
+The -c option creates layers as needed.  Using it to copy mapB to mapA will add a Fencing layer to mapA.
+
+
 The program works so far but there are still some minor problems: 
 
 -Only tested for TMW-compilant maps. I don't guarantee that it works with Tiled maps that are made for other games and thus use different features. It is assumed that the target map and the source maps have the same number of layers, for example. 

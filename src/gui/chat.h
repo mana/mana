@@ -100,6 +100,12 @@ class ChatWindow : public Window,
         void logic();
 
         /**
+         * Reset the chat window and recorder window attached to it to their
+         * default positions.
+         */
+        void resetToDefaultSize();
+
+        /**
          * Adds a line of text to our message list. Parameters:
          *
          * @param line Text message.
@@ -129,8 +135,11 @@ class ChatWindow : public Window,
 
         /**
          * Request focus for typing chat message.
+         *
+         * \returns true if the input was shown
+         *          false otherwise
          */
-        void requestChatFocus();
+        bool requestChatFocus();
 
         /**
          * Checks whether ChatWindow is Focused or not.
@@ -248,14 +257,15 @@ class ChatWindow : public Window,
 
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;
-        History mHistory;           /**< Command history. */
-        HistoryIterator mCurHist;   /**< History iterator. */
-        Recorder *mRecorder; /**< Recording class */
-        bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
-                                or not */
+        History mHistory;           /**< Command history */
+        HistoryIterator mCurHist;   /**< History iterator */
+        Recorder *mRecorder;        /**< Recording class */
+        bool mReturnToggles;        /**< Marks whether <Return> toggles the chat
+                                         log or not */
 #ifdef EATHENA_SUPPORT
-        char mPartyPrefix; /**< Messages beginning with the prefix are sent to
-                              the party */
+        char mPartyPrefix;          /**< Messages beginning with the prefix are
+                                         sent to the party */
+        Party *mParty;
 #endif
 };
 

@@ -35,6 +35,10 @@
 #include "../../npc.h"
 #include "../../player_relations.h"
 
+#include "../../gui/npc_text.h"
+
+extern NpcTextDialog *npcTextDialog;
+
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
 BeingHandler::BeingHandler(bool enableSync):
@@ -65,16 +69,16 @@ BeingHandler::BeingHandler(bool enableSync):
 
 void BeingHandler::handleMessage(MessageIn &msg)
 {
-    Uint32 id;
+    int id;
     Uint16 job, speed;
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves;
     Uint16 weapon, shield;
     Uint16 gmstatus;
-    Sint16 param1;
+    int param1;
     int stunMode;
     Uint32 statusEffects;
-    Sint8 type;
+    int type;
     Uint16 status;
     Being *srcBeing, *dstBeing;
     int hairStyle, hairColor, flag;
@@ -204,7 +208,12 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
         case SMSG_BEING_REMOVE:
             // A being should be removed or has died
-            dstBeing = beingManager->findBeing(msg.readInt32());
+            id = msg.readInt32();
+
+            if (id == current_npc)
+                npcTextDialog->showCloseButton();
+
+            dstBeing = beingManager->findBeing(id);
 
             if (!dstBeing)
                 break;
@@ -212,9 +221,6 @@ void BeingHandler::handleMessage(MessageIn &msg)
             // If this is player's current target, clear it.
             if (dstBeing == player_node->getTarget())
                 player_node->stopAttack();
-
-            if (dstBeing == current_npc)
-                    current_npc->handleDeath();
 
             if (msg.readInt8() == 1)
                 dstBeing->setAction(Being::DEAD);
@@ -236,14 +242,17 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             switch (type)
             {
-                case 0x0a: // Critical Damage
+                case Being::HIT: // Damage
+                case Being::CRITICAL: // Critical Damage
+                case Being::MULTI: // Critical Damage
+                case Being::REFLECT: // Reflected Damage
+                case Being::FLEE: // Lucky Dodge
                     if (dstBeing)
-                         dstBeing->showCrit();
-                case 0x00: // Damage
-                    if (dstBeing)
-                        dstBeing->takeDamage(param1);
+                        dstBeing->takeDamage(srcBeing, param1,
+                                (Being::AttackType)type);
                     if (srcBeing)
-                        srcBeing->handleAttack(dstBeing, param1);
+                        srcBeing->handleAttack(dstBeing, param1,
+                                (Being::AttackType)type);
                     break;
 
                 case 0x02: // Sit
@@ -450,11 +459,6 @@ void BeingHandler::handleMessage(MessageIn &msg)
             {
                 switch (msg.readInt8())
                 {
-                    case 1:
-                        if (dstBeing->getType() != Being::NPC)
-                            dstBeing->setAction(Being::DEAD);
-                        break;
-
                     case 2:
                         dstBeing->setAction(Being::SIT);
                         break;

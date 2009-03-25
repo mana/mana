@@ -26,11 +26,11 @@
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "popupmenu.h"
-#include "windowcontainer.h"
 
 #include "../being.h"
 #include "../beingmanager.h"
 #include "../floor_item.h"
+#include "../graphics.h"
 #include "../item.h"
 #include "../localplayer.h"
 #include "../npc.h"
@@ -75,7 +75,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     {
         case Being::PLAYER:
             {
-                // Players can be traded with. Later also attack, follow and
+                // Players can be traded with. Later also follow and
                 // add as buddy will be options in this menu.
                 const std::string &name = being->getName();
                 mBrowserBox->addRow(strprintf(_("@@trade|Trade With %s@@"), name.c_str()));
@@ -345,10 +345,10 @@ void PopupMenu::showPopup(int x, int y, Item *item)
 void PopupMenu::showPopup(int x, int y)
 {
     setContentSize(mBrowserBox->getWidth() + 8, mBrowserBox->getHeight() + 8);
-    if (windowContainer->getWidth() < (x + getWidth() + 5))
-        x = windowContainer->getWidth() - getWidth();
-    if (windowContainer->getHeight() < (y + getHeight() + 5))
-        y = windowContainer->getHeight() - getHeight();
+    if (graphics->getWidth() < (x + getWidth() + 5))
+        x = graphics->getWidth() - getWidth();
+    if (graphics->getHeight() < (y + getHeight() + 5))
+        y = graphics->getHeight() - getHeight();
     setPosition(x, y);
     setVisible(true);
     requestMoveToTop();

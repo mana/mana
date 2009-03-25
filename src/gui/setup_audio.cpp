@@ -19,9 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "checkbox.h"
+#include "label.h"
 #include "ok_dialog.h"
 #include "setup_audio.h"
 #include "slider.h"
@@ -45,8 +44,8 @@ Setup_Audio::Setup_Audio():
     setOpaque(false);
     setDimension(gcn::Rectangle(0, 0, 250, 200));
 
-    gcn::Label *sfxLabel = new gcn::Label(_("Sfx volume"));
-    gcn::Label *musicLabel = new gcn::Label(_("Music volume"));
+    gcn::Label *sfxLabel = new Label(_("Sfx volume"));
+    gcn::Label *musicLabel = new Label(_("Music volume"));
 
     mSfxSlider->setActionEventId("sfx");
     mMusicSlider->setActionEventId("music");
@@ -80,7 +79,8 @@ void Setup_Audio::apply()
     if (mSoundCheckBox->isSelected())
     {
         config.setValue("sound", 1);
-        try {
+        try
+        {
             sound.init();
         }
         catch (const char *err)

@@ -28,18 +28,33 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#ifdef TMWSERV_SUPPORT
+#include "../net/tmwserv/gameserver/player.h"
+#else
+#include "../net/ea/protocol.h"
+#endif
+
 #include "../utils/gettext.h"
 
-NpcTextDialog::NpcTextDialog():
-    Window(_("NPC")),
-    mState(NPC_TEXT_STATE_WAITING)
+#ifdef TMWSERV_SUPPORT
+NpcTextDialog::NpcTextDialog()
+#else
+NpcTextDialog::NpcTextDialog(Network *network)
+#endif
+    : Window(_("NPC"))
+#ifdef EATHENA_SUPPORT
+    , mNetwork(network)
+#endif
+    , mState(NPC_TEXT_STATE_WAITING)
 {
+    setWindowName("NPCText");
     setResizable(true);
 
     setMinWidth(200);
     setMinHeight(150);
 
-    setDefaultSize(0, 0, 260, 200);
+    setDefaultSize(260, 200, ImageRect::CENTER);
 
     mTextBox = new TextBox;
     mTextBox->setEditable(false);
@@ -57,8 +72,14 @@ NpcTextDialog::NpcTextDialog():
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
+    center();
     loadWindowState();
-    setLocationRelativeTo(getParent());
+}
+
+void NpcTextDialog::clearText()
+{
+    NPC::isTalking = false;
+    setText("");
 }
 
 void NpcTextDialog::setText(const std::string &text)
@@ -92,13 +113,15 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "ok")
     {
         if (mState == NPC_TEXT_STATE_NEXT && current_npc) {
-            current_npc->nextDialog();
+            nextDialog();
             addText("\n> Next\n");
         } else if (mState == NPC_TEXT_STATE_CLOSE ||
                 (mState == NPC_TEXT_STATE_NEXT && !current_npc)) {
             setText("");
+            if (current_npc) nextDialog();
             setVisible(false);
-            if (current_npc) current_npc->handleDeath();
+            current_npc = 0;
+            NPC::isTalking = false;
         } else return;
     }
     else return;
@@ -108,6 +131,26 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
     mState = NPC_TEXT_STATE_WAITING;
 }
 
+void NpcTextDialog::nextDialog(int npcID)
+{
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::talkToNPC(npcID, false);
+#else
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeInt32(npcID);
+#endif
+}
+
+void NpcTextDialog::closeDialog(int npcID)
+{
+#ifdef EATHENA_SUPPORT
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_NPC_CLOSE);
+    outMsg.writeInt32(npcID);
+#endif
+}
+
 void NpcTextDialog::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);
@@ -115,3 +158,8 @@ void NpcTextDialog::widgetResized(const gcn::Event &event)
     setText(mText);
 }
 
+void NpcTextDialog::requestFocus()
+{
+    loadWindowState();
+    setVisible(true);
+}

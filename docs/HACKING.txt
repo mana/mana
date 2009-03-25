@@ -115,20 +115,3 @@ necessary.
 * Whenever you add a new source file somewhere in ./src do not forget to add
   them in ./src/Makefile.am as well!
 
-* ChangeLog file format:
-
-  YYYY-MM-DD[space][space]Firstname[space]Lastname[space][space]<email@address>
-  [newline]
-  [tab]*[space]filename:[space]Comment
-  [newline]
-
-  The last character on each line is at max at column 79.
-
-  Example:
-
-1234-12-24  Some Body  <mymail@mailserver.tld>
-
-	* some/file: My comment.
-	* some/file, anotherfile: This is a pretty long comment and needs a
-	line break, to avoid characters at colums > 79.
-

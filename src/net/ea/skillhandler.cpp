@@ -85,14 +85,14 @@ void SkillHandler::handleMessage(MessageIn &msg)
 
             for (int k = 0; k < skillCount; k++)
             {
-                Sint16 skillId = msg.readInt16();
+                int skillId = msg.readInt16();
                 msg.readInt16();  // target type
                 msg.readInt16();  // unknown
-                Sint16 level = msg.readInt16();
-                Sint16 sp = msg.readInt16();
+                int level = msg.readInt16();
+                int sp = msg.readInt16();
                 msg.readInt16();  // range
                 std::string skillName = msg.readString(24);
-                Sint8 up = msg.readInt8();
+                int up = msg.readInt8();
 
                 if (level != 0 || up != 0)
                 {

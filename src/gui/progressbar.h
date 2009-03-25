@@ -124,10 +124,13 @@ class ProgressBar : public gcn::Widget
         bool mSmoothColorChange;
 
         std::string mText;
+        bool mUpdated;
 
         static ImageRect mBorder;
         static int mInstances;
         static float mAlpha;
+        
+        static const gcn::Color TEXT_COLOR;
 };
 
 #endif

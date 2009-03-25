@@ -40,7 +40,7 @@ EmoteWindow::EmoteWindow():
     setCloseButton(true);
     setMinWidth(80);
     setMinHeight(130);
-    setDefaultSize(115, 25, 322, 200);
+    setDefaultSize(322, 200, ImageRect::CENTER);
 
     mUseButton = new Button(_("Use"), "use", this);
 

@@ -24,13 +24,11 @@
 #include <SDL_thread.h>
 #include <zlib.h>
 
-#include <guichan/widgets/label.hpp>
-
-// Curl should be included after Guichan to avoid Windows redefinitions
 #include <curl/curl.h>
 
 #include "browserbox.h"
 #include "button.h"
+#include "label.h"
 #include "progressbar.h"
 #include "scrollarea.h"
 #include "updatewindow.h"
@@ -109,7 +107,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
 
     mBrowserBox = new BrowserBox;
     mScrollArea = new ScrollArea(mBrowserBox);
-    mLabel = new gcn::Label(_("Connecting..."));
+    mLabel = new Label(_("Connecting..."));
     mProgressBar = new ProgressBar(0.0, 310, 20, 168, 116, 31);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayButton = new Button(_("Play"), "play", this);
@@ -131,7 +129,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mCancelButton->requestFocus();
 

@@ -71,7 +71,7 @@ ChatWindow::ChatWindow(Network * network):
     setWindowName("Chat");
 
     setResizable(true);
-    setDefaultSize(0, windowContainer->getHeight() - 123, 600, 123);
+    setDefaultSize(600, 123, ImageRect::LOWER_LEFT);
     setMinWidth(150);
     setMinHeight(90);
 
@@ -121,7 +121,15 @@ ChatWindow::~ChatWindow()
     config.setValue("PartyPrefix", partyPrefix);
     config.setValue("ReturnToggles", mReturnToggles ? "1" : "0");
     delete mRecorder;
+    delete mParty;
 #endif
+    delete mItemLinkHandler;
+}
+
+void ChatWindow::resetToDefaultSize()
+{
+    mRecorder->resetToDefaultSize();
+    Window::resetToDefaultSize();
 }
 
 void ChatWindow::widgetResized(const gcn::Event &event)
@@ -303,6 +311,42 @@ void ChatWindow::chatLog(std::string line, int own, std::string channelName,
         << (int) ((t / 60) % 60)
         << "] ";
 
+    // Check for item link
+    std::string::size_type start = tmp.text.find('[');
+    while (start != std::string::npos && tmp.text[start+1] != '@')
+    {
+        std::string::size_type end = tmp.text.find(']', start);
+        if (start+1 != end && end != std::string::npos)
+        {
+            // Catch multiple embeds and ignore them
+            // so it doesn't crash the client.
+            while ((tmp.text.find('[', start + 1) != std::string::npos) &&
+                   (tmp.text.find('[', start + 1) < end))
+            {
+                start = tmp.text.find('[', start + 1);
+            }
+
+            std::string temp = tmp.text.substr(start+1, end - start - 1);
+
+            trim(temp);
+
+            for (unsigned int i = 0; i < temp.size(); i++)
+            {
+                temp[i] = (char) tolower(temp[i]);
+            }
+
+            const ItemInfo itemInfo = ItemDB::get(temp);
+            if (itemInfo.getName() != _("Unknown item"))
+            {
+                tmp.text.insert(end, "@@");
+                tmp.text.insert(start+1, "|");
+                tmp.text.insert(start+1, toString(itemInfo.getId()));
+                tmp.text.insert(start+1, "@@");
+            }
+        }
+        start = tmp.text.find('[', start + 1);
+    }
+
     line = lineColor + timeStr.str() + tmp.nick + tmp.text;
 
     // We look if the Vertical Scroll Bar is set at the max before
@@ -370,7 +414,7 @@ void ChatWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void ChatWindow::requestChatFocus()
+bool ChatWindow::requestChatFocus()
 {
     // Make sure chatWindow is visible
     if (!isVisible())
@@ -385,9 +429,14 @@ void ChatWindow::requestChatFocus()
         mTmpVisible = true;
     }
 
+    // Don't do anything else if the input is already visible and has focus
+    if (mChatInput->isVisible() && mChatInput->isFocused())
+        return false;
+
     // Give focus to the chat input
     mChatInput->setVisible(true);
     mChatInput->requestFocus();
+    return true;
 }
 
 bool ChatWindow::isInputFocused()
@@ -487,38 +536,6 @@ void ChatWindow::chatSend(std::string &msg)
         return;
     }
 #endif
-
-    // Check for item link
-    std::string::size_type start = msg.find('[');
-    while (start != std::string::npos && msg[start+1] != '@')
-    {
-        std::string::size_type end = msg.find(']', start);
-        if (start+1 != end && end != std::string::npos)
-        {
-            // Catch multiple embeds and ignore them
-            // so it doesn't crash the client.
-            while ((msg.find('[', start + 1) != std::string::npos) &&
-                   (msg.find('[', start + 1) < end))
-            {
-                start = msg.find('[', start + 1);
-            }
-
-            std::string temp = msg.substr(start + 1, end - start - 1);
-
-            toLower(trim(temp));
-
-            const ItemInfo itemInfo = ItemDB::get(temp);
-            if (itemInfo.getName() != _("Unknown item"))
-            {
-                msg.insert(end, "@@");
-                msg.insert(start+1, "|");
-                msg.insert(start+1, toString(itemInfo.getId()));
-                msg.insert(start+1, "@@");
-            }
-        }
-        start =  msg.find('[', start + 1);
-    }
-
 
     // Prepare ordinary message
     if (msg[0] != '/')

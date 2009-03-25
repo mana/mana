@@ -28,15 +28,28 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#ifdef EATHENA_SUPPORT
+#include "../net/ea/protocol.h"
+#endif
+
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-extern NpcTextDialog *npcTextDialog;
-
-NpcIntegerDialog::NpcIntegerDialog():
-    Window(_("NPC Number Request"))
+#ifdef TMWSERV_SUPPORT
+NpcIntegerDialog::NpcIntegerDialog()
+#else
+NpcIntegerDialog::NpcIntegerDialog(Network *network)
+#endif
+    : Window(_("NPC Number Request"))
+#ifdef EATHENA_SUPPORT
+    , mNetwork(network)
+#endif
 {
+    setWindowName("NPCInteger");
     mValueField = new IntTextField;
+
+    setDefaultSize(175, 75, ImageRect::CENTER);
 
     mDecButton = new Button("-", "decvalue", this);
     mIncButton = new Button("+", "incvalue", this);
@@ -44,8 +57,8 @@ NpcIntegerDialog::NpcIntegerDialog():
     gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
     gcn::Button *resetButton = new Button(_("Reset"), "reset", this);
 
-    mDecButton->setSize(20, 20);
-    mIncButton->setSize(20, 20);
+    mDecButton->adjustSize();
+    mDecButton->setWidth(mIncButton->getWidth());
 
     ContainerPlacer place;
     place = getPlacer(0, 0);
@@ -60,7 +73,9 @@ NpcIntegerDialog::NpcIntegerDialog():
     place(3, 0, okButton);
     reflowLayout(175, 0);
 
-    setLocationRelativeTo(getParent());
+    center();
+    setDefaultSize();
+    loadWindowState();
 }
 
 void NpcIntegerDialog::setRange(int min, int max)
@@ -73,18 +88,23 @@ int NpcIntegerDialog::getValue()
     return mValueField->getValue();
 }
 
+void NpcIntegerDialog::reset()
+{
+    mValueField->reset();
+}
+
 void NpcIntegerDialog::action(const gcn::ActionEvent &event)
 {
-    int finish = 0;
+    bool finish = false;
 
     if (event.getId() == "ok")
     {
-        finish = 1;
+        finish = true;
         npcTextDialog->addText(strprintf("\n> %d\n", mValueField->getValue()));
     }
     else if (event.getId() == "cancel")
     {
-        finish = 1;
+        finish = true;
         mValueField->reset();
         npcTextDialog->addText(_("\n> Cancel\n"));
     }
@@ -104,7 +124,15 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
     if (finish)
     {
         setVisible(false);
-        current_npc->integerInput(mValueField->getValue());
+        NPC::isTalking = false;
+
+#ifdef EATHENA_SUPPORT
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(CMSG_NPC_INT_RESPONSE);
+        outMsg.writeInt32(current_npc);
+        outMsg.writeInt32(mValueField->getValue());
+#endif
+
         mValueField->reset();
     }
 }
@@ -122,4 +150,14 @@ bool NpcIntegerDialog::isInputFocused()
 void NpcIntegerDialog::requestFocus()
 {
     mValueField->requestFocus();
+}
+
+void NpcIntegerDialog::setVisible(bool visible)
+{
+    if (visible) {
+        npcTextDialog->setVisible(true);
+        requestFocus();
+    }
+
+    Window::setVisible(visible);
 }

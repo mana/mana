@@ -18,10 +18,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-#include <SDL_mouse.h>
 
+#include "inventorywindow.h"
 #include "itemshortcutcontainer.h"
 #include "itempopup.h"
+#include "palette.h"
 #include "viewport.h"
 
 #include "../configuration.h"
@@ -46,6 +47,7 @@ ItemShortcutContainer::ItemShortcutContainer():
     addWidgetListener(this);
 
     mItemPopup = new ItemPopup;
+    mItemPopup->setOpaque(false);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -64,24 +66,19 @@ ItemShortcutContainer::~ItemShortcutContainer()
     delete mItemPopup;
 }
 
-void ItemShortcutContainer::logic()
-{
-    gcn::Widget::logic();
-
-    int i = itemShortcut->getItemCount();
-
-    if (i != mMaxItems)
-    {
-        mMaxItems = i;
-        setWidth(getWidth());
-    }
-}
-
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
+    if (!isVisible())
+        return;
+
+    if (config.getValue("guialpha", 0.8) != mAlpha)
+    {
+        mAlpha = config.getValue("guialpha", 0.8);
+        mBackgroundImg->setAlpha(mAlpha);
+    }
+
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    graphics->setColor(gcn::Color(0, 0, 0));
     graphics->setFont(getFont());
 
     for (int i = 0; i < mMaxItems; i++)
@@ -94,7 +91,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
             (SDLKey) keyboard.getKeyValue(keyboard.KEY_SHORTCUT_1 + i));
-        graphics->setColor(0x000000);
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
         g->drawText(key, itemX + 2, itemY + 2, gcn::Graphics::LEFT);
 
         if (itemShortcut->getItem(i) < 0)
@@ -102,6 +99,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
         Item *item =
             player_node->getInventory()->findItem(itemShortcut->getItem(i));
+
         if (item)
         {
             // Draw item icon.
@@ -115,14 +113,12 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 #endif
                     toString(item->getQuantity());
                 g->drawImage(image, itemX, itemY);
-                g->drawText(
-                        label,
-                        itemX + mBoxWidth / 2,
-                        itemY + mBoxHeight - 14,
-                        gcn::Graphics::CENTER);
+                g->drawText(label, itemX + mBoxWidth / 2,
+                            itemY + mBoxHeight - 14, gcn::Graphics::CENTER);
             }
         }
     }
+
     if (mItemMoved)
     {
         // Draw the item image being dragged by the cursor.
@@ -133,17 +129,10 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
             const int tPosY = mCursorPosY - (image->getHeight() / 2);
 
             g->drawImage(image, tPosX, tPosY);
-            g->drawText(
-                    toString(mItemMoved->getQuantity()),
-                    tPosX + mBoxWidth / 2,
-                    tPosY + mBoxHeight - 14,
-                    gcn::Graphics::CENTER);
+            g->drawText(toString(mItemMoved->getQuantity()),
+                        tPosX + mBoxWidth / 2, tPosY + mBoxHeight - 14,
+                        gcn::Graphics::CENTER);
         }
-    }
-
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
     }
 }
 
@@ -156,10 +145,7 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
             const int index = getIndexFromGrid(event.getX(), event.getY());
             const int itemId = itemShortcut->getItem(index);
 
-            if (index == -1)
-                return;
-
-            if (itemId < 0)
+            if (index == -1 || itemId < 0)
                 return;
 
             Item *item = player_node->getInventory()->findItem(itemId);
@@ -170,7 +156,8 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
                 itemShortcut->removeItem(index);
             }
         }
-        if (mItemMoved) {
+        if (mItemMoved)
+        {
             mCursorPosX = event.getX();
             mCursorPosY = event.getY();
         }
@@ -180,14 +167,14 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
 {
     const int index = getIndexFromGrid(event.getX(), event.getY());
+
     if (index == -1)
         return;
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-
         // Stores the selected item if theirs one.
-        if (itemShortcut->isItemSelected())
+        if (itemShortcut->isItemSelected() && inventoryWindow->isVisible())
         {
             itemShortcut->setItem(index);
             itemShortcut->setItemSelected(-1);
@@ -203,12 +190,9 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
         if (!item)
             return;
 
-        /* Convert relative to the window coordinates to absolute screen
-         * coordinates.
-         */
-        int mx, my;
-        SDL_GetMouseState(&mx, &my);
-        viewport->showPopup(mx, my, item);
+        // Convert relative to the window coordinates to absolute screen
+        // coordinates.
+        viewport->showPopup(viewport->getMouseX(), viewport->getMouseY(), item);
     }
 }
 
@@ -234,6 +218,7 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         {
             itemShortcut->useItem(index);
         }
+
         if (mItemClicked)
             mItemClicked = false;
     }
@@ -245,22 +230,17 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
     const int index = getIndexFromGrid(event.getX(), event.getY());
     const int itemId = itemShortcut->getItem(index);
 
-    if (index == -1)
-         return;
-
-    if (itemId < 0)
+    if (index == -1 || itemId < 0)
         return;
 
     Item *item = player_node->getInventory()->findItem(itemId);
 
-    if (item)
+    if (item && inventoryWindow->isVisible())
     {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-
-        mItemPopup->setItem(item->getInfo());
-        mItemPopup->setOpaque(false);
-        mItemPopup->view(mouseX, mouseY);
+        if (item->getInfo().getName() != mItemPopup->getItemName())
+            mItemPopup->setItem(item->getInfo());
+        mItemPopup->updateColors();
+        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
     }
     else
     {

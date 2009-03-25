@@ -25,7 +25,9 @@
 
 #include "focushandler.h"
 #include "gui.h"
+#include "palette.h"
 #include "sdlinput.h"
+#include "skin.h"
 #include "truetypefont.h"
 #include "viewport.h"
 #include "window.h"
@@ -45,11 +47,6 @@
 Gui *gui = 0;
 Viewport *viewport = 0;                    /**< Viewport on the map. */
 SDLInput *guiInput = 0;
-
-// Fonts used in showing hits
-gcn::Font *hitRedFont = 0;
-gcn::Font *hitBlueFont = 0;
-gcn::Font *hitYellowFont = 0;
 
 // Bolded font
 gcn::Font *boldFont = 0;
@@ -113,6 +110,7 @@ Gui::Gui(Graphics *graphics):
     {
         const int fontSize = (int)config.getValue("fontSize", 11);
         mGuiFont = new TrueTypeFont(path, fontSize);
+        mInfoParticleFont = new TrueTypeFont(path, fontSize, 1);
     }
     catch (gcn::Exception e)
     {
@@ -136,22 +134,6 @@ Gui::Gui(Graphics *graphics):
 
     gcn::Widget::setGlobalFont(mGuiFont);
 
-    // Load hits' colorful fonts
-    try
-    {
-        hitRedFont = new gcn::ImageFont("graphics/gui/hits_red.png",
-                "0123456789crit! ");
-        hitBlueFont = new gcn::ImageFont("graphics/gui/hits_blue.png",
-                "0123456789crit! ");
-        hitYellowFont = new gcn::ImageFont("graphics/gui/hits_yellow.png",
-                "0123456789misxp ");
-    }
-    catch (gcn::Exception e)
-    {
-        logger->error(std::string("Unable to load colored hits' fonts: ")
-                + e.getMessage());
-    }
-
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getValue("customcursor", 1) == 1);
     mConfigListener = new GuiConfigListener(this);
@@ -169,16 +151,12 @@ Gui::~Gui()
     config.removeListener("customcursor", mConfigListener);
     delete mConfigListener;
 
-    // Fonts used in showing hits
-    delete hitRedFont;
-    delete hitBlueFont;
-    delete hitYellowFont;
-
     if (mMouseCursors)
         mMouseCursors->decRef();
 
     delete mGuiFont;
     delete boldFont;
+    delete mInfoParticleFont;
     delete viewport;
     delete getTop();
 
@@ -195,6 +173,8 @@ void Gui::logic()
     }
     else
         mMouseCursorAlpha = std::max(0.0f, mMouseCursorAlpha - 0.005f);
+
+    guiPalette->advanceGradient();
 
     gcn::Gui::logic();
 }
@@ -261,4 +241,9 @@ void Gui::handleMouseMoved(const gcn::MouseInput &mouseInput)
 {
     gcn::Gui::handleMouseMoved(mouseInput);
     mMouseInactivityTimer = 0;
+}
+
+const int Gui::getFontHeight() const
+{
+    return mGuiFont->getHeight();
 }

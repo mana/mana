@@ -77,6 +77,18 @@ class Gui : public gcn::Gui
         { return mGuiFont; }
 
         /**
+         * Return game font height.
+         */
+        const int getFontHeight() const;
+
+        /**
+         * Return the Font used for "Info Particles", i.e. ones showing, what
+         * you picked up, etc.
+         */
+        gcn::Font* getInfoParticleFont() const
+        { return mInfoParticleFont; }
+
+        /**
          * Sets whether a custom cursor should be rendered.
          */
         void setUseCustomCursor(bool customCursor);
@@ -107,6 +119,7 @@ class Gui : public gcn::Gui
     private:
         GuiConfigListener *mConfigListener;
         gcn::Font *mGuiFont;                  /**< The global GUI font */
+        gcn::Font *mInfoParticleFont;         /**< Font for Info Particles*/
         bool mCustomCursor;                   /**< Show custom cursor */
         ImageSet *mMouseCursors;              /**< Mouse cursor images */
         float mMouseCursorAlpha;
@@ -116,13 +129,6 @@ class Gui : public gcn::Gui
 
 extern Gui *gui;                              /**< The GUI system */
 extern SDLInput *guiInput;                    /**< GUI input */
-
-/**
- * Fonts used in showing hits
- */
-extern gcn::Font *hitRedFont;
-extern gcn::Font *hitBlueFont;
-extern gcn::Font *hitYellowFont;
 
 /**
  * Bolded text font

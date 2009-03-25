@@ -101,12 +101,27 @@ class BuyDialog : public Window, public gcn::ActionListener,
          */
         void updateButtonsAndLabels();
 
+        /**
+         * Check for current NPC
+         */
+        void logic();
+
+        /**
+         * Sets the visibility of this window.
+         */
+        void setVisible(bool visible);
+
+        /**
+         * Closes the Buy Window, as well as resetting the current npc.
+         */
+        void close();
     private:
 #ifdef EATHENA_SUPPORT
         Network *mNetwork;
 #endif
         gcn::Button *mBuyButton;
         gcn::Button *mQuitButton;
+        gcn::Button *mAddMaxButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
         ShopListBox *mShopItemList;
@@ -123,5 +138,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         int mAmountItems;
         int mMaxItems;
 };
+
+extern BuyDialog *buyDialog;
 
 #endif

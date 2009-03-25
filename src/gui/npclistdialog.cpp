@@ -31,24 +31,39 @@
 
 #include "../npc.h"
 
+#include "../net/messageout.h"
+#ifdef TMWSERV_SUPPORT
+#include "../net/tmwserv/gameserver/player.h"
+#else
+#include "../net/ea/protocol.h"
+#endif
+
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-extern NpcTextDialog *npcTextDialog;
-
-NpcListDialog::NpcListDialog():
-    Window(_("NPC"))
+#ifdef TMWSERV_SUPPORT
+NpcListDialog::NpcListDialog()
+#else
+NpcListDialog::NpcListDialog(Network *network)
+#endif
+    : Window("NPC")
+#ifdef EATHENA_SUPPORT
+    , mNetwork(network)
+#endif
 {
+    setWindowName("NPCList");
     setResizable(true);
 
     setMinWidth(200);
     setMinHeight(150);
 
-    setDefaultSize(0, 0, 260, 200);
+    setDefaultSize(260, 200, ImageRect::CENTER);
 
     mItemList = new ListBox(this);
     mItemList->setWrappingEnabled(true);
+
     gcn::ScrollArea *scrollArea = new ScrollArea(mItemList);
+
     gcn::Button *okButton = new Button(_("OK"), "ok", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "cancel", this);
 
@@ -56,14 +71,14 @@ NpcListDialog::NpcListDialog():
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     place(0, 0, scrollArea, 5).setPadding(3);
-    place(3, 1, okButton);
-    place(4, 1, cancelButton);
+    place(3, 1, cancelButton);
+    place(4, 1, okButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
+    center();
     loadWindowState();
-    setLocationRelativeTo(getParent());
 }
 
 int NpcListDialog::getNumberOfElements()
@@ -92,6 +107,8 @@ void NpcListDialog::parseItems(const std::string &itemString)
 
 void NpcListDialog::reset()
 {
+    NPC::isTalking = false;
+    mItemList->setSelected(-1);
     mItems.clear();
 }
 
@@ -102,6 +119,7 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     {
         // Send the selected index back to the server
         int selectedIndex = mItemList->getSelected();
+
         if (selectedIndex > -1)
         {
             choice = selectedIndex + 1;
@@ -113,12 +131,40 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
     {
         choice = 0xff; // 0xff means cancel
         npcTextDialog->addText(_("\n> Cancel\n"));
+        npcTextDialog->showCloseButton();
     }
 
     if (choice)
     {
         setVisible(false);
+        saveWindowState();
         reset();
-        current_npc->dialogChoice(choice);
+
+#ifdef TMWSERV_SUPPORT
+        Net::GameServer::Player::selectFromNPC(current_npc, choice);
+#else
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
+        outMsg.writeInt32(current_npc);
+        outMsg.writeInt8(choice);
+#endif
     }
+}
+
+void NpcListDialog::setVisible(bool visible)
+{
+    if (visible) {
+        npcTextDialog->setVisible(true);
+        requestFocus();
+    }
+
+    Window::setVisible(visible);
+}
+
+void NpcListDialog::requestFocus()
+{
+    mItemList->requestFocus();
+    mItemList->setSelected(0);
+    loadWindowState();
+    setVisible(true);
 }

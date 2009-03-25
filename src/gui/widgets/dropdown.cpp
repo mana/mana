@@ -23,8 +23,8 @@
 
 #include "dropdown.h"
 
-#include "../color.h"
 #include "../listbox.h"
+#include "../palette.h"
 #include "../scrollarea.h"
 
 #include "../../configuration.h"
@@ -74,12 +74,15 @@ DropDown::DropDown(gcn::ListModel *listModel, gcn::ScrollArea *scrollArea,
         int gridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
 
-        for (y = 0; y < 3; y++) {
-            for (x = 0; x < 3; x++) {
-                skin.grid[a] = boxBorder->getSubImage(
-                        gridx[x], gridy[y],
-                        gridx[x + 1] - gridx[x] + 1,
-                        gridy[y + 1] - gridy[y] + 1);
+        for (y = 0; y < 3; y++)
+        {
+            for (x = 0; x < 3; x++)
+            {
+                skin.grid[a] = boxBorder->getSubImage(gridx[x], gridy[y],
+                                                      gridx[x + 1] -
+                                                      gridx[x] + 1,
+                                                      gridy[y + 1] -
+                                                      gridy[y] + 1);
                 skin.grid[a]->setAlpha(mAlpha);
                 a++;
             }
@@ -104,20 +107,22 @@ DropDown::~DropDown()
 
         for_each(skin.grid, skin.grid + 9, dtor<Image*>());
     }
+
+    gcn::ListModel *listModel = getListModel();
+    if (listModel) delete listModel;
 }
 
 void DropDown::draw(gcn::Graphics* graphics)
 {
+    if (!isVisible())
+        return;
+
     int h;
 
     if (mDroppedDown)
-    {
         h = mFoldedUpHeight;
-    }
     else
-    {
         h = getHeight();
-    }
 
     if (config.getValue("guialpha", 0.8) != mAlpha)
     {
@@ -134,27 +139,20 @@ void DropDown::draw(gcn::Graphics* graphics)
         }
     }
 
-    bool valid;
     const int alpha = (int)(mAlpha * 255.0f);
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
-    gcn::Color highlightColor = textColor->getColor('H', valid);
-    highlightColor.a = alpha;
+    const gcn::Color* highlightColor = &guiPalette->getColor(Palette::HIGHLIGHT,
+            alpha);
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;
 
     if (mOpaque)
     {
-        int red = getBackgroundColor().r;
-        int green = getBackgroundColor().g;
-        int blue = getBackgroundColor().b;
-        graphics->setColor(gcn::Color(red, green, blue, alpha));
+        graphics->setColor(guiPalette->getColor(Palette::BACKGROUND, alpha));
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), h));
 
-        red = getForegroundColor().r;
-        green = getForegroundColor().g;
-        blue = getForegroundColor().b;
-        graphics->setColor(gcn::Color(red, green, blue, alpha));
+        graphics->setColor(guiPalette->getColor(Palette::TEXT, alpha));
     }
 
     graphics->setFont(getFont());
@@ -166,7 +164,7 @@ void DropDown::draw(gcn::Graphics* graphics)
 
     if (isFocused())
     {
-        graphics->setColor(highlightColor);
+        graphics->setColor(*highlightColor);
         graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth() - h, h));
     }
 
@@ -178,7 +176,7 @@ void DropDown::draw(gcn::Graphics* graphics)
 
         // Draw two lines separating the ListBox with selected
         // element view.
-        graphics->setColor(highlightColor);
+        graphics->setColor(*highlightColor);
         graphics->drawLine(0, h, getWidth(), h);
         graphics->setColor(shadowColor);
         graphics->drawLine(0, h + 1, getWidth(), h + 1);

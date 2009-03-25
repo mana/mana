@@ -22,6 +22,7 @@
 #include "gui.h"
 #include "ministatus.h"
 #include "progressbar.h"
+#include "status.h"
 
 #include "../animatedsprite.h"
 #include "../configuration.h"
@@ -30,13 +31,9 @@
 
 #include "../utils/stringutils.h"
 
-MiniStatusWindow::MiniStatusWindow()
+MiniStatusWindow::MiniStatusWindow():
+    Popup("MiniStatus")
 {
-    setWindowName("MiniStatus");
-    setResizable(false);
-    setMovable(false);
-    setTitleBarHeight(0);
-
     mHpBar = new ProgressBar(1.0f, 100, 20, 0, 171, 34);
 #ifdef EATHENA_SUPPORT
     mMpBar = new ProgressBar(1.0f, 100, 20, 26, 102, 230);
@@ -62,8 +59,6 @@ MiniStatusWindow::MiniStatusWindow()
     setContentSize(mHpBar->getX() + mHpBar->getWidth(),
                    mHpBar->getY() + mHpBar->getHeight());
 #endif
-    setDefaultSize(0, 0, getWidth(), getHeight());
-    loadWindowState();
 }
 
 void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
@@ -86,43 +81,10 @@ extern volatile int tick_time;
 
 void MiniStatusWindow::update()
 {
-    // HP Bar coloration
-    int maxHp = player_node->getMaxHp();
-    int hp = player_node->getHp();
-    if (hp < int(maxHp / 3))
-    {
-        mHpBar->setColor(223, 32, 32); // Red
-    }
-    else if (hp < int((maxHp / 3) * 2))
-    {
-        mHpBar->setColor(230, 171, 34); // Orange
-    }
-    else
-    {
-        mHpBar->setColor(0, 171, 34); // Green
-    }
-
+    StatusWindow::updateHPBar(mHpBar);
 #ifdef EATHENA_SUPPORT
-    float xp = (float) player_node->getXp() / player_node->mXpForNextLevel;
-
-    if (xp != xp) xp = 0.0f; // check for NaN
-    if (xp < 0.0f) xp = 0.0f; // make sure the experience isn't negative (uninitialized pointer most likely)
-    if (xp > 1.0f) xp = 1.0f;
-#endif
-
-    mHpBar->setProgress((float) hp / maxHp);
-#ifdef EATHENA_SUPPORT
-    mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
-    mXpBar->setProgress(xp);
-#endif
-
-    // Update labels
-    mHpBar->setText(toString(player_node->getHp()));
-#ifdef EATHENA_SUPPORT
-    mMpBar->setText(toString(player_node->mMp));
-
-    std::stringstream updatedText;
-    updatedText << (float) ((int) (xp * 10000.0f)) / 100.0f << "%";
+    StatusWindow::updateMPBar(mMpBar);
+    StatusWindow::updateXPBar(mXpBar);
 
     // Displays the number of monsters to next lvl
     // (disabled for now but interesting idea)
@@ -136,8 +98,6 @@ void MiniStatusWindow::update()
             << config.getValue("xpBarMonsterCounterName", "Monsters") <<" left...";
     }
     */
-
-    mXpBar->setText(updatedText.str());
 #endif
 
     for (unsigned int i = 0; i < mIcons.size(); i++)

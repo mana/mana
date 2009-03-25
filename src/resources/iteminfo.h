@@ -138,6 +138,11 @@ class ItemInfo
         const std::string& getName() const
         { return mName; }
 
+        void setParticleEffect(const std::string &particleEffect)
+        { mParticle = particleEffect; }
+
+        std::string getParticleEffect() const { return mParticle; }
+
         void setImageName(const std::string &imageName)
         { mImageName = imageName; }
 
@@ -198,22 +203,23 @@ class ItemInfo
         const std::string& getSound(EquipmentSoundEvent event) const;
 
     protected:
-        std::string mImageName;        /**< The filename of the icon image. */
+        std::string mImageName;      /**< The filename of the icon image. */
         std::string mName;
-        std::string mDescription;      /**< Short description. */
-        std::string mEffect;           /**< Description of effects. */
+        std::string mDescription;    /**< Short description. */
+        std::string mEffect;         /**< Description of effects. */
 #ifdef TMWSERV_SUPPORT
-        char mType;                    /**< Item type. */
+        char mType;                  /**< Item type. */
 #else
-        std::string mType;             /**< Item type. */
+        std::string mType;           /**< Item type. */
 #endif
-        short mWeight;                 /**< Weight in grams. */
-        int mView;                     /**< Item ID of how this item looks. */
-        int mId;                       /**< Item ID */
+        std::string mParticle;       /**< Particle effect used with this item */
+        short mWeight;               /**< Weight in grams. */
+        int mView;                   /**< Item ID of how this item looks. */
+        int mId;                     /**< Item ID */
 
         // Equipment related members
-        SpriteAction mAttackType;      /**< Attack type, in case of weapon. */
-        int mAttackRange;              /**< Attack range, will be zero if non weapon. */
+        SpriteAction mAttackType;    /**< Attack type, in case of weapon. */
+        int mAttackRange;            /**< Attack range, will be zero if non weapon. */
 
         /** Maps gender to sprite filenames. */
         std::map<int, std::string> mAnimationFiles;
