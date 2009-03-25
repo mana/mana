@@ -211,6 +211,8 @@ Skin* SkinLoader::load(const std::string &filename,
 
     logger->log("Finished loading Skin.");
 
+    delete doc;
+
     // Hard-coded for now until we update the above code to look for window buttons.
     Image* closeImage = resman->getImage("graphics/gui/close_button.png");
 
