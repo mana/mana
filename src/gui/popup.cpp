@@ -20,8 +20,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-#include <cassert>
 #include <climits>
 
 #include <guichan/exception.hpp>
@@ -38,17 +36,7 @@
 
 #include "../resources/image.h"
 
-ConfigListener *Popup::popupConfigListener = 0;
 int Popup::instances = 0;
-bool Popup::mAlphaChanged = false;
-
-class PopupConfigListener : public ConfigListener
-{
-    void optionChanged(const std::string &)
-    {
-        Popup::mAlphaChanged = true;
-    }
-};
 
 Popup::Popup(const std::string& name, Window *parent,
              const std::string& skin):
@@ -64,22 +52,12 @@ Popup::Popup(const std::string& name, Window *parent,
     if (!windowContainer)
         throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
 
-    if (instances == 0)
-    {
-        popupConfigListener = new PopupConfigListener();
-        // Send GUI alpha changed for initialization
-        popupConfigListener->optionChanged("guialpha");
-        config.addListener("guialpha", popupConfigListener);
-    }
-
     setPadding(3);
 
     instances++;
 
     // Loads the skin
     mSkin = skinLoader->load(skin);
-
-    setGuiAlpha();
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -102,13 +80,6 @@ Popup::~Popup()
     instances--;
 
     mSkin->instances--;
-
-    if (instances == 0)
-    {
-        config.removeListener("guialpha", popupConfigListener);
-        delete popupConfigListener;
-        popupConfigListener = NULL;
-    }
 }
 
 void Popup::setWindowContainer(WindowContainer *wc)
@@ -125,13 +96,6 @@ void Popup::draw(gcn::Graphics *graphics)
 
     g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
 
-    // Update Popup alpha values
-    if (mAlphaChanged)
-    {
-        for_each(mSkin->getBorder().grid, mSkin->getBorder().grid + 9,
-                 std::bind2nd(std::mem_fun(&Image::setAlpha),
-                 config.getValue("guialpha", 0.8)));
-    }
     drawChildren(graphics);
 }
 
@@ -193,17 +157,5 @@ void Popup::setMaxHeight(unsigned int height)
 void Popup::scheduleDelete()
 {
     windowContainer->scheduleDelete(this);
-}
-
-void Popup::setGuiAlpha()
-{
-    //logger->log("Popup::setGuiAlpha: Alpha Value %f", config.getValue("guialpha", 0.8));
-    for (int i = 0; i < 9; i++)
-    {
-        //logger->log("Popup::setGuiAlpha: Border Image (%i)", i);
-        mSkin->getBorder().grid[i]->setAlpha(config.getValue("guialpha", 0.8));
-    }
-
-    mAlphaChanged = false;
 }
 

@@ -27,6 +27,7 @@
 
 #include "../graphics.h"
 
+class ConfigListener;
 class Image;
 
 class Skin
@@ -67,6 +68,11 @@ class Skin
          */
         unsigned int getMinHeight();
 
+        /**
+         * Updates the alpha value of the skin
+         */
+        void updateAlpha();
+
         int instances;
 
     private:
@@ -84,6 +90,8 @@ typedef Skins::iterator SkinIterator;
 class SkinLoader 
 {
     public:
+        friend class SkinConfigListener;
+
         SkinLoader();
         ~SkinLoader();
 
@@ -92,8 +100,18 @@ class SkinLoader
          */
         Skin* load(const std::string &filename);
 
+        /**
+         * Updates the alpha values of all of the skins
+         */
+        void updateAlpha();
+
     private:
         Skins mSkins;
+
+        /**
+         * The config listener that listens to changes relevant to all skins.
+         */
+        static ConfigListener *skinConfigListener;
 };
 
 extern SkinLoader* skinLoader;

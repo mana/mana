@@ -30,7 +30,6 @@
 #include "../graphics.h"
 #include "../guichanfwd.h"
 
-class ConfigListener;
 class GCContainer;
 class ContainerPlacer;
 class Layout;
@@ -49,8 +48,6 @@ class WindowContainer;
 class Window : public gcn::Window, gcn::WidgetListener
 {
     public:
-        friend class WindowConfigListener;
-
         /**
          * Constructor. Initializes the title to the given text and hooks
          * itself into the window container.
@@ -323,8 +320,6 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
-        void setGuiAlpha();
-
         GCContainer *mChrome;      /**< Contained container */
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
@@ -334,7 +329,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         bool mModal;               /**< Window is modal */
         bool mCloseButton;         /**< Window has a close button */
         bool mSticky;              /**< Window resists minimization */
-        static bool mAlphaChanged; /**< Whether the alpha percent was changed */
+        bool mAlphaChanged;        /**< Whether the alpha percent was changed */
         int mMinWinWidth;          /**< Minimum window width */
         int mMinWinHeight;         /**< Minimum window height */
         int mMaxWinWidth;          /**< Maximum window width */
@@ -343,11 +338,6 @@ class Window : public gcn::Window, gcn::WidgetListener
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */
         int mDefaultHeight;        /**< Default window height */
-
-        /**
-         * The config listener that listens to changes relevant to all windows.
-         */
-        static ConfigListener *windowConfigListener;
 
         static int mouseResize;    /**< Active resize handles */
         static int instances;      /**< Number of Window instances */

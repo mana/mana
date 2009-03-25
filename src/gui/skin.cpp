@@ -19,8 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <algorithm>
+
 #include "skin.h"
 
+#include "../configuration.h"
+#include "../configlistener.h"
 #include "../log.h"
 
 #include "../resources/image.h"
@@ -30,6 +34,16 @@
 #include "../utils/xml.h"
 
 SkinLoader* skinLoader = NULL;
+ConfigListener *SkinLoader::skinConfigListener = NULL;
+
+class SkinConfigListener : public ConfigListener
+{
+    void optionChanged(const std::string &)
+    {
+        if (skinLoader)
+            skinLoader->updateAlpha();
+    }
+};
 
 Skin::Skin(ImageRect skin, Image* close, std::string name):
     instances(0),
@@ -49,6 +63,15 @@ Skin::~Skin()
     }
 
     closeImage->decRef();
+}
+
+void Skin::updateAlpha()
+{
+    const float alpha = config.getValue("guialpha", 0.8);
+
+    for_each(border.grid, border.grid + 9,
+             std::bind2nd(std::mem_fun(&Image::setAlpha), alpha));
+    closeImage->setAlpha(alpha);
 }
 
 unsigned int Skin::getMinWidth()
@@ -177,15 +200,34 @@ Skin* SkinLoader::load(const std::string &filename)
     Skin* skin = new Skin(border, closeImage);
 
     mSkins[filename] = skin;
+
+    updateAlpha();
+
     return skin;
 }
 
-SkinLoader::SkinLoader()
+SkinLoader::SkinLoader() :
+    mSkins()
 {
+    skinConfigListener = new SkinConfigListener();
+    // Send GUI alpha changed for initialization
+    skinConfigListener->optionChanged("guialpha");
+    config.addListener("guialpha", skinConfigListener);
 }
 
 SkinLoader::~SkinLoader()
 {
     delete_all(mSkins);
+    config.removeListener("guialpha", skinConfigListener);
+    delete skinConfigListener;
+    skinConfigListener = NULL;
+}
+
+void SkinLoader::updateAlpha()
+{
+    for (SkinIterator iter = mSkins.begin(); iter != mSkins.end(); ++iter)
+    {
+        iter->second->updateAlpha();
+    }
 }
 

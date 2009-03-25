@@ -28,7 +28,6 @@
 #include "../graphics.h"
 #include "../guichanfwd.h"
 
-class ConfigListener;
 class Skin;
 class SkinLoader;
 class Window;
@@ -43,8 +42,6 @@ class WindowContainer;
 class Popup : public gcn::Container
 {
     public:
-        friend class PopupConfigListener;
-
         /**
          * Constructor. Initializes the title to the given text and hooks
          * itself into the popup container.
@@ -170,21 +167,13 @@ class Popup : public gcn::Container
         virtual gcn::Rectangle getChildrenArea();
 
     private:
-        void setGuiAlpha();
-
         Window *mParent;           /**< The parent Window (if there is one) */
         std::string mPopupName;    /**< Name of the Popup */
-        static bool mAlphaChanged; /**< Whether the alpha percent was changed */
         int mMinWidth;             /**< Minimum Popup width */
         int mMinHeight;            /**< Minimum Popup height */
         int mMaxWidth;             /**< Maximum Popup width */
         int mMaxHeight;            /**< Maximum Popup height */
-        unsigned int mPadding;     /**< Holds the padding of the window. */ 
-
-        /**
-         * The config listener that listens to changes relevant to all Popups.
-         */
-        static ConfigListener *popupConfigListener;
+        unsigned int mPadding;     /**< Holds the padding of the window. */
 
         static int instances;      /**< Number of Popup instances */
 

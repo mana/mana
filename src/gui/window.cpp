@@ -20,7 +20,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
 #include <cassert>
 #include <climits>
 
@@ -35,24 +34,13 @@
 #include "widgets/layout.h"
 #include "widgets/resizegrip.h"
 
-#include "../configlistener.h"
 #include "../configuration.h"
 #include "../log.h"
 
 #include "../resources/image.h"
 
-ConfigListener *Window::windowConfigListener = 0;
 int Window::instances = 0;
 int Window::mouseResize = 0;
-bool Window::mAlphaChanged = false;
-
-class WindowConfigListener : public ConfigListener
-{
-    void optionChanged(const std::string &)
-    {
-        Window::mAlphaChanged = true;
-    }
-};
 
 Window::Window(const std::string& caption, bool modal, Window *parent, const std::string& skin):
     gcn::Window(caption),
@@ -77,10 +65,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     if (instances == 0)
     {
         skinLoader = new SkinLoader();
-        windowConfigListener = new WindowConfigListener();
-        // Send GUI alpha changed for initialization
-        windowConfigListener->optionChanged("guialpha");
-        config.addListener("guialpha", windowConfigListener);
     }
 
     instances++;
@@ -91,8 +75,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
 
     // Loads the skin
     mSkin = skinLoader->load(skin);
-
-    setGuiAlpha();
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -133,9 +115,6 @@ Window::~Window()
     if (instances == 0)
     {
         delete skinLoader;
-        config.removeListener("guialpha", windowConfigListener);
-        delete windowConfigListener;
-        windowConfigListener = NULL;
     }
 }
 
@@ -170,14 +149,6 @@ void Window::draw(gcn::Graphics *graphics)
         );
     }
 
-    // Update window alpha values
-    if (mAlphaChanged)
-    {
-        for_each(mSkin->getBorder().grid, mSkin->getBorder().grid + 9,
-                 std::bind2nd(std::mem_fun(&Image::setAlpha),
-                 config.getValue("guialpha", 0.8)));
-        mSkin->getCloseImage()->setAlpha(config.getValue("guialpha", 0.8));
-    }
     drawChildren(graphics);
 }
 
@@ -663,18 +634,6 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
     }
 
     return resizeHandles;
-}
-
-void Window::setGuiAlpha()
-{
-    //logger->log("Window::setGuiAlpha: Alpha Value %f", config.getValue("guialpha", 0.8));
-    for (int i = 0; i < 9; i++)
-    {
-        //logger->log("Window::setGuiAlpha: Border Image (%i)", i);
-        mSkin->getBorder().grid[i]->setAlpha(config.getValue("guialpha", 0.8));
-    }
-
-    mAlphaChanged = false;
 }
 
 int Window::getGuiAlpha()
