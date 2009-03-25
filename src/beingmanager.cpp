@@ -85,7 +85,7 @@ void BeingManager::setPlayer(LocalPlayer *player)
 }
 
 #ifdef TMWSERV_SUPPORT
-Being* BeingManager::createBeing(int id, int type, int subtype)
+Being *BeingManager::createBeing(int id, int type, int subtype)
 #else
 Being *BeingManager::createBeing(int id, Uint16 job)
 #endif

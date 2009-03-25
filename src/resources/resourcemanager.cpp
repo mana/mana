@@ -440,7 +440,7 @@ std::vector<std::string> ResourceManager::loadTextFile(const std::string &fileNa
     return lines;
 }
 
-SDL_Surface *ResourceManager::loadSDLSurface(const std::string& filename)
+SDL_Surface *ResourceManager::loadSDLSurface(const std::string &filename)
 {
     int fileSize;
     void *buffer = loadFile(filename, fileSize);

@@ -20,12 +20,10 @@
  */
 
 #include <string>
-#include <vector>
 
 class Channel
 {
     public:
-        
         /**
          * Constructor.
          *
@@ -33,27 +31,27 @@ class Channel
          * @param name         the name of the channel.
          * @param announcement a welcome message.
          */
-        Channel(short id, 
+        Channel(short id,
                 const std::string &name,
                 const std::string &announcement = std::string());
-        
+
         /**
          * Get the id associated witht his channel
          */
         int getId() const { return mId; }
-        
+
          /**
          * Get this channel's name
          */
-        const std::string& getName() const
+        const std::string &getName() const
         { return mName; }
-        
+
         /**
          * Get the announcement message for this channel
          */
-        const std::string& getAnnouncement() const
+        const std::string &getAnnouncement() const
         { return mAnnouncement; }
-        
+
         /**
          * Sets the name of the channel.
          */
@@ -65,9 +63,8 @@ class Channel
          */
         void setAnnouncement(const std::string &channelAnnouncement)
         { mAnnouncement = channelAnnouncement; }
-        
+
     private:
-        
         unsigned short mId;
         std::string mName;
         std::string mAnnouncement;

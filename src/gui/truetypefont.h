@@ -55,7 +55,7 @@ class TrueTypeFont : public gcn::Font
          */
         ~TrueTypeFont();
 
-        virtual int getWidth(const std::string& text) const;
+        virtual int getWidth(const std::string &text) const;
 
         virtual int getHeight() const;
 

@@ -32,14 +32,14 @@
 class TextPreview : public gcn::Widget
 {
     public:
-        TextPreview(const std::string* text);
+        TextPreview(const std::string &text);
 
         /**
          * Sets the color the text is printed in.
          *
          * @param color the color to set
          */
-        inline void setTextColor(const gcn::Color* color)
+        inline void setTextColor(const gcn::Color *color)
         {
             mTextColor = color;
         }
@@ -49,7 +49,7 @@ class TextPreview : public gcn::Widget
          *
          * @param alpha whether to use alpha values for the text or not
          */
-        inline void useTextAlpha(bool alpha) 
+        inline void useTextAlpha(bool alpha)
         {
             mTextAlpha = alpha;
         }
@@ -60,7 +60,7 @@ class TextPreview : public gcn::Widget
          *
          * @param color the color to set
          */
-        inline void setTextBGColor(const gcn::Color* color)
+        inline void setTextBGColor(const gcn::Color *color)
         {
             mTextBGColor = color;
         }
@@ -70,7 +70,7 @@ class TextPreview : public gcn::Widget
          *
          * @param color the color to set
          */
-        inline void setBGColor(const gcn::Color* color)
+        inline void setBGColor(const gcn::Color *color)
         {
             mBGColor = color;
         }
@@ -124,14 +124,14 @@ class TextPreview : public gcn::Widget
          * Gets opacity for this widget (whether or not the background color
          * is shown below the widget)
          */
-        bool isOpaque() { return mOpaque; }
+        bool isOpaque() const { return mOpaque; }
 
     private:
         gcn::Font *mFont;
-        const std::string* mText;
-        const gcn::Color* mTextColor;
-        const gcn::Color* mBGColor;
-        const gcn::Color* mTextBGColor;
+        std::string mText;
+        const gcn::Color *mTextColor;
+        const gcn::Color *mBGColor;
+        const gcn::Color *mTextBGColor;
         static float mAlpha;
         bool mTextAlpha;
         bool mOpaque;

@@ -32,9 +32,9 @@
 
 float TextPreview::mAlpha = config.getValue("guialpha", 0.8);
 
-TextPreview::TextPreview(const std::string* text)
+TextPreview::TextPreview(const std::string &text):
+    mText(text)
 {
-    mText = text;
     mTextAlpha = false;
     mFont = gui->getFont();
     mTextColor = &guiPalette->getColor(Palette::TEXT);
@@ -65,7 +65,7 @@ void TextPreview::draw(gcn::Graphics* graphics)
     if (mTextBGColor && typeid(*mFont) == typeid(TrueTypeFont))
     {
         TrueTypeFont *font = static_cast<TrueTypeFont*>(mFont);
-        int x = font->getWidth(*mText) + 1 + 2 * ((mOutline || mShadow) ? 1 :0);
+        int x = font->getWidth(mText) + 1 + 2 * ((mOutline || mShadow) ? 1 :0);
         int y = font->getHeight() + 1 + 2 * ((mOutline || mShadow) ? 1 : 0);
         graphics->setColor(gcn::Color((int) mTextBGColor->r,
                                       (int) mTextBGColor->g,
@@ -74,7 +74,7 @@ void TextPreview::draw(gcn::Graphics* graphics)
         graphics->fillRectangle(gcn::Rectangle(1, 1, x, y));
     }
 
-    TextRenderer::renderText(graphics, *mText, 2, 2,  gcn::Graphics::LEFT,
+    TextRenderer::renderText(graphics, mText, 2, 2,  gcn::Graphics::LEFT,
                              gcn::Color(mTextColor->r, mTextColor->g,
                                         mTextColor->b, alpha),
                              mFont, mOutline, mShadow, alpha);

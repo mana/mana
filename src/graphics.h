@@ -58,7 +58,7 @@ struct ImageRect
         RIGHT = 5,
         LOWER_LEFT = 6,
         LOWER_CENTER = 7,
-        LOWER_RIGHT = 8,
+        LOWER_RIGHT = 8
     };
 
     Image *grid[9];

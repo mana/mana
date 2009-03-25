@@ -56,7 +56,7 @@ class Popup : public gcn::Container
          *                a Popup will never go below its parent Window.
          * @param skin    The location where the Popup's skin XML can be found.
          */
-        Popup(const std::string& name = "", Window *parent = NULL,
+        Popup(const std::string &name = "", Window *parent = NULL,
               const std::string &skin = "graphics/gui/gui.xml");
 
         /**
@@ -87,42 +87,42 @@ class Popup : public gcn::Container
         /**
          * Sets the minimum width of the popup.
          */
-        void setMinWidth(unsigned int width);
+        void setMinWidth(int width);
 
         /**
          * Sets the minimum height of the popup.
          */
-        void setMinHeight(unsigned int height);
+        void setMinHeight(int height);
 
         /**
          * Sets the maximum width of the popup.
          */
-        void setMaxWidth(unsigned int width);
+        void setMaxWidth(int width);
 
         /**
          * Sets the minimum height of the popup.
          */
-        void setMaxHeight(unsigned int height);
+        void setMaxHeight(int height);
 
         /**
          * Gets the minimum width of the popup.
          */
-        int getMinWidth() { return mMinWidth; }
+        int getMinWidth() const { return mMinWidth; }
 
         /**
          * Gets the minimum height of the popup.
          */
-        int getMinHeight() { return mMinHeight; }
+        int getMinHeight() const { return mMinHeight; }
 
         /**
          * Gets the maximum width of the popup.
          */
-        int getMaxWidth() { return mMaxWidth; }
+        int getMaxWidth() const { return mMaxWidth; }
 
         /**
          * Gets the minimum height of the popup.
          */
-        int getMaxHeight() { return mMaxHeight; }
+        int getMaxHeight() const { return mMaxHeight; }
 
         /**
          * Gets the padding of the popup. The padding is the distance between
@@ -140,14 +140,14 @@ class Popup : public gcn::Container
          * @param padding The padding of the popup.
          * @see getPadding
          */
-        void setPadding(unsigned int padding) { mPadding = padding; }
+        void setPadding(int padding) { mPadding = padding; }
 
         /**
          * Returns the parent Window.
          *
          * @return The parent Window or <code>NULL</code> if there is none.
          */
-        Window* getParentWindow() { return mParent; }
+        Window *getParentWindow() const { return mParent; }
 
         /**
          * Sets the name of the popup. This is only useful for debug purposes.
@@ -157,7 +157,7 @@ class Popup : public gcn::Container
         /**
          * Returns the name of the popup. This is only useful for debug purposes.
          */
-        const std::string& getPopupName() { return mPopupName; }
+        const std::string &getPopupName() const { return mPopupName; }
 
         /**
          * Schedule this popup for deletion. It will be deleted at the start
@@ -179,7 +179,7 @@ class Popup : public gcn::Container
         int mMinHeight;            /**< Minimum Popup height */
         int mMaxWidth;             /**< Maximum Popup width */
         int mMaxHeight;            /**< Maximum Popup height */
-        unsigned int mPadding;     /**< Holds the padding of the window. */ 
+        int mPadding;              /**< Holds the padding of the window. */
 
         /**
          * The config listener that listens to changes relevant to all Popups.

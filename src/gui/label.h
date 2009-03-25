@@ -42,12 +42,12 @@ class Label : public gcn::Label
          * Constructor. This version of the constructor sets the label with an
          * inintialization string.
          */
-        Label(const std::string& caption);
+        Label(const std::string &caption);
 
         /**
          * Draws the label.
          */
-        void draw(gcn::Graphics* graphics);
+        void draw(gcn::Graphics *graphics);
 };
 
 #endif

@@ -60,7 +60,7 @@ class Network
 
         int getState() const { return mState; }
 
-        const std::string& getError() const { return mError; }
+        const std::string &getError() const { return mError; }
 
         bool isConnected() const { return mState == CONNECTED; }
 
@@ -86,7 +86,7 @@ class Network
         };
 
     protected:
-        void setError(const std::string& error);
+        void setError(const std::string &error);
 
         Uint16 readWord(int pos);
 

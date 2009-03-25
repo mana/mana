@@ -80,7 +80,7 @@ void TextDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-const std::string& TextDialog::getText() const
+const std::string &TextDialog::getText() const
 {
     return textField->getText();
 }

@@ -241,7 +241,7 @@ void Graphics::updateScreen()
     SDL_Flip(mScreen);
 }
 
-SDL_Surface* Graphics::getScreenshot()
+SDL_Surface *Graphics::getScreenshot()
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     int rmask = 0xff000000;

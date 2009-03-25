@@ -205,7 +205,7 @@ void SellDialog::action(const gcn::ActionEvent &event)
         // Attempt sell
         MessageOut outMsg(mNetwork);
 
-        ShopItem* item = mShopItems->at(selectedItem);
+        ShopItem *item = mShopItems->at(selectedItem);
         int sellCount;
         mPlayerMoney +=
             mAmountItems * mShopItems->at(selectedItem)->getPrice();

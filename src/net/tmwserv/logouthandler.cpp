@@ -198,7 +198,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
 }
 
 void
-LogoutHandler::setScenario(unsigned short scenario, std::string* passToken)
+LogoutHandler::setScenario(unsigned short scenario, std::string *passToken)
 {
     mScenario = scenario;
     mPassToken = passToken;

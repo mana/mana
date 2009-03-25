@@ -25,8 +25,6 @@
 #include <string>
 #include <guichan/listmodel.hpp>
 
-#include "player.h"
-
 class Guild : public gcn::ListModel
 {
 public:
@@ -52,7 +50,7 @@ public:
      * Get the name of the guild
      * @return returns name of the guild
      */
-    const std::string& getName() const
+    const std::string &getName() const
     {
         return mName;
     }

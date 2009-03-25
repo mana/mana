@@ -40,7 +40,7 @@ namespace ColorDB
      */
     void unload();
 
-    std::string& get(int id);
+    std::string &get(int id);
 
     int size();
 

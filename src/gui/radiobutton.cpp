@@ -34,7 +34,7 @@ Image *RadioButton::radioChecked;
 Image *RadioButton::radioDisabled;
 Image *RadioButton::radioDisabledChecked;
 
-RadioButton::RadioButton(const std::string& caption, const std::string& group,
+RadioButton::RadioButton(const std::string &caption, const std::string &group,
         bool marked):
     gcn::RadioButton(caption, group, marked)
 {

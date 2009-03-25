@@ -886,7 +886,7 @@ void accountChangeEmail(LoginData *loginData)
     Net::AccountServer::Account::changeEmail(loginData->newEmail);
 }
 
-void switchCharacter(std::string* passToken)
+void switchCharacter(std::string *passToken)
 {
     Net::registerHandler(&logoutHandler);
 
@@ -969,7 +969,7 @@ void logoutThenExit()
     }
 }
 
-void reconnectAccount(const std::string& passToken)
+void reconnectAccount(const std::string &passToken)
 {
     Net::registerHandler(&loginHandler);
 

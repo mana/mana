@@ -70,7 +70,7 @@ void HelpWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void HelpWindow::handleLink(const std::string& link)
+void HelpWindow::handleLink(const std::string &link)
 {
     std::string helpFile = link;
     loadHelp(helpFile);

@@ -146,7 +146,7 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
     showPopup(x, y);
 }
 
-void PopupMenu::handleLink(const std::string& link)
+void PopupMenu::handleLink(const std::string &link)
 {
     Being *being = beingManager->findBeing(mBeingId);
 

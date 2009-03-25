@@ -121,7 +121,7 @@ class ChatWindow : public Window,
         /**
          * Gets the focused tab's name
          */
-        const std::string& getFocused() const;
+        const std::string &getFocused() const;
 
         /**
          * Clear the tab with the given name

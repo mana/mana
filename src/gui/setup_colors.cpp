@@ -57,7 +57,7 @@ Setup_Colors::Setup_Colors() :
     mScroll = new ScrollArea(mColorBox);
     mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mTextPreview = new TextPreview(&rawmsg);
+    mTextPreview = new TextPreview(rawmsg);
 
     mPreview = new BrowserBox(BrowserBox::AUTO_WRAP);
     mPreview->setOpaque(false);

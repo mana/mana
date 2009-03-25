@@ -35,7 +35,7 @@ class PasswordField : public TextField
         /**
          * Constructor, initializes the password field with the given string.
          */
-        PasswordField(const std::string& text = "");
+        PasswordField(const std::string &text = "");
 
         /**
          * Draws the password field.

@@ -98,7 +98,7 @@ void ColorDB::unload()
     mLoaded = false;
 }
 
-std::string& ColorDB::get(int id)
+std::string &ColorDB::get(int id)
 {
     if (!mLoaded)
         load();

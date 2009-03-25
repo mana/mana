@@ -37,7 +37,7 @@ class CheckBox : public gcn::CheckBox
         /**
          * Constructor.
          */
-        CheckBox(const std::string& caption, bool selected = false);
+        CheckBox(const std::string &caption, bool selected = false);
 
         /**
          * Destructor.

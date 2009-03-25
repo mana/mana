@@ -35,7 +35,7 @@ Image *CheckBox::checkBoxChecked;
 Image *CheckBox::checkBoxDisabled;
 Image *CheckBox::checkBoxDisabledChecked;
 
-CheckBox::CheckBox(const std::string& caption, bool selected):
+CheckBox::CheckBox(const std::string &caption, bool selected):
     gcn::CheckBox(caption, selected)
 {
     if (instances == 0)

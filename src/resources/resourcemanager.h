@@ -183,7 +183,7 @@ class ResourceManager
          * Loads the given filename as an SDL surface. The returned surface is
          * expected to be freed by the caller using SDL_FreeSurface.
          */
-        SDL_Surface *loadSDLSurface(const std::string& filename);
+        SDL_Surface *loadSDLSurface(const std::string &filename);
 
         /**
          * Returns an instance of the class, creating one if it does not

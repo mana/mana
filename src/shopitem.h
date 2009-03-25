@@ -117,7 +117,7 @@ class ShopItem : public Item
          *
          * @return the display name for the item in the shop list
          */
-        const std::string& getDisplayName() const
+        const std::string &getDisplayName() const
         { return mDisplayName; }
 
     protected:

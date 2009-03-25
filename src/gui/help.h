@@ -49,7 +49,7 @@ class HelpWindow : public Window, public LinkHandler,
         /**
          * Handles link action.
          */
-        void handleLink(const std::string& link);
+        void handleLink(const std::string &link);
 
         /**
          * Loads help in the dialog.

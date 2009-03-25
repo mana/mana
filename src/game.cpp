@@ -177,7 +177,7 @@ BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
 ChannelManager *channelManager = NULL;
 CommandHandler *commandHandler = NULL;
-Particle* particleEngine = NULL;
+Particle *particleEngine = NULL;
 EffectManager *effectManager = NULL;
 
 #ifdef EATHENA_SUPPORT

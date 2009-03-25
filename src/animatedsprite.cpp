@@ -51,7 +51,7 @@ AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
     play(ACTION_STAND);
 }
 
-AnimatedSprite *AnimatedSprite::load(const std::string& filename, int variant)
+AnimatedSprite *AnimatedSprite::load(const std::string &filename, int variant)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     SpriteDef *s = resman->getSprite(filename, variant);
@@ -140,7 +140,7 @@ bool AnimatedSprite::updateCurrentAnimation(unsigned int time)
     return true;
 }
 
-bool AnimatedSprite::draw(Graphics* graphics, int posX, int posY) const
+bool AnimatedSprite::draw(Graphics *graphics, int posX, int posY) const
 {
     if (!mFrame || !mFrame->image)
         return false;

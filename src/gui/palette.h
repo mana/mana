@@ -122,7 +122,7 @@ class Palette : public gcn::ListModel
          *
          * @return the requested color or Palette::BLACK
          */
-        const gcn::Color& getColor(char c, bool &valid);
+        const gcn::Color &getColor(char c, bool &valid);
 
         /**
          * Gets the color associated with the type. Sets the alpha channel
@@ -133,7 +133,7 @@ class Palette : public gcn::ListModel
          *
          * @return the requested color
          */
-        inline const gcn::Color& getColor(ColorType type, int alpha = 255)
+        inline const gcn::Color &getColor(ColorType type, int alpha = 255)
         {
             gcn::Color* col = &mColVector[type].color;
             col->a = alpha;
@@ -147,7 +147,7 @@ class Palette : public gcn::ListModel
          *
          * @return the requested committed color
          */
-        inline const gcn::Color& getCommittedColor(ColorType type)
+        inline const gcn::Color &getCommittedColor(ColorType type)
         {
             return mColVector[type].committedColor;
         }
@@ -159,7 +159,7 @@ class Palette : public gcn::ListModel
          *
          * @return the requested test color
          */
-        inline const gcn::Color& getTestColor(ColorType type)
+        inline const gcn::Color &getTestColor(ColorType type)
         {
             return mColVector[type].testColor;
         }
@@ -342,7 +342,7 @@ class Palette : public gcn::ListModel
          *
          * @return the transformed string
          */
-        static std::string getConfigName(const std::string& typeName);
+        static std::string getConfigName(const std::string &typeName);
 };
 
 extern Palette *guiPalette;

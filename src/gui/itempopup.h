@@ -77,7 +77,7 @@ class ItemPopup : public Popup
         ScrollArea *mItemEffectScroll;
         ScrollArea *mItemWeightScroll;
 
-        gcn::Color getColor(const std::string& type);
+        static gcn::Color getColor(const std::string &type);
 };
 
 #endif // ITEMPOPUP_H

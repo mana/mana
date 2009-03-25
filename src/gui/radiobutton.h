@@ -35,7 +35,7 @@ class RadioButton : public gcn::RadioButton
         /*
          * Constructor.
          */
-        RadioButton(const std::string& caption,const std::string& group,
+        RadioButton(const std::string &caption,const std::string &group,
                 bool marked = false);
 
         /**

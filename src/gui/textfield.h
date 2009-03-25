@@ -38,12 +38,13 @@ class TextFieldListener
  *
  * \ingroup GUI
  */
-class TextField : public gcn::TextField {
+class TextField : public gcn::TextField
+{
     public:
         /**
          * Constructor, initializes the text field with the given string.
          */
-        TextField(const std::string& text = "");
+        TextField(const std::string &text = "");
 
         /**
          * Destructor.

@@ -29,9 +29,9 @@
 #include "../utils/dtor.h"
 #include "../utils/xml.h"
 
-SkinLoader* skinLoader = NULL;
+SkinLoader *skinLoader = NULL;
 
-Skin::Skin(ImageRect skin, Image* close, std::string name):
+Skin::Skin(ImageRect skin, Image *close, std::string name):
     instances(0),
     mName(name),
     border(skin),
@@ -63,7 +63,7 @@ unsigned int Skin::getMinHeight()
             border.grid[6]->getHeight();
 }
 
-Skin* SkinLoader::load(const std::string &filename)
+Skin *SkinLoader::load(const std::string &filename)
 {
     SkinIterator skinIterator = mSkins.find(filename);
 
@@ -172,9 +172,9 @@ Skin* SkinLoader::load(const std::string &filename)
     logger->log("Finished loading Skin.");
 
     // Hard-coded for now until we update the above code to look for window buttons.
-    Image* closeImage = resman->getImage("graphics/gui/close_button.png");
+    Image *closeImage = resman->getImage("graphics/gui/close_button.png");
 
-    Skin* skin = new Skin(border, closeImage);
+    Skin *skin = new Skin(border, closeImage);
 
     mSkins[filename] = skin;
     return skin;

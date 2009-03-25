@@ -51,7 +51,7 @@ void ShopItems::addItem(int id, int amount, int price)
 #ifdef EATHENA_SUPPORT
 void ShopItems::addItem(int inventoryIndex, int id, int quantity, int price)
 {
-    ShopItem* item = 0;
+    ShopItem *item = 0;
     if (mMergeDuplicates)
     {
         item = findItem(id);
@@ -69,7 +69,7 @@ void ShopItems::addItem(int inventoryIndex, int id, int quantity, int price)
 }
 #endif
 
-ShopItem* ShopItems::at(int i) const
+ShopItem *ShopItems::at(int i) const
 {
     return mShopItems.at(i);
 }
@@ -85,7 +85,7 @@ void ShopItems::clear()
     mShopItems.clear();
 }
 
-ShopItem* ShopItems::findItem(int id)
+ShopItem *ShopItems::findItem(int id)
 {
     ShopItem *item;
 

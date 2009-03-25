@@ -135,7 +135,7 @@ class ItemInfo
         void setName(const std::string &name)
         { mName = name; }
 
-        const std::string& getName() const
+        const std::string &getName() const
         { return mName; }
 
         void setParticleEffect(const std::string &particleEffect)
@@ -146,19 +146,19 @@ class ItemInfo
         void setImageName(const std::string &imageName)
         { mImageName = imageName; }
 
-        const std::string& getImageName() const
+        const std::string &getImageName() const
         { return mImageName; }
 
         void setDescription(const std::string &description)
         { mDescription = description; }
 
-        const std::string& getDescription() const
+        const std::string &getDescription() const
         { return mDescription; }
 
         void setEffect(const std::string &effect)
         { mEffect = effect; }
 
-        const std::string& getEffect() const { return mEffect; }
+        const std::string &getEffect() const { return mEffect; }
 
 #ifdef TMWSERV_SUPPORT
         void setType(short type)
@@ -167,10 +167,10 @@ class ItemInfo
         short getType() const
         { return mType; }
 #else
-        void setType(const std::string& type)
+        void setType(const std::string &type)
         { mType = type; }
 
-        const std::string& getType() const { return mType; }
+        const std::string &getType() const { return mType; }
 #endif
 
         void setWeight(short weight)
@@ -185,7 +185,7 @@ class ItemInfo
         void setSprite(const std::string &animationFile, Gender gender)
         { mAnimationFiles[gender] = animationFile; }
 
-        const std::string& getSprite(Gender gender) const;
+        const std::string &getSprite(Gender gender) const;
 
         void setWeaponType(int);
 
@@ -200,7 +200,7 @@ class ItemInfo
 
         void addSound(EquipmentSoundEvent event, const std::string &filename);
 
-        const std::string& getSound(EquipmentSoundEvent event) const;
+        const std::string &getSound(EquipmentSoundEvent event) const;
 
     protected:
         std::string mImageName;      /**< The filename of the icon image. */

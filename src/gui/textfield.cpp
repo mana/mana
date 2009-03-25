@@ -39,7 +39,7 @@ int TextField::instances = 0;
 float TextField::mAlpha = config.getValue("guialpha", 0.8);
 ImageRect TextField::skin;
 
-TextField::TextField(const std::string& text):
+TextField::TextField(const std::string &text):
     gcn::TextField(text),
     mNumeric(false),
     mListener(0)

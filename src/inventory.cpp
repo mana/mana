@@ -53,7 +53,7 @@ Inventory::~Inventory()
     delete [] mItems;
 }
 
-Item* Inventory::getItem(int index) const
+Item *Inventory::getItem(int index) const
 {
 #ifdef TMWSERV_SUPPORT
     if (index < 0 || index >= mSize)
@@ -65,7 +65,7 @@ Item* Inventory::getItem(int index) const
     return mItems[index];
 }
 
-Item* Inventory::findItem(int itemId) const
+Item *Inventory::findItem(int itemId) const
 {
     for (int i = 0; i < mSize; i++)
         if (mItems[i] && mItems[i]->getId() == itemId)

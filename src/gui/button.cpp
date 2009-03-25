@@ -66,7 +66,7 @@ Button::Button():
     init();
 }
 
-Button::Button(const std::string& caption, const std::string &actionEventId,
+Button::Button(const std::string &caption, const std::string &actionEventId,
     gcn::ActionListener *listener):
     gcn::Button(caption),
     mIsLogged(false)

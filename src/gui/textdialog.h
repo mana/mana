@@ -51,7 +51,7 @@ public:
     /**
      * Get the text in the textfield
      */
-    const std::string& getText() const;
+    const std::string &getText() const;
 
     /**
      * Set the OK button action id

@@ -401,7 +401,7 @@ SpriteAction SpriteDef::makeSpriteAction(const std::string &action)
     }
 }
 
-SpriteDirection SpriteDef::makeSpriteDirection(const std::string& direction)
+SpriteDirection SpriteDef::makeSpriteDirection(const std::string &direction)
 {
     if (direction.empty() || direction == "default") {
         return DIRECTION_DEFAULT;

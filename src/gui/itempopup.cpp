@@ -173,7 +173,7 @@ void ItemPopup::updateColors()
     graphics->setColor(guiPalette->getColor(Palette::TEXT));
 }
 
-gcn::Color ItemPopup::getColor(const std::string& type)
+gcn::Color ItemPopup::getColor(const std::string &type)
 {
     gcn::Color color;
 

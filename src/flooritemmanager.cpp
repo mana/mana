@@ -29,7 +29,7 @@ FloorItemManager::~FloorItemManager()
     clear();
 }
 
-FloorItem* FloorItemManager::create(int id, int itemId,
+FloorItem *FloorItemManager::create(int id, int itemId,
                                     int x, int y, Map *map)
 {
     FloorItem *floorItem = new FloorItem(id, itemId, x, y, map);

@@ -74,7 +74,7 @@ class MonsterInfo
 
         void addParticleEffect(const std::string &filename);
 
-        const std::string& getName() const
+        const std::string &getName() const
         { return mName; }
 
         const std::list<std::string>& getSprites() const

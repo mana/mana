@@ -18,6 +18,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 #include "label.h"
 #include "palette.h"
 
@@ -26,12 +27,12 @@ Label::Label() :
 {
 }
 
-Label::Label(const std::string& caption) :
+Label::Label(const std::string &caption) :
     gcn::Label(caption)
 {
 }
 
-void Label::draw(gcn::Graphics* graphics)
+void Label::draw(gcn::Graphics *graphics)
 {
     setForegroundColor(guiPalette->getColor(Palette::TEXT));
     gcn::Label::draw(static_cast<gcn::Graphics*>(graphics));

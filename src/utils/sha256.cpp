@@ -269,7 +269,7 @@ std::string SHA256Hash(const char *src, int len)
     return hash;
 }
 
-std::string sha256(const std::string& string)
+std::string sha256(const std::string &string)
 {
     return SHA256Hash(string.c_str(), string.length());
 }
