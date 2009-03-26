@@ -534,32 +534,18 @@ int Being::getOffset(char pos, char neg) const
 
 int Being::getWidth() const
 {
-    if (mSprites[BASE_SPRITE])
-    {
-        const int width = mSprites[BASE_SPRITE]->getWidth() > DEFAULT_WIDTH ?
-                                   mSprites[BASE_SPRITE]->getWidth() :
-                                   DEFAULT_WIDTH;
-        return width;
-    }
+    if (AnimatedSprite *base = mSprites[BASE_SPRITE])
+        return std::max(base->getWidth(), DEFAULT_WIDTH);
     else
-    {
         return DEFAULT_WIDTH;
-    }
 }
 
 int Being::getHeight() const
 {
-    if (mSprites[BASE_SPRITE])
-    {
-        const int height = mSprites[BASE_SPRITE]->getHeight() > DEFAULT_HEIGHT ?
-                                   mSprites[BASE_SPRITE]->getHeight() :
-                                   DEFAULT_HEIGHT;
-        return height;
-    }
+    if (AnimatedSprite *base = mSprites[BASE_SPRITE])
+        return std::max(base->getHeight(), DEFAULT_HEIGHT);
     else
-    {
         return DEFAULT_HEIGHT;
-    }
 }
 
 void Being::setTargetAnimation(SimpleAnimation* animation)
@@ -575,9 +561,8 @@ void Being::load()
     int hairstyles = 1;
 
     while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
-    {
         hairstyles++;
-    }
+
     mNumberOfHairstyles = hairstyles;
 }
 

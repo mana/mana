@@ -78,9 +78,9 @@ class InventoryWindow : public Window, gcn::ActionListener,
 
         std::string mWeight;
         std::string mSlots;
-        std::string mUsedSlots;
-        std::string mTotalWeight;
-        std::string mMaxWeight;
+        int mUsedSlots;
+        int mTotalWeight;
+        int mMaxWeight;
         gcn::Button *mUseButton, *mDropButton;
         gcn::ScrollArea *mInvenScroll;
 

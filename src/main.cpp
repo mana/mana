@@ -179,7 +179,7 @@ struct Options
  * Parse the update host and determine the updates directory
  * Then verify that the directory exists (creating if needed).
  */
-void setUpdatesDir()
+static void setUpdatesDir()
 {
     std::stringstream updates;
 
@@ -257,7 +257,7 @@ void setUpdatesDir()
 /**
  * Do all initialization stuff
  */
-void init_engine(const Options &options)
+static void init_engine(const Options &options)
 {
     homeDir = std::string(PHYSFS_getUserDir()) + "/.aethyra";
 #if defined WIN32
@@ -463,7 +463,7 @@ void init_engine(const Options &options)
 }
 
 /** Clear the engine */
-void exit_engine()
+static void exit_engine()
 {
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
@@ -493,7 +493,7 @@ void exit_engine()
     SDL_FreeSurface(icon);
 }
 
-void printHelp()
+static void printHelp()
 {
     std::cout
         << _("aethyra") << std::endl << std::endl
@@ -511,7 +511,7 @@ void printHelp()
         << _("  -v --version    : Display the version") << std::endl;
 }
 
-void printVersion()
+static void printVersion()
 {
 #ifdef PACKAGE_VERSION
     std::cout << _("Aethyra version ") << PACKAGE_VERSION <<
@@ -522,7 +522,7 @@ void printVersion()
 #endif
 }
 
-void parseOptions(int argc, char *argv[], Options &options)
+static void parseOptions(int argc, char *argv[], Options &options)
 {
     const char *optstring = "hvud:U:P:Dp:C:H:";
 
@@ -540,14 +540,16 @@ void parseOptions(int argc, char *argv[], Options &options)
         { 0 }
     };
 
-    while (optind < argc) {
+    while (optind < argc)
+    {
 
         int result = getopt_long(argc, argv, optstring, long_options, NULL);
 
         if (result == -1)
             break;
 
-        switch (result) {
+        switch (result)
+        {
             case 'C':
                 options.configPath = optarg;
                 break;
@@ -587,7 +589,7 @@ void parseOptions(int argc, char *argv[], Options &options)
  * Reads the file "{Updates Directory}/resources2.txt" and attempts to load
  * each update mentioned in it.
  */
-void loadUpdates()
+static void loadUpdates()
 {
     if (updatesDir.empty()) return;
     const std::string updatesFile = "/" + updatesDir + "/resources2.txt";
@@ -613,7 +615,7 @@ struct ErrorListener : public gcn::ActionListener
 } errorListener;
 
 // TODO Find some nice place for these functions
-void accountLogin(Network *network, LoginData *loginData)
+static void accountLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to account server...");
     logger->log("Username is %s", loginData->username.c_str());
@@ -661,14 +663,14 @@ inline int MIN(int x, int y)
     return x < y ? x : y;
 }
 
-void positionDialog(Window *dialog, int screenWidth, int screenHeight)
+static void positionDialog(Window *dialog, int screenWidth, int screenHeight)
 {
     dialog->setPosition(
         MIN(screenWidth * 5 / 8, screenWidth - dialog->getWidth()),
         MIN(screenHeight * 5 / 8, screenHeight - dialog->getHeight()));
 }
 
-void charLogin(Network *network, LoginData *loginData)
+static void charLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to char server...");
     network->connect(loginData->hostname, loginData->port);
@@ -691,7 +693,7 @@ void charLogin(Network *network, LoginData *loginData)
     network->skip(4);
 }
 
-void mapLogin(Network *network, LoginData *loginData)
+static void mapLogin(Network *network, LoginData *loginData)
 {
     logger->log("Memorizing selected character %s",
             player_node->getName().c_str());
@@ -719,6 +721,22 @@ void mapLogin(Network *network, LoginData *loginData)
 
 } // namespace
 
+static void initInternationalization()
+{
+#if ENABLE_NLS
+#ifdef WIN32
+    putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+    // mingw doesn't like LOCALEDIR to be defined for some reason
+    bindtextdomain("tmw", "translations/");
+#else
+    bindtextdomain("tmw", LOCALEDIR);
+#endif
+    setlocale(LC_MESSAGES, "");
+    bind_textdomain_codeset("tmw", "UTF-8");
+    textdomain("tmw");
+#endif
+}
+
 extern "C" char const *_nl_locale_name_default(void);
 
 /** Main */
@@ -741,15 +759,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-#if ENABLE_NLS
-#ifdef WIN32
-        putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
-#endif
-        setlocale(LC_MESSAGES, "");
-        bindtextdomain("aethyra", LOCALEDIR);
-        bind_textdomain_codeset("aethyra", "UTF-8");
-        textdomain("aethyra");
-#endif
+    initInternationalization();
 
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.

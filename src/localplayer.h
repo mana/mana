@@ -220,7 +220,7 @@ class LocalPlayer : public Player
 
         Uint16 mAttackRange;
 
-        Uint32 mTotalWeight, mMaxWeight;
+        int mTotalWeight, mMaxWeight;
 
         Uint8 mAttr[6];
         Uint8 mAttrUp[6];
