@@ -357,34 +357,44 @@ void CommandHandler::handleMsg(const std::string &args)
     }
     else
     {
-        const std::string::size_type pos = msg.find(" ");
+        const std::string::size_type pos = args.find(" ");
         if (pos != std::string::npos)
         {
             recvnick = args.substr(0, pos);
             msg = args.substr(pos + 1, args.length());
         }
+        else
+        {
+            recvnick = std::string(args);
+            msg = "";
+        }
     }
 
     trim(msg);
 
-    std::string playerName = player_node->getName();
-    std::string tempNick = recvnick;
+    if (msg.length() > 0)
+    {
+        std::string playerName = player_node->getName();
+        std::string tempNick = recvnick;
 
-    toLower(playerName);
-    toLower(tempNick);
+        toLower(playerName);
+        toLower(tempNick);
 
-    if (tempNick.compare(playerName) == 0 || args.empty())
-        return;
+        if (tempNick.compare(playerName) == 0 || args.empty())
+            return;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_CHAT_WHISPER);
-    outMsg.writeInt16(msg.length() + 28);
-    outMsg.writeString(recvnick, 24);
-    outMsg.writeString(msg, msg.length());
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(CMSG_CHAT_WHISPER);
+        outMsg.writeInt16(msg.length() + 28);
+        outMsg.writeString(recvnick, 24);
+        outMsg.writeString(msg, msg.length());
 
-    chatWindow->chatLog(strprintf(_("Whispering to %s: %s"),
-                        recvnick.c_str(), msg.c_str()),
-                        BY_PLAYER);
+        chatWindow->chatLog(strprintf(_("Whispering to %s: %s"),
+                            recvnick.c_str(), msg.c_str()),
+                            BY_PLAYER);
+    }
+    else
+        chatWindow->chatLog("Cannont send empty whispers!");
 #endif
 }
 
