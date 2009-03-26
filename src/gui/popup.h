@@ -96,42 +96,42 @@ class Popup : public gcn::Container
         /**
          * Sets the minimum width of the popup.
          */
-        void setMinWidth(unsigned int width);
+        void setMinWidth(int width);
 
         /**
          * Sets the minimum height of the popup.
          */
-        void setMinHeight(unsigned int height);
+        void setMinHeight(int height);
 
         /**
          * Sets the maximum width of the popup.
          */
-        void setMaxWidth(unsigned int width);
+        void setMaxWidth(int width);
 
         /**
          * Sets the minimum height of the popup.
          */
-        void setMaxHeight(unsigned int height);
+        void setMaxHeight(int height);
 
         /**
          * Gets the minimum width of the popup.
          */
-        int getMinWidth() { return mMinWidth; }
+        int getMinWidth() const { return mMinWidth; }
 
         /**
          * Gets the minimum height of the popup.
          */
-        int getMinHeight() { return mMinHeight; }
+        int getMinHeight() const { return mMinHeight; }
 
         /**
          * Gets the maximum width of the popup.
          */
-        int getMaxWidth() { return mMaxWidth; }
+        int getMaxWidth() const { return mMaxWidth; }
 
         /**
          * Gets the minimum height of the popup.
          */
-        int getMaxHeight() { return mMaxHeight; }
+        int getMaxHeight() const { return mMaxHeight; }
 
         /**
          * Gets the padding of the popup. The padding is the distance between
@@ -149,7 +149,7 @@ class Popup : public gcn::Container
          * @param padding The padding of the popup.
          * @see getPadding
          */
-        void setPadding(unsigned int padding) { mPadding = padding; }
+        void setPadding(int padding) { mPadding = padding; }
 
         /**
          * Returns the parent Window.
@@ -186,7 +186,7 @@ class Popup : public gcn::Container
         int mMinHeight;               /**< Minimum popup height */
         int mMaxWidth;                /**< Maximum popup width */
         int mMaxHeight;               /**< Maximum popup height */
-        unsigned int mPadding;        /**< Holds the padding of the popup. */
+        int mPadding;                 /**< Holds the padding of the popup. */
 
         static int instances;         /**< Number of popup instances */
 

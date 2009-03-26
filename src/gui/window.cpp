@@ -221,23 +221,23 @@ void Window::setLocationRelativeTo(ImageRect::ImagePosition position,
     setPosition(offsetX, offsetY);
 }
 
-void Window::setMinWidth(unsigned int width)
+void Window::setMinWidth(int width)
 {
     mMinWinWidth = width > mSkin->getMinWidth() ? width : mSkin->getMinWidth();
 }
 
-void Window::setMinHeight(unsigned int height)
+void Window::setMinHeight(int height)
 {
     mMinWinHeight = height > mSkin->getMinHeight() ?
                         height : mSkin->getMinHeight();
 }
 
-void Window::setMaxWidth(unsigned int width)
+void Window::setMaxWidth(int width)
 {
     mMaxWinWidth = width;
 }
 
-void Window::setMaxHeight(unsigned int height)
+void Window::setMaxHeight(int height)
 {
     mMaxWinHeight = height;
 }
@@ -290,11 +290,6 @@ bool Window::isResizable()
 void Window::setSticky(bool sticky)
 {
     mSticky = sticky;
-}
-
-bool Window::isSticky()
-{
-    return mSticky;
 }
 
 void Window::setVisible(bool visible)

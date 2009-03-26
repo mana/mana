@@ -116,42 +116,42 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Sets the minimum width of the window.
          */
-        void setMinWidth(unsigned int width);
+        void setMinWidth(int width);
 
         /**
          * Sets the minimum height of the window.
          */
-        void setMinHeight(unsigned int height);
+        void setMinHeight(int height);
 
         /**
          * Sets the maximum width of the window.
          */
-        void setMaxWidth(unsigned int width);
+        void setMaxWidth(int width);
 
         /**
          * Sets the minimum height of the window.
          */
-        void setMaxHeight(unsigned int height);
+        void setMaxHeight(int height);
 
         /**
          * Gets the minimum width of the window.
          */
-        int getMinWidth() { return mMinWinWidth; }
+        int getMinWidth() const { return mMinWinWidth; }
 
         /**
          * Gets the minimum height of the window.
          */
-        int getMinHeight() { return mMinWinHeight; }
+        int getMinHeight() const { return mMinWinHeight; }
 
         /**
          * Gets the maximum width of the window.
          */
-        int getMaxWidth() { return mMaxWinWidth; }
+        int getMaxWidth() const { return mMaxWinWidth; }
 
         /**
          * Gets the minimum height of the window.
          */
-        int getMaxHeight() { return mMaxWinHeight; }
+        int getMaxHeight() const { return mMaxWinHeight; }
 
         /**
          * Sets flag to show a title or not.
@@ -167,7 +167,8 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Returns whether the window is sticky.
          */
-        bool isSticky();
+        bool isSticky() const
+        { return mSticky; }
 
         /**
          * Overloads window setVisible by Guichan to allow sticky window
@@ -180,7 +181,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          *
          * @return The parent window or <code>NULL</code> if there is none.
          */
-        Window* getParentWindow() { return mParent; }
+        Window *getParentWindow() const { return mParent; }
 
         /**
          * Schedule this window for deletion. It will be deleted at the start
