@@ -203,7 +203,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
         color = &guiPalette->getColor(Palette::HIT_CRITICAL);
     }
     else if (!amount)
-     {
+    {
         if (attacker == player_node)
         {
             // This is intended to be the wrong direction to visually
