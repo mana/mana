@@ -190,12 +190,12 @@ void ItemDB::load()
         mItemInfos[id] = itemInfo;
         if (!name.empty())
         {
-            NamedItemInfoIterator itr = mNamedItemInfos.find(name);
+            std::string temp = name;
+            toLower(trim(temp));
+
+            NamedItemInfoIterator itr = mNamedItemInfos.find(temp);
             if (itr == mNamedItemInfos.end())
             {
-                std::string temp = name;
-                toLower(trim(temp));
-
                 mNamedItemInfos[temp] = itemInfo;
             }
             else
