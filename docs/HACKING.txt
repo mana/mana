@@ -2,6 +2,9 @@
 The Mana World Hacking Guide
 ----------------------------
 
+This guide is also available at http://wiki.themanaworld.org/index.php/Hacking
+including more tips about C++ programming in general.
+
 With multiple coders working on the same source files, there needs to be a
 standard specifying how code is written down. Not doing so can cause quite some
 annoyance for certain coders and easily creates more version conflicts than
@@ -54,15 +57,32 @@ necessary.
   {
   };
 
-  For if, for and while constructs, opening parenthesis may be placed on the
-  same line to save space.
+  When there is only one statement you may leave out the braces, but don't
+  place the statement on the same line as the condition:
 
-  In most cases these are bad:
+  Good:
 
   if (condition)
       statement;
 
+  Bad:
+
   if (condition) statement;
+
+* Includes:
+  Source files should include their header first, to make sure the headers are
+  self-contained. After that follow other project includes, grouped by
+  directory and alphabetically ordered. System includes come last. All project
+  includes are done relative from the 'src' directory.
+
+  Good (subdirectory/source.cpp):
+
+  #include "subdirectory/header.h"
+
+  #include "somesub/bar.h"
+  #include "somesub/zaro.h"
+
+  #include <systemlib.h>
 
 * Comments:
   Single line C++ style comments are indented the same as the previous line.
