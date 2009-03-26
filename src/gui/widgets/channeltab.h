@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,22 +19,36 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "channel.h"
+#ifndef CHANNELTAB_H
+#define CHANNELTAB_H
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/chatserver/chatserver.h"
-#include "net/tmwserv/gameserver/player.h"
-#else
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
-#endif
+#include "chattab.h"
 
-Channel::Channel(short id,
-                 const std::string &name, 
-                 const std::string &announcement) :
-    mId(id),
-    mName(name),
-    mAnnouncement(announcement)
+class Channel;
+
+/**
+ * A tab for a chat channel.
+ */
+class ChannelTab : public ChatTab
 {
+    public:
+        /**
+         * Constructor.
+         */
+        ChannelTab(Channel *channel);
 
-}
+        /**
+         * Destructor.
+         */
+        ~ChannelTab();
+
+        Channel *getChannel() { return mChannel; }
+
+    protected:
+        void sendChat(std::string &msg);
+
+    private:
+        Channel *mChannel;
+};
+
+#endif // CHANNELTAB_H

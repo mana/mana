@@ -19,7 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef CHANNEL_H
+#define CHANNEL_H
+
 #include <string>
+
+#include "gui/widgets/channeltab.h"
 
 class Channel
 {
@@ -64,8 +69,17 @@ class Channel
         void setAnnouncement(const std::string &channelAnnouncement)
         { mAnnouncement = channelAnnouncement; }
 
+        ChannelTab *getTab() { return mTab; }
+
+    protected:
+        friend class ChannelTab;
+        void setTab(ChannelTab *tab) { mTab = tab; }
+
     private:
         unsigned short mId;
         std::string mName;
         std::string mAnnouncement;
+        ChannelTab *mTab;
 };
+
+#endif // CHANNEL_H

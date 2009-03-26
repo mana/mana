@@ -28,8 +28,9 @@
 #include "chatserver/chatserver.h"
 #include "chatserver/guild.h"
 
-#include "../../gui/guildwindow.h"
+#include "../../gui/widgets/channeltab.h"
 #include "../../gui/chat.h"
+#include "../../gui/guildwindow.h"
 #include "../../guild.h"
 #include "../../log.h"
 #include "../../localplayer.h"
@@ -208,7 +209,8 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 Guild *guild = player_node->getGuild(guildId);
                 if (guild)
                 {
-                    chatWindow->removeChannel(guild->getName());
+                    Channel *channel = channelManager->findByName(guild->getName());
+                    chatWindow->removeTab(channel->getTab());
                     guildWindow->removeTab(guildId);
                     player_node->removeGuild(guildId);
                 }
@@ -235,6 +237,6 @@ void GuildHandler::joinedGuild(MessageIn &msg)
     // COMMENT: Should this go here??
     Channel *channel = new Channel(channelId, guildName, announcement);
     channelManager->addChannel(channel);
-    chatWindow->createNewChannelTab(guildName);
+    chatWindow->addTab(new ChannelTab(channel));
     chatWindow->chatLog("Topic: " + announcement, BY_CHANNEL, guildName);
 }

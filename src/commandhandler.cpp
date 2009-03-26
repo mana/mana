@@ -26,6 +26,7 @@
 #include "game.h"
 #include "localplayer.h"
 
+#include "gui/widgets/channeltab.h"
 #include "gui/chat.h"
 
 #ifdef TMWSERV_SUPPORT
@@ -410,12 +411,14 @@ void CommandHandler::handleListChannels()
 
 void CommandHandler::handleListUsers()
 {
-    Net::ChatServer::getUserList(chatWindow->getFocused());
+    Net::ChatServer::getUserList(chatWindow->getFocused()->getCaption());
 }
 
 void CommandHandler::handleTopic(const std::string &args)
 {
-    if (Channel *channel = channelManager->findByName(chatWindow->getFocused()))
+    ChannelTab *tab = dynamic_cast<ChannelTab*>(chatWindow->getFocused());
+    Channel *channel = tab ? tab->getChannel() : NULL;
+    if (channel)
     {
         Net::ChatServer::setChannelTopic(channel->getId(), args);
     }
@@ -427,7 +430,9 @@ void CommandHandler::handleTopic(const std::string &args)
 
 void CommandHandler::handleQuit()
 {
-    if (Channel *channel = channelManager->findByName(chatWindow->getFocused()))
+    ChannelTab *tab = dynamic_cast<ChannelTab*>(chatWindow->getFocused());
+    Channel *channel = tab ? tab->getChannel() : NULL;
+    if (channel)
     {
         Net::ChatServer::quitChannel(channel->getId());
     }
@@ -439,7 +444,9 @@ void CommandHandler::handleQuit()
 
 void CommandHandler::handleOp(const std::string &args)
 {
-    if (Channel *channel = channelManager->findByName(chatWindow->getFocused()))
+    ChannelTab *tab = dynamic_cast<ChannelTab*>(chatWindow->getFocused());
+    Channel *channel = tab ? tab->getChannel() : NULL;
+    if (channel)
     {
         // set the user mode 'o' to op a user
         if (args != "")
@@ -455,7 +462,9 @@ void CommandHandler::handleOp(const std::string &args)
 
 void CommandHandler::handleKick(const std::string &args)
 {
-    if (Channel *channel = channelManager->findByName(chatWindow->getFocused()))
+    ChannelTab *tab = dynamic_cast<ChannelTab*>(chatWindow->getFocused());
+    Channel *channel = tab ? tab->getChannel() : NULL;
+    if (channel)
     {
         if (args != "")
         {

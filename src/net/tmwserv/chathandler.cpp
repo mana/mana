@@ -21,7 +21,7 @@
 
 #include "chathandler.h"
 
-#include <SDL_types.h>
+//#include <SDL_types.h>
 #include <string>
 #include <iostream>
 
@@ -34,6 +34,7 @@
 #include "../../channel.h"
 #include "../../channelmanager.h"
 
+#include "../../gui/widgets/channeltab.h"
 #include "../../gui/chat.h"
 #include "../../gui/guildwindow.h"
 
@@ -131,7 +132,7 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         std::string announcement = msg.readString();
         Channel *channel = new Channel(channelId, channelName, announcement);
         channelManager->addChannel(channel);
-        chatWindow->createNewChannelTab(channelName);
+        chatWindow->addTab(new ChannelTab(channel));
         chatWindow->chatLog("Topic: " + announcement, BY_CHANNEL, channelName);
 
         std::string user;
@@ -181,8 +182,8 @@ void ChatHandler::handlePrivateMessage(MessageIn &msg)
 
     if (!chatWindow->tabExists(userNick))
     {
-        chatWindow->createNewChannelTab(userNick);
-
+        // TODO: proper whisper tabs
+        //chatWindow->createNewChannelTab(userNick);
     }
     chatWindow->chatLog(userNick + ": " + chatMsg, BY_OTHER, userNick);
 }
@@ -199,7 +200,8 @@ void ChatHandler::handleChatMessage(MessageIn &msg)
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
 
-    chatWindow->sendToChannel(channelId, userNick, chatMsg);
+    Channel *channel = channelManager->findById(channelId);
+    channel->getTab()->chatLog(userNick, chatMsg);
 }
 
 void ChatHandler::handleQuitChannelResponse(MessageIn &msg)
@@ -207,8 +209,9 @@ void ChatHandler::handleQuitChannelResponse(MessageIn &msg)
     if(msg.readInt8() == ERRMSG_OK)
     {
         short channelId = msg.readInt16();
+        Channel *channel = channelManager->findById(channelId);
         // remove the chat tab
-        chatWindow->removeChannel(channelId);
+        chatWindow->removeTab(channel->getTab());
     }
 }
 

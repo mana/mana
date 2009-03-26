@@ -59,6 +59,14 @@ class ChatTab : public Tab
         void chatLog(std::string line, int own, bool ignoreRecord);
 
         /**
+         * Adds the text to the message list
+         *
+         * @param msg  The message text which is to be sent.
+         *
+         */
+        void chatLog(std::string &nick, std::string &msg);
+
+        /**
          * Determines whether the message is a command or message, then
          * sends the given message to the game server to be said, or to the
          * command handler
@@ -81,6 +89,9 @@ class ChatTab : public Tab
 
     protected:
         friend class ChatWindow;
+
+        void sendChat(std::string &msg);
+
         ScrollArea *mScrollArea;
         BrowserBox *mTextOutput;
         //Recorder *mRecorder;

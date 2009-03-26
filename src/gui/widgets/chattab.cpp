@@ -211,6 +211,11 @@ void ChatTab::chatLog(std::string line,  int own, bool ignoreRecord)
     chatWindow->mRecorder->record(line.substr(3));
 }
 
+void ChatTab::chatLog(std::string &nick, std::string &msg)
+{
+    chatLog(nick + ": " + msg, nick == player_node->getName() ? BY_PLAYER : BY_OTHER, false);
+}
+
 void ChatTab::chatSend(std::string &msg)
 {
     trim(msg);
@@ -273,23 +278,7 @@ void ChatTab::chatSend(std::string &msg)
     // Prepare ordinary message
     if (msg[0] != '/')
     {
-#ifdef TMWSERV_SUPPORT
-        Net::GameServer::Player::say(msg);
-        /*Channel *channel = channelManager->findByName(getFocused());
-        if (channel)
-        {
-            Net::ChatServer::chat(channel->getId(), msg);
-        }*/
-#else
-        msg = player_node->getName() + " : " + msg;
-
-        MessageOut outMsg(chatWindow->mNetwork);
-        outMsg.writeInt16(CMSG_CHAT_MESSAGE);
-        // Added + 1 in order to let eAthena parse admin commands correctly
-        outMsg.writeInt16(msg.length() + 4 + 1);
-        outMsg.writeString(msg, msg.length() + 1);
-        return;
-#endif
+        sendChat(msg);
     }
     else
     {
@@ -309,4 +298,19 @@ void ChatTab::scroll(int amount)
 void ChatTab::clearText()
 {
     mTextOutput->clearRows();
+}
+
+void ChatTab::sendChat(std::string &msg) {
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::say(msg);
+#else
+    msg = player_node->getName() + " : " + msg;
+
+    MessageOut outMsg(chatWindow->mNetwork);
+    outMsg.writeInt16(CMSG_CHAT_MESSAGE);
+    // Added + 1 in order to let eAthena parse admin commands correctly
+    outMsg.writeInt16(msg.length() + 4 + 1);
+    outMsg.writeString(msg, msg.length() + 1);
+    return;
+#endif
 }

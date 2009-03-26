@@ -34,6 +34,7 @@
 #include "../configuration.h"
 #include "../localplayer.h"
 
+#include "../utils/dtor.h"
 #include "../utils/stringutils.h"
 
 #ifdef TMWSERV_SUPPORT
@@ -94,6 +95,7 @@ ChatWindow::~ChatWindow()
     config.setValue("ReturnToggles", mReturnToggles ? "1" : "0");
     delete mRecorder;
 #endif
+    delete_all(mTabs);
     delete mItemLinkHandler;
 }
 
@@ -140,13 +142,15 @@ void ChatWindow::logic()
 void ChatWindow::chatLog(std::string line, int own, std::string channelName,
                          bool ignoreRecord)
 {
-    if(channelName.empty())
+    ChatTab *tab;
+    if(!channelName.empty())
+        tab = findTab(channelName);
+    else
 #ifdef TMWSERV_SUPPORT
-        channelName = getFocused();
+        tab = getFocused();
 #else
-        channelName = "General";
+        tab = findTab("General");
 #endif
-    ChatTab *tab = findTab(channelName);
 
     tab->chatLog(line, own, ignoreRecord);
 }

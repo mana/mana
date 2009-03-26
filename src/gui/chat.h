@@ -178,11 +178,6 @@ class ChatWindow : public Window,
         /** Add the tab to the window */
         void addTab(ChatTab *tab);
 
-        /** Called to output text to a specific channel */
-        void sendToChannel(short channel,
-                           const std::string &user,
-                           const std::string &msg);
-
         /**
          * Passes the text to the current tab as input
          *
