@@ -32,13 +32,15 @@
 
 // Generate strings from an enum ... some preprocessor fun.
 #define EDEF(a) a,
+#define LASTEDEF(a) a
 #define ECONFIGSTR(a) Palette::getConfigName(#a),
+#define LASTECONFIGSTR(a) Palette::getConfigName(#a)
 
 #define TEXTENUM(name,def)\
-    enum name { def(EDEF) };\
-    static const std::string name ## Names[];
+    enum name { def(EDEF,LASTEDEF) };\
+    static const std::string name ## Names[]
 #define DEFENUMNAMES(name,def)\
-    const std::string Palette::name ## Names[] = { def(ECONFIGSTR) "" };
+    const std::string Palette::name ## Names[] = { def(ECONFIGSTR,ECONFIGSTR) "" }
 
 /**
  * Class controlling the game's color palette.
@@ -47,7 +49,7 @@ class Palette : public gcn::ListModel
 {
     public:
         /** List of all colors that are configurable. */
-        #define COLOR_TYPE(ENTRY)\
+        #define COLOR_TYPE(ENTRY,LASTENTRY)\
             ENTRY(TEXT)\
             ENTRY(SHADOW)\
             ENTRY(OUTLINE)\
@@ -91,9 +93,9 @@ class Palette : public gcn::ListModel
             ENTRY(HIT_MONSTER_PLAYER)\
             ENTRY(HIT_CRITICAL)\
             ENTRY(MISS)\
-            ENTRY(TYPE_COUNT)\
+            LASTENTRY(TYPE_COUNT)
 
-        TEXTENUM(ColorType, COLOR_TYPE)
+        TEXTENUM(ColorType, COLOR_TYPE);
 
         /** Colors can be static or can alter over time. */
         enum GradientType {
