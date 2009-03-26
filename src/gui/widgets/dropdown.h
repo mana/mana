@@ -27,15 +27,15 @@
 class Image;
 class ImageRect;
 
-    /**
-     * A drop down box from which you can select different values. It is one of
-     * the most complicated Widgets you will find in Guichan. For drawing the
-     * DroppedDown box it uses one ScrollArea and one ListBox. It also uses an
-     * internal FocusHandler to handle the focus of the internal ScollArea and
-     * ListBox. DropDown uses a ListModel to handle the list. To be able to use
-     * DropDown you must give DropDown an implemented ListModel which represents
-     * your list.
-     */
+/**
+ * A drop down box from which you can select different values. It is one of
+ * the most complicated Widgets you will find in Guichan. For drawing the
+ * DroppedDown box it uses one ScrollArea and one ListBox. It also uses an
+ * internal FocusHandler to handle the focus of the internal ScollArea and
+ * ListBox. DropDown uses a ListModel to handle the list. To be able to use
+ * DropDown you must give DropDown an implemented ListModel which represents
+ * your list.
+ */
 class DropDown : public gcn::DropDown
 {
     public:
@@ -57,9 +57,9 @@ class DropDown : public gcn::DropDown
          */
         ~DropDown();
 
-        void draw(gcn::Graphics* graphics);
+        void draw(gcn::Graphics *graphics);
 
-        void drawFrame(gcn::Graphics* graphics);
+        void drawFrame(gcn::Graphics *graphics);
 
         /**
          * Sets the widget to be opaque, that is sets the widget to display its
@@ -67,7 +67,7 @@ class DropDown : public gcn::DropDown
          *
          * @param opaque True if the widget should be opaque, false otherwise.
          */
-        void setOpaque(bool opaque) {mOpaque = opaque;}
+        void setOpaque(bool opaque) { mOpaque = opaque; }
 
         /**
          * Checks if the widget is opaque, that is if the widget area displays
@@ -75,7 +75,7 @@ class DropDown : public gcn::DropDown
          *
          * @return True if the widget is opaque, false otherwise.
          */
-        bool isOpaque() const {return mOpaque;}
+        bool isOpaque() const { return mOpaque; }
 
 
     protected:

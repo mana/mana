@@ -19,16 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/textpreview.h"
+
+#include "gui/gui.h"
+#include "gui/palette.h"
+#include "gui/textrenderer.h"
+#include "gui/truetypefont.h"
+
+#include "configuration.h"
+
 #include <typeinfo>
-
-#include "textpreview.h"
-
-#include "../gui.h"
-#include "../palette.h"
-#include "../textrenderer.h"
-#include "../truetypefont.h"
-
-#include "../../configuration.h"
 
 float TextPreview::mAlpha = config.getValue("guialpha", 0.8);
 

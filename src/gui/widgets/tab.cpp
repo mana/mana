@@ -19,20 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/tab.h"
+
+#include "gui/widgets/tabbedarea.h"
+
+#include "gui/palette.h"
+
+#include "configuration.h"
+#include "graphics.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/dtor.h"
+
 #include <guichan/widgets/label.hpp>
-
-#include "tab.h"
-#include "tabbedarea.h"
-
-#include "../palette.h"
-
-#include "../../configuration.h"
-#include "../../graphics.h"
-
-#include "../../resources/image.h"
-#include "../../resources/resourcemanager.h"
-
-#include "../../utils/dtor.h"
 
 int Tab::mInstances = 0;
 float Tab::mAlpha = config.getValue("guialpha", 0.8);

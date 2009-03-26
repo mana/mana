@@ -19,21 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/dropdown.h"
+
+#include "gui/listbox.h"
+#include "gui/palette.h"
+#include "gui/scrollarea.h"
+
+#include "configuration.h"
+#include "graphics.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/dtor.h"
+
 #include <algorithm>
-
-#include "dropdown.h"
-
-#include "../listbox.h"
-#include "../palette.h"
-#include "../scrollarea.h"
-
-#include "../../configuration.h"
-#include "../../graphics.h"
-
-#include "../../resources/image.h"
-#include "../../resources/resourcemanager.h"
-
-#include "../../utils/dtor.h"
 
 int DropDown::instances = 0;
 Image *DropDown::buttons[2][2];

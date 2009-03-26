@@ -22,9 +22,9 @@
 #ifndef WIDGET_LAYOUT_H
 #define WIDGET_LAYOUT_H
 
-#include <vector>
-
 #include <guichan/widgets/container.hpp>
+
+#include <vector>
 
 class LayoutCell;
 

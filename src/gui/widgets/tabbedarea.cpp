@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "tabbedarea.h"
-#include "tab.h"
+#include "gui/widgets/tabbedarea.h"
+#include "gui/widgets/tab.h"
 
 #include <guichan/widgets/container.hpp>
 

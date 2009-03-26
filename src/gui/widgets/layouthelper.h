@@ -22,7 +22,7 @@
 #ifndef LAYOUTHELPER_H
 #define LAYOUTHELPER_H
 
-#include "layout.h"
+#include "gui/widgets/layout.h"
 
 #include <guichan/widgetlistener.hpp>
 

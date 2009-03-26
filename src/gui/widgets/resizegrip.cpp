@@ -19,15 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/resizegrip.h"
+
+#include "configuration.h"
+#include "graphics.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
 #include <guichan/graphics.hpp>
-
-#include "resizegrip.h"
-
-#include "../../configuration.h"
-#include "../../graphics.h"
-
-#include "../../resources/image.h"
-#include "../../resources/resourcemanager.h"
 
 Image *ResizeGrip::gripImage = 0;
 int ResizeGrip::mInstances = 0;

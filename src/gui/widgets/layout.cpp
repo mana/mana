@@ -19,9 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#include "gui/widgets/layout.h"
 
-#include "layout.h"
+#include <cassert>
 
 ContainerPlacer ContainerPlacer::at(int x, int y)
 {

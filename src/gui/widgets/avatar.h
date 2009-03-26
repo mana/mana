@@ -22,9 +22,11 @@
 #ifndef AVATAR_H
 #define AVATAR_H
 
-#include <string>
+#include "guichanfwd.h"
+
 #include <guichan/widget.hpp>
-#include <guichan/widgets/label.hpp>
+
+#include <string>
 
 class Image;
 class Icon;

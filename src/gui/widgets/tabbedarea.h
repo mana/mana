@@ -22,7 +22,6 @@
 #ifndef TABBEDAREA_H
 #define TABBEDAREA_H
 
-#include <guichan/widget.hpp>
 #include <guichan/widgets/tabbedarea.hpp>
 
 #include <string>
@@ -89,4 +88,3 @@ class TabbedArea : public gcn::TabbedArea
 };
 
 #endif
-

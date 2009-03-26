@@ -19,12 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "avatar.h"
+#include "gui/widgets/avatar.h"
 
-#include "../icon.h"
+#include "gui/icon.h"
 
-#include "../../resources/image.h"
-#include "../../resources/resourcemanager.h"
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
+#include <guichan/widgets/label.hpp>
 
 Avatar::Avatar(const std::string &name):
     mName(name)
