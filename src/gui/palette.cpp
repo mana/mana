@@ -70,11 +70,11 @@ std::string Palette::getConfigName(const std::string &typeName)
     return res;
 }
 
-DEFENUMNAMES(ColorType, COLOR_TYPE)
+DEFENUMNAMES(ColorType, COLOR_TYPE);
 
 const int Palette::GRADIENT_DELAY = 40;
 
-Palette::Palette() : 
+Palette::Palette() :
     mRainbowTime(tick_time),
     mColVector(ColVector(TYPE_COUNT)),
     mGradVector()
