@@ -22,6 +22,8 @@
 #ifndef TABBEDAREA_H
 #define TABBEDAREA_H
 
+#include <guichan/widget.hpp>
+#include <guichan/widgets/container.hpp>
 #include <guichan/widgets/tabbedarea.hpp>
 
 #include <string>
@@ -82,6 +84,8 @@ class TabbedArea : public gcn::TabbedArea
          * Overload the logic function since it's broken in guichan 0.8
          */
         void logic();
+
+        int getContainerHeight() { return mWidgetContainer->getHeight(); }
 
     private:
         typedef std::vector< std::pair<gcn::Tab*, gcn::Widget*> > TabContainer;

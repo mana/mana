@@ -28,18 +28,22 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
+#include <guichan/widget.hpp>
+#include <guichan/widgetlistener.hpp>
+
+#include "widgets/chattab.h"
 
 #include "window.h"
 
 class BrowserBox;
 class Channel;
+class ChatTab;
 class Recorder;
 class ScrollArea;
 class TabbedArea;
 class ItemLinkHandler;
 #ifdef EATHENA_SUPPORT
 class Network;
-class Party;
 #endif
 
 enum
@@ -66,6 +70,14 @@ enum
 #define CAT_WHISPER       " whispers: "
 
 #define DEFAULT_CHAT_WINDOW_SCROLL 7 // 1 means `1/8th of the window size'.
+
+/** One item in the chat log */
+struct CHATLOG
+{
+    std::string nick;
+    std::string text;
+    int own;
+};
 
 /**
  * The chat window.
@@ -119,14 +131,24 @@ class ChatWindow : public Window,
                      bool ignoreRecord = false);
 
         /**
-         * Gets the focused tab's name
+         * Gets the focused tab.
          */
-        const std::string &getFocused() const;
+        ChatTab* getFocused() const;
 
         /**
-         * Clear the tab with the given name
+         * Clear the tab with the given name.
          */
         void clearTab(const std::string &tab);
+
+        /**
+         * Clear the given tab.
+         */
+        void clearTab(ChatTab* tab);
+
+        /**
+         * Clear the current tab.
+         */
+        void clearTab();
 
         /**
          * Performs action.
@@ -146,15 +168,15 @@ class ChatWindow : public Window,
          */
         bool isInputFocused();
 
-        /** Called to remove the channel from the channel manager */
-        void removeChannel(short channelId);
+        ChatTab* findTab(const std::string &tabName);
 
-        void removeChannel(const std::string &channelName);
+        /** Remove the given tab from the window */
+        void removeTab(ChatTab *tab);
 
-        void removeChannel(Channel *channel);
+        void removeTab(const std::string &tabName);
 
-        /** Called to create a new channel tab */
-        void createNewChannelTab(const std::string &channelName);
+        /** Add the tab to the window */
+        void addTab(ChatTab *tab);
 
         /** Called to output text to a specific channel */
         void sendToChannel(short channel,
@@ -162,9 +184,7 @@ class ChatWindow : public Window,
                            const std::string &msg);
 
         /**
-         * Determines whether the message is a command or message, then
-         * sends the given message to the game server to be said, or to the
-         * command handler
+         * Passes the text to the current tab as input
          *
          * @param msg  The message text which is to be sent.
          *
@@ -212,61 +232,39 @@ class ChatWindow : public Window,
 
         void doPresent();
 
-    private:
+    protected:
+        friend class ChatTab;
+
+        void adjustTabSize();
+
 #ifdef EATHENA_SUPPORT
         Network *mNetwork;
+        char mPartyPrefix; /**< Messages beginning with the prefix are sent to
+                              the party */
 #endif
-        bool mTmpVisible;
-
-        int mItems;
-        int mItemsKeep;
-
-        /** One item in the chat log */
-        struct CHATLOG
-        {
-            std::string nick;
-            std::string text;
-            int own;
-        };
-
-        /**
-         * A structure combining a BrowserBox with its ScrollArea.
-         */
-        struct ChatArea
-        {
-            ChatArea(BrowserBox *b, ScrollArea *s):
-                browser(b), scroll(s)
-            {}
-
-            BrowserBox *browser;
-            ScrollArea *scroll;
-        };
-
         /** Used for showing item popup on clicking links **/
         ItemLinkHandler *mItemLinkHandler;
-
-        /** Tabbed area for holding each channel. */
-        TabbedArea *mChatTabs;
+        Recorder *mRecorder;
 
         /** Input box for typing chat messages. */
         gcn::TextField *mChatInput;
 
-        typedef std::map<const std::string, ChatArea> ChannelMap;
+    private:
+        bool mTmpVisible;
+
+        /** Tabbed area for holding each channel. */
+        TabbedArea *mChatTabs;
+
+        typedef std::map<const std::string, ChatTab*> TabMap;
         /** Map each tab to its browser and scroll area. */
-        ChannelMap mChannels;
+        TabMap mTabs;
 
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;
-        History mHistory;           /**< Command history */
-        HistoryIterator mCurHist;   /**< History iterator */
-        Recorder *mRecorder;        /**< Recording class */
-        bool mReturnToggles;        /**< Marks whether <Return> toggles the chat
-                                         log or not */
-#ifdef EATHENA_SUPPORT
-        char mPartyPrefix;          /**< Messages beginning with the prefix are
-                                         sent to the party */
-        Party *mParty;
-#endif
+        History mHistory;           /**< Command history. */
+        HistoryIterator mCurHist;   /**< History iterator. */
+        bool mReturnToggles; /**< Marks whether <Return> toggles the chat log
+                                or not */
 };
 
 extern ChatWindow *chatWindow;

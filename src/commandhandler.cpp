@@ -389,7 +389,7 @@ void CommandHandler::handleMsg(const std::string &args)
 
 void CommandHandler::handleClear()
 {
-    chatWindow->clearTab(chatWindow->getFocused());
+    chatWindow->clearTab();
 }
 
 #ifdef TMWSERV_SUPPORT

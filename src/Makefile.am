@@ -7,6 +7,8 @@ tmw_CXXFLAGS = -DPKG_DATADIR=\""$(pkgdatadir)/"\"      \
 
 tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/widgets/avatar.h \
+	      gui/widgets/chattab.cpp \
+	      gui/widgets/chattab.h \
 	      gui/widgets/dropdown.cpp \
 	      gui/widgets/dropdown.h \
 	      gui/widgets/layout.cpp \

@@ -48,6 +48,7 @@
 #endif
 #include "player_relations.h"
 
+#include "gui/widgets/chattab.h"
 #include "gui/buy.h"
 #include "gui/buysell.h"
 #include "gui/chat.h"
@@ -285,6 +286,8 @@ void createGuiWindows(Network *network)
                                             new ItemShortcutContainer);
     emoteShortcutWindow = new ShortcutWindow("emoteShortcut",
                                              new EmoteShortcutContainer);
+
+    chatWindow->addTab(new ChatTab(std::string("General")));
 
     // Set initial window visibility
     chatWindow->setVisible((bool) config.getValue(
