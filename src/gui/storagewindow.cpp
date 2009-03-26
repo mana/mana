@@ -48,7 +48,6 @@
 
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
-#include "../utils/stringutils.h"
 
 StorageWindow::StorageWindow(Network *network, int invSize):
     Window(_("Storage")),
@@ -72,7 +71,7 @@ StorageWindow::StorageWindow(Network *network, int invSize):
     mInvenScroll = new ScrollArea(mItems);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mUsedSlots = toString(player_node->getStorage()->getNumberOfSlotsUsed());
+    mUsedSlots = player_node->getStorage()->getNumberOfSlotsUsed();
 
     mSlotsLabel = new Label(_("Slots: "));
 
@@ -105,14 +104,15 @@ void StorageWindow::logic()
 
     Window::logic();
 
-    if (mUsedSlots != toString(player_node->getStorage()->getNumberOfSlotsUsed()))
+    const int usedSlots = player_node->getInventory()->getNumberOfSlotsUsed();
+
+    if (mUsedSlots != usedSlots)
     {
-        mUsedSlots = toString(player_node->getStorage()->getNumberOfSlotsUsed());
+        mUsedSlots = usedSlots;
 
-        mSlotsBar->setProgress((float)
-               player_node->getStorage()->getNumberOfSlotsUsed() / mMaxSlots);
+        mSlotsBar->setProgress((float) mUsedSlots / mMaxSlots);
 
-        mSlotsBar->setText(strprintf("%s/%d", mUsedSlots.c_str(), mMaxSlots));
+        mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mMaxSlots));
     }
 }
 
@@ -164,7 +164,8 @@ void StorageWindow::mouseClicked(gcn::MouseEvent &event)
     {
         Item *item = mItems->getSelectedItem();
 
-        if (!item) {
+        if (!item)
+        {
             mRetrieveButton->setEnabled(false);
             return;
         }

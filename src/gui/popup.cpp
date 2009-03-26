@@ -20,8 +20,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <climits>
-
 #include <guichan/exception.hpp>
 
 #include "gui.h"
@@ -45,8 +43,8 @@ Popup::Popup(const std::string& name, Window *parent,
     mDefaultSkinPath(skin),
     mMinWidth(100),
     mMinHeight(40),
-    mMaxWidth(INT_MAX),
-    mMaxHeight(INT_MAX)
+    mMaxWidth(graphics->getWidth()),
+    mMaxHeight(graphics->getHeight())
 {
     logger->log("Popup::Popup(\"%s\")", name.c_str());
 

@@ -1,6 +1,5 @@
 /*
  *  Aethyra
- *  Copyright (c) 2004 - 2008 Olof Naessén and Per Larsson
  *  Copyright (c) 2009  Aethyra Development Team 
  *
  *  This file is part of Aethyra based on original code

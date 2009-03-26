@@ -68,7 +68,8 @@ ItemPopup::ItemPopup():
     mItemEffectScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mItemEffectScroll->setDimension(gcn::Rectangle(0, 0, 196, getFont()->getHeight()));
     mItemEffectScroll->setOpaque(false);
-    mItemEffectScroll->setPosition(2, (2 * getFont()->getHeight()) + 5);
+    mItemEffectScroll->setPosition(2, (2 * getFont()->getHeight()) + 
+                                  (2 * getPadding()));
 
     // Item Weight
     mItemWeight = new TextBox();
@@ -79,7 +80,8 @@ ItemPopup::ItemPopup():
     mItemWeightScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mItemWeightScroll->setDimension(gcn::Rectangle(0, 0, 196, getFont()->getHeight()));
     mItemWeightScroll->setOpaque(false);
-    mItemWeightScroll->setPosition(2, (3 * getFont()->getHeight()) + 10);
+    mItemWeightScroll->setPosition(2, (3 * getFont()->getHeight()) + 
+                                  (4 * getPadding()));
 
     add(mItemName);
     add(mItemDescScroll);
@@ -125,43 +127,36 @@ void ItemPopup::setItem(const ItemInfo &item)
     minWidth += 8;
     setWidth(minWidth);
 
-    int numRowsDesc = mItemDesc->getNumberOfRows();
-    int numRowsEffect = mItemEffect->getNumberOfRows();
-    int numRowsWeight = mItemWeight->getNumberOfRows();
+    const int numRowsDesc = mItemDesc->getNumberOfRows();
+    const int numRowsEffect = mItemEffect->getNumberOfRows();
+    const int numRowsWeight = mItemWeight->getNumberOfRows();
+    const int height = getFont()->getHeight();
 
-    mItemDescScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
-                                  numRowsDesc * getFont()->getHeight()));
+    mItemDescScroll->setDimension(gcn::Rectangle(2, 0, minWidth, numRowsDesc * 
+                                                 height));
 
-    mItemEffectScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
-                                    numRowsEffect * getFont()->getHeight()));
+    mItemEffectScroll->setDimension(gcn::Rectangle(2, 0, minWidth, numRowsEffect
+                                                   * height));
 
-    mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
-                                    numRowsWeight * getFont()->getHeight()));
+    mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, minWidth, numRowsWeight
+                                                   * height));
 
     if (item.getEffect().empty())
     {
-        setContentSize(minWidth, (numRowsDesc * getFont()->getHeight() +
-                      (3 * getFont()->getHeight())));
+        setContentSize(minWidth, (numRowsDesc + 3) * height);
 
-        mItemWeightScroll->setPosition(2,
-                          (numRowsDesc * getFont()->getHeight()) +
-                          (2 * getFont()->getHeight()));
+        mItemWeightScroll->setPosition(2, (numRowsDesc + 2) * height);
     }
     else
     {
-        setContentSize(minWidth, (numRowsDesc * getFont()->getHeight()) +
-                      (numRowsEffect * getFont()->getHeight()) +
-                      (3 * getFont()->getHeight()));
+        setContentSize(minWidth, (numRowsDesc + numRowsEffect + 3) * height);
 
-        mItemWeightScroll->setPosition(2,
-                          (numRowsDesc * getFont()->getHeight()) +
-                          (numRowsEffect * getFont()->getHeight()) +
-                          (2 * getFont()->getHeight()));
+        mItemWeightScroll->setPosition(2, (numRowsDesc + numRowsEffect + 2) *
+                                       height);
     }
 
     mItemDescScroll->setPosition(2, 20);
-    mItemEffectScroll->setPosition(2, (numRowsDesc * getFont()->getHeight()) +
-                      (2 * getFont()->getHeight()));
+    mItemEffectScroll->setPosition(2, (numRowsDesc + 2) * height);
 }
 
 void ItemPopup::updateColors()

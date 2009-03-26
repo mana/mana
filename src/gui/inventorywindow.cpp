@@ -122,8 +122,7 @@ void InventoryWindow::logic()
     const int usedSlots = player_node->getInventory()->getNumberOfSlotsUsed();
 
     if (mMaxWeight != player_node->mMaxWeight ||
-        mTotalWeight != player_node->mTotalWeight ||
-        mUsedSlots != usedSlots)
+        mTotalWeight != player_node->mTotalWeight || mUsedSlots != usedSlots)
     {
         mTotalWeight = player_node->mTotalWeight;
         mMaxWeight = player_node->mMaxWeight;
@@ -131,25 +130,18 @@ void InventoryWindow::logic()
 
         // Weight Bar coloration
         if (mTotalWeight < (mMaxWeight / 3))
-        {
             mWeightBar->setColor(0, 0, 255); // Blue
-        }
         else if (mTotalWeight < ((mMaxWeight / 3) * 2))
-        {
             mWeightBar->setColor(255, 255, 0); // Yellow
-        }
         else
-        {
             mWeightBar->setColor(255, 0, 0); // Red
-        }
 
         // Adjust progress bars
         mSlotsBar->setProgress((float) mUsedSlots / mMaxSlots);
         mWeightBar->setProgress((float) mTotalWeight / mMaxWeight);
 
         mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mMaxSlots));
-        mWeightBar->setText(strprintf("%dg/%dg", mTotalWeight,
-                                                 mMaxWeight));
+        mWeightBar->setText(strprintf("%dg/%dg", mTotalWeight, mMaxWeight));
     }
 }
 

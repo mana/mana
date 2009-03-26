@@ -20,9 +20,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
-#include <climits>
-
 #include <guichan/exception.hpp>
 
 #include "gui.h"
@@ -55,8 +52,8 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
     mSticky(false),
     mMinWinWidth(100),
     mMinWinHeight(40),
-    mMaxWinWidth(INT_MAX),
-    mMaxWinHeight(INT_MAX)
+    mMaxWinWidth(graphics->getWidth()),
+    mMaxWinHeight(graphics->getHeight())
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
@@ -64,9 +61,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent, const std
         throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
 
     if (instances == 0)
-    {
         skinLoader = new SkinLoader();
-    }
 
     instances++;
 
@@ -114,9 +109,7 @@ Window::~Window()
     mSkin->instances--;
 
     if (instances == 0)
-    {
         delete skinLoader;
-    }
 }
 
 void Window::setWindowContainer(WindowContainer *wc)

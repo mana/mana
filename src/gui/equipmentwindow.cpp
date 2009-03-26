@@ -122,7 +122,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
             // Set color to the highligh color
             g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
             g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
-                                        BOX_WIDTH, BOX_HEIGHT));
+                                            BOX_WIDTH, BOX_HEIGHT));
         }
 
         // Set color black.
@@ -200,13 +200,8 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
             gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
                                  BOX_WIDTH, BOX_HEIGHT);
 
-            if (tRect.isPointInRect(x, y))
-            {
-                if (item)
-                {
-                    mSelected = i;
-                }
-            }
+            if (tRect.isPointInRect(x, y) && item)
+                mSelected = i;
         }
     }
     else if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)

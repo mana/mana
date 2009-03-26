@@ -174,7 +174,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
                 int type = msg->readInt16();
-                Uint32 value = msg->readInt32();
+                int value = msg->readInt32();
 
                 switch (type)
                 {
@@ -195,8 +195,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                  break;
                     case 0x0018:
                                  if (value >= player_node->mMaxWeight / 2 &&
-                                         player_node->mTotalWeight <
-                                         player_node->mMaxWeight / 2)
+                                     player_node->mTotalWeight <
+                                     player_node->mMaxWeight / 2)
                                  {
                                      weightNotice = new OkDialog(_("Message"),
                                              _("You are carrying more than "
