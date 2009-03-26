@@ -93,4 +93,4 @@ namespace XML
 #define for_each_xml_child_node(var, parent) \
     for (xmlNodePtr var = parent->xmlChildrenNode; var; var = var->next)
 
-#endif
+#endif // XML_H

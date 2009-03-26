@@ -39,7 +39,7 @@ public std::unary_function <std::pair<T1, T2>, void>
     void operator()(std::pair<T1, T2> &pair) { delete pair.second; }
 };
 
-    template<class Cont>
+template<class Cont>
 inline dtor<typename Cont::value_type> make_dtor(Cont const&)
 {
     return dtor<typename Cont::value_type>();

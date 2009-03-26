@@ -41,4 +41,4 @@
 
 #endif
 
-#endif
+#endif // UTILS_GETTEXT_H

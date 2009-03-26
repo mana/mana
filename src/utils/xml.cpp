@@ -19,11 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "xml.h"
+#include "utils/xml.h"
 
-#include "../log.h"
+#include "log.h"
 
-#include "../resources/resourcemanager.h"
+#include "resources/resourcemanager.h"
 
 namespace XML
 {

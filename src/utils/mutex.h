@@ -22,9 +22,9 @@
 #ifndef MUTEX_H
 #define MUTEX_H
 
-#include <SDL_thread.h>
+#include "log.h"
 
-#include "../log.h"
+#include <SDL_thread.h>
 
 /**
  * A mutex provides mutual exclusion of access to certain data that is
