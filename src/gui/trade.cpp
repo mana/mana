@@ -277,7 +277,7 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
     if (event.getSource() == mMyItemContainer &&
             (item = mMyItemContainer->getSelectedItem()))
         mPartnerItemContainer->selectNone();
-    else if (item = mPartnerItemContainer->getSelectedItem())
+    else if ((item = mPartnerItemContainer->getSelectedItem()))
         mMyItemContainer->selectNone();
 }
 

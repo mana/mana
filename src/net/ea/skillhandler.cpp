@@ -112,7 +112,7 @@ void SkillHandler::handleMessage(MessageIn &msg)
             // right level)
             short skill   = msg.readInt16();
             short bskill  = msg.readInt16();
-            short unused  = msg.readInt16(); // unknown
+            msg.readInt16(); // unknown
             char success = msg.readInt8();
             char reason  = msg.readInt8();
             if (success != SKILL_FAILED && bskill == BSKILL_EMOTE)

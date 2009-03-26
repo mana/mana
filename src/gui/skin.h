@@ -60,12 +60,12 @@ class Skin
         /**
          * Returns the minimum width which can be used with this skin.
          */
-        unsigned int getMinWidth();
+        int getMinWidth() const;
 
         /**
          * Returns the minimum height which can be used with this skin.
          */
-        unsigned int getMinHeight();
+        int getMinHeight() const;
 
         int instances;
 
