@@ -38,7 +38,7 @@
 int DropDown::instances = 0;
 Image *DropDown::buttons[2][2];
 ImageRect DropDown::skin;
-float DropDown::mAlpha = config.getValue("guialpha", 0.8);
+float DropDown::mAlpha = 1.0;
 
 DropDown::DropDown(gcn::ListModel *listModel, gcn::ScrollArea *scrollArea,
                    gcn::ListBox *listBox, bool opacity):

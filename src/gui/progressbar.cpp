@@ -34,7 +34,7 @@
 
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;
-float ProgressBar::mAlpha = config.getValue("guialpha", 0.8);
+float ProgressBar::mAlpha = 1.0;
 
 ProgressBar::ProgressBar(float progress,
                          unsigned int width, unsigned int height,

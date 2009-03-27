@@ -29,7 +29,7 @@
 #include "../resources/resourcemanager.h"
 
 int CheckBox::instances = 0;
-float CheckBox::mAlpha = config.getValue("guialpha", 0.8);
+float CheckBox::mAlpha = 1.0;
 Image *CheckBox::checkBoxNormal;
 Image *CheckBox::checkBoxChecked;
 Image *CheckBox::checkBoxDisabled;

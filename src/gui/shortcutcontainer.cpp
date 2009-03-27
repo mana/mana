@@ -27,7 +27,7 @@
 
 #include "../utils/stringutils.h"
 
-float ShortcutContainer::mAlpha = config.getValue("guialpha", 0.8);
+float ShortcutContainer::mAlpha = 1.0;
 
 ShortcutContainer::ShortcutContainer():
     mGridWidth(1),

@@ -29,7 +29,7 @@
 
 #include "../configuration.h"
 
-float ListBox::mAlpha = config.getValue("guialpha", 0.8);
+float ListBox::mAlpha = 1.0;
 
 ListBox::ListBox(gcn::ListModel *listModel):
     gcn::ListBox(listModel)

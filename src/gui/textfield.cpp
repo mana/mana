@@ -36,7 +36,7 @@
 #undef DELETE //Win32 compatibility hack
 
 int TextField::instances = 0;
-float TextField::mAlpha = config.getValue("guialpha", 0.8);
+float TextField::mAlpha = 1.0;
 ImageRect TextField::skin;
 
 TextField::TextField(const std::string &text):

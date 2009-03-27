@@ -30,7 +30,7 @@
 
 #include "../utils/dtor.h"
 
-float GuiTable::mAlpha = config.getValue("guialpha", 0.8);
+float GuiTable::mAlpha = 1.0;
 
 class GuiTableActionListener : public gcn::ActionListener
 {

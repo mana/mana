@@ -29,7 +29,7 @@
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;
-float Slider::mAlpha = config.getValue("guialpha", 0.8);
+float Slider::mAlpha = 1.0;
 int Slider::mInstances = 0;
 
 Slider::Slider(double scaleEnd):

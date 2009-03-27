@@ -32,7 +32,7 @@
 #include "../utils/dtor.h"
 
 int PlayerBox::instances = 0;
-float PlayerBox::mAlpha = config.getValue("guialpha", 0.8);
+float PlayerBox::mAlpha = 1.0;
 ImageRect PlayerBox::background;
 
 PlayerBox::PlayerBox(const Player *player):

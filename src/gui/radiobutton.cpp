@@ -28,7 +28,7 @@
 #include "../resources/resourcemanager.h"
 
 int RadioButton::instances = 0;
-float RadioButton::mAlpha = config.getValue("guialpha", 0.8);
+float RadioButton::mAlpha = 1.0;
 Image *RadioButton::radioNormal;
 Image *RadioButton::radioChecked;
 Image *RadioButton::radioDisabled;

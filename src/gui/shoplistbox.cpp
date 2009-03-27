@@ -32,7 +32,7 @@
 
 const int ITEM_ICON_SIZE = 32;
 
-float ShopListBox::mAlpha = config.getValue("guialpha", 0.8);
+float ShopListBox::mAlpha = 1.0;
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel):
     ListBox(listModel),

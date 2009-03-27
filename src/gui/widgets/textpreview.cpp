@@ -30,7 +30,7 @@
 
 #include <typeinfo>
 
-float TextPreview::mAlpha = config.getValue("guialpha", 0.8);
+float TextPreview::mAlpha = 1.0;
 
 TextPreview::TextPreview(const std::string &text):
     mText(text)

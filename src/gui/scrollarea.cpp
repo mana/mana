@@ -30,7 +30,7 @@
 #include "../utils/dtor.h"
 
 int ScrollArea::instances = 0;
-float ScrollArea::mAlpha = config.getValue("guialpha", 0.8);
+float ScrollArea::mAlpha = 1.0;
 ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
 Image *ScrollArea::buttons[4][2];
