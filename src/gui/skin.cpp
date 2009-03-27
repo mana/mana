@@ -1,8 +1,9 @@
 /*
- *  Aethyra
+ *  Gui Skinning
+ *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
  *  Copyright (C) 2009  Aethyra Development Team
  *
- *  This file is part of Aethyra.
+ *  This file is part of The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,7 +47,9 @@ class SkinConfigListener : public ConfigListener
     }
 };
 
-Skin::Skin(ImageRect skin, Image *close, std::string filePath, std::string name):
+Skin::Skin(ImageRect skin, Image *close,
+           const std::string &filePath,
+           const std::string &name):
     instances(0),
     mFilePath(filePath),
     mName(name),
@@ -225,10 +228,9 @@ Skin *SkinLoader::load(const std::string &filename,
     return skin;
 }
 
-SkinLoader::SkinLoader() :
-    mSkins()
+SkinLoader::SkinLoader()
 {
-    skinConfigListener = new SkinConfigListener();
+    skinConfigListener = new SkinConfigListener;
     // Send GUI alpha changed for initialization
     skinConfigListener->optionChanged("guialpha");
     config.addListener("guialpha", skinConfigListener);
