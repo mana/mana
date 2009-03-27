@@ -19,18 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "network.h"
+#include "net/tmwserv/network.h"
+
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/internal.h"
+
+#include "net/messagehandler.h"
+#include "net/messagein.h"
+
+#include "log.h"
 
 #include <enet/enet.h>
 
 #include <map>
-
-#include "connection.h"
-#include "internal.h"
-#include "../messagehandler.h"
-#include "../messagein.h"
-
-#include "../../log.h"
 
 /**
  * The local host which is shared for all outgoing connections.

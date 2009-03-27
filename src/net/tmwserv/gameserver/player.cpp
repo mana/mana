@@ -23,9 +23,10 @@
 
 #include "internal.h"
 
-#include "../connection.h"
-#include "../../messageout.h"
-#include "../protocol.h"
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/protocol.h"
+
+#include "net/messageout.h"
 
 void RespawnRequestListener::action(const gcn::ActionEvent &event)
 {

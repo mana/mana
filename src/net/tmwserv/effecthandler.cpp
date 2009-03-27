@@ -19,12 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "effecthandler.h"
+#include "net/tmwserv/effecthandler.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../effectmanager.h"
+#include "net/messagein.h"
+
+#include "effectmanager.h"
 
 
 EffectHandler::EffectHandler()

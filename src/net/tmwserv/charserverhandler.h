@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_CHARSERVERHANDLER_H
-#define NET_CHARSERVERHANDLER_H
+#ifndef NET_TMWSERV_CHARSERVERHANDLER_H
+#define NET_TMWSERV_CHARSERVERHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
-#include "../../lockedarray.h"
+#include "lockedarray.h"
 
 class CharCreateDialog;
 class LocalPlayer;
@@ -38,11 +38,9 @@ class CharServerHandler : public MessageHandler
     public:
         CharServerHandler();
 
-        void
-        handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        void
-        setCharInfo(LockedArray<LocalPlayer*> *charInfo)
+        void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
         {
             mCharInfo = charInfo;
         }
@@ -56,11 +54,9 @@ class CharServerHandler : public MessageHandler
         { mCharCreateDialog = window; }
 
     protected:
-        void
-        handleCharCreateResponse(MessageIn &msg);
+        void handleCharCreateResponse(MessageIn &msg);
 
-        void
-        handleCharSelectResponse(MessageIn &msg);
+        void handleCharSelectResponse(MessageIn &msg);
 
         LockedArray<LocalPlayer*> *mCharInfo;
         CharCreateDialog *mCharCreateDialog;

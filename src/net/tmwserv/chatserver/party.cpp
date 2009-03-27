@@ -19,16 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 #include "party.h"
 
 #include "internal.h"
 
-#include "../connection.h"
-#include "../../messageout.h"
-#include "../protocol.h"
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../../log.h"
+#include "net/messageout.h"
+
+#include "log.h"
 
 void Net::ChatServer::Party::invitePlayer(const std::string &name)
 {
@@ -67,4 +67,3 @@ void Net::ChatServer::Party::quitParty()
 
     Net::ChatServer::connection->send(msg);
 }
-

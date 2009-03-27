@@ -52,4 +52,6 @@ private:
     TextField *mSender;
 };
 
+extern NpcPostDialog *npcPostDialog;
+
 #endif

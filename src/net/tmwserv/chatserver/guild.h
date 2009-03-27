@@ -19,7 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 #ifndef NET_CHATSERVER_GUILD_H
 #define NET_CHATSERVER_GUILD_H
 
@@ -66,4 +65,3 @@ namespace Net
 }
 
 #endif
-

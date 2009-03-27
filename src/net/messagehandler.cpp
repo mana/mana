@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#include "net/messagehandler.h"
 
-#include "messagehandler.h"
 #ifdef TMWSERV_SUPPORT
-#include "tmwserv/network.h"
+#include "net/tmwserv/network.h"
 #else
-#include "ea/network.h"
+#include "net/ea/network.h"
 #endif
+
+#include <cassert>
 
 MessageHandler::MessageHandler()
 #ifdef EATHENA_SUPPORT

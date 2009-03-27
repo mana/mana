@@ -19,13 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "loginhandler.h"
+#include "net/tmwserv/loginhandler.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../logindata.h"
-#include "../../main.h"
+#include "net/messagein.h"
+
+#include "logindata.h"
+#include "main.h"
 
 LoginHandler::LoginHandler()
 {

@@ -19,21 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "buysellhandler.h"
+#include "net/tmwserv/buysellhandler.h"
 
-#include <SDL_types.h>
+#include "net/tmwserv/protocol.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/messagein.h"
 
-#include "../../beingmanager.h"
-#include "../../item.h"
-#include "../../localplayer.h"
-#include "../../npc.h"
+#include "beingmanager.h"
+#include "item.h"
+#include "localplayer.h"
+#include "npc.h"
 
-#include "../../gui/buy.h"
-#include "../../gui/chat.h"
-#include "../../gui/sell.h"
+#include "gui/buy.h"
+#include "gui/chat.h"
+#include "gui/sell.h"
 
 extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;

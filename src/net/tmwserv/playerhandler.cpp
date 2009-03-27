@@ -19,26 +19,27 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "playerhandler.h"
+#include "net/tmwserv/playerhandler.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../engine.h"
-#include "../../localplayer.h"
-#include "../../log.h"
-#include "../../particle.h"
-#include "../../npc.h"
+#include "net/messagein.h"
 
-#include "../../gui/buy.h"
-#include "../../gui/chat.h"
-#include "../../gui/gui.h"
-#include "../../gui/npclistdialog.h"
-#include "../../gui/npc_text.h"
-#include "../../gui/ok_dialog.h"
-#include "../../gui/sell.h"
-#include "../../gui/skill.h"
-#include "../../gui/viewport.h"
+#include "engine.h"
+#include "localplayer.h"
+#include "log.h"
+#include "particle.h"
+#include "npc.h"
+
+#include "gui/buy.h"
+#include "gui/chat.h"
+#include "gui/gui.h"
+#include "gui/npclistdialog.h"
+#include "gui/npc_text.h"
+#include "gui/ok_dialog.h"
+#include "gui/sell.h"
+#include "gui/skill.h"
+#include "gui/viewport.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
@@ -293,8 +294,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void
-PlayerHandler::handleMapChangeMessage(MessageIn &msg)
+void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 {
     const std::string mapName = msg.readString();
     const unsigned short x = msg.readInt16();

@@ -19,18 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "net/tmwserv/partyhandler.h"
+
+#include "net/tmwserv/chatserver/chatserver.h"
+#include "net/tmwserv/protocol.h"
+
+#include "net/messagein.h"
+
+#include "gui/chat.h"
+#include "gui/partywindow.h"
+
+#include "log.h"
+#include "localplayer.h"
+
 #include <iostream>
-#include "partyhandler.h"
-
-#include "protocol.h"
-#include "../messagein.h"
-
-#include "chatserver/chatserver.h"
-
-#include "../../gui/chat.h"
-#include "../../gui/partywindow.h"
-#include "../../log.h"
-#include "../../localplayer.h"
 
 PartyHandler::PartyHandler()
 {

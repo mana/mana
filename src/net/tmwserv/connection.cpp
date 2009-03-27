@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "connection.h"
+#include "net/tmwserv/connection.h"
+
+#include "net/tmwserv/internal.h"
+
+#include "net/messageout.h"
+
+#include "log.h"
 
 #include <string>
-
-#include "internal.h"
-#include "../messageout.h"
-
-#include "../../log.h"
 
 Net::Connection::Connection(ENetHost *client):
     mConnection(0), mClient(client)

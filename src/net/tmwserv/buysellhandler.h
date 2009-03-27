@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_BUYSELLHANDLER_H
-#define NET_BUYSELLHANDLER_H
+#ifndef NET_TMWSERV_BUYSELLHANDLER_H
+#define NET_TMWSERV_BUYSELLHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 class BuySellHandler : public MessageHandler
 {

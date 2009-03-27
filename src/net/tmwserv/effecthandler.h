@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EFFECTSHANDLER_H
-#define NET_EFFECTSHANDLER_H
+#ifndef NET_TMWSERV_EFFECTSHANDLER_H
+#define NET_TMWSERV_EFFECTSHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 class EffectHandler : public MessageHandler
 {

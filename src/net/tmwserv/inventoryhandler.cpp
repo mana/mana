@@ -19,21 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "inventoryhandler.h"
+#include "net/tmwserv/inventoryhandler.h"
 
-#include <SDL_types.h>
+#include "net/tmwserv/protocol.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/messagein.h"
 
-#include "../../equipment.h"
-#include "../../inventory.h"
-#include "../../item.h"
-#include "../../itemshortcut.h"
-#include "../../localplayer.h"
+#include "equipment.h"
+#include "inventory.h"
+#include "item.h"
+#include "itemshortcut.h"
+#include "localplayer.h"
 
-#include "../../gui/chat.h"
-#include "../../resources/iteminfo.h"
+#include "gui/chat.h"
+
+#include "resources/iteminfo.h"
 
 InventoryHandler::InventoryHandler()
 {

@@ -19,16 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 #include "guild.h"
 
 #include "internal.h"
 
-#include "../connection.h"
-#include "../../messageout.h"
-#include "../protocol.h"
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../../log.h"
+#include "net/messageout.h"
+
+#include "log.h"
 
 void Net::ChatServer::Guild::createGuild(const std::string &name)
 {

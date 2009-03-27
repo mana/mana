@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "messagein.h"
+#include "net/messagein.h"
 
 #ifdef TMWSERV_SUPPORT
 #include <enet/enet.h>

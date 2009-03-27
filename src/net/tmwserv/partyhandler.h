@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_PARTYHANDLER_H
-#define NET_PARTYHANDLER_H
+#ifndef NET_TMWSERV_PARTYHANDLER_H
+#define NET_TMWSERV_PARTYHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 #include <string>
 
@@ -32,9 +32,6 @@ public:
     PartyHandler();
 
     void handleMessage(MessageIn &msg);
-
-protected:
-
 };
 
 #endif

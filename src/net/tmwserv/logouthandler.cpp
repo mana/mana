@@ -19,16 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "logouthandler.h"
+#include "net/tmwserv/logouthandler.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../main.h"
+#include "net/messagein.h"
+
+#include "main.h"
 
 LogoutHandler::LogoutHandler():
-mPassToken(NULL), mScenario(LOGOUT_EXIT),
-mLoggedOutAccount(false), mLoggedOutGame(false), mLoggedOutChat(false)
+    mPassToken(NULL),
+    mScenario(LOGOUT_EXIT),
+    mLoggedOutAccount(false),
+    mLoggedOutGame(false),
+    mLoggedOutChat(false)
 {
     static const Uint16 _messages[] = {
         APMSG_LOGOUT_RESPONSE,
@@ -197,15 +201,14 @@ void LogoutHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void
-LogoutHandler::setScenario(unsigned short scenario, std::string *passToken)
+void LogoutHandler::setScenario(unsigned short scenario,
+                                std::string *passToken)
 {
     mScenario = scenario;
     mPassToken = passToken;
 }
 
-void
-LogoutHandler::reset()
+void LogoutHandler::reset()
 {
     mPassToken = NULL;
     mScenario = LOGOUT_EXIT;

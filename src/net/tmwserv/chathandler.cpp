@@ -19,24 +19,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "chathandler.h"
+#include "net/tmwserv/chathandler.h"
 
-//#include <SDL_types.h>
+#include "net/tmwserv/protocol.h"
+
+#include "net/messagein.h"
+
+#include "being.h"
+#include "beingmanager.h"
+#include "game.h"
+#include "channel.h"
+#include "channelmanager.h"
+
+#include "gui/widgets/channeltab.h"
+#include "gui/chat.h"
+#include "gui/guildwindow.h"
+
 #include <string>
 #include <iostream>
-
-#include "../messagein.h"
-#include "protocol.h"
-
-#include "../../being.h"
-#include "../../beingmanager.h"
-#include "../../game.h"
-#include "../../channel.h"
-#include "../../channelmanager.h"
-
-#include "../../gui/widgets/channeltab.h"
-#include "../../gui/chat.h"
-#include "../../gui/guildwindow.h"
 
 #include "utils/gettext.h"
 

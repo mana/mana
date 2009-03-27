@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_LOGOUTHANDLER_H
-#define NET_LOGOUTHANDLER_H
+#ifndef NET_TMWSERV_LOGOUTHANDLER_H
+#define NET_TMWSERV_LOGOUTHANDLER_H
+
+#include "net/messagehandler.h"
 
 #include <string>
-
-#include "../messagehandler.h"
 
 /**
  * The different scenarios for which LogoutHandler can be used
@@ -43,13 +43,13 @@ class LogoutHandler : public MessageHandler
         void handleMessage(MessageIn &msg);
 
         void setScenario(unsigned short scenario,
-                                               std::string* passToken = NULL);
+                         std::string *passToken = NULL);
 
         void reset();
 
-        void setAccountLoggedOut(){ mLoggedOutAccount = true; }
-        void setGameLoggedOut(){ mLoggedOutGame = true; }
-        void setChatLoggedOut(){ mLoggedOutChat = true; }
+        void setAccountLoggedOut() { mLoggedOutAccount = true; }
+        void setGameLoggedOut() { mLoggedOutGame = true; }
+        void setChatLoggedOut() { mLoggedOutChat = true; }
 
     private:
         std::string* mPassToken;

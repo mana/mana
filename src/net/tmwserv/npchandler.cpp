@@ -19,21 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npchandler.h"
+#include "net/tmwserv/npchandler.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../beingmanager.h"
-#include "../../npc.h"
+#include "net/messagein.h"
 
-#include "../../gui/npclistdialog.h"
-#include "../../gui/npcpostdialog.h"
-#include "../../gui/npc_text.h"
+#include "beingmanager.h"
+#include "npc.h"
 
-extern NpcListDialog *npcListDialog;
-extern NpcTextDialog *npcTextDialog;
-extern NpcPostDialog *npcPostDialog;
+#include "gui/npclistdialog.h"
+#include "gui/npcpostdialog.h"
+#include "gui/npc_text.h"
 
 NPCHandler::NPCHandler()
 {

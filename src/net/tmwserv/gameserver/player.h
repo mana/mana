@@ -22,7 +22,7 @@
 #ifndef NET_GAMESERVER_PLAYER_H
 #define NET_GAMESERVER_PLAYER_H
 
-#include "../../../being.h"
+#include "being.h"
 
 #include <guichan/actionlistener.hpp>
 

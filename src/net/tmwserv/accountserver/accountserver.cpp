@@ -21,15 +21,16 @@
 
 #include "accountserver.h"
 
-#include <string>
-
 #include "internal.h"
 
-#include "../connection.h"
-#include "../../messageout.h"
-#include "../protocol.h"
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../../utils/sha256.h"
+#include "net/messageout.h"
+
+#include "utils/sha256.h"
+
+#include <string>
 
 void Net::AccountServer::login(Net::Connection *connection, int version,
         const std::string &username, const std::string &password)

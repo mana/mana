@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_NETWORK_H
-#define NET_NETWORK_H
+#ifndef NET_TMWSERV_NETWORK_H
+#define NET_TMWSERV_NETWORK_H
 
 #include <iosfwd>
 

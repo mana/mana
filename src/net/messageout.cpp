@@ -19,12 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "messageout.h"
+#include "net/messageout.h"
 
 #ifdef TMWSERV_SUPPORT
 #include <enet/enet.h>
 #else
-#include "ea/network.h"
+#include "net/ea/network.h"
+
 #include <SDL.h>
 #include <SDL_endian.h>
 #endif

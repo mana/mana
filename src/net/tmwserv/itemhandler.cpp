@@ -19,12 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itemhandler.h"
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/tmwserv/itemhandler.h"
 
-#include "../../engine.h"
-#include "../../flooritemmanager.h"
+#include "net/tmwserv/protocol.h"
+
+#include "net/messagein.h"
+
+#include "engine.h"
+#include "flooritemmanager.h"
 
 ItemHandler::ItemHandler()
 {

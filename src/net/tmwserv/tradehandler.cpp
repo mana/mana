@@ -19,20 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "tradehandler.h"
+#include "net/tmwserv/tradehandler.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/tmwserv/gameserver/player.h"
+#include "net/tmwserv/protocol.h"
 
-#include "gameserver/player.h"
+#include "net/messagein.h"
 
-#include "../../beingmanager.h"
-#include "../../item.h"
-#include "../../localplayer.h"
+#include "beingmanager.h"
+#include "item.h"
+#include "localplayer.h"
 
-#include "../../gui/chat.h"
-#include "../../gui/confirm_dialog.h"
-#include "../../gui/trade.h"
+#include "gui/chat.h"
+#include "gui/confirm_dialog.h"
+#include "gui/trade.h"
 
 std::string tradePartnerName;
 int tradePartnerID;

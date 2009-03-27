@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_CHATHANDLER_H
-#define NET_CHATHANDLER_H
+#ifndef NET_TMWSERV_CHATHANDLER_H
+#define NET_TMWSERV_CHATHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 class ChatHandler : public MessageHandler
 {

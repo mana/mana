@@ -21,15 +21,16 @@
 
 #include "account.h"
 
-#include <string>
-
 #include "internal.h"
 
-#include "../connection.h"
-#include "../../messageout.h"
-#include "../protocol.h"
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../../utils/sha256.h"
+#include "net/messageout.h"
+
+#include "utils/sha256.h"
+
+#include <string>
 
 void Net::AccountServer::Account::createCharacter(
         const std::string &name, char hairStyle, char hairColor, char gender,

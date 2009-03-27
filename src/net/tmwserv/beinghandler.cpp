@@ -19,28 +19,27 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "beinghandler.h"
+#include "net/tmwserv/beinghandler.h"
 
-#include <SDL_types.h>
+#include "net/tmwserv/protocol.h"
 
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/messagein.h"
 
-#include "../../being.h"
-#include "../../beingmanager.h"
-#include "../../game.h"
-#include "../../localplayer.h"
-#include "../../log.h"
-#include "../../main.h"
-#include "../../npc.h"
-#include "../../particle.h"
-#include "../../sound.h"
+#include "being.h"
+#include "beingmanager.h"
+#include "game.h"
+#include "localplayer.h"
+#include "log.h"
+#include "main.h"
+#include "npc.h"
+#include "particle.h"
+#include "sound.h"
 
-#include "../../gui/ok_dialog.h"
+#include "gui/ok_dialog.h"
 
-#include "../../utils/gettext.h"
+#include "utils/gettext.h"
 
-#include "gameserver/player.h"
+#include "net/tmwserv/gameserver/player.h"
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
@@ -356,4 +355,3 @@ void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
        case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
     }
 }
-

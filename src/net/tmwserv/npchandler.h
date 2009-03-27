@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_NPCHANDLER_H
-#define NET_NPCHANDLER_H
+#ifndef NET_TMWSERV_NPCHANDLER_H
+#define NET_TMWSERV_NPCHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 class NPCHandler : public MessageHandler
 {

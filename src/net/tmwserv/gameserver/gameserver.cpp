@@ -23,9 +23,10 @@
 
 #include "internal.h"
 
-#include "../connection.h"
-#include "../../messageout.h"
-#include "../protocol.h"
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/protocol.h"
+
+#include "net/messageout.h"
 
 void Net::GameServer::connect(Net::Connection *connection,
         const std::string &token)

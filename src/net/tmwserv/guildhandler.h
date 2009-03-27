@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_GUILDHANDLER_H
-#define NET_GUILDHANDLER_H
+#ifndef NET_TMWSERV_GUILDHANDLER_H
+#define NET_TMWSERV_GUILDHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 #include <string>
 

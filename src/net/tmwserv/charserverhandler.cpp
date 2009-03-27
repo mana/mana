@@ -19,20 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "charserverhandler.h"
+#include "net/tmwserv/charserverhandler.h"
 
-#include "connection.h"
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/protocol.h"
 
-#include "../../game.h"
-#include "../../localplayer.h"
-#include "../../log.h"
-#include "../../logindata.h"
-#include "../../main.h"
+#include "net/messagein.h"
 
-#include "../../gui/ok_dialog.h"
-#include "../../gui/char_select.h"
+#include "game.h"
+#include "localplayer.h"
+#include "log.h"
+#include "logindata.h"
+#include "main.h"
+
+#include "gui/ok_dialog.h"
+#include "gui/char_select.h"
 
 extern Net::Connection *gameServerConnection;
 extern Net::Connection *chatServerConnection;
