@@ -46,14 +46,8 @@
 #include "utils/gettext.h"
 #include "utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 SellDialog::SellDialog():
     Window(_("Sell")),
-#else
-SellDialog::SellDialog(Network *network):
-    Window(_("Sell")),
-    mNetwork(network),
-#endif
     mMaxItems(0), mAmountItems(0)
 {
     setWindowName("Sell");

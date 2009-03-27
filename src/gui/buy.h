@@ -29,9 +29,6 @@
 
 #include "../guichanfwd.h"
 
-#ifndef TMWSERV_SUPPORT
-class Network;
-#endif
 class ShopItems;
 class ShopListBox;
 class ListBox;
@@ -50,11 +47,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-#ifdef TMWSERV_SUPPORT
         BuyDialog();
-#else
-        BuyDialog(Network *network);
-#endif
 
         /**
          * Destructor
@@ -116,9 +109,6 @@ class BuyDialog : public Window, public gcn::ActionListener,
          */
         void close();
     private:
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
         gcn::Button *mBuyButton;
         gcn::Button *mQuitButton;
         gcn::Button *mAddMaxButton;

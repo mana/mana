@@ -33,9 +33,6 @@ class ImageSet;
 class Inventory;
 class Item;
 class Map;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 
 #ifdef TMWSERV_SUPPORT
 
@@ -155,10 +152,6 @@ class LocalPlayer : public Player
 
         virtual void setName(const std::string &name);
 
-#ifdef EATHENA_SUPPORT
-        void setNetwork(Network *network) { mNetwork = network; }
-        Network *getNetwork() {return mNetwork; }
-#endif
         virtual void logic();
 
         /**
@@ -500,7 +493,6 @@ class LocalPlayer : public Player
         void walk(unsigned char dir);
 
 #ifdef EATHENA_SUPPORT
-        Network *mNetwork;
         int mXp;            /**< Experience points. */
         bool mInStorage;      /**< Whether storage is currently accessible */
         int mTargetTime;      /** How long the being has been targeted **/

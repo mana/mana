@@ -96,7 +96,6 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mStatPoint(0), mSkillPoint(0),
     mStatsPointsToAttribute(0),
     mEquipment(new Equipment),
-    mNetwork(0),
     mXp(0),
     mInStorage(false),
     mTargetTime(-1),

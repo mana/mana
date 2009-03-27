@@ -26,9 +26,6 @@
 
 #include "window.h"
 
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 class IntTextField;
 
 /**
@@ -44,11 +41,7 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-#ifdef TMWSERV_SUPPORT
         NpcIntegerDialog();
-#else
-        NpcIntegerDialog(Network *network);
-#endif
 
         /**
          * Called when receiving actions from the widgets.
@@ -93,9 +86,6 @@ class NpcIntegerDialog : public Window, public gcn::ActionListener
         void setVisible(bool visible);
 
     private:
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
         gcn::Button *mDecButton;
         gcn::Button *mIncButton;
         IntTextField *mValueField;

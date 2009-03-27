@@ -44,14 +44,8 @@
 
 #include "utils/stringutils.h"
 
-#ifdef TMWSERV_SUPPORT
 Engine::Engine():
     mCurrentMap(NULL)
-#else
-Engine::Engine(Network *network):
-    mCurrentMap(NULL),
-    mNetwork(network)
-#endif
 {
 }
 

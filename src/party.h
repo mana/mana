@@ -29,12 +29,11 @@
 class PartyHandler;
 class Being;
 class ChatWindow;
-class Network;
 
 class Party
 {
     public:
-        Party(Network *network);
+        Party();
         void respond(const std::string &command, const std::string &args);
 
         void create(const std::string &party);
@@ -43,7 +42,7 @@ class Party
         void createResponse(bool ok);
         void inviteResponse(const std::string &nick, int status);
         void invitedAsk(const std::string &nick, int gender,
-                const std::string &partyName);
+                        const std::string &partyName);
         void leftResponse(const std::string &nick);
         void receiveChat(Being *being, const std::string &msg);
 
@@ -51,7 +50,6 @@ class Party
 
     private:
         std::string mPartyName;
-        Network *mNetwork;
         bool mInParty;
         bool mCreating; /**< Used to give an appropriate response to
                           failure */
@@ -60,12 +58,11 @@ class Party
         class InviteListener : public gcn::ActionListener
         {
             public:
-                InviteListener(Network *network, bool *inParty) :
-                    mNetwork(network),
+                InviteListener(bool *inParty) :
                     mInParty(inParty)
                 {}
                 void action(const gcn::ActionEvent &event);
-                Network *mNetwork;
+
             private:
                 bool *mInParty;
         };

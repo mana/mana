@@ -1653,7 +1653,7 @@ int main(int argc, char *argv[])
                     break;
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
-                    currentDialog = new CharSelectDialog(network, &charInfo,
+                    currentDialog = new CharSelectDialog(&charInfo,
                             (loginData.sex == 0) ?
                             GENDER_FEMALE : GENDER_MALE);
                     positionDialog(currentDialog, screenWidth, screenHeight);

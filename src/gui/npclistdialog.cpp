@@ -41,15 +41,8 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 NpcListDialog::NpcListDialog()
-#else
-NpcListDialog::NpcListDialog(Network *network)
-#endif
     : Window("NPC")
-#ifdef EATHENA_SUPPORT
-    , mNetwork(network)
-#endif
 {
     setWindowName("NPCList");
     setResizable(true);

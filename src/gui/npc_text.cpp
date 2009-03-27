@@ -37,15 +37,8 @@
 
 #include "../utils/gettext.h"
 
-#ifdef TMWSERV_SUPPORT
 NpcTextDialog::NpcTextDialog()
-#else
-NpcTextDialog::NpcTextDialog(Network *network)
-#endif
     : Window(_("NPC"))
-#ifdef EATHENA_SUPPORT
-    , mNetwork(network)
-#endif
     , mState(NPC_TEXT_STATE_WAITING)
 {
     setWindowName("NPCText");

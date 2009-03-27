@@ -25,9 +25,6 @@
 #include <string>
 
 class Map;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 
 /**
  * Game engine. Actually hardly does anything anymore except keeping track of
@@ -39,11 +36,7 @@ class Engine
         /**
          * Constructor.
          */
-#ifdef EATHENA_SUPPORT
-        Engine(Network *network);
-#else
         Engine();
-#endif
 
         /**
          * Destructor.
@@ -69,9 +62,6 @@ class Engine
 
     private:
         Map *mCurrentMap;
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
         std::string mMapName;
 };
 

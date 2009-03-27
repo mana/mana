@@ -43,12 +43,7 @@
 #include "utils/stringutils.h"
 #include "utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 CommandHandler::CommandHandler()
-#else
-CommandHandler::CommandHandler(Network *network):
-    mNetwork(network)
-#endif
 {}
 
 void CommandHandler::handleCommand(const std::string &command)

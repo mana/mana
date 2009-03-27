@@ -51,14 +51,9 @@
 #include "../utils/stringutils.h"
 #include "../utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 TradeWindow::TradeWindow():
-#else
-TradeWindow::TradeWindow(Network *network):
-#endif
     Window(_("Trade: You")),
 #ifdef EATHENA_SUPPORT
-    mNetwork(network),
     mMyInventory(new Inventory(INVENTORY_SIZE, 2)),
     mPartnerInventory(new Inventory(INVENTORY_SIZE, 2))
 #else

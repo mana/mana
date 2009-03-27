@@ -26,9 +26,6 @@
 
 class LocalPlayer;
 class Map;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 
 typedef std::list<Being*> Beings;
 typedef Beings::iterator BeingIterator;
@@ -36,9 +33,7 @@ typedef Beings::iterator BeingIterator;
 class BeingManager
 {
     public:
-#ifdef EATHENA_SUPPORT
-        BeingManager(Network *network);
-#endif
+        BeingManager();
 
         ~BeingManager();
 
@@ -130,9 +125,6 @@ class BeingManager
     protected:
         Beings mBeings;
         Map *mMap;
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
 };
 
 extern BeingManager *beingManager;

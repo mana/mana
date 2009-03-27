@@ -34,9 +34,6 @@
 class Inventory;
 class Item;
 class ItemContainer;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 class ScrollArea;
 
 /**
@@ -50,11 +47,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         /**
          * Constructor.
          */
-#ifdef TMWSERV_SUPPORT
         TradeWindow();
-#else
-        TradeWindow(Network *network);
-#endif
 
         /**
          * Destructor.
@@ -137,10 +130,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          * Sets the current status of the trade.
          */
         void setStatus(Status);
-#endif
-
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
 #endif
 
         typedef const std::auto_ptr<Inventory> InventoryPtr;

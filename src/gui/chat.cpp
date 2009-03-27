@@ -40,13 +40,8 @@
 
 #include <guichan/focushandler.hpp>
 
-#ifdef TMWSERV_SUPPORT
 ChatWindow::ChatWindow():
-    Window("Chat"),
-#else
-ChatWindow::ChatWindow(Network * network):
-    Window(""), mNetwork(network),
-#endif
+    Window(_("Chat")),
     mTmpVisible(false)
 {
     setWindowName("Chat");

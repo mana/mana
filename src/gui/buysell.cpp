@@ -31,8 +31,8 @@
 
 #include "../utils/gettext.h"
 
-BuySellDialog::BuySellDialog(Network *network):
-    Window(_("Shop")), mNetwork(network)
+BuySellDialog::BuySellDialog():
+    Window(_("Shop"))
 {
     setWindowName("BuySell");
     Button *buyButton = 0;

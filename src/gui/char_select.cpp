@@ -100,12 +100,13 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    LoginData *loginData):
     Window(_("Account and Character Management")),
-    mCharInfo(charInfo), mCharSelected(false), mLoginData(loginData)
+    mCharInfo(charInfo),
+    mCharSelected(false),
+    mLoginData(loginData)
 #else
-CharSelectDialog::CharSelectDialog(Network *network,
-                                   LockedArray<LocalPlayer*> *charInfo,
+CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    Gender gender):
-    Window(_("Select Character")), mNetwork(network),
+    Window(_("Select Character")),
     mCharInfo(charInfo),
     mCharSelected(false),
     mGender(gender)
@@ -261,8 +262,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
-                new CharCreateDialog(this, mCharInfo->getPos(),
-                                     mNetwork, mGender);
+                new CharCreateDialog(this, mCharInfo->getPos(), mGender);
             charServerHandler.setCharCreateDialog(charCreateDialog);
         }
     }
@@ -398,13 +398,10 @@ bool CharSelectDialog::selectByName(const std::string &name)
 #ifdef TMWSERV_SUPPORT
 CharCreateDialog::CharCreateDialog(Window *parent, int slot):
 #else
-CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
+CharCreateDialog::CharCreateDialog(Window *parent, int slot,
                                    Gender gender):
 #endif
     Window(_("Create Character"), true, parent),
-#ifndef TMWSERV_SUPPORT
-    mNetwork(network),
-#endif
     mSlot(slot)
 {
     mPlayer = new Player(0, 0, NULL);

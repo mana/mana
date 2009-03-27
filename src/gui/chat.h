@@ -40,9 +40,6 @@ class Recorder;
 class ScrollArea;
 class TabbedArea;
 class ItemLinkHandler;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 class Tab;
 class WhisperTab;
 
@@ -69,11 +66,7 @@ class ChatWindow : public Window,
         /**
          * Constructor.
          */
-#ifdef TMWSERV_SUPPORT
         ChatWindow();
-#else
-        ChatWindow(Network *network);
-#endif
 
         /**
          * Destructor: used to write back values to the config file
@@ -190,7 +183,6 @@ class ChatWindow : public Window,
         void adjustTabSize();
 
 #ifdef EATHENA_SUPPORT
-        Network *mNetwork;
         char mPartyPrefix; /**< Messages beginning with the prefix are sent to
                               the party */
 #endif

@@ -46,15 +46,8 @@
 #include "utils/gettext.h"
 #include "utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 BuyDialog::BuyDialog():
-#else
-BuyDialog::BuyDialog(Network *network):
-#endif
     Window(_("Buy")),
-#ifndef TMWSERV_SUPPORT
-    mNetwork(network),
-#endif
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     setWindowName("Buy");

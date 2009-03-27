@@ -239,14 +239,9 @@ int get_elapsed_time(int start_time)
 /**
  * Create all the various globally accessible gui windows
  */
-#ifdef TMWSERV_SUPPORT
-void createGuiWindows()
-#else
-void createGuiWindows(Network *network)
-#endif
+static void createGuiWindows()
 {
     // Create dialogs
-#ifdef TMWSERV_SUPPORT
     chatWindow = new ChatWindow;
     buyDialog = new BuyDialog;
     sellDialog = new SellDialog;
@@ -255,6 +250,7 @@ void createGuiWindows(Network *network)
     npcIntegerDialog = new NpcIntegerDialog;
     npcListDialog = new NpcListDialog;
     npcStringDialog = new NpcStringDialog;
+#ifdef TMWSERV_SUPPORT
     npcPostDialog = new NpcPostDialog;
     magicDialog = new MagicDialog;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
@@ -262,17 +258,9 @@ void createGuiWindows(Network *network)
     guildWindow = new GuildWindow;
     partyWindow = new PartyWindow;
 #else
-    chatWindow = new ChatWindow(network);
-    buyDialog = new BuyDialog(network);
-    sellDialog = new SellDialog(network);
-    buySellDialog = new BuySellDialog(network);
-    tradeWindow = new TradeWindow(network);
+    buySellDialog = new BuySellDialog;
     equipmentWindow = new EquipmentWindow;
-    npcTextDialog = new NpcTextDialog(network);
-    npcIntegerDialog = new NpcIntegerDialog(network);
-    npcListDialog = new NpcListDialog(network);
-    npcStringDialog = new NpcStringDialog(network);
-    storageWindow = new StorageWindow(network);
+    storageWindow = new StorageWindow;
 #endif
     menuWindow = new MenuWindow;
     statusWindow = new StatusWindow(player_node);
@@ -328,7 +316,7 @@ void createGuiWindows(Network *network)
 /**
  * Destroy all the globally accessible gui windows
  */
-void destroyGuiWindows()
+static void destroyGuiWindows()
 {
     logger->setChatWindow(NULL);
     delete localChatTab; // Need to do this first, so it can remove itself
@@ -392,20 +380,11 @@ Game::Game(Network *network):
 {
     done = false;
 
-#ifdef TMWSERV_SUPPORT
     createGuiWindows();
     engine = new Engine;
 
     beingManager = new BeingManager;
     commandHandler = new CommandHandler;
-#else
-    createGuiWindows(network);
-    engine = new Engine(network);
-
-    beingManager = new BeingManager(network);
-    commandHandler = new CommandHandler(network);
-#endif
-
     floorItemManager = new FloorItemManager;
     channelManager = new ChannelManager;
     effectManager = new EffectManager;
@@ -425,8 +404,7 @@ Game::Game(Network *network):
     // Initialize beings
     beingManager->setPlayer(player_node);
 #ifdef EATHENA_SUPPORT
-    player_node->setNetwork(network);
-    playerParty = new Party(network);
+    playerParty = new Party;
 #endif
 
     Joystick::init();

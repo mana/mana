@@ -24,10 +24,6 @@
 
 #include <string>
 
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
-
 /**
  * A class to parse and handle user commands
  */
@@ -37,11 +33,7 @@ class CommandHandler
         /**
          * Constructor
          */
-#ifdef TMWSERV_SUPPORT
         CommandHandler();
-#else
-        CommandHandler(Network *network);
-#endif
 
         /**
          * Destructor
@@ -143,10 +135,6 @@ class CommandHandler
          * Handle a present command.
          */
         void handlePresent(const std::string &args);
-
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
 };
 
 extern CommandHandler *commandHandler;

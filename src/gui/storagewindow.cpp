@@ -51,9 +51,8 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-StorageWindow::StorageWindow(Network *network, int invSize):
+StorageWindow::StorageWindow(int invSize):
     Window(_("Storage")),
-    mNetwork(network),
     mMaxSlots(invSize),
     mItemDesc(false)
 {

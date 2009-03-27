@@ -33,9 +33,8 @@
 #include "utils/gettext.h"
 #include "utils/strprintf.h"
 
-Party::Party(Network *network) :
-    mNetwork(network),
-    mInviteListener(network, &mInParty)
+Party::Party() :
+    mInviteListener(&mInParty)
 {
 }
 

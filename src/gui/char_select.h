@@ -32,8 +32,6 @@
 
 #ifdef TMWSERV_SUPPORT
 #include "../logindata.h"
-#else
-class Network;
 #endif
 
 class LocalPlayer;
@@ -56,8 +54,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                          LoginData *loginData);
 #else
-        CharSelectDialog(Network *network,
-                         LockedArray<LocalPlayer*> *charInfo,
+        CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                          Gender gender);
 #endif
 
@@ -70,9 +67,6 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         bool selectByName(const std::string &name);
 
     private:
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
         LockedArray<LocalPlayer*> *mCharInfo;
 
         gcn::Button *mSelectButton;
@@ -129,8 +123,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 #ifdef TMWSERV_SUPPORT
         CharCreateDialog(Window *parent, int slot);
 #else
-        CharCreateDialog(Window *parent, int slot, Network *network,
-                         Gender gender);
+        CharCreateDialog(Window *parent, int slot, Gender gender);
 #endif
 
         /**
@@ -162,9 +155,6 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         void attemptCharCreate();
 
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;
         gcn::Button *mNextHairColorButton;
