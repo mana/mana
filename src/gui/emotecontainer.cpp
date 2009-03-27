@@ -79,9 +79,6 @@ EmoteContainer::~EmoteContainer()
 
 void EmoteContainer::draw(gcn::Graphics *graphics)
 {
-    if (!isVisible())
-        return;
-
     int columns = getWidth() / gridWidth;
 
     // Have at least 1 column

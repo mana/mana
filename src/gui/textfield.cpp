@@ -84,9 +84,6 @@ TextField::~TextField()
 
 void TextField::draw(gcn::Graphics *graphics)
 {
-    if (!isVisible())
-        return;
-
     if (isFocused())
     {
         drawCaret(graphics,

@@ -118,9 +118,6 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics *graphics)
 {
-    if (!isVisible())
-        return;
-
     Graphics *g = static_cast<Graphics*>(graphics);
 
     g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());

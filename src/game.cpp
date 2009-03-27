@@ -880,7 +880,6 @@ void Game::handleInput()
                         break;
                     case KeyboardConfig::KEY_WINDOW_MINIMAP:
                         minimap->toggle();
-                        requestedWindow = minimap;
                         break;
                     case KeyboardConfig::KEY_WINDOW_CHAT:
                         requestedWindow = chatWindow;

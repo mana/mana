@@ -93,7 +93,8 @@ namespace {
             sellDialog->setVisible(false);
             buySellDialog->setVisible(false);
 
-            if (storageWindow->isVisible()) storageWindow->close();
+            if (storageWindow->isVisible())
+                storageWindow->close();
         }
     } deathListener;
 
