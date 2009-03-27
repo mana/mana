@@ -45,7 +45,8 @@ static const int LOGIN_DIALOG_HEIGHT = 140;
 static const int FIELD_WIDTH = LOGIN_DIALOG_WIDTH - 70;
 
 LoginDialog::LoginDialog(LoginData *loginData):
-    Window(_("Login")), mLoginData(loginData)
+    Window(_("Login")),
+    mLoginData(loginData)
 {
     gcn::Label *userLabel = new Label(_("Name:"));
     gcn::Label *passLabel = new Label(_("Password:"));

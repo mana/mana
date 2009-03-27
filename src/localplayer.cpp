@@ -519,7 +519,6 @@ void LocalPlayer::walk(unsigned char dir)
 
 #ifdef TMWSERV_SUPPORT
     const Vector &pos = getPosition();
-    int dScaler; // Distance to walk
 #endif
 
     if (mAction == WALK && !mPath.empty())
@@ -554,7 +553,6 @@ void LocalPlayer::walk(unsigned char dir)
         dx++;
 #endif
 
-
     // Prevent skipping corners over colliding tiles
 #ifdef TMWSERV_SUPPORT
     if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
@@ -575,6 +573,8 @@ void LocalPlayer::walk(unsigned char dir)
     if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
                                    (pos.y + dy) / 32, getWalkMask()))
         dx = 16 - (int) pos.x % 32;
+
+    int dScaler; // Distance to walk
 
     // Checks our path up to 5 tiles, if a blocking tile is found
     // We go to the last good tile, and break out of the loop

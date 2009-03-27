@@ -68,7 +68,7 @@ struct LoginData
         session_ID2 = 0;
         sex = 0;
 #endif
-    };
+    }
 };
 
 #endif // LOGINDATA_H

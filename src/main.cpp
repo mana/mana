@@ -1099,37 +1099,24 @@ int main(int argc, char *argv[])
 
     sound.playMusic(branding.getValue("loginMusic", ""));
 
-    // Server choice
-    if (options.serverName.empty()) {
-        loginData.hostname = config.getValue("MostUsedServerName0",
-                branding.getValue("defaultServer", "server.themanaworld.org").c_str());
-    }
-    else {
-        loginData.hostname = options.serverName;
-    }
-    if (options.serverPort == 0) {
-        loginData.port = (short)config.getValue("MostUsedServerPort0",
-                branding.getValue("defaultPort", 9601));
-    } else {
-        loginData.port = options.serverPort;
-    }
-
+    // Initialize login data
+    loginData.hostname = options.serverName;
+    loginData.port = options.serverPort;
     loginData.username = options.username;
-    if (loginData.username.empty()) {
-        if (config.getValue("remember", 0)) {
-            loginData.username = config.getValue("username", "");
-        }
-    }
-    if (!options.password.empty()) {
-        loginData.password = options.password;
-    }
-
-#ifdef EATHENA_SUPPORT
-    loginData.hostname = config.getValue("host", "server.themanaworld.org");
-    loginData.port = (short)config.getValue("port", 6901);
-#endif
+    loginData.password = options.password;
     loginData.remember = config.getValue("remember", 0);
     loginData.registerLogin = false;
+
+    if (loginData.hostname.empty()) {
+        loginData.hostname = branding.getValue("defaultServer",
+                                               "server.themanaworld.org").c_str();
+    }
+    if (options.serverPort == 0) {
+        loginData.port = (short) branding.getValue("defaultPort", 9601);
+    }
+    if (loginData.username.empty() && loginData.remember) {
+        loginData.username = config.getValue("username", "");
+    }
 
 #ifdef TMWSERV_SUPPORT
     Net::initialize();
