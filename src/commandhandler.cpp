@@ -353,7 +353,8 @@ void CommandHandler::handleMsg(const std::string &args)
         if (pos != std::string::npos)
         {
             recvnick = args.substr(1, pos - 1);
-            msg = args.substr(pos + 2, args.length());
+            if (pos + 2 < args.length())
+                msg = args.substr(pos + 2, args.length());
         }
     }
     else
@@ -362,7 +363,8 @@ void CommandHandler::handleMsg(const std::string &args)
         if (pos != std::string::npos)
         {
             recvnick = args.substr(0, pos);
-            msg = args.substr(pos + 1, args.length());
+            if (pos + 1 < args.length())
+                msg = args.substr(pos + 1, args.length());
         }
         else
         {
