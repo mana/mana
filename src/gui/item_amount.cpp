@@ -36,8 +36,8 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item,
-    int maxRange):
+ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
+                                   int maxRange):
     Window("", true, parent),
     mItem(item),
     mMax(maxRange),
@@ -87,22 +87,20 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item,
 
     switch (usage)
     {
-        case AMOUNT_TRADE_ADD:
+        case TradeAdd:
             setCaption(_("Select amount of items to trade."));
             break;
-        case AMOUNT_ITEM_DROP:
+        case ItemDrop:
             setCaption(_("Select amount of items to drop."));
             break;
-        case AMOUNT_STORE_ADD:
+        case StoreAdd:
             setCaption(_("Select amount of items to store."));
             break;
-        case AMOUNT_STORE_REMOVE:
+        case StoreRemove:
             setCaption(_("Select amount of items to retrieve."));
             break;
-        case AMOUNT_ITEM_SPLIT:
+        case ItemSplit:
             setCaption(_("Select amount of items to split."));
-            break;
-        default:
             break;
     }
 
@@ -142,21 +140,21 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
 
         switch (mUsage)
         {
-            case AMOUNT_TRADE_ADD:
+            case TradeAdd:
                 tradeWindow->tradeItem(mItem, amount);
                 break;
-            case AMOUNT_ITEM_DROP:
+            case ItemDrop:
                 player_node->dropItem(mItem, amount);
                 break;
 #ifdef TMWSERV_SUPPORT
-            case AMOUNT_ITEM_SPLIT:
+            case ItemSplit:
                 player_node->splitItem(mItem, amount);
                 break;
 #else
-            case AMOUNT_STORE_ADD:
+            case StoreAdd:
                 storageWindow->addStore(mItem, amount);
                 break;
-            case AMOUNT_STORE_REMOVE:
+            case StoreRemove:
                 storageWindow->removeStore(mItem, amount);
                 break;
 #endif

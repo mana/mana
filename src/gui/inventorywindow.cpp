@@ -19,32 +19,33 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
+#include "gui/inventorywindow.h"
+
+#include "gui/button.h"
+#include "gui/item_amount.h"
+#include "gui/itemcontainer.h"
+#include "gui/label.h"
+#include "gui/progressbar.h"
+#include "gui/scrollarea.h"
+#include "gui/sdlinput.h"
+#include "gui/viewport.h"
+
+#include "gui/widgets/layout.h"
+
+#include "inventory.h"
+#include "item.h"
+#include "localplayer.h"
+#include "units.h"
+
+#include "resources/iteminfo.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 #include <guichan/font.hpp>
 #include <guichan/mouseinput.hpp>
 
-#include "button.h"
-#include "inventorywindow.h"
-#include "item_amount.h"
-#include "itemcontainer.h"
-#include "label.h"
-#include "progressbar.h"
-#include "scrollarea.h"
-#include "sdlinput.h"
-#include "viewport.h"
-
-#include "widgets/layout.h"
-
-#include "../inventory.h"
-#include "../item.h"
-#include "../localplayer.h"
-#include "../units.h"
-
-#include "../resources/iteminfo.h"
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
+#include <string>
 
 InventoryWindow::InventoryWindow(int invSize):
     Window(_("Inventory")),
@@ -55,12 +56,8 @@ InventoryWindow::InventoryWindow(int invSize):
     setWindowName("Inventory");
     setResizable(false);
     setCloseButton(true);
-    // LEEOR/TODO: Since this window is not resizable, do we really need to set these
-    // values or can we drop them?
-    setMinWidth(375);
-    setMinHeight(283);
-    // If you adjust these defaults, don't forget to adjust the trade window's.
-    setDefaultSize(375, 300, ImageRect::CENTER);
+
+    setDefaultSize(375, 307, ImageRect::CENTER);
     addKeyListener(this);
 
     std::string longestUseString = getFont()->getWidth(_("Equip")) >
@@ -79,34 +76,29 @@ InventoryWindow::InventoryWindow(int invSize):
     mSplitButton = new Button(_("Split"), "split", this);
 #endif
 
-#ifdef TMWSERV_SUPPORT
     mItems = new ItemContainer(player_node->getInventory(), 10, 5);
-#else
-    mItems = new ItemContainer(player_node->getInventory(), 10, 5, 2);
-#endif
     mItems->addSelectionListener(this);
 
+    // The window is supposed to be exactly large enough for now
     mInvenScroll = new ScrollArea(mItems);
+    mInvenScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mTotalWeight = -1;
     mMaxWeight = -1;
     mUsedSlots = -1;
 
-    mSlotsLabel = new Label(_("Slots: "));
-    mWeightLabel = new Label(_("Weight: "));
+    mSlotsLabel = new Label(_("Slots:"));
+    mWeightLabel = new Label(_("Weight:"));
 
     mSlotsBar = new ProgressBar(1.0f, 100, 20, 225, 200, 25);
     mWeightBar = new ProgressBar(1.0f, 100, 20, 0, 0, 255);
-
-    setMinHeight(130);
-    setMinWidth(mWeightLabel->getWidth() + mSlotsLabel->getWidth() + 280);
 
     place(0, 0, mWeightLabel).setPadding(3);
     place(1, 0, mWeightBar, 3);
     place(4, 0, mSlotsLabel).setPadding(3);
     place(5, 0, mSlotsBar, 2);
-    place(0, 1, mInvenScroll, 100).setPadding(3);
+    place(0, 1, mInvenScroll, 7).setPadding(3);
     place(0, 2, mUseButton);
     place(1, 2, mDropButton);
 #ifdef TMWSERV_SUPPORT
@@ -114,7 +106,7 @@ InventoryWindow::InventoryWindow(int invSize):
 #endif
 
     Layout &layout = getLayout();
-    layout.setRowHeight(0, Layout::AUTO_SET);
+    layout.setRowHeight(1, Layout::AUTO_SET);
 
     loadWindowState();
 }
@@ -196,7 +188,7 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     {
         if (item->getQuantity() > 1) {
             // Choose amount of items to drop
-            new ItemAmountWindow(AMOUNT_ITEM_DROP, this, item);
+            new ItemAmountWindow(ItemAmountWindow::ItemDrop, this, item);
         }
         else {
             player_node->dropItem(item, 1);
@@ -206,8 +198,8 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "split")
     {
         if (item && !item->isEquipment() && item->getQuantity() > 1) {
-            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item,
-                (item->getQuantity() - 1));
+            new ItemAmountWindow(ItemAmountWindow::ItemSplit, this, item,
+                                 (item->getQuantity() - 1));
         }
     }
 }
@@ -270,7 +262,8 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
         if (item && !item->isEquipment() && item->getQuantity() > 1)
         {
             mSplit = false;
-            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item, (item->getQuantity() - 1));
+            new ItemAmountWindow(ItemAmountWindow::ItemSplit, this, item,
+                                 (item->getQuantity() - 1));
         }
     }
 }

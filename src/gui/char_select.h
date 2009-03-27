@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _CHAR_SELECT_H
-#define _CHAR_SELECT_H
+#ifndef CHAR_SELECT_H
+#define CHAR_SELECT_H
 
 #include <guichan/actionlistener.hpp>
 

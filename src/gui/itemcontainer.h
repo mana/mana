@@ -22,11 +22,11 @@
 #ifndef ITEMCONTAINER_H
 #define ITEMCONTAINER_H
 
-#include <list>
-
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
+
+#include <list>
 
 class Image;
 class Inventory;
@@ -49,13 +49,13 @@ class ItemContainer : public gcn::Widget,
     public:
         /**
          * Constructor. Initializes the graphic.
+         *
          * @param inventory
          * @param gridColumns Amount of columns in grid.
          * @param gridRows    Amount of rows in grid.
          * @param offset      Index offset
          */
-        ItemContainer(Inventory *inventory, int gridColumns, int gridRows,
-                      int offset = 0);
+        ItemContainer(Inventory *inventory, int gridColumns, int gridRows);
 
         /**
          * Destructor.
@@ -67,35 +67,16 @@ class ItemContainer : public gcn::Widget,
          */
         void draw(gcn::Graphics *graphics);
 
-        /**
-         * Handles the key presses.
-         */
         void keyPressed(gcn::KeyEvent &event);
-
-        /**
-         * Handles the key releases.
-         */
         void keyReleased(gcn::KeyEvent &event);
-
-        /**
-         * Handles mouse click.
-         */
         void mousePressed(gcn::MouseEvent &event);
-
-        /**
-         * Handles mouse dragged.
-         */
         void mouseDragged(gcn::MouseEvent &event);
-
-        /**
-         * Handles mouse released.
-         */
         void mouseReleased(gcn::MouseEvent &event);
 
         /**
          * Returns the selected item.
          */
-        Item* getSelectedItem() const
+        Item *getSelectedItem() const
         { return mSelectedItem; }
 
         /**
@@ -121,13 +102,24 @@ class ItemContainer : public gcn::Widget,
             mSelectionListeners.remove(listener);
         }
 
-        enum {
-            MOVE_SELECTED_LEFT,  // 0
-            MOVE_SELECTED_RIGHT, // 1
-            MOVE_SELECTED_UP,    // 2
-            MOVE_SELECTED_DOWN   // 3
-        };
     private:
+        enum Direction
+        {
+            Left,
+            Right,
+            Up,
+            Down
+        };
+
+        enum SelectionState
+        {
+            SEL_NONE = 0,
+            SEL_SELECTED,
+            SEL_SELECTING,
+            SEL_DESELECTING,
+            SEL_DRAGGING
+        };
+
         /**
          * Execute all the functionality associated with the action key.
          */
@@ -141,7 +133,7 @@ class ItemContainer : public gcn::Widget,
          *
          * @param direction The move direction of the highlighter.
          */
-        void moveHighlight(int direction);
+        void moveHighlight(Direction direction);
 
         /**
          * Sets the currently selected item.
@@ -174,10 +166,9 @@ class ItemContainer : public gcn::Widget,
 
         Inventory *mInventory;
         int mGridColumns, mGridRows;
-        int mOffset;
         Image *mSelImg;
         Item *mSelectedItem, *mHighlightedItem;
-        int mSelectionStatus;
+        SelectionState mSelectionStatus;
         bool mSwapItems;
         bool mDescItems;
         int mDragPosX, mDragPosY;

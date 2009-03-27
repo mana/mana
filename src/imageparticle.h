@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _IMAGEPARTICLE_H
-#define _IMAGEPARTICLE_H
+#ifndef IMAGEPARTICLE_H
+#define IMAGEPARTICLE_H
 
 #include "particle.h"
 

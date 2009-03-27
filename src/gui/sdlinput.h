@@ -55,8 +55,8 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SDLINPUT_
-#define SDLINPUT_
+#ifndef SDLINPUT_H
+#define SDLINPUT_H
 
 #include <queue>
 

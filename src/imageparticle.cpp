@@ -19,8 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "graphics.h"
 #include "imageparticle.h"
+
+#include "graphics.h"
 
 #include "resources/image.h"
 
@@ -28,12 +29,14 @@ ImageParticle::ImageParticle(Map *map, Image *image):
     Particle(map),
     mImage(image)
 {
-    if (mImage) mImage->incRef();
+    if (mImage)
+        mImage->incRef();
 }
 
 ImageParticle::~ImageParticle()
 {
-    if (mImage) mImage->decRef();
+    if (mImage)
+        mImage->decRef();
 }
 
 void ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const

@@ -90,20 +90,12 @@ TradeWindow::TradeWindow(Network *network):
         mTradeButton->getFont()->getWidth(_("Propose trade")),
         mTradeButton->getFont()->getWidth(_("Confirm trade"))));
 
-#ifdef TMWSERV_SUPPORT
-    mMyItemContainer = new ItemContainer(mMyInventory.get(), 4, 3, 0);
-#else
-    mMyItemContainer = new ItemContainer(mMyInventory.get(), 4, 3, 2);
-#endif
+    mMyItemContainer = new ItemContainer(mMyInventory.get(), 4, 3);
     mMyItemContainer->addSelectionListener(this);
 
     ScrollArea *myScroll = new ScrollArea(mMyItemContainer);
 
-#ifdef TMWSERV_SUPPORT
-    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 4, 3, 0);
-#else
-    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 4, 3, 2);
-#endif
+    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 4, 3);
     mPartnerItemContainer->addSelectionListener(this);
 
     ScrollArea *partnerScroll = new ScrollArea(mPartnerItemContainer);
@@ -322,7 +314,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         else
         {
             // Choose amount of items to trade
-            new ItemAmountWindow(AMOUNT_TRADE_ADD, this, item);
+            new ItemAmountWindow(ItemAmountWindow::TradeAdd, this, item);
         }
 
 #ifdef TMWSERV_SUPPORT

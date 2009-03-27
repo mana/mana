@@ -284,11 +284,13 @@ void PopupMenu::handleLink(const std::string &link)
 
     else if (link == "split")
     {
-        new ItemAmountWindow(AMOUNT_ITEM_SPLIT, inventoryWindow, mItem);
+        new ItemAmountWindow(ItemAmountWindow::ItemSplit,
+                             inventoryWindow, mItem);
     }
     else if (link == "drop")
     {
-        new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, mItem);
+        new ItemAmountWindow(ItemAmountWindow::ItemDrop,
+                             inventoryWindow, mItem);
     }
 #ifdef EATHENA_SUPPORT
     else if (link == "party-invite" &&

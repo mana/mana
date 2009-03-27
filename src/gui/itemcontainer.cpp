@@ -49,23 +49,12 @@
 static const int BOX_WIDTH = 36;
 static const int BOX_HEIGHT = 44;
 
-enum
-{
-    SEL_NONE = 0,
-    SEL_SELECTED,
-    SEL_SELECTING,
-    SEL_DESELECTING,
-    SEL_DRAGGING
-};
-
 ItemContainer::ItemContainer(Inventory *inventory,
                              int gridColumns,
-                             int gridRows,
-                             int offset):
+                             int gridRows):
     mInventory(inventory),
     mGridColumns(gridColumns),
     mGridRows(gridRows),
-    mOffset(offset),
     mSelectedItem(NULL),
     mHighlightedItem(NULL),
     mSelectionStatus(SEL_NONE),
@@ -188,16 +177,16 @@ void ItemContainer::keyPressed(gcn::KeyEvent &event)
     switch (event.getKey().getValue())
     {
         case Key::LEFT:
-            moveHighlight(MOVE_SELECTED_LEFT);
+            moveHighlight(Left);
             break;
         case Key::RIGHT:
-            moveHighlight(MOVE_SELECTED_RIGHT);
+            moveHighlight(Right);
             break;
         case Key::UP:
-            moveHighlight(MOVE_SELECTED_UP);
+            moveHighlight(Up);
             break;
         case Key::DOWN:
-            moveHighlight(MOVE_SELECTED_DOWN);
+            moveHighlight(Down);
             break;
         case Key::SPACE:
             keyAction();
@@ -372,7 +361,7 @@ void ItemContainer::keyAction()
     }
 }
 
-void ItemContainer::moveHighlight(int direction)
+void ItemContainer::moveHighlight(Direction direction)
 {
     if (!mHighlightedItem)
     {
@@ -387,14 +376,14 @@ void ItemContainer::moveHighlight(int direction)
 
     switch (direction)
     {
-        case MOVE_SELECTED_LEFT:
+        case Left:
             if (mHighlightedItem->getInvIndex() % mGridColumns == 0)
             {
                 mHighlightedItem += mGridColumns;
             }
             mHighlightedItem--;
             break;
-        case MOVE_SELECTED_RIGHT:
+        case Right:
             if ((mHighlightedItem->getInvIndex() % mGridColumns) ==
                 (mGridColumns - 1))
             {
@@ -402,14 +391,14 @@ void ItemContainer::moveHighlight(int direction)
             }
             mHighlightedItem++;
             break;
-        case MOVE_SELECTED_UP:
+        case Up:
             if (mHighlightedItem->getInvIndex() / mGridColumns == 0)
             {
                 mHighlightedItem += (mGridColumns * mGridRows);
             }
             mHighlightedItem -= mGridColumns;
             break;
-        case MOVE_SELECTED_DOWN:
+        case Down:
             if ((mHighlightedItem->getInvIndex() / mGridColumns) ==
                 (mGridRows - 1))
             {

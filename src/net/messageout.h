@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef MESSAGEOUT_
-#define MESSAGEOUT_
+#ifndef MESSAGEOUT_H
+#define MESSAGEOUT_H
 
 #include <iosfwd>
 #include <SDL_types.h>

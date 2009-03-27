@@ -22,9 +22,9 @@
 #ifndef INVENTORYWINDOW_H
 #define INVENTORYWINDOW_H
 
-#include "window.h"
+#include "gui/window.h"
 
-#include "../inventory.h"
+#include "inventory.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>

@@ -67,7 +67,7 @@ StorageWindow::StorageWindow(Network *network, int invSize):
     mStoreButton = new Button(_("Store"), "store", this);
     mRetrieveButton = new Button(_("Retrieve"), "retrieve", this);
 
-    mItems = new ItemContainer(player_node->getStorage(), 10, 5, 1);
+    mItems = new ItemContainer(player_node->getStorage(), 10, 5);
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);
@@ -136,7 +136,7 @@ void StorageWindow::action(const gcn::ActionEvent &event)
         else
         {
             // Choose amount of items to trade
-            new ItemAmountWindow(AMOUNT_STORE_ADD, this, item);
+            new ItemAmountWindow(ItemAmountWindow::StoreAdd, this, item);
         }
     }
     else if (event.getId() == "retrieve")
@@ -153,7 +153,7 @@ void StorageWindow::action(const gcn::ActionEvent &event)
         else
         {
             // Choose amount of items to trade
-            new ItemAmountWindow(AMOUNT_STORE_REMOVE, this, item);
+            new ItemAmountWindow(ItemAmountWindow::StoreRemove, this, item);
         }
     }
 }

@@ -29,12 +29,6 @@
 class IntTextField;
 class Item;
 
-#define AMOUNT_TRADE_ADD 1
-#define AMOUNT_ITEM_DROP 2
-#define AMOUNT_STORE_ADD 3
-#define AMOUNT_STORE_REMOVE 4
-#define AMOUNT_ITEM_SPLIT 5
-
 /**
  * Window used for selecting the amount of items to drop, trade or split.
  *
@@ -43,10 +37,19 @@ class Item;
 class ItemAmountWindow : public Window, public gcn::ActionListener
 {
     public:
+        enum Usage {
+            TradeAdd,
+            ItemDrop,
+            StoreAdd,
+            StoreRemove,
+            ItemSplit
+        };
+
         /**
          * Constructor.
          */
-        ItemAmountWindow(int usage, Window *parent, Item *item, int maxRange = 0);
+        ItemAmountWindow(Usage usage, Window *parent, Item *item,
+                         int maxRange = 0);
 
         /**
          * Called when receiving actions from widget.
@@ -67,7 +70,8 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         gcn::Label *mItemAmountLabel;   /**< Item amount caption. */
         Item *mItem;
 
-        int mMax, mUsage;
+        int mMax;
+        Usage mUsage;
 
         /**
          * Item Amount buttons.

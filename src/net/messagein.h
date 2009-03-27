@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef MESSAGEIN_
-#define MESSAGEIN_
+#ifndef MESSAGEIN_H
+#define MESSAGEIN_H
 
 #include <SDL_types.h>
 #include <string>
