@@ -60,16 +60,14 @@ static ButtonData const data[BUTTON_COUNT] = {
 
 ImageRect Button::button[BUTTON_COUNT];
 
-Button::Button():
-    mIsLogged(false)
+Button::Button()
 {
     init();
 }
 
 Button::Button(const std::string &caption, const std::string &actionEventId,
     gcn::ActionListener *listener):
-    gcn::Button(caption),
-    mIsLogged(false)
+    gcn::Button(caption)
 {
     init();
     setActionEventId(actionEventId);
@@ -131,7 +129,7 @@ void Button::draw(gcn::Graphics *graphics)
 
     if (!isEnabled())
         mode = BUTTON_DISABLED;
-    else if (isPressed() || mIsLogged)
+    else if (isPressed())
         mode = BUTTON_PRESSED;
     else if (mHasMouse || isFocused())
         mode = BUTTON_HIGHLIGHTED;
