@@ -56,11 +56,12 @@ OkDialog *deathNotice = NULL;
 // everything beyond will reset the port hard.
 static const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
 
-/**
- * Listener used for handling the overweigth message.
- */
 // TODO Move somewhere else
 namespace {
+
+    /**
+     * Listener used for handling the overweigth message.
+     */
     struct WeightListener : public gcn::ActionListener
     {
         void action(const gcn::ActionEvent &event)
@@ -68,13 +69,10 @@ namespace {
             weightNotice = NULL;
         }
     } weightListener;
-}
 
-/**
- * Listener used for handling death message.
- */
-// TODO Move somewhere else
-namespace {
+    /**
+     * Listener used for handling death message.
+     */
     struct DeathListener : public gcn::ActionListener
     {
         void action(const gcn::ActionEvent &event)
@@ -96,6 +94,55 @@ namespace {
             if (storageWindow->isVisible()) storageWindow->close();
         }
     } deathListener;
+
+} // anonymous namespace
+
+static const char *randomDeathMessage()
+{
+    static char const *const deadMsg[] =
+    {
+        N_("You are dead."),
+        N_("We regret to inform you that your character was killed in "
+           "battle."),
+        N_("You are not that alive anymore."),
+        N_("The cold hands of the grim reaper are grabbing for your soul."),
+        N_("Game Over!"),
+        N_("Insert coin to continue"),
+        N_("No, kids. Your character did not really die. It... "
+           "err... went to a better place."),
+        N_("Your plan of breaking your enemies weapon by "
+           "bashing it with your throat failed."),
+        N_("I guess this did not run too well."),
+        // NetHack reference:
+        N_("Do you want your possessions identified?"),
+        // Secret of Mana reference:
+        N_("Sadly, no trace of you was ever found..."),
+        // Final Fantasy VI reference:
+        N_("Annihilated."),
+        // Earthbound reference:
+        N_("Looks like you got your head handed to you."),
+        // Leisure Suit Larry 1 reference:
+        N_("You screwed up again, dump your body down the tubes "
+           "and get you another one."),
+        // Monty Python references (Dead Parrot sketch mostly):
+        N_("You're not dead yet. You're just resting."),
+        N_("You are no more."),
+        N_("You have ceased to be."),
+        N_("You've expired and gone to meet your maker."),
+        N_("You're a stiff."),
+        N_("Bereft of life, you rest in peace."),
+        N_("If you weren't so animated, you'd be pushing up the daisies."),
+        N_("Your metabolic processes are now history."),
+        N_("You're off the twig."),
+        N_("You've kicked the bucket."),
+        N_("You've shuffled off your mortal coil, run down the "
+           "curtain and joined the bleedin' choir invisibile."),
+        N_("You are an ex-player."),
+        N_("You're pining for the fjords.")
+    };
+
+    const int random = rand() % (sizeof(deadMsg) / sizeof(deadMsg[0]));
+    return gettext(deadMsg[random]);
 }
 
 PlayerHandler::PlayerHandler()
@@ -222,52 +269,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 if (player_node->getHp() == 0 && !deathNotice)
                 {
-                    static char const *const deadMsg[] =
-                    {
-                        _("You are dead."),
-                        _("We regret to inform you that your character was "
-                          "killed in battle."),
-                        _("You are not that alive anymore."),
-                        _("The cold hands of the grim reaper are grabbing for "
-                          "your soul."),
-                        _("Game Over!"),
-                        _("Insert coin to continue"),
-                        _("No, kids. Your character did not really die. It... "
-                          "err... went to a better place."),
-                        _("Your plan of breaking your enemies weapon by "
-                          "bashing it with your throat failed."),
-                        _("I guess this did not run too well."),
-                        // NetHack reference:
-                        _("Do you want your possessions identified?"),
-                        // Secret of Mana reference:
-                        _("Sadly, no trace of you was ever found..."),
-                        // Final Fantasy VI reference:
-                        _("Annihilated."),
-                        // Earthbound reference:
-                        _("Looks like you got your head handed to you."),
-                        // Leisure Suit Larry 1 reference:
-                        _("You screwed up again, dump your body down the tubes "
-                          "and get you another one."),
-                        // Monty Python references (Dead Parrot sketch mostly):
-                        _("You're not dead yet. You're just resting."),
-                        _("You are no more."),
-                        _("You have ceased to be."),
-                        _("You've expired and gone to meet your maker."),
-                        _("You're a stiff."),
-                        _("Bereft of life, you rest in peace."),
-                        _("If you weren't so animated, you'd be pushing up the "
-                          "daisies."),
-                        _("Your metabolic processes are now history."),
-                        _("You're off the twig."),
-                        _("You've kicked the bucket."),
-                        _("You've shuffled off your mortal coil, run down the "
-                          "curtain and joined the bleedin' choir invisibile."),
-                        _("You are an ex-player."),
-                        _("You're pining for the fjords.")
-                    };
-                    std::string message(deadMsg[rand()%27]);
-
-                    deathNotice = new OkDialog(_("Message"), message);
+                    deathNotice = new OkDialog(_("Message"),
+                                               randomDeathMessage());
                     deathNotice->addActionListener(&deathListener);
                     player_node->setAction(Being::DEAD);
                 }

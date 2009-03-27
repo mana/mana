@@ -19,18 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <getopt.h>
-#include <iostream>
-#include <physfs.h>
-#include <unistd.h>
-#include <vector>
-#include <SDL_image.h>
-
-#include <guichan/actionlistener.hpp>
-
-#include <libxml/parser.h>
-
-#include <SDL/SDL_ttf.h>
+#include "main.h"
 
 #include "configuration.h"
 #include "emoteshortcut.h"
@@ -42,7 +31,6 @@
 #include "lockedarray.h"
 #include "log.h"
 #include "logindata.h"
-#include "main.h"
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
@@ -110,6 +98,18 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/strprintf.h"
+
+#include <SDL_image.h>
+
+#include <guichan/actionlistener.hpp>
+
+#include <libxml/parser.h>
+
+#include <getopt.h>
+#include <iostream>
+#include <physfs.h>
+#include <unistd.h>
+#include <vector>
 
 #ifdef __APPLE__
 #include <CoreFoundation/CFBundle.h>

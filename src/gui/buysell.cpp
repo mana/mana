@@ -44,7 +44,8 @@ BuySellDialog::BuySellDialog(Network *network):
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
         Button *btn = new Button(gettext(*curBtn), *curBtn, this);
-        if (!buyButton) buyButton = btn; // For focus request
+        if (!buyButton)
+            buyButton = btn; // For focus request
         btn->setPosition(x, y);
         add(btn);
         x += btn->getWidth() + 10;
