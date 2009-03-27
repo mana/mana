@@ -155,7 +155,6 @@ void NpcListDialog::setVisible(bool visible)
 {
     if (visible) {
         npcTextDialog->setVisible(true);
-        requestFocus();
     }
 
     Window::setVisible(visible);
@@ -165,6 +164,4 @@ void NpcListDialog::requestFocus()
 {
     mItemList->requestFocus();
     mItemList->setSelected(0);
-    loadWindowState();
-    setVisible(true);
 }

@@ -157,9 +157,3 @@ void NpcTextDialog::widgetResized(const gcn::Event &event)
 
     setText(mText);
 }
-
-void NpcTextDialog::requestFocus()
-{
-    loadWindowState();
-    setVisible(true);
-}
