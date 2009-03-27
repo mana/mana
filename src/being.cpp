@@ -746,8 +746,8 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     if (!mEmotion)
         return;
 
-    const int px = mPx - offsetX;
-    const int py = mPy - offsetY - 64;
+    const int px = mPx - offsetX - 16;
+    const int py = mPy - offsetY - 64 - 32;
     const int emotionIndex = mEmotion - 1;
 
     if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())

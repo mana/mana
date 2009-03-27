@@ -19,26 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/emotecontainer.h"
+
+#include "animatedsprite.h"
+#include "configuration.h"
+#include "emoteshortcut.h"
+#include "graphics.h"
+#include "localplayer.h"
+#include "log.h"
+
+#include "resources/emotedb.h"
+#include "resources/image.h"
+#include "resources/iteminfo.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/dtor.h"
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
-
-#include "emotecontainer.h"
-
-#include "../animatedsprite.h"
-#include "../configuration.h"
-#include "../emoteshortcut.h"
-#include "../graphics.h"
-#include "../localplayer.h"
-#include "../log.h"
-
-#include "../resources/emotedb.h"
-#include "../resources/image.h"
-#include "../resources/iteminfo.h"
-#include "../resources/resourcemanager.h"
-
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
 
 const int EmoteContainer::gridWidth = 34;  // emote icon width + 4
 const int EmoteContainer::gridHeight = 36; // emote icon height + 4
@@ -57,7 +57,8 @@ EmoteContainer::EmoteContainer():
     }
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
-    if (!mSelImg) logger->error(_("Unable to load selection.png"));
+    if (!mSelImg)
+        logger->error(_("Unable to load selection.png"));
 
     mSelImg->setAlpha(config.getValue("guialpha", 0.8));
 
@@ -89,18 +90,18 @@ void EmoteContainer::draw(gcn::Graphics *graphics)
 
     for (int i = 0; i < mMaxEmote ; i++)
     {
-        int emoteX = ((i) % columns) * gridWidth;
-        int emoteY = ((i) / columns) * gridHeight;
-
-        // Draw emote icon
-        mEmoteImg[i]->draw(static_cast<Graphics*>(graphics), emoteX, emoteY);
+        const int emoteX = ((i) % columns) * gridWidth;
+        const int emoteY = ((i) / columns) * gridHeight;
 
         // Draw selection image below selected item
         if (mSelectedEmoteIndex == i)
         {
             static_cast<Graphics*>(graphics)->drawImage(
-                    mSelImg, emoteX, emoteY);
+                    mSelImg, emoteX, emoteY + 4);
         }
+
+        // Draw emote icon
+        mEmoteImg[i]->draw(static_cast<Graphics*>(graphics), emoteX, emoteY);
     }
 }
 
