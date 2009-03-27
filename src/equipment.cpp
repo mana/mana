@@ -36,7 +36,7 @@ Equipment::Equipment()
 #ifdef TMWSERV_SUPPORT
     std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
 #else
-    std::fill_n(mEquipment, EQUIPMENT_SIZE, 0);
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, -1);
 #endif
 }
 
@@ -72,6 +72,12 @@ void Equipment::setEquipment(int index, int inventoryIndex)
     Item *item = player_node->getInventory()->getItem(inventoryIndex);
     if (item)
         item->setEquipped(true);
+}
+
+void Equipment::removeEquipment(int index)
+{
+     if (index >= 0 && index < EQUIPMENT_SIZE)
+         mEquipment[index] = -1;
 }
 
 #endif

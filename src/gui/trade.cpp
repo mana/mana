@@ -53,13 +53,10 @@
 
 TradeWindow::TradeWindow():
     Window(_("Trade: You")),
-#ifdef EATHENA_SUPPORT
-    mMyInventory(new Inventory(INVENTORY_SIZE, 2)),
-    mPartnerInventory(new Inventory(INVENTORY_SIZE, 2))
-#else
     mMyInventory(new Inventory(INVENTORY_SIZE)),
-    mPartnerInventory(new Inventory(INVENTORY_SIZE)),
-    mStatus(PREPARING)
+    mPartnerInventory(new Inventory(INVENTORY_SIZE))
+#ifdef TMWSERV_SUPPORT
+    , mStatus(PREPARING)
 #endif
 {
     setWindowName("Trade");
@@ -248,7 +245,7 @@ void TradeWindow::tradeItem(Item *item, int quantity)
     //       for that version only.
     //addItem(item->getId(), true, quantity, item->isEquipment());
     MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
-    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt32(quantity);
 #endif
 }

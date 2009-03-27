@@ -75,7 +75,7 @@ class Equipment
         /**
          * Remove equipment from the given slot.
          */
-        void removeEquipment(int index) { if (index >= 0 && index < EQUIPMENT_SIZE) mEquipment[index] = 0; }
+        void removeEquipment(int index);
 
         /**
          * Returns the item used in the arrow slot.
@@ -90,7 +90,7 @@ class Equipment
 
     private:
 #ifdef TMWSERV_SUPPORT
-        Item* mEquipment[EQUIPMENT_SIZE];
+        Item *mEquipment[EQUIPMENT_SIZE];
 #else
         int mEquipment[EQUIPMENT_SIZE];
         int mArrows;

@@ -18,7 +18,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-#include <cassert>
+
+#include "localplayer.h"
 
 #include "configuration.h"
 #include "equipment.h"
@@ -27,7 +28,6 @@
 #include "graphics.h"
 #include "inventory.h"
 #include "item.h"
-#include "localplayer.h"
 #include "map.h"
 #include "monster.h"
 #include "particle.h"
@@ -64,6 +64,8 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+
+#include <cassert>
 
 #ifdef TMWSERV_SUPPORT
 const short walkingKeyboardDelay = 100;
@@ -110,13 +112,12 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mLastAction(-1),
     mWalkingDir(0),
     mDestX(0), mDestY(0),
+    mInventory(new Inventory(INVENTORY_SIZE)),
 #ifdef TMWSERV_SUPPORT
     mLocalWalkTime(-1),
-    mInventory(new Inventory(INVENTORY_SIZE)),
     mExpMessageTime(0)
 #else
-    mInventory(new Inventory(INVENTORY_SIZE, 2)),
-    mStorage(new Inventory(STORAGE_SIZE, 1))
+    mStorage(new Inventory(STORAGE_SIZE))
 #endif
 {
     // Variable to keep the local player from doing certain actions before a map
@@ -399,7 +400,7 @@ void LocalPlayer::equipItem(Item *item)
     Net::GameServer::Player::equip(item->getInvIndex());
 #else
     MessageOut outMsg(CMSG_PLAYER_EQUIP);
-    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt16(0);
 #endif
 }
@@ -427,7 +428,7 @@ void LocalPlayer::unequipItem(Item *item)
         return;
 
     MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
     mEquipment->removeEquipment(item->getInvIndex());
@@ -436,7 +437,7 @@ void LocalPlayer::unequipItem(Item *item)
 void LocalPlayer::useItem(Item *item)
 {
     MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
-    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt32(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
 }
@@ -450,7 +451,7 @@ void LocalPlayer::dropItem(Item *item, int quantity)
 #else
     // TODO: Fix wrong coordinates of drops, serverside?
     MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
-    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt16(quantity);
 #endif
 }
@@ -1194,12 +1195,9 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
     assert(size > -1);
     assert(size < 3);
 
-    ImageSet* currentImageSet;
-    SimpleAnimation* currentCursor;
-
     ResourceManager *resman = ResourceManager::getInstance();
 
-    currentImageSet = resman->getImageSet(filename, width, height);
+    ImageSet *currentImageSet = resman->getImageSet(filename, width, height);
     Animation *anim = new Animation;
 
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)
@@ -1209,7 +1207,7 @@ void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
                       (16 - (currentImageSet->getHeight() / 2)));
     }
 
-    currentCursor = new SimpleAnimation(anim);
+    SimpleAnimation *currentCursor = new SimpleAnimation(anim);
 
     const int index = outRange ? 1 : 0;
 

@@ -1039,27 +1039,30 @@ int main(int argc, char *argv[])
 
     initXML();
 
-    // load branding information
+    // Load branding information
     branding.init("data/branding.xml");
 
     initHomeDir();
+
     // Configure logger
     logger = new Logger;
     logger->setLogFile(homeDir + std::string("/tmw.log"));
-    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
     // Log the tmw version
+    logger->log("The Mana World %s (%s)",
 #ifdef PACKAGE_VERSION
-#ifdef TMWSERV_SUPPORT
-    logger->log("The Mana World v%s TMWServ", PACKAGE_VERSION);
+                "v" PACKAGE_VERSION,
 #else
-    logger->log("The Mana World v%s eAthena", PACKAGE_VERSION);
+                "- version not defined",
 #endif
+#ifdef TMWSERV_SUPPORT
+                "tmwserv");
 #else
-    logger->log("The Mana World - version not defined");
+                "eAthena");
 #endif
 
     initConfiguration(options);
+    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
     initEngine(options);
 
@@ -1077,9 +1080,9 @@ int main(int argc, char *argv[])
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
 #ifdef TMWSERV_SUPPORT
-    gcn::Label *versionLabel = new Label(strprintf("%s TMWserv", PACKAGE_VERSION));
+    gcn::Label *versionLabel = new Label(strprintf("%s (tmwserv)", PACKAGE_VERSION));
 #else
-    gcn::Label *versionLabel = new Label(strprintf("%s eAthena", PACKAGE_VERSION));
+    gcn::Label *versionLabel = new Label(strprintf("%s (eAthena)", PACKAGE_VERSION));
 #endif
     top->add(versionLabel, 25, 2);
 #endif

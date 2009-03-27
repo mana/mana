@@ -187,17 +187,17 @@ Item* StorageWindow::getSelectedItem() const
     return mItems->getSelectedItem();
 }
 
-void StorageWindow::addStore(Item* item, int ammount)
+void StorageWindow::addStore(Item *item, int ammount)
 {
     MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
-    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt32(ammount);
 }
 
-void StorageWindow::removeStore(Item* item, int ammount)
+void StorageWindow::removeStore(Item *item, int ammount)
 {
     MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
-    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(item->getInvIndex() + STORAGE_OFFSET);
     outMsg.writeInt32(ammount);
 }
 

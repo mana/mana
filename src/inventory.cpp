@@ -37,9 +37,8 @@ struct SlotUsed : public std::unary_function<Item*, bool>
     }
 };
 
-Inventory::Inventory(int size, int offset):
-    mSize(size),
-    mOffset(offset)
+Inventory::Inventory(int size):
+    mSize(size)
 {
     mItems = new Item*[mSize];
     std::fill_n(mItems, mSize, (Item*) 0);
@@ -135,7 +134,7 @@ bool Inventory::contains(Item *item) const
 
 int Inventory::getFreeSlot() const
 {
-    Item **i = std::find_if(mItems + mOffset, mItems + mSize,
+    Item **i = std::find_if(mItems, mItems + mSize,
             std::not1(SlotUsed()));
     return (i == mItems + mSize) ? -1 : (i - mItems);
 }
@@ -152,9 +151,4 @@ int Inventory::getLastUsedSlot() const
             return i;
 
     return -1;
-}
-
-int Inventory::getInventorySize() const
-{
-    return mSize - mOffset;
 }

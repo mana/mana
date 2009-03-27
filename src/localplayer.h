@@ -526,14 +526,16 @@ class LocalPlayer : public Player
         int mWalkingDir;      /**< The direction the player is walking in. */
         int mDestX;           /**< X coordinate of destination. */
         int mDestY;           /**< Y coordinate of destination. */
-#ifdef TMWSERV_SUPPORT
-        int mLocalWalkTime;  /**< Timestamp used to control keyboard walk
-                                 messages flooding */
-#endif
 
         std::vector<int> mStatusEffectIcons;
 
         Inventory *mInventory;
+
+#ifdef TMWSERV_SUPPORT
+        int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
+                                  messages flooding */
+#endif
+
 #ifdef EATHENA_SUPPORT
         Inventory *mStorage;
 #endif

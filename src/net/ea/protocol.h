@@ -22,6 +22,9 @@
 #ifndef EA_PROTOCOL_H
 #define EA_PROTOCOL_H
 
+static const int INVENTORY_OFFSET = 2;
+static const int STORAGE_OFFSET = 1;
+
 /*********************************
  * Packets from server to client *
  *********************************/
