@@ -239,9 +239,7 @@ void ChatTab::chatInput(std::string &msg)
             chatLog(_("Trying to send a blank party message."), BY_SERVER, true);
             return;
         }
-        MessageOut outMsg(chatWindow->mNetwork);
-
-        outMsg.writeInt16(CMSG_PARTY_MESSAGE);
+        MessageOut outMsg(CMSG_PARTY_MESSAGE);
         outMsg.writeInt16(length + 4);
         outMsg.writeString(msg, length);
         return;
@@ -306,8 +304,7 @@ void ChatTab::handleInput(const std::string &msg) {
 #else
     std::string mes = player_node->getName() + " : " + msg;
 
-    MessageOut outMsg(chatWindow->mNetwork);
-    outMsg.writeInt16(CMSG_CHAT_MESSAGE);
+    MessageOut outMsg(CMSG_CHAT_MESSAGE);
     // Added + 1 in order to let eAthena parse admin commands correctly
     outMsg.writeInt16(mes.length() + 4 + 1);
     outMsg.writeString(mes, mes.length() + 1);

@@ -752,8 +752,7 @@ static void accountLogin(Network *network, LoginData *loginData)
             loginData->username,
             loginData->password);
 #else
-    MessageOut outMsg(network);
-    outMsg.writeInt16(0x0064);
+    MessageOut outMsg(0x0064);
     outMsg.writeInt32(0); // client version
     outMsg.writeString(loginData->username, 24);
     outMsg.writeString(loginData->password, 24);
@@ -807,8 +806,7 @@ static void charLogin(Network *network, LoginData *loginData)
     charServerHandler.setLoginData(loginData);
 
     // Send login infos
-    MessageOut outMsg(network);
-    outMsg.writeInt16(0x0065);
+    MessageOut outMsg(0x0065);
     outMsg.writeInt32(loginData->account_ID);
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
@@ -827,8 +825,6 @@ static void mapLogin(Network *network, LoginData *loginData)
             player_node->getName().c_str());
     config.setValue("lastCharacter", player_node->getName());
 
-    MessageOut outMsg(network);
-
     logger->log("Trying to connect to map server...");
     logger->log("Map: %s", map_path.c_str());
 
@@ -836,7 +832,7 @@ static void mapLogin(Network *network, LoginData *loginData)
     network->registerHandler(&mapLoginHandler);
 
     // Send login infos
-    outMsg.writeInt16(0x0072);
+    MessageOut outMsg(0x0072);
     outMsg.writeInt32(loginData->account_ID);
     outMsg.writeInt32(player_node->mCharId);
     outMsg.writeInt32(loginData->session_ID1);

@@ -33,21 +33,16 @@
 #include <cstring>
 #include <string>
 
-#ifdef TMWSERV_SUPPORT
 MessageOut::MessageOut(short id):
     mData(0),
-#else
-MessageOut::MessageOut(Network *network):
-    mNetwork(network),
-#endif
     mDataSize(0),
     mPos(0)
 {
-#ifdef TMWSERV_SUPPORT
-    writeInt16(id);
-#else
+#ifdef EATHENA_SUPPORT
+    mNetwork = Network::instance();
     mData = mNetwork->mOutBuffer + mNetwork->mOutSize;
 #endif
+    writeInt16(id);
 }
 
 #ifdef TMWSERV_SUPPORT

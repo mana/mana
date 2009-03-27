@@ -190,22 +190,19 @@ Item* StorageWindow::getSelectedItem() const
 
 void StorageWindow::addStore(Item* item, int ammount)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_MOVE_TO_STORAGE);
+    MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
     outMsg.writeInt16(item->getInvIndex());
     outMsg.writeInt32(ammount);
 }
 
 void StorageWindow::removeStore(Item* item, int ammount)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CSMG_MOVE_FROM_STORAGE);
+    MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
     outMsg.writeInt16(item->getInvIndex());
     outMsg.writeInt32(ammount);
 }
 
 void StorageWindow::close()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_CLOSE_STORAGE);
+    MessageOut outMsg(CMSG_CLOSE_STORAGE);
 }

@@ -85,7 +85,9 @@ class Network
             NET_ERROR
         };
 
-    protected:
+    private:
+        static Network *instance();
+
         void setError(const std::string &error);
 
         Uint16 readWord(int pos);
@@ -113,6 +115,8 @@ class Network
         typedef std::map<Uint16, MessageHandler*> MessageHandlers;
         typedef MessageHandlers::iterator MessageHandlerIterator;
         MessageHandlers mMessageHandlers;
+
+        static Network *mInstance;
 };
 
 #endif

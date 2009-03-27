@@ -43,15 +43,13 @@ class MessageOut
         /**
          * Constructor.
          */
-#ifdef TMWSERV_SUPPORT
         MessageOut(short id);
 
+#ifdef TMWSERV_SUPPORT
         /**
          * Destructor.
          */
         ~MessageOut();
-#else
-        MessageOut(Network *network);
 #endif
 
         void writeInt8(Sint8 value);          /**< Writes a byte. */

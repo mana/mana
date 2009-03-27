@@ -252,8 +252,7 @@ void TradeWindow::tradeItem(Item *item, int quantity)
     //       function. Detect the actual server version, and re-enable this
     //       for that version only.
     //addItem(item->getId(), true, quantity, item->isEquipment());
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
+    MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(item->getInvIndex());
     outMsg.writeInt32(quantity);
 #endif
@@ -329,8 +328,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 #ifdef TMWSERV_SUPPORT
         Net::GameServer::Player::acceptTrade(false);
 #else
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
+        MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
 #endif
     }
 #ifdef EATHENA_SUPPORT
@@ -342,8 +340,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         {
             mMoneyField->setText(toString(tempInt));
 
-            MessageOut outMsg(mNetwork);
-            outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
+            MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
             outMsg.writeInt16(0);
             outMsg.writeInt32(tempInt);
         }
@@ -352,8 +349,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             mMoneyField->setText("");
         }
         mMoneyField->setEnabled(false);
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_TRADE_ADD_COMPLETE);
+        MessageOut outMsg(CMSG_TRADE_ADD_COMPLETE);
     }
 #endif
     else if (event.getId() == "trade")
@@ -362,8 +358,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         Net::GameServer::Player::acceptTrade(true);
         setStatus(PROPOSING);
 #else
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_TRADE_OK);
+        MessageOut outMsg(CMSG_TRADE_OK);
 #endif
     }
 #ifdef TMWSERV_SUPPORT
@@ -382,7 +377,6 @@ void TradeWindow::close()
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::acceptTrade(false);
 #else
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
+    MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
 #endif
 }

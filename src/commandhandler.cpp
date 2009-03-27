@@ -142,8 +142,7 @@ void CommandHandler::handleAnnounce(const std::string &args)
 #ifdef TMWSERV_SUPPORT
     Net::ChatServer::announce(args);
 #else
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0099);
+    MessageOut outMsg(0x0099);
     outMsg.writeInt16(args.length() + 4);
     outMsg.writeString(args, args.length());
 #endif
@@ -332,8 +331,7 @@ void CommandHandler::handleWho()
 #ifdef TMWSERV_SUPPORT
     //TODO
 #else
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x00c1);
+    MessageOut outMsg(0x00c1);
 #endif
 }
 

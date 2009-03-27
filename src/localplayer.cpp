@@ -399,8 +399,7 @@ void LocalPlayer::equipItem(Item *item)
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::equip(item->getInvIndex());
 #else
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_EQUIP);
+    MessageOut outMsg(CMSG_PLAYER_EQUIP);
     outMsg.writeInt16(item->getInvIndex());
     outMsg.writeInt16(0);
 #endif
@@ -428,8 +427,7 @@ void LocalPlayer::unequipItem(Item *item)
     if (!item)
         return;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_UNEQUIP);
+    MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
     outMsg.writeInt16(item->getInvIndex());
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
@@ -438,8 +436,7 @@ void LocalPlayer::unequipItem(Item *item)
 
 void LocalPlayer::useItem(Item *item)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_USE);
+    MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
     outMsg.writeInt16(item->getInvIndex());
     outMsg.writeInt32(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
@@ -453,8 +450,7 @@ void LocalPlayer::dropItem(Item *item, int quantity)
     Net::GameServer::Player::drop(item->getInvIndex(), quantity);
 #else
     // TODO: Fix wrong coordinates of drops, serverside?
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_DROP);
+    MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
     outMsg.writeInt16(item->getInvIndex());
     outMsg.writeInt16(quantity);
 #endif
@@ -488,8 +484,7 @@ void LocalPlayer::pickUp(FloorItem *item)
         int id = item->getId();
         Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
 #else
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_ITEM_PICKUP);
+        MessageOut outMsg(CMSG_ITEM_PICKUP);
         outMsg.writeInt32(item->getId());
 #endif
         mPickUpTarget = NULL;
@@ -689,9 +684,8 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
         effectManager->trigger(15,x,y);
 #else
         char temp[4] = "";
-        MessageOut outMsg(mNetwork);
         set_coordinates(temp, x, y, mDirection);
-        outMsg.writeInt16(0x0085);
+        MessageOut outMsg(0x0085);
         outMsg.writeString(temp, 3);
 #endif
     }
@@ -734,8 +728,7 @@ void LocalPlayer::stopWalking(bool sendToServer)
 #ifdef EATHENA_SUPPORT
 void LocalPlayer::raiseAttribute(Attribute attr)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_STAT_UPDATE_REQUEST);
+    MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
 
     switch (attr)
     {
@@ -771,8 +764,7 @@ void LocalPlayer::raiseSkill(Uint16 skillId)
     if (mSkillPoint <= 0)
         return;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_SKILL_LEVELUP_REQUEST);
+    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
     outMsg.writeInt16(skillId);
 }
 #endif
@@ -795,8 +787,7 @@ void LocalPlayer::toggleSit()
     setAction(newAction);
     Net::GameServer::Player::changeAction(newAction);
 #else
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0089);
+    MessageOut outMsg(0x0089);
     outMsg.writeInt32(0);
     outMsg.writeInt8((newAction == SIT) ? 2 : 3);
 #endif
@@ -810,8 +801,7 @@ void LocalPlayer::emote(Uint8 emotion)
 
     // XXX Convert for new server
 #ifdef EATHENA_SUPPORT
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x00bf);
+    MessageOut outMsg(0x00bf);
     outMsg.writeInt8(emotion);
 #endif
 }
@@ -822,8 +812,7 @@ void LocalPlayer::tradeReply(bool accept)
     if (!accept)
         mTrading = false;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_RESPONSE);
+    MessageOut outMsg(CMSG_TRADE_RESPONSE);
     outMsg.writeInt8(accept ? 3 : 4);
 }
 #endif
@@ -837,8 +826,7 @@ void LocalPlayer::trade(Being *being) const
     tradePartnerID = being->getId();
     Net::GameServer::Player::requestTrade(tradePartnerID);
 #else
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_REQUEST);
+    MessageOut outMsg(CMSG_TRADE_REQUEST);
     outMsg.writeInt32(being->getId());
 #endif
 }
@@ -957,8 +945,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         sound.playSfx("sfx/fist-swish.ogg");
     }
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0089);
+    MessageOut outMsg(0x0089);
     outMsg.writeInt32(target->getId());
     outMsg.writeInt8(0);
 
@@ -983,8 +970,7 @@ void LocalPlayer::revive()
 {
     // XXX Convert for new server
 #ifdef EATHENA_SUPPORT
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x00b2);
+    MessageOut outMsg(0x00b2);
     outMsg.writeInt8(0);
 #endif
 }

@@ -129,8 +129,7 @@ void NPC::talk()
     if (!mNetwork)
         return;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_TALK);
+    MessageOut outMsg(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(0);
 #endif

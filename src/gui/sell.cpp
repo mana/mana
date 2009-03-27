@@ -207,15 +207,13 @@ void SellDialog::action(const gcn::ActionEvent &event)
             (mShopItems->at(selectedItem)->getId(), mAmountItems);
 #else
         // Attempt sell
-        MessageOut outMsg(mNetwork);
-
         ShopItem *item = mShopItems->at(selectedItem);
         int sellCount;
         mPlayerMoney +=
             mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mMaxItems -= mAmountItems;
         while (mAmountItems > 0) {
-            outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
+            MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
             outMsg.writeInt16(8);
             outMsg.writeInt16(item->getCurrentInvIndex());
             // This order is important, item->getCurrentInvIndex() would return

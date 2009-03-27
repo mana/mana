@@ -143,8 +143,7 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
 #ifdef TMWSERV_SUPPORT
         Net::GameServer::Player::selectFromNPC(current_npc, choice);
 #else
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
+        MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
         outMsg.writeInt32(current_npc);
         outMsg.writeInt8(choice);
 #endif

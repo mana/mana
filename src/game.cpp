@@ -468,8 +468,7 @@ Game::Game(Network *network):
      * packet is handled by the older version, but its response
      * is ignored by the client
      */
-    MessageOut msg(mNetwork);
-    msg.writeInt16(CMSG_CLIENT_PING);
+    MessageOut msg(CMSG_CLIENT_PING);
     msg.writeInt32(tick_time);
 
     engine->changeMap(map_path);

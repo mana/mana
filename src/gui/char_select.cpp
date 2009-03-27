@@ -348,8 +348,7 @@ void CharSelectDialog::attemptCharDelete()
     Net::AccountServer::Account::deleteCharacter(mCharInfo->getPos());
 #else
     // Request character deletion
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0068);
+    MessageOut outMsg(0x0068);
     outMsg.writeInt32(mCharInfo->getEntry()->mCharId);
     outMsg.writeString("a@a.com", 40);
 #endif
@@ -362,8 +361,7 @@ void CharSelectDialog::attemptCharSelect()
     Net::AccountServer::Account::selectCharacter(mCharInfo->getPos());
 #else
     // Request character selection
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0066);
+    MessageOut outMsg(0x0066);
     outMsg.writeInt8(mCharInfo->getPos());
 #endif
     mCharInfo->lock();
@@ -693,8 +691,7 @@ int CharCreateDialog::getDistributedPoints()
 void CharCreateDialog::attemptCharCreate()
 {
     // Send character infos
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0067);
+    MessageOut outMsg(0x0067);
     outMsg.writeString(getName(), 24);
     outMsg.writeInt8(5);
     outMsg.writeInt8(5);

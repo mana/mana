@@ -151,8 +151,7 @@ void Engine::changeMap(const std::string &mapPath)
 
 #ifdef EATHENA_SUPPORT
     // Send "map loaded"
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_MAP_LOADED);
+    MessageOut outMsg(CMSG_MAP_LOADED);
 #endif
 }
 

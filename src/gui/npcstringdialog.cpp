@@ -95,8 +95,7 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     mValueField->setText("");
 
 #ifdef EATHENA_SUPPORT
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
+    MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
     outMsg.writeInt16(text.length() + 9);
     outMsg.writeInt32(current_npc);
     outMsg.writeString(text, text.length());

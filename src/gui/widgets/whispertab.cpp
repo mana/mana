@@ -57,8 +57,7 @@ void WhisperTab::handleInput(const std::string &msg) {
 #ifdef TMWSERV_SUPPORT
     Net::ChatServer::privMsg(mNick, msg);
 #else
-    MessageOut outMsg(chatWindow->mNetwork);
-    outMsg.writeInt16(CMSG_CHAT_WHISPER);
+    MessageOut outMsg(CMSG_CHAT_WHISPER);
     outMsg.writeInt16(msg.length() + 28);
     outMsg.writeString(mNick, 24);
     outMsg.writeString(msg, msg.length());
