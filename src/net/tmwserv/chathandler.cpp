@@ -180,12 +180,7 @@ void ChatHandler::handlePrivateMessage(MessageIn &msg)
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
 
-    if (!chatWindow->tabExists(userNick))
-    {
-        // TODO: proper whisper tabs
-        //chatWindow->createNewChannelTab(userNick);
-    }
-    chatWindow->chatLog(userNick + ": " + chatMsg, BY_OTHER, userNick);
+    chatWindow->whisper(userNick, chatMsg);
 }
 
 void ChatHandler::handleAnnouncement(MessageIn &msg)
