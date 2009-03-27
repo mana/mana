@@ -422,8 +422,6 @@ tmw_SOURCES += \
 	      net/tmwserv/protocol.h \
 	      net/tmwserv/tradehandler.cpp \
 	      net/tmwserv/tradehandler.h \
-	      resources/buddylist.cpp \
-	      resources/buddylist.h \
 	      guild.cpp \
 	      guild.h
 endif
