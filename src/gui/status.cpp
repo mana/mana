@@ -314,6 +314,10 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
     else
         bar->setText(toString(player_node->mMp));
 
+    if (player_node->MATK <= 0)
+        bar->setColor(100, 100, 100); // grey, to indicate that we lack magic
+    else
+        bar->setColor(143, 192, 211); // blue, to indicate that we have magic
 
     bar->setProgress((float) player_node->mMp / (float) player_node->mMaxMp);
 }
