@@ -232,7 +232,10 @@ bool ChatWindow::isInputFocused()
 void ChatWindow::removeTab(ChatTab *tab)
 {
     // Prevent removal of the local chat tab
-    if (tab != localChatTab) mChatTabs->removeTab(tab);
+    if (tab == localChatTab)
+        return;
+
+    mChatTabs->removeTab(tab);
 }
 
 void ChatWindow::addTab(ChatTab *tab)
@@ -248,6 +251,11 @@ void ChatWindow::addTab(ChatTab *tab)
 
     // Update UI
     logic();
+}
+
+void ChatWindow::removeWhisper(std::string nick)
+{
+    mWhispers.erase(nick);
 }
 
 void ChatWindow::chatSend(std::string &msg)

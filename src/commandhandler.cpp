@@ -163,6 +163,7 @@ void CommandHandler::handleHelp(const std::string &args)
         localChatTab->chatLog(_("/msg > Send a private message to a user"));
         localChatTab->chatLog(_("/whisper > Alias of msg"));
         localChatTab->chatLog(_("/w > Alias of msg"));
+        localChatTab->chatLog(_("/close > Close the whisper tab (only works in whisper tabs)"));
 
 #ifdef TMWSERV_SUPPORT
         localChatTab->chatLog(_("/list > Display all public channels"));

@@ -194,6 +194,8 @@ class ChatWindow : public Window,
         /** Add the tab to the window */
         void addTab(ChatTab *tab);
 
+        void removeWhisper(std::string nick);
+
         void adjustTabSize();
 
 #ifdef EATHENA_SUPPORT

@@ -290,7 +290,7 @@ void ChatTab::chatSend(std::string &msg)
     }
     else
     {
-        commandHandler->handleCommand(std::string(msg, 1));
+        handleCommand(std::string(msg, 1));
     }
 }
 
@@ -321,4 +321,9 @@ void ChatTab::sendChat(std::string &msg) {
     outMsg.writeString(msg, msg.length() + 1);
     return;
 #endif
+}
+
+void ChatTab::handleCommand(std::string msg)
+{
+    commandHandler->handleCommand(msg);
 }

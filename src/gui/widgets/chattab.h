@@ -108,6 +108,8 @@ class ChatTab : public Tab
 
         virtual void sendChat(std::string &msg);
 
+        virtual void handleCommand(std::string msg);
+
         ScrollArea *mScrollArea;
         BrowserBox *mTextOutput;
         //Recorder *mRecorder;

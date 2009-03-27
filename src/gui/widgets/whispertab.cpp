@@ -55,6 +55,7 @@ WhisperTab::WhisperTab(const std::string &nick) :
 
 WhisperTab::~WhisperTab()
 {
+    chatWindow->removeWhisper(mNick);
 }
 
 void WhisperTab::sendChat(std::string &msg) {
@@ -75,4 +76,12 @@ void WhisperTab::sendChat(std::string &msg) {
 
     chatLog(strprintf(_("%s: %s"), player_node->getName().c_str(),
                         msg.c_str()), BY_PLAYER, false);
+}
+
+void WhisperTab::handleCommand(std::string msg)
+{
+    if (msg == "close")
+        delete this;
+    else
+        ChatTab::handleCommand(msg);
 }
