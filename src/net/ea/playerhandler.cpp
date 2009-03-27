@@ -211,9 +211,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 player_node->mX = x;
                 player_node->mY = y;
 
-                logger->log("Adjust scrolling by %d:%d",
-                        (int) scrollOffsetX,
-                        (int) scrollOffsetY);
+                logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
+                           (int) scrollOffsetY);
 
                 viewport->scrollBy(scrollOffsetX, scrollOffsetY);
             }
@@ -222,7 +221,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
                 int type = msg.readInt16();
-                Uint32 value = msg.readInt32();
+                int value = msg.readInt32();
 
                 switch (type)
                 {
@@ -242,7 +241,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                                  skillDialog->update();
                                  break;
                     case 0x0018:
-                                 if ((int) value >= player_node->getMaxWeight() / 2 &&
+                                 if (value >= player_node->getMaxWeight() / 2 &&
                                          player_node->getTotalWeight() <
                                          player_node->getMaxWeight() / 2)
                                  {

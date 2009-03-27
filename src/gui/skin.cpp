@@ -19,20 +19,36 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <algorithm>
+
 #include "skin.h"
 
+#include "../configuration.h"
+#include "../configlistener.h"
 #include "../log.h"
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 #include "../utils/dtor.h"
+#include "../utils/strprintf.h"
 #include "../utils/xml.h"
 
 SkinLoader *skinLoader = NULL;
+ConfigListener *SkinLoader::skinConfigListener = NULL;
 
-Skin::Skin(ImageRect skin, Image *close, std::string name):
+class SkinConfigListener : public ConfigListener
+{
+    void optionChanged(const std::string &)
+    {
+        if (skinLoader)
+            skinLoader->updateAlpha();
+    }
+};
+
+Skin::Skin(ImageRect skin, Image *close, std::string filePath, std::string name):
     instances(0),
+    mFilePath(filePath),
     mName(name),
     border(skin),
     closeImage(close)
@@ -51,6 +67,15 @@ Skin::~Skin()
     closeImage->decRef();
 }
 
+void Skin::updateAlpha()
+{
+    const float alpha = config.getValue("guialpha", 0.8);
+
+    for_each(border.grid, border.grid + 9,
+             std::bind2nd(std::mem_fun(&Image::setAlpha), alpha));
+    closeImage->setAlpha(alpha);
+}
+
 int Skin::getMinWidth() const
 {
     return (border.grid[0]->getWidth() + border.grid[1]->getWidth()) +
@@ -63,32 +88,47 @@ int Skin::getMinHeight() const
             border.grid[6]->getHeight();
 }
 
-Skin *SkinLoader::load(const std::string &filename)
+Skin *SkinLoader::load(const std::string &filename,
+                       const std::string &defaultPath)
 {
-    SkinIterator skinIterator = mSkins.find(filename);
+    std::string filePath = filename;
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    logger->log("Loading Skin '%s'.", filename.c_str());
+
+    if (filename.empty() && defaultPath.empty())
+        logger->error("SkinLoader::load(): Invalid File Name.");
+
+    XML::Document *doc = new XML::Document(filePath);
+    xmlNodePtr rootNode = doc->rootNode();
+
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
+    {
+        filePath = defaultPath;
+
+        logger->log("Widget Skinning error. Loading '%s' instead.",
+                    filePath.c_str());
+
+        delete doc;
+
+        doc = new XML::Document(filePath);
+        rootNode = doc->rootNode();
+        if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
+        {
+            logger->error(strprintf("Skinning failed. Check this skin file "
+                                    "to make sure it's valid: %s",
+                                    filePath.c_str()));
+        }
+    }
+
+    SkinIterator skinIterator = mSkins.find(filePath);
 
     if (mSkins.end() != skinIterator)
     {
         skinIterator->second->instances++;
         return skinIterator->second;
     }
-
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    logger->log("Loading Skin '%s'.", filename.c_str());
-
-    if (filename.empty())
-        logger->error("SkinLoader::load(): Invalid File Name.");
-
-    // TODO:
-    // If there is an error loading the specified file, we should try to revert
-    // to a 'default' skin file. Only if the 'default' skin file can't be loaded
-    // should we have a terminating error.
-    XML::Document doc(filename);
-    xmlNodePtr rootNode = doc.rootNode();
-
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "skinset"))
-        logger->error("Widget Skinning error");
 
     std::string skinSetImage;
     skinSetImage = XML::getProperty(rootNode, "image", "");
@@ -171,21 +211,42 @@ Skin *SkinLoader::load(const std::string &filename)
 
     logger->log("Finished loading Skin.");
 
+    delete doc;
+
     // Hard-coded for now until we update the above code to look for window buttons.
     Image *closeImage = resman->getImage("graphics/gui/close_button.png");
 
-    Skin *skin = new Skin(border, closeImage);
+    Skin *skin = new Skin(border, closeImage, filename);
 
     mSkins[filename] = skin;
+
+    updateAlpha();
+
     return skin;
 }
 
-SkinLoader::SkinLoader()
+SkinLoader::SkinLoader() :
+    mSkins()
 {
+    skinConfigListener = new SkinConfigListener();
+    // Send GUI alpha changed for initialization
+    skinConfigListener->optionChanged("guialpha");
+    config.addListener("guialpha", skinConfigListener);
 }
 
 SkinLoader::~SkinLoader()
 {
     delete_all(mSkins);
+    config.removeListener("guialpha", skinConfigListener);
+    delete skinConfigListener;
+    skinConfigListener = NULL;
+}
+
+void SkinLoader::updateAlpha()
+{
+    for (SkinIterator iter = mSkins.begin(); iter != mSkins.end(); ++iter)
+    {
+        iter->second->updateAlpha();
+    }
 }
 

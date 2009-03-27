@@ -34,7 +34,8 @@ class TextBox;
  *
  * \ingroup GUI
  */
-class OkDialog : public Window, public gcn::ActionListener {
+class OkDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor.

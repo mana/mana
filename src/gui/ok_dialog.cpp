@@ -30,7 +30,7 @@
 #include "../utils/gettext.h"
 
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
-        Window *parent):
+                   Window *parent):
     Window(title, true, parent)
 {
     mTextBox = new TextBox;
@@ -46,30 +46,24 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
 
     mTextBox->setTextWrapped(msg, 260);
 
-    int numRows = mTextBox->getNumberOfRows();
+    const int numRows = mTextBox->getNumberOfRows();
     const int fontHeight = getFont()->getHeight();
+    const int height = numRows * fontHeight;
+    int width = getFont()->getWidth(title);
 
-    if (numRows > 1)
-    {
-        // 14 == row top + bottom graphic pixel heights
-        setContentSize(mTextBox->getMinWidth() + fontHeight, ((numRows + 1) *
-                       fontHeight) + okButton->getHeight());
-        mTextArea->setDimension(gcn::Rectangle(4, 5,
-                    mTextBox->getMinWidth() + 5, 3 + (numRows * fontHeight)));
-    }
-    else
-    {
-        int width = getFont()->getWidth(title);
-        if (width < getFont()->getWidth(msg))
-            width = getFont()->getWidth(msg);
-        if (width < okButton->getWidth())
-            width = okButton->getWidth();
-        setContentSize(width + fontHeight, 30 + okButton->getHeight());
-        mTextArea->setDimension(gcn::Rectangle(4, 5, width + 5, 17));
-    }
+    if (width < mTextBox->getMinWidth())
+        width = mTextBox->getMinWidth();
+    if (width < okButton->getWidth())
+        width = okButton->getWidth();
 
-    okButton->setPosition((mTextBox->getMinWidth() - okButton->getWidth()) / 2,
-                          ((numRows - 1) * fontHeight) + okButton->getHeight() + 2);
+    setContentSize(mTextBox->getMinWidth() + fontHeight, height +
+                   fontHeight + okButton->getHeight());
+    mTextArea->setDimension(gcn::Rectangle(4, 5, width + 2 * getPadding(),
+                                           height + getPadding()));
+
+    // 8 is the padding that GUIChan adds to button widgets
+    // (top and bottom combined)
+    okButton->setPosition((width - okButton->getWidth()) / 2, height + 8);
 
     add(mTextArea);
     add(okButton);

@@ -74,6 +74,8 @@ void Engine::changeMap(const std::string &mapPath)
 
     particleEngine->clear();
 
+    mMapName = mapPath;
+
     // Store full map path in global var
 #ifdef TMWSERV_SUPPORT
     map_path = "maps/" + mapPath + ".tmx";
@@ -146,7 +148,6 @@ void Engine::changeMap(const std::string &mapPath)
         sound.playMusic(newMusic, -1);
 
     mCurrentMap = newMap;
-    mMapName = mapPath;
 
 #ifdef EATHENA_SUPPORT
     // Send "map loaded"

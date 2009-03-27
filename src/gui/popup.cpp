@@ -20,66 +20,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-#include <cassert>
-#include <climits>
-
 #include <guichan/exception.hpp>
 
-#include "gui.h"
 #include "skin.h"
 #include "popup.h"
-#include "window.h"
 #include "windowcontainer.h"
 
-#include "../configlistener.h"
 #include "../configuration.h"
+#include "../graphics.h"
 #include "../log.h"
 
 #include "../resources/image.h"
 
-ConfigListener *Popup::popupConfigListener = 0;
-int Popup::instances = 0;
-bool Popup::mAlphaChanged = false;
-
-class PopupConfigListener : public ConfigListener
-{
-    void optionChanged(const std::string &)
-    {
-        Popup::mAlphaChanged = true;
-    }
-};
-
-Popup::Popup(const std::string &name, Window *parent,
-             const std::string &skin):
-    mParent(parent),
+Popup::Popup(const std::string &name, const std::string &skin):
     mPopupName(name),
+    mDefaultSkinPath(skin),
     mMinWidth(100),
     mMinHeight(40),
-    mMaxWidth(INT_MAX),
-    mMaxHeight(INT_MAX)
+    mMaxWidth(graphics->getWidth()),
+    mMaxHeight(graphics->getHeight())
 {
     logger->log("Popup::Popup(\"%s\")", name.c_str());
 
     if (!windowContainer)
         throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
 
-    if (instances == 0)
-    {
-        popupConfigListener = new PopupConfigListener();
-        // Send GUI alpha changed for initialization
-        popupConfigListener->optionChanged("guialpha");
-        config.addListener("guialpha", popupConfigListener);
-    }
-
     setPadding(3);
 
-    instances++;
-
     // Loads the skin
-    mSkin = skinLoader->load(skin);
-
-    setGuiAlpha();
+    mSkin = skinLoader->load(skin, mDefaultSkinPath);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -92,6 +61,8 @@ Popup::~Popup()
 {
     logger->log("Popup::~Popup(\"%s\")", mPopupName.c_str());
 
+    savePopupConfiguration();
+
     while (!mWidgets.empty())
     {
         gcn::Widget *w = mWidgets.front();
@@ -99,21 +70,40 @@ Popup::~Popup()
         delete(w);
     }
 
-    instances--;
-
     mSkin->instances--;
-
-    if (instances == 0)
-    {
-        config.removeListener("guialpha", popupConfigListener);
-        delete popupConfigListener;
-        popupConfigListener = NULL;
-    }
 }
 
 void Popup::setWindowContainer(WindowContainer *wc)
 {
     windowContainer = wc;
+}
+
+void Popup::loadPopupConfiguration()
+{
+    if (mPopupName.empty())
+        return;
+
+    const std::string &name = mPopupName;
+    const std::string &skinName = config.getValue(name + "Skin",
+                                                  mSkin->getFilePath());
+
+    if (skinName.compare(mSkin->getFilePath()) != 0)
+    {
+        mSkin->instances--;
+        mSkin = skinLoader->load(skinName, mDefaultSkinPath);
+    }
+}
+
+void Popup::savePopupConfiguration()
+{
+    if (mPopupName.empty())
+        return;
+
+    const std::string &name = mPopupName;
+
+    // Saves the skin path in a config file (which allows for skins to be
+    // changed from the default path)
+    config.setValue(name + "Skin", mSkin->getFilePath());
 }
 
 void Popup::draw(gcn::Graphics *graphics)
@@ -125,13 +115,6 @@ void Popup::draw(gcn::Graphics *graphics)
 
     g->drawImageRect(0, 0, getWidth(), getHeight(), mSkin->getBorder());
 
-    // Update Popup alpha values
-    if (mAlphaChanged)
-    {
-        for_each(mSkin->getBorder().grid, mSkin->getBorder().grid + 9,
-                 std::bind2nd(std::mem_fun(&Image::setAlpha),
-                 config.getValue("guialpha", 0.8)));
-    }
     drawChildren(graphics);
 }
 
@@ -195,14 +178,3 @@ void Popup::scheduleDelete()
     windowContainer->scheduleDelete(this);
 }
 
-void Popup::setGuiAlpha()
-{
-    //logger->log("Popup::setGuiAlpha: Alpha Value %f", config.getValue("guialpha", 0.8));
-    for (int i = 0; i < 9; i++)
-    {
-        //logger->log("Popup::setGuiAlpha: Border Image (%i)", i);
-        mSkin->getBorder().grid[i]->setAlpha(config.getValue("guialpha", 0.8));
-    }
-
-    mAlphaChanged = false;
-}

@@ -29,7 +29,6 @@
 #include "../graphics.h"
 #include "../guichanfwd.h"
 
-class ConfigListener;
 class ContainerPlacer;
 class Layout;
 class LayoutCell;
@@ -47,8 +46,6 @@ class WindowContainer;
 class Window : public gcn::Window, gcn::WidgetListener
 {
     public:
-        friend class WindowConfigListener;
-
         /**
          * Constructor. Initializes the title to the given text and hooks
          * itself into the window container.
@@ -320,35 +317,28 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
-        void setGuiAlpha();
+        ResizeGrip *mGrip;            /**< Resize grip */
+        Window *mParent;              /**< The parent window */
+        Layout *mLayout;              /**< Layout handler */
+        std::string mWindowName;      /**< Name of the window */
+        std::string mDefaultSkinPath; /**< Default skin path for this window */
+        bool mShowTitle;              /**< Window has a title bar */
+        bool mModal;                  /**< Window is modal */
+        bool mCloseButton;            /**< Window has a close button */
+        bool mSticky;                 /**< Window resists minimization */
+        int mMinWinWidth;             /**< Minimum window width */
+        int mMinWinHeight;            /**< Minimum window height */
+        int mMaxWinWidth;             /**< Maximum window width */
+        int mMaxWinHeight;            /**< Maximum window height */
+        int mDefaultX;                /**< Default window X position */
+        int mDefaultY;                /**< Default window Y position */
+        int mDefaultWidth;            /**< Default window width */
+        int mDefaultHeight;           /**< Default window height */
 
-        ResizeGrip *mGrip;         /**< Resize grip */
-        Window *mParent;           /**< The parent window */
-        Layout *mLayout;           /**< Layout handler */
-        std::string mWindowName;   /**< Name of the window */
-        bool mShowTitle;           /**< Window has a title bar */
-        bool mModal;               /**< Window is modal */
-        bool mCloseButton;         /**< Window has a close button */
-        bool mSticky;              /**< Window resists minimization */
-        static bool mAlphaChanged; /**< Whether the alpha percent was changed */
-        int mMinWinWidth;          /**< Minimum window width */
-        int mMinWinHeight;         /**< Minimum window height */
-        int mMaxWinWidth;          /**< Maximum window width */
-        int mMaxWinHeight;         /**< Maximum window height */
-        int mDefaultX;             /**< Default window X position */
-        int mDefaultY;             /**< Default window Y position */
-        int mDefaultWidth;         /**< Default window width */
-        int mDefaultHeight;        /**< Default window height */
+        static int mouseResize;       /**< Active resize handles */
+        static int instances;         /**< Number of Window instances */
 
-        /**
-         * The config listener that listens to changes relevant to all windows.
-         */
-        static ConfigListener *windowConfigListener;
-
-        static int mouseResize;    /**< Active resize handles */
-        static int instances;      /**< Number of Window instances */
-
-        Skin* mSkin;               /**< Skin in use by this window */
+        Skin* mSkin;                  /**< Skin in use by this window */
 
         /**
          * The width of the resize border. Is independent of the actual window

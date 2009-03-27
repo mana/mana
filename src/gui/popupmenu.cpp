@@ -51,7 +51,7 @@
 extern std::string tradePartnerName;
 
 PopupMenu::PopupMenu():
-    Window(),
+    Window("PopupMenu"),
     mBeingId(0),
     mFloorItem(NULL),
     mItem(NULL)
@@ -64,8 +64,10 @@ PopupMenu::PopupMenu():
     mBrowserBox->setPosition(4, 4);
     mBrowserBox->setHighlightMode(BrowserBox::BACKGROUND);
     mBrowserBox->setOpaque(false);
-    add(mBrowserBox);
     mBrowserBox->setLinkHandler(this);
+    add(mBrowserBox);
+
+    loadWindowState();
 }
 
 void PopupMenu::showPopup(int x, int y, Being *being)

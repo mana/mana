@@ -409,7 +409,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
         color = &guiPalette->getColor(Palette::HIT_CRITICAL);
     }
     else if (!amount)
-     {
+    {
         if (attacker == player_node)
         {
             // This is intended to be the wrong direction to visually
@@ -1049,9 +1049,8 @@ void Being::load()
     int hairstyles = 1;
 
     while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
-    {
         hairstyles++;
-    }
+
     mNumberOfHairstyles = hairstyles;
 
     XML::Document doc(HAIR_FILE);

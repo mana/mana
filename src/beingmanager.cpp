@@ -145,9 +145,8 @@ Being *BeingManager::findBeing(int id)
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
         Being *being = (*i);
-        if (being->getId() == id) {
+        if (being->getId() == id)
             return being;
-        }
     }
     return NULL;
 }

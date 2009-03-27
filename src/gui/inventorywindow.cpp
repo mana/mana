@@ -44,7 +44,6 @@
 #include "../resources/iteminfo.h"
 
 #include "../utils/gettext.h"
-#include "../utils/stringutils.h"
 #include "../utils/strprintf.h"
 
 InventoryWindow::InventoryWindow(int invSize):
@@ -92,7 +91,7 @@ InventoryWindow::InventoryWindow(int invSize):
 
     mTotalWeight = -1;
     mMaxWeight = -1;
-    mUsedSlots = toString(player_node->getInventory()->getNumberOfSlotsUsed());
+    mUsedSlots = -1;
 
     mSlotsLabel = new Label(_("Slots: "));
     mWeightLabel = new Label(_("Weight: "));
@@ -137,29 +136,28 @@ void InventoryWindow::logic()
     updateButtons();
 
     const int usedSlots = player_node->getInventory()->getNumberOfSlotsUsed();
-    const std::string usedSlotsStr = toString(usedSlots);
 
     if (mMaxWeight != player_node->getMaxWeight() ||
-         mTotalWeight != player_node->getTotalWeight() ||
-         mUsedSlots != usedSlotsStr)
+        mTotalWeight != player_node->getTotalWeight() ||
+        mUsedSlots != usedSlots)
     {
         mTotalWeight = player_node->getTotalWeight();
         mMaxWeight = player_node->getMaxWeight();
-        mUsedSlots = usedSlotsStr;
+        mUsedSlots = usedSlots;
 
         // Weight Bar coloration
-        if (mTotalWeight < (int) (mMaxWeight / 3))
+        if (mTotalWeight < (mMaxWeight / 3))
             mWeightBar->setColor(0, 0, 255); // Blue
-        else if (mTotalWeight < (int) ((mMaxWeight * 2) / 3))
+        else if (mTotalWeight < ((mMaxWeight * 2) / 3))
             mWeightBar->setColor(255, 255, 0); // Yellow
         else
             mWeightBar->setColor(255, 0, 0); // Red
 
         // Adjust progress bars
-        mSlotsBar->setProgress((float) usedSlots / mMaxSlots);
+        mSlotsBar->setProgress((float) mUsedSlots / mMaxSlots);
         mWeightBar->setProgress((float) mTotalWeight / mMaxWeight);
 
-        mSlotsBar->setText(strprintf("%s/%d", mUsedSlots.c_str(), mMaxSlots));
+        mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mMaxSlots));
         mWeightBar->setText(strprintf("%s/%s",
                                     Units::formatWeight(mTotalWeight).c_str(),
                                     Units::formatWeight(mMaxWeight).c_str()));

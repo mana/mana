@@ -27,12 +27,14 @@
 
 #include "../graphics.h"
 
+class ConfigListener;
 class Image;
 
 class Skin
 {
     public:
-        Skin(ImageRect skin, Image* close, std::string name = "");
+        Skin(ImageRect skin, Image* close, std::string filePath,
+             std::string name = "");
         ~Skin();
 
         /**
@@ -41,6 +43,11 @@ class Skin
          * done.
          */
         std::string getName() { return mName; }
+
+        /**
+         * Returns the skin's xml file path.
+         */
+        std::string getFilePath() { return mFilePath; }
 
         /**
          * Returns the background skin.
@@ -67,9 +74,15 @@ class Skin
          */
         int getMinHeight() const;
 
+        /**
+         * Updates the alpha value of the skin
+         */
+        void updateAlpha();
+
         int instances;
 
     private:
+        std::string mFilePath;     /**< File name path for the skin */
         std::string mName;         /**< Name of the skin to use */
         ImageRect border;          /**< The window border and background */
         Image *closeImage;         /**< Close Button Image */
@@ -84,16 +97,28 @@ typedef Skins::iterator SkinIterator;
 class SkinLoader 
 {
     public:
+        friend class SkinConfigListener;
+
         SkinLoader();
         ~SkinLoader();
 
         /**
          * Loads a skin
          */
-        Skin* load(const std::string &filename);
+        Skin* load(const std::string &filename, const std::string &defaultPath);
+
+        /**
+         * Updates the alpha values of all of the skins
+         */
+        void updateAlpha();
 
     private:
         Skins mSkins;
+
+        /**
+         * The config listener that listens to changes relevant to all skins.
+         */
+        static ConfigListener *skinConfigListener;
 };
 
 extern SkinLoader* skinLoader;

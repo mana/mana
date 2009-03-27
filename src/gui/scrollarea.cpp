@@ -215,9 +215,9 @@ void ScrollArea::drawFrame(gcn::Graphics *graphics)
 {
     if (mOpaque)
     {
-        int bs = getFrameSize();
-        int w = getWidth() + bs * 2;
-        int h = getHeight() + bs * 2;
+        const int bs = getFrameSize();
+        const int w = getWidth() + bs * 2;
+        const int h = getHeight() + bs * 2;
 
         static_cast<Graphics*>(graphics)->
                 drawImageRect(0, 0, w, h, background);

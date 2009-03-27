@@ -104,8 +104,9 @@ class InventoryWindow : public Window,
 
         std::string mWeight;
         std::string mSlots;
-        std::string mUsedSlots;
-        int mTotalWeight, mMaxWeight;
+        int mUsedSlots;
+        int mTotalWeight;
+        int mMaxWeight;
         gcn::Button *mUseButton;
         gcn::Button *mDropButton;
 #ifdef TMWSERV_SUPPORT

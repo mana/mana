@@ -615,14 +615,16 @@ static void parseOptions(int argc, char *argv[], Options &options)
         { 0 }
     };
 
-    while (optind < argc) {
+    while (optind < argc)
+    {
 
         int result = getopt_long(argc, argv, optstring, long_options, NULL);
 
         if (result == -1)
             break;
 
-        switch (result) {
+        switch (result)
+        {
             case 'C':
                 options.configPath = optarg;
                 break;

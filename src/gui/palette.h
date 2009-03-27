@@ -307,6 +307,7 @@ class Palette : public gcn::ListModel
             {
                 ColorElem::type = type;
                 ColorElem::color = color;
+                ColorElem::testColor = color;
                 ColorElem::text = text;
                 ColorElem::ch = c;
                 ColorElem::grad = grad;

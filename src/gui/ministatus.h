@@ -27,6 +27,7 @@
 #include <vector>
 
 class AnimatedSprite;
+class Graphics;
 class ProgressBar;
 
 /**

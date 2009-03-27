@@ -34,7 +34,7 @@
 #include "../utils/gettext.h"
 
 SpeechBubble::SpeechBubble():
-    Popup("Speech", NULL, "graphics/gui/speechbubble.xml")
+    Popup("Speech", "graphics/gui/speechbubble.xml")
 {
     setContentSize(140, 46);
     setMinWidth(29);
@@ -59,6 +59,8 @@ SpeechBubble::SpeechBubble():
 
     add(mCaption);
     add(mSpeechArea);
+
+    loadPopupConfiguration();
 }
 
 void SpeechBubble::setCaption(const std::string &name, const gcn::Color *color)

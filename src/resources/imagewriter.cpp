@@ -27,8 +27,7 @@
 #include <SDL.h>
 #include <string>
 
-bool ImageWriter::writePNG(SDL_Surface *surface,
-                           const std::string &filename)
+bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
 {
     // TODO Maybe someone can make this look nice?
     FILE *fp = fopen(filename.c_str(), "wb");

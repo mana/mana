@@ -19,10 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-#include <cassert>
-#include <climits>
-
 #include <guichan/exception.hpp>
 
 #include "gui.h"
@@ -34,24 +30,13 @@
 #include "widgets/layout.h"
 #include "widgets/resizegrip.h"
 
-#include "../configlistener.h"
 #include "../configuration.h"
 #include "../log.h"
 
 #include "../resources/image.h"
 
-ConfigListener *Window::windowConfigListener = 0;
 int Window::instances = 0;
 int Window::mouseResize = 0;
-bool Window::mAlphaChanged = false;
-
-class WindowConfigListener : public ConfigListener
-{
-    void optionChanged(const std::string &)
-    {
-        Window::mAlphaChanged = true;
-    }
-};
 
 Window::Window(const std::string &caption, bool modal, Window *parent, const std::string &skin):
     gcn::Window(caption),
@@ -59,14 +44,15 @@ Window::Window(const std::string &caption, bool modal, Window *parent, const std
     mParent(parent),
     mLayout(NULL),
     mWindowName("window"),
+    mDefaultSkinPath(skin),
     mShowTitle(true),
     mModal(modal),
     mCloseButton(false),
     mSticky(false),
     mMinWinWidth(100),
     mMinWinHeight(40),
-    mMaxWinWidth(INT_MAX),
-    mMaxWinHeight(INT_MAX)
+    mMaxWinWidth(graphics->getWidth()),
+    mMaxWinHeight(graphics->getHeight())
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
@@ -74,13 +60,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent, const std
         throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
 
     if (instances == 0)
-    {
         skinLoader = new SkinLoader();
-        windowConfigListener = new WindowConfigListener;
-        // Send GUI alpha changed for initialization
-        windowConfigListener->optionChanged("guialpha");
-        config.addListener("guialpha", windowConfigListener);
-    }
 
     instances++;
 
@@ -89,9 +69,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent, const std
     setTitleBarHeight(20);
 
     // Loads the skin
-    mSkin = skinLoader->load(skin);
-
-    setGuiAlpha();
+    mSkin = skinLoader->load(skin, mDefaultSkinPath);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -130,12 +108,7 @@ Window::~Window()
     mSkin->instances--;
 
     if (instances == 0)
-    {
         delete skinLoader;
-        config.removeListener("guialpha", windowConfigListener);
-        delete windowConfigListener;
-        windowConfigListener = NULL;
-    }
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
@@ -169,14 +142,6 @@ void Window::draw(gcn::Graphics *graphics)
         );
     }
 
-    // Update window alpha values
-    if (mAlphaChanged)
-    {
-        for_each(mSkin->getBorder().grid, mSkin->getBorder().grid + 9,
-                 std::bind2nd(std::mem_fun(&Image::setAlpha),
-                 config.getValue("guialpha", 0.8)));
-        mSkin->getCloseImage()->setAlpha(config.getValue("guialpha", 0.8));
-    }
     drawChildren(graphics);
 }
 
@@ -499,11 +464,19 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 void Window::loadWindowState()
 {
     const std::string &name = mWindowName;
+    const std::string skinName = config.getValue(name + "Skin",
+                                                 mSkin->getFilePath());
     assert(!name.empty());
 
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
                 (int) config.getValue(name + "WinY", mDefaultY));
     setVisible((bool) config.getValue(name + "Visible", false));
+
+    if (skinName.compare(mSkin->getFilePath()) != 0)
+    {
+        mSkin->instances--;
+        mSkin = skinLoader->load(skinName, mDefaultSkinPath);
+    }
 
     if (mGrip)
     {
@@ -535,6 +508,7 @@ void Window::saveWindowState()
         config.setValue(mWindowName + "WinX", getX());
         config.setValue(mWindowName + "WinY", getY());
         config.setValue(mWindowName + "Visible", isVisible());
+        config.setValue(mWindowName + "Skin", mSkin->getFilePath());
 
         if (mGrip)
         {
@@ -665,18 +639,6 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
     }
 
     return resizeHandles;
-}
-
-void Window::setGuiAlpha()
-{
-    //logger->log("Window::setGuiAlpha: Alpha Value %f", config.getValue("guialpha", 0.8));
-    for (int i = 0; i < 9; i++)
-    {
-        //logger->log("Window::setGuiAlpha: Border Image (%i)", i);
-        mSkin->getBorder().grid[i]->setAlpha(config.getValue("guialpha", 0.8));
-    }
-
-    mAlphaChanged = false;
 }
 
 int Window::getGuiAlpha()

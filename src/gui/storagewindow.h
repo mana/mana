@@ -91,8 +91,8 @@ class StorageWindow : public Window, gcn::ActionListener,
         Network *mNetwork;
         ItemContainer *mItems;
 
-        std::string mSlots;
-        std::string mUsedSlots;
+        int mSlots;
+        int mUsedSlots;
         gcn::Button *mStoreButton, *mRetrieveButton;
         gcn::ScrollArea *mInvenScroll;
 

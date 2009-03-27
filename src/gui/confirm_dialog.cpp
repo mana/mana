@@ -47,37 +47,28 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
 
     mTextBox->setTextWrapped(msg, 260);
 
-    int numRows = mTextBox->getNumberOfRows();
-    int width = getFont()->getWidth(title);
-    int inWidth = yesButton->getWidth() + noButton->getWidth() + 5;
+    const int numRows = mTextBox->getNumberOfRows();
+    const int inWidth = yesButton->getWidth() + noButton->getWidth() + 
+                        (2 * getPadding());
     const int fontHeight = getFont()->getHeight();
+    const int height = numRows * fontHeight;
+    int width = getFont()->getWidth(title);
 
-    if (numRows > 1)
-    {
-        // fontHeight == height of each line of text (based on font heights)
-        // 14 == row top + bottom graphic pixel heights
-        setContentSize(mTextBox->getMinWidth() + fontHeight, ((numRows + 1) *
-                       fontHeight) + noButton->getHeight());
-        mTextArea->setDimension(gcn::Rectangle(4, 5, mTextBox->getMinWidth() + 5,
-                                               3 + (numRows * fontHeight)));
-    }
-    else
-    {
-        if (width < getFont()->getWidth(msg))
-            width = getFont()->getWidth(msg);
-        if (width < inWidth)
-            width = inWidth;
-        setContentSize(width + fontHeight, (2 * fontHeight) +
-                       noButton->getHeight());
-        mTextArea->setDimension(gcn::Rectangle(4, 5, width + 5, 17));
-    }
+    if (width < mTextBox->getMinWidth())
+        width = mTextBox->getMinWidth();
+    if (width < inWidth)
+        width = inWidth;
 
-    yesButton->setPosition(
-            (mTextBox->getMinWidth() - inWidth) / 2,
-            ((numRows - 1) * fontHeight) + noButton->getHeight() + 2);
-    noButton->setPosition(
-            yesButton->getX() + yesButton->getWidth() + 5,
-            ((numRows - 1) * fontHeight) + noButton->getHeight() + 2);
+    setContentSize(mTextBox->getMinWidth() + fontHeight, height + fontHeight +
+                   noButton->getHeight());
+    mTextArea->setDimension(gcn::Rectangle(4, 5, width + 2 * getPadding(),
+                                           height + getPadding()));
+
+    // 8 is the padding that GUIChan adds to button widgets
+    // (top and bottom combined)
+    yesButton->setPosition((width - inWidth) / 2, height + 8);
+    noButton->setPosition(yesButton->getX() + inWidth - noButton->getWidth(),
+                          height + 8);
 
     add(mTextArea);
     add(yesButton);

@@ -39,23 +39,35 @@ DyePalette::DyePalette(const std::string &description)
     int pos = 1;
     for (;;)
     {
-        if (pos + 6 > size) break;
+        if (pos + 6 > size)
+            break;
+
         int v = 0;
         for (int i = 0; i < 6; ++i)
         {
             char c = description[pos + i];
             int n;
-            if ('0' <= c && c <= '9') n = c - '0';
-            else if ('A' <= c && c <= 'F') n = c - 'A' + 10;
-            else if ('a' <= c && c <= 'f') n = c - 'a' + 10;
-            else goto error;
+
+            if ('0' <= c && c <= '9')
+                n = c - '0';
+            else if ('A' <= c && c <= 'F')
+                n = c - 'A' + 10;
+            else if ('a' <= c && c <= 'f')
+                n = c - 'a' + 10;
+            else
+                goto error;
+
             v = (v << 4) | n;
         }
         Color c = { { v >> 16, v >> 8, v } };
         mColors.push_back(c);
         pos += 6;
-        if (pos == size) return;
-        if (description[pos] != ',') break;
+
+        if (pos == size)
+            return;
+        if (description[pos] != ',')
+            break;
+
         ++pos;
     }
 
@@ -122,14 +134,18 @@ Dye::Dye(const std::string &description)
     {
         std::string::size_type pos = next_pos;
         next_pos = description.find(';', pos);
+
         if (next_pos == std::string::npos)
             next_pos = length;
+
         if (next_pos <= pos + 3 || description[pos + 1] != ':')
         {
             logger->log("Error, invalid dye: %s", description.c_str());
             return;
         }
+
         int i = 0;
+
         switch (description[pos])
         {
             case 'R': i = 0; break;
@@ -143,7 +159,8 @@ Dye::Dye(const std::string &description)
                 logger->log("Error, invalid dye: %s", description.c_str());
                 return;
         }
-        mDyePalettes[i] = new DyePalette(description.substr(pos + 2, next_pos - pos - 2));
+        mDyePalettes[i] = new DyePalette(description.substr(pos + 2,
+                                                            next_pos - pos - 2));
         ++next_pos;
     }
     while (next_pos < length);
@@ -180,8 +197,10 @@ void Dye::update(int color[3]) const
 void Dye::instantiate(std::string &target, const std::string &palettes)
 {
     std::string::size_type next_pos = target.find('|');
+
     if (next_pos == std::string::npos || palettes.empty())
         return;
+
     ++next_pos;
 
     std::ostringstream s;
@@ -191,8 +210,10 @@ void Dye::instantiate(std::string &target, const std::string &palettes)
     {
         std::string::size_type pos = next_pos;
         next_pos = target.find(';', pos);
+
         if (next_pos == std::string::npos)
             next_pos = last_pos;
+
         if (next_pos == pos + 1 && pal_pos != std::string::npos)
         {
             std::string::size_type pal_next_pos = palettes.find(';', pal_pos);
