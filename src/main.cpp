@@ -250,8 +250,7 @@ static void setUpdatesDir()
     {
         if (pos + 3 < updateHost.length())
         {
-            updates << "updates/" << updateHost.substr(pos + 3)
-                    << "/" << loginData.port;
+            updates << "updates/" << updateHost.substr(pos + 3);
             updatesDir = updates.str();
         }
         else
