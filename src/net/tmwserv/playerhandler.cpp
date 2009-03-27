@@ -322,6 +322,7 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 
     player_node->setAction(Being::STAND);
     player_node->setPosition(x, y);
+    player_node->setDestination(x, y);
 
     logger->log("Adjust scrolling by %d,%d", (int) scrollOffsetX,
                                              (int) scrollOffsetY);

@@ -217,8 +217,9 @@ void Monster::setShowName(bool show)
 
     if (show)
     {
-        mText = new Text(getInfo().getName(), mPx + NAME_X_OFFSET,
-                         mPy + NAME_Y_OFFSET - getHeight(),
+        mText = new Text(getInfo().getName(),
+                         getPixelX() + NAME_X_OFFSET,
+                         getPixelY() + NAME_Y_OFFSET - getHeight(),
                          gcn::Graphics::CENTER,
                          &guiPalette->getColor(Palette::MONSTER));
     }
@@ -232,7 +233,7 @@ void Monster::updateCoords()
 {
     if (mText)
     {
-        mText->adviseXY(mPx + NAME_X_OFFSET,
-                        mPy + NAME_Y_OFFSET - getHeight());
+        mText->adviseXY(getPixelX() + NAME_X_OFFSET,
+                        getPixelY() + NAME_Y_OFFSET - getHeight());
     }
 }

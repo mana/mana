@@ -387,24 +387,16 @@ class Being : public Sprite
         virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
-         * Returns the pixel X coordinate.
+         * Returns the X coordinate in pixels.
          */
-#ifdef TMWSERV_SUPPORT
-        int getPixelX() const { return (int) mPos.x; }
-#else
         int getPixelX() const { return mPx; }
-#endif
 
         /**
-         * Returns the pixel Y coordinate.
+         * Returns the Y coordinate in pixels.
          *
          * @see Sprite::getPixelY()
          */
-#ifdef TMWSERV_SUPPORT
-        int getPixelY() const { return (int) mPos.y; }
-#else
         int getPixelY() const { return mPy; }
-#endif
 
 #ifdef EATHENA_SUPPORT
         /**
@@ -421,8 +413,7 @@ class Being : public Sprite
 #endif
 
         /**
-         * Sets the position of this being. When the being was walking, it also
-         * clears the destination and the path.
+         * Sets the position of this being.
          */
         void setPosition(const Vector &pos);
 
@@ -545,7 +536,7 @@ class Being : public Sprite
         void setPath(const Path &path);
 
         /**
-         * Let the sub-classes react to a replacement
+         * Let the sub-classes react to a replacement.
          */
         virtual void updateCoords() {}
 
@@ -608,7 +599,6 @@ class Being : public Sprite
         int mHairStyle;
         int mHairColor;
         Gender mGender;
-        int mPx, mPy;                   /**< Pixel coordinates */
         Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
 
@@ -640,6 +630,7 @@ class Being : public Sprite
 
         Vector mPos;
         Vector mDest;
+        int mPx, mPy;                   /**< Position in pixels */
 
         // Target cursor being used
         SimpleAnimation* mUsedTargetCursor;

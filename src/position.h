@@ -30,9 +30,6 @@
  */
 struct Position
 {
-    /**
-     * Constructor.
-     */
     Position(int x, int y):
         x(x), y(y)
     { }

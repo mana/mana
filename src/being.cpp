@@ -100,7 +100,6 @@ Being::Being(int id, int job, Map *map):
 #endif
     mHairColor(0),
     mGender(GENDER_UNSPECIFIED),
-    mPx(0), mPy(0),
     mStunMode(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mSpriteIDs(VECTOREND_SPRITE, 0),
@@ -113,6 +112,7 @@ Being::Being(int id, int job, Map *map):
 #else
     mWalkSpeed(150),
 #endif
+    mPx(0), mPy(0),
     mUsedTargetCursor(NULL)
 {
     setMap(map);
@@ -141,8 +141,12 @@ Being::~Being()
 void Being::setPosition(const Vector &pos)
 {
     mPos = pos;
-    mDest = pos;
-    mPath.clear();
+
+    // Update pixel coordinates (convert once, for performance reasons)
+    mPx = (int) pos.x;
+    mPy = (int) pos.y;
+
+    updateCoords();
 }
 
 #ifdef EATHENA_SUPPORT
@@ -432,13 +436,8 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage,
-#ifdef TMWSERV_SUPPORT
-                                        (int) mPos.x + 16,
-                                        (int) mPos.y + 16,
-#else
                                         mPx + 16, mPy + 16,
-#endif
-            color, font, true);
+                                        color, font, true);
 
     if (amount > 0)
     {
@@ -649,7 +648,7 @@ void Being::logic()
     //       the jigger caused by moving too far.
     if (length > 2.0f) {
         const float speed = mWalkSpeed / 100.0f;
-        mPos += dir / (length / speed);
+        setPosition(mPos + (dir / (length / speed)));
 
         if (mAction != WALK)
             setAction(WALK);
@@ -672,17 +671,9 @@ void Being::logic()
         setAction(STAND);
     }
 #else
-    int oldPx = mPx;
-    int oldPy = mPy;
-
     // Update pixel coordinates
-    mPx = mX * 32 + getXOffset();
-    mPy = mY * 32 + getYOffset();
-
-    if (mPx != oldPx || mPy != oldPy)
-    {
-        updateCoords();
-    }
+    setPosition(mX * 32 + getXOffset(),
+                mY * 32 + getYOffset());
 #endif
 
     if (mEmotion != 0)
@@ -714,23 +705,13 @@ void Being::logic()
     }
 
     // Update particle effects
-#ifdef TMWSERV_SUPPORT
-    mChildParticleEffects.moveTo((float) mPx + 16.0f,
-                                 (float) mPy + 32.0f);
-#else
     mChildParticleEffects.moveTo(mPos.x, mPos.y);
-#endif
 }
 
 void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
-#ifdef TMWSERV_SUPPORT
-    int px = (int) mPos.x + offsetX;
-    int py = (int) mPos.y + offsetY;
-#else
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-#endif
+    const int px = mPx + offsetX;
+    const int py = mPy + offsetY;
 
     if (mUsedTargetCursor)
         mUsedTargetCursor->draw(graphics, px, py);
@@ -755,13 +736,8 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     if (!mEmotion)
         return;
 
-#ifdef TMWSERV_SUPPORT
-    const int px = (int) mPos.x + offsetX;
-    const int py = (int) mPos.y + offsetY - 64;
-#else
     const int px = mPx - offsetX;
     const int py = mPy - offsetY - 64;
-#endif
     const int emotionIndex = mEmotion - 1;
 
     if (emotionIndex >= 0 && emotionIndex <= EmoteDB::getLast())
@@ -770,13 +746,8 @@ void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 
 void Being::drawSpeech(int offsetX, int offsetY)
 {
-#ifdef TMWSERV_SUPPORT
-    int px = (int) mPos.x - offsetX;
-    int py = (int) mPos.y - offsetY;
-#else
     const int px = mPx - offsetX;
     const int py = mPy - offsetY;
-#endif
     const int speech = (int) config.getValue("speech", NAME_IN_BUBBLE);
 
     // Draw speech above this being
@@ -814,7 +785,9 @@ void Being::drawSpeech(int offsetX, int offsetY)
         if (mText)
             delete mText;
 
-        mText = new Text(mSpeech, mPx + X_SPEECH_OFFSET, mPy - Y_SPEECH_OFFSET,
+        mText = new Text(mSpeech,
+                         mPx + X_SPEECH_OFFSET,
+                         mPy - Y_SPEECH_OFFSET,
                          gcn::Graphics::CENTER,
                          &guiPalette->getColor(Palette::PARTICLE));
     }

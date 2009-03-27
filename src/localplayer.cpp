@@ -1068,7 +1068,10 @@ void LocalPlayer::setXp(int xp)
         const std::string text = toString(xp - mXp) + " xp";
 
         // Show XP number
-        particleEngine->addTextRiseFadeOutEffect(text, mPx + 16, mPy - 16,
+        particleEngine->addTextRiseFadeOutEffect(
+                text,
+                getPixelX() + 16,
+                getPixelY() - 16,
                 &guiPalette->getColor(Palette::EXP_INFO),
                 gui->getInfoParticleFont(), true);
     }
@@ -1082,7 +1085,10 @@ void LocalPlayer::pickedUp(const std::string &item)
     if (mMap)
     {
         // Show pickup notification
-        particleEngine->addTextRiseFadeOutEffect(item, mPx + 16, mPy - 16,
+        particleEngine->addTextRiseFadeOutEffect(
+                item,
+                getPixelX() + 16,
+                getPixelY() - 16,
                 &guiPalette->getColor(Palette::PICKUP_INFO),
                 gui->getInfoParticleFont (), true);
     }

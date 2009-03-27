@@ -58,14 +58,18 @@ void Player::setName(const std::string &name)
         if (mIsGM)
         {
             mNameColor = &guiPalette->getColor(Palette::GM);
-            mName = new FlashText("(GM) " + name, mPx + NAME_X_OFFSET, mPy +
-                                  NAME_Y_OFFSET, gcn::Graphics::CENTER,
+            mName = new FlashText("(GM) " + name,
+                                  getPixelX() + NAME_X_OFFSET,
+                                  getPixelY() + NAME_Y_OFFSET,
+                                  gcn::Graphics::CENTER,
                                   &guiPalette->getColor(Palette::GM_NAME));
         }
         else
         {
             mNameColor = &guiPalette->getColor(Palette::PLAYER);
-            mName = new FlashText(name, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+            mName = new FlashText(name,
+                                  getPixelX() + NAME_X_OFFSET,
+                                  getPixelY() + NAME_Y_OFFSET,
                                   gcn::Graphics::CENTER,
                                   (this == player_node) ?
                                   &guiPalette->getColor(Palette::SELF) :
@@ -233,7 +237,8 @@ void Player::setSprite(int slot, int id, const std::string &color)
 void Player::updateCoords()
 {
     if (mName)
-        mName->adviseXY(mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET);
+        mName->adviseXY(getPixelX() + NAME_X_OFFSET,
+                        getPixelY() + NAME_Y_OFFSET);
 }
 
 #ifdef TMWSERV_SUPPORT

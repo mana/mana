@@ -119,14 +119,9 @@ void Minimap::draw(gcn::Graphics *graphics)
         if (mMapImage->getWidth() > a.width ||
             mMapImage->getHeight() > a.height)
         {
-#ifdef TMWSERV_SUPPORT
             const Vector &p = player_node->getPosition();
             mapOriginX = (int) (((a.width) / 2) - (int) (p.x * mProportion) / 32);
             mapOriginY = (int) (((a.height) / 2) - (int) (p.y * mProportion) / 32);
-#else
-            mapOriginX = (int) (((a.width) / 2) - (player_node->mX * mProportion));
-            mapOriginY = (int) (((a.height) / 2) - (player_node->mY * mProportion));
-#endif
 
             const int minOriginX = a.width - mMapImage->getWidth();
             const int minOriginY = a.height - mMapImage->getHeight();
@@ -181,7 +176,7 @@ void Minimap::draw(gcn::Graphics *graphics)
 
         graphics->fillRectangle(gcn::Rectangle(
                     (int) (pos.x * mProportion) / 32 + mapOriginX - offset,
-                    (int) (pos.x * mProportion) / 32 + mapOriginY - offset,
+                    (int) (pos.y * mProportion) / 32 + mapOriginY - offset,
                     dotSize, dotSize));
     }
 

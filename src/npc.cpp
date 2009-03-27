@@ -95,7 +95,9 @@ void NPC::setName(const std::string &name)
     const std::string displayName = name.substr(0, name.find('#', 0));
 
     delete mName;
-    mName = new Text(displayName, mPx + NAME_X_OFFSET, mPy + NAME_Y_OFFSET,
+    mName = new Text(displayName,
+                     getPixelX() + NAME_X_OFFSET,
+                     getPixelY() + NAME_Y_OFFSET,
                      gcn::Graphics::CENTER,
                      &guiPalette->getColor(Palette::NPC));
     Being::setName(displayName + " (NPC)");
@@ -142,14 +144,8 @@ void NPC::updateCoords()
 {
     if (mName)
     {
-#ifdef TMWSERV_SUPPORT
-        const Vector &pos = getPosition();
-        const int px = (int) pos.x + NAME_X_OFFSET;
-        const int py = (int) pos.y + NAME_Y_OFFSET;
-#else
-        const int px = mPx + NAME_X_OFFSET;
-        const int py = mPy + NAME_Y_OFFSET;
-#endif
+        const int px = getPixelX() + NAME_X_OFFSET;
+        const int py = getPixelY() + NAME_Y_OFFSET;
         mName->adviseXY(px, py);
     }
 }
