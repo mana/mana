@@ -89,15 +89,12 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 break;
 
             chatMsg = msg.readString(chatMsgLength);
-            if (nick != SERVER_NAME)
-                chatMsg = nick + " : " + chatMsg;
 
-            if (nick == SERVER_NAME)
-                chatWindow->chatLog(chatMsg, BY_SERVER);
-            else {
+            if (nick != SERVER_NAME)
                 if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
-                    chatWindow->chatLog(chatMsg, ACT_WHISPER);
-            }
+                    chatWindow->whisper(nick, chatMsg);
+            else
+                chatWindow->chatLog(chatMsg, BY_SERVER);
 
             break;
 

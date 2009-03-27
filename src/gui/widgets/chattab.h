@@ -90,7 +90,7 @@ class ChatTab : public Tab
     protected:
         friend class ChatWindow;
 
-        void sendChat(std::string &msg);
+        virtual void sendChat(std::string &msg);
 
         ScrollArea *mScrollArea;
         BrowserBox *mTextOutput;

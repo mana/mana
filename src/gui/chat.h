@@ -45,6 +45,7 @@ class ItemLinkHandler;
 #ifdef EATHENA_SUPPORT
 class Network;
 #endif
+class WhisperTab;
 
 enum
 {
@@ -227,8 +228,11 @@ class ChatWindow : public Window,
 
         void doPresent();
 
+        void whisper(std::string nick, std::string mes, bool own = false);
+
     protected:
         friend class ChatTab;
+        friend class WhisperTab;
 
         void adjustTabSize();
 
@@ -249,10 +253,12 @@ class ChatWindow : public Window,
 
         /** Tabbed area for holding each channel. */
         TabbedArea *mChatTabs;
+        Tab *currentTab;
 
         typedef std::map<const std::string, ChatTab*> TabMap;
         /** Map each tab to its browser and scroll area. */
         TabMap mTabs;
+        TabMap mWhispers;
 
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;

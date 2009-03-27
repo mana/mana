@@ -29,6 +29,7 @@
 #include "sdlinput.h"
 
 #include "widgets/tabbedarea.h"
+#include "widgets/whispertab.h"
 
 #include "../beingmanager.h"
 #include "../configuration.h"
@@ -96,6 +97,7 @@ ChatWindow::~ChatWindow()
     delete mRecorder;
 #endif
     delete_all(mTabs);
+    delete_all(mWhispers);
     delete mItemLinkHandler;
 }
 
@@ -137,6 +139,12 @@ void ChatWindow::widgetResized(const gcn::Event &event)
 void ChatWindow::logic()
 {
     Window::logic();
+
+    Tab *tab = getFocused();
+    if (tab != currentTab) {
+        currentTab == tab;
+        adjustTabSize();
+    }
 }
 
 void ChatWindow::chatLog(std::string line, int own, std::string channelName,
@@ -393,4 +401,34 @@ bool ChatWindow::tabExists(const std::string &tabName)
 void ChatWindow::setRecordingFile(const std::string &msg)
 {
     mRecorder->setRecordingFile(msg);
+}
+
+void ChatWindow::whisper(std::string nick, std::string mes, bool own)
+{
+    if (mes.length() == 0) return;
+    std::string playerName = player_node->getName();
+    std::string tempNick = nick;
+
+    toLower(playerName);
+    toLower(tempNick);
+
+    if (tempNick.compare(playerName) == 0)
+        if (own)
+            ;
+        else
+            return;
+
+    ChatTab *tab = mWhispers[tempNick];
+
+    if (!tab)
+    {
+        tab = new WhisperTab(tempNick);
+        mWhispers[tempNick] = tab;
+        mChatTabs->addTab(tab, tab->mScrollArea);
+    }
+
+    if (own)
+        tab->chatSend(mes);
+    else
+        tab->chatLog(nick, mes);
 }

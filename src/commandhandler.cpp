@@ -383,15 +383,7 @@ void CommandHandler::handleMsg(const std::string &args)
         if (tempNick.compare(playerName) == 0 || args.empty())
             return;
 
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_CHAT_WHISPER);
-        outMsg.writeInt16(msg.length() + 28);
-        outMsg.writeString(recvnick, 24);
-        outMsg.writeString(msg, msg.length());
-
-        chatWindow->chatLog(strprintf(_("Whispering to %s: %s"),
-                            recvnick.c_str(), msg.c_str()),
-                            BY_PLAYER);
+        chatWindow->whisper(recvnick, msg, true);
     }
     else
         chatWindow->chatLog("Cannont send empty whispers!");

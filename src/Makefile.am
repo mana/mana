@@ -25,6 +25,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/widgets/tabbedarea.h \
 	      gui/widgets/textpreview.cpp \
 	      gui/widgets/textpreview.h \
+	      gui/widgets/whispertab.cpp \
+	      gui/widgets/whispertab.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/button.cpp \
