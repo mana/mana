@@ -255,12 +255,12 @@ void createGuiWindows(Network *network)
     npcIntegerDialog = new NpcIntegerDialog;
     npcListDialog = new NpcListDialog;
     npcStringDialog = new NpcStringDialog;
-    npcPostDialog = new NpcPostDialog();
-    magicDialog = new MagicDialog();
+    npcPostDialog = new NpcPostDialog;
+    magicDialog = new MagicDialog;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    buddyWindow = new BuddyWindow();
-    guildWindow = new GuildWindow();
-    partyWindow = new PartyWindow();
+    buddyWindow = new BuddyWindow;
+    guildWindow = new GuildWindow;
+    partyWindow = new PartyWindow;
 #else
     chatWindow = new ChatWindow(network);
     buyDialog = new BuyDialog(network);
@@ -369,10 +369,10 @@ void destroyGuiWindows()
 
 #ifdef TMWSERV_SUPPORT
 Game::Game():
-    mBeingHandler(new BeingHandler()),
-    mGuildHandler(new GuildHandler()),
-    mPartyHandler(new PartyHandler()),
-    mEffectHandler(new EffectHandler()),
+    mBeingHandler(new BeingHandler),
+    mGuildHandler(new GuildHandler),
+    mPartyHandler(new PartyHandler),
+    mEffectHandler(new EffectHandler),
 #else
 Game::Game(Network *network):
     mNetwork(network),
@@ -397,7 +397,7 @@ Game::Game(Network *network):
     engine = new Engine;
 
     beingManager = new BeingManager;
-    commandHandler = new CommandHandler();
+    commandHandler = new CommandHandler;
 #else
     createGuiWindows(network);
     engine = new Engine(network);
@@ -407,7 +407,7 @@ Game::Game(Network *network):
 #endif
 
     floorItemManager = new FloorItemManager;
-    channelManager = new ChannelManager();
+    channelManager = new ChannelManager;
     effectManager = new EffectManager;
 
     particleEngine = new Particle(NULL);

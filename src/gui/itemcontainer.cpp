@@ -61,7 +61,7 @@ ItemContainer::ItemContainer(Inventory *inventory,
     mSwapItems(false),
     mDescItems(false)
 {
-    mItemPopup = new ItemPopup();
+    mItemPopup = new ItemPopup;
     setFocusable(true);
 
     ResourceManager *resman = ResourceManager::getInstance();

@@ -102,7 +102,7 @@ SkillDialog::SkillDialog():
     setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
 
-    TabbedArea *panel = new TabbedArea();
+    TabbedArea *panel = new TabbedArea;
     panel->setDimension(gcn::Rectangle(5, 5, 270, 420));
 
     Skill_Tab *tab;

@@ -64,7 +64,7 @@ GuildWindow::GuildWindow():
     mGuildButton[1]->setEnabled(false);
     mGuildButton[2]->setEnabled(false);
 
-    mGuildTabs = new TabbedArea();
+    mGuildTabs = new TabbedArea;
 
     place(0, 0, mGuildButton[0]);
     place(1, 0, mGuildButton[1]);
@@ -169,7 +169,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
 void GuildWindow::newGuildTab(const std::string &guildName)
 {
     // Create new tab
-    GuildListBox *list = new GuildListBox();
+    GuildListBox *list = new GuildListBox;
     list->setListModel(player_node->getGuild(guildName));
     ScrollArea *sa = new ScrollArea(list);
     sa->setDimension(gcn::Rectangle(5, 5, 135, 250));

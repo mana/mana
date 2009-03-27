@@ -62,7 +62,7 @@ ChatWindow::ChatWindow(Network * network):
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
-    mChatTabs = new TabbedArea();
+    mChatTabs = new TabbedArea;
 
     add(mChatTabs);
     add(mChatInput);

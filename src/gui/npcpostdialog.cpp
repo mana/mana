@@ -41,7 +41,7 @@ NpcPostDialog::NpcPostDialog():
     // create text field for receiver
     gcn::Label *senderText = new gcn::Label("To:");
     senderText->setPosition(5, 5);
-    mSender = new TextField();
+    mSender = new TextField;
     mSender->setPosition(senderText->getWidth() + 5, 5);
     mSender->setWidth(65);
 
@@ -54,7 +54,7 @@ NpcPostDialog::NpcPostDialog():
                               sendButton->getY());
 
     // create textfield for letter
-    mText = new TextBox();
+    mText = new TextBox;
     mText->setHeight(400 - (mSender->getHeight() + sendButton->getHeight()));
     mText->setEditable(true);
 

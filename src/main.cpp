@@ -1048,7 +1048,7 @@ int main(int argc, char *argv[])
 
     initHomeDir();
     // Configure logger
-    logger = new Logger();
+    logger = new Logger;
     logger->setLogFile(homeDir + std::string("/tmw.log"));
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
@@ -1088,7 +1088,7 @@ int main(int argc, char *argv[])
     top->add(versionLabel, 25, 2);
 #endif
     ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
-    gcn::Label *progressLabel = new Label();
+    gcn::Label *progressLabel = new Label;
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
