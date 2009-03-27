@@ -43,9 +43,6 @@
 #include "log.h"
 #include "npc.h"
 #include "particle.h"
-#ifdef EATHENA_SUPPORT
-#include "party.h"
-#endif
 #include "player_relations.h"
 
 #include "gui/widgets/chattab.h"
@@ -110,6 +107,7 @@
 #include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
 #include "net/ea/npchandler.h"
+#include "net/ea/party.h"
 #include "net/ea/playerhandler.h"
 #include "net/ea/tradehandler.h"
 #include "net/ea/protocol.h"
@@ -450,6 +448,7 @@ Game::Game(Network *network):
     msg.writeInt32(tick_time);
 
     engine->changeMap(map_path);
+    MessageOut outMsg(CMSG_MAP_LOADED);
 #endif
 
     setupWindow->setInGame(true);

@@ -33,11 +33,6 @@
 #include "gui/minimap.h"
 #include "gui/viewport.h"
 
-#ifdef EATHENA_SUPPORT
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
-#endif
-
 #include "resources/mapreader.h"
 #include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
@@ -54,7 +49,7 @@ Engine::~Engine()
     delete mCurrentMap;
 }
 
-void Engine::changeMap(const std::string &mapPath)
+bool Engine::changeMap(const std::string &mapPath)
 {
     // Clean up floor items, beings and particles
     floorItemManager->clear();
@@ -71,11 +66,7 @@ void Engine::changeMap(const std::string &mapPath)
     mMapName = mapPath;
 
     // Store full map path in global var
-#ifdef TMWSERV_SUPPORT
     map_path = "maps/" + mapPath + ".tmx";
-#else
-    map_path = "maps/" + mapPath.substr(0, mapPath.rfind(".")) + ".tmx";
-#endif
     ResourceManager *resman = ResourceManager::getInstance();
     if (!resman->exists(map_path))
         map_path += ".gz";
@@ -143,10 +134,7 @@ void Engine::changeMap(const std::string &mapPath)
 
     mCurrentMap = newMap;
 
-#ifdef EATHENA_SUPPORT
-    // Send "map loaded"
-    MessageOut outMsg(CMSG_MAP_LOADED);
-#endif
+    return true;
 }
 
 void Engine::logic()

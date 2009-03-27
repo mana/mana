@@ -34,8 +34,8 @@
 #include "net/tmwserv/chatserver/chatserver.h"
 #include "net/tmwserv/gameserver/player.h"
 #else
-#include "party.h"
 #include "net/messageout.h"
+#include "net/ea/party.h"
 #include "net/ea/protocol.h"
 #endif
 

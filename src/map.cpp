@@ -141,11 +141,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
         // tiles have been drawn
         if (mIsFringeLayer)
         {
-#ifdef TMWSERV_SUPPORT
             while (si != sprites.end() && (*si)->getPixelY() <= y * 32)
-#else
-            while (si != sprites.end() && (*si)->getPixelY() <= y * 32)
-#endif
             {
                 (*si)->draw(graphics, -scrollX, -scrollY);
                 si++;

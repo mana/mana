@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "engine.h"
 #include "localplayer.h"
@@ -193,7 +194,9 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 nearby = (engine->getCurrentMapName() == mapPath);
 
                 // Switch the actual map, deleting the previous one if necessary
-                engine->changeMap(mapPath);
+                mapPath = mapPath.substr(0, mapPath.rfind("."));
+                if (engine->changeMap(mapPath))
+                    MessageOut outMsg(CMSG_MAP_LOADED);
 
                 float scrollOffsetX = 0.0f;
                 float scrollOffsetY = 0.0f;

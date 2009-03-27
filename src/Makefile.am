@@ -461,6 +461,8 @@ tmw_SOURCES += \
 	      net/ea/network.h \
 	      net/ea/npchandler.cpp \
 	      net/ea/npchandler.h \
+              net/ea/party.cpp \
+              net/ea/party.h \
 	      net/ea/partyhandler.cpp \
 	      net/ea/partyhandler.h \
 	      net/ea/playerhandler.cpp \
@@ -470,9 +472,7 @@ tmw_SOURCES += \
 	      net/ea/skillhandler.cpp \
 	      net/ea/skillhandler.h \
 	      net/ea/tradehandler.cpp \
-	      net/ea/tradehandler.h \
-	      party.cpp \
-	      party.h
+              net/ea/tradehandler.h
 endif
 
 # set the include path found by configure

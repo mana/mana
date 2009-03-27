@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,52 +19,31 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _ENGINE_H
-#define _ENGINE_H
+#ifndef CHANNELTAB_H
+#define CHANNELTAB_H
 
-#include <string>
-
-class Map;
+#include "gui/widgets/chattab.h"
 
 /**
- * Game engine. Actually hardly does anything anymore except keeping track of
- * the current map.
+ * A tab for a chat channel.
  */
-class Engine
+class PartyTab : public ChatTab
 {
     public:
         /**
          * Constructor.
          */
-        Engine();
+        PartyTab();
 
         /**
          * Destructor.
          */
-        ~Engine();
+        ~PartyTab();
 
-        /**
-         * Returns the currently active map.
-         */
-        Map *getCurrentMap() { return mCurrentMap; }
+    protected:
+        void handleInput(const std::string &msg);
 
-        const std::string &getCurrentMapName() { return mMapName; }
-
-        /**
-         * Sets the currently active map.
-         */
-        bool changeMap(const std::string &mapName);
-
-        /**
-         * Performs engine logic. This method is called 100 times per second.
-         */
-        void logic();
-
-    private:
-        Map *mCurrentMap;
-        std::string mMapName;
+        void handleCommand(std::string msg);
 };
 
-extern Engine *engine;
-
-#endif
+#endif // CHANNELTAB_H

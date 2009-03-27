@@ -28,7 +28,6 @@
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/chatserver/chatserver.h"
 #else
-#include "party.h"
 #include "net/messageout.h"
 #include "net/ea/protocol.h"
 #endif
