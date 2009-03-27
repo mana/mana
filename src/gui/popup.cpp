@@ -22,18 +22,15 @@
 
 #include <guichan/exception.hpp>
 
-#include "gui.h"
 #include "skin.h"
 #include "popup.h"
 #include "windowcontainer.h"
 
-#include "../configlistener.h"
 #include "../configuration.h"
+#include "../graphics.h"
 #include "../log.h"
 
 #include "../resources/image.h"
-
-int Popup::instances = 0;
 
 Popup::Popup(const std::string& name, const std::string& skin):
     mPopupName(name),
@@ -49,8 +46,6 @@ Popup::Popup(const std::string& name, const std::string& skin):
         throw GCN_EXCEPTION("Popup::Popup(): no windowContainer set");
 
     setPadding(3);
-
-    instances++;
 
     // Loads the skin
     mSkin = skinLoader->load(skin, mDefaultSkinPath);
@@ -74,8 +69,6 @@ Popup::~Popup()
         remove(w);
         delete(w);
     }
-
-    instances--;
 
     mSkin->instances--;
 }

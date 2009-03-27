@@ -25,7 +25,6 @@
 
 #include <guichan/widgets/container.hpp>
 
-#include "../graphics.h"
 #include "../guichanfwd.h"
 
 class Skin;
@@ -179,8 +178,6 @@ class Popup : public gcn::Container
         int mMaxWidth;                /**< Maximum popup width */
         int mMaxHeight;               /**< Maximum popup height */
         int mPadding;                 /**< Holds the padding of the popup. */
-
-        static int instances;         /**< Number of popup instances */
 
         Skin* mSkin;                  /**< Skin in use by this popup */
 };
