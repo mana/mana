@@ -30,9 +30,10 @@
 #include "localplayer.h"
 #include "player_relations.h"
 
-#include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/trade.h"
+
+#include "gui/widgets/chattab.h"
 
 #include "utils/gettext.h"
 

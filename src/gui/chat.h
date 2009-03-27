@@ -22,6 +22,8 @@
 #ifndef CHAT_H
 #define CHAT_H
 
+#include "window.h"
+
 #include <list>
 #include <string>
 #include <map>
@@ -30,10 +32,6 @@
 #include <guichan/keylistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
-
-#include "widgets/chattab.h"
-
-#include "window.h"
 
 class BrowserBox;
 class Channel;
@@ -45,15 +43,8 @@ class ItemLinkHandler;
 #ifdef EATHENA_SUPPORT
 class Network;
 #endif
+class Tab;
 class WhisperTab;
-
-/**
- * gets in between usernick and message text depending on
- * message type
- */
-#define CAT_NORMAL        ": "
-#define CAT_IS            ""
-#define CAT_WHISPER       " whispers: "
 
 #define DEFAULT_CHAT_WINDOW_SCROLL 7 // 1 means `1/8th of the window size'.
 
@@ -142,7 +133,7 @@ class ChatWindow : public Window,
          * @param msg  The message text which is to be sent.
          *
          */
-        void chatSend(std::string &msg);
+        void chatInput(std::string &msg);
 
         /** Called when key is pressed */
         void keyPressed(gcn::KeyEvent &event);

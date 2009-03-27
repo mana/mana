@@ -19,13 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "partywindow.h"
-#include "chat.h"
+#include "gui/partywindow.h"
 
-#include "widgets/avatar.h"
+#include "gui/widgets/avatar.h"
+#include "gui/widgets/chattab.h"
 
-#include "../utils/gettext.h"
-#include "../net/tmwserv/chatserver/party.h"
+#include "net/tmwserv/chatserver/party.h"
+
+#include "utils/gettext.h"
 
 PartyWindow::PartyWindow() : Window(_("Party"))
 {

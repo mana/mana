@@ -24,7 +24,7 @@
 #include <guichan/font.hpp>
 
 #include "button.h"
-#include "chat.h"
+#include "widgets/chattab.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
 #include "itemcontainer.h"

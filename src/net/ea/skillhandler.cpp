@@ -27,8 +27,9 @@
 
 #include "log.h"
 
-#include "gui/chat.h"
 #include "gui/skill.h"
+
+#include "gui/widgets/chattab.h"
 
 #include "utils/gettext.h"
 

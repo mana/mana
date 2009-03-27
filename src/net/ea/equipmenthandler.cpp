@@ -31,7 +31,7 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/chat.h"
+#include "gui/widgets/chattab.h"
 
 #include "utils/gettext.h"
 

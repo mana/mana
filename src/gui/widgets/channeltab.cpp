@@ -19,39 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "channeltab.h"
 
-#include "../browserbox.h"
-#include "../chatinput.h"
-#include "../itemlinkhandler.h"
-#include "../recorder.h"
-#include "../scrollarea.h"
-
-#include "../../beingmanager.h"
-#include "../../commandhandler.h"
-#include "../../channel.h"
-#include "../../configuration.h"
-#include "../../game.h"
-#include "../../localplayer.h"
+#include "channel.h"
 
 #ifdef TMWSERV_SUPPORT
-#include "../../net/tmwserv/chatserver/chatserver.h"
-#include "../../net/tmwserv/gameserver/player.h"
+#include "net/tmwserv/chatserver/chatserver.h"
+#include "net/tmwserv/gameserver/player.h"
 #else
-#include "../../party.h"
-#include "../../net/messageout.h"
-#include "../../net/ea/protocol.h"
+#include "net/messageout.h"
+#include "net/ea/protocol.h"
 #endif
-
-#include "../../resources/iteminfo.h"
-#include "../../resources/itemdb.h"
-
-#include "../../utils/dtor.h"
-#include "../../utils/gettext.h"
-#include "../../utils/strprintf.h"
-#include "../../utils/stringutils.h"
 
 ChannelTab::ChannelTab(Channel *channel) : ChatTab(channel->getName()),
             mChannel(channel)
@@ -63,7 +41,7 @@ ChannelTab::~ChannelTab()
 {
 }
 
-void ChannelTab::sendChat(const std::string &msg) {
+void ChannelTab::handleInput(const std::string &msg) {
 #ifdef TMSERV_SUPPORT
     Net::ChatServer::chat(getId(), msg);
 #endif

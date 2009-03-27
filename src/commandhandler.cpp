@@ -339,12 +339,6 @@ void CommandHandler::handleWho()
 
 void CommandHandler::handleMsg(const std::string &args)
 {
-#ifdef TMWSERV_SUPPORT
-    std::string::size_type pos = args.find(' ');
-    std::string recipient(args, 0, pos);
-    std::string text(args, pos+1);
-    Net::ChatServer::privMsg(recipient, text);
-#else
     std::string recvnick = "";
     std::string msg = "";
 
@@ -391,7 +385,6 @@ void CommandHandler::handleMsg(const std::string &args)
     }
     else
         localChatTab->chatLog("Cannont send empty whispers!");
-#endif
 }
 
 void CommandHandler::handleClear()
@@ -547,10 +540,7 @@ void CommandHandler::handleParty(const std::string &args)
 void CommandHandler::handleMe(const std::string &args)
 {
     std::string action = strprintf("*%s*", args.c_str());
-    chatWindow->chatSend(action);
-    //std::stringstream actionStr;
-    //actionStr << "*" << args << "*";
-    //chatWindow->chatSend(actionStr.str());
+    chatWindow->chatInput(action);
 }
 
 void CommandHandler::handleRecord(const std::string &args)

@@ -26,8 +26,9 @@
 
 #include "net/messagein.h"
 
-#include "gui/chat.h"
 #include "gui/partywindow.h"
+
+#include "gui/widgets/chattab.h"
 
 #include "log.h"
 #include "localplayer.h"

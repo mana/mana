@@ -32,7 +32,7 @@
 
 #include "log.h"
 
-#include "gui/chat.h"
+#include "gui/widgets/chattab.h"
 
 Logger::Logger():
     mLogToStandardOut(false),

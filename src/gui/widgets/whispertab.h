@@ -46,9 +46,9 @@ class WhisperTab : public ChatTab
 
         ~WhisperTab();
 
-        void sendChat(const std::string &msg);
+        void handleInput(const std::string &msg);
 
-        void handleCommand(const std::string msg);
+        void handleCommand(std::string msg);
 
     private:
         std::string mNick;

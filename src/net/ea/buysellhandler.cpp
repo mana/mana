@@ -33,12 +33,11 @@
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
-#include "gui/chat.h"
 #include "gui/sell.h"
 
-#include "utils/gettext.h"
+#include "gui/widgets/chattab.h"
 
-#include <SDL_types.h>
+#include "utils/gettext.h"
 
 BuySellHandler::BuySellHandler()
 {

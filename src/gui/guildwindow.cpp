@@ -20,26 +20,26 @@
  *  $$
  */
 
-#include "guildwindow.h"
+#include "gui/guildwindow.h"
 
-#include "button.h"
-#include "chat.h"
-#include "confirm_dialog.h"
-#include "guildlistbox.h"
-#include "scrollarea.h"
-#include "textdialog.h"
-#include "windowcontainer.h"
+#include "gui/button.h"
+#include "gui/confirm_dialog.h"
+#include "gui/guildlistbox.h"
+#include "gui/scrollarea.h"
+#include "gui/textdialog.h"
+#include "gui/windowcontainer.h"
 
-#include "widgets/layout.h"
-#include "widgets/tabbedarea.h"
+#include "gui/widgets/chattab.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/tabbedarea.h"
 
-#include "../guild.h"
-#include "../log.h"
-#include "../localplayer.h"
+#include "guild.h"
+#include "log.h"
+#include "localplayer.h"
 
-#include "../net/tmwserv/chatserver/guild.h"
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
+#include "net/tmwserv/chatserver/guild.h"
+#include "utils/dtor.h"
+#include "utils/gettext.h"
 
 #include <algorithm>
 

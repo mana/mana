@@ -27,6 +27,7 @@
 #include "gui/scrollarea.h"
 #include "gui/sdlinput.h"
 
+#include "gui/widgets/chattab.h"
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/whispertab.h"
 
@@ -82,7 +83,7 @@ ChatWindow::ChatWindow(Network * network):
     // run the @assert command for the player again. Convenience for GMs.
     if (config.getValue(player_node->getName() + "GMassert", 0)) {
         std::string cmd = "@assert";
-        chatSend(cmd);
+        chatInput(cmd);
     }
 #endif
     mRecorder = new Recorder(this);
@@ -180,7 +181,7 @@ void ChatWindow::action(const gcn::ActionEvent &event)
             mCurHist = mHistory.end();
 
             // Send the message to the server
-            chatSend(message);
+            chatInput(message);
 
             // Clear the text from the chat input
             mChatInput->setText("");
@@ -258,10 +259,10 @@ void ChatWindow::removeWhisper(std::string nick)
     mWhispers.erase(nick);
 }
 
-void ChatWindow::chatSend(std::string &msg)
+void ChatWindow::chatInput(std::string &msg)
 {
     ChatTab *tab = getFocused();
-    tab->chatSend(msg);
+    tab->chatInput(msg);
 }
 
 void ChatWindow::doPresent()
@@ -377,6 +378,7 @@ void ChatWindow::setRecordingFile(const std::string &msg)
 void ChatWindow::whisper(std::string nick, std::string mes, bool own)
 {
     if (mes.length() == 0) return;
+
     std::string playerName = player_node->getName();
     std::string tempNick = nick;
 
@@ -395,7 +397,7 @@ void ChatWindow::whisper(std::string nick, std::string mes, bool own)
     }
 
     if (own)
-        tab->chatSend(mes);
+        tab->chatInput(mes);
     else
         tab->chatLog(nick, mes);
 }

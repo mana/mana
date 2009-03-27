@@ -48,7 +48,7 @@ class ChannelTab : public ChatTab
          */
         ~ChannelTab();
 
-        void sendChat(const std::string &msg);
+        void handleInput(const std::string &msg);
 
     private:
         Channel *mChannel;
