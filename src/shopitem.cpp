@@ -25,7 +25,8 @@
 #include "utils/stringutils.h"
 
 ShopItem::ShopItem (int inventoryIndex, int id, int quantity, int price) :
-        Item (id, 0), mPrice(price)
+    Item (id, 0),
+    mPrice(price)
 {
     mDisplayName = getInfo().getName() + " (" + toString(mPrice) + " GP)";
     setInvIndex(inventoryIndex);

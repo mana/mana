@@ -31,6 +31,11 @@ class AmbientOverlay
     public:
         /**
          * Constructor.
+         *
+         * @param img the image this overlay displays
+         * @param parallax scroll factor based on camera position
+         * @param speedX scrolling speed in x-direction
+         * @param speedY scrolling speed in y-direction
          */
         AmbientOverlay(Image *img, float parallax,
                        float speedX, float speedY);
@@ -49,8 +54,8 @@ class AmbientOverlay
         float mParallax;
         float mPosX;              /**< Current layer X position. */
         float mPosY;              /**< Current layer Y position. */
-        float mSpeedX;            /**< Scroll speed in X direction. */
-        float mSpeedY;            /**< Scroll speed in Y direction. */
+        float mSpeedX;            /**< Scrolling speed in X direction. */
+        float mSpeedY;            /**< Scrolling speed in Y direction. */
 };
 
 #endif

@@ -217,12 +217,12 @@ void ScrollArea::draw(gcn::Graphics *graphics)
 
 void ScrollArea::drawFrame(gcn::Graphics *graphics)
 {
-    int bs = getFrameSize();
-    int w = getWidth() + bs * 2;
-    int h = getHeight() + bs * 2;
-
     if (mOpaque)
     {
+        const int bs = getFrameSize();
+        const int w = getWidth() + bs * 2;
+        const int h = getHeight() + bs * 2;
+
         static_cast<Graphics*>(graphics)->
             drawImageRect(0, 0, w, h, background);
     }
@@ -232,14 +232,7 @@ void ScrollArea::setOpaque(bool opaque)
 {
     mOpaque = opaque;
 
-    if (mOpaque)
-    {
-        setFrameSize(2);
-    }
-    else
-    {
-        setFrameSize(0);
-    }
+    setFrameSize(mOpaque ? 2 : 0);
 }
 
 void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)

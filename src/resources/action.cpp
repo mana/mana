@@ -41,9 +41,7 @@ Animation *Action::getAnimation(int direction) const
     // When the given direction is not available, return the first one.
     // (either DEFAULT, or more usually DOWN).
     if (i == mAnimations.end())
-    {
         i = mAnimations.begin();
-    }
 
     return (i == mAnimations.end()) ? NULL : i->second;
 }
