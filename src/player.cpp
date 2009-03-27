@@ -37,9 +37,6 @@
 
 #include "utils/strprintf.h"
 
-static const int NAME_X_OFFSET = 15;
-static const int NAME_Y_OFFSET = 30;
-
 Player::Player(int id, int job, Map *map):
     Being(id, job, map)
 {
@@ -59,8 +56,8 @@ void Player::setName(const std::string &name)
         {
             mNameColor = &guiPalette->getColor(Palette::GM);
             mName = new FlashText("(GM) " + name,
-                                  getPixelX() + NAME_X_OFFSET,
-                                  getPixelY() + NAME_Y_OFFSET,
+                                  getPixelX(),
+                                  getPixelY(),
                                   gcn::Graphics::CENTER,
                                   &guiPalette->getColor(Palette::GM_NAME));
         }
@@ -68,8 +65,8 @@ void Player::setName(const std::string &name)
         {
             mNameColor = &guiPalette->getColor(Palette::PLAYER);
             mName = new FlashText(name,
-                                  getPixelX() + NAME_X_OFFSET,
-                                  getPixelY() + NAME_Y_OFFSET,
+                                  getPixelX(),
+                                  getPixelY(),
                                   gcn::Graphics::CENTER,
                                   (this == player_node) ?
                                   &guiPalette->getColor(Palette::SELF) :
@@ -237,8 +234,7 @@ void Player::setSprite(int slot, int id, const std::string &color)
 void Player::updateCoords()
 {
     if (mName)
-        mName->adviseXY(getPixelX() + NAME_X_OFFSET,
-                        getPixelY() + NAME_Y_OFFSET);
+        mName->adviseXY(getPixelX(), getPixelY());
 }
 
 #ifdef TMWSERV_SUPPORT

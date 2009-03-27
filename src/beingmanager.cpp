@@ -188,7 +188,7 @@ Being *BeingManager::findBeingByPixel(int x, int y)
     return NULL;
 }
 
-Being *BeingManager::findBeingByName(std::string name, Being::Type type)
+Being *BeingManager::findBeingByName(const std::string &name, Being::Type type)
 {
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
@@ -321,11 +321,12 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
     return (maxdist >= dist) ? closestBeing : NULL;
 }
 
-bool BeingManager::hasBeing(Being *being)
+bool BeingManager::hasBeing(Being *being) const
 {
-    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    for (Beings::const_iterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
-        if (being == *i) return true;
+        if (being == *i)
+            return true;
     }
 
     return false;

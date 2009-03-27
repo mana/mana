@@ -109,6 +109,11 @@ Text::~Text()
     }
 }
 
+void Text::setColor(const gcn::Color *color)
+{
+    mColor = color;
+}
+
 void Text::adviseXY(int x, int y)
 {
     textManager->moveText(this, x - mXOffset, y);

@@ -92,7 +92,8 @@ class BeingManager
        /**
         * Finds a being by name and (optionally) by type.
         */
-        Being *findBeingByName(std::string name, Being::Type type = Being::UNKNOWN);
+        Being *findBeingByName(const std::string &name,
+                               Being::Type type = Being::UNKNOWN);
 
        /**
         * Returns a being nearest to another being.
@@ -106,7 +107,7 @@ class BeingManager
         /**
          * Returns the whole list of beings
          */
-        Beings& getAll();
+        Beings &getAll();
 
         /**
          * Returns true if the given being is in the manager's list, false
@@ -114,7 +115,7 @@ class BeingManager
          *
          * \param being the being to search for
          */
-        bool hasBeing(Being *being);
+        bool hasBeing(Being *being) const;
 
         /**
          * Logic.

@@ -289,7 +289,7 @@ void Viewport::drawPath(Graphics *graphics, const Path &path)
 void Viewport::mousePressed(gcn::MouseEvent &event)
 {
     // Check if we are alive and kickin'
-    if (!mMap || !player_node || player_node->mAction == Being::DEAD)
+    if (!mMap || !player_node || !player_node->isAlive())
         return;
 
     // Check if we are busy

@@ -71,9 +71,6 @@ const short walkingKeyboardDelay = 100;
 
 LocalPlayer *player_node = NULL;
 
-static const int NAME_X_OFFSET = 15;
-static const int NAME_Y_OFFSET = 30;
-
 #ifdef TMWSERV_SUPPORT
 LocalPlayer::LocalPlayer():
     Player(65535, 0, NULL),
@@ -86,7 +83,7 @@ LocalPlayer::LocalPlayer():
     mCorrectionPoints(-1),
     mLevelProgress(0),
 #else
-LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
+LocalPlayer::LocalPlayer(int id, int job, Map *map):
     Player(id, job, map),
     mCharId(0),
     mJobXp(0),

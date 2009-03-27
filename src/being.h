@@ -163,12 +163,13 @@ class Being : public Sprite
 
         /**
          * Constructor.
+         *
+         * @param id   a unique being id
+         * @param job  partly determines the type of the being
+         * @param map  the map the being is on
          */
         Being(int id, int job, Map *map);
 
-        /**
-         * Destructor.
-         */
         virtual ~Being();
 
         /**
@@ -276,9 +277,6 @@ class Being : public Sprite
          */
         virtual void setGender(Gender gender) { mGender = gender; }
 
-        /**
-         * Gets the gender of this being.
-         */
         Gender getGender() const { return mGender; }
 
 #ifdef EATHENA_SUPPORT
@@ -290,9 +288,6 @@ class Being : public Sprite
 
         /**
          * Triggers whether or not to show the name as a GM name.
-         * NOTE: This doesn't mean that just anyone can use this.
-         * If the server doesn't acknowlege you, you won't be shown
-         * as a GM on other people's clients.
          */
         virtual void setGM() { mIsGM = true; }
 
@@ -317,25 +312,18 @@ class Being : public Sprite
         virtual Type getType() const;
 
         /**
-         * Gets the walk speed.
-         * @see setWalkSpeed(int)
-         */
-        int getWalkSpeed() const { return mWalkSpeed; }
-
-        /**
          * Sets the walk speed (in pixels per second).
          */
         void setWalkSpeed(int speed) { mWalkSpeed = speed; }
 
-        /**
-         * Gets the being id.
-         */
-        int getId() const { return mId; }
+        int getWalkSpeed() const { return mWalkSpeed; }
 
         /**
          * Sets the sprite id.
          */
         void setId(int id) { mId = id; }
+
+        int getId() const { return mId; }
 
         /**
          * Sets the map the being is on
@@ -348,9 +336,9 @@ class Being : public Sprite
         virtual void setAction(Action action, int attackType = 0);
 
         /**
-         * Gets the current action.
+         * Returns whether this being is still alive.
          */
-        bool isAlive() { return mAction != DEAD; }
+        bool isAlive() const { return mAction != DEAD; }
 
         /**
          * Returns the current direction.
@@ -364,9 +352,9 @@ class Being : public Sprite
 
 #ifdef EATHENA_SUPPORT
         /**
-         * Gets the current action.
+         * Returns the walk time.
          */
-        int getWalkTime() { return mWalkTime; }
+        int getWalkTime() const { return mWalkTime; }
 #endif
 
         /**
@@ -515,17 +503,14 @@ class Being : public Sprite
             internalTriggerEffect(effectId, false, true);
         }
 
-        // Target cursor being used by the being
-        Image *mTargetCursor;
-
         static int getHairColorCount();
 
         static int getHairStyleCount();
 
         static std::string getHairColor(int index);
 
-        virtual AnimatedSprite* getSprite(int index) const
-            { return mSprites[index]; }
+        virtual AnimatedSprite *getSprite(int index) const
+        { return mSprites[index]; }
 
         static void load();
 
@@ -556,7 +541,7 @@ class Being : public Sprite
         void internalTriggerEffect(int effectId, bool sfx, bool gfx);
 
         /**
-         * Notify self that the stun mode has been updated.  Invoked by
+         * Notify self that the stun mode has been updated. Invoked by
          * setStunMode if something changed.
          */
         virtual void updateStunMode(int oldMode, int newMode);
@@ -623,7 +608,7 @@ class Being : public Sprite
         /** Reset particle status effects on next redraw? */
         bool mMustResetParticles;
 
-        // Speech Bubble components
+        /** Speech Bubble components */
         SpeechBubble *mSpeechBubble;
 
         int mWalkSpeed;                 /**< Walking speed (pixels/sec) */
@@ -632,7 +617,7 @@ class Being : public Sprite
         Vector mDest;
         int mPx, mPy;                   /**< Position in pixels */
 
-        // Target cursor being used
+        /** Target cursor being used */
         SimpleAnimation* mUsedTargetCursor;
 };
 

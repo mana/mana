@@ -34,9 +34,9 @@ class NPC : public Player
 {
     public:
 #ifdef TMWSERV_SUPPORT
-        NPC(Uint16 id, int sprite, Map *map);
+        NPC(int id, int sprite, Map *map);
 #else
-        NPC(int id, Uint16 job, Map *map, Network *network);
+        NPC(int id, int job, Map *map, Network *network);
 #endif
 
         ~NPC();

@@ -47,6 +47,11 @@ class Text
          */
         virtual ~Text();
 
+        void setColor(const gcn::Color *color);
+
+        int getWidth() const { return mWidth; }
+        int getHeight() const { return mHeight; }
+
         /**
          * Allows the originator of the text to specify the ideal coordinates.
          */

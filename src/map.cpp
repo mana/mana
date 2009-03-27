@@ -144,7 +144,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
 #ifdef TMWSERV_SUPPORT
             while (si != sprites.end() && (*si)->getPixelY() <= y * 32)
 #else
-            while (si != sprites.end() && (*si)->getPixelY() <= y * 32 - 32)
+            while (si != sprites.end() && (*si)->getPixelY() <= y * 32)
 #endif
             {
                 (*si)->draw(graphics, -scrollX, -scrollY);

@@ -40,14 +40,11 @@
 bool NPC::isTalking = false;
 int current_npc = 0;
 
-static const int NAME_X_OFFSET = 15;
-static const int NAME_Y_OFFSET = 30;
-
 #ifdef TMWSERV_SUPPORT
-NPC::NPC(Uint16 id, int job, Map *map):
+NPC::NPC(int id, int job, Map *map):
     Player(id, job, map)
 #else
-NPC::NPC(int id, Uint16 job, Map *map, Network *network):
+NPC::NPC(int id, int job, Map *map, Network *network):
     Player(id, job, map),
     mNetwork(network)
 #endif
@@ -96,8 +93,8 @@ void NPC::setName(const std::string &name)
 
     delete mName;
     mName = new Text(displayName,
-                     getPixelX() + NAME_X_OFFSET,
-                     getPixelY() + NAME_Y_OFFSET,
+                     getPixelX(),
+                     getPixelY(),
                      gcn::Graphics::CENTER,
                      &guiPalette->getColor(Palette::NPC));
     Being::setName(displayName + " (NPC)");
@@ -134,7 +131,6 @@ void NPC::talk()
 
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_TALK);
-    //outMsg.writeInt16(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(0);
 #endif
@@ -144,8 +140,6 @@ void NPC::updateCoords()
 {
     if (mName)
     {
-        const int px = getPixelX() + NAME_X_OFFSET;
-        const int py = getPixelY() + NAME_Y_OFFSET;
-        mName->adviseXY(px, py);
+        mName->adviseXY(getPixelX(), getPixelY());
     }
 }

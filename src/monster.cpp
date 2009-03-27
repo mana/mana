@@ -32,10 +32,7 @@
 #include "resources/monsterdb.h"
 #include "resources/monsterinfo.h"
 
-static const int NAME_X_OFFSET = 16;
-static const int NAME_Y_OFFSET = 16;
-
-Monster::Monster(int id, Uint16 job, Map *map):
+Monster::Monster(int id, int job, Map *map):
     Being(id, job, map),
     mText(0)
 {
@@ -218,8 +215,8 @@ void Monster::setShowName(bool show)
     if (show)
     {
         mText = new Text(getInfo().getName(),
-                         getPixelX() + NAME_X_OFFSET,
-                         getPixelY() + NAME_Y_OFFSET - getHeight(),
+                         getPixelX(),
+                         getPixelY() - getHeight(),
                          gcn::Graphics::CENTER,
                          &guiPalette->getColor(Palette::MONSTER));
     }
@@ -233,7 +230,7 @@ void Monster::updateCoords()
 {
     if (mText)
     {
-        mText->adviseXY(getPixelX() + NAME_X_OFFSET,
-                        getPixelY() + NAME_Y_OFFSET - getHeight());
+        mText->adviseXY(getPixelX(),
+                        getPixelY() - getHeight() - mText->getHeight());
     }
 }

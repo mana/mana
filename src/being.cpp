@@ -68,9 +68,6 @@ int Being::mNumberOfHairColors = 1;
 int Being::mNumberOfHairstyles = 1;
 std::vector<std::string> Being::hairColors;
 
-static const int X_SPEECH_OFFSET = 18;
-static const int Y_SPEECH_OFFSET = 60;
-
 static const int DEFAULT_WIDTH = 32;
 static const int DEFAULT_HEIGHT = 32;
 
@@ -147,6 +144,10 @@ void Being::setPosition(const Vector &pos)
     mPy = (int) pos.y;
 
     updateCoords();
+
+    if (mText)
+        mText->adviseXY(mPx,
+                        mPy - getHeight() - mText->getHeight());
 }
 
 #ifdef EATHENA_SUPPORT
@@ -396,6 +397,18 @@ void Being::setSpeech(const std::string &text, int time)
 
     if (!mSpeech.empty())
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
+
+    const int speech = (int) config.getValue("speech", NAME_IN_BUBBLE);
+    if (speech == TEXT_OVERHEAD) {
+        if (mText)
+            delete mText;
+
+        mText = new Text(mSpeech,
+                         mPx, mPy - getHeight(),
+                         gcn::Graphics::CENTER,
+                         &guiPalette->getColor(Palette::PARTICLE),
+                         true);
+    }
 }
 
 void Being::takeDamage(Being *attacker, int amount, AttackType type)
@@ -672,8 +685,8 @@ void Being::logic()
     }
 #else
     // Update pixel coordinates
-    setPosition(mX * 32 + getXOffset(),
-                mY * 32 + getYOffset());
+    setPosition(mX * 32 + 16 + getXOffset(),
+                mY * 32 + 32 + getYOffset());
 #endif
 
     if (mEmotion != 0)
@@ -710,8 +723,11 @@ void Being::logic()
 
 void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
-    const int px = mPx + offsetX;
-    const int py = mPy + offsetY;
+    // TODO: Eventually, we probably should fix all sprite offsets so that
+    //       these translations aren't necessary anymore. The sprites know
+    //       best where their centerpoint should be.
+    const int px = mPx + offsetX - 16;
+    const int py = mPy + offsetY - 32;
 
     if (mUsedTargetCursor)
         mUsedTargetCursor->draw(graphics, px, py);
@@ -720,13 +736,7 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     {
         if (mSprites[i])
         {
-#ifdef TMWSERV_SUPPORT
-            // TODO: Eventually, we probably should fix all sprite offsets so
-            //       that this translation isn't necessary anymore.
-            mSprites[i]->draw(graphics, px - 16, py - 32);
-#else
             mSprites[i]->draw(graphics, px, py);
-#endif
         }
     }
 }
@@ -769,27 +779,22 @@ void Being::drawSpeech(int offsetX, int offsetY)
 
         mSpeechBubble->setCaption(showName ? mName : "", mNameColor);
 
-        // Not quite centered, but close enough. However, it's not too important
-        // to get it right right now, as it doesn't take bubble collision into
-        // account yet.
         mSpeechBubble->setText(mSpeech, showName);
-        mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() * 4 / 11), 
-                                   py - 40 - (mSpeechBubble->getHeight()));
+        mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() / 2),
+                                   py - getHeight() - (mSpeechBubble->getHeight()));
         mSpeechBubble->setVisible(true);
     }
     else if (mSpeechTime > 0 && speech == TEXT_OVERHEAD)
     {
         mSpeechBubble->setVisible(false);
 
-        // don't introduce a memory leak
-        if (mText)
-            delete mText;
-
-        mText = new Text(mSpeech,
-                         mPx + X_SPEECH_OFFSET,
-                         mPy - Y_SPEECH_OFFSET,
-                         gcn::Graphics::CENTER,
-                         &guiPalette->getColor(Palette::PARTICLE));
+        if (! mText) {
+            mText = new Text(mSpeech,
+                             mPx, mPy - getHeight(),
+                             gcn::Graphics::CENTER,
+                             &guiPalette->getColor(Palette::PARTICLE),
+                             true);
+        }
     }
     else if (speech == NO_SPEECH)
     {

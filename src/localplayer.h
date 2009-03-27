@@ -145,7 +145,7 @@ class LocalPlayer : public Player
 #ifdef TMWSERV_SUPPORT
         LocalPlayer();
 #else
-        LocalPlayer(Uint32 id, Uint16 job, Map *map);
+        LocalPlayer(int id, int job, Map *map);
 #endif
 
         /**
@@ -170,13 +170,13 @@ class LocalPlayer : public Player
         /**
          * Returns the player's inventory.
          */
-        Inventory* getInventory() const { return mInventory; }
+        Inventory *getInventory() const { return mInventory; }
 
 #ifdef EATHENA_SUPPORT
         /**
          * Returns the player's storage
          */
-        Inventory* getStorage() const { return mStorage; }
+        Inventory *getStorage() const { return mStorage; }
 #endif
 
 #ifdef TMWSERV_SUPPORT
@@ -275,9 +275,6 @@ class LocalPlayer : public Player
 
         /**
          * Triggers whether or not to show the name as a GM name.
-         * NOTE: This doesn't mean that just anyone can use this.
-         * If the server doesn't acknowlege you, you won't be shown
-         * as a GM on other people's clients.
          */
         virtual void setGM();
 
