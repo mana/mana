@@ -98,7 +98,7 @@ void EquipmentHandler::handleMessage(MessageIn &msg)
             logger->log("Equipping: %i %i %i", index, equipPoint, type);
 
             if (!type) {
-                chatWindow->chatLog(_("Unable to equip."), BY_SERVER);
+                localChatTab->chatLog(_("Unable to equip."), BY_SERVER);
                 break;
             }
 
@@ -136,7 +136,7 @@ void EquipmentHandler::handleMessage(MessageIn &msg)
             type = msg.readInt8();
 
             if (!type) {
-                chatWindow->chatLog(_("Unable to unequip."), BY_SERVER);
+                localChatTab->chatLog(_("Unable to unequip."), BY_SERVER);
                 break;
             }
 

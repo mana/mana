@@ -181,6 +181,7 @@ CommandHandler *commandHandler = NULL;
 Particle *particleEngine = NULL;
 EffectManager *effectManager = NULL;
 
+ChatTab *localChatTab = NULL;
 #ifdef EATHENA_SUPPORT
 Party *playerParty = NULL;
 #endif
@@ -287,7 +288,7 @@ void createGuiWindows(Network *network)
     emoteShortcutWindow = new ShortcutWindow("emoteShortcut",
                                              new EmoteShortcutContainer);
 
-    chatWindow->addTab(new ChatTab(std::string("General")));
+    localChatTab = new ChatTab(_("General"));
 
     // Set initial window visibility
     chatWindow->setVisible((bool) config.getValue(
@@ -330,6 +331,7 @@ void createGuiWindows(Network *network)
 void destroyGuiWindows()
 {
     logger->setChatWindow(NULL);
+    delete localChatTab; // Need to do this first, so it can remove itself
     delete chatWindow;
     delete statusWindow;
     delete miniStatusWindow;
@@ -540,11 +542,11 @@ static bool saveScreenshot()
     {
         std::stringstream chatlogentry;
         chatlogentry << _("Screenshot saved to ~/") << filenameSuffix.str();
-        chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
+        localChatTab->chatLog(chatlogentry.str(), BY_SERVER);
     }
     else
     {
-        chatWindow->chatLog(_("Saving screenshot failed!"), BY_SERVER);
+        localChatTab->chatLog(_("Saving screenshot failed!"), BY_SERVER);
         logger->log("Error: could not save screenshot.");
     }
 
@@ -936,16 +938,16 @@ void Game::handleInput()
                         unsigned int deflt = player_relations.getDefault();
                         if (deflt & PlayerRelation::TRADE)
                         {
-                            chatWindow->chatLog(
-                                              _("Ignoring incoming trade requests"),
-                                                BY_SERVER);
+                            localChatTab->chatLog(
+                                        _("Ignoring incoming trade requests"),
+                                        BY_SERVER);
                             deflt &= ~PlayerRelation::TRADE;
                         }
                         else
                         {
-                            chatWindow->chatLog(
-                                              _("Accepting incoming trade requests"),
-                                                BY_SERVER);
+                            localChatTab->chatLog(
+                                        _("Accepting incoming trade requests"),
+                                        BY_SERVER);
                             deflt |= PlayerRelation::TRADE;
                         }
 

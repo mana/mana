@@ -64,12 +64,12 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge guild was created
-                chatWindow->chatLog("Guild created.");
+                localChatTab->chatLog("Guild created.");
                 joinedGuild(msg);
             }
             else
             {
-                chatWindow->chatLog("Error creating guild.");
+                localChatTab->chatLog("Error creating guild.");
             }
         } break;
 
@@ -79,7 +79,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge invite was sent
-                chatWindow->chatLog("Invite sent.");
+                localChatTab->chatLog("Invite sent.");
             }
         } break;
 
@@ -181,12 +181,12 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // promotion succeeded
-                chatWindow->chatLog("Member was promoted successfully");
+                localChatTab->chatLog("Member was promoted successfully");
             }
             else
             {
                 // promotion failed
-                chatWindow->chatLog("Failed to promote member");
+                localChatTab->chatLog("Failed to promote member");
             }
         }
 
@@ -210,7 +210,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 if (guild)
                 {
                     Channel *channel = channelManager->findByName(guild->getName());
-                    chatWindow->removeTab(channel->getTab());
+                    channelManager->removeChannel(channel);
                     guildWindow->removeTab(guildId);
                     player_node->removeGuild(guildId);
                 }
@@ -237,6 +237,5 @@ void GuildHandler::joinedGuild(MessageIn &msg)
     // COMMENT: Should this go here??
     Channel *channel = new Channel(channelId, guildName, announcement);
     channelManager->addChannel(channel);
-    chatWindow->addTab(new ChannelTab(channel));
-    chatWindow->chatLog("Topic: " + announcement, BY_CHANNEL, guildName);
+    channel->getTab()->chatLog("Topic: " + announcement, BY_CHANNEL);
 }

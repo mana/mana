@@ -38,6 +38,8 @@
 #include "../../gui/chat.h"
 #include "../../gui/guildwindow.h"
 
+#include "utils/gettext.h"
+
 extern Being *player_node;
 
 ChatHandler::ChatHandler()
@@ -105,22 +107,22 @@ void ChatHandler::handleGameChatMessage(MessageIn &msg)
 
     if (id == 0)
     {
-        chatWindow->chatLog(chatMsg, BY_SERVER);
+        localChatTab->chatLog(chatMsg, BY_SERVER);
         return;
     }
 
     Being *being = beingManager->findBeing(id);
 
+    std::string mes;
     if (being)
     {
-        chatWindow->chatLog(being->getName() + " : " + chatMsg,
-                            being == player_node ? BY_PLAYER : BY_OTHER, "General");
+        mes = being->getName() + " : " + chatMsg;
         being->setSpeech(chatMsg, SPEECH_TIME);
     }
     else
-    {
-        chatWindow->chatLog("Unknown : " + chatMsg, BY_OTHER, "General");
-    }
+        mes = "Unknown : " + chatMsg;
+
+    localChatTab->chatLog(mes, being == player_node ? BY_PLAYER : BY_OTHER);
 }
 
 void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
@@ -132,12 +134,12 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         std::string announcement = msg.readString();
         Channel *channel = new Channel(channelId, channelName, announcement);
         channelManager->addChannel(channel);
-        chatWindow->addTab(new ChannelTab(channel));
-        chatWindow->chatLog("Topic: " + announcement, BY_CHANNEL, channelName);
+        ChatTab *tab = channel->getTab();
+        tab->chatLog(_("Topic: ") + announcement, BY_CHANNEL);
 
         std::string user;
         std::string userModes;
-        chatWindow->chatLog("Players in this channel:", BY_CHANNEL, channelName);
+        tab->chatLog("Players in this channel:", BY_CHANNEL);
         while(msg.getUnreadLength())
         {
             user = msg.readString();
@@ -148,19 +150,19 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
             {
                 user = "@" + user;
             }
-            chatWindow->chatLog(user, BY_CHANNEL, channelName);
+            tab->chatLog(user, BY_CHANNEL);
         }
 
     }
     else
     {
-        chatWindow->chatLog("Error joining channel", BY_SERVER);
+        localChatTab->chatLog("Error joining channel", BY_SERVER);
     }
 }
 
 void ChatHandler::handleListChannelsResponse(MessageIn &msg)
 {
-    chatWindow->chatLog("Listing Channels", BY_SERVER);
+    localChatTab->chatLog("Listing Channels", BY_SERVER);
     while(msg.getUnreadLength())
     {
         std::string channelName = msg.readString();
@@ -170,9 +172,9 @@ void ChatHandler::handleListChannelsResponse(MessageIn &msg)
         numUsers << msg.readInt16();
         channelName += " - ";
         channelName += numUsers.str();
-        chatWindow->chatLog(channelName, BY_SERVER);
+        localChatTab->chatLog(channelName, BY_SERVER);
     }
-    chatWindow->chatLog("End of channel list", BY_SERVER);
+    localChatTab->chatLog("End of channel list", BY_SERVER);
 }
 
 void ChatHandler::handlePrivateMessage(MessageIn &msg)
@@ -186,7 +188,7 @@ void ChatHandler::handlePrivateMessage(MessageIn &msg)
 void ChatHandler::handleAnnouncement(MessageIn &msg)
 {
     std::string chatMsg = msg.readString();
-    chatWindow->chatLog(chatMsg, BY_GM);
+    localChatTab->chatLog(chatMsg, BY_GM);
 }
 
 void ChatHandler::handleChatMessage(MessageIn &msg)
@@ -205,17 +207,17 @@ void ChatHandler::handleQuitChannelResponse(MessageIn &msg)
     {
         short channelId = msg.readInt16();
         Channel *channel = channelManager->findById(channelId);
-        // remove the chat tab
-        chatWindow->removeTab(channel->getTab());
+        channelManager->removeChannel(channel);
     }
 }
 
 void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
 {
-    std::string channel = msg.readString();
+    std::string channelName = msg.readString();
     std::string userNick;
     std::string userModes;
-    chatWindow->chatLog("Players in this channel:", BY_CHANNEL, channel);
+    Channel *channel = channelManager->findByName(channelName);
+    channel->getTab()->chatLog("Players in this channel:", BY_CHANNEL);
     while(msg.getUnreadLength())
     {
         userNick = msg.readString();
@@ -228,7 +230,7 @@ void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
         {
             userNick = "@" + userNick;
         }
-        chatWindow->chatLog(userNick, BY_CHANNEL, channel);
+        localChatTab->chatLog(userNick, BY_CHANNEL, channel);
     }
 }
 
@@ -277,7 +279,7 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
                 line = "Unknown channel event.";
         }
 
-        chatWindow->chatLog(line, BY_CHANNEL, channel->getName());
+        channel->getTab()->chatLog(line, BY_CHANNEL);
     }
 }
 

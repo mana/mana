@@ -111,14 +111,14 @@ void PartyWindow::showPartyInvite(const std::string &inviter)
     // check there isnt already an invite showing
     if (mPartyInviter != "")
     {
-        chatWindow->chatLog("Received party request, but one already exists",
+        localChatTab->chatLog("Received party request, but one already exists",
                             BY_SERVER);
         return;
     }
 
     // log invite
     std::string msg = inviter + " has invited you to join their party";
-    chatWindow->chatLog(msg, BY_SERVER);
+    localChatTab->chatLog(msg, BY_SERVER);
 
     // show invite
     acceptDialog = new ConfirmDialog("Accept Party Invite", msg, this);
@@ -134,7 +134,7 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     // check if they accepted the invite
     if (eventId == "yes")
     {
-        chatWindow->chatLog("Accepted invite from " + mPartyInviter);
+        localChatTab->chatLog("Accepted invite from " + mPartyInviter);
         Net::ChatServer::Party::acceptInvite(mPartyInviter);
         mPartyInviter = "";
     }

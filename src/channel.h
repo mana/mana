@@ -40,6 +40,8 @@ class Channel
                 const std::string &name,
                 const std::string &announcement = std::string());
 
+        ~Channel();
+
         /**
          * Get the id associated witht his channel
          */

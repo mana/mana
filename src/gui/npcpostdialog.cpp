@@ -78,7 +78,7 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
     {
         if (mSender->getText().empty() || mText->getText().empty())
         {
-            chatWindow->chatLog("Failed to send as sender or letter invalid");
+            localChatTab->chatLog("Failed to send as sender or letter invalid");
         }
         else
         {

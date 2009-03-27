@@ -27,6 +27,7 @@
 #include "localplayer.h"
 
 #include "gui/widgets/channeltab.h"
+#include "gui/widgets/chattab.h"
 #include "gui/chat.h"
 
 #ifdef TMWSERV_SUPPORT
@@ -132,7 +133,7 @@ void CommandHandler::handleCommand(const std::string &command)
     }
     else
     {
-        chatWindow->chatLog("Unknown command");
+        localChatTab->chatLog("Unknown command");
     }
 }
 
@@ -152,106 +153,106 @@ void CommandHandler::handleHelp(const std::string &args)
 {
     if (args == "")
     {
-        chatWindow->chatLog(_("-- Help --"));
-        chatWindow->chatLog(_("/help > Display this help."));
+        localChatTab->chatLog(_("-- Help --"));
+        localChatTab->chatLog(_("/help > Display this help."));
 
-        chatWindow->chatLog(_("/where > Display map name"));
-        chatWindow->chatLog(_("/who > Display number of online users"));
-        chatWindow->chatLog(_("/me > Tell something about yourself"));
+        localChatTab->chatLog(_("/where > Display map name"));
+        localChatTab->chatLog(_("/who > Display number of online users"));
+        localChatTab->chatLog(_("/me > Tell something about yourself"));
 
-        chatWindow->chatLog(_("/msg > Send a private message to a user"));
-        chatWindow->chatLog(_("/whisper > Alias of msg"));
-        chatWindow->chatLog(_("/w > Alias of msg"));
+        localChatTab->chatLog(_("/msg > Send a private message to a user"));
+        localChatTab->chatLog(_("/whisper > Alias of msg"));
+        localChatTab->chatLog(_("/w > Alias of msg"));
 
 #ifdef TMWSERV_SUPPORT
-        chatWindow->chatLog(_("/list > Display all public channels"));
-        chatWindow->chatLog(_("/users > Lists the users in the current channel"));
-        chatWindow->chatLog(_("/join > Join or create a channel"));
-        chatWindow->chatLog(_("/topic > Set the topic of the current channel"));
-        chatWindow->chatLog(_("/quit > Leave a channel"));
-        chatWindow->chatLog(_("/clear > Clears this window"));
-        chatWindow->chatLog(_("/op > Make a user a channel operator"));
-        chatWindow->chatLog(_("/kick > Kick a user from the channel"));
+        localChatTab->chatLog(_("/list > Display all public channels"));
+        localChatTab->chatLog(_("/users > Lists the users in the current channel"));
+        localChatTab->chatLog(_("/join > Join or create a channel"));
+        localChatTab->chatLog(_("/topic > Set the topic of the current channel"));
+        localChatTab->chatLog(_("/quit > Leave a channel"));
+        localChatTab->chatLog(_("/clear > Clears this window"));
+        localChatTab->chatLog(_("/op > Make a user a channel operator"));
+        localChatTab->chatLog(_("/kick > Kick a user from the channel"));
 
-        chatWindow->chatLog(_("/party > Invite a user to party"));
+        localChatTab->chatLog(_("/party > Invite a user to party"));
 #else
-        chatWindow->chatLog(_("/party > Party-related commands"));
+        localChatTab->chatLog(_("/party > Party-related commands"));
 #endif
 
-        chatWindow->chatLog(_("/record > Start recording the chat to an external file"));
-        chatWindow->chatLog(_("/toggle > Determine whether <return> toggles the chat log"));
-        chatWindow->chatLog(_("/present > Get list of players present (sent to chat log, if logging)"));
+        localChatTab->chatLog(_("/record > Start recording the chat to an external file"));
+        localChatTab->chatLog(_("/toggle > Determine whether <return> toggles the chat log"));
+        localChatTab->chatLog(_("/present > Get list of players present (sent to chat log, if logging)"));
 
-        chatWindow->chatLog(_("/announce > Global announcement (GM only)"));
+        localChatTab->chatLog(_("/announce > Global announcement (GM only)"));
 
-        chatWindow->chatLog(_("For more information, type /help <command>"));
+        localChatTab->chatLog(_("For more information, type /help <command>"));
     }
     else if (args == "announce")
     {
-        chatWindow->chatLog(_("Command: /announce <msg>"));
-        chatWindow->chatLog(_("*** only available to a GM ***"));
-        chatWindow->chatLog(_("This command sends the message <msg> to "
+        localChatTab->chatLog(_("Command: /announce <msg>"));
+        localChatTab->chatLog(_("*** only available to a GM ***"));
+        localChatTab->chatLog(_("This command sends the message <msg> to "
                             "all players currently online."));
     }
     else if (args == "clear")
     {
-        chatWindow->chatLog(_("Command: /clear"));
-        chatWindow->chatLog(_("This command clears the chat log of previous chat."));
+        localChatTab->chatLog(_("Command: /clear"));
+        localChatTab->chatLog(_("This command clears the chat log of previous chat."));
     }
     else if (args == "help")
     {
-        chatWindow->chatLog(_("Command: /help"));
-        chatWindow->chatLog(_("This command displays a list of all commands available."));
-        chatWindow->chatLog(_("Command: /help <command>"));
-        chatWindow->chatLog(_("This command displays help on <command>."));
+        localChatTab->chatLog(_("Command: /help"));
+        localChatTab->chatLog(_("This command displays a list of all commands available."));
+        localChatTab->chatLog(_("Command: /help <command>"));
+        localChatTab->chatLog(_("This command displays help on <command>."));
     }
     else if (args == "join")
     {
-        chatWindow->chatLog(_("Command: /join <channel>"));
-        chatWindow->chatLog(_("This command makes you enter <channel>."));
-        chatWindow->chatLog(_("If <channel> doesn't exist, it's created."));
+        localChatTab->chatLog(_("Command: /join <channel>"));
+        localChatTab->chatLog(_("This command makes you enter <channel>."));
+        localChatTab->chatLog(_("If <channel> doesn't exist, it's created."));
     }
     else if (args == "kick")
     {
-        chatWindow->chatLog(_("Command: /kick <nick>"));
-        chatWindow->chatLog(_("This command makes <nick> leave the channel."));
-        chatWindow->chatLog(_("If the <nick> has spaces in it, enclose it in "
+        localChatTab->chatLog(_("Command: /kick <nick>"));
+        localChatTab->chatLog(_("This command makes <nick> leave the channel."));
+        localChatTab->chatLog(_("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\")."));
     }
     else if (args == "list")
     {
-        chatWindow->chatLog(_("Command: /list"));
-        chatWindow->chatLog(_("This command shows a list of all channels."));
+        localChatTab->chatLog(_("Command: /list"));
+        localChatTab->chatLog(_("This command shows a list of all channels."));
     }
     else if (args == "me")
     {
-        chatWindow->chatLog(_("Command: /me <message>"));
-        chatWindow->chatLog(_("This command tell others you are (doing) <msg>."));
+        localChatTab->chatLog(_("Command: /me <message>"));
+        localChatTab->chatLog(_("This command tell others you are (doing) <msg>."));
     }
     else if (args == "msg" || args == "whisper" || args == "w")
     {
-        chatWindow->chatLog(_("Command: /msg <nick> <message>"));
-        chatWindow->chatLog(_("Command: /whisper <nick> <message>"));
-        chatWindow->chatLog(_("Command: /w <nick> <message>"));
-        chatWindow->chatLog(_("This command sends the text <message> to <nick>."));
-        chatWindow->chatLog(_("If the <nick> has spaces in it, enclose it in "
+        localChatTab->chatLog(_("Command: /msg <nick> <message>"));
+        localChatTab->chatLog(_("Command: /whisper <nick> <message>"));
+        localChatTab->chatLog(_("Command: /w <nick> <message>"));
+        localChatTab->chatLog(_("This command sends the text <message> to <nick>."));
+        localChatTab->chatLog(_("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\")."));
     }
     else if (args == "op")
     {
-        chatWindow->chatLog(_("Command: /op <nick>"));
-        chatWindow->chatLog(_("This command makes <nick> a channel operator."));
-        chatWindow->chatLog(_("If the <nick> has spaces in it, enclose it in "
+        localChatTab->chatLog(_("Command: /op <nick>"));
+        localChatTab->chatLog(_("This command makes <nick> a channel operator."));
+        localChatTab->chatLog(_("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\")."));
-        chatWindow->chatLog(_("Channel operators can kick and op other users "
+        localChatTab->chatLog(_("Channel operators can kick and op other users "
                             "from the channel."));
     }
 #ifdef TMWSERV_SUPPORT
     else if (args == "party")
     {
-        chatWindow->chatLog(_("Command: /party <nick>"));
-        chatWindow->chatLog(_("This command invites <nick> to party with you."));
-        chatWindow->chatLog(_("If the <nick> has spaces in it, enclose it in "
+        localChatTab->chatLog(_("Command: /party <nick>"));
+        localChatTab->chatLog(_("This command invites <nick> to party with you."));
+        localChatTab->chatLog(_("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\")."));
 #else
     else if (args.substr(0, 5) == "party")
@@ -261,68 +262,68 @@ void CommandHandler::handleHelp(const std::string &args)
     }
     else if (args == "present")
     {
-        chatWindow->chatLog(_("Command: /present"));
-        chatWindow->chatLog(_("This command gets a list of players within hearing and "
+        localChatTab->chatLog(_("Command: /present"));
+        localChatTab->chatLog(_("This command gets a list of players within hearing and "
                   "sends it to either the record log if recording, or the chat "
                   "log otherwise."));
     }
     else if (args == "quit")
     {
-        chatWindow->chatLog(_("Command: /quit"));
-        chatWindow->chatLog(_("This command leaves the current channel."));
-        chatWindow->chatLog(_("If you're the last person in the channel, it will be deleted."));
+        localChatTab->chatLog(_("Command: /quit"));
+        localChatTab->chatLog(_("This command leaves the current channel."));
+        localChatTab->chatLog(_("If you're the last person in the channel, it will be deleted."));
     }
     else if (args == "record")
     {
-        chatWindow->chatLog(_("Command: /record <filename>"));
-        chatWindow->chatLog(_("This command starts recording the chat log to the file "
+        localChatTab->chatLog(_("Command: /record <filename>"));
+        localChatTab->chatLog(_("This command starts recording the chat log to the file "
                   "<filename>."));
-        chatWindow->chatLog(_("Command: /record"));
-        chatWindow->chatLog(_("This command finishes a recording session."));
+        localChatTab->chatLog(_("Command: /record"));
+        localChatTab->chatLog(_("This command finishes a recording session."));
     }
     else if (args == "toggle")
     {
-        chatWindow->chatLog(_("Command: /toggle <state>"));
-        chatWindow->chatLog(_("This command sets whether the return key should toggle the "
+        localChatTab->chatLog(_("Command: /toggle <state>"));
+        localChatTab->chatLog(_("This command sets whether the return key should toggle the "
                   "chat log, or whether the chat log turns off automatically."));
-        chatWindow->chatLog(_("<state> can be one of \"1\", \"yes\", \"true\" to "
+        localChatTab->chatLog(_("<state> can be one of \"1\", \"yes\", \"true\" to "
                   "turn the toggle on, or \"0\", \"no\", \"false\" to turn the "
                   "toggle off."));
-        chatWindow->chatLog(_("Command: /toggle"));
-        chatWindow->chatLog(_("This command displays the return toggle status."));
+        localChatTab->chatLog(_("Command: /toggle"));
+        localChatTab->chatLog(_("This command displays the return toggle status."));
     }
     else if (args == "topic")
     {
-        chatWindow->chatLog(_("Command: /topic <message>"));
-        chatWindow->chatLog(_("This command sets the topic to <message>."));
+        localChatTab->chatLog(_("Command: /topic <message>"));
+        localChatTab->chatLog(_("This command sets the topic to <message>."));
     }
     else if (args == "users")
     {
-        chatWindow->chatLog(_("Command: /users <channel>"));
-        chatWindow->chatLog(_("This command shows the users in <channel>."));
+        localChatTab->chatLog(_("Command: /users <channel>"));
+        localChatTab->chatLog(_("This command shows the users in <channel>."));
     }
     else if (args == "where")
     {
-        chatWindow->chatLog(_("Command: /where"));
-        chatWindow->chatLog(_("This command displays the name of the current map."));
+        localChatTab->chatLog(_("Command: /where"));
+        localChatTab->chatLog(_("This command displays the name of the current map."));
     }
     else if (args == "who")
     {
-        chatWindow->chatLog(_("Command: /who"));
-        chatWindow->chatLog(_("This command displays the number of players currently "
+        localChatTab->chatLog(_("Command: /who"));
+        localChatTab->chatLog(_("This command displays the number of players currently "
                             "online."));
     }
     else
     {
-        chatWindow->chatLog(_("Unknown command."));
-        chatWindow->chatLog(_("Type /help for a list of commands."));
+        localChatTab->chatLog(_("Unknown command."));
+        localChatTab->chatLog(_("Type /help for a list of commands."));
     }
 }
 
 void CommandHandler::handleWhere()
 {
     // TODO: add position
-    chatWindow->chatLog(map_path, BY_SERVER);
+    localChatTab->chatLog(map_path, BY_SERVER);
 }
 
 void CommandHandler::handleWho()
@@ -386,7 +387,7 @@ void CommandHandler::handleMsg(const std::string &args)
         chatWindow->whisper(recvnick, msg, true);
     }
     else
-        chatWindow->chatLog("Cannont send empty whispers!");
+        localChatTab->chatLog("Cannont send empty whispers!");
 #endif
 }
 
@@ -402,7 +403,7 @@ void CommandHandler::handleJoin(const std::string &args)
     std::string::size_type pos = args.find(' ');
     std::string name(args, 0, pos);
     std::string password(args, pos+1);
-    chatWindow->chatLog("Requesting to join channel " + name);
+    localChatTab->chatLog("Requesting to join channel " + name);
     Net::ChatServer::enterChannel(name, password);
 }
 
@@ -426,7 +427,7 @@ void CommandHandler::handleTopic(const std::string &args)
     }
     else
     {
-        chatWindow->chatLog("Unable to set this channel's topic", BY_CHANNEL);
+        localChatTab->chatLog("Unable to set this channel's topic", BY_CHANNEL);
     }
 }
 
@@ -440,7 +441,7 @@ void CommandHandler::handleQuit()
     }
     else
     {
-        chatWindow->chatLog("Unable to quit this channel", BY_CHANNEL);
+        localChatTab->chatLog("Unable to quit this channel", BY_CHANNEL);
     }
 }
 
@@ -458,7 +459,7 @@ void CommandHandler::handleOp(const std::string &args)
     }
     else
     {
-        chatWindow->chatLog("Unable to set this user's mode", BY_CHANNEL);
+        localChatTab->chatLog("Unable to set this user's mode", BY_CHANNEL);
     }
 }
 
@@ -475,7 +476,7 @@ void CommandHandler::handleKick(const std::string &args)
     }
     else
     {
-        chatWindow->chatLog("Unable to kick user", BY_CHANNEL);
+        localChatTab->chatLog("Unable to kick user", BY_CHANNEL);
     }
 }
 
@@ -491,7 +492,7 @@ void CommandHandler::handleParty(const std::string &args)
 #else
     if (args.empty())
     {
-        chatWindow->chatLog(_("Unknown party command... Type \"/help\" party for more "
+        localChatTab->chatLog(_("Unknown party command... Type \"/help\" party for more "
                 "information."), BY_SERVER);
         return;
     }
@@ -516,22 +517,22 @@ void CommandHandler::handleParty(const std::string &args)
         {
             char temp[2] = ".";
             *temp = chatWindow->getPartyPrefix();
-            chatWindow->chatLog(_("The current party prefix is ") + std::string(temp));
+            localChatTab->chatLog(_("The current party prefix is ") + std::string(temp));
         }
         else if (rest.length() != 1)
         {
-            chatWindow->chatLog(_("Party prefix must be one character long."));
+            localChatTab->chatLog(_("Party prefix must be one character long."));
         }
         else
         {
             if (rest == "/")
             {
-                chatWindow->chatLog(_("Cannot use a '/' as the prefix."));
+                localChatTab->chatLog(_("Cannot use a '/' as the prefix."));
             }
             else
             {
                 chatWindow->setPartyPrefix(rest.at(0));
-                chatWindow->chatLog(_("Changing prefix to ") + rest);
+                localChatTab->chatLog(_("Changing prefix to ") + rest);
             }
         }
     }
@@ -558,7 +559,7 @@ void CommandHandler::handleToggle(const std::string &args)
 {
     if (args.empty())
     {
-        chatWindow->chatLog(chatWindow->getReturnTogglesChat() ?
+        localChatTab->chatLog(chatWindow->getReturnTogglesChat() ?
                 _("Return toggles chat.") : _("Message closes chat."));
         return;
     }
@@ -569,7 +570,7 @@ void CommandHandler::handleToggle(const std::string &args)
         opt == "y" || opt == "Y" ||
         opt == "t" || opt == "T")
     {
-        chatWindow->chatLog(_("Return now toggles chat."));
+        localChatTab->chatLog(_("Return now toggles chat."));
         chatWindow->setReturnTogglesChat(true);
         return;
     }
@@ -577,12 +578,12 @@ void CommandHandler::handleToggle(const std::string &args)
              opt == "n" || opt == "N" ||
              opt == "f" || opt == "F")
     {
-        chatWindow->chatLog(_("Message now closes chat."));
+        localChatTab->chatLog(_("Message now closes chat."));
         chatWindow->setReturnTogglesChat(false);
         return;
     }
     else
-        chatWindow->chatLog(_("Options to /toggle are \"yes\", \"no\", \"true\", "
+        localChatTab->chatLog(_("Options to /toggle are \"yes\", \"no\", \"true\", "
                     "\"false\", \"1\", \"0\"."));
 }
 

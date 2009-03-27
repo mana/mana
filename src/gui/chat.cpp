@@ -96,7 +96,6 @@ ChatWindow::~ChatWindow()
     config.setValue("ReturnToggles", mReturnToggles ? "1" : "0");
     delete mRecorder;
 #endif
-    delete_all(mTabs);
     delete_all(mWhispers);
     delete mItemLinkHandler;
 }
@@ -147,22 +146,6 @@ void ChatWindow::logic()
     }
 }
 
-void ChatWindow::chatLog(std::string line, int own, std::string channelName,
-                         bool ignoreRecord)
-{
-    ChatTab *tab;
-    if(!channelName.empty())
-        tab = findTab(channelName);
-    else
-#ifdef TMWSERV_SUPPORT
-        tab = getFocused();
-#else
-        tab = findTab("General");
-#endif
-
-    tab->chatLog(line, own, ignoreRecord);
-}
-
 ChatTab* ChatWindow::getFocused() const
 {
     return dynamic_cast<ChatTab*>(mChatTabs->getSelectedTab());
@@ -171,11 +154,6 @@ ChatTab* ChatWindow::getFocused() const
 void ChatWindow::clearTab(ChatTab* tab)
 {
     if (tab) tab->clearText();
-}
-
-void ChatWindow::clearTab(const std::string &tab)
-{
-    clearTab(findTab(tab));
 }
 
 void ChatWindow::clearTab()
@@ -249,33 +227,21 @@ bool ChatWindow::isInputFocused()
     return mChatInput->isFocused();
 }
 
-ChatTab* ChatWindow::findTab(const  std::string &tabName)
-{
-    return mTabs[tabName];
-}
-
 void ChatWindow::removeTab(ChatTab *tab)
 {
-    mTabs.erase(tab->getCaption());
-    mChatTabs->removeTab(tab);
-}
-
-void ChatWindow::removeTab(const std::string &tabName)
-{
-    ChatTab *tab = findTab(tabName);
-    if (tab) removeTab(tab);
+    // Prevent removal of the local chat tab
+    if (tab != localChatTab) mChatTabs->removeTab(tab);
 }
 
 void ChatWindow::addTab(ChatTab *tab)
 {
     // Make sure we don't end up with duplicates in the gui
-    removeTab(tab->getCaption());
-
-    mTabs[tab->getCaption()] = tab;
+    // TODO
 
     mChatTabs->addTab(tab, tab->mScrollArea);
 
-    if (mTabs.size() == 1)
+    // Fix for layout issues when adding the first tab
+    if (tab == localChatTab)
         adjustTabSize();
 
     // Update UI
@@ -322,11 +288,12 @@ void ChatWindow::doPresent()
 
 
         mRecorder->record(timeStr.str() + _("Present: ") + response + ".");
-        chatLog(_("Attendance written to record log."), BY_SERVER, std::string(), true);
+        localChatTab->chatLog(_("Attendance written to record log."),
+                              BY_SERVER, true);
     }
     else
     {
-        chatLog(_("Present: ") + response, BY_SERVER);
+        localChatTab->chatLog(_("Present: ") + response, BY_SERVER);
     }
 }
 
@@ -392,12 +359,6 @@ void ChatWindow::setVisible(bool isVisible)
     mTmpVisible = false;
 }
 
-bool ChatWindow::tabExists(const std::string &tabName)
-{
-    Tab *tab = mChatTabs->getTab(tabName);
-    return tab != 0;
-}
-
 void ChatWindow::setRecordingFile(const std::string &msg)
 {
     mRecorder->setRecordingFile(msg);
@@ -424,7 +385,6 @@ void ChatWindow::whisper(std::string nick, std::string mes, bool own)
     {
         tab = new WhisperTab(tempNick);
         mWhispers[tempNick] = tab;
-        mChatTabs->addTab(tab, tab->mScrollArea);
     }
 
     if (own)

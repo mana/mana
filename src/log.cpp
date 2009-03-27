@@ -103,7 +103,7 @@ void Logger::log(const char *log_text, ...)
 
     if (mChatWindow)
     {
-        mChatWindow->chatLog(buf, BY_LOGGER);
+        localChatTab->chatLog(buf, BY_LOGGER);
     }
 
     // Delete temporary buffer

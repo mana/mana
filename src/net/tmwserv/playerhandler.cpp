@@ -280,7 +280,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 switch (type) {
                     case 0:
-                        chatWindow->chatLog("Equip arrows first",
+                        localChatTab->chatLog("Equip arrows first",
                                              BY_SERVER);
                         break;
                     default:

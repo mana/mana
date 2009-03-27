@@ -47,21 +47,6 @@ class Network;
 #endif
 class WhisperTab;
 
-enum
-{
-    BY_GM,
-#ifdef EATHENA_SUPPORT
-    BY_PARTY,
-#endif
-    BY_PLAYER,
-    BY_OTHER,
-    BY_SERVER,
-    BY_CHANNEL,
-    ACT_WHISPER,      // getting whispered at
-    ACT_IS,           // equivalent to "/me" on IRC
-    BY_LOGGER
-};
-
 /**
  * gets in between usernick and message text depending on
  * message type
@@ -119,27 +104,9 @@ class ChatWindow : public Window,
         void resetToDefaultSize();
 
         /**
-         * Adds a line of text to our message list. Parameters:
-         *
-         * @param line Text message.
-         * @param own  Type of message (usually the owner-type).
-         * @param channelName which channel to send the message to.
-         * @param ignoreRecord should this not be recorded?
-         */
-        void chatLog(std::string line,
-                     int own = BY_SERVER,
-                     std::string channelName = "",
-                     bool ignoreRecord = false);
-
-        /**
          * Gets the focused tab.
          */
         ChatTab* getFocused() const;
-
-        /**
-         * Clear the tab with the given name.
-         */
-        void clearTab(const std::string &tab);
 
         /**
          * Clear the given tab.
@@ -169,16 +136,6 @@ class ChatWindow : public Window,
          */
         bool isInputFocused();
 
-        ChatTab* findTab(const std::string &tabName);
-
-        /** Remove the given tab from the window */
-        void removeTab(ChatTab *tab);
-
-        void removeTab(const std::string &tabName);
-
-        /** Add the tab to the window */
-        void addTab(ChatTab *tab);
-
         /**
          * Passes the text to the current tab as input
          *
@@ -198,9 +155,6 @@ class ChatWindow : public Window,
 
         /** Override to reset mTmpVisible */
         void setVisible(bool visible);
-
-        /** Check if tab with that name already exists */
-        bool tabExists(const std::string &tabName);
 
         /**
          * Scrolls the chat window
@@ -234,6 +188,12 @@ class ChatWindow : public Window,
         friend class ChatTab;
         friend class WhisperTab;
 
+        /** Remove the given tab from the window */
+        void removeTab(ChatTab *tab);
+
+        /** Add the tab to the window */
+        void addTab(ChatTab *tab);
+
         void adjustTabSize();
 
 #ifdef EATHENA_SUPPORT
@@ -256,8 +216,7 @@ class ChatWindow : public Window,
         Tab *currentTab;
 
         typedef std::map<const std::string, ChatTab*> TabMap;
-        /** Map each tab to its browser and scroll area. */
-        TabMap mTabs;
+        /** Manage whisper tabs */
         TabMap mWhispers;
 
         typedef std::list<std::string> History;

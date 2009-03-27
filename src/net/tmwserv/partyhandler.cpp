@@ -70,7 +70,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 player_node->setInParty(true);
-                chatWindow->chatLog("Joined party");
+                localChatTab->chatLog("Joined party");
             }
         }
 
@@ -87,7 +87,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
             msg.readInt16(); // being id
             std::string name = msg.readString();
 
-            chatWindow->chatLog(name + " joined the party");
+            localChatTab->chatLog(name + " joined the party");
 
             if (!player_node->getInParty())
                 player_node->setInParty(true);

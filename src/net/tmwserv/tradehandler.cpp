@@ -73,9 +73,9 @@ void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
 {
     mAcceptTradeRequests = acceptTradeRequests;
     if (mAcceptTradeRequests) {
-        chatWindow->chatLog("Accepting incoming trade requests", BY_SERVER);
+        localChatTab->chatLog("Accepting incoming trade requests", BY_SERVER);
     } else {
-        chatWindow->chatLog("Ignoring incoming trade requests", BY_SERVER);
+        localChatTab->chatLog("Ignoring incoming trade requests", BY_SERVER);
     }
 }
 
@@ -121,14 +121,14 @@ void TradeHandler::handleMessage(MessageIn &msg)
             break;
 
         case GPMSG_TRADE_CANCEL:
-            chatWindow->chatLog("Trade canceled.", BY_SERVER);
+            localChatTab->chatLog("Trade canceled.", BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();
             player_node->setTrading(false);
             break;
 
         case GPMSG_TRADE_COMPLETE:
-            chatWindow->chatLog("Trade completed.", BY_SERVER);
+            localChatTab->chatLog("Trade completed.", BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();
             player_node->setTrading(false);

@@ -32,6 +32,11 @@ class Channel;
 class WhisperTab : public ChatTab
 {
     public:
+        std::string getNick() { return mNick; }
+
+    protected:
+        friend class ChatWindow;
+
         /**
          * Constructor.
          */
@@ -42,9 +47,6 @@ class WhisperTab : public ChatTab
          */
         ~WhisperTab();
 
-        std::string getNick() { return mNick; }
-
-    protected:
         void sendChat(std::string &msg);
 
     private:

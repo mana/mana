@@ -23,6 +23,7 @@
 #include "localplayer.h"
 #include "party.h"
 
+#include "gui/widgets/chattab.h"
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 
@@ -52,7 +53,7 @@ void Party::respond(const std::string &command, const std::string &args)
     }
     if (command == "settings")
     {
-        chatWindow->chatLog(_("Not yet implemented!"), BY_SERVER);
+        localChatTab->chatLog(_("Not yet implemented!"), BY_SERVER);
         return;
         /*
         MessageOut outMsg(mNetwork);
@@ -61,14 +62,14 @@ void Party::respond(const std::string &command, const std::string &args)
         outMsg.writeInt16(0); // Item
         */
     }
-    chatWindow->chatLog(_("Party command not known."), BY_SERVER);
+    localChatTab->chatLog(_("Party command not known."), BY_SERVER);
 }
 
 void Party::create(const std::string &party)
 {
     if (party.empty())
     {
-        chatWindow->chatLog(_("Party name is missing."), BY_SERVER);
+        localChatTab->chatLog(_("Party name is missing."), BY_SERVER);
         return;
     }
     MessageOut outMsg(mNetwork);
@@ -81,7 +82,7 @@ void Party::leave(const std::string &args)
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_PARTY_LEAVE);
-    chatWindow->chatLog(_("Left party."), BY_SERVER);
+    localChatTab->chatLog(_("Left party."), BY_SERVER);
     mInParty = false;
 }
 
@@ -89,12 +90,12 @@ void Party::createResponse(bool ok)
 {
     if (ok)
     {
-        chatWindow->chatLog(_("Party successfully created."), BY_SERVER);
+        localChatTab->chatLog(_("Party successfully created."), BY_SERVER);
         mInParty = true;
     }
     else
     {
-        chatWindow->chatLog(_("Could not create party."), BY_SERVER);
+        localChatTab->chatLog(_("Could not create party."), BY_SERVER);
     }
 }
 
@@ -103,15 +104,15 @@ void Party::inviteResponse(const std::string &nick, int status)
     switch (status)
     {
         case 0:
-            chatWindow->chatLog(strprintf(_("%s is already a member of a party."),
+            localChatTab->chatLog(strprintf(_("%s is already a member of a party."),
                         nick.c_str()), BY_SERVER);
             break;
         case 1:
-            chatWindow->chatLog(strprintf(_("%s refused your invitation."),
+            localChatTab->chatLog(strprintf(_("%s refused your invitation."),
                         nick.c_str()), BY_SERVER);
             break;
         case 2:
-            chatWindow->chatLog(strprintf(_("%s is now a member of your party."),
+            localChatTab->chatLog(strprintf(_("%s is now a member of your party."),
                         nick.c_str()), BY_SERVER);
             break;
     }
@@ -123,7 +124,7 @@ void Party::invitedAsk(const std::string &nick, int gender,
     mPartyName = partyName; /* Quick and nasty - needs redoing */
     if (nick.empty())
     {
-        chatWindow->chatLog(_("You can\'t have a blank party name!"), BY_SERVER);
+        localChatTab->chatLog(_("You can\'t have a blank party name!"), BY_SERVER);
         return;
     }
     mCreating = false;
@@ -146,7 +147,7 @@ void Party::InviteListener::action(const gcn::ActionEvent &event)
 
 void Party::leftResponse(const std::string &nick)
 {
-    chatWindow->chatLog(strprintf(_("%s has left your party."), nick.c_str()),
+    localChatTab->chatLog(strprintf(_("%s has left your party."), nick.c_str()),
                                BY_SERVER);
 }
 
@@ -158,12 +159,12 @@ void Party::receiveChat(Being *being, const std::string &msg)
     }
     if (being->getType() != Being::PLAYER)
     {
-        chatWindow->chatLog(_("Party chat received, but being is not a player"),
+        localChatTab->chatLog(_("Party chat received, but being is not a player"),
                        BY_SERVER);
         return;
     }
     being->setSpeech(msg, SPEECH_TIME);
-    chatWindow->chatLog(being->getName() + " : " + msg, BY_PARTY);
+    localChatTab->chatLog(being->getName() + " : " + msg, BY_PARTY);
 }
 
 void Party::help(const std::string &args)
@@ -173,35 +174,35 @@ void Party::help(const std::string &args)
 
     if (msg.empty())
     {
-        chatWindow->chatLog(_("Command: /party <command> <args>"), BY_SERVER);
-        chatWindow->chatLog(_("where <command> can be one of:"), BY_SERVER);
-        chatWindow->chatLog(_("   /new"), BY_SERVER);
-        chatWindow->chatLog(_("   /create"), BY_SERVER);
-        chatWindow->chatLog(_("   /prefix"), BY_SERVER);
-        chatWindow->chatLog(_("   /leave"), BY_SERVER);
-        chatWindow->chatLog(_("This command implements the partying function."),
+        localChatTab->chatLog(_("Command: /party <command> <args>"), BY_SERVER);
+        localChatTab->chatLog(_("where <command> can be one of:"), BY_SERVER);
+        localChatTab->chatLog(_("   /new"), BY_SERVER);
+        localChatTab->chatLog(_("   /create"), BY_SERVER);
+        localChatTab->chatLog(_("   /prefix"), BY_SERVER);
+        localChatTab->chatLog(_("   /leave"), BY_SERVER);
+        localChatTab->chatLog(_("This command implements the partying function."),
                        BY_SERVER);
-        chatWindow->chatLog(_("Type /help party <command> for further help."),
+        localChatTab->chatLog(_("Type /help party <command> for further help."),
                        BY_SERVER);
         return;
     }
     if (msg == "new" || msg == "create")
     {
-        chatWindow->chatLog(_("Command: /party new <party-name>"), BY_SERVER);
-        chatWindow->chatLog(_("Command: /party create <party-name>"), BY_SERVER);
-        chatWindow->chatLog(_("These commands create a new party <party-name."),
+        localChatTab->chatLog(_("Command: /party new <party-name>"), BY_SERVER);
+        localChatTab->chatLog(_("Command: /party create <party-name>"), BY_SERVER);
+        localChatTab->chatLog(_("These commands create a new party <party-name."),
                 BY_SERVER);
         return;
     }
     if (msg == "prefix")
     {
-        chatWindow->chatLog(_("Command: /party prefix <prefix-char>"), BY_SERVER);
-        chatWindow->chatLog(_("This command sets the party prefix character."),
+        localChatTab->chatLog(_("Command: /party prefix <prefix-char>"), BY_SERVER);
+        localChatTab->chatLog(_("This command sets the party prefix character."),
                        BY_SERVER);
-        chatWindow->chatLog(_("Any message preceded by <prefix-char> is sent to "
+        localChatTab->chatLog(_("Any message preceded by <prefix-char> is sent to "
                          "the party instead of everyone."), BY_SERVER);
-        chatWindow->chatLog(_("Command: /party prefix"), BY_SERVER);
-        chatWindow->chatLog(_("This command reports the current party prefix "
+        localChatTab->chatLog(_("Command: /party prefix"), BY_SERVER);
+        localChatTab->chatLog(_("This command reports the current party prefix "
                          "character."), BY_SERVER);
         return;
     }
@@ -209,11 +210,11 @@ void Party::help(const std::string &args)
     //if (msg == "info")
     if (msg == "leave")
     {
-        chatWindow->chatLog(_("Command: /party leave"), BY_SERVER);
-        chatWindow->chatLog(_("This command causes the player to leave the party."),
+        localChatTab->chatLog(_("Command: /party leave"), BY_SERVER);
+        localChatTab->chatLog(_("This command causes the player to leave the party."),
                 BY_SERVER);
         return;
     }
-    chatWindow->chatLog(_("Unknown /party command."), BY_SERVER);
-    chatWindow->chatLog(_("Type /help party for a list of options."), BY_SERVER);
+    localChatTab->chatLog(_("Unknown /party command."), BY_SERVER);
+    localChatTab->chatLog(_("Type /help party for a list of options."), BY_SERVER);
 }

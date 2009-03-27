@@ -26,6 +26,7 @@
 #include "recorder.h"
 #include "windowcontainer.h"
 
+#include "widgets/chattab.h"
 #include "widgets/layout.h"
 
 #include "../utils/stringutils.h"
@@ -82,16 +83,16 @@ void Recorder::setRecordingFile(const std::string &msg)
              * Message should go after mStream is closed so that it isn't
              * recorded.
              */
-            mChat->chatLog(_("Finishing recording."), BY_SERVER);
+            localChatTab->chatLog(_("Finishing recording."), BY_SERVER);
         }
         else
         {
-            mChat->chatLog(_("Not currently recording."), BY_SERVER);
+            localChatTab->chatLog(_("Not currently recording."), BY_SERVER);
         }
     }
     else if (mStream.is_open())
     {
-        mChat->chatLog(_("Already recording."), BY_SERVER);
+        localChatTab->chatLog(_("Already recording."), BY_SERVER);
     }
     else
     {
@@ -99,7 +100,7 @@ void Recorder::setRecordingFile(const std::string &msg)
          * Message should go before mStream is opened so that it isn't
          * recorded.
          */
-        mChat->chatLog(_("Starting to record..."), BY_SERVER);
+        localChatTab->chatLog(_("Starting to record..."), BY_SERVER);
         const std::string file =
             std::string(PHYSFS_getUserDir()) + "/.tmw/" + msgCopy;
 
@@ -108,7 +109,7 @@ void Recorder::setRecordingFile(const std::string &msg)
         if (mStream.is_open())
             setVisible(true);
         else
-            mChat->chatLog(_("Failed to start recording."), BY_SERVER);
+            localChatTab->chatLog(_("Failed to start recording."), BY_SERVER);
     }
 }
 

@@ -34,7 +34,12 @@ Channel::Channel(short id,
                  const std::string &announcement) :
     mId(id),
     mName(name),
-    mAnnouncement(announcement)
+    mAnnouncement(announcement),
+    mTab(new ChannelTab(this))
 {
+}
 
+Channel::~Channel()
+{
+    delete mTab;
 }

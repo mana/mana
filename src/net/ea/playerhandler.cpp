@@ -284,7 +284,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         int curGp = player_node->getMoney();
                         player_node->setMoney(msg.readInt32());
                         if (player_node->getMoney() > curGp)
-                            chatWindow->chatLog(_("You picked up ") +
+                            localChatTab->chatLog(_("You picked up ") +
                                 Units::formatCurrency(player_node->getMoney()
                                     - curGp), BY_SERVER);
                     }
@@ -407,7 +407,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 switch (type) {
                     case 0:
-                        chatWindow->chatLog(_("Equip arrows first"),
+                        localChatTab->chatLog(_("Equip arrows first"),
                                              BY_SERVER);
                         break;
                     default:

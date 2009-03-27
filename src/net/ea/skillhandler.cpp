@@ -200,7 +200,7 @@ void SkillHandler::handleMessage(MessageIn &msg)
                 }
             }
 
-            chatWindow->chatLog(msg);
+            localChatTab->chatLog(msg);
             break;
     }
 }

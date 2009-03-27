@@ -62,15 +62,23 @@ ChatTab::ChatTab(const std::string &name) : Tab()
                                  gcn::ScrollArea::SHOW_ALWAYS);
     mScrollArea->setScrollAmount(0, 1);
     mScrollArea->setOpaque(false);
+
+    chatWindow->addTab(this);
 }
 
 ChatTab::~ChatTab()
 {
+    chatWindow->removeTab(this);
     delete mTextOutput;
     delete mScrollArea;
 }
 
-void ChatTab::chatLog(std::string line,  int own, bool ignoreRecord)
+void ChatTab::chatLog(const char* line, int own, bool ignoreRecord)
+{
+    chatLog(std::string(line), own, ignoreRecord);
+}
+
+void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
 {
     // Trim whitespace
     trim(line);

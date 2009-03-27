@@ -32,6 +32,12 @@ class Channel;
 class ChannelTab : public ChatTab
 {
     public:
+
+        Channel *getChannel() { return mChannel; }
+
+    protected:
+        friend class Channel;
+
         /**
          * Constructor.
          */
@@ -42,9 +48,6 @@ class ChannelTab : public ChatTab
          */
         ~ChannelTab();
 
-        Channel *getChannel() { return mChannel; }
-
-    protected:
         void sendChat(std::string &msg);
 
     private:
