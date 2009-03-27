@@ -63,7 +63,7 @@ ChannelTab::~ChannelTab()
 {
 }
 
-void ChannelTab::sendChat(std::string &msg) {
+void ChannelTab::sendChat(const std::string &msg) {
 #ifdef TMSERV_SUPPORT
     Net::ChatServer::chat(getId(), msg);
 #endif

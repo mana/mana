@@ -323,7 +323,7 @@ void ChatTab::sendChat(std::string &msg) {
 #endif
 }
 
-void ChatTab::handleCommand(std::string msg)
+void ChatTab::handleCommand(const std::string msg)
 {
     commandHandler->handleCommand(msg);
 }

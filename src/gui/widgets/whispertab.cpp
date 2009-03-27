@@ -58,7 +58,7 @@ WhisperTab::~WhisperTab()
     chatWindow->removeWhisper(mNick);
 }
 
-void WhisperTab::sendChat(std::string &msg) {
+void WhisperTab::sendChat(const std::string &msg) {
     if (msg.length() == 0) {
         chatLog(_("Cannot send empty chat!"), BY_SERVER, false);
         return;
@@ -78,7 +78,7 @@ void WhisperTab::sendChat(std::string &msg) {
                         msg.c_str()), BY_PLAYER, false);
 }
 
-void WhisperTab::handleCommand(std::string msg)
+void WhisperTab::handleCommand(const std::string msg)
 {
     if (msg == "close")
         delete this;

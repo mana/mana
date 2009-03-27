@@ -108,7 +108,7 @@ class ChatTab : public Tab
 
         virtual void sendChat(std::string &msg);
 
-        virtual void handleCommand(std::string msg);
+        virtual void handleCommand(const std::string msg);
 
         ScrollArea *mScrollArea;
         BrowserBox *mTextOutput;
