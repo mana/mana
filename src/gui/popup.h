@@ -35,8 +35,8 @@ class Window;
 class WindowContainer;
 
 /**
- * A rather reduced down version of the Window class that is particularly suited
- * for 
+ * A rather reduced down version of the Window class that is particularly
+ * suited for ...
  *
  * \ingroup GUI
  */
@@ -89,39 +89,27 @@ class Popup : public gcn::Container
          */
         void setMinWidth(int width);
 
+        int getMinWidth() const { return mMinWidth; }
+
         /**
          * Sets the minimum height of the popup.
          */
         void setMinHeight(int height);
+
+        int getMinHeight() const { return mMinHeight; }
 
         /**
          * Sets the maximum width of the popup.
          */
         void setMaxWidth(int width);
 
+        int getMaxWidth() const { return mMaxWidth; }
+
         /**
          * Sets the minimum height of the popup.
          */
         void setMaxHeight(int height);
 
-        /**
-         * Gets the minimum width of the popup.
-         */
-        int getMinWidth() const { return mMinWidth; }
-
-        /**
-         * Gets the minimum height of the popup.
-         */
-        int getMinHeight() const { return mMinHeight; }
-
-        /**
-         * Gets the maximum width of the popup.
-         */
-        int getMaxWidth() const { return mMaxWidth; }
-
-        /**
-         * Gets the minimum height of the popup.
-         */
         int getMaxHeight() const { return mMaxHeight; }
 
         /**
@@ -131,15 +119,8 @@ class Popup : public gcn::Container
          * @return The padding of the popup.
          * @see setPadding
          */
-        unsigned int getPadding() const { return mPadding; }
+        int getPadding() const { return mPadding; }
 
-        /**
-         * Sets the padding of the popup. The padding is the distance between the
-         * popup border and the content.
-         *
-         * @param padding The padding of the popup.
-         * @see getPadding
-         */
         void setPadding(int padding) { mPadding = padding; }
 
         /**
@@ -152,12 +133,11 @@ class Popup : public gcn::Container
         /**
          * Sets the name of the popup. This is only useful for debug purposes.
          */
-        void setPopupName(const std::string &name) { mPopupName = name; }
+        void setPopupName(const std::string &name)
+        { mPopupName = name; }
 
-        /**
-         * Returns the name of the popup. This is only useful for debug purposes.
-         */
-        const std::string &getPopupName() const { return mPopupName; }
+        const std::string &getPopupName() const
+        { return mPopupName; }
 
         /**
          * Schedule this popup for deletion. It will be deleted at the start
@@ -188,7 +168,7 @@ class Popup : public gcn::Container
 
         static int instances;      /**< Number of Popup instances */
 
-        Skin* mSkin;               /**< Skin in use by this Popup */
+        Skin *mSkin;               /**< Skin in use by this Popup */
 };
 
 #endif

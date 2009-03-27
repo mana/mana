@@ -149,7 +149,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 #ifdef TMWSERV_SUPPORT
         int getDistributedPoints();
 
-        void UpdateSliders();
+        void updateSliders();
 #endif
 
         /**

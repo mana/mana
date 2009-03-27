@@ -491,7 +491,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
         mAttributeLabel[i]->setPosition(5, 140 + i*20);
     };
     mAttributesLeft->setPosition(15, 280);
-    UpdateSliders();
+    updateSliders();
     mCancelButton->setPosition(
             w - 5 - mCancelButton->getWidth(),
             h - 5 - mCancelButton->getHeight());
@@ -617,7 +617,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
                               mPlayer->getHairColor());
 #ifdef TMWSERV_SUPPORT
     else if (event.getId() == "statslider") {
-        UpdateSliders();
+        updateSliders();
     }
     else if (event.getId() == "gender"){
         if (mMale->isSelected()) {
@@ -637,7 +637,7 @@ std::string CharCreateDialog::getName()
 }
 
 #ifdef TMWSERV_SUPPORT
-void CharCreateDialog::UpdateSliders()
+void CharCreateDialog::updateSliders()
 {
     for (int i = 0; i < 6; i++)
     {

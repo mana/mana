@@ -119,39 +119,27 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         void setMinWidth(int width);
 
+        int getMinWidth() const { return mMinWinWidth; }
+
         /**
          * Sets the minimum height of the window.
          */
         void setMinHeight(int height);
+
+        int getMinHeight() const { return mMinWinHeight; }
 
         /**
          * Sets the maximum width of the window.
          */
         void setMaxWidth(int width);
 
+        int getMaxWidth() const { return mMaxWinWidth; }
+
         /**
          * Sets the minimum height of the window.
          */
         void setMaxHeight(int height);
 
-        /**
-         * Gets the minimum width of the window.
-         */
-        int getMinWidth() const { return mMinWinWidth; }
-
-        /**
-         * Gets the minimum height of the window.
-         */
-        int getMinHeight() const { return mMinWinHeight; }
-
-        /**
-         * Gets the maximum width of the window.
-         */
-        int getMaxWidth() const { return mMaxWinWidth; }
-
-        /**
-         * Gets the minimum height of the window.
-         */
         int getMaxHeight() const { return mMaxWinHeight; }
 
         /**
