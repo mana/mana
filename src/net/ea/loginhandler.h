@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_LOGINHANDLER_H
-#define NET_LOGINHANDLER_H
+#ifndef NET_EA_LOGINHANDLER_H
+#define NET_EA_LOGINHANDLER_H
+
+#include "net/messagehandler.h"
 
 #include <string>
-
-#include "../messagehandler.h"
 
 struct LoginData;
 
@@ -35,11 +35,11 @@ class LoginHandler : public MessageHandler
 
         void handleMessage(MessageIn &msg);
 
-        void setLoginData(LoginData *loginData) { mLoginData = loginData; };
+        void setLoginData(LoginData *loginData) { mLoginData = loginData; }
 
     private:
         LoginData *mLoginData;
         std::string mUpdateHost;
 };
 
-#endif
+#endif // NET_EA_LOGINHANDLER_H

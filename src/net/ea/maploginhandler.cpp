@@ -19,15 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "maploginhandler.h"
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/ea/maploginhandler.h"
 
-#include "../../localplayer.h"
-#include "../../log.h"
-#include "../../main.h"
+#include "net/ea/protocol.h"
 
-#include "../../utils/gettext.h"
+#include "net/messagein.h"
+
+#include "localplayer.h"
+#include "log.h"
+#include "main.h"
+
+#include "utils/gettext.h"
 
 MapLoginHandler::MapLoginHandler()
 {

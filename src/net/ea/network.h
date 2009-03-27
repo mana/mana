@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NETWORK_
-#define NETWORK_
+#ifndef EA_NETWORK_H
+#define EA_NETWORK_H
 
 #include <map>
 #include <SDL_net.h>

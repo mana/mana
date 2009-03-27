@@ -19,24 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "net/ea/buysellhandler.h"
+
+#include "net/ea/protocol.h"
+
+#include "net/messagein.h"
+
+#include "beingmanager.h"
+#include "inventory.h"
+#include "item.h"
+#include "localplayer.h"
+#include "npc.h"
+
+#include "gui/buy.h"
+#include "gui/buysell.h"
+#include "gui/chat.h"
+#include "gui/sell.h"
+
+#include "utils/gettext.h"
+
 #include <SDL_types.h>
-
-#include "buysellhandler.h"
-#include "../messagein.h"
-#include "protocol.h"
-
-#include "../../beingmanager.h"
-#include "../../inventory.h"
-#include "../../item.h"
-#include "../../localplayer.h"
-#include "../../npc.h"
-
-#include "../../gui/buy.h"
-#include "../../gui/buysell.h"
-#include "../../gui/chat.h"
-#include "../../gui/sell.h"
-
-#include "../../utils/gettext.h"
 
 BuySellHandler::BuySellHandler()
 {

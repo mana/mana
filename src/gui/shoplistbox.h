@@ -88,4 +88,4 @@ class ShopListBox : public ListBox
         bool mPriceCheck;
 };
 
-#endif
+#endif // SHOPLISTBOX_H

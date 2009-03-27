@@ -19,32 +19,34 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "../messagein.h"
-#include "playerhandler.h"
-#include "protocol.h"
+#include "net/ea/playerhandler.h"
 
-#include "../../engine.h"
-#include "../../localplayer.h"
-#include "../../log.h"
-#include "../../npc.h"
-#include "../../units.h"
+#include "net/ea/protocol.h"
 
-#include "../../gui/buy.h"
-#include "../../gui/buysell.h"
-#include "../../gui/chat.h"
-#include "../../gui/gui.h"
-#include "../../gui/npc_text.h"
-#include "../../gui/npcintegerdialog.h"
-#include "../../gui/npclistdialog.h"
-#include "../../gui/npcstringdialog.h"
-#include "../../gui/ok_dialog.h"
-#include "../../gui/sell.h"
-#include "../../gui/skill.h"
-#include "../../gui/storagewindow.h"
-#include "../../gui/viewport.h"
+#include "net/messagein.h"
 
-#include "../../utils/stringutils.h"
-#include "../../utils/gettext.h"
+#include "engine.h"
+#include "localplayer.h"
+#include "log.h"
+#include "npc.h"
+#include "units.h"
+
+#include "gui/buy.h"
+#include "gui/buysell.h"
+#include "gui/chat.h"
+#include "gui/gui.h"
+#include "gui/npc_text.h"
+#include "gui/npcintegerdialog.h"
+#include "gui/npclistdialog.h"
+#include "gui/npcstringdialog.h"
+#include "gui/ok_dialog.h"
+#include "gui/sell.h"
+#include "gui/skill.h"
+#include "gui/storagewindow.h"
+#include "gui/viewport.h"
+
+#include "utils/stringutils.h"
+#include "utils/gettext.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;

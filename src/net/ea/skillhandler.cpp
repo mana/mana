@@ -19,16 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "../messagein.h"
-#include "protocol.h"
-#include "skillhandler.h"
+#include "net/ea/skillhandler.h"
 
-#include "../../log.h"
+#include "net/ea/protocol.h"
 
-#include "../../gui/chat.h"
-#include "../../gui/skill.h"
+#include "net/messagein.h"
 
-#include "../../utils/gettext.h"
+#include "log.h"
+
+#include "gui/chat.h"
+#include "gui/skill.h"
+
+#include "utils/gettext.h"
 
 /** job dependend identifiers (?)  */
 #define SKILL_BASIC       0x0001

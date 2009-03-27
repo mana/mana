@@ -19,21 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "charserverhandler.h"
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/ea/charserverhandler.h"
 
-#include "../../game.h"
-#include "../../localplayer.h"
-#include "../../log.h"
-#include "../../logindata.h"
-#include "../../main.h"
+#include "net/ea/protocol.h"
 
-#include "../../gui/char_select.h"
-#include "../../gui/ok_dialog.h"
+#include "net/messagein.h"
 
-#include "../../utils/gettext.h"
-#include "../../utils/stringutils.h"
+#include "game.h"
+#include "localplayer.h"
+#include "log.h"
+#include "logindata.h"
+#include "main.h"
+
+#include "gui/char_select.h"
+#include "gui/ok_dialog.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)

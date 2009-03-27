@@ -31,6 +31,7 @@
 #include "gui/widgets/layout.h"
 
 #include "npc.h"
+#include "shopitem.h"
 #include "units.h"
 
 #ifdef TMWSERV_SUPPORT

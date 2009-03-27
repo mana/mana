@@ -19,17 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/actionlistener.hpp>
+#include "net/ea/partyhandler.h"
 
-#include "partyhandler.h"
-#include "protocol.h"
-#include "../messagein.h"
+#include "net/ea/protocol.h"
 
-#include "../../gui/chat.h"
-#include "../../gui/confirm_dialog.h"
+#include "net/messagein.h"
 
-#include "../../beingmanager.h"
-#include "../../party.h"
+#include "gui/chat.h"
+
+#include "beingmanager.h"
+#include "party.h"
 
 PartyHandler::PartyHandler(Party *party) : mParty(party)
 {

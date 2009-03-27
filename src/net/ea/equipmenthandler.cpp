@@ -19,19 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "equipmenthandler.h"
-#include "../messagein.h"
-#include "protocol.h"
+#include "net/ea/equipmenthandler.h"
 
-#include "../../equipment.h"
-#include "../../inventory.h"
-#include "../../item.h"
-#include "../../localplayer.h"
-#include "../../log.h"
+#include "net/ea/protocol.h"
 
-#include "../../gui/chat.h"
+#include "net/messagein.h"
 
-#include "../../utils/gettext.h"
+#include "equipment.h"
+#include "inventory.h"
+#include "item.h"
+#include "localplayer.h"
+#include "log.h"
+
+#include "gui/chat.h"
+
+#include "utils/gettext.h"
 
 EquipmentHandler::EquipmentHandler()
 {

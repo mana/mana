@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EQUIPMENTHANDLER_H
-#define NET_EQUIPMENTHANDLER_H
+#ifndef NET_EA_EQUIPMENTHANDLER_H
+#define NET_EA_EQUIPMENTHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 class EquipmentHandler : public MessageHandler
 {
@@ -32,4 +32,4 @@ class EquipmentHandler : public MessageHandler
         void handleMessage(MessageIn &msg);
 };
 
-#endif
+#endif // NET_EA_EQUIPMENTHANDLER_H

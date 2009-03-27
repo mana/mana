@@ -19,20 +19,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "../messagein.h"
-#include "protocol.h"
-#include "tradehandler.h"
+#include "net/ea/tradehandler.h"
 
-#include "../../inventory.h"
-#include "../../item.h"
-#include "../../localplayer.h"
-#include "../../player_relations.h"
+#include "net/ea/protocol.h"
 
-#include "../../gui/chat.h"
-#include "../../gui/confirm_dialog.h"
-#include "../../gui/trade.h"
+#include "net/messagein.h"
 
-#include "../../utils/gettext.h"
+#include "inventory.h"
+#include "item.h"
+#include "localplayer.h"
+#include "player_relations.h"
+
+#include "gui/chat.h"
+#include "gui/confirm_dialog.h"
+#include "gui/trade.h"
+
+#include "utils/gettext.h"
 
 std::string tradePartnerName;
 
@@ -45,7 +47,7 @@ namespace {
         void action(const gcn::ActionEvent &event)
         {
             player_node->tradeReply(event.getId() == "yes");
-        };
+        }
     } listener;
 }
 

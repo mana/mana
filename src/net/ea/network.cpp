@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "net/ea/network.h"
+
+#include "net/messagehandler.h"
+#include "net/messagein.h"
+
+#include "log.h"
+#include "utils/stringutils.h"
+
 #include <sstream>
-
-#include "../messagehandler.h"
-#include "../messagein.h"
-#include "network.h"
-
-#include "../../log.h"
-#include "../../utils/stringutils.h"
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */

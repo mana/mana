@@ -19,15 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _SHOP_H
-#define _SHOP_H
-
-#include <string>
-#include <vector>
+#ifndef SHOP_H
+#define SHOP_H
 
 #include <guichan/listmodel.hpp>
 
-#include "../shopitem.h"
+#include <string>
+#include <vector>
 
 class ShopItem;
 
@@ -44,16 +42,13 @@ class ShopItems : public gcn::ListModel
 {
     public:
         /**
-         * Constructor. Creates a new ShopItems instance.
+         * Constructor.
          *
          * @param mergeDuplicates lets the Shop look for duplicate entries and
          *                        merges them to one item.
          */
         ShopItems(bool mergeDuplicates = false);
 
-        /**
-         * Destructor.
-         */
         ~ShopItems();
 
         /**
@@ -76,8 +71,6 @@ class ShopItems : public gcn::ListModel
 
         /**
          * Returns the number of items in the shop.
-         *
-         * @return the number of items in the shop
          */
         int getNumberOfElements();
 
@@ -91,7 +84,7 @@ class ShopItems : public gcn::ListModel
         /**
          * Returns the item number i in the shop.
          */
-        ShopItem* at(int i) const;
+        ShopItem *at(int i) const;
 
         /**
          * Removes an element from the shop.
@@ -101,7 +94,7 @@ class ShopItems : public gcn::ListModel
         void erase(int i);
 
         /**
-         * Clear the vector.
+         * Clears the list of items in the shop.
          */
         void clear();
 
@@ -112,13 +105,13 @@ class ShopItems : public gcn::ListModel
          * 
          * @return the item found or 0
          */
-        ShopItem* findItem(int id);
+        ShopItem *findItem(int id);
 
-        /** the shop storage */
+        /** The list of items in the shop. */
         std::vector<ShopItem*> mShopItems;
 
-        /** Look for duplicate entries on addition */
+        /** Look for duplicate entries on addition. */
         bool mMergeDuplicates;
 };
 
-#endif
+#endif // SHOP_H

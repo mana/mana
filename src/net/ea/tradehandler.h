@@ -19,12 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_TRADEHANDLER_H
-#define NET_TRADEHANDLER_H
+#ifndef NET_EA_TRADEHANDLER_H
+#define NET_EA_TRADEHANDLER_H
 
-#include "../messagehandler.h"
-
-class Network;
+#include "net/messagehandler.h"
 
 class TradeHandler : public MessageHandler
 {
@@ -34,4 +32,4 @@ class TradeHandler : public MessageHandler
         void handleMessage(MessageIn &msg);
 };
 
-#endif
+#endif // NET_EA_TRADEHANDLER_H

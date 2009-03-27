@@ -19,9 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "shop.h"
+#include "gui/shop.h"
 
-#include "../utils/dtor.h"
+#include "shopitem.h"
+
+#include "utils/dtor.h"
 
 ShopItems::ShopItems(bool mergeDuplicates) :
     mMergeDuplicates(mergeDuplicates)

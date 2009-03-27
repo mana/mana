@@ -19,27 +19,29 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "net/ea/inventoryhandler.h"
+
+#include "net/ea/protocol.h"
+
+#include "net/messagein.h"
+
+#include "configuration.h"
+#include "inventory.h"
+#include "item.h"
+#include "itemshortcut.h"
+#include "localplayer.h"
+#include "log.h"
+
+#include "gui/chat.h"
+#include "gui/storagewindow.h"
+
+#include "resources/iteminfo.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
+
 #include <SDL_types.h>
-
-#include "inventoryhandler.h"
-#include "../messagein.h"
-#include "protocol.h"
-
-#include "../../configuration.h"
-#include "../../inventory.h"
-#include "../../item.h"
-#include "../../itemshortcut.h"
-#include "../../localplayer.h"
-#include "../../log.h"
-
-#include "../../gui/chat.h"
-#include "../../gui/storagewindow.h"
-
-#include "../../resources/iteminfo.h"
-
-#include "../../utils/gettext.h"
-#include "../../utils/strprintf.h"
-#include "../../utils/stringutils.h"
 
 InventoryHandler::InventoryHandler()
 {

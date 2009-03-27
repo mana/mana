@@ -19,15 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/palette.h"
+#include "gui/shop.h"
+#include "gui/shoplistbox.h"
+
+#include "configuration.h"
+#include "graphics.h"
+#include "shopitem.h"
+
 #include <guichan/font.hpp>
 #include <guichan/listmodel.hpp>
-
-#include "palette.h"
-#include "shop.h"
-#include "shoplistbox.h"
-
-#include "../configuration.h"
-#include "../graphics.h"
 
 const int ITEM_ICON_SIZE = 32;
 

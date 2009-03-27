@@ -19,20 +19,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "net/ea/npchandler.h"
+
+#include "net/ea/protocol.h"
+
+#include "net/messagein.h"
+
+#include "beingmanager.h"
+#include "localplayer.h"
+#include "npc.h"
+
+#include "gui/npc_text.h"
+#include "gui/npcintegerdialog.h"
+#include "gui/npclistdialog.h"
+#include "gui/npcstringdialog.h"
+
 #include <SDL_types.h>
-
-#include "../messagein.h"
-#include "npchandler.h"
-#include "protocol.h"
-
-#include "../../beingmanager.h"
-#include "../../localplayer.h"
-#include "../../npc.h"
-
-#include "../../gui/npc_text.h"
-#include "../../gui/npcintegerdialog.h"
-#include "../../gui/npclistdialog.h"
-#include "../../gui/npcstringdialog.h"
 
 NPCHandler::NPCHandler()
 {

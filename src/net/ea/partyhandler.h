@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef PARTYHANDLER_H
-#define PARTYHANDLER_H
+#ifndef NET_EA_PARTYHANDLER_H
+#define NET_EA_PARTYHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 class Party;
 
@@ -32,8 +32,9 @@ class PartyHandler : public MessageHandler
         PartyHandler(Party *party);
 
         void handleMessage(MessageIn &msg);
+
     private:
         Party *mParty;
 };
 
-#endif
+#endif // NET_EA_PARTYHANDLER_H

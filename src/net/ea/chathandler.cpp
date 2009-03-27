@@ -19,22 +19,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "net/ea/chathandler.h"
+
+#include "net/ea/protocol.h"
+
+#include "net/messagein.h"
+
+#include "being.h"
+#include "beingmanager.h"
+#include "game.h"
+#include "player_relations.h"
+
+#include "gui/chat.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <SDL_types.h>
 #include <string>
-
-#include "chathandler.h"
-#include "../messagein.h"
-#include "protocol.h"
-
-#include "../../being.h"
-#include "../../beingmanager.h"
-#include "../../game.h"
-#include "../../player_relations.h"
-
-#include "../../gui/chat.h"
-
-#include "../../utils/gettext.h"
-#include "../../utils/stringutils.h"
 
 extern Being *player_node;
 

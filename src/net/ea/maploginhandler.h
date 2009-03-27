@@ -19,10 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_MAPLOGINHANDLER_H
-#define NET_MAPLOGINHANDLER_H
+#ifndef NET_EA_MAPLOGINHANDLER_H
+#define NET_EA_MAPLOGINHANDLER_H
 
-#include "../messagehandler.h"
+#include "net/messagehandler.h"
 
 class MapLoginHandler : public MessageHandler
 {
@@ -32,4 +32,4 @@ class MapLoginHandler : public MessageHandler
         void handleMessage(MessageIn &msg);
 };
 
-#endif
+#endif // NET_EA_MAPLOGINHANDLER_H

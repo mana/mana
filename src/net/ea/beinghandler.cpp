@@ -19,23 +19,25 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "net/ea/beinghandler.h"
+
+#include "net/ea/protocol.h"
+
+#include "net/messagein.h"
+
+#include "being.h"
+#include "beingmanager.h"
+#include "effectmanager.h"
+#include "game.h"
+#include "localplayer.h"
+#include "log.h"
+#include "npc.h"
+#include "player_relations.h"
+
+#include "gui/npc_text.h"
+
 #include <iostream>
 #include <SDL_types.h>
-
-#include "beinghandler.h"
-#include "../messagein.h"
-#include "protocol.h"
-
-#include "../../being.h"
-#include "../../beingmanager.h"
-#include "../../effectmanager.h"
-#include "../../game.h"
-#include "../../localplayer.h"
-#include "../../log.h"
-#include "../../npc.h"
-#include "../../player_relations.h"
-
-#include "../../gui/npc_text.h"
 
 extern NpcTextDialog *npcTextDialog;
 
