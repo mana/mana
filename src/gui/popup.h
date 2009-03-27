@@ -30,7 +30,6 @@
 
 class Skin;
 class SkinLoader;
-class Window;
 class WindowContainer;
 
 /**
@@ -52,12 +51,9 @@ class Popup : public gcn::Container
          *
          * @param name    A human readable name for the popup. Only useful for
          *                debugging purposes.
-         * @param parent  The parent Window. This is the Window standing above
-         *                this one in the Window hiearchy. When reordering,
-         *                a Popup will never go below its parent Window.
          * @param skin    The location where the Popup's skin XML can be found.
          */
-        Popup(const std::string& name = "", Window *parent = NULL,
+        Popup(const std::string& name = "",
               const std::string &skin = "graphics/gui/gui.xml");
 
         /**
@@ -156,13 +152,6 @@ class Popup : public gcn::Container
         void setPadding(int padding) { mPadding = padding; }
 
         /**
-         * Returns the parent Window.
-         *
-         * @return The parent Window or <code>NULL</code> if there is none.
-         */
-        Window* getParentWindow() { return mParent; }
-
-        /**
          * Sets the name of the popup. This is only useful for debug purposes.
          */
         void setPopupName(const std::string &name) { mPopupName = name; }
@@ -183,7 +172,6 @@ class Popup : public gcn::Container
         virtual gcn::Rectangle getChildrenArea();
 
     private:
-        Window *mParent;              /**< The parent Window (if there is one) */
         std::string mPopupName;       /**< Name of the popup */
         std::string mDefaultSkinPath; /**< Default skin path for this popup */
         int mMinWidth;                /**< Minimum popup width */

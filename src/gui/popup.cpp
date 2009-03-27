@@ -25,7 +25,6 @@
 #include "gui.h"
 #include "skin.h"
 #include "popup.h"
-#include "window.h"
 #include "windowcontainer.h"
 
 #include "../configlistener.h"
@@ -36,9 +35,7 @@
 
 int Popup::instances = 0;
 
-Popup::Popup(const std::string& name, Window *parent,
-             const std::string& skin):
-    mParent(parent),
+Popup::Popup(const std::string& name, const std::string& skin):
     mPopupName(name),
     mDefaultSkinPath(skin),
     mMinWidth(100),
