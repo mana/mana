@@ -19,24 +19,25 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/focushandler.hpp>
-
 #include "chat.h"
-#include "chatinput.h"
-#include "itemlinkhandler.h"
-#include "recorder.h"
-#include "scrollarea.h"
-#include "sdlinput.h"
 
-#include "widgets/tabbedarea.h"
-#include "widgets/whispertab.h"
+#include "gui/chatinput.h"
+#include "gui/itemlinkhandler.h"
+#include "gui/recorder.h"
+#include "gui/scrollarea.h"
+#include "gui/sdlinput.h"
 
-#include "../beingmanager.h"
-#include "../configuration.h"
-#include "../localplayer.h"
+#include "gui/widgets/tabbedarea.h"
+#include "gui/widgets/whispertab.h"
 
-#include "../utils/dtor.h"
-#include "../utils/stringutils.h"
+#include "beingmanager.h"
+#include "configuration.h"
+#include "localplayer.h"
+
+#include "utils/dtor.h"
+#include "utils/stringutils.h"
+
+#include <guichan/focushandler.hpp>
 
 #ifdef TMWSERV_SUPPORT
 ChatWindow::ChatWindow():
@@ -140,20 +141,21 @@ void ChatWindow::logic()
     Window::logic();
 
     Tab *tab = getFocused();
-    if (tab != currentTab) {
-        currentTab == tab;
+    if (tab != mCurrentTab) {
+        mCurrentTab = tab;
         adjustTabSize();
     }
 }
 
-ChatTab* ChatWindow::getFocused() const
+ChatTab *ChatWindow::getFocused() const
 {
     return dynamic_cast<ChatTab*>(mChatTabs->getSelectedTab());
 }
 
-void ChatWindow::clearTab(ChatTab* tab)
+void ChatWindow::clearTab(ChatTab *tab)
 {
-    if (tab) tab->clearText();
+    if (tab)
+        tab->clearText();
 }
 
 void ChatWindow::clearTab()
@@ -373,11 +375,8 @@ void ChatWindow::whisper(std::string nick, std::string mes, bool own)
     toLower(playerName);
     toLower(tempNick);
 
-    if (tempNick.compare(playerName) == 0)
-        if (own)
-            ;
-        else
-            return;
+    if (!own && tempNick.compare(playerName) == 0)
+        return;
 
     ChatTab *tab = mWhispers[tempNick];
 

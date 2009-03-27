@@ -27,24 +27,23 @@
 class Channel;
 
 /**
- * A tab for whispers from a single nick.
+ * A tab for whispers from a single player.
  */
 class WhisperTab : public ChatTab
 {
     public:
-        std::string getNick() { return mNick; }
+        const std::string &getNick() const { return mNick; }
 
     protected:
         friend class ChatWindow;
 
         /**
          * Constructor.
+         *
+         * @param nick  the name of the player this tab is whispering to
          */
-        WhisperTab(std::string nick);
+        WhisperTab(const std::string &nick);
 
-        /**
-         * Destructor.
-         */
         ~WhisperTab();
 
         void sendChat(std::string &msg);

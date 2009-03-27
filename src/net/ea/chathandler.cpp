@@ -35,7 +35,6 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <SDL_types.h>
 #include <string>
 
 extern Being *player_node;
@@ -93,10 +92,14 @@ void ChatHandler::handleMessage(MessageIn &msg)
             chatMsg = msg.readString(chatMsgLength);
 
             if (nick != SERVER_NAME)
+            {
                 if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
                     chatWindow->whisper(nick, chatMsg);
+            }
             else
+            {
                 localChatTab->chatLog(chatMsg, BY_SERVER);
+            }
 
             break;
 
@@ -106,9 +109,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             being = beingManager->findBeing(msg.readInt32());
 
             if (!being || chatMsgLength <= 0)
-            {
                 break;
-            }
 
             chatMsg = msg.readString(chatMsgLength);
 
@@ -135,9 +136,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             chatMsgLength = msg.readInt16() - 4;
 
             if (chatMsgLength <= 0)
-            {
                 break;
-            }
 
             chatMsg = msg.readString(chatMsgLength);
             std::string::size_type pos = chatMsg.find(" : ", 0);

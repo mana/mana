@@ -47,8 +47,9 @@
 #include "../../utils/strprintf.h"
 #include "../../utils/stringutils.h"
 
-WhisperTab::WhisperTab(std::string nick) : ChatTab(nick),
-            mNick(nick)
+WhisperTab::WhisperTab(const std::string &nick) :
+    ChatTab(nick),
+    mNick(nick)
 {
 }
 

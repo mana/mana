@@ -213,7 +213,7 @@ class ChatWindow : public Window,
 
         /** Tabbed area for holding each channel. */
         TabbedArea *mChatTabs;
-        Tab *currentTab;
+        Tab *mCurrentTab;
 
         typedef std::map<const std::string, ChatTab*> TabMap;
         /** Manage whisper tabs */
