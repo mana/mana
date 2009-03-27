@@ -33,6 +33,7 @@
 
 #include "resources/colordb.h"
 #include "resources/itemdb.h"
+#include "resources/iteminfo.h"
 
 #include "utils/strprintf.h"
 

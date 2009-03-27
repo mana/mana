@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#include "resources/imageloader.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 #include <guichan/color.hpp>
 #include <guichan/sdl/sdlpixel.hpp>
 
-#include "image.h"
-#include "imageloader.h"
-#include "resourcemanager.h"
+#include <cassert>
 
 ProxyImage::ProxyImage(SDL_Surface *s):
     mImage(NULL), mSDLImage(s)

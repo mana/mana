@@ -316,7 +316,7 @@ void Window::setCloseButton(bool flag)
     mCloseButton = flag;
 }
 
-bool Window::isResizable()
+bool Window::isResizable() const
 {
     return mGrip;
 }

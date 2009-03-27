@@ -55,7 +55,7 @@ namespace EmoteDB
 
     const AnimatedSprite *getAnimation(int id);
 
-    const int& getLast();
+    const int &getLast();
 
     typedef EmoteInfos::iterator EmoteInfosIterator;
 }

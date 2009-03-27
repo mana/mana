@@ -19,8 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itemdb.h"
-#include "iteminfo.h"
+#include "resources/iteminfo.h"
+
+#include "resources/itemdb.h"
 
 const std::string &ItemInfo::getSprite(Gender gender) const
 {

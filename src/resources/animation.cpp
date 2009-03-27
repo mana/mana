@@ -19,16 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "animation.h"
+#include "resources/animation.h"
 
-#include "../utils/dtor.h"
+#include "utils/dtor.h"
 
 Animation::Animation():
     mDuration(0)
 {
 }
 
-void Animation::addFrame(Image *image, unsigned int delay, int offsetX, int offsetY)
+void Animation::addFrame(Image *image, unsigned int delay,
+                         int offsetX, int offsetY)
 {
     Frame frame = { image, delay, offsetX, offsetY };
     mFrames.push_back(frame);

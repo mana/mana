@@ -19,15 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "resources/buddylist.h"
+
+#include "main.h"
+#include "configuration.h"
+
 #include <algorithm>
 #include <cstring>
 #include <iostream>
 #include <fstream>
-
-#include "buddylist.h"
-
-#include "../main.h"
-#include "../configuration.h"
 
 BuddyList::BuddyList()
 {
@@ -82,7 +82,7 @@ void BuddyList::saveFile()
     outputStream.close();
 }
 
-bool BuddyList::addBuddy(const std::string buddy)
+bool BuddyList::addBuddy(const std::string &buddy)
 {
     if (find(mBuddylist.begin(), mBuddylist.end(), buddy) != mBuddylist.end())
     {
@@ -98,7 +98,7 @@ bool BuddyList::addBuddy(const std::string buddy)
     return true;
 }
 
-bool BuddyList::removeBuddy(const std::string buddy)
+bool BuddyList::removeBuddy(const std::string &buddy)
 {
     BuddyIterator i = find(mBuddylist.begin(), mBuddylist.end(), buddy);
 
@@ -111,7 +111,7 @@ bool BuddyList::removeBuddy(const std::string buddy)
     return false;
 }
 
-int  BuddyList::getNumberOfElements()
+int BuddyList::getNumberOfElements()
 {
     return mBuddylist.size();
 }

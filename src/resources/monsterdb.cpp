@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "monsterdb.h"
-#include "monsterinfo.h"
+#include "resources/monsterdb.h"
 
-#include "../log.h"
+#include "resources/monsterinfo.h"
 
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
-#include "../utils/xml.h"
+#include "log.h"
+
+#include "utils/dtor.h"
+#include "utils/gettext.h"
+#include "utils/xml.h"
 
 namespace
 {

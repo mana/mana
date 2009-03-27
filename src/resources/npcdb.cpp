@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npcdb.h"
+#include "resources/npcdb.h"
 
-#include "../log.h"
+#include "log.h"
 
-#include "../utils/gettext.h"
-#include "../utils/xml.h"
+#include "utils/gettext.h"
+#include "utils/xml.h"
 
 namespace
 {

@@ -22,6 +22,7 @@
 #include "item.h"
 
 #include "resources/image.h"
+#include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
 Item::Item(int id, int quantity, bool equipment

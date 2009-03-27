@@ -19,22 +19,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "resources/animation.h"
+#include "resources/image.h"
+#include "resources/mapreader.h"
+#include "resources/resourcemanager.h"
+
+#include "log.h"
+#include "map.h"
+#include "tileset.h"
+
+#include "utils/base64.h"
+#include "utils/stringutils.h"
+#include "utils/xml.h"
+
 #include <cassert>
 #include <iostream>
 #include <zlib.h>
-
-#include "animation.h"
-#include "image.h"
-#include "mapreader.h"
-#include "resourcemanager.h"
-
-#include "../log.h"
-#include "../map.h"
-#include "../tileset.h"
-
-#include "../utils/base64.h"
-#include "../utils/stringutils.h"
-#include "../utils/xml.h"
 
 const unsigned int DEFAULT_TILE_WIDTH = 32;
 const unsigned int DEFAULT_TILE_HEIGHT = 32;

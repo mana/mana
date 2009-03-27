@@ -112,7 +112,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Returns whether the window can be resized.
          */
-        bool isResizable();
+        bool isResizable() const;
 
         /**
          * Sets the minimum width of the window.
@@ -227,7 +227,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Returns the name of the window. This is not the window title.
          */
-        const std::string &getWindowName() { return mWindowName; }
+        const std::string &getWindowName() const { return mWindowName; }
 
         /**
          * Reads the position (and the size for resizable windows) in the

@@ -19,32 +19,34 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#include "gui/popupmenu.h"
 
-#include "browserbox.h"
-#include "chat.h"
-#include "inventorywindow.h"
-#include "item_amount.h"
-#include "popupmenu.h"
+#include "gui/browserbox.h"
+#include "gui/chat.h"
+#include "gui/inventorywindow.h"
+#include "gui/item_amount.h"
 
-#include "../being.h"
-#include "../beingmanager.h"
-#include "../floor_item.h"
-#include "../graphics.h"
-#include "../item.h"
-#include "../localplayer.h"
-#include "../npc.h"
-#include "../player_relations.h"
+#include "being.h"
+#include "beingmanager.h"
+#include "floor_item.h"
+#include "graphics.h"
+#include "item.h"
+#include "localplayer.h"
+#include "npc.h"
+#include "player_relations.h"
 
 #ifdef EATHENA_SUPPORT
-#include "../net/messageout.h"
-#include "../net/ea/protocol.h"
+#include "net/messageout.h"
+#include "net/ea/protocol.h"
 #endif
 
-#include "../resources/itemdb.h"
+#include "resources/itemdb.h"
+#include "resources/iteminfo.h"
 
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+
+#include <cassert>
 
 extern std::string tradePartnerName;
 

@@ -22,12 +22,12 @@
 #ifndef SPRITEDEF_H
 #define SPRITEDEF_H
 
+#include "resources/resource.h"
+
 #include <map>
 #include <string>
 
 #include <libxml/tree.h>
-
-#include "resource.h"
 
 class Action;
 class ImageSet;
@@ -158,4 +158,4 @@ class SpriteDef : public Resource
         Actions mActions;
 };
 
-#endif
+#endif // SPRITEDEF_H

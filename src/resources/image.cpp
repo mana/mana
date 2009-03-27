@@ -19,13 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "resources/image.h"
+
+#include "resources/dye.h"
+
+#include "log.h"
+
 #include <SDL_image.h>
-
-#include "dye.h"
-#include "image.h"
-
-#include "../log.h"
-#include "../position.h"
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
@@ -315,7 +315,7 @@ void Image::setAlpha(float a)
     }
 }
 
-Image* Image::merge(Image* image, const Position& pos)
+Image* Image::merge(Image *image, int x, int y)
 {
     SDL_Surface* surface = new SDL_Surface(*(image->mImage));
 
@@ -325,20 +325,20 @@ Image* Image::merge(Image* image, const Position& pos)
     SDL_PixelFormat *current_fmt = mImage->format;
     SDL_PixelFormat *surface_fmt = surface->format;
     int current_offset, surface_offset;
-    Position offset(0, 0);
+    int offset_x, offset_y;
 
     SDL_LockSurface(surface);
     SDL_LockSurface(mImage);
     // for each pixel lines of a source image
-    for (offset.x = (pos.x > 0 ? 0 : -pos.x); offset.x < image->getWidth() &&
-                     pos.x + offset.x < getWidth(); offset.x++)
+    for (offset_x = (x > 0 ? 0 : -x); offset_x < image->getWidth() &&
+                     x + offset_x < getWidth(); offset_x++)
     {
-        for (offset.y = (pos.y > 0 ? 0 : -pos.y); offset.y < image->getHeight()
-                        && pos.y + offset.y < getHeight(); offset.y++)
+        for (offset_y = (y > 0 ? 0 : -y); offset_y < image->getHeight()
+                        && y + offset_y < getHeight(); offset_y++)
         {
             // Computing offset on both images
-            current_offset = (pos.y + offset.y) * getWidth() + pos.x + offset.x;
-            surface_offset = offset.y * surface->w + offset.x;
+            current_offset = (y + offset_y) * getWidth() + x + offset_x;
+            surface_offset = offset_y * surface->w + offset_x;
 
             // Retrieving a pixel to merge
             surface_pix = ((Uint32*) surface->pixels)[surface_offset];
@@ -385,12 +385,12 @@ Image* Image::merge(Image* image, const Position& pos)
     SDL_UnlockSurface(surface);
     SDL_UnlockSurface(mImage);
 
-    Image* newImage = new Image(surface);
+    Image *newImage = new Image(surface);
 
     return newImage;
 }
 
-float Image::getAlpha()
+float Image::getAlpha() const
 {
     return mAlpha;
 }

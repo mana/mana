@@ -19,10 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "action.h"
-#include "animation.h"
+#include "resources/action.h"
 
-#include "../utils/dtor.h"
+#include "resources/animation.h"
+
+#include "utils/dtor.h"
 
 Action::Action()
 {
@@ -40,9 +41,7 @@ Animation *Action::getAnimation(int direction) const
     // When the given direction is not available, return the first one.
     // (either DEFAULT, or more usually DOWN).
     if (i == mAnimations.end())
-    {
         i = mAnimations.begin();
-    }
 
     return (i == mAnimations.end()) ? NULL : i->second;
 }

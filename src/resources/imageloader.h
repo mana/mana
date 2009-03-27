@@ -22,10 +22,10 @@
 #ifndef IMAGELOADER_H
 #define IMAGELOADER_H
 
-#include <string>
-
 #include <guichan/image.hpp>
 #include <guichan/imageloader.hpp>
+
+#include <string>
 
 class Image;
 struct SDL_Surface;
@@ -35,6 +35,7 @@ class ProxyImage : public gcn::Image
     public:
         ProxyImage(SDL_Surface *);
         ~ProxyImage();
+
         void free();
         int getWidth() const;
         int getHeight() const;

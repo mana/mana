@@ -35,7 +35,7 @@ namespace MonsterDB
 
     void unload();
 
-    const MonsterInfo& get(int id);
+    const MonsterInfo &get(int id);
 
     typedef std::map<int, MonsterInfo*> MonsterInfos;
     typedef MonsterInfos::iterator MonsterInfoIterator;

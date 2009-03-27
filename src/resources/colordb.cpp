@@ -19,13 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "resources/colordb.h"
+
+#include "log.h"
+
+#include "utils/xml.h"
+
 #include <libxml/tree.h>
-
-#include "colordb.h"
-
-#include "../log.h"
-
-#include "../utils/xml.h"
 
 #define HAIR_COLOR_FILE "colors.xml"
 #define TMW_COLOR_FILE "hair.xml"
@@ -40,9 +40,7 @@ namespace
 void ColorDB::load()
 {
     if (mLoaded)
-    {
         return;
-    }
 
     XML::Document *doc = new XML::Document(HAIR_COLOR_FILE);
     xmlNodePtr root = doc->rootNode();

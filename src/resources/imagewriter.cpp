@@ -19,16 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "resources/imagewriter.h"
+
+#include "log.h"
+
 #include <png.h>
 #include <SDL.h>
 #include <string>
 
-#include "imagewriter.h"
-
-#include "../log.h"
-
 bool ImageWriter::writePNG(SDL_Surface *surface,
-        const std::string &filename)
+                           const std::string &filename)
 {
     // TODO Maybe someone can make this look nice?
     FILE *fp = fopen(filename.c_str(), "wb");

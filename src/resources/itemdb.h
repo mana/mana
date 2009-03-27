@@ -23,8 +23,7 @@
 #define ITEM_MANAGER_H
 
 #include <map>
-
-#include "iteminfo.h"
+#include <string>
 
 class ItemInfo;
 
@@ -43,8 +42,8 @@ namespace ItemDB
      */
     void unload();
 
-    const ItemInfo& get(int id);
-    const ItemInfo& get(const std::string &name);
+    const ItemInfo &get(int id);
+    const ItemInfo &get(const std::string &name);
 
     // Items database
     typedef std::map<int, ItemInfo*> ItemInfos;

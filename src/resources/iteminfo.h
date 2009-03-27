@@ -22,13 +22,13 @@
 #ifndef ITEMINFO_H
 #define ITEMINFO_H
 
+#include "resources/spritedef.h"
+
+#include "being.h"
+
 #include <map>
 #include <string>
 #include <vector>
-
-#include "spritedef.h"
-
-#include "../being.h"
 
 enum EquipmentSoundEvent
 {
@@ -117,8 +117,6 @@ class ItemInfo
         ItemInfo():
 #ifdef TMWSERV_SUPPORT
             mType(ITEM_UNUSABLE),
-#else
-            mType(""),
 #endif
             mWeight(0),
             mView(0),

@@ -19,24 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "inventorywindow.h"
-#include "itemshortcutcontainer.h"
-#include "itempopup.h"
-#include "palette.h"
-#include "viewport.h"
+#include "gui/itemshortcutcontainer.h"
 
-#include "../configuration.h"
-#include "../graphics.h"
-#include "../inventory.h"
-#include "../item.h"
-#include "../itemshortcut.h"
-#include "../keyboardconfig.h"
-#include "../localplayer.h"
+#include "gui/inventorywindow.h"
+#include "gui/itempopup.h"
+#include "gui/palette.h"
+#include "gui/viewport.h"
 
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
+#include "configuration.h"
+#include "graphics.h"
+#include "inventory.h"
+#include "item.h"
+#include "itemshortcut.h"
+#include "keyboardconfig.h"
+#include "localplayer.h"
 
-#include "../utils/stringutils.h"
+#include "resources/image.h"
+#include "resources/iteminfo.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/stringutils.h"
 
 ItemShortcutContainer::ItemShortcutContainer():
     ShortcutContainer(),

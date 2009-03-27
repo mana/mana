@@ -19,10 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <cassert>
+#include "resources/resource.h"
 
-#include "resource.h"
-#include "resourcemanager.h"
+#include "resources/resourcemanager.h"
+
+#include <cassert>
 
 Resource::~Resource()
 {

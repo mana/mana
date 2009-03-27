@@ -596,7 +596,7 @@ class Being : public Sprite
         bool mParticleEffects;          /**< Whether to display particles or not */
 
         /** Engine-related infos about weapon. */
-        const ItemInfo* mEquippedWeapon;
+        const ItemInfo *mEquippedWeapon;
 
         static std::vector<std::string> hairColors;
         static int mNumberOfHairColors;          /** Number of hair colors in use */

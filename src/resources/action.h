@@ -34,19 +34,13 @@ class Animation;
 class Action
 {
     public:
-        /**
-         * Constructor.
-         */
         Action();
 
-        /**
-         * Destructor.
-         */
         ~Action();
 
         void setAnimation(int direction, Animation *animation);
 
-        Animation* getAnimation(int direction) const;
+        Animation *getAnimation(int direction) const;
 
     protected:
         typedef std::map<int, Animation*> Animations;

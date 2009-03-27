@@ -22,9 +22,11 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include <SDL.h>
+#include "main.h"
 
-#include "../main.h"
+#include "resources/resource.h"
+
+#include <SDL.h>
 
 #ifdef USE_OPENGL
 
@@ -36,8 +38,6 @@
 
 #include <SDL_opengl.h>
 #endif
-
-#include "resource.h"
 
 class Dye;
 class Position;
@@ -120,7 +120,7 @@ class Image : public Resource
         /**
          * Returns the alpha value of this image.
          */
-        float getAlpha();
+        float getAlpha() const;
 
 #ifdef USE_OPENGL
         /**
@@ -137,7 +137,7 @@ class Image : public Resource
          * improve overall framerates. Don't use unless you are using it to
          * reduce the number of overall layers that need to be drawn through SDL.
          */
-        Image* merge(Image* image, const Position& pos);
+        Image *merge(Image *image, int x, int y);
 
     protected:
         /**

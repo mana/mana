@@ -46,15 +46,13 @@ struct Frame
 class Animation
 {
     public:
-        /**
-         * Constructor.
-         */
         Animation();
 
         /**
          * Appends a new animation at the end of the sequence.
          */
-        void addFrame(Image *image, unsigned int delay, int offsetX, int offsetY);
+        void addFrame(Image *image, unsigned int delay,
+                      int offsetX, int offsetY);
 
         /**
          * Appends an animation terminator that states that the animation
@@ -65,7 +63,7 @@ class Animation
         /**
          * Returns the frame at the specified index.
          */
-        Frame* getFrame(int index) { return &(mFrames[index]); }
+        Frame *getFrame(int index) { return &(mFrames[index]); }
 
         /**
          * Returns the length of this animation in frames.

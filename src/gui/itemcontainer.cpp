@@ -19,28 +19,29 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/itemcontainer.h"
+
+#include "gui/chat.h"
+#include "gui/itempopup.h"
+#include "gui/palette.h"
+#include "gui/sdlinput.h"
+#include "gui/viewport.h"
+
+#include "graphics.h"
+#include "inventory.h"
+#include "item.h"
+#include "itemshortcut.h"
+#include "localplayer.h"
+#include "log.h"
+
+#include "resources/image.h"
+#include "resources/iteminfo.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/stringutils.h"
 
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
-
-#include "chat.h"
-#include "itemcontainer.h"
-#include "itempopup.h"
-#include "palette.h"
-#include "sdlinput.h"
-#include "viewport.h"
-
-#include "../graphics.h"
-#include "../inventory.h"
-#include "../item.h"
-#include "../itemshortcut.h"
-#include "../localplayer.h"
-#include "../log.h"
-
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
-
-#include "../utils/stringutils.h"
 
 // TODO: Add support for adding items to the item shortcut window (global
 // itemShortcut).

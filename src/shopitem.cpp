@@ -23,9 +23,12 @@
 
 #include "units.h"
 
-ShopItem::ShopItem (int inventoryIndex, int id,
-        int quantity, int price) :
-        Item (id, 0), mPrice(price)
+#include "resources/iteminfo.h"
+
+ShopItem::ShopItem(int inventoryIndex, int id,
+                   int quantity, int price) :
+    Item(id, 0),
+    mPrice(price)
 {
     mDisplayName = getInfo().getName() +
                         " (" + Units::formatCurrency(mPrice).c_str() + ")";

@@ -59,6 +59,7 @@
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
+#include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"

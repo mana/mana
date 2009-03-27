@@ -19,12 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "image.h"
-#include "imageset.h"
+#include "resources/imageset.h"
 
-#include "../log.h"
+#include "resources/image.h"
 
-#include "../utils/dtor.h"
+#include "log.h"
+
+#include "utils/dtor.h"
 
 ImageSet::ImageSet(Image *img, int width, int height)
 {

@@ -19,22 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "resources/resourcemanager.h"
+
+#include "resources/dye.h"
+#include "resources/image.h"
+#include "resources/imageset.h"
+#include "resources/music.h"
+#include "resources/soundeffect.h"
+#include "resources/spritedef.h"
+
+#include "log.h"
+
 #include <cassert>
 #include <physfs.h>
 #include <SDL_image.h>
 #include <sstream>
 
 #include <sys/time.h>
-
-#include "dye.h"
-#include "image.h"
-#include "imageset.h"
-#include "music.h"
-#include "resourcemanager.h"
-#include "soundeffect.h"
-#include "spritedef.h"
-
-#include "../log.h"
 
 ResourceManager *ResourceManager::instance = NULL;
 

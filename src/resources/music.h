@@ -22,12 +22,13 @@
 #ifndef MUSIC_H
 #define MUSIC_H
 
+#include "resources/resource.h"
+
 #ifdef __APPLE__
 #include <SDL_mixer/SDL_mixer.h>
 #else
 #include <SDL_mixer.h>
 #endif
-#include "resource.h"
 
 /**
  * Defines a class for loading and storing music.

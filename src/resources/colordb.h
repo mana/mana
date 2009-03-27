@@ -26,7 +26,7 @@
 #include <string>
 
 /**
- * The class that holds the color information.
+ * Color information database.
  */
 namespace ColorDB
 {

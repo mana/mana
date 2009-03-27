@@ -22,12 +22,12 @@
 #ifndef MONSTERINFO_H
 #define MONSTERINFO_H
 
+#include "being.h"
+
 #include <list>
 #include <map>
 #include <string>
 #include <vector>
-
-#include "../being.h"
 
 enum MonsterSoundEvent
 {
@@ -52,14 +52,8 @@ struct MonsterAttack
 class MonsterInfo
 {
     public:
-        /**
-         * Constructor.
-         */
         MonsterInfo();
 
-        /**
-         * Destructor.
-         */
         ~MonsterInfo();
 
         void setName(const std::string &name) { mName = name; }
@@ -105,4 +99,4 @@ class MonsterInfo
         std::list<std::string> mParticleEffects;
 };
 
-#endif
+#endif // MONSTERINFO_H

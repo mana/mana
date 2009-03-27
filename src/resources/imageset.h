@@ -22,9 +22,9 @@
 #ifndef IMAGESET_H
 #define IMAGESET_H
 
-#include <vector>
+#include "resources/resource.h"
 
-#include "resource.h"
+#include <vector>
 
 class Image;
 
@@ -34,7 +34,7 @@ class Image;
 class ImageSet : public Resource
 {
     public:
-        /*
+        /**
          * Cuts the passed image in a grid of sub images.
          */
         ImageSet(Image *img, int w, int h);
@@ -47,12 +47,12 @@ class ImageSet : public Resource
         /**
          * Returns the width of the images in the image set.
          */
-        int getWidth() const { return mWidth; };
+        int getWidth() const { return mWidth; }
 
         /**
          * Returns the height of the images in the image set.
          */
-        int getHeight() const { return mHeight; };
+        int getHeight() const { return mHeight; }
 
         typedef std::vector<Image*>::size_type size_type;
         Image* get(size_type i) const;

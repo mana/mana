@@ -19,28 +19,31 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "label.h"
-#include "scrollarea.h"
-#include "sell.h"
-#include "shop.h"
-#include "shoplistbox.h"
-#include "slider.h"
+#include "gui/sell.h"
 
-#include "widgets/layout.h"
+#include "gui/button.h"
+#include "gui/label.h"
+#include "gui/scrollarea.h"
+#include "gui/shop.h"
+#include "gui/shoplistbox.h"
+#include "gui/slider.h"
 
-#include "../npc.h"
-#include "../units.h"
+#include "gui/widgets/layout.h"
 
-#include "../net/messageout.h"
+#include "npc.h"
+#include "units.h"
+
+#include "net/messageout.h"
 #ifdef TMWSERV_SUPPORT
-#include "../net/tmwserv/gameserver/player.h"
+#include "net/tmwserv/gameserver/player.h"
 #else
-#include "../net/ea/protocol.h"
+#include "net/ea/protocol.h"
 #endif
 
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
+#include "resources/iteminfo.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 #ifdef TMWSERV_SUPPORT
 SellDialog::SellDialog():

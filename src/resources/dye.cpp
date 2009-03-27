@@ -19,16 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "resources/dye.h"
+
+#include "log.h"
+
 #include <sstream>
-
-#include "dye.h"
-
-#include "../log.h"
 
 DyePalette::DyePalette(const std::string &description)
 {
     int size = description.length();
-    if (size == 0) return;
+    if (size == 0)
+        return;
     if (description[0] != '#')
     {
         // TODO: load palette from file.
@@ -113,7 +114,8 @@ Dye::Dye(const std::string &description)
     for (int i = 0; i < 7; ++i)
         mDyePalettes[i] = 0;
 
-    if (description.empty()) return;
+    if (description.empty())
+        return;
 
     std::string::size_type next_pos = 0, length = description.length();
     do
@@ -156,7 +158,8 @@ Dye::~Dye()
 void Dye::update(int color[3]) const
 {
     int cmax = std::max(color[0], std::max(color[1], color[2]));
-    if (cmax == 0) return;
+    if (cmax == 0)
+        return;
 
     int cmin = std::min(color[0], std::min(color[1], color[2]));
     int intensity = color[0] + color[1] + color[2];
@@ -177,7 +180,8 @@ void Dye::update(int color[3]) const
 void Dye::instantiate(std::string &target, const std::string &palettes)
 {
     std::string::size_type next_pos = target.find('|');
-    if (next_pos == std::string::npos || palettes.empty()) return;
+    if (next_pos == std::string::npos || palettes.empty())
+        return;
     ++next_pos;
 
     std::ostringstream s;
@@ -187,7 +191,8 @@ void Dye::instantiate(std::string &target, const std::string &palettes)
     {
         std::string::size_type pos = next_pos;
         next_pos = target.find(';', pos);
-        if (next_pos == std::string::npos) next_pos = last_pos;
+        if (next_pos == std::string::npos)
+            next_pos = last_pos;
         if (next_pos == pos + 1 && pal_pos != std::string::npos)
         {
             std::string::size_type pal_next_pos = palettes.find(';', pal_pos);

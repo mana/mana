@@ -27,32 +27,25 @@
 
 #include <guichan/listmodel.hpp>
 
-class BuddyList : public gcn::ListModel {
+class BuddyList : public gcn::ListModel
+{
     public:
-        /**
-         * Constructor
-         */
         BuddyList();
-
-        /**
-         * Destructor
-         */
-        virtual ~BuddyList() { }
 
         /**
          * Adds buddy to the list
          */
-        bool addBuddy(const std::string buddy);
+        bool addBuddy(const std::string &buddy);
 
         /**
          * Removes buddy from the list
          */
-        bool removeBuddy(const std::string buddy);
+        bool removeBuddy(const std::string &buddy);
 
         /**
          * Returns the number of buddy on the list
          */
-        int  getNumberOfElements();
+        int getNumberOfElements();
 
         /**
          * Returns the buddy of the number or null
@@ -73,7 +66,7 @@ class BuddyList : public gcn::ListModel {
         typedef std::list<std::string> Buddies;
         typedef Buddies::iterator BuddyIterator;
         Buddies mBuddylist;               /**< Buddy list */
-        std::string mFilename;            /* File to work with */
+        std::string mFilename;            /**< File to work with */
 };
 
 #endif /* BUDDYLIST_H */

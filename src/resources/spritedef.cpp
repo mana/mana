@@ -19,18 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "resources/spritedef.h"
+
+#include "resources/action.h"
+#include "resources/animation.h"
+#include "resources/dye.h"
+#include "resources/image.h"
+#include "resources/imageset.h"
+#include "resources/resourcemanager.h"
+
+#include "log.h"
+
+#include "utils/xml.h"
+
 #include <set>
-
-#include "action.h"
-#include "animation.h"
-#include "dye.h"
-#include "image.h"
-#include "imageset.h"
-#include "resourcemanager.h"
-#include "spritedef.h"
-
-#include "../log.h"
-#include "../utils/xml.h"
 
 Action *SpriteDef::getAction(SpriteAction action) const
 {

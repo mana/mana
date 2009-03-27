@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "emotedb.h"
+#include "resources/emotedb.h"
 
-#include "../animatedsprite.h"
-#include "../log.h"
+#include "animatedsprite.h"
+#include "log.h"
 
-#include "../utils/xml.h"
+#include "utils/xml.h"
 
 namespace
 {
@@ -138,13 +138,13 @@ const EmoteInfo *EmoteDB::get(int id)
     }
 }
 
-const AnimatedSprite* EmoteDB::getAnimation(int id)
+const AnimatedSprite *EmoteDB::getAnimation(int id)
 {
     const EmoteInfo *info = get(id);
     return info->sprites.front()->sprite;
 }
 
-const int& EmoteDB::getLast()
+const int &EmoteDB::getLast()
 {
     return mLastEmote;
 }
