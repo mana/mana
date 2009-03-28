@@ -103,6 +103,16 @@ class ChatWindow : public Window,
         void clearTab();
 
         /**
+         * Switch to the previous tab in order
+         */
+        void prevTab();
+
+        /**
+         * Switch to the next tab in order
+         */
+        void nextTab();
+
+        /**
          * Performs action.
          */
         void action(const gcn::ActionEvent &event);

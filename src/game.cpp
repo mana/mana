@@ -722,6 +722,17 @@ void Game::handleInput()
                         used = true;
                 }
 
+            if (keyboard.isKeyActive(keyboard.KEY_PREV_CHAT_TAB))
+            {
+                chatWindow->prevTab();
+                return;
+            }
+            else if (keyboard.isKeyActive(keyboard.KEY_NEXT_CHAT_TAB))
+            {
+                chatWindow->nextTab();
+                return;
+            }
+
             const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
             switch (tKey)
             {

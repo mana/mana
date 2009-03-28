@@ -159,6 +159,28 @@ void ChatWindow::clearTab()
     clearTab(getFocused());
 }
 
+void ChatWindow::prevTab()
+{
+    int tab = mChatTabs->getSelectedTabIndex();
+
+    if (tab == 0)
+        tab = mChatTabs->getNumberOfTabs();
+    tab--;
+
+    mChatTabs->setSelectedTab(tab);
+}
+
+void ChatWindow::nextTab()
+{
+    int tab = mChatTabs->getSelectedTabIndex();
+
+    tab++;
+    if (tab == mChatTabs->getNumberOfTabs())
+        tab = 0;
+
+    mChatTabs->setSelectedTab(tab);
+}
+
 void ChatWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "chatinput")

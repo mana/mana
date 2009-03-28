@@ -205,6 +205,8 @@ class KeyboardConfig
             KEY_TOGGLE_CHAT,
             KEY_SCROLL_CHAT_UP,
             KEY_SCROLL_CHAT_DOWN,
+            KEY_PREV_CHAT_TAB,
+            KEY_NEXT_CHAT_TAB,
             KEY_OK,
             KEY_QUIT,
             KEY_IGNORE_INPUT_1,
