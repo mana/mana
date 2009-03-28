@@ -19,50 +19,48 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
+#include "gui/button.h"
+#include "gui/char_select.h"
+#include "gui/confirm_dialog.h"
+#include "gui/label.h"
+#include "gui/ok_dialog.h"
+#include "gui/playerbox.h"
+#include "gui/textfield.h"
+
+#ifdef TMWSERV_SUPPORT
+#include "gui/radiobutton.h"
+#include "gui/slider.h"
+
+#include "gui/unregisterdialog.h"
+#include "gui/changepassworddialog.h"
+#include "gui/changeemaildialog.h"
+
+#include "logindata.h"
+
+#include "net/tmwserv/accountserver/account.h"
+#include "net/tmwserv/charserverhandler.h"
+#else
+#include "net/ea/charserverhandler.h"
+#endif
+
+#include "gui/widgets/layout.h"
+
+#include "game.h"
+#include "localplayer.h"
+#include "main.h"
+#include "units.h"
+
+#include "net/messageout.h"
+
+#include "resources/colordb.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
 
-#include "button.h"
-#include "char_select.h"
-#include "confirm_dialog.h"
-#include "label.h"
-#include "ok_dialog.h"
-#include "playerbox.h"
-#include "textfield.h"
-
-#ifdef TMWSERV_SUPPORT
-#include "radiobutton.h"
-#include "slider.h"
-
-#include "unregisterdialog.h"
-#include "changepassworddialog.h"
-#include "changeemaildialog.h"
-
-#include "../logindata.h"
-
-#include "../net/tmwserv/accountserver/account.h"
-#include "../net/tmwserv/charserverhandler.h"
-#else
-#include "../net/ea/charserverhandler.h"
-#endif
-
-#include "widgets/layout.h"
-
-#include "../game.h"
-#include "../localplayer.h"
-#include "../main.h"
-#include "../units.h"
-
-#include "../net/messageout.h"
-
-#include "../resources/colordb.h"
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
-#include "../utils/stringutils.h"
-
-#define MAX_SLOT 2
+#include <string>
 
 // Defined in main.cpp, used here for setting the char create dialog
 extern CharServerHandler charServerHandler;
@@ -258,7 +256,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         {
             new CharDeleteConfirm(this);
         }
-        else if (n_character <= MAX_SLOT)
+        else if (n_character <= maxSlot)
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
