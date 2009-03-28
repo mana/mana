@@ -201,11 +201,7 @@ Being::TargetCursorSize Monster::getTargetCursorSize() const
 
 const MonsterInfo &Monster::getInfo() const
 {
-#ifdef TMWSERV_SUPPORT
     return MonsterDB::get(mJob);
-#else
-    return MonsterDB::get(mJob - 1002);
-#endif
 }
 
 void Monster::setShowName(bool show)

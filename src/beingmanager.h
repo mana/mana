@@ -50,11 +50,7 @@ class BeingManager
         /**
          * Create a being and add it to the list of beings.
          */
-#ifdef TMWSERV_SUPPORT
-        Being *createBeing(int id, int type, int subtype);
-#else
-        Being *createBeing(int id, Uint16 job);
-#endif
+        Being *createBeing(int id, Being::Type type, int subtype);
 
         /**
          * Remove a Being.
