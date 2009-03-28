@@ -80,9 +80,9 @@ void SpeechBubble::setText(std::string text, bool showName)
 
     const int fontHeight = getFont()->getHeight();
     const int nameHeight = showName ? mCaption->getHeight() + 
-                           getPadding() / 2 : 0;
+                           getPadding() : 0;
     const int numRows = mSpeechBox->getNumberOfRows();
-    const int height = (numRows * fontHeight) + nameHeight + 2 * getPadding();
+    const int height = (numRows * fontHeight) + nameHeight + getPadding();
 
     if (width < speechWidth)
         width = speechWidth;
