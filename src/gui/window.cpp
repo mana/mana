@@ -48,6 +48,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent, const std
     mShowTitle(true),
     mModal(modal),
     mCloseButton(false),
+    mStickyButton(false),
     mSticky(false),
     mMinWinWidth(100),
     mMinWinHeight(40),
@@ -135,8 +136,18 @@ void Window::draw(gcn::Graphics *graphics)
     {
         g->drawImage(mSkin->getCloseImage(),
             getWidth() - mSkin->getCloseImage()->getWidth() - getPadding(),
-            getPadding()
-        );
+            getPadding());
+    }
+
+    // Draw Sticky Button
+    if (mStickyButton)
+    {
+        Image *button = mSkin->getStickyImage(mSticky);
+        int x = getWidth() - button->getWidth() - getPadding();
+        if (mCloseButton)
+            x -= mSkin->getCloseImage()->getWidth();
+
+        g->drawImage(button, x, getPadding());
     }
 
     drawChildren(graphics);
@@ -283,6 +294,11 @@ bool Window::isResizable() const
     return mGrip;
 }
 
+void Window::setStickyButton(bool flag)
+{
+    mStickyButton = flag;
+}
+
 void Window::setSticky(bool sticky)
 {
     mSticky = sticky;
@@ -290,7 +306,12 @@ void Window::setSticky(bool sticky)
 
 void Window::setVisible(bool visible)
 {
-    gcn::Window::setVisible(isSticky() || visible);
+    setVisible(visible, false);
+}
+
+void Window::setVisible(bool visible, bool forceSticky)
+{
+    gcn::Window::setVisible((!forceSticky && isSticky()) || visible);
 }
 
 void Window::scheduleDelete()
@@ -320,6 +341,22 @@ void Window::mousePressed(gcn::MouseEvent &event)
             if (closeButtonRect.isPointInRect(x, y))
             {
                 close();
+            }
+        }
+
+        // Handle sticky button
+        if (mStickyButton)
+        {
+            Image *button = mSkin->getStickyImage(mSticky);
+            int rx = getWidth() - button->getWidth() - getPadding();
+            if (mCloseButton)
+                rx -= mSkin->getCloseImage()->getWidth();
+            gcn::Rectangle stickyButtonRect(rx, getPadding(),
+                                    button->getWidth(), button->getHeight());
+
+            if (stickyButtonRect.isPointInRect(x, y))
+            {
+                setSticky(!isSticky());
             }
         }
 
@@ -467,7 +504,12 @@ void Window::loadWindowState()
 
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
                 (int) config.getValue(name + "WinY", mDefaultY));
-    setVisible((bool) config.getValue(name + "Visible", false));
+
+    if (mCloseButton)
+        setVisible((bool) config.getValue(name + "Visible", false));
+
+    if (mStickyButton)
+        setSticky((bool) config.getValue(name + "Sticky", isSticky()));
 
     if (skinName.compare(mSkin->getFilePath()) != 0)
     {
@@ -504,7 +546,13 @@ void Window::saveWindowState()
     {
         config.setValue(mWindowName + "WinX", getX());
         config.setValue(mWindowName + "WinY", getY());
-        config.setValue(mWindowName + "Visible", isVisible());
+
+        if (mCloseButton)
+            config.setValue(mWindowName + "Visible", isVisible());
+
+        if (mStickyButton)
+            config.setValue(mWindowName + "Sticky", isSticky());
+
         config.setValue(mWindowName + "Skin", mSkin->getFilePath());
 
         if (mGrip)

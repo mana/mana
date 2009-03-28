@@ -145,22 +145,33 @@ class Window : public gcn::Window, gcn::WidgetListener
         void setShowTitle(bool flag) { mShowTitle = flag; }
 
         /**
+         * Sets whether or not the window has a sticky button.
+         */
+        void setStickyButton(bool flag);
+
+        /**
           * Sets whether the window is sticky. A sticky window will not have
           * its visibility set to false on a general setVisible(false) call.
+          * Use this to set the default before you call loadWindowState().
           */
         void setSticky(bool sticky);
 
         /**
          * Returns whether the window is sticky.
          */
-        bool isSticky() const
-        { return mSticky; }
+        bool isSticky() const { return mSticky; }
 
         /**
          * Overloads window setVisible by Guichan to allow sticky window
          * handling.
          */
         void setVisible(bool visible);
+
+        /**
+         * Overloads window setVisible by Guichan to allow sticky window
+         * handling, or not, if you force the sticky state.
+         */
+        void setVisible(bool visible, bool forceSticky);
 
         /**
          * Returns the parent window.
@@ -325,7 +336,8 @@ class Window : public gcn::Window, gcn::WidgetListener
         bool mShowTitle;              /**< Window has a title bar */
         bool mModal;                  /**< Window is modal */
         bool mCloseButton;            /**< Window has a close button */
-        bool mSticky;                 /**< Window resists minimization */
+        bool mStickyButton;           /**< Window has a sticky button */
+        bool mSticky;                 /**< Window resists hiding*/
         int mMinWinWidth;             /**< Minimum window width */
         int mMinWinHeight;            /**< Minimum window height */
         int mMaxWinWidth;             /**< Maximum window width */
