@@ -28,6 +28,7 @@ gui_DATA =				\
 	resize.png			\
 	selection.png			\
 	slider.png			\
+	sticky_button.png		\
 	speechbubble.xml		\
 	tab.png				\
 	tabselected.png			\
