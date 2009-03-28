@@ -69,9 +69,12 @@ class ItemContainer : public gcn::Widget,
 
         void keyPressed(gcn::KeyEvent &event);
         void keyReleased(gcn::KeyEvent &event);
+
         void mousePressed(gcn::MouseEvent &event);
         void mouseDragged(gcn::MouseEvent &event);
         void mouseReleased(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
+        void mouseExited(gcn::MouseEvent &event);
 
         /**
          * Returns the selected item.
@@ -125,9 +128,6 @@ class ItemContainer : public gcn::Widget,
          */
         void keyAction();
 
-        void mouseExited(gcn::MouseEvent &event);
-        void mouseMoved(gcn::MouseEvent &event);
-
         /**
          * Moves the highlight in the direction specified.
          *
@@ -158,11 +158,11 @@ class ItemContainer : public gcn::Widget,
         /**
          * Gets the slot index based on the cursor position.
          *
-         * @param posX The X Coordinate position.
-         * @param posY The Y Coordinate position.
+         * @param x The X coordinate position.
+         * @param y The Y coordinate position.
          * @return The slot index on success, -1 on failure.
          */
-        int getSlotIndex(int posX, int posY) const;
+        int getSlotIndex(int x, int y) const;
 
         Inventory *mInventory;
         int mGridColumns, mGridRows;

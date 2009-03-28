@@ -281,9 +281,11 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
     };
 
     int index = getSlotIndex(event.getX(), event.getY());
-    if (index == Inventory::NO_SLOT_INDEX) return;
+    if (index == Inventory::NO_SLOT_INDEX)
+        return;
     Item *item = mInventory->getItem(index);
-    if (item == mSelectedItem) return;
+    if (item == mSelectedItem)
+        return;
     player_node->moveInvItem(mSelectedItem, index);
     setSelectedItem(NULL);
     mSelectionStatus = SEL_NONE;
@@ -314,12 +316,12 @@ void ItemContainer::mouseExited(gcn::MouseEvent &event)
     mItemPopup->setVisible(false);
 }
 
-int ItemContainer::getSlotIndex(const int posX, const int posY) const
+int ItemContainer::getSlotIndex(int x, int y) const
 {
-    if (getDimension().isPointInRect(posX, posY))
+    if (x < getWidth() && y < getHeight())
     {
         // Takes into account, boxes are overlapping each other.
-        return (posY / (BOX_HEIGHT - 1)) * mGridColumns + (posX / (BOX_WIDTH - 1));
+        return (y / (BOX_HEIGHT - 1)) * mGridColumns + (x / (BOX_WIDTH - 1));
     }
     return Inventory::NO_SLOT_INDEX;
 }

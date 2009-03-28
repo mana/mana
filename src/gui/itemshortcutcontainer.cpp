@@ -252,4 +252,3 @@ void ItemShortcutContainer::mouseExited(gcn::MouseEvent &event)
 {
     mItemPopup->setVisible(false);
 }
-
