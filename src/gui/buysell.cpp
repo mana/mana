@@ -19,17 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
 #include "buysell.h"
 
-#include "../npc.h"
+#include "npc.h"
 
-#include "../net/messageout.h"
-#ifdef EATHENA_SUPPORT
-#include "../net/ea/protocol.h"
-#endif
+#include "gui/button.h"
 
-#include "../utils/gettext.h"
+#include "net/messageout.h"
+#include "net/ea/protocol.h"
+
+#include "utils/gettext.h"
 
 BuySellDialog::BuySellDialog():
     Window(_("Shop"))
@@ -96,9 +95,7 @@ void BuySellDialog::action(const gcn::ActionEvent &event)
         return;
     }
 
-#ifdef EATHENA_SUPPORT
     MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(current_npc);
     outMsg.writeInt8(action);
-#endif
 }
