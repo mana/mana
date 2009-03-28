@@ -49,7 +49,7 @@ ChatTab::ChatTab(const std::string &name) : Tab()
 {
     setCaption(name);
 
-    mTextOutput = new BrowserBox;
+    mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     mTextOutput->setOpaque(false);
     mTextOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
     mTextOutput->setLinkHandler(chatWindow->mItemLinkHandler);
