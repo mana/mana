@@ -114,7 +114,8 @@ EquipmentWindow::EquipmentWindow():
 
 EquipmentWindow::~EquipmentWindow()
 {
-    mBackground->decRef();
+    if (mBackground != NULL)
+        mBackground->decRef();
     delete mItemPopup;
     delete mUnequip;
 }
