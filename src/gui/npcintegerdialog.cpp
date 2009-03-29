@@ -36,15 +36,8 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 NpcIntegerDialog::NpcIntegerDialog()
-#else
-NpcIntegerDialog::NpcIntegerDialog(Network *network)
-#endif
     : Window(_("NPC Number Request"))
-#ifdef EATHENA_SUPPORT
-    , mNetwork(network)
-#endif
 {
     setWindowName("NPCInteger");
     mValueField = new IntTextField;
@@ -127,8 +120,7 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
         NPC::isTalking = false;
 
 #ifdef EATHENA_SUPPORT
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_NPC_INT_RESPONSE);
+        MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
         outMsg.writeInt32(current_npc);
         outMsg.writeInt32(mValueField->getValue());
 #endif

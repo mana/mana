@@ -24,20 +24,13 @@
 
 #include "player.h"
 
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 class Graphics;
 class Text;
 
 class NPC : public Player
 {
     public:
-#ifdef TMWSERV_SUPPORT
-        NPC(int id, int sprite, Map *map);
-#else
-        NPC(int id, int job, Map *map, Network *network);
-#endif
+        NPC(int id, int job, Map *map);
 
         ~NPC();
 
@@ -56,6 +49,7 @@ class NPC : public Player
         { return 0x83; } // blocked like a monster by walls, monsters and characters ( bin 1000 0011)
 
         static bool isTalking;
+
     protected:
         /**
          * Gets the way a monster blocks pathfinding for other objects
@@ -63,10 +57,8 @@ class NPC : public Player
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_CHARACTER; } //blocks like a player character
 
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
         void updateCoords();
+
     private:
         Text *mName;
 };

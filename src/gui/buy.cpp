@@ -46,15 +46,8 @@
 #include "utils/gettext.h"
 #include "utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 BuyDialog::BuyDialog():
-#else
-BuyDialog::BuyDialog(Network *network):
-#endif
     Window(_("Buy")),
-#ifndef TMWSERV_SUPPORT
-    mNetwork(network),
-#endif
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     setWindowName("Buy");
@@ -199,8 +192,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         Net::GameServer::Player::tradeWithNPC
             (mShopItems->at(selectedItem)->getId(), mAmountItems);
 #else
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
+        MessageOut outMsg(CMSG_NPC_BUY_REQUEST);
         outMsg.writeInt16(8);
         outMsg.writeInt16(mAmountItems);
         outMsg.writeInt16(mShopItems->at(selectedItem)->getId());

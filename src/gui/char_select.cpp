@@ -19,50 +19,48 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
+#include "gui/button.h"
+#include "gui/char_select.h"
+#include "gui/confirm_dialog.h"
+#include "gui/label.h"
+#include "gui/ok_dialog.h"
+#include "gui/playerbox.h"
+#include "gui/textfield.h"
+
+#ifdef TMWSERV_SUPPORT
+#include "gui/radiobutton.h"
+#include "gui/slider.h"
+
+#include "gui/unregisterdialog.h"
+#include "gui/changepassworddialog.h"
+#include "gui/changeemaildialog.h"
+
+#include "logindata.h"
+
+#include "net/tmwserv/accountserver/account.h"
+#include "net/tmwserv/charserverhandler.h"
+#else
+#include "net/ea/charserverhandler.h"
+#endif
+
+#include "gui/widgets/layout.h"
+
+#include "game.h"
+#include "localplayer.h"
+#include "main.h"
+#include "units.h"
+
+#include "net/messageout.h"
+
+#include "resources/colordb.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
 
-#include "button.h"
-#include "char_select.h"
-#include "confirm_dialog.h"
-#include "label.h"
-#include "ok_dialog.h"
-#include "playerbox.h"
-#include "textfield.h"
-
-#ifdef TMWSERV_SUPPORT
-#include "radiobutton.h"
-#include "slider.h"
-
-#include "unregisterdialog.h"
-#include "changepassworddialog.h"
-#include "changeemaildialog.h"
-
-#include "../logindata.h"
-
-#include "../net/tmwserv/accountserver/account.h"
-#include "../net/tmwserv/charserverhandler.h"
-#else
-#include "../net/ea/charserverhandler.h"
-#endif
-
-#include "widgets/layout.h"
-
-#include "../game.h"
-#include "../localplayer.h"
-#include "../main.h"
-#include "../units.h"
-
-#include "../net/messageout.h"
-
-#include "../resources/colordb.h"
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
-#include "../utils/stringutils.h"
-
-#define MAX_SLOT 2
+#include <string>
 
 // Defined in main.cpp, used here for setting the char create dialog
 extern CharServerHandler charServerHandler;
@@ -100,12 +98,13 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    LoginData *loginData):
     Window(_("Account and Character Management")),
-    mCharInfo(charInfo), mCharSelected(false), mLoginData(loginData)
+    mCharInfo(charInfo),
+    mCharSelected(false),
+    mLoginData(loginData)
 #else
-CharSelectDialog::CharSelectDialog(Network *network,
-                                   LockedArray<LocalPlayer*> *charInfo,
+CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    Gender gender):
-    Window(_("Select Character")), mNetwork(network),
+    Window(_("Select Character")),
     mCharInfo(charInfo),
     mCharSelected(false),
     mGender(gender)
@@ -257,12 +256,11 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         {
             new CharDeleteConfirm(this);
         }
-        else if (n_character <= MAX_SLOT)
+        else if (n_character <= maxSlot)
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
-                new CharCreateDialog(this, mCharInfo->getPos(),
-                                     mNetwork, mGender);
+                new CharCreateDialog(this, mCharInfo->getPos(), mGender);
             charServerHandler.setCharCreateDialog(charCreateDialog);
         }
     }
@@ -348,8 +346,7 @@ void CharSelectDialog::attemptCharDelete()
     Net::AccountServer::Account::deleteCharacter(mCharInfo->getPos());
 #else
     // Request character deletion
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0068);
+    MessageOut outMsg(0x0068);
     outMsg.writeInt32(mCharInfo->getEntry()->mCharId);
     outMsg.writeString("a@a.com", 40);
 #endif
@@ -362,8 +359,7 @@ void CharSelectDialog::attemptCharSelect()
     Net::AccountServer::Account::selectCharacter(mCharInfo->getPos());
 #else
     // Request character selection
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0066);
+    MessageOut outMsg(0x0066);
     outMsg.writeInt8(mCharInfo->getPos());
 #endif
     mCharInfo->lock();
@@ -400,13 +396,10 @@ bool CharSelectDialog::selectByName(const std::string &name)
 #ifdef TMWSERV_SUPPORT
 CharCreateDialog::CharCreateDialog(Window *parent, int slot):
 #else
-CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
+CharCreateDialog::CharCreateDialog(Window *parent, int slot,
                                    Gender gender):
 #endif
     Window(_("Create Character"), true, parent),
-#ifndef TMWSERV_SUPPORT
-    mNetwork(network),
-#endif
     mSlot(slot)
 {
     mPlayer = new Player(0, 0, NULL);
@@ -693,8 +686,7 @@ int CharCreateDialog::getDistributedPoints()
 void CharCreateDialog::attemptCharCreate()
 {
     // Send character infos
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0067);
+    MessageOut outMsg(0x0067);
     outMsg.writeString(getName(), 24);
     outMsg.writeInt8(5);
     outMsg.writeInt8(5);

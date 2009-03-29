@@ -34,7 +34,7 @@ class Image;
 class Skin
 {
     public:
-        Skin(ImageRect skin, Image *close,
+        Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
              const std::string &filePath,
              const std::string &name = "");
 
@@ -63,6 +63,12 @@ class Skin
         Image *getCloseImage() const { return closeImage; }
 
         /**
+         * Returns the image used by a sticky button for this skin.
+         */
+        Image *getStickyImage(bool state) const
+        { return state ? stickyImageDown : stickyImageUp; }
+
+        /**
          * Returns the number of instances which use this skin.
          */
         int getNumberOfInstances() const { return instances; }
@@ -89,6 +95,8 @@ class Skin
         std::string mName;         /**< Name of the skin to use */
         ImageRect border;          /**< The window border and background */
         Image *closeImage;         /**< Close Button Image */
+        Image *stickyImageUp;      /**< Sticky Button Image */
+        Image *stickyImageDown;    /**< Sticky Button Image */
 };
 
 // Map containing all window skins

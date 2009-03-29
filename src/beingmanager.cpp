@@ -59,12 +59,9 @@ class FindBeingFunctor
         Being::Type type;
 } beingFinder;
 
-#ifdef EATHENA_SUPPORT
-BeingManager::BeingManager(Network *network):
-    mNetwork(network)
+BeingManager::BeingManager()
 {
 }
-#endif
 
 BeingManager::~BeingManager()
 {
@@ -84,47 +81,27 @@ void BeingManager::setPlayer(LocalPlayer *player)
     mBeings.push_back(player);
 }
 
-#ifdef TMWSERV_SUPPORT
-Being *BeingManager::createBeing(int id, int type, int subtype)
-#else
-Being *BeingManager::createBeing(int id, Uint16 job)
-#endif
+Being *BeingManager::createBeing(int id, Being::Type type, int subtype)
 {
     Being *being;
 
-#ifdef TMWSERV_SUPPORT
     switch (type)
     {
-        case OBJECT_PLAYER:
+        case Being::PLAYER:
             being = new Player(id, subtype, mMap);
             break;
-        case OBJECT_NPC:
+        case Being::NPC:
             being = new NPC(id, subtype, mMap);
             break;
-        case OBJECT_MONSTER:
+        case Being::MONSTER:
             being = new Monster(id, subtype, mMap);
+            break;
+        case Being::UNKNOWN:
+            being = new Being(id, subtype, mMap);
             break;
         default:
             assert(false);
     }
-#else
-    if (job <= 25 || (job >= 4001 && job <= 4049))
-        being = new Player(id, job, mMap);
-    else if (job >= 46 && job <= 1000)
-        being = new NPC(id, job, mMap, mNetwork);
-    else if (job > 1000 && job <= 2000)
-        being = new Monster(id, job, mMap);
-    else
-        being = new Being(id, job, mMap);
-
-    // Player or NPC
-    if (job <= 1000 || (job >= 4001 && job <= 4049))
-    {
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(0x0094);
-        outMsg.writeInt32(id);//readLong(2));
-    }
-#endif
 
     mBeings.push_back(being);
     return being;

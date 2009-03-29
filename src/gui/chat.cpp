@@ -27,6 +27,7 @@
 #include "gui/scrollarea.h"
 #include "gui/sdlinput.h"
 
+#include "gui/widgets/chattab.h"
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/whispertab.h"
 
@@ -39,13 +40,8 @@
 
 #include <guichan/focushandler.hpp>
 
-#ifdef TMWSERV_SUPPORT
 ChatWindow::ChatWindow():
-    Window("Chat"),
-#else
-ChatWindow::ChatWindow(Network * network):
-    Window(""), mNetwork(network),
-#endif
+    Window(_("Chat")),
     mTmpVisible(false)
 {
     setWindowName("Chat");
@@ -61,7 +57,7 @@ ChatWindow::ChatWindow(Network * network):
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
-    mChatTabs = new TabbedArea();
+    mChatTabs = new TabbedArea;
 
     add(mChatTabs);
     add(mChatInput);
@@ -82,7 +78,7 @@ ChatWindow::ChatWindow(Network * network):
     // run the @assert command for the player again. Convenience for GMs.
     if (config.getValue(player_node->getName() + "GMassert", 0)) {
         std::string cmd = "@assert";
-        chatSend(cmd);
+        chatInput(cmd);
     }
 #endif
     mRecorder = new Recorder(this);
@@ -163,6 +159,28 @@ void ChatWindow::clearTab()
     clearTab(getFocused());
 }
 
+void ChatWindow::prevTab()
+{
+    int tab = mChatTabs->getSelectedTabIndex();
+
+    if (tab == 0)
+        tab = mChatTabs->getNumberOfTabs();
+    tab--;
+
+    mChatTabs->setSelectedTab(tab);
+}
+
+void ChatWindow::nextTab()
+{
+    int tab = mChatTabs->getSelectedTabIndex();
+
+    tab++;
+    if (tab == mChatTabs->getNumberOfTabs())
+        tab = 0;
+
+    mChatTabs->setSelectedTab(tab);
+}
+
 void ChatWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "chatinput")
@@ -180,7 +198,7 @@ void ChatWindow::action(const gcn::ActionEvent &event)
             mCurHist = mHistory.end();
 
             // Send the message to the server
-            chatSend(message);
+            chatInput(message);
 
             // Clear the text from the chat input
             mChatInput->setText("");
@@ -258,10 +276,10 @@ void ChatWindow::removeWhisper(std::string nick)
     mWhispers.erase(nick);
 }
 
-void ChatWindow::chatSend(std::string &msg)
+void ChatWindow::chatInput(std::string &msg)
 {
     ChatTab *tab = getFocused();
-    tab->chatSend(msg);
+    tab->chatInput(msg);
 }
 
 void ChatWindow::doPresent()
@@ -298,12 +316,12 @@ void ChatWindow::doPresent()
 
 
         mRecorder->record(timeStr.str() + _("Present: ") + response + ".");
-        localChatTab->chatLog(_("Attendance written to record log."),
+        getFocused()->chatLog(_("Attendance written to record log."),
                               BY_SERVER, true);
     }
     else
     {
-        localChatTab->chatLog(_("Present: ") + response, BY_SERVER);
+        getFocused()->chatLog(_("Present: ") + response, BY_SERVER);
     }
 }
 
@@ -377,6 +395,7 @@ void ChatWindow::setRecordingFile(const std::string &msg)
 void ChatWindow::whisper(std::string nick, std::string mes, bool own)
 {
     if (mes.length() == 0) return;
+
     std::string playerName = player_node->getName();
     std::string tempNick = nick;
 
@@ -395,7 +414,7 @@ void ChatWindow::whisper(std::string nick, std::string mes, bool own)
     }
 
     if (own)
-        tab->chatSend(mes);
+        tab->chatInput(mes);
     else
         tab->chatLog(nick, mes);
 }

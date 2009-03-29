@@ -51,9 +51,8 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-StorageWindow::StorageWindow(Network *network, int invSize):
+StorageWindow::StorageWindow(int invSize):
     Window(_("Storage")),
-    mNetwork(network),
     mMaxSlots(invSize),
     mItemDesc(false)
 {
@@ -188,24 +187,21 @@ Item* StorageWindow::getSelectedItem() const
     return mItems->getSelectedItem();
 }
 
-void StorageWindow::addStore(Item* item, int ammount)
+void StorageWindow::addStore(Item *item, int ammount)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_MOVE_TO_STORAGE);
-    outMsg.writeInt16(item->getInvIndex());
+    MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt32(ammount);
 }
 
-void StorageWindow::removeStore(Item* item, int ammount)
+void StorageWindow::removeStore(Item *item, int ammount)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CSMG_MOVE_FROM_STORAGE);
-    outMsg.writeInt16(item->getInvIndex());
+    MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
+    outMsg.writeInt16(item->getInvIndex() + STORAGE_OFFSET);
     outMsg.writeInt32(ammount);
 }
 
 void StorageWindow::close()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_CLOSE_STORAGE);
+    MessageOut outMsg(CMSG_CLOSE_STORAGE);
 }

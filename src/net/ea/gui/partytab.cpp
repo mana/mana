@@ -19,30 +19,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "channeltab.h"
+#include <guichan/widgets/label.hpp>
 
-#include "channel.h"
+#include "partytab.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/chatserver/chatserver.h"
-#include "net/tmwserv/gameserver/player.h"
-#else
 #include "net/messageout.h"
+
+#include "net/ea/party.h"
 #include "net/ea/protocol.h"
-#endif
 
-ChannelTab::ChannelTab(Channel *channel) : ChatTab(channel->getName()),
-            mChannel(channel)
+#include "resources/iteminfo.h"
+#include "resources/itemdb.h"
+
+#include "utils/dtor.h"
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
+
+PartyTab::PartyTab() : ChatTab(_("Party"))
 {
-    channel->setTab(this);
 }
 
-ChannelTab::~ChannelTab()
+PartyTab::~PartyTab()
 {
 }
 
-void ChannelTab::handleInput(const std::string &msg) {
-#ifdef TMSERV_SUPPORT
-    Net::ChatServer::chat(getId(), msg);
-#endif
+void PartyTab::handleInput(const std::string &msg) {
+    // TODO
+}
+
+void PartyTab::handleCommand(std::string msg) {
+    // TODO
 }

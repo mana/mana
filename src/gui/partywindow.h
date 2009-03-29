@@ -77,7 +77,8 @@ class PartyWindow : public Window, gcn::ActionListener
         /**
          * Show party invite
          */
-        void showPartyInvite(const std::string &inviter);
+        void showPartyInvite(const std::string &inviter,
+                             const std::string &partyName = "");
 
         /**
          * Handle events

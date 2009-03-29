@@ -170,9 +170,6 @@ void ScrollArea::logic()
 
 void ScrollArea::draw(gcn::Graphics *graphics)
 {
-    if (!isVisible())
-        return;
-
     if (mVBarVisible)
     {
         drawUpButton(graphics);

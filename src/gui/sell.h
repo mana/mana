@@ -30,9 +30,6 @@
 #include "window.h"
 
 class Item;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 class ShopItems;
 class ShopListBox;
 
@@ -49,11 +46,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          *
          * @see Window::Window
          */
-#ifdef TMWSERV_SUPPORT
         SellDialog();
-#else
-        SellDialog(Network *network);
-#endif
 
         /**
          * Destructor
@@ -111,9 +104,6 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void updateButtonsAndLabels();
 
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
         gcn::Button *mSellButton;
         gcn::Button *mQuitButton;
         gcn::Button *mAddMaxButton;

@@ -26,9 +26,6 @@
 
 class LocalPlayer;
 class Map;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 
 typedef std::list<Being*> Beings;
 typedef Beings::iterator BeingIterator;
@@ -36,9 +33,7 @@ typedef Beings::iterator BeingIterator;
 class BeingManager
 {
     public:
-#ifdef EATHENA_SUPPORT
-        BeingManager(Network *network);
-#endif
+        BeingManager();
 
         ~BeingManager();
 
@@ -55,11 +50,7 @@ class BeingManager
         /**
          * Create a being and add it to the list of beings.
          */
-#ifdef TMWSERV_SUPPORT
-        Being *createBeing(int id, int type, int subtype);
-#else
-        Being *createBeing(int id, Uint16 job);
-#endif
+        Being *createBeing(int id, Being::Type type, int subtype);
 
         /**
          * Remove a Being.
@@ -130,9 +121,6 @@ class BeingManager
     protected:
         Beings mBeings;
         Map *mMap;
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
 };
 
 extern BeingManager *beingManager;

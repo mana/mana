@@ -139,7 +139,7 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
             }
             else
             {
-                being = beingManager->createBeing(id, type, 0);
+                being = beingManager->createBeing(id, Being::PLAYER, 0);
                 being->setName(name);
             }
             Player *p = static_cast< Player * >(being);
@@ -154,7 +154,8 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
         case OBJECT_NPC:
         {
             int subtype = msg.readInt16();
-            being = beingManager->createBeing(id, type, subtype);
+            being = beingManager->createBeing(id, type == OBJECT_MONSTER ?
+                                    Being::MONSTER : Being::NPC, subtype);
             std::string name = msg.readString();
             if (name.length() > 0) being->setName(name);
         } break;

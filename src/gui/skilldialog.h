@@ -22,20 +22,19 @@
 #ifndef SKILL_H
 #define SKILL_H
 
-#include <vector>
-#include <list>
+#include "gui/window.h"
+#include "gui/gccontainer.h"
+
+#include "guichanfwd.h"
 
 #include <guichan/listmodel.hpp>
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
-#include "gccontainer.h"
-
-#include "../guichanfwd.h"
+#include <list>
 
 class ProgressBar;
 class Icon;
-class Skill_Tab;
+class SkillTab;
 
 /**
  * The skill dialog.
@@ -71,7 +70,7 @@ class SkillDialog : public Window, public gcn::ActionListener
         void draw(gcn::Graphics *g);
 
     private:
-        std::list<Skill_Tab*> mTabs;
+        std::list<SkillTab*> mTabs;
 };
 
 extern SkillDialog *skillDialog;

@@ -37,15 +37,8 @@
 
 #include "../utils/gettext.h"
 
-#ifdef TMWSERV_SUPPORT
 NpcTextDialog::NpcTextDialog()
-#else
-NpcTextDialog::NpcTextDialog(Network *network)
-#endif
     : Window(_("NPC"))
-#ifdef EATHENA_SUPPORT
-    , mNetwork(network)
-#endif
     , mState(NPC_TEXT_STATE_WAITING)
 {
     setWindowName("NPCText");
@@ -136,8 +129,7 @@ void NpcTextDialog::nextDialog(int npcID)
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::talkToNPC(npcID, false);
 #else
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
+    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(npcID);
 #endif
 }
@@ -145,8 +137,7 @@ void NpcTextDialog::nextDialog(int npcID)
 void NpcTextDialog::closeDialog(int npcID)
 {
 #ifdef EATHENA_SUPPORT
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_CLOSE);
+    MessageOut outMsg(CMSG_NPC_CLOSE);
     outMsg.writeInt32(npcID);
 #endif
 }

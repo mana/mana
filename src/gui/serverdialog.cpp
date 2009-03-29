@@ -80,7 +80,7 @@ ServerDialog::ServerDialog(LoginData *loginData):
     mPortField = new TextField(toString(mLoginData->port));
 
     // Add the most used servers from config
-    mMostUsedServersListModel = new ServersListModel();
+    mMostUsedServersListModel = new ServersListModel;
     Server currentServer;
     std::string currentConfig = "";
     for (int i=0; i<=MAX_SERVERLIST; i++)
@@ -101,7 +101,7 @@ ServerDialog::ServerDialog(LoginData *loginData):
 
     mMostUsedServersListBox = new ListBox(NULL);
     mMostUsedServersListBox->setListModel(mMostUsedServersListModel);
-    mMostUsedServersScrollArea = new ScrollArea();
+    mMostUsedServersScrollArea = new ScrollArea;
     mMostUsedServersDropDown = new DropDown(mMostUsedServersListModel,
         mMostUsedServersScrollArea, mMostUsedServersListBox);
 

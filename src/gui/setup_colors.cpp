@@ -79,7 +79,7 @@ Setup_Colors::Setup_Colors() :
     mGradTypeSlider->addActionListener(this);
     mGradTypeSlider->setEnabled(false);
 
-    mGradTypeText = new Label();
+    mGradTypeText = new Label;
 
     mRedLabel = new Label(_("Red: "));
 

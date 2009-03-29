@@ -33,9 +33,6 @@ class ImageSet;
 class Inventory;
 class Item;
 class Map;
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 
 #ifdef TMWSERV_SUPPORT
 
@@ -155,10 +152,6 @@ class LocalPlayer : public Player
 
         virtual void setName(const std::string &name);
 
-#ifdef EATHENA_SUPPORT
-        void setNetwork(Network *network) { mNetwork = network; }
-        Network *getNetwork() {return mNetwork; }
-#endif
         virtual void logic();
 
         /**
@@ -190,14 +183,14 @@ class LocalPlayer : public Player
          */
         void inviteToGuild(Being *being);
 
+        void clearInventory();
+        void setInvItem(int index, int id, int amount);
+#endif
+
         /**
          * Invite a player to join their party
          */
         void inviteToParty(const std::string &name);
-
-        void clearInventory();
-        void setInvItem(int index, int id, int amount);
-#endif
 
         /**
          * Move the Inventory item from the old slot to the new slot.
@@ -500,7 +493,6 @@ class LocalPlayer : public Player
         void walk(unsigned char dir);
 
 #ifdef EATHENA_SUPPORT
-        Network *mNetwork;
         int mXp;            /**< Experience points. */
         bool mInStorage;      /**< Whether storage is currently accessible */
         int mTargetTime;      /** How long the being has been targeted **/
@@ -534,14 +526,16 @@ class LocalPlayer : public Player
         int mWalkingDir;      /**< The direction the player is walking in. */
         int mDestX;           /**< X coordinate of destination. */
         int mDestY;           /**< Y coordinate of destination. */
-#ifdef TMWSERV_SUPPORT
-        int mLocalWalkTime;  /**< Timestamp used to control keyboard walk
-                                 messages flooding */
-#endif
 
         std::vector<int> mStatusEffectIcons;
 
         Inventory *mInventory;
+
+#ifdef TMWSERV_SUPPORT
+        int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
+                                  messages flooding */
+#endif
+
 #ifdef EATHENA_SUPPORT
         Inventory *mStorage;
 #endif

@@ -45,6 +45,9 @@ Minimap::Minimap():
     setDefaultSize(5, 25, 100, 100);
     setResizable(true);
 
+    setStickyButton(true);
+    setSticky(false);
+
     loadWindowState();
 }
 
@@ -92,20 +95,12 @@ void Minimap::setMapImage(Image *img)
 
 void Minimap::toggle()
 {
-    mShow = !mShow;
+    setVisible(!isVisible(), true);
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
 {
-    setVisible(mShow);
-
-    if (!isVisible())
-        return;
-
     Window::draw(graphics);
-
-    if (!mShow)
-        return;
 
     const gcn::Rectangle a = getChildrenArea();
 

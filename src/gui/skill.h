@@ -22,11 +22,11 @@
 #ifndef SKILL_H
 #define SKILL_H
 
+#include "gui/window.h"
+
 #include <vector>
 
 #include <guichan/actionlistener.hpp>
-
-#include "window.h"
 
 struct SKILL {
     short id;      /**< Index into "skill_db" array */
@@ -34,6 +34,7 @@ struct SKILL {
 };
 
 class GuiTable;
+class ScrollArea;
 class SkillGuiTableModel;
 
 /**

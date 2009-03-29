@@ -43,9 +43,6 @@
 #include "log.h"
 #include "npc.h"
 #include "particle.h"
-#ifdef EATHENA_SUPPORT
-#include "party.h"
-#endif
 #include "player_relations.h"
 
 #include "gui/widgets/chattab.h"
@@ -77,12 +74,12 @@
 #include "gui/status.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
+#include "gui/partywindow.h"
 #ifdef TMWSERV_SUPPORT
 #include "gui/buddywindow.h"
 #include "gui/guildwindow.h"
 #include "gui/magic.h"
 #include "gui/npcpostdialog.h"
-#include "gui/partywindow.h"
 #include "gui/quitdialog.h"
 #else
 #include "gui/storagewindow.h"
@@ -157,12 +154,12 @@ NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 NpcStringDialog *npcStringDialog;
 SkillDialog *skillDialog;
+PartyWindow *partyWindow;
 #ifdef TMWSERV_SUPPORT
 BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
 MagicDialog *magicDialog;
 NpcPostDialog *npcPostDialog;
-PartyWindow *partyWindow;
 #else
 StorageWindow *storageWindow;
 #endif
@@ -182,9 +179,6 @@ Particle *particleEngine = NULL;
 EffectManager *effectManager = NULL;
 
 ChatTab *localChatTab = NULL;
-#ifdef EATHENA_SUPPORT
-Party *playerParty = NULL;
-#endif
 
 const int MAX_TIME = 10000;
 
@@ -239,14 +233,9 @@ int get_elapsed_time(int start_time)
 /**
  * Create all the various globally accessible gui windows
  */
-#ifdef TMWSERV_SUPPORT
-void createGuiWindows()
-#else
-void createGuiWindows(Network *network)
-#endif
+static void createGuiWindows()
 {
     // Create dialogs
-#ifdef TMWSERV_SUPPORT
     chatWindow = new ChatWindow;
     buyDialog = new BuyDialog;
     sellDialog = new SellDialog;
@@ -255,24 +244,17 @@ void createGuiWindows(Network *network)
     npcIntegerDialog = new NpcIntegerDialog;
     npcListDialog = new NpcListDialog;
     npcStringDialog = new NpcStringDialog;
-    npcPostDialog = new NpcPostDialog();
-    magicDialog = new MagicDialog();
+    partyWindow = new PartyWindow;
+#ifdef TMWSERV_SUPPORT
+    npcPostDialog = new NpcPostDialog;
+    magicDialog = new MagicDialog;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    buddyWindow = new BuddyWindow();
-    guildWindow = new GuildWindow();
-    partyWindow = new PartyWindow();
+    buddyWindow = new BuddyWindow;
+    guildWindow = new GuildWindow;
 #else
-    chatWindow = new ChatWindow(network);
-    buyDialog = new BuyDialog(network);
-    sellDialog = new SellDialog(network);
-    buySellDialog = new BuySellDialog(network);
-    tradeWindow = new TradeWindow(network);
+    buySellDialog = new BuySellDialog;
     equipmentWindow = new EquipmentWindow;
-    npcTextDialog = new NpcTextDialog(network);
-    npcIntegerDialog = new NpcIntegerDialog(network);
-    npcListDialog = new NpcListDialog(network);
-    npcStringDialog = new NpcStringDialog(network);
-    storageWindow = new StorageWindow(network);
+    storageWindow = new StorageWindow;
 #endif
     menuWindow = new MenuWindow;
     statusWindow = new StatusWindow(player_node);
@@ -328,7 +310,7 @@ void createGuiWindows(Network *network)
 /**
  * Destroy all the globally accessible gui windows
  */
-void destroyGuiWindows()
+static void destroyGuiWindows()
 {
     logger->setChatWindow(NULL);
     delete localChatTab; // Need to do this first, so it can remove itself
@@ -347,12 +329,12 @@ void destroyGuiWindows()
     delete npcListDialog;
     delete npcTextDialog;
     delete npcStringDialog;
+    delete partyWindow;
 #ifdef TMWSERV_SUPPORT
     delete npcPostDialog;
     delete magicDialog;
     delete buddyWindow;
     delete guildWindow;
-    delete partyWindow;
 #endif
     delete skillDialog;
     delete minimap;
@@ -369,10 +351,10 @@ void destroyGuiWindows()
 
 #ifdef TMWSERV_SUPPORT
 Game::Game():
-    mBeingHandler(new BeingHandler()),
-    mGuildHandler(new GuildHandler()),
-    mPartyHandler(new PartyHandler()),
-    mEffectHandler(new EffectHandler()),
+    mBeingHandler(new BeingHandler),
+    mGuildHandler(new GuildHandler),
+    mPartyHandler(new PartyHandler),
+    mEffectHandler(new EffectHandler),
 #else
 Game::Game(Network *network):
     mNetwork(network),
@@ -392,22 +374,13 @@ Game::Game(Network *network):
 {
     done = false;
 
-#ifdef TMWSERV_SUPPORT
     createGuiWindows();
     engine = new Engine;
 
     beingManager = new BeingManager;
-    commandHandler = new CommandHandler();
-#else
-    createGuiWindows(network);
-    engine = new Engine(network);
-
-    beingManager = new BeingManager(network);
-    commandHandler = new CommandHandler(network);
-#endif
-
+    commandHandler = new CommandHandler;
     floorItemManager = new FloorItemManager;
-    channelManager = new ChannelManager();
+    channelManager = new ChannelManager;
     effectManager = new EffectManager;
 
     particleEngine = new Particle(NULL);
@@ -424,10 +397,6 @@ Game::Game(Network *network):
 
     // Initialize beings
     beingManager->setPlayer(player_node);
-#ifdef EATHENA_SUPPORT
-    player_node->setNetwork(network);
-    playerParty = new Party(network);
-#endif
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use
@@ -468,11 +437,12 @@ Game::Game(Network *network):
      * packet is handled by the older version, but its response
      * is ignored by the client
      */
-    MessageOut msg(mNetwork);
-    msg.writeInt16(CMSG_CLIENT_PING);
+    MessageOut msg(CMSG_CLIENT_PING);
     msg.writeInt32(tick_time);
 
+    map_path = map_path.substr(0, map_path.rfind("."));
     engine->changeMap(map_path);
+    MessageOut outMsg(CMSG_MAP_LOADED);
 #endif
 
     setupWindow->setInGame(true);
@@ -482,8 +452,6 @@ Game::~Game()
 {
 #ifdef TMWSERV_SUPPORT
     Net::clearHandlers();
-#else
-    delete playerParty;
 #endif
 
     destroyGuiWindows();
@@ -745,6 +713,17 @@ void Game::handleInput()
                         used = true;
                 }
 
+            if (keyboard.isKeyActive(keyboard.KEY_PREV_CHAT_TAB))
+            {
+                chatWindow->prevTab();
+                return;
+            }
+            else if (keyboard.isKeyActive(keyboard.KEY_NEXT_CHAT_TAB))
+            {
+                chatWindow->nextTab();
+                return;
+            }
+
             const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
             switch (tKey)
             {
@@ -903,7 +882,6 @@ void Game::handleInput()
                         break;
                     case KeyboardConfig::KEY_WINDOW_MINIMAP:
                         minimap->toggle();
-                        requestedWindow = minimap;
                         break;
                     case KeyboardConfig::KEY_WINDOW_CHAT:
                         requestedWindow = chatWindow;

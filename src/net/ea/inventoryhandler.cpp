@@ -32,8 +32,9 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/chat.h"
 #include "gui/storagewindow.h"
+
+#include "gui/widgets/chattab.h"
 
 #include "resources/iteminfo.h"
 
@@ -42,6 +43,8 @@
 #include "utils/stringutils.h"
 
 #include <SDL_types.h>
+
+enum { debugInventory = 1 };
 
 InventoryHandler::InventoryHandler()
 {
@@ -74,28 +77,26 @@ void InventoryHandler::handleMessage(MessageIn &msg)
     {
         case SMSG_PLAYER_INVENTORY:
         case SMSG_PLAYER_STORAGE_ITEMS:
-            switch (msg.getId()) {
-                case SMSG_PLAYER_INVENTORY:
-                    // Clear inventory - this will be a complete refresh
-                    inventory->clear();
-                    break;
-                case SMSG_PLAYER_STORAGE_ITEMS:
-                    /*
-                     * This packet will always be followed by a
-                     * SMSG_PLAYER_STORAGE_EQUIP packet.  The two packets
-                     * together comprise a complete refresh of storage, so
-                     * clear storage here
-                     */
-                    storage->clear();
-                    break;
-                default:
-                    logger->log("HOW DID WE GET HERE?");
-                    return;
+            if (msg.getId() == SMSG_PLAYER_INVENTORY)
+            {
+                // Clear inventory - this will be a complete refresh
+                inventory->clear();
+            }
+            else
+            {
+                /*
+                 * This packet will always be followed by a
+                 * SMSG_PLAYER_STORAGE_EQUIP packet.  The two packets
+                 * together comprise a complete refresh of storage, so
+                 * clear storage here
+                 */
+                storage->clear();
             }
             msg.readInt16();  // length
             number = (msg.getLength() - 4) / 18;
 
-            for (int loop = 0; loop < number; loop++) {
+            for (int loop = 0; loop < number; loop++)
+            {
                 index = msg.readInt16();
                 itemId = msg.readInt16();
                 itemType = msg.readInt8();
@@ -104,6 +105,17 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 arrow = msg.readInt16();
                 for (int i = 0; i < 4; i++)
                     cards[i] = msg.readInt16();
+
+                index -= (msg.getId() == SMSG_PLAYER_INVENTORY) ?
+                         INVENTORY_OFFSET : STORAGE_OFFSET;
+
+                if (debugInventory)
+                {
+                    logger->log("Index: %d, ID: %d, Type: %d, Identified: %d, "
+                                "Qty: %d, Cards: %d, %d, %d, %d",
+                                index, itemId, itemType, identified, amount,
+                                cards[0], cards[1], cards[2], cards[3]);
+                }
 
                 if (msg.getId() == SMSG_PLAYER_INVENTORY) {
                     inventory->setItem(index, itemId, amount, false);
@@ -114,8 +126,6 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                             item->setEquipment(true);
                     }
                 } else {
-                    logger->log("Index:%d, ID:%d, Type:%d, Identified:%d, Qty:%d, Cards:%d, %d, %d, %d",
-                        index, itemId, itemType, identified, amount, cards[0], cards[1], cards[2], cards[3]);
                     storage->setItem(index, itemId, amount, false);
                 }
             }
@@ -126,7 +136,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             number = (msg.getLength() - 4) / 20;
 
             for (int loop = 0; loop < number; loop++) {
-                index = msg.readInt16();
+                index = msg.readInt16() - STORAGE_OFFSET;
                 itemId = msg.readInt16();
                 itemType = msg.readInt8();
                 identified = msg.readInt8();
@@ -138,14 +148,20 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 for (int i = 0; i < 4; i++)
                     cards[i] = msg.readInt16();
 
-                logger->log("Index:%d, ID:%d, Type:%d, Identified:%d, Qty:%d, Cards:%d, %d, %d, %d",
-                    index, itemId, itemType, identified, amount, cards[0], cards[1], cards[2], cards[3]);
+                if (debugInventory)
+                {
+                    logger->log("Index: %d, ID: %d, Type: %d, Identified: %d, "
+                                "Qty: %d, Cards: %d, %d, %d, %d",
+                                index, itemId, itemType, identified, amount,
+                                cards[0], cards[1], cards[2], cards[3]);
+                }
+
                 storage->setItem(index, itemId, amount, false);
             }
             break;
 
         case SMSG_PLAYER_INVENTORY_ADD:
-            index = msg.readInt16();
+            index = msg.readInt16() - INVENTORY_OFFSET;
             amount = msg.readInt16();
             itemId = msg.readInt16();
             identified = msg.readInt8();
@@ -156,20 +172,26 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             equipType = msg.readInt16();
             itemType = msg.readInt8();
 
-            if (msg.readInt8() > 0) {
-                if (config.getValue("showpickupchat", true)) {
+            if (msg.readInt8() > 0)
+            {
+                if (config.getValue("showpickupchat", true))
                     localChatTab->chatLog(_("Unable to pick up item"), BY_SERVER);
-                }
-            } else {
+            }
+            else
+            {
                 const ItemInfo &itemInfo = ItemDB::get(itemId);
                 const std::string amountStr =
                     (amount > 1) ? toString(amount) : "a";
-                if (config.getValue("showpickupchat", true)) {
+
+                if (config.getValue("showpickupchat", true))
+                {
                     localChatTab->chatLog(strprintf(_("You picked up %s [%s]"),
                         amountStr.c_str(), itemInfo.getName().c_str()),
                         BY_SERVER);
                 }
-                if (config.getValue("showpickupparticle", false)) {
+
+                if (config.getValue("showpickupparticle", false))
+                {
                     player_node->pickedUp(itemInfo.getName());
                 }
 
@@ -183,9 +205,10 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_PLAYER_INVENTORY_REMOVE:
-            index = msg.readInt16();
+            index = msg.readInt16() - INVENTORY_OFFSET;
             amount = msg.readInt16();
-            if (Item *item = inventory->getItem(index)) {
+            if (Item *item = inventory->getItem(index))
+            {
                 item->increaseQuantity(-amount);
                 if (item->getQuantity() == 0)
                     inventory->removeItemAt(index);
@@ -193,7 +216,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_PLAYER_INVENTORY_USE:
-            index = msg.readInt16();
+            index = msg.readInt16() - INVENTORY_OFFSET;
             msg.readInt16(); // item id
             msg.readInt32();  // id
             amount = msg.readInt16();
@@ -204,7 +227,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_ITEM_USE_RESPONSE:
-            index = msg.readInt16();
+            index = msg.readInt16() - INVENTORY_OFFSET;
             amount = msg.readInt16();
 
             if (msg.readInt8() == 0) {
@@ -230,7 +253,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             /*
              * Move an item into storage
              */
-            index = msg.readInt16();
+            index = msg.readInt16() - STORAGE_OFFSET;
             amount = msg.readInt32();
             itemId = msg.readInt16();
             identified = msg.readInt8();
@@ -239,10 +262,13 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             for (int i = 0; i < 4; i++)
                 cards[i] = msg.readInt16();
 
-            if (Item *item = storage->getItem(index)) {
+            if (Item *item = storage->getItem(index))
+            {
                 item->setId(itemId);
                 item->increaseQuantity(amount);
-            } else {
+            }
+            else
+            {
                 storage->setItem(index, itemId, amount, false);
             }
             break;
@@ -251,9 +277,10 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             /*
              * Move an item out of storage
              */
-            index = msg.readInt16();
+            index = msg.readInt16() - STORAGE_OFFSET;
             amount = msg.readInt16();
-            if (Item *item = storage->getItem(index)) {
+            if (Item *item = storage->getItem(index))
+            {
                 item->increaseQuantity(-amount);
                 if (item->getQuantity() == 0)
                     storage->removeItemAt(index);

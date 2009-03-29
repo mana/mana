@@ -24,9 +24,9 @@
 
 #include <string>
 
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
+class ChatTab;
+
+extern ChatTab *localChatTab;
 
 /**
  * A class to parse and handle user commands
@@ -37,11 +37,7 @@ class CommandHandler
         /**
          * Constructor
          */
-#ifdef TMWSERV_SUPPORT
         CommandHandler();
-#else
-        CommandHandler(Network *network);
-#endif
 
         /**
          * Destructor
@@ -51,102 +47,98 @@ class CommandHandler
         /**
          * Parse and handle the given command.
          */
-        void handleCommand(const std::string &command);
+        void handleCommand(const std::string &command, ChatTab *tab = localChatTab);
 
     private:
         /**
          * Handle an announce command.
          */
-        void handleAnnounce(const std::string &args);
+        void handleAnnounce(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a help command.
          */
-        void handleHelp(const std::string &args);
+        void handleHelp(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a where command.
          */
-        void handleWhere();
+        void handleWhere(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a who command.
          */
-        void handleWho();
+        void handleWho(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a msg command.
          */
-        void handleMsg(const std::string &args);
+        void handleMsg(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a join command.
          */
-        void handleJoin(const std::string &args);
+        void handleJoin(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a listchannels command.
          */
-        void handleListChannels();
+        void handleListChannels(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a listusers command.
          */
-        void handleListUsers();
+        void handleListUsers(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a topic command.
          */
-        void handleTopic(const std::string &args);
+        void handleTopic(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a quit command.
          */
-        void handleQuit();
+        void handleQuit(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a clear command.
          */
-        void handleClear();
+        void handleClear(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a party command.
          */
-        void handleParty(const std::string &args);
+        void handleParty(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a op command.
          */
-        void handleOp(const std::string &args);
+        void handleOp(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a kick command.
          */
-        void handleKick(const std::string &args);
+        void handleKick(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a me command.
          */
-        void handleMe(const std::string &args);
+        void handleMe(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a record command.
          */
-        void handleRecord(const std::string &args);
+        void handleRecord(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a toggle command.
          */
-        void handleToggle(const std::string &args);
+        void handleToggle(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a present command.
          */
-        void handlePresent(const std::string &args);
-
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
+        void handlePresent(const std::string &args, ChatTab *tab);
 };
 
 extern CommandHandler *commandHandler;

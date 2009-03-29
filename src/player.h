@@ -107,6 +107,8 @@ class Player : public Being
          */
         short getNumberOfGuilds();
 
+#endif
+
         /**
          * Set the player in party
          */
@@ -116,7 +118,6 @@ class Player : public Being
          * Returns whether player is in the party
          */
         bool getInParty() const { return mInParty; }
-#endif
 
         /**
          * Gets the way the character is blocked by other objects.
@@ -140,10 +141,8 @@ class Player : public Being
 
         FlashText *mName;
 
-#ifdef TMWSERV_SUPPORT
     private:
         bool mInParty;
-#endif
 };
 
 #endif

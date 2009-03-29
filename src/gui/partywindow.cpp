@@ -19,13 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "partywindow.h"
-#include "chat.h"
+#include "gui/partywindow.h"
 
-#include "widgets/avatar.h"
+#include "gui/widgets/avatar.h"
+#include "gui/widgets/chattab.h"
 
-#include "../utils/gettext.h"
-#include "../net/tmwserv/chatserver/party.h"
+#ifdef TMWSERV_SUPPORT
+#include "net/tmwserv/chatserver/party.h"
+#else
+#include "net/ea/party.h"
+#endif
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 PartyWindow::PartyWindow() : Window(_("Party"))
 {
@@ -106,7 +112,8 @@ void PartyWindow::removePartyMember(const std::string &memberName)
     }
 }
 
-void PartyWindow::showPartyInvite(const std::string &inviter)
+void PartyWindow::showPartyInvite(const std::string &inviter,
+                                  const std::string &partyName)
 {
     // check there isnt already an invite showing
     if (mPartyInviter != "")
@@ -116,8 +123,15 @@ void PartyWindow::showPartyInvite(const std::string &inviter)
         return;
     }
 
+    std::string msg;
     // log invite
-    std::string msg = inviter + " has invited you to join their party";
+    if (partyName.empty())
+        msg = strprintf("%s has invited you to join their party",
+                                    inviter.c_str());
+    else
+        msg = strprintf("%s has invited you to join the %s party",
+                                    inviter.c_str(), partyName.c_str());
+
     localChatTab->chatLog(msg, BY_SERVER);
 
     // show invite
@@ -135,11 +149,21 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     if (eventId == "yes")
     {
         localChatTab->chatLog("Accepted invite from " + mPartyInviter);
+#ifdef TMWSERV_SUPPORT
         Net::ChatServer::Party::acceptInvite(mPartyInviter);
+#else
+        eAthena::Party::respondToInvite(true);
+#endif
         mPartyInviter = "";
     }
     else if (eventId == "no")
     {
+        localChatTab->chatLog("Rejected invite from " + mPartyInviter);
+#ifdef TMWSERV_SUPPORT
+        // TODO
+#else
+        eAthena::Party::respondToInvite(false);
+#endif
         mPartyInviter = "";
     }
 }

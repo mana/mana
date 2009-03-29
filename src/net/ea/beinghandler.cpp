@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "being.h"
 #include "beingmanager.h"
@@ -37,7 +38,6 @@
 #include "gui/npc_text.h"
 
 #include <iostream>
-#include <SDL_types.h>
 
 extern NpcTextDialog *npcTextDialog;
 
@@ -69,10 +69,34 @@ BeingHandler::BeingHandler(bool enableSync):
     handledMessages = _messages;
 }
 
+Being *createBeing(int id, short job)
+{
+    Being::Type type = Being::UNKNOWN;
+    if (job <= 25 || (job >= 4001 && job <= 4049))
+        type = Being::PLAYER;
+    else if (job >= 46 && job <= 1000)
+        type = Being::NPC;
+    else if (job > 1000 && job <= 2000)
+    {
+        type = Being::MONSTER;
+        job -= 1002;
+    }
+
+    Being *being = beingManager->createBeing(id, type, job);
+
+    if (type == Being::PLAYER || type == Being::NPC)
+    {
+        MessageOut outMsg(0x0094);
+        outMsg.writeInt32(id);//readLong(2));
+    }
+
+    return being;
+}
+
 void BeingHandler::handleMessage(MessageIn &msg)
 {
     int id;
-    Uint16 job, speed;
+    short job, speed;
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves;
     Uint16 weapon, shield;
@@ -108,9 +132,14 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     break;
                 }
 
-                dstBeing = beingManager->createBeing(id, job);
+                dstBeing = createBeing(id, job);
             }
-            else if (msg.getId() == 0x0078)
+            else if (dstBeing->getType() == Being::MONSTER)
+            {
+                job -= 1002;
+            }
+
+            if (msg.getId() == 0x0078)
             {
                 dstBeing->clearPath();
                 dstBeing->mFrame = 0;
@@ -399,7 +428,11 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             if (!dstBeing)
             {
-                dstBeing = beingManager->createBeing(id, job);
+                dstBeing = createBeing(id, job);
+            }
+            else if (dstBeing->getType() == Being::MONSTER)
+            {
+                job -= 1002;
             }
 
             dstBeing->setWalkSpeed(speed);

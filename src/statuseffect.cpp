@@ -21,10 +21,12 @@
 
 #include <map>
 
-#include "gui/chat.h"
 #include "statuseffect.h"
 
 #include "log.h"
+
+#include "gui/widgets/chattab.h"
+
 #include "utils/xml.h"
 
 

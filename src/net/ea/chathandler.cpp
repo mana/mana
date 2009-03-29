@@ -30,7 +30,7 @@
 #include "game.h"
 #include "player_relations.h"
 
-#include "gui/chat.h"
+#include "gui/widgets/chattab.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

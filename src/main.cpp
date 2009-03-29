@@ -250,8 +250,7 @@ static void setUpdatesDir()
     {
         if (pos + 3 < updateHost.length())
         {
-            updates << "updates/" << updateHost.substr(pos + 3)
-                    << "/" << loginData.port;
+            updates << "updates/" << updateHost.substr(pos + 3);
             updatesDir = updates.str();
         }
         else
@@ -752,8 +751,7 @@ static void accountLogin(Network *network, LoginData *loginData)
             loginData->username,
             loginData->password);
 #else
-    MessageOut outMsg(network);
-    outMsg.writeInt16(0x0064);
+    MessageOut outMsg(0x0064);
     outMsg.writeInt32(0); // client version
     outMsg.writeString(loginData->username, 24);
     outMsg.writeString(loginData->password, 24);
@@ -807,8 +805,7 @@ static void charLogin(Network *network, LoginData *loginData)
     charServerHandler.setLoginData(loginData);
 
     // Send login infos
-    MessageOut outMsg(network);
-    outMsg.writeInt16(0x0065);
+    MessageOut outMsg(0x0065);
     outMsg.writeInt32(loginData->account_ID);
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
@@ -827,8 +824,6 @@ static void mapLogin(Network *network, LoginData *loginData)
             player_node->getName().c_str());
     config.setValue("lastCharacter", player_node->getName());
 
-    MessageOut outMsg(network);
-
     logger->log("Trying to connect to map server...");
     logger->log("Map: %s", map_path.c_str());
 
@@ -836,7 +831,7 @@ static void mapLogin(Network *network, LoginData *loginData)
     network->registerHandler(&mapLoginHandler);
 
     // Send login infos
-    outMsg.writeInt16(0x0072);
+    MessageOut outMsg(0x0072);
     outMsg.writeInt32(loginData->account_ID);
     outMsg.writeInt32(player_node->mCharId);
     outMsg.writeInt32(loginData->session_ID1);
@@ -1044,27 +1039,30 @@ int main(int argc, char *argv[])
 
     initXML();
 
-    // load branding information
+    // Load branding information
     branding.init("data/branding.xml");
 
     initHomeDir();
+
     // Configure logger
-    logger = new Logger();
+    logger = new Logger;
     logger->setLogFile(homeDir + std::string("/tmw.log"));
-    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
     // Log the tmw version
+    logger->log("The Mana World %s (%s)",
 #ifdef PACKAGE_VERSION
-#ifdef TMWSERV_SUPPORT
-    logger->log("The Mana World v%s TMWServ", PACKAGE_VERSION);
+                "v" PACKAGE_VERSION,
 #else
-    logger->log("The Mana World v%s eAthena", PACKAGE_VERSION);
+                "- version not defined",
 #endif
+#ifdef TMWSERV_SUPPORT
+                "tmwserv");
 #else
-    logger->log("The Mana World - version not defined");
+                "eAthena");
 #endif
 
     initConfiguration(options);
+    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
     initEngine(options);
 
@@ -1082,14 +1080,14 @@ int main(int argc, char *argv[])
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
 #ifdef TMWSERV_SUPPORT
-    gcn::Label *versionLabel = new Label(strprintf("%s TMWserv", PACKAGE_VERSION));
+    gcn::Label *versionLabel = new Label(strprintf("%s (tmwserv)", PACKAGE_VERSION));
 #else
-    gcn::Label *versionLabel = new Label(strprintf("%s eAthena", PACKAGE_VERSION));
+    gcn::Label *versionLabel = new Label(strprintf("%s (eAthena)", PACKAGE_VERSION));
 #endif
     top->add(versionLabel, 25, 2);
 #endif
     ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
-    gcn::Label *progressLabel = new Label();
+    gcn::Label *progressLabel = new Label;
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
@@ -1658,7 +1656,7 @@ int main(int argc, char *argv[])
                     break;
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
-                    currentDialog = new CharSelectDialog(network, &charInfo,
+                    currentDialog = new CharSelectDialog(&charInfo,
                             (loginData.sex == 0) ?
                             GENDER_FEMALE : GENDER_MALE);
                     positionDialog(currentDialog, screenWidth, screenHeight);

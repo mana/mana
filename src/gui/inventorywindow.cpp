@@ -57,7 +57,7 @@ InventoryWindow::InventoryWindow(int invSize):
     setResizable(false);
     setCloseButton(true);
 
-    setDefaultSize(375, 307, ImageRect::CENTER);
+    setDefaultSize(387, 307, ImageRect::CENTER);
     addKeyListener(this);
 
     std::string longestUseString = getFont()->getWidth(_("Equip")) >
@@ -74,14 +74,13 @@ InventoryWindow::InventoryWindow(int invSize):
     mDropButton = new Button(_("Drop"), "drop", this);
 #ifdef TMWSERV_SUPPORT
     mSplitButton = new Button(_("Split"), "split", this);
-#endif
-
     mItems = new ItemContainer(player_node->getInventory(), 10, 5);
+#else
+    mItems = new ItemContainer(player_node->getInventory(), 10, 10);
+#endif
     mItems->addSelectionListener(this);
 
-    // The window is supposed to be exactly large enough for now
     mInvenScroll = new ScrollArea(mItems);
-    mInvenScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mTotalWeight = -1;

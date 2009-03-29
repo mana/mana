@@ -30,9 +30,6 @@
 
 #include "../npc.h"
 
-#ifdef EATHENA_SUPPORT
-class Network;
-#endif
 class TextBox;
 
 /**
@@ -48,11 +45,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-#ifdef TMWSERV_SUPPORT
         NpcTextDialog();
-#else
-        NpcTextDialog(Network *network);
-#endif
 
         /**
          * Called when receiving actions from the widgets.
@@ -101,9 +94,6 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         void widgetResized(const gcn::Event &event);
 
     private:
-#ifdef EATHENA_SUPPORT
-        Network *mNetwork;
-#endif
         gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
         gcn::Button *mButton;

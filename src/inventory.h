@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _INVENTORY_H
-#define _INVENTORY_H
+#ifndef INVENTORY_H
+#define INVENTORY_H
 
 class Item;
 
@@ -37,7 +37,7 @@ class Inventory
         /**
          * Constructor.
          */
-        Inventory(int size, int offset = 0);
+        Inventory(int size);
 
         /**
          * Destructor.
@@ -107,16 +107,11 @@ class Inventory
          */
         int getLastUsedSlot() const;
 
-        /**
-         * Returns the number of slots available in the inventory.
-         */
-        int getInventorySize() const;
-
         static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
+
     protected:
         Item **mItems;  /**< The holder of items */
         int mSize;      /**< The max number of inventory items */
-        int mOffset;    /**< Offset used by the inventory */
 };
 
 #endif

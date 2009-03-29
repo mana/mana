@@ -20,26 +20,26 @@
  *  $$
  */
 
-#include "guildwindow.h"
+#include "gui/guildwindow.h"
 
-#include "button.h"
-#include "chat.h"
-#include "confirm_dialog.h"
-#include "guildlistbox.h"
-#include "scrollarea.h"
-#include "textdialog.h"
-#include "windowcontainer.h"
+#include "gui/button.h"
+#include "gui/confirm_dialog.h"
+#include "gui/guildlistbox.h"
+#include "gui/scrollarea.h"
+#include "gui/textdialog.h"
+#include "gui/windowcontainer.h"
 
-#include "widgets/layout.h"
-#include "widgets/tabbedarea.h"
+#include "gui/widgets/chattab.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/tabbedarea.h"
 
-#include "../guild.h"
-#include "../log.h"
-#include "../localplayer.h"
+#include "guild.h"
+#include "log.h"
+#include "localplayer.h"
 
-#include "../net/tmwserv/chatserver/guild.h"
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
+#include "net/tmwserv/chatserver/guild.h"
+#include "utils/dtor.h"
+#include "utils/gettext.h"
 
 #include <algorithm>
 
@@ -64,7 +64,7 @@ GuildWindow::GuildWindow():
     mGuildButton[1]->setEnabled(false);
     mGuildButton[2]->setEnabled(false);
 
-    mGuildTabs = new TabbedArea();
+    mGuildTabs = new TabbedArea;
 
     place(0, 0, mGuildButton[0]);
     place(1, 0, mGuildButton[1]);
@@ -169,7 +169,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
 void GuildWindow::newGuildTab(const std::string &guildName)
 {
     // Create new tab
-    GuildListBox *list = new GuildListBox();
+    GuildListBox *list = new GuildListBox;
     list->setListModel(player_node->getGuild(guildName));
     ScrollArea *sa = new ScrollArea(list);
     sa->setDimension(gcn::Rectangle(5, 5, 135, 250));

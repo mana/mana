@@ -19,28 +19,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/skilldialog.h"
+
+#include "gui/icon.h"
+#include "gui/button.h"
+#include "gui/listbox.h"
+#include "gui/scrollarea.h"
+#include "gui/windowcontainer.h"
+#include "gui/progressbar.h"
+
+#include "gui/widgets/tabbedarea.h"
+
+#include "localplayer.h"
+
+#include "utils/dtor.h"
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <guichan/widgets/label.hpp>
 #include <guichan/widgets/container.hpp>
 #include <guichan/widgets/icon.hpp>
 
-#include "skilldialog.h"
+#include <vector>
 
-#include "icon.h"
-#include "button.h"
-#include "listbox.h"
-#include "scrollarea.h"
-#include "windowcontainer.h"
-#include "progressbar.h"
-
-#include "widgets/tabbedarea.h"
-
-#include "../localplayer.h"
-
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
-
-class Skill_Tab : public GCContainer, public gcn::ActionListener
+class SkillTab : public GCContainer, public gcn::ActionListener
 {
     public:
         /**
@@ -51,7 +53,7 @@ class Skill_Tab : public GCContainer, public gcn::ActionListener
         /**
          * Constructor
          */
-        Skill_Tab(const std::string &type);
+        SkillTab(const std::string &type);
 
         /**
          * Update this tab
@@ -102,21 +104,21 @@ SkillDialog::SkillDialog():
     setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
 
-    TabbedArea *panel = new TabbedArea();
+    TabbedArea *panel = new TabbedArea;
     panel->setDimension(gcn::Rectangle(5, 5, 270, 420));
 
-    Skill_Tab *tab;
+    SkillTab *tab;
 
     // Add each type of skill tab to the panel
-    tab = new Skill_Tab("Weapon");
+    tab = new SkillTab("Weapon");
     panel->addTab(_("Weapons"), tab);
     mTabs.push_back(tab);
 
-    tab = new Skill_Tab("Magic");
+    tab = new SkillTab("Magic");
     panel->addTab(_("Magic"), tab);
     mTabs.push_back(tab);
 
-    tab = new Skill_Tab("Craft");
+    tab = new SkillTab("Craft");
     panel->addTab(_("Crafts"), tab);
     mTabs.push_back(tab);
 
@@ -153,14 +155,14 @@ void SkillDialog::draw(gcn::Graphics *g)
 
 void SkillDialog::update()
 {
-  for(std::list<Skill_Tab*>::const_iterator i = mTabs.begin();
+  for(std::list<SkillTab*>::const_iterator i = mTabs.begin();
       i != mTabs.end(); ++i)
     {
       (*i)->update();
     }
 }
 
-Skill_Tab::Skill_Tab(const std::string &type): type(type)
+SkillTab::SkillTab(const std::string &type): type(type)
 {
     setOpaque(false);
     setDimension(gcn::Rectangle(0, 0, 270, 420));
@@ -200,7 +202,7 @@ Skill_Tab::Skill_Tab(const std::string &type): type(type)
 
 }
 
-int Skill_Tab::getSkillNum()
+int SkillTab::getSkillNum()
 {
     int skillNum = 0;
 
@@ -222,7 +224,7 @@ int Skill_Tab::getSkillNum()
     else return skillNum;
 }
 
-int Skill_Tab::getSkillBegin()
+int SkillTab::getSkillBegin()
 {
     int skillBegin = 0;
 
@@ -244,14 +246,14 @@ int Skill_Tab::getSkillBegin()
     else return skillBegin;
 }
 
-Icon* Skill_Tab::getIcon(int index)
+Icon* SkillTab::getIcon(int index)
 {
     int skillBegin = getSkillBegin();
     std::string icon = LocalPlayer::getSkillInfo(index + skillBegin).icon;
     return new Icon(icon);
 }
 
-void Skill_Tab::updateSkill(int index)
+void SkillTab::updateSkill(int index)
 {
     int skillBegin = getSkillBegin();
 
@@ -306,7 +308,7 @@ void Skill_Tab::updateSkill(int index)
     }
 }
 
-void Skill_Tab::update()
+void SkillTab::update()
 {
     int skillNum = getSkillNum();
 

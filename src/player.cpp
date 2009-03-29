@@ -283,9 +283,9 @@ short Player::getNumberOfGuilds()
     return mGuilds.size();
 }
 
+#endif
+
 void Player::setInParty(bool value)
 {
     mInParty = value;
 }
-
-#endif

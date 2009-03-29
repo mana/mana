@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "engine.h"
 #include "localplayer.h"
@@ -33,7 +34,6 @@
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
-#include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/npc_text.h"
 #include "gui/npcintegerdialog.h"
@@ -44,6 +44,8 @@
 #include "gui/skill.h"
 #include "gui/storagewindow.h"
 #include "gui/viewport.h"
+
+#include "gui/widgets/chattab.h"
 
 #include "utils/stringutils.h"
 #include "utils/gettext.h"
@@ -91,7 +93,8 @@ namespace {
             sellDialog->setVisible(false);
             buySellDialog->setVisible(false);
 
-            if (storageWindow->isVisible()) storageWindow->close();
+            if (storageWindow->isVisible())
+                storageWindow->close();
         }
     } deathListener;
 
@@ -192,7 +195,9 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 nearby = (engine->getCurrentMapName() == mapPath);
 
                 // Switch the actual map, deleting the previous one if necessary
-                engine->changeMap(mapPath);
+                mapPath = mapPath.substr(0, mapPath.rfind("."));
+                if (engine->changeMap(mapPath))
+                    MessageOut outMsg(CMSG_MAP_LOADED);
 
                 float scrollOffsetX = 0.0f;
                 float scrollOffsetY = 0.0f;

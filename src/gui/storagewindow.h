@@ -31,7 +31,6 @@
 
 class Item;
 class ItemContainer;
-class Network;
 class ProgressBar;
 class TextBox;
 
@@ -47,7 +46,7 @@ class StorageWindow : public Window, gcn::ActionListener,
         /**
          * Constructor.
          */
-        StorageWindow(Network *network, int invSize = (STORAGE_SIZE - 1));
+        StorageWindow(int invSize = (STORAGE_SIZE - 1));
 
         /**
          * Destructor.
@@ -88,7 +87,6 @@ class StorageWindow : public Window, gcn::ActionListener,
         void close();
 
     private:
-        Network *mNetwork;
         ItemContainer *mItems;
 
         int mSlots;

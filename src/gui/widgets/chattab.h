@@ -22,11 +22,10 @@
 #ifndef CHATTAB_H
 #define CHATTAB_H
 
+#include "gui/widgets/tab.h"
+#include "gui/chat.h"
+
 #include <guichan/widgets/container.hpp>
-
-#include "tab.h"
-
-#include "../chat.h"
 
 class BrowserBox;
 class Recorder;
@@ -46,6 +45,13 @@ enum
     ACT_IS,           // equivalent to "/me" on IRC
     BY_LOGGER
 };
+
+/**
+ * gets in between usernick and message text depending on
+ * message type
+ */
+#define CAT_NORMAL ": "
+#define CAT_IS     ""
 
 /**
  * A tab for the chat window. This is special to ease chat handling.
@@ -90,7 +96,7 @@ class ChatTab : public Tab
          * @param msg  The message text which is to be sent.
          *
          */
-        void chatSend(std::string &msg);
+        void chatInput(std::string &msg);
 
         /**
          * Scrolls the chat window
@@ -105,10 +111,11 @@ class ChatTab : public Tab
 
     protected:
         friend class ChatWindow;
+        friend class WhisperWindow;
 
-        virtual void sendChat(std::string &msg);
+        virtual void handleInput(const std::string &msg);
 
-        virtual void handleCommand(const std::string msg);
+        virtual void handleCommand(std::string msg);
 
         ScrollArea *mScrollArea;
         BrowserBox *mTextOutput;

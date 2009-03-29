@@ -111,9 +111,6 @@ DropDown::~DropDown()
 
 void DropDown::draw(gcn::Graphics* graphics)
 {
-    if (!isVisible())
-        return;
-
     int h;
 
     if (mDroppedDown)

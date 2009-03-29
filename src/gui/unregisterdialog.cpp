@@ -42,7 +42,7 @@
 
 UnRegisterDialog::UnRegisterDialog(Window *parent, LoginData *loginData):
     Window("Unregister", true, parent),
-    mWrongDataNoticeListener(new WrongDataNoticeListener()),
+    mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
     gcn::Label *userLabel = new gcn::Label(strprintf(_("Name: %s"), mLoginData->username.c_str()));

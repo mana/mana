@@ -40,14 +40,14 @@
 
 ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
     Window(_("Change Email Address"), true, parent),
-    mWrongDataNoticeListener(new WrongDataNoticeListener()),
+    mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
     gcn::Label *accountLabel = new gcn::Label(strprintf(_("Account: %s"),
                                               mLoginData->username.c_str()));
     gcn::Label *newEmailLabel = new gcn::Label(_("Type New Email Address twice:"));
-    mFirstEmailField = new TextField();
-    mSecondEmailField = new TextField();
+    mFirstEmailField = new TextField;
+    mSecondEmailField = new TextField;
     mChangeEmailButton = new Button(_("Change Email Address"), "change_email", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 

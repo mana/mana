@@ -19,40 +19,37 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "chattab.h"
-#include "layouthelper.h"
 
-#include "../browserbox.h"
-#include "../chatinput.h"
-#include "../itemlinkhandler.h"
-#include "../recorder.h"
-#include "../scrollarea.h"
+#include "commandhandler.h"
+#include "configuration.h"
+#include "localplayer.h"
 
-#include "../../commandhandler.h"
-#include "../../configuration.h"
-#include "../../localplayer.h"
+#include "gui/browserbox.h"
+#include "gui/itemlinkhandler.h"
+#include "gui/recorder.h"
+#include "gui/scrollarea.h"
 
 #ifdef TMWSERV_SUPPORT
-#include "../../net/tmwserv/chatserver/chatserver.h"
-#include "../../net/tmwserv/gameserver/player.h"
+#include "net/tmwserv/chatserver/chatserver.h"
+#include "net/tmwserv/gameserver/player.h"
 #else
-#include "../../net/messageout.h"
-#include "../../net/ea/protocol.h"
+#include "net/messageout.h"
+#include "net/ea/protocol.h"
 #endif
 
-#include "../../resources/iteminfo.h"
-#include "../../resources/itemdb.h"
+#include "resources/iteminfo.h"
+#include "resources/itemdb.h"
 
-#include "../../utils/strprintf.h"
-#include "../../utils/stringutils.h"
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 ChatTab::ChatTab(const std::string &name) : Tab()
 {
     setCaption(name);
 
-    mTextOutput = new BrowserBox;
+    mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     mTextOutput->setOpaque(false);
     mTextOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
     mTextOutput->setLinkHandler(chatWindow->mItemLinkHandler);
@@ -160,10 +157,9 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
             break;
 #endif
         case ACT_WHISPER:
-            tmp.nick = strprintf(_("%s whispers:"), tmp.nick.c_str());
-            tmp.nick += " ";
-            lineColor = "##W";
-            break;
+            // Resend whisper through normal mechanism
+            chatWindow->whisper(tmp.nick, tmp.text);
+            return;
         case ACT_IS:
             tmp.nick += CAT_IS;
             lineColor = "##I";
@@ -221,10 +217,11 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
 
 void ChatTab::chatLog(std::string &nick, std::string &msg)
 {
-    chatLog(nick + ": " + msg, nick == player_node->getName() ? BY_PLAYER : BY_OTHER, false);
+    chatLog(nick + CAT_NORMAL + msg, nick == player_node->getName() ?
+                BY_PLAYER : BY_OTHER, false);
 }
 
-void ChatTab::chatSend(std::string &msg)
+void ChatTab::chatInput(std::string &msg)
 {
     trim(msg);
 
@@ -242,9 +239,7 @@ void ChatTab::chatSend(std::string &msg)
             chatLog(_("Trying to send a blank party message."), BY_SERVER, true);
             return;
         }
-        MessageOut outMsg(chatWindow->mNetwork);
-
-        outMsg.writeInt16(CMSG_PARTY_MESSAGE);
+        MessageOut outMsg(CMSG_PARTY_MESSAGE);
         outMsg.writeInt16(length + 4);
         outMsg.writeString(msg, length);
         return;
@@ -282,16 +277,11 @@ void ChatTab::chatSend(std::string &msg)
         start =  msg.find('[', start + 1);
     }
 
-
     // Prepare ordinary message
     if (msg[0] != '/')
-    {
-        sendChat(msg);
-    }
+        handleInput(msg);
     else
-    {
         handleCommand(std::string(msg, 1));
-    }
 }
 
 void ChatTab::scroll(int amount)
@@ -308,22 +298,21 @@ void ChatTab::clearText()
     mTextOutput->clearRows();
 }
 
-void ChatTab::sendChat(std::string &msg) {
+void ChatTab::handleInput(const std::string &msg) {
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::say(msg);
 #else
-    msg = player_node->getName() + " : " + msg;
+    std::string mes = player_node->getName() + " : " + msg;
 
-    MessageOut outMsg(chatWindow->mNetwork);
-    outMsg.writeInt16(CMSG_CHAT_MESSAGE);
+    MessageOut outMsg(CMSG_CHAT_MESSAGE);
     // Added + 1 in order to let eAthena parse admin commands correctly
-    outMsg.writeInt16(msg.length() + 4 + 1);
-    outMsg.writeString(msg, msg.length() + 1);
+    outMsg.writeInt16(mes.length() + 4 + 1);
+    outMsg.writeString(mes, mes.length() + 1);
     return;
 #endif
 }
 
-void ChatTab::handleCommand(const std::string msg)
+void ChatTab::handleCommand(std::string msg)
 {
-    commandHandler->handleCommand(msg);
+    commandHandler->handleCommand(msg, this);
 }

@@ -47,14 +47,16 @@ class SkinConfigListener : public ConfigListener
     }
 };
 
-Skin::Skin(ImageRect skin, Image *close,
+Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
            const std::string &filePath,
            const std::string &name):
     instances(0),
     mFilePath(filePath),
     mName(name),
     border(skin),
-    closeImage(close)
+    closeImage(close),
+    stickyImageUp(stickyUp),
+    stickyImageDown(stickyDown)
 {
 }
 
@@ -219,7 +221,14 @@ Skin *SkinLoader::load(const std::string &filename,
     // Hard-coded for now until we update the above code to look for window buttons.
     Image *closeImage = resman->getImage("graphics/gui/close_button.png");
 
-    Skin *skin = new Skin(border, closeImage, filename);
+    Image *sticky = resman->getImage("graphics/gui/sticky_button.png");
+    Image *stickyImageUp = sticky->getSubImage(0, 0, 15, 15);
+    Image *stickyImageDown = sticky->getSubImage(15, 0, 15, 15);
+
+    sticky->decRef();
+
+    Skin *skin = new Skin(border, closeImage, stickyImageUp, stickyImageDown,
+                          filename);
 
     mSkins[filename] = skin;
 

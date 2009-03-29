@@ -46,14 +46,8 @@
 #include "utils/gettext.h"
 #include "utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 SellDialog::SellDialog():
     Window(_("Sell")),
-#else
-SellDialog::SellDialog(Network *network):
-    Window(_("Sell")),
-    mNetwork(network),
-#endif
     mMaxItems(0), mAmountItems(0)
 {
     setWindowName("Sell");
@@ -207,15 +201,13 @@ void SellDialog::action(const gcn::ActionEvent &event)
             (mShopItems->at(selectedItem)->getId(), mAmountItems);
 #else
         // Attempt sell
-        MessageOut outMsg(mNetwork);
-
         ShopItem *item = mShopItems->at(selectedItem);
         int sellCount;
         mPlayerMoney +=
             mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mMaxItems -= mAmountItems;
         while (mAmountItems > 0) {
-            outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
+            MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
             outMsg.writeInt16(8);
             outMsg.writeInt16(item->getCurrentInvIndex());
             // This order is important, item->getCurrentInvIndex() would return

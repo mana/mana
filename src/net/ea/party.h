@@ -22,19 +22,14 @@
 #ifndef PARTY_H
 #define PARTY_H
 
+#include "being.h"
+
 #include <string>
 
-#include <guichan/actionlistener.hpp>
-
-class PartyHandler;
-class Being;
-class ChatWindow;
-class Network;
-
-class Party
+namespace eAthena
 {
-    public:
-        Party(Network *network);
+    namespace Party
+    {
         void respond(const std::string &command, const std::string &args);
 
         void create(const std::string &party);
@@ -43,35 +38,21 @@ class Party
         void createResponse(bool ok);
         void inviteResponse(const std::string &nick, int status);
         void invitedAsk(const std::string &nick, int gender,
-                const std::string &partyName);
+                        const std::string &partyName);
+
+        /**
+         * Send invite response to the server
+         */
+        void respondToInvite(bool accept);
+
+        /**
+         * The player has left your party
+         */
         void leftResponse(const std::string &nick);
         void receiveChat(Being *being, const std::string &msg);
 
         void help(const std::string &args);
-
-    private:
-        std::string mPartyName;
-        Network *mNetwork;
-        bool mInParty;
-        bool mCreating; /**< Used to give an appropriate response to
-                          failure */
-        PartyHandler *handler;
-
-        class InviteListener : public gcn::ActionListener
-        {
-            public:
-                InviteListener(Network *network, bool *inParty) :
-                    mNetwork(network),
-                    mInParty(inParty)
-                {}
-                void action(const gcn::ActionEvent &event);
-                Network *mNetwork;
-            private:
-                bool *mInParty;
-        };
-        InviteListener mInviteListener;
-};
-
-extern Party *playerParty;
+    }
+}
 
 #endif

@@ -36,15 +36,8 @@
 #include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
-#ifdef TMWSERV_SUPPORT
 NpcStringDialog::NpcStringDialog()
-#else
-NpcStringDialog::NpcStringDialog(Network *network)
-#endif
     : Window(_("NPC Text Request"))
-#ifdef EATHENA_SUPPORT
-    , mNetwork(network)
-#endif
 {
     setWindowName("NPCString");
     mValueField = new TextField("");
@@ -95,8 +88,7 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     mValueField->setText("");
 
 #ifdef EATHENA_SUPPORT
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_STR_RESPONSE);
+    MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
     outMsg.writeInt16(text.length() + 9);
     outMsg.writeInt32(current_npc);
     outMsg.writeString(text, text.length());

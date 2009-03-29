@@ -30,9 +30,10 @@
 #include "item.h"
 #include "localplayer.h"
 
-#include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/trade.h"
+
+#include "gui/widgets/chattab.h"
 
 std::string tradePartnerName;
 int tradePartnerID;

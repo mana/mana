@@ -41,16 +41,16 @@
 
 ChangePasswordDialog::ChangePasswordDialog(Window *parent, LoginData *loginData):
     Window(_("Change Password"), true, parent),
-    mWrongDataNoticeListener(new WrongDataNoticeListener()),
+    mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
     gcn::Label *accountLabel = new gcn::Label(strprintf(_("Account: %s"),
                                               mLoginData->username.c_str()));
     gcn::Label *oldPassLabel = new gcn::Label(_("Password:"));
-    mOldPassField = new PasswordField();
+    mOldPassField = new PasswordField;
     gcn::Label *newPassLabel = new gcn::Label(_("Type New Password twice:"));
-    mFirstPassField = new PasswordField();
-    mSecondPassField = new PasswordField();
+    mFirstPassField = new PasswordField;
+    mSecondPassField = new PasswordField;
     mChangePassButton = new Button(_("Change Password"), "change_password", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 

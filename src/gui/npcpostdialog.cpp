@@ -19,15 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "npcpostdialog.h"
-#include "textbox.h"
-#include "textfield.h"
-#include "button.h"
-#include "scrollarea.h"
-#include "chat.h"
+#include "gui/npcpostdialog.h"
 
-#include "../net/tmwserv/gameserver/player.h"
-#include "../utils/gettext.h"
+#include "gui/textbox.h"
+#include "gui/textfield.h"
+#include "gui/button.h"
+#include "gui/scrollarea.h"
+
+#include "gui/widgets/chattab.h"
+
+#include "net/tmwserv/gameserver/player.h"
+#include "utils/gettext.h"
 
 #include <guichan/widgets/label.hpp>
 
@@ -39,7 +41,7 @@ NpcPostDialog::NpcPostDialog():
     // create text field for receiver
     gcn::Label *senderText = new gcn::Label("To:");
     senderText->setPosition(5, 5);
-    mSender = new TextField();
+    mSender = new TextField;
     mSender->setPosition(senderText->getWidth() + 5, 5);
     mSender->setWidth(65);
 
@@ -52,7 +54,7 @@ NpcPostDialog::NpcPostDialog():
                               sendButton->getY());
 
     // create textfield for letter
-    mText = new TextBox();
+    mText = new TextBox;
     mText->setHeight(400 - (mSender->getHeight() + sendButton->getHeight()));
     mText->setEditable(true);
 

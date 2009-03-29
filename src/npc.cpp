@@ -40,14 +40,8 @@
 bool NPC::isTalking = false;
 int current_npc = 0;
 
-#ifdef TMWSERV_SUPPORT
 NPC::NPC(int id, int job, Map *map):
     Player(id, job, map)
-#else
-NPC::NPC(int id, int job, Map *map, Network *network):
-    Player(id, job, map),
-    mNetwork(network)
-#endif
 {
     NPCInfo info = NPCDB::get(job);
 
@@ -126,11 +120,7 @@ void NPC::talk()
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::talkToNPC(mId, true);
 #else
-    if (!mNetwork)
-        return;
-
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_TALK);
+    MessageOut outMsg(CMSG_NPC_TALK);
     outMsg.writeInt32(mId);
     outMsg.writeInt8(0);
 #endif
