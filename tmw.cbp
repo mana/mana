@@ -6,7 +6,7 @@
 		<Option pch_mode="0" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="default">
+			<Target title="eAthena">
 				<Option output="tmw.exe" prefix_auto="0" extension_auto="0" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -18,6 +18,7 @@
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DNOGDI" />
 					<Add option="-DENABLE_NLS" />
+					<Add option="-DEATHENA_SUPPORT" />
 				</Compiler>
 				<Linker>
 					<Add library="guichan" />
@@ -38,6 +39,7 @@
 					<Add library="physfs" />
 					<Add library="curl.dll" />
 					<Add library="intl" />
+					<Add directory="E:\Programme\CodeBlocks\include\SDL" />
 				</Linker>
 			</Target>
 			<Target title="unix">
@@ -67,9 +69,46 @@
 					<Add library="png" />
 				</Linker>
 			</Target>
+			<Target title="TMWServ">
+				<Option output="tmw.exe" prefix_auto="0" extension_auto="0" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
+				<Option projectResourceIncludeDirsRelation="0" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-Wall" />
+					<Add option="-DUSE_OPENGL" />
+					<Add option="-DNOGDI" />
+					<Add option="-DENABLE_NLS" />
+					<Add option="-DTMWSERV_SUPPORT" />
+				</Compiler>
+				<Linker>
+					<Add library="guichan" />
+					<Add library="guichan_sdl" />
+					<Add library="guichan_opengl" />
+					<Add library="enet" />
+					<Add library="SDL_image" />
+					<Add library="SDL_mixer" />
+					<Add library="SDL_net" />
+					<Add library="SDL_ttf" />
+					<Add library="mingw32" />
+					<Add library="SDLmain" />
+					<Add library="SDL.dll" />
+					<Add library="xml2.dll" />
+					<Add library="opengl32" />
+					<Add library="png12.dll" />
+					<Add library="z.dll" />
+					<Add library="physfs" />
+					<Add library="curl.dll" />
+					<Add library="intl" />
+					<Add library="ws2_32" />
+					<Add library="winmm" />
+				</Linker>
+			</Target>
 		</Build>
 		<VirtualTargets>
-			<Add alias="All" targets="default;" />
+			<Add alias="All" targets="eAthena;" />
 		</VirtualTargets>
 		<Compiler>
 			<Add directory="src\" />
@@ -89,6 +128,12 @@
 		<Unit filename="src\being.h" />
 		<Unit filename="src\beingmanager.cpp" />
 		<Unit filename="src\beingmanager.h" />
+		<Unit filename="src\channel.cpp" />
+		<Unit filename="src\channel.h" />
+		<Unit filename="src\channelmanager.cpp" />
+		<Unit filename="src\channelmanager.h" />
+		<Unit filename="src\commandhandler.cpp" />
+		<Unit filename="src\commandhandler.h" />
 		<Unit filename="src\configlistener.h" />
 		<Unit filename="src\configuration.cpp" />
 		<Unit filename="src\configuration.h" />
@@ -110,16 +155,40 @@
 		<Unit filename="src\graphics.h" />
 		<Unit filename="src\gui\browserbox.cpp" />
 		<Unit filename="src\gui\browserbox.h" />
+		<Unit filename="src\gui\buddywindow.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\buddywindow.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\button.cpp" />
 		<Unit filename="src\gui\button.h" />
 		<Unit filename="src\gui\buy.cpp" />
 		<Unit filename="src\gui\buy.h" />
 		<Unit filename="src\gui\buysell.cpp" />
 		<Unit filename="src\gui\buysell.h" />
+		<Unit filename="src\gui\changeemaildialog.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\changeemaildialog.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\changepassworddialog.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\changepassworddialog.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\char_select.cpp" />
 		<Unit filename="src\gui\char_select.h" />
-		<Unit filename="src\gui\char_server.cpp" />
-		<Unit filename="src\gui\char_server.h" />
+		<Unit filename="src\gui\char_server.cpp">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
+		<Unit filename="src\gui\char_server.h">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
 		<Unit filename="src\gui\chat.cpp" />
 		<Unit filename="src\gui\chat.h" />
 		<Unit filename="src\gui\chatinput.cpp" />
@@ -146,8 +215,22 @@
 		<Unit filename="src\gui\gccontainer.h" />
 		<Unit filename="src\gui\gui.cpp" />
 		<Unit filename="src\gui\gui.h" />
+		<Unit filename="src\gui\guildlistbox.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\guildlistbox.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\guildwindow.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\guildwindow.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\help.cpp" />
 		<Unit filename="src\gui\help.h" />
+		<Unit filename="src\gui\icon.cpp" />
+		<Unit filename="src\gui\icon.h" />
 		<Unit filename="src\gui\inttextfield.cpp" />
 		<Unit filename="src\gui\inttextfield.h" />
 		<Unit filename="src\gui\inventorywindow.cpp" />
@@ -169,6 +252,12 @@
 		<Unit filename="src\gui\listbox.h" />
 		<Unit filename="src\gui\login.cpp" />
 		<Unit filename="src\gui\login.h" />
+		<Unit filename="src\gui\magic.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\magic.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\menuwindow.cpp" />
 		<Unit filename="src\gui\menuwindow.h" />
 		<Unit filename="src\gui\minimap.cpp" />
@@ -181,12 +270,24 @@
 		<Unit filename="src\gui\npcintegerdialog.h" />
 		<Unit filename="src\gui\npclistdialog.cpp" />
 		<Unit filename="src\gui\npclistdialog.h" />
+		<Unit filename="src\gui\npcpostdialog.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\npcpostdialog.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\npcstringdialog.cpp" />
 		<Unit filename="src\gui\npcstringdialog.h" />
 		<Unit filename="src\gui\ok_dialog.cpp" />
 		<Unit filename="src\gui\ok_dialog.h" />
 		<Unit filename="src\gui\palette.cpp" />
 		<Unit filename="src\gui\palette.h" />
+		<Unit filename="src\gui\partywindow.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\partywindow.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\passwordfield.cpp" />
 		<Unit filename="src\gui\passwordfield.h" />
 		<Unit filename="src\gui\playerbox.cpp" />
@@ -197,6 +298,12 @@
 		<Unit filename="src\gui\popupmenu.h" />
 		<Unit filename="src\gui\progressbar.cpp" />
 		<Unit filename="src\gui\progressbar.h" />
+		<Unit filename="src\gui\quitdialog.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\quitdialog.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\radiobutton.cpp" />
 		<Unit filename="src\gui\radiobutton.h" />
 		<Unit filename="src\gui\recorder.cpp" />
@@ -209,6 +316,12 @@
 		<Unit filename="src\gui\sdlinput.h" />
 		<Unit filename="src\gui\sell.cpp" />
 		<Unit filename="src\gui\sell.h" />
+		<Unit filename="src\gui\serverdialog.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\serverdialog.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\setup.cpp" />
 		<Unit filename="src\gui\setup.h" />
 		<Unit filename="src\gui\setup_audio.cpp" />
@@ -232,24 +345,60 @@
 		<Unit filename="src\gui\shortcutcontainer.h" />
 		<Unit filename="src\gui\shortcutwindow.cpp" />
 		<Unit filename="src\gui\shortcutwindow.h" />
-		<Unit filename="src\gui\skill.cpp" />
-		<Unit filename="src\gui\skill.h" />
+		<Unit filename="src\gui\skill.cpp">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
+		<Unit filename="src\gui\skill.h">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
+		<Unit filename="src\gui\skilldialog.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\skilldialog.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\skin.cpp" />
 		<Unit filename="src\gui\skin.h" />
 		<Unit filename="src\gui\slider.cpp" />
 		<Unit filename="src\gui\slider.h" />
 		<Unit filename="src\gui\speechbubble.cpp" />
 		<Unit filename="src\gui\speechbubble.h" />
-		<Unit filename="src\gui\status.cpp" />
-		<Unit filename="src\gui\status.h" />
-		<Unit filename="src\gui\storagewindow.cpp" />
-		<Unit filename="src\gui\storagewindow.h" />
+		<Unit filename="src\gui\status.cpp">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
+		<Unit filename="src\gui\status.h">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
+		<Unit filename="src\gui\statuswindow.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\statuswindow.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\storagewindow.cpp">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
+		<Unit filename="src\gui\storagewindow.h">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
 		<Unit filename="src\gui\table.cpp" />
 		<Unit filename="src\gui\table.h" />
 		<Unit filename="src\gui\table_model.cpp" />
 		<Unit filename="src\gui\table_model.h" />
 		<Unit filename="src\gui\textbox.cpp" />
 		<Unit filename="src\gui\textbox.h" />
+		<Unit filename="src\gui\textdialog.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\textdialog.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\textfield.cpp" />
 		<Unit filename="src\gui\textfield.h" />
 		<Unit filename="src\gui\textrenderer.h" />
@@ -257,10 +406,22 @@
 		<Unit filename="src\gui\trade.h" />
 		<Unit filename="src\gui\truetypefont.cpp" />
 		<Unit filename="src\gui\truetypefont.h" />
+		<Unit filename="src\gui\unregisterdialog.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\gui\unregisterdialog.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\gui\updatewindow.cpp" />
 		<Unit filename="src\gui\updatewindow.h" />
 		<Unit filename="src\gui\viewport.cpp" />
 		<Unit filename="src\gui\viewport.h" />
+		<Unit filename="src\gui\widgets\avatar.cpp" />
+		<Unit filename="src\gui\widgets\avatar.h" />
+		<Unit filename="src\gui\widgets\channeltab.cpp" />
+		<Unit filename="src\gui\widgets\channeltab.h" />
+		<Unit filename="src\gui\widgets\chattab.cpp" />
+		<Unit filename="src\gui\widgets\chattab.h" />
 		<Unit filename="src\gui\widgets\dropdown.cpp" />
 		<Unit filename="src\gui\widgets\dropdown.h" />
 		<Unit filename="src\gui\widgets\layout.cpp" />
@@ -275,11 +436,19 @@
 		<Unit filename="src\gui\widgets\tabbedarea.h" />
 		<Unit filename="src\gui\widgets\textpreview.cpp" />
 		<Unit filename="src\gui\widgets\textpreview.h" />
+		<Unit filename="src\gui\widgets\whispertab.cpp" />
+		<Unit filename="src\gui\widgets\whispertab.h" />
 		<Unit filename="src\gui\window.cpp" />
 		<Unit filename="src\gui\window.h" />
 		<Unit filename="src\gui\windowcontainer.cpp" />
 		<Unit filename="src\gui\windowcontainer.h" />
 		<Unit filename="src\guichanfwd.h" />
+		<Unit filename="src\guild.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\guild.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\imageparticle.cpp" />
 		<Unit filename="src\imageparticle.h" />
 		<Unit filename="src\inventory.cpp" />
@@ -304,45 +473,273 @@
 		<Unit filename="src\map.h" />
 		<Unit filename="src\monster.cpp" />
 		<Unit filename="src\monster.h" />
-		<Unit filename="src\net\beinghandler.cpp" />
-		<Unit filename="src\net\beinghandler.h" />
-		<Unit filename="src\net\buysellhandler.cpp" />
-		<Unit filename="src\net\buysellhandler.h" />
-		<Unit filename="src\net\charserverhandler.cpp" />
-		<Unit filename="src\net\charserverhandler.h" />
-		<Unit filename="src\net\chathandler.cpp" />
-		<Unit filename="src\net\chathandler.h" />
-		<Unit filename="src\net\equipmenthandler.cpp" />
-		<Unit filename="src\net\equipmenthandler.h" />
-		<Unit filename="src\net\inventoryhandler.cpp" />
-		<Unit filename="src\net\inventoryhandler.h" />
-		<Unit filename="src\net\itemhandler.cpp" />
-		<Unit filename="src\net\itemhandler.h" />
-		<Unit filename="src\net\loginhandler.cpp" />
-		<Unit filename="src\net\loginhandler.h" />
-		<Unit filename="src\net\maploginhandler.cpp" />
-		<Unit filename="src\net\maploginhandler.h" />
+		<Unit filename="src\net\ea\beinghandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\beinghandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\buysellhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\buysellhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\charserverhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\charserverhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\chathandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\chathandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\equipmenthandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\equipmenthandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\inventoryhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\inventoryhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\itemhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\itemhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\loginhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\loginhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\maploginhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\maploginhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\network.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\network.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\npchandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\npchandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\partyhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\partyhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\playerhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\playerhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\protocol.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\protocol.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\skillhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\skillhandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\tradehandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\tradehandler.h">
+			<Option target="eAthena" />
+		</Unit>
 		<Unit filename="src\net\messagehandler.cpp" />
 		<Unit filename="src\net\messagehandler.h" />
 		<Unit filename="src\net\messagein.cpp" />
 		<Unit filename="src\net\messagein.h" />
 		<Unit filename="src\net\messageout.cpp" />
 		<Unit filename="src\net\messageout.h" />
-		<Unit filename="src\net\network.cpp" />
-		<Unit filename="src\net\network.h" />
-		<Unit filename="src\net\npchandler.cpp" />
-		<Unit filename="src\net\npchandler.h" />
-		<Unit filename="src\net\packet.h" />
-		<Unit filename="src\net\partyhandler.cpp" />
-		<Unit filename="src\net\partyhandler.h" />
-		<Unit filename="src\net\playerhandler.cpp" />
-		<Unit filename="src\net\playerhandler.h" />
-		<Unit filename="src\net\protocol.cpp" />
-		<Unit filename="src\net\protocol.h" />
-		<Unit filename="src\net\skillhandler.cpp" />
-		<Unit filename="src\net\skillhandler.h" />
-		<Unit filename="src\net\tradehandler.cpp" />
-		<Unit filename="src\net\tradehandler.h" />
+		<Unit filename="src\net\tmwserv\accountserver\account.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\accountserver\account.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\accountserver\accountserver.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\accountserver\accountserver.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\accountserver\internal.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\accountserver\internal.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\beinghandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\beinghandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\buysellhandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\buysellhandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\charserverhandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\charserverhandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chathandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chathandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chatserver\chatserver.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chatserver\chatserver.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chatserver\guild.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chatserver\guild.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chatserver\internal.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chatserver\internal.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chatserver\party.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\chatserver\party.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\connection.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\connection.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\effecthandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\effecthandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\gameserver\gameserver.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\gameserver\gameserver.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\gameserver\internal.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\gameserver\internal.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\gameserver\player.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\gameserver\player.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\guildhandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\guildhandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\internal.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\internal.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\inventoryhandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\inventoryhandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\itemhandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\itemhandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\loginhandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\loginhandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\logouthandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\logouthandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\network.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\network.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\npchandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\npchandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\partyhandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\partyhandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\playerhandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\playerhandler.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\protocol.h">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\tradehandler.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\tradehandler.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\npc.cpp" />
 		<Unit filename="src\npc.h" />
 		<Unit filename="src\openglgraphics.cpp" />
@@ -354,8 +751,14 @@
 		<Unit filename="src\particleemitter.cpp" />
 		<Unit filename="src\particleemitter.h" />
 		<Unit filename="src\particleemitterprop.h" />
-		<Unit filename="src\party.cpp" />
-		<Unit filename="src\party.h" />
+		<Unit filename="src\party.cpp">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
+		<Unit filename="src\party.h">
+			<Option target="eAthena" />
+			<Option target="unix" />
+		</Unit>
 		<Unit filename="src\player.cpp" />
 		<Unit filename="src\player.h" />
 		<Unit filename="src\player_relations.cpp" />
@@ -433,6 +836,12 @@
 		<Unit filename="src\utils\fastsqrt.h" />
 		<Unit filename="src\utils\gettext.h" />
 		<Unit filename="src\utils\mutex.h" />
+		<Unit filename="src\utils\sha256.cpp">
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src\utils\sha256.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\utils\stringutils.cpp" />
 		<Unit filename="src\utils\stringutils.h" />
 		<Unit filename="src\utils\strprintf.cpp" />

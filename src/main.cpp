@@ -985,6 +985,9 @@ static void reconnectAccount(const std::string &passToken)
 
 #endif
 
+
+extern "C" char const *_nl_locale_name_default(void);
+
 static void initInternationalization()
 {
 #if ENABLE_NLS
@@ -1016,8 +1019,6 @@ static void initXML()
     // Suppress libxml2 error messages
     xmlSetGenericErrorFunc(NULL, xmlNullLogger);
 }
-
-extern "C" char const *_nl_locale_name_default(void);
 
 /** Main */
 int main(int argc, char *argv[])
@@ -1207,7 +1208,7 @@ int main(int argc, char *argv[])
         {
             state = STATE_ERROR;
 
-            if (!network->getError().empty()) 
+            if (!network->getError().empty())
                 errorMessage = network->getError();
             else
                 errorMessage = _("Got disconnected from server!");
