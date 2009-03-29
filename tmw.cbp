@@ -42,7 +42,7 @@
 					<Add directory="E:\Programme\CodeBlocks\include\SDL" />
 				</Linker>
 			</Target>
-			<Target title="unix">
+			<Target title="unix (currently broken)">
 				<Option platforms="Unix;" />
 				<Option output="tmw" prefix_auto="1" extension_auto="1" />
 				<Option type="0" />
@@ -183,11 +183,11 @@
 		<Unit filename="src\gui\char_select.h" />
 		<Unit filename="src\gui\char_server.cpp">
 			<Option target="eAthena" />
-			<Option target="unix" />
+			<Option target="unix (currently broken)" />
 		</Unit>
 		<Unit filename="src\gui\char_server.h">
 			<Option target="eAthena" />
-			<Option target="unix" />
+			<Option target="unix (currently broken)" />
 		</Unit>
 		<Unit filename="src\gui\chat.cpp" />
 		<Unit filename="src\gui\chat.h" />
@@ -284,9 +284,11 @@
 		<Unit filename="src\gui\palette.h" />
 		<Unit filename="src\gui\partywindow.cpp">
 			<Option target="TMWServ" />
+			<Option target="eAthena" />
 		</Unit>
 		<Unit filename="src\gui\partywindow.h">
 			<Option target="TMWServ" />
+			<Option target="eAthena" />
 		</Unit>
 		<Unit filename="src\gui\passwordfield.cpp" />
 		<Unit filename="src\gui\passwordfield.h" />
@@ -347,11 +349,11 @@
 		<Unit filename="src\gui\shortcutwindow.h" />
 		<Unit filename="src\gui\skill.cpp">
 			<Option target="eAthena" />
-			<Option target="unix" />
+			<Option target="unix (currently broken)" />
 		</Unit>
 		<Unit filename="src\gui\skill.h">
 			<Option target="eAthena" />
-			<Option target="unix" />
+			<Option target="unix (currently broken)" />
 		</Unit>
 		<Unit filename="src\gui\skilldialog.cpp">
 			<Option target="TMWServ" />
@@ -367,11 +369,11 @@
 		<Unit filename="src\gui\speechbubble.h" />
 		<Unit filename="src\gui\status.cpp">
 			<Option target="eAthena" />
-			<Option target="unix" />
+			<Option target="unix (currently broken)" />
 		</Unit>
 		<Unit filename="src\gui\status.h">
 			<Option target="eAthena" />
-			<Option target="unix" />
+			<Option target="unix (currently broken)" />
 		</Unit>
 		<Unit filename="src\gui\statuswindow.cpp">
 			<Option target="TMWServ" />
@@ -381,11 +383,11 @@
 		</Unit>
 		<Unit filename="src\gui\storagewindow.cpp">
 			<Option target="eAthena" />
-			<Option target="unix" />
+			<Option target="unix (currently broken)" />
 		</Unit>
 		<Unit filename="src\gui\storagewindow.h">
 			<Option target="eAthena" />
-			<Option target="unix" />
+			<Option target="unix (currently broken)" />
 		</Unit>
 		<Unit filename="src\gui\table.cpp" />
 		<Unit filename="src\gui\table.h" />
@@ -503,6 +505,12 @@
 		<Unit filename="src\net\ea\equipmenthandler.h">
 			<Option target="eAthena" />
 		</Unit>
+		<Unit filename="src\net\ea\gui\partytab.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\gui\partytab.h">
+			<Option target="eAthena" />
+		</Unit>
 		<Unit filename="src\net\ea\inventoryhandler.cpp">
 			<Option target="eAthena" />
 		</Unit>
@@ -537,6 +545,12 @@
 			<Option target="eAthena" />
 		</Unit>
 		<Unit filename="src\net\ea\npchandler.h">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\party.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\party.h">
 			<Option target="eAthena" />
 		</Unit>
 		<Unit filename="src\net\ea\partyhandler.cpp">
@@ -751,14 +765,6 @@
 		<Unit filename="src\particleemitter.cpp" />
 		<Unit filename="src\particleemitter.h" />
 		<Unit filename="src\particleemitterprop.h" />
-		<Unit filename="src\party.cpp">
-			<Option target="eAthena" />
-			<Option target="unix" />
-		</Unit>
-		<Unit filename="src\party.h">
-			<Option target="eAthena" />
-			<Option target="unix" />
-		</Unit>
 		<Unit filename="src\player.cpp" />
 		<Unit filename="src\player.h" />
 		<Unit filename="src\player_relations.cpp" />
