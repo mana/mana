@@ -314,5 +314,5 @@ void ChatTab::handleInput(const std::string &msg) {
 
 void ChatTab::handleCommand(std::string msg)
 {
-    commandHandler->handleCommand(msg);
+    commandHandler->handleCommand(msg, this);
 }

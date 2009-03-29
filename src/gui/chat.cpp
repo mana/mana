@@ -316,12 +316,12 @@ void ChatWindow::doPresent()
 
 
         mRecorder->record(timeStr.str() + _("Present: ") + response + ".");
-        localChatTab->chatLog(_("Attendance written to record log."),
+        getFocused()->chatLog(_("Attendance written to record log."),
                               BY_SERVER, true);
     }
     else
     {
-        localChatTab->chatLog(_("Present: ") + response, BY_SERVER);
+        getFocused()->chatLog(_("Present: ") + response, BY_SERVER);
     }
 }
 
