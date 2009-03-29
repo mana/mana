@@ -95,7 +95,7 @@ void TabbedArea::addTab(Tab *tab, gcn::Widget *widget)
 
 void TabbedArea::removeTab(Tab *tab)
 {
-    int tabIndexToBeSelected = 0;
+    int tabIndexToBeSelected = -1;
 
     if (tab == mSelectedTab)
     {
