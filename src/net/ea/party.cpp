@@ -26,19 +26,16 @@
 #include "gui/widgets/chattab.h"
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
+#include "gui/partywindow.h"
 
 #include "net/messageout.h"
 #include "net/ea/protocol.h"
+#include "net/ea/gui/partytab.h"
 
 #include "utils/gettext.h"
 #include "utils/strprintf.h"
 
-Party::Party() :
-    mInviteListener(&mInParty)
-{
-}
-
-void Party::respond(const std::string &command, const std::string &args)
+void eAthena::Party::respond(const std::string &command, const std::string &args)
 {
     if (command == "new" || command == "create")
     {
@@ -52,7 +49,7 @@ void Party::respond(const std::string &command, const std::string &args)
     }
     if (command == "settings")
     {
-        localChatTab->chatLog(_("Not yet implemented!"), BY_SERVER);
+        partyTab->chatLog(_("Not yet implemented!"), BY_SERVER);
         return;
         /*
         MessageOut outMsg(CMSG_PARTY_SETTINGS);
@@ -60,10 +57,10 @@ void Party::respond(const std::string &command, const std::string &args)
         outMsg.writeInt16(0); // Item
         */
     }
-    localChatTab->chatLog(_("Party command not known."), BY_SERVER);
+    partyTab->chatLog(_("Party command not known."), BY_SERVER);
 }
 
-void Party::create(const std::string &party)
+void eAthena::Party::create(const std::string &party)
 {
     if (party.empty())
     {
@@ -72,22 +69,21 @@ void Party::create(const std::string &party)
     }
     MessageOut outMsg(CMSG_PARTY_CREATE);
     outMsg.writeString(party.substr(0, 23), 24);
-    mCreating = true;
 }
 
-void Party::leave(const std::string &args)
+void eAthena::Party::leave(const std::string &args)
 {
     MessageOut outMsg(CMSG_PARTY_LEAVE);
     localChatTab->chatLog(_("Left party."), BY_SERVER);
-    mInParty = false;
+    player_node->setInParty(false);
 }
 
-void Party::createResponse(bool ok)
+void eAthena::Party::createResponse(bool ok)
 {
     if (ok)
     {
         localChatTab->chatLog(_("Party successfully created."), BY_SERVER);
-        mInParty = true;
+        player_node->setInParty(true);
     }
     else
     {
@@ -95,58 +91,41 @@ void Party::createResponse(bool ok)
     }
 }
 
-void Party::inviteResponse(const std::string &nick, int status)
+void eAthena::Party::inviteResponse(const std::string &nick, int status)
 {
     switch (status)
     {
         case 0:
-            localChatTab->chatLog(strprintf(_("%s is already a member of a party."),
+            partyTab->chatLog(strprintf(_("%s is already a member of a party."),
                         nick.c_str()), BY_SERVER);
             break;
         case 1:
-            localChatTab->chatLog(strprintf(_("%s refused your invitation."),
+            partyTab->chatLog(strprintf(_("%s refused your invitation."),
                         nick.c_str()), BY_SERVER);
             break;
         case 2:
-            localChatTab->chatLog(strprintf(_("%s is now a member of your party."),
+            partyTab->chatLog(strprintf(_("%s is now a member of your party."),
                         nick.c_str()), BY_SERVER);
             break;
     }
 }
 
-void Party::invitedAsk(const std::string &nick, int gender,
-                       const std::string &partyName)
-{
-    mPartyName = partyName; /* Quick and nasty - needs redoing */
-    if (nick.empty())
-    {
-        localChatTab->chatLog(_("You can\'t have a blank party name!"), BY_SERVER);
-        return;
-    }
-    mCreating = false;
-    ConfirmDialog *dlg = new ConfirmDialog(_("Invite to party"),
-            strprintf(_("%s invites you to join"
-                        " the %s party, do you accept?"),
-                nick.c_str(), partyName.c_str()));
-    dlg->addActionListener(&mInviteListener);
-}
-
-void Party::InviteListener::action(const gcn::ActionEvent &event)
+void eAthena::Party::respondToInvite(bool accept)
 {
     MessageOut outMsg(CMSG_PARTY_INVITED);
     outMsg.writeInt32(player_node->getId());
-    bool accept = event.getId() == "yes";
     outMsg.writeInt32(accept ? 1 : 0);
-    *mInParty = *mInParty || accept;
+    player_node->setInParty(player_node->getInParty() || accept);
 }
 
-void Party::leftResponse(const std::string &nick)
+void eAthena::Party::leftResponse(const std::string &nick)
 {
     localChatTab->chatLog(strprintf(_("%s has left your party."), nick.c_str()),
                                BY_SERVER);
+    partyWindow->removePartyMember(nick);
 }
 
-void Party::receiveChat(Being *being, const std::string &msg)
+void eAthena::Party::receiveChat(Being *being, const std::string &msg)
 {
     if (!being)
     {
@@ -162,7 +141,7 @@ void Party::receiveChat(Being *being, const std::string &msg)
     localChatTab->chatLog(being->getName() + " : " + msg, BY_PARTY);
 }
 
-void Party::help(const std::string &args)
+void eAthena::Party::help(const std::string &args)
 {
     // Strip "party " from the front
     std::string msg = args.substr(6, args.length());

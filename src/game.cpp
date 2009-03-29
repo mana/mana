@@ -74,12 +74,12 @@
 #include "gui/status.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
+#include "gui/partywindow.h"
 #ifdef TMWSERV_SUPPORT
 #include "gui/buddywindow.h"
 #include "gui/guildwindow.h"
 #include "gui/magic.h"
 #include "gui/npcpostdialog.h"
-#include "gui/partywindow.h"
 #include "gui/quitdialog.h"
 #else
 #include "gui/storagewindow.h"
@@ -107,7 +107,6 @@
 #include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
 #include "net/ea/npchandler.h"
-#include "net/ea/party.h"
 #include "net/ea/playerhandler.h"
 #include "net/ea/tradehandler.h"
 #include "net/ea/protocol.h"
@@ -155,12 +154,12 @@ NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 NpcStringDialog *npcStringDialog;
 SkillDialog *skillDialog;
+PartyWindow *partyWindow;
 #ifdef TMWSERV_SUPPORT
 BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
 MagicDialog *magicDialog;
 NpcPostDialog *npcPostDialog;
-PartyWindow *partyWindow;
 #else
 StorageWindow *storageWindow;
 #endif
@@ -180,9 +179,6 @@ Particle *particleEngine = NULL;
 EffectManager *effectManager = NULL;
 
 ChatTab *localChatTab = NULL;
-#ifdef EATHENA_SUPPORT
-Party *playerParty = NULL;
-#endif
 
 const int MAX_TIME = 10000;
 
@@ -248,13 +244,13 @@ static void createGuiWindows()
     npcIntegerDialog = new NpcIntegerDialog;
     npcListDialog = new NpcListDialog;
     npcStringDialog = new NpcStringDialog;
+    partyWindow = new PartyWindow;
 #ifdef TMWSERV_SUPPORT
     npcPostDialog = new NpcPostDialog;
     magicDialog = new MagicDialog;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     buddyWindow = new BuddyWindow;
     guildWindow = new GuildWindow;
-    partyWindow = new PartyWindow;
 #else
     buySellDialog = new BuySellDialog;
     equipmentWindow = new EquipmentWindow;
@@ -333,12 +329,12 @@ static void destroyGuiWindows()
     delete npcListDialog;
     delete npcTextDialog;
     delete npcStringDialog;
+    delete partyWindow;
 #ifdef TMWSERV_SUPPORT
     delete npcPostDialog;
     delete magicDialog;
     delete buddyWindow;
     delete guildWindow;
-    delete partyWindow;
 #endif
     delete skillDialog;
     delete minimap;
@@ -401,9 +397,6 @@ Game::Game(Network *network):
 
     // Initialize beings
     beingManager->setPlayer(player_node);
-#ifdef EATHENA_SUPPORT
-    playerParty = new Party;
-#endif
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use
@@ -459,8 +452,6 @@ Game::~Game()
 {
 #ifdef TMWSERV_SUPPORT
     Net::clearHandlers();
-#else
-    delete playerParty;
 #endif
 
     destroyGuiWindows();

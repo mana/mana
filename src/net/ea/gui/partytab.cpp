@@ -44,10 +44,10 @@ PartyTab::~PartyTab()
 {
 }
 
-void PartyTab::handleInput(std::string &msg) {
+void PartyTab::handleInput(const std::string &msg) {
     // TODO
 }
 
-void PartyTab::handleCommand(std::string &msg) {
+void PartyTab::handleCommand(std::string msg) {
     // TODO
 }

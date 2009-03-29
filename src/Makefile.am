@@ -32,7 +32,7 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/button.cpp \
 	      gui/button.h \
 	      gui/buy.cpp \
-              gui/buy.h \
+	      gui/buy.h \
 	      gui/char_select.cpp \
 	      gui/char_select.h \
 	      gui/chat.cpp \
@@ -102,6 +102,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/ok_dialog.h \
 	      gui/palette.cpp \
 	      gui/palette.h \
+	      gui/partywindow.cpp \
+	      gui/partywindow.h \
 	      gui/passwordfield.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
@@ -355,8 +357,6 @@ tmw_SOURCES += \
 	      gui/magic.h \
 	      gui/npcpostdialog.cpp \
 	      gui/npcpostdialog.h \
-	      gui/partywindow.cpp \
-	      gui/partywindow.h \
 	      gui/quitdialog.cpp \
 	      gui/quitdialog.h \
 	      gui/serverdialog.cpp \
@@ -429,8 +429,8 @@ endif
 if SERVER_EATHENA
 tmw_CXXFLAGS += -DEATHENA_SUPPORT
 tmw_SOURCES += \
-              gui/buysell.cpp \
-              gui/buysell.h \
+	      gui/buysell.cpp \
+	      gui/buysell.h \
 	      gui/char_server.cpp \
 	      gui/char_server.h \
 	      gui/skill.cpp \
@@ -439,6 +439,8 @@ tmw_SOURCES += \
 	      gui/status.h \
 	      gui/storagewindow.cpp \
 	      gui/storagewindow.h \
+	      net/ea/gui/partytab.cpp \
+	      net/ea/gui/partytab.h \
 	      net/ea/beinghandler.cpp \
 	      net/ea/beinghandler.h \
 	      net/ea/buysellhandler.cpp \
@@ -461,8 +463,8 @@ tmw_SOURCES += \
 	      net/ea/network.h \
 	      net/ea/npchandler.cpp \
 	      net/ea/npchandler.h \
-              net/ea/party.cpp \
-              net/ea/party.h \
+	      net/ea/party.cpp \
+	      net/ea/party.h \
 	      net/ea/partyhandler.cpp \
 	      net/ea/partyhandler.h \
 	      net/ea/playerhandler.cpp \
@@ -472,7 +474,7 @@ tmw_SOURCES += \
 	      net/ea/skillhandler.cpp \
 	      net/ea/skillhandler.h \
 	      net/ea/tradehandler.cpp \
-              net/ea/tradehandler.h
+	      net/ea/tradehandler.h
 endif
 
 # set the include path found by configure

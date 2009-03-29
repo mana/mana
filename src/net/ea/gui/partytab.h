@@ -46,4 +46,6 @@ class PartyTab : public ChatTab
         void handleCommand(std::string msg);
 };
 
+extern PartyTab *partyTab;
+
 #endif // CHANNELTAB_H

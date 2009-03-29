@@ -363,11 +363,6 @@ void LocalPlayer::inviteToGuild(Being *being)
     }
 }
 
-void LocalPlayer::inviteToParty(const std::string &name)
-{
-    Net::ChatServer::Party::invitePlayer(name);
-}
-
 void LocalPlayer::clearInventory()
 {
     mEquipment->clear();
@@ -380,6 +375,15 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 }
 
 #endif
+
+void LocalPlayer::inviteToParty(const std::string &name)
+{
+#ifdef TMWSERV_SUPPORT
+    Net::ChatServer::Party::invitePlayer(name);
+#else
+
+#endif
+}
 
 void LocalPlayer::moveInvItem(Item *item, int newIndex)
 {

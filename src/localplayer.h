@@ -183,14 +183,14 @@ class LocalPlayer : public Player
          */
         void inviteToGuild(Being *being);
 
+        void clearInventory();
+        void setInvItem(int index, int id, int amount);
+#endif
+
         /**
          * Invite a player to join their party
          */
         void inviteToParty(const std::string &name);
-
-        void clearInventory();
-        void setInvItem(int index, int id, int amount);
-#endif
 
         /**
          * Move the Inventory item from the old slot to the new slot.

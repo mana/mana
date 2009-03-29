@@ -24,17 +24,14 @@
 
 #include "net/messagehandler.h"
 
-class Party;
-
 class PartyHandler : public MessageHandler
 {
     public:
-        PartyHandler(Party *party);
+        PartyHandler();
+
+        ~PartyHandler();
 
         void handleMessage(MessageIn &msg);
-
-    private:
-        Party *mParty;
 };
 
 #endif // NET_EA_PARTYHANDLER_H

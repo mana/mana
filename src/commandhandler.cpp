@@ -252,7 +252,7 @@ void CommandHandler::handleHelp(const std::string &args)
 #else
     else if (args.substr(0, 5) == "party")
     {
-        playerParty->help(args);
+        eAthena::Party::help(args);
 #endif
     }
     else if (args == "present")
@@ -526,7 +526,7 @@ void CommandHandler::handleParty(const std::string &args)
         }
     }
     else
-        playerParty->respond(command, rest);
+        eAthena::Party::respond(command, rest);
 #endif
 }
 

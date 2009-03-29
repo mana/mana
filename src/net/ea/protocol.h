@@ -101,7 +101,7 @@ static const int STORAGE_OFFSET = 1;
 
 #define SMSG_PARTY_CREATE            0x00fa
 #define SMSG_PARTY_INFO              0x00fb
-#define SMSG_PARTY_INVITE            0x00fd
+#define SMSG_PARTY_INVITE_RESPONSE   0x00fd
 #define SMSG_PARTY_INVITED           0x00fe
 #define SMSG_PARTY_SETTINGS          0x0102
 #define SMSG_PARTY_MEMBER_INFO       0x0104

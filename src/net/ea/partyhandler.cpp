@@ -21,21 +21,29 @@
 
 #include "net/ea/partyhandler.h"
 
+#include "net/ea/gui/partytab.h"
+
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
 
 #include "gui/chat.h"
+#include "gui/partywindow.h"
 
 #include "beingmanager.h"
 #include "party.h"
 
-PartyHandler::PartyHandler(Party *party) : mParty(party)
+PartyTab *partyTab;
+
+static void newPartyTab() { partyTab = new PartyTab(); }
+static void deletePartyTab() { delete partyTab ; }
+
+PartyHandler::PartyHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_PARTY_CREATE,
         SMSG_PARTY_INFO,
-        SMSG_PARTY_INVITE,
+        SMSG_PARTY_INVITE_RESPONSE,
         SMSG_PARTY_INVITED,
         SMSG_PARTY_SETTINGS,
         SMSG_PARTY_MEMBER_INFO,
@@ -46,6 +54,13 @@ PartyHandler::PartyHandler(Party *party) : mParty(party)
         0
     };
     handledMessages = _messages;
+
+    newPartyTab();
+}
+
+PartyHandler::~PartyHandler()
+{
+    deletePartyTab();
 }
 
 void PartyHandler::handleMessage(MessageIn &msg)
@@ -53,15 +68,15 @@ void PartyHandler::handleMessage(MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_PARTY_CREATE:
-            mParty->createResponse(msg.readInt8());
+            eAthena::Party::createResponse(msg.readInt8());
             break;
         case SMSG_PARTY_INFO:
             break;
-        case SMSG_PARTY_INVITE:
+        case SMSG_PARTY_INVITE_RESPONSE:
             {
                 std::string nick = msg.readString(24);
                 int status = msg.readInt8();
-                mParty->inviteResponse(nick, status);
+                eAthena::Party::inviteResponse(nick, status);
                 break;
             }
         case SMSG_PARTY_INVITED:
@@ -85,7 +100,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     gender = being->getGender();
                     partyName = msg.readString(24);
                 }
-                mParty->invitedAsk(nick, gender, partyName);
+                partyWindow->showPartyInvite(nick, partyName);
                 break;
             }
         case SMSG_PARTY_SETTINGS:
@@ -97,7 +112,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 /*int id = */msg.readInt32();
                 std::string nick = msg.readString(24);
                 /*int fail = */msg.readInt8();
-                mParty->leftResponse(nick);
+                eAthena::Party::leftResponse(nick);
                 break;
             }
         case SMSG_PARTY_UPDATE_HP:
@@ -114,7 +129,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 int id = msg.readInt32();
                 Being *being = beingManager->findBeing(id);
                 std::string chatMsg = msg.readString(msgLength);
-                mParty->receiveChat(being, chatMsg);
+                eAthena::Party::receiveChat(being, chatMsg);
             }
             break;
     }
