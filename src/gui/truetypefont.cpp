@@ -86,13 +86,14 @@ TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
 
     ++fontCounter;
     mFont = TTF_OpenFont(filename.c_str(), size);
-    TTF_SetFontStyle (mFont, style);
 
     if (!mFont)
     {
         throw GCN_EXCEPTION("SDLTrueTypeFont::SDLTrueTypeFont: " +
             std::string(TTF_GetError()));
     }
+
+    TTF_SetFontStyle (mFont, style);
 }
 
 TrueTypeFont::~TrueTypeFont()
