@@ -62,7 +62,8 @@ static TabData const data[TAB_COUNT] = {
 
 ImageRect Tab::tabImg[TAB_COUNT];
 
-Tab::Tab() : gcn::Tab()
+Tab::Tab() : gcn::Tab(),
+    mTabColor(guiPalette->getColor(Palette::TEXT))
 {
     init();
 }
@@ -126,7 +127,7 @@ void Tab::draw(gcn::Graphics *graphics)
         {
             mode = TAB_SELECTED;
             // if tab is selected, it doesnt need to highlight activity
-            mLabel->setForegroundColor(guiPalette->getColor(Palette::TEXT));
+            mLabel->setForegroundColor(mTabColor);
             mHighlighted = false;
         }
         else if (mHighlighted)
@@ -136,7 +137,7 @@ void Tab::draw(gcn::Graphics *graphics)
         }
         else
         {
-            mLabel->setForegroundColor(guiPalette->getColor(Palette::TEXT));
+            mLabel->setForegroundColor(mTabColor);
         }
     }
 
@@ -156,6 +157,13 @@ void Tab::draw(gcn::Graphics *graphics)
 
     // draw label
     drawChildren(graphics);
+}
+
+void Tab::setTabColor(gcn::Color color)
+{
+    if (color == NULL)
+        color = guiPalette->getColor(Palette::TEXT);
+    mTabColor = color;
 }
 
 void Tab::setHighlighted(bool high)
