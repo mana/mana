@@ -99,6 +99,7 @@
 #include "net/tmwserv/inventoryhandler.h"
 #include "net/tmwserv/partyhandler.h"
 #else
+#include "net/ea/gui/partytab.h"
 #include "net/ea/network.h"
 #include "net/ea/chathandler.h"
 #include "net/ea/beinghandler.h"
@@ -108,6 +109,7 @@
 #include "net/ea/itemhandler.h"
 #include "net/ea/npchandler.h"
 #include "net/ea/playerhandler.h"
+#include "net/ea/partyhandler.h"
 #include "net/ea/tradehandler.h"
 #include "net/ea/protocol.h"
 #include "net/ea/skillhandler.h"
@@ -353,7 +355,6 @@ static void destroyGuiWindows()
 Game::Game():
     mBeingHandler(new BeingHandler),
     mGuildHandler(new GuildHandler),
-    mPartyHandler(new PartyHandler),
     mEffectHandler(new EffectHandler),
 #else
 Game::Game(Network *network):
@@ -362,6 +363,7 @@ Game::Game(Network *network):
     mEquipmentHandler(new EquipmentHandler),
     mSkillHandler(new SkillHandler),
 #endif
+    mPartyHandler(new PartyHandler),
     mBuySellHandler(new BuySellHandler),
     mChatHandler(new ChatHandler),
     mInventoryHandler(new InventoryHandler),
@@ -427,6 +429,9 @@ Game::Game(Network *network):
     network->registerHandler(mPlayerHandler.get());
     network->registerHandler(mSkillHandler.get());
     network->registerHandler(mTradeHandler.get());
+    network->registerHandler(mPartyHandler.get());
+
+    partyTab = new PartyTab();
 
     /*
      * To prevent the server from sending data before the client
@@ -452,6 +457,8 @@ Game::~Game()
 {
 #ifdef TMWSERV_SUPPORT
     Net::clearHandlers();
+#else
+    delete partyTab;
 #endif
 
     destroyGuiWindows();

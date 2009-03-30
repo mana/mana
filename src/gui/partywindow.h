@@ -25,8 +25,10 @@
 #include "window.h"
 #include "confirm_dialog.h"
 
+#include "gui/widgets/avatar.h"
+
 #include <string>
-#include <vector>
+#include <map>
 
 #include <guichan/actionevent.hpp>
 #include <guichan/actionlistener.hpp>
@@ -37,8 +39,13 @@
  */
 struct PartyMember
 {
+    int id;
     std::string name;
-    int vitality;
+    int health;
+    int healthMax;
+    bool leader;
+    bool online;
+    Avatar *avatar;
 };
 
 /**
@@ -65,14 +72,41 @@ class PartyWindow : public Window, gcn::ActionListener
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Add party member
+         * Find a party member based on ID
          */
-        void addPartyMember(const std::string &memberName);
+        PartyMember *findMember(int id) { return mMembers[id]; }
+
+        /**
+         * Find a party member based on ID. Creates if it doesn't already exist.
+         */
+        PartyMember *findMember2(int id);
+
+        /**
+         * Returns the id of the first member found with the given name or -1
+         * if it isn't found.
+         */
+        int findMember(const std::string &name);
+
+        /**
+         * Update/add a party member
+         */
+        void updateMember(int id, const std::string &memberName,
+                            bool leader = false, bool online = true);
 
         /**
          * Remove party member
          */
-        void removePartyMember(const std::string &memberName);
+        void removeMember(int id);
+
+        /**
+         * Remove party member
+         */
+        void removeMember(const std::string &name);
+
+        /**
+         * Remove party member
+         */
+        void updateOnlne(int id, bool online);
 
         /**
          * Show party invite
@@ -86,8 +120,8 @@ class PartyWindow : public Window, gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
     private:
-        typedef std::vector<PartyMember> PartyList;
-        PartyList mPartyMembers;
+        typedef std::map<int, PartyMember*> PartyList;
+        PartyList mMembers;
         std::string mPartyInviter;
         ConfirmDialog *acceptDialog;
 };

@@ -68,12 +68,12 @@ class Game : public ConfigListener
         MessageHandlerPtr mBeingHandler;
 #ifdef TMWSERV_SUPPORT
         MessageHandlerPtr mGuildHandler;
-        MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mEffectHandler;
 #else
         MessageHandlerPtr mEquipmentHandler;
         MessageHandlerPtr mSkillHandler;
 #endif
+        MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mBuySellHandler;
         MessageHandlerPtr mChatHandler;
         MessageHandlerPtr mInventoryHandler;

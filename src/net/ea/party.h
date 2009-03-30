@@ -23,6 +23,7 @@
 #define PARTY_H
 
 #include "being.h"
+#include "player.h"
 
 #include <string>
 
@@ -30,28 +31,17 @@ namespace eAthena
 {
     namespace Party
     {
-        void respond(const std::string &command, const std::string &args);
-
         void create(const std::string &party);
         void leave(const std::string &args);
 
         void createResponse(bool ok);
-        void inviteResponse(const std::string &nick, int status);
-        void invitedAsk(const std::string &nick, int gender,
-                        const std::string &partyName);
+
+        void invite(Player *player);
 
         /**
          * Send invite response to the server
          */
         void respondToInvite(bool accept);
-
-        /**
-         * The player has left your party
-         */
-        void leftResponse(const std::string &nick);
-        void receiveChat(Being *being, const std::string &msg);
-
-        void help(const std::string &args);
     }
 }
 

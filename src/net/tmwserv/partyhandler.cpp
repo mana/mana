@@ -87,7 +87,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_PARTY_NEW_MEMBER:
         {
-            msg.readInt16(); // being id
+            int id = msg.readInt16(); // being id
             std::string name = msg.readString();
 
             localChatTab->chatLog(name + " joined the party");
@@ -95,12 +95,12 @@ void PartyHandler::handleMessage(MessageIn &msg)
             if (!player_node->getInParty())
                 player_node->setInParty(true);
 
-            partyWindow->addPartyMember(name);
+            partyWindow->updateMember(id, name);
         } break;
 
         case CPMSG_PARTY_MEMBER_LEFT:
         {
-            partyWindow->removePartyMember(msg.readString());
+            partyWindow->removeMember(msg.readString());
         } break;
     }
 }

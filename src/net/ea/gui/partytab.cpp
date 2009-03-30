@@ -45,9 +45,73 @@ PartyTab::~PartyTab()
 }
 
 void PartyTab::handleInput(const std::string &msg) {
-    // TODO
+    std::size_t length = msg.length() + 1;
+
+    MessageOut outMsg(CMSG_PARTY_MESSAGE);
+    outMsg.writeInt16(length + 4);
+    outMsg.writeString(msg, length);
 }
 
 void PartyTab::handleCommand(std::string msg) {
-    // TODO
+    std::string::size_type pos = msg.find(' ');
+    std::string type(msg, 0, pos);
+    std::string args(msg, pos == std::string::npos ? msg.size() : pos + 1);
+
+    if (type == "help")
+    {
+        if (args == "")
+        {
+            partyTab->chatLog(_("-- Help --"));
+            partyTab->chatLog(_("/help > Display this help."));
+            partyTab->chatLog(_("/create > Create a new party"));
+            partyTab->chatLog(_("/new > alias of create"));
+            partyTab->chatLog(_("/leave > leave the party you are in"));
+        }
+        else if (args == "create" || args == "new")
+        {
+            partyTab->chatLog(_("Command: /party new <party-name>"));
+            partyTab->chatLog(_("Command: /party create <party-name>"));
+            partyTab->chatLog(_("These commands create a new party <party-name."));
+        }
+        //else if (msg == "settings")
+        //else if (msg == "info")
+        else if (args == "leave")
+        {
+            partyTab->chatLog(_("Command: /party leave"));
+            partyTab->chatLog(_("This command causes the player to leave the party."));
+        }
+        else if (args == "help")
+        {
+            partyTab->chatLog(_("Command: /help"));
+            partyTab->chatLog(_("This command displays a list of all commands available."));
+            partyTab->chatLog(_("Command: /help <command>"));
+            partyTab->chatLog(_("This command displays help on <command>."));
+        }
+        else
+        {
+            partyTab->chatLog(_("Unknown command."));
+            partyTab->chatLog(_("Type /help for a list of commands."));
+        }
+    }
+    else if (type == "create" || type == "new")
+    {
+        eAthena::Party::create(args);
+    }
+    else if (type == "leave")
+    {
+        eAthena::Party::leave(args);
+    }
+    else if (type == "settings")
+    {
+        partyTab->chatLog(_("The settings command is not yet implemented!"));
+        /*
+        MessageOut outMsg(CMSG_PARTY_SETTINGS);
+        outMsg.writeInt16(0); // Experience
+        outMsg.writeInt16(0); // Item
+        */
+    }
+    else
+    {
+        partyTab->chatLog("Unknown command");
+    }
 }

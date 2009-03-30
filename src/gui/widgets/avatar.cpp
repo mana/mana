@@ -28,28 +28,52 @@
 
 #include <guichan/widgets/label.hpp>
 
+namespace {
+    Image *avatarStatusOffline;
+    Image *avatarStatusOnline;
+    int avatarCount = 0;
+}
+
 Avatar::Avatar(const std::string &name):
     mName(name)
 {
+    setOpaque(false);
     setSize(110, 12);
+
+    if (avatarCount == 0)
+    {
+        ResourceManager *resman = ResourceManager::getInstance();
+        avatarStatusOffline = resman->getImage("graphics/gui/circle-gray.png");
+        avatarStatusOnline = resman->getImage("graphics/gui/circle-green.png");
+    }
+    avatarCount++;
+    avatarStatusOffline->incRef();
+    avatarStatusOnline->incRef();
+
+    mStatus = new Icon(avatarStatusOffline);
+    mStatus->setSize(12, 12);
+    add(mStatus, 1, 0);
+
     mLabel = new gcn::Label(name);
     mLabel->setSize(85, 12);
-    mLabel->setPosition(25, 0);
-    ResourceManager *resman = ResourceManager::getInstance();
-    mStatusOffline = resman->getImage("graphics/gui/circle-gray.png");
-    mStatusOnline = resman->getImage("graphics/gui/circle-green.png");
-    mStatus = new Icon(mStatusOffline);
-    mStatus->setSize(25, 12);
-    mStatus->setPosition(0, 0);
+    add(mLabel, 14, 0);
+}
+
+Avatar::~Avatar()
+{
+    avatarCount--;
+
+    avatarStatusOffline->decRef();
+    avatarStatusOnline->decRef();
+}
+
+void Avatar::setName(const std::string &name)
+{
+    mName = name;
+    mLabel->setCaption(name);
 }
 
 void Avatar::setOnline(bool online)
 {
-    mStatus->setImage(online ? mStatusOnline : mStatusOffline);
-}
-
-void Avatar::draw(gcn::Graphics *g)
-{
-    mLabel->draw(g);
-    mStatus->draw(g);
+    mStatus->setImage(online ? avatarStatusOnline : avatarStatusOffline);
 }

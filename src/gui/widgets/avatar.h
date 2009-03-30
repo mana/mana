@@ -24,14 +24,14 @@
 
 #include "guichanfwd.h"
 
-#include <guichan/widget.hpp>
+#include "gui/gccontainer.h"
 
 #include <string>
 
 class Image;
 class Icon;
 
-class Avatar : public gcn::Widget
+class Avatar : public GCContainer
 {
 public:
     /**
@@ -40,21 +40,21 @@ public:
      */
     Avatar(const std::string &name);
 
-    /**
-     * Set the avatar online status.
-     */
-    void setOnline(bool online);
+    ~Avatar();
 
     /**
-     * Draws the avatar.
+     * Set the avatar's name.
      */
-    void draw(gcn::Graphics *g);
+    void setName(const std::string &name);
+
+    /**
+     * Set the avatar's online status.
+     */
+    void setOnline(bool online);
 
 private:
     std::string mName;
     Icon *mStatus;
-    Image *mStatusOnline;
-    Image *mStatusOffline;
     gcn::Label *mLabel;
 };
 

@@ -170,8 +170,6 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/kick > Kick a user from the channel"));
 
         tab->chatLog(_("/party > Invite a user to party"));
-#else
-        tab->chatLog(_("/party > Party-related commands"));
 #endif
 
         tab->chatLog(_("/record > Start recording the chat to an external file"));
@@ -242,17 +240,15 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Channel operators can kick and op other users "
                             "from the channel."));
     }
-#ifdef TMWSERV_SUPPORT
     else if (args == "party")
     {
+#ifdef TMWSERV_SUPPORT
         tab->chatLog(_("Command: /party <nick>"));
         tab->chatLog(_("This command invites <nick> to party with you."));
         tab->chatLog(_("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\")."));
 #else
-    else if (args.substr(0, 5) == "party")
-    {
-        eAthena::Party::help(args);
+        tab->chatLog(_("Party commands are used on the party tab."));
 #endif
     }
     else if (args == "present")
@@ -479,54 +475,7 @@ void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
         player_node->inviteToParty(args);
     }
 #else
-    if (args.empty())
-    {
-        tab->chatLog(_("Unknown party command... Type \"/help\" party for more "
-                "information."), BY_SERVER);
-        return;
-    }
-
-    const std::string::size_type space = args.find(" ");
-    std::string command;
-    std::string rest;
-
-    if (space == std::string::npos)
-    {
-        command = args;
-    }
-    else
-    {
-        command = args.substr(0, space);
-        rest = args.substr(space + 1, args.length());
-    }
-
-    if (command == "prefix")
-    {
-        if (rest.empty())
-        {
-            char temp[2] = ".";
-            *temp = chatWindow->getPartyPrefix();
-            tab->chatLog(_("The current party prefix is ") + std::string(temp));
-        }
-        else if (rest.length() != 1)
-        {
-            tab->chatLog(_("Party prefix must be one character long."));
-        }
-        else
-        {
-            if (rest == "/")
-            {
-                tab->chatLog(_("Cannot use a '/' as the prefix."));
-            }
-            else
-            {
-                chatWindow->setPartyPrefix(rest.at(0));
-                tab->chatLog(_("Changing prefix to ") + rest);
-            }
-        }
-    }
-    else
-        eAthena::Party::respond(command, rest);
+    tab->chatLog(_("Please use party commands on the party tab."));
 #endif
 }
 

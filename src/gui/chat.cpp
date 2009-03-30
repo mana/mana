@@ -68,12 +68,9 @@ ChatWindow::ChatWindow():
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
 
-#ifdef EATHENA_SUPPORT
-    // Read the party prefix
-    std::string partyPrefix = config.getValue("PartyPrefix", "$");
-    mPartyPrefix = (partyPrefix.empty() ? '$' : partyPrefix.at(0));
     mReturnToggles = config.getValue("ReturnToggles", "0") == "1";
 
+#ifdef EATHENA_SUPPORT
     // If the player had @assert on in the last session, ask the server to
     // run the @assert command for the player again. Convenience for GMs.
     if (config.getValue(player_node->getName() + "GMassert", 0)) {
@@ -86,13 +83,8 @@ ChatWindow::ChatWindow():
 
 ChatWindow::~ChatWindow()
 {
-#ifdef EATHENA_SUPPORT
-    char partyPrefix[2] = ".";
-    *partyPrefix = mPartyPrefix;
-    config.setValue("PartyPrefix", partyPrefix);
     config.setValue("ReturnToggles", mReturnToggles ? "1" : "0");
     delete mRecorder;
-#endif
     delete_all(mWhispers);
     delete mItemLinkHandler;
 }

@@ -159,11 +159,6 @@ class ChatWindow : public Window,
          */
         void scroll(int amount);
 
-#ifdef EATHENA_SUPPORT
-        char getPartyPrefix() const { return mPartyPrefix; }
-        void setPartyPrefix(char prefix) { mPartyPrefix = prefix; }
-#endif
-
         /**
          * Sets the file being recorded to
          *
@@ -192,10 +187,6 @@ class ChatWindow : public Window,
 
         void adjustTabSize();
 
-#ifdef EATHENA_SUPPORT
-        char mPartyPrefix; /**< Messages beginning with the prefix are sent to
-                              the party */
-#endif
         /** Used for showing item popup on clicking links **/
         ItemLinkHandler *mItemLinkHandler;
         Recorder *mRecorder;

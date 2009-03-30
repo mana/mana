@@ -150,12 +150,6 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
             // TODO: Use a predefined color
             lineColor = "##2"; // Equiv. to BrowserBox::GREEN
             break;
-#ifdef EATHENA_SUPPORT
-        case BY_PARTY:
-            tmp.nick += CAT_NORMAL;
-            lineColor = "##P";
-            break;
-#endif
         case ACT_WHISPER:
             // Resend whisper through normal mechanism
             chatWindow->whisper(tmp.nick, tmp.text);
@@ -215,7 +209,7 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
     chatWindow->mRecorder->record(line.substr(3));
 }
 
-void ChatTab::chatLog(std::string &nick, std::string &msg)
+void ChatTab::chatLog(const std::string &nick, const std::string &msg)
 {
     chatLog(nick + CAT_NORMAL + msg, nick == player_node->getName() ?
                 BY_PLAYER : BY_OTHER, false);
@@ -226,25 +220,6 @@ void ChatTab::chatInput(std::string &msg)
     trim(msg);
 
     if (msg.empty()) return;
-
-#ifdef EATHENA_SUPPORT
-    // Send party message
-    if (msg.at(0) == chatWindow->mPartyPrefix)
-    {
-        msg.erase(0, 1);
-        std::size_t length = msg.length() + 1;
-
-        if (length == 0)
-        {
-            chatLog(_("Trying to send a blank party message."), BY_SERVER, true);
-            return;
-        }
-        MessageOut outMsg(CMSG_PARTY_MESSAGE);
-        outMsg.writeInt16(length + 4);
-        outMsg.writeString(msg, length);
-        return;
-    }
-#endif
 
     // Check for item link
     std::string::size_type start = msg.find('[');

@@ -50,10 +50,9 @@
 #include "net/tmwserv/gameserver/player.h"
 #include "net/tmwserv/chatserver/guild.h"
 #include "net/tmwserv/chatserver/party.h"
-#endif
-
-#ifdef EATHENA_SUPPORT
+#else
 #include "net/messageout.h"
+#include "net/ea/party.h"
 #include "net/ea/protocol.h"
 #endif
 
@@ -381,7 +380,16 @@ void LocalPlayer::inviteToParty(const std::string &name)
 #ifdef TMWSERV_SUPPORT
     Net::ChatServer::Party::invitePlayer(name);
 #else
+    // need an id
+#endif
+}
 
+void LocalPlayer::inviteToParty(Player *player)
+{
+#ifdef TMWSERV_SUPPORT
+    Net::ChatServer::Party::invitePlayer(player->getName());
+#else
+    eAthena::Party::invite(player);
 #endif
 }
 

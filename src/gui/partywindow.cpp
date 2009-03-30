@@ -21,7 +21,6 @@
 
 #include "gui/partywindow.h"
 
-#include "gui/widgets/avatar.h"
 #include "gui/widgets/chattab.h"
 
 #ifdef TMWSERV_SUPPORT
@@ -49,7 +48,7 @@ PartyWindow::PartyWindow() : Window(_("Party"))
 
 PartyWindow::~PartyWindow()
 {
-    mPartyMembers.clear();
+    mMembers.clear();
 }
 
 void PartyWindow::draw(gcn::Graphics *graphics)
@@ -57,59 +56,82 @@ void PartyWindow::draw(gcn::Graphics *graphics)
     Window::draw(graphics);
 }
 
-void PartyWindow::addPartyMember(const std::string &memberName)
+PartyMember *PartyWindow::findMember2(int id)
 {
-    // check to see if player is already in the party
-    PartyList::iterator itr = mPartyMembers.begin(),
-                        itr_end = mPartyMembers.end();
+    PartyMember *member = findMember(id);
+
+    if (!member)
+    {
+        member = new PartyMember;
+        member->avatar = new Avatar("");
+        add(member->avatar, 0, (mMembers.size() - 1) * 14);
+        mMembers[id] = member;
+    }
+
+    return member;
+}
+
+int PartyWindow::findMember(const std::string &name)
+{
+    PartyList::iterator itr = mMembers.begin(),
+                        itr_end = mMembers.end();
 
     while (itr != itr_end)
     {
-        if ((*itr).name == memberName)
+        if ((*itr).second->name == name)
         {
-            // already in the party, dont add
-            return;
+            return (*itr).first;
         }
         ++itr;
     }
 
-    // create new party member
-    PartyMember player;
-    player.name = memberName;
-    mPartyMembers.push_back(player);
+    return -1;
+}
 
-    // add avatar of the new member to window
-    Avatar *avatar = new Avatar(memberName);
-    add(avatar, 0, (mPartyMembers.size() - 1)*14);
+void PartyWindow::updateMember(int id, const std::string &memberName,
+                                 bool leader, bool online)
+{
+    // create new party member
+    PartyMember *player = findMember2(id);
+    player->id = id;
+    player->name = memberName;
+    player->leader = leader;
+    player->online = online;
+    player->avatar->setName(memberName);
+    player->avatar->setOnline(online);
 
     // show the window
-    if (mPartyMembers.size() > 0)
+    if (mMembers.size() > 0)
     {
         setVisible(true);
     }
 }
 
-void PartyWindow::removePartyMember(const std::string &memberName)
+void PartyWindow::removeMember(int id)
 {
-    // remove the party member
-    PartyList::iterator itr = mPartyMembers.begin(),
-                        itr_end = mPartyMembers.end();
-
-    while (itr != itr_end)
-    {
-        if ((*itr).name == memberName)
-        {
-            mPartyMembers.erase(itr);
-            break;
-        }
-        ++itr;
-    }
+    mMembers.erase(id);
 
     // if no-one left, remove the party window
-    if (mPartyMembers.size() < 1)
+    if (mMembers.size() < 1)
     {
         setVisible(false);
     }
+}
+
+void PartyWindow::removeMember(const std::string &name)
+{
+    removeMember(findMember(name));
+}
+
+void PartyWindow::updateOnlne(int id, bool online)
+{
+    PartyMember *player = findMember(id);
+
+    if (!player)
+        return;
+
+    player->online = online;
+    player->avatar->setOnline(online);
 }
 
 void PartyWindow::showPartyInvite(const std::string &inviter,

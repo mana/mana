@@ -215,13 +215,12 @@ void PopupMenu::handleLink(const std::string &link)
     {
         player_node->inviteToGuild(being);
     }
-
+#endif
     // Add player to your party
     else if (link == "party")
     {
-        player_node->inviteToParty(being->getName());
+        player_node->inviteToParty(dynamic_cast<Player*>(being));
     }
-#endif
     /*
     // Follow Player action
     else if (link == "follow")

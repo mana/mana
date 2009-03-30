@@ -21,17 +21,19 @@
 
 #include "net/ea/partyhandler.h"
 
-#include "net/ea/gui/partytab.h"
-
-#include "net/ea/protocol.h"
-
-#include "net/messagein.h"
+#include "beingmanager.h"
 
 #include "gui/chat.h"
 #include "gui/partywindow.h"
 
-#include "beingmanager.h"
-#include "party.h"
+#include "net/messagein.h"
+
+#include "net/ea/party.h"
+#include "net/ea/protocol.h"
+#include "net/ea/gui/partytab.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 PartyTab *partyTab;
 
@@ -46,7 +48,7 @@ PartyHandler::PartyHandler()
         SMSG_PARTY_INVITE_RESPONSE,
         SMSG_PARTY_INVITED,
         SMSG_PARTY_SETTINGS,
-        SMSG_PARTY_MEMBER_INFO,
+        SMSG_PARTY_MOVE,
         SMSG_PARTY_LEAVE,
         SMSG_PARTY_UPDATE_HP,
         SMSG_PARTY_UPDATE_COORDS,
@@ -55,12 +57,12 @@ PartyHandler::PartyHandler()
     };
     handledMessages = _messages;
 
-    newPartyTab();
+    //newPartyTab();
 }
 
 PartyHandler::~PartyHandler()
 {
-    deletePartyTab();
+    //deletePartyTab();
 }
 
 void PartyHandler::handleMessage(MessageIn &msg)
@@ -71,12 +73,45 @@ void PartyHandler::handleMessage(MessageIn &msg)
             eAthena::Party::createResponse(msg.readInt8());
             break;
         case SMSG_PARTY_INFO:
+            {
+                int length = msg.readInt16();
+                std::string party = msg.readString(24);
+                int count = (length - 28) / 46;
+
+                for (int i = 0; i < count; i++)
+                {
+                    int id = msg.readInt32();
+                    std::string nick = msg.readString(24);
+                    std::string map = msg.readString(16);
+                    bool leader = msg.readInt8() == 0;
+                    bool online = msg.readInt8() == 0;
+
+                    partyWindow->updateMember(id, nick, leader, online);
+                }
+            }
             break;
         case SMSG_PARTY_INVITE_RESPONSE:
             {
                 std::string nick = msg.readString(24);
-                int status = msg.readInt8();
-                eAthena::Party::inviteResponse(nick, status);
+                switch (msg.readInt8())
+                {
+                    case 0:
+                        partyTab->chatLog(strprintf(_("%s is already a member of a party."),
+                                    nick.c_str()), BY_SERVER);
+                        break;
+                    case 1:
+                        partyTab->chatLog(strprintf(_("%s refused your invitation."),
+                                    nick.c_str()), BY_SERVER);
+                        break;
+                    case 2:
+                        partyTab->chatLog(strprintf(_("%s is now a member of your party."),
+                                    nick.c_str()), BY_SERVER);
+                        break;
+                    default:
+                        partyTab->chatLog(strprintf(_("Unknown invite response for %s."),
+                                    nick.c_str()), BY_SERVER);
+                        break;
+                }
                 break;
             }
         case SMSG_PARTY_INVITED:
@@ -104,32 +139,65 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 break;
             }
         case SMSG_PARTY_SETTINGS:
+            // I don't see this in eAthena's source
+            printf("Party settings!\n");
             break;
-        case SMSG_PARTY_MEMBER_INFO:
+        case SMSG_PARTY_MOVE:
+            {
+                int id = msg.readInt32();
+                msg.skip(4);
+                int x = msg.readInt16();
+                int y = msg.readInt16();
+                bool online = msg.readInt8() == 0;
+                std::string party = msg.readString(24);
+                std::string nick = msg.readString(24);
+                std::string map = msg.readString(16);
+            }
             break;
         case SMSG_PARTY_LEAVE:
             {
-                /*int id = */msg.readInt32();
+                int id = msg.readInt32();
                 std::string nick = msg.readString(24);
-                /*int fail = */msg.readInt8();
-                eAthena::Party::leftResponse(nick);
+                int fail = msg.readInt8();
+                partyTab->chatLog(strprintf(_("%s has left your party."),
+                                    nick.c_str()), BY_SERVER);
+                partyWindow->removeMember(id);
                 break;
             }
         case SMSG_PARTY_UPDATE_HP:
+            {
+                int id = msg.readInt32();
+                int hp = msg.readInt16();
+                int hpMax = msg.readInt16();
+            }
             break;
         case SMSG_PARTY_UPDATE_COORDS:
+            {
+                int id = msg.readInt32();
+                int x = msg.readInt16();
+                int y = msg.readInt16();
+            }
             break;
         case SMSG_PARTY_MESSAGE:
-            { // new block to enable local variables
+            {
                 int msgLength = msg.readInt16() - 8;
                 if (msgLength <= 0)
                 {
                     return;
                 }
                 int id = msg.readInt32();
-                Being *being = beingManager->findBeing(id);
                 std::string chatMsg = msg.readString(msgLength);
-                eAthena::Party::receiveChat(being, chatMsg);
+
+                Being *being = beingManager->findBeing(id);
+                if (being)
+                    being->setSpeech(chatMsg, SPEECH_TIME);
+
+                PartyMember *member = partyWindow->findMember(id);
+                if (member)                
+                    partyTab->chatLog(member->name, chatMsg);
+                else
+                    partyTab->chatLog(strprintf(_("An unknown member tried to "
+                                    "say: %s"), chatMsg.c_str()), BY_SERVER);
             }
             break;
     }

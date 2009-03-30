@@ -193,6 +193,11 @@ class LocalPlayer : public Player
         void inviteToParty(const std::string &name);
 
         /**
+         * Invite a player to join their party
+         */
+        void inviteToParty(Player *player);
+
+        /**
          * Move the Inventory item from the old slot to the new slot.
          */
         void moveInvItem(Item *item, int newIndex);

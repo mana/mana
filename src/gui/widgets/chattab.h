@@ -34,9 +34,6 @@ class ScrollArea;
 enum
 {
     BY_GM,
-#ifdef EATHENA_SUPPORT
-    BY_PARTY,
-#endif
     BY_PLAYER,
     BY_OTHER,
     BY_SERVER,
@@ -86,7 +83,7 @@ class ChatTab : public Tab
          * @param msg  The message text which is to be sent.
          *
          */
-        void chatLog(std::string &nick, std::string &msg);
+        void chatLog(const std::string &nick, const std::string &msg);
 
         /**
          * Determines whether the message is a command or message, then
