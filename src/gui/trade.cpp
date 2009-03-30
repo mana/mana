@@ -282,12 +282,13 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "add")
     {
-        if (!inventoryWindow->isVisible()) return;
+        if (!inventoryWindow->isVisible())
+            return;
 
         if (!item)
             return;
 
-        if (mMyInventory->getFreeSlot() < 1)
+        if (mMyInventory->getFreeSlot() == -1)
             return;
 
         if (mMyInventory->contains(item))
