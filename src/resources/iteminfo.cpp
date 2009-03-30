@@ -45,7 +45,6 @@ void ItemInfo::setWeaponType(int type)
     // See server item.hpp file for type values.
     switch (type)
     {
-#ifdef TMWSERV_SUPPORT
         case WPNTYPE_NONE:
             mAttackType = ACTION_DEFAULT;
             break;
@@ -64,26 +63,6 @@ void ItemInfo::setWeaponType(int type)
             break;
         default:
             mAttackType = ACTION_ATTACK;
-#else
-        case 0:     // none
-            mAttackType = ACTION_DEFAULT;
-            break;
-        case 1:     // knife
-        case 2:     // sword
-            mAttackType = ACTION_ATTACK_STAB;
-            break;
-        case 8:     // projectile
-            mAttackType = ACTION_ATTACK_THROW;
-            break;
-        case 10:    // bow
-            mAttackType = ACTION_ATTACK_BOW;
-            break;
-        case 11:    // sickle
-            mAttackType = ACTION_ATTACK_SWING;
-            break;
-        default:
-            mAttackType = ACTION_ATTACK;
-#endif
     }
 }
 

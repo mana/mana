@@ -115,9 +115,7 @@ class ItemInfo
          * Constructor.
          */
         ItemInfo():
-#ifdef TMWSERV_SUPPORT
             mType(ITEM_UNUSABLE),
-#endif
             mWeight(0),
             mView(0),
             mAttackType(ACTION_DEFAULT)

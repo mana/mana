@@ -135,11 +135,7 @@ void ItemDB::load()
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-#ifdef TMWSERV_SUPPORT
         int weaponType = weaponTypeFromString(XML::getProperty(node, "weapon-type", ""));
-#else
-        int weaponType = XML::getProperty(node, "weapon_type", 0);
-#endif
         int attackRange = XML::getProperty(node, "attack-range", 0);
 
         ItemInfo *itemInfo = new ItemInfo;
