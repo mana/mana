@@ -451,7 +451,7 @@ void LocalPlayer::useItem(Item *item)
     MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
     outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt32(item->getId());
-    // Note: id is dest of item, usually player_node->account_ID ??
+    // Note: id isn't used, but the server wants it
 }
 
 #endif
@@ -461,7 +461,7 @@ void LocalPlayer::dropItem(Item *item, int quantity)
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::drop(item->getInvIndex(), quantity);
 #else
-    // TODO: Fix wrong coordinates of drops, serverside?
+    // TODO: Fix wrong coordinates of drops, serverside? (what's wrong here?)
     MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
     outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt16(quantity);

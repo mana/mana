@@ -84,6 +84,7 @@ class Palette : public gcn::ListModel
             ENTRY(TWOHAND)\
             ENTRY(SHIELD)\
             ENTRY(RING)\
+            ENTRY(NECKLACE)\
             ENTRY(ARMS)\
             ENTRY(AMMO)\
             ENTRY(PARTICLE)\

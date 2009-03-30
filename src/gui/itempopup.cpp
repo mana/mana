@@ -112,9 +112,7 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemEffect->setTextWrapped(item.getEffect(), 196);
     mItemWeight->setTextWrapped(_("Weight: ") +
                                 Units::formatWeight(item.getWeight()), 196);
-#ifdef EATHENA_SUPPORT
     mItemType = item.getType();
-#endif
 
     int minWidth = mItemName->getWidth();
 
@@ -162,44 +160,43 @@ void ItemPopup::setItem(const ItemInfo &item)
 
 void ItemPopup::updateColors()
 {
-#ifdef EATHENA_SUPPORT
     mItemName->setForegroundColor(getColor(mItemType));
-#endif
     graphics->setColor(guiPalette->getColor(Palette::TEXT));
 }
 
-gcn::Color ItemPopup::getColor(const std::string &type)
+gcn::Color ItemPopup::getColor(short type)
 {
-    gcn::Color color;
-
-    if (type.compare("generic") == 0)
-        color = guiPalette->getColor(Palette::GENERIC);
-    else if (type.compare("equip-head") == 0)
-        color = guiPalette->getColor(Palette::HEAD);
-    else if (type.compare("usable") == 0)
-        color = guiPalette->getColor(Palette::USABLE);
-    else if (type.compare("equip-torso") == 0)
-        color = guiPalette->getColor(Palette::TORSO);
-    else if (type.compare("equip-1hand") == 0)
-        color = guiPalette->getColor(Palette::ONEHAND);
-    else if (type.compare("equip-legs") == 0)
-        color = guiPalette->getColor(Palette::LEGS);
-    else if (type.compare("equip-feet") == 0)
-        color = guiPalette->getColor(Palette::FEET);
-    else if (type.compare("equip-2hand") == 0)
-        color = guiPalette->getColor(Palette::TWOHAND);
-    else if (type.compare("equip-shield") == 0)
-        color = guiPalette->getColor(Palette::SHIELD);
-    else if (type.compare("equip-ring") == 0)
-        color = guiPalette->getColor(Palette::RING);
-    else if (type.compare("equip-arms") == 0)
-        color = guiPalette->getColor(Palette::ARMS);
-    else if (type.compare("equip-ammo") == 0)
-        color = guiPalette->getColor(Palette::AMMO);
-    else
-        color = guiPalette->getColor(Palette::UNKNOWN_ITEM);
-
-    return color;
+    switch (type)
+    {
+        case ITEM_UNUSABLE:
+            return guiPalette->getColor(Palette::GENERIC);
+        case ITEM_USABLE:
+            return guiPalette->getColor(Palette::USABLE);
+        case ITEM_EQUIPMENT_ONE_HAND_WEAPON:
+            return guiPalette->getColor(Palette::ONEHAND);
+        case ITEM_EQUIPMENT_TWO_HANDS_WEAPON:
+            return guiPalette->getColor(Palette::TWOHAND);
+        case ITEM_EQUIPMENT_TORSO:
+            return guiPalette->getColor(Palette::TORSO);
+        case ITEM_EQUIPMENT_ARMS:
+            return guiPalette->getColor(Palette::ARMS);
+        case ITEM_EQUIPMENT_HEAD:
+            return guiPalette->getColor(Palette::HEAD);
+        case ITEM_EQUIPMENT_LEGS:
+            return guiPalette->getColor(Palette::LEGS);
+        case ITEM_EQUIPMENT_SHIELD:
+            return guiPalette->getColor(Palette::SHIELD);
+        case ITEM_EQUIPMENT_RING:
+            return guiPalette->getColor(Palette::RING);
+        case ITEM_EQUIPMENT_NECKLACE:
+            return guiPalette->getColor(Palette::NECKLACE);
+        case ITEM_EQUIPMENT_FEET:
+            return guiPalette->getColor(Palette::FEET);
+        case ITEM_EQUIPMENT_AMMO:
+            return guiPalette->getColor(Palette::AMMO);
+        default:
+            return guiPalette->getColor(Palette::UNKNOWN_ITEM);
+    }
 }
 
 std::string ItemPopup::getItemName()

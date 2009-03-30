@@ -158,18 +158,11 @@ class ItemInfo
 
         const std::string &getEffect() const { return mEffect; }
 
-#ifdef TMWSERV_SUPPORT
         void setType(short type)
         { mType = type; }
 
         short getType() const
         { return mType; }
-#else
-        void setType(const std::string &type)
-        { mType = type; }
-
-        const std::string &getType() const { return mType; }
-#endif
 
         void setWeight(short weight)
         { mWeight = weight; }
@@ -205,11 +198,7 @@ class ItemInfo
         std::string mName;
         std::string mDescription;    /**< Short description. */
         std::string mEffect;         /**< Description of effects. */
-#ifdef TMWSERV_SUPPORT
         char mType;                  /**< Item type. */
-#else
-        std::string mType;           /**< Item type. */
-#endif
         std::string mParticle;       /**< Particle effect used with this item */
         short mWeight;               /**< Weight in grams. */
         int mView;                   /**< Item ID of how this item looks. */

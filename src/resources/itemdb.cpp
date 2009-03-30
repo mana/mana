@@ -147,12 +147,8 @@ void ItemDB::load()
         itemInfo->setImageName(image);
         itemInfo->setName(name.empty() ? _("Unnamed") : name);
         itemInfo->setDescription(description);
-#ifdef TMWSERV_SUPPORT
         int type = itemTypeFromString(typeStr);
         itemInfo->setType(type);
-#else
-        itemInfo->setType(typeStr);
-#endif
         itemInfo->setView(view);
         itemInfo->setWeight(weight);
         itemInfo->setWeaponType(weaponType);

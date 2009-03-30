@@ -20,16 +20,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <math.h>
-
 #include "palette.h"
-#include "gui.h"
 
-#include "../configuration.h"
-#include "../game.h"
+#include "configuration.h"
+#include "game.h"
 
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
+#include "gui/gui.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
+#include <math.h>
 
 const gcn::Color Palette::BLACK = gcn::Color(0, 0, 0);
 
@@ -119,6 +120,7 @@ Palette::Palette() :
     addColor(TWOHAND, 0xf46d0e, STATIC, indent + _("2 Handed Weapons"));
     addColor(SHIELD, 0x9c2424, STATIC, indent + _("Shield"));
     addColor(RING, 0x0000ff, STATIC, indent + _("Ring"));
+    addColor(NECKLACE, 0xff00ff, STATIC, indent + _("Necklace"));
     addColor(ARMS, 0x9c24e8, STATIC, indent + _("Arms"));
     addColor(AMMO, 0x8b6311, STATIC, indent + _("Ammo"));
 

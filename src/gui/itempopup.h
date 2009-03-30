@@ -72,12 +72,12 @@ class ItemPopup : public Popup
         TextBox *mItemDesc;
         TextBox *mItemEffect;
         TextBox *mItemWeight;
-        std::string mItemType;
+        short mItemType;
         ScrollArea *mItemDescScroll;
         ScrollArea *mItemEffectScroll;
         ScrollArea *mItemWeightScroll;
 
-        static gcn::Color getColor(const std::string &type);
+        static gcn::Color getColor(short type);
 };
 
 #endif // ITEMPOPUP_H
