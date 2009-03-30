@@ -104,7 +104,7 @@ EquipmentWindow::EquipmentWindow():
 
     ResourceManager *resman = ResourceManager::getInstance();
     mBackground = resman->getImage("graphics/gui/equip_bg.png");
-    mBackground->setAlpha(0.3);
+    if (mBackground) mBackground->setAlpha(0.3);
 
 #ifdef EATHENA_SUPPORT
     mEquipment = player_node->mEquipment.get();
