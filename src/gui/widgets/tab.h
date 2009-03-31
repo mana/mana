@@ -23,8 +23,10 @@
 #define TAB_H
 
 #include <guichan/widgets/tab.hpp>
+#include <guichan/widgets/tabbedarea.hpp>
 
 class ImageRect;
+class TabbedArea;
 
 /**
  * A tab, the same as the guichan tab in 0.8, but extended to allow transparancy
@@ -56,6 +58,10 @@ class Tab : public gcn::Tab
          * Set tab highlighted
          */
         void setHighlighted(bool high);
+
+    protected:
+        friend class TabbedArea;
+        virtual void setCurrent() {}
 
     private:
         /** Load images if no other instances exist yet */

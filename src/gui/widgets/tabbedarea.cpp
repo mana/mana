@@ -146,4 +146,14 @@ void TabbedArea::removeTab(Tab *tab)
 void TabbedArea::logic()
 {
     logicChildren();
+
+}
+void TabbedArea::setSelectedTab(gcn::Tab *tab)
+{
+    gcn::TabbedArea::setSelectedTab(tab);
+
+    Tab *newTab = dynamic_cast<Tab*>(tab);
+
+    if (newTab)
+        newTab->setCurrent();
 }

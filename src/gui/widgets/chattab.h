@@ -110,6 +110,8 @@ class ChatTab : public Tab
         friend class ChatWindow;
         friend class WhisperWindow;
 
+        virtual void setCurrent() { setHighlighted(false); }
+
         virtual void handleInput(const std::string &msg);
 
         virtual void handleCommand(std::string msg);

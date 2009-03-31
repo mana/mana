@@ -87,6 +87,11 @@ class TabbedArea : public gcn::TabbedArea
 
         int getContainerHeight() { return mWidgetContainer->getHeight(); }
 
+        void setSelectedTab(unsigned int index)
+        { gcn::TabbedArea::setSelectedTab(index); }
+
+        void setSelectedTab(gcn::Tab *tab);
+
     private:
         typedef std::vector< std::pair<gcn::Tab*, gcn::Widget*> > TabContainer;
 };
