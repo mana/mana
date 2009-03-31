@@ -143,6 +143,7 @@ int inflateMemory(unsigned char *in, unsigned int inLength,
 
 Map *MapReader::readMap(const std::string &filename)
 {
+    logger->log("Attempting to read map %s", filename.c_str());
     // Load the file through resource manager
     ResourceManager *resman = ResourceManager::getInstance();
     int fileSize;
