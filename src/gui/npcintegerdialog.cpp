@@ -28,9 +28,8 @@
 
 #include "../npc.h"
 
-#include "../net/messageout.h"
 #ifdef EATHENA_SUPPORT
-#include "../net/ea/protocol.h"
+#include "../net/ea/npchandler.h"
 #endif
 
 #include "../utils/gettext.h"
@@ -119,10 +118,9 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
         setVisible(false);
         NPC::isTalking = false;
 
+        // Net::getNpcHandler()->integerInput(current_npc, mValueField->getValue());
 #ifdef EATHENA_SUPPORT
-        MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
-        outMsg.writeInt32(current_npc);
-        outMsg.writeInt32(mValueField->getValue());
+        npcHandler->integerInput(current_npc, mValueField->getValue());
 #endif
 
         mValueField->reset();

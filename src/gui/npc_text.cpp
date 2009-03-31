@@ -28,11 +28,10 @@
 
 #include "../npc.h"
 
-#include "../net/messageout.h"
 #ifdef TMWSERV_SUPPORT
 #include "../net/tmwserv/gameserver/player.h"
 #else
-#include "../net/ea/protocol.h"
+#include "../net/ea/npchandler.h"
 #endif
 
 #include "../utils/gettext.h"
@@ -126,19 +125,19 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
 
 void NpcTextDialog::nextDialog(int npcID)
 {
+    // Net::getNpcHandler()->nextDialog(npcID);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::talkToNPC(npcID, false);
 #else
-    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
-    outMsg.writeInt32(npcID);
+    npcHandler->nextDialog(npcID);
 #endif
 }
 
 void NpcTextDialog::closeDialog(int npcID)
 {
+    // Net::getNpcHandler()->closeDialog(npcID);
 #ifdef EATHENA_SUPPORT
-    MessageOut outMsg(CMSG_NPC_CLOSE);
-    outMsg.writeInt32(npcID);
+    npcHandler->closeDialog(npcID);
 #endif
 }
 

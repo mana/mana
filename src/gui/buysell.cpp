@@ -25,8 +25,7 @@
 
 #include "gui/button.h"
 
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
+#include "net/ea/npchandler.h"
 
 #include "utils/gettext.h"
 
@@ -77,25 +76,22 @@ void BuySellDialog::setVisible(bool visible)
 void BuySellDialog::action(const gcn::ActionEvent &event)
 {
     setVisible(false);
-    int action = 0;
 
     NPC::isTalking = false;
 
     if (event.getId() == "Buy")
     {
-        action = 0;
+        // Net::getNpcHandler()->buy(current_npc);
+        npcHandler->buy(current_npc);
     }
     else if (event.getId() == "Sell")
     {
-        action = 1;
+        // Net::getNpcHandler()->buy(current_npc);
+        npcHandler->sell(current_npc);
     }
     else if (event.getId() == "Cancel")
     {
         current_npc = 0;
         return;
     }
-
-    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(current_npc);
-    outMsg.writeInt8(action);
 }

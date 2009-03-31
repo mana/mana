@@ -23,13 +23,36 @@
 #define NET_EA_NPCHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/net.h"
 
-class NPCHandler : public MessageHandler
+class NPCHandler : public MessageHandler, public Net::NpcHandler
 {
     public:
         NPCHandler();
 
         void handleMessage(MessageIn &msg);
+
+        void talk(int npcId);
+
+        void nextDialog(int npcId);
+
+        void closeDialog(int npcId);
+
+        void listInput(int npcId, int value);
+
+        void integerInput(int npcId, int value);
+
+        void stringInput(int npcId, const std::string &value);
+
+        void buy(int beingId);
+
+        void sell(int beingId);
+
+        void buyItem(int beingId, int itemId, int amount);
+
+        void sellItem(int beingId, int itemId, int amount);
 };
+
+extern NPCHandler *npcHandler;
 
 #endif // NET_EA_NPCHANDLER_H

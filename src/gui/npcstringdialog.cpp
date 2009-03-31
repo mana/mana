@@ -28,9 +28,8 @@
 
 #include "../npc.h"
 
-#include "../net/messageout.h"
 #ifdef EATHENA_SUPPORT
-#include "../net/ea/protocol.h"
+#include "../net/ea/npchandler.h"
 #endif
 
 #include "../utils/gettext.h"
@@ -87,12 +86,9 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     std::string text = mValueField->getText();
     mValueField->setText("");
 
+    // Net::getNpcHandler()->stringInput(current_npc, text);
 #ifdef EATHENA_SUPPORT
-    MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
-    outMsg.writeInt16(text.length() + 9);
-    outMsg.writeInt32(current_npc);
-    outMsg.writeString(text, text.length());
-    outMsg.writeInt8(0);
+        npcHandler->stringInput(current_npc, text);
 #endif
 }
 

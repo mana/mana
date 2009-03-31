@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "beingmanager.h"
 #include "localplayer.h"
@@ -35,6 +36,8 @@
 #include "gui/npcstringdialog.h"
 
 #include <SDL_types.h>
+
+NPCHandler *npcHandler;
 
 NPCHandler::NPCHandler()
 {
@@ -48,6 +51,7 @@ NPCHandler::NPCHandler()
         0
     };
     handledMessages = _messages;
+    npcHandler = this;
 }
 
 void NPCHandler::handleMessage(MessageIn &msg)
@@ -113,4 +117,78 @@ void NPCHandler::handleMessage(MessageIn &msg)
             npcStringDialog->requestFocus();
             break;
     }
+}
+
+void NPCHandler::talk(int npcId)
+{
+    MessageOut outMsg(CMSG_NPC_TALK);
+    outMsg.writeInt32(npcId);
+    outMsg.writeInt8(0); // Unused
+}
+
+void NPCHandler::nextDialog(int npcId)
+{
+    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeInt32(npcId);
+}
+
+void NPCHandler::closeDialog(int npcId)
+{
+    MessageOut outMsg(CMSG_NPC_CLOSE);
+    outMsg.writeInt32(npcId);
+}
+
+void NPCHandler::listInput(int npcId, int value)
+{
+    MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
+    outMsg.writeInt32(npcId);
+    outMsg.writeInt8(value);
+}
+
+void NPCHandler::integerInput(int npcId, int value)
+{
+    MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
+    outMsg.writeInt32(npcId);
+    outMsg.writeInt32(value);
+}
+
+void NPCHandler::stringInput(int npcId, const std::string &value)
+{
+    MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
+    outMsg.writeInt16(value.length() + 9);
+    outMsg.writeInt32(npcId);
+    outMsg.writeString(value, value.length());
+    outMsg.writeInt8(0); // Prevent problems with string reading
+}
+
+void NPCHandler::buy(int beingId)
+{
+
+    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
+    outMsg.writeInt32(beingId);
+    outMsg.writeInt8(0); // Buy
+}
+
+void NPCHandler::sell(int beingId)
+{
+
+    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
+    outMsg.writeInt32(beingId);
+    outMsg.writeInt8(1); // Sell
+}
+
+void NPCHandler::buyItem(int beingId, int itemId, int amount)
+{
+    MessageOut outMsg(CMSG_NPC_BUY_REQUEST);
+    outMsg.writeInt16(8); // One item (length of packet)
+    outMsg.writeInt16(amount);
+    outMsg.writeInt16(itemId);
+}
+
+void NPCHandler::sellItem(int beingId, int itemId, int amount)
+{
+    MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
+    outMsg.writeInt16(8); // One item (length of packet)
+    outMsg.writeInt16(itemId + 2);
+    outMsg.writeInt16(amount);
 }

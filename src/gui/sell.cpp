@@ -34,11 +34,10 @@
 #include "shopitem.h"
 #include "units.h"
 
-#include "net/messageout.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/gameserver/player.h"
 #else
-#include "net/ea/protocol.h"
+#include "net/ea/npchandler.h"
 #endif
 
 #include "resources/iteminfo.h"
@@ -207,14 +206,12 @@ void SellDialog::action(const gcn::ActionEvent &event)
             mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mMaxItems -= mAmountItems;
         while (mAmountItems > 0) {
-            MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
-            outMsg.writeInt16(8);
-            outMsg.writeInt16(item->getCurrentInvIndex() + 2);
             // This order is important, item->getCurrentInvIndex() would return
             // the inventory index of the next Duplicate otherwise.
             sellCount = item->sellCurrentDuplicate(mAmountItems);
             mAmountItems -= sellCount;
-            outMsg.writeInt16(sellCount);
+            // Net::getNpcHandler()->sellItem(current_npc, item->getCurrentInvIndex(), sellCount);
+            npcHandler->sellItem(current_npc, item->getCurrentInvIndex(), sellCount);
         }
 #endif
 

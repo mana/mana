@@ -28,11 +28,11 @@
 #include "gui/npc_text.h"
 #include "gui/palette.h"
 
+#include "net/net.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/gameserver/player.h"
 #else
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
+#include "net/ea/npchandler.h"
 #endif
 
 #include "resources/npcdb.h"
@@ -117,12 +117,11 @@ void NPC::talk()
 
     isTalking = true;
 
+    // Net::getNpcHandler()->talk(mId);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::talkToNPC(mId, true);
 #else
-    MessageOut outMsg(CMSG_NPC_TALK);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(0);
+    npcHandler->talk(mId);
 #endif
 }
 

@@ -31,11 +31,10 @@
 
 #include "../npc.h"
 
-#include "../net/messageout.h"
 #ifdef TMWSERV_SUPPORT
 #include "../net/tmwserv/gameserver/player.h"
 #else
-#include "../net/ea/protocol.h"
+#include "../net/ea/npchandler.h"
 #endif
 
 #include "../utils/gettext.h"
@@ -133,12 +132,11 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
         saveWindowState();
         reset();
 
+    // Net::getNpcHandler()->listInput(current_npc, choice);
 #ifdef TMWSERV_SUPPORT
         Net::GameServer::Player::selectFromNPC(current_npc, choice);
 #else
-        MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
-        outMsg.writeInt32(current_npc);
-        outMsg.writeInt8(choice);
+        npcHandler->listInput(current_npc, choice);
 #endif
     }
 }
