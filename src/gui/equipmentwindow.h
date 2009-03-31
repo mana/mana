@@ -118,7 +118,6 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         Inventory *mInventory;
 #endif
         gcn::Button *mUnequip;                  /**< Button for unequipping. */
-        Image *mBackground;                 /**< Background Image. */
         EquipBox mEquipBox[EQUIP_VECTOREND];    /**< Equipment Boxes. */
 
         ItemPopup *mItemPopup;

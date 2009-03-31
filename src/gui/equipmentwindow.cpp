@@ -68,7 +68,6 @@ EquipmentWindow::EquipmentWindow():
 #ifdef TMWSERV_SUPPORT
     mEquipment(equipment),
 #endif
-    mBackground(NULL),
     mSelected(-1)
 {
     mItemPopup = new ItemPopup;
@@ -102,10 +101,6 @@ EquipmentWindow::EquipmentWindow():
         mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
     }
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    mBackground = resman->getImage("graphics/gui/equip_bg.png");
-    if (mBackground) mBackground->setAlpha(0.3);
-
 #ifdef EATHENA_SUPPORT
     mEquipment = player_node->mEquipment.get();
     mInventory = player_node->getInventory();
@@ -114,8 +109,6 @@ EquipmentWindow::EquipmentWindow():
 
 EquipmentWindow::~EquipmentWindow()
 {
-    if (mBackground != NULL)
-        mBackground->decRef();
     delete mItemPopup;
     delete mUnequip;
 }
