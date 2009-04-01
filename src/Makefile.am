@@ -455,6 +455,8 @@ tmw_SOURCES += \
 	      gui/storagewindow.h \
 	      net/ea/gui/partytab.cpp \
 	      net/ea/gui/partytab.h \
+	      net/ea/adminhandler.cpp \
+	      net/ea/adminhandler.h \
 	      net/ea/beinghandler.cpp \
 	      net/ea/beinghandler.h \
 	      net/ea/buysellhandler.cpp \
