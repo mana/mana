@@ -30,12 +30,14 @@
 #include "gui/widgets/chattab.h"
 #include "gui/chat.h"
 
+#include "net/net.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/chatserver/chatserver.h"
 #include "net/tmwserv/gameserver/player.h"
 #else
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
+#include "net/ea/adminhandler.h"
+#include "net/ea/chathandler.h"
+#include "net/ea/maphandler.h"
 #endif
 
 #include "utils/gettext.h"
@@ -133,12 +135,11 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
 
 void CommandHandler::handleAnnounce(const std::string &args, ChatTab *tab)
 {
+    // Net::getAdminHandler()->announce(args);
 #ifdef TMWSERV_SUPPORT
     Net::ChatServer::announce(args);
 #else
-    MessageOut outMsg(0x0099);
-    outMsg.writeInt16(args.length() + 4);
-    outMsg.writeString(args, args.length());
+    adminHandler->announce(args);
 #endif
 }
 
@@ -318,10 +319,11 @@ void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleWho(const std::string &args, ChatTab *tab)
 {
+    // Net::getMapHandler()->who();
 #ifdef TMWSERV_SUPPORT
     //TODO
 #else
-    MessageOut outMsg(0x00c1);
+    mapHandler->who();
 #endif
 }
 
@@ -480,8 +482,12 @@ void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleMe(const std::string &args, ChatTab *tab)
 {
-    std::string action = strprintf("*%s*", args.c_str());
-    chatWindow->chatInput(action);
+    // Net::getChatHandler()->me(args);
+#ifdef TMWServ_SUPPORT
+    // TODO
+#else
+    chatHandler->me(args);
+#endif
 }
 
 void CommandHandler::handleRecord(const std::string &args, ChatTab *tab)

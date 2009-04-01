@@ -471,8 +471,8 @@ tmw_SOURCES += \
 	      net/ea/itemhandler.h \
 	      net/ea/loginhandler.cpp \
 	      net/ea/loginhandler.h \
-	      net/ea/maploginhandler.cpp \
-	      net/ea/maploginhandler.h \
+	      net/ea/maphandler.cpp \
+	      net/ea/maphandler.h \
 	      net/ea/network.cpp \
 	      net/ea/network.h \
 	      net/ea/npchandler.cpp \

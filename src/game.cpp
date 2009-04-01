@@ -107,6 +107,7 @@
 #include "net/ea/equipmenthandler.h"
 #include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
+#include "net/ea/maphandler.h"
 #include "net/ea/npchandler.h"
 #include "net/ea/playerhandler.h"
 #include "net/ea/partyhandler.h"
@@ -447,7 +448,6 @@ Game::Game(Network *network):
 
     map_path = map_path.substr(0, map_path.rfind("."));
     engine->changeMap(map_path);
-    MessageOut outMsg(CMSG_MAP_LOADED);
 #endif
 
     setupWindow->setInGame(true);

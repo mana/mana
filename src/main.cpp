@@ -71,7 +71,7 @@
 #include "net/ea/charserverhandler.h"
 #include "net/ea/loginhandler.h"
 #include "net/ea/network.h"
-#include "net/ea/maploginhandler.h"
+#include "net/ea/maphandler.h"
 #include "net/messageout.h"
 #endif
 
@@ -187,7 +187,6 @@ std::string updatesDir;
 
 #ifdef EATHENA_SUPPORT
 LoginHandler loginHandler;
-MapLoginHandler mapLoginHandler;
 #endif
 
 SDL_Surface *icon;
@@ -828,7 +827,8 @@ static void mapLogin(Network *network, LoginData *loginData)
     logger->log("Map: %s", map_path.c_str());
 
     network->connect(loginData->hostname, loginData->port);
-    network->registerHandler(&mapLoginHandler);
+    //network->registerHandler(mapHandler);
+    network->registerHandler(new MapHandler);
 
     // Send login infos
     MessageOut outMsg(0x0072);

@@ -30,12 +30,12 @@
 #include "gui/recorder.h"
 #include "gui/scrollarea.h"
 
+#include "net/net.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/chatserver/chatserver.h"
 #include "net/tmwserv/gameserver/player.h"
 #else
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
+#include "net/ea/chathandler.h"
 #endif
 
 #include "resources/iteminfo.h"
@@ -276,16 +276,11 @@ void ChatTab::clearText()
 }
 
 void ChatTab::handleInput(const std::string &msg) {
+    // Net::getChatHandler()->talk(msg);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::say(msg);
 #else
-    std::string mes = player_node->getName() + " : " + msg;
-
-    MessageOut outMsg(CMSG_CHAT_MESSAGE);
-    // Added + 1 in order to let eAthena parse admin commands correctly
-    outMsg.writeInt16(mes.length() + 4 + 1);
-    outMsg.writeString(mes, mes.length() + 1);
-    return;
+    chatHandler->talk(msg);
 #endif
 }
 

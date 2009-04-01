@@ -121,6 +121,7 @@ static const int STORAGE_OFFSET = 1;
  *  Packets from client to server *
  **********************************/
 #define CMSG_CLIENT_PING             0x007e /**< Send to server with tick */
+#define CMSG_CLIENT_QUIT             0x018A
 #define CMSG_TRADE_RESPONSE          0x00e6
 #define CMSG_ITEM_PICKUP             0x009f
 #define CMSG_MAP_LOADED              0x007d
@@ -160,6 +161,11 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_MOVE_TO_STORAGE         0x00f3 /** Move item to storage */
 #define CSMG_MOVE_FROM_STORAGE       0x00f5 /** Remove item from storage */
 #define CMSG_CLOSE_STORAGE           0x00f7 /** Request storage close */
+
+#define CMSG_ADMIN_ANNOUNCE          0x0099
+#define CMSG_ADMIN_LOCAL_ANNOUNCE    0x019C
+#define CMSG_ADMIN_HIDE              0x019D
+#define CMSG_ADMIN_KICK              0x00CC
 
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);

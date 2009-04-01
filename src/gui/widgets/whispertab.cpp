@@ -25,11 +25,11 @@
 
 #include "gui/palette.h"
 
+#include "net/net.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/chatserver/chatserver.h"
 #else
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
+#include "net/ea/chathandler.h"
 #endif
 
 #include "utils/gettext.h"
@@ -53,13 +53,11 @@ void WhisperTab::handleInput(const std::string &msg) {
         return;
     }
 
+    // Net::getChatHandler()->privateMessage(mNick, msg);
 #ifdef TMWSERV_SUPPORT
     Net::ChatServer::privMsg(mNick, msg);
 #else
-    MessageOut outMsg(CMSG_CHAT_WHISPER);
-    outMsg.writeInt16(msg.length() + 28);
-    outMsg.writeString(mNick, 24);
-    outMsg.writeString(msg, msg.length());
+    chatHandler->privateMessage(mNick, msg);
 #endif
 
     chatLog(strprintf(_("%s: %s"), player_node->getName().c_str(),

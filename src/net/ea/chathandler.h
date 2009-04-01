@@ -23,13 +23,39 @@
 #define NET_EA_CHATHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/net.h"
 
-class ChatHandler : public MessageHandler
+class ChatHandler : public MessageHandler, public Net::ChatHandler
 {
     public:
         ChatHandler();
 
         virtual void handleMessage(MessageIn &msg);
+
+        virtual void talk(const std::string &text);
+
+        virtual void me(const std::string &text);
+
+        virtual void privateMessage(const std::string &recipient,
+                            const std::string &text);
+
+        virtual void channelList();
+
+        virtual void enterChannel(int channelId, const std::string &password);
+
+        virtual void quitChannel(int channelId);
+
+        virtual void sendToChannel(int channelId, const std::string &text);
+
+        virtual void userList(int channelId);
+
+        virtual void setChannelTopic(int channelId, const std::string &text);
+
+        virtual void setUserMode(int channelId, const std::string &name, int mode);
+
+        virtual void kickUser(int channelId, const std::string &name);
 };
+
+extern ChatHandler *chatHandler;
 
 #endif // NET_EA_CHATHANDLER_H

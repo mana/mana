@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "being.h"
 #include "beingmanager.h"
@@ -34,12 +35,13 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+#include "utils/strprintf.h"
 
 #include <string>
 
-extern Being *player_node;
-
 #define SERVER_NAME "Server"
+
+ChatHandler *chatHandler;
 
 ChatHandler::ChatHandler()
 {
@@ -49,11 +51,11 @@ ChatHandler::ChatHandler()
         SMSG_WHISPER,
         SMSG_WHISPER_RESPONSE,
         SMSG_GM_CHAT,
-        SMSG_WHO_ANSWER,
         0x10c, // MVP
         0
     };
     handledMessages = _messages;
+    chatHandler = this;
 }
 
 void ChatHandler::handleMessage(MessageIn &msg)
@@ -159,15 +161,76 @@ void ChatHandler::handleMessage(MessageIn &msg)
             break;
         }
 
-        case SMSG_WHO_ANSWER:
-            localChatTab->chatLog("Online users: " + toString(msg.readInt32()),
-                    BY_SERVER);
-            break;
-
         case 0x010c:
             // Display MVP player
             msg.readInt32(); // id
             localChatTab->chatLog("MVP player", BY_SERVER);
             break;
     }
+}
+
+void ChatHandler::talk(const std::string &text)
+{
+    std::string mes = player_node->getName() + " : " + text;
+
+    MessageOut outMsg(CMSG_CHAT_MESSAGE);
+    // Added + 1 in order to let eAthena parse admin commands correctly
+    outMsg.writeInt16(text.length() + 4 + 1);
+    outMsg.writeString(text, text.length() + 1);
+}
+
+void ChatHandler::me(const std::string &text)
+{
+    std::string action = strprintf("*%s*", text.c_str());
+
+    talk(text);
+}
+
+void ChatHandler::privateMessage(const std::string &recipient,
+                                 const std::string &text)
+{
+    MessageOut outMsg(CMSG_CHAT_WHISPER);
+    outMsg.writeInt16(text.length() + 28);
+    outMsg.writeString(recipient, 24);
+    outMsg.writeString(text, text.length());
+}
+
+void ChatHandler::channelList()
+{
+    // TODO
+}
+
+void ChatHandler::enterChannel(int channelId, const std::string &password)
+{
+    // TODO
+}
+
+void ChatHandler::quitChannel(int channelId)
+{
+    // TODO
+}
+
+void ChatHandler::sendToChannel(int channelId, const std::string &text)
+{
+    // TODO
+}
+
+void ChatHandler::userList(int channelId)
+{
+    // TODO
+}
+
+void ChatHandler::setChannelTopic(int channelId, const std::string &text)
+{
+    // TODO
+}
+
+void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
+{
+    // TODO
+}
+
+void ChatHandler::kickUser(int channelId, const std::string &name)
+{
+    // TODO
 }

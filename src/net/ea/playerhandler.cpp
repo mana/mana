@@ -199,8 +199,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 // Switch the actual map, deleting the previous one if necessary
                 mapPath = mapPath.substr(0, mapPath.rfind("."));
-                if (engine->changeMap(mapPath))
-                    MessageOut outMsg(CMSG_MAP_LOADED);
+                engine->changeMap(mapPath);
 
                 float scrollOffsetX = 0.0f;
                 float scrollOffsetY = 0.0f;
