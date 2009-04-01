@@ -29,7 +29,7 @@ class EquipmentHandler : public MessageHandler
     public:
         EquipmentHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_EQUIPMENTHANDLER_H

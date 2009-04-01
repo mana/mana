@@ -178,12 +178,26 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
+	      net/adminhandler.h \
+	      net/charhandler.h \
+	      net/chathandler.h \
+	      net/generalhandler.h \
+	      net/guildhandler.h \
+	      net/inventoryhandler.h \
+	      net/loginhandler.h \
+	      net/maphandler.h \
 	      net/messagehandler.cpp \
 	      net/messagehandler.h \
 	      net/messagein.cpp \
 	      net/messagein.h \
 	      net/messageout.cpp \
 	      net/messageout.h \
+	      net/npchandler.h \
+	      net/net.h \
+	      net/partyhandler.h \
+	      net/playerhandler.h \
+	      net/skillhandler.h \
+	      net/tradehandler.h \
 	      resources/action.cpp \
 	      resources/action.h \
 	      resources/ambientoverlay.cpp \

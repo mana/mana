@@ -25,17 +25,17 @@
 #include <iosfwd>
 
 namespace Net {
-    class MapHandler
-    {
-        public:
-            void connect() {}
+class MapHandler
+{
+    public:
+        virtual void connect() {}
 
-            void mapLoaded(const std::string &mapName) {}
+        virtual void mapLoaded(const std::string &mapName) {}
 
-            void who() {}
+        virtual void who() {}
 
-            void quit() {}
-    };
+        virtual void quit() {}
+};
 }
 
 #endif // MAPHANDLER_H

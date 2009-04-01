@@ -29,7 +29,7 @@ class SkillHandler : public MessageHandler
     public:
         SkillHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_SKILLHANDLER_H

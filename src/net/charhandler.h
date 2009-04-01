@@ -25,16 +25,16 @@
 #include <iosfwd>
 
 namespace Net {
-    class CharHandler
-    {
-        public:
-            void ChooseCharacter(int slot);
+class CharHandler
+{
+    public:
+        virtual void ChooseCharacter(int slot) {}
 
-            void NewCharacter(const std::string &name, bool gender,
-                              int hairstyle, int hairColor);
+        virtual void NewCharacter(const std::string &name, bool gender,
+                          int hairstyle, int hairColor) {}
 
-            void DeleteCharacter(int slot);
-    };
+        virtual void DeleteCharacter(int slot) {}
+};
 }
 
 #endif // CHARHANDLER_H

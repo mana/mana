@@ -25,14 +25,17 @@
 #include <iosfwd>
 
 namespace Net {
-    class SkillHandler
-    {
-        public:
-            void up(int skillId) {}
-            void use(int skillId, int level, int beingId) {}
-            void use(int skillId, int level, int x, int y) {}
-            void use(int skillId, const std::string &map) {}
-    };
+class SkillHandler
+{
+    public:
+        virtual void up(int skillId) {}
+
+        virtual void use(int skillId, int level, int beingId) {}
+
+        virtual void use(int skillId, int level, int x, int y) {}
+
+        virtual void use(int skillId, const std::string &map) {}
+};
 }
 
 #endif // SKILLHANDLER_H

@@ -29,7 +29,7 @@ class PlayerHandler : public MessageHandler
     public:
         PlayerHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_PLAYERHANDLER_H

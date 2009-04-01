@@ -37,31 +37,31 @@
 #include "net/tradehandler.h"
 
 namespace Net {
-    Net::AdminHandler *getAdminHandler();
+Net::AdminHandler *getAdminHandler();
 
-    Net::CharHandler *getCharHandler();
+Net::CharHandler *getCharHandler();
 
-    Net::ChatHandler *getChatHandler();
+Net::ChatHandler *getChatHandler();
 
-    Net::GeneralHandler *getGeneralHandler();
+Net::GeneralHandler *getGeneralHandler();
 
-    Net::GuildHandler *getGuildHandler();
+Net::GuildHandler *getGuildHandler();
 
-    Net::InvyHandler *getInvyHandler();
+Net::InvyHandler *getInvyHandler();
 
-    Net::LoginHandler *getLoginHandler();
+Net::LoginHandler *getLoginHandler();
 
-    Net::MapHandler *getMapHandler();
+Net::MapHandler *getMapHandler();
 
-    Net::NpcHandler *getNpcHandler();
+Net::NpcHandler *getNpcHandler();
 
-    Net::PartyHandler *getPartyHandler();
+Net::PartyHandler *getPartyHandler();
 
-    Net::PlayerHandler *getPlayerHandler();
+Net::PlayerHandler *getPlayerHandler();
 
-    Net::SkillHandler *getSkillHandler();
+Net::SkillHandler *getSkillHandler();
 
-    Net::TradeHandler *getTradeHandler();
+Net::TradeHandler *getTradeHandler();
 }
 
 #endif // NET_H

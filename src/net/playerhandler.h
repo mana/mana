@@ -28,31 +28,31 @@
 #include <iosfwd>
 
 namespace Net {
-    class PlayerHandler
-    {
-        public:
-            void attack(Being *being);
+class PlayerHandler
+{
+    public:
+        virtual void attack(Being *being) {}
 
-            void emote(int emoteId) {}
+        virtual void emote(int emoteId) {}
 
-            void increaseStat(int statId) {}
+        virtual void increaseStat(int statId) {}
 
-            void decreaseStat(int statId) {}
+        virtual void decreaseStat(int statId) {}
 
-            void pickUp(FloorItem *floorItem) {}
+        virtual void pickUp(FloorItem *floorItem) {}
 
-            void setDirection(int direction) {}
+        virtual void setDirection(int direction) {}
 
-            void setDestination(int x, int y, int direction = -1);
+        virtual void setDestination(int x, int y, int direction = -1);
 
-            void sit() {}
+        virtual void sit() {}
 
-            void respawn() {}
+        virtual void respawn() {}
 
-            void ingorePlayer(const std::string &player, bool ignore) {}
+        virtual void ingorePlayer(const std::string &player, bool ignore) {}
 
-            void ingoreAll(bool ignore) {}
-    };
+        virtual void ingoreAll(bool ignore) {}
+};
 }
 
 #endif // PLAYERHANDLER_H

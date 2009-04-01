@@ -29,7 +29,7 @@ class BuySellHandler : public MessageHandler
     public:
         BuySellHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_BUYSELLHANDLER_H

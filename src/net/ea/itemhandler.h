@@ -29,7 +29,7 @@ class ItemHandler : public MessageHandler
     public:
         ItemHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_ITEMHANDLER_H

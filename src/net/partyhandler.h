@@ -25,29 +25,29 @@
 #include <iosfwd>
 
 namespace Net {
-    class PartyHandler
-    {
-        public:
-            void create(const std::string &name="") {}
+class PartyHandler
+{
+    public:
+        virtual void create(const std::string &name="") {}
 
-            void join(int partyId) {}
+        virtual void join(int partyId) {}
 
-            void invite(int playerId) {}
+        virtual void invite(int playerId) {}
 
-            void inviteResponse(bool accept) {}
+        virtual void inviteResponse(bool accept) {}
 
-            void leave() {}
+        virtual void leave() {}
 
-            void kick(int playerId) {}
+        virtual void kick(int playerId) {}
 
-            void chat(const std::string &text) {}
+        virtual void chat(const std::string &text) {}
 
-            void partyMembers() {}
+        virtual void partyMembers() {}
 
-            // void options() {}
+        // virtual void options() {}
 
-            // void message() {}
-    };
+        // virtual void message() {}
+};
 }
 
 #endif // PARTYHANDLER_H

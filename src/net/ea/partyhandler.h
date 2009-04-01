@@ -31,7 +31,7 @@ class PartyHandler : public MessageHandler
 
         ~PartyHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_PARTYHANDLER_H

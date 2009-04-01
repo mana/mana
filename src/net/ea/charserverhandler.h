@@ -38,7 +38,7 @@ class CharServerHandler : public MessageHandler
     public:
         CharServerHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 
         void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
         { mCharInfo = charInfo; }

@@ -29,7 +29,7 @@ class InventoryHandler : public MessageHandler
     public:
         InventoryHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_INVENTORYHANDLER_H

@@ -27,25 +27,25 @@
 #include <iosfwd>
 
 namespace Net {
-    class TradeHandler
-    {
-        public:
-            void request(Being *being) {}
+class TradeHandler
+{
+    public:
+        virtual void request(Being *being) {}
 
-            void respond(bool accepet) {}
+        virtual void respond(bool accepet) {}
 
-            void addItem(int slotNum, int amount) {}
+        virtual void addItem(int slotNum, int amount) {}
 
-            void removeItem(int slotNum, int amount) {}
+        virtual void removeItem(int slotNum, int amount) {}
 
-            void setMoney(int amount) {}
+        virtual void setMoney(int amount) {}
 
-            void confirm() {}
+        virtual void confirm() {}
 
-            void finish() {}
+        virtual void finish() {}
 
-            void cancel() {}
-    };
+        virtual void cancel() {}
+};
 }
 
 #endif // TRADEHANDLER_H

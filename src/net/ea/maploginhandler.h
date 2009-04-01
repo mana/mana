@@ -29,7 +29,7 @@ class MapLoginHandler : public MessageHandler
     public:
         MapLoginHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_MAPLOGINHANDLER_H

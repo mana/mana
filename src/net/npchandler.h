@@ -25,36 +25,36 @@
 #include <iosfwd>
 
 namespace Net {
-    class NpcHandler
-    {
-        public:
-            void talk(int npcId);
+class NpcHandler
+{
+    public:
+        virtual void talk(int npcId) {}
 
-            void nextDialog(int npcId);
+        virtual void nextDialog(int npcId) {}
 
-            void closeDialog(int npcId);
+        virtual void closeDialog(int npcId) {}
 
-            void listInput(int npcId, int value) {}
+        virtual void listInput(int npcId, int value) {}
 
-            void integerInput(int npcId, int value){}
+        virtual void integerInput(int npcId, int value){}
 
-            void stringInput(int npcId, const std::string &value) {}
+        virtual void stringInput(int npcId, const std::string &value) {}
 
-            void sendLetter(int npcId, const std::string &recipient,
-                            const std::string &text) {}
+        virtual void sendLetter(int npcId, const std::string &recipient,
+                        const std::string &text) {}
 
-            void startShoping(int beingId) {}
+        virtual void startShoping(int beingId) {}
 
-            void buy(int beingId) {}
+        virtual void buy(int beingId) {}
 
-            void sell(int beingId) {}
+        virtual void sell(int beingId) {}
 
-            void buyItem(int beingId, int itemId, int ammount) {}
+        virtual void buyItem(int beingId, int itemId, int ammount) {}
 
-            void sellItem(int beingId, int itemId, int ammount) {}
+        virtual void sellItem(int beingId, int itemId, int ammount) {}
 
-            void endShoping(int beingId) {}
-    };
+        virtual void endShoping(int beingId) {}
+};
 }
 
 #endif // NPCHANDLER_H

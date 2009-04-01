@@ -29,7 +29,7 @@ class TradeHandler : public MessageHandler
     public:
         TradeHandler();
 
-        void handleMessage(MessageIn &msg);
+        virtual void handleMessage(MessageIn &msg);
 };
 
 #endif // NET_EA_TRADEHANDLER_H

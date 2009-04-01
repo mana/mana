@@ -23,13 +23,15 @@
 #define GENERALHANDLER_H
 
 namespace Net {
-    class GeneralHandler
-    {
-        public:
-            virtual void load();
-            virtual void unload();
-            virtual void guiWindowsLoaded() {}
-    };
+class GeneralHandler
+{
+    public:
+        virtual void load() {}
+
+        virtual void unload() {}
+
+        virtual void guiWindowsLoaded() {}
+};
 }
 
 #endif // GENERALHANDLER_H

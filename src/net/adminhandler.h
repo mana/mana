@@ -25,29 +25,29 @@
 #include <iosfwd>
 
 namespace Net {
-    class AdminHandler
-    {
-        public:
-            void announce(const std::string &text) {}
+class AdminHandler
+{
+    public:
+        virtual void announce(const std::string &text) {}
 
-            void localAnnounce(const std::string &text) {}
+        virtual void localAnnounce(const std::string &text) {}
 
-            void hide(bool hide) {}
+        virtual void hide(bool hide) {}
 
-            void kick(int playerId) {}
+        virtual void kick(int playerId) {}
 
-            void kick(const std::string &name) {}
+        virtual void kick(const std::string &name) {}
 
-            void ban(int playerId) {}
+        virtual void ban(int playerId) {}
 
-            void ban(const std::string &name) {}
+        virtual void ban(const std::string &name) {}
 
-            void unban(int playerId) {}
+        virtual void unban(int playerId) {}
 
-            void unban(const std::string &name) {}
+        virtual void unban(const std::string &name) {}
 
-            // TODO
-    };
+        // TODO
+};
 }
 
 #endif // ADMINHANDLER_H

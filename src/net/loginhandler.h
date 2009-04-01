@@ -25,22 +25,27 @@
 #include <iosfwd>
 
 namespace Net {
-    class LoginHandler
-    {
-        public:
-            virtual void loginAccount(const std::string &username,
-                               const std::string &password);
-            virtual void changeEmail(const std::string &email) {}
-            virtual void changePassword(const std::string &username,
-                               const std::string &oldPassword,
-                               const std::string &newPassword) {}
-            virtual void chooseServer(int server) {}
-            virtual void registerAccount(const std::string &username,
-                               const std::string &password,
-                               const std::string &email = "");
-            virtual void unregisterAccount(const std::string &username,
-                               const std::string &password);
-    };
+class LoginHandler
+{
+    public:
+        virtual void loginAccount(const std::string &username,
+                           const std::string &password) {}
+
+        virtual void changeEmail(const std::string &email) {}
+
+        virtual void changePassword(const std::string &username,
+                           const std::string &oldPassword,
+                           const std::string &newPassword) {}
+
+        virtual void chooseServer(int server) {}
+
+        virtual void registerAccount(const std::string &username,
+                           const std::string &password,
+                           const std::string &email = "") {}
+
+        virtual void unregisterAccount(const std::string &username,
+                           const std::string &password) {}
+};
 }
 
 #endif // LOGINHANDLER_H
