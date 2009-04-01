@@ -268,11 +268,7 @@ void PopupMenu::handleLink(const std::string &link)
         }
         else
         {
-#ifdef TMWSERV_SUPPORT
-            player_node->useItem(mItem->getInvIndex());
-#else
             player_node->useItem(mItem);
-#endif
         }
     }
 

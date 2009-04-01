@@ -52,10 +52,9 @@
 #include "net/tmwserv/chatserver/guild.h"
 #include "net/tmwserv/chatserver/party.h"
 #else
-#include "net/messageout.h"
+#include "net/ea/inventoryhandler.h"
 #include "net/ea/partyhandler.h"
 #include "net/ea/playerhandler.h"
-#include "net/ea/protocol.h"
 #include "net/ea/skillhandler.h"
 #include "net/ea/tradehandler.h"
 #endif
@@ -413,12 +412,11 @@ void LocalPlayer::moveInvItem(Item *item, int newIndex)
 
 void LocalPlayer::equipItem(Item *item)
 {
+    // Net::getInvyHandler()->equipItem(item);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::equip(item->getInvIndex());
 #else
-    MessageOut outMsg(CMSG_PLAYER_EQUIP);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-    outMsg.writeInt16(0);
+    invyHandler->equipItem(item);
 #endif
 }
 
@@ -432,20 +430,16 @@ void LocalPlayer::unequipItem(int slot)
     mEquipment->setEquipment(slot, 0);
 }
 
-void LocalPlayer::useItem(int slot)
-{
-    Net::GameServer::Player::useItem(slot);
-}
-
 #else
 
 void LocalPlayer::unequipItem(Item *item)
 {
-    if (!item)
-        return;
-
-    MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
+    // Net::getInvyHandler()->unequipItem(item);
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::unequip(item->getInvIndex());
+#else
+    invyHandler->unequipItem(item);
+#endif
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
     mEquipment->removeEquipment(item->getInvIndex());
@@ -453,23 +447,23 @@ void LocalPlayer::unequipItem(Item *item)
 
 void LocalPlayer::useItem(Item *item)
 {
-    MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-    outMsg.writeInt32(item->getId());
-    // Note: id isn't used, but the server wants it
+    // Net::getInvyHandler()->useItem(item);
+#ifdef TMWSERV_SUPPORT
+    Net::GameServer::Player::useItem(item->getInvIndex());
+#else
+    invyHandler->useItem(item);
+#endif
 }
 
 #endif
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
+    // Net::getInvyHandler()->dropItem(item, quantity);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::drop(item->getInvIndex(), quantity);
 #else
-    // TODO: Fix wrong coordinates of drops, serverside? (what's wrong here?)
-    MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-    outMsg.writeInt16(quantity);
+    invyHandler->dropItem(item, quantity);
 #endif
 }
 

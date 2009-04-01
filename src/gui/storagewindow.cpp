@@ -41,10 +41,8 @@
 #include "../localplayer.h"
 #include "../units.h"
 
-#include "../net/messageout.h"
-#ifdef EATHENA_SUPPORT
-#include "../net/ea/protocol.h"
-#endif
+#include "../net/net.h"
+#include "../net/ea/inventoryhandler.h"
 
 #include "../resources/iteminfo.h"
 
@@ -187,21 +185,24 @@ Item* StorageWindow::getSelectedItem() const
     return mItems->getSelectedItem();
 }
 
-void StorageWindow::addStore(Item *item, int ammount)
+void StorageWindow::addStore(Item *item, int amount)
 {
-    MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-    outMsg.writeInt32(ammount);
+    // Net::getInvyHandler()->moveItem(Net::InvyHandler::INVENTORY,
+    invyHandler->moveItem(Net::InvyHandler::INVENTORY,
+                                    item->getInvIndex(), amount,
+                                    Net::InvyHandler::STORAGE);
 }
 
-void StorageWindow::removeStore(Item *item, int ammount)
+void StorageWindow::removeStore(Item *item, int amount)
 {
-    MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
-    outMsg.writeInt16(item->getInvIndex() + STORAGE_OFFSET);
-    outMsg.writeInt32(ammount);
+    // Net::getInvyHandler()->moveItem(Net::InvyHandler::STORAGE,
+    invyHandler->moveItem(Net::InvyHandler::STORAGE,
+                                    item->getInvIndex(), amount,
+                                    Net::InvyHandler::INVENTORY);
 }
 
 void StorageWindow::close()
 {
-    MessageOut outMsg(CMSG_CLOSE_STORAGE);
+    // Net::getInvyHandler()->closeStorage();
+    invyHandler->closeStorage();
 }

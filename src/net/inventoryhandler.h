@@ -34,11 +34,11 @@ class InvyHandler
 
         virtual void unequipItem(Item *item) {}
 
-        virtual void useItem(int slot, Item *item) {}
+        virtual void useItem(Item *item) {}
 
-        virtual void dropItem(int slot, int amount) {}
+        virtual void dropItem(Item *item, int amount) {}
 
-        virtual void splitItem(int slot, int amount) {}
+        virtual void splitItem(Item *item, int amount) {}
 
         virtual void openStorage() {}
 

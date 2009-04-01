@@ -164,24 +164,18 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "use")
     {
-#ifdef TMWSERV_SUPPORT
         if (item->isEquipment()) {
+#ifdef TMWSERV_SUPPORT
             player_node->equipItem(item);
-        }
-        else {
-            player_node->useItem(item->getInvIndex());
-        }
 #else
-        if (item->isEquipment())
-        {
             if (item->isEquipped())
                 player_node->unequipItem(item);
             else
                 player_node->equipItem(item);
+#endif
         }
         else
             player_node->useItem(item);
-#endif
     }
     else if (event.getId() == "drop")
     {

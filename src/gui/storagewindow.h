@@ -73,12 +73,12 @@ class StorageWindow : public Window, gcn::ActionListener,
         /**
          * Add the specified ammount of the specified item to storage
          */
-        void addStore(Item* item, int ammount);
+        void addStore(Item* item, int amount);
 
         /**
          * Remove the specified ammount of the specified item from storage
          */
-        void removeStore(Item* item, int ammount);
+        void removeStore(Item* item, int amount);
 
         /**
          * Closes the Storage Window, as well as telling the server that the

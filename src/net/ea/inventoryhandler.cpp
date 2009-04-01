@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "configuration.h"
 #include "inventory.h"
@@ -46,6 +47,8 @@
 
 enum { debugInventory = 1 };
 
+InventoryHandler *invyHandler;
+
 InventoryHandler::InventoryHandler()
 {
     static const Uint16 _messages[] = {
@@ -63,6 +66,7 @@ InventoryHandler::InventoryHandler()
         0
     };
     handledMessages = _messages;
+    invyHandler = this;
 }
 
 void InventoryHandler::handleMessage(MessageIn &msg)
@@ -293,5 +297,64 @@ void InventoryHandler::handleMessage(MessageIn &msg)
              */
             player_node->setInStorage(false);
             break;
+    }
+}
+
+void InventoryHandler::equipItem(Item *item)
+{
+    if (!item)
+        return;
+
+    MessageOut outMsg(CMSG_PLAYER_EQUIP);
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
+    outMsg.writeInt16(0);
+}
+
+void InventoryHandler::unequipItem(Item *item)
+{
+    if (!item)
+        return;
+
+    MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
+}
+
+void InventoryHandler::useItem(Item *item)
+{
+    if (!item)
+        return;
+
+    MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
+    outMsg.writeInt32(item->getId()); // unused
+}
+
+void InventoryHandler::dropItem(Item *item, int amount)
+{
+    // TODO: Fix wrong coordinates of drops, serverside? (what's wrong here?)
+    MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
+    outMsg.writeInt16(amount);
+}
+
+void InventoryHandler::closeStorage()
+{
+    MessageOut outMsg(CMSG_CLOSE_STORAGE);
+}
+
+void InventoryHandler::moveItem(StorageType source, int slot, int amount,
+                                StorageType destination)
+{
+    if (source == INVENTORY && destination == STORAGE)
+    {
+        MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
+        outMsg.writeInt16(slot + INVENTORY_OFFSET);
+        outMsg.writeInt32(amount);
+    }
+    else if (source == STORAGE && destination == INVENTORY)
+    {
+    MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
+    outMsg.writeInt16(slot + STORAGE_OFFSET);
+    outMsg.writeInt32(amount);
     }
 }

@@ -81,11 +81,7 @@ void ItemShortcut::useItem(int index)
             }
             else
             {
-#ifdef TMWSERV_SUPPORT
-                player_node->useItem(item->getInvIndex());
-#else
                 player_node->useItem(item);
-#endif
             }
         }
     }
