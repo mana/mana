@@ -24,6 +24,7 @@
 
 #include "being.h"
 #include "floor_item.h"
+#include "localplayer.h"
 
 #include <iosfwd>
 
@@ -35,17 +36,17 @@ class PlayerHandler
 
         virtual void emote(int emoteId) {}
 
-        virtual void increaseStat(int statId) {}
+        virtual void increaseStat(LocalPlayer::Attribute attr) {}
 
-        virtual void decreaseStat(int statId) {}
+        virtual void decreaseStat(LocalPlayer::Attribute attr) {}
 
         virtual void pickUp(FloorItem *floorItem) {}
 
         virtual void setDirection(int direction) {}
 
-        virtual void setDestination(int x, int y, int direction = -1);
+        virtual void setDestination(int x, int y, int direction = -1) {}
 
-        virtual void sit() {}
+        virtual void changeAction(Being::Action action) {}
 
         virtual void respawn() {}
 

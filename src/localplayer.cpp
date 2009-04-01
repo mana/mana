@@ -54,6 +54,7 @@
 #else
 #include "net/messageout.h"
 #include "net/ea/partyhandler.h"
+#include "net/ea/playerhandler.h"
 #include "net/ea/protocol.h"
 #include "net/ea/skillhandler.h"
 #include "net/ea/tradehandler.h"
@@ -496,12 +497,12 @@ void LocalPlayer::pickUp(FloorItem *item)
 
     if (dx * dx + dy * dy < 4)
     {
+        // Net::getPlayerHandler()->pickUp(item);
 #ifdef TMWSERV_SUPPORT
         int id = item->getId();
         Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
 #else
-        MessageOut outMsg(CMSG_ITEM_PICKUP);
-        outMsg.writeInt32(item->getId());
+        playerHandler->pickUp(item);
 #endif
         mPickUpTarget = NULL;
     }
@@ -694,15 +695,13 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
         mDestX = x;
         mDestY = y;
 
+        // Net::getPlayerHandler()->setDestination(x, y, mDirection);
 #ifdef TMWSERV_SUPPORT 
         Net::GameServer::Player::walk(x, y);
         //Debugging fire burst
         effectManager->trigger(15,x,y);
 #else
-        char temp[4] = "";
-        set_coordinates(temp, x, y, mDirection);
-        MessageOut outMsg(0x0085);
-        outMsg.writeString(temp, 3);
+        playerHandler->setDestination(x, y, mDirection);
 #endif
     }
 
@@ -742,39 +741,6 @@ void LocalPlayer::stopWalking(bool sendToServer)
 #endif
 
 #ifdef EATHENA_SUPPORT
-void LocalPlayer::raiseAttribute(Attribute attr)
-{
-    MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
-
-    switch (attr)
-    {
-        case STR:
-            outMsg.writeInt16(0x000d);
-            break;
-
-        case AGI:
-            outMsg.writeInt16(0x000e);
-            break;
-
-        case VIT:
-            outMsg.writeInt16(0x000f);
-            break;
-
-        case INT:
-            outMsg.writeInt16(0x0010);
-            break;
-
-        case DEX:
-            outMsg.writeInt16(0x0011);
-            break;
-
-        case LUK:
-            outMsg.writeInt16(0x0012);
-            break;
-    }
-    outMsg.writeInt8(1);
-}
-
 void LocalPlayer::raiseSkill(Uint16 skillId)
 {
     if (mSkillPoint <= 0)
@@ -799,13 +765,13 @@ void LocalPlayer::toggleSit()
         default: return;
     }
 
+    // Net::getPlayerHandler()->changeAction(newAction);
+
 #ifdef TMWSERV_SUPPORT
     setAction(newAction);
     Net::GameServer::Player::changeAction(newAction);
 #else
-    MessageOut outMsg(0x0089);
-    outMsg.writeInt32(0);
-    outMsg.writeInt8((newAction == SIT) ? 2 : 3);
+    playerHandler->changeAction(newAction);
 #endif
 }
 
@@ -815,10 +781,9 @@ void LocalPlayer::emote(Uint8 emotion)
         return;
     mLastAction = tick_time;
 
-    // XXX Convert for new server
+    // Net::getPlayerHandler()->emote(emotion);
 #ifdef EATHENA_SUPPORT
-    MessageOut outMsg(0x00bf);
-    outMsg.writeInt8(emotion);
+    playerHandler->emote(emotion);
 #endif
 }
 
@@ -962,9 +927,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         sound.playSfx("sfx/fist-swish.ogg");
     }
 
-    MessageOut outMsg(0x0089);
-    outMsg.writeInt32(target->getId());
-    outMsg.writeInt8(0);
+    playerHandler->attack(target);
 
     if (!keep)
         stopAttack();
@@ -985,11 +948,8 @@ void LocalPlayer::stopAttack()
 
 void LocalPlayer::revive()
 {
-    // XXX Convert for new server
-#ifdef EATHENA_SUPPORT
-    MessageOut outMsg(0x00b2);
-    outMsg.writeInt8(0);
-#endif
+    // Net::getPlayerHandler()->respawn();
+    playerHandler->respawn();
 }
 
 #ifdef TMWSERV_SUPPORT

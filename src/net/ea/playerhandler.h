@@ -23,13 +23,38 @@
 #define NET_EA_PLAYERHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/net.h"
 
-class PlayerHandler : public MessageHandler
+class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 {
     public:
         PlayerHandler();
 
         virtual void handleMessage(MessageIn &msg);
+
+        virtual void attack(Being *being);
+
+        virtual void emote(int emoteId);
+
+        virtual void increaseStat(LocalPlayer::Attribute attr);
+
+        virtual void decreaseStat(LocalPlayer::Attribute attr);
+
+        virtual void pickUp(FloorItem *floorItem);
+
+        virtual void setDirection(int direction);
+
+        virtual void setDestination(int x, int y, int direction = -1);
+
+        virtual void changeAction(Being::Action action);
+
+        virtual void respawn();
+
+        virtual void ingorePlayer(const std::string &player, bool ignore);
+
+        virtual void ingoreAll(bool ignore);
 };
+
+extern PlayerHandler *playerHandler;
 
 #endif // NET_EA_PLAYERHANDLER_H

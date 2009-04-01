@@ -19,20 +19,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "label.h"
-#include "progressbar.h"
-#include "status.h"
-#include "windowcontainer.h"
+#include "gui/status.h"
 
-#include "widgets/layout.h"
+#include "localplayer.h"
+#include "units.h"
 
-#include "../localplayer.h"
-#include "../units.h"
+#include "gui/button.h"
+#include "gui/label.h"
+#include "gui/progressbar.h"
+#include "gui/windowcontainer.h"
 
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
-#include "../utils/stringutils.h"
+#include "gui/widgets/layout.h"
+
+#include "net/net.h"
+#include "net/ea/playerhandler.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 StatusWindow::StatusWindow(LocalPlayer *player):
     Window(player->getName()),
@@ -261,20 +265,21 @@ void StatusWindow::draw(gcn::Graphics *g)
 void StatusWindow::action(const gcn::ActionEvent &event)
 {
     // Stats Part
+    // Net::getPlayerHandler()->increaseStat(?);
     if (event.getId().length() == 3)
     {
         if (event.getId() == "STR")
-            player_node->raiseAttribute(LocalPlayer::STR);
+            playerHandler->increaseStat(LocalPlayer::STR);
         if (event.getId() == "AGI")
-            player_node->raiseAttribute(LocalPlayer::AGI);
+            playerHandler->increaseStat(LocalPlayer::AGI);
         if (event.getId() == "VIT")
-            player_node->raiseAttribute(LocalPlayer::VIT);
+            playerHandler->increaseStat(LocalPlayer::VIT);
         if (event.getId() == "INT")
-            player_node->raiseAttribute(LocalPlayer::INT);
+            playerHandler->increaseStat(LocalPlayer::INT);
         if (event.getId() == "DEX")
-            player_node->raiseAttribute(LocalPlayer::DEX);
+            playerHandler->increaseStat(LocalPlayer::DEX);
         if (event.getId() == "LUK")
-            player_node->raiseAttribute(LocalPlayer::LUK);
+            playerHandler->increaseStat(LocalPlayer::LUK);
     }
 }
 

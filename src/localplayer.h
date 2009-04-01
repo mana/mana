@@ -335,7 +335,6 @@ class LocalPlayer : public Player
         bool withinAttackRange(Being *target);
 
 #ifdef EATHENA_SUPPORT
-        void raiseAttribute(Attribute attr);
         void raiseSkill(Uint16 skillId);
 #else
 

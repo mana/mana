@@ -148,6 +148,8 @@ static const char *randomDeathMessage()
     return gettext(deadMsg[random]);
 }
 
+PlayerHandler *playerHandler;
+
 PlayerHandler::PlayerHandler()
 {
     static const Uint16 _messages[] = {
@@ -163,6 +165,7 @@ PlayerHandler::PlayerHandler()
         0
     };
     handledMessages = _messages;
+    playerHandler = this;
 }
 
 void PlayerHandler::handleMessage(MessageIn &msg)
@@ -426,4 +429,97 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             }
             break;
     }
+}
+
+void PlayerHandler::attack(Being *being)
+{
+    MessageOut outMsg(0x0089);
+    outMsg.writeInt32(being->getId());
+    outMsg.writeInt8(0);
+}
+
+void PlayerHandler::emote(int emoteId)
+{
+    MessageOut outMsg(0x00bf);
+    outMsg.writeInt8(emoteId);
+}
+
+void PlayerHandler::increaseStat(LocalPlayer::Attribute attr)
+{
+    MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
+
+    switch (attr)
+    {
+        case LocalPlayer::STR:
+            outMsg.writeInt16(0x000d);
+            break;
+
+        case LocalPlayer::AGI:
+            outMsg.writeInt16(0x000e);
+            break;
+
+        case LocalPlayer::VIT:
+            outMsg.writeInt16(0x000f);
+            break;
+
+        case LocalPlayer::INT:
+            outMsg.writeInt16(0x0010);
+            break;
+
+        case LocalPlayer::DEX:
+            outMsg.writeInt16(0x0011);
+            break;
+
+        case LocalPlayer::LUK:
+            outMsg.writeInt16(0x0012);
+            break;
+    }
+    outMsg.writeInt8(1);
+}
+
+void PlayerHandler::decreaseStat(LocalPlayer::Attribute attr)
+{
+    // Supported by eA?
+}
+
+void PlayerHandler::pickUp(FloorItem *floorItem)
+{
+    MessageOut outMsg(CMSG_ITEM_PICKUP);
+    outMsg.writeInt32(floorItem->getId());
+}
+
+void PlayerHandler::setDirection(int direction)
+{
+    // TODO
+}
+
+void PlayerHandler::setDestination(int x, int y, int direction)
+{
+    char temp[4] = "";
+    set_coordinates(temp, x, y, direction);
+    MessageOut outMsg(0x0085);
+    outMsg.writeString(temp, 3);
+}
+
+void PlayerHandler::changeAction(Being::Action action)
+{
+    MessageOut outMsg(0x0089);
+    outMsg.writeInt32(0);
+    outMsg.writeInt8((action == Being::SIT) ? 2 : 3);
+}
+
+void PlayerHandler::respawn()
+{
+    MessageOut outMsg(0x00b2);
+    outMsg.writeInt8(0);
+}
+
+void PlayerHandler::ingorePlayer(const std::string &player, bool ignore)
+{
+    // TODO
+}
+
+void PlayerHandler::ingoreAll(bool ignore)
+{
+    // TODO
 }
