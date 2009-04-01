@@ -445,6 +445,8 @@ void LocalPlayer::unequipItem(Item *item)
     mEquipment->removeEquipment(item->getInvIndex());
 }
 
+#endif
+
 void LocalPlayer::useItem(Item *item)
 {
     // Net::getInvyHandler()->useItem(item);
@@ -454,8 +456,6 @@ void LocalPlayer::useItem(Item *item)
     invyHandler->useItem(item);
 #endif
 }
-
-#endif
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
@@ -943,7 +943,9 @@ void LocalPlayer::stopAttack()
 void LocalPlayer::revive()
 {
     // Net::getPlayerHandler()->respawn();
+#ifdef EATHENA_SUPPORT
     playerHandler->respawn();
+#endif
 }
 
 #ifdef TMWSERV_SUPPORT
