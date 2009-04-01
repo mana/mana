@@ -134,7 +134,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
                 dstBeing = createBeing(id, job);
             }
-            else if (dstBeing->getType() == Being::MONSTER)
+
+            // Fix monster jobs
+            if (dstBeing->getType() == Being::MONSTER)
             {
                 job -= 1002;
             }
@@ -430,7 +432,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             {
                 dstBeing = createBeing(id, job);
             }
-            else if (dstBeing->getType() == Being::MONSTER)
+
+            // Fix monster jobs
+            if (dstBeing->getType() == Being::MONSTER)
             {
                 job -= 1002;
             }
