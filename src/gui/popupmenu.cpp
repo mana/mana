@@ -35,11 +35,6 @@
 #include "npc.h"
 #include "player_relations.h"
 
-#ifdef EATHENA_SUPPORT
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
-#endif
-
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
@@ -292,8 +287,7 @@ void PopupMenu::handleLink(const std::string &link)
              being &&
              being->getType() == Being::PLAYER)
     {
-        MessageOut outMsg(CMSG_PARTY_INVITE);
-        outMsg.writeInt32(being->getId());
+        player_node->inviteToParty(dynamic_cast<Player*> (being));
     }
 #endif
 

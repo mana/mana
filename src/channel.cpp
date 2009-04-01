@@ -24,9 +24,6 @@
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/chatserver/chatserver.h"
 #include "net/tmwserv/gameserver/player.h"
-#else
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
 #endif
 
 Channel::Channel(short id,

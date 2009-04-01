@@ -26,10 +26,7 @@
 #include "npc.h"
 #include "player.h"
 
-#ifdef EATHENA_SUPPORT
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
-#else
+#ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/protocol.h"
 #endif
 

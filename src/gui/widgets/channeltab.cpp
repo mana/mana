@@ -27,8 +27,7 @@
 #include "net/tmwserv/chatserver/chatserver.h"
 #include "net/tmwserv/gameserver/player.h"
 #else
-#include "net/messageout.h"
-#include "net/ea/protocol.h"
+
 #endif
 
 ChannelTab::ChannelTab(Channel *channel) : ChatTab(channel->getName()),
