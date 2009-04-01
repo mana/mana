@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "inventory.h"
 #include "item.h"
@@ -52,6 +53,8 @@ namespace {
     } listener;
 }
 
+TradeHandler *tradeHandler;
+
 TradeHandler::TradeHandler()
 {
     static const Uint16 _messages[] = {
@@ -65,6 +68,7 @@ TradeHandler::TradeHandler()
         0
     };
     handledMessages = _messages;
+    tradeHandler = this;
 }
 
 
@@ -220,4 +224,49 @@ void TradeHandler::handleMessage(MessageIn &msg)
             player_node->setTrading(false);
             break;
     }
+}
+
+void TradeHandler::request(Being *being)
+{
+    MessageOut outMsg(CMSG_TRADE_REQUEST);
+    outMsg.writeInt32(being->getId());
+}
+
+void TradeHandler::respond(bool accept)
+{
+    MessageOut outMsg(CMSG_TRADE_RESPONSE);
+    outMsg.writeInt8(accept ? 3 : 4);
+}
+
+void TradeHandler::addItem(int slotNum, int amount)
+{
+    MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
+    outMsg.writeInt16(slotNum + INVENTORY_OFFSET);
+    outMsg.writeInt32(amount);
+}
+
+void TradeHandler::removeItem(int slotNum, int amount)
+{
+}
+
+void TradeHandler::setMoney(int amount)
+{
+    MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
+    outMsg.writeInt16(0);
+    outMsg.writeInt32(amount);
+}
+
+void TradeHandler::confirm()
+{
+    MessageOut outMsg(CMSG_TRADE_ADD_COMPLETE);
+}
+
+void TradeHandler::finish()
+{
+    MessageOut outMsg(CMSG_TRADE_OK);
+}
+
+void TradeHandler::cancel()
+{
+        MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
 }

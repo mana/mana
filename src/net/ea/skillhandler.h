@@ -23,13 +23,18 @@
 #define NET_EA_SKILLHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/net.h"
 
-class SkillHandler : public MessageHandler
+class SkillHandler : public MessageHandler, public Net::SkillHandler
 {
     public:
         SkillHandler();
 
         virtual void handleMessage(MessageIn &msg);
+
+        virtual void up(int skillId);
 };
+
+extern SkillHandler *skillHandler;
 
 #endif // NET_EA_SKILLHANDLER_H

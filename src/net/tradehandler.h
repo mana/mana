@@ -32,7 +32,7 @@ class TradeHandler
     public:
         virtual void request(Being *being) {}
 
-        virtual void respond(bool accepet) {}
+        virtual void respond(bool accept) {}
 
         virtual void addItem(int slotNum, int amount) {}
 

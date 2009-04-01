@@ -23,10 +23,9 @@
 
 #include "partytab.h"
 
-#include "net/messageout.h"
+#include "net/net.h"
 
-#include "net/ea/party.h"
-#include "net/ea/protocol.h"
+#include "net/ea/partyhandler.h"
 
 #include "resources/iteminfo.h"
 #include "resources/itemdb.h"
@@ -44,15 +43,14 @@ PartyTab::~PartyTab()
 {
 }
 
-void PartyTab::handleInput(const std::string &msg) {
-    std::size_t length = msg.length() + 1;
-
-    MessageOut outMsg(CMSG_PARTY_MESSAGE);
-    outMsg.writeInt16(length + 4);
-    outMsg.writeString(msg, length);
+void PartyTab::handleInput(const std::string &msg)
+{
+    // Net::getPartyHandler()->chat(msg);
+    partyHandler->chat(msg);
 }
 
-void PartyTab::handleCommand(std::string msg) {
+void PartyTab::handleCommand(std::string msg)
+{
     std::string::size_type pos = msg.find(' ');
     std::string type(msg, 0, pos);
     std::string args(msg, pos == std::string::npos ? msg.size() : pos + 1);
@@ -95,11 +93,16 @@ void PartyTab::handleCommand(std::string msg) {
     }
     else if (type == "create" || type == "new")
     {
-        eAthena::Party::create(args);
+        if (args.empty())
+            chatLog(_("Party name is missing."), BY_SERVER);
+        else
+            // Net::getPartyHandler()->create(args);
+            partyHandler->create(args);
     }
     else if (type == "leave")
     {
-        eAthena::Party::leave(args);
+        // Net::getPartyHandler()->leave();
+        partyHandler->leave();
     }
     else if (type == "settings")
     {

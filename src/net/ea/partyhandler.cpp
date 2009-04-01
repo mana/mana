@@ -22,13 +22,14 @@
 #include "net/ea/partyhandler.h"
 
 #include "beingmanager.h"
+#include "localplayer.h"
 
 #include "gui/chat.h"
 #include "gui/partywindow.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
-#include "net/ea/party.h"
 #include "net/ea/protocol.h"
 #include "net/ea/gui/partytab.h"
 
@@ -39,6 +40,8 @@ PartyTab *partyTab;
 
 static void newPartyTab() { partyTab = new PartyTab(); }
 static void deletePartyTab() { delete partyTab ; }
+
+PartyHandler *partyHandler;
 
 PartyHandler::PartyHandler()
 {
@@ -56,6 +59,7 @@ PartyHandler::PartyHandler()
         0
     };
     handledMessages = _messages;
+    partyHandler = this;
 
     //newPartyTab();
 }
@@ -70,7 +74,13 @@ void PartyHandler::handleMessage(MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_PARTY_CREATE:
-            eAthena::Party::createResponse(msg.readInt8());
+            if (msg.readInt8())
+            {
+                partyTab->chatLog(_("Party successfully created."), BY_SERVER);
+                player_node->setInParty(true);
+            }
+            else
+                partyTab->chatLog(_("Could not create party."), BY_SERVER);
             break;
         case SMSG_PARTY_INFO:
             {
@@ -201,4 +211,47 @@ void PartyHandler::handleMessage(MessageIn &msg)
             }
             break;
     }
+}
+
+void PartyHandler::create(const std::string &name)
+{
+    MessageOut outMsg(CMSG_PARTY_CREATE);
+    outMsg.writeString(name.substr(0, 23), 24);
+}
+
+void PartyHandler::join(int partyId)
+{
+}
+
+void PartyHandler::invite(int playerId)
+{
+    MessageOut outMsg(CMSG_PARTY_INVITE);
+    outMsg.writeInt32(playerId);
+}
+
+void PartyHandler::inviteResponse(bool accept)
+{
+    MessageOut outMsg(CMSG_PARTY_INVITED);
+    outMsg.writeInt32(player_node->getId());
+    outMsg.writeInt32(accept ? 1 : 0);
+    player_node->setInParty(player_node->getInParty() || accept);
+}
+
+void PartyHandler::leave()
+{
+    MessageOut outMsg(CMSG_PARTY_LEAVE);
+    partyTab->chatLog(_("Left party."), BY_SERVER);
+    player_node->setInParty(false);
+}
+
+void PartyHandler::kick(int playerId)
+{
+    // TODO
+}
+
+void PartyHandler::chat(const std::string &text)
+{
+    MessageOut outMsg(CMSG_PARTY_MESSAGE);
+    outMsg.writeInt16(text.length() + 4);
+    outMsg.writeString(text, text.length());
 }

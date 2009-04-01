@@ -43,6 +43,7 @@
 #include "gui/storagewindow.h"
 #endif
 
+#include "net/net.h"
 #ifdef TMWSERV_SUPPORT
 #include "effectmanager.h"
 #include "guild.h"
@@ -52,8 +53,10 @@
 #include "net/tmwserv/chatserver/party.h"
 #else
 #include "net/messageout.h"
-#include "net/ea/party.h"
+#include "net/ea/partyhandler.h"
 #include "net/ea/protocol.h"
+#include "net/ea/skillhandler.h"
+#include "net/ea/tradehandler.h"
 #endif
 
 #include "resources/animation.h"
@@ -386,10 +389,11 @@ void LocalPlayer::inviteToParty(const std::string &name)
 
 void LocalPlayer::inviteToParty(Player *player)
 {
+    // Net::getPartyHandler()->invite(player->getId());
 #ifdef TMWSERV_SUPPORT
     Net::ChatServer::Party::invitePlayer(player->getName());
 #else
-    eAthena::Party::invite(player);
+    partyHandler->invite(player->getId());
 #endif
 }
 
@@ -776,8 +780,8 @@ void LocalPlayer::raiseSkill(Uint16 skillId)
     if (mSkillPoint <= 0)
         return;
 
-    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
-    outMsg.writeInt16(skillId);
+    // Net::getSkillHandler()->up(skillId);
+    skillHandler->up(skillId);
 }
 #endif
 
@@ -824,13 +828,15 @@ void LocalPlayer::tradeReply(bool accept)
     if (!accept)
         mTrading = false;
 
-    MessageOut outMsg(CMSG_TRADE_RESPONSE);
-    outMsg.writeInt8(accept ? 3 : 4);
+    // Net::getTradeHandler()->respond(accept);
+
+    tradeHandler->respond(accept);
 }
 #endif
 
 void LocalPlayer::trade(Being *being) const
 {
+    // Net::getTradeHandler()->request(being);
 #ifdef TMWSERV_SUPPORT
     extern std::string tradePartnerName;
     extern int tradePartnerID;
@@ -838,8 +844,7 @@ void LocalPlayer::trade(Being *being) const
     tradePartnerID = being->getId();
     Net::GameServer::Player::requestTrade(tradePartnerID);
 #else
-    MessageOut outMsg(CMSG_TRADE_REQUEST);
-    outMsg.writeInt32(being->getId());
+    tradeHandler->request(being);
 #endif
 }
 

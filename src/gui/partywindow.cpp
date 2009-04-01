@@ -23,10 +23,11 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "net/net.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/chatserver/party.h"
 #else
-#include "net/ea/party.h"
+#include "net/ea/partyhandler.h"
 #endif
 
 #include "utils/gettext.h"
@@ -171,20 +172,22 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     if (eventId == "yes")
     {
         localChatTab->chatLog("Accepted invite from " + mPartyInviter);
+        // Net::getPartyHandler()->inviteResponse(true);
 #ifdef TMWSERV_SUPPORT
         Net::ChatServer::Party::acceptInvite(mPartyInviter);
 #else
-        eAthena::Party::respondToInvite(true);
+        partyHandler->inviteResponse(true);
 #endif
         mPartyInviter = "";
     }
     else if (eventId == "no")
     {
         localChatTab->chatLog("Rejected invite from " + mPartyInviter);
+        // Net::getPartyHandler()->inviteResponse(false);
 #ifdef TMWSERV_SUPPORT
         // TODO
 #else
-        eAthena::Party::respondToInvite(false);
+        partyHandler->inviteResponse(false);
 #endif
         mPartyInviter = "";
     }

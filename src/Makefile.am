@@ -477,8 +477,6 @@ tmw_SOURCES += \
 	      net/ea/network.h \
 	      net/ea/npchandler.cpp \
 	      net/ea/npchandler.h \
-	      net/ea/party.cpp \
-	      net/ea/party.h \
 	      net/ea/partyhandler.cpp \
 	      net/ea/partyhandler.h \
 	      net/ea/playerhandler.cpp \

@@ -23,8 +23,9 @@
 #define NET_EA_PARTYHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/net.h"
 
-class PartyHandler : public MessageHandler
+class PartyHandler : public MessageHandler, public Net::PartyHandler
 {
     public:
         PartyHandler();
@@ -32,6 +33,22 @@ class PartyHandler : public MessageHandler
         ~PartyHandler();
 
         virtual void handleMessage(MessageIn &msg);
+
+        virtual void create(const std::string &name="");
+
+        virtual void join(int partyId);
+
+        virtual void invite(int playerId);
+
+        virtual void inviteResponse(bool accept);
+
+        virtual void leave();
+
+        virtual void kick(int playerId);
+
+        virtual void chat(const std::string &text);
 };
+
+extern PartyHandler *partyHandler;
 
 #endif // NET_EA_PARTYHANDLER_H

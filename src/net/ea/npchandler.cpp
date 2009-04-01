@@ -191,6 +191,6 @@ void NPCHandler::sellItem(int beingId, int itemId, int amount)
 {
     MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
     outMsg.writeInt16(8); // One item (length of packet)
-    outMsg.writeInt16(itemId + 2);
+    outMsg.writeInt16(itemId + INVENTORY_OFFSET);
     outMsg.writeInt16(amount);
 }

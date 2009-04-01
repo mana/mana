@@ -19,37 +19,38 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/trade.h"
+
+#include "inventory.h"
+#include "item.h"
+#include "localplayer.h"
+#include "units.h"
+
+#include "gui/button.h"
+#include "gui/widgets/chattab.h"
+#include "gui/inventorywindow.h"
+#include "gui/item_amount.h"
+#include "gui/itemcontainer.h"
+#include "gui/label.h"
+#include "gui/scrollarea.h"
+#include "gui/textfield.h"
+
+#include "gui/widgets/layout.h"
+
+#include "net/net.h"
+#ifdef TMWSERV_SUPPORT
+#include "net/tmwserv/gameserver/player.h"
+#else
+#include "net/ea/tradehandler.h"
+#endif
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+#include "utils/strprintf.h"
+
 #include <sstream>
 
 #include <guichan/font.hpp>
-
-#include "button.h"
-#include "widgets/chattab.h"
-#include "inventorywindow.h"
-#include "item_amount.h"
-#include "itemcontainer.h"
-#include "label.h"
-#include "scrollarea.h"
-#include "textfield.h"
-#include "trade.h"
-
-#include "widgets/layout.h"
-
-#include "../inventory.h"
-#include "../item.h"
-#include "../localplayer.h"
-#include "../units.h"
-
-#ifdef TMWSERV_SUPPORT
-#include "../net/tmwserv/gameserver/player.h"
-#else
-#include "../net/messageout.h"
-#include "../net/ea/protocol.h"
-#endif
-
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
-#include "../utils/strprintf.h"
 
 TradeWindow::TradeWindow():
     Window(_("Trade: You")),
@@ -235,6 +236,7 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
+    // Net::getTradeHandler()->addItem(item->getInvIndex(), quantity);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::tradeItem(item->getInvIndex(), quantity);
     addItem(item->getId(), true, quantity);
@@ -244,9 +246,7 @@ void TradeWindow::tradeItem(Item *item, int quantity)
     //       function. Detect the actual server version, and re-enable this
     //       for that version only.
     //addItem(item->getId(), true, quantity, item->isEquipment());
-    MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-    outMsg.writeInt32(quantity);
+    tradeHandler->addItem(item->getInvIndex(), quantity);
 #endif
 }
 
@@ -318,10 +318,12 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         setVisible(false);
         reset();
         player_node->setTrading(false);
+
+        // Net::getTradeHandler()->cancel();
 #ifdef TMWSERV_SUPPORT
         Net::GameServer::Player::acceptTrade(false);
 #else
-        MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
+        tradeHandler->cancel();
 #endif
     }
 #ifdef EATHENA_SUPPORT
@@ -333,16 +335,15 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         {
             mMoneyField->setText(toString(tempInt));
 
-            MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
-            outMsg.writeInt16(0);
-            outMsg.writeInt32(tempInt);
+            // Net::getTradeHandler()->setMoney(tempInt);
+            tradeHandler->setMoney(tempInt);
         }
         else
         {
             mMoneyField->setText("");
         }
         mMoneyField->setEnabled(false);
-        MessageOut outMsg(CMSG_TRADE_ADD_COMPLETE);
+        tradeHandler->confirm();
     }
 #endif
     else if (event.getId() == "trade")
@@ -351,7 +352,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         Net::GameServer::Player::acceptTrade(true);
         setStatus(PROPOSING);
 #else
-        MessageOut outMsg(CMSG_TRADE_OK);
+        tradeHandler->finish();
 #endif
     }
 #ifdef TMWSERV_SUPPORT
@@ -367,9 +368,10 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
 void TradeWindow::close()
 {
+    // Net::getTradeHandler()->cancel();
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::acceptTrade(false);
 #else
-    MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
+    tradeHandler->cancel();
 #endif
 }

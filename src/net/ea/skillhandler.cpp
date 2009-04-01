@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "log.h"
 
@@ -65,6 +66,8 @@
 /** should always be zero if failed */
 #define SKILL_FAILED      0x00
 
+SkillHandler *skillHandler;
+
 SkillHandler::SkillHandler()
 {
     static const Uint16 _messages[] = {
@@ -73,6 +76,7 @@ SkillHandler::SkillHandler()
         0
     };
     handledMessages = _messages;
+    skillHandler = this;
 }
 
 void SkillHandler::handleMessage(MessageIn &msg)
@@ -206,4 +210,10 @@ void SkillHandler::handleMessage(MessageIn &msg)
             localChatTab->chatLog(msg);
             break;
     }
+}
+
+void SkillHandler::up(int skillId)
+{
+    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
+    outMsg.writeInt16(skillId);
 }

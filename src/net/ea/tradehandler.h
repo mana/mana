@@ -23,13 +23,32 @@
 #define NET_EA_TRADEHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/net.h"
 
-class TradeHandler : public MessageHandler
+class TradeHandler : public MessageHandler, public Net::TradeHandler
 {
     public:
         TradeHandler();
 
         virtual void handleMessage(MessageIn &msg);
+
+        virtual void request(Being *being);
+
+        virtual void respond(bool accept);
+
+        virtual void addItem(int slotNum, int amount);
+
+        virtual void removeItem(int slotNum, int amount);
+
+        virtual void setMoney(int amount);
+
+        virtual void confirm();
+
+        virtual void finish();
+
+        virtual void cancel();
 };
+
+extern TradeHandler *tradeHandler;
 
 #endif // NET_EA_TRADEHANDLER_H
