@@ -55,7 +55,7 @@ class ItemPopup : public Popup
         /**
          * Gets the name of the currently stored item in this popup.
          */
-        std::string getItemName();
+        std::string getItemName() const;
 
         /**
          * Updates the colors used within the item popup.
