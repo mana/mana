@@ -117,6 +117,8 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_PLAYER_STORAGE_REMOVE   0x00f6 /**< Remove item/equip from storage */
 #define SMSG_PLAYER_STORAGE_CLOSE    0x00f8 /**< Storage access closed */
 
+#define SMSG_ADMIN_KICK_ACK          0x00cd
+
 /**********************************
  *  Packets from client to server *
  **********************************/
@@ -166,6 +168,7 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_ADMIN_LOCAL_ANNOUNCE    0x019C
 #define CMSG_ADMIN_HIDE              0x019D
 #define CMSG_ADMIN_KICK              0x00CC
+#define CMSG_ADMIN_MUTE              0x0149
 
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);

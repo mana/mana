@@ -35,6 +35,11 @@
 #include "npc.h"
 #include "player_relations.h"
 
+#include "net/net.h"
+#ifdef EATHENA_SUPPORT
+#include "net/ea/adminhandler.h"
+#endif
+
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
@@ -108,6 +113,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
                 mBrowserBox->addRow("##3---");
                 mBrowserBox->addRow(strprintf(_("@@party-invite|Invite %s to party@@"), name.c_str()));
+                //mBrowserBox->addRow(_("@@admin-kick|Kick player@@"));
             }
             break;
 
@@ -116,6 +122,10 @@ void PopupMenu::showPopup(int x, int y, Being *being)
             // unless more options would be added)
             mBrowserBox->addRow(_("@@talk|Talk To NPC@@"));
             break;
+
+        /*case Being::MONSTER:
+            mBrowserBox->addRow(_("@@admin-kick|Kick monster@@"));
+            break;*/
 
         default:
             /* Other beings aren't interesting... */
@@ -290,6 +300,13 @@ void PopupMenu::handleLink(const std::string &link)
         player_node->inviteToParty(dynamic_cast<Player*> (being));
     }
 #endif
+    else if (link == "admin-kick" &&
+             being &&
+             (being->getType() == Being::PLAYER ||
+              being->getType() == Being::MONSTER))
+    {
+        adminHandler->kick(being->getId());
+    }
 
     // Unknown actions
     else

@@ -101,6 +101,7 @@
 #else
 #include "net/ea/gui/partytab.h"
 #include "net/ea/network.h"
+#include "net/ea/adminhandler.h"
 #include "net/ea/chathandler.h"
 #include "net/ea/beinghandler.h"
 #include "net/ea/buysellhandler.h"
@@ -360,6 +361,7 @@ Game::Game():
 #else
 Game::Game(Network *network):
     mNetwork(network),
+    mAdminHandler(new AdminHandler),
     mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
     mEquipmentHandler(new EquipmentHandler),
     mSkillHandler(new SkillHandler),
@@ -420,6 +422,7 @@ Game::Game(Network *network):
     Net::registerHandler(mTradeHandler.get());
     Net::registerHandler(mEffectHandler.get());
 #else
+    network->registerHandler(mAdminHandler.get());
     network->registerHandler(mBeingHandler.get());
     network->registerHandler(mBuySellHandler.get());
     network->registerHandler(mChatHandler.get());

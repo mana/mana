@@ -21,6 +21,7 @@
 
 #include "net/ea/adminhandler.h"
 
+#include "net/ea/chathandler.h"
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
@@ -39,13 +40,12 @@
 
 #include <string>
 
-#define SERVER_NAME "Server"
-
 AdminHandler *adminHandler;
 
 AdminHandler::AdminHandler()
 {
     static const Uint16 _messages[] = {
+        SMSG_ADMIN_KICK_ACK,
         0
     };
     handledMessages = _messages;
@@ -54,9 +54,15 @@ AdminHandler::AdminHandler()
 
 void AdminHandler::handleMessage(MessageIn &msg)
 {
+    int id;
     switch (msg.getId())
     {
-        case SMSG_WHISPER_RESPONSE:
+        case SMSG_ADMIN_KICK_ACK:
+            id = msg.readInt32();
+            if (id == 0)
+                localChatTab->chatLog(_("Kick failed!"), BY_SERVER);
+            else
+                localChatTab->chatLog(_("Kick succedded!"), BY_SERVER);
             break;
     }
 }
@@ -89,17 +95,31 @@ void AdminHandler::kick(int playerId)
 
 void AdminHandler::kick(const std::string &name)
 {
-    // Unsupported
+    chatHandler->talk("@kick " + name);
 }
 
 void AdminHandler::ban(int playerId)
 {}
 
 void AdminHandler::ban(const std::string &name)
-{}
+{
+    chatHandler->talk("@ban " + name);
+}
 
 void AdminHandler::unban(int playerId)
 {}
 
 void AdminHandler::unban(const std::string &name)
-{}
+{
+    chatHandler->talk("@unban " + name);
+}
+
+void AdminHandler::mute(int playerId, int type, int limit)
+{
+    return; // Still looking into this
+
+    MessageOut outMsg(CMSG_ADMIN_MUTE);
+    outMsg.writeInt32(playerId);
+    outMsg.writeInt8(type);
+    outMsg.writeInt16(limit);
+}

@@ -70,6 +70,7 @@ class Game : public ConfigListener
         MessageHandlerPtr mGuildHandler;
         MessageHandlerPtr mEffectHandler;
 #else
+        MessageHandlerPtr mAdminHandler;
         MessageHandlerPtr mEquipmentHandler;
         MessageHandlerPtr mSkillHandler;
 #endif

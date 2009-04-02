@@ -19,40 +19,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EA_ADMINHANDLER_H
-#define NET_EA_ADMINHANDLER_H
+#ifndef NET_EA_MAPHANDLER_H
+#define NET_EA_MAPHANDLER_H
 
 #include "net/messagehandler.h"
 #include "net/net.h"
 
-class AdminHandler : public MessageHandler, public Net::AdminHandler
+class MapHandler : public MessageHandler, public Net::MapHandler
 {
     public:
-        AdminHandler();
+        MapHandler();
 
         virtual void handleMessage(MessageIn &msg);
 
-        virtual void announce(const std::string &text);
+        virtual void connect();
 
-        virtual void localAnnounce(const std::string &text);
+        virtual void mapLoaded(const std::string &mapName);
 
-        virtual void hide(bool hide);
+        virtual void who();
 
-        virtual void kick(int playerId);
-
-        virtual void kick(const std::string &name);
-
-        virtual void ban(int playerId);
-
-        virtual void ban(const std::string &name);
-
-        virtual void unban(int playerId);
-
-        virtual void unban(const std::string &name);
-
-        virtual void mute(int playerId, int type, int limit);
+        virtual void quit();
 };
 
-extern AdminHandler *adminHandler;
+extern MapHandler *mapHandler;
 
-#endif // NET_EA_ADMINHANDLER_H
+#endif // NET_EA_MAPHANDLER_H
