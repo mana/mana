@@ -28,8 +28,6 @@
 #include <SDL_endian.h>
 #endif
 
-#include <cassert>
-
 #define MAKEWORD(low,high) \
     ((unsigned short)(((unsigned char)(low)) | \
     ((unsigned short)((unsigned char)(high))) << 8))
@@ -109,87 +107,85 @@ void MessageIn::readCoordinates(Uint16 &x, Uint16 &y)
 
 void MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
 {
-    assert(mPos + 3 <= mLength);
-
-    const char *data = mData + mPos;
-    Sint16 temp;
-
-    temp = MAKEWORD(data[1] & 0x00c0, data[0] & 0x00ff);
-    x = temp >> 6;
-    temp = MAKEWORD(data[2] & 0x00f0, data[1] & 0x003f);
-    y = temp >> 4;
-
-    direction = data[2] & 0x000f;
-
-    // Translate from eAthena format
-    switch (direction)
+    if (mPos + 3 <= mLength)
     {
-        case 0:
-            direction = 1;
-            break;
-        case 1:
-            direction = 3;
-            break;
-        case 2:
-            direction = 2;
-            break;
-        case 3:
-            direction = 6;
-            break;
-        case 4:
-            direction = 4;
-            break;
-        case 5:
-            direction = 12;
-            break;
-        case 6:
-            direction = 8;
-            break;
-        case 7:
-            direction = 9;
-            break;
-        default:
-            // OOPSIE! Impossible or unknown
-            direction = 0;
-    }
+        const char *data = mData + mPos;
+        Sint16 temp;
 
+        temp = MAKEWORD(data[1] & 0x00c0, data[0] & 0x00ff);
+        x = temp >> 6;
+        temp = MAKEWORD(data[2] & 0x00f0, data[1] & 0x003f);
+        y = temp >> 4;
+
+        direction = data[2] & 0x000f;
+
+        // Translate from eAthena format
+        switch (direction)
+        {
+            case 0:
+                direction = 1;
+                break;
+            case 1:
+                direction = 3;
+                break;
+            case 2:
+                direction = 2;
+                break;
+            case 3:
+                direction = 6;
+                break;
+            case 4:
+                direction = 4;
+                break;
+            case 5:
+                direction = 12;
+                break;
+            case 6:
+                direction = 8;
+                break;
+            case 7:
+                direction = 9;
+                break;
+            default:
+                // OOPSIE! Impossible or unknown
+                direction = 0;
+        }
+    }
     mPos += 3;
 }
 
 void MessageIn::readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
-                              Uint16 &dstX, Uint16 &dstY)
+                                   Uint16 &dstX, Uint16 &dstY)
 {
-    assert(mPos + 5 <= mLength);
+    if (mPos + 5 <= mLength)
+    {
+        const char *data = mData + mPos;
+        Sint16 temp;
 
-    const char *data = mData + mPos;
-    Sint16 temp;
+        temp = MAKEWORD(data[3], data[2] & 0x000f);
+        dstX = temp >> 2;
 
-    temp = MAKEWORD(data[3], data[2] & 0x000f);
-    dstX = temp >> 2;
+        dstY = MAKEWORD(data[4], data[3] & 0x0003);
 
-    dstY = MAKEWORD(data[4], data[3] & 0x0003);
+        temp = MAKEWORD(data[1], data[0]);
+        srcX = temp >> 6;
 
-    temp = MAKEWORD(data[1], data[0]);
-    srcX = temp >> 6;
-
-    temp = MAKEWORD(data[2], data[1] & 0x003f);
-    srcY = temp >> 4;
-
+        temp = MAKEWORD(data[2], data[1] & 0x003f);
+        srcY = temp >> 4;
+    }
     mPos += 5;
 }
 
 void MessageIn::skip(unsigned int length)
 {
-    assert(mPos + length <= mLength);
     mPos += length;
 }
 
 std::string MessageIn::readString(int length)
 {
     // Get string length
-    if (length < 0) {
+    if (length < 0)
         length = readInt16();
-    }
 
     // Make sure the string isn't erroneous
     if (length < 0 || mPos + length > mLength) {

@@ -89,7 +89,7 @@ class MessageIn
         std::string readString(int length = -1);
 
     private:
-        const char* mData;             /**< The message data. */
+        const char *mData;             /**< The message data. */
         unsigned int mLength;          /**< The length of the data. */
         unsigned short mId;            /**< The message ID. */
 
