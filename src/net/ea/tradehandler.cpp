@@ -166,7 +166,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
         case SMSG_TRADE_ITEM_ADD_RESPONSE:
             // Trade: New Item add response (was 0x00ea, now 01b1)
             {
-                const int index = msg.readInt16();
+                const int index = msg.readInt16() - INVENTORY_OFFSET;
                 Item *item = player_node->getInventory()->getItem(index);
                 if (!item)
                 {
@@ -247,6 +247,7 @@ void TradeHandler::addItem(int slotNum, int amount)
 
 void TradeHandler::removeItem(int slotNum, int amount)
 {
+    // TODO
 }
 
 void TradeHandler::setMoney(int amount)
@@ -268,5 +269,5 @@ void TradeHandler::finish()
 
 void TradeHandler::cancel()
 {
-        MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
+    MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
 }

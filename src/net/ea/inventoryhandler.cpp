@@ -353,8 +353,8 @@ void InventoryHandler::moveItem(StorageType source, int slot, int amount,
     }
     else if (source == STORAGE && destination == INVENTORY)
     {
-    MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
-    outMsg.writeInt16(slot + STORAGE_OFFSET);
-    outMsg.writeInt32(amount);
+        MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
+        outMsg.writeInt16(slot + STORAGE_OFFSET);
+        outMsg.writeInt32(amount);
     }
 }
