@@ -25,10 +25,10 @@
 class Item;
 
 #ifdef EATHENA_SUPPORT
-#define INVENTORY_SIZE 102
-#define STORAGE_SIZE 301
+const int INVENTORY_SIZE = 102;
+const int STORAGE_SIZE = 301;
 #else
-#define INVENTORY_SIZE 50
+const int INVENTORY_SIZE = 50;
 #endif
 
 class Inventory
@@ -36,6 +36,8 @@ class Inventory
     public:
         /**
          * Constructor.
+         *
+         * @param size the number of items that fit in the inventory
          */
         Inventory(int size);
 
@@ -45,14 +47,14 @@ class Inventory
         ~Inventory();
 
         /**
-         * Returns the size that this instance is configured for
+         * Returns the size that this instance is configured for.
          */
-        int getSize() { return mSize; }
+        int getSize() const { return mSize; }
 
         /**
          * Returns the item at the specified index.
          */
-        Item* getItem(int index) const;
+        Item *getItem(int index) const;
 
         /**
          * Searches for the specified item by it's id.
@@ -60,7 +62,7 @@ class Inventory
          * @param itemId The id of the item to be searched.
          * @return Item found on success, NULL on failure.
          */
-        Item* findItem(int itemId) const;
+        Item *findItem(int itemId) const;
 
         /**
          * Adds a new item in a free slot.
@@ -83,7 +85,7 @@ class Inventory
         void removeItemAt(int index);
 
         /**
-         * Checks if the given item is in the inventory
+         * Checks if the given item is in the inventory.
          */
         bool contains(Item *item) const;
 

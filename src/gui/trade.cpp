@@ -61,12 +61,9 @@ TradeWindow::TradeWindow():
 #endif
 {
     setWindowName("Trade");
-    setResizable(true);
+    setResizable(false);
     setCloseButton(true);
-    setDefaultSize(342, 209, ImageRect::CENTER);
-
-    setMinWidth(342);
-    setMinHeight(209);
+    setDefaultSize(386, 180, ImageRect::CENTER);
 
     std::string longestName = getFont()->getWidth(_("OK")) >
                                    getFont()->getWidth(_("Trade")) ?
@@ -83,12 +80,12 @@ TradeWindow::TradeWindow():
         mTradeButton->getFont()->getWidth(_("Propose trade")),
         mTradeButton->getFont()->getWidth(_("Confirm trade"))));
 
-    mMyItemContainer = new ItemContainer(mMyInventory.get(), 4, 3);
+    mMyItemContainer = new ItemContainer(mMyInventory.get(), 5, 2);
     mMyItemContainer->addSelectionListener(this);
 
     ScrollArea *myScroll = new ScrollArea(mMyItemContainer);
 
-    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 4, 3);
+    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 5, 2);
     mPartnerItemContainer->addSelectionListener(this);
 
     ScrollArea *partnerScroll = new ScrollArea(mPartnerItemContainer);
