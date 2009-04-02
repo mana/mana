@@ -24,29 +24,30 @@
 
 #include "net/messagehandler.h"
 #include "net/net.h"
+#include "net/tradehandler.h"
 
 class TradeHandler : public MessageHandler, public Net::TradeHandler
 {
     public:
         TradeHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        virtual void request(Being *being);
+        void request(Being *being);
 
-        virtual void respond(bool accept);
+        void respond(bool accept);
 
-        virtual void addItem(int slotNum, int amount);
+        void addItem(int slotNum, int amount);
 
-        virtual void removeItem(int slotNum, int amount);
+        void removeItem(int slotNum, int amount);
 
-        virtual void setMoney(int amount);
+        void setMoney(int amount);
 
-        virtual void confirm();
+        void confirm();
 
-        virtual void finish();
+        void finish();
 
-        virtual void cancel();
+        void cancel();
 };
 
 extern TradeHandler *tradeHandler;

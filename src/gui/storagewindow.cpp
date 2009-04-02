@@ -180,29 +180,29 @@ void StorageWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
-Item* StorageWindow::getSelectedItem() const
+Item *StorageWindow::getSelectedItem() const
 {
     return mItems->getSelectedItem();
 }
 
 void StorageWindow::addStore(Item *item, int amount)
 {
-    // Net::getInvyHandler()->moveItem(Net::InvyHandler::INVENTORY,
-    invyHandler->moveItem(Net::InvyHandler::INVENTORY,
-                                    item->getInvIndex(), amount,
-                                    Net::InvyHandler::STORAGE);
+    // Net::getInventoryHandler()->moveItem(Net::InvyHandler::INVENTORY,
+    inventoryHandler->moveItem(Net::InventoryHandler::INVENTORY,
+                               item->getInvIndex(), amount,
+                               Net::InventoryHandler::STORAGE);
 }
 
 void StorageWindow::removeStore(Item *item, int amount)
 {
-    // Net::getInvyHandler()->moveItem(Net::InvyHandler::STORAGE,
-    invyHandler->moveItem(Net::InvyHandler::STORAGE,
-                                    item->getInvIndex(), amount,
-                                    Net::InvyHandler::INVENTORY);
+    // Net::getInventoryHandler()->moveItem(Net::InvyHandler::STORAGE,
+    inventoryHandler->moveItem(Net::InventoryHandler::STORAGE,
+                               item->getInvIndex(), amount,
+                               Net::InventoryHandler::INVENTORY);
 }
 
 void StorageWindow::close()
 {
-    // Net::getInvyHandler()->closeStorage();
-    invyHandler->closeStorage();
+    // Net::getInventoryHandler()->closeStorage();
+    inventoryHandler->closeStorage();
 }

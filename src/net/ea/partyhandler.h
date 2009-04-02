@@ -24,6 +24,7 @@
 
 #include "net/messagehandler.h"
 #include "net/net.h"
+#include "net/partyhandler.h"
 
 class PartyHandler : public MessageHandler, public Net::PartyHandler
 {
@@ -32,21 +33,23 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
 
         ~PartyHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        virtual void create(const std::string &name="");
+        void create(const std::string &name = "");
 
-        virtual void join(int partyId);
+        void join(int partyId);
 
-        virtual void invite(int playerId);
+        void invite(int playerId);
 
-        virtual void inviteResponse(bool accept);
+        void inviteResponse(bool accept);
 
-        virtual void leave();
+        void leave();
 
-        virtual void kick(int playerId);
+        void kick(int playerId);
 
-        virtual void chat(const std::string &text);
+        void chat(const std::string &text);
+
+        void requestPartyMembers();
 };
 
 extern PartyHandler *partyHandler;

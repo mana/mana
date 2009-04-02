@@ -24,35 +24,36 @@
 
 #include "net/messagehandler.h"
 #include "net/net.h"
+#include "net/playerhandler.h"
 
 class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 {
     public:
         PlayerHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        virtual void attack(Being *being);
+        void attack(Being *being);
 
-        virtual void emote(int emoteId);
+        void emote(int emoteId);
 
-        virtual void increaseStat(LocalPlayer::Attribute attr);
+        void increaseStat(LocalPlayer::Attribute attr);
 
-        virtual void decreaseStat(LocalPlayer::Attribute attr);
+        void decreaseStat(LocalPlayer::Attribute attr);
 
-        virtual void pickUp(FloorItem *floorItem);
+        void pickUp(FloorItem *floorItem);
 
-        virtual void setDirection(int direction);
+        void setDirection(int direction);
 
-        virtual void setDestination(int x, int y, int direction = -1);
+        void setDestination(int x, int y, int direction = -1);
 
-        virtual void changeAction(Being::Action action);
+        void changeAction(Being::Action action);
 
-        virtual void respawn();
+        void respawn();
 
-        virtual void ingorePlayer(const std::string &player, bool ignore);
+        void ingorePlayer(const std::string &player, bool ignore);
 
-        virtual void ingoreAll(bool ignore);
+        void ingoreAll(bool ignore);
 };
 
 extern PlayerHandler *playerHandler;

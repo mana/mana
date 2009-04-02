@@ -50,4 +50,4 @@ class MessageHandler
 #endif
 };
 
-#endif
+#endif // NET_MESSAGEHANDLER_H

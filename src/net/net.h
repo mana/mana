@@ -22,46 +22,36 @@
 #ifndef NET_H
 #define NET_H
 
-#include "net/adminhandler.h"
-#include "net/charhandler.h"
-#include "net/chathandler.h"
-#include "net/generalhandler.h"
-#include "net/guildhandler.h"
-#include "net/inventoryhandler.h"
-#include "net/loginhandler.h"
-#include "net/maphandler.h"
-#include "net/npchandler.h"
-#include "net/partyhandler.h"
-#include "net/playerhandler.h"
-#include "net/skillhandler.h"
-#include "net/tradehandler.h"
-
 namespace Net {
-Net::AdminHandler *getAdminHandler();
 
-Net::CharHandler *getCharHandler();
+class AdminHandler;
+class CharHandler;
+class ChatHandler;
+class GeneralHandler;
+class GuildHandler;
+class InventoryHandler;
+class LoginHandler;
+class MapHandler;
+class NpcHandler;
+class PartyHandler;
+class PlayerHandler;
+class SkillHandler;
+class TradeHandler;
 
-Net::ChatHandler *getChatHandler();
+AdminHandler *getAdminHandler();
+CharHandler *getCharHandler();
+ChatHandler *getChatHandler();
+GeneralHandler *getGeneralHandler();
+GuildHandler *getGuildHandler();
+InventoryHandler *getInventoryHandler();
+LoginHandler *getLoginHandler();
+MapHandler *getMapHandler();
+NpcHandler *getNpcHandler();
+PartyHandler *getPartyHandler();
+PlayerHandler *getPlayerHandler();
+SkillHandler *getSkillHandler();
+TradeHandler *getTradeHandler();
 
-Net::GeneralHandler *getGeneralHandler();
-
-Net::GuildHandler *getGuildHandler();
-
-Net::InvyHandler *getInvyHandler();
-
-Net::LoginHandler *getLoginHandler();
-
-Net::MapHandler *getMapHandler();
-
-Net::NpcHandler *getNpcHandler();
-
-Net::PartyHandler *getPartyHandler();
-
-Net::PlayerHandler *getPlayerHandler();
-
-Net::SkillHandler *getSkillHandler();
-
-Net::TradeHandler *getTradeHandler();
-}
+} // namespace Net
 
 #endif // NET_H

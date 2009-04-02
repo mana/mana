@@ -24,35 +24,43 @@
 
 #include "net/messagehandler.h"
 #include "net/net.h"
+#include "net/npchandler.h"
 
-class NPCHandler : public MessageHandler, public Net::NpcHandler
+class NpcHandler : public MessageHandler, public Net::NpcHandler
 {
     public:
-        NPCHandler();
+        NpcHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        virtual void talk(int npcId);
+        void talk(int npcId);
 
-        virtual void nextDialog(int npcId);
+        void nextDialog(int npcId);
 
-        virtual void closeDialog(int npcId);
+        void closeDialog(int npcId);
 
-        virtual void listInput(int npcId, int value);
+        void listInput(int npcId, int value);
 
-        virtual void integerInput(int npcId, int value);
+        void integerInput(int npcId, int value);
 
-        virtual void stringInput(int npcId, const std::string &value);
+        void stringInput(int npcId, const std::string &value);
 
-        virtual void buy(int beingId);
+        void sendLetter(int npcId, const std::string &recipient,
+                        const std::string &text);
 
-        virtual void sell(int beingId);
+        void startShopping(int beingId);
 
-        virtual void buyItem(int beingId, int itemId, int amount);
+        void buy(int beingId);
 
-        virtual void sellItem(int beingId, int itemId, int amount);
+        void sell(int beingId);
+
+        void buyItem(int beingId, int itemId, int amount);
+
+        void sellItem(int beingId, int itemId, int amount);
+
+        void endShopping(int beingId);
 };
 
-extern NPCHandler *npcHandler;
+extern NpcHandler *npcHandler;
 
 #endif // NET_EA_NPCHANDLER_H

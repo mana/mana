@@ -24,15 +24,16 @@
 
 #include "net/messagehandler.h"
 #include "net/net.h"
+#include "net/skillhandler.h"
 
 class SkillHandler : public MessageHandler, public Net::SkillHandler
 {
     public:
         SkillHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        virtual void up(int skillId);
+        void up(int skillId);
 };
 
 extern SkillHandler *skillHandler;

@@ -255,3 +255,8 @@ void PartyHandler::chat(const std::string &text)
     outMsg.writeInt16(text.length() + 4);
     outMsg.writeString(text, text.length());
 }
+
+void PartyHandler::requestPartyMembers()
+{
+    // Our eAthena doesn't have this message
+}

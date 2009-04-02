@@ -22,6 +22,7 @@
 #ifndef NET_EA_ADMINHANDLER_H
 #define NET_EA_ADMINHANDLER_H
 
+#include "net/adminhandler.h"
 #include "net/messagehandler.h"
 #include "net/net.h"
 
@@ -30,27 +31,27 @@ class AdminHandler : public MessageHandler, public Net::AdminHandler
     public:
         AdminHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        virtual void announce(const std::string &text);
+        void announce(const std::string &text);
 
-        virtual void localAnnounce(const std::string &text);
+        void localAnnounce(const std::string &text);
 
-        virtual void hide(bool hide);
+        void hide(bool hide);
 
-        virtual void kick(int playerId);
+        void kick(int playerId);
 
-        virtual void kick(const std::string &name);
+        void kick(const std::string &name);
 
-        virtual void ban(int playerId);
+        void ban(int playerId);
 
-        virtual void ban(const std::string &name);
+        void ban(const std::string &name);
 
-        virtual void unban(int playerId);
+        void unban(int playerId);
 
-        virtual void unban(const std::string &name);
+        void unban(const std::string &name);
 
-        virtual void mute(int playerId, int type, int limit);
+        void mute(int playerId, int type, int limit);
 };
 
 extern AdminHandler *adminHandler;

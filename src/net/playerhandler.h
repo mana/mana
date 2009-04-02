@@ -26,34 +26,34 @@
 #include "floor_item.h"
 #include "localplayer.h"
 
-#include <iosfwd>
-
 namespace Net {
+
 class PlayerHandler
 {
     public:
-        virtual void attack(Being *being) {}
+        virtual void attack(Being *being) = 0;
 
-        virtual void emote(int emoteId) {}
+        virtual void emote(int emoteId) = 0;
 
-        virtual void increaseStat(LocalPlayer::Attribute attr) {}
+        virtual void increaseStat(LocalPlayer::Attribute attr) = 0;
 
-        virtual void decreaseStat(LocalPlayer::Attribute attr) {}
+        virtual void decreaseStat(LocalPlayer::Attribute attr) = 0;
 
-        virtual void pickUp(FloorItem *floorItem) {}
+        virtual void pickUp(FloorItem *floorItem) = 0;
 
-        virtual void setDirection(int direction) {}
+        virtual void setDirection(int direction) = 0;
 
-        virtual void setDestination(int x, int y, int direction = -1) {}
+        virtual void setDestination(int x, int y, int direction = -1) = 0;
 
-        virtual void changeAction(Being::Action action) {}
+        virtual void changeAction(Being::Action action) = 0;
 
-        virtual void respawn() {}
+        virtual void respawn() = 0;
 
-        virtual void ingorePlayer(const std::string &player, bool ignore) {}
+        virtual void ingorePlayer(const std::string &player, bool ignore) = 0;
 
-        virtual void ingoreAll(bool ignore) {}
+        virtual void ingoreAll(bool ignore) = 0;
 };
-}
+
+} // namespace Net
 
 #endif // PLAYERHANDLER_H

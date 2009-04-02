@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -22,6 +22,7 @@
 #ifndef NET_EA_MAPHANDLER_H
 #define NET_EA_MAPHANDLER_H
 
+#include "net/maphandler.h"
 #include "net/messagehandler.h"
 #include "net/net.h"
 
@@ -30,15 +31,15 @@ class MapHandler : public MessageHandler, public Net::MapHandler
     public:
         MapHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        virtual void connect();
+        void connect();
 
-        virtual void mapLoaded(const std::string &mapName);
+        void mapLoaded(const std::string &mapName);
 
-        virtual void who();
+        void who();
 
-        virtual void quit();
+        void quit();
 };
 
 extern MapHandler *mapHandler;

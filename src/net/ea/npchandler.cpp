@@ -39,9 +39,9 @@
 
 #include <SDL_types.h>
 
-NPCHandler *npcHandler;
+NpcHandler *npcHandler;
 
-NPCHandler::NPCHandler()
+NpcHandler::NpcHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_NPC_CHOICE,
@@ -56,7 +56,7 @@ NPCHandler::NPCHandler()
     npcHandler = this;
 }
 
-void NPCHandler::handleMessage(MessageIn &msg)
+void NpcHandler::handleMessage(MessageIn &msg)
 {
     int id;
 
@@ -121,40 +121,40 @@ void NPCHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void NPCHandler::talk(int npcId)
+void NpcHandler::talk(int npcId)
 {
     MessageOut outMsg(CMSG_NPC_TALK);
     outMsg.writeInt32(npcId);
     outMsg.writeInt8(0); // Unused
 }
 
-void NPCHandler::nextDialog(int npcId)
+void NpcHandler::nextDialog(int npcId)
 {
     MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(npcId);
 }
 
-void NPCHandler::closeDialog(int npcId)
+void NpcHandler::closeDialog(int npcId)
 {
     MessageOut outMsg(CMSG_NPC_CLOSE);
     outMsg.writeInt32(npcId);
 }
 
-void NPCHandler::listInput(int npcId, int value)
+void NpcHandler::listInput(int npcId, int value)
 {
     MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
     outMsg.writeInt32(npcId);
     outMsg.writeInt8(value);
 }
 
-void NPCHandler::integerInput(int npcId, int value)
+void NpcHandler::integerInput(int npcId, int value)
 {
     MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
     outMsg.writeInt32(npcId);
     outMsg.writeInt32(value);
 }
 
-void NPCHandler::stringInput(int npcId, const std::string &value)
+void NpcHandler::stringInput(int npcId, const std::string &value)
 {
     MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
     outMsg.writeInt16(value.length() + 9);
@@ -163,23 +163,32 @@ void NPCHandler::stringInput(int npcId, const std::string &value)
     outMsg.writeInt8(0); // Prevent problems with string reading
 }
 
-void NPCHandler::buy(int beingId)
+void NpcHandler::sendLetter(int npcId, const std::string &recipient,
+                            const std::string &text)
 {
+    // TODO
+}
 
+void NpcHandler::startShopping(int beingId)
+{
+    // TODO
+}
+
+void NpcHandler::buy(int beingId)
+{
     MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(beingId);
     outMsg.writeInt8(0); // Buy
 }
 
-void NPCHandler::sell(int beingId)
+void NpcHandler::sell(int beingId)
 {
-
     MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(beingId);
     outMsg.writeInt8(1); // Sell
 }
 
-void NPCHandler::buyItem(int beingId, int itemId, int amount)
+void NpcHandler::buyItem(int beingId, int itemId, int amount)
 {
     MessageOut outMsg(CMSG_NPC_BUY_REQUEST);
     outMsg.writeInt16(8); // One item (length of packet)
@@ -187,10 +196,15 @@ void NPCHandler::buyItem(int beingId, int itemId, int amount)
     outMsg.writeInt16(itemId);
 }
 
-void NPCHandler::sellItem(int beingId, int itemId, int amount)
+void NpcHandler::sellItem(int beingId, int itemId, int amount)
 {
     MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
     outMsg.writeInt16(8); // One item (length of packet)
     outMsg.writeInt16(itemId + INVENTORY_OFFSET);
     outMsg.writeInt16(amount);
+}
+
+void NpcHandler::endShopping(int beingId)
+{
+    // TODO
 }

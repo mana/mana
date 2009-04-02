@@ -22,30 +22,35 @@
 #ifndef NET_EA_INVENTORYHANDLER_H
 #define NET_EA_INVENTORYHANDLER_H
 
+#include "net/inventoryhandler.h"
 #include "net/messagehandler.h"
 #include "net/net.h"
 
-class InventoryHandler : public MessageHandler, public Net::InvyHandler
+class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 {
     public:
         InventoryHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        virtual void equipItem(Item *item);
+        void equipItem(Item *item);
 
-        virtual void unequipItem(Item *item);
+        void unequipItem(Item *item);
 
-        virtual void useItem(Item *item);
+        void useItem(Item *item);
 
-        virtual void dropItem(Item *item, int amount);
+        void dropItem(Item *item, int amount);
 
-        virtual void closeStorage();
+        void splitItem(Item *item, int amount);
 
-        virtual void moveItem(StorageType source, int slot, int amount,
-                 StorageType destination);
+        void openStorage();
+
+        void closeStorage();
+
+        void moveItem(StorageType source, int slot, int amount,
+                      StorageType destination);
 };
 
-extern InventoryHandler *invyHandler;
+extern InventoryHandler *inventoryHandler;
 
 #endif // NET_EA_INVENTORYHANDLER_H

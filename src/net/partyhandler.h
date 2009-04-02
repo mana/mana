@@ -22,32 +22,34 @@
 #ifndef PARTYHANDLER_H
 #define PARTYHANDLER_H
 
-#include <iosfwd>
+#include <string>
 
 namespace Net {
+
 class PartyHandler
 {
     public:
-        virtual void create(const std::string &name="") {}
+        virtual void create(const std::string &name = "") = 0;
 
-        virtual void join(int partyId) {}
+        virtual void join(int partyId) = 0;
 
-        virtual void invite(int playerId) {}
+        virtual void invite(int playerId) = 0;
 
-        virtual void inviteResponse(bool accept) {}
+        virtual void inviteResponse(bool accept) = 0;
 
-        virtual void leave() {}
+        virtual void leave() = 0;
 
-        virtual void kick(int playerId) {}
+        virtual void kick(int playerId) = 0;
 
-        virtual void chat(const std::string &text) {}
+        virtual void chat(const std::string &text) = 0;
 
-        virtual void partyMembers() {}
+        virtual void requestPartyMembers() = 0;
 
-        // virtual void options() {}
+        // virtual void options() = 0;
 
-        // virtual void message() {}
+        // virtual void message() = 0;
 };
-}
+
+} // namespace Net
 
 #endif // PARTYHANDLER_H

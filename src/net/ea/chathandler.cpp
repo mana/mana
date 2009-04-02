@@ -29,6 +29,7 @@
 #include "being.h"
 #include "beingmanager.h"
 #include "game.h"
+#include "localplayer.h"
 #include "player_relations.h"
 
 #include "gui/widgets/chattab.h"

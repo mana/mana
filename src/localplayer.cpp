@@ -353,11 +353,11 @@ void LocalPlayer::moveInvItem(Item *item, int newIndex)
 
 void LocalPlayer::equipItem(Item *item)
 {
-    // Net::getInvyHandler()->equipItem(item);
+    // Net::getInventoryHandler()->equipItem(item);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::equip(item->getInvIndex());
 #else
-    invyHandler->equipItem(item);
+    inventoryHandler->equipItem(item);
 #endif
 }
 
@@ -375,11 +375,11 @@ void LocalPlayer::unequipItem(int slot)
 
 void LocalPlayer::unequipItem(Item *item)
 {
-    // Net::getInvyHandler()->unequipItem(item);
+    // Net::getInventoryHandler()->unequipItem(item);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::unequip(item->getInvIndex());
 #else
-    invyHandler->unequipItem(item);
+    inventoryHandler->unequipItem(item);
 #endif
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
@@ -390,21 +390,21 @@ void LocalPlayer::unequipItem(Item *item)
 
 void LocalPlayer::useItem(Item *item)
 {
-    // Net::getInvyHandler()->useItem(item);
+    // Net::getInventoryHandler()->useItem(item);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::useItem(item->getInvIndex());
 #else
-    invyHandler->useItem(item);
+    inventoryHandler->useItem(item);
 #endif
 }
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
-    // Net::getInvyHandler()->dropItem(item, quantity);
+    // Net::getInventoryHandler()->dropItem(item, quantity);
 #ifdef TMWSERV_SUPPORT
     Net::GameServer::Player::drop(item->getInvIndex(), quantity);
 #else
-    invyHandler->dropItem(item, quantity);
+    inventoryHandler->dropItem(item, quantity);
 #endif
 }
 

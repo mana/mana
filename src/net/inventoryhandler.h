@@ -27,24 +27,25 @@
 #include <iosfwd>
 
 namespace Net {
-class InvyHandler
+
+class InventoryHandler
 {
     public:
-        virtual void equipItem(Item *item) {}
+        virtual void equipItem(Item *item) = 0;
 
-        virtual void unequipItem(Item *item) {}
+        virtual void unequipItem(Item *item) = 0;
 
-        virtual void useItem(Item *item) {}
+        virtual void useItem(Item *item) = 0;
 
-        virtual void dropItem(Item *item, int amount) {}
+        virtual void dropItem(Item *item, int amount) = 0;
 
-        virtual void splitItem(Item *item, int amount) {}
+        virtual void splitItem(Item *item, int amount) = 0;
 
-        virtual void openStorage() {}
+        virtual void openStorage() = 0;
 
-        virtual void closeStorage() {}
+        virtual void closeStorage() = 0;
 
-        //void changeCart() {}
+        //void changeCart() = 0;
 
         enum StorageType {
             INVENTORY,
@@ -53,8 +54,9 @@ class InvyHandler
         };
 
         virtual void moveItem(StorageType source, int slot, int amount,
-                 StorageType destination) {}
+                              StorageType destination) = 0;
 };
-}
+
+} // namespace Net
 
 #endif // INVENTORYHANDLER_H

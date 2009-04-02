@@ -371,7 +371,7 @@ Game::Game(Network *network):
     mChatHandler(new ChatHandler),
     mInventoryHandler(new InventoryHandler),
     mItemHandler(new ItemHandler),
-    mNpcHandler(new NPCHandler),
+    mNpcHandler(new NpcHandler),
     mPlayerHandler(new PlayerHandler),
     mTradeHandler(new TradeHandler),
     mLastTarget(Being::UNKNOWN),

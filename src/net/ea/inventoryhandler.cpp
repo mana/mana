@@ -47,7 +47,7 @@
 
 enum { debugInventory = 1 };
 
-InventoryHandler *invyHandler;
+InventoryHandler *inventoryHandler;
 
 InventoryHandler::InventoryHandler()
 {
@@ -66,7 +66,7 @@ InventoryHandler::InventoryHandler()
         0
     };
     handledMessages = _messages;
-    invyHandler = this;
+    inventoryHandler = this;
 }
 
 void InventoryHandler::handleMessage(MessageIn &msg)
@@ -335,6 +335,16 @@ void InventoryHandler::dropItem(Item *item, int amount)
     MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
     outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt16(amount);
+}
+
+void InventoryHandler::splitItem(Item *item, int amount)
+{
+    // Not implemented for eAthena (possible?)
+}
+
+void InventoryHandler::openStorage()
+{
+    // Doesn't apply to eAthena, since opening happens through NPCs?
 }
 
 void InventoryHandler::closeStorage()

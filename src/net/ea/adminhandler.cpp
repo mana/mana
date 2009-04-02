@@ -62,7 +62,7 @@ void AdminHandler::handleMessage(MessageIn &msg)
             if (id == 0)
                 localChatTab->chatLog(_("Kick failed!"), BY_SERVER);
             else
-                localChatTab->chatLog(_("Kick succedded!"), BY_SERVER);
+                localChatTab->chatLog(_("Kick succeeded!"), BY_SERVER);
             break;
     }
 }
