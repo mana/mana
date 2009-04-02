@@ -94,7 +94,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
 
                 for (int k = 0; k < n_items; k++)
                 {
-                    int index = msg.readInt16();
+                    int index = msg.readInt16() - INVENTORY_OFFSET;
                     int value = msg.readInt32();
                     msg.readInt32();  // OCvalue
 
