@@ -299,7 +299,6 @@ void PopupMenu::handleLink(const std::string &link)
     {
         player_node->inviteToParty(dynamic_cast<Player*> (being));
     }
-#endif
     else if (link == "admin-kick" &&
              being &&
              (being->getType() == Being::PLAYER ||
@@ -307,6 +306,7 @@ void PopupMenu::handleLink(const std::string &link)
     {
         adminHandler->kick(being->getId());
     }
+#endif
 
     // Unknown actions
     else

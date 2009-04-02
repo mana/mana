@@ -483,7 +483,7 @@ void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
 void CommandHandler::handleMe(const std::string &args, ChatTab *tab)
 {
     // Net::getChatHandler()->me(args);
-#ifdef TMWServ_SUPPORT
+#ifdef TMWSERV_SUPPORT
     // TODO
 #else
     chatHandler->me(args);
