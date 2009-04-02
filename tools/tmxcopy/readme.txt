@@ -1,7 +1,8 @@
+=== TMXCopy ===
+
 Tmxcopy is a little tool that allows to copy parts of one TMX map to another map. This will make it much easier to match the border areas of maps. The program is command line based. The usage is:
 
-tmxcopy sourceFile x y height width targetFile x y [outputFile]
-
+ tmxcopy [-c] [-n] srcFile x y width height tgtFile x y [outfile]
 
 Here an example: 
 When you want to copy the lower right corner (20x20 tiles) of mapA.tmx to the upper left corner of mapB.txt you would open map A with tiled and check at which coordinates the area you want to copy begins. Let's say mapA is 120x130 tiles. Then the area you want to copy would begin at 100:110 and would be 20x20 tiles large. So the first part of the command is:
@@ -38,6 +39,38 @@ By default layers are copied to layers of the same name.  The -n option will mak
 
 The -c option creates layers as needed.  Using it to copy mapB to mapA will add a Fencing layer to mapA.
 
+
+=== TMX Random Fill ===
+
+This is for generating big areas of woodland (or other things that want lots of randomly-placed patterns).
+
+Usage: tmx_random_fill mapFile destLayer x y width height templateFile [-o outfile]
+    -c create layers, if they don't already exist in the target
+    -o save results to outfile, instead of overwriting the original
+
+Fill a rectangular area of mapFile's layer 'destLayer' with a random selection from the templateFile.
+
+The template is a map where each layer is a pattern.  For example, to make a woodland:
+  Create a new 2x1 tile map (yes, this is tiny, and only the base of the tree will be visible).
+  Add the Woodland_x3 tileset, using the correct height (96 pixels).
+  Make a layer, add a tree.
+  Make a layer, add the second tree.
+  Make a layer, add the third tree.
+  Save this as template_trees.tmx
+  Run tmx_random_fill with the appropriate options (destLayer will be "Fringe")
+
+It will then randomly place trees, but only in places where they won't overlap with other things on that layer.  The size of the template map is the size of the area which must be empty in the destination layer.
+
+
+=== TMX Translate ===
+
+This tool is still to be written.  I guarantee it will be written before I get a woodland map finished.
+
+A big woodland with lots of randomly-placed trees needs a complex collision layer, most of which can be generated from the visible layers.
+This tool takes a two-layer template map - one layer contains visible tiles, and one layer contains collision tiles.
+
+
+=== Bugs (for all these programs) ===
 
 The program works so far but there are still some minor problems: 
 

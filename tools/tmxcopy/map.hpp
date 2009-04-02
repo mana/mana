@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <map>
 #include <libxml/parser.h>
 
 struct ConfigurationOptions
@@ -54,12 +55,29 @@ struct Tileset
                 tileheight == a.tileheight
                 );
     }
+
+    Tileset()
+    {
+    }
+
+    Tileset(const Tileset& src) :
+        imagefile(src.imagefile), firstgid(src.firstgid),
+        name(src.name),
+        tilewidth(src.tilewidth), tileheight(src.tileheight)
+    {
+    }
+
 };
 
 struct Tile
 {
     int tileset; // number of tileset
     size_t index; // index in said tileset
+
+    bool empty()
+    {
+        return (tileset == -1);
+    }
 };
 
 typedef std::vector<Tile> LayerTiles;
@@ -67,7 +85,7 @@ typedef std::vector<Tile> LayerTiles;
 /* This represents an empty tile in the layer.
  * Note that {0,0} would be the first tile in the first tileset.
  */
-const Tile defaultTile = {-1, 0};
+const Tile emptyTile = {-1, 0};
 
 class Layer
 {
@@ -76,13 +94,14 @@ class Layer
          * tileCount - total number of tiles (width*height)
          */
         Layer(std::string name, LayerTiles::size_type tileCount)
-            : mTiles(tileCount, defaultTile),
+            : mTiles(tileCount, emptyTile),
             mName (name)
         {
         }
 
         std::string getName() { return mName; }
         Tile& at(LayerTiles::size_type c) { return mTiles.at(c); }
+        Tile& getTile(int x, int y, int mapWidth) { return mTiles.at(x + y*mapWidth); }
 
     private:
         LayerTiles mTiles;
@@ -95,9 +114,21 @@ class Map
         Map(std::string filename);
         ~Map();
 
+        /**
+         * Copies an area from srcMap, replacing its current contents.
+         */
         bool overwrite(Map* srcMap,
                     int srcX, int srcY, int srcWidth, int srcHeight,
                     int destX, int destY,
+                    const ConfigurationOptions& config);
+
+        /**
+         * Fills an area of this map with random parts of the template.
+         * Currently, each layer of the template is treated as an object that
+         * should be copied in its entirity.
+         */
+        bool randomFill(Map* templateMap, const std::string& destLayerName,
+                    int destX, int destY, int destWidth, int destHeight,
                     const ConfigurationOptions& config);
 
         int save(std::string filename);
@@ -113,6 +144,8 @@ class Map
         int getHeight() { return mHeight; }
 
     private:
+        std::map<int, int> addAndTranslateTilesets(const Map* srcMap);
+
         std::vector<Layer*> mLayers;
 
         int mWidth;

@@ -20,12 +20,12 @@
 
 #include <cstring>
 #include <iostream>
-#include <map>
 #include <list>
 
 #include <string.h>
 #include <zlib.h>
 #include <cassert>
+#include <ctime>
 
 #include "xmlutils.h"
 #include "zlibutils.h"
@@ -194,6 +194,37 @@ Map::Map(std::string filename):
     std::cout<<"largest GID:"<<mMaxGid<<std::endl<<std::endl;
 }
 
+/**
+ * When copying tiles from another map, add new tilesets to this map, and return the translation table.
+ */
+std::map<int, int> Map::addAndTranslateTilesets(const Map* srcMap)
+{
+    std::map<int, int> translation;
+    translation[-1] = -1;
+    std::vector<Tileset*>* srcTilesets = const_cast<Map*>(srcMap)->getTilesets();
+
+    for (std::vector<Tileset*>::size_type a = 0; a < srcTilesets->size(); a++)
+    {
+        std::vector<Tileset*>::size_type b;
+        for (b = 0; b < mTilesets.size(); b++)
+        {
+            if (*srcTilesets->at(a) == *mTilesets.at(b))
+            {
+                break;
+            }
+        }
+        if (b == mTilesets.size())
+        {
+            mMaxGid += srcTilesets->at(a)->firstgid;
+            Tileset* destTileset = new Tileset(*srcTilesets->at(a));
+            destTileset->firstgid = mMaxGid;//it is possible to get some holes in the gid index this way but who cares, we got 32bit.
+            mTilesets.push_back(destTileset);
+        }
+        translation[a] = b;
+    }
+    return translation;
+}
+
 bool Map::overwrite(  Map* srcMap,
                     int srcX, int srcY, int srcWidth, int srcHeight,
                     int destX, int destY,
@@ -245,29 +276,8 @@ bool Map::overwrite(  Map* srcMap,
 
     if (!checkPassed) return false;
 
-    std::map<int, int> translation;
-    translation[-1] = -1;
-    std::vector<Tileset*>* srcTilesets = srcMap->getTilesets();
+    std::map<int, int> translation = addAndTranslateTilesets(srcMap);
 
-    //add new tilesets and add redundant tilesets to list of redundand tilesets
-    for (int a = 0; a < srcTilesets->size(); a++)
-    {
-        int b;
-        for (b = 0; b < mTilesets.size(); b++)
-        {
-            if (*srcTilesets->at(a) == *mTilesets.at(b))
-            {
-                break;
-            }
-        }
-        if (b == mTilesets.size())
-        {
-            mMaxGid += srcTilesets->at(a)->firstgid;
-            srcTilesets->at(a)->firstgid = mMaxGid;//it is possible to get some holes in the gid index this way but who cares, we got 32bit.
-            mTilesets.push_back(srcTilesets->at(a));
-        }
-        translation[a] = b;
-    }
 
     //combining layer information
     for (int i = 0; i < srcMap->getNumberOfLayers(); i++)
@@ -328,6 +338,109 @@ bool Map::overwrite(  Map* srcMap,
     std::clog<<"copying successful!"<<std::endl;
     return true;
 }
+
+bool Map::randomFill(Map* templateMap, const std::string& destLayerName,
+            int destX, int destY, int destWidth, int destHeight,
+            const ConfigurationOptions& config)
+{
+    //plausibility check of coordinates
+    bool checkPassed = true;
+    if (destX + destWidth > mWidth)
+    {
+        std::cerr<<"Error: Area exceeds right map border of target map!"<<std::endl;
+        checkPassed = false;
+    }
+    if (destY + destHeight > mHeight)
+    {
+        std::cerr<<"Error: Area exceeds lower map border of target map!"<<std::endl;
+        checkPassed = false;
+    }
+    if (destWidth < templateMap->getWidth())
+    {
+        std::cerr<<"Error: Template is wider than target area"<<std::endl;
+        checkPassed = false;
+    }
+    if (destWidth < templateMap->getHeight())
+    {
+        std::cerr<<"Error: Template is higher than target area"<<std::endl;
+        checkPassed = false;
+    }
+    if (templateMap->getNumberOfLayers() == 0)
+    {
+        std::cerr<<"Error: Template has no layers"<<std::endl;
+        checkPassed = false;
+    }
+    if (!config.createMissingLayers && !getLayer(destLayerName))
+    {
+        std::cerr<<"Error: target map has no layer named \""<<destLayerName<<"\""<<std::endl
+             <<"(and the command-line \"create layers\" option was not used)"<<std::endl;
+        checkPassed = false;
+    }
+    if (!checkPassed) return false;
+
+    std::map<int, int> translation = addAndTranslateTilesets(templateMap);
+
+
+    Layer* destLayer = getLayer(destLayerName);
+    if (!destLayer)
+    {
+        destLayer = new Layer(destLayerName, mWidth * mHeight);
+        mLayers.push_back(destLayer);
+        std::cout<<"Created new layer "<<destLayerName<<std::endl;
+    }
+
+    /* Now generate extra tiles.
+     * TODO Need to configure this for desired density.  For 2x1 trees, dW*dH/10 is very sparse, dW*dH/2 is dense */
+    srand(time(NULL));
+    for (int i = destWidth*destHeight / 10; i > 0; i--)
+    {
+        /* Pick a random location, with enough tiles left and down from it to
+         * fit the template in (the +1 is because it starts on tile (x,y))
+         */
+        int x = destX + (rand() % (destWidth  - templateMap->getWidth () + 1));
+        int y = destY + (rand() % (destHeight - templateMap->getHeight() + 1));
+
+        bool areaIsClear = true;
+
+        for (int loop_y=0; loop_y<templateMap->getHeight(); loop_y++)
+        {
+            for (int loop_x=0; loop_x<templateMap->getWidth(); loop_x++)
+            {
+                if (! destLayer->getTile(x+loop_x, y+loop_y, mWidth).empty())
+                {
+                    areaIsClear = false;
+                }
+            }
+        }
+
+        if (areaIsClear)
+        {
+            int p = rand() % templateMap->getNumberOfLayers();
+            std::cout <<"Copying pattern "<<p<<" to "<<x<<", "<<y<<std::endl;
+
+            Layer* srcLayer = templateMap->getLayer(p);
+            for (int loop_y=0; loop_y<templateMap->getHeight(); loop_y++)
+            {
+                for (int loop_x=0; loop_x<templateMap->getWidth(); loop_x++)
+                {
+                    Tile& srcTile  = srcLayer->getTile(loop_x, loop_y, templateMap->getWidth());
+                    Tile& destTile = destLayer->getTile(x+loop_x, y+loop_y, mWidth);
+                    destTile.tileset = translation[srcTile.tileset];
+                    destTile.index = srcTile.index;
+                }
+            }
+        }
+        else
+        {
+            std::cout <<"Area occupied "<<x<<", "<<y<<std::endl;
+        }
+    }
+
+    std::clog<<"copying successful!"<<std::endl;
+    return true;
+}
+
+
 
 int Map::save(std::string filename)
 {
