@@ -7,7 +7,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="eAthena">
-				<Option output="tmw.exe" prefix_auto="0" extension_auto="0" />
+				<Option output="tmw-ea.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output=".objs\ea" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
@@ -70,7 +71,8 @@
 				</Linker>
 			</Target>
 			<Target title="TMWServ">
-				<Option output="tmw.exe" prefix_auto="0" extension_auto="0" />
+				<Option output="tmw-tmwserv.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output=".objs\tmwserv" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option parameters='-u -d &quot;D:/tmw/data&quot;' />
@@ -165,7 +167,9 @@
 		<Unit filename="src\gui\button.h" />
 		<Unit filename="src\gui\buy.cpp" />
 		<Unit filename="src\gui\buy.h" />
-		<Unit filename="src\gui\buysell.cpp" />
+		<Unit filename="src\gui\buysell.cpp">
+			<Option target="eAthena" />
+		</Unit>
 		<Unit filename="src\gui\buysell.h" />
 		<Unit filename="src\gui\changeemaildialog.cpp">
 			<Option target="TMWServ" />
@@ -475,6 +479,12 @@
 		<Unit filename="src\map.h" />
 		<Unit filename="src\monster.cpp" />
 		<Unit filename="src\monster.h" />
+		<Unit filename="src\net\ea\adminhandler.cpp">
+			<Option target="eAthena" />
+		</Unit>
+		<Unit filename="src\net\ea\adminhandler.h">
+			<Option target="eAthena" />
+		</Unit>
 		<Unit filename="src\net\ea\beinghandler.cpp">
 			<Option target="eAthena" />
 		</Unit>
@@ -529,10 +539,10 @@
 		<Unit filename="src\net\ea\loginhandler.h">
 			<Option target="eAthena" />
 		</Unit>
-		<Unit filename="src\net\ea\maploginhandler.cpp">
+		<Unit filename="src\net\ea\maphandler.cpp">
 			<Option target="eAthena" />
 		</Unit>
-		<Unit filename="src\net\ea\maploginhandler.h">
+		<Unit filename="src\net\ea\maphandler.h">
 			<Option target="eAthena" />
 		</Unit>
 		<Unit filename="src\net\ea\network.cpp">
@@ -545,12 +555,6 @@
 			<Option target="eAthena" />
 		</Unit>
 		<Unit filename="src\net\ea\npchandler.h">
-			<Option target="eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\party.cpp">
-			<Option target="eAthena" />
-		</Unit>
-		<Unit filename="src\net\ea\party.h">
 			<Option target="eAthena" />
 		</Unit>
 		<Unit filename="src\net\ea\partyhandler.cpp">
@@ -589,6 +593,9 @@
 		<Unit filename="src\net\messagein.h" />
 		<Unit filename="src\net\messageout.cpp" />
 		<Unit filename="src\net\messageout.h" />
+		<Unit filename="src\net\npchandler.h">
+			<Option target="TMWServ" />
+		</Unit>
 		<Unit filename="src\net\tmwserv\accountserver\account.cpp">
 			<Option target="TMWServ" />
 		</Unit>
