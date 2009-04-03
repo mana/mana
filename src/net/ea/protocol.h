@@ -122,6 +122,11 @@ static const int STORAGE_OFFSET = 1;
 /**********************************
  *  Packets from client to server *
  **********************************/
+#define CMSG_CHAR_SELECT             0x0066
+#define CMSG_CHAR_CREATE             0x0067
+#define CMSG_CHAR_DELETE             0x0068
+
+#define CMSG_MAP_SERVER_CONNECT      0x0072
 #define CMSG_CLIENT_PING             0x007e /**< Send to server with tick */
 #define CMSG_CLIENT_QUIT             0x018A
 #define CMSG_TRADE_RESPONSE          0x00e6

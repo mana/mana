@@ -22,18 +22,20 @@
 #ifndef CHARHANDLER_H
 #define CHARHANDLER_H
 
+#include "localplayer.h"
+
 #include <iosfwd>
 
 namespace Net {
 class CharHandler
 {
     public:
-        virtual void ChooseCharacter(int slot) {}
+        virtual void chooseCharacter(int slot, LocalPlayer* character) = 0;
 
-        virtual void NewCharacter(const std::string &name, bool gender,
-                          int hairstyle, int hairColor) {}
+        virtual void newCharacter(const std::string &name, int slot,
+                        bool gender, int hairstyle, int hairColor) = 0;
 
-        virtual void DeleteCharacter(int slot) {}
+        virtual void deleteCharacter(int slot, LocalPlayer* character) = 0;
 };
 }
 

@@ -100,7 +100,6 @@
 #include "net/tmwserv/partyhandler.h"
 #else
 #include "net/ea/gui/partytab.h"
-#include "net/ea/network.h"
 #include "net/ea/adminhandler.h"
 #include "net/ea/chathandler.h"
 #include "net/ea/beinghandler.h"
@@ -110,12 +109,11 @@
 #include "net/ea/itemhandler.h"
 #include "net/ea/maphandler.h"
 #include "net/ea/npchandler.h"
+#include "net/ea/network.h"
 #include "net/ea/playerhandler.h"
 #include "net/ea/partyhandler.h"
 #include "net/ea/tradehandler.h"
-#include "net/ea/protocol.h"
 #include "net/ea/skillhandler.h"
-#include "net/messageout.h"
 #endif
 
 #include "resources/imagewriter.h"
@@ -446,8 +444,7 @@ Game::Game(Network *network):
      * packet is handled by the older version, but its response
      * is ignored by the client
      */
-    MessageOut msg(CMSG_CLIENT_PING);
-    msg.writeInt32(tick_time);
+    mapHandler->ping(tick_time);
 
     map_path = map_path.substr(0, map_path.rfind("."));
     engine->changeMap(map_path);

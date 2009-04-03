@@ -22,6 +22,8 @@
 #ifndef MAPHANDLER_H
 #define MAPHANDLER_H
 
+#include "logindata.h"
+
 #include <iosfwd>
 
 namespace Net {
@@ -29,13 +31,15 @@ namespace Net {
 class MapHandler
 {
     public:
-        virtual void connect() = 0;
+        virtual void connect(LoginData *loginData) = 0;
 
         virtual void mapLoaded(const std::string &mapName) = 0;
 
         virtual void who() = 0;
 
         virtual void quit() = 0;
+
+        virtual void ping(int tick) = 0;
 };
 
 } // namespace Net

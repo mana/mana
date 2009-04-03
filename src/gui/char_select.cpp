@@ -43,6 +43,9 @@
 #include "net/ea/charserverhandler.h"
 #endif
 
+#include "net/charhandler.h"
+#include "net/net.h"
+
 #include "gui/widgets/layout.h"
 
 #include "game.h"
@@ -342,25 +345,22 @@ void CharSelectDialog::updatePlayerInfo()
 
 void CharSelectDialog::attemptCharDelete()
 {
+    // Net::getCharHandler()->deleteCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
 #ifdef TMWSERV_SUPPORT
     Net::AccountServer::Account::deleteCharacter(mCharInfo->getPos());
 #else
-    // Request character deletion
-    MessageOut outMsg(0x0068);
-    outMsg.writeInt32(mCharInfo->getEntry()->mCharId);
-    outMsg.writeString("a@a.com", 40);
+    charHandler->deleteCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
 #endif
     mCharInfo->lock();
 }
 
 void CharSelectDialog::attemptCharSelect()
 {
+    // Net::getCharHandler()->chooseCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
 #ifdef TMWSERV_SUPPORT
     Net::AccountServer::Account::selectCharacter(mCharInfo->getPos());
 #else
-    // Request character selection
-    MessageOut outMsg(0x0066);
-    outMsg.writeInt8(mCharInfo->getPos());
+    charHandler->chooseCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
 #endif
     mCharInfo->lock();
 }
@@ -582,7 +582,8 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
                     (int) mAttributeSlider[5]->getValue()  // WILL
             );
 #else
-            attemptCharCreate();
+            charHandler->newCharacter(getName(), mSlot, false,
+                            mPlayer->getHairStyle(), mPlayer->getHairColor());
 #endif
         }
         else
@@ -679,23 +680,5 @@ int CharCreateDialog::getDistributedPoints()
         points += (int) mAttributeSlider[i]->getValue();
     }
     return points;
-}
-#endif
-
-#ifndef TMWSERV_SUPPORT
-void CharCreateDialog::attemptCharCreate()
-{
-    // Send character infos
-    MessageOut outMsg(0x0067);
-    outMsg.writeString(getName(), 24);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(mSlot);
-    outMsg.writeInt16(mPlayer->getHairColor());
-    outMsg.writeInt16(mPlayer->getHairStyle());
 }
 #endif

@@ -23,6 +23,7 @@
 #define NET_EA_CHARSERVERHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/charhandler.h"
 
 #include "lockedarray.h"
 
@@ -33,7 +34,7 @@ class LoginData;
 /**
  * Deals with incoming messages from the character server.
  */
-class CharServerHandler : public MessageHandler
+class CharServerHandler : public MessageHandler, public Net::CharHandler
 {
     public:
         CharServerHandler();
@@ -54,6 +55,13 @@ class CharServerHandler : public MessageHandler
         void setCharCreateDialog(CharCreateDialog *window)
         { mCharCreateDialog = window; }
 
+        void chooseCharacter(int slot, LocalPlayer* character);
+
+        void newCharacter(const std::string &name, int slot, bool gender,
+                          int hairstyle, int hairColor);
+
+        void deleteCharacter(int slot, LocalPlayer* character);
+
     protected:
         LoginData *mLoginData;
         LockedArray<LocalPlayer*> *mCharInfo;
@@ -61,5 +69,7 @@ class CharServerHandler : public MessageHandler
 
         LocalPlayer *readPlayerData(MessageIn &msg, int &slot);
 };
+
+extern Net::CharHandler *charHandler;
 
 #endif // NET_EA_CHARSERVERHANDLER_H

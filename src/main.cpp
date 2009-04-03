@@ -826,19 +826,14 @@ static void mapLogin(Network *network, LoginData *loginData)
     logger->log("Trying to connect to map server...");
     logger->log("Map: %s", map_path.c_str());
 
+    MapHandler *mapHandler = new MapHandler;
     network->connect(loginData->hostname, loginData->port);
     //network->registerHandler(mapHandler);
-    network->registerHandler(new MapHandler);
+    network->registerHandler(mapHandler);
 
-    // Send login infos
-    MessageOut outMsg(0x0072);
-    outMsg.writeInt32(loginData->account_ID);
-    outMsg.writeInt32(player_node->mCharId);
-    outMsg.writeInt32(loginData->session_ID1);
-    outMsg.writeInt32(loginData->session_ID2);
-    outMsg.writeInt8(loginData->sex);
+    mapHandler->connect(loginData);
 
-    // We get 4 useless bytes before the real answer comes in
+    // We get 4 useless bytes before the real answer comes in (what are these?)
     network->skip(4);
 }
 

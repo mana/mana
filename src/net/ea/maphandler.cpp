@@ -96,9 +96,15 @@ void MapHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void MapHandler::connect()
+void MapHandler::connect(LoginData *loginData)
 {
-    // TODO
+    // Send login infos
+    MessageOut outMsg(CMSG_MAP_SERVER_CONNECT);
+    outMsg.writeInt32(loginData->account_ID);
+    outMsg.writeInt32(player_node->mCharId);
+    outMsg.writeInt32(loginData->session_ID1);
+    outMsg.writeInt32(loginData->session_ID2);
+    outMsg.writeInt8(loginData->sex);
 }
 
 void MapHandler::mapLoaded(const std::string &mapName)
@@ -114,4 +120,10 @@ void MapHandler::who()
 void MapHandler::quit()
 {
     MessageOut outMsg(CMSG_CLIENT_QUIT);
+}
+
+void MapHandler::ping(int tick)
+{
+    MessageOut msg(CMSG_CLIENT_PING);
+    msg.writeInt32(tick);
 }

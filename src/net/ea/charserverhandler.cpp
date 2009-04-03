@@ -24,9 +24,9 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "game.h"
-#include "localplayer.h"
 #include "log.h"
 #include "logindata.h"
 #include "main.h"
@@ -36,6 +36,8 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+
+Net::CharHandler *charHandler;
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
@@ -52,6 +54,7 @@ CharServerHandler::CharServerHandler():
         0
     };
     handledMessages = _messages;
+    charHandler = this;
 }
 
 void CharServerHandler::handleMessage(MessageIn &msg)
@@ -234,4 +237,33 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     msg.readInt8();                        // unknown
 
     return tempPlayer;
+}
+
+void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)
+{
+    MessageOut outMsg(CMSG_CHAR_SELECT);
+    outMsg.writeInt8(slot);
+}
+
+void CharServerHandler::newCharacter(const std::string &name, int slot,
+        bool gender, int hairstyle, int hairColor)
+{
+    MessageOut outMsg(CMSG_CHAR_CREATE);
+    outMsg.writeString(name, 24);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(slot);
+    outMsg.writeInt16(hairColor);
+    outMsg.writeInt16(hairstyle);
+}
+
+void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
+{
+    MessageOut outMsg(CMSG_CHAR_DELETE);
+    outMsg.writeInt32(character->mCharId);
+    outMsg.writeString("a@a.com", 40);
 }

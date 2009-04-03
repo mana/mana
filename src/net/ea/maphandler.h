@@ -33,13 +33,15 @@ class MapHandler : public MessageHandler, public Net::MapHandler
 
         void handleMessage(MessageIn &msg);
 
-        void connect();
+        void connect(LoginData *loginData);
 
         void mapLoaded(const std::string &mapName);
 
         void who();
 
         void quit();
+
+        void ping(int tick);
 };
 
 extern MapHandler *mapHandler;
