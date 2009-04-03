@@ -487,7 +487,7 @@ void PlayerHandler::pickUp(FloorItem *floorItem)
     outMsg.writeInt32(floorItem->getId());
 }
 
-void PlayerHandler::setDirection(int direction)
+void PlayerHandler::setDirection(char direction)
 {
     // TODO
 }

@@ -22,14 +22,32 @@
 #ifndef NET_TMWSERV_INVENTORYHANDLER_H
 #define NET_TMWSERV_INVENTORYHANDLER_H
 
+#include "net/inventoryhandler.h"
 #include "net/messagehandler.h"
 
-class InventoryHandler : public MessageHandler
+class InventoryHandler : public MessageHandler, Net::InventoryHandler
 {
     public:
         InventoryHandler();
 
         void handleMessage(MessageIn &msg);
+
+        void equipItem(Item *item);
+
+        void unequipItem(Item *item);
+
+        void useItem(Item *item);
+
+        void dropItem(Item *item, int amount);
+
+        void splitItem(Item *item, int amount);
+
+        void openStorage();
+
+        void closeStorage();
+
+        void moveItem(StorageType source, int slot, int amount,
+                              StorageType destination);
 };
 
 #endif

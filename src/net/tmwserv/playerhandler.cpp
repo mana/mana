@@ -23,8 +23,11 @@
 
 #include "net/tmwserv/protocol.h"
 
+#include "net/tmwserv/gameserver/player.h"
+
 #include "net/messagein.h"
 
+#include "effectmanager.h"
 #include "engine.h"
 #include "localplayer.h"
 #include "log.h"
@@ -324,4 +327,64 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     logger->log("Adjust scrolling by %d,%d", (int) scrollOffsetX,
                                              (int) scrollOffsetY);
     viewport->scrollBy(scrollOffsetX, scrollOffsetY);
+}
+
+void PlayerHandler::attack(Being *being)
+{
+    // TODO
+}
+
+void PlayerHandler::emote(int emoteId)
+{
+    // TODO
+}
+
+void PlayerHandler::increaseStat(LocalPlayer::Attribute attr)
+{
+    // TODO
+}
+
+void PlayerHandler::decreaseStat(LocalPlayer::Attribute attr)
+{
+    // TODO
+}
+
+void PlayerHandler::pickUp(FloorItem *floorItem)
+{
+    int id = floorItem->getId();
+    Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
+}
+
+void PlayerHandler::setDirection(char direction)
+{
+    Net::GameServer::Player::changeDir(direction);
+}
+
+void PlayerHandler::setDestination(int x, int y, int direction)
+{
+    Net::GameServer::Player::walk(x, y);
+    //Debugging fire burst
+    effectManager->trigger(15, x, y);
+}
+
+void PlayerHandler::changeAction(Being::Action action)
+{
+    if (action == Being::SIT)
+        player_node->setAction(action);
+    Net::GameServer::Player::changeAction(action);
+}
+
+void PlayerHandler::respawn()
+{
+    // TODO
+}
+
+void PlayerHandler::ingorePlayer(const std::string &player, bool ignore)
+{
+    // TODO
+}
+
+void PlayerHandler::ingoreAll(bool ignore)
+{
+    // TODO
 }

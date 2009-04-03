@@ -43,7 +43,7 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         void pickUp(FloorItem *floorItem);
 
-        void setDirection(int direction);
+        void setDirection(char direction);
 
         void setDestination(int x, int y, int direction = -1);
 

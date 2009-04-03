@@ -354,7 +354,7 @@ void LocalPlayer::moveInvItem(Item *item, int newIndex)
 void LocalPlayer::equipItem(Item *item)
 {
     // Net::getInventoryHandler()->equipItem(item);
-#ifdef TMWSERV_SUPPORT
+#ifdef TMWSERV_SUPPORT // Ready for replacement
     Net::GameServer::Player::equip(item->getInvIndex());
 #else
     inventoryHandler->equipItem(item);
@@ -376,7 +376,7 @@ void LocalPlayer::unequipItem(int slot)
 void LocalPlayer::unequipItem(Item *item)
 {
     // Net::getInventoryHandler()->unequipItem(item);
-#ifdef TMWSERV_SUPPORT
+#ifdef TMWSERV_SUPPORT // Ready for replacement
     Net::GameServer::Player::unequip(item->getInvIndex());
 #else
     inventoryHandler->unequipItem(item);
@@ -391,7 +391,7 @@ void LocalPlayer::unequipItem(Item *item)
 void LocalPlayer::useItem(Item *item)
 {
     // Net::getInventoryHandler()->useItem(item);
-#ifdef TMWSERV_SUPPORT
+#ifdef TMWSERV_SUPPORT // Ready for replacement
     Net::GameServer::Player::useItem(item->getInvIndex());
 #else
     inventoryHandler->useItem(item);
@@ -401,7 +401,7 @@ void LocalPlayer::useItem(Item *item)
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
     // Net::getInventoryHandler()->dropItem(item, quantity);
-#ifdef TMWSERV_SUPPORT
+#ifdef TMWSERV_SUPPORT // Ready for replacement
     Net::GameServer::Player::drop(item->getInvIndex(), quantity);
 #else
     inventoryHandler->dropItem(item, quantity);
@@ -433,7 +433,7 @@ void LocalPlayer::pickUp(FloorItem *item)
     if (dx * dx + dy * dy < 4)
     {
         // Net::getPlayerHandler()->pickUp(item);
-#ifdef TMWSERV_SUPPORT
+#ifdef TMWSERV_SUPPORT // Ready for replacement
         int id = item->getId();
         Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
 #else
@@ -550,7 +550,8 @@ void LocalPlayer::walk(unsigned char dir)
     else if (dir)
     {
         // If the being can't move, just change direction
-#ifdef TMWSERV_SUPPORT
+        // Net::getPlayerHandler()->setDirection(dir);
+#ifdef TMWSERV_SUPPORT // Ready for replacement
         Net::GameServer::Player::changeDir(dir);
 #else
         // TODO: Communicate this to the server
@@ -631,7 +632,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
         mDestY = y;
 
         // Net::getPlayerHandler()->setDestination(x, y, mDirection);
-#ifdef TMWSERV_SUPPORT 
+#ifdef TMWSERV_SUPPORT // Ready for replacement
         Net::GameServer::Player::walk(x, y);
         //Debugging fire burst
         effectManager->trigger(15,x,y);
@@ -701,8 +702,7 @@ void LocalPlayer::toggleSit()
     }
 
     // Net::getPlayerHandler()->changeAction(newAction);
-
-#ifdef TMWSERV_SUPPORT
+#ifdef TMWSERV_SUPPORT // Ready for replacement
     setAction(newAction);
     Net::GameServer::Player::changeAction(newAction);
 #else
@@ -717,7 +717,7 @@ void LocalPlayer::emote(Uint8 emotion)
     mLastAction = tick_time;
 
     // Net::getPlayerHandler()->emote(emotion);
-#ifdef EATHENA_SUPPORT
+#ifdef EATHENA_SUPPORT // Ready for replacement
     playerHandler->emote(emotion);
 #endif
 }
@@ -884,7 +884,7 @@ void LocalPlayer::stopAttack()
 void LocalPlayer::revive()
 {
     // Net::getPlayerHandler()->respawn();
-#ifdef EATHENA_SUPPORT
+#ifdef EATHENA_SUPPORT // Ready for replacement
     playerHandler->respawn();
 #endif
 }

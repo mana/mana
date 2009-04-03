@@ -23,6 +23,8 @@
 
 #include "net/tmwserv/protocol.h"
 
+#include "net/tmwserv/gameserver/player.h"
+
 #include "net/messagein.h"
 
 #include "equipment.h"
@@ -76,4 +78,45 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             };
             break;
     }
+}
+
+void InventoryHandler::equipItem(Item *item)
+{
+    Net::GameServer::Player::equip(item->getInvIndex());
+}
+
+void InventoryHandler::unequipItem(Item *item)
+{
+    Net::GameServer::Player::unequip(item->getInvIndex());
+}
+
+void InventoryHandler::useItem(Item *item)
+{
+    Net::GameServer::Player::useItem(item->getInvIndex());
+}
+
+void InventoryHandler::dropItem(Item *item, int amount)
+{
+    Net::GameServer::Player::drop(item->getInvIndex(), amount);
+}
+
+void InventoryHandler::splitItem(Item *item, int amount)
+{
+    // TODO
+}
+
+void InventoryHandler::openStorage()
+{
+    // TODO
+}
+
+void InventoryHandler::closeStorage()
+{
+    // TODO
+}
+
+void InventoryHandler::moveItem(StorageType source, int slot, int amount,
+                      StorageType destination)
+{
+    // TODO
 }

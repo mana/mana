@@ -23,13 +23,36 @@
 #define NET_TMWSERV_PLAYERHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/playerhandler.h"
 
-class PlayerHandler : public MessageHandler
+class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 {
     public:
         PlayerHandler();
 
         void handleMessage(MessageIn &msg);
+
+        void attack(Being *being);
+
+        void emote(int emoteId);
+
+        void increaseStat(LocalPlayer::Attribute attr);
+
+        void decreaseStat(LocalPlayer::Attribute attr);
+
+        void pickUp(FloorItem *floorItem);
+
+        void setDirection(char direction);
+
+        void setDestination(int x, int y, int direction = -1);
+
+        void changeAction(Being::Action action);
+
+        void respawn();
+
+        void ingorePlayer(const std::string &player, bool ignore);
+
+        void ingoreAll(bool ignore);
 
     private:
         void handleMapChangeMessage(MessageIn &msg);

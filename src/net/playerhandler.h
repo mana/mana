@@ -41,7 +41,7 @@ class PlayerHandler
 
         virtual void pickUp(FloorItem *floorItem) = 0;
 
-        virtual void setDirection(int direction) = 0;
+        virtual void setDirection(char direction) = 0;
 
         virtual void setDestination(int x, int y, int direction = -1) = 0;
 

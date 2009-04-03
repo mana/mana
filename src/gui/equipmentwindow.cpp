@@ -174,7 +174,7 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "unequip" && mSelected > -1)
     {
-#ifdef TMWSERV_SUPPORT
+#ifdef TMWSERV_SUPPORT // TODO: merge these!
         player_node->unequipItem(mSelected);
 #else
         Item* item = (mSelected != EQUIP_AMMO_SLOT) ?
