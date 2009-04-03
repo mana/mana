@@ -32,12 +32,18 @@ po/POTFILES
 .deps
 stamp-h1
 
+# files created by CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
 # files created during build
 *.o
 *.gmo
 .dirstamp
 po/stamp-po
 src/tmw
+src/tmw-ea
 
 # files created during Windows build
 .objs
