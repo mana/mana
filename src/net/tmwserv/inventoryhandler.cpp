@@ -37,6 +37,8 @@
 
 #include "resources/iteminfo.h"
 
+Net::InventoryHandler *inventoryHandler;
+
 InventoryHandler::InventoryHandler()
 {
     static const Uint16 _messages[] = {
@@ -45,6 +47,7 @@ InventoryHandler::InventoryHandler()
         0
     };
     handledMessages = _messages;
+    inventoryHandler = this;
 }
 
 void InventoryHandler::handleMessage(MessageIn &msg)

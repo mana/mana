@@ -193,6 +193,7 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      net/messageout.cpp \
 	      net/messageout.h \
 	      net/npchandler.h \
+	      net/net.cpp \
 	      net/net.h \
 	      net/partyhandler.h \
 	      net/playerhandler.h \

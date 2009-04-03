@@ -23,8 +23,9 @@
 #define NET_TMWSERV_TRADEHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/tradehandler.h"
 
-class TradeHandler : public MessageHandler
+class TradeHandler : public MessageHandler, public Net::TradeHandler
 {
     public:
         TradeHandler();
@@ -46,8 +47,26 @@ class TradeHandler : public MessageHandler
          */
         void setAcceptTradeRequests(bool acceptTradeRequests);
 
+        void request(Being *being);
+
+        void respond(bool accept);
+
+        void addItem(Item *item, int amount);
+
+        void removeItem(int slotNum, int amount);
+
+        void setMoney(int amount);
+
+        void confirm();
+
+        void finish();
+
+        void cancel();
+
     private:
         bool mAcceptTradeRequests;
 };
+
+extern Net::TradeHandler *tradeHandler;
 
 #endif

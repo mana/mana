@@ -34,7 +34,7 @@ class TradeHandler
 
         virtual void respond(bool accept) {}
 
-        virtual void addItem(int slotNum, int amount) {}
+        virtual void addItem(Item *item, int amount) {}
 
         virtual void removeItem(int slotNum, int amount) {}
 

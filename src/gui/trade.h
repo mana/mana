@@ -118,7 +118,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         void close();
 
     private:
-#ifdef TMWSERV_SUPPORT
         enum Status
         {
             PREPARING, /**< Players are adding items. */
@@ -130,7 +129,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          * Sets the current status of the trade.
          */
         void setStatus(Status);
-#endif
 
         typedef const std::auto_ptr<Inventory> InventoryPtr;
         InventoryPtr mMyInventory;
@@ -147,9 +145,8 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
 #endif
         gcn::TextField *mMoneyField;
 
-#ifdef TMWSERV_SUPPORT
         Status mStatus;
-#else
+#ifdef EATHENA_SUPPORT
         bool mOkOther, mOkMe;
 #endif
 };

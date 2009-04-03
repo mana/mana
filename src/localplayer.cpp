@@ -43,7 +43,11 @@
 #include "gui/storagewindow.h"
 #endif
 
+#include "net/inventoryhandler.h"
 #include "net/net.h"
+#include "net/playerhandler.h"
+#include "net/tradehandler.h"
+
 #ifdef TMWSERV_SUPPORT
 #include "effectmanager.h"
 #include "guild.h"
@@ -52,11 +56,8 @@
 #include "net/tmwserv/chatserver/guild.h"
 #include "net/tmwserv/chatserver/party.h"
 #else
-#include "net/ea/inventoryhandler.h"
 #include "net/ea/partyhandler.h"
-#include "net/ea/playerhandler.h"
 #include "net/ea/skillhandler.h"
-#include "net/ea/tradehandler.h"
 #endif
 
 #include "resources/animation.h"
@@ -353,12 +354,7 @@ void LocalPlayer::moveInvItem(Item *item, int newIndex)
 
 void LocalPlayer::equipItem(Item *item)
 {
-    // Net::getInventoryHandler()->equipItem(item);
-#ifdef TMWSERV_SUPPORT // Ready for replacement
-    Net::GameServer::Player::equip(item->getInvIndex());
-#else
-    inventoryHandler->equipItem(item);
-#endif
+    Net::getInventoryHandler()->equipItem(item);
 }
 
 #ifdef TMWSERV_SUPPORT
@@ -371,41 +367,28 @@ void LocalPlayer::unequipItem(int slot)
     mEquipment->setEquipment(slot, 0);
 }
 
-#else
+#endif
 
 void LocalPlayer::unequipItem(Item *item)
 {
-    // Net::getInventoryHandler()->unequipItem(item);
-#ifdef TMWSERV_SUPPORT // Ready for replacement
-    Net::GameServer::Player::unequip(item->getInvIndex());
-#else
-    inventoryHandler->unequipItem(item);
-#endif
+    Net::getInventoryHandler()->unequipItem(item);
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
+#ifdef TMWSERV_SUPPORT
+    mEquipment->setEquipment(item->getInvIndex(), 0);
+#else
     mEquipment->removeEquipment(item->getInvIndex());
-}
-
 #endif
+}
 
 void LocalPlayer::useItem(Item *item)
 {
-    // Net::getInventoryHandler()->useItem(item);
-#ifdef TMWSERV_SUPPORT // Ready for replacement
-    Net::GameServer::Player::useItem(item->getInvIndex());
-#else
-    inventoryHandler->useItem(item);
-#endif
+    Net::getInventoryHandler()->useItem(item);
 }
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
-    // Net::getInventoryHandler()->dropItem(item, quantity);
-#ifdef TMWSERV_SUPPORT // Ready for replacement
-    Net::GameServer::Player::drop(item->getInvIndex(), quantity);
-#else
-    inventoryHandler->dropItem(item, quantity);
-#endif
+    Net::getInventoryHandler()->dropItem(item, quantity);
 }
 
 #ifdef TMWSERV_SUPPORT
@@ -432,13 +415,7 @@ void LocalPlayer::pickUp(FloorItem *item)
 
     if (dx * dx + dy * dy < 4)
     {
-        // Net::getPlayerHandler()->pickUp(item);
-#ifdef TMWSERV_SUPPORT // Ready for replacement
-        int id = item->getId();
-        Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
-#else
-        playerHandler->pickUp(item);
-#endif
+        Net::getPlayerHandler()->pickUp(item);
         mPickUpTarget = NULL;
     }
     else
@@ -550,12 +527,7 @@ void LocalPlayer::walk(unsigned char dir)
     else if (dir)
     {
         // If the being can't move, just change direction
-        // Net::getPlayerHandler()->setDirection(dir);
-#ifdef TMWSERV_SUPPORT // Ready for replacement
-        Net::GameServer::Player::changeDir(dir);
-#else
-        // TODO: Communicate this to the server
-#endif
+        Net::getPlayerHandler()->setDirection(dir);
         setDirection(dir);
     }
 }
@@ -631,14 +603,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
         mDestX = x;
         mDestY = y;
 
-        // Net::getPlayerHandler()->setDestination(x, y, mDirection);
-#ifdef TMWSERV_SUPPORT // Ready for replacement
-        Net::GameServer::Player::walk(x, y);
-        //Debugging fire burst
-        effectManager->trigger(15,x,y);
-#else
-        playerHandler->setDestination(x, y, mDirection);
-#endif
+        Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }
 
     mPickUpTarget = NULL;
@@ -701,13 +666,7 @@ void LocalPlayer::toggleSit()
         default: return;
     }
 
-    // Net::getPlayerHandler()->changeAction(newAction);
-#ifdef TMWSERV_SUPPORT // Ready for replacement
-    setAction(newAction);
-    Net::GameServer::Player::changeAction(newAction);
-#else
-    playerHandler->changeAction(newAction);
-#endif
+    Net::getPlayerHandler()->changeAction(newAction);
 }
 
 void LocalPlayer::emote(Uint8 emotion)
@@ -716,36 +675,20 @@ void LocalPlayer::emote(Uint8 emotion)
         return;
     mLastAction = tick_time;
 
-    // Net::getPlayerHandler()->emote(emotion);
-#ifdef EATHENA_SUPPORT // Ready for replacement
-    playerHandler->emote(emotion);
-#endif
+    Net::getPlayerHandler()->emote(emotion);
 }
 
-#ifdef EATHENA_SUPPORT
 void LocalPlayer::tradeReply(bool accept)
 {
     if (!accept)
         mTrading = false;
 
-    // Net::getTradeHandler()->respond(accept);
-
-    tradeHandler->respond(accept);
+    Net::getTradeHandler()->respond(accept);
 }
-#endif
 
 void LocalPlayer::trade(Being *being) const
 {
-    // Net::getTradeHandler()->request(being);
-#ifdef TMWSERV_SUPPORT
-    extern std::string tradePartnerName;
-    extern int tradePartnerID;
-    tradePartnerName = being->getName();
-    tradePartnerID = being->getId();
-    Net::GameServer::Player::requestTrade(tradePartnerID);
-#else
-    tradeHandler->request(being);
-#endif
+    Net::getTradeHandler()->request(being);
 }
 
 bool LocalPlayer::tradeRequestOk() const
@@ -862,7 +805,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         sound.playSfx("sfx/fist-swish.ogg");
     }
 
-    playerHandler->attack(target);
+    Net::getPlayerHandler()->attack(target);
 
     if (!keep)
         stopAttack();
@@ -883,10 +826,7 @@ void LocalPlayer::stopAttack()
 
 void LocalPlayer::revive()
 {
-    // Net::getPlayerHandler()->respawn();
-#ifdef EATHENA_SUPPORT // Ready for replacement
-    playerHandler->respawn();
-#endif
+    Net::getPlayerHandler()->respawn();
 }
 
 #ifdef TMWSERV_SUPPORT

@@ -54,6 +54,8 @@ namespace {
     } listener;
 }
 
+Net::TradeHandler *tradeHandler;
+
 TradeHandler::TradeHandler():
     mAcceptTradeRequests(true)
 {
@@ -68,6 +70,7 @@ TradeHandler::TradeHandler():
         0
     };
     handledMessages = _messages;
+    tradeHandler = this;
 }
 
 void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
@@ -135,4 +138,50 @@ void TradeHandler::handleMessage(MessageIn &msg)
             player_node->setTrading(false);
             break;
     }
+}
+
+void TradeHandler::request(Being *being)
+{
+    extern std::string tradePartnerName;
+    extern int tradePartnerID;
+    tradePartnerName = being->getName();
+    tradePartnerID = being->getId();
+    Net::GameServer::Player::requestTrade(tradePartnerID);
+}
+
+void TradeHandler::respond(bool accept)
+{
+    // TODO
+}
+
+void TradeHandler::addItem(Item *item, int amount)
+{
+    Net::GameServer::Player::tradeItem(item->getInvIndex(), amount);
+    tradeWindow->addItem(item->getId(), true, amount);
+    item->increaseQuantity(-amount);
+}
+
+void TradeHandler::removeItem(int slotNum, int amount)
+{
+    // TODO
+}
+
+void TradeHandler::setMoney(int amount)
+{
+    // TODO
+}
+
+void TradeHandler::confirm()
+{
+    // TODO
+}
+
+void TradeHandler::finish()
+{
+    // TODO
+}
+
+void TradeHandler::cancel()
+{
+    Net::GameServer::Player::acceptTrade(false);
 }

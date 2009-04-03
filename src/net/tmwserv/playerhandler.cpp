@@ -93,6 +93,8 @@ namespace {
     } deathListener;
 }
 
+Net::PlayerHandler *playerHandler;
+
 PlayerHandler::PlayerHandler()
 {
     static const Uint16 _messages[] = {
@@ -107,6 +109,7 @@ PlayerHandler::PlayerHandler()
         0
     };
     handledMessages = _messages;
+    playerHandler = this;
 }
 
 void PlayerHandler::handleMessage(MessageIn &msg)

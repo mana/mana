@@ -38,6 +38,7 @@
 #include "gui/widgets/layout.h"
 
 #include "net/net.h"
+#include "net/tradehandler.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/gameserver/player.h"
 #else
@@ -136,18 +137,14 @@ void TradeWindow::setMoney(int amount)
     mMoneyLabel->setCaption(strprintf(_("You get %s."),
                                        Units::formatCurrency(amount).c_str()));
     mMoneyLabel->adjustSize();
-#ifdef TMWSERV_SUPPORT
     setStatus(PREPARING);
-#endif
 }
 
-#ifdef TMWSERV_SUPPORT
 void TradeWindow::addItem(int id, bool own, int quantity)
 {
     (own ? mMyInventory : mPartnerInventory)->addItem(id, quantity);
     setStatus(PREPARING);
 }
-#endif
 
 #ifdef EATHENA_SUPPORT
 void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
@@ -193,9 +190,7 @@ void TradeWindow::reset()
     mMoneyLabel->setCaption(strprintf(_("You get %s."), ""));
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
-#ifdef TMWSERV_SUPPORT
     setStatus(PREPARING);
-#endif
 }
 
 #ifdef TMWSERV_SUPPORT
@@ -233,18 +228,7 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
-    // Net::getTradeHandler()->addItem(item->getInvIndex(), quantity);
-#ifdef TMWSERV_SUPPORT
-    Net::GameServer::Player::tradeItem(item->getInvIndex(), quantity);
-    addItem(item->getId(), true, quantity);
-    item->increaseQuantity(-quantity);
-#else
-    // TODO: Our newer version of eAthena doesn't register this following
-    //       function. Detect the actual server version, and re-enable this
-    //       for that version only.
-    //addItem(item->getId(), true, quantity, item->isEquipment());
-    tradeHandler->addItem(item->getInvIndex(), quantity);
-#endif
+    Net::getTradeHandler()->addItem(item, quantity);
 }
 
 void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
@@ -261,7 +245,6 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
         mMyItemContainer->selectNone();
 }
 
-#ifdef TMWSERV_SUPPORT
 void TradeWindow::setStatus(Status s)
 {
     if (s == mStatus) return;
@@ -271,7 +254,6 @@ void TradeWindow::setStatus(Status s)
         (s == PREPARING ? _("Propose trade") : _("Confirm trade"));
     mTradeButton->setEnabled(s != PROPOSING);
 }
-#endif
 
 void TradeWindow::action(const gcn::ActionEvent &event)
 {
@@ -306,9 +288,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             new ItemAmountWindow(ItemAmountWindow::TradeAdd, this, item);
         }
 
-#ifdef TMWSERV_SUPPORT
         setStatus(PREPARING);
-#endif
     }
     else if (event.getId() == "cancel")
     {
@@ -316,12 +296,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         reset();
         player_node->setTrading(false);
 
-        // Net::getTradeHandler()->cancel();
-#ifdef TMWSERV_SUPPORT
-        Net::GameServer::Player::acceptTrade(false);
-#else
-        tradeHandler->cancel();
-#endif
+        Net::getTradeHandler()->cancel();
     }
 #ifdef EATHENA_SUPPORT
     else if (event.getId() == "ok")
@@ -345,12 +320,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 #endif
     else if (event.getId() == "trade")
     {
-#ifdef TMWSERV_SUPPORT
-        Net::GameServer::Player::acceptTrade(true);
+        Net::getTradeHandler()->finish();
         setStatus(PROPOSING);
-#else
-        tradeHandler->finish();
-#endif
     }
 #ifdef TMWSERV_SUPPORT
     else if (event.getId() == "money")
@@ -365,10 +336,5 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
 void TradeWindow::close()
 {
-    // Net::getTradeHandler()->cancel();
-#ifdef TMWSERV_SUPPORT
-    Net::GameServer::Player::acceptTrade(false);
-#else
-    tradeHandler->cancel();
-#endif
+    Net::getTradeHandler()->cancel();
 }

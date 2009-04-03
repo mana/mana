@@ -238,10 +238,10 @@ void TradeHandler::respond(bool accept)
     outMsg.writeInt8(accept ? 3 : 4);
 }
 
-void TradeHandler::addItem(int slotNum, int amount)
+void TradeHandler::addItem(Item *item, int amount)
 {
     MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
-    outMsg.writeInt16(slotNum + INVENTORY_OFFSET);
+    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt32(amount);
 }
 

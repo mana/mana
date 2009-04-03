@@ -37,7 +37,7 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
 
         void respond(bool accept);
 
-        void addItem(int slotNum, int amount);
+        void addItem(Item *item, int amount);
 
         void removeItem(int slotNum, int amount);
 
