@@ -78,6 +78,17 @@ struct Tile
     {
         return (tileset == -1);
     }
+
+    /* This is to allow std::map<Tile,Tile> */
+    bool operator< (const Tile& b) const
+    {
+        return ((tileset < b.tileset) || (index < b.index));
+    }
+
+    bool operator!= (const Tile& b) const
+    {
+        return ((tileset != b.tileset) || (index != b.index));
+    }
 };
 
 typedef std::vector<Tile> LayerTiles;
@@ -129,6 +140,13 @@ class Map
          */
         bool randomFill(Map* templateMap, const std::string& destLayerName,
                     int destX, int destY, int destWidth, int destHeight,
+                    const ConfigurationOptions& config);
+
+        /**
+         * Translates a layer - using the template, generates collision from visible layers (for example).
+         * TODO - avoid confusion with the math term "translate"
+         */
+        bool translateAllLayers(Map* templateMap, const std::string& destLayerName,
                     const ConfigurationOptions& config);
 
         int save(std::string filename);

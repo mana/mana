@@ -440,6 +440,76 @@ bool Map::randomFill(Map* templateMap, const std::string& destLayerName,
     return true;
 }
 
+bool Map::translateAllLayers(Map* templateMap, const std::string& destLayerName,
+            const ConfigurationOptions& config)
+{
+    bool checkPassed = true;
+    if (templateMap->getNumberOfLayers() != 2)
+    {
+        std::cerr<<"Error: template should have exactly 2 layers"<<std::endl;
+        checkPassed = false;
+    }
+    if (!config.createMissingLayers && !getLayer(destLayerName))
+    {
+        std::cerr<<"Error: target map has no layer named \""<<destLayerName<<"\""<<std::endl
+             <<"(and the command-line \"create layers\" option was not used)"<<std::endl;
+        checkPassed = false;
+    }
+    if (!checkPassed) return false;
+
+    //FIXME - as is, this will add tilesets that are in the template but
+    //not used in the main map
+    std::map<int, int> tilesetTranslation = addAndTranslateTilesets(templateMap);
+
+    //Lacking a better name, we'll say this is translating visible layers to collision
+    std::map<Tile, Tile> collisionTranslation;
+
+    Layer* fromLayer = templateMap->getLayer(0);
+    Layer* toLayer = templateMap->getLayer(1);
+    for (int xy = (templateMap->getWidth() * templateMap->getHeight() -1);
+        xy >= 0; xy--)
+    {
+        Tile& fromTile = fromLayer->at(xy);
+        Tile& toTile = toLayer->at(xy);
+        if (!fromTile.empty())
+        {
+            collisionTranslation[fromTile] = toTile;  //FIXME - just getting it compiling so far
+        }
+    }
+
+    /* Now apply that template to the game map */
+    Layer* destLayer = getLayer(destLayerName);
+    if (!destLayer)
+    {
+        destLayer = new Layer(destLayerName, mWidth * mHeight);
+        mLayers.push_back(destLayer);
+        std::cout<<"Created new layer "<<destLayerName<<std::endl;
+    }
+
+    for (std::vector<Layer*>::iterator layer = mLayers.begin();
+         layer != mLayers.end();
+         layer++)
+    {
+        if ((*layer)->getName() == destLayerName)
+            continue;
+
+        for (int xy = mWidth * mHeight -1; xy >= 0; xy--)
+        {
+            Tile& fromTile = (*layer)->at(xy);
+            Tile& toTile = destLayer->at(xy);
+            std::map<Tile,Tile>::iterator iteratedTile = collisionTranslation.find(fromTile);
+
+            if (iteratedTile != collisionTranslation.end())
+            {
+                toTile = (*iteratedTile).second;
+            }
+        }
+
+    }
+
+    return true;
+}
+
 
 
 int Map::save(std::string filename)
