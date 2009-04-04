@@ -478,7 +478,10 @@
 		<Unit filename="src\map.cpp" />
 		<Unit filename="src\map.h" />
 		<Unit filename="src\monster.cpp" />
-		<Unit filename="src\monster.h" />
+                <Unit filename="src\monster.h" />
+                <Unit filename="src\net\adminhandler.h" />
+                <Unit filename="src\net\charhandler.h" />
+                <Unit filename="src\net\chathandler.h" />
 		<Unit filename="src\net\ea\adminhandler.cpp">
 			<Option target="eAthena" />
 		</Unit>
@@ -587,15 +590,23 @@
 		<Unit filename="src\net\ea\tradehandler.h">
 			<Option target="eAthena" />
 		</Unit>
+                <Unit filename="src\net\generalhandler.h" />
+                <Unit filename="src\net\guildhandler.h" />
+                <Unit filename="src\net\inventoryhandler.h" />
+                <Unit filename="src\net\loginhandler.h" />
+                <Unit filename="src\net\maphandler.h" />
 		<Unit filename="src\net\messagehandler.cpp" />
 		<Unit filename="src\net\messagehandler.h" />
 		<Unit filename="src\net\messagein.cpp" />
 		<Unit filename="src\net\messagein.h" />
 		<Unit filename="src\net\messageout.cpp" />
-		<Unit filename="src\net\messageout.h" />
-		<Unit filename="src\net\npchandler.h">
-			<Option target="TMWServ" />
-		</Unit>
+                <Unit filename="src\net\messageout.h" />
+                <Unit filename="src\net\net.cpp" />
+                <Unit filename="src\net\net.h" />
+                <Unit filename="src\net\npchandler.h" />
+                <Unit filename="src\net\partyhandler.h" />
+                <Unit filename="src\net\playerhandler.h" />
+                <Unit filename="src\net\skillhandler.h" />
 		<Unit filename="src\net\tmwserv\accountserver\account.cpp">
 			<Option target="TMWServ" />
 		</Unit>
@@ -761,6 +772,7 @@
 		<Unit filename="src\net\tmwserv\tradehandler.h">
 			<Option target="TMWServ" />
 		</Unit>
+                <Unit filename="src\net\tradehandler.h" />
 		<Unit filename="src\npc.cpp" />
 		<Unit filename="src\npc.h" />
 		<Unit filename="src\openglgraphics.cpp" />
