@@ -359,17 +359,17 @@ Game::Game():
 #else
 Game::Game(Network *network):
     mNetwork(network),
-    mAdminHandler(new AdminHandler),
     mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
+    mAdminHandler(new AdminHandler),
     mEquipmentHandler(new EquipmentHandler),
     mSkillHandler(new SkillHandler),
-    mNpcHandler(new NpcHandler),
 #endif
     mPartyHandler(new PartyHandler),
     mBuySellHandler(new BuySellHandler),
     mChatHandler(new ChatHandler),
     mInventoryHandler(new InventoryHandler),
     mItemHandler(new ItemHandler),
+    mNpcHandler(new NpcHandler),
     mPlayerHandler(new PlayerHandler),
     mTradeHandler(new TradeHandler),
     mLastTarget(Being::UNKNOWN),

@@ -48,26 +48,31 @@
 Net::AdminHandler *Net::getAdminHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::CharHandler *Net::getCharHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::ChatHandler *Net::getChatHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::GeneralHandler *Net::getGeneralHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::GuildHandler *Net::getGuildHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::InventoryHandler *Net::getInventoryHandler()
@@ -78,21 +83,25 @@ Net::InventoryHandler *Net::getInventoryHandler()
 Net::LoginHandler *Net::getLoginHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::MapHandler *Net::getMapHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::NpcHandler *Net::getNpcHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::PartyHandler *Net::getPartyHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::PlayerHandler *Net::getPlayerHandler()
@@ -103,6 +112,7 @@ Net::PlayerHandler *Net::getPlayerHandler()
 Net::SkillHandler *Net::getSkillHandler()
 {
     // TODO
+    return 0;
 }
 
 Net::TradeHandler *Net::getTradeHandler()

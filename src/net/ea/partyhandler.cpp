@@ -37,10 +37,6 @@
 #include "utils/strprintf.h"
 
 PartyTab *partyTab;
-
-static void newPartyTab() { partyTab = new PartyTab(); }
-static void deletePartyTab() { delete partyTab ; }
-
 PartyHandler *partyHandler;
 
 PartyHandler::PartyHandler()
@@ -154,21 +150,21 @@ void PartyHandler::handleMessage(MessageIn &msg)
             break;
         case SMSG_PARTY_MOVE:
             {
-                int id = msg.readInt32();
+                msg.readInt32();    // id
                 msg.skip(4);
-                int x = msg.readInt16();
-                int y = msg.readInt16();
-                bool online = msg.readInt8() == 0;
-                std::string party = msg.readString(24);
-                std::string nick = msg.readString(24);
-                std::string map = msg.readString(16);
+                msg.readInt16();    // x
+                msg.readInt16();    // y
+                msg.readInt8();     // online (if 0)
+                msg.readString(24); // party
+                msg.readString(24); // nick
+                msg.readString(16); // map
             }
             break;
         case SMSG_PARTY_LEAVE:
             {
                 int id = msg.readInt32();
                 std::string nick = msg.readString(24);
-                int fail = msg.readInt8();
+                msg.readInt8();     // fail
                 partyTab->chatLog(strprintf(_("%s has left your party."),
                                     nick.c_str()), BY_SERVER);
                 partyWindow->removeMember(id);
@@ -176,16 +172,16 @@ void PartyHandler::handleMessage(MessageIn &msg)
             }
         case SMSG_PARTY_UPDATE_HP:
             {
-                int id = msg.readInt32();
-                int hp = msg.readInt16();
-                int hpMax = msg.readInt16();
+                msg.readInt32(); // id
+                msg.readInt16(); // hp
+                msg.readInt16(); // hpMax
             }
             break;
         case SMSG_PARTY_UPDATE_COORDS:
             {
-                int id = msg.readInt32();
-                int x = msg.readInt16();
-                int y = msg.readInt16();
+                msg.readInt32(); // id
+                msg.readInt16(); // x
+                msg.readInt16(); // y
             }
             break;
         case SMSG_PARTY_MESSAGE:

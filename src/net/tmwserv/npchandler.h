@@ -24,10 +24,10 @@
 
 #include "net/messagehandler.h"
 
-class NPCHandler : public MessageHandler
+class NpcHandler : public MessageHandler
 {
     public:
-        NPCHandler();
+        NpcHandler();
 
         void handleMessage(MessageIn &msg);
 };

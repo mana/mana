@@ -248,6 +248,7 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
             case Palette::TWOHAND:
             case Palette::SHIELD:
             case Palette::RING:
+            case Palette::NECKLACE:
             case Palette::ARMS:
             case Palette::AMMO:
                 mTextPreview->setFont(boldFont);

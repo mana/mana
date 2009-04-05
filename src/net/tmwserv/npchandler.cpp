@@ -32,7 +32,7 @@
 #include "gui/npcpostdialog.h"
 #include "gui/npc_text.h"
 
-NPCHandler::NPCHandler()
+NpcHandler::NpcHandler()
 {
     static const Uint16 _messages[] = {
         GPMSG_NPC_CHOICE,
@@ -44,7 +44,7 @@ NPCHandler::NPCHandler()
     handledMessages = _messages;
 }
 
-void NPCHandler::handleMessage(MessageIn &msg)
+void NpcHandler::handleMessage(MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
     if (!being || being->getType() != Being::NPC)
