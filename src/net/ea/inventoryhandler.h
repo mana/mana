@@ -26,6 +26,8 @@
 #include "net/messagehandler.h"
 #include "net/net.h"
 
+namespace EAthena {
+
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 {
     public:
@@ -51,6 +53,6 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
                       StorageType destination);
 };
 
-extern InventoryHandler *inventoryHandler;
+} // namespace EAthena
 
 #endif // NET_EA_INVENTORYHANDLER_H

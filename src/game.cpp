@@ -85,6 +85,9 @@
 #include "gui/storagewindow.h"
 #endif
 
+#include "net/tmwserv/inventoryhandler.h"
+#include "net/ea/inventoryhandler.h"
+
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/chathandler.h"
 #include "net/tmwserv/itemhandler.h"
@@ -96,7 +99,6 @@
 #include "net/tmwserv/buysellhandler.h"
 #include "net/tmwserv/effecthandler.h"
 #include "net/tmwserv/guildhandler.h"
-#include "net/tmwserv/inventoryhandler.h"
 #include "net/tmwserv/partyhandler.h"
 #else
 #include "net/ea/gui/partytab.h"
@@ -105,7 +107,6 @@
 #include "net/ea/beinghandler.h"
 #include "net/ea/buysellhandler.h"
 #include "net/ea/equipmenthandler.h"
-#include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
 #include "net/ea/maphandler.h"
 #include "net/ea/npchandler.h"
@@ -367,7 +368,11 @@ Game::Game(Network *network):
     mPartyHandler(new PartyHandler),
     mBuySellHandler(new BuySellHandler),
     mChatHandler(new ChatHandler),
-    mInventoryHandler(new InventoryHandler),
+#ifdef TMWSERV_SUPPORT
+    mInventoryHandler(new TmwServ::InventoryHandler),
+#else
+    mInventoryHandler(new EAthena::InventoryHandler),
+#endif
     mItemHandler(new ItemHandler),
     mNpcHandler(new NpcHandler),
     mPlayerHandler(new PlayerHandler),

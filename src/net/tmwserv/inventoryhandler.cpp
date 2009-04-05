@@ -37,6 +37,8 @@
 
 #include "resources/iteminfo.h"
 
+namespace TmwServ {
+
 Net::InventoryHandler *inventoryHandler;
 
 InventoryHandler::InventoryHandler()
@@ -123,3 +125,5 @@ void InventoryHandler::moveItem(StorageType source, int slot, int amount,
 {
     // TODO
 }
+
+} // namespace TmwServ

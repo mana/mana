@@ -187,22 +187,19 @@ Item *StorageWindow::getSelectedItem() const
 
 void StorageWindow::addStore(Item *item, int amount)
 {
-    // Net::getInventoryHandler()->moveItem(Net::InvyHandler::INVENTORY,
-    inventoryHandler->moveItem(Net::InventoryHandler::INVENTORY,
-                               item->getInvIndex(), amount,
-                               Net::InventoryHandler::STORAGE);
+    Net::getInventoryHandler()->moveItem(Net::InventoryHandler::INVENTORY,
+                                         item->getInvIndex(), amount,
+                                         Net::InventoryHandler::STORAGE);
 }
 
 void StorageWindow::removeStore(Item *item, int amount)
 {
-    // Net::getInventoryHandler()->moveItem(Net::InvyHandler::STORAGE,
-    inventoryHandler->moveItem(Net::InventoryHandler::STORAGE,
-                               item->getInvIndex(), amount,
-                               Net::InventoryHandler::INVENTORY);
+    Net::getInventoryHandler()->moveItem(Net::InventoryHandler::STORAGE,
+                                         item->getInvIndex(), amount,
+                                         Net::InventoryHandler::INVENTORY);
 }
 
 void StorageWindow::close()
 {
-    // Net::getInventoryHandler()->closeStorage();
-    inventoryHandler->closeStorage();
+    Net::getInventoryHandler()->closeStorage();
 }

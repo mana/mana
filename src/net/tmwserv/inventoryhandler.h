@@ -25,6 +25,8 @@
 #include "net/inventoryhandler.h"
 #include "net/messagehandler.h"
 
+namespace TmwServ {
+
 class InventoryHandler : public MessageHandler, Net::InventoryHandler
 {
     public:
@@ -51,5 +53,7 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler
 };
 
 extern Net::InventoryHandler *inventoryHandler;
+
+} // namespace TmwServ
 
 #endif

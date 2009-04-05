@@ -45,6 +45,8 @@
 
 #include <SDL_types.h>
 
+namespace EAthena {
+
 enum { debugInventory = 1 };
 
 InventoryHandler *inventoryHandler;
@@ -368,3 +370,5 @@ void InventoryHandler::moveItem(StorageType source, int slot, int amount,
         outMsg.writeInt32(amount);
     }
 }
+
+} // namespace EAthena
