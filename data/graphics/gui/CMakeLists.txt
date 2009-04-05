@@ -11,7 +11,6 @@ SET (FILES
     close_button.png
     deepbox.png
     default.png
-    equip_bg.png
     gui.xml
     hscroll_left_default.png
     hscroll_left_highlight.png
@@ -26,6 +25,7 @@ SET (FILES
     resize.png
     selection.png
     slider.png
+    sticky_button.png
     speechbubble.xml
     tab.png
     tabselected.png
