@@ -114,7 +114,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
                 g->drawImage(image, itemX, itemY);
                 if (item->isEquipped())
-                    g->setColor(guiPalette->getColor(Palette::ITEM_EQUIPED));
+                    g->setColor(guiPalette->getColor(Palette::ITEM_EQUIPPED));
                 g->drawText(caption, itemX + mBoxWidth / 2,
                             itemY + mBoxHeight - 14, gcn::Graphics::CENTER);
             }
