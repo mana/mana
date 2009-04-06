@@ -86,7 +86,7 @@ void BuySellDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "Sell")
     {
-        Net::getNpcHandler()->buy(current_npc);
+        Net::getNpcHandler()->sell(current_npc);
     }
     else if (event.getId() == "Cancel")
     {
