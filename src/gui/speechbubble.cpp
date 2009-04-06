@@ -42,7 +42,6 @@ SpeechBubble::SpeechBubble():
 
     mCaption = new gcn::Label;
     mCaption->setFont(boldFont);
-    mCaption->setPosition(5, 3);
 
     mSpeechBox = new TextBox;
     mSpeechBox->setEditable(false);
@@ -53,8 +52,6 @@ SpeechBubble::SpeechBubble():
 
     mSpeechArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mSpeechArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mSpeechArea->setDimension(gcn::Rectangle(4, boldFont->getHeight() + 3,
-                                             130, 28));
     mSpeechArea->setOpaque(false);
 
     add(mCaption);
@@ -77,26 +74,28 @@ void SpeechBubble::setText(std::string text, bool showName)
 
     graphics->setColor(guiPalette->getColor(Palette::TEXT));
 
-    int width = mCaption->getWidth();
+    int width = mCaption->getWidth() + 2 * getPadding();
+    const int speechWidth = mSpeechBox->getMinWidth() + 2 * getPadding();
     mSpeechBox->setTextWrapped(text, 130 > width ? 130 : width);
 
     const int fontHeight = getFont()->getHeight();
-    const int numRows = showName ? mSpeechBox->getNumberOfRows() + 1 :
-                                   mSpeechBox->getNumberOfRows();
-    int yPos = showName ? fontHeight + getPadding() : getPadding();
-    int height = (numRows * fontHeight);
+    const int nameHeight = showName ? mCaption->getHeight() + 
+                           getPadding() / 2 : 0;
+    const int numRows = mSpeechBox->getNumberOfRows();
+    const int height = (numRows * fontHeight) + nameHeight + 2 * getPadding();
 
-    if (width < mSpeechBox->getMinWidth())
-        width = mSpeechBox->getMinWidth();
+    if (width < speechWidth)
+        width = speechWidth;
 
-    if (numRows == 1)
-    {
-        yPos = (fontHeight / 4) + getPadding();
-        height = ((3 * fontHeight) / 2) + 1;
-    }
+    width += 2 * getPadding();
 
-    setContentSize(width + fontHeight, height + getPadding());
-    mSpeechArea->setDimension(gcn::Rectangle(4, yPos, width + 5, height));
+    setContentSize(width, height);
+
+    const int xPos = ((getWidth() - width) / 2);
+    const int yPos = ((getHeight() - height) / 2) + nameHeight;
+
+    mCaption->setPosition(xPos, getPadding());
+    mSpeechArea->setDimension(gcn::Rectangle(xPos, yPos, width, height));
 }
 
 unsigned int SpeechBubble::getNumRows()
