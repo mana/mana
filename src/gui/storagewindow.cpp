@@ -75,6 +75,8 @@ StorageWindow::StorageWindow(int invSize):
     mSlotsLabel = new Label(_("Slots: "));
 
     mSlotsBar = new ProgressBar(1.0f, 100, 20, 225, 200, 25);
+    mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mMaxSlots));
+    mSlotsBar->setProgress((float) mUsedSlots / mMaxSlots);
 
     setMinHeight(130);
     setMinWidth(mSlotsLabel->getWidth());
@@ -103,7 +105,7 @@ void StorageWindow::logic()
 
     Window::logic();
 
-    const int usedSlots = player_node->getInventory()->getNumberOfSlotsUsed();
+    const int usedSlots = player_node->getStorage()->getNumberOfSlotsUsed();
 
     if (mUsedSlots != usedSlots)
     {
