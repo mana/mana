@@ -25,17 +25,10 @@
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
-Item::Item(int id, int quantity, bool equipment
-#ifdef EATHENA_SUPPORT
-           , bool equipped
-#endif
-           ):
+Item::Item(int id, int quantity, bool equipment, bool equipped):
     mImage(0),
     mQuantity(quantity),
-    mEquipment(equipment)
-#ifdef EATHENA_SUPPORT
-    , mEquipped(equipped)
-#endif
+    mEquipment(equipment), mEquipped(equipped)
 {
     setId(id);
 }

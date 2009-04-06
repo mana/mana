@@ -39,6 +39,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/stringutils.h"
+#include "utils/strprintf.h"
 
 ItemShortcutContainer::ItemShortcutContainer():
     ShortcutContainer(),
@@ -106,11 +107,9 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
             if (image)
             {
-                const std::string label =
-#ifdef EATHENA_SUPPORT
-                    item->isEquipped() ? "Eq." :
-#endif
-                    toString(item->getQuantity());
+                const std::string label = strprintf("%d%s",
+                                            toString(item->getQuantity()).c_str(),
+                                            item->isEquipped() ? "(Eq)" : "");
                 g->drawImage(image, itemX, itemY);
                 g->drawText(label, itemX + mBoxWidth / 2,
                             itemY + mBoxHeight - 14, gcn::Graphics::CENTER);
