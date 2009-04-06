@@ -50,8 +50,8 @@ static const int BOX_WIDTH = 36;
 static const int BOX_HEIGHT = 44;
 
 ItemContainer::ItemContainer(Inventory *inventory,
-                             int gridColumns,
-                             int gridRows):
+                             int gridColumns, int gridRows,
+                             bool forceQuantity):
     mInventory(inventory),
     mGridColumns(gridColumns),
     mGridRows(gridRows),
@@ -59,7 +59,8 @@ ItemContainer::ItemContainer(Inventory *inventory,
     mHighlightedItem(NULL),
     mSelectionStatus(SEL_NONE),
     mSwapItems(false),
-    mDescItems(false)
+    mDescItems(false),
+    mForceQuantity(forceQuantity)
 {
     mItemPopup = new ItemPopup;
     setFocusable(true);
@@ -122,15 +123,17 @@ void ItemContainer::draw(gcn::Graphics *graphics)
                 }
                 g->drawImage(image, itemX, itemY);
             }
-            if (item->getQuantity() > 1) {
-                // Draw item caption
-                g->drawText(
-                    toString(item->getQuantity()),
-                    itemX + BOX_WIDTH / 2,
-                    itemY + BOX_HEIGHT - 14,
-                    gcn::Graphics::CENTER);
-            }
+            // Draw item caption
+            std::string caption;
+            if (item->getQuantity() > 1 || mForceQuantity)
+                caption = toString(item->getQuantity());
+            else if (item->isEquipped())
+                caption = "(Eq)";
 
+            if (item->isEquipped())
+                g->setColor(guiPalette->getColor(Palette::ITEM_EQUIPED));
+            g->drawText(caption, itemX + BOX_WIDTH / 2,
+                        itemY + BOX_HEIGHT - 14, gcn::Graphics::CENTER);
         }
     }
 

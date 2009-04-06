@@ -55,7 +55,8 @@ class ItemContainer : public gcn::Widget,
          * @param gridRows    Amount of rows in grid.
          * @param offset      Index offset
          */
-        ItemContainer(Inventory *inventory, int gridColumns, int gridRows);
+        ItemContainer(Inventory *inventory, int gridColumns, int gridRows,
+                      bool forceQuantity = false);
 
         /**
          * Destructor.
@@ -169,6 +170,7 @@ class ItemContainer : public gcn::Widget,
         Image *mSelImg;
         Item *mSelectedItem, *mHighlightedItem;
         SelectionState mSelectionStatus;
+        bool mForceQuantity;
         bool mSwapItems;
         bool mDescItems;
         int mDragPosX, mDragPosY;

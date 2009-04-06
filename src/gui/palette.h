@@ -58,6 +58,7 @@ class Palette : public gcn::ListModel
             ENTRY(HIGHLIGHT)\
             ENTRY(TAB_HIGHLIGHT)\
             ENTRY(SHOP_WARNING)\
+            ENTRY(ITEM_EQUIPED)\
             ENTRY(CHAT)\
             ENTRY(GM)\
             ENTRY(PLAYER)\

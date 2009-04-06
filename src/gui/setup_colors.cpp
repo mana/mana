@@ -237,6 +237,11 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
 
                 mPreview->addRow(msg);
                 break;
+            case Palette::ITEM_EQUIPED:
+                mTextPreview->setTextColor(col);
+                mTextPreview->setOutline(false);
+                mTextPreview->setShadow(false);
+                break;
             case Palette::UNKNOWN_ITEM:
             case Palette::GENERIC:
             case Palette::HEAD:

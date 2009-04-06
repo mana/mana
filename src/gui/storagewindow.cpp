@@ -64,7 +64,7 @@ StorageWindow::StorageWindow(int invSize):
     mStoreButton = new Button(_("Store"), "store", this);
     mRetrieveButton = new Button(_("Retrieve"), "retrieve", this);
 
-    mItems = new ItemContainer(player_node->getStorage(), 10, 5);
+    mItems = new ItemContainer(player_node->getStorage(), 10, 30, true);
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);
