@@ -357,18 +357,6 @@ void LocalPlayer::equipItem(Item *item)
     Net::getInventoryHandler()->equipItem(item);
 }
 
-#ifdef TMWSERV_SUPPORT
-
-void LocalPlayer::unequipItem(int slot)
-{
-    Net::GameServer::Player::unequip(slot);
-
-    // Tidy equipment directly to avoid weapon still shown bug, for instance
-    mEquipment->setEquipment(slot, 0);
-}
-
-#endif
-
 void LocalPlayer::unequipItem(Item *item)
 {
     Net::getInventoryHandler()->unequipItem(item);

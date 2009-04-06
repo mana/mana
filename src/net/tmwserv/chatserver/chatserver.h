@@ -34,23 +34,7 @@ namespace Net
 
         void logout();
 
-        void chat(short channel, const std::string &text);
-
         void announce(const std::string &text);
-
-        void privMsg(const std::string &recipient, const std::string &text);
-
-        void enterChannel(const std::string &channel, const std::string &password);
-
-        void quitChannel(short channel);
-
-        void getChannelList();
-
-        void getUserList(const std::string &channel);
-
-        void setChannelTopic(short channel, const std::string &topic);
-
-        void setUserMode(short channel, const std::string &user, unsigned char mode);
 
         void kickUser(short channel, const std::string &user);
 

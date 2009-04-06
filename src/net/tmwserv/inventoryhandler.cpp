@@ -21,11 +21,13 @@
 
 #include "net/tmwserv/inventoryhandler.h"
 
+#include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
 
-#include "net/tmwserv/gameserver/player.h"
+#include "net/tmwserv/gameserver/internal.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "equipment.h"
 #include "inventory.h"
@@ -87,22 +89,31 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
 void InventoryHandler::equipItem(Item *item)
 {
-    Net::GameServer::Player::equip(item->getInvIndex());
+    MessageOut msg(PGMSG_EQUIP);
+    msg.writeInt8(item->getInvIndex());
+    Net::GameServer::connection->send(msg);
 }
 
 void InventoryHandler::unequipItem(Item *item)
 {
-    Net::GameServer::Player::unequip(item->getInvIndex());
+    MessageOut msg(PGMSG_UNEQUIP);
+    msg.writeInt8(item->getInvIndex());
+    Net::GameServer::connection->send(msg);
 }
 
 void InventoryHandler::useItem(Item *item)
 {
-    Net::GameServer::Player::useItem(item->getInvIndex());
+    MessageOut msg(PGMSG_USE_ITEM);
+    msg.writeInt8(item->getInvIndex());
+    Net::GameServer::connection->send(msg);
 }
 
 void InventoryHandler::dropItem(Item *item, int amount)
 {
-    Net::GameServer::Player::drop(item->getInvIndex(), amount);
+    MessageOut msg(PGMSG_DROP);
+    msg.writeInt8(item->getInvIndex());
+    msg.writeInt8(amount);
+    Net::GameServer::connection->send(msg);
 }
 
 void InventoryHandler::splitItem(Item *item, int amount)
@@ -121,7 +132,7 @@ void InventoryHandler::closeStorage()
 }
 
 void InventoryHandler::moveItem(StorageType source, int slot, int amount,
-                      StorageType destination)
+                                StorageType destination)
 {
     // TODO
 }

@@ -33,13 +33,6 @@ void RespawnRequestListener::action(const gcn::ActionEvent &event)
     Net::GameServer::Player::respawn();
 }
 
-void Net::GameServer::Player::say(const std::string &text)
-{
-    MessageOut msg(PGMSG_SAY);
-    msg.writeString(text);
-    Net::GameServer::connection->send(msg);
-}
-
 void Net::GameServer::Player::walk(int x, int y)
 {
     MessageOut msg(PGMSG_WALK);
@@ -65,35 +58,6 @@ void Net::GameServer::Player::moveItem(int oldSlot, int newSlot, int amount)
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::drop(int slot, int amount)
-{
-    MessageOut msg(PGMSG_DROP);
-    msg.writeInt8(slot);
-    msg.writeInt8(amount);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::equip(int slot)
-{
-    MessageOut msg(PGMSG_EQUIP);
-    msg.writeInt8(slot);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::unequip(int slot)
-{
-    MessageOut msg(PGMSG_UNEQUIP);
-    msg.writeInt8(slot);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::useItem(int slot)
-{
-    MessageOut msg(PGMSG_USE_ITEM);
-    msg.writeInt8(slot);
-    Net::GameServer::connection->send(msg);
-}
-
 void Net::GameServer::Player::attack(int direction)
 {
     MessageOut msg(PGMSG_ATTACK);
@@ -105,28 +69,6 @@ void Net::GameServer::Player::useSpecial(int special)
 {
     MessageOut msg(PGMSG_USE_SPECIAL);
     msg.writeInt8(special);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::changeAction(Being::Action action)
-{
-    MessageOut msg(PGMSG_ACTION_CHANGE);
-    msg.writeInt8(action);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::talkToNPC(int id, bool restart)
-{
-    MessageOut msg(restart ? PGMSG_NPC_TALK : PGMSG_NPC_TALK_NEXT);
-    msg.writeInt16(id);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::selectFromNPC(int id, int choice)
-{
-    MessageOut msg(PGMSG_NPC_SELECT);
-    msg.writeInt16(id);
-    msg.writeInt8(choice);
     Net::GameServer::connection->send(msg);
 }
 
@@ -143,35 +85,10 @@ void Net::GameServer::Player::acceptTrade(bool accept)
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::tradeItem(int slot, int amount)
-{
-    MessageOut msg(PGMSG_TRADE_ADD_ITEM);
-    msg.writeInt8(slot);
-    msg.writeInt8(amount);
-    Net::GameServer::connection->send(msg);
-}
-
 void Net::GameServer::Player::tradeMoney(int amount)
 {
     MessageOut msg(PGMSG_TRADE_SET_MONEY);
     msg.writeInt32(amount);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::tradeWithNPC(int item, int amount)
-{
-    MessageOut msg(PGMSG_NPC_BUYSELL);
-    msg.writeInt16(item);
-    msg.writeInt16(amount);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::sendLetter(const std::string &player,
-                                         const std::string &text)
-{
-    MessageOut msg(PGMSG_NPC_POST_SEND);
-    msg.writeString(player);
-    msg.writeString(text);
     Net::GameServer::connection->send(msg);
 }
 
@@ -192,12 +109,5 @@ void Net::GameServer::Player::lowerAttribute(int attribute)
 void Net::GameServer::Player::respawn()
 {
     MessageOut msg(PGMSG_RESPAWN);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::changeDir(unsigned char dir)
-{
-    MessageOut msg(PGMSG_DIRECTION_CHANGE);
-    msg.writeInt8(dir);
     Net::GameServer::connection->send(msg);
 }

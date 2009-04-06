@@ -175,13 +175,13 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
     if (event.getId() == "unequip" && mSelected > -1)
     {
 #ifdef TMWSERV_SUPPORT // TODO: merge these!
-        player_node->unequipItem(mSelected);
+        Item *item = mEquipment->getEquipment(mSelected);
 #else
-        Item* item = (mSelected != EQUIP_AMMO_SLOT) ?
+        Item *item = (mSelected != EQUIP_AMMO_SLOT) ?
                      mInventory->getItem(mEquipment->getEquipment(mSelected)) :
                      mInventory->getItem(mEquipment->getArrows());
-        player_node->unequipItem(item);
 #endif
+        player_node->unequipItem(item);
         mSelected = -1;
     }
 }

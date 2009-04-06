@@ -21,10 +21,15 @@
 
 #include "net/tmwserv/tradehandler.h"
 
+#include "net/tmwserv/gameserver/internal.h"
 #include "net/tmwserv/gameserver/player.h"
+
+#include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
+#include "net/net.h"
 
 #include "beingmanager.h"
 #include "item.h"
@@ -49,7 +54,7 @@ namespace {
             if (event.getId() == "yes")
                 Net::GameServer::Player::requestTrade(tradePartnerID);
             else
-                Net::GameServer::Player::acceptTrade(false);
+                Net::getTradeHandler()->cancel();
         }
     } listener;
 }
@@ -146,7 +151,10 @@ void TradeHandler::request(Being *being)
 {
     tradePartnerName = being->getName();
     tradePartnerID = being->getId();
-    Net::GameServer::Player::requestTrade(tradePartnerID);
+
+    MessageOut msg(PGMSG_TRADE_REQUEST);
+    msg.writeInt16(tradePartnerID);
+    Net::GameServer::connection->send(msg);
 }
 
 void TradeHandler::respond(bool accept)
@@ -156,7 +164,11 @@ void TradeHandler::respond(bool accept)
 
 void TradeHandler::addItem(Item *item, int amount)
 {
-    Net::GameServer::Player::tradeItem(item->getInvIndex(), amount);
+    MessageOut msg(PGMSG_TRADE_ADD_ITEM);
+    msg.writeInt8(item->getInvIndex());
+    msg.writeInt8(amount);
+    Net::GameServer::connection->send(msg);
+
     tradeWindow->addItem(item->getId(), true, amount);
     item->increaseQuantity(-amount);
 }
@@ -183,7 +195,8 @@ void TradeHandler::finish()
 
 void TradeHandler::cancel()
 {
-    Net::GameServer::Player::acceptTrade(false);
+    MessageOut msg(PGMSG_TRADE_CANCEL);
+    Net::GameServer::connection->send(msg);
 }
 
 } // namespace TmwServ

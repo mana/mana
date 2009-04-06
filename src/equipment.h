@@ -49,7 +49,7 @@ class Equipment
          * Get equipment at the given slot.
          */
 #ifdef TMWSERV_SUPPORT
-        Item* getEquipment(int index)
+        Item *getEquipment(int index)
 #else
         int getEquipment(int index) const
 #endif

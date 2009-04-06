@@ -210,9 +210,6 @@ class LocalPlayer : public Player
         /**
          * Unequips an item.
          */
-#ifdef TMWSERV_SUPPORT
-        void unequipItem(int slot);
-#endif
         void unequipItem(Item *item);
 
         void useItem(Item *item);

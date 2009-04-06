@@ -40,30 +40,18 @@ namespace Net
     {
         namespace Player
         {
-            void say(const std::string &text);
             void walk(int x, int y);
             void pickUp(int x, int y);
             void moveItem(int oldSlot, int newSlot, int amount);
-            void drop(int slot, int amount);
-            void equip(int slot);
-            void unequip(int slot);
-            void useItem(int slot);
             void attack(int direction);
             void useSpecial(int special);
-            void changeAction(Being::Action action);
-            void talkToNPC(int id, bool restart);
-            void selectFromNPC(int id, int choice);
             void requestTrade(int id);
             void acceptTrade(bool accept);
-            void tradeItem(int slot, int amount);
             void tradeMoney(int amount);
-            void tradeWithNPC(int item, int amount);
-            void sendLetter(const std::string &player, const std::string &text);
             void raiseAttribute(int attribute);
             void lowerAttribute(int attribute);
             void respawn();
             static RespawnRequestListener respawnListener;
-            void changeDir(unsigned char dir);
         }
     }
 }

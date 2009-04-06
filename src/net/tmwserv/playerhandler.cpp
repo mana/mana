@@ -21,11 +21,14 @@
 
 #include "net/tmwserv/playerhandler.h"
 
+#include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
 
+#include "net/tmwserv/gameserver/internal.h"
 #include "net/tmwserv/gameserver/player.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "effectmanager.h"
 #include "engine.h"
@@ -362,13 +365,19 @@ void PlayerHandler::pickUp(FloorItem *floorItem)
 
 void PlayerHandler::setDirection(char direction)
 {
-    Net::GameServer::Player::changeDir(direction);
+    MessageOut msg(PGMSG_DIRECTION_CHANGE);
+    msg.writeInt8(direction);
+    Net::GameServer::connection->send(msg);
 }
 
-void PlayerHandler::setDestination(int x, int y, int direction)
+void PlayerHandler::setDestination(int x, int y, int /* direction */)
 {
-    Net::GameServer::Player::walk(x, y);
-    //Debugging fire burst
+    MessageOut msg(PGMSG_WALK);
+    msg.writeInt16(x);
+    msg.writeInt16(y);
+    Net::GameServer::connection->send(msg);
+
+    // Debugging fire burst
     effectManager->trigger(15, x, y);
 }
 
@@ -376,7 +385,10 @@ void PlayerHandler::changeAction(Being::Action action)
 {
     if (action == Being::SIT)
         player_node->setAction(action);
-    Net::GameServer::Player::changeAction(action);
+
+    MessageOut msg(PGMSG_ACTION_CHANGE);
+    msg.writeInt8(action);
+    Net::GameServer::connection->send(msg);
 }
 
 void PlayerHandler::respawn()

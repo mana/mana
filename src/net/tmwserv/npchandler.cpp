@@ -21,11 +21,14 @@
 
 #include "net/tmwserv/npchandler.h"
 
+#include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
 
+#include "net/tmwserv/gameserver/internal.h"
 #include "net/tmwserv/gameserver/player.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "beingmanager.h"
 #include "npc.h"
@@ -91,12 +94,16 @@ void NpcHandler::handleMessage(MessageIn &msg)
 
 void NpcHandler::talk(int npcId)
 {
-    Net::GameServer::Player::talkToNPC(npcId, true);
+    MessageOut msg(PGMSG_NPC_TALK);
+    msg.writeInt16(npcId);
+    Net::GameServer::connection->send(msg);
 }
 
 void NpcHandler::nextDialog(int npcId)
 {
-    Net::GameServer::Player::talkToNPC(npcId, false);
+    MessageOut msg(PGMSG_NPC_TALK_NEXT);
+    msg.writeInt16(npcId);
+    Net::GameServer::connection->send(msg);
 }
 
 void NpcHandler::closeDialog(int npcId)
@@ -106,7 +113,10 @@ void NpcHandler::closeDialog(int npcId)
 
 void NpcHandler::listInput(int npcId, int value)
 {
-    Net::GameServer::Player::selectFromNPC(npcId, value);
+    MessageOut msg(PGMSG_NPC_SELECT);
+    msg.writeInt16(npcId);
+    msg.writeInt8(value);
+    Net::GameServer::connection->send(msg);
 }
 
 void NpcHandler::integerInput(int npcId, int value)
@@ -120,9 +130,12 @@ void NpcHandler::stringInput(int npcId, const std::string &value)
 }
 
 void NpcHandler::sendLetter(int npcId, const std::string &recipient,
-                const std::string &text)
+                            const std::string &text)
 {
-    Net::GameServer::Player::sendLetter(recipient, text);
+    MessageOut msg(PGMSG_NPC_POST_SEND);
+    msg.writeString(recipient);
+    msg.writeString(text);
+    Net::GameServer::connection->send(msg);
 }
 
 void NpcHandler::startShopping(int beingId)
@@ -142,12 +155,18 @@ void NpcHandler::sell(int beingId)
 
 void NpcHandler::buyItem(int beingId, int itemId, int amount)
 {
-    Net::GameServer::Player::tradeWithNPC(itemId, amount);
+    MessageOut msg(PGMSG_NPC_BUYSELL);
+    msg.writeInt16(itemId);
+    msg.writeInt16(amount);
+    Net::GameServer::connection->send(msg);
 }
 
 void NpcHandler::sellItem(int beingId, int itemId, int amount)
 {
-    Net::GameServer::Player::tradeWithNPC(itemId, amount);
+    MessageOut msg(PGMSG_NPC_BUYSELL);
+    msg.writeInt16(itemId);
+    msg.writeInt16(amount);
+    Net::GameServer::connection->send(msg);
 }
 
 void NpcHandler::endShopping(int beingId)

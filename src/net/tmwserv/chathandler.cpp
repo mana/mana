@@ -21,13 +21,17 @@
 
 #include "net/tmwserv/chathandler.h"
 
+#include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
 
 #include "net/tmwserv/chatserver/chatserver.h"
+#include "net/tmwserv/chatserver/internal.h"
 
+#include "net/tmwserv/gameserver/internal.h"
 #include "net/tmwserv/gameserver/player.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "being.h"
 #include "beingmanager.h"
@@ -293,7 +297,9 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
 
 void ChatHandler::talk(const std::string &text)
 {
-    Net::GameServer::Player::say(text);
+    MessageOut msg(PGMSG_SAY);
+    msg.writeString(text);
+    Net::GameServer::connection->send(msg);
 }
 
 void ChatHandler::me(const std::string &text)
@@ -301,49 +307,75 @@ void ChatHandler::me(const std::string &text)
     // TODO
 }
 
-void ChatHandler::privateMessage(const std::string &recipient, const std::string &text)
+void ChatHandler::privateMessage(const std::string &recipient,
+                                 const std::string &text)
 {
-    Net::ChatServer::privMsg(recipient, text);
+    MessageOut msg(PCMSG_PRIVMSG);
+    msg.writeString(recipient);
+    msg.writeString(text);
+    Net::ChatServer::connection->send(msg);
 }
 
 void ChatHandler::channelList()
 {
-    Net::ChatServer::getChannelList();
+    MessageOut msg(PCMSG_LIST_CHANNELS);
+    Net::ChatServer::connection->send(msg);
 }
 
-void ChatHandler::enterChannel(const std::string &channel, const std::string &password)
+void ChatHandler::enterChannel(const std::string &channel,
+                               const std::string &password)
 {
-    Net::ChatServer::enterChannel(channel, password);
+    MessageOut msg(PCMSG_ENTER_CHANNEL);
+    msg.writeString(channel);
+    msg.writeString(password);
+    Net::ChatServer::connection->send(msg);
 }
 
 void ChatHandler::quitChannel(int channelId)
 {
-    Net::ChatServer::quitChannel(channelId);
+    MessageOut msg(PCMSG_QUIT_CHANNEL);
+    msg.writeInt16(channelId);
+    Net::ChatServer::connection->send(msg);
 }
 
 void ChatHandler::sendToChannel(int channelId, const std::string &text)
 {
-    Net::ChatServer::chat(channelId, text);
+    MessageOut msg(PCMSG_CHAT);
+    msg.writeString(text);
+    msg.writeInt16(channelId);
+    Net::ChatServer::connection->send(msg);
 }
 
 void ChatHandler::userList(const std::string &channel)
 {
-    Net::ChatServer::getUserList(channel);
+    MessageOut msg(PCMSG_LIST_CHANNELUSERS);
+    msg.writeString(channel);
+    Net::ChatServer::connection->send(msg);
 }
 
 void ChatHandler::setChannelTopic(int channelId, const std::string &text)
 {
-    Net::ChatServer::setChannelTopic(channelId, text);
+    MessageOut msg(PCMSG_TOPIC_CHANGE);
+    msg.writeInt16(channelId);
+    msg.writeString(text);
+    Net::ChatServer::connection->send(msg);
 }
 
 void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
 {
-    Net::ChatServer::setUserMode(channelId, name, mode);
+    MessageOut msg(PCMSG_USER_MODE);
+    msg.writeInt16(channelId);
+    msg.writeString(name);
+    msg.writeInt8(mode);
+    Net::ChatServer::connection->send(msg);
 }
 
 void ChatHandler::kickUser(int channelId, const std::string &name)
 {
-    Net::ChatServer::kickUser(channelId, name);
+    MessageOut msg(PCMSG_KICK_USER);
+    msg.writeInt16(channelId);
+    msg.writeString(name);
+    Net::ChatServer::connection->send(msg);
 }
 
 } // namespace TmwServ

@@ -56,4 +56,3 @@ void EffectHandler::handleCreateEffects(MessageIn &msg)
      Uint16 y = msg.readInt16();
      effectManager->trigger(id, x, y);
 }
-

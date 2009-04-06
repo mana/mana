@@ -41,8 +41,6 @@
 
 #include "net/tmwserv/gameserver/player.h"
 
-const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
-
 BeingHandler::BeingHandler()
 {
     static const Uint16 _messages[] = {
@@ -172,7 +170,8 @@ void BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
-    if (!being) return;
+    if (!being)
+        return;
 
     beingManager->destroyBeing(being);
 }
@@ -346,7 +345,8 @@ void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
 void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
-    if (!being) return;
+    if (!being)
+        return;
     int data = msg.readInt8();
     switch (data)
     {
