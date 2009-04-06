@@ -35,23 +35,6 @@
 #include "net/skillhandler.h"
 #include "net/tradehandler.h"
 
-#include "net/tmwserv/adminhandler.h"
-#include "net/tmwserv/chathandler.h"
-#include "net/tmwserv/inventoryhandler.h"
-#include "net/tmwserv/maphandler.h"
-#include "net/tmwserv/npchandler.h"
-#include "net/tmwserv/playerhandler.h"
-#include "net/tmwserv/skillhandler.h"
-#include "net/tmwserv/tradehandler.h"
-
-#include "net/ea/adminhandler.h"
-#include "net/ea/inventoryhandler.h"
-#include "net/ea/maphandler.h"
-#include "net/ea/npchandler.h"
-#include "net/ea/playerhandler.h"
-#include "net/ea/skillhandler.h"
-#include "net/ea/tradehandler.h"
-
 extern Net::AdminHandler *adminHandler;
 extern Net::ChatHandler *chatHandler;
 extern Net::InventoryHandler *inventoryHandler;
