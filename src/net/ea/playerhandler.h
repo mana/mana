@@ -26,6 +26,8 @@
 #include "net/net.h"
 #include "net/playerhandler.h"
 
+namespace EAthena {
+
 class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 {
     public:
@@ -56,6 +58,6 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
         void ingoreAll(bool ignore);
 };
 
-extern PlayerHandler *playerHandler;
+} // namespace EAthena
 
 #endif // NET_EA_PLAYERHANDLER_H

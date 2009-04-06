@@ -26,6 +26,8 @@
 #include "net/net.h"
 #include "net/skillhandler.h"
 
+namespace EAthena {
+
 class SkillHandler : public MessageHandler, public Net::SkillHandler
 {
     public:
@@ -34,8 +36,14 @@ class SkillHandler : public MessageHandler, public Net::SkillHandler
         void handleMessage(MessageIn &msg);
 
         void up(int skillId);
+
+        void use(int skillId, int level, int beingId);
+
+        void use(int skillId, int level, int x, int y);
+
+        void use(int skillId, const std::string &map);
 };
 
-extern SkillHandler *skillHandler;
+} // namespace EAthena
 
 #endif // NET_EA_SKILLHANDLER_H

@@ -28,13 +28,13 @@ namespace Net {
 class SkillHandler
 {
     public:
-        virtual void up(int skillId) {}
+        virtual void up(int skillId) = 0;
 
-        virtual void use(int skillId, int level, int beingId) {}
+        virtual void use(int skillId, int level, int beingId) = 0;
 
-        virtual void use(int skillId, int level, int x, int y) {}
+        virtual void use(int skillId, int level, int x, int y) = 0;
 
-        virtual void use(int skillId, const std::string &map) {}
+        virtual void use(int skillId, const std::string &map) = 0;
 };
 }
 

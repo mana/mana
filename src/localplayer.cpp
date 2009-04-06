@@ -647,8 +647,7 @@ void LocalPlayer::raiseSkill(Uint16 skillId)
     if (mSkillPoint <= 0)
         return;
 
-    // Net::getSkillHandler()->up(skillId);
-    skillHandler->up(skillId);
+    Net::getSkillHandler()->up(skillId);
 }
 #endif
 

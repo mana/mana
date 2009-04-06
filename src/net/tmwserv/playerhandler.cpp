@@ -95,6 +95,8 @@ namespace {
 
 Net::PlayerHandler *playerHandler;
 
+namespace TmwServ {
+
 PlayerHandler::PlayerHandler()
 {
     static const Uint16 _messages[] = {
@@ -391,3 +393,5 @@ void PlayerHandler::ingoreAll(bool ignore)
 {
     // TODO
 }
+
+} // namespace TmwServ

@@ -919,6 +919,18 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
+		<Unit filename="src\net\tmwserv\skillhandler.cpp">
+			<Option target="TMWServ" />
+			<Option target="Unix TMWSERV" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\skillhandler.h">
+			<Option target="TMWServ" />
+			<Option target="Unix TMWSERV" />
+		</Unit>
+		<Unit filename="src\net\tmwserv\tradehandler.cpp">
+			<Option target="TMWServ" />
+			<Option target="Unix TMWSERV" />
+		</Unit>
 		<Unit filename="src/net/tmwserv/tradehandler.cpp">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />

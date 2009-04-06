@@ -56,6 +56,8 @@ namespace {
 
 Net::TradeHandler *tradeHandler;
 
+namespace TmwServ {
+
 TradeHandler::TradeHandler():
     mAcceptTradeRequests(true)
 {
@@ -142,8 +144,6 @@ void TradeHandler::handleMessage(MessageIn &msg)
 
 void TradeHandler::request(Being *being)
 {
-    extern std::string tradePartnerName;
-    extern int tradePartnerID;
     tradePartnerName = being->getName();
     tradePartnerID = being->getId();
     Net::GameServer::Player::requestTrade(tradePartnerID);
@@ -185,3 +185,5 @@ void TradeHandler::cancel()
 {
     Net::GameServer::Player::acceptTrade(false);
 }
+
+} // namespace TmwServ

@@ -66,7 +66,9 @@
 /** should always be zero if failed */
 #define SKILL_FAILED      0x00
 
-SkillHandler *skillHandler;
+Net::SkillHandler *skillHandler;
+
+namespace EAthena {
 
 SkillHandler::SkillHandler()
 {
@@ -217,3 +219,20 @@ void SkillHandler::up(int skillId)
     MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
     outMsg.writeInt16(skillId);
 }
+
+void SkillHandler::use(int skillId, int level, int beingId)
+{
+    // TODO
+}
+
+void SkillHandler::use(int skillId, int level, int x, int y)
+{
+    // TODO
+}
+
+void SkillHandler::use(int skillId, const std::string &map)
+{
+    // TODO
+}
+
+} // namespace EAthena

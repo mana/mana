@@ -307,15 +307,14 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         {
             mMoneyField->setText(toString(tempInt));
 
-            // Net::getTradeHandler()->setMoney(tempInt);
-            tradeHandler->setMoney(tempInt);
+            Net::getTradeHandler()->setMoney(tempInt);
         }
         else
         {
             mMoneyField->setText("");
         }
         mMoneyField->setEnabled(false);
-        tradeHandler->confirm();
+        Net::getTradeHandler()->confirm();
     }
 #endif
     else if (event.getId() == "trade")

@@ -53,7 +53,9 @@ namespace {
     } listener;
 }
 
-TradeHandler *tradeHandler;
+Net::TradeHandler *tradeHandler;
+
+namespace EAthena {
 
 TradeHandler::TradeHandler()
 {
@@ -271,3 +273,5 @@ void TradeHandler::cancel()
 {
     MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
 }
+
+} // namespace EAthena

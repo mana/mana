@@ -25,6 +25,8 @@
 #include "net/messagehandler.h"
 #include "net/playerhandler.h"
 
+namespace TmwServ {
+
 class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 {
     public:
@@ -58,6 +60,6 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
         void handleMapChangeMessage(MessageIn &msg);
 };
 
-extern Net::PlayerHandler *playerHandler;
+} // namespace TmwServ
 
 #endif

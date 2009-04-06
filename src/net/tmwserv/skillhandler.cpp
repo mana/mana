@@ -19,39 +19,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EA_TRADEHANDLER_H
-#define NET_EA_TRADEHANDLER_H
+#include "net/tmwserv/skillhandler.h"
 
-#include "net/messagehandler.h"
-#include "net/net.h"
-#include "net/tradehandler.h"
+Net::SkillHandler *skillHandler;
 
-namespace EAthena {
+namespace TmwServ {
 
-class TradeHandler : public MessageHandler, public Net::TradeHandler
+SkillHandler::SkillHandler()
 {
-    public:
-        TradeHandler();
+    skillHandler = this;
+}
 
-        void handleMessage(MessageIn &msg);
+void SkillHandler::up(int skillId)
+{
+    // TODO
+}
 
-        void request(Being *being);
+void SkillHandler::use(int skillId, int level, int beingId)
+{
+    // TODO
+}
 
-        void respond(bool accept);
+void SkillHandler::use(int skillId, int level, int x, int y)
+{
+    // TODO
+}
 
-        void addItem(Item *item, int amount);
+void SkillHandler::use(int skillId, const std::string &map)
+{
+    // TODO
+}
 
-        void removeItem(int slotNum, int amount);
-
-        void setMoney(int amount);
-
-        void confirm();
-
-        void finish();
-
-        void cancel();
-};
-
-} // namespace EAthena
-
-#endif // NET_EA_TRADEHANDLER_H
+} // namespace TmwServ

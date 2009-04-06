@@ -539,6 +539,8 @@ SET(SRCS_TMW
     net/tmwserv/playerhandler.cpp
     net/tmwserv/playerhandler.h
     net/tmwserv/protocol.h
+    net/tmwserv/skillhandler.cpp
+    net/tmwserv/skillhandler.h
     net/tmwserv/tradehandler.cpp
     net/tmwserv/tradehandler.h
     guild.cpp

@@ -25,6 +25,8 @@
 #include "net/messagehandler.h"
 #include "net/tradehandler.h"
 
+namespace TmwServ {
+
 class TradeHandler : public MessageHandler, public Net::TradeHandler
 {
     public:
@@ -67,6 +69,6 @@ class TradeHandler : public MessageHandler, public Net::TradeHandler
         bool mAcceptTradeRequests;
 };
 
-extern Net::TradeHandler *tradeHandler;
+} // namespace TmwServ
 
 #endif

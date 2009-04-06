@@ -148,7 +148,9 @@ static const char *randomDeathMessage()
     return gettext(deadMsg[random]);
 }
 
-PlayerHandler *playerHandler;
+Net::PlayerHandler *playerHandler;
+
+namespace EAthena {
 
 PlayerHandler::PlayerHandler()
 {
@@ -522,3 +524,5 @@ void PlayerHandler::ingoreAll(bool ignore)
 {
     // TODO
 }
+
+} // namespace EAthena

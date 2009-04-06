@@ -366,7 +366,7 @@ Game::Game(Network *network):
     mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
     mAdminHandler(new EAthena::AdminHandler),
     mEquipmentHandler(new EquipmentHandler),
-    mSkillHandler(new SkillHandler),
+    mSkillHandler(new EAthena::SkillHandler),
 #endif
     mPartyHandler(new PartyHandler),
     mBuySellHandler(new BuySellHandler),
@@ -380,11 +380,13 @@ Game::Game(Network *network):
     mItemHandler(new ItemHandler),
 #ifdef TMWSERV_SUPPORT
     mNpcHandler(new TmwServ::NpcHandler),
+    mPlayerHandler(new TmwServ::PlayerHandler),
+    mTradeHandler(new TmwServ::TradeHandler),
 #else
     mNpcHandler(new EAthena::NpcHandler),
+    mPlayerHandler(new EAthena::PlayerHandler),
+    mTradeHandler(new EAthena::TradeHandler),
 #endif
-    mPlayerHandler(new PlayerHandler),
-    mTradeHandler(new TradeHandler),
     mLastTarget(Being::UNKNOWN),
     mLogicCounterId(0), mSecondsCounterId(0)
 {
