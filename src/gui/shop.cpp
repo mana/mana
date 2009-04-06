@@ -50,7 +50,6 @@ void ShopItems::addItem(int id, int amount, int price)
     mShopItems.push_back(new ShopItem(-1, id, amount, price));
 }
 
-#ifdef EATHENA_SUPPORT
 void ShopItems::addItem(int inventoryIndex, int id, int quantity, int price)
 {
     ShopItem *item = 0;
@@ -69,7 +68,6 @@ void ShopItems::addItem(int inventoryIndex, int id, int quantity, int price)
         mShopItems.push_back(item);
     }
 }
-#endif
 
 ShopItem *ShopItems::at(int i) const
 {

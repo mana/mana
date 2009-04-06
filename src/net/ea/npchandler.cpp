@@ -39,7 +39,9 @@
 
 #include <SDL_types.h>
 
-NpcHandler *npcHandler;
+Net::NpcHandler *npcHandler;
+
+namespace EAthena {
 
 NpcHandler::NpcHandler()
 {
@@ -208,3 +210,5 @@ void NpcHandler::endShopping(int beingId)
 {
     // TODO
 }
+
+} // namespace EAthena

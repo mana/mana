@@ -56,7 +56,6 @@ class ShopItems : public gcn::ListModel
          */
         void addItem(int id, int amount, int price);
 
-#ifdef EATHENA_SUPPORT
         /**
          * Adds an item to the list (used by sell dialog). Looks for
          * duplicate entries, if mergeDuplicates was turned on.
@@ -67,7 +66,6 @@ class ShopItems : public gcn::ListModel
          * @param price price of the item
          */
         void addItem(int inventoryIndex, int id, int amount, int price);
-#endif
 
         /**
          * Returns the number of items in the shop.

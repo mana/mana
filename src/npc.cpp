@@ -29,11 +29,7 @@
 #include "gui/palette.h"
 
 #include "net/net.h"
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/gameserver/player.h"
-#else
-#include "net/ea/npchandler.h"
-#endif
+#include "net/npchandler.h"
 
 #include "resources/npcdb.h"
 
@@ -117,12 +113,7 @@ void NPC::talk()
 
     isTalking = true;
 
-    // Net::getNpcHandler()->talk(mId);
-#ifdef TMWSERV_SUPPORT
-    Net::GameServer::Player::talkToNPC(mId, true);
-#else
-    npcHandler->talk(mId);
-#endif
+    Net::getNpcHandler()->talk(mId);
 }
 
 void NPC::updateCoords()

@@ -52,8 +52,6 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler
                               StorageType destination);
 };
 
-extern Net::InventoryHandler *inventoryHandler;
-
 } // namespace TmwServ
 
 #endif

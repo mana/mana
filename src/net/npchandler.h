@@ -50,9 +50,9 @@ class NpcHandler
 
         virtual void sell(int beingId) = 0;
 
-        virtual void buyItem(int beingId, int itemId, int ammount) = 0;
+        virtual void buyItem(int beingId, int itemId, int amount) = 0;
 
-        virtual void sellItem(int beingId, int itemId, int ammount) = 0;
+        virtual void sellItem(int beingId, int itemId, int amount) = 0;
 
         virtual void endShopping(int beingId) = 0;
 };

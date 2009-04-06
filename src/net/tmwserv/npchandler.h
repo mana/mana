@@ -23,13 +23,45 @@
 #define NET_TMWSERV_NPCHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/npchandler.h"
 
-class NpcHandler : public MessageHandler
+namespace TmwServ {
+
+class NpcHandler : public MessageHandler, public Net::NpcHandler
 {
     public:
         NpcHandler();
 
         void handleMessage(MessageIn &msg);
+
+        void talk(int npcId);
+
+        void nextDialog(int npcId);
+
+        void closeDialog(int npcId);
+
+        void listInput(int npcId, int value);
+
+        void integerInput(int npcId, int value);
+
+        void stringInput(int npcId, const std::string &value);
+
+        void sendLetter(int npcId, const std::string &recipient,
+                                const std::string &text);
+
+        void startShopping(int beingId);
+
+        void buy(int beingId);
+
+        void sell(int beingId);
+
+        void buyItem(int beingId, int itemId, int amount);
+
+        void sellItem(int beingId, int itemId, int amount);
+
+        void endShopping(int beingId);
 };
+
+} // namespace TmwServ
 
 #endif

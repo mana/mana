@@ -28,7 +28,11 @@
 
 #include "gui/widgets/chattab.h"
 
-#include "net/tmwserv/gameserver/player.h"
+#include "npc.h"
+
+#include "net/net.h"
+#include "net/npchandler.h"
+
 #include "utils/gettext.h"
 
 #include <guichan/widgets/label.hpp>
@@ -84,7 +88,8 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
-            Net::GameServer::Player::sendLetter(mSender->getText(), mText->getText());
+            Net::getNpcHandler()->sendLetter(current_npc, mSender->getText(),
+                                             mText->getText());
         }
         setVisible(false);
         clear();

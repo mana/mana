@@ -37,9 +37,9 @@
 
 #include "resources/iteminfo.h"
 
-namespace TmwServ {
-
 Net::InventoryHandler *inventoryHandler;
+
+namespace TmwServ {
 
 InventoryHandler::InventoryHandler()
 {

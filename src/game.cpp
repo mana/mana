@@ -374,7 +374,11 @@ Game::Game(Network *network):
     mInventoryHandler(new EAthena::InventoryHandler),
 #endif
     mItemHandler(new ItemHandler),
-    mNpcHandler(new NpcHandler),
+#ifdef TMWSERV_SUPPORT
+    mNpcHandler(new TmwServ::NpcHandler),
+#else
+    mNpcHandler(new EAthena::NpcHandler),
+#endif
     mPlayerHandler(new PlayerHandler),
     mTradeHandler(new TradeHandler),
     mLastTarget(Being::UNKNOWN),

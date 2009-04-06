@@ -19,21 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "npc_text.h"
-#include "npcstringdialog.h"
-#include "textfield.h"
+#include "gui/npc_text.h"
 
-#include "widgets/layout.h"
+#include "gui/button.h"
+#include "gui/npcstringdialog.h"
+#include "gui/textfield.h"
 
-#include "../npc.h"
+#include "gui/widgets/layout.h"
 
-#ifdef EATHENA_SUPPORT
-#include "../net/ea/npchandler.h"
-#endif
+#include "npc.h"
 
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
+#include "net/net.h"
+#include "net/npchandler.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 NpcStringDialog::NpcStringDialog()
     : Window(_("NPC Text Request"))
@@ -86,10 +86,7 @@ void NpcStringDialog::action(const gcn::ActionEvent &event)
     std::string text = mValueField->getText();
     mValueField->setText("");
 
-    // Net::getNpcHandler()->stringInput(current_npc, text);
-#ifdef EATHENA_SUPPORT
-        npcHandler->stringInput(current_npc, text);
-#endif
+    Net::getNpcHandler()->stringInput(current_npc, text);
 }
 
 bool NpcStringDialog::isInputFocused()

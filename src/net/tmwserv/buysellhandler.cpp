@@ -84,7 +84,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
                 int itemId = msg.readInt16();
                 int amount = msg.readInt16();
                 int value = msg.readInt16();
-                sellDialog->addItem(itemId, amount, value);
+                sellDialog->addItem(new Item(itemId, amount, false), value);
             }
             break;
     }

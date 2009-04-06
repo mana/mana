@@ -23,6 +23,8 @@
 
 #include "net/tmwserv/protocol.h"
 
+#include "net/tmwserv/gameserver/player.h"
+
 #include "net/messagein.h"
 
 #include "beingmanager.h"
@@ -31,6 +33,10 @@
 #include "gui/npclistdialog.h"
 #include "gui/npcpostdialog.h"
 #include "gui/npc_text.h"
+
+Net::NpcHandler *npcHandler;
+
+namespace TmwServ {
 
 NpcHandler::NpcHandler()
 {
@@ -42,6 +48,7 @@ NpcHandler::NpcHandler()
         0
     };
     handledMessages = _messages;
+    npcHandler = this;
 }
 
 void NpcHandler::handleMessage(MessageIn &msg)
@@ -81,3 +88,71 @@ void NpcHandler::handleMessage(MessageIn &msg)
             break;
     }
 }
+
+void NpcHandler::talk(int npcId)
+{
+    Net::GameServer::Player::talkToNPC(npcId, true);
+}
+
+void NpcHandler::nextDialog(int npcId)
+{
+    Net::GameServer::Player::talkToNPC(npcId, false);
+}
+
+void NpcHandler::closeDialog(int npcId)
+{
+    // TODO
+}
+
+void NpcHandler::listInput(int npcId, int value)
+{
+    Net::GameServer::Player::selectFromNPC(npcId, value);
+}
+
+void NpcHandler::integerInput(int npcId, int value)
+{
+    // TODO
+}
+
+void NpcHandler::stringInput(int npcId, const std::string &value)
+{
+    // TODO
+}
+
+void NpcHandler::sendLetter(int npcId, const std::string &recipient,
+                const std::string &text)
+{
+    Net::GameServer::Player::sendLetter(recipient, text);
+}
+
+void NpcHandler::startShopping(int beingId)
+{
+    // TODO
+}
+
+void NpcHandler::buy(int beingId)
+{
+    // TODO
+}
+
+void NpcHandler::sell(int beingId)
+{
+    // TODO
+}
+
+void NpcHandler::buyItem(int beingId, int itemId, int amount)
+{
+    Net::GameServer::Player::tradeWithNPC(itemId, amount);
+}
+
+void NpcHandler::sellItem(int beingId, int itemId, int amount)
+{
+    Net::GameServer::Player::tradeWithNPC(itemId, amount);
+}
+
+void NpcHandler::endShopping(int beingId)
+{
+    // TODO
+}
+
+} // namespace TmwServ

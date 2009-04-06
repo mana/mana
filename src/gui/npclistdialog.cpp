@@ -19,26 +19,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/npclistdialog.h"
+
+#include "gui/button.h"
+#include "gui/listbox.h"
+#include "gui/npc_text.h"
+#include "gui/scrollarea.h"
+
+#include "gui/widgets/layout.h"
+
+#include "npc.h"
+
+#include "net/net.h"
+#include "net/npchandler.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+
 #include <sstream>
-
-#include "button.h"
-#include "listbox.h"
-#include "npc_text.h"
-#include "npclistdialog.h"
-#include "scrollarea.h"
-
-#include "widgets/layout.h"
-
-#include "../npc.h"
-
-#ifdef TMWSERV_SUPPORT
-#include "../net/tmwserv/gameserver/player.h"
-#else
-#include "../net/ea/npchandler.h"
-#endif
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 
 NpcListDialog::NpcListDialog()
     : Window("NPC")
@@ -132,12 +130,7 @@ void NpcListDialog::action(const gcn::ActionEvent &event)
         saveWindowState();
         reset();
 
-    // Net::getNpcHandler()->listInput(current_npc, choice);
-#ifdef TMWSERV_SUPPORT
-        Net::GameServer::Player::selectFromNPC(current_npc, choice);
-#else
-        npcHandler->listInput(current_npc, choice);
-#endif
+        Net::getNpcHandler()->listInput(current_npc, choice);
     }
 }
 

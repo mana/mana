@@ -45,11 +45,11 @@
 
 #include <SDL_types.h>
 
+Net::InventoryHandler *inventoryHandler;
+
 namespace EAthena {
 
 enum { debugInventory = 1 };
-
-InventoryHandler *inventoryHandler;
 
 InventoryHandler::InventoryHandler()
 {

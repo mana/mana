@@ -28,28 +28,28 @@ namespace Net {
 class ChatHandler
 {
     public:
-        virtual void talk(const std::string &text) {}
+        virtual void talk(const std::string &text) = 0;
 
-        virtual void me(const std::string &text) {}
+        virtual void me(const std::string &text) = 0;
 
         virtual void privateMessage(const std::string &recipient,
-                            const std::string &text) {}
+                            const std::string &text) = 0;
 
-        virtual void channelList() {}
+        virtual void channelList() = 0;
 
-        virtual void enterChannel(int channelId, const std::string &password) {}
+        virtual void enterChannel(int channelId, const std::string &password) = 0;
 
-        virtual void quitChannel(int channelId) {}
+        virtual void quitChannel(int channelId) = 0;
 
-        virtual void sendToChannel(int channelId, const std::string &text) {}
+        virtual void sendToChannel(int channelId, const std::string &text) = 0;
 
-        virtual void userList(int channelId) {}
+        virtual void userList(int channelId) = 0;
 
-        virtual void setChannelTopic(int channelId, const std::string &text) {}
+        virtual void setChannelTopic(int channelId, const std::string &text) = 0;
 
-        virtual void setUserMode(int channelId, const std::string &name, int mode) {}
+        virtual void setUserMode(int channelId, const std::string &name, int mode) = 0;
 
-        virtual void kickUser(int channelId, const std::string &name) {}
+        virtual void kickUser(int channelId, const std::string &name) = 0;
 };
 }
 

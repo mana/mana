@@ -36,7 +36,9 @@
 #include "net/tradehandler.h"
 
 #include "net/tmwserv/inventoryhandler.h"
+#include "net/tmwserv/npchandler.h"
 #include "net/ea/inventoryhandler.h"
+#include "net/ea/npchandler.h"
 
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/playerhandler.h"
@@ -46,9 +48,8 @@
 #include "net/ea/tradehandler.h"
 #endif
 
-namespace EAthena {
-extern InventoryHandler *inventoryHandler;
-}
+extern Net::InventoryHandler *inventoryHandler;
+extern Net::NpcHandler *npcHandler;
 
 Net::AdminHandler *Net::getAdminHandler()
 {
@@ -82,11 +83,7 @@ Net::GuildHandler *Net::getGuildHandler()
 
 Net::InventoryHandler *Net::getInventoryHandler()
 {
-#ifdef TMWSERV_SUPPORT
-    return TmwServ::inventoryHandler;
-#else
-    return EAthena::inventoryHandler;
-#endif
+    return inventoryHandler;
 }
 
 Net::LoginHandler *Net::getLoginHandler()
@@ -103,8 +100,7 @@ Net::MapHandler *Net::getMapHandler()
 
 Net::NpcHandler *Net::getNpcHandler()
 {
-    // TODO
-    return 0;
+    return npcHandler;
 }
 
 Net::PartyHandler *Net::getPartyHandler()

@@ -61,11 +61,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         /**
          * Adds an item to the inventory.
          */
-#ifdef TMWSERV_SUPPORT
-        void addItem(int item, int amount, int price);
-#else
         void addItem(const Item *item, int price);
-#endif
 
         /**
          * Called when receiving actions from the widgets.

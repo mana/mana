@@ -19,22 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "npc_text.h"
-#include "scrollarea.h"
-#include "textbox.h"
+#include "gui/npc_text.h"
 
-#include "widgets/layout.h"
+#include "gui/button.h"
+#include "gui/scrollarea.h"
+#include "gui/textbox.h"
 
-#include "../npc.h"
+#include "gui/widgets/layout.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "../net/tmwserv/gameserver/player.h"
-#else
-#include "../net/ea/npchandler.h"
-#endif
+#include "npc.h"
 
-#include "../utils/gettext.h"
+#include "net/net.h"
+#include "net/npchandler.h"
+
+#include "utils/gettext.h"
 
 NpcTextDialog::NpcTextDialog()
     : Window(_("NPC"))
@@ -125,20 +123,12 @@ void NpcTextDialog::action(const gcn::ActionEvent &event)
 
 void NpcTextDialog::nextDialog(int npcID)
 {
-    // Net::getNpcHandler()->nextDialog(npcID);
-#ifdef TMWSERV_SUPPORT
-    Net::GameServer::Player::talkToNPC(npcID, false);
-#else
-    npcHandler->nextDialog(npcID);
-#endif
+    Net::getNpcHandler()->nextDialog(npcID);
 }
 
 void NpcTextDialog::closeDialog(int npcID)
 {
-    // Net::getNpcHandler()->closeDialog(npcID);
-#ifdef EATHENA_SUPPORT
-    npcHandler->closeDialog(npcID);
-#endif
+    Net::getNpcHandler()->closeDialog(npcID);
 }
 
 void NpcTextDialog::widgetResized(const gcn::Event &event)

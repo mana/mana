@@ -26,6 +26,8 @@
 #include "net/net.h"
 #include "net/npchandler.h"
 
+namespace EAthena {
+
 class NpcHandler : public MessageHandler, public Net::NpcHandler
 {
     public:
@@ -61,6 +63,6 @@ class NpcHandler : public MessageHandler, public Net::NpcHandler
         void endShopping(int beingId);
 };
 
-extern NpcHandler *npcHandler;
+} // namespace EAthena
 
 #endif // NET_EA_NPCHANDLER_H

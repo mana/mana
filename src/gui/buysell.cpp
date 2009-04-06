@@ -25,7 +25,8 @@
 
 #include "gui/button.h"
 
-#include "net/ea/npchandler.h"
+#include "net/net.h"
+#include "net/npchandler.h"
 
 #include "utils/gettext.h"
 
@@ -81,13 +82,11 @@ void BuySellDialog::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "Buy")
     {
-        // Net::getNpcHandler()->buy(current_npc);
-        npcHandler->buy(current_npc);
+        Net::getNpcHandler()->buy(current_npc);
     }
     else if (event.getId() == "Sell")
     {
-        // Net::getNpcHandler()->buy(current_npc);
-        npcHandler->sell(current_npc);
+        Net::getNpcHandler()->buy(current_npc);
     }
     else if (event.getId() == "Cancel")
     {

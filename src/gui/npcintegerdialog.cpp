@@ -19,21 +19,21 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "inttextfield.h"
-#include "npc_text.h"
-#include "npcintegerdialog.h"
+#include "gui/npcintegerdialog.h"
 
-#include "widgets/layout.h"
+#include "gui/button.h"
+#include "gui/inttextfield.h"
+#include "gui/npc_text.h"
 
-#include "../npc.h"
+#include "gui/widgets/layout.h"
 
-#ifdef EATHENA_SUPPORT
-#include "../net/ea/npchandler.h"
-#endif
+#include "npc.h"
 
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
+#include "net/net.h"
+#include "net/npchandler.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 NpcIntegerDialog::NpcIntegerDialog()
     : Window(_("NPC Number Request"))
@@ -118,10 +118,7 @@ void NpcIntegerDialog::action(const gcn::ActionEvent &event)
         setVisible(false);
         NPC::isTalking = false;
 
-        // Net::getNpcHandler()->integerInput(current_npc, mValueField->getValue());
-#ifdef EATHENA_SUPPORT
-        npcHandler->integerInput(current_npc, mValueField->getValue());
-#endif
+        Net::getNpcHandler()->integerInput(current_npc, mValueField->getValue());
 
         mValueField->reset();
     }
