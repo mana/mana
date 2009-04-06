@@ -163,7 +163,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
             std::vector<int> atts;
             for (int i = 0; i < mAttributeSlider.size(); i++)
             {
-                atts[i] = (int) mAttributeSlider[i]->getValue();
+                atts.push_back((int) mAttributeSlider[i]->getValue());
             }
 
             Net::getCharHandler()->newCharacter(getName(), mSlot,
@@ -275,6 +275,10 @@ void CharCreateDialog::setAttributes(std::vector<std::string> labels,
         remove(mAttributeValue[i]);
         delete mAttributeValue[i];
     }
+
+    mAttributeLabel.resize(labels.size());
+    mAttributeSlider.resize(labels.size());
+    mAttributeValue.resize(labels.size());
 
     int w = 200;
     int h = 330;
