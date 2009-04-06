@@ -25,6 +25,7 @@
 #include <iosfwd>
 
 namespace Net {
+
 class AdminHandler
 {
     public:
@@ -50,6 +51,7 @@ class AdminHandler
 
         // TODO
 };
-}
+
+} // namespace Net
 
 #endif // ADMINHANDLER_H

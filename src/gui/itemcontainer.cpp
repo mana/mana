@@ -58,9 +58,9 @@ ItemContainer::ItemContainer(Inventory *inventory,
     mSelectedItem(NULL),
     mHighlightedItem(NULL),
     mSelectionStatus(SEL_NONE),
+    mForceQuantity(forceQuantity),
     mSwapItems(false),
-    mDescItems(false),
-    mForceQuantity(forceQuantity)
+    mDescItems(false)
 {
     mItemPopup = new ItemPopup;
     setFocusable(true);

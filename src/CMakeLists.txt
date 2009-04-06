@@ -85,6 +85,8 @@ SET(SRCS
     gui/button.h
     gui/buy.cpp
     gui/buy.h
+    gui/buysell.cpp
+    gui/buysell.h
     gui/char_select.cpp
     gui/char_select.h
     gui/chat.cpp
@@ -407,8 +409,6 @@ SET(SRCS
     )
 
 SET(SRCS_EA
-    gui/buysell.cpp
-    gui/buysell.h
     gui/char_server.cpp
     gui/char_server.h
     gui/skill.cpp
