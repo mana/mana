@@ -90,7 +90,7 @@ Palette::Palette() :
     addColor(HIGHLIGHT, 0xebc873, STATIC, _("Highlight"), 'H');
     addColor(TAB_HIGHLIGHT, 0xff0000, PULSE, indent + _("Tab Highlight"));
     addColor(SHOP_WARNING, 0x910000, STATIC, indent + _("Item too expensive"));
-    addColor(ITEM_EQUIPED, 0x000091, STATIC, indent + _("Item is equiped"));
+    addColor(ITEM_EQUIPPED, 0x000091, STATIC, indent + _("Item is equipped"));
 
     addColor(CHAT, 0x000000, STATIC, _("Chat"), 'C');
     addColor(GM, 0xff0000, STATIC, indent + _("GM"), 'G');

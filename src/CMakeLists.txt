@@ -11,7 +11,8 @@ FIND_PACKAGE(PNG REQUIRED)
 
 
 SET(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
-SET(FLAGS "${FLAGS} -DTMW_DATADIR=\\\"${PKG_DATADIR}/\\\"")
+SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${PKG_DATADIR}/\\\"")
+SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${LOCALEDIR}/\\\"")
 SET(FLAGS_EA "${FLAGS} -DEATHENA_SUPPORT")
 SET(FLAGS_TMW "${FLAGS} -DTMWSERV_SUPPORT")
 
@@ -501,6 +502,8 @@ SET(SRCS_TMW
     net/tmwserv/gameserver/internal.h
     net/tmwserv/gameserver/player.cpp
     net/tmwserv/gameserver/player.h
+    net/tmwserv/adminhandler.cpp
+    net/tmwserv/adminhandler.h
     net/tmwserv/beinghandler.cpp
     net/tmwserv/beinghandler.h
     net/tmwserv/buysellhandler.cpp
@@ -525,6 +528,8 @@ SET(SRCS_TMW
     net/tmwserv/loginhandler.h
     net/tmwserv/logouthandler.cpp
     net/tmwserv/logouthandler.h
+    net/tmwserv/maphandler.cpp
+    net/tmwserv/maphandler.h
     net/tmwserv/network.cpp
     net/tmwserv/network.h
     net/tmwserv/npchandler.cpp

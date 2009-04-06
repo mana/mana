@@ -10,23 +10,34 @@ IF (ENet_INCLUDE_DIR AND ENet_LIBRARY)
    SET(ENet_FIND_QUIETLY TRUE)
 ENDIF (ENet_INCLUDE_DIR AND ENet_LIBRARY)
 
-FIND_PATH(ENet_INCLUDE_DIR enet/enet.h
-    /usr/include
-    /usr/local/include
+# for Windows we rely on the environement variables
+# %INCLUDE% and %LIB%; FIND_LIBRARY checks %LIB%
+# automatically on Windows
+IF(WIN32)
+    FIND_PATH(ENet_INCLUDE_DIR enet/enet.h
+        $ENV{INCLUDE}
     )
-
-FIND_LIBRARY(ENet_LIBRARY
-    NAMES enet
-    PATHS /usr/lib /usr/local/lib
+    FIND_LIBRARY(ENet_LIBRARY
+        NAMES enet
     )
+ELSE()
+    FIND_PATH(ENet_INCLUDE_DIR enet/enet.h
+        /usr/include
+        /usr/local/include
+    )
+    FIND_LIBRARY(ENet_LIBRARY
+        NAMES enet
+        PATHS /usr/lib /usr/local/lib
+    )
+ENDIF()
 
 IF (ENet_INCLUDE_DIR AND ENet_LIBRARY)
     SET(ENET_FOUND TRUE)
     SET(ENET_INCLUDE_DIR ${ENet_INCLUDE_DIR})
     SET(ENET_LIBRARIES ${ENet_LIBRARY})
-ELSE (ENet_INCLUDE_DIR AND ENet_LIBRARY)
+ELSE ()
     SET(ENET_FOUND FALSE)
-ENDIF (ENet_INCLUDE_DIR AND ENet_LIBRARY)
+ENDIF ()
 
 IF (ENET_FOUND)
     IF (NOT ENet_FIND_QUIETLY)

@@ -33,6 +33,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/button.h \
 	      gui/buy.cpp \
 	      gui/buy.h \
+	      gui/buysell.cpp \
+	      gui/buysell.h \
 	      gui/char_select.cpp \
 	      gui/char_select.h \
 	      gui/chat.cpp \
@@ -448,8 +450,6 @@ endif
 if SERVER_EATHENA
 tmw_CXXFLAGS += -DEATHENA_SUPPORT
 tmw_SOURCES += \
-	      gui/buysell.cpp \
-	      gui/buysell.h \
 	      gui/char_server.cpp \
 	      gui/char_server.h \
 	      gui/skill.cpp \

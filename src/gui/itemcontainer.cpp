@@ -131,7 +131,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
                 caption = "(Eq)";
 
             if (item->isEquipped())
-                g->setColor(guiPalette->getColor(Palette::ITEM_EQUIPED));
+                g->setColor(guiPalette->getColor(Palette::ITEM_EQUIPPED));
             g->drawText(caption, itemX + BOX_WIDTH / 2,
                         itemY + BOX_HEIGHT - 14, gcn::Graphics::CENTER);
         }
