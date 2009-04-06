@@ -26,6 +26,8 @@
 #include "net/messagehandler.h"
 #include "net/net.h"
 
+namespace EAthena {
+
 class ChatHandler : public MessageHandler, public Net::ChatHandler
 {
     public:
@@ -42,13 +44,14 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
 
         void channelList();
 
-        void enterChannel(int channelId, const std::string &password);
+        void enterChannel(const std::string &channel,
+                          const std::string &password);
 
         void quitChannel(int channelId);
 
         void sendToChannel(int channelId, const std::string &text);
 
-        void userList(int channelId);
+        void userList(const std::string &channel);
 
         void setChannelTopic(int channelId, const std::string &text);
 
@@ -57,6 +60,6 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
         void kickUser(int channelId, const std::string &name);
 };
 
-extern ChatHandler *chatHandler;
+} // namespace EAthena
 
 #endif // NET_EA_CHATHANDLER_H

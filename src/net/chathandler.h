@@ -37,13 +37,14 @@ class ChatHandler
 
         virtual void channelList() = 0;
 
-        virtual void enterChannel(int channelId, const std::string &password) = 0;
+        virtual void enterChannel(const std::string &channel,
+                                  const std::string &password) = 0;
 
         virtual void quitChannel(int channelId) = 0;
 
         virtual void sendToChannel(int channelId, const std::string &text) = 0;
 
-        virtual void userList(int channelId) = 0;
+        virtual void userList(const std::string &channel) = 0;
 
         virtual void setChannelTopic(int channelId, const std::string &text) = 0;
 

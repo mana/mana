@@ -402,6 +402,8 @@ tmw_SOURCES += \
 	      net/tmwserv/gameserver/internal.h \
 	      net/tmwserv/gameserver/player.cpp \
 	      net/tmwserv/gameserver/player.h \
+	      net/tmwserv/adminhandler.cpp \
+	      net/tmwserv/adminhandler.h \
 	      net/tmwserv/beinghandler.cpp \
 	      net/tmwserv/beinghandler.h \
 	      net/tmwserv/buysellhandler.cpp \
@@ -426,6 +428,8 @@ tmw_SOURCES += \
 	      net/tmwserv/loginhandler.h \
 	      net/tmwserv/logouthandler.cpp \
 	      net/tmwserv/logouthandler.h \
+	      net/tmwserv/maphandler.cpp \
+	      net/tmwserv/maphandler.h \
 	      net/tmwserv/network.cpp \
 	      net/tmwserv/network.h \
 	      net/tmwserv/npchandler.cpp \

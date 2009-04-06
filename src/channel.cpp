@@ -21,11 +21,6 @@
 
 #include "channel.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/chatserver/chatserver.h"
-#include "net/tmwserv/gameserver/player.h"
-#endif
-
 Channel::Channel(short id,
                  const std::string &name, 
                  const std::string &announcement) :

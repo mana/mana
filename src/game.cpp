@@ -85,6 +85,9 @@
 #include "gui/storagewindow.h"
 #endif
 
+#include "net/maphandler.h"
+#include "net/net.h"
+
 #include "net/tmwserv/inventoryhandler.h"
 #include "net/ea/inventoryhandler.h"
 
@@ -361,16 +364,17 @@ Game::Game():
 Game::Game(Network *network):
     mNetwork(network),
     mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
-    mAdminHandler(new AdminHandler),
+    mAdminHandler(new EAthena::AdminHandler),
     mEquipmentHandler(new EquipmentHandler),
     mSkillHandler(new SkillHandler),
 #endif
     mPartyHandler(new PartyHandler),
     mBuySellHandler(new BuySellHandler),
-    mChatHandler(new ChatHandler),
 #ifdef TMWSERV_SUPPORT
+    mChatHandler(new TmwServ::ChatHandler),
     mInventoryHandler(new TmwServ::InventoryHandler),
 #else
+    mChatHandler(new EAthena::ChatHandler),
     mInventoryHandler(new EAthena::InventoryHandler),
 #endif
     mItemHandler(new ItemHandler),
@@ -453,7 +457,7 @@ Game::Game(Network *network):
      * packet is handled by the older version, but its response
      * is ignored by the client
      */
-    mapHandler->ping(tick_time);
+    Net::getMapHandler()->ping(tick_time);
 
     map_path = map_path.substr(0, map_path.rfind("."));
     engine->changeMap(map_path);

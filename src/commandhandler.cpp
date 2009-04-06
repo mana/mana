@@ -30,15 +30,10 @@
 #include "gui/widgets/chattab.h"
 #include "gui/chat.h"
 
+#include "net/adminhandler.h"
+#include "net/chathandler.h"
+#include "net/maphandler.h"
 #include "net/net.h"
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/chatserver/chatserver.h"
-#include "net/tmwserv/gameserver/player.h"
-#else
-#include "net/ea/adminhandler.h"
-#include "net/ea/chathandler.h"
-#include "net/ea/maphandler.h"
-#endif
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -73,7 +68,6 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handleMsg(args, tab);
     }
-#ifdef TMWSERV_SUPPORT
     else if (type == "join")
     {
         handleJoin(args, tab);
@@ -106,7 +100,6 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handleKick(args, tab);
     }
-#endif
     else if (type == "party")
     {
         handleParty(args, tab);
@@ -135,12 +128,7 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
 
 void CommandHandler::handleAnnounce(const std::string &args, ChatTab *tab)
 {
-    // Net::getAdminHandler()->announce(args);
-#ifdef TMWSERV_SUPPORT
-    Net::ChatServer::announce(args);
-#else
-    adminHandler->announce(args);
-#endif
+    Net::getAdminHandler()->announce(args);
 }
 
 void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
@@ -319,12 +307,7 @@ void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleWho(const std::string &args, ChatTab *tab)
 {
-    // Net::getMapHandler()->who();
-#ifdef TMWSERV_SUPPORT
-    //TODO
-#else
-    mapHandler->who();
-#endif
+    Net::getMapHandler()->who();
 }
 
 void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
@@ -382,25 +365,23 @@ void CommandHandler::handleClear(const std::string &args, ChatTab *tab)
     chatWindow->clearTab();
 }
 
-#ifdef TMWSERV_SUPPORT
-
 void CommandHandler::handleJoin(const std::string &args, ChatTab *tab)
 {
     std::string::size_type pos = args.find(' ');
     std::string name(args, 0, pos);
     std::string password(args, pos+1);
     tab->chatLog("Requesting to join channel " + name);
-    Net::ChatServer::enterChannel(name, password);
+    Net::getChatHandler()->enterChannel(name, password);
 }
 
 void CommandHandler::handleListChannels(const std::string &args, ChatTab *tab)
 {
-    Net::ChatServer::getChannelList();
+    Net::getChatHandler()->channelList();
 }
 
 void CommandHandler::handleListUsers(const std::string &args, ChatTab *tab)
 {
-    Net::ChatServer::getUserList(chatWindow->getFocused()->getCaption());
+    Net::getChatHandler()->userList(chatWindow->getFocused()->getCaption());
 }
 
 void CommandHandler::handleTopic(const std::string &args, ChatTab *tab)
@@ -409,7 +390,7 @@ void CommandHandler::handleTopic(const std::string &args, ChatTab *tab)
     Channel *channel = channelTab ? channelTab->getChannel() : NULL;
     if (channel)
     {
-        Net::ChatServer::setChannelTopic(channel->getId(), args);
+        Net::getChatHandler()->setChannelTopic(channel->getId(), args);
     }
     else
     {
@@ -423,7 +404,7 @@ void CommandHandler::handleQuit(const std::string &args, ChatTab *tab)
     Channel *channel = channelTab ? channelTab->getChannel() : NULL;
     if (channel)
     {
-        Net::ChatServer::quitChannel(channel->getId());
+        Net::getChatHandler()->quitChannel(channel->getId());
     }
     else
     {
@@ -440,7 +421,7 @@ void CommandHandler::handleOp(const std::string &args, ChatTab *tab)
         // set the user mode 'o' to op a user
         if (args != "")
         {
-            Net::ChatServer::setUserMode(channel->getId(), args, 'o');
+            Net::getChatHandler()->setUserMode(channel->getId(), args, 'o');
         }
     }
     else
@@ -457,7 +438,7 @@ void CommandHandler::handleKick(const std::string &args, ChatTab *tab)
     {
         if (args != "")
         {
-            Net::ChatServer::kickUser(channel->getId(), args);
+            Net::getChatHandler()->kickUser(channel->getId(), args);
         }
     }
     else
@@ -465,8 +446,6 @@ void CommandHandler::handleKick(const std::string &args, ChatTab *tab)
         tab->chatLog("Unable to kick user", BY_CHANNEL);
     }
 }
-
-#endif
 
 void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
 {
@@ -482,12 +461,7 @@ void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleMe(const std::string &args, ChatTab *tab)
 {
-    // Net::getChatHandler()->me(args);
-#ifdef TMWSERV_SUPPORT
-    // TODO
-#else
-    chatHandler->me(args);
-#endif
+    Net::getChatHandler()->me(args);
 }
 
 void CommandHandler::handleRecord(const std::string &args, ChatTab *tab)

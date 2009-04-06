@@ -40,7 +40,11 @@
 
 #include <string>
 
-AdminHandler *adminHandler;
+extern Net::ChatHandler *chatHandler;
+
+Net::AdminHandler *adminHandler;
+
+namespace EAthena {
 
 AdminHandler::AdminHandler()
 {
@@ -99,7 +103,9 @@ void AdminHandler::kick(const std::string &name)
 }
 
 void AdminHandler::ban(int playerId)
-{}
+{
+    // Not supported
+}
 
 void AdminHandler::ban(const std::string &name)
 {
@@ -107,7 +113,9 @@ void AdminHandler::ban(const std::string &name)
 }
 
 void AdminHandler::unban(int playerId)
-{}
+{
+    // Not supported
+}
 
 void AdminHandler::unban(const std::string &name)
 {
@@ -123,3 +131,5 @@ void AdminHandler::mute(int playerId, int type, int limit)
     outMsg.writeInt8(type);
     outMsg.writeInt16(limit);
 }
+
+} // namespace EAthena

@@ -28,25 +28,25 @@ namespace Net {
 class AdminHandler
 {
     public:
-        virtual void announce(const std::string &text) {}
+        virtual void announce(const std::string &text) = 0;
 
-        virtual void localAnnounce(const std::string &text) {}
+        virtual void localAnnounce(const std::string &text) = 0;
 
-        virtual void hide(bool hide) {}
+        virtual void hide(bool hide) = 0;
 
-        virtual void kick(int playerId) {}
+        virtual void kick(int playerId) = 0;
 
-        virtual void kick(const std::string &name) {}
+        virtual void kick(const std::string &name) = 0;
 
-        virtual void ban(int playerId) {}
+        virtual void ban(int playerId) = 0;
 
-        virtual void ban(const std::string &name) {}
+        virtual void ban(const std::string &name) = 0;
 
-        virtual void unban(int playerId) {}
+        virtual void unban(int playerId) = 0;
 
-        virtual void unban(const std::string &name) {}
+        virtual void unban(const std::string &name) = 0;
 
-        virtual void mute(int playerId, int type, int limit) {}
+        virtual void mute(int playerId, int type, int limit) = 0;
 
         // TODO
 };

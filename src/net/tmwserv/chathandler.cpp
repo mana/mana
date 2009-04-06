@@ -23,6 +23,10 @@
 
 #include "net/tmwserv/protocol.h"
 
+#include "net/tmwserv/chatserver/chatserver.h"
+
+#include "net/tmwserv/gameserver/player.h"
+
 #include "net/messagein.h"
 
 #include "being.h"
@@ -41,6 +45,10 @@
 #include "utils/gettext.h"
 
 extern Being *player_node;
+
+Net::ChatHandler *chatHandler;
+
+namespace TmwServ {
 
 ChatHandler::ChatHandler()
 {
@@ -283,3 +291,59 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
     }
 }
 
+void ChatHandler::talk(const std::string &text)
+{
+    Net::GameServer::Player::say(text);
+}
+
+void ChatHandler::me(const std::string &text)
+{
+    // TODO
+}
+
+void ChatHandler::privateMessage(const std::string &recipient, const std::string &text)
+{
+    Net::ChatServer::privMsg(recipient, text);
+}
+
+void ChatHandler::channelList()
+{
+    Net::ChatServer::getChannelList();
+}
+
+void ChatHandler::enterChannel(const std::string &channel, const std::string &password)
+{
+    Net::ChatServer::enterChannel(channel, password);
+}
+
+void ChatHandler::quitChannel(int channelId)
+{
+    Net::ChatServer::quitChannel(channelId);
+}
+
+void ChatHandler::sendToChannel(int channelId, const std::string &text)
+{
+    Net::ChatServer::chat(channelId, text);
+}
+
+void ChatHandler::userList(const std::string &channel)
+{
+    Net::ChatServer::getUserList(channel);
+}
+
+void ChatHandler::setChannelTopic(int channelId, const std::string &text)
+{
+    Net::ChatServer::setChannelTopic(channelId, text);
+}
+
+void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
+{
+    Net::ChatServer::setUserMode(channelId, name, mode);
+}
+
+void ChatHandler::kickUser(int channelId, const std::string &name)
+{
+    Net::ChatServer::kickUser(channelId, name);
+}
+
+} // namespace TmwServ

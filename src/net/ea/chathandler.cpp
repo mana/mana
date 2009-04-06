@@ -42,7 +42,9 @@
 
 #define SERVER_NAME "Server"
 
-ChatHandler *chatHandler;
+Net::ChatHandler *chatHandler;
+
+namespace EAthena {
 
 ChatHandler::ChatHandler()
 {
@@ -201,7 +203,8 @@ void ChatHandler::channelList()
     // TODO
 }
 
-void ChatHandler::enterChannel(int channelId, const std::string &password)
+void ChatHandler::enterChannel(const std::string &channel,
+                               const std::string &password)
 {
     // TODO
 }
@@ -216,7 +219,7 @@ void ChatHandler::sendToChannel(int channelId, const std::string &text)
     // TODO
 }
 
-void ChatHandler::userList(int channelId)
+void ChatHandler::userList(const std::string &channel)
 {
     // TODO
 }
@@ -235,3 +238,5 @@ void ChatHandler::kickUser(int channelId, const std::string &name)
 {
     // TODO
 }
+
+} // namespace EAthena

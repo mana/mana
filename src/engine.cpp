@@ -33,10 +33,8 @@
 #include "gui/minimap.h"
 #include "gui/viewport.h"
 
+#include "net/maphandler.h"
 #include "net/net.h"
-#ifdef EATHENA_SUPPORT
-#include "net/ea/maphandler.h"
-#endif
 
 #include "resources/mapreader.h"
 #include "resources/monsterdb.h"
@@ -139,10 +137,7 @@ bool Engine::changeMap(const std::string &mapPath)
 
     mCurrentMap = newMap;
 
-    // Net::getMapHandler()->mapLoaded(mapPath);
-#ifdef EATHENA_SUPPORT
-    mapHandler->mapLoaded(mapPath);
-#endif
+    Net::getMapHandler()->mapLoaded(mapPath);
     return true;
 }
 

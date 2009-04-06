@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,33 +19,39 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EA_MAPHANDLER_H
-#define NET_EA_MAPHANDLER_H
+#ifndef NET_TMWSERV_ADMINHANDLER_H
+#define NET_TMWSERV_ADMINHANDLER_H
 
-#include "net/maphandler.h"
-#include "net/messagehandler.h"
-#include "net/net.h"
+#include "net/adminhandler.h"
 
-namespace EAthena {
+namespace TmwServ {
 
-class MapHandler : public MessageHandler, public Net::MapHandler
+class AdminHandler : public Net::AdminHandler
 {
     public:
-        MapHandler();
+        AdminHandler();
 
-        void handleMessage(MessageIn &msg);
+        void announce(const std::string &text);
 
-        void connect(LoginData *loginData);
+        void localAnnounce(const std::string &text);
 
-        void mapLoaded(const std::string &mapName);
+        void hide(bool hide);
 
-        void who();
+        void kick(int playerId);
 
-        void quit();
+        void kick(const std::string &name);
 
-        void ping(int tick);
+        void ban(int playerId);
+
+        void ban(const std::string &name);
+
+        void unban(int playerId);
+
+        void unban(const std::string &name);
+
+        void mute(int playerId, int type, int limit);
 };
 
-} // namespace EAthena
+} // namespace TmwServ
 
-#endif // NET_EA_MAPHANDLER_H
+#endif

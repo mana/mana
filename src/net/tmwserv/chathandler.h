@@ -22,9 +22,12 @@
 #ifndef NET_TMWSERV_CHATHANDLER_H
 #define NET_TMWSERV_CHATHANDLER_H
 
+#include "net/chathandler.h"
 #include "net/messagehandler.h"
 
-class ChatHandler : public MessageHandler
+namespace TmwServ {
+
+class ChatHandler : public MessageHandler, public Net::ChatHandler
 {
     public:
         ChatHandler();
@@ -33,6 +36,30 @@ class ChatHandler : public MessageHandler
          * Handle the given message appropriately.
          */
         void handleMessage(MessageIn &msg);
+
+        void talk(const std::string &text);
+
+        void me(const std::string &text);
+
+        void privateMessage(const std::string &recipient,
+                            const std::string &text);
+
+        void channelList();
+
+        void enterChannel(const std::string &channel,
+                          const std::string &password);
+
+        void quitChannel(int channelId);
+
+        void sendToChannel(int channelId, const std::string &text);
+
+        void userList(const std::string &channel);
+
+        void setChannelTopic(int channelId, const std::string &text);
+
+        void setUserMode(int channelId, const std::string &name, int mode);
+
+        void kickUser(int channelId, const std::string &name);
     
     private:
         /**
@@ -80,5 +107,7 @@ class ChatHandler : public MessageHandler
          */
         void handleChannelEvent(MessageIn &msg);
 };
+
+} // namespace TmwServ
 
 #endif

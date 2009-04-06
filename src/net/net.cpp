@@ -35,9 +35,15 @@
 #include "net/skillhandler.h"
 #include "net/tradehandler.h"
 
+#include "net/tmwserv/adminhandler.h"
+#include "net/tmwserv/chathandler.h"
 #include "net/tmwserv/inventoryhandler.h"
+#include "net/tmwserv/maphandler.h"
 #include "net/tmwserv/npchandler.h"
+
+#include "net/ea/adminhandler.h"
 #include "net/ea/inventoryhandler.h"
+#include "net/ea/maphandler.h"
 #include "net/ea/npchandler.h"
 
 #ifdef TMWSERV_SUPPORT
@@ -48,13 +54,15 @@
 #include "net/ea/tradehandler.h"
 #endif
 
+extern Net::AdminHandler *adminHandler;
+extern Net::ChatHandler *chatHandler;
 extern Net::InventoryHandler *inventoryHandler;
+extern Net::MapHandler *mapHandler;
 extern Net::NpcHandler *npcHandler;
 
 Net::AdminHandler *Net::getAdminHandler()
 {
-    // TODO
-    return 0;
+    return adminHandler;
 }
 
 Net::CharHandler *Net::getCharHandler()
@@ -65,8 +73,7 @@ Net::CharHandler *Net::getCharHandler()
 
 Net::ChatHandler *Net::getChatHandler()
 {
-    // TODO
-    return 0;
+    return chatHandler;
 }
 
 Net::GeneralHandler *Net::getGeneralHandler()
@@ -94,8 +101,7 @@ Net::LoginHandler *Net::getLoginHandler()
 
 Net::MapHandler *Net::getMapHandler()
 {
-    // TODO
-    return 0;
+    return mapHandler;
 }
 
 Net::NpcHandler *Net::getNpcHandler()

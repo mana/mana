@@ -23,12 +23,8 @@
 
 #include "channel.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/chatserver/chatserver.h"
-#include "net/tmwserv/gameserver/player.h"
-#else
-
-#endif
+#include "net/chathandler.h"
+#include "net/net.h"
 
 ChannelTab::ChannelTab(Channel *channel) : ChatTab(channel->getName()),
             mChannel(channel)
@@ -41,7 +37,5 @@ ChannelTab::~ChannelTab()
 }
 
 void ChannelTab::handleInput(const std::string &msg) {
-#ifdef TMSERV_SUPPORT
-    Net::ChatServer::chat(getId(), msg);
-#endif
+    Net::getChatHandler()->sendToChannel(getChannel()->getId(), msg);
 }

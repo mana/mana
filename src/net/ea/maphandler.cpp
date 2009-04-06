@@ -35,7 +35,9 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-MapHandler *mapHandler;
+Net::MapHandler *mapHandler;
+
+namespace EAthena {
 
 MapHandler::MapHandler()
 {
@@ -127,3 +129,5 @@ void MapHandler::ping(int tick)
     MessageOut msg(CMSG_CLIENT_PING);
     msg.writeInt32(tick);
 }
+
+} // namespace EAthena

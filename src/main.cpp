@@ -826,7 +826,7 @@ static void mapLogin(Network *network, LoginData *loginData)
     logger->log("Trying to connect to map server...");
     logger->log("Map: %s", map_path.c_str());
 
-    MapHandler *mapHandler = new MapHandler;
+    EAthena::MapHandler *mapHandler = new EAthena::MapHandler;
     network->connect(loginData->hostname, loginData->port);
     //network->registerHandler(mapHandler);
     network->registerHandler(mapHandler);

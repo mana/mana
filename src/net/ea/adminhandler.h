@@ -26,6 +26,8 @@
 #include "net/messagehandler.h"
 #include "net/net.h"
 
+namespace EAthena {
+
 class AdminHandler : public MessageHandler, public Net::AdminHandler
 {
     public:
@@ -54,6 +56,6 @@ class AdminHandler : public MessageHandler, public Net::AdminHandler
         void mute(int playerId, int type, int limit);
 };
 
-extern AdminHandler *adminHandler;
+} // namespace EAthena
 
 #endif // NET_EA_ADMINHANDLER_H

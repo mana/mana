@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,21 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EA_MAPHANDLER_H
-#define NET_EA_MAPHANDLER_H
+#ifndef NET_TMWSERV_MAPHANDLER_H
+#define NET_TMWSERV_MAPHANDLER_H
 
 #include "net/maphandler.h"
-#include "net/messagehandler.h"
-#include "net/net.h"
 
-namespace EAthena {
+namespace TmwServ {
 
-class MapHandler : public MessageHandler, public Net::MapHandler
+class MapHandler : public Net::MapHandler
 {
     public:
         MapHandler();
-
-        void handleMessage(MessageIn &msg);
 
         void connect(LoginData *loginData);
 
@@ -46,6 +42,6 @@ class MapHandler : public MessageHandler, public Net::MapHandler
         void ping(int tick);
 };
 
-} // namespace EAthena
+} // namespace TmwServ
 
-#endif // NET_EA_MAPHANDLER_H
+#endif

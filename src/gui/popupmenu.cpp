@@ -304,7 +304,7 @@ void PopupMenu::handleLink(const std::string &link)
              (being->getType() == Being::PLAYER ||
               being->getType() == Being::MONSTER))
     {
-        adminHandler->kick(being->getId());
+        Net::getAdminHandler()->kick(being->getId());
     }
 #endif
 

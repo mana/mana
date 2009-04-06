@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,33 +19,40 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EA_MAPHANDLER_H
-#define NET_EA_MAPHANDLER_H
+#include "net/tmwserv/maphandler.h"
 
-#include "net/maphandler.h"
-#include "net/messagehandler.h"
-#include "net/net.h"
+Net::MapHandler *mapHandler;
 
-namespace EAthena {
+namespace TmwServ {
 
-class MapHandler : public MessageHandler, public Net::MapHandler
+MapHandler::MapHandler()
 {
-    public:
-        MapHandler();
+    mapHandler = this;
+}
 
-        void handleMessage(MessageIn &msg);
+void MapHandler::connect(LoginData *loginData)
+{
+    // TODO
+}
 
-        void connect(LoginData *loginData);
+void MapHandler::mapLoaded(const std::string &mapName)
+{
+    // TODO
+}
 
-        void mapLoaded(const std::string &mapName);
+void MapHandler::who()
+{
+    // TODO
+}
 
-        void who();
+void MapHandler::quit()
+{
+    // TODO
+}
 
-        void quit();
+void MapHandler::ping(int tick)
+{
+    // TODO
+}
 
-        void ping(int tick);
-};
-
-} // namespace EAthena
-
-#endif // NET_EA_MAPHANDLER_H
+} // namespace TmwServ

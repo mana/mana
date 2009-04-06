@@ -30,13 +30,8 @@
 #include "gui/recorder.h"
 #include "gui/scrollarea.h"
 
+#include "net/chathandler.h"
 #include "net/net.h"
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/chatserver/chatserver.h"
-#include "net/tmwserv/gameserver/player.h"
-#else
-#include "net/ea/chathandler.h"
-#endif
 
 #include "resources/iteminfo.h"
 #include "resources/itemdb.h"
@@ -276,12 +271,7 @@ void ChatTab::clearText()
 }
 
 void ChatTab::handleInput(const std::string &msg) {
-    // Net::getChatHandler()->talk(msg);
-#ifdef TMWSERV_SUPPORT
-    Net::GameServer::Player::say(msg);
-#else
-    chatHandler->talk(msg);
-#endif
+    Net::getChatHandler()->talk(msg);
 }
 
 void ChatTab::handleCommand(std::string msg)
