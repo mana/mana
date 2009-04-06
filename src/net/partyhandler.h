@@ -35,6 +35,8 @@ class PartyHandler
 
         virtual void invite(int playerId) = 0;
 
+        virtual void invite(const std::string &name) = 0;
+
         virtual void inviteResponse(bool accept) = 0;
 
         virtual void leave() = 0;

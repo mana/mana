@@ -491,7 +491,9 @@ void PlayerHandler::pickUp(FloorItem *floorItem)
 
 void PlayerHandler::setDirection(char direction)
 {
-    // TODO
+    MessageOut outMsg(CMSG_PLAYER_CHANGE_DIR);
+    outMsg.writeInt16(0);
+    outMsg.writeInt8(direction);
 }
 
 void PlayerHandler::setDestination(int x, int y, int direction)

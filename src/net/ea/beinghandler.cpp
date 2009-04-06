@@ -57,6 +57,7 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_BEING_CHANGE_LOOKS,
         SMSG_BEING_CHANGE_LOOKS2,
         SMSG_BEING_NAME_RESPONSE,
+        SMSG_BEING_CHANGE_DIRECTION,
         SMSG_PLAYER_UPDATE_1,
         SMSG_PLAYER_UPDATE_2,
         SMSG_PLAYER_MOVE,
@@ -412,6 +413,18 @@ void BeingHandler::handleMessage(MessageIn &msg)
             {
                 dstBeing->setName(msg.readString(24));
             }
+            break;
+
+        case SMSG_BEING_CHANGE_DIRECTION:
+            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
+            {
+                break;
+            }
+
+            msg.readInt16(); // unused
+
+            dstBeing->setDirection(msg.readInt8());
+
             break;
 
         case SMSG_PLAYER_UPDATE_1:

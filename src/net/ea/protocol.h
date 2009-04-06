@@ -73,6 +73,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_BEING_ACTION            0x008a /**< Attack, sit, stand up, ... */
 #define SMSG_BEING_CHAT              0x008d /**< A being talks */
 #define SMSG_BEING_NAME_RESPONSE     0x0095 /**< Has to be requested */
+#define SMSG_BEING_CHANGE_DIRECTION  0x009c
 
 #define SMSG_NPC_MESSAGE             0x00b4
 #define SMSG_NPC_NEXT                0x00b5
@@ -147,6 +148,7 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_PLAYER_INVENTORY_DROP   0x00a2
 #define CMSG_PLAYER_EQUIP            0x00a9
 #define CMSG_PLAYER_UNEQUIP          0x00ab
+#define CMSG_PLAYER_CHANGE_DIR       0x009b
 
 #define CMSG_NPC_TALK                0x0090
 #define CMSG_NPC_NEXT_REQUEST        0x00b9

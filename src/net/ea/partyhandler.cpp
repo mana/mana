@@ -225,6 +225,11 @@ void PartyHandler::invite(int playerId)
     outMsg.writeInt32(playerId);
 }
 
+void PartyHandler::invite(const std::string &name)
+{
+    // TODO
+}
+
 void PartyHandler::inviteResponse(bool accept)
 {
     MessageOut outMsg(CMSG_PARTY_INVITED);

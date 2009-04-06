@@ -41,6 +41,8 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
 
         void invite(int playerId);
 
+        void invite(const std::string &name);
+
         void inviteResponse(bool accept);
 
         void leave();
