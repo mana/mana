@@ -376,6 +376,10 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         {
             player_node->pickUp(item);
         }
+        else if (player_node->mAction == Being::SIT)
+        {
+            return;
+        }
         // Just walk around
         else
         {
