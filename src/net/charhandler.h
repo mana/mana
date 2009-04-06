@@ -25,15 +25,21 @@
 #include "localplayer.h"
 
 #include <iosfwd>
+#include <vector>
+
+class CharCreateDialog;
 
 namespace Net {
 class CharHandler
 {
     public:
+        virtual void setCharCreateDialog(CharCreateDialog *window) = 0;
+
         virtual void chooseCharacter(int slot, LocalPlayer* character) = 0;
 
         virtual void newCharacter(const std::string &name, int slot,
-                        bool gender, int hairstyle, int hairColor) = 0;
+                        bool gender, int hairstyle, int hairColor,
+                        std::vector<int> stats) = 0;
 
         virtual void deleteCharacter(int slot, LocalPlayer* character) = 0;
 };

@@ -168,11 +168,13 @@ Net::Connection *chatServerConnection = 0;
 Net::Connection *accountServerConnection = 0;
 #endif
 
-CharServerHandler charServerHandler;
 LoginData loginData;
 #ifdef TMWSERV_SUPPORT
 LoginHandler loginHandler;
 LogoutHandler logoutHandler;
+TmwServ::CharServerHandler charServerHandler;
+#else
+EAthena::CharServerHandler charServerHandler;
 #endif
 LockedArray<LocalPlayer*> charInfo(maxSlot + 1);
 

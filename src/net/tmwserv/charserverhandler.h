@@ -22,18 +22,20 @@
 #ifndef NET_TMWSERV_CHARSERVERHANDLER_H
 #define NET_TMWSERV_CHARSERVERHANDLER_H
 
+#include "net/charhandler.h"
 #include "net/messagehandler.h"
 
 #include "lockedarray.h"
 
-class CharCreateDialog;
 class LocalPlayer;
 class LoginData;
+
+namespace TmwServ {
 
 /**
  * Deals with incoming messages related to character selection.
  */
-class CharServerHandler : public MessageHandler
+class CharServerHandler : public MessageHandler, public Net::CharHandler
 {
     public:
         CharServerHandler();
@@ -50,8 +52,15 @@ class CharServerHandler : public MessageHandler
          * dialog when a new character is succesfully created, and will unlock
          * the dialog when a new character failed to be created.
          */
-        void setCharCreateDialog(CharCreateDialog *window)
-        { mCharCreateDialog = window; }
+        void setCharCreateDialog(CharCreateDialog *window);
+
+        void chooseCharacter(int slot, LocalPlayer* character);
+
+        void newCharacter(const std::string &name, int slot,
+                        bool gender, int hairstyle, int hairColor,
+                        std::vector<int> stats);
+
+        void deleteCharacter(int slot, LocalPlayer* character);
 
     protected:
         void handleCharCreateResponse(MessageIn &msg);
@@ -64,5 +73,7 @@ class CharServerHandler : public MessageHandler
         LocalPlayer*
         readPlayerData(MessageIn &msg, int &slot);
 };
+
+} // namespace TmwServ
 
 #endif

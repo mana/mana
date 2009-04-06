@@ -27,9 +27,10 @@
 
 #include "lockedarray.h"
 
-class CharCreateDialog;
 class LocalPlayer;
 class LoginData;
+
+namespace EAthena {
 
 /**
  * Deals with incoming messages from the character server.
@@ -52,13 +53,12 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
          * dialog when a new character is succesfully created, and will unlock
          * the dialog when a new character failed to be created.
          */
-        void setCharCreateDialog(CharCreateDialog *window)
-        { mCharCreateDialog = window; }
+        void setCharCreateDialog(CharCreateDialog *window);
 
         void chooseCharacter(int slot, LocalPlayer* character);
 
         void newCharacter(const std::string &name, int slot, bool gender,
-                          int hairstyle, int hairColor);
+                    int hairstyle, int hairColor, std::vector<int> stats);
 
         void deleteCharacter(int slot, LocalPlayer* character);
 
@@ -70,6 +70,6 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
         LocalPlayer *readPlayerData(MessageIn &msg, int &slot);
 };
 
-extern Net::CharHandler *charHandler;
+} // namespace EAthena
 
 #endif // NET_EA_CHARSERVERHANDLER_H

@@ -36,6 +36,7 @@
 #include "net/tradehandler.h"
 
 extern Net::AdminHandler *adminHandler;
+extern Net::CharHandler *charHandler;
 extern Net::ChatHandler *chatHandler;
 extern Net::InventoryHandler *inventoryHandler;
 extern Net::MapHandler *mapHandler;
@@ -51,8 +52,7 @@ Net::AdminHandler *Net::getAdminHandler()
 
 Net::CharHandler *Net::getCharHandler()
 {
-    // TODO
-    return 0;
+    return charHandler;
 }
 
 Net::ChatHandler *Net::getChatHandler()

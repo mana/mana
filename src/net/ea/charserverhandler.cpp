@@ -31,13 +31,15 @@
 #include "logindata.h"
 #include "main.h"
 
-#include "gui/char_select.h"
+#include "gui/charcreatedialog.h"
 #include "gui/ok_dialog.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 Net::CharHandler *charHandler;
+
+namespace EAthena {
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
@@ -239,6 +241,24 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     return tempPlayer;
 }
 
+void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
+{
+    mCharCreateDialog = window;
+
+    if (!mCharCreateDialog) return;
+
+    std::vector<std::string> attributes;
+    attributes.push_back(_("Strength:"));
+    attributes.push_back(_("Agility:"));
+    attributes.push_back(_("Vitality:"));
+    attributes.push_back(_("Intelligence:"));
+    attributes.push_back(_("Dexterity:"));
+    attributes.push_back(_("Luck:"));
+
+    mCharCreateDialog->setAttributes(attributes, 30, 1, 9);
+    mCharCreateDialog->setFixedGender(true);
+}
+
 void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)
 {
     MessageOut outMsg(CMSG_CHAR_SELECT);
@@ -246,16 +266,14 @@ void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)
 }
 
 void CharServerHandler::newCharacter(const std::string &name, int slot,
-        bool gender, int hairstyle, int hairColor)
+        bool gender, int hairstyle, int hairColor, std::vector<int> stats)
 {
     MessageOut outMsg(CMSG_CHAR_CREATE);
     outMsg.writeString(name, 24);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
+    for (int i = 0; i < 6; i++)
+    {
+        outMsg.writeInt8(stats[i]);
+    }
     outMsg.writeInt8(slot);
     outMsg.writeInt16(hairColor);
     outMsg.writeInt16(hairstyle);
@@ -267,3 +285,5 @@ void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
     outMsg.writeInt32(character->mCharId);
     outMsg.writeString("a@a.com", 40);
 }
+
+} // namespace EAthena

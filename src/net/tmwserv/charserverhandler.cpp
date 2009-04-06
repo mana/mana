@@ -24,6 +24,9 @@
 #include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
 
+#include "net/tmwserv/accountserver/accountserver.h"
+#include "net/tmwserv/accountserver/account.h"
+
 #include "net/messagein.h"
 
 #include "game.h"
@@ -32,11 +35,17 @@
 #include "logindata.h"
 #include "main.h"
 
+#include "gui/charcreatedialog.h"
 #include "gui/ok_dialog.h"
-#include "gui/char_select.h"
+
+#include "utils/gettext.h"
 
 extern Net::Connection *gameServerConnection;
 extern Net::Connection *chatServerConnection;
+
+Net::CharHandler *charHandler;
+
+namespace TmwServ {
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
@@ -49,6 +58,7 @@ CharServerHandler::CharServerHandler():
         0
     };
     handledMessages = _messages;
+    charHandler = this;
 }
 
 void CharServerHandler::handleMessage(MessageIn &msg)
@@ -226,3 +236,46 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 
     return tempPlayer;
 }
+
+void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
+{
+    mCharCreateDialog = window;
+
+    if (!mCharCreateDialog) return;
+
+    std::vector<std::string> attributes;
+    attributes.push_back(_("Strength:"));
+    attributes.push_back(_("Agility:"));
+    attributes.push_back(_("Dexterity:"));
+    attributes.push_back(_("Vitality:"));
+    attributes.push_back(_("Intelligence:"));
+    attributes.push_back(_("Willpower:"));
+
+    mCharCreateDialog->setAttributes(attributes, 60, 1, 20);
+}
+
+void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)
+{
+    Net::AccountServer::Account::selectCharacter(slot);
+}
+
+void CharServerHandler::newCharacter(const std::string &name, int slot, bool gender,
+                  int hairstyle, int hairColor, std::vector<int> stats)
+{
+    Net::AccountServer::Account::createCharacter(name, hairstyle, hairColor,
+                    gender,
+                    stats[0],  // STR
+                    stats[1],  // AGI
+                    stats[2],  // DEX
+                    stats[3],  // VIT
+                    stats[4],  // INT
+                    stats[5]   // WILL
+                );
+}
+
+void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
+{
+    Net::AccountServer::Account::deleteCharacter(slot);
+}
+
+} // namespace TmwServ

@@ -19,8 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/button.h"
 #include "gui/char_select.h"
+
+#include "gui/button.h"
+#include "gui/charcreatedialog.h"
 #include "gui/confirm_dialog.h"
 #include "gui/label.h"
 #include "gui/ok_dialog.h"
@@ -38,13 +40,7 @@
 #include "logindata.h"
 
 #include "net/tmwserv/accountserver/account.h"
-#include "net/tmwserv/charserverhandler.h"
-#else
-#include "net/ea/charserverhandler.h"
 #endif
-
-#include "net/charhandler.h"
-#include "net/net.h"
 
 #include "gui/widgets/layout.h"
 
@@ -53,7 +49,9 @@
 #include "main.h"
 #include "units.h"
 
+#include "net/charhandler.h"
 #include "net/messageout.h"
+#include "net/net.h"
 
 #include "resources/colordb.h"
 
@@ -64,9 +62,6 @@
 #include <guichan/font.hpp>
 
 #include <string>
-
-// Defined in main.cpp, used here for setting the char create dialog
-extern CharServerHandler charServerHandler;
 
 /**
  * Listener for confirming character deletion.
@@ -240,7 +235,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
                 new CharCreateDialog(this, mCharInfo->getPos());
-            charServerHandler.setCharCreateDialog(charCreateDialog);
+            Net::getCharHandler()->setCharCreateDialog(charCreateDialog);
         }
     }
     else if (event.getId() == "delete")
@@ -263,8 +258,8 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
-                new CharCreateDialog(this, mCharInfo->getPos(), mGender);
-            charServerHandler.setCharCreateDialog(charCreateDialog);
+                new CharCreateDialog(this, mCharInfo->getPos());
+            Net::getCharHandler()->setCharCreateDialog(charCreateDialog);
         }
     }
 #endif
@@ -345,23 +340,13 @@ void CharSelectDialog::updatePlayerInfo()
 
 void CharSelectDialog::attemptCharDelete()
 {
-    // Net::getCharHandler()->deleteCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
-#ifdef TMWSERV_SUPPORT
-    Net::AccountServer::Account::deleteCharacter(mCharInfo->getPos());
-#else
-    charHandler->deleteCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
-#endif
+    Net::getCharHandler()->deleteCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
     mCharInfo->lock();
 }
 
 void CharSelectDialog::attemptCharSelect()
 {
-    // Net::getCharHandler()->chooseCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
-#ifdef TMWSERV_SUPPORT
-    Net::AccountServer::Account::selectCharacter(mCharInfo->getPos());
-#else
-    charHandler->chooseCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
-#endif
+    Net::getCharHandler()->chooseCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
     mCharInfo->lock();
 }
 
@@ -392,293 +377,3 @@ bool CharSelectDialog::selectByName(const std::string &name)
 
     return false;
 }
-
-#ifdef TMWSERV_SUPPORT
-CharCreateDialog::CharCreateDialog(Window *parent, int slot):
-#else
-CharCreateDialog::CharCreateDialog(Window *parent, int slot,
-                                   Gender gender):
-#endif
-    Window(_("Create Character"), true, parent),
-    mSlot(slot)
-{
-    mPlayer = new Player(0, 0, NULL);
-#ifdef TMWSERV_SUPPORT
-    mPlayer->setGender(GENDER_MALE);
-#else
-    mPlayer->setGender(gender);
-#endif
-
-    int numberOfHairColors = ColorDB::size();
-
-    mPlayer->setHairStyle(rand() % mPlayer->getNumOfHairstyles(),
-                          rand() % numberOfHairColors);
-
-    mNameField = new TextField("");
-    mNameLabel = new Label(_("Name:"));
-    mNextHairColorButton = new Button(">", "nextcolor", this);
-    mPrevHairColorButton = new Button("<", "prevcolor", this);
-    mHairColorLabel = new Label(_("Hair Color:"));
-    mNextHairStyleButton = new Button(">", "nextstyle", this);
-    mPrevHairStyleButton = new Button("<", "prevstyle", this);
-    mHairStyleLabel = new Label(_("Hair Style:"));
-    mCreateButton = new Button(_("Create"), "create", this);
-    mCancelButton = new Button(_("Cancel"), "cancel", this);
-#ifdef TMWSERV_SUPPORT
-    mMale = new RadioButton(_("Male"), "gender");
-    mFemale = new RadioButton(_("Female"), "gender");
-
-    // Default to a Male character
-    mMale->setSelected(true);
-
-    mMale->setActionEventId("gender");
-    mFemale->setActionEventId("gender");
-
-    mMale->addActionListener(this);
-    mFemale->addActionListener(this);
-#endif
-    mPlayerBox = new PlayerBox(mPlayer);
-
-    mPlayerBox->setWidth(74);
-
-    mNameField->setActionEventId("create");
-    mNameField->addActionListener(this);
-
-#ifdef TMWSERV_SUPPORT
-    mAttributeLabel[0] = new gcn::Label(_("Strength:"));
-    mAttributeLabel[1] = new gcn::Label(_("Agility:"));
-    mAttributeLabel[2] = new gcn::Label(_("Dexterity:"));
-    mAttributeLabel[3] = new gcn::Label(_("Vitality:"));
-    mAttributeLabel[4] = new gcn::Label(_("Intelligence:"));
-    mAttributeLabel[5] = new gcn::Label(_("Willpower:"));
-    for (int i = 0; i < 6; i++)
-    {
-        mAttributeLabel[i]->setWidth(70);
-        mAttributeSlider[i] = new Slider(1, 20);
-        mAttributeValue[i] = new gcn::Label("1");
-    };
-
-    mAttributesLeft = new gcn::Label(strprintf(_("Please distribute %d points"), 99));
-
-    int w = 200;
-    int h = 330;
-    setContentSize(w, h);
-    mPlayerBox->setDimension(gcn::Rectangle(80, 30, 110, 85));
-    mNameLabel->setPosition(5, 5);
-    mNameField->setDimension(
-            gcn::Rectangle(45, 5, w - 45 - 7, mNameField->getHeight()));
-    mPrevHairColorButton->setPosition(90, 35);
-    mNextHairColorButton->setPosition(165, 35);
-    mHairColorLabel->setPosition(5, 40);
-    mPrevHairStyleButton->setPosition(90, 64);
-    mNextHairStyleButton->setPosition(165, 64);
-    mHairStyleLabel->setPosition(5, 70);
-    for (int i=0; i<6; i++)
-    {
-        mAttributeSlider[i]->setValue(10);
-        mAttributeSlider[i]->setDimension(gcn::Rectangle(   75, 140 + i*20,
-                                                            100, 10));
-        mAttributeSlider[i]->setActionEventId("statslider");
-        mAttributeSlider[i]->addActionListener(this);
-        mAttributeValue[i]->setPosition(180, 140 + i*20);
-        mAttributeLabel[i]->setPosition(5, 140 + i*20);
-    };
-    mAttributesLeft->setPosition(15, 280);
-    updateSliders();
-    mCancelButton->setPosition(
-            w - 5 - mCancelButton->getWidth(),
-            h - 5 - mCancelButton->getHeight());
-    mCreateButton->setPosition(
-            mCancelButton->getX() - 5 - mCreateButton->getWidth(),
-            h - 5 - mCancelButton->getHeight());
-
-    mMale->setPosition(30, 120);
-    mFemale->setPosition(100, 120);
-
-    add(mPlayerBox);
-    add(mNameField);
-    add(mNameLabel);
-    add(mNextHairColorButton);
-    add(mPrevHairColorButton);
-    add(mHairColorLabel);
-    add(mNextHairStyleButton);
-    add(mPrevHairStyleButton);
-    add(mHairStyleLabel);
-    for (int i = 0; i < 6; i++)
-    {
-        add(mAttributeSlider[i]);
-        add(mAttributeValue[i]);
-        add(mAttributeLabel[i]);
-    };
-    add(mAttributesLeft);
-    add(mCreateButton);
-    add(mCancelButton);
-
-    add(mMale);
-    add(mFemale);
-
-#else
-
-    ContainerPlacer place;
-    place = getPlacer(0, 0);
-
-    place(0, 0, mNameLabel, 1);
-    place(1, 0, mNameField, 6);
-    place(0, 1, mHairStyleLabel, 1);
-    place(1, 1, mPrevHairStyleButton);
-    place(2, 1, mPlayerBox, 1, 8).setPadding(3);
-    place(3, 1, mNextHairStyleButton);
-    place(0, 2, mHairColorLabel, 1);
-    place(1, 2, mPrevHairColorButton);
-    place(3, 2, mNextHairColorButton);
-    place.getCell().matchColWidth(0, 2);
-    place = getPlacer(0, 2);
-    place(4, 0, mCancelButton);
-    place(5, 0, mCreateButton);
-
-    reflowLayout(225, 0);
-#endif
-
-    center();
-    setVisible(true);
-    mNameField->requestFocus();
-}
-
-CharCreateDialog::~CharCreateDialog()
-{
-    delete mPlayer;
-
-    // Make sure the char server handler knows that we're gone
-    charServerHandler.setCharCreateDialog(0);
-}
-
-void CharCreateDialog::action(const gcn::ActionEvent &event)
-{
-    int numberOfColors = ColorDB::size();
-    if (event.getId() == "create")
-    {
-        if (getName().length() >= 4)
-        {
-            // Attempt to create the character
-            mCreateButton->setEnabled(false);
-#ifdef TMWSERV_SUPPORT
-            unsigned int genderSelected;
-            if (mMale->isSelected()) {
-                genderSelected = GENDER_MALE;
-            } else {
-                genderSelected = GENDER_FEMALE;
-            }
-
-            Net::AccountServer::Account::createCharacter(
-                    getName(),
-                    mPlayer->getHairStyle(),
-                    mPlayer->getHairColor(),
-                    genderSelected,   // gender
-                    (int) mAttributeSlider[0]->getValue(),  // STR
-                    (int) mAttributeSlider[1]->getValue(),  // AGI
-                    (int) mAttributeSlider[2]->getValue(),  // DEX
-                    (int) mAttributeSlider[3]->getValue(),  // VIT
-                    (int) mAttributeSlider[4]->getValue(),  // INT
-                    (int) mAttributeSlider[5]->getValue()  // WILL
-            );
-#else
-            charHandler->newCharacter(getName(), mSlot, false,
-                            mPlayer->getHairStyle(), mPlayer->getHairColor());
-#endif
-        }
-        else
-        {
-            new OkDialog(_("Error"),
-                         _("Your name needs to be at least 4 characters."),
-                         this);
-        }
-    }
-    else if (event.getId() == "cancel")
-        scheduleDelete();
-    else if (event.getId() == "nextcolor")
-        mPlayer->setHairStyle(mPlayer->getHairStyle(),
-                             (mPlayer->getHairColor() + 1) % numberOfColors);
-    else if (event.getId() == "prevcolor")
-        mPlayer->setHairStyle(mPlayer->getHairStyle(),
-                             (mPlayer->getHairColor() + numberOfColors - 1) %
-                              numberOfColors);
-    else if (event.getId() == "nextstyle")
-        mPlayer->setHairStyle(mPlayer->getHairStyle() + 1,
-                              mPlayer->getHairColor());
-    else if (event.getId() == "prevstyle")
-        mPlayer->setHairStyle(mPlayer->getHairStyle() +
-                              mPlayer->getNumOfHairstyles() - 1,
-                              mPlayer->getHairColor());
-#ifdef TMWSERV_SUPPORT
-    else if (event.getId() == "statslider") {
-        updateSliders();
-    }
-    else if (event.getId() == "gender"){
-        if (mMale->isSelected()) {
-            mPlayer->setGender(GENDER_MALE);
-        } else {
-            mPlayer->setGender(GENDER_FEMALE);
-        }
-    }
-#endif
-}
-
-std::string CharCreateDialog::getName()
-{
-    std::string name = mNameField->getText();
-    trim(name);
-    return name;
-}
-
-#ifdef TMWSERV_SUPPORT
-void CharCreateDialog::updateSliders()
-{
-    for (int i = 0; i < 6; i++)
-    {
-        // Update captions
-        mAttributeValue[i]->setCaption(
-                toString((int) (mAttributeSlider[i]->getValue())));
-        mAttributeValue[i]->adjustSize();
-    }
-
-    // Update distributed points
-    int pointsLeft = 60 - getDistributedPoints();
-    if (pointsLeft == 0)
-    {
-        mAttributesLeft->setCaption(_("Character stats OK"));
-        mCreateButton->setEnabled(true);
-    }
-    else
-    {
-        mCreateButton->setEnabled(false);
-        if (pointsLeft > 0)
-        {
-            mAttributesLeft->setCaption(strprintf(_("Please distribute %d points"), pointsLeft));
-        }
-        else
-        {
-            mAttributesLeft->setCaption(strprintf(_("Please remove %d points"), -pointsLeft));
-        }
-    }
-
-    mAttributesLeft->adjustSize();
-}
-#endif
-
-void CharCreateDialog::unlock()
-{
-    mCreateButton->setEnabled(true);
-}
-
-#ifdef TMWSERV_SUPPORT
-int CharCreateDialog::getDistributedPoints()
-{
-    int points = 0;
-
-    for (int i = 0; i < 6; i++)
-    {
-        points += (int) mAttributeSlider[i]->getValue();
-    }
-    return points;
-}
-#endif

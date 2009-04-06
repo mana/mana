@@ -37,6 +37,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/buysell.h \
 	      gui/char_select.cpp \
 	      gui/char_select.h \
+	      gui/charcreatedialog.cpp \
+	      gui/charcreatedialog.h \
 	      gui/chat.cpp \
 	      gui/chat.h \
 	      gui/chatinput.cpp \

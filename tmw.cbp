@@ -226,6 +226,8 @@
 		</Unit>
 		<Unit filename="src/gui/char_select.cpp" />
 		<Unit filename="src/gui/char_select.h" />
+		<Unit filename="src/gui/charcreate.cpp" />
+		<Unit filename="src/gui/charcreate.h" />
 		<Unit filename="src/gui/char_server.cpp">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
