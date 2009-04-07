@@ -22,7 +22,7 @@
 #ifndef MINIMAP_H
 #define MINIMAP_H
 
-#include "window.h"
+#include "gui/widgets/window.h"
 
 class Image;
 

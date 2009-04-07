@@ -19,18 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/progressbar.h"
+
+#include "gui/gui.h"
+#include "gui/palette.h"
+#include "gui/textrenderer.h"
+
+#include "configuration.h"
+#include "graphics.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
 #include <guichan/font.hpp>
-
-#include "gui.h"
-#include "palette.h"
-#include "progressbar.h"
-#include "textrenderer.h"
-
-#include "../configuration.h"
-#include "../graphics.h"
-
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
 
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;

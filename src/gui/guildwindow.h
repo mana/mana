@@ -22,16 +22,16 @@
 #ifndef GUI_GUILDWINDOW_H
 #define GUI_GUILDWINDOW_H
 
-#include <iosfwd>
-#include <map>
-#include <vector>
+#include "gui/widgets/window.h"
+
+#include "guichanfwd.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/widgets/listbox.hpp>
 
-#include "window.h"
-
-#include "../guichanfwd.h"
+#include <iosfwd>
+#include <map>
+#include <vector>
 
 class LocalPlayer;
 class TextDialog;

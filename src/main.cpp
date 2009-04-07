@@ -40,17 +40,18 @@
 #include "statuseffect.h"
 #include "units.h"
 
-#include "gui/button.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/progressbar.h"
+
 #ifdef EATHENA_SUPPORT
 #include "gui/char_server.h"
 #endif
 #include "gui/char_select.h"
 #include "gui/gui.h"
-#include "gui/label.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
 #include "gui/palette.h"
-#include "gui/progressbar.h"
 #include "gui/register.h"
 #include "gui/sdlinput.h"
 #include "gui/setup.h"

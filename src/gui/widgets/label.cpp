@@ -19,8 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "label.h"
-#include "palette.h"
+#include "gui/widgets/label.h"
+
+#include "gui/palette.h"
 
 Label::Label() :
     gcn::Label()

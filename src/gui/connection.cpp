@@ -19,15 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
 #include "connection.h"
-#include "label.h"
-#include "progressbar.h"
 
-#include "../main.h"
-#include "../log.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/progressbar.h"
 
-#include "../utils/gettext.h"
+#include "main.h"
+#include "log.h"
+
+#include "utils/gettext.h"
 
 ConnectionDialog::ConnectionDialog(int previousState):
     Window("Info"), mProgress(0), mPreviousState(previousState)

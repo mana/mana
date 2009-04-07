@@ -19,17 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/recorder.h"
+
+#include "gui/chat.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/chattab.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/windowcontainer.h"
+
+#include "utils/stringutils.h"
+
 #include <physfs.h>
-
-#include "button.h"
-#include "chat.h"
-#include "recorder.h"
-#include "windowcontainer.h"
-
-#include "widgets/chattab.h"
-#include "widgets/layout.h"
-
-#include "../utils/stringutils.h"
 
 Recorder::Recorder(ChatWindow *chat, const std::string &title,
                    const std::string &buttonTxt) :

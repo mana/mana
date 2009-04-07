@@ -22,10 +22,12 @@
 #ifndef GUI_SETUP_VIDEO_H
 #define GUI_SETUP_VIDEO_H
 
+#include "guichanfwd.h"
+
+#include "gui/setuptab.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
-
-#include "setuptab.h"
 
 class Setup_Video : public SetupTab, public gcn::ActionListener,
                     public gcn::KeyListener

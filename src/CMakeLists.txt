@@ -59,30 +59,62 @@ MARK_AS_ADVANCED(SDL_LIBRARY)
 SET(SRCS
     gui/widgets/avatar.cpp
     gui/widgets/avatar.h
+    gui/widgets/browserbox.cpp
+    gui/widgets/browserbox.h
+    gui/widgets/button.cpp
+    gui/widgets/button.h
     gui/widgets/channeltab.cpp
     gui/widgets/channeltab.h
     gui/widgets/chattab.cpp
     gui/widgets/chattab.h
+    gui/widgets/checkbox.cpp
+    gui/widgets/checkbox.h
     gui/widgets/dropdown.cpp
     gui/widgets/dropdown.h
+    gui/widgets/gccontainer.cpp
+    gui/widgets/gccontainer.h
+    gui/widgets/icon.cpp
+    gui/widgets/icon.h
+    gui/widgets/inttextfield.cpp
+    gui/widgets/inttextfield.h
+    gui/widgets/label.cpp
+    gui/widgets/label.h
     gui/widgets/layout.cpp
     gui/widgets/layout.h
     gui/widgets/layouthelper.cpp
     gui/widgets/layouthelper.h
+    gui/widgets/listbox.cpp
+    gui/widgets/listbox.h
+    gui/widgets/passwordfield.cpp
+    gui/widgets/passwordfield.h
+    gui/widgets/popup.cpp
+    gui/widgets/popup.h
+    gui/widgets/progressbar.cpp
+    gui/widgets/progressbar.h
+    gui/widgets/radiobutton.cpp
+    gui/widgets/radiobutton.h
     gui/widgets/resizegrip.cpp
     gui/widgets/resizegrip.h
+    gui/widgets/scrollarea.cpp
+    gui/widgets/scrollarea.h
+    gui/widgets/slider.cpp
+    gui/widgets/slider.h
     gui/widgets/tab.cpp
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp
     gui/widgets/tabbedarea.h
+    gui/widgets/textbox.cpp
+    gui/widgets/textbox.h
+    gui/widgets/textfield.cpp
+    gui/widgets/textfield.h
     gui/widgets/textpreview.cpp
     gui/widgets/textpreview.h
     gui/widgets/whispertab.cpp
     gui/widgets/whispertab.h
-    gui/browserbox.cpp
-    gui/browserbox.h
-    gui/button.cpp
-    gui/button.h
+    gui/widgets/window.cpp
+    gui/widgets/window.h
+    gui/widgets/windowcontainer.cpp
+    gui/widgets/windowcontainer.h
     gui/buy.cpp
     gui/buy.h
     gui/buysell.cpp
@@ -95,8 +127,6 @@ SET(SRCS
     gui/chat.h
     gui/chatinput.cpp
     gui/chatinput.h
-    gui/checkbox.cpp
-    gui/checkbox.h
     gui/confirm_dialog.cpp
     gui/confirm_dialog.h
     gui/debugwindow.cpp
@@ -111,16 +141,10 @@ SET(SRCS
     gui/equipmentwindow.h
     gui/focushandler.cpp
     gui/focushandler.h
-    gui/gccontainer.cpp
-    gui/gccontainer.h
     gui/gui.cpp
     gui/gui.h
     gui/help.cpp
     gui/help.h
-    gui/icon.cpp
-    gui/icon.h
-    gui/inttextfield.cpp
-    gui/inttextfield.h
     gui/inventorywindow.cpp
     gui/inventorywindow.h
     gui/itemcontainer.cpp
@@ -133,11 +157,7 @@ SET(SRCS
     gui/itemshortcutcontainer.h
     gui/item_amount.cpp
     gui/item_amount.h
-    gui/label.cpp
-    gui/label.h
     gui/linkhandler.h
-    gui/listbox.cpp
-    gui/listbox.h
     gui/login.cpp
     gui/login.h
     gui/menuwindow.cpp
@@ -160,24 +180,14 @@ SET(SRCS
     gui/palette.h
     gui/partywindow.cpp
     gui/partywindow.h
-    gui/passwordfield.cpp
-    gui/passwordfield.h
     gui/playerbox.cpp
     gui/playerbox.h
-    gui/popup.cpp
-    gui/popup.h
     gui/popupmenu.cpp
     gui/popupmenu.h
-    gui/progressbar.cpp
-    gui/progressbar.h
-    gui/radiobutton.cpp
-    gui/radiobutton.h
     gui/recorder.cpp
     gui/recorder.h
     gui/register.cpp
     gui/register.h
-    gui/scrollarea.cpp
-    gui/scrollarea.h
     gui/sdlinput.cpp
     gui/sdlinput.h
     gui/sell.cpp
@@ -194,33 +204,27 @@ SET(SRCS
     gui/setup_keyboard.h
     gui/setup_players.cpp
     gui/setup_players.h
-    gui/setuptab.h
     gui/setup_video.cpp
     gui/setup_video.h
+    gui/setuptab.h
     gui/shop.cpp
     gui/shop.h
     gui/shoplistbox.cpp
     gui/shoplistbox.h
-    gui/shortcutwindow.cpp
-    gui/shortcutwindow.h
     gui/shortcutcontainer.cpp
     gui/shortcutcontainer.h
+    gui/shortcutwindow.cpp
+    gui/shortcutwindow.h
     gui/skin.cpp
     gui/skin.h
-    gui/slider.cpp
-    gui/slider.h
     gui/speechbubble.cpp
     gui/speechbubble.h
     gui/table.cpp
     gui/table.h
     gui/table_model.cpp
     gui/table_model.h
-    gui/textbox.cpp
-    gui/textbox.h
     gui/textdialog.cpp
     gui/textdialog.h
-    gui/textfield.cpp
-    gui/textfield.h
     gui/textrenderer.h
     gui/trade.cpp
     gui/trade.h
@@ -230,10 +234,6 @@ SET(SRCS
     gui/updatewindow.h
     gui/viewport.cpp
     gui/viewport.h
-    gui/window.cpp
-    gui/window.h
-    gui/windowcontainer.cpp
-    gui/windowcontainer.h
     net/adminhandler.h
     net/charhandler.h
     net/chathandler.h

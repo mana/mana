@@ -24,12 +24,11 @@
 #include "localplayer.h"
 #include "units.h"
 
-#include "gui/button.h"
-#include "gui/label.h"
-#include "gui/progressbar.h"
-#include "gui/windowcontainer.h"
-
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/progressbar.h"
+#include "gui/widgets/windowcontainer.h"
 
 #include "net/net.h"
 #include "net/ea/playerhandler.h"

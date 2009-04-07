@@ -22,7 +22,7 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include "gui/window.h"
+#include "gui/widgets/window.h"
 
 #include "guichanfwd.h"
 

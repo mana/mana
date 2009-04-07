@@ -22,7 +22,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "popup.h"
+#include "gui/widgets/popup.h"
 
 /**
  * The Button Menu.

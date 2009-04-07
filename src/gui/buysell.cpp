@@ -23,7 +23,7 @@
 
 #include "npc.h"
 
-#include "gui/button.h"
+#include "gui/widgets/button.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"

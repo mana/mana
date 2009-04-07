@@ -22,7 +22,7 @@
 #ifndef GUI_NPCSTRINGDIALOG_H
 #define GUI_NPCSTRINGDIALOG_H
 
-#include "window.h"
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 

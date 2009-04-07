@@ -23,7 +23,7 @@
 #ifndef ITEMPOPUP_H
 #define ITEMPOPUP_H
 
-#include "popup.h"
+#include "gui/widgets/popup.h"
 
 class ItemInfo;
 class ScrollArea;

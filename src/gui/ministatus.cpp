@@ -19,17 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui.h"
-#include "ministatus.h"
-#include "progressbar.h"
-#include "status.h"
+#include "gui/ministatus.h"
 
-#include "../animatedsprite.h"
-#include "../configuration.h"
-#include "../graphics.h"
-#include "../localplayer.h"
+#include "gui/gui.h"
+#include "gui/status.h"
 
-#include "../utils/stringutils.h"
+#include "gui/widgets/progressbar.h"
+
+#include "animatedsprite.h"
+#include "configuration.h"
+#include "graphics.h"
+#include "localplayer.h"
+
+#include "utils/stringutils.h"
 
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")

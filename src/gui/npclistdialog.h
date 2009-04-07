@@ -22,7 +22,7 @@
 #ifndef GUI_NPCLISTDIALOG_H
 #define GUI_NPCLISTDIALOG_H
 
-#include "window.h"
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>

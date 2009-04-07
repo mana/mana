@@ -22,9 +22,9 @@
 #ifndef ITEM_AMOUNT_WINDOW_H
 #define ITEM_AMOUNT_WINDOW_H
 
-#include <guichan/actionlistener.hpp>
+#include "gui/widgets/window.h"
 
-#include "window.h"
+#include <guichan/actionlistener.hpp>
 
 class IntTextField;
 class Item;

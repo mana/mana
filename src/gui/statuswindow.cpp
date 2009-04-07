@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "statuswindow.h"
+#include "gui/statuswindow.h"
 
-#include "gui/button.h"
-#include "gui/label.h"
-#include "gui/progressbar.h"
-#include "gui/windowcontainer.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/progressbar.h"
+#include "gui/widgets/windowcontainer.h"
 
 #include "localplayer.h"
 

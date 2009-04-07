@@ -19,16 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "chattab.h"
+#include "gui/widgets/chattab.h"
 
 #include "commandhandler.h"
 #include "configuration.h"
 #include "localplayer.h"
 
-#include "gui/browserbox.h"
+#include "gui/widgets/browserbox.h"
+#include "gui/widgets/scrollarea.h"
+
 #include "gui/itemlinkhandler.h"
 #include "gui/recorder.h"
-#include "gui/scrollarea.h"
 
 #include "net/chathandler.h"
 #include "net/net.h"

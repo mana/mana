@@ -19,26 +19,27 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "../configuration.h"
-#include "../log.h"
-#include "../logindata.h"
-#include "../main.h"
+#include "gui/register.h"
 
-#include "button.h"
-#include "checkbox.h"
-#include "label.h"
-#include "login.h"
-#include "ok_dialog.h"
-#include "passwordfield.h"
-#include "radiobutton.h"
-#include "register.h"
-#include "textfield.h"
+#include "configuration.h"
+#include "log.h"
+#include "logindata.h"
+#include "main.h"
 
-#include "widgets/layout.h"
+#include "gui/login.h"
+#include "gui/ok_dialog.h"
 
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
-#include "../utils/stringutils.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/checkbox.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/passwordfield.h"
+#include "gui/widgets/radiobutton.h"
+#include "gui/widgets/textfield.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 void WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 {

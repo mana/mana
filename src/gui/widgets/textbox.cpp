@@ -19,12 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <sstream>
+#include "gui/widgets/textbox.h"
+
+#include "gui/palette.h"
 
 #include <guichan/font.hpp>
 
-#include "palette.h"
-#include "textbox.h"
+#include <sstream>
 
 TextBox::TextBox() :
         gcn::TextBox(), mTextColor(&guiPalette->getColor(Palette::TEXT))

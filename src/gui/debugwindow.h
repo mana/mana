@@ -22,9 +22,7 @@
 #ifndef DEBUGWINDOW_H
 #define DEBUGWINDOW_H
 
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
+#include "gui/widgets/window.h"
 
 /**
  * The debug window.

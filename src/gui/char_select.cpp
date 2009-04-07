@@ -21,17 +21,14 @@
 
 #include "gui/char_select.h"
 
-#include "gui/button.h"
 #include "gui/charcreatedialog.h"
 #include "gui/confirm_dialog.h"
-#include "gui/label.h"
 #include "gui/ok_dialog.h"
 #include "gui/playerbox.h"
-#include "gui/textfield.h"
 
 #ifdef TMWSERV_SUPPORT
-#include "gui/radiobutton.h"
-#include "gui/slider.h"
+#include "gui/widgets/radiobutton.h"
+#include "gui/widgets/slider.h"
 
 #include "gui/unregisterdialog.h"
 #include "gui/changepassworddialog.h"
@@ -42,7 +39,10 @@
 #include "net/tmwserv/accountserver/account.h"
 #endif
 
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/textfield.h"
 
 #include "game.h"
 #include "localplayer.h"

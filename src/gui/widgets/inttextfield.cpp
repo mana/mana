@@ -19,10 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "inttextfield.h"
-#include "sdlinput.h"
+#include "gui/widgets/inttextfield.h"
 
-#include "../utils/stringutils.h"
+#include "gui/sdlinput.h"
+
+#include "utils/stringutils.h"
 
 IntTextField::IntTextField(int def):
     TextField(toString(def)),

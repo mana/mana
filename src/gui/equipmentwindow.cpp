@@ -19,30 +19,31 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define BOX_WIDTH 36
-#define BOX_HEIGHT 36
+#include "gui/widgets/button.h"
+
+#include "gui/equipmentwindow.h"
+#include "gui/itempopup.h"
+#include "gui/palette.h"
+#include "gui/playerbox.h"
+#include "gui/viewport.h"
+
+#include "equipment.h"
+#include "graphics.h"
+#include "inventory.h"
+#include "item.h"
+#include "localplayer.h"
+
+#include "resources/image.h"
+#include "resources/iteminfo.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
 
-#include "button.h"
-#include "equipmentwindow.h"
-#include "itempopup.h"
-#include "palette.h"
-#include "playerbox.h"
-#include "viewport.h"
-
-#include "../equipment.h"
-#include "../graphics.h"
-#include "../inventory.h"
-#include "../item.h"
-#include "../localplayer.h"
-
-#include "../resources/image.h"
-#include "../resources/iteminfo.h"
-#include "../resources/resourcemanager.h"
-
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
+static const int BOX_WIDTH = 36;
+static const int BOX_HEIGHT = 36;
 
 // Positions of the boxes, 2nd dimension is X and Y respectively.
 static const int boxPosition[][2] = {

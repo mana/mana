@@ -19,15 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/confirm_dialog.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/textbox.h"
+
+#include "gui/gui.h"
+
+#include "utils/gettext.h"
+
 #include <guichan/font.hpp>
-
-#include "button.h"
-#include "confirm_dialog.h"
-#include "gui.h"
-#include "scrollarea.h"
-#include "textbox.h"
-
-#include "../utils/gettext.h"
 
 ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
         Window *parent):

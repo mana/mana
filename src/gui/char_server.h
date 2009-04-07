@@ -22,10 +22,10 @@
 #ifndef _CHAR_SEL_SERVER_H
 #define _CHAR_SEL_SERVER_H
 
+#include "gui/widgets/window.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
-
-#include "window.h"
 
 class LoginData;
 class ServerListModel;

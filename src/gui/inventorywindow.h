@@ -22,7 +22,7 @@
 #ifndef INVENTORYWINDOW_H
 #define INVENTORYWINDOW_H
 
-#include "gui/window.h"
+#include "gui/widgets/window.h"
 
 #include "inventory.h"
 

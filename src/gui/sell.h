@@ -22,12 +22,12 @@
 #ifndef SELL_H
 #define SELL_H
 
+#include "gui/widgets/window.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
 #include <SDL_types.h>
-
-#include "window.h"
 
 class Item;
 class ShopItems;

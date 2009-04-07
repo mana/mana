@@ -22,7 +22,7 @@
 #ifndef MAGIC_H
 #define MAGIC_H
 
-#include "gui/window.h"
+#include "gui/widgets/window.h"
 
 #include "guichanfwd.h"
 

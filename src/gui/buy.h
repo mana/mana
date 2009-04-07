@@ -22,12 +22,12 @@
 #ifndef BUY_H
 #define BUY_H
 
+#include "gui/widgets/window.h"
+
+#include "guichanfwd.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
-
-#include "window.h"
-
-#include "../guichanfwd.h"
 
 class ShopItems;
 class ShopListBox;
@@ -108,6 +108,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
          * Closes the Buy Window, as well as resetting the current npc.
          */
         void close();
+
     private:
         gcn::Button *mBuyButton;
         gcn::Button *mQuitButton;

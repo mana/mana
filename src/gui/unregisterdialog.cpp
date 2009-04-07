@@ -25,13 +25,14 @@
 #include "log.h"
 #include "logindata.h"
 
-#include "gui/button.h"
-#include "gui/checkbox.h"
-#include "gui/label.h"
 #include "gui/ok_dialog.h"
-#include "gui/passwordfield.h"
 #include "gui/register.h"
-#include "gui/textfield.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/checkbox.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/passwordfield.h"
+#include "gui/widgets/textfield.h"
 
 #include "utils/gettext.h"
 #include "utils/strprintf.h"

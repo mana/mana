@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
+#include "gui/widgets/browserbox.h"
+
+#include "gui/linkhandler.h"
+#include "gui/palette.h"
+#include "gui/truetypefont.h"
 
 #include <guichan/graphics.hpp>
 
-#include "browserbox.h"
-#include "linkhandler.h"
-#include "palette.h"
-#include "truetypefont.h"
+#include <algorithm>
 
 BrowserBox::BrowserBox(unsigned int mode, bool opaque):
     gcn::Widget(),

@@ -19,21 +19,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "checkbox.h"
-#include "label.h"
-#include "ok_dialog.h"
-#include "setup_audio.h"
-#include "slider.h"
+#include "gui/setup_audio.h"
 
-#include "widgets/layouthelper.h"
+#include "gui/ok_dialog.h"
 
-#include "../configuration.h"
-#include "../log.h"
-#include "../sound.h"
-#include "../map.h"
-#include "../engine.h"
+#include "gui/widgets/checkbox.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/slider.h"
 
-#include "../utils/gettext.h"
+#include "configuration.h"
+#include "log.h"
+#include "sound.h"
+#include "map.h"
+#include "engine.h"
+
+#include "utils/gettext.h"
 
 Setup_Audio::Setup_Audio():
     mMusicVolume((int)config.getValue("musicVolume", 60)),

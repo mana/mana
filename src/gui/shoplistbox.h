@@ -22,7 +22,7 @@
 #ifndef SHOPLISTBOX_H
 #define SHOPLISTBOX_H
 
-#include "listbox.h"
+#include "gui/widgets/listbox.h"
 
 class ShopItems;
 

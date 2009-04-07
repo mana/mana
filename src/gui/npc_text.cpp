@@ -21,11 +21,10 @@
 
 #include "gui/npc_text.h"
 
-#include "gui/button.h"
-#include "gui/scrollarea.h"
-#include "gui/textbox.h"
-
+#include "gui/widgets/button.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/textbox.h"
 
 #include "npc.h"
 

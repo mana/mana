@@ -22,16 +22,14 @@
 #ifndef _UPDATERWINDOW_H
 #define _UPDATERWINDOW_H
 
+#include "gui/widgets/window.h"
+
+#include "utils/mutex.h"
+
 #include <guichan/actionlistener.hpp>
 
 #include <string>
 #include <vector>
-
-#include "window.h"
-
-#include "../utils/mutex.h"
-
-#include "../utils/mutex.h"
 
 class BrowserBox;
 class Button;

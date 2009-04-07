@@ -22,7 +22,7 @@
 #ifndef MINISTATUS_H
 #define MINISTATUS_H
 
-#include "popup.h"
+#include "gui/widgets/popup.h"
 
 #include <vector>
 

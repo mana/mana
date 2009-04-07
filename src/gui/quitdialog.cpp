@@ -23,8 +23,8 @@
 
 #include "main.h"
 
-#include "gui/button.h"
-#include "gui/radiobutton.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/radiobutton.h"
 
 #include "utils/gettext.h"
 

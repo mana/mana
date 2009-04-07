@@ -21,9 +21,10 @@
 
 #include "gui/widgets/dropdown.h"
 
-#include "gui/listbox.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
+
 #include "gui/palette.h"
-#include "gui/scrollarea.h"
 
 #include "configuration.h"
 #include "graphics.h"

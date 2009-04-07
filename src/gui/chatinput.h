@@ -22,9 +22,7 @@
 #ifndef CHATINPUT_H
 #define CHATINPUT_H
 
-#include <guichan/focuslistener.hpp>
-
-#include "textfield.h"
+#include "gui/widgets/textfield.h"
 
 #include <guichan/focuslistener.hpp>
 
@@ -34,9 +32,6 @@
 class ChatInput : public TextField, public gcn::FocusListener
 {
     public:
-        /**
-         * Constructor.
-         */
         ChatInput();
 
         /**

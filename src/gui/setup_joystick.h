@@ -22,9 +22,11 @@
 #ifndef GUI_SETUP_JOYSTICK_H
 #define GUI_SETUP_JOYSTICK_H
 
-#include <guichan/actionlistener.hpp>
+#include "guichanfwd.h"
 
-#include "setuptab.h"
+#include "gui/setuptab.h"
+
+#include <guichan/actionlistener.hpp>
 
 class Setup_Joystick : public SetupTab, public gcn::ActionListener
 {

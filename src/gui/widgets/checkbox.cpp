@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "checkbox.h"
-#include "palette.h"
+#include "gui/widgets/checkbox.h"
 
-#include "../configuration.h"
-#include "../graphics.h"
+#include "gui/palette.h"
 
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
+#include "configuration.h"
+#include "graphics.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 int CheckBox::instances = 0;
 float CheckBox::mAlpha = 1.0;

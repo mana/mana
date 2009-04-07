@@ -19,19 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/textfield.h"
+
+#include "gui/palette.h"
+#include "gui/sdlinput.h"
+
+#include "configuration.h"
+#include "graphics.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/dtor.h"
+
 #include <guichan/font.hpp>
-
-#include "palette.h"
-#include "sdlinput.h"
-#include "textfield.h"
-
-#include "../configuration.h"
-#include "../graphics.h"
-
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
-
-#include "../utils/dtor.h"
 
 #undef DELETE //Win32 compatibility hack
 

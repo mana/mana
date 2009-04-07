@@ -21,10 +21,11 @@
 
 #include "gui/popupmenu.h"
 
-#include "gui/browserbox.h"
 #include "gui/chat.h"
 #include "gui/inventorywindow.h"
 #include "gui/item_amount.h"
+
+#include "gui/widgets/browserbox.h"
 
 #include "being.h"
 #include "beingmanager.h"

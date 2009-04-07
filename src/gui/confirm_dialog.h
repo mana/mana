@@ -22,9 +22,9 @@
 #ifndef OPTION_DIALOG_H
 #define OPTION_DIALOG_H
 
-#include <guichan/actionlistener.hpp>
+#include "gui/widgets/window.h"
 
-#include "window.h"
+#include <guichan/actionlistener.hpp>
 
 class ScrollArea;
 class TextBox;

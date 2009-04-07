@@ -22,7 +22,7 @@
 #ifndef GUI_SETUPTAB_H
 #define GUI_SETUPTAB_H
 
-#include "gccontainer.h"
+#include "gui/widgets/gccontainer.h"
 
 class SetupTab : public GCContainer
 {

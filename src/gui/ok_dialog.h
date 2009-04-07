@@ -22,7 +22,7 @@
 #ifndef OK_DIALOG_H
 #define OK_DIALOG_H
 
-#include "window.h"
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 

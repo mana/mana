@@ -21,9 +21,9 @@
 
 #include "gui/textdialog.h"
 
-#include "gui/button.h"
-#include "gui/label.h"
-#include "gui/textfield.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/textfield.h"
 
 #include "utils/gettext.h"
 

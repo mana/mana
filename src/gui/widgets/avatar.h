@@ -24,7 +24,7 @@
 
 #include "guichanfwd.h"
 
-#include "gui/gccontainer.h"
+#include "gui/widgets/gccontainer.h"
 
 #include <string>
 

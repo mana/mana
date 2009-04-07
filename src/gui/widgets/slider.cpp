@@ -19,13 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "slider.h"
+#include "gui/widgets/slider.h"
 
-#include "../configuration.h"
-#include "../graphics.h"
+#include "configuration.h"
+#include "graphics.h"
 
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;

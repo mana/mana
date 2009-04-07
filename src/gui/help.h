@@ -22,10 +22,10 @@
 #ifndef HELP_H
 #define HELP_H
 
-#include <guichan/actionlistener.hpp>
+#include "gui/linkhandler.h"
+#include "gui/widgets/window.h"
 
-#include "linkhandler.h"
-#include "window.h"
+#include <guichan/actionlistener.hpp>
 
 class BrowserBox;
 
@@ -59,7 +59,7 @@ class HelpWindow : public Window, public LinkHandler,
     private:
         void loadFile(const std::string &file);
 
-        BrowserBox* mBrowserBox;
+        BrowserBox *mBrowserBox;
         gcn::ScrollArea *mScrollArea;
 };
 

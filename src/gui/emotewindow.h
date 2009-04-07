@@ -22,10 +22,10 @@
 #ifndef EMOTEWINDOW_H
 #define EMOTEWINDOW_H
 
+#include "gui/widgets/window.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
-
-#include "window.h"
 
 class EmoteContainer;
 class TextBox;

@@ -19,21 +19,22 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/window.h"
+
+#include "gui/widgets/layout.h"
+#include "gui/widgets/resizegrip.h"
+#include "gui/widgets/windowcontainer.h"
+
+#include "gui/gui.h"
+#include "gui/palette.h"
+#include "gui/skin.h"
+
+#include "configuration.h"
+#include "log.h"
+
+#include "resources/image.h"
+
 #include <guichan/exception.hpp>
-
-#include "gui.h"
-#include "palette.h"
-#include "skin.h"
-#include "window.h"
-#include "windowcontainer.h"
-
-#include "widgets/layout.h"
-#include "widgets/resizegrip.h"
-
-#include "../configuration.h"
-#include "../log.h"
-
-#include "../resources/image.h"
 
 int Window::instances = 0;
 int Window::mouseResize = 0;

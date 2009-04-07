@@ -19,29 +19,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/gui.h"
+
+#include "gui/focushandler.h"
+#include "gui/palette.h"
+#include "gui/sdlinput.h"
+#include "gui/skin.h"
+#include "gui/truetypefont.h"
+#include "gui/viewport.h"
+
+#include "gui/widgets/window.h"
+#include "gui/widgets/windowcontainer.h"
+
+#include "configlistener.h"
+#include "configuration.h"
+#include "graphics.h"
+#include "log.h"
+
+#include "resources/image.h"
+#include "resources/imageset.h"
+#include "resources/imageloader.h"
+#include "resources/resourcemanager.h"
+
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
-#include <guichan/imagefont.hpp>
-
-#include "focushandler.h"
-#include "gui.h"
-#include "palette.h"
-#include "sdlinput.h"
-#include "skin.h"
-#include "truetypefont.h"
-#include "viewport.h"
-#include "window.h"
-#include "windowcontainer.h"
-
-#include "../configlistener.h"
-#include "../configuration.h"
-#include "../graphics.h"
-#include "../log.h"
-
-#include "../resources/image.h"
-#include "../resources/imageset.h"
-#include "../resources/imageloader.h"
-#include "../resources/resourcemanager.h"
 
 // Guichan stuff
 Gui *gui = 0;

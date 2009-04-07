@@ -25,7 +25,7 @@
 
 #include <guichan/widgets/container.hpp>
 
-#include "../guichanfwd.h"
+#include "guichanfwd.h"
 
 class Skin;
 class SkinLoader;

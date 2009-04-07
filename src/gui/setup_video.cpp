@@ -19,33 +19,34 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <SDL.h>
-#include <string>
-#include <vector>
+#include "gui/setup_video.h"
+
+#include "gui/ok_dialog.h"
+
+#include "gui/widgets/checkbox.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/slider.h"
+#include "gui/widgets/textfield.h"
+
+#include "configuration.h"
+#include "graphics.h"
+#include "localplayer.h"
+#include "log.h"
+#include "main.h"
+#include "particle.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
 
-#include "checkbox.h"
-#include "label.h"
-#include "listbox.h"
-#include "ok_dialog.h"
-#include "scrollarea.h"
-#include "setup_video.h"
-#include "slider.h"
-#include "textfield.h"
-
-#include "widgets/layouthelper.h"
-
-#include "../configuration.h"
-#include "../graphics.h"
-#include "../localplayer.h"
-#include "../log.h"
-#include "../main.h"
-#include "../particle.h"
-
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
+#include <SDL.h>
+#include <string>
+#include <vector>
 
 extern Graphics *graphics;
 

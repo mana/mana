@@ -19,13 +19,13 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "radiobutton.h"
+#include "gui/widgets/radiobutton.h"
 
-#include "../configuration.h"
-#include "../graphics.h"
+#include "configuration.h"
+#include "graphics.h"
 
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 int RadioButton::instances = 0;
 float RadioButton::mAlpha = 1.0;

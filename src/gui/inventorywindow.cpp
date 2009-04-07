@@ -21,16 +21,16 @@
 
 #include "gui/inventorywindow.h"
 
-#include "gui/button.h"
 #include "gui/item_amount.h"
 #include "gui/itemcontainer.h"
-#include "gui/label.h"
-#include "gui/progressbar.h"
-#include "gui/scrollarea.h"
 #include "gui/sdlinput.h"
 #include "gui/viewport.h"
 
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/progressbar.h"
+#include "gui/widgets/scrollarea.h"
 
 #include "inventory.h"
 #include "item.h"

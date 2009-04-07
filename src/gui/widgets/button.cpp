@@ -19,19 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/button.h"
+
+#include "gui/palette.h"
+
+#include "configuration.h"
+#include "graphics.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/dtor.h"
+
 #include <guichan/exception.hpp>
 #include <guichan/font.hpp>
-
-#include "button.h"
-#include "palette.h"
-
-#include "../configuration.h"
-#include "../graphics.h"
-
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
-
-#include "../utils/dtor.h"
 
 int Button::mInstances = 0;
 float Button::mAlpha = 1.0;

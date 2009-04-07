@@ -23,8 +23,9 @@
 #ifndef SPEECHBUBBLE_H
 #define SPEECHBUBBLE_H
 
-#include "palette.h"
-#include "popup.h"
+#include "gui/palette.h"
+
+#include "gui/widgets/popup.h"
 
 class ScrollArea;
 class TextBox;

@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 
-#include "listbox.h"
+#include "gui/widgets/listbox.h"
 
 class Image;
 

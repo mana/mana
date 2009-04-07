@@ -19,25 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "checkbox.h"
-#include "label.h"
-#include "listbox.h"
-#include "login.h"
-#include "ok_dialog.h"
-#include "passwordfield.h"
-#include "scrollarea.h"
-#include "textfield.h"
+#include "gui/login.h"
 
-#include "widgets/dropdown.h"
-#include "widgets/layout.h"
+#include "gui/ok_dialog.h"
 
-#include "../main.h"
-#include "../logindata.h"
-#include "../configuration.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/checkbox.h"
+#include "gui/widgets/dropdown.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/passwordfield.h"
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/textfield.h"
 
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
+#include "main.h"
+#include "logindata.h"
+#include "configuration.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 static const int MAX_SERVER_LIST_SIZE = 5;
 static const int LOGIN_DIALOG_WIDTH = 220;

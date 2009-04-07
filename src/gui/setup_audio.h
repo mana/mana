@@ -22,9 +22,11 @@
 #ifndef GUI_SETUP_AUDIO_H
 #define GUI_SETUP_AUDIO_H
 
-#include <guichan/actionlistener.hpp>
+#include "guichanfwd.h"
 
-#include "setuptab.h"
+#include "gui/setuptab.h"
+
+#include <guichan/actionlistener.hpp>
 
 class Setup_Audio : public SetupTab, public gcn::ActionListener
 {

@@ -22,12 +22,12 @@
 
 #include "gui/setup_keyboard.h"
 
-#include "gui/button.h"
-#include "gui/listbox.h"
 #include "gui/ok_dialog.h"
-#include "gui/scrollarea.h"
 
+#include "gui/widgets/button.h"
 #include "gui/widgets/layouthelper.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
 
 #include "keyboardconfig.h"
 

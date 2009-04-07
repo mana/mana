@@ -19,30 +19,30 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/updatewindow.h"
+
+#include "gui/widgets/browserbox.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/progressbar.h"
+#include "gui/widgets/scrollarea.h"
+
+#include "configuration.h"
+#include "log.h"
+#include "main.h"
+
+#include "resources/resourcemanager.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <iostream>
 #include <SDL.h>
 #include <SDL_thread.h>
 #include <zlib.h>
 
 #include <curl/curl.h>
-
-#include "browserbox.h"
-#include "button.h"
-#include "label.h"
-#include "progressbar.h"
-#include "scrollarea.h"
-#include "updatewindow.h"
-
-#include "widgets/layout.h"
-
-#include "../configuration.h"
-#include "../log.h"
-#include "../main.h"
-
-#include "../resources/resourcemanager.h"
-
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
 
 /**
  * Calculates the Alder-32 checksum for the given file.

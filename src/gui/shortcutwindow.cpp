@@ -19,13 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "scrollarea.h"
-#include "shortcutcontainer.h"
-#include "shortcutwindow.h"
+#include "gui/shortcutwindow.h"
 
-#include "widgets/layout.h"
+#include "gui/shortcutcontainer.h"
 
-#include "../configuration.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/scrollarea.h"
+
+#include "configuration.h"
 
 static const int SCROLL_PADDING = 0;
 

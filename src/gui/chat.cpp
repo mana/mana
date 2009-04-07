@@ -24,10 +24,10 @@
 #include "gui/chatinput.h"
 #include "gui/itemlinkhandler.h"
 #include "gui/recorder.h"
-#include "gui/scrollarea.h"
 #include "gui/sdlinput.h"
 
 #include "gui/widgets/chattab.h"
+#include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/whispertab.h"
 

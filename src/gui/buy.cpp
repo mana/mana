@@ -21,14 +21,14 @@
 
 #include "gui/buy.h"
 
-#include "gui/button.h"
-#include "gui/label.h"
-#include "gui/scrollarea.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/slider.h"
+
 #include "gui/shop.h"
 #include "gui/shoplistbox.h"
-#include "gui/slider.h"
-
-#include "gui/widgets/layout.h"
 
 #include "npc.h"
 #include "shopitem.h"

@@ -22,11 +22,11 @@
 #ifndef UNREGISTERDIALOG_H
 #define UNREGISTERDIALOG_H
 
-#include <guichan/actionlistener.hpp>
-
-#include "gui/window.h"
+#include "gui/widgets/window.h"
 
 #include "guichanfwd.h"
+
+#include <guichan/actionlistener.hpp>
 
 class LoginData;
 class OkDialog;

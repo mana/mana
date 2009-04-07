@@ -22,8 +22,7 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-#include <string>
-#include <vector>
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
@@ -31,7 +30,8 @@
 #include <guichan/listmodel.hpp>
 #endif
 
-#include "window.h"
+#include <string>
+#include <vector>
 
 class LoginData;
 #ifdef EATHENA_SUPPORT

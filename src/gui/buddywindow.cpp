@@ -19,14 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "buddywindow.h"
-#include "chat.h"
-#include "icon.h"
+#include "gui/buddywindow.h"
 
-#include "widgets/avatar.h"
+#include "gui/chat.h"
 
-#include "../resources/resourcemanager.h"
-#include "../utils/gettext.h"
+#include "gui/widgets/avatar.h"
+#include "gui/widgets/icon.h"
+
+#include "resources/resourcemanager.h"
+#include "utils/gettext.h"
 
 extern ChatWindow *chatWindow;
 

@@ -20,10 +20,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/gui.h"
-#include "gui/scrollarea.h"
 #include "gui/speechbubble.h"
-#include "gui/textbox.h"
+
+#include "gui/gui.h"
+
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/textbox.h"
 
 #include "graphics.h"
 

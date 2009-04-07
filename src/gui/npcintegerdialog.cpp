@@ -21,10 +21,10 @@
 
 #include "gui/npcintegerdialog.h"
 
-#include "gui/button.h"
-#include "gui/inttextfield.h"
 #include "gui/npc_text.h"
 
+#include "gui/widgets/button.h"
+#include "gui/widgets/inttextfield.h"
 #include "gui/widgets/layout.h"
 
 #include "npc.h"

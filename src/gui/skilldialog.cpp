@@ -21,24 +21,21 @@
 
 #include "gui/skilldialog.h"
 
-#include "gui/button.h"
-#include "gui/gccontainer.h"
-#include "gui/icon.h"
-#include "gui/label.h"
-#include "gui/listbox.h"
-#include "gui/progressbar.h"
-#include "gui/scrollarea.h"
-#include "gui/windowcontainer.h"
-
+#include "gui/widgets/button.h"
+#include "gui/widgets/gccontainer.h"
+#include "gui/widgets/icon.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/progressbar.h"
+#include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tabbedarea.h"
+#include "gui/widgets/windowcontainer.h"
 
 #include "localplayer.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-
-#include <guichan/widgets/container.hpp>
 
 #include <string>
 #include <vector>

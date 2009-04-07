@@ -22,7 +22,7 @@
 #ifndef SERVERDIALOG_H
 #define SERVERDIALOG_H
 
-#include "gui/window.h"
+#include "gui/widgets/window.h"
 
 #include "guichanfwd.h"
 

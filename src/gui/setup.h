@@ -22,13 +22,13 @@
 #ifndef SETUP_H
 #define SETUP_H
 
-#include <list>
+#include "gui/widgets/window.h"
+
+#include "guichanfwd.h"
 
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
-
-#include "../guichanfwd.h"
+#include <list>
 
 class SetupTab;
 

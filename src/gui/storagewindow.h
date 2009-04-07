@@ -22,9 +22,9 @@
 #ifndef STORAGEWINDOW_H
 #define STORAGEWINDOW_H
 
-#include "window.h"
+#include "gui/widgets/window.h"
 
-#include "../inventory.h"
+#include "inventory.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>

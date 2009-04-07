@@ -19,23 +19,24 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "label.h"
-#include "listbox.h"
-#include "scrollarea.h"
-#include "skill.h"
-#include "table.h"
-#include "windowcontainer.h"
+#include "gui/skill.h"
 
-#include "widgets/layout.h"
+#include "gui/table.h"
 
-#include "../localplayer.h"
-#include "../log.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/windowcontainer.h"
 
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
-#include "../utils/xml.h"
+#include "localplayer.h"
+#include "log.h"
+
+#include "utils/dtor.h"
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/xml.h"
 
 static const char *SKILLS_FILE = _("skills.xml");
 

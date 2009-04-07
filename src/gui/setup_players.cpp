@@ -19,25 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/setup_players.h"
+
+#include "gui/ok_dialog.h"
+#include "gui/table.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/checkbox.h"
+#include "gui/widgets/dropdown.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
+
+#include "configuration.h"
+#include "log.h"
+
+#include "utils/gettext.h"
+
 #include <string>
 #include <vector>
-
-#include "button.h"
-#include "checkbox.h"
-#include "label.h"
-#include "listbox.h"
-#include "ok_dialog.h"
-#include "scrollarea.h"
-#include "setup_players.h"
-#include "table.h"
-
-#include "widgets/dropdown.h"
-#include "widgets/layouthelper.h"
-
-#include "../configuration.h"
-#include "../log.h"
-
-#include "../utils/gettext.h"
 
 #define COLUMNS_NR 2 // name plus listbox
 #define NAME_COLUMN 0

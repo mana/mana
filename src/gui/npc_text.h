@@ -22,13 +22,13 @@
 #ifndef NPC_TEXT_H
 #define NPC_TEXT_H
 
-#include <string>
+#include "gui/widgets/window.h"
+
+#include "npc.h"
 
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
-
-#include "../npc.h"
+#include <string>
 
 class TextBox;
 

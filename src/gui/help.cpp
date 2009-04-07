@@ -19,16 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "browserbox.h"
-#include "help.h"
-#include "scrollarea.h"
+#include "gui/help.h"
 
-#include "widgets/layout.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/browserbox.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/scrollarea.h"
 
-#include "../resources/resourcemanager.h"
+#include "resources/resourcemanager.h"
 
-#include "../utils/gettext.h"
+#include "utils/gettext.h"
 
 HelpWindow::HelpWindow():
     Window(_("Help"))

@@ -19,19 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
 #include "setup.h"
-#include "setup_audio.h"
-#include "setup_colors.h"
-#include "setup_joystick.h"
-#include "setup_keyboard.h"
-#include "setup_players.h"
-#include "setup_video.h"
 
-#include "widgets/tabbedarea.h"
+#include "gui/setup_audio.h"
+#include "gui/setup_colors.h"
+#include "gui/setup_joystick.h"
+#include "gui/setup_keyboard.h"
+#include "gui/setup_players.h"
+#include "gui/setup_video.h"
 
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/tabbedarea.h"
+
+#include "utils/dtor.h"
+#include "utils/gettext.h"
 
 extern Window *chatWindow;
 extern Window *statusWindow;

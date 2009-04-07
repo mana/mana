@@ -19,15 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/widgets/listbox.h"
+
+#include "gui/palette.h"
+
+#include "configuration.h"
+
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
-
-#include "listbox.h"
-#include "palette.h"
-
-#include "../configuration.h"
 
 float ListBox::mAlpha = 1.0;
 

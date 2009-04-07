@@ -22,10 +22,10 @@
 #ifndef BUDDYWINDOW_H
 #define BUDDYWINDOW_H
 
+#include "gui/widgets/window.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/actionevent.hpp>
-
-#include "window.h"
 
 class Avatar;
 

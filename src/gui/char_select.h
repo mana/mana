@@ -22,13 +22,13 @@
 #ifndef CHAR_SELECT_H
 #define CHAR_SELECT_H
 
+#include "gui/widgets/window.h"
+
+#include "being.h"
+#include "guichanfwd.h"
+#include "lockedarray.h"
+
 #include <guichan/actionlistener.hpp>
-
-#include "window.h"
-
-#include "../being.h"
-#include "../guichanfwd.h"
-#include "../lockedarray.h"
 
 #ifdef TMWSERV_SUPPORT
 #include "../logindata.h"

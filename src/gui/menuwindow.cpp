@@ -19,17 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
+#include "gui/menuwindow.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/window.h"
+
+#include "graphics.h"
+
+#include "utils/gettext.h"
 
 #include <guichan/actionlistener.hpp>
 
-#include "button.h"
-#include "menuwindow.h"
-#include "window.h"
-
-#include "../graphics.h"
-
-#include "../utils/gettext.h"
+#include <string>
 
 extern Window *chatWindow;
 extern Window *equipmentWindow;

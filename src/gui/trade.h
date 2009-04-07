@@ -22,14 +22,14 @@
 #ifndef TRADE_H
 #define TRADE_H
 
-#include <memory>
+#include "gui/widgets/window.h"
+
+#include "guichanfwd.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
-#include "window.h"
-
-#include "../guichanfwd.h"
+#include <memory>
 
 class Inventory;
 class Item;

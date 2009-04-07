@@ -22,7 +22,7 @@
 #ifndef SHORTCUTWINDOW_H
 #define SHORTCUTWINDOW_H
 
-#include "window.h"
+#include "gui/widgets/window.h"
 
 class ScrollArea;
 class ShortcutContainer;

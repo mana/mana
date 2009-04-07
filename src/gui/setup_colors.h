@@ -22,17 +22,17 @@
 #ifndef SETUP_COLORS_H
 #define SETUP_COLORS_H
 
-#include <string>
-
-#include <guichan/actionlistener.hpp>
-
 #include "gui/setuptab.h"
-#include "gui/textfield.h"
+
+#include "gui/widgets/textfield.h"
 
 #include "guichanfwd.h"
 
+#include <guichan/actionlistener.hpp>
+
+#include <string>
+
 class BrowserBox;
-class TextField;
 class TextPreview;
 
 class Setup_Colors : public SetupTab, public gcn::ActionListener,

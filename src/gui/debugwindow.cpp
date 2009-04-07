@@ -19,18 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "debugwindow.h"
-#include "label.h"
-#include "viewport.h"
+#include "gui/debugwindow.h"
 
-#include "widgets/layout.h"
+#include "gui/viewport.h"
 
-#include "../engine.h"
-#include "../game.h"
-#include "../particle.h"
-#include "../map.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
 
-#include "../utils/stringutils.h"
+#include "engine.h"
+#include "game.h"
+#include "particle.h"
+#include "map.h"
+
+#include "utils/stringutils.h"
 
 DebugWindow::DebugWindow():
     Window("Debug")

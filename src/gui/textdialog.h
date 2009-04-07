@@ -22,7 +22,7 @@
 #ifndef GUI_GUILD_DIALOG_H
 #define GUI_GUILD_DIALOG_H
 
-#include "window.h"
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 

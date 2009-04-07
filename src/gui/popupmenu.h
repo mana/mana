@@ -22,8 +22,8 @@
 #ifndef POPUP_MENU_H
 #define POPUP_MENU_H
 
-#include "linkhandler.h"
-#include "window.h"
+#include "gui/linkhandler.h"
+#include "gui/widgets/window.h"
 
 class Being;
 class BrowserBox;

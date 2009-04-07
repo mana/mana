@@ -22,13 +22,14 @@
 #ifndef SKILL_H
 #define SKILL_H
 
-#include "gui/window.h"
-
-#include <vector>
+#include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
 
-struct SKILL {
+#include <vector>
+
+struct SKILL
+{
     short id;      /**< Index into "skill_db" array */
     short lv, sp;
 };

@@ -21,12 +21,12 @@
 
 #include "gui/npclistdialog.h"
 
-#include "gui/button.h"
-#include "gui/listbox.h"
 #include "gui/npc_text.h"
-#include "gui/scrollarea.h"
 
+#include "gui/widgets/button.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
 
 #include "npc.h"
 

@@ -19,17 +19,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "checkbox.h"
-#include "label.h"
-#include "setup_joystick.h"
+#include "gui/setup_joystick.h"
 
-#include "widgets/layouthelper.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/checkbox.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layouthelper.h"
 
-#include "../configuration.h"
-#include "../joystick.h"
+#include "configuration.h"
+#include "joystick.h"
 
-#include "../utils/gettext.h"
+#include "utils/gettext.h"
 
 extern Joystick *joystick;
 

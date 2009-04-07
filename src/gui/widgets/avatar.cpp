@@ -21,8 +21,8 @@
 
 #include "gui/widgets/avatar.h"
 
-#include "gui/icon.h"
-#include "gui/label.h"
+#include "gui/widgets/icon.h"
+#include "gui/widgets/label.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"

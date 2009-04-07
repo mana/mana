@@ -19,17 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "char_server.h"
-#include "listbox.h"
-#include "scrollarea.h"
+#include "gui/char_server.h"
 
-#include "../logindata.h"
-#include "../main.h"
-#include "../serverinfo.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
 
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
+#include "logindata.h"
+#include "main.h"
+#include "serverinfo.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 extern SERVER_INFO **server_info;
 

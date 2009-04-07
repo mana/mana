@@ -19,35 +19,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string>
+#include "gui/storagewindow.h"
+#include "gui/inventorywindow.h"
+#include "gui/item_amount.h"
+#include "gui/itemcontainer.h"
+#include "gui/viewport.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/progressbar.h"
+#include "gui/widgets/scrollarea.h"
+
+#include "inventory.h"
+#include "item.h"
+#include "localplayer.h"
+#include "units.h"
+
+#include "net/net.h"
+#include "net/ea/inventoryhandler.h"
+
+#include "resources/iteminfo.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 #include <guichan/font.hpp>
 #include <guichan/mouseinput.hpp>
 
-#include "button.h"
-#include "inventorywindow.h"
-#include "item_amount.h"
-#include "itemcontainer.h"
-#include "label.h"
-#include "progressbar.h"
-#include "scrollarea.h"
-#include "storagewindow.h"
-#include "viewport.h"
-
-#include "widgets/layout.h"
-
-#include "../inventory.h"
-#include "../item.h"
-#include "../localplayer.h"
-#include "../units.h"
-
-#include "../net/net.h"
-#include "../net/ea/inventoryhandler.h"
-
-#include "../resources/iteminfo.h"
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
+#include <string>
 
 StorageWindow::StorageWindow(int invSize):
     Window(_("Storage")),

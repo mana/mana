@@ -22,7 +22,7 @@
 #ifndef QUITDIALOG_H
 #define QUITDIALOG_H
 
-#include "gui/window.h"
+#include "gui/widgets/window.h"
 
 #include "guichanfwd.h"
 #include "main.h"

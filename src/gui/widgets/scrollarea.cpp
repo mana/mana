@@ -19,15 +19,15 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "scrollarea.h"
+#include "gui/widgets/scrollarea.h"
 
-#include "../configuration.h"
-#include "../graphics.h"
+#include "configuration.h"
+#include "graphics.h"
 
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
-#include "../utils/dtor.h"
+#include "utils/dtor.h"
 
 int ScrollArea::instances = 0;
 float ScrollArea::mAlpha = 1.0;

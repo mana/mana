@@ -22,14 +22,14 @@
 #ifndef RECORD_H
 #define RECORD_H
 
-#include <fstream>
-#include <string>
+#include "gui/widgets/window.h"
+
+#include "utils/gettext.h"
 
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
-
-#include "../utils/gettext.h"
+#include <fstream>
+#include <string>
 
 class ChatWindow;
 

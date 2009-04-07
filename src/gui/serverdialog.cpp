@@ -21,15 +21,15 @@
 
 #include "gui/serverdialog.h"
 
-#include "gui/button.h"
-#include "gui/label.h"
-#include "gui/listbox.h"
 #include "gui/ok_dialog.h"
-#include "gui/scrollarea.h"
-#include "gui/textfield.h"
 
+#include "gui/widgets/button.h"
 #include "gui/widgets/dropdown.h"
+#include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/textfield.h"
 
 #include "configuration.h"
 #include "log.h"

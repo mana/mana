@@ -21,13 +21,12 @@
 
 #include "gui/npcpostdialog.h"
 
-#include "gui/label.h"
-#include "gui/textbox.h"
-#include "gui/textfield.h"
-#include "gui/button.h"
-#include "gui/scrollarea.h"
-
+#include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/textbox.h"
+#include "gui/widgets/textfield.h"
+#include "gui/widgets/scrollarea.h"
 
 #include "npc.h"
 

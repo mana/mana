@@ -22,16 +22,16 @@
 #ifndef PARTYWINDOW_H
 #define PARTYWINDOW_H
 
-#include "window.h"
-#include "confirm_dialog.h"
+#include "gui/confirm_dialog.h"
 
 #include "gui/widgets/avatar.h"
-
-#include <string>
-#include <map>
+#include "gui/widgets/window.h"
 
 #include <guichan/actionevent.hpp>
 #include <guichan/actionlistener.hpp>
+
+#include <string>
+#include <map>
 
 /**
  * Party Member

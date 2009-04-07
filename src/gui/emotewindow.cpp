@@ -19,18 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "gui.h"
-#include "emotewindow.h"
-#include "emotecontainer.h"
-#include "scrollarea.h"
+#include "gui/emotewindow.h"
 
-#include "widgets/layout.h"
+#include "gui/gui.h"
+#include "gui/emotecontainer.h"
 
-#include "../localplayer.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/scrollarea.h"
 
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
+#include "localplayer.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 EmoteWindow::EmoteWindow():
     Window(_("Emote"))

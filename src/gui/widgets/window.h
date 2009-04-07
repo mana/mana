@@ -22,12 +22,12 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "graphics.h"
+#include "guichanfwd.h"
+
 #include <guichan/widgetlistener.hpp>
 
 #include <guichan/widgets/window.hpp>
-
-#include "../graphics.h"
-#include "../guichanfwd.h"
 
 class ContainerPlacer;
 class Layout;

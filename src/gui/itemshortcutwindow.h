@@ -22,7 +22,7 @@
 #ifndef ITEMSHORTCUTWINDOW_H
 #define ITEMSHORTCUTWINDOW_H
 
-#include "window.h"
+#include "gui/widgets/window.h"
 
 class ItemShortcutContainer;
 class ScrollArea;

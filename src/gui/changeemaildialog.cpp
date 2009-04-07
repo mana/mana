@@ -19,17 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "changeemaildialog.h"
+#include "gui/changeemaildialog.h"
 
 #include "main.h"
 #include "log.h"
 #include "logindata.h"
 
-#include "gui/button.h"
-#include "gui/label.h"
 #include "gui/register.h"
-#include "gui/textfield.h"
 #include "gui/ok_dialog.h"
+
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/textfield.h"
 
 #include "utils/gettext.h"
 #include "utils/strprintf.h"

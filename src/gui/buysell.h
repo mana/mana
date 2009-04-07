@@ -22,9 +22,9 @@
 #ifndef BUYSELL_H
 #define BUYSELL_H
 
-#include <guichan/actionlistener.hpp>
+#include "gui/widgets/window.h"
 
-#include "window.h"
+#include <guichan/actionlistener.hpp>
 
 /**
  * A dialog to choose between buying or selling at a shop.

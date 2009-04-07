@@ -24,8 +24,9 @@
 
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/scrollarea.h"
-#include "gui/textbox.h"
+
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/textbox.h"
 
 #include "graphics.h"
 #include "units.h"

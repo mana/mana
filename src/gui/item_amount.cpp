@@ -19,22 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "button.h"
-#include "item_amount.h"
-#include "label.h"
-#include "slider.h"
+#include "gui/item_amount.h"
+
 #ifdef EATHENA_SUPPORT
-#include "storagewindow.h"
+#include "gui/storagewindow.h"
 #endif
-#include "trade.h"
+#include "gui/trade.h"
 
-#include "widgets/layout.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/slider.h"
 
-#include "../item.h"
-#include "../localplayer.h"
+#include "item.h"
+#include "localplayer.h"
 
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
                                    int maxRange):

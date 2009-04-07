@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "icon.h"
+#include "gui/widgets/icon.h"
 
-#include "../graphics.h"
+#include "graphics.h"
 
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 Icon::Icon(const std::string &file)
     : mImage(0)
