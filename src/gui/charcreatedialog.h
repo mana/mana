@@ -29,6 +29,8 @@
 #include "gui/window.h"
 
 #include <guichan/actionlistener.hpp>
+
+#include <string>
 #include <vector>
 
 class LocalPlayer;

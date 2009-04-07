@@ -23,11 +23,9 @@
 #define SKILL_H
 
 #include "gui/window.h"
-#include "gui/gccontainer.h"
 
 #include "guichanfwd.h"
 
-#include <guichan/listmodel.hpp>
 #include <guichan/actionlistener.hpp>
 
 #include <list>
@@ -44,14 +42,8 @@ class SkillTab;
 class SkillDialog : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         */
         SkillDialog();
 
-        /**
-         * Destructor.
-         */
         ~SkillDialog();
 
         /**

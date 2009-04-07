@@ -41,8 +41,8 @@ float Tab::mAlpha = 1.0;
 enum {
     TAB_STANDARD,    // 0
     TAB_HIGHLIGHTED, // 1
-    TAB_SELECTED,     // 2
-    TAB_UNUSED,       // 3
+    TAB_SELECTED,    // 2
+    TAB_UNUSED,      // 3
     TAB_COUNT        // 4 - Must be last.
 };
 

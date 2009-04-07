@@ -19,29 +19,26 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/browserbox.h"
+#include "gui/gui.h"
+#include "gui/itemlinkhandler.h"
+#include "gui/label.h"
+#include "gui/listbox.h"
+#include "gui/palette.h"
+#include "gui/scrollarea.h"
+#include "gui/setup_colors.h"
+#include "gui/slider.h"
+
+#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/textpreview.h"
+
+#include "configuration.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <string>
 #include <cmath>
-
-#include <guichan/listmodel.hpp>
-#include <guichan/widgets/slider.hpp>
-
-#include "browserbox.h"
-#include "gui.h"
-#include "itemlinkhandler.h"
-#include "label.h"
-#include "listbox.h"
-#include "palette.h"
-#include "scrollarea.h"
-#include "setup_colors.h"
-#include "slider.h"
-#include "textfield.h"
-
-#include "widgets/layouthelper.h"
-
-#include "../configuration.h"
-
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
 
 const std::string Setup_Colors::rawmsg = _("This is what the color looks like");
 

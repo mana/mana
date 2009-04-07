@@ -22,11 +22,10 @@
 #include "gui/widgets/avatar.h"
 
 #include "gui/icon.h"
+#include "gui/label.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-
-#include <guichan/widgets/label.hpp>
 
 namespace {
     Image *avatarStatusOffline;
@@ -54,7 +53,7 @@ Avatar::Avatar(const std::string &name):
     mStatus->setSize(12, 12);
     add(mStatus, 1, 0);
 
-    mLabel = new gcn::Label(name);
+    mLabel = new Label(name);
     mLabel->setSize(85, 12);
     add(mLabel, 14, 0);
 }

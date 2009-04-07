@@ -19,34 +19,33 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "unregisterdialog.h"
+#include "gui/unregisterdialog.h"
+
+#include "main.h"
+#include "log.h"
+#include "logindata.h"
+
+#include "gui/button.h"
+#include "gui/checkbox.h"
+#include "gui/label.h"
+#include "gui/ok_dialog.h"
+#include "gui/passwordfield.h"
+#include "gui/register.h"
+#include "gui/textfield.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
 
 #include <string>
 #include <sstream>
-
-#include <guichan/widgets/label.hpp>
-
-#include "../main.h"
-#include "../log.h"
-#include "../logindata.h"
-
-#include "button.h"
-#include "checkbox.h"
-#include "register.h"
-#include "passwordfield.h"
-#include "textfield.h"
-#include "ok_dialog.h"
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 
 UnRegisterDialog::UnRegisterDialog(Window *parent, LoginData *loginData):
     Window("Unregister", true, parent),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label(strprintf(_("Name: %s"), mLoginData->username.c_str()));
-    gcn::Label *passwordLabel = new gcn::Label(_("Password:"));
+    gcn::Label *userLabel = new Label(strprintf(_("Name: %s"), mLoginData->username.c_str()));
+    gcn::Label *passwordLabel = new Label(_("Password:"));
     mPasswordField = new PasswordField(mLoginData->password);
     mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);

@@ -26,17 +26,14 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <guichan/widgets/label.hpp>
-#include <guichan/widgets/listbox.hpp>
+#include "gui/setuptab.h"
+#include "gui/textfield.h"
 
-#include "setuptab.h"
-#include "textfield.h"
-
-#include "../guichanfwd.h"
-
-#include "widgets/textpreview.h"
+#include "guichanfwd.h"
 
 class BrowserBox;
+class TextField;
+class TextPreview;
 
 class Setup_Colors : public SetupTab, public gcn::ActionListener,
                      public TextFieldListener
@@ -44,11 +41,13 @@ class Setup_Colors : public SetupTab, public gcn::ActionListener,
     public:
         Setup_Colors();
         ~Setup_Colors();
+
         void apply();
         void cancel();
         void action(const gcn::ActionEvent &event);
 
         void listen(const TextField *tf);
+
     private:
         static const std::string rawmsg;
 
@@ -82,4 +81,5 @@ class Setup_Colors : public SetupTab, public gcn::ActionListener,
         void updateColor();
         void updateGradType();
 };
+
 #endif

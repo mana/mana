@@ -22,13 +22,11 @@
 #ifndef MAGIC_H
 #define MAGIC_H
 
+#include "gui/window.h"
+
+#include "guichanfwd.h"
+
 #include <guichan/actionlistener.hpp>
-
-#include "window.h"
-#include "gccontainer.h"
-
-#include "../guichanfwd.h"
-
 
 /**
  * The skill dialog.
@@ -38,14 +36,8 @@
 class MagicDialog : public Window, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         */
         MagicDialog();
 
-        /**
-         * Destructor.
-         */
         ~MagicDialog();
 
         /**
@@ -62,13 +54,7 @@ class MagicDialog : public Window, public gcn::ActionListener
           * Draw this window.
           */
         void draw(gcn::Graphics *g);
-
-    private:
-
 };
-
-
-
 
 extern MagicDialog *magicDialog;
 

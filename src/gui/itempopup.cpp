@@ -20,24 +20,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/itempopup.h"
+
+#include "gui/gui.h"
+#include "gui/palette.h"
+#include "gui/scrollarea.h"
+#include "gui/textbox.h"
+
+#include "graphics.h"
+#include "units.h"
+
+#include "resources/iteminfo.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <guichan/font.hpp>
-
 #include <guichan/widgets/label.hpp>
-
-#include "gui.h"
-#include "itempopup.h"
-#include "palette.h"
-#include "scrollarea.h"
-#include "textbox.h"
-
-#include "../graphics.h"
-
-#include "../units.h"
-
-#include "../resources/iteminfo.h"
-
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
 
 ItemPopup::ItemPopup():
     Popup("ItemPopup")

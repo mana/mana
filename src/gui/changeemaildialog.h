@@ -22,11 +22,11 @@
 #ifndef GUI_CHANGEEMAIL_H
 #define GUI_CHANGEEMAIL_H
 
-#include <iosfwd>
-#include <guichan/actionlistener.hpp>
+#include "gui/window.h"
 
-#include "window.h"
-#include "../guichanfwd.h"
+#include "guichanfwd.h"
+
+#include <guichan/actionlistener.hpp>
 
 class LoginData;
 class OkDialog;

@@ -22,27 +22,28 @@
 #ifndef QUITDIALOG_H
 #define QUITDIALOG_H
 
-#include <iosfwd>
-#include <guichan/actionlistener.hpp>
+#include "gui/window.h"
 
-#include "window.h"
-#include "../guichanfwd.h"
-#include "../main.h"
+#include "guichanfwd.h"
+#include "main.h"
+
+#include <guichan/actionlistener.hpp>
 
 /**
  * The quit dialog.
  *
  * \ingroup Interface
  */
-class QuitDialog : public Window, public gcn::ActionListener {
+class QuitDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor
          *
          * @quitGame;    to be used for getting out of the while loop in Game
-         * @pointerToMe; will be set to NULL when the QuitDialog is destroyed
+         * @pointerToMe  will be set to NULL when the QuitDialog is destroyed
          */
-        QuitDialog(bool* quitGame, QuitDialog** pointerToMe);
+        QuitDialog(bool *quitGame, QuitDialog **pointerToMe);
 
         /**
          * Destructor
@@ -62,9 +63,8 @@ class QuitDialog : public Window, public gcn::ActionListener {
         gcn::Button *mOkButton;
         gcn::Button *mCancelButton;
 
-        bool* mQuitGame;
-        QuitDialog** mMyPointer;
-
+        bool *mQuitGame;
+        QuitDialog **mMyPointer;
 };
 
 #endif

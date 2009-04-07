@@ -22,17 +22,14 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include <iosfwd>
+#include "gui/window.h"
+
+#include "guichanfwd.h"
 
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
-
-#include "../guichanfwd.h"
-
 class LocalPlayer;
 class ProgressBar;
-
 
 /**
  * The player status dialog.

@@ -19,8 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-
 #include "partytab.h"
 
 #include "net/net.h"
@@ -35,7 +33,8 @@
 #include "utils/strprintf.h"
 #include "utils/stringutils.h"
 
-PartyTab::PartyTab() : ChatTab(_("Party"))
+PartyTab::PartyTab() :
+    ChatTab(_("Party"))
 {
 }
 

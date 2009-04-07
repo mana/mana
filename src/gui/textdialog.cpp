@@ -19,20 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "textdialog.h"
-#include "button.h"
+#include "gui/textdialog.h"
 
-#include "../utils/gettext.h"
+#include "gui/button.h"
+#include "gui/label.h"
+#include "gui/textfield.h"
 
-#include <guichan/widgets/label.hpp>
-#include <guichan/widgets/textfield.hpp>
+#include "utils/gettext.h"
 
 TextDialog::TextDialog(const std::string &title, const std::string &msg,
                        Window *parent):
     Window(title, true, parent),
     mTextField(new TextField)
 {
-    gcn::Label *textLabel = new gcn::Label(msg);
+    gcn::Label *textLabel = new Label(msg);
     mOkButton = new Button(_("OK"), "OK", this);
     gcn::Button *cancelButton = new Button(_("Cancel"), "CANCEL", this);
 

@@ -62,7 +62,7 @@ BuyDialog::BuyDialog():
     mSlider = new Slider(1.0);
     mQuantityLabel = new Label(strprintf("%d / %d", mAmountItems, mMaxItems));
     mQuantityLabel->setAlignment(gcn::Graphics::CENTER);
-    mMoneyLabel = new gcn::Label(strprintf(_("Price: %s / Total: %s"),
+    mMoneyLabel = new Label(strprintf(_("Price: %s / Total: %s"),
                                             "", ""));
 
     mIncreaseButton = new Button("+", "+", this);

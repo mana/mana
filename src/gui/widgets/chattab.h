@@ -25,8 +25,6 @@
 #include "gui/widgets/tab.h"
 #include "gui/chat.h"
 
-#include <guichan/widgets/container.hpp>
-
 class BrowserBox;
 class Recorder;
 class ScrollArea;
@@ -60,10 +58,6 @@ class ChatTab : public Tab
          * Constructor.
          */
         ChatTab(const std::string &name);
-
-        /**
-         * Destructor.
-         */
         ~ChatTab();
 
         /**
@@ -81,7 +75,6 @@ class ChatTab : public Tab
          * Adds the text to the message list
          *
          * @param msg  The message text which is to be sent.
-         *
          */
         void chatLog(const std::string &nick, const std::string &msg);
 
@@ -91,7 +84,6 @@ class ChatTab : public Tab
          * command handler
          *
          * @param msg  The message text which is to be sent.
-         *
          */
         void chatInput(std::string &msg);
 

@@ -20,23 +20,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/setup_keyboard.h"
+
+#include "gui/button.h"
+#include "gui/listbox.h"
+#include "gui/ok_dialog.h"
+#include "gui/scrollarea.h"
+
+#include "gui/widgets/layouthelper.h"
+
+#include "keyboardconfig.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <SDL_keyboard.h>
 
-#include <guichan/widgets/label.hpp>
 #include <guichan/listmodel.hpp>
-
-#include "button.h"
-#include "listbox.h"
-#include "ok_dialog.h"
-#include "scrollarea.h"
-#include "setup_keyboard.h"
-
-#include "widgets/layouthelper.h"
-
-#include "../keyboardconfig.h"
-
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
 
 /**
  * The list model for key function list.
@@ -59,7 +59,7 @@ class KeyListModel : public gcn::ListModel
         /**
          * Sets element from container.
          */
-        void setElementAt(int i, std::string caption)
+        void setElementAt(int i, const std::string &caption)
         {
             mKeyFunctions[i] = caption;
         }

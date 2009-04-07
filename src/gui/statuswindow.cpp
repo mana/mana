@@ -21,16 +21,15 @@
 
 #include "statuswindow.h"
 
-#include <guichan/widgets/label.hpp>
+#include "gui/button.h"
+#include "gui/label.h"
+#include "gui/progressbar.h"
+#include "gui/windowcontainer.h"
 
-#include "button.h"
-#include "progressbar.h"
-#include "windowcontainer.h"
+#include "localplayer.h"
 
-#include "../localplayer.h"
-
-#include "../utils/strprintf.h"
-#include "../utils/stringutils.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 StatusWindow::StatusWindow(LocalPlayer *player):
     Window(player->getName()),
@@ -47,12 +46,12 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // Status Part
     // ----------------------
 
-    mLvlLabel = new gcn::Label("Level:");
-    mMoneyLabel = new gcn::Label("Money:");
+    mLvlLabel = new Label("Level:");
+    mMoneyLabel = new Label("Money:");
 
-    mHpLabel = new gcn::Label("HP:");
+    mHpLabel = new Label("HP:");
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
-    mHpValueLabel = new gcn::Label("");
+    mHpValueLabel = new Label;
 
     int y = 3;
     int x = 5;
@@ -84,34 +83,34 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // ----------------------
 
     // Static Labels
-    gcn::Label *mStatsTitleLabel = new gcn::Label("Stats");
-    gcn::Label *mStatsTotalLabel = new gcn::Label("Total");
+    gcn::Label *mStatsTitleLabel = new Label("Stats");
+    gcn::Label *mStatsTotalLabel = new Label("Total");
 
     // Derived Stats
 /*
-    mStatsAttackLabel = new gcn::Label("Attack:");
-    mStatsDefenseLabel= new gcn::Label("Defense:");
-    mStatsMagicAttackLabel = new gcn::Label("M.Attack:");
-    mStatsMagicDefenseLabel = new gcn::Label("M.Defense:");
-    mStatsAccuracyLabel = new gcn::Label("% Accuracy:");
-    mStatsEvadeLabel = new gcn::Label("% Evade:");
-    mStatsReflexLabel = new gcn::Label("% Reflex:");
+    mStatsAttackLabel = new Label("Attack:");
+    mStatsDefenseLabel= new Label("Defense:");
+    mStatsMagicAttackLabel = new Label("M.Attack:");
+    mStatsMagicDefenseLabel = new Label("M.Defense:");
+    mStatsAccuracyLabel = new Label("% Accuracy:");
+    mStatsEvadeLabel = new Label("% Evade:");
+    mStatsReflexLabel = new Label("% Reflex:");
 
-    mStatsAttackPoints = new gcn::Label("");
-    mStatsDefensePoints = new gcn::Label("");
-    mStatsMagicAttackPoints = new gcn::Label("");
-    mStatsMagicDefensePoints = new gcn::Label("");
-    mStatsAccuracyPoints = new gcn::Label("% Accuracy:");
-    mStatsEvadePoints = new gcn::Label("% Evade:");
-    mStatsReflexPoints = new gcn::Label("% Reflex:");
+    mStatsAttackPoints = new Label;
+    mStatsDefensePoints = new Label;
+    mStatsMagicAttackPoints = new Label;
+    mStatsMagicDefensePoints = new Label;
+    mStatsAccuracyPoints = new Label("% Accuracy:");
+    mStatsEvadePoints = new Label("% Evade:");
+    mStatsReflexPoints = new Label("% Reflex:");
 */
     // New labels
     for (int i = 0; i < 6; i++) {
-        mStatsLabel[i] = new gcn::Label();
-        mStatsDisplayLabel[i] = new gcn::Label();
+        mStatsLabel[i] = new Label;
+        mStatsDisplayLabel[i] = new Label;
     }
-    mCharacterPointsLabel = new gcn::Label();
-    mCorrectionPointsLabel = new gcn::Label();
+    mCharacterPointsLabel = new Label;
+    mCorrectionPointsLabel = new Label;
 
     // Set button events Id
     mStatsPlus[0] = new Button("+", "STR+", this);

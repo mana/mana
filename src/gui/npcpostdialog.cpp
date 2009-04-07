@@ -21,6 +21,7 @@
 
 #include "gui/npcpostdialog.h"
 
+#include "gui/label.h"
 #include "gui/textbox.h"
 #include "gui/textfield.h"
 #include "gui/button.h"
@@ -35,15 +36,13 @@
 
 #include "utils/gettext.h"
 
-#include <guichan/widgets/label.hpp>
-
 NpcPostDialog::NpcPostDialog():
     Window(_("NPC"))
 {
     setContentSize(400, 180);
 
     // create text field for receiver
-    gcn::Label *senderText = new gcn::Label("To:");
+    gcn::Label *senderText = new Label("To:");
     senderText->setPosition(5, 5);
     mSender = new TextField;
     mSender->setPosition(senderText->getWidth() + 5, 5);

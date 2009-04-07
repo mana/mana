@@ -22,11 +22,11 @@
 #ifndef UNREGISTERDIALOG_H
 #define UNREGISTERDIALOG_H
 
-#include <iosfwd>
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
-#include "../guichanfwd.h"
+#include "gui/window.h"
+
+#include "guichanfwd.h"
 
 class LoginData;
 class OkDialog;
@@ -37,18 +37,16 @@ class WrongDataNoticeListener;
  *
  * \ingroup Interface
  */
-class UnRegisterDialog : public Window, public gcn::ActionListener {
+class UnRegisterDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor
          *
          * @see Window::Window
          */
-        UnRegisterDialog(Window *parent,LoginData *loginData);
+        UnRegisterDialog(Window *parent, LoginData *loginData);
 
-        /**
-         * Destructor
-         */
         ~UnRegisterDialog();
 
         /**

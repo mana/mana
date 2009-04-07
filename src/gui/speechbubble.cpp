@@ -20,18 +20,17 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/gui.h"
+#include "gui/scrollarea.h"
+#include "gui/speechbubble.h"
+#include "gui/textbox.h"
+
+#include "graphics.h"
+
+#include "utils/gettext.h"
+
 #include <guichan/font.hpp>
-
 #include <guichan/widgets/label.hpp>
-
-#include "gui.h"
-#include "scrollarea.h"
-#include "speechbubble.h"
-#include "textbox.h"
-
-#include "../graphics.h"
-
-#include "../utils/gettext.h"
 
 SpeechBubble::SpeechBubble():
     Popup("Speech", "graphics/gui/speechbubble.xml")

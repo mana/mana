@@ -21,12 +21,13 @@
 
 #include "gui/skilldialog.h"
 
-#include "gui/icon.h"
 #include "gui/button.h"
+#include "gui/icon.h"
+#include "gui/label.h"
 #include "gui/listbox.h"
+#include "gui/progressbar.h"
 #include "gui/scrollarea.h"
 #include "gui/windowcontainer.h"
-#include "gui/progressbar.h"
 
 #include "gui/widgets/tabbedarea.h"
 
@@ -36,9 +37,7 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <guichan/widgets/label.hpp>
 #include <guichan/widgets/container.hpp>
-#include <guichan/widgets/icon.hpp>
 
 #include <vector>
 
@@ -87,7 +86,7 @@ class SkillTab : public GCContainer, public gcn::ActionListener
         /**
          * Get the icon associated with the given index
          */
-        Icon* getIcon(int index);
+        Icon *getIcon(int index);
 
         std::vector<Icon *> mSkillIcons;
         std::vector<gcn::Label *> mSkillNameLabels;
@@ -175,13 +174,13 @@ SkillTab::SkillTab(const std::string &type): type(type)
     mSkillProgress.resize(skillNum);
 
     // Set the initial positions of the skill information
-    for (int a=0; a < skillNum; a++)
+    for (int a = 0; a < skillNum; a++)
     {
         mSkillIcons.at(a) = getIcon(a);
         mSkillIcons.at(a)->setPosition(1, a*32);
         add(mSkillIcons.at(a));
 
-        mSkillNameLabels.at(a) = new gcn::Label("");
+        mSkillNameLabels.at(a) = new Label("");
         mSkillNameLabels.at(a)->setPosition(35, a*32 );
         add(mSkillNameLabels.at(a));
 
@@ -189,11 +188,11 @@ SkillTab::SkillTab(const std::string &type): type(type)
         mSkillProgress.at(a)->setPosition(35, a*32 + 13);
         add(mSkillProgress.at(a));
 
-        mSkillExpLabels.at(a) = new gcn::Label("");
+        mSkillExpLabels.at(a) = new Label("");
         mSkillExpLabels.at(a)->setPosition(45, a*32 + 16);
         add(mSkillExpLabels.at(a));
 
-        mSkillLevelLabels.at(a) = new gcn::Label("");
+        mSkillLevelLabels.at(a) = new Label("");
         mSkillLevelLabels.at(a)->setPosition(165, a*32);
         add(mSkillLevelLabels.at(a));
     }

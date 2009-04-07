@@ -22,10 +22,11 @@
 #ifndef GUI_GUILD_DIALOG_H
 #define GUI_GUILD_DIALOG_H
 
-#include <guichan/actionlistener.hpp>
-#include "textfield.h"
-
 #include "window.h"
+
+#include <guichan/actionlistener.hpp>
+
+class TextField;
 
 /**
 * An option dialog.
@@ -41,7 +42,7 @@ public:
      * @see Window::Window
      */
     TextDialog(const std::string &title, const std::string &msg,
-                  Window *parent = NULL);
+               Window *parent = NULL);
 
     /**
      * Called when receiving actions from the widgets.

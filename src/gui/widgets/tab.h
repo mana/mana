@@ -23,7 +23,6 @@
 #define TAB_H
 
 #include <guichan/widgets/tab.hpp>
-#include <guichan/widgets/tabbedarea.hpp>
 
 class ImageRect;
 class TabbedArea;
@@ -34,14 +33,7 @@ class TabbedArea;
 class Tab : public gcn::Tab
 {
     public:
-        /**
-         * Constructor.
-         */
         Tab();
-
-        /**
-         * Destructor.
-         */
         ~Tab();
 
         /**
@@ -76,5 +68,3 @@ class Tab : public gcn::Tab
 };
 
 #endif
-
-

@@ -19,29 +19,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/serverdialog.h"
+
+#include "gui/button.h"
+#include "gui/label.h"
+#include "gui/listbox.h"
+#include "gui/ok_dialog.h"
+#include "gui/scrollarea.h"
+#include "gui/textfield.h"
+
+#include "gui/widgets/layout.h"
+
+#include "configuration.h"
+#include "log.h"
+#include "logindata.h"
+#include "main.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
-
-#include <guichan/widgets/label.hpp>
-
-#include "serverdialog.h"
-
-#include "button.h"
-#include "listbox.h"
-#include "ok_dialog.h"
-#include "scrollarea.h"
-#include "textfield.h"
-
-#include "widgets/layout.h"
-
-#include "../configuration.h"
-#include "../log.h"
-#include "../logindata.h"
-#include "../main.h"
-
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
 
 const short MAX_SERVERLIST = 5;
 
@@ -74,8 +73,8 @@ void ServersListModel::addElement(Server server)
 ServerDialog::ServerDialog(LoginData *loginData):
     Window(_("Choose your server")), mLoginData(loginData)
 {
-    gcn::Label *serverLabel = new gcn::Label(_("Server:"));
-    gcn::Label *portLabel = new gcn::Label(_("Port:"));
+    gcn::Label *serverLabel = new Label(_("Server:"));
+    gcn::Label *portLabel = new Label(_("Port:"));
     mServerNameField = new TextField(mLoginData->hostname);
     mPortField = new TextField(toString(mLoginData->port));
 

@@ -22,26 +22,26 @@
 #ifndef SERVERDIALOG_H
 #define SERVERDIALOG_H
 
-#include <iosfwd>
-#include <vector>
+#include "gui/window.h"
+
+#include "guichanfwd.h"
+
+#include "net/tmwserv/network.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
-#include "./widgets/dropdown.h"
 
-#include "login.h"
-#include "window.h"
+#include <string>
+#include <vector>
 
-#include "../guichanfwd.h"
-
-#include "../net/tmwserv/network.h"
-
+class DropDown;
 class LoginData;
 
 /**
  * A server structure to keep pairs of servers and ports.
  */
-struct Server {
+struct Server
+{
     Server():
         port(0)
     {}
@@ -60,18 +60,23 @@ class ServersListModel : public gcn::ListModel
          * Used to get number of line in the list
          */
         int getNumberOfElements();
+
         /**
          * Used to get an element from the list
          */
         std::string getElementAt(int elementIndex);
+
         /**
          * Used to get the corresponding Server struct
          */
-        Server getServer(int elementIndex) { return servers[elementIndex]; };
+        Server getServer(int elementIndex) const
+        { return servers[elementIndex]; }
+
         /**
          * Add an Element at the end of the server list
          */
         void addElement(Server server);
+
         /**
          * Add an Element at the beginning of the server list
          */

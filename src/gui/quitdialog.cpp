@@ -19,18 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "quitdialog.h"
-#include <iostream>
-#include <string>
+#include "gui/quitdialog.h"
 
-#include <guichan/widgets/label.hpp>
+#include "main.h"
 
-#include "../main.h"
+#include "gui/button.h"
+#include "gui/radiobutton.h"
 
-#include "button.h"
-#include "radiobutton.h"
-
-#include "../utils/gettext.h"
+#include "utils/gettext.h"
 
 QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
     Window(_("Quit"), true, NULL), mQuitGame(quitGame), mMyPointer(pointerToMe)
@@ -85,7 +81,6 @@ QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
     setVisible(true);
 
     mOkButton->requestFocus();
-
 }
 
 QuitDialog::~QuitDialog()
@@ -98,8 +93,7 @@ QuitDialog::~QuitDialog()
     delete mSwitchCharacter;
 }
 
-void
-QuitDialog::action(const gcn::ActionEvent &event)
+void QuitDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {

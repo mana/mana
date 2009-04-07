@@ -40,6 +40,8 @@
 #include "utils/strprintf.h"
 #include "utils/stringutils.h"
 
+#include <guichan/widgets/tabbedarea.hpp>
+
 ChatTab::ChatTab(const std::string &name) : Tab()
 {
     setCaption(name);

@@ -51,8 +51,6 @@
 
 #include <guichan/font.hpp>
 
-#include <string>
-
 CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     Window(_("Create Character"), true, parent),
     mSlot(slot)
@@ -94,7 +92,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mNameField->setActionEventId("create");
     mNameField->addActionListener(this);
 
-    mAttributesLeft = new gcn::Label(strprintf(_("Please distribute %d points"), 99));
+    mAttributesLeft = new Label(strprintf(_("Please distribute %d points"), 99));
 
     int w = 200;
     int h = 330;
@@ -285,18 +283,18 @@ void CharCreateDialog::setAttributes(std::vector<std::string> labels,
 
     for (unsigned i = 0; i < labels.size(); i++)
     {
-        mAttributeLabel[i] = new gcn::Label(labels[i]);
+        mAttributeLabel[i] = new Label(labels[i]);
         mAttributeLabel[i]->setWidth(70);
         mAttributeLabel[i]->setPosition(5, 140 + i*20);
         add(mAttributeLabel[i]);
 
-        mAttributeSlider[i] = new gcn::Slider(min, max);
+        mAttributeSlider[i] = new Slider(min, max);
         mAttributeSlider[i]->setDimension(gcn::Rectangle(75, 140 + i*20, 100, 10));
         mAttributeSlider[i]->setActionEventId("statslider");
         mAttributeSlider[i]->addActionListener(this);
         add(mAttributeSlider[i]);
 
-        mAttributeValue[i] = new gcn::Label(toString(min));
+        mAttributeValue[i] = new Label(toString(min));
         mAttributeValue[i]->setPosition(180, 140 + i*20);
         add(mAttributeValue[i]);
     }

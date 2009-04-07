@@ -21,31 +21,30 @@
 
 #include "changeemaildialog.h"
 
+#include "main.h"
+#include "log.h"
+#include "logindata.h"
+
+#include "gui/button.h"
+#include "gui/label.h"
+#include "gui/register.h"
+#include "gui/textfield.h"
+#include "gui/ok_dialog.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+
 #include <string>
 #include <sstream>
-
-#include <guichan/widgets/label.hpp>
-
-#include "../main.h"
-#include "../log.h"
-#include "../logindata.h"
-
-#include "button.h"
-#include "register.h"
-#include "textfield.h"
-#include "ok_dialog.h"
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 
 ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
     Window(_("Change Email Address"), true, parent),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
-    gcn::Label *accountLabel = new gcn::Label(strprintf(_("Account: %s"),
-                                              mLoginData->username.c_str()));
-    gcn::Label *newEmailLabel = new gcn::Label(_("Type New Email Address twice:"));
+    gcn::Label *accountLabel = new Label(strprintf(_("Account: %s"),
+                                                   mLoginData->username.c_str()));
+    gcn::Label *newEmailLabel = new Label(_("Type New Email Address twice:"));
     mFirstEmailField = new TextField;
     mSecondEmailField = new TextField;
     mChangeEmailButton = new Button(_("Change Email Address"), "change_email", this);

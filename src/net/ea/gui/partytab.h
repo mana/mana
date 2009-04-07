@@ -25,24 +25,16 @@
 #include "gui/widgets/chattab.h"
 
 /**
- * A tab for a chat channel.
+ * A tab for a party chat channel.
  */
 class PartyTab : public ChatTab
 {
     public:
-        /**
-         * Constructor.
-         */
         PartyTab();
-
-        /**
-         * Destructor.
-         */
         ~PartyTab();
 
     protected:
         void handleInput(const std::string &msg);
-
         void handleCommand(std::string msg);
 };
 

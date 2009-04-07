@@ -22,11 +22,11 @@
 #ifndef CHANGEPASSWORDDIALOG_H
 #define CHANGEPASSWORDDIALOG_H
 
-#include <iosfwd>
-#include <guichan/actionlistener.hpp>
+#include "gui/window.h"
 
-#include "window.h"
-#include "../guichanfwd.h"
+#include "guichanfwd.h"
+
+#include <guichan/actionlistener.hpp>
 
 class LoginData;
 class OkDialog;

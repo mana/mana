@@ -19,17 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <guichan/widgets/label.hpp>
-#include <guichan/widgets/container.hpp>
-
 #include "magic.h"
 
-#include "button.h"
+#include "gui/button.h"
 
-#include "../localplayer.h"
+#include "localplayer.h"
 
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
+#include "utils/dtor.h"
+#include "utils/gettext.h"
 
 MagicDialog::MagicDialog():
     Window(_("Magic"))

@@ -21,34 +21,33 @@
 
 #include "changepassworddialog.h"
 
+#include "main.h"
+#include "log.h"
+#include "logindata.h"
+
+#include "gui/button.h"
+#include "gui/register.h"
+#include "gui/passwordfield.h"
+#include "gui/textfield.h"
+#include "gui/ok_dialog.h"
+#include "gui/label.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+
 #include <string>
 #include <sstream>
-
-#include <guichan/widgets/label.hpp>
-
-#include "../main.h"
-#include "../log.h"
-#include "../logindata.h"
-
-#include "button.h"
-#include "register.h"
-#include "passwordfield.h"
-#include "textfield.h"
-#include "ok_dialog.h"
-
-#include "../utils/gettext.h"
-#include "../utils/strprintf.h"
 
 ChangePasswordDialog::ChangePasswordDialog(Window *parent, LoginData *loginData):
     Window(_("Change Password"), true, parent),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
-    gcn::Label *accountLabel = new gcn::Label(strprintf(_("Account: %s"),
-                                              mLoginData->username.c_str()));
-    gcn::Label *oldPassLabel = new gcn::Label(_("Password:"));
+    gcn::Label *accountLabel = new Label(strprintf(_("Account: %s"),
+                                                   mLoginData->username.c_str()));
+    gcn::Label *oldPassLabel = new Label(_("Password:"));
     mOldPassField = new PasswordField;
-    gcn::Label *newPassLabel = new gcn::Label(_("Type New Password twice:"));
+    gcn::Label *newPassLabel = new Label(_("Type New Password twice:"));
     mFirstPassField = new PasswordField;
     mSecondPassField = new PasswordField;
     mChangePassButton = new Button(_("Change Password"), "change_password", this);
