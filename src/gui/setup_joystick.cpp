@@ -38,7 +38,7 @@ Setup_Joystick::Setup_Joystick():
     mCalibrateButton(new Button(_("Calibrate"), "calibrate", this)),
     mJoystickEnabled(new CheckBox(_("Enable joystick")))
 {
-    setOpaque(false);
+    setName(_("Joystick"));
 
     mOriginalJoystickEnabled = !config.getValue("joystickEnabled", false);
     mJoystickEnabled->setSelected(mOriginalJoystickEnabled);

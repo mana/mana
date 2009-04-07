@@ -85,7 +85,6 @@ GeneralHandler::GeneralHandler():
 void GeneralHandler::handleMessage(MessageIn &msg)
 {
     int code;
-    unsigned char direction;
 
     switch (msg.getId())
     {

@@ -46,7 +46,7 @@ const std::string Setup_Colors::rawmsg = _("This is what the color looks like");
 Setup_Colors::Setup_Colors() :
     mSelected(-1)
 {
-    setOpaque(false);
+    setName(_("Colors"));
 
     mColorBox = new ListBox(guiPalette);
     mColorBox->setActionEventId("color_box");

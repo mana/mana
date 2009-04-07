@@ -74,7 +74,7 @@ Setup_Keyboard::Setup_Keyboard():
     mKeySetting(false)
 {
     keyboard.setSetupKeyboard(this);
-    setOpaque(false);
+    setName(_("Keyboard"));
 
     refreshKeys();
 

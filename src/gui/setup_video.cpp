@@ -148,7 +148,7 @@ Setup_Video::Setup_Video():
     mParticleDetailSlider(new Slider(0, 3)),
     mParticleDetailField(new Label(""))
 {
-    setOpaque(false);
+    setName(_("Video"));
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

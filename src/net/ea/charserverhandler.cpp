@@ -61,7 +61,7 @@ CharServerHandler::CharServerHandler():
 
 void CharServerHandler::handleMessage(MessageIn &msg)
 {
-    int slot, flags, code;
+    int slot, flags;
     LocalPlayer *tempPlayer;
 
     logger->log("CharServerHandler: Packet ID: %x, Length: %d",

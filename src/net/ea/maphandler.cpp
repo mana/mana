@@ -54,7 +54,6 @@ MapHandler::MapHandler()
 
 void MapHandler::handleMessage(MessageIn &msg)
 {
-    int code;
     unsigned char direction;
 
     switch (msg.getId())

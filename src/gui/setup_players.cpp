@@ -232,7 +232,8 @@ Setup_Players::Setup_Players():
                 player_relations.getDefault() & PlayerRelation::WHISPER)),
     mDeleteButton(new Button(_("Delete"), ACTION_DELETE, this))
 {
-    setOpaque(false);
+    setName(_("Players"));
+
     mPlayerTable->setOpaque(false);
 
     mPlayerTableTitleModel->fixColumnWidth(NAME_COLUMN, NAME_COLUMN_WIDTH);

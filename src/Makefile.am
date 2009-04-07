@@ -154,6 +154,7 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/setup_players.h \
 	      gui/setup_video.cpp \
 	      gui/setup_video.h \
+	      gui/setuptab.cpp \
 	      gui/setuptab.h \
 	      gui/shop.cpp \
 	      gui/shop.h \

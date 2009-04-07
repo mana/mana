@@ -24,11 +24,39 @@
 
 #include "gui/widgets/gccontainer.h"
 
+#include <string>
+
+/**
+ * A container for the contents of a tab in the setup window.
+ */
 class SetupTab : public GCContainer
 {
-    public:
-        virtual void apply() = 0;
-        virtual void cancel() = 0;
+public:
+    SetupTab();
+
+    const std::string &getName() const
+    { return mName; }
+
+    /**
+     * Called when the Apply button is pressed in the setup window.
+     */
+    virtual void apply() = 0;
+
+    /**
+     * Called when the Cancel button is pressed in the setup window.
+     */
+    virtual void cancel() = 0;
+
+protected:
+    /**
+     * Sets the name displayed on the tab. Should be set in the
+     * constructor of a subclass.
+     */
+    void setName(const std::string &name)
+    { mName = name; }
+
+private:
+    std::string mName;
 };
 
 #endif
