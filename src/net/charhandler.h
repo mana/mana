@@ -23,16 +23,23 @@
 #define CHARHANDLER_H
 
 #include "localplayer.h"
+#include "lockedarray.h"
+#include "logindata.h"
 
 #include <iosfwd>
 #include <vector>
 
 class CharCreateDialog;
+class LocalPlayer;
 
 namespace Net {
 class CharHandler
 {
     public:
+        virtual void setCharInfo(LockedArray<LocalPlayer*> *charInfo) = 0;
+
+        virtual void connect(LoginData *loginData) = 0;
+
         virtual void setCharCreateDialog(CharCreateDialog *window) = 0;
 
         virtual void chooseCharacter(int slot, LocalPlayer* character) = 0;

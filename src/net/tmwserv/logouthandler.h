@@ -22,20 +22,14 @@
 #ifndef NET_TMWSERV_LOGOUTHANDLER_H
 #define NET_TMWSERV_LOGOUTHANDLER_H
 
+#include "net/logouthandler.h"
 #include "net/messagehandler.h"
 
 #include <string>
 
-/**
- * The different scenarios for which LogoutHandler can be used
- */
-enum {
-    LOGOUT_EXIT,
-    LOGOUT_SWITCH_ACCOUNTSERVER,
-    LOGOUT_SWITCH_CHARACTER
-};
+namespace TmwServ {
 
-class LogoutHandler : public MessageHandler
+class LogoutHandler : public MessageHandler, public Net::LogoutHandler
 {
     public:
         LogoutHandler();
@@ -58,5 +52,7 @@ class LogoutHandler : public MessageHandler
         bool mLoggedOutGame;
         bool mLoggedOutChat;
 };
+
+} // namespace TmwServ
 
 #endif

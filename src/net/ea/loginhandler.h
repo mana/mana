@@ -22,24 +22,44 @@
 #ifndef NET_EA_LOGINHANDLER_H
 #define NET_EA_LOGINHANDLER_H
 
+#include "net/loginhandler.h"
 #include "net/messagehandler.h"
 
 #include <string>
 
 struct LoginData;
 
-class LoginHandler : public MessageHandler
+namespace EAthena {
+
+class LoginHandler : public MessageHandler, public Net::LoginHandler
 {
     public:
         LoginHandler();
 
-        virtual void handleMessage(MessageIn &msg);
+        void handleMessage(MessageIn &msg);
 
-        void setLoginData(LoginData *loginData) { mLoginData = loginData; }
+        void loginAccount(LoginData *loginData);
+
+        void changeEmail(const std::string &email);
+
+        void changePassword(const std::string &username,
+                           const std::string &oldPassword,
+                           const std::string &newPassword);
+
+        void chooseServer(int server);
+
+        void registerAccount(const std::string &username,
+                           const std::string &password,
+                           const std::string &email);
+
+        void unregisterAccount(const std::string &username,
+                           const std::string &password);
 
     private:
         LoginData *mLoginData;
         std::string mUpdateHost;
 };
+
+} // namespace EAthena
 
 #endif // NET_EA_LOGINHANDLER_H

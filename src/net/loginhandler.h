@@ -22,29 +22,30 @@
 #ifndef LOGINHANDLER_H
 #define LOGINHANDLER_H
 
+#include "logindata.h"
+
 #include <iosfwd>
 
 namespace Net {
 class LoginHandler
 {
     public:
-        virtual void loginAccount(const std::string &username,
-                           const std::string &password) {}
+        virtual void loginAccount(LoginData *loginData) = 0;
 
-        virtual void changeEmail(const std::string &email) {}
+        virtual void changeEmail(const std::string &email) = 0;
 
         virtual void changePassword(const std::string &username,
                            const std::string &oldPassword,
-                           const std::string &newPassword) {}
+                           const std::string &newPassword) = 0;
 
-        virtual void chooseServer(int server) {}
+        virtual void chooseServer(int server) = 0;
 
         virtual void registerAccount(const std::string &username,
                            const std::string &password,
-                           const std::string &email = "") {}
+                           const std::string &email) = 0;
 
         virtual void unregisterAccount(const std::string &username,
-                           const std::string &password) {}
+                           const std::string &password) = 0;
 };
 }
 

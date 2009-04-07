@@ -85,6 +85,7 @@
 #include "gui/storagewindow.h"
 #endif
 
+#include "net/generalhandler.h"
 #include "net/maphandler.h"
 #include "net/net.h"
 
@@ -104,7 +105,6 @@
 #include "net/tmwserv/guildhandler.h"
 #include "net/tmwserv/partyhandler.h"
 #else
-#include "net/ea/gui/partytab.h"
 #include "net/ea/adminhandler.h"
 #include "net/ea/chathandler.h"
 #include "net/ea/beinghandler.h"
@@ -311,6 +311,8 @@ static void createGuiWindows()
     {
         logger->setChatWindow(chatWindow);
     }
+
+    Net::getGeneralHandler()->guiWindowsLoaded();
 }
 
 /**
@@ -355,38 +357,7 @@ static void destroyGuiWindows()
 #endif
 }
 
-#ifdef TMWSERV_SUPPORT
 Game::Game():
-    mBeingHandler(new BeingHandler),
-    mGuildHandler(new GuildHandler),
-    mEffectHandler(new EffectHandler),
-#else
-Game::Game(Network *network):
-    mNetwork(network),
-    mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
-    mAdminHandler(new EAthena::AdminHandler),
-    mEquipmentHandler(new EquipmentHandler),
-    mSkillHandler(new EAthena::SkillHandler),
-#endif
-    mPartyHandler(new PartyHandler),
-    mBuySellHandler(new BuySellHandler),
-#ifdef TMWSERV_SUPPORT
-    mChatHandler(new TmwServ::ChatHandler),
-    mInventoryHandler(new TmwServ::InventoryHandler),
-#else
-    mChatHandler(new EAthena::ChatHandler),
-    mInventoryHandler(new EAthena::InventoryHandler),
-#endif
-    mItemHandler(new ItemHandler),
-#ifdef TMWSERV_SUPPORT
-    mNpcHandler(new TmwServ::NpcHandler),
-    mPlayerHandler(new TmwServ::PlayerHandler),
-    mTradeHandler(new TmwServ::TradeHandler),
-#else
-    mNpcHandler(new EAthena::NpcHandler),
-    mPlayerHandler(new EAthena::PlayerHandler),
-    mTradeHandler(new EAthena::TradeHandler),
-#endif
     mLastTarget(Being::UNKNOWN),
     mLogicCounterId(0), mSecondsCounterId(0)
 {
@@ -422,33 +393,12 @@ Game::Game(Network *network):
     if (Joystick::getNumberOfJoysticks() > 0)
         joystick = new Joystick(0);
 
-#ifdef TMWSERV_SUPPORT
-    Net::registerHandler(mBeingHandler.get());
-    Net::registerHandler(mBuySellHandler.get());
-    Net::registerHandler(mChatHandler.get());
-    Net::registerHandler(mGuildHandler.get());
-    Net::registerHandler(mInventoryHandler.get());
-    Net::registerHandler(mItemHandler.get());
-    Net::registerHandler(mNpcHandler.get());
-    Net::registerHandler(mPartyHandler.get());
-    Net::registerHandler(mPlayerHandler.get());
-    Net::registerHandler(mTradeHandler.get());
-    Net::registerHandler(mEffectHandler.get());
-#else
-    network->registerHandler(mAdminHandler.get());
-    network->registerHandler(mBeingHandler.get());
-    network->registerHandler(mBuySellHandler.get());
-    network->registerHandler(mChatHandler.get());
-    network->registerHandler(mEquipmentHandler.get());
-    network->registerHandler(mInventoryHandler.get());
-    network->registerHandler(mItemHandler.get());
-    network->registerHandler(mNpcHandler.get());
-    network->registerHandler(mPlayerHandler.get());
-    network->registerHandler(mSkillHandler.get());
-    network->registerHandler(mTradeHandler.get());
-    network->registerHandler(mPartyHandler.get());
+#ifdef EATHENA_SUPPORT
+    map_path = map_path.substr(0, map_path.rfind("."));
+    engine->changeMap(map_path);
+#endif
 
-    partyTab = new PartyTab();
+    setupWindow->setInGame(true);
 
     /*
      * To prevent the server from sending data before the client
@@ -460,20 +410,13 @@ Game::Game(Network *network):
      * is ignored by the client
      */
     Net::getMapHandler()->ping(tick_time);
-
-    map_path = map_path.substr(0, map_path.rfind("."));
-    engine->changeMap(map_path);
-#endif
-
-    setupWindow->setInGame(true);
 }
 
 Game::~Game()
 {
+    Net::getGeneralHandler()->unload();
 #ifdef TMWSERV_SUPPORT
     Net::clearHandlers();
-#else
-    delete partyTab;
 #endif
 
     destroyGuiWindows();
@@ -608,14 +551,9 @@ void Game::logic()
         }
 
         // Handle network stuff
-#ifdef TMWSERV_SUPPORT
-        Net::flush();
-        // TODO: Fix notification when the connection is lost
-#else
-        mNetwork->flush();
-        mNetwork->dispatchMessages();
-
-        if (!mNetwork->isConnected())
+        Net::getGeneralHandler()->flushNetwork();
+#ifdef EATHENA_SUPPORT // TODO: TMWServ notification
+        if (!Net::getGeneralHandler()->isNetworkConnected())
         {
             if (!disconnectedDialog)
             {

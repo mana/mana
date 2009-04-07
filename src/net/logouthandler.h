@@ -19,23 +19,31 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef GENERALHANDLER_H
-#define GENERALHANDLER_H
+#ifndef LOGOUTHANDLER_H
+#define LOGOUTHANDLER_H
+
+#include "logindata.h"
+
+#include <iosfwd>
+
+/**
+ * The different scenarios for which LogoutHandler can be used
+ */
+enum {
+    LOGOUT_EXIT,
+    LOGOUT_SWITCH_LOGIN,
+    LOGOUT_SWITCH_CHARACTER
+};
 
 namespace Net {
-class GeneralHandler
+class LogoutHandler
 {
     public:
-        virtual void load() = 0;
+        virtual void setScenario(unsigned short scenario,
+                         std::string *passToken = NULL) = 0;
 
-        virtual void unload() = 0;
-
-        virtual void flushNetwork() = 0;
-
-        virtual bool isNetworkConnected() = 0;
-
-        virtual void guiWindowsLoaded() = 0;
+        virtual void reset() = 0;
 };
 }
 
-#endif // GENERALHANDLER_H
+#endif // LOGOUTHANDLER_H

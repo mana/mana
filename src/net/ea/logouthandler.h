@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,23 +19,29 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef GENERALHANDLER_H
-#define GENERALHANDLER_H
+#ifndef NET_EA_LOGOUTHANDLER_H
+#define NET_EA_LOGOUTHANDLER_H
 
-namespace Net {
-class GeneralHandler
+#include "net/logouthandler.h"
+#include "net/messagehandler.h"
+
+#include <string>
+
+namespace EAthena {
+
+class LogoutHandler : public MessageHandler, public Net::LogoutHandler
 {
     public:
-        virtual void load() = 0;
+        LogoutHandler();
 
-        virtual void unload() = 0;
+        void handleMessage(MessageIn &msg);
 
-        virtual void flushNetwork() = 0;
+        void setScenario(unsigned short scenario,
+                         std::string *passToken = NULL);
 
-        virtual bool isNetworkConnected() = 0;
-
-        virtual void guiWindowsLoaded() = 0;
+        void reset();
 };
-}
 
-#endif // GENERALHANDLER_H
+} // namespace EAthena
+
+#endif // NET_EA_LOGOUTHANDLER_H

@@ -21,6 +21,7 @@
 
 #include "net/ea/charserverhandler.h"
 
+#include "net/ea/network.h"
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
@@ -45,7 +46,6 @@ CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
-        SMSG_CONNECTION_PROBLEM,
         0x006b,
         0x006c,
         0x006d,
@@ -68,33 +68,6 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             msg.getId(), msg.getLength());
     switch (msg.getId())
     {
-        case SMSG_CONNECTION_PROBLEM:
-            code = msg.readInt8();
-            logger->log("Connection problem: %i", code);
-
-            switch (code) {
-                case 0:
-                    errorMessage = _("Authentication failed");
-                    break;
-                case 1:
-                    errorMessage = _("Map server(s) offline");
-                    break;
-                case 2:
-                    errorMessage = _("This account is already logged in");
-                    break;
-                case 3:
-                    errorMessage = _("Speed hack detected");
-                    break;
-                case 8:
-                    errorMessage = _("Duplicated login");
-                    break;
-                default:
-                    errorMessage = _("Unknown connection error");
-                    break;
-            }
-            state = STATE_ERROR;
-            break;
-
         case 0x006b:
             msg.skip(2); // Length word
             flags = msg.readInt32(); // Aethyra extensions flags
@@ -257,6 +230,23 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
 
     mCharCreateDialog->setAttributes(attributes, 30, 1, 9);
     mCharCreateDialog->setFixedGender(true);
+}
+
+void CharServerHandler::connect(LoginData *loginData)
+{
+    mLoginData = loginData;
+    
+    MessageOut outMsg(0x0065);
+    outMsg.writeInt32(loginData->account_ID);
+    outMsg.writeInt32(loginData->session_ID1);
+    outMsg.writeInt32(loginData->session_ID2);
+    // [Fate] The next word is unused by the old char server, so we squeeze in
+    //        tmw client version information
+    outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
+    outMsg.writeInt8(loginData->sex);
+
+    // We get 4 useless bytes before the real answer comes in (what are these?)
+    mNetwork->skip(4);
 }
 
 void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)

@@ -589,6 +589,14 @@
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
+		<Unit filename="src/net/ea/generalhandler.cpp">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
+		<Unit filename="src/net/ea/generalhandler.h">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
 		<Unit filename="src/net/ea/gui/partytab.cpp">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
@@ -620,6 +628,14 @@
 		<Unit filename="src/net/ea/loginhandler.h">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
+		</Unit>
+		<Unit filename="src/net/ea/logouthandler.cpp">
+			<Option target="eAthena" />
+			<Option target="Unix eAthena" />
+		</Unit>
+		<Unit filename="src/net/ea/logouthandler.h">
+			<Option target="eAthena" />
+			<Option target="Unix eAthena" />
 		</Unit>
 		<Unit filename="src/net/ea/maphandler.cpp">
 			<Option target="eAthena" />
@@ -689,6 +705,7 @@
 		<Unit filename="src/net/guildhandler.h" />
 		<Unit filename="src/net/inventoryhandler.h" />
 		<Unit filename="src/net/loginhandler.h" />
+		<Unit filename="src/net/logouthandler.h" />
 		<Unit filename="src/net/maphandler.h" />
 		<Unit filename="src/net/messagehandler.cpp" />
 		<Unit filename="src/net/messagehandler.h" />
@@ -830,6 +847,14 @@
 			<Option target="Unix TMWSERV" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gameserver/player.h">
+			<Option target="TMWServ" />
+			<Option target="Unix TMWSERV" />
+		</Unit>
+		<Unit filename="src/net/tmwserv/generalhandler.cpp">
+			<Option target="TMWServ" />
+			<Option target="Unix TMWSERV" />
+		</Unit>
+		<Unit filename="src/net/tmwserv/generalhandler.h">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>

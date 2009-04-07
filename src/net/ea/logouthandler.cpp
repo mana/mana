@@ -19,32 +19,48 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_TMWSERV_MAPHANDLER_H
-#define NET_TMWSERV_MAPHANDLER_H
+#include "net/ea/logouthandler.h"
 
-#include "net/maphandler.h"
-#include "net/messagehandler.h"
+#include "net/ea/protocol.h"
 
-namespace TmwServ {
+#include "net/messagein.h"
+#include "net/messageout.h"
 
-class MapHandler :  public MessageHandler, public Net::MapHandler
+#include "log.h"
+#include "logindata.h"
+#include "main.h"
+#include "serverinfo.h"
+
+#include "utils/gettext.h"
+#include "utils/strprintf.h"
+#include "utils/stringutils.h"
+
+Net::LogoutHandler *logoutHandler;
+
+namespace EAthena {
+
+LogoutHandler::LogoutHandler()
 {
-    public:
-        MapHandler();
+    static const Uint16 _messages[] = {
+        0
+    };
+    handledMessages = _messages;
+    logoutHandler = this;
+}
 
-        void handleMessage(MessageIn &msg);
+void LogoutHandler::handleMessage(MessageIn &msg)
+{
+}
 
-        void connect(LoginData *loginData);
+void LogoutHandler::setScenario(unsigned short scenario,
+                                std::string *passToken)
+{
+    // TODO
+}
 
-        void mapLoaded(const std::string &mapName);
+void LogoutHandler::reset()
+{
+    // TODO
+}
 
-        void who();
-
-        void quit();
-
-        void ping(int tick);
-};
-
-} // namespace TmwServ
-
-#endif
+} // namespace EAthena

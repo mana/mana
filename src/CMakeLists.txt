@@ -241,6 +241,7 @@ SET(SRCS
     net/guildhandler.h
     net/inventoryhandler.h
     net/loginhandler.h
+    net/logouthandler.h
     net/maphandler.h
     net/messagehandler.cpp
     net/messagehandler.h
@@ -433,12 +434,16 @@ SET(SRCS_EA
     net/ea/chathandler.h
     net/ea/equipmenthandler.cpp
     net/ea/equipmenthandler.h
+    net/ea/generalhandler.cpp
+    net/ea/generalhandler.h
     net/ea/inventoryhandler.cpp
     net/ea/inventoryhandler.h
     net/ea/itemhandler.cpp
     net/ea/itemhandler.h
     net/ea/loginhandler.cpp
     net/ea/loginhandler.h
+    net/ea/logouthandler.cpp
+    net/ea/logouthandler.h
     net/ea/maphandler.cpp
     net/ea/maphandler.h
     net/ea/network.cpp
@@ -518,6 +523,8 @@ SET(SRCS_TMW
     net/tmwserv/connection.h
     net/tmwserv/effecthandler.cpp
     net/tmwserv/effecthandler.h
+    net/tmwserv/generalhandler.cpp
+    net/tmwserv/generalhandler.h
     net/tmwserv/guildhandler.cpp
     net/tmwserv/guildhandler.h
     net/tmwserv/internal.cpp

@@ -25,9 +25,6 @@
 #include "net/messagehandler.h"
 #include "net/charhandler.h"
 
-#include "lockedarray.h"
-
-class LocalPlayer;
 class LoginData;
 
 namespace EAthena {
@@ -45,15 +42,14 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
         void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
         { mCharInfo = charInfo; }
 
-        void setLoginData(LoginData *loginData)
-        { mLoginData = loginData; }
-
         /**
          * Sets the character create dialog. The handler will clean up this
          * dialog when a new character is succesfully created, and will unlock
          * the dialog when a new character failed to be created.
          */
         void setCharCreateDialog(CharCreateDialog *window);
+
+        void connect(LoginData *loginData);
 
         void chooseCharacter(int slot, LocalPlayer* character);
 

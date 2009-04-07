@@ -30,6 +30,10 @@ MapHandler::MapHandler()
     mapHandler = this;
 }
 
+void MapHandler::handleMessage(MessageIn &msg)
+{
+}
+
 void MapHandler::connect(LoginData *loginData)
 {
     // TODO

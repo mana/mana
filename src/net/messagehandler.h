@@ -24,6 +24,8 @@
 
 #include <SDL_types.h>
 
+#include <memory>
+
 class MessageIn;
 #ifdef EATHENA_SUPPORT
 class Network;
@@ -42,12 +44,15 @@ class MessageHandler
 
         virtual void handleMessage(MessageIn &msg) = 0;
 
-#ifdef EATHENA_SUPPORT
+#ifdef TMWSERV_SUPPORT
+#else
         void setNetwork(Network *network);
 
     protected:
         Network *mNetwork;
 #endif
 };
+
+typedef const std::auto_ptr<MessageHandler> MessageHandlerPtr;
 
 #endif // NET_MESSAGEHANDLER_H

@@ -28,6 +28,7 @@
 #include "net/guildhandler.h"
 #include "net/inventoryhandler.h"
 #include "net/loginhandler.h"
+#include "net/logouthandler.h"
 #include "net/maphandler.h"
 #include "net/npchandler.h"
 #include "net/partyhandler.h"
@@ -38,7 +39,10 @@
 extern Net::AdminHandler *adminHandler;
 extern Net::CharHandler *charHandler;
 extern Net::ChatHandler *chatHandler;
+extern Net::GeneralHandler *generalHandler;
 extern Net::InventoryHandler *inventoryHandler;
+extern Net::LoginHandler *loginHandler;
+extern Net::LogoutHandler *logoutHandler;
 extern Net::MapHandler *mapHandler;
 extern Net::NpcHandler *npcHandler;
 extern Net::PlayerHandler *playerHandler;
@@ -62,8 +66,7 @@ Net::ChatHandler *Net::getChatHandler()
 
 Net::GeneralHandler *Net::getGeneralHandler()
 {
-    // TODO
-    return 0;
+    return generalHandler;
 }
 
 Net::GuildHandler *Net::getGuildHandler()
@@ -79,8 +82,12 @@ Net::InventoryHandler *Net::getInventoryHandler()
 
 Net::LoginHandler *Net::getLoginHandler()
 {
-    // TODO
-    return 0;
+    return loginHandler;
+}
+
+Net::LogoutHandler *Net::getLogoutHandler()
+{
+    return logoutHandler;
 }
 
 Net::MapHandler *Net::getMapHandler()

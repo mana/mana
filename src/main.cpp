@@ -61,18 +61,21 @@
 #endif
 #include "gui/updatewindow.h"
 
+#include "net/charhandler.h"
+#include "net/generalhandler.h"
+#include "net/loginhandler.h"
+#include "net/maphandler.h"
+#include "net/net.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/charserverhandler.h"
 #include "net/tmwserv/connection.h"
+#include "net/tmwserv/generalhandler.h"
 #include "net/tmwserv/loginhandler.h"
 #include "net/tmwserv/logouthandler.h"
 #include "net/tmwserv/network.h"
 #else
-#include "net/ea/charserverhandler.h"
-#include "net/ea/loginhandler.h"
+#include "net/ea/generalhandler.h"
 #include "net/ea/network.h"
-#include "net/ea/maphandler.h"
-#include "net/messageout.h"
 #endif
 
 #ifdef TMWSERV_SUPPORT
@@ -137,6 +140,10 @@ namespace
 
 #ifdef TMWSERV_SUPPORT
 std::string token; //used to store magic_token
+
+extern Net::Connection *gameServerConnection;
+extern Net::Connection *chatServerConnection;
+extern Net::Connection *accountServerConnection;
 #else
 // Account infos
 char n_server, n_character;
@@ -159,20 +166,13 @@ Configuration branding;       /**< XML branding information reader */
 Logger *logger;               /**< Log object */
 KeyboardConfig keyboard;
 
-#ifdef TMWSERV_SUPPORT
+/*#ifdef TMWSERV_SUPPORT
 Net::Connection *gameServerConnection = 0;
 Net::Connection *chatServerConnection = 0;
 Net::Connection *accountServerConnection = 0;
-#endif
+#endif*/
 
 LoginData loginData;
-#ifdef TMWSERV_SUPPORT
-LoginHandler loginHandler;
-LogoutHandler logoutHandler;
-TmwServ::CharServerHandler charServerHandler;
-#else
-EAthena::CharServerHandler charServerHandler;
-#endif
 LockedArray<LocalPlayer*> charInfo(maxSlot + 1);
 
 Palette *guiPalette;
@@ -183,10 +183,6 @@ namespace {
 std::string homeDir;
 std::string updateHost;
 std::string updatesDir;
-
-#ifdef EATHENA_SUPPORT
-LoginHandler loginHandler;
-#endif
 
 SDL_Surface *icon;
 
@@ -732,36 +728,15 @@ static void accountLogin(Network *network, LoginData *loginData)
     logger->log("Username is %s", loginData->username.c_str());
 #ifdef EATHENA_SUPPORT
     network->connect(loginData->hostname, loginData->port);
-    network->registerHandler(&loginHandler);
+    // network->registerHandler(&loginHandler);
 #endif
-    loginHandler.setLoginData(loginData);
-#ifdef TMWSERV_SUPPORT
-    Net::registerHandler(&loginHandler);
 
-    charServerHandler.setCharInfo(&charInfo);
-    Net::registerHandler(&charServerHandler);
+#ifdef TMWSERV_SUPPORT
+    Net::getCharHandler()->setCharInfo(&charInfo);
 #endif
 
     // Send login infos
-#ifdef TMWSERV_SUPPORT
-    Net::AccountServer::login(accountServerConnection,
-            0,  // client version
-            loginData->username,
-            loginData->password);
-#else
-    MessageOut outMsg(0x0064);
-    outMsg.writeInt32(0); // client version
-    outMsg.writeString(loginData->username, 24);
-    outMsg.writeString(loginData->password, 24);
-
-    /*
-     * eAthena calls the last byte "client version 2", but it isn't used at
-     * at all. We're retasking it, with bit 0 to indicate whether the client
-     * can handle the 0x63 "update host" packet. Clients prior to 0.0.25 send
-     * 0 here.
-     */
-    outMsg.writeInt8(0x01);
-#endif
+    Net::getLoginHandler()->loginAccount(loginData);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -798,22 +773,11 @@ static void charLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to char server...");
     network->connect(loginData->hostname, loginData->port);
-    network->registerHandler(&charServerHandler);
-    charServerHandler.setCharInfo(&charInfo);
-    charServerHandler.setLoginData(loginData);
+    // network->registerHandler(&charServerHandler);
+    Net::getCharHandler()->setCharInfo(&charInfo);
 
     // Send login infos
-    MessageOut outMsg(0x0065);
-    outMsg.writeInt32(loginData->account_ID);
-    outMsg.writeInt32(loginData->session_ID1);
-    outMsg.writeInt32(loginData->session_ID2);
-    // [Fate] The next word is unused by the old char server, so we squeeze in
-    //        tmw client version information
-    outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
-    outMsg.writeInt8(loginData->sex);
-
-    // We get 4 useless bytes before the real answer comes in
-    network->skip(4);
+    Net::getCharHandler()->connect(loginData);
 }
 
 static void mapLogin(Network *network, LoginData *loginData)
@@ -825,15 +789,10 @@ static void mapLogin(Network *network, LoginData *loginData)
     logger->log("Trying to connect to map server...");
     logger->log("Map: %s", map_path.c_str());
 
-    EAthena::MapHandler *mapHandler = new EAthena::MapHandler;
+    // EAthena::MapHandler *mapHandler = new EAthena::MapHandler;
     network->connect(loginData->hostname, loginData->port);
-    //network->registerHandler(mapHandler);
-    network->registerHandler(mapHandler);
 
-    mapHandler->connect(loginData);
-
-    // We get 4 useless bytes before the real answer comes in (what are these?)
-    network->skip(4);
+    Net::getMapHandler()->connect(loginData);
 }
 
 #else
@@ -842,132 +801,52 @@ static void accountRegister(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
 
-    Net::registerHandler(&loginHandler);
+    Net::getCharHandler()->setCharInfo(&charInfo);
 
-    charServerHandler.setCharInfo(&charInfo);
-    Net::registerHandler(&charServerHandler);
-
-    Net::AccountServer::registerAccount(accountServerConnection,
-            0, // client version
-            loginData->username,
-            loginData->password,
-            loginData->email);
+    Net::getLoginHandler()->registerAccount(loginData->username,
+            loginData->password, loginData->email);
 }
 
 static void accountUnRegister(LoginData *loginData)
 {
-    Net::registerHandler(&logoutHandler);
-
-    Net::AccountServer::Account::unregister(loginData->username,
+    Net::getLoginHandler()->unregisterAccount(loginData->username,
                                             loginData->password);
 
 }
 
 static void accountChangePassword(LoginData *loginData)
 {
-    Net::registerHandler(&loginHandler);
-
-    Net::AccountServer::Account::changePassword(loginData->username,
+    Net::getLoginHandler()->changePassword(loginData->username,
                                                 loginData->password,
                                                 loginData->newPassword);
 }
 
 static void accountChangeEmail(LoginData *loginData)
 {
-    Net::registerHandler(&loginHandler);
-
-    Net::AccountServer::Account::changeEmail(loginData->newEmail);
+    Net::getLoginHandler()->changeEmail(loginData->newEmail);
 }
 
 static void switchCharacter(std::string *passToken)
 {
-    Net::registerHandler(&logoutHandler);
-
-    logoutHandler.reset();
-    logoutHandler.setScenario(LOGOUT_SWITCH_CHARACTER, passToken);
-
-    Net::GameServer::logout(true);
-    Net::ChatServer::logout();
+    Net::getLogoutHandler()->reset();
+    Net::getLogoutHandler()->setScenario(LOGOUT_SWITCH_CHARACTER, passToken);
 }
 
 static void switchAccountServer()
 {
-    Net::registerHandler(&logoutHandler);
-
-    logoutHandler.reset();
-    logoutHandler.setScenario(LOGOUT_SWITCH_ACCOUNTSERVER);
-
-    //Can't logout if we were not logged in ...
-    if (accountServerConnection->isConnected())
-    {
-        Net::AccountServer::logout();
-    }
-    else
-    {
-        logoutHandler.setAccountLoggedOut();
-    }
-
-    if (gameServerConnection->isConnected())
-    {
-        Net::GameServer::logout(false);
-    }
-    else
-    {
-        logoutHandler.setGameLoggedOut();
-    }
-
-    if (chatServerConnection->isConnected())
-    {
-        Net::ChatServer::logout();
-    }
-    else
-    {
-        logoutHandler.setChatLoggedOut();
-    }
+    Net::getLogoutHandler()->reset();
+    Net::getLogoutHandler()->setScenario(LOGOUT_SWITCH_LOGIN);
 }
 
 static void logoutThenExit()
 {
-    Net::registerHandler(&logoutHandler);
-
-    logoutHandler.reset();
-    logoutHandler.setScenario(LOGOUT_EXIT);
-
-    // Can't logout if we were not logged in ...
-    if (accountServerConnection->isConnected())
-    {
-        Net::AccountServer::logout();
-    }
-    else
-    {
-        logoutHandler.setAccountLoggedOut();
-    }
-
-    if (gameServerConnection->isConnected())
-    {
-        Net::GameServer::logout(false);
-    }
-    else
-    {
-        logoutHandler.setGameLoggedOut();
-    }
-
-    if (chatServerConnection->isConnected())
-    {
-        Net::ChatServer::logout();
-    }
-    else
-    {
-        logoutHandler.setChatLoggedOut();
-    }
+    Net::getLogoutHandler()->reset();
+    Net::getLogoutHandler()->setScenario(LOGOUT_EXIT);
 }
 
 static void reconnectAccount(const std::string &passToken)
 {
-    Net::registerHandler(&loginHandler);
-
-    charServerHandler.setCharInfo(&charInfo);
-    Net::registerHandler(&charServerHandler);
+    Net::getCharHandler()->setCharInfo(&charInfo);
 
     Net::AccountServer::reconnectAccount(accountServerConnection, passToken);
 }
@@ -1113,13 +992,15 @@ int main(int argc, char *argv[])
 
 #ifdef TMWSERV_SUPPORT
     Net::initialize();
-    accountServerConnection = Net::getConnection();
-    gameServerConnection = Net::getConnection();
-    chatServerConnection = Net::getConnection();
+    TmwServ::GeneralHandler *generalHandler = new TmwServ::GeneralHandler;
 #else
     SDLNet_Init();
     Network *network = new Network;
+    EAthena::GeneralHandler *generalHandler = new EAthena::GeneralHandler;
+    network->registerHandler(generalHandler);
 #endif
+
+    Net::getGeneralHandler()->load();
 
     // Set the most appropriate wallpaper, based on screen width
     int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);
@@ -1561,7 +1442,6 @@ int main(int argc, char *argv[])
 
                 default:
                     network->disconnect();
-                    network->clearHandlers();
                     break;
             }
 
@@ -1686,7 +1566,7 @@ int main(int argc, char *argv[])
                     login_wallpaper = NULL;
 
                     logger->log("State: GAME");
-                    game = new Game(network);
+                    game = new Game();
                     game->logic();
                     delete game;
                     state = STATE_EXIT;
@@ -1773,18 +1653,8 @@ int main(int argc, char *argv[])
     delete setup;
     delete setupWindow;
 
+    Net::getGeneralHandler()->unload();
 #ifdef TMWSERV_SUPPORT
-    if (accountServerConnection)
-        accountServerConnection->disconnect();
-    if (gameServerConnection)
-        gameServerConnection->disconnect();
-    if (chatServerConnection)
-        chatServerConnection->disconnect();
-
-    delete accountServerConnection;
-    delete gameServerConnection;
-    delete chatServerConnection;
-    Net::finalize();
 #else
     delete network;
     SDLNet_Quit();

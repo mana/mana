@@ -21,11 +21,24 @@
 
 #include "net/tmwserv/logouthandler.h"
 
+#include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
+
+#include "net/tmwserv/accountserver/accountserver.h"
+#include "net/tmwserv/chatserver/chatserver.h"
+#include "net/tmwserv/gameserver/gameserver.h"
 
 #include "net/messagein.h"
 
 #include "main.h"
+
+Net::LogoutHandler *logoutHandler;
+
+extern Net::Connection *gameServerConnection;
+extern Net::Connection *chatServerConnection;
+extern Net::Connection *accountServerConnection;
+
+namespace TmwServ {
 
 LogoutHandler::LogoutHandler():
     mPassToken(NULL),
@@ -42,6 +55,7 @@ LogoutHandler::LogoutHandler():
         0
     };
     handledMessages = _messages;
+    logoutHandler = this;
 }
 
 void LogoutHandler::handleMessage(MessageIn &msg)
@@ -59,7 +73,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
 
                 switch (mScenario)
                 {
-                    case LOGOUT_SWITCH_ACCOUNTSERVER:
+                    case LOGOUT_SWITCH_LOGIN:
                         if (mLoggedOutGame && mLoggedOutChat)
                                            state = STATE_SWITCH_ACCOUNTSERVER;
                         break;
@@ -129,7 +143,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
                         if (mLoggedOutChat) state = STATE_RECONNECT_ACCOUNT;
                         break;
 
-                    case LOGOUT_SWITCH_ACCOUNTSERVER:
+                    case LOGOUT_SWITCH_LOGIN:
                         if (mLoggedOutAccount && mLoggedOutChat)
                                            state = STATE_SWITCH_ACCOUNTSERVER;
                         break;
@@ -170,7 +184,7 @@ void LogoutHandler::handleMessage(MessageIn &msg)
                         if (mLoggedOutGame) state = STATE_RECONNECT_ACCOUNT;
                         break;
 
-                    case LOGOUT_SWITCH_ACCOUNTSERVER:
+                    case LOGOUT_SWITCH_LOGIN:
                         if (mLoggedOutAccount && mLoggedOutGame)
                                           state = STATE_SWITCH_ACCOUNTSERVER;
                         break;
@@ -206,6 +220,47 @@ void LogoutHandler::setScenario(unsigned short scenario,
 {
     mScenario = scenario;
     mPassToken = passToken;
+
+    // Can't logout if we were not logged in ...
+    if (mScenario == LOGOUT_EXIT)
+    {
+        if (accountServerConnection->isConnected())
+            Net::AccountServer::logout();
+        else
+            setAccountLoggedOut();
+
+        if (gameServerConnection->isConnected())
+            Net::GameServer::logout(false);
+        else
+            setGameLoggedOut();
+
+        if (chatServerConnection->isConnected())
+            Net::ChatServer::logout();
+        else
+            setChatLoggedOut();
+    }
+    else if (mScenario == LOGOUT_SWITCH_LOGIN)
+    {
+        if (accountServerConnection->isConnected())
+            Net::AccountServer::logout();
+        else
+            setAccountLoggedOut();
+
+        if (gameServerConnection->isConnected())
+            Net::GameServer::logout(false);
+        else
+            setGameLoggedOut();
+
+        if (chatServerConnection->isConnected())
+            Net::ChatServer::logout();
+        else
+            setChatLoggedOut();
+    }
+    else if (mScenario == LOGOUT_SWITCH_CHARACTER)
+    {
+        Net::GameServer::logout(true);
+        Net::ChatServer::logout();
+    }
 }
 
 void LogoutHandler::reset()
@@ -216,3 +271,5 @@ void LogoutHandler::reset()
     mLoggedOutGame = false;
     mLoggedOutChat = false;
 }
+
+} // namespace TmwServ

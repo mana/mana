@@ -21,6 +21,7 @@
 
 #include "net/ea/maphandler.h"
 
+#include "net/ea/network.h"
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
@@ -42,7 +43,6 @@ namespace EAthena {
 MapHandler::MapHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_CONNECTION_PROBLEM,
         SMSG_LOGIN_SUCCESS,
         SMSG_SERVER_PING,
         SMSG_WHO_ANSWER,
@@ -59,24 +59,6 @@ void MapHandler::handleMessage(MessageIn &msg)
 
     switch (msg.getId())
     {
-        case SMSG_CONNECTION_PROBLEM:
-            code = msg.readInt8();
-            logger->log("Connection problem: %i", code);
-
-            switch (code) {
-                case 0:
-                    errorMessage = _("Authentication failed");
-                    break;
-                case 2:
-                    errorMessage = _("This account is already logged in");
-                    break;
-                default:
-                    errorMessage = _("Unknown connection error");
-                    break;
-            }
-            state = STATE_ERROR;
-            break;
-
         case SMSG_LOGIN_SUCCESS:
             msg.readInt32();   // server tick
             msg.readCoordinates(player_node->mX, player_node->mY, direction);
@@ -107,6 +89,9 @@ void MapHandler::connect(LoginData *loginData)
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
     outMsg.writeInt8(loginData->sex);
+
+    // We get 4 useless bytes before the real answer comes in (what are these?)
+    mNetwork->skip(4);
 }
 
 void MapHandler::mapLoaded(const std::string &mapName)

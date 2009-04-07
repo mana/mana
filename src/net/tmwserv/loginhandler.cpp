@@ -21,12 +21,22 @@
 
 #include "net/tmwserv/loginhandler.h"
 
+#include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
+
+#include "net/tmwserv/accountserver/account.h"
+#include "net/tmwserv/accountserver/accountserver.h"
 
 #include "net/messagein.h"
 
 #include "logindata.h"
 #include "main.h"
+
+Net::LoginHandler *loginHandler;
+
+extern Net::Connection *accountServerConnection;
+
+namespace TmwServ {
 
 LoginHandler::LoginHandler()
 {
@@ -39,11 +49,7 @@ LoginHandler::LoginHandler()
         0
     };
     handledMessages = _messages;
-}
-
-void LoginHandler::setLoginData(LoginData *loginData)
-{
-    mLoginData = loginData;
+    loginHandler = this;
 }
 
 void LoginHandler::handleMessage(MessageIn &msg)
@@ -224,3 +230,46 @@ void LoginHandler::readUpdateHost(MessageIn &msg)
         mLoginData->updateHost = msg.readString();
     }
 }
+
+void LoginHandler::loginAccount(LoginData *loginData)
+{
+    mLoginData = loginData;
+    Net::AccountServer::login(accountServerConnection,
+            0,  // client version
+            loginData->username,
+            loginData->password);
+}
+
+void LoginHandler::changeEmail(const std::string &email)
+{
+    Net::AccountServer::Account::changeEmail(email);
+}
+
+void LoginHandler::changePassword(const std::string &username,
+                    const std::string &oldPassword,
+                    const std::string &newPassword)
+{
+    Net::AccountServer::Account::changePassword(username, oldPassword,
+                                                newPassword);
+}
+
+void LoginHandler::chooseServer(int server)
+{
+    // TODO
+}
+
+void LoginHandler::registerAccount(const std::string &username,
+                        const std::string &password, const std::string &email)
+{
+    Net::AccountServer::registerAccount(accountServerConnection,
+            0, // client version
+            username, password, email);
+}
+
+void LoginHandler::unregisterAccount(const std::string &username,
+                        const std::string &password)
+{
+    Net::AccountServer::Account::unregister(username, password);
+}
+
+} // namespace TmwServ

@@ -148,7 +148,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
             if (msg.getId() == SMSG_PLAYER_CHAT)
             {
-                localChatTab->chatLog(chatMsg, BY_PLAYER);
+                if (localChatTab) localChatTab->chatLog(chatMsg, BY_PLAYER);
 
                 if (pos != std::string::npos)
                     chatMsg.erase(0, pos + 3);

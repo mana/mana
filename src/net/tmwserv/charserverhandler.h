@@ -25,9 +25,6 @@
 #include "net/charhandler.h"
 #include "net/messagehandler.h"
 
-#include "lockedarray.h"
-
-class LocalPlayer;
 class LoginData;
 
 namespace TmwServ {
@@ -53,6 +50,8 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
          * the dialog when a new character failed to be created.
          */
         void setCharCreateDialog(CharCreateDialog *window);
+
+        void connect(LoginData *loginData) {} // Unused
 
         void chooseCharacter(int slot, LocalPlayer* character);
 

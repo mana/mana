@@ -24,6 +24,7 @@
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 
 #include "log.h"
 #include "logindata.h"
@@ -36,16 +37,20 @@
 
 extern SERVER_INFO **server_info;
 
+Net::LoginHandler *loginHandler;
+
+namespace EAthena {
+
 LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_CONNECTION_PROBLEM,
         SMSG_UPDATE_HOST,
         0x0069,
         0x006a,
         0
     };
     handledMessages = _messages;
+    loginHandler = this;
 }
 
 void LoginHandler::handleMessage(MessageIn &msg)
@@ -54,27 +59,6 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
     switch (msg.getId())
     {
-        case SMSG_CONNECTION_PROBLEM:
-            code = msg.readInt8();
-            logger->log("Connection problem: %i", code);
-
-            switch (code) {
-                case 0:
-                    errorMessage = _("Authentication failed");
-                    break;
-                case 1:
-                    errorMessage = _("No servers available");
-                    break;
-                case 2:
-                    errorMessage = _("This account is already logged in");
-                    break;
-                default:
-                    errorMessage = _("Unknown connection error");
-                    break;
-            }
-            state = STATE_ERROR;
-            break;
-
         case SMSG_UPDATE_HOST:
              int len;
 
@@ -158,3 +142,52 @@ void LoginHandler::handleMessage(MessageIn &msg)
             break;
     }
 }
+
+void LoginHandler::loginAccount(LoginData *loginData)
+{
+    mLoginData = loginData;
+    MessageOut outMsg(0x0064);
+    outMsg.writeInt32(0); // client version
+    outMsg.writeString(loginData->username, 24);
+    outMsg.writeString(loginData->password, 24);
+
+    /*
+     * eAthena calls the last byte "client version 2", but it isn't used at
+     * at all. We're retasking it, with bit 0 to indicate whether the client
+     * can handle the 0x63 "update host" packet. Clients prior to 0.0.25 send
+     * 0 here.
+     */
+    outMsg.writeInt8(0x01);
+}
+
+void LoginHandler::changeEmail(const std::string &email)
+{
+    // TODO
+}
+
+void LoginHandler::changePassword(const std::string &username,
+                   const std::string &oldPassword,
+                   const std::string &newPassword)
+{
+    // TODO
+}
+
+void LoginHandler::chooseServer(int server)
+{
+    // TODO
+}
+
+void LoginHandler::registerAccount(const std::string &username,
+                   const std::string &password,
+                   const std::string &email = "")
+{
+    // TODO
+}
+
+void LoginHandler::unregisterAccount(const std::string &username,
+                   const std::string &password)
+{
+    // TODO
+}
+
+} // namespace EAthena
