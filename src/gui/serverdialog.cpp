@@ -28,6 +28,7 @@
 #include "gui/scrollarea.h"
 #include "gui/textfield.h"
 
+#include "gui/widgets/dropdown.h"
 #include "gui/widgets/layout.h"
 
 #include "configuration.h"

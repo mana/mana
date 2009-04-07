@@ -22,6 +22,7 @@
 #include "gui/skilldialog.h"
 
 #include "gui/button.h"
+#include "gui/gccontainer.h"
 #include "gui/icon.h"
 #include "gui/label.h"
 #include "gui/listbox.h"
@@ -39,6 +40,7 @@
 
 #include <guichan/widgets/container.hpp>
 
+#include <string>
 #include <vector>
 
 class SkillTab : public GCContainer, public gcn::ActionListener

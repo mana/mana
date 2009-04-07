@@ -92,9 +92,6 @@
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
 
-#ifdef TMWSERV_SUPPORT
-#include "utils/dtor.h"
-#endif
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/strprintf.h"
