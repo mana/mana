@@ -30,6 +30,8 @@
 #include "../configuration.h"
 #include "../log.h"
 #include "../sound.h"
+#include "../map.h"
+#include "../engine.h"
 
 #include "../utils/gettext.h"
 
@@ -88,6 +90,8 @@ void Setup_Audio::apply()
             new OkDialog("Sound Engine", err);
             logger->log("Warning: %s", err);
         }
+	Map *currentMap = engine->getCurrentMap();
+	sound.playMusic(currentMap->getProperty("music"), -1);
     }
     else
     {
