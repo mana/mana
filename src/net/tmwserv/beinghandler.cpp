@@ -264,10 +264,11 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
-    int direction = msg.readInt8();
-    int attackType = msg.readInt8();
+    const int direction = msg.readInt8();
+    const int attackType = msg.readInt8();
 
-    if (!being) return;
+    if (!being)
+        return;
 
     switch (direction)
     {
@@ -295,13 +296,14 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
 
 void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 {
-    Being* being = beingManager->findBeing(msg.readInt16());
+    Being *being = beingManager->findBeing(msg.readInt16());
     Being::Action action = (Being::Action) msg.readInt8();
-    if (!being) return;
+    if (!being)
+        return;
 
     being->setAction(action);
 
-    if (action == Being::DEAD && being==player_node)
+    if (action == Being::DEAD && being == player_node)
     {
         static char const *const deadMsg[] =
         {
@@ -330,8 +332,9 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readInt16());
-    if (!being || being->getType() != Being::PLAYER) return;
-    Player * player = static_cast< Player * >(being);
+    if (!being || being->getType() != Being::PLAYER)
+        return;
+    Player *player = static_cast<Player *>(being);
     handleLooks(player, msg);
     if (msg.getUnreadLength())
     {

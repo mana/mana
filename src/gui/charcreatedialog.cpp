@@ -161,7 +161,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
             mCreateButton->setEnabled(false);
 
             std::vector<int> atts;
-            for (int i = 0; i < mAttributeSlider.size(); i++)
+            for (unsigned i = 0; i < mAttributeSlider.size(); i++)
             {
                 atts.push_back((int) mAttributeSlider[i]->getValue());
             }
@@ -214,7 +214,7 @@ std::string CharCreateDialog::getName()
 
 void CharCreateDialog::updateSliders()
 {
-    for (int i = 0; i < mAttributeSlider.size(); i++)
+    for (unsigned i = 0; i < mAttributeSlider.size(); i++)
     {
         // Update captions
         mAttributeValue[i]->setCaption(
@@ -254,7 +254,7 @@ int CharCreateDialog::getDistributedPoints()
 {
     int points = 0;
 
-    for (int i = 0; i < mAttributeSlider.size(); i++)
+    for (unsigned i = 0; i < mAttributeSlider.size(); i++)
     {
         points += (int) mAttributeSlider[i]->getValue();
     }
@@ -266,7 +266,7 @@ void CharCreateDialog::setAttributes(std::vector<std::string> labels,
 {
     mMaxPoints = available;
 
-    for (int i = 0; i < mAttributeLabel.size(); i++)
+    for (unsigned i = 0; i < mAttributeLabel.size(); i++)
     {
         remove(mAttributeLabel[i]);
         delete mAttributeLabel[i];
@@ -283,7 +283,7 @@ void CharCreateDialog::setAttributes(std::vector<std::string> labels,
     int w = 200;
     int h = 330;
 
-    for (int i = 0; i < labels.size(); i++)
+    for (unsigned i = 0; i < labels.size(); i++)
     {
         mAttributeLabel[i] = new gcn::Label(labels[i]);
         mAttributeLabel[i]->setWidth(70);
