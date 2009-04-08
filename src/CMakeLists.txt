@@ -408,8 +408,8 @@ SET(SRCS
     )
 
 SET(SRCS_EA
-    gui/char_server.cpp
-    gui/char_server.h
+    gui/char_select.cpp
+    gui/char_select.h
     gui/skill.cpp
     gui/skill.h
     gui/status.cpp
