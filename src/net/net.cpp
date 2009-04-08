@@ -45,6 +45,7 @@ extern Net::LoginHandler *loginHandler;
 extern Net::LogoutHandler *logoutHandler;
 extern Net::MapHandler *mapHandler;
 extern Net::NpcHandler *npcHandler;
+extern Net::PartyHandler *partyHandler;
 extern Net::PlayerHandler *playerHandler;
 extern Net::SkillHandler *skillHandler;
 extern Net::TradeHandler *tradeHandler;
@@ -102,8 +103,7 @@ Net::NpcHandler *Net::getNpcHandler()
 
 Net::PartyHandler *Net::getPartyHandler()
 {
-    // TODO
-    return 0;
+    return partyHandler;
 }
 
 Net::PlayerHandler *Net::getPlayerHandler()
