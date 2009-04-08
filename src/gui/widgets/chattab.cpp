@@ -215,7 +215,8 @@ void ChatTab::chatInput(std::string &msg)
 {
     trim(msg);
 
-    if (msg.empty()) return;
+    if (msg.empty())
+        return;
 
     // Check for item link
     std::string::size_type start = msg.find('[');

@@ -54,26 +54,35 @@ void Wallpaper::loadWallpapers()
 {
     char **imgs = PHYSFS_enumerateFiles(WALLPAPER_FOLDER);
     char **i;
-    int baseLen = strlen(WALLPAPER_BASE), width, height;
+    size_t baseLen = strlen(WALLPAPER_BASE);
+    int width;
+    int height;
 
     wallpapers.clear();
 
     haveBackup = false;
 
     for (i = imgs; *i != NULL; i++)
+    {
         if (strncmp(*i, WALLPAPER_BASE, baseLen) == 0)
+        {
             if (strlen(*i) == baseLen + 4)
+            {
                 if (haveBackup)
                     logger->log("Duplicate default wallpaper!");
-                else haveBackup = true;
-            else if (sscanf(*i, WALLPAPER_BASE "_%dx%d.png", &width,
-                &height) == 2)
+                else
+                    haveBackup = true;
+            }
+            else if (sscanf(*i, WALLPAPER_BASE "_%dx%d.png",
+                            &width, &height) == 2)
             {
                 struct wallpaper wp;
                 wp.width = width;
                 wp.height = height;
                 wallpapers.push_back(wp);
             }
+        }
+    }
 
     PHYSFS_freeList(imgs);
 

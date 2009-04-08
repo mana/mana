@@ -967,7 +967,7 @@ int main(int argc, char *argv[])
 
 #ifdef TMWSERV_SUPPORT
     Net::initialize();
-    TmwServ::GeneralHandler *generalHandler = new TmwServ::GeneralHandler;
+    new TmwServ::GeneralHandler;  // Currently registers itself
 #else
     SDLNet_Init();
     Network *network = new Network;
