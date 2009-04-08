@@ -21,7 +21,6 @@
 
 #include "chat.h"
 
-#include "gui/chatinput.h"
 #include "gui/itemlinkhandler.h"
 #include "gui/recorder.h"
 #include "gui/sdlinput.h"
@@ -39,6 +38,18 @@
 #include "utils/stringutils.h"
 
 #include <guichan/focushandler.hpp>
+
+ChatInput::ChatInput()
+{
+    setVisible(false);
+
+    addFocusListener(this);
+}
+
+void ChatInput::focusLost(const gcn::Event &event)
+{
+    setVisible(false);
+}
 
 ChatWindow::ChatWindow():
     Window(_("Chat")),

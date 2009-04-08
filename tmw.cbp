@@ -238,8 +238,6 @@
 		</Unit>
 		<Unit filename="src/gui/chat.cpp" />
 		<Unit filename="src/gui/chat.h" />
-		<Unit filename="src/gui/chatinput.cpp" />
-		<Unit filename="src/gui/chatinput.h" />
 		<Unit filename="src/gui/checkbox.cpp" />
 		<Unit filename="src/gui/checkbox.h" />
 		<Unit filename="src/gui/confirm_dialog.cpp" />

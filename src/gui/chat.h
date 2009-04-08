@@ -22,9 +22,11 @@
 #ifndef CHAT_H
 #define CHAT_H
 
+#include "gui/widgets/textfield.h"
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/focuslistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
@@ -51,6 +53,21 @@ struct CHATLOG
     std::string nick;
     std::string text;
     int own;
+};
+
+/**
+ * The chat input hides when it loses focus. It is also invisible by default.
+ */
+class ChatInput : public TextField, public gcn::FocusListener
+{
+    public:
+        ChatInput();
+
+        /**
+         * Called if the chat input loses focus. It will set itself to
+         * invisible as result.
+         */
+        void focusLost(const gcn::Event &event);
 };
 
 /**
@@ -192,7 +209,7 @@ class ChatWindow : public Window,
         Recorder *mRecorder;
 
         /** Input box for typing chat messages. */
-        gcn::TextField *mChatInput;
+        ChatInput *mChatInput;
 
     private:
         bool mTmpVisible;

@@ -120,8 +120,6 @@ SET(SRCS
     gui/charcreatedialog.h
     gui/chat.cpp
     gui/chat.h
-    gui/chatinput.cpp
-    gui/chatinput.h
     gui/confirm_dialog.cpp
     gui/confirm_dialog.h
     gui/debugwindow.cpp
