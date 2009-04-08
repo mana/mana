@@ -68,11 +68,6 @@ ChatTab::~ChatTab()
     delete mScrollArea;
 }
 
-void ChatTab::chatLog(const char* line, int own, bool ignoreRecord)
-{
-    chatLog(std::string(line), own, ignoreRecord);
-}
-
 void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
 {
     // Trim whitespace

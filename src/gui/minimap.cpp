@@ -136,9 +136,9 @@ void Minimap::draw(gcn::Graphics *graphics)
     }
 
     const Beings &beings = beingManager->getAll();
-    Beings::const_iterator bi;
 
-    for (bi = beings.begin(); bi != beings.end(); bi++)
+    for (Beings::const_iterator bi = beings.begin(), bi_end = beings.end();
+         bi != bi_end; ++bi)
     {
         const Being *being = (*bi);
         int dotSize = 2;

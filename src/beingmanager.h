@@ -28,7 +28,6 @@ class LocalPlayer;
 class Map;
 
 typedef std::list<Being*> Beings;
-typedef Beings::iterator BeingIterator;
 
 class BeingManager
 {
@@ -38,12 +37,12 @@ class BeingManager
         ~BeingManager();
 
         /**
-         * Sets the map on which beings are created
+         * Sets the map on which beings are created.
          */
         void setMap(Map *map);
 
         /**
-         * Sets the current player
+         * Sets the current player.
          */
         void setPlayer(LocalPlayer *player);
 
@@ -60,13 +59,13 @@ class BeingManager
         /**
          * Returns a specific id Being.
          */
-        Being *findBeing(int id);
+        Being *findBeing(int id) const;
 
         /**
          * Returns a being at specific coordinates.
          */
-        Being *findBeing(int x, int y, Being::Type type = Being::UNKNOWN);
-        Being *findBeingByPixel(int x, int y);
+        Being *findBeing(int x, int y, Being::Type type = Being::UNKNOWN) const;
+        Being *findBeingByPixel(int x, int y) const;
 
         /**
          * Returns a being nearest to specific coordinates.
@@ -78,13 +77,13 @@ class BeingManager
          * @param type    The type of being to look for.
          */
         Being *findNearestLivingBeing(int x, int y, int maxdist,
-                                      Being::Type type = Being::UNKNOWN);
+                                      Being::Type type = Being::UNKNOWN) const;
 
        /**
         * Finds a being by name and (optionally) by type.
         */
         Being *findBeingByName(const std::string &name,
-                               Being::Type type = Being::UNKNOWN);
+                               Being::Type type = Being::UNKNOWN) const;
 
        /**
         * Returns a being nearest to another being.
@@ -93,12 +92,12 @@ class BeingManager
         *                no being is returned
         */
         Being *findNearestLivingBeing(Being *aroundBeing, int maxdist,
-                                      Being::Type type = Being::UNKNOWN);
+                                      Being::Type type = Being::UNKNOWN) const;
 
         /**
-         * Returns the whole list of beings
+         * Returns the whole list of beings.
          */
-        Beings &getAll();
+        const Beings &getAll() const;
 
         /**
          * Returns true if the given being is in the manager's list, false
@@ -109,7 +108,8 @@ class BeingManager
         bool hasBeing(Being *being) const;
 
         /**
-         * Logic.
+         * Performs being logic and deletes dead beings when they have been
+         * dead long enough.
          */
         void logic();
 

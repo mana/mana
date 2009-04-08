@@ -214,8 +214,9 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     // Draw player names, speech, and emotion sprite as needed
-    Beings &beings = beingManager->getAll();
-    for (BeingIterator i = beings.begin(); i != beings.end(); i++)
+    const Beings &beings = beingManager->getAll();
+    for (Beings::const_iterator i = beings.begin(), i_end = beings.end();
+         i != i_end; ++i)
     {
         (*i)->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
         (*i)->drawEmotion(graphics, (int) mPixelViewX, (int) mPixelViewY);

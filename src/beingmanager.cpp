@@ -114,9 +114,10 @@ void BeingManager::destroyBeing(Being *being)
     delete being;
 }
 
-Being *BeingManager::findBeing(int id)
+Being *BeingManager::findBeing(int id) const
 {
-    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    for (Beings::const_iterator i = mBeings.begin(), i_end = mBeings.end();
+         i != i_end; ++i)
     {
         Being *being = (*i);
         if (being->getId() == id)
@@ -125,21 +126,22 @@ Being *BeingManager::findBeing(int id)
     return NULL;
 }
 
-Being *BeingManager::findBeing(int x, int y, Being::Type type)
+Being *BeingManager::findBeing(int x, int y, Being::Type type) const
 {
     beingFinder.x = x;
     beingFinder.y = y;
     beingFinder.type = type;
 
-    BeingIterator i = find_if(mBeings.begin(), mBeings.end(), beingFinder);
+    Beings::const_iterator i = find_if(mBeings.begin(), mBeings.end(),
+                                       beingFinder);
 
     return (i == mBeings.end()) ? NULL : *i;
 }
 
-Being *BeingManager::findBeingByPixel(int x, int y)
+Being *BeingManager::findBeingByPixel(int x, int y) const
 {
-    BeingIterator itr = mBeings.begin();
-    BeingIterator itr_end = mBeings.end();
+    Beings::const_iterator itr = mBeings.begin();
+    Beings::const_iterator itr_end = mBeings.end();
 
     for (; itr != itr_end; ++itr)
     {
@@ -162,9 +164,11 @@ Being *BeingManager::findBeingByPixel(int x, int y)
     return NULL;
 }
 
-Being *BeingManager::findBeingByName(const std::string &name, Being::Type type)
+Being *BeingManager::findBeingByName(const std::string &name,
+                                     Being::Type type) const
 {
-    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    for (Beings::const_iterator i = mBeings.begin(), i_end = mBeings.end();
+         i != i_end; ++i)
     {
         Being *being = (*i);
         if (being->getName() == name &&
@@ -174,14 +178,14 @@ Being *BeingManager::findBeingByName(const std::string &name, Being::Type type)
     return NULL;
 }
 
-Beings &BeingManager::getAll()
+const Beings &BeingManager::getAll() const
 {
     return mBeings;
 }
 
 void BeingManager::logic()
 {
-    BeingIterator i = mBeings.begin();
+    Beings::iterator i = mBeings.begin();
     while (i != mBeings.end())
     {
         Being *being = (*i);
@@ -197,7 +201,7 @@ void BeingManager::logic()
         else
 #endif
         {
-            i++;
+            ++i;
         }
     }
 }
@@ -215,7 +219,7 @@ void BeingManager::clear()
 }
 
 Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
-                                            Being::Type type)
+                                            Being::Type type) const
 {
     Being *closestBeing = NULL;
     int dist = 0;
@@ -232,8 +236,8 @@ Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
     maxdist = maxdist * 32;
 #endif
 
-    BeingIterator itr = mBeings.begin();
-    BeingIterator itr_end = mBeings.end();
+    Beings::const_iterator itr = mBeings.begin();
+    Beings::const_iterator itr_end = mBeings.end();
 
     for (; itr != itr_end; ++itr)
     {
@@ -258,7 +262,7 @@ Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
 }
 
 Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
-                                            Being::Type type)
+                                            Being::Type type) const
 {
     Being *closestBeing = NULL;
     int dist = 0;
@@ -272,7 +276,8 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
     int y = aroundBeing->mY;
 #endif
 
-    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    for (Beings::const_iterator i = mBeings.begin(), i_end = mBeings.end();
+         i != i_end; ++i)
     {
         Being *being = (*i);
 #ifdef TMWSERV_SUPPORT
@@ -297,7 +302,8 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
 
 bool BeingManager::hasBeing(Being *being) const
 {
-    for (Beings::const_iterator i = mBeings.begin(); i != mBeings.end(); i++)
+    for (Beings::const_iterator i = mBeings.begin(), i_end = mBeings.end();
+         i != i_end; ++i)
     {
         if (being == *i)
             return true;

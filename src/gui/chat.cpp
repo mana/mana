@@ -287,11 +287,11 @@ void ChatWindow::chatInput(std::string &msg)
 
 void ChatWindow::doPresent()
 {
-    Beings & beings = beingManager->getAll();
+    const Beings &beings = beingManager->getAll();
     std::string response = "";
 
-    for (BeingIterator bi = beings.begin(), be = beings.end();
-            bi != be; ++bi)
+    for (Beings::const_iterator bi = beings.begin(), be = beings.end();
+         bi != be; ++bi)
     {
         if ((*bi)->getType() == Being::PLAYER)
         {

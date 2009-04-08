@@ -69,7 +69,6 @@ class ChatTab : public Tab
          * @param ignoreRecord should this not be recorded?
          */
         void chatLog(std::string line, int own = BY_SERVER, bool ignoreRecord = false);
-        void chatLog(const char* line, int own = BY_SERVER, bool ignoreRecord = false);
 
         /**
          * Adds the text to the message list
