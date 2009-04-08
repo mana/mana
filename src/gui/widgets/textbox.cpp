@@ -28,7 +28,7 @@
 #include <sstream>
 
 TextBox::TextBox() :
-        gcn::TextBox(), mTextColor(&guiPalette->getColor(Palette::TEXT))
+    gcn::TextBox(), mTextColor(&guiPalette->getColor(Palette::TEXT))
 {
     setOpaque(false);
     setFrameSize(0);
