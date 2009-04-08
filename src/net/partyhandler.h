@@ -24,6 +24,8 @@
 
 #include <string>
 
+class Player;
+
 namespace Net {
 
 class PartyHandler
@@ -33,11 +35,11 @@ class PartyHandler
 
         virtual void join(int partyId) = 0;
 
-        virtual void invite(int playerId) = 0;
+        virtual void invite(Player *player) = 0;
 
         virtual void invite(const std::string &name) = 0;
 
-        virtual void inviteResponse(bool accept) = 0;
+        virtual void inviteResponse(const std::string &inviter, bool accept) = 0;
 
         virtual void leave() = 0;
 

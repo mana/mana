@@ -51,19 +51,19 @@ namespace TmwServ {
 GeneralHandler::GeneralHandler():
     mBeingHandler(new BeingHandler),
     mBuySellHandler(new BuySellHandler),
-    mCharServerHandler(new TmwServ::CharServerHandler),
-    mChatHandler(new TmwServ::ChatHandler),
+    mCharServerHandler(new CharServerHandler),
+    mChatHandler(new ChatHandler),
     mEffectHandler(new EffectHandler),
     mGuildHandler(new GuildHandler),
-    mInventoryHandler(new TmwServ::InventoryHandler),
+    mInventoryHandler(new InventoryHandler),
     mItemHandler(new ItemHandler),
-    mLoginHandler(new TmwServ::LoginHandler),
+    mLoginHandler(new LoginHandler),
     mLogoutHandler(new LogoutHandler),
-    mMapHandler(new TmwServ::MapHandler),
-    mNpcHandler(new TmwServ::NpcHandler),
+    mMapHandler(new MapHandler),
+    mNpcHandler(new NpcHandler),
     mPartyHandler(new PartyHandler),
-    mPlayerHandler(new TmwServ::PlayerHandler),
-    mTradeHandler(new TmwServ::TradeHandler)
+    mPlayerHandler(new PlayerHandler),
+    mTradeHandler(new TradeHandler)
 {
     accountServerConnection = Net::getConnection();
     gameServerConnection = Net::getConnection();

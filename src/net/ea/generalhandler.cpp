@@ -141,7 +141,9 @@ void GeneralHandler::unload()
 {
     mNetwork->clearHandlers();
 
-    delete partyTab;
+    // The party tab might not have been made (if we never loaded the main GUI)
+    if (partyTab)
+        delete partyTab;
 }
 
 void GeneralHandler::flushNetwork()

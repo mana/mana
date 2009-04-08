@@ -45,6 +45,7 @@
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"
+#include "net/partyhandler.h"
 #include "net/playerhandler.h"
 #include "net/tradehandler.h"
 
@@ -54,7 +55,6 @@
 
 #include "net/tmwserv/gameserver/player.h"
 #include "net/tmwserv/chatserver/guild.h"
-#include "net/tmwserv/chatserver/party.h"
 #else
 #include "net/ea/partyhandler.h"
 #include "net/ea/skillhandler.h"
@@ -322,21 +322,12 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 
 void LocalPlayer::inviteToParty(const std::string &name)
 {
-#ifdef TMWSERV_SUPPORT
-    Net::ChatServer::Party::invitePlayer(name);
-#else
-    // need an id
-#endif
+    Net::getPartyHandler()->invite(name);
 }
 
 void LocalPlayer::inviteToParty(Player *player)
 {
-    // Net::getPartyHandler()->invite(player->getId());
-#ifdef TMWSERV_SUPPORT
-    Net::ChatServer::Party::invitePlayer(player->getName());
-#else
-    partyHandler->invite(player->getId());
-#endif
+    Net::getPartyHandler()->invite(player);
 }
 
 void LocalPlayer::moveInvItem(Item *item, int newIndex)

@@ -39,11 +39,11 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
 
         void join(int partyId);
 
-        void invite(int playerId);
+        void invite(Player *player);
 
         void invite(const std::string &name);
 
-        void inviteResponse(bool accept);
+        void inviteResponse(const std::string &inviter, bool accept);
 
         void leave();
 

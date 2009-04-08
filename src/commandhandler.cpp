@@ -156,9 +156,9 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/clear > Clears this window"));
         tab->chatLog(_("/op > Make a user a channel operator"));
         tab->chatLog(_("/kick > Kick a user from the channel"));
+#endif
 
         tab->chatLog(_("/party > Invite a user to party"));
-#endif
 
         tab->chatLog(_("/record > Start recording the chat to an external file"));
         tab->chatLog(_("/toggle > Determine whether <return> toggles the chat log"));
@@ -230,14 +230,10 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
     }
     else if (args == "party")
     {
-#ifdef TMWSERV_SUPPORT
         tab->chatLog(_("Command: /party <nick>"));
         tab->chatLog(_("This command invites <nick> to party with you."));
         tab->chatLog(_("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\")."));
-#else
-        tab->chatLog(_("Party commands are used on the party tab."));
-#endif
     }
     else if (args == "present")
     {
@@ -449,14 +445,10 @@ void CommandHandler::handleKick(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
 {
-#ifdef TMWSERV_SUPPORT
     if (args != "")
-    {
         player_node->inviteToParty(args);
-    }
-#else
-    tab->chatLog(_("Please use party commands on the party tab."));
-#endif
+    else
+        tab->chatLog("Please specify a name.", BY_SERVER);
 }
 
 void CommandHandler::handleMe(const std::string &args, ChatTab *tab)

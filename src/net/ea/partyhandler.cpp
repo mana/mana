@@ -219,10 +219,10 @@ void PartyHandler::join(int partyId)
 {
 }
 
-void PartyHandler::invite(int playerId)
+void PartyHandler::invite(Player *player)
 {
     MessageOut outMsg(CMSG_PARTY_INVITE);
-    outMsg.writeInt32(playerId);
+    outMsg.writeInt32(player->getId());
 }
 
 void PartyHandler::invite(const std::string &name)
@@ -230,7 +230,7 @@ void PartyHandler::invite(const std::string &name)
     // TODO
 }
 
-void PartyHandler::inviteResponse(bool accept)
+void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
 {
     MessageOut outMsg(CMSG_PARTY_INVITED);
     outMsg.writeInt32(player_node->getId());

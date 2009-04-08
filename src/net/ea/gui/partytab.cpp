@@ -22,8 +22,7 @@
 #include "partytab.h"
 
 #include "net/net.h"
-
-#include "net/ea/partyhandler.h"
+#include "net/partyhandler.h"
 
 #include "resources/iteminfo.h"
 #include "resources/itemdb.h"
@@ -44,8 +43,7 @@ PartyTab::~PartyTab()
 
 void PartyTab::handleInput(const std::string &msg)
 {
-    // Net::getPartyHandler()->chat(msg);
-    partyHandler->chat(msg);
+    Net::getPartyHandler()->chat(msg);
 }
 
 void PartyTab::handleCommand(std::string msg)
@@ -58,36 +56,44 @@ void PartyTab::handleCommand(std::string msg)
     {
         if (args == "")
         {
-            partyTab->chatLog(_("-- Help --"));
-            partyTab->chatLog(_("/help > Display this help."));
-            partyTab->chatLog(_("/create > Create a new party"));
-            partyTab->chatLog(_("/new > alias of create"));
-            partyTab->chatLog(_("/leave > leave the party you are in"));
+            chatLog(_("-- Help --"));
+            chatLog(_("/help > Display this help."));
+            chatLog(_("/create > Create a new party"));
+            chatLog(_("/new > Alias of create"));
+            chatLog(_("/invite > Invite a player to your party"));
+            chatLog(_("/leave > Leave the party you are in"));
         }
         else if (args == "create" || args == "new")
         {
-            partyTab->chatLog(_("Command: /party new <party-name>"));
-            partyTab->chatLog(_("Command: /party create <party-name>"));
-            partyTab->chatLog(_("These commands create a new party <party-name."));
+            chatLog(_("Command: /new <party-name>"));
+            chatLog(_("Command: /create <party-name>"));
+            chatLog(_("These commands create a new party called <party-name>."));
         }
         //else if (msg == "settings")
         //else if (msg == "info")
+        else if (args == "invite")
+        {
+            chatLog(_("Command: /invite <nick>"));
+            chatLog(_("This command invites <nick> to party with you."));
+            chatLog(_("If the <nick> has spaces in it, enclose it in "
+                            "double quotes (\")."));
+        }
         else if (args == "leave")
         {
-            partyTab->chatLog(_("Command: /party leave"));
-            partyTab->chatLog(_("This command causes the player to leave the party."));
+            chatLog(_("Command: /leave"));
+            chatLog(_("This command causes the player to leave the party."));
         }
         else if (args == "help")
         {
-            partyTab->chatLog(_("Command: /help"));
-            partyTab->chatLog(_("This command displays a list of all commands available."));
-            partyTab->chatLog(_("Command: /help <command>"));
-            partyTab->chatLog(_("This command displays help on <command>."));
+            chatLog(_("Command: /help"));
+            chatLog(_("This command displays a list of all commands available."));
+            chatLog(_("Command: /help <command>"));
+            chatLog(_("This command displays help on <command>."));
         }
         else
         {
-            partyTab->chatLog(_("Unknown command."));
-            partyTab->chatLog(_("Type /help for a list of commands."));
+            chatLog(_("Unknown command."));
+            chatLog(_("Type /help for a list of commands."));
         }
     }
     else if (type == "create" || type == "new")
@@ -95,17 +101,19 @@ void PartyTab::handleCommand(std::string msg)
         if (args.empty())
             chatLog(_("Party name is missing."), BY_SERVER);
         else
-            // Net::getPartyHandler()->create(args);
-            partyHandler->create(args);
+            Net::getPartyHandler()->create(args);
+    }
+    else if (type == "invite")
+    {
+        Net::getPartyHandler()->invite(args);
     }
     else if (type == "leave")
     {
-        // Net::getPartyHandler()->leave();
-        partyHandler->leave();
+        Net::getPartyHandler()->leave();
     }
     else if (type == "settings")
     {
-        partyTab->chatLog(_("The settings command is not yet implemented!"));
+        chatLog(_("The settings command is not yet implemented!"));
         /*
         MessageOut outMsg(CMSG_PARTY_SETTINGS);
         outMsg.writeInt16(0); // Experience
@@ -114,6 +122,6 @@ void PartyTab::handleCommand(std::string msg)
     }
     else
     {
-        partyTab->chatLog("Unknown command");
+        chatLog("Unknown command");
     }
 }

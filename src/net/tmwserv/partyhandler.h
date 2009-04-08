@@ -23,16 +23,39 @@
 #define NET_TMWSERV_PARTYHANDLER_H
 
 #include "net/messagehandler.h"
+#include "net/partyhandler.h"
 
 #include <string>
 
-class PartyHandler : public MessageHandler
+namespace TmwServ {
+
+class PartyHandler : public MessageHandler, public Net::PartyHandler
 {
 public:
     PartyHandler();
 
     void handleMessage(MessageIn &msg);
+
+    void create(const std::string &name = "");
+
+    void join(int partyId);
+
+    void invite(Player *player);
+
+    void invite(const std::string &name);
+
+    void inviteResponse(const std::string &inviter, bool accept);
+
+    void leave();
+
+    void kick(int playerId);
+
+    void chat(const std::string &text);
+
+    void requestPartyMembers();
 };
+
+} // namespace TmwServ
 
 #endif
 

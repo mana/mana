@@ -21,8 +21,10 @@
 
 #include "net/tmwserv/partyhandler.h"
 
-#include "net/tmwserv/chatserver/chatserver.h"
 #include "net/tmwserv/protocol.h"
+
+#include "net/tmwserv/chatserver/chatserver.h"
+#include "net/tmwserv/chatserver/party.h"
 
 #include "net/messagein.h"
 
@@ -34,6 +36,10 @@
 #include "localplayer.h"
 
 #include <iostream>
+
+Net::PartyHandler *partyHandler;
+
+namespace TmwServ {
 
 PartyHandler::PartyHandler()
 {
@@ -47,7 +53,7 @@ PartyHandler::PartyHandler()
         0
     };
     handledMessages = _messages;
-
+    partyHandler = this;
 }
 
 void PartyHandler::handleMessage(MessageIn &msg)
@@ -104,3 +110,52 @@ void PartyHandler::handleMessage(MessageIn &msg)
         } break;
     }
 }
+
+void PartyHandler::create(const std::string &name)
+{
+    // TODO
+}
+
+void PartyHandler::join(int partyId)
+{
+    // TODO
+}
+
+void PartyHandler::invite(Player *player)
+{
+    invite(player->getName());
+}
+
+void PartyHandler::invite(const std::string &name)
+{
+    Net::ChatServer::Party::invitePlayer(name);
+}
+
+void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
+{
+    if (accept)
+        Net::ChatServer::Party::acceptInvite(inviter);
+    // TODO: rejection
+}
+
+void PartyHandler::leave()
+{
+    // TODO
+}
+
+void PartyHandler::kick(int playerId)
+{
+    // TODO
+}
+
+void PartyHandler::chat(const std::string &text)
+{
+    // TODO
+}
+
+void PartyHandler::requestPartyMembers()
+{
+    // TODO
+}
+
+} // namespace TmwServ
