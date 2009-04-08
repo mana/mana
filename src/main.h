@@ -131,11 +131,8 @@ const short defaultMusicVolume = 60;
 // Defines the number of usable player slots
 const short maxSlot = 2;
 
-#ifdef TMWSERV_SUPPORT
 extern std::string token;
-#else
 extern char n_server, n_character;
-#endif
 
 extern unsigned char state;
 extern std::string errorMessage;

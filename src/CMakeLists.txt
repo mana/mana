@@ -114,8 +114,6 @@ SET(SRCS
     gui/buy.h
     gui/buysell.cpp
     gui/buysell.h
-    gui/char_select.cpp
-    gui/char_select.h
     gui/charcreatedialog.cpp
     gui/charcreatedialog.h
     gui/chat.cpp
@@ -163,6 +161,8 @@ SET(SRCS
     gui/npcintegerdialog.h
     gui/npclistdialog.cpp
     gui/npclistdialog.h
+    gui/npcpostdialog.cpp
+    gui/npcpostdialog.h
     gui/npcstringdialog.cpp
     gui/npcstringdialog.h
     gui/npc_text.cpp
@@ -185,6 +185,8 @@ SET(SRCS
     gui/sdlinput.h
     gui/sell.cpp
     gui/sell.h
+    gui/serverselectdialog.cpp
+    gui/serverselectdialog.h
     gui/setup.cpp
     gui/setup.h
     gui/setup_audio.cpp
@@ -471,8 +473,6 @@ SET(SRCS_TMW
     gui/guildwindow.h
     gui/magic.cpp
     gui/magic.h
-    gui/npcpostdialog.cpp
-    gui/npcpostdialog.h
     gui/quitdialog.cpp
     gui/quitdialog.h
     gui/serverdialog.cpp

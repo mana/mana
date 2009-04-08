@@ -118,6 +118,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/npcintegerdialog.h \
 	      gui/npclistdialog.cpp \
 	      gui/npclistdialog.h \
+	      gui/npcpostdialog.cpp \
+	      gui/npcpostdialog.h \
 	      gui/npcstringdialog.cpp \
 	      gui/npcstringdialog.h \
 	      gui/ok_dialog.cpp \
@@ -138,6 +140,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/sdlinput.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
+	      gui/serverselectdialog.cpp \
+	      gui/serverselectdialog.h \
 	      gui/setup.cpp \
 	      gui/setup.h \
 	      gui/setup_audio.cpp \
@@ -374,8 +378,6 @@ tmw_SOURCES += \
 	      gui/guildwindow.h \
 	      gui/magic.cpp \
 	      gui/magic.h \
-	      gui/npcpostdialog.cpp \
-	      gui/npcpostdialog.h \
 	      gui/quitdialog.cpp \
 	      gui/quitdialog.h \
 	      gui/serverdialog.cpp \
@@ -456,8 +458,6 @@ endif
 if SERVER_EATHENA
 tmw_CXXFLAGS += -DEATHENA_SUPPORT
 tmw_SOURCES += \
-	      gui/char_server.cpp \
-	      gui/char_server.h \
 	      gui/skill.cpp \
 	      gui/skill.h \
 	      gui/status.cpp \

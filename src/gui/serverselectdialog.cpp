@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/char_server.h"
+#include "gui/serverselectdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/listbox.h"
@@ -40,7 +40,7 @@ extern SERVER_INFO **server_info;
 class ServerListModel : public gcn::ListModel
 {
     public:
-        virtual ~ServerListModel() {};
+        virtual ~ServerListModel() {}
 
         int getNumberOfElements();
         std::string getElementAt(int i);

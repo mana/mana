@@ -203,10 +203,7 @@
 		<Unit filename="src/gui/button.h" />
 		<Unit filename="src/gui/buy.cpp" />
 		<Unit filename="src/gui/buy.h" />
-		<Unit filename="src/gui/buysell.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
+		<Unit filename="src/gui/buysell.cpp" />
 		<Unit filename="src/gui/buysell.h" />
 		<Unit filename="src/gui/changeemaildialog.cpp">
 			<Option target="TMWServ" />
@@ -228,14 +225,6 @@
 		<Unit filename="src/gui/char_select.h" />
 		<Unit filename="src/gui/charcreate.cpp" />
 		<Unit filename="src/gui/charcreate.h" />
-		<Unit filename="src/gui/char_server.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/char_server.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
 		<Unit filename="src/gui/chat.cpp" />
 		<Unit filename="src/gui/chat.h" />
 		<Unit filename="src/gui/checkbox.cpp" />
@@ -321,14 +310,8 @@
 		<Unit filename="src/gui/npcintegerdialog.h" />
 		<Unit filename="src/gui/npclistdialog.cpp" />
 		<Unit filename="src/gui/npclistdialog.h" />
-		<Unit filename="src/gui/npcpostdialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/npcpostdialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/npcpostdialog.cpp" />
+		<Unit filename="src/gui/npcpostdialog.h" />
 		<Unit filename="src/gui/npcstringdialog.cpp" />
 		<Unit filename="src/gui/npcstringdialog.h" />
 		<Unit filename="src/gui/ok_dialog.cpp" />
@@ -375,6 +358,8 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
+		<Unit filename="src/gui/serverselectdialog.cpp" />
+		<Unit filename="src/gui/serverselectdialog.h" />
 		<Unit filename="src/gui/setup.cpp" />
 		<Unit filename="src/gui/setup.h" />
 		<Unit filename="src/gui/setup_audio.cpp" />

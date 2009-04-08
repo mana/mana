@@ -44,9 +44,6 @@
 #include "gui/widgets/label.h"
 #include "gui/widgets/progressbar.h"
 
-#ifdef EATHENA_SUPPORT
-#include "gui/char_server.h"
-#endif
 #include "gui/char_select.h"
 #include "gui/gui.h"
 #include "gui/login.h"
@@ -54,6 +51,7 @@
 #include "gui/palette.h"
 #include "gui/register.h"
 #include "gui/sdlinput.h"
+#include "gui/serverselectdialog.h"
 #include "gui/setup.h"
 #ifdef TMWSERV_SUPPORT
 #include "gui/connection.h"
@@ -139,19 +137,19 @@ namespace
     } listener;
 }
 
-#ifdef TMWSERV_SUPPORT
 std::string token; //used to store magic_token
 
-extern Net::Connection *gameServerConnection;
-extern Net::Connection *chatServerConnection;
-extern Net::Connection *accountServerConnection;
-#else
 // Account infos
 char n_server, n_character;
 
 // TODO Anyone knows a good location for this? Or a way to make it non-global?
 class SERVER_INFO;
 SERVER_INFO **server_info;
+
+#ifdef TMWSERV_SUPPORT
+extern Net::Connection *gameServerConnection;
+extern Net::Connection *chatServerConnection;
+extern Net::Connection *accountServerConnection;
 #endif
 
 Graphics *graphics;
@@ -166,12 +164,6 @@ Configuration config;         /**< XML file configuration reader */
 Configuration branding;       /**< XML branding information reader */
 Logger *logger;               /**< Log object */
 KeyboardConfig keyboard;
-
-/*#ifdef TMWSERV_SUPPORT
-Net::Connection *gameServerConnection = 0;
-Net::Connection *chatServerConnection = 0;
-Net::Connection *accountServerConnection = 0;
-#endif*/
 
 LoginData loginData;
 LockedArray<LocalPlayer*> charInfo(maxSlot + 1);
@@ -808,25 +800,6 @@ static void accountRegister(LoginData *loginData)
             loginData->password, loginData->email);
 }
 
-static void accountUnRegister(LoginData *loginData)
-{
-    Net::getLoginHandler()->unregisterAccount(loginData->username,
-                                            loginData->password);
-
-}
-
-static void accountChangePassword(LoginData *loginData)
-{
-    Net::getLoginHandler()->changePassword(loginData->username,
-                                                loginData->password,
-                                                loginData->newPassword);
-}
-
-static void accountChangeEmail(LoginData *loginData)
-{
-    Net::getLoginHandler()->changeEmail(loginData->newEmail);
-}
-
 static void switchCharacter(std::string *passToken)
 {
     Net::getLogoutHandler()->reset();
@@ -1291,7 +1264,7 @@ int main(int argc, char *argv[])
 
                 case STATE_CHANGEEMAIL_ATTEMPT:
                     logger->log("State: CHANGE EMAIL ATTEMPT");
-                    accountChangeEmail(&loginData);
+                    Net::getLoginHandler()->changeEmail(loginData.newEmail);
                     break;
 
                 case STATE_CHANGEEMAIL:
@@ -1306,7 +1279,9 @@ int main(int argc, char *argv[])
 
                 case STATE_CHANGEPASSWORD_ATTEMPT:
                     logger->log("State: CHANGE PASSWORD ATTEMPT");
-                    accountChangePassword(&loginData);
+                    Net::getLoginHandler()->changePassword(loginData.username,
+                                                loginData.password,
+                                                loginData.newPassword);
                     break;
 
                 case STATE_CHANGEPASSWORD:
@@ -1321,7 +1296,8 @@ int main(int argc, char *argv[])
 
                 case STATE_UNREGISTER_ATTEMPT:
                     logger->log("State: UNREGISTER ATTEMPT");
-                    accountUnRegister(&loginData);
+                    Net::getLoginHandler()->unregisterAccount(
+                            loginData.username, loginData.password);
                     break;
 
                 case STATE_UNREGISTER:
