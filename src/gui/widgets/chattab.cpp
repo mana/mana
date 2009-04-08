@@ -205,7 +205,8 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
 
     mScrollArea->logic();
     chatWindow->mRecorder->record(line.substr(3));
-    if (this != getTabbedArea()->getSelectedTab())
+    if (this != getTabbedArea()->getSelectedTab() &&
+        own != BY_PLAYER)
         setHighlighted(true);
 }
 
