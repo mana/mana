@@ -28,6 +28,7 @@
 #include "gui/widgets/chattab.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tabbedarea.h"
+#include "gui/widgets/textfield.h"
 #include "gui/widgets/whispertab.h"
 
 #include "beingmanager.h"
@@ -38,18 +39,30 @@
 #include "utils/stringutils.h"
 
 #include <guichan/focushandler.hpp>
+#include <guichan/focuslistener.hpp>
 
-ChatInput::ChatInput()
+/**
+ * The chat input hides when it loses focus. It is also invisible by default.
+ */
+class ChatInput : public TextField, public gcn::FocusListener
 {
-    setVisible(false);
+    public:
+        ChatInput()
+        {
+            setVisible(false);
+            addFocusListener(this);
+        }
 
-    addFocusListener(this);
-}
+        /**
+         * Called if the chat input loses focus. It will set itself to
+         * invisible as result.
+         */
+        void focusLost(const gcn::Event &event)
+        {
+            setVisible(false);
+        }
+};
 
-void ChatInput::focusLost(const gcn::Event &event)
-{
-    setVisible(false);
-}
 
 ChatWindow::ChatWindow():
     Window(_("Chat")),
