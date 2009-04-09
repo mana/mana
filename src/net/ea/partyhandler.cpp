@@ -36,8 +36,8 @@
 #include "utils/gettext.h"
 #include "utils/strprintf.h"
 
-PartyTab *partyTab;
-PartyHandler *partyHandler;
+PartyTab *partyTab = 0;
+PartyHandler *partyHandler = 0;
 
 PartyHandler::PartyHandler()
 {

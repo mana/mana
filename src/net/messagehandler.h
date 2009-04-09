@@ -44,8 +44,7 @@ class MessageHandler
 
         virtual void handleMessage(MessageIn &msg) = 0;
 
-#ifdef TMWSERV_SUPPORT
-#else
+#ifdef EATHENA_SUPPORT
         void setNetwork(Network *network);
 
     protected:

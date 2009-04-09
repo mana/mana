@@ -27,7 +27,6 @@
 #else
 #include <SDL_mixer.h>
 #endif
-#include <string>
 
 #include <string>
 
@@ -35,16 +34,10 @@
  *
  * \ingroup CORE
  */
-class Sound {
+class Sound
+{
     public:
-        /**
-         * Constructor.
-         */
         Sound();
-
-        /**
-         * Destructor.
-         */
         ~Sound();
 
         /**

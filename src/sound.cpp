@@ -41,7 +41,8 @@ Sound::~Sound()
 void Sound::init()
 {
     // Don't initialize sound engine twice
-    if (mInstalled) return;
+    if (mInstalled)
+        return;
 
     logger->log("Sound::init() Initializing sound...");
 
@@ -110,7 +111,8 @@ void Sound::info()
 
 void Sound::setMusicVolume(int volume)
 {
-    if (!mInstalled) return;
+    if (!mInstalled)
+        return;
 
     mMusicVolume = volume;
     Mix_VolumeMusic(volume);
@@ -118,7 +120,8 @@ void Sound::setMusicVolume(int volume)
 
 void Sound::setSfxVolume(int volume)
 {
-    if (!mInstalled) return;
+    if (!mInstalled)
+        return;
 
     mSfxVolume = volume;
     Mix_Volume(-1, volume);
@@ -126,11 +129,11 @@ void Sound::setSfxVolume(int volume)
 
 void Sound::playMusic(const std::string &filename, int loop)
 {
-    if (!mInstalled) return;
+    if (!mInstalled)
+        return;
 
-    if (mMusic) {
+    if (mMusic)
         stopMusic();
-    }
 
     ResourceManager *resman = ResourceManager::getInstance();
     std::string path = resman->getPath("music/" + filename);
@@ -150,7 +153,8 @@ void Sound::playMusic(const std::string &filename, int loop)
 
 void Sound::stopMusic()
 {
-    if (!mInstalled) return;
+    if (!mInstalled)
+        return;
 
     logger->log("Sound::stopMusic()");
 
@@ -163,11 +167,11 @@ void Sound::stopMusic()
 
 void Sound::fadeInMusic(const std::string &path, int loop, int ms)
 {
-    if (!mInstalled) return;
+    if (!mInstalled)
+        return;
 
-    if (mMusic) {
+    if (mMusic)
         stopMusic();
-    }
 
     logger->log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)",
                 path.c_str(),
@@ -184,7 +188,8 @@ void Sound::fadeInMusic(const std::string &path, int loop, int ms)
 
 void Sound::fadeOutMusic(int ms)
 {
-    if (!mInstalled) return;
+    if (!mInstalled)
+        return;
 
     logger->log("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
 
@@ -197,7 +202,8 @@ void Sound::fadeOutMusic(int ms)
 
 void Sound::playSfx(const std::string &path)
 {
-    if (!mInstalled || path.length() == 0) return;
+    if (!mInstalled || path.length() == 0)
+        return;
 
     ResourceManager *resman = ResourceManager::getInstance();
     SoundEffect *sample = resman->getSoundEffect(path);

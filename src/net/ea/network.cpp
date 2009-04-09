@@ -175,7 +175,7 @@ void Network::disconnect()
 
 void Network::registerHandler(MessageHandler *handler)
 {
-    for (const Uint16 *i = handler->handledMessages; *i; i++)
+    for (const Uint16 *i = handler->handledMessages; *i; ++i)
     {
         mMessageHandlers[*i] = handler;
     }
@@ -185,7 +185,7 @@ void Network::registerHandler(MessageHandler *handler)
 
 void Network::unregisterHandler(MessageHandler *handler)
 {
-    for (const Uint16 *i = handler->handledMessages; *i; i++)
+    for (const Uint16 *i = handler->handledMessages; *i; ++i)
     {
         mMessageHandlers.erase(*i);
     }
@@ -196,7 +196,7 @@ void Network::unregisterHandler(MessageHandler *handler)
 void Network::clearHandlers()
 {
     MessageHandlerIterator i;
-    for (i = mMessageHandlers.begin(); i != mMessageHandlers.end(); i++)
+    for (i = mMessageHandlers.begin(); i != mMessageHandlers.end(); ++i)
     {
         i->second->setNetwork(0);
     }

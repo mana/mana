@@ -140,10 +140,7 @@ void GeneralHandler::load()
 void GeneralHandler::unload()
 {
     mNetwork->clearHandlers();
-
-    // The party tab might not have been made (if we never loaded the main GUI)
-    if (partyTab)
-        delete partyTab;
+    delete partyTab;
 }
 
 void GeneralHandler::flushNetwork()
@@ -159,7 +156,7 @@ bool GeneralHandler::isNetworkConnected()
 
 void GeneralHandler::guiWindowsLoaded()
 {
-    partyTab = new PartyTab();
+    partyTab = new PartyTab;
 }
 
 } // namespace EAthena
