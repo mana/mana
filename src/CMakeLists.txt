@@ -64,6 +64,8 @@ SET(SRCS
     gui/widgets/chattab.h
     gui/widgets/checkbox.cpp
     gui/widgets/checkbox.h
+    gui/widgets/desktop.cpp
+    gui/widgets/desktop.h
     gui/widgets/dropdown.cpp
     gui/widgets/dropdown.h
     gui/widgets/gccontainer.cpp
@@ -114,6 +116,8 @@ SET(SRCS
     gui/buy.h
     gui/buysell.cpp
     gui/buysell.h
+    gui/char_select.cpp
+    gui/char_select.h
     gui/charcreatedialog.cpp
     gui/charcreatedialog.h
     gui/chat.cpp
@@ -410,8 +414,6 @@ SET(SRCS
     )
 
 SET(SRCS_EA
-    gui/char_select.cpp
-    gui/char_select.h
     gui/skill.cpp
     gui/skill.h
     gui/status.cpp

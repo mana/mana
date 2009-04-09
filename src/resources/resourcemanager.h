@@ -40,7 +40,6 @@ struct SDL_Surface;
  */
 class ResourceManager
 {
-
     friend class Resource;
 
     public:

@@ -24,8 +24,6 @@
 
 #include <string>
 
-#include <SDL_types.h>
-
 /**
  * Handles organizing and choosing of wallpapers.
  */

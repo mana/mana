@@ -103,6 +103,8 @@ Network::Network():
     mState(IDLE),
     mWorkerThread(0)
 {
+    SDLNet_Init();
+
     mMutex = SDL_CreateMutex();
     mInstance = this;
 }
@@ -119,6 +121,8 @@ Network::~Network()
 
     delete[] mInBuffer;
     delete[] mOutBuffer;
+
+    SDLNet_Quit();
 }
 
 bool Network::connect(const std::string &address, short port)

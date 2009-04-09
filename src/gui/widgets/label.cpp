@@ -23,8 +23,7 @@
 
 #include "gui/palette.h"
 
-Label::Label() :
-    gcn::Label()
+Label::Label()
 {
 }
 

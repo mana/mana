@@ -41,6 +41,7 @@
 #include "units.h"
 
 #include "gui/widgets/button.h"
+#include "gui/widgets/desktop.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/progressbar.h"
 
@@ -93,7 +94,6 @@
 #include "resources/monsterdb.h"
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
-#include "resources/wallpaper.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -137,6 +137,12 @@ namespace
         void action(const gcn::ActionEvent &event);
     } listener;
 }
+
+static const int defaultScreenWidth = 800;
+static const int defaultScreenHeight = 600;
+
+static const int defaultSfxVolume = 100;
+static const int defaultMusicVolume = 60;
 
 std::string token; //used to store magic_token
 
@@ -922,10 +928,11 @@ int main(int argc, char *argv[])
 #ifdef TMWSERV_SUPPORT
     QuitDialog* quitDialog = NULL;
 #endif
-    Image *login_wallpaper = NULL;
     setupWindow = new Setup;
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+    Desktop *desktop = new Desktop;
+    top->add(desktop);
 #ifdef PACKAGE_VERSION
 #ifdef TMWSERV_SUPPORT
     gcn::Label *versionLabel = new Label(strprintf("%s (tmwserv)", PACKAGE_VERSION));
@@ -940,9 +947,9 @@ int main(int argc, char *argv[])
     top->add(progressLabel, 15 + progressBar->getWidth(),
                             progressBar->getY() + 4);
     progressBar->setVisible(false);
-    gcn::Button *setup = new Button(_("Setup"), "Setup", &listener);
-    setup->setPosition(top->getWidth() - setup->getWidth() - 3, 3);
-    top->add(setup);
+    gcn::Button *setupButton = new Button(_("Setup"), "Setup", &listener);
+    setupButton->setPosition(top->getWidth() - setupButton->getWidth() - 3, 3);
+    top->add(setupButton);
 
     sound.playMusic(branding.getValue("loginMusic", ""));
 
@@ -969,7 +976,6 @@ int main(int argc, char *argv[])
     Net::initialize();
     new TmwServ::GeneralHandler;  // Currently registers itself
 #else
-    SDLNet_Init();
     Network *network = new Network;
     EAthena::GeneralHandler *generalHandler = new EAthena::GeneralHandler;
     network->registerHandler(generalHandler);
@@ -977,20 +983,11 @@ int main(int argc, char *argv[])
 
     Net::getGeneralHandler()->load();
 
-    // Set the most appropriate wallpaper, based on screen width
-    Wallpaper::loadWallpapers();
-
     int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);
     int screenHeight = static_cast<int>(config.getValue("screenheight",
                                                         defaultScreenHeight));
 
-    std::string wallpaperName = Wallpaper::getWallpaper(screenWidth,
-                                                        screenHeight);
-
-    login_wallpaper = ResourceManager::getInstance()->getImage(wallpaperName);
-
-    if (!login_wallpaper)
-        logger->log("Couldn't load %s as wallpaper", wallpaperName.c_str());
+    desktop->setSize(screenWidth, screenHeight);
 
     unsigned int oldstate = !state; // We start with a status change.
 
@@ -1059,16 +1056,6 @@ int main(int argc, char *argv[])
                 progressBar->setProgress(0.0f);
         }
 
-        if (graphics->getWidth() > login_wallpaper->getWidth() ||
-                graphics->getHeight() > login_wallpaper->getHeight())
-        {
-            graphics->setColor(gcn::Color(64, 64, 64));
-            graphics->fillRectangle(gcn::Rectangle(
-                        0, 0, graphics->getWidth(), graphics->getHeight()));
-        }
-        graphics->drawImage(login_wallpaper,
-                (graphics->getWidth() - login_wallpaper->getWidth()) / 2,
-                (graphics->getHeight() - login_wallpaper->getHeight()) / 2);
         gui->draw();
         graphics->updateScreen();
 
@@ -1105,11 +1092,6 @@ int main(int argc, char *argv[])
             if (oldstate == STATE_UPDATE)
             {
                 loadUpdates();
-                // Reload the wallpaper in case that it was updated
-                login_wallpaper->decRef();
-                login_wallpaper = ResourceManager::getInstance()->getImage(
-                        branding.getValue("loginWallpaper",
-                            "graphics/images/login_wallpaper.png"));
             }
 
             oldstate = state;
@@ -1196,24 +1178,7 @@ int main(int argc, char *argv[])
                     EmoteDB::load();
                     Units::loadUnits();
 
-                    Wallpaper::loadWallpapers();
-
-                    {
-                    int screenWidth = (int) config.getValue("screenwidth",
-                                                        defaultScreenWidth);
-                    int screenHeight = (int) config.getValue("screenheight",
-                                                        defaultScreenHeight);
-
-                    Image *temp = ResourceManager::getInstance()
-                                ->getImage(Wallpaper::getWallpaper(screenWidth,
-                                                        screenHeight));
-
-                    if (temp)
-                    {
-                        login_wallpaper->decRef();
-                        login_wallpaper = temp;
-                    }
-                    }
+                    desktop->reloadWallpaper();
 
                     state = STATE_LOGIN;
                     break;
@@ -1409,25 +1374,6 @@ int main(int argc, char *argv[])
             {
                 case STATE_UPDATE:
                     loadUpdates();
-                    // Reload the wallpaper in case that it was updated
-                    Wallpaper::loadWallpapers();
-
-                    {
-                    int screenWidth = (int) config.getValue("screenwidth",
-                                                        defaultScreenWidth);
-                    int screenHeight = (int) config.getValue("screenheight",
-                                                        defaultScreenHeight);
-
-                    Image *temp = ResourceManager::getInstance()
-                                ->getImage(Wallpaper::getWallpaper(screenWidth,
-                                                        screenHeight));
-
-                    if (temp)
-                    {
-                        login_wallpaper->decRef();
-                        login_wallpaper = temp;
-                    }
-                    }
                     break;
 
                     // Those states don't cause a network disconnect
@@ -1477,6 +1423,8 @@ int main(int argc, char *argv[])
 
                     // Load units
                     Units::loadUnits();
+
+                    desktop->reloadWallpaper();
 
                     state = STATE_CHAR_CONNECT;
                     break;
@@ -1558,16 +1506,16 @@ int main(int argc, char *argv[])
 #endif
                     delete progressBar;
                     delete progressLabel;
-                    delete setup;
+                    delete setupButton;
+                    delete desktop;
                     progressBar = NULL;
                     progressLabel = NULL;
                     currentDialog = NULL;
-                    setup = NULL;
-                    login_wallpaper->decRef();
-                    login_wallpaper = NULL;
+                    setupButton = NULL;
+                    desktop = NULL;
 
                     logger->log("State: GAME");
-                    game = new Game();
+                    game = new Game;
                     game->logic();
                     delete game;
                     state = STATE_EXIT;
@@ -1651,13 +1599,12 @@ int main(int argc, char *argv[])
 #endif
     delete progressBar;
     delete progressLabel;
-    delete setup;
+    delete setupButton;
     delete setupWindow;
+    delete desktop;
 
-#ifdef TMWSERV_SUPPORT
-#else
+#ifdef EATHENA_SUPPORT
     delete network;
-    SDLNet_Quit();
 #endif
 
     logger->log("Quitting");

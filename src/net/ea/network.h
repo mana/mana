@@ -22,9 +22,10 @@
 #ifndef EA_NETWORK_H
 #define EA_NETWORK_H
 
-#include <map>
 #include <SDL_net.h>
 #include <SDL_thread.h>
+
+#include <map>
 #include <string>
 
 /**

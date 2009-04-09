@@ -53,20 +53,20 @@ bool wallpaperCompare(WallpaperSize a, WallpaperSize b)
 
 void Wallpaper::loadWallpapers()
 {
-    char **imgs = PHYSFS_enumerateFiles(WALLPAPER_FOLDER);
-    char **i;
-    size_t baseLen = strlen(WALLPAPER_BASE);
-    int width;
-    int height;
-
     wallpaperSizes.clear();
 
+    size_t baseLen = strlen(WALLPAPER_BASE);
     haveBackup = false;
 
-    for (i = imgs; *i != NULL; i++)
+    char **imgs = PHYSFS_enumerateFiles(WALLPAPER_FOLDER);
+
+    for (char **i = imgs; *i != NULL; i++)
     {
         if (strncmp(*i, WALLPAPER_BASE, baseLen) == 0)
         {
+            int width;
+            int height;
+
             if (strlen(*i) == baseLen + 4)
             {
                 if (haveBackup)
