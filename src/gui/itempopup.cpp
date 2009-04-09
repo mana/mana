@@ -31,8 +31,6 @@
 #include "graphics.h"
 #include "units.h"
 
-#include "resources/iteminfo.h"
-
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -52,11 +50,13 @@ ItemPopup::ItemPopup():
     mItemDesc->setEditable(false);
     mItemDescScroll = new ScrollArea(mItemDesc);
 
+    const int fontHeight = getFont()->getHeight();
+
     mItemDescScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mItemDescScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mItemDescScroll->setDimension(gcn::Rectangle(0, 0, 196, getFont()->getHeight()));
+    mItemDescScroll->setDimension(gcn::Rectangle(0, 0, 196, fontHeight));
     mItemDescScroll->setOpaque(false);
-    mItemDescScroll->setPosition(2, getFont()->getHeight());
+    mItemDescScroll->setPosition(2, fontHeight);
 
     // Item Effect
     mItemEffect = new TextBox;
@@ -65,10 +65,10 @@ ItemPopup::ItemPopup():
 
     mItemEffectScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mItemEffectScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mItemEffectScroll->setDimension(gcn::Rectangle(0, 0, 196, getFont()->getHeight()));
+    mItemEffectScroll->setDimension(gcn::Rectangle(0, 0, 196, fontHeight));
     mItemEffectScroll->setOpaque(false);
-    mItemEffectScroll->setPosition(2, (2 * getFont()->getHeight()) + 
-                                  (2 * getPadding()));
+    mItemEffectScroll->setPosition(2, (2 * fontHeight) +
+                                   (2 * getPadding()));
 
     // Item Weight
     mItemWeight = new TextBox;
@@ -77,10 +77,9 @@ ItemPopup::ItemPopup():
 
     mItemWeightScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mItemWeightScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mItemWeightScroll->setDimension(gcn::Rectangle(0, 0, 196, getFont()->getHeight()));
+    mItemWeightScroll->setDimension(gcn::Rectangle(0, 0, 196, fontHeight));
     mItemWeightScroll->setOpaque(false);
-    mItemWeightScroll->setPosition(2, (3 * getFont()->getHeight()) + 
-                                  (4 * getPadding()));
+    mItemWeightScroll->setPosition(2, 3 * fontHeight + 4 * getPadding());
 
     add(mItemName);
     add(mItemDescScroll);
@@ -131,14 +130,14 @@ void ItemPopup::setItem(const ItemInfo &item)
     const int numRowsWeight = mItemWeight->getNumberOfRows();
     const int height = getFont()->getHeight();
 
-    mItemDescScroll->setDimension(gcn::Rectangle(2, 0, minWidth, numRowsDesc * 
-                                                 height));
+    mItemDescScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
+                                                 numRowsDesc * height));
 
-    mItemEffectScroll->setDimension(gcn::Rectangle(2, 0, minWidth, numRowsEffect
-                                                   * height));
+    mItemEffectScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
+                                                   numRowsEffect * height));
 
-    mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, minWidth, numRowsWeight
-                                                   * height));
+    mItemWeightScroll->setDimension(gcn::Rectangle(2, 0, minWidth,
+                                                   numRowsWeight * height));
 
     if (item.getEffect().empty())
     {
@@ -164,7 +163,7 @@ void ItemPopup::updateColors()
     graphics->setColor(guiPalette->getColor(Palette::TEXT));
 }
 
-gcn::Color ItemPopup::getColor(short type)
+gcn::Color ItemPopup::getColor(ItemType type)
 {
     switch (type)
     {
@@ -204,7 +203,7 @@ std::string ItemPopup::getItemName() const
     return mItemName->getCaption();
 }
 
-unsigned int ItemPopup::getNumRows()
+unsigned int ItemPopup::getNumRows() const
 {
     return mItemDesc->getNumberOfRows() + mItemEffect->getNumberOfRows() +
            mItemWeight->getNumberOfRows();

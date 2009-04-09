@@ -72,7 +72,6 @@ EquipmentWindow::EquipmentWindow():
     mSelected(-1)
 {
     mItemPopup = new ItemPopup;
-    mItemPopup->setOpaque(false);
 
     // Control that shows the Player
     mPlayerBox = new PlayerBox;

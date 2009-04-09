@@ -156,10 +156,10 @@ class ItemInfo
 
         const std::string &getEffect() const { return mEffect; }
 
-        void setType(short type)
+        void setType(ItemType type)
         { mType = type; }
 
-        short getType() const
+        ItemType getType() const
         { return mType; }
 
         void setWeight(short weight)
@@ -196,7 +196,7 @@ class ItemInfo
         std::string mName;
         std::string mDescription;    /**< Short description. */
         std::string mEffect;         /**< Description of effects. */
-        char mType;                  /**< Item type. */
+        ItemType mType;              /**< Item type. */
         std::string mParticle;       /**< Particle effect used with this item */
         short mWeight;               /**< Weight in grams. */
         int mView;                   /**< Item ID of how this item looks. */

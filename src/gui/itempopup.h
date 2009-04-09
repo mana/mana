@@ -25,7 +25,8 @@
 
 #include "gui/widgets/popup.h"
 
-class ItemInfo;
+#include "resources/iteminfo.h"
+
 class ScrollArea;
 class TextBox;
 
@@ -50,7 +51,7 @@ class ItemPopup : public Popup
         /**
          * Gets the number of rows that the item popup currently has.
          */
-        unsigned int getNumRows();
+        unsigned int getNumRows() const;
 
         /**
          * Gets the name of the currently stored item in this popup.
@@ -72,12 +73,12 @@ class ItemPopup : public Popup
         TextBox *mItemDesc;
         TextBox *mItemEffect;
         TextBox *mItemWeight;
-        short mItemType;
+        ItemType mItemType;
         ScrollArea *mItemDescScroll;
         ScrollArea *mItemEffectScroll;
         ScrollArea *mItemWeightScroll;
 
-        static gcn::Color getColor(short type);
+        static gcn::Color getColor(ItemType type);
 };
 
 #endif // ITEMPOPUP_H
