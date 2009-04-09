@@ -76,6 +76,9 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     mBeingId = being->getId();
     mBrowserBox->clearRows();
 
+    // Any being's name can be added to chat
+    mBrowserBox->addRow(_("@@name|Add name to chat@@"));
+
     switch (being->getType())
     {
         case Being::PLAYER:
@@ -109,12 +112,12 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
                 //mBrowserBox->addRow(_("@@follow|Follow ") + name + "@@");
                 //mBrowserBox->addRow(_("@@buddy|Add ") + name + " to Buddy List@@");
-                mBrowserBox->addRow(strprintf(_("@@guild|Invite %s@@"), name.c_str()));
+                mBrowserBox->addRow(strprintf(_("@@guild|Invite %s to join your guild@@"), name.c_str()));
                 mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
 
+                /*
                 mBrowserBox->addRow("##3---");
-                mBrowserBox->addRow(strprintf(_("@@party-invite|Invite %s to party@@"), name.c_str()));
-                //mBrowserBox->addRow(_("@@admin-kick|Kick player@@"));
+                mBrowserBox->addRow(_("@@admin-kick|Kick player@@"));*/
             }
             break;
 
@@ -242,6 +245,10 @@ void PopupMenu::handleLink(const std::string &link)
 
         buddyWindow->addBuddy(being->getName());
     }*/
+    else if (link == "name")
+    {
+        chatWindow->addInputText(being->getName());
+    }
 
     // Pick Up Floor Item action
     else if ((link == "pickup") && mFloorItem)
@@ -293,13 +300,6 @@ void PopupMenu::handleLink(const std::string &link)
         new ItemAmountWindow(ItemAmountWindow::ItemDrop,
                              inventoryWindow, mItem);
     }
-#ifdef EATHENA_SUPPORT
-    else if (link == "party-invite" &&
-             being &&
-             being->getType() == Being::PLAYER)
-    {
-        player_node->inviteToParty(dynamic_cast<Player*> (being));
-    }
     else if (link == "admin-kick" &&
              being &&
              (being->getType() == Being::PLAYER ||
@@ -307,7 +307,6 @@ void PopupMenu::handleLink(const std::string &link)
     {
         Net::getAdminHandler()->kick(being->getId());
     }
-#endif
 
     // Unknown actions
     else

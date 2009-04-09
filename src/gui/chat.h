@@ -158,8 +158,8 @@ class ChatWindow : public Window,
         /** Called when key is pressed */
         void keyPressed(gcn::KeyEvent &event);
 
-        /** Called to set current text */
-        void setInputText(std::string input_str);
+        /** Add the given text to the chat input */
+        void addInputText(std::string input_str);
 
         /** Called to add item to chat */
         void addItemText(const std::string &item);
