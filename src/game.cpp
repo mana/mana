@@ -415,9 +415,6 @@ Game::Game():
 Game::~Game()
 {
     Net::getGeneralHandler()->unload();
-#ifdef TMWSERV_SUPPORT
-    Net::clearHandlers();
-#endif
 
     destroyGuiWindows();
 

@@ -36,10 +36,8 @@
 #include "npc.h"
 #include "player_relations.h"
 
+#include "net/adminhandler.h"
 #include "net/net.h"
-#ifdef EATHENA_SUPPORT
-#include "net/ea/adminhandler.h"
-#endif
 
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"

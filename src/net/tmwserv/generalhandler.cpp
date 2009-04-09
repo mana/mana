@@ -93,6 +93,8 @@ void GeneralHandler::load()
 
 void GeneralHandler::unload()
 {
+    Net::clearHandlers();
+
     if (accountServerConnection)
         accountServerConnection->disconnect();
     if (gameServerConnection)

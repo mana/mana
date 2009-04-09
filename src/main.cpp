@@ -1654,7 +1654,6 @@ int main(int argc, char *argv[])
     delete setup;
     delete setupWindow;
 
-    Net::getGeneralHandler()->unload();
 #ifdef TMWSERV_SUPPORT
 #else
     delete network;
