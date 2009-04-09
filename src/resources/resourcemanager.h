@@ -48,13 +48,11 @@ class ResourceManager
         typedef Resource *(*loader)(void *, unsigned);
         typedef Resource *(*generator)(void *);
 
-        /**
-         * Constructor.
-         */
         ResourceManager();
 
         /**
-         * Destructor.
+         * Destructor. Cleans up remaining resources, warning about resources
+         * that were still referenced.
          */
         ~ResourceManager();
 

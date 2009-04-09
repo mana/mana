@@ -19,35 +19,36 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <algorithm>
-#include <cstring>
-#include <physfs.h>
-
 #include "resources/wallpaper.h"
 
 #include "log.h"
 
 #include "utils/strprintf.h"
 
+#include <algorithm>
+#include <cstring>
+#include <vector>
+
+#include <physfs.h>
+
 #define WALLPAPER_FOLDER "graphics/images/"
+#define WALLPAPER_BASE   "login_wallpaper"
 
-#define WALLPAPER_BASE "login_wallpaper"
-
-struct wallpaper {
-    Uint16 width;
-    Uint16 height;
+struct WallpaperSize
+{
+    int width;
+    int height;
 };
 
-std::vector<struct wallpaper> wallpapers;
-bool haveBackup; // Is the backup (no size given) version availabnle?
+static std::vector<WallpaperSize> wallpaperSizes;
+static bool haveBackup; // Is the backup (no size given) version available?
 
-bool wallpaperCompare(struct wallpaper x, struct wallpaper y)
+bool wallpaperCompare(WallpaperSize a, WallpaperSize b)
 {
-    int aX = x.width * x.height;
-    int aY = y.width * y.height;
+    int aa = a.width * a.height;
+    int ab = b.width * b.height;
 
-    if (aX > aY || (aX == aY && x.width > y.width)) return true;
-    return false;
+    return (aa > ab || (aa == ab && a.width > b.width));
 }
 
 void Wallpaper::loadWallpapers()
@@ -58,7 +59,7 @@ void Wallpaper::loadWallpapers()
     int width;
     int height;
 
-    wallpapers.clear();
+    wallpaperSizes.clear();
 
     haveBackup = false;
 
@@ -76,33 +77,36 @@ void Wallpaper::loadWallpapers()
             else if (sscanf(*i, WALLPAPER_BASE "_%dx%d.png",
                             &width, &height) == 2)
             {
-                struct wallpaper wp;
+                WallpaperSize wp;
                 wp.width = width;
                 wp.height = height;
-                wallpapers.push_back(wp);
+                wallpaperSizes.push_back(wp);
             }
         }
     }
 
     PHYSFS_freeList(imgs);
 
-    std::sort(wallpapers.begin(), wallpapers.end(), wallpaperCompare);
+    std::sort(wallpaperSizes.begin(), wallpaperSizes.end(), wallpaperCompare);
 }
 
 std::string Wallpaper::getWallpaper(int width, int height)
 {
-    std::vector<wallpaper>::iterator iter;
-    wallpaper wp;
+    std::vector<WallpaperSize>::iterator iter;
+    WallpaperSize wp;
 
-    for(iter = wallpapers.begin(); iter != wallpapers.end(); iter++)
+    for (iter = wallpaperSizes.begin(); iter != wallpaperSizes.end(); iter++)
     {
         wp = *iter;
         if (wp.width <= width && wp.height <= height)
+        {
             return std::string(strprintf(WALLPAPER_FOLDER WALLPAPER_BASE
-                                "_%dx%d.png", wp.width, wp.height));
+                                         "_%dx%d.png", wp.width, wp.height));
+        }
     }
 
-    if (haveBackup) return std::string(WALLPAPER_FOLDER WALLPAPER_BASE ".png");
+    if (haveBackup)
+        return std::string(WALLPAPER_FOLDER WALLPAPER_BASE ".png");
 
-    return std::string("");
+    return std::string();
 }

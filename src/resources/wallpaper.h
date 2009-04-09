@@ -23,7 +23,6 @@
 #define WALLPAPER_H
 
 #include <string>
-#include <vector>
 
 #include <SDL_types.h>
 
