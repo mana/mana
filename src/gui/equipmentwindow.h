@@ -27,20 +27,9 @@
 #include <guichan/actionlistener.hpp>
 
 class Equipment;
-class Image;
 class Inventory;
 class Item;
 class ItemPopup;
-class PlayerBox;
-
-/**
- * Equipment box.
- */
-struct EquipBox
-{
-    int posX;
-    int posY;
-};
 
 /**
  * Equipment dialog.
@@ -74,8 +63,8 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         void mousePressed(gcn::MouseEvent& mouseEvent);
 
 #ifdef TMWSERV_SUPPORT
-        enum{
-            // Equipment rules:
+        enum EquipmentSlots
+        {
             EQUIP_TORSO_SLOT = 0,
             EQUIP_ARMS_SLOT = 1,
             EQUIP_HEAD_SLOT = 2,
@@ -90,8 +79,8 @@ class EquipmentWindow : public Window, public gcn::ActionListener
             EQUIP_VECTOREND
         };
 #else
-        enum {
-            // Equipment rules:
+        enum EquipmentSlots
+        {
             EQUIP_LEGS_SLOT = 0,
             EQUIP_FIGHT1_SLOT,
             EQUIP_GLOVES_SLOT,
@@ -111,18 +100,25 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         void mouseExited(gcn::MouseEvent &event);
         void mouseMoved(gcn::MouseEvent &event);
 
-        Item* getItem(int x, int y) const;
+        Item *getItem(int x, int y) const;
 
         Equipment *mEquipment;
 #ifdef EATHENA_SUPPORT
         Inventory *mInventory;
 #endif
-        gcn::Button *mUnequip;                  /**< Button for unequipping. */
+
+        /**
+         * Equipment box.
+         */
+        struct EquipBox
+        {
+            int posX;
+            int posY;
+        };
+
         EquipBox mEquipBox[EQUIP_VECTOREND];    /**< Equipment Boxes. */
 
         ItemPopup *mItemPopup;
-
-        PlayerBox *mPlayerBox;
 
         int mSelected;                          /**< Index of selected item. */
 };

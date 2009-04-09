@@ -58,7 +58,7 @@ class SpeechBubble : public Popup
         /**
          * Gets the number of rows the speech bubble has.
          */
-        unsigned int getNumRows();
+        unsigned int getNumRows() const;
 
     private:
         std::string mText;

@@ -47,17 +47,17 @@ static const int BOX_HEIGHT = 36;
 
 // Positions of the boxes, 2nd dimension is X and Y respectively.
 static const int boxPosition[][2] = {
-    {50, 208},   // EQUIP_LEGS_SLOT
-    {8, 123},    // EQUIP_FIGHT1_SLOT
-    {8, 78},     // EQUIP_GLOVES_SLOT
-    {129, 168},  // EQUIP_RING2_SLOT
-    {8, 168},    // EQUIP_RING1_SLOT
-    {129, 123},  // EQUIP_FIGHT2_SLOT
-    {90, 208},   // EQUIP_FEET_SLOT
-    {50, 40},    // EQUIP_CAPE_SLOT
-    {70, 0},     // EQUIP_HEAD_SLOT
-    {90, 40},    // EQUIP_TORSO_SLOT
-    {129, 78}    // EQUIP_AMMO_SLOT
+    { 50,  208 },   // EQUIP_LEGS_SLOT
+    { 8,   123 },   // EQUIP_FIGHT1_SLOT
+    { 8,   78 },    // EQUIP_GLOVES_SLOT
+    { 129, 168 },   // EQUIP_RING2_SLOT
+    { 8,   168 },   // EQUIP_RING1_SLOT
+    { 129, 123 },   // EQUIP_FIGHT2_SLOT
+    { 90,  208 },   // EQUIP_FEET_SLOT
+    { 50,  40 },    // EQUIP_CAPE_SLOT
+    { 70,  0 },     // EQUIP_HEAD_SLOT
+    { 90,  40 },    // EQUIP_TORSO_SLOT
+    { 129, 78 }     // EQUIP_AMMO_SLOT
 };
 
 #ifdef TMWSERV_SUPPORT
@@ -74,28 +74,24 @@ EquipmentWindow::EquipmentWindow():
     mItemPopup = new ItemPopup;
 
     // Control that shows the Player
-    mPlayerBox = new PlayerBox;
-    mPlayerBox->setDimension(gcn::Rectangle(50, 80, 74, 123));
-    mPlayerBox->setPlayer(player_node);
+    PlayerBox *playerBox = new PlayerBox;
+    playerBox->setDimension(gcn::Rectangle(50, 80, 74, 123));
+    playerBox->setPlayer(player_node);
 
     setWindowName("Equipment");
     setCloseButton(true);
     setDefaultSize(180, 300, ImageRect::CENTER);
     loadWindowState();
 
-    mUnequip = new Button(_("Unequip"), "unequip", this);
+    gcn::Button *unequip = new Button(_("Unequip"), "unequip", this);
     gcn::Rectangle const &area = getChildrenArea();
-    mUnequip->setPosition(area.width  - mUnequip->getWidth() - 5,
-                          area.height - mUnequip->getHeight() - 5);
+    unequip->setPosition(area.width  - unequip->getWidth() - 5,
+                         area.height - unequip->getHeight() - 5);
 
-    add(mPlayerBox);
-    add(mUnequip);
+    add(playerBox);
+    add(unequip);
 
-#ifdef TMWSERV_SUPPORT
-    for (int i = 0; i < EQUIPMENT_SIZE; i++)
-#else
-    for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
-#endif
+    for (int i = 0; i < EQUIP_VECTOREND; i++)
     {
         mEquipBox[i].posX = boxPosition[i][0] + getPadding();
         mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
@@ -110,7 +106,6 @@ EquipmentWindow::EquipmentWindow():
 EquipmentWindow::~EquipmentWindow()
 {
     delete mItemPopup;
-    delete mUnequip;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
@@ -122,11 +117,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
     Window::drawChildren(graphics);
 
-#ifdef TMWSERV_SUPPORT
-    for (int i = 0; i < EQUIPMENT_SIZE; i++)
-#else
-    for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
-#endif
+    for (int i = 0; i < EQUIP_VECTOREND; i++)
     {
         if (i == mSelected)
         {
@@ -188,11 +179,7 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
 
 Item* EquipmentWindow::getItem(int x, int y) const
 {
-#ifdef TMWSERV_SUPPORT
-    for (int i = 0; i < EQUIPMENT_SIZE; i++)
-#else
-    for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
-#endif
+    for (int i = 0; i < EQUIP_VECTOREND; i++)
     {
         gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
                              BOX_WIDTH, BOX_HEIGHT);
@@ -218,21 +205,15 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     const int x = mouseEvent.getX();
     const int y = mouseEvent.getY();
 
-    Item* item;
-
     if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
     {
         // Checks if any of the presses were in the equip boxes.
-#ifdef TMWSERV_SUPPORT
-        for (int i = 0; i < EQUIPMENT_SIZE; i++)
-#else
-        for (int i = EQUIP_LEGS_SLOT; i < EQUIP_VECTOREND; i++)
-#endif
+        for (int i = 0; i < EQUIP_VECTOREND; i++)
         {
 #ifdef TMWSERV_SUPPORT
-            item = mEquipment->getEquipment(i);
+            Item *item = mEquipment->getEquipment(i);
 #else
-            item = (i != EQUIP_AMMO_SLOT) ?
+            Item *item = (i != EQUIP_AMMO_SLOT) ?
                     mInventory->getItem(mEquipment->getEquipment(i)) :
                     mInventory->getItem(mEquipment->getArrows());
 #endif
@@ -245,17 +226,15 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     }
     else if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
     {
-        item = getItem(x, y);
-
-        if (!item)
-            return;
-
-        /* Convert relative to the window coordinates to absolute screen
-         * coordinates.
-         */
-        const int mx = x + getX();
-        const int my = y + getY();
-        viewport->showPopup(mx, my, item);
+        if (Item *item = getItem(x, y))
+        {
+            /* Convert relative to the window coordinates to absolute screen
+             * coordinates.
+             */
+            const int mx = x + getX();
+            const int my = y + getY();
+            viewport->showPopup(mx, my, item);
+        }
     }
 }
 
@@ -265,7 +244,7 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
     const int x = event.getX();
     const int y = event.getY();
 
-    Item* item = getItem(x, y);
+    Item *item = getItem(x, y);
 
     if (item)
     {
