@@ -93,6 +93,7 @@
 #include "resources/monsterdb.h"
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
+#include "resources/wallpaper.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -977,25 +978,14 @@ int main(int argc, char *argv[])
     Net::getGeneralHandler()->load();
 
     // Set the most appropriate wallpaper, based on screen width
+    Wallpaper::loadWallpapers();
+
     int screenWidth = (int) config.getValue("screenwidth", defaultScreenWidth);
-#ifdef EATHENA_SUPPORT
     int screenHeight = static_cast<int>(config.getValue("screenheight",
                                                         defaultScreenHeight));
-#endif
-    std::string wallpaperName;
 
-    wallpaperName = "graphics/images/login_wallpaper.png";
-    if (screenWidth >= 1024 && screenWidth < 1280)
-        wallpaperName = "graphics/images/login_wallpaper_1024x768.png";
-    else if (screenWidth >= 1280 && screenWidth < 1440)
-        wallpaperName = "graphics/images/login_wallpaper_1280x960.png";
-    else if (screenWidth >= 1440 && screenWidth < 1600)
-        wallpaperName = "graphics/images/login_wallpaper_1440x1080.png";
-    else if (screenWidth >= 1600)
-        wallpaperName = "graphics/images/login_wallpaper_1600x1200.png";
-
-    if (!ResourceManager::getInstance()->exists(wallpaperName))
-        wallpaperName = "graphics/images/login_wallpaper.png";
+    std::string wallpaperName = Wallpaper::getWallpaper(screenWidth,
+                                                        screenHeight);
 
     login_wallpaper = ResourceManager::getInstance()->getImage(wallpaperName);
 
@@ -1206,6 +1196,25 @@ int main(int argc, char *argv[])
                     EmoteDB::load();
                     Units::loadUnits();
 
+                    Wallpaper::loadWallpapers();
+
+                    {
+                    int screenWidth = (int) config.getValue("screenwidth",
+                                                        defaultScreenWidth);
+                    int screenHeight = (int) config.getValue("screenheight",
+                                                        defaultScreenHeight);
+
+                    Image *temp = ResourceManager::getInstance()
+                                ->getImage(Wallpaper::getWallpaper(screenWidth,
+                                                        screenHeight));
+
+                    if (temp)
+                    {
+                        login_wallpaper->decRef();
+                        login_wallpaper = temp;
+                    }
+                    }
+
                     state = STATE_LOGIN;
                     break;
 
@@ -1401,9 +1410,24 @@ int main(int argc, char *argv[])
                 case STATE_UPDATE:
                     loadUpdates();
                     // Reload the wallpaper in case that it was updated
-                    login_wallpaper->decRef();
-                    login_wallpaper = ResourceManager::getInstance()->
-                        getImage(wallpaperName);
+                    Wallpaper::loadWallpapers();
+
+                    {
+                    int screenWidth = (int) config.getValue("screenwidth",
+                                                        defaultScreenWidth);
+                    int screenHeight = (int) config.getValue("screenheight",
+                                                        defaultScreenHeight);
+
+                    Image *temp = ResourceManager::getInstance()
+                                ->getImage(Wallpaper::getWallpaper(screenWidth,
+                                                        screenHeight));
+
+                    if (temp)
+                    {
+                        login_wallpaper->decRef();
+                        login_wallpaper = temp;
+                    }
+                    }
                     break;
 
                     // Those states don't cause a network disconnect

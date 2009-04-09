@@ -249,6 +249,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
+	      resources/wallpaper.cpp \
+	      resources/wallpaper.h \
 	      utils/base64.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
