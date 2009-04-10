@@ -443,10 +443,10 @@
 		<Unit filename="src\gui\widgets\chattab.h" />
 		<Unit filename="src\gui\widgets\checkbox.cpp" />
 		<Unit filename="src\gui\widgets\checkbox.h" />
+		<Unit filename="src\gui\widgets\container.cpp" />
+		<Unit filename="src\gui\widgets\container.h" />
 		<Unit filename="src\gui\widgets\dropdown.cpp" />
 		<Unit filename="src\gui\widgets\dropdown.h" />
-		<Unit filename="src\gui\widgets\gccontainer.cpp" />
-		<Unit filename="src\gui\widgets\gccontainer.h" />
 		<Unit filename="src\gui\widgets\icon.cpp" />
 		<Unit filename="src\gui\widgets\icon.h" />
 		<Unit filename="src\gui\widgets\inttextfield.cpp" />

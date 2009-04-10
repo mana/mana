@@ -97,11 +97,7 @@ Window::~Window()
     delete mLayout;
 
     while (!mWidgets.empty())
-    {
-        gcn::Widget *w = mWidgets.front();
-        remove(w);
-        delete(w);
-    }
+        delete mWidgets.front();
 
     removeWidgetListener(this);
 

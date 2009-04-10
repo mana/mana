@@ -64,12 +64,12 @@ SET(SRCS
     gui/widgets/chattab.h
     gui/widgets/checkbox.cpp
     gui/widgets/checkbox.h
+    gui/widgets/container.cpp
+    gui/widgets/container.h
     gui/widgets/desktop.cpp
     gui/widgets/desktop.h
     gui/widgets/dropdown.cpp
     gui/widgets/dropdown.h
-    gui/widgets/gccontainer.cpp
-    gui/widgets/gccontainer.h
     gui/widgets/icon.cpp
     gui/widgets/icon.h
     gui/widgets/inttextfield.cpp

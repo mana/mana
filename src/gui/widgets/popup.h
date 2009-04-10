@@ -23,7 +23,7 @@
 #ifndef POPUP_H
 #define POPUP_H
 
-#include <guichan/widgets/container.hpp>
+#include "gui/widgets/container.h"
 
 #include "guichanfwd.h"
 
@@ -41,7 +41,7 @@ class WindowContainer;
  *
  * \ingroup GUI
  */
-class Popup : public gcn::Container
+class Popup : public Container
 {
     public:
         /**

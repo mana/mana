@@ -22,7 +22,7 @@
 #include "gui/skilldialog.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/gccontainer.h"
+#include "gui/widgets/container.h"
 #include "gui/widgets/icon.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/listbox.h"
@@ -40,7 +40,7 @@
 #include <string>
 #include <vector>
 
-class SkillTab : public GCContainer, public gcn::ActionListener
+class SkillTab : public Container, public gcn::ActionListener
 {
     public:
         /**
@@ -197,7 +197,6 @@ SkillTab::SkillTab(const std::string &type): type(type)
     }
 
     update();
-
 }
 
 int SkillTab::getSkillNum()

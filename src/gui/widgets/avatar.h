@@ -24,14 +24,14 @@
 
 #include "guichanfwd.h"
 
-#include "gui/widgets/gccontainer.h"
+#include "gui/widgets/container.h"
 
 #include <string>
 
 class Image;
 class Icon;
 
-class Avatar : public GCContainer
+class Avatar : public Container
 {
 public:
     /**

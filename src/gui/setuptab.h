@@ -22,14 +22,14 @@
 #ifndef GUI_SETUPTAB_H
 #define GUI_SETUPTAB_H
 
-#include "gui/widgets/gccontainer.h"
+#include "gui/widgets/container.h"
 
 #include <string>
 
 /**
  * A container for the contents of a tab in the setup window.
  */
-class SetupTab : public GCContainer
+class SetupTab : public Container
 {
 public:
     SetupTab();

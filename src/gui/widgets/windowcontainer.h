@@ -22,7 +22,7 @@
 #ifndef WINDOWCONTAINER_H
 #define WINDOWCONTAINER_H
 
-#include <guichan/widgets/container.hpp>
+#include "gui/widgets/container.h"
 
 /**
  * A window container. This container adds functionality for more convenient
@@ -30,7 +30,7 @@
  *
  * \ingroup GUI
  */
-class WindowContainer : public gcn::Container
+class WindowContainer : public Container
 {
     public:
         /**

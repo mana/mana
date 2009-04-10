@@ -80,7 +80,6 @@ GuildWindow::GuildWindow():
 
 GuildWindow::~GuildWindow()
 {
-    delete mGuildTabs;
 }
 
 void GuildWindow::update()

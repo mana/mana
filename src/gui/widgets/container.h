@@ -19,32 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef GUI_GCCONTAINER_H
-#define GUI_GCCONTAINER_H
-
-#include <list>
+#ifndef GUI_CONTAINER_H
+#define GUI_CONTAINER_H
 
 #include <guichan/widgets/container.hpp>
 
 /**
- * A garbage collecting container. Childs added to this container are
+ * A widget container. The only difference between the standard Guichan
+ * container and this one is that childs added to this container are
  * automatically deleted when the container is deleted.
  */
-class GCContainer : public gcn::Container
+class Container : public gcn::Container
 {
     public:
-        virtual ~GCContainer();
-
-        virtual void add(gcn::Widget *w);
-
-        virtual void add(gcn::Widget *w, int x, int y);
-
-        virtual void death(const gcn::Event &event);
-
-    protected:
-        typedef std::list<gcn::Widget*> Widgets;
-        typedef Widgets::iterator WidgetIterator;
-        Widgets mDeathList;
+        ~Container();
 };
 
 #endif

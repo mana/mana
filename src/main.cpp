@@ -1594,14 +1594,6 @@ int main(int argc, char *argv[])
     }
 
     delete guiPalette;
-#ifdef PACKAGE_VERSION
-    delete versionLabel;
-#endif
-    delete progressBar;
-    delete progressLabel;
-    delete setupButton;
-    delete setupWindow;
-    delete desktop;
 
 #ifdef EATHENA_SUPPORT
     delete network;

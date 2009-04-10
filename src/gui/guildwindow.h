@@ -38,20 +38,12 @@ class TextDialog;
 class ConfirmDialog;
 class GuildListBox;
 class ScrollArea;
-class GCContainer;
 class TabbedArea;
 
 class GuildWindow : public Window, public gcn::ActionListener
 {
 public:
-    /**
-     * Constructor.
-     */
     GuildWindow();
-
-    /**
-     * Destructor.
-     */
     ~GuildWindow();
 
     /**
