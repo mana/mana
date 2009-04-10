@@ -26,7 +26,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-class IntTextField;
 class Item;
 
 /**

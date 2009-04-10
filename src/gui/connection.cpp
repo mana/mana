@@ -51,7 +51,7 @@ ConnectionDialog::ConnectionDialog(int previousState):
     setVisible(true);
 }
 
-void ConnectionDialog::action(gcn::ActionEvent const &)
+void ConnectionDialog::action(const gcn::ActionEvent &)
 {
     logger->log("Cancel pressed");
     state = mPreviousState;

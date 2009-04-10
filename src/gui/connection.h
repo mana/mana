@@ -47,7 +47,7 @@ class ConnectionDialog : public Window, gcn::ActionListener
          * Called when the user presses Cancel. Restores the global state to
          * the previous one.
          */
-        void action(gcn::ActionEvent const &);
+        void action(const gcn::ActionEvent &);
 
         void logic();
 

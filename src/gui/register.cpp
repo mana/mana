@@ -63,6 +63,8 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
 #ifdef EATHENA_SUPPORT
     gcn::Label *serverLabel = new Label(_("Server:"));
     gcn::Label *portLabel = new Label(_("Port:"));
+#else
+    gcn::Label *emailLabel = new Label(_("Email:"));
 #endif
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
@@ -72,6 +74,8 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mPortField = new TextField(toString(loginData->port));
     mMaleButton = new RadioButton(_("Male"), "sex", true);
     mFemaleButton = new RadioButton(_("Female"), "sex", false);
+#else
+    mEmailField = new TextField;
 #endif
     mRegisterButton = new Button(_("Register"), "register", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
@@ -86,6 +90,8 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     place(2, 3, mFemaleButton);
     place(0, 4, serverLabel);
     place(0, 5, portLabel);
+#else
+    place(0, 3, emailLabel);
 #endif
     place(1, 0, mUserField, 3).setPadding(2);
     place(1, 1, mPasswordField, 3).setPadding(2);
@@ -93,6 +99,8 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
 #ifdef EATHENA_SUPPORT
     place(1, 4, mServerField, 3).setPadding(2);
     place(1, 5, mPortField, 3).setPadding(2);
+#else
+    place(1, 3, mEmailField, 3).setPadding(2);
 #endif
     place = getPlacer(0, 2);
     place(1, 0, mRegisterButton);
