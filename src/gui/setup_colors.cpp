@@ -94,12 +94,12 @@ Setup_Colors::Setup_Colors() :
 
     mGradDelayText = new TextField();
     mGradDelayText->setWidth(40);
-    mGradDelayText->setRange(20, 400);
+    mGradDelayText->setRange(20, 100);
     mGradDelayText->setNumeric(true);
     mGradDelayText->addListener(this);
     mGradDelayText->setEnabled(false);
 
-    mGradDelaySlider = new Slider(20, 400);
+    mGradDelaySlider = new Slider(20, 100);
     mGradDelaySlider->setWidth(180);
     mGradDelaySlider->setValue(mGradDelayText->getValue());
     mGradDelaySlider->setActionEventId("slider_graddelay");
