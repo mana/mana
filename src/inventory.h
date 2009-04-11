@@ -26,10 +26,10 @@ class Item;
 
 #ifdef EATHENA_SUPPORT
 const int INVENTORY_SIZE = 102;
-const int STORAGE_SIZE = 301;
 #else
 const int INVENTORY_SIZE = 50;
 #endif
+const int STORAGE_SIZE = 301;
 
 class Inventory
 {

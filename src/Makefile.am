@@ -172,6 +172,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/skin.h \
 	      gui/speechbubble.cpp \
 	      gui/speechbubble.h \
+	      gui/storagewindow.cpp \
+	      gui/storagewindow.h \
 	      gui/table.cpp \
 	      gui/table.h \
 	      gui/table_model.cpp \
@@ -466,8 +468,6 @@ tmw_SOURCES += \
 	      gui/skill.h \
 	      gui/status.cpp \
 	      gui/status.h \
-	      gui/storagewindow.cpp \
-	      gui/storagewindow.h \
 	      net/ea/gui/partytab.cpp \
 	      net/ea/gui/partytab.h \
 	      net/ea/adminhandler.cpp \

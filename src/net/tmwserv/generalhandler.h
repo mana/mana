@@ -41,7 +41,11 @@ class GeneralHandler : public Net::GeneralHandler
 
         bool isNetworkConnected();
 
+        void tick();
+
         void guiWindowsLoaded();
+
+        void guiWindowsUnloaded();
 
     protected:
         MessageHandlerPtr mBeingHandler;

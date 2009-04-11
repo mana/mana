@@ -974,7 +974,7 @@ int main(int argc, char *argv[])
 
 #ifdef TMWSERV_SUPPORT
     Net::initialize();
-    new TmwServ::GeneralHandler;  // Currently registers itself
+    new TmwServ::GeneralHandler;  // Currently doesn't need registration
 #else
     Network *network = new Network;
     EAthena::GeneralHandler *generalHandler = new EAthena::GeneralHandler;
@@ -1029,25 +1029,10 @@ int main(int argc, char *argv[])
             guiInput->pushInput(event);
         }
 
-#ifdef TMWSERV_SUPPORT
-        Net::flush();
-#else
-        network->flush();
-        network->dispatchMessages();
-#endif
+        Net::getGeneralHandler()->flushNetwork();
         gui->logic();
 
-#ifdef EATHENA_SUPPORT
-        if (network->getState() == Network::NET_ERROR)
-        {
-            state = STATE_ERROR;
-
-            if (!network->getError().empty())
-                errorMessage = network->getError();
-            else
-                errorMessage = _("Got disconnected from server!");
-        }
-#endif
+        Net::getGeneralHandler()->tick();
 
         if (progressBar->isVisible())
         {
@@ -1595,9 +1580,7 @@ int main(int argc, char *argv[])
 
     delete guiPalette;
 
-#ifdef EATHENA_SUPPORT
-    delete network;
-#endif
+    //delete Net::getGeneralHandler();
 
     logger->log("Quitting");
     exitEngine();

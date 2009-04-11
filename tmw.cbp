@@ -394,14 +394,8 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src\gui\storagewindow.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src\gui\storagewindow.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
+		<Unit filename="src\gui\storagewindow.cpp" />
+		<Unit filename="src\gui\storagewindow.h" />
 		<Unit filename="src\gui\table.cpp" />
 		<Unit filename="src\gui\table.h" />
 		<Unit filename="src\gui\table_model.cpp" />

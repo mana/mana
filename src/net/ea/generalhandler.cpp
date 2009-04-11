@@ -82,6 +82,11 @@ GeneralHandler::GeneralHandler():
     generalHandler = this;
 }
 
+GeneralHandler::~GeneralHandler()
+{
+    delete mNetwork;
+}
+
 void GeneralHandler::handleMessage(MessageIn &msg)
 {
     int code;
@@ -140,11 +145,13 @@ void GeneralHandler::load()
 void GeneralHandler::unload()
 {
     mNetwork->clearHandlers();
-    delete partyTab;
 }
 
 void GeneralHandler::flushNetwork()
 {
+    if (!mNetwork)
+        return;
+
     mNetwork->flush();
     mNetwork->dispatchMessages();
 }
@@ -154,9 +161,30 @@ bool GeneralHandler::isNetworkConnected()
     return mNetwork->isConnected();
 }
 
+void GeneralHandler::tick()
+{
+    if (!mNetwork)
+        return;
+
+    if (mNetwork->getState() == Network::NET_ERROR)
+    {
+        state = STATE_ERROR;
+
+        if (!mNetwork->getError().empty())
+            errorMessage = mNetwork->getError();
+        else
+            errorMessage = _("Got disconnected from server!");
+    }
+}
+
 void GeneralHandler::guiWindowsLoaded()
 {
     partyTab = new PartyTab;
+}
+
+void GeneralHandler::guiWindowsUnloaded()
+{
+    delete partyTab;
 }
 
 } // namespace EAthena

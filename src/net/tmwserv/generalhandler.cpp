@@ -120,7 +120,17 @@ bool GeneralHandler::isNetworkConnected()
     return true;
 }
 
+void GeneralHandler::tick()
+{
+    // TODO
+}
+
 void GeneralHandler::guiWindowsLoaded()
+{
+    // TODO
+}
+
+void GeneralHandler::guiWindowsUnloaded()
 {
     // TODO
 }

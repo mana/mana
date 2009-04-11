@@ -33,6 +33,8 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
     public:
         GeneralHandler();
 
+        ~GeneralHandler();
+
         void handleMessage(MessageIn &msg);
 
         void load();
@@ -43,7 +45,11 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
 
         bool isNetworkConnected();
 
+        void tick();
+
         void guiWindowsLoaded();
+
+        void guiWindowsUnloaded();
 
     protected:
         MessageHandlerPtr mAdminHandler;

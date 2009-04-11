@@ -102,10 +102,10 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mStatsPointsToAttribute(0),
     mEquipment(new Equipment),
     mXp(0),
-    mInStorage(false),
     mTargetTime(-1),
-    mLastTarget(-1),
 #endif
+    mLastTarget(-1),
+    mInStorage(false),
     mLevel(1),
     mMoney(0),
     mTotalWeight(1), mMaxWeight(1),
@@ -118,10 +118,9 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mInventory(new Inventory(INVENTORY_SIZE)),
 #ifdef TMWSERV_SUPPORT
     mLocalWalkTime(-1),
-    mExpMessageTime(0)
-#else
-    mStorage(new Inventory(STORAGE_SIZE))
+    mExpMessageTime(0),
 #endif
+    mStorage(new Inventory(STORAGE_SIZE))
 {
     // Variable to keep the local player from doing certain actions before a map
     // is initialized. e.g. drawing a player's name using the TextManager, since
@@ -789,6 +788,8 @@ void LocalPlayer::attack(Being *target, bool keep)
         stopAttack();
 }
 
+#endif // no TMWSERV_SUPPORT
+
 void LocalPlayer::stopAttack()
 {
     if (mTarget)
@@ -799,8 +800,6 @@ void LocalPlayer::stopAttack()
     setTarget(NULL);
     mLastTarget = -1;
 }
-
-#endif // no TMWSERV_SUPPORT
 
 void LocalPlayer::revive()
 {
@@ -949,19 +948,18 @@ bool LocalPlayer::withinAttackRange(Being *target)
 
 void LocalPlayer::setGotoTarget(Being *target)
 {
+    mLastTarget = -1;
 #ifdef TMWSERV_SUPPORT
     mTarget = target;
     mGoingToTarget = true;
     const Vector &targetPos = target->getPosition();
     setDestination(targetPos.x, targetPos.y);
 #else
-    mLastTarget = -1;
     setTarget(target);
     mGoingToTarget = true;
     setDestination(target->mX, target->mY);
 #endif
 }
-
 
 extern MiniStatusWindow *miniStatusWindow;
 

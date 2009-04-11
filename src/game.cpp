@@ -79,11 +79,10 @@
 #include "gui/buddywindow.h"
 #include "gui/guildwindow.h"
 #include "gui/magic.h"
-#include "gui/npcpostdialog.h"
 #include "gui/quitdialog.h"
-#else
-#include "gui/storagewindow.h"
 #endif
+#include "gui/npcpostdialog.h"
+#include "gui/storagewindow.h"
 
 #include "net/generalhandler.h"
 #include "net/maphandler.h"
@@ -91,34 +90,6 @@
 
 #include "net/tmwserv/inventoryhandler.h"
 #include "net/ea/inventoryhandler.h"
-
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/chathandler.h"
-#include "net/tmwserv/itemhandler.h"
-#include "net/tmwserv/npchandler.h"
-#include "net/tmwserv/playerhandler.h"
-#include "net/tmwserv/tradehandler.h"
-#include "net/tmwserv/network.h"
-#include "net/tmwserv/beinghandler.h"
-#include "net/tmwserv/buysellhandler.h"
-#include "net/tmwserv/effecthandler.h"
-#include "net/tmwserv/guildhandler.h"
-#include "net/tmwserv/partyhandler.h"
-#else
-#include "net/ea/adminhandler.h"
-#include "net/ea/chathandler.h"
-#include "net/ea/beinghandler.h"
-#include "net/ea/buysellhandler.h"
-#include "net/ea/equipmenthandler.h"
-#include "net/ea/itemhandler.h"
-#include "net/ea/maphandler.h"
-#include "net/ea/npchandler.h"
-#include "net/ea/network.h"
-#include "net/ea/playerhandler.h"
-#include "net/ea/partyhandler.h"
-#include "net/ea/tradehandler.h"
-#include "net/ea/skillhandler.h"
-#endif
 
 #include "resources/imagewriter.h"
 
@@ -165,10 +136,9 @@ PartyWindow *partyWindow;
 BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
 MagicDialog *magicDialog;
-NpcPostDialog *npcPostDialog;
-#else
-StorageWindow *storageWindow;
 #endif
+NpcPostDialog *npcPostDialog;
+StorageWindow *storageWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 TradeWindow *tradeWindow;
@@ -252,7 +222,6 @@ static void createGuiWindows()
     npcStringDialog = new NpcStringDialog;
     partyWindow = new PartyWindow;
 #ifdef TMWSERV_SUPPORT
-    npcPostDialog = new NpcPostDialog;
     magicDialog = new MagicDialog;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     buddyWindow = new BuddyWindow;
@@ -260,8 +229,9 @@ static void createGuiWindows()
 #else
     buySellDialog = new BuySellDialog;
     equipmentWindow = new EquipmentWindow;
-    storageWindow = new StorageWindow;
 #endif
+    npcPostDialog = new NpcPostDialog;
+    storageWindow = new StorageWindow;
     menuWindow = new MenuWindow;
     statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow;
@@ -320,6 +290,7 @@ static void createGuiWindows()
  */
 static void destroyGuiWindows()
 {
+    Net::getGeneralHandler()->guiWindowsUnloaded();
     logger->setChatWindow(NULL);
     delete localChatTab; // Need to do this first, so it can remove itself
     delete chatWindow;
@@ -338,8 +309,8 @@ static void destroyGuiWindows()
     delete npcTextDialog;
     delete npcStringDialog;
     delete partyWindow;
-#ifdef TMWSERV_SUPPORT
     delete npcPostDialog;
+#ifdef TMWSERV_SUPPORT
     delete magicDialog;
     delete buddyWindow;
     delete guildWindow;
@@ -352,9 +323,7 @@ static void destroyGuiWindows()
     delete debugWindow;
     delete itemShortcutWindow;
     delete emoteShortcutWindow;
-#ifdef EATHENA_SUPPORT
     delete storageWindow;
-#endif
 }
 
 Game::Game():
@@ -549,7 +518,6 @@ void Game::logic()
 
         // Handle network stuff
         Net::getGeneralHandler()->flushNetwork();
-#ifdef EATHENA_SUPPORT // TODO: TMWServ notification
         if (!Net::getGeneralHandler()->isNetworkConnected())
         {
             if (!disconnectedDialog)
@@ -562,7 +530,6 @@ void Game::logic()
                 disconnectedDialog->requestMoveToTop();
             }
         }
-#endif
     }
 }
 
@@ -591,7 +558,6 @@ void Game::handleInput()
                 return;
             }
 
-#ifdef TMWSERV_SUPPORT
             // send straight to gui for certain windows
             if (npcPostDialog->isVisible())
             {
@@ -606,7 +572,6 @@ void Game::handleInput()
                 }
                 return;
             }
-#endif
 
             // Mode switch to emotes
             if (keyboard.isKeyActive(keyboard.KEY_EMOTE))
@@ -928,10 +893,7 @@ void Game::handleInput()
         return;
 
     // Moving player around
-    if (player_node->mAction != Being::DEAD &&
-#ifdef EATHENA_SUPPORT
-        current_npc == 0 &&
-#endif
+    if (player_node->mAction != Being::DEAD && current_npc == 0 &&
         !chatWindow->isInputFocused())
     {
         // Get the state of the keyboard keys
@@ -1075,13 +1037,11 @@ void Game::handleInput()
             }
         }
 
-#ifdef EATHENA_SUPPORT
-        // Stop attacking if shift is pressed
+        // Stop attacking if the right key is pressed
         if (keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
             player_node->stopAttack();
         }
-#endif
 
         if (joystick)
         {

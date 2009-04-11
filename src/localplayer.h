@@ -165,12 +165,10 @@ class LocalPlayer : public Player
          */
         Inventory *getInventory() const { return mInventory; }
 
-#ifdef EATHENA_SUPPORT
         /**
          * Returns the player's storage
          */
         Inventory *getStorage() const { return mStorage; }
-#endif
 
 #ifdef TMWSERV_SUPPORT
         /**
@@ -268,9 +266,7 @@ class LocalPlayer : public Player
          */
         virtual void setGM();
 
-#ifdef EATHENA_SUPPORT
         void stopAttack();
-#endif
 
         /**
          * Overridden to do nothing. The attacks of the local player are
@@ -356,13 +352,13 @@ class LocalPlayer : public Player
          */
         void pickedUp(const std::string &item);
 
-#ifdef EATHENA_SUPPORT
         /**
          * Accessors for mInStorage
          */
         bool getInStorage() { return mInStorage; }
         void setInStorage(bool inStorage);
 
+#ifdef EATHENA_SUPPORT
         /**
          * Sets the amount of XP. Shows XP gaining effect if the player is on
          * a map.
@@ -488,12 +484,12 @@ class LocalPlayer : public Player
 
         void walk(unsigned char dir);
 
+        bool mInStorage;      /**< Whether storage is currently accessible */
 #ifdef EATHENA_SUPPORT
         int mXp;            /**< Experience points. */
-        bool mInStorage;      /**< Whether storage is currently accessible */
         int mTargetTime;      /** How long the being has been targeted **/
-        int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 #endif
+        int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 
 #ifdef TMWSERV_SUPPORT
         // Character status:
@@ -532,9 +528,7 @@ class LocalPlayer : public Player
                                   messages flooding */
 #endif
 
-#ifdef EATHENA_SUPPORT
         Inventory *mStorage;
-#endif
 
         // Load the target cursors into memory
         void initTargetCursor();
