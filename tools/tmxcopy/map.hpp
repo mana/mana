@@ -69,6 +69,13 @@ struct Tileset
 
 };
 
+/**
+ * A tile in a layer of a map.
+ *
+ * With the exception of the emptyTile and empty() function,
+ * interpreting what this tile represents depends on the map it
+ * belongs to (specifically the ordering of that map's tilesets).
+ */
 struct Tile
 {
     int tileset; // number of tileset
@@ -82,7 +89,8 @@ struct Tile
     /* This is to allow std::map<Tile,Tile> */
     bool operator< (const Tile& b) const
     {
-        return ((tileset < b.tileset) || (index < b.index));
+        return ((tileset < b.tileset) ||
+            ((tileset == b.tileset) && (index < b.index)));
     }
 
     bool operator!= (const Tile& b) const
@@ -144,7 +152,7 @@ class Map
 
         /**
          * Translates a layer - using the template, generates collision from visible layers (for example).
-         * TODO - avoid confusion with the math term "translate"
+         * TODO - avoid confusion with the geometry term "translate"
          */
         bool translateAllLayers(Map* templateMap, const std::string& destLayerName,
                     const ConfigurationOptions& config);

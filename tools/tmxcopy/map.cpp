@@ -392,6 +392,8 @@ bool Map::randomFill(Map* templateMap, const std::string& destLayerName,
     /* Now generate extra tiles.
      * TODO Need to configure this for desired density.  For 2x1 trees, dW*dH/10 is very sparse, dW*dH/2 is dense */
     srand(time(NULL));
+    int patternsGenerated = 0;
+    int occupiedAreas = 0;
     for (int i = destWidth*destHeight / 10; i > 0; i--)
     {
         /* Pick a random location, with enough tiles left and down from it to
@@ -429,14 +431,16 @@ bool Map::randomFill(Map* templateMap, const std::string& destLayerName,
                     destTile.index = srcTile.index;
                 }
             }
+            patternsGenerated++;
         }
         else
         {
+            occupiedAreas++;
             std::cout <<"Area occupied "<<x<<", "<<y<<std::endl;
         }
     }
 
-    std::clog<<"copying successful!"<<std::endl;
+    std::clog<<"Generated " << patternsGenerated << " new objects" <<std::endl;
     return true;
 }
 
@@ -469,11 +473,14 @@ bool Map::translateAllLayers(Map* templateMap, const std::string& destLayerName,
     for (int xy = (templateMap->getWidth() * templateMap->getHeight() -1);
         xy >= 0; xy--)
     {
-        Tile& fromTile = fromLayer->at(xy);
-        Tile& toTile = toLayer->at(xy);
+        Tile fromTile = fromLayer->at(xy);
+        Tile toTile = toLayer->at(xy);
         if (!fromTile.empty())
         {
-            collisionTranslation[fromTile] = toTile;  //FIXME - just getting it compiling so far
+            fromTile.tileset = tilesetTranslation[fromTile.tileset];
+            toTile.tileset = tilesetTranslation[toTile.tileset];
+
+            collisionTranslation[fromTile] = toTile;
         }
     }
 
