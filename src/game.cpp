@@ -444,10 +444,11 @@ void Game::exec()
         if (mCurrentMap)
             mCurrentMap->update(get_elapsed_time(gameTime));
 
+        handleInput();
+
         // Handle all necessary game logic
         while (get_elapsed_time(gameTime) > 0)
         {
-            handleInput();
             beingManager->logic();
             particleEngine->update();
             gui->logic();
