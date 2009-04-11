@@ -75,7 +75,8 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     mBrowserBox->clearRows();
 
     // Any being's name can be added to chat
-    mBrowserBox->addRow(_("@@name|Add name to chat@@"));
+    if (being->getType() != Being::UNKNOWN)
+        mBrowserBox->addRow(_("@@name|Add name to chat@@"));
 
     switch (being->getType())
     {
