@@ -79,6 +79,17 @@ Setup_Colors::Setup_Colors() :
 
     mGradTypeText = new Label;
 
+    std::string longText = _("Static");
+
+    if (getFont()->getWidth(_("Pulse")) > getFont()->getWidth(longText))
+        longText = _("Pulse");
+    if (getFont()->getWidth(_("Rainbow")) > getFont()->getWidth(longText))
+        longText = _("Rainbow");
+    if (getFont()->getWidth(_("Spectrum")) > getFont()->getWidth(longText))
+        longText = _("Spectrum");
+
+    mGradTypeText->setCaption(longText);
+
     mGradDelayLabel = new Label(_("Delay: "));
 
     mGradDelayText = new TextField();
@@ -89,7 +100,7 @@ Setup_Colors::Setup_Colors() :
     mGradDelayText->setEnabled(false);
 
     mGradDelaySlider = new Slider(20, 400);
-    mGradDelaySlider->setWidth(200);
+    mGradDelaySlider->setWidth(180);
     mGradDelaySlider->setValue(mGradDelayText->getValue());
     mGradDelaySlider->setActionEventId("slider_graddelay");
     mGradDelaySlider->addActionListener(this);
@@ -105,7 +116,7 @@ Setup_Colors::Setup_Colors() :
     mRedText->setEnabled(false);
 
     mRedSlider = new Slider(0, 255);
-    mRedSlider->setWidth(200);
+    mRedSlider->setWidth(180);
     mRedSlider->setValue(mRedText->getValue());
     mRedSlider->setActionEventId("slider_red");
     mRedSlider->addActionListener(this);
@@ -121,7 +132,7 @@ Setup_Colors::Setup_Colors() :
     mGreenText->setEnabled(false);
 
     mGreenSlider = new Slider(0, 255);
-    mGreenSlider->setWidth(200);
+    mGreenSlider->setWidth(180);
     mGreenSlider->setValue(mGreenText->getValue());
     mGreenSlider->setActionEventId("slider_green");
     mGreenSlider->addActionListener(this);
@@ -137,7 +148,7 @@ Setup_Colors::Setup_Colors() :
     mBlueText->setEnabled(false);
 
     mBlueSlider = new Slider(0, 255);
-    mBlueSlider->setWidth(200);
+    mBlueSlider->setWidth(180);
     mBlueSlider->setValue(mBlueText->getValue());
     mBlueSlider->setActionEventId("slider_blue");
     mBlueSlider->addActionListener(this);
@@ -149,23 +160,25 @@ Setup_Colors::Setup_Colors() :
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, mScroll, 4, 6).setPadding(2);
-    place(0, 6, mPreviewBox, 4).setPadding(2);
+    place(0, 0, mScroll, 5, 6).setPadding(2);
+    place(0, 6, mPreviewBox, 5).setPadding(2);
     place(0, 7, mGradTypeLabel, 2);
     place(2, 7, mGradTypeSlider);
-    place(3, 7, mGradTypeText);
-    place(0, 8, mGradDelayLabel, 2);
-    place(2, 8, mGradDelaySlider);
-    place(3, 8, mGradDelayText);
-    place(0, 9, mRedLabel, 2);
-    place(2, 9, mRedSlider);
-    place(3, 9, mRedText).setPadding(1);
-    place(0, 10, mGreenLabel, 2);
-    place(2, 10, mGreenSlider);
-    place(3, 10, mGreenText).setPadding(1);
-    place(0, 11, mBlueLabel, 2);
-    place(2, 11, mBlueSlider);
-    place(3, 11, mBlueText).setPadding(1);
+    place(3, 7, mGradTypeText, 2).setPadding(1);
+    place(0, 8, mRedLabel, 2);
+    place(2, 8, mRedSlider);
+    place(3, 8, mRedText).setPadding(1);
+    place(0, 9, mGreenLabel, 2);
+    place(2, 9, mGreenSlider);
+    place(3, 9, mGreenText).setPadding(1);
+    place(0, 10, mBlueLabel, 2);
+    place(2, 10, mBlueSlider);
+    place(3, 10, mBlueText).setPadding(1);
+    place(0, 11, mGradDelayLabel, 2);
+    place(2, 11, mGradDelaySlider);
+    place(3, 11, mGradDelayText).setPadding(1);
+
+    mGradTypeText->setCaption("");
 
     setDimension(gcn::Rectangle(0, 0, 325, 280));
 }
