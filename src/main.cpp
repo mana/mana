@@ -1272,10 +1272,6 @@ int main(int argc, char *argv[])
                     Net::ChatServer::connect(chatServerConnection, token);
                     sound.fadeOutMusic(1000);
 
-#ifdef PACKAGE_VERSION
-                    delete versionLabel;
-                    versionLabel = NULL;
-#endif
                     currentDialog = NULL;
 
                     logger->log("State: GAME");
