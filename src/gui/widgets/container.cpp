@@ -21,6 +21,11 @@
 
 #include "gui/widgets/container.h"
 
+Container::Container()
+{
+    setOpaque(false);
+}
+
 Container::~Container()
 {
     while (!mWidgets.empty())

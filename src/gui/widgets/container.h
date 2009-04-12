@@ -25,13 +25,18 @@
 #include <guichan/widgets/container.hpp>
 
 /**
- * A widget container. The only difference between the standard Guichan
- * container and this one is that childs added to this container are
- * automatically deleted when the container is deleted.
+ * A widget container.
+ *
+ * The main difference between the standard Guichan container and this one is
+ * that childs added to this container are automatically deleted when the
+ * container is deleted.
+ *
+ * This container is also non-opaque by default.
  */
 class Container : public gcn::Container
 {
     public:
+        Container();
         ~Container();
 };
 

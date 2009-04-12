@@ -22,11 +22,11 @@
 #ifndef DESKTOP_H
 #define DESKTOP_H
 
-#include <guichan/widgets/container.hpp>
+#include "gui/widgets/container.h"
+
 #include <guichan/widgetlistener.hpp>
 
 class Image;
-class Label;
 
 /**
  * Desktop widget, for drawing a background image and color.
@@ -37,9 +37,11 @@ class Label;
  * When the desktop widget is resized, the background image is automatically
  * updated.
  *
+ * The desktop also displays the client version in the top-right corner.
+ *
  * \ingroup GUI
  */
-class Desktop : public gcn::Container, gcn::WidgetListener
+class Desktop : public Container, gcn::WidgetListener
 {
     public:
         Desktop();
@@ -58,7 +60,6 @@ class Desktop : public gcn::Container, gcn::WidgetListener
         void setBestFittingWallpaper();
 
         Image *mWallpaper;
-        Label *versionLabel;
 };
 
 #endif // DESKTOP_H

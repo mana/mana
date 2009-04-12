@@ -61,6 +61,16 @@
 #define PACKAGE_VERSION "0.0.29"
 #endif
 
+#ifdef PACKAGE_VERSION
+#ifdef TMWSERV_SUPPORT
+#define FULL_VERSION "v" PACKAGE_VERSION " (tmwserv)"
+#else
+#define FULL_VERSION "v" PACKAGE_VERSION " (eAthena)"
+#endif
+#else
+#define FULL_VERSION "Unknown Version"
+#endif
+
 #ifndef PKG_DATADIR
 #define PKG_DATADIR ""
 #endif
@@ -127,11 +137,5 @@ extern char n_server, n_character;
 
 extern unsigned char state;
 extern std::string errorMessage;
-
-namespace Main {
-
-extern const std::string version;
-
-}
 
 #endif

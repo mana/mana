@@ -39,7 +39,7 @@ Desktop::Desktop()
 
     Wallpaper::loadWallpapers();
 
-    versionLabel = new Label(Main::version);
+    gcn::Label *versionLabel = new Label(FULL_VERSION);
     add(versionLabel, 25, 2);
 }
 
@@ -47,7 +47,6 @@ Desktop::~Desktop()
 {
     if (mWallpaper)
         mWallpaper->decRef();
-    delete versionLabel;
 }
 
 void Desktop::reloadWallpaper()
@@ -80,7 +79,7 @@ void Desktop::draw(gcn::Graphics *graphics)
                 (getHeight() - mWallpaper->getHeight()) / 2);
     }
 
-    drawChildren(graphics);
+    Container::draw(graphics);
 }
 
 void Desktop::setBestFittingWallpaper()

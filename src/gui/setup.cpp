@@ -104,7 +104,7 @@ Setup::Setup():
 
     add(panel);
 
-    Label *version = new Label(Main::version);
+    Label *version = new Label(FULL_VERSION);
     version->setPosition(5, height - version->getHeight() - 5);
     add(version);
 
