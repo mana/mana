@@ -57,7 +57,6 @@ bool Engine::changeMap(const std::string &mapPath)
     // Clean up floor items, beings and particles
     floorItemManager->clear();
     beingManager->clear();
-    particleEngine->clear();
 
     // Unset the map of the player so that its particles are cleared before
     // being deleted in the next step
