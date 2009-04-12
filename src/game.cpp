@@ -629,21 +629,25 @@ void Game::handleInput()
                     }
                     */
                 }
-                if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                else if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
                 {
                     if (chatWindow->requestChatFocus())
                         used = true;
                 }
 
-            if (keyboard.isKeyActive(keyboard.KEY_PREV_CHAT_TAB))
+
+            if (!chatWindow->isInputFocused() || (event.key.keysym.mod & KMOD_ALT))
             {
-                chatWindow->prevTab();
-                return;
-            }
-            else if (keyboard.isKeyActive(keyboard.KEY_NEXT_CHAT_TAB))
-            {
-                chatWindow->nextTab();
-                return;
+                if (keyboard.isKeyActive(keyboard.KEY_PREV_CHAT_TAB))
+                {
+                    chatWindow->prevTab();
+                    return;
+                }
+                else if (keyboard.isKeyActive(keyboard.KEY_NEXT_CHAT_TAB))
+                {
+                    chatWindow->nextTab();
+                    return;
+                }
             }
 
             const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
