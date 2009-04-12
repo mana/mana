@@ -170,8 +170,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
-    tempPlayer->setGender(
-            (mLoginData->sex == 0) ? GENDER_FEMALE : GENDER_MALE);
+    tempPlayer->setGender(mLoginData->sex);
 
     tempPlayer->mCharId = msg.readInt32();
     tempPlayer->setXp(msg.readInt32());
@@ -218,7 +217,8 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
 {
     mCharCreateDialog = window;
 
-    if (!mCharCreateDialog) return;
+    if (!mCharCreateDialog)
+        return;
 
     std::vector<std::string> attributes;
     attributes.push_back(_("Strength:"));
@@ -229,7 +229,7 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
     attributes.push_back(_("Luck:"));
 
     mCharCreateDialog->setAttributes(attributes, 30, 1, 9);
-    mCharCreateDialog->setFixedGender(true);
+    mCharCreateDialog->setFixedGender(true, mLoginData->sex);
 }
 
 void CharServerHandler::connect(LoginData *loginData)
@@ -243,7 +243,7 @@ void CharServerHandler::connect(LoginData *loginData)
     // [Fate] The next word is unused by the old char server, so we squeeze in
     //        tmw client version information
     outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
-    outMsg.writeInt8(loginData->sex);
+    outMsg.writeInt8((loginData->sex == GENDER_MALE) ? 1 : 0);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

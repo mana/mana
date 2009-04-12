@@ -258,12 +258,13 @@ void LoginHandler::chooseServer(int server)
     // TODO
 }
 
-void LoginHandler::registerAccount(const std::string &username,
-                        const std::string &password, const std::string &email)
+void LoginHandler::registerAccount(LoginData *loginData)
 {
     Net::AccountServer::registerAccount(accountServerConnection,
             0, // client version
-            username, password, email);
+            loginData->username,
+            loginData->password,
+            loginData->email);
 }
 
 void LoginHandler::unregisterAccount(const std::string &username,

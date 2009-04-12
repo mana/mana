@@ -24,7 +24,7 @@
 
 #include <string>
 
-#include <string>
+#include "being.h"
 
 struct LoginData
 {
@@ -43,7 +43,7 @@ struct LoginData
     int account_ID;
     int session_ID1;
     int session_ID2;
-    char sex;
+    Gender sex;
 #endif
 
     bool remember;            /**< Whether to store the username and host. */
@@ -66,7 +66,7 @@ struct LoginData
         account_ID = 0;
         session_ID1 = 0;
         session_ID2 = 0;
-        sex = 0;
+        sex = GENDER_UNSPECIFIED;
 #endif
     }
 };

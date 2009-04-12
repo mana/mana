@@ -65,17 +65,17 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         void setAttributes(std::vector<std::string> labels, int available,
                            int min, int max);
 
-        void setFixedGender(bool fixed, bool gender = false);
+        void setFixedGender(bool fixed, Gender gender = GENDER_FEMALE);
 
     private:
-        int getDistributedPoints();
+        int getDistributedPoints() const;
 
         void updateSliders();
 
         /**
          * Returns the name of the character to create.
          */
-        std::string getName();
+        std::string getName() const;
 
         /**
          * Communicate character creation to the server.

@@ -736,19 +736,14 @@ static void accountLogin(Network *network, LoginData *loginData)
 #endif
 
     // Send login infos
-    Net::getLoginHandler()->loginAccount(loginData);
+    if (loginData->registerLogin) {
+        Net::getLoginHandler()->registerAccount(loginData);
+    } else {
+        Net::getLoginHandler()->loginAccount(loginData);
+    }
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
-
-#ifdef EATHENA_SUPPORT
-    // Remove _M or _F from username after a login for registration purpose
-    if (loginData->registerLogin)
-    {
-        loginData->username =
-            loginData->username.substr(0, loginData->username.length() - 2);
-    }
-#endif
 
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
@@ -802,9 +797,7 @@ static void accountRegister(LoginData *loginData)
     logger->log("Username is %s", loginData->username.c_str());
 
     Net::getCharHandler()->setCharInfo(&charInfo);
-
-    Net::getLoginHandler()->registerAccount(loginData->username,
-            loginData->password, loginData->email);
+    Net::getLoginHandler()->registerAccount(loginData);
 }
 
 static void switchCharacter(std::string *passToken)
@@ -1465,8 +1458,7 @@ int main(int argc, char *argv[])
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(&charInfo,
-                            (loginData.sex == 0) ?
-                            GENDER_FEMALE : GENDER_MALE);
+                                                         loginData.sex);
                     positionDialog(currentDialog, screenWidth, screenHeight);
 
                     if (((CharSelectDialog*) currentDialog)->

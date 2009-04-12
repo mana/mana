@@ -232,7 +232,8 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 #ifdef EATHENA_SUPPORT
             mLoginData->hostname = mServerField->getText();
             mLoginData->port = getUShort(mPortField->getText());
-            mLoginData->username += mFemaleButton->isSelected() ? "_F" : "_M";
+            mLoginData->sex =
+                    mFemaleButton->isSelected() ? GENDER_FEMALE : GENDER_MALE;
 #else
             mLoginData->email = mEmailField->getText();
 #endif

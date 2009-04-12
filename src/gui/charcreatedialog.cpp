@@ -203,7 +203,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-std::string CharCreateDialog::getName()
+std::string CharCreateDialog::getName() const
 {
     std::string name = mNameField->getText();
     trim(name);
@@ -248,7 +248,7 @@ void CharCreateDialog::unlock()
     mCreateButton->setEnabled(true);
 }
 
-int CharCreateDialog::getDistributedPoints()
+int CharCreateDialog::getDistributedPoints() const
 {
     int points = 0;
 
@@ -310,9 +310,9 @@ void CharCreateDialog::setAttributes(std::vector<std::string> labels,
             h - 5 - mCancelButton->getHeight());
 }
 
-void CharCreateDialog::setFixedGender(bool fixed, bool gender)
+void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
 {
-    if (gender)
+    if (gender == GENDER_FEMALE)
     {
         mFemale->setSelected(true);
         mMale->setSelected(false);

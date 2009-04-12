@@ -87,7 +87,7 @@ void MapHandler::connect(LoginData *loginData)
     outMsg.writeInt32(player_node->mCharId);
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
-    outMsg.writeInt8(loginData->sex);
+    outMsg.writeInt8((loginData->sex == GENDER_MALE) ? 1 : 0);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

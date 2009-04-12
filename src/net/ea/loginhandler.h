@@ -43,19 +43,20 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void changeEmail(const std::string &email);
 
         void changePassword(const std::string &username,
-                           const std::string &oldPassword,
-                           const std::string &newPassword);
+                            const std::string &oldPassword,
+                            const std::string &newPassword);
 
         void chooseServer(int server);
 
-        void registerAccount(const std::string &username,
-                           const std::string &password,
-                           const std::string &email);
+        void registerAccount(LoginData *loginData);
 
         void unregisterAccount(const std::string &username,
-                           const std::string &password);
+                               const std::string &password);
 
     private:
+        void sendLoginRegister(const std::string &username,
+                               const std::string &password);
+
         LoginData *mLoginData;
         std::string mUpdateHost;
 };

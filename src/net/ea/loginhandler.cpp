@@ -81,7 +81,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             mLoginData->account_ID = msg.readInt32();
             mLoginData->session_ID2 = msg.readInt32();
             msg.skip(30);                           // unknown
-            mLoginData->sex = msg.readInt8();
+            mLoginData->sex = msg.readInt8() ? GENDER_MALE : GENDER_FEMALE;
 
             for (int i = 0; i < n_server; i++)
             {
@@ -146,18 +146,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
 void LoginHandler::loginAccount(LoginData *loginData)
 {
     mLoginData = loginData;
-    MessageOut outMsg(0x0064);
-    outMsg.writeInt32(0); // client version
-    outMsg.writeString(loginData->username, 24);
-    outMsg.writeString(loginData->password, 24);
-
-    /*
-     * eAthena calls the last byte "client version 2", but it isn't used at
-     * at all. We're retasking it, with bit 0 to indicate whether the client
-     * can handle the 0x63 "update host" packet. Clients prior to 0.0.25 send
-     * 0 here.
-     */
-    outMsg.writeInt8(0x01);
+    sendLoginRegister(loginData->username, loginData->password);
 }
 
 void LoginHandler::changeEmail(const std::string &email)
@@ -166,8 +155,8 @@ void LoginHandler::changeEmail(const std::string &email)
 }
 
 void LoginHandler::changePassword(const std::string &username,
-                   const std::string &oldPassword,
-                   const std::string &newPassword)
+                                  const std::string &oldPassword,
+                                  const std::string &newPassword)
 {
     // TODO
 }
@@ -177,17 +166,37 @@ void LoginHandler::chooseServer(int server)
     // TODO
 }
 
-void LoginHandler::registerAccount(const std::string &username,
-                   const std::string &password,
-                   const std::string &email = "")
+void LoginHandler::registerAccount(LoginData *loginData)
+{
+    mLoginData = loginData;
+
+    std::string username = loginData->username;
+    username.append((loginData->sex == GENDER_FEMALE) ? "_F" : "_M");
+
+    sendLoginRegister(username, loginData->password);
+}
+
+void LoginHandler::unregisterAccount(const std::string &username,
+                                     const std::string &password)
 {
     // TODO
 }
 
-void LoginHandler::unregisterAccount(const std::string &username,
-                   const std::string &password)
+void LoginHandler::sendLoginRegister(const std::string &username,
+                                     const std::string &password)
 {
-    // TODO
+    MessageOut outMsg(0x0064);
+    outMsg.writeInt32(0); // client version
+    outMsg.writeString(username, 24);
+    outMsg.writeString(password, 24);
+
+    /*
+     * eAthena calls the last byte "client version 2", but it isn't used at
+     * at all. We're retasking it, with bit 0 to indicate whether the client
+     * can handle the 0x63 "update host" packet. Clients prior to 0.0.25 send
+     * 0 here.
+     */
+    outMsg.writeInt8(0x01);
 }
 
 } // namespace EAthena
