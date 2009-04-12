@@ -511,6 +511,10 @@ void BeingHandler::handleMessage(MessageIn &msg)
             {
                 switch (msg.readInt8())
                 {
+                    case 1:
+                        dstBeing->setAction(Being::DEAD);
+                        break;
+
                     case 2:
                         dstBeing->setAction(Being::SIT);
                         break;
