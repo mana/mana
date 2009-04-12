@@ -49,7 +49,6 @@ ItemShortcutContainer::ItemShortcutContainer():
     addWidgetListener(this);
 
     mItemPopup = new ItemPopup;
-    mItemPopup->setOpaque(false);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -239,9 +238,7 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
 
     if (item && inventoryWindow->isVisible())
     {
-        if (item->getInfo().getName() != mItemPopup->getItemName())
-            mItemPopup->setItem(item->getInfo());
-        mItemPopup->updateColors();
+        mItemPopup->setItem(item->getInfo());
         mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
     }
     else

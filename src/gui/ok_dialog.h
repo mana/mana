@@ -45,8 +45,6 @@ class OkDialog : public Window, public gcn::ActionListener
         OkDialog(const std::string &title, const std::string &msg,
                 Window *parent = NULL);
 
-        unsigned int getNumRows();
-
         /**
          * Called when receiving actions from the widgets.
          */

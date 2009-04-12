@@ -251,9 +251,7 @@ void EquipmentWindow::mouseMoved(gcn::MouseEvent &event)
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        if (item->getInfo().getName() != mItemPopup->getItemName())
-            mItemPopup->setItem(item->getInfo());
-        mItemPopup->updateColors();
+        mItemPopup->setItem(item->getInfo());
         mItemPopup->view(x + getX(), y + getY());
     }
     else

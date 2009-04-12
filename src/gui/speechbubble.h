@@ -48,17 +48,12 @@ class SpeechBubble : public Popup
         /**
          * Sets the text to be displayed.
          */
-        void setText(std::string text, bool showName = true);
+        void setText(const std::string &text, bool showName = true);
 
         /**
          * Sets the location in which the speech bubble will be displayed.
          */
         void setLocation(int x, int y);
-
-        /**
-         * Gets the number of rows the speech bubble has.
-         */
-        unsigned int getNumRows() const;
 
     private:
         std::string mText;

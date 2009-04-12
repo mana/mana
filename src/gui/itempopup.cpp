@@ -98,13 +98,16 @@ void ItemPopup::setItem(const ItemInfo &item)
     if (item.getName() == mItemName->getCaption())
         return;
 
+    mItemType = item.getType();
+
     mItemName->setCaption(item.getName());
-    mItemName->setWidth(boldFont->getWidth(item.getName()));
+    mItemName->adjustSize();
+    mItemName->setForegroundColor(getColor(mItemType));
+
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);
     mItemWeight->setTextWrapped(_("Weight: ") +
                                 Units::formatWeight(item.getWeight()), 196);
-    mItemType = item.getType();
 
     int minWidth = mItemName->getWidth();
 
@@ -150,12 +153,6 @@ void ItemPopup::setItem(const ItemInfo &item)
     mItemEffectScroll->setPosition(2, (numRowsDesc + 2) * height);
 }
 
-void ItemPopup::updateColors()
-{
-    mItemName->setForegroundColor(getColor(mItemType));
-    graphics->setColor(guiPalette->getColor(Palette::TEXT));
-}
-
 gcn::Color ItemPopup::getColor(ItemType type)
 {
     switch (type)
@@ -189,17 +186,6 @@ gcn::Color ItemPopup::getColor(ItemType type)
         default:
             return guiPalette->getColor(Palette::UNKNOWN_ITEM);
     }
-}
-
-std::string ItemPopup::getItemName() const
-{
-    return mItemName->getCaption();
-}
-
-unsigned int ItemPopup::getNumRows() const
-{
-    return mItemDesc->getNumberOfRows() + mItemEffect->getNumberOfRows() +
-           mItemWeight->getNumberOfRows();
 }
 
 void ItemPopup::view(int x, int y)

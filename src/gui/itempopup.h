@@ -30,6 +30,9 @@
 class ScrollArea;
 class TextBox;
 
+/**
+ * A popup that displays information about an item.
+ */
 class ItemPopup : public Popup
 {
     public:
@@ -47,21 +50,6 @@ class ItemPopup : public Popup
          * Sets the info to be displayed given a particular item.
          */
         void setItem(const ItemInfo &item);
-
-        /**
-         * Gets the number of rows that the item popup currently has.
-         */
-        unsigned int getNumRows() const;
-
-        /**
-         * Gets the name of the currently stored item in this popup.
-         */
-        std::string getItemName() const;
-
-        /**
-         * Updates the colors used within the item popup.
-         */
-        void updateColors();
 
         /**
          * Sets the location to display the item popup.

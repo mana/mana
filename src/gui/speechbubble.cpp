@@ -68,7 +68,7 @@ void SpeechBubble::setCaption(const std::string &name, const gcn::Color *color)
     mCaption->setForegroundColor(*color);
 }
 
-void SpeechBubble::setText(std::string text, bool showName)
+void SpeechBubble::setText(const std::string &text, bool showName)
 {
     if (text == mText && (mCaption->getWidth() <= mSpeechBox->getMinWidth()))
         return;
@@ -97,9 +97,4 @@ void SpeechBubble::setText(std::string text, bool showName)
 
     mCaption->setPosition(xPos, getPadding());
     mSpeechArea->setDimension(gcn::Rectangle(xPos, yPos, width, height));
-}
-
-unsigned int SpeechBubble::getNumRows() const
-{
-    return mSpeechBox->getNumberOfRows();
 }

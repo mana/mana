@@ -75,11 +75,6 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     okButton->requestFocus();
 }
 
-unsigned int OkDialog::getNumRows()
-{
-    return mTextBox->getNumberOfRows();
-}
-
 void OkDialog::action(const gcn::ActionEvent &event)
 {
     // Proxy button events to our listeners

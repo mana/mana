@@ -85,11 +85,6 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     yesButton->requestFocus();
 }
 
-unsigned int ConfirmDialog::getNumRows()
-{
-    return mTextBox->getNumberOfRows();
-}
-
 void ConfirmDialog::action(const gcn::ActionEvent &event)
 {
     // Proxy button events to our listeners
