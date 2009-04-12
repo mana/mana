@@ -128,4 +128,10 @@ extern char n_server, n_character;
 extern unsigned char state;
 extern std::string errorMessage;
 
+namespace Main {
+
+extern const std::string version;
+
+}
+
 #endif

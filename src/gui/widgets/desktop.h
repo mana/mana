@@ -22,10 +22,11 @@
 #ifndef DESKTOP_H
 #define DESKTOP_H
 
-#include <guichan/widget.hpp>
+#include <guichan/widgets/container.hpp>
 #include <guichan/widgetlistener.hpp>
 
 class Image;
+class Label;
 
 /**
  * Desktop widget, for drawing a background image and color.
@@ -38,7 +39,7 @@ class Image;
  *
  * \ingroup GUI
  */
-class Desktop : public gcn::Widget, gcn::WidgetListener
+class Desktop : public gcn::Container, gcn::WidgetListener
 {
     public:
         Desktop();
@@ -57,6 +58,7 @@ class Desktop : public gcn::Widget, gcn::WidgetListener
         void setBestFittingWallpaper();
 
         Image *mWallpaper;
+        Label *versionLabel;
 };
 
 #endif // DESKTOP_H

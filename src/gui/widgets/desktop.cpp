@@ -22,6 +22,7 @@
 #include "gui/widgets/desktop.h"
 
 #include "gui/palette.h"
+#include "gui/widgets/label.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -29,6 +30,7 @@
 
 #include "graphics.h"
 #include "log.h"
+#include "main.h"
 
 Desktop::Desktop()
     : mWallpaper(0)
@@ -36,12 +38,16 @@ Desktop::Desktop()
     addWidgetListener(this);
 
     Wallpaper::loadWallpapers();
+
+    versionLabel = new Label(Main::version);
+    add(versionLabel, 25, 2);
 }
 
 Desktop::~Desktop()
 {
     if (mWallpaper)
         mWallpaper->decRef();
+    delete versionLabel;
 }
 
 void Desktop::reloadWallpaper()
@@ -73,6 +79,8 @@ void Desktop::draw(gcn::Graphics *graphics)
                 (getWidth() - mWallpaper->getWidth()) / 2,
                 (getHeight() - mWallpaper->getHeight()) / 2);
     }
+
+    drawChildren(graphics);
 }
 
 void Desktop::setBestFittingWallpaper()

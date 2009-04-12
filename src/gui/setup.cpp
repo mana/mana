@@ -21,6 +21,8 @@
 
 #include "setup.h"
 
+#include "main.h"
+
 #include "gui/setup_audio.h"
 #include "gui/setup_colors.h"
 #include "gui/setup_joystick.h"
@@ -29,6 +31,7 @@
 #include "gui/setup_video.h"
 
 #include "gui/widgets/button.h"
+#include "gui/widgets/label.h"
 #include "gui/widgets/tabbedarea.h"
 
 #include "utils/dtor.h"
@@ -100,6 +103,10 @@ Setup::Setup():
     }
 
     add(panel);
+
+    Label *version = new Label(Main::version);
+    version->setPosition(5, height - version->getHeight() - 5);
+    add(version);
 
     center();
 

@@ -164,6 +164,20 @@ Graphics *graphics;
 unsigned char state;
 std::string errorMessage;
 
+namespace Main {
+#ifdef PACKAGE_VERSION
+#ifdef TMWSERV_SUPPORT
+const std::string version = strprintf("v%s (tmwserv)", PACKAGE_VERSION);
+#else
+const std::string version = strprintf("v%s (eAthena)", PACKAGE_VERSION);
+#endif
+#else
+const std::string version = _("Unknown Version");
+#endif
+}
+
+Desktop *desktop;
+
 Sound sound;
 Music *bgm;
 
@@ -580,10 +594,10 @@ static void printHelp()
 static void printVersion()
 {
 #ifdef PACKAGE_VERSION
-    std::cout << _("The Mana World version ") << PACKAGE_VERSION << std::endl;
+    std::cout << _("The Mana World version ") << Main::version << std::endl;
 #else
-    std::cout << _("The Mana World version ") <<
-             _("(local build?, PACKAGE_VERSION is not defined)") << std::endl;
+    std::cout << _("The Mana World version ") << Main::version <<
+             _("(local build?)") << std::endl;
 #endif
 }
 
@@ -896,17 +910,7 @@ int main(int argc, char *argv[])
     logger->setLogFile(homeDir + std::string("/tmw.log"));
 
     // Log the tmw version
-    logger->log("The Mana World %s (%s)",
-#ifdef PACKAGE_VERSION
-                "v" PACKAGE_VERSION,
-#else
-                "- version not defined",
-#endif
-#ifdef TMWSERV_SUPPORT
-                "tmwserv");
-#else
-                "eAthena");
-#endif
+    logger->log("The Mana World %s", Main::version.c_str());
 
     initConfiguration(options);
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
@@ -924,16 +928,8 @@ int main(int argc, char *argv[])
     setupWindow = new Setup;
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
-    Desktop *desktop = new Desktop;
+    desktop = new Desktop;
     top->add(desktop);
-#ifdef PACKAGE_VERSION
-#ifdef TMWSERV_SUPPORT
-    gcn::Label *versionLabel = new Label(strprintf("%s (tmwserv)", PACKAGE_VERSION));
-#else
-    gcn::Label *versionLabel = new Label(strprintf("%s (eAthena)", PACKAGE_VERSION));
-#endif
-    top->add(versionLabel, 25, 2);
-#endif
     ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
     gcn::Label *progressLabel = new Label;
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
@@ -1477,10 +1473,6 @@ int main(int argc, char *argv[])
                 case STATE_GAME:
                     sound.fadeOutMusic(1000);
 
-#ifdef PACKAGE_VERSION
-                    delete versionLabel;
-                    versionLabel = NULL;
-#endif
                     delete progressBar;
                     delete progressLabel;
                     delete setupButton;
@@ -1571,8 +1563,8 @@ int main(int argc, char *argv[])
     }
 
     delete guiPalette;
-
-    //delete Net::getGeneralHandler();
+    top->remove(desktop);
+    delete desktop;
 
     logger->log("Quitting");
     exitEngine();
