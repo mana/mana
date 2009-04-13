@@ -2,6 +2,7 @@
  *  Gui Skinning
  *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
  *  Copyright (C) 2009  Aethyra Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -23,10 +24,10 @@
 #ifndef SKIN_H
 #define SKIN_H
 
+#include "graphics.h"
+
 #include <map>
 #include <string>
-
-#include "../graphics.h"
 
 class ConfigListener;
 class Image;
@@ -45,33 +46,28 @@ class Skin
          * name if a dialog for skin selection for a specific window type is
          * done.
          */
-        std::string getName() const { return mName; }
+        const std::string &getName() const { return mName; }
 
         /**
          * Returns the skin's xml file path.
          */
-        std::string getFilePath() const { return mFilePath; }
+        const std::string &getFilePath() const { return mFilePath; }
 
         /**
          * Returns the background skin.
          */
-        ImageRect getBorder() const { return border; }
+        const ImageRect &getBorder() const { return mBorder; }
 
         /**
          * Returns the image used by a close button for this skin.
          */
-        Image *getCloseImage() const { return closeImage; }
+        Image *getCloseImage() const { return mCloseImage; }
 
         /**
          * Returns the image used by a sticky button for this skin.
          */
         Image *getStickyImage(bool state) const
-        { return state ? stickyImageDown : stickyImageUp; }
-
-        /**
-         * Returns the number of instances which use this skin.
-         */
-        int getNumberOfInstances() const { return instances; }
+        { return state ? mStickyImageDown : mStickyImageUp; }
 
         /**
          * Returns the minimum width which can be used with this skin.
@@ -93,44 +89,42 @@ class Skin
     private:
         std::string mFilePath;     /**< File name path for the skin */
         std::string mName;         /**< Name of the skin to use */
-        ImageRect border;          /**< The window border and background */
-        Image *closeImage;         /**< Close Button Image */
-        Image *stickyImageUp;      /**< Sticky Button Image */
-        Image *stickyImageDown;    /**< Sticky Button Image */
+        ImageRect mBorder;         /**< The window border and background */
+        Image *mCloseImage;        /**< Close Button Image */
+        Image *mStickyImageUp;     /**< Sticky Button Image */
+        Image *mStickyImageDown;   /**< Sticky Button Image */
 };
-
-// Map containing all window skins
-typedef std::map<std::string, Skin*> Skins;
-
-// Iterator for window skins
-typedef Skins::iterator SkinIterator;
 
 class SkinLoader 
 {
     public:
-        friend class SkinConfigListener;
-
         SkinLoader();
         ~SkinLoader();
 
         /**
-         * Loads a skin
+         * Loads a skin.
          */
         Skin *load(const std::string &filename,
                    const std::string &defaultPath);
 
         /**
-         * Updates the alpha values of all of the skins
+         * Updates the alpha values of all of the skins.
          */
         void updateAlpha();
 
     private:
+        Skin *readSkin(const std::string &filename);
+
+        // Map containing all window skins
+        typedef std::map<std::string, Skin*> Skins;
+        typedef Skins::iterator SkinIterator;
+
         Skins mSkins;
 
         /**
          * The config listener that listens to changes relevant to all skins.
          */
-        static ConfigListener *skinConfigListener;
+        ConfigListener *mSkinConfigListener;
 };
 
 extern SkinLoader *skinLoader;

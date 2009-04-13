@@ -45,11 +45,6 @@ class WindowContainer : public Container
          */
         void scheduleDelete(gcn::Widget *widget);
 
-        /**
-         * Get the number of widget instances
-         */
-        int getNumberOfInstances() { return mDeathList.size(); }
-
     private:
         /**
          * List of widgets that are scheduled to be deleted.

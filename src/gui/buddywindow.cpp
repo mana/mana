@@ -35,7 +35,7 @@ BuddyWindow::BuddyWindow():
     Window(_("Buddy"))
 {
     setVisible(false);
-    setWindowName("Buddy Window");
+    setWindowName("BuddyWindow");
     setCaption(_("Buddy List"));
     setResizable(true);
     setCloseButton(true);
