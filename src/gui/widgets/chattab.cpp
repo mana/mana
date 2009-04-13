@@ -163,9 +163,6 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
         tmp.nick = "";
         lineColor = "##S";
     }
-    
-    // check for @, # or [ in nick
-    tmp.nick = removeBadChars(tmp.nick);
 
 #ifdef EATHENA_SUPPORT
     if (tmp.nick.empty() && tmp.text.substr(0, 17) == "Visible GM status")

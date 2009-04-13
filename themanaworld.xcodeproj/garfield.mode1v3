@@ -200,6 +200,46 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
+				<string>92A2463F0F937FCE00B7719B</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>browserbox.cpp</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>92A246400F937FCE00B7719B</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>browserbox.cpp</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>92A246640F9388D100B7719B</string>
+						<key>history</key>
+						<array>
+							<string>92A2463B0F937EA700B7719B</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {627, 617}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>162 85 627 658 0 0 1280 832 </string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
 				<string>92A246100F936EBC00B7719B</string>
 				<key>PBXProjectModuleLabel</key>
 				<string>chattab.cpp</string>
@@ -214,7 +254,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>92A246370F9378E100B7719B</string>
+						<string>92A246650F9388D100B7719B</string>
 						<key>history</key>
 						<array>
 							<string>92A245EB0F93672300B7719B</string>
@@ -254,7 +294,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>92A246380F9378E100B7719B</string>
+						<string>92A246660F9388D100B7719B</string>
 						<key>history</key>
 						<array>
 							<string>92A245EE0F936C4600B7719B</string>
@@ -294,7 +334,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>92A246390F9378E100B7719B</string>
+						<string>92A246670F9388D100B7719B</string>
 						<key>history</key>
 						<array>
 							<string>92A245EC0F9368CA00B7719B</string>
@@ -394,13 +434,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>259</integer>
+									<integer>68</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 1533}, {186, 520}}</string>
+							<string>{{0, 918}, {186, 520}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -430,14 +470,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>stringutils.cpp</string>
+								<string>chattab.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -445,11 +483,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>stringutils.cpp</string>
+										<string>chattab.h</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>92A246360F9378E100B7719B</string>
+										<string>92A246630F9388D100B7719B</string>
 										<key>history</key>
 										<array>
 											<string>92B1EBF30ED4E5C5009AF197</string>
@@ -569,7 +607,8 @@
 											<string>92A245FB0F936EBC00B7719B</string>
 											<string>92A245FC0F936EBC00B7719B</string>
 											<string>92A246190F93760E00B7719B</string>
-											<string>92A2461A0F93760E00B7719B</string>
+											<string>92A246550F93876C00B7719B</string>
+											<string>92A246560F93876C00B7719B</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -697,6 +736,7 @@
 											<string>92A246080F936EBC00B7719B</string>
 											<string>92A2461B0F93760E00B7719B</string>
 											<string>92A2461C0F93760E00B7719B</string>
+											<string>92A246570F93876C00B7719B</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -718,6 +758,8 @@
 							<string>342pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -888,8 +930,8 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>92A2463A0F9378E100B7719B</string>
-		<string>92A246350F93782E00B7719B</string>
+		<string>92A246680F9388D100B7719B</string>
+		<string>92A246690F9388D100B7719B</string>
 		<string>92A2462E0F9377B400B7719B</string>
 		<string>92A2462F0F9377B400B7719B</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
@@ -899,6 +941,7 @@
 		<string>1C78EAAD065D492600B07095</string>
 		<string>92A246100F936EBC00B7719B</string>
 		<string>/Users/garfield/programming/tmwclient/themanaworld.xcodeproj</string>
+		<string>92A2463F0F937FCE00B7719B</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 	</array>
 	<key>WindowString</key>
@@ -1077,10 +1120,10 @@
 									<key>Frame</key>
 									<string>{{316, 0}, {378, 203}}</string>
 									<key>RubberWindowFrame</key>
-									<string>207 225 694 422 0 0 1280 832 </string>
+									<string>412 235 694 422 0 0 1280 832 </string>
 								</dict>
 								<key>RubberWindowFrame</key>
-								<string>207 225 694 422 0 0 1280 832 </string>
+								<string>412 235 694 422 0 0 1280 832 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXDebugSessionModule</string>
@@ -1114,7 +1157,7 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
 			<key>WindowString</key>
-			<string>207 225 694 422 0 0 1280 832 </string>
+			<string>412 235 694 422 0 0 1280 832 </string>
 			<key>WindowToolGUID</key>
 			<string>1CD10A99069EF8BA00B06720</string>
 			<key>WindowToolIsVisible</key>

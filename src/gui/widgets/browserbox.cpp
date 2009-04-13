@@ -70,7 +70,7 @@ void BrowserBox::addRow(const std::string &row)
     std::string tmp = row;
     std::string newRow;
     BROWSER_LINK bLink;
-    int idx1, idx2, idx3;
+    std::string::size_type idx1, idx2, idx3;
     TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     // Use links and user defined colors
@@ -78,10 +78,13 @@ void BrowserBox::addRow(const std::string &row)
     {
         // Check for links in format "@@link|Caption@@"
         idx1 = tmp.find("@@");
-        while (idx1 >= 0)
+        while (idx1 != std::string::npos)
         {
             idx2 = tmp.find("|", idx1);
             idx3 = tmp.find("@@", idx2);
+            
+            if (idx2 == std::string::npos || idx3 == std::string::npos)
+                break;
             bLink.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
             bLink.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
             bLink.y1 = mTextRows.size() * font->getHeight();
@@ -91,7 +94,7 @@ void BrowserBox::addRow(const std::string &row)
 
             std::string tmp2 = newRow;
             idx1 = tmp2.find("##");
-            while (idx1 >= 0)
+            while (idx1 != std::string::npos)
             {
                 tmp2.erase(idx1, 3);
                 idx1 = tmp2.find("##");
@@ -143,7 +146,7 @@ void BrowserBox::addRow(const std::string &row)
     if (mMode == AUTO_SIZE)
     {
         std::string plain = newRow;
-        for (idx1 = plain.find("##"); idx1 >= 0; idx1 = plain.find("##"))
+        for (idx1 = plain.find("##"); idx1 != std::string::npos; idx1 = plain.find("##"))
             plain.erase(idx1, 3);
 
         // Adjust the BrowserBox size
