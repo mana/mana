@@ -61,3 +61,16 @@ const char *ipToString(int address)
 
     return asciiIP;
 }
+
+std::string &removeBadChars(std::string &str)
+{
+    std::string::size_type pos;
+    do
+    {
+        pos = str.find_first_of("@#[]");
+        if (pos != std::string::npos)
+            str.erase(pos, 1);
+    } while (pos != std::string::npos);
+
+    return str;
+}

@@ -65,4 +65,12 @@ template<typename T> std::string toString(const T &arg)
  */
 const char *ipToString(int address);
 
+/**
+ * Removes bad characters from a string
+ *
+ * @param str the string to remove the bad chars from
+ * @return a reference to the string without bad chars
+ */
+std::string &removeBadChars(std::string &str);
+
 #endif // UTILS_STRINGUTILS_H
