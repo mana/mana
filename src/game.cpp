@@ -629,7 +629,7 @@ void Game::handleInput()
                     }
                     */
                 }
-                else if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
+                if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
                 {
                     if (chatWindow->requestChatFocus())
                         used = true;
