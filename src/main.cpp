@@ -356,7 +356,7 @@ static void initConfiguration(const Options &options)
     config.setValue("remember", 1);
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
-    config.setValue("fpslimit", 0);
+    config.setValue("fpslimit", 60);
     std::string defaultUpdateHost = branding.getValue("defaultUpdateHost",
         "http://updates.themanaworld.org");
     config.setValue("updatehost", defaultUpdateHost);

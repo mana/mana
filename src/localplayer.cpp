@@ -101,11 +101,13 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mStatPoint(0), mSkillPoint(0),
     mStatsPointsToAttribute(0),
     mEquipment(new Equipment),
+#endif
+    mInStorage(false),
+#ifdef EATHENA_SUPPORT
     mXp(0),
     mTargetTime(-1),
 #endif
     mLastTarget(-1),
-    mInStorage(false),
     mLevel(1),
     mMoney(0),
     mTotalWeight(1), mMaxWeight(1),

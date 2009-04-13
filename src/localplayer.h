@@ -479,8 +479,7 @@ class LocalPlayer : public Player
         const std::auto_ptr<Equipment> mEquipment;
 
     protected:
-        virtual void
-        handleStatusEffect(StatusEffect *effect, int effectId);
+        virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
         void walk(unsigned char dir);
 

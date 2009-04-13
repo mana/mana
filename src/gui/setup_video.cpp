@@ -115,7 +115,7 @@ Setup_Video::Setup_Video():
     mPickupChatEnabled(config.getValue("showpickupchat", true)),
     mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
-    mFps((int) config.getValue("fpslimit", 0)),
+    mFps((int) config.getValue("fpslimit", 60)),
     mSpeechMode((int) config.getValue("speech", 3)),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
