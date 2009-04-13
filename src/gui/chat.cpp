@@ -107,7 +107,7 @@ ChatWindow::ChatWindow():
 
 ChatWindow::~ChatWindow()
 {
-    config.setValue("ReturnToggles", mReturnToggles ? "1" : "0");
+    config.setValue("ReturnToggles", mReturnToggles);
     delete mRecorder;
     delete_all(mWhispers);
     delete mItemLinkHandler;

@@ -22,6 +22,8 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#include "utils/stringutils.h"
+
 #include <libxml/xmlwriter.h>
 
 #include <cassert>
@@ -33,8 +35,8 @@ class ConfigListener;
 class ConfigurationObject;
 
 /**
- * Configuration list manager interface; responsible for serlialising/deserialising
- * configuration choices in containers.
+ * Configuration list manager interface; responsible for
+ * serializing/deserializing configuration choices in containers.
  *
  * \param T Type of the container elements to serialise
  * \param CONT Type of the container we (de)serialise
@@ -48,9 +50,11 @@ class ConfigurationListManager
          *
          * \param value The value to write out
          * \param obj The configuation object to write to
-         * \return obj, or otherwise NULL to indicate that this option should be skipped
+         * \return obj, or otherwise NULL to indicate that this option should
+         *         be skipped
          */
-        virtual ConfigurationObject *writeConfigItem(T value, ConfigurationObject *obj) = 0;
+        virtual ConfigurationObject *writeConfigItem(T value,
+                                                     ConfigurationObject *obj) = 0;
 
         /**
          * Reads a value from a configuration object
@@ -58,7 +62,8 @@ class ConfigurationListManager
          * \param obj The configuration object to read from
          * \param container The container to insert the object to
          */
-        virtual CONT readConfigItem(ConfigurationObject *obj, CONT container) = 0;
+        virtual CONT readConfigItem(ConfigurationObject *obj,
+                                    CONT container) = 0;
 };
 
 /**
@@ -80,15 +85,8 @@ class ConfigurationObject
          * \param key Option identifier.
          * \param value Value.
          */
-        virtual void setValue(const std::string &key, std::string value);
-
-        /**
-         * Sets an option using a numeric value.
-         *
-         * \param key Option identifier.
-         * \param value Value.
-         */
-        virtual void setValue(const std::string &key, float value);
+        virtual void setValue(const std::string &key,
+                              const std::string &value);
 
         /**
          * Gets a value as string.
@@ -96,15 +94,14 @@ class ConfigurationObject
          * \param key Option identifier.
          * \param deflt Default option if not there or error.
          */
-        std::string getValue(const std::string &key, std::string deflt);
+        std::string getValue(const std::string &key,
+                             const std::string &deflt) const;
 
-        /**
-         * Gets a value as numeric (float).
-         *
-         * \param key Option identifier.
-         * \param deflt Default option if not there or error.
-         */
-        float getValue(const std::string &key, float deflt);
+        int getValue(const std::string &key, int deflt) const;
+
+        unsigned getValue(const std::string &key, unsigned deflt) const;
+
+        double getValue(const std::string &key, double deflt) const;
 
         /**
          * Re-sets all data in the configuration
@@ -124,7 +121,8 @@ class ConfigurationObject
          * \param manager An object capable of serialising T items
          */
         template <class IT, class T, class CONT>
-        void setList(const std::string &name, IT begin, IT end, ConfigurationListManager<T, CONT> *manager)
+        void setList(const std::string &name, IT begin, IT end,
+                     ConfigurationListManager<T, CONT> *manager)
         {
             ConfigurationObject *nextobj = new ConfigurationObject;
             deleteList(name);
@@ -173,7 +171,6 @@ class ConfigurationObject
         void deleteList(const std::string &name);
 
         typedef std::map<std::string, std::string> Options;
-        typedef Options::iterator OptionIterator;
         Options mOptions;
 
         typedef std::list<ConfigurationObject *> ConfigurationList;
@@ -213,8 +210,22 @@ class Configuration : public ConfigurationObject
          */
         void removeListener(const std::string &key, ConfigListener *listener);
 
-        virtual void setValue(const std::string &key, std::string value);
-        virtual void setValue(const std::string &key, float value);
+        void setValue(const std::string &key, const std::string &value);
+
+        inline void setValue(const std::string &key, float value)
+        { setValue(key, toString(value)); }
+
+        inline void setValue(const std::string &key, double value)
+        { setValue(key, toString(value)); }
+
+        inline void setValue(const std::string &key, int value)
+        { setValue(key, toString(value)); }
+
+        inline void setValue(const std::string &key, unsigned value)
+        { setValue(key, toString(value)); }
+
+        inline void setValue(const std::string &key, bool value)
+        { setValue(key, value ? std::string("1") : std::string("0")); }
 
     private:
         typedef std::list<ConfigListener*> Listeners;

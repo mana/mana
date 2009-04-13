@@ -49,7 +49,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
         if (!value.second)
             return NULL;
         cobj->setValue(NAME, value.first);
-        cobj->setValue(RELATION, value.second->mRelation);
+        cobj->setValue(RELATION, toString(value.second->mRelation));
 
         return cobj;
     }
@@ -64,7 +64,7 @@ class PlayerConfSerialiser : public ConfigurationListManager<std::pair<std::stri
 
         if (!(*container)[name]) {
             int v = (int)cobj->getValue(RELATION, PlayerRelation::NEUTRAL);
-            (*container)[name] = new PlayerRelation(static_cast<PlayerRelation::relation>(v));
+            (*container)[name] = new PlayerRelation(static_cast<PlayerRelation::Relation>(v));
         }
         // otherwise ignore the duplicate entry
 
@@ -81,7 +81,7 @@ const unsigned int PlayerRelation::RELATION_PERMISSIONS[RELATIONS_NR] = {
     /* IGNORED */    0
 };
 
-PlayerRelation::PlayerRelation(relation relation)
+PlayerRelation::PlayerRelation(Relation relation)
 {
     mRelation = relation;
 }
@@ -126,7 +126,7 @@ void PlayerRelationsManager::load()
     clear();
 
     mPersistIgnores = config.getValue(PERSIST_IGNORE_LIST, 0);
-    mDefaultPermissions = (int)config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
+    mDefaultPermissions = (int) config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
     std::string ignore_strategy_name = config.getValue(PLAYER_IGNORE_STRATEGY, DEFAULT_IGNORE_STRATEGY);
     int ignore_strategy_index = getPlayerIgnoreStrategyIndex(ignore_strategy_name);
     if (ignore_strategy_index >= 0)
@@ -222,7 +222,8 @@ bool PlayerRelationsManager::hasPermission(const std::string &name, unsigned int
     return permitted;
 }
 
-void PlayerRelationsManager::setRelation(const std::string &player_name, PlayerRelation::relation relation)
+void PlayerRelationsManager::setRelation(const std::string &player_name,
+                                         PlayerRelation::Relation relation)
 {
     PlayerRelation *r = mRelations[player_name];
     if (r == NULL)
@@ -257,7 +258,7 @@ void PlayerRelationsManager::removePlayer(const std::string &name)
 }
 
 
-PlayerRelation::relation PlayerRelationsManager::getRelation(const std::string &name)
+PlayerRelation::Relation PlayerRelationsManager::getRelation(const std::string &name)
 {
     if (mRelations[name])
         return mRelations[name]->mRelation;

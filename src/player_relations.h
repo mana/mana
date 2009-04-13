@@ -46,16 +46,16 @@ struct PlayerRelation
                                       | SPEECH_LOG
                                       | WHISPER
                                       | TRADE;
-    enum relation {
+    enum Relation {
         NEUTRAL     = 0,
         FRIEND      = 1,
         DISREGARDED = 2,
         IGNORED     = 3
     };
 
-    PlayerRelation(relation relation);
+    PlayerRelation(Relation relation);
 
-    relation mRelation; // bitmask for all of the above
+    Relation mRelation; // bitmask for all of the above
 };
 
 
@@ -131,12 +131,12 @@ public:
      * Updates the relationship with this player.
      */
     void setRelation(const std::string &name,
-                     PlayerRelation::relation relation);
+                     PlayerRelation::Relation relation);
 
     /**
      * Updates the relationship with this player.
      */
-    PlayerRelation::relation getRelation(const std::string &name);
+    PlayerRelation::Relation getRelation(const std::string &name);
 
     /**
      * Deletes the information recorded for a player.

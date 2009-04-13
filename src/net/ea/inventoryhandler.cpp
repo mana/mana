@@ -180,7 +180,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
             if (msg.readInt8() > 0)
             {
-                if (config.getValue("showpickupchat", true))
+                if (config.getValue("showpickupchat", 1))
                     localChatTab->chatLog(_("Unable to pick up item"), BY_SERVER);
             }
             else
@@ -189,14 +189,14 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 const std::string amountStr =
                     (amount > 1) ? toString(amount) : "a";
 
-                if (config.getValue("showpickupchat", true))
+                if (config.getValue("showpickupchat", 1))
                 {
                     localChatTab->chatLog(strprintf(_("You picked up %s [%s]"),
                         amountStr.c_str(), itemInfo.getName().c_str()),
                         BY_SERVER);
                 }
 
-                if (config.getValue("showpickupparticle", false))
+                if (config.getValue("showpickupparticle", 0))
                 {
                     player_node->pickedUp(itemInfo.getName());
                 }

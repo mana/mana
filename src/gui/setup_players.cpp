@@ -157,7 +157,7 @@ public:
         gcn::DropDown *choicebox = dynamic_cast<gcn::DropDown *>(
                                    getElementAt(row, RELATION_CHOICE_COLUMN));
         player_relations.setRelation(getPlayerAt(row),
-                                   static_cast<PlayerRelation::relation>(
+                                   static_cast<PlayerRelation::Relation>(
                                    choicebox->getSelected()));
     }
 

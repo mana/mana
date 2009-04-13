@@ -26,22 +26,13 @@
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
-void ConfigurationObject::setValue(const std::string &key, std::string value)
+void ConfigurationObject::setValue(const std::string &key,
+                                   const std::string &value)
 {
     mOptions[key] = value;
 }
 
-void ConfigurationObject::setValue(const std::string &key, float value)
-{
-    setValue(key, toString((value == (int)value) ? (int)value : value));
-}
-
-void Configuration::setValue(const std::string &key, float value)
-{
-    setValue(key, toString((value == (int)value) ? (int)value : value));
-}
-
-void Configuration::setValue(const std::string &key, std::string value)
+void Configuration::setValue(const std::string &key, const std::string &value)
 {
     ConfigurationObject::setValue(key, value);
 
@@ -57,15 +48,29 @@ void Configuration::setValue(const std::string &key, std::string value)
 }
 
 std::string ConfigurationObject::getValue(const std::string &key,
-                                          std::string deflt)
+                                          const std::string &deflt) const
 {
-    OptionIterator iter = mOptions.find(key);
+    Options::const_iterator iter = mOptions.find(key);
     return ((iter != mOptions.end()) ? iter->second : deflt);
 }
 
-float ConfigurationObject::getValue(const std::string &key, float deflt)
+int ConfigurationObject::getValue(const std::string &key, int deflt) const
 {
-    OptionIterator iter = mOptions.find(key);
+    Options::const_iterator iter = mOptions.find(key);
+    return (iter != mOptions.end()) ? atoi(iter->second.c_str()) : deflt;
+}
+
+unsigned ConfigurationObject::getValue(const std::string &key,
+                                       unsigned deflt) const
+{
+    Options::const_iterator iter = mOptions.find(key);
+    return (iter != mOptions.end()) ? atol(iter->second.c_str()) : deflt;
+}
+
+double ConfigurationObject::getValue(const std::string &key,
+                                     double deflt) const
+{
+    Options::const_iterator iter = mOptions.find(key);
     return (iter != mOptions.end()) ? atof(iter->second.c_str()) : deflt;
 }
 
@@ -158,7 +163,8 @@ void Configuration::init(const std::string &filename)
 
 void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)
 {
-    for (OptionIterator i = mOptions.begin(); i != mOptions.end(); i++)
+    for (Options::const_iterator i = mOptions.begin(), i_end = mOptions.end();
+         i != i_end; ++i)
     {
         xmlTextWriterStartElement(writer, BAD_CAST "option");
         xmlTextWriterWriteAttribute(writer,

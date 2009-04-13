@@ -19,19 +19,19 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/minimap.h"
+
+#include "being.h"
+#include "beingmanager.h"
+#include "configuration.h"
+#include "graphics.h"
+#include "localplayer.h"
+
+#include "resources/image.h"
+
+#include "utils/gettext.h"
+
 #include <guichan/font.hpp>
-
-#include "minimap.h"
-
-#include "../being.h"
-#include "../beingmanager.h"
-#include "../configuration.h"
-#include "../graphics.h"
-#include "../localplayer.h"
-
-#include "../resources/image.h"
-
-#include "../utils/gettext.h"
 
 bool Minimap::mShow = true;
 
