@@ -75,7 +75,7 @@ class OpenGLGraphics : public Graphics
         /**
          * Takes a screenshot and returns it as SDL surface.
          */
-        SDL_Surface* getScreenshot();
+        SDL_Surface *getScreenshot();
 
     protected:
         void setTexturingAndBlending(bool enable);

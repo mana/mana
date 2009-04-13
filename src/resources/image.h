@@ -128,6 +128,10 @@ class Image : public Resource
          * <code>true</code> for OpenGL.
          */
         static void setLoadAsOpenGL(bool useOpenGL);
+
+        int getTextureWidth() const { return mTexWidth; }
+        int getTextureHeight() const { return mTexHeight; }
+        static int getTextureType() { return mTextureType; }
 #endif
 
         /**
