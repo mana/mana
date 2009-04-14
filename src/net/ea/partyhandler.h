@@ -26,6 +26,8 @@
 #include "net/net.h"
 #include "net/partyhandler.h"
 
+namespace EAthena {
+
 class PartyHandler : public MessageHandler, public Net::PartyHandler
 {
     public:
@@ -54,6 +56,6 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
         void requestPartyMembers();
 };
 
-extern PartyHandler *partyHandler;
+} // namespace EAthena
 
 #endif // NET_EA_PARTYHANDLER_H

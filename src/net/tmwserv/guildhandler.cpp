@@ -39,6 +39,8 @@
 
 #include <iostream>
 
+namespace TmwServ {
+
 GuildHandler::GuildHandler()
 {
     static const Uint16 _messages[] = {
@@ -241,3 +243,5 @@ void GuildHandler::joinedGuild(MessageIn &msg)
     channelManager->addChannel(channel);
     channel->getTab()->chatLog("Topic: " + announcement, BY_CHANNEL);
 }
+
+} // namespace TmwServ

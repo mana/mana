@@ -37,7 +37,9 @@
 #include "utils/strprintf.h"
 
 PartyTab *partyTab = 0;
-PartyHandler *partyHandler = 0;
+Net::PartyHandler *partyHandler = 0;
+
+namespace EAthena {
 
 PartyHandler::PartyHandler()
 {
@@ -261,3 +263,5 @@ void PartyHandler::requestPartyMembers()
 {
     // Our eAthena doesn't have this message
 }
+
+} // namespace EAthena

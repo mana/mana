@@ -24,6 +24,8 @@
 
 #include "net/messagehandler.h"
 
+namespace EAthena {
+
 class BeingHandler : public MessageHandler
 {
     public:
@@ -35,5 +37,7 @@ class BeingHandler : public MessageHandler
         // Should we honor server "Stop Walking" packets
         bool mSync;
 };
+
+} // namespace EAthena
 
 #endif // NET_EA_BEINGHANDLER_H

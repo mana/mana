@@ -24,6 +24,8 @@
 
 #include "net/messagehandler.h"
 
+namespace TmwServ {
+
 class BeingHandler : public MessageHandler
 {
     public:
@@ -41,5 +43,7 @@ class BeingHandler : public MessageHandler
         void handleBeingLooksChangeMessage(MessageIn &msg);
         void handleBeingDirChangeMessage(MessageIn &msg);
 };
+
+} // namespace TmwServ
 
 #endif

@@ -38,6 +38,8 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
 
+namespace TmwServ {
+
 BuySellHandler::BuySellHandler()
 {
     static const Uint16 _messages[] = {
@@ -89,3 +91,5 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             break;
     }
 }
+
+} // namespace TmwServ

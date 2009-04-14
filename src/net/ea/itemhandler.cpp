@@ -28,6 +28,8 @@
 #include "engine.h"
 #include "flooritemmanager.h"
 
+namespace EAthena {
+
 ItemHandler::ItemHandler()
 {
     static const Uint16 _messages[] = {
@@ -67,3 +69,5 @@ void ItemHandler::handleMessage(MessageIn &msg)
             break;
     }
 }
+
+} // namespace EAthena

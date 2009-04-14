@@ -41,6 +41,8 @@
 
 extern NpcTextDialog *npcTextDialog;
 
+namespace EAthena {
+
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 
 BeingHandler::BeingHandler(bool enableSync):
@@ -600,3 +602,5 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
     }
 }
+
+} // namespace EAthena

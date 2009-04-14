@@ -39,6 +39,8 @@
 
 #include "utils/gettext.h"
 
+namespace EAthena {
+
 BuySellHandler::BuySellHandler()
 {
     static const Uint16 _messages[] = {
@@ -134,3 +136,5 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             break;
     }
 }
+
+} // namespace EAthena

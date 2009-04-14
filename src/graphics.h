@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _GRAPHICS_H
-#define _GRAPHICS_H
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
 
 #include <guichan/sdl/sdlgraphics.hpp>
 
@@ -149,17 +149,17 @@ class Graphics : public gcn::SDLGraphics
         /**
          * Returns the width of the screen.
          */
-        int getWidth();
+        int getWidth() const;
 
         /**
          * Returns the height of the screen.
          */
-        int getHeight();
+        int getHeight() const;
 
         /**
          * Takes a screenshot and returns it as SDL surface.
          */
-        virtual SDL_Surface* getScreenshot();
+        virtual SDL_Surface *getScreenshot();
 
     protected:
         SDL_Surface *mScreen;

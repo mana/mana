@@ -24,6 +24,8 @@
 
 #include "net/messagehandler.h"
 
+namespace TmwServ {
+
 class EffectHandler : public MessageHandler
 {
     public:
@@ -34,5 +36,7 @@ class EffectHandler : public MessageHandler
     private:
         void handleCreateEffects(MessageIn &msg);
 };
+
+} // namespace TmwServ
 
 #endif

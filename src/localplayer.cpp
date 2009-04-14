@@ -80,13 +80,6 @@ LocalPlayer *player_node = NULL;
 LocalPlayer::LocalPlayer():
     Player(65535, 0, NULL),
     mEquipment(new Equipment),
-    mAttributeBase(NB_CHARACTER_ATTRIBUTES, -1),
-    mAttributeEffective(NB_CHARACTER_ATTRIBUTES, -1),
-    mExpCurrent(CHAR_SKILL_NB, -1),
-    mExpNext(CHAR_SKILL_NB, -1),
-    mCharacterPoints(-1),
-    mCorrectionPoints(-1),
-    mLevelProgress(0),
 #else
 LocalPlayer::LocalPlayer(int id, int job, Map *map):
     Player(id, job, map),
@@ -108,6 +101,15 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mTargetTime(-1),
 #endif
     mLastTarget(-1),
+#ifdef TMWSERV_SUPPORT
+    mAttributeBase(NB_CHARACTER_ATTRIBUTES, -1),
+    mAttributeEffective(NB_CHARACTER_ATTRIBUTES, -1),
+    mExpCurrent(CHAR_SKILL_NB, -1),
+    mExpNext(CHAR_SKILL_NB, -1),
+    mCharacterPoints(-1),
+    mCorrectionPoints(-1),
+    mLevelProgress(0),
+#endif
     mLevel(1),
     mMoney(0),
     mTotalWeight(1), mMaxWeight(1),
@@ -120,9 +122,11 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mInventory(new Inventory(INVENTORY_SIZE)),
 #ifdef TMWSERV_SUPPORT
     mLocalWalkTime(-1),
-    mExpMessageTime(0),
 #endif
     mStorage(new Inventory(STORAGE_SIZE))
+#ifdef TMWSERV_SUPPORT
+    , mExpMessageTime(0)
+#endif
 {
     // Variable to keep the local player from doing certain actions before a map
     // is initialized. e.g. drawing a player's name using the TextManager, since

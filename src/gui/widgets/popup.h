@@ -28,7 +28,6 @@
 #include "guichanfwd.h"
 
 class Skin;
-class SkinLoader;
 class WindowContainer;
 
 /**

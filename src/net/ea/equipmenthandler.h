@@ -24,6 +24,8 @@
 
 #include "net/messagehandler.h"
 
+namespace EAthena {
+
 class EquipmentHandler : public MessageHandler
 {
     public:
@@ -31,5 +33,7 @@ class EquipmentHandler : public MessageHandler
 
         virtual void handleMessage(MessageIn &msg);
 };
+
+} // namespace EAthena
 
 #endif // NET_EA_EQUIPMENTHANDLER_H

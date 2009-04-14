@@ -28,6 +28,8 @@
 #include "engine.h"
 #include "flooritemmanager.h"
 
+namespace TmwServ {
+
 ItemHandler::ItemHandler()
 {
     static const Uint16 _messages[] = {
@@ -64,3 +66,5 @@ void ItemHandler::handleMessage(MessageIn &msg)
         } break;
     }
 }
+
+} // namespace TmwServ

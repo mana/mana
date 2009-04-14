@@ -24,6 +24,8 @@
 
 #include "net/messagehandler.h"
 
+namespace TmwServ {
+
 class ItemHandler : public MessageHandler
 {
     public:
@@ -31,5 +33,7 @@ class ItemHandler : public MessageHandler
 
         void handleMessage(MessageIn &msg);
 };
+
+} // namespace TmwServ
 
 #endif

@@ -41,6 +41,8 @@
 
 #include "net/tmwserv/gameserver/player.h"
 
+namespace TmwServ {
+
 BeingHandler::BeingHandler()
 {
     static const Uint16 _messages[] = {
@@ -359,3 +361,5 @@ void BeingHandler::handleBeingDirChangeMessage(MessageIn &msg)
        case DIRECTION_RIGHT: being->setDirection(Being::RIGHT); break;
     }
 }
+
+} // namespace TmwServ

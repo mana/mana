@@ -26,6 +26,8 @@
 
 #include <string>
 
+namespace TmwServ {
+
 class GuildHandler : public MessageHandler
 {
 public:
@@ -36,5 +38,7 @@ public:
 protected:
     void joinedGuild(MessageIn &msg);
 };
+
+} // namespace TmwServ
 
 #endif

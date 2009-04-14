@@ -35,6 +35,8 @@
 
 #include "utils/gettext.h"
 
+namespace EAthena {
+
 enum { debugEquipment = 1 };
 
 EquipmentHandler::EquipmentHandler()
@@ -205,3 +207,5 @@ void EquipmentHandler::handleMessage(MessageIn &msg)
             break;
     }
 }
+
+} // namespace EAthena

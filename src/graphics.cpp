@@ -105,12 +105,12 @@ bool Graphics::setFullscreen(bool fs)
             mScreen->format->BitsPerPixel, fs, mHWAccel);
 }
 
-int Graphics::getWidth()
+int Graphics::getWidth() const
 {
     return mScreen->w;
 }
 
-int Graphics::getHeight()
+int Graphics::getHeight() const
 {
     return mScreen->h;
 }
