@@ -921,7 +921,7 @@ int main(int argc, char *argv[])
     setupButton->setPosition(top->getWidth() - setupButton->getWidth() - 3, 3);
     top->add(setupButton);
 
-    sound.playMusic(branding.getValue("loginMusic", ""));
+    sound.playMusic(branding.getValue("loginMusic", "Login.ogg"));
 
     // Initialize login data
     loginData.hostname = options.serverName;
