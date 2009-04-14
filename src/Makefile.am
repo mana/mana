@@ -258,8 +258,9 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      utils/base64.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
-	      utils/fastsqrt.h \
 	      utils/gettext.h \
+	      utils/mathutils.cpp \
+	      utils/mathutils.h \
 	      utils/sha256.cpp \
 	      utils/sha256.h \
 	      utils/stringutils.cpp \

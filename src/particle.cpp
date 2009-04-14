@@ -36,7 +36,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
-#include "utils/fastsqrt.h"
+#include "utils/mathutils.h"
 #include "utils/xml.h"
 
 #define SIN45 0.707106781f

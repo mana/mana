@@ -62,11 +62,6 @@ class StatusWindow : public Window, public gcn::ActionListener
         static void updateXPBar(ProgressBar *bar, bool percent = true);
         static void updateJobBar(ProgressBar *bar, bool percent = true);
 
-        /**
-         * Used by updateHPBar to get the weighted average of two colors
-         */
-        static float weightedAverage(float n1, float n2, float w);
-
     private:
         LocalPlayer *mPlayer;
 
