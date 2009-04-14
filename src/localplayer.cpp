@@ -910,7 +910,7 @@ void LocalPlayer::pickedUp(const std::string &item)
                 getPixelX() + 16,
                 getPixelY() - 16,
                 &guiPalette->getColor(Palette::PICKUP_INFO),
-                gui->getInfoParticleFont (), true);
+                gui->getInfoParticleFont(), true);
     }
 }
 

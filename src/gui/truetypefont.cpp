@@ -93,7 +93,7 @@ TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
             std::string(TTF_GetError()));
     }
 
-    TTF_SetFontStyle (mFont, style);
+    TTF_SetFontStyle(mFont, style);
 }
 
 TrueTypeFont::~TrueTypeFont()

@@ -105,32 +105,31 @@ Gui::Gui(Graphics *graphics):
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Set global font
-    std::string path = resman->getPath(
-            branding.getValue("font", "fonts/dejavusans.ttf"));
+    const int fontSize = (int) config.getValue("fontSize", 11);
+    std::string fontFile = branding.getValue("font", "fonts/dejavusans.ttf");
+    std::string path = resman->getPath(fontFile);
     try
     {
-        const int fontSize = (int)config.getValue("fontSize", 11);
         mGuiFont = new TrueTypeFont(path, fontSize);
-        mInfoParticleFont = new TrueTypeFont(path, fontSize, 1);
+        mInfoParticleFont = new TrueTypeFont(path, fontSize, TTF_STYLE_BOLD);
     }
     catch (gcn::Exception e)
     {
-        logger->error(std::string("Unable to load dejavusans.ttf: ")
-            + e.getMessage());
+        logger->error(std::string("Unable to load '") + fontFile +
+                      std::string("': ") + e.getMessage());
     }
 
     // Set bold font
-    path = resman->getPath(
-            branding.getValue("boldFont", "fonts/dejavusans.ttf"));
+    fontFile = branding.getValue("boldFont", "fonts/dejavusans-bold.ttf");
+    path = resman->getPath(fontFile);
     try
     {
-        const int fontSize = (int)config.getValue("fontSize", 11);
         boldFont = new TrueTypeFont(path, fontSize);
     }
     catch (gcn::Exception e)
     {
-        logger->error(std::string("Unable to load dejavusans-bold.ttf: ")
-            + e.getMessage());
+        logger->error(std::string("Unable to load '") + fontFile +
+                      std::string("': ") + e.getMessage());
     }
 
     gcn::Widget::setGlobalFont(mGuiFont);
@@ -242,9 +241,4 @@ void Gui::handleMouseMoved(const gcn::MouseInput &mouseInput)
 {
     gcn::Gui::handleMouseMoved(mouseInput);
     mMouseInactivityTimer = 0;
-}
-
-const int Gui::getFontHeight() const
-{
-    return mGuiFont->getHeight();
 }

@@ -73,19 +73,14 @@ class Gui : public gcn::Gui
         /**
          * Return game font.
          */
-        gcn::Font* getFont() const
+        gcn::Font *getFont() const
         { return mGuiFont; }
-
-        /**
-         * Return game font height.
-         */
-        const int getFontHeight() const;
 
         /**
          * Return the Font used for "Info Particles", i.e. ones showing, what
          * you picked up, etc.
          */
-        gcn::Font* getInfoParticleFont() const
+        gcn::Font *getInfoParticleFont() const
         { return mInfoParticleFont; }
 
         /**
