@@ -291,20 +291,65 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
         bar->setText(toString(player_node->getHp()));
 
     // HP Bar coloration
-    if (player_node->getHp() < player_node->getMaxHp() / 3)
+    int r1 = 255;
+    int g1 = 255;
+    int b1 = 255;
+
+    int r2 = 255;
+    int g2 = 255;
+    int b2 = 255;
+
+    float weight = 1.0f;
+
+    int curHP = player_node->getHp();
+    int thresholdLevel = player_node->getMaxHp() / 4;
+
+    if (curHP < (thresholdLevel*2))
     {
-        bar->setColor(223, 32, 32); // Red
+        r1 = 0xcc; g1 = 0x00; b1 = 0x00;
+        r2 = 0xcc; g2 = 0xcc; b2 = 0x00;
+        weight = (float)(curHP-(thresholdLevel)) / (float)thresholdLevel;
+        // Reddish Brown -> Red
     }
-    else if (player_node->getHp() < (player_node->getMaxHp() / 3) * 2)
+    else if (curHP < thresholdLevel*2)
     {
-        bar->setColor(230, 171, 34); // Orange
+        r1 = 0xcc; g1 = 0xcc; b1 = 0x00;
+        r2 = 0xff; g2 = 0xcc; b2 = 0x00;
+        weight = (float)(curHP-(thresholdLevel*2)) / (float)thresholdLevel;
+        // Orange->Reddish Brown
     }
     else
     {
-        bar->setColor(0, 171, 34); // Green
+        r1 = 0xff; g1 = 0xcc; b1 = 0x00;
+        r2 = 0x99; g2 = 0xff; b2 = 0x99;
+        weight = (float)(curHP-(thresholdLevel*3)) / (float)thresholdLevel;
+        // Green ->Orange
     }
 
+    //safety checks
+    if (weight>1.0f) weight=1.0f;
+    if (weight<0.0f) weight=0.0f;
+
+    //Do the color blend
+    r1 = (int)weightedAverage(r1,r2,weight);
+    g1 = (int)weightedAverage(g1,g2,weight);
+    b1 = (int)weightedAverage(b1,b2,weight);
+
+    //more safety checks
+    if (r1>255) r1=255;
+    if (g1>255) g1=255;
+    if (b1>255) b1=255;
+
+    bar->setColor(r1,g1,b1);
+
     bar->setProgress((float) player_node->getHp() / (float) player_node->getMaxHp());
+}
+
+float StatusWindow::weightedAverage(float n1, float n2, float w) {
+    if (w<0.0f) return n1;
+    if (w>1.0f) return n2;
+
+    return (w*n2 + (1.0f-w)*n1) / 2.0f;
 }
 
 void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
