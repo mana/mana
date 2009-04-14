@@ -973,9 +973,8 @@ void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
 {
     Being::handleStatusEffect(effect, effectId);
 
-
-
-    if (effect) {
+    if (effect)
+    {
         effect->deliverMessage();
         effect->playSFX();
 

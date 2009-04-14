@@ -30,7 +30,8 @@
 Sound::Sound():
     mInstalled(false),
     mSfxVolume(100),
-    mMusicVolume(60)
+    mMusicVolume(60),
+    mMusic(NULL)
 {
 }
 
@@ -46,7 +47,8 @@ void Sound::init()
 
     logger->log("Sound::init() Initializing sound...");
 
-    if (SDL_InitSubSystem(SDL_INIT_AUDIO) == -1) {
+    if (SDL_InitSubSystem(SDL_INIT_AUDIO) == -1)
+    {
         logger->log("Sound::init() Failed to initialize audio subsystem");
         return;
     }
@@ -54,20 +56,24 @@ void Sound::init()
     const size_t audioBuffer = 4096;
 
     const int res = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
-            2, audioBuffer);
-    if (res >= 0) {
-        Mix_AllocateChannels(16);
-    } else {
+                                  MIX_DEFAULT_CHANNELS, audioBuffer);
+    if (res < 0)
+    {
         logger->log("Sound::init Could not initialize audio: %s",
-                Mix_GetError());
+                    Mix_GetError());
         return;
     }
 
+    Mix_AllocateChannels(16);
+    Mix_VolumeMusic(mMusicVolume);
+    Mix_Volume(-1, mSfxVolume);
+
     info();
 
-    mMusic = NULL;
-
     mInstalled = true;
+
+    if (!mCurrentMusicFile.empty())
+        playMusic(mCurrentMusicFile);
 }
 
 void Sound::info()
@@ -109,46 +115,56 @@ void Sound::info()
     logger->log("Sound::info() Channels: %i", channels);
 }
 
+int Sound::getMaxVolume() const
+{
+    return MIX_MAX_VOLUME;
+}
+
 void Sound::setMusicVolume(int volume)
 {
-    if (!mInstalled)
-        return;
-
     mMusicVolume = volume;
-    Mix_VolumeMusic(volume);
+
+    if (mInstalled)
+        Mix_VolumeMusic(mMusicVolume);
 }
 
 void Sound::setSfxVolume(int volume)
 {
-    if (!mInstalled)
-        return;
-
     mSfxVolume = volume;
-    Mix_Volume(-1, volume);
+
+    if (mInstalled)
+        Mix_Volume(-1, mSfxVolume);
 }
 
-void Sound::playMusic(const std::string &filename, int loop)
+static Mix_Music *loadMusic(const std::string &filename)
 {
-    if (!mInstalled)
-        return;
-
-    if (mMusic)
-        stopMusic();
-
     ResourceManager *resman = ResourceManager::getInstance();
     std::string path = resman->getPath("music/" + filename);
 
-    logger->log("Sound::startMusic() Playing \"%s\" %i times", path.c_str(),
-                loop);
+    logger->log("Loading music \"%s\"", path.c_str());
 
-    mMusic = Mix_LoadMUS(path.c_str());
-    if (mMusic) {
-        Mix_PlayMusic(mMusic, loop);
+    Mix_Music *music = Mix_LoadMUS(path.c_str());
+
+    if (!music)
+    {
+        logger->log("Mix_LoadMUS() Error loading '%s': %s", path.c_str(),
+                    Mix_GetError());
     }
-    else {
-        logger->log("Sound::startMusic() Warning: error loading file: %s",
-                Mix_GetError());
-    }
+
+    return music;
+}
+
+void Sound::playMusic(const std::string &filename)
+{
+    mCurrentMusicFile = filename;
+
+    if (!mInstalled)
+        return;
+
+    haltMusic();
+
+    if ((mMusic = loadMusic(filename)))
+        Mix_PlayMusic(mMusic, -1); // Loop forever
 }
 
 void Sound::stopMusic()
@@ -165,29 +181,23 @@ void Sound::stopMusic()
     }
 }
 
-void Sound::fadeInMusic(const std::string &path, int loop, int ms)
+void Sound::fadeInMusic(const std::string &path, int ms)
 {
+    mCurrentMusicFile = path;
+
     if (!mInstalled)
         return;
 
-    if (mMusic)
-        stopMusic();
+    haltMusic();
 
-    logger->log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)",
-                path.c_str(),
-                loop, ms);
-
-    mMusic = Mix_LoadMUS(path.c_str());
-    if (mMusic) {
-        Mix_FadeInMusic(mMusic, loop, ms);
-    }
-    else {
-        logger->log("Sound::fadeInMusic() Warning: error loading file.");
-    }
+    if ((mMusic = loadMusic(path.c_str())))
+        Mix_FadeInMusic(mMusic, -1, ms); // Loop forever
 }
 
 void Sound::fadeOutMusic(int ms)
 {
+    mCurrentMusicFile.clear();
+
     if (!mInstalled)
         return;
 
@@ -215,9 +225,22 @@ void Sound::playSfx(const std::string &path)
 
 void Sound::close()
 {
-    stopMusic();
+    if (!mInstalled)
+        return;
 
-    mInstalled = false;
+    haltMusic();
     logger->log("Sound::close() Shutting down sound...");
     Mix_CloseAudio();
+
+    mInstalled = false;
+}
+
+void Sound::haltMusic()
+{
+    if (!mMusic)
+        return;
+
+    Mix_HaltMusic();
+    Mix_FreeMusic(mMusic);
+    mMusic = NULL;
 }

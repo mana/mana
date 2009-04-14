@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 Branding information
 
-All values in here are the default values which are hardcoded into the TMW client.
-So it would make no difference for the official version when this file is missing. It is
-basically an example for developers of tmw forks to help them writing a branding.xml
-for their forks.
+All values in here are the default values which are hardcoded into the TMW
+client. So it would make no difference for the official version when this file
+is missing. It is basically an example for developers of TMW forks to help them
+writing a branding.xml for their forks.
 -->
 
 <configuration>
@@ -14,11 +14,10 @@ for their forks.
  <option name="appShort" value="tmw"/>
  <option name="appIcon" value="icons/tmw.png"/>
  <option name="loginWallpaper" value="graphics/images/login_wallpaper.png"/>
- <option name="loginMusic" value="The Mana World - Hurnscald.ogg"/>
+ <option name="loginMusic" value="Magick - Real.ogg"/>
  <option name="defaultServer" value="server.themanaworld.org"/>
  <option name="defaultPort" value="9601"/>
  <option name="defaultUpdateHost" value="http://updates.themanaworld.org"/>
- <option name="guiFont" value="fonts/dejavusans.ttf" />
- <option name="speechFont" value="fonts/dejavusans.ttf" />
- 
+ <option name="font" value="fonts/dejavusans.ttf" />
+ <option name="boldFont" value="fonts/dejavusans-bold.ttf" />
 </configuration>

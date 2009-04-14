@@ -132,7 +132,7 @@ bool Engine::changeMap(const std::string &mapPath)
     std::string newMusic = newMap->getProperty("music");
 
     if (newMusic != oldMusic)
-        sound.playMusic(newMusic, -1);
+        sound.playMusic(newMusic);
 
     mCurrentMap = newMap;
 
