@@ -63,7 +63,6 @@ void ShopItem::addDuplicate(int inventoryIndex, int quantity)
     mQuantity += quantity;
 }
 
-
 void ShopItem::addDuplicate()
 {
     DuplicateItem* di = new DuplicateItem;
