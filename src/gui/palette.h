@@ -42,6 +42,9 @@
 #define DEFENUMNAMES(name,def)\
     const std::string Palette::name ## Names[] = { def(ECONFIGSTR,ECONFIGSTR) "" }
 
+// Default Gradient Delay
+#define GRADIENT_DELAY 40
+
 /**
  * Class controlling the game's color palette.
  */
@@ -196,6 +199,16 @@ class Palette : public gcn::ListModel
         }
 
         /**
+         * Gets the gradient delay for the specified type.
+         *
+         * @param type the color type of the color
+         *
+         * @return the gradient delay of the color with the given index
+         */
+        inline int getGradientDelay(ColorType type)
+            { return mColVector[type].delay; }
+
+        /**
         * Get the character used by the specified color.
         *
         * @param type the color type of the color
@@ -223,6 +236,14 @@ class Palette : public gcn::ListModel
          * @param grad gradient type to set
          */
         void setGradient(ColorType type, GradientType grad);
+
+        /**
+         * Sets the gradient delay for the specified color.
+         *
+         * @param grad gradient type to set
+         */
+        void setGradientDelay(ColorType type, int delay)
+            { mColVector[type].delay = delay; }
 
         /**
          * Returns the number of colors known.
@@ -275,8 +296,6 @@ class Palette : public gcn::ListModel
         /** Colors used for the rainbow gradient */
         static const gcn::Color RAINBOW_COLORS[];
         static const int RAINBOW_COLOR_COUNT;
-        /** Parameter to control the speed of the gradient */
-        static const int GRADIENT_DELAY;
         /** Time tick, that gradient-type colors were updated the last time. */
         int mRainbowTime;
 
@@ -307,9 +326,11 @@ class Palette : public gcn::ListModel
             GradientType grad;
             GradientType committedGrad;
             int gradientIndex;
+            int delay;
+            int committedDelay;
 
             void set(ColorType type, gcn::Color& color, GradientType grad,
-                    const std::string &text, char c)
+                     const std::string &text, char c, int delay)
             {
                 ColorElem::type = type;
                 ColorElem::color = color;
@@ -317,6 +338,7 @@ class Palette : public gcn::ListModel
                 ColorElem::text = text;
                 ColorElem::ch = c;
                 ColorElem::grad = grad;
+                ColorElem::delay = delay;
                 ColorElem::gradientIndex = rand();
             }
 
@@ -339,7 +361,8 @@ class Palette : public gcn::ListModel
          * @param text identifier of color
          */
         void addColor(ColorType type, int rgb, GradientType grad,
-                const std::string &text, char c = 0);
+                      const std::string &text, char c = 0, 
+                      int delay = GRADIENT_DELAY);
 
         /**
          * Prefixes the given string with "Color", lowercases all letters but

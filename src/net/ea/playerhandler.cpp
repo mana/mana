@@ -95,6 +95,7 @@ namespace {
 
             if (storageWindow->isVisible())
                 storageWindow->close();
+            viewport->closePopupMenu();
         }
     } deathListener;
 
