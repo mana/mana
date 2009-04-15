@@ -70,6 +70,7 @@ class ChatInput : public TextField, public gcn::FocusListener
 
 ChatWindow::ChatWindow():
     Window(_("Chat")),
+    mCurrentTab(NULL),
     mTmpVisible(false)
 {
     setWindowName("Chat");

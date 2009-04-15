@@ -31,6 +31,7 @@ MonsterInfo::~MonsterInfo()
 {
     // kill vectors in mSoundEffects
     delete_all(mSounds);
+    delete_all(mMonsterAttacks);
     mSounds.clear();
 }
 

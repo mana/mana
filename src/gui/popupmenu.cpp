@@ -55,6 +55,7 @@ PopupMenu::PopupMenu():
     mFloorItem(NULL),
     mItem(NULL)
 {
+    setDefaultSize(0, 0, 0, 0);
     setResizable(false);
     setTitleBarHeight(0);
     setShowTitle(false);
