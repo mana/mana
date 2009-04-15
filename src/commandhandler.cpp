@@ -68,9 +68,9 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handleMsg(args, tab);
     }
-    else if (type == "msgtab" || type == "whispertab" || type == "wt")
+    else if (type == "query" || type == "q")
     {
-        handleMsgTab(args, tab);
+        handleQuery(args, tab);
     }
     else if (type == "join")
     {
@@ -149,9 +149,8 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/msg > Send a private message to a user"));
         tab->chatLog(_("/whisper > Alias of msg"));
         tab->chatLog(_("/w > Alias of msg"));
-        tab->chatLog(_("/msgtab > Makes a tab for private messages with another user"));
-        tab->chatLog(_("/whispertab > Alias of msgtab"));
-        tab->chatLog(_("/wt > Alias of msgtab"));
+        tab->chatLog(_("/query > Makes a tab for private messages with another user"));
+        tab->chatLog(_("/q > Alias of query"));
         tab->chatLog(_("/close > Close the whisper tab (only works in whisper tabs)"));
 
 #ifdef TMWSERV_SUPPORT
@@ -226,11 +225,10 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\")."));
     }
-    else if (args == "msgtab" || args == "whispertab" || args == "wt")
+    else if (args == "query" || args == "q")
     {
-        tab->chatLog(_("Command: /msgtab <nick>"));
-        tab->chatLog(_("Command: /whispertab <nick>"));
-        tab->chatLog(_("Command: /wtab <nick>"));
+        tab->chatLog(_("Command: /query <nick>"));
+        tab->chatLog(_("Command: /q <nick>"));
         tab->chatLog(_("This command tries to make a tab for whispers between"
                        "you and <nick>."));
     }
@@ -371,7 +369,7 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Cannont send empty whispers!"), BY_SERVER);
 }
 
-void CommandHandler::handleMsgTab(const std::string &args, ChatTab *tab) {
+void CommandHandler::handleQuery(const std::string &args, ChatTab *tab) {
     if (chatWindow->addWhisperTab(args))
         return;
 
