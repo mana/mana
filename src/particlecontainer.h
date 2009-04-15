@@ -52,7 +52,7 @@ public:
     /**
      * Kills and removes all particle effects (only in this container)
      */
-    virtual void clearLocally() {};
+    virtual void clearLocally() {}
 
     /**
      * Sets the positions of all elements

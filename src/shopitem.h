@@ -63,21 +63,22 @@ class ShopItem : public Item
          * @param inventoryIndex the inventory index of the item
          * @param quantity number of available copies of the item
          */
-        void addDuplicate (int inventoryIndex, int quantity);
+        void addDuplicate(int inventoryIndex, int quantity);
 
         /**
          * Add a duplicate. Id and price will be taken from this item.
          * Needed for compatibility with ShopDuplicateItems (see) class
          * documentation).
          */
-        void addDuplicate ();
+        void addDuplicate();
 
         /**
          * Gets the quantity of the currently topmost duplicate.
          *
          * @return the quantity of the currently topmost duplicate
          */
-        int getCurrentQuantity() {
+        int getCurrentQuantity() const
+        {
             return mDuplicates.empty() ? 0 : mDuplicates.top()->quantity;
         }
 
@@ -86,7 +87,8 @@ class ShopItem : public Item
          *
          * @return the inventory index of the currently topmost duplicate
          */
-        int getCurrentInvIndex() {
+        int getCurrentInvIndex() const
+        {
             return mDuplicates.empty() ? mInvIndex :
                    mDuplicates.top()->inventoryIndex;
         }

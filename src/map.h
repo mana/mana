@@ -53,7 +53,7 @@ struct MetaTile
     /**
      * Constructor.
      */
-    MetaTile():whichList(0), blockmask(0) {};
+    MetaTile() : whichList(0), blockmask(0) {}
 
     // Pathfinding members
     int Fcost;               /**< Estimation of total path cost */

@@ -412,9 +412,10 @@ void ChatWindow::setRecordingFile(const std::string &msg)
     mRecorder->setRecordingFile(msg);
 }
 
-void ChatWindow::whisper(std::string nick, std::string mes, bool own)
+void ChatWindow::whisper(const std::string &nick, std::string mes, bool own)
 {
-    if (mes.length() == 0) return;
+    if (mes.length() == 0)
+        return;
 
     std::string playerName = player_node->getName();
     std::string tempNick = nick;
@@ -453,7 +454,7 @@ void ChatWindow::whisper(std::string nick, std::string mes, bool own)
     }
 }
 
-ChatTab *ChatWindow::addWhisperTab(std::string nick)
+ChatTab *ChatWindow::addWhisperTab(const std::string &nick)
 {
     std::string playerName = player_node->getName();
     std::string tempNick = nick;

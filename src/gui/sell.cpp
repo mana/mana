@@ -283,7 +283,8 @@ void SellDialog::logic()
 {
     Window::logic();
 
-    if (!current_npc) setVisible(false);
+    if (!current_npc)
+        setVisible(false);
 }
 
 void SellDialog::setVisible(bool visible)

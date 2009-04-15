@@ -274,7 +274,7 @@ void Palette::addColor(Palette::ColorType type, int rgb,
         mGradVector.push_back(&mColVector[type]);
 }
 
-void Palette::advanceGradient ()
+void Palette::advanceGradient()
 {
     if (get_elapsed_time(mRainbowTime) > 5)
     {
