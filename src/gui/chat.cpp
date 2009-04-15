@@ -426,6 +426,11 @@ void ChatWindow::whisper(std::string nick, std::string mes, bool own)
 
     ChatTab *tab = mWhispers[tempNick];
 
+    if (!tab && config.getValue("whispertab", false))
+    {
+        tab = addWhisperTab(nick);
+    }
+
     if (tab)
     {
         if (own)
@@ -447,7 +452,7 @@ void ChatWindow::whisper(std::string nick, std::string mes, bool own)
     }
 }
 
-bool ChatWindow::addWhisperTab(std::string nick)
+ChatTab *ChatWindow::addWhisperTab(std::string nick)
 {
     std::string playerName = player_node->getName();
     std::string tempNick = nick;
@@ -456,9 +461,7 @@ bool ChatWindow::addWhisperTab(std::string nick)
     toLower(tempNick);
 
     if (mWhispers[tempNick] || tempNick.compare(playerName) == 0)
-        return false;
+        return NULL;
 
-    mWhispers[tempNick] = new WhisperTab(nick);
-
-    return true;
+    return mWhispers[tempNick] = new WhisperTab(nick);
 }

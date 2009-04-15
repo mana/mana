@@ -64,6 +64,9 @@ private:
 
     gcn::Button *mDeleteButton;
     gcn::DropDown *mIgnoreActionChoicesBox;
+
+    bool mWhisperTab;
+    gcn::CheckBox *mWhisperTabCheckBox;
 };
 
 #endif
