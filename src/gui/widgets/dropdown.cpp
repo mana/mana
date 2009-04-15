@@ -110,7 +110,6 @@ DropDown::~DropDown()
     }
 
     delete mScrollArea;
-    delete mListBox;
 }
 
 void DropDown::draw(gcn::Graphics* graphics)
