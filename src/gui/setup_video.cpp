@@ -32,6 +32,7 @@
 #include "gui/widgets/textfield.h"
 
 #include "configuration.h"
+#include "engine.h"
 #include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
@@ -464,9 +465,11 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     {
         config.setValue("particleeffects",
                         mParticleEffectsCheckBox->isSelected());
-        new OkDialog(_("Particle effect settings changed."),
-                     _("Restart your client or change maps "
-                       "for the change to take effect."));
+        if (engine)
+        {
+            new OkDialog(_("Particle effect settings changed."),
+                         _("Changes will take effect on map change."));
+        }
     }
     else if (event.getId() == "pickupchat")
     {
