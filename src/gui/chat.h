@@ -173,6 +173,8 @@ class ChatWindow : public Window,
 
         void whisper(std::string nick, std::string mes, bool own = false);
 
+        bool addWhisperTab(std::string nick);
+
     protected:
         friend class ChatTab;
         friend class WhisperTab;

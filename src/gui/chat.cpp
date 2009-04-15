@@ -35,8 +35,12 @@
 #include "configuration.h"
 #include "localplayer.h"
 
+#include "net/chathandler.h"
+#include "net/net.h"
+
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
+#include "utils/strprintf.h"
 
 #include <guichan/focushandler.hpp>
 #include <guichan/focuslistener.hpp>
@@ -417,19 +421,44 @@ void ChatWindow::whisper(std::string nick, std::string mes, bool own)
     toLower(playerName);
     toLower(tempNick);
 
-    if (!own && tempNick.compare(playerName) == 0)
+    if (tempNick.compare(playerName) == 0)
         return;
 
     ChatTab *tab = mWhispers[tempNick];
 
-    if (!tab)
+    if (tab)
     {
-        tab = new WhisperTab(tempNick);
-        mWhispers[tempNick] = tab;
+        if (own)
+            tab->chatInput(mes);
+        else
+            tab->chatLog(nick, mes);
     }
-
-    if (own)
-        tab->chatInput(mes);
     else
-        tab->chatLog(nick, mes);
+    {
+        if (own)
+        {
+            Net::getChatHandler()->privateMessage(nick, mes);
+
+            localChatTab->chatLog(strprintf(_("Whispering to %s: %s"),
+                            nick.c_str(), mes.c_str()), BY_PLAYER);
+        }
+        else
+            localChatTab->chatLog(nick + " : " + mes, ACT_WHISPER, false);
+    }
+}
+
+bool ChatWindow::addWhisperTab(std::string nick)
+{
+    std::string playerName = player_node->getName();
+    std::string tempNick = nick;
+
+    toLower(playerName);
+    toLower(tempNick);
+
+    if (mWhispers[tempNick] || tempNick.compare(playerName) == 0)
+        return false;
+
+    mWhispers[tempNick] = new WhisperTab(nick);
+
+    return true;
 }

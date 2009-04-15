@@ -76,6 +76,11 @@ class CommandHandler
         void handleMsg(const std::string &args, ChatTab *tab);
 
         /**
+         * Handle a msg tab request.
+         */
+        void handleMsgTab(const std::string &args, ChatTab *tab);
+
+        /**
          * Handle a join command.
          */
         void handleJoin(const std::string &args, ChatTab *tab);

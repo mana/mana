@@ -68,6 +68,10 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handleMsg(args, tab);
     }
+    else if (type == "msgtab" || type == "whispertab" || type == "wt")
+    {
+        handleMsgTab(args, tab);
+    }
     else if (type == "join")
     {
         handleJoin(args, tab);
@@ -145,6 +149,9 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/msg > Send a private message to a user"));
         tab->chatLog(_("/whisper > Alias of msg"));
         tab->chatLog(_("/w > Alias of msg"));
+        tab->chatLog(_("/msgtab > Makes a tab for private messages with another user"));
+        tab->chatLog(_("/whispertab > Alias of msgtab"));
+        tab->chatLog(_("/wt > Alias of msgtab"));
         tab->chatLog(_("/close > Close the whisper tab (only works in whisper tabs)"));
 
 #ifdef TMWSERV_SUPPORT
@@ -218,6 +225,14 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("This command sends the text <message> to <nick>."));
         tab->chatLog(_("If the <nick> has spaces in it, enclose it in "
                             "double quotes (\")."));
+    }
+    else if (args == "msgtab" || args == "whispertab" || args == "wt")
+    {
+        tab->chatLog(_("Command: /msgtab <nick>"));
+        tab->chatLog(_("Command: /whispertab <nick>"));
+        tab->chatLog(_("Command: /wtab <nick>"));
+        tab->chatLog(_("This command tries to make a tab for whispers between"
+                       "you and <nick>."));
     }
     else if (args == "op")
     {
@@ -353,7 +368,15 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
         chatWindow->whisper(recvnick, msg, true);
     }
     else
-        tab->chatLog("Cannont send empty whispers!");
+        tab->chatLog(_("Cannont send empty whispers!"), BY_SERVER);
+}
+
+void CommandHandler::handleMsgTab(const std::string &args, ChatTab *tab) {
+    if (chatWindow->addWhisperTab(args))
+        return;
+
+    tab->chatLog(strprintf(_("Cannont create a whisper tab for nick '%s'!"
+            "It either already exists, or is you."), args.c_str()), BY_SERVER);
 }
 
 void CommandHandler::handleClear(const std::string &args, ChatTab *tab)
