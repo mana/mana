@@ -132,9 +132,9 @@ Palette::Palette() :
     addColor(HIT_CRITICAL, 0xff0000, RAINBOW, indent + _("Critical Hit"));
     addColor(MISS, 0xffff00, STATIC, indent + _("Misses"));
 
-    addColor(HPBAR_FULL, 0x99ff00, STATIC, _("HP Bar"));
-    addColor(HPBAR_THREE_QUARTERS, 0xffff00, STATIC, indent + _("3/4 HP Bar"));
-    addColor(HPBAR_ONE_HALF, 0xff9900, STATIC, indent + _("1/2 HP Bar"));
+    addColor(HPBAR_FULL, 0x0f6a20, STATIC, _("HP Bar"));
+    addColor(HPBAR_THREE_QUARTERS, 0xc38948, STATIC, indent + _("3/4 HP Bar"));
+    addColor(HPBAR_ONE_HALF, 0xe28000, STATIC, indent + _("1/2 HP Bar"));
     addColor(HPBAR_ONE_QUARTER, 0xff0000, PULSE, indent + _("1/4 HP Bar"));
     commit(true);
 }

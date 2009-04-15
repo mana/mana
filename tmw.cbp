@@ -439,6 +439,8 @@
 		<Unit filename="src\gui\widgets\checkbox.h" />
 		<Unit filename="src\gui\widgets\container.cpp" />
 		<Unit filename="src\gui\widgets\container.h" />
+		<Unit filename="src\gui\widgets\desktop.cpp" />
+		<Unit filename="src\gui\widgets\desktop.h" />
 		<Unit filename="src\gui\widgets\dropdown.cpp" />
 		<Unit filename="src\gui\widgets\dropdown.h" />
 		<Unit filename="src\gui\widgets\icon.cpp" />
