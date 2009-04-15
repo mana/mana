@@ -95,6 +95,10 @@ class Palette : public gcn::ListModel
             ENTRY(HIT_MONSTER_PLAYER)\
             ENTRY(HIT_CRITICAL)\
             ENTRY(MISS)\
+            ENTRY(HPBAR_FULL)\
+            ENTRY(HPBAR_THREE_QUARTERS)\
+            ENTRY(HPBAR_ONE_HALF)\
+            ENTRY(HPBAR_ONE_QUARTER)\
             LASTENTRY(TYPE_COUNT)
 
         TEXTENUM(ColorType, COLOR_TYPE);

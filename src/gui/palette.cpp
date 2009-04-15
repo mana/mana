@@ -133,6 +133,11 @@ Palette::Palette() :
             indent + _("Monster hits Player"));
     addColor(HIT_CRITICAL, 0xff0000, RAINBOW, indent + _("Critical Hit"));
     addColor(MISS, 0xffff00, STATIC, indent + _("Misses"));
+
+    addColor(HPBAR_FULL, 0x99ff00, STATIC, _("HP Bar"));
+    addColor(HPBAR_THREE_QUARTERS, 0xffff00, STATIC, indent + _("3/4 HP Bar"));
+    addColor(HPBAR_ONE_HALF, 0xff9900, STATIC, indent + _("1/2 HP Bar"));
+    addColor(HPBAR_ONE_QUARTER, 0xff0000, PULSE, indent + _("1/4 HP Bar"));
     commit(true);
 }
 
@@ -292,7 +297,7 @@ void Palette::advanceGradient ()
 
             if (mGradVector[i]->grad == PULSE)
             {
-                colVal = (int) (255.0 * (sin(M_PI * 
+                colVal = (int) (255.0 * (sin(M_PI *
                          (mGradVector[i]->gradientIndex) / 255) + 1) / 2);
 
                 const gcn::Color* col = &mGradVector[i]->testColor;

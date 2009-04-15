@@ -54,5 +54,5 @@ float weightedAverage(float n1, float n2, float w)
     if (w > 1.0f)
         return n2;
 
-    return (w * n2 + (1.0f - w) * n1) / 2.0f;
+    return ((w * n2) + ((1.0f - w) * n1));
 }

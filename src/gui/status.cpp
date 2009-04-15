@@ -20,6 +20,7 @@
  */
 
 #include "gui/status.h"
+#include "gui/palette.h"
 
 #include "localplayer.h"
 #include "units.h"
@@ -292,39 +293,52 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
         bar->setText(toString(player_node->getHp()));
 
     // HP Bar coloration
-    int r1 = 255;
-    int g1 = 255;
-    int b1 = 255;
+    float r1 = 255;
+    float g1 = 255;
+    float b1 = 255;
 
-    int r2 = 255;
-    int g2 = 255;
-    int b2 = 255;
+    float r2 = 255;
+    float g2 = 255;
+    float b2 = 255;
 
     float weight = 1.0f;
 
     int curHP = player_node->getHp();
     int thresholdLevel = player_node->getMaxHp() / 4;
+    int thresholdProgress = curHP % thresholdLevel;
+    weight = 1-((float)thresholdProgress) / ((float)thresholdLevel);
 
-    if (curHP < (thresholdLevel*2))
+    if (curHP < (thresholdLevel))
     {
-        r1 = 0xcc; g1 = 0x00; b1 = 0x00;
-        r2 = 0xcc; g2 = 0xcc; b2 = 0x00;
-        weight = (float) (curHP - (thresholdLevel)) / (float) thresholdLevel;
-        // Reddish Brown -> Red
+        gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_ONE_HALF);
+        gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_ONE_QUARTER);
+        r1 = color1.r; r2 = color2.r;
+        g1 = color1.g; g2 = color2.g;
+        b1 = color1.b; b2 = color2.b;
     }
-    else if (curHP < thresholdLevel*2)
+    else if (curHP < (thresholdLevel*2))
     {
-        r1 = 0xcc; g1 = 0xcc; b1 = 0x00;
-        r2 = 0xff; g2 = 0xcc; b2 = 0x00;
-        weight = (float) (curHP - (thresholdLevel * 2)) / (float) thresholdLevel;
-        // Orange -> Reddish Brown
+        gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_THREE_QUARTERS);
+        gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_ONE_HALF);
+        r1 = color1.r; r2 = color2.r;
+        g1 = color1.g; g2 = color2.g;
+        b1 = color1.b; b2 = color2.b;
+    }
+    else if (curHP < thresholdLevel*3)
+    {
+        gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_FULL);
+        gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_THREE_QUARTERS);
+        r1 = color1.r; r2 = color2.r;
+        g1 = color1.g; g2 = color2.g;
+        b1 = color1.b; b2 = color2.b;
     }
     else
     {
-        r1 = 0xff; g1 = 0xcc; b1 = 0x00;
-        r2 = 0x99; g2 = 0xff; b2 = 0x99;
-        weight = (float) (curHP - (thresholdLevel * 3)) / (float) thresholdLevel;
-        // Green -> Orange
+        gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_FULL);
+        gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_FULL);
+        r1 = color1.r; r2 = color2.r;
+        g1 = color1.g; g2 = color2.g;
+        b1 = color1.b; b2 = color2.b;
     }
 
     //safety checks
@@ -332,7 +346,7 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
     if (weight<0.0f) weight=0.0f;
 
     //Do the color blend
-    r1 = (int) weightedAverage(r1, r2, weight);
+    r1 = (int) weightedAverage(r1, r2,weight);
     g1 = (int) weightedAverage(g1, g2, weight);
     b1 = (int) weightedAverage(b1, b2, weight);
 

@@ -210,6 +210,17 @@ void Setup_Colors::action(const gcn::ActionEvent &event)
                 mTextPreview->setOutline(false);
                 mTextPreview->setShadow(false);
                 break;
+            case Palette::HPBAR_FULL:
+            case Palette::HPBAR_THREE_QUARTERS:
+            case Palette::HPBAR_ONE_HALF:
+            case Palette::HPBAR_ONE_QUARTER:
+                mTextPreview->setTextBGColor(col);
+                mTextPreview->setFont(boldFont);
+                mTextPreview->setTextColor(&guiPalette->getColor(Palette::PROGRESS_BAR));
+                mTextPreview->setOutline(true);
+                mTextPreview->setShadow(false);
+                mPreview->addRow(rawmsg);
+                break;
             case Palette::HIGHLIGHT:
                 mTextPreview->setTextBGColor(col);
                 mTextPreview->setOutline(false);
