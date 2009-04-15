@@ -64,6 +64,12 @@ class FloorItem : public Sprite
         int getItemId() const;
 
         /**
+         * Returns the item object. Useful for adding an item link for the floor
+         * item to chat.
+         */
+        Item* getItem() const;
+
+        /**
          * Returns the x coordinate.
          */
         int getX() const { return mX; }

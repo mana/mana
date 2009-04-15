@@ -109,6 +109,12 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void showPopup(int x, int y, Item *item);
 
         /**
+         * Closes the popup menu. Needed for when the player dies or switching
+         * maps.
+         */
+        void closePopupMenu();
+
+        /**
          * A relevant config option changed.
          */
         void optionChanged(const std::string &name);

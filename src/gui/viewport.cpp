@@ -313,8 +313,8 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         if ((being = beingManager->findBeingByPixel(pixelx, pixely)) &&
              being != player_node)
         {
-           mPopupMenu->showPopup(event.getX(), event.getY(), being);
-           return;
+            mPopupMenu->showPopup(event.getX(), event.getY(), being);
+            return;
         }
         else if ((floorItem = floorItemManager->findByCoordinates(tilex,
                                                                   tiley)))
@@ -444,6 +444,11 @@ void Viewport::mouseReleased(gcn::MouseEvent &event)
 void Viewport::showPopup(int x, int y, Item *item)
 {
     mPopupMenu->showPopup(x, y, item);
+}
+
+void Viewport::closePopupMenu()
+{
+    mPopupMenu->handleLink("cancel");
 }
 
 void Viewport::optionChanged(const std::string &name)

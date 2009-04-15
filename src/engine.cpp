@@ -58,6 +58,10 @@ bool Engine::changeMap(const std::string &mapPath)
     floorItemManager->clear();
     beingManager->clear();
 
+    // Close the popup menu on map change so that invalid options can't be
+    // executed.
+    viewport->closePopupMenu();
+
     // Unset the map of the player so that its particles are cleared before
     // being deleted in the next step
     if (player_node)

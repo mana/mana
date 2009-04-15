@@ -43,8 +43,7 @@ Monster::Monster(int id, int job, Map *map):
     const std::list<std::string> &sprites = info.getSprites();
 
     for (std::list<std::string>::const_iterator i = sprites.begin();
-         i != sprites.end();
-         i++)
+         i != sprites.end(); i++)
     {
         if (c == VECTOREND_SPRITE) break;
 
@@ -62,15 +61,16 @@ Monster::Monster(int id, int job, Map *map):
     if (mParticleEffects)
     {
         const std::list<std::string> &particleEffects = info.getParticleEffects();
-        for (   std::list<std::string>::const_iterator i = particleEffects.begin();
-                i != particleEffects.end(); i++
-            )
+        for (std::list<std::string>::const_iterator i = particleEffects.begin();
+             i != particleEffects.end(); i++)
         {
             controlParticle(particleEngine->addEffect((*i), 0, 0));
         }
     }
 
     mNameColor = &guiPalette->getColor(Palette::MONSTER);
+
+    Being::setName(getInfo().getName());
 }
 
 Monster::~Monster()
@@ -86,9 +86,7 @@ void Monster::logic()
         mFrame = (get_elapsed_time(mWalkTime) * 4) / getWalkSpeed();
 
         if (mFrame >= 4 && mAction != DEAD)
-        {
             nextStep();
-        }
     }
 
     Being::logic();
@@ -132,8 +130,7 @@ void Monster::setAction(Action action, int attackType)
                     default: break;
                 }
                 Particle *p;
-                p = particleEngine->addEffect(
-                                    particleEffect, 0, 0, rotation);
+                p = particleEngine->addEffect(particleEffect, 0, 0, rotation);
                 controlParticle(p);
             }
             break;
@@ -153,9 +150,7 @@ void Monster::setAction(Action action, int attackType)
         for (int i = 0; i < VECTOREND_SPRITE; i++)
         {
             if (mSprites[i])
-            {
                 mSprites[i]->play(currentAction);
-            }
         }
         mAction = action;
     }
@@ -190,7 +185,9 @@ void Monster::handleAttack(Being *victim, int damage, AttackType type)
 
 void Monster::takeDamage(Being *attacker, int amount, AttackType type)
 {
-    if (amount > 0) sound.playSfx(getInfo().getSound(MONSTER_EVENT_HURT));
+    if (amount > 0)
+        sound.playSfx(getInfo().getSound(MONSTER_EVENT_HURT));
+
     Being::takeDamage(attacker, amount, type);
 }
 

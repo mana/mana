@@ -78,13 +78,13 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     if (being->getType() != Being::UNKNOWN)
         mBrowserBox->addRow(_("@@name|Add name to chat@@"));
 
+    const std::string &name = being->getName();
     switch (being->getType())
     {
         case Being::PLAYER:
             {
                 // Players can be traded with. Later also follow and
                 // add as buddy will be options in this menu.
-                const std::string &name = being->getName();
                 mBrowserBox->addRow(strprintf(_("@@trade|Trade With %s@@"), name.c_str()));
                 mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
 
@@ -109,7 +109,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                         break;
                 }
 
-                //mBrowserBox->addRow(_("@@follow|Follow ") + name + "@@");
+                //mBrowserBox->addRow(_(strprintf("@@follow|Follow %s@@"), name.c_str()));
                 //mBrowserBox->addRow(_("@@buddy|Add ") + name + " to Buddy List@@");
                 mBrowserBox->addRow(strprintf(_("@@guild|Invite %s to join your guild@@"), name.c_str()));
                 mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
@@ -123,7 +123,12 @@ void PopupMenu::showPopup(int x, int y, Being *being)
         case Being::NPC:
             // NPCs can be talked to (single option, candidate for removal
             // unless more options would be added)
-            mBrowserBox->addRow(_("@@talk|Talk To NPC@@"));
+            mBrowserBox->addRow(strprintf(_("@@talk|Talk To %s@@"), name.c_str()));
+            break;
+
+        case Being::MONSTER:
+            // Monsters can be attacked
+            mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
             break;
 
         /*case Being::MONSTER:
@@ -132,7 +137,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
         default:
             /* Other beings aren't interesting... */
-            break;
+            return;
     }
 
     //browserBox->addRow("@@look|Look To@@");
@@ -145,11 +150,13 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 {
     mFloorItem = floorItem;
+    mItem = floorItem->getItem();
     mBrowserBox->clearRows();
 
     // Floor item can be picked up (single option, candidate for removal)
     std::string name = ItemDB::get(mFloorItem->getItemId()).getName();
     mBrowserBox->addRow(strprintf(_("@@pickup|Pick Up %s@@"), name.c_str()));
+    mBrowserBox->addRow(_("@@chat|Add to Chat@@"));
 
     //browserBox->addRow("@@look|Look To@@");
     mBrowserBox->addRow("##3---");
@@ -181,9 +188,7 @@ void PopupMenu::handleLink(const std::string &link)
     }
 #ifdef EATHENA_SUPPORT
     // Attack action
-    else if (link == "attack" &&
-             being &&
-             being->getType() == Being::PLAYER)
+    else if (link == "attack" && being)
     {
         player_node->attack(being, true);
     }
@@ -224,11 +229,6 @@ void PopupMenu::handleLink(const std::string &link)
         player_node->inviteToGuild(being);
     }
 #endif
-    // Add player to your party
-    else if (link == "party")
-    {
-        player_node->inviteToParty(dynamic_cast<Player*>(being));
-    }
     /*
     // Follow Player action
     else if (link == "follow")
@@ -244,10 +244,6 @@ void PopupMenu::handleLink(const std::string &link)
 
         buddyWindow->addBuddy(being->getName());
     }*/
-    else if (link == "name")
-    {
-        chatWindow->addInputText(being->getName());
-    }
 
     // Pick Up Floor Item action
     else if ((link == "pickup") && mFloorItem)
@@ -294,11 +290,23 @@ void PopupMenu::handleLink(const std::string &link)
         new ItemAmountWindow(ItemAmountWindow::ItemSplit,
                              inventoryWindow, mItem);
     }
+
     else if (link == "drop")
     {
         new ItemAmountWindow(ItemAmountWindow::ItemDrop,
                              inventoryWindow, mItem);
     }
+
+    else if (link == "party" && being && being->getType() == Being::PLAYER)
+    {
+        player_node->inviteToParty(dynamic_cast<Player*>(being));
+    }
+
+    else if (link == "name" && being)
+    {
+        chatWindow->addInputText(being->getName());
+    }
+
     else if (link == "admin-kick" &&
              being &&
              (being->getType() == Being::PLAYER ||
@@ -308,7 +316,7 @@ void PopupMenu::handleLink(const std::string &link)
     }
 
     // Unknown actions
-    else
+    else if (link != "cancel")
     {
         std::cout << link << std::endl;
     }
