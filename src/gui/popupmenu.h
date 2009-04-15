@@ -23,7 +23,7 @@
 #define POPUP_MENU_H
 
 #include "gui/linkhandler.h"
-#include "gui/widgets/window.h"
+#include "gui/widgets/popup.h"
 
 class Being;
 class BrowserBox;
@@ -33,7 +33,7 @@ class Item;
 /**
  * Window showing popup menu.
  */
-class PopupMenu : public Window, public LinkHandler
+class PopupMenu : public Popup, public LinkHandler
 {
     public:
         /**

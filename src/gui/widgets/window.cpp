@@ -61,9 +61,6 @@ Window::Window(const std::string &caption, bool modal, Window *parent, const std
     if (!windowContainer)
         throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
 
-    if (instances == 0)
-        skinLoader = new SkinLoader;
-
     instances++;
 
     setFrameSize(0);
@@ -71,7 +68,7 @@ Window::Window(const std::string &caption, bool modal, Window *parent, const std
     setTitleBarHeight(20);
 
     // Loads the skin
-    mSkin = skinLoader->load(skin, mDefaultSkinPath);
+    mSkin = SkinLoader::instance()->load(skin, mDefaultSkinPath);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -104,9 +101,6 @@ Window::~Window()
     instances--;
 
     mSkin->instances--;
-
-    if (instances == 0)
-        delete skinLoader;
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
@@ -511,7 +505,7 @@ void Window::loadWindowState()
     if (skinName.compare(mSkin->getFilePath()) != 0)
     {
         mSkin->instances--;
-        mSkin = skinLoader->load(skinName, mDefaultSkinPath);
+        mSkin = SkinLoader::instance()->load(skinName, mDefaultSkinPath);
     }
 
     if (mGrip)

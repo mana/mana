@@ -50,7 +50,7 @@ Popup::Popup(const std::string &name, const std::string &skin):
     setPadding(3);
 
     // Loads the skin
-    mSkin = skinLoader->load(skin, mDefaultSkinPath);
+    mSkin = SkinLoader::instance()->load(skin, mDefaultSkinPath);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -85,7 +85,7 @@ void Popup::loadPopupConfiguration()
     if (skinName.compare(mSkin->getFilePath()) != 0)
     {
         mSkin->instances--;
-        mSkin = skinLoader->load(skinName, mDefaultSkinPath);
+        mSkin = SkinLoader::instance()->load(skinName, mDefaultSkinPath);
     }
 }
 

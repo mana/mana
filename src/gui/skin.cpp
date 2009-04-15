@@ -36,7 +36,7 @@
 
 #include <algorithm>
 
-SkinLoader *skinLoader = 0;
+SkinLoader *SkinLoader::mInstance = 0;
 
 
 class SkinConfigListener : public ConfigListener
@@ -113,7 +113,6 @@ int Skin::getMinHeight() const
             mBorder.grid[ImageRect::LOWER_LEFT]->getHeight();
 }
 
-
 SkinLoader::SkinLoader()
     : mSkinConfigListener(new SkinConfigListener(this))
 {
@@ -123,6 +122,20 @@ SkinLoader::~SkinLoader()
 {
     delete_all(mSkins);
     delete mSkinConfigListener;
+}
+
+SkinLoader *SkinLoader::instance()
+{
+    if (!mInstance)
+        mInstance = new SkinLoader;
+
+    return mInstance;
+}
+
+void SkinLoader::deleteInstance()
+{
+    delete mInstance;
+    mInstance = 0;
 }
 
 Skin *SkinLoader::load(const std::string &filename,

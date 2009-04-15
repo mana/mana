@@ -98,8 +98,8 @@ class Skin
 class SkinLoader 
 {
     public:
-        SkinLoader();
-        ~SkinLoader();
+        static SkinLoader *instance();
+        static void deleteInstance();
 
         /**
          * Loads a skin.
@@ -113,6 +113,9 @@ class SkinLoader
         void updateAlpha();
 
     private:
+        SkinLoader();
+        ~SkinLoader();
+
         Skin *readSkin(const std::string &filename);
 
         // Map containing all window skins
@@ -125,8 +128,8 @@ class SkinLoader
          * The config listener that listens to changes relevant to all skins.
          */
         ConfigListener *mSkinConfigListener;
-};
 
-extern SkinLoader *skinLoader;
+        static SkinLoader *mInstance;
+};
 
 #endif

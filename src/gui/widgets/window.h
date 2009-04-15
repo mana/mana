@@ -34,7 +34,6 @@ class Layout;
 class LayoutCell;
 class ResizeGrip;
 class Skin;
-class SkinLoader;
 class WindowContainer;
 
 /**

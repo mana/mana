@@ -161,6 +161,8 @@ Gui::~Gui()
     delete getTop();
 
     delete guiInput;
+
+    SkinLoader::deleteInstance();
 }
 
 void Gui::logic()
