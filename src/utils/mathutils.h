@@ -22,10 +22,40 @@
 #ifndef UTILS_MATHUTILS_H
 #define UTILS_MATHUTILS_H
 
-float fastInvSqrt(float x);
+/* A very fast function to calculate the approximate inverse square root of a
+ * floating point value and a helper function that uses it for getting the
+ * normal squareroot. For an explanation of the inverse squareroot function
+ * read:
+ * http://www.math.purdue.edu/~clomont/Math/Papers/2003/InvSqrt.pdf
+ *
+ * Unfortunately the original creator of this function seems to be unknown.
+ */
 
-float fastSqrt(float x);
+inline float fastInvSqrt(float x)
+{
+    union { int i; float x; } tmp;
+    float xhalf = 0.5f * x;
+    tmp.x = x;
+    tmp.i = 0x5f375a86 - (tmp.i >> 1);
+    x = tmp.x;
+    x = x * (1.5f - xhalf * x * x);
+    return x;
+}
 
-float weightedAverage(float n1, float n2, float w);
+inline float fastSqrt(float x)
+{
+    return 1.0f / fastInvSqrt(x);
+}
+
+inline float weightedAverage(float n1, float n2, float w)
+{
+    if (w < 0.0f)
+        return n1;
+
+    if (w > 1.0f)
+        return n2;
+
+    return w * n2 + (1.0f - w) * n1;
+}
 
 #endif // UTILS_MATHUTILS_H

@@ -306,7 +306,6 @@ SET(SRCS
     utils/base64.h
     utils/dtor.h
     utils/gettext.h
-    utils/mathutils.cpp
     utils/mathutils.h
     utils/sha256.cpp
     utils/sha256.h

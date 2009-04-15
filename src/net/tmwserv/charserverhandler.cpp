@@ -254,11 +254,6 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
     mCharCreateDialog->setAttributes(attributes, 60, 1, 20);
 }
 
-void connect(LoginData *loginData)
-{
-    // Uneeded
-}
-
 void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)
 {
     Net::AccountServer::Account::selectCharacter(slot);
