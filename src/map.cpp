@@ -75,13 +75,13 @@ TileAnimation::~TileAnimation()
     delete mAnimation;
 }
 
-void TileAnimation::update()
+void TileAnimation::update(int ticks)
 {
     if (!mAnimation)
         return;
 
-    //update animation
-    mAnimation->update(1);
+    // update animation
+    mAnimation->update(ticks);
 
     // exchange images
     Image *img = mAnimation->getCurrentImage();
@@ -248,14 +248,14 @@ bool spriteCompare(const Sprite *a, const Sprite *b)
     return a->getPixelY() < b->getPixelY();
 }
 
-void Map::update()
+void Map::update(int ticks)
 {
     //update animated tiles
     for (std::map<int, TileAnimation*>::iterator iAni = mTileAnimations.begin();
          iAni != mTileAnimations.end();
          iAni++)
     {
-        iAni->second->update();
+        iAni->second->update(ticks);
     }
 }
 

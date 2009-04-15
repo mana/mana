@@ -148,7 +148,5 @@ void Engine::logic()
 {
     beingManager->logic();
     particleEngine->update();
-    if (mCurrentMap)
-        mCurrentMap->update();
     gui->logic();
 }
