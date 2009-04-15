@@ -41,10 +41,10 @@ Image *DropDown::buttons[2][2];
 ImageRect DropDown::skin;
 float DropDown::mAlpha = 1.0;
 
-DropDown::DropDown(gcn::ListModel *listModel, gcn::ScrollArea *scrollArea,
-                   gcn::ListBox *listBox, bool opacity):
-    gcn::DropDown::DropDown(listModel, scrollArea, listBox),
-    mOpaque(opacity)
+DropDown::DropDown(gcn::ListModel *listModel):
+    gcn::DropDown::DropDown(listModel,
+                            new ScrollArea,
+                            new ListBox(listModel))
 {
     setFrameSize(2);
 
@@ -108,6 +108,9 @@ DropDown::~DropDown()
 
         for_each(skin.grid, skin.grid + 9, dtor<Image*>());
     }
+
+    delete mScrollArea;
+    delete mListBox;
 }
 
 void DropDown::draw(gcn::Graphics* graphics)
@@ -134,7 +137,7 @@ void DropDown::draw(gcn::Graphics* graphics)
         }
     }
 
-    const int alpha = (int)(mAlpha * 255.0f);
+    const int alpha = (int) (mAlpha * 255.0f);
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
     const gcn::Color* highlightColor = &guiPalette->getColor(Palette::HIGHLIGHT,
@@ -142,18 +145,10 @@ void DropDown::draw(gcn::Graphics* graphics)
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;
 
-    if (mOpaque)
-    {
-        graphics->setColor(guiPalette->getColor(Palette::BACKGROUND, alpha));
-        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), h));
-
-        graphics->setColor(guiPalette->getColor(Palette::TEXT, alpha));
-    }
-
-    graphics->setFont(getFont());
-
     if (mListBox->getListModel() && mListBox->getSelected() >= 0)
     {
+        graphics->setFont(getFont());
+        graphics->setColor(guiPalette->getColor(Palette::TEXT, alpha));
         graphics->drawText(mListBox->getListModel()->getElementAt(mListBox->getSelected()), 1, 0);
     }
 

@@ -27,8 +27,6 @@
 #include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
-#include "gui/widgets/listbox.h"
-#include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textfield.h"
 
 #include "configuration.h"
@@ -99,11 +97,7 @@ ServerDialog::ServerDialog(LoginData *loginData):
         }
     }
 
-    mMostUsedServersListBox = new ListBox(NULL);
-    mMostUsedServersListBox->setListModel(mMostUsedServersListModel);
-    mMostUsedServersScrollArea = new ScrollArea;
-    mMostUsedServersDropDown = new DropDown(mMostUsedServersListModel,
-        mMostUsedServersScrollArea, mMostUsedServersListBox);
+    mMostUsedServersDropDown = new DropDown(mMostUsedServersListModel);
 
     mOkButton = new Button(_("Ok"), "connect", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
@@ -142,7 +136,6 @@ ServerDialog::ServerDialog(LoginData *loginData):
 ServerDialog::~ServerDialog()
 {
     delete mMostUsedServersListModel;
-    delete mMostUsedServersScrollArea;
 }
 
 void
@@ -157,7 +150,7 @@ ServerDialog::action(const gcn::ActionEvent &event)
     {
         // Change the textField Values according to new selection
         Server myServer = mMostUsedServersListModel->getServer
-            (mMostUsedServersListBox->getSelected());
+            (mMostUsedServersDropDown->getSelected());
         mServerNameField->setText(myServer.serverName);
         mPortField->setText(toString(myServer.port));
     }

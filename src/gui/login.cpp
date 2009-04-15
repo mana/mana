@@ -28,9 +28,7 @@
 #include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
-#include "gui/widgets/listbox.h"
 #include "gui/widgets/passwordfield.h"
-#include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textfield.h"
 
 #include "main.h"
@@ -61,8 +59,6 @@ LoginDialog::LoginDialog(LoginData *loginData):
     dfltPort.push_back("6901");
     mServerList = new DropDownList("MostRecent00", dfltServer, dfltPort,
                                    MAX_SERVER_LIST_SIZE);
-    mServerListBox = new ListBox(mServerList);
-    mServerScrollArea = new ScrollArea;
 #endif
 
     mUserField = new TextField(mLoginData->username);
@@ -70,10 +66,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
 #ifdef EATHENA_SUPPORT
     mServerField = new TextField(mServerList->getServerAt(0));
     mPortField = new TextField(mServerList->getPortAt(0));
-    mServerDropDown = new DropDown(mServerList,
-                                   mServerScrollArea,
-                                   mServerListBox);
-    mServerDropDown->setOpaque(false);
+    mServerDropDown = new DropDown(mServerList);
 #endif
 
     mKeepCheck = new CheckBox(_("Remember Username"), mLoginData->remember);
@@ -161,7 +154,7 @@ void LoginDialog::action(const gcn::ActionEvent &event)
 #ifdef EATHENA_SUPPORT
     else if (event.getId() == "changeSelection")
     {
-        int selected = mServerListBox->getSelected();
+        int selected = mServerDropDown->getSelected();
         mServerField->setText(mServerList->getServerAt(selected));
         mPortField->setText(mServerList->getPortAt(selected));
     }

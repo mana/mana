@@ -29,7 +29,6 @@
 #include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
-#include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
 #include "configuration.h"
@@ -141,10 +140,7 @@ public:
             mWidgets.push_back(widget);
             gcn::ListModel *playerRelation = new PlayerRelationListModel;
 
-            gcn::DropDown *choicebox = new DropDown(playerRelation,
-                                                    new ScrollArea,
-                                                    new ListBox(playerRelation),
-                                                    false);
+            gcn::DropDown *choicebox = new DropDown(playerRelation);
             choicebox->setSelected(player_relations.getRelation(name));
             mWidgets.push_back(choicebox);
         }
@@ -245,8 +241,7 @@ Setup_Players::Setup_Players():
     mPlayerTitleTable->setBackgroundColor(gcn::Color(0xbf, 0xbf, 0xbf));
 
     gcn::ListModel *ignoreChoices = new IgnoreChoicesListModel;
-    mIgnoreActionChoicesBox = new DropDown(ignoreChoices, new ScrollArea,
-                                           new ListBox(ignoreChoices), false);
+    mIgnoreActionChoicesBox = new DropDown(ignoreChoices);
 
     for (int i = 0; i < COLUMNS_NR; i++)
     {

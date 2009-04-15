@@ -118,8 +118,6 @@ class ServerDialog : public Window, public gcn::ActionListener
         gcn::Button *mCancelButton;
 
         DropDown *mMostUsedServersDropDown;
-        gcn::ListBox *mMostUsedServersListBox;
-        gcn::ScrollArea *mMostUsedServersScrollArea;
         ServersListModel *mMostUsedServersListModel;
 
         LoginData *mLoginData;

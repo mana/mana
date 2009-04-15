@@ -28,11 +28,9 @@ class Image;
 class ImageRect;
 
 /**
- * A drop down box from which you can select different values. It is one of
- * the most complicated Widgets you will find in Guichan. For drawing the
- * DroppedDown box it uses one ScrollArea and one ListBox. It also uses an
- * internal FocusHandler to handle the focus of the internal ScollArea and
- * ListBox. DropDown uses a ListModel to handle the list. To be able to use
+ * A drop down box from which you can select different values.
+ *
+ * A ListModel provides the contents of the drop down. To be able to use
  * DropDown you must give DropDown an implemented ListModel which represents
  * your list.
  */
@@ -47,36 +45,13 @@ class DropDown : public gcn::DropDown
          * @param listBox the listBox to use.
          * @see ListModel, ScrollArea, ListBox.
          */
-        DropDown(gcn::ListModel *listModel = NULL,
-                 gcn::ScrollArea *scrollArea = NULL,
-                 gcn::ListBox *listBox = NULL,
-                 bool opacity = true);
+        DropDown(gcn::ListModel *listModel = NULL);
 
-        /**
-         * Destructor.
-         */
         ~DropDown();
 
         void draw(gcn::Graphics *graphics);
 
         void drawFrame(gcn::Graphics *graphics);
-
-        /**
-         * Sets the widget to be opaque, that is sets the widget to display its
-         * background.
-         *
-         * @param opaque True if the widget should be opaque, false otherwise.
-         */
-        void setOpaque(bool opaque) { mOpaque = opaque; }
-
-        /**
-         * Checks if the widget is opaque, that is if the widget area displays
-         * its background.
-         *
-         * @return True if the widget is opaque, false otherwise.
-         */
-        bool isOpaque() const { return mOpaque; }
-
 
     protected:
         /**
@@ -91,8 +66,6 @@ class DropDown : public gcn::DropDown
         static Image *buttons[2][2];
         static ImageRect skin;
         static float mAlpha;
-
-        bool mOpaque;
 };
 
 #endif // end DROPDOWN_H

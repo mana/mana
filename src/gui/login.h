@@ -34,10 +34,6 @@
 #include <vector>
 
 class LoginData;
-#ifdef EATHENA_SUPPORT
-class DropDown;
-class ScrollArea;
-#endif
 
 /**
  * The login dialog.
@@ -97,7 +93,7 @@ class LoginDialog : public Window, public gcn::ActionListener,
 #ifdef EATHENA_SUPPORT
         gcn::TextField *mServerField;
         gcn::TextField *mPortField;
-        DropDown *mServerDropDown;
+        gcn::DropDown *mServerDropDown;
 #endif
         gcn::CheckBox *mKeepCheck;
         gcn::Button *mOkButton;
@@ -132,8 +128,6 @@ class LoginDialog : public Window, public gcn::ActionListener,
                 std::string getPortAt(int i);
         };
         DropDownList *mServerList;
-        gcn::ListBox *mServerListBox;
-        gcn::ScrollArea *mServerScrollArea;
 #endif
 };
 
