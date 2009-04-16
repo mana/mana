@@ -46,11 +46,15 @@
 #include "net/messagein.h"
 #include "net/messageout.h"
 
+#include "resources/itemdb.h"
+
 #include "configuration.h"
 #include "log.h"
 #include "main.h"
 
 #include "utils/gettext.h"
+
+#include <list>
 
 Net::GeneralHandler *generalHandler;
 
@@ -80,6 +84,23 @@ GeneralHandler::GeneralHandler():
     };
     handledMessages = _messages;
     generalHandler = this;
+
+    std::list<ItemDB::Stat*> stats;
+    ItemDB::Stat stat;
+    stat.tag = "str"; stat.tag = N_("Strength: %d");
+    stats.push_back(&stat);
+    stat.tag = "agi"; stat.tag = N_("Agility: %d");
+    stats.push_back(&stat);
+    stat.tag = "vit"; stat.tag = N_("Vitality: %d");
+    stats.push_back(&stat);
+    stat.tag = "int"; stat.tag = N_("Intelligence: %d");
+    stats.push_back(&stat);
+    stat.tag = "dex"; stat.tag = N_("Dexterity: %d");
+    stats.push_back(&stat);
+    stat.tag = "luck"; stat.tag = N_("Luck: %d");
+    stats.push_back(&stat);
+
+    ItemDB::setStatsList(stats);
 }
 
 GeneralHandler::~GeneralHandler()
