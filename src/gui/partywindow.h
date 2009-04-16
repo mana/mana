@@ -49,77 +49,74 @@ struct PartyMember
 };
 
 /**
- * Party Window.
+ * Party window.
  *
  * \ingroup Interface
  */
 class PartyWindow : public Window, gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         */
         PartyWindow();
 
         /**
-         * Release all the players created
+         * Release all the players created.
          */
         ~PartyWindow();
 
         /**
-         * Draws the party window
+         * Draws the party window.
          */
         void draw(gcn::Graphics *graphics);
 
         /**
          * Find a party member based on ID. Returns NULL if not found.
          */
-        PartyMember *findMember(int id);
-
-        /**
-         * Find a party member based on ID. Creates if not found.
-         */
-        PartyMember *findMember2(int id);
+        PartyMember *findMember(int id) const;
 
         /**
          * Returns the id of the first member found with the given name or -1
          * if it isn't found.
          */
-        int findMember(const std::string &name);
+        int findMember(const std::string &name) const;
 
         /**
-         * Update/add a party member
+         * Update/add a party member.
          */
         void updateMember(int id, const std::string &memberName,
-                            bool leader = false, bool online = true);
+                          bool leader = false, bool online = true);
 
         /**
-         * Remove party member
+         * Remove party member with the given id.
          */
         void removeMember(int id);
 
         /**
-         * Remove party member
+         * Remove party member with the given name.
          */
         void removeMember(const std::string &name);
 
         /**
-         * Remove party member
+         * Updates the online state of the member with the given id.
          */
         void updateOnlne(int id, bool online);
 
         /**
-         * Show party invite
+         * Show party invite.
          */
         void showPartyInvite(const std::string &inviter,
                              const std::string &partyName = "");
 
         /**
-         * Handle events
+         * Handle events.
          */
         void action(const gcn::ActionEvent &event);
 
     private:
+        /**
+         * Find a party member based on ID. Creates if not found.
+         */
+        PartyMember *findOrCreateMember(int id);
+
         typedef std::map<int, PartyMember*> PartyList;
         PartyList mMembers;
         std::string mPartyInviter;

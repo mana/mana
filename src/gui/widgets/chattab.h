@@ -113,7 +113,8 @@ class ChatTab : public Tab
          * @returns true  if the command was handled
          *          false if the command was not handled
          */
-        virtual bool handleCommand(std::string type, std::string args)
+        virtual bool handleCommand(const std::string &type,
+                                   const std::string &args)
         { return false; }
 
     protected:
@@ -124,7 +125,7 @@ class ChatTab : public Tab
 
         virtual void handleInput(const std::string &msg);
 
-        virtual void handleCommand(std::string msg);
+        virtual void handleCommand(const std::string &msg);
 
         ScrollArea *mScrollArea;
         BrowserBox *mTextOutput;

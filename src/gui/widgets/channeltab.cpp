@@ -28,8 +28,9 @@
 
 #include "utils/gettext.h"
 
-ChannelTab::ChannelTab(Channel *channel) : ChatTab(channel->getName()),
-            mChannel(channel)
+ChannelTab::ChannelTab(Channel *channel) :
+    ChatTab(channel->getName()),
+    mChannel(channel)
 {
     channel->setTab(this);
 }
@@ -38,7 +39,8 @@ ChannelTab::~ChannelTab()
 {
 }
 
-void ChannelTab::handleInput(const std::string &msg) {
+void ChannelTab::handleInput(const std::string &msg)
+{
     Net::getChatHandler()->sendToChannel(getChannel()->getId(), msg);
 }
 
@@ -51,7 +53,8 @@ void ChannelTab::showHelp()
     chatLog(_("/kick > Kick a user from the channel"));
 }
 
-bool ChannelTab::handleCommand(std::string type, std::string args)
+bool ChannelTab::handleCommand(const std::string &type,
+                               const std::string &args)
 {
     if (type == "help")
     {
