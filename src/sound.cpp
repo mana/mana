@@ -149,8 +149,13 @@ static Mix_Music *loadMusic(const std::string &filename)
         // it to a temporary physical file so that SDL_mixer can stream it.
         logger->log("Loading music \"%s\" from temporary file tempMusic.ogg",
                     path.c_str());
-        resman->moveFile("music/" + filename, "tempMusic.ogg");
-        path = resman->getPath("tempMusic.ogg");
+        bool success = resman->copyFile("music/" + filename, "tempMusic.ogg");
+        if (success)
+        {
+            path = resman->getPath("tempMusic.ogg");
+        } else {
+            return NULL;
+        }
     } else {
         logger->log("Loading music \"%s\"", path.c_str());
     }

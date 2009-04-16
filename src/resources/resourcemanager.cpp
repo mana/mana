@@ -419,7 +419,7 @@ void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
     return buffer;
 }
 
-bool ResourceManager::moveFile(const std::string &src, const std::string &dst)
+bool ResourceManager::copyFile(const std::string &src, const std::string &dst)
 {
     PHYSFS_file *srcFile = PHYSFS_openRead(src.c_str());
     if (!srcFile)

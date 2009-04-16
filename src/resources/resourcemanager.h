@@ -133,7 +133,7 @@ class ResourceManager
         * @return true on success, false on failure. An error message should be
         *         in the log file.
         */
-        bool moveFile(const std::string &src, const std::string &dst);
+        bool copyFile(const std::string &src, const std::string &dst);
 
         /**
          * Convenience wrapper around ResourceManager::get for loading
