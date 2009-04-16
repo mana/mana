@@ -56,6 +56,13 @@ static char const *const fields[][2] =
     { "mp",        N_("MP %+d")        }
 };
 
+static std::list<ItemDB::Stat*> extraStats;
+
+void ItemDB::setStatsList(std::list<ItemDB::Stat*> stats)
+{
+    extraStats = stats;
+}
+
 static ItemType itemTypeFromString(const std::string &name, int id = 0)
 {
     if      (name=="generic")           return ITEM_UNUSABLE;
@@ -149,7 +156,6 @@ void ItemDB::load()
         itemInfo->setWeaponType(weaponType);
         itemInfo->setAttackRange(attackRange);
 
-#ifdef TMWSERV_SUPPORT
         std::string effect;
         for (int i = 0; i < int(sizeof(fields) / sizeof(fields[0])); ++i)
         {
@@ -158,11 +164,19 @@ void ItemDB::load()
             if (!effect.empty()) effect += " / ";
             effect += strprintf(gettext(fields[i][1]), value);
         }
-#else
-        std::string effect = XML::getProperty(node, "effect", "");
-#endif
+        for (std::list<Stat*>::iterator it = extraStats.begin();
+                it != extraStats.end(); it++)
+        {
+            int value = XML::getProperty(node, (*it)->tag.c_str(), 0);
+            if (!value) continue;
+            if (!effect.empty()) effect += " / ";
+            effect += strprintf((*it)->format.c_str(), value);
+        }
+        std::string temp = XML::getProperty(node, "effect", "");
+        if (!effect.empty() && !temp.empty())
+            effect += " / ";
+        effect += temp;
         itemInfo->setEffect(effect);
-
 
         for_each_xml_child_node(itemChild, node)
         {

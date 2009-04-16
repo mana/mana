@@ -22,6 +22,7 @@
 #ifndef ITEM_MANAGER_H
 #define ITEM_MANAGER_H
 
+#include <list>
 #include <map>
 #include <string>
 
@@ -44,6 +45,13 @@ namespace ItemDB
 
     const ItemInfo &get(int id);
     const ItemInfo &get(const std::string &name);
+
+    struct Stat {
+        std::string tag;
+        std::string format;
+    };
+
+    void setStatsList(std::list<Stat*> stats);
 
     // Items database
     typedef std::map<int, ItemInfo*> ItemInfos;
