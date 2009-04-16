@@ -260,7 +260,7 @@ bool Map::overwrite(  Map* srcMap,
         }
         else
         {
-            for (int i = 0; i < srcMap->getNumberOfLayers(); i++)
+            for (size_t i = 0; i < srcMap->getNumberOfLayers(); i++)
             {
                 Layer* srcLayer = srcMap->getLayer(i);
                 Layer* destLayer = getLayer(srcLayer->getName());
@@ -280,7 +280,7 @@ bool Map::overwrite(  Map* srcMap,
 
 
     //combining layer information
-    for (int i = 0; i < srcMap->getNumberOfLayers(); i++)
+    for (size_t i = 0; i < srcMap->getNumberOfLayers(); i++)
     {
         Layer* srcLayer = srcMap->getLayer(i);
         Layer* destLayer = NULL;
@@ -543,7 +543,7 @@ int Map::save(std::string filename)
     //TODO: reorganize GIDs
 
     //add new tileset information to XML tree
-    for (int i = 0; i< mTilesets.size(); i++)
+    for (size_t i = 0; i< mTilesets.size(); i++)
     {
         xmlNodePtr newNode;
 
@@ -563,7 +563,7 @@ int Map::save(std::string filename)
     }
 
     //add new layer information to XML tree
-    for (int i = 0; i < mLayers.size(); i++)
+    for (size_t i = 0; i < mLayers.size(); i++)
     {
         //lay out layer information in binary
         unsigned char* binData = (unsigned char*)malloc(mWidth * mHeight * 4);

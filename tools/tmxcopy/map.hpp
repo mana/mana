@@ -159,7 +159,7 @@ class Map
 
         int save(std::string filename);
 
-        int getNumberOfLayers() { return mLayers.size(); }
+        size_t getNumberOfLayers() { return mLayers.size(); }
 
         Layer* getLayer(size_t num) { return mLayers.at(num); }
         Layer* getLayer(std::string name);
