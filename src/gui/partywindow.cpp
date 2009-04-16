@@ -54,6 +54,16 @@ void PartyWindow::draw(gcn::Graphics *graphics)
     Window::draw(graphics);
 }
 
+PartyMember *PartyWindow::findMember(int id)
+{
+    PartyList::iterator it = mMembers.find(id);
+
+    if (it == mMembers.end())
+        return NULL;
+    else
+        return it->second;
+}
+
 PartyMember *PartyWindow::findMember2(int id)
 {
     PartyMember *member = findMember(id);
