@@ -42,13 +42,6 @@ enum
 };
 
 /**
- * gets in between usernick and message text depending on
- * message type
- */
-#define CAT_NORMAL ": "
-#define CAT_IS     ""
-
-/**
  * A tab for the chat window. This is special to ease chat handling.
  */
 class ChatTab : public Tab

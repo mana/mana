@@ -159,10 +159,8 @@ void Tab::draw(gcn::Graphics *graphics)
     drawChildren(graphics);
 }
 
-void Tab::setTabColor(gcn::Color color)
+void Tab::setTabColor(const gcn::Color &color)
 {
-    if (color == NULL)
-        color = guiPalette->getColor(Palette::TEXT);
     mTabColor = color;
 }
 

@@ -29,14 +29,14 @@ TabbedArea::TabbedArea() : gcn::TabbedArea()
     mWidgetContainer->setOpaque(false);
 }
 
-int TabbedArea::getNumberOfTabs()
+int TabbedArea::getNumberOfTabs() const
 {
     return mTabs.size();
 }
 
-Tab* TabbedArea::getTab(const std::string &name)
+Tab *TabbedArea::getTab(const std::string &name) const
 {
-    TabContainer::iterator itr = mTabs.begin(), itr_end = mTabs.end();
+    TabContainer::const_iterator itr = mTabs.begin(), itr_end = mTabs.end();
     while (itr != itr_end)
     {
         if ((*itr).first->getCaption() == name)
@@ -55,9 +55,9 @@ void TabbedArea::draw(gcn::Graphics *graphics)
     drawChildren(graphics);
 }
 
-gcn::Widget* TabbedArea::getWidget(const std::string &name)
+gcn::Widget *TabbedArea::getWidget(const std::string &name) const
 {
-    TabContainer::iterator itr = mTabs.begin(), itr_end = mTabs.end();
+    TabContainer::const_iterator itr = mTabs.begin(), itr_end = mTabs.end();
     while (itr != itr_end)
     {
         if ((*itr).first->getCaption() == name)
@@ -71,26 +71,11 @@ gcn::Widget* TabbedArea::getWidget(const std::string &name)
 
 void TabbedArea::addTab(const std::string &caption, gcn::Widget *widget)
 {
-    Tab* tab = new Tab;
+    Tab *tab = new Tab;
     tab->setCaption(caption);
     mTabsToDelete.push_back(tab);
 
     addTab(tab, widget);
-}
-
-void TabbedArea::addTab(Tab *tab, gcn::Widget *widget)
-{
-    tab->setTabbedArea(this);
-    tab->addActionListener(this);
-
-    mTabContainer->add(tab);
-    mTabs.push_back(std::pair<Tab*, gcn::Widget*>(tab, widget));
-
-    if (!mSelectedTab)
-        setSelectedTab(tab);
-
-    adjustTabPositions();
-    adjustSize();
 }
 
 void TabbedArea::removeTab(Tab *tab)
@@ -146,8 +131,8 @@ void TabbedArea::removeTab(Tab *tab)
 void TabbedArea::logic()
 {
     logicChildren();
-
 }
+
 void TabbedArea::setSelectedTab(gcn::Tab *tab)
 {
     gcn::TabbedArea::setSelectedTab(tab);

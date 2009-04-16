@@ -414,7 +414,7 @@ void ChatWindow::setRecordingFile(const std::string &msg)
 
 void ChatWindow::whisper(const std::string &nick, std::string mes, bool own)
 {
-    if (mes.length() == 0)
+    if (mes.empty())
         return;
 
     std::string playerName = player_node->getName();

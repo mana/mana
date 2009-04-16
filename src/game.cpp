@@ -19,13 +19,6 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <fstream>
-#include <physfs.h>
-#include <sstream>
-#include <string>
-
-#include <guichan/exception.hpp>
-
 #include "beingmanager.h"
 #include "channelmanager.h"
 #include "commandhandler.h"
@@ -95,6 +88,13 @@
 #include "resources/imagewriter.h"
 
 #include "utils/gettext.h"
+
+#include <guichan/exception.hpp>
+
+#include <fstream>
+#include <physfs.h>
+#include <sstream>
+#include <string>
 
 std::string map_path;
 
