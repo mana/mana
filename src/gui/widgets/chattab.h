@@ -95,7 +95,26 @@ class ChatTab : public Tab
          */
         void scroll(int amount);
 
+        /**
+         * Clears the text from the tab
+         */
         void clearText();
+
+        /**
+         * Add any extra help text to the output. Allows tabs to define help
+         * for commands defined by the tab itself.
+         */
+        virtual void showHelp() {}
+
+        /**
+         * Handle special commands. Allows a tab to handle commands it
+         * defines itself.
+         *
+         * @returns true  if the command was handled
+         *          false if the command was not handled
+         */
+        virtual bool handleCommand(std::string type, std::string args)
+        { return false; }
 
     protected:
         friend class ChatWindow;

@@ -131,7 +131,9 @@ LoginDialog::LoginDialog(LoginData *loginData):
 
 LoginDialog::~LoginDialog()
 {
+#ifdef EATHENA_SUPPORT
     delete mServerList;
+#endif
 }
 
 void LoginDialog::action(const gcn::ActionEvent &event)

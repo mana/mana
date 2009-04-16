@@ -62,3 +62,30 @@ void WhisperTab::handleCommand(std::string msg)
     else
         ChatTab::handleCommand(msg);
 }
+
+void WhisperTab::showHelp()
+{
+    chatLog(_("/close > Close the whisper tab"));
+}
+
+bool WhisperTab::handleCommand(std::string type, std::string args)
+{
+    if (type == "help")
+    {
+        if (args == "close")
+        {
+            chatLog(_("Command: /close"));
+            chatLog(_("This command closes the current whisper tab."));
+        }
+        else
+            return false;
+    }
+    else if (type == "close")
+    {
+        delete this;
+    }
+    else
+        return false;
+
+    return true;
+}
