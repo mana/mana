@@ -35,6 +35,10 @@ class ChannelTab : public ChatTab
 
         Channel *getChannel() { return mChannel; }
 
+        void showHelp();
+
+        bool handleCommand(std::string type, std::string args);
+
     protected:
         friend class Channel;
 

@@ -47,14 +47,18 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     std::string::size_type pos = command.find(' ');
     std::string type(command, 0, pos);
     std::string args(command, pos == std::string::npos ? command.size() : pos + 1);
-
+    
+    if (type == "help") // Do help before tabs so they can't override it
+    {
+        handleHelp(args, tab);
+    }
+    else if (tab->handleCommand(type, args))
+    {
+        // Nothing to do
+    }
     if (type == "announce")
     {
         handleAnnounce(args, tab);
-    }
-    else if (type == "help")
-    {
-        handleHelp(args, tab);
     }
     else if (type == "where")
     {
@@ -80,29 +84,9 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         handleListChannels(args, tab);
     }
-    else if (type == "users")
-    {
-        handleListUsers(args, tab);
-    }
-    else if (type == "quit")
-    {
-        handleQuit(args, tab);
-    }
-    else if (type == "topic")
-    {
-        handleTopic(args, tab);
-    }
     else if (type == "clear")
     {
         handleClear(args, tab);
-    }
-    else if (type == "op")
-    {
-        handleOp(args, tab);
-    }
-    else if (type == "kick")
-    {
-        handleKick(args, tab);
     }
     else if (type == "party")
     {
@@ -146,23 +130,16 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/who > Display number of online users"));
         tab->chatLog(_("/me > Tell something about yourself"));
 
+        tab->chatLog(_("/clear > Clears this window"));
+
         tab->chatLog(_("/msg > Send a private message to a user"));
         tab->chatLog(_("/whisper > Alias of msg"));
         tab->chatLog(_("/w > Alias of msg"));
         tab->chatLog(_("/query > Makes a tab for private messages with another user"));
         tab->chatLog(_("/q > Alias of query"));
-        tab->chatLog(_("/close > Close the whisper tab (only works in whisper tabs)"));
 
-#ifdef TMWSERV_SUPPORT
         tab->chatLog(_("/list > Display all public channels"));
-        tab->chatLog(_("/users > Lists the users in the current channel"));
         tab->chatLog(_("/join > Join or create a channel"));
-        tab->chatLog(_("/topic > Set the topic of the current channel"));
-        tab->chatLog(_("/quit > Leave a channel"));
-        tab->chatLog(_("/clear > Clears this window"));
-        tab->chatLog(_("/op > Make a user a channel operator"));
-        tab->chatLog(_("/kick > Kick a user from the channel"));
-#endif
 
         tab->chatLog(_("/party > Invite a user to party"));
 
@@ -172,7 +149,20 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
 
         tab->chatLog(_("/announce > Global announcement (GM only)"));
 
+        tab->showHelp(); // Allow the tab to show it's help
+
         tab->chatLog(_("For more information, type /help <command>"));
+    }
+    else if (args == "help") // Do this before tabs so they can't change it
+    {
+        tab->chatLog(_("Command: /help"));
+        tab->chatLog(_("This command displays a list of all commands available."));
+        tab->chatLog(_("Command: /help <command>"));
+        tab->chatLog(_("This command displays help on <command>."));
+    }
+    else if (tab->handleCommand("help", args))
+    {
+        // Nothing to do
     }
     else if (args == "announce")
     {
@@ -186,25 +176,11 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Command: /clear"));
         tab->chatLog(_("This command clears the chat log of previous chat."));
     }
-    else if (args == "help")
-    {
-        tab->chatLog(_("Command: /help"));
-        tab->chatLog(_("This command displays a list of all commands available."));
-        tab->chatLog(_("Command: /help <command>"));
-        tab->chatLog(_("This command displays help on <command>."));
-    }
     else if (args == "join")
     {
         tab->chatLog(_("Command: /join <channel>"));
         tab->chatLog(_("This command makes you enter <channel>."));
         tab->chatLog(_("If <channel> doesn't exist, it's created."));
-    }
-    else if (args == "kick")
-    {
-        tab->chatLog(_("Command: /kick <nick>"));
-        tab->chatLog(_("This command makes <nick> leave the channel."));
-        tab->chatLog(_("If the <nick> has spaces in it, enclose it in "
-                            "double quotes (\")."));
     }
     else if (args == "list")
     {
@@ -232,15 +208,6 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("This command tries to make a tab for whispers between"
                        "you and <nick>."));
     }
-    else if (args == "op")
-    {
-        tab->chatLog(_("Command: /op <nick>"));
-        tab->chatLog(_("This command makes <nick> a channel operator."));
-        tab->chatLog(_("If the <nick> has spaces in it, enclose it in "
-                            "double quotes (\")."));
-        tab->chatLog(_("Channel operators can kick and op other users "
-                            "from the channel."));
-    }
     else if (args == "party")
     {
         tab->chatLog(_("Command: /party <nick>"));
@@ -254,12 +221,6 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("This command gets a list of players within hearing and "
                   "sends it to either the record log if recording, or the chat "
                   "log otherwise."));
-    }
-    else if (args == "quit")
-    {
-        tab->chatLog(_("Command: /quit"));
-        tab->chatLog(_("This command leaves the current channel."));
-        tab->chatLog(_("If you're the last person in the channel, it will be deleted."));
     }
     else if (args == "record")
     {
@@ -279,16 +240,6 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
                   "toggle off."));
         tab->chatLog(_("Command: /toggle"));
         tab->chatLog(_("This command displays the return toggle status."));
-    }
-    else if (args == "topic")
-    {
-        tab->chatLog(_("Command: /topic <message>"));
-        tab->chatLog(_("This command sets the topic to <message>."));
-    }
-    else if (args == "users")
-    {
-        tab->chatLog(_("Command: /users <channel>"));
-        tab->chatLog(_("This command shows the users in <channel>."));
     }
     else if (args == "where")
     {
@@ -394,74 +345,6 @@ void CommandHandler::handleJoin(const std::string &args, ChatTab *tab)
 void CommandHandler::handleListChannels(const std::string &args, ChatTab *tab)
 {
     Net::getChatHandler()->channelList();
-}
-
-void CommandHandler::handleListUsers(const std::string &args, ChatTab *tab)
-{
-    Net::getChatHandler()->userList(chatWindow->getFocused()->getCaption());
-}
-
-void CommandHandler::handleTopic(const std::string &args, ChatTab *tab)
-{
-    ChannelTab *channelTab = dynamic_cast<ChannelTab*>(tab);
-    Channel *channel = channelTab ? channelTab->getChannel() : NULL;
-    if (channel)
-    {
-        Net::getChatHandler()->setChannelTopic(channel->getId(), args);
-    }
-    else
-    {
-        tab->chatLog("Unable to set this channel's topic", BY_CHANNEL);
-    }
-}
-
-void CommandHandler::handleQuit(const std::string &args, ChatTab *tab)
-{
-    ChannelTab *channelTab = dynamic_cast<ChannelTab*>(tab);
-    Channel *channel = channelTab ? channelTab->getChannel() : NULL;
-    if (channel)
-    {
-        Net::getChatHandler()->quitChannel(channel->getId());
-    }
-    else
-    {
-        tab->chatLog("Unable to quit this channel", BY_CHANNEL);
-    }
-}
-
-void CommandHandler::handleOp(const std::string &args, ChatTab *tab)
-{
-    ChannelTab *channelTab = dynamic_cast<ChannelTab*>(tab);
-    Channel *channel = channelTab ? channelTab->getChannel() : NULL;
-    if (channel)
-    {
-        // set the user mode 'o' to op a user
-        if (args != "")
-        {
-            Net::getChatHandler()->setUserMode(channel->getId(), args, 'o');
-        }
-    }
-    else
-    {
-        tab->chatLog("Unable to set this user's mode", BY_CHANNEL);
-    }
-}
-
-void CommandHandler::handleKick(const std::string &args, ChatTab *tab)
-{
-    ChannelTab *channelTab = dynamic_cast<ChannelTab*>(tab);
-    Channel *channel = channelTab ? channelTab->getChannel() : NULL;
-    if (channel)
-    {
-        if (args != "")
-        {
-            Net::getChatHandler()->kickUser(channel->getId(), args);
-        }
-    }
-    else
-    {
-        tab->chatLog("Unable to kick user", BY_CHANNEL);
-    }
 }
 
 void CommandHandler::handleParty(const std::string &args, ChatTab *tab)

@@ -46,24 +46,20 @@ void PartyTab::handleInput(const std::string &msg)
     Net::getPartyHandler()->chat(msg);
 }
 
-void PartyTab::handleCommand(std::string msg)
+void PartyTab::showHelp()
 {
-    std::string::size_type pos = msg.find(' ');
-    std::string type(msg, 0, pos);
-    std::string args(msg, pos == std::string::npos ? msg.size() : pos + 1);
+    chatLog(_("/help > Display this help."));
+    chatLog(_("/create > Create a new party"));
+    chatLog(_("/new > Alias of create"));
+    chatLog(_("/invite > Invite a player to your party"));
+    chatLog(_("/leave > Leave the party you are in"));
+}
 
+bool PartyTab::handleCommand(std::string type, std::string args)
+{
     if (type == "help")
     {
-        if (args == "")
-        {
-            chatLog(_("-- Help --"));
-            chatLog(_("/help > Display this help."));
-            chatLog(_("/create > Create a new party"));
-            chatLog(_("/new > Alias of create"));
-            chatLog(_("/invite > Invite a player to your party"));
-            chatLog(_("/leave > Leave the party you are in"));
-        }
-        else if (args == "create" || args == "new")
+        if (args == "create" || args == "new")
         {
             chatLog(_("Command: /new <party-name>"));
             chatLog(_("Command: /create <party-name>"));
@@ -83,18 +79,8 @@ void PartyTab::handleCommand(std::string msg)
             chatLog(_("Command: /leave"));
             chatLog(_("This command causes the player to leave the party."));
         }
-        else if (args == "help")
-        {
-            chatLog(_("Command: /help"));
-            chatLog(_("This command displays a list of all commands available."));
-            chatLog(_("Command: /help <command>"));
-            chatLog(_("This command displays help on <command>."));
-        }
         else
-        {
-            chatLog(_("Unknown command."));
-            chatLog(_("Type /help for a list of commands."));
-        }
+            return false;
     }
     else if (type == "create" || type == "new")
     {
@@ -121,7 +107,7 @@ void PartyTab::handleCommand(std::string msg)
         */
     }
     else
-    {
-        chatLog("Unknown command");
-    }
+        return false;
+
+    return true;
 }

@@ -72,12 +72,12 @@ class PartyWindow : public Window, gcn::ActionListener
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Find a party member based on ID
+         * Find a party member based on ID. Returns NULL if not found.
          */
-        PartyMember *findMember(int id) { return mMembers[id]; }
+        PartyMember *findMember(int id);
 
         /**
-         * Find a party member based on ID. Creates if it doesn't already exist.
+         * Find a party member based on ID. Creates if not found.
          */
         PartyMember *findMember2(int id);
 

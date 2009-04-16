@@ -33,9 +33,12 @@ class PartyTab : public ChatTab
         PartyTab();
         ~PartyTab();
 
+        void showHelp();
+
+        bool handleCommand(std::string type, std::string args);
+
     protected:
         void handleInput(const std::string &msg);
-        void handleCommand(std::string msg);
 };
 
 extern PartyTab *partyTab;

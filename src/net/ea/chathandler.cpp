@@ -200,43 +200,43 @@ void ChatHandler::privateMessage(const std::string &recipient,
 
 void ChatHandler::channelList()
 {
-    // TODO
+    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
 void ChatHandler::enterChannel(const std::string &channel,
                                const std::string &password)
 {
-    // TODO
+    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
 void ChatHandler::quitChannel(int channelId)
 {
-    // TODO
+    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
 void ChatHandler::sendToChannel(int channelId, const std::string &text)
 {
-    // TODO
+    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
 void ChatHandler::userList(const std::string &channel)
 {
-    // TODO
+    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
 void ChatHandler::setChannelTopic(int channelId, const std::string &text)
 {
-    // TODO
+    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
 void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
 {
-    // TODO
+    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
 void ChatHandler::kickUser(int channelId, const std::string &name)
 {
-    // TODO
+    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
 } // namespace EAthena

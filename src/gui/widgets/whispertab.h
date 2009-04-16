@@ -34,6 +34,10 @@ class WhisperTab : public ChatTab
     public:
         const std::string &getNick() const { return mNick; }
 
+        void showHelp();
+
+        bool handleCommand(std::string type, std::string args);
+
     protected:
         friend class ChatWindow;
 
