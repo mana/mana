@@ -947,8 +947,7 @@ int main(int argc, char *argv[])
     new TmwServ::GeneralHandler;  // Currently doesn't need registration
 #else
     Network *network = new Network;
-    EAthena::GeneralHandler *generalHandler = new EAthena::GeneralHandler;
-    network->registerHandler(generalHandler);
+    network->registerHandler(new EAthena::GeneralHandler);
 #endif
 
     Net::getGeneralHandler()->load();

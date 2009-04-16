@@ -63,6 +63,8 @@ private:
     gcn::CheckBox *mDefaultWhisper;
 
     gcn::Button *mDeleteButton;
+
+    gcn::ListModel *mIgnoreActionChoicesModel;
     gcn::DropDown *mIgnoreActionChoicesBox;
 
     bool mWhisperTab;

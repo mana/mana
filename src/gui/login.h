@@ -51,6 +51,8 @@ class LoginDialog : public Window, public gcn::ActionListener,
          */
         LoginDialog(LoginData *loginData);
 
+        ~LoginDialog();
+
         /**
          * Called when receiving actions from the widgets.
          */

@@ -26,6 +26,7 @@
 #include "net/net.h"
 #include "net/partyhandler.h"
 
+#include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/strprintf.h"
 
@@ -45,7 +46,7 @@ PartyWindow::PartyWindow() : Window(_("Party"))
 
 PartyWindow::~PartyWindow()
 {
-    mMembers.clear();
+    delete_all(mMembers);
 }
 
 void PartyWindow::draw(gcn::Graphics *graphics)
