@@ -200,7 +200,7 @@ void ItemDB::load()
             std::string temp = name;
             toLower(trim(temp));
 
-            NamedItemInfoIterator itr = mNamedItemInfos.find(temp);
+            NamedItemInfos::const_iterator itr = mNamedItemInfos.find(temp);
             if (itr == mNamedItemInfos.end())
             {
                 mNamedItemInfos[temp] = itemInfo;
@@ -248,7 +248,7 @@ const ItemInfo& ItemDB::get(int id)
 {
     assert(mLoaded);
 
-    ItemInfoIterator i = mItemInfos.find(id);
+    ItemInfos::const_iterator i = mItemInfos.find(id);
 
     if (i == mItemInfos.end())
     {
@@ -265,7 +265,7 @@ const ItemInfo& ItemDB::get(const std::string &name)
 {
     assert(mLoaded && !name.empty());
 
-    NamedItemInfoIterator i = mNamedItemInfos.find(name);
+    NamedItemInfos::const_iterator i = mNamedItemInfos.find(name);
 
     if (i == mNamedItemInfos.end())
     {

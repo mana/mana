@@ -56,8 +56,6 @@ namespace ItemDB
     // Items database
     typedef std::map<int, ItemInfo*> ItemInfos;
     typedef std::map<std::string, ItemInfo*> NamedItemInfos;
-    typedef ItemInfos::iterator ItemInfoIterator;
-    typedef NamedItemInfos::iterator NamedItemInfoIterator;
 }
 
 #endif

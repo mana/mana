@@ -28,7 +28,8 @@ class ImageRect;
 class TabbedArea;
 
 /**
- * A tab, the same as the guichan tab in 0.8, but extended to allow transparancy
+ * A tab, the same as the Guichan tab in 0.8, but extended to allow
+ * transparency.
  */
 class Tab : public gcn::Tab
 {
@@ -44,7 +45,7 @@ class Tab : public gcn::Tab
         /**
          * Set the normal color fo the tab's text.
          */
-        void setTabColor(gcn::Color color);
+        void setTabColor(const gcn::Color &color);
 
         /**
          * Set tab highlighted

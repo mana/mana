@@ -229,7 +229,7 @@ void Sound::fadeOutMusic(int ms)
 
 void Sound::playSfx(const std::string &path)
 {
-    if (!mInstalled || path.length() == 0)
+    if (!mInstalled || path.empty())
         return;
 
     ResourceManager *resman = ResourceManager::getInstance();

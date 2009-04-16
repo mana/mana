@@ -47,45 +47,45 @@ class TabbedArea : public gcn::TabbedArea
         void draw(gcn::Graphics *graphics);
 
         /**
-         * Return how many tabs have been created
+         * Return how many tabs have been created.
+         *
+         * @todo Remove this method when upgrading to Guichan 0.9.0
          */
-        int getNumberOfTabs();
+        int getNumberOfTabs() const;
 
         /**
-         * Return tab with specified name as caption
+         * Return tab with specified name as caption.
          */
-        Tab* getTab(const std::string &name);
+        Tab *getTab(const std::string &name) const;
 
         /**
          * Returns the widget with the tab that has specified caption
          */
-        gcn::Widget* getWidget(const std::string &name);
+        gcn::Widget *getWidget(const std::string &name) const;
+
+        using gcn::TabbedArea::addTab;
 
         /**
-         * Add a tab
+         * Add a tab. Overridden since it needs to create an instance of Tab
+         * instead of gcn::Tab.
+         *
          * @param caption The Caption to display
          * @param widget The widget to show when tab is selected
          */
         void addTab(const std::string &caption, gcn::Widget *widget);
 
         /**
-         * Add a tab
-         * @param tab The tab
-         * @param widget The widget to display
-         */
-        void addTab(Tab *tab, gcn::Widget *widget);
-
-        /**
-         * Overload the remove tab function as its broken in guichan 0.8
+         * Overload the remove tab function as it's broken in guichan 0.8.
          */
         void removeTab(Tab *tab);
 
         /**
-         * Overload the logic function since it's broken in guichan 0.8
+         * Overload the logic function since it's broken in guichan 0.8.
          */
         void logic();
 
-        int getContainerHeight() { return mWidgetContainer->getHeight(); }
+        int getContainerHeight() const
+        { return mWidgetContainer->getHeight(); }
 
         void setSelectedTab(unsigned int index)
         { gcn::TabbedArea::setSelectedTab(index); }
