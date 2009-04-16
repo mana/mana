@@ -26,9 +26,7 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
-#ifdef EATHENA_SUPPORT
 #include <guichan/listmodel.hpp>
-#endif
 
 #include <string>
 #include <vector>
@@ -104,7 +102,6 @@ class LoginDialog : public Window, public gcn::ActionListener,
 
         LoginData *mLoginData;
 
-#ifdef EATHENA_SUPPORT
         /**
          * Helper class to keep a list of all the recent entries for the
          * dropdown
@@ -130,7 +127,6 @@ class LoginDialog : public Window, public gcn::ActionListener,
                 std::string getPortAt(int i);
         };
         DropDownList *mServerList;
-#endif
 };
 
 #endif
