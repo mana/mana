@@ -128,7 +128,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
             break;
 
         case GPMSG_TRADE_ACCEPT:
-            tradeWindow->receivedOk();
+            tradeWindow->receivedOk(false);
             break;
 
         case GPMSG_TRADE_CANCEL:
@@ -180,7 +180,9 @@ void TradeHandler::removeItem(int slotNum, int amount)
 
 void TradeHandler::setMoney(int amount)
 {
-    // TODO
+    MessageOut msg(PGMSG_TRADE_SET_MONEY);
+    msg.writeInt32(amount);
+    Net::GameServer::connection->send(msg);
 }
 
 void TradeHandler::confirm()
@@ -190,7 +192,8 @@ void TradeHandler::confirm()
 
 void TradeHandler::finish()
 {
-    // TODO
+    MessageOut msg(PGMSG_TRADE_ACCEPT);
+    Net::GameServer::connection->send(msg);
 }
 
 void TradeHandler::cancel()

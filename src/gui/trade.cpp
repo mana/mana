@@ -39,11 +39,6 @@
 
 #include "net/net.h"
 #include "net/tradehandler.h"
-#ifdef TMWSERV_SUPPORT
-#include "net/tmwserv/gameserver/player.h"
-#else
-#include "net/ea/tradehandler.h"
-#endif
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -53,13 +48,15 @@
 
 #include <guichan/font.hpp>
 
+#define CAPTION_PROPOSE _("Propose trade")
+#define CAPTION_WAIT _("Waiting")
+#define CAPTION_ACCEPT _("Confirm trade")
+
 TradeWindow::TradeWindow():
     Window(_("Trade: You")),
     mMyInventory(new Inventory(INVENTORY_SIZE)),
-    mPartnerInventory(new Inventory(INVENTORY_SIZE))
-#ifdef TMWSERV_SUPPORT
-    , mStatus(PREPARING)
-#endif
+    mPartnerInventory(new Inventory(INVENTORY_SIZE)),
+    mStatus(PROPOSING)
 {
     setWindowName("Trade");
     setResizable(false);
@@ -71,15 +68,13 @@ TradeWindow::TradeWindow():
                                    _("OK") : _("Trade");
 
     Button *addButton = new Button(_("Add"), "add", this);
-#ifdef EATHENA_SUPPORT
-    mOkButton = new Button(longestName, "ok", this);
-#else
-    Button *cancelButton = new Button(_("Cancel"), "cancel", this);
-#endif
-    mTradeButton = new Button(_("Propose trade"), "trade", this);
-    mTradeButton->setWidth(8 + std::max(
-        mTradeButton->getFont()->getWidth(_("Propose trade")),
-        mTradeButton->getFont()->getWidth(_("Confirm trade"))));
+    mOkButton = new Button("", "", this); // Will be filled in later
+
+    int width = std::max(mOkButton->getFont()->getWidth(CAPTION_PROPOSE),
+                         mOkButton->getFont()->getWidth(CAPTION_WAIT));
+    width = std::max(width, mOkButton->getFont()->getWidth(CAPTION_ACCEPT));
+
+    mOkButton->setWidth(8 + width);
 
     mMyItemContainer = new ItemContainer(mMyInventory.get(), 5, 2);
     mMyItemContainer->addSelectionListener(this);
@@ -108,12 +103,7 @@ TradeWindow::TradeWindow():
     place(2, 0, moneyChange).setHAlign(LayoutCell::LEFT);
     place = getPlacer(0, 2);
     place(0, 0, addButton);
-#ifdef EATHENA_SUPPORT
     place(1, 0, mOkButton);
-#else
-    place(2, 0, mTradeButton);
-    place(3, 0, cancelButton);
-#endif
     Layout &layout = getLayout();
     layout.extend(0, 2, 2, 1);
     layout.setRowHeight(1, Layout::AUTO_SET);
@@ -121,11 +111,9 @@ TradeWindow::TradeWindow():
     layout.setColWidth(0, Layout::AUTO_SET);
     layout.setColWidth(1, Layout::AUTO_SET);
 
-#ifdef EATHENA_SUPPORT
-    mOkButton->setCaption(_("OK"));
-#endif
-
     loadWindowState();
+
+    reset();
 }
 
 TradeWindow::~TradeWindow()
@@ -146,7 +134,6 @@ void TradeWindow::addItem(int id, bool own, int quantity)
     setStatus(PREPARING);
 }
 
-#ifdef EATHENA_SUPPORT
 void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
 {
     if (own)
@@ -174,57 +161,29 @@ void TradeWindow::increaseQuantity(int index, bool own, int quantity)
     else
         mPartnerInventory->getItem(index)->increaseQuantity(quantity);
 }
-#endif
 
 void TradeWindow::reset()
 {
     mMyInventory->clear();
     mPartnerInventory->clear();
-#ifdef EATHENA_SUPPORT
-    mOkButton->setCaption(_("OK"));
-    mOkButton->setActionEventId("ok");
-    mOkButton->setEnabled(true);
     mOkOther = false;
     mOkMe = false;
-#endif
     mMoneyLabel->setCaption(strprintf(_("You get %s."), ""));
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
     setStatus(PREPARING);
 }
 
-#ifdef TMWSERV_SUPPORT
-
-void TradeWindow::receivedOk()
-{
-    setStatus(ACCEPTING);
-}
-
-#else
-
 void TradeWindow::receivedOk(bool own)
 {
     if (own)
-    {
         mOkMe = true;
-        if (mOkOther)
-        {
-            mOkButton->setCaption(_("Trade"));
-            mOkButton->setActionEventId("trade");
-        }
-    }
     else
-    {
         mOkOther = true;
-        if (mOkMe)
-        {
-            mOkButton->setCaption(_("Trade"));
-            mOkButton->setActionEventId("trade");
-        }
-    }
-}
 
-#endif
+    if (mOkMe && mOkOther)
+        setStatus(ACCEPTING);
+}
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
@@ -247,12 +206,29 @@ void TradeWindow::valueChanged(const gcn::SelectionEvent &event)
 
 void TradeWindow::setStatus(Status s)
 {
-    if (s == mStatus) return;
+    if (s == mStatus)
+        return;
     mStatus = s;
 
-    mTradeButton->setCaption
-        (s == PREPARING ? _("Propose trade") : _("Confirm trade"));
-    mTradeButton->setEnabled(s != PROPOSING);
+    switch (s)
+    {
+        case PREPARING:
+            mOkButton->setCaption(CAPTION_PROPOSE);
+            mOkButton->setActionEventId("ok");
+            break;
+        case PROPOSING:
+            mOkButton->setCaption(CAPTION_WAIT);
+            mOkButton->setActionEventId("");
+            break;
+        case ACCEPTING:
+            mOkButton->setCaption(CAPTION_ACCEPT);
+            mOkButton->setActionEventId("trade");
+            break;
+        default:
+            break;
+    }
+
+    mOkButton->setEnabled(s != PROPOSING);
 }
 
 void TradeWindow::action(const gcn::ActionEvent &event)
@@ -298,39 +274,23 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
         Net::getTradeHandler()->cancel();
     }
-#ifdef EATHENA_SUPPORT
     else if (event.getId() == "ok")
     {
-        std::stringstream tempMoney(mMoneyField->getText());
-        int tempInt;
-        if (tempMoney >> tempInt)
-        {
-            mMoneyField->setText(toString(tempInt));
-
-            Net::getTradeHandler()->setMoney(tempInt);
-        }
-        else
-        {
-            mMoneyField->setText("");
-        }
         mMoneyField->setEnabled(false);
         Net::getTradeHandler()->confirm();
     }
-#endif
     else if (event.getId() == "trade")
     {
         Net::getTradeHandler()->finish();
         setStatus(PROPOSING);
     }
-#ifdef TMWSERV_SUPPORT
     else if (event.getId() == "money")
     {
         int v = atoi(mMoneyField->getText().c_str());
-        Net::GameServer::Player::tradeMoney(v);
+        Net::getTradeHandler()->setMoney(v);
         mMoneyField->setText(strprintf("%d", v));
         setStatus(PREPARING);
     }
-#endif
 }
 
 void TradeWindow::close()

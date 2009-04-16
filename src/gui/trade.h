@@ -69,7 +69,6 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void reset();
 
-#ifdef EATHENA_SUPPORT
         /**
          * Add an item to the trade window.
          */
@@ -84,16 +83,11 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
          * Increase quantity of an item.
          */
         void increaseQuantity(int index, bool own, int quantity);
-#endif
 
         /**
          * Player received ok message from server
          */
-#ifdef TMWSERV_SUPPORT
-        void receivedOk();
-#else
         void receivedOk(bool own);
-#endif
 
         /**
          * Send trade packet.
@@ -128,7 +122,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         /**
          * Sets the current status of the trade.
          */
-        void setStatus(Status);
+        void setStatus(Status s);
 
         typedef const std::auto_ptr<Inventory> InventoryPtr;
         InventoryPtr mMyInventory;
@@ -138,17 +132,12 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         ItemContainer *mPartnerItemContainer;
 
         gcn::Label *mMoneyLabel;
-        gcn::Button *mTradeButton;
-#ifdef EATHENA_SUPPORT
         gcn::Button *mAddButton;
         gcn::Button *mOkButton;
-#endif
         gcn::TextField *mMoneyField;
 
         Status mStatus;
-#ifdef EATHENA_SUPPORT
         bool mOkOther, mOkMe;
-#endif
 };
 
 extern TradeWindow *tradeWindow;
