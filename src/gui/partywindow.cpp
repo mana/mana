@@ -54,9 +54,9 @@ void PartyWindow::draw(gcn::Graphics *graphics)
     Window::draw(graphics);
 }
 
-PartyMember *PartyWindow::findMember(int id)
+PartyMember *PartyWindow::findMember(int id) const
 {
-    PartyList::iterator it = mMembers.find(id);
+    PartyList::const_iterator it = mMembers.find(id);
 
     if (it == mMembers.end())
         return NULL;
@@ -64,7 +64,7 @@ PartyMember *PartyWindow::findMember(int id)
         return it->second;
 }
 
-PartyMember *PartyWindow::findMember2(int id)
+PartyMember *PartyWindow::findOrCreateMember(int id)
 {
     PartyMember *member = findMember(id);
 
@@ -79,10 +79,10 @@ PartyMember *PartyWindow::findMember2(int id)
     return member;
 }
 
-int PartyWindow::findMember(const std::string &name)
+int PartyWindow::findMember(const std::string &name) const
 {
-    PartyList::iterator itr = mMembers.begin(),
-                        itr_end = mMembers.end();
+    PartyList::const_iterator itr = mMembers.begin(),
+                              itr_end = mMembers.end();
 
     while (itr != itr_end)
     {
@@ -97,10 +97,10 @@ int PartyWindow::findMember(const std::string &name)
 }
 
 void PartyWindow::updateMember(int id, const std::string &memberName,
-                                 bool leader, bool online)
+                               bool leader, bool online)
 {
     // create new party member
-    PartyMember *player = findMember2(id);
+    PartyMember *player = findOrCreateMember(id);
     player->id = id;
     player->name = memberName;
     player->leader = leader;

@@ -274,7 +274,7 @@ void ChatTab::handleInput(const std::string &msg) {
     Net::getChatHandler()->talk(msg);
 }
 
-void ChatTab::handleCommand(std::string msg)
+void ChatTab::handleCommand(const std::string &msg)
 {
     commandHandler->handleCommand(msg, this);
 }

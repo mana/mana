@@ -55,7 +55,7 @@ void PartyTab::showHelp()
     chatLog(_("/leave > Leave the party you are in"));
 }
 
-bool PartyTab::handleCommand(std::string type, std::string args)
+bool PartyTab::handleCommand(const std::string &type, const std::string &args)
 {
     if (type == "help")
     {
