@@ -125,6 +125,17 @@ class ResourceManager
         Resource *load(const std::string &path, loader fun);
 
         /**
+        * Copies a file from one place to another (useful for extracting
+        * raw files from a zip archive, for example)
+        *
+        * @param src Source file name
+        * @param dst Destination file name
+        * @return true on success, false on failure. An error message should be
+        *         in the log file.
+        */
+        bool moveFile(const std::string &src, const std::string &dst);
+
+        /**
          * Convenience wrapper around ResourceManager::get for loading
          * images.
          */

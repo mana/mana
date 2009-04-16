@@ -419,6 +419,32 @@ void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
     return buffer;
 }
 
+bool ResourceManager::moveFile(const std::string &src, const std::string &dst)
+{
+    PHYSFS_file *srcFile = PHYSFS_openRead(src.c_str());
+    if (!srcFile)
+    {
+        logger->log("Read error: %s", PHYSFS_getLastError());
+        return false;
+    }
+    PHYSFS_file *dstFile = PHYSFS_openWrite(dst.c_str());
+    if (!dstFile)
+    {
+        logger->log("Write error: %s", PHYSFS_getLastError());
+        PHYSFS_close(srcFile);
+        return false;
+    }
+
+    int fileSize = PHYSFS_fileLength(srcFile);
+    void *buf = malloc(fileSize);
+    PHYSFS_read(srcFile, buf, 1, fileSize);
+    PHYSFS_write(dstFile, buf, 1, fileSize);
+
+    PHYSFS_close(srcFile);
+    PHYSFS_close(dstFile);
+    return true;
+}
+
 std::vector<std::string> ResourceManager::loadTextFile(const std::string &fileName)
 {
     int contentsLength;
