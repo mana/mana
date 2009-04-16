@@ -323,6 +323,8 @@ void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
         mFemale->setSelected(false);
     }
 
+    mPlayer->setGender(gender);
+
     if (fixed)
     {
         mMale->setEnabled(false);
