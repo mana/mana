@@ -87,17 +87,17 @@ GeneralHandler::GeneralHandler():
 
     std::list<ItemDB::Stat*> stats;
     ItemDB::Stat stat;
-    stat.tag = "str"; stat.tag = N_("Strength: %d");
+    stat.tag = "str"; stat.format = N_("Strength: %d");
     stats.push_back(&stat);
-    stat.tag = "agi"; stat.tag = N_("Agility: %d");
+    stat.tag = "agi"; stat.format = N_("Agility: %d");
     stats.push_back(&stat);
-    stat.tag = "vit"; stat.tag = N_("Vitality: %d");
+    stat.tag = "vit"; stat.format = N_("Vitality: %d");
     stats.push_back(&stat);
-    stat.tag = "int"; stat.tag = N_("Intelligence: %d");
+    stat.tag = "int"; stat.format = N_("Intelligence: %d");
     stats.push_back(&stat);
-    stat.tag = "dex"; stat.tag = N_("Dexterity: %d");
+    stat.tag = "dex"; stat.format = N_("Dexterity: %d");
     stats.push_back(&stat);
-    stat.tag = "luck"; stat.tag = N_("Luck: %d");
+    stat.tag = "luck"; stat.format = N_("Luck: %d");
     stats.push_back(&stat);
 
     ItemDB::setStatsList(stats);
