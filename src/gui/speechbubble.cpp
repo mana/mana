@@ -66,7 +66,7 @@ void SpeechBubble::setText(const std::string &text, bool showName)
     if (text == mText && (mCaption->getWidth() <= mSpeechBox->getMinWidth()))
         return;
 
-    graphics->setColor(guiPalette->getColor(Palette::TEXT));
+    mSpeechBox->setTextColor(&guiPalette->getColor(Palette::TEXT));
 
     int width = mCaption->getWidth() + 2 * getPadding();
     const int speechWidth = mSpeechBox->getMinWidth() + 2 * getPadding();

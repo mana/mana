@@ -40,9 +40,7 @@ class TextBox : public gcn::TextBox
         TextBox();
 
         inline void setTextColor(const gcn::Color* color)
-        {
-            mTextColor = color;
-        }
+        { mTextColor = color; }
 
         /**
          * Sets the text after wrapping it to the current width of the widget.
