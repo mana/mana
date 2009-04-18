@@ -442,10 +442,12 @@ bool ResourceManager::copyFile(const std::string &src, const std::string &dst)
 
     PHYSFS_close(srcFile);
     PHYSFS_close(dstFile);
+    free(buf);
     return true;
 }
 
-std::vector<std::string> ResourceManager::loadTextFile(const std::string &fileName)
+std::vector<std::string> ResourceManager::loadTextFile(
+        const std::string &fileName)
 {
     int contentsLength;
     char *fileContents = (char*)loadFile(fileName, contentsLength);
