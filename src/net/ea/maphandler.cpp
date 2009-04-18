@@ -43,7 +43,7 @@ namespace EAthena {
 MapHandler::MapHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_LOGIN_SUCCESS,
+        SMSG_MAP_LOGIN_SUCCESS,
         SMSG_SERVER_PING,
         SMSG_WHO_ANSWER,
         0
@@ -58,7 +58,7 @@ void MapHandler::handleMessage(MessageIn &msg)
 
     switch (msg.getId())
     {
-        case SMSG_LOGIN_SUCCESS:
+        case SMSG_MAP_LOGIN_SUCCESS:
             msg.readInt32();   // server tick
             msg.readCoordinates(player_node->mX, player_node->mY, direction);
             msg.skip(2);      // unknown
@@ -100,7 +100,7 @@ void MapHandler::mapLoaded(const std::string &mapName)
 
 void MapHandler::who()
 {
-    MessageOut outMsg(0x00c1);
+    MessageOut outMsg(CMSG_WHO_REQUEST);
 }
 
 void MapHandler::quit()

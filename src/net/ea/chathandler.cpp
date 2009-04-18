@@ -54,7 +54,7 @@ ChatHandler::ChatHandler()
         SMSG_WHISPER,
         SMSG_WHISPER_RESPONSE,
         SMSG_GM_CHAT,
-        0x10c, // MVP
+        SMSG_MVP, // MVP
         0
     };
     handledMessages = _messages;
@@ -164,7 +164,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             break;
         }
 
-        case 0x010c:
+        case SMSG_MVP:
             // Display MVP player
             msg.readInt32(); // id
             localChatTab->chatLog("MVP player", BY_SERVER);

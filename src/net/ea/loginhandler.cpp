@@ -45,8 +45,8 @@ LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_UPDATE_HOST,
-        0x0069,
-        0x006a,
+        SMSG_LOGIN_DATA,
+        SMSG_LOGIN_ERROR,
         0
     };
     handledMessages = _messages;
@@ -69,7 +69,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                      mUpdateHost.c_str());
              break;
 
-        case 0x0069:
+        case SMSG_LOGIN_DATA:
             // Skip the length word
             msg.skip(2);
 
@@ -102,7 +102,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             state = STATE_CHAR_SERVER;
             break;
 
-        case 0x006a:
+        case SMSG_LOGIN_ERROR:
             code = msg.readInt8();
             logger->log("Login::error code: %i", code);
 

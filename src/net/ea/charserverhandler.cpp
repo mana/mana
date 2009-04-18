@@ -46,13 +46,13 @@ CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
-        0x006b,
-        0x006c,
-        0x006d,
-        0x006e,
-        0x006f,
-        0x0070,
-        0x0071,
+        SMSG_CHAR_LOGIN,
+        SMSG_CHAR_LOGIN_ERROR,
+        SMSG_CHAR_CREATE_SUCCEEDED,
+        SMSG_CHAR_CREATE_FAILED,
+        SMSG_CHAR_DELETE_SUCCEEDED,
+        SMSG_CHAR_DELETE_FAILED,
+        SMSG_CHAR_MAP_INFO,
         0
     };
     handledMessages = _messages;
@@ -89,7 +89,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             state = STATE_CHAR_SELECT;
             break;
 
-        case 0x006c:
+        case SMSG_CHAR_LOGIN_ERROR:
             switch (msg.readInt8()) {
                 case 0:
                     errorMessage = _("Access denied");
@@ -104,7 +104,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             mCharInfo->unlock();
             break;
 
-        case 0x006d:
+        case SMSG_CHAR_CREATE_SUCCEEDED:
             tempPlayer = readPlayerData(msg, slot);
             mCharInfo->unlock();
             mCharInfo->select(slot);
@@ -119,7 +119,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             }
             break;
 
-        case 0x006e:
+        case SMSG_CHAR_CREATE_FAILED:
             new OkDialog(_("Error"), _("Failed to create character. Most likely"
                                        " the name is already taken."));
 
@@ -127,7 +127,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                 mCharCreateDialog->unlock();
             break;
 
-        case 0x006f:
+        case SMSG_CHAR_DELETE_SUCCEEDED:
             delete mCharInfo->getEntry();
             mCharInfo->setEntry(0);
             mCharInfo->unlock();
@@ -135,12 +135,12 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             new OkDialog(_("Info"), _("Player deleted"));
             break;
 
-        case 0x0070:
+        case SMSG_CHAR_DELETE_FAILED:
             mCharInfo->unlock();
             new OkDialog(_("Error"), _("Failed to delete character."));
             break;
 
-        case 0x0071:
+        case SMSG_CHAR_MAP_INFO:
             player_node = mCharInfo->getEntry();
             slot = mCharInfo->getPos();
             msg.skip(4); // CharID, must be the same as player_node->charID
@@ -236,7 +236,7 @@ void CharServerHandler::connect(LoginData *loginData)
 {
     mLoginData = loginData;
     
-    MessageOut outMsg(0x0065);
+    MessageOut outMsg(CMSG_CHAR_SERVER_CONNECT);
     outMsg.writeInt32(loginData->account_ID);
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);

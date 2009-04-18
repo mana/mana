@@ -28,10 +28,22 @@ static const int STORAGE_OFFSET = 1;
 /*********************************
  * Packets from server to client *
  *********************************/
-#define SMSG_LOGIN_SUCCESS           0x0073 /**< Contains starting location */
 #define SMSG_SERVER_PING             0x007f /**< Contains server tick */
 #define SMSG_CONNECTION_PROBLEM      0x0081
+
 #define SMSG_UPDATE_HOST             0x0063 /**< Custom update host packet */
+#define SMSG_LOGIN_DATA              0x0069
+#define SMSG_LOGIN_ERROR             0x006a
+
+#define SMSG_CHAR_LOGIN              0x006b
+#define SMSG_CHAR_LOGIN_ERROR        0x006c
+#define SMSG_CHAR_CREATE_SUCCEEDED   0x006d
+#define SMSG_CHAR_CREATE_FAILED      0x007e
+#define SMSG_CHAR_DELETE_SUCCEEDED   0x006f
+#define SMSG_CHAR_DELETE_FAILED      0x0070
+#define SMSG_CHAR_MAP_INFO           0x0071
+
+#define SMSG_MAP_LOGIN_SUCCESS       0x0073 /**< Contains starting location */
 #define SMSG_PLAYER_UPDATE_1         0x01d8
 #define SMSG_PLAYER_UPDATE_2         0x01d9
 #define SMSG_PLAYER_MOVE             0x01da /**< A nearby player moves */
@@ -74,6 +86,9 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_BEING_CHAT              0x008d /**< A being talks */
 #define SMSG_BEING_NAME_RESPONSE     0x0095 /**< Has to be requested */
 #define SMSG_BEING_CHANGE_DIRECTION  0x009c
+
+#define SMSG_PLAYER_STATUS_CHANGE    0x0119
+#define SMSG_BEING_STATUS_CHANGE     0x0196
 
 #define SMSG_NPC_MESSAGE             0x00b4
 #define SMSG_NPC_NEXT                0x00b5
@@ -120,35 +135,42 @@ static const int STORAGE_OFFSET = 1;
 
 #define SMSG_ADMIN_KICK_ACK          0x00cd
 
+#define SMSG_MVP                     0x010c
+
 /**********************************
  *  Packets from client to server *
  **********************************/
+#define CMSG_CHAR_SERVER_CONNECT     0x0065
 #define CMSG_CHAR_SELECT             0x0066
 #define CMSG_CHAR_CREATE             0x0067
 #define CMSG_CHAR_DELETE             0x0068
 
 #define CMSG_MAP_SERVER_CONNECT      0x0072
 #define CMSG_CLIENT_PING             0x007e /**< Send to server with tick */
-#define CMSG_CLIENT_QUIT             0x018A
-#define CMSG_TRADE_RESPONSE          0x00e6
-#define CMSG_ITEM_PICKUP             0x009f
 #define CMSG_MAP_LOADED              0x007d
+#define CMSG_CLIENT_QUIT             0x018A
+
 #define CMSG_CHAT_MESSAGE            0x008c
 #define CMSG_CHAT_WHISPER            0x0096
 #define CMSG_CHAT_ANNOUNCE           0x0099
 #define CMSG_CHAT_WHO                0x00c1
+
 #define CMSG_SKILL_LEVELUP_REQUEST   0x0112
 #define CMSG_STAT_UPDATE_REQUEST     0x00bb
-#define CMSG_TRADE_ITEM_ADD_REQUEST  0x00e8
-#define CMSG_TRADE_CANCEL_REQUEST    0x00ed
-#define CMSG_TRADE_ADD_COMPLETE      0x00eb
-#define CMSG_TRADE_OK                0x00ef
-#define CMSG_TRADE_REQUEST           0x00e4
+
 #define CMSG_PLAYER_INVENTORY_USE    0x00a7
 #define CMSG_PLAYER_INVENTORY_DROP   0x00a2
 #define CMSG_PLAYER_EQUIP            0x00a9
 #define CMSG_PLAYER_UNEQUIP          0x00ab
+
+#define CMSG_ITEM_PICKUP             0x009f
 #define CMSG_PLAYER_CHANGE_DIR       0x009b
+#define CMSG_PLAYER_CHANGE_DEST      0x0085
+#define CMSG_PLAYER_CHANGE_ACT       0x0089
+#define CMSG_PLAYER_RESPAWN          0x00b2
+#define CMSG_PLAYER_EMOTE            0x00bf
+#define CMSG_PLAYER_ATTACK           0x0089
+#define CMSG_WHO_REQUEST             0x00c1
 
 #define CMSG_NPC_TALK                0x0090
 #define CMSG_NPC_NEXT_REQUEST        0x00b9
@@ -159,6 +181,13 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_NPC_BUY_SELL_REQUEST    0x00c5
 #define CMSG_NPC_BUY_REQUEST         0x00c8
 #define CMSG_NPC_SELL_REQUEST        0x00c9
+
+#define CMSG_TRADE_REQUEST           0x00e4
+#define CMSG_TRADE_RESPONSE          0x00e6
+#define CMSG_TRADE_ITEM_ADD_REQUEST  0x00e8
+#define CMSG_TRADE_CANCEL_REQUEST    0x00ed
+#define CMSG_TRADE_ADD_COMPLETE      0x00eb
+#define CMSG_TRADE_OK                0x00ef
 
 #define CMSG_PARTY_CREATE            0x00f9
 #define CMSG_PARTY_INVITE            0x00fc

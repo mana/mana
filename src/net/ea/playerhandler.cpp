@@ -435,14 +435,14 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
 void PlayerHandler::attack(Being *being)
 {
-    MessageOut outMsg(0x0089);
+    MessageOut outMsg(CMSG_PLAYER_ATTACK);
     outMsg.writeInt32(being->getId());
     outMsg.writeInt8(0);
 }
 
 void PlayerHandler::emote(int emoteId)
 {
-    MessageOut outMsg(0x00bf);
+    MessageOut outMsg(CMSG_PLAYER_EMOTE);
     outMsg.writeInt8(emoteId);
 }
 
@@ -501,20 +501,28 @@ void PlayerHandler::setDestination(int x, int y, int direction)
 {
     char temp[4] = "";
     set_coordinates(temp, x, y, direction);
-    MessageOut outMsg(0x0085);
+    MessageOut outMsg(CMSG_PLAYER_CHANGE_DEST);
     outMsg.writeString(temp, 3);
 }
 
 void PlayerHandler::changeAction(Being::Action action)
 {
-    MessageOut outMsg(0x0089);
+    char type;
+    switch (action)
+    {
+        case Being::SIT: type = 2; break;
+        case Being::STAND: type = 3; break;
+        default: return;
+    }
+
+    MessageOut outMsg(CMSG_PLAYER_CHANGE_ACT);
     outMsg.writeInt32(0);
-    outMsg.writeInt8((action == Being::SIT) ? 2 : 3);
+    outMsg.writeInt8(type);
 }
 
 void PlayerHandler::respawn()
 {
-    MessageOut outMsg(0x00b2);
+    MessageOut outMsg(CMSG_PLAYER_RESPAWN);
     outMsg.writeInt8(0);
 }
 

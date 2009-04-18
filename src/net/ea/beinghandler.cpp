@@ -65,8 +65,8 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_PLAYER_MOVE,
         SMSG_PLAYER_STOP,
         SMSG_PLAYER_MOVE_TO_ATTACK,
-        0x0119,
-        0x0196,
+        SMSG_PLAYER_STATUS_CHANGE,
+        SMSG_BEING_STATUS_CHANGE,
         0
     };
     handledMessages = _messages;
@@ -574,7 +574,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
              */
             break;
 
-        case 0x0119:
+        case SMSG_PLAYER_STATUS_CHANGE:
             // Change in players' flags
             id = msg.readInt32();
             dstBeing = beingManager->findBeing(id);
@@ -590,7 +590,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
             break;
 
-        case 0x0196:
+        case SMSG_BEING_STATUS_CHANGE:
             // Status change
             status = msg.readInt16();
             id = msg.readInt32();
