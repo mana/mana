@@ -113,13 +113,11 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
          * NOTES (by Javila):
          *  - color values is "0x" prefix followed by HTML color style.
          *  - we can add up to 10 different colors: [0..9].
-         *  - we need a link and a highlighted link colors.
          *  - not all colors will be fine with all backgrounds due transparent
          *    windows and widgets. So, I think it's better keep BrowserBox
          *    opaque (white background) by default.
          */
         enum {
-            BLACK = 0x000000,       /**< Color 0 */
             RED = 0xff0000,         /**< Color 1 */
             GREEN = 0x009000,       /**< Color 2 */
             BLUE = 0x0000ff,        /**< Color 3 */
@@ -129,9 +127,6 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
             PURPLE = 0x8415e2,      /**< Color 7 */
             GRAY = 0x919191,        /**< Color 8 */
             BROWN = 0x8e4c17,       /**< Color 9 */
-            BGCOLOR = 0xffffff,     /**< Bg color for opacity */
-            LINK = 0xe50d0d,        /**< Color L */
-            HIGHLIGHT = 0xcacaca    /**< Bg color for highlighted link */
         };
 
         /**

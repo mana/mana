@@ -82,7 +82,7 @@ void BrowserBox::addRow(const std::string &row)
         {
             idx2 = tmp.find("|", idx1);
             idx3 = tmp.find("@@", idx2);
-            
+
             if (idx2 == std::string::npos || idx3 == std::string::npos)
                 break;
             bLink.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
@@ -286,9 +286,10 @@ void BrowserBox::draw(gcn::Graphics *graphics)
     graphics->setColor(guiPalette->getColor(Palette::TEXT));
     for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
     {
-        const gcn::Color *selColor = &guiPalette->getColor(Palette::TEXT);
-        const gcn::Color *prevColor = selColor;
-        std::string row = *(i);
+        const gcn::Color textColor = guiPalette->getColor(Palette::TEXT);
+        gcn::Color selColor = textColor;
+        gcn::Color prevColor = selColor;
+        const std::string row = *(i);
         bool wrapped = false;
         x = 0;
 
@@ -327,28 +328,45 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                 // Check for color change in format "##x", x = [L,P,0..9]
                 if (row.find("##", start) == start && row.size() > start + 2)
                 {
-                    char c = row.at(start + 2);
+                    const char c = row.at(start + 2);
+                    bool valid;
+                    const gcn::Color col = guiPalette->getColor(c, valid);
+
                     if (c == '>')
                     {
                         selColor = prevColor;
                     }
+                    else if (c == '<')
+                    {
+                        const int size = mLinks[link].x2 - mLinks[link].x1;
+                        mLinks[link].x1 = x;
+                        mLinks[link].y1 = y;
+                        mLinks[link].x2 = mLinks[link].x1 + size;
+                        mLinks[link].y2 = y + font->getHeight();
+                        link++;
+                        selColor = col;
+                        prevColor = selColor;
+                    }
+                    else if (valid)
+                    {
+                        selColor = col;
+                    }
                     else
                     {
-                        bool valid;
-                        const gcn::Color *col = &guiPalette->getColor(c, valid);
-                        if (c == '<')
+                        switch (c)
                         {
-                            const int size = mLinks[link].x2 - mLinks[link].x1;
-                            mLinks[link].x1 = x;
-                            mLinks[link].y1 = y;
-                            mLinks[link].x2 = mLinks[link].x1 + size;
-                            mLinks[link].y2 = y + font->getHeight();
-                            link++;
-                            prevColor = selColor;
-                        }
-                        if (valid)
-                        {
-                            selColor = col;
+                            case '1': selColor = RED; break;
+                            case '2': selColor = GREEN; break;
+                            case '3': selColor = BLUE; break;
+                            case '4': selColor = ORANGE; break;
+                            case '5': selColor = YELLOW; break;
+                            case '6': selColor = PINK; break;
+                            case '7': selColor = PURPLE; break;
+                            case '8': selColor = GRAY; break;
+                            case '9': selColor = BROWN; break;
+                            case '0':
+                            default:
+                                selColor = textColor;
                         }
                     }
                     start += 3;
@@ -358,7 +376,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                         break;
                     }
                 }
-                graphics->setColor(*selColor);
+                graphics->setColor(selColor);
             }
 
             std::string::size_type len =
