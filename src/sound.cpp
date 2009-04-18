@@ -20,7 +20,6 @@
  */
 
 #include <SDL.h>
-#include <physfs.h>
 
 #include "log.h"
 #include "sound.h"
