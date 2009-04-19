@@ -454,7 +454,7 @@ void ChatWindow::whisper(const std::string &nick, std::string mes, bool own)
     }
 }
 
-ChatTab *ChatWindow::addWhisperTab(const std::string &nick)
+ChatTab *ChatWindow::addWhisperTab(const std::string &nick, bool switchTo)
 {
     std::string playerName = player_node->getName();
     std::string tempNick = nick;
@@ -465,5 +465,9 @@ ChatTab *ChatWindow::addWhisperTab(const std::string &nick)
     if (mWhispers[tempNick] || tempNick.compare(playerName) == 0)
         return NULL;
 
-    return mWhispers[tempNick] = new WhisperTab(nick);
+    ChatTab *ret = mWhispers[tempNick] = new WhisperTab(nick);
+
+    mChatTabs->setSelectedTab(ret);
+
+    return ret;
 }

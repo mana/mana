@@ -337,7 +337,7 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
 }
 
 void CommandHandler::handleQuery(const std::string &args, ChatTab *tab) {
-    if (chatWindow->addWhisperTab(args))
+    if (chatWindow->addWhisperTab(args, true))
         return;
 
     tab->chatLog(strprintf(_("Cannont create a whisper tab for nick '%s'!"
