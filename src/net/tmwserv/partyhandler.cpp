@@ -143,7 +143,12 @@ void PartyHandler::leave()
     // TODO
 }
 
-void PartyHandler::kick(int playerId)
+void PartyHandler::kick(Player *player)
+{
+    // TODO
+}
+
+void PartyHandler::kick(const std::string &name)
 {
     // TODO
 }
