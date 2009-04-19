@@ -119,7 +119,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_PARTY_INFO              0x00fb
 #define SMSG_PARTY_INVITE_RESPONSE   0x00fd
 #define SMSG_PARTY_INVITED           0x00fe
-#define SMSG_PARTY_SETTINGS          0x0102
+#define SMSG_PARTY_SETTINGS          0x0101
 #define SMSG_PARTY_MOVE              0x0104
 #define SMSG_PARTY_LEAVE             0x0105
 #define SMSG_PARTY_UPDATE_HP         0x0106
@@ -192,8 +192,9 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_PARTY_CREATE            0x00f9
 #define CMSG_PARTY_INVITE            0x00fc
 #define CMSG_PARTY_INVITED           0x00ff
-#define CMSG_PARTY_LEAVE             0x0100 /** Undocumented */
-#define CMSG_PARTY_SETTINGS          0x0101
+#define CMSG_PARTY_LEAVE             0x0100
+#define CMSG_PARTY_SETTINGS          0x0102
+#define CMSG_PARTY_KICK              0x0103
 #define CMSG_PARTY_MESSAGE           0x0108
 
 #define CMSG_MOVE_TO_STORAGE         0x00f3 /** Move item to storage */

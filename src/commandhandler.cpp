@@ -56,7 +56,7 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         // Nothing to do
     }
-    if (type == "announce")
+    else if (type == "announce")
     {
         handleAnnounce(args, tab);
     }
@@ -112,6 +112,22 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     {
         tab->chatLog("Unknown command");
     }
+}
+
+char CommandHandler::parseBoolean(const std::string &value)
+{
+    std::string opt = value.substr(0, 1);
+
+    if (opt == "1" ||
+        opt == "y" || opt == "Y" ||
+        opt == "t" || opt == "T")
+        return 1;
+    else if (opt == "0" ||
+             opt == "n" || opt == "N" ||
+             opt == "f" || opt == "F")
+        return 0;
+    else
+        return -1;
 }
 
 void CommandHandler::handleAnnounce(const std::string &args, ChatTab *tab)
@@ -374,27 +390,21 @@ void CommandHandler::handleToggle(const std::string &args, ChatTab *tab)
         return;
     }
 
-    std::string opt = args.substr(0, 1);
+    char opt = parseBoolean(args);
 
-    if (opt == "1" ||
-        opt == "y" || opt == "Y" ||
-        opt == "t" || opt == "T")
+    switch (opt)
     {
-        tab->chatLog(_("Return now toggles chat."));
-        chatWindow->setReturnTogglesChat(true);
-        return;
+        case 1:
+            tab->chatLog(_("Return now toggles chat."));
+            chatWindow->setReturnTogglesChat(true);
+            return;
+        case 0:
+            tab->chatLog(_("Message now closes chat."));
+            chatWindow->setReturnTogglesChat(false);
+            return;
+        case -1:
+            tab->chatLog(strprintf(BOOLEAN_OPTIONS, "toggle"));
     }
-    else if (opt == "0" ||
-             opt == "n" || opt == "N" ||
-             opt == "f" || opt == "F")
-    {
-        tab->chatLog(_("Message now closes chat."));
-        chatWindow->setReturnTogglesChat(false);
-        return;
-    }
-    else
-        tab->chatLog(_("Options to /toggle are \"yes\", \"no\", \"true\", "
-                    "\"false\", \"1\", \"0\"."));
 }
 
 void CommandHandler::handlePresent(const std::string &args, ChatTab *tab)

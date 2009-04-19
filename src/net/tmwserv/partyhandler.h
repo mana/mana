@@ -48,11 +48,21 @@ public:
 
     void leave();
 
-    void kick(int playerId);
+    void kick(Player *player);
+
+    void kick(const std::string &name);
 
     void chat(const std::string &text);
 
     void requestPartyMembers();
+
+    PartyShare getShareExperience() { return PARTY_SHARE_NO; }
+
+    void setShareExperience(PartyShare share) {}
+
+    PartyShare getShareItems() { return PARTY_SHARE_NO; }
+
+    void setShareItems(PartyShare share) {}
 };
 
 } // namespace TmwServ

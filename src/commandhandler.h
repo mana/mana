@@ -28,6 +28,9 @@ class ChatTab;
 
 extern ChatTab *localChatTab;
 
+#define BOOLEAN_OPTIONS _("Options to /%s are \"yes\", \"no\", \"true\", "\
+"\"false\", \"1\", \"0\".")
+
 /**
  * A class to parse and handle user commands
  */
@@ -48,6 +51,8 @@ class CommandHandler
          * Parse and handle the given command.
          */
         void handleCommand(const std::string &command, ChatTab *tab = localChatTab);
+
+        static char parseBoolean(const std::string &value);
 
     private:
         /**

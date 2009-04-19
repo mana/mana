@@ -21,6 +21,8 @@
 
 #include "partytab.h"
 
+#include "commandhandler.h"
+
 #include "net/net.h"
 #include "net/partyhandler.h"
 
@@ -53,6 +55,9 @@ void PartyTab::showHelp()
     chatLog(_("/new > Alias of create"));
     chatLog(_("/invite > Invite a player to your party"));
     chatLog(_("/leave > Leave the party you are in"));
+    chatLog(_("/kick > Kick some one from the party you are in"));
+    chatLog(_("/item > Show/change party item sharing options"));
+    chatLog(_("/exp > Show/change party experience sharing options"));
 }
 
 bool PartyTab::handleCommand(const std::string &type, const std::string &args)
@@ -65,8 +70,6 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
             chatLog(_("Command: /create <party-name>"));
             chatLog(_("These commands create a new party called <party-name>."));
         }
-        //else if (msg == "settings")
-        //else if (msg == "info")
         else if (args == "invite")
         {
             chatLog(_("Command: /invite <nick>"));
@@ -78,6 +81,26 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
         {
             chatLog(_("Command: /leave"));
             chatLog(_("This command causes the player to leave the party."));
+        }
+        else if (args == "item")
+        {
+            chatLog(_("Command: /item <policy>"));
+            chatLog(_("This command changes the party's item sharing policy."));
+            chatLog(_("<policy> can be one of \"1\", \"yes\", \"true\" to "
+                      "enable item sharing, or \"0\", \"no\", \"false\" to "
+                      "disable item sharing."));
+            chatLog(_("Command: /item"));
+            chatLog(_("This command displays the party's current item sharing policy."));
+        }
+        else if (args == "exp")
+        {
+            chatLog(_("Command: /exp <policy>"));
+            chatLog(_("This command changes the party's experience sharing policy."));
+            chatLog(_("<policy> can be one of \"1\", \"yes\", \"true\" to "
+                      "enable experience sharing, or \"0\", \"no\", \"false\" to "
+                      "disable experience sharing."));
+            chatLog(_("Command: /exp"));
+            chatLog(_("This command displays the party's current experience sharing policy."));
         }
         else
             return false;
@@ -97,14 +120,73 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
     {
         Net::getPartyHandler()->leave();
     }
-    else if (type == "settings")
+    else if (type == "kick")
     {
-        chatLog(_("The settings command is not yet implemented!"));
-        /*
-        MessageOut outMsg(CMSG_PARTY_SETTINGS);
-        outMsg.writeInt16(0); // Experience
-        outMsg.writeInt16(0); // Item
-        */
+        Net::getPartyHandler()->kick(args);
+    }
+    else if (type == "item")
+    {
+        if (args.empty())
+        {
+            switch (Net::getPartyHandler()->getShareItems())
+            {
+                case PARTY_SHARE:
+                    chatLog(_("Item sharing enabled."), BY_SERVER);
+                    return true;
+                case PARTY_SHARE_NO:
+                    chatLog(_("Item sharing disabled."), BY_SERVER);
+                    return true;
+                case PARTY_SHARE_NOT_POSSIBLE:
+                    chatLog(_("Item sharing not possible."), BY_SERVER);
+                    return true;
+            }
+        }
+
+        char opt = CommandHandler::parseBoolean(args);
+
+        switch (opt)
+        {
+            case 1:
+                Net::getPartyHandler()->setShareItems(PARTY_SHARE);
+                break;
+            case 0:
+                Net::getPartyHandler()->setShareItems(PARTY_SHARE_NO);
+                break;
+            case -1:
+                chatLog(strprintf(BOOLEAN_OPTIONS, "item"));
+        }
+    }
+    else if (type == "exp")
+    {
+        if (args.empty())
+        {
+            switch (Net::getPartyHandler()->getShareExperience())
+            {
+                case PARTY_SHARE:
+                    chatLog(_("Experience sharing enabled."), BY_SERVER);
+                    return true;
+                case PARTY_SHARE_NO:
+                    chatLog(_("Experience sharing disabled."), BY_SERVER);
+                    return true;
+                case PARTY_SHARE_NOT_POSSIBLE:
+                    chatLog(_("Experience sharing not possible."), BY_SERVER);
+                    return true;
+            }
+        }
+
+        char opt = CommandHandler::parseBoolean(args);
+
+        switch (opt)
+        {
+            case 1:
+                Net::getPartyHandler()->setShareExperience(PARTY_SHARE);
+                break;
+            case 0:
+                Net::getPartyHandler()->setShareExperience(PARTY_SHARE_NO);
+                break;
+            case -1:
+                chatLog(strprintf(BOOLEAN_OPTIONS, "exp"));
+        }
     }
     else
         return false;

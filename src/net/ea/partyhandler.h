@@ -49,11 +49,24 @@ class PartyHandler : public MessageHandler, public Net::PartyHandler
 
         void leave();
 
-        void kick(int playerId);
+        void kick(Player *player);
+
+        void kick(const std::string &name);
 
         void chat(const std::string &text);
 
         void requestPartyMembers();
+
+        PartyShare getShareExperience() { return mShareExp; }
+
+        void setShareExperience(PartyShare share);
+
+        PartyShare getShareItems() { return mShareItems; }
+
+        void setShareItems(PartyShare share);
+
+    private:
+        PartyShare mShareExp, mShareItems;
 };
 
 } // namespace EAthena

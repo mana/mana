@@ -111,6 +111,8 @@ class PartyWindow : public Window, gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        void clear();
+
     private:
         /**
          * Find a party member based on ID. Creates if not found.

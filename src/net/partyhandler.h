@@ -26,6 +26,12 @@
 
 class Player;
 
+enum PartyShare {
+    PARTY_SHARE_NO,
+    PARTY_SHARE,
+    PARTY_SHARE_NOT_POSSIBLE = 2
+};
+
 namespace Net {
 
 class PartyHandler
@@ -43,11 +49,21 @@ class PartyHandler
 
         virtual void leave() = 0;
 
-        virtual void kick(int playerId) = 0;
+        virtual void kick(Player *player) = 0;
+
+        virtual void kick(const std::string &name) = 0;
 
         virtual void chat(const std::string &text) = 0;
 
         virtual void requestPartyMembers() = 0;
+
+        virtual PartyShare getShareExperience() = 0;
+
+        virtual void setShareExperience(PartyShare share) = 0;
+
+        virtual PartyShare getShareItems() = 0;
+
+        virtual void setShareItems(PartyShare share) = 0;
 
         // virtual void options() = 0;
 
