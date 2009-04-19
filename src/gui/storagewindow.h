@@ -92,7 +92,6 @@ class StorageWindow : public Window, gcn::ActionListener,
         int mSlots;
         int mUsedSlots;
         gcn::Button *mStoreButton, *mRetrieveButton;
-        gcn::ScrollArea *mInvenScroll;
 
         gcn::Label *mSlotsLabel;
 

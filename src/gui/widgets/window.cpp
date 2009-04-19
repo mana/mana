@@ -242,7 +242,8 @@ void Window::setMaxHeight(int height)
 
 void Window::setResizable(bool r)
 {
-    if ((bool) mGrip == r) return;
+    if ((bool) mGrip == r)
+        return;
 
     if (r)
     {

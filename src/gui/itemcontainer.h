@@ -25,6 +25,7 @@
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
+#include <guichan/widgetlistener.hpp>
 
 #include <list>
 
@@ -44,7 +45,8 @@ namespace gcn {
  */
 class ItemContainer : public gcn::Widget,
                       public gcn::KeyListener,
-                      public gcn::MouseListener
+                      public gcn::MouseListener,
+                      public gcn::WidgetListener
 {
     public:
         /**
@@ -55,8 +57,7 @@ class ItemContainer : public gcn::Widget,
          * @param gridRows    Amount of rows in grid.
          * @param offset      Index offset
          */
-        ItemContainer(Inventory *inventory, int gridColumns, int gridRows,
-                      bool forceQuantity = false);
+        ItemContainer(Inventory *inventory, bool forceQuantity = false);
 
         /**
          * Destructor.
@@ -68,14 +69,19 @@ class ItemContainer : public gcn::Widget,
          */
         void draw(gcn::Graphics *graphics);
 
+        // KeyListener
         void keyPressed(gcn::KeyEvent &event);
         void keyReleased(gcn::KeyEvent &event);
 
+        // MouseListener
         void mousePressed(gcn::MouseEvent &event);
         void mouseDragged(gcn::MouseEvent &event);
         void mouseReleased(gcn::MouseEvent &event);
         void mouseMoved(gcn::MouseEvent &event);
         void mouseExited(gcn::MouseEvent &event);
+
+        // WidgetListener
+        void widgetResized(const gcn::Event &event);
 
         /**
          * Returns the selected item.
