@@ -46,15 +46,13 @@
 // TODO: Add support for adding items to the item shortcut window (global
 // itemShortcut).
 
-static const int BOX_WIDTH = 36;
-static const int BOX_HEIGHT = 44;
+static const int BOX_WIDTH = 35;
+static const int BOX_HEIGHT = 43;
 
-ItemContainer::ItemContainer(Inventory *inventory,
-                             int gridColumns, int gridRows,
-                             bool forceQuantity):
+ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
     mInventory(inventory),
-    mGridColumns(gridColumns),
-    mGridRows(gridRows),
+    mGridColumns(1),
+    mGridRows(1),
     mSelectedItem(NULL),
     mHighlightedItem(NULL),
     mSelectionStatus(SEL_NONE),
@@ -68,13 +66,12 @@ ItemContainer::ItemContainer(Inventory *inventory,
     ResourceManager *resman = ResourceManager::getInstance();
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
-    if (!mSelImg) logger->error("Unable to load selection.png");
+    if (!mSelImg)
+        logger->error("Unable to load selection.png");
 
     addKeyListener(this);
     addMouseListener(this);
-
-    setSize((BOX_WIDTH - 1) * mGridColumns + 1,
-            (BOX_HEIGHT - 1) * mGridRows + 1);
+    addWidgetListener(this);
 }
 
 ItemContainer::~ItemContainer()
@@ -87,19 +84,14 @@ void ItemContainer::draw(gcn::Graphics *graphics)
 {
     Graphics *g = static_cast<Graphics*>(graphics);
 
+    g->setFont(getFont());
+
     for (int i = 0; i < mGridColumns; i++)
     {
         for (int j = 0; j < mGridRows; j++)
         {
-            // Items positions made to overlap on another.
-            int itemX = i * (BOX_WIDTH - 1);
-            int itemY = j * (BOX_HEIGHT - 1);
-
-            // Set color to black.
-            g->setColor(gcn::Color(0, 0, 0));
-            // Draw box border.
-            g->drawRectangle(
-                gcn::Rectangle(itemX, itemY, BOX_WIDTH, BOX_HEIGHT));
+            int itemX = i * BOX_WIDTH;
+            int itemY = j * BOX_HEIGHT;
 
             Item *item = mInventory->getItem((j * mGridColumns) + i);
 
@@ -128,23 +120,25 @@ void ItemContainer::draw(gcn::Graphics *graphics)
             if (item->getQuantity() > 1 || mForceQuantity)
                 caption = toString(item->getQuantity());
             else if (item->isEquipped())
-                caption = "(Eq)";
+                caption = "Eq.";
 
             if (item->isEquipped())
                 g->setColor(guiPalette->getColor(Palette::ITEM_EQUIPPED));
+            else
+                g->setColor(gcn::Color(0, 0, 0));
+
             g->drawText(caption, itemX + BOX_WIDTH / 2,
                         itemY + BOX_HEIGHT - 14, gcn::Graphics::CENTER);
         }
     }
 
-    if (isFocused() && mHighlightedItem) {
-        // Items positions made to overlap on another.
+    // Draw an orange box around the selected item
+    if (isFocused() && mHighlightedItem)
+    {
         const int i = mHighlightedItem->getInvIndex();
-        const int itemX = (i % mGridColumns) * (BOX_WIDTH - 1);
-        const int itemY = (i / mGridColumns) * (BOX_HEIGHT - 1);
-        // Set color to orange.
+        const int itemX = (i % mGridColumns) * BOX_WIDTH;
+        const int itemY = (i / mGridColumns) * BOX_HEIGHT;
         g->setColor(gcn::Color(255, 128, 0));
-        // Draw box border.
         g->drawRectangle(gcn::Rectangle(itemX, itemY, BOX_WIDTH, BOX_HEIGHT));
     }
 }
@@ -165,13 +159,13 @@ void ItemContainer::setSelectedItem(Item *item)
 
 void ItemContainer::distributeValueChangedEvent()
 {
-    SelectionListenerIterator iter;
+    SelectionListenerIterator i, i_end;
 
-    for (iter = mSelectionListeners.begin(); iter != mSelectionListeners.end();
-         ++iter)
+    for (i = mSelectionListeners.begin(), i_end = mSelectionListeners.end();
+         i != i_end; ++i)
     {
         gcn::SelectionEvent event(this);
-        (*iter)->valueChanged(event);
+        (*i)->valueChanged(event);
     }
 }
 
@@ -224,9 +218,8 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
     if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
     {
         const int index = getSlotIndex(event.getX(), event.getY());
-        if (index == Inventory::NO_SLOT_INDEX) {
+        if (index == Inventory::NO_SLOT_INDEX)
             return;
-        }
 
         Item *item = mInventory->getItem(index);
 
@@ -317,12 +310,21 @@ void ItemContainer::mouseExited(gcn::MouseEvent &event)
     mItemPopup->setVisible(false);
 }
 
+void ItemContainer::widgetResized(const gcn::Event &event)
+{
+    mGridColumns = std::max(1, getWidth() / BOX_WIDTH);
+    mGridRows = mInventory->getSize() / mGridColumns;
+    if (mGridRows == 0 || mInventory->getSize() % mGridColumns > 0)
+        ++mGridRows;
+
+    setHeight(mGridRows * BOX_HEIGHT);
+}
+
 int ItemContainer::getSlotIndex(int x, int y) const
 {
     if (x < getWidth() && y < getHeight())
     {
-        // Takes into account, boxes are overlapping each other.
-        return (y / (BOX_HEIGHT - 1)) * mGridColumns + (x / (BOX_WIDTH - 1));
+        return (y / BOX_HEIGHT) * mGridColumns + (x / BOX_WIDTH);
     }
     return Inventory::NO_SLOT_INDEX;
 }

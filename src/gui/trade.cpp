@@ -59,9 +59,11 @@ TradeWindow::TradeWindow():
     mStatus(PROPOSING)
 {
     setWindowName("Trade");
-    setResizable(false);
+    setResizable(true);
     setCloseButton(true);
     setDefaultSize(386, 180, ImageRect::CENTER);
+    setMinWidth(386);
+    setMinHeight(180);
 
     std::string longestName = getFont()->getWidth(_("OK")) >
                                    getFont()->getWidth(_("Trade")) ?
@@ -76,15 +78,17 @@ TradeWindow::TradeWindow():
 
     mOkButton->setWidth(8 + width);
 
-    mMyItemContainer = new ItemContainer(mMyInventory.get(), 5, 2);
+    mMyItemContainer = new ItemContainer(mMyInventory.get());
     mMyItemContainer->addSelectionListener(this);
 
     ScrollArea *myScroll = new ScrollArea(mMyItemContainer);
+    myScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get(), 5, 2);
+    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get());
     mPartnerItemContainer->addSelectionListener(this);
 
     ScrollArea *partnerScroll = new ScrollArea(mPartnerItemContainer);
+    partnerScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mMoneyLabel = new Label(strprintf(_("You get %s."), ""));
     gcn::Label *mMoneyLabel2 = new Label(_("You give:"));

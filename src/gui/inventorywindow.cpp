@@ -54,10 +54,12 @@ InventoryWindow::InventoryWindow(int invSize):
     mItemDesc(false)
 {
     setWindowName("Inventory");
-    setResizable(false);
+    setResizable(true);
     setCloseButton(true);
 
     setDefaultSize(387, 307, ImageRect::CENTER);
+    setMinWidth(316);
+    setMinHeight(179);
     addKeyListener(this);
 
     std::string longestUseString = getFont()->getWidth(_("Equip")) >
@@ -74,14 +76,14 @@ InventoryWindow::InventoryWindow(int invSize):
     mDropButton = new Button(_("Drop"), "drop", this);
 #ifdef TMWSERV_SUPPORT
     mSplitButton = new Button(_("Split"), "split", this);
-    mItems = new ItemContainer(player_node->getInventory(), 10, 5);
+    mItems = new ItemContainer(player_node->getInventory());
 #else
-    mItems = new ItemContainer(player_node->getInventory(), 10, 10);
+    mItems = new ItemContainer(player_node->getInventory());
 #endif
     mItems->addSelectionListener(this);
 
-    mInvenScroll = new ScrollArea(mItems);
-    mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    gcn::ScrollArea *invenScroll = new ScrollArea(mItems);
+    invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mTotalWeight = -1;
     mMaxWeight = -1;
@@ -97,7 +99,7 @@ InventoryWindow::InventoryWindow(int invSize):
     place(1, 0, mWeightBar, 3);
     place(4, 0, mSlotsLabel).setPadding(3);
     place(5, 0, mSlotsBar, 2);
-    place(0, 1, mInvenScroll, 7).setPadding(3);
+    place(0, 1, invenScroll, 7).setPadding(3);
     place(0, 2, mUseButton);
     place(1, 2, mDropButton);
 #ifdef TMWSERV_SUPPORT

@@ -112,7 +112,6 @@ class InventoryWindow : public Window,
 #ifdef TMWSERV_SUPPORT
         gcn::Button *mSplitButton;
 #endif
-        gcn::ScrollArea *mInvenScroll;         /**< Inventory Scroll Area. */
         gcn::Label *mWeightLabel;
         gcn::Label *mSlotsLabel;
 
