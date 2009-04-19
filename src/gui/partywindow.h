@@ -39,7 +39,6 @@
  */
 struct PartyMember
 {
-    int id;
     std::string name;
     int health;
     int healthMax;
