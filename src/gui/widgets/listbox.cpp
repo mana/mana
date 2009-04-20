@@ -66,36 +66,6 @@ void ListBox::draw(gcn::Graphics *graphics)
     }
 }
 
-void ListBox::setSelected(int selected)
-{
-    if (!mListModel)
-    {
-        mSelected = -1;
-    }
-    else
-    {
-        if (selected < 0 && !mWrappingEnabled)
-        {
-            mSelected = -1;
-        }
-        else if (selected >= mListModel->getNumberOfElements() &&
-                 mWrappingEnabled)
-        {
-            mSelected = 0;
-        }
-        else if ((selected >= mListModel->getNumberOfElements() &&
-                 !mWrappingEnabled) || (selected < 0 && mWrappingEnabled))
-        {
-            mSelected = mListModel->getNumberOfElements() - 1;
-        }
-        else
-        {
-            mSelected = selected;
-        }
-    }
-    gcn::ListBox::setSelected(mSelected);
-}
-
 // -- KeyListener notifications
 void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
 {
