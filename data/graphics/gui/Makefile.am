@@ -39,12 +39,10 @@ gui_DATA =				\
 	target-cursor-red-m.png		\
 	target-cursor-red-s.png		\
 	unknown-item.png		\
-	vscroll_blue.png		\
 	vscroll_down_default.png	\
 	vscroll_down_highlight.png	\
 	vscroll_down_pressed.png	\
 	vscroll_grey.png		\
-	vscroll_red.png			\
 	vscroll_up_default.png		\
 	vscroll_up_highlight.png	\
 	vscroll_up_pressed.png
