@@ -154,6 +154,8 @@ class LocalPlayer : public Player
 
         virtual void logic();
 
+        virtual void setAction(Action action, int attackType = 0);
+
         /**
          * Adds a new step when walking before calling super. Also, when
          * specified it picks up an item at the end of a path.
@@ -285,7 +287,6 @@ class LocalPlayer : public Player
          * currently targeted.
          */
         Being* getTarget() const;
-
 
         /**
          * Sets the target being of the player.

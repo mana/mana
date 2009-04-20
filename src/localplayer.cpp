@@ -225,6 +225,17 @@ void LocalPlayer::logic()
     Player::logic();
 }
 
+void LocalPlayer::setAction(Action action, int attackType)
+{
+    if (action == DEAD)
+    {
+        mLastTarget = -1;
+        setTarget(NULL);
+    }
+
+    Player::setAction(action, attackType);
+}
+
 void LocalPlayer::setGM()
 {
     mIsGM = !mIsGM;

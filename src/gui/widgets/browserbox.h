@@ -126,7 +126,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
             PINK = 0xff00d8,        /**< Color 6 */
             PURPLE = 0x8415e2,      /**< Color 7 */
             GRAY = 0x919191,        /**< Color 8 */
-            BROWN = 0x8e4c17,       /**< Color 9 */
+            BROWN = 0x8e4c17        /**< Color 9 */
         };
 
         /**
