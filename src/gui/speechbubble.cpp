@@ -24,7 +24,6 @@
 
 #include "gui/gui.h"
 
-#include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textbox.h"
 
 #include "graphics.h"
@@ -49,14 +48,8 @@ SpeechBubble::SpeechBubble():
     mSpeechBox->setOpaque(false);
     mSpeechBox->setTextColor(&guiPalette->getColor(Palette::CHAT));
 
-    mSpeechArea = new ScrollArea(mSpeechBox);
-
-    mSpeechArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mSpeechArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mSpeechArea->setOpaque(false);
-
     add(mCaption);
-    add(mSpeechArea);
+    add(mSpeechBox);
 
     loadPopupConfiguration();
 }
@@ -96,5 +89,5 @@ void SpeechBubble::setText(const std::string &text, bool showName)
     const int yPos = ((getHeight() - height) / 2) + nameHeight;
 
     mCaption->setPosition(xPos, getPadding());
-    mSpeechArea->setDimension(gcn::Rectangle(xPos, yPos, width, height));
+    mSpeechBox->setPosition(xPos, yPos);
 }

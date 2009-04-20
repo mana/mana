@@ -262,13 +262,9 @@ void PopupMenu::handleLink(const std::string &link)
             player_node->equipItem(mItem);
 #else
             if (mItem->isEquipped())
-            {
                 player_node->unequipItem(mItem);
-            }
             else
-            {
                 player_node->equipItem(mItem);
-            }
 #endif
         }
         else

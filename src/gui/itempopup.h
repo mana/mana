@@ -27,7 +27,6 @@
 
 #include "resources/iteminfo.h"
 
-class ScrollArea;
 class TextBox;
 
 /**
@@ -62,9 +61,6 @@ class ItemPopup : public Popup
         TextBox *mItemEffect;
         TextBox *mItemWeight;
         ItemType mItemType;
-        ScrollArea *mItemDescScroll;
-        ScrollArea *mItemEffectScroll;
-        ScrollArea *mItemWeightScroll;
 
         static gcn::Color getColor(ItemType type);
 };
