@@ -1271,6 +1271,11 @@ int main(int argc, char *argv[])
                     Net::ChatServer::connect(chatServerConnection, token);
                     sound.fadeOutMusic(1000);
 
+                    delete setupButton;
+                    delete desktop;
+                    setupButton = NULL;
+                    desktop = NULL;
+
                     currentDialog = NULL;
 
                     logger->log("State: GAME");
