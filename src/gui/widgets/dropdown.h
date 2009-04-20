@@ -53,6 +53,16 @@ class DropDown : public gcn::DropDown
 
         void drawFrame(gcn::Graphics *graphics);
 
+        // Inherited from KeyListener
+
+        void keyPressed(gcn::KeyEvent& keyEvent);
+
+        // Inherited from MouseListener
+
+        void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
+
+        void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
+
     protected:
         /**
          * Draws the button with the little down arrow.
