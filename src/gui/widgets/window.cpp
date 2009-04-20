@@ -39,7 +39,8 @@
 int Window::instances = 0;
 int Window::mouseResize = 0;
 
-Window::Window(const std::string &caption, bool modal, Window *parent, const std::string &skin):
+Window::Window(const std::string &caption, bool modal, Window *parent,
+               const std::string &skin):
     gcn::Window(caption),
     mGrip(0),
     mParent(parent),

@@ -242,7 +242,7 @@ static void createGuiWindows()
     debugWindow = new DebugWindow;
     itemShortcutWindow = new ShortcutWindow("ItemShortcut",
                                             new ItemShortcutContainer);
-    emoteShortcutWindow = new ShortcutWindow("emoteShortcut",
+    emoteShortcutWindow = new ShortcutWindow("EmoteShortcut",
                                              new EmoteShortcutContainer);
 
     localChatTab = new ChatTab(_("General"));

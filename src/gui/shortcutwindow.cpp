@@ -32,7 +32,8 @@ static const int SCROLL_PADDING = 0;
 
 int ShortcutWindow::mInstances = 0;
 
-ShortcutWindow::ShortcutWindow(const char *title, ShortcutContainer *content)
+ShortcutWindow::ShortcutWindow(const std::string &title,
+                               ShortcutContainer *content)
 {
     setWindowName(title);
     // no title presented, title bar is padding so window can be moved.

@@ -23,6 +23,7 @@
 #define GENERALHANDLER_H
 
 namespace Net {
+
 class GeneralHandler
 {
     public:
@@ -40,6 +41,7 @@ class GeneralHandler
 
         virtual void guiWindowsUnloaded() = 0;
 };
-}
+
+} // namespace Net
 
 #endif // GENERALHANDLER_H
