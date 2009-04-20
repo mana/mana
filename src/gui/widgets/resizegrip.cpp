@@ -54,9 +54,7 @@ ResizeGrip::~ResizeGrip()
     mInstances--;
 
     if (mInstances == 0)
-    {
         gripImage->decRef();
-    }
 }
 
 void ResizeGrip::draw(gcn::Graphics *graphics)

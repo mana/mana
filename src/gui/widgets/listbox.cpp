@@ -22,6 +22,7 @@
 #include "gui/widgets/listbox.h"
 
 #include "gui/palette.h"
+#include "gui/sdlinput.h"
 
 #include "configuration.h"
 
@@ -100,27 +101,34 @@ void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
 {
     gcn::Key key = keyEvent.getKey();
 
-    if (key.getValue() == gcn::Key::ENTER || key.getValue() == gcn::Key::SPACE)
+    if (key.getValue() == Key::ENTER || key.getValue() == Key::SPACE)
     {
         distributeActionEvent();
         keyEvent.consume();
     }
-    else if (key.getValue() == gcn::Key::UP)
+    else if (key.getValue() == Key::UP)
     {
-        setSelected(mSelected - 1);
+        if (getSelected() > 0)
+            setSelected(mSelected - 1);
+        else if (getSelected() == 0 && mWrappingEnabled)
+            setSelected(getListModel()->getNumberOfElements() - 1);
         keyEvent.consume();
     }
-    else if (key.getValue() == gcn::Key::DOWN)
+    else if (key.getValue() == Key::DOWN)
     {
-        setSelected(mSelected + 1);
+        if (getSelected() < (getListModel()->getNumberOfElements() - 1))
+            setSelected(mSelected + 1);
+        else if (getSelected() == (getListModel()->getNumberOfElements() - 1) &&
+                 mWrappingEnabled)
+            setSelected(0);
         keyEvent.consume();
     }
-    else if (key.getValue() == gcn::Key::HOME)
+    else if (key.getValue() == Key::HOME)
     {
         setSelected(0);
         keyEvent.consume();
     }
-    else if (key.getValue() == gcn::Key::END)
+    else if (key.getValue() == Key::END)
     {
         setSelected(getListModel()->getNumberOfElements() - 1);
         keyEvent.consume();
@@ -131,10 +139,10 @@ void ListBox::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
     if (isFocused())
     {
-        if (getSelected() > 0 || (getSelected() == 0 && mWrappingEnabled))
-        {
+        if (getSelected() > 0)
             setSelected(getSelected() - 1);
-        }
+        else if (getSelected() == 0 && mWrappingEnabled)
+            setSelected(getListModel()->getNumberOfElements() - 1);
 
         mouseEvent.consume();
     }
@@ -144,7 +152,11 @@ void ListBox::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
 {
     if (isFocused())
     {
-        setSelected(getSelected() + 1);
+        if (getSelected() < (getListModel()->getNumberOfElements() - 1))
+            setSelected(getSelected() + 1);
+        else if (getSelected() == (getListModel()->getNumberOfElements() - 1) &&
+                 mWrappingEnabled)
+            setSelected(0);
 
         mouseEvent.consume();
     }
