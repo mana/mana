@@ -61,6 +61,8 @@ MiniStatusWindow::MiniStatusWindow():
     setContentSize(mHpBar->getX() + mHpBar->getWidth(),
                    mHpBar->getY() + mHpBar->getHeight());
 #endif
+
+    setVisible((bool) config.getValue(getPopupName() + "Visible", true));
 }
 
 void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)

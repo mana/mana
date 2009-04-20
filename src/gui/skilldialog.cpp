@@ -100,6 +100,7 @@ SkillDialog::SkillDialog():
 {
     setWindowName("Skills");
     setCloseButton(true);
+    setSaveVisible(true);
     setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
 
     TabbedArea *panel = new TabbedArea;

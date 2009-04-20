@@ -173,6 +173,26 @@ class Window : public gcn::Window, gcn::WidgetListener
         void setVisible(bool visible, bool forceSticky);
 
         /**
+         * Returns whether the window will save it's visibility.
+         */
+        bool isDefaultVisible() const { return mDefaultVisible; }
+
+        /**
+         * Returns whether the window will save it's visibility.
+         */
+        void setDefaultVisible(bool save) { mDefaultVisible = save; }
+
+        /**
+         * Returns whether the window will save it's visibility.
+         */
+        bool willSaveVisible() const { return mSaveVisible; }
+
+        /**
+         * Returns whether the window will save it's visibility.
+         */
+        void setSaveVisible(bool save) { mSaveVisible = save; }
+
+        /**
          * Returns the parent window.
          *
          * @return The parent window or <code>NULL</code> if there is none.
@@ -335,6 +355,8 @@ class Window : public gcn::Window, gcn::WidgetListener
         bool mShowTitle;              /**< Window has a title bar */
         bool mModal;                  /**< Window is modal */
         bool mCloseButton;            /**< Window has a close button */
+        bool mDefaultVisible;         /**< Window's default visibility */
+        bool mSaveVisible;            /**< Window will save visibility */
         bool mStickyButton;           /**< Window has a sticky button */
         bool mSticky;                 /**< Window resists hiding*/
         int mMinWinWidth;             /**< Minimum window width */

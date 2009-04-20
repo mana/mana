@@ -34,11 +34,11 @@ extern ChatWindow *chatWindow;
 BuddyWindow::BuddyWindow():
     Window(_("Buddy"))
 {
-    setVisible(false);
     setWindowName("BuddyWindow");
     setCaption(_("Buddy List"));
     setResizable(true);
     setCloseButton(true);
+    setSaveVisible(true);
     setMinWidth(110);
     setMinHeight(200);
     setDefaultSize(124, 41, 288, 330);

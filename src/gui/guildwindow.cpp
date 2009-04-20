@@ -54,6 +54,7 @@ GuildWindow::GuildWindow():
     setCaption(_("Guild"));
     setResizable(false);
     setCloseButton(true);
+    setSaveVisible(true);
     setMinWidth(200);
     setMinHeight(280);
     setDefaultSize(124, 41, 288, 330);

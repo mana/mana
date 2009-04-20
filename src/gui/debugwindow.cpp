@@ -40,6 +40,7 @@ DebugWindow::DebugWindow():
 
     setResizable(true);
     setCloseButton(true);
+    setSaveVisible(true);
     setDefaultSize(400, 100, ImageRect::CENTER);
 
     mFPSLabel = new Label("0 FPS");

@@ -90,6 +90,8 @@ MenuWindow::MenuWindow():
 
     setPosition(graphics->getWidth() - x - 3, 3);
     setContentSize(x - 3, h);
+
+    setVisible((bool) config.getValue(getPopupName() + "Visible", true));
 }
 
 void MenuWindow::draw(gcn::Graphics *graphics)

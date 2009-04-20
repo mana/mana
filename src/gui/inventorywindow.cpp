@@ -56,6 +56,7 @@ InventoryWindow::InventoryWindow(int invSize):
     setWindowName("Inventory");
     setResizable(true);
     setCloseButton(true);
+    setSaveVisible(true);
 
     setDefaultSize(387, 307, ImageRect::CENTER);
     setMinWidth(316);

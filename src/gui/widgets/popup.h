@@ -25,6 +25,7 @@
 
 #include "gui/widgets/container.h"
 
+#include "configuration.h"
 #include "guichanfwd.h"
 
 class Skin;

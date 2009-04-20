@@ -33,6 +33,7 @@ MagicDialog::MagicDialog():
 {
     setWindowName("Magic");
     setCloseButton(true);
+    setSaveVisible(true);
     setDefaultSize(255, 30, 175, 225);
 
     gcn::Button *spellButton1 = new Button(_("Cast Test Spell 1"), "spell_1", this);

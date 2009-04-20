@@ -80,6 +80,7 @@ EquipmentWindow::EquipmentWindow():
 
     setWindowName("Equipment");
     setCloseButton(true);
+    setSaveVisible(true);
     setDefaultSize(180, 300, ImageRect::CENTER);
     loadWindowState();
 

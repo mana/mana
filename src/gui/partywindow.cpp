@@ -35,7 +35,7 @@ PartyWindow::PartyWindow() : Window(_("Party"))
     setWindowName("Party");
     setVisible(false);
     setResizable(false);
-    setCaption(_("Party"));
+    setSaveVisible(true);
     setCloseButton(true);
     setMinWidth(110);
     setMinHeight(200);

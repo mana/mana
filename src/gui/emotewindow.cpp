@@ -39,6 +39,7 @@ EmoteWindow::EmoteWindow():
     setWindowName("Emote");
     setResizable(true);
     setCloseButton(true);
+    setSaveVisible(true);
     setMinWidth(80);
     setMinHeight(130);
     setDefaultSize(322, 200, ImageRect::CENTER);

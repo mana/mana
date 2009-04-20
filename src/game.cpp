@@ -247,35 +247,6 @@ static void createGuiWindows()
 
     localChatTab = new ChatTab(_("General"));
 
-    // Set initial window visibility
-    chatWindow->setVisible((bool) config.getValue(
-        chatWindow->getWindowName() + "Visible", true));
-    miniStatusWindow->setVisible((bool) config.getValue(
-        miniStatusWindow->getPopupName() + "Visible", true));
-    buyDialog->setVisible(false);
-    sellDialog->setVisible(false);
-    minimap->setVisible((bool) config.getValue(
-        minimap->getWindowName() + "Visible", true));
-    tradeWindow->setVisible(false);
-    menuWindow->setVisible((bool) config.getValue(
-        menuWindow->getPopupName() + "Visible", true));
-    itemShortcutWindow->setVisible((bool) config.getValue(
-        itemShortcutWindow->getWindowName() + "Visible", true));
-    emoteShortcutWindow->setVisible((bool) config.getValue(
-        emoteShortcutWindow->getWindowName() + "Visible", true));
-    minimap->setVisible((bool) config.getValue(
-        minimap->getWindowName() + "Visible", true));
-#ifdef EATHENA_SUPPORT
-    buySellDialog->setVisible(false);
-#endif
-    npcTextDialog->setVisible(false);
-    npcIntegerDialog->setVisible(false);
-    npcListDialog->setVisible(false);
-    npcStringDialog->setVisible(false);
-#ifdef EATHENA_SUPPORT
-    storageWindow->setVisible(false);
-#endif
-
     if (config.getValue("logToChat", 0))
     {
         logger->setChatWindow(chatWindow);

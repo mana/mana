@@ -46,6 +46,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 {
     setWindowName("Status");
     setCloseButton(true);
+    setSaveVisible(true);
     setDefaultSize(400, 345, ImageRect::CENTER);
 
     // ----------------------

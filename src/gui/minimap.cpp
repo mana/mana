@@ -44,6 +44,8 @@ Minimap::Minimap():
     mShow = config.getValue(getWindowName() + "Show", true);
     setDefaultSize(5, 25, 100, 100);
     setResizable(true);
+    setDefaultVisible(true);
+    setSaveVisible(true);
 
     setStickyButton(true);
     setSticky(false);

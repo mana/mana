@@ -50,6 +50,8 @@ Window::Window(const std::string &caption, bool modal, Window *parent,
     mShowTitle(true),
     mModal(modal),
     mCloseButton(false),
+    mDefaultVisible(false),
+    mSaveVisible(false),
     mStickyButton(false),
     mSticky(false),
     mMinWinWidth(100),
@@ -492,8 +494,8 @@ void Window::loadWindowState()
     setPosition((int) config.getValue(name + "WinX", mDefaultX),
                 (int) config.getValue(name + "WinY", mDefaultY));
 
-    if (mCloseButton)
-        setVisible((bool) config.getValue(name + "Visible", false));
+    if (mSaveVisible)
+        setVisible((bool) config.getValue(name + "Visible", mDefaultVisible));
 
     if (mStickyButton)
         setSticky((bool) config.getValue(name + "Sticky", isSticky()));
@@ -534,7 +536,7 @@ void Window::saveWindowState()
         config.setValue(mWindowName + "WinX", getX());
         config.setValue(mWindowName + "WinY", getY());
 
-        if (mCloseButton)
+        if (mSaveVisible)
             config.setValue(mWindowName + "Visible", isVisible());
 
         if (mStickyButton)
