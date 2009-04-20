@@ -85,9 +85,16 @@ void TextBox::setTextWrapped(const std::string &text, int minDimension)
 
             int width = getFont()->getWidth(word);
 
-            if (xpos != 0 && xpos + width + getFont()->getWidth(" ") <= mMinWidth)
+            if (xpos == 0 && width > mMinWidth)
             {
-                xpos += width + getFont()->getWidth(" ");
+                mMinWidth = width;
+                xpos = width;
+                wrappedStream << word;
+            }
+            else if (xpos != 0 && xpos + getFont()->getWidth(" ") + width <= 
+                     mMinWidth)
+            {
+                xpos += getFont()->getWidth(" ") + width;
                 wrappedStream << " " << word;
             }
             else if (lastSpacePos == 0)
