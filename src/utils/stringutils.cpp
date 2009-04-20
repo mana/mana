@@ -30,10 +30,9 @@ std::string &trim(std::string &str)
     {
         str.erase(pos + 1);
         pos = str.find_first_not_of(' ');
+
         if (pos != std::string::npos)
-        {
             str.erase(0, pos);
-        }
     }
     else
     {
@@ -47,6 +46,14 @@ std::string &toLower(std::string &str)
 {
     std::transform(str.begin(), str.end(), str.begin(), tolower);
     return str;
+}
+
+unsigned int atox(const std::string &str)
+{
+    unsigned int value;
+    sscanf(str.c_str(), "0x%06x", &value);
+
+    return value;
 }
 
 const char *ipToString(int address)

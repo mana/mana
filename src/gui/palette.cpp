@@ -152,7 +152,11 @@ Palette::~Palette()
             config.setValue(*configName + "Delay", col->delay);
 
         if (col->grad == STATIC || col->grad == PULSE)
-            config.setValue(*configName, toString(col->getRGB()));
+        {
+            char buffer[20];
+            sprintf(buffer, "0x%06x", col->getRGB());
+            config.setValue(*configName, buffer);
+        }
     }
 }
 
@@ -265,7 +269,15 @@ void Palette::addColor(Palette::ColorType type, int rgb,
                        char c, int delay)
 {
     const std::string *configName = &ColorTypeNames[type];
-    gcn::Color trueCol = (int) config.getValue(*configName, rgb);
+    char buffer[20];
+    sprintf(buffer, "0x%06x", rgb);
+    const std::string rgbString = config.getValue(*configName, buffer);
+    unsigned int rgbValue = 0;
+    if (rgbString.length() == 8 && rgbString[0] == '0' && rgbString[1] == 'x')
+        rgbValue = atox(rgbString);
+    else
+        rgbValue = atoi(rgbString.c_str());
+    gcn::Color trueCol = rgbValue;
     grad = (GradientType) config.getValue(*configName + "Gradient", grad);
     delay = (int) config.getValue(*configName + "Delay", delay);
     mColVector[type].set(type, trueCol, grad, text, c, delay);

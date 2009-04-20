@@ -42,6 +42,14 @@ std::string &trim(std::string &str);
 std::string &toLower(std::string &str);
 
 /**
+ * Converts an ascii hexidecimal string to an integer
+ *
+ * @param str the hex string to convert to an int
+ * @return the integer representation of the hex string
+ */
+unsigned int atox(const std::string &str);
+
+/**
  * Converts the given value to a string using std::stringstream.
  *
  * @param arg the value to convert to a string
