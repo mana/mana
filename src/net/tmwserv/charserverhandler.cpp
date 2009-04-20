@@ -214,6 +214,12 @@ void CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 
         state = STATE_CONNECT_GAME;
     }
+    else if(errMsg == ERRMSG_FAILURE)
+    {
+        errorMessage = _("No gameservers are available.");
+        mCharInfo->clear();
+        state = STATE_ERROR;
+    }
 }
 
 LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
