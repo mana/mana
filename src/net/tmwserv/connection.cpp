@@ -83,7 +83,7 @@ void Net::Connection::disconnect()
 
 bool Net::Connection::isConnected()
 {
-    return bool (mConnection) ?
+    return (mConnection) ?
                     (mConnection->state == ENET_PEER_STATE_CONNECTED) : false;
 }
 

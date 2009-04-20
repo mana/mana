@@ -69,6 +69,7 @@ ChatHandler::ChatHandler()
         0
     };
     handledMessages = _messages;
+    chatHandler = this;
 }
 
 void ChatHandler::handleMessage(MessageIn &msg)

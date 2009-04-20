@@ -1029,7 +1029,7 @@ int main(int argc, char *argv[])
                 chatServerConnection->isConnected())
         {
             accountServerConnection->disconnect();
-            Net::clearHandlers();
+//            Net::clearHandlers();
 
             state = STATE_GAME;
         }
@@ -1308,6 +1308,7 @@ int main(int argc, char *argv[])
                 case STATE_EXIT:
                     logger->log("State: EXIT");
                     logoutThenExit();
+                    Net::getGeneralHandler()->unload();
                     break;
 
                 default:

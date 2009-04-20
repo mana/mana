@@ -27,11 +27,16 @@ namespace TmwServ {
 
 MapHandler::MapHandler()
 {
+    static const Uint16 _messages[] = {
+        0
+    };
+    handledMessages = _messages;
     mapHandler = this;
 }
 
 void MapHandler::handleMessage(MessageIn &msg)
 {
+
 }
 
 void MapHandler::connect(LoginData *loginData)

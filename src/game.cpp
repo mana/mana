@@ -382,8 +382,6 @@ Game::Game():
 
 Game::~Game()
 {
-    Net::getGeneralHandler()->unload();
-
     destroyGuiWindows();
 
     delete beingManager;
