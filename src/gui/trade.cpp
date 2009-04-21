@@ -49,9 +49,9 @@
 
 #include <guichan/font.hpp>
 
-#define CAPTION_PROPOSE _("!Propose trade")
+#define CAPTION_PROPOSE _("Propose trade")
 #define CAPTION_CONFIRMED _("Confirmed. Waiting...")
-#define CAPTION_ACCEPT _("!Agree trade")
+#define CAPTION_ACCEPT _("Agree trade")
 #define CAPTION_ACCEPTED _("Agreed. Waiting...")
 
 TradeWindow::TradeWindow():
