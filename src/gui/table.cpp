@@ -500,7 +500,10 @@ gcn::Widget *GuiTable::getWidgetAt(int x, int y)
 
 int GuiTable::getRowForY(int y)
 {
-   int row = y / getRowHeight();
+   int row = -1;
+
+   if (getRowHeight() > 0)
+       row = y / getRowHeight();
 
    if (row < 0 || row >= mModel->getRows())
        return -1;
