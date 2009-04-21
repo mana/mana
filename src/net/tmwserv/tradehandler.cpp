@@ -71,13 +71,16 @@ TradeHandler::TradeHandler():
         GPMSG_TRADE_CANCEL,
         GPMSG_TRADE_START,
         GPMSG_TRADE_COMPLETE,
-        GPMSG_TRADE_ACCEPT,
+        GPMSG_TRADE_AGREED,
+        GPMSG_TRADE_BOTH_CONFIRM,
+        GPMSG_TRADE_CONFIRM,
         GPMSG_TRADE_ADD_ITEM,
         GPMSG_TRADE_SET_MONEY,
         0
     };
     handledMessages = _messages;
     tradeHandler = this;
+    
 }
 
 void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
@@ -127,10 +130,14 @@ void TradeHandler::handleMessage(MessageIn &msg)
             tradeWindow->setVisible(true);
             break;
 
-        case GPMSG_TRADE_ACCEPT:
+        case GPMSG_TRADE_BOTH_CONFIRM:
             tradeWindow->receivedOk(false);
             break;
 
+        case GPMSG_TRADE_AGREED:
+            tradeWindow->receivedOk(false);
+            break;
+            
         case GPMSG_TRADE_CANCEL:
             localChatTab->chatLog("Trade canceled.", BY_SERVER);
             tradeWindow->setVisible(false);
@@ -187,12 +194,13 @@ void TradeHandler::setMoney(int amount)
 
 void TradeHandler::confirm()
 {
-    // TODO
+    MessageOut msg(PGMSG_TRADE_CONFIRM);
+    Net::GameServer::connection->send(msg);
 }
 
 void TradeHandler::finish()
 {
-    MessageOut msg(PGMSG_TRADE_ACCEPT);
+    MessageOut msg(PGMSG_TRADE_AGREED);
     Net::GameServer::connection->send(msg);
 }
 

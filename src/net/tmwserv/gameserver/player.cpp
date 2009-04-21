@@ -81,7 +81,7 @@ void Net::GameServer::Player::requestTrade(int id)
 
 void Net::GameServer::Player::acceptTrade(bool accept)
 {
-    MessageOut msg(accept ? PGMSG_TRADE_ACCEPT : PGMSG_TRADE_CANCEL);
+    MessageOut msg(accept ? PGMSG_TRADE_REQUEST : PGMSG_TRADE_CANCEL);
     Net::GameServer::connection->send(msg);
 }
 

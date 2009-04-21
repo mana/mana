@@ -114,9 +114,10 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
     private:
         enum Status
         {
-            PREPARING, /**< Players are adding items. */
-            PROPOSING, /**< Local player is proposing a trade. */
-            ACCEPTING  /**< Distant player is proposing a trade. */
+            PREPARING, /**< Players are adding items. (1) */
+            PROPOSING, /**< Local player has confirmed the trade. (1) */
+            ACCEPTING, /**< Accepting the trade. (2) */
+            ACCEPTED  /**< Local player has accepted the trade. */
         };
 
         /**
@@ -134,6 +135,7 @@ class TradeWindow : public Window, gcn::ActionListener, gcn::SelectionListener
         gcn::Label *mMoneyLabel;
         gcn::Button *mAddButton;
         gcn::Button *mOkButton;
+        gcn::Button  *mMoneyChangeButton;
         gcn::TextField *mMoneyField;
 
         Status mStatus;

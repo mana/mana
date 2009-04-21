@@ -44,20 +44,22 @@
 #include "utils/stringutils.h"
 #include "utils/strprintf.h"
 
+
 #include <sstream>
 
 #include <guichan/font.hpp>
 
-#define CAPTION_PROPOSE _("Propose trade")
-#define CAPTION_WAIT _("Waiting")
-#define CAPTION_ACCEPT _("Confirm trade")
+#define CAPTION_PROPOSE _("!Propose trade")
+#define CAPTION_CONFIRMED _("Confirmed. Waiting...")
+#define CAPTION_ACCEPT _("!Agree trade")
+#define CAPTION_ACCEPTED _("Agreed. Waiting...")
 
 TradeWindow::TradeWindow():
     Window(_("Trade: You")),
     mMyInventory(new Inventory(INVENTORY_SIZE)),
     mPartnerInventory(new Inventory(INVENTORY_SIZE)),
     mStatus(PROPOSING)
-{
+{    
     setWindowName("Trade");
     setResizable(true);
     setCloseButton(true);
@@ -69,12 +71,13 @@ TradeWindow::TradeWindow():
                                    getFont()->getWidth(_("Trade")) ?
                                    _("OK") : _("Trade");
 
-    Button *addButton = new Button(_("Add"), "add", this);
+    mAddButton = new Button(_("Add"), "add", this);
     mOkButton = new Button("", "", this); // Will be filled in later
 
     int width = std::max(mOkButton->getFont()->getWidth(CAPTION_PROPOSE),
-                         mOkButton->getFont()->getWidth(CAPTION_WAIT));
+                         mOkButton->getFont()->getWidth(CAPTION_CONFIRMED));
     width = std::max(width, mOkButton->getFont()->getWidth(CAPTION_ACCEPT));
+    width = std::max(width, mOkButton->getFont()->getWidth(CAPTION_ACCEPTED));
 
     mOkButton->setWidth(8 + width);
 
@@ -92,10 +95,10 @@ TradeWindow::TradeWindow():
 
     mMoneyLabel = new Label(strprintf(_("You get %s."), ""));
     gcn::Label *mMoneyLabel2 = new Label(_("You give:"));
-
+    
     mMoneyField = new TextField;
     mMoneyField->setWidth(40);
-    Button *moneyChange = new Button(_("Change"), "money", this);
+    mMoneyChangeButton = new Button(_("Change"), "money", this);
 
     place(1, 0, mMoneyLabel);
     place(0, 1, myScroll).setPadding(3);
@@ -104,9 +107,9 @@ TradeWindow::TradeWindow():
     place = getPlacer(0, 0);
     place(0, 0, mMoneyLabel2);
     place(1, 0, mMoneyField);
-    place(2, 0, moneyChange).setHAlign(LayoutCell::LEFT);
+    place(2, 0, mMoneyChangeButton).setHAlign(LayoutCell::LEFT);
     place = getPlacer(0, 2);
-    place(0, 0, addButton);
+    place(0, 0, mAddButton);
     place(1, 0, mOkButton);
     Layout &layout = getLayout();
     layout.extend(0, 2, 2, 1);
@@ -129,13 +132,13 @@ void TradeWindow::setMoney(int amount)
     mMoneyLabel->setCaption(strprintf(_("You get %s."),
                                        Units::formatCurrency(amount).c_str()));
     mMoneyLabel->adjustSize();
-    setStatus(PREPARING);
+    //setStatus(PREPARING);
 }
 
 void TradeWindow::addItem(int id, bool own, int quantity)
 {
     (own ? mMyInventory : mPartnerInventory)->addItem(id, quantity);
-    setStatus(PREPARING);
+    //setStatus(PREPARING);
 }
 
 void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
@@ -172,9 +175,11 @@ void TradeWindow::reset()
     mPartnerInventory->clear();
     mOkOther = false;
     mOkMe = false;
-    mMoneyLabel->setCaption(strprintf(_("You get %s."), ""));
+    mMoneyLabel->setCaption(strprintf(_("You get %s."), "0GP"));
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
+    mAddButton->setEnabled(true);
+    mMoneyChangeButton->setEnabled(true);
     setStatus(PREPARING);
 }
 
@@ -186,7 +191,11 @@ void TradeWindow::receivedOk(bool own)
         mOkOther = true;
 
     if (mOkMe && mOkOther)
+    {
+        mOkMe = false;
+        mOkOther = false;
         setStatus(ACCEPTING);
+    }
 }
 
 void TradeWindow::tradeItem(Item *item, int quantity)
@@ -221,18 +230,22 @@ void TradeWindow::setStatus(Status s)
             mOkButton->setActionEventId("ok");
             break;
         case PROPOSING:
-            mOkButton->setCaption(CAPTION_WAIT);
+            mOkButton->setCaption(CAPTION_CONFIRMED);
             mOkButton->setActionEventId("");
             break;
         case ACCEPTING:
             mOkButton->setCaption(CAPTION_ACCEPT);
             mOkButton->setActionEventId("trade");
             break;
+        case ACCEPTED:
+            mOkButton->setCaption(CAPTION_ACCEPTED);
+            mOkButton->setActionEventId("");
+            break;
         default:
             break;
     }
 
-    mOkButton->setEnabled(s != PROPOSING);
+    mOkButton->setEnabled((s != PROPOSING && s != ACCEPTED));
 }
 
 void TradeWindow::action(const gcn::ActionEvent &event)
@@ -241,6 +254,9 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "add")
     {
+        if(mStatus != PREPARING)
+            return;
+        
         if (!inventoryWindow->isVisible())
             return;
 
@@ -281,19 +297,32 @@ void TradeWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "ok")
     {
         mMoneyField->setEnabled(false);
+        mAddButton->setEnabled(false);
+        mMoneyChangeButton->setEnabled(false);
+        receivedOk(true);
+        setStatus(PROPOSING);
         Net::getTradeHandler()->confirm();
     }
     else if (event.getId() == "trade")
     {
+        receivedOk(true);
+        setStatus(ACCEPTED);
         Net::getTradeHandler()->finish();
-        setStatus(PROPOSING);
     }
     else if (event.getId() == "money")
     {
+        if(mStatus != PREPARING) 
+            return;
+        
         int v = atoi(mMoneyField->getText().c_str());
+        int curMoney = player_node->getMoney();
+        if(v > curMoney)
+        {
+            localChatTab->chatLog(_("You don't have enough money"), BY_SERVER);
+            v = curMoney;
+        }
         Net::getTradeHandler()->setMoney(v);
         mMoneyField->setText(strprintf("%d", v));
-        setStatus(PREPARING);
     }
 }
 
