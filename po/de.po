@@ -8,26 +8,28 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-04-21 17:27+0200\n"
-"PO-Revision-Date: 2009-01-28 16:16+0000\n"
-"Last-Translator: Philipp Sehmisch <Unknown>\n"
+"PO-Revision-Date: 2009-04-20 12:27+0000\n"
+"Last-Translator: JohnTooray <Unknown>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-02-12 19:04+0000\n"
+"X-Launchpad-Export-Date: 2009-04-21 14:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:142
 msgid "-- Help --"
-msgstr ""
+msgstr "-- Hilfe --"
 
 #: src/commandhandler.cpp:143 src/net/ea/gui/partytab.cpp:53
+#, fuzzy
 msgid "/help > Display this help."
-msgstr ""
+msgstr "/help: Hilfe anzeigen"
 
 #: src/commandhandler.cpp:145
+#, fuzzy
 msgid "/where > Display map name"
-msgstr ""
+msgstr "/where: Zeigt den Namen der Karte an"
 
 #: src/commandhandler.cpp:146
 msgid "/who > Display number of online users"
@@ -129,7 +131,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:193
 msgid "This command clears the chat log of previous chat."
-msgstr ""
+msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/commandhandler.cpp:197
 msgid "Command: /join <channel>"
@@ -148,28 +150,33 @@ msgid "Command: /list"
 msgstr ""
 
 #: src/commandhandler.cpp:204
+#, fuzzy
 msgid "This command shows a list of all channels."
-msgstr ""
+msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/commandhandler.cpp:208
+#, fuzzy
 msgid "Command: /me <message>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/commandhandler.cpp:209
 msgid "This command tell others you are (doing) <msg>."
 msgstr ""
 
 #: src/commandhandler.cpp:213
+#, fuzzy
 msgid "Command: /msg <nick> <message>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/commandhandler.cpp:214
+#, fuzzy
 msgid "Command: /whisper <nick> <message>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/commandhandler.cpp:215
+#, fuzzy
 msgid "Command: /w <nick> <message>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/commandhandler.cpp:216
 msgid "This command sends the text <message> to <nick>."
@@ -182,20 +189,23 @@ msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
 msgstr ""
 
 #: src/commandhandler.cpp:222
+#, fuzzy
 msgid "Command: /query <nick>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/commandhandler.cpp:223
+#, fuzzy
 msgid "Command: /q <nick>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/commandhandler.cpp:224
 msgid "This command tries to make a tab for whispers betweenyou and <nick>."
 msgstr ""
 
 #: src/commandhandler.cpp:229
+#, fuzzy
 msgid "Command: /party <nick>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/commandhandler.cpp:230 src/net/ea/gui/partytab.cpp:76
 msgid "This command invites <nick> to party with you."
@@ -216,8 +226,9 @@ msgid "Command: /record <filename>"
 msgstr ""
 
 #: src/commandhandler.cpp:244
+#, fuzzy
 msgid "This command starts recording the chat log to the file <filename>."
-msgstr ""
+msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/commandhandler.cpp:246
 msgid "Command: /record"
@@ -248,8 +259,9 @@ msgid "Command: /toggle"
 msgstr ""
 
 #: src/commandhandler.cpp:258
+#, fuzzy
 msgid "This command displays the return toggle status."
-msgstr ""
+msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/commandhandler.cpp:262
 msgid "Command: /where"
@@ -559,7 +571,7 @@ msgstr "Geld: %d"
 #: src/gui/char_select.cpp:326
 #, c-format
 msgid "Job Level: %d"
-msgstr ""
+msgstr "Beruf Stufe: %d"
 
 #: src/gui/char_select.cpp:163 src/gui/char_select.cpp:309
 #: src/gui/char_select.cpp:328 src/gui/status.cpp:58 src/gui/status.cpp:183
@@ -718,9 +730,8 @@ msgid "Port:"
 msgstr "Port:"
 
 #: src/gui/login.cpp:55
-#, fuzzy
 msgid "Recent:"
-msgstr "Registrieren"
+msgstr ""
 
 #: src/gui/login.cpp:72
 msgid "Remember Username"
@@ -1334,7 +1345,7 @@ msgstr "Freund"
 
 #: src/gui/setup_players.cpp:64
 msgid "Disregarded"
-msgstr ""
+msgstr "Unbeachtet"
 
 #: src/gui/setup_players.cpp:65
 msgid "Ignored"
@@ -1564,7 +1575,7 @@ msgstr "Erstellen"
 #: src/gui/status.cpp:57 src/gui/status.cpp:178
 #, c-format
 msgid "Job: %d"
-msgstr ""
+msgstr "Job: %d"
 
 #: src/gui/status.cpp:61
 msgid "HP:"
@@ -1579,8 +1590,9 @@ msgid "MP:"
 msgstr ""
 
 #: src/gui/status.cpp:70
+#, fuzzy
 msgid "Job:"
-msgstr ""
+msgstr "Job: %d"
 
 #: src/gui/status.cpp:78
 msgid "Stats"
@@ -1727,8 +1739,9 @@ msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr ""
 
 #: src/gui/trade.cpp:321
+#, fuzzy
 msgid "You don't have enough money"
-msgstr ""
+msgstr "Keine Memos vorhanden!"
 
 #: src/gui/updatewindow.cpp:91
 msgid "Updating..."
@@ -1783,36 +1796,41 @@ msgid "/kick > Kick a user from the channel"
 msgstr ""
 
 #: src/gui/widgets/channeltab.cpp:63
+#, fuzzy
 msgid "Command: /users"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/gui/widgets/channeltab.cpp:64
 msgid "This command shows the users in this channel."
 msgstr ""
 
 #: src/gui/widgets/channeltab.cpp:68
+#, fuzzy
 msgid "Command: /topic <message>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/gui/widgets/channeltab.cpp:69
+#, fuzzy
 msgid "This command sets the topic to <message>."
-msgstr ""
+msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/gui/widgets/channeltab.cpp:73
 msgid "Command: /quit"
 msgstr ""
 
 #: src/gui/widgets/channeltab.cpp:74
+#, fuzzy
 msgid "This command leaves the current channel."
-msgstr ""
+msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/gui/widgets/channeltab.cpp:75
 msgid "If you're the last person in the channel, it will be deleted."
 msgstr ""
 
 #: src/gui/widgets/channeltab.cpp:79
+#, fuzzy
 msgid "Command: /op <nick>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/gui/widgets/channeltab.cpp:80
 msgid "This command makes <nick> a channel operator."
@@ -1823,8 +1841,9 @@ msgid "Channel operators can kick and op other users from the channel."
 msgstr ""
 
 #: src/gui/widgets/channeltab.cpp:88
+#, fuzzy
 msgid "Command: /kick <nick>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/gui/widgets/channeltab.cpp:89
 msgid "This command makes <nick> leave the channel."
@@ -1858,8 +1877,9 @@ msgid "Unknown item"
 msgstr "Unbekannter Befehl"
 
 #: src/gui/widgets/whispertab.cpp:49
+#, fuzzy
 msgid "Cannot send empty chat!"
-msgstr ""
+msgstr "Kann nicht rufen!"
 
 #: src/gui/widgets/whispertab.cpp:55
 #, c-format
@@ -1875,8 +1895,9 @@ msgid "Command: /close"
 msgstr ""
 
 #: src/gui/widgets/whispertab.cpp:80
+#, fuzzy
 msgid "This command closes the current whisper tab."
-msgstr ""
+msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/keyboardconfig.cpp:41
 msgid "Move Up"
@@ -2162,8 +2183,9 @@ msgid "  -D --default    : Bypass the login process with default settings"
 msgstr ""
 
 #: src/main.cpp:568
+#, fuzzy
 msgid "  -h --help       : Display this help"
-msgstr ""
+msgstr "/help: Hilfe anzeigen"
 
 #: src/main.cpp:569
 msgid "  -S --homedir    : Directory to use as home directory"
@@ -2435,20 +2457,23 @@ msgid "These commands create a new party called <party-name>."
 msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:75
+#, fuzzy
 msgid "Command: /invite <nick>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/net/ea/gui/partytab.cpp:82
 msgid "Command: /leave"
 msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:83
+#, fuzzy
 msgid "This command causes the player to leave the party."
-msgstr ""
+msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/net/ea/gui/partytab.cpp:87
+#, fuzzy
 msgid "Command: /item <policy>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/net/ea/gui/partytab.cpp:88
 msgid "This command changes the party's item sharing policy."
@@ -2469,8 +2494,9 @@ msgid "This command displays the party's current item sharing policy."
 msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:97
+#, fuzzy
 msgid "Command: /exp <policy>"
-msgstr ""
+msgstr "Befehl: /whisper <Spitzname> <Nachricht>"
 
 #: src/net/ea/gui/partytab.cpp:98
 msgid "This command changes the party's experience sharing policy."
@@ -2579,7 +2605,7 @@ msgstr ""
 #: src/net/ea/partyhandler.cpp:82
 #, fuzzy
 msgid "Could not create party."
-msgstr "Konnte nichts stehlen..."
+msgstr "Kann der Gruppe nicht beitreten!"
 
 #: src/net/ea/partyhandler.cpp:112
 #, c-format
@@ -2616,9 +2642,9 @@ msgid "An unknown member tried to say: %s"
 msgstr ""
 
 #: src/net/ea/partyhandler.cpp:323
-#, c-format
+#, fuzzy, c-format
 msgid "%s is not in your party!"
-msgstr ""
+msgstr "Kann der Gruppe nicht beitreten!"
 
 #: src/net/ea/playerhandler.cpp:108 src/net/tmwserv/beinghandler.cpp:312
 msgid "You are dead."
@@ -2687,12 +2713,14 @@ msgid "You're not dead yet. You're just resting."
 msgstr ""
 
 #: src/net/ea/playerhandler.cpp:133
+#, fuzzy
 msgid "You are no more."
-msgstr ""
+msgstr "Keine Memos vorhanden!"
 
 #: src/net/ea/playerhandler.cpp:134
+#, fuzzy
 msgid "You have ceased to be."
-msgstr ""
+msgstr "Keine Memos vorhanden!"
 
 #: src/net/ea/playerhandler.cpp:135
 msgid "You've expired and gone to meet your maker."
@@ -2771,11 +2799,11 @@ msgstr "Chat-Erstellung fehlgeschlagen!"
 
 #: src/net/ea/skillhandler.cpp:150
 msgid "Could not join party!"
-msgstr ""
+msgstr "Kann der Gruppe nicht beitreten!"
 
 #: src/net/ea/skillhandler.cpp:153
 msgid "Cannot shout!"
-msgstr ""
+msgstr "Kann nicht rufen!"
 
 #: src/net/ea/skillhandler.cpp:162
 msgid "You have not yet reached a high enough lvl!"
@@ -2791,7 +2819,7 @@ msgstr "NIcht genug SP!"
 
 #: src/net/ea/skillhandler.cpp:171
 msgid "You have no memos!"
-msgstr ""
+msgstr "Keine Memos vorhanden!"
 
 #: src/net/ea/skillhandler.cpp:174
 msgid "You cannot do that right now!"

@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-04-21 17:27+0200\n"
-"PO-Revision-Date: 2009-02-02 12:09+0000\n"
+"PO-Revision-Date: 2008-12-30 10:23+0000\n"
 "Last-Translator: ville-v <villev90@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-02-12 19:08+0000\n"
+"X-Launchpad-Export-Date: 2009-04-21 14:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:142
@@ -385,8 +385,9 @@ msgid "Effect: %s"
 msgstr "Vaikutus: %s"
 
 #: src/gui/buysell.cpp:34
+#, fuzzy
 msgid "Shop"
-msgstr "Kauppa"
+msgstr "Lopeta"
 
 #: src/gui/buysell.cpp:39 src/gui/sell.cpp:46 src/gui/sell.cpp:72
 msgid "Sell"
@@ -501,8 +502,9 @@ msgid "Account and Character Management"
 msgstr "Tilin ja hahmojen hallinta"
 
 #: src/gui/char_select.cpp:105
+#, fuzzy
 msgid "Select Character"
-msgstr "Valitse hahmo"
+msgstr "Luo hahmo"
 
 #: src/gui/char_select.cpp:111 src/gui/item_amount.cpp:66
 #: src/gui/ok_dialog.cpp:42 src/gui/quitdialog.cpp:39
@@ -554,9 +556,9 @@ msgstr "Rahatilanne: %d"
 
 #: src/gui/char_select.cpp:162 src/gui/char_select.cpp:306
 #: src/gui/char_select.cpp:326
-#, c-format
+#, fuzzy, c-format
 msgid "Job Level: %d"
-msgstr ""
+msgstr "Taso: %d"
 
 #: src/gui/char_select.cpp:163 src/gui/char_select.cpp:309
 #: src/gui/char_select.cpp:328 src/gui/status.cpp:58 src/gui/status.cpp:183
@@ -713,9 +715,8 @@ msgid "Port:"
 msgstr "Portti:"
 
 #: src/gui/login.cpp:55
-#, fuzzy
 msgid "Recent:"
-msgstr "Rekisteröidy"
+msgstr ""
 
 #: src/gui/login.cpp:72
 msgid "Remember Username"
@@ -726,7 +727,7 @@ msgstr "Muista käyttäjätunnus"
 #: src/gui/serverselectdialog.cpp:57 src/gui/textdialog.cpp:36
 #: src/gui/trade.cpp:70 src/gui/trade.cpp:72
 msgid "OK"
-msgstr "Ok"
+msgstr ""
 
 #: src/gui/login.cpp:75 src/gui/register.cpp:56 src/gui/register.cpp:80
 msgid "Register"
@@ -944,9 +945,8 @@ msgid "Pants"
 msgstr ""
 
 #: src/gui/palette.cpp:117
-#, fuzzy
 msgid "Shoes"
-msgstr "Kauppa"
+msgstr ""
 
 #: src/gui/palette.cpp:118
 msgid "2 Handed Weapons"
@@ -1090,8 +1090,9 @@ msgid "@@use|Equip@@"
 msgstr "@@use|Ota varuste käyttöön@@"
 
 #: src/gui/popupmenu.cpp:339
+#, fuzzy
 msgid "@@use|Unequip@@"
-msgstr ""
+msgstr "@@use|Ota varuste käyttöön@@"
 
 #: src/gui/popupmenu.cpp:345
 msgid "@@use|Use@@"
@@ -1106,9 +1107,8 @@ msgid "@@split|Split@@"
 msgstr "@@split|Pinon jako@@"
 
 #: src/gui/quitdialog.cpp:37
-#, fuzzy
 msgid "Switch server"
-msgstr "Vaihda hahmoa"
+msgstr "Vaihda palvelinta"
 
 #: src/gui/quitdialog.cpp:38
 msgid "Switch character"
@@ -1185,8 +1185,9 @@ msgid "Please type both the address and the port of a server."
 msgstr "Kirjoita kenttiin sekä palvelimen osoite että portti"
 
 #: src/gui/serverselectdialog.cpp:50
+#, fuzzy
 msgid "Select Server"
-msgstr "Valitse palvelin"
+msgstr "Vaihda palvelinta"
 
 #: src/gui/setup_audio.cpp:41
 msgid "Sound"
@@ -1294,8 +1295,9 @@ msgid "Assign"
 msgstr ""
 
 #: src/gui/setup_keyboard.cpp:90
+#, fuzzy
 msgid "Default"
-msgstr ""
+msgstr "Poista"
 
 #: src/gui/setup_keyboard.cpp:119
 msgid "Key Conflict(s) Detected."
@@ -1306,8 +1308,9 @@ msgid "Resolve them, or gameplay may result in strange behaviour."
 msgstr ""
 
 #: src/gui/setup_players.cpp:56
+#, fuzzy
 msgid "Name"
-msgstr ""
+msgstr "Nimi:"
 
 #: src/gui/setup_players.cpp:57
 msgid "Relation"
@@ -1548,9 +1551,9 @@ msgid "Crafts"
 msgstr "Luo"
 
 #: src/gui/status.cpp:57 src/gui/status.cpp:178
-#, c-format
+#, fuzzy, c-format
 msgid "Job: %d"
-msgstr ""
+msgstr "Rahatilanne: %d"
 
 #: src/gui/status.cpp:61
 msgid "HP:"
@@ -1569,8 +1572,9 @@ msgid "Job:"
 msgstr ""
 
 #: src/gui/status.cpp:78
+#, fuzzy
 msgid "Stats"
-msgstr ""
+msgstr "Hahmon tiedot"
 
 #: src/gui/status.cpp:79
 msgid "Total"
@@ -1581,20 +1585,24 @@ msgid "Cost"
 msgstr ""
 
 #: src/gui/status.cpp:84
+#, fuzzy
 msgid "Attack:"
-msgstr ""
+msgstr "Hyökkäys %+d"
 
 #: src/gui/status.cpp:85
+#, fuzzy
 msgid "Defense:"
-msgstr ""
+msgstr "Puolustus %+d"
 
 #: src/gui/status.cpp:86
+#, fuzzy
 msgid "M.Attack:"
-msgstr ""
+msgstr "Hyökkäys %+d"
 
 #: src/gui/status.cpp:87
+#, fuzzy
 msgid "M.Defense:"
-msgstr ""
+msgstr "Puolustus %+d"
 
 #: src/gui/status.cpp:89
 #, no-c-format
@@ -1612,24 +1620,29 @@ msgid "% Reflex:"
 msgstr ""
 
 #: src/gui/status.cpp:199
+#, fuzzy
 msgid "Strength"
-msgstr ""
+msgstr "Voima:"
 
 #: src/gui/status.cpp:200
+#, fuzzy
 msgid "Agility"
-msgstr ""
+msgstr "Ketteryys:"
 
 #: src/gui/status.cpp:201
+#, fuzzy
 msgid "Vitality"
-msgstr ""
+msgstr "Elinvoima:"
 
 #: src/gui/status.cpp:202
+#, fuzzy
 msgid "Intelligence"
-msgstr ""
+msgstr "Älykkyys:"
 
 #: src/gui/status.cpp:203
+#, fuzzy
 msgid "Dexterity"
-msgstr ""
+msgstr "Näppäryys:"
 
 #: src/gui/status.cpp:204
 msgid "Luck"
@@ -1877,8 +1890,9 @@ msgid "Move Right"
 msgstr ""
 
 #: src/keyboardconfig.cpp:45
+#, fuzzy
 msgid "Attack"
-msgstr ""
+msgstr "Hyökkäys %+d"
 
 #: src/keyboardconfig.cpp:46
 msgid "Smilie"
@@ -2028,9 +2042,8 @@ msgid "Next Chat Tab"
 msgstr ""
 
 #: src/keyboardconfig.cpp:99
-#, fuzzy
 msgid "Select OK"
-msgstr "Valitse palvelin"
+msgstr ""
 
 #: src/keyboardconfig.cpp:101
 msgid "Ignore input 1"
@@ -2182,8 +2195,9 @@ msgid "The Mana World "
 msgstr "Valitse Mana World -palvelimesi"
 
 #: src/main.cpp:1499
+#, fuzzy
 msgid "Connecting to map server..."
-msgstr ""
+msgstr "Yhdistetään..."
 
 #: src/main.cpp:1507
 msgid "Connecting to character server..."
@@ -2253,27 +2267,27 @@ msgstr "Nimessäsi täytyy olla ainakin 4 merkkiä."
 #: src/net/ea/charserverhandler.cpp:224
 #: src/net/tmwserv/charserverhandler.cpp:253
 msgid "Strength:"
-msgstr ""
+msgstr "Voima:"
 
 #: src/net/ea/charserverhandler.cpp:225
 #: src/net/tmwserv/charserverhandler.cpp:254
 msgid "Agility:"
-msgstr ""
+msgstr "Ketteryys:"
 
 #: src/net/ea/charserverhandler.cpp:226
 #: src/net/tmwserv/charserverhandler.cpp:256
 msgid "Vitality:"
-msgstr ""
+msgstr "Elinvoima:"
 
 #: src/net/ea/charserverhandler.cpp:227
 #: src/net/tmwserv/charserverhandler.cpp:257
 msgid "Intelligence:"
-msgstr ""
+msgstr "Älykkyys:"
 
 #: src/net/ea/charserverhandler.cpp:228
 #: src/net/tmwserv/charserverhandler.cpp:255
 msgid "Dexterity:"
-msgstr ""
+msgstr "Näppäryys:"
 
 #: src/net/ea/charserverhandler.cpp:229
 msgid "Luck:"
@@ -2304,29 +2318,29 @@ msgid "Unable to unequip."
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:90 src/net/tmwserv/generalhandler.cpp:80
-#, c-format
+#, fuzzy, c-format
 msgid "Strength: %d"
-msgstr ""
+msgstr "Voima:"
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:82
-#, c-format
+#, fuzzy, c-format
 msgid "Agility: %d"
-msgstr ""
+msgstr "Ketteryys:"
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
-#, c-format
+#, fuzzy, c-format
 msgid "Vitality: %d"
-msgstr ""
+msgstr "Elinvoima:"
 
 #: src/net/ea/generalhandler.cpp:96 src/net/tmwserv/generalhandler.cpp:88
-#, c-format
+#, fuzzy, c-format
 msgid "Intelligence: %d"
-msgstr ""
+msgstr "Älykkyys:"
 
 #: src/net/ea/generalhandler.cpp:98 src/net/tmwserv/generalhandler.cpp:84
-#, c-format
+#, fuzzy, c-format
 msgid "Dexterity: %d"
-msgstr ""
+msgstr "Näppäryys:"
 
 #: src/net/ea/generalhandler.cpp:100
 #, c-format
@@ -2514,9 +2528,8 @@ msgid "Account expired"
 msgstr "Tili: %s"
 
 #: src/net/ea/loginhandler.cpp:120
-#, fuzzy
 msgid "Rejected from server"
-msgstr "Valitse palvelin"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:124
 msgid ""
@@ -2883,12 +2896,12 @@ msgstr "Tahdonvoima:"
 #: src/resources/itemdb.cpp:53
 #, c-format
 msgid "Attack %+d"
-msgstr ""
+msgstr "Hyökkäys %+d"
 
 #: src/resources/itemdb.cpp:54
 #, c-format
 msgid "Defense %+d"
-msgstr ""
+msgstr "Puolustus %+d"
 
 #: src/resources/itemdb.cpp:55
 #, c-format
@@ -2919,9 +2932,6 @@ msgstr ""
 #: src/resources/npcdb.cpp:53
 msgid "NPC Database: Error while loading npcs.xml!"
 msgstr ""
-
-#~ msgid "Gold: %d"
-#~ msgstr "Raha: %d"
 
 #~ msgid "@@description|Description@@"
 #~ msgstr "@@description|Kuvaus@@"
