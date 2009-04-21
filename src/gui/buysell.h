@@ -53,6 +53,9 @@ class BuySellDialog : public Window, public gcn::ActionListener
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event);
+
+    private:
+        gcn::Button* buyButton;
 };
 
 extern BuySellDialog *buySellDialog;

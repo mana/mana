@@ -270,7 +270,7 @@ void BuyDialog::setVisible(bool visible)
     Window::setVisible(visible);
 
     if (visible)
-        requestFocus();
+        mShopItemList->requestFocus();
 }
 
 void BuyDialog::close()
