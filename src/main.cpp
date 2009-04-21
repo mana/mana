@@ -961,11 +961,8 @@ int main(int argc, char *argv[])
     unsigned int oldstate = !state; // We start with a status change.
 
     SDL_Event event;
-#ifdef TMWSERV_SUPPORT
-    while (state != STATE_FORCE_QUIT)
-#else
+
     while (state != STATE_EXIT)
-#endif
     {
         // Handle SDL events
         while (SDL_PollEvent(&event))
@@ -973,11 +970,7 @@ int main(int argc, char *argv[])
             switch (event.type)
             {
                 case SDL_QUIT:
-#ifdef TMWSERV_SUPPORT
-                    state = STATE_FORCE_QUIT;
-#else
                     state = STATE_EXIT;
-#endif
                     break;
 
                 case SDL_KEYDOWN:
@@ -1283,11 +1276,11 @@ int main(int argc, char *argv[])
                     game->logic();
                     delete game;
 
-                    // If the quitdialog didn't set the next state
-                    if (state == STATE_GAME)
-                    {
-                        state = STATE_EXIT;
-                    }
+                    state = STATE_EXIT;
+
+                    logoutThenExit();
+                    Net::getGeneralHandler()->unload();
+
                     break;
 
                 case STATE_SWITCH_CHARACTER:
@@ -1308,12 +1301,6 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_WAIT:
-                    break;
-
-                case STATE_EXIT:
-                    logger->log("State: EXIT");
-                    logoutThenExit();
-                    Net::getGeneralHandler()->unload();
                     break;
 
                 default:
