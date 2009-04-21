@@ -103,20 +103,21 @@ void ItemPopup::setItem(const ItemInfo &item)
 
     const int numRowsDesc = mItemDesc->getNumberOfRows();
     const int numRowsEffect = mItemEffect->getNumberOfRows();
-    //const int numRowsWeight = mItemWeight->getNumberOfRows();
+    const int numRowsWeight = mItemWeight->getNumberOfRows();
     const int height = getFont()->getHeight();
 
     if (item.getEffect().empty())
     {
-        setContentSize(minWidth, (numRowsDesc + 3) * height);
+        setContentSize(minWidth, (numRowsDesc + numRowsWeight + getPadding()) *
+                       height);
 
         mItemWeight->setPosition(getPadding(), (numRowsDesc + getPadding()) *
                                  height);
     }
     else
     {
-        setContentSize(minWidth, (numRowsDesc + numRowsEffect + getPadding()) *
-                       height);
+        setContentSize(minWidth, (numRowsDesc + numRowsEffect + numRowsWeight +
+                       getPadding()) * height);
 
         mItemWeight->setPosition(getPadding(), (numRowsDesc + numRowsEffect +
                                  getPadding()) * height);
