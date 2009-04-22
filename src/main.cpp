@@ -370,7 +370,7 @@ static void initConfiguration(const Options &options)
 
     if (configPath.empty())
         configPath = homeDir + "/config.xml";
-
+    
     configFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
@@ -563,7 +563,8 @@ static void printHelp()
         << _("Options: ") << std::endl
         << _("  -C --configfile : Configuration file to use") << std::endl
         << _("  -d --data       : Directory to load game data from") << std::endl
-        << _("  -D --default    : Bypass the login process with default settings")
+        << _("  -D --default    : Bypass the login process with default settings"
+                " from config.xml")
         << std::endl
         << _("  -h --help       : Display this help") << std::endl
         << _("  -S --homedir    : Directory to use as home directory") << std::endl
