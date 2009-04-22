@@ -143,8 +143,8 @@ SkillDialog::SkillDialog():
 
     ScrollArea *skillScrollArea = new ScrollArea(mTable);
     mPointsLabel = new Label(strprintf(_("Skill points: %d"), 0));
-    mIncButton = new Button(_("Up"), _("inc"), this);
-    mUseButton = new Button(_("Use"), _("use"), this);
+    mIncButton = new Button(_("Up"), "inc", this);
+    mUseButton = new Button(_("Use"), "use", this);
     mUseButton->setEnabled(false);
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

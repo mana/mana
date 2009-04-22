@@ -152,8 +152,8 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 
     // Floor item can be picked up (single option, candidate for removal)
     std::string name = ItemDB::get(mFloorItem->getItemId()).getName();
-    mBrowserBox->addRow(strprintf(_("@@pickup|Pick Up %s@@"), name.c_str()));
-    mBrowserBox->addRow(_("@@chat|Add to Chat@@"));
+    mBrowserBox->addRow(strprintf(_("@@pickup|Pick up %s@@"), name.c_str()));
+    mBrowserBox->addRow(_("@@chat|Add to chat@@"));
 
     //browserBox->addRow("@@look|Look To@@");
     mBrowserBox->addRow("##3---");
@@ -349,7 +349,7 @@ void PopupMenu::showPopup(int x, int y, Item *item)
     if (!item->isEquipment())
         mBrowserBox->addRow(_("@@split|Split@@"));
 #endif
-    mBrowserBox->addRow(_("@@chat|Add to Chat@@"));
+    mBrowserBox->addRow(_("@@chat|Add to chat@@"));
     mBrowserBox->addRow("##3---");
     mBrowserBox->addRow(_("@@cancel|Cancel@@"));
 

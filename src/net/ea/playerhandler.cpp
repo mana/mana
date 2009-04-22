@@ -111,7 +111,7 @@ static const char *randomDeathMessage()
         N_("You are not that alive anymore."),
         N_("The cold hands of the grim reaper are grabbing for your soul."),
         N_("Game Over!"),
-        N_("Insert coin to continue"),
+        N_("Insert coin to continue."),
         N_("No, kids. Your character did not really die. It... "
            "err... went to a better place."),
         N_("Your plan of breaking your enemies weapon by "

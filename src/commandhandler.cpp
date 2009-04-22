@@ -140,7 +140,7 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
     if (args == "")
     {
         tab->chatLog(_("-- Help --"));
-        tab->chatLog(_("/help > Display this help."));
+        tab->chatLog(_("/help > Display this help"));
 
         tab->chatLog(_("/where > Display map name"));
         tab->chatLog(_("/who > Display number of online users"));
@@ -333,14 +333,14 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
         chatWindow->whisper(recvnick, msg, true);
     }
     else
-        tab->chatLog(_("Cannont send empty whispers!"), BY_SERVER);
+        tab->chatLog(_("Cannot send empty whispers!"), BY_SERVER);
 }
 
 void CommandHandler::handleQuery(const std::string &args, ChatTab *tab) {
     if (chatWindow->addWhisperTab(args, true))
         return;
 
-    tab->chatLog(strprintf(_("Cannont create a whisper tab for nick '%s'!"
+    tab->chatLog(strprintf(_("Cannot create a whisper tab for nick '%s'! "
             "It either already exists, or is you."), args.c_str()), BY_SERVER);
 }
 
