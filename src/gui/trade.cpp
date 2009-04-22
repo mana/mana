@@ -132,13 +132,11 @@ void TradeWindow::setMoney(int amount)
     mMoneyLabel->setCaption(strprintf(_("You get %s."),
                                        Units::formatCurrency(amount).c_str()));
     mMoneyLabel->adjustSize();
-    //setStatus(PREPARING);
 }
 
 void TradeWindow::addItem(int id, bool own, int quantity)
 {
     (own ? mMyInventory : mPartnerInventory)->addItem(id, quantity);
-    //setStatus(PREPARING);
 }
 
 void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
@@ -175,7 +173,7 @@ void TradeWindow::reset()
     mPartnerInventory->clear();
     mOkOther = false;
     mOkMe = false;
-    mMoneyLabel->setCaption(strprintf(_("You get %s."), "0GP"));
+    setMoney(0);
     mMoneyField->setEnabled(true);
     mMoneyField->setText("");
     mAddButton->setEnabled(true);
@@ -192,8 +190,8 @@ void TradeWindow::receivedOk(bool own)
 
     if (mOkMe && mOkOther)
     {
-        mOkMe = false;
-        mOkOther = false;
+        //mOkMe = false;
+        //mOkOther = false;
         setStatus(ACCEPTING);
     }
 }
