@@ -188,7 +188,6 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         else {
             player_node->dropItem(item, 1);
         }
-        mItems->selectNone();
     }
     else if (event.getId() == "split")
     {
