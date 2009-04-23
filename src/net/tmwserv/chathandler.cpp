@@ -66,6 +66,7 @@ ChatHandler::ChatHandler()
         CPMSG_QUIT_CHANNEL_RESPONSE,
         CPMSG_LIST_CHANNELUSERS_RESPONSE,
         CPMSG_CHANNEL_EVENT,
+        CPMSG_WHO_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -110,6 +111,11 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_CHANNEL_EVENT:
             handleChannelEvent(msg);
+            break;
+
+        case CPMSG_WHO_RESPONSE:
+            handleWhoResponse(msg);
+            break;
     }
 }
 
@@ -296,6 +302,21 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
     }
 }
 
+void ChatHandler::handleWhoResponse(MessageIn &msg)
+{
+    std::string userNick;
+
+    while(msg.getUnreadLength())
+    {
+        userNick = msg.readString();
+        if (userNick == "")
+        {
+            break;
+        }
+        localChatTab->chatLog(userNick, BY_SERVER);
+    }
+}
+
 void ChatHandler::talk(const std::string &text)
 {
     MessageOut msg(PGMSG_SAY);
@@ -376,6 +397,12 @@ void ChatHandler::kickUser(int channelId, const std::string &name)
     MessageOut msg(PCMSG_KICK_USER);
     msg.writeInt16(channelId);
     msg.writeString(name);
+    Net::ChatServer::connection->send(msg);
+}
+
+void ChatHandler::who()
+{
+    MessageOut msg(PCMSG_WHO);
     Net::ChatServer::connection->send(msg);
 }
 

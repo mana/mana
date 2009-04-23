@@ -239,4 +239,9 @@ void ChatHandler::kickUser(int channelId, const std::string &name)
     localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
 }
 
+void ChatHandler::who()
+{
+    MessageOut outMsg(CMSG_WHO_REQUEST);
+}
+
 } // namespace EAthena

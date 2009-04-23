@@ -47,7 +47,7 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     std::string::size_type pos = command.find(' ');
     std::string type(command, 0, pos);
     std::string args(command, pos == std::string::npos ? command.size() : pos + 1);
-    
+
     if (type == "help") // Do help before tabs so they can't override it
     {
         handleHelp(args, tab);
@@ -283,7 +283,7 @@ void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleWho(const std::string &args, ChatTab *tab)
 {
-    Net::getMapHandler()->who();
+    Net::getChatHandler()->who();
 }
 
 void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)

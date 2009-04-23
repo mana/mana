@@ -51,6 +51,8 @@ class ChatHandler
         virtual void setUserMode(int channelId, const std::string &name, int mode) = 0;
 
         virtual void kickUser(int channelId, const std::string &name) = 0;
+
+        virtual void who() = 0;
 };
 }
 

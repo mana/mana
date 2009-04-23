@@ -100,7 +100,7 @@ void MapHandler::mapLoaded(const std::string &mapName)
 
 void MapHandler::who()
 {
-    MessageOut outMsg(CMSG_WHO_REQUEST);
+
 }
 
 void MapHandler::quit()

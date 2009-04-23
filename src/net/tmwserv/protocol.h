@@ -167,6 +167,8 @@ enum {
     CPMSG_PARTY_INVITED                 = 0x03A2, // S name
     PCMSG_PARTY_ACCEPT_INVITE           = 0x03A5, // S name
     CPMSG_PARTY_ACCEPT_INVITE_RESPONSE  = 0x03A6, // B error, { S name }
+    PCMSG_PARTY_REJECT_INVITE           = 0x03A7, // S name
+    CPMSG_PARTY_REJECTED                = 0x03A8, // S name
     PCMSG_PARTY_QUIT                    = 0x03AA, // -
     CPMSG_PARTY_QUIT_RESPONSE           = 0x03AB, // B error
     CPMSG_PARTY_NEW_MEMBER              = 0x03B0, // W being id, S name
@@ -180,6 +182,9 @@ enum {
     PCMSG_CHAT                     = 0x0410, // S text, W channel
     PCMSG_ANNOUNCE                 = 0x0411, // S text
     PCMSG_PRIVMSG                  = 0x0412, // S user, S text
+    PCMSG_WHO                      = 0x0415, // -
+    CPMSG_WHO_RESPONSE             = 0x0416, // { S user }
+
     // -- Channeling
     CPMSG_CHANNEL_EVENT               = 0x0430, // W channel, B event, S info
     PCMSG_ENTER_CHANNEL               = 0x0440, // S channel, S password

@@ -58,6 +58,8 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
         void setUserMode(int channelId, const std::string &name, int mode);
 
         void kickUser(int channelId, const std::string &name);
+
+        void who();
 };
 
 } // namespace EAthena
