@@ -50,6 +50,7 @@ PartyHandler::PartyHandler()
         CPMSG_PARTY_QUIT_RESPONSE,
         CPMSG_PARTY_NEW_MEMBER,
         CPMSG_PARTY_MEMBER_LEFT,
+        CPMSG_PARTY_REJECTED,
         0
     };
     handledMessages = _messages;
@@ -108,6 +109,12 @@ void PartyHandler::handleMessage(MessageIn &msg)
         {
             partyWindow->removeMember(msg.readString());
         } break;
+
+        case CPMSG_PARTY_REJECTED:
+        {
+            std::string name = msg.readString();
+            localChatTab->chatLog(name + "rejected your invite.");
+        } break;
     }
 }
 
@@ -135,12 +142,13 @@ void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
 {
     if (accept)
         Net::ChatServer::Party::acceptInvite(inviter);
-    // TODO: rejection
+    else
+        Net::ChatServer::Party::rejectInvite(inviter);
 }
 
 void PartyHandler::leave()
 {
-    // TODO
+    Net::ChatServer::Party::quitParty();
 }
 
 void PartyHandler::kick(Player *player)

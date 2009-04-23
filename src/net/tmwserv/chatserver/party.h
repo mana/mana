@@ -41,6 +41,11 @@ namespace Net
             void acceptInvite(const std::string &name);
 
             /**
+             * Reject an invite from another player to join their party
+             */
+            void rejectInvite(const std::string &name);
+
+            /**
              * Get a list of party members
              */
             void getPartyMembers();

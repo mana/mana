@@ -613,10 +613,12 @@
 		<Unit filename="src/net/ea/logouthandler.cpp">
 			<Option target="eAthena" />
 			<Option target="Unix eAthena" />
+			<Option target="UNIX eAthena" />
 		</Unit>
 		<Unit filename="src/net/ea/logouthandler.h">
 			<Option target="eAthena" />
 			<Option target="Unix eAthena" />
+			<Option target="UNIX eAthena" />
 		</Unit>
 		<Unit filename="src/net/ea/maphandler.cpp">
 			<Option target="eAthena" />

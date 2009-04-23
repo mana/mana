@@ -50,6 +50,16 @@ void Net::ChatServer::Party::acceptInvite(const std::string &name)
     Net::ChatServer::connection->send(msg);
 }
 
+void Net::ChatServer::Party::rejectInvite(const std::string &name)
+{
+    logger->log("Sending PCMSG_PARTY_REJECT_INVITE");
+    MessageOut msg(PCMSG_PARTY_REJECT_INVITE);
+
+    msg.writeString(name);
+
+    Net::ChatServer::connection->send(msg);
+}
+
 void Net::ChatServer::Party::getPartyMembers()
 {
     logger->log("Sending PCMSG_PARTY_GET_MEMBERS");
