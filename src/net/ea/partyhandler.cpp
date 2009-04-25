@@ -83,6 +83,9 @@ void PartyHandler::handleMessage(MessageIn &msg)
             break;
         case SMSG_PARTY_INFO:
             {
+                if (!partyWindow)
+                    break;
+
                 partyWindow->clear();
 
                 int length = msg.readInt16();
