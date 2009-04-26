@@ -67,6 +67,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::Label *scrollLazinessLabel;
         gcn::Label *overlayDetailLabel;
         gcn::Label *particleDetailLabel;
+        gcn::Label *fontSizeLabel;
 
         gcn::ListBox *mModeList;
         gcn::CheckBox *mFsCheckBox;
@@ -102,6 +103,9 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         int mParticleDetail;
         gcn::Slider *mParticleDetailSlider;
         gcn::Label *mParticleDetailField;
+        
+        int mFontSize;
+        gcn::DropDown *mFontSizeDropDown;
 };
 
 #endif

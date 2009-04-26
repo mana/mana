@@ -30,6 +30,7 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
 #include "gui/widgets/textfield.h"
+#include "gui/widgets/dropdown.h"
 
 #include "configuration.h"
 #include "engine.h"
@@ -93,7 +94,7 @@ ModeListModel::ModeListModel()
         logger->log("No modes available");
     else if (modes == (SDL_Rect **)-1)
         logger->log("All resolutions available");
-    else 
+    else
     {
         //logger->log("Available Modes");
         for (int i = 0; modes[i]; ++i)
@@ -105,6 +106,33 @@ ModeListModel::ModeListModel()
         }
     }
 }
+
+const char *SIZE_NAME[4] =
+{
+        N_("Small"),
+        N_("Medium"),
+        N_("Large"),
+        N_("Very Large")
+};
+
+class FontSizeChoiceListModel : public gcn::ListModel
+{
+public:
+    virtual ~FontSizeChoiceListModel() { }
+
+    virtual int getNumberOfElements()
+    {
+        return 4;
+    }
+
+    virtual std::string getElementAt(int i)
+    {
+        if (i >= getNumberOfElements())
+            return _("???");
+
+        return SIZE_NAME[i];
+    }
+};
 
 Setup_Video::Setup_Video():
     mFullScreenEnabled(config.getValue("screen", false)),
@@ -147,7 +175,8 @@ Setup_Video::Setup_Video():
     mOverlayDetailField(new Label("")),
     mParticleDetail(3 - (int) config.getValue("particleEmitterSkip", 1)),
     mParticleDetailSlider(new Slider(0, 3)),
-    mParticleDetailField(new Label(""))
+    mParticleDetailField(new Label("")),
+    mFontSize((int) config.getValue("fontSize", 11))
 {
     setName(_("Video"));
 
@@ -160,6 +189,9 @@ Setup_Video::Setup_Video():
     scrollLazinessLabel = new Label(_("Scroll laziness"));
     overlayDetailLabel = new Label(_("Ambient FX"));
     particleDetailLabel = new Label(_("Particle Detail"));
+    fontSizeLabel = new Label(_("Font size"));
+
+    mFontSizeDropDown = new DropDown(new FontSizeChoiceListModel);
 
     mModeList->setEnabled(true);
 
@@ -272,6 +304,29 @@ Setup_Video::Setup_Video():
     }
     mParticleDetailSlider->setValue(mParticleDetail);
 
+    int fontSizeSelected;
+    switch (mFontSize)
+    {
+        case 11:
+            fontSizeSelected = 0;
+            break;
+        case 12:
+            fontSizeSelected = 1;
+            break;
+        case 13:
+            fontSizeSelected = 2;
+            break;
+        case 14:
+            fontSizeSelected = 3;
+            break;
+        default:
+            fontSizeSelected = 0;
+            break;
+    }
+
+    mFontSizeDropDown->setSelected(fontSizeSelected);
+    mFontSizeDropDown->adjustHeight();
+
     // Do the layout
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
@@ -284,8 +339,7 @@ Setup_Video::Setup_Video():
     place(3, 2, mNameCheckBox, 1);
     place(1, 3, mParticleEffectsCheckBox, 3);
     place(1, 4, mPickupNotifyLabel, 3);
-    place(1, 5, mPickupChatCheckBox, 1);
-    place(2, 5, mPickupParticleCheckBox, 2);
+    place(1, 13, mPickupChatCheckBox, 1);
 
     place(0, 6, mAlphaSlider);
     place(0, 7, mFpsSlider);
@@ -302,15 +356,18 @@ Setup_Video::Setup_Video():
     place(1, 10, speechLabel);
     place(1, 11, overlayDetailLabel);
     place(1, 12, particleDetailLabel);
+    place(1, 5, fontSizeLabel, 3);
 
+    place(2, 5, mFontSizeDropDown, 3);
     place(2, 7, mFpsField).setPadding(1);
     place(2, 8, mScrollRadiusField).setPadding(1);
     place(2, 9, mScrollLazinessField).setPadding(1);
     place(2, 10, mSpeechLabel, 3).setPadding(2);
     place(2, 11, mOverlayDetailField, 3).setPadding(2);
     place(2, 12, mParticleDetailField, 3).setPadding(2);
+    place(2, 13, mPickupParticleCheckBox, 2);
 
-    setDimension(gcn::Rectangle(0, 0, 325, 280));
+    setDimension(gcn::Rectangle(0, 0, 325, 300));
 }
 
 void Setup_Video::apply()
@@ -367,6 +424,8 @@ void Setup_Video::apply()
 
     // FPS change
     config.setValue("fpslimit", mFps);
+
+    config.setValue("fontSize", mFontSizeDropDown->getSelected() + 11);
 
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getValue("screen", false);
