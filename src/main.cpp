@@ -560,25 +560,26 @@ static void exitEngine()
 
 static void printHelp()
 {
+    using std::endl;
+
     std::cout
-        << _("tmw") << std::endl << std::endl
-        << _("Options: ") << std::endl
-        << _("  -C --configfile : Configuration file to use") << std::endl
-        << _("  -d --data       : Directory to load game data from") << std::endl
-        << _("  -D --default    : Bypass the login process with default settings"
-                " from config.xml")
-        << std::endl
-        << _("  -h --help       : Display this help") << std::endl
-        << _("  -S --homedir    : Directory to use as home directory") << std::endl
-        << _("  -H --updatehost : Use this update host") << std::endl
-        << _("  -P --password   : Login with this password") << std::endl
-        << _("  -c --character  : Login with this character") << std::endl
-        << _("  -o --port       : Login Server Port") << std::endl
-        << _("  -s --server     : Login Server name or IP") << std::endl
-        << _("  -u --skipupdate : Skip the update downloads") << std::endl
-        << _("  -U --username   : Login with this username") << std::endl
-        << _("  -O --noopengl   : Disable OpenGL for this sesion") << std::endl
-        << _("  -v --version    : Display the version") << std::endl;
+        << _("tmw") << endl << endl
+        << _("Options:") << endl
+        << _("  -C --config-file : Configuration file to use") << endl
+        << _("  -d --data        : Directory to load game data from") << endl
+        << _("  -D --default     : Choose default character server and "
+                                  "character") << endl
+        << _("  -h --help        : Display this help") << endl
+        << _("  -S --home-dir    : Directory to use as home directory") << endl
+        << _("  -H --update-host : Use this update host") << endl
+        << _("  -P --password    : Login with this password") << endl
+        << _("  -c --character   : Login with this character") << endl
+        << _("  -p --port        : Login Server Port") << endl
+        << _("  -s --server      : Login Server name or IP") << endl
+        << _("  -u --skip-update : Skip the update downloads") << endl
+        << _("  -U --username    : Login with this username") << endl
+        << _("  -O --no-opengl   : Disable OpenGL for this sesion") << endl
+        << _("  -v --version     : Display the version") << endl;
 }
 
 static void printVersion()
@@ -588,23 +589,23 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hvud:U:P:Dc:s:o:C:H:S:O";
+    const char *optstring = "hvud:U:P:Dc:s:p:C:H:S:O";
 
     const struct option long_options[] = {
-        { "configfile", required_argument, 0, 'C' },
-        { "data",       required_argument, 0, 'd' },
-        { "default",    no_argument,       0, 'D' },
-        { "password",   required_argument, 0, 'P' },
-        { "character",  required_argument, 0, 'c' },
-        { "help",       no_argument,       0, 'h' },
-        { "homedir",    required_argument, 0, 'S' },
-        { "updatehost", required_argument, 0, 'H' },
-        { "port",       required_argument, 0, 'o' },
-        { "server",     required_argument, 0, 's' },
-        { "skipupdate", no_argument,       0, 'u' },
-        { "username",   required_argument, 0, 'U' },
-        { "noopengl",   no_argument,       0, 'O' },
-        { "version",    no_argument,       0, 'v' },
+        { "config-file", required_argument, 0, 'C' },
+        { "data",        required_argument, 0, 'd' },
+        { "default",     no_argument,       0, 'D' },
+        { "password",    required_argument, 0, 'P' },
+        { "character",   required_argument, 0, 'c' },
+        { "help",        no_argument,       0, 'h' },
+        { "home-dir",    required_argument, 0, 'S' },
+        { "update-host", required_argument, 0, 'H' },
+        { "port",        required_argument, 0, 'p' },
+        { "server",      required_argument, 0, 's' },
+        { "skip-update", no_argument,       0, 'u' },
+        { "username",    required_argument, 0, 'U' },
+        { "no-opengl",   no_argument,       0, 'O' },
+        { "version",     no_argument,       0, 'v' },
         { 0 }
     };
 
@@ -643,8 +644,8 @@ static void parseOptions(int argc, char *argv[], Options &options)
             case 's':
                 options.serverName = optarg;
                 break;
-            case 'o':
-                options.serverPort = (short)atoi(optarg);
+            case 'p':
+                options.serverPort = (short) atoi(optarg);
                 break;
             case 'u':
                 options.skipUpdate = true;
