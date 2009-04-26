@@ -28,7 +28,7 @@ class ScrollArea;
 class ShortcutContainer;
 
 /**
- * A window around the ItemShortcutContainer.
+ * A window around a ShortcutContainer.
  *
  * \ingroup Interface
  */

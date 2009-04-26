@@ -23,33 +23,30 @@
 #define MINIMAP_H
 
 #include "gui/widgets/window.h"
-#include "map.h"
 
 class Image;
+class Map;
 
 /**
- * Minimap dialog.
+ * Minimap window. Shows a minimap image and the name of the current map.
+ *
+ * The name of the map is defined by the map property "name". The minimap image
+ * is defined by the map property "minimap". The path to the image should be
+ * given relative to the root of the client data.
  *
  * \ingroup Interface
  */
 class Minimap : public Window
 {
     public:
-        /**
-         * Constructor.
-         */
         Minimap();
-
-        /**
-         * Destructor.
-         */
         ~Minimap();
 
         /**
          * Sets the map image that should be displayed.
          */
         void setMap(Map *map);
-        
+
         /**
          * Toggles the displaying of the minimap.
          */
@@ -61,7 +58,6 @@ class Minimap : public Window
         void draw(gcn::Graphics *graphics);
 
     private:
-        Map *mMap;
         Image *mMapImage;
         float mWidthProportion;
         float mHeightProportion;

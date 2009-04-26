@@ -43,7 +43,7 @@
 #include "utils/stringutils.h"
 
 Engine::Engine():
-    mCurrentMap(NULL)
+    mCurrentMap(0)
 {
 }
 
@@ -84,27 +84,6 @@ bool Engine::changeMap(const std::string &mapPath)
         logger->error("Could not find map file");
 
     // Notify the minimap and beingManager about the map change
-    if (newMap->hasProperty("minimap"))
-    {
-        // Set the title for the Minimap
-        if (newMap->hasProperty("mapname"))
-             minimap->setCaption(newMap->getProperty("mapname"));
-        else if (newMap->hasProperty("name"))
-            minimap->setCaption(newMap->getProperty("name"));
-        else
-        {
-             minimap->setCaption("Unknown");
-             logger->log("WARNING: Map file '%s' defines a minimap image but "
-                         "does not define a 'mapname' property",
-                         map_path.c_str());
-        }    
-    }
-    if (newMap->hasProperty("name"))
-    {
-        minimap->setCaption(newMap->getProperty("name"));
-    } else {
-        minimap->setCaption("Map");
-    }
     minimap->setMap(newMap);
     beingManager->setMap(newMap);
     particleEngine->setMap(newMap);

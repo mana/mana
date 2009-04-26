@@ -75,4 +75,3 @@ ShortcutWindow::~ShortcutWindow()
 {
     delete mItems;
 }
-
