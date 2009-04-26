@@ -309,7 +309,8 @@ void ChatWindow::doPresent()
 {
     const Beings &beings = beingManager->getAll();
     std::string response = "";
-
+    unsigned short playercount = 0;
+    char cpc[25];
     for (Beings::const_iterator bi = beings.begin(), be = beings.end();
          bi != be; ++bi)
     {
@@ -320,9 +321,10 @@ void ChatWindow::doPresent()
                 response += ", ";
             }
             response += (*bi)->getName();
+            ++playercount;
         }
     }
-
+    sprintf(cpc,"%u players are present.",playercount);
     if (mRecorder->isRecording())
     {
         // Get the current system time
@@ -338,13 +340,13 @@ void ChatWindow::doPresent()
             << "] ";
 
 
-        mRecorder->record(timeStr.str() + _("Present: ") + response + ".");
+        mRecorder->record(timeStr.str() + _("Present: ") + response + _("; ") + cpc);
         getFocused()->chatLog(_("Attendance written to record log."),
                               BY_SERVER, true);
     }
     else
     {
-        getFocused()->chatLog(_("Present: ") + response, BY_SERVER);
+        getFocused()->chatLog(_("Present: ") + response + _("; ") + cpc, BY_SERVER);
     }
 }
 
