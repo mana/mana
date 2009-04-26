@@ -23,6 +23,7 @@
 #define MINIMAP_H
 
 #include "gui/widgets/window.h"
+#include "map.h"
 
 class Image;
 
@@ -47,13 +48,8 @@ class Minimap : public Window
         /**
          * Sets the map image that should be displayed.
          */
-        void setMapImage(Image *img);
-
-        /**
-         * Sets the map proportion (1 means 1 tile to one pixel, .5 means 2 tiles to 1 pixel, etc.)
-         */
-        void setProportion(float proportion) { mProportion = proportion; }
-
+        void setMap(Map *map);
+        
         /**
          * Toggles the displaying of the minimap.
          */
@@ -65,8 +61,10 @@ class Minimap : public Window
         void draw(gcn::Graphics *graphics);
 
     private:
+        Map *mMap;
         Image *mMapImage;
-        float mProportion;
+        float mWidthProportion;
+        float mHeightProportion;
         static bool mShow;
 };
 

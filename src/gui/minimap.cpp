@@ -26,8 +26,11 @@
 #include "configuration.h"
 #include "graphics.h"
 #include "localplayer.h"
+#include "map.h"
+#include "log.h"
 
 #include "resources/image.h"
+#include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
 
@@ -38,7 +41,8 @@ bool Minimap::mShow = true;
 Minimap::Minimap():
     Window(_("MiniMap")),
     mMapImage(NULL),
-    mProportion(0.5)
+    mHeightProportion(0.5),
+    mWidthProportion(0.5)
 {
     setWindowName("MiniMap");
     mShow = config.getValue(getWindowName() + "Show", true);
@@ -51,6 +55,8 @@ Minimap::Minimap():
     setSticky(false);
 
     loadWindowState();
+    
+    //Debug
 }
 
 Minimap::~Minimap()
@@ -61,12 +67,15 @@ Minimap::~Minimap()
     config.setValue(getWindowName() + "Show", mShow);
 }
 
-void Minimap::setMapImage(Image *img)
+void Minimap::setMap(Map *map)
 {
     if (mMapImage)
         mMapImage->decRef();
 
-    mMapImage = img;
+    mMap = map;
+    
+    ResourceManager *resman = ResourceManager::getInstance();
+    mMapImage = resman->getImage(mMap->getProperty("minimap"));
 
     if (mMapImage)
     {
@@ -80,6 +89,13 @@ void Minimap::setMapImage(Image *img)
 
         setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);
         setMinHeight(mapHeight);
+        
+        mWidthProportion =  (float) mMapImage->getWidth() / (float) mMap->getWidth();
+        mHeightProportion = (float) mMapImage->getHeight() / (float) mMap->getHeight();
+        
+        logger->log("Minimap width : %d ; %d ; %f", mMapImage->getWidth(), mMap->getWidth(), mWidthProportion);
+        logger->log("Minimap height : %d ; %d ; %f", mMapImage->getHeight(), mMap->getHeight(), mHeightProportion);
+        
         setMaxWidth(mMapImage->getWidth() > titleWidth ?
                     mMapImage->getWidth() + offsetX : titleWidth);
         setMaxHeight(mMapImage->getHeight() + offsetY);
@@ -117,8 +133,8 @@ void Minimap::draw(gcn::Graphics *graphics)
             mMapImage->getHeight() > a.height)
         {
             const Vector &p = player_node->getPosition();
-            mapOriginX = (int) (((a.width) / 2) - (int) (p.x * mProportion) / 32);
-            mapOriginY = (int) (((a.height) / 2) - (int) (p.y * mProportion) / 32);
+            mapOriginX = (int) (((a.width) / 2) - (int) (p.x * mWidthProportion) / 32);
+            mapOriginY = (int) (((a.height) / 2) - (int) (p.y * mHeightProportion) / 32);
 
             const int minOriginX = a.width - mMapImage->getWidth();
             const int minOriginY = a.height - mMapImage->getHeight();
@@ -145,7 +161,8 @@ void Minimap::draw(gcn::Graphics *graphics)
         const Being *being = (*bi);
         int dotSize = 2;
 
-        switch (being->getType()) {
+        switch (being->getType())
+        {
             case Being::PLAYER:
                 if (being == player_node)
                 {
@@ -167,13 +184,15 @@ void Minimap::draw(gcn::Graphics *graphics)
             default:
                 continue;
         }
+        
 
-        const int offset = (int) ((dotSize - 1) * mProportion);
+        const int offsetHeight = (int) ((dotSize - 1) * mHeightProportion);
+        const int offsetWidth = (int) ((dotSize - 1) * mWidthProportion);
         const Vector &pos = being->getPosition();
 
         graphics->fillRectangle(gcn::Rectangle(
-                    (int) (pos.x * mProportion) / 32 + mapOriginX - offset,
-                    (int) (pos.y * mProportion) / 32 + mapOriginY - offset,
+                    (int) (pos.x * mWidthProportion) / 32 + mapOriginX - offsetWidth,
+                    (int) (pos.y * mHeightProportion) / 32 + mapOriginY - offsetHeight,
                     dotSize, dotSize));
     }
 
