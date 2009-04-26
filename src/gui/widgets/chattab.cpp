@@ -101,7 +101,6 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
         tmp.text.at(0) == '*' &&
         tmp.text.at(tmp.text.length()-1) == '*')
     {
-        printf("Action from %s: %s\n", tmp.nick.c_str(), tmp.text.c_str());
         tmp.text[0] = ' ';
         tmp.text.erase(tmp.text.length() - 1);
         own = ACT_IS;
