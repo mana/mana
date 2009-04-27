@@ -13,7 +13,6 @@ writing a branding.xml for their forks.
  <option name="appName" value="The Mana World"/>
  <option name="appShort" value="tmw"/>
  <option name="appIcon" value="icons/tmw.png"/>
- <option name="loginWallpaper" value="graphics/images/login_wallpaper.png"/>
  <option name="loginMusic" value="Magick - Real.ogg"/>
  <option name="defaultServer" value="server.themanaworld.org"/>
  <option name="defaultPort" value="9601"/>
