@@ -74,13 +74,13 @@ class ShortcutContainer : public gcn::Widget,
          */
         virtual void mouseReleased(gcn::MouseEvent &event) = 0;
 
-        virtual int getMaxItems() const
+        int getMaxItems() const
         { return mMaxItems; }
 
-        virtual int getBoxWidth() const
+        int getBoxWidth() const
         { return mBoxWidth; }
 
-        virtual int getBoxHeight() const
+        int getBoxHeight() const
         { return mBoxHeight; }
 
     protected:
