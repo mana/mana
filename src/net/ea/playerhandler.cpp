@@ -499,10 +499,8 @@ void PlayerHandler::setDirection(char direction)
 
 void PlayerHandler::setDestination(int x, int y, int direction)
 {
-    char temp[4] = "";
-    set_coordinates(temp, x, y, direction);
     MessageOut outMsg(CMSG_PLAYER_CHANGE_DEST);
-    outMsg.writeString(temp, 3);
+    outMsg.writeCoordinates(x, y, direction);
 }
 
 void PlayerHandler::changeAction(Being::Action action)

@@ -502,7 +502,6 @@ tmw_SOURCES += \
 	      net/ea/partyhandler.h \
 	      net/ea/playerhandler.cpp \
 	      net/ea/playerhandler.h \
-	      net/ea/protocol.cpp \
 	      net/ea/protocol.h \
 	      net/ea/skillhandler.cpp \
 	      net/ea/skillhandler.h \

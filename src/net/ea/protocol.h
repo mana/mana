@@ -207,7 +207,4 @@ static const int STORAGE_OFFSET = 1;
 #define CMSG_ADMIN_KICK              0x00CC
 #define CMSG_ADMIN_MUTE              0x0149
 
-/** Encodes coords and direction in 3 bytes data */
-void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);
-
 #endif

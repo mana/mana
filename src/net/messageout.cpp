@@ -103,6 +103,67 @@ void MessageOut::writeInt32(Sint32 value)
     mPos += 4;
 }
 
+#ifdef EATHENA_SUPPORT
+
+#define LOBYTE(w)  ((unsigned char)(w))
+#define HIBYTE(w)  ((unsigned char)(((unsigned short)(w)) >> 8))
+
+void MessageOut::writeCoordinates(unsigned short x, unsigned short y,
+                                  unsigned char direction)
+{
+    char *data = mData + mPos;
+    mNetwork->mOutSize += 3;
+    mPos += 3;
+
+    short temp;
+    temp = x;
+    temp <<= 6;
+    data[0] = 0;
+    data[1] = 1;
+    data[2] = 2;
+    data[0] = HIBYTE(temp);
+    data[1] = (unsigned char) temp;
+    temp = y;
+    temp <<= 4;
+    data[1] |= HIBYTE(temp);
+    data[2] = LOBYTE(temp);
+
+    // Translate direction to eAthena format
+    switch (direction)
+    {
+        case 1:
+            direction = 0;
+            break;
+        case 3:
+            direction = 1;
+            break;
+        case 2:
+            direction = 2;
+            break;
+        case 6:
+            direction = 3;
+            break;
+        case 4:
+            direction = 4;
+            break;
+        case 12:
+            direction = 5;
+            break;
+        case 8:
+            direction = 6;
+            break;
+        case 9:
+            direction = 7;
+            break;
+        default:
+            // OOPSIE! Impossible or unknown
+            direction = (unsigned char) -1;
+    }
+    data[2] |= direction;
+}
+
+#endif // EATHENA_SUPPORT
+
 void MessageOut::writeString(const std::string &string, int length)
 {
     int stringLength = string.length();

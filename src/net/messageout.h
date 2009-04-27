@@ -56,6 +56,14 @@ class MessageOut
         void writeInt16(Sint16 value);        /**< Writes a short. */
         void writeInt32(Sint32 value);        /**< Writes a long. */
 
+#ifdef EATHENA_SUPPORT
+        /**
+         * Encodes coordinates and direction in 3 bytes. Used by eAthena.
+         */
+        void writeCoordinates(unsigned short x, unsigned short y,
+                              unsigned char direction);
+#endif
+
         /**
          * Writes a string. If a fixed length is not given (-1), it is stored
          * as a short at the start of the string.
