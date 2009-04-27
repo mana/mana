@@ -26,7 +26,7 @@
 #include "configuration.h"
 #include "graphics.h"
 #include "player.h"
-#include "player_relations.h"
+#include "playerrelations.h"
 
 #include "utils/dtor.h"
 

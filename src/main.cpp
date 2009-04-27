@@ -34,7 +34,7 @@
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
-#include "player_relations.h"
+#include "playerrelations.h"
 #include "serverinfo.h"
 #include "sound.h"
 #include "statuseffect.h"
@@ -45,10 +45,10 @@
 #include "gui/widgets/label.h"
 #include "gui/widgets/progressbar.h"
 
-#include "gui/char_select.h"
+#include "gui/charselectdialog.h"
 #include "gui/gui.h"
 #include "gui/login.h"
-#include "gui/ok_dialog.h"
+#include "gui/okdialog.h"
 #include "gui/palette.h"
 #include "gui/register.h"
 #include "gui/sdlinput.h"

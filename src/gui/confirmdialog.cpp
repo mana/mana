@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/confirm_dialog.h"
+#include "gui/confirmdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/textbox.h"

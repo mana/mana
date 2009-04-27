@@ -29,9 +29,9 @@
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
-#include "player_relations.h"
+#include "playerrelations.h"
 
-#include "gui/confirm_dialog.h"
+#include "gui/confirmdialog.h"
 #include "gui/trade.h"
 
 #include "gui/widgets/chattab.h"

@@ -21,7 +21,7 @@
 
 #include "gui/serverdialog.h"
 
-#include "gui/ok_dialog.h"
+#include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/dropdown.h"

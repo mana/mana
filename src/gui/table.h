@@ -22,13 +22,13 @@
 #ifndef TABLE_H
 #define TABLE_H
 
-#include <vector>
+#include "tablemodel.h"
 
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 
-#include "table_model.h"
+#include <vector>
 
 class GuiTableActionListener;
 

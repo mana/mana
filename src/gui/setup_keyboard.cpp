@@ -22,7 +22,7 @@
 
 #include "gui/setup_keyboard.h"
 
-#include "gui/ok_dialog.h"
+#include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/layouthelper.h"

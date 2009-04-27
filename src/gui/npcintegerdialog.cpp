@@ -21,7 +21,7 @@
 
 #include "gui/npcintegerdialog.h"
 
-#include "gui/npc_text.h"
+#include "gui/npctextdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/inttextfield.h"

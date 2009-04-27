@@ -22,7 +22,7 @@
 #ifndef PARTYWINDOW_H
 #define PARTYWINDOW_H
 
-#include "gui/confirm_dialog.h"
+#include "gui/confirmdialog.h"
 
 #include "gui/widgets/avatar.h"
 #include "gui/widgets/window.h"

@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/item_amount.h"
+#include "gui/itemamount.h"
 
 #ifdef EATHENA_SUPPORT
 #include "gui/storagewindow.h"

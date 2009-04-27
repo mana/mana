@@ -21,7 +21,7 @@
 
 #include "gui/setup_audio.h"
 
-#include "gui/ok_dialog.h"
+#include "gui/okdialog.h"
 
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"

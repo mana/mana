@@ -24,7 +24,7 @@
 
 #include <string>
 
-#include "gui/widgets/channeltab.h"
+class ChannelTab;
 
 class Channel
 {
@@ -43,18 +43,18 @@ class Channel
         ~Channel();
 
         /**
-         * Get the id associated witht his channel
+         * Get the id associated witht his channel.
          */
         int getId() const { return mId; }
 
          /**
-         * Get this channel's name
+         * Get this channel's name.
          */
         const std::string &getName() const
         { return mName; }
 
         /**
-         * Get the announcement message for this channel
+         * Get the announcement message for this channel.
          */
         const std::string &getAnnouncement() const
         { return mAnnouncement; }

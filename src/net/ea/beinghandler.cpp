@@ -33,9 +33,9 @@
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
-#include "player_relations.h"
+#include "playerrelations.h"
 
-#include "gui/npc_text.h"
+#include "gui/npctextdialog.h"
 
 #include <iostream>
 

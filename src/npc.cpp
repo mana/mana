@@ -25,7 +25,7 @@
 #include "particle.h"
 #include "text.h"
 
-#include "gui/npc_text.h"
+#include "gui/npctextdialog.h"
 #include "gui/palette.h"
 
 #include "net/net.h"

@@ -116,14 +116,14 @@ SET(SRCS
     gui/buy.h
     gui/buysell.cpp
     gui/buysell.h
-    gui/char_select.cpp
-    gui/char_select.h
+    gui/charselectdialog.cpp
+    gui/charselectdialog.h
     gui/charcreatedialog.cpp
     gui/charcreatedialog.h
     gui/chat.cpp
     gui/chat.h
-    gui/confirm_dialog.cpp
-    gui/confirm_dialog.h
+    gui/confirmdialog.cpp
+    gui/confirmdialog.h
     gui/debugwindow.cpp
     gui/debugwindow.h
     gui/emotecontainer.cpp
@@ -150,8 +150,8 @@ SET(SRCS
     gui/itempopup.h
     gui/itemshortcutcontainer.cpp
     gui/itemshortcutcontainer.h
-    gui/item_amount.cpp
-    gui/item_amount.h
+    gui/itemamount.cpp
+    gui/itemamount.h
     gui/linkhandler.h
     gui/login.cpp
     gui/login.h
@@ -169,10 +169,10 @@ SET(SRCS
     gui/npcpostdialog.h
     gui/npcstringdialog.cpp
     gui/npcstringdialog.h
-    gui/npc_text.cpp
-    gui/npc_text.h
-    gui/ok_dialog.cpp
-    gui/ok_dialog.h
+    gui/npctextdialog.cpp
+    gui/npctextdialog.h
+    gui/okdialog.cpp
+    gui/okdialog.h
     gui/palette.cpp
     gui/palette.h
     gui/partywindow.cpp
@@ -223,8 +223,8 @@ SET(SRCS
     gui/storagewindow.h
     gui/table.cpp
     gui/table.h
-    gui/table_model.cpp
-    gui/table_model.h
+    gui/tablemodel.cpp
+    gui/tablemodel.h
     gui/textdialog.cpp
     gui/textdialog.h
     gui/textrenderer.h
@@ -341,8 +341,8 @@ SET(SRCS
     engine.h
     equipment.cpp
     equipment.h
-    floor_item.cpp
-    floor_item.h
+    flooritem.cpp
+    flooritem.h
     flooritemmanager.cpp
     flooritemmanager.h
     game.cpp
@@ -387,8 +387,8 @@ SET(SRCS
     particleemitterprop.h
     player.cpp
     player.h
-    player_relations.cpp
-    player_relations.h
+    playerrelations.cpp
+    playerrelations.h
     position.cpp
     position.h
     properties.h

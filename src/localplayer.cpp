@@ -23,7 +23,7 @@
 
 #include "configuration.h"
 #include "equipment.h"
-#include "floor_item.h"
+#include "flooritem.h"
 #include "game.h"
 #include "graphics.h"
 #include "inventory.h"

@@ -22,7 +22,7 @@
 
 #include "gui/guildwindow.h"
 
-#include "gui/confirm_dialog.h"
+#include "gui/confirmdialog.h"
 #include "gui/guildlistbox.h"
 #include "gui/textdialog.h"
 

@@ -23,7 +23,7 @@
 #define PLAYERHANDLER_H
 
 #include "being.h"
-#include "floor_item.h"
+#include "flooritem.h"
 #include "localplayer.h"
 
 namespace Net {

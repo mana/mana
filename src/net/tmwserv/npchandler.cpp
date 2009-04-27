@@ -35,7 +35,7 @@
 
 #include "gui/npclistdialog.h"
 #include "gui/npcpostdialog.h"
-#include "gui/npc_text.h"
+#include "gui/npctextdialog.h"
 
 Net::NpcHandler *npcHandler;
 

@@ -30,7 +30,7 @@
 #include "beingmanager.h"
 #include "game.h"
 #include "localplayer.h"
-#include "player_relations.h"
+#include "playerrelations.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -39,8 +39,6 @@
 #include "utils/strprintf.h"
 
 #include <string>
-
-#define SERVER_NAME "Server"
 
 Net::ChatHandler *chatHandler;
 
@@ -96,7 +94,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
             chatMsg = msg.readString(chatMsgLength);
 
-            if (nick != SERVER_NAME)
+            if (nick != "Server")
             {
                 if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
                     chatWindow->whisper(nick, chatMsg);

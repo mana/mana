@@ -64,10 +64,10 @@ class FloorItem : public Sprite
         int getItemId() const;
 
         /**
-         * Returns the item object. Useful for adding an item link for the floor
-         * item to chat.
+         * Returns the item object. Useful for adding an item link for the
+         * floor item to chat.
          */
-        Item* getItem() const;
+        Item *getItem() const;
 
         /**
          * Returns the x coordinate.

@@ -35,7 +35,7 @@
 #include "particle.h"
 #include "sound.h"
 
-#include "gui/ok_dialog.h"
+#include "gui/okdialog.h"
 
 #include "utils/gettext.h"
 

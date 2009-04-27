@@ -23,18 +23,18 @@
 
 #include "gui/chat.h"
 #include "gui/inventorywindow.h"
-#include "gui/item_amount.h"
+#include "gui/itemamount.h"
 
 #include "gui/widgets/browserbox.h"
 
 #include "being.h"
 #include "beingmanager.h"
-#include "floor_item.h"
+#include "flooritem.h"
 #include "graphics.h"
 #include "item.h"
 #include "localplayer.h"
 #include "npc.h"
-#include "player_relations.h"
+#include "playerrelations.h"
 
 #include "net/adminhandler.h"
 #include "net/net.h"

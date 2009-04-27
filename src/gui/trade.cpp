@@ -27,7 +27,7 @@
 #include "units.h"
 
 #include "gui/inventorywindow.h"
-#include "gui/item_amount.h"
+#include "gui/itemamount.h"
 #include "gui/itemcontainer.h"
 
 #include "gui/widgets/button.h"

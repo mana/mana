@@ -22,6 +22,8 @@
 #ifndef TABLE_MODEL_H
 #define TABLE_MODEL_H
 
+#include <guichanfwd.h>
+
 #include <set>
 #include <vector>
 

@@ -21,7 +21,7 @@
 
 #include "gui/npcstringdialog.h"
 
-#include "gui/npc_text.h"
+#include "gui/npctextdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/layout.h"

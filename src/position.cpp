@@ -29,14 +29,14 @@ std::ostream& operator <<(std::ostream &os, const Position &p)
 
 std::ostream& operator <<(std::ostream &os, const Path &path)
 {
-    Path::const_iterator i = path.begin();
+    Path::const_iterator i = path.begin(), i_end = path.end();
 
     os << "(";
-    while (i != path.end())
+    while (i != i_end)
     {
         os << *i;
         ++i;
-        if (i != path.end())
+        if (i != i_end)
             os << ", ";
     }
     os << ")";

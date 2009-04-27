@@ -32,7 +32,7 @@
 #include "localplayer.h"
 #include "npc.h"
 
-#include "gui/npc_text.h"
+#include "gui/npctextdialog.h"
 #include "gui/npcintegerdialog.h"
 #include "gui/npclistdialog.h"
 #include "gui/npcstringdialog.h"

@@ -33,7 +33,7 @@
 #include "main.h"
 
 #include "gui/charcreatedialog.h"
-#include "gui/ok_dialog.h"
+#include "gui/okdialog.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

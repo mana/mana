@@ -182,8 +182,8 @@
 		<Unit filename="src/engine.h" />
 		<Unit filename="src/equipment.cpp" />
 		<Unit filename="src/equipment.h" />
-		<Unit filename="src/floor_item.cpp" />
-		<Unit filename="src/floor_item.h" />
+		<Unit filename="src/flooritem.cpp" />
+		<Unit filename="src/flooritem.h" />
 		<Unit filename="src/flooritemmanager.cpp" />
 		<Unit filename="src/flooritemmanager.h" />
 		<Unit filename="src/game.cpp" />
@@ -218,14 +218,14 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/gui/char_select.cpp" />
-		<Unit filename="src/gui/char_select.h" />
+		<Unit filename="src/gui/charselectdialog.cpp" />
+		<Unit filename="src/gui/charselectdialog.h" />
 		<Unit filename="src/gui/charcreatedialog.cpp" />
 		<Unit filename="src/gui/charcreatedialog.h" />
 		<Unit filename="src/gui/chat.cpp" />
 		<Unit filename="src/gui/chat.h" />
-		<Unit filename="src/gui/confirm_dialog.cpp" />
-		<Unit filename="src/gui/confirm_dialog.h" />
+		<Unit filename="src/gui/confirmdialog.cpp" />
+		<Unit filename="src/gui/confirmdialog.h" />
 		<Unit filename="src/gui/connection.cpp" />
 		<Unit filename="src/gui/connection.h" />
 		<Unit filename="src/gui/debugwindow.cpp" />
@@ -262,8 +262,8 @@
 		<Unit filename="src/gui/help.h" />
 		<Unit filename="src/gui/inventorywindow.cpp" />
 		<Unit filename="src/gui/inventorywindow.h" />
-		<Unit filename="src/gui/item_amount.cpp" />
-		<Unit filename="src/gui/item_amount.h" />
+		<Unit filename="src/gui/itemamount.cpp" />
+		<Unit filename="src/gui/itemamount.h" />
 		<Unit filename="src/gui/itemcontainer.cpp" />
 		<Unit filename="src/gui/itemcontainer.h" />
 		<Unit filename="src/gui/itemlinkhandler.cpp" />
@@ -289,8 +289,8 @@
 		<Unit filename="src/gui/minimap.h" />
 		<Unit filename="src/gui/ministatus.cpp" />
 		<Unit filename="src/gui/ministatus.h" />
-		<Unit filename="src/gui/npc_text.cpp" />
-		<Unit filename="src/gui/npc_text.h" />
+		<Unit filename="src/gui/npctextdialog.cpp" />
+		<Unit filename="src/gui/npctextdialog.h" />
 		<Unit filename="src/gui/npcintegerdialog.cpp" />
 		<Unit filename="src/gui/npcintegerdialog.h" />
 		<Unit filename="src/gui/npclistdialog.cpp" />
@@ -299,8 +299,8 @@
 		<Unit filename="src/gui/npcpostdialog.h" />
 		<Unit filename="src/gui/npcstringdialog.cpp" />
 		<Unit filename="src/gui/npcstringdialog.h" />
-		<Unit filename="src/gui/ok_dialog.cpp" />
-		<Unit filename="src/gui/ok_dialog.h" />
+		<Unit filename="src/gui/okdialog.cpp" />
+		<Unit filename="src/gui/okdialog.h" />
 		<Unit filename="src/gui/palette.cpp" />
 		<Unit filename="src/gui/palette.h" />
 		<Unit filename="src/gui/partywindow.cpp" />
@@ -399,8 +399,8 @@
 		<Unit filename="src/gui/storagewindow.h" />
 		<Unit filename="src/gui/table.cpp" />
 		<Unit filename="src/gui/table.h" />
-		<Unit filename="src/gui/table_model.cpp" />
-		<Unit filename="src/gui/table_model.h" />
+		<Unit filename="src/gui/tablemodel.cpp" />
+		<Unit filename="src/gui/tablemodel.h" />
 		<Unit filename="src/gui/textdialog.cpp">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
@@ -959,8 +959,8 @@
 		<Unit filename="src/particleemitterprop.h" />
 		<Unit filename="src/player.cpp" />
 		<Unit filename="src/player.h" />
-		<Unit filename="src/player_relations.cpp" />
-		<Unit filename="src/player_relations.h" />
+		<Unit filename="src/playerrelations.cpp" />
+		<Unit filename="src/playerrelations.h" />
 		<Unit filename="src/position.cpp" />
 		<Unit filename="src/position.h" />
 		<Unit filename="src/properties.h" />

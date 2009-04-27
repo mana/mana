@@ -26,7 +26,7 @@
 
 #include "gui/setuptab.h"
 
-#include "player_relations.h"
+#include "playerrelations.h"
 
 #include <guichan/actionlistener.hpp>
 
