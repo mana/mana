@@ -77,10 +77,8 @@ InventoryWindow::InventoryWindow(int invSize):
     mDropButton = new Button(_("Drop"), "drop", this);
 #ifdef TMWSERV_SUPPORT
     mSplitButton = new Button(_("Split"), "split", this);
-    mItems = new ItemContainer(player_node->getInventory());
-#else
-    mItems = new ItemContainer(player_node->getInventory());
 #endif
+    mItems = new ItemContainer(player_node->getInventory());
     mItems->addSelectionListener(this);
 
     gcn::ScrollArea *invenScroll = new ScrollArea(mItems);
@@ -167,14 +165,10 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     if (event.getId() == "use")
     {
         if (item->isEquipment()) {
-#ifdef TMWSERV_SUPPORT
-            player_node->equipItem(item);
-#else
             if (item->isEquipped())
                 player_node->unequipItem(item);
             else
                 player_node->equipItem(item);
-#endif
         }
         else
             player_node->useItem(item);
@@ -268,11 +262,9 @@ void InventoryWindow::updateButtons()
 
     if (selectedItem && selectedItem->isEquipment())
     {
-#ifdef EATHENA_SUPPORT
         if (selectedItem->isEquipped())
             mUseButton->setCaption(_("Unequip"));
         else
-#endif
             mUseButton->setCaption(_("Equip"));
     }
     else
