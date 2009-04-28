@@ -329,7 +329,11 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
 
             if (player_relations.hasPermission(dstBeing, PlayerRelation::EMOTE))
-                dstBeing->setEmote(msg.readInt8(), EMOTION_TIME);
+            {
+                // only set emote if one doesnt already exist
+                if (!dstBeing->mEmotion)
+                    dstBeing->setEmote(msg.readInt8(), EMOTION_TIME);
+            }
 
             break;
 

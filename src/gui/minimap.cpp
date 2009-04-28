@@ -47,7 +47,10 @@ Minimap::Minimap():
     setWindowName("MiniMap");
     mShow = config.getValue(getWindowName() + "Show", true);
     setDefaultSize(5, 25, 100, 100);
-    setResizable(true);
+    // set this to false as the minimap window size is changed
+    //depending on the map size
+    setResizable(false);
+
     setDefaultVisible(true);
     setSaveVisible(true);
 
@@ -98,7 +101,7 @@ void Minimap::setMap(Map *map)
 
         setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);
         setMinHeight(mapHeight);
-        
+
         mWidthProportion = (float) mMapImage->getWidth() / map->getWidth();
         mHeightProportion = (float) mMapImage->getHeight() / map->getHeight();
 
@@ -190,7 +193,7 @@ void Minimap::draw(gcn::Graphics *graphics)
             default:
                 continue;
         }
-        
+
 
         const int offsetHeight = (int) ((dotSize - 1) * mHeightProportion);
         const int offsetWidth = (int) ((dotSize - 1) * mWidthProportion);

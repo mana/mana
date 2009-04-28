@@ -660,10 +660,6 @@
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
-		<Unit filename="src/net/ea/protocol.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
 		<Unit filename="src/net/ea/protocol.h">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
