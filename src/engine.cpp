@@ -96,16 +96,14 @@ bool Engine::changeMap(const std::string &mapPath)
     std::string oldMusic = "";
 
     if (mCurrentMap)
-    {
         oldMusic = mCurrentMap->getProperty("music");
-        delete mCurrentMap;
-    }
 
     std::string newMusic = newMap->getProperty("music");
 
     if (newMusic != oldMusic)
         sound.playMusic(newMusic);
 
+    delete mCurrentMap;
     mCurrentMap = newMap;
 
     Net::getMapHandler()->mapLoaded(mapPath);

@@ -384,7 +384,7 @@ void Map::drawOverlay(Graphics *graphics,
 class ContainsGidFunctor
 {
     public:
-        bool operator() (const Tileset* set) const
+        bool operator() (const Tileset *set) const
         {
             return (set->getFirstGid() <= gid &&
                     gid - set->getFirstGid() < (int)set->size());
@@ -392,7 +392,7 @@ class ContainsGidFunctor
         int gid;
 } containsGid;
 
-Tileset* Map::getTilesetWithGid(int gid) const
+Tileset *Map::getTilesetWithGid(int gid) const
 {
     containsGid.gid = gid;
 
@@ -444,7 +444,7 @@ bool Map::contains(int x, int y) const
     return x >= 0 && y >= 0 && x < mWidth && y < mHeight;
 }
 
-MetaTile* Map::getMetaTile(int x, int y) const
+MetaTile *Map::getMetaTile(int x, int y) const
 {
     return &mMetaTiles[x + y * mWidth];
 }
@@ -655,7 +655,7 @@ void Map::addParticleEffect(const std::string &effectFile, int x, int y)
     particleEffects.push_back(newEffect);
 }
 
-void Map::initializeParticleEffects(Particle* particleEngine)
+void Map::initializeParticleEffects(Particle *particleEngine)
 {
     if (config.getValue("particleeffects", 1))
     {
@@ -669,7 +669,7 @@ void Map::initializeParticleEffects(Particle* particleEngine)
     }
 }
 
-TileAnimation* Map::getAnimationForGid(int gid)
+TileAnimation *Map::getAnimationForGid(int gid)
 {
     std::map<int, TileAnimation*>::iterator i = mTileAnimations.find(gid);
     if (i == mTileAnimations.end())

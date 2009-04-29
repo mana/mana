@@ -33,14 +33,8 @@ class Map;
 class Engine
 {
     public:
-        /**
-         * Constructor.
-         */
         Engine();
 
-        /**
-         * Destructor.
-         */
         ~Engine();
 
         /**
