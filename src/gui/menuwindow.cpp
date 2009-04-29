@@ -32,7 +32,6 @@
 
 #include <string>
 
-extern Window *chatWindow;
 extern Window *equipmentWindow;
 extern Window *inventoryWindow;
 extern Window *itemShortcutWindow;
@@ -62,7 +61,6 @@ MenuWindow::MenuWindow():
     // Buttons
     static const char *buttonNames[] =
     {
-        N_("Chat"),
         N_("Status"),
         N_("Equipment"),
         N_("Inventory"),
@@ -103,11 +101,7 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
 {
     Window *window = NULL;
 
-    if (event.getId() == "Chat")
-    {
-        window = chatWindow;
-    }
-    else if (event.getId() == "Status")
+    if (event.getId() == "Status")
     {
         window = statusWindow;
     }
