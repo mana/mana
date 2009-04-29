@@ -200,6 +200,7 @@ struct Options
         printVersion(false),
         skipUpdate(false),
         chooseDefault(false),
+        noOpenGL(false),
         serverPort(0)
     {}
 
@@ -207,6 +208,7 @@ struct Options
     bool printVersion;
     bool skipUpdate;
     bool chooseDefault;
+    bool noOpenGL;
     std::string username;
     std::string password;
     std::string character;
@@ -217,7 +219,6 @@ struct Options
     std::string serverName;
     short serverPort;
 
-    bool noOpenGL;
 };
 
 /**
@@ -372,7 +373,7 @@ static void initConfiguration(const Options &options)
 
     if (configPath.empty())
         configPath = homeDir + "/config.xml";
-    
+
     configFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
