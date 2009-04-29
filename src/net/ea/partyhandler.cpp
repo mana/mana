@@ -74,12 +74,12 @@ void PartyHandler::handleMessage(MessageIn &msg)
     {
         case SMSG_PARTY_CREATE:
             if (msg.readInt8())
+                partyTab->chatLog(_("Could not create party."), BY_SERVER);
+            else
             {
                 partyTab->chatLog(_("Party successfully created."), BY_SERVER);
                 player_node->setInParty(true);
             }
-            else
-                partyTab->chatLog(_("Could not create party."), BY_SERVER);
             break;
         case SMSG_PARTY_INFO:
             {
@@ -295,6 +295,7 @@ void PartyHandler::invite(Player *player)
 
 void PartyHandler::invite(const std::string &name)
 {
+    partyTab->chatLog(_("Inviting like this isn't supported at the moment."), BY_SERVER);
     // TODO?
 }
 
