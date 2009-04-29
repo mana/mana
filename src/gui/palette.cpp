@@ -155,7 +155,7 @@ Palette::~Palette()
         {
             char buffer[20];
             sprintf(buffer, "0x%06x", col->getRGB());
-            config.setValue(*configName, buffer);
+            config.setValue(*configName, std::string(buffer));
         }
     }
 }
@@ -271,7 +271,8 @@ void Palette::addColor(Palette::ColorType type, int rgb,
     const std::string *configName = &ColorTypeNames[type];
     char buffer[20];
     sprintf(buffer, "0x%06x", rgb);
-    const std::string rgbString = config.getValue(*configName, buffer);
+    const std::string rgbString = config.getValue(*configName,
+                                                  std::string(buffer));
     unsigned int rgbValue = 0;
     if (rgbString.length() == 8 && rgbString[0] == '0' && rgbString[1] == 'x')
         rgbValue = atox(rgbString);
