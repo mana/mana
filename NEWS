@@ -21,7 +21,7 @@
 - Made font size configurable in the config file
 - Fixed restoring of punching animation after weapon removal
 - Fixed inability to chat while talking to NPCs
-- Updated Swedish translation
+- Updated German, Spanish, Finnish, Swedish and Polish translations
 
 0.0.28 (25 January 2009)
 - Added support for animated map tiles
