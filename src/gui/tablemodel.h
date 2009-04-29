@@ -53,27 +53,27 @@ public:
     /**
      * Determines the number of rows (lines) in the table
      */
-    virtual int getRows() = 0;
+    virtual int getRows() const = 0;
 
     /**
      * Determines the number of columns in each row
      */
-    virtual int getColumns() = 0;
+    virtual int getColumns() const = 0;
 
     /**
      * Determines the height for each row
      */
-    virtual int getRowHeight() = 0;
+    virtual int getRowHeight() const = 0;
 
     /**
      * Determines the width of each individual column
      */
-    virtual int getColumnWidth(int index) = 0;
+    virtual int getColumnWidth(int index) const = 0;
 
     /**
      * Retrieves the widget stored at the specified location within the table.
      */
-    virtual gcn::Widget *getElementAt(int row, int column) = 0;
+    virtual gcn::Widget *getElementAt(int row, int column) const = 0;
 
     virtual void installListener(TableModelListener *listener);
 
@@ -128,13 +128,13 @@ public:
      */
     virtual void resize();
 
-    virtual int getRows();
-    virtual int getColumns();
-    virtual int getRowHeight();
-    virtual int getWidth();
-    virtual int getHeight();
-    virtual int getColumnWidth(int index);
-    virtual gcn::Widget *getElementAt(int row, int column);
+    virtual int getRows() const;
+    virtual int getColumns() const;
+    virtual int getRowHeight() const;
+    virtual int getWidth() const;
+    virtual int getHeight() const;
+    virtual int getColumnWidth(int index) const;
+    virtual gcn::Widget *getElementAt(int row, int column) const;
 
 protected:
     int mRows, mColumns;

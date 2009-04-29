@@ -70,13 +70,11 @@ public:
      */
     void setModel(TableModel *m);
 
-    const TableModel* getModel() {return mModel;}
-
     void setSelected(int row, int column);
 
-    int getSelectedRow();
+    int getSelectedRow() const;
 
-    int getSelectedColumn();
+    int getSelectedColumn() const;
 
     void setSelectedRow(int selected);
 
@@ -87,7 +85,7 @@ public:
     void setWrappingEnabled(bool wrappingEnabled)
     {mWrappingEnabled = wrappingEnabled;}
 
-    gcn::Rectangle getChildrenArea(void);
+    gcn::Rectangle getChildrenArea() const;
 
     /**
      * Toggle whether to use linewise selection mode, in which the table selects
@@ -105,7 +103,7 @@ public:
     // Inherited from Widget
     virtual void draw(gcn::Graphics* graphics);
 
-    virtual gcn::Widget *getWidgetAt(int x, int y);
+    virtual gcn::Widget *getWidgetAt(int x, int y) const;
 
     virtual void moveToTop(gcn::Widget *child);
 
@@ -150,12 +148,12 @@ protected:
     /** Installs all action listeners on inner widgets. */
     virtual void installActionListeners();
 
-    virtual int getRowHeight();
-    virtual int getColumnWidth(int i);
+    virtual int getRowHeight() const;
+    virtual int getColumnWidth(int i) const;
 
 private:
-    int getRowForY(int y); // -1 on error
-    int getColumnForX(int x); // -1 on error
+    int getRowForY(int y) const; // -1 on error
+    int getColumnForX(int x) const; // -1 on error
     void recomputeDimensions();
     bool mLinewiseMode;
     bool mWrappingEnabled;

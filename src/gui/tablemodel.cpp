@@ -97,7 +97,7 @@ void StaticTableModel::set(int row, int column, gcn::Widget *widget)
     signalAfterUpdate();
 }
 
-gcn::Widget *StaticTableModel::getElementAt(int row, int column)
+gcn::Widget *StaticTableModel::getElementAt(int row, int column) const
 {
     return mTableModel[WIDGET_AT(row, column)];
 }
@@ -119,12 +119,12 @@ void StaticTableModel::fixRowHeight(int height)
     mHeight = -height;
 }
 
-int StaticTableModel::getRowHeight()
+int StaticTableModel::getRowHeight() const
 {
     return abs(mHeight);
 }
 
-int StaticTableModel::getColumnWidth(int column)
+int StaticTableModel::getColumnWidth(int column) const
 {
    if (column < 0 || column >= mColumns)
         return 0;
@@ -132,17 +132,17 @@ int StaticTableModel::getColumnWidth(int column)
     return abs(mWidths[column]);
 }
 
-int StaticTableModel::getRows()
+int StaticTableModel::getRows() const
 {
     return mRows;
 }
 
-int StaticTableModel::getColumns()
+int StaticTableModel::getColumns() const
 {
     return mColumns;
 }
 
-int StaticTableModel::getWidth(void)
+int StaticTableModel::getWidth() const
 {
     int width = 0;
 
@@ -154,8 +154,8 @@ int StaticTableModel::getWidth(void)
     return width;
 }
 
-int StaticTableModel::getHeight(void)
+int StaticTableModel::getHeight() const
 {
-    return (mColumns * mHeight);
+    return mColumns * mHeight;
 }
 

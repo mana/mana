@@ -66,12 +66,12 @@ public:
         update();
     }
 
-    virtual int getRows(void)
+    virtual int getRows() const
     {
         return mEntriesNr;
     }
 
-    virtual int getColumnWidth(int index)
+    virtual int getColumnWidth(int index) const
     {
         if (index == 0)
             return 160;
@@ -79,7 +79,7 @@ public:
         return 35;
     }
 
-    virtual int getRowHeight()
+    virtual int getRowHeight() const
     {
         return 12;
     }

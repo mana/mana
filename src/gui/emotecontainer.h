@@ -109,17 +109,17 @@ class EmoteContainer : public gcn::Widget,
         /**
          * Find the current emote index by the most recently used emote ID
          */
-        void refindSelectedEmote(void);
+        void refindSelectedEmote();
 
         /**
          * Determine and set the height of the container.
          */
-        void recalculateHeight(void);
+        void recalculateHeight();
 
         /**
          * Sends out selection events to the list of selection listeners.
          */
-        void distributeValueChangedEvent(void);
+        void distributeValueChangedEvent();
 
         std::vector<const AnimatedSprite*> mEmoteImg;
         Image *mSelImg;

@@ -99,22 +99,22 @@ public:
             delete mPlayers;
     }
 
-    virtual int getRows()
+    virtual int getRows() const
     {
         return mPlayers->size();
     }
 
-    virtual int getColumns()
+    virtual int getColumns() const
     {
         return COLUMNS_NR;
     }
 
-    virtual int getRowHeight()
+    virtual int getRowHeight() const
     {
         return ROW_HEIGHT;
     }
 
-    virtual int getColumnWidth(int index)
+    virtual int getColumnWidth(int index) const
     {
         if (index == NAME_COLUMN)
             return NAME_COLUMN_WIDTH;
@@ -158,7 +158,7 @@ public:
     }
 
 
-    virtual gcn::Widget *getElementAt(int row, int column)
+    virtual gcn::Widget *getElementAt(int row, int column) const
     {
         return mWidgets[WIDGET_AT(row, column)];
     }
@@ -178,7 +178,7 @@ public:
         mWidgets.clear();
     }
 
-    std::string getPlayerAt(int index)
+    std::string getPlayerAt(int index) const
     {
         return (*mPlayers)[index];
     }

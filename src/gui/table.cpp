@@ -154,12 +154,12 @@ void GuiTable::setSelected(int row, int column)
     mSelectedRow = row;
 }
 
-int GuiTable::getSelectedRow()
+int GuiTable::getSelectedRow() const
 {
     return mSelectedRow;
 }
 
-int GuiTable::getSelectedColumn()
+int GuiTable::getSelectedColumn() const
 {
     return mSelectedColumn;
 }
@@ -169,7 +169,7 @@ void GuiTable::setLinewiseSelection(bool linewise)
     mLinewiseMode = linewise;
 }
 
-int GuiTable::getRowHeight()
+int GuiTable::getRowHeight() const
 {
     if (mModel)
         return mModel->getRowHeight() + 1; // border
@@ -177,7 +177,7 @@ int GuiTable::getRowHeight()
         return 0;
 }
 
-int GuiTable::getColumnWidth(int i)
+int GuiTable::getColumnWidth(int i) const
 {
     if (mModel)
         return mModel->getColumnWidth(i) + 1; // border
@@ -238,7 +238,7 @@ void GuiTable::setSelectedColumn(int selected)
     }
 }
 
-void GuiTable::uninstallActionListeners(void)
+void GuiTable::uninstallActionListeners()
 {
     delete_all(mActionListeners);
     mActionListeners.clear();
@@ -368,7 +368,7 @@ void GuiTable::moveToBottom(gcn::Widget *widget)
         mTopWidget = NULL;
 }
 
-gcn::Rectangle GuiTable::getChildrenArea()
+gcn::Rectangle GuiTable::getChildrenArea() const
 {
     return gcn::Rectangle(0, 0, getWidth(), getHeight());
 }
@@ -478,7 +478,7 @@ void GuiTable::modelUpdated(bool completed)
     }
 }
 
-gcn::Widget *GuiTable::getWidgetAt(int x, int y)
+gcn::Widget *GuiTable::getWidgetAt(int x, int y) const
 {
     int row = getRowForY(y);
     int column = getColumnForX(x);
@@ -498,7 +498,7 @@ gcn::Widget *GuiTable::getWidgetAt(int x, int y)
         return NULL;
 }
 
-int GuiTable::getRowForY(int y)
+int GuiTable::getRowForY(int y) const
 {
    int row = -1;
 
@@ -511,7 +511,7 @@ int GuiTable::getRowForY(int y)
        return row;
 }
 
-int GuiTable::getColumnForX(int x)
+int GuiTable::getColumnForX(int x) const
 {
     int column;
     int delta = 0;
