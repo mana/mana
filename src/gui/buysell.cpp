@@ -31,10 +31,11 @@
 #include "utils/gettext.h"
 
 BuySellDialog::BuySellDialog():
-    Window(_("Shop"))
+    Window(_("Shop")),
+    mBuyButton(0)
 {
     setWindowName("BuySell");
-    buyButton = 0;
+
     static const char *buttonNames[] = {
         N_("Buy"), N_("Sell"), N_("Cancel"), 0
     };
@@ -43,15 +44,15 @@ BuySellDialog::BuySellDialog():
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
         Button *btn = new Button(gettext(*curBtn), *curBtn, this);
-        if (!buyButton)
-            buyButton = btn; // For focus request
+        if (!mBuyButton)
+            mBuyButton = btn; // For focus request
         btn->setPosition(x, y);
         add(btn);
         x += btn->getWidth() + 10;
     }
-    buyButton->requestFocus();
+    mBuyButton->requestFocus();
 
-    setContentSize(x, 2 * y + buyButton->getHeight());
+    setContentSize(x, 2 * y + mBuyButton->getHeight());
 
     center();
     setDefaultSize();
@@ -71,7 +72,7 @@ void BuySellDialog::setVisible(bool visible)
     Window::setVisible(visible);
 
     if (visible)
-        buyButton->requestFocus();
+        mBuyButton->requestFocus();
 }
 
 void BuySellDialog::action(const gcn::ActionEvent &event)

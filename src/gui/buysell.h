@@ -55,7 +55,7 @@ class BuySellDialog : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
     private:
-        gcn::Button* buyButton;
+        gcn::Button *mBuyButton;
 };
 
 extern BuySellDialog *buySellDialog;
