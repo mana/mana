@@ -60,6 +60,11 @@ class Player : public Being
         virtual void setGender(Gender gender);
 
         /**
+         * Whether or not this player is a GM.
+         */
+        bool isGM() { return mIsGM; }
+
+        /**
          * Sets the hair style and color for this player.
          *
          * Only for convenience in 0.0 client. When porting
