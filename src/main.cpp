@@ -974,9 +974,13 @@ int main(int argc, char *argv[])
 
     while (state != STATE_EXIT)
     {
+        bool handledEvents = false;
+
         // Handle SDL events
         while (SDL_PollEvent(&event))
         {
+            handledEvents = true;
+
             switch (event.type)
             {
                 case SDL_QUIT:
@@ -1538,7 +1542,8 @@ int main(int argc, char *argv[])
          * just constantly redrawing the wallpaper.  Added the following
          * usleep to limit it to 40 FPS during the login sequence
          */
-        usleep(25000);
+        if (!handledEvents)
+            usleep(25000);
     }
 
     delete guiPalette;
