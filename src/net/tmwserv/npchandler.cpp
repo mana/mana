@@ -48,6 +48,8 @@ NpcHandler::NpcHandler()
         GPMSG_NPC_MESSAGE,
         GPMSG_NPC_ERROR,
         GPMSG_NPC_CLOSE,
+        GPMSG_NPC_NUMBER,
+        GPMSG_NPC_STRING,
         0
     };
     handledMessages = _messages;
@@ -82,6 +84,10 @@ void NpcHandler::handleMessage(MessageIn &msg)
             npcDialog->integerRequest(msg.readInt32(), min_num, max_num);
             break;
         }
+
+        case GPMSG_NPC_STRING:
+            npcDialog->textRequest("");
+            break;
 
         case GPMSG_NPC_POST:
             npcDialog->setVisible(false);
