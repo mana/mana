@@ -40,8 +40,6 @@
 #include "gui/buy.h"
 #include "gui/chat.h"
 #include "gui/gui.h"
-#include "gui/npclistdialog.h"
-#include "gui/npctextdialog.h"
 #include "gui/okdialog.h"
 #include "gui/sell.h"
 #include "gui/skill.h"
@@ -51,8 +49,6 @@
 OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
 
-extern NpcListDialog *npcListDialog;
-extern NpcTextDialog *npcTextDialog;
 extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
@@ -87,8 +83,6 @@ namespace {
         {
             player_node->revive();
             deathNotice = NULL;
-            npcListDialog->setVisible(false);
-            npcTextDialog->setVisible(false);
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);
             current_npc = 0;

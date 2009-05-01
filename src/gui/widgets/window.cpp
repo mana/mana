@@ -687,6 +687,19 @@ Layout &Window::getLayout()
     return *mLayout;
 }
 
+void Window::clearLayout()
+{
+    clear();  // This removes widgets from the container
+
+    while (!mWidgets.empty())
+        delete mWidgets.front();
+
+    if (!mLayout)
+        delete mLayout;
+    mLayout = new Layout;
+    
+}
+
 LayoutCell &Window::place(int x, int y, gcn::Widget *wg, int w, int h)
 {
     add(wg);
@@ -705,6 +718,17 @@ void Window::reflowLayout(int w, int h)
     delete mLayout;
     mLayout = NULL;
     setContentSize(w, h);
+}
+
+void Window::redraw()
+{
+    if (mLayout)
+    {
+        const gcn::Rectangle area = getChildrenArea();
+        int w = area.width;
+        int h = area.height;
+        mLayout->reflow(w, h);
+    }
 }
 
 void Window::center()

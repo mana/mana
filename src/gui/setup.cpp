@@ -146,8 +146,6 @@ void Setup::action(const gcn::ActionEvent &event)
 #endif
         inventoryWindow->resetToDefaultSize();
         emoteWindow->resetToDefaultSize();
-        npcTextDialog->resetToDefaultSize();
-        npcStringDialog->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
         minimap->resetToDefaultSize();
         equipmentWindow->resetToDefaultSize();

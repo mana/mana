@@ -161,16 +161,10 @@ SET(SRCS
     gui/minimap.h
     gui/ministatus.cpp
     gui/ministatus.h
-    gui/npcintegerdialog.cpp
-    gui/npcintegerdialog.h
-    gui/npclistdialog.cpp
-    gui/npclistdialog.h
+    gui/npcdialog.cpp
+    gui/npcdialog.h
     gui/npcpostdialog.cpp
     gui/npcpostdialog.h
-    gui/npcstringdialog.cpp
-    gui/npcstringdialog.h
-    gui/npctextdialog.cpp
-    gui/npctextdialog.h
     gui/okdialog.cpp
     gui/okdialog.h
     gui/palette.cpp

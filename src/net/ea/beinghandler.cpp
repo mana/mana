@@ -35,11 +35,7 @@
 #include "npc.h"
 #include "playerrelations.h"
 
-#include "gui/npctextdialog.h"
-
 #include <iostream>
-
-extern NpcTextDialog *npcTextDialog;
 
 namespace EAthena {
 
@@ -245,9 +241,6 @@ void BeingHandler::handleMessage(MessageIn &msg)
         case SMSG_BEING_REMOVE:
             // A being should be removed or has died
             id = msg.readInt32();
-
-            if (id == current_npc)
-                npcTextDialog->showCloseButton();
 
             dstBeing = beingManager->findBeing(id);
 

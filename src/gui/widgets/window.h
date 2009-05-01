@@ -95,6 +95,8 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         void setResizable(bool resize);
 
+        void redraw();
+
         /**
          * Called whenever the widget changes size.
          */
@@ -291,6 +293,11 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Gets the layout handler for this window.
          */
         Layout &getLayout();
+
+        /**
+         * Clears the Window's layout (useful for redesigning the window)
+         */
+        void clearLayout();
 
         /**
          * Computes the position of the widgets according to the current

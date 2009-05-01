@@ -33,9 +33,8 @@
 #include "beingmanager.h"
 #include "npc.h"
 
-#include "gui/npclistdialog.h"
 #include "gui/npcpostdialog.h"
-#include "gui/npctextdialog.h"
+#include "gui/npcdialog.h"
 
 Net::NpcHandler *npcHandler;
 
@@ -48,6 +47,7 @@ NpcHandler::NpcHandler()
         GPMSG_NPC_POST,
         GPMSG_NPC_MESSAGE,
         GPMSG_NPC_ERROR,
+        GPMSG_NPC_CLOSE,
         0
     };
     handledMessages = _messages;
@@ -63,31 +63,43 @@ void NpcHandler::handleMessage(MessageIn &msg)
     }
 
     current_npc = being->getId();
+    npcDialog->setNpc(current_npc);
 
     switch (msg.getId())
     {
         case GPMSG_NPC_CHOICE:
-            npcListDialog->reset();
+            npcDialog->choiceRequest();
             while (msg.getUnreadLength())
             {
-                npcListDialog->addItem(msg.readString());
+                npcDialog->addChoice(msg.readString());
             }
-            npcListDialog->setVisible(true);
             break;
 
+        case GPMSG_NPC_NUMBER:
+        {
+            int min_num = msg.readInt32();
+            int max_num = msg.readInt32();
+            npcDialog->integerRequest(msg.readInt32(), min_num, max_num);
+            break;
+        }
+
         case GPMSG_NPC_POST:
-            npcTextDialog->setVisible(false);
+            npcDialog->setVisible(false);
             npcPostDialog->clear();
             npcPostDialog->setVisible(true);
             break;
 
         case GPMSG_NPC_ERROR:
             current_npc = NULL;
+            break;
+
         case GPMSG_NPC_MESSAGE:
-            npcTextDialog->addText(msg.readString(msg.getUnreadLength()));
-            npcListDialog->setVisible(false);
-            npcTextDialog->setVisible(true);
-            npcPostDialog->setVisible(false);
+            npcDialog->addText(msg.readString(msg.getUnreadLength()));
+            npcDialog->setVisible(true);
+            break;
+
+        case GPMSG_NPC_CLOSE:
+            npcDialog->showCloseButton();
             break;
     }
 }
@@ -108,7 +120,11 @@ void NpcHandler::nextDialog(int npcId)
 
 void NpcHandler::closeDialog(int npcId)
 {
-    // TODO
+    MessageOut msg(PGMSG_NPC_TALK_NEXT);
+    msg.writeInt16(npcId);
+    Net::GameServer::connection->send(msg);
+    npcDialog->setVisible(false);
+    npcDialog->setText("");
 }
 
 void NpcHandler::listInput(int npcId, int value)
@@ -121,12 +137,18 @@ void NpcHandler::listInput(int npcId, int value)
 
 void NpcHandler::integerInput(int npcId, int value)
 {
-    // TODO
+    MessageOut msg(PGMSG_NPC_NUMBER);
+    msg.writeInt16(npcId);
+    msg.writeInt32(value);
+    Net::GameServer::connection->send(msg);
 }
 
 void NpcHandler::stringInput(int npcId, const std::string &value)
 {
-    // TODO
+    MessageOut msg(PGMSG_NPC_STRING);
+    msg.writeInt16(npcId);
+    msg.writeString(value);
+    Net::GameServer::connection->send(msg);
 }
 
 void NpcHandler::sendLetter(int npcId, const std::string &recipient,

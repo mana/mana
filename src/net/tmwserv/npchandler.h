@@ -25,6 +25,8 @@
 #include "net/messagehandler.h"
 #include "net/npchandler.h"
 
+#include <list>
+
 namespace TmwServ {
 
 class NpcHandler : public MessageHandler, public Net::NpcHandler

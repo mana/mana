@@ -56,10 +56,7 @@
 #include "gui/menuwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
-#include "gui/npcintegerdialog.h"
-#include "gui/npclistdialog.h"
-#include "gui/npcstringdialog.h"
-#include "gui/npctextdialog.h"
+#include "gui/npcdialog.h"
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
 #include "gui/sell.h"
@@ -125,10 +122,6 @@ BuySellDialog *buySellDialog;
 #endif
 InventoryWindow *inventoryWindow;
 EmoteWindow *emoteWindow;
-NpcIntegerDialog *npcIntegerDialog;
-NpcListDialog *npcListDialog;
-NpcTextDialog *npcTextDialog;
-NpcStringDialog *npcStringDialog;
 SkillDialog *skillDialog;
 PartyWindow *partyWindow;
 #ifdef TMWSERV_SUPPORT
@@ -136,6 +129,7 @@ BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
 MagicDialog *magicDialog;
 #endif
+NpcDialog *npcDialog;
 NpcPostDialog *npcPostDialog;
 StorageWindow *storageWindow;
 Minimap *minimap;
@@ -215,10 +209,6 @@ static void createGuiWindows()
     buyDialog = new BuyDialog;
     sellDialog = new SellDialog;
     tradeWindow = new TradeWindow;
-    npcTextDialog = new NpcTextDialog;
-    npcIntegerDialog = new NpcIntegerDialog;
-    npcListDialog = new NpcListDialog;
-    npcStringDialog = new NpcStringDialog;
     partyWindow = new PartyWindow;
 #ifdef TMWSERV_SUPPORT
     magicDialog = new MagicDialog;
@@ -229,6 +219,7 @@ static void createGuiWindows()
     buySellDialog = new BuySellDialog;
     equipmentWindow = new EquipmentWindow;
 #endif
+    npcDialog = new NpcDialog;
     npcPostDialog = new NpcPostDialog;
     storageWindow = new StorageWindow;
     menuWindow = new MenuWindow;
@@ -274,11 +265,8 @@ static void destroyGuiWindows()
 #endif
     delete inventoryWindow;
     delete emoteWindow;
-    delete npcIntegerDialog;
-    delete npcListDialog;
-    delete npcTextDialog;
-    delete npcStringDialog;
     delete partyWindow;
+    delete npcDialog;
     delete npcPostDialog;
 #ifdef TMWSERV_SUPPORT
     delete magicDialog;
@@ -573,22 +561,9 @@ void Game::handleInput()
                     else if (setupWindow->isVisible() &&
                                 keyboard.isKeyActive(keyboard.KEY_OK))
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                    // Submits the text and proceeds to the next dialog
-                    else if (npcStringDialog->isVisible() &&
+                    else if (npcDialog->isVisible() &&
                                 keyboard.isKeyActive(keyboard.KEY_OK))
-                        npcStringDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Proceed to the next dialog option, or close the window
-                    else if (npcTextDialog->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
-                        npcTextDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Choose the currently highlighted dialogue option
-                    else if (npcListDialog->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
-                        npcListDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    // Submits the text and proceeds to the next dialog
-                    else if (npcIntegerDialog->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
-                        npcIntegerDialog->action(gcn::ActionEvent(NULL, "ok"));
+                        npcDialog->action(gcn::ActionEvent(NULL, "ok"));
                     /*
                     else if (guildWindow->isVisible())
                     {
@@ -676,8 +651,8 @@ void Game::handleInput()
                 default:
                     break;
             }
-            if (keyboard.isEnabled() && !chatWindow->isInputFocused()
-                                     && !npcStringDialog->isInputFocused())
+            if (keyboard.isEnabled() && 
+                 !chatWindow->isInputFocused() && !npcDialog->isInputFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
 
@@ -995,8 +970,7 @@ void Game::handleInput()
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
         {
-            if (!npcTextDialog->isVisible()   && !npcListDialog->isVisible() &&
-                !npcStringDialog->isVisible() && !npcIntegerDialog->isVisible())
+            if (!npcDialog->isVisible())
             {
                 Being *target = player_node->getTarget();
 
