@@ -277,8 +277,9 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 {
-    // TODO: add position
-    tab->chatLog(map_path, BY_SERVER);
+    std::ostringstream where;
+    where << map_path << ", coordinates: " << player_node->mX << ", " << player_node->mY;
+    tab->chatLog(where.str(), BY_SERVER);
 }
 
 void CommandHandler::handleWho(const std::string &args, ChatTab *tab)
