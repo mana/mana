@@ -158,7 +158,6 @@ void NpcHandler::integerInput(int npcId, int value)
 
 void NpcHandler::stringInput(int npcId, const std::string &value)
 {
-    printf("I got a %s", value.c_str());
     MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
     outMsg.writeInt16(value.length() + 9);
     outMsg.writeInt32(npcId);

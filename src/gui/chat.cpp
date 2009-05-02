@@ -359,20 +359,27 @@ void ChatWindow::scroll(int amount)
 
 void ChatWindow::keyPressed(gcn::KeyEvent &event)
 {
-    if (event.getKey().getValue() == Key::DOWN &&
-            mCurHist != mHistory.end())
+    if (event.getKey().getValue() == Key::DOWN)
     {
-        // Move forward through the history
-        HistoryIterator prevHist = mCurHist++;
-
         if (mCurHist != mHistory.end())
         {
-            mChatInput->setText(*mCurHist);
-            mChatInput->setCaretPosition(mChatInput->getText().length());
+            // Move forward through the history
+            HistoryIterator prevHist = mCurHist++;
+
+            if (mCurHist != mHistory.end())
+            {
+                mChatInput->setText(*mCurHist);
+                mChatInput->setCaretPosition(mChatInput->getText().length());
+            }
+            else
+            {
+                mChatInput->setText("");
+                mCurHist = prevHist;
+            }
         }
-        else
+        else if (mChatInput->getText() != "")
         {
-            mCurHist = prevHist;
+            mChatInput->setText("");
         }
     }
     else if (event.getKey().getValue() == Key::UP &&
