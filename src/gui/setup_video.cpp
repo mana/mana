@@ -203,12 +203,6 @@ Setup_Video::Setup_Video():
     mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
     mFpsSlider(new Slider(10, 120)),
     mFpsField(new TextField),
-    mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 16)),
-    mScrollLazinessSlider(new Slider(1, 64)),
-    mScrollLazinessField(new TextField),
-    mOriginalScrollRadius((int) config.getValue("ScrollRadius", 0)),
-    mScrollRadiusSlider(new Slider(0, 128)),
-    mScrollRadiusField(new TextField),
     mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
     mOverlayDetailSlider(new Slider(0, 2)),
     mOverlayDetailField(new Label("")),
@@ -224,8 +218,6 @@ Setup_Video::Setup_Video():
 
     speechLabel = new Label(_("Overhead text"));
     alphaLabel = new Label(_("Gui opacity"));
-    scrollRadiusLabel = new Label(_("Scroll radius"));
-    scrollLazinessLabel = new Label(_("Scroll laziness"));
     overlayDetailLabel = new Label(_("Ambient FX"));
     particleDetailLabel = new Label(_("Particle Detail"));
     fontSizeLabel = new Label(_("Font size"));
@@ -259,10 +251,6 @@ Setup_Video::Setup_Video():
     mFpsCheckBox->setActionEventId("fpslimitcheckbox");
     mSpeechSlider->setActionEventId("speech");
     mFpsSlider->setActionEventId("fpslimitslider");
-    mScrollRadiusSlider->setActionEventId("scrollradiusslider");
-    mScrollRadiusField->setActionEventId("scrollradiusfield");
-    mScrollLazinessSlider->setActionEventId("scrolllazinessslider");
-    mScrollLazinessField->setActionEventId("scrolllazinessfield");
     mOverlayDetailSlider->setActionEventId("overlaydetailslider");
     mOverlayDetailField->setActionEventId("overlaydetailfield");
     mParticleDetailSlider->setActionEventId("particledetailslider");
@@ -279,21 +267,10 @@ Setup_Video::Setup_Video():
     mFpsCheckBox->addActionListener(this);
     mSpeechSlider->addActionListener(this);
     mFpsSlider->addActionListener(this);
-    mFpsField->addKeyListener(this);
-    mScrollRadiusSlider->addActionListener(this);
-    mScrollRadiusField->addKeyListener(this);
-    mScrollLazinessSlider->addActionListener(this);
-    mScrollLazinessField->addKeyListener(this);
     mOverlayDetailSlider->addActionListener(this);
     mOverlayDetailField->addKeyListener(this);
     mParticleDetailSlider->addActionListener(this);
     mParticleDetailField->addKeyListener(this);
-
-    mScrollRadiusField->setText(toString(mOriginalScrollRadius));
-    mScrollRadiusSlider->setValue(mOriginalScrollRadius);
-
-    mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
-    mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
 
     mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
     mSpeechSlider->setValue(mSpeechMode);
@@ -331,7 +308,7 @@ Setup_Video::Setup_Video():
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
-    place(0, 0, scrollArea, 1, 6).setPadding(2);
+    place(0, 0, scrollArea, 1, 5).setPadding(2);
     place(1, 0, mFsCheckBox, 2);
     place(3, 0, mOpenGLCheckBox, 1);
 
@@ -357,25 +334,17 @@ Setup_Video::Setup_Video():
     place(1, 8, mFpsCheckBox).setPadding(3);
     place(2, 8, mFpsField).setPadding(1);
 
-    place(0, 9, mScrollRadiusSlider);
-    place(1, 9, scrollRadiusLabel);
-    place(2, 9, mScrollRadiusField).setPadding(1);
+    place(0, 9, mSpeechSlider);
+    place(1, 9, speechLabel);
+    place(2, 9, mSpeechLabel, 3).setPadding(2);
 
-    place(0, 10, mScrollLazinessSlider);
-    place(1, 10, scrollLazinessLabel);
-    place(2, 10, mScrollLazinessField).setPadding(1);
+    place(0, 10, mOverlayDetailSlider);
+    place(1, 10, overlayDetailLabel);
+    place(2, 10, mOverlayDetailField, 3).setPadding(2);
 
-    place(0, 11, mSpeechSlider);
-    place(1, 11, speechLabel);
-    place(2, 11, mSpeechLabel, 3).setPadding(2);
-
-    place(0, 12, mOverlayDetailSlider);
-    place(1, 12, overlayDetailLabel);
-    place(2, 12, mOverlayDetailField, 3).setPadding(2);
-
-    place(0, 13, mParticleDetailSlider);
-    place(1, 13, particleDetailLabel);
-    place(2, 13, mParticleDetailField, 3).setPadding(2);
+    place(0, 11, mParticleDetailSlider);
+    place(1, 11, particleDetailLabel);
+    place(2, 11, mParticleDetailField, 3).setPadding(2);
 
     setDimension(gcn::Rectangle(0, 0, 325, 300));
 }
@@ -452,26 +421,6 @@ void Setup_Video::apply()
     mPickupParticleEnabled = config.getValue("showpickupparticle", false);
 }
 
-int Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
-                              const std::string &configName)
-{
-    int value;
-    std::stringstream temp(field->getText());
-    temp >> value;
-    if (value < slider->getScaleStart())
-    {
-        value = (int) slider->getScaleStart();
-    }
-    else if (value > slider->getScaleEnd())
-    {
-        value = (int) slider->getScaleEnd();
-    }
-    field->setText(toString(value));
-    slider->setValue(value);
-    config.setValue(configName, value);
-    return value;
-}
-
 void Setup_Video::cancel()
 {
     mFsCheckBox->setSelected(mFullScreenEnabled);
@@ -484,11 +433,6 @@ void Setup_Video::cancel()
     mAlphaSlider->setValue(mOpacity);
     mOverlayDetailSlider->setValue(mOverlayDetail);
     mParticleDetailSlider->setValue(mParticleDetail);
-
-    mScrollRadiusField->setText(toString(mOriginalScrollRadius));
-    mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
-    updateSlider(mScrollRadiusSlider, mScrollRadiusField, "ScrollRadius");
-    updateSlider(mScrollLazinessSlider, mScrollLazinessField, "ScrollLaziness");
 
     config.setValue("screen", mFullScreenEnabled);
     config.setValue("customcursor", mCustomCursorEnabled);
@@ -574,18 +518,6 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         mFps = (int) mFpsSlider->getValue();
         mFpsField->setText(toString(mFps));
     }
-    else if (event.getId() == "scrollradiusslider")
-    {
-        int val = (int) mScrollRadiusSlider->getValue();
-        mScrollRadiusField->setText(toString(val));
-        config.setValue("ScrollRadius", val);
-    }
-    else if (event.getId() == "scrolllazinessslider")
-    {
-        int val = (int) mScrollLazinessSlider->getValue();
-        mScrollLazinessField->setText(toString(val));
-        config.setValue("ScrollLaziness", val);
-    }
     else if (event.getId() == "overlaydetailslider")
     {
         int val = (int) mOverlayDetailSlider->getValue();
@@ -638,6 +570,4 @@ void Setup_Video::keyPressed(gcn::KeyEvent &event)
         mFpsField->setText("");
         mFps = 0;
     }
-    updateSlider(mScrollRadiusSlider, mScrollRadiusField, "ScrollRadius");
-    updateSlider(mScrollLazinessSlider, mScrollLazinessField, "ScrollLaziness");
 }

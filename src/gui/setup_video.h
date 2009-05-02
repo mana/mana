@@ -45,9 +45,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         void keyPressed(gcn::KeyEvent &event);
 
     private:
-        int updateSlider(gcn::Slider *slider, gcn::TextField *field,
-                         const std::string &configName);
-
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
@@ -88,14 +85,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mFpsCheckBox;
         gcn::Slider *mFpsSlider;
         gcn::TextField *mFpsField;
-
-        int mOriginalScrollLaziness;
-        gcn::Slider *mScrollLazinessSlider;
-        gcn::TextField *mScrollLazinessField;
-
-        int mOriginalScrollRadius;
-        gcn::Slider *mScrollRadiusSlider;
-        gcn::TextField *mScrollRadiusField;
 
         int mOverlayDetail;
         gcn::Slider *mOverlayDetailSlider;
