@@ -1426,8 +1426,7 @@ int main(int argc, char *argv[])
                                                                 nextState);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
-                        if (options.chooseDefault
-                                || !options.character.empty())
+                        if (options.chooseDefault)
                         {
                             ((ServerSelectDialog*) currentDialog)->action(
                                 gcn::ActionEvent(NULL, "ok"));
