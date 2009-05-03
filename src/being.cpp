@@ -87,7 +87,6 @@ Being::Being(int id, int job, Map *map):
     mSpriteDirection(DIRECTION_DOWN),
 #endif
     mMap(NULL),
-    mIsGM(false),
     mParticleEffects(config.getValue("particleeffects", 1)),
     mEquippedWeapon(NULL),
 #ifdef TMWSERV_SUPPORT

@@ -170,7 +170,7 @@ void Minimap::draw(gcn::Graphics *graphics)
     for (Beings::const_iterator bi = beings.begin(), bi_end = beings.end();
          bi != bi_end; ++bi)
     {
-        Being *being = (*bi);
+        const Being *being = (*bi);
         int dotSize = 2;
 
         switch (being->getType())
@@ -185,7 +185,7 @@ void Minimap::draw(gcn::Graphics *graphics)
                         dotSize = 3;
                     }
 
-                    if (static_cast<Player*>(being)->isGM())
+                    if (static_cast<const Player*>(being)->isGM())
                         type = Palette::GM_NAME;
 
                     graphics->setColor(guiPalette->getColor(type));

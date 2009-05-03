@@ -38,9 +38,11 @@
 #include "utils/strprintf.h"
 
 Player::Player(int id, int job, Map *map):
-    Being(id, job, map)
+    Being(id, job, map),
+    mName(0),
+    mIsGM(false),
+    mInParty(false)
 {
-    mName = NULL;
 }
 
 Player::~Player()
@@ -50,7 +52,7 @@ Player::~Player()
 
 void Player::setName(const std::string &name)
 {
-    if (mName == NULL)
+    if (!mName)
     {
         if (mIsGM)
         {

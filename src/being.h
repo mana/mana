@@ -287,11 +287,6 @@ class Being : public Sprite
 #endif
 
         /**
-         * Triggers whether or not to show the name as a GM name.
-         */
-        virtual void setGM() { mIsGM = true; }
-
-        /**
          * Performs being logic.
          */
         virtual void logic();
@@ -568,7 +563,6 @@ class Being : public Sprite
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
-        bool mIsGM;
         bool mParticleEffects;          /**< Whether to display particles or not */
 
         /** Engine-related infos about weapon. */

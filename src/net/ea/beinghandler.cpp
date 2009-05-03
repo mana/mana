@@ -503,8 +503,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
 
             gmstatus = msg.readInt16();
-            if (gmstatus & 0x80)
-                dstBeing->setGM();
+            if ((gmstatus & 0x80) && dstBeing->getType() == Being::PLAYER)
+                static_cast<Player*>(dstBeing)->setGM();
 
             if (msg.getId() == SMSG_PLAYER_UPDATE_1)
             {
