@@ -48,6 +48,10 @@ class SimpleAnimation
 
         ~SimpleAnimation();
 
+        void setFrame(int frame);
+
+        int getLength();
+
         void update(unsigned int timePassed);
 
         bool draw(Graphics* graphics, int posX, int posY) const;

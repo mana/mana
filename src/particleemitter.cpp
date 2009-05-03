@@ -26,6 +26,7 @@
 #include "log.h"
 #include "particle.h"
 #include "particleemitter.h"
+#include "rotationalparticle.h"
 
 #include "resources/image.h"
 #include "resources/imageset.h"
@@ -184,6 +185,74 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             ParticleEmitter newEmitter(propertyNode, mParticleTarget, map);
             mParticleChildEmitters.push_back(newEmitter);
         }
+        else if (xmlStrEqual(propertyNode->name, BAD_CAST "rotation"))
+        {
+            ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
+                XML::getProperty(propertyNode, "imageset", ""),
+                XML::getProperty(propertyNode, "width", 0),
+                XML::getProperty(propertyNode, "height", 0)
+            );
+
+            // Get animation frames
+            for_each_xml_child_node(frameNode, propertyNode)
+            {
+                int delay = XML::getProperty(frameNode, "delay", 0);
+                int offsetX = XML::getProperty(frameNode, "offsetX", 0);
+                int offsetY = XML::getProperty(frameNode, "offsetY", 0);
+                offsetY -= imageset->getHeight() - 32;
+                offsetX -= imageset->getWidth() / 2 - 16;
+
+                if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
+                {
+                    int index = XML::getProperty(frameNode, "index", -1);
+
+                    if (index < 0)
+                    {
+                        logger->log("No valid value for 'index'");
+                        continue;
+                    }
+
+                    Image *img = imageset->get(index);
+
+                    if (!img)
+                    {
+                        logger->log("No image at index %d", index);
+                        continue;
+                    }
+
+                    mParticleRotation.addFrame(img, delay, offsetX, offsetY);
+                }
+                else if (xmlStrEqual(frameNode->name, BAD_CAST "sequence"))
+                {
+                    int start = XML::getProperty(frameNode, "start", -1);
+                    int end = XML::getProperty(frameNode, "end", -1);
+
+                    if (start < 0 || end < 0)
+                    {
+                        logger->log("No valid value for 'start' or 'end'");
+                        continue;
+                    }
+
+                    while (end >= start)
+                    {
+                        Image *img = imageset->get(start);
+
+                        if (!img)
+                        {
+                            logger->log("No image at index %d", start);
+                            continue;
+                        }
+
+                        mParticleRotation.addFrame(img, delay, offsetX, offsetY);
+                        start++;
+                    }
+                }
+                else if (xmlStrEqual(frameNode->name, BAD_CAST "end"))
+                {
+                    mParticleRotation.addTerminator();
+                }
+            } // for frameNode
+        }
         else if (xmlStrEqual(propertyNode->name, BAD_CAST "animation"))
         {
             ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
@@ -285,6 +354,7 @@ ParticleEmitter & ParticleEmitter::operator=(const ParticleEmitter &o)
     mOutputPause = o.mOutputPause;
     mParticleImage = o.mParticleImage;
     mParticleAnimation = o.mParticleAnimation;
+    mParticleRotation = o.mParticleRotation;
     mParticleChildEmitters = o.mParticleChildEmitters;
 
     mOutputPauseLeft = 0;
@@ -348,6 +418,11 @@ std::list<Particle *> ParticleEmitter::createParticles(int tick)
         if (mParticleImage)
         {
             newParticle = new ImageParticle(mMap, mParticleImage);
+        }
+        else if (mParticleRotation.getLength() > 0)
+        {
+            Animation *newAnimation = new Animation(mParticleRotation);
+            newParticle = new RotationalParticle(mMap, newAnimation);
         }
         else if (mParticleAnimation.getLength() > 0)
         {

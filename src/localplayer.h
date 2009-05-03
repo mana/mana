@@ -279,7 +279,7 @@ class LocalPlayer : public Player
          * @param damage the amount of damage dealt (0 means miss)
          * @param type the attack type
          */
-        virtual void handleAttack(Being *victim, int damage, AttackType type) {}
+        //virtual void handleAttack(Being *victim, int damage, AttackType type) {}
         virtual void handleAttack() {}
 
         /**

@@ -31,6 +31,7 @@
 #include "map.h"
 #include "particle.h"
 #include "particleemitter.h"
+#include "rotationalparticle.h"
 #include "textparticle.h"
 
 #include "resources/resourcemanager.h"
@@ -222,7 +223,6 @@ bool Particle::update()
             p = mChildParticles.erase(p);
         }
     }
-
     if (!mAlive && mChildParticles.empty() && mAutoDelete)
     {
         return false;
@@ -279,6 +279,11 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
         if ((node = XML::findFirstChildByName(effectChildNode, "animation")))
         {
             newParticle = new AnimationParticle(mMap, node);
+        }
+        // Rotational
+        else if ((node = XML::findFirstChildByName(effectChildNode, "rotation")))
+        {
+            newParticle = new RotationalParticle(mMap, node);
         }
         // Image
         else if ((node = XML::findFirstChildByName(effectChildNode, "image")))

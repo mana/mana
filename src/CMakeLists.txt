@@ -384,6 +384,8 @@ SET(SRCS
     position.cpp
     position.h
     properties.h
+    rotationalparticle.cpp
+    rotationalparticle.h
     serverinfo.h
     shopitem.cpp
     shopitem.h

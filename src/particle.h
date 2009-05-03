@@ -267,7 +267,6 @@ class Particle : public Sprite
         int mFadeIn;                /**< Age in game ticks where fading in is finished*/
         float mAlpha;               /**< Opacity of the graphical representation of the particle */
 
-    private:
         // generic properties
         bool mAutoDelete;           /**< May the particle request its deletion by the parent particle? */
         Map *mMap;                  /**< Map the particle is on. */

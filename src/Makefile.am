@@ -337,6 +337,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      position.cpp \
 	      position.h \
 	      properties.h \
+	      rotationalparticle.cpp \
+	      rotationalparticle.h \
 	      serverinfo.h \
 	      shopitem.cpp \
 	      shopitem.h \
