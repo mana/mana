@@ -305,8 +305,6 @@ SET(SRCS
     utils/sha256.h
     utils/stringutils.cpp
     utils/stringutils.h
-    utils/strprintf.cpp
-    utils/strprintf.h
     utils/mutex.h
     utils/xml.cpp
     utils/xml.h

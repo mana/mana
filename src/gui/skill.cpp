@@ -35,7 +35,7 @@
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 #include "utils/xml.h"
 
 static const char *SKILLS_FILE = _("skills.xml");

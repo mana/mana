@@ -28,7 +28,6 @@
 
 #include "localplayer.h"
 
-#include "utils/strprintf.h"
 #include "utils/stringutils.h"
 
 StatusWindow::StatusWindow(LocalPlayer *player):

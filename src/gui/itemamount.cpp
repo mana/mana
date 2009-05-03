@@ -35,7 +35,7 @@
 #include "localplayer.h"
 
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
                                    int maxRange):

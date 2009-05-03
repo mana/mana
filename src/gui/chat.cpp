@@ -40,7 +40,6 @@
 
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
-#include "utils/strprintf.h"
 
 #include <guichan/focushandler.hpp>
 #include <guichan/focuslistener.hpp>

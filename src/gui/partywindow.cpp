@@ -28,7 +28,7 @@
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 PartyWindow::PartyWindow() : Window(_("Party"))
 {

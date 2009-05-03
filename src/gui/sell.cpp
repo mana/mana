@@ -40,7 +40,7 @@
 #include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 SellDialog::SellDialog():
     Window(_("Sell")),

@@ -38,7 +38,6 @@
 #include "gui/widgets/textfield.h"
 
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
 #include "utils/stringutils.h"
 
 void WrongDataNoticeListener::setTarget(gcn::TextField *textField)

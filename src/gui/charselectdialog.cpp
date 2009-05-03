@@ -56,7 +56,6 @@
 #include "resources/colordb.h"
 
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
 #include "utils/stringutils.h"
 
 #include <guichan/font.hpp>

@@ -35,7 +35,7 @@
 #include "net/npchandler.h"
 
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 NpcDialog::NpcDialog()
     : Window(_("NPC")), 

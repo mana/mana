@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef GUI
-#define GUI
+#ifndef GUI_H
+#define GUI_H
 
 #include <guichan/gui.hpp>
 
-#include "../guichanfwd.h"
+#include "guichanfwd.h"
 
 class Graphics;
 class GuiConfigListener;
@@ -130,4 +130,4 @@ extern SDLInput *guiInput;                    /**< GUI input */
  */
 extern gcn::Font *boldFont;
 
-#endif
+#endif // GUI_H

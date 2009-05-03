@@ -278,7 +278,7 @@ void ScrollArea::drawRightButton(gcn::Graphics *graphics)
 
 void ScrollArea::drawVBar(gcn::Graphics *graphics)
 {
-    gcn::Rectangle dim = getVerticalBarDimension();
+    const gcn::Rectangle dim = getVerticalBarDimension();
     graphics->setColor(gcn::Color(0, 0, 0, 32));
     graphics->fillRectangle(dim);
     graphics->setColor(gcn::Color(255, 255, 255));
@@ -286,7 +286,7 @@ void ScrollArea::drawVBar(gcn::Graphics *graphics)
 
 void ScrollArea::drawHBar(gcn::Graphics *graphics)
 {
-    gcn::Rectangle dim = getHorizontalBarDimension();
+    const gcn::Rectangle dim = getHorizontalBarDimension();
     graphics->setColor(gcn::Color(0, 0, 0, 32));
     graphics->fillRectangle(dim);
     graphics->setColor(gcn::Color(255, 255, 255));

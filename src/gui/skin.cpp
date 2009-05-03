@@ -31,7 +31,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 #include "utils/xml.h"
 
 #include <algorithm>

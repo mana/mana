@@ -22,6 +22,8 @@
 #include "utils/stringutils.h"
 
 #include <algorithm>
+#include <cstdarg>
+#include <cstdio>
 
 std::string &trim(std::string &str)
 {
@@ -67,6 +69,28 @@ const char *ipToString(int address)
             (unsigned char)(address >> 24));
 
     return asciiIP;
+}
+
+std::string strprintf(char const *format, ...)
+{
+    char buf[256];
+    va_list(args);
+    va_start(args, format);
+    int nb = vsnprintf(buf, 256, format, args);
+    va_end(args);
+    if (nb < 256)
+    {
+        return buf;
+    }
+    // The static size was not big enough, try again with a dynamic allocation.
+    ++nb;
+    char *buf2 = new char[nb];
+    va_start(args, format);
+    vsnprintf(buf2, nb, format, args);
+    va_end(args);
+    std::string res(buf2);
+    delete [] buf2;
+    return res;
 }
 
 std::string &removeBadChars(std::string &str)

@@ -36,7 +36,6 @@
 
 #include "utils/gettext.h"
 #include "utils/mathutils.h"
-#include "utils/strprintf.h"
 #include "utils/stringutils.h"
 
 StatusWindow::StatusWindow(LocalPlayer *player):

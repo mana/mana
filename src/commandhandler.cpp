@@ -37,7 +37,6 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
-#include "utils/strprintf.h"
 
 CommandHandler::CommandHandler()
 {}

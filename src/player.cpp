@@ -35,7 +35,7 @@
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 Player::Player(int id, int job, Map *map):
     Being(id, job, map),

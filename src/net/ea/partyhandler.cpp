@@ -35,7 +35,7 @@
 #include "net/ea/gui/partytab.h"
 
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 PartyTab *partyTab = 0;
 Net::PartyHandler *partyHandler = 0;

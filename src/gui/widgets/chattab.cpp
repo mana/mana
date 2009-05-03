@@ -38,7 +38,6 @@
 #include "resources/itemdb.h"
 
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
 #include "utils/stringutils.h"
 
 #include <guichan/widgets/tabbedarea.hpp>

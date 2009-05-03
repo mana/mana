@@ -29,7 +29,7 @@
 #include "net/net.h"
 
 #include "utils/gettext.h"
-#include "utils/strprintf.h"
+#include "utils/stringutils.h"
 
 WhisperTab::WhisperTab(const std::string &nick) :
     ChatTab(nick),

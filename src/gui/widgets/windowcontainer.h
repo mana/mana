@@ -54,6 +54,6 @@ class WindowContainer : public Container
         Widgets mDeathList;
 };
 
-extern WindowContainer* windowContainer;
+extern WindowContainer *windowContainer;
 
 #endif
