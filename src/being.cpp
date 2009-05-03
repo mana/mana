@@ -483,9 +483,12 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
             victim->controlParticle(p);
 
             Particle *p2 = particleEngine->addEffect("graphics/particles/arrow.particle.xml", mPx, mPy);
-            p2->setLifetime(900);
-            p2->setDestination(p, 7, 0);
-            p2->setDieDistance(8);
+            if (p2)
+            {
+                p2->setLifetime(900);
+                p2->setDestination(p, 7, 0);
+                p2->setDieDistance(8);
+            }
         }
     }
     mFrame = 0;
