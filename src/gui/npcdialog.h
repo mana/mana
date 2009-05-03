@@ -151,6 +151,9 @@ class NpcDialog : public Window, public gcn::ActionListener,
 
         int mNpcId;
 
+        int mDefaultInt;
+        std::string mDefaultString;
+
         // Used for the main input area
         gcn::ScrollArea *mScrollArea;
         TextBox *mTextBox;
@@ -167,6 +170,9 @@ class NpcDialog : public Window, public gcn::ActionListener,
 
         // Used for the button
         Button *mButton;
+
+        // Will reset the text and integer input to the provided default
+        Button *mResetButton;
         
         enum NPCInputState {
             NPC_INPUT_NONE,

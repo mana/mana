@@ -37,11 +37,20 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+#include <guichan/font.hpp>
+
+#define CAPTION_WAITING _("Waiting for server")
+#define CAPTION_NEXT _("Next")
+#define CAPTION_CLOSE _("Close")
+#define CAPTION_SUBMIT _("Submit")
+
 NpcDialog::NpcDialog()
     : Window(_("NPC")), 
       mActionState(NPC_ACTION_WAIT),
       mInputState(NPC_INPUT_NONE),
       mNpcId(0),
+      mDefaultString(""),
+      mDefaultInt(0),
       mText("")
 {
     // Basic Window Setup
@@ -81,7 +90,16 @@ NpcDialog::NpcDialog()
     mIntField->setVisible(true);
 
     // Setup button
-    mButton = new Button(_("Next"), "ok", this);
+    mButton = new Button("", "ok", this);
+
+    int width = std::max(mButton->getFont()->getWidth(CAPTION_WAITING),
+                         mButton->getFont()->getWidth(CAPTION_NEXT));
+    width = std::max(width, mButton->getFont()->getWidth(CAPTION_CLOSE));
+    width = std::max(width, mButton->getFont()->getWidth(CAPTION_SUBMIT));
+
+    mButton->setWidth(8 + width);
+
+    mResetButton = new Button(_("Reset"), "reset", this);
 
     // Place widgets
     buildLayout();
@@ -164,6 +182,17 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             addText( strprintf("\n> \"%s\"\n", printText.c_str()) );
         } 
     }
+    else if (event.getId() == "reset")
+    {
+        if (mInputState == NPC_INPUT_STRING)
+        {
+            mTextField->setText(mDefaultString);
+        }
+        else if (mInputState == NPC_INPUT_INTEGER)
+        {
+            mIntField->setValue(mDefaultInt);
+        }
+    }
 }
 
 void NpcDialog::nextDialog()
@@ -212,6 +241,7 @@ void NpcDialog::textRequest(std::string defaultText)
 {
     mActionState = NPC_ACTION_INPUT;
     mInputState = NPC_INPUT_STRING;
+    mDefaultString = defaultText;
     mTextField->setText(defaultText);
     buildLayout();
 }
@@ -225,6 +255,7 @@ void NpcDialog::integerRequest(int defaultValue, int min, int max)
 {
     mActionState = NPC_ACTION_INPUT;
     mInputState = NPC_INPUT_INTEGER;
+    mDefaultInt = defaultValue;
     mIntField->setRange(min, max);
     mIntField->setValue(defaultValue);
     buildLayout();
@@ -245,22 +276,22 @@ void NpcDialog::buildLayout()
     {
         if (mActionState == NPC_ACTION_WAIT)
         {
-            mButton->setCaption(_("Waiting for server"));
+            mButton->setCaption(CAPTION_WAITING);
         }
         else if (mActionState == NPC_ACTION_NEXT)
         {
-            mButton->setCaption(_("Next"));
+            mButton->setCaption(CAPTION_NEXT);
         }
         else if (mActionState == NPC_ACTION_CLOSE)
         {
-            mButton->setCaption(_("Close"));
+            mButton->setCaption(CAPTION_CLOSE);
         }
         place(0, 0, mScrollArea, 5, 3);
         place(4, 3, mButton);
     }
     else if (mInputState != NPC_INPUT_NONE)
     {
-        mButton->setCaption(_("Submit"));
+        mButton->setCaption(CAPTION_SUBMIT);
         if (mInputState == NPC_INPUT_LIST)
         {
             place(0, 0, mScrollArea, 5, 3);
@@ -270,13 +301,15 @@ void NpcDialog::buildLayout()
         else if(mInputState == NPC_INPUT_STRING)
         {
             place(0, 0, mScrollArea, 5, 3);
-            place(0, 3, mTextField, 3);
+            place(0, 3, mTextField, 5);
+            place(0, 4, mResetButton, 2);
             place(3, 4, mButton, 2);
         }
         else if(mInputState == NPC_INPUT_INTEGER)
         {
             place(0, 0, mScrollArea, 5, 3);
             place(0, 3, mIntField, 3);
+            place(0, 4, mResetButton, 2);
             place(3, 4, mButton, 2);
         }
     }
