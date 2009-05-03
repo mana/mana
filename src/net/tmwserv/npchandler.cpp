@@ -101,6 +101,7 @@ void NpcHandler::handleMessage(MessageIn &msg)
 
         case GPMSG_NPC_MESSAGE:
             npcDialog->addText(msg.readString(msg.getUnreadLength()));
+            npcDialog->showNextButton();
             npcDialog->setVisible(true);
             break;
 

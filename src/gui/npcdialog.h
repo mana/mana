@@ -80,8 +80,13 @@ class NpcDialog : public Window, public gcn::ActionListener,
         void addText(const std::string &string);
 
         /**
-         * When called, the widget will show a "Close" button instead of the "Next"
-         * And when clicked it will close the window
+         * When called, the widget will show a "Next" button.
+         */
+        void showNextButton();
+
+        /**
+         * When called, the widget will show a "Close" button and will close
+         * the dialog when clicked.
          */
         void showCloseButton();
 
@@ -172,6 +177,7 @@ class NpcDialog : public Window, public gcn::ActionListener,
         NPCInputState mInputState;
 
         enum NPCActionState {
+            NPC_ACTION_WAIT,
             NPC_ACTION_NEXT,
             NPC_ACTION_INPUT,
             NPC_ACTION_CLOSE

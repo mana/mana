@@ -87,20 +87,19 @@ void NpcHandler::handleMessage(MessageIn &msg)
                 npcDialog->showCloseButton();
             // Otherwise, move on as an empty dialog doesn't help
             else
-                npcDialog->closeDialog();
+                closeDialog(id);
             break;
 
-        /* Note: with the new dialog, we automaticilly assume "Next"
         case SMSG_NPC_NEXT:
             id = msg.readInt32();
             // If we're talking to that NPC, show the next button
-            if (id == current_npc && dialog)
-                dialog->showNextButton();
+            if (id == current_npc)
+                npcDialog->showNextButton();
             // Otherwise, move on as an empty dialog doesn't help
-            else if (dialog)
+            else
                 nextDialog(id);
             break;
-        */
+
         case SMSG_NPC_INT_INPUT:
             // Request for an integer
             current_npc = msg.readInt32();

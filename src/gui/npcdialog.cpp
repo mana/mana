@@ -39,7 +39,7 @@
 
 NpcDialog::NpcDialog()
     : Window(_("NPC")), 
-      mActionState(NPC_ACTION_NEXT),
+      mActionState(NPC_ACTION_WAIT),
       mInputState(NPC_INPUT_NONE),
       mNpcId(0),
       mText("")
@@ -101,6 +101,12 @@ void NpcDialog::addText(const std::string &text)
 {
     setText(mText + text + "\n");
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
+    mActionState = NPC_ACTION_WAIT;
+    buildLayout();
+}
+
+void NpcDialog::showNextButton()
+{
     mActionState = NPC_ACTION_NEXT;
     buildLayout();
 }
@@ -237,7 +243,11 @@ void NpcDialog::buildLayout()
 
     if (mActionState != NPC_ACTION_INPUT)
     {
-        if (mActionState == NPC_ACTION_NEXT)
+        if (mActionState == NPC_ACTION_WAIT)
+        {
+            mButton->setCaption(_("Waiting for server"));
+        }
+        else if (mActionState == NPC_ACTION_NEXT)
         {
             mButton->setCaption(_("Next"));
         }
@@ -269,9 +279,14 @@ void NpcDialog::buildLayout()
             place(0, 3, mIntField, 3);
             place(3, 4, mButton, 2);
         }
-    } 
+    }
     
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
+
+    mButton->setEnabled(mActionState != NPC_ACTION_WAIT);
+
     redraw();
+
+    mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
 }
