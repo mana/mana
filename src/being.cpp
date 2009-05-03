@@ -475,10 +475,11 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
 #ifdef EATHENA_SUPPORT
     if (getType() == PLAYER)
     {
-        if (mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
+        if (mEquippedWeapon && mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
         {
             Particle *p = new Particle(NULL);
             p->setLifetime(1000);
+            p->moveBy(Vector(0.0f, 0.0f, 32.0f));
             victim->controlParticle(p);
 
             Particle *p2 = particleEngine->addEffect("graphics/particles/arrow.particle.xml", mPx, mPy);
