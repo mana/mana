@@ -386,8 +386,7 @@ void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
         {
             float xp = (float) player_node->getXp() /
                                 player_node->mXpForNextLevel;
-            bar->setText(toString((float) ((int) (xp * 10000.0f)) / 100.0f) +
-                        "%");
+            bar->setText(strprintf("%2.2f", 100 * xp) + "%");
         }
         else
             bar->setText(toString(player_node->getXp()) +
@@ -408,14 +407,13 @@ void StatusWindow::updateJobBar(ProgressBar *bar, bool percent)
         {
             float xp = (float) player_node->mJobXp /
                                 player_node->mJobXpForNextLevel;
-            bar->setText(toString((float) ((int) (xp * 10000.0f)) / 100.0f) +
-                        "%");
+            bar->setText(strprintf("%2.2f", 100 * xp) + "%");
         }
         else
             bar->setText(toString(player_node->mJobXp) +
                                 "/" + toString(player_node->mJobXpForNextLevel));
 
         bar->setProgress((float) player_node->mJobXp /
-                            (float) player_node->mJobXpForNextLevel);
+                         (float) player_node->mJobXpForNextLevel);
     }
 }
