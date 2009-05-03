@@ -115,7 +115,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mTotalWeight(1), mMaxWeight(1),
     mHp(1), mMaxHp(1),
     mTarget(NULL), mPickUpTarget(NULL),
-    mTrading(false), mGoingToTarget(false),
+    mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
     mWalkingDir(0),
     mDestX(0), mDestY(0),

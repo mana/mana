@@ -475,8 +475,6 @@ class LocalPlayer : public Player
 
         bool mMapInitialized; /** Whether or not the map is available yet */
 
-        float mLastAttackTime; /**< Used to synchronize the charge dialog */
-
         const std::auto_ptr<Equipment> mEquipment;
 
     protected:
