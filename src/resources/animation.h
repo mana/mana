@@ -34,7 +34,7 @@ class Image;
 struct Frame
 {
     Image *image;
-    unsigned int delay;
+    int delay;
     int offsetX;
     int offsetY;
 };
@@ -68,7 +68,7 @@ class Animation
         /**
          * Returns the length of this animation in frames.
          */
-        unsigned int getLength() const { return mFrames.size(); }
+        int getLength() const { return mFrames.size(); }
 
         /**
          * Returns the duration of this animation.

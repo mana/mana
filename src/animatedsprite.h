@@ -101,8 +101,8 @@ class AnimatedSprite
         SpriteDirection mDirection;    /**< The sprite direction. */
         int mLastTime;                 /**< The last time update was called. */
 
-        unsigned int mFrameIndex;      /**< The index of the current frame. */
-        unsigned int mFrameTime;       /**< The time since start of frame. */
+        int mFrameIndex;               /**< The index of the current frame. */
+        int mFrameTime;                /**< The time since start of frame. */
 
         SpriteDef *mSprite;            /**< The sprite definition. */
         Action *mAction;               /**< The currently active action. */

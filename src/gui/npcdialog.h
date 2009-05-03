@@ -111,14 +111,14 @@ class NpcDialog : public Window, public gcn::ActionListener,
         std::string getElementAt(int i);
 
         /**
-         * Makes this dialog request a choice selection from the user
+         * Makes this dialog request a choice selection from the user.
          */
         void choiceRequest();
 
         /**
-         * Adds a choice to the list box
+         * Adds a choice to the list box.
          */
-        void addChoice(std::string);
+        void addChoice(const std::string &);
 
         /**
           * Fills the options list for an NPC dialog.
@@ -130,9 +130,9 @@ class NpcDialog : public Window, public gcn::ActionListener,
         /**
          * Requests a text string from the user.
          */
-        void textRequest(std::string defaultText = "");
+        void textRequest(const std::string &defaultText = "");
 
-        bool isInputFocused();
+        bool isInputFocused() const;
 
         /**
          * Requests a interger from the user.
@@ -176,24 +176,28 @@ class NpcDialog : public Window, public gcn::ActionListener,
         // Will reset the text and integer input to the provided default
         Button *mResetButton;
 
-        enum NPCInputState {
+        enum NpcInputState
+        {
             NPC_INPUT_NONE,
             NPC_INPUT_LIST,
             NPC_INPUT_STRING,
             NPC_INPUT_INTEGER
         };
-        NPCInputState mInputState;
 
-        enum NPCActionState {
+        enum NpcActionState
+        {
             NPC_ACTION_WAIT,
             NPC_ACTION_NEXT,
             NPC_ACTION_INPUT,
             NPC_ACTION_CLOSE
         };
-        NPCActionState mActionState;
+
+        NpcInputState mInputState;
+        NpcActionState mActionState;
 };
 
 // TODO: This should be made not to be global, later.
 
 extern NpcDialog* npcDialog;
+
 #endif // NPCDIALOG_H

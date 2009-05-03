@@ -46,15 +46,13 @@
 
 NpcDialog::NpcDialog()
     : Window(_("NPC")),
-      mActionState(NPC_ACTION_WAIT),
-      mInputState(NPC_INPUT_NONE),
       mNpcId(0),
-      mDefaultString(""),
       mDefaultInt(0),
-      mText("")
+      mInputState(NPC_INPUT_NONE),
+      mActionState(NPC_ACTION_WAIT)
 {
     // Basic Window Setup
-    setWindowName("NPCText");
+    setWindowName("NpcText");
     setResizable(true);
 
     setMinWidth(200);
@@ -197,11 +195,11 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             mIntField->setValue(mDefaultInt);
         }
     }
-    else if(event.getId() == "plus")
+    else if (event.getId() == "plus")
     {
         mIntField->setValue(mIntField->getValue() + 1);
     }
-    else if(event.getId() == "minus")
+    else if (event.getId() == "minus")
     {
         mIntField->setValue(mIntField->getValue() - 1);
     }
@@ -235,7 +233,7 @@ void NpcDialog::choiceRequest()
     buildLayout();
 }
 
-void NpcDialog::addChoice(std::string choice)
+void NpcDialog::addChoice(const std::string &choice)
 {
     mItems.push_back(choice);
 }
@@ -249,7 +247,7 @@ void NpcDialog::parseListItems(const std::string &itemString)
         mItems.push_back(tmp);
 }
 
-void NpcDialog::textRequest(std::string defaultText)
+void NpcDialog::textRequest(const std::string &defaultText)
 {
     mActionState = NPC_ACTION_INPUT;
     mInputState = NPC_INPUT_STRING;
@@ -258,7 +256,7 @@ void NpcDialog::textRequest(std::string defaultText)
     buildLayout();
 }
 
-bool NpcDialog::isInputFocused()
+bool NpcDialog::isInputFocused() const
 {
     return mTextField->isFocused() || mIntField->isFocused();
 }
@@ -310,14 +308,14 @@ void NpcDialog::buildLayout()
             place(0, 3, mListScrollArea, 5, 3);
             place(3, 6, mButton, 2);
         }
-        else if(mInputState == NPC_INPUT_STRING)
+        else if (mInputState == NPC_INPUT_STRING)
         {
             place(0, 0, mScrollArea, 5, 3);
             place(0, 3, mTextField, 5);
             place(0, 4, mResetButton, 2);
             place(3, 4, mButton, 2);
         }
-        else if(mInputState == NPC_INPUT_INTEGER)
+        else if (mInputState == NPC_INPUT_INTEGER)
         {
             place(0, 0, mScrollArea, 5, 3);
             place(0, 3, mMinusButton, 1);

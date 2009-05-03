@@ -50,9 +50,9 @@ class SimpleAnimation
 
         void setFrame(int frame);
 
-        int getLength();
+        int getLength() const;
 
-        void update(unsigned int timePassed);
+        void update(int timePassed);
 
         bool draw(Graphics* graphics, int posX, int posY) const;
 
@@ -68,10 +68,10 @@ class SimpleAnimation
         Animation *mAnimation;
 
         /** Time in game ticks the current frame is shown. */
-        unsigned int mAnimationTime;
+        int mAnimationTime;
 
         /** Index of current animation phase. */
-        unsigned int mAnimationPhase;
+        int mAnimationPhase;
 
         /** Current animation phase. */
         Frame *mCurrentFrame;

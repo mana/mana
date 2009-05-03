@@ -129,7 +129,7 @@ class ChatWindow : public Window,
         /**
          * Checks whether ChatWindow is Focused or not.
          */
-        bool isInputFocused();
+        bool isInputFocused() const;
 
         /**
          * Passes the text to the current tab as input

@@ -139,7 +139,7 @@ void SimpleAnimation::setFrame(int frame)
     mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
 }
 
-void SimpleAnimation::update(unsigned int timePassed)
+void SimpleAnimation::update(int timePassed)
 {
     mAnimationTime += timePassed;
 
@@ -155,7 +155,7 @@ void SimpleAnimation::update(unsigned int timePassed)
     }
 }
 
-int SimpleAnimation::getLength()
+int SimpleAnimation::getLength() const
 {
     return mAnimation->getLength();
 }

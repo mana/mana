@@ -264,7 +264,7 @@ bool ChatWindow::requestChatFocus()
     return true;
 }
 
-bool ChatWindow::isInputFocused()
+bool ChatWindow::isInputFocused() const
 {
     return mChatInput->isFocused();
 }
