@@ -163,17 +163,19 @@ class NpcDialog : public Window, public gcn::ActionListener,
         ListBox *mItemList;
         gcn::ScrollArea *mListScrollArea;
         std::vector<std::string> mItems;
-        
+
         // Used for string and integer input
         TextField *mTextField;
         IntTextField *mIntField;
+        Button *mPlusButton;
+        Button *mMinusButton;
 
         // Used for the button
         Button *mButton;
 
         // Will reset the text and integer input to the provided default
         Button *mResetButton;
-        
+
         enum NPCInputState {
             NPC_INPUT_NONE,
             NPC_INPUT_LIST,

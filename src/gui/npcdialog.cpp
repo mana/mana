@@ -45,7 +45,7 @@
 #define CAPTION_SUBMIT _("Submit")
 
 NpcDialog::NpcDialog()
-    : Window(_("NPC")), 
+    : Window(_("NPC")),
       mActionState(NPC_ACTION_WAIT),
       mInputState(NPC_INPUT_NONE),
       mNpcId(0),
@@ -91,6 +91,10 @@ NpcDialog::NpcDialog()
 
     // Setup button
     mButton = new Button("", "ok", this);
+
+    //Setup more and less buttons (int input)
+    mPlusButton = new Button(_("+"), "plus", this);
+    mMinusButton = new Button(_("-"), "minus", this);
 
     int width = std::max(mButton->getFont()->getWidth(CAPTION_WAITING),
                          mButton->getFont()->getWidth(CAPTION_NEXT));
@@ -139,19 +143,19 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        if (mActionState == NPC_ACTION_NEXT) 
+        if (mActionState == NPC_ACTION_NEXT)
         {
             nextDialog();
             addText("\n> Next\n");
-        } 
+        }
         else if (mActionState == NPC_ACTION_CLOSE)
         {
-            if (current_npc) 
+            if (current_npc)
                 closeDialog();
             setVisible(false);
             current_npc = 0;
             NPC::isTalking = false;
-        } 
+        }
         else if (mActionState == NPC_ACTION_INPUT)
         {
             std::string printText = "";  // Text that will get printed in the textbox
@@ -180,7 +184,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             }
             // addText will auto remove the input layout
             addText( strprintf("\n> \"%s\"\n", printText.c_str()) );
-        } 
+        }
     }
     else if (event.getId() == "reset")
     {
@@ -192,6 +196,14 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         {
             mIntField->setValue(mDefaultInt);
         }
+    }
+    else if(event.getId() == "plus")
+    {
+        mIntField->setValue(mIntField->getValue() + 1);
+    }
+    else if(event.getId() == "minus")
+    {
+        mIntField->setValue(mIntField->getValue() - 1);
     }
 }
 
@@ -308,12 +320,14 @@ void NpcDialog::buildLayout()
         else if(mInputState == NPC_INPUT_INTEGER)
         {
             place(0, 0, mScrollArea, 5, 3);
-            place(0, 3, mIntField, 3);
+            place(0, 3, mMinusButton, 1);
+            place(1, 3, mIntField, 3);
+            place(4, 3, mPlusButton, 1);
             place(0, 4, mResetButton, 2);
             place(3, 4, mButton, 2);
         }
     }
-    
+
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
