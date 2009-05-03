@@ -206,7 +206,7 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
 
 void ChatTab::chatLog(const std::string &nick, const std::string &msg)
 {
-    chatLog(nick + ": " + msg,
+    chatLog(nick + " : " + msg,
             nick == player_node->getName() ? BY_PLAYER : BY_OTHER,
             false);
 }

@@ -52,8 +52,7 @@ void WhisperTab::handleInput(const std::string &msg)
 
     Net::getChatHandler()->privateMessage(mNick, msg);
 
-    chatLog(strprintf(_("%s: %s"), player_node->getName().c_str(),
-                        msg.c_str()), BY_PLAYER, false);
+    chatLog(player_node->getName(), msg);
 }
 
 void WhisperTab::handleCommand(const std::string &msg)

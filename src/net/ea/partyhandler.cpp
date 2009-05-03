@@ -266,7 +266,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     being->setSpeech(chatMsg, SPEECH_TIME);
 
                 PartyMember *member = partyWindow->findMember(id);
-                if (member)                
+                if (member)
                     partyTab->chatLog(member->name, chatMsg);
                 else
                     partyTab->chatLog(strprintf(_("An unknown member tried to "
