@@ -186,7 +186,7 @@ class ChatWindow : public Window,
         /** Add the tab to the window */
         void addTab(ChatTab *tab);
 
-        void removeWhisper(std::string nick);
+        void removeWhisper(const std::string &nick);
 
         void adjustTabSize();
 

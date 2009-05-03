@@ -294,7 +294,7 @@ void ChatWindow::addTab(ChatTab *tab)
     logic();
 }
 
-void ChatWindow::removeWhisper(std::string nick)
+void ChatWindow::removeWhisper(const std::string &nick)
 {
     mWhispers.erase(nick);
 }
@@ -309,8 +309,8 @@ void ChatWindow::doPresent()
 {
     const Beings &beings = beingManager->getAll();
     std::string response = "";
-    unsigned short playercount = 0;
-    char cpc[25];
+    int playercount = 0;
+
     for (Beings::const_iterator bi = beings.begin(), be = beings.end();
          bi != be; ++bi)
     {
@@ -324,7 +324,9 @@ void ChatWindow::doPresent()
             ++playercount;
         }
     }
-    sprintf(cpc,"%u players are present.",playercount);
+
+    std::string cpc = strprintf(_("%d players are present."), playercount);
+
     if (mRecorder->isRecording())
     {
         // Get the current system time
@@ -338,7 +340,6 @@ void ChatWindow::doPresent()
             << ":" << (((t / 60) % 60 < 10) ? "0" : "")
             << (int) ((t / 60) % 60)
             << "] ";
-
 
         mRecorder->record(timeStr.str() + _("Present: ") + response + _("; ") + cpc);
         getFocused()->chatLog(_("Attendance written to record log."),
