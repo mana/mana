@@ -79,8 +79,6 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/confirmdialog.h \
 	      gui/debugwindow.cpp \
 	      gui/debugwindow.h \
-	      gui/emotecontainer.cpp \
-	      gui/emotecontainer.h \
 	      gui/emotepopup.cpp \
 	      gui/emotepopup.h \
 	      gui/emoteshortcutcontainer.cpp \

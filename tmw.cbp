@@ -230,8 +230,6 @@
 		<Unit filename="src/gui/connection.h" />
 		<Unit filename="src/gui/debugwindow.cpp" />
 		<Unit filename="src/gui/debugwindow.h" />
-		<Unit filename="src/gui/emotecontainer.cpp" />
-		<Unit filename="src/gui/emotecontainer.h" />
 		<Unit filename="src/gui/emotepopup.cpp" />
 		<Unit filename="src/gui/emotepopup.h" />
 		<Unit filename="src/gui/emoteshortcutcontainer.cpp" />
