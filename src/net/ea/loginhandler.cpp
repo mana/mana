@@ -191,11 +191,11 @@ void LoginHandler::sendLoginRegister(const std::string &username,
 
     /*
      * eAthena calls the last byte "client version 2", but it isn't used at
-     * at all. We're retasking it, with bit 0 to indicate whether the client
-     * can handle the 0x63 "update host" packet. Clients prior to 0.0.25 send
-     * 0 here.
+     * at all. We're retasking it, as a bit mask:
+     *  0 - can handle the 0x63 "update host" packet
+     *  1 - defaults to the first char-server (instead of the last)
      */
-    outMsg.writeInt8(0x01);
+    outMsg.writeInt8(0x03);
 }
 
 } // namespace EAthena

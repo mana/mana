@@ -42,8 +42,16 @@ class ServerListModel : public gcn::ListModel
     public:
         virtual ~ServerListModel() {}
 
-        int getNumberOfElements();
-        std::string getElementAt(int i);
+        int getNumberOfElements()
+        {
+            return n_server;
+        }
+
+        std::string getElementAt(int i)
+        {
+            const SERVER_INFO *si = server_info[i];
+            return si->name + " (" + toString(si->online_users) + ")";
+        }
 };
 
 ServerSelectDialog::ServerSelectDialog(LoginData *loginData, int nextState):
@@ -84,7 +92,7 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData, int nextState):
         mOkButton->setEnabled(false);
     else
         // Select first server
-        mServerList->setSelected(1);
+        mServerList->setSelected(0);
 
     center();
     setVisible(true);
@@ -109,15 +117,4 @@ void ServerSelectDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "cancel")
         state = STATE_LOGIN;
-}
-
-int ServerListModel::getNumberOfElements()
-{
-    return n_server;
-}
-
-std::string ServerListModel::getElementAt(int i)
-{
-    const SERVER_INFO *si = server_info[i];
-    return si->name + " (" + toString(si->online_users) + ")";
 }
