@@ -344,8 +344,8 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                         mLinks[link].x2 = mLinks[link].x1 + size;
                         mLinks[link].y2 = y + font->getHeight();
                         link++;
-                        selColor = col;
                         prevColor = selColor;
+                        selColor = col;
                     }
                     else if (valid)
                     {

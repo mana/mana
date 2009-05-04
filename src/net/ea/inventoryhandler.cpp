@@ -190,8 +190,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
                 if (config.getValue("showpickupchat", 1))
                 {
-                    localChatTab->chatLog(strprintf(_("You picked up %s [%s]"),
-                        amountStr.c_str(), itemInfo.getName().c_str()),
+                    localChatTab->chatLog(strprintf(_("You picked up %s [@@%d|%s@@]"),
+                        amountStr.c_str(), itemInfo.getId(), itemInfo.getName().c_str()),
                         BY_SERVER);
                 }
 
