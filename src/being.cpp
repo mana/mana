@@ -473,7 +473,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
     if (this != player_node)
         setAction(Being::ATTACK);
 #ifdef EATHENA_SUPPORT
-    if (getType() == PLAYER)
+    if (getType() == PLAYER && victim)
     {
         if (mEquippedWeapon && mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
         {
