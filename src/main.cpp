@@ -578,7 +578,9 @@ static void printHelp()
         << _("  -s --server      : Login Server name or IP") << endl
         << _("  -u --skip-update : Skip the update downloads") << endl
         << _("  -U --username    : Login with this username") << endl
-        << _("  -O --no-opengl   : Disable OpenGL for this sesion") << endl
+#ifdef USE_OPENGL
+        << _("  -O --no-opengl   : Disable OpenGL for this session") << endl
+#endif
         << _("  -v --version     : Display the version") << endl;
 }
 
