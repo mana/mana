@@ -46,14 +46,12 @@
 #include "gui/confirmdialog.h"
 #include "gui/debugwindow.h"
 #include "gui/emoteshortcutcontainer.h"
-#include "gui/emotewindow.h"
 #include "gui/equipmentwindow.h"
 #include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
 #include "gui/shortcutwindow.h"
 #include "gui/itemshortcutcontainer.h"
-#include "gui/menuwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
 #include "gui/npcdialog.h"
@@ -65,6 +63,7 @@
 #include "gui/status.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
+#include "gui/windowmenu.h"
 #include "gui/partywindow.h"
 #ifdef TMWSERV_SUPPORT
 #include "gui/buddywindow.h"
@@ -112,7 +111,6 @@ ConfirmDialog *exitConfirm = NULL;
 OkDialog *disconnectedDialog = NULL;
 
 ChatWindow *chatWindow;
-MenuWindow *menuWindow;
 StatusWindow *statusWindow;
 MiniStatusWindow *miniStatusWindow;
 BuyDialog *buyDialog;
@@ -121,7 +119,6 @@ SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 #endif
 InventoryWindow *inventoryWindow;
-EmoteWindow *emoteWindow;
 SkillDialog *skillDialog;
 PartyWindow *partyWindow;
 #ifdef TMWSERV_SUPPORT
@@ -222,11 +219,9 @@ static void createGuiWindows()
     npcDialog = new NpcDialog;
     npcPostDialog = new NpcPostDialog;
     storageWindow = new StorageWindow;
-    menuWindow = new MenuWindow;
     statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow;
     inventoryWindow = new InventoryWindow;
-    emoteWindow = new EmoteWindow;
     skillDialog = new SkillDialog;
     minimap = new Minimap;
     helpWindow = new HelpWindow;
@@ -257,14 +252,12 @@ static void destroyGuiWindows()
     delete chatWindow;
     delete statusWindow;
     delete miniStatusWindow;
-    delete menuWindow;
     delete buyDialog;
     delete sellDialog;
 #ifdef EATHENA_SUPPORT
     delete buySellDialog;
 #endif
     delete inventoryWindow;
-    delete emoteWindow;
     delete partyWindow;
     delete npcDialog;
     delete npcPostDialog;
@@ -291,6 +284,10 @@ Game::Game():
     done = false;
 
     createGuiWindows();
+
+    mWindowMenu = new WindowMenu;
+    windowContainer->add(mWindowMenu);
+
     engine = new Engine;
 
     beingManager = new BeingManager;
@@ -341,6 +338,8 @@ Game::Game():
 
 Game::~Game()
 {
+    delete mWindowMenu;
+
     destroyGuiWindows();
 
     delete beingManager;
@@ -724,7 +723,6 @@ void Game::handleInput()
                         {
                             statusWindow->setVisible(false);
                             inventoryWindow->setVisible(false);
-                            emoteWindow->setVisible(false);
                             skillDialog->setVisible(false);
                             setupWindow->setVisible(false);
                             equipmentWindow->setVisible(false);
@@ -762,9 +760,6 @@ void Game::handleInput()
                         break;
                     case KeyboardConfig::KEY_WINDOW_DEBUG:
                         requestedWindow = debugWindow;
-                        break;
-                    case KeyboardConfig::KEY_WINDOW_EMOTE:
-                        requestedWindow = emoteWindow;
                         break;
                     case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
                         requestedWindow = emoteShortcutWindow;

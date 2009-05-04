@@ -232,10 +232,10 @@
 		<Unit filename="src/gui/debugwindow.h" />
 		<Unit filename="src/gui/emotecontainer.cpp" />
 		<Unit filename="src/gui/emotecontainer.h" />
+		<Unit filename="src/gui/emotepopup.cpp" />
+		<Unit filename="src/gui/emotepopup.h" />
 		<Unit filename="src/gui/emoteshortcutcontainer.cpp" />
 		<Unit filename="src/gui/emoteshortcutcontainer.h" />
-		<Unit filename="src/gui/emotewindow.cpp" />
-		<Unit filename="src/gui/emotewindow.h" />
 		<Unit filename="src/gui/equipmentwindow.cpp" />
 		<Unit filename="src/gui/equipmentwindow.h" />
 		<Unit filename="src/gui/focushandler.cpp" />
@@ -283,8 +283,6 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/gui/menuwindow.cpp" />
-		<Unit filename="src/gui/menuwindow.h" />
 		<Unit filename="src/gui/minimap.cpp" />
 		<Unit filename="src/gui/minimap.h" />
 		<Unit filename="src/gui/ministatus.cpp" />
@@ -486,6 +484,8 @@
 		<Unit filename="src/gui/widgets/window.h" />
 		<Unit filename="src/gui/widgets/windowcontainer.cpp" />
 		<Unit filename="src/gui/widgets/windowcontainer.h" />
+		<Unit filename="src/gui/windowmenu.cpp" />
+		<Unit filename="src/gui/windowmenu.h" />
 		<Unit filename="src/guichanfwd.h" />
 		<Unit filename="src/guild.cpp">
 			<Option target="TMWServ" />

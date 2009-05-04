@@ -77,7 +77,6 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyWindowShortcut", SDLK_F8, _("Item Shortcut Window")},
     {"keyWindowSetup", SDLK_F9, _("Setup Window")},
     {"keyWindowDebug", SDLK_F10, _("Debug Window")},
-    {"keyWindowEmote", SDLK_F11, _("Emote Window")},
     {"keyWindowEmoteBar", SDLK_F12, _("Emote Shortcut Window")},
     {"keyEmoteShortcut1", SDLK_1, strprintf(_("Emote Shortcut %d"), 1)},
     {"keyEmoteShortcut2", SDLK_2, strprintf(_("Emote Shortcut %d"), 2)},
@@ -197,9 +196,10 @@ int KeyboardConfig::getKeyEmoteOffset(int keyValue) const
     return 0;
 }
 
-bool KeyboardConfig::isKeyActive(int index)
+bool KeyboardConfig::isKeyActive(int index) const
 {
-    if (!mActiveKeys) return false;
+    if (!mActiveKeys)
+        return false;
     return mActiveKeys[mKey[index].value];
 }
 

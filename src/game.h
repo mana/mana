@@ -22,8 +22,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-//#include <memory>
-
 #include "SDL.h"
 
 #include "configlistener.h"
@@ -31,6 +29,8 @@
 extern std::string map_path;
 extern volatile int fps;
 extern volatile int tick_time;
+
+class WindowMenu;
 
 class Game : public ConfigListener
 {
@@ -56,6 +56,8 @@ class Game : public ConfigListener
 
         SDL_TimerID mLogicCounterId;
         SDL_TimerID mSecondsCounterId;
+
+        WindowMenu *mWindowMenu;
 };
 
 /**

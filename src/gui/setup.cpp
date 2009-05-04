@@ -43,7 +43,6 @@ extern Window *buyDialog;
 extern Window *sellDialog;
 extern Window *buySellDialog;
 extern Window *inventoryWindow;
-extern Window *emoteWindow;
 extern Window *npcTextDialog;
 extern Window *npcStringDialog;
 extern Window *skillDialog;
@@ -145,7 +144,6 @@ void Setup::action(const gcn::ActionEvent &event)
         buySellDialog->resetToDefaultSize();
 #endif
         inventoryWindow->resetToDefaultSize();
-        emoteWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
         minimap->resetToDefaultSize();
         equipmentWindow->resetToDefaultSize();
@@ -168,4 +166,4 @@ void Setup::setInGame(bool inGame)
     mResetWindows->setEnabled(inGame);
 }
 
-Setup* setupWindow;
+Setup *setupWindow;

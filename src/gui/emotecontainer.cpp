@@ -70,11 +70,7 @@ EmoteContainer::EmoteContainer():
 
 EmoteContainer::~EmoteContainer()
 {
-    if (mSelImg)
-    {
-       mSelImg->decRef();
-       mSelImg = NULL;
-    }
+    mSelImg->decRef();
 }
 
 void EmoteContainer::draw(gcn::Graphics *graphics)

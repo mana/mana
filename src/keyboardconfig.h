@@ -132,7 +132,7 @@ class KeyboardConfig
         /**
          * Checks if the key is active, by providing the key function index.
          */
-        bool isKeyActive(int index);
+        bool isKeyActive(int index) const;
 
         /**
          * Takes a snapshot of all the active keys.
@@ -188,7 +188,6 @@ class KeyboardConfig
             KEY_WINDOW_SHORTCUT,
             KEY_WINDOW_SETUP,
             KEY_WINDOW_DEBUG,
-            KEY_WINDOW_EMOTE,
             KEY_WINDOW_EMOTE_SHORTCUT,
             KEY_EMOTE_1,
             KEY_EMOTE_2,

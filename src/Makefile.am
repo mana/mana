@@ -81,10 +81,10 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/debugwindow.h \
 	      gui/emotecontainer.cpp \
 	      gui/emotecontainer.h \
+	      gui/emotepopup.cpp \
+	      gui/emotepopup.h \
 	      gui/emoteshortcutcontainer.cpp \
 	      gui/emoteshortcutcontainer.h \
-	      gui/emotewindow.cpp \
-	      gui/emotewindow.h \
 	      gui/equipmentwindow.cpp \
 	      gui/equipmentwindow.h \
 	      gui/focushandler.cpp \
@@ -108,8 +108,6 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/linkhandler.h \
 	      gui/login.cpp \
 	      gui/login.h \
-	      gui/menuwindow.cpp \
-	      gui/menuwindow.h \
 	      gui/minimap.cpp \
 	      gui/minimap.h \
 	      gui/ministatus.cpp \
@@ -183,6 +181,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/updatewindow.h \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
+	      gui/windowmenu.cpp \
+	      gui/windowmenu.h \
 	      net/adminhandler.h \
 	      net/charhandler.h \
 	      net/chathandler.h \

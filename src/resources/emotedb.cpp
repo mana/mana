@@ -90,7 +90,8 @@ void EmoteDB::load()
             }
         }
         mEmoteInfos[id] = currentInfo;
-        if (id > mLastEmote) mLastEmote = id;
+        if (id > mLastEmote)
+            mLastEmote = id;
     }
 
     mLoaded = true;
@@ -98,9 +99,9 @@ void EmoteDB::load()
 
 void EmoteDB::unload()
 {
-    for (   EmoteInfosIterator i = mEmoteInfos.begin();
-            i != mEmoteInfos.end();
-            i++)
+    for (EmoteInfos::const_iterator i = mEmoteInfos.begin();
+         i != mEmoteInfos.end();
+         i++)
     {
         while (!i->second->sprites.empty())
         {
@@ -125,7 +126,7 @@ void EmoteDB::unload()
 
 const EmoteInfo *EmoteDB::get(int id)
 {
-    EmoteInfosIterator i = mEmoteInfos.find(id);
+    EmoteInfos::const_iterator i = mEmoteInfos.find(id);
 
     if (i == mEmoteInfos.end())
     {

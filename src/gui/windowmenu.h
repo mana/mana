@@ -1,6 +1,6 @@
 /*
- *  Extended support for activating emotes
- *  Copyright (C) 2009  Aethyra Development Team
+ *  The Mana World
+ *  Copyright (C) 2004  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,48 +19,36 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef EMOTEWINDOW_H
-#define EMOTEWINDOW_H
+#ifndef WINDOWMENU_H
+#define WINDOWMENU_H
 
-#include "gui/widgets/window.h"
+#include "gui/widgets/container.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
-class EmoteContainer;
-class TextBox;
+class EmotePopup;
 
 /**
- * Emote dialog.
+ * The window menu. Allows showing and hiding many of the different windows
+ * used in the game.
  *
  * \ingroup Interface
  */
-class EmoteWindow : public Window, gcn::ActionListener,
-                                   gcn::SelectionListener
+class WindowMenu : public Container,
+                   public gcn::ActionListener,
+                   public gcn::SelectionListener
 {
     public:
-        /**
-         * Constructor.
-         */
-        EmoteWindow();
+        WindowMenu();
+        ~WindowMenu();
 
-        /**
-         * Called when receiving actions from the widgets.
-         */
         void action(const gcn::ActionEvent &event);
 
-        /**
-         * Returns the selected item.
-         */
-        int getSelectedEmote() const;
+        void valueChanged(const gcn::SelectionEvent &event);
 
     private:
-        EmoteContainer *mEmotes;
-
-        gcn::Button *mUseButton;
-        gcn::ScrollArea *mEmoteScroll;
+        EmotePopup *mEmotePopup;
 };
-
-extern EmoteWindow *emoteWindow;
 
 #endif
