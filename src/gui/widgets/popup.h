@@ -32,12 +32,14 @@ class Skin;
 class WindowContainer;
 
 /**
- * A rather reduced down version of the Window class that is particularly suited
- * for popup type functionality that doesn't need to be resized or moved around
- * by the mouse once created, but only needs to display some simple content,
- * like a static message. Popups, in general, shouldn't also need to update
- * their content once created, although this is not an explicit requirement to
- * use the popup class.
+ * A light version of the Window class. Particularly suited for popup type
+ * functionality that doesn't need to be resized or moved around by the mouse
+ * once created, but only needs to display some simple content, like a static
+ * message.
+ *
+ * Popups, in general, shouldn't also need to update their content once
+ * created, although this is not an explicit requirement to use the popup
+ * class.
  *
  * \ingroup GUI
  */
