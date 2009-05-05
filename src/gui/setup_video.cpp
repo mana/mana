@@ -109,10 +109,10 @@ ModeListModel::ModeListModel()
 
 const char *SIZE_NAME[4] =
 {
+        N_("Tiny"),
         N_("Small"),
         N_("Medium"),
         N_("Large"),
-        N_("Very Large")
 };
 
 class FontSizeChoiceListModel : public gcn::ListModel
@@ -150,14 +150,17 @@ Setup_Video::Setup_Video():
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
     mOpenGLCheckBox(new CheckBox(_("OpenGL"), mOpenGLEnabled)),
-    mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
-    mVisibleNamesCheckBox(new CheckBox(_("Visible names"), mVisibleNamesEnabled)),
-    mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
+    mCustomCursorCheckBox(new CheckBox(_("Custom cursor"),
+                                       mCustomCursorEnabled)),
+    mVisibleNamesCheckBox(new CheckBox(_("Visible names"),
+                                       mVisibleNamesEnabled)),
+    mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
+                                          mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification"))),
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
-                           mPickupParticleEnabled)),
+                                         mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),
     mSpeechLabel(new Label("")),
     mAlphaSlider(new Slider(0.2, 1.0)),
@@ -307,20 +310,20 @@ Setup_Video::Setup_Video():
     int fontSizeSelected;
     switch (mFontSize)
     {
-        case 11:
+        case 10:
             fontSizeSelected = 0;
             break;
-        case 12:
+        case 11:
             fontSizeSelected = 1;
             break;
-        case 13:
+        case 12:
             fontSizeSelected = 2;
             break;
-        case 14:
+        case 13:
             fontSizeSelected = 3;
             break;
         default:
-            fontSizeSelected = 0;
+            fontSizeSelected = 1;
             break;
     }
 
@@ -435,7 +438,7 @@ void Setup_Video::apply()
     // FPS change
     config.setValue("fpslimit", mFps);
 
-    config.setValue("fontSize", mFontSizeDropDown->getSelected() + 11);
+    config.setValue("fontSize", mFontSizeDropDown->getSelected() + 10);
 
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getValue("screen", false);
