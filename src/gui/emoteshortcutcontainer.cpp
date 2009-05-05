@@ -19,27 +19,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "emoteshortcutcontainer.h"
-#include "palette.h"
+#include "gui/emoteshortcutcontainer.h"
 
-#include "../animatedsprite.h"
-#include "../configuration.h"
-#include "../emoteshortcut.h"
-#include "../graphics.h"
-#include "../inventory.h"
-#include "../item.h"
-#include "../itemshortcut.h"
-#include "../keyboardconfig.h"
-#include "../localplayer.h"
-#include "../log.h"
+#include "gui/palette.h"
 
-#include "../resources/emotedb.h"
-#include "../resources/image.h"
-#include "../resources/resourcemanager.h"
+#include "animatedsprite.h"
+#include "configuration.h"
+#include "emoteshortcut.h"
+#include "graphics.h"
+#include "inventory.h"
+#include "item.h"
+#include "itemshortcut.h"
+#include "keyboardconfig.h"
+#include "localplayer.h"
+#include "log.h"
 
-#include "../utils/dtor.h"
-#include "../utils/gettext.h"
-#include "../utils/stringutils.h"
+#include "resources/emotedb.h"
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/dtor.h"
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 static const int MAX_ITEMS = 12;
 

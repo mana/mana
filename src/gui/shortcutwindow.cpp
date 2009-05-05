@@ -33,14 +33,14 @@ static const int SCROLL_PADDING = 0;
 int ShortcutWindow::mInstances = 0;
 
 ShortcutWindow::ShortcutWindow(const std::string &title,
-                               ShortcutContainer *content, bool defaultVisible)
+                               ShortcutContainer *content)
 {
     setWindowName(title);
     // no title presented, title bar is padding so window can be moved.
     gcn::Window::setTitleBarHeight(gcn::Window::getPadding());
     setShowTitle(false);
     setResizable(true);
-    setDefaultVisible(defaultVisible);
+    setDefaultVisible(false);
     setSaveVisible(true);
 
     mItems = content;

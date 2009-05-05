@@ -38,8 +38,7 @@ class ShortcutWindow : public Window
         /**
          * Constructor.
          */
-        ShortcutWindow(const std::string &title, ShortcutContainer *content,
-                       bool defaultVisible = true);
+        ShortcutWindow(const std::string &title, ShortcutContainer *content);
 
         /**
          * Destructor.
