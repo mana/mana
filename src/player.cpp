@@ -44,10 +44,12 @@ Player::Player(int id, int job, Map *map):
     mIsGM(false),
     mInParty(false)
 {
+    config.addListener("visiblenames", this);
 }
 
 Player::~Player()
 {
+    config.removeListener("visiblenames", this);
     delete mName;
 }
 
@@ -135,18 +137,6 @@ void Player::logic()
             break;
     }
 
-    if (getType() == Being::PLAYER && player_node != this)
-    {
-        if (!config.getValue("visiblenames", 1) && mName)
-        {
-            delete mName;
-            mName = NULL;
-        }
-        else if (config.getValue("visiblenames", 1) && !mName && !(getName().empty()))
-        {
-            setName(getName());
-        }
-    }
     Being::logic();
 }
 #endif
@@ -295,4 +285,21 @@ short Player::getNumberOfGuilds()
 void Player::setInParty(bool value)
 {
     mInParty = value;
+}
+
+void Player::optionChanged(const std::string &value)
+{
+    if (value == "visiblenames" && getType() == Being::PLAYER && player_node != this)
+    {
+        bool value = config.getValue("visiblenames", 1);
+        if (!value && mName)
+        {
+            delete mName;
+            mName = NULL;
+        }
+        else if (value && !mName && !(getName().empty()))
+        {
+            setName(getName());
+        }
+    }
 }

@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 
+#include "configlistener.h"
 #include "map.h"
 #include "particlecontainer.h"
 #include "position.h"
@@ -68,7 +69,7 @@ enum Gender
     GENDER_UNSPECIFIED = 2
 };
 
-class Being : public Sprite
+class Being : public Sprite, public ConfigListener
 {
     public:
         enum Type
@@ -508,6 +509,8 @@ class Being : public Sprite
         { return mSprites[index]; }
 
         static void load();
+
+        void optionChanged(const std::string &value) {}
 
     protected:
         /**

@@ -135,6 +135,12 @@ class Player : public Being
         virtual unsigned char getWalkMask() const
         { return 0x82; } // blocked by walls and monsters (bin 1000 0010)
 
+        /**
+         * Called when a option (set with config.addListener()) is changed
+         */
+
+        void optionChanged(const std::string &value);
+
     protected:
         /**
          * Gets the way the monster blocks pathfinding for other objects.
