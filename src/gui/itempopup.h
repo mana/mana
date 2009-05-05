@@ -27,12 +27,15 @@
 
 #include "resources/iteminfo.h"
 
+#include <guichan/mouselistener.hpp>
+
 class TextBox;
 
 /**
  * A popup that displays information about an item.
  */
-class ItemPopup : public Popup
+class ItemPopup : public Popup,
+                  public gcn::MouseListener
 {
     public:
         /**
@@ -54,6 +57,8 @@ class ItemPopup : public Popup
          * Sets the location to display the item popup.
          */
         void view(int x, int y);
+
+        void mouseMoved(gcn::MouseEvent &mouseEvent);
 
     private:
         gcn::Label *mItemName;

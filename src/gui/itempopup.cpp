@@ -66,6 +66,8 @@ ItemPopup::ItemPopup():
     add(mItemEffect);
     add(mItemWeight);
 
+    addMouseListener(this);
+
     loadPopupConfiguration();
 }
 
@@ -177,4 +179,10 @@ void ItemPopup::view(int x, int y)
     setPosition(posX, posY);
     setVisible(true);
     requestMoveToTop();
+}
+
+void ItemPopup::mouseMoved(gcn::MouseEvent &event)
+{
+    // When the mouse moved on top of the popup, hide it
+    setVisible(false);
 }
