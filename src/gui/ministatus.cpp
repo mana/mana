@@ -36,10 +36,10 @@
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
-    mHpBar = new ProgressBar(1.0f, 100, 20, gcn::Color(0, 171, 34));
+    mHpBar = new ProgressBar(0.0f, 100, 20, gcn::Color(0, 171, 34));
 #ifdef EATHENA_SUPPORT
-    mMpBar = new ProgressBar(1.0f, 100, 20, gcn::Color(26, 102, 230));
-    mXpBar = new ProgressBar(1.0f, 100, 20, gcn::Color(143, 192, 211));
+    mMpBar = new ProgressBar(0.0f, 100, 20, gcn::Color(26, 102, 230));
+    mXpBar = new ProgressBar(0.0f, 100, 20, gcn::Color(143, 192, 211));
 #endif
 
     mHpBar->setPosition(0, 3);

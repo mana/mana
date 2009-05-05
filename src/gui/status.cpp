@@ -58,16 +58,16 @@ StatusWindow::StatusWindow(LocalPlayer *player):
                 Units::formatCurrency(mCurrency).c_str()));
 
     mHpLabel = new Label(_("HP:"));
-    mHpBar = new ProgressBar(1.0f, 80, 15, gcn::Color(0, 171, 34));
+    mHpBar = new ProgressBar(0.0f, 80, 15, gcn::Color(0, 171, 34));
 
     mXpLabel = new Label(_("Exp:"));
-    mXpBar = new ProgressBar(1.0f, 80, 15, gcn::Color(143, 192, 211));
+    mXpBar = new ProgressBar(0.0f, 80, 15, gcn::Color(143, 192, 211));
 
     mMpLabel = new Label(_("MP:"));
-    mMpBar = new ProgressBar(1.0f, 80, 15, gcn::Color(26, 102, 230));
+    mMpBar = new ProgressBar(0.0f, 80, 15, gcn::Color(26, 102, 230));
 
     mJobLabel = new Label(_("Job:"));
-    mJobBar = new ProgressBar(1.0f, 80, 15, gcn::Color(220, 135, 203));
+    mJobBar = new ProgressBar(0.0f, 80, 15, gcn::Color(220, 135, 203));
 
     // ----------------------
     // Stats Part
