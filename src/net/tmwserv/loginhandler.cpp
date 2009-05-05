@@ -27,9 +27,9 @@
 #include "net/tmwserv/accountserver/account.h"
 #include "net/tmwserv/accountserver/accountserver.h"
 
+#include "net/logindata.h"
 #include "net/messagein.h"
 
-#include "logindata.h"
 #include "main.h"
 
 #include "utils/gettext.h"

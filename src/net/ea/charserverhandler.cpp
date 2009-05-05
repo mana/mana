@@ -24,12 +24,12 @@
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
 
+#include "net/logindata.h"
 #include "net/messagein.h"
 #include "net/messageout.h"
 
 #include "game.h"
 #include "log.h"
-#include "logindata.h"
 #include "main.h"
 
 #include "gui/charcreatedialog.h"

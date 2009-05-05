@@ -25,9 +25,10 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
-#include "logindata.h"
+#include "net/logindata.h"
+#include "net/serverinfo.h"
+
 #include "main.h"
-#include "serverinfo.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

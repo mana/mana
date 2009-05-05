@@ -34,7 +34,7 @@
 #include "gui/changepassworddialog.h"
 #include "gui/changeemaildialog.h"
 
-#include "logindata.h"
+#include "net/logindata.h"
 
 #include "net/tmwserv/accountserver/account.h"
 #endif

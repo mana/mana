@@ -234,6 +234,7 @@ SET(SRCS
     net/generalhandler.h
     net/guildhandler.h
     net/inventoryhandler.h
+    net/logindata.h
     net/loginhandler.h
     net/logouthandler.h
     net/maphandler.h
@@ -248,6 +249,7 @@ SET(SRCS
     net/net.h
     net/partyhandler.h
     net/playerhandler.h
+    net/serverinfo.h
     net/skillhandler.h
     net/tradehandler.h
     resources/action.cpp
@@ -357,7 +359,6 @@ SET(SRCS
     lockedarray.h
     log.cpp
     log.h
-    logindata.h
     main.cpp
     main.h
     map.cpp
@@ -384,7 +385,6 @@ SET(SRCS
     properties.h
     rotationalparticle.cpp
     rotationalparticle.h
-    serverinfo.h
     shopitem.cpp
     shopitem.h
     simpleanimation.cpp

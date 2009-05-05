@@ -187,6 +187,7 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      net/generalhandler.h \
 	      net/guildhandler.h \
 	      net/inventoryhandler.h \
+	      net/logindata.h \
 	      net/loginhandler.h \
 	      net/logouthandler.h \
 	      net/maphandler.h \
@@ -201,6 +202,7 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      net/net.h \
 	      net/partyhandler.h \
 	      net/playerhandler.h \
+	      net/serverinfo.h \
 	      net/skillhandler.h \
 	      net/tradehandler.h \
 	      resources/action.cpp \
@@ -310,7 +312,6 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      lockedarray.h \
 	      log.cpp \
 	      log.h \
-	      logindata.h \
 	      main.cpp \
 	      main.h \
 	      map.cpp\
@@ -337,7 +338,6 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      properties.h \
 	      rotationalparticle.cpp \
 	      rotationalparticle.h \
-	      serverinfo.h \
 	      shopitem.cpp \
 	      shopitem.h \
 	      simpleanimation.cpp \

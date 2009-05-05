@@ -30,12 +30,10 @@
 #include "localplayer.h"
 #include "lockedarray.h"
 #include "log.h"
-#include "logindata.h"
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
 #include "playerrelations.h"
-#include "serverinfo.h"
 #include "sound.h"
 #include "statuseffect.h"
 #include "units.h"
@@ -63,9 +61,11 @@
 
 #include "net/charhandler.h"
 #include "net/generalhandler.h"
+#include "net/logindata.h"
 #include "net/loginhandler.h"
 #include "net/maphandler.h"
 #include "net/net.h"
+#include "net/serverinfo.h"
 #ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/charserverhandler.h"
 #include "net/tmwserv/connection.h"

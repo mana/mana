@@ -31,8 +31,9 @@
 #include "gui/widgets/passwordfield.h"
 #include "gui/widgets/textfield.h"
 
+#include "net/logindata.h"
+
 #include "main.h"
-#include "logindata.h"
 #include "configuration.h"
 
 #include "utils/gettext.h"

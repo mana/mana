@@ -23,7 +23,6 @@
 
 #include "configuration.h"
 #include "log.h"
-#include "logindata.h"
 #include "main.h"
 
 #include "gui/login.h"
@@ -36,6 +35,8 @@
 #include "gui/widgets/passwordfield.h"
 #include "gui/widgets/radiobutton.h"
 #include "gui/widgets/textfield.h"
+
+#include "net/logindata.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

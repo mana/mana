@@ -27,12 +27,12 @@
 #include "net/tmwserv/accountserver/accountserver.h"
 #include "net/tmwserv/accountserver/account.h"
 
+#include "net/logindata.h"
 #include "net/messagein.h"
 
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
-#include "logindata.h"
 #include "main.h"
 
 #include "gui/charcreatedialog.h"

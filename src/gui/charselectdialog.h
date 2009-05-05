@@ -30,11 +30,8 @@
 
 #include <guichan/actionlistener.hpp>
 
-#ifdef TMWSERV_SUPPORT
-#include "../logindata.h"
-#endif
-
 class LocalPlayer;
+class LoginData;
 class Player;
 class PlayerBox;
 
