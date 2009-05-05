@@ -182,16 +182,17 @@ void SellDialog::action(const gcn::ActionEvent &event)
     {
         // Attempt sell
         ShopItem *item = mShopItems->at(selectedItem);
-        int sellCount;
+        int sellCount, itemIndex;
         mPlayerMoney +=
             mAmountItems * mShopItems->at(selectedItem)->getPrice();
         mMaxItems -= mAmountItems;
         while (mAmountItems > 0) {
             // This order is important, item->getCurrentInvIndex() would return
             // the inventory index of the next Duplicate otherwise.
+            itemIndex = item->getCurrentInvIndex();
             sellCount = item->sellCurrentDuplicate(mAmountItems);
+            Net::getNpcHandler()->sellItem(current_npc, itemIndex, sellCount);
             mAmountItems -= sellCount;
-            Net::getNpcHandler()->sellItem(current_npc, item->getCurrentInvIndex(), sellCount);
         }
 
         mPlayerMoney +=
