@@ -20,6 +20,7 @@
  */
 
 #include "animatedsprite.h"
+#include "configuration.h"
 #include "game.h"
 #ifdef TMWSERV_SUPPORT
 #include "guild.h"
@@ -74,8 +75,8 @@ void Player::setName(const std::string &name)
                                   &guiPalette->getColor(Palette::SELF) :
                                   &guiPalette->getColor(Palette::PC));
         }
-        Being::setName(name);
     }
+    Being::setName(name);
 }
 
 #ifdef EATHENA_SUPPORT
@@ -134,6 +135,18 @@ void Player::logic()
             break;
     }
 
+    if (getType() == Being::PLAYER && player_node != this)
+    {
+        if (!config.getValue("visiblenames", 1) && mName)
+        {
+            delete mName;
+            mName = NULL;
+        }
+        else if (config.getValue("visiblenames", 1) && !mName && !(getName().empty()))
+        {
+            setName(getName());
+        }
+    }
     Being::logic();
 }
 #endif
