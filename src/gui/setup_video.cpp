@@ -334,38 +334,48 @@ Setup_Video::Setup_Video():
     place(0, 0, scrollArea, 1, 6).setPadding(2);
     place(1, 0, mFsCheckBox, 2);
     place(3, 0, mOpenGLCheckBox, 1);
+
     place(1, 1, mCustomCursorCheckBox, 3);
+
     place(1, 2, mVisibleNamesCheckBox, 3);
     place(3, 2, mNameCheckBox, 1);
+
     place(1, 3, mParticleEffectsCheckBox, 3);
+
     place(1, 4, mPickupNotifyLabel, 3);
-    place(1, 13, mPickupChatCheckBox, 1);
 
-    place(0, 6, mAlphaSlider);
-    place(0, 7, mFpsSlider);
-    place(0, 8, mScrollRadiusSlider);
-    place(0, 9, mScrollLazinessSlider);
-    place(0, 10, mSpeechSlider);
-    place(0, 11, mOverlayDetailSlider);
-    place(0, 12, mParticleDetailSlider);
+    place(1, 5, mPickupChatCheckBox, 1);
+    place(2, 5, mPickupParticleCheckBox, 2);
 
-    place(1, 6, alphaLabel, 3);
-    place(1, 7, mFpsCheckBox).setPadding(3);
-    place(1, 8, scrollRadiusLabel);
-    place(1, 9, scrollLazinessLabel);
-    place(1, 10, speechLabel);
-    place(1, 11, overlayDetailLabel);
-    place(1, 12, particleDetailLabel);
-    place(1, 5, fontSizeLabel, 3);
+    place(0, 6, fontSizeLabel, 3);
+    place(1, 6, mFontSizeDropDown, 3);
 
-    place(2, 5, mFontSizeDropDown, 3);
-    place(2, 7, mFpsField).setPadding(1);
-    place(2, 8, mScrollRadiusField).setPadding(1);
-    place(2, 9, mScrollLazinessField).setPadding(1);
-    place(2, 10, mSpeechLabel, 3).setPadding(2);
-    place(2, 11, mOverlayDetailField, 3).setPadding(2);
-    place(2, 12, mParticleDetailField, 3).setPadding(2);
-    place(2, 13, mPickupParticleCheckBox, 2);
+    place(0, 7, mAlphaSlider);
+    place(1, 7, alphaLabel, 3);
+
+    place(0, 8, mFpsSlider);
+    place(1, 8, mFpsCheckBox).setPadding(3);
+    place(2, 8, mFpsField).setPadding(1);
+
+    place(0, 9, mScrollRadiusSlider);
+    place(1, 9, scrollRadiusLabel);
+    place(2, 9, mScrollRadiusField).setPadding(1);
+
+    place(0, 10, mScrollLazinessSlider);
+    place(1, 10, scrollLazinessLabel);
+    place(2, 10, mScrollLazinessField).setPadding(1);
+
+    place(0, 11, mSpeechSlider);
+    place(1, 11, speechLabel);
+    place(2, 11, mSpeechLabel, 3).setPadding(2);
+
+    place(0, 12, mOverlayDetailSlider);
+    place(1, 12, overlayDetailLabel);
+    place(2, 12, mOverlayDetailField, 3).setPadding(2);
+
+    place(0, 13, mParticleDetailSlider);
+    place(1, 13, particleDetailLabel);
+    place(2, 13, mParticleDetailField, 3).setPadding(2);
 
     setDimension(gcn::Rectangle(0, 0, 325, 300));
 }
