@@ -83,6 +83,7 @@ src/net/tmwserv/beinghandler.cpp
 src/net/tmwserv/charserverhandler.cpp
 src/net/tmwserv/chathandler.cpp
 src/net/tmwserv/generalhandler.cpp
+src/net/tmwserv/loginhandler.cpp
 src/resources/itemdb.cpp
 src/resources/monsterdb.cpp
 src/resources/npcdb.cpp
