@@ -253,6 +253,11 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
     }
 }
 
+void InventoryWindow::setSplitAllowed(bool allowed)
+{
+    mSplitButton->setVisible(allowed);
+}
+
 void InventoryWindow::updateButtons()
 {
     const Item *selectedItem = mItems->getSelectedItem();

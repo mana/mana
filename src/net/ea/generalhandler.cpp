@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/inventorywindow.h"
+
 #include "net/ea/generalhandler.h"
 
 #include "net/ea/network.h"
@@ -201,6 +203,7 @@ void GeneralHandler::tick()
 void GeneralHandler::guiWindowsLoaded()
 {
     partyTab = new PartyTab;
+    inventoryWindow->setSplitAllowed(false);
 }
 
 void GeneralHandler::guiWindowsUnloaded()

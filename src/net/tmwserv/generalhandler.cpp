@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/inventorywindow.h"
+
 #include "net/tmwserv/generalhandler.h"
 
 #include "net/tmwserv/network.h"
@@ -148,7 +150,7 @@ void GeneralHandler::tick()
 
 void GeneralHandler::guiWindowsLoaded()
 {
-    // TODO
+    inventoryWindow->setSplitAllowed(true);
 }
 
 void GeneralHandler::guiWindowsUnloaded()

@@ -91,6 +91,11 @@ class InventoryWindow : public Window,
          */
         void valueChanged(const gcn::SelectionEvent &event);
 
+        /**
+         * Sets whether the split button should be shown.
+         */
+        void setSplitAllowed(bool allowed);
+
     private:
         void updateButtons();    /**< Updates button states. */
 
