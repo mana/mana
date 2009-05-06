@@ -188,6 +188,10 @@ void Player::setHairStyle(int style, int color)
 
 void Player::setSprite(int slot, int id, const std::string &color)
 {
+    // TODO: Find a better way
+    if (getType() == NPC)
+        return;
+
     // id = 0 means unequip
     if (id == 0)
     {
