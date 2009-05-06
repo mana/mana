@@ -49,11 +49,7 @@ class InventoryWindow : public Window,
         /**
          * Constructor.
          */
-#ifdef TMWSERV_SUPPORT
         InventoryWindow(int invSize = (INVENTORY_SIZE));
-#else
-        InventoryWindow(int invSize = (INVENTORY_SIZE - 2));
-#endif
 
         /**
          * Destructor.
@@ -80,7 +76,6 @@ class InventoryWindow : public Window,
          */
         void mouseClicked(gcn::MouseEvent &event);
 
-#ifdef TMWSERV_SUPPORT
         /**
          * Handles the key presses.
          */
@@ -90,7 +85,6 @@ class InventoryWindow : public Window,
          * Handles the key releases.
          */
         void keyReleased(gcn::KeyEvent &event);
-#endif
 
         /**
          * Updates labels to currently selected item.
@@ -109,9 +103,7 @@ class InventoryWindow : public Window,
         int mMaxWeight;
         gcn::Button *mUseButton;
         gcn::Button *mDropButton;
-#ifdef TMWSERV_SUPPORT
         gcn::Button *mSplitButton;
-#endif
         gcn::Label *mWeightLabel;
         gcn::Label *mSlotsLabel;
 

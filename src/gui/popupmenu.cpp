@@ -38,6 +38,7 @@
 #include "playerrelations.h"
 
 #include "net/adminhandler.h"
+#include "net/inventoryhandler.h"
 #include "net/net.h"
 
 #include "resources/itemdb.h"
@@ -259,14 +260,10 @@ void PopupMenu::handleLink(const std::string &link)
         assert(mItem);
         if (mItem->isEquipment())
         {
-#ifdef TMWSERV_SUPPORT
-            player_node->equipItem(mItem);
-#else
             if (mItem->isEquipped())
                 player_node->unequipItem(mItem);
             else
                 player_node->equipItem(mItem);
-#endif
         }
         else
         {
@@ -357,12 +354,10 @@ void PopupMenu::showPopup(int x, int y, Item *item, bool isInventory)
 
         mBrowserBox->addRow(_("@@drop|Drop@@"));
 
-#ifdef TMWSERV_SUPPORT
-        if (!item->isEquipment())
+        if (Net::getInventoryHandler()->canSplit(item))
         {
             mBrowserBox->addRow(_("@@split|Split@@"));
         }
-#endif
 
         if (player_node->getInStorage())
         {

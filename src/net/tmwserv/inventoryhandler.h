@@ -34,15 +34,19 @@ class InventoryHandler : public MessageHandler, Net::InventoryHandler
 
         void handleMessage(MessageIn &msg);
 
-        void equipItem(Item *item);
+        void equipItem(const Item *item);
 
-        void unequipItem(Item *item);
+        void unequipItem(const Item *item);
 
-        void useItem(Item *item);
+        void useItem(const Item *item);
 
-        void dropItem(Item *item, int amount);
+        void dropItem(const Item *item, int amount);
 
-        void splitItem(Item *item, int amount);
+        bool canSplit(const Item *item);
+
+        void splitItem(const Item *item, int amount);
+
+        void moveItem(int oldIndex, int newIndex);
 
         void openStorage();
 

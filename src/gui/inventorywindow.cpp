@@ -37,6 +37,9 @@
 #include "localplayer.h"
 #include "units.h"
 
+#include "net/inventoryhandler.h"
+#include "net/net.h"
+
 #include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
@@ -75,9 +78,7 @@ InventoryWindow::InventoryWindow(int invSize):
 
     mUseButton = new Button(longestUseString, "use", this);
     mDropButton = new Button(_("Drop"), "drop", this);
-#ifdef TMWSERV_SUPPORT
     mSplitButton = new Button(_("Split"), "split", this);
-#endif
     mItems = new ItemContainer(player_node->getInventory());
     mItems->addSelectionListener(this);
 
@@ -101,9 +102,7 @@ InventoryWindow::InventoryWindow(int invSize):
     place(0, 1, invenScroll, 7).setPadding(3);
     place(0, 2, mUseButton);
     place(1, 2, mDropButton);
-#ifdef TMWSERV_SUPPORT
     place(2, 2, mSplitButton);
-#endif
 
     Layout &layout = getLayout();
     layout.setRowHeight(1, Layout::AUTO_SET);
@@ -217,7 +216,6 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
-#ifdef TMWSERV_SUPPORT
 void InventoryWindow::keyPressed(gcn::KeyEvent &event)
 {
     switch (event.getKey().getValue())
@@ -239,7 +237,6 @@ void InventoryWindow::keyReleased(gcn::KeyEvent &event)
             break;
     }
 }
-#endif
 
 void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
@@ -273,14 +270,11 @@ void InventoryWindow::updateButtons()
     mUseButton->setEnabled(selectedItem != 0);
     mDropButton->setEnabled(selectedItem != 0);
 
-#ifdef TMWSERV_SUPPORT
-    if (selectedItem && !selectedItem->isEquipment() &&
-        selectedItem->getQuantity() > 1)
+    if (Net::getInventoryHandler()->canSplit(selectedItem))
     {
         mSplitButton->setEnabled(true);
     }
     else {
         mSplitButton->setEnabled(false);
     }
-#endif
 }

@@ -31,15 +31,19 @@ namespace Net {
 class InventoryHandler
 {
     public:
-        virtual void equipItem(Item *item) = 0;
+        virtual void equipItem(const Item *item) = 0;
 
-        virtual void unequipItem(Item *item) = 0;
+        virtual void unequipItem(const Item *item) = 0;
 
-        virtual void useItem(Item *item) = 0;
+        virtual void useItem(const Item *item) = 0;
 
-        virtual void dropItem(Item *item, int amount) = 0;
+        virtual void dropItem(const Item *item, int amount) = 0;
 
-        virtual void splitItem(Item *item, int amount) = 0;
+        virtual bool canSplit(const Item *item) = 0;
+
+        virtual void splitItem(const Item *item, int amount) = 0;
+
+        virtual void moveItem(int oldIndex, int newIndex) = 0;
 
         virtual void openStorage() = 0;
 

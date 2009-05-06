@@ -21,9 +21,7 @@
 
 #include "gui/itemamount.h"
 
-#ifdef EATHENA_SUPPORT
 #include "gui/storagewindow.h"
-#endif
 #include "gui/trade.h"
 
 #include "gui/widgets/button.h"
@@ -155,11 +153,9 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
             case ItemDrop:
                 player_node->dropItem(mItem, amount);
                 break;
-#ifdef TMWSERV_SUPPORT
             case ItemSplit:
                 player_node->splitItem(mItem, amount);
                 break;
-#endif
             case StoreAdd:
                 storageWindow->addStore(mItem, amount);
                 break;

@@ -216,9 +216,7 @@ class LocalPlayer : public Player
 
         void dropItem(Item *item, int quantity);
 
-#ifdef TMWSERV_SUPPORT
         void splitItem(Item *item, int quantity);
-#endif
 
         void pickUp(FloorItem *item);
 

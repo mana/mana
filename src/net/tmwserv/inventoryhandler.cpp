@@ -25,6 +25,7 @@
 #include "net/tmwserv/protocol.h"
 
 #include "net/tmwserv/gameserver/internal.h"
+#include "net/tmwserv/gameserver/player.h"
 
 #include "net/messagein.h"
 #include "net/messageout.h"
@@ -87,28 +88,28 @@ void InventoryHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void InventoryHandler::equipItem(Item *item)
+void InventoryHandler::equipItem(const Item *item)
 {
     MessageOut msg(PGMSG_EQUIP);
     msg.writeInt8(item->getInvIndex());
     Net::GameServer::connection->send(msg);
 }
 
-void InventoryHandler::unequipItem(Item *item)
+void InventoryHandler::unequipItem(const Item *item)
 {
     MessageOut msg(PGMSG_UNEQUIP);
     msg.writeInt8(item->getInvIndex());
     Net::GameServer::connection->send(msg);
 }
 
-void InventoryHandler::useItem(Item *item)
+void InventoryHandler::useItem(const Item *item)
 {
     MessageOut msg(PGMSG_USE_ITEM);
     msg.writeInt8(item->getInvIndex());
     Net::GameServer::connection->send(msg);
 }
 
-void InventoryHandler::dropItem(Item *item, int amount)
+void InventoryHandler::dropItem(const Item *item, int amount)
 {
     MessageOut msg(PGMSG_DROP);
     msg.writeInt8(item->getInvIndex());
@@ -116,9 +117,28 @@ void InventoryHandler::dropItem(Item *item, int amount)
     Net::GameServer::connection->send(msg);
 }
 
-void InventoryHandler::splitItem(Item *item, int amount)
+bool InventoryHandler::canSplit(const Item *item)
 {
-    // TODO
+    return item && !item->isEquipment() && item->getQuantity() > 1;
+}
+
+void InventoryHandler::splitItem(const Item *item, int amount)
+{
+    int newIndex = player_node->getInventory()->getFreeSlot();
+    if (newIndex > Inventory::NO_SLOT_INDEX)
+    {
+        Net::GameServer::Player::moveItem(
+            item->getInvIndex(), newIndex, amount);
+    }
+}
+
+void InventoryHandler::moveItem(int oldIndex, int newIndex)
+{
+    if (oldIndex == newIndex)
+        return;
+
+    // TODO fix me!
+    Net::GameServer::Player::moveItem(oldIndex, newIndex, -1);
 }
 
 void InventoryHandler::openStorage()

@@ -348,15 +348,7 @@ void LocalPlayer::inviteToParty(Player *player)
 
 void LocalPlayer::moveInvItem(Item *item, int newIndex)
 {
-    // special case, the old and new cannot copy over each other.
-    if (item->getInvIndex() == newIndex)
-        return;
-
-#ifdef TMWSERV_SUPPORT
-    Net::GameServer::Player::moveItem(
-        item->getInvIndex(), newIndex, item->getQuantity());
-#endif
-    // TODO: eAthena support
+    Net::getInventoryHandler()->moveItem(item->getInvIndex(), newIndex);
 }
 
 void LocalPlayer::equipItem(Item *item)
@@ -386,17 +378,10 @@ void LocalPlayer::dropItem(Item *item, int quantity)
     Net::getInventoryHandler()->dropItem(item, quantity);
 }
 
-#ifdef TMWSERV_SUPPORT
 void LocalPlayer::splitItem(Item *item, int quantity)
 {
-    int newIndex = mInventory->getFreeSlot();
-    if (newIndex > Inventory::NO_SLOT_INDEX)
-    {
-        Net::GameServer::Player::moveItem(
-            item->getInvIndex(), newIndex, quantity);
-    }
+    Net::getInventoryHandler()->splitItem(item, quantity);
 }
-#endif
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
