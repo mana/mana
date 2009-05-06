@@ -30,7 +30,7 @@
 
 Equipment::Equipment()
 #ifdef EATHENA_SUPPORT
-    : mArrows(0)
+    : mArrows(-1)
 #endif
 {
 #ifdef TMWSERV_SUPPORT
