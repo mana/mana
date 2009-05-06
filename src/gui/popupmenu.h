@@ -56,7 +56,7 @@ class PopupMenu : public Popup, public LinkHandler
          * Shows the related popup menu when right click on the inventory
          * at the specified mouse coordinates.
          */
-        void showPopup(int x, int y, Item *item);
+        void showPopup(int x, int y, Item *item, bool isInventory);
 
         /**
          * Handles link action.

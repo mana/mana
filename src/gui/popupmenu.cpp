@@ -23,6 +23,7 @@
 
 #include "gui/chat.h"
 #include "gui/inventorywindow.h"
+#include "gui/storagewindow.h"
 #include "gui/itemamount.h"
 
 #include "gui/widgets/browserbox.h"
@@ -290,6 +291,18 @@ void PopupMenu::handleLink(const std::string &link)
                              inventoryWindow, mItem);
     }
 
+    else if (link == "store")
+    {
+        new ItemAmountWindow(ItemAmountWindow::StoreAdd,
+                             inventoryWindow, mItem);
+    }
+
+    else if (link == "retrieve")
+    {
+        new ItemAmountWindow(ItemAmountWindow::StoreRemove,
+                             storageWindow, mItem);
+    }
+
     else if (link == "party" && being && being->getType() == Being::PLAYER)
     {
         player_node->inviteToParty(dynamic_cast<Player*>(being));
@@ -324,31 +337,44 @@ void PopupMenu::handleLink(const std::string &link)
     mItem = NULL;
 }
 
-void PopupMenu::showPopup(int x, int y, Item *item)
+void PopupMenu::showPopup(int x, int y, Item *item, bool isInventory)
 {
     assert(item);
     mItem = item;
     mBrowserBox->clearRows();
 
-    if (item->isEquipment())
+    if (isInventory)
     {
-#ifdef TMWSERV_SUPPORT
-        mBrowserBox->addRow(_("@@use|Equip@@"));
-#else
-        if (item->isEquipped())
-            mBrowserBox->addRow(_("@@use|Unequip@@"));
+        if (item->isEquipment())
+        {
+            if (item->isEquipped())
+                mBrowserBox->addRow(_("@@use|Unequip@@"));
+            else
+                mBrowserBox->addRow(_("@@use|Equip@@"));
+        }
         else
-            mBrowserBox->addRow(_("@@use|Equip@@"));
-#endif
-    }
-    else
-        mBrowserBox->addRow(_("@@use|Use@@"));
+            mBrowserBox->addRow(_("@@use|Use@@"));
 
-    mBrowserBox->addRow(_("@@drop|Drop@@"));
+        mBrowserBox->addRow(_("@@drop|Drop@@"));
+
 #ifdef TMWSERV_SUPPORT
-    if (!item->isEquipment())
-        mBrowserBox->addRow(_("@@split|Split@@"));
+        if (!item->isEquipment())
+        {
+            mBrowserBox->addRow(_("@@split|Split@@"));
+        }
 #endif
+
+        if (player_node->getInStorage())
+        {
+            mBrowserBox->addRow(_("@@store|Store@@"));
+        }
+    }
+    // Assume in storage for now
+    // TODO: make this whole system more flexible, if needed
+    else
+    {
+        mBrowserBox->addRow(_("@@retrieve|Retrieve@@"));
+    }
     mBrowserBox->addRow(_("@@chat|Add to chat@@"));
     mBrowserBox->addRow("##3---");
     mBrowserBox->addRow(_("@@cancel|Cancel@@"));

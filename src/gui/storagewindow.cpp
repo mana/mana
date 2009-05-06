@@ -178,7 +178,7 @@ void StorageWindow::mouseClicked(gcn::MouseEvent &event)
          */
         const int mx = event.getX() + getX();
         const int my = event.getY() + getY();
-        viewport->showPopup(mx, my, item);
+        viewport->showPopup(mx, my, item, false);
     }
 }
 

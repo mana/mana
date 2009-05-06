@@ -449,9 +449,9 @@ void Viewport::mouseReleased(gcn::MouseEvent &event)
     mPlayerFollowMouse = false;
 }
 
-void Viewport::showPopup(int x, int y, Item *item)
+void Viewport::showPopup(int x, int y, Item *item, bool isInventory)
 {
-    mPopupMenu->showPopup(x, y, item);
+    mPopupMenu->showPopup(x, y, item, isInventory);
 }
 
 void Viewport::closePopupMenu()
