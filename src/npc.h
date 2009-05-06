@@ -48,8 +48,6 @@ class NPC : public Player
         virtual unsigned char getWalkMask() const
         { return 0x83; } // blocked like a monster by walls, monsters and characters ( bin 1000 0011)
 
-        void checkSprites();
-
         static bool isTalking;
 
     protected:

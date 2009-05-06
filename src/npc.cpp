@@ -52,10 +52,6 @@ NPC::NPC(int id, int job, Map *map):
         std::string file = "graphics/sprites/" + (*i)->sprite;
         int variant = (*i)->variant;
         mSprites[c] = AnimatedSprite::load(file, variant);
-        if (mSprites[c])
-            printf("Placed sprite '%s'(%d) at %d\n", file.c_str(), variant, c);
-        else
-            printf("Placed nonsprite '%s'(%d) at %d\n", file.c_str(), variant, c);
         c++;
     }
 
@@ -73,14 +69,6 @@ NPC::NPC(int id, int job, Map *map):
     mName = 0;
 
     mNameColor = &guiPalette->getColor(Palette::NPC);
-
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-    {
-        if (mSprites[i])
-            printf("Has sprite %d\n", i);
-        else
-            printf("Has not sprite %d\n", i);
-    }
 }
 
 NPC::~NPC()
@@ -124,8 +112,6 @@ void NPC::talk()
 
     isTalking = true;
 
-    checkSprites();
-
     Net::getNpcHandler()->talk(mId);
 }
 
@@ -134,16 +120,5 @@ void NPC::updateCoords()
     if (mName)
     {
         mName->adviseXY(getPixelX(), getPixelY());
-    }
-}
-
-void NPC::checkSprites()
-{
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-    {
-        if (mSprites[i])
-            printf("Has sprite %d\n", i);
-        else
-            printf("Has not sprite %d\n", i);
     }
 }

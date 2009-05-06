@@ -718,34 +718,10 @@ void Being::logic()
     if (mUsedTargetCursor)
         mUsedTargetCursor->update(tick_time * 10);
 
-    if (getType() == NPC)
-    {
-        for (int i = 0; i < VECTOREND_SPRITE; i++)
-        {
-            if (mSprites[i])
-                printf("Has sprite %d\n", i);
-            else
-                printf("Has not sprite %d\n", i);
-        }
-    }
-
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
         if (mSprites[i])
             mSprites[i]->update(tick_time * 10);
-    }////
-
-    if (getType() == NPC)
-    {
-        for (int i = 0; i < VECTOREND_SPRITE; i++)
-        {
-            if (mSprites[i])
-                printf("Has sprite %d\n", i);
-            else
-                printf("Has not sprite %d\n", i);
-        }
-
-        assert(false);
     }
 
     // Restart status/particle effects, if needed
@@ -780,19 +756,6 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
         {
             mSprites[i]->draw(graphics, px, py);
         }
-    }
-
-    if (getType() == NPC)
-    {
-        for (int i = 0; i < VECTOREND_SPRITE; i++)
-        {
-            if (mSprites[i])
-                printf("Has sprite %d\n", i);
-            else
-                printf("Has not sprite %d\n", i);
-        }
-
-        assert(false);
     }
 }
 
