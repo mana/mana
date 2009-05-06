@@ -107,10 +107,6 @@ Being *BeingManager::createBeing(int id, Being::Type type, int subtype)
 void BeingManager::destroyBeing(Being *being)
 {
     mBeings.remove(being);
-#ifdef TMWSERV_SUPPORT
-    if(being == player_node->getTarget())
-        player_node->setTarget(NULL);
-#endif
     delete being;
 }
 
