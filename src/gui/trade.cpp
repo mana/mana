@@ -271,15 +271,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             return;
         }
 
-        if (item->getQuantity() == 1)
-        {
-            tradeItem(item, 1);
-        }
-        else
-        {
-            // Choose amount of items to trade
-            new ItemAmountWindow(ItemAmountWindow::TradeAdd, this, item);
-        }
+        // Choose amount of items to trade
+        ItemAmountWindow::showWindow(ItemAmountWindow::TradeAdd, this, item);
 
         setStatus(PREPARING);
     }

@@ -45,12 +45,6 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         };
 
         /**
-         * Constructor.
-         */
-        ItemAmountWindow(Usage usage, Window *parent, Item *item,
-                         int maxRange = 0);
-
-        /**
          * Called when receiving actions from widget.
          */
         void action(const gcn::ActionEvent &event);
@@ -65,7 +59,18 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
          */
         void close();
 
+        /**
+         * Creates the dialog, or bypass it if there aren't enough items.
+         */
+        static void showWindow(Usage usage, Window *parent, Item *item,
+                         int maxRange = 0);
+
     private:
+        static void finish(Item *item, int amount, Usage usage);
+
+        ItemAmountWindow(Usage usage, Window *parent, Item *item,
+                         int maxRange = 0);
+
         gcn::Label *mItemAmountLabel;   /**< Item amount caption. */
         Item *mItem;
 

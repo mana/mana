@@ -128,15 +128,7 @@ void StorageWindow::action(const gcn::ActionEvent &event)
         if (!item)
             return;
 
-        if (item->getQuantity() == 1)
-        {
-            addStore(item, 1);
-        }
-        else
-        {
-            // Choose amount of items to trade
-            new ItemAmountWindow(ItemAmountWindow::StoreAdd, this, item);
-        }
+        ItemAmountWindow::showWindow(ItemAmountWindow::StoreAdd, this, item);
     }
     else if (event.getId() == "retrieve")
     {
@@ -145,15 +137,8 @@ void StorageWindow::action(const gcn::ActionEvent &event)
         if (!item)
             return;
 
-        if (item->getQuantity() == 1)
-        {
-            removeStore(item, 1);
-        }
-        else
-        {
-            // Choose amount of items to trade
-            new ItemAmountWindow(ItemAmountWindow::StoreRemove, this, item);
-        }
+        ItemAmountWindow::showWindow(ItemAmountWindow::StoreRemove, this,
+                                     item);
     }
 }
 

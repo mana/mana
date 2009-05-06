@@ -174,20 +174,12 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "drop")
     {
-        if (item->getQuantity() > 1) {
-            // Choose amount of items to drop
-            new ItemAmountWindow(ItemAmountWindow::ItemDrop, this, item);
-        }
-        else {
-            player_node->dropItem(item, 1);
-        }
+        ItemAmountWindow::showWindow(ItemAmountWindow::ItemDrop, this, item);
     }
     else if (event.getId() == "split")
     {
-        if (item && !item->isEquipment() && item->getQuantity() > 1) {
-            new ItemAmountWindow(ItemAmountWindow::ItemSplit, this, item,
+        ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
                                  (item->getQuantity() - 1));
-        }
     }
 }
 
@@ -244,12 +236,8 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
     {
         Item *item = mItems->getSelectedItem();
 
-        if (item && !item->isEquipment() && item->getQuantity() > 1)
-        {
-            mSplit = false;
-            new ItemAmountWindow(ItemAmountWindow::ItemSplit, this, item,
+        ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
                                  (item->getQuantity() - 1));
-        }
     }
 }
 

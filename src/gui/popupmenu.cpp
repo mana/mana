@@ -278,25 +278,25 @@ void PopupMenu::handleLink(const std::string &link)
 
     else if (link == "split")
     {
-        new ItemAmountWindow(ItemAmountWindow::ItemSplit,
+        ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit,
                              inventoryWindow, mItem);
     }
 
     else if (link == "drop")
     {
-        new ItemAmountWindow(ItemAmountWindow::ItemDrop,
+        ItemAmountWindow::showWindow(ItemAmountWindow::ItemDrop,
                              inventoryWindow, mItem);
     }
 
     else if (link == "store")
     {
-        new ItemAmountWindow(ItemAmountWindow::StoreAdd,
+        ItemAmountWindow::showWindow(ItemAmountWindow::StoreAdd,
                              inventoryWindow, mItem);
     }
 
     else if (link == "retrieve")
     {
-        new ItemAmountWindow(ItemAmountWindow::StoreRemove,
+        ItemAmountWindow::showWindow(ItemAmountWindow::StoreRemove,
                              storageWindow, mItem);
     }
 

@@ -35,6 +35,30 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
+{
+    switch (usage)
+    {
+        case TradeAdd:
+            tradeWindow->tradeItem(item, amount);
+            break;
+        case ItemDrop:
+            player_node->dropItem(item, amount);
+            break;
+        case ItemSplit:
+            player_node->splitItem(item, amount);
+            break;
+        case StoreAdd:
+            storageWindow->addStore(item, amount);
+            break;
+        case StoreRemove:
+            storageWindow->removeStore(item, amount);
+            break;
+        default:
+            break;
+    }
+}
+
 ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
                                    int maxRange):
     Window("", true, parent),
@@ -67,14 +91,6 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
 
     minusButton->adjustSize();
     minusButton->setWidth(plusButton->getWidth());
-
-    // If only one item is available, then the window isn't needed, so move on
-    // To prevent problems, we still build the gui elements
-    if (mMax <= 1)
-    {
-        action(gcn::ActionEvent(this, "All"));
-        return;
-    }
 
     // Set positions
     ContainerPlacer place;
@@ -145,27 +161,7 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
         if (event.getId() == "All") 
             amount = mMax;
 
-        switch (mUsage)
-        {
-            case TradeAdd:
-                tradeWindow->tradeItem(mItem, amount);
-                break;
-            case ItemDrop:
-                player_node->dropItem(mItem, amount);
-                break;
-            case ItemSplit:
-                player_node->splitItem(mItem, amount);
-                break;
-            case StoreAdd:
-                storageWindow->addStore(mItem, amount);
-                break;
-            case StoreRemove:
-                storageWindow->removeStore(mItem, amount);
-                break;
-            default:
-                return;
-                break;
-        }
+        finish(mItem, amount, mUsage);
 
         scheduleDelete();
         return;
@@ -178,4 +174,20 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
 void ItemAmountWindow::close()
 {
     scheduleDelete();
+}
+
+void ItemAmountWindow::showWindow(Usage usage, Window *parent, Item *item,
+                                  int maxRange)
+{
+    if (!maxRange)
+        maxRange = item->getQuantity();
+
+    if (maxRange <= 1)
+    {
+        finish(item, maxRange, usage);
+    }
+    else
+    {
+        new ItemAmountWindow(usage, parent, item, maxRange);
+    }
 }
