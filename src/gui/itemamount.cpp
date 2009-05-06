@@ -70,6 +70,14 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     minusButton->adjustSize();
     minusButton->setWidth(plusButton->getWidth());
 
+    // If only one item is available, then the window isn't needed, so move on
+    // To prevent problems, we still build the gui elements
+    if (mMax <= 1)
+    {
+        action(gcn::ActionEvent(this, "All"));
+        return;
+    }
+
     // Set positions
     ContainerPlacer place;
     place = getPlacer(0, 0);
@@ -151,14 +159,13 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
             case ItemSplit:
                 player_node->splitItem(mItem, amount);
                 break;
-#else
+#endif
             case StoreAdd:
                 storageWindow->addStore(mItem, amount);
                 break;
             case StoreRemove:
                 storageWindow->removeStore(mItem, amount);
                 break;
-#endif
             default:
                 return;
                 break;
