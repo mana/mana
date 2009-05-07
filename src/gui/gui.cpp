@@ -46,7 +46,6 @@
 
 // Guichan stuff
 Gui *gui = 0;
-Viewport *viewport = 0;                    /**< Viewport on the map. */
 SDLInput *guiInput = 0;
 
 // Bolded font
@@ -138,12 +137,6 @@ Gui::Gui(Graphics *graphics):
     setUseCustomCursor(config.getValue("customcursor", 1) == 1);
     mConfigListener = new GuiConfigListener(this);
     config.addListener("customcursor", mConfigListener);
-
-    // Create the viewport
-    viewport = new Viewport;
-    viewport->setDimension(gcn::Rectangle(0, 0,
-                graphics->getWidth(), graphics->getHeight()));
-    guiTop->add(viewport);
 }
 
 Gui::~Gui()
@@ -157,7 +150,6 @@ Gui::~Gui()
     delete mGuiFont;
     delete boldFont;
     delete mInfoParticleFont;
-    delete viewport;
     delete getTop();
 
     delete guiInput;

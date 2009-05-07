@@ -129,6 +129,7 @@ ChannelManager *channelManager = NULL;
 CommandHandler *commandHandler = NULL;
 Particle *particleEngine = NULL;
 EffectManager *effectManager = NULL;
+Viewport *viewport = NULL;                    /**< Viewport on the map. */
 
 ChatTab *localChatTab = NULL;
 
@@ -274,6 +275,14 @@ Game::Game():
 
     disconnectedDialog = NULL;
 
+    // Create the viewport
+    viewport = new Viewport();
+    viewport->setDimension(gcn::Rectangle(0, 0, graphics->getWidth(),
+                                          graphics->getHeight()));
+
+    gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+    top->add(viewport);
+
     createGuiWindows();
 
     mWindowMenu = new WindowMenu;
@@ -334,6 +343,7 @@ Game::~Game()
     delete commandHandler;
     delete joystick;
     delete particleEngine;
+    delete viewport;
 
     viewport->setMap(NULL);
 

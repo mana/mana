@@ -30,7 +30,6 @@ class Graphics;
 class GuiConfigListener;
 class ImageSet;
 class SDLInput;
-class Viewport;
 
 /**
  * \defgroup GUI Core GUI related classes (widgets)
