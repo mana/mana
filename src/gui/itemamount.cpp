@@ -25,7 +25,7 @@
 #include "gui/trade.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/label.h"
+#include "gui/widgets/inttextfield.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/slider.h"
 
@@ -33,7 +33,6 @@
 #include "localplayer.h"
 
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
 {
@@ -72,9 +71,9 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     setCloseButton(true);
 
     // Integer field
-
-    mItemAmountLabel = new Label(strprintf("%d / %d", 1, mMax));
-    mItemAmountLabel->setAlignment(gcn::Graphics::CENTER);
+    mItemAmountTextField = new IntTextField(1);
+    mItemAmountTextField->setRange(1, mMax);
+    mItemAmountTextField->setWidth(35);
 
     // Slider
     mItemAmountSlide = new Slider(1.0, mMax);
@@ -95,13 +94,13 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     // Set positions
     ContainerPlacer place;
     place = getPlacer(0, 0);
-
     place(0, 0, minusButton);
-    place(1, 0, mItemAmountSlide, 3);
-    place(4, 0, plusButton);
-    place(5, 0, mItemAmountLabel, 2);
-    place(7, 0, addAllButton);
+    place(1, 0, mItemAmountTextField);
+    place(2, 0, plusButton);
+    place(3, 0, addAllButton);
     place = getPlacer(0, 1);
+    place(0, 0, mItemAmountSlide, 6);
+    place = getPlacer(0, 2);
     place(4, 0, cancelButton);
     place(5, 0, okButton);
     reflowLayout(225, 0);
@@ -133,12 +132,12 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
 
 void ItemAmountWindow::resetAmount()
 {
-    mItemAmountLabel->setCaption(strprintf("%d / %d", 1, mMax));
+    mItemAmountTextField->setValue(1);
 }
 
 void ItemAmountWindow::action(const gcn::ActionEvent &event)
 {
-    int amount = mItemAmountSlide->getValue();
+    int amount = mItemAmountTextField->getValue();
 
     if (event.getId() == "Cancel")
     {
@@ -166,8 +165,7 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
         scheduleDelete();
         return;
     }
-
-    mItemAmountLabel->setCaption(strprintf("%d / %d", amount, mMax));
+    mItemAmountTextField->setValue(amount);
     mItemAmountSlide->setValue(amount);
 }
 

@@ -26,6 +26,7 @@
 
 #include <guichan/actionlistener.hpp>
 
+class IntTextField;
 class Item;
 
 /**
@@ -71,7 +72,7 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         ItemAmountWindow(Usage usage, Window *parent, Item *item,
                          int maxRange = 0);
 
-        gcn::Label *mItemAmountLabel;   /**< Item amount caption. */
+        IntTextField *mItemAmountTextField;   /**< Item amount caption. */
         Item *mItem;
 
         int mMax;
