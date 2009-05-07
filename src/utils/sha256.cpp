@@ -70,12 +70,14 @@
 
 #include "utils/sha256.h"
 
+#include "config.h"
+
 #include <memory.h>
 
-#ifdef HAS_STDINT
+#ifdef HAVE_STDINT_H
 #include <stdint.h>
-#endif
-#ifndef HAS_STDINT
+#else
+typedef unsigned char uint8_t;
 typedef unsigned int uint32_t;
 #endif
 
