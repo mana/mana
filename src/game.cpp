@@ -34,6 +34,7 @@
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "log.h"
+#include "main.h"
 #include "map.h"
 #include "npc.h"
 #include "particle.h"
@@ -474,12 +475,15 @@ void Game::logic()
         Net::getGeneralHandler()->flushNetwork();
         if (!Net::getGeneralHandler()->isNetworkConnected())
         {
+            if (state != STATE_ERROR)
+            {
+                errorMessage = _("The connection to the server was lost, "
+                                 "the program will now quit");
+            }
+
             if (!disconnectedDialog)
             {
-                disconnectedDialog = new OkDialog(_("Network Error"),
-                                                  _("The connection to the "
-                                                    "server was lost, the "
-                                                    "program will now quit"));
+                disconnectedDialog = new OkDialog(_("Network Error"), errorMessage);
                 disconnectedDialog->addActionListener(&exitListener);
                 disconnectedDialog->requestMoveToTop();
             }

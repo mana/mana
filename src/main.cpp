@@ -1011,7 +1011,7 @@ int main(int argc, char *argv[])
 
         Net::getGeneralHandler()->tick();
 
-        if (progressBar->isVisible())
+        if (progressBar && progressBar->isVisible())
         {
             progressBar->setProgress(progressBar->getProgress() + 0.005f);
             if (progressBar->getProgress() == 1.0f)
@@ -1470,7 +1470,8 @@ int main(int argc, char *argv[])
                     game = new Game;
                     game->logic();
                     delete game;
-                    state = STATE_EXIT;
+                    if (state != STATE_ERROR)
+                        state = STATE_EXIT;
                     break;
 
                 case STATE_UPDATE:

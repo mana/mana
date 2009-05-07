@@ -128,7 +128,11 @@ void GeneralHandler::handleMessage(MessageIn &msg)
                     errorMessage = _("No servers available");
                     break;
                 case 2:
-                    errorMessage = _("This account is already logged in");
+                    if (state == STATE_GAME)
+                        errorMessage = _("Someone else is trying to use this "
+                                         "account");
+                    else
+                        errorMessage = _("This account is already logged in");
                     break;
                 case 3:
                     errorMessage = _("Speed hack detected");
@@ -191,12 +195,12 @@ void GeneralHandler::tick()
 
     if (mNetwork->getState() == Network::NET_ERROR)
     {
-        state = STATE_ERROR;
-
         if (!mNetwork->getError().empty())
             errorMessage = mNetwork->getError();
         else
             errorMessage = _("Got disconnected from server!");
+
+        state = STATE_ERROR;
     }
 }
 
