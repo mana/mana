@@ -982,7 +982,8 @@ void Game::handleInput()
         }
 
         // Stop attacking if the right key is pressed
-        if (keyboard.isKeyActive(keyboard.KEY_TARGET))
+        if (!keyboard.isKeyActive(keyboard.KEY_ATTACK) 
+            && keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
             player_node->stopAttack();
         }
