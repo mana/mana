@@ -50,7 +50,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mMoneyLabel = new Label("Money:");
 
     mHpLabel = new Label("HP:");
-    mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
+    mHpBar = new ProgressBar(1.0f, 80, 15, gcn::Color(0, 171, 34));
     mHpValueLabel = new Label;
 
     int y = 3;

@@ -137,8 +137,8 @@ void InventoryHandler::moveItem(int oldIndex, int newIndex)
     if (oldIndex == newIndex)
         return;
 
-    // TODO fix me!
-    Net::GameServer::Player::moveItem(oldIndex, newIndex, -1);
+    Net::GameServer::Player::moveItem(oldIndex, newIndex,
+        player_node->getInventory()->getItem(oldIndex)->getQuantity());
 }
 
 void InventoryHandler::openStorage()

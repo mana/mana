@@ -36,7 +36,7 @@ ConnectionDialog::ConnectionDialog(int previousState):
     setContentSize(200, 100);
 
     Button *cancelButton = new Button(_("Cancel"), "cancelButton", this);
-    mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
+    mProgressBar = new ProgressBar(0.0, 200 - 10, 20, gcn::Color(128, 128, 128));
     gcn::Label *label = new Label(_("Connecting..."));
 
     cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
