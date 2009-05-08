@@ -163,7 +163,8 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "use")
     {
-        if (item->isEquipment()) {
+        if (item->isEquipment()) 
+        {
             if (item->isEquipped())
                 player_node->unequipItem(item);
             else
@@ -241,6 +242,7 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
     }
 }
 
+
 void InventoryWindow::setSplitAllowed(bool allowed)
 {
     mSplitButton->setVisible(allowed);
@@ -250,7 +252,17 @@ void InventoryWindow::updateButtons()
 {
     const Item *selectedItem = mItems->getSelectedItem();
 
-    if (selectedItem && selectedItem->isEquipment())
+    if (!selectedItem || selectedItem->getQuantity() == 0)
+    {
+        mUseButton->setEnabled(false);
+        mDropButton->setEnabled(false);
+        return;
+    }
+    
+    mUseButton->setEnabled(true);
+    mDropButton->setEnabled(true);
+        
+    if (selectedItem->isEquipment())
     {
         if (selectedItem->isEquipped())
             mUseButton->setCaption(_("Unequip"));
@@ -258,10 +270,9 @@ void InventoryWindow::updateButtons()
             mUseButton->setCaption(_("Equip"));
     }
     else
+    {
         mUseButton->setCaption(_("Use"));
-
-    mUseButton->setEnabled(selectedItem != 0);
-    mDropButton->setEnabled(selectedItem != 0);
+    }
 
     if (Net::getInventoryHandler()->canSplit(selectedItem))
     {
