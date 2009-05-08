@@ -124,15 +124,15 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         {
             const gcn::Color color = guiPalette->getColor(Palette::HIGHLIGHT);
 
-            // Set color to the highligh color
+            // Set color to the highlight color
             g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
             g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
                                             BOX_WIDTH, BOX_HEIGHT));
         }
 
-        // Set color black.
+        // Set color black
         g->setColor(gcn::Color(0, 0, 0));
-        // Draw box border.
+        // Draw box border
         g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
                                         BOX_WIDTH, BOX_HEIGHT));
 
