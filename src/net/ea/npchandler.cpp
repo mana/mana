@@ -58,33 +58,37 @@ NpcHandler::NpcHandler()
 void NpcHandler::handleMessage(MessageIn &msg)
 {
     int id;
+    bool resetPlayer = false;
 
     switch (msg.getId())
     {
         case SMSG_NPC_CHOICE:
             msg.readInt16();  // length
             current_npc = msg.readInt32();
-            player_node->setAction(LocalPlayer::STAND);
             npcDialog->setNpc(current_npc);
             npcDialog->choiceRequest();
             npcDialog->parseListItems(msg.readString(msg.getLength() - 8));
             npcDialog->setVisible(true);
+            resetPlayer = true;
             break;
 
         case SMSG_NPC_MESSAGE:
             msg.readInt16();  // length
             current_npc = msg.readInt32();
-            player_node->setAction(LocalPlayer::STAND);
             npcDialog->setNpc(current_npc);
             npcDialog->addText(msg.readString(msg.getLength() - 8));
             npcDialog->setVisible(true);
+            resetPlayer = true;
             break;
 
          case SMSG_NPC_CLOSE:
             id = msg.readInt32();
             // If we're talking to that NPC, show the close button
             if (id == current_npc)
+            {
                 npcDialog->showCloseButton();
+                resetPlayer = true;
+            }
             // Otherwise, move on as an empty dialog doesn't help
             else
                 closeDialog(id);
@@ -94,7 +98,10 @@ void NpcHandler::handleMessage(MessageIn &msg)
             id = msg.readInt32();
             // If we're talking to that NPC, show the next button
             if (id == current_npc)
+            {
                 npcDialog->showNextButton();
+                resetPlayer = true;
+            }
             // Otherwise, move on as an empty dialog doesn't help
             else
                 nextDialog(id);
@@ -103,21 +110,24 @@ void NpcHandler::handleMessage(MessageIn &msg)
         case SMSG_NPC_INT_INPUT:
             // Request for an integer
             current_npc = msg.readInt32();
-            player_node->setAction(LocalPlayer::STAND);
             npcDialog->setNpc(current_npc);
             npcDialog->integerRequest(0);
             npcDialog->setVisible(true);
+            resetPlayer = true;
             break;
 
         case SMSG_NPC_STR_INPUT:
             // Request for a string
             current_npc = msg.readInt32();
-            player_node->setAction(LocalPlayer::STAND);
             npcDialog->setNpc(current_npc);
             npcDialog->textRequest("");
             npcDialog->setVisible(true);
+            resetPlayer = true;
             break;
     }
+
+    if (resetPlayer && player_node->mAction != Being::SIT)
+        player_node->setAction(Being::STAND);
 }
 
 void NpcHandler::talk(int npcId)
