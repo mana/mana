@@ -23,11 +23,14 @@
 
 #include "gui/storagewindow.h"
 #include "gui/trade.h"
+#include "gui/itempopup.h"
+#include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/inttextfield.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/slider.h"
+#include "gui/widgets/icon.h"
 
 #include "item.h"
 #include "localplayer.h"
@@ -80,6 +83,10 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     mItemAmountSlide->setActionEventId("Slide");
     mItemAmountSlide->addActionListener(this);
 
+    //Item icon
+    Image *image = item->getImage();
+    mItemIcon = new Icon(image);
+
     // Buttons
     Button *minusButton = new Button("-", "Minus", this);
     Button *plusButton = new Button("+", "Plus", this);
@@ -93,15 +100,17 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     // Set positions
     ContainerPlacer place;
     place = getPlacer(0, 0);
-    place(0, 0, minusButton);
-    place(1, 0, mItemAmountTextField);
-    place(2, 0, plusButton);
-    place(3, 0, addAllButton);
-    place = getPlacer(0, 1);
-    place(0, 0, mItemAmountSlide, 6);
-    place = getPlacer(0, 2);
-    place(4, 0, cancelButton);
-    place(5, 0, okButton);
+    place(1, 0, minusButton);
+    place(2, 0, mItemAmountTextField);
+    place(3, 0, plusButton);
+    place(4, 0, addAllButton);
+
+    place(0, 1, mItemIcon);
+    place(1, 1, mItemAmountSlide, 5);
+
+    place(4, 2, cancelButton);
+    place(5, 2, okButton);
+
     reflowLayout(225, 0);
 
     resetAmount();
@@ -127,6 +136,25 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
 
     setLocationRelativeTo(getParentWindow());
     setVisible(true);
+
+    mItemPopup = new ItemPopup;
+    mItemIcon->addMouseListener(this);
+}
+
+// Show ItemTooltip
+void ItemAmountWindow::mouseMoved(gcn::MouseEvent &event)
+{
+    if(event.getSource() == mItemIcon)
+    {
+        mItemPopup->setItem(mItem->getInfo());
+        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
+    }
+}
+
+// Hide ItemTooltip
+void ItemAmountWindow::mouseExited(gcn::MouseEvent &event)
+{
+    mItemPopup->setVisible(false);
 }
 
 void ItemAmountWindow::resetAmount()
@@ -170,6 +198,7 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
 
 void ItemAmountWindow::close()
 {
+    delete mItemPopup;
     scheduleDelete();
 }
 

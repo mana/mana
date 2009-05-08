@@ -29,13 +29,16 @@
 
 class IntTextField;
 class Item;
+class ItemPopup;
+class Icon;
 
 /**
  * Window used for selecting the amount of items to drop, trade or split.
  *
  * \ingroup Interface
  */
-class ItemAmountWindow : public Window, public gcn::ActionListener,
+class ItemAmountWindow : public Window,
+                         public gcn::ActionListener,
                          public gcn::KeyListener
 {
     public:
@@ -56,6 +59,10 @@ class ItemAmountWindow : public Window, public gcn::ActionListener,
          * Sets default amount value.
          */
         void resetAmount();
+
+        // MouseListener
+        void mouseMoved(gcn::MouseEvent &event);
+        void mouseExited(gcn::MouseEvent &event);
 
         /**
          * Schedules the Item Amount window for deletion.
@@ -78,9 +85,11 @@ class ItemAmountWindow : public Window, public gcn::ActionListener,
 
         IntTextField *mItemAmountTextField;   /**< Item amount caption. */
         Item *mItem;
+        Icon *mItemIcon;
 
         int mMax;
         Usage mUsage;
+        ItemPopup *mItemPopup;
 
         /**
          * Item Amount buttons.
