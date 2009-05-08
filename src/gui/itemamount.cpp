@@ -74,6 +74,7 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     mItemAmountTextField = new IntTextField(1);
     mItemAmountTextField->setRange(1, mMax);
     mItemAmountTextField->setWidth(35);
+    mItemAmountTextField->addKeyListener(this);
 
     // Slider
     mItemAmountSlide = new Slider(1.0, mMax);
@@ -172,6 +173,11 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
 void ItemAmountWindow::close()
 {
     scheduleDelete();
+}
+
+void ItemAmountWindow::keyReleased(gcn::KeyEvent &keyEvent)
+{
+    mItemAmountSlide->setValue(mItemAmountTextField->getValue());
 }
 
 void ItemAmountWindow::showWindow(Usage usage, Window *parent, Item *item,

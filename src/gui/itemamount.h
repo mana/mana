@@ -24,6 +24,7 @@
 
 #include "gui/widgets/window.h"
 
+#include <guichan/keylistener.hpp>
 #include <guichan/actionlistener.hpp>
 
 class IntTextField;
@@ -34,7 +35,8 @@ class Item;
  *
  * \ingroup Interface
  */
-class ItemAmountWindow : public Window, public gcn::ActionListener
+class ItemAmountWindow : public Window, public gcn::ActionListener,
+                         public gcn::KeyListener
 {
     public:
         enum Usage {
@@ -59,6 +61,8 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
          * Schedules the Item Amount window for deletion.
          */
         void close();
+
+        void keyReleased(gcn::KeyEvent &keyEvent);
 
         /**
          * Creates the dialog, or bypass it if there aren't enough items.
