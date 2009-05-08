@@ -31,6 +31,7 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
+#include "gui/widgets/textfield.h"
 #include "gui/widgets/textpreview.h"
 
 #include "configuration.h"
@@ -96,7 +97,6 @@ Setup_Colors::Setup_Colors() :
     mGradDelayText->setWidth(40);
     mGradDelayText->setRange(20, 100);
     mGradDelayText->setNumeric(true);
-    mGradDelayText->addListener(this);
     mGradDelayText->setEnabled(false);
 
     mGradDelaySlider = new Slider(20, 100);
@@ -112,7 +112,6 @@ Setup_Colors::Setup_Colors() :
     mRedText->setWidth(40);
     mRedText->setRange(0, 255);
     mRedText->setNumeric(true);
-    mRedText->addListener(this);
     mRedText->setEnabled(false);
 
     mRedSlider = new Slider(0, 255);
@@ -128,7 +127,6 @@ Setup_Colors::Setup_Colors() :
     mGreenText->setWidth(40);
     mGreenText->setRange(0, 255);
     mGreenText->setNumeric(true);
-    mGreenText->addListener(this);
     mGreenText->setEnabled(false);
 
     mGreenSlider = new Slider(0, 255);
@@ -144,7 +142,6 @@ Setup_Colors::Setup_Colors() :
     mBlueText->setWidth(40);
     mBlueText->setRange(0, 255);
     mBlueText->setNumeric(true);
-    mBlueText->addListener(this);
     mBlueText->setEnabled(false);
 
     mBlueSlider = new Slider(0, 255);
@@ -407,6 +404,7 @@ void Setup_Colors::cancel()
     setEntry(mBlueSlider, mBlueText, col->b);
 }
 
+#if 0
 void Setup_Colors::listen(const TextField *tf)
 {
     if (tf == mGradDelayText)
@@ -420,6 +418,7 @@ void Setup_Colors::listen(const TextField *tf)
 
     updateColor();
 }
+#endif
 
 void Setup_Colors::updateGradType()
 {

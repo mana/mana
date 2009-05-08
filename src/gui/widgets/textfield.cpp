@@ -42,8 +42,7 @@ ImageRect TextField::skin;
 
 TextField::TextField(const std::string &text):
     gcn::TextField(text),
-    mNumeric(false),
-    mListener(0)
+    mNumeric(false)
 {
     setFrameSize(2);
 
