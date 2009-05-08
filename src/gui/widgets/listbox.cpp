@@ -66,7 +66,6 @@ void ListBox::draw(gcn::Graphics *graphics)
     }
 }
 
-// -- KeyListener notifications
 void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
 {
     gcn::Key key = keyEvent.getKey();
@@ -105,31 +104,14 @@ void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
     }
 }
 
+// Don't do anything on scrollwheel. ScrollArea will deal with that.
+
 void ListBox::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
-    if (isFocused())
-    {
-        if (getSelected() > 0)
-            setSelected(getSelected() - 1);
-        else if (getSelected() == 0 && mWrappingEnabled)
-            setSelected(getListModel()->getNumberOfElements() - 1);
-
-        mouseEvent.consume();
-    }
 }
 
 void ListBox::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
 {
-    if (isFocused())
-    {
-        if (getSelected() < (getListModel()->getNumberOfElements() - 1))
-            setSelected(getSelected() + 1);
-        else if (getSelected() == (getListModel()->getNumberOfElements() - 1) &&
-                 mWrappingEnabled)
-            setSelected(0);
-
-        mouseEvent.consume();
-    }
 }
 
 void ListBox::mouseDragged(gcn::MouseEvent &event)
