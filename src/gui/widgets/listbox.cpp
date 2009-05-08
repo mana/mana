@@ -116,7 +116,10 @@ void ListBox::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
 
 void ListBox::mouseDragged(gcn::MouseEvent &event)
 {
-    // Pretend mouse is pressed continuously while dragged. Causes list
-    // selection to be updated as is default in many GUIs.
-    mousePressed(event);
+    if (event.getButton() != gcn::MouseEvent::LEFT)
+        return;
+
+    // Make list selection update on drag, but guard against negative y
+    int y = std::max(0, event.getY());
+    setSelected(y / getRowHeight());
 }
