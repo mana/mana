@@ -86,7 +86,6 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     Button *minusButton = new Button("-", "Minus", this);
     Button *plusButton = new Button("+", "Plus", this);
     Button *okButton = new Button(_("Ok"), "Ok", this);
-    Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
     Button *addAllButton = new Button(_("All"), "All", this);
 
     minusButton->adjustSize();
@@ -102,7 +101,6 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     place = getPlacer(0, 1);
     place(0, 0, mItemAmountSlide, 6);
     place = getPlacer(0, 2);
-    place(4, 0, cancelButton);
     place(5, 0, okButton);
     reflowLayout(225, 0);
 
@@ -140,11 +138,7 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
 {
     int amount = mItemAmountTextField->getValue();
 
-    if (event.getId() == "Cancel")
-    {
-        close();
-    }
-    else if (event.getId() == "Plus" && amount < mMax)
+    if (event.getId() == "Plus" && amount < mMax)
     {
         amount++;
     }
