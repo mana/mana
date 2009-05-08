@@ -765,6 +765,9 @@ void Game::handleInput()
                     case KeyboardConfig::KEY_WINDOW_DEBUG:
                         requestedWindow = debugWindow;
                         break;
+                    case KeyboardConfig::KEY_WINDOW_PARTY:
+                        requestedWindow = partyWindow;
+                        break;
                     case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
                         requestedWindow = emoteShortcutWindow;
                         break;

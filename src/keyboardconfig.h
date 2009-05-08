@@ -188,6 +188,7 @@ class KeyboardConfig
             KEY_WINDOW_SHORTCUT,
             KEY_WINDOW_SETUP,
             KEY_WINDOW_DEBUG,
+            KEY_WINDOW_PARTY,
             KEY_WINDOW_EMOTE_SHORTCUT,
             KEY_EMOTE_1,
             KEY_EMOTE_2,
