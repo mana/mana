@@ -1470,8 +1470,7 @@ int main(int argc, char *argv[])
                     game = new Game;
                     game->logic();
                     delete game;
-                    if (state != STATE_ERROR)
-                        state = STATE_EXIT;
+                    state = STATE_EXIT;
                     break;
 
                 case STATE_UPDATE:
