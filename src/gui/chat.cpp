@@ -74,6 +74,9 @@ ChatWindow::ChatWindow():
 {
     setWindowName("Chat");
 
+    // no title presented, title bar is padding so window can be moved.
+    gcn::Window::setTitleBarHeight(gcn::Window::getPadding());
+    setShowTitle(false);
     setResizable(true);
     setDefaultVisible(true);
     setSaveVisible(true);
