@@ -147,7 +147,9 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         {
             // Draw Item.
             Image *image = item->getImage();
-            g->drawImage(image, mEquipBox[i].posX, mEquipBox[i].posY);
+            g->drawImage(image,
+                         mEquipBox[i].posX + 2,
+                         mEquipBox[i].posY + 2);
 #ifdef EATHENA_SUPPORT
             if (i == EQUIP_AMMO_SLOT)
             {
