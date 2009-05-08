@@ -44,6 +44,7 @@ Player::Player(int id, int job, Map *map):
     mIsGM(false),
     mInParty(false)
 {
+    mShowName = config.getValue("visiblenames", 1);
     config.addListener("visiblenames", this);
 }
 
@@ -55,7 +56,7 @@ Player::~Player()
 
 void Player::setName(const std::string &name)
 {
-    if (!mName)
+    if (!mName && mShowName)
     {
         if (mIsGM)
         {
@@ -295,13 +296,13 @@ void Player::optionChanged(const std::string &value)
 {
     if (value == "visiblenames" && getType() == Being::PLAYER && player_node != this)
     {
-        bool value = config.getValue("visiblenames", 1);
-        if (!value && mName)
+        mShowName = config.getValue("visiblenames", 1);
+        if (!mShowName && mName)
         {
             delete mName;
             mName = NULL;
         }
-        else if (value && !mName && !(getName().empty()))
+        else if (mShowName && !mName && !(getName().empty()))
         {
             setName(getName());
         }

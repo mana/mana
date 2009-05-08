@@ -155,6 +155,7 @@ class Player : public Being
         std::map<int, Guild*> mGuilds;
 #endif
 
+        bool mShowName;
         FlashText *mName;
 
         bool mIsGM;
