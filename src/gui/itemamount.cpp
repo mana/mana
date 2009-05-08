@@ -105,7 +105,7 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     place(3, 0, plusButton);
     place(4, 0, addAllButton);
 
-    place(0, 1, mItemIcon);
+    place(0, 0, mItemIcon, 1, 3);
     place(1, 1, mItemAmountSlide, 5);
 
     place(4, 2, cancelButton);
