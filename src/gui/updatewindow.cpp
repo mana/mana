@@ -108,7 +108,7 @@ UpdaterWindow::UpdaterWindow(const std::string &updateHost,
     mBrowserBox = new BrowserBox;
     mScrollArea = new ScrollArea(mBrowserBox);
     mLabel = new Label(_("Connecting..."));
-    mProgressBar = new ProgressBar(0.0, 310, 20, 168, 116, 31);
+    mProgressBar = new ProgressBar(0.0, 310, 20, gcn::Color(168, 116, 31));
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayButton = new Button(_("Play"), "play", this);
 

@@ -26,8 +26,6 @@
 
 #include <guichan/widget.hpp>
 
-#include <SDL_types.h>
-
 class ImageRect;
 
 /**
@@ -42,12 +40,9 @@ class ProgressBar : public gcn::Widget
          * Constructor, initializes the progress with the given value.
          */
         ProgressBar(float progress = 0.0f,
-                    unsigned int width = 40, unsigned int height = 7,
-                    Uint8 red = 150, Uint8 green = 150, Uint8 blue = 150);
+                    int width = 40, int height = 7,
+                    const gcn::Color &color = gcn::Color(150, 150, 150));
 
-        /**
-         * Destructor.
-         */
         ~ProgressBar();
 
         /**
@@ -71,24 +66,22 @@ class ProgressBar : public gcn::Widget
         float getProgress() const { return mProgress; }
 
         /**
-         * Change the filling of the progress bar.
+         * Change the color of the progress bar.
          */
-        void setColor(Uint8, Uint8 green, Uint8 blue);
+        void setColor(const gcn::Color &color);
 
         /**
-         * Returns the red value of color.
+         * Change the color of the progress bar.
+         *
+         * This is an overload provided for convenience.
          */
-        Uint8 getRed() const { return mRed; }
+        inline void setColor(int r, int g, int b)
+        { setColor(gcn::Color(r, g, b)); }
 
         /**
-         * Returns the green value of color.
+         * Returns the color of the progress bar.
          */
-        Uint8 getGreen() const { return mGreen; }
-
-        /**
-         * Returns the blue value of color.
-         */
-        Uint8 getBlue() const { return mBlue; }
+        const gcn::Color &getColor() const { return mColor; }
 
         /**
          * Sets the text shown on the progress bar.
@@ -103,33 +96,31 @@ class ProgressBar : public gcn::Widget
         { return mText; }
 
         /**
-         * Set wether the progress is moved smoothly.
+         * Set whether the progress is moved smoothly.
          */
         void setSmoothProgress(bool smoothProgress)
         { mSmoothProgress = smoothProgress; }
 
         /**
-         * Set wether the color changing is made smoothly.
+         * Set whether the color changing is made smoothly.
          */
         void setSmoothColorChange(bool smoothColorChange)
         { mSmoothColorChange = smoothColorChange; }
-
 
     private:
         float mProgress, mProgressToGo;
         bool mSmoothProgress;
 
-        Uint8 mRed, mGreen, mBlue;
-        Uint8 mRedToGo, mGreenToGo, mBlueToGo;
+        gcn::Color mColor;
+        gcn::Color mColorToGo;
         bool mSmoothColorChange;
 
         std::string mText;
-        bool mUpdated;
 
         static ImageRect mBorder;
         static int mInstances;
         static float mAlpha;
-        
+
         static const gcn::Color TEXT_COLOR;
 };
 

@@ -38,18 +38,18 @@ int ProgressBar::mInstances = 0;
 float ProgressBar::mAlpha = 1.0;
 
 ProgressBar::ProgressBar(float progress,
-                         unsigned int width, unsigned int height,
-                         Uint8 red, Uint8 green, Uint8 blue):
+                         int width, int height,
+                         const gcn::Color &color):
     gcn::Widget(),
-    mRed(red), mGreen(green), mBlue(blue),
-    mRedToGo(red), mGreenToGo(green), mBlueToGo(blue)
+    mProgress(0.0f),
+    mProgressToGo(0.0f),
+    mSmoothProgress(true),
+    mColor(color),
+    mColorToGo(color),
+    mSmoothColorChange(true)
 {
-    mProgressToGo = mProgress = 0.0f;
-    mSmoothProgress = mSmoothColorChange = true;
-
     setProgress(progress);
-    setWidth(width);
-    setHeight(height);
+    setSize(width, height);
 
     if (mInstances == 0)
     {
@@ -99,28 +99,28 @@ void ProgressBar::logic()
     if (mSmoothColorChange)
     {
         // Smoothly changing the color for a nicer effect.
-        if (mRedToGo > mRed) mRed++;
-        if (mRedToGo < mRed) mRed--;
-        if (mGreenToGo > mGreen) mGreen++;
-        if (mGreenToGo < mGreen) mGreen--;
-        if (mBlueToGo > mBlue) mBlue++;
-        if (mBlueToGo < mBlue) mBlue--;
-    }
-    else
-    {
-        mRed = mRedToGo;
-        mGreen = mGreenToGo;
-        mBlue = mBlueToGo;
+        if (mColorToGo.r > mColor.r)
+            mColor.r++;
+        if (mColorToGo.g > mColor.g)
+            mColor.g++;
+        if (mColorToGo.b > mColor.b)
+            mColor.b++;
+        if (mColorToGo.r < mColor.r)
+            mColor.r--;
+        if (mColorToGo.g < mColor.g)
+            mColor.g--;
+        if (mColorToGo.b < mColor.b)
+            mColor.b--;
     }
 
     if (mSmoothProgress)
     {
         // Smoothly showing the progressbar changes.
-        if (mProgressToGo > mProgress) mProgress = mProgress + 0.005f;
-        if (mProgressToGo < mProgress) mProgress = mProgress - 0.005f;
+        if (mProgressToGo > mProgress)
+            mProgress = std::min(1.0f, mProgress + 0.005f);
+        if (mProgressToGo < mProgress)
+            mProgress = std::max(0.0f, mProgress - 0.005f);
     }
-    else
-        mProgress = mProgressToGo;
 }
 
 void ProgressBar::draw(gcn::Graphics *graphics)
@@ -137,12 +137,12 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
 
-    const int alpha = (int)(mAlpha * 255.0f);
+    mColor.a = (int) (mAlpha * 255);
 
     // The bar
     if (mProgress > 0)
     {
-        graphics->setColor(gcn::Color(mRed, mGreen, mBlue, alpha));
+        graphics->setColor(mColor);
         graphics->fillRectangle(gcn::Rectangle(4, 4,
                                (int) (mProgress * (getWidth() - 8)),
                                 getHeight() - 8));
@@ -163,14 +163,17 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 
 void ProgressBar::setProgress(float progress)
 {
-    if (progress < 0.0f) mProgressToGo = 0.0;
-    else if (progress > 1.0f) mProgressToGo = 1.0;
-    else mProgressToGo = progress;
+    const float p = std::min(1.0f, std::max(0.0f, progress));
+    mProgressToGo = p;
+
+    if (!mSmoothProgress)
+        mProgress = p;
 }
 
-void ProgressBar::setColor(Uint8 red, Uint8 green, Uint8 blue)
+void ProgressBar::setColor(const gcn::Color &color)
 {
-    mRedToGo = red;
-    mGreenToGo = green;
-    mBlueToGo = blue;
+    mColorToGo = color;
+
+    if (!mSmoothColorChange)
+        mColor = color;
 }

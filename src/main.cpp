@@ -922,7 +922,9 @@ int main(int argc, char *argv[])
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
     Desktop *desktop = new Desktop;
     top->add(desktop);
-    ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20, 168, 116, 31);
+    ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20,
+                                               gcn::Color(168, 116, 31));
+    progressBar->setSmoothProgress(false);
     gcn::Label *progressLabel = new Label;
     top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
     top->add(progressLabel, 15 + progressBar->getWidth(),
