@@ -105,12 +105,12 @@ class Player : public Being
         /**
          * Returns a pointer to the specified guild.
          */
-        Guild *getGuild(const std::string &guildName);
+        Guild *getGuild(const std::string &guildName) const;
 
         /**
          * Returns a pointer to the guild with matching id.
          */
-        Guild *getGuild(int id);
+        Guild *getGuild(int id) const;
 
         /**
          * Get number of guilds the player belongs to.

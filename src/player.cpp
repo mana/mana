@@ -253,9 +253,9 @@ void Player::removeGuild(int id)
     mGuilds.erase(id);
 }
 
-Guild* Player::getGuild(const std::string &guildName)
+Guild *Player::getGuild(const std::string &guildName) const
 {
-    std::map<int, Guild*>::iterator itr, itr_end = mGuilds.end();
+    std::map<int, Guild*>::const_iterator itr, itr_end = mGuilds.end();
     for (itr = mGuilds.begin(); itr != itr_end; ++itr)
     {
         Guild *guild = itr->second;
@@ -268,9 +268,9 @@ Guild* Player::getGuild(const std::string &guildName)
     return NULL;
 }
 
-Guild* Player::getGuild(int id)
+Guild *Player::getGuild(int id) const
 {
-    std::map<int, Guild*>::iterator itr;
+    std::map<int, Guild*>::const_iterator itr;
     itr = mGuilds.find(id);
     if (itr != mGuilds.end())
     {

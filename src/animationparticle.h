@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _ANIMATION_PARTICLE
-#define _ANIMATION_PARTICLE
+#ifndef ANIMATION_PARTICLE_H
+#define ANIMATION_PARTICLE_H
 
 #include <libxml/tree.h>
 

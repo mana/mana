@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _PARTICLEEMITTER_H
-#define _PARTICLEEMITTER_H
+#ifndef PARTICLEEMITTER_H
+#define PARTICLEEMITTER_H
 
 #include <list>
 

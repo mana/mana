@@ -25,8 +25,6 @@
 #include "graphics.h"
 #include "guichanfwd.h"
 
-#include "gui/widgets/resizegrip.h"
-
 #include <guichan/widgetlistener.hpp>
 
 #include <guichan/widgets/window.hpp>
@@ -34,6 +32,7 @@
 class ContainerPlacer;
 class Layout;
 class LayoutCell;
+class ResizeGrip;
 class Skin;
 class WindowContainer;
 

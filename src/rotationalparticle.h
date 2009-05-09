@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _ROTATIONAL_PARTICLE_H
-#define _ROTATIONAL_PARTICLE_H
+#ifndef ROTATIONAL_PARTICLE_H
+#define ROTATIONAL_PARTICLE_H
 
 #include <libxml/tree.h>
 

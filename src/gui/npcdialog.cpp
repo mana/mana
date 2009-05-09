@@ -22,12 +22,13 @@
 #include "gui/npcdialog.h"
 
 #include "gui/widgets/button.h"
+#include "gui/widgets/inttextfield.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/resizegrip.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textbox.h"
-#include "gui/widgets/listbox.h"
 #include "gui/widgets/textfield.h"
-#include "gui/widgets/inttextfield.h"
 
 #include "npc.h"
 

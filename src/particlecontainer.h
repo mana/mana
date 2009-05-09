@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _PARTICLE_CONTAINER_H
-#define _PARTICLE_CONTAINER_H
+#ifndef PARTICLE_CONTAINER_H
+#define PARTICLE_CONTAINER_H
 
 #include <list>
 #include <vector>
