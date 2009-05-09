@@ -27,6 +27,7 @@
 #include "guichanfwd.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/selectionlistener.hpp>
 
 #include <string>
 
@@ -34,7 +35,9 @@ class BrowserBox;
 class TextField;
 class TextPreview;
 
-class Setup_Colors : public SetupTab, public gcn::ActionListener
+class Setup_Colors : public SetupTab,
+                     public gcn::ActionListener,
+                     public gcn::SelectionListener
 {
     public:
         Setup_Colors();
@@ -42,7 +45,10 @@ class Setup_Colors : public SetupTab, public gcn::ActionListener
 
         void apply();
         void cancel();
+
         void action(const gcn::ActionEvent &event);
+
+        void valueChanged(const gcn::SelectionEvent &event);
 
     private:
         static const std::string rawmsg;
