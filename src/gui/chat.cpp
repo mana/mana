@@ -44,6 +44,8 @@
 #include <guichan/focushandler.hpp>
 #include <guichan/focuslistener.hpp>
 
+#include <sstream>
+
 /**
  * The chat input hides when it loses focus. It is also invisible by default.
  */
@@ -336,7 +338,7 @@ void ChatWindow::doPresent()
         time(&t);
 
         // Format the time string properly
-        std::stringstream timeStr;
+        std::ostringstream timeStr;
         timeStr << "[" << ((((t / 60) / 60) % 24 < 10) ? "0" : "")
             << (int) (((t / 60) / 60) % 24)
             << ":" << (((t / 60) % 60 < 10) ? "0" : "")
@@ -359,7 +361,8 @@ void ChatWindow::scroll(int amount)
         return;
 
     ChatTab *tab = getFocused();
-    if (tab) tab->scroll(amount);
+    if (tab)
+        tab->scroll(amount);
 }
 
 void ChatWindow::keyPressed(gcn::KeyEvent &event)
@@ -397,16 +400,24 @@ void ChatWindow::keyPressed(gcn::KeyEvent &event)
     }
 }
 
-void ChatWindow::addInputText(std::string input_str)
+void ChatWindow::addInputText(const std::string &text)
 {
-     mChatInput->setText(mChatInput->getText() + input_str + " ");
-     requestChatFocus();
+    const int caretPos = mChatInput->getCaretPosition();
+    const std::string inputText = mChatInput->getText();
+
+    std::ostringstream ss;
+    ss << inputText.substr(0, caretPos) << text << " ";
+    ss << inputText.substr(caretPos);
+
+    mChatInput->setText(ss.str());
+    mChatInput->setCaretPosition(caretPos + text.length() + 1);
+    requestChatFocus();
 }
 
 void ChatWindow::addItemText(const std::string &item)
 {
     std::ostringstream text;
-    text << "[" << item << "] ";
+    text << "[" << item << "]";
     addInputText(text.str());
 }
 

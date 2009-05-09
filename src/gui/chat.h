@@ -91,12 +91,12 @@ class ChatWindow : public Window,
         /**
          * Gets the focused tab.
          */
-        ChatTab* getFocused() const;
+        ChatTab *getFocused() const;
 
         /**
          * Clear the given tab.
          */
-        void clearTab(ChatTab* tab);
+        void clearTab(ChatTab *tab);
 
         /**
          * Clear the current tab.
@@ -141,8 +141,8 @@ class ChatWindow : public Window,
         /** Called when key is pressed */
         void keyPressed(gcn::KeyEvent &event);
 
-        /** Add the given text to the chat input */
-        void addInputText(std::string input_str);
+        /** Add the given text to the chat input. */
+        void addInputText(const std::string &text);
 
         /** Called to add item to chat */
         void addItemText(const std::string &item);
