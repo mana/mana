@@ -22,7 +22,6 @@
 #include "gui/widgets/window.h"
 
 #include "gui/widgets/layout.h"
-#include "gui/widgets/resizegrip.h"
 #include "gui/widgets/windowcontainer.h"
 
 #include "gui/gui.h"

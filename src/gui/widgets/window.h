@@ -25,6 +25,8 @@
 #include "graphics.h"
 #include "guichanfwd.h"
 
+#include "gui/widgets/resizegrip.h"
+
 #include <guichan/widgetlistener.hpp>
 
 #include <guichan/widgets/window.hpp>
@@ -32,7 +34,6 @@
 class ContainerPlacer;
 class Layout;
 class LayoutCell;
-class ResizeGrip;
 class Skin;
 class WindowContainer;
 
@@ -336,6 +337,9 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getGuiAlpha();
 
+    protected:
+        ResizeGrip *mGrip;            /**< Resize grip */
+
     private:
         enum ResizeHandles
         {
@@ -354,7 +358,6 @@ class Window : public gcn::Window, gcn::WidgetListener
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
-        ResizeGrip *mGrip;            /**< Resize grip */
         Window *mParent;              /**< The parent window */
         Layout *mLayout;              /**< Layout handler */
         std::string mWindowName;      /**< Name of the window */

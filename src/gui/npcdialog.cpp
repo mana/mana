@@ -110,6 +110,16 @@ NpcDialog::NpcDialog()
     loadWindowState();
 }
 
+NpcDialog::~NpcDialog()
+{
+    // These might not actually be in the layout, so lets be safe
+    delete mItemList;
+    delete mTextField;
+    delete mIntField;
+    delete mResetButton;
+    delete mPlusButton;
+    delete mMinusButton;
+}
 
 void NpcDialog::setText(const std::string &text)
 {
@@ -281,6 +291,8 @@ void NpcDialog::widgetResized(const gcn::Event &event)
 void NpcDialog::buildLayout()
 {
     clearLayout();
+
+    add(mGrip);
 
     if (mActionState != NPC_ACTION_INPUT)
     {

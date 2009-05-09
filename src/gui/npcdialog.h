@@ -54,6 +54,8 @@ class NpcDialog : public Window, public gcn::ActionListener,
          */
         NpcDialog();
 
+        ~NpcDialog();
+
         /**
          * Called when receiving actions from the widgets.
          */
