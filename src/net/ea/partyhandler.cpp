@@ -261,10 +261,6 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 int id = msg.readInt32();
                 std::string chatMsg = msg.readString(msgLength);
 
-                Being *being = beingManager->findBeing(id);
-                if (being)
-                    being->setSpeech(chatMsg, SPEECH_TIME);
-
                 PartyMember *member = partyWindow->findMember(id);
                 if (member)
                     partyTab->chatLog(member->name, chatMsg);
