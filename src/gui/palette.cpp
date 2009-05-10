@@ -95,7 +95,7 @@ Palette::Palette() :
     addColor(PLAYER, 0x1fa052, STATIC, indent + _("Player"), 'Y');
     addColor(WHISPER, 0x0000ff, STATIC, indent + _("Whisper"), 'W');
     addColor(IS, 0xa08527, STATIC, indent + _("Is"), 'I');
-    addColor(PARTY, 0xff00d8, STATIC, indent + _("Party"), 'P');
+    addColor(PARTY, 0xf48055, STATIC, indent + _("Party"), 'P');
     addColor(SERVER, 0x8415e2, STATIC, indent + _("Server"), 'S');
     addColor(LOGGER, 0x919191, STATIC, indent + _("Logger"), 'L');
     addColor(HYPERLINK, 0xe50d0d, STATIC, indent + _("Hyperlink"), '<');
