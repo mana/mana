@@ -37,7 +37,7 @@ Avatar::Avatar(const std::string &name):
     mName(name)
 {
     setOpaque(false);
-    setSize(110, 12);
+    setSize(200, 12);
 
     if (avatarCount == 0)
     {
@@ -54,8 +54,8 @@ Avatar::Avatar(const std::string &name):
     add(mStatus, 1, 0);
 
     mLabel = new Label(name);
-    mLabel->setSize(85, 12);
-    add(mLabel, 14, 0);
+    mLabel->setSize(174, 12);
+    add(mLabel, 16, 0);
 }
 
 Avatar::~Avatar()
