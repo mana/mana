@@ -31,6 +31,7 @@
 #include "player.h"
 
 #include "gui/palette.h"
+#include "gui/partywindow.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -183,6 +184,10 @@ void Minimap::draw(gcn::Graphics *graphics)
                     {
                         type = Palette::SELF;
                         dotSize = 3;
+                    }
+                    else if (partyWindow->findMember(being->getId()))
+                    {
+                        type = Palette::PARTY;
                     }
 
                     if (static_cast<const Player*>(being)->isGM())
