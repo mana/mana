@@ -56,13 +56,13 @@ Minimap::Minimap():
     setResizable(false);
 
     setDefaultVisible(true);
-    setSaveVisible(false);
+    setSaveVisible(true);
 
     setStickyButton(true);
     setSticky(false);
 
     loadWindowState();
-    setVisible(mShow);
+    setVisible(mShow, isSticky());
 }
 
 Minimap::~Minimap()
@@ -94,9 +94,6 @@ void Minimap::setMap(Map *map)
     ResourceManager *resman = ResourceManager::getInstance();
     mMapImage = resman->getImage(map->getProperty("minimap"));
 
-    if (!mShow)
-        return;
-
     if (mMapImage)
     {
         const int offsetX = 2 * getPadding();
@@ -120,17 +117,19 @@ void Minimap::setMap(Map *map)
         setDefaultSize(getX(), getY(), getWidth(), getHeight());
         resetToDefaultSize();
 
-        setVisible(true);
+        if (mShow)
+            setVisible(true);
     }
     else
     {
-        setVisible(false);
+        if (!isSticky())
+            setVisible(false);
     }
 }
 
 void Minimap::toggle()
 {
-    setVisible(!mShow, isSticky());
+    setVisible(!isVisible(), isSticky());
     mShow = isVisible();
 }
 
