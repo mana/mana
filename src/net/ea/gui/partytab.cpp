@@ -23,6 +23,8 @@
 
 #include "commandhandler.h"
 
+#include "gui/palette.h"
+
 #include "net/net.h"
 #include "net/partyhandler.h"
 
@@ -36,6 +38,7 @@
 PartyTab::PartyTab() :
     ChatTab(_("Party"))
 {
+    setTabColor(guiPalette->getColor(Palette::PARTY));
 }
 
 PartyTab::~PartyTab()
