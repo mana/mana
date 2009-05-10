@@ -35,12 +35,7 @@ class Icon;
 class Avatar : public Container
 {
 public:
-    /**
-     * Constructor.
-     * @param name Character name
-     */
-    Avatar(const std::string &name);
-
+    Avatar();
     ~Avatar();
 
     /**

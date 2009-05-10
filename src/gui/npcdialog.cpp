@@ -25,7 +25,6 @@
 #include "gui/widgets/inttextfield.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
-#include "gui/widgets/resizegrip.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
@@ -292,8 +291,6 @@ void NpcDialog::widgetResized(const gcn::Event &event)
 void NpcDialog::buildLayout()
 {
     clearLayout();
-
-    add(mGrip);
 
     if (mActionState != NPC_ACTION_INPUT)
     {

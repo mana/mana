@@ -37,13 +37,18 @@
  * Party Member
  * Used for storing players in the party
  */
-struct PartyMember
+class PartyMember
 {
-    std::string name;
-    bool leader;
-    bool online;
-    Avatar *avatar;
+    public:
+        PartyMember();
+        ~PartyMember();
+
+        std::string name;
+        bool leader;
+        bool online;
+        Avatar *avatar;
 };
+
 
 /**
  * Party window.
@@ -59,11 +64,6 @@ class PartyWindow : public Window, gcn::ActionListener
          * Release all the players created.
          */
         ~PartyWindow();
-
-        /**
-         * Draws the party window.
-         */
-        void draw(gcn::Graphics *graphics);
 
         /**
          * Find a party member based on ID. Returns NULL if not found.
@@ -113,7 +113,7 @@ class PartyWindow : public Window, gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
-        void clear();
+        void clearMembers();
 
     private:
         /**

@@ -86,7 +86,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 if (!partyWindow)
                     break;
 
-                partyWindow->clear();
+                partyWindow->clearMembers();
 
                 int length = msg.readInt16();
                 std::string party = msg.readString(24);
@@ -231,7 +231,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 if (id == player_node->getId())
                 {
                     player_node->setInParty(false);
-                    partyWindow->clear();
+                    partyWindow->clearMembers();
                     partyWindow->setVisible(false);
                     partyTab->chatLog(_("You have left the party."), BY_SERVER);
                 }

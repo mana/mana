@@ -40,13 +40,12 @@ namespace {
     int avatarCount = 0;
 }
 
-Avatar::Avatar(const std::string &name):
-    mName(name)
+Avatar::Avatar():
+    mHpState("???"),
+    mMaxHpState("???")
 {
     setOpaque(false);
     setSize(200, 12);
-    mHpState = "???";
-    mMaxHpState = "???";
 
     if (avatarCount == 0)
     {
@@ -61,12 +60,7 @@ Avatar::Avatar(const std::string &name):
     mStatus = new Icon(avatarStatusOffline);
     mStatus->setSize(12, 12);
     add(mStatus, 1, 0);
-    mAvatarLabel.str("");
-    if (mName != player_node->getName())
-        mAvatarLabel << mName << "  " << mHpState << "/" + mMaxHpState;
-    else
-        mAvatarLabel << mName << "  " << player_node->getHp() << "/" << player_node->getMaxHp();
-    mLabel = new Label(mAvatarLabel.str());
+    mLabel = new Label;
     mLabel->setSize(174, 12);
     add(mLabel, 16, 0);
 }

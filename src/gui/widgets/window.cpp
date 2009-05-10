@@ -683,21 +683,25 @@ int Window::getGuiAlpha()
 
 Layout &Window::getLayout()
 {
-    if (!mLayout) mLayout = new Layout;
+    if (!mLayout)
+        mLayout = new Layout;
     return *mLayout;
 }
 
 void Window::clearLayout()
 {
-    clear();  // This removes widgets from the container
+    clear();
 
-    while (!mWidgets.empty())
-        delete mWidgets.front();
+    // Restore the resize grip
+    if (mGrip)
+        add(mGrip);
 
-    if (!mLayout)
+    // Recreate layout instance when one is present
+    if (mLayout)
+    {
         delete mLayout;
-    mLayout = new Layout;
-    
+        mLayout = new Layout;
+    }
 }
 
 LayoutCell &Window::place(int x, int y, gcn::Widget *wg, int w, int h)

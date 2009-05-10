@@ -30,7 +30,19 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-PartyWindow::PartyWindow() : Window(_("Party"))
+PartyMember::PartyMember():
+    avatar(new Avatar)
+{
+}
+
+PartyMember::~PartyMember()
+{
+    delete avatar;
+}
+
+
+PartyWindow::PartyWindow() :
+    Window(_("Party"))
 {
     setWindowName("Party");
     setVisible(false);
@@ -50,11 +62,6 @@ PartyWindow::~PartyWindow()
     delete_all(mMembers);
 }
 
-void PartyWindow::draw(gcn::Graphics *graphics)
-{
-    Window::draw(graphics);
-}
-
 PartyMember *PartyWindow::findMember(int id) const
 {
     PartyList::const_iterator it = mMembers.find(id);
@@ -71,7 +78,6 @@ PartyMember *PartyWindow::findOrCreateMember(int id)
     if (!member)
     {
         member = new PartyMember;
-        member->avatar = new Avatar("");
         mMembers[id] = member;
         add(member->avatar, 0, (mMembers.size() - 1) * 14);
     }
@@ -195,9 +201,10 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void PartyWindow::clear()
+void PartyWindow::clearMembers()
 {
-    Window::clear();
+    clearLayout();
 
+    delete_all(mMembers);
     mMembers.clear();
 }
