@@ -6,28 +6,31 @@ HELP
 Q: How to get help?
 
 A: The fastest way is to come on our IRC channel. There you can find a lot of
-   nice people that will help you until you solve your problem. Server:
-   irc.freenode.net Channel: #themanaworld.
+   nice people that will help you until you solve your problem.
+
+     Server: irc.freenode.net  Channel: #themanaworld.
+
    If you don't like IRC just come to our forums:
-   http://forums.themanaworld.org. Ok, do you think forums are evil? Don't
-   worry, send me an e-mail at elvenprogrammer@gmail.com and you're done.
-   That's not enough? No, I won't give you my phone number! ;P
+
+     http://forums.themanaworld.org.
+
+   Ok, do you think forums are evil? Don't worry, send us an e-mail at
+   themanaworld-devel@lists.sourceforge.net and you're done. That's not enough?
+   No, we don't share our phone numbers! ;P
+
 
 GAME
 
 Q: I always get "Unregistered ID" error message, why?
 
-A: First of all check that your username is at least 4 characters long. Is the
-   first time you login? Have you registered an account? If not use the
-   "Register" button in game. If you already succesfully connected before, but
-   now you're getting this message, please send an e-mail to
-   elvenprogrammer@gmail.com.
-
+A: Is the first time you login? Have you registered an account? If not use the
+   "Register" button. If you already succesfully connected before, but now
+   you're getting this message, please get in touch (see "How to get help").
 
 Q: I always get "Wrong password" but I'm sure I typed it right, why?
 
 A: If is the first time you login be sure you're not adding _M at the end of
-   your username. Else please send an e-mail to elvenprogrammer@gmail.com.
+   your username. Otherwise just get in touch (see "How to get help").
 
 Q: How can I talk to NPCs?
 
@@ -43,22 +46,23 @@ A: Check your inventory, if you've got lots of stuff probably you're
    carrying 50% of your maximum weight.
 
 
-SVN
+Git
 
-Q: What's SVN?
+Q: What's Git?
 
 A: It's a system where is stored the latest development version. It's not
-   assured that it's stable, but surely it has the latest updates. (SVN version
+   assured that it's stable, but surely it has the latest updates. (Git version
    is updated quite frequently). If you want to check it out, read this guide
-   http://themanaworld.org/svn-tutorial.txt
+
+     http://wiki.themanaworld.org/index.php/Git
 
 
 DEVELOPMENT
 
 Q: When will the next version be released?
 
-A: We have scheduled releases. Usually a new release is available every month.
-   Check http://themanaworld.org/ for further info.
+A: We don't have scheduled releases, but usually a new release is available
+   every few months. Check http://themanaworld.org/ for further info.
 
 
 Q: How can I contribute?
@@ -66,16 +70,19 @@ Q: How can I contribute?
 A: There are a lot of ways:
 
    - If you're a programmer, an artist or just willing to help in any way, you
-     can become part of the development team. Send an e-mail to
-     elvenprogrammer@gmail.com explaining what you want to do, or join our irc
-     channel: #themanaworld @ irc.freenode.net.
+     can become part of the development team. Join our irc channel:
+
+       #themanaworld @ irc.freenode.net.
+
+     There's also a wiki page about how to get involved:
+
+       http://wiki.themanaworld.org/index.php/Joining_the_project
 
    - You can donate money. Follow the link on the project page:
 
-        http://sourceforge.net/projects/themanaworld/
+       http://sourceforge.net/projects/themanaworld/
 
    - You can be a beta tester. Just play The Mana World and report every
-     error to the tracker or on the forum.
+     error to the bug tracker or on the forum.
 
    - Play with The Mana World: more players, more fun! Simple as that! ;-)
-
