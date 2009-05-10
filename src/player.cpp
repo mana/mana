@@ -31,6 +31,7 @@
 #include "text.h"
 
 #include "gui/palette.h"
+#include "gui/partywindow.h"
 
 #include "resources/colordb.h"
 #include "resources/itemdb.h"
@@ -68,15 +69,27 @@ void Player::setName(const std::string &name)
                                   &guiPalette->getColor(Palette::GM_NAME));
         }
         else
-        {
-            mNameColor = &guiPalette->getColor(Palette::PLAYER);
+        {   
+            const gcn::Color *color;
+            if (this == player_node)
+            {
+                color = mNameColor = &guiPalette->getColor(Palette::SELF);
+            }
+            else if (partyWindow->findMember(getId()))
+            {
+                color = mNameColor = &guiPalette->getColor(Palette::PARTY);
+            }
+            else
+            {
+                mNameColor = &guiPalette->getColor(Palette::PLAYER);
+                color = &guiPalette->getColor(Palette::PC);
+            }
+
             mName = new FlashText(name,
                                   getPixelX(),
                                   getPixelY(),
                                   gcn::Graphics::CENTER,
-                                  (this == player_node) ?
-                                  &guiPalette->getColor(Palette::SELF) :
-                                  &guiPalette->getColor(Palette::PC));
+                                  color);
         }
     }
     Being::setName(name);
