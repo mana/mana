@@ -87,6 +87,7 @@
 #include "utils/gettext.h"
 
 #include <guichan/exception.hpp>
+#include <guichan/focushandler.hpp>
 
 #include <fstream>
 #include <physfs.h>
@@ -544,11 +545,13 @@ void Game::handleInput()
                 }
             }
 
-            if (!(chatWindow->isInputFocused() || deathNotice || weightNotice))
+            if (!chatWindow->isInputFocused()
+                && !gui->getFocusHandler()->getModalFocused())
+            {
                 if (keyboard.isKeyActive(keyboard.KEY_OK))
                 {
 #ifdef TMWSERV_SUPPORT
-                    // Don not focus chat input when quit dialog is active
+                    // Do not focus chat input when quit dialog is active
                     if (quitDialog != NULL && quitDialog->isVisible())
                         continue;
 #else
@@ -579,6 +582,7 @@ void Game::handleInput()
                     if (chatWindow->requestChatFocus())
                         used = true;
                 }
+            }
 
 
             if (!chatWindow->isInputFocused() || (event.key.keysym.mod & KMOD_ALT))

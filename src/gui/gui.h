@@ -70,6 +70,9 @@ class Gui : public gcn::Gui
          */
         void draw();
 
+        gcn::FocusHandler *getFocusHandler() const
+        { return mFocusHandler; }
+
         /**
          * Return game font.
          */
