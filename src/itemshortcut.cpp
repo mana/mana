@@ -30,14 +30,11 @@
 
 #include "utils/stringutils.h"
 
-ItemShortcut::ItemShortcut *itemShortcut;
+ItemShortcut *itemShortcut;
 
 ItemShortcut::ItemShortcut():
     mItemSelected(-1)
 {
-    for (int i = 0; i < SHORTCUT_ITEMS; i++)
-        mItems[i] = -1;
-
     load();
 }
 
@@ -52,8 +49,7 @@ void ItemShortcut::load()
     {
         int itemId = (int) config.getValue("shortcut" + toString(i), -1);
 
-        if (itemId != -1)
-            mItems[i] = itemId;
+        mItems[i] = itemId;
     }
 }
 

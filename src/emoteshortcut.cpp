@@ -31,10 +31,6 @@ EmoteShortcut *emoteShortcut;
 EmoteShortcut::EmoteShortcut():
     mEmoteSelected(0)
 {
-    for (int i = 0; i < SHORTCUT_EMOTES; i++)
-    {
-        mEmotes[i] = i + 1;
-    }
     load();
 }
 
@@ -49,10 +45,7 @@ void EmoteShortcut::load()
     {
         int emoteId = (int) config.getValue("emoteshortcut" + toString(i), i + 1);
 
-        if (emoteId)
-        {
-            mEmotes[i] = emoteId;
-        }
+        mEmotes[i] = emoteId;
     }
 }
 
