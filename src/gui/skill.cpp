@@ -150,7 +150,7 @@ SkillDialog::SkillDialog():
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     place(0, 0, skillScrollArea, 5).setPadding(3);
-    place(0, 1, mPointsLabel, 2);
+    place(0, 1, mPointsLabel, 4);
     place(3, 2, mIncButton);
     place(4, 2, mUseButton);
 
