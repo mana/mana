@@ -330,6 +330,7 @@ void ChatWindow::doPresent()
     }
 
     std::string cpc = strprintf(_("%d players are present."), playercount);
+    std::string log = _("Present: ") + response + std::string("; ") + cpc;
 
     if (mRecorder->isRecording())
     {
@@ -345,13 +346,13 @@ void ChatWindow::doPresent()
             << (int) ((t / 60) % 60)
             << "] ";
 
-        mRecorder->record(timeStr.str() + _("Present: ") + response + _("; ") + cpc);
+        mRecorder->record(timeStr.str() + log);
         getFocused()->chatLog(_("Attendance written to record log."),
                               BY_SERVER, true);
     }
     else
     {
-        getFocused()->chatLog(_("Present: ") + response + _("; ") + cpc, BY_SERVER);
+        getFocused()->chatLog(log, BY_SERVER);
     }
 }
 

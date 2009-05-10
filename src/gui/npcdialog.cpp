@@ -92,8 +92,8 @@ NpcDialog::NpcDialog()
     mButton = new Button("", "ok", this);
 
     //Setup more and less buttons (int input)
-    mPlusButton = new Button(_("+"), "plus", this);
-    mMinusButton = new Button(_("-"), "minus", this);
+    mPlusButton = new Button("+", "plus", this);
+    mMinusButton = new Button("-", "minus", this);
 
     int width = std::max(mButton->getFont()->getWidth(CAPTION_WAITING),
                          mButton->getFont()->getWidth(CAPTION_NEXT));
