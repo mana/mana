@@ -512,7 +512,7 @@ void LocalPlayer::walk(unsigned char dir)
     }
 }
 
-Being* LocalPlayer::getTarget() const
+Being *LocalPlayer::getTarget() const
 {
     return mTarget;
 }
@@ -587,6 +587,8 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
     }
 
     mPickUpTarget = NULL;
+    mKeepAttacking = false;
+
     Being::setDestination(x, y);
 }
 
@@ -741,7 +743,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (!target || target->getType() == Being::NPC)
         return;
 
-    if ((mTarget != target) || !mTarget)
+    if (mTarget != target || !mTarget)
     {
         mLastTarget = -1;
         setTarget(target);
@@ -751,7 +753,8 @@ void LocalPlayer::attack(Being *target, bool keep)
     int dist_y = target->mY - mY;
 
     // Must be standing to attack
-    if (mAction != STAND) return;
+    if (mAction != STAND)
+        return;
 
     if (abs(dist_y) >= abs(dist_x))
     {
