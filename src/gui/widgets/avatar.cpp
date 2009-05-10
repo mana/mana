@@ -19,9 +19,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "localplayer.h"
-
 #include "gui/widgets/avatar.h"
+
+#include "localplayer.h"
 
 #include "gui/widgets/icon.h"
 #include "gui/widgets/label.h"
@@ -29,10 +29,7 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
-#include "utils/gettext.h"
-#include "utils/stringutils.h"
-
-#include <stdio.h>
+#include <sstream>
 
 namespace {
     Image *avatarStatusOffline;
@@ -41,8 +38,8 @@ namespace {
 }
 
 Avatar::Avatar():
-    mHpState("???"),
-    mMaxHpState("???")
+    mHp(0),
+    mMaxHp(0)
 {
     setOpaque(false);
     setSize(200, 12);
@@ -86,27 +83,35 @@ void Avatar::setOnline(bool online)
 
 void Avatar::setHp(int hp)
 {
-    if (hp)
-        mHpState = strprintf("%i", hp);
-    else
-        mHpState = "???";
+    if (hp == mHp)
+        return;
+
+    mHp = hp;
     updateAvatarLabel();
 }
 
-void Avatar::setMaxHp(int maxhp)
+void Avatar::setMaxHp(int maxHp)
 {
-    if (maxhp)
-        mMaxHpState = strprintf("%i", maxhp);
-    else
-        mMaxHpState = "???";
+    if (maxHp == mMaxHp)
+        return;
+
+    mMaxHp = maxHp;
     updateAvatarLabel();
 }
 
-void Avatar::updateAvatarLabel() {
-    mAvatarLabel.str("");
-    if (mName != player_node->getName())
-        mAvatarLabel << mName << "  " << mHpState << "/" << mMaxHpState;
-    else
-        mAvatarLabel << mName << "  " << player_node->getHp() << "/" << player_node->getMaxHp();
-    mLabel->setCaption(mAvatarLabel.str());
+void Avatar::updateAvatarLabel()
+{
+    std::ostringstream ss;
+    ss << mName;
+
+    if (mName == player_node->getName())
+    {
+        mHp = player_node->getHp();
+        mMaxHp = player_node->getMaxHp();
+    }
+
+    if (mMaxHp != 0)
+        ss << "  (" << mHp << "/" << mMaxHp << ")";
+
+    mLabel->setCaption(ss.str());
 }

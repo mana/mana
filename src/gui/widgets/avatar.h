@@ -27,7 +27,6 @@
 #include "gui/widgets/container.h"
 
 #include <string>
-#include <sstream>
 
 class Image;
 class Icon;
@@ -50,15 +49,14 @@ public:
 
     void setHp(int hp);
 
-    void setMaxHp(int maxhp);
-
-    void updateAvatarLabel();
+    void setMaxHp(int maxHp);
 
 private:
+    void updateAvatarLabel();
+
     std::string mName;
-    std::string mHpState;
-    std::string mMaxHpState;
-    std::stringstream mAvatarLabel;
+    int mHp;
+    int mMaxHp;
     Icon *mStatus;
     gcn::Label *mLabel;
 };
