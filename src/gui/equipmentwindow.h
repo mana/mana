@@ -24,6 +24,8 @@
 
 #include "gui/widgets/window.h"
 
+#include "guichanfwd.h"
+
 #include <guichan/actionlistener.hpp>
 
 class Equipment;
@@ -102,6 +104,8 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         Item *getItem(int x, int y) const;
 
+        void setSelected(int index);
+
         Equipment *mEquipment;
 #ifdef EATHENA_SUPPORT
         Inventory *mInventory;
@@ -119,6 +123,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         EquipBox mEquipBox[EQUIP_VECTOREND];    /**< Equipment Boxes. */
 
         ItemPopup *mItemPopup;
+        gcn::Button *mUnequip;
 
         int mSelected;                          /**< Index of selected item. */
 };
