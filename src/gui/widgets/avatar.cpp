@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "localplayer.h"
+
 #include "gui/widgets/avatar.h"
 
 #include "gui/widgets/icon.h"
@@ -26,6 +28,11 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
+#include <stdio.h>
 
 namespace {
     Image *avatarStatusOffline;
@@ -38,6 +45,8 @@ Avatar::Avatar(const std::string &name):
 {
     setOpaque(false);
     setSize(200, 12);
+    mHpState = "???";
+    mMaxHpState = "???";
 
     if (avatarCount == 0)
     {
@@ -52,8 +61,12 @@ Avatar::Avatar(const std::string &name):
     mStatus = new Icon(avatarStatusOffline);
     mStatus->setSize(12, 12);
     add(mStatus, 1, 0);
-
-    mLabel = new Label(name);
+    mAvatarLabel.str("");
+    if (mName != player_node->getName())
+        mAvatarLabel << mName << "  " << mHpState << "/" + mMaxHpState;
+    else
+        mAvatarLabel << mName << "  " << player_node->getHp() << "/" << player_node->getMaxHp();
+    mLabel = new Label(mAvatarLabel.str());
     mLabel->setSize(174, 12);
     add(mLabel, 16, 0);
 }
@@ -69,10 +82,37 @@ Avatar::~Avatar()
 void Avatar::setName(const std::string &name)
 {
     mName = name;
-    mLabel->setCaption(name);
+    updateAvatarLabel();
 }
 
 void Avatar::setOnline(bool online)
 {
     mStatus->setImage(online ? avatarStatusOnline : avatarStatusOffline);
+}
+
+void Avatar::setHp(int hp)
+{
+    if (hp)
+        mHpState = strprintf("%i", hp);
+    else
+        mHpState = "???";
+    updateAvatarLabel();
+}
+
+void Avatar::setMaxHp(int maxhp)
+{
+    if (maxhp)
+        mMaxHpState = strprintf("%i", maxhp);
+    else
+        mMaxHpState = "???";
+    updateAvatarLabel();
+}
+
+void Avatar::updateAvatarLabel() {
+    mAvatarLabel.str("");
+    if (mName != player_node->getName())
+        mAvatarLabel << mName << "  " << mHpState << "/" << mMaxHpState;
+    else
+        mAvatarLabel << mName << "  " << player_node->getHp() << "/" << player_node->getMaxHp();
+    mLabel->setCaption(mAvatarLabel.str());
 }

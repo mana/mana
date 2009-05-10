@@ -34,12 +34,12 @@ PartyWindow::PartyWindow() : Window(_("Party"))
 {
     setWindowName("Party");
     setVisible(false);
-    setResizable(false);
+    setResizable(true);
     setSaveVisible(true);
     setCloseButton(true);
-    setMinWidth(110);
+    setMinWidth(200);
     setMinHeight(200);
-    setDefaultSize(620, 300, 110, 200);
+    setDefaultSize(620, 300, 200, 200);
 
     loadWindowState();
     setVisible(false); // Do not start out visible
@@ -58,7 +58,6 @@ void PartyWindow::draw(gcn::Graphics *graphics)
 PartyMember *PartyWindow::findMember(int id) const
 {
     PartyList::const_iterator it = mMembers.find(id);
-
     if (it == mMembers.end())
         return NULL;
     else
@@ -112,6 +111,13 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
     {
         setVisible(true);
     }
+}
+
+void PartyWindow::updateMemberHP(int id, int hp, int maxhp)
+{
+    PartyMember *player = findOrCreateMember(id);
+    player->avatar->setHp(hp);
+    player->avatar->setMaxHp(maxhp);
 }
 
 void PartyWindow::removeMember(int id)

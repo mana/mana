@@ -239,9 +239,10 @@ void PartyHandler::handleMessage(MessageIn &msg)
             }
         case SMSG_PARTY_UPDATE_HP:
             {
-                msg.readInt32(); // id
-                msg.readInt16(); // hp
-                msg.readInt16(); // hpMax
+                int id = msg.readInt32();
+                int hp = msg.readInt16();
+                int maxhp = msg.readInt16();
+                partyWindow->updateMemberHP(id, hp, maxhp);
             }
             break;
         case SMSG_PARTY_UPDATE_COORDS:

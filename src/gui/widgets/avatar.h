@@ -27,6 +27,7 @@
 #include "gui/widgets/container.h"
 
 #include <string>
+#include <sstream>
 
 class Image;
 class Icon;
@@ -52,8 +53,17 @@ public:
      */
     void setOnline(bool online);
 
+    void setHp(int hp);
+
+    void setMaxHp(int maxhp);
+
+    void updateAvatarLabel();
+
 private:
     std::string mName;
+    std::string mHpState;
+    std::string mMaxHpState;
+    std::stringstream mAvatarLabel;
     Icon *mStatus;
     gcn::Label *mLabel;
 };

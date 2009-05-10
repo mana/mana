@@ -40,8 +40,6 @@
 struct PartyMember
 {
     std::string name;
-    int health;
-    int healthMax;
     bool leader;
     bool online;
     Avatar *avatar;
@@ -83,6 +81,11 @@ class PartyWindow : public Window, gcn::ActionListener
          */
         void updateMember(int id, const std::string &memberName,
                           bool leader = false, bool online = true);
+
+        /**
+         * Update a member's HP and Max HP
+         */
+        void updateMemberHP(int id, int hp, int maxhp);
 
         /**
          * Remove party member with the given id.
