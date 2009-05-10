@@ -95,7 +95,7 @@ void Minimap::setMap(Map *map)
     mMapImage = resman->getImage(map->getProperty("minimap"));
 
     if (!mShow)
-	    return;
+        return;
 
     if (mMapImage)
     {
