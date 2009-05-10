@@ -920,24 +920,14 @@ void Game::handleInput()
 
             bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
             // A set target has highest priority
-            if (newTarget || !player_node->getTarget())
+            if (!player_node->getTarget())
             {
                 Uint16 targetX = x, targetY = y;
-
-                switch (player_node->getSpriteDirection())
-                {
-                    case DIRECTION_UP   : --targetY; break;
-                    case DIRECTION_DOWN : ++targetY; break;
-                    case DIRECTION_LEFT : --targetX; break;
-                    case DIRECTION_RIGHT: ++targetX; break;
-                    default: break;
-                }
 
                 // Only auto target Monsters
                 target = beingManager->findNearestLivingBeing(targetX, targetY,
                          20, Being::MONSTER);
             }
-
             player_node->attack(target, newTarget);
         }
 #endif
