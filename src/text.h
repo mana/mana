@@ -71,6 +71,7 @@ class Text
         static int mInstances; /**< Instances of text. */
         std::string mText;     /**< The text to display. */
         const gcn::Color *mColor;     /**< The color of the text. */
+        gcn::Font *mFont;      /**< The font of the text */
         bool mIsSpeech;        /**< Is this text a speech bubble? */
 
     protected:
