@@ -109,7 +109,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
                 if (item->getQuantity() > 1)
                     caption = toString(item->getQuantity());
                 else if (item->isEquipped())
-                    caption = "(Eq)";
+                    caption = "Eq.";
 
                 g->drawImage(image, itemX, itemY);
                 if (item->isEquipped())
