@@ -101,6 +101,9 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     bool online = msg.readInt8() == 0;
 
                     partyWindow->updateMember(id, nick, leader, online);
+
+                    Being *being = beingManager->findBeing(id);
+                    being->setName(nick);
                 }
 
                 partyWindow->setVisible(true);
