@@ -100,7 +100,7 @@ ModeListModel::ModeListModel()
         for (int i = 0; modes[i]; ++i)
         {
             const std::string modeString =
-                toString((int)modes[i]->w) + "x" + toString((int)modes[i]->h);
+                toString((int)modes[i]->w) + "x" + toString((int) modes[i]->h);
             //logger->log(modeString.c_str());
             mVideoModes.push_back(modeString);
         }
@@ -145,7 +145,7 @@ Setup_Video::Setup_Video():
     mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 60)),
-    mSpeechMode((int) config.getValue("speech", 3)),
+    mSpeechMode((int) config.getValue("speech", Being::TEXT_OVERHEAD)),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
@@ -446,7 +446,7 @@ void Setup_Video::apply()
     mVisibleNamesEnabled = config.getValue("visiblenames", true);
     mParticleEffectsEnabled = config.getValue("particleeffects", true);
     mNameEnabled = config.getValue("showownname", false);
-    mSpeechMode = (int) config.getValue("speech", 3);
+    mSpeechMode = (int) config.getValue("speech", Being::TEXT_OVERHEAD);
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", false);

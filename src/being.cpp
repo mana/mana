@@ -396,7 +396,7 @@ void Being::setSpeech(const std::string &text, int time)
     if (!mSpeech.empty())
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 
-    const int speech = (int) config.getValue("speech", NAME_IN_BUBBLE);
+    const int speech = (int) config.getValue("speech", TEXT_OVERHEAD);
     if (speech == TEXT_OVERHEAD)
     {
         if (mText)
@@ -776,7 +776,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = mPx - offsetX;
     const int py = mPy - offsetY;
-    const int speech = (int) config.getValue("speech", NAME_IN_BUBBLE);
+    const int speech = (int) config.getValue("speech", TEXT_OVERHEAD);
 
     // Draw speech above this being
     if (mSpeechTime == 0)

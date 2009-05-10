@@ -51,7 +51,7 @@ PartyWindow::PartyWindow() :
     setCloseButton(true);
     setMinWidth(200);
     setMinHeight(200);
-    setDefaultSize(620, 300, 200, 200);
+    setDefaultSize(590, 200, 200, 200);
 
     loadWindowState();
     setVisible(false); // Do not start out visible

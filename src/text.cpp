@@ -42,6 +42,7 @@ Text::Text(const std::string &text, int x, int y,
            const gcn::Color* color, bool isSpeech) :
     mText(text),
     mColor(color),
+    mFont(gui->getFont()),
     mIsSpeech(isSpeech)
 {
     if (textManager == 0)
@@ -69,8 +70,8 @@ Text::Text(const std::string &text, int x, int y,
         sbImage->decRef();
     }
     ++mInstances;
-    mHeight = boldFont->getHeight();
-    mWidth = boldFont->getWidth(text);
+    mHeight = mFont->getHeight();
+    mWidth = mFont->getWidth(text);
 
     switch (alignment)
     {
@@ -121,8 +122,6 @@ void Text::adviseXY(int x, int y)
 
 void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
-    graphics->setFont(boldFont);
-
     if (mIsSpeech) {
         static_cast<Graphics*>(graphics)->drawImageRect(
                 mX - xOff - 5, mY - yOff - 5, mWidth + 10, mHeight + 10,
@@ -138,7 +137,7 @@ void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 
     TextRenderer::renderText(graphics, mText,
             mX - xOff, mY - yOff, gcn::Graphics::LEFT,
-            *mColor, boldFont, !mIsSpeech, true);
+            *mColor, mFont, !mIsSpeech, true);
 }
 
 FlashText::FlashText(const std::string &text, int x, int y,
