@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-10 15:53+0200\n"
-"PO-Revision-Date: 2008-06-28 16:27+0000\n"
-"Last-Translator: fate <Unknown>\n"
+"POT-Creation-Date: 2009-05-10 16:39+0200\n"
+"PO-Revision-Date: 2009-01-09 12:31+0000\n"
+"Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-01-06 12:40+0000\n"
+"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:141
@@ -332,9 +332,8 @@ msgid "Quit"
 msgstr "終了"
 
 #: src/game.cpp:647
-#, fuzzy
 msgid "Are you sure you want to quit?"
-msgstr "このキャラは消してもいいですか?"
+msgstr ""
 
 #: src/game.cpp:654
 msgid "no"
@@ -349,9 +348,8 @@ msgid "Accepting incoming trade requests"
 msgstr ""
 
 #: src/gui/buddywindow.cpp:35
-#, fuzzy
 msgid "Buddy"
-msgstr "買う"
+msgstr ""
 
 #: src/gui/buddywindow.cpp:38
 msgid "Buddy List"
@@ -363,9 +361,9 @@ msgstr "買う"
 
 #: src/gui/buy.cpp:65 src/gui/buy.cpp:256 src/gui/sell.cpp:67
 #: src/gui/sell.cpp:278
-#, fuzzy, c-format
+#, c-format
 msgid "Price: %s / Total: %s"
-msgstr "価格: %d GP / 合計: %d GP"
+msgstr ""
 
 #: src/gui/buy.cpp:72 src/gui/sell.cpp:74
 msgid "Max"
@@ -419,9 +417,8 @@ msgstr ""
 
 #: src/gui/changepassworddialog.cpp:44 src/gui/changepassworddialog.cpp:55
 #: src/gui/charselectdialog.cpp:120
-#, fuzzy
 msgid "Change Password"
-msgstr "パスワード:"
+msgstr ""
 
 #: src/gui/changepassworddialog.cpp:50 src/gui/login.cpp:52
 #: src/gui/register.cpp:61 src/gui/unregisterdialog.cpp:50
@@ -481,9 +478,9 @@ msgid "Character stats OK"
 msgstr ""
 
 #: src/gui/charcreatedialog.cpp:238
-#, fuzzy, c-format
+#, c-format
 msgid "Please remove %d points"
-msgstr "%d ポイントを取り分けください"
+msgstr ""
 
 #: src/gui/charselectdialog.cpp:78
 msgid "Confirm Character Delete"
@@ -551,21 +548,20 @@ msgstr "GP: %d"
 
 #: src/gui/charselectdialog.cpp:161 src/gui/charselectdialog.cpp:305
 #: src/gui/charselectdialog.cpp:325
-#, fuzzy, c-format
+#, c-format
 msgid "Job Level: %d"
-msgstr "レベル: %d"
+msgstr ""
 
 #: src/gui/charselectdialog.cpp:162 src/gui/charselectdialog.cpp:308
 #: src/gui/charselectdialog.cpp:327 src/gui/status.cpp:57
 #: src/gui/status.cpp:182
-#, fuzzy, c-format
+#, c-format
 msgid "Money: %s"
-msgstr "GP: %d"
+msgstr ""
 
 #: src/gui/chat.cpp:73 src/gui/palette.cpp:93
-#, fuzzy
 msgid "Chat"
-msgstr "作成"
+msgstr ""
 
 #: src/gui/chat.cpp:332
 #, c-format
@@ -619,9 +615,8 @@ msgid "Guild"
 msgstr ""
 
 #: src/gui/guildwindow.cpp:63
-#, fuzzy
 msgid "Create Guild"
-msgstr "作成"
+msgstr ""
 
 #: src/gui/guildwindow.cpp:64
 msgid "Invite User"
@@ -755,7 +750,7 @@ msgstr ""
 #: src/gui/npcdialog.cpp:46
 #, fuzzy
 msgid "Submit"
-msgstr "分割"
+msgstr "終了"
 
 #: src/gui/npcdialog.cpp:49 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -779,9 +774,8 @@ msgstr ""
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:268
 #: src/gui/setup_video.cpp:567
-#, fuzzy
 msgid "Text"
-msgstr "次へ"
+msgstr ""
 
 #: src/gui/palette.cpp:82
 msgid "Text Shadow"
@@ -833,14 +827,12 @@ msgstr ""
 
 #: src/gui/palette.cpp:98 src/gui/partywindow.cpp:33
 #: src/net/ea/gui/partytab.cpp:37
-#, fuzzy
 msgid "Party"
-msgstr "ポート:"
+msgstr ""
 
 #: src/gui/palette.cpp:99
-#, fuzzy
 msgid "Server"
-msgstr "サーバ:"
+msgstr ""
 
 #: src/gui/palette.cpp:100
 msgid "Logger"
@@ -859,14 +851,12 @@ msgid "Other Players' Names"
 msgstr ""
 
 #: src/gui/palette.cpp:105
-#, fuzzy
 msgid "Own Name"
-msgstr "名前:"
+msgstr ""
 
 #: src/gui/palette.cpp:106
-#, fuzzy
 msgid "GM Names"
-msgstr "名前:"
+msgstr ""
 
 #: src/gui/palette.cpp:107
 msgid "NPCs"
@@ -895,18 +885,16 @@ msgid "Usables"
 msgstr "使う"
 
 #: src/gui/palette.cpp:114
-#, fuzzy
 msgid "Shirts"
-msgstr "分割"
+msgstr ""
 
 #: src/gui/palette.cpp:115
 msgid "1 Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Pants"
-msgstr "状態"
+msgstr ""
 
 #: src/gui/palette.cpp:117
 msgid "Shoes"
@@ -957,9 +945,8 @@ msgid "Monster hits Player"
 msgstr ""
 
 #: src/gui/palette.cpp:132
-#, fuzzy
 msgid "Critical Hit"
-msgstr "体力:"
+msgstr ""
 
 #: src/gui/palette.cpp:133
 msgid "Misses"
@@ -1031,9 +1018,9 @@ msgid "@@party|Invite %s to join your party@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:125
-#, fuzzy, c-format
+#, c-format
 msgid "@@talk|Talk To %s@@"
-msgstr "@@talk|NPCを喋る@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:144 src/gui/popupmenu.cpp:162
 #: src/gui/popupmenu.cpp:375
@@ -1050,9 +1037,8 @@ msgid "@@chat|Add to chat@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:348
-#, fuzzy
 msgid "@@use|Unequip@@"
-msgstr "@@use|使う@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:350
 msgid "@@use|Equip@@"
@@ -1080,14 +1066,12 @@ msgid "@@retrieve|Retrieve@@"
 msgstr ""
 
 #: src/gui/quitdialog.cpp:37
-#, fuzzy
 msgid "Switch server"
-msgstr "キャラを選択"
+msgstr ""
 
 #: src/gui/quitdialog.cpp:38
-#, fuzzy
 msgid "Switch character"
-msgstr "キャラを選択"
+msgstr ""
 
 #: src/gui/recorder.cpp:87
 msgid "Finishing recording."
@@ -1110,9 +1094,8 @@ msgid "Failed to start recording."
 msgstr ""
 
 #: src/gui/recorder.h:39
-#, fuzzy
 msgid "Recording..."
-msgstr "接続しています..."
+msgstr ""
 
 #: src/gui/recorder.h:40
 msgid "Stop recording"
@@ -1159,9 +1142,8 @@ msgid "Please type both the address and the port of a server."
 msgstr ""
 
 #: src/gui/serverselectdialog.cpp:59
-#, fuzzy
 msgid "Select Server"
-msgstr "キャラを選択"
+msgstr ""
 
 #: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:933
 msgid "Setup"
@@ -1204,9 +1186,8 @@ msgid "Type: "
 msgstr ""
 
 #: src/gui/setup_colors.cpp:82 src/gui/setup_colors.cpp:430
-#, fuzzy
 msgid "Static"
-msgstr "状態"
+msgstr ""
 
 #: src/gui/setup_colors.cpp:84 src/gui/setup_colors.cpp:85
 #: src/gui/setup_colors.cpp:431
@@ -1220,9 +1201,8 @@ msgstr ""
 
 #: src/gui/setup_colors.cpp:88 src/gui/setup_colors.cpp:89
 #: src/gui/setup_colors.cpp:432
-#, fuzzy
 msgid "Spectrum"
-msgstr "セットアップ"
+msgstr ""
 
 #: src/gui/setup_colors.cpp:93
 msgid "Delay: "
@@ -1273,9 +1253,8 @@ msgid "Assign"
 msgstr ""
 
 #: src/gui/setup_keyboard.cpp:90
-#, fuzzy
 msgid "Default"
-msgstr "削除"
+msgstr ""
 
 #: src/gui/setup_keyboard.cpp:119
 msgid "Key Conflict(s) Detected."
@@ -1286,9 +1265,8 @@ msgid "Resolve them, or gameplay may result in strange behaviour."
 msgstr ""
 
 #: src/gui/setup_players.cpp:56
-#, fuzzy
 msgid "Name"
-msgstr "名前:"
+msgstr ""
 
 #: src/gui/setup_players.cpp:57
 msgid "Relation"
@@ -1427,9 +1405,8 @@ msgid "Font size"
 msgstr ""
 
 #: src/gui/setup_video.cpp:265 src/gui/setup_video.cpp:564
-#, fuzzy
 msgid "No text"
-msgstr "次へ"
+msgstr ""
 
 #: src/gui/setup_video.cpp:271 src/gui/setup_video.cpp:570
 msgid "Bubbles, no names"
@@ -1535,14 +1512,13 @@ msgid "Weapons"
 msgstr ""
 
 #: src/gui/skilldialog.cpp:121
-#, fuzzy
 msgid "Crafts"
-msgstr "作成"
+msgstr ""
 
 #: src/gui/status.cpp:56 src/gui/status.cpp:177
-#, fuzzy, c-format
+#, c-format
 msgid "Job: %d"
-msgstr "レベル: %d"
+msgstr ""
 
 #: src/gui/status.cpp:60
 msgid "HP:"
@@ -1557,14 +1533,12 @@ msgid "MP:"
 msgstr ""
 
 #: src/gui/status.cpp:69
-#, fuzzy
 msgid "Job:"
-msgstr "レベル: %d"
+msgstr ""
 
 #: src/gui/status.cpp:77
-#, fuzzy
 msgid "Stats"
-msgstr "状態"
+msgstr ""
 
 #: src/gui/status.cpp:78
 msgid "Total"
@@ -1606,29 +1580,24 @@ msgid "% Reflex:"
 msgstr ""
 
 #: src/gui/status.cpp:198
-#, fuzzy
 msgid "Strength"
-msgstr "筋力:"
+msgstr ""
 
 #: src/gui/status.cpp:199
-#, fuzzy
 msgid "Agility"
-msgstr "素早さ:"
+msgstr ""
 
 #: src/gui/status.cpp:200
-#, fuzzy
 msgid "Vitality"
-msgstr "体力:"
+msgstr ""
 
 #: src/gui/status.cpp:201
-#, fuzzy
 msgid "Intelligence"
-msgstr "知性:"
+msgstr ""
 
 #: src/gui/status.cpp:202
-#, fuzzy
 msgid "Dexterity"
-msgstr "敏捷:"
+msgstr ""
 
 #: src/gui/status.cpp:203
 msgid "Luck"
@@ -1648,9 +1617,8 @@ msgid "Storage"
 msgstr ""
 
 #: src/gui/storagewindow.cpp:65
-#, fuzzy
 msgid "Store"
-msgstr "筋力:"
+msgstr ""
 
 #: src/gui/storagewindow.cpp:66
 msgid "Retrieve"
@@ -1665,9 +1633,8 @@ msgid "Propose trade"
 msgstr ""
 
 #: src/gui/trade.cpp:52
-#, fuzzy
 msgid "Confirmed. Waiting..."
-msgstr "接続しています..."
+msgstr ""
 
 #: src/gui/trade.cpp:53
 msgid "Agree trade"
@@ -1699,9 +1666,8 @@ msgid "You give:"
 msgstr ""
 
 #: src/gui/trade.cpp:100
-#, fuzzy
 msgid "Change"
-msgstr "取消"
+msgstr ""
 
 #: src/gui/trade.cpp:268
 msgid "Failed adding item. You can not overlap one kind of item on the window."
@@ -1862,9 +1828,8 @@ msgid "Guilds"
 msgstr ""
 
 #: src/gui/windowmenu.cpp:66
-#, fuzzy
 msgid "Buddys"
-msgstr "買う"
+msgstr ""
 
 #: src/gui/windowmenu.cpp:68
 msgid "Shortcut"
@@ -1923,9 +1888,8 @@ msgid "Hide Windows"
 msgstr ""
 
 #: src/keyboardconfig.cpp:54
-#, fuzzy
 msgid "Sit"
-msgstr "分割"
+msgstr ""
 
 #: src/keyboardconfig.cpp:55
 msgid "Screenshot"
@@ -1954,9 +1918,8 @@ msgid "Help Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:71
-#, fuzzy
 msgid "Status Window"
-msgstr "状態"
+msgstr ""
 
 #: src/keyboardconfig.cpp:72
 msgid "Inventory Window"
@@ -1991,9 +1954,8 @@ msgid "Debug Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:80
-#, fuzzy
 msgid "Party Window"
-msgstr "状態"
+msgstr ""
 
 #: src/keyboardconfig.cpp:81
 msgid "Emote Shortcut Window"
@@ -2022,18 +1984,16 @@ msgid "Scroll Chat Down"
 msgstr ""
 
 #: src/keyboardconfig.cpp:97
-#, fuzzy
 msgid "Previous Chat Tab"
-msgstr "前へ"
+msgstr ""
 
 #: src/keyboardconfig.cpp:98
 msgid "Next Chat Tab"
 msgstr ""
 
 #: src/keyboardconfig.cpp:99
-#, fuzzy
 msgid "Select OK"
-msgstr "キャラを選択"
+msgstr ""
 
 #: src/keyboardconfig.cpp:101
 msgid "Ignore input 1"
@@ -2060,9 +2020,8 @@ msgid "Polearm"
 msgstr ""
 
 #: src/localplayer.cpp:838
-#, fuzzy
 msgid "Staff"
-msgstr "状態"
+msgstr ""
 
 #: src/localplayer.cpp:839
 msgid "Whip"
@@ -2077,9 +2036,8 @@ msgid "Shooting"
 msgstr ""
 
 #: src/localplayer.cpp:842
-#, fuzzy
 msgid "Mace"
-msgstr "取消"
+msgstr ""
 
 #: src/localplayer.cpp:843
 msgid "Axe"
@@ -2090,9 +2048,8 @@ msgid "Thrown"
 msgstr ""
 
 #: src/localplayer.cpp:846
-#, fuzzy
 msgid "Craft"
-msgstr "作成"
+msgstr ""
 
 #: src/localplayer.cpp:847
 msgid "Unknown Skill"
@@ -2187,9 +2144,8 @@ msgid "The Mana World "
 msgstr ""
 
 #: src/main.cpp:1515
-#, fuzzy
 msgid "Connecting to map server..."
-msgstr "接続しています..."
+msgstr ""
 
 #: src/main.cpp:1523
 msgid "Connecting to character server..."
@@ -2252,37 +2208,31 @@ msgid "Player deleted"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:140
-#, fuzzy
 msgid "Failed to delete character."
-msgstr "キャラを選択"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:224
 #: src/net/tmwserv/charserverhandler.cpp:253
-#, fuzzy
 msgid "Strength:"
 msgstr "筋力:"
 
 #: src/net/ea/charserverhandler.cpp:225
 #: src/net/tmwserv/charserverhandler.cpp:254
-#, fuzzy
 msgid "Agility:"
 msgstr "素早さ:"
 
 #: src/net/ea/charserverhandler.cpp:226
 #: src/net/tmwserv/charserverhandler.cpp:256
-#, fuzzy
 msgid "Vitality:"
 msgstr "体力:"
 
 #: src/net/ea/charserverhandler.cpp:227
 #: src/net/tmwserv/charserverhandler.cpp:257
-#, fuzzy
 msgid "Intelligence:"
 msgstr "知性:"
 
 #: src/net/ea/charserverhandler.cpp:228
 #: src/net/tmwserv/charserverhandler.cpp:255
-#, fuzzy
 msgid "Dexterity:"
 msgstr "敏捷:"
 
@@ -2314,29 +2264,29 @@ msgid "Unable to unequip."
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength: %d"
-msgstr "筋力:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Agility: %d"
-msgstr "素早さ:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:96 src/net/tmwserv/generalhandler.cpp:88
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality: %d"
-msgstr "体力:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:98 src/net/tmwserv/generalhandler.cpp:90
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence: %d"
-msgstr "知性:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:100 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity: %d"
-msgstr "敏捷:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:102
 #, c-format
@@ -2517,23 +2467,20 @@ msgid "Failed to use item"
 msgstr ""
 
 #: src/net/ea/loginhandler.cpp:110
-#, fuzzy
 msgid "Unregistered ID"
-msgstr "登録削除"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:113
-#, fuzzy
 msgid "Wrong password"
-msgstr "パスワード:"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:116
 msgid "Account expired"
 msgstr ""
 
 #: src/net/ea/loginhandler.cpp:119
-#, fuzzy
 msgid "Rejected from server"
-msgstr "キャラを選択"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:123
 msgid ""
@@ -2849,9 +2796,8 @@ msgid "Trade with "
 msgstr ""
 
 #: src/net/ea/tradehandler.cpp:137
-#, fuzzy
 msgid " cancelled"
-msgstr "取消"
+msgstr ""
 
 #: src/net/ea/tradehandler.cpp:144
 msgid "Unhandled trade cancel packet"
@@ -2898,9 +2844,9 @@ msgid "Topic: "
 msgstr ""
 
 #: src/net/tmwserv/generalhandler.cpp:92
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower: %d"
-msgstr "精神:"
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
@@ -2911,9 +2857,8 @@ msgid "Already logged in"
 msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:86 src/net/tmwserv/loginhandler.cpp:185
-#, fuzzy
 msgid "Server is full"
-msgstr "サーバ:"
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:110
 msgid "New password incorrect"
@@ -2944,9 +2889,8 @@ msgid "Client version is too old"
 msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:179
-#, fuzzy
 msgid "Wrong username or password"
-msgstr "パスワード:"
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:211
 msgid "Wrong username, password or email address"
@@ -2999,23 +2943,3 @@ msgstr ""
 #: src/resources/npcdb.cpp:53
 msgid "NPC Database: Error while loading npcs.xml!"
 msgstr ""
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "> Cancel\n"
-#~ msgstr "取消"
-
-#, fuzzy
-#~ msgid "use"
-#~ msgstr "使う"
-
-#, fuzzy
-#~ msgid "Money: %d GP"
-#~ msgstr "GP: %d"
-
-#~ msgid "Confirm"
-#~ msgstr "確認"
-
-#~ msgid "Charisma:"
-#~ msgstr "魅力:"

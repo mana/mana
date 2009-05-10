@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-10 15:53+0200\n"
-"PO-Revision-Date: 2009-01-29 01:20+0100\n"
-"Last-Translator: Kess Vargavind <vargavind@gmail.com>\n"
+"POT-Creation-Date: 2009-05-10 16:39+0200\n"
+"PO-Revision-Date: 2009-04-22 11:32+0000\n"
+"Last-Translator: Kess Vargavind <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-01-06 12:40+0000\n"
+"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:141
@@ -24,76 +24,73 @@ msgstr "-- Hjälp --"
 #: src/commandhandler.cpp:142
 #, fuzzy
 msgid "/help > Display this help"
-msgstr "/help: Visar den här hjälptexten"
+msgstr "/help > Visa den här hjälpen"
 
 #: src/commandhandler.cpp:144
-#, fuzzy
 msgid "/where > Display map name"
-msgstr "/where: Visar namnet på kartan där du befinner dig"
+msgstr "/where > Visa kartans namn"
 
 #: src/commandhandler.cpp:145
-#, fuzzy
 msgid "/who > Display number of online users"
-msgstr "/who: Visar antalet inloggade spelare"
+msgstr "/who > Visa antalet inloggade spelare"
 
 #: src/commandhandler.cpp:146
 msgid "/me > Tell something about yourself"
-msgstr ""
+msgstr "/me > Säg något om dig själv"
 
 #: src/commandhandler.cpp:148
-#, fuzzy
 msgid "/clear > Clears this window"
-msgstr "/clear: Tömmer det här fönstret på text"
+msgstr "/clear > Tömmer det här fönstret"
 
 #: src/commandhandler.cpp:150
-#, fuzzy
 msgid "/msg > Send a private message to a user"
-msgstr "/whisper <namn> <text>: Skickar ett privat meddelande till en spelare"
+msgstr "/msg > Skickar ett privat meddelande till en spelare"
 
 #: src/commandhandler.cpp:151
 msgid "/whisper > Alias of msg"
-msgstr ""
+msgstr "/whisper > Alias för msg"
 
 #: src/commandhandler.cpp:152
 msgid "/w > Alias of msg"
-msgstr ""
+msgstr "/w > Alias för msg"
 
 #: src/commandhandler.cpp:153
 msgid "/query > Makes a tab for private messages with another user"
-msgstr ""
+msgstr "/query > Skapar en flik för privata meddelanden med en annan spelare"
 
 #: src/commandhandler.cpp:154
 msgid "/q > Alias of query"
-msgstr ""
+msgstr "/q > Alias för query"
 
 #: src/commandhandler.cpp:156
 msgid "/list > Display all public channels"
-msgstr ""
+msgstr "/list > Visa alla offentliga chattkanaler"
 
 #: src/commandhandler.cpp:157
 msgid "/join > Join or create a channel"
-msgstr ""
+msgstr "/join > Gå med i eller skapa en chattkanal"
 
 #: src/commandhandler.cpp:159
 msgid "/party > Invite a user to party"
-msgstr ""
+msgstr "/party > Bjud in en spelare till din grupp"
 
 #: src/commandhandler.cpp:161
 msgid "/record > Start recording the chat to an external file"
-msgstr ""
+msgstr "/record > Påbörja loggning av chatten till en extern fil"
 
 #: src/commandhandler.cpp:162
 msgid "/toggle > Determine whether <return> toggles the chat log"
-msgstr ""
+msgstr "/toggle > Avgör huruvida <retur> aktiverar chattfönstret eller ej"
 
 #: src/commandhandler.cpp:163
 msgid "/present > Get list of players present (sent to chat log, if logging)"
 msgstr ""
+"/present > Lista närvarande spelare (sänds till chattloggen om loggning är "
+"aktiverad)"
 
 #: src/commandhandler.cpp:165
-#, fuzzy
 msgid "/announce > Global announcement (GM only)"
-msgstr "/announce: Globalt meddelande (endast GM)"
+msgstr "/announce > Globalt meddelande (endast för GM)"
 
 #: src/commandhandler.cpp:169
 msgid "For more information, type /help <command>"
@@ -137,144 +134,133 @@ msgid "This command clears the chat log of previous chat."
 msgstr "Det här kommandot tömmer chattloggen."
 
 #: src/commandhandler.cpp:196
-#, fuzzy
 msgid "Command: /join <channel>"
-msgstr "Kommando: /help"
+msgstr "Kommando: /join <chattkanal>"
 
 #: src/commandhandler.cpp:197
-#, fuzzy
 msgid "This command makes you enter <channel>."
-msgstr "Det här kommandot ger mer information om <kommando>."
+msgstr "Det här kommandot låter dig gå in i <chattkanal>."
 
 #: src/commandhandler.cpp:198
 msgid "If <channel> doesn't exist, it's created."
-msgstr ""
+msgstr "Om <chattkanal> inte existerar, skapas den."
 
 #: src/commandhandler.cpp:202
-#, fuzzy
 msgid "Command: /list"
-msgstr "Kommando: /help"
+msgstr "Kommando: /list"
 
 #: src/commandhandler.cpp:203
-#, fuzzy
 msgid "This command shows a list of all channels."
-msgstr "Det här kommandot visar en lista över alla tillgängliga kommandon."
+msgstr "Det här kommandot visar en lista över alla chattkanaler."
 
 #: src/commandhandler.cpp:207
-#, fuzzy
 msgid "Command: /me <message>"
-msgstr "Kommando: /announce <text>"
+msgstr "Kommando: /me <meddelande>"
 
 #: src/commandhandler.cpp:208
 msgid "This command tell others you are (doing) <msg>."
-msgstr ""
+msgstr "Det här kommandet berättar för andra att du är/gör <meddelande>."
 
 #: src/commandhandler.cpp:212
-#, fuzzy
 msgid "Command: /msg <nick> <message>"
-msgstr "Kommando: /w <namn> <text>"
+msgstr "Kommando: /msg <spelare> <meddelande>"
 
 #: src/commandhandler.cpp:213
-#, fuzzy
 msgid "Command: /whisper <nick> <message>"
-msgstr "Kommando: /whisper <namn> <text>"
+msgstr "Kommando: /whisper <spelare> <meddelande>"
 
 #: src/commandhandler.cpp:214
-#, fuzzy
 msgid "Command: /w <nick> <message>"
-msgstr "Kommando: /w <namn> <text>"
+msgstr "Kommando: /w <spelare> <meddelande>"
 
 #: src/commandhandler.cpp:215
-#, fuzzy
 msgid "This command sends the text <message> to <nick>."
-msgstr "Det här kommandot skickar meddelandet <text> till karaktären <namn>."
+msgstr "Det här kommandot skickar <meddelande> till <spelare>."
 
 #: src/commandhandler.cpp:216 src/commandhandler.cpp:230
 #: src/gui/widgets/channeltab.cpp:81 src/gui/widgets/channeltab.cpp:90
 #: src/net/ea/gui/partytab.cpp:76
 msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
 msgstr ""
-"Om <namn> innehåller mellanslag, måste du sätta citattecken (\") runt det."
+"Om <spelare> innehåller mellanslag, måste du sätta citattecken (\") runt det."
 
 #: src/commandhandler.cpp:221
-#, fuzzy
 msgid "Command: /query <nick>"
-msgstr "Kommando: /w <namn> <text>"
+msgstr "Kommando: /query <spelare>"
 
 #: src/commandhandler.cpp:222
-#, fuzzy
 msgid "Command: /q <nick>"
-msgstr "Kommando: /w <namn> <text>"
+msgstr "Kommando: /q <spelare>"
 
 #: src/commandhandler.cpp:223
 msgid "This command tries to make a tab for whispers betweenyou and <nick>."
 msgstr ""
+"Det här kommandot försöker att skapa en flik för viskningar mellan dig och "
+"<spelare>."
 
 #: src/commandhandler.cpp:228
-#, fuzzy
 msgid "Command: /party <nick>"
-msgstr "Kommando: /w <namn> <text>"
+msgstr "Kommando: /party <spelare>"
 
 #: src/commandhandler.cpp:229 src/net/ea/gui/partytab.cpp:75
 msgid "This command invites <nick> to party with you."
-msgstr ""
+msgstr "Det här kommandot bjuder in <spelare> till din grupp."
 
 #: src/commandhandler.cpp:235
-#, fuzzy
 msgid "Command: /present"
-msgstr "Kommando: /where"
+msgstr "Kommando: /present"
 
 #: src/commandhandler.cpp:236
 msgid ""
 "This command gets a list of players within hearing and sends it to either "
 "the record log if recording, or the chat log otherwise."
 msgstr ""
+"Det här kommandot ger en lista över spelare som finns inom höravstånd, om "
+"loggning av chatten är aktiverad skickas listan till loggfilen."
 
 #: src/commandhandler.cpp:242
-#, fuzzy
 msgid "Command: /record <filename>"
-msgstr "Kommando: /clear"
+msgstr "Kommando: /record <filnamn>"
 
 #: src/commandhandler.cpp:243
-#, fuzzy
 msgid "This command starts recording the chat log to the file <filename>."
-msgstr "Det här kommandot tömmer chattloggen."
+msgstr "Det här kommandot startar loggning av chatten till <filnamn>."
 
 #: src/commandhandler.cpp:245
-#, fuzzy
 msgid "Command: /record"
-msgstr "Kommando: /clear"
+msgstr "Kommando: /record"
 
 #: src/commandhandler.cpp:246
 msgid "This command finishes a recording session."
-msgstr ""
+msgstr "Det här kommandot slutar loggning av chatten."
 
 #: src/commandhandler.cpp:250
-#, fuzzy
 msgid "Command: /toggle <state>"
-msgstr "Kommando: /announce <text>"
+msgstr "Kommando: /toggle <tillstånd>"
 
 #: src/commandhandler.cpp:251
 msgid ""
 "This command sets whether the return key should toggle the chat log, or "
 "whether the chat log turns off automatically."
 msgstr ""
+"Det här kommandot anger huruvida retur visar/döljerer chattfönstret eller om "
+"chattfönstret stänger sig själv."
 
 #: src/commandhandler.cpp:253
 msgid ""
 "<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or \"0"
 "\", \"no\", \"false\" to turn the toggle off."
 msgstr ""
+"<tillstånd> kan vara ”1”, ”yes” eller ”true” för att använda returtangenten "
+"eller ”0”, ”no” eller ”false” för att använda automatisk stängning."
 
 #: src/commandhandler.cpp:256
-#, fuzzy
 msgid "Command: /toggle"
-msgstr "Kommando: /clear"
+msgstr "Kommando: /toggle"
 
 #: src/commandhandler.cpp:257
-#, fuzzy
 msgid "This command displays the return toggle status."
-msgstr "Det här kommandot visar namnet på den karta där du befinner dig."
+msgstr "Det här kommandot visar tillståndet för huruvida retur används."
 
 #: src/commandhandler.cpp:261
 msgid "Command: /where"
@@ -303,56 +289,58 @@ msgstr "Skriv /help för en lista med kommandon."
 #: src/commandhandler.cpp:339
 #, fuzzy
 msgid "Cannot send empty whispers!"
-msgstr "Kan inte skrika!"
+msgstr "Kan inte skicka tomma viskningar!"
 
 #: src/commandhandler.cpp:346
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Cannot create a whisper tab for nick '%s'! It either already exists, or is "
 "you."
 msgstr ""
+"Kan inte skapa en ny flik för viskningar till spelaren ”%s”! Antingen finns "
+"den fliken redan eller så angav du dig själv."
 
 #: src/commandhandler.cpp:392
 msgid "Return toggles chat."
-msgstr ""
+msgstr "Retur visar/döljer chattfönstret."
 
 #: src/commandhandler.cpp:392
 msgid "Message closes chat."
-msgstr ""
+msgstr "Meddelande stänger chattfönstret."
 
 #: src/commandhandler.cpp:401
 msgid "Return now toggles chat."
-msgstr ""
+msgstr "Retur växlar nu chattfönstrets synlighet."
 
 #: src/commandhandler.cpp:405
 msgid "Message now closes chat."
-msgstr ""
+msgstr "Meddelanden stänger nu chattfönstret."
 
 #: src/commandhandler.h:31
 #, c-format
 msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
-msgstr ""
+msgstr "Alternativ till /%s är ”yes”, ”no”, ”true”, ”false”, ”1”, ”0”."
 
 #: src/game.cpp:236
 msgid "General"
-msgstr ""
+msgstr "Allmänt"
 
 #: src/game.cpp:400
 msgid "Screenshot saved to ~/"
-msgstr ""
+msgstr "Skärmbild sparades till ~/"
 
 #: src/game.cpp:405
-#, fuzzy
 msgid "Saving screenshot failed!"
-msgstr "Kan inte sitta ned!"
+msgstr "Kunde inte spara skärmbild!"
 
 #: src/game.cpp:481
 msgid "The connection to the server was lost, the program will now quit"
 msgstr ""
+"Förbindelsen till servern förlorades, programmet kommer nu att avslutas."
 
 #: src/game.cpp:487
 msgid "Network Error"
-msgstr ""
+msgstr "Nätverksfel"
 
 #: src/game.cpp:646 src/gui/buy.cpp:71 src/gui/quitdialog.cpp:32
 #: src/gui/quitdialog.cpp:35 src/gui/quitdialog.cpp:36 src/gui/sell.cpp:73
@@ -361,30 +349,28 @@ msgid "Quit"
 msgstr "Avsluta"
 
 #: src/game.cpp:647
-#, fuzzy
 msgid "Are you sure you want to quit?"
-msgstr "Är du säker på att du vill ta bort den här karaktären?"
+msgstr "Är du säker på att du vill avsluta?"
 
 #: src/game.cpp:654
 msgid "no"
-msgstr ""
+msgstr "nej"
 
 #: src/game.cpp:794
 msgid "Ignoring incoming trade requests"
-msgstr ""
+msgstr "Ignorerar handelserbjudanden"
 
 #: src/game.cpp:801
 msgid "Accepting incoming trade requests"
-msgstr ""
+msgstr "Accepterar handelserbjudanden"
 
 #: src/gui/buddywindow.cpp:35
-#, fuzzy
 msgid "Buddy"
-msgstr "Köp"
+msgstr "Kompis"
 
 #: src/gui/buddywindow.cpp:38
 msgid "Buddy List"
-msgstr ""
+msgstr "Kompislista"
 
 #: src/gui/buy.cpp:46 src/gui/buy.cpp:70 src/gui/buysell.cpp:40
 msgid "Buy"
@@ -392,14 +378,13 @@ msgstr "Köp"
 
 #: src/gui/buy.cpp:65 src/gui/buy.cpp:256 src/gui/sell.cpp:67
 #: src/gui/sell.cpp:278
-#, fuzzy, c-format
+#, c-format
 msgid "Price: %s / Total: %s"
-msgstr "Pris: %d GP / Totalt: %d GP"
+msgstr "Pris: %s / Totalt: %s"
 
 #: src/gui/buy.cpp:72 src/gui/sell.cpp:74
-#, fuzzy
 msgid "Max"
-msgstr "maximal"
+msgstr "Max"
 
 #: src/gui/buy.cpp:73 src/gui/buy.cpp:223 src/gui/buy.cpp:241
 #: src/gui/sell.cpp:75 src/gui/sell.cpp:250 src/gui/sell.cpp:264
@@ -435,23 +420,22 @@ msgstr "Avbryt"
 #: src/gui/changeemaildialog.cpp:43 src/gui/changeemaildialog.cpp:52
 #: src/gui/charselectdialog.cpp:121
 msgid "Change Email Address"
-msgstr ""
+msgstr "Ändra epostadress"
 
 #: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:48
 #: src/gui/charselectdialog.cpp:123
 #, c-format
 msgid "Account: %s"
-msgstr ""
+msgstr "Konto: %s"
 
 #: src/gui/changeemaildialog.cpp:49
 msgid "Type New Email Address twice:"
-msgstr ""
+msgstr "Ange den nya epostadressen två gånger:"
 
 #: src/gui/changepassworddialog.cpp:44 src/gui/changepassworddialog.cpp:55
 #: src/gui/charselectdialog.cpp:120
-#, fuzzy
 msgid "Change Password"
-msgstr "Lösenord:"
+msgstr "Ändra lösenord"
 
 #: src/gui/changepassworddialog.cpp:50 src/gui/login.cpp:52
 #: src/gui/register.cpp:61 src/gui/unregisterdialog.cpp:50
@@ -460,7 +444,7 @@ msgstr "Lösenord:"
 
 #: src/gui/changepassworddialog.cpp:52
 msgid "Type New Password twice:"
-msgstr ""
+msgstr "Ange det nya lösenordet två gånger:"
 
 #: src/gui/charcreatedialog.cpp:54
 msgid "Create Character"
@@ -525,7 +509,7 @@ msgstr "Är du säker på att du vill ta bort den här karaktären?"
 
 #: src/gui/charselectdialog.cpp:97
 msgid "Account and Character Management"
-msgstr ""
+msgstr "Hantering av konto och karaktärer"
 
 #: src/gui/charselectdialog.cpp:104
 msgid "Select Character"
@@ -588,14 +572,13 @@ msgstr "Jobbnivå: %d"
 #: src/gui/charselectdialog.cpp:162 src/gui/charselectdialog.cpp:308
 #: src/gui/charselectdialog.cpp:327 src/gui/status.cpp:57
 #: src/gui/status.cpp:182
-#, fuzzy, c-format
+#, c-format
 msgid "Money: %s"
-msgstr "Pengar: %d"
+msgstr "Pengar: %s"
 
 #: src/gui/chat.cpp:73 src/gui/palette.cpp:93
-#, fuzzy
 msgid "Chat"
-msgstr "Skapa"
+msgstr "Chatt"
 
 #: src/gui/chat.cpp:332
 #, c-format
@@ -604,7 +587,7 @@ msgstr ""
 
 #: src/gui/chat.cpp:348 src/gui/chat.cpp:354
 msgid "Present: "
-msgstr ""
+msgstr "Närvarande: "
 
 #: src/gui/chat.cpp:348 src/gui/chat.cpp:354
 msgid "; "
@@ -612,7 +595,7 @@ msgstr ""
 
 #: src/gui/chat.cpp:349
 msgid "Attendance written to record log."
-msgstr ""
+msgstr "Närvaro loggades till fil."
 
 #: src/gui/chat.cpp:474
 #, c-format
@@ -633,7 +616,7 @@ msgstr "Ansluter..."
 
 #: src/gui/emotepopup.cpp:64
 msgid "Unable to load selection.png"
-msgstr ""
+msgstr "Kan inte ladda selection.png"
 
 #: src/gui/equipmentwindow.cpp:68 src/gui/windowmenu.cpp:60
 msgid "Equipment"
@@ -646,20 +629,19 @@ msgstr "Avrusta"
 
 #: src/gui/guildwindow.cpp:50 src/gui/guildwindow.cpp:54
 msgid "Guild"
-msgstr ""
+msgstr "Gille"
 
 #: src/gui/guildwindow.cpp:63
-#, fuzzy
 msgid "Create Guild"
-msgstr "Skapa"
+msgstr "Skapa gille"
 
 #: src/gui/guildwindow.cpp:64
 msgid "Invite User"
-msgstr ""
+msgstr "Bjud in spelare"
 
 #: src/gui/guildwindow.cpp:65
 msgid "Quit Guild"
-msgstr ""
+msgstr "Lämna gille"
 
 #: src/gui/help.cpp:34
 msgid "Help"
@@ -693,16 +675,15 @@ msgstr "Dela"
 
 #: src/gui/inventorywindow.cpp:92
 msgid "Slots:"
-msgstr ""
+msgstr "Utrymme:"
 
 #: src/gui/inventorywindow.cpp:93
-#, fuzzy
 msgid "Weight:"
-msgstr "Vikt: %d / %d"
+msgstr "Vikt:"
 
 #: src/gui/itemamount.cpp:95
 msgid "All"
-msgstr ""
+msgstr "Alla"
 
 #: src/gui/itemamount.cpp:121
 msgid "Select amount of items to trade."
@@ -713,23 +694,20 @@ msgid "Select amount of items to drop."
 msgstr "Välj antal föremål att släppa."
 
 #: src/gui/itemamount.cpp:127
-#, fuzzy
 msgid "Select amount of items to store."
-msgstr "Välj antal föremål att handla med."
+msgstr "Välj antal att lagra."
 
 #: src/gui/itemamount.cpp:130
-#, fuzzy
 msgid "Select amount of items to retrieve."
-msgstr "Välj antal föremål att handla med."
+msgstr "Vaälja antal att hämta."
 
 #: src/gui/itemamount.cpp:133
 msgid "Select amount of items to split."
 msgstr "Välj antal föremål att dela."
 
 #: src/gui/itempopup.cpp:91
-#, fuzzy
 msgid "Weight: "
-msgstr "Vikt: %d / %d"
+msgstr "Vikt: "
 
 #: src/gui/login.cpp:48
 msgid "Login"
@@ -745,9 +723,8 @@ msgid "Port:"
 msgstr "Port:"
 
 #: src/gui/login.cpp:56
-#, fuzzy
 msgid "Recent:"
-msgstr "Registrera"
+msgstr "Senaste:"
 
 #: src/gui/login.cpp:73
 msgid "Remember Username"
@@ -765,33 +742,33 @@ msgstr "Registrera"
 #: src/gui/magic.cpp:32 src/gui/skilldialog.cpp:117 src/gui/windowmenu.cpp:64
 #: src/localplayer.cpp:845
 msgid "Magic"
-msgstr ""
+msgstr "Magi"
 
 #: src/gui/magic.cpp:39
 msgid "Cast Test Spell 1"
-msgstr ""
+msgstr "Använd testmagi 1"
 
 #: src/gui/magic.cpp:40
 msgid "Cast Test Spell 2"
-msgstr ""
+msgstr "Använd testmagi 2"
 
 #: src/gui/magic.cpp:41
 msgid "Cast Test Spell 3"
-msgstr ""
+msgstr "Använd testmagi 3"
 
 #: src/gui/minimap.cpp:45 src/gui/minimap.cpp:84
 #, fuzzy
 msgid "Map"
-msgstr "maximal"
+msgstr "Max"
 
 #: src/gui/npcdialog.cpp:43
 msgid "Waiting for server"
-msgstr ""
+msgstr "Väntar på server"
 
 #: src/gui/npcdialog.cpp:46
 #, fuzzy
 msgid "Submit"
-msgstr "Dela"
+msgstr "Sitt"
 
 #: src/gui/npcdialog.cpp:49 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -806,24 +783,21 @@ msgid "-"
 msgstr ""
 
 #: src/gui/npcdialog.cpp:105
-#, fuzzy
 msgid "Reset"
-msgstr "Registrera"
+msgstr "Återställ"
 
 #: src/gui/npcpostdialog.cpp:51
-#, fuzzy
 msgid "Send"
-msgstr "Ljud"
+msgstr "Skicka"
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:268
 #: src/gui/setup_video.cpp:567
-#, fuzzy
 msgid "Text"
-msgstr "Nästa"
+msgstr "Text"
 
 #: src/gui/palette.cpp:82
 msgid "Text Shadow"
-msgstr ""
+msgstr "Textskugga"
 
 #: src/gui/palette.cpp:83
 msgid "Text Outline"
@@ -831,16 +805,15 @@ msgstr ""
 
 #: src/gui/palette.cpp:84
 msgid "Progress Bar Labels"
-msgstr ""
+msgstr "Förloppsindikatoretiketter"
 
 #: src/gui/palette.cpp:86
 msgid "Background"
-msgstr ""
+msgstr "Bakgrund"
 
 #: src/gui/palette.cpp:88
-#, fuzzy
 msgid "Highlight"
-msgstr "hög"
+msgstr ""
 
 #: src/gui/palette.cpp:89
 msgid "Tab Highlight"
@@ -856,32 +829,28 @@ msgstr ""
 
 #: src/gui/palette.cpp:94
 msgid "GM"
-msgstr ""
+msgstr "GM"
 
 #: src/gui/palette.cpp:95
-#, fuzzy
 msgid "Player"
 msgstr "Spelare"
 
 #: src/gui/palette.cpp:96
-#, fuzzy
 msgid "Whisper"
-msgstr "%s viskar:"
+msgstr "Viskning"
 
 #: src/gui/palette.cpp:97
 msgid "Is"
-msgstr ""
+msgstr "Är"
 
 #: src/gui/palette.cpp:98 src/gui/partywindow.cpp:33
 #: src/net/ea/gui/partytab.cpp:37
-#, fuzzy
 msgid "Party"
-msgstr "Spela"
+msgstr "Grupp"
 
 #: src/gui/palette.cpp:99
-#, fuzzy
 msgid "Server"
-msgstr "Server:"
+msgstr "Server"
 
 #: src/gui/palette.cpp:100
 msgid "Logger"
@@ -889,47 +858,46 @@ msgstr ""
 
 #: src/gui/palette.cpp:101
 msgid "Hyperlink"
-msgstr ""
+msgstr "Länk"
 
 #: src/gui/palette.cpp:103
 msgid "Being"
-msgstr ""
+msgstr "Varelse"
 
 #: src/gui/palette.cpp:104
+#, fuzzy
 msgid "Other Players' Names"
-msgstr ""
+msgstr "Andra spelares namn"
 
 #: src/gui/palette.cpp:105
-#, fuzzy
 msgid "Own Name"
-msgstr "Namn"
+msgstr "Eget namn"
 
 #: src/gui/palette.cpp:106
-#, fuzzy
 msgid "GM Names"
-msgstr "Namn"
+msgstr "GM-namn"
 
 #: src/gui/palette.cpp:107
-#, fuzzy
 msgid "NPCs"
-msgstr "NPC"
+msgstr "NPC:er"
 
 #: src/gui/palette.cpp:108
 msgid "Monsters"
-msgstr ""
+msgstr "Monster"
 
 #: src/gui/palette.cpp:110
 msgid "Unknown Item Type"
 msgstr ""
 
 #: src/gui/palette.cpp:111
+#, fuzzy
 msgid "Generics"
-msgstr ""
+msgstr "Allmänt"
 
 #: src/gui/palette.cpp:112
 #, fuzzy
 msgid "Hats"
-msgstr "Statistik"
+msgstr "Byxor"
 
 #: src/gui/palette.cpp:113
 #, fuzzy
@@ -939,38 +907,38 @@ msgstr "Använd"
 #: src/gui/palette.cpp:114
 #, fuzzy
 msgid "Shirts"
-msgstr "Genvägar"
+msgstr "Tröja"
 
 #: src/gui/palette.cpp:115
 msgid "1 Handed Weapons"
-msgstr ""
+msgstr "Enhandsvapen"
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Pants"
-msgstr "Statistik"
+msgstr "Byxor"
 
 #: src/gui/palette.cpp:117
-#, fuzzy
 msgid "Shoes"
-msgstr "Affär"
+msgstr "Skor"
 
 #: src/gui/palette.cpp:118
 msgid "2 Handed Weapons"
-msgstr ""
+msgstr "Tvåhandsvapen"
 
 #: src/gui/palette.cpp:119
 #, fuzzy
 msgid "Shields"
-msgstr "Sälj"
+msgstr "Sköld"
 
 #: src/gui/palette.cpp:120
+#, fuzzy
 msgid "Rings"
-msgstr ""
+msgstr "Ring"
 
 #: src/gui/palette.cpp:121
+#, fuzzy
 msgid "Necklaces"
-msgstr ""
+msgstr "Halsband"
 
 #: src/gui/palette.cpp:122
 msgid "Arms"
@@ -978,12 +946,11 @@ msgstr ""
 
 #: src/gui/palette.cpp:123
 msgid "Ammo"
-msgstr ""
+msgstr "Ammunition"
 
 #: src/gui/palette.cpp:125
-#, fuzzy
 msgid "Particle Effects"
-msgstr "Partikeldetaljer"
+msgstr "Partikeleffekter"
 
 #: src/gui/palette.cpp:126
 msgid "Pickup Notification"
@@ -991,24 +958,23 @@ msgstr ""
 
 #: src/gui/palette.cpp:127
 msgid "Exp Notification"
-msgstr ""
+msgstr "XP-notifiering"
 
 #: src/gui/palette.cpp:129
 msgid "Player hits Monster"
-msgstr ""
+msgstr "Spelare slår monster"
 
 #: src/gui/palette.cpp:131
 msgid "Monster hits Player"
-msgstr ""
+msgstr "Monster slår spelare"
 
 #: src/gui/palette.cpp:132
-#, fuzzy
 msgid "Critical Hit"
-msgstr "Hälsa"
+msgstr ""
 
 #: src/gui/palette.cpp:133
 msgid "Misses"
-msgstr ""
+msgstr "Missar"
 
 #: src/gui/palette.cpp:135
 msgid "HP Bar"
@@ -1028,7 +994,7 @@ msgstr ""
 
 #: src/gui/popupmenu.cpp:75
 msgid "@@name|Add name to chat@@"
-msgstr ""
+msgstr "@@name|Använd namn i chatt@@"
 
 #: src/gui/popupmenu.cpp:87
 #, c-format
@@ -1043,42 +1009,42 @@ msgstr "@@attack|Attackera %s@@"
 #: src/gui/popupmenu.cpp:94
 #, c-format
 msgid "@@friend|Befriend %s@@"
-msgstr ""
+msgstr "@@friend|Lägg till %s som vän@@"
 
 #: src/gui/popupmenu.cpp:97
 #, c-format
 msgid "@@disregard|Disregard %s@@"
-msgstr ""
+msgstr "@@disregard|Strunta i %s@@"
 
 #: src/gui/popupmenu.cpp:98
 #, c-format
 msgid "@@ignore|Ignore %s@@"
-msgstr ""
+msgstr "@@ignore|Ignorera %s@@"
 
 #: src/gui/popupmenu.cpp:102 src/gui/popupmenu.cpp:107
 #, c-format
 msgid "@@unignore|Un-Ignore %s@@"
-msgstr ""
+msgstr "@@unignore|Sluta ignorera %s@@"
 
 #: src/gui/popupmenu.cpp:103
 #, c-format
 msgid "@@ignore|Completely ignore %s@@"
-msgstr ""
+msgstr "@@ignore|Ignorera %s fullständigt@@"
 
 #: src/gui/popupmenu.cpp:113
 #, c-format
 msgid "@@guild|Invite %s to join your guild@@"
-msgstr ""
+msgstr "@@guild|Bjud in %s till ditt gille@@"
 
 #: src/gui/popupmenu.cpp:114
 #, c-format
 msgid "@@party|Invite %s to join your party@@"
-msgstr ""
+msgstr "@@party|Bjud in %s till din grupp@@"
 
 #: src/gui/popupmenu.cpp:125
-#, fuzzy, c-format
+#, c-format
 msgid "@@talk|Talk To %s@@"
-msgstr "@@talk|Prata med NPC@@"
+msgstr "@@talk|Prata med %s@@"
 
 #: src/gui/popupmenu.cpp:144 src/gui/popupmenu.cpp:162
 #: src/gui/popupmenu.cpp:375
@@ -1091,8 +1057,9 @@ msgid "@@pickup|Pick up %s@@"
 msgstr "@@pickup|Plocka upp %s@@"
 
 #: src/gui/popupmenu.cpp:158 src/gui/popupmenu.cpp:373
+#, fuzzy
 msgid "@@chat|Add to chat@@"
-msgstr ""
+msgstr "@@chat|Lägg till chatt@@"
 
 #: src/gui/popupmenu.cpp:348
 msgid "@@use|Unequip@@"
@@ -1117,7 +1084,7 @@ msgstr "@@split|Dela@@"
 #: src/gui/popupmenu.cpp:364
 #, fuzzy
 msgid "@@store|Store@@"
-msgstr "@@use|Använd@@"
+msgstr "@@ignore|Ignorera %s@@"
 
 #: src/gui/popupmenu.cpp:371
 msgid "@@retrieve|Retrieve@@"
@@ -1133,32 +1100,31 @@ msgstr "Byt karaktär"
 
 #: src/gui/recorder.cpp:87
 msgid "Finishing recording."
-msgstr ""
+msgstr "Avslutar chattloggning."
 
 #: src/gui/recorder.cpp:91
 msgid "Not currently recording."
-msgstr ""
+msgstr "Loggar inte chattmeddelanden till fil."
 
 #: src/gui/recorder.cpp:96
 msgid "Already recording."
-msgstr ""
+msgstr "Loggar chattmeddelanden till fil."
 
 #: src/gui/recorder.cpp:104
 msgid "Starting to record..."
-msgstr ""
+msgstr "Börjar logga chattmeddelanden…"
 
 #: src/gui/recorder.cpp:113
 msgid "Failed to start recording."
-msgstr ""
+msgstr "Misslyckades att börja logga chattmeddelanden."
 
 #: src/gui/recorder.h:39
-#, fuzzy
 msgid "Recording..."
-msgstr "Ansluter..."
+msgstr "Loggar chattmeddelanden…"
 
 #: src/gui/recorder.h:40
 msgid "Stop recording"
-msgstr ""
+msgstr "Sluta logga chattmeddelanden"
 
 #: src/gui/register.cpp:62
 msgid "Confirm:"
@@ -1193,9 +1159,8 @@ msgid "Passwords do not match."
 msgstr "Lösenorden stämmer inte överens."
 
 #: src/gui/serverdialog.cpp:74
-#, fuzzy
 msgid "Choose your server"
-msgstr "Välj din Mana World-server"
+msgstr "Välj din server"
 
 #: src/gui/serverdialog.cpp:164
 msgid "Please type both the address and the port of a server."
@@ -1235,54 +1200,50 @@ msgstr "Musikvolym"
 
 #: src/gui/setup_colors.cpp:45
 msgid "This is what the color looks like"
-msgstr ""
+msgstr "Så här ser färgen ut"
 
 #: src/gui/setup_colors.cpp:50
-#, fuzzy
 msgid "Colors"
-msgstr "Stäng"
+msgstr "Färger"
 
 #: src/gui/setup_colors.cpp:71
 msgid "Type: "
-msgstr ""
+msgstr "Typ: "
 
 #: src/gui/setup_colors.cpp:82 src/gui/setup_colors.cpp:430
-#, fuzzy
 msgid "Static"
-msgstr "Statistik"
+msgstr "Statisk"
 
 #: src/gui/setup_colors.cpp:84 src/gui/setup_colors.cpp:85
 #: src/gui/setup_colors.cpp:431
-#, fuzzy
 msgid "Pulse"
-msgstr "Stäng"
+msgstr "Pulserande"
 
 #: src/gui/setup_colors.cpp:86 src/gui/setup_colors.cpp:87
 #: src/gui/setup_colors.cpp:432
 msgid "Rainbow"
-msgstr ""
+msgstr "Regnbåge"
 
 #: src/gui/setup_colors.cpp:88 src/gui/setup_colors.cpp:89
 #: src/gui/setup_colors.cpp:432
-#, fuzzy
 msgid "Spectrum"
-msgstr "Inställningar"
+msgstr "Spektrum"
 
 #: src/gui/setup_colors.cpp:93
 msgid "Delay: "
-msgstr ""
+msgstr "Fördröjning: "
 
 #: src/gui/setup_colors.cpp:108
 msgid "Red: "
-msgstr ""
+msgstr "Röd: "
 
 #: src/gui/setup_colors.cpp:123
 msgid "Green: "
-msgstr ""
+msgstr "Grön: "
 
 #: src/gui/setup_colors.cpp:138
 msgid "Blue: "
-msgstr ""
+msgstr "Blå: "
 
 #: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:78
 msgid "Press the button to start calibration"
@@ -1354,7 +1315,7 @@ msgstr "Ignorerad"
 
 #: src/gui/setup_players.cpp:207 src/gui/setup_video.cpp:131
 msgid "???"
-msgstr ""
+msgstr "???"
 
 #: src/gui/setup_players.cpp:224
 msgid "Save player list"
@@ -1370,7 +1331,7 @@ msgstr "Tillåt viskningar"
 
 #: src/gui/setup_players.cpp:232
 msgid "Put all whispers in tabs"
-msgstr ""
+msgstr "Visa alla viskningar i egna flikar"
 
 #: src/gui/setup_players.cpp:234
 msgid "Players"
@@ -1412,28 +1373,27 @@ msgstr "Särskild muspekare"
 
 #: src/gui/setup_video.cpp:155
 msgid "Visible names"
-msgstr ""
+msgstr "Synliga namn"
 
 #: src/gui/setup_video.cpp:157
-#, fuzzy
 msgid "Particle effects"
-msgstr "Partikeldetaljer"
+msgstr "Partikeleffekter"
 
 #: src/gui/setup_video.cpp:159
 msgid "Show name"
-msgstr ""
+msgstr "Visa namn"
 
 #: src/gui/setup_video.cpp:160
 msgid "Show pickup notification"
-msgstr ""
+msgstr "Visa erhållna saker"
 
 #: src/gui/setup_video.cpp:161
 msgid "in chat"
-msgstr ""
+msgstr "i chattfönster"
 
 #: src/gui/setup_video.cpp:162
 msgid "as particle"
-msgstr ""
+msgstr "som partikel"
 
 #: src/gui/setup_video.cpp:167
 msgid "FPS Limit:"
@@ -1445,7 +1405,7 @@ msgstr "Video"
 
 #: src/gui/setup_video.cpp:189
 msgid "Overhead text"
-msgstr ""
+msgstr "Text ovanför huvudet"
 
 #: src/gui/setup_video.cpp:190
 msgid "Gui opacity"
@@ -1472,17 +1432,16 @@ msgid "Font size"
 msgstr ""
 
 #: src/gui/setup_video.cpp:265 src/gui/setup_video.cpp:564
-#, fuzzy
 msgid "No text"
-msgstr "Nästa"
+msgstr "Ingen text"
 
 #: src/gui/setup_video.cpp:271 src/gui/setup_video.cpp:570
 msgid "Bubbles, no names"
-msgstr ""
+msgstr "Textbubblor utan namn"
 
 #: src/gui/setup_video.cpp:274 src/gui/setup_video.cpp:573
 msgid "Bubbles with names"
-msgstr ""
+msgstr "Textbubblor med namn"
 
 #: src/gui/setup_video.cpp:282 src/gui/setup_video.cpp:610
 msgid "off"
@@ -1508,16 +1467,15 @@ msgstr "maximal"
 
 #: src/gui/setup_video.cpp:410
 msgid "Failed to switch to "
-msgstr ""
+msgstr "Kunde inte byta till "
 
 #: src/gui/setup_video.cpp:411
 msgid "windowed"
-msgstr ""
+msgstr "som fönster"
 
 #: src/gui/setup_video.cpp:411
-#, fuzzy
 msgid "fullscreen"
-msgstr "Helskärm"
+msgstr "helskärm"
 
 #: src/gui/setup_video.cpp:412
 msgid "mode and restoration of old mode also failed!"
@@ -1541,25 +1499,23 @@ msgstr "Ändringar i OpenGL kräver omstart."
 
 #: src/gui/setup_video.cpp:520
 msgid "Screen resolution changed"
-msgstr ""
+msgstr "Skärmupplösning ändrad"
 
 #: src/gui/setup_video.cpp:521
-#, fuzzy
 msgid "Restart your client for the change to take effect."
-msgstr "Omstart krävs för att ändringarna ska synas."
+msgstr "Starta om din klient för att ändringen ska börja gälla."
 
 #: src/gui/setup_video.cpp:545
 msgid "Particle effect settings changed."
-msgstr ""
+msgstr "Inställningar för partikeleffekter ändrade."
 
 #: src/gui/setup_video.cpp:546
 msgid "Changes will take effect on map change."
-msgstr ""
+msgstr "Förändringar kommer att börja gälla när du byter karta."
 
 #: src/gui/skill.cpp:41
-#, fuzzy
 msgid "skills.xml"
-msgstr "Färdigheter"
+msgstr ""
 
 #: src/gui/skill.cpp:50
 msgid "Mystery Skill"
@@ -1580,12 +1536,11 @@ msgstr "Upp"
 
 #: src/gui/skilldialog.cpp:113
 msgid "Weapons"
-msgstr ""
+msgstr "Vapen"
 
 #: src/gui/skilldialog.cpp:121
-#, fuzzy
 msgid "Crafts"
-msgstr "Skapa"
+msgstr ""
 
 #: src/gui/status.cpp:56 src/gui/status.cpp:177
 #, c-format
@@ -1594,20 +1549,19 @@ msgstr "Jobb: %d"
 
 #: src/gui/status.cpp:60
 msgid "HP:"
-msgstr ""
+msgstr "HP:"
 
 #: src/gui/status.cpp:63
 msgid "Exp:"
-msgstr ""
+msgstr "EP:"
 
 #: src/gui/status.cpp:66
 msgid "MP:"
-msgstr ""
+msgstr "MP:"
 
 #: src/gui/status.cpp:69
-#, fuzzy
 msgid "Job:"
-msgstr "Jobb: %d"
+msgstr "Jobb:"
 
 #: src/gui/status.cpp:77
 msgid "Stats"
@@ -1638,14 +1592,14 @@ msgid "M.Defense:"
 msgstr "M. försvar:"
 
 #: src/gui/status.cpp:88
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "% Accuracy:"
-msgstr "% Precision:"
+msgstr ""
 
 #: src/gui/status.cpp:90
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "% Evade:"
-msgstr "% Undvikan:"
+msgstr ""
 
 #: src/gui/status.cpp:92
 #, no-c-format
@@ -1682,51 +1636,44 @@ msgid "Remaining Status Points: %d"
 msgstr "Återstående statuspoäng: %d"
 
 #: src/gui/status.cpp:384
-#, fuzzy
 msgid "Max level"
-msgstr "Man"
+msgstr ""
 
 #: src/gui/storagewindow.cpp:54
 msgid "Storage"
-msgstr ""
+msgstr "Lagring"
 
 #: src/gui/storagewindow.cpp:65
-#, fuzzy
 msgid "Store"
-msgstr "Stopp"
+msgstr "Lagra"
 
 #: src/gui/storagewindow.cpp:66
 msgid "Retrieve"
-msgstr ""
+msgstr "Hämta"
 
 #: src/gui/storagewindow.cpp:78
-#, fuzzy
 msgid "Slots: "
-msgstr "Färdighetspoäng: %d"
+msgstr ""
 
 #: src/gui/trade.cpp:51
 msgid "Propose trade"
 msgstr "Föreslå handel"
 
 #: src/gui/trade.cpp:52
-#, fuzzy
 msgid "Confirmed. Waiting..."
-msgstr "Ansluter..."
+msgstr ""
 
 #: src/gui/trade.cpp:53
-#, fuzzy
 msgid "Agree trade"
-msgstr "Föreslå handel"
+msgstr "Godkänn handel"
 
 #: src/gui/trade.cpp:54
-#, fuzzy
 msgid "Agreed. Waiting..."
-msgstr "Uppdaterar..."
+msgstr "Godkänt. Väntar…"
 
 #: src/gui/trade.cpp:57
-#, fuzzy
 msgid "Trade: You"
-msgstr "Byteshandla"
+msgstr "Byteshandel: du"
 
 #: src/gui/trade.cpp:70 src/gui/trade.cpp:71
 msgid "Trade"
@@ -1737,9 +1684,9 @@ msgid "Add"
 msgstr "Lägg till"
 
 #: src/gui/trade.cpp:95 src/gui/trade.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "You get %s."
-msgstr "Du får %d GP."
+msgstr "Du får %s."
 
 #: src/gui/trade.cpp:96
 msgid "You give:"
@@ -1756,9 +1703,8 @@ msgstr ""
 "sak flera gånger."
 
 #: src/gui/trade.cpp:311
-#, fuzzy
 msgid "You don't have enough money"
-msgstr "Du har inga anteckningar!"
+msgstr "Du har inte tillräckligt med pengar"
 
 #: src/gui/updatewindow.cpp:91
 msgid "Updating..."
@@ -1795,86 +1741,81 @@ msgstr "Färdig"
 #: src/gui/widgets/channeltab.cpp:49
 msgid "/users > Lists the users in the current channel"
 msgstr ""
+"/users > Visar en lista över de spelare som finns i den aktuella chattkanalen"
 
 #: src/gui/widgets/channeltab.cpp:50
 msgid "/topic > Set the topic of the current channel"
-msgstr ""
+msgstr "/topic > Sätter ämnet för chattkanalen"
 
 #: src/gui/widgets/channeltab.cpp:51
 msgid "/quit > Leave a channel"
-msgstr ""
+msgstr "/quit > Lämnar chattkanalen"
 
 #: src/gui/widgets/channeltab.cpp:52
 msgid "/op > Make a user a channel operator"
-msgstr ""
+msgstr "/op > Gör en spelare till chattkanalsoperatör"
 
 #: src/gui/widgets/channeltab.cpp:53
 msgid "/kick > Kick a user from the channel"
-msgstr ""
+msgstr "/kick > Sparka ut en spelare från chattkanalen"
 
 #: src/gui/widgets/channeltab.cpp:63
-#, fuzzy
 msgid "Command: /users"
-msgstr "Kommando: /clear"
+msgstr "Kommando: /users"
 
 #: src/gui/widgets/channeltab.cpp:64
-#, fuzzy
 msgid "This command shows the users in this channel."
-msgstr "Det här kommandot visar namnet på den karta där du befinner dig."
+msgstr "Det här kommandot visar alla spelare i den här chattkanalen."
 
 #: src/gui/widgets/channeltab.cpp:68
-#, fuzzy
 msgid "Command: /topic <message>"
-msgstr "Kommando: /announce <text>"
+msgstr "Kommando: /topic <meddelande>"
 
 #: src/gui/widgets/channeltab.cpp:69
-#, fuzzy
 msgid "This command sets the topic to <message>."
-msgstr "Det här kommandot skickar meddelandet <text> till karaktären <namn>."
+msgstr "Det här kommandot sätter ämnet till <meddelande>."
 
 #: src/gui/widgets/channeltab.cpp:73
-#, fuzzy
 msgid "Command: /quit"
-msgstr "Kommando: /who"
+msgstr "Kommando: /quit"
 
 #: src/gui/widgets/channeltab.cpp:74
-#, fuzzy
 msgid "This command leaves the current channel."
-msgstr "Det här kommandot visar namnet på den karta där du befinner dig."
+msgstr "Det här kommandot gör att du lämnar aktuell chattkanal."
 
 #: src/gui/widgets/channeltab.cpp:75
 msgid "If you're the last person in the channel, it will be deleted."
-msgstr ""
+msgstr "Om du är den sista spelaren i chattkanalen tas den bort."
 
 #: src/gui/widgets/channeltab.cpp:79
-#, fuzzy
 msgid "Command: /op <nick>"
-msgstr "Kommando: /w <namn> <text>"
+msgstr "Kommando: /op <spelare>"
 
 #: src/gui/widgets/channeltab.cpp:80
 msgid "This command makes <nick> a channel operator."
-msgstr ""
+msgstr "Det här kommandot gör <spelare> till chattkanalsoperatör."
 
 #: src/gui/widgets/channeltab.cpp:83
 msgid "Channel operators can kick and op other users from the channel."
 msgstr ""
+"Operatörer kan sparka ut och ge operatörsstatus till andra spelare i "
+"chattkanalen."
 
 #: src/gui/widgets/channeltab.cpp:88
-#, fuzzy
 msgid "Command: /kick <nick>"
-msgstr "Kommando: /w <namn> <text>"
+msgstr "Kommando: /kick <spelare>"
 
 #: src/gui/widgets/channeltab.cpp:89
 msgid "This command makes <nick> leave the channel."
-msgstr ""
+msgstr "Det här kommandot sparkar ut <spelare> ur chattkanalen."
 
 #: src/gui/widgets/channeltab.cpp:118
 msgid "Need a user to op!"
-msgstr ""
+msgstr "Du måste ange vilken spelare som ska få operatörsstatus!"
 
 #: src/gui/widgets/channeltab.cpp:125
 msgid "Need a user to kick!"
-msgstr ""
+msgstr "Du måste ange vilken spelare som ska sparkas ut!"
 
 #: src/gui/widgets/chattab.cpp:114
 msgid "Global announcement:"
@@ -1886,33 +1827,29 @@ msgid "Global announcement from %s:"
 msgstr "Globalt meddelande från %s:"
 
 #: src/gui/widgets/chattab.cpp:146
-#, fuzzy, c-format
+#, c-format
 msgid "%s whispers: "
-msgstr "%s viskar:"
+msgstr "%s viskar: "
 
 #: src/gui/widgets/chattab.cpp:240 src/resources/itemdb.cpp:107
-#, fuzzy
 msgid "Unknown item"
-msgstr "Okänt kommando"
+msgstr ""
 
 #: src/gui/widgets/whispertab.cpp:49
-#, fuzzy
 msgid "Cannot send empty chat!"
-msgstr "Kan inte skrika!"
+msgstr "Kan inte skicka ett tomt chattmeddelande!"
 
 #: src/gui/widgets/whispertab.cpp:68
 msgid "/close > Close the whisper tab"
-msgstr ""
+msgstr "/close > Stänger viskningsfliken"
 
 #: src/gui/widgets/whispertab.cpp:78
-#, fuzzy
 msgid "Command: /close"
-msgstr "Kommando: /clear"
+msgstr "Kommando: /close"
 
 #: src/gui/widgets/whispertab.cpp:79
-#, fuzzy
 msgid "This command closes the current whisper tab."
-msgstr "Det här kommandot visar namnet på den karta där du befinner dig."
+msgstr "Det här kommandot stänger aktuell viskningsflik."
 
 #: src/gui/windowmenu.cpp:59
 msgid "Status"
@@ -1920,12 +1857,11 @@ msgstr "Status"
 
 #: src/gui/windowmenu.cpp:65
 msgid "Guilds"
-msgstr ""
+msgstr "Gillen"
 
 #: src/gui/windowmenu.cpp:66
-#, fuzzy
 msgid "Buddys"
-msgstr "Köp"
+msgstr "Kompisar"
 
 #: src/gui/windowmenu.cpp:68
 msgid "Shortcut"
@@ -1933,38 +1869,35 @@ msgstr "Genvägar"
 
 #: src/keyboardconfig.cpp:41
 msgid "Move Up"
-msgstr ""
+msgstr "Gå uppåt"
 
 #: src/keyboardconfig.cpp:42
 msgid "Move Down"
-msgstr ""
+msgstr "Gå nedåt"
 
 #: src/keyboardconfig.cpp:43
 msgid "Move Left"
-msgstr ""
+msgstr "Gå åt vänster"
 
 #: src/keyboardconfig.cpp:44
 msgid "Move Right"
-msgstr ""
+msgstr "Gå åt höger"
 
 #: src/keyboardconfig.cpp:45
-#, fuzzy
 msgid "Attack"
-msgstr "Attack:"
+msgstr "Attackera"
 
 #: src/keyboardconfig.cpp:46
 msgid "Smilie"
 msgstr ""
 
 #: src/keyboardconfig.cpp:47
-#, fuzzy
 msgid "Talk"
-msgstr "Totalt"
+msgstr "Prata"
 
 #: src/keyboardconfig.cpp:48
-#, fuzzy
 msgid "Stop Attack"
-msgstr "Attack:"
+msgstr "Sluta attackera"
 
 #: src/keyboardconfig.cpp:49
 msgid "Target Closest"
@@ -1975,27 +1908,24 @@ msgid "Target NPC"
 msgstr ""
 
 #: src/keyboardconfig.cpp:51
-#, fuzzy
 msgid "Target Player"
-msgstr "Spelare"
+msgstr ""
 
 #: src/keyboardconfig.cpp:52
 msgid "Pickup"
-msgstr ""
+msgstr "Plocka upp"
 
 #: src/keyboardconfig.cpp:53
-#, fuzzy
 msgid "Hide Windows"
-msgstr "Återställ fönster"
+msgstr "Dölj fönster"
 
 #: src/keyboardconfig.cpp:54
-#, fuzzy
 msgid "Sit"
-msgstr "Dela"
+msgstr "Sitt"
 
 #: src/keyboardconfig.cpp:55
 msgid "Screenshot"
-msgstr ""
+msgstr "Skärmbild"
 
 #: src/keyboardconfig.cpp:56
 msgid "Enable/Disable Trading"
@@ -2011,62 +1941,54 @@ msgstr ""
 #: src/keyboardconfig.cpp:64 src/keyboardconfig.cpp:65
 #: src/keyboardconfig.cpp:66 src/keyboardconfig.cpp:67
 #: src/keyboardconfig.cpp:68 src/keyboardconfig.cpp:69
-#, fuzzy, c-format
+#, c-format
 msgid "Item Shortcut %d"
-msgstr "Genvägar"
+msgstr ""
 
 #: src/keyboardconfig.cpp:70
-#, fuzzy
 msgid "Help Window"
-msgstr "Återställ fönster"
+msgstr "Hjälpfönster"
 
 #: src/keyboardconfig.cpp:71
-#, fuzzy
 msgid "Status Window"
-msgstr "Status"
+msgstr "Statusfönster"
 
 #: src/keyboardconfig.cpp:72
-#, fuzzy
 msgid "Inventory Window"
-msgstr "Inventarium"
+msgstr "Inventorium"
 
 #: src/keyboardconfig.cpp:73
-#, fuzzy
 msgid "Equipment WIndow"
-msgstr "Utrustning"
+msgstr ""
 
 #: src/keyboardconfig.cpp:74
-#, fuzzy
 msgid "Skill Window"
-msgstr "Färdighetspoäng: %d"
+msgstr ""
 
 #: src/keyboardconfig.cpp:75
 msgid "Minimap Window"
-msgstr ""
+msgstr "Minikarta"
 
 #: src/keyboardconfig.cpp:76
-#, fuzzy
 msgid "Chat Window"
-msgstr "Återställ fönster"
+msgstr "Chattfönster"
 
 #: src/keyboardconfig.cpp:77
 msgid "Item Shortcut Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:78
-#, fuzzy
 msgid "Setup Window"
-msgstr "Återställ fönster"
+msgstr ""
 
 #: src/keyboardconfig.cpp:79
-#, fuzzy
 msgid "Debug Window"
-msgstr "Återställ fönster"
+msgstr "Felsökningsfönster"
 
 #: src/keyboardconfig.cpp:80
 #, fuzzy
 msgid "Party Window"
-msgstr "Återställ fönster"
+msgstr "Chattfönster"
 
 #: src/keyboardconfig.cpp:81
 msgid "Emote Shortcut Window"
@@ -2078,9 +2000,9 @@ msgstr ""
 #: src/keyboardconfig.cpp:88 src/keyboardconfig.cpp:89
 #: src/keyboardconfig.cpp:90 src/keyboardconfig.cpp:91
 #: src/keyboardconfig.cpp:92 src/keyboardconfig.cpp:93
-#, fuzzy, c-format
+#, c-format
 msgid "Emote Shortcut %d"
-msgstr "Genvägar"
+msgstr ""
 
 #: src/keyboardconfig.cpp:94
 msgid "Toggle Chat"
@@ -2088,25 +2010,23 @@ msgstr ""
 
 #: src/keyboardconfig.cpp:95
 msgid "Scroll Chat Up"
-msgstr ""
+msgstr "Rulla upp chatt"
 
 #: src/keyboardconfig.cpp:96
 msgid "Scroll Chat Down"
-msgstr ""
+msgstr "Rulla ned chatt"
 
 #: src/keyboardconfig.cpp:97
-#, fuzzy
 msgid "Previous Chat Tab"
-msgstr "Föregående"
+msgstr "Föregående chattflik"
 
 #: src/keyboardconfig.cpp:98
 msgid "Next Chat Tab"
-msgstr ""
+msgstr "Nästa chattflik"
 
 #: src/keyboardconfig.cpp:99
-#, fuzzy
 msgid "Select OK"
-msgstr "Välj server"
+msgstr ""
 
 #: src/keyboardconfig.cpp:101
 msgid "Ignore input 1"
@@ -2117,58 +2037,52 @@ msgid "Ignore input 2"
 msgstr ""
 
 #: src/localplayer.cpp:834
-#, fuzzy
 msgid "Unarmed"
-msgstr "Namnlös"
+msgstr ""
 
 #: src/localplayer.cpp:835
 msgid "Knife"
-msgstr ""
+msgstr "Kniv"
 
 #: src/localplayer.cpp:836
-#, fuzzy
 msgid "Sword"
-msgstr "Ljud"
+msgstr "Svärd"
 
 #: src/localplayer.cpp:837
 msgid "Polearm"
-msgstr ""
+msgstr "Spjut"
 
 #: src/localplayer.cpp:838
-#, fuzzy
 msgid "Staff"
-msgstr "Statistik"
+msgstr "Stav"
 
 #: src/localplayer.cpp:839
 msgid "Whip"
-msgstr ""
+msgstr "Piska"
 
 #: src/localplayer.cpp:840
-#, fuzzy
 msgid "Bow"
-msgstr "låg"
+msgstr "Båge"
 
 #: src/localplayer.cpp:841
 msgid "Shooting"
-msgstr ""
+msgstr "Skjutvapen"
 
 #: src/localplayer.cpp:842
-#, fuzzy
 msgid "Mace"
-msgstr "Man"
+msgstr "Spikklubba"
 
 #: src/localplayer.cpp:843
 msgid "Axe"
-msgstr ""
+msgstr "Yxa"
 
 #: src/localplayer.cpp:844
 msgid "Thrown"
-msgstr ""
+msgstr "Kastvapen"
 
 #: src/localplayer.cpp:846
-#, fuzzy
 msgid "Craft"
-msgstr "Skapa"
+msgstr ""
 
 #: src/localplayer.cpp:847
 msgid "Unknown Skill"
@@ -2196,19 +2110,22 @@ msgstr ""
 
 #: src/main.cpp:566
 msgid "tmw"
-msgstr ""
+msgstr "tmw"
 
 #: src/main.cpp:567
+#, fuzzy
 msgid "Options:"
-msgstr ""
+msgstr "Flaggor: "
 
 #: src/main.cpp:568
+#, fuzzy
 msgid "  -C --config-file : Configuration file to use"
-msgstr ""
+msgstr "  -C --configfile : Konfigurationsfil"
 
 #: src/main.cpp:569
+#, fuzzy
 msgid "  -d --data        : Directory to load game data from"
-msgstr ""
+msgstr "  -d --data       : Katalog att läsa speldata från"
 
 #: src/main.cpp:570
 msgid "  -D --default     : Choose default character server and character"
@@ -2217,39 +2134,47 @@ msgstr ""
 #: src/main.cpp:572
 #, fuzzy
 msgid "  -h --help        : Display this help"
-msgstr "/help: Visar den här hjälptexten"
+msgstr "  -h --help       : Visa den här hjälpen"
 
 #: src/main.cpp:573
+#, fuzzy
 msgid "  -S --home-dir    : Directory to use as home directory"
-msgstr ""
+msgstr "  -S --homedir    : Hemkatalog"
 
 #: src/main.cpp:574
+#, fuzzy
 msgid "  -H --update-host : Use this update host"
-msgstr ""
+msgstr "  -H --updatehost : Uppdateringsvärd"
 
 #: src/main.cpp:575
+#, fuzzy
 msgid "  -P --password    : Login with this password"
-msgstr ""
+msgstr "  -P --password   : Lösenord för inloggning"
 
 #: src/main.cpp:576
+#, fuzzy
 msgid "  -c --character   : Login with this character"
-msgstr ""
+msgstr "  -c --character  : Karaktär att logga in med"
 
 #: src/main.cpp:577
+#, fuzzy
 msgid "  -p --port        : Login Server Port"
-msgstr ""
+msgstr "  -o --port       : Port att logga in på"
 
 #: src/main.cpp:578
+#, fuzzy
 msgid "  -s --server      : Login Server name or IP"
-msgstr ""
+msgstr "  -s --server     : Servernamn eller IP-adress att logga in på"
 
 #: src/main.cpp:579
+#, fuzzy
 msgid "  -u --skip-update : Skip the update downloads"
-msgstr ""
+msgstr "  -u --skipupdate : Hoppa över att ladda ned uppdateringar"
 
 #: src/main.cpp:580
+#, fuzzy
 msgid "  -U --username    : Login with this username"
-msgstr ""
+msgstr "  -U --username   : Användarnamn att logga in med"
 
 #: src/main.cpp:582
 msgid "  -O --no-opengl   : Disable OpenGL for this session"
@@ -2258,12 +2183,11 @@ msgstr ""
 #: src/main.cpp:584
 #, fuzzy
 msgid "  -v --version     : Display the version"
-msgstr "/help: Visar den här hjälptexten"
+msgstr "  -v --version    : Visa version"
 
 #: src/main.cpp:589
-#, fuzzy
 msgid "The Mana World "
-msgstr "Välj din Mana World-server"
+msgstr "Manavärlden "
 
 #: src/main.cpp:1515
 msgid "Connecting to map server..."
@@ -2278,33 +2202,32 @@ msgid "Connecting to account server..."
 msgstr "Ansluter till kontoservern..."
 
 #: src/net/ea/adminhandler.cpp:66
-#, fuzzy
 msgid "Kick failed!"
-msgstr "Kan inte sitta ned!"
+msgstr "Kunde inte sparka ut!"
 
 #: src/net/ea/adminhandler.cpp:68
 msgid "Kick succeeded!"
-msgstr ""
+msgstr "Klarade av att sparka ut!"
 
 #: src/net/ea/buysellhandler.cpp:111
 msgid "Nothing to sell"
-msgstr ""
+msgstr "Inget att sälja."
 
 #: src/net/ea/buysellhandler.cpp:119
 msgid "Thanks for buying"
-msgstr ""
+msgstr "Tack för köpet."
 
 #: src/net/ea/buysellhandler.cpp:126
 msgid "Unable to buy"
-msgstr ""
+msgstr "Kan inte köpa."
 
 #: src/net/ea/buysellhandler.cpp:132
 msgid "Thanks for selling"
-msgstr ""
+msgstr "Tack för försäljningen."
 
 #: src/net/ea/buysellhandler.cpp:134
 msgid "Unable to sell"
-msgstr ""
+msgstr "Kan inte sälja."
 
 #: src/net/ea/charserverhandler.cpp:95
 msgid "Access denied"
@@ -2320,118 +2243,109 @@ msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:123
 msgid "Failed to create character. Most likely the name is already taken."
-msgstr ""
+msgstr "Kan inte skapa karaktär. Troligtvis används namnet av någon annan."
 
 #: src/net/ea/charserverhandler.cpp:135
 msgid "Info"
-msgstr ""
+msgstr "Information"
 
 #: src/net/ea/charserverhandler.cpp:135
 msgid "Player deleted"
-msgstr ""
+msgstr "Karaktär borttagen."
 
 #: src/net/ea/charserverhandler.cpp:140
-#, fuzzy
 msgid "Failed to delete character."
-msgstr "Ditt namn måste vara minst 4 tecken långt."
+msgstr "Kunde inte ta bort karaktär."
 
 #: src/net/ea/charserverhandler.cpp:224
 #: src/net/tmwserv/charserverhandler.cpp:253
-#, fuzzy
 msgid "Strength:"
-msgstr "Styrka"
+msgstr "Styrka:"
 
 #: src/net/ea/charserverhandler.cpp:225
 #: src/net/tmwserv/charserverhandler.cpp:254
-#, fuzzy
 msgid "Agility:"
-msgstr "Smidighet"
+msgstr "Smidighet:"
 
 #: src/net/ea/charserverhandler.cpp:226
 #: src/net/tmwserv/charserverhandler.cpp:256
-#, fuzzy
 msgid "Vitality:"
-msgstr "Hälsa"
+msgstr "Hälsa:"
 
 #: src/net/ea/charserverhandler.cpp:227
 #: src/net/tmwserv/charserverhandler.cpp:257
-#, fuzzy
 msgid "Intelligence:"
-msgstr "Intelligens"
+msgstr "Intelligens:"
 
 #: src/net/ea/charserverhandler.cpp:228
 #: src/net/tmwserv/charserverhandler.cpp:255
-#, fuzzy
 msgid "Dexterity:"
-msgstr "Skicklighet"
+msgstr "Skicklighet:"
 
 #: src/net/ea/charserverhandler.cpp:229
-#, fuzzy
 msgid "Luck:"
-msgstr "Tur"
+msgstr "Tur:"
 
 #: src/net/ea/chathandler.cpp:78
 msgid "Whisper could not be sent, user is offline"
-msgstr ""
+msgstr "Kunde inte viska eftersom spelaren inte är inloggad."
 
 #: src/net/ea/chathandler.cpp:81
 msgid "Whisper could not be sent, ignored by user"
-msgstr ""
+msgstr "Kunde inte viska, ignorerad av spelaren."
 
 #: src/net/ea/chathandler.cpp:200 src/net/ea/chathandler.cpp:206
 #: src/net/ea/chathandler.cpp:211 src/net/ea/chathandler.cpp:216
 #: src/net/ea/chathandler.cpp:221 src/net/ea/chathandler.cpp:226
 #: src/net/ea/chathandler.cpp:231 src/net/ea/chathandler.cpp:236
 msgid "Channels are not supported!"
-msgstr ""
+msgstr "Chattkanaler stöds inte!"
 
 #: src/net/ea/equipmenthandler.cpp:111
-#, fuzzy
 msgid "Unable to equip."
-msgstr "Avrusta"
+msgstr "Kan inte utrusta."
 
 #: src/net/ea/equipmenthandler.cpp:152
 msgid "Unable to unequip."
-msgstr ""
+msgstr "Kan inte avrusta."
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength: %d"
-msgstr "Styrka"
+msgstr "Styrka: %d"
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Agility: %d"
-msgstr "Smidighet"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:96 src/net/tmwserv/generalhandler.cpp:88
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality: %d"
-msgstr "Hälsa"
+msgstr "Livskraft: %d"
 
 #: src/net/ea/generalhandler.cpp:98 src/net/tmwserv/generalhandler.cpp:90
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence: %d"
-msgstr "Intelligens"
+msgstr "Intelligens: %d"
 
 #: src/net/ea/generalhandler.cpp:100 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity: %d"
-msgstr "Skicklighet"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:102
-#, fuzzy, c-format
+#, c-format
 msgid "Luck: %d"
-msgstr "Tur"
+msgstr "Tur: %d"
 
 #: src/net/ea/generalhandler.cpp:125
-#, fuzzy
 msgid "Authentication failed"
-msgstr "Kan inte skicka chattmeddelande!"
+msgstr "Behörighetskontroll misslyckades"
 
 #: src/net/ea/generalhandler.cpp:128
 msgid "No servers available"
-msgstr ""
+msgstr "Ingen server är tillgänglig"
 
 #: src/net/ea/generalhandler.cpp:132
 msgid "Someone else is trying to use this account"
@@ -2439,7 +2353,7 @@ msgstr ""
 
 #: src/net/ea/generalhandler.cpp:135
 msgid "This account is already logged in"
-msgstr ""
+msgstr "Det här kontot är redan inloggat"
 
 #: src/net/ea/generalhandler.cpp:138
 msgid "Speed hack detected"
@@ -2458,29 +2372,28 @@ msgid "Got disconnected from server!"
 msgstr "Kopplades från servern!"
 
 #: src/net/ea/gui/partytab.cpp:52
-#, fuzzy
 msgid "/help > Display this help."
-msgstr "/help: Visar den här hjälptexten"
+msgstr "/help > Visa den här hjälpen"
 
 #: src/net/ea/gui/partytab.cpp:53
 msgid "/create > Create a new party"
-msgstr ""
+msgstr "/create > Skapa ny grupp"
 
 #: src/net/ea/gui/partytab.cpp:54
 msgid "/new > Alias of create"
-msgstr ""
+msgstr "/new > Alias för /create"
 
 #: src/net/ea/gui/partytab.cpp:55
 msgid "/invite > Invite a player to your party"
-msgstr ""
+msgstr "/invite > Bjud in en spelare till din grupp"
 
 #: src/net/ea/gui/partytab.cpp:56
 msgid "/leave > Leave the party you are in"
-msgstr ""
+msgstr "/leave > Lämna gruppen du är i"
 
 #: src/net/ea/gui/partytab.cpp:57
 msgid "/kick > Kick some one from the party you are in"
-msgstr ""
+msgstr "/kick > Sparka ut någon från din grupp"
 
 #: src/net/ea/gui/partytab.cpp:58
 msgid "/item > Show/change party item sharing options"
@@ -2488,46 +2401,39 @@ msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:59
 msgid "/exp > Show/change party experience sharing options"
-msgstr ""
+msgstr "/exp > Visa/ändra hur erfarenhet fördelas i gruppen"
 
 #: src/net/ea/gui/partytab.cpp:68
-#, fuzzy
 msgid "Command: /new <party-name>"
-msgstr "Kommando: /announce <text>"
+msgstr "Kommando: /new <grupp>"
 
 #: src/net/ea/gui/partytab.cpp:69
-#, fuzzy
 msgid "Command: /create <party-name>"
-msgstr "Kommando: /clear"
+msgstr "Kommando: /create <grupp>"
 
 #: src/net/ea/gui/partytab.cpp:70
 msgid "These commands create a new party called <party-name>."
-msgstr ""
+msgstr "Dessa kommandon skapar <grupp>."
 
 #: src/net/ea/gui/partytab.cpp:74
-#, fuzzy
 msgid "Command: /invite <nick>"
-msgstr "Kommando: /w <namn> <text>"
+msgstr "Kommando: /invite <spelare>"
 
 #: src/net/ea/gui/partytab.cpp:81
-#, fuzzy
 msgid "Command: /leave"
-msgstr "Kommando: /clear"
+msgstr "Kommando: /leave"
 
 #: src/net/ea/gui/partytab.cpp:82
-#, fuzzy
 msgid "This command causes the player to leave the party."
-msgstr "Det här kommandot tömmer chattloggen."
+msgstr "Det här kommandot får spelaren att lämna gruppen."
 
 #: src/net/ea/gui/partytab.cpp:86
-#, fuzzy
 msgid "Command: /item <policy>"
-msgstr "Kommando: /help"
+msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:87
-#, fuzzy
 msgid "This command changes the party's item sharing policy."
-msgstr "Det här kommandot skickar meddelandet <text> till karaktären <namn>."
+msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:88
 msgid ""
@@ -2536,19 +2442,16 @@ msgid ""
 msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:91
-#, fuzzy
 msgid "Command: /item"
-msgstr "Kommando: /help"
+msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:92
-#, fuzzy
 msgid "This command displays the party's current item sharing policy."
-msgstr "Det här kommandot visar namnet på den karta där du befinner dig."
+msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:96
-#, fuzzy
 msgid "Command: /exp <policy>"
-msgstr "Kommando: /help <kommando>"
+msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:97
 msgid "This command changes the party's experience sharing policy."
@@ -2561,18 +2464,16 @@ msgid ""
 msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:101
-#, fuzzy
 msgid "Command: /exp"
-msgstr "Kommando: /help"
+msgstr "Kommando: /exp"
 
 #: src/net/ea/gui/partytab.cpp:102
-#, fuzzy
 msgid "This command displays the party's current experience sharing policy."
-msgstr "Det här kommandot visar namnet på den karta där du befinner dig."
+msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:110
 msgid "Party name is missing."
-msgstr ""
+msgstr "Du måste ange gruppens namn."
 
 #: src/net/ea/gui/partytab.cpp:133 src/net/ea/partyhandler.cpp:191
 msgid "Item sharing enabled."
@@ -2588,47 +2489,44 @@ msgstr ""
 
 #: src/net/ea/gui/partytab.cpp:165 src/net/ea/partyhandler.cpp:168
 msgid "Experience sharing enabled."
-msgstr ""
+msgstr "Fördelning av erfarenhet aktiverad."
 
 #: src/net/ea/gui/partytab.cpp:168 src/net/ea/partyhandler.cpp:174
 msgid "Experience sharing disabled."
-msgstr ""
+msgstr "Fördelning av erfarenhet inaktiverad."
 
 #: src/net/ea/gui/partytab.cpp:171 src/net/ea/partyhandler.cpp:180
 msgid "Experience sharing not possible."
-msgstr ""
+msgstr "Fördelning av erfarenhet ej möjlig."
 
 #: src/net/ea/inventoryhandler.cpp:183
 msgid "Unable to pick up item"
 msgstr ""
 
 #: src/net/ea/inventoryhandler.cpp:193
-#, c-format
+#, fuzzy, c-format
 msgid "You picked up %s [@@%d|%s@@]"
-msgstr ""
+msgstr "Du plockade upp %s [%s]."
 
 #: src/net/ea/inventoryhandler.cpp:239
 msgid "Failed to use item"
 msgstr ""
 
 #: src/net/ea/loginhandler.cpp:110
-#, fuzzy
 msgid "Unregistered ID"
-msgstr "Avregistrera"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:113
-#, fuzzy
 msgid "Wrong password"
-msgstr "Lösenord:"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:116
 msgid "Account expired"
 msgstr ""
 
 #: src/net/ea/loginhandler.cpp:119
-#, fuzzy
 msgid "Rejected from server"
-msgstr "Kopplades från servern!"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:123
 msgid ""
@@ -2649,33 +2547,31 @@ msgstr ""
 #: src/net/ea/loginhandler.cpp:137 src/net/tmwserv/loginhandler.cpp:89
 #: src/net/tmwserv/loginhandler.cpp:119 src/net/tmwserv/loginhandler.cpp:152
 #: src/net/tmwserv/loginhandler.cpp:188 src/net/tmwserv/loginhandler.cpp:220
-#, fuzzy
 msgid "Unknown error"
-msgstr "Okänt kommando"
+msgstr ""
 
 #: src/net/ea/partyhandler.cpp:77
-#, fuzzy
 msgid "Could not create party."
-msgstr "Kan inte ansluta till gruppen!"
+msgstr "Kunde inte skapa grupp."
 
 #: src/net/ea/partyhandler.cpp:80
 msgid "Party successfully created."
-msgstr ""
+msgstr "Grupp skapad."
 
 #: src/net/ea/partyhandler.cpp:115
 #, c-format
 msgid "%s is already a member of a party."
-msgstr ""
+msgstr "%s är redan medlem i en grupp."
 
 #: src/net/ea/partyhandler.cpp:119
 #, c-format
 msgid "%s refused your invitation."
-msgstr ""
+msgstr "%s avvisade din inbjudan."
 
 #: src/net/ea/partyhandler.cpp:123
 #, c-format
 msgid "%s is now a member of your party."
-msgstr ""
+msgstr "%s är nu en medlem i din grupp."
 
 #: src/net/ea/partyhandler.cpp:127
 #, c-format
@@ -2684,83 +2580,88 @@ msgstr ""
 
 #: src/net/ea/partyhandler.cpp:232
 msgid "You have left the party."
-msgstr ""
+msgstr "Du har lämnat gruppen."
 
 #: src/net/ea/partyhandler.cpp:235
 #, c-format
 msgid "%s has left your party."
-msgstr ""
+msgstr "%s har lämnat din grupp."
 
 #: src/net/ea/partyhandler.cpp:272
 #, c-format
 msgid "An unknown member tried to say: %s"
-msgstr ""
+msgstr "En okänd medlem försökte säga: %s"
 
 #: src/net/ea/partyhandler.cpp:298
 msgid "Inviting like this isn't supported at the moment."
 msgstr ""
 
 #: src/net/ea/partyhandler.cpp:327
-#, fuzzy, c-format
+#, c-format
 msgid "%s is not in your party!"
-msgstr "Kan inte ansluta till gruppen!"
+msgstr "%s är inte med i din grupp!"
 
 #: src/net/ea/playerhandler.cpp:96 src/net/tmwserv/beinghandler.cpp:312
 msgid "You are dead."
-msgstr ""
+msgstr "Du är död."
 
 #: src/net/ea/playerhandler.cpp:97 src/net/tmwserv/beinghandler.cpp:313
 msgid "We regret to inform you that your character was killed in battle."
 msgstr ""
+"Vi beklagar att behöva meddela dig om att din karaktär dödades i strid."
 
 #: src/net/ea/playerhandler.cpp:99 src/net/tmwserv/beinghandler.cpp:314
-#, fuzzy
 msgid "You are not that alive anymore."
-msgstr "Du kan inte göra det just nu!"
+msgstr "Du är inte så värst levande längre."
 
 #: src/net/ea/playerhandler.cpp:100 src/net/tmwserv/beinghandler.cpp:315
 msgid "The cold hands of the grim reaper are grabbing for your soul."
-msgstr ""
+msgstr "Liemannens svala händer sträcker sig efter din själ."
 
 #: src/net/ea/playerhandler.cpp:101 src/net/tmwserv/beinghandler.cpp:316
 msgid "Game Over!"
-msgstr ""
+msgstr "Spelet är slut!"
 
 #: src/net/ea/playerhandler.cpp:102
+#, fuzzy
 msgid "Insert coin to continue."
-msgstr ""
+msgstr "Stoppa i mynt och fortsätt"
 
 #: src/net/ea/playerhandler.cpp:103 src/net/tmwserv/beinghandler.cpp:317
 msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
 msgstr ""
+"Barn, barn. Din karaktär dog egentligen inte. Den… öh… kom till ett bättre "
+"ställe."
 
 #: src/net/ea/playerhandler.cpp:105 src/net/tmwserv/beinghandler.cpp:318
 msgid ""
 "Your plan of breaking your enemies weapon by bashing it with your throat "
 "failed."
 msgstr ""
+"Din plan att ha sönder dina fiendens vapen genom att krossa dem med din hals "
+"misslyckades."
 
 #: src/net/ea/playerhandler.cpp:107 src/net/tmwserv/beinghandler.cpp:319
 msgid "I guess this did not run too well."
-msgstr ""
+msgstr "Jag antar att det kunde gått bättre."
 
 #: src/net/ea/playerhandler.cpp:109 src/net/tmwserv/beinghandler.cpp:320
 msgid "Do you want your possessions identified?"
-msgstr ""
+msgstr "Vill du att dina tillhörigheter ska identifieras?"
 
 #: src/net/ea/playerhandler.cpp:111 src/net/tmwserv/beinghandler.cpp:321
 msgid "Sadly, no trace of you was ever found..."
-msgstr ""
+msgstr "Ledsamt nog så kunde inga spår efter dig någonsin hittas…"
 
 #: src/net/ea/playerhandler.cpp:113 src/net/tmwserv/beinghandler.cpp:322
 msgid "Annihilated."
-msgstr ""
+msgstr "Tillintetgjord."
 
 #: src/net/ea/playerhandler.cpp:115 src/net/tmwserv/beinghandler.cpp:323
 msgid "Looks like you got your head handed to you."
-msgstr ""
+msgstr "Ser ut som att någon gav dig ditt huvud."
 
 #: src/net/ea/playerhandler.cpp:117 src/net/tmwserv/beinghandler.cpp:324
 msgid ""
@@ -2769,29 +2670,27 @@ msgstr ""
 
 #: src/net/ea/playerhandler.cpp:120
 msgid "You're not dead yet. You're just resting."
-msgstr ""
+msgstr "Du är inte död än. Du vilar bara."
 
 #: src/net/ea/playerhandler.cpp:121
-#, fuzzy
 msgid "You are no more."
-msgstr "Du har inga anteckningar!"
+msgstr "Du finns inte längre."
 
 #: src/net/ea/playerhandler.cpp:122
-#, fuzzy
 msgid "You have ceased to be."
-msgstr "Du har inga anteckningar!"
+msgstr "Du har slutat att existera."
 
 #: src/net/ea/playerhandler.cpp:123
 msgid "You've expired and gone to meet your maker."
-msgstr ""
+msgstr "Du är passé och har givit dig av för att träffa din skapare."
 
 #: src/net/ea/playerhandler.cpp:124
 msgid "You're a stiff."
-msgstr ""
+msgstr "Du är en steling."
 
 #: src/net/ea/playerhandler.cpp:125
 msgid "Bereft of life, you rest in peace."
-msgstr ""
+msgstr "Berövad på ditt liv, vilar du i frid."
 
 #: src/net/ea/playerhandler.cpp:126
 msgid "If you weren't so animated, you'd be pushing up the daisies."
@@ -2807,7 +2706,7 @@ msgstr ""
 
 #: src/net/ea/playerhandler.cpp:129
 msgid "You've kicked the bucket."
-msgstr ""
+msgstr "Du har kastat in handduken."
 
 #: src/net/ea/playerhandler.cpp:130
 msgid ""
@@ -2817,7 +2716,7 @@ msgstr ""
 
 #: src/net/ea/playerhandler.cpp:132
 msgid "You are an ex-player."
-msgstr ""
+msgstr "Du är en före detta spelare."
 
 #: src/net/ea/playerhandler.cpp:133
 msgid "You're pining for the fjords."
@@ -2825,20 +2724,20 @@ msgstr ""
 
 #: src/net/ea/playerhandler.cpp:246 src/net/ea/playerhandler.cpp:269
 msgid "Message"
-msgstr ""
+msgstr "Meddelande"
 
 #: src/net/ea/playerhandler.cpp:247
 msgid ""
 "You are carrying more than half your weight. You are unable to regain health."
-msgstr ""
+msgstr "Du bär mer än halva din vikt på dig. Du kan inte återfå hälsa."
 
 #: src/net/ea/playerhandler.cpp:289
 msgid "You picked up "
-msgstr ""
+msgstr "Du plockade upp "
 
 #: src/net/ea/playerhandler.cpp:412
 msgid "Equip arrows first"
-msgstr ""
+msgstr "Utrusta dig med pilar först."
 
 #: src/net/ea/skillhandler.cpp:138
 msgid "Trade failed!"
@@ -2885,9 +2784,8 @@ msgid "You cannot do that right now!"
 msgstr "Du kan inte göra det just nu!"
 
 #: src/net/ea/skillhandler.cpp:177
-#, fuzzy
 msgid "Seems you need more money... ;-)"
-msgstr "Verkar som att du behöver mer zeny... ;-)"
+msgstr "Verkar som att du behöver mer pengar… ;-)"
 
 #: src/net/ea/skillhandler.cpp:180
 msgid "You cannot use this skill with that kind of weapon!"
@@ -2923,37 +2821,35 @@ msgstr "Giftet tog inte..."
 
 #: src/net/ea/tradehandler.cpp:100
 msgid "Request for trade"
-msgstr ""
+msgstr "Erbjudande till byteshandel"
 
 #: src/net/ea/tradehandler.cpp:102
 msgid " wants to trade with you, do you accept?"
-msgstr ""
+msgstr " vill handla med dig, är det okej?"
 
 #: src/net/ea/tradehandler.cpp:116
 msgid "Trading isn't possible. Trade partner is too far away."
-msgstr ""
+msgstr "Byteshandel är inte möjligt. Handelspartnern är för långt borta."
 
 #: src/net/ea/tradehandler.cpp:120
 msgid "Trading isn't possible. Character doesn't exist."
-msgstr ""
+msgstr "Byteshandel är inte möjligt. Karaktären existerar inte."
 
 #: src/net/ea/tradehandler.cpp:124
 msgid "Trade cancelled due to an unknown reason."
-msgstr ""
+msgstr "Byteshandel avbröts av okänd anledning."
 
 #: src/net/ea/tradehandler.cpp:130
 msgid "Trade: You and "
-msgstr ""
+msgstr "Byteshandel mellan dig och "
 
 #: src/net/ea/tradehandler.cpp:136
-#, fuzzy
 msgid "Trade with "
-msgstr "Byteshandla"
+msgstr "Byteshandla med "
 
 #: src/net/ea/tradehandler.cpp:137
-#, fuzzy
 msgid " cancelled"
-msgstr "Avbryt"
+msgstr ""
 
 #: src/net/ea/tradehandler.cpp:144
 msgid "Unhandled trade cancel packet"
@@ -2972,27 +2868,24 @@ msgid "Failed adding item for unknown reason."
 msgstr ""
 
 #: src/net/ea/tradehandler.cpp:216
-#, fuzzy
 msgid "Trade canceled."
-msgstr "Byteshandel misslyckades!"
+msgstr "Byteshandel avbruten."
 
 #: src/net/ea/tradehandler.cpp:223
-#, fuzzy
 msgid "Trade completed."
-msgstr "Färdig"
+msgstr "Byteshandel genomförd."
 
 #: src/net/tmwserv/beinghandler.cpp:328
 msgid " Press OK to respawn"
 msgstr ""
 
 #: src/net/tmwserv/beinghandler.cpp:329
-#, fuzzy
 msgid "You died"
-msgstr "Du ger:"
+msgstr "Du dog"
 
 #: src/net/tmwserv/charserverhandler.cpp:219
 msgid "No gameservers are available."
-msgstr ""
+msgstr "Ingen spelserver finns tillgänglig."
 
 #: src/net/tmwserv/charserverhandler.cpp:258
 msgid "Willpower:"
@@ -3000,29 +2893,31 @@ msgstr "Viljestyrka:"
 
 #: src/net/tmwserv/chathandler.cpp:157
 msgid "Topic: "
-msgstr ""
+msgstr "Ämne: "
 
 #: src/net/tmwserv/generalhandler.cpp:92
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower: %d"
-msgstr "Viljestyrka:"
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
 msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:83 src/net/tmwserv/loginhandler.cpp:182
+#, fuzzy
 msgid "Already logged in"
-msgstr ""
+msgstr "Loggar chattmeddelanden till fil."
 
 #: src/net/tmwserv/loginhandler.cpp:86 src/net/tmwserv/loginhandler.cpp:185
 #, fuzzy
 msgid "Server is full"
-msgstr "Server:"
+msgstr "Server"
 
 #: src/net/tmwserv/loginhandler.cpp:110
+#, fuzzy
 msgid "New password incorrect"
-msgstr ""
+msgstr "Ange det nya lösenordet två gånger:"
 
 #: src/net/tmwserv/loginhandler.cpp:113
 msgid "Old password incorrect"
@@ -3033,25 +2928,27 @@ msgid "Account not connected. Please login first."
 msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:140
+#, fuzzy
 msgid "New email address incorrect"
-msgstr ""
+msgstr "Ange den nya epostadressen två gånger:"
 
 #: src/net/tmwserv/loginhandler.cpp:143
+#, fuzzy
 msgid "Old email address incorrect"
-msgstr ""
+msgstr "Ange den nya epostadressen två gånger:"
 
 #: src/net/tmwserv/loginhandler.cpp:149
+#, fuzzy
 msgid "The new Email Address already exists."
-msgstr ""
+msgstr "Ange den nya epostadressen två gånger:"
 
 #: src/net/tmwserv/loginhandler.cpp:176 src/net/tmwserv/loginhandler.cpp:208
 msgid "Client version is too old"
 msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:179
-#, fuzzy
 msgid "Wrong username or password"
-msgstr "Lösenord:"
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:211
 msgid "Wrong username, password or email address"
@@ -3066,14 +2963,14 @@ msgid "Email address already exists"
 msgstr ""
 
 #: src/resources/itemdb.cpp:52
-#, fuzzy, c-format
+#, c-format
 msgid "Attack %+d"
-msgstr "Attack:"
+msgstr "Attack %+d"
 
 #: src/resources/itemdb.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "Defense %+d"
-msgstr "Försvar:"
+msgstr "Försvar %+d"
 
 #: src/resources/itemdb.cpp:54
 #, c-format
@@ -3094,9 +2991,8 @@ msgid "Unnamed"
 msgstr "Namnlös"
 
 #: src/resources/monsterdb.cpp:45 src/resources/monsterdb.cpp:67
-#, fuzzy
 msgid "unnamed"
-msgstr "Namnlös"
+msgstr ""
 
 #: src/resources/monsterdb.cpp:49
 msgid "monsters.xml"
@@ -3109,46 +3005,23 @@ msgstr ""
 #~ msgid "MiniMap"
 #~ msgstr "Minikarta"
 
-#, fuzzy
+#~ msgid "NPC Number Request"
+#~ msgstr "NPC-nummerefterfrågan"
+
 #~ msgid ""
 #~ "\n"
 #~ "> Cancel\n"
-#~ msgstr "Avbryt"
+#~ msgstr ""
+#~ "\n"
+#~ "> Avbryt\n"
 
-#, fuzzy
-#~ msgid "use"
-#~ msgstr "Använd"
+#~ msgid "NPC Text Request"
+#~ msgstr "NPC-textefterfrågan"
 
-#, fuzzy
-#~ msgid "Emote Window"
-#~ msgstr "Kan inte visa smiley!"
+#~ msgid "%s: %s"
+#~ msgstr "%s: %s"
 
-#~ msgid "Gold: %d"
-#~ msgstr "Guld: %d"
-
-#~ msgid "/w <nick> <message>: Short form for /whisper"
-#~ msgstr "/w <namn> <text>: Kortare variant av /whisper"
-
-#~ msgid "Slots used: %d / %d"
-#~ msgstr "Utrymme: %d / %d"
-
-#~ msgid "@@description|Description@@"
-#~ msgstr "@@description|Beskrivning@@"
-
-#~ msgid "Money: %d GP"
-#~ msgstr "Pengar: %d GP"
-
-#~ msgid "Confirm trade"
-#~ msgstr "Bekräfta handel"
-
-#~ msgid "Confirm"
-#~ msgstr "Bekräfta"
-
-#~ msgid "Charisma:"
-#~ msgstr "Karisma:"
-
-#~ msgid "Total Weight: %d - Maximum Weight: %d"
-#~ msgstr "Nuvarande vikt: %d - Maxvikt: %d"
-
-#~ msgid "Keep"
-#~ msgstr "Behåll"
+#~ msgid "  -D --default    : Bypass the login process with default settings"
+#~ msgstr ""
+#~ "  -D --default    : Kringgå inloggningsprocessen och använd "
+#~ "grundinställningarna"

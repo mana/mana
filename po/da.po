@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-10 15:53+0200\n"
+"POT-Creation-Date: 2009-05-10 16:39+0200\n"
 "PO-Revision-Date: 2008-12-28 14:45+0000\n"
 "Last-Translator: GonzoDark AKA IchigoBlack <Gonzo.Dark@gmail.com>\n"
 "Language-Team: Danish <none@none.none>\n"
@@ -2277,9 +2277,8 @@ msgid "  -c --character   : Login with this character"
 msgstr "  -p --playername : Logind med denne bruger"
 
 #: src/main.cpp:577
-#, fuzzy
 msgid "  -p --port        : Login Server Port"
-msgstr "  -U --username   : Logind med dette brugernavn"
+msgstr ""
 
 #: src/main.cpp:578
 #, fuzzy
@@ -3137,14 +3136,14 @@ msgid "Email address already exists"
 msgstr ""
 
 #: src/resources/itemdb.cpp:52
-#, fuzzy, c-format
+#, c-format
 msgid "Attack %+d"
-msgstr "Angrib:"
+msgstr "Angrib %+d"
 
 #: src/resources/itemdb.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "Defense %+d"
-msgstr "Forsvar:"
+msgstr "Forsvar %+d"
 
 #: src/resources/itemdb.cpp:54
 #, c-format
@@ -3179,290 +3178,9 @@ msgstr "NPC Database: Fejl under indlæsning af npcs.xml!"
 #~ msgid "Emote"
 #~ msgstr "Emote"
 
-#~ msgid "MiniMap"
-#~ msgstr "MiniKort"
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "> Cancel\n"
-#~ msgstr "Fortryd"
-
 #~ msgid "inc"
 #~ msgstr "inc"
-
-#, fuzzy
-#~ msgid "use"
-#~ msgstr "Brug"
-
-#, fuzzy
-#~ msgid "%s: %s"
-#~ msgstr "Bane; %s"
-
-#, fuzzy
-#~ msgid "Emote Window"
-#~ msgstr "Emote fejlede!"
 
 #~ msgid "  -D --default    : Bypass the login process with default settings"
 #~ msgstr ""
 #~ "  -D --default    : Overskriv login processen med normale indstillinger"
-
-#~ msgid "Gold: %d"
-#~ msgstr "Guld: %d"
-
-#~ msgid "Unknown command"
-#~ msgstr "Ukendt kommando"
-
-#~ msgid "/w <nick> <message>: Short form for /whisper"
-#~ msgstr "/w <navn> <besked>: Kort form for /whisper"
-
-#~ msgid "@@description|Description@@"
-#~ msgstr "@@description|Beskrivelse@@"
-
-#, fuzzy
-#~ msgid "Money: %d GP"
-#~ msgstr "Penge: %d GP"
-
-#~ msgid "Welcome"
-#~ msgstr "Velkommen"
-
-#~ msgid "Trying to send a blank party message."
-#~ msgstr "Prøver at sende en blank gruppe besked."
-
-#~ msgid ""
-#~ "Unknown party command... Type \"/help party\" party for more information."
-#~ msgstr ""
-#~ "Ukendt gruppe kommando... Skriv \"/help party\" for mere information."
-
-#~ msgid "No such spell!"
-#~ msgstr "Trylleformularen findes ikke!"
-
-#~ msgid "The current server doesn't support spells"
-#~ msgstr "Den nuværende server understøtter ikke trylleformulare"
-
-#~ msgid "The current party prefix is "
-#~ msgstr "Det nuværende gruppe præfiks er "
-
-#~ msgid "Party prefix must be one character long."
-#~ msgstr "Gruppens præfiks skal være et bogstav langt. "
-
-#~ msgid "Cannot use a '/' as the prefix."
-#~ msgstr "Kan ikke bruge '/' som præfikset"
-
-#, fuzzy
-#~ msgid "Changing prefix to "
-#~ msgstr "Ændre præfikset til "
-
-#~ msgid "/msg <nick> <message>: Alternate form for /whisper"
-#~ msgstr "/msg <navn> <besked>: Alternativ form for /whisper"
-
-#~ msgid " g  Slots: "
-#~ msgstr " g  Pladser: "
-
-#~ msgid "Keep"
-#~ msgstr "Behold"
-
-#~ msgid "@@party-invite|Invite "
-#~ msgstr "@@party-invite|Inviter "
-
-#~ msgid "RegisterDialog::register Username is %s"
-#~ msgstr "RegisterDialog::register Brugernavn er %s"
-
-#, fuzzy
-#~ msgid "Color:"
-#~ msgstr "Farve:"
-
-#~ msgid "All resolutions available"
-#~ msgstr "Alle opløsninger er tilgængelige"
-
-#~ msgid "Speech bubbles"
-#~ msgstr "Snakke bobler"
-
-#, fuzzy
-#~ msgid "Restart your client or change maps for the change to take effect."
-#~ msgstr "Ændringerne kræver at du genstarter klienten, eller skifter bane."
-
-#~ msgid "Error loading skills file: %s"
-#~ msgstr "Fejl under loading af færdigheds fil: %s"
-
-#~ msgid "Couldn't load text file: %s"
-#~ msgstr "Kunne ikke loade tekst fil: %s"
-
-#~ msgid "Couldn't load news"
-#~ msgstr "Kunne ikke loade nyhederne"
-
-#~ msgid "Checksum for file %s failed: (%lx/%lx)"
-#~ msgstr "Checksum for fil %s fejlede: (%lx/%lx)"
-
-#~ msgid "%s already here"
-#~ msgstr "%s allerede her"
-
-#~ msgid "0x013b: Unhandled message %i"
-#~ msgstr "0x013b: Unbehandlet besked %i"
-
-#~ msgid "Trying TMW's color file, %s."
-#~ msgstr "Prøver TMW's farve fil, %s."
-
-#~ msgid "ColorDB: Failed"
-#~ msgstr "ColorDB: Fejlede"
-
-#~ msgid "Unloading color database..."
-#~ msgstr "Udlæser farve database..."
-
-#~ msgid "ColorDB: Error, unknown dye ID# %d"
-#~ msgstr "ColorDB: Fejl, ukendt dye ID# %d"
-
-#~ msgid "Initializing emote database..."
-#~ msgstr "startede emote database..."
-
-#~ msgid "Emote Database: Error while loading emotes.xml!"
-#~ msgstr "Emote Database: Fejl under læsning af emotes.xml!"
-
-#~ msgid "Emote Database: Emote with missing ID in emotes.xml!"
-#~ msgstr "Emote Database: Emote med manglende ID i emotes.xml!"
-
-#~ msgid "EmoteDB: Warning, unknown emote ID %d requested"
-#~ msgstr "EmoteDB: Warning, unknown emote ID %d requested"
-
-#~ msgid "Initializing item database..."
-#~ msgstr "Startede genstans database..."
-
-#~ msgid "ItemDB: Error while loading items.xml!"
-#~ msgstr "ItemDB: Fejl under læsningen af items.xml!"
-
-#~ msgid "ItemDB: Invalid or missing item ID in items.xml!"
-#~ msgstr "ItemDB: Ugyldig eller manglende genstand ID i items.xml!"
-
-#~ msgid "ItemDB: Redefinition of item ID %d"
-#~ msgstr "ItemDB: Ny definition af genstand ID %d"
-
-#~ msgid "Unloading item database..."
-#~ msgstr "Udlæser genstands databasen..."
-
-#~ msgid "ItemDB: Error, unknown item ID# %d"
-#~ msgstr "ItemDB: Fejl, ukendt genstand ID# %d"
-
-#~ msgid "ItemDB: Ignoring unknown sound event '%s'"
-#~ msgstr "ItemDB: Ignorerer ukendt lyd begivenhed '%s'"
-
-#~ msgid "Initializing monster database..."
-#~ msgstr "Starter monster database..."
-
-#~ msgid "Monster Database: Error while loading monster.xml!"
-#~ msgstr "Monster Database: Fejl under indlæsningen ad monster.xml!"
-
-#~ msgid ""
-#~ "MonsterDB: Unknown target cursor type \"%s\" for %s - using medium sized "
-#~ "one"
-#~ msgstr ""
-#~ "MonsterDB: Ukendt mål mus skriver \"%s\" for %s - at bruge en mellem "
-#~ "størelse"
-
-#~ msgid ""
-#~ "MonsterDB: Warning, sound effect %s for unknown event %s of monster %s"
-#~ msgstr ""
-#~ "MonsterDB: Advarsel, lyd effekt %s for ukendt begivenhed %s af monster %s"
-
-#~ msgid "MonsterDB: Warning, unknown monster ID %d requested"
-#~ msgstr "MonsterDB: Advarsel, ukendt monster ID %d efterspurgt"
-
-#~ msgid "Initializing NPC database..."
-#~ msgstr "Starter NPC database..."
-
-#~ msgid "NPC Database: NPC with missing ID in npcs.xml!"
-#~ msgstr "NPC Database: NPC med manglende ID i npcs.xml!"
-
-#~ msgid "NPCDB: Warning, unknown NPC ID %d requested"
-#~ msgstr "NPCDB: Advarsel, ukendt NPC ID %d efterspurgt"
-
-#~ msgid "Error: could not save screenshot."
-#~ msgstr "Fejl: kunne ikke gemme skærmbilledet."
-
-#~ msgid "Warning: guichan input exception: %s"
-#~ msgstr "Advarsel: guichan indput untagelse: %s"
-
-#~ msgid "Error: Invalid update host: %s"
-#~ msgstr "Fejl: Ugyldigt opdaterings host: %s"
-
-#~ msgid "Warning: no protocol was specified for the update host"
-#~ msgstr "Advarsel: ingen protocol var aktiv som opdate host"
-
-#~ msgid "Error: %s/%s can't be made, but doesn't exist!"
-#~ msgstr "Fejl: %s/%s kan ikke laves, men findes ikke!"
-
-#~ msgid "Initializing SDL..."
-#~ msgstr "Starter SDL..."
-
-#~ msgid "Could not initialize SDL: "
-#~ msgstr "Kunne ikke starte SDL: "
-
-#~ msgid " couldn't be set as home directory! Exiting."
-#~ msgstr " kunne ikke blive sat til hjemmemappen! Lukker."
-
-#~ msgid "Can't find Resources directory\n"
-#~ msgstr "Kan ikke finde ressourcernes mappe\n"
-
-#~ msgid "Initializing configuration..."
-#~ msgstr "Starter configurationen..."
-
-#~ msgid "Warning: %s"
-#~ msgstr "Advarsel: %s"
-
-#~ msgid "aethyra"
-#~ msgstr "aethyra"
-
-#~ msgid "(local build?, PACKAGE_VERSION is not defined)"
-#~ msgstr "(lokalt build?, PACKAGE_VERSION er ikke defineret)"
-
-#, fuzzy
-#~ msgid "Trying to connect to account server..."
-#~ msgstr "Prøver at opretter forbindelse til bruger serveren..."
-
-#, fuzzy
-#~ msgid "Trying to connect to char server..."
-#~ msgstr "Prøver at oprette forbindelse til karakter serveren..."
-
-#~ msgid "Memorizing selected character %s"
-#~ msgstr "Husk den valgte karakter %s"
-
-#, fuzzy
-#~ msgid "Trying to connect to map server..."
-#~ msgstr "Prøver at oprette forbindelse til bane serveren..."
-
-#~ msgid "Couldn't load %s as wallpaper"
-#~ msgstr "Kunne ikke indlæse %s som background"
-
-#, fuzzy
-#~ msgid "Description:"
-#~ msgstr "Beskrivelse:"
-
-#, fuzzy
-#~ msgid "Effect:"
-#~ msgstr "Effekt:"
-
-#, fuzzy
-#~ msgid "Name: "
-#~ msgstr "Navn: "
-
-#, fuzzy
-#~ msgid "Effect: "
-#~ msgstr "Effekt: "
-
-#, fuzzy
-#~ msgid "Description: "
-#~ msgstr "Beskrivelse: "
-
-#~ msgid "@@guild|Invite %s@@"
-#~ msgstr "@@guild|Inviter %s@@"
-
-#~ msgid "Confirm trade"
-#~ msgstr "Bekræft handel"
-
-#~ msgid "Confirm"
-#~ msgstr "Bekræft"
-
-#~ msgid "Charisma:"
-#~ msgstr "Udstråling"
-
-#~ msgid "Total Weight: %d - Maximum Weight: %d"
-#~ msgstr "Total Vægt: %d - Maximum Vægt: %d"

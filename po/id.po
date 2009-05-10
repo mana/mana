@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-10 15:53+0200\n"
-"PO-Revision-Date: 2008-03-26 09:11+0000\n"
+"POT-Creation-Date: 2009-05-10 16:39+0200\n"
+"PO-Revision-Date: 2009-01-09 12:22+0000\n"
 "Last-Translator: ActiveFile <activefile@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-01-06 12:40+0000\n"
+"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:141
@@ -332,9 +332,8 @@ msgid "Quit"
 msgstr "Keluar"
 
 #: src/game.cpp:647
-#, fuzzy
 msgid "Are you sure you want to quit?"
-msgstr "Apakah anda bersungguh-sungguh ingin menghapus karakter ini?"
+msgstr ""
 
 #: src/game.cpp:654
 msgid "no"
@@ -349,9 +348,8 @@ msgid "Accepting incoming trade requests"
 msgstr ""
 
 #: src/gui/buddywindow.cpp:35
-#, fuzzy
 msgid "Buddy"
-msgstr "Beli"
+msgstr ""
 
 #: src/gui/buddywindow.cpp:38
 msgid "Buddy List"
@@ -363,9 +361,9 @@ msgstr "Beli"
 
 #: src/gui/buy.cpp:65 src/gui/buy.cpp:256 src/gui/sell.cpp:67
 #: src/gui/sell.cpp:278
-#, fuzzy, c-format
+#, c-format
 msgid "Price: %s / Total: %s"
-msgstr "Harga: %d GP / Jumlah: %d GP"
+msgstr ""
 
 #: src/gui/buy.cpp:72 src/gui/sell.cpp:74
 msgid "Max"
@@ -384,9 +382,8 @@ msgid "Effect: %s"
 msgstr "Efek: %s"
 
 #: src/gui/buysell.cpp:34
-#, fuzzy
 msgid "Shop"
-msgstr "Berhenti"
+msgstr ""
 
 #: src/gui/buysell.cpp:40 src/gui/sell.cpp:46 src/gui/sell.cpp:72
 msgid "Sell"
@@ -420,9 +417,8 @@ msgstr ""
 
 #: src/gui/changepassworddialog.cpp:44 src/gui/changepassworddialog.cpp:55
 #: src/gui/charselectdialog.cpp:120
-#, fuzzy
 msgid "Change Password"
-msgstr "Kata Sandi:"
+msgstr ""
 
 #: src/gui/changepassworddialog.cpp:50 src/gui/login.cpp:52
 #: src/gui/register.cpp:61 src/gui/unregisterdialog.cpp:50
@@ -552,21 +548,20 @@ msgstr "Uang: %d"
 
 #: src/gui/charselectdialog.cpp:161 src/gui/charselectdialog.cpp:305
 #: src/gui/charselectdialog.cpp:325
-#, fuzzy, c-format
+#, c-format
 msgid "Job Level: %d"
-msgstr "Tingkatan: %d"
+msgstr ""
 
 #: src/gui/charselectdialog.cpp:162 src/gui/charselectdialog.cpp:308
 #: src/gui/charselectdialog.cpp:327 src/gui/status.cpp:57
 #: src/gui/status.cpp:182
-#, fuzzy, c-format
+#, c-format
 msgid "Money: %s"
-msgstr "Uang: %d"
+msgstr ""
 
 #: src/gui/chat.cpp:73 src/gui/palette.cpp:93
-#, fuzzy
 msgid "Chat"
-msgstr "Buat"
+msgstr ""
 
 #: src/gui/chat.cpp:332
 #, c-format
@@ -620,9 +615,8 @@ msgid "Guild"
 msgstr ""
 
 #: src/gui/guildwindow.cpp:63
-#, fuzzy
 msgid "Create Guild"
-msgstr "Buat"
+msgstr ""
 
 #: src/gui/guildwindow.cpp:64
 msgid "Invite User"
@@ -683,14 +677,12 @@ msgid "Select amount of items to drop."
 msgstr "Pilih jumlah item yang mau di buang"
 
 #: src/gui/itemamount.cpp:127
-#, fuzzy
 msgid "Select amount of items to store."
-msgstr "Pilih jumlah item yang mau di perdagangkan"
+msgstr ""
 
 #: src/gui/itemamount.cpp:130
-#, fuzzy
 msgid "Select amount of items to retrieve."
-msgstr "Pilih jumlah item yang mau di perdagangkan"
+msgstr ""
 
 #: src/gui/itemamount.cpp:133
 msgid "Select amount of items to split."
@@ -714,9 +706,8 @@ msgid "Port:"
 msgstr "Port:"
 
 #: src/gui/login.cpp:56
-#, fuzzy
 msgid "Recent:"
-msgstr "Mendaftar"
+msgstr ""
 
 #: src/gui/login.cpp:73
 msgid "Remember Username"
@@ -760,7 +751,7 @@ msgstr ""
 #: src/gui/npcdialog.cpp:46
 #, fuzzy
 msgid "Submit"
-msgstr "Pecah"
+msgstr "Keluar"
 
 #: src/gui/npcdialog.cpp:49 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -775,20 +766,17 @@ msgid "-"
 msgstr ""
 
 #: src/gui/npcdialog.cpp:105
-#, fuzzy
 msgid "Reset"
-msgstr "Mendaftar"
+msgstr ""
 
 #: src/gui/npcpostdialog.cpp:51
-#, fuzzy
 msgid "Send"
-msgstr "Suara"
+msgstr ""
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:268
 #: src/gui/setup_video.cpp:567
-#, fuzzy
 msgid "Text"
-msgstr "Berikutnya"
+msgstr ""
 
 #: src/gui/palette.cpp:82
 msgid "Text Shadow"
@@ -807,9 +795,8 @@ msgid "Background"
 msgstr ""
 
 #: src/gui/palette.cpp:88
-#, fuzzy
 msgid "Highlight"
-msgstr "tinggi"
+msgstr ""
 
 #: src/gui/palette.cpp:89
 msgid "Tab Highlight"
@@ -841,14 +828,12 @@ msgstr ""
 
 #: src/gui/palette.cpp:98 src/gui/partywindow.cpp:33
 #: src/net/ea/gui/partytab.cpp:37
-#, fuzzy
 msgid "Party"
-msgstr "Port:"
+msgstr ""
 
 #: src/gui/palette.cpp:99
-#, fuzzy
 msgid "Server"
-msgstr "Server:"
+msgstr ""
 
 #: src/gui/palette.cpp:100
 msgid "Logger"
@@ -867,19 +852,16 @@ msgid "Other Players' Names"
 msgstr ""
 
 #: src/gui/palette.cpp:105
-#, fuzzy
 msgid "Own Name"
-msgstr "Nama:"
+msgstr ""
 
 #: src/gui/palette.cpp:106
-#, fuzzy
 msgid "GM Names"
-msgstr "Nama:"
+msgstr ""
 
 #: src/gui/palette.cpp:107
-#, fuzzy
 msgid "NPCs"
-msgstr "NPC"
+msgstr ""
 
 #: src/gui/palette.cpp:108
 msgid "Monsters"
@@ -904,23 +886,20 @@ msgid "Usables"
 msgstr "Gunakan"
 
 #: src/gui/palette.cpp:114
-#, fuzzy
 msgid "Shirts"
-msgstr "Tombol Singkat"
+msgstr ""
 
 #: src/gui/palette.cpp:115
 msgid "1 Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:116
-#, fuzzy
 msgid "Pants"
-msgstr "Status"
+msgstr ""
 
 #: src/gui/palette.cpp:117
-#, fuzzy
 msgid "Shoes"
-msgstr "Berhenti"
+msgstr ""
 
 #: src/gui/palette.cpp:118
 msgid "2 Handed Weapons"
@@ -929,7 +908,7 @@ msgstr ""
 #: src/gui/palette.cpp:119
 #, fuzzy
 msgid "Shields"
-msgstr "Jual"
+msgstr "Keahlian"
 
 #: src/gui/palette.cpp:120
 msgid "Rings"
@@ -968,9 +947,8 @@ msgid "Monster hits Player"
 msgstr ""
 
 #: src/gui/palette.cpp:132
-#, fuzzy
 msgid "Critical Hit"
-msgstr "Daya/Tenaga Hidup"
+msgstr ""
 
 #: src/gui/palette.cpp:133
 msgid "Misses"
@@ -1042,9 +1020,9 @@ msgid "@@party|Invite %s to join your party@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:125
-#, fuzzy, c-format
+#, c-format
 msgid "@@talk|Talk To %s@@"
-msgstr "@@talk|Bicara dengan NPC@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:144 src/gui/popupmenu.cpp:162
 #: src/gui/popupmenu.cpp:375
@@ -1061,9 +1039,8 @@ msgid "@@chat|Add to chat@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:348
-#, fuzzy
 msgid "@@use|Unequip@@"
-msgstr "@@use|Melengkapi@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:350
 msgid "@@use|Equip@@"
@@ -1119,9 +1096,8 @@ msgid "Failed to start recording."
 msgstr ""
 
 #: src/gui/recorder.h:39
-#, fuzzy
 msgid "Recording..."
-msgstr "Menyambung..."
+msgstr ""
 
 #: src/gui/recorder.h:40
 msgid "Stop recording"
@@ -1160,18 +1136,16 @@ msgid "Passwords do not match."
 msgstr "Kata sandi tidak sama."
 
 #: src/gui/serverdialog.cpp:74
-#, fuzzy
 msgid "Choose your server"
-msgstr "Pilih Server Mana World"
+msgstr ""
 
 #: src/gui/serverdialog.cpp:164
 msgid "Please type both the address and the port of a server."
 msgstr "Tolong tulis address dan port dari server"
 
 #: src/gui/serverselectdialog.cpp:59
-#, fuzzy
 msgid "Select Server"
-msgstr "Pilih Karakter"
+msgstr ""
 
 #: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:933
 msgid "Setup"
@@ -1214,9 +1188,8 @@ msgid "Type: "
 msgstr ""
 
 #: src/gui/setup_colors.cpp:82 src/gui/setup_colors.cpp:430
-#, fuzzy
 msgid "Static"
-msgstr "Status"
+msgstr ""
 
 #: src/gui/setup_colors.cpp:84 src/gui/setup_colors.cpp:85
 #: src/gui/setup_colors.cpp:431
@@ -1230,9 +1203,8 @@ msgstr ""
 
 #: src/gui/setup_colors.cpp:88 src/gui/setup_colors.cpp:89
 #: src/gui/setup_colors.cpp:432
-#, fuzzy
 msgid "Spectrum"
-msgstr "Atur"
+msgstr ""
 
 #: src/gui/setup_colors.cpp:93
 msgid "Delay: "
@@ -1283,9 +1255,8 @@ msgid "Assign"
 msgstr ""
 
 #: src/gui/setup_keyboard.cpp:90
-#, fuzzy
 msgid "Default"
-msgstr "Hapus"
+msgstr ""
 
 #: src/gui/setup_keyboard.cpp:119
 msgid "Key Conflict(s) Detected."
@@ -1296,9 +1267,8 @@ msgid "Resolve them, or gameplay may result in strange behaviour."
 msgstr ""
 
 #: src/gui/setup_players.cpp:56
-#, fuzzy
 msgid "Name"
-msgstr "Nama:"
+msgstr ""
 
 #: src/gui/setup_players.cpp:57
 msgid "Relation"
@@ -1438,9 +1408,8 @@ msgid "Font size"
 msgstr ""
 
 #: src/gui/setup_video.cpp:265 src/gui/setup_video.cpp:564
-#, fuzzy
 msgid "No text"
-msgstr "Berikutnya"
+msgstr ""
 
 #: src/gui/setup_video.cpp:271 src/gui/setup_video.cpp:570
 msgid "Bubbles, no names"
@@ -1481,9 +1450,8 @@ msgid "windowed"
 msgstr ""
 
 #: src/gui/setup_video.cpp:411
-#, fuzzy
 msgid "fullscreen"
-msgstr "Layar penuh"
+msgstr ""
 
 #: src/gui/setup_video.cpp:412
 msgid "mode and restoration of old mode also failed!"
@@ -1510,9 +1478,8 @@ msgid "Screen resolution changed"
 msgstr ""
 
 #: src/gui/setup_video.cpp:521
-#, fuzzy
 msgid "Restart your client for the change to take effect."
-msgstr "Memulai dari awal di butuhkan untuk melihat efek"
+msgstr ""
 
 #: src/gui/setup_video.cpp:545
 msgid "Particle effect settings changed."
@@ -1523,9 +1490,8 @@ msgid "Changes will take effect on map change."
 msgstr ""
 
 #: src/gui/skill.cpp:41
-#, fuzzy
 msgid "skills.xml"
-msgstr "Keahlian"
+msgstr ""
 
 #: src/gui/skill.cpp:50
 msgid "Mystery Skill"
@@ -1549,14 +1515,13 @@ msgid "Weapons"
 msgstr ""
 
 #: src/gui/skilldialog.cpp:121
-#, fuzzy
 msgid "Crafts"
-msgstr "Buat"
+msgstr ""
 
 #: src/gui/status.cpp:56 src/gui/status.cpp:177
-#, fuzzy, c-format
+#, c-format
 msgid "Job: %d"
-msgstr "Tingkatan: %d"
+msgstr ""
 
 #: src/gui/status.cpp:60
 msgid "HP:"
@@ -1571,14 +1536,12 @@ msgid "MP:"
 msgstr ""
 
 #: src/gui/status.cpp:69
-#, fuzzy
 msgid "Job:"
-msgstr "Tingkatan: %d"
+msgstr ""
 
 #: src/gui/status.cpp:77
-#, fuzzy
 msgid "Stats"
-msgstr "Status"
+msgstr ""
 
 #: src/gui/status.cpp:78
 msgid "Total"
@@ -1589,24 +1552,20 @@ msgid "Cost"
 msgstr ""
 
 #: src/gui/status.cpp:83
-#, fuzzy
 msgid "Attack:"
-msgstr "Serangan %+d"
+msgstr ""
 
 #: src/gui/status.cpp:84
-#, fuzzy
 msgid "Defense:"
-msgstr "Pertahanan %+d"
+msgstr ""
 
 #: src/gui/status.cpp:85
-#, fuzzy
 msgid "M.Attack:"
-msgstr "Serangan %+d"
+msgstr ""
 
 #: src/gui/status.cpp:86
-#, fuzzy
 msgid "M.Defense:"
-msgstr "Pertahanan %+d"
+msgstr ""
 
 #: src/gui/status.cpp:88
 #, no-c-format
@@ -1624,29 +1583,24 @@ msgid "% Reflex:"
 msgstr ""
 
 #: src/gui/status.cpp:198
-#, fuzzy
 msgid "Strength"
-msgstr "Kekuatan"
+msgstr ""
 
 #: src/gui/status.cpp:199
-#, fuzzy
 msgid "Agility"
-msgstr "Daya/Tenaga Hidup"
+msgstr ""
 
 #: src/gui/status.cpp:200
-#, fuzzy
 msgid "Vitality"
-msgstr "Daya/Tenaga Hidup"
+msgstr ""
 
 #: src/gui/status.cpp:201
-#, fuzzy
 msgid "Intelligence"
-msgstr "Kecerdasan"
+msgstr ""
 
 #: src/gui/status.cpp:202
-#, fuzzy
 msgid "Dexterity"
-msgstr "Ketangkasan"
+msgstr ""
 
 #: src/gui/status.cpp:203
 msgid "Luck"
@@ -1666,9 +1620,8 @@ msgid "Storage"
 msgstr ""
 
 #: src/gui/storagewindow.cpp:65
-#, fuzzy
 msgid "Store"
-msgstr "Berhenti"
+msgstr ""
 
 #: src/gui/storagewindow.cpp:66
 msgid "Retrieve"
@@ -1683,14 +1636,12 @@ msgid "Propose trade"
 msgstr "Menawarkan tukar menukar"
 
 #: src/gui/trade.cpp:52
-#, fuzzy
 msgid "Confirmed. Waiting..."
-msgstr "Menyambung..."
+msgstr ""
 
 #: src/gui/trade.cpp:53
-#, fuzzy
 msgid "Agree trade"
-msgstr "Menawarkan tukar menukar"
+msgstr ""
 
 #: src/gui/trade.cpp:54
 msgid "Agreed. Waiting..."
@@ -1709,9 +1660,9 @@ msgid "Add"
 msgstr "Tambah"
 
 #: src/gui/trade.cpp:95 src/gui/trade.cpp:131
-#, fuzzy, c-format
+#, c-format
 msgid "You get %s."
-msgstr "Anda mendapatkan %d GP."
+msgstr ""
 
 #: src/gui/trade.cpp:96
 msgid "You give:"
@@ -1880,9 +1831,8 @@ msgid "Guilds"
 msgstr ""
 
 #: src/gui/windowmenu.cpp:66
-#, fuzzy
 msgid "Buddys"
-msgstr "Beli"
+msgstr ""
 
 #: src/gui/windowmenu.cpp:68
 msgid "Shortcut"
@@ -1905,9 +1855,8 @@ msgid "Move Right"
 msgstr ""
 
 #: src/keyboardconfig.cpp:45
-#, fuzzy
 msgid "Attack"
-msgstr "Serangan %+d"
+msgstr ""
 
 #: src/keyboardconfig.cpp:46
 msgid "Smilie"
@@ -1918,9 +1867,8 @@ msgid "Talk"
 msgstr ""
 
 #: src/keyboardconfig.cpp:48
-#, fuzzy
 msgid "Stop Attack"
-msgstr "Serangan %+d"
+msgstr ""
 
 #: src/keyboardconfig.cpp:49
 msgid "Target Closest"
@@ -1943,9 +1891,8 @@ msgid "Hide Windows"
 msgstr ""
 
 #: src/keyboardconfig.cpp:54
-#, fuzzy
 msgid "Sit"
-msgstr "Pecah"
+msgstr ""
 
 #: src/keyboardconfig.cpp:55
 msgid "Screenshot"
@@ -1965,28 +1912,25 @@ msgstr ""
 #: src/keyboardconfig.cpp:64 src/keyboardconfig.cpp:65
 #: src/keyboardconfig.cpp:66 src/keyboardconfig.cpp:67
 #: src/keyboardconfig.cpp:68 src/keyboardconfig.cpp:69
-#, fuzzy, c-format
+#, c-format
 msgid "Item Shortcut %d"
-msgstr "Tombol Singkat"
+msgstr ""
 
 #: src/keyboardconfig.cpp:70
 msgid "Help Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:71
-#, fuzzy
 msgid "Status Window"
-msgstr "Status"
+msgstr ""
 
 #: src/keyboardconfig.cpp:72
-#, fuzzy
 msgid "Inventory Window"
-msgstr "Inventaris"
+msgstr ""
 
 #: src/keyboardconfig.cpp:73
-#, fuzzy
 msgid "Equipment WIndow"
-msgstr "Perlengkapan"
+msgstr ""
 
 #: src/keyboardconfig.cpp:74
 msgid "Skill Window"
@@ -2013,9 +1957,8 @@ msgid "Debug Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:80
-#, fuzzy
 msgid "Party Window"
-msgstr "Status"
+msgstr ""
 
 #: src/keyboardconfig.cpp:81
 msgid "Emote Shortcut Window"
@@ -2027,9 +1970,9 @@ msgstr ""
 #: src/keyboardconfig.cpp:88 src/keyboardconfig.cpp:89
 #: src/keyboardconfig.cpp:90 src/keyboardconfig.cpp:91
 #: src/keyboardconfig.cpp:92 src/keyboardconfig.cpp:93
-#, fuzzy, c-format
+#, c-format
 msgid "Emote Shortcut %d"
-msgstr "Tombol Singkat"
+msgstr ""
 
 #: src/keyboardconfig.cpp:94
 msgid "Toggle Chat"
@@ -2044,18 +1987,16 @@ msgid "Scroll Chat Down"
 msgstr ""
 
 #: src/keyboardconfig.cpp:97
-#, fuzzy
 msgid "Previous Chat Tab"
-msgstr "Sebelumnya"
+msgstr ""
 
 #: src/keyboardconfig.cpp:98
 msgid "Next Chat Tab"
 msgstr ""
 
 #: src/keyboardconfig.cpp:99
-#, fuzzy
 msgid "Select OK"
-msgstr "Pilih Karakter"
+msgstr ""
 
 #: src/keyboardconfig.cpp:101
 msgid "Ignore input 1"
@@ -2074,36 +2015,32 @@ msgid "Knife"
 msgstr ""
 
 #: src/localplayer.cpp:836
-#, fuzzy
 msgid "Sword"
-msgstr "Suara"
+msgstr ""
 
 #: src/localplayer.cpp:837
 msgid "Polearm"
 msgstr ""
 
 #: src/localplayer.cpp:838
-#, fuzzy
 msgid "Staff"
-msgstr "Status"
+msgstr ""
 
 #: src/localplayer.cpp:839
 msgid "Whip"
 msgstr ""
 
 #: src/localplayer.cpp:840
-#, fuzzy
 msgid "Bow"
-msgstr "rendah"
+msgstr ""
 
 #: src/localplayer.cpp:841
 msgid "Shooting"
 msgstr ""
 
 #: src/localplayer.cpp:842
-#, fuzzy
 msgid "Mace"
-msgstr "Batal"
+msgstr ""
 
 #: src/localplayer.cpp:843
 msgid "Axe"
@@ -2114,9 +2051,8 @@ msgid "Thrown"
 msgstr ""
 
 #: src/localplayer.cpp:846
-#, fuzzy
 msgid "Craft"
-msgstr "Buat"
+msgstr ""
 
 #: src/localplayer.cpp:847
 msgid "Unknown Skill"
@@ -2207,14 +2143,12 @@ msgid "  -v --version     : Display the version"
 msgstr ""
 
 #: src/main.cpp:589
-#, fuzzy
 msgid "The Mana World "
-msgstr "Pilih Server Mana World"
+msgstr ""
 
 #: src/main.cpp:1515
-#, fuzzy
 msgid "Connecting to map server..."
-msgstr "Menyambung..."
+msgstr ""
 
 #: src/main.cpp:1523
 msgid "Connecting to character server..."
@@ -2277,37 +2211,31 @@ msgid "Player deleted"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:140
-#, fuzzy
 msgid "Failed to delete character."
-msgstr "Nama anda sekurang-kurangnya harus 4 karakter"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:224
 #: src/net/tmwserv/charserverhandler.cpp:253
-#, fuzzy
 msgid "Strength:"
 msgstr "Kekuatan"
 
 #: src/net/ea/charserverhandler.cpp:225
 #: src/net/tmwserv/charserverhandler.cpp:254
-#, fuzzy
 msgid "Agility:"
-msgstr "Daya/Tenaga Hidup"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:226
 #: src/net/tmwserv/charserverhandler.cpp:256
-#, fuzzy
 msgid "Vitality:"
 msgstr "Daya/Tenaga Hidup"
 
 #: src/net/ea/charserverhandler.cpp:227
 #: src/net/tmwserv/charserverhandler.cpp:257
-#, fuzzy
 msgid "Intelligence:"
 msgstr "Kecerdasan"
 
 #: src/net/ea/charserverhandler.cpp:228
 #: src/net/tmwserv/charserverhandler.cpp:255
-#, fuzzy
 msgid "Dexterity:"
 msgstr "Ketangkasan"
 
@@ -2339,29 +2267,29 @@ msgid "Unable to unequip."
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength: %d"
-msgstr "Kekuatan"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Agility: %d"
-msgstr "Daya/Tenaga Hidup"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:96 src/net/tmwserv/generalhandler.cpp:88
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality: %d"
-msgstr "Daya/Tenaga Hidup"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:98 src/net/tmwserv/generalhandler.cpp:90
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence: %d"
-msgstr "Kecerdasan"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:100 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity: %d"
-msgstr "Ketangkasan"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:102
 #, c-format
@@ -2542,23 +2470,20 @@ msgid "Failed to use item"
 msgstr ""
 
 #: src/net/ea/loginhandler.cpp:110
-#, fuzzy
 msgid "Unregistered ID"
-msgstr "Tidak terdaftar"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:113
-#, fuzzy
 msgid "Wrong password"
-msgstr "Kata Sandi:"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:116
 msgid "Account expired"
 msgstr ""
 
 #: src/net/ea/loginhandler.cpp:119
-#, fuzzy
 msgid "Rejected from server"
-msgstr "Pilih Karakter"
+msgstr ""
 
 #: src/net/ea/loginhandler.cpp:123
 msgid ""
@@ -2874,9 +2799,8 @@ msgid "Trade with "
 msgstr ""
 
 #: src/net/ea/tradehandler.cpp:137
-#, fuzzy
 msgid " cancelled"
-msgstr "Batal"
+msgstr ""
 
 #: src/net/ea/tradehandler.cpp:144
 msgid "Unhandled trade cancel packet"
@@ -2907,9 +2831,8 @@ msgid " Press OK to respawn"
 msgstr ""
 
 #: src/net/tmwserv/beinghandler.cpp:329
-#, fuzzy
 msgid "You died"
-msgstr "Anda memberikan:"
+msgstr ""
 
 #: src/net/tmwserv/charserverhandler.cpp:219
 msgid "No gameservers are available."
@@ -2924,9 +2847,9 @@ msgid "Topic: "
 msgstr ""
 
 #: src/net/tmwserv/generalhandler.cpp:92
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower: %d"
-msgstr "Ketekunan"
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
@@ -2937,9 +2860,8 @@ msgid "Already logged in"
 msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:86 src/net/tmwserv/loginhandler.cpp:185
-#, fuzzy
 msgid "Server is full"
-msgstr "Server:"
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:110
 msgid "New password incorrect"
@@ -2970,9 +2892,8 @@ msgid "Client version is too old"
 msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:179
-#, fuzzy
 msgid "Wrong username or password"
-msgstr "Kata Sandi:"
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:211
 msgid "Wrong username, password or email address"
@@ -2987,12 +2908,12 @@ msgid "Email address already exists"
 msgstr ""
 
 #: src/resources/itemdb.cpp:52
-#, fuzzy, c-format
+#, c-format
 msgid "Attack %+d"
 msgstr "Serangan %+d"
 
 #: src/resources/itemdb.cpp:53
-#, fuzzy, c-format
+#, c-format
 msgid "Defense %+d"
 msgstr "Pertahanan %+d"
 
@@ -3025,35 +2946,3 @@ msgstr ""
 #: src/resources/npcdb.cpp:53
 msgid "NPC Database: Error while loading npcs.xml!"
 msgstr ""
-
-#, fuzzy
-#~ msgid ""
-#~ "\n"
-#~ "> Cancel\n"
-#~ msgstr "Batal"
-
-#, fuzzy
-#~ msgid "use"
-#~ msgstr "Gunakan"
-
-#~ msgid "@@description|Description@@"
-#~ msgstr "@@description|Deskripsi@@"
-
-#, fuzzy
-#~ msgid "Money: %d GP"
-#~ msgstr "Uang: %d"
-
-#~ msgid "Confirm trade"
-#~ msgstr "Konfirmasi tukar menukar"
-
-#~ msgid "Confirm"
-#~ msgstr "Konfirmasi"
-
-#~ msgid "Charisma:"
-#~ msgstr "Karisma"
-
-#~ msgid "Total Weight: %d - Maximum Weight: %d"
-#~ msgstr "Jumlah Berat: %d - Berat Maksimum: %d"
-
-#~ msgid "Keep"
-#~ msgstr "Pertahankan"
