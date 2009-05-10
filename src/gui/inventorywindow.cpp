@@ -184,7 +184,7 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-Item* InventoryWindow::getSelectedItem() const
+Item *InventoryWindow::getSelectedItem() const
 {
     return mItems->getSelectedItem();
 }

@@ -41,6 +41,12 @@ class FloorItem : public Sprite
     public:
         /**
          * Constructor.
+         *
+         * @param id     the unique ID of this item instance
+         * @param itemId the item ID
+         * @param x      the x position in tiles
+         * @param y      the y position in tiles
+         * @param map    the map this item is on
          */
         FloorItem(int id,
                   int itemId,
@@ -48,18 +54,15 @@ class FloorItem : public Sprite
                   int y,
                   Map *map);
 
-        /**
-         * Destructor.
-         */
         ~FloorItem();
 
         /**
-         * Returns instance id of this item.
+         * Returns instance ID of this item.
          */
         int getId() const { return mId; }
 
         /**
-         * Returns the item id.
+         * Returns the item ID.
          */
         int getItemId() const;
 
@@ -70,12 +73,12 @@ class FloorItem : public Sprite
         Item *getItem() const;
 
         /**
-         * Returns the x coordinate.
+         * Returns the x coordinate in tiles.
          */
         int getX() const { return mX; }
 
         /**
-         * Returns the y coordinate.
+         * Returns the y coordinate in tiles.
          */
         int getY() const { return mY; }
 
@@ -84,7 +87,7 @@ class FloorItem : public Sprite
          *
          * @see Sprite::getPixelY()
          */
-        int getPixelY() const { return mY * 32; }
+        int getPixelY() const { return mY * 32 + 16; }
 
         /**
          * Draws this floor item to the given graphics context.

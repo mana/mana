@@ -56,7 +56,7 @@ class Item
         /**
          * Returns the item image.
          */
-        Image* getImage() { return mImage; }
+        Image *getImage() { return mImage; }
 
         /**
          * Sets the number of items.
@@ -106,7 +106,7 @@ class Item
         /**
          * Returns information about this item type.
          */
-        const ItemInfo& getInfo() const { return ItemDB::get(mId); }
+        const ItemInfo &getInfo() const { return ItemDB::get(mId); }
 
     protected:
         int mId;              /**< Item type id. */
