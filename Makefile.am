@@ -6,7 +6,9 @@ desktopdir = $(datadir)/applications
 desktop_DATA = tmw.desktop
 
 # Extra files to include
-EXTRA_DIST = $(desktop_DATA) tmw.cbp
+EXTRA_DIST = $(desktop_DATA) \
+	     tmw.cbp \
+	     tmw.menu
 
 # Autopoint m4 stuff
 ACLOCAL_AMFLAGS = -I m4
