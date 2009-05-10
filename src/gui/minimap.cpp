@@ -56,20 +56,21 @@ Minimap::Minimap():
     setResizable(false);
 
     setDefaultVisible(true);
-    setSaveVisible(true);
+    setSaveVisible(false);
 
     setStickyButton(true);
     setSticky(false);
 
     loadWindowState();
+    setVisible(mShow);
 }
 
 Minimap::~Minimap()
 {
+    config.setValue(getWindowName() + "Show", mShow);
+
     if (mMapImage)
         mMapImage->decRef();
-
-    config.setValue(getWindowName() + "Show", mShow);
 }
 
 void Minimap::setMap(Map *map)
@@ -92,6 +93,9 @@ void Minimap::setMap(Map *map)
 
     ResourceManager *resman = ResourceManager::getInstance();
     mMapImage = resman->getImage(map->getProperty("minimap"));
+
+    if (!mShow)
+	    return;
 
     if (mMapImage)
     {
@@ -116,7 +120,7 @@ void Minimap::setMap(Map *map)
         setDefaultSize(getX(), getY(), getWidth(), getHeight());
         resetToDefaultSize();
 
-        setVisible(mShow);
+        setVisible(true);
     }
     else
     {
@@ -126,7 +130,8 @@ void Minimap::setMap(Map *map)
 
 void Minimap::toggle()
 {
-    setVisible(!isVisible(), true);
+    setVisible(!mShow, isSticky());
+    mShow = isVisible();
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
