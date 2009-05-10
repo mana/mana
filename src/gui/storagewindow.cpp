@@ -87,9 +87,9 @@ StorageWindow::StorageWindow(int invSize):
     place(0, 0, mSlotsLabel).setPadding(3);
     place(1, 0, mSlotsBar, 3);
     place(0, 1, invenScroll, 4, 4);
-    place(0, 5, mCloseButton);
-    place(2, 5, mStoreButton);
-    place(3, 5, mRetrieveButton);
+    place(0, 5, mStoreButton);
+    place(1, 5, mRetrieveButton);
+    place(3, 5, mCloseButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, mStoreButton->getHeight());
