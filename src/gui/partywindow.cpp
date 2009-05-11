@@ -46,6 +46,7 @@ PartyWindow::PartyWindow() :
 {
     setWindowName("Party");
     setVisible(false);
+    setSaveVisible(true);
     setResizable(true);
     setSaveVisible(true);
     setCloseButton(true);
@@ -54,7 +55,6 @@ PartyWindow::PartyWindow() :
     setDefaultSize(590, 200, 200, 200);
 
     loadWindowState();
-    setVisible(false); // Do not start out visible
 }
 
 PartyWindow::~PartyWindow()
@@ -111,12 +111,6 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
     player->online = online;
     player->avatar->setName(memberName);
     player->avatar->setOnline(online);
-
-    // show the window
-    if (mMembers.size() > 0)
-    {
-        setVisible(true);
-    }
 }
 
 void PartyWindow::updateMemberHP(int id, int hp, int maxhp)
@@ -129,12 +123,6 @@ void PartyWindow::updateMemberHP(int id, int hp, int maxhp)
 void PartyWindow::removeMember(int id)
 {
     mMembers.erase(id);
-
-    // if no-one left, remove the party window
-    if (mMembers.size() < 1)
-    {
-        setVisible(false);
-    }
 }
 
 void PartyWindow::removeMember(const std::string &name)

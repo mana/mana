@@ -106,8 +106,6 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     if (being)
                         being->setName(nick);
                 }
-
-                partyWindow->setVisible(true);
             }
             break;
         case SMSG_PARTY_INVITE_RESPONSE:
@@ -232,7 +230,6 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 {
                     player_node->setInParty(false);
                     partyWindow->clearMembers();
-                    partyWindow->setVisible(false);
                     partyTab->chatLog(_("You have left the party."), BY_SERVER);
                 }
                 else
