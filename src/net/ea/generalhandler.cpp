@@ -59,6 +59,7 @@
 #include <list>
 
 Net::GeneralHandler *generalHandler;
+std::list<ItemDB::Stat*> stats;
 
 namespace EAthena {
 
@@ -87,7 +88,6 @@ GeneralHandler::GeneralHandler():
     handledMessages = _messages;
     generalHandler = this;
 
-    std::list<ItemDB::Stat*> stats;
     ItemDB::Stat stat;
     stat.tag = "str"; stat.format = N_("Strength: %d");
     stats.push_back(&stat);

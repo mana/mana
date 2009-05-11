@@ -52,6 +52,8 @@ Net::Connection *gameServerConnection = 0;
 Net::Connection *chatServerConnection = 0;
 Net::Connection *accountServerConnection = 0;
 
+std::list<ItemDB::Stat*> stats;
+
 namespace TmwServ {
 
 GeneralHandler::GeneralHandler():
@@ -77,7 +79,6 @@ GeneralHandler::GeneralHandler():
 
     generalHandler = this;
 
-    std::list<ItemDB::Stat*> stats;
     ItemDB::Stat stat;
     stat.tag = "str"; stat.format = N_("Strength: %d");
     stats.push_back(&stat);
