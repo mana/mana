@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-05-12 00:11+0200\n"
-"PO-Revision-Date: 2009-05-03 13:13+0000\n"
+"PO-Revision-Date: 2009-05-10 15:53+0000\n"
 "Last-Translator: Jumpy <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2009-05-11 21:56+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:141
@@ -22,9 +22,8 @@ msgid "-- Help --"
 msgstr "ayuda"
 
 #: src/commandhandler.cpp:142
-#, fuzzy
 msgid "/help > Display this help"
-msgstr "/help > Mostrar la ayuda"
+msgstr "/help > Muestra la ayuda"
 
 #: src/commandhandler.cpp:144
 msgid "/where > Display map name"
@@ -57,6 +56,7 @@ msgstr "/w Alias para un mensaje"
 #: src/commandhandler.cpp:153
 msgid "/query > Makes a tab for private messages with another user"
 msgstr ""
+"/query > Crea una ventana para mensajes privados con un otro utilizador"
 
 #: src/commandhandler.cpp:154
 msgid "/q > Alias of query"
@@ -64,19 +64,19 @@ msgstr "/q > Alias para una demanda"
 
 #: src/commandhandler.cpp:156
 msgid "/list > Display all public channels"
-msgstr ""
+msgstr "/list > Enseña la lista de los salones publicos"
 
 #: src/commandhandler.cpp:157
 msgid "/join > Join or create a channel"
-msgstr ""
+msgstr "/join > Entrar o crear un salon"
 
 #: src/commandhandler.cpp:159
 msgid "/party > Invite a user to party"
-msgstr ""
+msgstr "/party > Invita un jugador en un grupo"
 
 #: src/commandhandler.cpp:161
 msgid "/record > Start recording the chat to an external file"
-msgstr ""
+msgstr "/record > Empieza a registrar el chat en un archivo externo"
 
 #: src/commandhandler.cpp:162
 msgid "/toggle > Determine whether <return> toggles the chat log"
@@ -140,7 +140,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:198
 msgid "If <channel> doesn't exist, it's created."
-msgstr ""
+msgstr "Si <channel> no existe, lo crea"
 
 #: src/commandhandler.cpp:202
 msgid "Command: /list"
@@ -738,18 +738,16 @@ msgid "Cast Test Spell 3"
 msgstr ""
 
 #: src/gui/minimap.cpp:46 src/gui/minimap.cpp:86
-#, fuzzy
 msgid "Map"
-msgstr "Minimapa"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:42
 msgid "Waiting for server"
 msgstr ""
 
 #: src/gui/npcdialog.cpp:45
-#, fuzzy
 msgid "Submit"
-msgstr "Salir"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:48 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -865,14 +863,12 @@ msgid "Generics"
 msgstr ""
 
 #: src/gui/palette.cpp:112
-#, fuzzy
 msgid "Hats"
-msgstr "Estadísticas"
+msgstr ""
 
 #: src/gui/palette.cpp:113
-#, fuzzy
 msgid "Usables"
-msgstr "Usar"
+msgstr ""
 
 #: src/gui/palette.cpp:114
 msgid "Shirts"
@@ -895,9 +891,8 @@ msgid "2 Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:119
-#, fuzzy
 msgid "Shields"
-msgstr "Habilidades"
+msgstr ""
 
 #: src/gui/palette.cpp:120
 msgid "Rings"
@@ -1019,9 +1014,9 @@ msgid "@@cancel|Cancel@@"
 msgstr "@@cancel|Cancelar@@"
 
 #: src/gui/popupmenu.cpp:157
-#, fuzzy, c-format
+#, c-format
 msgid "@@pickup|Pick up %s@@"
-msgstr "@@pickup|Recoger %s@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:158 src/gui/popupmenu.cpp:373
 msgid "@@chat|Add to chat@@"
@@ -1048,9 +1043,8 @@ msgid "@@split|Split@@"
 msgstr "@@split|Dividir@@"
 
 #: src/gui/popupmenu.cpp:364
-#, fuzzy
 msgid "@@store|Store@@"
-msgstr "@@use|Usar@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:371
 msgid "@@retrieve|Retrieve@@"
@@ -1308,14 +1302,12 @@ msgid "Tiny"
 msgstr ""
 
 #: src/gui/setup_video.cpp:113
-#, fuzzy
 msgid "Small"
-msgstr "Vender"
+msgstr ""
 
 #: src/gui/setup_video.cpp:114
-#, fuzzy
 msgid "Medium"
-msgstr "Medio"
+msgstr ""
 
 #: src/gui/setup_video.cpp:115
 msgid "Large"
@@ -1935,9 +1927,8 @@ msgid "Debug Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:80
-#, fuzzy
 msgid "Party Window"
-msgstr "Reiniciar ventanas"
+msgstr ""
 
 #: src/keyboardconfig.cpp:81
 msgid "Emote Shortcut Window"
@@ -2078,9 +2069,8 @@ msgid "  -D --default     : Choose default character server and character"
 msgstr ""
 
 #: src/main.cpp:572
-#, fuzzy
 msgid "  -h --help        : Display this help"
-msgstr "/help > Mostrar la ayuda"
+msgstr ""
 
 #: src/main.cpp:573
 msgid "  -S --home-dir    : Directory to use as home directory"
