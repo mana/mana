@@ -88,12 +88,12 @@ GeneralHandler::GeneralHandler():
     generalHandler = this;
 
     std::list<ItemDB::Stat> stats;
-    stats.push_back(ItemDB::Stat("str", N_("Strength: %d")));
-    stats.push_back(ItemDB::Stat("agi", N_("Agility: %d")));
-    stats.push_back(ItemDB::Stat("vit", N_("Vitality: %d")));
-    stats.push_back(ItemDB::Stat("int", N_("Intelligence: %d")));
-    stats.push_back(ItemDB::Stat("dex", N_("Dexterity: %d")));
-    stats.push_back(ItemDB::Stat("luck", N_("Luck: %d")));
+    stats.push_back(ItemDB::Stat("str", N_("Strength %+d")));
+    stats.push_back(ItemDB::Stat("agi", N_("Agility %+d")));
+    stats.push_back(ItemDB::Stat("vit", N_("Vitality %+d")));
+    stats.push_back(ItemDB::Stat("int", N_("Intelligence %+d")));
+    stats.push_back(ItemDB::Stat("dex", N_("Dexterity %+d")));
+    stats.push_back(ItemDB::Stat("luck", N_("Luck %+d")));
 
     ItemDB::setStatsList(stats);
 }
