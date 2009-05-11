@@ -221,8 +221,6 @@ Setup_Players::Setup_Players():
     mPlayerTable(new GuiTable(mPlayerTableModel)),
     mPlayerTitleTable(new GuiTable(mPlayerTableTitleModel)),
     mPlayerScrollArea(new ScrollArea(mPlayerTable)),
-    mPersistIgnores(new CheckBox(_("Save player list"),
-                player_relations.getPersistIgnores())),
     mDefaultTrading(new CheckBox(_("Allow trading"),
                 player_relations.getDefault() & PlayerRelation::TRADE)),
     mDefaultWhisper(new CheckBox(_("Allow whispers"),
@@ -288,9 +286,8 @@ Setup_Players::Setup_Players():
     place(0, 6, mWhisperTabCheckBox);
     place(2, 5, ignore_action_label);
     place(2, 6, mIgnoreActionChoicesBox, 2).setPadding(2);
-    place(2, 7, mPersistIgnores);
-    place(2, 8, mDefaultTrading);
-    place(2, 9, mDefaultWhisper);
+    place(2, 7, mDefaultTrading);
+    place(2, 8, mDefaultWhisper);
 
     player_relations.addListener(this);
 
@@ -326,7 +323,6 @@ void Setup_Players::reset()
 
 void Setup_Players::apply()
 {
-    player_relations.setPersistIgnores(mPersistIgnores->isSelected());
     player_relations.store();
 
     unsigned int old_default_relations = player_relations.getDefault() &

@@ -107,7 +107,7 @@ void PlayerRelationsManager::clear()
     delete names;
 }
 
-#define PERSIST_IGNORE_LIST "persist-player-list"
+#define PERSIST_IGNORE_LIST "persistent-player-list"
 #define PLAYER_IGNORE_STRATEGY "player-ignore-strategy"
 #define DEFAULT_PERMISSIONS "default-player-permissions"
 
@@ -125,7 +125,7 @@ void PlayerRelationsManager::load()
 {
     clear();
 
-    mPersistIgnores = config.getValue(PERSIST_IGNORE_LIST, 0);
+    mPersistIgnores = config.getValue(PERSIST_IGNORE_LIST, 1);
     mDefaultPermissions = (int) config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
     std::string ignore_strategy_name = config.getValue(PLAYER_IGNORE_STRATEGY, DEFAULT_IGNORE_STRATEGY);
     int ignore_strategy_index = getPlayerIgnoreStrategyIndex(ignore_strategy_name);
