@@ -281,27 +281,7 @@ Setup_Video::Setup_Video():
     mParticleDetailField->setCaption(particleDetailToString(mParticleDetail));
     mParticleDetailSlider->setValue(mParticleDetail);
 
-    int fontSizeSelected;
-    switch (mFontSize)
-    {
-        case 10:
-            fontSizeSelected = 0;
-            break;
-        case 11:
-            fontSizeSelected = 1;
-            break;
-        case 12:
-            fontSizeSelected = 2;
-            break;
-        case 13:
-            fontSizeSelected = 3;
-            break;
-        default:
-            fontSizeSelected = 1;
-            break;
-    }
-
-    mFontSizeDropDown->setSelected(fontSizeSelected);
+    mFontSizeDropDown->setSelected(mFontSize - 10);
     mFontSizeDropDown->adjustHeight();
 
     // Do the layout
