@@ -22,6 +22,7 @@
 #ifndef GUI_SETUP_VIDEO_H
 #define GUI_SETUP_VIDEO_H
 
+#include "being.h"
 #include "guichanfwd.h"
 
 #include "gui/setuptab.h"
@@ -57,7 +58,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mPickupParticleEnabled;
         double mOpacity;
         int mFps;
-        int mSpeechMode;
+        Being::Speech mSpeechMode;
 
         class ModeListModel *mModeListModel;
 

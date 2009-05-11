@@ -109,10 +109,10 @@ ModeListModel::ModeListModel()
 
 const char *SIZE_NAME[4] =
 {
-        N_("Tiny"),
-        N_("Small"),
-        N_("Medium"),
-        N_("Large"),
+    N_("Tiny"),
+    N_("Small"),
+    N_("Medium"),
+    N_("Large"),
 };
 
 class FontSizeChoiceListModel : public gcn::ListModel
@@ -134,6 +134,41 @@ public:
     }
 };
 
+static const char *speechModeToString(Being::Speech mode)
+{
+    switch (mode)
+    {
+        case Being::NO_SPEECH:         return _("No text");
+        case Being::TEXT_OVERHEAD:     return _("Text");
+        case Being::NO_NAME_IN_BUBBLE: return _("Bubbles, no names");
+        case Being::NAME_IN_BUBBLE:    return _("Bubbles with names");
+    }
+    return "";
+}
+
+static const char *overlayDetailToString(int detail)
+{
+    switch (detail)
+    {
+        case 0: return _("off");
+        case 1: return _("low");
+        case 2: return _("high");
+    }
+    return "";
+}
+
+static const char *particleDetailToString(int detail)
+{
+    switch (detail)
+    {
+        case 0: return _("low");
+        case 1: return _("medium");
+        case 2: return _("high");
+        case 3: return _("max");
+    }
+    return "";
+}
+
 Setup_Video::Setup_Video():
     mFullScreenEnabled(config.getValue("screen", false)),
     mOpenGLEnabled(config.getValue("opengl", false)),
@@ -145,7 +180,8 @@ Setup_Video::Setup_Video():
     mPickupParticleEnabled(config.getValue("showpickupparticle", false)),
     mOpacity(config.getValue("guialpha", 0.8)),
     mFps((int) config.getValue("fpslimit", 60)),
-    mSpeechMode((int) config.getValue("speech", Being::TEXT_OVERHEAD)),
+    mSpeechMode(static_cast<Being::Speech>(
+            config.getValue("speech", Being::TEXT_OVERHEAD))),
     mModeListModel(new ModeListModel),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
@@ -259,52 +295,13 @@ Setup_Video::Setup_Video():
     mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
     mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
 
-    switch (mSpeechMode)
-    {
-        case 0:
-            mSpeechLabel->setCaption(_("No text"));
-            break;
-        case 1:
-            mSpeechLabel->setCaption(_("Text"));
-            break;
-        case 2:
-            mSpeechLabel->setCaption(_("Bubbles, no names"));
-            break;
-        case 3:
-            mSpeechLabel->setCaption(_("Bubbles with names"));
-            break;
-    }
+    mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
     mSpeechSlider->setValue(mSpeechMode);
 
-    switch (mOverlayDetail)
-    {
-        case 0:
-            mOverlayDetailField->setCaption(_("off"));
-            break;
-        case 1:
-            mOverlayDetailField->setCaption(_("low"));
-            break;
-        case 2:
-            mOverlayDetailField->setCaption(_("high"));
-            break;
-    }
+    mOverlayDetailField->setCaption(overlayDetailToString(mOverlayDetail));
     mOverlayDetailSlider->setValue(mOverlayDetail);
 
-    switch (mParticleDetail)
-    {
-        case 0:
-            mParticleDetailField->setCaption(_("low"));
-            break;
-        case 1:
-            mParticleDetailField->setCaption(_("medium"));
-            break;
-        case 2:
-            mParticleDetailField->setCaption(_("high"));
-            break;
-        case 3:
-            mParticleDetailField->setCaption(_("max"));
-            break;
-    }
+    mParticleDetailField->setCaption(particleDetailToString(mParticleDetail));
     mParticleDetailSlider->setValue(mParticleDetail);
 
     int fontSizeSelected;
@@ -446,7 +443,8 @@ void Setup_Video::apply()
     mVisibleNamesEnabled = config.getValue("visiblenames", true);
     mParticleEffectsEnabled = config.getValue("particleeffects", true);
     mNameEnabled = config.getValue("showownname", false);
-    mSpeechMode = (int) config.getValue("speech", Being::TEXT_OVERHEAD);
+    mSpeechMode = static_cast<Being::Speech>(
+            config.getValue("speech", Being::TEXT_OVERHEAD));
     mOpacity = config.getValue("guialpha", 0.8);
     mOverlayDetail = (int) config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", false);
@@ -557,22 +555,9 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "speech")
     {
-        int val = (int) mSpeechSlider->getValue();
-        switch (val)
-        {
-            case 0:
-                mSpeechLabel->setCaption(_("No text"));
-                break;
-            case 1:
-                mSpeechLabel->setCaption(_("Text"));
-                break;
-            case 2:
-                mSpeechLabel->setCaption(_("Bubbles, no names"));
-                break;
-            case 3:
-                mSpeechLabel->setCaption(_("Bubbles with names"));
-                break;
-        }
+        Being::Speech val =
+                static_cast<Being::Speech>(mSpeechSlider->getValue());
+        mSpeechLabel->setCaption(speechModeToString(val));
         mSpeechSlider->setValue(val);
         config.setValue("speech", val);
     }
@@ -604,38 +589,13 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     else if (event.getId() == "overlaydetailslider")
     {
         int val = (int) mOverlayDetailSlider->getValue();
-        switch (val)
-        {
-            case 0:
-                mOverlayDetailField->setCaption(_("off"));
-                break;
-            case 1:
-                mOverlayDetailField->setCaption(_("low"));
-                break;
-            case 2:
-                mOverlayDetailField->setCaption(_("high"));
-                break;
-        }
+        mOverlayDetailField->setCaption(overlayDetailToString(val));
         config.setValue("OverlayDetail", val);
     }
     else if (event.getId() == "particledetailslider")
     {
         int val = (int) mParticleDetailSlider->getValue();
-        switch (val)
-        {
-            case 0:
-                mParticleDetailField->setCaption(_("low"));
-                break;
-            case 1:
-                mParticleDetailField->setCaption(_("medium"));
-                break;
-            case 2:
-                mParticleDetailField->setCaption(_("high"));
-                break;
-            case 3:
-                mParticleDetailField->setCaption(_("max"));
-                break;
-        }
+        mParticleDetailField->setCaption(particleDetailToString(val));
         config.setValue("particleEmitterSkip", 3 - val);
         Particle::emitterSkip = 4 - val;
     }
