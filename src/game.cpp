@@ -923,6 +923,23 @@ void Game::handleInput()
             if (player_node->getTarget())
                 player_node->attack(player_node->getTarget(), true);
         }
+
+        if (keyboard.isKeyActive(keyboard.KEY_TARGET_ATTACK))
+        {
+            Being *target = NULL;
+
+            bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
+            // A set target has highest priority
+            if (!player_node->getTarget())
+            {
+                Uint16 targetX = x, targetY = y;
+                // Only auto target Monsters
+                target = beingManager->findNearestLivingBeing(targetX, targetY,
+                         20, Being::MONSTER);
+            }
+            player_node->attack(target, newTarget);
+        }
+
 #endif
 
         // Target the nearest player/monster/npc
