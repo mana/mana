@@ -212,12 +212,14 @@ void DropDown::keyPressed(gcn::KeyEvent& keyEvent)
     }
     else if (key.getValue() == Key::UP)
     {
-        setSelected(getSelected() - 1);
+        if (!mDroppedDown)
+            setSelected(getSelected() - 1);
         keyEvent.consume();
     }
     else if (key.getValue() == Key::DOWN)
     {
-        setSelected(getSelected() + 1);
+        if (!mDroppedDown)
+            setSelected(getSelected() + 1);
         keyEvent.consume();
     }
     else if (key.getValue() == Key::HOME)
