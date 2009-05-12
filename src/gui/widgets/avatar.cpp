@@ -104,13 +104,7 @@ void Avatar::updateAvatarLabel()
     std::ostringstream ss;
     ss << mName;
 
-    if (mName == player_node->getName())
-    {
-        mHp = player_node->getHp();
-        mMaxHp = player_node->getMaxHp();
-    }
-
-    if (mMaxHp != 0)
+    if (mName != player_node->getName() && mMaxHp != 0)
         ss << "  (" << mHp << "/" << mMaxHp << ")";
 
     mLabel->setCaption(ss.str());
