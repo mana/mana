@@ -23,6 +23,9 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "beingmanager.h"
+#include "player.h"
+
 #include "net/net.h"
 #include "net/partyhandler.h"
 
@@ -105,12 +108,16 @@ int PartyWindow::findMember(const std::string &name) const
 void PartyWindow::updateMember(int id, const std::string &memberName,
                                bool leader, bool online)
 {
-    PartyMember *player = findOrCreateMember(id);
-    player->name = memberName;
-    player->leader = leader;
-    player->online = online;
-    player->avatar->setName(memberName);
-    player->avatar->setOnline(online);
+    PartyMember *member = findOrCreateMember(id);
+    member->name = memberName;
+    member->leader = leader;
+    member->online = online;
+    member->avatar->setName(memberName);
+    member->avatar->setOnline(online);
+
+    Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
+    if (player)
+        player->setInParty(true);
 }
 
 void PartyWindow::updateMemberHP(int id, int hp, int maxhp)
@@ -123,6 +130,10 @@ void PartyWindow::updateMemberHP(int id, int hp, int maxhp)
 void PartyWindow::removeMember(int id)
 {
     mMembers.erase(id);
+
+    Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
+    if (player)
+        player->setInParty(false);
 }
 
 void PartyWindow::removeMember(const std::string &name)
@@ -189,9 +200,18 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     }
 }
 
+void clearMembersSub(std::pair<int, PartyMember*> p)
+{
+    Player *player = dynamic_cast<Player*>(beingManager->findBeing(p.first));
+    if (player)
+        player->setInParty(false);
+}
+
 void PartyWindow::clearMembers()
 {
     clearLayout();
+
+    std::for_each(mMembers.begin(), mMembers.end(), clearMembersSub);
 
     delete_all(mMembers);
     mMembers.clear();

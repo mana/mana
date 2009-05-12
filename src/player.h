@@ -127,7 +127,7 @@ class Player : public Being
         /**
          * Returns whether player is in the party
          */
-        bool getInParty() const { return mInParty; }
+        bool isInParty() const { return mInParty; }
 
         /**
          * Gets the way the character is blocked by other objects.

@@ -102,10 +102,6 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     bool online = msg.readInt8() == 0;
 
                     partyWindow->updateMember(id, nick, leader, online);
-
-                    Being *being = beingManager->findBeing(id);
-                    if (being)
-                        being->setName(nick);
                 }
             }
             break;
@@ -229,7 +225,6 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 msg.readInt8();     // fail
                 if (id == player_node->getId())
                 {
-                    player_node->setInParty(false);
                     partyWindow->clearMembers();
                     partyWindow->setVisible(false);
                     partyTab->chatLog(_("You have left the party."), BY_SERVER);
@@ -306,7 +301,7 @@ void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
     MessageOut outMsg(CMSG_PARTY_INVITED);
     outMsg.writeInt32(player_node->getId());
     outMsg.writeInt32(accept ? 1 : 0);
-    player_node->setInParty(player_node->getInParty() || accept);
+    player_node->setInParty(player_node->isInParty() || accept);
 }
 
 void PartyHandler::leave()

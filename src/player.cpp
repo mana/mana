@@ -31,7 +31,6 @@
 #include "text.h"
 
 #include "gui/palette.h"
-#include "gui/partywindow.h"
 
 #include "resources/colordb.h"
 #include "resources/itemdb.h"
@@ -77,7 +76,7 @@ void Player::setName(const std::string &name)
             {
                 color = &guiPalette->getColor(Palette::SELF);
             }
-            else if (partyWindow->findMember(getId()))
+            else if (mInParty)
             {
                 color = &guiPalette->getColor(Palette::PARTY);
             }
@@ -304,6 +303,9 @@ short Player::getNumberOfGuilds()
 void Player::setInParty(bool value)
 {
     mInParty = value;
+
+    if (this != player_node && mName)
+        mName->setColor(&guiPalette->getColor(value ? Palette::PARTY : Palette::PC));
 }
 
 void Player::optionChanged(const std::string &value)
