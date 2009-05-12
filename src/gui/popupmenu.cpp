@@ -112,8 +112,11 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
                 //mBrowserBox->addRow(_(strprintf("@@follow|Follow %s@@"), name.c_str()));
                 //mBrowserBox->addRow(_("@@buddy|Add ") + name + " to Buddy List@@");
+#ifdef TMWSERV_SUPPORT
                 mBrowserBox->addRow(strprintf(_("@@guild|Invite %s to join your guild@@"), name.c_str()));
-                mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
+#endif
+                if (player_node->isInParty())
+                    mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
 
                 /*
                 mBrowserBox->addRow("##3---");
