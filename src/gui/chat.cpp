@@ -493,5 +493,8 @@ ChatTab *ChatWindow::addWhisperTab(const std::string &nick, bool switchTo)
 
     ChatTab *ret = mWhispers[tempNick] = new WhisperTab(nick);
 
+    if (switchTo)
+        mChatTabs->setSelectedTab(ret);
+
     return ret;
 }
