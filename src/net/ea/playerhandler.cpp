@@ -75,7 +75,7 @@ namespace {
     {
         void action(const gcn::ActionEvent &event)
         {
-            player_node->revive();
+            Net::getPlayerHandler()->respawn();
             deathNotice = NULL;
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);

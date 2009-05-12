@@ -40,6 +40,8 @@
 #include "net/adminhandler.h"
 #include "net/inventoryhandler.h"
 #include "net/net.h"
+#include "net/partyhandler.h"
+#include "net/tradehandler.h"
 
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
@@ -182,7 +184,7 @@ void PopupMenu::handleLink(const std::string &link)
              being &&
              being->getType() == Being::PLAYER)
     {
-        player_node->trade(being);
+        Net::getTradeHandler()->request(being);
         tradePartnerName = being->getName();
     }
 #ifdef EATHENA_SUPPORT
@@ -261,13 +263,13 @@ void PopupMenu::handleLink(const std::string &link)
         if (mItem->isEquipment())
         {
             if (mItem->isEquipped())
-                player_node->unequipItem(mItem);
+                Net::getInventoryHandler()->unequipItem(mItem);
             else
-                player_node->equipItem(mItem);
+                Net::getInventoryHandler()->equipItem(mItem);
         }
         else
         {
-            player_node->useItem(mItem);
+            Net::getInventoryHandler()->useItem(mItem);
         }
     }
 
@@ -302,7 +304,7 @@ void PopupMenu::handleLink(const std::string &link)
 
     else if (link == "party" && being && being->getType() == Being::PLAYER)
     {
-        player_node->inviteToParty(dynamic_cast<Player*>(being));
+        Net::getPartyHandler()->invite(dynamic_cast<Player*>(being));
     }
 
     else if (link == "name" && being)

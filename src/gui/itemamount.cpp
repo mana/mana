@@ -33,7 +33,9 @@
 #include "gui/widgets/icon.h"
 
 #include "item.h"
-#include "localplayer.h"
+
+#include "net/inventoryhandler.h"
+#include "net/net.h"
 
 #include "utils/gettext.h"
 
@@ -45,10 +47,10 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             tradeWindow->tradeItem(item, amount);
             break;
         case ItemDrop:
-            player_node->dropItem(item, amount);
+            Net::getInventoryHandler()->dropItem(item, amount);
             break;
         case ItemSplit:
-            player_node->splitItem(item, amount);
+            Net::getInventoryHandler()->splitItem(item, amount);
             break;
         case StoreAdd:
             storageWindow->addStore(item, amount);

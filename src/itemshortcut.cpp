@@ -25,6 +25,9 @@
 #include "itemshortcut.h"
 #include "localplayer.h"
 
+#include "net/inventoryhandler.h"
+#include "net/net.h"
+
 #include "utils/stringutils.h"
 
 ItemShortcut::ItemShortcut *itemShortcut;
@@ -72,16 +75,14 @@ void ItemShortcut::useItem(int index)
         {
             if (item->isEquipment())
             {
-#ifdef EATHENA_SUPPORT
                 if (item->isEquipped())
-                    player_node->unequipItem(item);
+                    Net::getInventoryHandler()->unequipItem(item);
                 else
-#endif
-                    player_node->equipItem(item);
+                    Net::getInventoryHandler()->equipItem(item);
             }
             else
             {
-                player_node->useItem(item);
+                Net::getInventoryHandler()->useItem(item);
             }
         }
     }

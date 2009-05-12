@@ -33,6 +33,9 @@
 #include "item.h"
 #include "localplayer.h"
 
+#include "net/inventoryhandler.h"
+#include "net/net.h"
+
 #include "resources/image.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
@@ -176,7 +179,7 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
                      mInventory->getItem(mEquipment->getEquipment(mSelected)) :
                      mInventory->getItem(mEquipment->getArrows());
 #endif
-        player_node->unequipItem(item);
+        Net::getInventoryHandler()->unequipItem(item);
         setSelected(-1);
     }
 }

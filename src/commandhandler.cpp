@@ -34,6 +34,7 @@
 #include "net/chathandler.h"
 #include "net/maphandler.h"
 #include "net/net.h"
+#include "net/partyhandler.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -369,7 +370,7 @@ void CommandHandler::handleListChannels(const std::string &args, ChatTab *tab)
 void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
 {
     if (args != "")
-        player_node->inviteToParty(args);
+        Net::getPartyHandler()->invite(args);
     else
         tab->chatLog("Please specify a name.", BY_SERVER);
 }

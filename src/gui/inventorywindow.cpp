@@ -166,12 +166,12 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         if (item->isEquipment()) 
         {
             if (item->isEquipped())
-                player_node->unequipItem(item);
+                Net::getInventoryHandler()->unequipItem(item);
             else
-                player_node->equipItem(item);
+                Net::getInventoryHandler()->equipItem(item);
         }
         else
-            player_node->useItem(item);
+            Net::getInventoryHandler()->useItem(item);
     }
     else if (event.getId() == "drop")
     {

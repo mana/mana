@@ -167,6 +167,8 @@ void TradeHandler::request(Being *being)
 void TradeHandler::respond(bool accept)
 {
     // TODO
+    if (!accept)
+        player_node->setTrading(false);
 }
 
 void TradeHandler::addItem(Item *item, int amount)

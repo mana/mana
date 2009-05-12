@@ -187,32 +187,6 @@ class LocalPlayer : public Player
         void setInvItem(int index, int id, int amount);
 #endif
 
-        /**
-         * Invite a player to join their party
-         */
-        void inviteToParty(const std::string &name);
-
-        /**
-         * Invite a player to join their party
-         */
-        void inviteToParty(Player *player);
-
-        /**
-         * Equips an item.
-         */
-        void equipItem(Item *item);
-
-        /**
-         * Unequips an item.
-         */
-        void unequipItem(Item *item);
-
-        void useItem(Item *item);
-
-        void dropItem(Item *item, int quantity);
-
-        void splitItem(Item *item, int quantity);
-
         void pickUp(FloorItem *item);
 
 #ifdef EATHENA_SUPPORT
@@ -228,20 +202,10 @@ class LocalPlayer : public Player
         int getAttackRange();
 
         /**
-         * Sents a trade request to the given being.
-         */
-        void trade(Being *being) const;
-
-        /**
-         * Accept or decline a trade offer
-         */
-        void tradeReply(bool accept);
-
-        /**
          * Returns true when the player is ready to accept a trade offer.
          * Returns false otherwise.
          */
-        bool tradeRequestOk() const;
+        bool tradeRequestOk() const { return !mTrading; }
 
         /**
          * Sets the trading state of the player, i.e. whether or not he is
@@ -317,7 +281,7 @@ class LocalPlayer : public Player
         bool withinAttackRange(Being *target);
 
 #ifdef EATHENA_SUPPORT
-        void raiseSkill(Uint16 skillId);
+        //void raiseSkill(Uint16 skillId);
 #else
 
         /**
@@ -338,8 +302,6 @@ class LocalPlayer : public Player
 
         void toggleSit();
         void emote(Uint8 emotion);
-
-        void revive();
 
         /**
          * Shows item pickup effect if the player is on a map.
