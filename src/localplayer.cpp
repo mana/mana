@@ -346,11 +346,6 @@ void LocalPlayer::inviteToParty(Player *player)
     Net::getPartyHandler()->invite(player);
 }
 
-void LocalPlayer::moveInvItem(Item *item, int newIndex)
-{
-    Net::getInventoryHandler()->moveItem(item->getInvIndex(), newIndex);
-}
-
 void LocalPlayer::equipItem(Item *item)
 {
     Net::getInventoryHandler()->equipItem(item);

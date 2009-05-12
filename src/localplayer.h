@@ -198,11 +198,6 @@ class LocalPlayer : public Player
         void inviteToParty(Player *player);
 
         /**
-         * Move the Inventory item from the old slot to the new slot.
-         */
-        void moveInvItem(Item *item, int newIndex);
-
-        /**
          * Equips an item.
          */
         void equipItem(Item *item);

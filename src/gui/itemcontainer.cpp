@@ -27,11 +27,13 @@
 #include "gui/sdlinput.h"
 #include "gui/viewport.h"
 
+#include "net/net.h"
+#include "net/inventoryhandler.h"
+
 #include "graphics.h"
 #include "inventory.h"
 #include "item.h"
 #include "itemshortcut.h"
-#include "localplayer.h"
 #include "log.h"
 
 #include "resources/image.h"
@@ -53,8 +55,8 @@ ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
     mInventory(inventory),
     mGridColumns(1),
     mGridRows(1),
-    mSelectedItem(NULL),
-    mHighlightedItem(NULL),
+    mSelectedIndex(-1),
+    mHighlightedIndex(-1),
     mSelectionStatus(SEL_NONE),
     mForceQuantity(forceQuantity),
     mSwapItems(false),
@@ -92,8 +94,8 @@ void ItemContainer::draw(gcn::Graphics *graphics)
         {
             int itemX = i * BOX_WIDTH;
             int itemY = j * BOX_HEIGHT;
-
-            Item *item = mInventory->getItem((j * mGridColumns) + i);
+            int itemIndex = (j * mGridColumns) + i;
+            Item *item = mInventory->getItem(itemIndex);
 
             if (!item || item->getId() == 0)
                 continue;
@@ -101,7 +103,7 @@ void ItemContainer::draw(gcn::Graphics *graphics)
             Image *image = item->getImage();
             if (image)
             {
-                if (item == mSelectedItem)
+                if (itemIndex == mSelectedIndex)
                 {
                     if (mSelectionStatus == SEL_DRAGGING) {
                         // Reposition the coords to that of the cursor.
@@ -133,11 +135,10 @@ void ItemContainer::draw(gcn::Graphics *graphics)
     }
 
     // Draw an orange box around the selected item
-    if (isFocused() && mHighlightedItem)
+    if (isFocused() && mHighlightedIndex != -1)
     {
-        const int i = mHighlightedItem->getInvIndex();
-        const int itemX = (i % mGridColumns) * BOX_WIDTH;
-        const int itemY = (i / mGridColumns) * BOX_HEIGHT;
+        const int itemX = (mHighlightedIndex % mGridColumns) * BOX_WIDTH;
+        const int itemY = (mHighlightedIndex / mGridColumns) * BOX_HEIGHT;
         g->setColor(gcn::Color(255, 128, 0));
         g->drawRectangle(gcn::Rectangle(itemX, itemY, BOX_WIDTH, BOX_HEIGHT));
     }
@@ -145,16 +146,22 @@ void ItemContainer::draw(gcn::Graphics *graphics)
 
 void ItemContainer::selectNone()
 {
-    setSelectedItem(NULL);
+    setSelectedIndex(-1);
+    mSelectionStatus = SEL_NONE;
 }
 
-void ItemContainer::setSelectedItem(Item *item)
+void ItemContainer::setSelectedIndex(int newIndex)
 {
-    if (mSelectedItem != item)
+    if (mSelectedIndex != newIndex)
     {
-        mSelectedItem = item;
+        mSelectedIndex = newIndex;
         distributeValueChangedEvent();
     }
+}
+
+Item *ItemContainer::getSelectedItem() const
+{
+    return mInventory->getItem(mSelectedIndex);
 }
 
 void ItemContainer::distributeValueChangedEvent()
@@ -229,21 +236,20 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
             chatWindow->addItemText(item->getInfo().getName());
         }
 
-        if (mSelectedItem && mSelectedItem == item)
+        if (mSelectedIndex == index)
         {
             mSelectionStatus = SEL_DESELECTING;
         }
         else if (item && item->getId())
         {
-            setSelectedItem(item);
+            setSelectedIndex(index);
             mSelectionStatus = SEL_SELECTING;
 
             itemShortcut->setItemSelected(item->getId());
         }
         else
         {
-            setSelectedItem(NULL);
-            mSelectionStatus = SEL_NONE;
+            selectNone();
         }
     }
 }
@@ -266,8 +272,7 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
             mSelectionStatus = SEL_SELECTED;
             return;
         case SEL_DESELECTING:
-            setSelectedItem(NULL);
-            mSelectionStatus = SEL_NONE;
+            selectNone();
             return;
         case SEL_DRAGGING:
             mSelectionStatus = SEL_SELECTED;
@@ -279,12 +284,10 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
     int index = getSlotIndex(event.getX(), event.getY());
     if (index == Inventory::NO_SLOT_INDEX)
         return;
-    Item *item = mInventory->getItem(index);
-    if (item == mSelectedItem)
+    if (index == mSelectedIndex || mSelectedIndex == -1)
         return;
-    player_node->moveInvItem(mSelectedItem, index);
-    setSelectedItem(NULL);
-    mSelectionStatus = SEL_NONE;
+    Net::getInventoryHandler()->moveItem(mSelectedIndex, index);
+    selectNone();
 }
 
 
@@ -320,20 +323,6 @@ void ItemContainer::widgetResized(const gcn::Event &event)
     setHeight(mGridRows * BOX_HEIGHT);
 }
 
-Item *ItemContainer::getSelectedItem()
-{
-     if (!mSelectedItem)
-          return NULL;
-
-     if (!mInventory->contains(mSelectedItem))
-     {
-          mSelectedItem = NULL;
-          return NULL;
-     }
-
-     return mSelectedItem;
-}
-
 int ItemContainer::getSlotIndex(int x, int y) const
 {
     if (x < getWidth() && y < getHeight())
@@ -346,49 +335,47 @@ int ItemContainer::getSlotIndex(int x, int y) const
 void ItemContainer::keyAction()
 {
     // If there is no highlight then return.
-    if (!mHighlightedItem)
+    if (mHighlightedIndex == -1)
         return;
 
     // If the highlight is on the selected item, then deselect it.
-    if (mHighlightedItem == mSelectedItem)
+    if (mHighlightedIndex == mSelectedIndex)
     {
-        setSelectedItem(NULL);
-        mSelectionStatus = SEL_NONE;
+         selectNone();
     }
     // Check and swap items if necessary.
     else if (mSwapItems &&
-        mSelectedItem &&
-        mHighlightedItem->getId())
+        mSelectedIndex != -1 &&
+        mHighlightedIndex != -1)
     {
-        player_node->moveInvItem(
-            mSelectedItem, mHighlightedItem->getInvIndex());
-        setSelectedItem(mHighlightedItem);
+        Net::getInventoryHandler()->moveItem(
+            mSelectedIndex, mHighlightedIndex);
+        setSelectedIndex(mHighlightedIndex);
     }
     // If the highlight is on an item then select it.
-    else if (mHighlightedItem->getId())
+    else if (mHighlightedIndex != -1)
     {
-        setSelectedItem(mHighlightedItem);
+        setSelectedIndex(mHighlightedIndex);
         mSelectionStatus = SEL_SELECTED;
     }
     // If the highlight is on a blank space then move it.
-    else if (mSelectedItem)
+    else if (mSelectedIndex != -1)
     {
-        player_node->moveInvItem(
-            mSelectedItem, mHighlightedItem->getInvIndex());
-        setSelectedItem(NULL);
-        mSelectionStatus = SEL_NONE;
+        Net::getInventoryHandler()->moveItem(
+            mSelectedIndex, mHighlightedIndex);
+        selectNone();
     }
 }
 
 void ItemContainer::moveHighlight(Direction direction)
 {
-    if (!mHighlightedItem)
+    if (mHighlightedIndex == -1)
     {
-        if (mSelectedItem) {
-            mHighlightedItem = mSelectedItem;
+        if (mSelectedIndex != -1) {
+            mHighlightedIndex = mSelectedIndex;
         }
         else {
-            mHighlightedItem = mInventory->getItem(0);
+            mHighlightedIndex = 0;
         }
         return;
     }
@@ -396,34 +383,34 @@ void ItemContainer::moveHighlight(Direction direction)
     switch (direction)
     {
         case Left:
-            if (mHighlightedItem->getInvIndex() % mGridColumns == 0)
+            if (mHighlightedIndex % mGridColumns == 0)
             {
-                mHighlightedItem += mGridColumns;
+                mHighlightedIndex += mGridColumns;
             }
-            mHighlightedItem--;
+            mHighlightedIndex--;
             break;
         case Right:
-            if ((mHighlightedItem->getInvIndex() % mGridColumns) ==
+            if ((mHighlightedIndex % mGridColumns) ==
                 (mGridColumns - 1))
             {
-                mHighlightedItem -= mGridColumns;
+                mHighlightedIndex -= mGridColumns;
             }
-            mHighlightedItem++;
+            mHighlightedIndex++;
             break;
         case Up:
-            if (mHighlightedItem->getInvIndex() / mGridColumns == 0)
+            if (mHighlightedIndex / mGridColumns == 0)
             {
-                mHighlightedItem += (mGridColumns * mGridRows);
+                mHighlightedIndex += (mGridColumns * mGridRows);
             }
-            mHighlightedItem -= mGridColumns;
+            mHighlightedIndex -= mGridColumns;
             break;
         case Down:
-            if ((mHighlightedItem->getInvIndex() / mGridColumns) ==
+            if ((mHighlightedIndex / mGridColumns) ==
                 (mGridRows - 1))
             {
-                mHighlightedItem -= (mGridColumns * mGridRows);
+                mHighlightedIndex -= (mGridColumns * mGridRows);
             }
-            mHighlightedItem += mGridColumns;
+            mHighlightedIndex += mGridColumns;
             break;
     }
 }

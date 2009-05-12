@@ -86,7 +86,7 @@ class ItemContainer : public gcn::Widget,
         /**
          * Returns the selected item.
          */
-        Item *getSelectedItem();
+        Item *getSelectedItem() const;
 
         /**
          * Sets selected item to NULL.
@@ -144,7 +144,7 @@ class ItemContainer : public gcn::Widget,
         /**
          * Sets the currently selected item.
          */
-        void setSelectedItem(Item *item);
+        void setSelectedIndex(int index);
 
         /**
          * Find the current item index by the most recently used item ID
@@ -173,7 +173,7 @@ class ItemContainer : public gcn::Widget,
         Inventory *mInventory;
         int mGridColumns, mGridRows;
         Image *mSelImg;
-        Item *mSelectedItem, *mHighlightedItem;
+        int mSelectedIndex, mHighlightedIndex;
         SelectionState mSelectionStatus;
         bool mForceQuantity;
         bool mSwapItems;
