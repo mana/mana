@@ -79,6 +79,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
             {
                 partyTab->chatLog(_("Party successfully created."), BY_SERVER);
                 player_node->setInParty(true);
+                partyWindow->setVisible(true);
             }
             break;
         case SMSG_PARTY_INFO:
@@ -230,12 +231,15 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 {
                     player_node->setInParty(false);
                     partyWindow->clearMembers();
+                    partyWindow->setVisible(false);
                     partyTab->chatLog(_("You have left the party."), BY_SERVER);
                 }
                 else
+                {
                     partyTab->chatLog(strprintf(_("%s has left your party."),
                                     nick.c_str()), BY_SERVER);
-                partyWindow->removeMember(id);
+                    partyWindow->removeMember(id);
+                }
                 break;
             }
         case SMSG_PARTY_UPDATE_HP:
