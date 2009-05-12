@@ -76,6 +76,10 @@ void Player::setName(const std::string &name)
             {
                 color = &guiPalette->getColor(Palette::SELF);
             }
+            else if (mIsGM)
+            {
+                color = &guiPalette->getColor(Palette::GM);
+            }
             else if (mInParty)
             {
                 color = &guiPalette->getColor(Palette::PARTY);
