@@ -65,6 +65,10 @@ class PartyWindow : public Window, gcn::ActionListener
          */
         ~PartyWindow();
 
+        void setPartyName(std::string name);
+
+        void clearPartyName();
+
         /**
          * Find a party member based on ID. Returns NULL if not found.
          */

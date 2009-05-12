@@ -65,6 +65,16 @@ PartyWindow::~PartyWindow()
     delete_all(mMembers);
 }
 
+void PartyWindow::setPartyName(std::string name)
+{
+    setCaption(strprintf(_("Party (%s)"), name.c_str()));
+}
+
+void PartyWindow::clearPartyName()
+{
+    setCaption(_("Party"));
+}
+
 PartyMember *PartyWindow::findMember(int id) const
 {
     PartyList::const_iterator it = mMembers.find(id);

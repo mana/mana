@@ -20,6 +20,7 @@
  */
 
 #include "gui/inventorywindow.h"
+#include "gui/partywindow.h"
 
 #include "net/tmwserv/generalhandler.h"
 
@@ -144,6 +145,7 @@ void GeneralHandler::tick()
 void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(true);
+    partyWindow->clearPartyName();
 }
 
 void GeneralHandler::guiWindowsUnloaded()

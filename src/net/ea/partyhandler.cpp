@@ -91,6 +91,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
 
                 int length = msg.readInt16();
                 std::string party = msg.readString(24);
+                partyWindow->setPartyName(party);
                 int count = (length - 28) / 46;
 
                 for (int i = 0; i < count; i++)
