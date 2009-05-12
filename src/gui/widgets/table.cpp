@@ -462,6 +462,15 @@ void GuiTable::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
 
 void GuiTable::mouseDragged(gcn::MouseEvent& mouseEvent)
 {
+    if (mouseEvent.getButton() != gcn::MouseEvent::LEFT)
+        return;
+
+    // Make table selection update on drag
+    const int x = std::max(0, mouseEvent.getX());
+    const int y = std::max(0, mouseEvent.getY());
+
+    setSelectedRow(getRowForY(y));
+    setSelectedColumn(getColumnForX(x));
 }
 
 // -- TableModelListener notifications
