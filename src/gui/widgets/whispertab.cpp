@@ -35,7 +35,7 @@ WhisperTab::WhisperTab(const std::string &nick) :
     ChatTab(nick),
     mNick(nick)
 {
-    setTabColor(guiPalette->getColor(Palette::WHISPER));
+    setTabColor(&guiPalette->getColor(Palette::WHISPER));
 }
 
 WhisperTab::~WhisperTab()

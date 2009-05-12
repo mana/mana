@@ -38,7 +38,7 @@
 PartyTab::PartyTab() :
     ChatTab(_("Party"))
 {
-    setTabColor(guiPalette->getColor(Palette::PARTY));
+    setTabColor(&guiPalette->getColor(Palette::PARTY));
 }
 
 PartyTab::~PartyTab()
