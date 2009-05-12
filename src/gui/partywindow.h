@@ -65,7 +65,7 @@ class PartyWindow : public Window, gcn::ActionListener
          */
         ~PartyWindow();
 
-        void setPartyName(std::string name);
+        void setPartyName(const std::string &name);
 
         void clearPartyName();
 

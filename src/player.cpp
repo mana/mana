@@ -300,12 +300,15 @@ short Player::getNumberOfGuilds()
 
 #endif
 
-void Player::setInParty(bool value)
+void Player::setInParty(bool inParty)
 {
-    mInParty = value;
+    mInParty = inParty;
 
     if (this != player_node && mName)
-        mName->setColor(&guiPalette->getColor(value ? Palette::PARTY : Palette::PC));
+    {
+        Palette::ColorType colorType = mInParty ? Palette::PARTY : Palette::PC;
+        mName->setColor(&guiPalette->getColor(colorType));
+    }
 }
 
 void Player::optionChanged(const std::string &value)

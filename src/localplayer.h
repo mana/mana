@@ -280,10 +280,7 @@ class LocalPlayer : public Player
          */
         bool withinAttackRange(Being *target);
 
-#ifdef EATHENA_SUPPORT
-        //void raiseSkill(Uint16 skillId);
-#else
-
+#ifdef TMWSERV_SUPPORT
         /**
          * Stops the player dead in his tracks
          */

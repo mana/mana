@@ -181,7 +181,7 @@ void Minimap::draw(gcn::Graphics *graphics)
         {
             case Being::PLAYER:
                 {
-                    const Player* player = static_cast<const Player*>(being);
+                    const Player *player = static_cast<const Player*>(being);
 
                     Palette::ColorType type = Palette::PC;
 

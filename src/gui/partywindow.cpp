@@ -65,7 +65,7 @@ PartyWindow::~PartyWindow()
     delete_all(mMembers);
 }
 
-void PartyWindow::setPartyName(std::string name)
+void PartyWindow::setPartyName(const std::string &name)
 {
     setCaption(strprintf(_("Party (%s)"), name.c_str()));
 }
@@ -125,8 +125,7 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
     member->avatar->setName(memberName);
     member->avatar->setOnline(online);
 
-    Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
-    if (player)
+    if (Player *player = dynamic_cast<Player*>(beingManager->findBeing(id)))
         player->setInParty(true);
 }
 
@@ -141,8 +140,7 @@ void PartyWindow::removeMember(int id)
 {
     mMembers.erase(id);
 
-    Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
-    if (player)
+    if (Player *player = dynamic_cast<Player*>(beingManager->findBeing(id)))
         player->setInParty(false);
 }
 
@@ -210,7 +208,7 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void clearMembersSub(std::pair<int, PartyMember*> p)
+void clearMembersSub(const std::pair<int, PartyMember*> &p)
 {
     Player *player = dynamic_cast<Player*>(beingManager->findBeing(p.first));
     if (player)

@@ -120,13 +120,12 @@ class Player : public Being
 #endif
 
         /**
-         * Set the player in party
+         * Set whether the player in the LocalPlayer's party. Players that are
+         * in the same party as the local player get their name displayed in
+         * a different color.
          */
-        void setInParty(bool value);
+        void setInParty(bool inParty);
 
-        /**
-         * Returns whether player is in the party
-         */
         bool isInParty() const { return mInParty; }
 
         /**
@@ -138,7 +137,6 @@ class Player : public Being
         /**
          * Called when a option (set with config.addListener()) is changed
          */
-
         void optionChanged(const std::string &value);
 
     protected:
