@@ -86,8 +86,7 @@ class ItemContainer : public gcn::Widget,
         /**
          * Returns the selected item.
          */
-        Item *getSelectedItem() const
-        { return mSelectedItem; }
+        Item *getSelectedItem();
 
         /**
          * Sets selected item to NULL.

@@ -320,6 +320,20 @@ void ItemContainer::widgetResized(const gcn::Event &event)
     setHeight(mGridRows * BOX_HEIGHT);
 }
 
+Item *ItemContainer::getSelectedItem()
+{
+     if (!mSelectedItem)
+          return NULL;
+
+     if (!mInventory->contains(mSelectedItem))
+     {
+          mSelectedItem = NULL;
+          return NULL;
+     }
+
+     return mSelectedItem;
+}
+
 int ItemContainer::getSlotIndex(int x, int y) const
 {
     if (x < getWidth() && y < getHeight())
