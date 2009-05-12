@@ -57,6 +57,7 @@ ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
     mGridRows(1),
     mSelectedIndex(-1),
     mHighlightedIndex(-1),
+    mLastUsedSlot(-1),
     mSelectionStatus(SEL_NONE),
     mForceQuantity(forceQuantity),
     mSwapItems(false),
@@ -80,6 +81,19 @@ ItemContainer::~ItemContainer()
 {
     mSelImg->decRef();
     delete mItemPopup;
+}
+
+void ItemContainer::logic()
+{
+    gcn::Widget::logic();
+
+    const int lastUsedSlot = mInventory->getLastUsedSlot();
+
+    if (lastUsedSlot != mLastUsedSlot)
+    {
+        mLastUsedSlot = lastUsedSlot;
+        adjustHeight();
+    }
 }
 
 void ItemContainer::draw(gcn::Graphics *graphics)
@@ -316,8 +330,13 @@ void ItemContainer::mouseExited(gcn::MouseEvent &event)
 void ItemContainer::widgetResized(const gcn::Event &event)
 {
     mGridColumns = std::max(1, getWidth() / BOX_WIDTH);
-    mGridRows = mInventory->getSize() / mGridColumns;
-    if (mGridRows == 0 || mInventory->getSize() % mGridColumns > 0)
+    adjustHeight();
+}
+
+void ItemContainer::adjustHeight()
+{
+    mGridRows = (mLastUsedSlot + 1) / mGridColumns;
+    if (mGridRows == 0 || (mLastUsedSlot + 1) % mGridColumns > 0)
         ++mGridRows;
 
     setHeight(mGridRows * BOX_HEIGHT);

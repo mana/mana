@@ -65,6 +65,11 @@ class ItemContainer : public gcn::Widget,
         virtual ~ItemContainer();
 
         /**
+         * Necessary for checking how full the inventory is.
+         */
+        void logic();
+
+        /**
          * Draws the items.
          */
         void draw(gcn::Graphics *graphics);
@@ -147,14 +152,9 @@ class ItemContainer : public gcn::Widget,
         void setSelectedIndex(int index);
 
         /**
-         * Find the current item index by the most recently used item ID
-         */
-        void refindSelectedItem();
-
-        /**
          * Determine and set the height of the container.
          */
-        void recalculateHeight();
+        void adjustHeight();
 
         /**
          * Sends out selection events to the list of selection listeners.
@@ -174,6 +174,7 @@ class ItemContainer : public gcn::Widget,
         int mGridColumns, mGridRows;
         Image *mSelImg;
         int mSelectedIndex, mHighlightedIndex;
+        int mLastUsedSlot;
         SelectionState mSelectionStatus;
         bool mForceQuantity;
         bool mSwapItems;
