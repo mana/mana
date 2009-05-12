@@ -23,9 +23,9 @@
 
 #include "gui/linkhandler.h"
 #include "gui/palette.h"
-#include "gui/truetypefont.h"
 
 #include <guichan/graphics.hpp>
+#include <guichan/font.hpp>
 
 #include <algorithm>
 
@@ -71,7 +71,7 @@ void BrowserBox::addRow(const std::string &row)
     std::string newRow;
     BROWSER_LINK bLink;
     std::string::size_type idx1, idx2, idx3;
-    TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
+    gcn::Font *font = getFont();
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
@@ -116,7 +116,6 @@ void BrowserBox::addRow(const std::string &row)
 
         newRow += tmp;
     }
-
     // Don't use links and user defined colors
     else
     {
@@ -281,7 +280,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
     int x = 0, y = 0;
     int wrappedLines = 0;
     int link = 0;
-    TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
+    gcn::Font *font = getFont();
 
     graphics->setColor(guiPalette->getColor(Palette::TEXT));
     for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
@@ -296,10 +295,11 @@ void BrowserBox::draw(gcn::Graphics *graphics)
         // Check for separator lines
         if (row.find("---", 0) == 0)
         {
+            const int dashWidth = font->getWidth("-");
             for (x = 0; x < getWidth(); x++)
             {
                 font->drawString(graphics, "-", x, y);
-                x += font->getWidth("-") - 2;
+                x += dashWidth - 2;
             }
             y += font->getHeight();
             continue;
@@ -389,7 +389,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
             {
                 bool forced = false;
                 char const *hyphen = "~";
-                int hyphenWidth =  font->getWidth(hyphen);
+                int hyphenWidth = font->getWidth(hyphen);
 
                 /* FIXME: This code layout makes it easy to crash remote
                    clients by talking garbage. Forged long utf-8 characters
