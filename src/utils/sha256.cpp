@@ -70,7 +70,9 @@
 
 #include "utils/sha256.h"
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include <memory.h>
 

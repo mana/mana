@@ -31,7 +31,6 @@
 #include "player.h"
 
 #include "gui/palette.h"
-#include "gui/partywindow.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -56,13 +55,13 @@ Minimap::Minimap():
     setResizable(false);
 
     setDefaultVisible(true);
-    setSaveVisible(false);
+    setSaveVisible(true);
 
     setStickyButton(true);
     setSticky(false);
 
     loadWindowState();
-    setVisible(mShow);
+    setVisible(mShow, isSticky());
 }
 
 Minimap::~Minimap()
@@ -94,9 +93,6 @@ void Minimap::setMap(Map *map)
     ResourceManager *resman = ResourceManager::getInstance();
     mMapImage = resman->getImage(map->getProperty("minimap"));
 
-    if (!mShow)
-	    return;
-
     if (mMapImage)
     {
         const int offsetX = 2 * getPadding();
@@ -120,17 +116,19 @@ void Minimap::setMap(Map *map)
         setDefaultSize(getX(), getY(), getWidth(), getHeight());
         resetToDefaultSize();
 
-        setVisible(true);
+        if (mShow)
+            setVisible(true);
     }
     else
     {
-        setVisible(false);
+        if (!isSticky())
+            setVisible(false);
     }
 }
 
 void Minimap::toggle()
 {
-    setVisible(!mShow, isSticky());
+    setVisible(!isVisible(), isSticky());
     mShow = isVisible();
 }
 
@@ -183,6 +181,8 @@ void Minimap::draw(gcn::Graphics *graphics)
         {
             case Being::PLAYER:
                 {
+                    const Player *player = static_cast<const Player*>(being);
+
                     Palette::ColorType type = Palette::PC;
 
                     if (being == player_node)
@@ -190,13 +190,14 @@ void Minimap::draw(gcn::Graphics *graphics)
                         type = Palette::SELF;
                         dotSize = 3;
                     }
-                    else if (partyWindow->findMember(being->getId()))
+                    else if (player->isGM())
+                    {
+                        type = Palette::GM_NAME;
+                    }
+                    else if (player->isInParty())
                     {
                         type = Palette::PARTY;
                     }
-
-                    if (static_cast<const Player*>(being)->isGM())
-                        type = Palette::GM_NAME;
 
                     graphics->setColor(guiPalette->getColor(type));
                     break;

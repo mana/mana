@@ -92,8 +92,8 @@ InventoryWindow::InventoryWindow(int invSize):
     mSlotsLabel = new Label(_("Slots:"));
     mWeightLabel = new Label(_("Weight:"));
 
-    mSlotsBar = new ProgressBar(1.0f, 100, 20, gcn::Color(225, 200, 25));
-    mWeightBar = new ProgressBar(1.0f, 100, 20, gcn::Color(0, 0, 255));
+    mSlotsBar = new ProgressBar(0.0f, 100, 20, gcn::Color(225, 200, 25));
+    mWeightBar = new ProgressBar(0.0f, 100, 20, gcn::Color(0, 0, 255));
 
     place(0, 0, mWeightLabel).setPadding(3);
     place(1, 0, mWeightBar, 3);
@@ -166,12 +166,12 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         if (item->isEquipment()) 
         {
             if (item->isEquipped())
-                player_node->unequipItem(item);
+                Net::getInventoryHandler()->unequipItem(item);
             else
-                player_node->equipItem(item);
+                Net::getInventoryHandler()->equipItem(item);
         }
         else
-            player_node->useItem(item);
+            Net::getInventoryHandler()->useItem(item);
     }
     else if (event.getId() == "drop")
     {

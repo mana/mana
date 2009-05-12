@@ -20,6 +20,7 @@
  */
 
 #include "gui/inventorywindow.h"
+#include "gui/partywindow.h"
 
 #include "net/tmwserv/generalhandler.h"
 
@@ -77,20 +78,13 @@ GeneralHandler::GeneralHandler():
 
     generalHandler = this;
 
-    std::list<ItemDB::Stat*> stats;
-    ItemDB::Stat stat;
-    stat.tag = "str"; stat.format = N_("Strength: %d");
-    stats.push_back(&stat);
-    stat.tag = "agi"; stat.format = N_("Agility: %d");
-    stats.push_back(&stat);
-    stat.tag = "dex"; stat.format = N_("Dexterity: %d");
-    stats.push_back(&stat);
-    stat.tag = "vit"; stat.format = N_("Vitality: %d");
-    stats.push_back(&stat);
-    stat.tag = "int"; stat.format = N_("Intelligence: %d");
-    stats.push_back(&stat);
-    stat.tag = "will"; stat.format = N_("Willpower: %d");
-    stats.push_back(&stat);
+    std::list<ItemDB::Stat> stats;
+    stats.push_back(ItemDB::Stat("str", N_("Strength %+d")));
+    stats.push_back(ItemDB::Stat("agi", N_("Agility %+d")));
+    stats.push_back(ItemDB::Stat("dex", N_("Dexterity %+d")));
+    stats.push_back(ItemDB::Stat("vit", N_("Vitality %+d")));
+    stats.push_back(ItemDB::Stat("int", N_("Intelligence %+d")));
+    stats.push_back(ItemDB::Stat("will", N_("Willpower %+d")));
 
     ItemDB::setStatsList(stats);
 }
@@ -151,6 +145,7 @@ void GeneralHandler::tick()
 void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(true);
+    partyWindow->clearPartyName();
 }
 
 void GeneralHandler::guiWindowsUnloaded()

@@ -99,7 +99,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
 
             localChatTab->chatLog(name + " joined the party");
 
-            if (!player_node->getInParty())
+            if (!player_node->isInParty())
                 player_node->setInParty(true);
 
             partyWindow->updateMember(id, name);

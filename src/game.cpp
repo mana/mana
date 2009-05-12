@@ -920,19 +920,8 @@ void Game::handleInput()
         if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
            (joystick && joystick->buttonPressed(0)))
         {
-            Being *target = NULL;
-
-            bool newTarget = !keyboard.isKeyActive(keyboard.KEY_TARGET);
-            // A set target has highest priority
-            if (!player_node->getTarget())
-            {
-                Uint16 targetX = x, targetY = y;
-
-                // Only auto target Monsters
-                target = beingManager->findNearestLivingBeing(targetX, targetY,
-                         20, Being::MONSTER);
-            }
-            player_node->attack(target, newTarget);
+            if (player_node->getTarget())
+                player_node->attack(player_node->getTarget(), true);
         }
 #endif
 

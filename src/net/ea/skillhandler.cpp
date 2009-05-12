@@ -26,6 +26,7 @@
 #include "net/messagein.h"
 #include "net/messageout.h"
 
+#include "localplayer.h"
 #include "log.h"
 
 #include "gui/skill.h"
@@ -216,6 +217,9 @@ void SkillHandler::handleMessage(MessageIn &msg)
 
 void SkillHandler::up(int skillId)
 {
+    if (player_node->mSkillPoint <= 0)
+        return;
+
     MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
     outMsg.writeInt16(skillId);
 }

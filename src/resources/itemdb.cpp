@@ -55,9 +55,9 @@ static char const *const fields[][2] =
     { "mp",        N_("MP %+d")        }
 };
 
-static std::list<ItemDB::Stat*> extraStats;
+static std::list<ItemDB::Stat> extraStats;
 
-void ItemDB::setStatsList(std::list<ItemDB::Stat*> stats)
+void ItemDB::setStatsList(const std::list<ItemDB::Stat> &stats)
 {
     extraStats = stats;
 }
@@ -163,13 +163,13 @@ void ItemDB::load()
             if (!effect.empty()) effect += " / ";
             effect += strprintf(gettext(fields[i][1]), value);
         }
-        for (std::list<Stat*>::iterator it = extraStats.begin();
+        for (std::list<Stat>::iterator it = extraStats.begin();
                 it != extraStats.end(); it++)
         {
-            int value = XML::getProperty(node, (*it)->tag.c_str(), 0);
+            int value = XML::getProperty(node, it->tag.c_str(), 0);
             if (!value) continue;
             if (!effect.empty()) effect += " / ";
-            effect += strprintf((*it)->format.c_str(), value);
+            effect += strprintf(it->format.c_str(), value);
         }
         std::string temp = XML::getProperty(node, "effect", "");
         if (!effect.empty() && !temp.empty())

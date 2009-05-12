@@ -23,6 +23,9 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "beingmanager.h"
+#include "player.h"
+
 #include "net/net.h"
 #include "net/partyhandler.h"
 
@@ -46,20 +49,30 @@ PartyWindow::PartyWindow() :
 {
     setWindowName("Party");
     setVisible(false);
+    setSaveVisible(true);
     setResizable(true);
     setSaveVisible(true);
     setCloseButton(true);
-    setMinWidth(200);
+    setMinWidth(212);
     setMinHeight(200);
-    setDefaultSize(590, 200, 200, 200);
+    setDefaultSize(590, 200, 212, 200);
 
     loadWindowState();
-    setVisible(false); // Do not start out visible
 }
 
 PartyWindow::~PartyWindow()
 {
     delete_all(mMembers);
+}
+
+void PartyWindow::setPartyName(const std::string &name)
+{
+    setCaption(strprintf(_("Party (%s)"), name.c_str()));
+}
+
+void PartyWindow::clearPartyName()
+{
+    setCaption(_("Party"));
 }
 
 PartyMember *PartyWindow::findMember(int id) const
@@ -105,18 +118,15 @@ int PartyWindow::findMember(const std::string &name) const
 void PartyWindow::updateMember(int id, const std::string &memberName,
                                bool leader, bool online)
 {
-    PartyMember *player = findOrCreateMember(id);
-    player->name = memberName;
-    player->leader = leader;
-    player->online = online;
-    player->avatar->setName(memberName);
-    player->avatar->setOnline(online);
+    PartyMember *member = findOrCreateMember(id);
+    member->name = memberName;
+    member->leader = leader;
+    member->online = online;
+    member->avatar->setName(memberName);
+    member->avatar->setOnline(online);
 
-    // show the window
-    if (mMembers.size() > 0)
-    {
-        setVisible(true);
-    }
+    if (Player *player = dynamic_cast<Player*>(beingManager->findBeing(id)))
+        player->setInParty(true);
 }
 
 void PartyWindow::updateMemberHP(int id, int hp, int maxhp)
@@ -130,11 +140,8 @@ void PartyWindow::removeMember(int id)
 {
     mMembers.erase(id);
 
-    // if no-one left, remove the party window
-    if (mMembers.size() < 1)
-    {
-        setVisible(false);
-    }
+    if (Player *player = dynamic_cast<Player*>(beingManager->findBeing(id)))
+        player->setInParty(false);
 }
 
 void PartyWindow::removeMember(const std::string &name)
@@ -201,9 +208,18 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     }
 }
 
+void clearMembersSub(const std::pair<int, PartyMember*> &p)
+{
+    Player *player = dynamic_cast<Player*>(beingManager->findBeing(p.first));
+    if (player)
+        player->setInParty(false);
+}
+
 void PartyWindow::clearMembers()
 {
     clearLayout();
+
+    std::for_each(mMembers.begin(), mMembers.end(), clearMembersSub);
 
     delete_all(mMembers);
     mMembers.clear();

@@ -29,6 +29,7 @@
 
 #include "net/messagein.h"
 #include "net/messageout.h"
+#include "net/net.h"
 
 #include "effectmanager.h"
 #include "engine.h"
@@ -81,7 +82,7 @@ namespace {
     {
         void action(const gcn::ActionEvent &event)
         {
-            player_node->revive();
+            Net::getPlayerHandler()->respawn();
             deathNotice = NULL;
             buyDialog->setVisible(false);
             sellDialog->setVisible(false);

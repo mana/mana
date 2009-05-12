@@ -100,6 +100,9 @@ void InventoryHandler::unequipItem(const Item *item)
     MessageOut msg(PGMSG_UNEQUIP);
     msg.writeInt8(item->getInvIndex());
     Net::GameServer::connection->send(msg);
+
+    // Tidy equipment directly to avoid weapon still shown bug, for instance
+    player_node->mEquipment->setEquipment(item->getInvIndex(), 0);
 }
 
 void InventoryHandler::useItem(const Item *item)

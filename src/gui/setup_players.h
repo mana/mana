@@ -58,7 +58,6 @@ private:
     GuiTable *mPlayerTitleTable;
     gcn::ScrollArea *mPlayerScrollArea;
 
-    gcn::CheckBox *mPersistIgnores;
     gcn::CheckBox *mDefaultTrading;
     gcn::CheckBox *mDefaultWhisper;
 

@@ -79,6 +79,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
             {
                 partyTab->chatLog(_("Party successfully created."), BY_SERVER);
                 player_node->setInParty(true);
+                partyWindow->setVisible(true);
             }
             break;
         case SMSG_PARTY_INFO:
@@ -90,6 +91,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
 
                 int length = msg.readInt16();
                 std::string party = msg.readString(24);
+                partyWindow->setPartyName(party);
                 int count = (length - 28) / 46;
 
                 for (int i = 0; i < count; i++)
@@ -101,13 +103,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     bool online = msg.readInt8() == 0;
 
                     partyWindow->updateMember(id, nick, leader, online);
-
-                    Being *being = beingManager->findBeing(id);
-                    if (being)
-                        being->setName(nick);
                 }
-
-                partyWindow->setVisible(true);
             }
             break;
         case SMSG_PARTY_INVITE_RESPONSE:
@@ -230,15 +226,16 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 msg.readInt8();     // fail
                 if (id == player_node->getId())
                 {
-                    player_node->setInParty(false);
                     partyWindow->clearMembers();
                     partyWindow->setVisible(false);
                     partyTab->chatLog(_("You have left the party."), BY_SERVER);
                 }
                 else
+                {
                     partyTab->chatLog(strprintf(_("%s has left your party."),
                                     nick.c_str()), BY_SERVER);
-                partyWindow->removeMember(id);
+                    partyWindow->removeMember(id);
+                }
                 break;
             }
         case SMSG_PARTY_UPDATE_HP:
@@ -305,7 +302,7 @@ void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
     MessageOut outMsg(CMSG_PARTY_INVITED);
     outMsg.writeInt32(player_node->getId());
     outMsg.writeInt32(accept ? 1 : 0);
-    player_node->setInParty(player_node->getInParty() || accept);
+    player_node->setInParty(player_node->isInParty() || accept);
 }
 
 void PartyHandler::leave()

@@ -23,6 +23,7 @@
 
 #include "net/ea/protocol.h"
 
+#include "net/inventoryhandler.h"
 #include "net/messagein.h"
 #include "net/messageout.h"
 
@@ -48,7 +49,7 @@ namespace {
     {
         void action(const gcn::ActionEvent &event)
         {
-            player_node->tradeReply(event.getId() == "yes");
+            Net::getTradeHandler()->respond(event.getId() == "yes");
         }
     } listener;
 }
@@ -91,7 +92,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
                 {
                     if (!player_node->tradeRequestOk())
                     {
-                        player_node->tradeReply(false);
+                        Net::getTradeHandler()->respond(false);
                         break;
                     }
 
@@ -104,7 +105,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
                 }
                 else
                 {
-                    player_node->tradeReply(false);
+                    Net::getTradeHandler()->respond(false);
                     break;
                 }
             break;
@@ -183,7 +184,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
                         // Successfully added item
                         if (item->isEquipment() && item->isEquipped())
                         {
-                            player_node->unequipItem(item);
+                            Net::getInventoryHandler()->unequipItem(item);
                         }
                         tradeWindow->addItem(item->getId(), true, quantity,
                                 item->isEquipment());
@@ -236,6 +237,9 @@ void TradeHandler::request(Being *being)
 
 void TradeHandler::respond(bool accept)
 {
+    if (!accept)
+        player_node->setTrading(false);
+
     MessageOut outMsg(CMSG_TRADE_RESPONSE);
     outMsg.writeInt8(accept ? 3 : 4);
 }

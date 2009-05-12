@@ -46,12 +46,19 @@ namespace ItemDB
     const ItemInfo &get(int id);
     const ItemInfo &get(const std::string &name);
 
-    struct Stat {
+    struct Stat
+    {
+        Stat(const std::string &tag,
+             const std::string &format):
+            tag(tag),
+            format(format)
+        {}
+
         std::string tag;
         std::string format;
     };
 
-    void setStatsList(std::list<Stat*> stats);
+    void setStatsList(const std::list<Stat> &stats);
 
     // Items database
     typedef std::map<int, ItemInfo*> ItemInfos;

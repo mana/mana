@@ -336,53 +336,6 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 
 #endif
 
-void LocalPlayer::inviteToParty(const std::string &name)
-{
-    Net::getPartyHandler()->invite(name);
-}
-
-void LocalPlayer::inviteToParty(Player *player)
-{
-    Net::getPartyHandler()->invite(player);
-}
-
-void LocalPlayer::moveInvItem(Item *item, int newIndex)
-{
-    Net::getInventoryHandler()->moveItem(item->getInvIndex(), newIndex);
-}
-
-void LocalPlayer::equipItem(Item *item)
-{
-    Net::getInventoryHandler()->equipItem(item);
-}
-
-void LocalPlayer::unequipItem(Item *item)
-{
-    Net::getInventoryHandler()->unequipItem(item);
-
-    // Tidy equipment directly to avoid weapon still shown bug, for instance
-#ifdef TMWSERV_SUPPORT
-    mEquipment->setEquipment(item->getInvIndex(), 0);
-#else
-    mEquipment->removeEquipment(item->getInvIndex());
-#endif
-}
-
-void LocalPlayer::useItem(Item *item)
-{
-    Net::getInventoryHandler()->useItem(item);
-}
-
-void LocalPlayer::dropItem(Item *item, int quantity)
-{
-    Net::getInventoryHandler()->dropItem(item, quantity);
-}
-
-void LocalPlayer::splitItem(Item *item, int quantity)
-{
-    Net::getInventoryHandler()->splitItem(item, quantity);
-}
-
 void LocalPlayer::pickUp(FloorItem *item)
 {
 #ifdef TMWSERV_SUPPORT
@@ -623,16 +576,6 @@ void LocalPlayer::stopWalking(bool sendToServer)
 }
 #endif
 
-#ifdef EATHENA_SUPPORT
-void LocalPlayer::raiseSkill(Uint16 skillId)
-{
-    if (mSkillPoint <= 0)
-        return;
-
-    Net::getSkillHandler()->up(skillId);
-}
-#endif
-
 void LocalPlayer::toggleSit()
 {
     if (mLastAction != -1)
@@ -657,24 +600,6 @@ void LocalPlayer::emote(Uint8 emotion)
     mLastAction = tick_time;
 
     Net::getPlayerHandler()->emote(emotion);
-}
-
-void LocalPlayer::tradeReply(bool accept)
-{
-    if (!accept)
-        mTrading = false;
-
-    Net::getTradeHandler()->respond(accept);
-}
-
-void LocalPlayer::trade(Being *being) const
-{
-    Net::getTradeHandler()->request(being);
-}
-
-bool LocalPlayer::tradeRequestOk() const
-{
-    return !mTrading;
 }
 
 #ifdef TMWSERV_SUPPORT
@@ -804,11 +729,6 @@ void LocalPlayer::stopAttack()
     }
     setTarget(NULL);
     mLastTarget = -1;
-}
-
-void LocalPlayer::revive()
-{
-    Net::getPlayerHandler()->respawn();
 }
 
 #ifdef TMWSERV_SUPPORT

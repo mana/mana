@@ -107,7 +107,7 @@ void PlayerRelationsManager::clear()
     delete names;
 }
 
-#define PERSIST_IGNORE_LIST "persist-player-list"
+#define PERSIST_IGNORE_LIST "persistent-player-list"
 #define PLAYER_IGNORE_STRATEGY "player-ignore-strategy"
 #define DEFAULT_PERMISSIONS "default-player-permissions"
 
@@ -125,7 +125,7 @@ void PlayerRelationsManager::load()
 {
     clear();
 
-    mPersistIgnores = config.getValue(PERSIST_IGNORE_LIST, 0);
+    mPersistIgnores = config.getValue(PERSIST_IGNORE_LIST, 1);
     mDefaultPermissions = (int) config.getValue(DEFAULT_PERMISSIONS, mDefaultPermissions);
     std::string ignore_strategy_name = config.getValue(PLAYER_IGNORE_STRATEGY, DEFAULT_IGNORE_STRATEGY);
     int ignore_strategy_index = getPlayerIgnoreStrategyIndex(ignore_strategy_name);
@@ -203,7 +203,8 @@ bool PlayerRelationsManager::hasPermission(Being *being, unsigned int flags)
     return true;
 }
 
-bool PlayerRelationsManager::hasPermission(const std::string &name, unsigned int flags)
+bool PlayerRelationsManager::hasPermission(const std::string &name,
+                                           unsigned int flags)
 {
     unsigned int rejections = flags & ~checkPermissionSilently(name, flags);
     bool permitted = rejections == 0;
@@ -214,8 +215,7 @@ bool PlayerRelationsManager::hasPermission(const std::string &name, unsigned int
             Player *to_ignore = dynamic_cast<Player *>(beingManager->findBeingByName(name, Being::PLAYER));
 
             if (to_ignore)
-                mIgnoreStrategy->ignore(to_ignore,
-                                        rejections);
+                mIgnoreStrategy->ignore(to_ignore, rejections);
         }
     }
 
@@ -297,8 +297,8 @@ public:
     }
 
     virtual void ignore(Player *player, unsigned int flags)
-     {
-     }
+    {
+    }
 };
 
 class PIS_dotdotdot : public PlayerIgnoreStrategy
