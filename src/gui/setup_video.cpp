@@ -479,8 +479,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "speech")
     {
-        Being::Speech val =
-                static_cast<Being::Speech>(mSpeechSlider->getValue());
+        Being::Speech val = (Being::Speech)mSpeechSlider->getValue();
         mSpeechLabel->setCaption(speechModeToString(val));
         mSpeechSlider->setValue(val);
         config.setValue("speech", val);
