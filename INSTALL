@@ -24,7 +24,7 @@ and some libraries. The required libraries are:
 * ENet 1.2          http://enet.bespin.org/
 * Guichan 0.8.x     http://guichan.sourceforge.net/
 * libxml2           http://www.xmlsoft.org/
-* physfs 1.0.x      http://icculus.org/physfs/
+* physfs 1.x        http://icculus.org/physfs/
 * zlib 1.2.x        http://www.gzip.org/zlib/
 * libcurl           http://curl.haxx.se/libcurl/
 
@@ -65,6 +65,16 @@ different prefix to configure as usual.
     ./configure --without-opengl
 
   Rebuild the executable from scratch using "make clean" and then "make".
+
+
+  NOTE: This version of TMW can be compiled with support for connecting to
+  tmwserv, a server developed from scratch by the TMW project. However, the
+  client won't support eAthena anymore when you do. In future clients we
+  intend to support either server from a single compile.
+
+  To configure the client with support for tmwserv, do step 3 as follows:
+
+    ./configure --with-server=tmwserv
 
 
 3. Notes
