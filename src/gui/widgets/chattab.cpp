@@ -165,7 +165,7 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
 #ifdef EATHENA_SUPPORT
     if (tmp.nick.empty() && tmp.text.substr(0, 17) == "Visible GM status")
     {
-        player_node->setGM();
+        player_node->setGM(true);
     }
 #endif
 

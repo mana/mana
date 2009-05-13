@@ -118,9 +118,11 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 if (player_node->isInParty())
                     mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
 
-                /*
-                mBrowserBox->addRow("##3---");
-                mBrowserBox->addRow(_("@@admin-kick|Kick player@@"));*/
+                if (player_node->isGM())
+                {
+                    mBrowserBox->addRow("##3---");
+                    mBrowserBox->addRow(_("@@admin-kick|Kick player@@"));
+                }
             }
             break;
 
@@ -131,13 +133,14 @@ void PopupMenu::showPopup(int x, int y, Being *being)
             break;
 
         case Being::MONSTER:
-            // Monsters can be attacked
-            mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
-            break;
+            {
+                // Monsters can be attacked
+                mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
 
-        /*case Being::MONSTER:
-            mBrowserBox->addRow(_("@@admin-kick|Kick monster@@"));
-            break;*/
+                if (player_node->isGM())
+                    mBrowserBox->addRow(_("@@admin-kick|Kick monster@@"));
+            }
+            break;
 
         default:
             /* Other beings aren't interesting... */

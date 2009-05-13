@@ -223,7 +223,7 @@ class LocalPlayer : public Player
         /**
          * Triggers whether or not to show the name as a GM name.
          */
-        virtual void setGM();
+        virtual void setGM(bool gm);
 
         void stopAttack();
 

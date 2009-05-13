@@ -67,7 +67,7 @@ class Player : public Being
         /**
          * Triggers whether or not to show the name as a GM name.
          */
-        virtual void setGM() { mIsGM = true; }
+        virtual void setGM(bool gm);
 
         /**
          * Sets the hair style and color for this player.
