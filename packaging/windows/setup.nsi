@@ -241,6 +241,7 @@ Section Uninstall
 
   RMDir /r "$INSTDIR\data"
   RMDir /r "$INSTDIR\docs"
+  RMDir /r "$INSTDIR\translations"
   RMDir /r "$INSTDIR\updates"
   RMDir "$INSTDIR"
 
