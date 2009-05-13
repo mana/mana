@@ -262,6 +262,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                     case 0x0032: player_node->FLEE = value; break;
                     case 0x0035: player_node->mAttackSpeed = value; break;
                     case 0x0037: player_node->mJobLevel = value; break;
+                    case 500: player_node->setGMLevel(value); break;
                 }
 
                 if (player_node->getHp() == 0 && !deathNotice)

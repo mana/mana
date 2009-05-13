@@ -241,6 +241,14 @@ void LocalPlayer::setGM(bool gm)
     mIsGM = gm;
 }
 
+void LocalPlayer::setGMLevel(int level)
+{
+    mGMLevel = level;
+
+    if (level > 0)
+        setGM(true);
+}
+
 void LocalPlayer::setName(const std::string &name)
 {
     if (mName)

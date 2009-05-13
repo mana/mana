@@ -225,6 +225,8 @@ class LocalPlayer : public Player
          */
         virtual void setGM(bool gm);
 
+        void setGMLevel(int level);
+
         void stopAttack();
 
         /**
@@ -457,6 +459,8 @@ class LocalPlayer : public Player
         int mMaxWeight;
         int mHp;
         int mMaxHp;
+
+        int mGMLevel;
 
         Being *mTarget;
         FloorItem *mPickUpTarget;
