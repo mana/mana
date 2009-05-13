@@ -299,13 +299,13 @@ Setup_Video::Setup_Video():
 
     place(1, 3, mParticleEffectsCheckBox, 3);
 
-    place(1, 4, mPickupNotifyLabel, 3);
+    place(1, 4, mPickupNotifyLabel, 4);
 
     place(1, 5, mPickupChatCheckBox, 1);
     place(2, 5, mPickupParticleCheckBox, 2);
 
     place(0, 6, fontSizeLabel, 3);
-    place(1, 6, mFontSizeDropDown, 3);
+    place(1, 6, mFontSizeDropDown, 2);
 
     place(0, 7, mAlphaSlider);
     place(1, 7, alphaLabel, 3);
@@ -326,7 +326,7 @@ Setup_Video::Setup_Video():
     place(1, 11, particleDetailLabel);
     place(2, 11, mParticleDetailField, 3).setPadding(2);
 
-    setDimension(gcn::Rectangle(0, 0, 325, 300));
+    setDimension(gcn::Rectangle(0, 0, 365, 300));
 }
 
 void Setup_Video::apply()

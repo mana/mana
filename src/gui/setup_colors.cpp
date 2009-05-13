@@ -176,7 +176,7 @@ Setup_Colors::Setup_Colors() :
 
     mGradTypeText->setCaption("");
 
-    setDimension(gcn::Rectangle(0, 0, 325, 280));
+    setDimension(gcn::Rectangle(0, 0, 365, 280));
 }
 
 Setup_Colors::~Setup_Colors()
