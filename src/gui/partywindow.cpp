@@ -53,9 +53,9 @@ PartyWindow::PartyWindow() :
     setResizable(true);
     setSaveVisible(true);
     setCloseButton(true);
-    setMinWidth(212);
+    setMinWidth(120);
     setMinHeight(200);
-    setDefaultSize(590, 200, 212, 200);
+    setDefaultSize(590, 200, 120, 200);
 
     loadWindowState();
 }

@@ -42,7 +42,7 @@ Avatar::Avatar():
     mMaxHp(0)
 {
     setOpaque(false);
-    setSize(200, 12);
+    setSize(250, 12);
 
     if (avatarCount == 0)
     {
@@ -58,7 +58,7 @@ Avatar::Avatar():
     mStatus->setSize(12, 12);
     add(mStatus, 1, 0);
     mLabel = new Label;
-    mLabel->setSize(174, 12);
+    mLabel->adjustSize();
     add(mLabel, 16, 0);
 }
 
@@ -108,4 +108,5 @@ void Avatar::updateAvatarLabel()
         ss << "  (" << mHp << "/" << mMaxHp << ")";
 
     mLabel->setCaption(ss.str());
+    mLabel->adjustSize();
 }
