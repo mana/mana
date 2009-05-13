@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-13 19:40+0200\n"
+"POT-Creation-Date: 2009-05-14 01:21+0200\n"
 "PO-Revision-Date: 2009-01-09 11:46+0000\n"
 "Last-Translator: Habari <Unknown>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -464,7 +464,7 @@ msgid "Please distribute %d points"
 msgstr ""
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1503
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1501
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr ""
@@ -1142,7 +1142,7 @@ msgstr ""
 msgid "Select Server"
 msgstr ""
 
-#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:933
+#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:931
 msgid "Setup"
 msgstr ""
 
@@ -2130,15 +2130,15 @@ msgstr ""
 msgid "The Mana World "
 msgstr ""
 
-#: src/main.cpp:1515
+#: src/main.cpp:1512
 msgid "Connecting to map server..."
 msgstr ""
 
-#: src/main.cpp:1523
+#: src/main.cpp:1520
 msgid "Connecting to character server..."
 msgstr ""
 
-#: src/main.cpp:1531
+#: src/main.cpp:1528
 msgid "Connecting to account server..."
 msgstr ""
 

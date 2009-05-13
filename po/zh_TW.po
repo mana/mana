@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-13 19:40+0200\n"
-"PO-Revision-Date: 2009-05-11 03:32+0000\n"
+"POT-Creation-Date: 2009-05-14 01:21+0200\n"
+"PO-Revision-Date: 2009-05-13 02:58+0000\n"
 "Last-Translator: netwareboss <netwareboss@gmail.com>\n"
 "Language-Team: Traditional Chinese <themanaworld-devel@lists.sourceforge."
 "net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-11 21:56+0000\n"
+"X-Launchpad-Export-Date: 2009-05-13 18:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Country: China\n"
 "X-Poedit-Language: Chinese\n"
@@ -84,7 +84,7 @@ msgstr "/record > 開始紀錄對話內容到外部檔案"
 
 #: src/commandhandler.cpp:163
 msgid "/toggle > Determine whether <return> toggles the chat log"
-msgstr ""
+msgstr "/toggle > 是否切換回聊天視窗"
 
 #: src/commandhandler.cpp:164
 msgid "/present > Get list of players present (sent to chat log, if logging)"
@@ -238,7 +238,7 @@ msgstr "指令： /toggle <state>"
 msgid ""
 "This command sets whether the return key should toggle the chat log, or "
 "whether the chat log turns off automatically."
-msgstr ""
+msgstr "這指令用來設定\"enter\"鍵是否切換聊天記錄,或者自動關閉記錄"
 
 #: src/commandhandler.cpp:254
 msgid ""
@@ -254,7 +254,7 @@ msgstr "指令： /toggle"
 
 #: src/commandhandler.cpp:258
 msgid "This command displays the return toggle status."
-msgstr ""
+msgstr "這個指令顯示輸入切換狀態"
 
 #: src/commandhandler.cpp:262
 msgid "Command: /where"
@@ -471,7 +471,7 @@ msgid "Please distribute %d points"
 msgstr "請分配%d點數"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1503
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1501
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "錯誤"
@@ -913,7 +913,7 @@ msgstr "武器"
 
 #: src/gui/palette.cpp:123
 msgid "Ammo"
-msgstr "阿木"
+msgstr "箭"
 
 #: src/gui/palette.cpp:125
 msgid "Particle Effects"
@@ -991,17 +991,17 @@ msgstr ""
 #: src/gui/popupmenu.cpp:100
 #, c-format
 msgid "@@ignore|Ignore %s@@"
-msgstr ""
+msgstr "@@ignore| 忽視 %s@@"
 
 #: src/gui/popupmenu.cpp:104 src/gui/popupmenu.cpp:109
 #, c-format
 msgid "@@unignore|Un-Ignore %s@@"
-msgstr ""
+msgstr "@@unignore| 不忽視 %s@@"
 
 #: src/gui/popupmenu.cpp:105
 #, c-format
 msgid "@@ignore|Completely ignore %s@@"
-msgstr ""
+msgstr "@@ignore|完全忽視 %s@@"
 
 #: src/gui/popupmenu.cpp:116
 #, c-format
@@ -1148,7 +1148,7 @@ msgstr "請輸入伺服氣得IP地址和Port"
 msgid "Select Server"
 msgstr "選擇伺服器"
 
-#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:933
+#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:931
 msgid "Setup"
 msgstr "設定"
 
@@ -1317,7 +1317,7 @@ msgstr "當忽略時："
 
 #: src/gui/setup_video.cpp:112
 msgid "Tiny"
-msgstr ""
+msgstr "小"
 
 #: src/gui/setup_video.cpp:113
 msgid "Small"
@@ -2083,7 +2083,7 @@ msgstr "  -C --config-file : 使用此設定檔"
 
 #: src/main.cpp:569
 msgid "  -d --data        : Directory to load game data from"
-msgstr ""
+msgstr "  -d -data : 指定遊戲資料所在的目錄"
 
 #: src/main.cpp:570
 msgid "  -D --default     : Choose default character server and character"
@@ -2137,15 +2137,15 @@ msgstr "  -v --version : 顯示遊戲版本"
 msgid "The Mana World "
 msgstr "瑪那世界 "
 
-#: src/main.cpp:1515
+#: src/main.cpp:1512
 msgid "Connecting to map server..."
 msgstr "正在連接到地圖伺服器..."
 
-#: src/main.cpp:1523
+#: src/main.cpp:1520
 msgid "Connecting to character server..."
 msgstr "正在連接角色伺服器..."
 
-#: src/main.cpp:1531
+#: src/main.cpp:1528
 msgid "Connecting to account server..."
 msgstr "正在連接帳號伺服器..."
 
@@ -2258,34 +2258,34 @@ msgid "Unable to unequip."
 msgstr "無法卸下裝備。"
 
 #: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "力量: %d"
+msgstr "力量 %+d"
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "敏捷: %d"
+msgstr "敏捷 %+d"
 
 #: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "體力: %d"
+msgstr "體力 %+d"
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "智力: %d"
+msgstr "智力 %+d"
 
 #: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "閃躲: %d"
+msgstr "防禦 %+d"
 
 #: src/net/ea/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
-msgstr "幸運: %d"
+msgstr "幸運  %+d"
 
 #: src/net/ea/generalhandler.cpp:118
 msgid "Authentication failed"
@@ -2626,7 +2626,7 @@ msgstr "你已經沒有更多"
 
 #: src/net/ea/playerhandler.cpp:122
 msgid "You have ceased to be."
-msgstr ""
+msgstr "你已不再是."
 
 #: src/net/ea/playerhandler.cpp:123
 msgid "You've expired and gone to meet your maker."
@@ -2844,9 +2844,9 @@ msgid "Topic: "
 msgstr "主題: "
 
 #: src/net/tmwserv/generalhandler.cpp:87
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "意志力: %d"
+msgstr "意志力 %+d"
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
@@ -2944,14 +2944,11 @@ msgstr "monsters.xml"
 msgid "NPC Database: Error while loading npcs.xml!"
 msgstr "NPC 資料庫：當載入 npcs.xml 時發生錯誤！"
 
-#~ msgid "+"
-#~ msgstr "增加"
+#~ msgid "MiniMap"
+#~ msgstr "小地圖"
 
-#~ msgid "-"
-#~ msgstr "減少"
-
-#~ msgid "Save player list"
-#~ msgstr "保存玩家列表"
+#~ msgid "@@pickup|Pick Up %s@@"
+#~ msgstr "@@撿起|撿起%s@@"
 
 #~ msgid "Scroll radius"
 #~ msgstr "捲動半徑"
@@ -2959,11 +2956,8 @@ msgstr "NPC 資料庫：當載入 npcs.xml 時發生錯誤！"
 #~ msgid "Scroll laziness"
 #~ msgstr "捲動延遲"
 
-#~ msgid "MiniMap"
-#~ msgstr "小地圖"
-
-#~ msgid "@@pickup|Pick Up %s@@"
-#~ msgstr "@@撿起|撿起%s@@"
+#~ msgid "Save player list"
+#~ msgstr "保存玩家列表"
 
 #~ msgid "Emote"
 #~ msgstr "表情"
@@ -3064,8 +3058,29 @@ msgstr "NPC 資料庫：當載入 npcs.xml 時發生錯誤！"
 #~ msgid "  -s --server     : Login Server name or IP"
 #~ msgstr "  -s --server  : 登入伺服器名稱或 IP"
 
+#~ msgid "Strength: %d"
+#~ msgstr "力量: %d"
+
+#~ msgid "Agility: %d"
+#~ msgstr "敏捷: %d"
+
+#~ msgid "Vitality: %d"
+#~ msgstr "體力: %d"
+
+#~ msgid "Intelligence: %d"
+#~ msgstr "智力: %d"
+
+#~ msgid "Dexterity: %d"
+#~ msgstr "閃躲: %d"
+
+#~ msgid "Luck: %d"
+#~ msgstr "幸運: %d"
+
 #~ msgid "You picked up %s [%s]"
 #~ msgstr "您已經撿起 %s [%s]"
+
+#~ msgid "Willpower: %d"
+#~ msgstr "意志力: %d"
 
 #~ msgid "Gold: %d"
 #~ msgstr "金幣：%d"
@@ -3129,3 +3144,9 @@ msgstr "NPC 資料庫：當載入 npcs.xml 時發生錯誤！"
 
 #~ msgid "Keep"
 #~ msgstr "保持"
+
+#~ msgid "+"
+#~ msgstr "增加"
+
+#~ msgid "-"
+#~ msgstr "減少"

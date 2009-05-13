@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-13 19:40+0200\n"
-"PO-Revision-Date: 2009-05-10 15:42+0000\n"
+"POT-Creation-Date: 2009-05-14 01:21+0200\n"
+"PO-Revision-Date: 2009-05-11 22:56+0000\n"
 "Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
 "Language-Team: <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-11 21:56+0000\n"
+"X-Launchpad-Export-Date: 2009-05-13 18:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:142
@@ -479,7 +479,7 @@ msgid "Please distribute %d points"
 msgstr "Proszę wykorzystać %d punktów"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1503
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1501
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "Błąd"
@@ -1156,7 +1156,7 @@ msgstr "Proszę wpisać adres i port serwera"
 msgid "Select Server"
 msgstr "Wybierz serwer"
 
-#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:933
+#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:931
 msgid "Setup"
 msgstr "Konfiguracja"
 
@@ -2147,15 +2147,15 @@ msgstr ""
 msgid "The Mana World "
 msgstr "The Mana World "
 
-#: src/main.cpp:1515
+#: src/main.cpp:1512
 msgid "Connecting to map server..."
 msgstr "Łączenie z serwerem map..."
 
-#: src/main.cpp:1523
+#: src/main.cpp:1520
 msgid "Connecting to character server..."
 msgstr "Łączenie z serwerem postaci..."
 
-#: src/main.cpp:1531
+#: src/main.cpp:1528
 msgid "Connecting to account server..."
 msgstr "Łączenie z serwerem kont..."
 
@@ -2961,8 +2961,8 @@ msgstr "monsters.xml"
 msgid "NPC Database: Error while loading npcs.xml!"
 msgstr "Baza NPC: Błąd podczas wczytywania npcs.xml!"
 
-#~ msgid "Save player list"
-#~ msgstr "Zapisz listę graczy"
+#~ msgid "MiniMap"
+#~ msgstr "MiniMapa"
 
 #~ msgid "Scroll radius"
 #~ msgstr "Skok przy przewijaniu ekranu"
@@ -2970,8 +2970,8 @@ msgstr "Baza NPC: Błąd podczas wczytywania npcs.xml!"
 #~ msgid "Scroll laziness"
 #~ msgstr "Opóźnienie przy przewijaniu ekranu"
 
-#~ msgid "MiniMap"
-#~ msgstr "MiniMapa"
+#~ msgid "Save player list"
+#~ msgstr "Zapisz listę graczy"
 
 #~ msgid "Emote"
 #~ msgstr "Emoty"

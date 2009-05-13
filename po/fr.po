@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-13 19:40+0200\n"
-"PO-Revision-Date: 2009-05-10 20:26+0000\n"
+"POT-Creation-Date: 2009-05-14 01:21+0200\n"
+"PO-Revision-Date: 2009-05-13 12:56+0000\n"
 "Last-Translator: Jumpy <Unknown>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-11 21:56+0000\n"
+"X-Launchpad-Export-Date: 2009-05-13 18:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:142
@@ -491,7 +491,7 @@ msgid "Please distribute %d points"
 msgstr "Veuillez distribuer %d points"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1503
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1501
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "Erreur"
@@ -1168,7 +1168,7 @@ msgstr "Veuillez entrer l'adresse et le port du serveur."
 msgid "Select Server"
 msgstr "Sélectionner un serveur"
 
-#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:933
+#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:931
 msgid "Setup"
 msgstr "Configuration"
 
@@ -2171,15 +2171,15 @@ msgstr "  -v --version : Affiche la version"
 msgid "The Mana World "
 msgstr "Le Monde de Mana "
 
-#: src/main.cpp:1515
+#: src/main.cpp:1512
 msgid "Connecting to map server..."
 msgstr "Connexion au serveur de cartes..."
 
-#: src/main.cpp:1523
+#: src/main.cpp:1520
 msgid "Connecting to character server..."
 msgstr "Connexion au serveur de personnages..."
 
-#: src/main.cpp:1531
+#: src/main.cpp:1528
 msgid "Connecting to account server..."
 msgstr "Connexion au serveur de comptes..."
 
@@ -2296,34 +2296,34 @@ msgid "Unable to unequip."
 msgstr "Impossible de deséquiper cet objet."
 
 #: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Force : %d"
+msgstr "Force %+d"
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "Agilité : %d"
+msgstr "Agilité %+d"
 
 #: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "Vitalité : %d"
+msgstr "Vitalité %+d"
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Intelligence : %d"
+msgstr "Intelligence %+d"
 
 #: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "Dextérité : %d"
+msgstr "Dextérité %+d"
 
 #: src/net/ea/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
-msgstr "Chance : %d"
+msgstr "Chance %+d"
 
 #: src/net/ea/generalhandler.cpp:118
 msgid "Authentication failed"
@@ -2907,9 +2907,9 @@ msgid "Topic: "
 msgstr "Sujet : "
 
 #: src/net/tmwserv/generalhandler.cpp:87
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "Volonté : %d"
+msgstr "Volonté %+d"
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
@@ -3008,23 +3008,14 @@ msgid "NPC Database: Error while loading npcs.xml!"
 msgstr ""
 "Base de donnée des PNJ : Erreur pendant le chargement du fichier npcs.xml !"
 
+#~ msgid "MiniMap"
+#~ msgstr "Plan"
+
 #~ msgid "Scroll radius"
 #~ msgstr "Rayon du défilement"
 
 #~ msgid "Scroll laziness"
 #~ msgstr "Lenteur du défilement"
-
-#~ msgid "MiniMap"
-#~ msgstr "Plan"
-
-#~ msgid "; "
-#~ msgstr "; "
-
-#~ msgid "+"
-#~ msgstr "+"
-
-#~ msgid "-"
-#~ msgstr "-"
 
 #~ msgid "Save player list"
 #~ msgstr "Sauvegarder la liste de joueurs"
@@ -3061,3 +3052,12 @@ msgstr ""
 
 #~ msgid "Emote Window"
 #~ msgstr "Fenêtre d'emote"
+
+#~ msgid "; "
+#~ msgstr "; "
+
+#~ msgid "+"
+#~ msgstr "+"
+
+#~ msgid "-"
+#~ msgstr "-"

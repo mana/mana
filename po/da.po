@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-13 19:40+0200\n"
+"POT-Creation-Date: 2009-05-14 01:21+0200\n"
 "PO-Revision-Date: 2008-12-28 14:45+0000\n"
 "Last-Translator: GonzoDark AKA IchigoBlack <Gonzo.Dark@gmail.com>\n"
 "Language-Team: Danish <none@none.none>\n"
@@ -507,7 +507,7 @@ msgid "Please distribute %d points"
 msgstr "Du mangler at fordele %d points"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1503
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1501
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "Fejl"
@@ -1221,7 +1221,7 @@ msgstr "Skriv både adressen og porten på serveren."
 msgid "Select Server"
 msgstr "Vælg Server"
 
-#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:933
+#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:931
 msgid "Setup"
 msgstr "Opsætning"
 
@@ -2300,16 +2300,16 @@ msgstr "  -v --version    : Viser den nuværende version"
 msgid "The Mana World "
 msgstr "Vælg din Mana World Server"
 
-#: src/main.cpp:1515
+#: src/main.cpp:1512
 #, fuzzy
 msgid "Connecting to map server..."
 msgstr "Opretter forbindelse til bane serveren..."
 
-#: src/main.cpp:1523
+#: src/main.cpp:1520
 msgid "Connecting to character server..."
 msgstr "Opretter forbindelse til karakter serveren..."
 
-#: src/main.cpp:1531
+#: src/main.cpp:1528
 msgid "Connecting to account server..."
 msgstr "Opretter forbindelse til bruger serveren..."
 
