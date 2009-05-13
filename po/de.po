@@ -1401,11 +1401,11 @@ msgstr "Partikeleffekte"
 
 #: src/gui/setup_video.cpp:195
 msgid "Show name"
-msgstr "Zeige eigenen Namen"
+msgstr "Eigener Namen"
 
 #: src/gui/setup_video.cpp:196
 msgid "Show pickup notification"
-msgstr "Benachrichtigung über aufgehobene Gegenstände zeigen"
+msgstr "Benachrichtigung beim Aufheben"
 
 #: src/gui/setup_video.cpp:197
 msgid "in chat"
