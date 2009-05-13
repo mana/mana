@@ -126,7 +126,7 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
     member->avatar->setOnline(online);
 
     Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
-    if (player && player->getName() == memberName)
+    if (player && online)
         player->setInParty(true);
 }
 
