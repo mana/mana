@@ -294,6 +294,9 @@ void NpcDialog::move(int amount)
         case NPC_INPUT_LIST:
             mItemList->setSelected(mItemList->getSelected() - amount);
             break;
+        case NPC_INPUT_NONE:
+        case NPC_INPUT_STRING:
+            break;
     }
 }
 

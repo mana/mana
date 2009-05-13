@@ -583,10 +583,12 @@ void Game::handleInput()
                         used = true;
                 }
                 if (npcDialog->isVisible())
+                {
                     if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP))
                         npcDialog->move(1);
                     else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN))
                         npcDialog->move(-1);
+                }
             }
 
 
