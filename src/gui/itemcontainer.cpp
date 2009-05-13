@@ -57,6 +57,7 @@ ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
     mGridRows(1),
     mSelectedIndex(-1),
     mHighlightedIndex(-1),
+    mLastUsedSlot(-1),
     mSelectionStatus(SEL_NONE),
     mForceQuantity(forceQuantity),
     mSwapItems(false),
@@ -80,6 +81,19 @@ ItemContainer::~ItemContainer()
 {
     mSelImg->decRef();
     delete mItemPopup;
+}
+
+void ItemContainer::logic()
+{
+    gcn::Widget::logic();
+
+    const int lastUsedSlot = mInventory->getLastUsedSlot();
+
+    if (lastUsedSlot != mLastUsedSlot)
+    {
+        mLastUsedSlot = lastUsedSlot;
+        adjustHeight();
+    }
 }
 
 void ItemContainer::draw(gcn::Graphics *graphics)
@@ -178,7 +192,7 @@ void ItemContainer::distributeValueChangedEvent()
 
 void ItemContainer::keyPressed(gcn::KeyEvent &event)
 {
-    switch (event.getKey().getValue())
+    /*switch (event.getKey().getValue())
     {
         case Key::LEFT:
             moveHighlight(Left);
@@ -202,12 +216,12 @@ void ItemContainer::keyPressed(gcn::KeyEvent &event)
         case Key::RIGHT_CONTROL:
             mDescItems = true;
             break;
-    }
+    }*/
 }
 
 void ItemContainer::keyReleased(gcn::KeyEvent &event)
 {
-    switch (event.getKey().getValue())
+    /*switch (event.getKey().getValue())
     {
         case Key::LEFT_ALT:
         case Key::RIGHT_ALT:
@@ -216,7 +230,7 @@ void ItemContainer::keyReleased(gcn::KeyEvent &event)
         case Key::RIGHT_CONTROL:
             mDescItems = false;
             break;
-    }
+    }*/
 }
 
 void ItemContainer::mousePressed(gcn::MouseEvent &event)
@@ -316,8 +330,13 @@ void ItemContainer::mouseExited(gcn::MouseEvent &event)
 void ItemContainer::widgetResized(const gcn::Event &event)
 {
     mGridColumns = std::max(1, getWidth() / BOX_WIDTH);
-    mGridRows = mInventory->getSize() / mGridColumns;
-    if (mGridRows == 0 || mInventory->getSize() % mGridColumns > 0)
+    adjustHeight();
+}
+
+void ItemContainer::adjustHeight()
+{
+    mGridRows = (mLastUsedSlot + 1) / mGridColumns;
+    if (mGridRows == 0 || (mLastUsedSlot + 1) % mGridColumns > 0)
         ++mGridRows;
 
     setHeight(mGridRows * BOX_HEIGHT);

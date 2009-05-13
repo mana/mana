@@ -236,14 +236,17 @@ void LocalPlayer::setAction(Action action, int attackType)
     Player::setAction(action, attackType);
 }
 
-void LocalPlayer::setGM()
+void LocalPlayer::setGM(bool gm)
 {
-    mIsGM = !mIsGM;
-    mNameColor = mIsGM ?
-            &guiPalette->getColor(Palette::GM) :
-            &guiPalette->getColor(Palette::PLAYER);
-    setName(getName());
-    config.setValue(getName() + "GMassert", mIsGM);
+    mIsGM = gm;
+}
+
+void LocalPlayer::setGMLevel(int level)
+{
+    mGMLevel = level;
+
+    if (level > 0)
+        setGM(true);
 }
 
 void LocalPlayer::setName(const std::string &name)

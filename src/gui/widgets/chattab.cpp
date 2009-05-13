@@ -162,13 +162,6 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
         lineColor = "##S";
     }
 
-#ifdef EATHENA_SUPPORT
-    if (tmp.nick.empty() && tmp.text.substr(0, 17) == "Visible GM status")
-    {
-        player_node->setGM();
-    }
-#endif
-
     // Get the current system time
     time_t t;
     time(&t);

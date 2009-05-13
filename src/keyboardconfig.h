@@ -154,6 +154,7 @@ class KeyboardConfig
             KEY_MOVE_LEFT,
             KEY_MOVE_RIGHT,
             KEY_ATTACK,
+            KEY_TARGET_ATTACK,
             KEY_EMOTE,
             KEY_TALK,
             KEY_TARGET,

@@ -1,7 +1,7 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.29       Date: XX/XX/2009
+ Version: 0.0.29       Date: 13/05/2009
 
  Development team:
   - See AUTHORS file for a list
@@ -12,6 +12,7 @@ THE MANA WORLD
   - Guichan (GUI framework)
   - libxml2 (XML parsing and writing)
   - PhysFS (Data files)
+  - ENet (UDP networking library)
   - libcurl (HTTP downloads)
   - zlib (Archives)
 

@@ -35,6 +35,8 @@
 #include "npc.h"
 #include "playerrelations.h"
 
+#include "gui/partywindow.h"
+
 #include <iostream>
 
 namespace EAthena {
@@ -445,11 +447,14 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 dstBeing = createBeing(id, job);
             }
 
-            // Fix monster jobs
-            if (dstBeing->getType() == Being::MONSTER)
             {
-                job -= 1002;
+                PartyMember *member = partyWindow->findMember(id);
+                if (member && member->online)
+                {
+                    dynamic_cast<Player*>(dstBeing)->setInParty(true);
+                }
             }
+
 
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
@@ -503,8 +508,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
 
             gmstatus = msg.readInt16();
-            if ((gmstatus & 0x80) && dstBeing->getType() == Being::PLAYER)
-                static_cast<Player*>(dstBeing)->setGM();
+            if (gmstatus & 0x80)
+                if (Player *player = dynamic_cast<Player*>(dstBeing))
+                    player->setGM(true);
 
             if (msg.getId() == SMSG_PLAYER_UPDATE_1)
             {

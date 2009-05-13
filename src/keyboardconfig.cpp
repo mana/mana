@@ -43,6 +43,7 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyMoveLeft", SDLK_LEFT, _("Move Left")},
     {"keyMoveRight", SDLK_RIGHT, _("Move Right")},
     {"keyAttack", SDLK_LCTRL, _("Attack")},
+    {"keyTargetAttack", SDLK_x, _("Target & Attack")},
     {"keySmilie", SDLK_LALT, _("Smilie")},
     {"keyTalk", SDLK_t, _("Talk")},
     {"keyTarget", SDLK_LSHIFT, _("Stop Attack")},

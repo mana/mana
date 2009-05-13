@@ -223,7 +223,9 @@ class LocalPlayer : public Player
         /**
          * Triggers whether or not to show the name as a GM name.
          */
-        virtual void setGM();
+        virtual void setGM(bool gm);
+
+        void setGMLevel(int level);
 
         void stopAttack();
 
@@ -457,6 +459,8 @@ class LocalPlayer : public Player
         int mMaxWeight;
         int mHp;
         int mMaxHp;
+
+        int mGMLevel;
 
         Being *mTarget;
         FloorItem *mPickUpTarget;

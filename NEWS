@@ -1,18 +1,46 @@
-0.0.29 (...)
-* Added ability to record the chatlog to a file
-* Added support for dynamic emotes
-* Added speech balloons that wrap the text
-* Added item popup for showing detailed information
-* Added support for external tilesets
-* Added ability to refer to items in chat
-* Added the ability to see your own name in game
-* Made smily shortcuts customizable in more detail
-* Made chat colors customizable
-* Made it possible to change resolution
-* GUI opacity now effects more widgets
-* Redesigned equipment window and allow unequip from there
-* Next level percentage is now displayed in hundredths
-* Player and NPC names now appear in bold for better readability
+0.0.29 (13 May 2009)
+- Added support for dynamic emotes and a new way to select them
+- Added speech balloons that wrap the text
+- Added item popup for showing detailed information
+- Added ability to refer to items in chat
+- Added the ability to see your own name in game
+- Added the option to hide player names
+- Added support for dynamically defined weight unit and currency
+- Added support for NPC item storage
+- Added compile-time support for tmwserv, as an alternative to eAthena
+- Added support for entering the port of the login server
+- Added support for creating parties and inviting other players to them
+- Added tabs to the chat window for party and private chats
+- Added ability to set initial player attributes when creating a new character
+- Added command line option to temporarily disable OpenGL (--no-opengl)
+- Added support for showing arrows flying through the air
+- Added option to show pickup as text particle instead of in the chat
+- Added ability to change the font size
+- Added support for the /me command to do actions
+- Added a /present command to show players present in the area
+- Added ability to record the chatlog to a file
+- Made emote shortcuts customizable in more detail
+- Made it possible to change resolution
+- Made many colors used by the game configurable
+- Made setup window available during login
+- Dynamically generate the item effects description
+- Minimap can now be told to stay on the screen
+- Minimap now adapts to the scale and size of the minimap image
+- Non-stackable items can now be sold more easily
+- Login dialog now remembers the list of recently used servers
+- Completely rewritten NPC interaction
+- GUI opacity now effects the whole user interface
+- Redesigned the trade window
+- Redesigned equipment window and allow unequip from there
+- Next level percentage is now displayed in hundredths
+- The player will no longer walk away when clicking the map while sitting
+- Keep the login screen from taking 100% CPU
+- No longer prompt for character server when there is only one
+- Fixed compilation with GCC 4.4
+- Fixed scroll wheel handling and dragging glitches in lists
+- Many more bug fixes, small improvements and code cleanups
+- Updated German, Finnish, Croatian, French, Spanish, Swedish and Polish
+  translations
 
 0.0.28.1 (12 February 2009)
 - Enabled translations on Windows

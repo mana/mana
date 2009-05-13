@@ -156,6 +156,9 @@ void PartyHandler::handleMessage(MessageIn &msg)
             }
         case SMSG_PARTY_SETTINGS:
             {
+                if (!partyTab)
+                    break;
+
                 // These seem to indicate the sharing mode for exp and items
                 short exp = msg.readInt16();
                 short item = msg.readInt16();

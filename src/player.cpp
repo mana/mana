@@ -58,44 +58,34 @@ void Player::setName(const std::string &name)
 {
     if (!mName && mShowName)
     {
-        if (mIsGM)
+        mNameColor = &guiPalette->getColor(Palette::PLAYER);
+
+        const gcn::Color *color;
+        if (this == player_node)
+        {
+            color = &guiPalette->getColor(Palette::SELF);
+        }
+        else if (mIsGM)
         {
             mNameColor = &guiPalette->getColor(Palette::GM);
-            mName = new FlashText("(GM) " + name,
-                                  getPixelX(),
-                                  getPixelY(),
-                                  gcn::Graphics::CENTER,
-                                  &guiPalette->getColor(Palette::GM_NAME));
+            color = &guiPalette->getColor(Palette::GM_NAME);
+        }
+        else if (mInParty)
+        {
+            color = &guiPalette->getColor(Palette::PARTY);
         }
         else
         {
-            mNameColor = &guiPalette->getColor(Palette::PLAYER);
-
-            const gcn::Color *color;
-            if (this == player_node)
-            {
-                color = &guiPalette->getColor(Palette::SELF);
-            }
-            else if (mIsGM)
-            {
-                color = &guiPalette->getColor(Palette::GM);
-            }
-            else if (mInParty)
-            {
-                color = &guiPalette->getColor(Palette::PARTY);
-            }
-            else
-            {
-                color = &guiPalette->getColor(Palette::PC);
-            }
-
-            mName = new FlashText(name,
-                                  getPixelX(),
-                                  getPixelY(),
-                                  gcn::Graphics::CENTER,
-                                  color);
+            color = &guiPalette->getColor(Palette::PC);
         }
+
+        mName = new FlashText(name,
+                              getPixelX(),
+                              getPixelY(),
+                              gcn::Graphics::CENTER,
+                              color);
     }
+
     Being::setName(name);
 }
 
@@ -189,6 +179,14 @@ void Player::setGender(Gender gender)
                 setSprite(i, mSpriteIDs.at(i), mSpriteColors.at(i));
         }
     }
+}
+
+void Player::setGM(bool gm)
+{
+    mIsGM = gm;
+
+    if (gm && mName)
+        mName->setColor(&guiPalette->getColor(Palette::GM));
 }
 
 void Player::setHairStyle(int style, int color)

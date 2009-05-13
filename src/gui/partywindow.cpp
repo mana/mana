@@ -53,9 +53,9 @@ PartyWindow::PartyWindow() :
     setResizable(true);
     setSaveVisible(true);
     setCloseButton(true);
-    setMinWidth(212);
+    setMinWidth(120);
     setMinHeight(200);
-    setDefaultSize(590, 200, 212, 200);
+    setDefaultSize(590, 200, 150, 200);
 
     loadWindowState();
 }
@@ -125,7 +125,8 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
     member->avatar->setName(memberName);
     member->avatar->setOnline(online);
 
-    if (Player *player = dynamic_cast<Player*>(beingManager->findBeing(id)))
+    Player *player = dynamic_cast<Player*>(beingManager->findBeing(id));
+    if (player && online)
         player->setInParty(true);
 }
 
