@@ -55,7 +55,7 @@ PartyWindow::PartyWindow() :
     setCloseButton(true);
     setMinWidth(120);
     setMinHeight(200);
-    setDefaultSize(590, 200, 120, 200);
+    setDefaultSize(590, 200, 150, 200);
 
     loadWindowState();
 }
