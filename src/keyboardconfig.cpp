@@ -80,6 +80,7 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyWindowDebug", SDLK_F10, _("Debug Window")},
     {"keyWindowParty", SDLK_F11, _("Party Window")},
     {"keyWindowEmoteBar", SDLK_F12, _("Emote Shortcut Window")},
+    {"keyWindowOutfit", SDLK_o, _("Emote Shortcut Window")},
     {"keyEmoteShortcut1", SDLK_1, strprintf(_("Emote Shortcut %d"), 1)},
     {"keyEmoteShortcut2", SDLK_2, strprintf(_("Emote Shortcut %d"), 2)},
     {"keyEmoteShortcut3", SDLK_3, strprintf(_("Emote Shortcut %d"), 3)},

@@ -57,6 +57,7 @@
 #include "gui/ministatus.h"
 #include "gui/npcdialog.h"
 #include "gui/okdialog.h"
+#include "gui/outfitwindow.h"
 #include "gui/sdlinput.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
@@ -138,6 +139,7 @@ HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 ShortcutWindow *itemShortcutWindow;
 ShortcutWindow *emoteShortcutWindow;
+OutfitWindow *outfitWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
@@ -232,6 +234,7 @@ static void createGuiWindows()
                                             new ItemShortcutContainer);
     emoteShortcutWindow = new ShortcutWindow("EmoteShortcut",
                                              new EmoteShortcutContainer);
+    outfitWindow = new OutfitWindow();
 
     localChatTab = new ChatTab(_("General"));
 
@@ -277,6 +280,7 @@ static void destroyGuiWindows()
     delete itemShortcutWindow;
     delete emoteShortcutWindow;
     delete storageWindow;
+    delete outfitWindow;
 }
 
 Game::Game():
@@ -606,6 +610,65 @@ void Game::handleInput()
                 }
             }
 
+            if (event.key.keysym.mod & KMOD_RCTRL && !chatWindow->isInputFocused())
+            {
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_1:
+                        outfitWindow->wearOutfit(0);
+                        used = true;
+                        break;
+
+                    case SDLK_2:
+                        outfitWindow->wearOutfit(1);
+                        used = true;
+                        break;
+
+                    case SDLK_3:
+                        outfitWindow->wearOutfit(2);
+                        used = true;
+                        break;
+
+                    case SDLK_4:
+                        outfitWindow->wearOutfit(3);
+                        used = true;
+                        break;
+
+                    case SDLK_5:
+                        outfitWindow->wearOutfit(4);
+                        used = true;
+                        break;
+
+                    case SDLK_6:
+                        outfitWindow->wearOutfit(5);
+                        used = true;
+                        break;
+
+                    case SDLK_7:
+                        outfitWindow->wearOutfit(6);
+                        used = true;
+                        break;
+
+                    case SDLK_8:
+                        outfitWindow->wearOutfit(7);
+                        used = true;
+                        break;
+
+                    case SDLK_9:
+                        outfitWindow->wearOutfit(8);
+                        used = true;
+                        break;
+
+                    case SDLK_0:
+                        outfitWindow->wearOutfit(9);
+                        used = true;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
             const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
             switch (tKey)
             {
@@ -781,6 +844,9 @@ void Game::handleInput()
                         break;
                     case KeyboardConfig::KEY_WINDOW_EMOTE_SHORTCUT:
                         requestedWindow = emoteShortcutWindow;
+                        break;
+                    case KeyboardConfig::KEY_WINDOW_OUTFIT:
+                        requestedWindow = outfitWindow;
                         break;
                     case KeyboardConfig::KEY_SCREENSHOT:
                         // Screenshot (picture, hence the p)

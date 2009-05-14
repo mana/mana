@@ -297,6 +297,8 @@
 		<Unit filename="src/gui/npcstringdialog.h" />
 		<Unit filename="src/gui/okdialog.cpp" />
 		<Unit filename="src/gui/okdialog.h" />
+		<Unit filename="src/gui/outfitwindow.cpp" />
+		<Unit filename="src/gui/outfitwindow.h" />
 		<Unit filename="src/gui/palette.cpp" />
 		<Unit filename="src/gui/palette.h" />
 		<Unit filename="src/gui/partywindow.cpp" />
