@@ -26,7 +26,7 @@
 #include "gui/textrenderer.h"
 
 TextParticle::TextParticle(Map *map, const std::string &text,
-                           const gcn::Color* color,
+                           const gcn::Color *color,
                            gcn::Font *font, bool outline):
     Particle(map),
     mText(text),
@@ -47,18 +47,15 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     float alpha = mAlpha * 255.0f;
 
     if (mLifetimeLeft > -1 && mLifetimeLeft < mFadeOut)
-    {
-        alpha *= mLifetimeLeft;
-        alpha /= mFadeOut;
-    }
+        alpha = alpha * mLifetimeLeft / mFadeOut;
 
     if (mLifetimePast < mFadeIn)
-    {
-        alpha *= mLifetimePast;
-        alpha /= mFadeIn;
-    }
+        alpha = alpha * mLifetimePast / mFadeIn;
+
+    gcn::Color color = *mColor;
+    color.a = (int) alpha;
 
     TextRenderer::renderText(graphics, mText,
             screenX, screenY, gcn::Graphics::CENTER,
-            *mColor, mTextFont, mOutline, false, (int) alpha);
+            color, mTextFont, mOutline, false, (int) alpha);
 }

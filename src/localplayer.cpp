@@ -946,7 +946,8 @@ void LocalPlayer::initTargetCursor()
                      true, TC_LARGE);
 }
 
-void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
+void LocalPlayer::loadTargetCursor(const std::string &filename,
+                                   int width, int height,
                                    bool outRange, TargetCursorSize size)
 {
     assert(size > -1);
