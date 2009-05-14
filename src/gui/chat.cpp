@@ -105,14 +105,6 @@ ChatWindow::ChatWindow():
 
     mReturnToggles = config.getValue("ReturnToggles", "0") == "1";
 
-#ifdef EATHENA_SUPPORT
-    // If the player had @assert on in the last session, ask the server to
-    // run the @assert command for the player again. Convenience for GMs.
-    if (config.getValue(player_node->getName() + "GMassert", 0)) {
-        std::string cmd = "@assert";
-        chatInput(cmd);
-    }
-#endif
     mRecorder = new Recorder(this);
 }
 

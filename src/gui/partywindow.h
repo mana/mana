@@ -125,6 +125,8 @@ class PartyWindow : public Window, gcn::ActionListener
          */
         PartyMember *findOrCreateMember(int id);
 
+        void buildLayout();
+
         typedef std::map<int, PartyMember*> PartyList;
         PartyList mMembers;
         std::string mPartyInviter;

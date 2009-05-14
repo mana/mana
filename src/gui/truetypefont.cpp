@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui/truetypefont.h"
+
+#include "graphics.h"
+#include "resources/image.h"
+
 #include <guichan/exception.hpp>
-
-#include "truetypefont.h"
-
-#include "../graphics.h"
-#include "../resources/image.h"
 
 #define CACHE_SIZE 256
 

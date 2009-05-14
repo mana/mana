@@ -53,9 +53,9 @@ PartyWindow::PartyWindow() :
     setResizable(true);
     setSaveVisible(true);
     setCloseButton(true);
-    setMinWidth(212);
+    setMinWidth(120);
     setMinHeight(200);
-    setDefaultSize(590, 200, 212, 200);
+    setDefaultSize(590, 200, 150, 200);
 
     loadWindowState();
 }
@@ -92,8 +92,9 @@ PartyMember *PartyWindow::findOrCreateMember(int id)
     {
         member = new PartyMember;
         mMembers[id] = member;
-        add(member->avatar, 0, (mMembers.size() - 1) * 14);
     }
+
+    buildLayout();
 
     return member;
 }
@@ -148,6 +149,8 @@ void PartyWindow::removeMember(int id)
 void PartyWindow::removeMember(const std::string &name)
 {
     removeMember(findMember(name));
+
+    buildLayout();
 }
 
 void PartyWindow::updateOnlne(int id, bool online)
@@ -224,4 +227,20 @@ void PartyWindow::clearMembers()
 
     delete_all(mMembers);
     mMembers.clear();
+}
+
+void PartyWindow::buildLayout()
+{
+    clearLayout();
+    int lastPos = 0;
+
+    PartyList::iterator it;
+    PartyMember *member;
+
+    for (it = mMembers.begin(); it != mMembers.end(); it++)
+    {
+        member = (*it).second;
+        add(member->avatar, 0, lastPos);
+        lastPos += member->avatar->getHeight() + 2;
+    }
 }

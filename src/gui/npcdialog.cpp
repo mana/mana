@@ -281,6 +281,25 @@ void NpcDialog::integerRequest(int defaultValue, int min, int max)
     buildLayout();
 }
 
+void NpcDialog::move(int amount)
+{
+    if (mActionState != NPC_ACTION_INPUT)
+        return;
+
+    switch (mInputState)
+    {
+        case NPC_INPUT_INTEGER:
+            mIntField->setValue(mIntField->getValue() + amount);
+            break;
+        case NPC_INPUT_LIST:
+            mItemList->setSelected(mItemList->getSelected() - amount);
+            break;
+        case NPC_INPUT_NONE:
+        case NPC_INPUT_STRING:
+            break;
+    }
+}
+
 void NpcDialog::widgetResized(const gcn::Event &event)
 {
     Window::widgetResized(event);

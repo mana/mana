@@ -734,7 +734,6 @@ static void accountLogin(Network *network, LoginData *loginData)
     logger->log("Username is %s", loginData->username.c_str());
 #ifdef EATHENA_SUPPORT
     network->connect(loginData->hostname, loginData->port);
-    // network->registerHandler(&loginHandler);
 #endif
 
 #ifdef TMWSERV_SUPPORT
@@ -774,7 +773,6 @@ static void charLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to char server...");
     network->connect(loginData->hostname, loginData->port);
-    // network->registerHandler(&charServerHandler);
     Net::getCharHandler()->setCharInfo(&charInfo);
 
     // Send login infos
@@ -1505,7 +1503,6 @@ int main(int argc, char *argv[])
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     network->disconnect();
-                    network->clearHandlers();
                     break;
 
                 case STATE_CONNECTING:

@@ -239,7 +239,14 @@ void LocalPlayer::setAction(Action action, int attackType)
 void LocalPlayer::setGM(bool gm)
 {
     mIsGM = gm;
-    config.setValue(getName() + "GMassert", mIsGM);
+}
+
+void LocalPlayer::setGMLevel(int level)
+{
+    mGMLevel = level;
+
+    if (level > 0)
+        setGM(true);
 }
 
 void LocalPlayer::setName(const std::string &name)

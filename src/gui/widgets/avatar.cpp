@@ -42,7 +42,6 @@ Avatar::Avatar():
     mMaxHp(0)
 {
     setOpaque(false);
-    setSize(200, 12);
 
     if (avatarCount == 0)
     {
@@ -54,12 +53,17 @@ Avatar::Avatar():
     avatarStatusOffline->incRef();
     avatarStatusOnline->incRef();
 
+    mLabel = new Label;
+    mLabel->adjustSize();
+
     mStatus = new Icon(avatarStatusOffline);
     mStatus->setSize(12, 12);
-    add(mStatus, 1, 0);
-    mLabel = new Label;
-    mLabel->setSize(174, 12);
+
+    add(mStatus, 1, (mLabel->getHeight() - 12) / 2);
     add(mLabel, 16, 0);
+
+    setSize(250, mLabel->getHeight());
+
 }
 
 Avatar::~Avatar()
@@ -108,4 +112,5 @@ void Avatar::updateAvatarLabel()
         ss << "  (" << mHp << "/" << mMaxHp << ")";
 
     mLabel->setCaption(ss.str());
+    mLabel->adjustSize();
 }
