@@ -969,12 +969,12 @@ msgstr ""
 #: src/gui/popupmenu.cpp:89
 #, c-format
 msgid "@@trade|Trade With %s@@"
-msgstr "@@Negociar|Negociar com %s@@"
+msgstr "@@trade|Negociar com %s@@"
 
 #: src/gui/popupmenu.cpp:90 src/gui/popupmenu.cpp:138
 #, c-format
 msgid "@@attack|Attack %s@@"
-msgstr "@@atacar|Atacar %s@@"
+msgstr "@@attack|Atacar %s@@"
 
 #: src/gui/popupmenu.cpp:96
 #, c-format
@@ -1009,7 +1009,7 @@ msgstr ""
 #: src/gui/popupmenu.cpp:119
 #, c-format
 msgid "@@party|Invite %s to join your party@@"
-msgstr "@@grupo|Convidar %s para entrar para o seu grupo"
+msgstr "@@party|Convidar %s para entrar para o seu grupo"
 
 #: src/gui/popupmenu.cpp:124
 msgid "@@admin-kick|Kick player@@"
@@ -1027,12 +1027,12 @@ msgstr ""
 #: src/gui/popupmenu.cpp:152 src/gui/popupmenu.cpp:170
 #: src/gui/popupmenu.cpp:383
 msgid "@@cancel|Cancel@@"
-msgstr "@@cancelar|Cancelar@@"
+msgstr "@@cancel|Cancelar@@"
 
 #: src/gui/popupmenu.cpp:165
 #, fuzzy, c-format
 msgid "@@pickup|Pick up %s@@"
-msgstr "@@pegar|Pegar %s@@"
+msgstr "@@pickup|Pegar %s@@"
 
 #: src/gui/popupmenu.cpp:166 src/gui/popupmenu.cpp:381
 msgid "@@chat|Add to chat@@"
@@ -1040,28 +1040,27 @@ msgstr ""
 
 #: src/gui/popupmenu.cpp:356
 msgid "@@use|Unequip@@"
-msgstr "@@usar|Desequipar@@"
+msgstr "@@use|Desequipar@@"
 
 #: src/gui/popupmenu.cpp:358
 msgid "@@use|Equip@@"
-msgstr "@@usar|Equipar@@"
+msgstr "@@use|Equipar@@"
 
 #: src/gui/popupmenu.cpp:361
 msgid "@@use|Use@@"
-msgstr "@@usar|Usar@@"
+msgstr "@@use|Usar@@"
 
 #: src/gui/popupmenu.cpp:363
 msgid "@@drop|Drop@@"
-msgstr "@@descartar|Descartar@@"
+msgstr "@@drop|Descartar@@"
 
 #: src/gui/popupmenu.cpp:367
 msgid "@@split|Split@@"
-msgstr "@@dividir|Dividir@@"
+msgstr "@@split|Dividir@@"
 
 #: src/gui/popupmenu.cpp:372
-#, fuzzy
 msgid "@@store|Store@@"
-msgstr "@@usar|Usar@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:379
 msgid "@@retrieve|Retrieve@@"
