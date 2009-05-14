@@ -47,7 +47,7 @@ class TextParticle : public Particle
     private:
         std::string mText;             /**< Text of the particle. */
         gcn::Font *mTextFont;          /**< Font used for drawing the text. */
-        const gcn::Color* mColor;      /**< Color used for drawing the text. */
+        const gcn::Color *mColor;      /**< Color used for drawing the text. */
         bool mOutline;                 /**< Make the text better readable */
 };
 
