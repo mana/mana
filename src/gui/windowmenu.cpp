@@ -47,7 +47,6 @@ extern Window *buddyWindow;
 extern Window *guildWindow;
 extern Window *magicDialog;
 #endif
-extern Window *outfitWindow;
 
 WindowMenu::WindowMenu():
     mEmotePopup(0)
@@ -56,7 +55,6 @@ WindowMenu::WindowMenu():
     static const char *buttonNames[] =
     {
         ":-)",
-        N_("Outfits"),
         N_("Status"),
         N_("Equipment"),
         N_("Inventory"),
@@ -114,10 +112,6 @@ void WindowMenu::action(const gcn::ActionEvent &event)
             windowContainer->scheduleDelete(mEmotePopup);
             mEmotePopup = 0;
         }
-    }
-    else if (event.getId() == "Outfits")
-    {
-        window = outfitWindow;
     }
     else if (event.getId() == "Status")
     {

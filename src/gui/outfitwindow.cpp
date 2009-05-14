@@ -119,7 +119,7 @@ void OutfitWindow::save()
         config.setValue("Outfit" + toString(o), outfitStr);
         outfitStr = "";
     }
-    config.setValue("OutfitUnequip", mUnequipCheck ? true : false);
+    config.setValue("OutfitUnequip", mUnequipCheck->isSelected());
 }
 
 void OutfitWindow::action(const gcn::ActionEvent &event)

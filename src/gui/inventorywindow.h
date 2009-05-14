@@ -109,6 +109,7 @@ class InventoryWindow : public Window,
         gcn::Button *mUseButton;
         gcn::Button *mDropButton;
         gcn::Button *mSplitButton;
+        gcn::Button *mOutfitButton;
         gcn::Label *mWeightLabel;
         gcn::Label *mSlotsLabel;
 
