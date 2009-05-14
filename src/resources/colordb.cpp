@@ -27,8 +27,8 @@
 
 #include <libxml/tree.h>
 
-#define HAIR_COLOR_FILE "colors.xml"
-#define TMW_COLOR_FILE "hair.xml"
+#define HAIR_COLOR_FILE "hair.xml"
+#define AE_COLOR_FILE "colors.xml"
 
 namespace
 {
@@ -48,17 +48,17 @@ void ColorDB::load()
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
-        logger->log("Trying TMW's color file, %s.", TMW_COLOR_FILE);
+        logger->log("Trying Aethyra's color file, %s.", AE_COLOR_FILE);
 
         TMWHair = true;
 
         delete doc;
 
-        doc = new XML::Document(TMW_COLOR_FILE);
+        doc = new XML::Document(AE_COLOR_FILE);
         root = doc->rootNode();
         if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
         {
-            logger->log("ColorDB: Failed");
+            logger->log("ColorDB: Failed to find any color files.");
             mColors[0] = mFail;
             mLoaded = true;
 
