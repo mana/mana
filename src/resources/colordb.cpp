@@ -27,9 +27,6 @@
 
 #include <libxml/tree.h>
 
-#define HAIR_COLOR_FILE "hair.xml"
-#define AE_COLOR_FILE "colors.xml"
-
 namespace
 {
     ColorDB::Colors mColors;
@@ -42,20 +39,20 @@ void ColorDB::load()
     if (mLoaded)
         return;
 
-    XML::Document *doc = new XML::Document(HAIR_COLOR_FILE);
+    XML::Document *doc = new XML::Document("hair.xml");
     xmlNodePtr root = doc->rootNode();
-    bool TMWHair = false;
+    bool hairXml = true;
 
     if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
     {
-        logger->log("Trying Aethyra's color file, %s.", AE_COLOR_FILE);
+        logger->log("Trying to fall back on colors.xml");
 
-        TMWHair = true;
+        hairXml = false;
 
         delete doc;
-
-        doc = new XML::Document(AE_COLOR_FILE);
+        doc = new XML::Document("colors.xml");
         root = doc->rootNode();
+
         if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
         {
             logger->log("ColorDB: Failed to find any color files.");
@@ -78,8 +75,8 @@ void ColorDB::load()
                 logger->log("ColorDB: Redefinition of dye ID %d", id);
             }
 
-            TMWHair ? mColors[id] = XML::getProperty(node, "value", "#FFFFFF") :
-                      mColors[id] = XML::getProperty(node, "dye", "#FFFFFF");
+            mColors[id] = hairXml ? XML::getProperty(node, "value", "#FFFFFF") :
+                                    XML::getProperty(node, "dye", "#FFFFFF");
         }
     }
 
