@@ -46,6 +46,7 @@ extern Window *inventoryWindow;
 extern Window *npcTextDialog;
 extern Window *npcStringDialog;
 extern Window *skillDialog;
+extern Window *partyWindow;
 extern Window *minimap;
 extern Window *equipmentWindow;
 extern Window *tradeWindow;
@@ -145,6 +146,7 @@ void Setup::action(const gcn::ActionEvent &event)
 #endif
         inventoryWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
+        partyWindow->resetToDefaultSize();
         minimap->resetToDefaultSize();
         equipmentWindow->resetToDefaultSize();
         tradeWindow->resetToDefaultSize();
