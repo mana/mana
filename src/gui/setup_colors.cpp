@@ -71,7 +71,7 @@ Setup_Colors::Setup_Colors() :
     mGradTypeLabel = new Label(_("Type:"));
 
     mGradTypeSlider = new Slider(0, 3);
-    mGradTypeSlider->setWidth(200);
+    mGradTypeSlider->setWidth(180);
     mGradTypeSlider->setActionEventId("slider_grad");
     mGradTypeSlider->setValue(0);
     mGradTypeSlider->addActionListener(this);
@@ -158,21 +158,21 @@ Setup_Colors::Setup_Colors() :
 
     place(0, 0, mScroll, 5, 6).setPadding(2);
     place(0, 6, mPreviewBox, 5).setPadding(2);
-    place(0, 7, mGradTypeLabel, 2);
-    place(2, 7, mGradTypeSlider);
-    place(3, 7, mGradTypeText, 2).setPadding(1);
-    place(0, 8, mRedLabel, 2);
-    place(2, 8, mRedSlider);
-    place(3, 8, mRedText).setPadding(1);
-    place(0, 9, mGreenLabel, 2);
-    place(2, 9, mGreenSlider);
-    place(3, 9, mGreenText).setPadding(1);
-    place(0, 10, mBlueLabel, 2);
-    place(2, 10, mBlueSlider);
-    place(3, 10, mBlueText).setPadding(1);
-    place(0, 11, mGradDelayLabel, 2);
-    place(2, 11, mGradDelaySlider);
-    place(3, 11, mGradDelayText).setPadding(1);
+    place(0, 7, mGradTypeLabel, 3);
+    place(3, 7, mGradTypeSlider);
+    place(4, 7, mGradTypeText, 2).setPadding(1);
+    place(0, 8, mRedLabel, 3);
+    place(3, 8, mRedSlider);
+    place(4, 8, mRedText).setPadding(1);
+    place(0, 9, mGreenLabel, 3);
+    place(3, 9, mGreenSlider);
+    place(4, 9, mGreenText).setPadding(1);
+    place(0, 10, mBlueLabel, 3);
+    place(3, 10, mBlueSlider);
+    place(4, 10, mBlueText).setPadding(1);
+    place(0, 11, mGradDelayLabel, 3);
+    place(3, 11, mGradDelaySlider);
+    place(4, 11, mGradDelayText).setPadding(1);
 
     mGradTypeText->setCaption("");
 
