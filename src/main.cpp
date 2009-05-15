@@ -159,6 +159,7 @@ extern Net::Connection *accountServerConnection;
 #endif
 
 Graphics *graphics;
+Game *game = 0;
 
 unsigned char state;
 std::string errorMessage;
@@ -910,7 +911,6 @@ int main(int argc, char *argv[])
     // Needs to be created in main, as the updater uses it
     guiPalette = new Palette;
 
-    Game *game = NULL;
     Window *currentDialog = NULL;
 #ifdef TMWSERV_SUPPORT
     QuitDialog* quitDialog = NULL;
@@ -1290,6 +1290,7 @@ int main(int argc, char *argv[])
                     game = new Game;
                     game->logic();
                     delete game;
+                    game = 0;
 
                     state = STATE_EXIT;
 
@@ -1467,9 +1468,9 @@ int main(int argc, char *argv[])
                     desktop = NULL;
 
                     logger->log("State: GAME");
-                    game = new Game;
                     game->logic();
                     delete game;
+                    game = 0;
                     state = STATE_EXIT;
                     break;
 
