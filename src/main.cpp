@@ -215,6 +215,7 @@ struct Options
     std::string configPath;
     std::string updateHost;
     std::string dataPath;
+    std::string homeDir;
 
     std::string serverName;
     short serverPort;
@@ -303,11 +304,16 @@ static void setUpdatesDir()
  * Initializes the home directory. On UNIX and FreeBSD, ~/.tmw is used. On
  * Windows and other systems we use the current working directory.
  */
-static void initHomeDir()
+static void initHomeDir(const Options &options)
 {
-    homeDir = std::string(PHYSFS_getUserDir()) +
-        "/." +
-        branding.getValue("appShort", "tmw");
+    homeDir = options.homeDir;
+    
+    if (homeDir.empty())
+    {
+	    homeDir = std::string(PHYSFS_getUserDir()) +
+            "/." +
+	        branding.getValue("appShort", "tmw");
+    }
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
@@ -660,7 +666,7 @@ static void parseOptions(int argc, char *argv[], Options &options)
                 options.printVersion = true;
                 break;
             case 'S':
-                homeDir = optarg;
+                options.homeDir = optarg;
                 break;
             case 'O':
                 options.noOpenGL = true;
@@ -894,7 +900,7 @@ int main(int argc, char *argv[])
     // Load branding information
     branding.init("data/branding.xml");
 
-    initHomeDir();
+    initHomeDir(options);
 
     // Configure logger
     logger = new Logger;
