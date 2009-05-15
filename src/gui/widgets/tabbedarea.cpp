@@ -156,6 +156,19 @@ void TabbedArea::logic()
     logicChildren();
 }
 
+void TabbedArea::mousePressed(gcn::MouseEvent &mouseEvent)
+{
+    if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
+    {
+        gcn::Widget *widget = mTabContainer->getWidgetAt(mouseEvent.getX(),
+                                                         mouseEvent.getY());
+        gcn::Tab *tab = dynamic_cast<gcn::Tab*>(widget);
+
+        if (tab)
+            setSelectedTab(tab);
+    }
+}
+
 void TabbedArea::setSelectedTab(gcn::Tab *tab)
 {
     gcn::TabbedArea::setSelectedTab(tab);
