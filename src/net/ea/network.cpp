@@ -223,6 +223,9 @@ void Network::dispatchMessages()
 
         MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
+        if (msg.getLength() == 0)
+            logger->error("Zero length packet received. Exiting.");
+
         if (iter != mMessageHandlers.end())
         {
             iter->second->handleMessage(msg);
