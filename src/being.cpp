@@ -448,7 +448,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage,
-                                        mPx + 16, mPy + 16,
+                                        mPx, mPy - 16,
                                         color, font, true);
 
     if (amount > 0)
