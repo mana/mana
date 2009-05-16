@@ -812,8 +812,8 @@ void LocalPlayer::setXp(int xp)
         // Show XP number
         particleEngine->addTextRiseFadeOutEffect(
                 text,
-                getPixelX() + 16,
-                getPixelY() - 16,
+                getPixelX(),
+                getPixelY() - 48,
                 &guiPalette->getColor(Palette::EXP_INFO),
                 gui->getInfoParticleFont(), true);
     }
@@ -829,8 +829,8 @@ void LocalPlayer::pickedUp(const std::string &item)
         // Show pickup notification
         particleEngine->addTextRiseFadeOutEffect(
                 item,
-                getPixelX() + 16,
-                getPixelY() - 16,
+                getPixelX(),
+                getPixelY() - 48,
                 &guiPalette->getColor(Palette::PICKUP_INFO),
                 gui->getInfoParticleFont(), true);
     }
