@@ -195,7 +195,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             mMap->drawCollision(graphics,
                                 (int) mPixelViewX,
                                 (int) mPixelViewY);
-#if 0
+#if EATHENA_SUPPORT
             drawDebugPath(graphics);
 #endif
         }
@@ -265,8 +265,8 @@ void Viewport::drawDebugPath(Graphics *graphics)
     const Vector &playerPos = player_node->getPosition();
 
     Path debugPath = mMap->findPath(
-            (int) playerPos.x / 32,
-            (int) playerPos.y / 32,
+            (int) (playerPos.x - 16) / 32,
+            (int) (playerPos.y - 32) / 32,
             mouseTileX, mouseTileY, 0xFF);
 
     drawPath(graphics, debugPath);
