@@ -727,10 +727,10 @@ void LocalPlayer::stopAttack()
 {
     if (mTarget)
     {
-        setAction(STAND);
-        mLastTarget = -1;
+        if (mAction == ATTACK)
+            setAction(STAND);
+        setTarget(NULL);
     }
-    setTarget(NULL);
     mLastTarget = -1;
 }
 
