@@ -50,7 +50,7 @@ class TextRenderer
         if (shadow)
         {
             graphics->setColor(guiPalette->getColor(Palette::SHADOW,
-                    alpha / 2));
+                                                    alpha / 2));
             if (outline)
             {
                 graphics->drawText(text, x + 2, y + 2, align);

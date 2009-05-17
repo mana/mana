@@ -140,15 +140,15 @@ void DropDown::draw(gcn::Graphics* graphics)
     const int alpha = (int) (mAlpha * 255.0f);
     gcn::Color faceColor = getBaseColor();
     faceColor.a = alpha;
-    const gcn::Color* highlightColor = &guiPalette->getColor(Palette::HIGHLIGHT,
-            alpha);
+    const gcn::Color *highlightColor =
+            &guiPalette->getColor(Palette::HIGHLIGHT, alpha);
     gcn::Color shadowColor = faceColor - 0x303030;
     shadowColor.a = alpha;
 
     if (mListBox->getListModel() && mListBox->getSelected() >= 0)
     {
         graphics->setFont(getFont());
-        graphics->setColor(guiPalette->getColor(Palette::TEXT, alpha));
+        graphics->setColor(guiPalette->getColor(Palette::TEXT));
         graphics->drawText(mListBox->getListModel()->getElementAt(mListBox->getSelected()), 1, 0);
     }
 

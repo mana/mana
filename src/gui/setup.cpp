@@ -46,6 +46,7 @@ extern Window *inventoryWindow;
 extern Window *npcTextDialog;
 extern Window *npcStringDialog;
 extern Window *skillDialog;
+extern Window *partyWindow;
 extern Window *minimap;
 extern Window *equipmentWindow;
 extern Window *tradeWindow;
@@ -64,7 +65,7 @@ Setup::Setup():
     Window(_("Setup"))
 {
     setCloseButton(true);
-    int width = 340;
+    int width = 380;
     int height = 360;
     setContentSize(width, height);
 
@@ -104,7 +105,7 @@ Setup::Setup():
     add(panel);
 
     Label *version = new Label(FULL_VERSION);
-    version->setPosition(5, height - version->getHeight() - 5);
+    version->setPosition(9, height - version->getHeight() - 9);
     add(version);
 
     center();
@@ -145,6 +146,7 @@ void Setup::action(const gcn::ActionEvent &event)
 #endif
         inventoryWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
+        partyWindow->resetToDefaultSize();
         minimap->resetToDefaultSize();
         equipmentWindow->resetToDefaultSize();
         tradeWindow->resetToDefaultSize();

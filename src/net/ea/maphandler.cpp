@@ -27,6 +27,7 @@
 #include "net/messagein.h"
 #include "net/messageout.h"
 
+#include "game.h"
 #include "localplayer.h"
 #include "log.h"
 #include "main.h"
@@ -37,6 +38,7 @@
 #include "utils/stringutils.h"
 
 Net::MapHandler *mapHandler;
+extern Game *game;
 
 namespace EAthena {
 
@@ -65,6 +67,7 @@ void MapHandler::handleMessage(MessageIn &msg)
             logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
                     player_node->mX, player_node->mY, direction);
             state = STATE_GAME;
+            game = new Game;
             break;
 
         case SMSG_SERVER_PING:

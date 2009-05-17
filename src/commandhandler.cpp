@@ -279,9 +279,9 @@ void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 {
     std::ostringstream where;
     where << map_path << ", coordinates: " 
-          << (player_node->getPixelX() / 32) << ", "
-          << ((player_node->getPixelY() / 32) - 1); // Not real sure why we remove 1, 
-                                                    // but it makes it in sync with @where
+          << ((player_node->getPixelX() - 16) / 32) << ", "
+          << ((player_node->getPixelY() - 32) / 32);
+
     tab->chatLog(where.str(), BY_SERVER);
 }
 

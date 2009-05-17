@@ -727,10 +727,10 @@ void LocalPlayer::stopAttack()
 {
     if (mTarget)
     {
-        setAction(STAND);
-        mLastTarget = -1;
+        if (mAction == ATTACK)
+            setAction(STAND);
+        setTarget(NULL);
     }
-    setTarget(NULL);
     mLastTarget = -1;
 }
 
@@ -812,8 +812,8 @@ void LocalPlayer::setXp(int xp)
         // Show XP number
         particleEngine->addTextRiseFadeOutEffect(
                 text,
-                getPixelX() + 16,
-                getPixelY() - 16,
+                getPixelX(),
+                getPixelY() - 48,
                 &guiPalette->getColor(Palette::EXP_INFO),
                 gui->getInfoParticleFont(), true);
     }
@@ -829,8 +829,8 @@ void LocalPlayer::pickedUp(const std::string &item)
         // Show pickup notification
         particleEngine->addTextRiseFadeOutEffect(
                 item,
-                getPixelX() + 16,
-                getPixelY() - 16,
+                getPixelX(),
+                getPixelY() - 48,
                 &guiPalette->getColor(Palette::PICKUP_INFO),
                 gui->getInfoParticleFont(), true);
     }
@@ -946,7 +946,8 @@ void LocalPlayer::initTargetCursor()
                      true, TC_LARGE);
 }
 
-void LocalPlayer::loadTargetCursor(std::string filename, int width, int height,
+void LocalPlayer::loadTargetCursor(const std::string &filename,
+                                   int width, int height,
                                    bool outRange, TargetCursorSize size)
 {
     assert(size > -1);

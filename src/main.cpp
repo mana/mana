@@ -159,8 +159,9 @@ extern Net::Connection *accountServerConnection;
 #endif
 
 Graphics *graphics;
+Game *game = 0;
 
-unsigned char state;
+State state = STATE_NULL;
 std::string errorMessage;
 
 Sound sound;
@@ -214,6 +215,7 @@ struct Options
     std::string configPath;
     std::string updateHost;
     std::string dataPath;
+    std::string homeDir;
 
     std::string serverName;
     short serverPort;
@@ -302,11 +304,16 @@ static void setUpdatesDir()
  * Initializes the home directory. On UNIX and FreeBSD, ~/.tmw is used. On
  * Windows and other systems we use the current working directory.
  */
-static void initHomeDir()
+static void initHomeDir(const Options &options)
 {
-    homeDir = std::string(PHYSFS_getUserDir()) +
-        "/." +
-        branding.getValue("appShort", "tmw");
+    homeDir = options.homeDir;
+    
+    if (homeDir.empty())
+    {
+	    homeDir = std::string(PHYSFS_getUserDir()) +
+            "/." +
+	        branding.getValue("appShort", "tmw");
+    }
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
@@ -659,7 +666,7 @@ static void parseOptions(int argc, char *argv[], Options &options)
                 options.printVersion = true;
                 break;
             case 'S':
-                homeDir = optarg;
+                options.homeDir = optarg;
                 break;
             case 'O':
                 options.noOpenGL = true;
@@ -734,7 +741,6 @@ static void accountLogin(Network *network, LoginData *loginData)
     logger->log("Username is %s", loginData->username.c_str());
 #ifdef EATHENA_SUPPORT
     network->connect(loginData->hostname, loginData->port);
-    // network->registerHandler(&loginHandler);
 #endif
 
 #ifdef TMWSERV_SUPPORT
@@ -774,7 +780,6 @@ static void charLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to char server...");
     network->connect(loginData->hostname, loginData->port);
-    // network->registerHandler(&charServerHandler);
     Net::getCharHandler()->setCharInfo(&charInfo);
 
     // Send login infos
@@ -895,7 +900,7 @@ int main(int argc, char *argv[])
     // Load branding information
     branding.init("data/branding.xml");
 
-    initHomeDir();
+    initHomeDir(options);
 
     // Configure logger
     logger = new Logger;
@@ -912,7 +917,6 @@ int main(int argc, char *argv[])
     // Needs to be created in main, as the updater uses it
     guiPalette = new Palette;
 
-    Game *game = NULL;
     Window *currentDialog = NULL;
 #ifdef TMWSERV_SUPPORT
     QuitDialog* quitDialog = NULL;
@@ -971,7 +975,7 @@ int main(int argc, char *argv[])
 
     desktop->setSize(screenWidth, screenHeight);
 
-    unsigned int oldstate = !state; // We start with a status change.
+    State oldstate = STATE_EXIT; // We start with a status change
 
     SDL_Event event;
 
@@ -1292,6 +1296,7 @@ int main(int argc, char *argv[])
                     game = new Game;
                     game->logic();
                     delete game;
+                    game = 0;
 
                     state = STATE_EXIT;
 
@@ -1424,9 +1429,9 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        int nextState = STATE_UPDATE;
+                        State nextState = STATE_UPDATE;
                         currentDialog = new ServerSelectDialog(&loginData,
-                                                                nextState);
+                                                               nextState);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
                         if (options.chooseDefault)
@@ -1469,9 +1474,9 @@ int main(int argc, char *argv[])
                     desktop = NULL;
 
                     logger->log("State: GAME");
-                    game = new Game;
                     game->logic();
                     delete game;
+                    game = 0;
                     state = STATE_EXIT;
                     break;
 
@@ -1505,7 +1510,6 @@ int main(int argc, char *argv[])
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     network->disconnect();
-                    network->clearHandlers();
                     break;
 
                 case STATE_CONNECTING:

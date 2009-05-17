@@ -283,15 +283,15 @@ Setup_Players::Setup_Players():
     place(0, 0, mPlayerTitleTable, 4);
     place(0, 1, mPlayerScrollArea, 4, 4).setPadding(2);
     place(0, 5, mDeleteButton);
-    place(0, 6, mWhisperTabCheckBox);
     place(2, 5, ignore_action_label);
     place(2, 6, mIgnoreActionChoicesBox, 2).setPadding(2);
     place(2, 7, mDefaultTrading);
     place(2, 8, mDefaultWhisper);
+    place(0, 9, mWhisperTabCheckBox, 4).setPadding(4);
 
     player_relations.addListener(this);
 
-    setDimension(gcn::Rectangle(0, 0, 325, 280));
+    setDimension(gcn::Rectangle(0, 0, 365, 280));
 }
 
 Setup_Players::~Setup_Players()

@@ -116,6 +116,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/npcpostdialog.h \
 	      gui/okdialog.cpp \
 	      gui/okdialog.h \
+	      gui/outfitwindow.cpp \
+	      gui/outfitwindow.h \
 	      gui/palette.cpp \
 	      gui/palette.h \
 	      gui/partywindow.cpp \

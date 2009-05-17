@@ -490,7 +490,8 @@ class LocalPlayer : public Player
         /**
          * Helper function for loading target cursors
          */
-        void loadTargetCursor(std::string filename, int width, int height,
+        void loadTargetCursor(const std::string &filename,
+                              int width, int height,
                               bool outRange, Being::TargetCursorSize size);
 
         /** Images of the target cursor. */
