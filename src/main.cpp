@@ -161,7 +161,7 @@ extern Net::Connection *accountServerConnection;
 Graphics *graphics;
 Game *game = 0;
 
-unsigned char state = STATE_NULL;
+State state = STATE_NULL;
 std::string errorMessage;
 
 Sound sound;
@@ -975,7 +975,7 @@ int main(int argc, char *argv[])
 
     desktop->setSize(screenWidth, screenHeight);
 
-    unsigned int oldstate = !state; // We start with a status change.
+    State oldstate = STATE_EXIT; // We start with a status change
 
     SDL_Event event;
 
@@ -1429,9 +1429,9 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        int nextState = STATE_UPDATE;
+                        State nextState = STATE_UPDATE;
                         currentDialog = new ServerSelectDialog(&loginData,
-                                                                nextState);
+                                                               nextState);
                         positionDialog(currentDialog, screenWidth,
                                                       screenHeight);
                         if (options.chooseDefault)

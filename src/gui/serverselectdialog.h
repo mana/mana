@@ -24,6 +24,8 @@
 
 #include "gui/widgets/window.h"
 
+#include "main.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
 
@@ -42,7 +44,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
          *
          * @see Window::Window
          */
-        ServerSelectDialog(LoginData *loginData, int nextState);
+        ServerSelectDialog(LoginData *loginData, State nextState);
 
         /**
          * Destructor.
@@ -59,7 +61,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         ServerListModel *mServerListModel;
         gcn::ListBox *mServerList;
         gcn::Button *mOkButton;
-        int mNextState;
+        State mNextState;
 };
 
 #endif

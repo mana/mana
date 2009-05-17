@@ -55,7 +55,7 @@ class ServerListModel : public gcn::ListModel
         }
 };
 
-ServerSelectDialog::ServerSelectDialog(LoginData *loginData, int nextState):
+ServerSelectDialog::ServerSelectDialog(LoginData *loginData, State nextState):
     Window(_("Select Server")),
     mLoginData(loginData),
     mNextState(nextState)
