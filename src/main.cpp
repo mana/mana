@@ -161,7 +161,7 @@ extern Net::Connection *accountServerConnection;
 Graphics *graphics;
 Game *game = 0;
 
-unsigned char state;
+unsigned char state = STATE_NULL;
 std::string errorMessage;
 
 Sound sound;
