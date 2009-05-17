@@ -78,7 +78,7 @@
 /*
  * Client different States
  */
-enum {
+enum State {
     STATE_EXIT,
     STATE_LOADDATA,
     STATE_LOGIN,
@@ -136,7 +136,7 @@ const short maxSlot = 2;
 extern std::string token;
 extern char n_server, n_character;
 
-extern unsigned char state;
+extern State state;
 extern std::string errorMessage;
 
 #endif
