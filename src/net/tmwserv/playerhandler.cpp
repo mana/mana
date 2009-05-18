@@ -332,9 +332,11 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     viewport->scrollBy(scrollOffsetX, scrollOffsetY);
 }
 
-void PlayerHandler::attack(Being *being)
+void PlayerHandler::attack(int id)
 {
-    // TODO
+    MessageOut msg(PGMSG_ATTACK);
+    msg.writeInt16(id);
+    Net::GameServer::connection->send(msg);
 }
 
 void PlayerHandler::emote(int emoteId)

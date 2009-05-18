@@ -307,7 +307,7 @@ static void setUpdatesDir()
 static void initHomeDir(const Options &options)
 {
     homeDir = options.homeDir;
-    
+
     if (homeDir.empty())
     {
 	    homeDir = std::string(PHYSFS_getUserDir()) +

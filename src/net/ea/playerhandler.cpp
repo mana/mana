@@ -422,10 +422,10 @@ void PlayerHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void PlayerHandler::attack(Being *being)
+void PlayerHandler::attack(int id)
 {
     MessageOut outMsg(CMSG_PLAYER_ATTACK);
-    outMsg.writeInt32(being->getId());
+    outMsg.writeInt32(id);
     outMsg.writeInt8(0);
 }
 

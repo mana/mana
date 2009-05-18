@@ -35,7 +35,7 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         void handleMessage(MessageIn &msg);
 
-        void attack(Being *being);
+        void attack(int id);
 
         void emote(int emoteId);
 

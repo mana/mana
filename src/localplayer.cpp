@@ -606,7 +606,7 @@ void LocalPlayer::emote(Uint8 emotion)
 }
 
 #ifdef TMWSERV_SUPPORT
-
+/*
 void LocalPlayer::attack()
 {
     if (mLastAction != -1)
@@ -656,13 +656,14 @@ void LocalPlayer::attack()
     }
     Net::GameServer::Player::attack(getSpriteDirection());
 }
-
+*/
 void LocalPlayer::useSpecial(int special)
 {
     Net::GameServer::Player::useSpecial(special);
 }
 
-#else 
+#endif
+//#else
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
@@ -676,9 +677,13 @@ void LocalPlayer::attack(Being *target, bool keep)
         mLastTarget = -1;
         setTarget(target);
     }
-
+#ifdef TMWSERV_SUPPORT
+    int dist_x = target->getPixelX();
+    int dist_y = target->getPixelY();
+#else
     int dist_x = target->mX - mX;
     int dist_y = target->mY - mY;
+#endif
 
     // Must be standing to attack
     if (mAction != STAND)
@@ -699,8 +704,12 @@ void LocalPlayer::attack(Being *target, bool keep)
             setDirection(LEFT);
     }
 
+#ifdef TMWSERV_SUPPORT
+    mLastAction = tick_time;
+#else
     mWalkTime = tick_time;
     mTargetTime = tick_time;
+#endif
 
     setAction(ATTACK);
 
@@ -715,13 +724,11 @@ void LocalPlayer::attack(Being *target, bool keep)
         sound.playSfx("sfx/fist-swish.ogg");
     }
 
-    Net::getPlayerHandler()->attack(target);
+    Net::getPlayerHandler()->attack(target->getId());
 
     if (!keep)
         stopAttack();
 }
-
-#endif // no TMWSERV_SUPPORT
 
 void LocalPlayer::stopAttack()
 {

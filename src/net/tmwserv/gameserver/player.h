@@ -43,7 +43,6 @@ namespace Net
             void walk(int x, int y);
             void pickUp(int x, int y);
             void moveItem(int oldSlot, int newSlot, int amount);
-            void attack(int direction);
             void useSpecial(int special);
             void requestTrade(int id);
             void acceptTrade(bool accept);

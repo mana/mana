@@ -214,11 +214,9 @@ class LocalPlayer : public Player
         void setTrading(bool trading) { mTrading = trading; }
 
 #ifdef TMWSERV_SUPPORT
-        void attack();
         void useSpecial(int id);
-#else
-        void attack(Being *target = NULL, bool keep = false);
 #endif
+        void attack(Being *target = NULL, bool keep = false);
 
         /**
          * Triggers whether or not to show the name as a GM name.

@@ -358,19 +358,15 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                         keyboard.isKeyActive(keyboard.KEY_ATTACK))
                     {
                         player_node->setGotoTarget(being);
-//TODO: This can be changed when TMWServ moves to target based combat
-#ifdef TMWSERV_SUPPORT 
-                        player_node->attack();
-#else
+
                         player_node->attack(being,
                             !keyboard.isKeyActive(keyboard.KEY_TARGET));
-#endif
 
                     }
                     else
                     {
 #ifdef TMWSERV_SUPPORT
-                        player_node->setDestination(event.getX() + (int) mPixelViewX, 
+                        player_node->setDestination(event.getX() + (int) mPixelViewX,
                                                     event.getY() + (int) mPixelViewY);
 #else
                         player_node->setDestination(tilex, tiley);
