@@ -193,6 +193,8 @@ void LocalPlayer::logic()
         mLastTarget = -1;
     }
 
+#endif
+
     if (mTarget)
     {
         if (mTarget->getType() == Being::NPC)
@@ -203,12 +205,21 @@ void LocalPlayer::logic()
         }
         else
         {
+#ifdef TMWSERV_SUPPORT
+            // Find whether target is in range
+            const int rangeX = abs(mTarget->getPosition().x - getPosition().x);
+            const int rangeY = abs(mTarget->getPosition().y - getPosition().y);
+            const int attackRange = getAttackRange();
+            const int inRange = rangeX > attackRange || rangeY > attackRange
+                                                                    ? 1 : 0;
+#else
             // Find whether target is in range
             const int rangeX = abs(mTarget->mX - mX);
             const int rangeY = abs(mTarget->mY - mY);
             const int attackRange = getAttackRange();
             const int inRange = rangeX > attackRange || rangeY > attackRange
                                                                     ? 1 : 0;
+#endif
 
             mTarget->setTargetAnimation(
                 mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
@@ -220,7 +231,6 @@ void LocalPlayer::logic()
                 attack(mTarget, true);
         }
     }
-#endif
 
     Player::logic();
 }
@@ -663,10 +673,18 @@ void LocalPlayer::useSpecial(int special)
 }
 
 #endif
-//#else
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
+#ifdef TMWSERV_SUPPORT
+    if (mLastAction != -1)
+        return;
+
+    // Can only attack when standing still
+    if (mAction != STAND && mAction != ATTACK)
+        return;
+#endif
+
     mKeepAttacking = keep;
 
     if (!target || target->getType() == Being::NPC)
@@ -678,8 +696,10 @@ void LocalPlayer::attack(Being *target, bool keep)
         setTarget(target);
     }
 #ifdef TMWSERV_SUPPORT
-    int dist_x = target->getPixelX();
-    int dist_y = target->getPixelY();
+    Vector plaPos = this->getPosition();
+    Vector tarPos = mTarget->getPosition();
+    int dist_x = plaPos.x - tarPos.x;
+    int dist_y = plaPos.y - tarPos.y;
 #else
     int dist_x = target->mX - mX;
     int dist_y = target->mY - mY;
