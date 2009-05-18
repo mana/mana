@@ -1471,8 +1471,6 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_GAME:
-                    sound.fadeOutMusic(1000);
-
                     delete progressBar;
                     delete progressLabel;
                     delete setupButton;
