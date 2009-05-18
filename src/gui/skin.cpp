@@ -101,16 +101,14 @@ void Skin::updateAlpha()
 
 int Skin::getMinWidth() const
 {
-    return (mBorder.grid[ImageRect::UPPER_LEFT]->getWidth() +
-            mBorder.grid[ImageRect::UPPER_CENTER]->getWidth()) +
-            mBorder.grid[ImageRect::UPPER_RIGHT]->getWidth();
+    return mBorder.grid[ImageRect::UPPER_LEFT]->getWidth() +
+           mBorder.grid[ImageRect::UPPER_RIGHT]->getWidth();
 }
 
 int Skin::getMinHeight() const
 {
-    return (mBorder.grid[ImageRect::UPPER_LEFT]->getHeight() +
-            mBorder.grid[ImageRect::LEFT]->getHeight()) +
-            mBorder.grid[ImageRect::LOWER_LEFT]->getHeight();
+    return mBorder.grid[ImageRect::UPPER_LEFT]->getHeight() +
+           mBorder.grid[ImageRect::LOWER_LEFT]->getHeight();
 }
 
 SkinLoader::SkinLoader()
