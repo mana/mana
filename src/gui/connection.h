@@ -24,6 +24,8 @@
 
 #include "gui/widgets/window.h"
 
+#include "main.h"
+
 #include <guichan/actionlistener.hpp>
 
 class ProgressBar;
@@ -41,7 +43,7 @@ class ConnectionDialog : public Window, gcn::ActionListener
          *
          * @see Window::Window
          */
-        ConnectionDialog(int previousState);
+        ConnectionDialog(State previousState);
 
         /**
          * Called when the user presses Cancel. Restores the global state to
@@ -54,7 +56,7 @@ class ConnectionDialog : public Window, gcn::ActionListener
     private:
         ProgressBar *mProgressBar;
         float mProgress;
-        int mPreviousState;
+        State mPreviousState;
 };
 
 #endif
