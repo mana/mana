@@ -31,6 +31,8 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
+#include "utils/dtor.h"
+
 #include <guichan/font.hpp>
 
 ImageRect ProgressBar::mBorder;
@@ -59,7 +61,7 @@ ProgressBar::ProgressBar(float progress,
         mBorder.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
         mBorder.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
         mBorder.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
-        mBorder.grid[4] = resman->getImage("graphics/gui/bg_quad_dis.png");
+        mBorder.grid[4] = dBorders->getSubImage(4, 4, 3, 10);
         mBorder.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
         mBorder.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
         mBorder.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
@@ -82,15 +84,7 @@ ProgressBar::~ProgressBar()
 
     if (mInstances == 0)
     {
-        delete mBorder.grid[0];
-        delete mBorder.grid[1];
-        delete mBorder.grid[2];
-        delete mBorder.grid[3];
-        mBorder.grid[4]->decRef();
-        delete mBorder.grid[5];
-        delete mBorder.grid[6];
-        delete mBorder.grid[7];
-        delete mBorder.grid[8];
+        for_each(mBorder.grid, mBorder.grid + 9, dtor<Image*>());
     }
 }
 
