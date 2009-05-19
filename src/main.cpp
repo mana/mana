@@ -126,6 +126,12 @@
 #include <sys/stat.h>
 #endif
 
+#ifdef TWMSERV_SUPPORT
+#define DEFAULT_PORT 9601
+#else
+#define DEFAULT_PORT 6901
+#endif
+
 namespace
 {
     struct SetupListener : public gcn::ActionListener
@@ -347,11 +353,7 @@ static void initConfiguration(const Options &options)
     std::string defaultHost = branding.getValue("defaultServer",
         "server.themanaworld.org");
     config.setValue("host", defaultHost);
-#ifdef TWMSERV_SUPPORT
-    int defaultPort = (int)branding.getValue("defaultPort", 9601);
-#else
-    int defaultPort = (int)branding.getValue("defaultPort", 6901);
-#endif
+    int defaultPort = (int)branding.getValue("defaultPort", DEFAULT_PORT);
     config.setValue("port", defaultPort);
     config.setValue("hwaccel", false);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
@@ -953,7 +955,7 @@ int main(int argc, char *argv[])
                                                "server.themanaworld.org").c_str();
     }
     if (options.serverPort == 0) {
-        loginData.port = (short) branding.getValue("defaultPort", 9601);
+        loginData.port = (short) branding.getValue("defaultPort", DEFAULT_PORT);
     }
     if (loginData.username.empty() && loginData.remember) {
         loginData.username = config.getValue("username", "");
