@@ -209,18 +209,14 @@ void LocalPlayer::logic()
             // Find whether target is in range
             const int rangeX = abs(mTarget->getPosition().x - getPosition().x);
             const int rangeY = abs(mTarget->getPosition().y - getPosition().y);
-            const int attackRange = getAttackRange();
-            const int inRange = rangeX > attackRange || rangeY > attackRange
-                                                                    ? 1 : 0;
 #else
             // Find whether target is in range
             const int rangeX = abs(mTarget->mX - mX);
             const int rangeY = abs(mTarget->mY - mY);
+#endif
             const int attackRange = getAttackRange();
             const int inRange = rangeX > attackRange || rangeY > attackRange
                                                                     ? 1 : 0;
-#endif
-
             mTarget->setTargetAnimation(
                 mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
 
@@ -290,9 +286,7 @@ void LocalPlayer::nextStep()
     if (mGoingToTarget && mTarget && withinAttackRange(mTarget))
     {
         mAction = Being::STAND;
-#ifdef EATHENA_SUPPORT
         attack(mTarget, true);
-#endif
         mGoingToTarget = false;
         mPath.clear();
         return;
@@ -703,11 +697,11 @@ void LocalPlayer::attack(Being *target, bool keep)
 #else
     int dist_x = target->mX - mX;
     int dist_y = target->mY - mY;
-#endif
 
     // Must be standing to attack
     if (mAction != STAND)
         return;
+#endif
 
     if (abs(dist_y) >= abs(dist_x))
     {
@@ -744,10 +738,12 @@ void LocalPlayer::attack(Being *target, bool keep)
         sound.playSfx("sfx/fist-swish.ogg");
     }
 
+#ifdef EATHENA_SUPPORT
     Net::getPlayerHandler()->attack(target->getId());
 
     if (!keep)
         stopAttack();
+#endif
 }
 
 void LocalPlayer::stopAttack()
@@ -872,7 +868,7 @@ int LocalPlayer::getAttackRange()
         const ItemInfo info = weapon->getInfo();
         return info.getAttackRange();
     }
-    return 32; // unarmed range
+    return 48; // unarmed range
 #else
     return mAttackRange;
 #endif
