@@ -15,7 +15,7 @@ writing a branding.xml for their forks.
  <option name="appIcon" value="icons/tmw.png"/>
  <option name="loginMusic" value="Magick - Real.ogg"/>
  <option name="defaultServer" value="server.themanaworld.org"/>
- <option name="defaultPort" value="9601"/>
+ <option name="defaultPort" value="6901"/>
  <option name="defaultUpdateHost" value="http://updates.themanaworld.org"/>
  <option name="font" value="fonts/dejavusans.ttf" />
  <option name="boldFont" value="fonts/dejavusans-bold.ttf" />
