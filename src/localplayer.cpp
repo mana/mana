@@ -738,9 +738,11 @@ void LocalPlayer::attack(Being *target, bool keep)
         sound.playSfx("sfx/fist-swish.ogg");
     }
 
-#ifdef EATHENA_SUPPORT
+#ifdef TMWSERV_SUPPORT
+    if (mLastAction == STAND)
+#endif
     Net::getPlayerHandler()->attack(target->getId());
-
+#ifdef EATHENA_SUPPORT
     if (!keep)
         stopAttack();
 #endif
