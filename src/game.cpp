@@ -39,6 +39,7 @@
 #include "npc.h"
 #include "particle.h"
 #include "playerrelations.h"
+#include "sound.h"
 
 #include "gui/widgets/chattab.h"
 #include "gui/buy.h"
@@ -320,6 +321,9 @@ Game::Game():
         joystick = new Joystick(0);
 
 #ifdef EATHENA_SUPPORT
+    // fade out logon-music here too to give the desired effect of "flowing"
+    // into the game.
+    sound.fadeOutMusic(1000);
     map_path = map_path.substr(0, map_path.rfind("."));
     engine->changeMap(map_path);
 #endif
