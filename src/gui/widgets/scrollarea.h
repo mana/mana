@@ -139,6 +139,8 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         int mX,mY;
         bool mHasMouse;
         bool mOpaque;
+
+        int mLastUpdate;
 };
 
 #endif

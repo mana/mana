@@ -24,6 +24,7 @@
 #include "configuration.h"
 #include "graphics.h"
 
+#include "gui/gui.h"
 #include "gui/skin.h"
 
 #include "resources/image.h"
@@ -159,13 +160,18 @@ void ScrollArea::init()
             resman->getImage("graphics/gui/hscroll_right_pressed.png");
     }
 
+    mLastUpdate = tick_time;
+
     instances++;
 }
 
 void ScrollArea::logic()
 {
     if (!isVisible())
+    {
+        mLastUpdate = tick_time;
         return;
+    }
 
     gcn::ScrollArea::logic();
     gcn::Widget *content = getContent();
@@ -184,6 +190,34 @@ void ScrollArea::logic()
             content->setHeight(getChildrenArea().height -
                     2 * content->getFrameSize());
         }
+    }
+
+    const int updateTicks = get_elapsed_time(mLastUpdate) / 100;
+
+    if (updateTicks > 0)
+    {
+        if (mUpButtonPressed)
+        {
+            setVerticalScrollAmount(getVerticalScrollAmount() -
+                                    mUpButtonScrollAmount);
+        }
+        else if (mDownButtonPressed)
+        {
+            setVerticalScrollAmount(getVerticalScrollAmount() +
+                                    mDownButtonScrollAmount);
+        }
+        else if (mLeftButtonPressed)
+        {
+            setHorizontalScrollAmount(getHorizontalScrollAmount() - 
+                                      mLeftButtonScrollAmount);
+        }
+        else if (mRightButtonPressed)
+        {
+            setHorizontalScrollAmount(getHorizontalScrollAmount() +
+                                      mRightButtonScrollAmount);
+        }
+
+        mLastUpdate = tick_time;
     }
 }
 
@@ -346,8 +380,8 @@ void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 
 void ScrollArea::mouseMoved(gcn::MouseEvent& event)
 {
-mX = event.getX();
-mY = event.getY();
+    mX = event.getX();
+    mY = event.getY();
 }
 
 void ScrollArea::mouseEntered(gcn::MouseEvent& event)
