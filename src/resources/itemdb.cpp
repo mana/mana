@@ -210,6 +210,10 @@ void ItemDB::load()
             }
         }
 
+        if (weaponType > 0)
+            if (attackRange == 0)
+                logger->log("ItemDB: Missing attack range from weapon %i!", id);
+
 #define CHECK_PARAM(param, error_value) \
         if (param == error_value) \
             logger->log("ItemDB: Missing " #param " attribute for item %i!",id)
