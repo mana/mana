@@ -227,15 +227,19 @@ void ChatTab::chatInput(std::string &msg)
 
             std::string temp = msg.substr(start + 1, end - start - 1);
 
-            toLower(trim(temp));
-
-            const ItemInfo itemInfo = ItemDB::get(temp);
-            if (itemInfo.getName() != _("Unknown item"))
+            // Do not parse an empty string (it crashes the client)
+            if (!temp.empty())
             {
-                msg.insert(end, "@@");
-                msg.insert(start+1, "|");
-                msg.insert(start+1, toString(itemInfo.getId()));
-                msg.insert(start+1, "@@");
+                toLower(trim(temp));
+
+                const ItemInfo itemInfo = ItemDB::get(temp);
+                if (itemInfo.getName() != _("Unknown item"))
+                {
+                    msg.insert(end, "@@");
+                    msg.insert(start+1, "|");
+                    msg.insert(start+1, toString(itemInfo.getId()));
+                    msg.insert(start+1, "@@");
+                }
             }
         }
         start =  msg.find('[', start + 1);
