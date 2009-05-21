@@ -49,9 +49,9 @@ class PlayerHandler
 
         virtual void respawn() = 0;
 
-        virtual void ingorePlayer(const std::string &player, bool ignore) = 0;
+        virtual void ignorePlayer(const std::string &player, bool ignore) = 0;
 
-        virtual void ingoreAll(bool ignore) = 0;
+        virtual void ignoreAll(bool ignore) = 0;
 };
 
 } // namespace Net

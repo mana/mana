@@ -181,7 +181,10 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() > 0)
             {
                 if (config.getValue("showpickupchat", 1))
-                    localChatTab->chatLog(_("Unable to pick up item"), BY_SERVER);
+                {
+                    localChatTab->chatLog(_("Unable to pick up item."),
+                                          BY_SERVER);
+                }
             }
             else
             {
@@ -191,7 +194,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
                 if (config.getValue("showpickupchat", 1))
                 {
-                    localChatTab->chatLog(strprintf(_("You picked up %s [@@%d|%s@@]"),
+                    localChatTab->chatLog(strprintf(_("You picked up %s [@@%d|%s@@]."),
                         amountStr.c_str(), itemInfo.getId(), itemInfo.getName().c_str()),
                         BY_SERVER);
                 }
@@ -237,7 +240,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             amount = msg.readInt16();
 
             if (msg.readInt8() == 0) {
-                localChatTab->chatLog(_("Failed to use item"), BY_SERVER);
+                localChatTab->chatLog(_("Failed to use item."), BY_SERVER);
             } else {
                 if (Item *item = inventory->getItem(index))
                     item->setQuantity(amount);

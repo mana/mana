@@ -41,7 +41,7 @@
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
-static const char *SKILLS_FILE = _("skills.xml");
+static const char *SKILLS_FILE = "skills.xml";
 
 struct SkillInfo
 {

@@ -120,8 +120,8 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_CHAR_CREATE_FAILED:
-            new OkDialog(_("Error"), _("Failed to create character. Most likely"
-                                       " the name is already taken."));
+            new OkDialog(_("Error"), _("Failed to create character. Most "
+                                       "likely the name is already taken."));
 
             if (mCharCreateDialog)
                 mCharCreateDialog->unlock();
@@ -132,7 +132,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             mCharInfo->setEntry(0);
             mCharInfo->unlock();
             n_character--;
-            new OkDialog(_("Info"), _("Player deleted"));
+            new OkDialog(_("Info"), _("Character deleted."));
             break;
 
         case SMSG_CHAR_DELETE_FAILED:

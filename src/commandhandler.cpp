@@ -110,7 +110,7 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     }
     else
     {
-        tab->chatLog("Unknown command");
+        tab->chatLog(_("Unknown command."));
     }
 }
 
@@ -167,7 +167,7 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
 
         tab->showHelp(); // Allow the tab to show it's help
 
-        tab->chatLog(_("For more information, type /help <command>"));
+        tab->chatLog(_("For more information, type /help <command>."));
     }
     else if (args == "help") // Do this before tabs so they can't change it
     {
@@ -344,7 +344,7 @@ void CommandHandler::handleQuery(const std::string &args, ChatTab *tab) {
     if (chatWindow->addWhisperTab(args, true))
         return;
 
-    tab->chatLog(strprintf(_("Cannot create a whisper tab for nick '%s'! "
+    tab->chatLog(strprintf(_("Cannot create a whisper tab for nick \"%s\"! "
             "It either already exists, or is you."), args.c_str()), BY_SERVER);
 }
 
@@ -358,7 +358,7 @@ void CommandHandler::handleJoin(const std::string &args, ChatTab *tab)
     std::string::size_type pos = args.find(' ');
     std::string name(args, 0, pos);
     std::string password(args, pos+1);
-    tab->chatLog("Requesting to join channel " + name);
+    tab->chatLog(strprintf(_("Requesting to join channel %s."), name.c_str()));
     Net::getChatHandler()->enterChannel(name, password);
 }
 
