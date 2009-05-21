@@ -78,7 +78,7 @@
 /*
  * Client different States
  */
-enum {
+enum State {
     STATE_EXIT,
     STATE_LOADDATA,
     STATE_LOGIN,
@@ -107,15 +107,16 @@ enum {
     STATE_LOGOUT_ATTEMPT,
     STATE_CONNECT_GAME,
     STATE_WAIT,
-    STATE_FORCE_QUIT
+    STATE_FORCE_QUIT,
 #else
     STATE_ACCOUNT,
     STATE_CHAR_CONNECT,
     STATE_CHAR_SERVER,
     STATE_CHAR_NEW,
     STATE_CHAR_DEL,
-    STATE_CONNECTING
+    STATE_CONNECTING,
 #endif
+    STATE_NULL
 };
 
 /* length definitions for several char[]s in order
@@ -135,7 +136,7 @@ const short maxSlot = 2;
 extern std::string token;
 extern char n_server, n_character;
 
-extern unsigned char state;
+extern State state;
 extern std::string errorMessage;
 
 #endif

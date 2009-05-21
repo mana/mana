@@ -79,6 +79,7 @@ InventoryWindow::InventoryWindow(int invSize):
     mUseButton = new Button(longestUseString, "use", this);
     mDropButton = new Button(_("Drop"), "drop", this);
     mSplitButton = new Button(_("Split"), "split", this);
+    mOutfitButton = new Button(_("Outfits"), "outfit", this);
     mItems = new ItemContainer(player_node->getInventory());
     mItems->addSelectionListener(this);
 
@@ -103,6 +104,7 @@ InventoryWindow::InventoryWindow(int invSize):
     place(0, 2, mUseButton);
     place(1, 2, mDropButton);
     place(2, 2, mSplitButton);
+    place(6, 2, mOutfitButton);
 
     Layout &layout = getLayout();
     layout.setRowHeight(1, Layout::AUTO_SET);
@@ -156,6 +158,16 @@ void InventoryWindow::logic()
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
 {
+    if (event.getId() == "outfit")
+    {
+        extern Window *outfitWindow;
+        outfitWindow->setVisible(!outfitWindow->isVisible());
+        if (outfitWindow->isVisible())
+        {
+            outfitWindow->requestMoveToTop();
+        }
+    }
+
     Item *item = mItems->getSelectedItem();
 
     if (!item)
@@ -163,7 +175,7 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "use")
     {
-        if (item->isEquipment()) 
+        if (item->isEquipment())
         {
             if (item->isEquipped())
                 Net::getInventoryHandler()->unequipItem(item);
@@ -258,10 +270,10 @@ void InventoryWindow::updateButtons()
         mDropButton->setEnabled(false);
         return;
     }
-    
+
     mUseButton->setEnabled(true);
     mDropButton->setEnabled(true);
-        
+
     if (selectedItem->isEquipment())
     {
         if (selectedItem->isEquipped())

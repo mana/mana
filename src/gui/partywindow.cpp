@@ -54,8 +54,8 @@ PartyWindow::PartyWindow() :
     setSaveVisible(true);
     setCloseButton(true);
     setMinWidth(120);
-    setMinHeight(200);
-    setDefaultSize(590, 200, 150, 200);
+    setMinHeight(55);
+    setDefaultSize(590, 200, 150, 60);
 
     loadWindowState();
 }
@@ -123,6 +123,7 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
     member->name = memberName;
     member->leader = leader;
     member->online = online;
+    member->avatar->setDisplayBold(leader);
     member->avatar->setName(memberName);
     member->avatar->setOnline(online);
 

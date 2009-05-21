@@ -23,6 +23,7 @@
 
 #include "gui/chat.h"
 #include "gui/itempopup.h"
+#include "gui/outfitwindow.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
 #include "gui/viewport.h"
@@ -162,6 +163,7 @@ void ItemContainer::selectNone()
 {
     setSelectedIndex(-1);
     mSelectionStatus = SEL_NONE;
+    outfitWindow->setItemSelected(-1);
 }
 
 void ItemContainer::setSelectedIndex(int newIndex)
@@ -260,6 +262,8 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
             mSelectionStatus = SEL_SELECTING;
 
             itemShortcut->setItemSelected(item->getId());
+            if (item->isEquipment())
+                outfitWindow->setItemSelected(item->getId());
         }
         else
         {

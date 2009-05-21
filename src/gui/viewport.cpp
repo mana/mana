@@ -195,7 +195,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             mMap->drawCollision(graphics,
                                 (int) mPixelViewX,
                                 (int) mPixelViewY);
-#if 0
+#if EATHENA_SUPPORT
             drawDebugPath(graphics);
 #endif
         }
@@ -265,8 +265,8 @@ void Viewport::drawDebugPath(Graphics *graphics)
     const Vector &playerPos = player_node->getPosition();
 
     Path debugPath = mMap->findPath(
-            (int) playerPos.x / 32,
-            (int) playerPos.y / 32,
+            (int) (playerPos.x - 16) / 32,
+            (int) (playerPos.y - 32) / 32,
             mouseTileX, mouseTileY, 0xFF);
 
     drawPath(graphics, debugPath);
@@ -357,24 +357,12 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                     if (player_node->withinAttackRange(being) ||
                         keyboard.isKeyActive(keyboard.KEY_ATTACK))
                     {
-                        player_node->setGotoTarget(being);
-//TODO: This can be changed when TMWServ moves to target based combat
-#ifdef TMWSERV_SUPPORT 
-                        player_node->attack();
-#else
                         player_node->attack(being,
                             !keyboard.isKeyActive(keyboard.KEY_TARGET));
-#endif
-
                     }
                     else
                     {
-#ifdef TMWSERV_SUPPORT
-                        player_node->setDestination(event.getX() + (int) mPixelViewX, 
-                                                    event.getY() + (int) mPixelViewY);
-#else
-                        player_node->setDestination(tilex, tiley);
-#endif
+                        player_node->setGotoTarget(being);
                     }
                     break;
                 default:
@@ -403,9 +391,9 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                                             event.getY() + (int) mPixelViewY);
             }
 #else
-            player_node->stopAttack();
             player_node->setDestination(tilex, tiley);
 #endif
+            player_node->stopAttack();
             mPlayerFollowMouse = true;
         }
     }

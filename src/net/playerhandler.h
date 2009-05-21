@@ -31,7 +31,7 @@ namespace Net {
 class PlayerHandler
 {
     public:
-        virtual void attack(Being *being) = 0;
+        virtual void attack(int id) = 0;
 
         virtual void emote(int emoteId) = 0;
 

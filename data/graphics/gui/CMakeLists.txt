@@ -1,5 +1,4 @@
 SET (FILES
-    bg_quad_dis.png
     bubble.png
     button.png
     button_disabled.png
@@ -10,7 +9,6 @@ SET (FILES
     circle-green.png
     close_button.png
     deepbox.png
-    default.png
     gui.xml
     hscroll_left_default.png
     hscroll_left_highlight.png
@@ -43,6 +41,7 @@ SET (FILES
     vscroll_up_default.png
     vscroll_up_highlight.png
     vscroll_up_pressed.png
+    window.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/gui)

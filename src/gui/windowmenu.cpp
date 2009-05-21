@@ -48,7 +48,6 @@ extern Window *guildWindow;
 extern Window *magicDialog;
 #endif
 
-
 WindowMenu::WindowMenu():
     mEmotePopup(0)
 {

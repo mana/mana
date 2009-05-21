@@ -106,7 +106,7 @@ enum {
     GPMSG_BEING_DIR_CHANGE         = 0x0273, // W being id, B direction
     GPMSG_BEINGS_MOVE              = 0x0280, // { W being id, B flags [, C position, B speed] [, W*2 destination] }*
     GPMSG_ITEMS                    = 0x0281, // { W item id, W*2 position }*
-    PGMSG_ATTACK                   = 0x0290, // B direction
+    PGMSG_ATTACK                   = 0x0290, // W being id
     PGMSG_USE_SPECIAL              = 0x0292, // B specialID
     GPMSG_BEING_ATTACK             = 0x0291, // W being id
     PGMSG_SAY                      = 0x02A0, // S text
@@ -162,9 +162,11 @@ enum {
     CPMSG_GUILD_QUIT_RESPONSE           = 0x0361, // B error
     PCMSG_GUILD_PROMOTE_MEMBER          = 0x0365, // W guild, S name, B rights
     CPMSG_GUILD_PROMOTE_MEMBER_RESPONSE = 0x0366, // B error
+    PCMSG_GUILD_KICK_MEMBER             = 0x0370, // W guild, S name
+    CPMSG_GUILD_KICK_MEMBER_RESPONSE    = 0x0371, // B error
 
-    CPMSG_GUILD_INVITED                 = 0x0370, // S char name, S  guild name, W id
-    CPMSG_GUILD_REJOIN                  = 0x0371, // S name, W guild, W rights, W channel, S announce
+    CPMSG_GUILD_INVITED                 = 0x0388, // S char name, S  guild name, W id
+    CPMSG_GUILD_REJOIN                  = 0x0389, // S name, W guild, W rights, W channel, S announce
 
     // Party
     PCMSG_PARTY_INVITE                  = 0x03A0, // S name
