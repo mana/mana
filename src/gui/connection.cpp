@@ -30,7 +30,7 @@
 
 #include "utils/gettext.h"
 
-ConnectionDialog::ConnectionDialog(int previousState):
+ConnectionDialog::ConnectionDialog(State previousState):
     Window("Info"), mProgress(0), mPreviousState(previousState)
 {
     setContentSize(200, 100);

@@ -109,7 +109,7 @@ void ItemDB::load()
     mUnknown->setSprite("error.xml", GENDER_MALE);
     mUnknown->setSprite("error.xml", GENDER_FEMALE);
 
-    XML::Document doc(_("items.xml"));
+    XML::Document doc("items.xml");
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
@@ -209,6 +209,10 @@ void ItemDB::load()
                 logger->log("ItemDB: Duplicate name of item found item %d", id);
             }
         }
+
+        if (weaponType > 0)
+            if (attackRange == 0)
+                logger->log("ItemDB: Missing attack range from weapon %i!", id);
 
 #define CHECK_PARAM(param, error_value) \
         if (param == error_value) \

@@ -218,10 +218,10 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/gui/charselectdialog.cpp" />
-		<Unit filename="src/gui/charselectdialog.h" />
 		<Unit filename="src/gui/charcreatedialog.cpp" />
 		<Unit filename="src/gui/charcreatedialog.h" />
+		<Unit filename="src/gui/charselectdialog.cpp" />
+		<Unit filename="src/gui/charselectdialog.h" />
 		<Unit filename="src/gui/chat.cpp" />
 		<Unit filename="src/gui/chat.h" />
 		<Unit filename="src/gui/confirmdialog.cpp" />
@@ -285,16 +285,14 @@
 		<Unit filename="src/gui/minimap.h" />
 		<Unit filename="src/gui/ministatus.cpp" />
 		<Unit filename="src/gui/ministatus.h" />
-		<Unit filename="src/gui/npctextdialog.cpp" />
-		<Unit filename="src/gui/npctextdialog.h" />
-		<Unit filename="src/gui/npcintegerdialog.cpp" />
+		<Unit filename="src/gui/npcdialog.cpp" />
+		<Unit filename="src/gui/npcdialog.h" />
 		<Unit filename="src/gui/npcintegerdialog.h" />
-		<Unit filename="src/gui/npclistdialog.cpp" />
 		<Unit filename="src/gui/npclistdialog.h" />
 		<Unit filename="src/gui/npcpostdialog.cpp" />
 		<Unit filename="src/gui/npcpostdialog.h" />
-		<Unit filename="src/gui/npcstringdialog.cpp" />
 		<Unit filename="src/gui/npcstringdialog.h" />
+		<Unit filename="src/gui/npctextdialog.h" />
 		<Unit filename="src/gui/okdialog.cpp" />
 		<Unit filename="src/gui/okdialog.h" />
 		<Unit filename="src/gui/outfitwindow.cpp" />
@@ -512,7 +510,6 @@
 		<Unit filename="src/lockedarray.h" />
 		<Unit filename="src/log.cpp" />
 		<Unit filename="src/log.h" />
-		<Unit filename="src/logindata.h" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/main.h" />
 		<Unit filename="src/map.cpp" />
@@ -1008,7 +1005,8 @@
 		<Unit filename="src/resources/spritedef.h" />
 		<Unit filename="src/resources/wallpaper.cpp" />
 		<Unit filename="src/resources/wallpaper.h" />
-		<Unit filename="src/serverinfo.h" />
+		<Unit filename="src/rotationalparticle.cpp" />
+		<Unit filename="src/rotationalparticle.h" />
 		<Unit filename="src/shopitem.cpp" />
 		<Unit filename="src/shopitem.h" />
 		<Unit filename="src/simpleanimation.cpp" />

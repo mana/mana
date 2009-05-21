@@ -75,10 +75,12 @@ void ChatHandler::handleMessage(MessageIn &msg)
                     //localChatTab->chatLog("Whisper sent", BY_SERVER);
                     break;
                 case 0x01:
-                    localChatTab->chatLog(_("Whisper could not be sent, user is offline"), BY_SERVER);
+                    localChatTab->chatLog(_("Whisper could not be sent, user "
+                                            "is offline."), BY_SERVER);
                     break;
                 case 0x02:
-                    localChatTab->chatLog(_("Whisper could not be sent, ignored by user"), BY_SERVER);
+                    localChatTab->chatLog(_("Whisper could not be sent, "
+                                            "ignored by user."), BY_SERVER);
                     break;
             }
             break;

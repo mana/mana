@@ -123,6 +123,7 @@ void PartyWindow::updateMember(int id, const std::string &memberName,
     member->name = memberName;
     member->leader = leader;
     member->online = online;
+    member->avatar->setDisplayBold(leader);
     member->avatar->setName(memberName);
     member->avatar->setOnline(online);
 
@@ -170,24 +171,24 @@ void PartyWindow::showPartyInvite(const std::string &inviter,
     // check there isnt already an invite showing
     if (mPartyInviter != "")
     {
-        localChatTab->chatLog("Received party request, but one already exists",
-                            BY_SERVER);
+        localChatTab->chatLog(_("Received party request, but one already "
+                "exists."), BY_SERVER);
         return;
     }
 
     std::string msg;
     // log invite
     if (partyName.empty())
-        msg = strprintf("%s has invited you to join their party",
+        msg = strprintf(N_("%s has invited you to join their party."),
                                     inviter.c_str());
     else
-        msg = strprintf("%s has invited you to join the %s party",
+        msg = strprintf(N_("%s has invited you to join the %s party."),
                                     inviter.c_str(), partyName.c_str());
 
     localChatTab->chatLog(msg, BY_SERVER);
 
     // show invite
-    acceptDialog = new ConfirmDialog("Accept Party Invite", msg, this);
+    acceptDialog = new ConfirmDialog(_("Accept Party Invite"), msg, this);
     acceptDialog->addActionListener(this);
 
     mPartyInviter = inviter;
@@ -200,13 +201,15 @@ void PartyWindow::action(const gcn::ActionEvent &event)
     // check if they accepted the invite
     if (eventId == "yes")
     {
-        localChatTab->chatLog("Accepted invite from " + mPartyInviter);
+        localChatTab->chatLog(strprintf(_("Accepted invite from %s."),
+                mPartyInviter.c_str()));
         Net::getPartyHandler()->inviteResponse(mPartyInviter, true);
         mPartyInviter = "";
     }
     else if (eventId == "no")
     {
-        localChatTab->chatLog("Rejected invite from " + mPartyInviter);
+        localChatTab->chatLog(strprintf(_("Rejected invite from %s."),
+                mPartyInviter.c_str()));
         Net::getPartyHandler()->inviteResponse(mPartyInviter, false);
         mPartyInviter = "";
     }

@@ -51,6 +51,8 @@ public:
 
     void setMaxHp(int maxHp);
 
+    void setDisplayBold(bool displayBold) { mDisplayBold = displayBold; }
+
 private:
     void updateAvatarLabel();
 
@@ -59,6 +61,7 @@ private:
     int mMaxHp;
     Icon *mStatus;
     gcn::Label *mLabel;
+    bool mDisplayBold;
 };
 
 #endif // AVATAR_H

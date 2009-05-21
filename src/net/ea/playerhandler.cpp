@@ -410,7 +410,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 switch (type) {
                     case 0:
-                        localChatTab->chatLog(_("Equip arrows first"),
+                        localChatTab->chatLog(_("Equip arrows first."),
                                              BY_SERVER);
                         break;
                     default:
@@ -422,10 +422,10 @@ void PlayerHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void PlayerHandler::attack(Being *being)
+void PlayerHandler::attack(int id)
 {
     MessageOut outMsg(CMSG_PLAYER_ATTACK);
-    outMsg.writeInt32(being->getId());
+    outMsg.writeInt32(id);
     outMsg.writeInt8(0);
 }
 
@@ -513,12 +513,12 @@ void PlayerHandler::respawn()
     outMsg.writeInt8(0);
 }
 
-void PlayerHandler::ingorePlayer(const std::string &player, bool ignore)
+void PlayerHandler::ignorePlayer(const std::string &player, bool ignore)
 {
     // TODO
 }
 
-void PlayerHandler::ingoreAll(bool ignore)
+void PlayerHandler::ignoreAll(bool ignore)
 {
     // TODO
 }

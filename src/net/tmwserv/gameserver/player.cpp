@@ -58,13 +58,6 @@ void Net::GameServer::Player::moveItem(int oldSlot, int newSlot, int amount)
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::attack(int direction)
-{
-    MessageOut msg(PGMSG_ATTACK);
-    msg.writeInt8(direction);
-    Net::GameServer::connection->send(msg);
-}
-
 void Net::GameServer::Player::useSpecial(int special)
 {
     MessageOut msg(PGMSG_USE_SPECIAL);

@@ -36,7 +36,7 @@ QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
     mForceQuit = new RadioButton(_("Quit"), "quitdialog");
     mSwitchAccountServer = new RadioButton(_("Switch server"), "quitdialog");
     mSwitchCharacter = new RadioButton(_("Switch character"), "quitdialog");
-    mOkButton = new Button(_("Ok"), "ok", this);
+    mOkButton = new Button(_("OK"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
     setContentSize(200, 91);

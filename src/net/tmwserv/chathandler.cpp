@@ -43,10 +43,11 @@
 #include "gui/chat.h"
 #include "gui/guildwindow.h"
 
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <string>
 #include <iostream>
-
-#include "utils/gettext.h"
 
 extern Being *player_node;
 
@@ -154,7 +155,7 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         Channel *channel = new Channel(channelId, channelName, announcement);
         channelManager->addChannel(channel);
         ChatTab *tab = channel->getTab();
-        tab->chatLog(_("Topic: ") + announcement, BY_CHANNEL);
+        tab->chatLog(strprintf(_("Topic: %s"), announcement.c_str()), BY_CHANNEL);
 
         std::string user;
         std::string userModes;
@@ -175,13 +176,13 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
     }
     else
     {
-        localChatTab->chatLog("Error joining channel", BY_SERVER);
+        localChatTab->chatLog("Error joining channel.", BY_SERVER);
     }
 }
 
 void ChatHandler::handleListChannelsResponse(MessageIn &msg)
 {
-    localChatTab->chatLog("Listing Channels", BY_SERVER);
+    localChatTab->chatLog("Listing channels", BY_SERVER);
     while(msg.getUnreadLength())
     {
         std::string channelName = msg.readString();
@@ -193,7 +194,7 @@ void ChatHandler::handleListChannelsResponse(MessageIn &msg)
         channelName += numUsers.str();
         localChatTab->chatLog(channelName, BY_SERVER);
     }
-    localChatTab->chatLog("End of channel list", BY_SERVER);
+    localChatTab->chatLog("End of channel list.", BY_SERVER);
 }
 
 void ChatHandler::handlePrivateMessage(MessageIn &msg)

@@ -284,7 +284,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 switch (type) {
                     case 0:
-                        localChatTab->chatLog("Equip arrows first",
+                        localChatTab->chatLog(_("Equip arrows first."),
                                              BY_SERVER);
                         break;
                     default:
@@ -332,9 +332,11 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     viewport->scrollBy(scrollOffsetX, scrollOffsetY);
 }
 
-void PlayerHandler::attack(Being *being)
+void PlayerHandler::attack(int id)
 {
-    // TODO
+    MessageOut msg(PGMSG_ATTACK);
+    msg.writeInt16(id);
+    Net::GameServer::connection->send(msg);
 }
 
 void PlayerHandler::emote(int emoteId)
@@ -391,12 +393,12 @@ void PlayerHandler::respawn()
     // TODO
 }
 
-void PlayerHandler::ingorePlayer(const std::string &player, bool ignore)
+void PlayerHandler::ignorePlayer(const std::string &player, bool ignore)
 {
     // TODO
 }
 
-void PlayerHandler::ingoreAll(bool ignore)
+void PlayerHandler::ignoreAll(bool ignore)
 {
     // TODO
 }

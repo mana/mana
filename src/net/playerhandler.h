@@ -31,7 +31,7 @@ namespace Net {
 class PlayerHandler
 {
     public:
-        virtual void attack(Being *being) = 0;
+        virtual void attack(int id) = 0;
 
         virtual void emote(int emoteId) = 0;
 
@@ -49,9 +49,9 @@ class PlayerHandler
 
         virtual void respawn() = 0;
 
-        virtual void ingorePlayer(const std::string &player, bool ignore) = 0;
+        virtual void ignorePlayer(const std::string &player, bool ignore) = 0;
 
-        virtual void ingoreAll(bool ignore) = 0;
+        virtual void ignoreAll(bool ignore) = 0;
 };
 
 } // namespace Net

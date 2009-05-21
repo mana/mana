@@ -126,6 +126,12 @@
 #include <sys/stat.h>
 #endif
 
+#ifdef TWMSERV_SUPPORT
+#define DEFAULT_PORT 9601
+#else
+#define DEFAULT_PORT 6901
+#endif
+
 namespace
 {
     struct SetupListener : public gcn::ActionListener
@@ -307,7 +313,7 @@ static void setUpdatesDir()
 static void initHomeDir(const Options &options)
 {
     homeDir = options.homeDir;
-    
+
     if (homeDir.empty())
     {
 	    homeDir = std::string(PHYSFS_getUserDir()) +
@@ -347,11 +353,7 @@ static void initConfiguration(const Options &options)
     std::string defaultHost = branding.getValue("defaultServer",
         "server.themanaworld.org");
     config.setValue("host", defaultHost);
-#ifdef TWMSERV_SUPPORT
-    int defaultPort = (int)branding.getValue("defaultPort", 9601);
-#else
-    int defaultPort = (int)branding.getValue("defaultPort", 6901);
-#endif
+    int defaultPort = (int)branding.getValue("defaultPort", DEFAULT_PORT);
     config.setValue("port", defaultPort);
     config.setValue("hwaccel", false);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
@@ -581,8 +583,8 @@ static void printHelp()
         << _("  -H --update-host : Use this update host") << endl
         << _("  -P --password    : Login with this password") << endl
         << _("  -c --character   : Login with this character") << endl
-        << _("  -p --port        : Login Server Port") << endl
-        << _("  -s --server      : Login Server name or IP") << endl
+        << _("  -p --port        : Login server port") << endl
+        << _("  -s --server      : Login server name or IP") << endl
         << _("  -u --skip-update : Skip the update downloads") << endl
         << _("  -U --username    : Login with this username") << endl
 #ifdef USE_OPENGL
@@ -593,7 +595,7 @@ static void printHelp()
 
 static void printVersion()
 {
-    std::cout << _("The Mana World ") << FULL_VERSION << std::endl;
+    std::cout << strprintf(_("The Mana World %s"), FULL_VERSION) << std::endl;
 }
 
 static void parseOptions(int argc, char *argv[], Options &options)
@@ -953,7 +955,7 @@ int main(int argc, char *argv[])
                                                "server.themanaworld.org").c_str();
     }
     if (options.serverPort == 0) {
-        loginData.port = (short) branding.getValue("defaultPort", 9601);
+        loginData.port = (short) branding.getValue("defaultPort", DEFAULT_PORT);
     }
     if (loginData.username.empty() && loginData.remember) {
         loginData.username = config.getValue("username", "");

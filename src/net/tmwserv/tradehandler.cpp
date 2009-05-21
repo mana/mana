@@ -40,6 +40,9 @@
 
 #include "gui/widgets/chattab.h"
 
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 std::string tradePartnerName;
 int tradePartnerID;
 
@@ -87,9 +90,9 @@ void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
 {
     mAcceptTradeRequests = acceptTradeRequests;
     if (mAcceptTradeRequests) {
-        localChatTab->chatLog("Accepting incoming trade requests", BY_SERVER);
+        localChatTab->chatLog(_("Accepting incoming trade requests."), BY_SERVER);
     } else {
-        localChatTab->chatLog("Ignoring incoming trade requests", BY_SERVER);
+        localChatTab->chatLog(_("Ignoring incoming trade requests."), BY_SERVER);
     }
 }
 
@@ -108,8 +111,9 @@ void TradeHandler::handleMessage(MessageIn &msg)
             player_node->setTrading(true);
             tradePartnerName = being->getName();
             tradePartnerID = being->getId();
-            ConfirmDialog *dlg = new ConfirmDialog("Request for trade",
-                tradePartnerName + " wants to trade with you, do you accept?");
+            ConfirmDialog *dlg = new ConfirmDialog(_("Request for Trade"),
+                    strprintf(_("%s wants to trade with you, do you accept?"),
+                            tradePartnerName.c_str()));
             dlg->addActionListener(&listener);
         }   break;
 
@@ -126,7 +130,8 @@ void TradeHandler::handleMessage(MessageIn &msg)
 
         case GPMSG_TRADE_START:
             tradeWindow->reset();
-            tradeWindow->setCaption("Trading with " + tradePartnerName);
+            tradeWindow->setCaption(strprintf(_("Trading with %s"),
+                                              tradePartnerName.c_str()));
             tradeWindow->setVisible(true);
             break;
 
@@ -139,14 +144,14 @@ void TradeHandler::handleMessage(MessageIn &msg)
             break;
             
         case GPMSG_TRADE_CANCEL:
-            localChatTab->chatLog("Trade canceled.", BY_SERVER);
+            localChatTab->chatLog(_("Trade canceled."), BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();
             player_node->setTrading(false);
             break;
 
         case GPMSG_TRADE_COMPLETE:
-            localChatTab->chatLog("Trade completed.", BY_SERVER);
+            localChatTab->chatLog(_("Trade completed."), BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();
             player_node->setTrading(false);

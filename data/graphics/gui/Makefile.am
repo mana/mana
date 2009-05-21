@@ -2,7 +2,6 @@
 guidir = $(pkgdatadir)/data/graphics/gui
 
 gui_DATA =				\
-	bg_quad_dis.png			\
 	bubble.png			\
 	button.png			\
 	button_disabled.png		\
@@ -13,7 +12,6 @@ gui_DATA =				\
 	circle-green.png		\
 	close_button.png		\
 	deepbox.png			\
-	default.png			\
 	gui.xml				\
 	hscroll_left_default.png	\
 	hscroll_left_highlight.png	\
@@ -45,7 +43,8 @@ gui_DATA =				\
 	vscroll_grey.png		\
 	vscroll_up_default.png		\
 	vscroll_up_highlight.png	\
-	vscroll_up_pressed.png
+	vscroll_up_pressed.png		\
+	window.png
 
 EXTRA_DIST =				\
 	$(gui_DATA)
