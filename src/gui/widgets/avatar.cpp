@@ -23,6 +23,7 @@
 
 #include "localplayer.h"
 
+#include "gui/gui.h"
 #include "gui/widgets/icon.h"
 #include "gui/widgets/label.h"
 
@@ -39,7 +40,8 @@ namespace {
 
 Avatar::Avatar():
     mHp(0),
-    mMaxHp(0)
+    mMaxHp(0),
+    mDisplayBold(false)
 {
     setOpaque(false);
 
@@ -111,6 +113,8 @@ void Avatar::updateAvatarLabel()
     if (mName != player_node->getName() && mMaxHp != 0)
         ss << "  (" << mHp << "/" << mMaxHp << ")";
 
+    if (mDisplayBold)
+        mLabel->setFont(boldFont);
     mLabel->setCaption(ss.str());
     mLabel->adjustSize();
 }
