@@ -52,9 +52,9 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         void respawn();
 
-        void ingorePlayer(const std::string &player, bool ignore);
+        void ignorePlayer(const std::string &player, bool ignore);
 
-        void ingoreAll(bool ignore);
+        void ignoreAll(bool ignore);
 
     private:
         void handleMapChangeMessage(MessageIn &msg);

@@ -109,7 +109,7 @@ void ItemDB::load()
     mUnknown->setSprite("error.xml", GENDER_MALE);
     mUnknown->setSprite("error.xml", GENDER_FEMALE);
 
-    XML::Document doc(_("items.xml"));
+    XML::Document doc("items.xml");
     xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))

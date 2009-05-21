@@ -583,8 +583,8 @@ static void printHelp()
         << _("  -H --update-host : Use this update host") << endl
         << _("  -P --password    : Login with this password") << endl
         << _("  -c --character   : Login with this character") << endl
-        << _("  -p --port        : Login Server Port") << endl
-        << _("  -s --server      : Login Server name or IP") << endl
+        << _("  -p --port        : Login server port") << endl
+        << _("  -s --server      : Login server name or IP") << endl
         << _("  -u --skip-update : Skip the update downloads") << endl
         << _("  -U --username    : Login with this username") << endl
 #ifdef USE_OPENGL
@@ -595,7 +595,7 @@ static void printHelp()
 
 static void printVersion()
 {
-    std::cout << _("The Mana World ") << FULL_VERSION << std::endl;
+    std::cout << strprintf(_("The Mana World %s"), FULL_VERSION) << std::endl;
 }
 
 static void parseOptions(int argc, char *argv[], Options &options)

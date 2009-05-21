@@ -126,7 +126,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                 case 6:
                     errorMessage = strprintf(_("You have been temporarily "
                                                "banned from the game until "
-                                               "%s.\n Please contact the GM "
+                                               "%s.\nPlease contact the GM "
                                                "team via the forums."),
                                                msg.readString(20).c_str());
                     break;

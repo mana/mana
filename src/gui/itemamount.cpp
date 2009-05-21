@@ -82,7 +82,7 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     // Slider
     mItemAmountSlide = new Slider(1.0, mMax);
     mItemAmountSlide->setHeight(10);
-    mItemAmountSlide->setActionEventId("Slide");
+    mItemAmountSlide->setActionEventId("slide");
     mItemAmountSlide->addActionListener(this);
 
     //Item icon
@@ -90,11 +90,11 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     mItemIcon = new Icon(image);
 
     // Buttons
-    Button *minusButton = new Button("-", "Minus", this);
-    Button *plusButton = new Button("+", "Plus", this);
-    Button *okButton = new Button(_("Ok"), "Ok", this);
-    Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
-    Button *addAllButton = new Button(_("All"), "All", this);
+    Button *minusButton = new Button("-", "minus", this);
+    Button *plusButton = new Button("+", "plus", this);
+    Button *okButton = new Button(_("Ok"), "ok", this);
+    Button *cancelButton = new Button(_("Cancel"), "cancel", this);
+    Button *addAllButton = new Button(_("All"), "all", this);
 
     minusButton->adjustSize();
     minusButton->setWidth(plusButton->getWidth());
@@ -168,27 +168,27 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
 {
     int amount = mItemAmountTextField->getValue();
 
-    if (event.getId() == "Cancel")
+    if (event.getId() == "cancel")
     {
         close();
     }
-    else if (event.getId() == "Plus" && amount < mMax)
+    else if (event.getId() == "plus" && amount < mMax)
     {
         amount++;
     }
-    else if (event.getId() == "Minus" && amount > 1)
+    else if (event.getId() == "minus" && amount > 1)
     {
         amount--;
     }
-    else if (event.getId() == "All")
+    else if (event.getId() == "all")
     {
         amount = mMax;
     }
-    else if (event.getId() == "Slide")
+    else if (event.getId() == "slide")
     {
         amount = static_cast<int>(mItemAmountSlide->getValue());
     }
-    else if (event.getId() == "Ok")
+    else if (event.getId() == "ok")
     {
         finish(mItem, amount, mUsage);
         scheduleDelete();

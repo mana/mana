@@ -71,7 +71,7 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyWindowHelp", SDLK_F1, _("Help Window")},
     {"keyWindowStatus", SDLK_F2, _("Status Window")},
     {"keyWindowInventory", SDLK_F3, _("Inventory Window")},
-    {"keyWindowEquipment", SDLK_F4, _("Equipment WIndow")},
+    {"keyWindowEquipment", SDLK_F4, _("Equipment Window")},
     {"keyWindowSkill", SDLK_F5, _("Skill Window")},
     {"keyWindowMinimap", SDLK_F6, _("Minimap Window")},
     {"keyWindowChat", SDLK_F7, _("Chat Window")},

@@ -100,7 +100,7 @@ ServerDialog::ServerDialog(LoginData *loginData):
 
     mMostUsedServersDropDown = new DropDown(mMostUsedServersListModel);
 
-    mOkButton = new Button(_("Ok"), "connect", this);
+    mOkButton = new Button(_("OK"), "connect", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
     mServerNameField->setActionEventId("connect");

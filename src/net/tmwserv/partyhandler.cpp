@@ -35,6 +35,9 @@
 #include "log.h"
 #include "localplayer.h"
 
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <iostream>
 
 Net::PartyHandler *partyHandler;
@@ -80,7 +83,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 player_node->setInParty(true);
-                localChatTab->chatLog("Joined party");
+                localChatTab->chatLog(_("Joined party."));
             }
         }
 
@@ -97,7 +100,8 @@ void PartyHandler::handleMessage(MessageIn &msg)
             int id = msg.readInt16(); // being id
             std::string name = msg.readString();
 
-            localChatTab->chatLog(name + " joined the party");
+            localChatTab->chatLog(strprintf(_("%s joined the "
+                    "party."), name.c_str()));
 
             if (!player_node->isInParty())
                 player_node->setInParty(true);

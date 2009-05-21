@@ -37,6 +37,9 @@
 #include "channel.h"
 #include "channelmanager.h"
 
+#include "utils/gettext.h"
+#include "utils/stringutils.h"
+
 #include <iostream>
 
 namespace TmwServ {
@@ -68,12 +71,12 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge guild was created
-                localChatTab->chatLog("Guild created.");
+                localChatTab->chatLog(_("Guild created."));
                 joinedGuild(msg);
             }
             else
             {
-                localChatTab->chatLog("Error creating guild.");
+                localChatTab->chatLog(_("Error creating guild."));
             }
         } break;
 
@@ -83,7 +86,7 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if(msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge invite was sent
-                localChatTab->chatLog("Invite sent.");
+                localChatTab->chatLog(_("Invite sent."));
             }
         } break;
 
@@ -144,7 +147,8 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 {
                     case GUILD_EVENT_NEW_PLAYER:
                         guild->addMember(guildMember);
-                        guildWindow->setOnline(guild->getName(), guildMember, true);
+                        guildWindow->setOnline(guild->getName(), guildMember,
+                                               true);
                         break;
 
                     case GUILD_EVENT_LEAVING_PLAYER:
@@ -152,11 +156,13 @@ void GuildHandler::handleMessage(MessageIn &msg)
                         break;
 
                     case GUILD_EVENT_ONLINE_PLAYER:
-                        guildWindow->setOnline(guild->getName(), guildMember, true);
+                        guildWindow->setOnline(guild->getName(), guildMember,
+                                               true);
                         break;
 
                     case GUILD_EVENT_OFFLINE_PLAYER:
-                        guildWindow->setOnline(guild->getName(), guildMember, false);
+                        guildWindow->setOnline(guild->getName(), guildMember,
+                                               false);
                         break;
 
                     default:
@@ -185,12 +191,12 @@ void GuildHandler::handleMessage(MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // promotion succeeded
-                localChatTab->chatLog("Member was promoted successfully");
+                localChatTab->chatLog(_("Member was promoted successfully."));
             }
             else
             {
                 // promotion failed
-                localChatTab->chatLog("Failed to promote member");
+                localChatTab->chatLog(_("Failed to promote member."));
             }
         }
 
@@ -241,7 +247,8 @@ void GuildHandler::joinedGuild(MessageIn &msg)
     // COMMENT: Should this go here??
     Channel *channel = new Channel(channelId, guildName, announcement);
     channelManager->addChannel(channel);
-    channel->getTab()->chatLog("Topic: " + announcement, BY_CHANNEL);
+    channel->getTab()->chatLog(strprintf(_("Topic: %s"), announcement.c_str()),
+                               BY_CHANNEL);
 }
 
 } // namespace TmwServ

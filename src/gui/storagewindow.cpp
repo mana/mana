@@ -75,7 +75,7 @@ StorageWindow::StorageWindow(int invSize):
 
     mUsedSlots = player_node->getStorage()->getNumberOfSlotsUsed();
 
-    mSlotsLabel = new Label(_("Slots: "));
+    mSlotsLabel = new Label(_("Slots:"));
 
     mSlotsBar = new ProgressBar(0.0f, 100, 20, gcn::Color(225, 200, 25));
     mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mMaxSlots));

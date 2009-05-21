@@ -308,7 +308,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
         int curMoney = player_node->getMoney();
         if(v > curMoney)
         {
-            localChatTab->chatLog(_("You don't have enough money"), BY_SERVER);
+            localChatTab->chatLog(_("You don't have enough money."), BY_SERVER);
             v = curMoney;
         }
         Net::getTradeHandler()->setMoney(v);

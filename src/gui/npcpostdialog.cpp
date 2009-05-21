@@ -41,7 +41,7 @@ NpcPostDialog::NpcPostDialog():
     setContentSize(400, 180);
 
     // create text field for receiver
-    gcn::Label *senderText = new Label("To:");
+    gcn::Label *senderText = new Label(_("To:"));
     senderText->setPosition(5, 5);
     mSender = new TextField;
     mSender->setPosition(senderText->getWidth() + 5, 5);
@@ -49,8 +49,8 @@ NpcPostDialog::NpcPostDialog():
 
     // create button for sending
     Button *sendButton = new Button(_("Send"), "send", this);
-    sendButton->setPosition(400-sendButton->getWidth(),
-                            170-sendButton->getHeight());
+    sendButton->setPosition(400 - sendButton->getWidth(),
+                            170 - sendButton->getHeight());
     Button *cancelButton = new Button(_("Cancel"), "cancel", this);
     cancelButton->setPosition(sendButton->getX() - (cancelButton->getWidth() + 2),
                               sendButton->getY());
@@ -82,7 +82,8 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
     {
         if (mSender->getText().empty() || mText->getText().empty())
         {
-            localChatTab->chatLog("Failed to send as sender or letter invalid");
+            localChatTab->chatLog(_("Failed to send as sender or letter "
+                    "invalid."));
         }
         else
         {
