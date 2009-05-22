@@ -86,6 +86,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_BEING_CHAT              0x008d /**< A being talks */
 #define SMSG_BEING_NAME_RESPONSE     0x0095 /**< Has to be requested */
 #define SMSG_BEING_CHANGE_DIRECTION  0x009c
+#define SMSG_BEING_RESURRECT         0x0148
 
 #define SMSG_PLAYER_STATUS_CHANGE    0x0119
 #define SMSG_BEING_STATUS_CHANGE     0x0196

@@ -65,6 +65,7 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_PLAYER_MOVE_TO_ATTACK,
         SMSG_PLAYER_STATUS_CHANGE,
         SMSG_BEING_STATUS_CHANGE,
+        SMSG_BEING_RESURRECT,
         0
     };
     handledMessages = _messages;
@@ -257,6 +258,24 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 dstBeing->setAction(Being::DEAD);
             else
                 beingManager->destroyBeing(dstBeing);
+
+            break;
+
+        case SMSG_BEING_RESURRECT:
+            // A being changed mortality status
+            id = msg.readInt32();
+
+            dstBeing = beingManager->findBeing(id);
+
+            if (!dstBeing)
+                break;
+
+            // If this is player's current target, clear it.
+            if (dstBeing == player_node->getTarget())
+                player_node->stopAttack();
+
+            if (msg.readInt8() == 1)
+                dstBeing->setAction(Being::STAND);
 
             break;
 
