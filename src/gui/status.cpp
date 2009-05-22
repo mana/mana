@@ -125,17 +125,17 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     place(0, 0, mLvlLabel, 3);
     place(5, 0, mJobLvlLabel, 3);
     place(8, 0, mGpLabel, 3);
-    place(1, 1, mHpLabel).setPadding(3);
-    place(2, 1, mHpBar, 3);
-    place(6, 1, mXpLabel).setPadding(3);
-    place(7, 1, mXpBar, 3);
-    place(1, 2, mMpLabel).setPadding(3);
-    place(2, 2, mMpBar, 3);
-    place(6, 2, mJobLabel).setPadding(3);
-    place(7, 2, mJobBar, 3);
+    place(0, 1, mHpLabel).setPadding(3);
+    place(1, 1, mHpBar, 4);
+    place(5, 1, mXpLabel).setPadding(3);
+    place(6, 1, mXpBar, 5);
+    place(0, 2, mMpLabel).setPadding(3);
+    place(1, 2, mMpBar, 4);
+    place(5, 2, mJobLabel).setPadding(3);
+    place(6, 2, mJobBar, 5);
     place.getCell().matchColWidth(0, 1);
     place = getPlacer(0, 3);
-    place(0, 0, mStatsTitleLabel, 5);
+    place(0, 1, mStatsTitleLabel, 5);
     place(5, 1, mStatsTotalLabel, 5);
     place(12, 1, mStatsCostLabel, 5);
     for (int i = 0; i < 6; i++)
