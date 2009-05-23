@@ -215,7 +215,7 @@ void ChatTab::chatInput(std::string &msg)
     while (start != std::string::npos && msg[start+1] != '@')
     {
         std::string::size_type end = msg.find(']', start);
-        if (start+1 != end && end != std::string::npos)
+        if (start + 1 != end && end != std::string::npos)
         {
             // Catch multiple embeds and ignore them
             // so it doesn't crash the client.
@@ -227,22 +227,16 @@ void ChatTab::chatInput(std::string &msg)
 
             std::string temp = msg.substr(start + 1, end - start - 1);
 
-            // Do not parse an empty string (it crashes the client)
-            if (!temp.empty())
+            const ItemInfo itemInfo = ItemDB::get(temp);
+            if (itemInfo.getId() != 0)
             {
-                toLower(trim(temp));
-
-                const ItemInfo itemInfo = ItemDB::get(temp);
-                if (itemInfo.getName() != _("Unknown item"))
-                {
-                    msg.insert(end, "@@");
-                    msg.insert(start+1, "|");
-                    msg.insert(start+1, toString(itemInfo.getId()));
-                    msg.insert(start+1, "@@");
-                }
+                msg.insert(end, "@@");
+                msg.insert(start + 1, "|");
+                msg.insert(start + 1, toString(itemInfo.getId()));
+                msg.insert(start + 1, "@@");
             }
         }
-        start =  msg.find('[', start + 1);
+        start = msg.find('[', start + 1);
     }
 
     // Prepare ordinary message

@@ -243,7 +243,7 @@ void ItemDB::unload()
     mLoaded = false;
 }
 
-const ItemInfo& ItemDB::get(int id)
+const ItemInfo &ItemDB::get(int id)
 {
     assert(mLoaded);
 
@@ -251,30 +251,30 @@ const ItemInfo& ItemDB::get(int id)
 
     if (i == mItemInfos.end())
     {
-        logger->log("ItemDB: Error, unknown item ID# %d", id);
+        logger->log("ItemDB: Warning, unknown item ID# %d", id);
         return *mUnknown;
     }
-    else
-    {
-        return *(i->second);
-    }
+
+    return *(i->second);
 }
 
-const ItemInfo& ItemDB::get(const std::string &name)
+const ItemInfo &ItemDB::get(const std::string &name)
 {
-    assert(mLoaded && !name.empty());
+    assert(mLoaded);
 
     NamedItemInfos::const_iterator i = mNamedItemInfos.find(name);
 
     if (i == mNamedItemInfos.end())
     {
-        logger->log("ItemDB: Error, unknown item name %s", name.c_str());
+        if (!name.empty())
+        {
+            logger->log("ItemDB: Warning, unknown item name \"%s\"",
+                        name.c_str());
+        }
         return *mUnknown;
     }
-    else
-    {
-        return *(i->second);
-    }
+
+    return *(i->second);
 }
 
 void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)

@@ -118,6 +118,7 @@ class ItemInfo
             mType(ITEM_UNUSABLE),
             mWeight(0),
             mView(0),
+            mId(0),
             mAttackType(ACTION_DEFAULT)
         {
         }
@@ -162,10 +163,10 @@ class ItemInfo
         ItemType getType() const
         { return mType; }
 
-        void setWeight(short weight)
+        void setWeight(int weight)
         { mWeight = weight; }
 
-        short getWeight() const
+        int getWeight() const
         { return mWeight; }
 
         void setView(int view)
@@ -198,7 +199,7 @@ class ItemInfo
         std::string mEffect;         /**< Description of effects. */
         ItemType mType;              /**< Item type. */
         std::string mParticle;       /**< Particle effect used with this item */
-        short mWeight;               /**< Weight in grams. */
+        int mWeight;                 /**< Weight in grams. */
         int mView;                   /**< Item ID of how this item looks. */
         int mId;                     /**< Item ID */
 
