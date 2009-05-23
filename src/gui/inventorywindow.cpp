@@ -245,11 +245,12 @@ void InventoryWindow::keyReleased(gcn::KeyEvent &event)
 
 void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
 {
-    if (mSplit)
+    if (mSplit && Net::getInventoryHandler()->canSplit(mItems->getSelectedItem()))
     {
         Item *item = mItems->getSelectedItem();
 
-        ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
+        if (item)
+            ItemAmountWindow::showWindow(ItemAmountWindow::ItemSplit, this, item,
                                  (item->getQuantity() - 1));
     }
 }
