@@ -1,3 +1,18 @@
+0.0.29.1 (...)
+- The leader of a party is now displayed in bold
+- Status window was reorganized to allow larger numbers to be displayed
+- Fixed position of floating text for damage, pickup and experience
+- Fixed a possible crash on logging in to the map server
+- Fixed the crash when shift-clicking an item in the inventory
+- Fixed a crash related to item links in the chat window
+- Fixed a crash on whispering somebody again after closing their tab
+- Fixed lightspeed bug when stopping to attack
+- Fixed the -S/--home-dir command line option
+- Fixed Reset Windows to also reset the party window
+- Fixed problems with the context menu in the Brazilian translation
+- Fixed resetting the height of the chat on /clear
+- Small optimizations to OpenGL mode when drawing certain GUI widgets
+
 0.0.29 (13 May 2009)
 - Added support for dynamic emotes and a new way to select them
 - Added speech balloons that wrap the text

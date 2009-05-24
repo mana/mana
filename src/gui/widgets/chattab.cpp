@@ -203,8 +203,9 @@ void ChatTab::chatLog(const std::string &nick, const std::string &msg)
             false);
 }
 
-void ChatTab::chatInput(std::string &msg)
+void ChatTab::chatInput(const std::string &message)
 {
+    std::string msg = message;
     trim(msg);
 
     if (msg.empty())

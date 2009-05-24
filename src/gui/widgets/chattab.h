@@ -77,7 +77,7 @@ class ChatTab : public Tab
          *
          * @param msg  The message text which is to be sent.
          */
-        void chatInput(std::string &msg);
+        void chatInput(const std::string &msg);
 
         /**
          * Scrolls the chat window
