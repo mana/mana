@@ -1446,7 +1446,7 @@ int main(int argc, char *argv[])
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(&charInfo,
-                                                         loginData.sex);
+                                                         &loginData);
                     positionDialog(currentDialog, screenWidth, screenHeight);
 
                     if (((CharSelectDialog*) currentDialog)->
