@@ -190,7 +190,9 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             {
                 const ItemInfo &itemInfo = ItemDB::get(itemId);
                 const std::string amountStr =
-                    (amount > 1) ? toString(amount) : "a";
+                    // TRANSLATORS: Used as in "You picked up a ...", when
+                    // picking up only one item.
+                    (amount > 1) ? toString(amount) : _("a");
 
                 if (config.getValue("showpickupchat", 1))
                 {
