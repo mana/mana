@@ -292,7 +292,9 @@ void ChatWindow::addTab(ChatTab *tab)
 
 void ChatWindow::removeWhisper(const std::string &nick)
 {
-    mWhispers.erase(nick);
+    std::string tempNick = nick;
+    toLower(tempNick);
+    mWhispers.erase(tempNick);
 }
 
 void ChatWindow::chatInput(std::string &msg)
@@ -444,12 +446,13 @@ void ChatWindow::whisper(const std::string &nick, std::string mes, bool own)
     if (tempNick.compare(playerName) == 0)
         return;
 
-    ChatTab *tab = mWhispers[tempNick];
+    ChatTab *tab = 0;
+    TabMap::const_iterator i = mWhispers.find(tempNick);
 
-    if (!tab && config.getValue("whispertab", false))
-    {
+    if (i != mWhispers.end())
+        tab = i->second;
+    else if (config.getValue("whispertab", false))
         tab = addWhisperTab(nick);
-    }
 
     if (tab)
     {
@@ -480,10 +483,12 @@ ChatTab *ChatWindow::addWhisperTab(const std::string &nick, bool switchTo)
     toLower(playerName);
     toLower(tempNick);
 
-    if (mWhispers[tempNick] || tempNick.compare(playerName) == 0)
+    if (mWhispers.find(tempNick) != mWhispers.end()
+        || tempNick.compare(playerName) == 0)
         return NULL;
 
-    ChatTab *ret = mWhispers[tempNick] = new WhisperTab(nick);
+    ChatTab *ret = new WhisperTab(nick);
+    mWhispers[tempNick] = ret;
 
     if (switchTo)
         mChatTabs->setSelectedTab(ret);

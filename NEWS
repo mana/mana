@@ -5,6 +5,7 @@
 - Fixed a possible crash on logging in to the map server
 - Fixed the crash when shift-clicking an item in the inventory
 - Fixed a crash related to item links in the chat window
+- Fixed a crash on whispering somebody again after closing their tab
 - Fixed lightspeed bug when stopping to attack
 - Fixed the -S/--home-dir command line option
 - Fixed Reset Windows to also reset the party window
