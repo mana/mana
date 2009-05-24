@@ -466,8 +466,8 @@ SET(SRCS_TMW
     gui/buddywindow.h
     gui/changeemaildialog.cpp
     gui/changeemaildialog.h
-    gui/connection.cpp
-    gui/connection.h
+    gui/connectiondialog.cpp
+    gui/connectiondialog.h
     gui/guildlistbox.cpp
     gui/guildlistbox.h
     gui/guildwindow.cpp

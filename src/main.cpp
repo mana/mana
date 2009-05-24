@@ -53,7 +53,7 @@
 #include "gui/serverselectdialog.h"
 #include "gui/setup.h"
 #ifdef TMWSERV_SUPPORT
-#include "gui/connection.h"
+#include "gui/connectiondialog.h"
 #include "gui/quitdialog.h"
 #include "gui/serverdialog.h"
 #endif
