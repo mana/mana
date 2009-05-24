@@ -25,16 +25,15 @@
 #include "gui/confirmdialog.h"
 #include "gui/okdialog.h"
 #include "gui/playerbox.h"
+#include "gui/changepassworddialog.h"
+#include "net/logindata.h"
 
 #ifdef TMWSERV_SUPPORT
 #include "gui/widgets/radiobutton.h"
 #include "gui/widgets/slider.h"
 
 #include "gui/unregisterdialog.h"
-#include "gui/changepassworddialog.h"
 #include "gui/changeemaildialog.h"
-
-#include "net/logindata.h"
 
 #include "net/tmwserv/accountserver/account.h"
 #endif
@@ -91,36 +90,30 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
     ConfirmDialog::action(event);
 }
 
-#ifdef TMWSERV_SUPPORT
 CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    LoginData *loginData):
     Window(_("Account and Character Management")),
     mCharInfo(charInfo),
     mCharSelected(false),
-    mLoginData(loginData)
-#else
-CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
-                                   Gender gender):
-    Window(_("Select Character")),
-    mCharInfo(charInfo),
-    mCharSelected(false),
-    mGender(gender)
+#ifdef EATHENA_SUPPORT
+    mGender(loginData->sex),
 #endif
+    mLoginData(loginData)
 {
     mSelectButton = new Button(_("OK"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPreviousButton = new Button(_("Previous"), "previous", this);
     mNextButton = new Button(_("Next"), "next", this);
+    mAccountNameLabel = new Label(strprintf(_("Account: %s"), mLoginData->username.c_str()));
     mNameLabel = new Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new Label(strprintf(_("Level: %d"), 0));
+    mChangePasswordButton = new Button(_("Change Password"), "change_password", this);
 #ifdef TMWSERV_SUPPORT
     mNewCharButton = new Button(_("New"), "new", this);
     mDelCharButton = new Button(_("Delete"), "delete", this);
     mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
-    mChangePasswordButton = new Button(_("Change Password"), "change_password", this);
     mChangeEmailButton = new Button(_("Change Email Address"), "change_email", this);
 
-    mAccountNameLabel = new Label(strprintf(_("Account: %s"), mLoginData->username.c_str()));
     mNameLabel = new Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new Label(strprintf(_("Level: %d"), 0));
     mMoneyLabel = new Label(strprintf(_("Money: %d"), 0));
@@ -169,13 +162,15 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
     ContainerPlacer place;
     place = getPlacer(0, 0);
-
+    place(0, 0, mAccountNameLabel);
+    place(0, 1, mChangePasswordButton);
+    place = getPlacer(0, 1);
     place(0, 0, mPlayerBox, 1, 6).setPadding(3);
-    place(1, 0, mNewDelCharButton);
-    place(1, 1, mNameLabel, 5);
-    place(1, 2, mLevelLabel, 5);
-    place(1, 3, mJobLevelLabel, 5);
-    place(1, 4, mMoneyLabel, 5);
+    place(1, 0, mNameLabel, 5);
+    place(1, 1, mLevelLabel, 5);
+    place(1, 2, mJobLevelLabel, 5);
+    place(1, 3, mMoneyLabel, 5);
+    place(1, 4, mNewDelCharButton);
     place.getCell().matchColWidth(1, 4);
     place = getPlacer(0, 2);
     place(0, 0, mPreviousButton);
@@ -276,14 +271,14 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         if (pi)
             mMoney = Units::formatCurrency(pi->getMoney());
     }
+    else if (event.getId() == "change_password")
+    {
+        new ChangePasswordDialog(this, mLoginData);
+    }
 #ifdef TMWSERV_SUPPORT
     else if (event.getId() == "unregister")
     {
         new UnRegisterDialog(this, mLoginData);
-    }
-    else if (event.getId() == "change_password")
-    {
-        new ChangePasswordDialog(this, mLoginData);
     }
     else if (event.getId() == "change_email")
     {

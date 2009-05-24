@@ -47,13 +47,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-#ifdef TMWSERV_SUPPORT
         CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                          LoginData *loginData);
-#else
-        CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
-                         Gender gender);
-#endif
 
         void action(const gcn::ActionEvent &event);
 
@@ -70,11 +65,15 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Button *mCancelButton;
         gcn::Button *mPreviousButton;
         gcn::Button *mNextButton;
+        gcn::Button *mChangePasswordButton;
 
         gcn::Label *mNameLabel;
         gcn::Label *mLevelLabel;
         gcn::Label *mMoneyLabel;
+        gcn::Label *mAccountNameLabel;
         std::string mMoney;
+
+        LoginData *mLoginData;
 
         PlayerBox *mPlayerBox;
 
@@ -84,11 +83,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Button *mNewCharButton;
         gcn::Button *mDelCharButton;
         gcn::Button *mUnRegisterButton;
-        gcn::Button *mChangePasswordButton;
         gcn::Button *mChangeEmailButton;
-        gcn::Label *mAccountNameLabel;
 
-        LoginData *mLoginData;
 #else
         gcn::Button *mNewDelCharButton;
         gcn::Label *mJobLevelLabel;
