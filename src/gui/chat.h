@@ -136,7 +136,7 @@ class ChatWindow : public Window,
          *
          * @param msg  The message text which is to be sent.
          */
-        void chatInput(std::string &msg);
+        void chatInput(const std::string &msg);
 
         /** Called when key is pressed */
         void keyPressed(gcn::KeyEvent &event);
@@ -171,7 +171,7 @@ class ChatWindow : public Window,
 
         void doPresent();
 
-        void whisper(const std::string &nick, std::string mes,
+        void whisper(const std::string &nick, const std::string &mes,
                      bool own = false);
 
         ChatTab *addWhisperTab(const std::string &nick, bool switchTo = false);

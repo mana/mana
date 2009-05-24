@@ -297,7 +297,7 @@ void ChatWindow::removeWhisper(const std::string &nick)
     mWhispers.erase(tempNick);
 }
 
-void ChatWindow::chatInput(std::string &msg)
+void ChatWindow::chatInput(const std::string &msg)
 {
     ChatTab *tab = getFocused();
     tab->chatInput(msg);
@@ -432,7 +432,8 @@ void ChatWindow::setRecordingFile(const std::string &msg)
     mRecorder->setRecordingFile(msg);
 }
 
-void ChatWindow::whisper(const std::string &nick, std::string mes, bool own)
+void ChatWindow::whisper(const std::string &nick,
+                         const std::string &mes, bool own)
 {
     if (mes.empty())
         return;
@@ -471,7 +472,9 @@ void ChatWindow::whisper(const std::string &nick, std::string mes, bool own)
                             nick.c_str(), mes.c_str()), BY_PLAYER);
         }
         else
+        {
             localChatTab->chatLog(nick + " : " + mes, ACT_WHISPER, false);
+        }
     }
 }
 

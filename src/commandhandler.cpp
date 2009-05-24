@@ -340,7 +340,8 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
         tab->chatLog(_("Cannot send empty whispers!"), BY_SERVER);
 }
 
-void CommandHandler::handleQuery(const std::string &args, ChatTab *tab) {
+void CommandHandler::handleQuery(const std::string &args, ChatTab *tab)
+{
     if (chatWindow->addWhisperTab(args, true))
         return;
 
