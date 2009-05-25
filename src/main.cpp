@@ -710,7 +710,6 @@ struct ErrorListener : public gcn::ActionListener
     }
 } errorListener;
 
-#ifdef TMWSERV_SUPPORT
 struct AccountListener : public gcn::ActionListener
 {
     void action(const gcn::ActionEvent &event)
@@ -719,6 +718,7 @@ struct AccountListener : public gcn::ActionListener
     }
 } accountListener;
 
+#ifdef TMWSERV_SUPPORT
 struct LoginListener : public gcn::ActionListener
 {
     void action(const gcn::ActionEvent &event)
@@ -1343,8 +1343,16 @@ int main(int argc, char *argv[])
                     loadUpdates();
                     break;
 
-                    // Those states don't cause a network disconnect
+                // Those states don't cause a network disconnect
                 case STATE_LOADDATA:
+                case STATE_CHANGEPASSWORD_ATTEMPT:
+                case STATE_CHANGEPASSWORD:
+                case STATE_ACCOUNTCHANGE_ERROR:
+                    break;
+
+                case STATE_CHAR_SELECT:
+                	if (state == STATE_CONNECTING)
+                		network->disconnect();
                     break;
 
                 case STATE_ACCOUNT:
@@ -1537,6 +1545,30 @@ int main(int argc, char *argv[])
                             _("Connecting to account server..."));
                     progressLabel->adjustSize();
                     accountLogin(network, &loginData);
+                    break;
+
+                case STATE_CHANGEPASSWORD_ATTEMPT:
+                    logger->log("State: CHANGE PASSWORD ATTEMPT");
+                    Net::getLoginHandler()->changePassword(loginData.username,
+                                                loginData.password,
+                                                loginData.newPassword);
+                    break;
+
+                case STATE_CHANGEPASSWORD:
+                    logger->log("State: CHANGE PASSWORD");
+                    currentDialog = new OkDialog("Password change",
+                            "Password changed successfully!");
+                    currentDialog->addActionListener(&accountListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    loginData.password = loginData.newPassword;
+                    loginData.newPassword = "";
+                    break;
+
+                case STATE_ACCOUNTCHANGE_ERROR:
+                    logger->log("State: ACCOUNT CHANGE ERROR");
+                    currentDialog = new OkDialog("Error ", errorMessage);
+                    currentDialog->addActionListener(&accountListener);
+                    currentDialog = NULL; // OkDialog deletes itself
                     break;
 
                 default:
