@@ -31,6 +31,7 @@
 
 #include "gui/gui.h"
 #include "gui/minimap.h"
+#include "gui/okdialog.h"
 #include "gui/viewport.h"
 
 #include "net/maphandler.h"
@@ -40,6 +41,7 @@
 #include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
 
+#include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 Engine::Engine():
@@ -81,7 +83,11 @@ bool Engine::changeMap(const std::string &mapPath)
     Map *newMap = MapReader::readMap(map_path);
 
     if (!newMap)
-        logger->error("Could not find map file");
+    {
+        logger->log("Error while loading %s", map_path.c_str());
+        new OkDialog(_("Could not load map"),
+                     strprintf(_("Error while loading %s"), map_path.c_str()));
+    }
 
     // Notify the minimap and beingManager about the map change
     minimap->setMap(newMap);
@@ -90,16 +96,12 @@ bool Engine::changeMap(const std::string &mapPath)
     viewport->setMap(newMap);
 
     // Initialize map-based particle effects
-    newMap->initializeParticleEffects(particleEngine);
+    if (newMap)
+        newMap->initializeParticleEffects(particleEngine);
 
     // Start playing new music file when necessary
-    std::string oldMusic = "";
-
-    if (mCurrentMap)
-        oldMusic = mCurrentMap->getProperty("music");
-
-    std::string newMusic = newMap->getProperty("music");
-
+    std::string oldMusic = mCurrentMap ? mCurrentMap->getMusicFile() : "";
+    std::string newMusic = newMap ? newMap->getMusicFile() : "";
     if (newMusic != oldMusic)
         sound.playMusic(newMusic);
 

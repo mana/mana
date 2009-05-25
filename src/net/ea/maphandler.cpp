@@ -103,7 +103,6 @@ void MapHandler::mapLoaded(const std::string &mapName)
 
 void MapHandler::who()
 {
-
 }
 
 void MapHandler::quit()
