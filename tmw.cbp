@@ -210,14 +210,8 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/gui/changepassworddialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/changepassworddialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/changepassworddialog.cpp" />
+		<Unit filename="src/gui/changepassworddialog.h" />
 		<Unit filename="src/gui/charcreatedialog.cpp" />
 		<Unit filename="src/gui/charcreatedialog.h" />
 		<Unit filename="src/gui/charselectdialog.cpp" />
