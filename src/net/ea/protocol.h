@@ -42,6 +42,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_CHAR_DELETE_SUCCEEDED   0x006f
 #define SMSG_CHAR_DELETE_FAILED      0x0070
 #define SMSG_CHAR_MAP_INFO           0x0071
+#define SMSG_CHAR_PASSWORD_RESPONSE  0x0062 /**< Custom packet reply to password change request */
 
 #define SMSG_MAP_LOGIN_SUCCESS       0x0073 /**< Contains starting location */
 #define SMSG_PLAYER_UPDATE_1         0x01d8
@@ -141,6 +142,7 @@ static const int STORAGE_OFFSET = 1;
 /**********************************
  *  Packets from client to server *
  **********************************/
+#define CMSG_CHAR_PASSWORD_CHANGE    0x0061 /**< Custom change password packet */
 #define CMSG_CHAR_SERVER_CONNECT     0x0065
 #define CMSG_CHAR_SELECT             0x0066
 #define CMSG_CHAR_CREATE             0x0067

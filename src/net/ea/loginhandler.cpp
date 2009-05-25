@@ -46,6 +46,7 @@ LoginHandler::LoginHandler()
         SMSG_UPDATE_HOST,
         SMSG_LOGIN_DATA,
         SMSG_LOGIN_ERROR,
+        SMSG_CHAR_PASSWORD_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -58,6 +59,37 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
     switch (msg.getId())
     {
+        case SMSG_CHAR_PASSWORD_RESPONSE:
+        {
+			// 0: acc not found, 1: success, 2: password mismatch, 3: pass too short
+            int errMsg = msg.readInt8();
+            // Successful pass change
+            if (errMsg == 1)
+            {
+                state = STATE_CHANGEPASSWORD;
+            }
+            // pass change failed
+            else
+            {
+                switch (errMsg) {
+                    case 0:
+                        errorMessage = _("Account not connected. Please login first.");
+                        break;
+                    case 2:
+                        errorMessage = _("Old password incorrect");
+                        break;
+                    case 3:
+                        errorMessage = _("New password too short");
+                        break;
+                    default:
+                        errorMessage = _("Unknown error");
+                        break;
+                }
+                state = STATE_ACCOUNTCHANGE_ERROR;
+            }
+        }
+            break;
+
         case SMSG_UPDATE_HOST:
              int len;
 
@@ -157,7 +189,9 @@ void LoginHandler::changePassword(const std::string &username,
                                   const std::string &oldPassword,
                                   const std::string &newPassword)
 {
-    // TODO
+    MessageOut outMsg(CMSG_CHAR_PASSWORD_CHANGE);
+    outMsg.writeString(oldPassword, 24);
+    outMsg.writeString(newPassword, 24);
 }
 
 void LoginHandler::chooseServer(int server)
