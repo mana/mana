@@ -120,6 +120,8 @@ SET(SRCS
     gui/buy.h
     gui/buysell.cpp
     gui/buysell.h
+    gui/changepassworddialog.cpp
+    gui/changepassworddialog.h
     gui/charselectdialog.cpp
     gui/charselectdialog.h
     gui/charcreatedialog.cpp
@@ -464,8 +466,6 @@ SET(SRCS_TMW
     gui/buddywindow.h
     gui/changeemaildialog.cpp
     gui/changeemaildialog.h
-    gui/changepassworddialog.cpp
-    gui/changepassworddialog.h
     gui/connection.cpp
     gui/connection.h
     gui/guildlistbox.cpp
