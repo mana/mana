@@ -73,7 +73,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             {
                 switch (errMsg) {
                     case 0:
-                        errorMessage = _("Account not connected. Please login first.");
+                        errorMessage = _("Account was not found. Please re-login.");
                         break;
                     case 2:
                         errorMessage = _("Old password incorrect");
