@@ -19,26 +19,28 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ministatus.h"
-#include "popupmenu.h"
-#include "viewport.h"
+#include "gui/viewport.h"
 
-#include "../beingmanager.h"
-#include "../configuration.h"
-#include "../flooritemmanager.h"
-#include "../game.h"
-#include "../graphics.h"
-#include "../keyboardconfig.h"
-#include "../localplayer.h"
-#include "../map.h"
-#include "../monster.h"
-#include "../npc.h"
-#include "../textmanager.h"
+#include "gui/gui.h"
+#include "gui/ministatus.h"
+#include "gui/popupmenu.h"
 
-#include "../resources/monsterinfo.h"
-#include "../resources/resourcemanager.h"
+#include "beingmanager.h"
+#include "configuration.h"
+#include "flooritemmanager.h"
+#include "game.h"
+#include "graphics.h"
+#include "keyboardconfig.h"
+#include "localplayer.h"
+#include "map.h"
+#include "monster.h"
+#include "npc.h"
+#include "textmanager.h"
 
-#include "../utils/stringutils.h"
+#include "resources/monsterinfo.h"
+#include "resources/resourcemanager.h"
+
+#include "utils/stringutils.h"
 
 extern volatile int tick_time;
 
@@ -94,7 +96,12 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     static int lastTick = tick_time;
 
     if (!mMap || !player_node)
+    {
+        gcnGraphics->setColor(gcn::Color(64, 64, 64));
+        gcnGraphics->fillRectangle(
+                gcn::Rectangle(0, 0, getWidth(), getHeight()));
         return;
+    }
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
@@ -233,10 +240,10 @@ void Viewport::logic()
 {
     WindowContainer::logic();
 
+    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
+
     if (!mMap || !player_node)
         return;
-
-    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
 
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
 #ifdef TMWSERV_SUPPORT

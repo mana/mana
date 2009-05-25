@@ -77,21 +77,26 @@ void Minimap::setMap(Map *map)
     // Set the title for the Minimap
     std::string caption;
 
-    if (map->hasProperty("name"))
-        caption = map->getProperty("name");
-    else if (map->hasProperty("mapname"))
-        caption = map->getProperty("mapname");
-    else
+    if (map)
+        caption = map->getName();
+
+    if (caption.empty())
         caption = _("Map");
 
     minimap->setCaption(caption);
 
     // Adapt the image
     if (mMapImage)
+    {
         mMapImage->decRef();
+        mMapImage = 0;
+    }
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    mMapImage = resman->getImage(map->getProperty("minimap"));
+    if (map)
+    {
+        ResourceManager *resman = ResourceManager::getInstance();
+        mMapImage = resman->getImage(map->getProperty("minimap"));
+    }
 
     if (mMapImage)
     {

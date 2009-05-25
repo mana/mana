@@ -36,7 +36,6 @@ MapHandler::MapHandler()
 
 void MapHandler::handleMessage(MessageIn &msg)
 {
-
 }
 
 void MapHandler::connect(LoginData *loginData)
