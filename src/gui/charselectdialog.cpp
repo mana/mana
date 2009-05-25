@@ -94,11 +94,11 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    LoginData *loginData):
     Window(_("Account and Character Management")),
     mCharInfo(charInfo),
-    mCharSelected(false),
+    mLoginData(loginData),
+    mCharSelected(false)
 #ifdef EATHENA_SUPPORT
-    mGender(loginData->sex),
+    , mGender(loginData->sex)
 #endif
-    mLoginData(loginData)
 {
     mSelectButton = new Button(_("OK"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
