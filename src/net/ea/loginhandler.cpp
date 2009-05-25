@@ -61,7 +61,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
     {
         case SMSG_CHAR_PASSWORD_RESPONSE:
         {
-			// 0: acc not found, 1: success, 2: password mismatch, 3: pass too short
+            // 0: acc not found, 1: success, 2: password mismatch, 3: pass too short
             int errMsg = msg.readInt8();
             // Successful pass change
             if (errMsg == 1)
