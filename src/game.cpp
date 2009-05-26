@@ -728,7 +728,7 @@ void Game::handleInput()
                 default:
                     break;
             }
-            if (keyboard.isEnabled() && 
+            if (keyboard.isEnabled() &&
                  !chatWindow->isInputFocused() && !npcDialog->isInputFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
@@ -988,7 +988,7 @@ void Game::handleInput()
         }
 #else
         player_node->setWalkingDir(direction);
-
+#endif
         // Attacking monsters
         if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
            (joystick && joystick->buttonPressed(0)))
@@ -1005,15 +1005,17 @@ void Game::handleInput()
             // A set target has highest priority
             if (!player_node->getTarget())
             {
+#ifdef TMWSERV_SUPPORT
+                Uint16 targetX = x / 32, targetY = y / 32;
+#else
                 Uint16 targetX = x, targetY = y;
+#endif
                 // Only auto target Monsters
                 target = beingManager->findNearestLivingBeing(targetX, targetY,
                          20, Being::MONSTER);
             }
             player_node->attack(target, newTarget);
         }
-
-#endif
 
         // Target the nearest player/monster/npc
         if ((keyboard.isKeyActive(keyboard.KEY_TARGET_PLAYER) ||
@@ -1058,7 +1060,7 @@ void Game::handleInput()
         }
 
         // Stop attacking if the right key is pressed
-        if (!keyboard.isKeyActive(keyboard.KEY_ATTACK) 
+        if (!keyboard.isKeyActive(keyboard.KEY_ATTACK)
             && keyboard.isKeyActive(keyboard.KEY_TARGET))
         {
             player_node->stopAttack();

@@ -703,6 +703,22 @@ void LocalPlayer::attack(Being *target, bool keep)
         return;
 #endif
 
+#ifdef TMWSERV_SUPPORT
+    if (abs(dist_y) >= abs(dist_x))
+    {
+        if (dist_y < 0)
+            setDirection(DOWN);
+        else
+            setDirection(UP);
+    }
+    else
+    {
+        if (dist_x < 0)
+            setDirection(RIGHT);
+        else
+            setDirection(LEFT);
+    }
+#else
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y > 0)
@@ -717,6 +733,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         else
             setDirection(LEFT);
     }
+#endif
 
 #ifdef TMWSERV_SUPPORT
     mLastAction = tick_time;
@@ -738,9 +755,6 @@ void LocalPlayer::attack(Being *target, bool keep)
         sound.playSfx("sfx/fist-swish.ogg");
     }
 
-#ifdef TMWSERV_SUPPORT
-    if (mLastAction == STAND)
-#endif
     Net::getPlayerHandler()->attack(target->getId());
 #ifdef EATHENA_SUPPORT
     if (!keep)
