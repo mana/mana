@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-05-28 22:55+0200\n"
-"PO-Revision-Date: 2009-05-13 17:21+0000\n"
+"PO-Revision-Date: 2009-05-19 13:34+0000\n"
 "Last-Translator: Habari <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-13 18:28+0000\n"
+"X-Launchpad-Export-Date: 2009-05-28 20:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
@@ -332,9 +332,9 @@ msgid "Could not load map"
 msgstr "no pudiste unirte al grupo"
 
 #: src/engine.cpp:89
-#, c-format
+#, fuzzy, c-format
 msgid "Error while loading %s"
-msgstr ""
+msgstr "Base de datos de NPC: error al cargar npcs.xml"
 
 #: src/game.cpp:237
 msgid "General"
@@ -779,8 +779,9 @@ msgid "Reset"
 msgstr "resetear"
 
 #: src/gui/npcpostdialog.cpp:44
+#, fuzzy
 msgid "To:"
-msgstr ""
+msgstr "Tema: "
 
 #: src/gui/npcpostdialog.cpp:51
 msgid "Send"
@@ -984,23 +985,23 @@ msgid "1/4 HP Bar"
 msgstr "barra de salud a un cuarto"
 
 #: src/gui/partywindow.cpp:70
-#, fuzzy, c-format
+#, c-format
 msgid "Party (%s)"
-msgstr "grupo"
+msgstr "Grupo (%s)"
 
 #: src/gui/partywindow.cpp:174
 msgid "Received party request, but one already exists."
 msgstr ""
 
 #: src/gui/partywindow.cpp:182
-#, c-format
+#, fuzzy, c-format
 msgid "%s has invited you to join their party."
-msgstr ""
+msgstr "%s ha dejado el grupo."
 
 #: src/gui/partywindow.cpp:185
-#, c-format
+#, fuzzy, c-format
 msgid "%s has invited you to join the %s party."
-msgstr ""
+msgstr "%s ha dejado el grupo."
 
 #: src/gui/partywindow.cpp:191
 msgid "Accept Party Invite"
@@ -1012,9 +1013,9 @@ msgid "Accepted invite from %s."
 msgstr ""
 
 #: src/gui/partywindow.cpp:211
-#, c-format
+#, fuzzy, c-format
 msgid "Rejected invite from %s."
-msgstr ""
+msgstr "Rechazado por el servidor."
 
 #: src/gui/popupmenu.cpp:77
 msgid "@@name|Add name to chat@@"
@@ -1067,7 +1068,7 @@ msgstr "@@party|Invita a  %sa unirse a tu grupoy@@"
 
 #: src/gui/popupmenu.cpp:124
 msgid "@@admin-kick|Kick player@@"
-msgstr ""
+msgstr "@@admin-kick|expulsar jugador@@"
 
 #: src/gui/popupmenu.cpp:132
 #, c-format
@@ -1076,7 +1077,7 @@ msgstr "@@talk|Hablar a %s@@"
 
 #: src/gui/popupmenu.cpp:141
 msgid "@@admin-kick|Kick monster@@"
-msgstr ""
+msgstr "@@admin-kick|expulsar monstruor@@"
 
 #: src/gui/popupmenu.cpp:152 src/gui/popupmenu.cpp:170
 #: src/gui/popupmenu.cpp:383
@@ -1804,14 +1805,16 @@ msgstr "hace a <apodo> operador de canal"
 #: src/gui/widgets/channeltab.cpp:83
 msgid "Channel operators can kick and op other users from the channel."
 msgstr ""
+"los operadores de canal pueden expulsar a otros usuarios y/o convertirlos en "
+"op. de canal"
 
 #: src/gui/widgets/channeltab.cpp:88
 msgid "Command: /kick <nick>"
-msgstr ""
+msgstr "comando:/kick <apodo>"
 
 #: src/gui/widgets/channeltab.cpp:89
 msgid "This command makes <nick> leave the channel."
-msgstr ""
+msgstr "este comando expulsa a <apodo> del canal"
 
 #: src/gui/widgets/channeltab.cpp:118
 msgid "Need a user to op!"
@@ -1888,9 +1891,8 @@ msgid "Attack"
 msgstr "ataque"
 
 #: src/keyboardconfig.cpp:46
-#, fuzzy
 msgid "Target & Attack"
-msgstr "dejar de atacar"
+msgstr "objetivo y ataque"
 
 #: src/keyboardconfig.cpp:47
 msgid "Smilie"
@@ -2095,7 +2097,7 @@ msgstr "habilidad desconocida"
 
 #: src/main.cpp:263
 msgid "Invalid update host: "
-msgstr ""
+msgstr "servidor de actualizaciones invalido: "
 
 #: src/main.cpp:296 src/main.cpp:302
 msgid "Error creating updates directory!"
@@ -2103,7 +2105,7 @@ msgstr "error al crear directorio de actualizaciones"
 
 #: src/main.cpp:340
 msgid " can't be created, but it doesn't exist! Exiting."
-msgstr ""
+msgstr " no se puede crear , pero no existe , saliendo..."
 
 #: src/main.cpp:492
 msgid "Couldn't set "
@@ -2123,11 +2125,11 @@ msgstr "Opciones:"
 
 #: src/main.cpp:577
 msgid "  -C --config-file : Configuration file to use"
-msgstr ""
+msgstr "  -C --config-file : archivo de configuracion a usar"
 
 #: src/main.cpp:578
 msgid "  -d --data        : Directory to load game data from"
-msgstr ""
+msgstr "  -d --data : Directorio para cargar archivos del juego"
 
 #: src/main.cpp:579
 msgid "  -D --default     : Choose default character server and character"
@@ -2147,7 +2149,7 @@ msgstr "  -H --update-host : Usar este servidor de actualizaciones"
 
 #: src/main.cpp:584
 msgid "  -P --password    : Login with this password"
-msgstr ""
+msgstr "  -P --password : entrar con esta contraseña"
 
 #: src/main.cpp:585
 msgid "  -c --character   : Login with this character"
@@ -2173,11 +2175,11 @@ msgstr "  -U --username : conectarse con este nombre se usuario"
 
 #: src/main.cpp:591
 msgid "  -O --no-opengl   : Disable OpenGL for this session"
-msgstr ""
+msgstr "  -O --no-opengl : des habilitar OpenGl para esta sesion"
 
 #: src/main.cpp:593
 msgid "  -v --version     : Display the version"
-msgstr ""
+msgstr "  -v --version : muestra la version"
 
 #: src/main.cpp:598
 #, fuzzy, c-format
@@ -2239,11 +2241,11 @@ msgstr "no se pude usar esta ID"
 
 #: src/net/ea/charserverhandler.cpp:101
 msgid "Unknown failure to select character"
-msgstr ""
+msgstr "fallo desconocido al seleccionar personaje"
 
 #: src/net/ea/charserverhandler.cpp:123
 msgid "Failed to create character. Most likely the name is already taken."
-msgstr ""
+msgstr "no se pudo crear personaje. probablemente el nombre este cogido"
 
 #: src/net/ea/charserverhandler.cpp:135
 msgid "Info"
@@ -2288,85 +2290,87 @@ msgid "Luck:"
 msgstr "suerte:"
 
 #: src/net/ea/chathandler.cpp:78
+#, fuzzy
 msgid "Whisper could not be sent, user is offline."
-msgstr ""
+msgstr "no se pudo enviar susurro , el jugador esta desconectado"
 
 #: src/net/ea/chathandler.cpp:82
+#, fuzzy
 msgid "Whisper could not be sent, ignored by user."
-msgstr ""
+msgstr "no se pudo enviar susurro , fue ignorado por el jugador"
 
 #: src/net/ea/chathandler.cpp:202 src/net/ea/chathandler.cpp:208
 #: src/net/ea/chathandler.cpp:213 src/net/ea/chathandler.cpp:218
 #: src/net/ea/chathandler.cpp:223 src/net/ea/chathandler.cpp:228
 #: src/net/ea/chathandler.cpp:233 src/net/ea/chathandler.cpp:238
 msgid "Channels are not supported!"
-msgstr ""
+msgstr "no se soportan canales!!"
 
 #: src/net/ea/equipmenthandler.cpp:111
 msgid "Unable to equip."
-msgstr ""
+msgstr "no se pudo equipar"
 
 #: src/net/ea/equipmenthandler.cpp:152
 msgid "Unable to unequip."
-msgstr ""
+msgstr "no se pudo desequipar"
 
 #: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
 #, c-format
 msgid "Strength %+d"
-msgstr ""
+msgstr "fuerza %+d"
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
 #, c-format
 msgid "Agility %+d"
-msgstr ""
+msgstr "agilidad %+d"
 
 #: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
 #, c-format
 msgid "Vitality %+d"
-msgstr ""
+msgstr "vitalidad %+d"
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
 #, c-format
 msgid "Intelligence %+d"
-msgstr ""
+msgstr "inteligencia %+d"
 
 #: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
 #, c-format
 msgid "Dexterity %+d"
-msgstr ""
+msgstr "Destreza %+d"
 
 #: src/net/ea/generalhandler.cpp:96
 #, c-format
 msgid "Luck %+d"
-msgstr ""
+msgstr "suerte %+d"
 
 #: src/net/ea/generalhandler.cpp:118
 msgid "Authentication failed"
-msgstr ""
+msgstr "autenticacion fallida"
 
 #: src/net/ea/generalhandler.cpp:121
 msgid "No servers available"
-msgstr ""
+msgstr "no hay servidores disponibles"
 
 #: src/net/ea/generalhandler.cpp:125
 msgid "Someone else is trying to use this account"
-msgstr ""
+msgstr "alguien mas esta tratando de usar esta cuenta"
 
 #: src/net/ea/generalhandler.cpp:128
 msgid "This account is already logged in"
-msgstr ""
+msgstr "esta cuenta ya esta conectada"
 
 #: src/net/ea/generalhandler.cpp:131
 msgid "Speed hack detected"
-msgstr ""
+msgstr "se detecto hack de velocidad"
 
 #: src/net/ea/generalhandler.cpp:134
 msgid "Duplicated login"
-msgstr ""
+msgstr "conexion duplicada"
 
 #: src/net/ea/generalhandler.cpp:137
 msgid "Unknown connection error"
-msgstr ""
+msgstr "error de conexion desconocido"
 
 #: src/net/ea/generalhandler.cpp:194
 msgid "Got disconnected from server!"
@@ -2378,132 +2382,137 @@ msgstr "/help > Mostrar la ayuda"
 
 #: src/net/ea/gui/partytab.cpp:56
 msgid "/create > Create a new party"
-msgstr ""
+msgstr "/create > Crear un nuevo grupo"
 
 #: src/net/ea/gui/partytab.cpp:57
 msgid "/new > Alias of create"
-msgstr ""
+msgstr "new > lo mismo que create"
 
 #: src/net/ea/gui/partytab.cpp:58
 msgid "/invite > Invite a player to your party"
-msgstr ""
+msgstr "/invite > Invitar a un jugador a tu grupo"
 
 #: src/net/ea/gui/partytab.cpp:59
 msgid "/leave > Leave the party you are in"
-msgstr ""
+msgstr "/leave > abandonar tu grupo"
 
 #: src/net/ea/gui/partytab.cpp:60
 msgid "/kick > Kick some one from the party you are in"
-msgstr ""
+msgstr "/kick > expulsar a alguien de tu grupo"
 
 #: src/net/ea/gui/partytab.cpp:61
 msgid "/item > Show/change party item sharing options"
-msgstr ""
+msgstr "/item > mostrar/cambiar opciones de compartir objetos del grupo"
 
 #: src/net/ea/gui/partytab.cpp:62
 msgid "/exp > Show/change party experience sharing options"
-msgstr ""
+msgstr "/exp > mostrar/cambiar opciones para compartir experiencia en el grupo"
 
 #: src/net/ea/gui/partytab.cpp:71
 msgid "Command: /new <party-name>"
-msgstr ""
+msgstr "Comando: /new <nombre del grupo>"
 
 #: src/net/ea/gui/partytab.cpp:72
 msgid "Command: /create <party-name>"
-msgstr ""
+msgstr "Comando: /create <nombre>"
 
 #: src/net/ea/gui/partytab.cpp:73
 msgid "These commands create a new party called <party-name>."
-msgstr ""
+msgstr "estos comandos crean un grupo <nombre>"
 
 #: src/net/ea/gui/partytab.cpp:77
 msgid "Command: /invite <nick>"
-msgstr ""
+msgstr "Command: /invite <nick>"
 
 #: src/net/ea/gui/partytab.cpp:84
 msgid "Command: /leave"
-msgstr ""
+msgstr "Command: /leave"
 
 #: src/net/ea/gui/partytab.cpp:85
 msgid "This command causes the player to leave the party."
-msgstr ""
+msgstr "este comando hace que el jugador deje el grupo"
 
 #: src/net/ea/gui/partytab.cpp:89
 msgid "Command: /item <policy>"
-msgstr ""
+msgstr "Command: /item <policy>"
 
 #: src/net/ea/gui/partytab.cpp:90
 msgid "This command changes the party's item sharing policy."
-msgstr ""
+msgstr "cambia el compartir objetos dentro de un grupo"
 
 #: src/net/ea/gui/partytab.cpp:91
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
 "\"0\", \"no\", \"false\" to disable item sharing."
 msgstr ""
+"<policy> puede ser  \"1\", \"yes\", \"true\" para compartir, o  \"0\", \"no"
+"\", \"false\" para no compartir"
 
 #: src/net/ea/gui/partytab.cpp:94
 msgid "Command: /item"
-msgstr ""
+msgstr "Comando: /item"
 
 #: src/net/ea/gui/partytab.cpp:95
 msgid "This command displays the party's current item sharing policy."
 msgstr ""
+"Este mando permite enseñar la politica de intercambio de objetos en el grupo"
 
 #: src/net/ea/gui/partytab.cpp:99
 msgid "Command: /exp <policy>"
-msgstr ""
+msgstr "Comando: /exp <policy>"
 
 #: src/net/ea/gui/partytab.cpp:100
 msgid "This command changes the party's experience sharing policy."
-msgstr ""
+msgstr "este comando cambia si el grupo comparte o no la experiencia"
 
 #: src/net/ea/gui/partytab.cpp:101
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable experience "
 "sharing, or \"0\", \"no\", \"false\" to disable experience sharing."
 msgstr ""
+"<policy> puede ser \"1\", \"yes\", \"true\" para activar el intercambio de "
+"experiencia o \"0\", \"no\", \"false\" para desactivarla."
 
 #: src/net/ea/gui/partytab.cpp:104
 msgid "Command: /exp"
-msgstr ""
+msgstr "Comando: /exp"
 
 #: src/net/ea/gui/partytab.cpp:105
 msgid "This command displays the party's current experience sharing policy."
-msgstr ""
+msgstr "este comando muestra si el grupo deja compartir experiencia"
 
 #: src/net/ea/gui/partytab.cpp:113
 msgid "Party name is missing."
-msgstr ""
+msgstr "falta el nombre del grupo"
 
 #: src/net/ea/gui/partytab.cpp:136 src/net/ea/partyhandler.cpp:194
 msgid "Item sharing enabled."
-msgstr ""
+msgstr "se permite compartir objetos"
 
 #: src/net/ea/gui/partytab.cpp:139 src/net/ea/partyhandler.cpp:200
 msgid "Item sharing disabled."
-msgstr ""
+msgstr "no se permite compartir objetos"
 
 #: src/net/ea/gui/partytab.cpp:142 src/net/ea/partyhandler.cpp:206
 msgid "Item sharing not possible."
-msgstr ""
+msgstr "Imposible compartir ítem."
 
 #: src/net/ea/gui/partytab.cpp:168 src/net/ea/partyhandler.cpp:171
 msgid "Experience sharing enabled."
-msgstr ""
+msgstr "Compartir experiencia activado."
 
 #: src/net/ea/gui/partytab.cpp:171 src/net/ea/partyhandler.cpp:177
 msgid "Experience sharing disabled."
-msgstr ""
+msgstr "Compartir experiencia desactivado."
 
 #: src/net/ea/gui/partytab.cpp:174 src/net/ea/partyhandler.cpp:183
 msgid "Experience sharing not possible."
-msgstr ""
+msgstr "Imposible compartir experiencia."
 
 #: src/net/ea/inventoryhandler.cpp:185
 #, fuzzy
 msgid "Unable to pick up item."
-msgstr "no se pudo comprar"
+msgstr "No puede recoger el objeto"
 
 #. TRANSLATORS: Used as in "You picked up a ...", when
 #. picking up only one item.
@@ -2512,248 +2521,262 @@ msgid "a"
 msgstr ""
 
 #: src/net/ea/inventoryhandler.cpp:199
-#, c-format
+#, fuzzy, c-format
 msgid "You picked up %s [@@%d|%s@@]."
-msgstr ""
+msgstr "ha recogido %s [@@%d|%s@@]"
 
 #: src/net/ea/inventoryhandler.cpp:245
 #, fuzzy
 msgid "Failed to use item."
-msgstr "no se pudo cambiar a: "
+msgstr "Fallo al usar ítem."
 
 #: src/net/ea/loginhandler.cpp:76
+#, fuzzy
 msgid "Account was not found. Please re-login."
-msgstr ""
+msgstr "cuenta no conectada , conectate primero"
 
 #: src/net/ea/loginhandler.cpp:79 src/net/tmwserv/loginhandler.cpp:113
 msgid "Old password incorrect"
-msgstr ""
+msgstr "la contraseña antigua es incorrecta"
 
 #: src/net/ea/loginhandler.cpp:82
+#, fuzzy
 msgid "New password too short"
-msgstr ""
+msgstr "la nueva contraseña es incorrecta"
 
 #: src/net/ea/loginhandler.cpp:85 src/net/ea/loginhandler.cpp:169
 #: src/net/tmwserv/loginhandler.cpp:89 src/net/tmwserv/loginhandler.cpp:119
 #: src/net/tmwserv/loginhandler.cpp:152 src/net/tmwserv/loginhandler.cpp:188
 #: src/net/tmwserv/loginhandler.cpp:220
 msgid "Unknown error"
-msgstr ""
+msgstr "Error desconocido."
 
 #: src/net/ea/loginhandler.cpp:142
 msgid "Unregistered ID"
-msgstr ""
+msgstr "ID sin registrar."
 
 #: src/net/ea/loginhandler.cpp:145
 msgid "Wrong password"
-msgstr ""
+msgstr "Contraseña incorrecta."
 
 #: src/net/ea/loginhandler.cpp:148
 msgid "Account expired"
-msgstr ""
+msgstr "Cuenta expirada."
 
 #: src/net/ea/loginhandler.cpp:151
 msgid "Rejected from server"
-msgstr ""
+msgstr "Rechazado por el servidor."
 
 #: src/net/ea/loginhandler.cpp:155
 msgid ""
 "You have been permanently banned from the game. Please contact the GM Team."
 msgstr ""
+"Has sido bloqueado permanentemente del juego. Por favor, contacta al Equipo "
+"GM."
 
 #: src/net/ea/loginhandler.cpp:159
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "You have been temporarily banned from the game until %s.\n"
 "Please contact the GM team via the forums."
 msgstr ""
+"Has sido bloqueado temporalmente del juego hasta %s\n"
+" Por favor contacta al Equipo GM a través de los foros."
 
 #: src/net/ea/loginhandler.cpp:166
 msgid "This user name is already taken"
-msgstr ""
+msgstr "Este nombre de usuario ya está tomado."
 
 #: src/net/ea/partyhandler.cpp:77
 msgid "Could not create party."
-msgstr ""
+msgstr "No se ha podido crear el grupo"
 
 #: src/net/ea/partyhandler.cpp:80
 msgid "Party successfully created."
-msgstr ""
+msgstr "El grupo se creo con exito"
 
 #: src/net/ea/partyhandler.cpp:115
 #, c-format
 msgid "%s is already a member of a party."
-msgstr ""
+msgstr "%s ya forma parte del grupo."
 
 #: src/net/ea/partyhandler.cpp:119
 #, c-format
 msgid "%s refused your invitation."
-msgstr ""
+msgstr "%s rechazó tu invitación."
 
 #: src/net/ea/partyhandler.cpp:123
 #, c-format
 msgid "%s is now a member of your party."
-msgstr ""
+msgstr "%s es ahorra miembro de su grupo."
 
 #: src/net/ea/partyhandler.cpp:127
 #, c-format
 msgid "Unknown invite response for %s."
-msgstr ""
+msgstr "respuesta a invitacion desconocida para %s."
 
 #: src/net/ea/partyhandler.cpp:234
 msgid "You have left the party."
-msgstr ""
+msgstr "Acaba de dejar al grupo."
 
 #: src/net/ea/partyhandler.cpp:238
 #, c-format
 msgid "%s has left your party."
-msgstr ""
+msgstr "%s ha dejado el grupo."
 
 #: src/net/ea/partyhandler.cpp:273
 #, c-format
 msgid "An unknown member tried to say: %s"
-msgstr ""
+msgstr "Un miembro desconocido intentó decir: %s"
 
 #: src/net/ea/partyhandler.cpp:299
 msgid "Inviting like this isn't supported at the moment."
-msgstr ""
+msgstr "Por el momento no está soportado invitar de esta forma."
 
 #: src/net/ea/partyhandler.cpp:328
 #, c-format
 msgid "%s is not in your party!"
-msgstr ""
+msgstr "%s no es de su grupo !"
 
 #: src/net/ea/playerhandler.cpp:96 src/net/tmwserv/beinghandler.cpp:312
 msgid "You are dead."
-msgstr ""
+msgstr "Estás muerto."
 
 #: src/net/ea/playerhandler.cpp:97 src/net/tmwserv/beinghandler.cpp:313
 msgid "We regret to inform you that your character was killed in battle."
-msgstr ""
+msgstr "Sentimos informarte de que tu personaje fue muerto en batalla."
 
 #: src/net/ea/playerhandler.cpp:99 src/net/tmwserv/beinghandler.cpp:314
 msgid "You are not that alive anymore."
-msgstr ""
+msgstr "Te quedaste sin vida/"
 
 #: src/net/ea/playerhandler.cpp:100 src/net/tmwserv/beinghandler.cpp:315
 msgid "The cold hands of the grim reaper are grabbing for your soul."
-msgstr ""
+msgstr "Las manos heladas de la muerte se llevaron tu alma."
 
 #: src/net/ea/playerhandler.cpp:101 src/net/tmwserv/beinghandler.cpp:316
 msgid "Game Over!"
-msgstr ""
+msgstr "¡Fin del juego!"
 
 #: src/net/ea/playerhandler.cpp:102
 msgid "Insert coin to continue."
-msgstr ""
+msgstr "Inserta una moneda para continuar."
 
 #: src/net/ea/playerhandler.cpp:103 src/net/tmwserv/beinghandler.cpp:317
 msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
 msgstr ""
+"No, niños. Tu personaje no murió realmente. Él... eeh... se marchó a un "
+"lugar mejor."
 
 #: src/net/ea/playerhandler.cpp:105 src/net/tmwserv/beinghandler.cpp:318
 msgid ""
 "Your plan of breaking your enemies weapon by bashing it with your throat "
 "failed."
 msgstr ""
+"Falló tu plan de romper el arma de tus enemigos golpeándola con tu garganta."
 
 #: src/net/ea/playerhandler.cpp:107 src/net/tmwserv/beinghandler.cpp:319
 msgid "I guess this did not run too well."
-msgstr ""
+msgstr "Creo que esto no funcionó muy bien."
 
 #: src/net/ea/playerhandler.cpp:109 src/net/tmwserv/beinghandler.cpp:320
 msgid "Do you want your possessions identified?"
-msgstr ""
+msgstr "¿Quieres que tus posesiones sean identificadas?"
 
 #: src/net/ea/playerhandler.cpp:111 src/net/tmwserv/beinghandler.cpp:321
 msgid "Sadly, no trace of you was ever found..."
-msgstr ""
+msgstr "Lamentablemente, ningún rastro tuyo fue encontrado nunca."
 
 #: src/net/ea/playerhandler.cpp:113 src/net/tmwserv/beinghandler.cpp:322
 msgid "Annihilated."
-msgstr ""
+msgstr "Aniquilado."
 
 #: src/net/ea/playerhandler.cpp:115 src/net/tmwserv/beinghandler.cpp:323
 msgid "Looks like you got your head handed to you."
-msgstr ""
+msgstr "Parce que te volaron la cabeza."
 
 #: src/net/ea/playerhandler.cpp:117 src/net/tmwserv/beinghandler.cpp:324
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
 msgstr ""
+"Ya la has cagado otra vez, pon en tierra ese cuerpo por ahi en los tuneles y "
+"cogete otro."
 
 #: src/net/ea/playerhandler.cpp:120
 msgid "You're not dead yet. You're just resting."
-msgstr ""
+msgstr "No estás muerto aún. Sólo estás descansando."
 
 #: src/net/ea/playerhandler.cpp:121
 msgid "You are no more."
-msgstr ""
+msgstr "Tú ya no existes más."
 
 #: src/net/ea/playerhandler.cpp:122
 msgid "You have ceased to be."
-msgstr ""
+msgstr "Has dejado de existir."
 
 #: src/net/ea/playerhandler.cpp:123
 msgid "You've expired and gone to meet your maker."
-msgstr ""
+msgstr "Has expirado e ido a encontrarte con tu creador."
 
 #: src/net/ea/playerhandler.cpp:124
 msgid "You're a stiff."
-msgstr ""
+msgstr "eres un tieso"
 
 #: src/net/ea/playerhandler.cpp:125
 msgid "Bereft of life, you rest in peace."
-msgstr ""
+msgstr "Sin vida, descanza en paz."
 
 #: src/net/ea/playerhandler.cpp:126
 msgid "If you weren't so animated, you'd be pushing up the daisies."
-msgstr ""
+msgstr "Si estuvieras con mas animo no estarias comiendo las raices."
 
 #: src/net/ea/playerhandler.cpp:127
 msgid "Your metabolic processes are now history."
-msgstr ""
+msgstr "Tus procesos metabólicos ya son historia."
 
 #: src/net/ea/playerhandler.cpp:128
 msgid "You're off the twig."
-msgstr ""
+msgstr "estas al borde de la ramita"
 
 #: src/net/ea/playerhandler.cpp:129
 msgid "You've kicked the bucket."
-msgstr ""
+msgstr "Has tocado el fondo."
 
 #: src/net/ea/playerhandler.cpp:130
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
 "bleedin' choir invisibile."
 msgstr ""
+"has terminado de barajar tu vida , has corrido debajo de la cortina y te has "
+"unido al sangriento coro invisible."
 
 #: src/net/ea/playerhandler.cpp:132
 msgid "You are an ex-player."
-msgstr ""
+msgstr "Eres un ex-jugador."
 
 #: src/net/ea/playerhandler.cpp:133
 msgid "You're pining for the fjords."
-msgstr ""
+msgstr "estas ganando puntos para acabar en los fiordos"
 
 #: src/net/ea/playerhandler.cpp:246 src/net/ea/playerhandler.cpp:270
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #: src/net/ea/playerhandler.cpp:247
 msgid ""
 "You are carrying more than half your weight. You are unable to regain health."
-msgstr ""
+msgstr "Estás cargando más de la mitad de tu peso. No puedes recuperar salud."
 
 #: src/net/ea/playerhandler.cpp:290
 msgid "You picked up "
-msgstr ""
+msgstr "Has cogido "
 
 #: src/net/ea/playerhandler.cpp:413
+#, fuzzy
 msgid "Equip arrows first."
-msgstr ""
+msgstr "Pon primero las flechas"
 
 #: src/net/ea/skillhandler.cpp:139
 msgid "Trade failed!"
@@ -2801,7 +2824,7 @@ msgstr "no puedes hacer eso ahora mismo"
 
 #: src/net/ea/skillhandler.cpp:178
 msgid "Seems you need more money... ;-)"
-msgstr ""
+msgstr "Parece que necesitas más dinero... ;-)"
 
 #: src/net/ea/skillhandler.cpp:181
 msgid "You cannot use this skill with that kind of weapon!"
@@ -2836,85 +2859,89 @@ msgid "Poison had no effect..."
 msgstr "el veneno no tuvo efecto"
 
 #: src/net/ea/tradehandler.cpp:103 src/net/tmwserv/tradehandler.cpp:114
+#, fuzzy
 msgid "Request for Trade"
-msgstr ""
+msgstr "Peticion de intercambio"
 
 #: src/net/ea/tradehandler.cpp:104 src/net/tmwserv/tradehandler.cpp:115
-#, c-format
+#, fuzzy, c-format
 msgid "%s wants to trade with you, do you accept?"
-msgstr ""
+msgstr " quiere realizar un intercambio contigo, lo acceptas ?"
 
 #: src/net/ea/tradehandler.cpp:119
 msgid "Trading isn't possible. Trade partner is too far away."
 msgstr ""
+"Intercambiar es impossible ya que la persona con quien se debe hacer se "
+"encuentra demasiado lejos de ti."
 
 #: src/net/ea/tradehandler.cpp:123
 msgid "Trading isn't possible. Character doesn't exist."
-msgstr ""
+msgstr "Intercambio imposible. El personaje no existe/"
 
 #: src/net/ea/tradehandler.cpp:127
 msgid "Trade cancelled due to an unknown reason."
-msgstr ""
+msgstr "Intercambio anulado por razones desconocidas."
 
 #: src/net/ea/tradehandler.cpp:132
 #, fuzzy, c-format
 msgid "Trade: You and %s"
-msgstr "intercambiar: tu"
+msgstr "Negociar: tu y "
 
 #: src/net/ea/tradehandler.cpp:139
-#, c-format
+#, fuzzy, c-format
 msgid "Trade with %s cancelled."
-msgstr ""
+msgstr "trato cancelado"
 
 #: src/net/ea/tradehandler.cpp:148
+#, fuzzy
 msgid "Unhandled trade cancel packet."
-msgstr ""
+msgstr "paquete de cancelar comercio no validado"
 
 #: src/net/ea/tradehandler.cpp:198
 msgid "Failed adding item. Trade partner is over weighted."
-msgstr ""
+msgstr "no se pudo añadir el objeto , tu compañero lleva demasiado peso encima"
 
 #: src/net/ea/tradehandler.cpp:203
 msgid "Failed adding item. Trade partner has no free slot."
-msgstr ""
+msgstr "no se pudo añadir el objeto , tu compañero no tiene espacio"
 
 #: src/net/ea/tradehandler.cpp:207
 msgid "Failed adding item for unknown reason."
-msgstr ""
+msgstr "no se pudo añadir el objeto , razon desconocida"
 
 #: src/net/ea/tradehandler.cpp:220 src/net/tmwserv/tradehandler.cpp:147
 msgid "Trade canceled."
-msgstr ""
+msgstr "trato cancelado"
 
 #: src/net/ea/tradehandler.cpp:227 src/net/tmwserv/tradehandler.cpp:154
 msgid "Trade completed."
-msgstr ""
+msgstr "trato completado"
 
 #: src/net/tmwserv/beinghandler.cpp:328
 msgid " Press OK to respawn"
-msgstr ""
+msgstr " pulsa OK para volver a la vida"
 
 #: src/net/tmwserv/beinghandler.cpp:329
 msgid "You died"
-msgstr ""
+msgstr "Has muerto"
 
 #: src/net/tmwserv/charserverhandler.cpp:219
 msgid "No gameservers are available."
-msgstr ""
+msgstr "no hay servidores de juego disponibles"
 
 #: src/net/tmwserv/charserverhandler.cpp:258
 msgid "Willpower:"
 msgstr "Fuerza de voluntad:"
 
 #: src/net/tmwserv/chathandler.cpp:158 src/net/tmwserv/guildhandler.cpp:250
-#, c-format
+#, fuzzy, c-format
 msgid "Topic: %s"
-msgstr ""
+msgstr "Tema: "
 
 #: src/net/tmwserv/generalhandler.cpp:87
 #, c-format
 msgid "Willpower %+d"
-msgstr ""
+msgstr "fuerza de voluntad: %+d"
 
 #: src/net/tmwserv/guildhandler.cpp:74
 msgid "Guild created."
@@ -2937,59 +2964,59 @@ msgstr ""
 #: src/net/tmwserv/guildhandler.cpp:199
 #, fuzzy
 msgid "Failed to promote member."
-msgstr "no se pudo empezar a grabar"
+msgstr "Fallo al usar ítem."
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
-msgstr ""
+msgstr "ficha de magia erronea"
 
 #: src/net/tmwserv/loginhandler.cpp:83 src/net/tmwserv/loginhandler.cpp:182
 msgid "Already logged in"
-msgstr ""
+msgstr "ya estas conectado"
 
 #: src/net/tmwserv/loginhandler.cpp:86 src/net/tmwserv/loginhandler.cpp:185
 msgid "Server is full"
-msgstr ""
+msgstr "el servidor esta lleno"
 
 #: src/net/tmwserv/loginhandler.cpp:110
 msgid "New password incorrect"
-msgstr ""
+msgstr "la nueva contraseña es incorrecta"
 
 #: src/net/tmwserv/loginhandler.cpp:116 src/net/tmwserv/loginhandler.cpp:146
 msgid "Account not connected. Please login first."
-msgstr ""
+msgstr "cuenta no conectada , conectate primero"
 
 #: src/net/tmwserv/loginhandler.cpp:140
 msgid "New email address incorrect"
-msgstr ""
+msgstr "Nueva Direccion de E-mail erronea"
 
 #: src/net/tmwserv/loginhandler.cpp:143
 msgid "Old email address incorrect"
-msgstr ""
+msgstr "Antigua dirreccion de E-mail erronea"
 
 #: src/net/tmwserv/loginhandler.cpp:149
 msgid "The new Email Address already exists."
-msgstr ""
+msgstr "la nueva direccion de E-mail ya existe"
 
 #: src/net/tmwserv/loginhandler.cpp:176 src/net/tmwserv/loginhandler.cpp:208
 msgid "Client version is too old"
-msgstr ""
+msgstr "La version de tu cliente es demasiado antigua"
 
 #: src/net/tmwserv/loginhandler.cpp:179
 msgid "Wrong username or password"
-msgstr ""
+msgstr "nombre de usuario o contraseña incorrectos"
 
 #: src/net/tmwserv/loginhandler.cpp:211
 msgid "Wrong username, password or email address"
-msgstr ""
+msgstr "nombre de usuario , contraseña o Email incorrectos"
 
 #: src/net/tmwserv/loginhandler.cpp:214
 msgid "Username already exists"
-msgstr ""
+msgstr "ese nombre ya existe"
 
 #: src/net/tmwserv/loginhandler.cpp:217
 msgid "Email address already exists"
-msgstr ""
+msgstr "ese E-mail ya existe"
 
 #: src/net/tmwserv/partyhandler.cpp:86
 msgid "Joined party."
@@ -3011,9 +3038,9 @@ msgid "Ignoring incoming trade requests."
 msgstr "actualmente se estan ignorando las peticiones de comercio recibidas"
 
 #: src/net/tmwserv/tradehandler.cpp:133
-#, c-format
+#, fuzzy, c-format
 msgid "Trading with %s"
-msgstr ""
+msgstr "comerciar con "
 
 #: src/resources/itemdb.cpp:52
 #, c-format
@@ -3045,10 +3072,19 @@ msgstr "sin nombre"
 
 #: src/resources/monsterdb.cpp:45 src/resources/monsterdb.cpp:67
 msgid "unnamed"
-msgstr ""
+msgstr "sin nombre"
 
 #~ msgid "Select Character"
 #~ msgstr "Seleccionar personaje"
+
+#~ msgid "Scroll radius"
+#~ msgstr "Ratio de scroll"
+
+#~ msgid "Scroll laziness"
+#~ msgstr "Velocidad de scroll"
+
+#~ msgid "Save player list"
+#~ msgstr "guardar lista de jugdores"
 
 #~ msgid "Unable to load selection.png"
 #~ msgstr "no se pudo cargar selection.png"
@@ -3062,11 +3098,11 @@ msgstr ""
 #~ msgid "Player deleted"
 #~ msgstr "personaje borrado"
 
-#~ msgid "Scroll radius"
-#~ msgstr "Ratio de scroll"
+#~ msgid " cancelled"
+#~ msgstr " cancelado"
 
-#~ msgid "Scroll laziness"
-#~ msgstr "Velocidad de scroll"
+#~ msgid "items.xml"
+#~ msgstr "items.xml"
 
-#~ msgid "Save player list"
-#~ msgstr "guardar lista de jugdores"
+#~ msgid "monsters.xml"
+#~ msgstr "monsters.xml"

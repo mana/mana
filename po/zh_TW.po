@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-05-28 22:55+0200\n"
-"PO-Revision-Date: 2009-05-13 02:58+0000\n"
+"PO-Revision-Date: 2009-05-15 02:25+0000\n"
 "Last-Translator: netwareboss <netwareboss@gmail.com>\n"
 "Language-Team: Traditional Chinese <themanaworld-devel@lists.sourceforge."
 "net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-13 18:28+0000\n"
+"X-Launchpad-Export-Date: 2009-05-28 20:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Country: China\n"
 "X-Poedit-Language: Chinese\n"
@@ -218,6 +218,7 @@ msgid ""
 "This command gets a list of players within hearing and sends it to either "
 "the record log if recording, or the chat log otherwise."
 msgstr ""
+"該指令顯示玩家有聽到並傳送到任何日誌記錄，如果記錄，聊天記錄或其他方式。"
 
 #: src/commandhandler.cpp:243
 msgid "Command: /record <filename>"
@@ -290,7 +291,7 @@ msgstr "傳送密語失敗"
 msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
 "you."
-msgstr "不能建立 nick 「%s」的悄悄話分頁！它已經存在，或者對象是你自己。"
+msgstr "不能創造一個密語區塊給\"%s\"! 他不是已經存在,或就是你."
 
 #: src/commandhandler.cpp:362
 #, c-format
@@ -299,19 +300,19 @@ msgstr ""
 
 #: src/commandhandler.cpp:394
 msgid "Return toggles chat."
-msgstr ""
+msgstr "\"ENTER\"切換聊天"
 
 #: src/commandhandler.cpp:394
 msgid "Message closes chat."
-msgstr ""
+msgstr "關閉密語"
 
 #: src/commandhandler.cpp:403
 msgid "Return now toggles chat."
-msgstr ""
+msgstr "\"ENTER\"切換聊天"
 
 #: src/commandhandler.cpp:407
 msgid "Message now closes chat."
-msgstr ""
+msgstr "切換聊天"
 
 #: src/commandhandler.h:31
 #, c-format
@@ -723,7 +724,7 @@ msgstr "端口(port):"
 
 #: src/gui/login.cpp:56
 msgid "Recent:"
-msgstr "最近的:"
+msgstr "記錄的:"
 
 #: src/gui/login.cpp:73
 msgid "Remember Username"
@@ -966,20 +967,20 @@ msgstr "血量"
 
 #: src/gui/palette.cpp:136
 msgid "3/4 HP Bar"
-msgstr "3/4 HP Bar"
+msgstr "3/4 血量"
 
 #: src/gui/palette.cpp:137
 msgid "1/2 HP Bar"
-msgstr "1/2 HP 量"
+msgstr "1/2 血量"
 
 #: src/gui/palette.cpp:138
 msgid "1/4 HP Bar"
-msgstr "1/4 HP 量"
+msgstr "1/4 血量"
 
 #: src/gui/partywindow.cpp:70
-#, fuzzy, c-format
+#, c-format
 msgid "Party (%s)"
-msgstr "隊伍"
+msgstr "隊伍(%s)"
 
 #: src/gui/partywindow.cpp:174
 msgid "Received party request, but one already exists."
@@ -1031,7 +1032,7 @@ msgstr "@@friend|與%s交朋友@@"
 #: src/gui/popupmenu.cpp:99
 #, c-format
 msgid "@@disregard|Disregard %s@@"
-msgstr ""
+msgstr "@@disregard|無視 %s@@"
 
 #: src/gui/popupmenu.cpp:100
 #, c-format
@@ -1060,7 +1061,7 @@ msgstr "@@party|邀請 %s 加入你的隊伍@@"
 
 #: src/gui/popupmenu.cpp:124
 msgid "@@admin-kick|Kick player@@"
-msgstr ""
+msgstr "@@admin-kick|踢掉玩家@@"
 
 #: src/gui/popupmenu.cpp:132
 #, c-format
@@ -1069,7 +1070,7 @@ msgstr "@@對話|與 %s 對話@@"
 
 #: src/gui/popupmenu.cpp:141
 msgid "@@admin-kick|Kick monster@@"
-msgstr ""
+msgstr "@@admin-kick|移除怪物@@"
 
 #: src/gui/popupmenu.cpp:152 src/gui/popupmenu.cpp:170
 #: src/gui/popupmenu.cpp:383
@@ -1107,11 +1108,11 @@ msgstr "@@分離|分離@@"
 
 #: src/gui/popupmenu.cpp:372
 msgid "@@store|Store@@"
-msgstr "@@store|"
+msgstr "@@store|儲存@@"
 
 #: src/gui/popupmenu.cpp:379
 msgid "@@retrieve|Retrieve@@"
-msgstr ""
+msgstr "@@retrieve|檢索@@"
 
 #: src/gui/quitdialog.cpp:37
 msgid "Switch server"
@@ -1442,7 +1443,7 @@ msgstr "聊天中"
 
 #: src/gui/setup_video.cpp:198
 msgid "as particle"
-msgstr "如同練習"
+msgstr "同粒子設定"
 
 #: src/gui/setup_video.cpp:203
 msgid "FPS Limit:"
@@ -1462,7 +1463,7 @@ msgstr "Gui 透明度"
 
 #: src/gui/setup_video.cpp:221
 msgid "Ambient FX"
-msgstr "Ambient FX"
+msgstr "環境效果"
 
 #: src/gui/setup_video.cpp:222
 msgid "Particle Detail"
@@ -1486,7 +1487,7 @@ msgstr "全螢幕"
 
 #: src/gui/setup_video.cpp:358
 msgid "mode and restoration of old mode also failed!"
-msgstr ""
+msgstr "模式和恢復舊模式也沒有！"
 
 #: src/gui/setup_video.cpp:367
 msgid "Switching to full screen"
@@ -1552,15 +1553,15 @@ msgstr "職業：%d"
 
 #: src/gui/status.cpp:60
 msgid "HP:"
-msgstr "HP:"
+msgstr "體力 :"
 
 #: src/gui/status.cpp:63
 msgid "Exp:"
-msgstr "Exp:"
+msgstr "經驗值:"
 
 #: src/gui/status.cpp:66
 msgid "MP:"
-msgstr "MP:"
+msgstr "魔力:"
 
 #: src/gui/status.cpp:69
 msgid "Job:"
@@ -1879,13 +1880,12 @@ msgid "Attack"
 msgstr "攻擊"
 
 #: src/keyboardconfig.cpp:46
-#, fuzzy
 msgid "Target & Attack"
-msgstr "停止攻擊"
+msgstr "尋找目標攻擊"
 
 #: src/keyboardconfig.cpp:47
 msgid "Smilie"
-msgstr ""
+msgstr "史萊姆吃掉妳了~~"
 
 #: src/keyboardconfig.cpp:48
 msgid "Talk"
@@ -2326,7 +2326,7 @@ msgstr "智力 %+d"
 #: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
 #, c-format
 msgid "Dexterity %+d"
-msgstr "防禦 %+d"
+msgstr "閃躲 %+d"
 
 #: src/net/ea/generalhandler.cpp:96
 #, c-format
@@ -2399,19 +2399,19 @@ msgstr "/exp > 顯示/改變隊伍經驗值分享選項"
 
 #: src/net/ea/gui/partytab.cpp:71
 msgid "Command: /new <party-name>"
-msgstr "指令： /new <party-name>"
+msgstr "指令： /new <隊伍名稱>"
 
 #: src/net/ea/gui/partytab.cpp:72
 msgid "Command: /create <party-name>"
-msgstr "指令： /create <party-name>"
+msgstr "指令： /create <隊伍名稱>"
 
 #: src/net/ea/gui/partytab.cpp:73
 msgid "These commands create a new party called <party-name>."
-msgstr "這些指令會建立叫做 <party-name> 的新隊伍。"
+msgstr "這些指令會建立叫做 <隊伍名稱> 的新隊伍。"
 
 #: src/net/ea/gui/partytab.cpp:77
 msgid "Command: /invite <nick>"
-msgstr "指令： /invite <nick>"
+msgstr "/invite <暱稱>"
 
 #: src/net/ea/gui/partytab.cpp:84
 msgid "Command: /leave"
@@ -2423,7 +2423,7 @@ msgstr "這個指令會使玩家離開隊伍。"
 
 #: src/net/ea/gui/partytab.cpp:89
 msgid "Command: /item <policy>"
-msgstr "指令： /item <policy>"
+msgstr "/item <政策>"
 
 #: src/net/ea/gui/partytab.cpp:90
 msgid "This command changes the party's item sharing policy."
@@ -2447,7 +2447,7 @@ msgstr "這個指令會顯示此隊伍目前的道具分享政策。"
 
 #: src/net/ea/gui/partytab.cpp:99
 msgid "Command: /exp <policy>"
-msgstr "指令： /exp <policy>"
+msgstr "指令： /exp <政策>"
 
 #: src/net/ea/gui/partytab.cpp:100
 msgid "This command changes the party's experience sharing policy."
@@ -2683,7 +2683,7 @@ msgstr "看起來你把你的頭拿在手上。"
 #: src/net/ea/playerhandler.cpp:117 src/net/tmwserv/beinghandler.cpp:324
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
-msgstr ""
+msgstr "你又被幹掉啦!!!躺在地上一次又一次!!"
 
 #: src/net/ea/playerhandler.cpp:120
 msgid "You're not dead yet. You're just resting."
@@ -2711,11 +2711,11 @@ msgstr "失去了生命，您安詳的休息了。"
 
 #: src/net/ea/playerhandler.cpp:126
 msgid "If you weren't so animated, you'd be pushing up the daisies."
-msgstr ""
+msgstr "如果你沒有這樣做,你就不會上天堂了!!"
 
 #: src/net/ea/playerhandler.cpp:127
 msgid "Your metabolic processes are now history."
-msgstr ""
+msgstr "你的傳奇已經是過去式了!!"
 
 #: src/net/ea/playerhandler.cpp:128
 msgid "You're off the twig."
@@ -2729,7 +2729,7 @@ msgstr "你踢了水桶"
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
 "bleedin' choir invisibile."
-msgstr ""
+msgstr "死掉了...."
 
 #: src/net/ea/playerhandler.cpp:132
 msgid "You are an ex-player."
@@ -2737,7 +2737,7 @@ msgstr "您已是前-玩家。"
 
 #: src/net/ea/playerhandler.cpp:133
 msgid "You're pining for the fjords."
-msgstr ""
+msgstr "你正走向地獄!!"
 
 #: src/net/ea/playerhandler.cpp:246 src/net/ea/playerhandler.cpp:270
 msgid "Message"
@@ -2965,15 +2965,15 @@ msgstr "帳號還沒連線,請先登入"
 
 #: src/net/tmwserv/loginhandler.cpp:140
 msgid "New email address incorrect"
-msgstr "新的Email位址不正確"
+msgstr "新的郵件位址不正確"
 
 #: src/net/tmwserv/loginhandler.cpp:143
 msgid "Old email address incorrect"
-msgstr "舊得Email位址不正確"
+msgstr "舊得郵件位址不正確"
 
 #: src/net/tmwserv/loginhandler.cpp:149
 msgid "The new Email Address already exists."
-msgstr "Email已經被註冊"
+msgstr "電子郵件已經被註冊"
 
 #: src/net/tmwserv/loginhandler.cpp:176 src/net/tmwserv/loginhandler.cpp:208
 msgid "Client version is too old"
@@ -2985,7 +2985,7 @@ msgstr "錯誤的帳號或密碼"
 
 #: src/net/tmwserv/loginhandler.cpp:211
 msgid "Wrong username, password or email address"
-msgstr "錯誤的帳號或密碼及E-mail"
+msgstr "錯誤的帳號或密碼及電子郵件"
 
 #: src/net/tmwserv/loginhandler.cpp:214
 msgid "Username already exists"
@@ -2993,7 +2993,7 @@ msgstr "名字已經有人使用"
 
 #: src/net/tmwserv/loginhandler.cpp:217
 msgid "Email address already exists"
-msgstr "E-mail已經存在"
+msgstr "電子郵件已經存在"
 
 #: src/net/tmwserv/partyhandler.cpp:86
 msgid "Joined party."
@@ -3032,12 +3032,12 @@ msgstr "防禦 %+d"
 #: src/resources/itemdb.cpp:54
 #, c-format
 msgid "HP %+d"
-msgstr "HP %+d"
+msgstr "體力%+d"
 
 #: src/resources/itemdb.cpp:55
 #, c-format
 msgid "MP %+d"
-msgstr "MP %+d"
+msgstr "魔力%+d"
 
 #: src/resources/itemdb.cpp:113
 msgid "Unknown item"
@@ -3055,7 +3055,7 @@ msgstr "未知物品"
 #~ msgstr "選擇角色"
 
 #~ msgid "Unable to load selection.png"
-#~ msgstr "無法讀取 selection.png"
+#~ msgstr "無法讀取所選擇png圖檔"
 
 #~ msgid "skills.xml"
 #~ msgstr "skills.xml"
@@ -3131,6 +3131,11 @@ msgstr "未知物品"
 
 #~ msgid "Cannont send empty whispers!"
 #~ msgstr "不能送出空的悄悄話！"
+
+#~ msgid ""
+#~ "Cannont create a whisper tab for nick '%s'!It either already exists, or "
+#~ "is you."
+#~ msgstr "不能建立 nick 「%s」的悄悄話分頁！它已經存在，或者對象是你自己。"
 
 #~ msgid ""
 #~ "\n"

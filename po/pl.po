@@ -10,13 +10,13 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-05-28 22:55+0200\n"
-"PO-Revision-Date: 2009-05-11 22:56+0000\n"
-"Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
+"PO-Revision-Date: 2009-05-17 13:56+0000\n"
+"Last-Translator: lusmanko <Unknown>\n"
 "Language-Team: <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-13 18:28+0000\n"
+"X-Launchpad-Export-Date: 2009-05-28 20:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
@@ -29,7 +29,7 @@ msgstr "-- Pomoc --"
 
 #: src/commandhandler.cpp:143
 msgid "/help > Display this help"
-msgstr ""
+msgstr "/help > Pokazuje tę pomoc"
 
 #: src/commandhandler.cpp:145
 msgid "/where > Display map name"
@@ -291,14 +291,15 @@ msgstr "Wpisz /help aby usyskać listę komend."
 
 #: src/commandhandler.cpp:340
 msgid "Cannot send empty whispers!"
-msgstr ""
+msgstr "Nie można wysłać pustych szeptów!"
 
 #: src/commandhandler.cpp:348
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
 "you."
 msgstr ""
+"Nie można utworzyć zakładki szeptu dla ksywki '%s'! Już istnieje, albo to ty."
 
 #: src/commandhandler.cpp:362
 #, c-format
@@ -594,7 +595,7 @@ msgstr "Czat"
 #: src/gui/chat.cpp:326
 #, c-format
 msgid "%d players are present."
-msgstr ""
+msgstr "%d graczy jest obecnych."
 
 #: src/gui/chat.cpp:327
 msgid "Present: "
@@ -702,7 +703,7 @@ msgstr "Wybierz ilość przedmiotów do upuszczenia."
 
 #: src/gui/itemamount.cpp:129
 msgid "Select amount of items to store."
-msgstr "Wybierz ilość przedmiotów do przechowania."
+msgstr "Podaj ilość rzeczy do przechowania."
 
 #: src/gui/itemamount.cpp:132
 msgid "Select amount of items to retrieve."
@@ -760,7 +761,7 @@ msgstr "Test Rzucania Zaklęcia 3"
 
 #: src/gui/minimap.cpp:45 src/gui/minimap.cpp:84
 msgid "Map"
-msgstr ""
+msgstr "Mapa"
 
 #: src/gui/npcdialog.cpp:42
 msgid "Waiting for server"
@@ -768,7 +769,7 @@ msgstr "Oczekiwanie na serwer"
 
 #: src/gui/npcdialog.cpp:45
 msgid "Submit"
-msgstr ""
+msgstr "Przekaż"
 
 #: src/gui/npcdialog.cpp:48 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -862,11 +863,11 @@ msgstr "Hiperłącze"
 
 #: src/gui/palette.cpp:103
 msgid "Being"
-msgstr "Byt"
+msgstr "Byty"
 
 #: src/gui/palette.cpp:104
 msgid "Other Players' Names"
-msgstr ""
+msgstr "Imiona Innych Graczy"
 
 #: src/gui/palette.cpp:105
 msgid "Own Name"
@@ -890,19 +891,19 @@ msgstr "Nieznany Typ Przedmiotu"
 
 #: src/gui/palette.cpp:111
 msgid "Generics"
-msgstr ""
+msgstr "Ogólne"
 
 #: src/gui/palette.cpp:112
 msgid "Hats"
-msgstr ""
+msgstr "Kapelusze"
 
 #: src/gui/palette.cpp:113
 msgid "Usables"
-msgstr ""
+msgstr "Użytkowe"
 
 #: src/gui/palette.cpp:114
 msgid "Shirts"
-msgstr ""
+msgstr "Koszulki"
 
 #: src/gui/palette.cpp:115
 msgid "1 Handed Weapons"
@@ -922,15 +923,15 @@ msgstr "Bronie dwuręczne"
 
 #: src/gui/palette.cpp:119
 msgid "Shields"
-msgstr ""
+msgstr "Tarcze"
 
 #: src/gui/palette.cpp:120
 msgid "Rings"
-msgstr ""
+msgstr "Pierścienie"
 
 #: src/gui/palette.cpp:121
 msgid "Necklaces"
-msgstr ""
+msgstr "Naszyjniki"
 
 #: src/gui/palette.cpp:122
 msgid "Arms"
@@ -985,9 +986,9 @@ msgid "1/4 HP Bar"
 msgstr "1/4 Paska HP"
 
 #: src/gui/partywindow.cpp:70
-#, fuzzy, c-format
+#, c-format
 msgid "Party (%s)"
-msgstr "Grupa"
+msgstr "Grupa (%s)"
 
 #: src/gui/partywindow.cpp:174
 msgid "Received party request, but one already exists."
@@ -1068,7 +1069,7 @@ msgstr "@@party|Zaproś %s do grupy@@"
 
 #: src/gui/popupmenu.cpp:124
 msgid "@@admin-kick|Kick player@@"
-msgstr ""
+msgstr "@@admin-kick|Wykop gracza@@"
 
 #: src/gui/popupmenu.cpp:132
 #, c-format
@@ -1077,7 +1078,7 @@ msgstr "@@talk|Rozmawiaj z %s@@"
 
 #: src/gui/popupmenu.cpp:141
 msgid "@@admin-kick|Kick monster@@"
-msgstr ""
+msgstr "@@admin-kick|Wykop potwora@@"
 
 #: src/gui/popupmenu.cpp:152 src/gui/popupmenu.cpp:170
 #: src/gui/popupmenu.cpp:383
@@ -1087,11 +1088,11 @@ msgstr "@@cancel|Anuluj@@"
 #: src/gui/popupmenu.cpp:165
 #, c-format
 msgid "@@pickup|Pick up %s@@"
-msgstr ""
+msgstr "@@pickup|Podnieś %s@@"
 
 #: src/gui/popupmenu.cpp:166 src/gui/popupmenu.cpp:381
 msgid "@@chat|Add to chat@@"
-msgstr ""
+msgstr "@@chat|Dodaj do czatu@@"
 
 #: src/gui/popupmenu.cpp:356
 msgid "@@use|Unequip@@"
@@ -1115,11 +1116,11 @@ msgstr "@@split|Rozdziel@@"
 
 #: src/gui/popupmenu.cpp:372
 msgid "@@store|Store@@"
-msgstr ""
+msgstr "@@store|Zachowaj@@"
 
 #: src/gui/popupmenu.cpp:379
 msgid "@@retrieve|Retrieve@@"
-msgstr ""
+msgstr "@@retrieve|Pobierz@@"
 
 #: src/gui/quitdialog.cpp:37
 msgid "Switch server"
@@ -1278,7 +1279,7 @@ msgstr "Niebieski: "
 
 #: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:78
 msgid "Press the button to start calibration"
-msgstr "Wciśnij przycisk aby rozpocząć kalibrację"
+msgstr "Naciśnij przycisk aby rozpocząć kalibrację"
 
 #: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:76
 msgid "Calibrate"
@@ -1370,19 +1371,19 @@ msgstr "Gdy ignorowany:"
 
 #: src/gui/setup_video.cpp:112
 msgid "Tiny"
-msgstr ""
+msgstr "Drobna"
 
 #: src/gui/setup_video.cpp:113
 msgid "Small"
-msgstr ""
+msgstr "Mała"
 
 #: src/gui/setup_video.cpp:114
 msgid "Medium"
-msgstr ""
+msgstr "Średnia"
 
 #: src/gui/setup_video.cpp:115
 msgid "Large"
-msgstr ""
+msgstr "Duża"
 
 #: src/gui/setup_video.cpp:141
 msgid "No text"
@@ -1478,7 +1479,7 @@ msgstr "Detale cząsteczek"
 
 #: src/gui/setup_video.cpp:223
 msgid "Font size"
-msgstr ""
+msgstr "Rozmiar czcionki"
 
 #: src/gui/setup_video.cpp:356
 msgid "Failed to switch to "
@@ -1522,11 +1523,11 @@ msgstr "Uruchom ponownie twojego klienta, aby mogły zajść zmiany."
 
 #: src/gui/setup_video.cpp:467
 msgid "Particle effect settings changed."
-msgstr "Zmieniono ustawienia efektów cząsteczek"
+msgstr "Zmieniono ustawienia ef. cząsteczek"
 
 #: src/gui/setup_video.cpp:468
 msgid "Changes will take effect on map change."
-msgstr "Zmiany nastąpią po zmianie mapy."
+msgstr "Efekty nastąpią po zmianie mapy."
 
 #: src/gui/skill.cpp:53
 msgid "Mystery Skill"
@@ -1648,7 +1649,7 @@ msgstr "Pozostało Punktów Statusu: %d"
 
 #: src/gui/status.cpp:384
 msgid "Max level"
-msgstr "Maksymalny poziom"
+msgstr "Maks. poziom"
 
 #: src/gui/storagewindow.cpp:54
 msgid "Storage"
@@ -1889,9 +1890,8 @@ msgid "Attack"
 msgstr "Atak"
 
 #: src/keyboardconfig.cpp:46
-#, fuzzy
 msgid "Target & Attack"
-msgstr "Zatrzymaj Atak"
+msgstr "Namierz i Atakuj"
 
 #: src/keyboardconfig.cpp:47
 msgid "Smilie"
@@ -1994,7 +1994,7 @@ msgstr "Okno diagnostyczne"
 
 #: src/keyboardconfig.cpp:81
 msgid "Party Window"
-msgstr ""
+msgstr "Okno Grupy"
 
 #: src/keyboardconfig.cpp:82
 msgid "Emote Shortcut Window"
@@ -2120,63 +2120,65 @@ msgstr "tmw"
 
 #: src/main.cpp:576
 msgid "Options:"
-msgstr ""
+msgstr "Opcje:"
 
 #: src/main.cpp:577
 msgid "  -C --config-file : Configuration file to use"
-msgstr ""
+msgstr "  -C --config-file : Plik konfiguracyjny do użycia"
 
 #: src/main.cpp:578
 msgid "  -d --data        : Directory to load game data from"
-msgstr ""
+msgstr "  -d --data        : Katalog, z którego załadować dane gry"
 
 #: src/main.cpp:579
 msgid "  -D --default     : Choose default character server and character"
-msgstr ""
+msgstr "  -D --default     : Wybierz domyślny serwer postaci i postać"
 
 #: src/main.cpp:581
 msgid "  -h --help        : Display this help"
-msgstr ""
+msgstr "  -h --help        : Pokazuje tę pomoc"
 
 #: src/main.cpp:582
 msgid "  -S --home-dir    : Directory to use as home directory"
-msgstr ""
+msgstr "  -S --home-dir    : Katalog do użycia jako katalog domowy"
 
 #: src/main.cpp:583
 msgid "  -H --update-host : Use this update host"
-msgstr ""
+msgstr "  -H --update-host : Użyj tego hosta aktualizacji"
 
 #: src/main.cpp:584
 msgid "  -P --password    : Login with this password"
-msgstr ""
+msgstr "  -P --password    : Zaloguj z tym hasłem"
 
 #: src/main.cpp:585
 msgid "  -c --character   : Login with this character"
-msgstr ""
+msgstr "  -c --character   : Zaloguj z tą postacią"
 
 #: src/main.cpp:586
+#, fuzzy
 msgid "  -p --port        : Login server port"
-msgstr ""
+msgstr "  -p --port        : Port Serwera Logowania"
 
 #: src/main.cpp:587
+#, fuzzy
 msgid "  -s --server      : Login server name or IP"
-msgstr ""
+msgstr "  -s --server      : Nazwa Serwera Logowania lub IP"
 
 #: src/main.cpp:588
 msgid "  -u --skip-update : Skip the update downloads"
-msgstr ""
+msgstr "  -u --skip-update : Pomiń pobieranie aktualizacji"
 
 #: src/main.cpp:589
 msgid "  -U --username    : Login with this username"
-msgstr ""
+msgstr "  -U --username    : Zaloguj z tą nazwą użytkownika"
 
 #: src/main.cpp:591
 msgid "  -O --no-opengl   : Disable OpenGL for this session"
-msgstr ""
+msgstr "  -O --no-opengl   : Wyłącz OpenGL dla tej sesji"
 
 #: src/main.cpp:593
 msgid "  -v --version     : Display the version"
-msgstr ""
+msgstr "  -v --version     : Pokazuje wersję"
 
 #: src/main.cpp:598
 #, fuzzy, c-format
@@ -2313,34 +2315,34 @@ msgid "Unable to unequip."
 msgstr "Nie można zdjąć."
 
 #: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Siła: %d"
+msgstr "Siła %+d"
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "Zwinność: %d"
+msgstr "Zwinność %+d"
 
 #: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "Witalność: %d"
+msgstr "Witalność %+d"
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Inteligencja: %d"
+msgstr "Inteligencja %+d"
 
 #: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "Zręczność: %d"
+msgstr "Zręczność %+d"
 
 #: src/net/ea/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
-msgstr "Szczęście: %d"
+msgstr "Szczęście %+d"
 
 #: src/net/ea/generalhandler.cpp:118
 msgid "Authentication failed"
@@ -2352,7 +2354,7 @@ msgstr "Brak dostępnych serwerów"
 
 #: src/net/ea/generalhandler.cpp:125
 msgid "Someone else is trying to use this account"
-msgstr ""
+msgstr "Ktoś inny próbuje użyć tego konta"
 
 #: src/net/ea/generalhandler.cpp:128
 msgid "This account is already logged in"
@@ -2521,7 +2523,7 @@ msgstr ""
 #: src/net/ea/inventoryhandler.cpp:199
 #, fuzzy, c-format
 msgid "You picked up %s [@@%d|%s@@]."
-msgstr "Podniosłeś "
+msgstr "Podniosłeś %s [@@%d|%s@@]"
 
 #: src/net/ea/inventoryhandler.cpp:245
 #, fuzzy
@@ -2529,16 +2531,18 @@ msgid "Failed to use item."
 msgstr "Użycie przedmiotu nie powiodło się"
 
 #: src/net/ea/loginhandler.cpp:76
+#, fuzzy
 msgid "Account was not found. Please re-login."
-msgstr ""
+msgstr "Konto niepołączone. Proszę najpierw się zalogować."
 
 #: src/net/ea/loginhandler.cpp:79 src/net/tmwserv/loginhandler.cpp:113
 msgid "Old password incorrect"
-msgstr ""
+msgstr "Stare hasło jest nieprawidłowe"
 
 #: src/net/ea/loginhandler.cpp:82
+#, fuzzy
 msgid "New password too short"
-msgstr ""
+msgstr "Nowe hasło jest nieprawidłowe"
 
 #: src/net/ea/loginhandler.cpp:85 src/net/ea/loginhandler.cpp:169
 #: src/net/tmwserv/loginhandler.cpp:89 src/net/tmwserv/loginhandler.cpp:119
@@ -2625,7 +2629,7 @@ msgstr "Nieznany członek próbował powiedzieć: %s"
 
 #: src/net/ea/partyhandler.cpp:299
 msgid "Inviting like this isn't supported at the moment."
-msgstr ""
+msgstr "Zapraszanie w ten sposób nie jest obecnie wspierane."
 
 #: src/net/ea/partyhandler.cpp:328
 #, c-format
@@ -2929,9 +2933,9 @@ msgid "Topic: %s"
 msgstr "Temat: "
 
 #: src/net/tmwserv/generalhandler.cpp:87
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "Siłą woli: %d"
+msgstr "Siła woli %+d"
 
 #: src/net/tmwserv/guildhandler.cpp:74
 msgid "Guild created."
@@ -2958,55 +2962,55 @@ msgstr "Użycie przedmiotu nie powiodło się"
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
-msgstr ""
+msgstr "Zły magic_token"
 
 #: src/net/tmwserv/loginhandler.cpp:83 src/net/tmwserv/loginhandler.cpp:182
 msgid "Already logged in"
-msgstr ""
+msgstr "Już zalogowany"
 
 #: src/net/tmwserv/loginhandler.cpp:86 src/net/tmwserv/loginhandler.cpp:185
 msgid "Server is full"
-msgstr ""
+msgstr "Serwer jest pełny"
 
 #: src/net/tmwserv/loginhandler.cpp:110
 msgid "New password incorrect"
-msgstr ""
+msgstr "Nowe hasło jest nieprawidłowe"
 
 #: src/net/tmwserv/loginhandler.cpp:116 src/net/tmwserv/loginhandler.cpp:146
 msgid "Account not connected. Please login first."
-msgstr ""
+msgstr "Konto niepołączone. Proszę najpierw się zalogować."
 
 #: src/net/tmwserv/loginhandler.cpp:140
 msgid "New email address incorrect"
-msgstr ""
+msgstr "Nowy adres email jest niepoprawny"
 
 #: src/net/tmwserv/loginhandler.cpp:143
 msgid "Old email address incorrect"
-msgstr ""
+msgstr "Stary adres email jest niepoprawny"
 
 #: src/net/tmwserv/loginhandler.cpp:149
 msgid "The new Email Address already exists."
-msgstr ""
+msgstr "Nowy Adres Email już istnieje"
 
 #: src/net/tmwserv/loginhandler.cpp:176 src/net/tmwserv/loginhandler.cpp:208
 msgid "Client version is too old"
-msgstr ""
+msgstr "Wersja klienta jest zbyt stara"
 
 #: src/net/tmwserv/loginhandler.cpp:179
 msgid "Wrong username or password"
-msgstr ""
+msgstr "Zła nazwa użytkownika lub hasło"
 
 #: src/net/tmwserv/loginhandler.cpp:211
 msgid "Wrong username, password or email address"
-msgstr ""
+msgstr "Zła nazwa użytkownika, hasło, lub adres email"
 
 #: src/net/tmwserv/loginhandler.cpp:214
 msgid "Username already exists"
-msgstr ""
+msgstr "Nazwa użytkownika już istnieje"
 
 #: src/net/tmwserv/loginhandler.cpp:217
 msgid "Email address already exists"
-msgstr ""
+msgstr "Adres email już istnieje"
 
 #: src/net/tmwserv/partyhandler.cpp:86
 msgid "Joined party."
@@ -3067,6 +3071,18 @@ msgstr "nienazwany"
 #~ msgid "Select Character"
 #~ msgstr "Wybierz postać"
 
+#~ msgid "MiniMap"
+#~ msgstr "MiniMapa"
+
+#~ msgid "Scroll radius"
+#~ msgstr "Skok przy przewijaniu ekranu"
+
+#~ msgid "Scroll laziness"
+#~ msgstr "Opóźnienie przy przewijaniu ekranu"
+
+#~ msgid "Save player list"
+#~ msgstr "Zapisz listę graczy"
+
 #~ msgid "Unable to load selection.png"
 #~ msgstr "Nie można załadować selection.png"
 
@@ -3074,7 +3090,7 @@ msgstr "nienazwany"
 #~ msgstr "skills.xml"
 
 #~ msgid "Slots: "
-#~ msgstr "Miejsca: "
+#~ msgstr "Miejsc: "
 
 #~ msgid "Player deleted"
 #~ msgstr "Gracz usunięty"
@@ -3087,18 +3103,6 @@ msgstr "nienazwany"
 
 #~ msgid "monsters.xml"
 #~ msgstr "monsters.xml"
-
-#~ msgid "MiniMap"
-#~ msgstr "MiniMapa"
-
-#~ msgid "Scroll radius"
-#~ msgstr "Skok przy przewijaniu ekranu"
-
-#~ msgid "Scroll laziness"
-#~ msgstr "Opóźnienie przy przewijaniu ekranu"
-
-#~ msgid "Save player list"
-#~ msgstr "Zapisz listę graczy"
 
 #~ msgid "Emote"
 #~ msgstr "Emoty"

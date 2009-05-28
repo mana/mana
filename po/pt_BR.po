@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-05-28 22:55+0200\n"
-"PO-Revision-Date: 2009-01-21 20:48+0000\n"
-"Last-Translator: Bruno <brunorafaelcardoso@gmail.com>\n"
+"PO-Revision-Date: 2009-05-19 23:56+0000\n"
+"Last-Translator: Rosiney Gomes Pereira <rosiney.gp@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2009-05-28 20:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
@@ -27,71 +27,73 @@ msgstr "--Ajuda--"
 
 #: src/commandhandler.cpp:143
 msgid "/help > Display this help"
-msgstr ""
+msgstr "/help > Exibe ajuda"
 
 #: src/commandhandler.cpp:145
 msgid "/where > Display map name"
-msgstr ""
+msgstr "/where > Exibe o nome do mapa"
 
 #: src/commandhandler.cpp:146
 msgid "/who > Display number of online users"
-msgstr ""
+msgstr "/who > Exibe o número de usuários online"
 
 #: src/commandhandler.cpp:147
 msgid "/me > Tell something about yourself"
-msgstr ""
+msgstr "/me > Diz alguma coisa sobre você"
 
 #: src/commandhandler.cpp:149
 msgid "/clear > Clears this window"
-msgstr ""
+msgstr "/clear > Lista janela atual"
 
 #: src/commandhandler.cpp:151
 msgid "/msg > Send a private message to a user"
-msgstr ""
+msgstr "/msg > Envia uma messagem privada a um usuário"
 
 #: src/commandhandler.cpp:152
 msgid "/whisper > Alias of msg"
-msgstr ""
+msgstr "/whisper > Messagem Confidêncial"
 
 #: src/commandhandler.cpp:153
 msgid "/w > Alias of msg"
-msgstr ""
+msgstr "/w > Abreviação de messagem"
 
 #: src/commandhandler.cpp:154
 msgid "/query > Makes a tab for private messages with another user"
-msgstr ""
+msgstr "/query > Fazer um chat com outros usuários"
 
 #: src/commandhandler.cpp:155
 msgid "/q > Alias of query"
-msgstr ""
+msgstr "/q > Abreviação de query"
 
 #: src/commandhandler.cpp:157
 msgid "/list > Display all public channels"
-msgstr ""
+msgstr "/list > Exibir todos os canais públicos"
 
 #: src/commandhandler.cpp:158
 msgid "/join > Join or create a channel"
-msgstr ""
+msgstr "/join > Criar ou entrar em um canal"
 
 #: src/commandhandler.cpp:160
 msgid "/party > Invite a user to party"
-msgstr ""
+msgstr "/party > Convidar um usuário para a festa"
 
 #: src/commandhandler.cpp:162
 msgid "/record > Start recording the chat to an external file"
-msgstr ""
+msgstr "/record > Começar a gravar o chat em um arquivo externo"
 
 #: src/commandhandler.cpp:163
 msgid "/toggle > Determine whether <return> toggles the chat log"
-msgstr ""
+msgstr "/toggle > Determinar um clima <return> alternar o log de chat"
 
 #: src/commandhandler.cpp:164
 msgid "/present > Get list of players present (sent to chat log, if logging)"
 msgstr ""
+"/present > Pegar a lista de jogadores presentes (Enviou log de chat. Se "
+"logando)"
 
 #: src/commandhandler.cpp:166
 msgid "/announce > Global announcement (GM only)"
-msgstr ""
+msgstr "/announce > Anuciamento Global (Somente GM)"
 
 #: src/commandhandler.cpp:170
 #, fuzzy
@@ -136,47 +138,47 @@ msgstr "Limpa os logs do chat anterior."
 
 #: src/commandhandler.cpp:197
 msgid "Command: /join <channel>"
-msgstr ""
+msgstr "Command: /join <channel>"
 
 #: src/commandhandler.cpp:198
 msgid "This command makes you enter <channel>."
-msgstr ""
+msgstr "Este comando faz você entrar <channel>."
 
 #: src/commandhandler.cpp:199
 msgid "If <channel> doesn't exist, it's created."
-msgstr ""
+msgstr "Se <channel> não existe, Isto já existe."
 
 #: src/commandhandler.cpp:203
 msgid "Command: /list"
-msgstr ""
+msgstr "Comando: /list"
 
 #: src/commandhandler.cpp:204
 msgid "This command shows a list of all channels."
-msgstr ""
+msgstr "Este comando exibe uma lista com todos os canais."
 
 #: src/commandhandler.cpp:208
 msgid "Command: /me <message>"
-msgstr ""
+msgstr "Command: /me <message>"
 
 #: src/commandhandler.cpp:209
 msgid "This command tell others you are (doing) <msg>."
-msgstr ""
+msgstr "Este comando diz aos outros o que eu estou (fazendo) <msg>."
 
 #: src/commandhandler.cpp:213
 msgid "Command: /msg <nick> <message>"
-msgstr ""
+msgstr "Command: /msg <nick> <message>"
 
 #: src/commandhandler.cpp:214
 msgid "Command: /whisper <nick> <message>"
-msgstr ""
+msgstr "Command: /whisper <nick> <message>"
 
 #: src/commandhandler.cpp:215
 msgid "Command: /w <nick> <message>"
-msgstr ""
+msgstr "Command: /w <nick> <message>"
 
 #: src/commandhandler.cpp:216
 msgid "This command sends the text <message> to <nick>."
-msgstr ""
+msgstr "Este comando envia um texto <message> para <nick>."
 
 #: src/commandhandler.cpp:217 src/commandhandler.cpp:231
 #: src/gui/widgets/channeltab.cpp:81 src/gui/widgets/channeltab.cpp:90
@@ -186,11 +188,11 @@ msgstr "Se <nick> possuir espaços, coloque dentro de parenteses (\")."
 
 #: src/commandhandler.cpp:222
 msgid "Command: /query <nick>"
-msgstr ""
+msgstr "Command: /query <nick>"
 
 #: src/commandhandler.cpp:223
 msgid "Command: /q <nick>"
-msgstr ""
+msgstr "Command: /q <nick>"
 
 #: src/commandhandler.cpp:224
 msgid "This command tries to make a tab for whispers betweenyou and <nick>."
@@ -744,18 +746,16 @@ msgid "Cast Test Spell 3"
 msgstr ""
 
 #: src/gui/minimap.cpp:45 src/gui/minimap.cpp:84
-#, fuzzy
 msgid "Map"
-msgstr "MiniMapa"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:42
 msgid "Waiting for server"
 msgstr ""
 
 #: src/gui/npcdialog.cpp:45
-#, fuzzy
 msgid "Submit"
-msgstr "Sair"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:48 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -879,14 +879,12 @@ msgid "Generics"
 msgstr ""
 
 #: src/gui/palette.cpp:112
-#, fuzzy
 msgid "Hats"
-msgstr "Status"
+msgstr ""
 
 #: src/gui/palette.cpp:113
-#, fuzzy
 msgid "Usables"
-msgstr "Usar"
+msgstr ""
 
 #: src/gui/palette.cpp:114
 msgid "Shirts"
@@ -909,9 +907,8 @@ msgid "2 Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:119
-#, fuzzy
 msgid "Shields"
-msgstr "Habilidades"
+msgstr ""
 
 #: src/gui/palette.cpp:120
 msgid "Rings"
@@ -1013,12 +1010,12 @@ msgstr ""
 #: src/gui/popupmenu.cpp:89
 #, c-format
 msgid "@@trade|Trade With %s@@"
-msgstr "@@trade|Negociar com %s@@"
+msgstr "@@Negociar|Negociar com %s@@"
 
 #: src/gui/popupmenu.cpp:90 src/gui/popupmenu.cpp:138
 #, c-format
 msgid "@@attack|Attack %s@@"
-msgstr "@@attack|Atacar %s@@"
+msgstr "@@atacar|Atacar %s@@"
 
 #: src/gui/popupmenu.cpp:96
 #, c-format
@@ -1053,7 +1050,7 @@ msgstr ""
 #: src/gui/popupmenu.cpp:119
 #, c-format
 msgid "@@party|Invite %s to join your party@@"
-msgstr "@@party|Convidar %s para entrar para o seu grupo"
+msgstr "@@grupo|Convidar %s para entrar para o seu grupo"
 
 #: src/gui/popupmenu.cpp:124
 msgid "@@admin-kick|Kick player@@"
@@ -1071,12 +1068,12 @@ msgstr ""
 #: src/gui/popupmenu.cpp:152 src/gui/popupmenu.cpp:170
 #: src/gui/popupmenu.cpp:383
 msgid "@@cancel|Cancel@@"
-msgstr "@@cancel|Cancelar@@"
+msgstr "@@cancelar|Cancelar@@"
 
 #: src/gui/popupmenu.cpp:165
-#, fuzzy, c-format
+#, c-format
 msgid "@@pickup|Pick up %s@@"
-msgstr "@@pickup|Pegar %s@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:166 src/gui/popupmenu.cpp:381
 msgid "@@chat|Add to chat@@"
@@ -1084,23 +1081,23 @@ msgstr ""
 
 #: src/gui/popupmenu.cpp:356
 msgid "@@use|Unequip@@"
-msgstr "@@use|Desequipar@@"
+msgstr "@@usar|Desequipar@@"
 
 #: src/gui/popupmenu.cpp:358
 msgid "@@use|Equip@@"
-msgstr "@@use|Equipar@@"
+msgstr "@@usar|Equipar@@"
 
 #: src/gui/popupmenu.cpp:361
 msgid "@@use|Use@@"
-msgstr "@@use|Usar@@"
+msgstr "@@usar|Usar@@"
 
 #: src/gui/popupmenu.cpp:363
 msgid "@@drop|Drop@@"
-msgstr "@@drop|Descartar@@"
+msgstr "@@descartar|Descartar@@"
 
 #: src/gui/popupmenu.cpp:367
 msgid "@@split|Split@@"
-msgstr "@@split|Dividir@@"
+msgstr "@@dividir|Dividir@@"
 
 #: src/gui/popupmenu.cpp:372
 msgid "@@store|Store@@"
@@ -1362,14 +1359,12 @@ msgid "Tiny"
 msgstr ""
 
 #: src/gui/setup_video.cpp:113
-#, fuzzy
 msgid "Small"
-msgstr "Vender"
+msgstr ""
 
 #: src/gui/setup_video.cpp:114
-#, fuzzy
 msgid "Medium"
-msgstr "médio"
+msgstr ""
 
 #: src/gui/setup_video.cpp:115
 msgid "Large"
@@ -1982,9 +1977,8 @@ msgid "Debug Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:81
-#, fuzzy
 msgid "Party Window"
-msgstr "Restaurar janelas"
+msgstr ""
 
 #: src/keyboardconfig.cpp:82
 msgid "Emote Shortcut Window"
@@ -2295,34 +2289,34 @@ msgid "Unable to unequip."
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Força"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "Agilidade"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "Vitalidade"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Inteligência"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "Destreza"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
-msgstr "Sorte"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:118
 msgid "Authentication failed"
@@ -2894,9 +2888,9 @@ msgid "Topic: %s"
 msgstr ""
 
 #: src/net/tmwserv/generalhandler.cpp:87
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "Força de Vontade:"
+msgstr ""
 
 #: src/net/tmwserv/guildhandler.cpp:74
 msgid "Guild created."
@@ -3028,11 +3022,11 @@ msgstr ""
 #~ msgid "Select Character"
 #~ msgstr "Selecionar personagem"
 
-#~ msgid "Save player list"
-#~ msgstr "Salvar lista de jogadores"
-
 #~ msgid "Scroll radius"
 #~ msgstr "Rolar radius"
 
 #~ msgid "Scroll laziness"
 #~ msgstr "Rolar Laziness"
+
+#~ msgid "Save player list"
+#~ msgstr "Salvar lista de jogadores"
