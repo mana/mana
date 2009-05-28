@@ -28,8 +28,6 @@
 #include "gui/widgets/layouthelper.h"
 #include "gui/widgets/slider.h"
 
-#include "engine.h"
-#include "map.h"
 #include "configuration.h"
 #include "log.h"
 #include "sound.h"
@@ -90,9 +88,6 @@ void Setup_Audio::apply()
         try
         {
             sound.init();
-            Map *currentMap = engine->getCurrentMap();
-            if (currentMap)
-                sound.playMusic(currentMap->getProperty("music"));
         }
         catch (const char *err)
         {
