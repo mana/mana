@@ -557,6 +557,8 @@
 		92C6378C0FC5756400EE8D8D /* dejavusans-bold.ttf in Copy Font Files */ = {isa = PBXBuildFile; fileRef = 92C637850FC5751700EE8D8D /* dejavusans-bold.ttf */; };
 		92C6378D0FC5757500EE8D8D /* window.png in Copy GUI Files */ = {isa = PBXBuildFile; fileRef = 92C637800FC574B500EE8D8D /* window.png */; };
 		92DD76470F267B3600B2B519 /* layouthelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92DD76450F267B3600B2B519 /* layouthelper.cpp */; };
+		92EA98B40FC5CB17003DC005 /* SDLMain.nib in Resources */ = {isa = PBXBuildFile; fileRef = 92EA98B30FC5CB17003DC005 /* SDLMain.nib */; };
+		92EA98B50FC5CB17003DC005 /* SDLMain.nib in Resources */ = {isa = PBXBuildFile; fileRef = 92EA98B30FC5CB17003DC005 /* SDLMain.nib */; };
 		92EEA0030D2E20B300DDE300 /* libpng.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 9294DAA00C17E73200FCEDE9 /* libpng.framework */; };
 		92EEA0050D2E20B300DDE300 /* SDL_image.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 92BC408E0BAEE818000DAB7F /* SDL_image.framework */; };
 		92EEA0060D2E20B300DDE300 /* SDL_mixer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 92BC408F0BAEE818000DAB7F /* SDL_mixer.framework */; };
@@ -1395,6 +1397,7 @@
 		92C637880FC5752500EE8D8D /* branding.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = branding.xml; sourceTree = "<group>"; };
 		92DD76450F267B3600B2B519 /* layouthelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = layouthelper.cpp; sourceTree = "<group>"; };
 		92DD76460F267B3600B2B519 /* layouthelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = layouthelper.h; sourceTree = "<group>"; };
+		92EA98B30FC5CB17003DC005 /* SDLMain.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = SDLMain.nib; sourceTree = "<group>"; };
 		92FD19B30DDCE53400D14E5D /* setup_players.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = setup_players.cpp; sourceTree = "<group>"; };
 		92FD19B40DDCE53400D14E5D /* setup_players.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setup_players.h; sourceTree = "<group>"; };
 		92FD19B50DDCE53400D14E5D /* table.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = table.cpp; sourceTree = "<group>"; };
@@ -1575,6 +1578,7 @@
 		20286C2CFDCF999611CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				92EA98B30FC5CB17003DC005 /* SDLMain.nib */,
 				9273BDFD0EF33E1A008E56E1 /* AUTHORS */,
 				9273BDFE0EF33E1A008E56E1 /* README */,
 				9273BDFB0EF33DFD008E56E1 /* COPYING */,
@@ -2325,6 +2329,7 @@
 				9273BDFC0EF33DFD008E56E1 /* COPYING in Resources */,
 				9273BDFF0EF33E1A008E56E1 /* AUTHORS in Resources */,
 				9273BE000EF33E1A008E56E1 /* README in Resources */,
+				92EA98B40FC5CB17003DC005 /* SDLMain.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2336,6 +2341,7 @@
 				92C637820FC574B500EE8D8D /* window.png in Resources */,
 				92C637870FC5751700EE8D8D /* dejavusans-bold.ttf in Resources */,
 				92C6378A0FC5752500EE8D8D /* branding.xml in Resources */,
+				92EA98B50FC5CB17003DC005 /* SDLMain.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
