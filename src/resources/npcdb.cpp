@@ -23,7 +23,6 @@
 
 #include "log.h"
 
-#include "utils/gettext.h"
 #include "utils/xml.h"
 
 namespace
@@ -50,7 +49,7 @@ void NPCDB::load()
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "npcs"))
     {
-        logger->error(_("NPC Database: Error while loading npcs.xml!"));
+        logger->error("NPC Database: Error while loading npcs.xml!");
     }
 
     //iterate <npc>s

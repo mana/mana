@@ -35,8 +35,6 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
-#include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
@@ -61,7 +59,7 @@ EmotePopup::EmotePopup():
     ResourceManager *resman = ResourceManager::getInstance();
     mSelectionImage = resman->getImage("graphics/gui/selection.png");
     if (!mSelectionImage)
-        logger->error(_("Unable to load selection.png"));
+        logger->error("Unable to load selection.png");
 
     mSelectionImage->setAlpha(config.getValue("guialpha", 0.8));
 
