@@ -7,75 +7,79 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-14 01:21+0200\n"
-"PO-Revision-Date: 2009-01-09 12:19+0000\n"
+"POT-Creation-Date: 2009-05-28 22:55+0200\n"
+"PO-Revision-Date: 2009-05-28 19:43+0000\n"
 "Last-Translator: Ddorda <d.dorda@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2009-05-28 20:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+
+#: src/commandhandler.cpp:113 src/commandhandler.cpp:273
+msgid "Unknown command."
+msgstr "פקודה לא ידועה."
 
 #: src/commandhandler.cpp:142
 msgid "-- Help --"
-msgstr ""
+msgstr "-- עזרה --"
 
 #: src/commandhandler.cpp:143
 msgid "/help > Display this help"
-msgstr ""
+msgstr "/help > הצג עזרה זו"
 
 #: src/commandhandler.cpp:145
 msgid "/where > Display map name"
-msgstr ""
+msgstr "/where > הצג את שם המפה"
 
 #: src/commandhandler.cpp:146
 msgid "/who > Display number of online users"
-msgstr ""
+msgstr "/who > הצג את מספר המשתמשים המחוברים"
 
 #: src/commandhandler.cpp:147
 msgid "/me > Tell something about yourself"
-msgstr ""
+msgstr "/me > אמור משהו על עצמך"
 
 #: src/commandhandler.cpp:149
 msgid "/clear > Clears this window"
-msgstr ""
+msgstr "/clear > נקה את חלון זה"
 
 #: src/commandhandler.cpp:151
 msgid "/msg > Send a private message to a user"
-msgstr ""
+msgstr "/msg > שלח הודעה פרטית למשתמש"
 
 #: src/commandhandler.cpp:152
 msgid "/whisper > Alias of msg"
-msgstr ""
+msgstr "/whisper > שם נוסף ל-msg"
 
 #: src/commandhandler.cpp:153
 msgid "/w > Alias of msg"
-msgstr ""
+msgstr "/w > שם נוסף ל-msg"
 
 #: src/commandhandler.cpp:154
 msgid "/query > Makes a tab for private messages with another user"
-msgstr ""
+msgstr "/query > יוצר לשונית עבור הודעות פרטיות עם משתמש אחר"
 
 #: src/commandhandler.cpp:155
 msgid "/q > Alias of query"
-msgstr ""
+msgstr "/q > שם נוסף ל-query"
 
 #: src/commandhandler.cpp:157
 msgid "/list > Display all public channels"
-msgstr ""
+msgstr "/list > הצג את כל החדרים הציבוריים"
 
 #: src/commandhandler.cpp:158
 msgid "/join > Join or create a channel"
-msgstr ""
+msgstr "/join > צור או הצטרף לחדר"
 
 #: src/commandhandler.cpp:160
 msgid "/party > Invite a user to party"
-msgstr ""
+msgstr "/party > הזמן משתמש לחגיגה"
 
 #: src/commandhandler.cpp:162
 msgid "/record > Start recording the chat to an external file"
-msgstr ""
+msgstr "/record > התחל להקליט את השיחה לקובץ חיצוני"
 
 #: src/commandhandler.cpp:163
 msgid "/toggle > Determine whether <return> toggles the chat log"
@@ -83,151 +87,156 @@ msgstr ""
 
 #: src/commandhandler.cpp:164
 msgid "/present > Get list of players present (sent to chat log, if logging)"
-msgstr ""
+msgstr "/present > קבל את רשימת הנמצאים (ישלח לרישום, אם פעיל)"
 
 #: src/commandhandler.cpp:166
 msgid "/announce > Global announcement (GM only)"
-msgstr ""
+msgstr "/announce > הודעה גלובאלית (GM בלבד)"
 
 #: src/commandhandler.cpp:170
-msgid "For more information, type /help <command>"
-msgstr ""
+#, fuzzy
+msgid "For more information, type /help <command>."
+msgstr "למידע נוסף, הקלד /help <command>"
 
 #: src/commandhandler.cpp:174
 msgid "Command: /help"
-msgstr ""
+msgstr "פקודה: /help"
 
 #: src/commandhandler.cpp:175
 msgid "This command displays a list of all commands available."
-msgstr ""
+msgstr "פקודה זו מציגה רשימה של כל הפקודות האפשריות."
 
 #: src/commandhandler.cpp:176
 msgid "Command: /help <command>"
-msgstr ""
+msgstr "פקודה: /help <command>"
 
 #: src/commandhandler.cpp:177
 msgid "This command displays help on <command>."
-msgstr ""
+msgstr "פקודה זו מציגה עזרה על <command>."
 
 #: src/commandhandler.cpp:185
 msgid "Command: /announce <msg>"
-msgstr ""
+msgstr "פקודה: /announce <msg>"
 
 #: src/commandhandler.cpp:186
 msgid "*** only available to a GM ***"
-msgstr ""
+msgstr "*** זמין ל-GM בלבד ***"
 
 #: src/commandhandler.cpp:187
 msgid "This command sends the message <msg> to all players currently online."
 msgstr ""
+"This command sends the message <msg> to all players currently online.\r\n"
+"פקודה זו שולחת את ההודעה <msg> לכל השחקנים המחוברים."
 
 #: src/commandhandler.cpp:192
 msgid "Command: /clear"
-msgstr ""
+msgstr "פקודה: /clear"
 
 #: src/commandhandler.cpp:193
 msgid "This command clears the chat log of previous chat."
-msgstr ""
+msgstr "פקודה זו מנקה את רישום השיחה הקודמת."
 
 #: src/commandhandler.cpp:197
 msgid "Command: /join <channel>"
-msgstr ""
+msgstr "פקודה: /join <channel>"
 
 #: src/commandhandler.cpp:198
 msgid "This command makes you enter <channel>."
-msgstr ""
+msgstr "פקודה זו מכניסה אותך אל <channel>."
 
 #: src/commandhandler.cpp:199
 msgid "If <channel> doesn't exist, it's created."
-msgstr ""
+msgstr "אם <channel> אינו קיים, הוא נוצר."
 
 #: src/commandhandler.cpp:203
 msgid "Command: /list"
-msgstr ""
+msgstr "פקודה: /list"
 
 #: src/commandhandler.cpp:204
 msgid "This command shows a list of all channels."
-msgstr ""
+msgstr "פקודה זו מציגה את רשימת כל החדרים."
 
 #: src/commandhandler.cpp:208
 msgid "Command: /me <message>"
-msgstr ""
+msgstr "פקודה: /me <message>"
 
 #: src/commandhandler.cpp:209
 msgid "This command tell others you are (doing) <msg>."
-msgstr ""
+msgstr "פקודה זו תאמר לאחרים שאתה (עושה) <msg>."
 
 #: src/commandhandler.cpp:213
 msgid "Command: /msg <nick> <message>"
-msgstr ""
+msgstr "פקודה: /msg <nick> <message>"
 
 #: src/commandhandler.cpp:214
 msgid "Command: /whisper <nick> <message>"
-msgstr ""
+msgstr "פקודה: /whisper <nick> <message>"
 
 #: src/commandhandler.cpp:215
 msgid "Command: /w <nick> <message>"
-msgstr ""
+msgstr "פקודה: /w <nick> <message>"
 
 #: src/commandhandler.cpp:216
 msgid "This command sends the text <message> to <nick>."
-msgstr ""
+msgstr "פקודה זו שולחת את הטקסט <message> אל <nick>."
 
 #: src/commandhandler.cpp:217 src/commandhandler.cpp:231
 #: src/gui/widgets/channeltab.cpp:81 src/gui/widgets/channeltab.cpp:90
 #: src/net/ea/gui/partytab.cpp:79
 msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
-msgstr ""
+msgstr "אם <nick> מכיל רווחים בתוכו, תחום אותו במרכאות כפולות (\")."
 
 #: src/commandhandler.cpp:222
 msgid "Command: /query <nick>"
-msgstr ""
+msgstr "פקודה: /query <nick>"
 
 #: src/commandhandler.cpp:223
 msgid "Command: /q <nick>"
-msgstr ""
+msgstr "פקודה: /q <nick>"
 
 #: src/commandhandler.cpp:224
 msgid "This command tries to make a tab for whispers betweenyou and <nick>."
-msgstr ""
+msgstr "הפקודה מנסה ליצור לשונית עבור מסרים בינך לבין <nick>."
 
 #: src/commandhandler.cpp:229
 msgid "Command: /party <nick>"
-msgstr ""
+msgstr "פקודה: /party <nick>"
 
 #: src/commandhandler.cpp:230 src/net/ea/gui/partytab.cpp:78
 msgid "This command invites <nick> to party with you."
-msgstr ""
+msgstr "פקודה זו מזמינה את <nick> לחגוג איתך."
 
 #: src/commandhandler.cpp:236
 msgid "Command: /present"
-msgstr ""
+msgstr "פקודה: /present"
 
 #: src/commandhandler.cpp:237
 msgid ""
 "This command gets a list of players within hearing and sends it to either "
 "the record log if recording, or the chat log otherwise."
 msgstr ""
+"פקודה זו מקבלת את רשימת המשתמשים המופיעים על המסך, ושולח אותה לרישום, אם "
+"הינך מקליט רישום, או אל השיחה."
 
 #: src/commandhandler.cpp:243
 msgid "Command: /record <filename>"
-msgstr ""
+msgstr "פקודה: /record <filename>"
 
 #: src/commandhandler.cpp:244
 msgid "This command starts recording the chat log to the file <filename>."
-msgstr ""
+msgstr "פקודה זו מתחילה להקליט רישום שיחה לקובץ <filename>."
 
 #: src/commandhandler.cpp:246
 msgid "Command: /record"
-msgstr ""
+msgstr "פקודה: /record"
 
 #: src/commandhandler.cpp:247
 msgid "This command finishes a recording session."
-msgstr ""
+msgstr "פקודה זו מסיימת תהליך הקלטה."
 
 #: src/commandhandler.cpp:251
 msgid "Command: /toggle <state>"
-msgstr ""
+msgstr "פקודה: /toggle <state>"
 
 #: src/commandhandler.cpp:252
 msgid ""
@@ -240,10 +249,12 @@ msgid ""
 "<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or \"0"
 "\", \"no\", \"false\" to turn the toggle off."
 msgstr ""
+"<state> יכול להיות אחד משני משני מצבים. \"1\", \"yes\", \"ture\" כדי לשנות "
+"למצב פעיל, או \"0\", no\", falst\" כדי לשנות למצב כבוי."
 
 #: src/commandhandler.cpp:257
 msgid "Command: /toggle"
-msgstr ""
+msgstr "פקודה: /toggle"
 
 #: src/commandhandler.cpp:258
 msgid "This command displays the return toggle status."
@@ -251,52 +262,54 @@ msgstr ""
 
 #: src/commandhandler.cpp:262
 msgid "Command: /where"
-msgstr ""
+msgstr "פקודה: /where"
 
 #: src/commandhandler.cpp:263
 msgid "This command displays the name of the current map."
-msgstr ""
+msgstr "פקודה זו מציגה את שם המפה הנוכחית."
 
 #: src/commandhandler.cpp:267
 msgid "Command: /who"
-msgstr ""
+msgstr "פקודה: /who"
 
 #: src/commandhandler.cpp:268
 msgid "This command displays the number of players currently online."
-msgstr ""
-
-#: src/commandhandler.cpp:273
-msgid "Unknown command."
-msgstr ""
+msgstr "פקודה זו מציגה את מספר השחקנים המחוברים כרגע."
 
 #: src/commandhandler.cpp:274
 msgid "Type /help for a list of commands."
-msgstr ""
+msgstr "הקלד /help לרשימת הפקודות."
 
 #: src/commandhandler.cpp:340
 msgid "Cannot send empty whispers!"
-msgstr ""
+msgstr "לא ניתן לשלוח לחישות ריקות!"
 
-#: src/commandhandler.cpp:347
-#, c-format
+#: src/commandhandler.cpp:348
+#, fuzzy, c-format
 msgid ""
-"Cannot create a whisper tab for nick '%s'! It either already exists, or is "
+"Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
 "you."
 msgstr ""
+"לא ניתן ליצור לשונית לחישות עבור הכינוי '%s'! הכינוי כבר בשימוש או שמדובר בך."
 
-#: src/commandhandler.cpp:393
+#: src/commandhandler.cpp:362
+#, c-format
+msgid "Requesting to join channel %s."
+msgstr ""
+
+#: src/commandhandler.cpp:394
 msgid "Return toggles chat."
 msgstr ""
 
-#: src/commandhandler.cpp:393
+#: src/commandhandler.cpp:394
 msgid "Message closes chat."
 msgstr ""
 
-#: src/commandhandler.cpp:402
+#: src/commandhandler.cpp:403
 msgid "Return now toggles chat."
 msgstr ""
 
-#: src/commandhandler.cpp:406
+#: src/commandhandler.cpp:407
 msgid "Message now closes chat."
 msgstr ""
 
@@ -304,56 +317,66 @@ msgstr ""
 #, c-format
 msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 msgstr ""
+"האפשרויות עבור /%s הינם \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 
-#: src/game.cpp:236
+#: src/engine.cpp:88
+msgid "Could not load map"
+msgstr ""
+
+#: src/engine.cpp:89
+#, c-format
+msgid "Error while loading %s"
+msgstr ""
+
+#: src/game.cpp:237
 msgid "General"
-msgstr ""
+msgstr "כללי"
 
-#: src/game.cpp:400
+#: src/game.cpp:404
 msgid "Screenshot saved to ~/"
-msgstr ""
+msgstr "תמונת־מסך נשמרה במיקום ~/"
 
-#: src/game.cpp:405
+#: src/game.cpp:409
 msgid "Saving screenshot failed!"
-msgstr ""
+msgstr "שמירת תמונת־מסך נכשלה"
 
-#: src/game.cpp:481
+#: src/game.cpp:485
 msgid "The connection to the server was lost, the program will now quit"
-msgstr ""
+msgstr "החיבור לשרת נכשל, התוכנה תסגר כעת"
 
-#: src/game.cpp:487
+#: src/game.cpp:491
 msgid "Network Error"
-msgstr ""
+msgstr "שגיאת רשת"
 
-#: src/game.cpp:653 src/gui/buy.cpp:71 src/gui/quitdialog.cpp:32
+#: src/game.cpp:657 src/gui/buy.cpp:71 src/gui/quitdialog.cpp:32
 #: src/gui/quitdialog.cpp:35 src/gui/quitdialog.cpp:36 src/gui/sell.cpp:73
 #: src/keyboardconfig.cpp:101
 msgid "Quit"
 msgstr "יציאה"
 
-#: src/game.cpp:654
+#: src/game.cpp:658
 msgid "Are you sure you want to quit?"
-msgstr ""
+msgstr "האם אתה בטוח שברצונך לצאת?"
 
-#: src/game.cpp:661
+#: src/game.cpp:665
 msgid "no"
-msgstr ""
+msgstr "לא"
 
-#: src/game.cpp:801
+#: src/game.cpp:805
 msgid "Ignoring incoming trade requests"
-msgstr ""
+msgstr "מתעלם מהצעות סחר נכנסות"
 
-#: src/game.cpp:808
+#: src/game.cpp:812
 msgid "Accepting incoming trade requests"
-msgstr ""
+msgstr "מאשר הצעות סחר נכנסות"
 
 #: src/gui/buddywindow.cpp:35
 msgid "Buddy"
-msgstr ""
+msgstr "חבר"
 
 #: src/gui/buddywindow.cpp:38
 msgid "Buddy List"
-msgstr ""
+msgstr "רשימת חברים"
 
 #: src/gui/buy.cpp:46 src/gui/buy.cpp:70 src/gui/buysell.cpp:40
 msgid "Buy"
@@ -363,11 +386,11 @@ msgstr "קנה"
 #: src/gui/sell.cpp:278
 #, c-format
 msgid "Price: %s / Total: %s"
-msgstr ""
+msgstr "מחיר: %s / סה\"כ: %s"
 
 #: src/gui/buy.cpp:72 src/gui/sell.cpp:74
 msgid "Max"
-msgstr ""
+msgstr "מקסימום"
 
 #: src/gui/buy.cpp:73 src/gui/buy.cpp:223 src/gui/buy.cpp:241
 #: src/gui/sell.cpp:75 src/gui/sell.cpp:250 src/gui/sell.cpp:264
@@ -383,7 +406,7 @@ msgstr "השפעה: %s"
 
 #: src/gui/buysell.cpp:34
 msgid "Shop"
-msgstr ""
+msgstr "חנות"
 
 #: src/gui/buysell.cpp:40 src/gui/sell.cpp:46 src/gui/sell.cpp:72
 msgid "Sell"
@@ -391,32 +414,32 @@ msgstr "מכר"
 
 #: src/gui/buysell.cpp:40 src/gui/changeemaildialog.cpp:53
 #: src/gui/changepassworddialog.cpp:56 src/gui/charcreatedialog.cpp:74
-#: src/gui/charselectdialog.cpp:111 src/gui/connection.cpp:38
+#: src/gui/charselectdialog.cpp:104 src/gui/connection.cpp:38
 #: src/gui/itemamount.cpp:96 src/gui/login.cpp:75 src/gui/npcpostdialog.cpp:54
 #: src/gui/quitdialog.cpp:40 src/gui/register.cpp:81
 #: src/gui/serverdialog.cpp:104 src/gui/serverselectdialog.cpp:67
-#: src/gui/setup.cpp:72 src/gui/textdialog.cpp:37
+#: src/gui/setup.cpp:73 src/gui/textdialog.cpp:37
 #: src/gui/unregisterdialog.cpp:53 src/gui/updatewindow.cpp:112
 msgid "Cancel"
 msgstr "ביטול"
 
 #: src/gui/changeemaildialog.cpp:43 src/gui/changeemaildialog.cpp:52
-#: src/gui/charselectdialog.cpp:121
+#: src/gui/charselectdialog.cpp:115
 msgid "Change Email Address"
 msgstr "שנה כתובת דואר אלקטרוני"
 
 #: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:48
-#: src/gui/charselectdialog.cpp:123
+#: src/gui/charselectdialog.cpp:107
 #, c-format
 msgid "Account: %s"
 msgstr "משתמש: %s"
 
 #: src/gui/changeemaildialog.cpp:49
 msgid "Type New Email Address twice:"
-msgstr ""
+msgstr "הקלד כתובת דוא\"ל חדשה פעמיים:"
 
 #: src/gui/changepassworddialog.cpp:44 src/gui/changepassworddialog.cpp:55
-#: src/gui/charselectdialog.cpp:120
+#: src/gui/charselectdialog.cpp:110
 msgid "Change Password"
 msgstr "שנה סיסמה"
 
@@ -427,7 +450,7 @@ msgstr "סיסמה:"
 
 #: src/gui/changepassworddialog.cpp:52
 msgid "Type New Password twice:"
-msgstr ""
+msgstr "הקלד סיסמה חדשה פעמיים:"
 
 #: src/gui/charcreatedialog.cpp:54
 msgid "Create Character"
@@ -464,7 +487,7 @@ msgid "Please distribute %d points"
 msgstr "אנא חלק %d נקודות"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1501
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1516
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "שגיאה"
@@ -482,104 +505,101 @@ msgstr "נתוני שחקן - אישור"
 msgid "Please remove %d points"
 msgstr "אנא הסר %d נקודות"
 
-#: src/gui/charselectdialog.cpp:78
+#: src/gui/charselectdialog.cpp:77
 msgid "Confirm Character Delete"
 msgstr "אשר מחיקת שחקן"
 
-#: src/gui/charselectdialog.cpp:79
+#: src/gui/charselectdialog.cpp:78
 msgid "Are you sure you want to delete this character?"
 msgstr "האם אתה בטוח כי ברצונך למחוק את השחקן?"
 
-#: src/gui/charselectdialog.cpp:97
+#: src/gui/charselectdialog.cpp:95
 msgid "Account and Character Management"
 msgstr "ניהול משתמש ושחקן"
 
-#: src/gui/charselectdialog.cpp:104
-msgid "Select Character"
-msgstr ""
-
-#: src/gui/charselectdialog.cpp:110 src/gui/itemamount.cpp:95
+#: src/gui/charselectdialog.cpp:103 src/gui/login.cpp:74
 #: src/gui/okdialog.cpp:42 src/gui/quitdialog.cpp:39
-#: src/gui/serverdialog.cpp:103
-msgid "Ok"
+#: src/gui/serverdialog.cpp:103 src/gui/serverselectdialog.cpp:66
+#: src/gui/textdialog.cpp:36 src/gui/trade.cpp:69 src/gui/trade.cpp:71
+msgid "OK"
 msgstr "אישור"
 
-#: src/gui/charselectdialog.cpp:112
+#: src/gui/charselectdialog.cpp:105
 msgid "Previous"
 msgstr "הקודם"
 
-#: src/gui/charselectdialog.cpp:113 src/gui/npcdialog.cpp:43
+#: src/gui/charselectdialog.cpp:106 src/gui/npcdialog.cpp:43
 msgid "Next"
 msgstr "הבא"
 
-#: src/gui/charselectdialog.cpp:114 src/gui/charselectdialog.cpp:124
-#: src/gui/charselectdialog.cpp:301 src/gui/charselectdialog.cpp:322
+#: src/gui/charselectdialog.cpp:108 src/gui/charselectdialog.cpp:117
+#: src/gui/charselectdialog.cpp:296 src/gui/charselectdialog.cpp:317
 #: src/gui/unregisterdialog.cpp:49
 #, c-format
 msgid "Name: %s"
 msgstr "שם: %s"
 
-#: src/gui/charselectdialog.cpp:115 src/gui/charselectdialog.cpp:125
-#: src/gui/charselectdialog.cpp:303 src/gui/charselectdialog.cpp:323
+#: src/gui/charselectdialog.cpp:109 src/gui/charselectdialog.cpp:118
+#: src/gui/charselectdialog.cpp:298 src/gui/charselectdialog.cpp:318
 #: src/gui/status.cpp:55 src/gui/status.cpp:174
 #, c-format
 msgid "Level: %d"
 msgstr "רמה: %d"
 
-#: src/gui/charselectdialog.cpp:117 src/gui/charselectdialog.cpp:164
-#: src/gui/charselectdialog.cpp:166 src/gui/charselectdialog.cpp:332
+#: src/gui/charselectdialog.cpp:112 src/gui/charselectdialog.cpp:157
+#: src/gui/charselectdialog.cpp:159 src/gui/charselectdialog.cpp:327
 msgid "New"
 msgstr "חדש"
 
-#: src/gui/charselectdialog.cpp:118 src/gui/charselectdialog.cpp:165
-#: src/gui/charselectdialog.cpp:166 src/gui/charselectdialog.cpp:315
+#: src/gui/charselectdialog.cpp:113 src/gui/charselectdialog.cpp:158
+#: src/gui/charselectdialog.cpp:159 src/gui/charselectdialog.cpp:310
 #: src/gui/setup_players.cpp:228
 msgid "Delete"
 msgstr "מחק"
 
-#: src/gui/charselectdialog.cpp:119 src/gui/unregisterdialog.cpp:52
+#: src/gui/charselectdialog.cpp:114 src/gui/unregisterdialog.cpp:52
 msgid "Unregister"
 msgstr "בטל רישום"
 
-#: src/gui/charselectdialog.cpp:126
+#: src/gui/charselectdialog.cpp:119
 #, c-format
 msgid "Money: %d"
 msgstr "זהב: %d"
 
-#: src/gui/charselectdialog.cpp:161 src/gui/charselectdialog.cpp:305
-#: src/gui/charselectdialog.cpp:325
+#: src/gui/charselectdialog.cpp:154 src/gui/charselectdialog.cpp:300
+#: src/gui/charselectdialog.cpp:320
 #, c-format
 msgid "Job Level: %d"
-msgstr ""
+msgstr "רמת עבודה: %d"
 
-#: src/gui/charselectdialog.cpp:162 src/gui/charselectdialog.cpp:308
-#: src/gui/charselectdialog.cpp:327 src/gui/status.cpp:57
+#: src/gui/charselectdialog.cpp:155 src/gui/charselectdialog.cpp:303
+#: src/gui/charselectdialog.cpp:322 src/gui/status.cpp:57
 #: src/gui/status.cpp:182
 #, c-format
 msgid "Money: %s"
-msgstr ""
+msgstr "כסף: %s"
 
 #: src/gui/chat.cpp:73 src/gui/palette.cpp:93
 msgid "Chat"
-msgstr ""
+msgstr "שיחה"
 
-#: src/gui/chat.cpp:324
+#: src/gui/chat.cpp:326
 #, c-format
 msgid "%d players are present."
-msgstr ""
+msgstr "%d משתמשים נוכחים."
 
-#: src/gui/chat.cpp:325
+#: src/gui/chat.cpp:327
 msgid "Present: "
-msgstr ""
+msgstr "נוכחים: "
 
-#: src/gui/chat.cpp:342
+#: src/gui/chat.cpp:344
 msgid "Attendance written to record log."
 msgstr ""
 
-#: src/gui/chat.cpp:467
+#: src/gui/chat.cpp:471
 #, c-format
 msgid "Whispering to %s: %s"
-msgstr ""
+msgstr "לוחש אל %s: %s"
 
 #: src/gui/confirmdialog.cpp:42
 msgid "Yes"
@@ -593,54 +613,50 @@ msgstr "לא"
 msgid "Connecting..."
 msgstr "מתחבר..."
 
-#: src/gui/emotepopup.cpp:64
-msgid "Unable to load selection.png"
-msgstr ""
-
 #: src/gui/equipmentwindow.cpp:71 src/gui/windowmenu.cpp:60
 msgid "Equipment"
 msgstr "ציוד"
 
 #: src/gui/equipmentwindow.cpp:90 src/gui/inventorywindow.cpp:74
-#: src/gui/inventorywindow.cpp:76 src/gui/inventorywindow.cpp:268
+#: src/gui/inventorywindow.cpp:76 src/gui/inventorywindow.cpp:269
 msgid "Unequip"
 msgstr "הורד"
 
 #: src/gui/guildwindow.cpp:50 src/gui/guildwindow.cpp:54
 msgid "Guild"
-msgstr ""
+msgstr "גילדה"
 
 #: src/gui/guildwindow.cpp:63
 msgid "Create Guild"
-msgstr ""
+msgstr "צור גילדה"
 
 #: src/gui/guildwindow.cpp:64
 msgid "Invite User"
-msgstr ""
+msgstr "הזמן משתמש"
 
 #: src/gui/guildwindow.cpp:65
 msgid "Quit Guild"
-msgstr ""
+msgstr "עזוב גילדה"
 
 #: src/gui/help.cpp:34
 msgid "Help"
-msgstr ""
+msgstr "עזרה"
 
 #: src/gui/help.cpp:47 src/gui/npcdialog.cpp:44 src/gui/storagewindow.cpp:68
 msgid "Close"
-msgstr ""
+msgstr "סגור"
 
 #: src/gui/inventorywindow.cpp:54 src/gui/windowmenu.cpp:61
 msgid "Inventory"
 msgstr "ציוד"
 
 #: src/gui/inventorywindow.cpp:69 src/gui/inventorywindow.cpp:71
-#: src/gui/inventorywindow.cpp:270
+#: src/gui/inventorywindow.cpp:271
 msgid "Equip"
 msgstr "החזק"
 
 #: src/gui/inventorywindow.cpp:70 src/gui/inventorywindow.cpp:71
-#: src/gui/inventorywindow.cpp:274 src/gui/skill.cpp:150
+#: src/gui/inventorywindow.cpp:275 src/gui/skill.cpp:150
 msgid "Use"
 msgstr "השתמש"
 
@@ -652,17 +668,21 @@ msgstr "השלך"
 msgid "Split"
 msgstr "פצל"
 
-#: src/gui/inventorywindow.cpp:92
+#: src/gui/inventorywindow.cpp:92 src/gui/storagewindow.cpp:78
 msgid "Slots:"
-msgstr ""
+msgstr "תאים:"
 
 #: src/gui/inventorywindow.cpp:93
 msgid "Weight:"
-msgstr ""
+msgstr "משקל:"
+
+#: src/gui/itemamount.cpp:95
+msgid "Ok"
+msgstr "אישור"
 
 #: src/gui/itemamount.cpp:97
 msgid "All"
-msgstr ""
+msgstr "הכל"
 
 #: src/gui/itemamount.cpp:123
 msgid "Select amount of items to trade."
@@ -674,11 +694,11 @@ msgstr "בחר כמות חפצים להשליך."
 
 #: src/gui/itemamount.cpp:129
 msgid "Select amount of items to store."
-msgstr ""
+msgstr "בחר כמות חפצים לאחסן."
 
 #: src/gui/itemamount.cpp:132
 msgid "Select amount of items to retrieve."
-msgstr ""
+msgstr "בחר כמות חפצים להחזיר."
 
 #: src/gui/itemamount.cpp:135
 msgid "Select amount of items to split."
@@ -686,7 +706,7 @@ msgstr "בחר כמות חפצים לפצל."
 
 #: src/gui/itempopup.cpp:91
 msgid "Weight: "
-msgstr ""
+msgstr "משקל: "
 
 #: src/gui/login.cpp:48
 msgid "Login"
@@ -703,16 +723,11 @@ msgstr "פורט:"
 
 #: src/gui/login.cpp:56
 msgid "Recent:"
-msgstr ""
+msgstr "לאחרונה:"
 
 #: src/gui/login.cpp:73
 msgid "Remember Username"
 msgstr "זכור שם משתמש"
-
-#: src/gui/login.cpp:74 src/gui/serverselectdialog.cpp:66
-#: src/gui/textdialog.cpp:36 src/gui/trade.cpp:69 src/gui/trade.cpp:71
-msgid "OK"
-msgstr ""
 
 #: src/gui/login.cpp:76 src/gui/register.cpp:56 src/gui/register.cpp:80
 msgid "Register"
@@ -721,33 +736,31 @@ msgstr "הרשם"
 #: src/gui/magic.cpp:32 src/gui/skilldialog.cpp:117 src/gui/windowmenu.cpp:64
 #: src/localplayer.cpp:771
 msgid "Magic"
-msgstr ""
+msgstr "קסם"
 
 #: src/gui/magic.cpp:39
 msgid "Cast Test Spell 1"
-msgstr ""
+msgstr "הטל קסם נסיון 1"
 
 #: src/gui/magic.cpp:40
 msgid "Cast Test Spell 2"
-msgstr ""
+msgstr "הטל קסם נסיון 2"
 
 #: src/gui/magic.cpp:41
 msgid "Cast Test Spell 3"
-msgstr ""
+msgstr "הטל קסם נסיון 3"
 
-#: src/gui/minimap.cpp:45 src/gui/minimap.cpp:85
-#, fuzzy
+#: src/gui/minimap.cpp:45 src/gui/minimap.cpp:84
 msgid "Map"
-msgstr "מיני-מפה"
+msgstr "מפה"
 
 #: src/gui/npcdialog.cpp:42
 msgid "Waiting for server"
-msgstr ""
+msgstr "ממתין לשרת"
 
 #: src/gui/npcdialog.cpp:45
-#, fuzzy
 msgid "Submit"
-msgstr "יציאה"
+msgstr "שלח"
 
 #: src/gui/npcdialog.cpp:48 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -755,72 +768,80 @@ msgstr "NPC"
 
 #: src/gui/npcdialog.cpp:104
 msgid "Reset"
+msgstr "אפס"
+
+#: src/gui/npcpostdialog.cpp:44
+msgid "To:"
 msgstr ""
 
 #: src/gui/npcpostdialog.cpp:51
 msgid "Send"
+msgstr "שלח"
+
+#: src/gui/npcpostdialog.cpp:85
+msgid "Failed to send as sender or letter invalid."
 msgstr ""
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:142
 msgid "Text"
-msgstr ""
+msgstr "טקסט"
 
 #: src/gui/palette.cpp:82
 msgid "Text Shadow"
-msgstr ""
+msgstr "הצללת טקסט"
 
 #: src/gui/palette.cpp:83
 msgid "Text Outline"
-msgstr ""
+msgstr "מתאר הטקסט"
 
 #: src/gui/palette.cpp:84
 msgid "Progress Bar Labels"
-msgstr ""
+msgstr "תוויות סרגל התקדמות"
 
 #: src/gui/palette.cpp:86
 msgid "Background"
-msgstr ""
+msgstr "רקע"
 
 #: src/gui/palette.cpp:88
 msgid "Highlight"
-msgstr ""
+msgstr "הדגשה"
 
 #: src/gui/palette.cpp:89
 msgid "Tab Highlight"
-msgstr ""
+msgstr "לשונית הדגשה"
 
 #: src/gui/palette.cpp:90
 msgid "Item too expensive"
-msgstr ""
+msgstr "החפץ יקר מדי"
 
 #: src/gui/palette.cpp:91
 msgid "Item is equipped"
-msgstr ""
+msgstr "החפץ בשימוש"
 
 #: src/gui/palette.cpp:94
 msgid "GM"
-msgstr ""
+msgstr "GM"
 
 #: src/gui/palette.cpp:95
 msgid "Player"
-msgstr ""
+msgstr "שחקן"
 
 #: src/gui/palette.cpp:96
 msgid "Whisper"
-msgstr ""
+msgstr "לחישה"
 
 #: src/gui/palette.cpp:97
 msgid "Is"
-msgstr ""
+msgstr "הינו"
 
 #: src/gui/palette.cpp:98 src/gui/partywindow.cpp:48
 #: src/gui/partywindow.cpp:75 src/net/ea/gui/partytab.cpp:39
 msgid "Party"
-msgstr ""
+msgstr "חגיגה"
 
 #: src/gui/palette.cpp:99
 msgid "Server"
-msgstr ""
+msgstr "שרת"
 
 #: src/gui/palette.cpp:100
 msgid "Logger"
@@ -828,7 +849,7 @@ msgstr ""
 
 #: src/gui/palette.cpp:101
 msgid "Hyperlink"
-msgstr ""
+msgstr "קישור"
 
 #: src/gui/palette.cpp:103
 msgid "Being"
@@ -836,15 +857,15 @@ msgstr ""
 
 #: src/gui/palette.cpp:104
 msgid "Other Players' Names"
-msgstr ""
+msgstr "שמות המשתמשים האחרים"
 
 #: src/gui/palette.cpp:105
 msgid "Own Name"
-msgstr ""
+msgstr "השם שלך"
 
 #: src/gui/palette.cpp:106
 msgid "GM Names"
-msgstr ""
+msgstr "שמות המנהלים"
 
 #: src/gui/palette.cpp:107
 msgid "NPCs"
@@ -852,58 +873,55 @@ msgstr ""
 
 #: src/gui/palette.cpp:108
 msgid "Monsters"
-msgstr ""
+msgstr "מפלצות"
 
 #: src/gui/palette.cpp:110
 msgid "Unknown Item Type"
-msgstr ""
+msgstr "סוג חפץ לא ידוע"
 
 #: src/gui/palette.cpp:111
 msgid "Generics"
-msgstr ""
+msgstr "כלליים"
 
 #: src/gui/palette.cpp:112
-#, fuzzy
 msgid "Hats"
-msgstr "מצב"
+msgstr "כובעים"
 
 #: src/gui/palette.cpp:113
-#, fuzzy
 msgid "Usables"
-msgstr "השתמש"
+msgstr "שימושיים"
 
 #: src/gui/palette.cpp:114
 msgid "Shirts"
-msgstr ""
+msgstr "חולצות"
 
 #: src/gui/palette.cpp:115
 msgid "1 Handed Weapons"
-msgstr ""
+msgstr "נשקים ליד אחת"
 
 #: src/gui/palette.cpp:116
 msgid "Pants"
-msgstr ""
+msgstr "מכנסיים"
 
 #: src/gui/palette.cpp:117
 msgid "Shoes"
-msgstr ""
+msgstr "נעליים"
 
 #: src/gui/palette.cpp:118
 msgid "2 Handed Weapons"
-msgstr ""
+msgstr "נשקים לשתי ידיים"
 
 #: src/gui/palette.cpp:119
-#, fuzzy
 msgid "Shields"
-msgstr "כישורים"
+msgstr "מגנים"
 
 #: src/gui/palette.cpp:120
 msgid "Rings"
-msgstr ""
+msgstr "טבעות"
 
 #: src/gui/palette.cpp:121
 msgid "Necklaces"
-msgstr ""
+msgstr "שרשראות"
 
 #: src/gui/palette.cpp:122
 msgid "Arms"
@@ -911,60 +929,88 @@ msgstr ""
 
 #: src/gui/palette.cpp:123
 msgid "Ammo"
-msgstr ""
+msgstr "תחמושת"
 
 #: src/gui/palette.cpp:125
 msgid "Particle Effects"
-msgstr ""
+msgstr "אפקטים חלקיים"
 
 #: src/gui/palette.cpp:126
 msgid "Pickup Notification"
-msgstr ""
+msgstr "הודעה על לקיחה"
 
 #: src/gui/palette.cpp:127
 msgid "Exp Notification"
-msgstr ""
+msgstr "הודעה על נק' נסיון"
 
 #: src/gui/palette.cpp:129
 msgid "Player hits Monster"
-msgstr ""
+msgstr "משתמש מכה מפלצת"
 
 #: src/gui/palette.cpp:131
 msgid "Monster hits Player"
-msgstr ""
+msgstr "משתמש מכה משתמש"
 
 #: src/gui/palette.cpp:132
 msgid "Critical Hit"
-msgstr ""
+msgstr "מכה קריטית"
 
 #: src/gui/palette.cpp:133
 msgid "Misses"
-msgstr ""
+msgstr "פספוס"
 
 #: src/gui/palette.cpp:135
 msgid "HP Bar"
-msgstr ""
+msgstr "סרגל חיים"
 
 #: src/gui/palette.cpp:136
 msgid "3/4 HP Bar"
-msgstr ""
+msgstr "3/4 סרגל חיים"
 
 #: src/gui/palette.cpp:137
 msgid "1/2 HP Bar"
-msgstr ""
+msgstr "1/2 סרגל חיים"
 
 #: src/gui/palette.cpp:138
 msgid "1/4 HP Bar"
-msgstr ""
+msgstr "1/4 סרגל חיים"
 
 #: src/gui/partywindow.cpp:70
 #, c-format
 msgid "Party (%s)"
+msgstr "חגיגה (%s)"
+
+#: src/gui/partywindow.cpp:174
+msgid "Received party request, but one already exists."
+msgstr ""
+
+#: src/gui/partywindow.cpp:182
+#, c-format
+msgid "%s has invited you to join their party."
+msgstr ""
+
+#: src/gui/partywindow.cpp:185
+#, c-format
+msgid "%s has invited you to join the %s party."
+msgstr ""
+
+#: src/gui/partywindow.cpp:191
+msgid "Accept Party Invite"
+msgstr ""
+
+#: src/gui/partywindow.cpp:204
+#, c-format
+msgid "Accepted invite from %s."
+msgstr ""
+
+#: src/gui/partywindow.cpp:211
+#, c-format
+msgid "Rejected invite from %s."
 msgstr ""
 
 #: src/gui/popupmenu.cpp:77
 msgid "@@name|Add name to chat@@"
-msgstr ""
+msgstr "@@name|הוסף שם לשיחה@@"
 
 #: src/gui/popupmenu.cpp:89
 #, c-format
@@ -1009,7 +1055,7 @@ msgstr ""
 #: src/gui/popupmenu.cpp:119
 #, c-format
 msgid "@@party|Invite %s to join your party@@"
-msgstr "@@party|הזמן את %s להצטרף למסיבה@@"
+msgstr "@@party|הזמן את %s להצטרף לחגיגה@@"
 
 #: src/gui/popupmenu.cpp:124
 msgid "@@admin-kick|Kick player@@"
@@ -1030,9 +1076,9 @@ msgid "@@cancel|Cancel@@"
 msgstr "@@cancel|ביטול@@"
 
 #: src/gui/popupmenu.cpp:165
-#, fuzzy, c-format
+#, c-format
 msgid "@@pickup|Pick up %s@@"
-msgstr "@@pickup|הרם %s@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:166 src/gui/popupmenu.cpp:381
 msgid "@@chat|Add to chat@@"
@@ -1059,9 +1105,8 @@ msgid "@@split|Split@@"
 msgstr "@@split|פצל@@"
 
 #: src/gui/popupmenu.cpp:372
-#, fuzzy
 msgid "@@store|Store@@"
-msgstr "@@use|Use@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:379
 msgid "@@retrieve|Retrieve@@"
@@ -1147,15 +1192,15 @@ msgstr "אנא הכנס גם את כתובת וגם את פורט השרת."
 msgid "Select Server"
 msgstr ""
 
-#: src/gui/setup.cpp:64 src/gui/windowmenu.cpp:69 src/main.cpp:931
+#: src/gui/setup.cpp:65 src/gui/windowmenu.cpp:69 src/main.cpp:939
 msgid "Setup"
 msgstr "הגדרות"
 
-#: src/gui/setup.cpp:72
+#: src/gui/setup.cpp:73
 msgid "Apply"
 msgstr "אשר"
 
-#: src/gui/setup.cpp:72
+#: src/gui/setup.cpp:73
 msgid "Reset Windows"
 msgstr "אתחל חלונות"
 
@@ -1319,9 +1364,8 @@ msgid "Tiny"
 msgstr ""
 
 #: src/gui/setup_video.cpp:113
-#, fuzzy
 msgid "Small"
-msgstr "מכר"
+msgstr ""
 
 #: src/gui/setup_video.cpp:114
 msgid "Medium"
@@ -1475,10 +1519,6 @@ msgstr ""
 msgid "Changes will take effect on map change."
 msgstr ""
 
-#: src/gui/skill.cpp:44
-msgid "skills.xml"
-msgstr ""
-
 #: src/gui/skill.cpp:53
 msgid "Mystery Skill"
 msgstr ""
@@ -1613,10 +1653,6 @@ msgstr ""
 msgid "Retrieve"
 msgstr ""
 
-#: src/gui/storagewindow.cpp:78
-msgid "Slots: "
-msgstr ""
-
 #: src/gui/trade.cpp:51
 msgid "Propose trade"
 msgstr "מציע לחור"
@@ -1663,7 +1699,7 @@ msgid "Failed adding item. You can not overlap one kind of item on the window."
 msgstr ""
 
 #: src/gui/trade.cpp:311
-msgid "You don't have enough money"
+msgid "You don't have enough money."
 msgstr ""
 
 #: src/gui/updatewindow.cpp:91
@@ -1786,10 +1822,6 @@ msgstr ""
 #: src/gui/widgets/chattab.cpp:146
 #, c-format
 msgid "%s whispers: "
-msgstr ""
-
-#: src/gui/widgets/chattab.cpp:233 src/resources/itemdb.cpp:107
-msgid "Unknown item"
 msgstr ""
 
 #: src/gui/widgets/whispertab.cpp:49
@@ -1919,8 +1951,9 @@ msgid "Inventory Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:74
-msgid "Equipment WIndow"
-msgstr ""
+#, fuzzy
+msgid "Equipment Window"
+msgstr "ציוד"
 
 #: src/keyboardconfig.cpp:75
 msgid "Skill Window"
@@ -1947,9 +1980,8 @@ msgid "Debug Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:81
-#, fuzzy
 msgid "Party Window"
-msgstr "אתחל חלונות"
+msgstr ""
 
 #: src/keyboardconfig.cpp:82
 msgid "Emote Shortcut Window"
@@ -2049,103 +2081,104 @@ msgstr ""
 msgid "Unknown Skill"
 msgstr ""
 
-#: src/main.cpp:255
+#: src/main.cpp:263
 msgid "Invalid update host: "
 msgstr ""
 
-#: src/main.cpp:288 src/main.cpp:294
+#: src/main.cpp:296 src/main.cpp:302
 msgid "Error creating updates directory!"
 msgstr ""
 
-#: src/main.cpp:327
+#: src/main.cpp:340
 msgid " can't be created, but it doesn't exist! Exiting."
 msgstr ""
 
-#: src/main.cpp:483
+#: src/main.cpp:492
 msgid "Couldn't set "
 msgstr ""
 
-#: src/main.cpp:484
+#: src/main.cpp:493
 msgid " video mode: "
 msgstr ""
 
-#: src/main.cpp:566
+#: src/main.cpp:575
 msgid "tmw"
 msgstr ""
 
-#: src/main.cpp:567
+#: src/main.cpp:576
 msgid "Options:"
 msgstr ""
 
-#: src/main.cpp:568
+#: src/main.cpp:577
 msgid "  -C --config-file : Configuration file to use"
 msgstr ""
 
-#: src/main.cpp:569
+#: src/main.cpp:578
 msgid "  -d --data        : Directory to load game data from"
 msgstr ""
 
-#: src/main.cpp:570
+#: src/main.cpp:579
 msgid "  -D --default     : Choose default character server and character"
 msgstr ""
 
-#: src/main.cpp:572
+#: src/main.cpp:581
 msgid "  -h --help        : Display this help"
 msgstr ""
 
-#: src/main.cpp:573
+#: src/main.cpp:582
 msgid "  -S --home-dir    : Directory to use as home directory"
 msgstr ""
 
-#: src/main.cpp:574
+#: src/main.cpp:583
 msgid "  -H --update-host : Use this update host"
 msgstr ""
 
-#: src/main.cpp:575
+#: src/main.cpp:584
 msgid "  -P --password    : Login with this password"
 msgstr ""
 
-#: src/main.cpp:576
+#: src/main.cpp:585
 msgid "  -c --character   : Login with this character"
 msgstr ""
 
-#: src/main.cpp:577
-msgid "  -p --port        : Login Server Port"
+#: src/main.cpp:586
+msgid "  -p --port        : Login server port"
 msgstr ""
 
-#: src/main.cpp:578
-msgid "  -s --server      : Login Server name or IP"
+#: src/main.cpp:587
+msgid "  -s --server      : Login server name or IP"
 msgstr ""
 
-#: src/main.cpp:579
+#: src/main.cpp:588
 msgid "  -u --skip-update : Skip the update downloads"
 msgstr ""
 
-#: src/main.cpp:580
+#: src/main.cpp:589
 msgid "  -U --username    : Login with this username"
 msgstr ""
 
-#: src/main.cpp:582
+#: src/main.cpp:591
 msgid "  -O --no-opengl   : Disable OpenGL for this session"
 msgstr ""
 
-#: src/main.cpp:584
+#: src/main.cpp:593
 msgid "  -v --version     : Display the version"
 msgstr ""
 
-#: src/main.cpp:589
-msgid "The Mana World "
+#: src/main.cpp:598
+#, c-format
+msgid "The Mana World %s"
 msgstr ""
 
-#: src/main.cpp:1512
+#: src/main.cpp:1527
 msgid "Connecting to map server..."
 msgstr ""
 
-#: src/main.cpp:1520
+#: src/main.cpp:1535
 msgid "Connecting to character server..."
 msgstr ""
 
-#: src/main.cpp:1528
+#: src/main.cpp:1543
 msgid "Connecting to account server..."
 msgstr ""
 
@@ -2158,24 +2191,25 @@ msgid "Kick succeeded!"
 msgstr ""
 
 #: src/net/ea/buysellhandler.cpp:111
-msgid "Nothing to sell"
+msgid "Nothing to sell."
 msgstr ""
 
 #: src/net/ea/buysellhandler.cpp:119
-msgid "Thanks for buying"
+msgid "Thanks for buying."
 msgstr ""
 
 #: src/net/ea/buysellhandler.cpp:126
-msgid "Unable to buy"
+msgid "Unable to buy."
 msgstr ""
 
 #: src/net/ea/buysellhandler.cpp:132
-msgid "Thanks for selling"
+msgid "Thanks for selling."
 msgstr ""
 
 #: src/net/ea/buysellhandler.cpp:134
-msgid "Unable to sell"
-msgstr ""
+#, fuzzy
+msgid "Unable to sell."
+msgstr "Unable to load selection.png"
 
 #: src/net/ea/charserverhandler.cpp:95
 msgid "Access denied"
@@ -2198,8 +2232,9 @@ msgid "Info"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:135
-msgid "Player deleted"
-msgstr ""
+#, fuzzy
+msgid "Character deleted."
+msgstr "אשר מחיקת שחקן"
 
 #: src/net/ea/charserverhandler.cpp:140
 msgid "Failed to delete character."
@@ -2235,17 +2270,17 @@ msgid "Luck:"
 msgstr ""
 
 #: src/net/ea/chathandler.cpp:78
-msgid "Whisper could not be sent, user is offline"
+msgid "Whisper could not be sent, user is offline."
 msgstr ""
 
-#: src/net/ea/chathandler.cpp:81
-msgid "Whisper could not be sent, ignored by user"
+#: src/net/ea/chathandler.cpp:82
+msgid "Whisper could not be sent, ignored by user."
 msgstr ""
 
-#: src/net/ea/chathandler.cpp:200 src/net/ea/chathandler.cpp:206
-#: src/net/ea/chathandler.cpp:211 src/net/ea/chathandler.cpp:216
-#: src/net/ea/chathandler.cpp:221 src/net/ea/chathandler.cpp:226
-#: src/net/ea/chathandler.cpp:231 src/net/ea/chathandler.cpp:236
+#: src/net/ea/chathandler.cpp:202 src/net/ea/chathandler.cpp:208
+#: src/net/ea/chathandler.cpp:213 src/net/ea/chathandler.cpp:218
+#: src/net/ea/chathandler.cpp:223 src/net/ea/chathandler.cpp:228
+#: src/net/ea/chathandler.cpp:233 src/net/ea/chathandler.cpp:238
 msgid "Channels are not supported!"
 msgstr ""
 
@@ -2258,34 +2293,34 @@ msgid "Unable to unequip."
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "עוצמה:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "זריזות:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "חיוניות:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "תבונה:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "מיומנות:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
-msgstr "התקפה %+d"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:118
 msgid "Authentication failed"
@@ -2447,55 +2482,74 @@ msgstr ""
 msgid "Experience sharing not possible."
 msgstr ""
 
-#: src/net/ea/inventoryhandler.cpp:184
-msgid "Unable to pick up item"
+#: src/net/ea/inventoryhandler.cpp:185
+msgid "Unable to pick up item."
 msgstr ""
 
-#: src/net/ea/inventoryhandler.cpp:194
+#. TRANSLATORS: Used as in "You picked up a ...", when
+#. picking up only one item.
+#: src/net/ea/inventoryhandler.cpp:195
+msgid "a"
+msgstr ""
+
+#: src/net/ea/inventoryhandler.cpp:199
 #, c-format
-msgid "You picked up %s [@@%d|%s@@]"
+msgid "You picked up %s [@@%d|%s@@]."
 msgstr ""
 
-#: src/net/ea/inventoryhandler.cpp:240
-msgid "Failed to use item"
+#: src/net/ea/inventoryhandler.cpp:245
+msgid "Failed to use item."
 msgstr ""
 
-#: src/net/ea/loginhandler.cpp:110
+#: src/net/ea/loginhandler.cpp:76
+msgid "Account was not found. Please re-login."
+msgstr ""
+
+#: src/net/ea/loginhandler.cpp:79 src/net/tmwserv/loginhandler.cpp:113
+msgid "Old password incorrect"
+msgstr ""
+
+#: src/net/ea/loginhandler.cpp:82
+msgid "New password too short"
+msgstr ""
+
+#: src/net/ea/loginhandler.cpp:85 src/net/ea/loginhandler.cpp:169
+#: src/net/tmwserv/loginhandler.cpp:89 src/net/tmwserv/loginhandler.cpp:119
+#: src/net/tmwserv/loginhandler.cpp:152 src/net/tmwserv/loginhandler.cpp:188
+#: src/net/tmwserv/loginhandler.cpp:220
+msgid "Unknown error"
+msgstr ""
+
+#: src/net/ea/loginhandler.cpp:142
 msgid "Unregistered ID"
 msgstr ""
 
-#: src/net/ea/loginhandler.cpp:113
+#: src/net/ea/loginhandler.cpp:145
 msgid "Wrong password"
 msgstr ""
 
-#: src/net/ea/loginhandler.cpp:116
+#: src/net/ea/loginhandler.cpp:148
 msgid "Account expired"
 msgstr ""
 
-#: src/net/ea/loginhandler.cpp:119
+#: src/net/ea/loginhandler.cpp:151
 msgid "Rejected from server"
 msgstr ""
 
-#: src/net/ea/loginhandler.cpp:123
+#: src/net/ea/loginhandler.cpp:155
 msgid ""
 "You have been permanently banned from the game. Please contact the GM Team."
 msgstr ""
 
-#: src/net/ea/loginhandler.cpp:127
+#: src/net/ea/loginhandler.cpp:159
 #, c-format
 msgid ""
 "You have been temporarily banned from the game until %s.\n"
-" Please contact the GM team via the forums."
+"Please contact the GM team via the forums."
 msgstr ""
 
-#: src/net/ea/loginhandler.cpp:134
+#: src/net/ea/loginhandler.cpp:166
 msgid "This user name is already taken"
-msgstr ""
-
-#: src/net/ea/loginhandler.cpp:137 src/net/tmwserv/loginhandler.cpp:89
-#: src/net/tmwserv/loginhandler.cpp:119 src/net/tmwserv/loginhandler.cpp:152
-#: src/net/tmwserv/loginhandler.cpp:188 src/net/tmwserv/loginhandler.cpp:220
-msgid "Unknown error"
 msgstr ""
 
 #: src/net/ea/partyhandler.cpp:77
@@ -2678,7 +2732,7 @@ msgid "You picked up "
 msgstr ""
 
 #: src/net/ea/playerhandler.cpp:413
-msgid "Equip arrows first"
+msgid "Equip arrows first."
 msgstr ""
 
 #: src/net/ea/skillhandler.cpp:139
@@ -2761,59 +2815,58 @@ msgstr ""
 msgid "Poison had no effect..."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:101
-msgid "Request for trade"
+#: src/net/ea/tradehandler.cpp:103 src/net/tmwserv/tradehandler.cpp:114
+msgid "Request for Trade"
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:103
-msgid " wants to trade with you, do you accept?"
+#: src/net/ea/tradehandler.cpp:104 src/net/tmwserv/tradehandler.cpp:115
+#, c-format
+msgid "%s wants to trade with you, do you accept?"
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:117
+#: src/net/ea/tradehandler.cpp:119
 msgid "Trading isn't possible. Trade partner is too far away."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:121
+#: src/net/ea/tradehandler.cpp:123
 msgid "Trading isn't possible. Character doesn't exist."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:125
+#: src/net/ea/tradehandler.cpp:127
 msgid "Trade cancelled due to an unknown reason."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:131
-msgid "Trade: You and "
+#: src/net/ea/tradehandler.cpp:132
+#, c-format
+msgid "Trade: You and %s"
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:137
-msgid "Trade with "
+#: src/net/ea/tradehandler.cpp:139
+#, c-format
+msgid "Trade with %s cancelled."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:138
-msgid " cancelled"
+#: src/net/ea/tradehandler.cpp:148
+msgid "Unhandled trade cancel packet."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:145
-msgid "Unhandled trade cancel packet"
-msgstr ""
-
-#: src/net/ea/tradehandler.cpp:195
+#: src/net/ea/tradehandler.cpp:198
 msgid "Failed adding item. Trade partner is over weighted."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:200
+#: src/net/ea/tradehandler.cpp:203
 msgid "Failed adding item. Trade partner has no free slot."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:204
+#: src/net/ea/tradehandler.cpp:207
 msgid "Failed adding item for unknown reason."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:217
+#: src/net/ea/tradehandler.cpp:220 src/net/tmwserv/tradehandler.cpp:147
 msgid "Trade canceled."
 msgstr ""
 
-#: src/net/ea/tradehandler.cpp:224
+#: src/net/ea/tradehandler.cpp:227 src/net/tmwserv/tradehandler.cpp:154
 msgid "Trade completed."
 msgstr ""
 
@@ -2833,14 +2886,36 @@ msgstr ""
 msgid "Willpower:"
 msgstr "כח רצון:"
 
-#: src/net/tmwserv/chathandler.cpp:157
-msgid "Topic: "
+#: src/net/tmwserv/chathandler.cpp:158 src/net/tmwserv/guildhandler.cpp:250
+#, c-format
+msgid "Topic: %s"
 msgstr ""
 
 #: src/net/tmwserv/generalhandler.cpp:87
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "כח רצון:"
+msgstr ""
+
+#: src/net/tmwserv/guildhandler.cpp:74
+msgid "Guild created."
+msgstr ""
+
+#: src/net/tmwserv/guildhandler.cpp:79
+msgid "Error creating guild."
+msgstr ""
+
+#: src/net/tmwserv/guildhandler.cpp:89
+#, fuzzy
+msgid "Invite sent."
+msgstr "הזמן משתמש"
+
+#: src/net/tmwserv/guildhandler.cpp:194
+msgid "Member was promoted successfully."
+msgstr ""
+
+#: src/net/tmwserv/guildhandler.cpp:199
+msgid "Failed to promote member."
+msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
@@ -2856,10 +2931,6 @@ msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:110
 msgid "New password incorrect"
-msgstr ""
-
-#: src/net/tmwserv/loginhandler.cpp:113
-msgid "Old password incorrect"
 msgstr ""
 
 #: src/net/tmwserv/loginhandler.cpp:116 src/net/tmwserv/loginhandler.cpp:146
@@ -2898,6 +2969,30 @@ msgstr ""
 msgid "Email address already exists"
 msgstr ""
 
+#: src/net/tmwserv/partyhandler.cpp:86
+msgid "Joined party."
+msgstr ""
+
+#: src/net/tmwserv/partyhandler.cpp:103
+#, c-format
+msgid "%s joined the party."
+msgstr ""
+
+#: src/net/tmwserv/tradehandler.cpp:93
+#, fuzzy
+msgid "Accepting incoming trade requests."
+msgstr "מאשר הצעות סחר נכנסות"
+
+#: src/net/tmwserv/tradehandler.cpp:95
+#, fuzzy
+msgid "Ignoring incoming trade requests."
+msgstr "מתעלם מהצעות סחר נכנסות"
+
+#: src/net/tmwserv/tradehandler.cpp:133
+#, c-format
+msgid "Trading with %s"
+msgstr ""
+
 #: src/resources/itemdb.cpp:52
 #, c-format
 msgid "Attack %+d"
@@ -2918,11 +3013,11 @@ msgstr "HP %+d"
 msgid "MP %+d"
 msgstr "MP %+d"
 
-#: src/resources/itemdb.cpp:112
-msgid "items.xml"
+#: src/resources/itemdb.cpp:113
+msgid "Unknown item"
 msgstr ""
 
-#: src/resources/itemdb.cpp:150
+#: src/resources/itemdb.cpp:156
 msgid "Unnamed"
 msgstr ""
 
@@ -2930,16 +3025,11 @@ msgstr ""
 msgid "unnamed"
 msgstr ""
 
-#: src/resources/monsterdb.cpp:49
-msgid "monsters.xml"
-msgstr ""
-
-#: src/resources/npcdb.cpp:53
-msgid "NPC Database: Error while loading npcs.xml!"
-msgstr ""
-
 #~ msgid "Scroll radius"
 #~ msgstr "תווך גלילה"
 
 #~ msgid "Scroll laziness"
 #~ msgstr "עצלנות גלילה"
+
+#~ msgid "Select Character"
+#~ msgstr "בחר שחקן"
