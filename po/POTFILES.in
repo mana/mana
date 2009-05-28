@@ -14,7 +14,6 @@ src/gui/charselectdialog.cpp
 src/gui/chat.cpp
 src/gui/confirmdialog.cpp
 src/gui/connection.cpp
-src/gui/emotepopup.cpp
 src/gui/equipmentwindow.cpp
 src/gui/guildwindow.cpp
 src/gui/help.cpp
@@ -82,6 +81,5 @@ src/net/tmwserv/generalhandler.cpp
 src/net/tmwserv/loginhandler.cpp
 src/resources/itemdb.cpp
 src/resources/monsterdb.cpp
-src/resources/npcdb.cpp
 src/utils/gettext.h
 src/utils/stringutils.h

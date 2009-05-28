@@ -343,7 +343,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                         mLinks[link].x1 = x;
                         mLinks[link].y1 = y;
                         mLinks[link].x2 = mLinks[link].x1 + size;
-                        mLinks[link].y2 = y + font->getHeight();
+                        mLinks[link].y2 = y + font->getHeight() - 1;
                         link++;
                         prevColor = selColor;
                         selColor = col;
@@ -386,7 +386,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
 
             // Auto wrap mode
             if (mMode == AUTO_WRAP &&
-                    (x + font->getWidth(part.c_str()) + 10) > getWidth())
+                    (x + font->getWidth(part) + 10) > getWidth())
             {
                 bool forced = false;
                 char const *hyphen = "~";
@@ -399,14 +399,14 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                 do
                 {
                     if (!forced)
-                        end = row.rfind(" ", end);
+                        end = row.rfind(' ', end);
 
                     // Check if we have to (stupidly) force-wrap
                     if (end == std::string::npos || end <= start)
                     {
                         forced = true;
                         end = row.size();
-                        x += hyphenWidth * 2; // Account for the wrap-notifier
+                        x += hyphenWidth; // Account for the wrap-notifier
                         continue;
                     }
 
@@ -416,7 +416,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                     end--; // And then to the last byte of the previous one
 
                     part = row.substr(start, end - start + 1);
-                } while ((x + font->getWidth(part.c_str()) + 10) > getWidth());
+                } while (end > start && (x + font->getWidth(part) + 10) > getWidth());
 
                 if (forced)
                 {
@@ -432,7 +432,7 @@ void BrowserBox::draw(gcn::Graphics *graphics)
                 wrappedLines++;
             }
             font->drawString(graphics, part, x, y);
-            x += font->getWidth(part.c_str());
+            x += font->getWidth(part);
         }
         y += font->getHeight();
         setHeight((mTextRows.size() + wrappedLines) * font->getHeight());
