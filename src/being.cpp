@@ -56,11 +56,6 @@
 #include <cassert>
 #include <cmath>
 
-namespace {
-const bool debug_movement = true;
-}
-
-
 #define BEING_EFFECTS_FILE "effects.xml"
 #define HAIR_FILE "hair.xml"
 
@@ -157,169 +152,66 @@ void Being::setDestination(Uint16 destX, Uint16 destY)
 #endif
 
 #ifdef TMWSERV_SUPPORT
-void Being::adjustCourse(int srcX, int srcY, int dstX, int dstY)
-{
-    if (debug_movement)
-        printf("%p adjustCourse(%d, %d, %d, %d)\n",
-                (void*) this, srcX, srcY, dstX, dstY);
-
-    mDest.x = dstX;
-    mDest.y = dstY;
-
-    // Find a path to the destination when it is at least a tile away
-    if (mMap && fabsf((mDest - mPos).length()) > 32) {
-        setPath(mMap->findPath((int) mPos.x / 32, (int) mPos.y / 32,
-                               dstX / 32, dstY / 32, getWalkMask()));
-    } else {
-        setPath(Path());
-    }
-
-    // TODO: Evaluate the implementation of this method
-    /*
-    if (mX / 32 == dstX / 32 && mY / 32 == dstY / 32)
-    {
-        // The being is already on the last tile of the path.
-        Path p;
-        p.push_back(Position(dstX, dstY));
-        setPath(p);
-        return;
-    }
-
-    Path p1;
-    int p1_size, p1_length;
-    Uint16 *p1_dist;
-    int onPath = -1;
-    if (srcX / 32 == dstX / 32 && srcY / 32 == dstY / 32)
-    {
-        p1_dist = new Uint16[1];
-        p1_size = 1;
-        p1_dist[0] = 0;
-        p1_length = 0;
-    }
-    else
-    {
-        p1 = mMap->findPath(srcX / 32, srcY / 32, dstX / 32, dstY / 32, getWalkMask());
-        if (p1.empty())
-        {
-            // No path, but don't teleport since it could be user input.
-            setPath(p1);
-            return;
-        }
-        p1_size = p1.size();
-        p1_dist = new Uint16[p1_size];
-        int j = 0;
-        // Remove last tile so that it can be replaced by the exact destination.
-        p1.pop_back();
-        for (Path::iterator i = p1.begin(), i_end = p1.end(); i != i_end; ++i)
-        {
-            // Get distance from source to tile i.
-            p1_dist[j] = mMap->getMetaTile(i->x, i->y)->Gcost;
-            // Check if the being is already walking on the path.
-            if (i->x == mX / 32 && i->y == mY / 32)
-            {
-                onPath = j;
-            }
-            // Do not set any offset for intermediate steps.
-            i->x = i->x * 32;
-            i->y = i->y * 32;
-            ++j;
-        }
-        p1_length = mMap->getMetaTile(dstX / 32, dstY / 32)->Gcost;
-        p1_dist[p1_size - 1] = p1_length;
-    }
-    p1.push_back(Position(dstX, dstY));
-
-    if (mX / 32 == srcX / 32 && mY / 32 == srcY / 32)
-    {
-        // The being is at the start of the path.
-        setPath(p1);
-        delete[] p1_dist;
-        return;
-    }
-
-    if (onPath >= 0)
-    {
-        // The being is already on the path, but it needs to be slowed down.
-        for (int j = onPath; j >= 0; --j)
-        {
-            p1.pop_front();
-        }
-        int r = p1_length - p1_dist[onPath];  // remaining length
-        assert(r > 0);
-        setPath(p1, p1_length * 1024 / r);
-        delete[] p1_dist;
-        return;
-    }
-
-    Path bestPath;
-    int bestRating = -1, bestStart = 0, bestLength = 0;
-    int j = 0;
-
-    for (Path::iterator i = p1.begin(), i_end = p1.end(); i != i_end; ++i)
-    {
-        // Look if it is worth passing by tile i.
-        Path p2 = mMap->findPath(mX / 32, mY / 32, i->x / 32, i->y / 32, getWalkMask());
-        if (!p2.empty())
-        {
-            int l1 = mMap->getMetaTile(i->x / 32, i->y / 32)->Gcost;
-            int l2 = p1_length - p1_dist[j];
-            int r = l1 + l2 / 2; // TODO: tune rating formula
-            assert(r > 0);
-            if (bestRating < 0 || r < bestRating)
-            {
-                bestPath.swap(p2);
-                bestRating = r;
-                bestStart = j;
-                bestLength = l1 + l2;
-            }
-        }
-        ++j;
-    }
-
-    if (bestRating < 0)
-    {
-        // Unable to reach the path? Still, don't teleport since it could be
-        // user input instead of server command.
-        setPath(p1);
-        delete[] p1_dist;
-        return;
-    }
-
-    bestPath.pop_back();
-    for (Path::iterator i = bestPath.begin(), i_end = bestPath.end(); i != i_end; ++i)
-    {
-        i->x = i->x * 32;
-        i->y = i->y * 32;
-    }
-
-    // Concatenate paths.
-    for (int j = bestStart; j > 0; --j)
-    {
-        p1.pop_front();
-    }
-    p1.splice(p1.begin(), bestPath);
-
-    assert(bestLength > 0);
-    setPath(p1, p1_length * 1024 / bestLength);
-    delete[] p1_dist;
-    */
-}
 
 void Being::adjustCourse(int srcX, int srcY)
 {
-    if (debug_movement)
-        printf("%p adjustCourse(%d, %d)\n", (void*) this, srcX, srcY);
-
-    if (!mPath.empty())
-        adjustCourse(srcX, srcY, mPath.back().x * 32, mPath.back().y * 32);
+    setDestination(srcX, srcY, mDest.x, mDest.y);
 }
 
-void Being::setDestination(int destX, int destY)
+void Being::setDestination(int dstX, int dstY)
 {
-    if (debug_movement)
-        printf("%p setDestination(%d, %d)\n", (void*) this, destX, destY);
+    setDestination(mPos.x, mPos.y, dstX, dstY);
+}
 
-    adjustCourse((int) mPos.x, (int) mPos.y, destX, destY);
+void Being::setDestination(int srcX, int srcY, int dstX, int dstY)
+{
+    mDest.x = dstX;
+    mDest.y = dstY;
+
+    Path thisPath;
+
+    if (mMap) 
+    {
+         thisPath = mMap->findPath((int) srcX / 32, (int) srcY / 32,
+                               dstX / 32, dstY / 32, getWalkMask());
+    } 
+    if (thisPath.empty())
+    {
+        setPath(Path());
+        return;
+    }
+
+    // FIXME: Look into making this code neater.
+    // Interpolate the offsets.  Also convert from tile based to pixel based
+
+    // Note: I divided the offsets by 32 then muilpied it back to get the top left
+    // Conner of where the tile is. (If you know a better way then please change it)
+
+    // Find the starting offset
+    int startX = srcX - ((srcX / 32) * 32 + 16);
+    int startY = srcY - ((srcY / 32) * 32 + 16);
+
+    // Find the ending offset
+    int endX = dstX - ((dstX / 32) * 32 + 16);
+    int endY = dstY - ((dstY / 32) * 32 + 16);
+
+    // Find the distance, and divide it by the number of steps
+    int changeX = (endX - startX) / thisPath.size();
+    int changeY = (endY - startY) / thisPath.size();
+
+    // Convert the map path to pixels over tiles
+    // And add interpolation between the starting and ending offsets
+    Path::iterator it = thisPath.begin();
+    int i = 0;
+    while(it != thisPath.end())
+    {
+       it->x = (it->x * 32 + 16) + startX + (changeX * i);
+       it->y = (it->y * 32 + 16) + startY + (changeY * i);
+       i++;
+       it++;
+    }
+
+    setPath(thisPath);
 }
 #endif  // TMWSERV_SUPPORT
 
@@ -332,7 +224,7 @@ void Being::setPath(const Path &path)
 {
     mPath = path;
 #ifdef TMWSERV_SUPPORT
-    std::cout << this << " New path: " << path << std::endl;
+//    std::cout << this << " New path: " << path << std::endl;
 #else
     if (mAction != WALK && mAction != DEAD)
     {
@@ -668,8 +560,8 @@ void Being::logic()
 
 #ifdef TMWSERV_SUPPORT
     const Vector dest = (mPath.empty()) ?
-        mDest : Vector(mPath.front().x * 32 + 16,
-                       mPath.front().y * 32 + 16);
+        mDest : Vector(mPath.front().x,
+                       mPath.front().y);
 
     Vector dir = dest - mPos;
     const float length = dir.length();

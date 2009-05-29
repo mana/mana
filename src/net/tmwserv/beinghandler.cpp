@@ -191,11 +191,6 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         int dy = 0;
         int speed = 0;
 
-        printf("handleBeingsMoveMessage for %p (%s | %s)\n",
-                (void*) being,
-                (flags & MOVING_POSITION) ? "pos" : "",
-                (flags & MOVING_DESTINATION) ? "dest" : "");
-
         if (flags & MOVING_POSITION)
         {
             Uint16 sx2, sy2;
@@ -235,7 +230,7 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 
         // If being is a player, and he only moves a little, its ok to be a little out of sync
         if (being->getType() == Being::PLAYER && abs(being->getPixelX() - dx) +
-                                                 abs(being->getPixelY() - dy) < 2 * 32 &&
+                                                 abs(being->getPixelY() - dy) < 16 &&
                                                  (dx != being->getDestination().x && dy != being->getDestination().y))
         {
             being->setDestination(being->getPixelX(),being->getPixelY());
@@ -258,7 +253,7 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         }
         else
         {
-            being->adjustCourse(sx, sy, dx, dy);
+            being->setDestination(sx, sy, dx, dy);
         }
     }
 }

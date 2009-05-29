@@ -71,7 +71,10 @@
 #include <cassert>
 
 #ifdef TMWSERV_SUPPORT
-const short walkingKeyboardDelay = 100;
+// This is shorter then it really needs to be for normal use
+// But if we ever wanted to increase player speed, having this lower
+// Won't hurt
+const short walkingKeyboardDelay = 40;
 #endif
 
 LocalPlayer *player_node = NULL;
@@ -437,9 +440,9 @@ void LocalPlayer::walk(unsigned char dir)
 
     int dScaler; // Distance to walk
 
-    // Checks our path up to 5 tiles, if a blocking tile is found
+    // Checks our path up to 2 tiles, if a blocking tile is found
     // We go to the last good tile, and break out of the loop
-    for (dScaler = 1; dScaler <= 10; dScaler++)
+    for (dScaler = 1; dScaler <= 2; dScaler++)
     {
         if ( (dx || dy) &&
              !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,

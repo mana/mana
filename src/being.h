@@ -183,12 +183,15 @@ class Being : public Sprite, public ConfigListener
 #ifdef EATHENA_SUPPORT
         virtual void setDestination(Uint16 destX, Uint16 destY);
 #else
-        void setDestination(int x, int y);
+        /**
+         * Creates a path for the being from sx,sy to ex,ey
+         */
+        void setDestination(int sx, int sy, int ex, int ey);
 
         /**
-         * Returns the destination for this being.
+         * Creates a path for the being from currect position to ex and ey
          */
-        const Vector &getDestination() const { return mDest; }
+        void setDestination(int ex, int ey);
 
         /**
          * Adjusts course to expected start point.
@@ -196,9 +199,9 @@ class Being : public Sprite, public ConfigListener
         void adjustCourse(int srcX, int srcY);
 
         /**
-         * Adjusts course to expected start and end points.
+         * Returns the destination for this being.
          */
-        void adjustCourse(int srcX, int srcY, int destX, int destY);
+        const Vector &getDestination() const { return mDest; }
 #endif
 
         /**

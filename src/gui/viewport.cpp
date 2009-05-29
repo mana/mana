@@ -202,9 +202,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
             mMap->drawCollision(graphics,
                                 (int) mPixelViewX,
                                 (int) mPixelViewY);
-#if EATHENA_SUPPORT
             drawDebugPath(graphics);
-#endif
         }
     }
 

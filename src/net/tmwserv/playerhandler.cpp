@@ -373,9 +373,6 @@ void PlayerHandler::setDestination(int x, int y, int /* direction */)
     msg.writeInt16(x);
     msg.writeInt16(y);
     Net::GameServer::connection->send(msg);
-
-    // Debugging fire burst
-    effectManager->trigger(15, x, y);
 }
 
 void PlayerHandler::changeAction(Being::Action action)
