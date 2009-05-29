@@ -25,6 +25,7 @@
 #include "channel.h"
 #include "game.h"
 #include "localplayer.h"
+#include "playerrelations.h"
 
 #include "gui/widgets/channeltab.h"
 #include "gui/widgets/chattab.h"
@@ -75,6 +76,14 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     else if (type == "query" || type == "q")
     {
         handleQuery(args, tab);
+    }
+    else if (type == "ignore")
+    {
+        handleIgnore(args, tab);
+    }
+    else if (type == "unignore")
+    {
+        handleUnignore(args, tab);
     }
     else if (type == "join")
     {
@@ -154,6 +163,9 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
         tab->chatLog(_("/query > Makes a tab for private messages with another user"));
         tab->chatLog(_("/q > Alias of query"));
 
+        tab->chatLog(_("/ignore > ignore a player"));
+        tab->chatLog(_("/unignore > stop ignoring a player"));
+
         tab->chatLog(_("/list > Display all public channels"));
         tab->chatLog(_("/join > Join or create a channel"));
 
@@ -191,6 +203,12 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
     {
         tab->chatLog(_("Command: /clear"));
         tab->chatLog(_("This command clears the chat log of previous chat."));
+    }
+    else if (args == "ignore")
+    {
+        tab->chatLog(_("Command: /ignore <player>"));
+        tab->chatLog(_("This command ignores the given player reguardless of "
+                       "current relations."));
     }
     else if (args == "join")
     {
@@ -256,6 +274,12 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
                   "toggle off."));
         tab->chatLog(_("Command: /toggle"));
         tab->chatLog(_("This command displays the return toggle status."));
+    }
+    else if (args == "unignore")
+    {
+        tab->chatLog(_("Command: /unignore <player>"));
+        tab->chatLog(_("This command stops ignoring the given player if they "
+                       "are being ignored"));
     }
     else if (args == "where")
     {
@@ -415,4 +439,48 @@ void CommandHandler::handleToggle(const std::string &args, ChatTab *tab)
 void CommandHandler::handlePresent(const std::string &args, ChatTab *tab)
 {
     chatWindow->doPresent();
+}
+
+void CommandHandler::handleIgnore(const std::string &args, ChatTab *tab)
+{
+    if (args.empty())
+    {
+        tab->chatLog(_("Please specify a name."), BY_SERVER);
+        return;
+    }
+
+    if (player_relations.getRelation(args) == PlayerRelation::IGNORED)
+    {
+        tab->chatLog(_("Player already ignored!"), BY_SERVER);
+        return;
+    }
+    else
+        player_relations.setRelation(args, PlayerRelation::IGNORED);
+
+    if (player_relations.getRelation(args) == PlayerRelation::IGNORED)
+        tab->chatLog(_("Player successfully ignored!"), BY_SERVER);
+    else
+        tab->chatLog(_("Player could not be ignored!"), BY_SERVER);
+}
+
+void CommandHandler::handleUnignore(const std::string &args, ChatTab *tab)
+{
+    if (args.empty())
+    {
+        tab->chatLog(_("Please specify a name."), BY_SERVER);
+        return;
+    }
+
+    if (player_relations.getRelation(args) == PlayerRelation::IGNORED)
+        player_relations.removePlayer(args);
+    else
+    {
+        tab->chatLog(_("Player wasn't ignored!"), BY_SERVER);
+        return;
+    }
+
+    if (player_relations.getRelation(args) != PlayerRelation::IGNORED)
+        tab->chatLog(_("Player no longer ignored!"), BY_SERVER);
+    else
+        tab->chatLog(_("Player could not be unignored!"), BY_SERVER);
 }

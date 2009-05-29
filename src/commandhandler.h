@@ -54,7 +54,10 @@ class CommandHandler
 
         static char parseBoolean(const std::string &value);
 
-    private:
+    protected:
+        friend class ChatTab;
+        friend class WhisperTab;
+
         /**
          * Handle an announce command.
          */
@@ -124,6 +127,16 @@ class CommandHandler
          * Handle a present command.
          */
         void handlePresent(const std::string &args, ChatTab *tab);
+
+        /**
+         * Handle an ignore command.
+         */
+        void handleIgnore(const std::string &args, ChatTab *tab);
+
+        /**
+         * Handle an unignore command.
+         */
+        void handleUnignore(const std::string &args, ChatTab *tab);
 };
 
 extern CommandHandler *commandHandler;

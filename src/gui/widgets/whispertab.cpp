@@ -21,6 +21,7 @@
 
 #include "whispertab.h"
 
+#include "commandhandler.h"
 #include "localplayer.h"
 
 #include "gui/palette.h"
@@ -65,6 +66,8 @@ void WhisperTab::handleCommand(const std::string &msg)
 
 void WhisperTab::showHelp()
 {
+    chatLog(_("/ignore > Ignore the other player"));
+    chatLog(_("/unignore > Stop ignoring the other player"));
     chatLog(_("/close > Close the whisper tab"));
 }
 
@@ -78,12 +81,32 @@ bool WhisperTab::handleCommand(const std::string &type,
             chatLog(_("Command: /close"));
             chatLog(_("This command closes the current whisper tab."));
         }
+        else if (args == "ignore")
+        {
+            chatLog(_("Command: /ignore"));
+            chatLog(_("This command ignores the other player reguardless of "
+                      "current relations."));
+        }
+        else if (args == "unignore")
+        {
+            chatLog(_("Command: /unignore <player>"));
+            chatLog(_("This command stops ignoring the other player if they "
+                      "are being ignored"));
+        }
         else
             return false;
     }
     else if (type == "close")
     {
         delete this;
+    }
+    else if (type == "ignore")
+    {
+        commandHandler->handleIgnore(mNick, this);
+    }
+    else if (type == "unignore")
+    {
+        commandHandler->handleUnignore(mNick, this);
     }
     else
         return false;
