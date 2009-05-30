@@ -313,25 +313,24 @@ static void setUpdatesDir()
 static void initHomeDir(const Options &options)
 {
     homeDir = options.homeDir;
-    
+
     if (homeDir.empty())
     {
-	    homeDir = std::string(PHYSFS_getUserDir()) +
-            "/." +
-	        branding.getValue("appShort", "tmw");
+#ifdef __APPLE__
+        // Use Application Directory instead of .tmw
+        homeDir = std::string(PHYSFS_getUserDir()) +
+            "/Library/Application Support/" +
+            branding.getValue("appName", "The Mana World");
+#else
+        homeDir = std::string(PHYSFS_getUserDir()) +
+            "/." + branding.getValue("appShort", "tmw");
+#endif
     }
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
-#elif defined __APPLE__
-    // Use Application Directory instead of .tmw
-    homeDir = std::string(PHYSFS_getUserDir()) +
-        "/Library/Application Support/" +
-        branding.getValue("appName", "The Mana World");
-    if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
-            (errno != EEXIST))
 #else
-    // Checking if /home/user/.tmw folder exists.
+    // Create home directory if it doesn't exist already
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
 #endif
