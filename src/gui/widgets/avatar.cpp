@@ -59,9 +59,9 @@ Avatar::Avatar():
     mLabel->adjustSize();
 
     mStatus = new Icon(avatarStatusOffline);
-    mStatus->setSize(12, 12);
+    mStatus->setSize(10, 10);
 
-    add(mStatus, 1, (mLabel->getHeight() - 12) / 2);
+    add(mStatus, 4, (mLabel->getHeight() - 10) / 2);
     add(mLabel, 16, 0);
 
     setSize(250, mLabel->getHeight());
