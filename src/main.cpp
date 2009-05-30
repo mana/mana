@@ -316,22 +316,21 @@ static void initHomeDir(const Options &options)
 
     if (homeDir.empty())
     {
-	    homeDir = std::string(PHYSFS_getUserDir()) +
-            "/." +
-	        branding.getValue("appShort", "tmw");
+#ifdef __APPLE__
+        // Use Application Directory instead of .tmw
+        homeDir = std::string(PHYSFS_getUserDir()) +
+            "/Library/Application Support/" +
+            branding.getValue("appName", "The Mana World");
+#else
+        homeDir = std::string(PHYSFS_getUserDir()) +
+            "/." + branding.getValue("appShort", "tmw");
+#endif
     }
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
-#elif defined __APPLE__
-    // Use Application Directory instead of .tmw
-    homeDir = std::string(PHYSFS_getUserDir()) +
-        "/Library/Application Support/" +
-        branding.getValue("appName", "The Mana World");
-    if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
-            (errno != EEXIST))
 #else
-    // Checking if /home/user/.tmw folder exists.
+    // Create home directory if it doesn't exist already
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
 #endif
@@ -415,7 +414,8 @@ static void initEngine(const Options &options)
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-    SDL_WM_SetCaption(branding.getValue("appName", "The Mana World").c_str(), NULL);
+    SDL_WM_SetCaption(branding.getValue("appName", "The Mana World").c_str(),
+                      NULL);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -595,7 +595,7 @@ static void printHelp()
 
 static void printVersion()
 {
-    std::cout << strprintf(_("The Mana World %s"), FULL_VERSION) << std::endl;
+    std::cout << strprintf("The Mana World %s", FULL_VERSION) << std::endl;
 }
 
 static void parseOptions(int argc, char *argv[], Options &options)
