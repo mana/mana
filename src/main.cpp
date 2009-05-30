@@ -415,7 +415,8 @@ static void initEngine(const Options &options)
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-    SDL_WM_SetCaption(branding.getValue("appName", "The Mana World").c_str(), NULL);
+    SDL_WM_SetCaption(branding.getValue("appName", "The Mana World").c_str(),
+                      NULL);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -595,7 +596,7 @@ static void printHelp()
 
 static void printVersion()
 {
-    std::cout << strprintf(_("The Mana World %s"), FULL_VERSION) << std::endl;
+    std::cout << strprintf("The Mana World %s", FULL_VERSION) << std::endl;
 }
 
 static void parseOptions(int argc, char *argv[], Options &options)
