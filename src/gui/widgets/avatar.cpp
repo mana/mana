@@ -62,7 +62,7 @@ Avatar::Avatar():
     mStatus->setSize(10, 10);
 
     add(mStatus, 4, (mLabel->getHeight() - 10) / 2);
-    add(mLabel, 16, 0);
+    add(mLabel, 18, 0);
 
     setSize(250, mLabel->getHeight());
 
