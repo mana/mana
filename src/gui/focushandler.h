@@ -54,7 +54,20 @@ class FocusHandler : public gcn::FocusHandler
          */
         void remove(gcn::Widget *widget);
 
+        /**
+         * Overloaded to allow windows to move to the top when one of their
+         * widgets is tabbed to when tabbing through focusable elements.
+         */
+        void tabNext();
+        void tabPrevious();
+
     private:
+        /**
+         * Checks to see if the widget tabbed to is in a window, and if it is,
+         * it requests the window be moved to the top.
+         */
+        void checkForWindow();
+
         /**
          * Stack of widgets that have requested modal forcus.
          */
