@@ -178,7 +178,7 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     place(4, 0, mCancelButton);
     place(5, 0, mSelectButton);
 
-    reflowLayout(250, 0);
+    reflowLayout(270, 0);
 #endif
 
     center();
