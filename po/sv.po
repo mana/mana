@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-28 22:55+0200\n"
-"PO-Revision-Date: 2009-05-22 15:56+0000\n"
+"POT-Creation-Date: 2009-06-02 20:41+0200\n"
+"PO-Revision-Date: 2009-06-02 14:28+0000\n"
 "Last-Translator: Kess Vargavind <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-28 20:32+0000\n"
+"X-Launchpad-Export-Date: 2009-06-02 17:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
@@ -96,9 +96,8 @@ msgid "/announce > Global announcement (GM only)"
 msgstr "/announce > Globalt meddelande (endast för GM)"
 
 #: src/commandhandler.cpp:170
-#, fuzzy
 msgid "For more information, type /help <command>."
-msgstr "För mer information skriv /help <kommando>"
+msgstr "Skriv /help <kommando> för mer information."
 
 #: src/commandhandler.cpp:174
 msgid "Command: /help"
@@ -291,18 +290,18 @@ msgid "Cannot send empty whispers!"
 msgstr "Behöver en text att viska!"
 
 #: src/commandhandler.cpp:348
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
 "you."
 msgstr ""
-"Kan inte skapa en viskningsflik för ”%s”! Antingen finns fliken redan eller "
-"så försöker du med dig själv."
+"Kan inte skapa viskningsflik för smeknamnet \"%s\"! Antingen existerar "
+"fliken redan eller så försöker du viska till dig själv."
 
 #: src/commandhandler.cpp:362
 #, c-format
 msgid "Requesting to join channel %s."
-msgstr ""
+msgstr "Skickar förfrågan att gå in i chattkanalen %s."
 
 #: src/commandhandler.cpp:394
 msgid "Return toggles chat."
@@ -326,14 +325,13 @@ msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 msgstr "Alternativ till /%s är ”yes”, ”no”, ”true”, ”false”, ”1”, ”0”."
 
 #: src/engine.cpp:88
-#, fuzzy
 msgid "Could not load map"
-msgstr "Kan inte ansluta till gruppen!"
+msgstr "Kunde inte ladda karta"
 
 #: src/engine.cpp:89
-#, fuzzy, c-format
+#, c-format
 msgid "Error while loading %s"
-msgstr "NPC-databasen: Fel under inläsningen av npcs.xml!"
+msgstr "Kunde inte ladda %s"
 
 #: src/game.cpp:237
 msgid "General"
@@ -706,7 +704,7 @@ msgstr "Välj antal att lagra."
 
 #: src/gui/itemamount.cpp:132
 msgid "Select amount of items to retrieve."
-msgstr "Vaälja antal att hämta."
+msgstr "Välj antal att hämta."
 
 #: src/gui/itemamount.cpp:135
 msgid "Select amount of items to split."
@@ -779,9 +777,8 @@ msgid "Reset"
 msgstr "Återställ"
 
 #: src/gui/npcpostdialog.cpp:44
-#, fuzzy
 msgid "To:"
-msgstr "Ämne: "
+msgstr "Till:"
 
 #: src/gui/npcpostdialog.cpp:51
 msgid "Send"
@@ -790,6 +787,8 @@ msgstr "Skicka"
 #: src/gui/npcpostdialog.cpp:85
 msgid "Failed to send as sender or letter invalid."
 msgstr ""
+"Kunde inte skicka brevet eftersom antingen avsändaren eller brevet självt är "
+"ogiltigt."
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:142
 msgid "Text"
@@ -854,7 +853,7 @@ msgstr "Server"
 
 #: src/gui/palette.cpp:100
 msgid "Logger"
-msgstr ""
+msgstr "Loggning"
 
 #: src/gui/palette.cpp:101
 msgid "Hyperlink"
@@ -991,31 +990,31 @@ msgstr "Grupp (%s)"
 
 #: src/gui/partywindow.cpp:174
 msgid "Received party request, but one already exists."
-msgstr ""
+msgstr "Mottog en gruppinbjudan, men du har redan en annan inbjudan."
 
 #: src/gui/partywindow.cpp:182
-#, fuzzy, c-format
+#, c-format
 msgid "%s has invited you to join their party."
-msgstr "%s har lämnat din grupp."
+msgstr "%s har bjudit in dig till sin grupp."
 
 #: src/gui/partywindow.cpp:185
-#, fuzzy, c-format
+#, c-format
 msgid "%s has invited you to join the %s party."
-msgstr "%s har lämnat din grupp."
+msgstr "%s har bjudit in dig till %ss grupp."
 
 #: src/gui/partywindow.cpp:191
 msgid "Accept Party Invite"
-msgstr ""
+msgstr "Acceptera gruppinbjudan"
 
 #: src/gui/partywindow.cpp:204
 #, c-format
 msgid "Accepted invite from %s."
-msgstr ""
+msgstr "Accepterade injudan från %s."
 
 #: src/gui/partywindow.cpp:211
-#, fuzzy, c-format
+#, c-format
 msgid "Rejected invite from %s."
-msgstr "Nekad tillträde till servern"
+msgstr "Avslog inbjudan från %s."
 
 #: src/gui/popupmenu.cpp:77
 msgid "@@name|Add name to chat@@"
@@ -1486,15 +1485,15 @@ msgstr "Kunde inte byta till "
 
 #: src/gui/setup_video.cpp:357
 msgid "windowed"
-msgstr "som fönster"
+msgstr "fönster"
 
 #: src/gui/setup_video.cpp:357
 msgid "fullscreen"
-msgstr "helskärm"
+msgstr "helskärms"
 
 #: src/gui/setup_video.cpp:358
 msgid "mode and restoration of old mode also failed!"
-msgstr ""
+msgstr "läge och återgång till det gamla läget misslyckades också!"
 
 #: src/gui/setup_video.cpp:367
 msgid "Switching to full screen"
@@ -1710,9 +1709,8 @@ msgstr ""
 "sak flera gånger."
 
 #: src/gui/trade.cpp:311
-#, fuzzy
 msgid "You don't have enough money."
-msgstr "Du har inte tillräckligt med pengar"
+msgstr "Du har inte tillräckligt med pengar."
 
 #: src/gui/updatewindow.cpp:91
 msgid "Updating..."
@@ -1897,7 +1895,7 @@ msgstr "Välj & attackera"
 
 #: src/keyboardconfig.cpp:47
 msgid "Smilie"
-msgstr ""
+msgstr "Smiley"
 
 #: src/keyboardconfig.cpp:48
 msgid "Talk"
@@ -1951,7 +1949,7 @@ msgstr "Gå till muspekaren"
 #: src/keyboardconfig.cpp:69 src/keyboardconfig.cpp:70
 #, c-format
 msgid "Item Shortcut %d"
-msgstr ""
+msgstr "Tangent för snabbåtkomst %d"
 
 #: src/keyboardconfig.cpp:71
 msgid "Help Window"
@@ -1966,7 +1964,6 @@ msgid "Inventory Window"
 msgstr "Inventorium"
 
 #: src/keyboardconfig.cpp:74
-#, fuzzy
 msgid "Equipment Window"
 msgstr "Utrustningsfönster"
 
@@ -1984,7 +1981,7 @@ msgstr "Chattfönster"
 
 #: src/keyboardconfig.cpp:78
 msgid "Item Shortcut Window"
-msgstr ""
+msgstr "Snabbåtkomstfönster"
 
 #: src/keyboardconfig.cpp:79
 msgid "Setup Window"
@@ -2000,7 +1997,7 @@ msgstr "Gruppfönster"
 
 #: src/keyboardconfig.cpp:82
 msgid "Emote Shortcut Window"
-msgstr ""
+msgstr "Smileyfönster"
 
 #: src/keyboardconfig.cpp:83 src/keyboardconfig.cpp:84
 #: src/keyboardconfig.cpp:85 src/keyboardconfig.cpp:86
@@ -2010,7 +2007,7 @@ msgstr ""
 #: src/keyboardconfig.cpp:93 src/keyboardconfig.cpp:94
 #, c-format
 msgid "Emote Shortcut %d"
-msgstr ""
+msgstr "Tangent för smiley %d"
 
 #: src/keyboardconfig.cpp:95
 msgid "Toggle Chat"
@@ -2090,7 +2087,7 @@ msgstr "Kastvapen"
 
 #: src/localplayer.cpp:772
 msgid "Craft"
-msgstr ""
+msgstr "Hantverk"
 
 #: src/localplayer.cpp:773
 msgid "Unknown Skill"
@@ -2104,7 +2101,7 @@ msgstr "Ogiltig uppdateringsvärd: "
 msgid "Error creating updates directory!"
 msgstr "Kunde inte skapa katalog för uppdateringar!"
 
-#: src/main.cpp:340
+#: src/main.cpp:339
 msgid " can't be created, but it doesn't exist! Exiting."
 msgstr " kan inte skapas och existerar inte! Avslutar."
 
@@ -2157,16 +2154,12 @@ msgid "  -c --character   : Login with this character"
 msgstr "  -c --character   : Logga in med den här karaktären"
 
 #: src/main.cpp:586
-#, fuzzy
 msgid "  -p --port        : Login server port"
-msgstr "  -p --port        : Ange porten att logga in på servern med"
+msgstr "  -p --port        : Port på inloggningsserver"
 
 #: src/main.cpp:587
-#, fuzzy
 msgid "  -s --server      : Login server name or IP"
-msgstr ""
-"  -s --server      : Ange namnet eller IP-adressen till servern att logga in "
-"på"
+msgstr "  -s --server      : Namn eller IP-adress för inloggningsserver"
 
 #: src/main.cpp:588
 msgid "  -u --skip-update : Skip the update downloads"
@@ -2183,11 +2176,6 @@ msgstr "  -O --no-opengl   : Använd inte OpenGL den här sessionen"
 #: src/main.cpp:593
 msgid "  -v --version     : Display the version"
 msgstr "  -v --version     : Visa aktuell version"
-
-#: src/main.cpp:598
-#, fuzzy, c-format
-msgid "The Mana World %s"
-msgstr "Manavärlden "
 
 #: src/main.cpp:1527
 msgid "Connecting to map server..."
@@ -2210,27 +2198,22 @@ msgid "Kick succeeded!"
 msgstr "Klarade av att sparka ut!"
 
 #: src/net/ea/buysellhandler.cpp:111
-#, fuzzy
 msgid "Nothing to sell."
 msgstr "Inget att sälja."
 
 #: src/net/ea/buysellhandler.cpp:119
-#, fuzzy
 msgid "Thanks for buying."
 msgstr "Tack för köpet."
 
 #: src/net/ea/buysellhandler.cpp:126
-#, fuzzy
 msgid "Unable to buy."
 msgstr "Kan inte köpa."
 
 #: src/net/ea/buysellhandler.cpp:132
-#, fuzzy
 msgid "Thanks for selling."
-msgstr "Tack för försäljningen."
+msgstr "Tack för en god affär."
 
 #: src/net/ea/buysellhandler.cpp:134
-#, fuzzy
 msgid "Unable to sell."
 msgstr "Kan inte sälja."
 
@@ -2255,9 +2238,8 @@ msgid "Info"
 msgstr "Information"
 
 #: src/net/ea/charserverhandler.cpp:135
-#, fuzzy
 msgid "Character deleted."
-msgstr "Bekräfta borttagning av karaktär"
+msgstr "Karaktär borttagen."
 
 #: src/net/ea/charserverhandler.cpp:140
 msgid "Failed to delete character."
@@ -2293,14 +2275,12 @@ msgid "Luck:"
 msgstr "Tur:"
 
 #: src/net/ea/chathandler.cpp:78
-#, fuzzy
 msgid "Whisper could not be sent, user is offline."
 msgstr "Kunde inte viska eftersom spelaren inte är inloggad."
 
 #: src/net/ea/chathandler.cpp:82
-#, fuzzy
 msgid "Whisper could not be sent, ignored by user."
-msgstr "Kunde inte viska, ignorerad av spelaren."
+msgstr "Kunde inte viska eftersom ignorerad av spelaren."
 
 #: src/net/ea/chathandler.cpp:202 src/net/ea/chathandler.cpp:208
 #: src/net/ea/chathandler.cpp:213 src/net/ea/chathandler.cpp:218
@@ -2365,7 +2345,7 @@ msgstr "Det här kontot är redan inloggat"
 
 #: src/net/ea/generalhandler.cpp:131
 msgid "Speed hack detected"
-msgstr ""
+msgstr "Ett hastighetshack har upptäckts"
 
 #: src/net/ea/generalhandler.cpp:134
 msgid "Duplicated login"
@@ -2516,39 +2496,35 @@ msgid "Experience sharing not possible."
 msgstr "Fördelning av erfarenhet ej möjlig."
 
 #: src/net/ea/inventoryhandler.cpp:185
-#, fuzzy
 msgid "Unable to pick up item."
-msgstr "Kan inte plocka upp"
+msgstr "Kunde inte plocka upp."
 
 #. TRANSLATORS: Used as in "You picked up a ...", when
 #. picking up only one item.
 #: src/net/ea/inventoryhandler.cpp:195
 msgid "a"
-msgstr ""
+msgstr "en"
 
 #: src/net/ea/inventoryhandler.cpp:199
-#, fuzzy, c-format
+#, c-format
 msgid "You picked up %s [@@%d|%s@@]."
-msgstr "Du plockade upp %s [@@%d|%s@@]"
+msgstr "Du plockade upp %s [@@%d|%s@@]."
 
 #: src/net/ea/inventoryhandler.cpp:245
-#, fuzzy
 msgid "Failed to use item."
-msgstr "Kan inte använda"
+msgstr "Kunde inte använda föremål."
 
 #: src/net/ea/loginhandler.cpp:76
-#, fuzzy
 msgid "Account was not found. Please re-login."
-msgstr "Kontot är inte anslutet. Var god logga in först."
+msgstr "Kontot kunde inte hittas. Var vänlig att logga in på nytt."
 
 #: src/net/ea/loginhandler.cpp:79 src/net/tmwserv/loginhandler.cpp:113
 msgid "Old password incorrect"
 msgstr "Det gamla lösenordet är fel"
 
 #: src/net/ea/loginhandler.cpp:82
-#, fuzzy
 msgid "New password too short"
-msgstr "Det nya lösenordet stämmer inte överens"
+msgstr "Det nya lösenordet är för kort"
 
 #: src/net/ea/loginhandler.cpp:85 src/net/ea/loginhandler.cpp:169
 #: src/net/tmwserv/loginhandler.cpp:89 src/net/tmwserv/loginhandler.cpp:119
@@ -2567,7 +2543,7 @@ msgstr "Fel lösenord"
 
 #: src/net/ea/loginhandler.cpp:148
 msgid "Account expired"
-msgstr ""
+msgstr "Konto raderat"
 
 #: src/net/ea/loginhandler.cpp:151
 msgid "Rejected from server"
@@ -2579,13 +2555,13 @@ msgid ""
 msgstr "Du har permanent blivit bannlyst från spelet. Kontakta en GM."
 
 #: src/net/ea/loginhandler.cpp:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You have been temporarily banned from the game until %s.\n"
 "Please contact the GM team via the forums."
 msgstr ""
-"Du har tillfälligtvis blivt bannlyst från spelet till %s.\n"
-" Kontakta en GM via forumet."
+"Du har tillfälligt blivit utkastat från spelet till %s.\n"
+"Var vänlig kontakta en GM i forumet."
 
 #: src/net/ea/loginhandler.cpp:166
 msgid "This user name is already taken"
@@ -2617,7 +2593,7 @@ msgstr "%s är nu en medlem i din grupp."
 #: src/net/ea/partyhandler.cpp:127
 #, c-format
 msgid "Unknown invite response for %s."
-msgstr ""
+msgstr "Okänt injudningssvar från %s."
 
 #: src/net/ea/partyhandler.cpp:234
 msgid "You have left the party."
@@ -2733,11 +2709,12 @@ msgstr "Du är en steling."
 
 #: src/net/ea/playerhandler.cpp:125
 msgid "Bereft of life, you rest in peace."
-msgstr "Berövad på ditt liv, vilar du i frid."
+msgstr "Berövad på ditt liv vilar du numera i frid."
 
 #: src/net/ea/playerhandler.cpp:126
 msgid "If you weren't so animated, you'd be pushing up the daisies."
 msgstr ""
+"Om du inte vore så livfull skulle du vara blomnäring vid det här laget."
 
 #: src/net/ea/playerhandler.cpp:127
 msgid "Your metabolic processes are now history."
@@ -2755,7 +2732,7 @@ msgstr "Du har kastat in handduken."
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
 "bleedin' choir invisibile."
-msgstr ""
+msgstr "Du tog ner skylten, kilade runt hörnet och bet i gräset."
 
 #: src/net/ea/playerhandler.cpp:132
 msgid "You are an ex-player."
@@ -2763,7 +2740,7 @@ msgstr "Du är en före detta spelare."
 
 #: src/net/ea/playerhandler.cpp:133
 msgid "You're pining for the fjords."
-msgstr ""
+msgstr "Du har gått till de sälla jaktmarkerna."
 
 #: src/net/ea/playerhandler.cpp:246 src/net/ea/playerhandler.cpp:270
 msgid "Message"
@@ -2779,7 +2756,6 @@ msgid "You picked up "
 msgstr "Du plockade upp "
 
 #: src/net/ea/playerhandler.cpp:413
-#, fuzzy
 msgid "Equip arrows first."
 msgstr "Utrusta dig med pilar först."
 
@@ -2864,14 +2840,13 @@ msgid "Poison had no effect..."
 msgstr "Giftet tog inte..."
 
 #: src/net/ea/tradehandler.cpp:103 src/net/tmwserv/tradehandler.cpp:114
-#, fuzzy
 msgid "Request for Trade"
-msgstr "Erbjudande till byteshandel"
+msgstr "Förfrågan om byteshandel"
 
 #: src/net/ea/tradehandler.cpp:104 src/net/tmwserv/tradehandler.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "%s wants to trade with you, do you accept?"
-msgstr " vill handla med dig, är det okej?"
+msgstr "%s vill byteshandla med dig, accepterar du?"
 
 #: src/net/ea/tradehandler.cpp:119
 msgid "Trading isn't possible. Trade partner is too far away."
@@ -2886,18 +2861,18 @@ msgid "Trade cancelled due to an unknown reason."
 msgstr "Byteshandel avbröts av okänd anledning."
 
 #: src/net/ea/tradehandler.cpp:132
-#, fuzzy, c-format
+#, c-format
 msgid "Trade: You and %s"
-msgstr "Byteshandel mellan dig och "
+msgstr "Byteshandel: du och %s"
 
 #: src/net/ea/tradehandler.cpp:139
-#, fuzzy, c-format
+#, c-format
 msgid "Trade with %s cancelled."
-msgstr "Byteshandel avbruten."
+msgstr "Byteshandel med %s avbruten."
 
 #: src/net/ea/tradehandler.cpp:148
 msgid "Unhandled trade cancel packet."
-msgstr ""
+msgstr "Ett okänt paket för att avbryta byteshandeln påträffades."
 
 #: src/net/ea/tradehandler.cpp:198
 msgid "Failed adding item. Trade partner is over weighted."
@@ -2936,9 +2911,9 @@ msgid "Willpower:"
 msgstr "Viljestyrka:"
 
 #: src/net/tmwserv/chathandler.cpp:158 src/net/tmwserv/guildhandler.cpp:250
-#, fuzzy, c-format
+#, c-format
 msgid "Topic: %s"
-msgstr "Ämne: "
+msgstr "Ämne: %s"
 
 #: src/net/tmwserv/generalhandler.cpp:87
 #, c-format
@@ -2947,26 +2922,23 @@ msgstr "Viljekraft %+d"
 
 #: src/net/tmwserv/guildhandler.cpp:74
 msgid "Guild created."
-msgstr ""
+msgstr "Gille skapat."
 
 #: src/net/tmwserv/guildhandler.cpp:79
-#, fuzzy
 msgid "Error creating guild."
-msgstr "Kunde inte skapa katalog för uppdateringar!"
+msgstr "Kunde inte skapa gille."
 
 #: src/net/tmwserv/guildhandler.cpp:89
-#, fuzzy
 msgid "Invite sent."
-msgstr "Bjud in spelare"
+msgstr "Inbjudan skickad."
 
 #: src/net/tmwserv/guildhandler.cpp:194
 msgid "Member was promoted successfully."
-msgstr ""
+msgstr "Medlem befordrad."
 
 #: src/net/tmwserv/guildhandler.cpp:199
-#, fuzzy
 msgid "Failed to promote member."
-msgstr "Kan inte använda"
+msgstr "Kunde inte befordra medlem."
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
@@ -3022,27 +2994,25 @@ msgstr "Epostadressen finns redan"
 
 #: src/net/tmwserv/partyhandler.cpp:86
 msgid "Joined party."
-msgstr ""
+msgstr "Anslöt dig till grupp."
 
 #: src/net/tmwserv/partyhandler.cpp:103
 #, c-format
 msgid "%s joined the party."
-msgstr ""
+msgstr "%s anslöt sig till gruppen."
 
 #: src/net/tmwserv/tradehandler.cpp:93
-#, fuzzy
 msgid "Accepting incoming trade requests."
-msgstr "Accepterar handelserbjudanden"
+msgstr "Accepterar byteshandelsförfrågningar."
 
 #: src/net/tmwserv/tradehandler.cpp:95
-#, fuzzy
 msgid "Ignoring incoming trade requests."
-msgstr "Ignorerar handelserbjudanden"
+msgstr "Ignorerar byteshandelsförfrågningar."
 
 #: src/net/tmwserv/tradehandler.cpp:133
-#, fuzzy, c-format
+#, c-format
 msgid "Trading with %s"
-msgstr "Byteshandla med "
+msgstr "Byteshandlar med %s"
 
 #: src/resources/itemdb.cpp:52
 #, c-format
@@ -3076,6 +3046,9 @@ msgstr "Namnlös"
 msgid "unnamed"
 msgstr "namnlös"
 
+#~ msgid "The Mana World %s"
+#~ msgstr "Manavärlden %s"
+
 #~ msgid "Select Character"
 #~ msgstr "Välj karaktär"
 
@@ -3094,23 +3067,8 @@ msgstr "namnlös"
 #~ msgid "Unable to load selection.png"
 #~ msgstr "Kan inte ladda selection.png"
 
-#~ msgid "skills.xml"
-#~ msgstr "skills.xml"
-
-#~ msgid "Slots: "
-#~ msgstr "Utrymme: "
-
-#~ msgid "Player deleted"
-#~ msgstr "Karaktär borttagen."
-
 #~ msgid " cancelled"
 #~ msgstr " avbruten"
-
-#~ msgid "items.xml"
-#~ msgstr "items.xml"
-
-#~ msgid "monsters.xml"
-#~ msgstr "monsters.xml"
 
 #~ msgid "  -D --default    : Bypass the login process with default settings"
 #~ msgstr ""
@@ -3130,5 +3088,20 @@ msgstr "namnlös"
 #~ msgid "NPC Text Request"
 #~ msgstr "NPC-textefterfrågan"
 
+#~ msgid "skills.xml"
+#~ msgstr "skills.xml"
+
+#~ msgid "Slots: "
+#~ msgstr "Utrymme: "
+
 #~ msgid "%s: %s"
 #~ msgstr "%s: %s"
+
+#~ msgid "Player deleted"
+#~ msgstr "Karaktär borttagen."
+
+#~ msgid "items.xml"
+#~ msgstr "items.xml"
+
+#~ msgid "monsters.xml"
+#~ msgstr "monsters.xml"
