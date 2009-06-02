@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-28 22:55+0200\n"
+"POT-Creation-Date: 2009-06-02 20:41+0200\n"
 "PO-Revision-Date: 2009-05-15 02:25+0000\n"
 "Last-Translator: netwareboss <netwareboss@gmail.com>\n"
 "Language-Team: Traditional Chinese <themanaworld-devel@lists.sourceforge."
@@ -2092,7 +2092,7 @@ msgstr "無效的更新主機: "
 msgid "Error creating updates directory!"
 msgstr "建立更新目錄失敗！"
 
-#: src/main.cpp:340
+#: src/main.cpp:339
 msgid " can't be created, but it doesn't exist! Exiting."
 msgstr " 不能建立，但是它也不存在！現在結束。"
 
@@ -2169,11 +2169,6 @@ msgstr "  -O --no-opengl : 不使用OpenGL"
 #: src/main.cpp:593
 msgid "  -v --version     : Display the version"
 msgstr "  -v --version : 顯示遊戲版本"
-
-#: src/main.cpp:598
-#, fuzzy, c-format
-msgid "The Mana World %s"
-msgstr "瑪那世界 "
 
 #: src/main.cpp:1527
 msgid "Connecting to map server..."
@@ -3050,6 +3045,10 @@ msgstr "未知物品"
 #: src/resources/monsterdb.cpp:45 src/resources/monsterdb.cpp:67
 msgid "unnamed"
 msgstr "未知物品"
+
+#, fuzzy
+#~ msgid "The Mana World %s"
+#~ msgstr "瑪那世界 "
 
 #~ msgid "Select Character"
 #~ msgstr "選擇角色"

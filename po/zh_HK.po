@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-28 22:55+0200\n"
+"POT-Creation-Date: 2009-06-02 20:41+0200\n"
 "PO-Revision-Date: 2009-05-05 10:15+0000\n"
 "Last-Translator: lok0919 <lok0919@gmail.com>\n"
 "Language-Team: Traditional Chinese <themanaworld-devel@lists.sourceforge."
@@ -2098,7 +2098,7 @@ msgstr ""
 msgid "Error creating updates directory!"
 msgstr ""
 
-#: src/main.cpp:340
+#: src/main.cpp:339
 msgid " can't be created, but it doesn't exist! Exiting."
 msgstr ""
 
@@ -2173,11 +2173,6 @@ msgstr ""
 
 #: src/main.cpp:593
 msgid "  -v --version     : Display the version"
-msgstr ""
-
-#: src/main.cpp:598
-#, c-format
-msgid "The Mana World %s"
 msgstr ""
 
 #: src/main.cpp:1527

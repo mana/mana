@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-28 22:55+0200\n"
+"POT-Creation-Date: 2009-06-02 20:41+0200\n"
 "PO-Revision-Date: 2008-12-28 14:45+0000\n"
 "Last-Translator: GonzoDark AKA IchigoBlack <Gonzo.Dark@gmail.com>\n"
 "Language-Team: Danish <none@none.none>\n"
@@ -2237,7 +2237,7 @@ msgstr "Ugyldigt opdaterings host: "
 msgid "Error creating updates directory!"
 msgstr "Fejl under oprettelsen af opdateringen mappen!"
 
-#: src/main.cpp:340
+#: src/main.cpp:339
 msgid " can't be created, but it doesn't exist! Exiting."
 msgstr " kan ikke laves, men det findes ikke! Lukker."
 
@@ -2325,11 +2325,6 @@ msgstr ""
 #, fuzzy
 msgid "  -v --version     : Display the version"
 msgstr "  -v --version    : Viser den nuværende version"
-
-#: src/main.cpp:598
-#, fuzzy, c-format
-msgid "The Mana World %s"
-msgstr "Vælg din Mana World Server"
 
 #: src/main.cpp:1527
 #, fuzzy
@@ -3252,6 +3247,10 @@ msgstr "Unavngivet"
 #: src/resources/monsterdb.cpp:45 src/resources/monsterdb.cpp:67
 msgid "unnamed"
 msgstr "unavngivet"
+
+#, fuzzy
+#~ msgid "The Mana World %s"
+#~ msgstr "Vælg din Mana World Server"
 
 #~ msgid "Select Character"
 #~ msgstr "Vælg Karakter"

@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-05-28 22:55+0200\n"
-"PO-Revision-Date: 2009-05-17 13:56+0000\n"
+"POT-Creation-Date: 2009-06-02 20:41+0200\n"
+"PO-Revision-Date: 2009-05-30 15:48+0000\n"
 "Last-Translator: lusmanko <Unknown>\n"
 "Language-Team: <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-28 20:32+0000\n"
+"X-Launchpad-Export-Date: 2009-06-02 17:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
@@ -99,9 +99,8 @@ msgid "/announce > Global announcement (GM only)"
 msgstr "/announce > Globalne ogłoszenie (tylko GM)"
 
 #: src/commandhandler.cpp:170
-#, fuzzy
 msgid "For more information, type /help <command>."
-msgstr "Aby uzyskać więcej informacji wpisz /help <komenda>"
+msgstr "Aby uzyskać więcej informacji, wpisz /help <komenda>"
 
 #: src/commandhandler.cpp:174
 msgid "Command: /help"
@@ -294,17 +293,18 @@ msgid "Cannot send empty whispers!"
 msgstr "Nie można wysłać pustych szeptów!"
 
 #: src/commandhandler.cpp:348
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
 "you."
 msgstr ""
-"Nie można utworzyć zakładki szeptu dla ksywki '%s'! Już istnieje, albo to ty."
+"Nie można utworzyć zakładki szeptu dla ksywki \"%s\"! Już istnieje, albo to "
+"ty."
 
 #: src/commandhandler.cpp:362
 #, c-format
 msgid "Requesting to join channel %s."
-msgstr ""
+msgstr "Prośba o dołączenie do kanału %s."
 
 #: src/commandhandler.cpp:394
 msgid "Return toggles chat."
@@ -328,14 +328,13 @@ msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 msgstr "Opcjami dla /%s są \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 
 #: src/engine.cpp:88
-#, fuzzy
 msgid "Could not load map"
-msgstr "Nie można dołączyć do grupy!"
+msgstr "Nie można załadować mapy"
 
 #: src/engine.cpp:89
-#, fuzzy, c-format
+#, c-format
 msgid "Error while loading %s"
-msgstr "Baza NPC: Błąd podczas wczytywania npcs.xml!"
+msgstr "Błąd podczas łądowania %s"
 
 #: src/game.cpp:237
 msgid "General"
@@ -769,7 +768,7 @@ msgstr "Oczekiwanie na serwer"
 
 #: src/gui/npcdialog.cpp:45
 msgid "Submit"
-msgstr "Przekaż"
+msgstr "Zatwierdź"
 
 #: src/gui/npcdialog.cpp:48 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -780,9 +779,8 @@ msgid "Reset"
 msgstr "Resetuj"
 
 #: src/gui/npcpostdialog.cpp:44
-#, fuzzy
 msgid "To:"
-msgstr "Temat: "
+msgstr "Do:"
 
 #: src/gui/npcpostdialog.cpp:51
 msgid "Send"
@@ -790,7 +788,7 @@ msgstr "Wyślij"
 
 #: src/gui/npcpostdialog.cpp:85
 msgid "Failed to send as sender or letter invalid."
-msgstr ""
+msgstr "Nie powiodła się wysyłka jako nadawca, albo list jest nieprawidłowy."
 
 #: src/gui/palette.cpp:81 src/gui/setup_video.cpp:142
 msgid "Text"
@@ -992,31 +990,31 @@ msgstr "Grupa (%s)"
 
 #: src/gui/partywindow.cpp:174
 msgid "Received party request, but one already exists."
-msgstr ""
+msgstr "Otrzymano prośbę o założenie grupy, ale ona już istnieje."
 
 #: src/gui/partywindow.cpp:182
-#, fuzzy, c-format
+#, c-format
 msgid "%s has invited you to join their party."
-msgstr "%s opuścił twoją grupę."
+msgstr "%s zaprosił ciebie, byś dołączył do grupy."
 
 #: src/gui/partywindow.cpp:185
-#, fuzzy, c-format
+#, c-format
 msgid "%s has invited you to join the %s party."
-msgstr "%s opuścił twoją grupę."
+msgstr "%s zaprosił ciebie, byś dołączył do grupy %s ."
 
 #: src/gui/partywindow.cpp:191
 msgid "Accept Party Invite"
-msgstr ""
+msgstr "Zaakceptuj zaproszenie do grupy"
 
 #: src/gui/partywindow.cpp:204
 #, c-format
 msgid "Accepted invite from %s."
-msgstr ""
+msgstr "Zaakceptowano zaproszenie od %s."
 
 #: src/gui/partywindow.cpp:211
-#, fuzzy, c-format
+#, c-format
 msgid "Rejected invite from %s."
-msgstr "Odrzucony z serwera"
+msgstr "Odrzucono zaproszenie od %s."
 
 #: src/gui/popupmenu.cpp:77
 msgid "@@name|Add name to chat@@"
@@ -1711,9 +1709,8 @@ msgstr ""
 "rodzaj przedmiotu w okienku."
 
 #: src/gui/trade.cpp:311
-#, fuzzy
 msgid "You don't have enough money."
-msgstr "Nie masz wystarczającej ilości pieniędzy"
+msgstr "Nie masz wystarczającej ilości pieniędzy."
 
 #: src/gui/updatewindow.cpp:91
 msgid "Updating..."
@@ -1964,7 +1961,6 @@ msgid "Inventory Window"
 msgstr "Okno Inwentarza"
 
 #: src/keyboardconfig.cpp:74
-#, fuzzy
 msgid "Equipment Window"
 msgstr "Okno Ekwipunku"
 
@@ -2102,7 +2098,7 @@ msgstr "Nieprawidłowy host aktualizacji: "
 msgid "Error creating updates directory!"
 msgstr "Błąd podczas tworzenia katalogu aktualizacji!"
 
-#: src/main.cpp:340
+#: src/main.cpp:339
 msgid " can't be created, but it doesn't exist! Exiting."
 msgstr " nie może być utworzony, ale nie istnieje! Kończenie."
 
@@ -2155,14 +2151,12 @@ msgid "  -c --character   : Login with this character"
 msgstr "  -c --character   : Zaloguj z tą postacią"
 
 #: src/main.cpp:586
-#, fuzzy
 msgid "  -p --port        : Login server port"
-msgstr "  -p --port        : Port Serwera Logowania"
+msgstr "  -p --port        : Port serwera logowania"
 
 #: src/main.cpp:587
-#, fuzzy
 msgid "  -s --server      : Login server name or IP"
-msgstr "  -s --server      : Nazwa Serwera Logowania lub IP"
+msgstr "  -s --server      : Nazwa serwera logowania, lub IP"
 
 #: src/main.cpp:588
 msgid "  -u --skip-update : Skip the update downloads"
@@ -2179,11 +2173,6 @@ msgstr "  -O --no-opengl   : Wyłącz OpenGL dla tej sesji"
 #: src/main.cpp:593
 msgid "  -v --version     : Display the version"
 msgstr "  -v --version     : Pokazuje wersję"
-
-#: src/main.cpp:598
-#, fuzzy, c-format
-msgid "The Mana World %s"
-msgstr "The Mana World "
 
 #: src/main.cpp:1527
 msgid "Connecting to map server..."
@@ -2206,29 +2195,24 @@ msgid "Kick succeeded!"
 msgstr "Wykopanie powiodło się!"
 
 #: src/net/ea/buysellhandler.cpp:111
-#, fuzzy
 msgid "Nothing to sell."
-msgstr "Nic do sprzedania"
+msgstr "Nie masz niczego do sprzedania."
 
 #: src/net/ea/buysellhandler.cpp:119
-#, fuzzy
 msgid "Thanks for buying."
-msgstr "Dzięki za zakup"
+msgstr "Dziękuję za kupno."
 
 #: src/net/ea/buysellhandler.cpp:126
-#, fuzzy
 msgid "Unable to buy."
-msgstr "Nie można kupić"
+msgstr "Nie można kupić."
 
 #: src/net/ea/buysellhandler.cpp:132
-#, fuzzy
 msgid "Thanks for selling."
-msgstr "Dzięki za sprzedaż"
+msgstr "Dziękuję za sprzedaż."
 
 #: src/net/ea/buysellhandler.cpp:134
-#, fuzzy
 msgid "Unable to sell."
-msgstr "Nie można sprzedać"
+msgstr "Nie można sprzedać."
 
 #: src/net/ea/charserverhandler.cpp:95
 msgid "Access denied"
@@ -2252,9 +2236,8 @@ msgid "Info"
 msgstr "Info"
 
 #: src/net/ea/charserverhandler.cpp:135
-#, fuzzy
 msgid "Character deleted."
-msgstr "Potwierdź usunięcie postaci"
+msgstr "Usunięto postać."
 
 #: src/net/ea/charserverhandler.cpp:140
 msgid "Failed to delete character."
@@ -2290,14 +2273,12 @@ msgid "Luck:"
 msgstr "Szczęście:"
 
 #: src/net/ea/chathandler.cpp:78
-#, fuzzy
 msgid "Whisper could not be sent, user is offline."
-msgstr "Szept nie mógł zostać wysłany, uzytkownik nie jest połączony"
+msgstr "Szept nie mógł zostać wysłany, użytkownik jest offline."
 
 #: src/net/ea/chathandler.cpp:82
-#, fuzzy
 msgid "Whisper could not be sent, ignored by user."
-msgstr "Szept nie mógł zostać wysłany, został zignorowany przez użytkownika"
+msgstr "Szept nie mógł zostać wysłany, jesteś ignorowany przez odbiorcę."
 
 #: src/net/ea/chathandler.cpp:202 src/net/ea/chathandler.cpp:208
 #: src/net/ea/chathandler.cpp:213 src/net/ea/chathandler.cpp:218
@@ -2510,9 +2491,8 @@ msgid "Experience sharing not possible."
 msgstr "Podział doświadczenia nie jest możliwy."
 
 #: src/net/ea/inventoryhandler.cpp:185
-#, fuzzy
 msgid "Unable to pick up item."
-msgstr "Nie można podnieść przedmiotu"
+msgstr "Nie można podnieść przedmiotu."
 
 #. TRANSLATORS: Used as in "You picked up a ...", when
 #. picking up only one item.
@@ -2521,28 +2501,25 @@ msgid "a"
 msgstr ""
 
 #: src/net/ea/inventoryhandler.cpp:199
-#, fuzzy, c-format
+#, c-format
 msgid "You picked up %s [@@%d|%s@@]."
-msgstr "Podniosłeś %s [@@%d|%s@@]"
+msgstr "Podniosłeś %s [@@%d|%s@@]."
 
 #: src/net/ea/inventoryhandler.cpp:245
-#, fuzzy
 msgid "Failed to use item."
-msgstr "Użycie przedmiotu nie powiodło się"
+msgstr "Użycie przedmiotu nie powiodło się."
 
 #: src/net/ea/loginhandler.cpp:76
-#, fuzzy
 msgid "Account was not found. Please re-login."
-msgstr "Konto niepołączone. Proszę najpierw się zalogować."
+msgstr "Nie znaleziono Konta. Proszę zalogować się ponownie."
 
 #: src/net/ea/loginhandler.cpp:79 src/net/tmwserv/loginhandler.cpp:113
 msgid "Old password incorrect"
 msgstr "Stare hasło jest nieprawidłowe"
 
 #: src/net/ea/loginhandler.cpp:82
-#, fuzzy
 msgid "New password too short"
-msgstr "Nowe hasło jest nieprawidłowe"
+msgstr "Nowe hasło jest za krótkie"
 
 #: src/net/ea/loginhandler.cpp:85 src/net/ea/loginhandler.cpp:169
 #: src/net/tmwserv/loginhandler.cpp:89 src/net/tmwserv/loginhandler.cpp:119
@@ -2573,13 +2550,13 @@ msgid ""
 msgstr "Zostałeś tymczasowo zbanowany. Proszę skontaktować się z zespołem GM."
 
 #: src/net/ea/loginhandler.cpp:159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You have been temporarily banned from the game until %s.\n"
 "Please contact the GM team via the forums."
 msgstr ""
-"Zostałeś tymczasowo zbanowany aż do %s.\n"
-" Proszę skontaktować się z zespołem GM poprzez forum."
+"Zostałeś tymczasowo zbanowany z gry do dnia %s.\n"
+"Proszę skontaktować się z zespołem GM poprzez forum."
 
 #: src/net/ea/loginhandler.cpp:166
 msgid "This user name is already taken"
@@ -2769,9 +2746,8 @@ msgid "You picked up "
 msgstr "Podniosłeś "
 
 #: src/net/ea/playerhandler.cpp:413
-#, fuzzy
 msgid "Equip arrows first."
-msgstr "Najpierw załóż strzały"
+msgstr "Najpierw załóż strzały."
 
 #: src/net/ea/skillhandler.cpp:139
 msgid "Trade failed!"
@@ -2854,14 +2830,13 @@ msgid "Poison had no effect..."
 msgstr "Trucizna nie zadziałała..."
 
 #: src/net/ea/tradehandler.cpp:103 src/net/tmwserv/tradehandler.cpp:114
-#, fuzzy
 msgid "Request for Trade"
-msgstr "Prośba o handel"
+msgstr "Prośba o Handel"
 
 #: src/net/ea/tradehandler.cpp:104 src/net/tmwserv/tradehandler.cpp:115
-#, fuzzy, c-format
+#, c-format
 msgid "%s wants to trade with you, do you accept?"
-msgstr " chce handlować z tobą, zgadzasz się?"
+msgstr "%s chce handlować z tobą, zgadzasz się?"
 
 #: src/net/ea/tradehandler.cpp:119
 msgid "Trading isn't possible. Trade partner is too far away."
@@ -2876,19 +2851,18 @@ msgid "Trade cancelled due to an unknown reason."
 msgstr "Handel anulowany z nieznanego powodu."
 
 #: src/net/ea/tradehandler.cpp:132
-#, fuzzy, c-format
+#, c-format
 msgid "Trade: You and %s"
-msgstr "Handel: Ty i "
+msgstr "Handel: Ty i %s"
 
 #: src/net/ea/tradehandler.cpp:139
-#, fuzzy, c-format
+#, c-format
 msgid "Trade with %s cancelled."
-msgstr "Handel anulowany."
+msgstr "Handel z %s został anulowany."
 
 #: src/net/ea/tradehandler.cpp:148
-#, fuzzy
 msgid "Unhandled trade cancel packet."
-msgstr "Nieobsługiwany pakiet anulowania handlu"
+msgstr "Nieobsługiwany pakiet anulowania handlu."
 
 #: src/net/ea/tradehandler.cpp:198
 msgid "Failed adding item. Trade partner is over weighted."
@@ -2928,9 +2902,9 @@ msgid "Willpower:"
 msgstr "Siła woli:"
 
 #: src/net/tmwserv/chathandler.cpp:158 src/net/tmwserv/guildhandler.cpp:250
-#, fuzzy, c-format
+#, c-format
 msgid "Topic: %s"
-msgstr "Temat: "
+msgstr "Temat: %s"
 
 #: src/net/tmwserv/generalhandler.cpp:87
 #, c-format
@@ -2939,26 +2913,23 @@ msgstr "Siła woli %+d"
 
 #: src/net/tmwserv/guildhandler.cpp:74
 msgid "Guild created."
-msgstr ""
+msgstr "Gildia została utworzona."
 
 #: src/net/tmwserv/guildhandler.cpp:79
-#, fuzzy
 msgid "Error creating guild."
-msgstr "Błąd podczas tworzenia katalogu aktualizacji!"
+msgstr "Błąd podczas tworzenia gildii."
 
 #: src/net/tmwserv/guildhandler.cpp:89
-#, fuzzy
 msgid "Invite sent."
-msgstr "Zaproś Użytkownika"
+msgstr "Zaproszenie wysłane."
 
 #: src/net/tmwserv/guildhandler.cpp:194
 msgid "Member was promoted successfully."
-msgstr ""
+msgstr "Członek został pomyślnie wypromowany."
 
 #: src/net/tmwserv/guildhandler.cpp:199
-#, fuzzy
 msgid "Failed to promote member."
-msgstr "Użycie przedmiotu nie powiodło się"
+msgstr "Promocja Członka nie powiodła się."
 
 #: src/net/tmwserv/loginhandler.cpp:80
 msgid "Wrong magic_token"
@@ -3014,27 +2985,25 @@ msgstr "Adres email już istnieje"
 
 #: src/net/tmwserv/partyhandler.cpp:86
 msgid "Joined party."
-msgstr ""
+msgstr "Dołączono do grupy."
 
 #: src/net/tmwserv/partyhandler.cpp:103
 #, c-format
 msgid "%s joined the party."
-msgstr ""
+msgstr "%s dołączył do grupy."
 
 #: src/net/tmwserv/tradehandler.cpp:93
-#, fuzzy
 msgid "Accepting incoming trade requests."
-msgstr "Akceptowanie przychodzących próśb o handel"
+msgstr "Akceptowanie nadchodzących próśb o handel."
 
 #: src/net/tmwserv/tradehandler.cpp:95
-#, fuzzy
 msgid "Ignoring incoming trade requests."
-msgstr "Ignorowanie przychodzących próśb o handel"
+msgstr "Ignorowanie nadchodzących próśb o handel."
 
 #: src/net/tmwserv/tradehandler.cpp:133
-#, fuzzy, c-format
+#, c-format
 msgid "Trading with %s"
-msgstr "Handel z "
+msgstr "Handel z %s"
 
 #: src/resources/itemdb.cpp:52
 #, c-format
@@ -3068,6 +3037,9 @@ msgstr "Nienazwany"
 msgid "unnamed"
 msgstr "nienazwany"
 
+#~ msgid "The Mana World %s"
+#~ msgstr "The Mana World %s"
+
 #~ msgid "Select Character"
 #~ msgstr "Wybierz postać"
 
@@ -3086,24 +3058,6 @@ msgstr "nienazwany"
 #~ msgid "Unable to load selection.png"
 #~ msgstr "Nie można załadować selection.png"
 
-#~ msgid "skills.xml"
-#~ msgstr "skills.xml"
-
-#~ msgid "Slots: "
-#~ msgstr "Miejsc: "
-
-#~ msgid "Player deleted"
-#~ msgstr "Gracz usunięty"
-
-#~ msgid " cancelled"
-#~ msgstr " anulował"
-
-#~ msgid "items.xml"
-#~ msgstr "items.xml"
-
-#~ msgid "monsters.xml"
-#~ msgstr "monsters.xml"
-
 #~ msgid "Emote"
 #~ msgstr "Emoty"
 
@@ -3112,6 +3066,9 @@ msgstr "nienazwany"
 
 #~ msgid "use"
 #~ msgstr "użyj"
+
+#~ msgid " cancelled"
+#~ msgstr " anulował"
 
 #~ msgid "  -D --default    : Bypass the login process with default settings"
 #~ msgstr ""
@@ -3130,8 +3087,23 @@ msgstr "nienazwany"
 #~ msgid "NPC Text Request"
 #~ msgstr "Tekst NPC - Prośba"
 
+#~ msgid "skills.xml"
+#~ msgstr "skills.xml"
+
+#~ msgid "Slots: "
+#~ msgstr "Miejsc: "
+
 #~ msgid "%s: %s"
 #~ msgstr "%s: %s"
 
 #~ msgid "Emote Window"
 #~ msgstr "Okno Emotek"
+
+#~ msgid "Player deleted"
+#~ msgstr "Gracz usunięty"
+
+#~ msgid "items.xml"
+#~ msgstr "items.xml"
+
+#~ msgid "monsters.xml"
+#~ msgstr "monsters.xml"
