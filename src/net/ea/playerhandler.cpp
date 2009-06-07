@@ -223,9 +223,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 switch (type)
                 {
-                    //case 0x0000:
-                    //    player_node->setWalkSpeed(msg.readInt32());
-                    //    break;
+                    case 0x0000: player_node->setWalkSpeed(value); break;
                     case 0x0005: player_node->setHp(value); break;
                     case 0x0006: player_node->setMaxHp(value); break;
                     case 0x0007: player_node->mMp = value; break;
