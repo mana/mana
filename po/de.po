@@ -1073,7 +1073,7 @@ msgstr "@@party|%s in deine Gruppe einladen@@"
 
 #: src/gui/popupmenu.cpp:124
 msgid "@@admin-kick|Kick player@@"
-msgstr "@@admin-kick|Spieler rauswerfen"
+msgstr "@@admin-kick|Spieler rauswerfen@@"
 
 #: src/gui/popupmenu.cpp:132
 #, c-format
