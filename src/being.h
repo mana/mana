@@ -569,8 +569,6 @@ class Being : public Sprite, public ConfigListener
         /** Engine-related infos about weapon. */
         const ItemInfo *mEquippedWeapon;
 
-        static std::vector<std::string> hairColors;
-        static int mNumberOfHairColors;          /** Number of hair colors in use */
         static int mNumberOfHairstyles;          /** Number of hair styles in use */
 
         Path mPath;

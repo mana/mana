@@ -59,9 +59,7 @@
 #define BEING_EFFECTS_FILE "effects.xml"
 #define HAIR_FILE "hair.xml"
 
-int Being::mNumberOfHairColors = 1;
 int Being::mNumberOfHairstyles = 1;
-std::vector<std::string> Being::hairColors;
 
 static const int DEFAULT_WIDTH = 32;
 static const int DEFAULT_HEIGHT = 32;
