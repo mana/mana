@@ -227,6 +227,13 @@ class Map : public Properties
         bool getWalk(int x, int y,
                      unsigned char walkmask = BLOCKMASK_WALL) const;
 
+#ifdef EATHENA_SUPPORT
+        /**
+         * Tells whether a tile is occupied by a being.
+         */
+        bool occupied(int x, int y) const;
+#endif
+
         /**
          * Returns the width of this map in tiles.
          */

@@ -407,7 +407,7 @@ void Map::blockTile(int x, int y, BlockType type)
     if (type == BLOCKTYPE_NONE || !contains(x, y))
         return;
 
-    int tileNum = x + y * mWidth;
+    const int tileNum = x + y * mWidth;
 
     if ((++mOccupation[type][tileNum]) > 0)
     {
@@ -438,6 +438,23 @@ bool Map::getWalk(int x, int y, unsigned char walkmask) const
     // Check if the tile is walkable
     return !(mMetaTiles[x + y * mWidth].blockmask & walkmask);
 }
+
+#ifdef EATHENA_SUPPORT
+bool Map::occupied(int x, int y) const
+{
+    const Beings &beings = beingManager->getAll();
+    for (Beings::const_iterator i = beings.begin(); i != beings.end(); i++)
+    {
+        const Being *being = *i;
+
+        // job 45 is a portal, they don't collide
+        if (being->mX == x && being->mY == y && being->mJob != 45)
+            return true;
+    }
+
+    return false;
+}
+#endif
 
 bool Map::contains(int x, int y) const
 {
@@ -569,12 +586,14 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                     ++Gcost;
                 }
 
+#ifdef EATHENA_SUPPORT
                 // It costs extra to walk through a being (needs to be enough
                 // to make it more attractive to walk around).
-                if (!getWalk(x, y, BLOCKMASK_CHARACTER | BLOCKMASK_MONSTER))
+                if (occupied(x, y))
                 {
                     Gcost += 3 * basicCost;
                 }
+#endif
 
                 // Skip if Gcost becomes too much
                 // Warning: probably not entirely accurate
