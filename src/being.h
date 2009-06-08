@@ -498,11 +498,7 @@ class Being : public Sprite, public ConfigListener
             internalTriggerEffect(effectId, false, true);
         }
 
-        static int getHairColorCount();
-
         static int getHairStyleCount();
-
-        static std::string getHairColor(int index);
 
         virtual AnimatedSprite *getSprite(int index) const
         { return mSprites[index]; }
