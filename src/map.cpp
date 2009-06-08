@@ -429,7 +429,7 @@ void Map::blockTile(int x, int y, BlockType type)
     }
 }
 
-bool Map::getWalk(int x, int y, char walkmask) const
+bool Map::getWalk(int x, int y, unsigned char walkmask) const
 {
     // You can't walk outside of the map
     if (!contains(x, y))
