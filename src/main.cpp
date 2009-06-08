@@ -1143,6 +1143,7 @@ int main(int argc, char *argv[])
                     // Load XML databases
                     ColorDB::load();
                     ItemDB::load();
+                    Being::load(); // Hairstyles
                     MonsterDB::load();
                     NPCDB::load();
                     EmoteDB::load();
