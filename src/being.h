@@ -358,12 +358,8 @@ class Being : public Sprite, public ConfigListener
         /**
          * Returns the direction the being is facing.
          */
-#ifdef TMWSERV_SUPPORT
         SpriteDirection getSpriteDirection() const
         { return SpriteDirection(mSpriteDirection); }
-#else
-        SpriteDirection getSpriteDirection() const;
-#endif
 
         /**
          * Draws this being to the given graphics context.
@@ -558,9 +554,7 @@ class Being : public Sprite, public ConfigListener
 
         int mId;                        /**< Unique sprite id */
         Uint8 mDirection;               /**< Facing direction */
-#ifdef TMWSERV_SUPPORT
         Uint8 mSpriteDirection;         /**< Facing direction */
-#endif
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;

@@ -76,9 +76,7 @@ Being::Being(int id, int job, Map *map):
     mJob(job),
     mId(id),
     mDirection(DOWN),
-#ifdef TMWSERV_SUPPORT
     mSpriteDirection(DIRECTION_DOWN),
-#endif
     mMap(NULL),
     mParticleEffects(config.getValue("particleeffects", 1)),
     mEquippedWeapon(NULL),
@@ -461,12 +459,12 @@ void Being::setDirection(Uint8 direction)
     if (mDirection == direction)
         return;
 
-#ifdef TMWSERV_SUPPORT
+    mDirection = direction;
+
     // if the direction does not change much, keep the common component
     int mFaceDirection = mDirection & direction;
     if (!mFaceDirection)
         mFaceDirection = direction;
-    mDirection = direction;
 
     SpriteDirection dir;
     if (mFaceDirection & UP)
@@ -478,10 +476,6 @@ void Being::setDirection(Uint8 direction)
     else
         dir = DIRECTION_LEFT;
     mSpriteDirection = dir;
-#else
-    mDirection = direction;
-    SpriteDirection dir = getSpriteDirection();
-#endif
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
@@ -491,22 +485,6 @@ void Being::setDirection(Uint8 direction)
 }
 
 #ifdef EATHENA_SUPPORT
-SpriteDirection Being::getSpriteDirection() const
-{
-    SpriteDirection dir;
-
-    if (mDirection & UP)
-        dir = DIRECTION_UP;
-    else if (mDirection & DOWN)
-        dir = DIRECTION_DOWN;
-    else if (mDirection & RIGHT)
-        dir = DIRECTION_RIGHT;
-    else
-        dir = DIRECTION_LEFT;
-
-    return dir;
-}
-
 void Being::nextStep()
 {
     if (mPath.empty())
