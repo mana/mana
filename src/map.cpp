@@ -475,7 +475,8 @@ const std::string &Map::getName() const
 
 static int const basicCost = 100;
 
-Path Map::findPath(int startX, int startY, int destX, int destY, unsigned char walkmask, int maxCost)
+Path Map::findPath(int startX, int startY, int destX, int destY,
+                   unsigned char walkmask, int maxCost)
 {
     // Path to be built up (empty by default)
     Path path;
@@ -533,7 +534,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY, unsigned char w
                 // Skip if the tile is on the closed list or is not walkable
                 // unless its the destination tile
                 if (newTile->whichList == mOnClosedList ||
-                    ((newTile->blockmask & walkmask) && !(x == destX && y == destY)))
+                    ((newTile->blockmask & walkmask)
+                     && !(x == destX && y == destY)))
                 {
                     continue;
                 }
@@ -545,10 +547,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY, unsigned char w
                     MetaTile *t1 = getMetaTile(curr.x, curr.y + dy);
                     MetaTile *t2 = getMetaTile(curr.x + dx, curr.y);
 
-                    if (t1->blockmask & walkmask && !(t2->blockmask & walkmask)) // I hope I didn't fuck this line up
-                    {
+                    if ((t1->blockmask | t2->blockmask) & BLOCKMASK_WALL)
                         continue;
-                    }
                 }
 
                 // Calculate G cost for this route, ~sqrt(2) for moving diagonal
