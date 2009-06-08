@@ -917,19 +917,6 @@ int Being::getHairStyleCount()
     return mNumberOfHairstyles;
 }
 
-int Being::getHairColorCount()
-{
-    return mNumberOfHairColors;
-}
-
-std::string Being::getHairColor(int index)
-{
-    if (index < 0 || index >= mNumberOfHairColors)
-        return "#000000";
-
-    return hairColors[index];
-}
-
 void Being::load()
 {
     // Hairstyles are encoded as negative numbers. Count how far negative
@@ -940,32 +927,4 @@ void Being::load()
         hairstyles++;
 
     mNumberOfHairstyles = hairstyles;
-
-    XML::Document doc(HAIR_FILE);
-    xmlNodePtr root = doc.rootNode();
-
-    // Add an initial hair color
-    hairColors.resize(1, "#000000");
-
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "colors"))
-    {
-        logger->log("Error loading being hair configuration file");
-    } else {
-        for_each_xml_child_node(node, root)
-        {
-            if (xmlStrEqual(node->name, BAD_CAST "color"))
-            {
-                int index = atoi(XML::getProperty(node, "id", "-1").c_str());
-                std::string value = XML::getProperty(node, "value", "");
-
-                if (index >= 0 && !value.empty()) {
-                    if (index >= mNumberOfHairColors) {
-                        mNumberOfHairColors = index + 1;
-                        hairColors.resize(mNumberOfHairColors, "#000000");
-                    }
-                    hairColors[index] = value;
-                }
-            }
-        }
-    }
 }
