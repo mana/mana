@@ -46,7 +46,11 @@ class NPC : public Player
          * Gets the way an NPC is blocked by other things on the map
          */
         virtual unsigned char getWalkMask() const
-        { return 0x83; } // blocked like a monster by walls, monsters and characters ( bin 1000 0011)
+        {
+            return Map::BLOCKMASK_WALL
+                    | Map::BLOCKMASK_CHARACTER
+                    | Map::BLOCKMASK_MONSTER;
+        }
 
         static bool isTalking;
 

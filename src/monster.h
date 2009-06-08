@@ -82,7 +82,11 @@ class Monster : public Being
          * Gets the way the monster is blocked by other objects
          */
         virtual unsigned char getWalkMask() const
-        { return 0x83; } // blocked by walls, other monsters and players ( bin 1000 0011)
+        {
+            return Map::BLOCKMASK_WALL
+                    | Map::BLOCKMASK_CHARACTER
+                    | Map::BLOCKMASK_MONSTER;
+        }
 
     protected:
         /**

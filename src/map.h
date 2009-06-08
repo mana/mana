@@ -152,6 +152,13 @@ class Map : public Properties
             NB_BLOCKTYPES
         };
 
+        enum BlockMask
+        {
+            BLOCKMASK_WALL      = 0x80, // = bin 1000 0000
+            BLOCKMASK_CHARACTER = 0x01, // = bin 0000 0001
+            BLOCKMASK_MONSTER   = 0x02  // = bin 0000 0010
+        };
+
         /**
          * Constructor, taking map and tile size as parameters.
          */
@@ -217,7 +224,15 @@ class Map : public Properties
          * Gets walkability for a tile with a blocking bitmask. When called
          * without walkmask, only blocks against colliding tiles.
          */
-        bool getWalk(int x, int y, char walkmask = BLOCKMASK_WALL) const;
+        bool getWalk(int x, int y,
+                     unsigned char walkmask = BLOCKMASK_WALL) const;
+
+#ifdef EATHENA_SUPPORT
+        /**
+         * Tells whether a tile is occupied by a being.
+         */
+        bool occupied(int x, int y) const;
+#endif
 
         /**
          * Returns the width of this map in tiles.
@@ -294,9 +309,6 @@ class Map : public Properties
         /**
          * Blockmasks for different entities
          */
-        static const unsigned char BLOCKMASK_WALL = 0x80;     // = bin 1000 0000
-        static const unsigned char BLOCKMASK_CHARACTER = 0x01;// = bin 0000 0001
-        static const unsigned char BLOCKMASK_MONSTER = 0x02;  // = bin 0000 0010
         int *mOccupation[NB_BLOCKTYPES];
 
         int mWidth, mHeight;
