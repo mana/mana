@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-06-02 20:41+0200\n"
+"POT-Creation-Date: 2009-06-08 23:19+0200\n"
 "PO-Revision-Date: 2009-05-31 11:16+0000\n"
 "Last-Translator: Jumpy <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -492,7 +492,7 @@ msgid "Please distribute %d points"
 msgstr "Distribuya %d puntos"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1516
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1517
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "Error"
@@ -2173,15 +2173,15 @@ msgstr "  -O --no-opengl : des habilitar OpenGl para esta sesion"
 msgid "  -v --version     : Display the version"
 msgstr "  -v --version : muestra la version"
 
-#: src/main.cpp:1527
+#: src/main.cpp:1528
 msgid "Connecting to map server..."
 msgstr "conectando al servidor de mapas...."
 
-#: src/main.cpp:1535
+#: src/main.cpp:1536
 msgid "Connecting to character server..."
 msgstr "conectando al servidor de personajes..."
 
-#: src/main.cpp:1543
+#: src/main.cpp:1544
 msgid "Connecting to account server..."
 msgstr "conectando al servidor de cuentas de usuario..."
 

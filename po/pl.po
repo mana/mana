@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-06-02 20:41+0200\n"
+"POT-Creation-Date: 2009-06-08 23:19+0200\n"
 "PO-Revision-Date: 2009-05-30 15:48+0000\n"
 "Last-Translator: lusmanko <Unknown>\n"
 "Language-Team: <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-02 17:48+0000\n"
+"X-Launchpad-Export-Date: 2009-06-08 19:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
@@ -495,7 +495,7 @@ msgid "Please distribute %d points"
 msgstr "Proszę wykorzystać %d punktów"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1516
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1517
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "Błąd"
@@ -2174,15 +2174,15 @@ msgstr "  -O --no-opengl   : Wyłącz OpenGL dla tej sesji"
 msgid "  -v --version     : Display the version"
 msgstr "  -v --version     : Pokazuje wersję"
 
-#: src/main.cpp:1527
+#: src/main.cpp:1528
 msgid "Connecting to map server..."
 msgstr "Łączenie z serwerem map..."
 
-#: src/main.cpp:1535
+#: src/main.cpp:1536
 msgid "Connecting to character server..."
 msgstr "Łączenie z serwerem postaci..."
 
-#: src/main.cpp:1543
+#: src/main.cpp:1544
 msgid "Connecting to account server..."
 msgstr "Łączenie z serwerem kont..."
 
@@ -3036,9 +3036,6 @@ msgstr "Nienazwany"
 #: src/resources/monsterdb.cpp:45 src/resources/monsterdb.cpp:67
 msgid "unnamed"
 msgstr "nienazwany"
-
-#~ msgid "The Mana World %s"
-#~ msgstr "The Mana World %s"
 
 #~ msgid "Select Character"
 #~ msgstr "Wybierz postać"
