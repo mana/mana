@@ -440,9 +440,9 @@ void LocalPlayer::walk(unsigned char dir)
 
     int dScaler; // Distance to walk
 
-    // Checks our path up to 2 tiles, if a blocking tile is found
+    // Checks our path up to 1 tiles, if a blocking tile is found
     // We go to the last good tile, and break out of the loop
-    for (dScaler = 1; dScaler <= 2; dScaler++)
+    for (dScaler = 1; dScaler <= 1; dScaler++)
     {
         if ( (dx || dy) &&
              !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
