@@ -1,7 +1,8 @@
 
 iconsdir = $(pkgdatadir)/data/icons
 
-icons_DATA = tmw.png
+icons_DATA = tmw.png \
+	     tmw.xpm
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(datadir)/pixmaps
