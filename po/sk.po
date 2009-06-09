@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-06-08 23:19+0200\n"
+"POT-Creation-Date: 2009-06-09 21:24+0200\n"
 "PO-Revision-Date: 2009-04-07 18:10+0000\n"
 "Last-Translator: Dalanos <Unknown>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -406,7 +406,7 @@ msgid "Sell"
 msgstr "Predaj"
 
 #: src/gui/buysell.cpp:40 src/gui/changeemaildialog.cpp:53
-#: src/gui/changepassworddialog.cpp:56 src/gui/charcreatedialog.cpp:74
+#: src/gui/changepassworddialog.cpp:57 src/gui/charcreatedialog.cpp:74
 #: src/gui/charselectdialog.cpp:104 src/gui/connection.cpp:38
 #: src/gui/itemamount.cpp:96 src/gui/login.cpp:75 src/gui/npcpostdialog.cpp:54
 #: src/gui/quitdialog.cpp:40 src/gui/register.cpp:81
@@ -421,7 +421,7 @@ msgstr "Zrušiť"
 msgid "Change Email Address"
 msgstr "Zmeniť Emailovú adresu"
 
-#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:48
+#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:51
 #: src/gui/charselectdialog.cpp:107
 #, c-format
 msgid "Account: %s"
@@ -431,18 +431,18 @@ msgstr "Účet: %s"
 msgid "Type New Email Address twice:"
 msgstr ""
 
-#: src/gui/changepassworddialog.cpp:44 src/gui/changepassworddialog.cpp:55
+#: src/gui/changepassworddialog.cpp:46 src/gui/changepassworddialog.cpp:55
 #: src/gui/charselectdialog.cpp:110
 msgid "Change Password"
 msgstr "Zmeniť heslo"
 
-#: src/gui/changepassworddialog.cpp:50 src/gui/login.cpp:52
+#: src/gui/changepassworddialog.cpp:60 src/gui/login.cpp:52
 #: src/gui/register.cpp:61 src/gui/unregisterdialog.cpp:50
 msgid "Password:"
 msgstr "Heslo:"
 
-#: src/gui/changepassworddialog.cpp:52
-msgid "Type New Password twice:"
+#: src/gui/changepassworddialog.cpp:62
+msgid "Type new password twice:"
 msgstr ""
 
 #: src/gui/charcreatedialog.cpp:54
