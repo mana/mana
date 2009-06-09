@@ -3,6 +3,26 @@
  
 ##3                         === RECENT CHANGES ===
  
+ 0.0.29.1 (9 June 2009)
+ - Added the ability to change your password after logging in
+ - The leader of a party is now displayed in bold
+ - Status window was reorganized to allow larger numbers to be displayed
+ - The client no longer quits when it can't find the current map
+ - Fixed position of floating text for damage, pickup and experience
+ - Fixed a possible crash on logging in to the map server
+ - Fixed the crash when shift-clicking an item in the inventory
+ - Fixed a crash related to item links in the chat window
+ - Fixed a crash on whispering somebody again after closing their tab
+ - Fixed lightspeed bug when stopping to attack
+ - Fixed the -S/--home-dir command line option
+ - Fixed Reset Windows to also reset the party window
+ - Fixed problems with the context menu in the Brazilian translation
+ - Fixed resetting the height of the chat on /clear
+ - Fixed playing of login song and the music after login
+ - Fixed a problem with the player skipping corners, desyncing from the server
+ - Small optimizations to OpenGL mode when drawing certain GUI widgets
+ - Updated Spanish, Polish, Portugese, Swedish, French and German translations
+
  0.0.29 (13 May 2009)
  - Added support for dynamic emotes and a new way to select them
  - Added speech balloons that wrap the text
@@ -96,24 +116,4 @@
  - Added new features to the particle engine
  - Position names and chat such that there is no overlap, when possible
  - Fixed a crash when loading a corrupt map that has too much layer data
- 
- 0.0.25 (27 July 2008)
- - Added support for whispering to other players
- - Added ability to ignore other players
- - Added command line argument for specifying the update host (-H)
- - Added support for receiving the update host from the server
- - Added support for displaying a shield sprite
- - Added shortcut window, allowing you to quickly access inventory items
- - Added message when gaining money from trade or quest
- - Added support for an arbitrary number of map layers
- - Added support for basing one sprite definition on another
- - Added the possibility to assign particle effects to NPCs
- - Added remembering whether windows are visible or not
- - Updated to work with Guichan 0.8.x
- - Improved accuracy of monster targeting with the mouse
- - Page up and page down will now scroll the chat window
- - Item icons are now loaded on demand and unloaded when no longer used
- - Fixed display of critical hits
- - Fixed multi-channel image dyeing
- - Fixed updating of money display after buying
  

@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-06-02 20:41+0200\n"
+"POT-Creation-Date: 2009-06-09 21:24+0200\n"
 "PO-Revision-Date: 2009-06-02 14:28+0000\n"
 "Last-Translator: Kess Vargavind <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-06-02 17:48+0000\n"
+"X-Launchpad-Export-Date: 2009-06-08 19:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
@@ -419,7 +419,7 @@ msgid "Sell"
 msgstr "Sälj"
 
 #: src/gui/buysell.cpp:40 src/gui/changeemaildialog.cpp:53
-#: src/gui/changepassworddialog.cpp:56 src/gui/charcreatedialog.cpp:74
+#: src/gui/changepassworddialog.cpp:57 src/gui/charcreatedialog.cpp:74
 #: src/gui/charselectdialog.cpp:104 src/gui/connection.cpp:38
 #: src/gui/itemamount.cpp:96 src/gui/login.cpp:75 src/gui/npcpostdialog.cpp:54
 #: src/gui/quitdialog.cpp:40 src/gui/register.cpp:81
@@ -434,7 +434,7 @@ msgstr "Avbryt"
 msgid "Change Email Address"
 msgstr "Ändra epostadress"
 
-#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:48
+#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:51
 #: src/gui/charselectdialog.cpp:107
 #, c-format
 msgid "Account: %s"
@@ -444,18 +444,19 @@ msgstr "Konto: %s"
 msgid "Type New Email Address twice:"
 msgstr "Ange den nya epostadressen två gånger:"
 
-#: src/gui/changepassworddialog.cpp:44 src/gui/changepassworddialog.cpp:55
+#: src/gui/changepassworddialog.cpp:46 src/gui/changepassworddialog.cpp:55
 #: src/gui/charselectdialog.cpp:110
 msgid "Change Password"
 msgstr "Ändra lösenord"
 
-#: src/gui/changepassworddialog.cpp:50 src/gui/login.cpp:52
+#: src/gui/changepassworddialog.cpp:60 src/gui/login.cpp:52
 #: src/gui/register.cpp:61 src/gui/unregisterdialog.cpp:50
 msgid "Password:"
 msgstr "Lösenord:"
 
-#: src/gui/changepassworddialog.cpp:52
-msgid "Type New Password twice:"
+#: src/gui/changepassworddialog.cpp:62
+#, fuzzy
+msgid "Type new password twice:"
 msgstr "Ange det nya lösenordet två gånger:"
 
 #: src/gui/charcreatedialog.cpp:54
@@ -493,7 +494,7 @@ msgid "Please distribute %d points"
 msgstr "Var vänlig fördela %d poäng"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1516
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1517
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "Fel"
@@ -2177,15 +2178,15 @@ msgstr "  -O --no-opengl   : Använd inte OpenGL den här sessionen"
 msgid "  -v --version     : Display the version"
 msgstr "  -v --version     : Visa aktuell version"
 
-#: src/main.cpp:1527
+#: src/main.cpp:1528
 msgid "Connecting to map server..."
 msgstr "Ansluter till kartservern..."
 
-#: src/main.cpp:1535
+#: src/main.cpp:1536
 msgid "Connecting to character server..."
 msgstr "Ansluter till karaktärsservern..."
 
-#: src/main.cpp:1543
+#: src/main.cpp:1544
 msgid "Connecting to account server..."
 msgstr "Ansluter till kontoservern..."
 
@@ -3045,9 +3046,6 @@ msgstr "Namnlös"
 #: src/resources/monsterdb.cpp:45 src/resources/monsterdb.cpp:67
 msgid "unnamed"
 msgstr "namnlös"
-
-#~ msgid "The Mana World %s"
-#~ msgstr "Manavärlden %s"
 
 #~ msgid "Select Character"
 #~ msgstr "Välj karaktär"

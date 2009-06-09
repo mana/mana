@@ -31,6 +31,7 @@
 #include "gui/widgets/passwordfield.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
 
 #include "net/logindata.h"
 
@@ -40,62 +41,30 @@
 #include <string>
 #include <sstream>
 
-ChangePasswordDialog::ChangePasswordDialog(Window *parent, LoginData *loginData):
+ChangePasswordDialog::ChangePasswordDialog(Window *parent,
+                                           LoginData *loginData):
     Window(_("Change Password"), true, parent),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
-    gcn::Label *accountLabel = new Label(strprintf(_("Account: %s"),
-                                                   mLoginData->username.c_str()));
-    gcn::Label *oldPassLabel = new Label(_("Password:"));
+    gcn::Label *accountLabel = new Label(
+            strprintf(_("Account: %s"), mLoginData->username.c_str()));
     mOldPassField = new PasswordField;
-    gcn::Label *newPassLabel = new Label(_("Type New Password twice:"));
     mFirstPassField = new PasswordField;
     mSecondPassField = new PasswordField;
-    mChangePassButton = new Button(_("Change Password"), "change_password", this);
+    mChangePassButton = new Button(_("Change Password"), "change_password",
+                                   this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
-    const int width = 200;
-    const int height = 170;
-    setContentSize(width, height);
-
-    accountLabel->setPosition(5, 5);
-    accountLabel->setWidth(130);
-    oldPassLabel->setPosition(
-            5, accountLabel->getY() + accountLabel->getHeight() + 7);
-    oldPassLabel->setWidth(130);
-
-    mOldPassField->setPosition(
-            5, oldPassLabel->getY() + oldPassLabel->getHeight() + 7);
-    mOldPassField->setWidth(130);
-
-    newPassLabel->setPosition(
-            5, mOldPassField->getY() + mOldPassField->getHeight() + 7);
-    newPassLabel->setWidth(width - 5);
-
-    mFirstPassField->setPosition(
-            5, newPassLabel->getY() + newPassLabel->getHeight() + 7);
-    mFirstPassField->setWidth(130);
-
-    mSecondPassField->setPosition(
-            5, mFirstPassField->getY() + mFirstPassField->getHeight() + 7);
-    mSecondPassField->setWidth(130);
-
-    mCancelButton->setPosition(
-            width - 5 - mCancelButton->getWidth(),
-            height - 5 - mCancelButton->getHeight());
-    mChangePassButton->setPosition(
-            mCancelButton->getX() - 5 - mChangePassButton->getWidth(),
-            mCancelButton->getY());
-
-    add(accountLabel);
-    add(oldPassLabel);
-    add(mOldPassField);
-    add(newPassLabel);
-    add(mFirstPassField);
-    add(mSecondPassField);
-    add(mChangePassButton);
-    add(mCancelButton);
+    place(0, 0, accountLabel, 3);
+    place(0, 1, new Label(_("Password:")), 3);
+    place(0, 2, mOldPassField, 3).setPadding(1);
+    place(0, 3, new Label(_("Type new password twice:")), 3);
+    place(0, 4, mFirstPassField, 3).setPadding(1);
+    place(0, 5, mSecondPassField, 3).setPadding(1);
+    place(1, 6, mCancelButton);
+    place(2, 6, mChangePassButton);
+    reflowLayout(200);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
@@ -111,8 +80,7 @@ ChangePasswordDialog::~ChangePasswordDialog()
     delete mWrongDataNoticeListener;
 }
 
-void
-ChangePasswordDialog::action(const gcn::ActionEvent &event)
+void ChangePasswordDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {

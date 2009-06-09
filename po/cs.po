@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-06-02 20:41+0200\n"
+"POT-Creation-Date: 2009-06-09 21:24+0200\n"
 "PO-Revision-Date: 2009-03-26 13:00+0000\n"
 "Last-Translator: Lubos <alvinx12@centrum.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -405,7 +405,7 @@ msgid "Sell"
 msgstr "Prodej"
 
 #: src/gui/buysell.cpp:40 src/gui/changeemaildialog.cpp:53
-#: src/gui/changepassworddialog.cpp:56 src/gui/charcreatedialog.cpp:74
+#: src/gui/changepassworddialog.cpp:57 src/gui/charcreatedialog.cpp:74
 #: src/gui/charselectdialog.cpp:104 src/gui/connection.cpp:38
 #: src/gui/itemamount.cpp:96 src/gui/login.cpp:75 src/gui/npcpostdialog.cpp:54
 #: src/gui/quitdialog.cpp:40 src/gui/register.cpp:81
@@ -420,7 +420,7 @@ msgstr "Zrušit"
 msgid "Change Email Address"
 msgstr "Změnit e-mail"
 
-#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:48
+#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:51
 #: src/gui/charselectdialog.cpp:107
 #, c-format
 msgid "Account: %s"
@@ -430,18 +430,18 @@ msgstr "Účet: %s"
 msgid "Type New Email Address twice:"
 msgstr ""
 
-#: src/gui/changepassworddialog.cpp:44 src/gui/changepassworddialog.cpp:55
+#: src/gui/changepassworddialog.cpp:46 src/gui/changepassworddialog.cpp:55
 #: src/gui/charselectdialog.cpp:110
 msgid "Change Password"
 msgstr "Změnit heslo"
 
-#: src/gui/changepassworddialog.cpp:50 src/gui/login.cpp:52
+#: src/gui/changepassworddialog.cpp:60 src/gui/login.cpp:52
 #: src/gui/register.cpp:61 src/gui/unregisterdialog.cpp:50
 msgid "Password:"
 msgstr "Heslo:"
 
-#: src/gui/changepassworddialog.cpp:52
-msgid "Type New Password twice:"
+#: src/gui/changepassworddialog.cpp:62
+msgid "Type new password twice:"
 msgstr ""
 
 #: src/gui/charcreatedialog.cpp:54
@@ -479,7 +479,7 @@ msgid "Please distribute %d points"
 msgstr "Rozdělte prosím %d bodů"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1516
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1517
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "Chyba"
@@ -2161,15 +2161,15 @@ msgstr ""
 msgid "  -v --version     : Display the version"
 msgstr ""
 
-#: src/main.cpp:1527
+#: src/main.cpp:1528
 msgid "Connecting to map server..."
 msgstr ""
 
-#: src/main.cpp:1535
+#: src/main.cpp:1536
 msgid "Connecting to character server..."
 msgstr ""
 
-#: src/main.cpp:1543
+#: src/main.cpp:1544
 msgid "Connecting to account server..."
 msgstr ""
 

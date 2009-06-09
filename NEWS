@@ -1,6 +1,8 @@
-0.0.29.1 (...)
+0.0.29.1 (9 June 2009)
+- Added the ability to change your password after logging in
 - The leader of a party is now displayed in bold
 - Status window was reorganized to allow larger numbers to be displayed
+- The client no longer quits when it can't find the current map
 - Fixed position of floating text for damage, pickup and experience
 - Fixed a possible crash on logging in to the map server
 - Fixed the crash when shift-clicking an item in the inventory
@@ -11,7 +13,10 @@
 - Fixed Reset Windows to also reset the party window
 - Fixed problems with the context menu in the Brazilian translation
 - Fixed resetting the height of the chat on /clear
+- Fixed playing of login song and the music after login
+- Fixed a problem with the player skipping corners, desyncing from the server
 - Small optimizations to OpenGL mode when drawing certain GUI widgets
+- Updated Spanish, Polish, Portugese, Swedish, French and German translations
 
 0.0.29 (13 May 2009)
 - Added support for dynamic emotes and a new way to select them

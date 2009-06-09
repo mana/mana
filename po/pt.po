@@ -7,47 +7,47 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tmw\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-06-02 20:41+0200\n"
-"PO-Revision-Date: 2009-01-09 12:36+0000\n"
-"Last-Translator: Bjørn Lindeijer <bjorn@lindeijer.nl>\n"
+"POT-Creation-Date: 2009-06-09 21:24+0200\n"
+"PO-Revision-Date: 2009-06-06 21:57+0000\n"
+"Last-Translator: Diogo Lavareda <diogolavareda9@hotmail.com>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-05-10 13:48+0000\n"
+"X-Launchpad-Export-Date: 2009-06-08 19:36+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: src/commandhandler.cpp:113 src/commandhandler.cpp:273
 msgid "Unknown command."
-msgstr ""
+msgstr "Comando desconhecido"
 
 #: src/commandhandler.cpp:142
 msgid "-- Help --"
-msgstr ""
+msgstr "-- Ajuda --"
 
 #: src/commandhandler.cpp:143
 msgid "/help > Display this help"
-msgstr ""
+msgstr "/help > Mostra a ajuda"
 
 #: src/commandhandler.cpp:145
 msgid "/where > Display map name"
-msgstr ""
+msgstr "/where > Mostra o nome do mapa"
 
 #: src/commandhandler.cpp:146
 msgid "/who > Display number of online users"
-msgstr ""
+msgstr "/who > Mostra o numero de utilizadores online"
 
 #: src/commandhandler.cpp:147
 msgid "/me > Tell something about yourself"
-msgstr ""
+msgstr "/me > Diga alguma coisa sobre si"
 
 #: src/commandhandler.cpp:149
 msgid "/clear > Clears this window"
-msgstr ""
+msgstr "/clear > Limpa a janela"
 
 #: src/commandhandler.cpp:151
 msgid "/msg > Send a private message to a user"
-msgstr ""
+msgstr "/msg > Envia uma mensagem privata a um utilizador"
 
 #: src/commandhandler.cpp:152
 msgid "/whisper > Alias of msg"
@@ -59,7 +59,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:154
 msgid "/query > Makes a tab for private messages with another user"
-msgstr ""
+msgstr "/query > Cria um separador para mensagens privadas com outro utlizador"
 
 #: src/commandhandler.cpp:155
 msgid "/q > Alias of query"
@@ -67,11 +67,11 @@ msgstr ""
 
 #: src/commandhandler.cpp:157
 msgid "/list > Display all public channels"
-msgstr ""
+msgstr "/list > Mostra todos os canais públicos"
 
 #: src/commandhandler.cpp:158
 msgid "/join > Join or create a channel"
-msgstr ""
+msgstr "/join > Junte-se ou crie um canal"
 
 #: src/commandhandler.cpp:160
 msgid "/party > Invite a user to party"
@@ -79,7 +79,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:162
 msgid "/record > Start recording the chat to an external file"
-msgstr ""
+msgstr "/record > Inicie a gravação da conversa para um ficheiro externo"
 
 #: src/commandhandler.cpp:163
 msgid "/toggle > Determine whether <return> toggles the chat log"
@@ -95,19 +95,19 @@ msgstr ""
 
 #: src/commandhandler.cpp:170
 msgid "For more information, type /help <command>."
-msgstr ""
+msgstr "Para mais informações, escreva /help <command>."
 
 #: src/commandhandler.cpp:174
 msgid "Command: /help"
-msgstr ""
+msgstr "Comando: /help"
 
 #: src/commandhandler.cpp:175
 msgid "This command displays a list of all commands available."
-msgstr ""
+msgstr "Este comando mostra a lista de todos os comandos disponiveis"
 
 #: src/commandhandler.cpp:176
 msgid "Command: /help <command>"
-msgstr ""
+msgstr "Comando: /help <command>"
 
 #: src/commandhandler.cpp:177
 msgid "This command displays help on <command>."
@@ -404,7 +404,7 @@ msgid "Sell"
 msgstr "Vender"
 
 #: src/gui/buysell.cpp:40 src/gui/changeemaildialog.cpp:53
-#: src/gui/changepassworddialog.cpp:56 src/gui/charcreatedialog.cpp:74
+#: src/gui/changepassworddialog.cpp:57 src/gui/charcreatedialog.cpp:74
 #: src/gui/charselectdialog.cpp:104 src/gui/connection.cpp:38
 #: src/gui/itemamount.cpp:96 src/gui/login.cpp:75 src/gui/npcpostdialog.cpp:54
 #: src/gui/quitdialog.cpp:40 src/gui/register.cpp:81
@@ -419,7 +419,7 @@ msgstr "Cancelar"
 msgid "Change Email Address"
 msgstr ""
 
-#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:48
+#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:51
 #: src/gui/charselectdialog.cpp:107
 #, c-format
 msgid "Account: %s"
@@ -429,18 +429,18 @@ msgstr ""
 msgid "Type New Email Address twice:"
 msgstr ""
 
-#: src/gui/changepassworddialog.cpp:44 src/gui/changepassworddialog.cpp:55
+#: src/gui/changepassworddialog.cpp:46 src/gui/changepassworddialog.cpp:55
 #: src/gui/charselectdialog.cpp:110
 msgid "Change Password"
 msgstr ""
 
-#: src/gui/changepassworddialog.cpp:50 src/gui/login.cpp:52
+#: src/gui/changepassworddialog.cpp:60 src/gui/login.cpp:52
 #: src/gui/register.cpp:61 src/gui/unregisterdialog.cpp:50
 msgid "Password:"
 msgstr "Senha:"
 
-#: src/gui/changepassworddialog.cpp:52
-msgid "Type New Password twice:"
+#: src/gui/changepassworddialog.cpp:62
+msgid "Type new password twice:"
 msgstr ""
 
 #: src/gui/charcreatedialog.cpp:54
@@ -478,7 +478,7 @@ msgid "Please distribute %d points"
 msgstr "Por favor distribua %d potos"
 
 #: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
-#: src/gui/serverdialog.cpp:163 src/main.cpp:1516
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1517
 #: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
 msgid "Error"
 msgstr "Erro"
@@ -742,18 +742,16 @@ msgid "Cast Test Spell 3"
 msgstr ""
 
 #: src/gui/minimap.cpp:45 src/gui/minimap.cpp:84
-#, fuzzy
 msgid "Map"
-msgstr "MiniMapa"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:42
 msgid "Waiting for server"
 msgstr ""
 
 #: src/gui/npcdialog.cpp:45
-#, fuzzy
 msgid "Submit"
-msgstr "Sair"
+msgstr ""
 
 #: src/gui/npcdialog.cpp:48 src/gui/npcpostdialog.cpp:39
 msgid "NPC"
@@ -877,14 +875,12 @@ msgid "Generics"
 msgstr ""
 
 #: src/gui/palette.cpp:112
-#, fuzzy
 msgid "Hats"
-msgstr "Estado"
+msgstr ""
 
 #: src/gui/palette.cpp:113
-#, fuzzy
 msgid "Usables"
-msgstr "Usar"
+msgstr ""
 
 #: src/gui/palette.cpp:114
 msgid "Shirts"
@@ -907,9 +903,8 @@ msgid "2 Handed Weapons"
 msgstr ""
 
 #: src/gui/palette.cpp:119
-#, fuzzy
 msgid "Shields"
-msgstr "Competências"
+msgstr ""
 
 #: src/gui/palette.cpp:120
 msgid "Rings"
@@ -1072,9 +1067,9 @@ msgid "@@cancel|Cancel@@"
 msgstr "@@cancel|Cancelar@@"
 
 #: src/gui/popupmenu.cpp:165
-#, fuzzy, c-format
+#, c-format
 msgid "@@pickup|Pick up %s@@"
-msgstr "@@pickup|Apanhar %s@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:166 src/gui/popupmenu.cpp:381
 msgid "@@chat|Add to chat@@"
@@ -1101,9 +1096,8 @@ msgid "@@split|Split@@"
 msgstr "@@split|Dividir@@"
 
 #: src/gui/popupmenu.cpp:372
-#, fuzzy
 msgid "@@store|Store@@"
-msgstr "@@use|Usar@@"
+msgstr ""
 
 #: src/gui/popupmenu.cpp:379
 msgid "@@retrieve|Retrieve@@"
@@ -1361,9 +1355,8 @@ msgid "Tiny"
 msgstr ""
 
 #: src/gui/setup_video.cpp:113
-#, fuzzy
 msgid "Small"
-msgstr "Vender"
+msgstr ""
 
 #: src/gui/setup_video.cpp:114
 msgid "Medium"
@@ -1949,9 +1942,8 @@ msgid "Inventory Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:74
-#, fuzzy
 msgid "Equipment Window"
-msgstr "Equipamento"
+msgstr ""
 
 #: src/keyboardconfig.cpp:75
 msgid "Skill Window"
@@ -1978,9 +1970,8 @@ msgid "Debug Window"
 msgstr ""
 
 #: src/keyboardconfig.cpp:81
-#, fuzzy
 msgid "Party Window"
-msgstr "Reiniciar Janelas"
+msgstr ""
 
 #: src/keyboardconfig.cpp:82
 msgid "Emote Shortcut Window"
@@ -2164,15 +2155,15 @@ msgstr ""
 msgid "  -v --version     : Display the version"
 msgstr ""
 
-#: src/main.cpp:1527
+#: src/main.cpp:1528
 msgid "Connecting to map server..."
 msgstr ""
 
-#: src/main.cpp:1535
+#: src/main.cpp:1536
 msgid "Connecting to character server..."
 msgstr ""
 
-#: src/main.cpp:1543
+#: src/main.cpp:1544
 msgid "Connecting to account server..."
 msgstr ""
 
@@ -2225,9 +2216,8 @@ msgid "Info"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:135
-#, fuzzy
 msgid "Character deleted."
-msgstr "Estatisticas da personagem OK"
+msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:140
 msgid "Failed to delete character."
@@ -2286,36 +2276,34 @@ msgid "Unable to unequip."
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:91 src/net/tmwserv/generalhandler.cpp:82
-#, fuzzy, c-format
+#, c-format
 msgid "Strength %+d"
-msgstr "Força:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:92 src/net/tmwserv/generalhandler.cpp:83
-#, fuzzy, c-format
+#, c-format
 msgid "Agility %+d"
-msgstr "Agilidade:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:93 src/net/tmwserv/generalhandler.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "Vitality %+d"
-msgstr "Vitalidade:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:94 src/net/tmwserv/generalhandler.cpp:86
-#, fuzzy, c-format
+#, c-format
 msgid "Intelligence %+d"
-msgstr "Inteligência:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:95 src/net/tmwserv/generalhandler.cpp:84
-#, fuzzy, c-format
+#, c-format
 msgid "Dexterity %+d"
-msgstr "Destreza:"
+msgstr ""
 
 #: src/net/ea/generalhandler.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid "Luck %+d"
 msgstr ""
-"Copy text   \t\r\n"
-"Ataque %+d"
 
 #: src/net/ea/generalhandler.cpp:118
 msgid "Authentication failed"
@@ -2887,9 +2875,9 @@ msgid "Topic: %s"
 msgstr ""
 
 #: src/net/tmwserv/generalhandler.cpp:87
-#, fuzzy, c-format
+#, c-format
 msgid "Willpower %+d"
-msgstr "Força de Vontade:"
+msgstr ""
 
 #: src/net/tmwserv/guildhandler.cpp:74
 msgid "Guild created."
