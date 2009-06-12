@@ -295,6 +295,9 @@ void Viewport::_drawPath(Graphics *graphics, const Path &path)
 
 void Viewport::mousePressed(gcn::MouseEvent &event)
 {
+    if (event.getSource() != this)
+        return;
+
     // Check if we are alive and kickin'
     if (!mMap || !player_node || !player_node->isAlive())
         return;
