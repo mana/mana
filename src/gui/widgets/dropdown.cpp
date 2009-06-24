@@ -234,6 +234,12 @@ void DropDown::keyPressed(gcn::KeyEvent& keyEvent)
     }
 }
 
+void DropDown::focusLost(const gcn::Event& event)
+{
+    gcn::DropDown::focusLost(event);
+    releaseModalMouseInputFocus();
+}
+
 void DropDown::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
 {
     setSelected(getSelected() - 1);
