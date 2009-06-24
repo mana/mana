@@ -229,11 +229,7 @@ class Being : public Sprite, public ConfigListener
          * @param damage the amount of damage dealt (0 means miss)
          * @param type the attack type
          */
-#ifdef TMWSERV_SUPPORT
-        virtual void handleAttack();
-#else
         virtual void handleAttack(Being *victim, int damage, AttackType type);
-#endif
 
         /**
          * Returns the name of the being.

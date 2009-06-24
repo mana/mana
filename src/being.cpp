@@ -352,15 +352,10 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     }
 }
 
-#ifdef TMWSERV_SUPPORT
-void Being::handleAttack()
-#else
 void Being::handleAttack(Being *victim, int damage, AttackType type)
-#endif
 {
     if (this != player_node)
-        setAction(Being::ATTACK);
-#ifdef EATHENA_SUPPORT
+        setAction(Being::ATTACK, 1);
     if (getType() == PLAYER && victim)
     {
         if (mEquippedWeapon && mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
@@ -379,6 +374,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
             }
         }
     }
+#ifdef EATHENA_SUPPORT
     mFrame = 0;
     mWalkTime = tick_time;
 #endif

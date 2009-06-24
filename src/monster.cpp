@@ -156,22 +156,6 @@ void Monster::setAction(Action action, int attackType)
     }
 }
 
-#ifdef TMWSERV_SUPPORT
-
-void Monster::handleAttack()
-{
-    Being::handleAttack();
-
-    const MonsterInfo &mi = getInfo();
-
-    // TODO: It's not possible to determine hit or miss here, so this stuff
-    // probably needs to be moved somewhere else. We may lose synchronization
-    // between attack animation and the sound, unless we adapt the protocol...
-    sound.playSfx(mi.getSound(MONSTER_EVENT_HIT));
-}
-
-#else
-
 void Monster::handleAttack(Being *victim, int damage, AttackType type)
 {
     Being::handleAttack(victim, damage, type);
@@ -180,8 +164,6 @@ void Monster::handleAttack(Being *victim, int damage, AttackType type)
     sound.playSfx(mi.getSound((damage > 0) ?
                 MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
 }
-
-#endif
 
 void Monster::takeDamage(Being *attacker, int amount, AttackType type)
 {
