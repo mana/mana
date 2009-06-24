@@ -121,12 +121,12 @@ void Monster::setAction(Action action, int attackType)
             particleEffect = getInfo().getAttackParticleEffect(attackType);
             if (!particleEffect.empty() && mParticleEffects)
             {
-                switch (mDirection)
+                switch (mSpriteDirection)
                 {
-                    case DOWN: rotation = 0; break;
-                    case LEFT: rotation = 90; break;
-                    case UP: rotation = 180; break;
-                    case RIGHT: rotation = 270; break;
+                    case DIRECTION_DOWN: rotation = 0; break;
+                    case DIRECTION_LEFT: rotation = 90; break;
+                    case DIRECTION_UP: rotation = 180; break;
+                    case DIRECTION_RIGHT: rotation = 270; break;
                     default: break;
                 }
                 Particle *p;
