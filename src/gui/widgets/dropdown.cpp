@@ -202,42 +202,47 @@ void DropDown::drawButton(gcn::Graphics *graphics)
 // -- KeyListener notifications
 void DropDown::keyPressed(gcn::KeyEvent& keyEvent)
 {
+    if (keyEvent.isConsumed())
+        return;
+
     gcn::Key key = keyEvent.getKey();
 
     if (key.getValue() == Key::ENTER || key.getValue() == Key::SPACE)
-    {
-        if (!mDroppedDown)
-            dropDown();
-        keyEvent.consume();
-    }
+        dropDown();
     else if (key.getValue() == Key::UP)
-    {
-        if (!mDroppedDown)
-            setSelected(getSelected() - 1);
-        keyEvent.consume();
-    }
+        setSelected(getSelected() - 1);
     else if (key.getValue() == Key::DOWN)
-    {
-        if (!mDroppedDown)
-            setSelected(getSelected() + 1);
-        keyEvent.consume();
-    }
+        setSelected(getSelected() + 1);
     else if (key.getValue() == Key::HOME)
-    {
         setSelected(0);
-        keyEvent.consume();
-    }
     else if (key.getValue() == Key::END)
-    {
         setSelected(mListBox->getListModel()->getNumberOfElements() - 1);
-        keyEvent.consume();
-    }
+    else
+        return;
+
+    keyEvent.consume();
 }
 
 void DropDown::focusLost(const gcn::Event& event)
 {
     gcn::DropDown::focusLost(event);
     releaseModalMouseInputFocus();
+}
+
+void DropDown::mousePressed(gcn::MouseEvent& mouseEvent)
+{
+    gcn::DropDown::mousePressed(mouseEvent);
+
+    if (0 <= mouseEvent.getY() && mouseEvent.getY() < getHeight() &&
+        mouseEvent.getX() >= 0 && mouseEvent.getX() < getWidth() &&
+        mouseEvent.getButton() == gcn::MouseEvent::LEFT && mDroppedDown &&
+        mouseEvent.getSource() == mListBox)
+    {
+        mPushed = false;
+        foldUp();
+        releaseModalMouseInputFocus();
+        distributeActionEvent();
+    }
 }
 
 void DropDown::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)

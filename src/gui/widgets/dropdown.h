@@ -68,6 +68,8 @@ class DropDown : public gcn::DropDown
 
         // Inherited from MouseListener
 
+        void mousePressed(gcn::MouseEvent& mouseEvent);
+
         void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
 
         void mouseWheelMovedDown(gcn::MouseEvent& mouseEvent);
