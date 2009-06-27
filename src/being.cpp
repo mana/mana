@@ -531,39 +531,42 @@ void Being::logic()
     }
 
 #ifdef TMWSERV_SUPPORT
-    const Vector dest = (mPath.empty()) ?
-        mDest : Vector(mPath.front().x,
-                       mPath.front().y);
+    if (mAction != DEAD)
+    {
+        const Vector dest = (mPath.empty()) ?
+            mDest : Vector(mPath.front().x,
+                           mPath.front().y);
 
-    Vector dir = dest - mPos;
-    const float length = dir.length();
+        Vector dir = dest - mPos;
+        const float length = dir.length();
 
-    // When we're over 2 pixels from our destination, move to it
-    // TODO: Should be possible to make it even pixel exact, but this solves
-    //       the jigger caused by moving too far.
-    if (length > 2.0f) {
-        const float speed = mWalkSpeed / 100.0f;
-        setPosition(mPos + (dir / (length / speed)));
+        // When we're over 2 pixels from our destination, move to it
+        // TODO: Should be possible to make it even pixel exact, but this solves
+        //       the jigger caused by moving too far.
+        if (length > 2.0f) {
+            const float speed = mWalkSpeed / 100.0f;
+            setPosition(mPos + (dir / (length / speed)));
 
-        if (mAction != WALK)
-            setAction(WALK);
+            if (mAction != WALK)
+                setAction(WALK);
 
-        // Update the player sprite direction
-        int direction = 0;
-        const float dx = std::abs(dir.x);
-        const float dy = std::abs(dir.y);
-        if (dx > dy)
-            direction |= (dir.x > 0) ? RIGHT : LEFT;
-        else
-            direction |= (dir.y > 0) ? DOWN : UP;
-        setDirection(direction);
-    }
-    else if (!mPath.empty()) {
-        // TODO: Pop as soon as there is a direct unblocked line to the next
-        //       point on the path.
-        mPath.pop_front();
-    } else if (mAction == WALK) {
-        setAction(STAND);
+            // Update the player sprite direction
+            int direction = 0;
+            const float dx = std::abs(dir.x);
+            const float dy = std::abs(dir.y);
+            if (dx > dy)
+                 direction |= (dir.x > 0) ? RIGHT : LEFT;
+            else
+                 direction |= (dir.y > 0) ? DOWN : UP;
+            setDirection(direction);
+        }
+        else if (!mPath.empty()) {
+            // TODO: Pop as soon as there is a direct unblocked line to the next
+            //       point on the path.
+            mPath.pop_front();
+        } else if (mAction == WALK) {
+            setAction(STAND);
+        }
     }
 #else
     // Update pixel coordinates
