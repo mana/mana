@@ -324,9 +324,6 @@ void InventoryHandler::unequipItem(const Item *item)
 
     MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
     outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-
-    // Tidy equipment directly to avoid weapon still shown bug, for instance
-    player_node->mEquipment->removeEquipment(item->getInvIndex());
 }
 
 void InventoryHandler::useItem(const Item *item)
