@@ -106,11 +106,11 @@ void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
 
 // Don't do anything on scrollwheel. ScrollArea will deal with that.
 
-void ListBox::mouseWheelMovedUp(gcn::MouseEvent& mouseEvent)
+void ListBox::mouseWheelMovedUp(gcn::MouseEvent &mouseEvent)
 {
 }
 
-void ListBox::mouseWheelMovedDown(gcn::MouseEvent& mouseEvent)
+void ListBox::mouseWheelMovedDown(gcn::MouseEvent &mouseEvent)
 {
 }
 

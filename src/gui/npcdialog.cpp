@@ -172,7 +172,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
                  int choice = 0;
                  int selectedIndex = mItemList->getSelected();
 
-                 if (selectedIndex >= mItems.size())
+                 if (selectedIndex >= (int) mItems.size())
                  {
                      return;
                  }
