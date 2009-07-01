@@ -169,7 +169,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             logger->log("EXP Update");
             while (msg.getUnreadLength())
             {
-                int skill = msg.readInt8();
+                int skill = msg.readInt16();
                 int current = msg.readInt32();
                 int next = msg.readInt32();
 
