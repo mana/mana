@@ -490,6 +490,50 @@ const std::string &Map::getName() const
     return getProperty("mapname");
 }
 
+Path Map::findSimplePath(int startX, int startY,
+                         int destX, int destY,
+                         unsigned char walkmask)
+{
+    // Path to be built up (empty by default)
+    Path path;
+    int positionX = startX, positionY = startY;
+    int directionX, directionY;
+    // Checks our path up to 1 tiles, if a blocking tile is found
+    // We go to the last good tile, and break out of the loop
+    while(true)
+    {
+        directionX = destX - positionX;
+        directionY = destY - positionY;
+
+        if (directionX > 0)
+            directionX = 1;
+        else if(directionX < 0)
+            directionX = -1;
+
+        if (directionY > 0)
+            directionY = 1;
+        else if(directionY < 0)
+            directionY = -1;
+
+        positionX += directionX;
+        positionY += directionY;
+
+        if (getWalk(positionX, positionY, walkmask))
+        {
+            path.push_back(Position(positionX, positionY));
+
+            if ((positionX == destX) && (positionY == destY))
+            {
+                return path;
+            }
+        }
+        else
+        {
+            return path;
+        }
+    }
+}
+
 static int const basicCost = 100;
 
 Path Map::findPath(int startX, int startY, int destX, int destY,

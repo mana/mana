@@ -159,18 +159,26 @@ void Being::setDestination(int dstX, int dstY)
     setDestination(mPos.x, mPos.y, dstX, dstY);
 }
 
+Path Being::findPath()
+{
+    Path path;
+
+    if (mMap)
+    {
+        path = mMap->findPath(mPos.x / 32, mPos.y / 32,
+                              mDest.x / 32, mDest.y / 32, getWalkMask());
+    }
+
+    return path;
+}
+
 void Being::setDestination(int srcX, int srcY, int dstX, int dstY)
 {
     mDest.x = dstX;
     mDest.y = dstY;
 
-    Path thisPath;
+    Path thisPath = findPath();
 
-    if (mMap) 
-    {
-         thisPath = mMap->findPath((int) srcX / 32, (int) srcY / 32,
-                               dstX / 32, dstY / 32, getWalkMask());
-    } 
     if (thisPath.empty())
     {
         setPath(Path());

@@ -149,6 +149,20 @@ void Player::logic()
 }
 #endif
 
+Path Player::findPath()
+{
+    Path path;
+
+    if (mMap)
+    {
+        path = mMap->findSimplePath(getPosition().x / 32, getPosition().y / 32,
+                                    getDestination().x / 32, getDestination().y / 32,
+                                    getWalkMask());
+    }
+
+    return path;
+}
+
 Being::Type Player::getType() const
 {
     return PLAYER;

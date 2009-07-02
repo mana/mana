@@ -258,6 +258,13 @@ class Map : public Properties
         const std::string &getName() const;
 
         /**
+         * Find a simple path from one location to the next.
+         */
+        Path findSimplePath(int startX, int startY,
+                            int destX, int destY,
+                            unsigned char walkmask);
+
+        /**
          * Find a path from one location to the next.
          */
         Path findPath(int startX, int startY, int destX, int destY,
