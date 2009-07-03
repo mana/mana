@@ -40,6 +40,8 @@
 
 #include "resources/iteminfo.h"
 
+#include "log.h" // <<< REMOVE ME!
+
 Net::InventoryHandler *inventoryHandler;
 
 namespace TmwServ {
@@ -102,7 +104,9 @@ void InventoryHandler::unequipItem(const Item *item)
     Net::GameServer::connection->send(msg);
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
-    player_node->mEquipment->setEquipment(item->getInvIndex(), 0);
+    int equipSlot = item->getInvIndex();
+    logger->log("Unequipping %d", equipSlot);
+    player_node->mEquipment->setEquipment(equipSlot, 0);
 }
 
 void InventoryHandler::useItem(const Item *item)

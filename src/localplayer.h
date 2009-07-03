@@ -36,6 +36,13 @@ class Map;
 
 #ifdef TMWSERV_SUPPORT
 
+struct Special
+{
+    int currentMana;
+    int neededMana;
+    int recharge;
+};
+
 /**
  * Attributes used during combat. Available to all the beings.
  */
@@ -215,6 +222,11 @@ class LocalPlayer : public Player
 
 #ifdef TMWSERV_SUPPORT
         void useSpecial(int id);
+
+        void setSpecialStatus(int id, int current, int max, int recharge);
+
+        const std::map<int, Special> &getSpecialStatus() const
+        { return mSpecials; }
 #endif
         void attack(Being *target = NULL, bool keep = false);
 
@@ -450,6 +462,8 @@ class LocalPlayer : public Player
         int mCharacterPoints;
         int mCorrectionPoints;
         int mLevelProgress;
+        std::map<int, Special> mSpecials;
+        char mSpecialRechargeUpdateNeeded;
 #endif
         int mLevel;
         int mMoney;

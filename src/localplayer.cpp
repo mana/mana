@@ -28,6 +28,7 @@
 #include "graphics.h"
 #include "inventory.h"
 #include "item.h"
+#include "log.h"
 #include "map.h"
 #include "monster.h"
 #include "particle.h"
@@ -183,6 +184,23 @@ void LocalPlayer::logic()
         }
         mExpMessageTime--;
     }
+
+    if ((mSpecialRechargeUpdateNeeded%11) == 0)
+    {
+        mSpecialRechargeUpdateNeeded = 0;
+        for (std::map<int, Special>::iterator i = mSpecials.begin();
+             i != mSpecials.end();
+             i++)
+        {
+            i->second.currentMana += i->second.recharge;
+            if (i->second.currentMana > i->second.neededMana)
+            {
+                i->second.currentMana = i->second.neededMana;
+            }
+        }
+    }
+    mSpecialRechargeUpdateNeeded++;
+
 #else
     // Targeting allowed 4 times a second
     if (get_elapsed_time(mLastTarget) >= 250)
@@ -667,6 +685,14 @@ void LocalPlayer::attack()
 void LocalPlayer::useSpecial(int special)
 {
     Net::GameServer::Player::useSpecial(special);
+}
+
+void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
+{
+    logger->log("SpecialUpdate Skill #%d -- (%d/%d) -> %d", id, current, max, recharge);
+    mSpecials[id].currentMana = current;
+    mSpecials[id].neededMana = max;
+    mSpecials[id].recharge = recharge;
 }
 
 #endif

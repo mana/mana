@@ -36,17 +36,19 @@ MagicDialog::MagicDialog():
     setSaveVisible(true);
     setDefaultSize(255, 30, 175, 225);
 
-    gcn::Button *spellButton1 = new Button(_("Cast Test Spell 1"), "spell_1", this);
-    gcn::Button *spellButton2 = new Button(_("Cast Test Spell 2"), "spell_2", this);
-    gcn::Button *spellButton3 = new Button(_("Cast Test Spell 3"), "spell_3", this);
+    mSpellButtons.resize(4);
 
-    spellButton1->setPosition(10, 30);
-    spellButton2->setPosition(10, 60);
-    spellButton3->setPosition(10, 90);
+    mSpellButtons[1] = new Button(_("Spell 1"), "spell_1", this);
+    mSpellButtons[2] = new Button(_("Spell 2"), "spell_2", this);
+    mSpellButtons[3] = new Button(_("Spell 3"), "spell_3", this);
 
-    add(spellButton1);
-    add(spellButton2);
-    add(spellButton3);
+    mSpellButtons[1]->setPosition(10, 60);
+    mSpellButtons[2]->setPosition(10, 90);
+    mSpellButtons[3]->setPosition(10, 120);
+
+    add(mSpellButtons[1]);
+    add(mSpellButtons[2]);
+    add(mSpellButtons[3]);
 
     update();
 
@@ -87,4 +89,23 @@ void MagicDialog::draw(gcn::Graphics *g)
 
 void MagicDialog::update()
 {
+    std::map<int, Special> specials = player_node->getSpecialStatus();
+
+    for (size_t i = 1; i < mSpellButtons.size(); i++)
+    {
+        if (specials.find(i) != specials.end())
+        {
+            std::stringstream s;
+            s <<
+                "Spell" <<
+                i <<
+                " (" <<
+                specials[i].currentMana <<
+                "/" <<
+                specials[i].neededMana <<
+                ")";
+            mSpellButtons[i]->setCaption(s.str());
+            mSpellButtons[i]->adjustSize();
+        }
+    }
 }

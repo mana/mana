@@ -22,6 +22,8 @@
 #ifndef MAGIC_H
 #define MAGIC_H
 
+#include <vector>
+
 #include "gui/widgets/window.h"
 
 #include "guichanfwd.h"
@@ -29,7 +31,13 @@
 #include <guichan/actionlistener.hpp>
 
 /**
- * The skill dialog.
+ * The magic interface.
+ *
+ * This window is hacked together quickly to test the spell
+ * recharge netcode.
+ * It does in no way represent how the interface is going to
+ * look in the final version. Optimization / cleanup is
+ * pointless, as it will be redesigned from scratch.
  *
  * \ingroup Interface
  */
@@ -54,6 +62,9 @@ class MagicDialog : public Window, public gcn::ActionListener
           * Draw this window.
           */
         void draw(gcn::Graphics *g);
+
+    private:
+        std::vector<gcn::Button *> mSpellButtons;
 };
 
 extern MagicDialog *magicDialog;
