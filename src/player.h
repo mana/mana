@@ -54,10 +54,6 @@ class Player : public Being
 #ifdef EATHENA_SUPPORT
         virtual void logic();
 #endif
-        /**
-         * Returns the path to the player's current destination
-         */
-        Path findPath();
 
         virtual Type getType() const;
 
@@ -96,6 +92,11 @@ class Player : public Being
         void flash(int time);
 
 #ifdef TMWSERV_SUPPORT
+        /**
+         * Returns the path to the player's current destination
+         */
+        Path findPath();
+
         /**
          * Adds a guild to the player.
          */
