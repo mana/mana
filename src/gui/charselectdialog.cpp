@@ -300,7 +300,7 @@ void CharSelectDialog::updatePlayerInfo()
         mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"),
                                               pi->mJobLevel));
 #endif
-        mMoneyLabel->setCaption(strprintf(_("Money: %s"), mMoney.c_str()));
+        mMoneyLabel->setCaption(strprintf(_("Money: %s"),mMoney.c_str()));
         if (!mCharSelected)
         {
 #ifdef TMWSERV_SUPPORT
@@ -362,7 +362,10 @@ bool CharSelectDialog::selectByName(const std::string &name)
         LocalPlayer *player = mCharInfo->getEntry();
 
         if (player && player->getName() == name)
+	    {
+	     mMoney = Units::formatCurrency(player->getMoney());
             return true;
+	    }
 
         mCharInfo->next();
     } while (mCharInfo->getPos());
