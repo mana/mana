@@ -94,13 +94,11 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mAttackRange(0),
     ATK(0), MATK(0), DEF(0), MDEF(0), HIT(0), FLEE(0),
     ATK_BONUS(0), MATK_BONUS(0), DEF_BONUS(0), MDEF_BONUS(0), FLEE_BONUS(0),
-    mStatPoint(0), mSkillPoint(0),
-    mStatsPointsToAttribute(0),
+    mSkillPoint(0),
     mEquipment(new Equipment),
 #endif
     mInStorage(false),
 #ifdef EATHENA_SUPPORT
-    mXp(0),
     mTargetTime(-1),
 #endif
     mLastTarget(-1),
@@ -843,13 +841,13 @@ std::pair<int, int> LocalPlayer::getExperience(int skill)
     return std::pair<int, int> (mExpCurrent.at(skill), mExpNext.at(skill));
 }
 
-#else
+#endif
 
-void LocalPlayer::setXp(int xp)
+void LocalPlayer::setLevelProgress(int percent)
 {
-    if (mMap && xp > mXp)
+    if (mMap && percent > percent)
     {
-        const std::string text = toString(xp - mXp) + " xp";
+        const std::string text = toString(percent - percent) + " xp";
 
         // Show XP number
         particleEngine->addTextRiseFadeOutEffect(
@@ -859,10 +857,8 @@ void LocalPlayer::setXp(int xp)
                 &guiPalette->getColor(Palette::EXP_INFO),
                 gui->getInfoParticleFont(), true);
     }
-    mXp = xp;
+    mLevelProgress = percent;
 }
-
-#endif
 
 void LocalPlayer::pickedUp(const std::string &item)
 {

@@ -224,7 +224,7 @@ static void createGuiWindows()
     npcDialog = new NpcDialog;
     npcPostDialog = new NpcPostDialog;
     storageWindow = new StorageWindow;
-    statusWindow = new StatusWindow(player_node);
+    statusWindow = new StatusWindow();
     miniStatusWindow = new MiniStatusWindow;
     inventoryWindow = new InventoryWindow;
     skillDialog = new SkillDialog;

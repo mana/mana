@@ -42,7 +42,7 @@ class StatusWindow : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        StatusWindow(LocalPlayer *player);
+        StatusWindow();
 
          /**
          * Called when receiving actions from widget.
@@ -62,8 +62,6 @@ class StatusWindow : public Window, public gcn::ActionListener
         static void updateHPBar(ProgressBar *bar, bool showMax = false);
 
     private:
-        LocalPlayer *mPlayer;
-
         /**
          * Status Part
          */

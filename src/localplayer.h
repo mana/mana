@@ -312,17 +312,6 @@ class LocalPlayer : public Player
         void setInStorage(bool inStorage);
 
 #ifdef EATHENA_SUPPORT
-        /**
-         * Sets the amount of XP. Shows XP gaining effect if the player is on
-         * a map.
-         */
-        void setXp(int xp);
-
-        /**
-         * Returns the amount of experience points.
-         */
-        int getXp() const { return mXp; }
-
         Uint32 mCharId;     /**< Used only during character selection. */
 
         Uint32 mJobXp;
@@ -338,8 +327,7 @@ class LocalPlayer : public Player
         int ATK, MATK, DEF, MDEF, HIT, FLEE;
         int ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
 
-        Uint16 mStatPoint, mSkillPoint;
-        Uint16 mStatsPointsToAttribute;
+        Uint16 mSkillPoint;
 #endif
 
         int getHp() const
@@ -360,13 +348,10 @@ class LocalPlayer : public Player
         void setLevel(int value)
         { mLevel = value; }
 
-#ifdef TMWSERV_SUPPORT
-        void setLevelProgress(int percent)
-        { mLevelProgress = percent; }
+        void setLevelProgress(int percent);
 
         int getLevelProgress() const
         { return mLevelProgress; }
-#endif
 
         int getMoney() const
         { return mMoney; }
@@ -386,7 +371,6 @@ class LocalPlayer : public Player
         void setMaxWeight(int value)
         { mMaxWeight = value; }
 
-#ifdef TMWSERV_SUPPORT
         int getAttributeBase(int num) const
         { return mAttributeBase[num]; }
 
@@ -421,7 +405,6 @@ class LocalPlayer : public Player
         static const SkillInfo& getSkillInfo(int skill);
 
         std::pair<int, int> getExperience(int skill);
-#endif
 
         bool mUpdateName;     /** Whether or not the name settings have changed */
 
@@ -436,12 +419,10 @@ class LocalPlayer : public Player
 
         bool mInStorage;      /**< Whether storage is currently accessible */
 #ifdef EATHENA_SUPPORT
-        int mXp;            /**< Experience points. */
         int mTargetTime;      /** How long the being has been targeted **/
 #endif
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 
-#ifdef TMWSERV_SUPPORT
         // Character status:
         std::vector<int> mAttributeBase;
         std::vector<int> mAttributeEffective;
@@ -450,7 +431,6 @@ class LocalPlayer : public Player
         int mCharacterPoints;
         int mCorrectionPoints;
         int mLevelProgress;
-#endif
         int mLevel;
         int mMoney;
         int mTotalWeight;

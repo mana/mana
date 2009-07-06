@@ -30,9 +30,8 @@
 
 #include "utils/stringutils.h"
 
-StatusWindow::StatusWindow(LocalPlayer *player):
-    Window(player->getName()),
-    mPlayer(player)
+StatusWindow::StatusWindow():
+    Window(player_node->getName())
 {
     setWindowName("Status");
     setResizable(true);
@@ -198,13 +197,13 @@ void StatusWindow::update()
     // Status Part
     // -----------
     mLvlLabel->setCaption(  "Level: " +
-                            toString(mPlayer->getLevel()) +
+                            toString(player_node->getLevel()) +
                             " (" +
-                            toString(mPlayer->getLevelProgress()) +
+                            toString(player_node->getLevelProgress()) +
                             "%)");
     mLvlLabel->adjustSize();
 
-    mMoneyLabel->setCaption("Money: " + toString(mPlayer->getMoney()) + " GP");
+    mMoneyLabel->setCaption("Money: " + toString(player_node->getMoney()) + " GP");
     mMoneyLabel->adjustSize();
 
     updateHPBar(mHpBar, true);
@@ -219,16 +218,16 @@ void StatusWindow::update()
         "Intelligence",
         "Willpower"
     };
-    int characterPoints = mPlayer->getCharacterPoints();
-    int correctionPoints = mPlayer->getCorrectionPoints();
+    int characterPoints = player_node->getCharacterPoints();
+    int correctionPoints = player_node->getCorrectionPoints();
     // Update labels
     for (int i = 0; i < 6; i++)
     {
         mStatsLabel[i]->setCaption(attrNames[i]);
         mStatsDisplayLabel[i]->setCaption(
             strprintf("%d / %d",
-                mPlayer->getAttributeEffective(CHAR_ATTR_BEGIN + i),
-                mPlayer->getAttributeBase(CHAR_ATTR_BEGIN + i)));
+                player_node->getAttributeEffective(CHAR_ATTR_BEGIN + i),
+                player_node->getAttributeBase(CHAR_ATTR_BEGIN + i)));
 
         mStatsLabel[i]->adjustSize();
         mStatsDisplayLabel[i]->adjustSize();
@@ -248,34 +247,34 @@ void StatusWindow::update()
 
     // Attack TODO: Count equipped Weapons and items attack bonuses
     mStatsAttackPoints->setCaption(
-            toString(mPlayer->ATK + mPlayer->ATK_BONUS));
+            toString(player_node->ATK + player_node->ATK_BONUS));
     mStatsAttackPoints->adjustSize();
 
     // Defense TODO: Count equipped Armors and items defense bonuses
     mStatsDefensePoints->setCaption(
-            toString(mPlayer->DEF + mPlayer->DEF_BONUS));
+            toString(player_node->DEF + player_node->DEF_BONUS));
     mStatsDefensePoints->adjustSize();
 
     // Magic Attack TODO: Count equipped items M.Attack bonuses
     mStatsMagicAttackPoints->setCaption(
-            toString(mPlayer->MATK + mPlayer->MATK_BONUS));
+            toString(player_node->MATK + player_node->MATK_BONUS));
     mStatsMagicAttackPoints->adjustSize();
 
     // Magic Defense TODO: Count equipped items M.Defense bonuses
     mStatsMagicDefensePoints->setCaption(
-            toString(mPlayer->MDEF + mPlayer->MDEF_BONUS));
+            toString(player_node->MDEF + player_node->MDEF_BONUS));
     mStatsMagicDefensePoints->adjustSize();
 
     // Accuracy %
-    mStatsAccuracyPoints->setCaption(toString(mPlayer->HIT));
+    mStatsAccuracyPoints->setCaption(toString(player_node->HIT));
     mStatsAccuracyPoints->adjustSize();
 
     // Evasion %
-    mStatsEvadePoints->setCaption(toString(mPlayer->FLEE));
+    mStatsEvadePoints->setCaption(toString(player_node->FLEE));
     mStatsEvadePoints->adjustSize();
 
     // Reflex %
-    mStatsReflexPoints->setCaption(toString(mPlayer->DEX / 4)); // + counter
+    mStatsReflexPoints->setCaption(toString(player_node->DEX / 4)); // + counter
     mStatsReflexPoints->adjustSize();
 */
     // Update Second column widgets position
@@ -298,52 +297,52 @@ void StatusWindow::action(const gcn::ActionEvent &event)
     // Stats Part
     if (eventId == "STR+")
     {
-        mPlayer->raiseAttribute(LocalPlayer::STR);
+        player_node->raiseAttribute(LocalPlayer::STR);
     }
     else if (eventId == "AGI+")
     {
-        mPlayer->raiseAttribute(LocalPlayer::AGI);
+        player_node->raiseAttribute(LocalPlayer::AGI);
     }
     else if (eventId == "DEX+")
     {
-        mPlayer->raiseAttribute(LocalPlayer::DEX);
+        player_node->raiseAttribute(LocalPlayer::DEX);
     }
     else if (eventId == "VIT+")
     {
-        mPlayer->raiseAttribute(LocalPlayer::VIT);
+        player_node->raiseAttribute(LocalPlayer::VIT);
     }
     else if (eventId == "INT+")
     {
-        mPlayer->raiseAttribute(LocalPlayer::INT);
+        player_node->raiseAttribute(LocalPlayer::INT);
     }
     else if (eventId == "WIL+")
     {
-        mPlayer->raiseAttribute(LocalPlayer::WIL);
+        player_node->raiseAttribute(LocalPlayer::WIL);
     }
 
     else if (eventId == "STR-")
     {
-        mPlayer->lowerAttribute(LocalPlayer::STR);
+        player_node->lowerAttribute(LocalPlayer::STR);
     }
     else if (eventId == "AGI-")
     {
-        mPlayer->lowerAttribute(LocalPlayer::AGI);
+        player_node->lowerAttribute(LocalPlayer::AGI);
     }
     else if (eventId == "DEX-")
     {
-        mPlayer->lowerAttribute(LocalPlayer::DEX);
+        player_node->lowerAttribute(LocalPlayer::DEX);
     }
     else if (eventId == "VIT-")
     {
-        mPlayer->lowerAttribute(LocalPlayer::VIT);
+        player_node->lowerAttribute(LocalPlayer::VIT);
     }
     else if (eventId == "INT-")
     {
-        mPlayer->lowerAttribute(LocalPlayer::INT);
+        player_node->lowerAttribute(LocalPlayer::INT);
     }
     else if (eventId == "WIL-")
     {
-        mPlayer->lowerAttribute(LocalPlayer::WIL);
+        player_node->lowerAttribute(LocalPlayer::WIL);
     }
 }
 

@@ -38,9 +38,8 @@
 #include "utils/mathutils.h"
 #include "utils/stringutils.h"
 
-StatusWindow::StatusWindow(LocalPlayer *player):
-    Window(player->getName()),
-    mPlayer(player),
+StatusWindow::StatusWindow():
+    Window(player_node->getName()),
     mCurrency(0)
 {
     setWindowName("Status");
@@ -171,14 +170,14 @@ void StatusWindow::update()
 {
     // Status Part
     // -----------
-    mLvlLabel->setCaption(strprintf(_("Level: %d"), mPlayer->getLevel()));
+    mLvlLabel->setCaption(strprintf(_("Level: %d"), player_node->getLevel()));
     mLvlLabel->adjustSize();
 
-    mJobLvlLabel->setCaption(strprintf(_("Job: %d"), mPlayer->mJobLevel));
+    mJobLvlLabel->setCaption(strprintf(_("Job: %d"), player_node->mJobLevel));
     mJobLvlLabel->adjustSize();
 
-    if (mCurrency != mPlayer->getMoney()) {
-        mCurrency = mPlayer->getMoney();
+    if (mCurrency != player_node->getMoney()) {
+        mCurrency = player_node->getMoney();
         mGpLabel->setCaption(strprintf(_("Money: %s"),
                     Units::formatCurrency(mCurrency).c_str()));
         mGpLabel->adjustSize();
@@ -202,20 +201,20 @@ void StatusWindow::update()
         N_("Dexterity"),
         N_("Luck")
     };
-    int statusPoints = mPlayer->mStatsPointsToAttribute;
+    int statusPoints = player_node->getCharacterPoints();
 
     // Update labels
     for (int i = 0; i < 6; i++)
     {
         mStatsLabel[i]->setCaption(gettext(attrNames[i]));
-        mStatsDisplayLabel[i]->setCaption(toString((int) mPlayer->mAttr[i]));
-        mPointsLabel[i]->setCaption(toString((int) mPlayer->mAttrUp[i]));
+        mStatsDisplayLabel[i]->setCaption(toString((int) player_node->mAttr[i]));
+        mPointsLabel[i]->setCaption(toString((int) player_node->mAttrUp[i]));
 
         mStatsLabel[i]->adjustSize();
         mStatsDisplayLabel[i]->adjustSize();
         mPointsLabel[i]->adjustSize();
 
-        mStatsButton[i]->setEnabled(mPlayer->mAttrUp[i] <= statusPoints);
+        mStatsButton[i]->setEnabled(player_node->mAttrUp[i] <= statusPoints);
     }
     mRemainingStatsPointsLabel->setCaption(
             strprintf(_("Remaining Status Points: %d"), statusPoints));
@@ -225,34 +224,34 @@ void StatusWindow::update()
 
     // Attack TODO: Count equipped Weapons and items attack bonuses
     mStatsAttackPoints->setCaption(
-            toString(mPlayer->ATK + mPlayer->ATK_BONUS));
+            toString(player_node->ATK + player_node->ATK_BONUS));
     mStatsAttackPoints->adjustSize();
 
     // Defense TODO: Count equipped Armors and items defense bonuses
     mStatsDefensePoints->setCaption(
-            toString(mPlayer->DEF + mPlayer->DEF_BONUS));
+            toString(player_node->DEF + player_node->DEF_BONUS));
     mStatsDefensePoints->adjustSize();
 
     // Magic Attack TODO: Count equipped items M.Attack bonuses
     mStatsMagicAttackPoints->setCaption(
-            toString(mPlayer->MATK + mPlayer->MATK_BONUS));
+            toString(player_node->MATK + player_node->MATK_BONUS));
     mStatsMagicAttackPoints->adjustSize();
 
     // Magic Defense TODO: Count equipped items M.Defense bonuses
     mStatsMagicDefensePoints->setCaption(
-            toString(mPlayer->MDEF + mPlayer->MDEF_BONUS));
+            toString(player_node->MDEF + player_node->MDEF_BONUS));
     mStatsMagicDefensePoints->adjustSize();
 
     // Accuracy %
-    mStatsAccuracyPoints->setCaption(toString(mPlayer->HIT));
+    mStatsAccuracyPoints->setCaption(toString(player_node->HIT));
     mStatsAccuracyPoints->adjustSize();
 
     // Evasion %
-    mStatsEvadePoints->setCaption(toString(mPlayer->FLEE));
+    mStatsEvadePoints->setCaption(toString(player_node->FLEE));
     mStatsEvadePoints->adjustSize();
 
     // Reflex %
-    mStatsReflexPoints->setCaption(toString(mPlayer->DEX / 4)); // + counter
+    mStatsReflexPoints->setCaption(toString(player_node->DEX / 4)); // + counter
     mStatsReflexPoints->adjustSize();
 }
 
@@ -400,7 +399,7 @@ static void updateProgressBar(ProgressBar *bar, int value, int max,
 void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
 {
     updateProgressBar(bar,
-                      player_node->getXp(),
+                      player_node->getLevelProgress(),
                       player_node->mXpForNextLevel,
                       percent);
 }

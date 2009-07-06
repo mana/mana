@@ -40,7 +40,7 @@ class StatusWindow : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        StatusWindow(LocalPlayer *player);
+        StatusWindow();
 
          /**
          * Called when receiving actions from widget.
@@ -63,8 +63,6 @@ class StatusWindow : public Window, public gcn::ActionListener
         static void updateJobBar(ProgressBar *bar, bool percent = true);
 
     private:
-        LocalPlayer *mPlayer;
-
         /**
          * Status Part
          */

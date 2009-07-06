@@ -173,7 +173,7 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setGender(mLoginData->sex);
 
     tempPlayer->mCharId = msg.readInt32();
-    tempPlayer->setXp(msg.readInt32());
+    tempPlayer->setLevelProgress(msg.readInt32());
     tempPlayer->setMoney(msg.readInt32());
     tempPlayer->mJobXp = msg.readInt32();
     tempPlayer->mJobLevel = msg.readInt32();
