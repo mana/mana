@@ -21,6 +21,7 @@
 
 #include "gui/inventorywindow.h"
 #include "gui/partywindow.h"
+#include "gui/skilldialog.h"
 
 #include "net/tmwserv/generalhandler.h"
 
@@ -146,6 +147,7 @@ void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(true);
     partyWindow->clearPartyName();
+    skillDialog->loadSkills("tmw-skills.xml");
 }
 
 void GeneralHandler::guiWindowsUnloaded()

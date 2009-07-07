@@ -84,39 +84,7 @@ enum
     CHAR_ATTR_END,
     CHAR_ATTR_NB = CHAR_ATTR_END - CHAR_ATTR_BEGIN,
 
-    CHAR_SKILL_BEGIN = CHAR_ATTR_END,
-
-    CHAR_SKILL_WEAPON_BEGIN = CHAR_SKILL_BEGIN,
-    CHAR_SKILL_WEAPON_NONE = CHAR_SKILL_WEAPON_BEGIN,
-    CHAR_SKILL_WEAPON_KNIFE,
-    CHAR_SKILL_WEAPON_SWORD,
-    CHAR_SKILL_WEAPON_POLEARM,
-    CHAR_SKILL_WEAPON_STAFF,
-    CHAR_SKILL_WEAPON_WHIP,
-    CHAR_SKILL_WEAPON_BOW,
-    CHAR_SKILL_WEAPON_SHOOTING,
-    CHAR_SKILL_WEAPON_MACE,
-    CHAR_SKILL_WEAPON_AXE,
-    CHAR_SKILL_WEAPON_THROWN,
-    CHAR_SKILL_WEAPON_END,
-    CHAR_SKILL_WEAPON_NB = CHAR_SKILL_WEAPON_END - CHAR_SKILL_WEAPON_BEGIN,
-
-    CHAR_SKILL_MAGIC_BEGIN = CHAR_SKILL_WEAPON_END,
-    CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER = CHAR_SKILL_MAGIC_BEGIN,
-    // add magic skills here
-    CHAR_SKILL_MAGIC_END,
-    CHAR_SKILL_MAGIC_NB = CHAR_SKILL_MAGIC_END - CHAR_SKILL_MAGIC_BEGIN,
-
-    CHAR_SKILL_CRAFT_BEGIN = CHAR_SKILL_MAGIC_END,
-    CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER = CHAR_SKILL_CRAFT_BEGIN,
-    // add crafting skills here
-    CHAR_SKILL_CRAFT_END,
-    CHAR_SKILL_CRAFT_NB = CHAR_SKILL_CRAFT_END - CHAR_SKILL_CRAFT_BEGIN,
-
-    CHAR_SKILL_END = CHAR_SKILL_CRAFT_END,
-    CHAR_SKILL_NB = CHAR_SKILL_END - CHAR_SKILL_BEGIN,
-
-    NB_CHARACTER_ATTRIBUTES = CHAR_SKILL_END
+    NB_CHARACTER_ATTRIBUTES = CHAR_ATTR_END
 };
 
 #endif
@@ -371,17 +339,15 @@ class LocalPlayer : public Player
         void setMaxWeight(int value)
         { mMaxWeight = value; }
 
-        int getAttributeBase(int num) const
+        int getAttributeBase(int num)
         { return mAttributeBase[num]; }
 
-        void setAttributeBase(int num, int value)
-        { mAttributeBase[num] = value; }
+        void setAttributeBase(int num, int value);
 
-        int getAttributeEffective(int num) const
+        int getAttributeEffective(int num)
         { return mAttributeEffective[num]; }
 
-        void setAttributeEffective(int num, int value)
-        { mAttributeEffective[num] = value; }
+        void setAttributeEffective(int num, int value);
 
         int getCharacterPoints() const
         { return mCharacterPoints; }
@@ -396,13 +362,6 @@ class LocalPlayer : public Player
         { mCorrectionPoints = n; }
 
         void setExperience(int skill, int current, int next);
-
-        struct SkillInfo {
-            std::string name;
-            std::string icon;
-        };
-
-        static const SkillInfo& getSkillInfo(int skill);
 
         std::pair<int, int> getExperience(int skill);
 
@@ -424,10 +383,9 @@ class LocalPlayer : public Player
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 
         // Character status:
-        std::vector<int> mAttributeBase;
-        std::vector<int> mAttributeEffective;
-        std::vector<int> mExpCurrent;
-        std::vector<int> mExpNext;
+        std::map<int, int> mAttributeBase;
+        std::map<int, int> mAttributeEffective;
+        std::map<int, std::pair<int, int> > mSkillExp;
         int mCharacterPoints;
         int mCorrectionPoints;
         int mLevelProgress;

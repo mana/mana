@@ -69,6 +69,16 @@ gcn::Widget *TabbedArea::getWidget(const std::string &name) const
     return NULL;
 }
 
+gcn::Widget *TabbedArea::getCurrentWidget()
+{
+    gcn::Tab *tab = getSelectedTab();
+
+    if (tab)
+        return getWidget(tab->getCaption());
+    else
+        return NULL;
+}
+
 void TabbedArea::addTab(const std::string &caption, gcn::Widget *widget)
 {
     Tab *tab = new Tab;

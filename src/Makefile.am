@@ -59,6 +59,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/widgets/textfield.h \
 	      gui/widgets/textpreview.cpp \
 	      gui/widgets/textpreview.h \
+	      gui/widgets/vertcontainer.cpp \
+	      gui/widgets/vertcontainer.h \
 	      gui/widgets/whispertab.cpp \
 	      gui/widgets/whispertab.h \
 	      gui/widgets/window.cpp \

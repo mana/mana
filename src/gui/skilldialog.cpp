@@ -25,105 +25,66 @@
 #include "gui/widgets/container.h"
 #include "gui/widgets/icon.h"
 #include "gui/widgets/label.h"
+#include "gui/widgets/layouthelper.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/progressbar.h"
 #include "gui/widgets/scrollarea.h"
+#include "gui/widgets/tab.h"
 #include "gui/widgets/tabbedarea.h"
+#include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
 
 #include "localplayer.h"
+#include "log.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+#include "utils/xml.h"
 
 #include <string>
 #include <vector>
 
-class SkillTab : public Container, public gcn::ActionListener
+class SkillEntry;
+
+struct SkillInfo
 {
-    public:
-        /**
-         * The type of this skill tab
-         */
-        const std::string type;
-
-        /**
-         * Constructor
-         */
-        SkillTab(const std::string &type);
-
-        /**
-         * Update this tab
-         */
-        void update();
-
-        /**
-         * Called when receiving actions from widget.
-         */
-        void action(const gcn::ActionEvent &event) {}
-
-    private:
-         /**
-         * Update the information of a skill at
-         * the given index
-         */
-        void updateSkill(int index);
-
-        /**
-         * Gets the number of skills in this particular
-         * type of tab.
-         */
-        int getSkillNum();
-
-        /**
-         * Get the first enumeration of this skill tab's
-         * skill type.
-         */
-        int getSkillBegin();
-
-        /**
-         * Get the icon associated with the given index
-         */
-        Icon *getIcon(int index);
-
-        std::vector<Icon *> mSkillIcons;
-        std::vector<gcn::Label *> mSkillNameLabels;
-        std::vector<gcn::Label *> mSkillLevelLabels;
-        std::vector<gcn::Label *> mSkillExpLabels;
-        std::vector<ProgressBar *> mSkillProgress;
+    unsigned short id;
+    std::string name;
+    std::string icon;
+    bool modifiable;
+    SkillEntry *display;
 };
 
+class SkillEntry : public Container
+{
+    public:
+        SkillEntry(struct SkillInfo *info);
+
+        void update();
+
+    private:
+        struct SkillInfo *mInfo;
+        Icon *mIcon;
+        Label *mNameLabel;
+        Label *mLevelLabel;
+        Label *mExpLabel;
+        ProgressBar *mProgress;
+};
 
 SkillDialog::SkillDialog():
     Window(_("Skills"))
 {
     setWindowName("Skills");
     setCloseButton(true);
+    setResizable(true);
     setSaveVisible(true);
     setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
 
-    TabbedArea *panel = new TabbedArea;
-    panel->setDimension(gcn::Rectangle(5, 5, 270, 420));
+    mTabs = new TabbedArea();
 
-    SkillTab *tab;
-
-    // Add each type of skill tab to the panel
-    tab = new SkillTab("Weapon");
-    panel->addTab(_("Weapons"), tab);
-    mTabs.push_back(tab);
-
-    tab = new SkillTab("Magic");
-    panel->addTab(_("Magic"), tab);
-    mTabs.push_back(tab);
-
-    tab = new SkillTab("Craft");
-    panel->addTab(_("Crafts"), tab);
-    mTabs.push_back(tab);
-
-    add(panel);
-
-    update();
+    place(0, 0, mTabs, 5, 5);
+    place(0, 5, new Label("TODO"));
 
     setLocationRelativeTo(getParent());
     loadWindowState();
@@ -131,7 +92,7 @@ SkillDialog::SkillDialog():
 
 SkillDialog::~SkillDialog()
 {
-    delete_all(mTabs);
+    //delete_all(mTabs);
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)
@@ -145,174 +106,182 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void SkillDialog::draw(gcn::Graphics *g)
+void SkillDialog::adjustTabSize()
 {
-    update();
-
-    Window::draw(g);
-}
-
-void SkillDialog::update()
-{
-  for(std::list<SkillTab*>::const_iterator i = mTabs.begin();
-      i != mTabs.end(); ++i)
-    {
-      (*i)->update();
+    gcn::Widget *content = mTabs->getCurrentWidget();
+    if (content) {
+        int width = mTabs->getWidth() - 2 * content->getFrameSize();
+        int height = mTabs->getContainerHeight() - 2 * content->getFrameSize();
+        content->setSize(width, height);
+        content->setVisible(true);
+        content->logic();
     }
 }
 
-SkillTab::SkillTab(const std::string &type): type(type)
+void SkillDialog::widgetResized(const gcn::Event &event)
 {
-    setOpaque(false);
-    setDimension(gcn::Rectangle(0, 0, 270, 420));
-    int skillNum = getSkillNum();
+    Window::widgetResized(event);
 
-    mSkillIcons.resize(skillNum);
-    mSkillNameLabels.resize(skillNum);
-    mSkillLevelLabels.resize(skillNum);
-    mSkillExpLabels.resize(skillNum);
-    mSkillProgress.resize(skillNum);
-
-    // Set the initial positions of the skill information
-    for (int a = 0; a < skillNum; a++)
-    {
-        mSkillIcons.at(a) = getIcon(a);
-        mSkillIcons.at(a)->setPosition(1, a*32);
-        add(mSkillIcons.at(a));
-
-        mSkillNameLabels.at(a) = new Label("");
-        mSkillNameLabels.at(a)->setPosition(35, a*32 );
-        add(mSkillNameLabels.at(a));
-
-        mSkillProgress.at(a) = new ProgressBar(0.0f, 200, 20, gcn::Color(150, 150, 150));
-        mSkillProgress.at(a)->setPosition(35, a*32 + 13);
-        add(mSkillProgress.at(a));
-
-        mSkillExpLabels.at(a) = new Label("");
-        mSkillExpLabels.at(a)->setPosition(45, a*32 + 16);
-        add(mSkillExpLabels.at(a));
-
-        mSkillLevelLabels.at(a) = new Label("");
-        mSkillLevelLabels.at(a)->setPosition(165, a*32);
-        add(mSkillLevelLabels.at(a));
-    }
-
-    update();
+    adjustTabSize();
 }
 
-int SkillTab::getSkillNum()
+void SkillDialog::logic()
 {
-    int skillNum = 0;
+    Window::logic();
 
-    if (type == "Weapon")
-    {
-        skillNum = CHAR_SKILL_WEAPON_NB;
-        return skillNum;
+    Tab *tab = dynamic_cast<Tab*>(mTabs->getSelectedTab());
+    if (tab != mCurrentTab) {
+        mCurrentTab = tab;
+        adjustTabSize();
     }
-    else if (type == "Magic")
-    {
-        skillNum = CHAR_SKILL_MAGIC_NB;
-        return skillNum;
-    }
-    else if (type == "Craft")
-    {
-        skillNum = CHAR_SKILL_CRAFT_NB;
-        return skillNum;
-    }
-    else return skillNum;
 }
 
-int SkillTab::getSkillBegin()
+std::string SkillDialog::update(int id)
 {
-    int skillBegin = 0;
+    SkillInfo *info = mSkills[id];
 
-    if (type == "Weapon")
+    if (info)
     {
-        skillBegin = CHAR_SKILL_WEAPON_BEGIN - CHAR_SKILL_BEGIN;
-        return skillBegin;
-    }
-    else if (type == "Magic")
-    {
-        skillBegin = CHAR_SKILL_MAGIC_BEGIN - CHAR_SKILL_BEGIN;
-        return skillBegin;
-    }
-    else if (type == "Craft")
-    {
-        skillBegin = CHAR_SKILL_CRAFT_BEGIN - CHAR_SKILL_BEGIN;
-        return skillBegin;
-    }
-    else return skillBegin;
-}
-
-Icon* SkillTab::getIcon(int index)
-{
-    int skillBegin = getSkillBegin();
-    std::string icon = LocalPlayer::getSkillInfo(index + skillBegin).icon;
-    return new Icon(icon);
-}
-
-void SkillTab::updateSkill(int index)
-{
-    int skillBegin = getSkillBegin();
-
-    int baseLevel = player_node->getAttributeBase(index +
-                                                  skillBegin +
-                                                  CHAR_SKILL_BEGIN);
-
-    int effLevel = player_node->getAttributeEffective(index +
-                                                      skillBegin +
-                                                      CHAR_SKILL_BEGIN);
-    if(baseLevel <= 0)
-    {
-        mSkillProgress.at(index)->setVisible(false);
-        mSkillExpLabels.at(index)->setVisible(false);
-        mSkillLevelLabels.at(index)->setVisible(false);
-        mSkillNameLabels.at(index)->setVisible(false);
-        mSkillIcons.at(index)->setVisible(false);
+        info->display->update();
+        return info->name;
     }
     else
-    {
-        mSkillProgress.at(index)->setVisible(true);
-        mSkillExpLabels.at(index)->setVisible(true);
-        mSkillLevelLabels.at(index)->setVisible(true);
-        mSkillNameLabels.at(index)->setVisible(true);
-        mSkillIcons.at(index)->setVisible(true);
-        std::string skillLevel("Lvl: " + toString(baseLevel));
-        if (effLevel < baseLevel)
-        {
-            skillLevel.append(" - " + toString(baseLevel - effLevel));
-        }
-        else if (effLevel > baseLevel)
-        {
-            skillLevel.append(" + " + toString(effLevel - baseLevel));
-        }
-        mSkillLevelLabels.at(index)->setCaption(skillLevel);
-
-        std::pair<int, int> exp = player_node->getExperience(index + skillBegin);
-        std::string sExp (toString(exp.first) + " / " + toString(exp.second));
-
-
-        mSkillNameLabels.at(index)->setCaption(LocalPlayer::getSkillInfo(index + skillBegin).name);
-        mSkillNameLabels.at(index)->adjustSize();
-        mSkillLevelLabels.at(index)->adjustSize();
-        mSkillExpLabels.at(index)->setCaption(sExp);
-        mSkillExpLabels.at(index)->adjustSize();
-        mSkillExpLabels.at(index)->setAlignment(gcn::Graphics::RIGHT);
-
-        // More intense red as exp grows
-        int color = 150 - (int)(150 * ((float) exp.first / exp.second));
-        mSkillProgress.at(index)->setColor(244, color, color);
-        mSkillProgress.at(index)->setProgress((float) exp.first / exp.second);
-    }
+        return "";
 }
 
-void SkillTab::update()
+void SkillDialog::loadSkills(const std::string &file, bool fixed)
 {
-    int skillNum = getSkillNum();
+    // TODO: mTabs->clear();
+    delete_all(mSkills);
 
-    // Update the skill information for reach skill
-    for (int a = 0; a < skillNum; a++)
+    XML::Document doc(file);
+    xmlNodePtr root = doc.rootNode();
+
+    if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
     {
-        updateSkill(a);
+        logger->log("Error loading skills file: %s", file.c_str());
+        return;
     }
+
+    int setCount = 0;
+    std::string setName;
+    ScrollArea *scroll;
+    VertContainer *container;
+    std::string fixedDef = toString(fixed);
+
+    for_each_xml_child_node(set, root)
+    {
+        if (xmlStrEqual(set->name, BAD_CAST "set"))
+        {
+            setCount++;
+            setName = XML::getProperty(set, "name", strprintf(_("Skill Set %d"), setCount));
+
+            container = new VertContainer(32);
+            container->setOpaque(false);
+            scroll = new ScrollArea(container);
+            scroll->setOpaque(false);
+            scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
+            scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
+
+            mTabs->addTab(setName, scroll);
+            for_each_xml_child_node(node, set)
+            {
+                if (xmlStrEqual(node->name, BAD_CAST "skill"))
+                {
+                    int id = atoi(XML::getProperty(node, "id", "-1").c_str());
+                    std::string name = XML::getProperty(node, "name", strprintf(_("Skill %d"), id));
+                    std::string icon = XML::getProperty(node, "icon", "");
+                    bool modifiable = !atoi(XML::getProperty(node, "fixed", fixedDef).c_str());
+
+                    SkillInfo *skill = new SkillInfo;
+                    skill->id = id;
+                    skill->name = name;
+                    skill->icon = icon;
+                    skill->modifiable = modifiable;
+                    skill->display = new SkillEntry(skill);
+
+                    container->add(skill->display);
+
+                    mSkills[id] = skill;
+                }
+            }
+        }
+    }
+
+    adjustTabSize();
+}
+
+SkillEntry::SkillEntry(struct SkillInfo *info) : mInfo(info),
+    mIcon(NULL),
+    mNameLabel(new Label(info->name)),
+    mProgress(new ProgressBar(0.0f, 200, 20, gcn::Color(150, 150, 150))),
+    mLevelLabel(new Label("999"))
+{
+    setOpaque(false);
+
+    if (!info->icon.empty())
+        mIcon = new Icon(info->icon);
+
+    /*LayoutHelper h(this);
+    ContainerPlacer place = h.getPlacer(0, 0);
+
+    if (mIcon)
+        place(0, 0, mIcon, 1, 2);
+    place(1, 0, mNameLabel, 3);
+    place(4, 0, mLevelLabel);
+    place(1, 1, mProgress, 4);*/
+
+    if (mIcon)
+    {
+        mIcon->setPosition(1, 0);
+        add(mIcon);
+    }
+
+    mNameLabel->setPosition(35, 0);
+    add(mNameLabel);
+
+    mLevelLabel->setPosition(165, 0);
+    add(mLevelLabel);
+
+    mProgress->setPosition(35, 13);
+    add(mProgress);
+
+    update();
+}
+
+void SkillEntry::update()
+{
+    int baseLevel = player_node->getAttributeBase(mInfo->id);
+
+    int effLevel = player_node->getAttributeEffective(mInfo->id);
+
+    if (baseLevel <= 0)
+    {
+        setVisible(false);
+        return;
+    }
+
+    setVisible(true);
+
+    std::string skillLevel("Lvl: " + toString(baseLevel));
+    if (effLevel < baseLevel)
+    {
+        skillLevel.append(" - " + toString(baseLevel - effLevel));
+    }
+    else if (effLevel > baseLevel)
+    {
+        skillLevel.append(" + " + toString(effLevel - baseLevel));
+    }
+    mLevelLabel->setCaption(skillLevel);
+
+    std::pair<int, int> exp = player_node->getExperience(mInfo->id);
+    std::string sExp (toString(exp.first) + " / " + toString(exp.second));
+
+    mLevelLabel->adjustSize();
+    mProgress->setText(sExp);
+
+    // More intense red as exp grows
+    int color = 150 - (int)(150 * ((float) exp.first / exp.second));
+    mProgress->setColor(244, color, color);
+    mProgress->setProgress((float) exp.first / exp.second);
 }

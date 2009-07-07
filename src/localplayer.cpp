@@ -41,6 +41,8 @@
 #include "gui/palette.h"
 #ifdef EATHENA_SUPPORT
 #include "gui/storagewindow.h"
+#else
+#include "gui/skilldialog.h"
 #endif
 
 #include "net/inventoryhandler.h"
@@ -103,10 +105,6 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 #endif
     mLastTarget(-1),
 #ifdef TMWSERV_SUPPORT
-    mAttributeBase(NB_CHARACTER_ATTRIBUTES, -1),
-    mAttributeEffective(NB_CHARACTER_ATTRIBUTES, -1),
-    mExpCurrent(CHAR_SKILL_NB, -1),
-    mExpNext(CHAR_SKILL_NB, -1),
     mCharacterPoints(-1),
     mCorrectionPoints(-1),
     mLevelProgress(0),
@@ -793,52 +791,50 @@ void LocalPlayer::lowerAttribute(size_t attr)
     Net::GameServer::Player::lowerAttribute(attr + CHAR_ATTR_BEGIN);
 }
 
-const struct LocalPlayer::SkillInfo& LocalPlayer::getSkillInfo(int skill)
+void LocalPlayer::setAttributeBase(int num, int value)
 {
-    static const SkillInfo skills[CHAR_SKILL_NB + 1] =
-    {
-        { _("Unarmed"), "graphics/images/unarmed.png" },   // CHAR_SKILL_WEAPON_NONE
-        { _("Knife"), "graphics/images/knife.png" },       // CHAR_SKILL_WEAPON_KNIFE
-        { _("Sword"), "graphics/images/sword.png" },       // CHAR_SKILL_WEAPON_SWORD
-        { _("Polearm"), "graphics/images/polearm.png" },   // CHAR_SKILL_WEAPON_POLEARM
-        { _("Staff"), "graphics/images/staff.png" },       // CHAR_SKILL_WEAPON_STAFF
-        { _("Whip"), "graphics/images/whip.png" },         // CHAR_SKILL_WEAPON_WHIP
-        { _("Bow"), "graphics/images/bow.png" },           // CHAR_SKILL_WEAPON_BOW
-        { _("Shooting"), "graphics/images/shooting.png" }, // CHAR_SKILL_WEAPON_SHOOTING
-        { _("Mace"), "graphics/images/mace.png" },         // CHAR_SKILL_WEAPON_MACE
-        { _("Axe"), "graphics/images/axe.png" },           // CHAR_SKILL_WEAPON_AXE
-        { _("Thrown"), "graphics/images/thrown.png" },     // CHAR_SKILL_WEAPON_THROWN
-        { _("Magic"), "graphics/images/magic.png" },       // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
-        { _("Craft"), "graphics/images/craft.png" },       // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
-        { _("Unknown Skill"), "graphics/images/unknown.png" }
-    };
+    int old = mAttributeBase[num];
 
-    if ((skill < 0) || (skill > CHAR_SKILL_NB))
+    mAttributeBase[num] = value;
+    if (skillDialog)
     {
-        return skills[CHAR_SKILL_NB];
+        if (skillDialog->update(num).empty() || !(value > old))
+            return;
+
+        Particle* effect = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
+        this->controlParticle(effect);
     }
-    else
-    {
-        return skills[skill];
-    }
+}
+
+void LocalPlayer::setAttributeEffective(int num, int value)
+{
+    mAttributeEffective[num] = value;
+    if (skillDialog)
+        skillDialog->update(num);
 }
 
 void LocalPlayer::setExperience(int skill, int current, int next)
 {
-    int diff = current - mExpCurrent.at(skill);
-    if (mMap && mExpCurrent.at(skill) != -1 && diff > 0)
+    std::pair<int, int> cur = getExperience(skill);
+    int diff = current - cur.first;
+
+    cur = std::pair<int, int>(current, next);
+
+    mSkillExp[skill] = cur;
+    std::string name;
+    if (skillDialog)
+        name = skillDialog->update(skill);
+
+    if (mMap && cur.first != -1 && diff > 0 && !name.empty())
     {
-        const std::string text = toString(diff) + " " + getSkillInfo(skill).name + " xp";
+        const std::string text = strprintf("%d %s xp", diff, name.c_str());
         mExpMessages.push_back(text);
     }
-
-    mExpCurrent.at(skill) = current;
-    mExpNext.at(skill) = next;
 }
 
 std::pair<int, int> LocalPlayer::getExperience(int skill)
 {
-    return std::pair<int, int> (mExpCurrent.at(skill), mExpNext.at(skill));
+    return mSkillExp[skill];
 }
 
 #endif

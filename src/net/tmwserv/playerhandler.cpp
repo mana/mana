@@ -133,7 +133,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             logger->log("ATTRIBUTE UPDATE:");
             while (msg.getUnreadLength())
             {
-                int stat = msg.readInt8();
+                int stat = msg.readInt16();
                 int base = msg.readInt16();
                 int value = msg.readInt16();
                 logger->log("%d set to %d %d", stat, base, value);
@@ -143,23 +143,10 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                     player_node->setMaxHp(base);
                     player_node->setHp(value);
                 }
-                else if (stat < NB_CHARACTER_ATTRIBUTES)
-                {
-                    if (stat >= CHAR_SKILL_BEGIN && stat < CHAR_SKILL_END
-                        && player_node->getAttributeBase(stat) < base
-                        && player_node->getAttributeBase(stat) > -1)
-                    {
-                        Particle* effect = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
-                        player_node->controlParticle(effect);
-                    }
-
-                    player_node->setAttributeBase(stat, base);
-                    player_node->setAttributeEffective(stat, value);
-                }
                 else
                 {
-                    logger->log("Warning: server wants to update unknown "
-                                "attribute %d to %d", stat, value);
+                    player_node->setAttributeBase(stat, base);
+                    player_node->setAttributeEffective(stat, value);
                 }
             }
         } break;
@@ -173,15 +160,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 int current = msg.readInt32();
                 int next = msg.readInt32();
 
-                if (skill < CHAR_SKILL_NB)
-                {
-                    player_node->setExperience(skill, current, next);
-                }
-                else
-                {
-                    logger->log("Warning: server wants to update experience of unknown "
-                                "skill  %d to %d / %d", skill, current, next);
-                }
+                player_node->setExperience(skill, current, next);
             }
         } break;
 

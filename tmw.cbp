@@ -470,6 +470,8 @@
 		<Unit filename="src/gui/widgets/textfield.h" />
 		<Unit filename="src/gui/widgets/textpreview.cpp" />
 		<Unit filename="src/gui/widgets/textpreview.h" />
+		<Unit filename="src/gui/widgets/vertcontainer.cpp" />
+		<Unit filename="src/gui/widgets/vertcontainer.h" />
 		<Unit filename="src/gui/widgets/whispertab.cpp" />
 		<Unit filename="src/gui/widgets/whispertab.h" />
 		<Unit filename="src/gui/widgets/window.cpp" />
