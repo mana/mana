@@ -31,6 +31,7 @@
 #include <list>
 #include <map>
 
+class Label;
 class ScrollArea;
 class Tab;
 class TabbedArea;
@@ -67,14 +68,23 @@ class SkillDialog : public Window, public gcn::ActionListener
          */
         std::string update(int id);
 
+        /**
+         * Update other parts of the display
+         */
+        void update();
+
         void loadSkills(const std::string &file, bool fixed = true);
+
+        void setModifiable(int id, bool modifiable);
 
     private:
         void adjustTabSize();
 
+        typedef std::map<int, SkillInfo*> SkillMap;
+        SkillMap mSkills;
         Tab *mCurrentTab;
         TabbedArea *mTabs;
-        std::map<int, SkillInfo*> mSkills;
+        Label *mPointsLabel;
 };
 
 extern SkillDialog *skillDialog;

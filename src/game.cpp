@@ -62,7 +62,7 @@
 #include "gui/sdlinput.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
-#include "gui/skill.h"
+#include "gui/skilldialog.h"
 #include "gui/status.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"

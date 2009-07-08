@@ -39,11 +39,8 @@
 #include "gui/gui.h"
 #include "gui/ministatus.h"
 #include "gui/palette.h"
-#ifdef EATHENA_SUPPORT
-#include "gui/storagewindow.h"
-#else
 #include "gui/skilldialog.h"
-#endif
+#include "gui/storagewindow.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"
@@ -93,10 +90,10 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mJobLevel(0),
     mXpForNextLevel(0), mJobXpForNextLevel(0),
     mMp(0), mMaxMp(0),
+    mSkillPoints(0),
     mAttackRange(0),
     ATK(0), MATK(0), DEF(0), MDEF(0), HIT(0), FLEE(0),
     ATK_BONUS(0), MATK_BONUS(0), DEF_BONUS(0), MDEF_BONUS(0), FLEE_BONUS(0),
-    mSkillPoint(0),
     mEquipment(new Equipment),
 #endif
     mInStorage(false),
@@ -791,6 +788,8 @@ void LocalPlayer::lowerAttribute(size_t attr)
     Net::GameServer::Player::lowerAttribute(attr + CHAR_ATTR_BEGIN);
 }
 
+#endif
+
 void LocalPlayer::setAttributeBase(int num, int value)
 {
     int old = mAttributeBase[num];
@@ -813,6 +812,13 @@ void LocalPlayer::setAttributeEffective(int num, int value)
         skillDialog->update(num);
 }
 
+void LocalPlayer::setSkillPoints(int points)
+{
+    mSkillPoints = points;
+    if (skillDialog)
+        skillDialog->update();
+}
+
 void LocalPlayer::setExperience(int skill, int current, int next)
 {
     std::pair<int, int> cur = getExperience(skill);
@@ -825,19 +831,19 @@ void LocalPlayer::setExperience(int skill, int current, int next)
     if (skillDialog)
         name = skillDialog->update(skill);
 
+#ifdef TMWSERV_SUPPORT
     if (mMap && cur.first != -1 && diff > 0 && !name.empty())
     {
         const std::string text = strprintf("%d %s xp", diff, name.c_str());
         mExpMessages.push_back(text);
     }
+#endif
 }
 
 std::pair<int, int> LocalPlayer::getExperience(int skill)
 {
     return mSkillExp[skill];
 }
-
-#endif
 
 void LocalPlayer::setLevelProgress(int percent)
 {

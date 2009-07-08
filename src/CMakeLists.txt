@@ -215,6 +215,8 @@ SET(SRCS
     gui/shortcutcontainer.h
     gui/shortcutwindow.cpp
     gui/shortcutwindow.h
+    gui/skilldialog.cpp
+    gui/skilldialog.h
     gui/skin.cpp
     gui/skin.h
     gui/speechbubble.cpp
@@ -418,8 +420,6 @@ SET(SRCS
     )
 
 SET(SRCS_EA
-    gui/skill.cpp
-    gui/skill.h
     gui/status.cpp
     gui/status.h
     net/ea/gui/partytab.cpp
@@ -480,8 +480,6 @@ SET(SRCS_TMW
     gui/quitdialog.h
     gui/serverdialog.cpp
     gui/serverdialog.h
-    gui/skilldialog.cpp
-    gui/skilldialog.h
     gui/statuswindow.cpp
     gui/statuswindow.h
     gui/unregisterdialog.cpp

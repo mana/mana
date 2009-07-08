@@ -349,22 +349,8 @@
 		<Unit filename="src/gui/shortcutcontainer.h" />
 		<Unit filename="src/gui/shortcutwindow.cpp" />
 		<Unit filename="src/gui/shortcutwindow.h" />
-		<Unit filename="src/gui/skill.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/skill.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/skilldialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/skilldialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/skilldialog.cpp" />
+		<Unit filename="src/gui/skilldialog.h" />
 		<Unit filename="src/gui/skin.cpp" />
 		<Unit filename="src/gui/skin.h" />
 		<Unit filename="src/gui/speechbubble.cpp" />

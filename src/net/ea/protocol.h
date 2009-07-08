@@ -69,6 +69,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_PLAYER_ARROW_EQUIP      0x013c
 #define SMSG_PLAYER_ARROW_MESSAGE    0x013b
 #define SMSG_PLAYER_SKILLS           0x010f
+#define SMSG_PLAYER_SKILL_UP         0x010e
 #define SMSG_SKILL_FAILED            0x0110
 #define SMSG_ITEM_USE_RESPONSE       0x00a8
 #define SMSG_ITEM_VISIBLE            0x009d /**< An item is on the floor */

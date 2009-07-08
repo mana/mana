@@ -43,7 +43,6 @@
 #include "gui/gui.h"
 #include "gui/okdialog.h"
 #include "gui/sell.h"
-#include "gui/skill.h"
 #include "gui/viewport.h"
 
 // TODO Move somewhere else

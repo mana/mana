@@ -19,9 +19,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/inventorywindow.h"
-
 #include "net/ea/generalhandler.h"
+
+#include "gui/inventorywindow.h"
+#include "gui/skilldialog.h"
 
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
@@ -201,6 +202,7 @@ void GeneralHandler::guiWindowsLoaded()
 {
     partyTab = new PartyTab;
     inventoryWindow->setSplitAllowed(false);
+    skillDialog->loadSkills("ea-skills.xml");
 }
 
 void GeneralHandler::guiWindowsUnloaded()

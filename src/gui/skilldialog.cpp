@@ -37,6 +37,9 @@
 #include "localplayer.h"
 #include "log.h"
 
+#include "net/net.h"
+#include "net/skillhandler.h"
+
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -65,12 +68,16 @@ class SkillEntry : public Container, gcn::WidgetListener
 
         void update();
 
-    private:
+    protected:
+        friend class SkillDialog;
         struct SkillInfo *mInfo;
+
+    private:
         Icon *mIcon;
         Label *mNameLabel;
         Label *mLevelLabel;
         Label *mExpLabel;
+        Button *mIncrease;
         ProgressBar *mProgress;
 };
 
@@ -84,9 +91,10 @@ SkillDialog::SkillDialog():
     setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
 
     mTabs = new TabbedArea();
+    mPointsLabel = new Label("0");
 
     place(0, 0, mTabs, 5, 5);
-    place(0, 5, new Label("TODO"));
+    place(0, 5, mPointsLabel);
 
     setLocationRelativeTo(getParent());
     loadWindowState();
@@ -99,8 +107,12 @@ SkillDialog::~SkillDialog()
 
 void SkillDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "skill")
+    if (event.getId() == "inc")
     {
+        SkillEntry *disp = dynamic_cast<SkillEntry*>(event.getSource()->getParent());
+
+        if (disp)
+            Net::getSkillHandler()->up(disp->mInfo->id);
     }
     else if (event.getId() == "close")
     {
@@ -149,6 +161,19 @@ std::string SkillDialog::update(int id)
     }
     else
         return "";
+}
+
+void SkillDialog::update()
+{
+    mPointsLabel->setCaption(strprintf(_("Skill points available: %d"),
+                                       player_node->getSkillPoints()));
+    mPointsLabel->adjustSize();
+
+    for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end(); it++)
+    {
+        if ((*it).second->modifiable)
+            (*it).second->display->update();
+    }
 }
 
 void SkillDialog::loadSkills(const std::string &file, bool fixed)
@@ -211,12 +236,25 @@ void SkillDialog::loadSkills(const std::string &file, bool fixed)
     }
 
     adjustTabSize();
+    update();
+}
+
+void SkillDialog::setModifiable(int id, bool modifiable)
+{
+    SkillInfo *info = mSkills[id];
+
+    if (info)
+    {
+        info->modifiable = modifiable;
+        info->display->update();
+    }
 }
 
 SkillEntry::SkillEntry(struct SkillInfo *info) : mInfo(info),
     mIcon(NULL),
     mNameLabel(new Label(info->name)),
     mProgress(new ProgressBar(0.0f, 200, 20, gcn::Color(150, 150, 150))),
+    mIncrease(new Button("+", "inc", skillDialog)),
     mLevelLabel(new Label("999"))
 {
     setFrameSize(1);
@@ -242,6 +280,9 @@ SkillEntry::SkillEntry(struct SkillInfo *info) : mInfo(info),
     mProgress->setPosition(35, 13);
     add(mProgress);
 
+    mIncrease->setPosition(getWidth() - mIncrease->getWidth(), 13);
+    add(mIncrease);
+
     update();
 }
 
@@ -250,7 +291,8 @@ void SkillEntry::widgetResized(const gcn::Event &event)
     gcn::Rectangle size = getChildrenArea();
 
     mLevelLabel->setPosition(size.width - mLevelLabel->getWidth(), 0);
-    mProgress->setWidth(size.width - 35);
+    mProgress->setWidth(size.width - mIncrease->getWidth() - 39);
+    mIncrease->setPosition(getWidth() - mIncrease->getWidth() - 2, 13);
 }
 
 void SkillEntry::update()
@@ -288,4 +330,8 @@ void SkillEntry::update()
     int color = 150 - (int)(150 * ((float) exp.first / exp.second));
     mProgress->setColor(244, color, color);
     mProgress->setProgress((float) exp.first / exp.second);
+
+    mIncrease->setEnabled(mInfo->modifiable && player_node->getSkillPoints());
+
+    widgetResized(NULL);
 }

@@ -295,7 +295,6 @@ class LocalPlayer : public Player
         int ATK, MATK, DEF, MDEF, HIT, FLEE;
         int ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
 
-        Uint16 mSkillPoint;
 #endif
 
         int getHp() const
@@ -361,6 +360,11 @@ class LocalPlayer : public Player
         void setCorrectionPoints(int n)
         { mCorrectionPoints = n; }
 
+        int getSkillPoints() const
+        { return mSkillPoints; }
+
+        void setSkillPoints(int points);
+
         void setExperience(int skill, int current, int next);
 
         std::pair<int, int> getExperience(int skill);
@@ -395,6 +399,7 @@ class LocalPlayer : public Player
         int mMaxWeight;
         int mHp;
         int mMaxHp;
+        int mSkillPoints;
 
         int mGMLevel;
 

@@ -37,7 +37,6 @@
 #include "gui/gui.h"
 #include "gui/okdialog.h"
 #include "gui/sell.h"
-#include "gui/skill.h"
 #include "gui/storagewindow.h"
 #include "gui/viewport.h"
 
@@ -233,8 +232,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                                  break;
                     case 0x000b: player_node->setLevel(value); break;
                     case 0x000c:
-                                 player_node->mSkillPoint = value;
-                                 skillDialog->update();
+                                 player_node->setSkillPoints(value);
                                  break;
                     case 0x0018:
                                  if (value >= player_node->getMaxWeight() / 2 &&

@@ -164,6 +164,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/shortcutcontainer.h \
 	      gui/shortcutwindow.cpp \
 	      gui/shortcutwindow.h \
+	      gui/skilldialog.cpp \
+	      gui/skilldialog.h \
 	      gui/skin.cpp \
 	      gui/skin.h \
 	      gui/speechbubble.cpp \
@@ -384,8 +386,6 @@ tmw_SOURCES += \
 	      gui/quitdialog.h \
 	      gui/serverdialog.cpp \
 	      gui/serverdialog.h \
-	      gui/skilldialog.cpp \
-	      gui/skilldialog.h \
 	      gui/statuswindow.cpp \
 	      gui/statuswindow.h \
 	      gui/unregisterdialog.cpp \
@@ -460,8 +460,6 @@ endif
 if SERVER_EATHENA
 tmw_CXXFLAGS += -DEATHENA_SUPPORT
 tmw_SOURCES += \
-	      gui/skill.cpp \
-	      gui/skill.h \
 	      gui/status.cpp \
 	      gui/status.h \
 	      net/ea/gui/partytab.cpp \
