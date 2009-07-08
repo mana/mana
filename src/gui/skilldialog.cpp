@@ -176,7 +176,7 @@ void SkillDialog::update()
     }
 }
 
-void SkillDialog::loadSkills(const std::string &file, bool fixed)
+void SkillDialog::loadSkills(const std::string &file)
 {
     // TODO: mTabs->clear();
     delete_all(mSkills);
@@ -194,7 +194,6 @@ void SkillDialog::loadSkills(const std::string &file, bool fixed)
     std::string setName;
     ScrollArea *scroll;
     VertContainer *container;
-    std::string fixedDef = toString(fixed);
 
     for_each_xml_child_node(set, root)
     {
@@ -218,13 +217,12 @@ void SkillDialog::loadSkills(const std::string &file, bool fixed)
                     int id = atoi(XML::getProperty(node, "id", "-1").c_str());
                     std::string name = XML::getProperty(node, "name", strprintf(_("Skill %d"), id));
                     std::string icon = XML::getProperty(node, "icon", "");
-                    bool modifiable = !atoi(XML::getProperty(node, "fixed", fixedDef).c_str());
 
                     SkillInfo *skill = new SkillInfo;
                     skill->id = id;
                     skill->name = name;
                     skill->icon = icon;
-                    skill->modifiable = modifiable;
+                    skill->modifiable = 0;
                     skill->display = new SkillEntry(skill);
 
                     container->add(skill->display);

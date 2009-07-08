@@ -73,7 +73,7 @@ class SkillDialog : public Window, public gcn::ActionListener
          */
         void update();
 
-        void loadSkills(const std::string &file, bool fixed = true);
+        void loadSkills(const std::string &file);
 
         void setModifiable(int id, bool modifiable);
 
