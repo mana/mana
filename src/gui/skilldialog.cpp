@@ -56,10 +56,12 @@ struct SkillInfo
     SkillEntry *display;
 };
 
-class SkillEntry : public Container
+class SkillEntry : public Container, gcn::WidgetListener
 {
     public:
         SkillEntry(struct SkillInfo *info);
+
+        void widgetResized(const gcn::Event &event);
 
         void update();
 
@@ -110,7 +112,7 @@ void SkillDialog::adjustTabSize()
 {
     gcn::Widget *content = mTabs->getCurrentWidget();
     if (content) {
-        int width = mTabs->getWidth() - 2 * content->getFrameSize();
+        int width = mTabs->getWidth() - 2 * content->getFrameSize() - 2 * mTabs->getFrameSize();
         int height = mTabs->getContainerHeight() - 2 * content->getFrameSize();
         content->setSize(width, height);
         content->setVisible(true);
@@ -217,19 +219,13 @@ SkillEntry::SkillEntry(struct SkillInfo *info) : mInfo(info),
     mProgress(new ProgressBar(0.0f, 200, 20, gcn::Color(150, 150, 150))),
     mLevelLabel(new Label("999"))
 {
+    setFrameSize(1);
     setOpaque(false);
+
+    addWidgetListener(this);
 
     if (!info->icon.empty())
         mIcon = new Icon(info->icon);
-
-    /*LayoutHelper h(this);
-    ContainerPlacer place = h.getPlacer(0, 0);
-
-    if (mIcon)
-        place(0, 0, mIcon, 1, 2);
-    place(1, 0, mNameLabel, 3);
-    place(4, 0, mLevelLabel);
-    place(1, 1, mProgress, 4);*/
 
     if (mIcon)
     {
@@ -247,6 +243,14 @@ SkillEntry::SkillEntry(struct SkillInfo *info) : mInfo(info),
     add(mProgress);
 
     update();
+}
+
+void SkillEntry::widgetResized(const gcn::Event &event)
+{
+    gcn::Rectangle size = getChildrenArea();
+
+    mLevelLabel->setPosition(size.width - mLevelLabel->getWidth(), 0);
+    mProgress->setWidth(size.width - 35);
 }
 
 void SkillEntry::update()
