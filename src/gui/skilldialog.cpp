@@ -264,12 +264,11 @@ SkillEntry::SkillEntry(struct SkillInfo *info) : mInfo(info),
 
     if (!info->icon.empty())
         mIcon = new Icon(info->icon);
+    else
+        mIcon = new Icon("graphics/gui/unknown-item.png");
 
-    if (mIcon)
-    {
-        mIcon->setPosition(1, 0);
-        add(mIcon);
-    }
+    mIcon->setPosition(1, 0);
+    add(mIcon);
 
     mNameLabel->setPosition(35, 0);
     add(mNameLabel);
