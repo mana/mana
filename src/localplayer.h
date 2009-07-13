@@ -375,6 +375,8 @@ class LocalPlayer : public Player
 
         const std::auto_ptr<Equipment> mEquipment;
 
+        void addMessageToQueue(const std::string &message);
+
     protected:
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
@@ -441,10 +443,8 @@ class LocalPlayer : public Player
         /** Animated target cursors. */
         SimpleAnimation *mTargetCursor[2][NUM_TC];
 
-#ifdef TMWSERV_SUPPORT
-        std::list<std::string> mExpMessages; /**< Queued exp messages*/
-        int mExpMessageTime;
-#endif
+        std::list<std::string> mMessages; /**< Queued exp messages*/
+        int mMessageTime;
 };
 
 extern LocalPlayer *player_node;

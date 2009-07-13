@@ -119,10 +119,8 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 #ifdef TMWSERV_SUPPORT
     mLocalWalkTime(-1),
 #endif
-    mStorage(new Inventory(STORAGE_SIZE))
-#ifdef TMWSERV_SUPPORT
-    , mExpMessageTime(0)
-#endif
+    mStorage(new Inventory(STORAGE_SIZE)),
+    mMessageTime(0)
 {
     // Variable to keep the local player from doing certain actions before a map
     // is initialized. e.g. drawing a player's name using the TextManager, since
@@ -156,27 +154,29 @@ void LocalPlayer::logic()
     if (get_elapsed_time(mLastAction) >= 1000)
         mLastAction = -1;
 
-#ifdef TMWSERV_SUPPORT
     // Show XP messages
-    if (!mExpMessages.empty())
+    if (!mMessages.empty())
     {
-        if (mExpMessageTime == 0)
+        if (mMessageTime == 0)
         {
-            const Vector &pos = getPosition();
+            //const Vector &pos = getPosition();
 
             particleEngine->addTextRiseFadeOutEffect(
-                    mExpMessages.front(),
-                    (int) pos.x + 16,
-                    (int) pos.y - 16,
+                    mMessages.front(),
+                    /*(int) pos.x,
+                    (int) pos.y - 48,*/
+                    getPixelX(),
+                    getPixelY() - 48,
                     &guiPalette->getColor(Palette::EXP_INFO),
                     gui->getInfoParticleFont(), true);
 
-            mExpMessages.pop_front();
-            mExpMessageTime = 30;
+            mMessages.pop_front();
+            mMessageTime = 30;
         }
-        mExpMessageTime--;
+        mMessageTime--;
     }
-#else
+
+#ifdef EATHENA_SUPPORT
     // Targeting allowed 4 times a second
     if (get_elapsed_time(mLastTarget) >= 250)
         mLastTarget = -1;
@@ -188,7 +188,6 @@ void LocalPlayer::logic()
         setTarget(NULL);
         mLastTarget = -1;
     }
-
 #endif
 
     if (mTarget)
@@ -831,13 +830,10 @@ void LocalPlayer::setExperience(int skill, int current, int next)
     if (skillDialog)
         name = skillDialog->update(skill);
 
-#ifdef TMWSERV_SUPPORT
     if (mMap && cur.first != -1 && diff > 0 && !name.empty())
     {
-        const std::string text = strprintf("%d %s xp", diff, name.c_str());
-        mExpMessages.push_back(text);
+        addMessageToQueue(strprintf("%d %s xp", diff, name.c_str()));
     }
-#endif
 }
 
 std::pair<int, int> LocalPlayer::getExperience(int skill)
@@ -847,17 +843,9 @@ std::pair<int, int> LocalPlayer::getExperience(int skill)
 
 void LocalPlayer::setLevelProgress(int percent)
 {
-    if (mMap && percent > percent)
+    if (mMap && percent > mLevelProgress)
     {
-        const std::string text = toString(percent - percent) + " xp";
-
-        // Show XP number
-        particleEngine->addTextRiseFadeOutEffect(
-                text,
-                getPixelX(),
-                getPixelY() - 48,
-                &guiPalette->getColor(Palette::EXP_INFO),
-                gui->getInfoParticleFont(), true);
+        addMessageToQueue(toString(percent - mLevelProgress) + " xp");
     }
     mLevelProgress = percent;
 }
@@ -1021,3 +1009,8 @@ void LocalPlayer::setInStorage(bool inStorage)
     storageWindow->setVisible(inStorage);
 }
 #endif
+
+void LocalPlayer::addMessageToQueue(const std::string &message)
+{
+    mMessages.push_back(message);
+}
