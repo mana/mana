@@ -62,21 +62,33 @@ The template is a map where each layer is a pattern.  For example, to make a woo
 It will then randomly place trees, but only in places where they won't overlap with other things on that layer.  The size of the template map is the size of the area which must be empty in the destination layer.
 
 
-=== TMX Translate ===
-
-This tool is still to be written.  I guarantee it will be written before I get a woodland map finished.
+=== TMX Collide / Translate ===
 
 A big woodland with lots of randomly-placed trees needs a complex collision layer, most of which can be generated from the visible layers.
-This tool takes a two-layer template map - one layer contains visible tiles, and one layer contains collision tiles.
+This tool does that automatic generation.
+
+It's not limited to adding collision tiles; it can be used for any task where tiles are added to one layer based on the tiles present in other layers.
+
+Usage: tmxcollide [-c] mapFile destLayer templateFile [-o outfile]
+    -c create layers, if they don't already exist in the target
+    -o save results to outfile, instead of overwriting the original
+
+To fill the collision layer, "destLayer" should be "Collision".
+
+As with TMX Random Fill, this tool takes a template map; for this tool it should have exactly two layers.
+  Upper layer: tiles to translate to (collision tiles)
+  Lower layer: tiles to translate from (visible tiles)
+Blank tiles in the lower layer will be ignored (put a blank in the upper layer too).
 
 
 === Bugs (for all these programs) ===
 
 The program works so far but there are still some minor problems: 
 
--Only tested for TMW-compilant maps. I don't guarantee that it works with Tiled maps that are made for other games and thus use different features. It is assumed that the target map and the source maps have the same number of layers, for example. 
+-Only tested for TMW-compilant maps. I don't guarantee that it works with Tiled maps that are made for other games and thus use different features.
 -Compressed maps (tmx.gz) can not be handled yet (but compressed or uncompressed layers work properly) 
 -When the target map has an object layer it is moved to the bottom of the layer list of the map (no problem for the game but inconvenient for editing). Objects on the source map are ignored. 
+-All tilesets included in the srcFile (TMXCopy) or template (TMXRandomFill and TMXCollide) will be added to the output file, even if they aren't needed for the tiles that are added.
 -Layer data of output file isn't gzip-compressed yet 
 -Created TMX file is a bit malformated (but working properly) 
 
