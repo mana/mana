@@ -24,7 +24,9 @@
 
 namespace gcn
 {
+    class ActionEvent;
     class ActionListener;
+    class AllegroFont;
     class AllegroGraphics;
     class AllegroImage;
     class AllegroImageLoader;
@@ -37,27 +39,45 @@ namespace gcn
     class Container;
     class DefaultFont;
     class DropDown;
+    class Event;
     class Exception;
     class FocusHandler;
+    class FocusListener;
     class Font;
+    class GenericInput;
     class Graphics;
     class Gui;
+    class HGEGraphics;
+    class HGEImage;
+    class HGEImageFont;
+    class HGEImageLoader;
+    class HGEInput;
     class Icon;
     class Image;
+    class ImageButton;
+    class InputEvent;
     class ImageFont;
     class ImageLoader;
     class Input;
     class Key;
+    class KeyEvent;
     class KeyInput;
     class KeyListener;
     class Label;
     class ListBox;
     class ListModel;
+    class MouseEvent;
     class MouseInput;
     class MouseListener;
+    class OpenGLAllegroImageLoader;
     class OpenGLGraphics;
     class OpenGLImage;
     class OpenGLSDLImageLoader;
+    class OpenLayerFont;
+    class OpenLayerGraphics;
+    class OpenLayerImage;
+    class OpenLayerImageLoader;
+    class OpenLayerInput;
     class RadioButton;
     class Rectangle;
     class ScrollArea;
@@ -65,10 +85,16 @@ namespace gcn
     class SDLImage;
     class SDLImageLoader;
     class SDLInput;
+    class SDLPixel;
+    class SelectionEvent;
+    class SelectionListener;
     class Slider;
+    class Tab;
+    class TabbedArea;
     class TextBox;
     class TextField;
     class Widget;
+    class WidgetListener;
     class Window;
 }
 
