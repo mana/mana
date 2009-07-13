@@ -287,9 +287,26 @@ void SkillEntry::widgetResized(const gcn::Event &event)
 {
     gcn::Rectangle size = getChildrenArea();
 
-    mLevelLabel->setPosition(size.width - mLevelLabel->getWidth(), 0);
-    mProgress->setWidth(size.width - mIncrease->getWidth() - 39);
-    mIncrease->setPosition(getWidth() - mIncrease->getWidth() - 2, 13);
+    if (mProgress->isVisible() && mIncrease->isVisible())
+    {
+        mLevelLabel->setPosition(size.width - mLevelLabel->getWidth()
+                                 - mIncrease->getWidth() - 4, 0);
+        mProgress->setWidth(size.width - mIncrease->getWidth() - 39);
+        mIncrease->setPosition(getWidth() - mIncrease->getWidth() - 2, 6);
+    }
+    else if (mProgress->isVisible())
+    {
+        mLevelLabel->setPosition(size.width - mLevelLabel->getWidth(), 0);
+        mProgress->setWidth(size.width - 39);
+    }
+    else if (mIncrease->isVisible())
+    {
+        mLevelLabel->setPosition(size.width - mLevelLabel->getWidth()
+                                 - mIncrease->getWidth() - 4, 0);
+        mIncrease->setPosition(getWidth() - mIncrease->getWidth() - 2, 6);
+    }
+    else
+        mLevelLabel->setPosition(size.width - mLevelLabel->getWidth(), 0);
 }
 
 void SkillEntry::update()
@@ -321,14 +338,30 @@ void SkillEntry::update()
     std::string sExp (toString(exp.first) + " / " + toString(exp.second));
 
     mLevelLabel->adjustSize();
-    mProgress->setText(sExp);
 
-    // More intense red as exp grows
-    int color = 150 - (int)(150 * ((float) exp.first / exp.second));
-    mProgress->setColor(244, color, color);
-    mProgress->setProgress((float) exp.first / exp.second);
+    if (exp.second)
+    {
+        mProgress->setVisible(true);
+        mProgress->setText(sExp);
 
-    mIncrease->setEnabled(mInfo->modifiable && player_node->getSkillPoints());
+        // More intense red as exp grows
+        int color = 150 - (int)(150 * ((float) exp.first / exp.second));
+        mProgress->setColor(244, color, color);
+        mProgress->setProgress((float) exp.first / exp.second);
+    }
+    else
+        mProgress->setVisible(false);
+
+    if (mInfo->modifiable)
+    {
+        mIncrease->setVisible(true);
+        mIncrease->setEnabled(player_node->getSkillPoints());
+    }
+    else
+    {
+        mIncrease->setVisible(false);
+        mIncrease->setEnabled(false);
+    }
 
     widgetResized(NULL);
 }
