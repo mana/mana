@@ -298,7 +298,7 @@ void SkillEntry::update()
 
     int effLevel = player_node->getAttributeEffective(mInfo->id);
 
-    if (baseLevel <= 0)
+    if (baseLevel <= 0 && !mInfo->modifiable)
     {
         setVisible(false);
         return;
