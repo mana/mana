@@ -21,6 +21,13 @@
 
 #include "net/tmwserv/specialhandler.h"
 
+#include "net/tmwserv/gameserver/internal.h"
+
+#include "net/tmwserv/connection.h"
+#include "net/tmwserv/protocol.h"
+
+#include "net/messageout.h"
+
 Net::SpecialHandler *specialHandler;
 
 namespace TmwServ {
@@ -32,7 +39,9 @@ SpecialHandler::SpecialHandler()
 
 void SpecialHandler::use(int id)
 {
-    // TODO
+    MessageOut msg(PGMSG_USE_SPECIAL);
+    msg.writeInt8(id);
+    Net::GameServer::connection->send(msg);
 }
 
 void SpecialHandler::use(int id, int level, int beingId)

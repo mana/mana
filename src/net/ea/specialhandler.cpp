@@ -230,17 +230,26 @@ void SpecialHandler::use(int id)
 
 void SpecialHandler::use(int id, int level, int beingId)
 {
-    // TODO
+    MessageOut outMsg(CMSG_SKILL_USE_BEING);
+    outMsg.writeInt16(level);
+    outMsg.writeInt16(id);
+    outMsg.writeInt16(beingId);
 }
 
 void SpecialHandler::use(int id, int level, int x, int y)
 {
-    // TODO
+    MessageOut outMsg(CMSG_SKILL_USE_POSITION);
+    outMsg.writeInt16(level);
+    outMsg.writeInt16(id);
+    outMsg.writeInt16(x);
+    outMsg.writeInt16(y);
 }
 
 void SpecialHandler::use(int id, const std::string &map)
 {
-    // TODO
+    MessageOut outMsg(CMSG_SKILL_USE_MAP);
+    outMsg.writeInt16(id);
+    outMsg.writeString(map, 16);
 }
 
 } // namespace EAthena

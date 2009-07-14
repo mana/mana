@@ -48,6 +48,7 @@
 #include "net/net.h"
 #include "net/partyhandler.h"
 #include "net/playerhandler.h"
+#include "net/specialhandler.h"
 #include "net/tradehandler.h"
 
 #ifdef TMWSERV_SUPPORT
@@ -661,7 +662,7 @@ void LocalPlayer::attack()
 */
 void LocalPlayer::useSpecial(int special)
 {
-    Net::GameServer::Player::useSpecial(special);
+    Net::getSpecialHandler()->use(special);
 }
 
 #endif

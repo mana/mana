@@ -42,7 +42,6 @@ namespace Net
         {
             void walk(int x, int y);
             void moveItem(int oldSlot, int newSlot, int amount);
-            void useSpecial(int special);
             void raiseAttribute(int attribute);
             void lowerAttribute(int attribute);
             void respawn();
