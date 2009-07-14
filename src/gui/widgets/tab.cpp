@@ -84,6 +84,7 @@ Tab::~Tab()
 
 void Tab::init()
 {
+    setFocusable(false);
     setFrameSize(0);
     mHighlighted = false;
 
