@@ -26,6 +26,7 @@
 #include <vector>
 
 #include "player.h"
+#include "gui/palette.h"
 
 class Equipment;
 class FloorItem;
@@ -269,9 +270,9 @@ class LocalPlayer : public Player
         void emote(Uint8 emotion);
 
         /**
-         * Shows item pickup effect if the player is on a map.
+         * Shows item pickup notifications.
          */
-        void pickedUp(const std::string &item);
+        void pickedUp(const ItemInfo &itemInfo, int amount);
 
         /**
          * Accessors for mInStorage
@@ -375,7 +376,8 @@ class LocalPlayer : public Player
 
         const std::auto_ptr<Equipment> mEquipment;
 
-        void addMessageToQueue(const std::string &message);
+        void addMessageToQueue(const std::string &message,
+                               Palette::ColorType color = Palette::EXP_INFO);
 
     protected:
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
@@ -443,7 +445,9 @@ class LocalPlayer : public Player
         /** Animated target cursors. */
         SimpleAnimation *mTargetCursor[2][NUM_TC];
 
-        std::list<std::string> mMessages; /**< Queued exp messages*/
+        typedef std::pair<std::string, Palette::ColorType> MessagePair;
+        /** Queued exp messages*/
+        std::list<MessagePair> mMessages;
         int mMessageTime;
 };
 

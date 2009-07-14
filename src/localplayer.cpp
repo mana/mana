@@ -42,6 +42,8 @@
 #include "gui/skilldialog.h"
 #include "gui/storagewindow.h"
 
+#include "gui/widgets/chattab.h"
+
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 #include "net/partyhandler.h"
@@ -161,13 +163,15 @@ void LocalPlayer::logic()
         {
             //const Vector &pos = getPosition();
 
+            MessagePair info = mMessages.front();
+
             particleEngine->addTextRiseFadeOutEffect(
-                    mMessages.front(),
+                    info.first,
                     /*(int) pos.x,
                     (int) pos.y - 48,*/
                     getPixelX(),
                     getPixelY() - 48,
-                    &guiPalette->getColor(Palette::EXP_INFO),
+                    &guiPalette->getColor(info.second),
                     gui->getInfoParticleFont(), true);
 
             mMessages.pop_front();
@@ -850,17 +854,33 @@ void LocalPlayer::setLevelProgress(int percent)
     mLevelProgress = percent;
 }
 
-void LocalPlayer::pickedUp(const std::string &item)
+void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
 {
-    if (mMap)
+    if (!amount)
     {
-        // Show pickup notification
-        particleEngine->addTextRiseFadeOutEffect(
-                item,
-                getPixelX(),
-                getPixelY() - 48,
-                &guiPalette->getColor(Palette::PICKUP_INFO),
-                gui->getInfoParticleFont(), true);
+        if (config.getValue("showpickupchat", 1))
+        {
+            localChatTab->chatLog(_("Unable to pick up item."), BY_SERVER);
+        }
+    }
+    else
+    {
+        // TRANSLATORS: Used as in "You picked up a ...", when picking up
+        // only one item.
+        const std::string amountStr = (amount > 1) ? toString(amount) : _("a");
+
+        if (config.getValue("showpickupchat", 1))
+        {
+            localChatTab->chatLog(strprintf(_("You picked up %s [@@%d|%s@@]."),
+                amountStr.c_str(), itemInfo.getId(),
+                itemInfo.getName().c_str()), BY_SERVER);
+        }
+
+        if (mMap && config.getValue("showpickupparticle", 0))
+        {
+            // Show pickup notification
+            addMessageToQueue(itemInfo.getName(), Palette::PICKUP_INFO);
+        }
     }
 }
 
@@ -1010,7 +1030,8 @@ void LocalPlayer::setInStorage(bool inStorage)
 }
 #endif
 
-void LocalPlayer::addMessageToQueue(const std::string &message)
+void LocalPlayer::addMessageToQueue(const std::string &message,
+                                    Palette::ColorType color)
 {
-    mMessages.push_back(message);
+    mMessages.push_back(MessagePair(message, color));
 }

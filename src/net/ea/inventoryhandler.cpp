@@ -178,42 +178,25 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             equipType = msg.readInt16();
             itemType = msg.readInt8();
 
-            if (msg.readInt8() > 0)
-            {
-                if (config.getValue("showpickupchat", 1))
-                {
-                    localChatTab->chatLog(_("Unable to pick up item."),
-                                          BY_SERVER);
-                }
-            }
-            else
             {
                 const ItemInfo &itemInfo = ItemDB::get(itemId);
-                const std::string amountStr =
-                    // TRANSLATORS: Used as in "You picked up a ...", when
-                    // picking up only one item.
-                    (amount > 1) ? toString(amount) : _("a");
 
-                if (config.getValue("showpickupchat", 1))
+                if (msg.readInt8() > 0)
                 {
-                    localChatTab->chatLog(strprintf(_("You picked up %s [@@%d|%s@@]."),
-                        amountStr.c_str(), itemInfo.getId(), itemInfo.getName().c_str()),
-                        BY_SERVER);
+                    player_node->pickedUp(itemInfo, 0);
                 }
-
-                if (config.getValue("showpickupparticle", 0))
+                else
                 {
-                    player_node->pickedUp(itemInfo.getName());
-                }
+                    player_node->pickedUp(itemInfo, amount);
 
-                if (Item *item = inventory->getItem(index)) {
-                    item->setId(itemId);
-                    item->increaseQuantity(amount);
-                } else {
-                    inventory->setItem(index, itemId, amount, equipType != 0);
+                    if (Item *item = inventory->getItem(index)) {
+                        item->setId(itemId);
+                        item->increaseQuantity(amount);
+                    } else {
+                        inventory->setItem(index, itemId, amount, equipType != 0);
+                    }
                 }
-            }
-            break;
+            } break;
 
         case SMSG_PLAYER_INVENTORY_REMOVE:
             index = msg.readInt16() - INVENTORY_OFFSET;

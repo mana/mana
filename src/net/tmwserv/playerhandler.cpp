@@ -335,7 +335,10 @@ void PlayerHandler::decreaseStat(LocalPlayer::Attribute attr)
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
     int id = floorItem->getId();
-    Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
+    MessageOut msg(PGMSG_PICKUP);
+    msg.writeInt16(id >> 16);
+    msg.writeInt16(id & 0xFFFF);
+    Net::GameServer::connection->send(msg);
 }
 
 void PlayerHandler::setDirection(char direction)

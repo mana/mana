@@ -41,14 +41,6 @@ void Net::GameServer::Player::walk(int x, int y)
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::pickUp(int x, int y)
-{
-    MessageOut msg(PGMSG_PICKUP);
-    msg.writeInt16(x);
-    msg.writeInt16(y);
-    Net::GameServer::connection->send(msg);
-}
-
 void Net::GameServer::Player::moveItem(int oldSlot, int newSlot, int amount)
 {
     MessageOut msg(PGMSG_MOVE_ITEM);

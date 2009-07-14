@@ -41,7 +41,6 @@ namespace Net
         namespace Player
         {
             void walk(int x, int y);
-            void pickUp(int x, int y);
             void moveItem(int oldSlot, int newSlot, int amount);
             void useSpecial(int special);
             void requestTrade(int id);
