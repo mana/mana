@@ -322,14 +322,18 @@ void PlayerHandler::emote(int emoteId)
     // TODO
 }
 
-void PlayerHandler::increaseStat(LocalPlayer::Attribute attr)
+void PlayerHandler::increaseAttribute(size_t attr)
 {
-    // TODO
+    MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
+    msg.writeInt8(attr);
+    Net::GameServer::connection->send(msg);
 }
 
-void PlayerHandler::decreaseStat(LocalPlayer::Attribute attr)
+void PlayerHandler::decreaseAttribute(size_t attr)
 {
-    // TODO
+    MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
+    msg.writeInt8(attr);
+    Net::GameServer::connection->send(msg);
 }
 
 void PlayerHandler::increaseSkill(int skillId)

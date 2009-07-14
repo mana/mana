@@ -182,9 +182,8 @@ class LocalPlayer : public Player
          */
         void setTrading(bool trading) { mTrading = trading; }
 
-#ifdef TMWSERV_SUPPORT
         void useSpecial(int id);
-#endif
+
         void attack(Being *target = NULL, bool keep = false);
 
         /**
@@ -249,7 +248,6 @@ class LocalPlayer : public Player
          */
         bool withinAttackRange(Being *target);
 
-#ifdef TMWSERV_SUPPORT
         /**
          * Stops the player dead in his tracks
          */
@@ -264,7 +262,6 @@ class LocalPlayer : public Player
          * Uses a correction point to lower an attribute
          */
         void lowerAttribute(size_t attr);
-#endif
 
         void toggleSit();
         void emote(Uint8 emotion);

@@ -55,10 +55,8 @@
 #include "effectmanager.h"
 #include "guild.h"
 
-#include "net/tmwserv/gameserver/player.h"
+//#include "net/tmwserv/gameserver/player.h"
 #include "net/tmwserv/chatserver/guild.h"
-#else
-#include "net/ea/partyhandler.h"
 #endif
 
 #include "resources/animation.h"
@@ -83,7 +81,6 @@ LocalPlayer *player_node = NULL;
 #ifdef TMWSERV_SUPPORT
 LocalPlayer::LocalPlayer():
     Player(65535, 0, NULL),
-    mEquipment(new Equipment),
 #else
 LocalPlayer::LocalPlayer(int id, int job, Map *map):
     Player(id, job, map),
@@ -92,26 +89,24 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mJobLevel(0),
     mXpForNextLevel(0), mJobXpForNextLevel(0),
     mMp(0), mMaxMp(0),
-    mSkillPoints(0),
     mAttackRange(0),
     ATK(0), MATK(0), DEF(0), MDEF(0), HIT(0), FLEE(0),
     ATK_BONUS(0), MATK_BONUS(0), DEF_BONUS(0), MDEF_BONUS(0), FLEE_BONUS(0),
-    mEquipment(new Equipment),
 #endif
+    mEquipment(new Equipment),
     mInStorage(false),
 #ifdef EATHENA_SUPPORT
     mTargetTime(-1),
 #endif
     mLastTarget(-1),
-#ifdef TMWSERV_SUPPORT
     mCharacterPoints(-1),
     mCorrectionPoints(-1),
     mLevelProgress(0),
-#endif
     mLevel(1),
     mMoney(0),
     mTotalWeight(1), mMaxWeight(1),
     mHp(1), mMaxHp(1),
+    mSkillPoints(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
@@ -566,21 +561,22 @@ void LocalPlayer::setWalkingDir(int dir)
     }
 }
 
-#ifdef TMWSERV_SUPPORT
 void LocalPlayer::stopWalking(bool sendToServer)
 {
     if (mAction == WALK && mWalkingDir) {
         mWalkingDir = 0;
+#ifdef TMWSERV_SUPPORT
         mLocalWalkTime = 0;
+#endif
         Being::setDestination(getPosition().x,getPosition().y);
         if (sendToServer)
-             Net::GameServer::Player::walk(getPosition().x, getPosition().y);
+             Net::getPlayerHandler()->setDestination(getPosition().x,
+                                                     getPosition().y);
         setAction(STAND);
     }
 
     clearPath();
 }
-#endif
 
 void LocalPlayer::toggleSit()
 {
@@ -660,12 +656,12 @@ void LocalPlayer::attack()
     Net::GameServer::Player::attack(getSpriteDirection());
 }
 */
+#endif
+
 void LocalPlayer::useSpecial(int special)
 {
     Net::getSpecialHandler()->use(special);
 }
-
-#endif
 
 void LocalPlayer::attack(Being *target, bool keep)
 {
@@ -772,14 +768,12 @@ void LocalPlayer::stopAttack()
     mLastTarget = -1;
 }
 
-#ifdef TMWSERV_SUPPORT
-
 void LocalPlayer::raiseAttribute(size_t attr)
 {
     // we assume that the server allows the change. When not we will undo it later.
     mCharacterPoints--;
     mAttributeBase.at(attr)++;
-    Net::GameServer::Player::raiseAttribute(attr + CHAR_ATTR_BEGIN);
+    Net::getPlayerHandler()->increaseAttribute(attr);
 }
 
 void LocalPlayer::lowerAttribute(size_t attr)
@@ -788,10 +782,8 @@ void LocalPlayer::lowerAttribute(size_t attr)
     mCorrectionPoints--;
     mCharacterPoints++;
     mAttributeBase.at(attr)--;
-    Net::GameServer::Player::lowerAttribute(attr + CHAR_ATTR_BEGIN);
+    Net::getPlayerHandler()->decreaseAttribute(attr);
 }
-
-#endif
 
 void LocalPlayer::setAttributeBase(int num, int value)
 {

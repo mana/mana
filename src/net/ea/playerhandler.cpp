@@ -431,7 +431,7 @@ void PlayerHandler::emote(int emoteId)
     outMsg.writeInt8(emoteId);
 }
 
-void PlayerHandler::increaseStat(LocalPlayer::Attribute attr)
+void PlayerHandler::increaseAttribute(size_t attr)
 {
     MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
 
@@ -464,7 +464,7 @@ void PlayerHandler::increaseStat(LocalPlayer::Attribute attr)
     outMsg.writeInt8(1);
 }
 
-void PlayerHandler::decreaseStat(LocalPlayer::Attribute attr)
+void PlayerHandler::decreaseAttribute(size_t attr)
 {
     // Supported by eA?
 }

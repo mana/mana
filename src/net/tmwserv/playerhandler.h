@@ -38,9 +38,9 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         void emote(int emoteId);
 
-        void increaseStat(LocalPlayer::Attribute attr);
+        void increaseAttribute(size_t attr);
 
-        void decreaseStat(LocalPlayer::Attribute attr);
+        void decreaseAttribute(size_t attr);
 
         void increaseSkill(int skillId);
 

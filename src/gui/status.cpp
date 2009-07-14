@@ -269,17 +269,17 @@ void StatusWindow::action(const gcn::ActionEvent &event)
     if (event.getId().length() == 3)
     {
         if (event.getId() == "STR")
-            Net::getPlayerHandler()->increaseStat(LocalPlayer::STR);
+            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::STR);
         if (event.getId() == "AGI")
-            Net::getPlayerHandler()->increaseStat(LocalPlayer::AGI);
+            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::AGI);
         if (event.getId() == "VIT")
-            Net::getPlayerHandler()->increaseStat(LocalPlayer::VIT);
+            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::VIT);
         if (event.getId() == "INT")
-            Net::getPlayerHandler()->increaseStat(LocalPlayer::INT);
+            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::INT);
         if (event.getId() == "DEX")
-            Net::getPlayerHandler()->increaseStat(LocalPlayer::DEX);
+            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::DEX);
         if (event.getId() == "LUK")
-            Net::getPlayerHandler()->increaseStat(LocalPlayer::LUK);
+            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::LUK);
     }
 }
 

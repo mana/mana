@@ -42,8 +42,6 @@ namespace Net
         {
             void walk(int x, int y);
             void moveItem(int oldSlot, int newSlot, int amount);
-            void raiseAttribute(int attribute);
-            void lowerAttribute(int attribute);
             void respawn();
             static RespawnRequestListener respawnListener;
         }

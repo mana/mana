@@ -35,9 +35,9 @@ class PlayerHandler
 
         virtual void emote(int emoteId) = 0;
 
-        virtual void increaseStat(LocalPlayer::Attribute attr) = 0;
+        virtual void increaseAttribute(size_t attr) = 0;
 
-        virtual void decreaseStat(LocalPlayer::Attribute attr) = 0;
+        virtual void decreaseAttribute(size_t attr) = 0;
 
         virtual void increaseSkill(int skillId) = 0;
 
