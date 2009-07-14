@@ -58,7 +58,6 @@
 #include "net/tmwserv/chatserver/guild.h"
 #else
 #include "net/ea/partyhandler.h"
-#include "net/ea/skillhandler.h"
 #endif
 
 #include "resources/animation.h"

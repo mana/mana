@@ -211,7 +211,7 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      net/partyhandler.h \
 	      net/playerhandler.h \
 	      net/serverinfo.h \
-	      net/skillhandler.h \
+	      net/specialhandler.h \
 	      net/tradehandler.h \
 	      resources/action.cpp \
 	      resources/action.h \
@@ -449,8 +449,8 @@ tmw_SOURCES += \
 	      net/tmwserv/playerhandler.cpp \
 	      net/tmwserv/playerhandler.h \
 	      net/tmwserv/protocol.h \
-	      net/tmwserv/skillhandler.cpp \
-	      net/tmwserv/skillhandler.h \
+	      net/tmwserv/specialhandler.cpp \
+	      net/tmwserv/specialhandler.h \
 	      net/tmwserv/tradehandler.cpp \
 	      net/tmwserv/tradehandler.h \
 	      guild.cpp \
@@ -497,8 +497,8 @@ tmw_SOURCES += \
 	      net/ea/playerhandler.cpp \
 	      net/ea/playerhandler.h \
 	      net/ea/protocol.h \
-	      net/ea/skillhandler.cpp \
-	      net/ea/skillhandler.h \
+	      net/ea/specialhandler.cpp \
+	      net/ea/specialhandler.h \
 	      net/ea/tradehandler.cpp \
 	      net/ea/tradehandler.h
 endif

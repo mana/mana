@@ -39,6 +39,8 @@ class PlayerHandler
 
         virtual void decreaseStat(LocalPlayer::Attribute attr) = 0;
 
+        virtual void increaseSkill(int skillId) = 0;
+
         virtual void pickUp(FloorItem *floorItem) = 0;
 
         virtual void setDirection(char direction) = 0;

@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "net/ea/skillhandler.h"
+#include "net/ea/specialhandler.h"
 
 #include "net/ea/protocol.h"
 
@@ -67,11 +67,11 @@
 /** should always be zero if failed */
 #define SKILL_FAILED      0x00
 
-Net::SkillHandler *skillHandler;
+Net::SpecialHandler *specialHandler;
 
 namespace EAthena {
 
-SkillHandler::SkillHandler()
+SpecialHandler::SpecialHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_PLAYER_SKILLS,
@@ -80,10 +80,10 @@ SkillHandler::SkillHandler()
         0
     };
     handledMessages = _messages;
-    skillHandler = this;
+    specialHandler = this;
 }
 
-void SkillHandler::handleMessage(MessageIn &msg)
+void SpecialHandler::handleMessage(MessageIn &msg)
 {
     int skillCount;
     int skillId;
@@ -223,26 +223,22 @@ void SkillHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void SkillHandler::up(int skillId)
-{
-    if (player_node->getSkillPoints() <= 0)
-        return;
-
-    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
-    outMsg.writeInt16(skillId);
-}
-
-void SkillHandler::use(int skillId, int level, int beingId)
+void SpecialHandler::use(int id)
 {
     // TODO
 }
 
-void SkillHandler::use(int skillId, int level, int x, int y)
+void SpecialHandler::use(int id, int level, int beingId)
 {
     // TODO
 }
 
-void SkillHandler::use(int skillId, const std::string &map)
+void SpecialHandler::use(int id, int level, int x, int y)
+{
+    // TODO
+}
+
+void SpecialHandler::use(int id, const std::string &map)
 {
     // TODO
 }

@@ -19,31 +19,27 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EA_SKILLHANDLER_H
-#define NET_EA_SKILLHANDLER_H
+#ifndef NET_TMWSERV_SKILLHANDLER_H
+#define NET_TMWSERV_SKILLHANDLER_H
 
-#include "net/messagehandler.h"
-#include "net/net.h"
-#include "net/skillhandler.h"
+#include "net/specialhandler.h"
 
-namespace EAthena {
+namespace TmwServ {
 
-class SkillHandler : public MessageHandler, public Net::SkillHandler
+class SpecialHandler : public Net::SpecialHandler
 {
     public:
-        SkillHandler();
+        SpecialHandler();
 
-        void handleMessage(MessageIn &msg);
+        void use(int id);
 
-        void up(int skillId);
+        void use(int id, int level, int beingId);
 
-        void use(int skillId, int level, int beingId);
+        void use(int id, int level, int x, int y);
 
-        void use(int skillId, int level, int x, int y);
-
-        void use(int skillId, const std::string &map);
+        void use(int id, const std::string &map);
 };
 
-} // namespace EAthena
+} // namespace TmwServ
 
-#endif // NET_EA_SKILLHANDLER_H
+#endif

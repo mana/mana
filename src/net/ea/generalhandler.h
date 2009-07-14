@@ -66,7 +66,7 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
         MessageHandlerPtr mNpcHandler;
         MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mPlayerHandler;
-        MessageHandlerPtr mSkillHandler;
+        MessageHandlerPtr mSpecialHandler;
         MessageHandlerPtr mTradeHandler;
 };
 

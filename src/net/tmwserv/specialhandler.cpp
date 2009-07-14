@@ -19,27 +19,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_TMWSERV_SKILLHANDLER_H
-#define NET_TMWSERV_SKILLHANDLER_H
+#include "net/tmwserv/specialhandler.h"
 
-#include "net/skillhandler.h"
+Net::SpecialHandler *specialHandler;
 
 namespace TmwServ {
 
-class SkillHandler : public Net::SkillHandler
+SpecialHandler::SpecialHandler()
 {
-    public:
-        SkillHandler();
+    specialHandler = this;
+}
 
-        void up(int skillId);
+void SpecialHandler::use(int id)
+{
+    // TODO
+}
 
-        void use(int skillId, int level, int beingId);
+void SpecialHandler::use(int id, int level, int beingId)
+{
+    // TODO
+}
 
-        void use(int skillId, int level, int x, int y);
+void SpecialHandler::use(int id, int level, int x, int y)
+{
+    // TODO
+}
 
-        void use(int skillId, const std::string &map);
-};
+void SpecialHandler::use(int id, const std::string &map)
+{
+    // TODO
+}
 
 } // namespace TmwServ
-
-#endif

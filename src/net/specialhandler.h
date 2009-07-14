@@ -19,23 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef SKILLHANDLER_H
-#define SKILLHANDLER_H
+#ifndef SPECIALHANDLER_H
+#define SPECIALHANDLER_H
 
 #include <iosfwd>
 
 namespace Net {
-class SkillHandler
+class SpecialHandler
 {
     public:
-        virtual void up(int skillId) = 0;
+        virtual void use(int id) = 0;
 
-        virtual void use(int skillId, int level, int beingId) = 0;
+        virtual void use(int id, int level, int beingId) = 0;
 
-        virtual void use(int skillId, int level, int x, int y) = 0;
+        virtual void use(int id, int level, int x, int y) = 0;
 
-        virtual void use(int skillId, const std::string &map) = 0;
+        virtual void use(int id, const std::string &map) = 0;
 };
 }
 
-#endif // SKILLHANDLER_H
+#endif // SPECIALHANDLER_H

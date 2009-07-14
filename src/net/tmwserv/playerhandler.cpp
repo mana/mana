@@ -332,6 +332,11 @@ void PlayerHandler::decreaseStat(LocalPlayer::Attribute attr)
     // TODO
 }
 
+void PlayerHandler::increaseSkill(int skillId)
+{
+    // Not used atm
+}
+
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
     int id = floorItem->getId();

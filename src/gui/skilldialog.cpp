@@ -38,7 +38,7 @@
 #include "log.h"
 
 #include "net/net.h"
-#include "net/skillhandler.h"
+#include "net/playerhandler.h"
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
@@ -112,7 +112,7 @@ void SkillDialog::action(const gcn::ActionEvent &event)
         SkillEntry *disp = dynamic_cast<SkillEntry*>(event.getSource()->getParent());
 
         if (disp)
-            Net::getSkillHandler()->up(disp->mInfo->id);
+            Net::getPlayerHandler()->increaseSkill(disp->mInfo->id);
     }
     else if (event.getId() == "close")
     {

@@ -469,6 +469,15 @@ void PlayerHandler::decreaseStat(LocalPlayer::Attribute attr)
     // Supported by eA?
 }
 
+void PlayerHandler::increaseSkill(int skillId)
+{
+    if (player_node->getSkillPoints() <= 0)
+        return;
+
+    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
+    outMsg.writeInt16(skillId);
+}
+
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
     MessageOut outMsg(CMSG_ITEM_PICKUP);

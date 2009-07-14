@@ -42,6 +42,8 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         void decreaseStat(LocalPlayer::Attribute attr);
 
+        void increaseSkill(int skillId);
+
         void pickUp(FloorItem *floorItem);
 
         void setDirection(char direction);

@@ -42,7 +42,7 @@
 #include "net/ea/playerhandler.h"
 #include "net/ea/partyhandler.h"
 #include "net/ea/tradehandler.h"
-#include "net/ea/skillhandler.h"
+#include "net/ea/specialhandler.h"
 
 #include "net/ea/gui/partytab.h"
 
@@ -78,7 +78,7 @@ GeneralHandler::GeneralHandler():
     mNpcHandler(new NpcHandler),
     mPartyHandler(new PartyHandler),
     mPlayerHandler(new PlayerHandler),
-    mSkillHandler(new SkillHandler),
+    mSpecialHandler(new SpecialHandler),
     mTradeHandler(new TradeHandler)
 {
     static const Uint16 _messages[] = {
@@ -158,7 +158,7 @@ void GeneralHandler::load()
     mNetwork->registerHandler(mMapHandler.get());
     mNetwork->registerHandler(mNpcHandler.get());
     mNetwork->registerHandler(mPlayerHandler.get());
-    mNetwork->registerHandler(mSkillHandler.get());
+    mNetwork->registerHandler(mSpecialHandler.get());
     mNetwork->registerHandler(mTradeHandler.get());
     mNetwork->registerHandler(mPartyHandler.get());
 }

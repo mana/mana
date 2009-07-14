@@ -643,11 +643,11 @@
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
-		<Unit filename="src/net/ea/skillhandler.cpp">
+		<Unit filename="src/net/ea/specialhandler.cpp">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
-		<Unit filename="src/net/ea/skillhandler.h">
+		<Unit filename="src/net/ea/specialhandler.h">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
@@ -676,7 +676,7 @@
 		<Unit filename="src/net/npchandler.h" />
 		<Unit filename="src/net/partyhandler.h" />
 		<Unit filename="src/net/playerhandler.h" />
-		<Unit filename="src/net/skillhandler.h" />
+		<Unit filename="src/net/specialhandler.h" />
 		<Unit filename="src/net/tmwserv/accountserver/account.cpp">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
@@ -908,11 +908,11 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/skillhandler.cpp">
+		<Unit filename="src/net/tmwserv/specialhandler.cpp">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/skillhandler.h">
+		<Unit filename="src/net/tmwserv/specialhandler.h">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
