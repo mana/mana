@@ -57,26 +57,6 @@ void Net::GameServer::Player::useSpecial(int special)
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::requestTrade(int id)
-{
-    MessageOut msg(PGMSG_TRADE_REQUEST);
-    msg.writeInt16(id);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::acceptTrade(bool accept)
-{
-    MessageOut msg(accept ? PGMSG_TRADE_REQUEST : PGMSG_TRADE_CANCEL);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::tradeMoney(int amount)
-{
-    MessageOut msg(PGMSG_TRADE_SET_MONEY);
-    msg.writeInt32(amount);
-    Net::GameServer::connection->send(msg);
-}
-
 void Net::GameServer::Player::raiseAttribute(int attribute)
 {
     MessageOut msg(PGMSG_RAISE_ATTRIBUTE);

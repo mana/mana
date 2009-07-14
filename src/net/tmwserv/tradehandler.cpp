@@ -55,7 +55,11 @@ namespace {
         void action(const gcn::ActionEvent &event)
         {
             if (event.getId() == "yes")
-                Net::GameServer::Player::requestTrade(tradePartnerID);
+            {
+                MessageOut msg(PGMSG_TRADE_REQUEST);
+                msg.writeInt16(tradePartnerID);
+                Net::GameServer::connection->send(msg);
+            }
             else
                 Net::getTradeHandler()->cancel();
         }
@@ -105,7 +109,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
             Being *being = beingManager->findBeing(msg.readInt16());
             if (!being || !mAcceptTradeRequests)
             {
-                Net::GameServer::Player::acceptTrade(false);
+                respond(false);
                 break;
             }
             player_node->setTrading(true);
@@ -171,7 +175,9 @@ void TradeHandler::request(Being *being)
 
 void TradeHandler::respond(bool accept)
 {
-    // TODO
+    MessageOut msg(accept ? PGMSG_TRADE_REQUEST : PGMSG_TRADE_CANCEL);
+    Net::GameServer::connection->send(msg);
+
     if (!accept)
         player_node->setTrading(false);
 }
