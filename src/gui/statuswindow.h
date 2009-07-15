@@ -50,14 +50,13 @@ class StatusWindow : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         /**
-         * Draw this window
-         */
-        void draw(gcn::Graphics *graphics);
-
-        /**
          * Updates this dialog with values from PLAYER_INFO *char_info
          */
         void update();
+
+        std::string update(int id);
+
+        void addAttribute(int id, const std::string &name, bool modifiable);
 
         static void updateHPBar(ProgressBar *bar, bool showMax = false);
 

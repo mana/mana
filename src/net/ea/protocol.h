@@ -22,6 +22,30 @@
 #ifndef EA_PROTOCOL_H
 #define EA_PROTOCOL_H
 
+enum {
+    STR = 0xd,
+    AGI,
+    VIT,
+    INT,
+    DEX,
+    LUK,
+
+    STR_U,
+    AGI_U,
+    VIT_U,
+    INT_U,
+    DEX_U,
+    LUK_U,
+
+    ATK,
+    DEF,
+    MATK,
+    MDEF,
+    HIT,
+    FLEE,
+    CRIT
+};
+
 static const int INVENTORY_OFFSET = 2;
 static const int STORAGE_OFFSET = 1;
 

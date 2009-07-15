@@ -48,14 +48,15 @@ class StatusWindow : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         /**
-         * Draw this window
-         */
-        void draw(gcn::Graphics *graphics);
-
-        /**
          * Updates this dialog with values from PLAYER_INFO *char_info
          */
         void update();
+
+        // TODO: only update what changed
+        std::string update(int id) { update(); return ""; }
+
+        // future use
+        void addAttribute(int id, const std::string &name, bool modifiable)  {}
 
         static void updateHPBar(ProgressBar *bar, bool showMax = false);
         static void updateMPBar(ProgressBar *bar, bool showMax = false);
@@ -76,15 +77,8 @@ class StatusWindow : public Window, public gcn::ActionListener
         /**
          * Derived Statistics captions
          */
-        gcn::Label *mStatsAttackLabel, *mStatsDefenseLabel;
-        gcn::Label *mStatsMagicAttackLabel, *mStatsMagicDefenseLabel;
-        gcn::Label *mStatsAccuracyLabel, *mStatsEvadeLabel;
-        gcn::Label *mStatsReflexLabel;
-
-        gcn::Label *mStatsAttackPoints, *mStatsDefensePoints;
-        gcn::Label *mStatsMagicAttackPoints, *mStatsMagicDefensePoints;
-        gcn::Label *mStatsAccuracyPoints, *mStatsEvadePoints;
-        gcn::Label *mStatsReflexPoints;
+        gcn::Label *mDStatsLabel[7];
+        gcn::Label *mDPointsLabel[7];
 
         /**
          * Stats captions.

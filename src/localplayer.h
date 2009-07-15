@@ -35,8 +35,6 @@ class Inventory;
 class Item;
 class Map;
 
-#ifdef TMWSERV_SUPPORT
-
 /**
  * Attributes used during combat. Available to all the beings.
  */
@@ -88,22 +86,18 @@ enum
     NB_CHARACTER_ATTRIBUTES = CHAR_ATTR_END
 };
 
-#endif
-
 /**
  * The local player character.
  */
 class LocalPlayer : public Player
 {
     public:
+#ifdef TMWSERV_SUPPORT
         enum Attribute
         {
-#ifdef TMWSERV_SUPPORT
             STR = 0, AGI, DEX, VIT, INT, WIL, CHR
-#else
-            STR = 0, AGI, VIT, INT, DEX, LUK
-#endif
         };
+#endif
 
         /**
          * Constructor.
@@ -286,13 +280,6 @@ class LocalPlayer : public Player
         Uint16 mMp, mMaxMp;
 
         Uint16 mAttackRange;
-
-        Uint8 mAttr[6];
-        Uint8 mAttrUp[6];
-
-        int ATK, MATK, DEF, MDEF, HIT, FLEE;
-        int ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
-
 #endif
 
         int getHp() const

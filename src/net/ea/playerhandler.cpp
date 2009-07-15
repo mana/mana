@@ -53,6 +53,9 @@ OkDialog *deathNotice = NULL;
 // everything beyond will reset the port hard.
 static const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
 
+#define ATTR_BONUS(atr) \
+(player_node->getAttributeEffective(atr) - player_node->getAttributeBase(atr))
+
 // TODO Move somewhere else
 namespace {
 
@@ -223,17 +226,14 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 switch (type)
                 {
                     case 0x0000: player_node->setWalkSpeed(value); break;
+                    case 0x0004: break; // manner
                     case 0x0005: player_node->setHp(value); break;
                     case 0x0006: player_node->setMaxHp(value); break;
                     case 0x0007: player_node->mMp = value; break;
                     case 0x0008: player_node->mMaxMp = value; break;
-                    case 0x0009:
-                                 player_node->setCharacterPoints(value);
-                                 break;
+                    case 0x0009: player_node->setCharacterPoints(value); break;
                     case 0x000b: player_node->setLevel(value); break;
-                    case 0x000c:
-                                 player_node->setSkillPoints(value);
-                                 break;
+                    case 0x000c: player_node->setSkillPoints(value); break;
                     case 0x0018:
                                  if (value >= player_node->getMaxWeight() / 2 &&
                                          player_node->getTotalWeight() <
@@ -249,13 +249,44 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                                  player_node->setTotalWeight(value);
                                  break;
                     case 0x0019: player_node->setMaxWeight(value); break;
-                    case 0x0029: player_node->ATK = value; break;
-                    case 0x002b: player_node->MATK = value; break;
-                    case 0x002d: player_node->DEF = value; break;
-                    case 0x002e: player_node->DEF_BONUS = value; break;
-                    case 0x002f: player_node->MDEF = value; break;
-                    case 0x0031: player_node->HIT = value; break;
-                    case 0x0032: player_node->FLEE = value; break;
+
+                    case 0x0029: player_node->setAttributeEffective(ATK, value
+                                                           + ATTR_BONUS(ATK));
+                        player_node->setAttributeBase(ATK, value);
+                        break;
+                    case 0x002a: value += player_node->getAttributeBase(ATK);
+                        player_node->setAttributeEffective(ATK, value); break;
+
+                    case 0x002b: player_node->setAttributeEffective(MATK, value
+                                                           + ATTR_BONUS(MATK));
+                        player_node->setAttributeBase(MATK, value); break;
+                    case 0x002c: value += player_node->getAttributeBase(MATK);
+                        player_node->setAttributeEffective(MATK, value); break;
+
+                    case 0x002d: player_node->setAttributeEffective(DEF, value
+                                                           + ATTR_BONUS(DEF));
+                        player_node->setAttributeBase(DEF, value); break;
+                    case 0x002e: value += player_node->getAttributeBase(DEF);
+                        player_node->setAttributeEffective(DEF, value); break;
+
+                    case 0x002f: player_node->setAttributeEffective(MDEF, value
+                                                           + ATTR_BONUS(MDEF));
+                        player_node->setAttributeBase(MDEF, value); break;
+                    case 0x0030: value += player_node->getAttributeBase(MDEF);
+                        player_node->setAttributeEffective(MDEF, value); break;
+
+                    case 0x0031: player_node->setAttributeBase(HIT, value);
+                        player_node->setAttributeEffective(HIT, value); break;
+
+                    case 0x0032: player_node->setAttributeEffective(FLEE, value
+                                                           + ATTR_BONUS(FLEE));
+                        player_node->setAttributeBase(FLEE, value); break;
+                    case 0x0033: value += player_node->getAttributeBase(FLEE);
+                        player_node->setAttributeEffective(FLEE, value); break;
+
+                    case 0x0034: player_node->setAttributeBase(CRIT, value);
+                        player_node->setAttributeEffective(CRIT, value); break;
+
                     case 0x0035: player_node->mAttackSpeed = value; break;
                     case 0x0037: player_node->mJobLevel = value; break;
                     case 500: player_node->setGMLevel(value); break;
@@ -302,26 +333,13 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 int type = msg.readInt32();
                 int base = msg.readInt32();
                 int bonus = msg.readInt32();
-                int total = base + bonus;
 
-                switch (type) {
-                    case 0x000d: player_node->mAttr[LocalPlayer::STR] = total;
-                                 break;
-                    case 0x000e: player_node->mAttr[LocalPlayer::AGI] = total;
-                                 break;
-                    case 0x000f: player_node->mAttr[LocalPlayer::VIT] = total;
-                                 break;
-                    case 0x0010: player_node->mAttr[LocalPlayer::INT] = total;
-                                 break;
-                    case 0x0011: player_node->mAttr[LocalPlayer::DEX] = total;
-                                 break;
-                    case 0x0012: player_node->mAttr[LocalPlayer::LUK] = total;
-                                 break;
-                }
+                player_node->setAttributeBase(type, base);
+                player_node->setAttributeEffective(type, base + bonus);
             }
             break;
 
-        case SMSG_PLAYER_STAT_UPDATE_4:
+        case SMSG_PLAYER_STAT_UPDATE_4: // Attribute increase ack
             {
                 int type = msg.readInt16();
                 int fail = msg.readInt8();
@@ -330,72 +348,104 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 if (fail != 1)
                     break;
 
-                switch (type) {
-                    case 0x000d: player_node->mAttr[LocalPlayer::STR] = value;
-                                 break;
-                    case 0x000e: player_node->mAttr[LocalPlayer::AGI] = value;
-                                 break;
-                    case 0x000f: player_node->mAttr[LocalPlayer::VIT] = value;
-                                 break;
-                    case 0x0010: player_node->mAttr[LocalPlayer::INT] = value;
-                                 break;
-                    case 0x0011: player_node->mAttr[LocalPlayer::DEX] = value;
-                                 break;
-                    case 0x0012: player_node->mAttr[LocalPlayer::LUK] = value;
-                                 break;
-                }
+                int bonus = ATTR_BONUS(type);
+
+                player_node->setAttributeBase(type, value);
+                player_node->setAttributeEffective(type, value + bonus);
             }
             break;
 
         // Updates stats and status points
         case SMSG_PLAYER_STAT_UPDATE_5:
             player_node->setCharacterPoints(msg.readInt16());
-            player_node->mAttr[LocalPlayer::STR] = msg.readInt8();
-            player_node->mAttrUp[LocalPlayer::STR] = msg.readInt8();
-            player_node->mAttr[LocalPlayer::AGI] = msg.readInt8();
-            player_node->mAttrUp[LocalPlayer::AGI] = msg.readInt8();
-            player_node->mAttr[LocalPlayer::VIT] = msg.readInt8();
-            player_node->mAttrUp[LocalPlayer::VIT] = msg.readInt8();
-            player_node->mAttr[LocalPlayer::INT] = msg.readInt8();
-            player_node->mAttrUp[LocalPlayer::INT] = msg.readInt8();
-            player_node->mAttr[LocalPlayer::DEX] = msg.readInt8();
-            player_node->mAttrUp[LocalPlayer::DEX] = msg.readInt8();
-            player_node->mAttr[LocalPlayer::LUK] = msg.readInt8();
-            player_node->mAttrUp[LocalPlayer::LUK] = msg.readInt8();
-            player_node->ATK       = msg.readInt16();  // ATK
-            player_node->ATK_BONUS  = msg.readInt16();  // ATK bonus
-            player_node->MATK      = msg.readInt16();  // MATK max
-            player_node->MATK_BONUS = msg.readInt16();  // MATK min
-            player_node->DEF       = msg.readInt16();  // DEF
-            player_node->DEF_BONUS  = msg.readInt16();  // DEF bonus
-            player_node->MDEF      = msg.readInt16();  // MDEF
-            player_node->MDEF_BONUS = msg.readInt16();  // MDEF bonus
-            player_node->HIT       = msg.readInt16();  // HIT
-            player_node->FLEE      = msg.readInt16();  // FLEE
-            player_node->FLEE_BONUS = msg.readInt16();  // FLEE bonus
-            msg.readInt16();  // critical
-            msg.readInt16();  // unknown
+
+            {
+                int val = msg.readInt8();
+                player_node->setAttributeEffective(STR, val + ATTR_BONUS(STR));
+                player_node->setAttributeBase(STR, val);
+                player_node->setAttributeBase(STR, msg.readInt8());
+
+                val = msg.readInt8();
+                player_node->setAttributeEffective(AGI, val + ATTR_BONUS(AGI));
+                player_node->setAttributeBase(AGI, val);
+                player_node->setAttributeBase(AGI_U, msg.readInt8());
+
+                val = msg.readInt8();
+                player_node->setAttributeEffective(VIT, val + ATTR_BONUS(VIT));
+                player_node->setAttributeBase(VIT, val);
+                player_node->setAttributeBase(VIT_U, msg.readInt8());
+
+                val = msg.readInt8();
+                player_node->setAttributeEffective(INT, val + ATTR_BONUS(INT));
+                player_node->setAttributeBase(INT, val);
+                player_node->setAttributeBase(INT_U, msg.readInt8());
+
+                val = msg.readInt8();
+                player_node->setAttributeEffective(DEX, val + ATTR_BONUS(DEX));
+                player_node->setAttributeBase(DEX, val);
+                player_node->setAttributeBase(DEX_U, msg.readInt8());
+
+                val = msg.readInt8();
+                player_node->setAttributeEffective(LUK, val + ATTR_BONUS(LUK));
+                player_node->setAttributeBase(LUK, val);
+                player_node->setAttributeBase(LUK_U, msg.readInt8());
+
+                val = msg.readInt16(); // ATK
+                player_node->setAttributeBase(ATK, val);
+                val += msg.readInt16();  // ATK bonus
+                player_node->setAttributeEffective(ATK, val);
+
+                val = msg.readInt16(); // MATK
+                player_node->setAttributeBase(MATK, val);
+                val += msg.readInt16();  // MATK bonus
+                player_node->setAttributeEffective(MATK, val);
+
+                val = msg.readInt16(); // DEF
+                player_node->setAttributeBase(DEF, val);
+                val += msg.readInt16();  // DEF bonus
+                player_node->setAttributeEffective(DEF, val);
+
+                val = msg.readInt16(); // MDEF
+                player_node->setAttributeBase(MDEF, val);
+                val += msg.readInt16();  // MDEF bonus
+                player_node->setAttributeEffective(MDEF, val);
+
+                val = msg.readInt16(); // HIT
+                player_node->setAttributeBase(ATK, val);
+                player_node->setAttributeEffective(ATK, val);
+
+                val = msg.readInt16(); // FLEE
+                player_node->setAttributeBase(FLEE, val);
+                val += msg.readInt16();  // FLEE bonus
+                player_node->setAttributeEffective(FLEE, val);
+
+                val = msg.readInt16();
+                player_node->setAttributeBase(CRIT, val);
+                player_node->setAttributeEffective(CRIT, val);
+            }
+
+            msg.readInt16();  // manner
             break;
 
         case SMSG_PLAYER_STAT_UPDATE_6:
             switch (msg.readInt16()) {
                 case 0x0020:
-                    player_node->mAttrUp[LocalPlayer::STR] = msg.readInt8();
+                    player_node->setAttributeBase(STR_U, msg.readInt8());
                     break;
                 case 0x0021:
-                    player_node->mAttrUp[LocalPlayer::AGI] = msg.readInt8();
+                    player_node->setAttributeBase(AGI_U, msg.readInt8());
                     break;
                 case 0x0022:
-                    player_node->mAttrUp[LocalPlayer::VIT] = msg.readInt8();
+                    player_node->setAttributeBase(VIT_U, msg.readInt8());
                     break;
                 case 0x0023:
-                    player_node->mAttrUp[LocalPlayer::INT] = msg.readInt8();
+                    player_node->setAttributeBase(INT_U, msg.readInt8());
                     break;
                 case 0x0024:
-                    player_node->mAttrUp[LocalPlayer::DEX] = msg.readInt8();
+                    player_node->setAttributeBase(DEX_U, msg.readInt8());
                     break;
                 case 0x0025:
-                    player_node->mAttrUp[LocalPlayer::LUK] = msg.readInt8();
+                    player_node->setAttributeBase(LUK_U, msg.readInt8());
                     break;
             }
             break;
@@ -433,35 +483,12 @@ void PlayerHandler::emote(int emoteId)
 
 void PlayerHandler::increaseAttribute(size_t attr)
 {
-    MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
-
-    switch (attr)
+    if (attr >= STR && attr <= LUK)
     {
-        case LocalPlayer::STR:
-            outMsg.writeInt16(0x000d);
-            break;
-
-        case LocalPlayer::AGI:
-            outMsg.writeInt16(0x000e);
-            break;
-
-        case LocalPlayer::VIT:
-            outMsg.writeInt16(0x000f);
-            break;
-
-        case LocalPlayer::INT:
-            outMsg.writeInt16(0x0010);
-            break;
-
-        case LocalPlayer::DEX:
-            outMsg.writeInt16(0x0011);
-            break;
-
-        case LocalPlayer::LUK:
-            outMsg.writeInt16(0x0012);
-            break;
+        MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
+        outMsg.writeInt16(STR);
+        outMsg.writeInt8(1);
     }
-    outMsg.writeInt8(1);
 }
 
 void PlayerHandler::decreaseAttribute(size_t attr)

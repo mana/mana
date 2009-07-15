@@ -22,6 +22,7 @@
 #include "gui/inventorywindow.h"
 #include "gui/partywindow.h"
 #include "gui/skilldialog.h"
+#include "gui/statuswindow.h"
 
 #include "net/tmwserv/generalhandler.h"
 
@@ -148,6 +149,13 @@ void GeneralHandler::guiWindowsLoaded()
     inventoryWindow->setSplitAllowed(true);
     partyWindow->clearPartyName();
     skillDialog->loadSkills("tmw-skills.xml");
+
+    /*statusWindow->addAttribute(16, _("Strength"), true);
+    statusWindow->addAttribute(17, _("Agility"), true);
+    statusWindow->addAttribute(18, _("Dexterity"), true);
+    statusWindow->addAttribute(19, _("Vitality"), true);
+    statusWindow->addAttribute(20, _("Intelligence"), true);
+    statusWindow->addAttribute(21, _("Willpower"), true);*/
 }
 
 void GeneralHandler::guiWindowsUnloaded()

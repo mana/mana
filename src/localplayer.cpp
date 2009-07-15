@@ -41,6 +41,11 @@
 #include "gui/palette.h"
 #include "gui/skilldialog.h"
 #include "gui/storagewindow.h"
+#ifdef TMWSERV_SUPPORT
+#include "gui/statuswindow.h"
+#else
+#include "gui/status.h"
+#endif
 
 #include "gui/widgets/chattab.h"
 
@@ -90,8 +95,6 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mXpForNextLevel(0), mJobXpForNextLevel(0),
     mMp(0), mMaxMp(0),
     mAttackRange(0),
-    ATK(0), MATK(0), DEF(0), MDEF(0), HIT(0), FLEE(0),
-    ATK_BONUS(0), MATK_BONUS(0), DEF_BONUS(0), MDEF_BONUS(0), FLEE_BONUS(0),
 #endif
     mEquipment(new Equipment),
     mInStorage(false),
@@ -798,6 +801,9 @@ void LocalPlayer::setAttributeBase(int num, int value)
         Particle* effect = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
         this->controlParticle(effect);
     }
+
+    if (statusWindow)
+        statusWindow->update(num);
 }
 
 void LocalPlayer::setAttributeEffective(int num, int value)
@@ -805,6 +811,9 @@ void LocalPlayer::setAttributeEffective(int num, int value)
     mAttributeEffective[num] = value;
     if (skillDialog)
         skillDialog->update(num);
+
+    if (statusWindow)
+        statusWindow->update(num);
 }
 
 void LocalPlayer::setSkillPoints(int points)
@@ -844,6 +853,9 @@ void LocalPlayer::setLevelProgress(int percent)
         addMessageToQueue(toString(percent - mLevelProgress) + " xp");
     }
     mLevelProgress = percent;
+
+    if (statusWindow)
+        statusWindow->update();
 }
 
 void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)

@@ -32,7 +32,8 @@
 #include "gui/widgets/windowcontainer.h"
 
 #include "net/net.h"
-#include "net/ea/playerhandler.h"
+#include "net/playerhandler.h"
+#include "net/ea/protocol.h"
 
 #include "utils/gettext.h"
 #include "utils/mathutils.h"
@@ -79,29 +80,38 @@ StatusWindow::StatusWindow():
     mStatsTotalLabel->setAlignment(gcn::Graphics::CENTER);
 
     // Derived Stats
-    mStatsAttackLabel = new Label(_("Attack:"));
-    mStatsDefenseLabel= new Label(_("Defense:"));
-    mStatsMagicAttackLabel = new Label(_("M.Attack:"));
-    mStatsMagicDefenseLabel = new Label(_("M.Defense:"));
-    // Gettext flag for next line: xgettext:no-c-format
-    mStatsAccuracyLabel = new Label(_("% Accuracy:"));
-    // Gettext flag for next line: xgettext:no-c-format
-    mStatsEvadeLabel = new Label(_("% Evade:"));
-    // Gettext flag for next line: xgettext:no-c-format
-    mStatsReflexLabel = new Label(_("% Reflex:"));
+    static const char *dAttrNames[7] = {
+        _("Attack"),
+        _("Defense"),
+        _("M.Attack"),
+        _("M.Defense"),
+        // Gettext flag for next line: xgettext:no-c-format
+        _("% Accuracy"),
+        // Gettext flag for next line: xgettext:no-c-format
+        _("% Evade"),
+        // Gettext flag for next line: xgettext:no-c-format
+        _("% Crit Chance")
+    };
 
-    mStatsAttackPoints = new Label;
-    mStatsDefensePoints = new Label;
-    mStatsMagicAttackPoints = new Label;
-    mStatsMagicDefensePoints = new Label;
-    mStatsAccuracyPoints = new Label;
-    mStatsEvadePoints = new Label;
-    mStatsReflexPoints = new Label;
+    for (int i = 0; i < 7; i++)
+    {
+        mDStatsLabel[i] = new Label(dAttrNames[i]);
+        mDPointsLabel[i] =  new Label;
+    }
 
-    // New labels
+    // Stats labels
+    static const char *attrNames[6] = {
+        _("Strength"),
+        _("Agility"),
+        _("Vitality"),
+        _("Intelligence"),
+        _("Dexterity"),
+        _("Luck")
+    };
+
     for (int i = 0; i < 6; i++)
     {
-        mStatsLabel[i] = new Label("0");
+        mStatsLabel[i] = new Label(attrNames[i]);
         mStatsLabel[i]->setAlignment(gcn::Graphics::CENTER);
         mStatsDisplayLabel[i] = new Label;
         mPointsLabel[i] = new Label("0");
@@ -144,26 +154,19 @@ StatusWindow::StatusWindow():
         place(10, 2 + i, mStatsButton[i]);
         place(12, 2 + i, mPointsLabel[i]).setPadding(5);
     }
-    place(14, 2, mStatsAttackLabel, 7).setPadding(5);
-    place(14, 3, mStatsDefenseLabel, 7).setPadding(5);
-    place(14, 4, mStatsMagicAttackLabel, 7).setPadding(5);
-    place(14, 5, mStatsMagicDefenseLabel, 7).setPadding(5);
-    place(14, 6, mStatsAccuracyLabel, 7).setPadding(5);
-    place(14, 7, mStatsEvadeLabel, 7).setPadding(5);
-    place(14, 8, mStatsReflexLabel, 7).setPadding(5);
-    place(21, 2, mStatsAttackPoints, 3).setPadding(5);
-    place(21, 3, mStatsDefensePoints, 3).setPadding(5);
-    place(21, 4, mStatsMagicAttackPoints, 3).setPadding(5);
-    place(21, 5, mStatsMagicDefensePoints, 3).setPadding(5);
-    place(21, 6, mStatsAccuracyPoints, 3).setPadding(5);
-    place(21, 7, mStatsEvadePoints, 3).setPadding(5);
-    place(21, 8, mStatsReflexPoints, 3).setPadding(5);
+    for (int i = 0; i < 7; i++)
+    {
+        place(14, 2 + i, mDStatsLabel[i], 7).setPadding(5);
+        place(21, 2 + i, mDPointsLabel[i], 3).setPadding(5);
+    }
+
     place(0, 8, mRemainingStatsPointsLabel, 3).setPadding(5);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState();
+    update();
 }
 
 void StatusWindow::update()
@@ -193,73 +196,41 @@ void StatusWindow::update()
 
     // Stats Part
     // ----------
-    static const char *attrNames[6] = {
-        N_("Strength"),
-        N_("Agility"),
-        N_("Vitality"),
-        N_("Intelligence"),
-        N_("Dexterity"),
-        N_("Luck")
-    };
     int statusPoints = player_node->getCharacterPoints();
 
     // Update labels
     for (int i = 0; i < 6; i++)
     {
-        mStatsLabel[i]->setCaption(gettext(attrNames[i]));
-        mStatsDisplayLabel[i]->setCaption(toString((int) player_node->mAttr[i]));
-        mPointsLabel[i]->setCaption(toString((int) player_node->mAttrUp[i]));
+        int base = player_node->getAttributeBase(i + STR);
+        int bonus = player_node->getAttributeEffective(i + STR) - base;
+        std::string value = toString(base);
+        if (bonus)
+            value += strprintf(" (%+d)", bonus);
+        mStatsDisplayLabel[i]->setCaption(value);
+        mPointsLabel[i]->setCaption(toString(player_node->
+                                             getAttributeBase(i + STR_U)));
 
-        mStatsLabel[i]->adjustSize();
         mStatsDisplayLabel[i]->adjustSize();
         mPointsLabel[i]->adjustSize();
 
-        mStatsButton[i]->setEnabled(player_node->mAttrUp[i] <= statusPoints);
+        mStatsButton[i]->setEnabled(player_node->getAttributeBase(i + STR_U)
+                                    <= statusPoints);
     }
     mRemainingStatsPointsLabel->setCaption(
             strprintf(_("Remaining Status Points: %d"), statusPoints));
     mRemainingStatsPointsLabel->adjustSize();
 
     // Derived Stats Points
-
-    // Attack TODO: Count equipped Weapons and items attack bonuses
-    mStatsAttackPoints->setCaption(
-            toString(player_node->ATK + player_node->ATK_BONUS));
-    mStatsAttackPoints->adjustSize();
-
-    // Defense TODO: Count equipped Armors and items defense bonuses
-    mStatsDefensePoints->setCaption(
-            toString(player_node->DEF + player_node->DEF_BONUS));
-    mStatsDefensePoints->adjustSize();
-
-    // Magic Attack TODO: Count equipped items M.Attack bonuses
-    mStatsMagicAttackPoints->setCaption(
-            toString(player_node->MATK + player_node->MATK_BONUS));
-    mStatsMagicAttackPoints->adjustSize();
-
-    // Magic Defense TODO: Count equipped items M.Defense bonuses
-    mStatsMagicDefensePoints->setCaption(
-            toString(player_node->MDEF + player_node->MDEF_BONUS));
-    mStatsMagicDefensePoints->adjustSize();
-
-    // Accuracy %
-    mStatsAccuracyPoints->setCaption(toString(player_node->HIT));
-    mStatsAccuracyPoints->adjustSize();
-
-    // Evasion %
-    mStatsEvadePoints->setCaption(toString(player_node->FLEE));
-    mStatsEvadePoints->adjustSize();
-
-    // Reflex %
-    mStatsReflexPoints->setCaption(toString(player_node->DEX / 4)); // + counter
-    mStatsReflexPoints->adjustSize();
-}
-
-void StatusWindow::draw(gcn::Graphics *g)
-{
-    update();
-
-    Window::draw(g);
+    for (int i = 0; i < 7; i++)
+    {
+        int base = player_node->getAttributeBase(i + ATK);
+        int bonus = player_node->getAttributeEffective(i + ATK) - base;
+        std::string value = toString(base);
+        if (bonus)
+            value += strprintf(" (%+d)", bonus);
+        mDPointsLabel[i]->setCaption(value);
+        mDPointsLabel[i]->adjustSize();
+    }
 }
 
 void StatusWindow::action(const gcn::ActionEvent &event)
@@ -269,17 +240,17 @@ void StatusWindow::action(const gcn::ActionEvent &event)
     if (event.getId().length() == 3)
     {
         if (event.getId() == "STR")
-            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::STR);
+            Net::getPlayerHandler()->increaseAttribute(STR);
         if (event.getId() == "AGI")
-            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::AGI);
+            Net::getPlayerHandler()->increaseAttribute(AGI);
         if (event.getId() == "VIT")
-            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::VIT);
+            Net::getPlayerHandler()->increaseAttribute(VIT);
         if (event.getId() == "INT")
-            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::INT);
+            Net::getPlayerHandler()->increaseAttribute(INT);
         if (event.getId() == "DEX")
-            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::DEX);
+            Net::getPlayerHandler()->increaseAttribute(DEX);
         if (event.getId() == "LUK")
-            Net::getPlayerHandler()->increaseAttribute(LocalPlayer::LUK);
+            Net::getPlayerHandler()->increaseAttribute(LUK);
     }
 }
 
@@ -367,7 +338,7 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
     else
         bar->setText(toString(player_node->mMp));
 
-    if (player_node->MATK <= 0)
+    if (player_node->getAttributeEffective(MATK) <= 0)
         bar->setColor(100, 100, 100); // grey, to indicate that we lack magic
     else
         bar->setColor(26, 102, 230); // blue, to indicate that we have magic

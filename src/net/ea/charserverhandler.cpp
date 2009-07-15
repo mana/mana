@@ -205,7 +205,7 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setSprite(Being::MISC2_SPRITE, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++) {
-        tempPlayer->mAttr[i] = msg.readInt8();
+        tempPlayer->setAttributeBase(i + STR, msg.readInt8());
     }
     slot = msg.readInt8(); // character slot
     msg.readInt8();                        // unknown

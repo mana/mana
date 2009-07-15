@@ -85,24 +85,6 @@ StatusWindow::StatusWindow():
     gcn::Label *mStatsTitleLabel = new Label("Stats");
     gcn::Label *mStatsTotalLabel = new Label("Total");
 
-    // Derived Stats
-/*
-    mStatsAttackLabel = new Label("Attack:");
-    mStatsDefenseLabel= new Label("Defense:");
-    mStatsMagicAttackLabel = new Label("M.Attack:");
-    mStatsMagicDefenseLabel = new Label("M.Defense:");
-    mStatsAccuracyLabel = new Label("% Accuracy:");
-    mStatsEvadeLabel = new Label("% Evade:");
-    mStatsReflexLabel = new Label("% Reflex:");
-
-    mStatsAttackPoints = new Label;
-    mStatsDefensePoints = new Label;
-    mStatsMagicAttackPoints = new Label;
-    mStatsMagicDefensePoints = new Label;
-    mStatsAccuracyPoints = new Label("% Accuracy:");
-    mStatsEvadePoints = new Label("% Evade:");
-    mStatsReflexPoints = new Label("% Reflex:");
-*/
     // New labels
     for (int i = 0; i < 6; i++) {
         mStatsLabel[i] = new Label;
@@ -126,8 +108,6 @@ StatusWindow::StatusWindow():
     mStatsMinus[4] = new Button("-", "INT-", this);
     mStatsMinus[5] = new Button("-", "WIL-", this);
 
-
-
     // Set position
     mStatsTitleLabel->setPosition(mHpLabel->getX(), mHpLabel->getY() + 23 );
     mStatsTotalLabel->setPosition(110, mStatsTitleLabel->getY() + 15);
@@ -145,23 +125,7 @@ StatusWindow::StatusWindow():
 
     mCharacterPointsLabel->setPosition(5, mStatsDisplayLabel[5]->getY() + 25);
     mCorrectionPointsLabel->setPosition(5, mStatsDisplayLabel[5]->getY() + 35);
-/*
-    mStatsAttackLabel->setPosition(220, mStatsLabel[0]->getY());
-    mStatsDefenseLabel->setPosition(220, mStatsLabel[1]->getY());
-    mStatsMagicAttackLabel->setPosition(220, mStatsLabel[2]->getY());
-    mStatsMagicDefenseLabel->setPosition(220, mStatsLabel[3]->getY());
-    mStatsAccuracyLabel->setPosition(220, mStatsLabel[4]->getY());
-    mStatsEvadeLabel->setPosition(220, mStatsLabel[5]->getY());
-    mStatsReflexLabel->setPosition(220, mStatsLabel[6]->getY());
 
-    mStatsAttackPoints->setPosition(310, mStatsLabel[0]->getY());
-    mStatsDefensePoints->setPosition(310, mStatsLabel[1]->getY());
-    mStatsMagicAttackPoints->setPosition(310, mStatsLabel[2]->getY());
-    mStatsMagicDefensePoints->setPosition(310, mStatsLabel[3]->getY());
-    mStatsAccuracyPoints->setPosition(310, mStatsLabel[4]->getY());
-    mStatsEvadePoints->setPosition(310, mStatsLabel[5]->getY());
-    mStatsReflexPoints->setPosition(310, mStatsLabel[6]->getY());
-*/
     // Assemble
     add(mStatsTitleLabel);
     add(mStatsTotalLabel);
@@ -171,22 +135,7 @@ StatusWindow::StatusWindow():
         add(mStatsDisplayLabel[i]);
         add(mStatsPlus[i]);
         add(mStatsMinus[i]);
-    }/*
-    add(mStatsAttackLabel);
-    add(mStatsDefenseLabel);
-    add(mStatsMagicAttackLabel);
-    add(mStatsMagicDefenseLabel);
-    add(mStatsAccuracyLabel);
-    add(mStatsEvadeLabel);
-    add(mStatsReflexLabel);
-
-    add(mStatsAttackPoints);
-    add(mStatsDefensePoints);
-    add(mStatsMagicAttackPoints);
-    add(mStatsMagicDefensePoints);
-    add(mStatsAccuracyPoints);
-    add(mStatsEvadePoints);
-    add(mStatsReflexPoints);*/
+    }
 
     add(mCharacterPointsLabel);
     add(mCorrectionPointsLabel);
@@ -242,52 +191,24 @@ void StatusWindow::update()
     mCorrectionPointsLabel->setCaption("Correction Points: " +
             toString(correctionPoints));
     mCorrectionPointsLabel->adjustSize();
-/*
-    // Derived Stats Points
 
-    // Attack TODO: Count equipped Weapons and items attack bonuses
-    mStatsAttackPoints->setCaption(
-            toString(player_node->ATK + player_node->ATK_BONUS));
-    mStatsAttackPoints->adjustSize();
-
-    // Defense TODO: Count equipped Armors and items defense bonuses
-    mStatsDefensePoints->setCaption(
-            toString(player_node->DEF + player_node->DEF_BONUS));
-    mStatsDefensePoints->adjustSize();
-
-    // Magic Attack TODO: Count equipped items M.Attack bonuses
-    mStatsMagicAttackPoints->setCaption(
-            toString(player_node->MATK + player_node->MATK_BONUS));
-    mStatsMagicAttackPoints->adjustSize();
-
-    // Magic Defense TODO: Count equipped items M.Defense bonuses
-    mStatsMagicDefensePoints->setCaption(
-            toString(player_node->MDEF + player_node->MDEF_BONUS));
-    mStatsMagicDefensePoints->adjustSize();
-
-    // Accuracy %
-    mStatsAccuracyPoints->setCaption(toString(player_node->HIT));
-    mStatsAccuracyPoints->adjustSize();
-
-    // Evasion %
-    mStatsEvadePoints->setCaption(toString(player_node->FLEE));
-    mStatsEvadePoints->adjustSize();
-
-    // Reflex %
-    mStatsReflexPoints->setCaption(toString(player_node->DEX / 4)); // + counter
-    mStatsReflexPoints->adjustSize();
-*/
     // Update Second column widgets position
     mMoneyLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
                          mLvlLabel->getY());
 
+    update();
 }
 
-void StatusWindow::draw(gcn::Graphics *g)
+std::string StatusWindow::update(int id)
 {
+    // TODO: only update what changed
     update();
+}
 
-    Window::draw(g);
+void StatusWindow::addAttribute(int id, const std::string &name,
+                                bool modifiable)
+{
+    // future use
 }
 
 void StatusWindow::action(const gcn::ActionEvent &event)

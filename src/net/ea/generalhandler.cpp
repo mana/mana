@@ -23,6 +23,7 @@
 
 #include "gui/inventorywindow.h"
 #include "gui/skilldialog.h"
+#include "gui/status.h"
 
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
@@ -203,6 +204,20 @@ void GeneralHandler::guiWindowsLoaded()
     partyTab = new PartyTab;
     inventoryWindow->setSplitAllowed(false);
     skillDialog->loadSkills("ea-skills.xml");
+
+    /*statusWindow->addAttribute(STR, _("Strength"), true);
+    statusWindow->addAttribute(AGI, _("Agility"), true);
+    statusWindow->addAttribute(VIT, _("Vitality"), true);
+    statusWindow->addAttribute(INT, _("Intelligence"), true);
+    statusWindow->addAttribute(DEX, _("Dexterity"), true);
+    statusWindow->addAttribute(LUK, _("Luck"), true);
+
+    statusWindow->addAttribute(ATK, _("Attack"), false);
+    statusWindow->addAttribute(DEF, _("Defense"), false);
+    statusWindow->addAttribute(MATK, _("M.Attack"), false);
+    statusWindow->addAttribute(MDEF, _("M.Defense"), false);
+    statusWindow->addAttribute(HIT, _("% Accuracy"), false);
+    statusWindow->addAttribute(FLEE, _("% Evade"), false);*/
 }
 
 void GeneralHandler::guiWindowsUnloaded()
