@@ -100,8 +100,8 @@ void SpecialHandler::handleMessage(MessageIn &msg)
                 msg.readInt16();  // target type
                 msg.skip(2);  // unused
                 int level = msg.readInt16();
-                int sp = msg.readInt16();
-                int range = msg.readInt16();
+                msg.readInt16(); // sp
+                msg.readInt16(); // range
                 msg.skip(24); // unused
                 int up = msg.readInt8();
 
@@ -115,8 +115,8 @@ void SpecialHandler::handleMessage(MessageIn &msg)
             {
                 skillId = msg.readInt16();
                 int level = msg.readInt16();
-                int sp = msg.readInt16();
-                int range = msg.readInt16();
+                msg.readInt16(); // sp
+                msg.readInt16(); // range
                 int up = msg.readInt8();
 
                 player_node->setAttributeBase(skillId, level);

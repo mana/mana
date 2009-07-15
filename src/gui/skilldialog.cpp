@@ -62,7 +62,7 @@ struct SkillInfo
 class SkillEntry : public Container, gcn::WidgetListener
 {
     public:
-        SkillEntry(struct SkillInfo *info);
+        SkillEntry(SkillInfo *info);
 
         void widgetResized(const gcn::Event &event);
 
@@ -70,7 +70,7 @@ class SkillEntry : public Container, gcn::WidgetListener
 
     protected:
         friend class SkillDialog;
-        struct SkillInfo *mInfo;
+        SkillInfo *mInfo;
 
     private:
         Icon *mIcon;
@@ -152,15 +152,16 @@ void SkillDialog::logic()
 
 std::string SkillDialog::update(int id)
 {
-    SkillInfo *info = mSkills[id];
+    SkillMap::iterator i = mSkills.find(id);
 
-    if (info)
+    if (i != mSkills.end())
     {
+        SkillInfo *info = i->second;
         info->display->update();
         return info->name;
     }
-    else
-        return "";
+
+    return std::string();
 }
 
 void SkillDialog::update()
@@ -180,6 +181,7 @@ void SkillDialog::loadSkills(const std::string &file)
 {
     // TODO: mTabs->clear();
     delete_all(mSkills);
+    mSkills.clear();
 
     XML::Document doc(file);
     xmlNodePtr root = doc.rootNode();
@@ -239,21 +241,23 @@ void SkillDialog::loadSkills(const std::string &file)
 
 void SkillDialog::setModifiable(int id, bool modifiable)
 {
-    SkillInfo *info = mSkills[id];
+    SkillMap::iterator i = mSkills.find(id);
 
-    if (info)
+    if (i != mSkills.end())
     {
+        SkillInfo *info = i->second;
         info->modifiable = modifiable;
         info->display->update();
     }
 }
 
-SkillEntry::SkillEntry(struct SkillInfo *info) : mInfo(info),
+SkillEntry::SkillEntry(SkillInfo *info) :
+    mInfo(info),
     mIcon(NULL),
     mNameLabel(new Label(info->name)),
-    mProgress(new ProgressBar(0.0f, 200, 20, gcn::Color(150, 150, 150))),
+    mLevelLabel(new Label("999")),
     mIncrease(new Button("+", "inc", skillDialog)),
-    mLevelLabel(new Label("999"))
+    mProgress(new ProgressBar(0.0f, 200, 20, gcn::Color(150, 150, 150)))
 {
     setFrameSize(1);
     setOpaque(false);
@@ -312,7 +316,6 @@ void SkillEntry::widgetResized(const gcn::Event &event)
 void SkillEntry::update()
 {
     int baseLevel = player_node->getAttributeBase(mInfo->id);
-
     int effLevel = player_node->getAttributeEffective(mInfo->id);
 
     if (baseLevel <= 0 && !mInfo->modifiable)
