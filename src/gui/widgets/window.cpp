@@ -35,6 +35,7 @@
 #include "resources/image.h"
 
 #include <guichan/exception.hpp>
+#include <guichan/focushandler.hpp>
 
 int Window::instances = 0;
 int Window::mouseResize = 0;
@@ -284,6 +285,14 @@ void Window::widgetHidden(const gcn::Event &event)
     if (gui)
     {
         gui->setCursorType(Gui::CURSOR_POINTER);
+    }
+
+    WidgetListIterator it;
+
+    for (it = mWidgets.begin(); it != mWidgets.end(); it++)
+    {
+        if (mFocusHandler->isFocused(*it))
+            mFocusHandler->focusNone();
     }
 }
 
