@@ -203,6 +203,10 @@ std::string StatusWindow::update(int id)
 {
     // TODO: only update what changed
     update();
+
+    // FIXME: Added the return value to be able to compile, haven't got a
+    //        clue what it is supposed to return (Kess, July 2009)
+    return "";
 }
 
 void StatusWindow::addAttribute(int id, const std::string &name,
