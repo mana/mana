@@ -192,7 +192,7 @@ Setup_Video::Setup_Video():
                                        mVisibleNamesEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"),
                                           mParticleEffectsEnabled)),
-    mNameCheckBox(new CheckBox(_("Show name"), mNameEnabled)),
+    mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification"))),
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
@@ -352,12 +352,20 @@ void Setup_Video::apply()
                 fullscreen = !fullscreen;
                 if (!graphics->setFullscreen(fullscreen))
                 {
-                    std::stringstream error;
-                    error << _("Failed to switch to ") <<
-                        (fullscreen ? _("windowed") : _("fullscreen")) <<
-                        _("mode and restoration of old mode also failed!") <<
-                        std::endl;
-                    logger->error(error.str());
+                    std::stringstream errorMessage;
+                    if (fullscreen)
+                    {
+                        errorMessage << _("Failed to switch to windowed mode "
+                                          "and restoration of old mode also "
+                                          "failed!") << std::endl;
+                    }
+                    else
+                    {
+                        errorMessage << _("Failed to switch to fullscreen mode "
+                                          "and restoration of old mode also "
+                                          "failed!") << std::endl;
+                    }
+                    logger->error(errorMessage.str());
                 }
             }
 #if defined(WIN32) || defined(__APPLE__)

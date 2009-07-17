@@ -68,7 +68,7 @@ Setup_Colors::Setup_Colors() :
     mPreviewBox->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER,
                                  gcn::ScrollArea::SHOW_NEVER);
 
-    mGradTypeLabel = new Label(_("Type: "));
+    mGradTypeLabel = new Label(_("Type:"));
 
     mGradTypeSlider = new Slider(0, 3);
     mGradTypeSlider->setWidth(200);
@@ -90,7 +90,7 @@ Setup_Colors::Setup_Colors() :
 
     mGradTypeText->setCaption(longText);
 
-    mGradDelayLabel = new Label(_("Delay: "));
+    mGradDelayLabel = new Label(_("Delay:"));
 
     mGradDelayText = new TextField();
     mGradDelayText->setWidth(40);
@@ -105,7 +105,7 @@ Setup_Colors::Setup_Colors() :
     mGradDelaySlider->addActionListener(this);
     mGradDelaySlider->setEnabled(false);
 
-    mRedLabel = new Label(_("Red: "));
+    mRedLabel = new Label(_("Red:"));
 
     mRedText = new TextField;
     mRedText->setWidth(40);
@@ -120,7 +120,7 @@ Setup_Colors::Setup_Colors() :
     mRedSlider->addActionListener(this);
     mRedSlider->setEnabled(false);
 
-    mGreenLabel = new Label(_("Green: "));
+    mGreenLabel = new Label(_("Green:"));
 
     mGreenText = new TextField;
     mGreenText->setWidth(40);
@@ -135,7 +135,7 @@ Setup_Colors::Setup_Colors() :
     mGreenSlider->addActionListener(this);
     mGreenSlider->setEnabled(false);
 
-    mBlueLabel = new Label(_("Blue: "));
+    mBlueLabel = new Label(_("Blue:"));
 
     mBlueText = new TextField;
     mBlueText->setWidth(40);

@@ -34,6 +34,7 @@
 #include "graphics.h"
 #include "item.h"
 #include "localplayer.h"
+#include "log.h"
 #include "npc.h"
 #include "playerrelations.h"
 
@@ -332,7 +333,7 @@ void PopupMenu::handleLink(const std::string &link)
     // Unknown actions
     else if (link != "cancel")
     {
-        std::cout << link << std::endl;
+        logger->log("PopupMenu: Warning, unknown action '%s'", link.c_str());
     }
 
     setVisible(false);

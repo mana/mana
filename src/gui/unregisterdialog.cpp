@@ -102,24 +102,23 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
         logger->log("UnregisterDialog::unregistered, Username is %s",
                      username.c_str());
 
-        std::stringstream errorMsg;
+        std::stringstream errorMessage;
         bool error = false;
 
         // Check password
         if (password.length() < LEN_MIN_PASSWORD)
         {
             // Pass too short
-            errorMsg << "The password needs to be at least "
-                     << LEN_MIN_PASSWORD
-                     << " characters long.";
+            errorMessage << strprintf(_("The password needs to be at least %d "
+                                        "characters long."), LEN_MIN_PASSWORD);
             error = true;
         }
-        else if (password.length() > LEN_MAX_PASSWORD - 1 )
+        else if (password.length() > LEN_MAX_PASSWORD - 1)
         {
             // Pass too long
-            errorMsg << "The password needs to be less than "
-                     << LEN_MAX_PASSWORD
-                     << " characters long.";
+            errorMessage << strprintf(_("The password needs to be less than "
+                                        "%d characters long."),
+                                      LEN_MAX_PASSWORD);
             error = true;
         }
 
@@ -127,7 +126,7 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
         {
             mWrongDataNoticeListener->setTarget(this->mPasswordField);
 
-            OkDialog *dlg = new OkDialog("Error", errorMsg.str());
+            OkDialog *dlg = new OkDialog(_("Error"), errorMessage.str());
             dlg->addActionListener(mWrongDataNoticeListener);
         }
         else

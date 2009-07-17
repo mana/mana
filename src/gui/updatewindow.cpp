@@ -322,9 +322,8 @@ int UpdaterWindow::downloadThread(void *ptr)
                 {
                 case CURLE_COULDNT_CONNECT:
                 default:
-                    std::cerr << _("curl error ") << res << ": "
-                              << uw->mCurlError << _(" host: ") << url.c_str()
-                              << std::endl;
+                    logger->log("curl error %d: %s host: %s",
+                                res, uw->mCurlError, url.c_str());
                     break;
                 }
 

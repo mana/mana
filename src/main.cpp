@@ -260,7 +260,7 @@ static void setUpdatesDir()
         else
         {
             logger->log("Error: Invalid update host: %s", updateHost.c_str());
-            errorMessage = _("Invalid update host: ") + updateHost;
+            errorMessage = strprintf(_("Invalid update host: %s"), updateHost.c_str());
             state = STATE_ERROR;
         }
     }
@@ -335,10 +335,8 @@ static void initHomeDir(const Options &options)
             (errno != EEXIST))
 #endif
     {
-        std::cout << homeDir
-                  << _(" can't be created, but it doesn't exist! Exiting.")
-                  << std::endl;
-        exit(1);
+        logger->error(strprintf(_("%s doesn't exist and can't be created! "
+                                  "Exiting."), homeDir.c_str()));
     }
 }
 
@@ -389,8 +387,7 @@ static void initConfiguration(const Options &options)
         configFile = fopen(configPath.c_str(), "wt");
     }
     if (configFile == NULL) {
-        std::cout << "Can't create " << configPath << ". "
-                  << "Using Defaults." << std::endl;
+       logger->log("Can't create %s. Using defaults.", configPath.c_str());
     } else {
         fclose(configFile);
         config.init(configPath);
@@ -405,9 +402,8 @@ static void initEngine(const Options &options)
     // Initialize SDL
     logger->log("Initializing SDL...");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-        std::cerr << "Could not initialize SDL: " <<
-            SDL_GetError() << std::endl;
-        exit(1);
+        logger->error(strprintf("Could not initialize SDL: %s",
+                      SDL_GetError()));
     }
     atexit(SDL_Quit);
 
@@ -420,10 +416,8 @@ static void initEngine(const Options &options)
     ResourceManager *resman = ResourceManager::getInstance();
 
     if (!resman->setWriteDir(homeDir)) {
-        std::cout << homeDir
-                  << " couldn't be set as home directory! Exiting."
-                  << std::endl;
-        exit(1);
+        logger->error(strprintf("%s couldn't be set as home directory! "
+                                "Exiting.", homeDir.c_str()));
     }
 
     // Add the user's homedir to PhysicsFS search path
@@ -489,10 +483,8 @@ static void initEngine(const Options &options)
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
     {
-        std::cerr << _("Couldn't set ")
-                  << width << "x" << height << "x" << bpp << _(" video mode: ")
-                  << SDL_GetError() << std::endl;
-        exit(1);
+        logger->error(strprintf("Couldn't set %dx%dx%d video mode: %s",
+            width, height, bpp, SDL_GetError()));
     }
 
     // Initialize for drawing
@@ -1160,7 +1152,7 @@ int main(int argc, char *argv[])
 
                 case STATE_LOGIN_ERROR:
                     logger->log("State: LOGIN ERROR");
-                    currentDialog = new OkDialog("Error ", errorMessage);
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
                     currentDialog->addActionListener(&loginListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     break;
@@ -1214,8 +1206,8 @@ int main(int argc, char *argv[])
 
                 case STATE_CHANGEEMAIL:
                     logger->log("State: CHANGE EMAIL");
-                    currentDialog = new OkDialog("Email Address change",
-                            "Email Address changed successfully!");
+                    currentDialog = new OkDialog(_("Email Address Change"),
+                            _("Email address changed successfully!"));
                     currentDialog->addActionListener(&accountListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     loginData.email = loginData.newEmail;
@@ -1231,8 +1223,8 @@ int main(int argc, char *argv[])
 
                 case STATE_CHANGEPASSWORD:
                     logger->log("State: CHANGE PASSWORD");
-                    currentDialog = new OkDialog("Password change",
-                            "Password changed successfully!");
+                    currentDialog = new OkDialog(_("Password Change"),
+                            _("Password changed successfully!"));
                     currentDialog->addActionListener(&accountListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     loginData.password = loginData.newPassword;
@@ -1248,8 +1240,8 @@ int main(int argc, char *argv[])
                 case STATE_UNREGISTER:
                     logger->log("State: UNREGISTER");
                     accountServerConnection->disconnect();
-                    currentDialog = new OkDialog("Unregister successful",
-                            "Farewell, come back any time ....");
+                    currentDialog = new OkDialog(_("Unregister Successful"),
+                            _("Farewell, come back any time..."));
                     loginData.clear();
                     //The errorlistener sets the state to STATE_CHOOSE_SERVER
                     currentDialog->addActionListener(&errorListener);
@@ -1258,7 +1250,7 @@ int main(int argc, char *argv[])
 
                 case STATE_ACCOUNTCHANGE_ERROR:
                     logger->log("State: ACCOUNT CHANGE ERROR");
-                    currentDialog = new OkDialog("Error ", errorMessage);
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
                     currentDialog->addActionListener(&accountListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     break;
@@ -1266,7 +1258,7 @@ int main(int argc, char *argv[])
 
                 case STATE_ERROR:
                     logger->log("State: ERROR");
-                    currentDialog = new OkDialog("Error", errorMessage);
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     gameServerConnection->disconnect();
@@ -1555,8 +1547,8 @@ int main(int argc, char *argv[])
 
                 case STATE_CHANGEPASSWORD:
                     logger->log("State: CHANGE PASSWORD");
-                    currentDialog = new OkDialog("Password change",
-                            "Password changed successfully!");
+                    currentDialog = new OkDialog(_("Password Change"),
+                            _("Password changed successfully!"));
                     currentDialog->addActionListener(&accountListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     loginData.password = loginData.newPassword;
@@ -1565,7 +1557,7 @@ int main(int argc, char *argv[])
 
                 case STATE_ACCOUNTCHANGE_ERROR:
                     logger->log("State: ACCOUNT CHANGE ERROR");
-                    currentDialog = new OkDialog("Error ", errorMessage);
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
                     currentDialog->addActionListener(&accountListener);
                     currentDialog = NULL; // OkDialog deletes itself
                     break;

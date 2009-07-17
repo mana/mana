@@ -88,8 +88,9 @@ void ItemPopup::setItem(const ItemInfo &item)
 
     mItemDesc->setTextWrapped(item.getDescription(), 196);
     mItemEffect->setTextWrapped(item.getEffect(), 196);
-    mItemWeight->setTextWrapped(_("Weight: ") +
-                                Units::formatWeight(item.getWeight()), 196);
+    mItemWeight->setTextWrapped(strprintf(_("Weight: %s"),
+                                Units::formatWeight(item.getWeight()).c_str()),
+                                196);
 
     int minWidth = mItemName->getWidth();
 

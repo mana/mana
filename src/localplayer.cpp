@@ -869,15 +869,24 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
     }
     else
     {
-        // TRANSLATORS: Used as in "You picked up a ...", when picking up
-        // only one item.
         const std::string amountStr = (amount > 1) ? toString(amount) : _("a");
 
         if (config.getValue("showpickupchat", 1))
         {
-            localChatTab->chatLog(strprintf(_("You picked up %s [@@%d|%s@@]."),
-                amountStr.c_str(), itemInfo.getId(),
-                itemInfo.getName().c_str()), BY_SERVER);
+            if (amount == 1)
+            {
+                // TRANSLATORS: Used as in "You picked up a [Candy]", when
+                // picking up only one item.
+                localChatTab->chatLog(strprintf(_("You picked up a [@@%d|%s@@]."),
+                    itemInfo.getId(), itemInfo.getName().c_str()), BY_SERVER);
+            }
+            else
+            {
+                // TRANSLATORS: Used as in "You picked up 4 [Candy]", when
+                // picking up more than one item.
+                localChatTab->chatLog(strprintf(_("You picked up %d [@@%d|%s@@]."),
+                    amount, itemInfo.getId(), itemInfo.getName().c_str()), BY_SERVER);
+            }
         }
 
         if (mMap && config.getValue("showpickupparticle", 0))

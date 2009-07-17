@@ -160,13 +160,13 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
         const std::string user = mUserField->getText();
         logger->log("RegisterDialog::register Username is %s", user.c_str());
 
-        std::string errorMsg;
+        std::string errorMessage;
         int error = 0;
 
         if (user.length() < LEN_MIN_USERNAME)
         {
             // Name too short
-            errorMsg = strprintf
+            errorMessage = strprintf
                 (_("The username needs to be at least %d characters long."),
                  LEN_MIN_USERNAME);
             error = 1;
@@ -174,7 +174,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
         else if (user.length() > LEN_MAX_USERNAME - 1 )
         {
             // Name too long
-            errorMsg = strprintf
+            errorMessage = strprintf
                 (_("The username needs to be less than %d characters long."),
                  LEN_MAX_USERNAME);
             error = 1;
@@ -182,7 +182,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
         else if (mPasswordField->getText().length() < LEN_MIN_PASSWORD)
         {
             // Pass too short
-            errorMsg = strprintf
+            errorMessage = strprintf
                 (_("The password needs to be at least %d characters long."),
                  LEN_MIN_PASSWORD);
             error = 2;
@@ -190,7 +190,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
         else if (mPasswordField->getText().length() > LEN_MAX_PASSWORD - 1 )
         {
             // Pass too long
-            errorMsg = strprintf
+            errorMessage = strprintf
                 (_("The password needs to be less than %d characters long."),
                  LEN_MAX_PASSWORD);
             error = 2;
@@ -198,7 +198,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
         else if (mPasswordField->getText() != mConfirmField->getText())
         {
             // Password does not match with the confirmation one
-            errorMsg = _("Passwords do not match.");
+            errorMessage = _("Passwords do not match.");
             error = 2;
         }
 
@@ -219,7 +219,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
                 mWrongDataNoticeListener->setTarget(this->mPasswordField);
             }
 
-            OkDialog *dlg = new OkDialog(_("Error"), errorMsg);
+            OkDialog *dlg = new OkDialog(_("Error"), errorMessage);
             dlg->addActionListener(mWrongDataNoticeListener);
         }
         else
