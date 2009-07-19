@@ -486,7 +486,7 @@ void PlayerHandler::increaseAttribute(size_t attr)
     if (attr >= STR && attr <= LUK)
     {
         MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
-        outMsg.writeInt16(STR);
+        outMsg.writeInt16(attr);
         outMsg.writeInt8(1);
     }
 }
