@@ -54,7 +54,7 @@ class StatusWindow : public Window, public gcn::ActionListener
          */
         void update();
 
-        std::string update(int id);
+        void update(int id);
 
         void addAttribute(int id, const std::string &name, bool modifiable);
 
