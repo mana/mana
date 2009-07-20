@@ -289,19 +289,19 @@ class LocalPlayer : public Player
         void setExp(int value);
 
         int getExp() const
-        { return mExp, mExpNeeded; }
+        { return mExp; }
 
         void setExpNeeded(int value);
 
         int getExpNeeded() const
         { return mExpNeeded; }
 
-        int setMP(int value);
+        void setMP(int value);
 
         int getMP() const
         { return mMp; }
 
-        int setMaxMP(int value);
+        void setMaxMP(int value);
 
         int getMaxMP() const
         { return mMaxMp; }

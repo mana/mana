@@ -895,7 +895,7 @@ void LocalPlayer::setExpNeeded(int value)
         statusWindow->update(StatusWindow::EXP);
 }
 
-int LocalPlayer::setMP(int value)
+void LocalPlayer::setMP(int value)
 {
     mMp = value;
 
@@ -903,7 +903,7 @@ int LocalPlayer::setMP(int value)
         statusWindow->update(StatusWindow::MP);
 }
 
-int LocalPlayer::setMaxMP(int value)
+void LocalPlayer::setMaxMP(int value)
 {
     mMaxMp = value;
 

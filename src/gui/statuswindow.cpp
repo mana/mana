@@ -415,7 +415,7 @@ AttrDisplay::AttrDisplay(int id, const std::string &name):
     mValue->setAlignment(Graphics::CENTER);
 
     mLayout = new LayoutHelper(this);
-};
+}
 
 std::string AttrDisplay::update()
 {
@@ -441,7 +441,7 @@ DerDisplay::DerDisplay(int id, const std::string &name):
     place(3, 0, mValue, 2);
 
     update();
-};
+}
 
 ChangeDisplay::ChangeDisplay(int id, const std::string &name):
         AttrDisplay(id, name), mNeeded(1)
@@ -461,7 +461,7 @@ ChangeDisplay::ChangeDisplay(int id, const std::string &name):
     place(7, 0, mPoints);
 
     update();
-};
+}
 
 std::string ChangeDisplay::update()
 {
