@@ -327,14 +327,8 @@ void SkillEntry::update()
     setVisible(true);
 
     std::string skillLevel("Lvl: " + toString(baseLevel));
-    if (effLevel < baseLevel)
-    {
-        skillLevel.append(" - " + toString(baseLevel - effLevel));
-    }
-    else if (effLevel > baseLevel)
-    {
-        skillLevel.append(" + " + toString(effLevel - baseLevel));
-    }
+    if (effLevel != baseLevel)
+        skillLevel += strprintf(" (%+d)", baseLevel - effLevel);
     mLevelLabel->setCaption(skillLevel);
 
     std::pair<int, int> exp = player_node->getExperience(mInfo->id);
