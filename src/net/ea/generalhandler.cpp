@@ -218,6 +218,7 @@ void GeneralHandler::guiWindowsLoaded()
     statusWindow->addAttribute(MDEF, _("M.Defense"), false);
     statusWindow->addAttribute(HIT, _("% Accuracy"), false);
     statusWindow->addAttribute(FLEE, _("% Evade"), false);
+    statusWindow->addAttribute(CRIT, _("% Critical"), false);
 }
 
 void GeneralHandler::guiWindowsUnloaded()
