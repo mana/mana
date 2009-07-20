@@ -31,7 +31,7 @@ void printUsage()
              <<"    -o save results to outfile, instead of overwriting the original"<<std::endl
              <<std::endl
              <<"Fill a rectangular area of mapFile's layer 'destLayer' with a random selection from the templateFile"<<std::endl
-             <<"TODO - more help here"<<std::endl;
+             <<"See readme.txt for full documentation"<<std::endl;
 }
 
 int main(int argc, char * argv[] )

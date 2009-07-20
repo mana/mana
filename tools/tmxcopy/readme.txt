@@ -1,3 +1,10 @@
+=== TMX Map Tools ===
+
+A set of tools for manipulating TMX map files.
+
+After using any of these tools, load the map in Tiled and save it again; until this is done the game may not be able to load the file (see Bugs for an explanation).
+
+
 === TMXCopy ===
 
 Tmxcopy is a little tool that allows to copy parts of one TMX map to another map. This will make it much easier to match the border areas of maps. The program is command line based. The usage is:
@@ -61,6 +68,8 @@ The template is a map where each layer is a pattern.  For example, to make a woo
 
 It will then randomly place trees, but only in places where they won't overlap with other things on that layer.  The size of the template map is the size of the area which must be empty in the destination layer.
 
+Running it several times (without specifying an output file) will add more objects.  After considering ways to specify the number of objects to add, I think the easiest is to just reload the map in Tiled each time until it looks right (you don't need to quit Tiled while running tmx_random_fill).
+
 
 === TMX Collide / Translate ===
 
@@ -83,7 +92,7 @@ Blank tiles in the lower layer will be ignored (put a blank in the upper layer t
 
 === Bugs (for all these programs) ===
 
-The program works so far but there are still some minor problems: 
+The programs work so far but there are still some minor problems:
 
 -Only tested for TMW-compilant maps. I don't guarantee that it works with Tiled maps that are made for other games and thus use different features.
 -Compressed maps (tmx.gz) can not be handled yet (but compressed or uncompressed layers work properly) 
