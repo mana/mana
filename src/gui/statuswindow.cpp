@@ -97,13 +97,19 @@ StatusWindow::StatusWindow():
     mMoneyLabel = new Label("Money:");
 
     mHpLabel = new Label("HP:");
-    mHpBar = new ProgressBar(0.0f, 80, 15, gcn::Color(0, 171, 34));
+    mHpBar = new ProgressBar((float) player_node->getHp()
+                             / (float) player_node->getMaxHp(),
+                             80, 15, gcn::Color(0, 171, 34));
 
     mXpLabel = new Label(_("Exp:"));
-    mXpBar = new ProgressBar(0.0f, 80, 15, gcn::Color(143, 192, 211));
+    mXpBar = new ProgressBar((float) player_node->getExp()
+                             / player_node->getExpNeeded(),
+                             80, 15, gcn::Color(143, 192, 211));
 
     mMpLabel = new Label(_("MP:"));
-    mMpBar = new ProgressBar(0.0f, 80, 15, gcn::Color(26, 102, 230));
+    mMpBar = new ProgressBar((float) player_node->getMaxMP()
+                             / (float) player_node->getMaxMP(),
+                             80, 15, gcn::Color(26, 102, 230));
 
     place(0, 0, mLvlLabel, 3);
     // 5, 0 Job Level
