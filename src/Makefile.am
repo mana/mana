@@ -170,6 +170,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/skin.h \
 	      gui/speechbubble.cpp \
 	      gui/speechbubble.h \
+	      gui/statuswindow.cpp \
+	      gui/statuswindow.h \
 	      gui/storagewindow.cpp \
 	      gui/storagewindow.h \
 	      gui/table.cpp \
@@ -386,8 +388,6 @@ tmw_SOURCES += \
 	      gui/quitdialog.h \
 	      gui/serverdialog.cpp \
 	      gui/serverdialog.h \
-	      gui/statuswindow.cpp \
-	      gui/statuswindow.h \
 	      gui/unregisterdialog.cpp \
 	      gui/unregisterdialog.h \
 	      net/tmwserv/accountserver/account.cpp \
@@ -460,8 +460,6 @@ endif
 if SERVER_EATHENA
 tmw_CXXFLAGS += -DEATHENA_SUPPORT
 tmw_SOURCES += \
-	      gui/status.cpp \
-	      gui/status.h \
 	      net/ea/gui/partytab.cpp \
 	      net/ea/gui/partytab.h \
 	      net/ea/adminhandler.cpp \

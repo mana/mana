@@ -23,19 +23,14 @@
 #define EA_PROTOCOL_H
 
 enum {
+    JOB = 0xa,
+
     STR = 0xd,
     AGI,
     VIT,
     INT,
     DEX,
     LUK,
-
-    STR_U,
-    AGI_U,
-    VIT_U,
-    INT_U,
-    DEX_U,
-    LUK_U,
 
     ATK,
     DEF,

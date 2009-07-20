@@ -28,72 +28,71 @@
 
 #include <guichan/actionlistener.hpp>
 
-class LocalPlayer;
+#include <map>
+
+class AttrDisplay;
 class ProgressBar;
+class ScrollArea;
+class VertContainer;
 
 /**
  * The player status dialog.
  *
  * \ingroup Interface
  */
-class StatusWindow : public Window, public gcn::ActionListener
+class StatusWindow : public Window
 {
     public:
+        enum { // Some update constants
+            HP = -1,
+            MP = -2,
+            EXP = -3,
+            MONEY = -4,
+            CHAR_POINTS = -5,
+            LEVEL = -6
+        };
+
         /**
          * Constructor.
          */
         StatusWindow();
 
-         /**
-         * Called when receiving actions from widget.
-         */
-        void action(const gcn::ActionEvent &event);
+        std::string update(int id);
 
-        /**
-         * Updates this dialog with values from PLAYER_INFO *char_info
-         */
-        void update();
-
-        void update(int id);
+        void setPointsNeeded(int id, int needed);
 
         void addAttribute(int id, const std::string &name, bool modifiable);
 
         static void updateHPBar(ProgressBar *bar, bool showMax = false);
+        static void updateMPBar(ProgressBar *bar, bool showMax = false);
+        static void updateXPBar(ProgressBar *bar, bool percent = true);
+        static void updateProgressBar(ProgressBar *bar, int value, int max,
+                              bool percent);
+        static void updateProgressBar(ProgressBar *bar, int id,
+                                      bool percent = true);
 
     private:
         /**
          * Status Part
          */
-        gcn::Label *mLvlLabel, *mMoneyLabel, *mHpLabel, *mHpValueLabel;
-        ProgressBar *mHpBar;
+        gcn::Label *mLvlLabel, *mMoneyLabel;
+        gcn::Label *mHpLabel, *mMpLabel, *mXpLabel;
+        ProgressBar *mHpBar, *mMpBar, *mXpBar;
 
-        /**
-         * Derived Statistics captions
-         */
-/*
-        gcn::Label *mStatsAttackLabel, *mStatsDefenseLabel;
-        gcn::Label *mStatsMagicAttackLabel, *mStatsMagicDefenseLabel;
-        gcn::Label *mStatsAccuracyLabel, *mStatsEvadeLabel;
-        gcn::Label *mStatsReflexLabel;
+#ifdef EATHENA_SUPPORT
+        gcn::Label *mJobLvlLabel, *mJobLabel;
+        ProgressBar *mJobBar;
+#endif
 
-        gcn::Label *mStatsAttackPoints, *mStatsDefensePoints;
-        gcn::Label *mStatsMagicAttackPoints, *mStatsMagicDefensePoints;
-        gcn::Label *mStatsAccuracyPoints, *mStatsEvadePoints;
-        gcn::Label *mStatsReflexPoints;
-*/
-        /**
-         * Stats captions.
-         */
-        gcn::Label *mStatsLabel[6];
-        gcn::Label *mStatsDisplayLabel[6];
-        gcn::Label *mCharacterPointsLabel;
-        gcn::Label *mCorrectionPointsLabel;
+        VertContainer *mAttrCont;
+        ScrollArea *mAttrScroll;
+        VertContainer *mDAttrCont;
+        ScrollArea *mDAttrScroll;
 
-        /**
-         * Stats buttons.
-         */
-        gcn::Button *mStatsPlus[6];
-        gcn::Button *mStatsMinus[6];
+        gcn::Label *mCharacterPointsLabel, *mCorrectionPointsLabel;
+
+        typedef std::map<int, AttrDisplay*> Attrs;
+        Attrs mAttrs;
 };
 
 extern StatusWindow *statusWindow;

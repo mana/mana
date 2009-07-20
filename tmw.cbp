@@ -355,22 +355,8 @@
 		<Unit filename="src/gui/skin.h" />
 		<Unit filename="src/gui/speechbubble.cpp" />
 		<Unit filename="src/gui/speechbubble.h" />
-		<Unit filename="src/gui/status.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/status.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/statuswindow.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/statuswindow.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/statuswindow.cpp" />
+		<Unit filename="src/gui/statuswindow.h" />
 		<Unit filename="src/gui/storagewindow.cpp" />
 		<Unit filename="src/gui/storagewindow.h" />
 		<Unit filename="src/gui/table.cpp" />

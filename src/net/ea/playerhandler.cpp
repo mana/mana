@@ -37,6 +37,7 @@
 #include "gui/gui.h"
 #include "gui/okdialog.h"
 #include "gui/sell.h"
+#include "gui/statuswindow.h"
 #include "gui/storagewindow.h"
 #include "gui/viewport.h"
 
@@ -229,8 +230,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                     case 0x0004: break; // manner
                     case 0x0005: player_node->setHp(value); break;
                     case 0x0006: player_node->setMaxHp(value); break;
-                    case 0x0007: player_node->mMp = value; break;
-                    case 0x0008: player_node->mMaxMp = value; break;
+                    case 0x0007: player_node->setMP(value); break;
+                    case 0x0008: player_node->setMaxMP(value); break;
                     case 0x0009: player_node->setCharacterPoints(value); break;
                     case 0x000b: player_node->setLevel(value); break;
                     case 0x000c: player_node->setSkillPoints(value); break;
@@ -288,7 +289,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         player_node->setAttributeEffective(CRIT, value); break;
 
                     case 0x0035: player_node->mAttackSpeed = value; break;
-                    case 0x0037: player_node->mJobLevel = value; break;
+                    case 0x0037:
+                        player_node->setAttributeBase(JOB, value); break;
                     case 500: player_node->setGMLevel(value); break;
                 }
 
@@ -305,10 +307,11 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         case SMSG_PLAYER_STAT_UPDATE_2:
             switch (msg.readInt16()) {
                 case 0x0001:
-                    player_node->setLevelProgress(msg.readInt32());
+                    player_node->setExp(msg.readInt32());
                     break;
                 case 0x0002:
-                    player_node->mJobXp = msg.readInt32();
+                    player_node->setExperience(JOB, msg.readInt32(),
+                                    player_node->getExperience(JOB).second);
                     break;
                 case 0x0014: {
                         int curGp = player_node->getMoney();
@@ -320,10 +323,12 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                     }
                     break;
                 case 0x0016:
-                    player_node->mXpForNextLevel = msg.readInt32();
+                    player_node->setExpNeeded(msg.readInt32());
                     break;
                 case 0x0017:
-                    player_node->mJobXpForNextLevel = msg.readInt32();
+                    player_node->setExperience(JOB,
+                                    player_node->getExperience(JOB).first,
+                                    msg.readInt32());
                     break;
             }
             break;
@@ -363,32 +368,32 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 int val = msg.readInt8();
                 player_node->setAttributeEffective(STR, val + ATTR_BONUS(STR));
                 player_node->setAttributeBase(STR, val);
-                player_node->setAttributeBase(STR, msg.readInt8());
+                statusWindow->setPointsNeeded(STR, msg.readInt8());
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(AGI, val + ATTR_BONUS(AGI));
                 player_node->setAttributeBase(AGI, val);
-                player_node->setAttributeBase(AGI_U, msg.readInt8());
+                statusWindow->setPointsNeeded(AGI, msg.readInt8());
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(VIT, val + ATTR_BONUS(VIT));
                 player_node->setAttributeBase(VIT, val);
-                player_node->setAttributeBase(VIT_U, msg.readInt8());
+                statusWindow->setPointsNeeded(VIT, msg.readInt8());
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(INT, val + ATTR_BONUS(INT));
                 player_node->setAttributeBase(INT, val);
-                player_node->setAttributeBase(INT_U, msg.readInt8());
+                statusWindow->setPointsNeeded(INT, msg.readInt8());
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(DEX, val + ATTR_BONUS(DEX));
                 player_node->setAttributeBase(DEX, val);
-                player_node->setAttributeBase(DEX_U, msg.readInt8());
+                statusWindow->setPointsNeeded(DEX, msg.readInt8());
 
                 val = msg.readInt8();
                 player_node->setAttributeEffective(LUK, val + ATTR_BONUS(LUK));
                 player_node->setAttributeBase(LUK, val);
-                player_node->setAttributeBase(LUK_U, msg.readInt8());
+                statusWindow->setPointsNeeded(LUK, msg.readInt8());
 
                 val = msg.readInt16(); // ATK
                 player_node->setAttributeBase(ATK, val);
@@ -430,22 +435,22 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         case SMSG_PLAYER_STAT_UPDATE_6:
             switch (msg.readInt16()) {
                 case 0x0020:
-                    player_node->setAttributeBase(STR_U, msg.readInt8());
+                    statusWindow->setPointsNeeded(STR, msg.readInt8());
                     break;
                 case 0x0021:
-                    player_node->setAttributeBase(AGI_U, msg.readInt8());
+                    statusWindow->setPointsNeeded(AGI, msg.readInt8());
                     break;
                 case 0x0022:
-                    player_node->setAttributeBase(VIT_U, msg.readInt8());
+                    statusWindow->setPointsNeeded(VIT, msg.readInt8());
                     break;
                 case 0x0023:
-                    player_node->setAttributeBase(INT_U, msg.readInt8());
+                    statusWindow->setPointsNeeded(INT, msg.readInt8());
                     break;
                 case 0x0024:
-                    player_node->setAttributeBase(DEX_U, msg.readInt8());
+                    statusWindow->setPointsNeeded(DEX, msg.readInt8());
                     break;
                 case 0x0025:
-                    player_node->setAttributeBase(LUK_U, msg.readInt8());
+                    statusWindow->setPointsNeeded(LUK, msg.readInt8());
                     break;
             }
             break;

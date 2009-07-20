@@ -36,6 +36,8 @@
 #include "gui/changeemaildialog.h"
 
 #include "net/tmwserv/accountserver/account.h"
+#else
+#include "net/ea/protocol.h"
 #endif
 
 #include "gui/widgets/button.h"
@@ -296,9 +298,9 @@ void CharSelectDialog::updatePlayerInfo()
         mNameLabel->setCaption(strprintf(_("Name: %s"),
                                           pi->getName().c_str()));
         mLevelLabel->setCaption(strprintf(_("Level: %d"), pi->getLevel()));
-#ifndef TMWSERV_SUPPORT
+#ifdef EATHENA_SUPPORT
         mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"),
-                                              pi->mJobLevel));
+                                              pi->getAttributeBase(JOB)));
 #endif
         mMoneyLabel->setCaption(strprintf(_("Money: %s"), mMoney.c_str()));
         if (!mCharSelected)

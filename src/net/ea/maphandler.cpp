@@ -82,15 +82,20 @@ void MapHandler::handleMessage(MessageIn &msg)
     }
 }
 
+#include <fstream>
+
 void MapHandler::connect(LoginData *loginData)
 {
     // Send login infos
     MessageOut outMsg(CMSG_MAP_SERVER_CONNECT);
     outMsg.writeInt32(loginData->account_ID);
-    outMsg.writeInt32(player_node->mCharId);
+    outMsg.writeInt32(player_node->getId());
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
     outMsg.writeInt8((loginData->sex == GENDER_MALE) ? 1 : 0);
+
+    // Change the player's ID to the account ID to match what eAthena uses
+    player_node->setId(loginData->account_ID);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

@@ -22,7 +22,7 @@
 #include "gui/ministatus.h"
 
 #include "gui/gui.h"
-#include "gui/status.h"
+#include "gui/statuswindow.h"
 
 #include "gui/widgets/progressbar.h"
 

@@ -221,6 +221,8 @@ SET(SRCS
     gui/skin.h
     gui/speechbubble.cpp
     gui/speechbubble.h
+    gui/statuswindow.cpp
+    gui/statuswindow.h
     gui/storagewindow.cpp
     gui/storagewindow.h
     gui/table.cpp
@@ -420,8 +422,6 @@ SET(SRCS
     )
 
 SET(SRCS_EA
-    gui/status.cpp
-    gui/status.h
     net/ea/gui/partytab.cpp
     net/ea/gui/partytab.h
     net/ea/adminhandler.cpp
@@ -480,8 +480,6 @@ SET(SRCS_TMW
     gui/quitdialog.h
     gui/serverdialog.cpp
     gui/serverdialog.h
-    gui/statuswindow.cpp
-    gui/statuswindow.h
     gui/unregisterdialog.cpp
     gui/unregisterdialog.h
     net/tmwserv/accountserver/account.cpp

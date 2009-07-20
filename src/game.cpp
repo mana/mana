@@ -63,7 +63,7 @@
 #include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/skilldialog.h"
-#include "gui/status.h"
+#include "gui/statuswindow.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
 #include "gui/windowmenu.h"
@@ -224,7 +224,7 @@ static void createGuiWindows()
     npcDialog = new NpcDialog;
     npcPostDialog = new NpcPostDialog;
     storageWindow = new StorageWindow;
-    statusWindow = new StatusWindow();
+    statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
     inventoryWindow = new InventoryWindow;
     skillDialog = new SkillDialog;

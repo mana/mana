@@ -176,7 +176,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         case GPMSG_LEVEL_PROGRESS:
         {
             logger->log("Level Progress Update");
-            player_node->setLevelProgress(msg.readInt8());
+            player_node->setExp(msg.readInt8());
         } break;
 
 

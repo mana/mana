@@ -169,14 +169,13 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
 LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
-    LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
+    LocalPlayer *tempPlayer = new LocalPlayer(msg.readInt32(), 0, NULL);
     tempPlayer->setGender(mLoginData->sex);
 
-    tempPlayer->mCharId = msg.readInt32();
-    tempPlayer->setLevelProgress(msg.readInt32());
+    tempPlayer->setExp(msg.readInt32());
     tempPlayer->setMoney(msg.readInt32());
-    tempPlayer->mJobXp = msg.readInt32();
-    tempPlayer->mJobLevel = msg.readInt32();
+    tempPlayer->setExperience(JOB, msg.readInt32(), 1);
+    tempPlayer->setAttributeBase(JOB, msg.readInt32());
     tempPlayer->setSprite(Being::SHOE_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Being::GLOVES_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Being::CAPE_SPRITE, msg.readInt16());
@@ -187,8 +186,8 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     msg.skip(2);                          // unknown
     tempPlayer->setHp(msg.readInt16());
     tempPlayer->setMaxHp(msg.readInt16());
-    tempPlayer->mMp = msg.readInt16();
-    tempPlayer->mMaxMp = msg.readInt16();
+    tempPlayer->setMP(msg.readInt16());
+    tempPlayer->setMaxMP(msg.readInt16());
     msg.readInt16();                       // speed
     msg.readInt16();                       // class
     int hairStyle = msg.readInt16();
@@ -272,7 +271,7 @@ void CharServerHandler::newCharacter(const std::string &name, int slot,
 void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
 {
     MessageOut outMsg(CMSG_CHAR_DELETE);
-    outMsg.writeInt32(character->mCharId);
+    outMsg.writeInt32(character->getId());
     outMsg.writeString("a@a.com", 40);
 }
 

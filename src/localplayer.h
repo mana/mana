@@ -102,11 +102,7 @@ class LocalPlayer : public Player
         /**
          * Constructor.
          */
-#ifdef TMWSERV_SUPPORT
-        LocalPlayer();
-#else
-        LocalPlayer(int id, int job, Map *map);
-#endif
+        LocalPlayer(int id= 65535, int job = 0, Map *map = NULL);
 
         /**
          * Destructor.
@@ -272,13 +268,6 @@ class LocalPlayer : public Player
         void setInStorage(bool inStorage);
 
 #ifdef EATHENA_SUPPORT
-        Uint32 mCharId;     /**< Used only during character selection. */
-
-        Uint32 mJobXp;
-        Uint32 mJobLevel;
-        Uint32 mXpForNextLevel, mJobXpForNextLevel;
-        Uint16 mMp, mMaxMp;
-
         Uint16 mAttackRange;
 #endif
 
@@ -288,22 +277,34 @@ class LocalPlayer : public Player
         int getMaxHp() const
         { return mMaxHp; }
 
-        void setHp(int value)
-        { mHp = value; }
+        void setHp(int value);
 
-        void setMaxHp(int value)
-        { mMaxHp = value; }
+        void setMaxHp(int value);
 
         int getLevel() const
         { return mLevel; }
 
-        void setLevel(int value)
-        { mLevel = value; }
+        void setLevel(int value);
 
-        void setLevelProgress(int percent);
+        void setExp(int value);
 
-        int getLevelProgress() const
-        { return mLevelProgress; }
+        int getExp() const
+        { return mExp, mExpNeeded; }
+
+        void setExpNeeded(int value);
+
+        int getExpNeeded() const
+        { return mExpNeeded; }
+
+        int setMP(int value);
+
+        int getMP() const
+        { return mMp; }
+
+        int setMaxMP(int value);
+
+        int getMaxMP() const
+        { return mMaxMp; }
 
         int getMoney() const
         { return mMoney; }
@@ -336,14 +337,12 @@ class LocalPlayer : public Player
         int getCharacterPoints() const
         { return mCharacterPoints; }
 
-        void setCharacterPoints(int n)
-        { mCharacterPoints = n; }
+        void setCharacterPoints(int n);
 
         int getCorrectionPoints() const
         { return mCorrectionPoints; }
 
-        void setCorrectionPoints(int n)
-        { mCorrectionPoints = n; }
+        void setCorrectionPoints(int n);
 
         int getSkillPoints() const
         { return mSkillPoints; }
@@ -380,8 +379,9 @@ class LocalPlayer : public Player
         std::map<int, std::pair<int, int> > mSkillExp;
         int mCharacterPoints;
         int mCorrectionPoints;
-        int mLevelProgress;
         int mLevel;
+        int mExp, mExpNeeded;
+        int mMp, mMaxMp;
         int mMoney;
         int mTotalWeight;
         int mMaxWeight;

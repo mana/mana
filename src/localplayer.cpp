@@ -40,12 +40,8 @@
 #include "gui/ministatus.h"
 #include "gui/palette.h"
 #include "gui/skilldialog.h"
-#include "gui/storagewindow.h"
-#ifdef TMWSERV_SUPPORT
 #include "gui/statuswindow.h"
-#else
-#include "gui/status.h"
-#endif
+#include "gui/storagewindow.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -83,17 +79,9 @@ const short walkingKeyboardDelay = 40;
 
 LocalPlayer *player_node = NULL;
 
-#ifdef TMWSERV_SUPPORT
-LocalPlayer::LocalPlayer():
-    Player(65535, 0, NULL),
-#else
 LocalPlayer::LocalPlayer(int id, int job, Map *map):
     Player(id, job, map),
-    mCharId(0),
-    mJobXp(0),
-    mJobLevel(0),
-    mXpForNextLevel(0), mJobXpForNextLevel(0),
-    mMp(0), mMaxMp(0),
+#ifdef EATHENA_SUPPORT
     mAttackRange(0),
 #endif
     mEquipment(new Equipment),
@@ -102,10 +90,11 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mTargetTime(-1),
 #endif
     mLastTarget(-1),
-    mCharacterPoints(-1),
-    mCorrectionPoints(-1),
-    mLevelProgress(0),
+    mCharacterPoints(0),
+    mCorrectionPoints(0),
     mLevel(1),
+    mExp(0), mExpNeeded(0),
+    mMp(0), mMaxMp(0),
     mMoney(0),
     mTotalWeight(1), mMaxWeight(1),
     mHp(1), mMaxHp(1),
@@ -816,6 +805,22 @@ void LocalPlayer::setAttributeEffective(int num, int value)
         statusWindow->update(num);
 }
 
+void LocalPlayer::setCharacterPoints(int n)
+{
+    mCharacterPoints = n;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::CHAR_POINTS);
+}
+
+void LocalPlayer::setCorrectionPoints(int n)
+{
+    mCorrectionPoints = n;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::CHAR_POINTS);
+}
+
 void LocalPlayer::setSkillPoints(int points)
 {
     mSkillPoints = points;
@@ -846,16 +851,64 @@ std::pair<int, int> LocalPlayer::getExperience(int skill)
     return mSkillExp[skill];
 }
 
-void LocalPlayer::setLevelProgress(int percent)
+void LocalPlayer::setHp(int value)
 {
-    if (mMap && percent > mLevelProgress)
-    {
-        addMessageToQueue(toString(percent - mLevelProgress) + " xp");
-    }
-    mLevelProgress = percent;
+    mHp = value;
 
     if (statusWindow)
-        statusWindow->update();
+        statusWindow->update(StatusWindow::HP);
+}
+
+void LocalPlayer::setMaxHp(int value)
+{
+    mMaxHp = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::HP);
+}
+
+void LocalPlayer::setLevel(int value)
+{
+    mLevel = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::LEVEL);
+}
+
+void LocalPlayer::setExp(int value)
+{
+    if (mMap && value > mExp)
+    {
+        addMessageToQueue(toString(value - mExp) + " xp");
+    }
+    mExp = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::EXP);
+}
+
+void LocalPlayer::setExpNeeded(int value)
+{
+    mExpNeeded = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::EXP);
+}
+
+int LocalPlayer::setMP(int value)
+{
+    mMp = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::MP);
+}
+
+int LocalPlayer::setMaxMP(int value)
+{
+    mMaxMp = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::MP);
 }
 
 void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
