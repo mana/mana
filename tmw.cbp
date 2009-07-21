@@ -220,8 +220,8 @@
 		<Unit filename="src/gui/chat.h" />
 		<Unit filename="src/gui/confirmdialog.cpp" />
 		<Unit filename="src/gui/confirmdialog.h" />
-		<Unit filename="src/gui/connection.cpp" />
-		<Unit filename="src/gui/connection.h" />
+		<Unit filename="src/gui/connectiondialog.cpp" />
+		<Unit filename="src/gui/connectiondialog.h" />
 		<Unit filename="src/gui/debugwindow.cpp" />
 		<Unit filename="src/gui/debugwindow.h" />
 		<Unit filename="src/gui/emotepopup.cpp" />
