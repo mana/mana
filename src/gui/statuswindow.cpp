@@ -43,7 +43,8 @@
 #include "utils/mathutils.h"
 #include "utils/stringutils.h"
 
-class AttrDisplay : public Container {
+class AttrDisplay : public Container
+{
     public:
         virtual std::string update();
 
@@ -58,12 +59,14 @@ class AttrDisplay : public Container {
         Label *mValue;
 };
 
-class DerDisplay : public AttrDisplay {
+class DerDisplay : public AttrDisplay
+{
     public:
         DerDisplay(int id, const std::string &name);
 };
 
-class ChangeDisplay : public AttrDisplay, gcn::ActionListener {
+class ChangeDisplay : public AttrDisplay, gcn::ActionListener
+{
     public:
         ChangeDisplay(int id, const std::string &name);
         std::string update();
