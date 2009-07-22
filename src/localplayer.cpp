@@ -911,6 +911,14 @@ void LocalPlayer::setMaxMP(int value)
         statusWindow->update(StatusWindow::MP);
 }
 
+void LocalPlayer::setMoney(int value)
+{
+    mMoney = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::MONEY);
+}
+
 void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
 {
     if (!amount)

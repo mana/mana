@@ -309,8 +309,7 @@ class LocalPlayer : public Player
         int getMoney() const
         { return mMoney; }
 
-        void setMoney(int value)
-        { mMoney = value; }
+        void setMoney(int value);
 
         int getTotalWeight() const
         { return mTotalWeight; }
