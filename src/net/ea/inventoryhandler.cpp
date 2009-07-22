@@ -87,6 +87,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             if (msg.getId() == SMSG_PLAYER_INVENTORY)
             {
                 // Clear inventory - this will be a complete refresh
+                clearEquipment();
                 inventory->clear();
             }
             else

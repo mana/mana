@@ -113,6 +113,20 @@ void setEquipment(int eAthenaSlot, int index, bool equiped)
     }
 }
 
+void clearEquipment()
+{
+    for (int i = 0; i < Equipment::EQUIP_VECTOREND; i++)
+    {
+        if (equips[i])
+        {
+            equips[i]->setEquipped(false);
+            player_node->mEquipment->setEquipment(i, -1);
+        }
+
+        equips[i] = NULL;
+    }
+}
+
 Item *getRealEquipedItem(const Item *equipped)
 {
     if (!equipped)
