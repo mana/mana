@@ -153,14 +153,8 @@ void OutfitWindow::wearOutfit(int outfit)
             //non vis is 3,4,7
             if (i != 3 && i != 4 && i != 7)
             {
-#ifdef TMWSERV_SUPPORT
                 if (!(item = player_node->mEquipment.get()->getEquipment(i)))
                     continue;
-#else
-                if (!(item = player_node->getInventory()->getItem(
-                      player_node->mEquipment.get()->getEquipment(i))))
-                    continue;
-#endif
                 Net::getInventoryHandler()->unequipItem(item);
             }
         }

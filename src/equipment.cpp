@@ -29,18 +29,9 @@
 #include <algorithm>
 
 Equipment::Equipment()
-#ifdef EATHENA_SUPPORT
-    : mArrows(-1)
-#endif
 {
-#ifdef TMWSERV_SUPPORT
     std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
-#else
-    std::fill_n(mEquipment, EQUIPMENT_SIZE, -1);
-#endif
 }
-
-#ifdef TMWSERV_SUPPORT
 
 Equipment::~Equipment()
 {
@@ -55,29 +46,14 @@ void Equipment::clear()
     std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
 }
 
-void Equipment::setEquipment(int index, int id)
+void Equipment::setEquipment(int index, int id, int quantity)
 {
     if (mEquipment[index] && mEquipment[index]->getId() == id)
         return;
 
     delete mEquipment[index];
-    mEquipment[index] = (id > 0) ? new Item(id) : 0;
+    mEquipment[index] = (id > 0) ? new Item(id, quantity) : 0;
+
+    if (mEquipment[index])
+        mEquipment[index]->setInvIndex(index);
 }
-
-#else
-
-void Equipment::setEquipment(int index, int inventoryIndex)
-{
-    mEquipment[index] = inventoryIndex;
-    Item *item = player_node->getInventory()->getItem(inventoryIndex);
-    if (item)
-        item->setEquipped(true);
-}
-
-void Equipment::removeEquipment(int index)
-{
-     if (index >= 0 && index < EQUIPMENT_SIZE)
-         mEquipment[index] = -1;
-}
-
-#endif

@@ -214,13 +214,12 @@ static void createGuiWindows()
     partyWindow = new PartyWindow;
 #ifdef TMWSERV_SUPPORT
     magicDialog = new MagicDialog;
-    equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     buddyWindow = new BuddyWindow;
     guildWindow = new GuildWindow;
 #else
     buySellDialog = new BuySellDialog;
-    equipmentWindow = new EquipmentWindow;
 #endif
+    equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     npcDialog = new NpcDialog;
     npcPostDialog = new NpcPostDialog;
     storageWindow = new StorageWindow;

@@ -21,6 +21,7 @@
 
 #include "net/ea/inventoryhandler.h"
 
+#include "net/ea/equipmenthandler.h"
 #include "net/ea/protocol.h"
 
 #include "net/messagein.h"
@@ -302,11 +303,13 @@ void InventoryHandler::equipItem(const Item *item)
 
 void InventoryHandler::unequipItem(const Item *item)
 {
-    if (!item)
+    const Item *real_item = item->isEquipped() ? item : getRealEquipedItem(item);
+
+    if (!real_item)
         return;
 
     MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
+    outMsg.writeInt16(real_item->getInvIndex() + INVENTORY_OFFSET);
 }
 
 void InventoryHandler::useItem(const Item *item)

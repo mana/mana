@@ -22,11 +22,7 @@
 #ifndef EQUIPMENT_H
 #define EQUIPMENT_H
 
-#ifdef TMWSERV_SUPPORT
 #define EQUIPMENT_SIZE 11
-#else
-#define EQUIPMENT_SIZE 10
-#endif
 
 class Item;
 
@@ -38,63 +34,45 @@ class Equipment
          */
         Equipment();
 
-#ifdef TMWSERV_SUPPORT
         /**
          * Destructor.
          */
         ~Equipment();
-#endif
+
+        enum EquipmentSlots
+        {
+            EQUIP_TORSO_SLOT = 0,
+            EQUIP_GLOVES_SLOT = 1,
+            EQUIP_HEAD_SLOT = 2,
+            EQUIP_LEGS_SLOT = 3,
+            EQUIP_FEET_SLOT = 4,
+            EQUIP_RING1_SLOT = 5,
+            EQUIP_RING2_SLOT = 6,
+            EQUIP_NECK_SLOT = 7,
+            EQUIP_FIGHT1_SLOT = 8,
+            EQUIP_FIGHT2_SLOT = 9,
+            EQUIP_PROJECTILE_SLOT = 10,
+            EQUIP_VECTOREND
+        };
 
         /**
          * Get equipment at the given slot.
          */
-#ifdef TMWSERV_SUPPORT
         Item *getEquipment(int index)
-#else
-        int getEquipment(int index) const
-#endif
         { return mEquipment[index]; }
 
-#ifdef TMWSERV_SUPPORT
         /**
          * Clears equipment.
          */
         void clear();
-#endif
 
         /**
          * Set equipment at the given slot.
          */
-#ifdef TMWSERV_SUPPORT
-        void setEquipment(int index, int id);
-#else
-        void setEquipment(int index, int inventoryIndex);
-#endif
-
-#ifdef EATHENA_SUPPORT
-        /**
-         * Remove equipment from the given slot.
-         */
-        void removeEquipment(int index);
-
-        /**
-         * Returns the item used in the arrow slot.
-         */
-        int getArrows() const { return mArrows; }
-
-        /**
-         * Set the item used in the arrow slot.
-         */
-        void setArrows(int arrows) { mArrows = arrows; }
-#endif
+        void setEquipment(int index, int id, int quantity = 0);
 
     private:
-#ifdef TMWSERV_SUPPORT
         Item *mEquipment[EQUIPMENT_SIZE];
-#else
-        int mEquipment[EQUIPMENT_SIZE];
-        int mArrows;
-#endif
 };
 
 #endif

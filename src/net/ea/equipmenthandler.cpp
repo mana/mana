@@ -35,9 +35,97 @@
 
 #include "utils/gettext.h"
 
+const Equipment::EquipmentSlots EQUIP_POINTS[Equipment::EQUIP_VECTOREND] = {
+    Equipment::EQUIP_LEGS_SLOT,
+    Equipment::EQUIP_FIGHT1_SLOT,
+    Equipment::EQUIP_GLOVES_SLOT,
+    Equipment::EQUIP_RING2_SLOT,
+    Equipment::EQUIP_RING1_SLOT,
+    Equipment::EQUIP_FIGHT2_SLOT,
+    Equipment::EQUIP_FEET_SLOT,
+    Equipment::EQUIP_NECK_SLOT,
+    Equipment::EQUIP_HEAD_SLOT,
+    Equipment::EQUIP_TORSO_SLOT,
+    Equipment::EQUIP_PROJECTILE_SLOT};
+
+Item *equips[Equipment::EQUIP_VECTOREND];
+
 namespace EAthena {
 
 enum { debugEquipment = 1 };
+
+void setEquipment(int eAthenaSlot, int index, bool equiped)
+{
+    if (!eAthenaSlot)
+        return;
+
+    Item *item = player_node->getInventory()->getItem(index);
+
+    if (!item)
+        return;
+
+    int position = 0;
+
+    if (eAthenaSlot & 0x8000) {    // Arrows
+        position = Equipment::EQUIP_PROJECTILE_SLOT;
+    }
+    else
+    {
+        /*
+         * An item may occupy more than 1 slot.  If so, it's
+         * only shown as equipped on the *first* slot.
+         */
+        int mask = 1;
+        while (!(eAthenaSlot & mask))
+        {
+            mask <<= 1;
+            position++;
+        }
+
+        position = EQUIP_POINTS[position];
+    }
+
+    if (equips[position])
+        equips[position]->setEquipped(false);
+
+    if (equiped && item)
+    {
+        equips[position] = item;
+        item->setEquipped(true);
+        player_node->mEquipment->setEquipment(position, item->getId(), item->getQuantity());
+
+        if (debugEquipment)
+        {
+            logger->log("Equipping: %i %i at position %i",
+                        index, eAthenaSlot, position);
+        }
+    }
+    else
+    {
+        equips[position] = NULL;
+        player_node->mEquipment->setEquipment(position, -1);
+
+        if (debugEquipment)
+        {
+            logger->log("Unequipping: %i %i at position %i",
+                        index, eAthenaSlot, position);
+        }
+    }
+}
+
+Item *getRealEquipedItem(const Item *equipped)
+{
+    if (!equipped)
+        return NULL;
+
+    for (int i = 0; i < Equipment::EQUIP_VECTOREND; i++)
+    {
+        if (equips[i] && equipped->getId() == equips[i]->getId())
+            return equips[i];
+    }
+
+    return NULL;
+}
 
 EquipmentHandler::EquipmentHandler()
 {
@@ -50,6 +138,7 @@ EquipmentHandler::EquipmentHandler()
         0
     };
     handledMessages = _messages;
+    memset(equips, 0, sizeof(equips));
 }
 
 void EquipmentHandler::handleMessage(MessageIn &msg)
@@ -57,8 +146,6 @@ void EquipmentHandler::handleMessage(MessageIn &msg)
     int itemCount;
     int index, equipPoint, itemId;
     int type;
-    int mask, position;
-    Item *item;
     Inventory *inventory = player_node->getInventory();
 
     switch (msg.getId())
@@ -79,25 +166,9 @@ void EquipmentHandler::handleMessage(MessageIn &msg)
                 msg.readInt8();  // refine
                 msg.skip(8);     // card
 
-                if (debugEquipment)
-                {
-                    logger->log("Index: %d, ID: %d", index, itemId);
-                }
-
                 inventory->setItem(index, itemId, 1, true);
 
-                if (equipPoint)
-                {
-                    mask = 1;
-                    position = 0;
-                    while (!(equipPoint & mask))
-                    {
-                        mask <<= 1;
-                        position++;
-                    }
-                    item = inventory->getItem(index);
-                    player_node->mEquipment->setEquipment(position, index);
-                }
+                setEquipment(equipPoint, index, true);
             }
             break;
 
@@ -112,35 +183,7 @@ void EquipmentHandler::handleMessage(MessageIn &msg)
                 break;
             }
 
-            // No point in searching when no point given
-            if (!equipPoint)
-                break;
-
-            /*
-             * An item may occupy more than 1 slot.  If so, it's
-             * only shown as equipped on the *first* slot.
-             */
-            mask = 1;
-            position = 0;
-            while (!(equipPoint & mask)) {
-                mask <<= 1;
-                position++;
-            }
-
-            if (debugEquipment)
-            {
-                logger->log("Equipping: %i %i %i at position %i",
-                            index, equipPoint, type, position);
-            }
-
-            item = inventory->getItem(player_node->mEquipment->getEquipment(position));
-
-            // Unequip any existing equipped item in this position
-            if (item)
-                item->setEquipped(false);
-
-            item = inventory->getItem(index);
-            player_node->mEquipment->setEquipment(position, index);
+            setEquipment(equipPoint, index, true);
             break;
 
         case SMSG_PLAYER_UNEQUIP:
@@ -153,36 +196,7 @@ void EquipmentHandler::handleMessage(MessageIn &msg)
                 break;
             }
 
-            if (!equipPoint) {
-                // No point given, no point in searching
-                break;
-            }
-
-            mask = 1;
-            position = 0;
-            while (!(equipPoint & mask)) {
-                mask <<= 1;
-                position++;
-            }
-
-            item = inventory->getItem(index);
-            if (!item)
-                break;
-
-            item->setEquipped(false);
-
-            if (equipPoint & 0x8000) {    // Arrows
-                player_node->mEquipment->setArrows(-1);
-            }
-            else {
-                player_node->mEquipment->removeEquipment(position);
-            }
-
-            if (debugEquipment)
-            {
-                logger->log("Unequipping: %i %i(%i) %i",
-                            index, equipPoint, type, position);
-            }
+            setEquipment(equipPoint, index, false);
             break;
 
         case SMSG_PLAYER_ATTACK_RANGE:
@@ -197,13 +211,8 @@ void EquipmentHandler::handleMessage(MessageIn &msg)
 
             index -= INVENTORY_OFFSET;
 
-            item = inventory->getItem(index);
-
-            if (item) {
-                item->setEquipped(true);
-                player_node->mEquipment->setArrows(index);
-                logger->log("Arrows equipped: %i", index);
-            }
+            logger->log("Arrows equipped: %i", index);
+            setEquipment(0x8000, index, true);
             break;
     }
 }
