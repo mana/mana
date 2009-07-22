@@ -282,6 +282,7 @@ Game::Game():
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
     top->add(viewport);
+    viewport->requestMoveToBottom();
 
     createGuiWindows();
 
