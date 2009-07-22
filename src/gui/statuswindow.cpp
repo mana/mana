@@ -434,7 +434,6 @@ std::string AttrDisplay::update()
     if (bonus)
         value += strprintf(" (%+d)", bonus);
     mValue->setCaption(value);
-    mValue->adjustSize();
 
     return mName;
 }
