@@ -390,7 +390,17 @@ bool Map::randomFill(Map* templateMap, const std::string& destLayerName,
     }
 
     /* Now generate extra tiles.
-     * TODO Need to configure this for desired density.  For 2x1 trees, dW*dH/10 is very sparse, dW*dH/2 is dense */
+     *
+     * After considering ways to specify the number of objects to add, I think
+     * the best user interface (without integrating it with Tiled) is to place
+     * a small number of objects each time, and have the user run the utility
+     * several times, reloading the map in Tiled each time until it looks
+     * right.  Simpler than typing magic numbers in at a command prompt.
+     *
+     * This algorithm completes after a fixed number of attempts at placing an
+     * object; regardless of how many attempts are successful.
+     * For 2x1 trees, destWidth*destHeight/10 is very sparse, dW*dH/2 is dense.
+     */
     srand(time(NULL));
     int patternsGenerated = 0;
     int occupiedAreas = 0;
@@ -418,7 +428,6 @@ bool Map::randomFill(Map* templateMap, const std::string& destLayerName,
         if (areaIsClear)
         {
             int p = rand() % templateMap->getNumberOfLayers();
-            std::cout <<"Copying pattern "<<p<<" to "<<x<<", "<<y<<std::endl;
 
             Layer* srcLayer = templateMap->getLayer(p);
             for (int loop_y=0; loop_y<templateMap->getHeight(); loop_y++)
@@ -436,11 +445,11 @@ bool Map::randomFill(Map* templateMap, const std::string& destLayerName,
         else
         {
             occupiedAreas++;
-            std::cout <<"Area occupied "<<x<<", "<<y<<std::endl;
         }
     }
 
     std::clog<<"Generated " << patternsGenerated << " new objects" <<std::endl;
+    (void) occupiedAreas;  // Unused at the moment, but keep it without a compiler warning about unused variables
     return true;
 }
 
@@ -461,7 +470,7 @@ bool Map::translateAllLayers(Map* templateMap, const std::string& destLayerName,
     }
     if (!checkPassed) return false;
 
-    //FIXME - as is, this will add tilesets that are in the template but
+    //TODO This will unnecessarily add tilesets that are in the template but
     //not used in the main map
     std::map<int, int> tilesetTranslation = addAndTranslateTilesets(templateMap);
 
