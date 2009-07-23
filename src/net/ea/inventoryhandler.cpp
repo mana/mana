@@ -191,6 +191,11 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 {
                     player_node->pickedUp(itemInfo, amount);
 
+                    Item *item = inventory->getItem(index);
+
+                    if  (item && item->getId() == itemId)
+                        amount += inventory->getItem(index)->getQuantity();
+
                     inventory->setItem(index, itemId, amount, equipType != 0);
                 }
             } break;
