@@ -23,6 +23,7 @@
 
 #include "gui/itemamount.h"
 #include "gui/itemcontainer.h"
+#include "gui/setup.h"
 #include "gui/sdlinput.h"
 #include "gui/viewport.h"
 
@@ -57,6 +58,7 @@ InventoryWindow::InventoryWindow(int invSize):
     mItemDesc(false)
 {
     setWindowName("Inventory");
+    setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
     setSaveVisible(true);

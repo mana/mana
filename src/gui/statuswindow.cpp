@@ -28,6 +28,7 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
+#include "gui/setup.h"
 
 #include "localplayer.h"
 #include "units.h"
@@ -86,6 +87,7 @@ StatusWindow::StatusWindow():
     Window(player_node->getName())
 {
     setWindowName("Status");
+    setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
     setSaveVisible(true);

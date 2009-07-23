@@ -27,6 +27,7 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
 
+#include "gui/setup.h"
 #include "gui/shop.h"
 #include "gui/shoplistbox.h"
 
@@ -47,6 +48,7 @@ BuyDialog::BuyDialog():
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     setWindowName("Buy");
+    setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
     setMinWidth(260);

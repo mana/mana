@@ -21,6 +21,7 @@
 
 #include "gui/debugwindow.h"
 
+#include "gui/setup.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/label.h"
@@ -37,6 +38,7 @@ DebugWindow::DebugWindow():
     Window("Debug")
 {
     setWindowName("Debug");
+    setupWindow->registerWindowForReset(this);
 
     setResizable(true);
     setCloseButton(true);

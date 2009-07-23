@@ -23,6 +23,7 @@
 
 #include "gui/itemlinkhandler.h"
 #include "gui/recorder.h"
+#include "gui/setup.h"
 #include "gui/sdlinput.h"
 
 #include "gui/widgets/chattab.h"
@@ -75,6 +76,8 @@ ChatWindow::ChatWindow():
     mCurrentTab(NULL)
 {
     setWindowName("Chat");
+
+    setupWindow->registerWindowForReset(this);
 
     // no title presented, title bar is padding so window can be moved.
     gcn::Window::setTitleBarHeight(gcn::Window::getPadding() + 4);

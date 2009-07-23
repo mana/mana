@@ -21,6 +21,7 @@
 
 #include "gui/sell.h"
 
+#include "gui/setup.h"
 #include "gui/shop.h"
 #include "gui/shoplistbox.h"
 
@@ -47,6 +48,7 @@ SellDialog::SellDialog():
     mMaxItems(0), mAmountItems(0)
 {
     setWindowName("Sell");
+    setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
     setMinWidth(260);

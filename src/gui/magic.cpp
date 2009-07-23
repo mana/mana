@@ -22,6 +22,7 @@
 #include "gui/magic.h"
 
 #include "gui/widgets/button.h"
+#include "gui/setup.h"
 
 #include "localplayer.h"
 
@@ -35,6 +36,7 @@ MagicDialog::MagicDialog():
     setCloseButton(true);
     setSaveVisible(true);
     setDefaultSize(255, 30, 175, 225);
+    setupWindow->registerWindowForReset(this);
 
     gcn::Button *spellButton1 = new Button(_("Cast Test Spell 1"), "spell_1", this);
     gcn::Button *spellButton2 = new Button(_("Cast Test Spell 2"), "spell_2", this);

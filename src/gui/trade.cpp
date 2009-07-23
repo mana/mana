@@ -29,6 +29,7 @@
 #include "gui/inventorywindow.h"
 #include "gui/itemamount.h"
 #include "gui/itemcontainer.h"
+#include "gui/setup.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
@@ -65,6 +66,7 @@ TradeWindow::TradeWindow():
     setDefaultSize(386, 180, ImageRect::CENTER);
     setMinWidth(386);
     setMinHeight(180);
+    setupWindow->registerWindowForReset(this);
 
     std::string longestName = getFont()->getWidth(_("OK")) >
                                    getFont()->getWidth(_("Trade")) ?

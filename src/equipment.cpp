@@ -21,10 +21,6 @@
 
 #include "equipment.h"
 #include "item.h"
-#ifdef EATHENA_SUPPORT
-#include "inventory.h"
-#include "localplayer.h"
-#endif
 
 #include <algorithm>
 

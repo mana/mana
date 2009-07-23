@@ -29,11 +29,7 @@ struct SlotUsed : public std::unary_function<Item*, bool>
 {
     bool operator()(const Item *item) const
     {
-#ifdef TMWSERV_SUPPORT
-        return item && item->getId() && item->getQuantity();
-#else
-        return item && item->getId() != -1 && item->getQuantity() > 0;
-#endif
+        return item && item->getId() >= 0 && item->getQuantity() > 0;
     }
 };
 
@@ -54,11 +50,7 @@ Inventory::~Inventory()
 
 Item *Inventory::getItem(int index) const
 {
-#ifdef TMWSERV_SUPPORT
-    if (index < 0 || index >= mSize)
-#else
     if (index < 0 || index >= mSize || !mItems[index] || mItems[index]->getQuantity() <= 0)
-#endif
         return 0;
 
     return mItems[index];

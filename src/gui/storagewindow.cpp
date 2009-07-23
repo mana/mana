@@ -24,6 +24,7 @@
 #include "gui/inventorywindow.h"
 #include "gui/itemamount.h"
 #include "gui/itemcontainer.h"
+#include "gui/setup.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
@@ -58,6 +59,7 @@ StorageWindow::StorageWindow(int invSize):
     setWindowName("Storage");
     setResizable(true);
     setCloseButton(true);
+    setupWindow->registerWindowForReset(this);
 
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(375, 300, ImageRect::CENTER);

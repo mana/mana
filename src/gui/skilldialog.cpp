@@ -33,6 +33,7 @@
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
+#include "gui/setup.h"
 
 #include "localplayer.h"
 #include "log.h"
@@ -89,6 +90,7 @@ SkillDialog::SkillDialog():
     setResizable(true);
     setSaveVisible(true);
     setDefaultSize(windowContainer->getWidth() - 280, 30, 275, 425);
+    setupWindow->registerWindowForReset(this);
 
     mTabs = new TabbedArea();
     mPointsLabel = new Label("0");

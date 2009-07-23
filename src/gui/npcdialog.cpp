@@ -28,6 +28,7 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
+#include "gui/setup.h"
 
 #include "npc.h"
 
@@ -54,6 +55,7 @@ NpcDialog::NpcDialog()
     // Basic Window Setup
     setWindowName("NpcText");
     setResizable(true);
+    setupWindow->registerWindowForReset(this);
 
     setMinWidth(200);
     setMinHeight(150);

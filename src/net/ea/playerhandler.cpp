@@ -289,8 +289,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         player_node->setAttributeEffective(CRIT, value); break;
 
                     case 0x0035: player_node->mAttackSpeed = value; break;
-                    case 0x0037:
-                        player_node->setAttributeBase(JOB, value); break;
+                    case 0x0037: player_node->setAttributeBase(JOB, value);
+                        player_node->setAttributeEffective(JOB, value); break;
                     case 500: player_node->setGMLevel(value); break;
                 }
 

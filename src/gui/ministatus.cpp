@@ -39,34 +39,22 @@ MiniStatusWindow::MiniStatusWindow():
     mHpBar = new ProgressBar((float) player_node->getHp()
                              / (float) player_node->getMaxHp(),
                              100, 20, gcn::Color(0, 171, 34));
-#ifdef EATHENA_SUPPORT
     mMpBar = new ProgressBar((float) player_node->getMaxMP()
                              / (float) player_node->getMaxMP(),
                              100, 20, gcn::Color(26, 102, 230));
     mXpBar = new ProgressBar((float) player_node->getExp()
                              / player_node->getExpNeeded(),
                              100, 20, gcn::Color(143, 192, 211));
-#endif
-
     mHpBar->setPosition(0, 3);
-#ifdef EATHENA_SUPPORT
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
     mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);
-#endif
 
     add(mHpBar);
-#ifdef EATHENA_SUPPORT
     add(mMpBar);
     add(mXpBar);
-#endif
 
-#ifdef EATHENA_SUPPORT
     setContentSize(mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
-#else
-    setContentSize(mHpBar->getX() + mHpBar->getWidth(),
-                   mHpBar->getY() + mHpBar->getHeight());
-#endif
 
     setVisible((bool) config.getValue(getPopupName() + "Visible", true));
 }
@@ -92,7 +80,6 @@ extern volatile int tick_time;
 void MiniStatusWindow::update()
 {
     StatusWindow::updateHPBar(mHpBar);
-#ifdef EATHENA_SUPPORT
     StatusWindow::updateMPBar(mMpBar);
     StatusWindow::updateXPBar(mXpBar);
 
@@ -108,7 +95,6 @@ void MiniStatusWindow::update()
             << config.getValue("xpBarMonsterCounterName", "Monsters") <<" left...";
     }
     */
-#endif
 
     for (unsigned int i = 0; i < mIcons.size(); i++)
         if (mIcons[i])
@@ -124,11 +110,7 @@ void MiniStatusWindow::draw(gcn::Graphics *graphics)
 void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
     // Draw icons
-#ifdef TMWSERV_SUPPORT
-    int icon_x = mHpBar->getX() + mHpBar->getWidth() + 4;
-#else
     int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
-#endif
     for (unsigned int i = 0; i < mIcons.size(); i++) {
         if (mIcons[i]) {
             mIcons[i]->draw(graphics, icon_x, 3);

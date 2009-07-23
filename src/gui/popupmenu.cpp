@@ -194,13 +194,11 @@ void PopupMenu::handleLink(const std::string &link)
         Net::getTradeHandler()->request(being);
         tradePartnerName = being->getName();
     }
-#ifdef EATHENA_SUPPORT
     // Attack action
     else if (link == "attack" && being)
     {
         player_node->attack(being, true);
     }
-#endif
     else if (link == "unignore" &&
              being &&
              being->getType() == Being::PLAYER)

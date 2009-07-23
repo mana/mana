@@ -206,6 +206,8 @@ int get_elapsed_time(int start_time)
  */
 static void createGuiWindows()
 {
+    setupWindow->clearWindowsForReset();
+
     // Create dialogs
     chatWindow = new ChatWindow;
     buyDialog = new BuyDialog;

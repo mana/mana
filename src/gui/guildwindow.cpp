@@ -24,6 +24,7 @@
 
 #include "gui/confirmdialog.h"
 #include "gui/guildlistbox.h"
+#include "gui/setup.h"
 #include "gui/textdialog.h"
 
 #include "gui/widgets/button.h"
@@ -59,6 +60,7 @@ GuildWindow::GuildWindow():
     setMinWidth(200);
     setMinHeight(280);
     setDefaultSize(124, 41, 288, 330);
+    setupWindow->registerWindowForReset(this);
 
     // Set button events Id
     mGuildButton[0] = new Button(_("Create Guild"), "CREATE_GUILD", this);

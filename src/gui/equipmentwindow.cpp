@@ -25,6 +25,7 @@
 #include "gui/itempopup.h"
 #include "gui/palette.h"
 #include "gui/playerbox.h"
+#include "gui/setup.h"
 #include "gui/viewport.h"
 
 #include "equipment.h"
@@ -69,6 +70,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     mSelected(-1)
 {
     mItemPopup = new ItemPopup;
+    setupWindow->registerWindowForReset(this);
 
     // Control that shows the Player
     PlayerBox *playerBox = new PlayerBox;

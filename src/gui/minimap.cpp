@@ -31,6 +31,7 @@
 #include "player.h"
 
 #include "gui/palette.h"
+#include "gui/setup.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -53,6 +54,7 @@ Minimap::Minimap():
     // set this to false as the minimap window size is changed
     //depending on the map size
     setResizable(false);
+    setupWindow->registerWindowForReset(this);
 
     setDefaultVisible(true);
     setSaveVisible(true);

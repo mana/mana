@@ -175,7 +175,9 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setExp(msg.readInt32());
     tempPlayer->setMoney(msg.readInt32());
     tempPlayer->setExperience(JOB, msg.readInt32(), 1);
-    tempPlayer->setAttributeBase(JOB, msg.readInt32());
+    int temp = msg.readInt32();
+    tempPlayer->setAttributeBase(JOB, temp);
+    tempPlayer->setAttributeEffective(JOB, temp);
     tempPlayer->setSprite(Being::SHOE_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Being::GLOVES_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Being::CAPE_SPRITE, msg.readInt16());
