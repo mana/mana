@@ -43,13 +43,17 @@ ProgressBar::ProgressBar(float progress,
                          int width, int height,
                          const gcn::Color &color):
     gcn::Widget(),
-    mProgress(progress),
-    mProgressToGo(progress),
     mSmoothProgress(true),
     mColor(color),
     mColorToGo(color),
     mSmoothColorChange(true)
 {
+    // The progress value is directly set at load time:
+    if (progress > 1.0f || progress < 0.0f)
+        progress = 1.0f;
+
+    mProgress = mProgressToGo = progress;
+
     setSize(width, height);
 
     if (mInstances == 0)
