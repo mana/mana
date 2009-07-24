@@ -125,6 +125,15 @@ class ResourceManager
         Resource *load(const std::string &path, loader fun);
 
         /**
+         * Adds a preformatted resource to the resource map.
+         *
+         * @param path The file name.
+         * @param Resource  The Resource to add.
+         * @return true if successfull, false otherwise.
+         */
+        bool addResource(const std::string &idPath, Resource* resource);
+
+        /**
         * Copies a file from one place to another (useful for extracting
         * raw files from a zip archive, for example)
         *

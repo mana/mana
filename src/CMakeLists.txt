@@ -304,6 +304,8 @@ SET(SRCS
     resources/resource.h
     resources/resourcemanager.cpp
     resources/resourcemanager.h
+    resources/sdlrescalefacility.h
+    resources/sdlrescalefacility.cpp
     resources/soundeffect.h
     resources/soundeffect.cpp
     resources/spritedef.h

@@ -214,6 +214,19 @@ std::string ResourceManager::getPath(const std::string &file)
     return path;
 }
 
+bool ResourceManager::addResource(const std::string &idPath,
+                                  Resource* resource)
+{
+    if (resource)
+    {
+        resource->incRef();
+        resource->mIdPath = idPath;
+        mResources[idPath] = resource;
+        return true;
+    }
+    return false;
+}
+
 Resource *ResourceManager::get(const std::string &idPath, generator fun,
                                void *data)
 {

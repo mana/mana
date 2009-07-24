@@ -26,6 +26,7 @@
 #include "log.h"
 
 #include <SDL_image.h>
+#include "resources/sdlrescalefacility.h"
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
@@ -289,6 +290,15 @@ void Image::unload()
 #endif
 }
 
+bool Image::isAnOpenGLOne() const
+{
+#ifdef USE_OPENGL
+    return mUseOpenGL;
+#else
+    return false;
+#endif
+}
+
 Image *Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
@@ -395,6 +405,34 @@ float Image::getAlpha() const
     return mAlpha;
 }
 
+Image* Image::SDLgetScaledImage(unsigned int width, unsigned int height)
+{
+    // No scaling on incorrect new values.
+    if (width == 0 || height == 0)
+    return NULL;
+    
+    // No scaling when there is ... no different given size ...
+    if (width == getWidth() && height == getHeight())
+        return NULL;
+
+    Image* scaledImage = NULL;
+    SDL_Surface* scaledSurface = NULL;
+    
+    if (mImage)
+    {
+        scaledSurface = _SDLzoomSurface(mImage,
+                    (double) width / getWidth(),
+                    (double) height / getHeight(),
+                    1);
+
+        // The load function takes of the SDL<->OpenGL implementation
+        // and about freeing the given SDL_surface*.
+        if (scaledSurface)
+            scaledImage = load(scaledSurface);
+    }
+    return scaledImage;
+}
+
 #ifdef USE_OPENGL
 void Image::setLoadAsOpenGL(bool useOpenGL)
 {
@@ -469,4 +507,3 @@ Image *SubImage::getSubImage(int x, int y, int w, int h)
 {
     return mParent->getSubImage(mBounds.x + x, mBounds.y + y, w, h);
 }
-

@@ -105,6 +105,28 @@ class Graphics : public gcn::SDLGraphics
                        int dstX, int dstY, int width, int height);
 
         /**
+         * Draws a resclaled version of the image
+         */
+        bool drawRescaledImage(Image *image, int srcX, int srcY,
+                               int dstX, int dstY,
+                               int width, int height,
+                               int desiredWidth, int desiredHeight)
+        { return drawRescaledImage(image, srcX, srcY,
+                                   dstX, dstY,
+                                   width, height,
+                                   desiredWidth, desiredHeight,
+                                   false); };
+
+        /**
+         * Draws a resclaled version of the image
+         */
+        virtual bool drawRescaledImage(Image *image, int srcX, int srcY,
+                               int dstX, int dstY,
+                               int width, int height,
+                               int desiredWidth, int desiredHeight,
+                               bool useColor = false);
+
+        /**
          * Blits an image onto the screen.
          *
          * @return <code>true</code> if the image was blitted properly

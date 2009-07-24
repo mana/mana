@@ -88,6 +88,16 @@ class Image : public Resource
         static Image *load(SDL_Surface *);
 
         /**
+         * Gets an scaled instance of an image.
+         * 
+         * @param width The desired width of the scaled image.
+         * @param height The desired height of the scaled image.
+         *
+         * @return A new Image* object.
+         */        
+        Image* SDLgetScaledImage(unsigned int width, unsigned int height);
+
+        /**
          * Frees the resources created by SDL.
          */
         virtual void unload();
@@ -103,6 +113,12 @@ class Image : public Resource
          */
         virtual int getHeight() const
         { return mBounds.h; }
+
+        /**
+         * Tells if the image was loade using OpenGL or SDL
+         * @return true if OpenGL, false if SDL.
+         */
+        bool isAnOpenGLOne() const;
 
         /**
          * Creates a new image with the desired clipping rectangle.

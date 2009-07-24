@@ -74,9 +74,14 @@ void Desktop::draw(gcn::Graphics *graphics)
 
     if (mWallpaper)
     {
-        g->drawImage(mWallpaper,
+        if (!mWallpaper->isAnOpenGLOne())
+            g->drawImage(mWallpaper,
                 (getWidth() - mWallpaper->getWidth()) / 2,
                 (getHeight() - mWallpaper->getHeight()) / 2);
+        else
+            g->drawRescaledImage(mWallpaper, 0, 0, 0, 0,
+                mWallpaper->getWidth(), mWallpaper->getHeight(),
+                getWidth(), getHeight(), false);
     }
 
     Container::draw(graphics);
@@ -87,13 +92,27 @@ void Desktop::setBestFittingWallpaper()
     const std::string wallpaperName =
             Wallpaper::getWallpaper(getWidth(), getHeight());
 
-    Image *temp = ResourceManager::getInstance()->getImage(wallpaperName);
+    Image *nWallPaper = ResourceManager::getInstance()->getImage(wallpaperName);
 
-    if (temp)
+    if (nWallPaper)
     {
         if (mWallpaper)
             mWallpaper->decRef();
-        mWallpaper = temp;
+
+        if (!nWallPaper->isAnOpenGLOne() && (nWallPaper->getWidth() != getWidth()
+            || nWallPaper->getHeight() != getHeight()))
+        {
+            // We rescale to obtain a fullscreen wallpaper...
+            Image *newRsclWlPpr = nWallPaper->SDLgetScaledImage(getWidth(), getHeight());
+            std::string idPath = nWallPaper->getIdPath();
+
+            // We replace the resource in the resource manager
+            nWallPaper->decRef();
+            ResourceManager::getInstance()->addResource(idPath, newRsclWlPpr);
+            mWallpaper = newRsclWlPpr;
+        }
+            else 
+                mWallpaper = nWallPaper;
     }
     else
     {
