@@ -54,6 +54,8 @@ class PlayerHandler
         virtual void ignorePlayer(const std::string &player, bool ignore) = 0;
 
         virtual void ignoreAll(bool ignore) = 0;
+
+        virtual bool canUseMagic() = 0;
 };
 
 } // namespace Net

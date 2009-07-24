@@ -33,6 +33,8 @@
 
 #include "utils/stringutils.h"
 
+extern volatile int tick_time;
+
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
@@ -75,13 +77,37 @@ void MiniStatusWindow::eraseIcon(int index)
     mIcons.erase(mIcons.begin() + index);
 }
 
-extern volatile int tick_time;
-
-void MiniStatusWindow::update()
+void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
-    StatusWindow::updateHPBar(mHpBar);
-    StatusWindow::updateMPBar(mMpBar);
-    StatusWindow::updateXPBar(mXpBar);
+    // Draw icons
+    int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
+    for (unsigned int i = 0; i < mIcons.size(); i++) {
+        if (mIcons[i]) {
+            mIcons[i]->draw(graphics, icon_x, 3);
+            icon_x += 2 + mIcons[i]->getWidth();
+        }
+    }
+}
+
+void MiniStatusWindow::update(int id)
+{
+    if (id == StatusWindow::HP)
+    {
+        StatusWindow::updateHPBar(mHpBar);
+    }
+    else if (id == StatusWindow::MP)
+    {
+        StatusWindow::updateMPBar(mMpBar);
+    }
+    else if (id == StatusWindow::EXP)
+    {
+        StatusWindow::updateXPBar(mXpBar);
+    }
+}
+
+void MiniStatusWindow::logic()
+{
+    Popup::logic();
 
     // Displays the number of monsters to next lvl
     // (disabled for now but interesting idea)
@@ -99,22 +125,4 @@ void MiniStatusWindow::update()
     for (unsigned int i = 0; i < mIcons.size(); i++)
         if (mIcons[i])
             mIcons[i]->update(tick_time * 10);
-}
-
-void MiniStatusWindow::draw(gcn::Graphics *graphics)
-{
-    update();
-    drawChildren(graphics);
-}
-
-void MiniStatusWindow::drawIcons(Graphics *graphics)
-{
-    // Draw icons
-    int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
-    for (unsigned int i = 0; i < mIcons.size(); i++) {
-        if (mIcons[i]) {
-            mIcons[i]->draw(graphics, icon_x, 3);
-            icon_x += 2 + mIcons[i]->getWidth();
-        }
-    }
 }

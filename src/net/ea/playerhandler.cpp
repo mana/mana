@@ -260,10 +260,11 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                     case 0x002b: player_node->setAttributeEffective(MATK, value
                                                            + ATTR_BONUS(MATK));
-                        player_node->setAttributeBase(MATK, value); break;
+                        player_node->setAttributeBase(MATK, value);
+                        statusWindow->update(StatusWindow::MP); break;
                     case 0x002c: value += player_node->getAttributeBase(MATK);
-                        player_node->setAttributeEffective(MATK, value); break;
-
+                        player_node->setAttributeEffective(MATK, value);
+                        statusWindow->update(StatusWindow::MP); break;
                     case 0x002d: player_node->setAttributeEffective(DEF, value
                                                            + ATTR_BONUS(DEF));
                         player_node->setAttributeBase(DEF, value); break;
@@ -333,7 +334,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             }
             break;
 
-        case SMSG_PLAYER_STAT_UPDATE_3:
+        case SMSG_PLAYER_STAT_UPDATE_3: // Update a base attribute
             {
                 int type = msg.readInt32();
                 int base = msg.readInt32();
@@ -404,6 +405,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 player_node->setAttributeBase(MATK, val);
                 val += msg.readInt16();  // MATK bonus
                 player_node->setAttributeEffective(MATK, val);
+                statusWindow->update(StatusWindow::MP);
 
                 val = msg.readInt16(); // DEF
                 player_node->setAttributeBase(DEF, val);
@@ -558,6 +560,11 @@ void PlayerHandler::ignorePlayer(const std::string &player, bool ignore)
 void PlayerHandler::ignoreAll(bool ignore)
 {
     // TODO
+}
+
+bool PlayerHandler::canUseMagic()
+{
+    return player_node->getAttributeEffective(MATK) > 0;
 }
 
 } // namespace EAthena

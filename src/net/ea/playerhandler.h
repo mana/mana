@@ -58,6 +58,8 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
         void ignorePlayer(const std::string &player, bool ignore);
 
         void ignoreAll(bool ignore);
+
+        bool canUseMagic();
 };
 
 } // namespace EAthena

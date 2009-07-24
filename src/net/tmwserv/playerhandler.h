@@ -58,6 +58,8 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         void ignoreAll(bool ignore);
 
+        bool canUseMagic();
+
     private:
         void handleMapChangeMessage(MessageIn &msg);
 };

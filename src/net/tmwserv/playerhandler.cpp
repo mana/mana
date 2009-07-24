@@ -390,4 +390,9 @@ void PlayerHandler::ignoreAll(bool ignore)
     // TODO
 }
 
+bool PlayerHandler::canUseMagic()
+{
+    return true;
+}
+
 } // namespace TmwServ

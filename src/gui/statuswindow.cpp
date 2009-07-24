@@ -28,6 +28,8 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
+
+#include "gui/ministatus.h"
 #include "gui/setup.h"
 
 #include "localplayer.h"
@@ -181,17 +183,23 @@ std::string StatusWindow::update(int id)
     {
         updateHPBar(mHpBar, true);
 
+        miniStatusWindow->update(HP);
+
         return _("HP");
     }
     else if (id == MP)
     {
         updateMPBar(mMpBar, true);
 
+        miniStatusWindow->update(MP);
+
         return _("MP");
     }
     else if (id == EXP)
     {
         updateXPBar(mXpBar, false);
+
+        miniStatusWindow->update(EXP);
 
         return _("Exp");
     }
@@ -370,12 +378,10 @@ void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
     else
         bar->setText(toString(player_node->getMP()));
 
-#ifdef EATHENA_SUPPORT
-    if (player_node->getAttributeEffective(MATK) <= 0)
-        bar->setColor(100, 100, 100); // grey, to indicate that we lack magic
-    else
-#endif
+    if (Net::getPlayerHandler()->canUseMagic())
         bar->setColor(26, 102, 230); // blue, to indicate that we have magic
+    else
+        bar->setColor(100, 100, 100); // grey, to indicate that we lack magic
 
     bar->setProgress((float) player_node->getMP() /
                      (float) player_node->getMaxMP());
