@@ -28,7 +28,6 @@
 #include "resources/imageloader.h"
 
 Graphics::Graphics():
-    mScreen(0),
     mWidth(0),
     mHeight(0),
     mBpp(0),
@@ -65,9 +64,9 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     else
         displayFlags |= SDL_SWSURFACE;
 
-    mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags);
+    mTarget = SDL_SetVideoMode(w, h, bpp, displayFlags);
 
-    if (!mScreen)
+    if (!mTarget)
         return false;
 
     char videoDriverName[64];
@@ -99,7 +98,7 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
             ((vi->blit_fill) ? "yes" : "no"));
     logger->log("Available video memory: %d", vi->video_mem);
 
-    setTarget(mScreen);
+    setTarget(mTarget);
 
     return true;
 }
@@ -137,7 +136,7 @@ bool Graphics::drawRescaledImage(Image *image, int srcX, int srcY,
                                bool useColor)
 {
     // Check that preconditions for blitting are met.
-    if (!mScreen || !image) return false;
+    if (!mTarget || !image) return false;
     if (!image->mSDLSurface) return false;
 
     Image *tmpImage = image->SDLgetScaledImage(desiredWidth, desiredHeight);
@@ -159,7 +158,7 @@ bool Graphics::drawRescaledImage(Image *image, int srcX, int srcY,
     srcRect.w = width;
     srcRect.h = height;
 
-    returnValue = !(SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect, mScreen, &dstRect) < 0);
+    returnValue = !(SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
 
     delete tmpImage;
 
@@ -170,7 +169,7 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
                          int width, int height, bool)
 {
     // Check that preconditions for blitting are met.
-    if (!mScreen || !image || !image->mSDLSurface)
+    if (!mTarget || !image || !image->mSDLSurface)
         return false;
 
     dstX += mClipStack.top().xOffset;
@@ -186,7 +185,7 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcRect.w = width;
     srcRect.h = height;
 
-    return !(SDL_BlitSurface(image->mSDLSurface, &srcRect, mScreen, &dstRect) < 0);
+    return !(SDL_BlitSurface(image->mSDLSurface, &srcRect, mTarget, &dstRect) < 0);
 }
 
 void Graphics::drawImage(gcn::Image const *image, int srcX, int srcY,
@@ -201,7 +200,7 @@ void Graphics::drawImage(gcn::Image const *image, int srcX, int srcY,
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
 {
     // Check that preconditions for blitting are met.
-    if (!mScreen || !image) return;
+    if (!mTarget || !image) return;
     if (!image->mSDLSurface) return;
 
     const int iw = image->getWidth();
@@ -227,7 +226,7 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
             srcRect.x = srcX; srcRect.y = srcY;
             srcRect.w = dw;   srcRect.h = dh;
 
-            SDL_BlitSurface(image->mSDLSurface, &srcRect, mScreen, &dstRect);
+            SDL_BlitSurface(image->mSDLSurface, &srcRect, mTarget, &dstRect);
         }
     }
 }
@@ -236,7 +235,7 @@ void Graphics::drawRescaledImagePattern(Image *image, int x, int y,
                int w, int h, int scaledWidth, int scaledHeight)
 {
     // Check that preconditions for blitting are met.
-    if (!mScreen || !image) return;
+    if (!mTarget || !image) return;
     if (!image->mSDLSurface) return;
 
     if (scaledHeight == 0 || scaledWidth == 0) return;
@@ -267,7 +266,7 @@ void Graphics::drawRescaledImagePattern(Image *image, int x, int y,
             srcRect.x = srcX; srcRect.y = srcY;
             srcRect.w = dw;   srcRect.h = dh;
 
-            SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect, mScreen, &dstRect);
+            SDL_BlitSurface(tmpImage->mSDLSurface, &srcRect, mTarget, &dstRect);
         }
     }
 
@@ -328,7 +327,7 @@ void Graphics::drawImageRect(int x, int y, int w, int h,
 
 void Graphics::updateScreen()
 {
-    SDL_Flip(mScreen);
+    SDL_Flip(mTarget);
 }
 
 SDL_Surface *Graphics::getScreenshot()
@@ -344,10 +343,10 @@ SDL_Surface *Graphics::getScreenshot()
 #endif
     int amask = 0x00000000;
 
-    SDL_Surface *screenshot = SDL_CreateRGBSurface(SDL_SWSURFACE, mScreen->w,
-            mScreen->h, 24, rmask, gmask, bmask, amask);
+    SDL_Surface *screenshot = SDL_CreateRGBSurface(SDL_SWSURFACE, mTarget->w,
+            mTarget->h, 24, rmask, gmask, bmask, amask);
 
-    SDL_BlitSurface(mScreen, NULL, screenshot, NULL);
+    SDL_BlitSurface(mTarget, NULL, screenshot, NULL);
 
     return screenshot;
 }

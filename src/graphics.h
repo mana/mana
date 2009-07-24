@@ -206,7 +206,6 @@ class Graphics : public gcn::SDLGraphics
         gcn::Font *getFont() const { return mFont; }
 
     protected:
-        SDL_Surface *mScreen;
         int mWidth;
         int mHeight;
         int mBpp;
