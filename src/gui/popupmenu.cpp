@@ -73,10 +73,6 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     mBeingId = being->getId();
     mBrowserBox->clearRows();
 
-    // Any being's name can be added to chat
-    if (being->getType() != Being::UNKNOWN)
-        mBrowserBox->addRow(_("@@name|Add name to chat@@"));
-
     const std::string &name = being->getType() == Being::NPC ?
                               being->getName().substr(0, being->getName().size()
                               - 6) : being->getName();
@@ -87,42 +83,67 @@ void PopupMenu::showPopup(int x, int y, Being *being)
             {
                 // Players can be traded with. Later also follow and
                 // add as buddy will be options in this menu.
-                mBrowserBox->addRow(strprintf(_("@@trade|Trade With %s@@"), name.c_str()));
-                mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
+                mBrowserBox->addRow(strprintf("@@trade|%s@@",
+                                                strprintf(_("Trade With %s"),
+                                                    name.c_str()).c_str()));
+                mBrowserBox->addRow(strprintf("@@attack|%s@@",
+                                                strprintf(_("Attack %s"),
+                                                    name.c_str()).c_str()));
 
                 mBrowserBox->addRow("##3---");
 
                 switch (player_relations.getRelation(name)) {
                     case PlayerRelation::NEUTRAL:
-                        mBrowserBox->addRow(strprintf(_("@@friend|Befriend %s@@"), name.c_str()));
+                        mBrowserBox->addRow(strprintf("@@friend|%s@@",
+                                                strprintf(_("Befriend %s"),
+                                                    name.c_str()).c_str()));
 
                     case PlayerRelation::FRIEND:
-                        mBrowserBox->addRow(strprintf(_("@@disregard|Disregard %s@@"), name.c_str()));
-                        mBrowserBox->addRow(strprintf(_("@@ignore|Ignore %s@@"), name.c_str()));
+                        mBrowserBox->addRow(strprintf("@@disregard|%s@@",
+                                                strprintf(_("Disregard %s"),
+                                                    name.c_str()).c_str()));
+                        mBrowserBox->addRow(strprintf("@@ignore|%s@@",
+                                                strprintf(_("Ignore %s"),
+                                                    name.c_str()).c_str()));
                         break;
 
                     case PlayerRelation::DISREGARDED:
-                        mBrowserBox->addRow(strprintf(_("@@unignore|Un-Ignore %s@@"), name.c_str()));
-                        mBrowserBox->addRow(strprintf(_("@@ignore|Completely ignore %s@@"), name.c_str()));
+                        mBrowserBox->addRow(strprintf("@@unignore|%s@@",
+                                                strprintf(_("Un-Ignore %s"),
+                                                    name.c_str()).c_str()));
+                        mBrowserBox->addRow(strprintf("@@ignore|%s@@",
+                                           strprintf(_("Completely ignore %s"),
+                                                    name.c_str()).c_str()));
                         break;
 
                     case PlayerRelation::IGNORED:
-                        mBrowserBox->addRow(strprintf(_("@@unignore|Un-Ignore %s@@"), name.c_str()));
+                        mBrowserBox->addRow(strprintf("@@unignore|%s@@",
+                                                strprintf(_("Un-Ignore %s"),
+                                                    name.c_str()).c_str()));
                         break;
                 }
 
-                //mBrowserBox->addRow(_(strprintf("@@follow|Follow %s@@"), name.c_str()));
-                //mBrowserBox->addRow(_("@@buddy|Add ") + name + " to Buddy List@@");
+                /*mBrowserBox->addRow(strprintf("@@follow|%s@@",
+                                        strprintf(_("Follow %s"),
+                                                  name.c_str()).c_str()));*/
+                /*mBrowserBox->addRow(strprintf("@@buddy|%s@@",
+                                        strprintf(_("Add %s to Buddy List"),
+                                                  name.c_str()).c_str()));*/
 #ifdef TMWSERV_SUPPORT
-                mBrowserBox->addRow(strprintf(_("@@guild|Invite %s to join your guild@@"), name.c_str()));
+                mBrowserBox->addRow(strprintf("@@guild|%s@@",
+                                strprintf(_("Invite %s to join your guild"),
+                                                    name.c_str()).c_str()));
 #endif
                 if (player_node->isInParty())
-                    mBrowserBox->addRow(strprintf(_("@@party|Invite %s to join your party@@"), name.c_str()));
+                    mBrowserBox->addRow(strprintf("@@pickup|%s@@",
+                                strprintf(_("Invite %s to join your party"),
+                                                    name.c_str()).c_str()));
 
                 if (player_node->isGM())
                 {
                     mBrowserBox->addRow("##3---");
-                    mBrowserBox->addRow(_("@@admin-kick|Kick player@@"));
+                    mBrowserBox->addRow(strprintf("@@admin-kick|%s@@",
+                                                  _("Kick player")));
                 }
             }
             break;
@@ -130,16 +151,21 @@ void PopupMenu::showPopup(int x, int y, Being *being)
         case Being::NPC:
             // NPCs can be talked to (single option, candidate for removal
             // unless more options would be added)
-            mBrowserBox->addRow(strprintf(_("@@talk|Talk To %s@@"), name.c_str()));
+            mBrowserBox->addRow(strprintf("@@talk|%s@@",
+                                              strprintf(_("Talk to %s"),
+                                                    name.c_str()).c_str()));
             break;
 
         case Being::MONSTER:
             {
                 // Monsters can be attacked
-                mBrowserBox->addRow(strprintf(_("@@attack|Attack %s@@"), name.c_str()));
+                mBrowserBox->addRow(strprintf("@@attack|%s@@",
+                                              strprintf(_("Attack %s"),
+                                                    name.c_str()).c_str()));
 
                 if (player_node->isGM())
-                    mBrowserBox->addRow(_("@@admin-kick|Kick monster@@"));
+                    mBrowserBox->addRow(strprintf("@@admin-kick|%s@@",
+                                                  _("Kick monster")));
             }
             break;
 
@@ -147,10 +173,11 @@ void PopupMenu::showPopup(int x, int y, Being *being)
             /* Other beings aren't interesting... */
             return;
     }
+    mBrowserBox->addRow(strprintf("@@name|%s@@", _("Add name to chat")));
 
-    //browserBox->addRow("@@look|Look To@@");
+    //mBrowserBox->addRow(strprintf("@@look|%s@@", _("Look To")));
     mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow(_("@@cancel|Cancel@@"));
+    mBrowserBox->addRow(strprintf("@@cancel|%s@@", _("Cancel")));
 
     showPopup(x, y);
 }
@@ -163,12 +190,13 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 
     // Floor item can be picked up (single option, candidate for removal)
     std::string name = ItemDB::get(mFloorItem->getItemId()).getName();
-    mBrowserBox->addRow(strprintf(_("@@pickup|Pick up %s@@"), name.c_str()));
-    mBrowserBox->addRow(_("@@chat|Add to chat@@"));
+    mBrowserBox->addRow(strprintf("@@pickup|%s@@", strprintf(_("Pick up %s"),
+                                                    name.c_str()).c_str()));
+    mBrowserBox->addRow(strprintf("@@chat|%s@@", _("Add to chat")));
 
-    //browserBox->addRow("@@look|Look To@@");
+    //mBrowserBox->addRow(strprintf("@@look|%s@@", _("Look To")));
     mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow(_("@@cancel|Cancel@@"));
+    mBrowserBox->addRow(strprintf("@@cancel|%s@@", _("Cancel")));
 
     showPopup(x, y);
 }
@@ -352,34 +380,34 @@ void PopupMenu::showPopup(int x, int y, Item *item, bool isInventory)
         if (item->isEquipment())
         {
             if (item->isEquipped())
-                mBrowserBox->addRow(_("@@use|Unequip@@"));
+                mBrowserBox->addRow(strprintf("@@use|%s@@", _("Unequip")));
             else
-                mBrowserBox->addRow(_("@@use|Equip@@"));
+                mBrowserBox->addRow(strprintf("@@use|%s@@", _("Equip")));
         }
         else
-            mBrowserBox->addRow(_("@@use|Use@@"));
+            mBrowserBox->addRow(strprintf("@@use|%s@@", _("Use")));
 
-        mBrowserBox->addRow(_("@@drop|Drop@@"));
+        mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop")));
 
         if (Net::getInventoryHandler()->canSplit(item))
         {
-            mBrowserBox->addRow(_("@@split|Split@@"));
+            mBrowserBox->addRow(strprintf("@@split|%s@@",  _("Split")));
         }
 
         if (player_node->getInStorage())
         {
-            mBrowserBox->addRow(_("@@store|Store@@"));
+            mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }
     }
     // Assume in storage for now
     // TODO: make this whole system more flexible, if needed
     else
     {
-        mBrowserBox->addRow(_("@@retrieve|Retrieve@@"));
+        mBrowserBox->addRow(strprintf("@@retrieve|%s@@", _("Retrieve")));
     }
-    mBrowserBox->addRow(_("@@chat|Add to chat@@"));
+    mBrowserBox->addRow(strprintf("@@chat|%s@@", _("Add to chat")));
     mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow(_("@@cancel|Cancel@@"));
+    mBrowserBox->addRow(strprintf("@@cancel|%s@@", _("Cancel")));
 
     showPopup(x, y);
 }
