@@ -67,9 +67,9 @@ class StatusWindow : public Window
         static void updateMPBar(ProgressBar *bar, bool showMax = false);
         static void updateXPBar(ProgressBar *bar, bool percent = true);
         static void updateProgressBar(ProgressBar *bar, int value, int max,
-                              bool percent);
-        static void updateProgressBar(ProgressBar *bar, int id,
-                                      bool percent = true);
+                               bool percent);
+        void updateProgressBar(ProgressBar *bar, int id,
+                               bool percent = true);
 
     private:
         /**

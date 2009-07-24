@@ -179,6 +179,9 @@ StatusWindow::StatusWindow():
 
 std::string StatusWindow::update(int id)
 {
+    if (miniStatusWindow)
+        miniStatusWindow->update(id);
+
     if (id == HP)
     {
         updateHPBar(mHpBar, true);
