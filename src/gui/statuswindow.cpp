@@ -183,23 +183,17 @@ std::string StatusWindow::update(int id)
     {
         updateHPBar(mHpBar, true);
 
-        miniStatusWindow->update(HP);
-
         return _("HP");
     }
     else if (id == MP)
     {
         updateMPBar(mMpBar, true);
 
-        miniStatusWindow->update(MP);
-
         return _("MP");
     }
     else if (id == EXP)
     {
         updateXPBar(mXpBar, false);
-
-        miniStatusWindow->update(EXP);
 
         return _("Exp");
     }
@@ -293,6 +287,7 @@ void StatusWindow::addAttribute(int id, const std::string &name,
 
 void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
 {
+
     if (showMax)
         bar->setText(toString(player_node->getHp()) +
                     "/" + toString(player_node->getMaxHp()));
@@ -313,6 +308,7 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
     int curHP = player_node->getHp();
     int thresholdLevel = player_node->getMaxHp() / 4;
     int thresholdProgress = curHP % thresholdLevel;
+
     if (thresholdLevel)
         weight = 1 - ((float)thresholdProgress) / ((float)thresholdLevel);
     else
@@ -368,6 +364,7 @@ void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
     bar->setColor(r1, g1, b1);
 
     bar->setProgress((float) player_node->getHp() / (float) player_node->getMaxHp());
+
 }
 
 void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
