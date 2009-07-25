@@ -84,7 +84,7 @@ bool WhisperTab::handleCommand(const std::string &type,
         else if (args == "ignore")
         {
             chatLog(_("Command: /ignore"));
-            chatLog(_("This command ignores the other player reguardless of "
+            chatLog(_("This command ignores the other player regardless of "
                       "current relations."));
         }
         else if (args == "unignore")

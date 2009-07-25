@@ -207,7 +207,7 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
     else if (args == "ignore")
     {
         tab->chatLog(_("Command: /ignore <player>"));
-        tab->chatLog(_("This command ignores the given player reguardless of "
+        tab->chatLog(_("This command ignores the given player regardless of "
                        "current relations."));
     }
     else if (args == "join")
