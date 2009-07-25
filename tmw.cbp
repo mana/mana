@@ -967,6 +967,8 @@
 		<Unit filename="src/resources/resource.h" />
 		<Unit filename="src/resources/resourcemanager.cpp" />
 		<Unit filename="src/resources/resourcemanager.h" />
+		<Unit filename="src/resources/sdlrescalefacility.cpp" />
+		<Unit filename="src/resources/sdlrescalefacility.h" />
 		<Unit filename="src/resources/soundeffect.cpp" />
 		<Unit filename="src/resources/soundeffect.h" />
 		<Unit filename="src/resources/spritedef.cpp" />
