@@ -405,7 +405,7 @@ float Image::getAlpha() const
     return mAlpha;
 }
 
-Image* Image::SDLgetScaledImage(unsigned int width, unsigned int height)
+Image* Image::SDLgetScaledImage(int width, int height)
 {
     // No scaling on incorrect new values.
     if (width == 0 || height == 0)

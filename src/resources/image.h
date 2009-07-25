@@ -95,7 +95,7 @@ class Image : public Resource
          *
          * @return A new Image* object.
          */        
-        Image* SDLgetScaledImage(unsigned int width, unsigned int height);
+        Image* SDLgetScaledImage(int width, int height);
 
         /**
          * Frees the resources created by SDL.
