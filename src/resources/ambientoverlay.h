@@ -35,9 +35,11 @@ class AmbientOverlay
          * @param parallax  scroll factor based on camera position
          * @param speedX    scrolling speed in x-direction
          * @param speedY    scrolling speed in y-direction
+         * @param keepRatio  rescale the image to keep
+         * the same ratio than in 800x600 resolution mode.
          */
         AmbientOverlay(Image *img, float parallax,
-                       float speedX, float speedY);
+                       float speedX, float speedY, bool keepRatio = false);
 
         ~AmbientOverlay();
 
@@ -52,6 +54,7 @@ class AmbientOverlay
         float mPosY;              /**< Current layer Y position. */
         float mSpeedX;            /**< Scrolling speed in X direction. */
         float mSpeedY;            /**< Scrolling speed in Y direction. */
+        bool mKeepRatio;          /**< Keep overlay ratio on every resolution */
 };
 
 #endif

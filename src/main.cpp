@@ -143,9 +143,6 @@ namespace
     } listener;
 }
 
-static const int defaultScreenWidth = 800;
-static const int defaultScreenHeight = 600;
-
 static const int defaultSfxVolume = 100;
 static const int defaultMusicVolume = 60;
 

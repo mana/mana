@@ -218,11 +218,12 @@ void Map::initializeOverlays()
         const float speedX = getFloatProperty(name + "scrollX");
         const float speedY = getFloatProperty(name + "scrollY");
         const float parallax = getFloatProperty(name + "parallax");
+        const bool keepRatio = getBoolProperty(name + "keepratio");
 
         if (img)
         {
             mOverlays.push_back(
-                    new AmbientOverlay(img, parallax, speedX, speedY));
+                    new AmbientOverlay(img, parallax, speedX, speedY, keepRatio));
 
             // The AmbientOverlay takes control over the image.
             img->decRef();

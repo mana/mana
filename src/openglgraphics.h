@@ -59,6 +59,13 @@ class OpenGLGraphics : public Graphics
                               int x, int y,
                               int w, int h);
 
+        /**
+         * Draw a pattern based on a rescaled version of the given image...
+         */
+        void drawRescaledImagePattern(Image *image,
+                               int x, int y, int w, int h,
+                               int scaledWidth, int scaledHeight);
+
         void updateScreen();
 
         void _beginDraw();

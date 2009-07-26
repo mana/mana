@@ -74,6 +74,26 @@ class Properties
         }
 
         /**
+         * Gets a map property as a boolean.
+         *
+         * @param name The name of the property.
+         * @param def  Default value, false by default.
+         * @return the value of the given property, or false when it doesn't
+         *         exist.
+         */
+        float getBoolProperty(const std::string &name, bool def = false) const
+        {
+            PropertyMap::const_iterator i = mProperties.find(name);
+            bool ret = def;
+            if (i != mProperties.end())
+            {
+                if (i->second == "true")
+                    ret = true;
+            }
+            return ret;
+        }
+
+        /**
          * Returns whether a certain property is available.
          *
          * @param name The name of the property.

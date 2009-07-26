@@ -221,6 +221,48 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     }
 }
 
+void Graphics::drawRescaledImagePattern(Image *image, int x, int y,
+               int w, int h, int scaledWidth, int scaledHeight)
+{
+    // Check that preconditions for blitting are met.
+    if (!mScreen || !image) return;
+    if (!image->mImage) return;
+
+    if (scaledHeight == 0 || scaledWidth == 0) return;
+
+    Image *tmpImage = image->SDLgetScaledImage(scaledWidth, scaledHeight);
+    if (!tmpImage) return;
+
+    const int iw = tmpImage->getWidth();
+    const int ih = tmpImage->getHeight();
+ 
+    if (iw == 0 || ih == 0) return;                         
+
+    for (int py = 0; py < h; py += ih)     // Y position on pattern plane
+    {
+        int dh = (py + ih >= h) ? h - py : ih;
+        int srcY = tmpImage->mBounds.y;
+        int dstY = y + py + mClipStack.top().yOffset;
+
+        for (int px = 0; px < w; px += iw) // X position on pattern plane  
+        {
+            int dw = (px + iw >= w) ? w - px : iw;
+            int srcX = tmpImage->mBounds.x;
+            int dstX = x + px + mClipStack.top().xOffset;
+
+            SDL_Rect dstRect;
+            SDL_Rect srcRect;
+            dstRect.x = dstX; dstRect.y = dstY;
+            srcRect.x = srcX; srcRect.y = srcY;
+            srcRect.w = dw;   srcRect.h = dh;
+
+            SDL_BlitSurface(tmpImage->mImage, &srcRect, mScreen, &dstRect);
+        }
+    }
+
+    delete tmpImage;
+}
+
 void Graphics::drawImageRect(int x, int y, int w, int h,
                              Image *topLeft, Image *topRight,
                              Image *bottomLeft, Image *bottomRight,

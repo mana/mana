@@ -277,6 +277,49 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
 }
 
+void OpenGLGraphics::drawRescaledImagePattern(Image *image, int x, int y,
+                                      int w, int h,
+                                      int scaledWidth, int scaledHeight)
+{
+    if (!image)
+        return;
+
+    const int srcX = image->mBounds.x;
+    const int srcY = image->mBounds.y;
+
+    const int iw = scaledWidth;
+    const int ih = scaledHeight;
+    if (iw == 0 || ih == 0)
+        return;
+
+    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
+
+    glBindTexture(Image::mTextureType, image->mGLImage);
+
+    setTexturingAndBlending(true);
+
+    // Draw a set of textured rectangles
+    glBegin(GL_QUADS);
+
+    for (int py = 0; py < h; py += ih)
+    {
+        const int height = (py + ih >= h) ? h - py : ih;
+        const int dstY = y + py;
+        for (int px = 0; px < w; px += iw)
+        {
+            int width = (px + iw >= w) ? w - px : iw;
+            int dstX = x + px;
+
+            drawRescaledQuad(image, srcX, srcY, dstX, dstY,
+                             width, height, scaledWidth, scaledHeight);
+        }
+    }
+
+    glEnd();
+
+    glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+}
+
 void OpenGLGraphics::updateScreen()
 {
     glFlush();

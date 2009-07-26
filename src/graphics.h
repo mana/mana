@@ -29,6 +29,9 @@ class ImageRect;
 
 struct SDL_Surface;
 
+static const int defaultScreenWidth = 800;
+static const int defaultScreenHeight = 600;
+
 /**
  * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
  * topology is as follows:
@@ -141,6 +144,13 @@ class Graphics : public gcn::SDLGraphics
         virtual void drawImagePattern(Image *image,
                                       int x, int y,
                                       int w, int h);
+
+        /**
+         * Draw a pattern based on a rescaled version of the given image...
+         */
+        virtual void drawRescaledImagePattern(Image *image,
+                               int x, int y, int w, int h,
+                               int scaledWidth, int scaledHeight);
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1
