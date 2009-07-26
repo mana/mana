@@ -299,18 +299,6 @@ bool Image::isAnOpenGLOne() const
 #endif
 }
 
-Image *Image::getSubImage(int x, int y, int width, int height)
-{
-    // Create a new clipped sub-image
-#ifdef USE_OPENGL
-    if (mUseOpenGL)
-        return new SubImage(this, mGLImage, x, y, width, height,
-                            mTexWidth, mTexHeight);
-#endif
-
-    return new SubImage(this, mImage, x, y, width, height);
-}
-
 void Image::setAlpha(float a)
 {
     if (mAlpha == a)
@@ -405,6 +393,29 @@ float Image::getAlpha() const
     return mAlpha;
 }
 
+Image* Image::getColoredPattern(Uint8 red, Uint8 green, Uint8 blue)
+{
+    // A simple pattern used for pattern operations...
+    SDL_Surface* tmpSurface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+                    2, 2, 32, 0, 0, 0, 0);
+
+    Image* patternImage = NULL;
+
+    if(tmpSurface)
+    {
+        //Fill the surface white
+        SDL_FillRect(tmpSurface,
+                      &tmpSurface->clip_rect,
+                      SDL_MapRGB(tmpSurface->format, red, green, blue));
+
+
+        patternImage = Image::load(tmpSurface);
+    }
+    SDL_FreeSurface(tmpSurface);
+
+    return patternImage;
+}
+
 Image* Image::SDLgetScaledImage(int width, int height)
 {
     // No scaling on incorrect new values.
@@ -457,6 +468,18 @@ int Image::powerOfTwo(int input)
     return value >= mTextureSize ? mTextureSize : value;
 }
 #endif
+
+Image *Image::getSubImage(int x, int y, int width, int height)
+{
+    // Create a new clipped sub-image
+#ifdef USE_OPENGL
+    if (mUseOpenGL)
+        return new SubImage(this, mGLImage, x, y, width, height,
+                            mTexWidth, mTexHeight);
+#endif
+
+    return new SubImage(this, mImage, x, y, width, height);
+}
 
 //============================================================================
 // SubImage Class

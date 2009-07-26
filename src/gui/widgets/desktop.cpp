@@ -32,6 +32,9 @@
 #include "log.h"
 #include "main.h"
 
+#define VERSION_LABEL_X 25
+#define VERSION_LABEL_Y 2
+
 Desktop::Desktop()
     : mWallpaper(0)
 {
@@ -40,7 +43,16 @@ Desktop::Desktop()
     Wallpaper::loadWallpapers();
 
     gcn::Label *versionLabel = new Label(FULL_VERSION);
-    add(versionLabel, 25, 2);
+    add(versionLabel, VERSION_LABEL_X, VERSION_LABEL_Y);
+
+    mVersionRectangle.x = VERSION_LABEL_X;
+    mVersionRectangle.y = VERSION_LABEL_Y;
+    mVersionRectangle.width = versionLabel->getWidth();
+    mVersionRectangle.height = versionLabel->getHeight();
+
+    // Loads a white pattern and make it translucent...
+    mVersionBorder = Image::getColoredPattern(0xFF, 0xFF, 0xFF);
+    mVersionBorder->setAlpha(0.5f);
 }
 
 Desktop::~Desktop()
@@ -83,6 +95,11 @@ void Desktop::draw(gcn::Graphics *graphics)
                 mWallpaper->getWidth(), mWallpaper->getHeight(),
                 getWidth(), getHeight(), false);
     }
+
+    // Draw a thin border under the application version...
+    g->drawImagePattern(mVersionBorder, mVersionRectangle.x, mVersionRectangle.y,
+                        mVersionRectangle.width,
+                        mVersionRectangle.height);
 
     Container::draw(graphics);
 }

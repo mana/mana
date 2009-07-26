@@ -138,6 +138,12 @@ class Image : public Resource
          */
         float getAlpha() const;
 
+        /**
+         * Returns a 2x2 image filled with the desired color.
+         * Useful for pattern operations.
+         */
+        static Image* getColoredPattern(Uint8 red, Uint8 green, Uint8 blue);
+
 #ifdef USE_OPENGL
         /**
          * Sets the target image format. Use <code>false</code> for SDL and

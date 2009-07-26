@@ -59,7 +59,8 @@ class Desktop : public Container, gcn::WidgetListener
     private:
         void setBestFittingWallpaper();
 
-        Image *mWallpaper;
+        Image *mWallpaper, *mVersionBorder;
+        gcn::Rectangle mVersionRectangle;
 };
 
 #endif // DESKTOP_H
