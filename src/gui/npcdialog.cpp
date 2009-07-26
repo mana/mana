@@ -93,8 +93,8 @@ NpcDialog::NpcDialog()
     mButton = new Button("", "ok", this);
 
     //Setup more and less buttons (int input)
-    mPlusButton = new Button("+", "plus", this);
-    mMinusButton = new Button("-", "minus", this);
+    mPlusButton = new Button(_("+"), "inc", this);
+    mMinusButton = new Button(_("-"), "dec", this);
 
     int width = std::max(mButton->getFont()->getWidth(CAPTION_WAITING),
                          mButton->getFont()->getWidth(CAPTION_NEXT));
@@ -211,11 +211,11 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             mIntField->setValue(mDefaultInt);
         }
     }
-    else if (event.getId() == "plus")
+    else if (event.getId() == "inc")
     {
         mIntField->setValue(mIntField->getValue() + 1);
     }
-    else if (event.getId() == "minus")
+    else if (event.getId() == "dec")
     {
         mIntField->setValue(mIntField->getValue() - 1);
     }

@@ -318,9 +318,9 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         int curGp = player_node->getMoney();
                         player_node->setMoney(msg.readInt32());
                         if (player_node->getMoney() > curGp)
-                            localChatTab->chatLog(_("You picked up ") +
+                            localChatTab->chatLog(strprintf(_("You picked up %s"),
                                 Units::formatCurrency(player_node->getMoney()
-                                    - curGp), BY_SERVER);
+                                    - curGp).c_str()), BY_SERVER);
                     }
                     break;
                 case 0x0016:

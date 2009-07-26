@@ -64,11 +64,11 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
 
     mNameField = new TextField("");
     mNameLabel = new Label(_("Name:"));
-    mNextHairColorButton = new Button(">", "nextcolor", this);
-    mPrevHairColorButton = new Button("<", "prevcolor", this);
+    mNextHairColorButton = new Button(_(">"), "nextcolor", this);
+    mPrevHairColorButton = new Button(_("<"), "prevcolor", this);
     mHairColorLabel = new Label(_("Hair Color:"));
-    mNextHairStyleButton = new Button(">", "nextstyle", this);
-    mPrevHairStyleButton = new Button("<", "prevstyle", this);
+    mNextHairStyleButton = new Button(_(">"), "nextstyle", this);
+    mPrevHairStyleButton = new Button(_("<"), "prevstyle", this);
     mHairStyleLabel = new Label(_("Hair Style:"));
     mCreateButton = new Button(_("Create"), "create", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);

@@ -46,7 +46,7 @@ ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
 {
     gcn::Label *accountLabel = new Label(strprintf(_("Account: %s"),
                                                    mLoginData->username.c_str()));
-    gcn::Label *newEmailLabel = new Label(_("Type New Email Address twice:"));
+    gcn::Label *newEmailLabel = new Label(_("Type new email address twice:"));
     mFirstEmailField = new TextField;
     mSecondEmailField = new TextField;
     mChangeEmailButton = new Button(_("Change Email Address"), "change_email", this);

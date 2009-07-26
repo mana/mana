@@ -48,7 +48,7 @@ Minimap::Minimap():
     mWidthProportion(0.5),
     mHeightProportion(0.5)
 {
-    setWindowName("MiniMap");
+    setWindowName("Minimap");
     mShow = config.getValue(getWindowName() + "Show", true);
     setDefaultSize(5, 25, 100, 100);
     // set this to false as the minimap window size is changed

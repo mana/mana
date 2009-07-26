@@ -326,8 +326,8 @@ void ChatWindow::doPresent()
         }
     }
 
-    std::string cpc = strprintf(_("%d players are present."), playercount);
-    std::string log = _("Present: ") + response + std::string("; ") + cpc;
+    std::string log = strprintf(_("Present: %s; %d players are present."),
+                                response.c_str(), playercount);
 
     if (mRecorder->isRecording())
     {

@@ -258,7 +258,7 @@ SkillEntry::SkillEntry(SkillInfo *info) :
     mIcon(NULL),
     mNameLabel(new Label(info->name)),
     mLevelLabel(new Label("999")),
-    mIncrease(new Button("+", "inc", skillDialog)),
+    mIncrease(new Button(_("+"), "inc", skillDialog)),
     mProgress(new ProgressBar(0.0f, 200, 20, gcn::Color(150, 150, 150)))
 {
     setFrameSize(1);

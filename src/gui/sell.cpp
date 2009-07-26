@@ -69,8 +69,8 @@ SellDialog::SellDialog():
     mMoneyLabel = new Label(strprintf(_("Price: %s / Total: %s"),
                                       "", ""));
 
-    mIncreaseButton = new Button("+", "+", this);
-    mDecreaseButton = new Button("-", "-", this);
+    mIncreaseButton = new Button(_("+"), "inc", this);
+    mDecreaseButton = new Button(_("-"), "dec", this);
     mSellButton = new Button(_("Sell"), "sell", this);
     mQuitButton = new Button(_("Quit"), "quit", this);
     mAddMaxButton = new Button(_("Max"), "max", this);
@@ -161,13 +161,13 @@ void SellDialog::action(const gcn::ActionEvent &event)
         mAmountItems = (int) mSlider->getValue();
         updateButtonsAndLabels();
     }
-    else if (event.getId() == "+" && mAmountItems < mMaxItems)
+    else if (event.getId() == "inc" && mAmountItems < mMaxItems)
     {
         mAmountItems++;
         mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
-    else if (event.getId() == "-" && mAmountItems > 1)
+    else if (event.getId() == "dec" && mAmountItems > 1)
     {
         mAmountItems--;
         mSlider->setValue(mAmountItems);

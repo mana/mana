@@ -100,10 +100,10 @@ StatusWindow::StatusWindow():
     // Status Part
     // ----------------------
 
-    mLvlLabel = new Label("Level:");
-    mMoneyLabel = new Label("Money:");
+    mLvlLabel = new Label(strprintf(_("Level: %d"), 0));
+    mMoneyLabel = new Label(strprintf(_("Money: %s"), ""));
 
-    mHpLabel = new Label("HP:");
+    mHpLabel = new Label(_("HP:"));
     mHpBar = new ProgressBar((float) player_node->getHp()
                              / (float) player_node->getMaxHp(),
                              80, 15, gcn::Color(0, 171, 34));
@@ -463,8 +463,8 @@ ChangeDisplay::ChangeDisplay(int id, const std::string &name):
         AttrDisplay(id, name), mNeeded(1)
 {
     mPoints = new Label("1");
-    mDec = new Button("-", "-", this);
-    mInc = new Button("+", "+", this);
+    mDec = new Button(_("-"), "dec", this);
+    mInc = new Button(_("+"), "inc", this);
     mDec->setWidth(mInc->getWidth());
 
     // Do the layout

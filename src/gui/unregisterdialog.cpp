@@ -42,7 +42,7 @@
 #include <sstream>
 
 UnRegisterDialog::UnRegisterDialog(Window *parent, LoginData *loginData):
-    Window("Unregister", true, parent),
+    Window(_("Unregister"), true, parent),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
