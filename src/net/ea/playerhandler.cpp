@@ -200,17 +200,16 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 /* Scroll if neccessary */
                 if (!nearby
-                    || (abs(x - player_node->mX) > MAP_TELEPORT_SCROLL_DISTANCE)
-                    || (abs(y - player_node->mY) > MAP_TELEPORT_SCROLL_DISTANCE))
+                    || (abs(x - player_node->getTileX()) > MAP_TELEPORT_SCROLL_DISTANCE)
+                    || (abs(y - player_node->getTileY()) > MAP_TELEPORT_SCROLL_DISTANCE))
                 {
-                    scrollOffsetX = (x - player_node->mX) * 32;
-                    scrollOffsetY = (y - player_node->mY) * 32;
+                    scrollOffsetX = (x - player_node->getTileX()) * 32;
+                    scrollOffsetY = (y - player_node->getTileY()) * 32;
                 }
 
                 player_node->setAction(Being::STAND);
                 player_node->mFrame = 0;
-                player_node->mX = x;
-                player_node->mY = y;
+                player_node->setTileCoords(x, y);
 
                 logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
                            (int) scrollOffsetY);

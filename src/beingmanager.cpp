@@ -40,14 +40,9 @@ class FindBeingFunctor
         bool operator() (Being *being)
         {
             Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
-#ifdef TMWSERV_SUPPORT
             const Vector &pos = being->getPosition();
             return ((int) pos.x / 32 == x &&
                     ((int) pos.y / 32 == y || (int) pos.y / 32 == other_y) &&
-#else
-            return (being->mX == x &&
-                    (being->mY == y || being->mY == other_y) &&
-#endif
                     being->mAction != Being::DEAD &&
                     (type == Being::UNKNOWN || being->getType() == type));
         }
@@ -242,7 +237,7 @@ Being *BeingManager::findNearestLivingBeing(int x, int y, int maxdist,
         const Vector &pos = being->getPosition();
         int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
 #else
-        int d = abs(being->mX - x) + abs(being->mY - y);
+        int d = abs(being->getTileX() - x) + abs(being->getTileY() - y);
 #endif
 
         if ((being->getType() == type || type == Being::UNKNOWN)
@@ -268,8 +263,8 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
     int y = apos.y;
     maxdist = maxdist * 32;
 #else
-    int x = aroundBeing->mX;
-    int y = aroundBeing->mY;
+    int x = aroundBeing->getTileX();
+    int y = aroundBeing->getTileY();
 #endif
 
     for (Beings::const_iterator i = mBeings.begin(), i_end = mBeings.end();
@@ -280,7 +275,7 @@ Being *BeingManager::findNearestLivingBeing(Being *aroundBeing, int maxdist,
         const Vector &pos = being->getPosition();
         int d = abs(((int) pos.x) - x) + abs(((int) pos.y) - y);
 #else
-        int d = abs(being->mX - x) + abs(being->mY - y);
+        int d = abs(being->getTileX() - x) + abs(being->getTileY() - y);
 #endif
 
         if ((being->getType() == type || type == Being::UNKNOWN)

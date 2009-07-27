@@ -197,8 +197,8 @@ void LocalPlayer::logic()
             const int rangeY = abs(mTarget->getPosition().y - getPosition().y);
 #else
             // Find whether target is in range
-            const int rangeX = abs(mTarget->mX - mX);
-            const int rangeY = abs(mTarget->mY - mY);
+            const int rangeX = abs(mTarget->getTileX() - getTileX());
+            const int rangeY = abs(mTarget->getTileY() - getTileY());
 #endif
             const int attackRange = getAttackRange();
             const int inRange = rangeX > attackRange || rangeY > attackRange
@@ -331,13 +331,8 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-#ifdef TMWSERV_SUPPORT
     int dx = item->getX() - (int) getPosition().x / 32;
     int dy = item->getY() - (int) getPosition().y / 32;
-#else
-    int dx = item->getX() - mX;
-    int dy = item->getY() - mY;
-#endif
 
     if (dx * dx + dy * dy < 4)
     {
@@ -374,7 +369,7 @@ void LocalPlayer::walk(unsigned char dir)
 #ifdef TMWSERV_SUPPORT
         Being::setDestination(pos.x, pos.y);
 #else
-        Being::setDestination(mX, mY);
+        Being::setDestination(getTileX(), getTileY());
 #endif
         return;
     }
@@ -409,9 +404,9 @@ void LocalPlayer::walk(unsigned char dir)
                              ((int) pos.y + dy) / 32, getWalkMask()))
         dy = 16 - (int) pos.y % 32;
 #else
-    if (dx && !mMap->getWalk(mX + dx, mY, getWalkMask()))
+    if (dx && !mMap->getWalk(getTileX() + dx, getTileY(), getWalkMask()))
         dx = 0;
-    if (dy && !mMap->getWalk(mX, mY + dy, getWalkMask()))
+    if (dy && !mMap->getWalk(getTileX(), getTileY() + dy, getWalkMask()))
         dy = 0;
 #endif
 
@@ -441,13 +436,13 @@ void LocalPlayer::walk(unsigned char dir)
          setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
     }
 #else
-    if (dx && dy && !mMap->getWalk(mX + dx, mY + dy, getWalkMask()))
+    if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
         dx = 0;
 
     // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk(mX + dx, mY + dy, getWalkMask()))
+    if ((dx || dy) && mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
     {
-        setDestination(mX + dx, mY + dy);
+        setDestination(getTileX() + dx, getTileY() + dy);
     }
 #endif
     else if (dir)
@@ -682,8 +677,8 @@ void LocalPlayer::attack(Being *target, bool keep)
     int dist_x = plaPos.x - tarPos.x;
     int dist_y = plaPos.y - tarPos.y;
 #else
-    int dist_x = target->mX - mX;
-    int dist_y = target->mY - mY;
+    int dist_x = target->getTileX() - getTileX();
+    int dist_y = target->getTileY() - getTileY();
 
     // Must be standing to attack
     if (mAction != STAND)
@@ -984,8 +979,8 @@ bool LocalPlayer::withinAttackRange(Being *target)
 
     return !(dx > range || dy > range);
 #else
-    int dist_x = abs(target->mX - mX);
-    int dist_y = abs(target->mY - mY);
+    int dist_x = abs(target->getTileX() - getTileY());
+    int dist_y = abs(target->getTileY() - getTileX());
 
     if (dist_x > getAttackRange() || dist_y > getAttackRange())
     {
@@ -1007,7 +1002,7 @@ void LocalPlayer::setGotoTarget(Being *target)
 #else
     setTarget(target);
     mGoingToTarget = true;
-    setDestination(target->mX, target->mY);
+    setDestination(target->getTileX(), target->getTileY());
 #endif
 }
 

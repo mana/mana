@@ -149,7 +149,6 @@ class Being : public Sprite, public ConfigListener
         enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
 #ifdef EATHENA_SUPPORT
-        Uint16 mX, mY;        /**< Tile coordinates */
         int mFrame;
         int mWalkTime;
 #endif
@@ -208,6 +207,21 @@ class Being : public Sprite, public ConfigListener
          */
         const Vector &getDestination() const { return mDest; }
 #endif
+
+        /**
+         * Returns the tile x or y coord
+         */
+        int getTileX() const
+        { return mX; }
+
+        int getTileY() const
+        { return mY; }
+
+        /**
+         * Sets the tile x or y coord
+         */
+        void setTileCoords(int x, int y)
+        { mX = x; mY = y; }
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -603,6 +617,7 @@ class Being : public Sprite, public ConfigListener
         Vector mPos;
         Vector mDest;
         int mPx, mPy;                   /**< Position in pixels */
+        int mX, mY;                     /**< Position on tile */
 
         /** Target cursor being used */
         SimpleAnimation* mUsedTargetCursor;

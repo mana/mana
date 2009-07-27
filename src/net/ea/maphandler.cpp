@@ -61,14 +61,17 @@ void MapHandler::handleMessage(MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_MAP_LOGIN_SUCCESS:
+        {
+            Uint16 x, y;
             msg.readInt32();   // server tick
-            msg.readCoordinates(player_node->mX, player_node->mY, direction);
+            msg.readCoordinates(x, y, direction);
             msg.skip(2);      // unknown
             logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
-                    player_node->mX, player_node->mY, direction);
+                    x, y, direction);
             state = STATE_GAME;
+            player_node->setTileCoords(x, y);
             game = new Game;
-            break;
+         }  break;
 
         case SMSG_SERVER_PING:
             // We ignore this for now

@@ -449,7 +449,7 @@ bool Map::occupied(int x, int y) const
         const Being *being = *i;
 
         // job 45 is a portal, they don't collide
-        if (being->mX == x && being->mY == y && being->mJob != 45)
+        if (being->getTileX() == x && being->getTileY() == y && being->mJob != 45)
             return true;
     }
 

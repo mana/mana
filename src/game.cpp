@@ -759,14 +759,9 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-#ifdef TMWSERV_SUPPORT
                             const Vector &pos = player_node->getPosition();
                             Uint16 x = (int) pos.x / 32;
                             Uint16 y = (int) pos.y / 32;
-#else
-                            Uint16 x = player_node->mX;
-                            Uint16 y = player_node->mY;
-#endif
                             FloorItem *item =
                                 floorItemManager->findByCoordinates(x, y);
 
@@ -938,14 +933,9 @@ void Game::handleInput()
             return;
         }
 
-#ifdef TMWSERV_SUPPORT
         const Vector &pos = player_node->getPosition();
         const Uint16 x = (int) pos.x / 32;
         const Uint16 y = (int) pos.y / 32;
-#else
-        const Uint16 x = player_node->mX;
-        const Uint16 y = player_node->mY;
-#endif
         unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction

@@ -194,14 +194,15 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
                 dstBeing->setAction(Being::STAND);
-                dstBeing->mX = srcX;
-                dstBeing->mY = srcY;
+                dstBeing->setTileCoords(srcX, srcY);
                 dstBeing->setDestination(dstX, dstY);
             }
             else
             {
                 Uint8 dir;
-                msg.readCoordinates(dstBeing->mX, dstBeing->mY, dir);
+                Uint16 x, y;
+                msg.readCoordinates(x, y, dir);
+                dstBeing->setTileCoords(x, y);
                 dstBeing->setDirection(dir);
             }
 
@@ -234,8 +235,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             if (dstBeing) {
                 dstBeing->setAction(Being::STAND);
-                dstBeing->mX = srcX;
-                dstBeing->mY = srcY;
+                dstBeing->setTileCoords(srcX, srcY);
                 dstBeing->setDestination(dstX, dstY);
             }
 
@@ -515,14 +515,15 @@ void BeingHandler::handleMessage(MessageIn &msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->mX = srcX;
-                dstBeing->mY = srcY;
+                dstBeing->setTileCoords(srcX, srcY);
                 dstBeing->setDestination(dstX, dstY);
             }
             else
             {
                 Uint8 dir;
-                msg.readCoordinates(dstBeing->mX, dstBeing->mY, dir);
+                Uint16 x, y;
+                msg.readCoordinates(x, y, dir);
+                dstBeing->setTileCoords(x, y);
                 dstBeing->setDirection(dir);
             }
 
@@ -577,8 +578,10 @@ void BeingHandler::handleMessage(MessageIn &msg)
             if (mSync || id != player_node->getId()) {
                 dstBeing = beingManager->findBeing(id);
                 if (dstBeing) {
-                    dstBeing->mX = msg.readInt16();
-                    dstBeing->mY = msg.readInt16();
+                    Uint16 x, y;
+                    x = msg.readInt16();
+                    y = msg.readInt16();
+                    dstBeing->setTileCoords(x, y);
                     if (dstBeing->mAction == Being::WALK) {
                         dstBeing->mFrame = 0;
                         dstBeing->setAction(Being::STAND);
