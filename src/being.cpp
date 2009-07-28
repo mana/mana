@@ -66,7 +66,6 @@ static const int DEFAULT_HEIGHT = 32;
 
 Being::Being(int id, int job, Map *map):
 #ifdef EATHENA_SUPPORT
-    mX(0), mY(0),
     mWalkTime(0),
 #endif
     mEmotion(0), mEmotionTime(0),
@@ -100,6 +99,7 @@ Being::Being(int id, int job, Map *map):
     mWalkSpeed(150),
 #endif
     mPx(0), mPy(0),
+    mX(0), mY(0),
     mUsedTargetCursor(NULL)
 {
     setMap(map);
