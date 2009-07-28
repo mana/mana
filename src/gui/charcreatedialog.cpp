@@ -64,7 +64,11 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
 
     mNameField = new TextField("");
     mNameLabel = new Label(_("Name:"));
+    // TRANSLATORS: This is a narrow symbol used to denote 'next'.
+    // You may change this symbol if your language uses another.
     mNextHairColorButton = new Button(_(">"), "nextcolor", this);
+    // TRANSLATORS: This is a narrow symbol used to denote 'previous'.
+    // You may change this symbol if your language uses another.
     mPrevHairColorButton = new Button(_("<"), "prevcolor", this);
     mHairColorLabel = new Label(_("Hair Color:"));
     mNextHairStyleButton = new Button(_(">"), "nextstyle", this);

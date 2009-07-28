@@ -67,7 +67,11 @@ BuyDialog::BuyDialog():
     mMoneyLabel = new Label(strprintf(_("Price: %s / Total: %s"),
                                             "", ""));
 
+    // TRANSLATORS: This is a narrow symbol used to denote 'increasing'.
+    // You may change this symbol if your language uses another.
     mIncreaseButton = new Button(_("+"), "inc", this);
+    // TRANSLATORS: This is a narrow symbol used to denote 'decreasing'.
+    // You may change this symbol if your language uses another.
     mDecreaseButton = new Button(_("-"), "dec", this);
     mBuyButton = new Button(_("Buy"), "buy", this);
     mQuitButton = new Button(_("Quit"), "quit", this);
