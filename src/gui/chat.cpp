@@ -367,33 +367,35 @@ void ChatWindow::scroll(int amount)
     if (tab)
         tab->scroll(amount);
 }
+
 void ChatWindow::mousePressed(gcn::MouseEvent &event)
 {
-Window::mousePressed(event);
+    Window::mousePressed(event);
 
-if(event.isConsumed())
-return;
+    if(event.isConsumed())
+        return;
 
-mMoved = event.getY() <= mCurrentTab->getHeight();
-mDragOffsetX = event.getX();
-mDragOffsetY = event.getY();
+    mMoved = event.getY() <= mCurrentTab->getHeight();
+    mDragOffsetX = event.getX();
+    mDragOffsetY = event.getY();
 
 }
+
 void ChatWindow::mouseDragged(gcn::MouseEvent &event)
 {
-Window::mouseDragged(event);
+    Window::mouseDragged(event);
 
-if(event.isConsumed())
-return;
+    if(event.isConsumed())
+        return;
 
-if(isMovable() && mMoved)
-{
-  int newX = std::max(0, getX() + event.getX() - mDragOffsetX);
-  int newY = std::max(0, getY() + event.getY() - mDragOffsetY);
-  newX = std::min(graphics->getWidth() - getWidth(), newX);
-  newY = std::min(graphics->getHeight() - getHeight(), newY);
-  setPosition(newX, newY);
-}
+    if(isMovable() && mMoved)
+    {
+        int newX = std::max(0, getX() + event.getX() - mDragOffsetX);
+        int newY = std::max(0, getY() + event.getY() - mDragOffsetY);
+        newX = std::min(graphics->getWidth() - getWidth(), newX);
+        newY = std::min(graphics->getHeight() - getHeight(), newY);
+        setPosition(newX, newY);
+    }
 }
 
 
