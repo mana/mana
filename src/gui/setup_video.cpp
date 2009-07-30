@@ -444,11 +444,17 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         const int width = atoi(mode.substr(0, mode.find("x")).c_str());
         const int height = atoi(mode.substr(mode.find("x") + 1).c_str());
 
+          // TODO: Find out why the drawing area doesn't resize without a restart.
         if (width != graphics->getWidth() || height != graphics->getHeight())
         {
-            // TODO: Find out why the drawing area doesn't resize without a restart.
-            new OkDialog(_("Screen resolution changed"),
-                         _("Restart your client for the change to take effect."));
+            if (width < graphics->getWidth() || height < graphics->getHeight())
+                new OkDialog(_("Screen resolution changed"),
+                       _("Restart your client for the change to take effect.")
+                       + std::string("\n") +
+                _("Some windows may be moved to fit the lowered resolution."));
+            else
+                new OkDialog(_("Screen resolution changed"),
+                     _("Restart your client for the change to take effect."));
         }
 
         config.setValue("screenwidth", width);

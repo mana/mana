@@ -269,7 +269,7 @@ class Window : public gcn::Window, gcn::WidgetListener
                             int defaultWidth, int defaultHeight);
 
         /**
-         * Set the default win pos and size tot he current ones.
+         * Set the default win pos and size to the current ones.
          */
         void setDefaultSize();
 
@@ -345,6 +345,13 @@ class Window : public gcn::Window, gcn::WidgetListener
             BOTTOM = 0x04,
             LEFT   = 0x08
         };
+
+        /**
+         * Check if the window is off-screen and then move it to be visible
+         * again. This is internally used by loadWindowState
+         * and setVisible(true) members.
+         */
+        void checkIfIsOffScreen(bool partially = true, bool entirely = true);
 
         /**
          * Determines if the mouse is in a resize area and returns appropriate
