@@ -257,7 +257,10 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             return;
         
         if (!inventoryWindow->isVisible())
+        {
             inventoryWindow->setVisible(true);
+            return;
+        }
 
         if (!item)
             return;
