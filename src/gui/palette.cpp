@@ -82,6 +82,8 @@ Palette::Palette() :
     addColor(SHADOW, 0x000000, STATIC, indent + _("Text Shadow"));
     addColor(OUTLINE, 0x000000, STATIC, indent + _("Text Outline"));
     addColor(PROGRESS_BAR, 0xffffff, STATIC, indent + _("Progress Bar Labels"));
+    addColor(BUTTON, 0x000000, STATIC, indent + _("Buttons"));
+    addColor(BUTTON_DISABLED, 0x000000, STATIC, indent + _("Disabled Buttons"));
 
     addColor(BACKGROUND, 0xffffff, STATIC, _("Background"));
 
