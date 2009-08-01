@@ -187,27 +187,13 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         Being *being = beingManager->findBeing(id);
         int sx = 0;
         int sy = 0;
-        int dx = 0;
-        int dy = 0;
         int speed = 0;
 
         if (flags & MOVING_POSITION)
         {
-            Uint16 sx2, sy2;
-            msg.readCoordinates(sx2, sy2);
-            sx = sx2 * 32 + 16;
-            sy = sy2 * 32 + 16;
+            sx = msg.readInt16();
+            sy = msg.readInt16();
             speed = msg.readInt8();
-        }
-        if (flags & MOVING_DESTINATION)
-        {
-            dx = msg.readInt16();
-            dy = msg.readInt16();
-            if (!(flags & MOVING_POSITION))
-            {
-                sx = dx;
-                sy = dy;
-            }
         }
         if (!being || !(flags & (MOVING_POSITION | MOVING_DESTINATION)))
         {
@@ -228,33 +214,9 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         if (being == player_node)
             continue;
 
-        // If being is a player, and he only moves a little, its ok to be a little out of sync
-        if (being->getType() == Being::PLAYER && abs(being->getPixelX() - dx) +
-                                                 abs(being->getPixelY() - dy) < 16 &&
-                                                 (dx != being->getDestination().x &&
-                                                  dy != being->getDestination().y))
+        if (flags & MOVING_POSITION)
         {
-            being->setDestination(being->getPixelX(),being->getPixelY());
-            continue;
-        }
-        if (abs(being->getPixelX() - sx) +
-            abs(being->getPixelY() - sy) > 10 * 32)
-        {
-            // Too large a desynchronization.
-            being->setPosition(sx, sy);
-            being->setDestination(dx, dy);
-        }
-        else if (!(flags & MOVING_POSITION))
-        {
-            being->setDestination(dx, dy);
-        }
-        else if (!(flags & MOVING_DESTINATION))
-        {
-            being->adjustCourse(sx, sy);
-        }
-        else
-        {
-            being->setDestination(sx, sy, dx, dy);
+            being->setDestination(sx, sy);
         }
     }
 }

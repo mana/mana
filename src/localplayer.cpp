@@ -375,16 +375,6 @@ void LocalPlayer::walk(unsigned char dir)
     }
 
     int dx = 0, dy = 0;
-#ifdef TMWSERV_SUPPORT
-    if (dir & UP)
-        dy -= 32;
-    if (dir & DOWN)
-        dy += 32;
-    if (dir & LEFT)
-        dx -= 32;
-    if (dir & RIGHT)
-        dx += 32;
-#else
     if (dir & UP)
         dy--;
     if (dir & DOWN)
@@ -393,7 +383,6 @@ void LocalPlayer::walk(unsigned char dir)
         dx--;
     if (dir & RIGHT)
         dx++;
-#endif
 
     // Prevent skipping corners over colliding tiles
 #ifdef TMWSERV_SUPPORT
@@ -420,7 +409,7 @@ void LocalPlayer::walk(unsigned char dir)
 
     // Checks our path up to 1 tiles, if a blocking tile is found
     // We go to the last good tile, and break out of the loop
-    for (dScaler = 1; dScaler <= 1; dScaler++)
+    for (dScaler = 1; dScaler <= 32; dScaler++)
     {
         if ( (dx || dy) &&
              !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
@@ -433,7 +422,8 @@ void LocalPlayer::walk(unsigned char dir)
 
     if (dScaler >= 0)
     {
-         setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+        effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+        setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
     }
 #else
     if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
