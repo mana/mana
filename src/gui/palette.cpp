@@ -84,6 +84,7 @@ Palette::Palette() :
     addColor(PROGRESS_BAR, 0xffffff, STATIC, indent + _("Progress Bar Labels"));
     addColor(BUTTON, 0x000000, STATIC, indent + _("Buttons"));
     addColor(BUTTON_DISABLED, 0x000000, STATIC, indent + _("Disabled Buttons"));
+    addColor(TAB, 0x000000, STATIC, indent + _("Tabs"));
 
     addColor(BACKGROUND, 0xffffff, STATIC, _("Background"));
 

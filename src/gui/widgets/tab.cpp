@@ -63,7 +63,7 @@ static TabData const data[TAB_COUNT] = {
 ImageRect Tab::tabImg[TAB_COUNT];
 
 Tab::Tab() : gcn::Tab(),
-    mTabColor(&guiPalette->getColor(Palette::TEXT))
+    mTabColor(&guiPalette->getColor(Palette::TAB))
 {
     init();
 }

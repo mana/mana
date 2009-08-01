@@ -264,6 +264,7 @@ void Setup_Colors::valueChanged(const gcn::SelectionEvent &event)
             break;
         case Palette::BUTTON:
         case Palette::BUTTON_DISABLED:
+        case Palette::TAB:
         case Palette::TAB_HIGHLIGHT:
             mTextPreview->setFont(gui->getFont());
             mTextPreview->setTextColor(col);
