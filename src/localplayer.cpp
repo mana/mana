@@ -749,7 +749,9 @@ void LocalPlayer::raiseAttribute(size_t attr)
 {
     // we assume that the server allows the change. When not we will undo it later.
     mCharacterPoints--;
-    mAttributeBase.at(attr)++;
+    IntMap::iterator it = mAttributeBase.find(attr);
+    if (it != mAttributeBase.end())
+        (*it).second++;
     Net::getPlayerHandler()->increaseAttribute(attr);
 }
 
@@ -758,7 +760,9 @@ void LocalPlayer::lowerAttribute(size_t attr)
     // we assume that the server allows the change. When not we will undo it later.
     mCorrectionPoints--;
     mCharacterPoints++;
-    mAttributeBase.at(attr)--;
+    IntMap::iterator it = mAttributeBase.find(attr);
+    if (it != mAttributeBase.end())
+        (*it).second--;
     Net::getPlayerHandler()->decreaseAttribute(attr);
 }
 

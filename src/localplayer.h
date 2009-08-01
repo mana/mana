@@ -373,8 +373,9 @@ class LocalPlayer : public Player
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 
         // Character status:
-        std::map<int, int> mAttributeBase;
-        std::map<int, int> mAttributeEffective;
+        typedef std::map<int, int> IntMap;
+        IntMap mAttributeBase;
+        IntMap mAttributeEffective;
         std::map<int, std::pair<int, int> > mSkillExp;
         int mCharacterPoints;
         int mCorrectionPoints;
