@@ -183,24 +183,9 @@ class Being : public Sprite, public ConfigListener
         virtual void setDestination(Uint16 destX, Uint16 destY);
 #else
         /**
-         * Returns the path to the being's current destination
-         */
-        virtual Path findPath();
-
-        /**
-         * Creates a path for the being from sx,sy to ex,ey
-         */
-        void setDestination(int sx, int sy, int ex, int ey);
-
-        /**
          * Creates a path for the being from current position to ex and ey
          */
         void setDestination(int ex, int ey);
-
-        /**
-         * Adjusts course to expected start point.
-         */
-        void adjustCourse(int srcX, int srcY);
 
         /**
          * Returns the destination for this being.

@@ -148,36 +148,20 @@ void Being::setDestination(Uint16 destX, Uint16 destY)
 #endif
 
 #ifdef TMWSERV_SUPPORT
-
-void Being::adjustCourse(int srcX, int srcY)
-{
-    setDestination(srcX, srcY, mDest.x, mDest.y);
-}
-
 void Being::setDestination(int dstX, int dstY)
-{
-    setDestination(mPos.x, mPos.y, dstX, dstY);
-}
-
-Path Being::findPath()
-{
-    Path path;
-
-    if (mMap)
-    {
-        path = mMap->findPath(mPos.x / 32, mPos.y / 32,
-                              mDest.x / 32, mDest.y / 32, getWalkMask());
-    }
-
-    return path;
-}
-
-void Being::setDestination(int srcX, int srcY, int dstX, int dstY)
 {
     mDest.x = dstX;
     mDest.y = dstY;
+    int srcX = mPos.x;
+    int srcY = mPos.y;
 
-    Path thisPath = findPath();
+    Path thisPath;
+
+    if (mMap)
+    {
+        thisPath = mMap->findPath(mPos.x / 32, mPos.y / 32,
+                                  mDest.x / 32, mDest.y / 32, getWalkMask());
+    }
 
     if (thisPath.empty())
     {
@@ -228,7 +212,7 @@ void Being::setPath(const Path &path)
 {
     mPath = path;
 #ifdef TMWSERV_SUPPORT
-//    std::cout << this << " New path: " << path << std::endl;
+    std::cout << this << " New path: " << path << std::endl;
 #else
     if (mAction != WALK && mAction != DEAD)
     {
