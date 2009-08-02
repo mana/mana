@@ -30,6 +30,7 @@ gui_DATA =				\
 	speechbubble.xml		\
 	tab.png				\
 	tabselected.png			\
+	tab_hilight.png 		\
 	target-cursor-blue-l.png	\
 	target-cursor-blue-m.png	\
 	target-cursor-blue-s.png	\
@@ -44,7 +45,12 @@ gui_DATA =				\
 	vscroll_up_default.png		\
 	vscroll_up_highlight.png	\
 	vscroll_up_pressed.png		\
-	window.png
+	window.png			\
+	radioin_highlight.png		\
+	radioout_highlight.png		\
+	slider_hilight.png		\
+	tab_hilight.png			\
+	vscroll_highlight.png
 
 EXTRA_DIST =				\
 	$(gui_DATA)

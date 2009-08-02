@@ -82,9 +82,9 @@ Palette::Palette() :
     addColor(SHADOW, 0x000000, STATIC, indent + _("Text Shadow"));
     addColor(OUTLINE, 0x000000, STATIC, indent + _("Text Outline"));
     addColor(PROGRESS_BAR, 0xffffff, STATIC, indent + _("Progress Bar Labels"));
-    addColor(BUTTON, 0x000000, STATIC, indent + _("Buttons"));
-    addColor(BUTTON_DISABLED, 0x000000, STATIC, indent + _("Disabled Buttons"));
-    addColor(TAB, 0x000000, STATIC, indent + _("Tabs"));
+    addColor(BUTTON, 0xc8ad00, STATIC, indent + _("Buttons"));
+    addColor(BUTTON_DISABLED, 0x828282, STATIC, indent + _("Disabled Buttons"));
+    addColor(TAB, 0xc8ad00, STATIC, indent + _("Tabs"));
 
     addColor(BACKGROUND, 0xffffff, STATIC, _("Background"));
 
@@ -96,7 +96,7 @@ Palette::Palette() :
     addColor(CHAT, 0x000000, STATIC, _("Chat"), 'C');
     addColor(GM, 0xff0000, STATIC, indent + _("GM"), 'G');
     addColor(PLAYER, 0x1fa052, STATIC, indent + _("Player"), 'Y');
-    addColor(WHISPER, 0x0000ff, STATIC, indent + _("Whisper"), 'W');
+    addColor(WHISPER, 0x00feaf, STATIC, indent + _("Whisper"), 'W');
     addColor(IS, 0xa08527, STATIC, indent + _("Is"), 'I');
     addColor(PARTY, 0xf48055, STATIC, indent + _("Party"), 'P');
     addColor(SERVER, 0x8415e2, STATIC, indent + _("Server"), 'S');

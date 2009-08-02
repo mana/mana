@@ -26,13 +26,13 @@
 
 class Image;
 
-/*
+/**
  * Guichan based RadioButton with custom look
  */
 class RadioButton : public gcn::RadioButton
 {
     public:
-        /*
+        /**
          * Constructor.
          */
         RadioButton(const std::string &caption,const std::string &group,
@@ -54,13 +54,26 @@ class RadioButton : public gcn::RadioButton
          */
         void draw(gcn::Graphics* graphics);
 
+        /**
+         * Called when the mouse enteres the widget area.
+         */
+        void mouseEntered(gcn::MouseEvent& event);
+
+        /**
+         * Called when the mouse leaves the widget area.
+         */
+        void mouseExited(gcn::MouseEvent& event);
+
     private:
         static int instances;
         static float mAlpha;
+        bool mHasMouse;
         static Image *radioNormal;
         static Image *radioChecked;
         static Image *radioDisabled;
         static Image *radioDisabledChecked;
+        static Image *radioNormalHi;
+        static Image *radioCheckedHi;
 };
 
 #endif /* RADIOBUTTON_H */

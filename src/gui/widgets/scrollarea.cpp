@@ -33,10 +33,13 @@ int ScrollArea::instances = 0;
 float ScrollArea::mAlpha = 1.0;
 ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
+ImageRect ScrollArea::vMarkerHi;
 Image *ScrollArea::buttons[4][2];
 
 ScrollArea::ScrollArea():
     gcn::ScrollArea(),
+    mX(0),
+    mY(0),
     mOpaque(true)
 {
     init();
@@ -44,6 +47,7 @@ ScrollArea::ScrollArea():
 
 ScrollArea::ScrollArea(gcn::Widget *widget):
     gcn::ScrollArea(widget),
+    mHasMouse(false),
     mOpaque(true)
 {
     init();
@@ -60,6 +64,7 @@ ScrollArea::~ScrollArea()
     {
         for_each(background.grid, background.grid + 9, dtor<Image*>());
         for_each(vMarker.grid, vMarker.grid + 9, dtor<Image*>());
+        for_each(vMarkerHi.grid, vMarker.grid + 9, dtor<Image*>());
 
         buttons[UP][0]->decRef();
         buttons[UP][1]->decRef();
@@ -103,6 +108,8 @@ void ScrollArea::init()
 
         // Load vertical scrollbar skin
         Image *vscroll = resman->getImage("graphics/gui/vscroll_grey.png");
+        Image *vscrollHi = resman->getImage("graphics/gui/vscroll_highlight.png");
+
         int vsgridx[4] = {0, 4, 7, 11};
         int vsgridy[4] = {0, 4, 15, 19};
         a = 0;
@@ -115,12 +122,18 @@ void ScrollArea::init()
                         vsgridx[x], vsgridy[y],
                         vsgridx[x + 1] - vsgridx[x],
                         vsgridy[y + 1] - vsgridy[y]);
+                vMarkerHi.grid[a] = vscrollHi->getSubImage(
+                        vsgridx[x], vsgridy[y],
+                        vsgridx[x + 1] - vsgridx[x],
+                        vsgridy[y + 1] - vsgridy[y]);
                 vMarker.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
+                vMarkerHi.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
                 a++;
             }
         }
 
         vscroll->decRef();
+        vscrollHi->decRef();
 
         buttons[UP][0] =
             resman->getImage("graphics/gui/vscroll_up_default.png");
@@ -202,6 +215,7 @@ void ScrollArea::draw(gcn::Graphics *graphics)
         {
             background.grid[a]->setAlpha(mAlpha);
             vMarker.grid[a]->setAlpha(mAlpha);
+            vMarkerHi.grid[a]->setAlpha(mAlpha);
         }
     }
 
@@ -296,14 +310,39 @@ void ScrollArea::drawVMarker(gcn::Graphics *graphics)
 {
     gcn::Rectangle dim = getVerticalMarkerDimension();
 
-    static_cast<Graphics*>(graphics)->
-        drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarker);
+    if ((mHasMouse) && (mX > (getWidth() - getScrollbarWidth())))
+        static_cast<Graphics*>(graphics)->
+            drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarkerHi);
+    else
+        static_cast<Graphics*>(graphics)->
+            drawImageRect(dim.x, dim.y, dim.width, dim.height,vMarker);
 }
 
 void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 {
     gcn::Rectangle dim = getHorizontalMarkerDimension();
 
-    static_cast<Graphics*>(graphics)->
-        drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarker);
+    if ((mHasMouse) && (mY > (getHeight() - getScrollbarWidth())))
+        static_cast<Graphics*>(graphics)->
+            drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarkerHi);
+    else
+        static_cast<Graphics*>(graphics)->
+            drawImageRect(dim.x, dim.y, dim.width, dim.height, vMarker);
 }
+
+void ScrollArea::mouseMoved(gcn::MouseEvent& event)
+{
+mX = event.getX();
+mY = event.getY();
+}
+
+void ScrollArea::mouseEntered(gcn::MouseEvent& event)
+{
+    mHasMouse = true;
+}
+
+void ScrollArea::mouseExited(gcn::MouseEvent& event)
+{
+    mHasMouse = false;
+}
+

@@ -24,6 +24,7 @@
 
 #include <guichan/widgets/checkbox.hpp>
 
+
 class Image;
 
 /**
@@ -54,13 +55,26 @@ class CheckBox : public gcn::CheckBox
          */
         void drawBox(gcn::Graphics* graphics);
 
+        /**
+         * Called when the mouse enteres the widget area.
+         */
+        void mouseEntered(gcn::MouseEvent& event);
+
+        /**
+         * Called when the mouse leaves the widget area.
+         */
+        void mouseExited(gcn::MouseEvent& event);
+
     private:
         static int instances;
         static float mAlpha;
+        bool mHasMouse;
         static Image *checkBoxNormal;
         static Image *checkBoxChecked;
         static Image *checkBoxDisabled;
         static Image *checkBoxDisabledChecked;
+        static Image *checkBoxNormalHi;
+        static Image *checkBoxCheckedHi;
 };
 
 #endif

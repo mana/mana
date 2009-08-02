@@ -55,7 +55,7 @@ struct TabData
 
 static TabData const data[TAB_COUNT] = {
     { "graphics/gui/tab.png", 0, 0 },
-    { "graphics/gui/tab.png", 9, 4 },
+    { "graphics/gui/tab_hilight.png", 9, 4 },
     { "graphics/gui/tabselected.png", 16, 19 },
     { "graphics/gui/tab.png", 25, 23 }
 };
@@ -123,21 +123,19 @@ void Tab::draw(gcn::Graphics *graphics)
     // check which type of tab to draw
     if (mTabbedArea)
     {
+        mLabel->setForegroundColor(*mTabColor);
         if (mTabbedArea->isTabSelected(this))
         {
             mode = TAB_SELECTED;
             // if tab is selected, it doesnt need to highlight activity
-            mLabel->setForegroundColor(*mTabColor);
             mHighlighted = false;
-        }
-        else if (mHighlighted)
+        } else if (mHasMouse)
         {
             mode = TAB_HIGHLIGHTED;
-            mLabel->setForegroundColor(guiPalette->getColor(Palette::TAB_HIGHLIGHT));
         }
-        else
+        if (mHighlighted)
         {
-            mLabel->setForegroundColor(*mTabColor);
+            mLabel->setForegroundColor(guiPalette->getColor(Palette::TAB_HIGHLIGHT));
         }
     }
 
