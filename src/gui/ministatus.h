@@ -53,6 +53,9 @@ class MiniStatusWindow : public Popup
 
         void logic(); // Updates icons
 
+        void draw(gcn::Graphics *graphics)
+        { drawChildren(graphics); }
+
     private:
         /*
          * Mini Status Bars
