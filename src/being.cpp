@@ -172,16 +172,13 @@ void Being::setDestination(int dstX, int dstY)
     // FIXME: Look into making this code neater.
     // Interpolate the offsets.  Also convert from tile based to pixel based
 
-    // Note: I divided the offsets by 32 then muilpied it back to get the top left
-    // Conner of where the tile is. (If you know a better way then please change it)
-
     // Find the starting offset
-    int startX = srcX - ((srcX / 32) * 32 + 16);
-    int startY = srcY - ((srcY / 32) * 32 + 16);
+    int startX = (srcX % 32);
+    int startY = (srcY % 32);
 
     // Find the ending offset
-    int endX = dstX - ((dstX / 32) * 32 + 16);
-    int endY = dstY - ((dstY / 32) * 32 + 16);
+    int endX = (dstX % 32);
+    int endY = (dstY % 32);
 
     // Find the distance, and divide it by the number of steps
     int changeX = (endX - startX) / thisPath.size();
@@ -193,8 +190,8 @@ void Being::setDestination(int dstX, int dstY)
     int i = 0;
     while(it != thisPath.end())
     {
-       it->x = (it->x * 32 + 16) + startX + (changeX * i);
-       it->y = (it->y * 32 + 16) + startY + (changeY * i);
+       it->x = (it->x * 32) + startX + (changeX * i);
+       it->y = (it->y * 32) + startY + (changeY * i);
        i++;
        it++;
     }

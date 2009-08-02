@@ -759,9 +759,14 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
+#ifdef TMWSERV_SUPPORT
                             const Vector &pos = player_node->getPosition();
                             Uint16 x = (int) pos.x / 32;
                             Uint16 y = (int) pos.y / 32;
+#else
+                            Uint16 x = player_node->getTileX();
+                            Uint16 y = player_node->getTileY();
+#endif
                             FloorItem *item =
                                 floorItemManager->findByCoordinates(x, y);
 
