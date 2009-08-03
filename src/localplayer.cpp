@@ -52,8 +52,8 @@
 #include "net/specialhandler.h"
 #include "net/tradehandler.h"
 
-#ifdef TMWSERV_SUPPORT
 #include "effectmanager.h"
+#ifdef TMWSERV_SUPPORT
 #include "guild.h"
 
 //#include "net/tmwserv/gameserver/player.h"
@@ -776,8 +776,7 @@ void LocalPlayer::setAttributeBase(int num, int value)
         if (skillDialog->update(num).empty() || !(value > old))
             return;
 
-        Particle* effect = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
-        this->controlParticle(effect);
+        effectManager->trigger(1, this);
     }
 
     if (statusWindow)
