@@ -89,6 +89,8 @@ class Properties
             {
                 if (i->second == "true")
                     ret = true;
+                if (i->second == "false")
+                    ret = false;
             }
             return ret;
         }
