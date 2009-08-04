@@ -14,7 +14,8 @@ src/gui/charcreatedialog.cpp
 src/gui/charselectdialog.cpp
 src/gui/chat.cpp
 src/gui/confirmdialog.cpp
-src/gui/connection.cpp
+src/gui/connectiondialog.cpp
+src/gui/debugwindow.cpp
 src/gui/equipmentwindow.cpp
 src/gui/guildwindow.cpp
 src/gui/help.cpp
@@ -27,6 +28,7 @@ src/gui/minimap.cpp
 src/gui/npcdialog.cpp
 src/gui/npcpostdialog.cpp
 src/gui/okdialog.cpp
+src/gui/outfitwindow.cpp
 src/gui/palette.cpp
 src/gui/partywindow.cpp
 src/gui/popupmenu.cpp
@@ -46,9 +48,8 @@ src/gui/setup_joystick.cpp
 src/gui/setup_keyboard.cpp
 src/gui/setup_players.cpp
 src/gui/setup_video.cpp
-src/gui/skill.cpp
 src/gui/skilldialog.cpp
-src/gui/status.cpp
+src/gui/statuswindow.cpp
 src/gui/storagewindow.cpp
 src/gui/textdialog.cpp
 src/gui/trade.cpp
@@ -73,7 +74,7 @@ src/net/ea/inventoryhandler.cpp
 src/net/ea/loginhandler.cpp
 src/net/ea/partyhandler.cpp
 src/net/ea/playerhandler.cpp
-src/net/ea/skillhandler.cpp
+src/net/ea/specialhandler.cpp
 src/net/ea/tradehandler.cpp
 src/net/tmwserv/beinghandler.cpp
 src/net/tmwserv/charserverhandler.cpp
