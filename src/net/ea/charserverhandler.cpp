@@ -61,18 +61,16 @@ CharServerHandler::CharServerHandler():
 
 void CharServerHandler::handleMessage(MessageIn &msg)
 {
-    int slot, flags;
+    int slot;
     LocalPlayer *tempPlayer;
 
     logger->log("CharServerHandler: Packet ID: %x, Length: %d",
             msg.getId(), msg.getLength());
     switch (msg.getId())
     {
-        case 0x006b:
+        case SMSG_CHAR_LOGIN:
             msg.skip(2); // Length word
-            flags = msg.readInt32(); // Aethyra extensions flags
-            logger->log("Server flags are: %x", flags);
-            msg.skip(16); // Unused
+            msg.skip(20); // Unused
 
             // Derive number of characters from message length
             n_character = (msg.getLength() - 24) / 106;
