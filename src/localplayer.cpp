@@ -918,24 +918,14 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
     }
     else
     {
-        const std::string amountStr = (amount > 1) ? toString(amount) : _("a");
-
         if (config.getValue("showpickupchat", 1))
         {
-            if (amount == 1)
-            {
-                // TRANSLATORS: Used as in "You picked up a [Candy]", when
-                // picking up only one item.
-                localChatTab->chatLog(strprintf(_("You picked up a [@@%d|%s@@]."),
-                    itemInfo.getId(), itemInfo.getName().c_str()), BY_SERVER);
-            }
-            else
-            {
-                // TRANSLATORS: Used as in "You picked up 4 [Candy]", when
-                // picking up more than one item.
-                localChatTab->chatLog(strprintf(_("You picked up %d [@@%d|%s@@]."),
-                    amount, itemInfo.getId(), itemInfo.getName().c_str()), BY_SERVER);
-            }
+            // TRANSLATORS: This sentence may be translated differently
+            // for different grammatical numbers (singular, plural, ...)
+            localChatTab->chatLog(strprintf(ngettext("You picked up %d "
+                    "[@@%d|%s@@].", "You picked up %d [@@%d|%s@@].", amount),
+                    amount, itemInfo.getId(), itemInfo.getName().c_str()),
+                    BY_SERVER);
         }
 
         if (mMap && config.getValue("showpickupparticle", 0))
