@@ -32,9 +32,6 @@
 #include "log.h"
 #include "main.h"
 
-#define VERSION_LABEL_X 25
-#define VERSION_LABEL_Y 2
-
 Desktop::Desktop()
     : mWallpaper(0)
 {
@@ -42,17 +39,9 @@ Desktop::Desktop()
 
     Wallpaper::loadWallpapers();
 
-    gcn::Label *versionLabel = new Label(FULL_VERSION);
-    add(versionLabel, VERSION_LABEL_X, VERSION_LABEL_Y);
-
-    mVersionRectangle.x = VERSION_LABEL_X;
-    mVersionRectangle.y = VERSION_LABEL_Y;
-    mVersionRectangle.width = versionLabel->getWidth();
-    mVersionRectangle.height = versionLabel->getHeight();
-
-    // Loads a white pattern and make it translucent...
-    mVersionBorder = Image::getColoredPattern(0xFF, 0xFF, 0xFF);
-    mVersionBorder->setAlpha(0.5f);
+    mVersionLabel = new Label(FULL_VERSION);
+    mVersionLabel->setBackgroundColor(gcn::Color(255, 255, 255, 128));
+    add(mVersionLabel, 25, 2);
 }
 
 Desktop::~Desktop()
@@ -97,9 +86,8 @@ void Desktop::draw(gcn::Graphics *graphics)
     }
 
     // Draw a thin border under the application version...
-    g->drawImagePattern(mVersionBorder, mVersionRectangle.x, mVersionRectangle.y,
-                        mVersionRectangle.width,
-                        mVersionRectangle.height);
+    g->setColor(gcn::Color(255, 255, 255, 128));
+    g->fillRectangle(gcn::Rectangle(mVersionLabel->getDimension()));
 
     Container::draw(graphics);
 }
@@ -128,7 +116,7 @@ void Desktop::setBestFittingWallpaper()
             ResourceManager::getInstance()->addResource(idPath, newRsclWlPpr);
             mWallpaper = newRsclWlPpr;
         }
-            else 
+            else
                 mWallpaper = nWallPaper;
     }
     else

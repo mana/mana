@@ -89,12 +89,12 @@ class Image : public Resource
 
         /**
          * Gets an scaled instance of an image.
-         * 
+         *
          * @param width The desired width of the scaled image.
          * @param height The desired height of the scaled image.
          *
          * @return A new Image* object.
-         */        
+         */
         Image* SDLgetScaledImage(int width, int height);
 
         /**
@@ -137,12 +137,6 @@ class Image : public Resource
          * Returns the alpha value of this image.
          */
         float getAlpha() const;
-
-        /**
-         * Returns a 2x2 image filled with the desired color.
-         * Useful for pattern operations.
-         */
-        static Image* getColoredPattern(Uint8 red, Uint8 green, Uint8 blue);
 
 #ifdef USE_OPENGL
         /**

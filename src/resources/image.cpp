@@ -343,7 +343,7 @@ Image* Image::merge(Image *image, int x, int y)
             cur_pix = ((Uint32*) mImage->pixels)[current_offset];
 
             // Retreiving each channel of the pixel using pixel format
-            r = (Uint8)(((surface_pix & surface_fmt->Rmask) >> 
+            r = (Uint8)(((surface_pix & surface_fmt->Rmask) >>
                           surface_fmt->Rshift) << surface_fmt->Rloss);
             g = (Uint8)(((surface_pix & surface_fmt->Gmask) >>
                           surface_fmt->Gshift) << surface_fmt->Gloss);
@@ -358,14 +358,14 @@ Image* Image::merge(Image *image, int x, int y)
 
             // new pixel with no alpha or nothing on previous pixel
             if (a == SDL_ALPHA_OPAQUE || (p_a == 0 && a > 0))
-                ((Uint32 *)(surface->pixels))[current_offset] = 
+                ((Uint32 *)(surface->pixels))[current_offset] =
                     SDL_MapRGBA(current_fmt, r, g, b, a);
-            else if (a > 0) 
+            else if (a > 0)
             { // alpha is lower => merge color with previous value
                 f_a = (double) a / 255.0;
                 f_ca = 1.0 - f_a;
                 f_pa = (double) p_a / 255.0;
-                p_r = (Uint8)(((cur_pix & current_fmt->Rmask) >> 
+                p_r = (Uint8)(((cur_pix & current_fmt->Rmask) >>
                                 current_fmt->Rshift) << current_fmt->Rloss);
                 p_g = (Uint8)(((cur_pix & current_fmt->Gmask) >>
                                 current_fmt->Gshift) << current_fmt->Gloss);
@@ -393,42 +393,19 @@ float Image::getAlpha() const
     return mAlpha;
 }
 
-Image* Image::getColoredPattern(Uint8 red, Uint8 green, Uint8 blue)
-{
-    // A simple pattern used for pattern operations...
-    SDL_Surface* tmpSurface = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                    2, 2, 32, 0, 0, 0, 0);
-
-    Image* patternImage = NULL;
-
-    if(tmpSurface)
-    {
-        //Fill the surface white
-        SDL_FillRect(tmpSurface,
-                      &tmpSurface->clip_rect,
-                      SDL_MapRGB(tmpSurface->format, red, green, blue));
-
-
-        patternImage = Image::load(tmpSurface);
-    }
-    SDL_FreeSurface(tmpSurface);
-
-    return patternImage;
-}
-
 Image* Image::SDLgetScaledImage(int width, int height)
 {
     // No scaling on incorrect new values.
     if (width == 0 || height == 0)
     return NULL;
-    
+
     // No scaling when there is ... no different given size ...
     if (width == getWidth() && height == getHeight())
         return NULL;
 
     Image* scaledImage = NULL;
     SDL_Surface* scaledSurface = NULL;
-    
+
     if (mImage)
     {
         scaledSurface = _SDLzoomSurface(mImage,
