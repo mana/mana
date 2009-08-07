@@ -47,7 +47,6 @@
 #include "utils/xml.h"
 
 #include <string>
-#include <vector>
 
 class SkillEntry;
 
@@ -104,7 +103,8 @@ SkillDialog::SkillDialog():
 
 SkillDialog::~SkillDialog()
 {
-    //delete_all(mTabs);
+    // Clear gui
+    loadSkills("");
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)
@@ -182,8 +182,20 @@ void SkillDialog::update()
 void SkillDialog::loadSkills(const std::string &file)
 {
     // TODO: mTabs->clear();
+    while (mTabs->getSelectedTabIndex() != -1)
+    {
+        mTabs->removeTabWithIndex(mTabs->getSelectedTabIndex());
+    }
+
+    for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end();  it++)
+    {
+        delete (*it).second->display;
+    }
     delete_all(mSkills);
     mSkills.clear();
+
+    if (file.length() == 0)
+        return;
 
     XML::Document doc(file);
     xmlNodePtr root = doc.rootNode();

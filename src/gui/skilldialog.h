@@ -28,7 +28,6 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include <list>
 #include <map>
 
 class Label;
