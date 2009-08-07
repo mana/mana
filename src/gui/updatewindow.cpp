@@ -444,10 +444,13 @@ void UpdaterWindow::logic()
                 }
                 mThread = NULL;
             }
+            // TODO: Only send complete sentences to gettext
             mBrowserBox->addRow("");
             mBrowserBox->addRow(_("##1  The update process is incomplete."));
+            // TRANSLATORS: Continues "you try again later.".
             mBrowserBox->addRow(_("##1  It is strongly recommended that"));
-            mBrowserBox->addRow(_("##1  you try again later"));
+            // TRANSLATORS: Begins "It is strongly recommended that".
+            mBrowserBox->addRow(_("##1  you try again later."));
             mBrowserBox->addRow(mCurlError);
             mScrollArea->setVerticalScrollAmount(
                     mScrollArea->getVerticalMaxScroll());

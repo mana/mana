@@ -28,6 +28,7 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/windowcontainer.h"
 
+#include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 #include <physfs.h>

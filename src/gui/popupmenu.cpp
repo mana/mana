@@ -84,8 +84,9 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 // Players can be traded with. Later also follow and
                 // add as buddy will be options in this menu.
                 mBrowserBox->addRow(strprintf("@@trade|%s@@",
-                                                strprintf(_("Trade With %s"),
+                                                strprintf(_("Trade with %s"),
                                                     name.c_str()).c_str()));
+                // TRANSLATORS: Attacking a player.
                 mBrowserBox->addRow(strprintf("@@attack|%s@@",
                                                 strprintf(_("Attack %s"),
                                                     name.c_str()).c_str()));
@@ -109,7 +110,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
                     case PlayerRelation::DISREGARDED:
                         mBrowserBox->addRow(strprintf("@@unignore|%s@@",
-                                                strprintf(_("Un-Ignore %s"),
+                                                strprintf(_("Unignore %s"),
                                                     name.c_str()).c_str()));
                         mBrowserBox->addRow(strprintf("@@ignore|%s@@",
                                            strprintf(_("Completely ignore %s"),
@@ -118,7 +119,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
                     case PlayerRelation::IGNORED:
                         mBrowserBox->addRow(strprintf("@@unignore|%s@@",
-                                                strprintf(_("Un-Ignore %s"),
+                                                strprintf(_("Unignore %s"),
                                                     name.c_str()).c_str()));
                         break;
                 }

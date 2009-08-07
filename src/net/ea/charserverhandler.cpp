@@ -90,13 +90,13 @@ void CharServerHandler::handleMessage(MessageIn &msg)
         case SMSG_CHAR_LOGIN_ERROR:
             switch (msg.readInt8()) {
                 case 0:
-                    errorMessage = _("Access denied");
+                    errorMessage = _("Access denied.");
                     break;
                 case 1:
-                    errorMessage = _("Cannot use this ID");
+                    errorMessage = _("Cannot use this ID.");
                     break;
                 default:
-                    errorMessage = _("Unknown failure to select character");
+                    errorMessage = _("Unknown failure to select character.");
                     break;
             }
             mCharInfo->unlock();

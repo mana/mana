@@ -223,11 +223,11 @@ std::string StatusWindow::update(int id)
 #endif
     else if (id == CHAR_POINTS)
     {
-        mCharacterPointsLabel->setCaption(strprintf(_("Character Points: %d"),
+        mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
                                         player_node->getCharacterPoints()));
         mCharacterPointsLabel->adjustSize();
 
-        mCorrectionPointsLabel->setCaption(strprintf(_("Correction Points: %d"),
+        mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
                                         player_node->getCorrectionPoints()));
         mCorrectionPointsLabel->adjustSize();
 

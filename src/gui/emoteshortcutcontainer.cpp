@@ -39,8 +39,6 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
-#include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 static const int MAX_ITEMS = 12;
 

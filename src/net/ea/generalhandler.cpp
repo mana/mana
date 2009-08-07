@@ -117,26 +117,26 @@ void GeneralHandler::handleMessage(MessageIn &msg)
 
             switch (code) {
                 case 0:
-                    errorMessage = _("Authentication failed");
+                    errorMessage = _("Authentication failed.");
                     break;
                 case 1:
-                    errorMessage = _("No servers available");
+                    errorMessage = _("No servers available.");
                     break;
                 case 2:
                     if (state == STATE_GAME)
                         errorMessage = _("Someone else is trying to use this "
-                                         "account");
+                                         "account.");
                     else
-                        errorMessage = _("This account is already logged in");
+                        errorMessage = _("This account is already logged in.");
                     break;
                 case 3:
-                    errorMessage = _("Speed hack detected");
+                    errorMessage = _("Speed hack detected.");
                     break;
                 case 8:
-                    errorMessage = _("Duplicated login");
+                    errorMessage = _("Duplicated login.");
                     break;
                 default:
-                    errorMessage = _("Unknown connection error");
+                    errorMessage = _("Unknown connection error.");
                     break;
             }
             state = STATE_ERROR;

@@ -79,8 +79,8 @@ void MapHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_WHO_ANSWER:
-            localChatTab->chatLog("Online users: " + toString(msg.readInt32()),
-                    BY_SERVER);
+            localChatTab->chatLog(strprintf(_("Online users: %d"),
+                                            msg.readInt32()), BY_SERVER);
             break;
     }
 }

@@ -51,7 +51,7 @@ DebugWindow::DebugWindow():
     mMapLabel = new Label(strprintf(_("Map: %s"), ""));
     mMinimapLabel = new Label(strprintf(_("Minimap: %s"), ""));
     mTileMouseLabel = new Label(strprintf(_("Tile: (%d, %d)"), 0, 0));
-    mParticleCountLabel = new Label(strprintf(_("Particle Count: %d"), 0));
+    mParticleCountLabel = new Label(strprintf(_("Particle count: %d"), 0));
 
     place(0, 0, mFPSLabel, 3);
     place(3, 0, mTileMouseLabel);

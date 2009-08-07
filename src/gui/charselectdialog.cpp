@@ -118,7 +118,7 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
     mNameLabel = new Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new Label(strprintf(_("Level: %d"), 0));
-    mMoneyLabel = new Label(strprintf(_("Money: %d"), 0));
+    mMoneyLabel = new Label(strprintf(_("Money: %s"), ""));
 
     // Control that shows the Player
     mPlayerBox = new PlayerBox;

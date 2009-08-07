@@ -166,7 +166,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
         case SMSG_MVP:
             // Display MVP player
             msg.readInt32(); // id
-            localChatTab->chatLog("MVP player", BY_SERVER);
+            localChatTab->chatLog(_("MVP player."), BY_SERVER);
             break;
     }
 }

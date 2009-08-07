@@ -194,13 +194,15 @@ Setup_Video::Setup_Video():
                                           mParticleEffectsEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
     mPickupNotifyLabel(new Label(_("Show pickup notification"))),
+    // TRANSLATORS: Refers to "Show own name"
     mPickupChatCheckBox(new CheckBox(_("in chat"), mPickupChatEnabled)),
+    // TRANSLATORS: Refers to "Show own name"
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
                                          mPickupParticleEnabled)),
     mSpeechSlider(new Slider(0, 3)),
     mSpeechLabel(new Label("")),
     mAlphaSlider(new Slider(0.2, 1.0)),
-    mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
+    mFpsCheckBox(new CheckBox(_("FPS limit:"))),
     mFpsSlider(new Slider(10, 120)),
     mFpsField(new TextField),
     mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
@@ -219,7 +221,7 @@ Setup_Video::Setup_Video():
     speechLabel = new Label(_("Overhead text"));
     alphaLabel = new Label(_("Gui opacity"));
     overlayDetailLabel = new Label(_("Ambient FX"));
-    particleDetailLabel = new Label(_("Particle Detail"));
+    particleDetailLabel = new Label(_("Particle detail"));
     fontSizeLabel = new Label(_("Font size"));
 
     mFontSizeDropDown = new DropDown(new FontSizeChoiceListModel);
@@ -372,7 +374,7 @@ void Setup_Video::apply()
         }
         else
         {
-            new OkDialog(_("Switching to full screen"),
+            new OkDialog(_("Switching to Full Screen"),
                          _("Restart needed for changes to take effect."));
         }
 #endif
@@ -385,7 +387,7 @@ void Setup_Video::apply()
         config.setValue("opengl", mOpenGLCheckBox->isSelected());
 
         // OpenGL can currently only be changed by restarting, notify user.
-        new OkDialog(_("Changing OpenGL"),
+        new OkDialog(_("Changing to OpenGL"),
                      _("Applying change to OpenGL requires restart."));
     }
 
@@ -448,12 +450,12 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         if (width != graphics->getWidth() || height != graphics->getHeight())
         {
             if (width < graphics->getWidth() || height < graphics->getHeight())
-                new OkDialog(_("Screen resolution changed"),
+                new OkDialog(_("Screen Resolution Changed"),
                        _("Restart your client for the change to take effect.")
                        + std::string("\n") +
                 _("Some windows may be moved to fit the lowered resolution."));
             else
-                new OkDialog(_("Screen resolution changed"),
+                new OkDialog(_("Screen Resolution Changed"),
                      _("Restart your client for the change to take effect."));
         }
 
@@ -478,7 +480,7 @@ void Setup_Video::action(const gcn::ActionEvent &event)
                         mParticleEffectsCheckBox->isSelected());
         if (engine)
         {
-            new OkDialog(_("Particle effect settings changed."),
+            new OkDialog(_("Particle Effect Settings Changed."),
                          _("Changes will take effect on map change."));
         }
     }

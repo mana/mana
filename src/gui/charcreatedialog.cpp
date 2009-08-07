@@ -70,10 +70,10 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     // TRANSLATORS: This is a narrow symbol used to denote 'previous'.
     // You may change this symbol if your language uses another.
     mPrevHairColorButton = new Button(_("<"), "prevcolor", this);
-    mHairColorLabel = new Label(_("Hair Color:"));
+    mHairColorLabel = new Label(_("Hair color:"));
     mNextHairStyleButton = new Button(_(">"), "nextstyle", this);
     mPrevHairStyleButton = new Button(_("<"), "prevstyle", this);
-    mHairStyleLabel = new Label(_("Hair Style:"));
+    mHairStyleLabel = new Label(_("Hair style:"));
     mCreateButton = new Button(_("Create"), "create", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mMale = new RadioButton(_("Male"), "gender");
