@@ -298,7 +298,7 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
                 std::string user1 = line.substr(0, first);
                 std::string user2 = line.substr(first+1, line.length());
                 channel->getTab()->chatLog(strprintf(_("%s has kicked %s."),
-                        user1, user2), BY_CHANNEL);
+                        user1.c_str(), user2.c_str()), BY_CHANNEL);
             } break;
 
             default:
