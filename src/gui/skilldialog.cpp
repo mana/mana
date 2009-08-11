@@ -95,7 +95,7 @@ SkillDialog::SkillDialog():
     mPointsLabel = new Label("0");
 
     place(0, 0, mTabs, 5, 5);
-    place(0, 5, mPointsLabel);
+    place(0, 5, mPointsLabel, 2);
 
     setLocationRelativeTo(getParent());
     loadWindowState();
