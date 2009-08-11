@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef MAGIC_H
-#define MAGIC_H
+#ifndef SPECIALSWINDOW_H
+#define SPECIALSWINDOW_H
 
 #include "gui/widgets/window.h"
 
@@ -28,34 +28,42 @@
 
 #include <guichan/actionlistener.hpp>
 
-/**
- * The skill dialog.
- *
- * \ingroup Interface
- */
-class MagicDialog : public Window, public gcn::ActionListener
-{
-    public:
-        MagicDialog();
+#include <map>
 
-        ~MagicDialog();
+class Label;
+class ScrollArea;
+class Tab;
+class TabbedArea;
+
+struct SpecialInfo;
+
+class SpecialsWindow : public Window, public gcn::ActionListener {
+    public:
+        SpecialsWindow();
+
+        ~SpecialsWindow();
 
         /**
          * Called when receiving actions from widget.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &actionEvent);
+
+        void logic();
 
         /**
-         * Update the tabs in this dialog
+         * Update the given special's display
          */
-        void update();
+        std::string update(int id);
 
-        /**
-          * Draw this window.
-          */
-        void draw(gcn::Graphics *g);
+        void loadSpecials(const std::string &file);
+
+    private:
+        typedef std::map<int, SpecialInfo*> SpecialMap;
+        SpecialMap mSpecials;
+        Tab *mCurrentTab;
+        TabbedArea *mTabs;
 };
 
-extern MagicDialog *magicDialog;
+extern SpecialsWindow *specialsWindow;
 
-#endif
+#endif // SPECIALSWINDOW_H

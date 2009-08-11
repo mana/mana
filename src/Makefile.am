@@ -23,6 +23,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/widgets/desktop.h \
 	      gui/widgets/dropdown.cpp \
 	      gui/widgets/dropdown.h \
+	      gui/widgets/flowcontainer.cpp \
+	      gui/widgets/flowcontainer.h \
 	      gui/widgets/icon.cpp \
 	      gui/widgets/icon.h \
 	      gui/widgets/inttextfield.cpp \
@@ -170,6 +172,8 @@ tmw_SOURCES = gui/widgets/avatar.cpp \
 	      gui/skin.h \
 	      gui/speechbubble.cpp \
 	      gui/speechbubble.h \
+	      gui/specialswindow.cpp \
+	      gui/specialswindow.h \
 	      gui/statuswindow.cpp \
 	      gui/statuswindow.h \
 	      gui/storagewindow.cpp \
@@ -384,8 +388,6 @@ tmw_SOURCES += \
 	      gui/guildlistbox.h \
 	      gui/guildwindow.cpp \
 	      gui/guildwindow.h \
-	      gui/magic.cpp \
-	      gui/magic.h \
 	      gui/quitdialog.cpp \
 	      gui/quitdialog.h \
 	      gui/serverdialog.cpp \

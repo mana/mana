@@ -71,10 +71,10 @@
 #ifdef TMWSERV_SUPPORT
 #include "gui/buddywindow.h"
 #include "gui/guildwindow.h"
-#include "gui/magic.h"
 #include "gui/quitdialog.h"
 #endif
 #include "gui/npcpostdialog.h"
+#include "gui/specialswindow.h"
 #include "gui/storagewindow.h"
 
 #include "net/generalhandler.h"
@@ -128,7 +128,6 @@ PartyWindow *partyWindow;
 #ifdef TMWSERV_SUPPORT
 BuddyWindow *buddyWindow;
 GuildWindow *guildWindow;
-MagicDialog *magicDialog;
 #endif
 NpcDialog *npcDialog;
 NpcPostDialog *npcPostDialog;
@@ -141,6 +140,7 @@ DebugWindow *debugWindow;
 ShortcutWindow *itemShortcutWindow;
 ShortcutWindow *emoteShortcutWindow;
 OutfitWindow *outfitWindow;
+SpecialsWindow *specialsWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
@@ -215,7 +215,6 @@ static void createGuiWindows()
     tradeWindow = new TradeWindow;
     partyWindow = new PartyWindow;
 #ifdef TMWSERV_SUPPORT
-    magicDialog = new MagicDialog;
     buddyWindow = new BuddyWindow;
     guildWindow = new GuildWindow;
 #else
@@ -237,6 +236,7 @@ static void createGuiWindows()
     emoteShortcutWindow = new ShortcutWindow("EmoteShortcut",
                                              new EmoteShortcutContainer);
     outfitWindow = new OutfitWindow();
+    specialsWindow = new SpecialsWindow();
 
     localChatTab = new ChatTab(_("General"));
 
@@ -269,7 +269,6 @@ static void destroyGuiWindows()
     delete npcDialog;
     delete npcPostDialog;
 #ifdef TMWSERV_SUPPORT
-    delete magicDialog;
     delete buddyWindow;
     delete guildWindow;
 #endif
@@ -283,6 +282,7 @@ static void destroyGuiWindows()
     delete emoteShortcutWindow;
     delete storageWindow;
     delete outfitWindow;
+    delete specialsWindow;
 }
 
 Game::Game():

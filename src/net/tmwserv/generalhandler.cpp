@@ -22,6 +22,7 @@
 #include "gui/inventorywindow.h"
 #include "gui/partywindow.h"
 #include "gui/skilldialog.h"
+#include "gui/specialswindow.h"
 #include "gui/statuswindow.h"
 
 #include "net/tmwserv/generalhandler.h"
@@ -43,6 +44,7 @@
 #include "net/tmwserv/npchandler.h"
 #include "net/tmwserv/partyhandler.h"
 #include "net/tmwserv/playerhandler.h"
+#include "net/tmwserv/specialhandler.h"
 #include "net/tmwserv/tradehandler.h"
 
 #include "utils/gettext.h"
@@ -72,7 +74,8 @@ GeneralHandler::GeneralHandler():
     mNpcHandler(new NpcHandler),
     mPartyHandler(new PartyHandler),
     mPlayerHandler(new PlayerHandler),
-    mTradeHandler(new TradeHandler)
+    mTradeHandler(new TradeHandler),
+    mSpecialHandler(new SpecialHandler)
 {
     accountServerConnection = Net::getConnection();
     gameServerConnection = Net::getConnection();
@@ -149,6 +152,7 @@ void GeneralHandler::guiWindowsLoaded()
     inventoryWindow->setSplitAllowed(true);
     partyWindow->clearPartyName();
     skillDialog->loadSkills("tmw-skills.xml");
+    specialsWindow->loadSpecials("specials.xml");
 
     player_node->setExpNeeded(100);
 

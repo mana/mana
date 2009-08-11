@@ -22,14 +22,17 @@
 #ifndef NET_TMWSERV_SKILLHANDLER_H
 #define NET_TMWSERV_SKILLHANDLER_H
 
+#include "net/messagehandler.h"
 #include "net/specialhandler.h"
 
 namespace TmwServ {
 
-class SpecialHandler : public Net::SpecialHandler
+class SpecialHandler : public MessageHandler, public Net::SpecialHandler
 {
     public:
         SpecialHandler();
+
+        void handleMessage(MessageIn &msg);
 
         void use(int id);
 

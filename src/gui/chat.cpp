@@ -98,6 +98,8 @@ ChatWindow::ChatWindow():
 
     mChatTabs = new TabbedArea;
 
+    //place(0, 0, mChatTabs, 3, 3);
+    //place(0, 3, mChatInput, 3);
     add(mChatTabs);
     add(mChatInput);
 
@@ -128,6 +130,7 @@ void ChatWindow::resetToDefaultSize()
 
 void ChatWindow::adjustTabSize()
 {
+    //return;
     const gcn::Rectangle area = getChildrenArea();
 
     mChatInput->setPosition(mChatInput->getFrameSize(),
