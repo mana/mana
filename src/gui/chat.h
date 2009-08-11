@@ -74,12 +74,6 @@ class ChatWindow : public Window,
          */
         ~ChatWindow();
 
-        /**
-         * Called when the widget changes size. Used for adapting the size of
-         * the tabbed area.
-         */
-        void widgetResized(const gcn::Event &event);
-
         void logic();
 
         /**
@@ -192,8 +186,6 @@ class ChatWindow : public Window,
         void addTab(ChatTab *tab);
 
         void removeWhisper(const std::string &nick);
-
-        void adjustTabSize();
 
         /** Used for showing item popup on clicking links **/
         ItemLinkHandler *mItemLinkHandler;

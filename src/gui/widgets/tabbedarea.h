@@ -72,6 +72,14 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
         using gcn::TabbedArea::addTab;
 
         /**
+         * Add a tab. Overridden since it needs to size the widget.
+         *
+         * @param tab The tab widget for the tab.
+         * @param widget The widget to view when the tab is selected.
+         */
+        void addTab(gcn::Tab* tab, gcn::Widget* widget);
+
+        /**
          * Add a tab. Overridden since it needs to create an instance of Tab
          * instead of gcn::Tab.
          *

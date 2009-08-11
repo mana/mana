@@ -98,10 +98,10 @@ ChatWindow::ChatWindow():
 
     mChatTabs = new TabbedArea;
 
-    //place(0, 0, mChatTabs, 3, 3);
-    //place(0, 3, mChatInput, 3);
-    add(mChatTabs);
-    add(mChatInput);
+    place(0, 0, mChatTabs, 3, 3);
+    place(0, 3, mChatInput, 3);
+    //add(mChatTabs);
+    //add(mChatInput);
 
     loadWindowState();
 
@@ -128,41 +128,6 @@ void ChatWindow::resetToDefaultSize()
     Window::resetToDefaultSize();
 }
 
-void ChatWindow::adjustTabSize()
-{
-    //return;
-    const gcn::Rectangle area = getChildrenArea();
-
-    mChatInput->setPosition(mChatInput->getFrameSize(),
-                            area.height - mChatInput->getHeight() -
-                                mChatInput->getFrameSize());
-    mChatInput->setWidth(area.width - 2 * mChatInput->getFrameSize());
-
-    mChatTabs->setWidth(area.width - 2 * mChatTabs->getFrameSize());
-    mChatTabs->setHeight(area.height - 2 * mChatTabs->getFrameSize() -
-                         (mChatInput->getHeight() + mChatInput->getFrameSize() * 2));
-
-    ChatTab *tab = getFocused();
-    if (tab) {
-        gcn::Widget *content = tab->mScrollArea;
-	bool scrollLock = false;
-	if(tab->mScrollArea->getVerticalMaxScroll() == tab->mScrollArea->getVerticalScrollAmount())
-	scrollLock = true;
-        content->setSize(mChatTabs->getWidth() - 2 * content->getFrameSize(),
-                         mChatTabs->getContainerHeight() - 2 * content->getFrameSize());
-        content->logic();
-	if(scrollLock)
-	tab->mScrollArea->setVerticalScrollAmount(tab->mScrollArea->getVerticalMaxScroll());
-    }
-}
-
-void ChatWindow::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    adjustTabSize();
-}
-
 void ChatWindow::logic()
 {
     Window::logic();
@@ -170,7 +135,6 @@ void ChatWindow::logic()
     Tab *tab = getFocused();
     if (tab != mCurrentTab) {
         mCurrentTab = tab;
-        adjustTabSize();
     }
 }
 
@@ -293,10 +257,6 @@ void ChatWindow::addTab(ChatTab *tab)
     // TODO
 
     mChatTabs->addTab(tab, tab->mScrollArea);
-
-    // Fix for layout issues when adding the first tab
-    if (tab == localChatTab)
-        adjustTabSize();
 
     // Update UI
     logic();
