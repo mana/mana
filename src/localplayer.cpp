@@ -65,7 +65,6 @@
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
-#include <libintl.h>
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 

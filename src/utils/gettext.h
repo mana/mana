@@ -26,9 +26,9 @@
 #include "config.h"
 #endif
 
-#if ENABLE_NLS
-
 #include <libintl.h>
+
+#if ENABLE_NLS
 
 #define _(s) ((char const *)gettext(s))
 #define N_(s) ((char const *)s)
