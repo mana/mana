@@ -40,6 +40,7 @@
 #include "net/net.h"
 
 #include "utils/dtor.h"
+#include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 #include <guichan/focushandler.hpp>

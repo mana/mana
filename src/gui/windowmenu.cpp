@@ -62,7 +62,7 @@ WindowMenu::WindowMenu():
 #ifdef TMWSERV_SUPPORT
         N_("Magic"),
         N_("Guilds"),
-        N_("Buddys"),
+        N_("Buddies"),
 #endif
         N_("Shortcut"),
         N_("Setup"),
@@ -138,7 +138,7 @@ void WindowMenu::action(const gcn::ActionEvent &event)
     {
         window = guildWindow;
     }
-    else if (event.getId() == "Buddys")
+    else if (event.getId() == "Buddies")
     {
         window = buddyWindow;
     }

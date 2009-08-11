@@ -159,7 +159,7 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
 
         std::string user;
         std::string userModes;
-        tab->chatLog("Players in this channel:", BY_CHANNEL);
+        tab->chatLog(_("Players in this channel:"), BY_CHANNEL);
         while(msg.getUnreadLength())
         {
             user = msg.readString();
@@ -176,13 +176,13 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
     }
     else
     {
-        localChatTab->chatLog("Error joining channel.", BY_SERVER);
+        localChatTab->chatLog(_("Error joining channel."), BY_SERVER);
     }
 }
 
 void ChatHandler::handleListChannelsResponse(MessageIn &msg)
 {
-    localChatTab->chatLog("Listing channels", BY_SERVER);
+    localChatTab->chatLog(_("Listing channels."), BY_SERVER);
     while(msg.getUnreadLength())
     {
         std::string channelName = msg.readString();
@@ -194,7 +194,7 @@ void ChatHandler::handleListChannelsResponse(MessageIn &msg)
         channelName += numUsers.str();
         localChatTab->chatLog(channelName, BY_SERVER);
     }
-    localChatTab->chatLog("End of channel list.", BY_SERVER);
+    localChatTab->chatLog(_("End of channel list."), BY_SERVER);
 }
 
 void ChatHandler::handlePrivateMessage(MessageIn &msg)
@@ -237,7 +237,7 @@ void ChatHandler::handleListChannelUsersResponse(MessageIn &msg)
     std::string userNick;
     std::string userModes;
     Channel *channel = channelManager->findByName(channelName);
-    channel->getTab()->chatLog("Players in this channel:", BY_CHANNEL);
+    channel->getTab()->chatLog(_("Players in this channel:"), BY_CHANNEL);
     while(msg.getUnreadLength())
     {
         userNick = msg.readString();
@@ -266,15 +266,18 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
         switch(eventId)
         {
             case CHAT_EVENT_NEW_PLAYER:
-                line += " entered the channel.";
+                channel->getTab()->chatLog(strprintf(_("%s entered the "
+                        "channel."), line.c_str()), BY_CHANNEL);
                 break;
 
             case CHAT_EVENT_LEAVING_PLAYER:
-                line += " left the channel.";
+                channel->getTab()->chatLog(strprintf(_("%s left the channel."),
+                        line.c_str()), BY_CHANNEL);
                 break;
 
             case CHAT_EVENT_TOPIC_CHANGE:
-                line = "Topic: " + line;
+                channel->getTab()->chatLog(strprintf(_("Topic: %s"),
+                        line.c_str()), BY_CHANNEL);
                 break;
 
             case CHAT_EVENT_MODE_CHANGE:
@@ -284,7 +287,9 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
                 std::string user1 = line.substr(0, first);
                 std::string user2 = line.substr(first+1, second);
                 std::string mode = line.substr(second+1, line.length());
-                line = user1 + " has set mode " + mode + " on user " + user2;
+                channel->getTab()->chatLog(strprintf(_("%s has set mode %s "
+                        "on user %s."), user1.c_str(), mode.c_str(),
+                        user2.c_str()), BY_CHANNEL);
             } break;
 
             case CHAT_EVENT_KICKED_PLAYER:
@@ -292,14 +297,14 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
                 int first = line.find(":");
                 std::string user1 = line.substr(0, first);
                 std::string user2 = line.substr(first+1, line.length());
-                line = user1 + " has kicked " + user2;
+                channel->getTab()->chatLog(strprintf(_("%s has kicked %s."),
+                        user1.c_str(), user2.c_str()), BY_CHANNEL);
             } break;
 
             default:
-                line = "Unknown channel event.";
+                channel->getTab()->chatLog(_("Unknown channel event."),
+                                           BY_CHANNEL);
         }
-
-        channel->getTab()->chatLog(line, BY_CHANNEL);
     }
 }
 

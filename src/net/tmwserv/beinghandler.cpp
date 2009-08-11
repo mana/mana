@@ -268,18 +268,22 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
         static char const *const deadMsg[] =
         {
             _("You are dead."),
-            _("We regret to inform you that your character was killed in battle."),
+            _("We regret to inform you that your character was killed in "
+              "battle."),
             _("You are not that alive anymore."),
             _("The cold hands of the grim reaper are grabbing for your soul."),
             _("Game Over!"),
-            _("No, kids. Your character did not really die. It... err... went to a better place."),
-            _("Your plan of breaking your enemies weapon by bashing it with your throat failed."),
+            _("No, kids. Your character did not really die. It... err... "
+              "went to a better place."),
+            _("Your plan of breaking your enemies weapon by bashing it with "
+              "your throat failed."),
             _("I guess this did not run too well."),
             _("Do you want your possessions identified?"), // Nethack reference
             _("Sadly, no trace of you was ever found..."), // Secret of Mana reference
             _("Annihilated."), // Final Fantasy VI reference
-            _("Looks like you got your head handed to you."), //Earthbound reference
-            _("You screwed up again, dump your body down the tubes and get you another one.") // Leisure Suit Larry 1 Reference
+            _("Looks like you got your head handed to you."), // Earthbound reference
+            _("You screwed up again, dump your body down the tubes and get "
+              "you another one.") // Leisure Suit Larry 1 Reference
 
         };
         std::string message(deadMsg[rand()%13]);

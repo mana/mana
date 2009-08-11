@@ -72,6 +72,7 @@ src/net/ea/generalhandler.cpp
 src/net/ea/gui/partytab.cpp
 src/net/ea/inventoryhandler.cpp
 src/net/ea/loginhandler.cpp
+src/net/ea/maphandler.cpp
 src/net/ea/partyhandler.cpp
 src/net/ea/playerhandler.cpp
 src/net/ea/specialhandler.cpp
@@ -85,6 +86,7 @@ src/net/tmwserv/loginhandler.cpp
 src/net/tmwserv/partyhandler.cpp
 src/net/tmwserv/playerhandler.cpp
 src/net/tmwserv/tradehandler.cpp
+src/playerrelations.cpp
 src/resources/itemdb.cpp
 src/resources/monsterdb.cpp
 src/utils/gettext.h

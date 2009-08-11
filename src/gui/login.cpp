@@ -70,7 +70,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mServerDropDown = new DropDown(mServerList);
 #endif
 
-    mKeepCheck = new CheckBox(_("Remember Username"), mLoginData->remember);
+    mKeepCheck = new CheckBox(_("Remember username"), mLoginData->remember);
     mOkButton = new Button(_("OK"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mRegisterButton = new Button(_("Register"), "register", this);

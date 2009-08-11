@@ -406,6 +406,7 @@ static bool saveScreenshot()
     if (success)
     {
         std::stringstream chatlogentry;
+        // TODO: Make it one complete gettext string below
         chatlogentry << _("Screenshot saved to ~/") << filenameSuffix.str();
         localChatTab->chatLog(chatlogentry.str(), BY_SERVER);
     }

@@ -100,8 +100,8 @@ void PartyHandler::handleMessage(MessageIn &msg)
             int id = msg.readInt16(); // being id
             std::string name = msg.readString();
 
-            localChatTab->chatLog(strprintf(_("%s joined the "
-                    "party."), name.c_str()));
+            localChatTab->chatLog(strprintf(_("%s joined the party."),
+                                            name.c_str()));
 
             if (!player_node->isInParty())
                 player_node->setInParty(true);
@@ -117,7 +117,8 @@ void PartyHandler::handleMessage(MessageIn &msg)
         case CPMSG_PARTY_REJECTED:
         {
             std::string name = msg.readString();
-            localChatTab->chatLog(name + "rejected your invite.");
+            localChatTab->chatLog(strprintf(_("%s rejected your invite."),
+                                            name.c_str()));
         } break;
     }
 }

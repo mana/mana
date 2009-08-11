@@ -397,7 +397,7 @@ void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
     if (args != "")
         Net::getPartyHandler()->invite(args);
     else
-        tab->chatLog("Please specify a name.", BY_SERVER);
+        tab->chatLog(_("Please specify a name."), BY_SERVER);
 }
 
 void CommandHandler::handleMe(const std::string &args, ChatTab *tab)

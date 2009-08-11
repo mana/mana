@@ -94,7 +94,7 @@ TradeWindow::TradeWindow():
     ScrollArea *partnerScroll = new ScrollArea(mPartnerItemContainer);
     partnerScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mMoneyLabel = new Label(strprintf(_("You get %s."), ""));
+    mMoneyLabel = new Label(strprintf(_("You get %s"), ""));
     gcn::Label *mMoneyLabel2 = new Label(_("You give:"));
     
     mMoneyField = new TextField;
@@ -130,7 +130,7 @@ TradeWindow::~TradeWindow()
 
 void TradeWindow::setMoney(int amount)
 {
-    mMoneyLabel->setCaption(strprintf(_("You get %s."),
+    mMoneyLabel->setCaption(strprintf(_("You get %s"),
                                        Units::formatCurrency(amount).c_str()));
     mMoneyLabel->adjustSize();
 }

@@ -90,8 +90,8 @@ Palette::Palette() :
 
     addColor(HIGHLIGHT, 0xebc873, STATIC, _("Highlight"), 'H');
     addColor(TAB_HIGHLIGHT, 0xff0000, PULSE, indent + _("Tab Highlight"));
-    addColor(SHOP_WARNING, 0x910000, STATIC, indent + _("Item too expensive"));
-    addColor(ITEM_EQUIPPED, 0x000091, STATIC, indent + _("Item is equipped"));
+    addColor(SHOP_WARNING, 0x910000, STATIC, indent + _("Item Too Expensive"));
+    addColor(ITEM_EQUIPPED, 0x000091, STATIC, indent + _("Item Is Equipped"));
 
     addColor(CHAT, 0x000000, STATIC, _("Chat"), 'C');
     addColor(GM, 0xff0000, STATIC, indent + _("GM"), 'G');
@@ -115,10 +115,10 @@ Palette::Palette() :
     addColor(HEAD, 0x527fa4, STATIC, indent + _("Hats"));
     addColor(USABLE, 0x268d24, STATIC, indent + _("Usables"));
     addColor(TORSO, 0xd12aa4, STATIC, indent + _("Shirts"));
-    addColor(ONEHAND, 0xf42a2a, STATIC, indent + _("1 Handed Weapons"));
+    addColor(ONEHAND, 0xf42a2a, STATIC, indent + _("One Handed Weapons"));
     addColor(LEGS, 0x699900, STATIC, indent + _("Pants"));
     addColor(FEET, 0xaa1d48, STATIC, indent + _("Shoes"));
-    addColor(TWOHAND, 0xf46d0e, STATIC, indent + _("2 Handed Weapons"));
+    addColor(TWOHAND, 0xf46d0e, STATIC, indent + _("Two Handed Weapons"));
     addColor(SHIELD, 0x9c2424, STATIC, indent + _("Shields"));
     addColor(RING, 0x0000ff, STATIC, indent + _("Rings"));
     addColor(NECKLACE, 0xff00ff, STATIC, indent + _("Necklaces"));
@@ -129,9 +129,9 @@ Palette::Palette() :
     addColor(PICKUP_INFO, 0x28dc28, STATIC, indent + _("Pickup Notification"));
     addColor(EXP_INFO, 0xffff00, STATIC, indent + _("Exp Notification"));
     addColor(HIT_PLAYER_MONSTER, 0x0064ff, STATIC,
-            indent + _("Player hits Monster"));
+            indent + _("Player Hits Monster"));
     addColor(HIT_MONSTER_PLAYER, 0xff3232, STATIC,
-            indent + _("Monster hits Player"));
+            indent + _("Monster Hits Player"));
     addColor(HIT_CRITICAL, 0xff0000, RAINBOW, indent + _("Critical Hit"));
     addColor(MISS, 0xffff00, STATIC, indent + _("Misses"));
 

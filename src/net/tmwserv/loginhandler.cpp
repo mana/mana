@@ -77,16 +77,16 @@ void LoginHandler::handleMessage(MessageIn &msg)
             {
                 switch (errMsg) {
                     case ERRMSG_INVALID_ARGUMENT:
-                        errorMessage = _("Wrong magic_token");
+                        errorMessage = _("Wrong magic_token.");
                         break;
                     case ERRMSG_FAILURE:
-                        errorMessage = _("Already logged in");
+                        errorMessage = _("Already logged in.");
                         break;
                     case LOGIN_SERVER_FULL:
-                        errorMessage = _("Server is full");
+                        errorMessage = _("Server is full.");
                         break;
                     default:
-                        errorMessage = _("Unknown error");
+                        errorMessage = _("Unknown error.");
                         break;
                 }
                 state = STATE_ERROR;
@@ -107,16 +107,16 @@ void LoginHandler::handleMessage(MessageIn &msg)
             {
                 switch (errMsg) {
                     case ERRMSG_INVALID_ARGUMENT:
-                        errorMessage = _("New password incorrect");
+                        errorMessage = _("New password incorrect.");
                         break;
                     case ERRMSG_FAILURE:
-                        errorMessage = _("Old password incorrect");
+                        errorMessage = _("Old password incorrect.");
                         break;
                     case ERRMSG_NO_LOGIN:
                         errorMessage = _("Account not connected. Please login first.");
                         break;
                     default:
-                        errorMessage = _("Unknown error");
+                        errorMessage = _("Unknown error.");
                         break;
                 }
                 state = STATE_ACCOUNTCHANGE_ERROR;
@@ -137,10 +137,10 @@ void LoginHandler::handleMessage(MessageIn &msg)
             {
                 switch (errMsg) {
                     case ERRMSG_INVALID_ARGUMENT:
-                        errorMessage = _("New email address incorrect");
+                        errorMessage = _("New email address incorrect.");
                         break;
                     case ERRMSG_FAILURE:
-                        errorMessage = _("Old email address incorrect");
+                        errorMessage = _("Old email address incorrect.");
                         break;
                     case ERRMSG_NO_LOGIN:
                         errorMessage = _("Account not connected. Please login first.");
@@ -149,7 +149,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = _("The new email address already exists.");
                         break;
                     default:
-                        errorMessage = _("Unknown error");
+                        errorMessage = _("Unknown error.");
                         break;
                 }
                 state = STATE_ACCOUNTCHANGE_ERROR;
@@ -173,19 +173,19 @@ void LoginHandler::handleLoginResponse(MessageIn &msg)
     {
         switch (errMsg) {
             case LOGIN_INVALID_VERSION:
-                errorMessage = _("Client version is too old");
+                errorMessage = _("Client version is too old.");
                 break;
             case ERRMSG_INVALID_ARGUMENT:
-                errorMessage = _("Wrong username or password");
+                errorMessage = _("Wrong username or password.");
                 break;
             case ERRMSG_FAILURE:
-                errorMessage = _("Already logged in");
+                errorMessage = _("Already logged in.");
                 break;
             case LOGIN_SERVER_FULL:
-                errorMessage = _("Server is full");
+                errorMessage = _("Server is full.");
                 break;
             default:
-                errorMessage = _("Unknown error");
+                errorMessage = _("Unknown error.");
                 break;
         }
         state = STATE_LOGIN_ERROR;
@@ -205,19 +205,19 @@ void LoginHandler::handleRegisterResponse(MessageIn &msg)
     {
         switch (errMsg) {
             case REGISTER_INVALID_VERSION:
-                errorMessage = _("Client version is too old");
+                errorMessage = _("Client version is too old.");
                 break;
             case ERRMSG_INVALID_ARGUMENT:
-                errorMessage = _("Wrong username, password or email address");
+                errorMessage = _("Wrong username, password or email address.");
                 break;
             case REGISTER_EXISTS_USERNAME:
-                errorMessage = _("Username already exists");
+                errorMessage = _("Username already exists.");
                 break;
             case REGISTER_EXISTS_EMAIL:
-                errorMessage = _("Email address already exists");
+                errorMessage = _("Email address already exists.");
                 break;
             default:
-                errorMessage = _("Unknown error");
+                errorMessage = _("Unknown error.");
                 break;
         }
         state = STATE_LOGIN_ERROR;

@@ -81,7 +81,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                 delete mCharInfo->getEntry();
                 mCharInfo->setEntry(0);
                 mCharInfo->unlock();
-                new OkDialog(_("Info"), _("Player deleted"));
+                new OkDialog(_("Info"), _("Player deleted."));
             }
             // Character deletion failed
             else
@@ -90,13 +90,13 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                 switch (errMsg)
                 {
                     case ERRMSG_NO_LOGIN:
-                        errorMessage = _("Not logged in");
+                        errorMessage = _("Not logged in.");
                         break;
                     case ERRMSG_INVALID_ARGUMENT:
-                        errorMessage = _("Selection out of range");
+                        errorMessage = _("Selection out of range.");
                         break;
                     default:
-                        errorMessage = _("Unknown error");
+                        errorMessage = _("Unknown error.");
                 }
                 mCharInfo->unlock();
                 new OkDialog(_("Error"), errorMessage);
@@ -135,37 +135,37 @@ void CharServerHandler::handleCharCreateResponse(MessageIn &msg)
         switch (errMsg)
         {
             case ERRMSG_NO_LOGIN:
-                errorMessage = _("Not logged in");
+                errorMessage = _("Not logged in.");
                 break;
             case CREATE_TOO_MUCH_CHARACTERS:
-                errorMessage = _("No empty slot");
+                errorMessage = _("No empty slot.");
                 break;
             case ERRMSG_INVALID_ARGUMENT:
-                errorMessage = _("Invalid name");
+                errorMessage = _("Invalid name.");
                 break;
             case CREATE_EXISTS_NAME:
-                errorMessage = _("Character's name already exists");
+                errorMessage = _("Character's name already exists.");
                 break;
             case CREATE_INVALID_HAIRSTYLE:
-                errorMessage = _("Invalid hairstyle");
+                errorMessage = _("Invalid hairstyle.");
                 break;
             case CREATE_INVALID_HAIRCOLOR:
-                errorMessage = _("Invalid hair color");
+                errorMessage = _("Invalid hair color.");
                 break;
             case CREATE_INVALID_GENDER:
-                errorMessage = _("Invalid gender");
+                errorMessage = _("Invalid gender.");
                 break;
             case CREATE_RAW_STATS_TOO_HIGH:
-                errorMessage = _("Character's stats are too high");
+                errorMessage = _("Character's stats are too high.");
                 break;
             case CREATE_RAW_STATS_TOO_LOW:
-                errorMessage = _("Character's stats are too low");
+                errorMessage = _("Character's stats are too low.");
                 break;
             case CREATE_RAW_STATS_EQUAL_TO_ZERO:
-                errorMessage = _("One stat is zero");
+                errorMessage = _("One stat is zero.");
                 break;
             default:
-                errorMessage = _("Unknown error");
+                errorMessage = _("Unknown error.");
                 break;
         }
         new OkDialog(_("Error"), errorMessage);
