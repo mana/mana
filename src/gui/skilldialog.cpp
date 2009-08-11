@@ -122,25 +122,6 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void SkillDialog::adjustTabSize()
-{
-    gcn::Widget *content = mTabs->getCurrentWidget();
-    if (content) {
-        int width = mTabs->getWidth() - 2 * content->getFrameSize() - 2 * mTabs->getFrameSize();
-        int height = mTabs->getContainerHeight() - 2 * content->getFrameSize();
-        content->setSize(width, height);
-        content->setVisible(true);
-        content->logic();
-    }
-}
-
-void SkillDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    adjustTabSize();
-}
-
 void SkillDialog::logic()
 {
     Window::logic();
@@ -148,7 +129,6 @@ void SkillDialog::logic()
     Tab *tab = dynamic_cast<Tab*>(mTabs->getSelectedTab());
     if (tab != mCurrentTab) {
         mCurrentTab = tab;
-        adjustTabSize();
     }
 }
 
@@ -248,8 +228,6 @@ void SkillDialog::loadSkills(const std::string &file)
             }
         }
     }
-
-    adjustTabSize();
     update();
 }
 

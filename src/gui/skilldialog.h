@@ -54,12 +54,6 @@ class SkillDialog : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
-        /**
-         * Called when the widget changes size. Used for adapting the size of
-         * the tabbed area.
-         */
-        void widgetResized(const gcn::Event &event);
-
         void logic();
 
         /**
@@ -77,8 +71,6 @@ class SkillDialog : public Window, public gcn::ActionListener
         void setModifiable(int id, bool modifiable);
 
     private:
-        void adjustTabSize();
-
         typedef std::map<int, SkillInfo*> SkillMap;
         SkillMap mSkills;
         Tab *mCurrentTab;
