@@ -24,12 +24,18 @@
 
 #include "being.h"
 
-class FlashText;
 class Graphics;
 class Map;
 #ifdef TMWSERV_SUPPORT
 class Guild;
 #endif
+
+enum Gender
+{
+    GENDER_MALE = 0,
+    GENDER_FEMALE = 1,
+    GENDER_UNSPECIFIED = 2
+};
 
 /**
  * A player being. Players have their name drawn beneath them. This class also
@@ -39,6 +45,29 @@ class Guild;
 class Player : public Being
 {
     public:
+        enum Sprite
+        {
+            BASE_SPRITE = 0,
+            SHOE_SPRITE,
+            BOTTOMCLOTHES_SPRITE,
+            TOPCLOTHES_SPRITE,
+#ifdef EATHENA_SUPPORT
+            MISC1_SPRITE,
+            MISC2_SPRITE,
+#endif
+            HAIR_SPRITE,
+            HAT_SPRITE,
+#ifdef EATHENA_SUPPORT
+            CAPE_SPRITE,
+            GLOVES_SPRITE,
+#endif
+            WEAPON_SPRITE,
+#ifdef EATHENA_SUPPORT
+            SHIELD_SPRITE,
+#endif
+            VECTOREND_SPRITE
+        };
+
         /**
          * Constructor.
          */
@@ -46,18 +75,18 @@ class Player : public Being
 
         ~Player();
 
-        /**
-         * Set up mName to be the character's name
-         */
-        virtual void setName(const std::string &name);
-
 #ifdef EATHENA_SUPPORT
         virtual void logic();
 #endif
 
-        virtual Type getType() const;
+        virtual Type getType() const { return PLAYER; }
 
+        /**
+         * Sets the gender of this being.
+         */
         virtual void setGender(Gender gender);
+
+        Gender getGender() const { return mGender; }
 
         /**
          * Whether or not this player is a GM.
@@ -70,26 +99,9 @@ class Player : public Being
         virtual void setGM(bool gm);
 
         /**
-         * Sets the hair style and color for this player.
-         *
-         * Only for convenience in 0.0 client. When porting
-         * this to the trunk remove this function and
-         * call setSprite directly instead. The server should
-         * provide the hair ID and coloring in the same way
-         * it does for other equipment pieces.
-         *
-         */
-        void setHairStyle(int style, int color);
-
-        /**
          * Sets visible equipments for this player.
          */
         virtual void setSprite(int slot, int id, const std::string &color = "");
-
-        /**
-         * Flash the player's name
-         */
-        void flash(int time);
 
 #ifdef TMWSERV_SUPPORT
         /**
@@ -137,7 +149,7 @@ class Player : public Being
         /**
          * Called when a option (set with config.addListener()) is changed
          */
-        void optionChanged(const std::string &value);
+        virtual void optionChanged(const std::string &value);
 
     protected:
         /**
@@ -146,15 +158,16 @@ class Player : public Being
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_CHARACTER; }
 
-        virtual void updateCoords();
+        virtual void updateColors();
+
+        Gender mGender;
+        std::vector<int> mSpriteIDs;
+        std::vector<std::string> mSpriteColors;
 
 #ifdef TMWSERV_SUPPORT
         // Character guild information
         std::map<int, Guild*> mGuilds;
 #endif
-
-        bool mShowName;
-        FlashText *mName;
 
         bool mIsGM;
 

@@ -39,8 +39,8 @@ class Sprite;
 class Tileset;
 
 typedef std::vector<Tileset*> Tilesets;
-typedef std::list<Sprite*> Sprites;
-typedef Sprites::iterator SpriteIterator;
+typedef std::list<Sprite*> MapSprites;
+typedef MapSprites::iterator MapSprite;
 typedef std::vector<MapLayer*> Layers;
 
 /**
@@ -128,7 +128,7 @@ class MapLayer
                   int startX, int startY,
                   int endX, int endY,
                   int scrollX, int scrollY,
-                  const Sprites &sprites) const;
+                  const MapSprites &sprites) const;
 
     private:
         int mX, mY;
@@ -266,12 +266,12 @@ class Map : public Properties
         /**
          * Adds a sprite to the map.
          */
-        SpriteIterator addSprite(Sprite *sprite);
+        MapSprite addSprite(Sprite *sprite);
 
         /**
          * Removes a sprite from the map.
          */
-        void removeSprite(SpriteIterator iterator);
+        void removeSprite(MapSprite iterator);
 
         /**
          * Adds a particle effect
@@ -317,7 +317,7 @@ class Map : public Properties
         MetaTile *mMetaTiles;
         Layers mLayers;
         Tilesets mTilesets;
-        Sprites mSprites;
+        MapSprites mSprites;
 
         // Pathfinding members
         int mOnClosedList, mOnOpenList;

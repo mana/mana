@@ -139,7 +139,6 @@ void PartyHandler::handleMessage(MessageIn &msg)
                     break;
                 }
                 std::string nick;
-                int gender = 0;
                 std::string partyName = "";
                 if (being->getType() != Being::PLAYER)
                 {
@@ -148,7 +147,6 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 else
                 {
                     nick = being->getName();
-                    gender = being->getGender();
                     partyName = msg.readString(24);
                 }
                 partyWindow->showPartyInvite(nick, partyName);

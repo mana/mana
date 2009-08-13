@@ -77,18 +77,11 @@ Being::Being(int id, int job, Map *map):
     mSpriteDirection(DIRECTION_DOWN),
     mMap(NULL),
     mParticleEffects(config.getValue("particleeffects", 1)),
+    mDispName(0),
+    mShowName(false),
     mEquippedWeapon(NULL),
-#ifdef TMWSERV_SUPPORT
-    mHairStyle(0),
-#else
-    mHairStyle(1),
-#endif
-    mHairColor(0),
-    mGender(GENDER_UNSPECIFIED),
+    mText(0),
     mStunMode(0),
-    mSprites(VECTOREND_SPRITE, NULL),
-    mSpriteIDs(VECTOREND_SPRITE, 0),
-    mSpriteColors(VECTOREND_SPRITE, ""),
     mStatusParticleEffects(&mStunParticleEffects, false),
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
@@ -105,8 +98,8 @@ Being::Being(int id, int job, Map *map):
 
     mSpeechBubble = new SpeechBubble;
 
-    mNameColor = &guiPalette->getColor(Palette::CHAT);
-    mText = 0;
+    mNameColor = &guiPalette->getColor(Palette::NPC);
+    mTextColor = &guiPalette->getColor(Palette::CHAT);
 }
 
 Being::~Being()
@@ -120,6 +113,7 @@ Being::~Being()
     setMap(NULL);
 
     delete mSpeechBubble;
+    delete mDispName;
     delete mText;
 }
 
@@ -216,19 +210,6 @@ void Being::setPath(const Path &path)
         mWalkTime = tick_time;
     }
 #endif
-}
-
-void Being::setHairStyle(int style, int color)
-{
-    mHairStyle = style < 0 ? mHairStyle : style % mNumberOfHairstyles;
-    mHairColor = color < 0 ? mHairColor : color % ColorDB::size();
-}
-
-void Being::setSprite(int slot, int id, const std::string &color)
-{
-    assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
-    mSpriteIDs[slot] = id;
-    mSpriteColors[slot] = color;
 }
 
 void Being::setSpeech(const std::string &text, int time)
@@ -368,17 +349,42 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
 #endif
 }
 
+void Being::setName(const std::string &name)
+{
+    mName = name;
+
+    if (getShowName())
+        showName();
+}
+
+void Being::setShowName(bool doShowName)
+{
+    bool oldShow = mShowName;
+    mShowName = doShowName;
+
+    if (doShowName != oldShow)
+    {
+        if (doShowName)
+            showName();
+        else
+        {
+            delete mDispName;
+            mDispName = 0;
+        }
+    }
+}
+
 void Being::setMap(Map *map)
 {
     // Remove sprite from potential previous map
     if (mMap)
-        mMap->removeSprite(mSpriteIterator);
+        mMap->removeSprite(mMapSprite);
 
     mMap = map;
 
     // Add sprite to potential new map
     if (mMap)
-        mSpriteIterator = mMap->addSprite(this);
+        mMapSprite = mMap->addSprite(this);
 
     // Clear particle effect list because child particles became invalid
     mChildParticleEffects.clear();
@@ -408,11 +414,9 @@ void Being::setAction(Action action, int attackType)
             else
                 currentAction = ACTION_ATTACK;
 
-            for (int i = 0; i < VECTOREND_SPRITE; i++)
-            {
-                if (mSprites[i])
-                    mSprites[i]->reset();
-            }
+            for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
+                if (*it)
+                    (*it)->reset();
             break;
         case HURT:
             //currentAction = ACTION_HURT;  // Buggy: makes the player stop
@@ -429,11 +433,9 @@ void Being::setAction(Action action, int attackType)
 
     if (currentAction != ACTION_INVALID)
     {
-        for (int i = 0; i < VECTOREND_SPRITE; i++)
-        {
-            if (mSprites[i])
-                mSprites[i]->play(currentAction);
-        }
+        for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
+            if (*it)
+                (*it)->play(currentAction);
         mAction = action;
     }
 }
@@ -461,11 +463,9 @@ void Being::setDirection(Uint8 direction)
         dir = DIRECTION_LEFT;
     mSpriteDirection = dir;
 
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-    {
-       if (mSprites[i])
-           mSprites[i]->setDirection(dir);
-    }
+    for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
+        if (*it)
+           (*it)->setDirection(dir);
 }
 
 #ifdef EATHENA_SUPPORT
@@ -573,11 +573,9 @@ void Being::logic()
     if (mUsedTargetCursor)
         mUsedTargetCursor->update(tick_time * 10);
 
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-    {
-        if (mSprites[i])
-            mSprites[i]->update(tick_time * 10);
-    }
+    for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
+        if (*it)
+            (*it)->update(tick_time * 10);
 
     // Restart status/particle effects, if needed
     if (mMustResetParticles) {
@@ -605,13 +603,9 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
     if (mUsedTargetCursor)
         mUsedTargetCursor->draw(graphics, px, py);
 
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-    {
-        if (mSprites[i])
-        {
-            mSprites[i]->draw(graphics, px, py);
-        }
-    }
+    for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
+        if (*it)
+            (*it)->draw(graphics, px, py);
 }
 
 void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
@@ -650,7 +644,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
             mText = NULL;
         }
 
-        mSpeechBubble->setCaption(showName ? mName : "", mNameColor);
+        mSpeechBubble->setCaption(showName ? mName : "", mTextColor);
 
         mSpeechBubble->setText(mSpeech, showName);
         mSpeechBubble->setPosition(px - (mSpeechBubble->getWidth() / 2),
@@ -678,11 +672,6 @@ void Being::drawSpeech(int offsetX, int offsetY)
 
         mText = NULL;
     }
-}
-
-Being::Type Being::getType() const
-{
-    return UNKNOWN;
 }
 
 void Being::setStatusEffectBlock(int offset, Uint16 newEffects)
@@ -765,7 +754,13 @@ int Being::getOffset(char pos, char neg) const
 
 int Being::getWidth() const
 {
-    if (AnimatedSprite *base = mSprites[BASE_SPRITE])
+    AnimatedSprite *base = NULL;
+
+    for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
+        if ((base = (*it)))
+            break;
+
+    if (base)
         return std::max(base->getWidth(), DEFAULT_WIDTH);
     else
         return DEFAULT_WIDTH;
@@ -773,7 +768,13 @@ int Being::getWidth() const
 
 int Being::getHeight() const
 {
-    if (AnimatedSprite *base = mSprites[BASE_SPRITE])
+    AnimatedSprite *base = NULL;
+
+    for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
+        if ((base = (*it)))
+            break;
+
+    if (base)
         return std::max(base->getHeight(), DEFAULT_HEIGHT);
     else
         return DEFAULT_HEIGHT;
@@ -875,9 +876,27 @@ void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
     }
 }
 
-int Being::getHairStyleCount()
+void Being::updateCoords()
 {
-    return mNumberOfHairstyles;
+    if (mDispName)
+    {
+        mDispName->adviseXY(getPixelX(), getPixelY());
+    }
+}
+
+void Being::flashName(int time)
+{
+    if (mDispName)
+        mDispName->flash(time);
+}
+
+void Being::showName()
+{
+    delete mDispName;
+    mDispName = 0;
+
+    mDispName = new FlashText(mName, getPixelX(), getPixelY(),
+                             gcn::Graphics::CENTER, mNameColor);
 }
 
 void Being::load()

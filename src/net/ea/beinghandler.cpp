@@ -37,6 +37,8 @@
 
 #include "gui/partywindow.h"
 
+#include "resources/colordb.h"
+
 #include <iostream>
 
 namespace EAthena {
@@ -98,7 +100,7 @@ Being *createBeing(int id, short job)
 void BeingHandler::handleMessage(MessageIn &msg)
 {
     int id;
-    short job, speed;
+    short job, speed, gender;
     Uint16 headTop, headMid, headBottom;
     Uint16 shoes, gloves;
     Uint16 weapon, shield;
@@ -109,6 +111,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
     int type;
     Uint16 status;
     Being *srcBeing, *dstBeing;
+    Player *player;
     int hairStyle, hairColor, flag;
 
     switch (msg.getId())
@@ -137,6 +140,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 dstBeing = createBeing(id, job);
             }
 
+            player = dynamic_cast<Player*>(dstBeing);
+
             // Fix monster jobs
             if (dstBeing->getType() == Being::MONSTER)
             {
@@ -158,7 +163,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             hairStyle = msg.readInt16();
-            dstBeing->setSprite(Being::WEAPON_SPRITE, msg.readInt16());
+            weapon = msg.readInt16();
             headBottom = msg.readInt16();
 
             if (msg.getId() == SMSG_BEING_MOVE)
@@ -166,7 +171,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 msg.readInt32(); // server tick
             }
 
-            dstBeing->setSprite(Being::SHIELD_SPRITE, msg.readInt16());
+            shield = msg.readInt16();
             headTop = msg.readInt16();
             headMid = msg.readInt16();
             hairColor = msg.readInt16();
@@ -178,16 +183,22 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readInt16();  // manner
             dstBeing->setStatusEffectBlock(32, msg.readInt16());  // opt3
             msg.readInt8();   // karma
-            dstBeing->setGender(
-                    (msg.readInt8() == 0) ? GENDER_FEMALE : GENDER_MALE);
+            gender = msg.readInt8();
 
-            // Set these after the gender, as the sprites may be gender-specific
-            dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
-            dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
-            dstBeing->setSprite(Being::HAT_SPRITE, headTop);
-            dstBeing->setSprite(Being::SHOE_SPRITE, shoes);
-            dstBeing->setSprite(Being::GLOVES_SPRITE, gloves);
-            dstBeing->setHairStyle(hairStyle, hairColor);
+            if (player)
+            {
+                player->setGender((gender == 0)
+                                  ? GENDER_FEMALE : GENDER_MALE);
+                // Set these after the gender, as the sprites may be gender-specific
+                player->setSprite(Player::HAIR_SPRITE, hairStyle * -1, ColorDB::get(hairColor));
+                player->setSprite(Player::BOTTOMCLOTHES_SPRITE, headBottom);
+                player->setSprite(Player::TOPCLOTHES_SPRITE, headMid);
+                player->setSprite(Player::HAT_SPRITE, headTop);
+                player->setSprite(Player::SHOE_SPRITE, shoes);
+                player->setSprite(Player::GLOVES_SPRITE, gloves);
+                player->setSprite(Player::WEAPON_SPRITE, weapon);
+                player->setSprite(Player::SHIELD_SPRITE, shield);
+            }
 
             if (msg.getId() == SMSG_BEING_MOVE)
             {
@@ -371,6 +382,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 break;
             }
 
+            player = dynamic_cast<Player*>(dstBeing);
+
             int type = msg.readInt8();
             int id = 0;
             int id2 = 0;
@@ -384,41 +397,42 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             switch (type) {
                 case 1:     // eAthena LOOK_HAIR
-                    dstBeing->setHairStyle(id, -1);
+                    player->setSprite(Player::HAIR_SPRITE, id * -1,
+                                      ColorDB::get(id2));
                     break;
                 case 2:     // Weapon ID in id, Shield ID in id2
-                    dstBeing->setSprite(Being::WEAPON_SPRITE, id);
-                    dstBeing->setSprite(Being::SHIELD_SPRITE, id2);
+                    player->setSprite(Player::WEAPON_SPRITE, id);
+                    player->setSprite(Player::SHIELD_SPRITE, id2);
                     break;
                 case 3:     // Change lower headgear for eAthena, pants for us
-                    dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, id);
+                    player->setSprite(Player::BOTTOMCLOTHES_SPRITE, id);
                     break;
                 case 4:     // Change upper headgear for eAthena, hat for us
-                    dstBeing->setSprite(Being::HAT_SPRITE, id);
+                    player->setSprite(Player::HAT_SPRITE, id);
                     break;
                 case 5:     // Change middle headgear for eathena, armor for us
-                     dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, id);
+                    player->setSprite(Player::TOPCLOTHES_SPRITE, id);
                     break;
                 case 6:     // eAthena LOOK_HAIR_COLOR
-                    dstBeing->setHairStyle(-1, id);
+                    // ignored (duplicate of LOOK_HAIR)
                     break;
                 case 8:     // eAthena LOOK_SHIELD
-                    dstBeing->setSprite(Being::SHIELD_SPRITE, id);
+                    player->setSprite(Player::SHIELD_SPRITE, id);
                     break;
                 case 9:     // eAthena LOOK_SHOES
-                    dstBeing->setSprite(Being::SHOE_SPRITE, id);
+                    player->setSprite(Player::SHOE_SPRITE, id);
                     break;
                 case 10:   // LOOK_GLOVES
-                    dstBeing->setSprite(Being::GLOVES_SPRITE, id);
+                    player->setSprite(Player::GLOVES_SPRITE, id);
                     break;
                 case 11:  // LOOK_CAPE
-                    dstBeing->setSprite(Being::CAPE_SPRITE, id);
+                    player->setSprite(Player::CAPE_SPRITE, id);
                     break;
                 case 12:
-                    dstBeing->setSprite(Being::MISC1_SPRITE, id);
+                    player->setSprite(Player::MISC1_SPRITE, id);
                     break;
                 case 13:
-                    dstBeing->setSprite(Being::MISC2_SPRITE, id);
+                    player->setSprite(Player::MISC2_SPRITE, id);
                     break;
                 default:
                     logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
@@ -466,14 +480,15 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 dstBeing = createBeing(id, job);
             }
 
+            player = dynamic_cast<Player*>(dstBeing);
+
             {
                 PartyMember *member = partyWindow->findMember(id);
                 if (member && member->online)
                 {
-                    dynamic_cast<Player*>(dstBeing)->setInParty(true);
+                    player->setInParty(true);
                 }
             }
-
 
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
@@ -497,19 +512,19 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readInt16();  // manner
             dstBeing->setStatusEffectBlock(32, msg.readInt16());  // opt3
             msg.readInt8();   // karma
-            dstBeing->setGender(
-                    (msg.readInt8() == 0) ? GENDER_FEMALE : GENDER_MALE);
+            player->setGender((msg.readInt8() == 0)
+                              ? GENDER_FEMALE : GENDER_MALE);
 
             // Set these after the gender, as the sprites may be gender-specific
-            dstBeing->setSprite(Being::WEAPON_SPRITE, weapon);
-            dstBeing->setSprite(Being::SHIELD_SPRITE, shield);
-            dstBeing->setSprite(Being::BOTTOMCLOTHES_SPRITE, headBottom);
-            dstBeing->setSprite(Being::TOPCLOTHES_SPRITE, headMid);
-            dstBeing->setSprite(Being::HAT_SPRITE, headTop);
-            //dstBeing->setSprite(Being::CAPE_SPRITE, cape);
-            //dstBeing->setSprite(Being::MISC1_SPRITE, misc1);
-            //dstBeing->setSprite(Being::MISC2_SPRITE, misc2);
-            dstBeing->setHairStyle(hairStyle, hairColor);
+            player->setSprite(Player::WEAPON_SPRITE, weapon);
+            player->setSprite(Player::SHIELD_SPRITE, shield);
+            player->setSprite(Player::BOTTOMCLOTHES_SPRITE, headBottom);
+            player->setSprite(Player::TOPCLOTHES_SPRITE, headMid);
+            player->setSprite(Player::HAT_SPRITE, headTop);
+            //player->setSprite(Player::CAPE_SPRITE, cape);
+            //player->setSprite(Player::MISC1_SPRITE, misc1);
+            //player->setSprite(Player::MISC2_SPRITE, misc2);
+            player->setSprite(Player::HAIR_SPRITE, hairStyle * -1, ColorDB::get(hairColor));
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {

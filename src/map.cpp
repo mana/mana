@@ -123,7 +123,7 @@ Image* MapLayer::getTile(int x, int y) const
 
 void MapLayer::draw(Graphics *graphics, int startX, int startY,
                     int endX, int endY, int scrollX, int scrollY,
-                    const Sprites &sprites) const
+                    const MapSprites &sprites) const
 {
     startX -= mX;
     startY -= mY;
@@ -135,7 +135,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
     if (endX > mWidth) endX = mWidth;
     if (endY > mHeight) endY = mHeight;
 
-    Sprites::const_iterator si = sprites.begin();
+    MapSprites::const_iterator si = sprites.begin();
 
     for (int y = startY; y < endY; y++)
     {
@@ -467,13 +467,13 @@ MetaTile *Map::getMetaTile(int x, int y) const
     return &mMetaTiles[x + y * mWidth];
 }
 
-SpriteIterator Map::addSprite(Sprite *sprite)
+MapSprite Map::addSprite(Sprite *sprite)
 {
     mSprites.push_front(sprite);
     return mSprites.begin();
 }
 
-void Map::removeSprite(SpriteIterator iterator)
+void Map::removeSprite(MapSprite iterator)
 {
     mSprites.erase(iterator);
 }

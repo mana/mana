@@ -82,11 +82,11 @@ void PlayerBox::draw(gcn::Graphics *graphics)
     {
         // Draw character
         const int bs = getFrameSize();
-#ifdef TMWSERV_SUPPORT
+//#ifdef TMWSERV_SUPPORT
         const int x = getWidth() / 2 + bs;
         const int y = getHeight() - bs - 8;
         mPlayer->draw(static_cast<Graphics*>(graphics), x, y);
-#else
+/*#else
         const int x = getWidth() / 2 - 16 + bs;
         const int y = getHeight() / 2 + bs;
         for (int i = 0; i < Being::VECTOREND_SPRITE; i++)
@@ -96,7 +96,7 @@ void PlayerBox::draw(gcn::Graphics *graphics)
                 mPlayer->getSprite(i)->draw(static_cast<Graphics*>(graphics), x, y);
             }
         }
-#endif
+#endif*/
     }
 
     if (config.getValue("guialpha", 0.8) != mAlpha)

@@ -24,14 +24,12 @@
 
 #include <list>
 
+#include "map.h"
 #include "sprite.h"
 
 class Graphics;
 class Image;
 class Item;
-class Map;
-
-typedef std::list<Sprite*> Sprites;
 
 /**
  * An item lying on the floor.
@@ -100,7 +98,7 @@ class FloorItem : public Sprite
         int mId;
         int mX, mY;
         Item *mItem;
-        Sprites::iterator mSpriteIterator;
+        MapSprite mMapSprite;
         Map *mMap;
 };
 

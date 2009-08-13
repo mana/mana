@@ -109,8 +109,6 @@ class LocalPlayer : public Player
          */
         ~LocalPlayer();
 
-        virtual void setName(const std::string &name);
-
         virtual void logic();
 
         virtual void setAction(Action action, int attackType = 0);
@@ -361,8 +359,16 @@ class LocalPlayer : public Player
         void addMessageToQueue(const std::string &message,
                                Palette::ColorType color = Palette::EXP_INFO);
 
+        /**
+         * Called when a option (set with config.addListener()) is changed
+         */
+        void optionChanged(const std::string &value);
+
     protected:
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
+
+        // Colors don't change for local player
+        virtual void updateColors() {}
 
         void walk(unsigned char dir);
 

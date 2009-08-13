@@ -38,6 +38,8 @@
 #include "gui/charcreatedialog.h"
 #include "gui/okdialog.h"
 
+#include "resources/colordb.h"
+
 #include "utils/gettext.h"
 
 extern Net::Connection *gameServerConnection;
@@ -229,7 +231,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setName(msg.readString());
     tempPlayer->setGender(msg.readInt8() == GENDER_MALE ? GENDER_MALE : GENDER_FEMALE);
     int hs = msg.readInt8(), hc = msg.readInt8();
-    tempPlayer->setHairStyle(hs, hc);
+    tempPlayer->setSprite(Player::HAIR_SPRITE, hs * -1, ColorDB::get(hc));
     tempPlayer->setLevel(msg.readInt16());
     tempPlayer->setCharacterPoints(msg.readInt16());
     tempPlayer->setCorrectionPoints(msg.readInt16());

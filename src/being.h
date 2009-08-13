@@ -46,11 +46,11 @@
 #define SPEECH_MAX_TIME 1000
 
 class AnimatedSprite;
+class FlashText;
+class Graphics;
 class Image;
 class ItemInfo;
 class Item;
-class Map;
-class Graphics;
 class Particle;
 class Position;
 class SimpleAnimation;
@@ -58,16 +58,6 @@ class SpeechBubble;
 class Text;
 
 class StatusEffect;
-
-typedef std::list<Sprite*> Sprites;
-typedef Sprites::iterator SpriteIterator;
-
-enum Gender
-{
-    GENDER_MALE = 0,
-    GENDER_FEMALE = 1,
-    GENDER_UNSPECIFIED = 2
-};
 
 class Being : public Sprite, public ConfigListener
 {
@@ -93,29 +83,6 @@ class Being : public Sprite, public ConfigListener
             SIT,
             DEAD,
             HURT
-        };
-
-        enum Sprite
-        {
-            BASE_SPRITE = 0,
-            SHOE_SPRITE,
-            BOTTOMCLOTHES_SPRITE,
-            TOPCLOTHES_SPRITE,
-#ifdef EATHENA_SUPPORT
-            MISC1_SPRITE,
-            MISC2_SPRITE,
-#endif
-            HAIR_SPRITE,
-            HAT_SPRITE,
-#ifdef EATHENA_SUPPORT
-            CAPE_SPRITE,
-            GLOVES_SPRITE,
-#endif
-            WEAPON_SPRITE,
-#ifdef EATHENA_SUPPORT
-            SHIELD_SPRITE,
-#endif
-            VECTOREND_SPRITE
         };
 
         enum TargetCursorSize
@@ -246,41 +213,16 @@ class Being : public Sprite, public ConfigListener
          *
          * @param name The name that should appear.
          */
-        virtual void setName(const std::string &name)
-        { mName = name; }
+        virtual void setName(const std::string &name);
 
-        /**
-         * Gets the hair color for this being.
-         */
-        int getHairColor() const { return mHairColor; }
+        const bool getShowName() const { return mShowName; }
 
-        /**
-         * Gets the hair style for this being.
-         */
-        int getHairStyle() const { return mHairStyle; }
+        virtual void setShowName(bool doShowName);
 
         /**
          * Get the number of hairstyles implemented
          */
         static int getNumOfHairstyles() { return mNumberOfHairstyles; }
-
-        /**
-         * Sets the hair style and color for this being.
-         */
-        virtual void setHairStyle(int style, int color);
-
-        /**
-         * Sets visible equipments for this being.
-         */
-        virtual void setSprite(int slot, int id,
-                               const std::string &color = "");
-
-        /**
-         * Sets the gender of this being.
-         */
-        virtual void setGender(Gender gender) { mGender = gender; }
-
-        Gender getGender() const { return mGender; }
 
 #ifdef EATHENA_SUPPORT
         /**
@@ -307,7 +249,7 @@ class Being : public Sprite, public ConfigListener
         /**
          * Returns the type of the being.
          */
-        virtual Type getType() const;
+        virtual Type getType() const { return UNKNOWN; }
 
         /**
          * Sets the walk speed (in pixels per second).
@@ -496,14 +438,14 @@ class Being : public Sprite, public ConfigListener
             internalTriggerEffect(effectId, false, true);
         }
 
-        static int getHairStyleCount();
-
         virtual AnimatedSprite *getSprite(int index) const
         { return mSprites[index]; }
 
         static void load();
 
-        void optionChanged(const std::string &value) {}
+        virtual void optionChanged(const std::string &value) {}
+
+        void flashName(int time);
 
     protected:
         /**
@@ -512,9 +454,9 @@ class Being : public Sprite, public ConfigListener
         void setPath(const Path &path);
 
         /**
-         * Let the sub-classes react to a replacement.
+         * Updates name's location.
          */
-        virtual void updateCoords() {}
+        virtual void updateCoords();
 
         /**
          * Gets the way the object blocks pathfinding for other objects
@@ -551,13 +493,22 @@ class Being : public Sprite, public ConfigListener
          */
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
+        virtual void showName();
+
         int mId;                        /**< Unique sprite id */
         Uint8 mDirection;               /**< Facing direction */
         Uint8 mSpriteDirection;         /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
-        SpriteIterator mSpriteIterator;
+        MapSprite mMapSprite;
         bool mParticleEffects;          /**< Whether to display particles or not */
+
+        /**
+         * Holds a text object when the being displays it's name, 0 otherwise
+         */
+        FlashText *mDispName;
+        const gcn::Color *mNameColor;
+        bool mShowName;
 
         /** Engine-related infos about weapon. */
         const ItemInfo *mEquippedWeapon;
@@ -567,17 +518,14 @@ class Being : public Sprite, public ConfigListener
         Path mPath;
         std::string mSpeech;
         Text *mText;
-        int mHairStyle;
-        int mHairColor;
-        Gender mGender;
+        const gcn::Color *mTextColor;
         Uint16 mStunMode;               /**< Stun mode; zero if not stunned */
         std::set<int> mStatusEffects;   /**< set of active status effects */
 
-        const gcn::Color *mNameColor;
-
-        std::vector<AnimatedSprite*> mSprites;
-        std::vector<int> mSpriteIDs;
-        std::vector<std::string> mSpriteColors;
+        typedef std::vector<AnimatedSprite*> Sprites;
+        typedef Sprites::iterator SpriteIterator;
+        typedef Sprites::const_iterator SpriteConstIterator;
+        Sprites mSprites;
         ParticleList mStunParticleEffects;
         ParticleVector mStatusParticleEffects;
         ParticleList mChildParticleEffects;

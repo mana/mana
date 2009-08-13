@@ -35,6 +35,8 @@
 #include "gui/charcreatedialog.h"
 #include "gui/okdialog.h"
 
+#include "resources/colordb.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -176,10 +178,10 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     int temp = msg.readInt32();
     tempPlayer->setAttributeBase(JOB, temp);
     tempPlayer->setAttributeEffective(JOB, temp);
-    tempPlayer->setSprite(Being::SHOE_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Being::GLOVES_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Being::CAPE_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Being::MISC1_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(Player::SHOE_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(Player::GLOVES_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(Player::CAPE_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(Player::MISC1_SPRITE, msg.readInt16());
     msg.readInt32();                       // option
     msg.readInt32();                       // karma
     msg.readInt32();                       // manner
@@ -192,16 +194,15 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     msg.readInt16();                       // class
     int hairStyle = msg.readInt16();
     Uint16 weapon = msg.readInt16();
-    tempPlayer->setSprite(Being::WEAPON_SPRITE, weapon);
+    tempPlayer->setSprite(Player::WEAPON_SPRITE, weapon);
     tempPlayer->setLevel(msg.readInt16());
     msg.readInt16();                       // skill point
-    tempPlayer->setSprite(Being::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
-    tempPlayer->setSprite(Being::SHIELD_SPRITE, msg.readInt16());
-    tempPlayer->setSprite(Being::HAT_SPRITE, msg.readInt16()); // head option top
-    tempPlayer->setSprite(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
-    int hairColor = msg.readInt16();
-    tempPlayer->setHairStyle(hairStyle, hairColor);
-    tempPlayer->setSprite(Being::MISC2_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(Player::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
+    tempPlayer->setSprite(Player::SHIELD_SPRITE, msg.readInt16());
+    tempPlayer->setSprite(Player::HAT_SPRITE, msg.readInt16()); // head option top
+    tempPlayer->setSprite(Player::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
+    tempPlayer->setSprite(Player::HAIR_SPRITE, hairStyle * -1, ColorDB::get(msg.readInt16()));
+    tempPlayer->setSprite(Player::MISC2_SPRITE, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++) {
         tempPlayer->setAttributeBase(i + STR, msg.readInt8());

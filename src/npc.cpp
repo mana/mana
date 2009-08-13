@@ -41,18 +41,13 @@ NPC::NPC(int id, int job, Map *map):
     NPCInfo info = NPCDB::get(job);
 
     // Setup NPC sprites
-    int c = BASE_SPRITE;
     for (std::list<NPCsprite*>::const_iterator i = info.sprites.begin();
          i != info.sprites.end();
          i++)
     {
-        if (c == VECTOREND_SPRITE)
-            break;
-
         std::string file = "graphics/sprites/" + (*i)->sprite;
         int variant = (*i)->variant;
-        mSprites[c] = AnimatedSprite::load(file, variant);
-        c++;
+        mSprites.push_back(AnimatedSprite::load(file, variant));
     }
 
     if (mParticleEffects)
@@ -66,32 +61,15 @@ NPC::NPC(int id, int job, Map *map):
             this->controlParticle(p);
         }
     }
-    mName = 0;
 
-    mNameColor = &guiPalette->getColor(Palette::NPC);
-}
-
-NPC::~NPC()
-{
-    delete mName;
+    setShowName(true);
 }
 
 void NPC::setName(const std::string &name)
 {
     const std::string displayName = name.substr(0, name.find('#', 0));
 
-    delete mName;
-    mName = new Text(displayName,
-                     getPixelX(),
-                     getPixelY(),
-                     gcn::Graphics::CENTER,
-                     &guiPalette->getColor(Palette::NPC));
-    Being::setName(displayName + " (NPC)");
-}
-
-Being::Type NPC::getType() const
-{
-    return Being::NPC;
+    Being::setName(displayName);
 }
 
 void NPC::talk()
@@ -102,12 +80,4 @@ void NPC::talk()
     isTalking = true;
 
     Net::getNpcHandler()->talk(mId);
-}
-
-void NPC::updateCoords()
-{
-    if (mName)
-    {
-        mName->adviseXY(getPixelX(), getPixelY());
-    }
 }

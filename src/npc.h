@@ -32,11 +32,9 @@ class NPC : public Being
     public:
         NPC(int id, int job, Map *map);
 
-        ~NPC();
-
         void setName(const std::string &name);
 
-        virtual Type getType() const;
+        virtual Type getType() const { return Being::NPC; }
 
         void talk();
 
@@ -58,11 +56,6 @@ class NPC : public Being
          */
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_CHARACTER; } //blocks like a player character
-
-        void updateCoords();
-
-    private:
-        Text *mName;
 };
 
 extern int current_npc;
