@@ -93,6 +93,12 @@ class Image : public Resource
         virtual void unload();
 
         /**
+         * Tells is the image is loaded
+         */
+        bool isLoaded()
+        { return mLoaded; }
+
+        /**
          * Returns the width of the image.
          */
         virtual int getWidth() const

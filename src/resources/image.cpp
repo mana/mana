@@ -43,8 +43,19 @@ Image::Image(SDL_Surface *image):
 {
     mBounds.x = 0;
     mBounds.y = 0;
-    mBounds.w = mSDLSurface->w;
-    mBounds.h = mSDLSurface->h;
+
+    if (mSDLSurface)
+    {
+        mBounds.w = mSDLSurface->w;
+        mBounds.h = mSDLSurface->h;
+        mLoaded = true;
+    }
+    else
+    {
+        logger->log(
+          "Image::Image(SDL_Surface*): Couldn't load invalid Surface!");
+        mLoaded = false;
+    }
 }
 
 #ifdef USE_OPENGL
@@ -59,6 +70,15 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
     mBounds.y = 0;
     mBounds.w = width;
     mBounds.h = height;
+
+    if (mGLImage)
+        mLoaded = true;
+    else
+    {
+        logger->log(
+          "Image::Image(GLuint*, ...): Couldn't load invalid Surface!");
+        mLoaded = false;
+    }
 }
 #endif
 
