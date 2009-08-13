@@ -244,6 +244,9 @@ void Image::setAlpha(float a)
 
 Image* Image::SDLmerge(Image *image, int x, int y)
 {
+    if (!mSDLSurface)
+        return NULL;
+
     SDL_Surface* surface = new SDL_Surface(*(image->mSDLSurface));
 
     Uint32 surface_pix, cur_pix;
