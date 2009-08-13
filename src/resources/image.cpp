@@ -48,6 +48,8 @@ Image::Image(SDL_Surface *image):
     {
         mBounds.w = mSDLSurface->w;
         mBounds.h = mSDLSurface->h;
+
+        mAlphaChannel = hasAlphaChannel();
         mLoaded = true;
     }
     else
@@ -64,7 +66,8 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
     mTexWidth(texWidth),
     mTexHeight(texHeight),
     mSDLSurface(0),
-    mAlpha(1.0)
+    mAlpha(1.0),
+    mAlphaChannel(true)
 {
     mBounds.x = 0;
     mBounds.y = 0;
@@ -187,6 +190,43 @@ bool Image::isAnOpenGLOne() const
 #else
     return false;
 #endif
+}
+
+bool Image::hasAlphaChannel()
+{
+    if (mLoaded)
+        return mAlphaChannel;
+
+#ifdef USE_OPENGL
+    if (mUseOpenGL)
+        return true;
+#endif
+
+    if (!mSDLSurface)
+        return false;
+
+    bool hasAlpha = false;
+
+    if (mSDLSurface->format->BitsPerPixel == 32)
+    {
+        // Figure out whether the image uses its alpha layer
+        for (int i = 0; i < mSDLSurface->w * mSDLSurface->h; ++i)
+        {
+            Uint8 r, g, b, a;
+            SDL_GetRGBA(
+                    ((Uint32*) mSDLSurface->pixels)[i],
+                    mSDLSurface->format,
+                    &r, &g, &b, &a);
+
+            if (a != 255)
+            {
+                hasAlpha = true;
+                break;
+            }
+        }
+    }
+
+    return hasAlpha;
 }
 
 void Image::setAlpha(float a)

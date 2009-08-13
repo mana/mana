@@ -111,10 +111,16 @@ class Image : public Resource
         { return mBounds.h; }
 
         /**
-         * Tells if the image was loade using OpenGL or SDL
+         * Tells if the image was loaded using OpenGL or SDL
          * @return true if OpenGL, false if SDL.
          */
         bool isAnOpenGLOne() const;
+
+        /**
+         * Tells if the image has got an alpha channel
+         * @return true if OpenGL, false if SDL.
+         */
+        bool hasAlphaChannel();
 
         /**
          * Sets the alpha value of this image.
@@ -181,6 +187,7 @@ class Image : public Resource
         SDL_Rect mBounds;
         bool mLoaded;
         float mAlpha;
+        bool mAlphaChannel;
 
       // -----------------------
       // SDL protected members
@@ -190,7 +197,6 @@ class Image : public Resource
         Image(SDL_Surface *image);
 
         static Image *_SDLload(SDL_Surface *tmpImage);
-
 
         SDL_Surface *mSDLSurface;
 
