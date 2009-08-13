@@ -38,8 +38,9 @@ Image::Image(SDL_Surface *image):
 #ifdef USE_OPENGL
     mGLImage(0),
 #endif
-    mSDLSurface(image),
-    mAlpha(1.0f)
+    mAlpha(1.0f),
+    mAlphaChannel(0),
+    mSDLSurface(image)
 {
     mBounds.x = 0;
     mBounds.y = 0;
@@ -51,7 +52,7 @@ Image::Image(SDL_Surface *image):
         mBounds.w = mSDLSurface->w;
         mBounds.h = mSDLSurface->h;
 
-        mAlphaChannel = hasAlphaChannel();
+        mHasAlphaChannel = hasAlphaChannel();
         mLoaded = true;
     }
     else
@@ -64,9 +65,10 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight),
-    mSDLSurface(0),
     mAlpha(1.0),
-    mAlphaChannel(true)
+    mHasAlphaChannel(true),
+    mAlphaChannel(0),
+    mSDLSurface(0)
 {
     mBounds.x = 0;
     mBounds.y = 0;
@@ -386,6 +388,34 @@ Image *Image::_SDLload(SDL_Surface *tmpImage)
     }
 
     return new Image(image);
+}
+
+Uint8 *Image::_SDLgetAlphaChannel()
+{
+    if (!mSDLSurface)
+        return NULL;
+
+    // If an old channel was stored, we free it.
+    free(mAlphaChannel);
+    mAlphaChannel = NULL;
+
+    // We allocate the place to put our data
+    Uint8* mAlphaChannel = (Uint8*)malloc(mSDLSurface->w * mSDLSurface->h * sizeof(Uint8));
+
+    if (mSDLSurface->format->BitsPerPixel == 32)
+    {
+        // Figure out whether the image uses its alpha layer
+        for (int i = 0; i < mSDLSurface->w * mSDLSurface->h; ++i)
+        {
+            Uint8 r, g, b, a;
+            SDL_GetRGBA(
+                    ((Uint32*) mSDLSurface->pixels)[i],
+                    mSDLSurface->format,
+                    &r, &g, &b, &a);
+
+            mAlphaChannel[i] = a;
+        }
+    }
 }
 
 #ifdef USE_OPENGL

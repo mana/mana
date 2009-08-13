@@ -187,7 +187,7 @@ class Image : public Resource
         SDL_Rect mBounds;
         bool mLoaded;
         float mAlpha;
-        bool mAlphaChannel;
+        bool mHasAlphaChannel;
 
       // -----------------------
       // SDL protected members
@@ -196,7 +196,16 @@ class Image : public Resource
         /** SDL Constructor */
         Image(SDL_Surface *image);
 
+        /** SDL_Surface to SDL_Surface Image loader */
         static Image *_SDLload(SDL_Surface *tmpImage);
+
+       /**
+        * Make a converted copy of the alpha channel
+        * used for 32 bits SDLbased images
+        * in order to support changing the opacity.
+        */
+        Uint8 *_SDLgetAlphaChannel();
+        Uint8* mAlphaChannel;
 
         SDL_Surface *mSDLSurface;
 
