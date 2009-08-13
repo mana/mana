@@ -38,13 +38,13 @@ Image::Image(SDL_Surface *image):
 #ifdef USE_OPENGL
     mGLImage(0),
 #endif
-    mImage(image),
+    mSDLSurface(image),
     mAlpha(1.0f)
 {
     mBounds.x = 0;
     mBounds.y = 0;
-    mBounds.w = mImage->w;
-    mBounds.h = mImage->h;
+    mBounds.w = mSDLSurface->w;
+    mBounds.h = mSDLSurface->h;
 }
 
 #ifdef USE_OPENGL
@@ -52,7 +52,7 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight),
-    mImage(0),
+    mSDLSurface(0),
     mAlpha(1.0)
 {
     mBounds.x = 0;
@@ -144,11 +144,11 @@ void Image::unload()
 {
     mLoaded = false;
 
-    if (mImage)
+    if (mSDLSurface)
     {
         // Free the image surface.
-        SDL_FreeSurface(mImage);
-        mImage = NULL;
+        SDL_FreeSurface(mSDLSurface);
+        mSDLSurface = NULL;
     }
 
 #ifdef USE_OPENGL
@@ -176,27 +176,27 @@ void Image::setAlpha(float a)
 
     mAlpha = a;
 
-    if (mImage)
+    if (mSDLSurface)
     {
         // Set the alpha value this image is drawn at
-        SDL_SetAlpha(mImage, SDL_SRCALPHA, (int) (255 * mAlpha));
+        SDL_SetAlpha(mSDLSurface, SDL_SRCALPHA, (int) (255 * mAlpha));
     }
 }
 
 Image* Image::SDLmerge(Image *image, int x, int y)
 {
-    SDL_Surface* surface = new SDL_Surface(*(image->mImage));
+    SDL_Surface* surface = new SDL_Surface(*(image->mSDLSurface));
 
     Uint32 surface_pix, cur_pix;
     Uint8 r, g, b, a, p_r, p_g, p_b, p_a;
     double f_a, f_ca, f_pa;
-    SDL_PixelFormat *current_fmt = mImage->format;
+    SDL_PixelFormat *current_fmt = mSDLSurface->format;
     SDL_PixelFormat *surface_fmt = surface->format;
     int current_offset, surface_offset;
     int offset_x, offset_y;
 
     SDL_LockSurface(surface);
-    SDL_LockSurface(mImage);
+    SDL_LockSurface(mSDLSurface);
     // for each pixel lines of a source image
     for (offset_x = (x > 0 ? 0 : -x); offset_x < image->getWidth() &&
                      x + offset_x < getWidth(); offset_x++)
@@ -210,7 +210,7 @@ Image* Image::SDLmerge(Image *image, int x, int y)
 
             // Retrieving a pixel to merge
             surface_pix = ((Uint32*) surface->pixels)[surface_offset];
-            cur_pix = ((Uint32*) mImage->pixels)[current_offset];
+            cur_pix = ((Uint32*) mSDLSurface->pixels)[current_offset];
 
             // Retreiving each channel of the pixel using pixel format
             r = (Uint8)(((surface_pix & surface_fmt->Rmask) >>
@@ -251,7 +251,7 @@ Image* Image::SDLmerge(Image *image, int x, int y)
         }
     }
     SDL_UnlockSurface(surface);
-    SDL_UnlockSurface(mImage);
+    SDL_UnlockSurface(mSDLSurface);
 
     Image *newImage = new Image(surface);
 
@@ -271,9 +271,9 @@ Image* Image::SDLgetScaledImage(int width, int height)
     Image* scaledImage = NULL;
     SDL_Surface* scaledSurface = NULL;
 
-    if (mImage)
+    if (mSDLSurface)
     {
-        scaledSurface = _SDLzoomSurface(mImage,
+        scaledSurface = _SDLzoomSurface(mSDLSurface,
                     (double) width / getWidth(),
                     (double) height / getHeight(),
                     1);
@@ -463,7 +463,7 @@ Image *Image::getSubImage(int x, int y, int width, int height)
                             mTexWidth, mTexHeight);
 #endif
 
-    return new SubImage(this, mImage, x, y, width, height);
+    return new SubImage(this, mSDLSurface, x, y, width, height);
 }
 
 //============================================================================
@@ -504,7 +504,7 @@ SubImage::SubImage(Image *parent, GLuint image,
 SubImage::~SubImage()
 {
     // Avoid destruction of the image
-    mImage = 0;
+    mSDLSurface = 0;
 #ifdef USE_OPENGL
     mGLImage = 0;
 #endif

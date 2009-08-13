@@ -186,7 +186,7 @@ class Image : public Resource
         static Image *_SDLload(SDL_Surface *tmpImage);
 
 
-        SDL_Surface *mImage;
+        SDL_Surface *mSDLSurface;
 
 
       // -----------------------
