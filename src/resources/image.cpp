@@ -44,6 +44,8 @@ Image::Image(SDL_Surface *image):
     mBounds.x = 0;
     mBounds.y = 0;
 
+    mLoaded = false;
+
     if (mSDLSurface)
     {
         mBounds.w = mSDLSurface->w;
@@ -53,11 +55,8 @@ Image::Image(SDL_Surface *image):
         mLoaded = true;
     }
     else
-    {
         logger->log(
           "Image::Image(SDL_Surface*): Couldn't load invalid Surface!");
-        mLoaded = false;
-    }
 }
 
 #ifdef USE_OPENGL
