@@ -133,6 +133,205 @@ Image *Image::load(SDL_Surface *tmpImage)
 #ifdef USE_OPENGL
     if (mUseOpenGL)
     {
+        return _GLload(tmpImage);
+    }
+#endif
+
+    return _SDLload(tmpImage);
+}
+
+void Image::unload()
+{
+    mLoaded = false;
+
+    if (mImage)
+    {
+        // Free the image surface.
+        SDL_FreeSurface(mImage);
+        mImage = NULL;
+    }
+
+#ifdef USE_OPENGL
+    if (mGLImage)
+    {
+        glDeleteTextures(1, &mGLImage);
+        mGLImage = 0;
+    }
+#endif
+}
+
+bool Image::isAnOpenGLOne() const
+{
+#ifdef USE_OPENGL
+    return mUseOpenGL;
+#else
+    return false;
+#endif
+}
+
+void Image::setAlpha(float a)
+{
+    if (mAlpha == a)
+        return;
+
+    mAlpha = a;
+
+    if (mImage)
+    {
+        // Set the alpha value this image is drawn at
+        SDL_SetAlpha(mImage, SDL_SRCALPHA, (int) (255 * mAlpha));
+    }
+}
+
+Image* Image::SDLmerge(Image *image, int x, int y)
+{
+    SDL_Surface* surface = new SDL_Surface(*(image->mImage));
+
+    Uint32 surface_pix, cur_pix;
+    Uint8 r, g, b, a, p_r, p_g, p_b, p_a;
+    double f_a, f_ca, f_pa;
+    SDL_PixelFormat *current_fmt = mImage->format;
+    SDL_PixelFormat *surface_fmt = surface->format;
+    int current_offset, surface_offset;
+    int offset_x, offset_y;
+
+    SDL_LockSurface(surface);
+    SDL_LockSurface(mImage);
+    // for each pixel lines of a source image
+    for (offset_x = (x > 0 ? 0 : -x); offset_x < image->getWidth() &&
+                     x + offset_x < getWidth(); offset_x++)
+    {
+        for (offset_y = (y > 0 ? 0 : -y); offset_y < image->getHeight()
+                        && y + offset_y < getHeight(); offset_y++)
+        {
+            // Computing offset on both images
+            current_offset = (y + offset_y) * getWidth() + x + offset_x;
+            surface_offset = offset_y * surface->w + offset_x;
+
+            // Retrieving a pixel to merge
+            surface_pix = ((Uint32*) surface->pixels)[surface_offset];
+            cur_pix = ((Uint32*) mImage->pixels)[current_offset];
+
+            // Retreiving each channel of the pixel using pixel format
+            r = (Uint8)(((surface_pix & surface_fmt->Rmask) >>
+                          surface_fmt->Rshift) << surface_fmt->Rloss);
+            g = (Uint8)(((surface_pix & surface_fmt->Gmask) >>
+                          surface_fmt->Gshift) << surface_fmt->Gloss);
+            b = (Uint8)(((surface_pix & surface_fmt->Bmask) >>
+                          surface_fmt->Bshift) << surface_fmt->Bloss);
+            a = (Uint8)(((surface_pix & surface_fmt->Amask) >>
+                          surface_fmt->Ashift) << surface_fmt->Aloss);
+
+            // Retreiving previous alpha value
+            p_a = (Uint8)(((cur_pix & current_fmt->Amask) >>
+                            current_fmt->Ashift) << current_fmt->Aloss);
+
+            // new pixel with no alpha or nothing on previous pixel
+            if (a == SDL_ALPHA_OPAQUE || (p_a == 0 && a > 0))
+                ((Uint32 *)(surface->pixels))[current_offset] =
+                    SDL_MapRGBA(current_fmt, r, g, b, a);
+            else if (a > 0)
+            { // alpha is lower => merge color with previous value
+                f_a = (double) a / 255.0;
+                f_ca = 1.0 - f_a;
+                f_pa = (double) p_a / 255.0;
+                p_r = (Uint8)(((cur_pix & current_fmt->Rmask) >>
+                                current_fmt->Rshift) << current_fmt->Rloss);
+                p_g = (Uint8)(((cur_pix & current_fmt->Gmask) >>
+                                current_fmt->Gshift) << current_fmt->Gloss);
+                p_b = (Uint8)(((cur_pix & current_fmt->Bmask) >>
+                                current_fmt->Bshift) << current_fmt->Bloss);
+                r = (Uint8)((double) p_r * f_ca * f_pa + (double)r * f_a);
+                g = (Uint8)((double) p_g * f_ca * f_pa + (double)g * f_a);
+                b = (Uint8)((double) p_b * f_ca * f_pa + (double)b * f_a);
+                a = (a > p_a ? a : p_a);
+               ((Uint32 *)(surface->pixels))[current_offset] =
+                   SDL_MapRGBA(current_fmt, r, g, b, a);
+            }
+        }
+    }
+    SDL_UnlockSurface(surface);
+    SDL_UnlockSurface(mImage);
+
+    Image *newImage = new Image(surface);
+
+    return newImage;
+}
+
+Image* Image::SDLgetScaledImage(int width, int height)
+{
+    // No scaling on incorrect new values.
+    if (width == 0 || height == 0)
+    return NULL;
+
+    // No scaling when there is ... no different given size ...
+    if (width == getWidth() && height == getHeight())
+        return NULL;
+
+    Image* scaledImage = NULL;
+    SDL_Surface* scaledSurface = NULL;
+
+    if (mImage)
+    {
+        scaledSurface = _SDLzoomSurface(mImage,
+                    (double) width / getWidth(),
+                    (double) height / getHeight(),
+                    1);
+
+        // The load function takes of the SDL<->OpenGL implementation
+        // and about freeing the given SDL_surface*.
+        if (scaledSurface)
+            scaledImage = load(scaledSurface);
+    }
+    return scaledImage;
+}
+
+Image *Image::_SDLload(SDL_Surface *tmpImage)
+{
+    if (!tmpImage)
+        return NULL;
+
+    bool hasAlpha = false;
+
+    if (tmpImage->format->BitsPerPixel == 32)
+    {
+        // Figure out whether the image uses its alpha layer
+        for (int i = 0; i < tmpImage->w * tmpImage->h; ++i)
+        {
+            Uint8 r, g, b, a;
+            SDL_GetRGBA(
+                    ((Uint32*) tmpImage->pixels)[i],
+                    tmpImage->format,
+                    &r, &g, &b, &a);
+
+            if (a != 255)
+            {
+                hasAlpha = true;
+                break;
+            }
+        }
+    }
+
+    SDL_Surface *image;
+
+    // Convert the surface to the current display format
+    if (hasAlpha)
+        image = SDL_DisplayFormatAlpha(tmpImage);
+    else
+        image = SDL_DisplayFormat(tmpImage);
+
+    if (!image)
+    {
+        logger->log("Error: Image convert failed.");
+        return NULL;
+    }
+
+    return new Image(image);
+}
+
+#ifdef USE_OPENGL
+Image *Image::_GLload(SDL_Surface *tmpImage)
+{
         // Flush current error flag.
         glGetError();
 
@@ -229,199 +428,8 @@ Image *Image::load(SDL_Surface *tmpImage)
         }
 
         return new Image(texture, width, height, realWidth, realHeight);
-    }
-#endif
-
-    bool hasAlpha = false;
-
-    if (tmpImage->format->BitsPerPixel == 32)
-    {
-        // Figure out whether the image uses its alpha layer
-        for (int i = 0; i < tmpImage->w * tmpImage->h; ++i)
-        {
-            Uint8 r, g, b, a;
-            SDL_GetRGBA(
-                    ((Uint32*) tmpImage->pixels)[i],
-                    tmpImage->format,
-                    &r, &g, &b, &a);
-
-            if (a != 255)
-            {
-                hasAlpha = true;
-                break;
-            }
-        }
-    }
-
-    SDL_Surface *image;
-
-    // Convert the surface to the current display format
-    if (hasAlpha)
-        image = SDL_DisplayFormatAlpha(tmpImage);
-    else
-        image = SDL_DisplayFormat(tmpImage);
-
-    if (!image)
-    {
-        logger->log("Error: Image convert failed.");
-        return NULL;
-    }
-
-    return new Image(image);
 }
 
-void Image::unload()
-{
-    mLoaded = false;
-
-    if (mImage)
-    {
-        // Free the image surface.
-        SDL_FreeSurface(mImage);
-        mImage = NULL;
-    }
-
-#ifdef USE_OPENGL
-    if (mGLImage)
-    {
-        glDeleteTextures(1, &mGLImage);
-        mGLImage = 0;
-    }
-#endif
-}
-
-bool Image::isAnOpenGLOne() const
-{
-#ifdef USE_OPENGL
-    return mUseOpenGL;
-#else
-    return false;
-#endif
-}
-
-void Image::setAlpha(float a)
-{
-    if (mAlpha == a)
-        return;
-
-    mAlpha = a;
-
-    if (mImage)
-    {
-        // Set the alpha value this image is drawn at
-        SDL_SetAlpha(mImage, SDL_SRCALPHA, (int) (255 * mAlpha));
-    }
-}
-
-Image* Image::merge(Image *image, int x, int y)
-{
-    SDL_Surface* surface = new SDL_Surface(*(image->mImage));
-
-    Uint32 surface_pix, cur_pix;
-    Uint8 r, g, b, a, p_r, p_g, p_b, p_a;
-    double f_a, f_ca, f_pa;
-    SDL_PixelFormat *current_fmt = mImage->format;
-    SDL_PixelFormat *surface_fmt = surface->format;
-    int current_offset, surface_offset;
-    int offset_x, offset_y;
-
-    SDL_LockSurface(surface);
-    SDL_LockSurface(mImage);
-    // for each pixel lines of a source image
-    for (offset_x = (x > 0 ? 0 : -x); offset_x < image->getWidth() &&
-                     x + offset_x < getWidth(); offset_x++)
-    {
-        for (offset_y = (y > 0 ? 0 : -y); offset_y < image->getHeight()
-                        && y + offset_y < getHeight(); offset_y++)
-        {
-            // Computing offset on both images
-            current_offset = (y + offset_y) * getWidth() + x + offset_x;
-            surface_offset = offset_y * surface->w + offset_x;
-
-            // Retrieving a pixel to merge
-            surface_pix = ((Uint32*) surface->pixels)[surface_offset];
-            cur_pix = ((Uint32*) mImage->pixels)[current_offset];
-
-            // Retreiving each channel of the pixel using pixel format
-            r = (Uint8)(((surface_pix & surface_fmt->Rmask) >>
-                          surface_fmt->Rshift) << surface_fmt->Rloss);
-            g = (Uint8)(((surface_pix & surface_fmt->Gmask) >>
-                          surface_fmt->Gshift) << surface_fmt->Gloss);
-            b = (Uint8)(((surface_pix & surface_fmt->Bmask) >>
-                          surface_fmt->Bshift) << surface_fmt->Bloss);
-            a = (Uint8)(((surface_pix & surface_fmt->Amask) >>
-                          surface_fmt->Ashift) << surface_fmt->Aloss);
-
-            // Retreiving previous alpha value
-            p_a = (Uint8)(((cur_pix & current_fmt->Amask) >>
-                            current_fmt->Ashift) << current_fmt->Aloss);
-
-            // new pixel with no alpha or nothing on previous pixel
-            if (a == SDL_ALPHA_OPAQUE || (p_a == 0 && a > 0))
-                ((Uint32 *)(surface->pixels))[current_offset] =
-                    SDL_MapRGBA(current_fmt, r, g, b, a);
-            else if (a > 0)
-            { // alpha is lower => merge color with previous value
-                f_a = (double) a / 255.0;
-                f_ca = 1.0 - f_a;
-                f_pa = (double) p_a / 255.0;
-                p_r = (Uint8)(((cur_pix & current_fmt->Rmask) >>
-                                current_fmt->Rshift) << current_fmt->Rloss);
-                p_g = (Uint8)(((cur_pix & current_fmt->Gmask) >>
-                                current_fmt->Gshift) << current_fmt->Gloss);
-                p_b = (Uint8)(((cur_pix & current_fmt->Bmask) >>
-                                current_fmt->Bshift) << current_fmt->Bloss);
-                r = (Uint8)((double) p_r * f_ca * f_pa + (double)r * f_a);
-                g = (Uint8)((double) p_g * f_ca * f_pa + (double)g * f_a);
-                b = (Uint8)((double) p_b * f_ca * f_pa + (double)b * f_a);
-                a = (a > p_a ? a : p_a);
-               ((Uint32 *)(surface->pixels))[current_offset] =
-                   SDL_MapRGBA(current_fmt, r, g, b, a);
-            }
-        }
-    }
-    SDL_UnlockSurface(surface);
-    SDL_UnlockSurface(mImage);
-
-    Image *newImage = new Image(surface);
-
-    return newImage;
-}
-
-float Image::getAlpha() const
-{
-    return mAlpha;
-}
-
-Image* Image::SDLgetScaledImage(int width, int height)
-{
-    // No scaling on incorrect new values.
-    if (width == 0 || height == 0)
-    return NULL;
-
-    // No scaling when there is ... no different given size ...
-    if (width == getWidth() && height == getHeight())
-        return NULL;
-
-    Image* scaledImage = NULL;
-    SDL_Surface* scaledSurface = NULL;
-
-    if (mImage)
-    {
-        scaledSurface = _SDLzoomSurface(mImage,
-                    (double) width / getWidth(),
-                    (double) height / getHeight(),
-                    1);
-
-        // The load function takes of the SDL<->OpenGL implementation
-        // and about freeing the given SDL_surface*.
-        if (scaledSurface)
-            scaledImage = load(scaledSurface);
-    }
-    return scaledImage;
-}
-
-#ifdef USE_OPENGL
 void Image::setLoadAsOpenGL(bool useOpenGL)
 {
     Image::mUseOpenGL = useOpenGL;

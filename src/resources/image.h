@@ -88,16 +88,6 @@ class Image : public Resource
         static Image *load(SDL_Surface *);
 
         /**
-         * Gets an scaled instance of an image.
-         *
-         * @param width The desired width of the scaled image.
-         * @param height The desired height of the scaled image.
-         *
-         * @return A new Image* object.
-         */
-        Image* SDLgetScaledImage(int width, int height);
-
-        /**
          * Frees the resources created by SDL.
          */
         virtual void unload();
@@ -121,14 +111,6 @@ class Image : public Resource
         bool isAnOpenGLOne() const;
 
         /**
-         * Creates a new image with the desired clipping rectangle.
-         *
-         * @return <code>NULL</code> if creation failed and a valid
-         *         object otherwise.
-         */
-        virtual Image *getSubImage(int x, int y, int width, int height);
-
-        /**
          * Sets the alpha value of this image.
          */
         virtual void setAlpha(float alpha);
@@ -136,9 +118,43 @@ class Image : public Resource
         /**
          * Returns the alpha value of this image.
          */
-        float getAlpha() const;
+        float getAlpha() const
+        { return mAlpha; }
+
+        /**
+         * Creates a new image with the desired clipping rectangle.
+         *
+         * @return <code>NULL</code> if creation failed and a valid
+         *         object otherwise.
+         */
+        virtual Image *getSubImage(int x, int y, int width, int height);
+
+
+        // SDL only public functions
+
+        /**
+         * Gets an scaled instance of an image.
+         *
+         * @param width The desired width of the scaled image.
+         * @param height The desired height of the scaled image.
+         *
+         * @return A new Image* object.
+         */
+        Image* SDLgetScaledImage(int width, int height);
+
+        /**
+         * Merges two image SDL_Surfaces together. This is for SDL use only, as
+         * reducing the number of surfaces that SDL has to render can cut down
+         * on the number of blit operations necessary, which in turn can help
+         * improve overall framerates. Don't use unless you are using it to
+         * reduce the number of overall layers that need to be drawn through SDL.
+         */
+        Image *SDLmerge(Image *image, int x, int y);
 
 #ifdef USE_OPENGL
+
+        // OpenGL only public functions
+
         /**
          * Sets the target image format. Use <code>false</code> for SDL and
          * <code>true</code> for OpenGL.
@@ -150,20 +166,36 @@ class Image : public Resource
         static int getTextureType() { return mTextureType; }
 #endif
 
-        /**
-         * Merges two image SDL_Surfaces together. This is for SDL use only, as
-         * reducing the number of surfaces that SDL has to render can cut down
-         * on the number of blit operations necessary, which in turn can help
-         * improve overall framerates. Don't use unless you are using it to
-         * reduce the number of overall layers that need to be drawn through SDL.
-         */
-        Image *merge(Image *image, int x, int y);
-
     protected:
-        /**
-         * Constructor.
-         */
+
+      // -----------------------
+      // Generic protected members
+      // -----------------------
+
+        SDL_Rect mBounds;
+        bool mLoaded;
+        float mAlpha;
+
+      // -----------------------
+      // SDL protected members
+      // -----------------------
+
+        /** SDL Constructor */
+        Image(SDL_Surface *image);
+
+        static Image *_SDLload(SDL_Surface *tmpImage);
+
+
+        SDL_Surface *mImage;
+
+
+      // -----------------------
+      // OpenGL protected members
+      // -----------------------
 #ifdef USE_OPENGL
+        /**
+         * OpenGL Constructor.
+         */
         Image(GLuint glimage, int width, int height,
               int texWidth, int texHeight);
 
@@ -171,13 +203,9 @@ class Image : public Resource
          * Returns the first power of two equal or bigger than the input.
          */
         static int powerOfTwo(int input);
-#endif
-        Image(SDL_Surface *image);
 
-        SDL_Rect mBounds;
-        bool mLoaded;
+        static Image *_GLload(SDL_Surface *tmpImage);
 
-#ifdef USE_OPENGL
         GLuint mGLImage;
         int mTexWidth, mTexHeight;
 
@@ -185,8 +213,6 @@ class Image : public Resource
         static int mTextureType;
         static int mTextureSize;
 #endif
-        SDL_Surface *mImage;
-        float mAlpha;
 };
 
 /**
