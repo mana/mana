@@ -154,11 +154,8 @@ Image *Image::load(SDL_Surface *tmpImage)
 {
 #ifdef USE_OPENGL
     if (mUseOpenGL)
-    {
         return _GLload(tmpImage);
-    }
 #endif
-
     return _SDLload(tmpImage);
 }
 
