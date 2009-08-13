@@ -82,10 +82,11 @@ gcn::Widget *TabbedArea::getCurrentWidget()
 
 void TabbedArea::addTab(gcn::Tab* tab, gcn::Widget* widget)
 {
+    gcn::TabbedArea::addTab(tab, widget);
+
     int width = getWidth() - 2 * getFrameSize();
     int height = getHeight() - 2 * getFrameSize() - mTabContainer->getHeight();
     widget->setSize(width, height);
-    gcn::TabbedArea::addTab(tab, widget);
 }
 
 void TabbedArea::addTab(const std::string &caption, gcn::Widget *widget)

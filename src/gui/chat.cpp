@@ -100,8 +100,6 @@ ChatWindow::ChatWindow():
 
     place(0, 0, mChatTabs, 3, 3);
     place(0, 3, mChatInput, 3);
-    //add(mChatTabs);
-    //add(mChatInput);
 
     loadWindowState();
 
