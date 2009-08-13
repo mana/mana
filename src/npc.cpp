@@ -36,7 +36,7 @@ bool NPC::isTalking = false;
 int current_npc = 0;
 
 NPC::NPC(int id, int job, Map *map):
-    Player(id, job, map)
+    Being(id, job, map)
 {
     NPCInfo info = NPCDB::get(job);
 
@@ -87,17 +87,6 @@ void NPC::setName(const std::string &name)
                      gcn::Graphics::CENTER,
                      &guiPalette->getColor(Palette::NPC));
     Being::setName(displayName + " (NPC)");
-}
-
-void NPC::setGender(Gender gender)
-{
-    Being::setGender(gender);
-}
-
-void NPC::setSprite(int slot, int id, std::string color)
-{
-    // Fix this later should it not be adequate enough.
-    Being::setSprite(slot, id, color);
 }
 
 Being::Type NPC::getType() const

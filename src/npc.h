@@ -27,7 +27,7 @@
 class Graphics;
 class Text;
 
-class NPC : public Player
+class NPC : public Being
 {
     public:
         NPC(int id, int job, Map *map);
@@ -35,8 +35,6 @@ class NPC : public Player
         ~NPC();
 
         void setName(const std::string &name);
-        void setGender(Gender gender);
-        void setSprite(int slot, int id, std::string color);
 
         virtual Type getType() const;
 
