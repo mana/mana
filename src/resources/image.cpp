@@ -36,12 +36,12 @@ int Image::mTextureSize = 0;
 
 Image::Image(SDL_Surface *image):
     mAlpha(1.0f),
-    mAlphaChannel(0),
-    mSDLSurface(image),
-#ifdef USE_OPENGL
-    mGLImage(0)
-#endif
+    mSDLSurface(image)
 {
+#ifdef USE_OPENGL
+    mGLImage = 0;
+#endif
+
     mBounds.x = 0;
     mBounds.y = 0;
 
@@ -64,7 +64,6 @@ Image::Image(SDL_Surface *image):
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
     mAlpha(1.0),
     mHasAlphaChannel(true),
-    mAlphaChannel(0),
     mSDLSurface(0),
     mGLImage(glimage),
     mTexWidth(texWidth),
@@ -193,7 +192,7 @@ bool Image::isAnOpenGLOne() const
 bool Image::hasAlphaChannel()
 {
     if (mLoaded)
-        return mAlphaChannel;
+        return mHasAlphaChannel;
 
 #ifdef USE_OPENGL
     if (mUseOpenGL)
@@ -388,36 +387,6 @@ Image *Image::_SDLload(SDL_Surface *tmpImage)
     }
 
     return new Image(image);
-}
-
-Uint8 *Image::_SDLgetAlphaChannel()
-{
-    if (!mSDLSurface)
-        return NULL;
-
-    // If an old channel was stored, we free it.
-    free(mAlphaChannel);
-    mAlphaChannel = NULL;
-
-    // We allocate the place to put our data
-    Uint8* mAlphaChannel = (Uint8*)malloc(mSDLSurface->w * mSDLSurface->h * sizeof(Uint8));
-
-    if (mSDLSurface->format->BitsPerPixel == 32)
-    {
-        // Figure out whether the image uses its alpha layer
-        for (int i = 0; i < mSDLSurface->w * mSDLSurface->h; ++i)
-        {
-            Uint8 r, g, b, a;
-            SDL_GetRGBA(
-                    ((Uint32*) mSDLSurface->pixels)[i],
-                    mSDLSurface->format,
-                    &r, &g, &b, &a);
-
-            mAlphaChannel[i] = a;
-        }
-    }
-
-    return mAlphaChannel;
 }
 
 #ifdef USE_OPENGL
