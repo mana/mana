@@ -36,7 +36,7 @@ bool NPC::isTalking = false;
 int current_npc = 0;
 
 NPC::NPC(int id, int job, Map *map):
-    Being(id, job, map)
+    Player(id, job, map, true)
 {
     NPCInfo info = NPCDB::get(job);
 
@@ -48,6 +48,8 @@ NPC::NPC(int id, int job, Map *map):
         std::string file = "graphics/sprites/" + (*i)->sprite;
         int variant = (*i)->variant;
         mSprites.push_back(AnimatedSprite::load(file, variant));
+        mSpriteIDs.push_back(0);
+        mSpriteColors.push_back("");
     }
 
     if (mParticleEffects)
@@ -80,4 +82,9 @@ void NPC::talk()
     isTalking = true;
 
     Net::getNpcHandler()->talk(mId);
+}
+
+void NPC::setSprite(unsigned int slot, int id, const std::string &color)
+{
+    // Do nothing
 }

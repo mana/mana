@@ -397,8 +397,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             switch (type) {
                 case 1:     // eAthena LOOK_HAIR
-                    player->setSprite(Player::HAIR_SPRITE, id * -1,
-                                      ColorDB::get(id2));
+                    player->setSpriteID(Player::HAIR_SPRITE, id *-1);
                     break;
                 case 2:     // Weapon ID in id, Shield ID in id2
                     player->setSprite(Player::WEAPON_SPRITE, id);
@@ -414,7 +413,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     player->setSprite(Player::TOPCLOTHES_SPRITE, id);
                     break;
                 case 6:     // eAthena LOOK_HAIR_COLOR
-                    // ignored (duplicate of LOOK_HAIR)
+                    player->setSpriteColor(Player::HAIR_SPRITE, ColorDB::get(id));
                     break;
                 case 8:     // eAthena LOOK_SHIELD
                     player->setSprite(Player::SHIELD_SPRITE, id);

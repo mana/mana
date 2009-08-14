@@ -38,16 +38,27 @@
 
 #include "utils/stringutils.h"
 
-Player::Player(int id, int job, Map *map):
+Player::Player(int id, int job, Map *map, bool isNPC):
     Being(id, job, map),
     mGender(GENDER_UNSPECIFIED),
-    mSpriteIDs(VECTOREND_SPRITE, 0),
-    mSpriteColors(VECTOREND_SPRITE, ""),
     mIsGM(false),
     mInParty(false)
 {
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-        mSprites.push_back(NULL);
+    if (!isNPC)
+    {
+        for (int i = 0; i < VECTOREND_SPRITE; i++)
+        {
+            mSprites.push_back(NULL);
+            mSpriteIDs.push_back(0);
+            mSpriteColors.push_back("");
+        }
+
+        /* Human base sprite. When implementing different races remove this
+         * line and set the base sprite when setting the race of the player
+         * character.
+         */
+        setSprite(BASE_SPRITE, -100);
+    }
     mShowName = config.getValue("visiblenames", 1);
     config.addListener("visiblenames", this);
 
@@ -125,14 +136,8 @@ void Player::setGender(Gender gender)
     {
         mGender = gender;
 
-        /* Human base sprite. When implementing different races remove this
-         * line and set the base sprite when setting the race of the player
-         * character.
-         */
-        setSprite(BASE_SPRITE, -100);
-
         // Reload all subsprites
-        for (unsigned int i = 1; i < mSprites.size(); i++)
+        for (unsigned int i = 0; i < mSprites.size(); i++)
         {
             if (mSpriteIDs.at(i) != 0)
                 setSprite(i, mSpriteIDs.at(i), mSpriteColors.at(i));
@@ -147,7 +152,7 @@ void Player::setGM(bool gm)
     updateColors();
 }
 
-void Player::setSprite(int slot, int id, const std::string &color)
+void Player::setSprite(unsigned int slot, int id, const std::string &color)
 {
     assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
 
@@ -191,6 +196,16 @@ void Player::setSprite(int slot, int id, const std::string &color)
 
     mSpriteIDs[slot] = id;
     mSpriteColors[slot] = color;
+}
+
+void Player::setSpriteID(unsigned int slot, int id)
+{
+    setSprite(slot, id, mSpriteColors[slot]);
+}
+
+void Player::setSpriteColor(unsigned int slot, const std::string &color)
+{
+    setSprite(slot, mSpriteIDs[slot], color);
 }
 
 #ifdef TMWSERV_SUPPORT

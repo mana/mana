@@ -71,7 +71,7 @@ class Player : public Being
         /**
          * Constructor.
          */
-        Player(int id, int job, Map *map);
+        Player(int id, int job, Map *map, bool isNPC = false);
 
         ~Player();
 
@@ -101,7 +101,13 @@ class Player : public Being
         /**
          * Sets visible equipments for this player.
          */
-        virtual void setSprite(int slot, int id, const std::string &color = "");
+        virtual void setSprite(unsigned int slot, int id,
+                               const std::string &color = "");
+
+        virtual void setSpriteID(unsigned int slot, int id);
+
+        virtual void setSpriteColor(unsigned int slot,
+                                    const std::string &color = "");
 
 #ifdef TMWSERV_SUPPORT
         /**

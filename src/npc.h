@@ -27,7 +27,7 @@
 class Graphics;
 class Text;
 
-class NPC : public Being
+class NPC : public Player
 {
     public:
         NPC(int id, int job, Map *map);
@@ -37,6 +37,9 @@ class NPC : public Being
         virtual Type getType() const { return Being::NPC; }
 
         void talk();
+
+        void setSprite(unsigned int slot, int id,
+                        const std::string &color = "");
 
         /**
          * Gets the way an NPC is blocked by other things on the map
@@ -56,6 +59,9 @@ class NPC : public Being
          */
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_CHARACTER; } //blocks like a player character
+
+        // Colors don't change for NPCs
+        virtual void updateColors() {}
 };
 
 extern int current_npc;
