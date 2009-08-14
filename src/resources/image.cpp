@@ -27,6 +27,7 @@
 
 #include <SDL_image.h>
 #include "resources/sdlrescalefacility.h"
+#include <assert.h>
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
@@ -34,9 +35,11 @@ int Image::mTextureType = 0;
 int Image::mTextureSize = 0;
 #endif
 
-Image::Image(SDL_Surface *image):
+Image::Image(SDL_Surface *image, bool hasAlphaChannel, Uint8 *alphaChannel):
     mAlpha(1.0f),
-    mSDLSurface(image)
+    mSDLSurface(image),
+    mHasAlphaChannel(hasAlphaChannel),
+    mAlphaChannel(alphaChannel)
 {
 #ifdef USE_OPENGL
     mGLImage = 0;
@@ -52,7 +55,6 @@ Image::Image(SDL_Surface *image):
         mBounds.w = mSDLSurface->w;
         mBounds.h = mSDLSurface->h;
 
-        mHasAlphaChannel = hasAlphaChannel();
         mLoaded = true;
     }
     else
@@ -62,9 +64,10 @@ Image::Image(SDL_Surface *image):
 
 #ifdef USE_OPENGL
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
-    mAlpha(1.0),
+    mAlpha(1.0f),
     mHasAlphaChannel(true),
     mSDLSurface(0),
+    mAlphaChannel(0),
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight)
@@ -169,6 +172,9 @@ void Image::unload()
         // Free the image surface.
         SDL_FreeSurface(mSDLSurface);
         mSDLSurface = NULL;
+
+        delete[] mAlphaChannel;
+        mAlphaChannel = NULL;
     }
 
 #ifdef USE_OPENGL
@@ -199,44 +205,49 @@ bool Image::hasAlphaChannel()
         return true;
 #endif
 
-    if (!mSDLSurface)
-        return false;
-
-    bool hasAlpha = false;
-
-    if (mSDLSurface->format->BitsPerPixel == 32)
-    {
-        // Figure out whether the image uses its alpha layer
-        for (int i = 0; i < mSDLSurface->w * mSDLSurface->h; ++i)
-        {
-            Uint8 r, g, b, a;
-            SDL_GetRGBA(
-                    ((Uint32*) mSDLSurface->pixels)[i],
-                    mSDLSurface->format,
-                    &r, &g, &b, &a);
-
-            if (a != 255)
-            {
-                hasAlpha = true;
-                break;
-            }
-        }
-    }
-
-    return hasAlpha;
+    return false;
 }
 
-void Image::setAlpha(float a)
+void Image::setAlpha(float alpha)
 {
-    if (mAlpha == a)
+    if (mAlpha == alpha)
         return;
 
-    mAlpha = a;
+    if (alpha < 0.0f || alpha > 1.0f)
+        return;
+
+    mAlpha = alpha;
 
     if (mSDLSurface)
     {
-        // Set the alpha value this image is drawn at
-        SDL_SetAlpha(mSDLSurface, SDL_SRCALPHA, (int) (255 * mAlpha));
+        if (!hasAlphaChannel())
+        {
+            // Set the alpha value this image is drawn at
+            SDL_SetAlpha(mSDLSurface, SDL_SRCALPHA, (int) (255 * mAlpha));
+        }
+        else
+        {
+            if (SDL_MUSTLOCK(mSDLSurface))
+                SDL_LockSurface(mSDLSurface);
+
+            for (int i = 0; i < mSDLSurface->w * mSDLSurface->h; ++i)
+            {
+                Uint8 r, g, b, a;
+                SDL_GetRGBA(
+                        ((Uint32*) mSDLSurface->pixels)[i],
+                        mSDLSurface->format,
+                        &r, &g, &b, &a);
+
+                a = (Uint8) (mAlphaChannel[i] * mAlpha);
+
+                // Here is the pixel we want to set
+                ((Uint32 *)(mSDLSurface->pixels))[i] =
+                SDL_MapRGBA(mSDLSurface->format, r, g, b, a);
+            }
+
+            if (SDL_MUSTLOCK(mSDLSurface))
+                SDL_UnlockSurface(mSDLSurface);
+        }
     }
 }
 
@@ -353,6 +364,9 @@ Image *Image::_SDLload(SDL_Surface *tmpImage)
 
     bool hasAlpha = false;
 
+    // The alpha channel to be filled with alpha values
+    Uint8 *alphaChannel = new Uint8[tmpImage->w * tmpImage->h];
+
     if (tmpImage->format->BitsPerPixel == 32)
     {
         // Figure out whether the image uses its alpha layer
@@ -365,10 +379,9 @@ Image *Image::_SDLload(SDL_Surface *tmpImage)
                     &r, &g, &b, &a);
 
             if (a != 255)
-            {
                 hasAlpha = true;
-                break;
-            }
+
+            alphaChannel[i] = a;
         }
     }
 
@@ -378,15 +391,23 @@ Image *Image::_SDLload(SDL_Surface *tmpImage)
     if (hasAlpha)
         image = SDL_DisplayFormatAlpha(tmpImage);
     else
+    {
         image = SDL_DisplayFormat(tmpImage);
+
+        // We also delete the alpha channel since
+        // it's not used.
+        delete[] alphaChannel;
+        alphaChannel = NULL;
+    }
 
     if (!image)
     {
         logger->log("Error: Image convert failed.");
+        delete[] alphaChannel;
         return NULL;
     }
 
-    return new Image(image);
+    return new Image(image, hasAlpha, alphaChannel);
 }
 
 #ifdef USE_OPENGL
@@ -537,6 +558,9 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
 {
     mParent->incRef();
 
+    mHasAlphaChannel = mParent->hasAlphaChannel();
+    mAlphaChannel = mParent->SDLgetAlphaChannel();
+
     // Set up the rectangle.
     mBounds.x = x;
     mBounds.y = y;
@@ -565,6 +589,8 @@ SubImage::~SubImage()
 {
     // Avoid destruction of the image
     mSDLSurface = 0;
+    // Avoid possible destruction of its alpha channel
+    mAlphaChannel = 0;
 #ifdef USE_OPENGL
     mGLImage = 0;
 #endif

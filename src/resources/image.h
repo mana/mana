@@ -118,7 +118,7 @@ class Image : public Resource
 
         /**
          * Tells if the image has got an alpha channel
-         * @return true if OpenGL, false if SDL.
+         * @return true if it's true, false otherwise.
          */
         bool hasAlphaChannel();
 
@@ -163,6 +163,12 @@ class Image : public Resource
          */
         Image *SDLmerge(Image *image, int x, int y);
 
+        /**
+         * Get the alpha Channel of a SDL surface.
+         */
+        Uint8 *SDLgetAlphaChannel() const
+        { return mAlphaChannel; }
+
 #ifdef USE_OPENGL
 
         // OpenGL only public functions
@@ -194,13 +200,16 @@ class Image : public Resource
       // -----------------------
 
         /** SDL Constructor */
-        Image(SDL_Surface *image);
+        Image(SDL_Surface *image, bool hasAlphaChannel = false,
+              Uint8 *alphaChannel = NULL);
 
         /** SDL_Surface to SDL_Surface Image loader */
         static Image *_SDLload(SDL_Surface *tmpImage);
 
         SDL_Surface *mSDLSurface;
 
+        /** Alpha Channel pointer used for 32bit based SDL surfaces */
+        Uint8 *mAlphaChannel;
 
       // -----------------------
       // OpenGL protected members
