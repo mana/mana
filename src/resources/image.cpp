@@ -35,12 +35,12 @@ int Image::mTextureSize = 0;
 #endif
 
 Image::Image(SDL_Surface *image):
-#ifdef USE_OPENGL
-    mGLImage(0),
-#endif
     mAlpha(1.0f),
     mAlphaChannel(0),
-    mSDLSurface(image)
+    mSDLSurface(image),
+#ifdef USE_OPENGL
+    mGLImage(0)
+#endif
 {
     mBounds.x = 0;
     mBounds.y = 0;
@@ -62,13 +62,13 @@ Image::Image(SDL_Surface *image):
 
 #ifdef USE_OPENGL
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
-    mGLImage(glimage),
-    mTexWidth(texWidth),
-    mTexHeight(texHeight),
     mAlpha(1.0),
     mHasAlphaChannel(true),
     mAlphaChannel(0),
-    mSDLSurface(0)
+    mSDLSurface(0),
+    mGLImage(glimage),
+    mTexWidth(texWidth),
+    mTexHeight(texHeight)
 {
     mBounds.x = 0;
     mBounds.y = 0;
@@ -416,6 +416,8 @@ Uint8 *Image::_SDLgetAlphaChannel()
             mAlphaChannel[i] = a;
         }
     }
+
+    return mAlphaChannel;
 }
 
 #ifdef USE_OPENGL
