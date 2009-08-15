@@ -36,8 +36,8 @@ int Image::mTextureSize = 0;
 
 Image::Image(SDL_Surface *image, bool hasAlphaChannel, Uint8 *alphaChannel):
     mAlpha(1.0f),
-    mSDLSurface(image),
     mHasAlphaChannel(hasAlphaChannel),
+    mSDLSurface(image),
     mAlphaChannel(alphaChannel)
 {
 #ifdef USE_OPENGL
