@@ -54,8 +54,6 @@ class SkillDialog : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
-        void logic();
-
         /**
          * Update the given skill's display
          */
@@ -73,7 +71,6 @@ class SkillDialog : public Window, public gcn::ActionListener
     private:
         typedef std::map<int, SkillInfo*> SkillMap;
         SkillMap mSkills;
-        Tab *mCurrentTab;
         TabbedArea *mTabs;
         Label *mPointsLabel;
 };

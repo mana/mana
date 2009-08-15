@@ -48,8 +48,6 @@ class SpecialsWindow : public Window, public gcn::ActionListener {
          */
         void action(const gcn::ActionEvent &actionEvent);
 
-        void logic();
-
         /**
          * Update the given special's display
          */
@@ -60,7 +58,6 @@ class SpecialsWindow : public Window, public gcn::ActionListener {
     private:
         typedef std::map<int, SpecialInfo*> SpecialMap;
         SpecialMap mSpecials;
-        Tab *mCurrentTab;
         TabbedArea *mTabs;
 };
 

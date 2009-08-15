@@ -126,16 +126,6 @@ void SpecialsWindow::action(const gcn::ActionEvent &event)
     }
 }
 
-void SpecialsWindow::logic()
-{
-    Window::logic();
-
-    Tab *tab = dynamic_cast<Tab*>(mTabs->getSelectedTab());
-    if (tab != mCurrentTab) {
-        mCurrentTab = tab;
-    }
-}
-
 std::string SpecialsWindow::update(int id)
 {
     // TODO

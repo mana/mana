@@ -122,16 +122,6 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-void SkillDialog::logic()
-{
-    Window::logic();
-
-    Tab *tab = dynamic_cast<Tab*>(mTabs->getSelectedTab());
-    if (tab != mCurrentTab) {
-        mCurrentTab = tab;
-    }
-}
-
 std::string SkillDialog::update(int id)
 {
     SkillMap::iterator i = mSkills.find(id);
