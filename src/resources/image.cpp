@@ -27,7 +27,6 @@
 
 #include <SDL_image.h>
 #include "resources/sdlrescalefacility.h"
-#include <assert.h>
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
