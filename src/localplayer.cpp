@@ -133,6 +133,8 @@ LocalPlayer::~LocalPlayer()
     delete mStorage;
 #endif
 
+    config.removeListener("showownname", this);
+
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
         delete mTargetCursor[0][i];
