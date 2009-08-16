@@ -28,8 +28,6 @@
 
 #include "graphics.h"
 
-#include "utils/gettext.h"
-
 #include <guichan/font.hpp>
 #include <guichan/widgets/label.hpp>
 

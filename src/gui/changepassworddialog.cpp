@@ -96,36 +96,35 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
         logger->log("ChangePasswordDialog::Password change, Username is %s",
                      username.c_str());
 
-        std::stringstream errorMsg;
+        std::stringstream errorMessage;
         int error = 0;
 
         // Check old Password
         if (oldPassword.empty())
         {
             // No old password
-            errorMsg << "Enter the old Password first.";
+            errorMessage << _("Enter the old password first.");
             error = 1;
         }
         else if (newFirstPass.length() < LEN_MIN_PASSWORD)
         {
             // First password too short
-            errorMsg << "The new password needs to be at least "
-                     << LEN_MIN_PASSWORD
-                     << " characters long.";
+            errorMessage << strprintf(_("The new password needs to be at least "
+                                      "%d characters long."), LEN_MIN_PASSWORD);
             error = 2;
         }
         else if (newFirstPass.length() > LEN_MAX_PASSWORD - 1 )
         {
             // First password too long
-            errorMsg << "The new password needs to be less than "
-                     << LEN_MAX_PASSWORD
-                     << " characters long.";
+            errorMessage << strprintf(_("The new password needs to be less "
+                                        "than %d characters long."),
+                                      LEN_MAX_PASSWORD);
             error = 2;
         }
         else if (newFirstPass != newSecondPass)
         {
             // Second Pass mismatch
-            errorMsg << "The new password entries mismatch.";
+            errorMessage << _("The new password entries mismatch.");
             error = 3;
         }
 
@@ -144,7 +143,7 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
                 mWrongDataNoticeListener->setTarget(this->mSecondPassField);
             }
 
-            OkDialog *dlg = new OkDialog("Error", errorMsg.str());
+            OkDialog *dlg = new OkDialog(_("Error"), errorMessage.str());
             dlg->addActionListener(mWrongDataNoticeListener);
         }
         else

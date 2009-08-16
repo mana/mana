@@ -153,7 +153,7 @@ void ItemDB::load()
         ItemInfo *itemInfo = new ItemInfo;
         itemInfo->setId(id);
         itemInfo->setImageName(image);
-        itemInfo->setName(name.empty() ? _("Unnamed") : name);
+        itemInfo->setName(name.empty() ? _("unnamed") : name);
         itemInfo->setDescription(description);
         itemInfo->setType(itemTypeFromString(typeStr));
         itemInfo->setView(view);

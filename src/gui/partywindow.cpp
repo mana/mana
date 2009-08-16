@@ -22,6 +22,7 @@
 #include "gui/partywindow.h"
 
 #include "gui/widgets/chattab.h"
+#include "gui/setup.h"
 
 #include "beingmanager.h"
 #include "player.h"
@@ -56,6 +57,7 @@ PartyWindow::PartyWindow() :
     setMinWidth(120);
     setMinHeight(55);
     setDefaultSize(590, 200, 150, 60);
+    setupWindow->registerWindowForReset(this);
 
     loadWindowState();
 }

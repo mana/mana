@@ -22,16 +22,41 @@
 #include "resources/ambientoverlay.h"
 
 #include "resources/image.h"
-
+#include "resources/resourcemanager.h"
 #include "graphics.h"
 
 AmbientOverlay::AmbientOverlay(Image *img, float parallax,
-                               float speedX, float speedY):
+                               float speedX, float speedY, bool keepRatio):
     mImage(img), mParallax(parallax),
     mPosX(0), mPosY(0),
-    mSpeedX(speedX), mSpeedY(speedY)
+    mSpeedX(speedX), mSpeedY(speedY),
+    mKeepRatio(keepRatio)
 {
-    mImage->incRef();
+
+    if (keepRatio && !mImage->isAnOpenGLOne()
+        && defaultScreenWidth != 0
+        && defaultScreenHeight != 0
+        && graphics->getWidth() != defaultScreenWidth
+        && graphics->getHeight() != defaultScreenHeight)
+    {
+        // Rescale the overlay to keep the ratio as if we were on
+        // the default resolution...
+        Image *rescaledOverlay = mImage->SDLgetScaledImage(
+         (int) mImage->getWidth() / defaultScreenWidth * graphics->getWidth(),
+     (int) mImage->getHeight() / defaultScreenHeight * graphics->getHeight());
+
+        if (rescaledOverlay)
+        {
+            // Replace the resource with the new one...
+            std::string idPath = mImage->getIdPath() + "_rescaled";
+            ResourceManager::getInstance()->addResource(idPath, rescaledOverlay);
+            mImage = rescaledOverlay;
+        }
+        else
+            mImage->incRef();
+    }
+    else
+        mImage->incRef();
 }
 
 AmbientOverlay::~AmbientOverlay()
@@ -66,6 +91,13 @@ void AmbientOverlay::update(int timePassed, float dx, float dy)
 
 void AmbientOverlay::draw(Graphics *graphics, int x, int y)
 {
-    graphics->drawImagePattern(mImage,
+    if (!mImage->isAnOpenGLOne() || !mKeepRatio)
+        graphics->drawImagePattern(mImage,
             (int) -mPosX, (int) -mPosY, x + (int) mPosX, y + (int) mPosY);
+    else
+        graphics->drawRescaledImagePattern(mImage,
+              (int) -mPosX, (int) -mPosY, x + (int) mPosX, y + (int) mPosY,
+         (int) mImage->getWidth() / defaultScreenWidth * graphics->getWidth(),
+     (int) mImage->getHeight() / defaultScreenHeight * graphics->getHeight());
+
 }

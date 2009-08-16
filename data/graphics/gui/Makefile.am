@@ -22,13 +22,17 @@ gui_DATA =				\
 	item_shortcut_bgr.png		\
 	mouse.png			\
 	radioin.png			\
+	radioin_highlight.png		\
 	radioout.png			\
+	radioout_highlight.png		\
 	resize.png			\
 	selection.png			\
 	slider.png			\
-	sticky_button.png		\
+	slider_hilight.png		\
 	speechbubble.xml		\
+	sticky_button.png		\
 	tab.png				\
+	tab_hilight.png			\
 	tabselected.png			\
 	target-cursor-blue-l.png	\
 	target-cursor-blue-m.png	\
@@ -41,6 +45,7 @@ gui_DATA =				\
 	vscroll_down_highlight.png	\
 	vscroll_down_pressed.png	\
 	vscroll_grey.png		\
+	vscroll_highlight.png		\
 	vscroll_up_default.png		\
 	vscroll_up_highlight.png	\
 	vscroll_up_pressed.png		\

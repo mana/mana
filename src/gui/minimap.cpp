@@ -31,6 +31,7 @@
 #include "player.h"
 
 #include "gui/palette.h"
+#include "gui/setup.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -47,12 +48,13 @@ Minimap::Minimap():
     mWidthProportion(0.5),
     mHeightProportion(0.5)
 {
-    setWindowName("MiniMap");
+    setWindowName("Minimap");
     mShow = config.getValue(getWindowName() + "Show", true);
     setDefaultSize(5, 25, 100, 100);
     // set this to false as the minimap window size is changed
     //depending on the map size
     setResizable(false);
+    setupWindow->registerWindowForReset(this);
 
     setDefaultVisible(true);
     setSaveVisible(true);

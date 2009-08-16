@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "net/ea/skillhandler.h"
+#include "net/ea/specialhandler.h"
 
 #include "net/ea/protocol.h"
 
@@ -29,7 +29,7 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/skill.h"
+#include "gui/skilldialog.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -67,60 +67,68 @@
 /** should always be zero if failed */
 #define SKILL_FAILED      0x00
 
-Net::SkillHandler *skillHandler;
+Net::SpecialHandler *specialHandler;
 
 namespace EAthena {
 
-SkillHandler::SkillHandler()
+SpecialHandler::SpecialHandler()
 {
     static const Uint16 _messages[] = {
         SMSG_PLAYER_SKILLS,
         SMSG_SKILL_FAILED,
+        SMSG_PLAYER_SKILL_UP,
         0
     };
     handledMessages = _messages;
-    skillHandler = this;
+    specialHandler = this;
 }
 
-void SkillHandler::handleMessage(MessageIn &msg)
+void SpecialHandler::handleMessage(MessageIn &msg)
 {
     int skillCount;
+    int skillId;
 
     switch (msg.getId())
     {
         case SMSG_PLAYER_SKILLS:
             msg.readInt16();  // length
             skillCount = (msg.getLength() - 4) / 37;
-            skillDialog->cleanList();
 
             for (int k = 0; k < skillCount; k++)
             {
-                int skillId = msg.readInt16();
+                skillId = msg.readInt16();
                 msg.readInt16();  // target type
-                msg.readInt16();  // unknown
+                msg.skip(2);  // unused
                 int level = msg.readInt16();
-                int sp = msg.readInt16();
-                msg.readInt16();  // range
-                std::string skillName = msg.readString(24);
+                msg.readInt16(); // sp
+                msg.readInt16(); // range
+                msg.skip(24); // unused
                 int up = msg.readInt8();
 
-                if (level != 0 || up != 0)
-                {
-                    if (skillDialog->hasSkill(skillId)) {
-                        skillDialog->setSkill(skillId, level, sp);
-                    }
-                    else {
-                        skillDialog->addSkill(skillId, level, sp);
-                    }
-                }
+                player_node->setAttributeBase(skillId, level);
+                player_node->setAttributeEffective(skillId, level);
+                skillDialog->setModifiable(skillId, up);
             }
-            skillDialog->update();
+            break;
+
+        case SMSG_PLAYER_SKILL_UP:
+            {
+                skillId = msg.readInt16();
+                int level = msg.readInt16();
+                msg.readInt16(); // sp
+                msg.readInt16(); // range
+                int up = msg.readInt8();
+
+                player_node->setAttributeBase(skillId, level);
+                player_node->setAttributeEffective(skillId, level);
+                skillDialog->setModifiable(skillId, up);
+            }
             break;
 
         case SMSG_SKILL_FAILED:
             // Action failed (ex. sit because you have not reached the
             // right level)
-            short skill   = msg.readInt16();
+            skillId   = msg.readInt16();
             short bskill  = msg.readInt16();
             msg.readInt16(); // unknown
             char success = msg.readInt8();
@@ -131,7 +139,7 @@ void SkillHandler::handleMessage(MessageIn &msg)
             }
 
             std::string msg;
-            if (success == SKILL_FAILED && skill == SKILL_BASIC)
+            if (success == SKILL_FAILED && skillId == SKILL_BASIC)
             {
                 switch (bskill)
                 {
@@ -196,7 +204,7 @@ void SkillHandler::handleMessage(MessageIn &msg)
             }
             else
             {
-                switch (skill)
+                switch (skillId)
                 {
                     case SKILL_WARP :
                         msg = _("Warp failed...");
@@ -215,28 +223,33 @@ void SkillHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void SkillHandler::up(int skillId)
-{
-    if (player_node->mSkillPoint <= 0)
-        return;
-
-    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
-    outMsg.writeInt16(skillId);
-}
-
-void SkillHandler::use(int skillId, int level, int beingId)
+void SpecialHandler::use(int id)
 {
     // TODO
 }
 
-void SkillHandler::use(int skillId, int level, int x, int y)
+void SpecialHandler::use(int id, int level, int beingId)
 {
-    // TODO
+    MessageOut outMsg(CMSG_SKILL_USE_BEING);
+    outMsg.writeInt16(level);
+    outMsg.writeInt16(id);
+    outMsg.writeInt16(beingId);
 }
 
-void SkillHandler::use(int skillId, const std::string &map)
+void SpecialHandler::use(int id, int level, int x, int y)
 {
-    // TODO
+    MessageOut outMsg(CMSG_SKILL_USE_POSITION);
+    outMsg.writeInt16(level);
+    outMsg.writeInt16(id);
+    outMsg.writeInt16(x);
+    outMsg.writeInt16(y);
+}
+
+void SpecialHandler::use(int id, const std::string &map)
+{
+    MessageOut outMsg(CMSG_SKILL_USE_MAP);
+    outMsg.writeInt16(id);
+    outMsg.writeString(map, 16);
 }
 
 } // namespace EAthena

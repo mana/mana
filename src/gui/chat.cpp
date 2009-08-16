@@ -23,6 +23,7 @@
 
 #include "gui/itemlinkhandler.h"
 #include "gui/recorder.h"
+#include "gui/setup.h"
 #include "gui/sdlinput.h"
 
 #include "gui/widgets/chattab.h"
@@ -39,6 +40,7 @@
 #include "net/net.h"
 
 #include "utils/dtor.h"
+#include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 #include <guichan/focushandler.hpp>
@@ -75,6 +77,8 @@ ChatWindow::ChatWindow():
     mCurrentTab(NULL)
 {
     setWindowName("Chat");
+
+    setupWindow->registerWindowForReset(this);
 
     // no title presented, title bar is padding so window can be moved.
     gcn::Window::setTitleBarHeight(gcn::Window::getPadding() + 4);
@@ -138,9 +142,14 @@ void ChatWindow::adjustTabSize()
     ChatTab *tab = getFocused();
     if (tab) {
         gcn::Widget *content = tab->mScrollArea;
+	bool scrollLock = false;
+	if(tab->mScrollArea->getVerticalMaxScroll() == tab->mScrollArea->getVerticalScrollAmount())
+	scrollLock = true;
         content->setSize(mChatTabs->getWidth() - 2 * content->getFrameSize(),
                          mChatTabs->getContainerHeight() - 2 * content->getFrameSize());
         content->logic();
+	if(scrollLock)
+	tab->mScrollArea->setVerticalScrollAmount(tab->mScrollArea->getVerticalMaxScroll());
     }
 }
 
@@ -323,8 +332,8 @@ void ChatWindow::doPresent()
         }
     }
 
-    std::string cpc = strprintf(_("%d players are present."), playercount);
-    std::string log = _("Present: ") + response + std::string("; ") + cpc;
+    std::string log = strprintf(_("Present: %s; %d players are present."),
+                                response.c_str(), playercount);
 
     if (mRecorder->isRecording())
     {
@@ -359,6 +368,37 @@ void ChatWindow::scroll(int amount)
     if (tab)
         tab->scroll(amount);
 }
+
+void ChatWindow::mousePressed(gcn::MouseEvent &event)
+{
+    Window::mousePressed(event);
+
+    if(event.isConsumed())
+        return;
+
+    mMoved = event.getY() <= mCurrentTab->getHeight();
+    mDragOffsetX = event.getX();
+    mDragOffsetY = event.getY();
+
+}
+
+void ChatWindow::mouseDragged(gcn::MouseEvent &event)
+{
+    Window::mouseDragged(event);
+
+    if(event.isConsumed())
+        return;
+
+    if(isMovable() && mMoved)
+    {
+        int newX = std::max(0, getX() + event.getX() - mDragOffsetX);
+        int newY = std::max(0, getY() + event.getY() - mDragOffsetY);
+        newX = std::min(graphics->getWidth() - getWidth(), newX);
+        newY = std::min(graphics->getHeight() - getHeight(), newY);
+        setPosition(newX, newY);
+    }
+}
+
 
 void ChatWindow::keyPressed(gcn::KeyEvent &event)
 {

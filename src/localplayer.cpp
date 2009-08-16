@@ -40,25 +40,25 @@
 #include "gui/gui.h"
 #include "gui/ministatus.h"
 #include "gui/palette.h"
-#ifdef EATHENA_SUPPORT
+#include "gui/skilldialog.h"
+#include "gui/statuswindow.h"
 #include "gui/storagewindow.h"
-#endif
+
+#include "gui/widgets/chattab.h"
 
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 #include "net/partyhandler.h"
 #include "net/playerhandler.h"
+#include "net/specialhandler.h"
 #include "net/tradehandler.h"
 
-#ifdef TMWSERV_SUPPORT
 #include "effectmanager.h"
+#ifdef TMWSERV_SUPPORT
 #include "guild.h"
 
-#include "net/tmwserv/gameserver/player.h"
+//#include "net/tmwserv/gameserver/player.h"
 #include "net/tmwserv/chatserver/guild.h"
-#else
-#include "net/ea/partyhandler.h"
-#include "net/ea/skillhandler.h"
 #endif
 
 #include "resources/animation.h"
@@ -80,44 +80,26 @@ const short walkingKeyboardDelay = 40;
 
 LocalPlayer *player_node = NULL;
 
-#ifdef TMWSERV_SUPPORT
-LocalPlayer::LocalPlayer():
-    Player(65535, 0, NULL),
-    mEquipment(new Equipment),
-#else
 LocalPlayer::LocalPlayer(int id, int job, Map *map):
     Player(id, job, map),
-    mCharId(0),
-    mJobXp(0),
-    mJobLevel(0),
-    mXpForNextLevel(0), mJobXpForNextLevel(0),
-    mMp(0), mMaxMp(0),
+#ifdef EATHENA_SUPPORT
     mAttackRange(0),
-    ATK(0), MATK(0), DEF(0), MDEF(0), HIT(0), FLEE(0),
-    ATK_BONUS(0), MATK_BONUS(0), DEF_BONUS(0), MDEF_BONUS(0), FLEE_BONUS(0),
-    mStatPoint(0), mSkillPoint(0),
-    mStatsPointsToAttribute(0),
-    mEquipment(new Equipment),
 #endif
+    mEquipment(new Equipment),
     mInStorage(false),
 #ifdef EATHENA_SUPPORT
-    mXp(0),
     mTargetTime(-1),
 #endif
     mLastTarget(-1),
-#ifdef TMWSERV_SUPPORT
-    mAttributeBase(NB_CHARACTER_ATTRIBUTES, -1),
-    mAttributeEffective(NB_CHARACTER_ATTRIBUTES, -1),
-    mExpCurrent(CHAR_SKILL_NB, -1),
-    mExpNext(CHAR_SKILL_NB, -1),
-    mCharacterPoints(-1),
-    mCorrectionPoints(-1),
-    mLevelProgress(0),
-#endif
+    mCharacterPoints(0),
+    mCorrectionPoints(0),
     mLevel(1),
+    mExp(0), mExpNeeded(0),
+    mMp(0), mMaxMp(0),
     mMoney(0),
     mTotalWeight(1), mMaxWeight(1),
     mHp(1), mMaxHp(1),
+    mSkillPoints(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
@@ -127,10 +109,8 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 #ifdef TMWSERV_SUPPORT
     mLocalWalkTime(-1),
 #endif
-    mStorage(new Inventory(STORAGE_SIZE))
-#ifdef TMWSERV_SUPPORT
-    , mExpMessageTime(0)
-#endif
+    mStorage(new Inventory(STORAGE_SIZE)),
+    mMessageTime(0)
 {
     // Variable to keep the local player from doing certain actions before a map
     // is initialized. e.g. drawing a player's name using the TextManager, since
@@ -164,25 +144,28 @@ void LocalPlayer::logic()
     if (get_elapsed_time(mLastAction) >= 1000)
         mLastAction = -1;
 
-#ifdef TMWSERV_SUPPORT
     // Show XP messages
-    if (!mExpMessages.empty())
+    if (!mMessages.empty())
     {
-        if (mExpMessageTime == 0)
+        if (mMessageTime == 0)
         {
-            const Vector &pos = getPosition();
+            //const Vector &pos = getPosition();
+
+            MessagePair info = mMessages.front();
 
             particleEngine->addTextRiseFadeOutEffect(
-                    mExpMessages.front(),
-                    (int) pos.x + 16,
-                    (int) pos.y - 16,
-                    &guiPalette->getColor(Palette::EXP_INFO),
+                    info.first,
+                    /*(int) pos.x,
+                    (int) pos.y - 48,*/
+                    getPixelX(),
+                    getPixelY() - 48,
+                    &guiPalette->getColor(info.second),
                     gui->getInfoParticleFont(), true);
 
-            mExpMessages.pop_front();
-            mExpMessageTime = 30;
+            mMessages.pop_front();
+            mMessageTime = 30;
         }
-        mExpMessageTime--;
+        mMessageTime--;
     }
 
     if ((mSpecialRechargeUpdateNeeded%11) == 0)
@@ -201,7 +184,7 @@ void LocalPlayer::logic()
     }
     mSpecialRechargeUpdateNeeded++;
 
-#else
+#ifdef EATHENA_SUPPORT
     // Targeting allowed 4 times a second
     if (get_elapsed_time(mLastTarget) >= 250)
         mLastTarget = -1;
@@ -213,7 +196,6 @@ void LocalPlayer::logic()
         setTarget(NULL);
         mLastTarget = -1;
     }
-
 #endif
 
     if (mTarget)
@@ -232,8 +214,8 @@ void LocalPlayer::logic()
             const int rangeY = abs(mTarget->getPosition().y - getPosition().y);
 #else
             // Find whether target is in range
-            const int rangeX = abs(mTarget->mX - mX);
-            const int rangeY = abs(mTarget->mY - mY);
+            const int rangeX = abs(mTarget->getTileX() - getTileX());
+            const int rangeY = abs(mTarget->getTileY() - getTileY());
 #endif
             const int attackRange = getAttackRange();
             const int inRange = rangeX > attackRange || rangeY > attackRange
@@ -366,13 +348,8 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-#ifdef TMWSERV_SUPPORT
     int dx = item->getX() - (int) getPosition().x / 32;
     int dy = item->getY() - (int) getPosition().y / 32;
-#else
-    int dx = item->getX() - mX;
-    int dy = item->getY() - mY;
-#endif
 
     if (dx * dx + dy * dy < 4)
     {
@@ -409,22 +386,12 @@ void LocalPlayer::walk(unsigned char dir)
 #ifdef TMWSERV_SUPPORT
         Being::setDestination(pos.x, pos.y);
 #else
-        Being::setDestination(mX, mY);
+        Being::setDestination(getTileX(), getTileY());
 #endif
         return;
     }
 
     int dx = 0, dy = 0;
-#ifdef TMWSERV_SUPPORT
-    if (dir & UP)
-        dy -= 32;
-    if (dir & DOWN)
-        dy += 32;
-    if (dir & LEFT)
-        dx -= 32;
-    if (dir & RIGHT)
-        dx += 32;
-#else
     if (dir & UP)
         dy--;
     if (dir & DOWN)
@@ -433,7 +400,6 @@ void LocalPlayer::walk(unsigned char dir)
         dx--;
     if (dir & RIGHT)
         dx++;
-#endif
 
     // Prevent skipping corners over colliding tiles
 #ifdef TMWSERV_SUPPORT
@@ -444,9 +410,9 @@ void LocalPlayer::walk(unsigned char dir)
                              ((int) pos.y + dy) / 32, getWalkMask()))
         dy = 16 - (int) pos.y % 32;
 #else
-    if (dx && !mMap->getWalk(mX + dx, mY, getWalkMask()))
+    if (dx && !mMap->getWalk(getTileX() + dx, getTileY(), getWalkMask()))
         dx = 0;
-    if (dy && !mMap->getWalk(mX, mY + dy, getWalkMask()))
+    if (dy && !mMap->getWalk(getTileX(), getTileY() + dy, getWalkMask()))
         dy = 0;
 #endif
 
@@ -460,7 +426,7 @@ void LocalPlayer::walk(unsigned char dir)
 
     // Checks our path up to 1 tiles, if a blocking tile is found
     // We go to the last good tile, and break out of the loop
-    for (dScaler = 1; dScaler <= 1; dScaler++)
+    for (dScaler = 1; dScaler <= 32; dScaler++)
     {
         if ( (dx || dy) &&
              !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
@@ -473,16 +439,17 @@ void LocalPlayer::walk(unsigned char dir)
 
     if (dScaler >= 0)
     {
-         setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+        effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+        setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
     }
 #else
-    if (dx && dy && !mMap->getWalk(mX + dx, mY + dy, getWalkMask()))
+    if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
         dx = 0;
 
     // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk(mX + dx, mY + dy, getWalkMask()))
+    if ((dx || dy) && mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
     {
-        setDestination(mX + dx, mY + dy);
+        setDestination(getTileX() + dx, getTileY() + dy);
     }
 #endif
     else if (dir)
@@ -588,21 +555,22 @@ void LocalPlayer::setWalkingDir(int dir)
     }
 }
 
-#ifdef TMWSERV_SUPPORT
 void LocalPlayer::stopWalking(bool sendToServer)
 {
     if (mAction == WALK && mWalkingDir) {
         mWalkingDir = 0;
+#ifdef TMWSERV_SUPPORT
         mLocalWalkTime = 0;
+#endif
         Being::setDestination(getPosition().x,getPosition().y);
         if (sendToServer)
-             Net::GameServer::Player::walk(getPosition().x, getPosition().y);
+             Net::getPlayerHandler()->setDestination(getPosition().x,
+                                                     getPosition().y);
         setAction(STAND);
     }
 
     clearPath();
 }
-#endif
 
 void LocalPlayer::toggleSit()
 {
@@ -682,9 +650,10 @@ void LocalPlayer::attack()
     Net::GameServer::Player::attack(getSpriteDirection());
 }
 */
+
 void LocalPlayer::useSpecial(int special)
 {
-    Net::GameServer::Player::useSpecial(special);
+    Net::getSpecialHandler()->use(special);
 }
 
 void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
@@ -724,8 +693,8 @@ void LocalPlayer::attack(Being *target, bool keep)
     int dist_x = plaPos.x - tarPos.x;
     int dist_y = plaPos.y - tarPos.y;
 #else
-    int dist_x = target->mX - mX;
-    int dist_y = target->mY - mY;
+    int dist_x = target->getTileX() - getTileX();
+    int dist_y = target->getTileY() - getTileY();
 
     // Must be standing to attack
     if (mAction != STAND)
@@ -802,14 +771,14 @@ void LocalPlayer::stopAttack()
     mLastTarget = -1;
 }
 
-#ifdef TMWSERV_SUPPORT
-
 void LocalPlayer::raiseAttribute(size_t attr)
 {
     // we assume that the server allows the change. When not we will undo it later.
     mCharacterPoints--;
-    mAttributeBase.at(attr)++;
-    Net::GameServer::Player::raiseAttribute(attr + CHAR_ATTR_BEGIN);
+    IntMap::iterator it = mAttributeBase.find(attr);
+    if (it != mAttributeBase.end())
+        (*it).second++;
+    Net::getPlayerHandler()->increaseAttribute(attr);
 }
 
 void LocalPlayer::lowerAttribute(size_t attr)
@@ -817,90 +786,179 @@ void LocalPlayer::lowerAttribute(size_t attr)
     // we assume that the server allows the change. When not we will undo it later.
     mCorrectionPoints--;
     mCharacterPoints++;
-    mAttributeBase.at(attr)--;
-    Net::GameServer::Player::lowerAttribute(attr + CHAR_ATTR_BEGIN);
+    IntMap::iterator it = mAttributeBase.find(attr);
+    if (it != mAttributeBase.end())
+        (*it).second--;
+    Net::getPlayerHandler()->decreaseAttribute(attr);
 }
 
-const struct LocalPlayer::SkillInfo& LocalPlayer::getSkillInfo(int skill)
+void LocalPlayer::setAttributeBase(int num, int value)
 {
-    static const SkillInfo skills[CHAR_SKILL_NB + 1] =
-    {
-        { _("Unarmed"), "graphics/images/unarmed.png" },   // CHAR_SKILL_WEAPON_NONE
-        { _("Knife"), "graphics/images/knife.png" },       // CHAR_SKILL_WEAPON_KNIFE
-        { _("Sword"), "graphics/images/sword.png" },       // CHAR_SKILL_WEAPON_SWORD
-        { _("Polearm"), "graphics/images/polearm.png" },   // CHAR_SKILL_WEAPON_POLEARM
-        { _("Staff"), "graphics/images/staff.png" },       // CHAR_SKILL_WEAPON_STAFF
-        { _("Whip"), "graphics/images/whip.png" },         // CHAR_SKILL_WEAPON_WHIP
-        { _("Bow"), "graphics/images/bow.png" },           // CHAR_SKILL_WEAPON_BOW
-        { _("Shooting"), "graphics/images/shooting.png" }, // CHAR_SKILL_WEAPON_SHOOTING
-        { _("Mace"), "graphics/images/mace.png" },         // CHAR_SKILL_WEAPON_MACE
-        { _("Axe"), "graphics/images/axe.png" },           // CHAR_SKILL_WEAPON_AXE
-        { _("Thrown"), "graphics/images/thrown.png" },     // CHAR_SKILL_WEAPON_THROWN
-        { _("Magic"), "graphics/images/magic.png" },       // CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER
-        { _("Craft"), "graphics/images/craft.png" },       // CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER
-        { _("Unknown Skill"), "graphics/images/unknown.png" }
-    };
+    int old = mAttributeBase[num];
 
-    if ((skill < 0) || (skill > CHAR_SKILL_NB))
+    mAttributeBase[num] = value;
+    if (skillDialog)
     {
-        return skills[CHAR_SKILL_NB];
+        if (skillDialog->update(num).empty() || !(value > old))
+            return;
+
+        effectManager->trigger(1, this);
     }
-    else
-    {
-        return skills[skill];
-    }
+
+    if (statusWindow)
+        statusWindow->update(num);
+}
+
+void LocalPlayer::setAttributeEffective(int num, int value)
+{
+    mAttributeEffective[num] = value;
+    if (skillDialog)
+        skillDialog->update(num);
+
+    if (statusWindow)
+        statusWindow->update(num);
+}
+
+void LocalPlayer::setCharacterPoints(int n)
+{
+    mCharacterPoints = n;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::CHAR_POINTS);
+}
+
+void LocalPlayer::setCorrectionPoints(int n)
+{
+    mCorrectionPoints = n;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::CHAR_POINTS);
+}
+
+void LocalPlayer::setSkillPoints(int points)
+{
+    mSkillPoints = points;
+    if (skillDialog)
+        skillDialog->update();
 }
 
 void LocalPlayer::setExperience(int skill, int current, int next)
 {
-    int diff = current - mExpCurrent.at(skill);
-    if (mMap && mExpCurrent.at(skill) != -1 && diff > 0)
-    {
-        const std::string text = toString(diff) + " " + getSkillInfo(skill).name + " xp";
-        mExpMessages.push_back(text);
-    }
+    std::pair<int, int> cur = getExperience(skill);
+    int diff = current - cur.first;
 
-    mExpCurrent.at(skill) = current;
-    mExpNext.at(skill) = next;
+    cur = std::pair<int, int>(current, next);
+
+    mSkillExp[skill] = cur;
+    std::string name;
+    if (skillDialog)
+        name = skillDialog->update(skill);
+
+    if (mMap && cur.first != -1 && diff > 0 && !name.empty())
+    {
+        addMessageToQueue(strprintf("%d %s xp", diff, name.c_str()));
+    }
 }
 
 std::pair<int, int> LocalPlayer::getExperience(int skill)
 {
-    return std::pair<int, int> (mExpCurrent.at(skill), mExpNext.at(skill));
+    return mSkillExp[skill];
 }
 
-#else
-
-void LocalPlayer::setXp(int xp)
+void LocalPlayer::setHp(int value)
 {
-    if (mMap && xp > mXp)
-    {
-        const std::string text = toString(xp - mXp) + " xp";
+    mHp = value;
 
-        // Show XP number
-        particleEngine->addTextRiseFadeOutEffect(
-                text,
-                getPixelX(),
-                getPixelY() - 48,
-                &guiPalette->getColor(Palette::EXP_INFO),
-                gui->getInfoParticleFont(), true);
+    if (statusWindow)
+        statusWindow->update(StatusWindow::HP);
+}
+
+void LocalPlayer::setMaxHp(int value)
+{
+    mMaxHp = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::HP);
+}
+
+void LocalPlayer::setLevel(int value)
+{
+    mLevel = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::LEVEL);
+}
+
+void LocalPlayer::setExp(int value)
+{
+    if (mMap && value > mExp)
+    {
+        addMessageToQueue(toString(value - mExp) + " xp");
     }
-    mXp = xp;
+    mExp = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::EXP);
 }
 
-#endif
-
-void LocalPlayer::pickedUp(const std::string &item)
+void LocalPlayer::setExpNeeded(int value)
 {
-    if (mMap)
+    mExpNeeded = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::EXP);
+}
+
+void LocalPlayer::setMP(int value)
+{
+    mMp = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::MP);
+}
+
+void LocalPlayer::setMaxMP(int value)
+{
+    mMaxMp = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::MP);
+}
+
+void LocalPlayer::setMoney(int value)
+{
+    mMoney = value;
+
+    if (statusWindow)
+        statusWindow->update(StatusWindow::MONEY);
+}
+
+void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
+{
+    if (!amount)
     {
-        // Show pickup notification
-        particleEngine->addTextRiseFadeOutEffect(
-                item,
-                getPixelX(),
-                getPixelY() - 48,
-                &guiPalette->getColor(Palette::PICKUP_INFO),
-                gui->getInfoParticleFont(), true);
+        if (config.getValue("showpickupchat", 1))
+        {
+            localChatTab->chatLog(_("Unable to pick up item."), BY_SERVER);
+        }
+    }
+    else
+    {
+        if (config.getValue("showpickupchat", 1))
+        {
+            // TRANSLATORS: This sentence may be translated differently
+            // for different grammatical numbers (singular, plural, ...)
+            localChatTab->chatLog(strprintf(ngettext("You picked up %d "
+                    "[@@%d|%s@@].", "You picked up %d [@@%d|%s@@].", amount),
+                    amount, itemInfo.getId(), itemInfo.getName().c_str()),
+                    BY_SERVER);
+        }
+
+        if (mMap && config.getValue("showpickupparticle", 0))
+        {
+            // Show pickup notification
+            addMessageToQueue(itemInfo.getName(), Palette::PICKUP_INFO);
+        }
     }
 }
 
@@ -930,8 +988,8 @@ bool LocalPlayer::withinAttackRange(Being *target)
 
     return !(dx > range || dy > range);
 #else
-    int dist_x = abs(target->mX - mX);
-    int dist_y = abs(target->mY - mY);
+    int dist_x = abs(target->getTileX() - getTileY());
+    int dist_y = abs(target->getTileY() - getTileX());
 
     if (dist_x > getAttackRange() || dist_y > getAttackRange())
     {
@@ -953,7 +1011,7 @@ void LocalPlayer::setGotoTarget(Being *target)
 #else
     setTarget(target);
     mGoingToTarget = true;
-    setDestination(target->mX, target->mY);
+    setDestination(target->getTileX(), target->getTileY());
 #endif
 }
 
@@ -1049,3 +1107,9 @@ void LocalPlayer::setInStorage(bool inStorage)
     storageWindow->setVisible(inStorage);
 }
 #endif
+
+void LocalPlayer::addMessageToQueue(const std::string &message,
+                                    Palette::ColorType color)
+{
+    mMessages.push_back(MessagePair(message, color));
+}

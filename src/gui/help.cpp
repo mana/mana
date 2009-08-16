@@ -25,6 +25,7 @@
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
+#include "gui/setup.h"
 
 #include "resources/resourcemanager.h"
 
@@ -38,6 +39,7 @@ HelpWindow::HelpWindow():
     setContentSize(455, 350);
     setWindowName("Help");
     setResizable(true);
+    setupWindow->registerWindowForReset(this);
 
     setDefaultSize(500, 400, ImageRect::CENTER);
 

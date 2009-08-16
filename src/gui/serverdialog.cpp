@@ -71,7 +71,7 @@ void ServersListModel::addElement(Server server)
 }
 
 ServerDialog::ServerDialog(LoginData *loginData):
-    Window(_("Choose your server")), mLoginData(loginData)
+    Window(_("Choose Your Server")), mLoginData(loginData)
 {
     gcn::Label *serverLabel = new Label(_("Server:"));
     gcn::Label *portLabel = new Label(_("Port:"));

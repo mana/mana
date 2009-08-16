@@ -140,6 +140,42 @@ static inline void drawQuad(Image *image,
     }
 }
 
+static inline void drawRescaledQuad(Image *image,
+                            int srcX, int srcY, int dstX, int dstY,
+                            int width, int height,
+                            int desiredWidth, int desiredHeight)
+{
+    if (image->getTextureType() == GL_TEXTURE_2D)
+    {
+        // Find OpenGL normalized texture coordinates.
+        float texX1 = srcX / (float) image->getTextureWidth();
+        float texY1 = srcY / (float) image->getTextureHeight();
+        float texX2 = (srcX + width) / (float) image->getTextureWidth();
+        float texY2 = (srcY + height) / (float) image->getTextureHeight();
+
+        glTexCoord2f(texX1, texY1);
+        glVertex2i(dstX, dstY);
+        glTexCoord2f(texX2, texY1);
+        glVertex2i(dstX + desiredWidth, dstY);
+        glTexCoord2f(texX2, texY2);
+        glVertex2i(dstX + desiredWidth, dstY + desiredHeight);
+        glTexCoord2f(texX1, texY2);
+        glVertex2i(dstX, dstY + desiredHeight);
+    }
+    else
+    {
+        glTexCoord2i(srcX, srcY);
+        glVertex2i(dstX, dstY);
+        glTexCoord2i(srcX + width, srcY);
+        glVertex2i(dstX + desiredWidth, dstY);
+        glTexCoord2i(srcX + width, srcY + height);
+        glVertex2i(dstX + desiredWidth, dstY + desiredHeight);
+        glTexCoord2i(srcX, srcY + height);
+        glVertex2i(dstX, dstY + desiredHeight);
+    }
+}
+
+
 bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
                                int dstX, int dstY,
                                int width, int height, bool useColor)
@@ -160,6 +196,37 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
     // Draw a textured quad.
     glBegin(GL_QUADS);
     drawQuad(image, srcX, srcY, dstX, dstY, width, height);
+    glEnd();
+
+    if (!useColor)
+        glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+
+    return true;
+}
+
+bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
+                               int dstX, int dstY,
+                               int width, int height,
+                               int desiredWidth, int desiredHeight,
+                               bool useColor)
+{
+    if (!image)
+        return false;
+
+    srcX += image->mBounds.x;
+    srcY += image->mBounds.y;
+
+    if (!useColor)
+        glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
+
+    glBindTexture(Image::mTextureType, image->mGLImage);
+
+    setTexturingAndBlending(true);
+
+    // Draw a textured quad.
+    glBegin(GL_QUADS);
+    drawRescaledQuad(image, srcX, srcY, dstX, dstY, width, height,
+                     desiredWidth, desiredHeight);
     glEnd();
 
     if (!useColor)
@@ -202,6 +269,49 @@ void OpenGLGraphics::drawImagePattern(Image *image, int x, int y, int w, int h)
             int dstX = x + px;
 
             drawQuad(image, srcX, srcY, dstX, dstY, width, height);
+        }
+    }
+
+    glEnd();
+
+    glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+}
+
+void OpenGLGraphics::drawRescaledImagePattern(Image *image, int x, int y,
+                                      int w, int h,
+                                      int scaledWidth, int scaledHeight)
+{
+    if (!image)
+        return;
+
+    const int srcX = image->mBounds.x;
+    const int srcY = image->mBounds.y;
+
+    const int iw = scaledWidth;
+    const int ih = scaledHeight;
+    if (iw == 0 || ih == 0)
+        return;
+
+    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
+
+    glBindTexture(Image::mTextureType, image->mGLImage);
+
+    setTexturingAndBlending(true);
+
+    // Draw a set of textured rectangles
+    glBegin(GL_QUADS);
+
+    for (int py = 0; py < h; py += ih)
+    {
+        const int height = (py + ih >= h) ? h - py : ih;
+        const int dstY = y + py;
+        for (int px = 0; px < w; px += iw)
+        {
+            int width = (px + iw >= w) ? w - px : iw;
+            int dstX = x + px;
+
+            drawRescaledQuad(image, srcX, srcY, dstX, dstY,
+                             width, height, scaledWidth, scaledHeight);
         }
     }
 

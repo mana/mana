@@ -63,6 +63,11 @@ class TabbedArea : public gcn::TabbedArea
          */
         gcn::Widget *getWidget(const std::string &name) const;
 
+        /**
+         * Returns the widget for the current tab
+         */
+        gcn::Widget *getCurrentWidget();
+
         using gcn::TabbedArea::addTab;
 
         /**

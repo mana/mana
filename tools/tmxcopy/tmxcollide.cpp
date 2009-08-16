@@ -31,7 +31,7 @@ void printUsage()
              <<"    -o save results to outfile, instead of overwriting the original"<<std::endl
              <<std::endl
              <<"Using the template, translate visible layers to the collision layer"<<std::endl
-             <<"TODO - more help here"<<std::endl;
+             <<"See readme.txt for full documentation"<<std::endl;
 }
 
 int main(int argc, char * argv[] )

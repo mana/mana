@@ -23,353 +23,494 @@
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
+#include "gui/widgets/layouthelper.h"
 #include "gui/widgets/progressbar.h"
+#include "gui/widgets/scrollarea.h"
+#include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
 
-#include "localplayer.h"
+#include "gui/ministatus.h"
+#include "gui/setup.h"
 
+#include "localplayer.h"
+#include "units.h"
+
+#include "net/net.h"
+#include "net/playerhandler.h"
+
+#ifdef EATHENA_SUPPORT
+#include "net/ea/protocol.h"
+#endif
+
+#include "utils/gettext.h"
+#include "utils/mathutils.h"
 #include "utils/stringutils.h"
 
-StatusWindow::StatusWindow(LocalPlayer *player):
-    Window(player->getName()),
-    mPlayer(player)
+class AttrDisplay : public Container
+{
+    public:
+        virtual std::string update();
+
+    protected:
+        AttrDisplay(int id, const std::string &name);
+
+        const int mId;
+        const std::string mName;
+
+        LayoutHelper *mLayout;
+        Label *mLabel;
+        Label *mValue;
+};
+
+class DerDisplay : public AttrDisplay
+{
+    public:
+        DerDisplay(int id, const std::string &name);
+};
+
+class ChangeDisplay : public AttrDisplay, gcn::ActionListener
+{
+    public:
+        ChangeDisplay(int id, const std::string &name);
+        std::string update();
+        void setPointsNeeded(int needed);
+
+    private:
+        void action(const gcn::ActionEvent &event);
+
+        int mNeeded;
+
+        Label *mPoints;
+        Button *mDec;
+        Button *mInc;
+};
+
+StatusWindow::StatusWindow():
+    Window(player_node->getName())
 {
     setWindowName("Status");
+    setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
     setSaveVisible(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
                    (windowContainer->getHeight() - 255) / 2, 365, 275);
+
+    // ----------------------
+    // Status Part
+    // ----------------------
+
+    mLvlLabel = new Label(strprintf(_("Level: %d"), 0));
+    mMoneyLabel = new Label(strprintf(_("Money: %s"), ""));
+
+    mHpLabel = new Label(_("HP:"));
+    mHpBar = new ProgressBar((float) player_node->getHp()
+                             / (float) player_node->getMaxHp(),
+                             80, 15, gcn::Color(0, 171, 34));
+
+    mXpLabel = new Label(_("Exp:"));
+    mXpBar = new ProgressBar((float) player_node->getExp()
+                             / player_node->getExpNeeded(),
+                             80, 15, gcn::Color(143, 192, 211));
+
+    mMpLabel = new Label(_("MP:"));
+    mMpBar = new ProgressBar((float) player_node->getMaxMP()
+                             / (float) player_node->getMaxMP(),
+                             80, 15, gcn::Color(26, 102, 230));
+
+    place(0, 0, mLvlLabel, 3);
+    // 5, 0 Job Level
+    place(8, 0, mMoneyLabel, 3);
+    place(0, 1, mHpLabel).setPadding(3);
+    place(1, 1, mHpBar, 4);
+    place(5, 1, mXpLabel).setPadding(3);
+    place(6, 1, mXpBar, 5);
+    place(0, 2, mMpLabel).setPadding(3);
+    // 5, 2 and 6, 2 Job Progress Bar
+    place(1, 2, mMpBar, 4);
+
+#ifdef EATHENA_SUPPORT
+    mJobLvlLabel = new Label(strprintf(_("Job: %d"), 0));
+    mJobLabel = new Label(_("Job:"));
+    mJobBar = new ProgressBar(0.0f, 80, 15, gcn::Color(220, 135, 203));
+
+    place(5, 0, mJobLvlLabel, 3);
+    place(5, 2, mJobLabel).setPadding(3);
+    place(6, 2, mJobBar, 5);
+#endif
+
+    // ----------------------
+    // Stats Part
+    // ----------------------
+
+    mAttrCont = new VertContainer(32);
+    mAttrScroll = new ScrollArea(mAttrCont);
+    mAttrScroll->setOpaque(false);
+    mAttrScroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
+    mAttrScroll->setVerticalScrollPolicy(ScrollArea::SHOW_AUTO);
+    place(0, 3, mAttrScroll, 5, 3);
+
+    mDAttrCont = new VertContainer(32);
+    mDAttrScroll = new ScrollArea(mDAttrCont);
+    mDAttrScroll->setOpaque(false);
+    mDAttrScroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
+    mDAttrScroll->setVerticalScrollPolicy(ScrollArea::SHOW_AUTO);
+    place(6, 3, mDAttrScroll, 5, 3);
+
+    getLayout().setRowHeight(3, Layout::AUTO_SET);
+
+    mCharacterPointsLabel = new Label("C");
+    mCorrectionPointsLabel = new Label("C");
+    place(0, 6, mCharacterPointsLabel, 5);
+    place(0, 7, mCorrectionPointsLabel, 5);
+
     loadWindowState();
 
-    // ----------------------
-    // Status Part
-    // ----------------------
-
-    mLvlLabel = new Label("Level:");
-    mMoneyLabel = new Label("Money:");
-
-    mHpLabel = new Label("HP:");
-    mHpBar = new ProgressBar(0.0f, 80, 15, gcn::Color(0, 171, 34));
-    mHpValueLabel = new Label;
-
-    int y = 3;
-    int x = 5;
-
-    mLvlLabel->setPosition(x, y);
-    x += mLvlLabel->getWidth() + 40;
-    mMoneyLabel->setPosition(x, y);
-
-    y += mLvlLabel->getHeight() + 5; // Next Row
-    x = 5;
-
-    mHpLabel->setPosition(x, y);
-    x += mHpLabel->getWidth() + 5;
-    mHpBar->setPosition(x, y);
-    x += mHpBar->getWidth() + 5;
-    mHpValueLabel->setPosition(x, y);
-
-    y += mHpLabel->getHeight() + 5; // Next Row
-    x = 5;
-
-    add(mLvlLabel);
-    add(mMoneyLabel);
-    add(mHpLabel);
-    add(mHpValueLabel);
-    add(mHpBar);
-
-    // ----------------------
-    // Stats Part
-    // ----------------------
-
-    // Static Labels
-    gcn::Label *mStatsTitleLabel = new Label("Stats");
-    gcn::Label *mStatsTotalLabel = new Label("Total");
-
-    // Derived Stats
-/*
-    mStatsAttackLabel = new Label("Attack:");
-    mStatsDefenseLabel= new Label("Defense:");
-    mStatsMagicAttackLabel = new Label("M.Attack:");
-    mStatsMagicDefenseLabel = new Label("M.Defense:");
-    mStatsAccuracyLabel = new Label("% Accuracy:");
-    mStatsEvadeLabel = new Label("% Evade:");
-    mStatsReflexLabel = new Label("% Reflex:");
-
-    mStatsAttackPoints = new Label;
-    mStatsDefensePoints = new Label;
-    mStatsMagicAttackPoints = new Label;
-    mStatsMagicDefensePoints = new Label;
-    mStatsAccuracyPoints = new Label("% Accuracy:");
-    mStatsEvadePoints = new Label("% Evade:");
-    mStatsReflexPoints = new Label("% Reflex:");
-*/
-    // New labels
-    for (int i = 0; i < 6; i++) {
-        mStatsLabel[i] = new Label;
-        mStatsDisplayLabel[i] = new Label;
-    }
-    mCharacterPointsLabel = new Label;
-    mCorrectionPointsLabel = new Label;
-
-    // Set button events Id
-    mStatsPlus[0] = new Button("+", "STR+", this);
-    mStatsPlus[1] = new Button("+", "AGI+", this);
-    mStatsPlus[2] = new Button("+", "DEX+", this);
-    mStatsPlus[3] = new Button("+", "VIT+", this);
-    mStatsPlus[4] = new Button("+", "INT+", this);
-    mStatsPlus[5] = new Button("+", "WIL+", this);
-
-    mStatsMinus[0] = new Button("-", "STR-", this);
-    mStatsMinus[1] = new Button("-", "AGI-", this);
-    mStatsMinus[2] = new Button("-", "DEX-", this);
-    mStatsMinus[3] = new Button("-", "VIT-", this);
-    mStatsMinus[4] = new Button("-", "INT-", this);
-    mStatsMinus[5] = new Button("-", "WIL-", this);
-
-
-
-    // Set position
-    mStatsTitleLabel->setPosition(mHpLabel->getX(), mHpLabel->getY() + 23 );
-    mStatsTotalLabel->setPosition(110, mStatsTitleLabel->getY() + 15);
-    int totalLabelY = mStatsTotalLabel->getY();
-
-    for (int i = 0; i < 6; i++)
-    {
-        mStatsLabel[i]->setPosition(5,
-                                    mStatsTotalLabel->getY() + (i * 23) + 15);
-        mStatsMinus[i]->setPosition(85, totalLabelY + (i * 23) + 15);
-        mStatsDisplayLabel[i]->setPosition(125,
-                                          totalLabelY + (i * 23) + 15);
-        mStatsPlus[i]->setPosition(185, totalLabelY + (i * 23) + 15);
-    }
-
-    mCharacterPointsLabel->setPosition(5, mStatsDisplayLabel[5]->getY() + 25);
-    mCorrectionPointsLabel->setPosition(5, mStatsDisplayLabel[5]->getY() + 35);
-/*
-    mStatsAttackLabel->setPosition(220, mStatsLabel[0]->getY());
-    mStatsDefenseLabel->setPosition(220, mStatsLabel[1]->getY());
-    mStatsMagicAttackLabel->setPosition(220, mStatsLabel[2]->getY());
-    mStatsMagicDefenseLabel->setPosition(220, mStatsLabel[3]->getY());
-    mStatsAccuracyLabel->setPosition(220, mStatsLabel[4]->getY());
-    mStatsEvadeLabel->setPosition(220, mStatsLabel[5]->getY());
-    mStatsReflexLabel->setPosition(220, mStatsLabel[6]->getY());
-
-    mStatsAttackPoints->setPosition(310, mStatsLabel[0]->getY());
-    mStatsDefensePoints->setPosition(310, mStatsLabel[1]->getY());
-    mStatsMagicAttackPoints->setPosition(310, mStatsLabel[2]->getY());
-    mStatsMagicDefensePoints->setPosition(310, mStatsLabel[3]->getY());
-    mStatsAccuracyPoints->setPosition(310, mStatsLabel[4]->getY());
-    mStatsEvadePoints->setPosition(310, mStatsLabel[5]->getY());
-    mStatsReflexPoints->setPosition(310, mStatsLabel[6]->getY());
-*/
-    // Assemble
-    add(mStatsTitleLabel);
-    add(mStatsTotalLabel);
-    for(int i = 0; i < 6; i++)
-    {
-        add(mStatsLabel[i]);
-        add(mStatsDisplayLabel[i]);
-        add(mStatsPlus[i]);
-        add(mStatsMinus[i]);
-    }/*
-    add(mStatsAttackLabel);
-    add(mStatsDefenseLabel);
-    add(mStatsMagicAttackLabel);
-    add(mStatsMagicDefenseLabel);
-    add(mStatsAccuracyLabel);
-    add(mStatsEvadeLabel);
-    add(mStatsReflexLabel);
-
-    add(mStatsAttackPoints);
-    add(mStatsDefensePoints);
-    add(mStatsMagicAttackPoints);
-    add(mStatsMagicDefensePoints);
-    add(mStatsAccuracyPoints);
-    add(mStatsEvadePoints);
-    add(mStatsReflexPoints);*/
-
-    add(mCharacterPointsLabel);
-    add(mCorrectionPointsLabel);
+    update(HP);
+    update(MP);
+    update(EXP);
+    update(MONEY);
+    update(CHAR_POINTS); // This also updates all attributes (none atm)
+    update(LEVEL);
+#ifdef EATHENA_SUPPORT
+    update(JOB);
+#endif
 }
 
-void StatusWindow::update()
+std::string StatusWindow::update(int id)
 {
-    // Status Part
-    // -----------
-    mLvlLabel->setCaption(  "Level: " +
-                            toString(mPlayer->getLevel()) +
-                            " (" +
-                            toString(mPlayer->getLevelProgress()) +
-                            "%)");
-    mLvlLabel->adjustSize();
+    if (miniStatusWindow)
+        miniStatusWindow->update(id);
 
-    mMoneyLabel->setCaption("Money: " + toString(mPlayer->getMoney()) + " GP");
-    mMoneyLabel->adjustSize();
-
-    updateHPBar(mHpBar, true);
-
-    // Stats Part
-    // ----------
-    const std::string attrNames[6] = {
-        "Strength",
-        "Agility",
-        "Dexterity",
-        "Vitality",
-        "Intelligence",
-        "Willpower"
-    };
-    int characterPoints = mPlayer->getCharacterPoints();
-    int correctionPoints = mPlayer->getCorrectionPoints();
-    // Update labels
-    for (int i = 0; i < 6; i++)
+    if (id == HP)
     {
-        mStatsLabel[i]->setCaption(attrNames[i]);
-        mStatsDisplayLabel[i]->setCaption(
-            strprintf("%d / %d",
-                mPlayer->getAttributeEffective(CHAR_ATTR_BEGIN + i),
-                mPlayer->getAttributeBase(CHAR_ATTR_BEGIN + i)));
+        updateHPBar(mHpBar, true);
 
-        mStatsLabel[i]->adjustSize();
-        mStatsDisplayLabel[i]->adjustSize();
-
-        mStatsPlus[i]->setEnabled(characterPoints);
-        mStatsMinus[i]->setEnabled(correctionPoints);
+        return _("HP");
     }
-    mCharacterPointsLabel->setCaption("Character Points: " +
-            toString(characterPoints));
-    mCharacterPointsLabel->adjustSize();
+    else if (id == MP)
+    {
+        updateMPBar(mMpBar, true);
 
-    mCorrectionPointsLabel->setCaption("Correction Points: " +
-            toString(correctionPoints));
-    mCorrectionPointsLabel->adjustSize();
-/*
-    // Derived Stats Points
+        return _("MP");
+    }
+    else if (id == EXP)
+    {
+        updateXPBar(mXpBar, false);
 
-    // Attack TODO: Count equipped Weapons and items attack bonuses
-    mStatsAttackPoints->setCaption(
-            toString(mPlayer->ATK + mPlayer->ATK_BONUS));
-    mStatsAttackPoints->adjustSize();
+        return _("Exp");
+    }
+    else if (id == MONEY)
+    {
+        int money = player_node->getMoney();
+        mMoneyLabel->setCaption(strprintf(_("Money: %s"),
+                                        Units::formatCurrency(money).c_str()));
+        mMoneyLabel->adjustSize();
 
-    // Defense TODO: Count equipped Armors and items defense bonuses
-    mStatsDefensePoints->setCaption(
-            toString(mPlayer->DEF + mPlayer->DEF_BONUS));
-    mStatsDefensePoints->adjustSize();
+        return _("Money");
+    }
+#ifdef EATHENA_SUPPORT
+    else if (id == JOB)
+    {
+        mJobLvlLabel->setCaption(strprintf(_("Job: %d"),
+                                        player_node->getAttributeBase(JOB)));
+        mJobLvlLabel->adjustSize();
 
-    // Magic Attack TODO: Count equipped items M.Attack bonuses
-    mStatsMagicAttackPoints->setCaption(
-            toString(mPlayer->MATK + mPlayer->MATK_BONUS));
-    mStatsMagicAttackPoints->adjustSize();
+        updateProgressBar(mJobBar, JOB, false);
 
-    // Magic Defense TODO: Count equipped items M.Defense bonuses
-    mStatsMagicDefensePoints->setCaption(
-            toString(mPlayer->MDEF + mPlayer->MDEF_BONUS));
-    mStatsMagicDefensePoints->adjustSize();
+        return _("Job");
+    }
+#endif
+    else if (id == CHAR_POINTS)
+    {
+        mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
+                                        player_node->getCharacterPoints()));
+        mCharacterPointsLabel->adjustSize();
 
-    // Accuracy %
-    mStatsAccuracyPoints->setCaption(toString(mPlayer->HIT));
-    mStatsAccuracyPoints->adjustSize();
+        mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
+                                        player_node->getCorrectionPoints()));
+        mCorrectionPointsLabel->adjustSize();
 
-    // Evasion %
-    mStatsEvadePoints->setCaption(toString(mPlayer->FLEE));
-    mStatsEvadePoints->adjustSize();
+        for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
+        {
+            it->second->update();
+        }
+    }
+    else if (id == LEVEL)
+    {
+        mLvlLabel->setCaption(strprintf(_("Level: %d"),
+                                        player_node->getLevel()));
+        mLvlLabel->adjustSize();
 
-    // Reflex %
-    mStatsReflexPoints->setCaption(toString(mPlayer->DEX / 4)); // + counter
-    mStatsReflexPoints->adjustSize();
-*/
-    // Update Second column widgets position
-    mMoneyLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
-                         mLvlLabel->getY());
+        return _("Level");
+    }
+    else
+    {
+        Attrs::iterator it = mAttrs.find(id);
 
+        if (it != mAttrs.end())
+        {
+            return it->second->update();
+        }
+    }
+
+    return "";
 }
 
-void StatusWindow::draw(gcn::Graphics *g)
+void StatusWindow::setPointsNeeded(int id, int needed)
 {
-    update();
+    Attrs::iterator it = mAttrs.find(id);
 
-    Window::draw(g);
+    if (it != mAttrs.end())
+    {
+        ChangeDisplay *disp = dynamic_cast<ChangeDisplay*>(it->second);
+        if (disp)
+            disp->setPointsNeeded(needed);
+    }
 }
 
-void StatusWindow::action(const gcn::ActionEvent &event)
+void StatusWindow::addAttribute(int id, const std::string &name,
+                                bool modifiable)
 {
-    const std::string &eventId = event.getId();
+    AttrDisplay *disp;
 
-    // Stats Part
-    if (eventId == "STR+")
+    if (modifiable)
     {
-        mPlayer->raiseAttribute(LocalPlayer::STR);
+        disp = new ChangeDisplay(id, name);
+        mAttrCont->add(disp);
     }
-    else if (eventId == "AGI+")
+    else
     {
-        mPlayer->raiseAttribute(LocalPlayer::AGI);
-    }
-    else if (eventId == "DEX+")
-    {
-        mPlayer->raiseAttribute(LocalPlayer::DEX);
-    }
-    else if (eventId == "VIT+")
-    {
-        mPlayer->raiseAttribute(LocalPlayer::VIT);
-    }
-    else if (eventId == "INT+")
-    {
-        mPlayer->raiseAttribute(LocalPlayer::INT);
-    }
-    else if (eventId == "WIL+")
-    {
-        mPlayer->raiseAttribute(LocalPlayer::WIL);
+        disp = new DerDisplay(id, name);
+        mDAttrCont->add(disp);
     }
 
-    else if (eventId == "STR-")
-    {
-        mPlayer->lowerAttribute(LocalPlayer::STR);
-    }
-    else if (eventId == "AGI-")
-    {
-        mPlayer->lowerAttribute(LocalPlayer::AGI);
-    }
-    else if (eventId == "DEX-")
-    {
-        mPlayer->lowerAttribute(LocalPlayer::DEX);
-    }
-    else if (eventId == "VIT-")
-    {
-        mPlayer->lowerAttribute(LocalPlayer::VIT);
-    }
-    else if (eventId == "INT-")
-    {
-        mPlayer->lowerAttribute(LocalPlayer::INT);
-    }
-    else if (eventId == "WIL-")
-    {
-        mPlayer->lowerAttribute(LocalPlayer::WIL);
-    }
+    mAttrs[id] = disp;
 }
-
-// WARNING: Duplicated method!
 
 void StatusWindow::updateHPBar(ProgressBar *bar, bool showMax)
 {
+
     if (showMax)
         bar->setText(toString(player_node->getHp()) +
                     "/" + toString(player_node->getMaxHp()));
     else
         bar->setText(toString(player_node->getHp()));
 
-    // HP Bar coloration
-    if (player_node->getHp() < player_node->getMaxHp() / 3)
+    if (player_node->getMaxHp() < 4)
     {
-        bar->setColor(223, 32, 32); // Red
-    }
-    else if (player_node->getHp() < (player_node->getMaxHp() / 3) * 2)
-    {
-        bar->setColor(230, 171, 34); // Orange
+        bar->setColor(guiPalette->getColor(Palette::HPBAR_ONE_QUARTER));
     }
     else
     {
-        bar->setColor(0, 171, 34); // Green
+        // HP Bar coloration
+        float r1 = 255;
+        float g1 = 255;
+        float b1 = 255;
+
+        float r2 = 255;
+        float g2 = 255;
+        float b2 = 255;
+
+        float weight = 1.0f;
+
+        int curHP = player_node->getHp();
+        int thresholdLevel = player_node->getMaxHp() / 4;
+        int thresholdProgress = curHP % thresholdLevel;
+
+        if (thresholdLevel)
+            weight = 1 - ((float)thresholdProgress) / ((float)thresholdLevel);
+        else
+            weight = 0;
+
+        if (curHP < (thresholdLevel))
+        {
+            gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_ONE_HALF);
+            gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_ONE_QUARTER);
+            r1 = color1.r; r2 = color2.r;
+            g1 = color1.g; g2 = color2.g;
+            b1 = color1.b; b2 = color2.b;
+        }
+        else if (curHP < (thresholdLevel*2))
+        {
+            gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_THREE_QUARTERS);
+            gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_ONE_HALF);
+            r1 = color1.r; r2 = color2.r;
+            g1 = color1.g; g2 = color2.g;
+            b1 = color1.b; b2 = color2.b;
+        }
+        else if (curHP < thresholdLevel*3)
+        {
+            gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_FULL);
+            gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_THREE_QUARTERS);
+            r1 = color1.r; r2 = color2.r;
+            g1 = color1.g; g2 = color2.g;
+            b1 = color1.b; b2 = color2.b;
+        }
+        else
+        {
+            gcn::Color color1 = guiPalette->getColor(Palette::HPBAR_FULL);
+            gcn::Color color2 = guiPalette->getColor(Palette::HPBAR_FULL);
+            r1 = color1.r; r2 = color2.r;
+            g1 = color1.g; g2 = color2.g;
+            b1 = color1.b; b2 = color2.b;
+        }
+
+        // Safety checks
+        if (weight > 1.0f) weight = 1.0f;
+        if (weight < 0.0f) weight = 0.0f;
+
+        // Do the color blend
+        r1 = (int) weightedAverage(r1, r2,weight);
+        g1 = (int) weightedAverage(g1, g2, weight);
+        b1 = (int) weightedAverage(b1, b2, weight);
+
+        // More safety checks
+        if (r1 > 255) r1 = 255;
+        if (g1 > 255) g1 = 255;
+        if (b1 > 255) b1 = 255;
+
+        bar->setColor(r1, g1, b1);
     }
 
     bar->setProgress((float) player_node->getHp() / (float) player_node->getMaxHp());
+
+}
+
+void StatusWindow::updateMPBar(ProgressBar *bar, bool showMax)
+{
+    if (showMax)
+        bar->setText(toString(player_node->getMP()) +
+                    "/" + toString(player_node->getMaxMP()));
+    else
+        bar->setText(toString(player_node->getMP()));
+
+    if (Net::getPlayerHandler()->canUseMagic())
+        bar->setColor(26, 102, 230); // blue, to indicate that we have magic
+    else
+        bar->setColor(100, 100, 100); // grey, to indicate that we lack magic
+
+    bar->setProgress((float) player_node->getMP() /
+                     (float) player_node->getMaxMP());
+}
+
+void StatusWindow::updateProgressBar(ProgressBar *bar, int value, int max,
+                              bool percent)
+{
+    if (max == 0)
+    {
+        bar->setText(_("Max"));
+        bar->setProgress(1.0);
+    }
+    else
+    {
+        float progress = (float) value / max;
+
+        if (percent)
+            bar->setText(strprintf("%2.2f", 100 * progress) + "%");
+        else
+            bar->setText(toString(value) + "/" + toString(max));
+
+        bar->setProgress(progress);
+    }
+}
+
+void StatusWindow::updateXPBar(ProgressBar *bar, bool percent)
+{
+    updateProgressBar(bar, player_node->getExp(), player_node->getExpNeeded(),
+                      percent);
+}
+
+void StatusWindow::updateProgressBar(ProgressBar *bar, int id, bool percent)
+{
+    std::pair<int, int> exp =  player_node->getExperience(id);
+    updateProgressBar(bar, exp.first, exp.second, percent);
+}
+
+AttrDisplay::AttrDisplay(int id, const std::string &name):
+        mId(id),
+        mName(name)
+{
+    setSize(100, 32);
+    mLabel = new Label(name);
+    mValue = new Label("1");
+
+    mLabel->setAlignment(Graphics::CENTER);
+    mValue->setAlignment(Graphics::CENTER);
+
+    mLayout = new LayoutHelper(this);
+}
+
+std::string AttrDisplay::update()
+{
+    int base = player_node->getAttributeBase(mId);
+    int bonus = player_node->getAttributeEffective(mId) - base;
+    std::string value = toString(base);
+    if (bonus)
+        value += strprintf(" (%+d)", bonus);
+    mValue->setCaption(value);
+
+    return mName;
+}
+
+DerDisplay::DerDisplay(int id, const std::string &name):
+        AttrDisplay(id, name)
+{
+    // Do the layout
+    LayoutHelper h(this);
+    ContainerPlacer place = mLayout->getPlacer(0, 0);
+
+    place(0, 0, mLabel, 3);
+    place(3, 0, mValue, 2);
+
+    update();
+}
+
+ChangeDisplay::ChangeDisplay(int id, const std::string &name):
+        AttrDisplay(id, name), mNeeded(1)
+{
+    mPoints = new Label("1");
+    mDec = new Button(_("-"), "dec", this);
+    mInc = new Button(_("+"), "inc", this);
+    mDec->setWidth(mInc->getWidth());
+
+    // Do the layout
+    ContainerPlacer place = mLayout->getPlacer(0, 0);
+
+    place(0, 0, mLabel, 3);
+    place(3, 0, mDec);
+    place(4, 0, mValue, 2);
+    place(6, 0, mInc);
+    place(7, 0, mPoints);
+
+    update();
+}
+
+std::string ChangeDisplay::update()
+{
+    mPoints->setCaption(toString(mNeeded));
+
+    mDec->setEnabled(player_node->getCorrectionPoints());
+    mInc->setEnabled(player_node->getCharacterPoints() >= mNeeded);
+
+    return AttrDisplay::update();
+}
+
+void ChangeDisplay::setPointsNeeded(int needed)
+{
+    mNeeded = needed;
+
+    update();
+}
+
+void ChangeDisplay::action(const gcn::ActionEvent &event)
+{
+    if (event.getSource() == mDec)
+    {
+        Net::getPlayerHandler()->decreaseAttribute(mId);
+    }
+    else if (event.getSource() == mInc)
+    {
+        Net::getPlayerHandler()->increaseAttribute(mId);
+    }
 }

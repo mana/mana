@@ -43,7 +43,6 @@
 #include "gui/gui.h"
 #include "gui/okdialog.h"
 #include "gui/sell.h"
-#include "gui/skill.h"
 #include "gui/viewport.h"
 
 // TODO Move somewhere else
@@ -134,7 +133,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             logger->log("ATTRIBUTE UPDATE:");
             while (msg.getUnreadLength())
             {
-                int stat = msg.readInt8();
+                int stat = msg.readInt16();
                 int base = msg.readInt16();
                 int value = msg.readInt16();
                 logger->log("%d set to %d %d", stat, base, value);
@@ -144,23 +143,10 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                     player_node->setMaxHp(base);
                     player_node->setHp(value);
                 }
-                else if (stat < NB_CHARACTER_ATTRIBUTES)
-                {
-                    if (stat >= CHAR_SKILL_BEGIN && stat < CHAR_SKILL_END
-                        && player_node->getAttributeBase(stat) < base
-                        && player_node->getAttributeBase(stat) > -1)
-                    {
-                        Particle* effect = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
-                        player_node->controlParticle(effect);
-                    }
-
-                    player_node->setAttributeBase(stat, base);
-                    player_node->setAttributeEffective(stat, value);
-                }
                 else
                 {
-                    logger->log("Warning: server wants to update unknown "
-                                "attribute %d to %d", stat, value);
+                    player_node->setAttributeBase(stat, base);
+                    player_node->setAttributeEffective(stat, value);
                 }
             }
         } break;
@@ -174,15 +160,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 int current = msg.readInt32();
                 int next = msg.readInt32();
 
-                if (skill < CHAR_SKILL_NB)
-                {
-                    player_node->setExperience(skill, current, next);
-                }
-                else
-                {
-                    logger->log("Warning: server wants to update experience of unknown "
-                                "skill  %d to %d / %d", skill, current, next);
-                }
+                player_node->setExperience(skill, current, next);
             }
         } break;
 
@@ -199,7 +177,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         case GPMSG_LEVEL_PROGRESS:
         {
             logger->log("Level Progress Update");
-            player_node->setLevelProgress(msg.readInt8());
+            player_node->setExp(msg.readInt8());
         } break;
 
 
@@ -358,20 +336,32 @@ void PlayerHandler::emote(int emoteId)
     // TODO
 }
 
-void PlayerHandler::increaseStat(LocalPlayer::Attribute attr)
+void PlayerHandler::increaseAttribute(size_t attr)
 {
-    // TODO
+    MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
+    msg.writeInt8(attr);
+    Net::GameServer::connection->send(msg);
 }
 
-void PlayerHandler::decreaseStat(LocalPlayer::Attribute attr)
+void PlayerHandler::decreaseAttribute(size_t attr)
 {
-    // TODO
+    MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
+    msg.writeInt8(attr);
+    Net::GameServer::connection->send(msg);
+}
+
+void PlayerHandler::increaseSkill(int skillId)
+{
+    // Not used atm
 }
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
     int id = floorItem->getId();
-    Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
+    MessageOut msg(PGMSG_PICKUP);
+    msg.writeInt16(id >> 16);
+    msg.writeInt16(id & 0xFFFF);
+    Net::GameServer::connection->send(msg);
 }
 
 void PlayerHandler::setDirection(char direction)
@@ -412,6 +402,11 @@ void PlayerHandler::ignorePlayer(const std::string &player, bool ignore)
 void PlayerHandler::ignoreAll(bool ignore)
 {
     // TODO
+}
+
+bool PlayerHandler::canUseMagic()
+{
+    return true;
 }
 
 } // namespace TmwServ

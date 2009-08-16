@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,31 +19,29 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_EA_SKILLHANDLER_H
-#define NET_EA_SKILLHANDLER_H
+#ifndef GUI_VERTCONTAINER_H
+#define GUI_VERTCONTAINER_H
 
-#include "net/messagehandler.h"
-#include "net/net.h"
-#include "net/skillhandler.h"
+#include "gui/widgets/container.h"
 
-namespace EAthena {
+#include <guichan/widgetlistener.hpp>
 
-class SkillHandler : public MessageHandler, public Net::SkillHandler
+/**
+ * A widget container.
+ *
+ * This container places it's contents veritcally.
+ */
+class VertContainer : public Container, public gcn::WidgetListener
 {
     public:
-        SkillHandler();
+        VertContainer(int spacing);
+        virtual void add(gcn::Widget *widget);
+        virtual void clear();
+        void widgetResized(const gcn::Event &event);
 
-        void handleMessage(MessageIn &msg);
-
-        void up(int skillId);
-
-        void use(int skillId, int level, int beingId);
-
-        void use(int skillId, int level, int x, int y);
-
-        void use(int skillId, const std::string &map);
+    private:
+        int mSpacing;
+        int mCount;
 };
 
-} // namespace EAthena
-
-#endif // NET_EA_SKILLHANDLER_H
+#endif

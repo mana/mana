@@ -36,6 +36,8 @@
 #include "gui/changeemaildialog.h"
 
 #include "net/tmwserv/accountserver/account.h"
+#else
+#include "net/ea/protocol.h"
 #endif
 
 #include "gui/widgets/button.h"
@@ -116,7 +118,7 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
     mNameLabel = new Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new Label(strprintf(_("Level: %d"), 0));
-    mMoneyLabel = new Label(strprintf(_("Money: %d"), 0));
+    mMoneyLabel = new Label(strprintf(_("Money: %s"), ""));
 
     // Control that shows the Player
     mPlayerBox = new PlayerBox;
@@ -296,9 +298,9 @@ void CharSelectDialog::updatePlayerInfo()
         mNameLabel->setCaption(strprintf(_("Name: %s"),
                                           pi->getName().c_str()));
         mLevelLabel->setCaption(strprintf(_("Level: %d"), pi->getLevel()));
-#ifndef TMWSERV_SUPPORT
+#ifdef EATHENA_SUPPORT
         mJobLevelLabel->setCaption(strprintf(_("Job Level: %d"),
-                                              pi->mJobLevel));
+                                              pi->getAttributeBase(JOB)));
 #endif
         mMoneyLabel->setCaption(strprintf(_("Money: %s"), mMoney.c_str()));
         if (!mCharSelected)
@@ -362,7 +364,10 @@ bool CharSelectDialog::selectByName(const std::string &name)
         LocalPlayer *player = mCharInfo->getEntry();
 
         if (player && player->getName() == name)
+	{
+	    mMoney = Units::formatCurrency(player->getMoney());
             return true;
+	}
 
         mCharInfo->next();
     } while (mCharInfo->getPos());

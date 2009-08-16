@@ -76,13 +76,13 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = _("Account was not found. Please re-login.");
                         break;
                     case 2:
-                        errorMessage = _("Old password incorrect");
+                        errorMessage = _("Old password incorrect.");
                         break;
                     case 3:
-                        errorMessage = _("New password too short");
+                        errorMessage = _("New password too short.");
                         break;
                     default:
-                        errorMessage = _("Unknown error");
+                        errorMessage = _("Unknown error.");
                         break;
                 }
                 state = STATE_ACCOUNTCHANGE_ERROR;
@@ -96,7 +96,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
              len = msg.readInt16() - 4;
              mUpdateHost = msg.readString(len);
 
-             logger->log("Received update host \"%s\" from login server",
+             logger->log("Received update host \"%s\" from login server.",
                      mUpdateHost.c_str());
              break;
 
@@ -139,21 +139,21 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
             switch (code) {
                 case 0:
-                    errorMessage = _("Unregistered ID");
+                    errorMessage = _("Unregistered ID.");
                     break;
                 case 1:
-                    errorMessage = _("Wrong password");
+                    errorMessage = _("Wrong password.");
                     break;
                 case 2:
-                    errorMessage = _("Account expired");
+                    errorMessage = _("Account expired.");
                     break;
                 case 3:
-                    errorMessage = _("Rejected from server");
+                    errorMessage = _("Rejected from server.");
                     break;
                 case 4:
 
                     errorMessage = _("You have been permanently banned from "
-                                     "the game. Please contact the GM Team.");
+                                     "the game. Please contact the GM team.");
                     break;
                 case 6:
                     errorMessage = strprintf(_("You have been temporarily "
@@ -163,10 +163,10 @@ void LoginHandler::handleMessage(MessageIn &msg)
                                                msg.readString(20).c_str());
                     break;
                 case 9:
-                    errorMessage = _("This user name is already taken");
+                    errorMessage = _("This user name is already taken.");
                     break;
                 default:
-                    errorMessage = _("Unknown error");
+                    errorMessage = _("Unknown error.");
                     break;
             }
             state = STATE_ERROR;

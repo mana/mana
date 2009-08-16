@@ -37,29 +37,7 @@
 #include "utils/dtor.h"
 #include "utils/gettext.h"
 
-extern Window *chatWindow;
 extern Window *statusWindow;
-extern Window *buyDialog;
-extern Window *sellDialog;
-extern Window *buySellDialog;
-extern Window *inventoryWindow;
-extern Window *npcTextDialog;
-extern Window *npcStringDialog;
-extern Window *skillDialog;
-extern Window *partyWindow;
-extern Window *minimap;
-extern Window *equipmentWindow;
-extern Window *tradeWindow;
-extern Window *helpWindow;
-extern Window *debugWindow;
-extern Window *itemShortcutWindow;
-extern Window *emoteShortcutWindow;
-#ifdef TMWSERV_SUPPORT
-extern Window *magicDialog;
-extern Window *guildWindow;
-#else
-extern Window *storageWindow;
-#endif
 
 Setup::Setup():
     Window(_("Setup"))
@@ -137,35 +115,22 @@ void Setup::action(const gcn::ActionEvent &event)
         if (!statusWindow)
             return;
 
-        chatWindow->resetToDefaultSize();
-        statusWindow->resetToDefaultSize();
-        buyDialog->resetToDefaultSize();
-        sellDialog->resetToDefaultSize();
-#ifdef EATHENA_SUPPORT
-        buySellDialog->resetToDefaultSize();
-#endif
-        inventoryWindow->resetToDefaultSize();
-        skillDialog->resetToDefaultSize();
-        partyWindow->resetToDefaultSize();
-        minimap->resetToDefaultSize();
-        equipmentWindow->resetToDefaultSize();
-        tradeWindow->resetToDefaultSize();
-        helpWindow->resetToDefaultSize();
-        debugWindow->resetToDefaultSize();
-        itemShortcutWindow->resetToDefaultSize();
-        emoteShortcutWindow->resetToDefaultSize();
-#ifdef TMWSERV_SUPPORT
-        magicDialog->resetToDefaultSize();
-        guildWindow->resetToDefaultSize();
-#else
-        storageWindow->resetToDefaultSize();
-#endif
+        for (std::list<Window*>::iterator it = mWindowsToReset.begin();
+                it != mWindowsToReset.end(); it++)
+        {
+            (*it)->resetToDefaultSize();
+        }
     }
 }
 
 void Setup::setInGame(bool inGame)
 {
     mResetWindows->setEnabled(inGame);
+}
+
+void Setup::registerWindowForReset(Window *window)
+{
+    mWindowsToReset.push_back(window);
 }
 
 Setup *setupWindow;

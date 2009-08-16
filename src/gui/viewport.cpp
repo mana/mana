@@ -116,22 +116,12 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     // Calculate viewpoint
-#ifdef TMWSERV_SUPPORT
     int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 2;
     int midTileY = (graphics->getHeight() + mScrollCenterOffsetX) / 2;
 
     const Vector &playerPos = player_node->getPosition();
     const int player_x = (int) playerPos.x - midTileX;
     const int player_y = (int) playerPos.y - midTileY;
-#else
-    int midTileX = (graphics->getWidth() + mScrollCenterOffsetX) / 32 / 2;
-    int midTileY = (graphics->getHeight() + mScrollCenterOffsetY) / 32 / 2;
-
-    int player_x = (player_node->mX - midTileX) * 32 +
-                    player_node->getXOffset();
-    int player_y = (player_node->mY - midTileY) * 32 +
-                    player_node->getYOffset();
-#endif
 
     if (mScrollLaziness < 1)
         mScrollLaziness = 1; // Avoids division by zero

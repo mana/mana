@@ -61,18 +61,16 @@ CharServerHandler::CharServerHandler():
 
 void CharServerHandler::handleMessage(MessageIn &msg)
 {
-    int slot, flags;
+    int slot;
     LocalPlayer *tempPlayer;
 
     logger->log("CharServerHandler: Packet ID: %x, Length: %d",
             msg.getId(), msg.getLength());
     switch (msg.getId())
     {
-        case 0x006b:
+        case SMSG_CHAR_LOGIN:
             msg.skip(2); // Length word
-            flags = msg.readInt32(); // Aethyra extensions flags
-            logger->log("Server flags are: %x", flags);
-            msg.skip(16); // Unused
+            msg.skip(20); // Unused
 
             // Derive number of characters from message length
             n_character = (msg.getLength() - 24) / 106;
@@ -92,13 +90,13 @@ void CharServerHandler::handleMessage(MessageIn &msg)
         case SMSG_CHAR_LOGIN_ERROR:
             switch (msg.readInt8()) {
                 case 0:
-                    errorMessage = _("Access denied");
+                    errorMessage = _("Access denied.");
                     break;
                 case 1:
-                    errorMessage = _("Cannot use this ID");
+                    errorMessage = _("Cannot use this ID.");
                     break;
                 default:
-                    errorMessage = _("Unknown failure to select character");
+                    errorMessage = _("Unknown failure to select character.");
                     break;
             }
             mCharInfo->unlock();
@@ -169,14 +167,15 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
 LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
-    LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
+    LocalPlayer *tempPlayer = new LocalPlayer(msg.readInt32(), 0, NULL);
     tempPlayer->setGender(mLoginData->sex);
 
-    tempPlayer->mCharId = msg.readInt32();
-    tempPlayer->setXp(msg.readInt32());
+    tempPlayer->setExp(msg.readInt32());
     tempPlayer->setMoney(msg.readInt32());
-    tempPlayer->mJobXp = msg.readInt32();
-    tempPlayer->mJobLevel = msg.readInt32();
+    tempPlayer->setExperience(JOB, msg.readInt32(), 1);
+    int temp = msg.readInt32();
+    tempPlayer->setAttributeBase(JOB, temp);
+    tempPlayer->setAttributeEffective(JOB, temp);
     tempPlayer->setSprite(Being::SHOE_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Being::GLOVES_SPRITE, msg.readInt16());
     tempPlayer->setSprite(Being::CAPE_SPRITE, msg.readInt16());
@@ -187,8 +186,8 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     msg.skip(2);                          // unknown
     tempPlayer->setHp(msg.readInt16());
     tempPlayer->setMaxHp(msg.readInt16());
-    tempPlayer->mMp = msg.readInt16();
-    tempPlayer->mMaxMp = msg.readInt16();
+    tempPlayer->setMP(msg.readInt16());
+    tempPlayer->setMaxMP(msg.readInt16());
     msg.readInt16();                       // speed
     msg.readInt16();                       // class
     int hairStyle = msg.readInt16();
@@ -205,7 +204,7 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setSprite(Being::MISC2_SPRITE, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++) {
-        tempPlayer->mAttr[i] = msg.readInt8();
+        tempPlayer->setAttributeBase(i + STR, msg.readInt8());
     }
     slot = msg.readInt8(); // character slot
     msg.readInt8();                        // unknown
@@ -272,7 +271,7 @@ void CharServerHandler::newCharacter(const std::string &name, int slot,
 void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
 {
     MessageOut outMsg(CMSG_CHAR_DELETE);
-    outMsg.writeInt32(character->mCharId);
+    outMsg.writeInt32(character->getId());
     outMsg.writeString("a@a.com", 40);
 }
 

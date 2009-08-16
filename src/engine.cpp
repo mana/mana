@@ -85,7 +85,7 @@ bool Engine::changeMap(const std::string &mapPath)
     if (!newMap)
     {
         logger->log("Error while loading %s", map_path.c_str());
-        new OkDialog(_("Could not load map"),
+        new OkDialog(_("Could Not Load Map"),
                      strprintf(_("Error while loading %s"), map_path.c_str()));
     }
 

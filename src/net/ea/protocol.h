@@ -22,6 +22,25 @@
 #ifndef EA_PROTOCOL_H
 #define EA_PROTOCOL_H
 
+enum {
+    JOB = 0xa,
+
+    STR = 0xd,
+    AGI,
+    VIT,
+    INT,
+    DEX,
+    LUK,
+
+    ATK,
+    DEF,
+    MATK,
+    MDEF,
+    HIT,
+    FLEE,
+    CRIT
+};
+
 static const int INVENTORY_OFFSET = 2;
 static const int STORAGE_OFFSET = 1;
 
@@ -69,6 +88,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_PLAYER_ARROW_EQUIP      0x013c
 #define SMSG_PLAYER_ARROW_MESSAGE    0x013b
 #define SMSG_PLAYER_SKILLS           0x010f
+#define SMSG_PLAYER_SKILL_UP         0x010e
 #define SMSG_SKILL_FAILED            0x0110
 #define SMSG_ITEM_USE_RESPONSE       0x00a8
 #define SMSG_ITEM_VISIBLE            0x009d /**< An item is on the floor */
@@ -160,6 +180,11 @@ static const int STORAGE_OFFSET = 1;
 
 #define CMSG_SKILL_LEVELUP_REQUEST   0x0112
 #define CMSG_STAT_UPDATE_REQUEST     0x00bb
+#define CMSG_SKILL_USE_BEING         0x0113
+#define CMSG_SKILL_USE_POSITION      0x0116
+// Variant of 0x116 with 80 char string at end (unsure of use)
+#define CMSG_SKILL_USE_POSITION_MORE 0x0190
+#define CMSG_SKILL_USE_MAP           0x011b
 
 #define CMSG_PLAYER_INVENTORY_USE    0x00a7
 #define CMSG_PLAYER_INVENTORY_DROP   0x00a2

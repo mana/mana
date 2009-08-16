@@ -38,9 +38,11 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
 
         void emote(int emoteId);
 
-        void increaseStat(LocalPlayer::Attribute attr);
+        void increaseAttribute(size_t attr);
 
-        void decreaseStat(LocalPlayer::Attribute attr);
+        void decreaseAttribute(size_t attr);
+
+        void increaseSkill(int skillId);
 
         void pickUp(FloorItem *floorItem);
 
@@ -55,6 +57,8 @@ class PlayerHandler : public MessageHandler, public Net::PlayerHandler
         void ignorePlayer(const std::string &player, bool ignore);
 
         void ignoreAll(bool ignore);
+
+        bool canUseMagic();
 
     private:
         void handleMapChangeMessage(MessageIn &msg);

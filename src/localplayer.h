@@ -26,6 +26,7 @@
 #include <vector>
 
 #include "player.h"
+#include "gui/palette.h"
 
 class Equipment;
 class FloorItem;
@@ -34,7 +35,6 @@ class Inventory;
 class Item;
 class Map;
 
-#ifdef TMWSERV_SUPPORT
 
 struct Special
 {
@@ -42,6 +42,7 @@ struct Special
     int neededMana;
     int recharge;
 };
+
 
 /**
  * Attributes used during combat. Available to all the beings.
@@ -91,42 +92,8 @@ enum
     CHAR_ATTR_END,
     CHAR_ATTR_NB = CHAR_ATTR_END - CHAR_ATTR_BEGIN,
 
-    CHAR_SKILL_BEGIN = CHAR_ATTR_END,
-
-    CHAR_SKILL_WEAPON_BEGIN = CHAR_SKILL_BEGIN,
-    CHAR_SKILL_WEAPON_NONE = CHAR_SKILL_WEAPON_BEGIN,
-    CHAR_SKILL_WEAPON_KNIFE,
-    CHAR_SKILL_WEAPON_SWORD,
-    CHAR_SKILL_WEAPON_POLEARM,
-    CHAR_SKILL_WEAPON_STAFF,
-    CHAR_SKILL_WEAPON_WHIP,
-    CHAR_SKILL_WEAPON_BOW,
-    CHAR_SKILL_WEAPON_SHOOTING,
-    CHAR_SKILL_WEAPON_MACE,
-    CHAR_SKILL_WEAPON_AXE,
-    CHAR_SKILL_WEAPON_THROWN,
-    CHAR_SKILL_WEAPON_END,
-    CHAR_SKILL_WEAPON_NB = CHAR_SKILL_WEAPON_END - CHAR_SKILL_WEAPON_BEGIN,
-
-    CHAR_SKILL_MAGIC_BEGIN = CHAR_SKILL_WEAPON_END,
-    CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER = CHAR_SKILL_MAGIC_BEGIN,
-    // add magic skills here
-    CHAR_SKILL_MAGIC_END,
-    CHAR_SKILL_MAGIC_NB = CHAR_SKILL_MAGIC_END - CHAR_SKILL_MAGIC_BEGIN,
-
-    CHAR_SKILL_CRAFT_BEGIN = CHAR_SKILL_MAGIC_END,
-    CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER = CHAR_SKILL_CRAFT_BEGIN,
-    // add crafting skills here
-    CHAR_SKILL_CRAFT_END,
-    CHAR_SKILL_CRAFT_NB = CHAR_SKILL_CRAFT_END - CHAR_SKILL_CRAFT_BEGIN,
-
-    CHAR_SKILL_END = CHAR_SKILL_CRAFT_END,
-    CHAR_SKILL_NB = CHAR_SKILL_END - CHAR_SKILL_BEGIN,
-
-    NB_CHARACTER_ATTRIBUTES = CHAR_SKILL_END
+    NB_CHARACTER_ATTRIBUTES = CHAR_ATTR_END
 };
-
-#endif
 
 /**
  * The local player character.
@@ -134,23 +101,17 @@ enum
 class LocalPlayer : public Player
 {
     public:
+#ifdef TMWSERV_SUPPORT
         enum Attribute
         {
-#ifdef TMWSERV_SUPPORT
             STR = 0, AGI, DEX, VIT, INT, WIL, CHR
-#else
-            STR = 0, AGI, VIT, INT, DEX, LUK
-#endif
         };
+#endif
 
         /**
          * Constructor.
          */
-#ifdef TMWSERV_SUPPORT
-        LocalPlayer();
-#else
-        LocalPlayer(int id, int job, Map *map);
-#endif
+        LocalPlayer(int id= 65535, int job = 0, Map *map = NULL);
 
         /**
          * Destructor.
@@ -220,14 +181,13 @@ class LocalPlayer : public Player
          */
         void setTrading(bool trading) { mTrading = trading; }
 
-#ifdef TMWSERV_SUPPORT
         void useSpecial(int id);
 
         void setSpecialStatus(int id, int current, int max, int recharge);
 
         const std::map<int, Special> &getSpecialStatus() const
         { return mSpecials; }
-#endif
+
         void attack(Being *target = NULL, bool keep = false);
 
         /**
@@ -292,7 +252,6 @@ class LocalPlayer : public Player
          */
         bool withinAttackRange(Being *target);
 
-#ifdef TMWSERV_SUPPORT
         /**
          * Stops the player dead in his tracks
          */
@@ -307,15 +266,14 @@ class LocalPlayer : public Player
          * Uses a correction point to lower an attribute
          */
         void lowerAttribute(size_t attr);
-#endif
 
         void toggleSit();
         void emote(Uint8 emotion);
 
         /**
-         * Shows item pickup effect if the player is on a map.
+         * Shows item pickup notifications.
          */
-        void pickedUp(const std::string &item);
+        void pickedUp(const ItemInfo &itemInfo, int amount);
 
         /**
          * Accessors for mInStorage
@@ -324,34 +282,7 @@ class LocalPlayer : public Player
         void setInStorage(bool inStorage);
 
 #ifdef EATHENA_SUPPORT
-        /**
-         * Sets the amount of XP. Shows XP gaining effect if the player is on
-         * a map.
-         */
-        void setXp(int xp);
-
-        /**
-         * Returns the amount of experience points.
-         */
-        int getXp() const { return mXp; }
-
-        Uint32 mCharId;     /**< Used only during character selection. */
-
-        Uint32 mJobXp;
-        Uint32 mJobLevel;
-        Uint32 mXpForNextLevel, mJobXpForNextLevel;
-        Uint16 mMp, mMaxMp;
-
         Uint16 mAttackRange;
-
-        Uint8 mAttr[6];
-        Uint8 mAttrUp[6];
-
-        int ATK, MATK, DEF, MDEF, HIT, FLEE;
-        int ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
-
-        Uint16 mStatPoint, mSkillPoint;
-        Uint16 mStatsPointsToAttribute;
 #endif
 
         int getHp() const
@@ -360,31 +291,39 @@ class LocalPlayer : public Player
         int getMaxHp() const
         { return mMaxHp; }
 
-        void setHp(int value)
-        { mHp = value; }
+        void setHp(int value);
 
-        void setMaxHp(int value)
-        { mMaxHp = value; }
+        void setMaxHp(int value);
 
         int getLevel() const
         { return mLevel; }
 
-        void setLevel(int value)
-        { mLevel = value; }
+        void setLevel(int value);
 
-#ifdef TMWSERV_SUPPORT
-        void setLevelProgress(int percent)
-        { mLevelProgress = percent; }
+        void setExp(int value);
 
-        int getLevelProgress() const
-        { return mLevelProgress; }
-#endif
+        int getExp() const
+        { return mExp; }
+
+        void setExpNeeded(int value);
+
+        int getExpNeeded() const
+        { return mExpNeeded; }
+
+        void setMP(int value);
+
+        int getMP() const
+        { return mMp; }
+
+        void setMaxMP(int value);
+
+        int getMaxMP() const
+        { return mMaxMp; }
 
         int getMoney() const
         { return mMoney; }
 
-        void setMoney(int value)
-        { mMoney = value; }
+        void setMoney(int value);
 
         int getTotalWeight() const
         { return mTotalWeight; }
@@ -398,48 +337,43 @@ class LocalPlayer : public Player
         void setMaxWeight(int value)
         { mMaxWeight = value; }
 
-#ifdef TMWSERV_SUPPORT
-        int getAttributeBase(int num) const
+        int getAttributeBase(int num)
         { return mAttributeBase[num]; }
 
-        void setAttributeBase(int num, int value)
-        { mAttributeBase[num] = value; }
+        void setAttributeBase(int num, int value);
 
-        int getAttributeEffective(int num) const
+        int getAttributeEffective(int num)
         { return mAttributeEffective[num]; }
 
-        void setAttributeEffective(int num, int value)
-        { mAttributeEffective[num] = value; }
+        void setAttributeEffective(int num, int value);
 
         int getCharacterPoints() const
         { return mCharacterPoints; }
 
-        void setCharacterPoints(int n)
-        { mCharacterPoints = n; }
+        void setCharacterPoints(int n);
 
         int getCorrectionPoints() const
         { return mCorrectionPoints; }
 
-        void setCorrectionPoints(int n)
-        { mCorrectionPoints = n; }
+        void setCorrectionPoints(int n);
+
+        int getSkillPoints() const
+        { return mSkillPoints; }
+
+        void setSkillPoints(int points);
 
         void setExperience(int skill, int current, int next);
 
-        struct SkillInfo {
-            std::string name;
-            std::string icon;
-        };
-
-        static const SkillInfo& getSkillInfo(int skill);
-
         std::pair<int, int> getExperience(int skill);
-#endif
 
         bool mUpdateName;     /** Whether or not the name settings have changed */
 
         bool mMapInitialized; /** Whether or not the map is available yet */
 
         const std::auto_ptr<Equipment> mEquipment;
+
+        void addMessageToQueue(const std::string &message,
+                               Palette::ColorType color = Palette::EXP_INFO);
 
     protected:
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
@@ -448,29 +382,29 @@ class LocalPlayer : public Player
 
         bool mInStorage;      /**< Whether storage is currently accessible */
 #ifdef EATHENA_SUPPORT
-        int mXp;            /**< Experience points. */
         int mTargetTime;      /** How long the being has been targeted **/
 #endif
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 
-#ifdef TMWSERV_SUPPORT
         // Character status:
-        std::vector<int> mAttributeBase;
-        std::vector<int> mAttributeEffective;
-        std::vector<int> mExpCurrent;
-        std::vector<int> mExpNext;
+        typedef std::map<int, int> IntMap;
+        IntMap mAttributeBase;
+        IntMap mAttributeEffective;
+        std::map<int, std::pair<int, int> > mSkillExp;
         int mCharacterPoints;
         int mCorrectionPoints;
         int mLevelProgress;
         std::map<int, Special> mSpecials;
         char mSpecialRechargeUpdateNeeded;
-#endif
         int mLevel;
+        int mExp, mExpNeeded;
+        int mMp, mMaxMp;
         int mMoney;
         int mTotalWeight;
         int mMaxWeight;
         int mHp;
         int mMaxHp;
+        int mSkillPoints;
 
         int mGMLevel;
 
@@ -512,10 +446,10 @@ class LocalPlayer : public Player
         /** Animated target cursors. */
         SimpleAnimation *mTargetCursor[2][NUM_TC];
 
-#ifdef TMWSERV_SUPPORT
-        std::list<std::string> mExpMessages; /**< Queued exp messages*/
-        int mExpMessageTime;
-#endif
+        typedef std::pair<std::string, Palette::ColorType> MessagePair;
+        /** Queued exp messages*/
+        std::list<MessagePair> mMessages;
+        int mMessageTime;
 };
 
 extern LocalPlayer *player_node;

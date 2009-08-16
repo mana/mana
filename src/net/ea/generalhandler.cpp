@@ -19,9 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/inventorywindow.h"
-
 #include "net/ea/generalhandler.h"
+
+#include "gui/inventorywindow.h"
+#include "gui/skilldialog.h"
+#include "gui/statuswindow.h"
 
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
@@ -41,7 +43,7 @@
 #include "net/ea/playerhandler.h"
 #include "net/ea/partyhandler.h"
 #include "net/ea/tradehandler.h"
-#include "net/ea/skillhandler.h"
+#include "net/ea/specialhandler.h"
 
 #include "net/ea/gui/partytab.h"
 
@@ -77,7 +79,7 @@ GeneralHandler::GeneralHandler():
     mNpcHandler(new NpcHandler),
     mPartyHandler(new PartyHandler),
     mPlayerHandler(new PlayerHandler),
-    mSkillHandler(new SkillHandler),
+    mSpecialHandler(new SpecialHandler),
     mTradeHandler(new TradeHandler)
 {
     static const Uint16 _messages[] = {
@@ -115,26 +117,26 @@ void GeneralHandler::handleMessage(MessageIn &msg)
 
             switch (code) {
                 case 0:
-                    errorMessage = _("Authentication failed");
+                    errorMessage = _("Authentication failed.");
                     break;
                 case 1:
-                    errorMessage = _("No servers available");
+                    errorMessage = _("No servers available.");
                     break;
                 case 2:
                     if (state == STATE_GAME)
                         errorMessage = _("Someone else is trying to use this "
-                                         "account");
+                                         "account.");
                     else
-                        errorMessage = _("This account is already logged in");
+                        errorMessage = _("This account is already logged in.");
                     break;
                 case 3:
-                    errorMessage = _("Speed hack detected");
+                    errorMessage = _("Speed hack detected.");
                     break;
                 case 8:
-                    errorMessage = _("Duplicated login");
+                    errorMessage = _("Duplicated login.");
                     break;
                 default:
-                    errorMessage = _("Unknown connection error");
+                    errorMessage = _("Unknown connection error.");
                     break;
             }
             state = STATE_ERROR;
@@ -157,7 +159,7 @@ void GeneralHandler::load()
     mNetwork->registerHandler(mMapHandler.get());
     mNetwork->registerHandler(mNpcHandler.get());
     mNetwork->registerHandler(mPlayerHandler.get());
-    mNetwork->registerHandler(mSkillHandler.get());
+    mNetwork->registerHandler(mSpecialHandler.get());
     mNetwork->registerHandler(mTradeHandler.get());
     mNetwork->registerHandler(mPartyHandler.get());
 }
@@ -201,6 +203,22 @@ void GeneralHandler::guiWindowsLoaded()
 {
     partyTab = new PartyTab;
     inventoryWindow->setSplitAllowed(false);
+    skillDialog->loadSkills("ea-skills.xml");
+
+    statusWindow->addAttribute(STR, _("Strength"), true);
+    statusWindow->addAttribute(AGI, _("Agility"), true);
+    statusWindow->addAttribute(VIT, _("Vitality"), true);
+    statusWindow->addAttribute(INT, _("Intelligence"), true);
+    statusWindow->addAttribute(DEX, _("Dexterity"), true);
+    statusWindow->addAttribute(LUK, _("Luck"), true);
+
+    statusWindow->addAttribute(ATK, _("Attack"), false);
+    statusWindow->addAttribute(DEF, _("Defense"), false);
+    statusWindow->addAttribute(MATK, _("M.Attack"), false);
+    statusWindow->addAttribute(MDEF, _("M.Defense"), false);
+    statusWindow->addAttribute(HIT, _("% Accuracy"), false);
+    statusWindow->addAttribute(FLEE, _("% Evade"), false);
+    statusWindow->addAttribute(CRIT, _("% Critical"), false);
 }
 
 void GeneralHandler::guiWindowsUnloaded()

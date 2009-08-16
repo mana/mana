@@ -36,7 +36,7 @@ class MapHandler;
 class NpcHandler;
 class PartyHandler;
 class PlayerHandler;
-class SkillHandler;
+class SpecialHandler;
 class TradeHandler;
 
 AdminHandler *getAdminHandler();
@@ -51,7 +51,7 @@ MapHandler *getMapHandler();
 NpcHandler *getNpcHandler();
 PartyHandler *getPartyHandler();
 PlayerHandler *getPlayerHandler();
-SkillHandler *getSkillHandler();
+SpecialHandler *getSpecialHandler();
 TradeHandler *getTradeHandler();
 
 } // namespace Net

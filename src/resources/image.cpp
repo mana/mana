@@ -26,6 +26,7 @@
 #include "log.h"
 
 #include <SDL_image.h>
+#include "resources/sdlrescalefacility.h"
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
@@ -289,16 +290,13 @@ void Image::unload()
 #endif
 }
 
-Image *Image::getSubImage(int x, int y, int width, int height)
+bool Image::isAnOpenGLOne() const
 {
-    // Create a new clipped sub-image
 #ifdef USE_OPENGL
-    if (mUseOpenGL)
-        return new SubImage(this, mGLImage, x, y, width, height,
-                            mTexWidth, mTexHeight);
+    return mUseOpenGL;
+#else
+    return false;
 #endif
-
-    return new SubImage(this, mImage, x, y, width, height);
 }
 
 void Image::setAlpha(float a)
@@ -345,7 +343,7 @@ Image* Image::merge(Image *image, int x, int y)
             cur_pix = ((Uint32*) mImage->pixels)[current_offset];
 
             // Retreiving each channel of the pixel using pixel format
-            r = (Uint8)(((surface_pix & surface_fmt->Rmask) >> 
+            r = (Uint8)(((surface_pix & surface_fmt->Rmask) >>
                           surface_fmt->Rshift) << surface_fmt->Rloss);
             g = (Uint8)(((surface_pix & surface_fmt->Gmask) >>
                           surface_fmt->Gshift) << surface_fmt->Gloss);
@@ -360,14 +358,14 @@ Image* Image::merge(Image *image, int x, int y)
 
             // new pixel with no alpha or nothing on previous pixel
             if (a == SDL_ALPHA_OPAQUE || (p_a == 0 && a > 0))
-                ((Uint32 *)(surface->pixels))[current_offset] = 
+                ((Uint32 *)(surface->pixels))[current_offset] =
                     SDL_MapRGBA(current_fmt, r, g, b, a);
-            else if (a > 0) 
+            else if (a > 0)
             { // alpha is lower => merge color with previous value
                 f_a = (double) a / 255.0;
                 f_ca = 1.0 - f_a;
                 f_pa = (double) p_a / 255.0;
-                p_r = (Uint8)(((cur_pix & current_fmt->Rmask) >> 
+                p_r = (Uint8)(((cur_pix & current_fmt->Rmask) >>
                                 current_fmt->Rshift) << current_fmt->Rloss);
                 p_g = (Uint8)(((cur_pix & current_fmt->Gmask) >>
                                 current_fmt->Gshift) << current_fmt->Gloss);
@@ -395,6 +393,34 @@ float Image::getAlpha() const
     return mAlpha;
 }
 
+Image* Image::SDLgetScaledImage(int width, int height)
+{
+    // No scaling on incorrect new values.
+    if (width == 0 || height == 0)
+    return NULL;
+
+    // No scaling when there is ... no different given size ...
+    if (width == getWidth() && height == getHeight())
+        return NULL;
+
+    Image* scaledImage = NULL;
+    SDL_Surface* scaledSurface = NULL;
+
+    if (mImage)
+    {
+        scaledSurface = _SDLzoomSurface(mImage,
+                    (double) width / getWidth(),
+                    (double) height / getHeight(),
+                    1);
+
+        // The load function takes of the SDL<->OpenGL implementation
+        // and about freeing the given SDL_surface*.
+        if (scaledSurface)
+            scaledImage = load(scaledSurface);
+    }
+    return scaledImage;
+}
+
 #ifdef USE_OPENGL
 void Image::setLoadAsOpenGL(bool useOpenGL)
 {
@@ -419,6 +445,18 @@ int Image::powerOfTwo(int input)
     return value >= mTextureSize ? mTextureSize : value;
 }
 #endif
+
+Image *Image::getSubImage(int x, int y, int width, int height)
+{
+    // Create a new clipped sub-image
+#ifdef USE_OPENGL
+    if (mUseOpenGL)
+        return new SubImage(this, mGLImage, x, y, width, height,
+                            mTexWidth, mTexHeight);
+#endif
+
+    return new SubImage(this, mImage, x, y, width, height);
+}
 
 //============================================================================
 // SubImage Class
@@ -469,4 +507,3 @@ Image *SubImage::getSubImage(int x, int y, int w, int h)
 {
     return mParent->getSubImage(mBounds.x + x, mBounds.y + y, w, h);
 }
-

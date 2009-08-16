@@ -35,9 +35,11 @@ class PlayerHandler
 
         virtual void emote(int emoteId) = 0;
 
-        virtual void increaseStat(LocalPlayer::Attribute attr) = 0;
+        virtual void increaseAttribute(size_t attr) = 0;
 
-        virtual void decreaseStat(LocalPlayer::Attribute attr) = 0;
+        virtual void decreaseAttribute(size_t attr) = 0;
+
+        virtual void increaseSkill(int skillId) = 0;
 
         virtual void pickUp(FloorItem *floorItem) = 0;
 
@@ -52,6 +54,8 @@ class PlayerHandler
         virtual void ignorePlayer(const std::string &player, bool ignore) = 0;
 
         virtual void ignoreAll(bool ignore) = 0;
+
+        virtual bool canUseMagic() = 0;
 };
 
 } // namespace Net

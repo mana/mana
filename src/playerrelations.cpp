@@ -29,6 +29,7 @@
 #include "playerrelations.h"
 
 #include "utils/dtor.h"
+#include "utils/gettext.h"
 
 #define PLAYER_IGNORE_STRATEGY_NOP "nop"
 #define PLAYER_IGNORE_STRATEGY_EMOTE0 "emote0"
@@ -292,7 +293,7 @@ class PIS_nothing : public PlayerIgnoreStrategy
 public:
     PIS_nothing()
     {
-        mDescription = "completely ignore";
+        mDescription = _("Completely ignore");
         mShortName = PLAYER_IGNORE_STRATEGY_NOP;
     }
 
@@ -306,7 +307,7 @@ class PIS_dotdotdot : public PlayerIgnoreStrategy
 public:
     PIS_dotdotdot()
     {
-        mDescription = "print '...'";
+        mDescription = _("Print '...'");
         mShortName = "dotdotdot";
     }
 
@@ -322,7 +323,7 @@ class PIS_blinkname : public PlayerIgnoreStrategy
 public:
     PIS_blinkname()
     {
-        mDescription = "blink name";
+        mDescription = _("Blink name");
         mShortName = "blinkname";
     }
 
@@ -359,10 +360,10 @@ PlayerRelationsManager::getPlayerIgnoreStrategies()
     {
         // not initialised yet?
         mIgnoreStrategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE,
-                                                  "floating '...' bubble",
+                                                  _("Floating '...' bubble"),
                                                    PLAYER_IGNORE_STRATEGY_EMOTE0));
         mIgnoreStrategies.push_back(new PIS_emote(FIRST_IGNORE_EMOTE + 1,
-                                                  "floating bubble",
+                                                  _("Floating bubble"),
                                                   "emote1"));
         mIgnoreStrategies.push_back(new PIS_nothing());
         mIgnoreStrategies.push_back(new PIS_dotdotdot());

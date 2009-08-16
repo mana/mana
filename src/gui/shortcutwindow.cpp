@@ -25,6 +25,7 @@
 
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
+#include "gui/setup.h"
 
 #include "configuration.h"
 
@@ -42,6 +43,7 @@ ShortcutWindow::ShortcutWindow(const std::string &title,
     setResizable(true);
     setDefaultVisible(false);
     setSaveVisible(true);
+    setupWindow->registerWindowForReset(this);
 
     mItems = content;
 

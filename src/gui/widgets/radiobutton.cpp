@@ -33,10 +33,13 @@ Image *RadioButton::radioNormal;
 Image *RadioButton::radioChecked;
 Image *RadioButton::radioDisabled;
 Image *RadioButton::radioDisabledChecked;
+Image *RadioButton::radioNormalHi;
+Image *RadioButton::radioCheckedHi;
 
 RadioButton::RadioButton(const std::string &caption, const std::string &group,
         bool marked):
-    gcn::RadioButton(caption, group, marked)
+    gcn::RadioButton(caption, group, marked),
+    mHasMouse(false)
 {
     if (instances == 0)
     {
@@ -45,10 +48,14 @@ RadioButton::RadioButton(const std::string &caption, const std::string &group,
         radioChecked = resman->getImage("graphics/gui/radioin.png");
         radioDisabled = resman->getImage("graphics/gui/radioout.png");
         radioDisabledChecked = resman->getImage("graphics/gui/radioin.png");
+        radioNormalHi = resman->getImage("graphics/gui/radioout_highlight.png");
+        radioCheckedHi = resman->getImage("graphics/gui/radioin_highlight.png");
         radioNormal->setAlpha(mAlpha);
         radioChecked->setAlpha(mAlpha);
         radioDisabled->setAlpha(mAlpha);
         radioDisabledChecked->setAlpha(mAlpha);
+        radioNormalHi->setAlpha(mAlpha);
+        radioCheckedHi->setAlpha(mAlpha);
     }
 
     instances++;
@@ -64,6 +71,8 @@ RadioButton::~RadioButton()
         radioChecked->decRef();
         radioDisabled->decRef();
         radioDisabledChecked->decRef();
+        radioNormalHi->decRef();
+        radioCheckedHi->decRef();
     }
 }
 
@@ -76,21 +85,28 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
         radioChecked->setAlpha(mAlpha);
         radioDisabled->setAlpha(mAlpha);
         radioDisabledChecked->setAlpha(mAlpha);
+        radioNormalHi->setAlpha(mAlpha);
+        radioCheckedHi->setAlpha(mAlpha);
     }
 
     Image *box = NULL;
 
-    if (isSelected())
-    {
-        if (isEnabled())
-            box = radioChecked;
+    if (isEnabled())
+        if (isSelected())
+            if (mHasMouse)
+                box = radioCheckedHi;
+            else
+                box = radioChecked;
         else
-            box = radioDisabledChecked;
-    }
-    else if (isEnabled())
-        box = radioNormal;
+            if (mHasMouse)
+                box = radioNormalHi;
+            else
+                box = radioNormal;
     else
-        box = radioDisabled;
+        if (isSelected())
+            box = radioDisabledChecked;
+        else
+            box = radioDisabled;
 
     if (box)
         static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
@@ -111,3 +127,14 @@ void RadioButton::draw(gcn::Graphics* graphics)
     int h = getHeight() + getHeight() / 2;
     graphics->drawText(getCaption(), h - 2, 0);
 }
+
+void RadioButton::mouseEntered(gcn::MouseEvent& event)
+{
+    mHasMouse = true;
+}
+
+void RadioButton::mouseExited(gcn::MouseEvent& event)
+{
+    mHasMouse = false;
+}
+

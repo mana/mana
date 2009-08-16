@@ -57,6 +57,9 @@ class Palette : public gcn::ListModel
             ENTRY(SHADOW)\
             ENTRY(OUTLINE)\
             ENTRY(PROGRESS_BAR)\
+            ENTRY(BUTTON)\
+            ENTRY(BUTTON_DISABLED)\
+            ENTRY(TAB)\
             ENTRY(BACKGROUND)\
             ENTRY(HIGHLIGHT)\
             ENTRY(TAB_HIGHLIGHT)\

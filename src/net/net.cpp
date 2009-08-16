@@ -33,7 +33,7 @@
 #include "net/npchandler.h"
 #include "net/partyhandler.h"
 #include "net/playerhandler.h"
-#include "net/skillhandler.h"
+#include "net/specialhandler.h"
 #include "net/tradehandler.h"
 
 extern Net::AdminHandler *adminHandler;
@@ -47,7 +47,7 @@ extern Net::MapHandler *mapHandler;
 extern Net::NpcHandler *npcHandler;
 extern Net::PartyHandler *partyHandler;
 extern Net::PlayerHandler *playerHandler;
-extern Net::SkillHandler *skillHandler;
+extern Net::SpecialHandler *specialHandler;
 extern Net::TradeHandler *tradeHandler;
 
 Net::AdminHandler *Net::getAdminHandler()
@@ -111,9 +111,9 @@ Net::PlayerHandler *Net::getPlayerHandler()
     return playerHandler;
 }
 
-Net::SkillHandler *Net::getSkillHandler()
+Net::SpecialHandler *Net::getSpecialHandler()
 {
-    return skillHandler;
+    return specialHandler;
 }
 
 Net::TradeHandler *Net::getTradeHandler()

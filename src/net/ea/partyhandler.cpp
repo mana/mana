@@ -230,6 +230,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 if (id == player_node->getId())
                 {
                     partyWindow->clearMembers();
+                    partyWindow->clearPartyName();
                     partyWindow->setVisible(false);
                     partyTab->chatLog(_("You have left the party."), BY_SERVER);
                 }

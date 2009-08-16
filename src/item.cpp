@@ -43,10 +43,8 @@ void Item::setId(int id)
 {
     mId = id;
 
-#ifdef TMWSERV_SUPPORT
     // Types 0 and 1 are not equippable items.
     mEquipment = id && getInfo().getType() >= 2;
-#endif
 
     // Load the associated image
     if (mImage)

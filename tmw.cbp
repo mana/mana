@@ -220,8 +220,8 @@
 		<Unit filename="src/gui/chat.h" />
 		<Unit filename="src/gui/confirmdialog.cpp" />
 		<Unit filename="src/gui/confirmdialog.h" />
-		<Unit filename="src/gui/connection.cpp" />
-		<Unit filename="src/gui/connection.h" />
+		<Unit filename="src/gui/connectiondialog.cpp" />
+		<Unit filename="src/gui/connectiondialog.h" />
 		<Unit filename="src/gui/debugwindow.cpp" />
 		<Unit filename="src/gui/debugwindow.h" />
 		<Unit filename="src/gui/emotepopup.cpp" />
@@ -349,42 +349,14 @@
 		<Unit filename="src/gui/shortcutcontainer.h" />
 		<Unit filename="src/gui/shortcutwindow.cpp" />
 		<Unit filename="src/gui/shortcutwindow.h" />
-		<Unit filename="src/gui/skill.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/skill.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/skilldialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/skilldialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/skilldialog.cpp" />
+		<Unit filename="src/gui/skilldialog.h" />
 		<Unit filename="src/gui/skin.cpp" />
 		<Unit filename="src/gui/skin.h" />
 		<Unit filename="src/gui/speechbubble.cpp" />
 		<Unit filename="src/gui/speechbubble.h" />
-		<Unit filename="src/gui/status.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/status.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/gui/statuswindow.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/statuswindow.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/statuswindow.cpp" />
+		<Unit filename="src/gui/statuswindow.h" />
 		<Unit filename="src/gui/storagewindow.cpp" />
 		<Unit filename="src/gui/storagewindow.h" />
 		<Unit filename="src/gui/table.cpp" />
@@ -470,6 +442,8 @@
 		<Unit filename="src/gui/widgets/textfield.h" />
 		<Unit filename="src/gui/widgets/textpreview.cpp" />
 		<Unit filename="src/gui/widgets/textpreview.h" />
+		<Unit filename="src/gui/widgets/vertcontainer.cpp" />
+		<Unit filename="src/gui/widgets/vertcontainer.h" />
 		<Unit filename="src/gui/widgets/whispertab.cpp" />
 		<Unit filename="src/gui/widgets/whispertab.h" />
 		<Unit filename="src/gui/widgets/window.cpp" />
@@ -655,11 +629,11 @@
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
-		<Unit filename="src/net/ea/skillhandler.cpp">
+		<Unit filename="src/net/ea/specialhandler.cpp">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
-		<Unit filename="src/net/ea/skillhandler.h">
+		<Unit filename="src/net/ea/specialhandler.h">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
@@ -688,7 +662,7 @@
 		<Unit filename="src/net/npchandler.h" />
 		<Unit filename="src/net/partyhandler.h" />
 		<Unit filename="src/net/playerhandler.h" />
-		<Unit filename="src/net/skillhandler.h" />
+		<Unit filename="src/net/specialhandler.h" />
 		<Unit filename="src/net/tmwserv/accountserver/account.cpp">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
@@ -920,11 +894,11 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/skillhandler.cpp">
+		<Unit filename="src/net/tmwserv/specialhandler.cpp">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/skillhandler.h">
+		<Unit filename="src/net/tmwserv/specialhandler.h">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
@@ -993,6 +967,8 @@
 		<Unit filename="src/resources/resource.h" />
 		<Unit filename="src/resources/resourcemanager.cpp" />
 		<Unit filename="src/resources/resourcemanager.h" />
+		<Unit filename="src/resources/sdlrescalefacility.cpp" />
+		<Unit filename="src/resources/sdlrescalefacility.h" />
 		<Unit filename="src/resources/soundeffect.cpp" />
 		<Unit filename="src/resources/soundeffect.h" />
 		<Unit filename="src/resources/spritedef.cpp" />

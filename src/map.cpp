@@ -218,11 +218,12 @@ void Map::initializeOverlays()
         const float speedX = getFloatProperty(name + "scrollX");
         const float speedY = getFloatProperty(name + "scrollY");
         const float parallax = getFloatProperty(name + "parallax");
+        const bool keepRatio = getBoolProperty(name + "keepratio");
 
         if (img)
         {
             mOverlays.push_back(
-                    new AmbientOverlay(img, parallax, speedX, speedY));
+                    new AmbientOverlay(img, parallax, speedX, speedY, keepRatio));
 
             // The AmbientOverlay takes control over the image.
             img->decRef();
@@ -448,7 +449,7 @@ bool Map::occupied(int x, int y) const
         const Being *being = *i;
 
         // job 45 is a portal, they don't collide
-        if (being->mX == x && being->mY == y && being->mJob != 45)
+        if (being->getTileX() == x && being->getTileY() == y && being->mJob != 45)
             return true;
     }
 
@@ -488,50 +489,6 @@ const std::string &Map::getName() const
         return getProperty("name");
 
     return getProperty("mapname");
-}
-
-Path Map::findSimplePath(int startX, int startY,
-                         int destX, int destY,
-                         unsigned char walkmask)
-{
-    // Path to be built up (empty by default)
-    Path path;
-    int positionX = startX, positionY = startY;
-    int directionX, directionY;
-    // Checks our path up to 1 tiles, if a blocking tile is found
-    // We go to the last good tile, and break out of the loop
-    while(true)
-    {
-        directionX = destX - positionX;
-        directionY = destY - positionY;
-
-        if (directionX > 0)
-            directionX = 1;
-        else if(directionX < 0)
-            directionX = -1;
-
-        if (directionY > 0)
-            directionY = 1;
-        else if(directionY < 0)
-            directionY = -1;
-
-        positionX += directionX;
-        positionY += directionY;
-
-        if (getWalk(positionX, positionY, walkmask))
-        {
-            path.push_back(Position(positionX, positionY));
-
-            if ((positionX == destX) && (positionY == destY))
-            {
-                return path;
-            }
-        }
-        else
-        {
-            return path;
-        }
-    }
 }
 
 static int const basicCost = 100;

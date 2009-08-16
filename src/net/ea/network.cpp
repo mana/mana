@@ -318,9 +318,9 @@ bool Network::realConnect()
 
     if (SDLNet_ResolveHost(&ipAddress, mAddress.c_str(), mPort) == -1)
     {
-        std::string error = "Unable to resolve host \"" + mAddress + "\"";
-        setError(error);
-        logger->log("SDLNet_ResolveHost: %s", error.c_str());
+        std::string errorMessage = "Unable to resolve host \"" + mAddress + "\"";
+        setError(errorMessage);
+        logger->log("SDLNet_ResolveHost: %s", errorMessage.c_str());
         return false;
     }
 

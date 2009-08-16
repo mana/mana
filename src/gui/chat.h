@@ -150,6 +150,11 @@ class ChatWindow : public Window,
         /** Override to reset mTmpVisible */
         void setVisible(bool visible);
 
+
+	void mousePressed(gcn::MouseEvent &event);
+	void mouseDragged(gcn::MouseEvent &event);
+
+
         /**
          * Scrolls the chat window
          *

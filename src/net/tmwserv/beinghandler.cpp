@@ -187,27 +187,13 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         Being *being = beingManager->findBeing(id);
         int sx = 0;
         int sy = 0;
-        int dx = 0;
-        int dy = 0;
         int speed = 0;
 
         if (flags & MOVING_POSITION)
         {
-            Uint16 sx2, sy2;
-            msg.readCoordinates(sx2, sy2);
-            sx = sx2 * 32 + 16;
-            sy = sy2 * 32 + 16;
+            sx = msg.readInt16();
+            sy = msg.readInt16();
             speed = msg.readInt8();
-        }
-        if (flags & MOVING_DESTINATION)
-        {
-            dx = msg.readInt16();
-            dy = msg.readInt16();
-            if (!(flags & MOVING_POSITION))
-            {
-                sx = dx;
-                sy = dy;
-            }
         }
         if (!being || !(flags & (MOVING_POSITION | MOVING_DESTINATION)))
         {
@@ -228,33 +214,9 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         if (being == player_node)
             continue;
 
-        // If being is a player, and he only moves a little, its ok to be a little out of sync
-        if (being->getType() == Being::PLAYER && abs(being->getPixelX() - dx) +
-                                                 abs(being->getPixelY() - dy) < 16 &&
-                                                 (dx != being->getDestination().x &&
-                                                  dy != being->getDestination().y))
+        if (flags & MOVING_POSITION)
         {
-            being->setDestination(being->getPixelX(),being->getPixelY());
-            continue;
-        }
-        if (abs(being->getPixelX() - sx) +
-            abs(being->getPixelY() - sy) > 10 * 32)
-        {
-            // Too large a desynchronization.
-            being->setPosition(sx, sy);
-            being->setDestination(dx, dy);
-        }
-        else if (!(flags & MOVING_POSITION))
-        {
-            being->setDestination(dx, dy);
-        }
-        else if (!(flags & MOVING_DESTINATION))
-        {
-            being->adjustCourse(sx, sy);
-        }
-        else
-        {
-            being->setDestination(sx, sy, dx, dy);
+            being->setDestination(sx, sy);
         }
     }
 }
@@ -306,23 +268,27 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
         static char const *const deadMsg[] =
         {
             _("You are dead."),
-            _("We regret to inform you that your character was killed in battle."),
+            _("We regret to inform you that your character was killed in "
+              "battle."),
             _("You are not that alive anymore."),
             _("The cold hands of the grim reaper are grabbing for your soul."),
             _("Game Over!"),
-            _("No, kids. Your character did not really die. It... err... went to a better place."),
-            _("Your plan of breaking your enemies weapon by bashing it with your throat failed."),
+            _("No, kids. Your character did not really die. It... err... "
+              "went to a better place."),
+            _("Your plan of breaking your enemies weapon by bashing it with "
+              "your throat failed."),
             _("I guess this did not run too well."),
             _("Do you want your possessions identified?"), // Nethack reference
             _("Sadly, no trace of you was ever found..."), // Secret of Mana reference
             _("Annihilated."), // Final Fantasy VI reference
-            _("Looks like you got your head handed to you."), //Earthbound reference
-            _("You screwed up again, dump your body down the tubes and get you another one.") // Leisure Suit Larry 1 Reference
+            _("Looks like you got your head handed to you."), // Earthbound reference
+            _("You screwed up again, dump your body down the tubes and get "
+              "you another one.") // Leisure Suit Larry 1 Reference
 
         };
         std::string message(deadMsg[rand()%13]);
-        message.append(_(" Press OK to respawn"));
-        OkDialog *dlg = new OkDialog(_("You died"), message);
+        message.append(std::string(" ") + _("Press OK to respawn."));
+        OkDialog *dlg = new OkDialog(_("You Died"), message);
         dlg->addActionListener(&(Net::GameServer::Player::respawnListener));
     }
 }

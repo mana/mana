@@ -110,6 +110,8 @@ SET(SRCS
     gui/widgets/textfield.h
     gui/widgets/textpreview.cpp
     gui/widgets/textpreview.h
+    gui/widgets/vertcontainer.cpp
+    gui/widgets/vertcontainer.h
     gui/widgets/whispertab.cpp
     gui/widgets/whispertab.h
     gui/widgets/window.cpp
@@ -213,10 +215,14 @@ SET(SRCS
     gui/shortcutcontainer.h
     gui/shortcutwindow.cpp
     gui/shortcutwindow.h
+    gui/skilldialog.cpp
+    gui/skilldialog.h
     gui/skin.cpp
     gui/skin.h
     gui/speechbubble.cpp
     gui/speechbubble.h
+    gui/statuswindow.cpp
+    gui/statuswindow.h
     gui/storagewindow.cpp
     gui/storagewindow.h
     gui/table.cpp
@@ -258,7 +264,7 @@ SET(SRCS
     net/partyhandler.h
     net/playerhandler.h
     net/serverinfo.h
-    net/skillhandler.h
+    net/specialhandler.h
     net/tradehandler.h
     resources/action.cpp
     resources/action.h
@@ -298,6 +304,8 @@ SET(SRCS
     resources/resource.h
     resources/resourcemanager.cpp
     resources/resourcemanager.h
+    resources/sdlrescalefacility.h
+    resources/sdlrescalefacility.cpp
     resources/soundeffect.h
     resources/soundeffect.cpp
     resources/spritedef.h
@@ -416,10 +424,6 @@ SET(SRCS
     )
 
 SET(SRCS_EA
-    gui/skill.cpp
-    gui/skill.h
-    gui/status.cpp
-    gui/status.h
     net/ea/gui/partytab.cpp
     net/ea/gui/partytab.h
     net/ea/adminhandler.cpp
@@ -455,8 +459,8 @@ SET(SRCS_EA
     net/ea/playerhandler.cpp
     net/ea/playerhandler.h
     net/ea/protocol.h
-    net/ea/skillhandler.cpp
-    net/ea/skillhandler.h
+    net/ea/specialhandler.cpp
+    net/ea/specialhandler.h
     net/ea/tradehandler.cpp
     net/ea/tradehandler.h
     )
@@ -478,10 +482,6 @@ SET(SRCS_TMW
     gui/quitdialog.h
     gui/serverdialog.cpp
     gui/serverdialog.h
-    gui/skilldialog.cpp
-    gui/skilldialog.h
-    gui/statuswindow.cpp
-    gui/statuswindow.h
     gui/unregisterdialog.cpp
     gui/unregisterdialog.h
     net/tmwserv/accountserver/account.cpp
@@ -543,8 +543,8 @@ SET(SRCS_TMW
     net/tmwserv/playerhandler.cpp
     net/tmwserv/playerhandler.h
     net/tmwserv/protocol.h
-    net/tmwserv/skillhandler.cpp
-    net/tmwserv/skillhandler.h
+    net/tmwserv/specialhandler.cpp
+    net/tmwserv/specialhandler.h
     net/tmwserv/tradehandler.cpp
     net/tmwserv/tradehandler.h
     guild.cpp

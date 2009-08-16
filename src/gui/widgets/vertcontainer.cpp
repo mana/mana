@@ -19,23 +19,35 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef SKILLHANDLER_H
-#define SKILLHANDLER_H
+#include "gui/widgets/vertcontainer.h"
 
-#include <iosfwd>
-
-namespace Net {
-class SkillHandler
+VertContainer::VertContainer(int spacing):
+        mSpacing(spacing),
+        mCount(0)
 {
-    public:
-        virtual void up(int skillId) = 0;
-
-        virtual void use(int skillId, int level, int beingId) = 0;
-
-        virtual void use(int skillId, int level, int x, int y) = 0;
-
-        virtual void use(int skillId, const std::string &map) = 0;
-};
+    addWidgetListener(this);
 }
 
-#endif // SKILLHANDLER_H
+void VertContainer::add(gcn::Widget *widget)
+{
+    Container::add(widget);
+    widget->setPosition(0, mCount * mSpacing);
+    widget->setSize(getWidth(), mSpacing);
+    mCount++;
+    setHeight(mCount * mSpacing);
+}
+
+void VertContainer::clear()
+{
+    Container::clear();
+
+    mCount = 0;
+}
+
+void VertContainer::widgetResized(const gcn::Event &event)
+{
+    for (WidgetListIterator it = mWidgets.begin(); it != mWidgets.end(); it++)
+    {
+        (*it)->setWidth(getWidth());
+    }
+}

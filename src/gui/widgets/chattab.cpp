@@ -143,7 +143,7 @@ void ChatTab::chatLog(std::string line, int own, bool ignoreRecord)
             lineColor = "##2"; // Equiv. to BrowserBox::GREEN
             break;
         case ACT_WHISPER:
-            tmp.nick = strprintf(_("%s whispers: "), tmp.nick.c_str());
+            tmp.nick = strprintf(_("%s whispers: %s"), tmp.nick.c_str(), "");
             lineColor = "##W";
             break;
         case ACT_IS:

@@ -27,6 +27,7 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/slider.h"
 
+#include "gui/setup.h"
 #include "gui/shop.h"
 #include "gui/shoplistbox.h"
 
@@ -47,6 +48,7 @@ BuyDialog::BuyDialog():
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     setWindowName("Buy");
+    setupWindow->registerWindowForReset(this);
     setResizable(true);
     setCloseButton(true);
     setMinWidth(260);
@@ -65,8 +67,12 @@ BuyDialog::BuyDialog():
     mMoneyLabel = new Label(strprintf(_("Price: %s / Total: %s"),
                                             "", ""));
 
-    mIncreaseButton = new Button("+", "+", this);
-    mDecreaseButton = new Button("-", "-", this);
+    // TRANSLATORS: This is a narrow symbol used to denote 'increasing'.
+    // You may change this symbol if your language uses another.
+    mIncreaseButton = new Button(_("+"), "inc", this);
+    // TRANSLATORS: This is a narrow symbol used to denote 'decreasing'.
+    // You may change this symbol if your language uses another.
+    mDecreaseButton = new Button(_("-"), "dec", this);
     mBuyButton = new Button(_("Buy"), "buy", this);
     mQuitButton = new Button(_("Quit"), "quit", this);
     mAddMaxButton = new Button(_("Max"), "max", this);
@@ -160,13 +166,13 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         mAmountItems = (int) mSlider->getValue();
         updateButtonsAndLabels();
     }
-    else if (event.getId() == "+" && mAmountItems < mMaxItems)
+    else if (event.getId() == "inc" && mAmountItems < mMaxItems)
     {
         mAmountItems++;
         mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
-    else if (event.getId() == "-" && mAmountItems > 1)
+    else if (event.getId() == "dec" && mAmountItems > 1)
     {
         mAmountItems--;
         mSlider->setValue(mAmountItems);

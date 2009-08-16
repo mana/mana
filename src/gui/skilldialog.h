@@ -29,10 +29,14 @@
 #include <guichan/actionlistener.hpp>
 
 #include <list>
+#include <map>
 
-class ProgressBar;
-class Icon;
-class SkillTab;
+class Label;
+class ScrollArea;
+class Tab;
+class TabbedArea;
+
+struct SkillInfo;
 
 /**
  * The skill dialog.
@@ -52,17 +56,35 @@ class SkillDialog : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         /**
-         * Update the tabs in this dialog
+         * Called when the widget changes size. Used for adapting the size of
+         * the tabbed area.
+         */
+        void widgetResized(const gcn::Event &event);
+
+        void logic();
+
+        /**
+         * Update the given skill's display
+         */
+        std::string update(int id);
+
+        /**
+         * Update other parts of the display
          */
         void update();
 
-        /**
-          * Draw this window.
-          */
-        void draw(gcn::Graphics *g);
+        void loadSkills(const std::string &file);
+
+        void setModifiable(int id, bool modifiable);
 
     private:
-        std::list<SkillTab*> mTabs;
+        void adjustTabSize();
+
+        typedef std::map<int, SkillInfo*> SkillMap;
+        SkillMap mSkills;
+        Tab *mCurrentTab;
+        TabbedArea *mTabs;
+        Label *mPointsLabel;
 };
 
 extern SkillDialog *skillDialog;

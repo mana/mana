@@ -24,6 +24,7 @@
 #include "npc.h"
 
 #include "gui/widgets/button.h"
+#include "gui/setup.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"
@@ -35,6 +36,7 @@ BuySellDialog::BuySellDialog():
     mBuyButton(0)
 {
     setWindowName("BuySell");
+    setupWindow->registerWindowForReset(this);
 
     static const char *buttonNames[] = {
         N_("Buy"), N_("Sell"), N_("Cancel"), 0

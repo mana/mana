@@ -306,6 +306,10 @@ void Window::setVisible(bool visible)
 
 void Window::setVisible(bool visible, bool forceSticky)
 {
+    // Check if the window is off screen...
+    if (visible)
+        checkIfIsOffScreen();
+
     gcn::Window::setVisible((!forceSticky && isSticky()) || visible);
 }
 
@@ -526,6 +530,9 @@ void Window::loadWindowState()
     {
         setSize(mDefaultWidth, mDefaultHeight);
     }
+
+    // Check if the window is off screen...
+    checkIfIsOffScreen();
 }
 
 void Window::saveWindowState()
@@ -738,4 +745,64 @@ void Window::redraw()
 void Window::center()
 {
     setLocationRelativeTo(getParent());
+}
+
+void Window::checkIfIsOffScreen(bool partially, bool entirely)
+{
+    // Move the window onto screen if it has become off screen
+    // For instance, because of resolution change... 
+
+    // First of all, don't deal when a window hasn't got
+    // any size initialized yet...
+    if (getWidth() == 0 && getHeight() == 0)
+        return;
+
+    // Made partially the default behaviour
+    if (!partially && !entirely)
+        partially = true;
+
+  // Keep guichan window inside screen (supports resizing any side)
+
+    gcn::Rectangle winDimension =  getDimension();
+
+    if (winDimension.x < 0)
+    {
+        winDimension.width += winDimension.x;
+        winDimension.x = 0;
+    }
+    if (winDimension.y < 0)
+    {
+        winDimension.height += winDimension.y;
+        winDimension.y = 0;
+    }
+
+    // Look if the window is partially off-screen limits...
+    if (partially)
+    {
+        if (winDimension.x + winDimension.width > graphics->getWidth())
+        {
+            winDimension.x = graphics->getWidth() - winDimension.width;
+        }
+
+        if (winDimension.y + winDimension.height > graphics->getHeight())
+        {
+            winDimension.y = graphics->getHeight() - winDimension.height;
+        }
+        setDimension(winDimension);
+        return;
+    }
+
+    if (entirely)
+    {
+        if (winDimension.x > graphics->getWidth())
+        {
+            winDimension.x = graphics->getWidth() - winDimension.width;
+        }
+
+        if (winDimension.y > graphics->getHeight())
+        {
+            winDimension.y = graphics->getHeight() - winDimension.height;
+        }
+    }
+    setDimension(winDimension);
 }

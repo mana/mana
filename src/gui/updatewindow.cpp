@@ -322,9 +322,8 @@ int UpdaterWindow::downloadThread(void *ptr)
                 {
                 case CURLE_COULDNT_CONNECT:
                 default:
-                    std::cerr << _("curl error ") << res << ": "
-                              << uw->mCurlError << _(" host: ") << url.c_str()
-                              << std::endl;
+                    logger->log("curl error %d: %s host: %s",
+                                res, uw->mCurlError, url.c_str());
                     break;
                 }
 
@@ -445,10 +444,13 @@ void UpdaterWindow::logic()
                 }
                 mThread = NULL;
             }
+            // TODO: Only send complete sentences to gettext
             mBrowserBox->addRow("");
             mBrowserBox->addRow(_("##1  The update process is incomplete."));
+            // TRANSLATORS: Continues "you try again later.".
             mBrowserBox->addRow(_("##1  It is strongly recommended that"));
-            mBrowserBox->addRow(_("##1  you try again later"));
+            // TRANSLATORS: Begins "It is strongly recommended that".
+            mBrowserBox->addRow(_("##1  you try again later."));
             mBrowserBox->addRow(mCurlError);
             mScrollArea->setVerticalScrollAmount(
                     mScrollArea->getVerticalMaxScroll());

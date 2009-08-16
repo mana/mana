@@ -90,9 +90,9 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
     mItemIcon = new Icon(image);
 
     // Buttons
-    Button *minusButton = new Button("-", "minus", this);
-    Button *plusButton = new Button("+", "plus", this);
-    Button *okButton = new Button(_("Ok"), "ok", this);
+    Button *minusButton = new Button(_("-"), "dec", this);
+    Button *plusButton = new Button(_("+"), "inc", this);
+    Button *okButton = new Button(_("OK"), "ok", this);
     Button *cancelButton = new Button(_("Cancel"), "cancel", this);
     Button *addAllButton = new Button(_("All"), "all", this);
 
@@ -172,11 +172,11 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     {
         close();
     }
-    else if (event.getId() == "plus" && amount < mMax)
+    else if (event.getId() == "inc" && amount < mMax)
     {
         amount++;
     }
-    else if (event.getId() == "minus" && amount > 1)
+    else if (event.getId() == "dec" && amount > 1)
     {
         amount--;
     }

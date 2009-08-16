@@ -24,6 +24,7 @@
 
 #include "gui/confirmdialog.h"
 #include "gui/guildlistbox.h"
+#include "gui/setup.h"
 #include "gui/textdialog.h"
 
 #include "gui/widgets/button.h"
@@ -41,6 +42,7 @@
 
 #include "utils/dtor.h"
 #include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 #include <algorithm>
 
@@ -58,6 +60,7 @@ GuildWindow::GuildWindow():
     setMinWidth(200);
     setMinHeight(280);
     setDefaultSize(124, 41, 288, 330);
+    setupWindow->registerWindowForReset(this);
 
     // Set button events Id
     mGuildButton[0] = new Button(_("Create Guild"), "CREATE_GUILD", this);
@@ -110,7 +113,8 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     {
         // Set focus so that guild name to be created can be typed.
         mFocus = true;
-        guildDialog = new TextDialog("Guild Name", "Choose your guild's name", this);
+        guildDialog = new TextDialog(_("Guild Name"),
+                                     _("Choose your guild's name."), this);
         guildDialog->setOKButtonActionId("CREATE_GUILD_OK");
         guildDialog->addActionListener(this);
     }
@@ -118,7 +122,8 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     {
         // TODO - Give feedback on whether the invite succeeded
         mFocus = true;
-        inviteDialog = new TextDialog("Member Invite", "Who would you like to invite?", this);
+        inviteDialog = new TextDialog(_("Member Invite"),
+                                      _("Who would you like to invite?"), this);
         inviteDialog->setOKButtonActionId("INVITE_USER_OK");
         inviteDialog->addActionListener(this);
     }
@@ -128,7 +133,8 @@ void GuildWindow::action(const gcn::ActionEvent &event)
         if (guild)
         {
             Net::ChatServer::Guild::quitGuild(guild);
-            localChatTab->chatLog("Guild " + mGuildTabs->getSelectedTab()->getCaption() + " quit", BY_SERVER);
+            localChatTab->chatLog(strprintf(_("Guild %s quit."),
+                    mGuildTabs->getSelectedTab()->getCaption().c_str()), BY_SERVER);
         }
     }
     else if (eventId == "CREATE_GUILD_OK")
@@ -144,7 +150,8 @@ void GuildWindow::action(const gcn::ActionEvent &event)
 
         // Defocus dialog
         mFocus = false;
-        localChatTab->chatLog("Creating Guild called " + name, BY_SERVER);
+        localChatTab->chatLog(strprintf(_("Creating guild called %s."),
+                                        name.c_str()), BY_SERVER);
         guildDialog->scheduleDelete();
     }
     else if (eventId == "INVITE_USER_OK")
@@ -157,7 +164,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
 
         // Defocus dialog
         mFocus = false;
-        localChatTab->chatLog("Invited user " + name, BY_SERVER);
+        localChatTab->chatLog(strprintf(_("Invited user %s."), name.c_str()), BY_SERVER);
         inviteDialog->scheduleDelete();
     }
     else if (eventId == "yes")
@@ -233,10 +240,11 @@ short GuildWindow::getSelectedGuild()
 void GuildWindow::openAcceptDialog(const std::string &inviterName,
                                    const std::string &guildName)
 {
-    std::string msg = inviterName + " has invited you to join the guild " + guildName;
+    std::string msg = strprintf(_("%s has invited you to join the guild %s."),
+                                inviterName.c_str(), guildName.c_str());
     localChatTab->chatLog(msg, BY_SERVER);
 
-    acceptDialog = new ConfirmDialog("Accept Guild Invite", msg, this);
+    acceptDialog = new ConfirmDialog(_("Accept Guild Invite"), msg, this);
     acceptDialog->addActionListener(this);
 
     invitedGuild = guildName;

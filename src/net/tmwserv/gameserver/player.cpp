@@ -41,61 +41,12 @@ void Net::GameServer::Player::walk(int x, int y)
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::pickUp(int x, int y)
-{
-    MessageOut msg(PGMSG_PICKUP);
-    msg.writeInt16(x);
-    msg.writeInt16(y);
-    Net::GameServer::connection->send(msg);
-}
-
 void Net::GameServer::Player::moveItem(int oldSlot, int newSlot, int amount)
 {
     MessageOut msg(PGMSG_MOVE_ITEM);
     msg.writeInt8(oldSlot);
     msg.writeInt8(newSlot);
     msg.writeInt8(amount);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::useSpecial(int special)
-{
-    MessageOut msg(PGMSG_USE_SPECIAL);
-    msg.writeInt8(special);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::requestTrade(int id)
-{
-    MessageOut msg(PGMSG_TRADE_REQUEST);
-    msg.writeInt16(id);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::acceptTrade(bool accept)
-{
-    MessageOut msg(accept ? PGMSG_TRADE_REQUEST : PGMSG_TRADE_CANCEL);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::tradeMoney(int amount)
-{
-    MessageOut msg(PGMSG_TRADE_SET_MONEY);
-    msg.writeInt32(amount);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::raiseAttribute(int attribute)
-{
-    MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
-    msg.writeInt8(attribute);
-    Net::GameServer::connection->send(msg);
-}
-
-void Net::GameServer::Player::lowerAttribute(int attribute)
-{
-    MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
-    msg.writeInt8(attribute);
     Net::GameServer::connection->send(msg);
 }
 

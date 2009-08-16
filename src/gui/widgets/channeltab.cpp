@@ -72,23 +72,24 @@ bool ChannelTab::handleCommand(const std::string &type,
         {
             chatLog(_("Command: /quit"));
             chatLog(_("This command leaves the current channel."));
-            chatLog(_("If you're the last person in the channel, it will be deleted."));
+            chatLog(_("If you're the last person in the channel, "
+                      "it will be deleted."));
         }
         else if (args == "op")
         {
             chatLog(_("Command: /op <nick>"));
             chatLog(_("This command makes <nick> a channel operator."));
             chatLog(_("If the <nick> has spaces in it, enclose it in "
-                                "double quotes (\")."));
+                      "double quotes (\")."));
             chatLog(_("Channel operators can kick and op other users "
-                                "from the channel."));
+                      "from the channel."));
         }
         else if (args == "kick")
         {
             chatLog(_("Command: /kick <nick>"));
             chatLog(_("This command makes <nick> leave the channel."));
             chatLog(_("If the <nick> has spaces in it, enclose it in "
-                                "double quotes (\")."));
+                      "double quotes (\")."));
         }
         else
             return false;

@@ -24,7 +24,13 @@
 
 #include "net/messagehandler.h"
 
+class Item;
+
 namespace EAthena {
+
+void setEquipment(int eAthenaSlot, int index, bool equiped);
+void clearEquipment();
+Item *getRealEquipedItem(const Item *equipped);
 
 class EquipmentHandler : public MessageHandler
 {

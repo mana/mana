@@ -46,9 +46,25 @@ class OpenGLGraphics : public Graphics
                        int width, int height,
                        bool useColor);
 
+        /**
+         * Draws a resclaled version of the image
+         */
+        bool drawRescaledImage(Image *image, int srcX, int srcY,
+                               int dstX, int dstY,
+                               int width, int height,
+                               int desiredWidth, int desiredHeight,
+                               bool useColor);
+
         void drawImagePattern(Image *image,
                               int x, int y,
                               int w, int h);
+
+        /**
+         * Draw a pattern based on a rescaled version of the given image...
+         */
+        void drawRescaledImagePattern(Image *image,
+                               int x, int y, int w, int h,
+                               int scaledWidth, int scaledHeight);
 
         void updateScreen();
 

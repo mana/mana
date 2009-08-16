@@ -83,6 +83,21 @@ class ScrollArea : public gcn::ScrollArea
          */
         bool isOpaque() const { return mOpaque; }
 
+        /**
+         * Called when the mouse moves in the widget area.
+         */
+        void mouseMoved(gcn::MouseEvent& event);
+
+        /**
+         * Called when the mouse enteres the widget area.
+         */
+        void mouseEntered(gcn::MouseEvent& event);
+
+        /**
+         * Called when the mouse leaves the widget area.
+         */
+        void mouseExited(gcn::MouseEvent& event);
+
     protected:
         enum BUTTON_DIR {
             UP,
@@ -110,8 +125,11 @@ class ScrollArea : public gcn::ScrollArea
         static float mAlpha;
         static ImageRect background;
         static ImageRect vMarker;
+        static ImageRect vMarkerHi;
         static Image *buttons[4][2];
 
+        int mX,mY;
+        bool mHasMouse;
         bool mOpaque;
 };
 

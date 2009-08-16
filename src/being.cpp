@@ -49,7 +49,6 @@
 #include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
-#include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
@@ -66,7 +65,6 @@ static const int DEFAULT_HEIGHT = 32;
 
 Being::Being(int id, int job, Map *map):
 #ifdef EATHENA_SUPPORT
-    mX(0), mY(0),
     mWalkTime(0),
 #endif
     mEmotion(0), mEmotionTime(0),
@@ -100,6 +98,7 @@ Being::Being(int id, int job, Map *map):
     mWalkSpeed(150),
 #endif
     mPx(0), mPy(0),
+    mX(0), mY(0),
     mUsedTargetCursor(NULL)
 {
     setMap(map);
@@ -148,36 +147,20 @@ void Being::setDestination(Uint16 destX, Uint16 destY)
 #endif
 
 #ifdef TMWSERV_SUPPORT
-
-void Being::adjustCourse(int srcX, int srcY)
-{
-    setDestination(srcX, srcY, mDest.x, mDest.y);
-}
-
 void Being::setDestination(int dstX, int dstY)
-{
-    setDestination(mPos.x, mPos.y, dstX, dstY);
-}
-
-Path Being::findPath()
-{
-    Path path;
-
-    if (mMap)
-    {
-        path = mMap->findPath(mPos.x / 32, mPos.y / 32,
-                              mDest.x / 32, mDest.y / 32, getWalkMask());
-    }
-
-    return path;
-}
-
-void Being::setDestination(int srcX, int srcY, int dstX, int dstY)
 {
     mDest.x = dstX;
     mDest.y = dstY;
+    int srcX = mPos.x;
+    int srcY = mPos.y;
 
-    Path thisPath = findPath();
+    Path thisPath;
+
+    if (mMap)
+    {
+        thisPath = mMap->findPath(mPos.x / 32, mPos.y / 32,
+                                  mDest.x / 32, mDest.y / 32, getWalkMask());
+    }
 
     if (thisPath.empty())
     {
@@ -188,16 +171,13 @@ void Being::setDestination(int srcX, int srcY, int dstX, int dstY)
     // FIXME: Look into making this code neater.
     // Interpolate the offsets.  Also convert from tile based to pixel based
 
-    // Note: I divided the offsets by 32 then muilpied it back to get the top left
-    // Conner of where the tile is. (If you know a better way then please change it)
-
     // Find the starting offset
-    int startX = srcX - ((srcX / 32) * 32 + 16);
-    int startY = srcY - ((srcY / 32) * 32 + 16);
+    int startX = (srcX % 32);
+    int startY = (srcY % 32);
 
     // Find the ending offset
-    int endX = dstX - ((dstX / 32) * 32 + 16);
-    int endY = dstY - ((dstY / 32) * 32 + 16);
+    int endX = (dstX % 32);
+    int endY = (dstY % 32);
 
     // Find the distance, and divide it by the number of steps
     int changeX = (endX - startX) / thisPath.size();
@@ -209,8 +189,8 @@ void Being::setDestination(int srcX, int srcY, int dstX, int dstY)
     int i = 0;
     while(it != thisPath.end())
     {
-       it->x = (it->x * 32 + 16) + startX + (changeX * i);
-       it->y = (it->y * 32 + 16) + startY + (changeY * i);
+       it->x = (it->x * 32) + startX + (changeX * i);
+       it->y = (it->y * 32) + startY + (changeY * i);
        i++;
        it++;
     }
@@ -228,7 +208,7 @@ void Being::setPath(const Path &path)
 {
     mPath = path;
 #ifdef TMWSERV_SUPPORT
-//    std::cout << this << " New path: " << path << std::endl;
+    std::cout << this << " New path: " << path << std::endl;
 #else
     if (mAction != WALK && mAction != DEAD)
     {

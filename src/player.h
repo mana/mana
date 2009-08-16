@@ -93,11 +93,6 @@ class Player : public Being
 
 #ifdef TMWSERV_SUPPORT
         /**
-         * Returns the path to the player's current destination
-         */
-        Path findPath();
-
-        /**
          * Adds a guild to the player.
          */
         Guild *addGuild(short guildId, short rights);

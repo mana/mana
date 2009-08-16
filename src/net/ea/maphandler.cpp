@@ -61,14 +61,17 @@ void MapHandler::handleMessage(MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_MAP_LOGIN_SUCCESS:
+        {
+            Uint16 x, y;
             msg.readInt32();   // server tick
-            msg.readCoordinates(player_node->mX, player_node->mY, direction);
+            msg.readCoordinates(x, y, direction);
             msg.skip(2);      // unknown
             logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
-                    player_node->mX, player_node->mY, direction);
+                    x, y, direction);
             state = STATE_GAME;
+            player_node->setTileCoords(x, y);
             game = new Game;
-            break;
+         }  break;
 
         case SMSG_SERVER_PING:
             // We ignore this for now
@@ -76,21 +79,26 @@ void MapHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_WHO_ANSWER:
-            localChatTab->chatLog("Online users: " + toString(msg.readInt32()),
-                    BY_SERVER);
+            localChatTab->chatLog(strprintf(_("Online users: %d"),
+                                            msg.readInt32()), BY_SERVER);
             break;
     }
 }
+
+#include <fstream>
 
 void MapHandler::connect(LoginData *loginData)
 {
     // Send login infos
     MessageOut outMsg(CMSG_MAP_SERVER_CONNECT);
     outMsg.writeInt32(loginData->account_ID);
-    outMsg.writeInt32(player_node->mCharId);
+    outMsg.writeInt32(player_node->getId());
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
     outMsg.writeInt8((loginData->sex == GENDER_MALE) ? 1 : 0);
+
+    // Change the player's ID to the account ID to match what eAthena uses
+    player_node->setId(loginData->account_ID);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

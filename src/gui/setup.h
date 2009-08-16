@@ -61,8 +61,14 @@ class Setup : public Window, public gcn::ActionListener
          */
         void setInGame(bool inGame);
 
+        void registerWindowForReset(Window *window);
+
+        void clearWindowsForReset()
+        { mWindowsToReset.clear(); }
+
     private:
         std::list<SetupTab*> mTabs;
+        std::list<Window*> mWindowsToReset;
         gcn::Button *mResetWindows;
 };
 

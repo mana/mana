@@ -28,6 +28,7 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
+#include "gui/setup.h"
 
 #include "npc.h"
 
@@ -54,6 +55,7 @@ NpcDialog::NpcDialog()
     // Basic Window Setup
     setWindowName("NpcText");
     setResizable(true);
+    setupWindow->registerWindowForReset(this);
 
     setMinWidth(200);
     setMinHeight(150);
@@ -91,8 +93,8 @@ NpcDialog::NpcDialog()
     mButton = new Button("", "ok", this);
 
     //Setup more and less buttons (int input)
-    mPlusButton = new Button("+", "plus", this);
-    mMinusButton = new Button("-", "minus", this);
+    mPlusButton = new Button(_("+"), "inc", this);
+    mMinusButton = new Button(_("-"), "dec", this);
 
     int width = std::max(mButton->getFont()->getWidth(CAPTION_WAITING),
                          mButton->getFont()->getWidth(CAPTION_NEXT));
@@ -154,7 +156,8 @@ void NpcDialog::action(const gcn::ActionEvent &event)
         if (mActionState == NPC_ACTION_NEXT)
         {
             nextDialog();
-            addText("\n> Next\n");
+            // TRANSLATORS: Please leave the \n sequences intact.
+            addText(_("\n> Next\n"));
         }
         else if (mActionState == NPC_ACTION_CLOSE)
         {
@@ -209,11 +212,11 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             mIntField->setValue(mDefaultInt);
         }
     }
-    else if (event.getId() == "plus")
+    else if (event.getId() == "inc")
     {
         mIntField->setValue(mIntField->getValue() + 1);
     }
-    else if (event.getId() == "minus")
+    else if (event.getId() == "dec")
     {
         mIntField->setValue(mIntField->getValue() - 1);
     }

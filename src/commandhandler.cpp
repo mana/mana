@@ -207,7 +207,7 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
     else if (args == "ignore")
     {
         tab->chatLog(_("Command: /ignore <player>"));
-        tab->chatLog(_("This command ignores the given player reguardless of "
+        tab->chatLog(_("This command ignores the given player regardless of "
                        "current relations."));
     }
     else if (args == "join")
@@ -397,7 +397,7 @@ void CommandHandler::handleParty(const std::string &args, ChatTab *tab)
     if (args != "")
         Net::getPartyHandler()->invite(args);
     else
-        tab->chatLog("Please specify a name.", BY_SERVER);
+        tab->chatLog(_("Please specify a name."), BY_SERVER);
 }
 
 void CommandHandler::handleMe(const std::string &args, ChatTab *tab)

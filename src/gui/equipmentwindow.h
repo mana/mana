@@ -24,11 +24,11 @@
 
 #include "gui/widgets/window.h"
 
+#include "equipment.h"
 #include "guichanfwd.h"
 
 #include <guichan/actionlistener.hpp>
 
-class Equipment;
 class Inventory;
 class Item;
 class ItemPopup;
@@ -44,11 +44,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-#ifdef TMWSERV_SUPPORT
         EquipmentWindow(Equipment *equipment);
-#else
-        EquipmentWindow();
-#endif
 
         /**
          * Destructor.
@@ -64,40 +60,6 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         void mousePressed(gcn::MouseEvent& mouseEvent);
 
-#ifdef TMWSERV_SUPPORT
-        enum EquipmentSlots
-        {
-            EQUIP_TORSO_SLOT = 0,
-            EQUIP_ARMS_SLOT = 1,
-            EQUIP_HEAD_SLOT = 2,
-            EQUIP_LEGS_SLOT = 3,
-            EQUIP_FEET_SLOT = 4,
-            EQUIP_RING1_SLOT = 5,
-            EQUIP_RING2_SLOT = 6,
-            EQUIP_NECKLACE_SLOT = 7,
-            EQUIP_FIGHT1_SLOT = 8,
-            EQUIP_FIGHT2_SLOT = 9,
-            EQUIP_PROJECTILE_SLOT = 10,
-            EQUIP_VECTOREND
-        };
-#else
-        enum EquipmentSlots
-        {
-            EQUIP_LEGS_SLOT = 0,
-            EQUIP_FIGHT1_SLOT,
-            EQUIP_GLOVES_SLOT,
-            EQUIP_RING2_SLOT,
-            EQUIP_RING1_SLOT,
-            EQUIP_FIGHT2_SLOT,
-            EQUIP_FEET_SLOT,
-            EQUIP_CAPE_SLOT,
-            EQUIP_HEAD_SLOT,
-            EQUIP_TORSO_SLOT,
-            EQUIP_AMMO_SLOT,
-            EQUIP_VECTOREND
-        };
-#endif
-
     private:
         void mouseExited(gcn::MouseEvent &event);
         void mouseMoved(gcn::MouseEvent &event);
@@ -107,9 +69,6 @@ class EquipmentWindow : public Window, public gcn::ActionListener
         void setSelected(int index);
 
         Equipment *mEquipment;
-#ifdef EATHENA_SUPPORT
-        Inventory *mInventory;
-#endif
 
         /**
          * Equipment box.
@@ -120,12 +79,12 @@ class EquipmentWindow : public Window, public gcn::ActionListener
             int posY;
         };
 
-        EquipBox mEquipBox[EQUIP_VECTOREND];    /**< Equipment Boxes. */
+        EquipBox mEquipBox[Equipment::EQUIP_VECTOREND]; /**< Equipment Boxes. */
 
         ItemPopup *mItemPopup;
         gcn::Button *mUnequip;
 
-        int mSelected;                          /**< Index of selected item. */
+        int mSelected; /**< Index of selected item. */
 };
 
 extern EquipmentWindow *equipmentWindow;

@@ -22,7 +22,7 @@
 #include "gui/ministatus.h"
 
 #include "gui/gui.h"
-#include "gui/status.h"
+#include "gui/statuswindow.h"
 
 #include "gui/widgets/progressbar.h"
 
@@ -33,34 +33,30 @@
 
 #include "utils/stringutils.h"
 
+extern volatile int tick_time;
+
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
-    mHpBar = new ProgressBar(0.0f, 100, 20, gcn::Color(0, 171, 34));
-#ifdef EATHENA_SUPPORT
-    mMpBar = new ProgressBar(0.0f, 100, 20, gcn::Color(26, 102, 230));
-    mXpBar = new ProgressBar(0.0f, 100, 20, gcn::Color(143, 192, 211));
-#endif
-
+    mHpBar = new ProgressBar((float) player_node->getHp()
+                             / (float) player_node->getMaxHp(),
+                             100, 20, gcn::Color(0, 171, 34));
+    mMpBar = new ProgressBar((float) player_node->getMaxMP()
+                             / (float) player_node->getMaxMP(),
+                             100, 20, gcn::Color(26, 102, 230));
+    mXpBar = new ProgressBar((float) player_node->getExp()
+                             / player_node->getExpNeeded(),
+                             100, 20, gcn::Color(143, 192, 211));
     mHpBar->setPosition(0, 3);
-#ifdef EATHENA_SUPPORT
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
     mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);
-#endif
 
     add(mHpBar);
-#ifdef EATHENA_SUPPORT
     add(mMpBar);
     add(mXpBar);
-#endif
 
-#ifdef EATHENA_SUPPORT
     setContentSize(mXpBar->getX() + mXpBar->getWidth(),
                    mXpBar->getY() + mXpBar->getHeight());
-#else
-    setContentSize(mHpBar->getX() + mHpBar->getWidth(),
-                   mHpBar->getY() + mHpBar->getHeight());
-#endif
 
     setVisible((bool) config.getValue(getPopupName() + "Visible", true));
 }
@@ -81,14 +77,37 @@ void MiniStatusWindow::eraseIcon(int index)
     mIcons.erase(mIcons.begin() + index);
 }
 
-extern volatile int tick_time;
-
-void MiniStatusWindow::update()
+void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
-    StatusWindow::updateHPBar(mHpBar);
-#ifdef EATHENA_SUPPORT
-    StatusWindow::updateMPBar(mMpBar);
-    StatusWindow::updateXPBar(mXpBar);
+    // Draw icons
+    int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
+    for (unsigned int i = 0; i < mIcons.size(); i++) {
+        if (mIcons[i]) {
+            mIcons[i]->draw(graphics, icon_x, 3);
+            icon_x += 2 + mIcons[i]->getWidth();
+        }
+    }
+}
+
+void MiniStatusWindow::update(int id)
+{
+    if (id == StatusWindow::HP)
+    {
+        StatusWindow::updateHPBar(mHpBar);
+    }
+    else if (id == StatusWindow::MP)
+    {
+        StatusWindow::updateMPBar(mMpBar);
+    }
+    else if (id == StatusWindow::EXP)
+    {
+        StatusWindow::updateXPBar(mXpBar);
+    }
+}
+
+void MiniStatusWindow::logic()
+{
+    Popup::logic();
 
     // Displays the number of monsters to next lvl
     // (disabled for now but interesting idea)
@@ -102,31 +121,8 @@ void MiniStatusWindow::update()
             << config.getValue("xpBarMonsterCounterName", "Monsters") <<" left...";
     }
     */
-#endif
 
     for (unsigned int i = 0; i < mIcons.size(); i++)
         if (mIcons[i])
             mIcons[i]->update(tick_time * 10);
-}
-
-void MiniStatusWindow::draw(gcn::Graphics *graphics)
-{
-    update();
-    drawChildren(graphics);
-}
-
-void MiniStatusWindow::drawIcons(Graphics *graphics)
-{
-    // Draw icons
-#ifdef TMWSERV_SUPPORT
-    int icon_x = mHpBar->getX() + mHpBar->getWidth() + 4;
-#else
-    int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
-#endif
-    for (unsigned int i = 0; i < mIcons.size(); i++) {
-        if (mIcons[i]) {
-            mIcons[i]->draw(graphics, icon_x, 3);
-            icon_x += 2 + mIcons[i]->getWidth();
-        }
-    }
 }

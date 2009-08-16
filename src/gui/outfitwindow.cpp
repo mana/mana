@@ -58,9 +58,9 @@ OutfitWindow::OutfitWindow():
     setCloseButton(true);
     setDefaultSize(250, 250, 118, 180); //160
 
-    mPreviousButton = new Button("<", "previous", this);
-    mNextButton = new Button(">", "next", this);
-    mCurrentLabel = new Label("Outfit: 1");
+    mPreviousButton = new Button(_("<"), "previous", this);
+    mNextButton = new Button(_(">"), "next", this);
+    mCurrentLabel = new Label(strprintf(_("Outfit: %d"), 1));
     mCurrentLabel->setAlignment(gcn::Graphics::CENTER);
     mUnequipCheck = new CheckBox(_("Unequip first"),
                                  config.getValue("OutfitUnequip", true));
@@ -140,7 +140,7 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
             mCurrentOutfit = 9;
         }
     }
-    mCurrentLabel->setCaption("Outfit: " + toString(mCurrentOutfit + 1));
+    mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
 }
 
 void OutfitWindow::wearOutfit(int outfit)
@@ -153,14 +153,8 @@ void OutfitWindow::wearOutfit(int outfit)
             //non vis is 3,4,7
             if (i != 3 && i != 4 && i != 7)
             {
-#ifdef TMWSERV_SUPPORT
                 if (!(item = player_node->mEquipment.get()->getEquipment(i)))
                     continue;
-#else
-                if (!(item = player_node->getInventory()->getItem(
-                      player_node->mEquipment.get()->getEquipment(i))))
-                    continue;
-#endif
                 Net::getInventoryHandler()->unequipItem(item);
             }
         }

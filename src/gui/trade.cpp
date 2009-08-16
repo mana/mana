@@ -29,6 +29,7 @@
 #include "gui/inventorywindow.h"
 #include "gui/itemamount.h"
 #include "gui/itemcontainer.h"
+#include "gui/setup.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
@@ -65,6 +66,7 @@ TradeWindow::TradeWindow():
     setDefaultSize(386, 180, ImageRect::CENTER);
     setMinWidth(386);
     setMinHeight(180);
+    setupWindow->registerWindowForReset(this);
 
     std::string longestName = getFont()->getWidth(_("OK")) >
                                    getFont()->getWidth(_("Trade")) ?
@@ -92,7 +94,7 @@ TradeWindow::TradeWindow():
     ScrollArea *partnerScroll = new ScrollArea(mPartnerItemContainer);
     partnerScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mMoneyLabel = new Label(strprintf(_("You get %s."), ""));
+    mMoneyLabel = new Label(strprintf(_("You get %s"), ""));
     gcn::Label *mMoneyLabel2 = new Label(_("You give:"));
     
     mMoneyField = new TextField;
@@ -128,7 +130,7 @@ TradeWindow::~TradeWindow()
 
 void TradeWindow::setMoney(int amount)
 {
-    mMoneyLabel->setCaption(strprintf(_("You get %s."),
+    mMoneyLabel->setCaption(strprintf(_("You get %s"),
                                        Units::formatCurrency(amount).c_str()));
     mMoneyLabel->adjustSize();
 }
@@ -255,7 +257,10 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             return;
         
         if (!inventoryWindow->isVisible())
+        {
+            inventoryWindow->setVisible(true);
             return;
+        }
 
         if (!item)
             return;

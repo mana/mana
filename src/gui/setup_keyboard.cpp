@@ -116,7 +116,7 @@ void Setup_Keyboard::apply()
 
     if (keyboard.hasConflicts())
     {
-        new OkDialog(_("Key Conflict(s) Detected."),
+        new OkDialog(_("Key Conflict(s) Detected"),
                      _("Resolve them, or gameplay may result in strange "
                        "behaviour."));
     }

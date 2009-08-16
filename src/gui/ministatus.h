@@ -40,8 +40,6 @@ class MiniStatusWindow : public Popup
     public:
         MiniStatusWindow();
 
-        void draw(gcn::Graphics *graphics);
-
         /**
          * Sets one of the icons.
          */
@@ -51,22 +49,24 @@ class MiniStatusWindow : public Popup
 
         void drawIcons(Graphics *graphics);
 
-    private:
-        /**
-         * Updates this dialog with values from player_node.
-         */
-        void update();
+        void update(int id); // Same types as status window
 
+        void logic(); // Updates icons
+
+        void draw(gcn::Graphics *graphics)
+        { drawChildren(graphics); }
+
+    private:
         /*
          * Mini Status Bars
          */
         ProgressBar *mHpBar;
-#ifdef EATHENA_SUPPORT
         ProgressBar *mMpBar;
         ProgressBar *mXpBar;
-#endif
 
         std::vector<AnimatedSprite *> mIcons;
 };
+
+extern MiniStatusWindow *miniStatusWindow;
 
 #endif
