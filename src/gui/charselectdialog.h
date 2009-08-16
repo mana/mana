@@ -24,7 +24,7 @@
 
 #include "gui/widgets/window.h"
 
-#include "being.h"
+#include "player.h"
 #include "guichanfwd.h"
 #include "lockedarray.h"
 
@@ -32,7 +32,6 @@
 
 class LocalPlayer;
 class LoginData;
-class Player;
 class PlayerBox;
 
 /**

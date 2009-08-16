@@ -22,7 +22,7 @@
 #ifndef CHAR_CREATE_H
 #define CHAR_CREATE_H
 
-#include "being.h"
+#include "player.h"
 #include "guichanfwd.h"
 #include "lockedarray.h"
 
@@ -34,7 +34,6 @@
 #include <vector>
 
 class LocalPlayer;
-class Player;
 class PlayerBox;
 
 /**
@@ -82,6 +81,8 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         void attemptCharCreate();
 
+        void updateHair();
+
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;
         gcn::Button *mNextHairColorButton;
@@ -107,6 +108,9 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 
         Player *mPlayer;
         PlayerBox *mPlayerBox;
+
+        int mHairStyle;
+        int mHairColor;
 
         int mSlot;
 };

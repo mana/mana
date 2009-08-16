@@ -23,6 +23,7 @@
 #define SCROLLAREA_H
 
 #include <guichan/widgets/scrollarea.hpp>
+#include <guichan/widgetlistener.hpp>
 
 class Image;
 class ImageRect;
@@ -36,7 +37,7 @@ class ImageRect;
  *
  * \ingroup GUI
  */
-class ScrollArea : public gcn::ScrollArea
+class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
 {
     public:
         /**
@@ -97,6 +98,8 @@ class ScrollArea : public gcn::ScrollArea
          * Called when the mouse leaves the widget area.
          */
         void mouseExited(gcn::MouseEvent& event);
+
+        void widgetResized(const gcn::Event &event);
 
     protected:
         enum BUTTON_DIR {

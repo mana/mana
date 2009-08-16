@@ -32,15 +32,14 @@ class NPC : public Player
     public:
         NPC(int id, int job, Map *map);
 
-        ~NPC();
-
         void setName(const std::string &name);
-        void setGender(Gender gender);
-        void setSprite(int slot, int id, std::string color);
 
-        virtual Type getType() const;
+        virtual Type getType() const { return Being::NPC; }
 
         void talk();
+
+        void setSprite(unsigned int slot, int id,
+                        const std::string &color = "");
 
         /**
          * Gets the way an NPC is blocked by other things on the map
@@ -61,10 +60,8 @@ class NPC : public Player
         virtual Map::BlockType getBlockType() const
         { return Map::BLOCKTYPE_CHARACTER; } //blocks like a player character
 
-        void updateCoords();
-
-    private:
-        Text *mName;
+        // Colors don't change for NPCs
+        virtual void updateColors() {}
 };
 
 extern int current_npc;

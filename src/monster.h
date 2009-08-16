@@ -32,15 +32,13 @@ class Monster : public Being
     public:
         Monster(int id, int job, Map *map);
 
-        ~Monster();
-
 #ifdef EATHENA_SUPPORT
         virtual void logic();
 #endif
 
         virtual void setAction(Action action, int attackType = 0);
 
-        virtual Type getType() const;
+        virtual Type getType() const { return MONSTER; }
 
         virtual TargetCursorSize
         getTargetCursorSize() const;
@@ -70,11 +68,6 @@ class Monster : public Being
         const MonsterInfo& getInfo() const;
 
         /**
-         * Determine whether the mob should show it's name
-         */
-        void setShowName(bool show);
-
-        /**
          * Gets the way the monster is blocked by other objects
          */
         virtual unsigned char getWalkMask() const
@@ -96,11 +89,7 @@ class Monster : public Being
          */
         void updateCoords();
 
-    private:
-        /**
-         * holds a text object when the mod displays it's name, 0 otherwise
-         */
-        Text *mText;
+        void showName();
 };
 
 #endif

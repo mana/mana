@@ -27,6 +27,7 @@
 TabbedArea::TabbedArea() : gcn::TabbedArea()
 {
     mWidgetContainer->setOpaque(false);
+    addWidgetListener(this);
 }
 
 int TabbedArea::getNumberOfTabs() const
@@ -77,6 +78,15 @@ gcn::Widget *TabbedArea::getCurrentWidget()
         return getWidget(tab->getCaption());
     else
         return NULL;
+}
+
+void TabbedArea::addTab(gcn::Tab* tab, gcn::Widget* widget)
+{
+    gcn::TabbedArea::addTab(tab, widget);
+
+    int width = getWidth() - 2 * getFrameSize();
+    int height = getHeight() - 2 * getFrameSize() - mTabContainer->getHeight();
+    widget->setSize(width, height);
 }
 
 void TabbedArea::addTab(const std::string &caption, gcn::Widget *widget)
@@ -151,4 +161,14 @@ void TabbedArea::setSelectedTab(gcn::Tab *tab)
 
     if (newTab)
         newTab->setCurrent();
+}
+
+void TabbedArea::widgetResized(const gcn::Event &event)
+{
+    int width = getWidth() - 2 * getFrameSize();
+    int height = getHeight() - 2 * getFrameSize() - mTabContainer->getHeight();
+    mWidgetContainer->setSize(width, height);
+    gcn::Widget *w = getCurrentWidget();
+    if (w)
+        w->setSize(width, height);
 }

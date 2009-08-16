@@ -329,7 +329,7 @@ public:
 
     virtual void ignore(Player *player, unsigned int flags)
     {
-        player->flash(200);
+        player->flashName(200);
     }
 };
 

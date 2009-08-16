@@ -47,7 +47,6 @@
 #include "utils/xml.h"
 
 #include <string>
-#include <vector>
 
 class SkillEntry;
 
@@ -96,7 +95,7 @@ SkillDialog::SkillDialog():
     mPointsLabel = new Label("0");
 
     place(0, 0, mTabs, 5, 5);
-    place(0, 5, mPointsLabel);
+    place(0, 5, mPointsLabel, 2);
 
     setLocationRelativeTo(getParent());
     loadWindowState();
@@ -104,7 +103,8 @@ SkillDialog::SkillDialog():
 
 SkillDialog::~SkillDialog()
 {
-    //delete_all(mTabs);
+    // Clear gui
+    loadSkills("");
 }
 
 void SkillDialog::action(const gcn::ActionEvent &event)
@@ -119,36 +119,6 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "close")
     {
         setVisible(false);
-    }
-}
-
-void SkillDialog::adjustTabSize()
-{
-    gcn::Widget *content = mTabs->getCurrentWidget();
-    if (content) {
-        int width = mTabs->getWidth() - 2 * content->getFrameSize() - 2 * mTabs->getFrameSize();
-        int height = mTabs->getContainerHeight() - 2 * content->getFrameSize();
-        content->setSize(width, height);
-        content->setVisible(true);
-        content->logic();
-    }
-}
-
-void SkillDialog::widgetResized(const gcn::Event &event)
-{
-    Window::widgetResized(event);
-
-    adjustTabSize();
-}
-
-void SkillDialog::logic()
-{
-    Window::logic();
-
-    Tab *tab = dynamic_cast<Tab*>(mTabs->getSelectedTab());
-    if (tab != mCurrentTab) {
-        mCurrentTab = tab;
-        adjustTabSize();
     }
 }
 
@@ -182,8 +152,20 @@ void SkillDialog::update()
 void SkillDialog::loadSkills(const std::string &file)
 {
     // TODO: mTabs->clear();
+    while (mTabs->getSelectedTabIndex() != -1)
+    {
+        mTabs->removeTabWithIndex(mTabs->getSelectedTabIndex());
+    }
+
+    for (SkillMap::iterator it = mSkills.begin(); it != mSkills.end();  it++)
+    {
+        delete (*it).second->display;
+    }
     delete_all(mSkills);
     mSkills.clear();
+
+    if (file.length() == 0)
+        return;
 
     XML::Document doc(file);
     xmlNodePtr root = doc.rootNode();
@@ -236,8 +218,6 @@ void SkillDialog::loadSkills(const std::string &file)
             }
         }
     }
-
-    adjustTabSize();
     update();
 }
 

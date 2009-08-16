@@ -38,55 +38,36 @@
 
 #include "utils/stringutils.h"
 
-Player::Player(int id, int job, Map *map):
+Player::Player(int id, int job, Map *map, bool isNPC):
     Being(id, job, map),
-    mName(0),
+    mGender(GENDER_UNSPECIFIED),
     mIsGM(false),
     mInParty(false)
 {
+    if (!isNPC)
+    {
+        for (int i = 0; i < VECTOREND_SPRITE; i++)
+        {
+            mSprites.push_back(NULL);
+            mSpriteIDs.push_back(0);
+            mSpriteColors.push_back("");
+        }
+
+        /* Human base sprite. When implementing different races remove this
+         * line and set the base sprite when setting the race of the player
+         * character.
+         */
+        setSprite(BASE_SPRITE, -100);
+    }
     mShowName = config.getValue("visiblenames", 1);
     config.addListener("visiblenames", this);
+
+    updateColors();
 }
 
 Player::~Player()
 {
     config.removeListener("visiblenames", this);
-    delete mName;
-}
-
-void Player::setName(const std::string &name)
-{
-    if (!mName && mShowName)
-    {
-        mNameColor = &guiPalette->getColor(Palette::PLAYER);
-
-        const gcn::Color *color;
-        if (this == player_node)
-        {
-            color = &guiPalette->getColor(Palette::SELF);
-        }
-        else if (mIsGM)
-        {
-            mNameColor = &guiPalette->getColor(Palette::GM);
-            color = &guiPalette->getColor(Palette::GM_NAME);
-        }
-        else if (mInParty)
-        {
-            color = &guiPalette->getColor(Palette::PARTY);
-        }
-        else
-        {
-            color = &guiPalette->getColor(Palette::PC);
-        }
-
-        mName = new FlashText(name,
-                              getPixelX(),
-                              getPixelY(),
-                              gcn::Graphics::CENTER,
-                              color);
-    }
-
-    Being::setName(name);
 }
 
 #ifdef EATHENA_SUPPORT
@@ -149,31 +130,14 @@ void Player::logic()
 }
 #endif
 
-Being::Type Player::getType() const
-{
-    return PLAYER;
-}
-
-void Player::flash(int time)
-{
-    if (mName)
-        mName->flash(time);
-}
-
 void Player::setGender(Gender gender)
 {
     if (gender != mGender)
     {
-        Being::setGender(gender);
-
-        /* Human base sprite. When implementing different races remove this
-         * line and set the base sprite when setting the race of the player
-         * character.
-         */
-        setSprite(Being::BASE_SPRITE, -100);
+        mGender = gender;
 
         // Reload all subsprites
-        for (int i = 1; i < VECTOREND_SPRITE; i++)
+        for (unsigned int i = 0; i < mSprites.size(); i++)
         {
             if (mSpriteIDs.at(i) != 0)
                 setSprite(i, mSpriteIDs.at(i), mSpriteColors.at(i));
@@ -185,28 +149,12 @@ void Player::setGM(bool gm)
 {
     mIsGM = gm;
 
-    if (gm && mName)
-        mName->setColor(&guiPalette->getColor(Palette::GM));
+    updateColors();
 }
 
-void Player::setHairStyle(int style, int color)
+void Player::setSprite(unsigned int slot, int id, const std::string &color)
 {
-    style = style < 0 ? mHairStyle : style % mNumberOfHairstyles;
-    color = color < 0 ? mHairColor : color % ColorDB::size();
-    if (style == mHairStyle && color == mHairColor) return;
-
-    Being::setHairStyle(style, color);
-
-    setSprite(HAIR_SPRITE, style * -1, ColorDB::get(color));
-
-    setAction(mAction);
-}
-
-void Player::setSprite(int slot, int id, const std::string &color)
-{
-    // TODO: Find a better way
-    if (getType() == NPC)
-        return;
+    assert(slot >= BASE_SPRITE && slot < VECTOREND_SPRITE);
 
     // id = 0 means unequip
     if (id == 0)
@@ -237,6 +185,7 @@ void Player::setSprite(int slot, int id, const std::string &color)
             equipmentSprite->setDirection(getSpriteDirection());
 
         delete mSprites[slot];
+
         mSprites[slot] = equipmentSprite;
 
         if (slot == WEAPON_SPRITE)
@@ -245,13 +194,18 @@ void Player::setSprite(int slot, int id, const std::string &color)
         setAction(mAction);
     }
 
-    Being::setSprite(slot, id, color);
+    mSpriteIDs[slot] = id;
+    mSpriteColors[slot] = color;
 }
 
-void Player::updateCoords()
+void Player::setSpriteID(unsigned int slot, int id)
 {
-    if (mName)
-        mName->adviseXY(getPixelX(), getPixelY());
+    setSprite(slot, id, mSpriteColors[slot]);
+}
+
+void Player::setSpriteColor(unsigned int slot, const std::string &color)
+{
+    setSprite(slot, mSpriteIDs[slot], color);
 }
 
 #ifdef TMWSERV_SUPPORT
@@ -305,26 +259,32 @@ void Player::setInParty(bool inParty)
 {
     mInParty = inParty;
 
-    if (this != player_node && mName)
-    {
-        Palette::ColorType colorType = mInParty ? Palette::PARTY : Palette::PC;
-        mName->setColor(&guiPalette->getColor(colorType));
-    }
+    updateColors();
 }
 
 void Player::optionChanged(const std::string &value)
 {
-    if (value == "visiblenames" && getType() == Being::PLAYER && player_node != this)
+    if (value == "visiblenames")
     {
-        mShowName = config.getValue("visiblenames", 1);
-        if (!mShowName && mName)
-        {
-            delete mName;
-            mName = NULL;
-        }
-        else if (mShowName && !mName && !(getName().empty()))
-        {
-            setName(getName());
-        }
+        setShowName(config.getValue("visiblenames", 1));
+    }
+}
+
+void Player::updateColors()
+{
+    mTextColor = &guiPalette->getColor(Palette::PLAYER);
+
+    if (mIsGM)
+    {
+        mTextColor = &guiPalette->getColor(Palette::GM);
+        mNameColor = &guiPalette->getColor(Palette::GM_NAME);
+    }
+    else if (mInParty)
+    {
+        mNameColor = &guiPalette->getColor(Palette::PARTY);
+    }
+    else
+    {
+        mNameColor = &guiPalette->getColor(Palette::PC);
     }
 }

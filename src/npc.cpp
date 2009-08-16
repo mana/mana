@@ -36,23 +36,20 @@ bool NPC::isTalking = false;
 int current_npc = 0;
 
 NPC::NPC(int id, int job, Map *map):
-    Player(id, job, map)
+    Player(id, job, map, true)
 {
     NPCInfo info = NPCDB::get(job);
 
     // Setup NPC sprites
-    int c = BASE_SPRITE;
     for (std::list<NPCsprite*>::const_iterator i = info.sprites.begin();
          i != info.sprites.end();
          i++)
     {
-        if (c == VECTOREND_SPRITE)
-            break;
-
         std::string file = "graphics/sprites/" + (*i)->sprite;
         int variant = (*i)->variant;
-        mSprites[c] = AnimatedSprite::load(file, variant);
-        c++;
+        mSprites.push_back(AnimatedSprite::load(file, variant));
+        mSpriteIDs.push_back(0);
+        mSpriteColors.push_back("");
     }
 
     if (mParticleEffects)
@@ -66,43 +63,15 @@ NPC::NPC(int id, int job, Map *map):
             this->controlParticle(p);
         }
     }
-    mName = 0;
 
-    mNameColor = &guiPalette->getColor(Palette::NPC);
-}
-
-NPC::~NPC()
-{
-    delete mName;
+    setShowName(true);
 }
 
 void NPC::setName(const std::string &name)
 {
     const std::string displayName = name.substr(0, name.find('#', 0));
 
-    delete mName;
-    mName = new Text(displayName,
-                     getPixelX(),
-                     getPixelY(),
-                     gcn::Graphics::CENTER,
-                     &guiPalette->getColor(Palette::NPC));
-    Being::setName(displayName + " (NPC)");
-}
-
-void NPC::setGender(Gender gender)
-{
-    Being::setGender(gender);
-}
-
-void NPC::setSprite(int slot, int id, std::string color)
-{
-    // Fix this later should it not be adequate enough.
-    Being::setSprite(slot, id, color);
-}
-
-Being::Type NPC::getType() const
-{
-    return Being::NPC;
+    Being::setName(displayName);
 }
 
 void NPC::talk()
@@ -115,10 +84,7 @@ void NPC::talk()
     Net::getNpcHandler()->talk(mId);
 }
 
-void NPC::updateCoords()
+void NPC::setSprite(unsigned int slot, int id, const std::string &color)
 {
-    if (mName)
-    {
-        mName->adviseXY(getPixelX(), getPixelY());
-    }
+    // Do nothing
 }

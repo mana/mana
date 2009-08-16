@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,8 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef MAGIC_H
-#define MAGIC_H
+#ifndef SPECIALSWINDOW_H
+#define SPECIALSWINDOW_H
 
 #include <vector>
 
@@ -30,43 +30,41 @@
 
 #include <guichan/actionlistener.hpp>
 
-/**
- * The magic interface.
- *
- * This window is hacked together quickly to test the spell
- * recharge netcode.
- * It does in no way represent how the interface is going to
- * look in the final version. Optimization / cleanup is
- * pointless, as it will be redesigned from scratch.
- *
- * \ingroup Interface
- */
-class MagicDialog : public Window, public gcn::ActionListener
-{
-    public:
-        MagicDialog();
 
-        ~MagicDialog();
+#include <map>
+
+class Label;
+class ScrollArea;
+class Tab;
+class TabbedArea;
+
+struct SpecialInfo;
+
+class SpecialsWindow : public Window, public gcn::ActionListener {
+    public:
+        SpecialsWindow();
+
+        ~SpecialsWindow();
 
         /**
          * Called when receiving actions from widget.
          */
-        void action(const gcn::ActionEvent &event);
+        void action(const gcn::ActionEvent &actionEvent);
 
         /**
-         * Update the tabs in this dialog
+         * Update the given special's display
          */
-        void update();
+        std::string update(int id);
 
-        /**
-          * Draw this window.
-          */
-        void draw(gcn::Graphics *g);
+        void loadSpecials(const std::string &file);
 
     private:
         std::vector<gcn::Button *> mSpellButtons;
+        typedef std::map<int, SpecialInfo*> SpecialMap;
+        SpecialMap mSpecials;
+        TabbedArea *mTabs;
 };
 
-extern MagicDialog *magicDialog;
+extern SpecialsWindow *specialsWindow;
 
-#endif
+#endif // SPECIALSWINDOW_H

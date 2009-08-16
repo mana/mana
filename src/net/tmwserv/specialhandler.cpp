@@ -37,6 +37,11 @@ SpecialHandler::SpecialHandler()
     specialHandler = this;
 }
 
+void SpecialHandler::handleMessage(MessageIn &msg)
+{
+    // TODO
+}
+
 void SpecialHandler::use(int id)
 {
     MessageOut msg(PGMSG_USE_SPECIAL);

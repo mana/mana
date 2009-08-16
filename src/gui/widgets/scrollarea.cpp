@@ -42,6 +42,7 @@ ScrollArea::ScrollArea():
     mY(0),
     mOpaque(true)
 {
+    addWidgetListener(this);
     init();
 }
 
@@ -346,3 +347,7 @@ void ScrollArea::mouseExited(gcn::MouseEvent& event)
     mHasMouse = false;
 }
 
+void ScrollArea::widgetResized(const gcn::Event &event)
+{
+    getContent()->setSize(getWidth() - 2 * getFrameSize(), getHeight() - 2 * getFrameSize());
+}

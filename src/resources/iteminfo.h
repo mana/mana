@@ -24,7 +24,7 @@
 
 #include "resources/spritedef.h"
 
-#include "being.h"
+#include "player.h"
 
 #include <map>
 #include <string>

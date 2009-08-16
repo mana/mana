@@ -32,18 +32,19 @@
 #include <physfs.h>
 
 #define WALLPAPER_FOLDER "graphics/images/"
-#define WALLPAPER_BASE   "login_wallpaper"
+#define WALLPAPER_BASE   "login_wallpaper.png"
 
-struct WallpaperSize
+struct WallpaperData
 {
+    std::string filename;
     int width;
     int height;
 };
 
-static std::vector<WallpaperSize> wallpaperSizes;
+static std::vector<WallpaperData> wallpaperData;
 static bool haveBackup; // Is the backup (no size given) version available?
 
-bool wallpaperCompare(WallpaperSize a, WallpaperSize b)
+bool wallpaperCompare(WallpaperData a, WallpaperData b)
 {
     int aa = a.width * a.height;
     int ab = b.width * b.height;
@@ -53,60 +54,82 @@ bool wallpaperCompare(WallpaperSize a, WallpaperSize b)
 
 void Wallpaper::loadWallpapers()
 {
-    wallpaperSizes.clear();
-
-    size_t baseLen = strlen(WALLPAPER_BASE);
-    haveBackup = false;
+    wallpaperData.clear();
 
     char **imgs = PHYSFS_enumerateFiles(WALLPAPER_FOLDER);
 
     for (char **i = imgs; *i != NULL; i++)
     {
-        if (strncmp(*i, WALLPAPER_BASE, baseLen) == 0)
-        {
-            int width;
-            int height;
+        int width;
+        int height;
 
-            if (strlen(*i) == baseLen + 4)
-            {
-                if (haveBackup)
-                    logger->log("Duplicate default wallpaper!");
-                else
-                    haveBackup = true;
-            }
-            else if (sscanf(*i, WALLPAPER_BASE "_%dx%d.png",
-                            &width, &height) == 2)
-            {
-                WallpaperSize wp;
-                wp.width = width;
-                wp.height = height;
-                wallpaperSizes.push_back(wp);
-            }
+        // If the backup file is found, we tell it.
+        if (strncmp (*i, WALLPAPER_BASE, strlen(*i)) == 0)
+            haveBackup = true;
+
+        // If the image format is terminated by: "_<width>x<height>.png"
+        // It is taken as a potential wallpaper.
+
+        // First, get the base filename of the image:
+        std::string filename = *i;
+        int separator = filename.rfind("_");
+        filename = filename.substr(0, separator);
+
+        // Then, append the width and height search mask.
+        filename.append("_%dx%d.png");
+
+        if (sscanf(*i, filename.c_str(), &width, &height) == 2)
+        {
+            WallpaperData wp;
+            wp.filename = WALLPAPER_FOLDER;
+            wp.filename.append(*i);
+            wp.width = width;
+            wp.height = height;
+            wallpaperData.push_back(wp);
         }
     }
 
     PHYSFS_freeList(imgs);
 
-    std::sort(wallpaperSizes.begin(), wallpaperSizes.end(), wallpaperCompare);
+    std::sort(wallpaperData.begin(), wallpaperData.end(), wallpaperCompare);
 }
 
 std::string Wallpaper::getWallpaper(int width, int height)
 {
-    std::vector<WallpaperSize>::iterator iter;
-    WallpaperSize wp;
+    std::vector<WallpaperData>::iterator iter;
+    WallpaperData wp;
 
-    for (iter = wallpaperSizes.begin(); iter != wallpaperSizes.end(); iter++)
+    // Wallpaper filename container
+    std::vector<std::string> wallPaperVector;
+
+    for (iter = wallpaperData.begin(); iter != wallpaperData.end(); iter++)
     {
         wp = *iter;
         if (wp.width <= width && wp.height <= height)
-        {
-            return std::string(strprintf(WALLPAPER_FOLDER WALLPAPER_BASE
-                                         "_%dx%d.png", wp.width, wp.height));
-        }
+            wallPaperVector.push_back(wp.filename);
     }
 
-    if (haveBackup)
-        return std::string(WALLPAPER_FOLDER WALLPAPER_BASE ".png");
 
+    if (!wallPaperVector.empty())
+    {
+        // If we've got more than one occurence of a valid wallpaper...
+        if (wallPaperVector.size() > 0)
+        {
+          // Return randomly a wallpaper between vector[0] and
+          // vector[vector.size() - 1]
+          srand((unsigned)time(0)); 
+          return wallPaperVector
+          [int(wallPaperVector.size() * rand() / (RAND_MAX + 1.0))];
+        }
+        else // If there at least one, we return it
+          return wallPaperVector[0];
+    }
+
+    // Return the backup file if everything else failed...
+    if (haveBackup)
+        return std::string(WALLPAPER_FOLDER WALLPAPER_BASE);
+
+    // Return an empty string if everything else failed
     return std::string();
+
 }

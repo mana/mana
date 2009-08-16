@@ -267,14 +267,6 @@
 		<Unit filename="src/gui/linkhandler.h" />
 		<Unit filename="src/gui/login.cpp" />
 		<Unit filename="src/gui/login.h" />
-		<Unit filename="src/gui/magic.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/magic.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
 		<Unit filename="src/gui/minimap.cpp" />
 		<Unit filename="src/gui/minimap.h" />
 		<Unit filename="src/gui/ministatus.cpp" />
@@ -355,6 +347,8 @@
 		<Unit filename="src/gui/skin.h" />
 		<Unit filename="src/gui/speechbubble.cpp" />
 		<Unit filename="src/gui/speechbubble.h" />
+		<Unit filename="src/gui/specialswindow.cpp" />
+		<Unit filename="src/gui/specialswindow.h" />
 		<Unit filename="src/gui/statuswindow.cpp" />
 		<Unit filename="src/gui/statuswindow.h" />
 		<Unit filename="src/gui/storagewindow.cpp" />
@@ -406,6 +400,8 @@
 		<Unit filename="src/gui/widgets/desktop.h" />
 		<Unit filename="src/gui/widgets/dropdown.cpp" />
 		<Unit filename="src/gui/widgets/dropdown.h" />
+		<Unit filename="src/gui/widgets/flowcontainer.cpp" />
+		<Unit filename="src/gui/widgets/flowcontainer.h" />
 		<Unit filename="src/gui/widgets/icon.cpp" />
 		<Unit filename="src/gui/widgets/icon.h" />
 		<Unit filename="src/gui/widgets/inttextfield.cpp" />

@@ -63,6 +63,7 @@ class GeneralHandler : public Net::GeneralHandler
         MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mPlayerHandler;
         MessageHandlerPtr mTradeHandler;
+        MessageHandlerPtr mSpecialHandler;
 };
 
 } // namespace TmwServ

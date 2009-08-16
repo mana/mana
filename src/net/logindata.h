@@ -24,7 +24,7 @@
 
 #include <string>
 
-#include "being.h"
+#include "player.h"
 
 struct LoginData
 {

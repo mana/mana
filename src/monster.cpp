@@ -33,29 +33,24 @@
 #include "resources/monsterinfo.h"
 
 Monster::Monster(int id, int job, Map *map):
-    Being(id, job, map),
-    mText(0)
+    Being(id, job, map)
 {
     const MonsterInfo& info = getInfo();
 
     // Setup Monster sprites
-    int c = BASE_SPRITE;
     const std::list<std::string> &sprites = info.getSprites();
 
     for (std::list<std::string>::const_iterator i = sprites.begin();
          i != sprites.end(); i++)
     {
-        if (c == VECTOREND_SPRITE) break;
-
         std::string file = "graphics/sprites/" + *i;
-        mSprites[c] = AnimatedSprite::load(file);
-        c++;
+        mSprites.push_back(AnimatedSprite::load(file));
     }
 
     // Ensure that something is shown
-    if (c == BASE_SPRITE)
+    if (mSprites.size() == 0)
     {
-        mSprites[c] = AnimatedSprite::load("graphics/sprites/error.xml");
+        mSprites.push_back(AnimatedSprite::load("graphics/sprites/error.xml"));
     }
 
     if (mParticleEffects)
@@ -69,13 +64,9 @@ Monster::Monster(int id, int job, Map *map):
     }
 
     mNameColor = &guiPalette->getColor(Palette::MONSTER);
+    mTextColor = &guiPalette->getColor(Palette::MONSTER);
 
     Being::setName(getInfo().getName());
-}
-
-Monster::~Monster()
-{
-    delete mText;
 }
 
 #ifdef EATHENA_SUPPORT
@@ -92,11 +83,6 @@ void Monster::logic()
     Being::logic();
 }
 #endif
-
-Being::Type Monster::getType() const
-{
-    return MONSTER;
-}
 
 void Monster::setAction(Action action, int attackType)
 {
@@ -115,7 +101,8 @@ void Monster::setAction(Action action, int attackType)
             break;
         case ATTACK:
             currentAction = getInfo().getAttackAction(attackType);
-            mSprites[BASE_SPRITE]->reset();
+            for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
+                (*it)->reset();
 
             //attack particle effect
             particleEffect = getInfo().getAttackParticleEffect(attackType);
@@ -147,11 +134,9 @@ void Monster::setAction(Action action, int attackType)
 
     if (currentAction != ACTION_INVALID)
     {
-        for (int i = 0; i < VECTOREND_SPRITE; i++)
-        {
-            if (mSprites[i])
-                mSprites[i]->play(currentAction);
-        }
+        for (SpriteIterator it = mSprites.begin(); it != mSprites.end(); it++)
+            if (*it)
+                (*it)->play(currentAction);
         mAction = action;
     }
 }
@@ -183,29 +168,18 @@ const MonsterInfo &Monster::getInfo() const
     return MonsterDB::get(mJob);
 }
 
-void Monster::setShowName(bool show)
+void Monster::updateCoords()
 {
-    delete mText;
-
-    if (show)
+    if (mDispName)
     {
-        mText = new Text(getInfo().getName(),
-                         getPixelX(),
-                         getPixelY() - getHeight(),
-                         gcn::Graphics::CENTER,
-                         &guiPalette->getColor(Palette::MONSTER));
-    }
-    else
-    {
-        mText = 0;
+        mDispName->adviseXY(getPixelX(),
+                        getPixelY() - getHeight() - mDispName->getHeight());
     }
 }
 
-void Monster::updateCoords()
+void Monster::showName()
 {
-    if (mText)
-    {
-        mText->adviseXY(getPixelX(),
-                        getPixelY() - getHeight() - mText->getHeight());
-    }
+    Being::showName();
+
+    updateCoords();
 }

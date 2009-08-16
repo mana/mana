@@ -41,13 +41,13 @@ FloorItem::FloorItem(int id,
     mItem = new Item(itemId);
 
     // Add ourselves to the map
-    mSpriteIterator = mMap->addSprite(this);
+    mMapSprite = mMap->addSprite(this);
 }
 
 FloorItem::~FloorItem()
 {
     // Remove ourselves from the map
-    mMap->removeSprite(mSpriteIterator);
+    mMap->removeSprite(mMapSprite);
 
     delete mItem;
 }

@@ -119,7 +119,12 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 
     mUpdateName = true;
 
+    mTextColor = &guiPalette->getColor(Palette::PLAYER);
+    mNameColor = &guiPalette->getColor(Palette::SELF);
+
     initTargetCursor();
+
+    config.addListener("showownname", this);
 }
 
 LocalPlayer::~LocalPlayer()
@@ -128,6 +133,8 @@ LocalPlayer::~LocalPlayer()
 #ifdef EATHENA_SUPPORT
     delete mStorage;
 #endif
+
+    config.removeListener("showownname", this);
 
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
@@ -256,20 +263,6 @@ void LocalPlayer::setGMLevel(int level)
 
     if (level > 0)
         setGM(true);
-}
-
-void LocalPlayer::setName(const std::string &name)
-{
-    if (mName)
-    {
-        delete mName;
-        mName = 0;
-    }
-
-    if (config.getValue("showownname", false) && mMapInitialized)
-        Player::setName(name);
-    else
-        Being::setName(name);
 }
 
 void LocalPlayer::nextStep()
@@ -1112,4 +1105,12 @@ void LocalPlayer::addMessageToQueue(const std::string &message,
                                     Palette::ColorType color)
 {
     mMessages.push_back(MessagePair(message, color));
+}
+
+void LocalPlayer::optionChanged(const std::string &value)
+{
+    if (value == "showownname")
+    {
+        setShowName(config.getValue("showownname", 1));
+    }
 }

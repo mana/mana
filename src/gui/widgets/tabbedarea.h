@@ -23,6 +23,7 @@
 #define TABBEDAREA_H
 
 #include <guichan/widget.hpp>
+#include <guichan/widgetlistener.hpp>
 #include <guichan/widgets/container.hpp>
 #include <guichan/widgets/tabbedarea.hpp>
 
@@ -33,7 +34,7 @@ class Tab;
 /**
  * A tabbed area, the same as the guichan tabbed area in 0.8, but extended
  */
-class TabbedArea : public gcn::TabbedArea
+class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
 {
     public:
         /**
@@ -71,6 +72,14 @@ class TabbedArea : public gcn::TabbedArea
         using gcn::TabbedArea::addTab;
 
         /**
+         * Add a tab. Overridden since it needs to size the widget.
+         *
+         * @param tab The tab widget for the tab.
+         * @param widget The widget to view when the tab is selected.
+         */
+        void addTab(gcn::Tab* tab, gcn::Widget* widget);
+
+        /**
          * Add a tab. Overridden since it needs to create an instance of Tab
          * instead of gcn::Tab.
          *
@@ -96,6 +105,8 @@ class TabbedArea : public gcn::TabbedArea
         { gcn::TabbedArea::setSelectedTab(index); }
 
         void setSelectedTab(gcn::Tab *tab);
+
+        void widgetResized(const gcn::Event &event);
 
     private:
         typedef std::vector< std::pair<gcn::Tab*, gcn::Widget*> > TabContainer;
