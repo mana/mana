@@ -101,8 +101,7 @@ class TabbedArea : public gcn::TabbedArea, public gcn::WidgetListener
         int getContainerHeight() const
         { return mWidgetContainer->getHeight(); }
 
-        void setSelectedTab(unsigned int index)
-        { gcn::TabbedArea::setSelectedTab(index); }
+        using gcn::TabbedArea::setSelectedTab;
 
         void setSelectedTab(gcn::Tab *tab);
 
