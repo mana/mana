@@ -1,10 +1,12 @@
 # German translation of The Mana World.
-# Copyright (C) 2007 The Mana World Development Team
+# Copyright (C) 2007-2009 The Mana World Development Team
+# Copyright (C) 2010 The Mana Development Team
 # This file is distributed under the same license as the The Mana World package.
 #
 # Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
 # Jonathan Raphael Joachim Kolberg, 2009, 2010.
 # seeseekey <seeseekey@googlemail.com>, 2009.
+# Andrej, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
@@ -192,7 +194,7 @@ msgstr ""
 
 #: src/commandhandler.cpp:184
 msgid "/announce > Global announcement (GM only)"
-msgstr "/announce > Globale Ansage (Nur von GM's nutzbar)"
+msgstr "/announce > Globale Ansage (Nur von GMs nutzbar)"
 
 #: src/commandhandler.cpp:188
 msgid "For more information, type /help <command>."
@@ -597,7 +599,7 @@ msgstr "Abbrechen"
 
 #: src/gui/changeemaildialog.cpp:45 src/gui/changeemaildialog.cpp:54
 msgid "Change Email Address"
-msgstr "Email-Adresse ändern"
+msgstr "E-MailAdresse ändern"
 
 #: src/gui/changeemaildialog.cpp:49 src/gui/changepassworddialog.cpp:52
 #, c-format
@@ -661,7 +663,7 @@ msgstr "Charakter erstellen"
 #: src/gui/charcreatedialog.cpp:67 src/gui/login.cpp:52
 #: src/gui/register.cpp:67
 msgid "Name:"
-msgstr "Name :"
+msgstr "Name:"
 
 #. TRANSLATORS: This is a narrow symbol used to denote 'next'.
 #. You may change this symbol if your language uses another.
@@ -722,7 +724,7 @@ msgstr "Bestätige Charakter-Löschung"
 
 #: src/gui/charselectdialog.cpp:70
 msgid "Are you sure you want to delete this character?"
-msgstr "Bist du sicher, dass du diesen Charakter löschen möchtest?"
+msgstr "Bist Du sicher, dass du diesen Charakter löschen möchtest?"
 
 #: src/gui/charselectdialog.cpp:117
 msgid "Account and Character Management"
@@ -906,11 +908,11 @@ msgstr "Wähle aus, wie viele Gegenstände Du wegwerfen möchtest."
 
 #: src/gui/itemamount.cpp:134
 msgid "Select amount of items to store."
-msgstr "Wähle aus, wie viele Gegenstände du einlagern möchtest."
+msgstr "Wähle aus, wie viele Gegenstände Du einlagern möchtest."
 
 #: src/gui/itemamount.cpp:137
 msgid "Select amount of items to retrieve."
-msgstr "Wähle aus, wie viele Gegenstände du wieder haben möchtest."
+msgstr "Wähle aus, wie viele Gegenstände Du wieder haben möchtest."
 
 #: src/gui/itemamount.cpp:140
 msgid "Select amount of items to split."
@@ -1138,7 +1140,7 @@ msgstr "Der Nutzername muss kürzer als %d Zeichen sein."
 #: src/gui/register.cpp:182 src/gui/unregisterdialog.cpp:117
 #, c-format
 msgid "The password needs to be at least %d characters long."
-msgstr "Das Passwort muss aus mindestens %d bestehen."
+msgstr "Das Passwort muss aus mindestens %d Zeichen bestehen."
 
 #: src/gui/register.cpp:190 src/gui/unregisterdialog.cpp:124
 #, c-format
@@ -1177,7 +1179,7 @@ msgstr "Benutzerdefinierter Zeiger"
 
 #: src/gui/serverdialog.cpp:242
 msgid "Please type both the address and the port of a server."
-msgstr "Bitte die Adresse und den Port eines Servers eingeben"
+msgstr "Bitte die Adresse und den Port eines Servers eingeben."
 
 #: src/gui/serverdialog.cpp:357
 #, c-format
@@ -1284,7 +1286,7 @@ msgstr "Fenster zurücksetzen"
 
 #: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:78
 msgid "Press the button to start calibration"
-msgstr "Knopf drücken um die Kalibrierung zu starten"
+msgstr "Knopf drücken, um die Kalibrierung zu starten"
 
 #: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:76
 msgid "Calibrate"
@@ -1431,7 +1433,7 @@ msgstr "Mittel"
 
 #: src/gui/setup_video.cpp:174
 msgid "max"
-msgstr "max"
+msgstr "Maximal"
 
 #: src/gui/setup_video.cpp:196
 msgid "Full screen"
@@ -1492,7 +1494,7 @@ msgstr "Chat über Spielern"
 
 #: src/gui/setup_video.cpp:234
 msgid "Gui opacity"
-msgstr "GUI Transparenz"
+msgstr "GUI-Transparenz"
 
 #: src/gui/setup_video.cpp:235
 msgid "Ambient FX"
@@ -1517,13 +1519,13 @@ msgstr "Nein"
 #, fuzzy
 msgid ""
 "Failed to switch to windowed mode and restoration of old mode also failed!"
-msgstr "und Wiederherstellung der alten Auflösung schlug fehl!"
+msgstr "Auflösung und Wiederherstellung der alten Auflösung schlug fehl!"
 
 #: src/gui/setup_video.cpp:387
 #, fuzzy
 msgid ""
 "Failed to switch to fullscreen mode and restoration of old mode also failed!"
-msgstr "und Wiederherstellung der alten Auflösung schlug fehl!"
+msgstr "Auflösung und Wiederherstellung der alten Auflösung schlug fehl!"
 
 #: src/gui/setup_video.cpp:398
 #, fuzzy
@@ -1731,7 +1733,7 @@ msgstr "Anfrage für eine Party erhalten, aber du bist bereits in einer Party."
 #: src/gui/socialwindow.cpp:503
 #, c-format
 msgid "%s has invited you to join the guild %s."
-msgstr "%s hat dich eingeladen, seiner Gilde %s beizutreten."
+msgstr "%s hat Dich eingeladen, seiner Gilde %s beizutreten."
 
 #: src/gui/socialwindow.cpp:508
 msgid "Accept Guild Invite"
@@ -1818,11 +1820,11 @@ msgstr "MP:"
 #: src/gui/statuswindow.cpp:132 src/gui/statuswindow.cpp:219
 #, c-format
 msgid "Job: %d"
-msgstr "Job: %d"
+msgstr "Beruf: %d"
 
 #: src/gui/statuswindow.cpp:133
 msgid "Job:"
-msgstr "Job:"
+msgstr "Beruf:"
 
 #: src/gui/statuswindow.cpp:194
 #, fuzzy
@@ -1957,7 +1959,7 @@ msgstr "Fertig"
 
 #: src/gui/widgets/channeltab.cpp:49
 msgid "/users > Lists the users in the current channel"
-msgstr "/users > Zeigt eine Liste der Spiele im aktuellen Kanal"
+msgstr "/users > Zeigt eine Liste der Spieler im aktuellen Kanal"
 
 #: src/gui/widgets/channeltab.cpp:50
 msgid "/topic > Set the topic of the current channel"
@@ -1969,7 +1971,7 @@ msgstr "/quit > Verlasse einen Kanal"
 
 #: src/gui/widgets/channeltab.cpp:52
 msgid "/op > Make a user a channel operator"
-msgstr "/op > Ernenne einen Spieler zum Kanalwärter"
+msgstr "/op > Ernenne einen Spieler zum Kanalmoderator"
 
 #: src/gui/widgets/channeltab.cpp:53
 msgid "/kick > Kick a user from the channel"
@@ -1981,7 +1983,7 @@ msgstr "Befehl: /users"
 
 #: src/gui/widgets/channeltab.cpp:64
 msgid "This command shows the users in this channel."
-msgstr "Dieser Befehl zeit eine Liste der Spieler im aktuellen Kanal."
+msgstr "Dieser Befehl zeigt eine Liste der Spieler im aktuellen Kanal."
 
 #: src/gui/widgets/channeltab.cpp:68
 msgid "Command: /topic <message>"
@@ -2015,7 +2017,7 @@ msgstr "Dieser Befehl macht Spieler <Name> zu einem Moderator des Kanals"
 msgid "Channel operators can kick and op other users from the channel."
 msgstr ""
 "Moderatoren können andere Spieler aus dem Kanal werfen oder ihnen ebenfalls "
-"Moderator-Rechte verleihen."
+"Moderatorrechte verleihen."
 
 #: src/gui/widgets/channeltab.cpp:89
 msgid "Command: /kick <nick>"
@@ -2307,7 +2309,7 @@ msgstr "Bitte beheben, oder es wird zu merkwürdigem Verhalten im Spiel kommen."
 
 #: src/localplayer.cpp:914
 msgid "Unable to pick up item."
-msgstr "Kann das nicht aufheben."
+msgstr "Kann Gegenstand nicht aufheben."
 
 #. TRANSLATORS: This sentence may be translated differently
 #. for different grammatical numbers (singular, plural, ...)
@@ -2328,53 +2330,53 @@ msgstr "Optionen:"
 
 #: src/main.cpp:45
 msgid "  -v --version        : Display the version"
-msgstr "  -v --version : Die Version des Spieles anzeigen"
+msgstr "  -v --version        : Die Version des Spieles anzeigen"
 
 #: src/main.cpp:46
 msgid "  -h --help           : Display this help"
-msgstr "  - --help : Zeigt diesen Hilfstext an"
+msgstr "  - --help           : Zeigt diesen Hilfstext an"
 
 #: src/main.cpp:47
 #, fuzzy
 msgid "  -C --config-dir     : Configuration directory to use"
-msgstr "  -C --config-file : zu benutzende Konfigurationsdatei"
+msgstr "  -C --config-file     : zu benutzende Konfigurationsdatei"
 
 #: src/main.cpp:48
 msgid "  -U --username       : Login with this username"
-msgstr "  -U --username : Mit angegebenem Benutzernamen anmelden"
+msgstr "  -U --username       : Mit angegebenem Benutzernamen anmelden"
 
 #: src/main.cpp:49
 msgid "  -P --password       : Login with this password"
-msgstr "  -P --password : Angegebenes Passwort benutzen"
+msgstr "  -P --password       : Angegebenes Passwort benutzen"
 
 #: src/main.cpp:50
 msgid "  -c --character      : Login with this character"
-msgstr "  -c --charakter : Mit angegebenem Spieler anmelden"
+msgstr "  -c --charakter      : Mit angegebenem Spieler anmelden"
 
 #: src/main.cpp:51
 msgid "  -s --server         : Login server name or IP"
-msgstr "  -s --server : Name oder IP-Adresse des Loginservers"
+msgstr "  -s --server         : Name oder IP-Adresse des Loginservers"
 
 #: src/main.cpp:52
 msgid "  -p --port           : Login server port"
-msgstr "  -p --port : Port des Loginservers"
+msgstr "  -p --port           : Port des Loginservers"
 
 #: src/main.cpp:53
 #, fuzzy
 msgid "     --update-host    : Use this update host"
-msgstr "  -H --update-host : Benutze angegebenen Updateserver"
+msgstr "  -H --update-host    : Benutze angegebenen Updateserver"
 
 #: src/main.cpp:54
 msgid "  -D --default        : Choose default character server and character"
-msgstr "  -D --default : Wähle zuletzt benutzten Server und Spieler aus"
+msgstr "  -D --default        : Wähle zuletzt benutzten Server und Spieler aus"
 
 #: src/main.cpp:56
 msgid "  -u --skip-update    : Skip the update downloads"
-msgstr "  -u --skip-update : Überspringe das Herunterladen von Updates"
+msgstr "  -u --skip-update    : Überspringe das Herunterladen von Updates"
 
 #: src/main.cpp:57
 msgid "  -d --data           : Directory to load game data from"
-msgstr "  -d --data : Datenverzeichnis, aus dem das Spiel geladen werden soll"
+msgstr "  -d --data           : Datenverzeichnis, aus dem das Spiel geladen werden soll"
 
 #: src/main.cpp:58
 #, fuzzy
@@ -2391,7 +2393,7 @@ msgstr ""
 #: src/main.cpp:61
 #, fuzzy
 msgid "     --no-opengl      : Disable OpenGL for this session"
-msgstr "  -O --no-opengl : OpenGL-Erweiterungen deaktivieren"
+msgstr "  -O --no-opengl      : OpenGL-Erweiterungen deaktivieren"
 
 #: src/net/ea/adminhandler.cpp:63
 msgid "Kick failed!"
@@ -2541,7 +2543,7 @@ msgstr "Glück %+d"
 
 #: src/net/ea/generalhandler.cpp:130
 msgid "Authentication failed."
-msgstr "Authentifizierung verweigert"
+msgstr "Authentifizierung fehlgeschlagen"
 
 #: src/net/ea/generalhandler.cpp:133
 msgid "No servers available."
@@ -2821,7 +2823,7 @@ msgstr "Gegenstand konnte nicht benutzt werden."
 
 #: src/net/ea/inventoryhandler.cpp:391
 msgid "Unable to equip."
-msgstr "Kann Gegenstand nicht Ausrüsten."
+msgstr "Kann Gegenstand nicht ausrüsten."
 
 #: src/net/ea/inventoryhandler.cpp:402
 msgid "Unable to unequip."
@@ -2866,7 +2868,7 @@ msgstr "Vom Server zurückgewiesen"
 msgid ""
 "You have been permanently banned from the game. Please contact the GM team."
 msgstr ""
-"Du wurdest permanent vom Spiel ausgeschlossen. Bitte wende Dich an das GM "
+"Du wurdest permanent vom Spiel ausgeschlossen. Bitte wende Dich an das GM-"
 "Team."
 
 #: src/net/ea/loginhandler.cpp:165
@@ -2876,7 +2878,7 @@ msgid ""
 "Please contact the GM team via the forums."
 msgstr ""
 "Du wurdest zeitweise, bis %s vom Spiel ausgeschlossen.\n"
-"Bitte wende dich mittels des Forums an das GM Team."
+"Bitte wende dich mittels des Forums an das GM-Team."
 
 #: src/net/ea/loginhandler.cpp:172
 msgid "This user name is already taken."
@@ -2964,7 +2966,7 @@ msgstr "Du bist nicht länger lebendig."
 
 #: src/net/ea/playerhandler.cpp:103 src/net/manaserv/beinghandler.cpp:308
 msgid "The cold hands of the grim reaper are grabbing for your soul."
-msgstr "Die kalten Hände des Sensemanns greifen nach Deiner Seele."
+msgstr "Die kalten Hände des Sensenmanns greifen nach Deiner Seele."
 
 #: src/net/ea/playerhandler.cpp:104 src/net/manaserv/beinghandler.cpp:309
 msgid "Game Over!"
@@ -3014,7 +3016,7 @@ msgstr "Sieht aus, als würde Dein Kopf Dich anschauen."
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
 msgstr ""
-"Du hast schon wieder versagt. Spül Deine Überreste hinunter und hol Dir ein "
+"Du hast schon wieder versagt. Spül Deine Überreste hinunter und hol Dir einen "
 "paar Neue."
 
 #: src/net/ea/playerhandler.cpp:123
@@ -3105,7 +3107,7 @@ msgstr "Handel fehlgeschlagen!"
 
 #: src/net/ea/specialhandler.cpp:150
 msgid "Emote failed!"
-msgstr "Emote fehlgeschlagen!"
+msgstr "Gefühl fehlgeschlagen!"
 
 #: src/net/ea/specialhandler.cpp:153
 msgid "Sit failed!"
@@ -3161,11 +3163,11 @@ msgstr "Du brauchst noch einen blauen Edelstein!"
 
 #: src/net/ea/specialhandler.cpp:198
 msgid "You're carrying to much to do this!"
-msgstr "Du schleppst zu viel herum um das zu machen!"
+msgstr "Du schleppst zu viel herum, um das zu machen!"
 
 #: src/net/ea/specialhandler.cpp:201
 msgid "Huh? What's that?"
-msgstr "Eha? Was ist das?"
+msgstr "Huch? Was ist das?"
 
 #: src/net/ea/specialhandler.cpp:210
 msgid "Warp failed..."
@@ -3186,7 +3188,7 @@ msgstr "Erbitte einen Handel"
 #: src/net/ea/tradehandler.cpp:108 src/net/manaserv/tradehandler.cpp:117
 #, c-format
 msgid "%s wants to trade with you, do you accept?"
-msgstr "%s möchte mit dir handeln, stimmst du zu?"
+msgstr "%s möchte mit dir handeln, stimmst Du zu?"
 
 #: src/net/ea/tradehandler.cpp:124
 msgid "Trading isn't possible. Trade partner is too far away."
@@ -3377,7 +3379,7 @@ msgstr "Einladung gesendet."
 
 #: src/net/manaserv/guildhandler.cpp:203
 msgid "Member was promoted successfully."
-msgstr "Mitglied wurde erfolgreich Befördert."
+msgstr "Mitglied wurde erfolgreich befördert."
 
 #: src/net/manaserv/guildhandler.cpp:208
 msgid "Failed to promote member."
@@ -3660,16 +3662,16 @@ msgstr "unbenannt"
 #~ msgstr "Verfehlt"
 
 #~ msgid "HP Bar"
-#~ msgstr "HP Leiste"
+#~ msgstr "HP-Leiste"
 
 #~ msgid "3/4 HP Bar"
-#~ msgstr "3/4 HP Leiste"
+#~ msgstr "3/4 HP-Leiste"
 
 #~ msgid "1/2 HP Bar"
-#~ msgstr "1/2 HP Leiste"
+#~ msgstr "1/2 HP-Leiste"
 
 #~ msgid "1/4 HP Bar"
-#~ msgstr "1/4 HP Leiste"
+#~ msgstr "1/4 HP-Leiste"
 
 #~ msgid "help"
 #~ msgstr "Hilfe"
@@ -4723,7 +4725,7 @@ msgstr "unbenannt"
 #~ msgstr "Freundesliste"
 
 #~ msgid "Job Level: %d"
-#~ msgstr "Beruf Stufe: %d"
+#~ msgstr "Berufsstufe: %d"
 
 #~ msgid "Ok"
 #~ msgstr "Ok"
@@ -4741,7 +4743,7 @@ msgstr "unbenannt"
 #~ msgstr "zweihändige Waffen"
 
 #~ msgid "Failed to switch to "
-#~ msgstr "Konnte Auflösung nicht ändern in "
+#~ msgstr "Konnte Auflösung nicht ändern zu "
 
 #~ msgid "Mystery Skill"
 #~ msgstr "Unbekannter Skill"
@@ -4774,7 +4776,7 @@ msgstr "unbenannt"
 #~ msgstr "Max Level"
 
 #~ msgid "curl error "
-#~ msgstr "curl fehler "
+#~ msgstr "curl-Fehler "
 
 #~ msgid "Buddys"
 #~ msgstr "Freunde"
