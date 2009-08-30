@@ -1575,7 +1575,7 @@ int main(int argc, char *argv[])
     }
 
     delete guiPalette;
-#ifndef TMWSERV_SUPPORT
+#ifdef EATHENA_SUPPORT
     delete network;
 #endif
 
