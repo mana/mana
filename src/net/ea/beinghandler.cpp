@@ -543,8 +543,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             gmstatus = msg.readInt16();
             if (gmstatus & 0x80)
-                if (Player *player = dynamic_cast<Player*>(dstBeing))
-                    player->setGM(true);
+                player->setGM(true);
 
             if (msg.getId() == SMSG_PLAYER_UPDATE_1)
             {

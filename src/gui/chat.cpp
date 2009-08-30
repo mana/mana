@@ -453,7 +453,7 @@ void ChatWindow::whisper(const std::string &nick,
 
     if (i != mWhispers.end())
         tab = i->second;
-    else if (config.getValue("whispertab", false))
+    else if (config.getValue("whispertab", true))
         tab = addWhisperTab(nick);
 
     if (tab)

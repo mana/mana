@@ -1575,6 +1575,9 @@ int main(int argc, char *argv[])
     }
 
     delete guiPalette;
+#ifdef EATHENA_SUPPORT
+    delete network;
+#endif
 
     logger->log("Quitting");
     exitEngine();
