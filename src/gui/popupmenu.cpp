@@ -73,9 +73,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     mBeingId = being->getId();
     mBrowserBox->clearRows();
 
-    const std::string &name = being->getType() == Being::NPC ?
-                              being->getName().substr(0, being->getName().size()
-                              - 6) : being->getName();
+    const std::string &name = being->getName();
 
     switch (being->getType())
     {
@@ -343,9 +341,7 @@ void PopupMenu::handleLink(const std::string &link)
 
     else if (link == "name" && being)
     {
-        const std::string &name = being->getType() == Being::NPC ?
-                                  being->getName().substr(0,
-                                  being->getName().size() - 6) : being->getName();
+        const std::string &name = being->getName();
         chatWindow->addInputText(name);
     }
 
