@@ -50,7 +50,7 @@ DebugWindow::DebugWindow():
     mMusicFileLabel = new Label(strprintf(_("Music: %s"), ""));
     mMapLabel = new Label(strprintf(_("Map: %s"), ""));
     mMinimapLabel = new Label(strprintf(_("Minimap: %s"), ""));
-    mTileMouseLabel = new Label(strprintf(_("Tile: (%d, %d)"), 0, 0));
+    mTileMouseLabel = new Label(strprintf(_("Cursor: (%d, %d)"), 0, 0));
     mParticleCountLabel = new Label(strprintf(_("Particle count: %d"), 88888));
 
     place(0, 0, mFPSLabel, 3);
@@ -74,7 +74,7 @@ void DebugWindow::logic()
 
     mFPSLabel->setCaption(strprintf(_("%d FPS"), fps));
 
-    mTileMouseLabel->setCaption(strprintf(_("Tile: (%d, %d)"), mouseTileX,
+    mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"), mouseTileX,
                                           mouseTileY));
 
     Map *currentMap = engine->getCurrentMap();
