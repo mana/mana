@@ -89,7 +89,10 @@ class StatusWindow : public Window
         VertContainer *mDAttrCont;
         ScrollArea *mDAttrScroll;
 
-        gcn::Label *mCharacterPointsLabel, *mCorrectionPointsLabel;
+        gcn::Label *mCharacterPointsLabel;
+#ifdef TMWSERV_SUPPORT
+        gcn::Label *mCorrectionPointsLabel;
+#endif
 
         typedef std::map<int, AttrDisplay*> Attrs;
         Attrs mAttrs;

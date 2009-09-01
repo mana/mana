@@ -81,7 +81,9 @@ class ChangeDisplay : public AttrDisplay, gcn::ActionListener
         int mNeeded;
 
         Label *mPoints;
+#ifdef TMWSERV_SUPPORT
         Button *mDec;
+#endif
         Button *mInc;
 };
 
@@ -160,9 +162,11 @@ StatusWindow::StatusWindow():
     getLayout().setRowHeight(3, Layout::AUTO_SET);
 
     mCharacterPointsLabel = new Label("C");
-    mCorrectionPointsLabel = new Label("C");
     place(0, 6, mCharacterPointsLabel, 5);
+#ifdef TMWSERV_SUPPORT
+    mCorrectionPointsLabel = new Label("C");
     place(0, 7, mCorrectionPointsLabel, 5);
+#endif
 
     loadWindowState();
 
@@ -227,9 +231,11 @@ std::string StatusWindow::update(int id)
                                         player_node->getCharacterPoints()));
         mCharacterPointsLabel->adjustSize();
 
+#ifdef TMWSERV_SUPPORT
         mCorrectionPointsLabel->setCaption(strprintf(_("Correction points: %d"),
                                         player_node->getCorrectionPoints()));
         mCorrectionPointsLabel->adjustSize();
+#endif
 
         for (Attrs::iterator it = mAttrs.begin(); it != mAttrs.end(); it++)
         {
@@ -470,18 +476,22 @@ ChangeDisplay::ChangeDisplay(int id, const std::string &name):
         AttrDisplay(id, name), mNeeded(1)
 {
     mPoints = new Label("1");
-    mDec = new Button(_("-"), "dec", this);
     mInc = new Button(_("+"), "inc", this);
-    mDec->setWidth(mInc->getWidth());
 
     // Do the layout
     ContainerPlacer place = mLayout->getPlacer(0, 0);
 
     place(0, 0, mLabel, 3);
-    place(3, 0, mDec);
     place(4, 0, mValue, 2);
     place(6, 0, mInc);
     place(7, 0, mPoints);
+
+#ifdef TMWSERV_SUPPORT
+    mDec = new Button(_("-"), "dec", this);
+    mDec->setWidth(mInc->getWidth());
+
+    place(3, 0, mDec);
+#endif
 
     update();
 }
@@ -490,7 +500,9 @@ std::string ChangeDisplay::update()
 {
     mPoints->setCaption(toString(mNeeded));
 
+#ifdef TMWSERV_SUPPORT
     mDec->setEnabled(player_node->getCorrectionPoints());
+#endif
     mInc->setEnabled(player_node->getCharacterPoints() >= mNeeded);
 
     return AttrDisplay::update();
@@ -505,11 +517,13 @@ void ChangeDisplay::setPointsNeeded(int needed)
 
 void ChangeDisplay::action(const gcn::ActionEvent &event)
 {
+#ifdef TMWSERV_SUPPORT
     if (event.getSource() == mDec)
     {
         Net::getPlayerHandler()->decreaseAttribute(mId);
-    }
-    else if (event.getSource() == mInc)
+    } else
+#endif
+    if (event.getSource() == mInc)
     {
         Net::getPlayerHandler()->increaseAttribute(mId);
     }
