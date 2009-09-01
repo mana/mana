@@ -49,6 +49,7 @@ src/gui/setup_keyboard.cpp
 src/gui/setup_players.cpp
 src/gui/setup_video.cpp
 src/gui/skilldialog.cpp
+src/gui/specialswindow.cpp
 src/gui/statuswindow.cpp
 src/gui/storagewindow.cpp
 src/gui/textdialog.cpp
