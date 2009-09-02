@@ -51,6 +51,11 @@ class CheckBox : public gcn::CheckBox
         void draw(gcn::Graphics* graphics);
 
         /**
+         * Update the alpha value to the checkbox components.
+         */
+        void updateAlpha();
+
+        /**
          * Draws the check box, not the caption.
          */
         void drawBox(gcn::Graphics* graphics);

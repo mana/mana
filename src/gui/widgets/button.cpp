@@ -28,6 +28,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "gui/skin.h"
 
 #include "utils/dtor.h"
 
@@ -101,12 +102,12 @@ void Button::init()
                             data[x].gridX, data[y].gridY,
                             data[x + 1].gridX - data[x].gridX + 1,
                             data[y + 1].gridY - data[y].gridY + 1);
-                    button[mode].grid[a]->setAlpha(mAlpha);
                     a++;
                 }
             }
             btn[mode]->decRef();
         }
+        updateAlpha();
     }
     mInstances++;
 }
@@ -124,6 +125,24 @@ Button::~Button()
     }
 }
 
+void Button::updateAlpha()
+{
+    float alpha = std::max(config.getValue("guialpha", 0.8f),
+                           (double)SkinLoader::instance()->getMinimumOpacity());
+
+    if (mAlpha != alpha)
+    {
+        mAlpha = alpha;
+        for (int a = 0; a < 9; a++)
+        {
+            button[BUTTON_DISABLED].grid[a]->setAlpha(mAlpha);
+            button[BUTTON_PRESSED].grid[a]->setAlpha(mAlpha);
+            button[BUTTON_HIGHLIGHTED].grid[a]->setAlpha(mAlpha);
+            button[BUTTON_STANDARD].grid[a]->setAlpha(mAlpha);
+        }
+    }
+}
+
 void Button::draw(gcn::Graphics *graphics)
 {
     int mode;
@@ -137,17 +156,7 @@ void Button::draw(gcn::Graphics *graphics)
     else
         mode = BUTTON_STANDARD;
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mAlpha = config.getValue("guialpha", 0.8);
-        for (int a = 0; a < 9; a++)
-        {
-            button[BUTTON_DISABLED].grid[a]->setAlpha(mAlpha);
-            button[BUTTON_PRESSED].grid[a]->setAlpha(mAlpha);
-            button[BUTTON_HIGHLIGHTED].grid[a]->setAlpha(mAlpha);
-            button[BUTTON_STANDARD].grid[a]->setAlpha(mAlpha);
-        }
-    }
+    updateAlpha();
 
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), button[mode]);

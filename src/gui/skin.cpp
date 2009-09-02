@@ -87,9 +87,10 @@ Skin::~Skin()
     delete mStickyImageDown;
 }
 
-void Skin::updateAlpha()
+void Skin::updateAlpha(float minimumOpacityAllowed)
 {
-    const float alpha = config.getValue("guialpha", 0.8);
+    const float alpha = std::max((double)minimumOpacityAllowed,
+                                 config.getValue("guialpha", 0.8f));
 
     for_each(mBorder.grid, mBorder.grid + 9,
              std::bind2nd(std::mem_fun(&Image::setAlpha), alpha));
@@ -112,7 +113,8 @@ int Skin::getMinHeight() const
 }
 
 SkinLoader::SkinLoader()
-    : mSkinConfigListener(new SkinConfigListener(this))
+    : mSkinConfigListener(new SkinConfigListener(this)),
+    mMinimumOpacity(-1.0f)
 {
 }
 
@@ -174,10 +176,18 @@ Skin *SkinLoader::load(const std::string &filename,
     return skin;
 }
 
+void SkinLoader::setMinimumOpacity(float minimumOpacity)
+{
+    if (minimumOpacity > 1.0f) return;
+
+    mMinimumOpacity = minimumOpacity;
+    updateAlpha();
+}
+
 void SkinLoader::updateAlpha()
 {
     for (SkinIterator iter = mSkins.begin(); iter != mSkins.end(); ++iter)
-        iter->second->updateAlpha();
+        iter->second->updateAlpha(mMinimumOpacity);
 }
 
 Skin *SkinLoader::readSkin(const std::string &filename)
@@ -284,6 +294,6 @@ Skin *SkinLoader::readSkin(const std::string &filename)
 
     Skin *skin = new Skin(border, closeImage, stickyImageUp, stickyImageDown,
                           filename);
-    skin->updateAlpha();
+    skin->updateAlpha(mMinimumOpacity);
     return skin;
 }

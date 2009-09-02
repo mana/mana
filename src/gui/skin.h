@@ -82,7 +82,7 @@ class Skin
         /**
          * Updates the alpha value of the skin
          */
-        void updateAlpha();
+        void updateAlpha(float minimumOpacityAllowed = 0.0f);
 
         int instances;
 
@@ -95,7 +95,7 @@ class Skin
         Image *mStickyImageDown;   /**< Sticky Button Image */
 };
 
-class SkinLoader 
+class SkinLoader
 {
     public:
         static SkinLoader *instance();
@@ -111,6 +111,18 @@ class SkinLoader
          * Updates the alpha values of all of the skins.
          */
         void updateAlpha();
+
+        /**
+         * Get the minimum opacity allowed to skins.
+         */
+        float getMinimumOpacity()
+        { return mMinimumOpacity; }
+
+        /**
+         * Set the minimum opacity allowed to skins.
+         * Set a negative value to free the minimum allowed.
+         */
+        void setMinimumOpacity(float minimumOpacity);
 
     private:
         SkinLoader();
@@ -130,6 +142,12 @@ class SkinLoader
         ConfigListener *mSkinConfigListener;
 
         static SkinLoader *mInstance;
+
+        /**
+         * Tells if the current skins opacity
+         * should not get less than the given value
+         */
+        float mMinimumOpacity;
 };
 
 #endif

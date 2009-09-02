@@ -28,6 +28,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "gui/skin.h"
 
 int CheckBox::instances = 0;
 float CheckBox::mAlpha = 1.0;
@@ -91,6 +92,23 @@ void CheckBox::draw(gcn::Graphics* graphics)
     graphics->drawText(getCaption(), h - 2, 0);
 }
 
+void CheckBox::updateAlpha()
+{
+    float alpha = std::max(config.getValue("guialpha", 0.8f),
+                       (double)SkinLoader::instance()->getMinimumOpacity());
+
+    if (mAlpha != alpha)
+    {
+        mAlpha = alpha;
+        checkBoxNormal->setAlpha(mAlpha);
+        checkBoxChecked->setAlpha(mAlpha);
+        checkBoxDisabled->setAlpha(mAlpha);
+        checkBoxDisabledChecked->setAlpha(mAlpha);
+        checkBoxNormal->setAlpha(mAlpha);
+        checkBoxCheckedHi->setAlpha(mAlpha);
+    }
+}
+
 void CheckBox::drawBox(gcn::Graphics* graphics)
 {
     Image *box;
@@ -112,16 +130,7 @@ void CheckBox::drawBox(gcn::Graphics* graphics)
         else
             box = checkBoxDisabled;
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mAlpha = config.getValue("guialpha", 0.8);
-        checkBoxNormal->setAlpha(mAlpha);
-        checkBoxChecked->setAlpha(mAlpha);
-        checkBoxDisabled->setAlpha(mAlpha);
-        checkBoxDisabledChecked->setAlpha(mAlpha);
-        checkBoxNormal->setAlpha(mAlpha);
-        checkBoxCheckedHi->setAlpha(mAlpha);
-    }
+    updateAlpha();
 
     static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
 }

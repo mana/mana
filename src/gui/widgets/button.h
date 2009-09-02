@@ -56,6 +56,11 @@ class Button : public gcn::Button
          */
         void draw(gcn::Graphics *graphics);
 
+        /**
+         * Update the alpha value to the button components.
+         */
+        void updateAlpha();
+
     private:
         void init();
 

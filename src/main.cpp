@@ -45,6 +45,7 @@
 
 #include "gui/charselectdialog.h"
 #include "gui/gui.h"
+#include "gui/skin.h"
 #include "gui/login.h"
 #include "gui/okdialog.h"
 #include "gui/palette.h"
@@ -1070,6 +1071,10 @@ int main(int argc, char *argv[])
                 case STATE_CHOOSE_SERVER:
                     logger->log("State: CHOOSE_SERVER");
 
+                    // Don't allow an alpha opacity
+                    // lower than the default value
+                    SkinLoader::instance()->setMinimumOpacity(0.8f);
+
                     // Allow changing this using a server choice dialog
                     // We show the dialog box only if the command-line
                     // options weren't set.
@@ -1109,6 +1114,10 @@ int main(int argc, char *argv[])
 
                 case STATE_LOGIN:
                     logger->log("State: LOGIN");
+                    // Don't allow an alpha opacity
+                    // lower than the default value
+                    SkinLoader::instance()->setMinimumOpacity(0.8f);
+
                     if (options.username.empty()
                             || options.password.empty()) {
                         currentDialog = new LoginDialog(&loginData);
@@ -1182,6 +1191,10 @@ int main(int argc, char *argv[])
 
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
+                    // Don't allow an alpha opacity
+                    // lower than the default value
+                    SkinLoader::instance()->setMinimumOpacity(0.8f);
+
                     currentDialog =
                         new CharSelectDialog(&charInfo, &loginData);
 
@@ -1275,6 +1288,10 @@ int main(int argc, char *argv[])
 
                     Net::GameServer::connect(gameServerConnection, token);
                     Net::ChatServer::connect(chatServerConnection, token);
+
+                    // Allow any alpha opacity
+                    SkinLoader::instance()->setMinimumOpacity(-1.0f);
+
                     sound.fadeOutMusic(1000);
 
                     delete setupButton;
@@ -1341,6 +1358,10 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_CHAR_SELECT:
+                    // Don't allow an alpha opacity
+                    // lower than the default value
+                    SkinLoader::instance()->setMinimumOpacity(0.8f);
+
                 	if (state == STATE_CONNECTING)
                 		network->disconnect();
                     break;
@@ -1397,6 +1418,10 @@ int main(int argc, char *argv[])
                 case STATE_LOGIN:
                     logger->log("State: LOGIN");
 
+                    // Don't allow an alpha opacity
+                    // lower than the default value
+                    SkinLoader::instance()->setMinimumOpacity(0.8f);
+
                     if (!loginData.password.empty())
                     {
                         loginData.registerLogin = false;
@@ -1443,6 +1468,11 @@ int main(int argc, char *argv[])
                     break;
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
+
+                    // Don't allow an alpha opacity
+                    // lower than the default value
+                    SkinLoader::instance()->setMinimumOpacity(0.8f);
+
                     currentDialog = new CharSelectDialog(&charInfo,
                                                          &loginData);
                     positionDialog(currentDialog, screenWidth, screenHeight);
@@ -1472,6 +1502,9 @@ int main(int argc, char *argv[])
                     desktop = NULL;
 
                     logger->log("State: GAME");
+                    // Allow any alpha opacity
+                    SkinLoader::instance()->setMinimumOpacity(-1.0f);
+
                     game->logic();
                     delete game;
                     game = 0;
