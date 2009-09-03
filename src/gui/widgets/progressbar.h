@@ -51,6 +51,11 @@ class ProgressBar : public gcn::Widget
         void logic();
 
         /**
+         * Update the alpha value to the graphic components.
+         */
+        void updateAlpha();
+
+        /**
          * Draws the progress bar.
          */
         void draw(gcn::Graphics *graphics);

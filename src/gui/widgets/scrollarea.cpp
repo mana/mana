@@ -26,6 +26,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "gui/skin.h"
 
 #include "utils/dtor.h"
 
@@ -182,6 +183,23 @@ void ScrollArea::logic()
     }
 }
 
+void ScrollArea::updateAlpha()
+{
+        float alpha = std::max(config.getValue("guialpha", 0.8),
+                   (double)SkinLoader::instance()->getMinimumOpacity());
+
+    if (alpha != mAlpha)
+    {
+        mAlpha = alpha;
+        for (int a = 0; a < 9; a++)
+        {
+            background.grid[a]->setAlpha(mAlpha);
+            vMarker.grid[a]->setAlpha(mAlpha);
+            vMarkerHi.grid[a]->setAlpha(mAlpha);
+        }
+    }
+}
+
 void ScrollArea::draw(gcn::Graphics *graphics)
 {
     if (mVBarVisible)
@@ -209,16 +227,7 @@ void ScrollArea::draw(gcn::Graphics *graphics)
                     mScrollbarWidth));
     }
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mAlpha = config.getValue("guialpha", 0.8);
-        for (int a = 0; a < 9; a++)
-        {
-            background.grid[a]->setAlpha(mAlpha);
-            vMarker.grid[a]->setAlpha(mAlpha);
-            vMarkerHi.grid[a]->setAlpha(mAlpha);
-        }
-    }
+    updateAlpha();
 
     drawChildren(graphics);
 }

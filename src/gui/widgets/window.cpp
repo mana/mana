@@ -684,7 +684,8 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
 
 int Window::getGuiAlpha()
 {
-    float alpha = config.getValue("guialpha", 0.8);
+    float alpha = std::max(config.getValue("guialpha", 0.8),
+                   (double)SkinLoader::instance()->getMinimumOpacity());
     return (int) (alpha * 255.0f);
 }
 

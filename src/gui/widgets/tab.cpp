@@ -30,6 +30,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "gui/skin.h"
 
 #include "utils/dtor.h"
 
@@ -116,6 +117,26 @@ void Tab::init()
     mInstances++;
 }
 
+void Tab::updateAlpha()
+{
+    float alpha = std::max(config.getValue("guialpha", 0.8),
+                   (double)SkinLoader::instance()->getMinimumOpacity());
+
+    // TODO We don't need to do this for every tab on every draw
+    // Maybe use a config listener to do it as the value changes.
+    if (alpha != mAlpha)
+    {
+        mAlpha = alpha;
+        for (int a = 0; a < 9; a++)
+        {
+            for (int t = 0; t < TAB_COUNT; t++)
+            {
+                tabImg[t].grid[a]->setAlpha(mAlpha);
+            }
+        }
+    }
+}
+
 void Tab::draw(gcn::Graphics *graphics)
 {
     int mode = TAB_STANDARD;
@@ -139,19 +160,7 @@ void Tab::draw(gcn::Graphics *graphics)
         }
     }
 
-    // TODO We don't need to do this for every tab on every draw
-    // Maybe use a config listener to do it as the value changes.
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mAlpha = config.getValue("guialpha", 0.8);
-        for (int a = 0; a < 9; a++)
-        {
-            for (int t = 0; t < TAB_COUNT; t++)
-            {
-                tabImg[t].grid[a]->setAlpha(mAlpha);
-            }
-        }
-    }
+    updateAlpha();
 
     // draw tab
     static_cast<Graphics*>(graphics)->

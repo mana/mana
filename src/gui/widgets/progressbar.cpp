@@ -30,6 +30,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "gui/skin.h"
 
 #include "utils/dtor.h"
 
@@ -120,16 +121,25 @@ void ProgressBar::logic()
     }
 }
 
-void ProgressBar::draw(gcn::Graphics *graphics)
+void ProgressBar::updateAlpha()
 {
-    if (config.getValue("guialpha", 0.8) != mAlpha)
+    float alpha = std::max(config.getValue("guialpha", 0.8),
+                   (double)SkinLoader::instance()->getMinimumOpacity());
+
+    if (mAlpha != alpha)
     {
-        mAlpha = config.getValue("guialpha", 0.8);
+        mAlpha = alpha;
         for (int i = 0; i < 9; i++)
         {
             mBorder.grid[i]->setAlpha(mAlpha);
         }
     }
+
+}
+
+void ProgressBar::draw(gcn::Graphics *graphics)
+{
+    updateAlpha();
 
     static_cast<Graphics*>(graphics)->
         drawImageRect(0, 0, getWidth(), getHeight(), mBorder);

@@ -32,6 +32,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "gui/skin.h"
 
 #include "utils/dtor.h"
 
@@ -113,18 +114,14 @@ DropDown::~DropDown()
     delete mScrollArea;
 }
 
-void DropDown::draw(gcn::Graphics* graphics)
+void DropDown::updateAlpha()
 {
-    int h;
+    float alpha = std::max(config.getValue("guialpha", 0.8f),
+                       (double)SkinLoader::instance()->getMinimumOpacity());
 
-    if (mDroppedDown)
-        h = mFoldedUpHeight;
-    else
-        h = getHeight();
-
-    if (config.getValue("guialpha", 0.8) != mAlpha)
+    if (mAlpha != alpha)
     {
-        mAlpha = config.getValue("guialpha", 0.8);
+        mAlpha = alpha;
 
         buttons[0][0]->setAlpha(mAlpha);
         buttons[0][1]->setAlpha(mAlpha);
@@ -136,6 +133,18 @@ void DropDown::draw(gcn::Graphics* graphics)
             skin.grid[a]->setAlpha(mAlpha);
         }
     }
+}
+
+void DropDown::draw(gcn::Graphics* graphics)
+{
+    int h;
+
+    if (mDroppedDown)
+        h = mFoldedUpHeight;
+    else
+        h = getHeight();
+
+    updateAlpha();
 
     const int alpha = (int) (mAlpha * 255.0f);
     gcn::Color faceColor = getBaseColor();

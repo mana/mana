@@ -65,6 +65,11 @@ class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
         void logic();
 
         /**
+         * Update the alpha value to the graphic components.
+         */
+        void updateAlpha();
+
+        /**
          * Draws the scroll area.
          */
         void draw(gcn::Graphics *graphics);

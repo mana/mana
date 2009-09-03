@@ -46,6 +46,11 @@ class ListBox : public gcn::ListBox
          */
         void draw(gcn::Graphics *graphics);
 
+        /**
+         * Update the alpha value to the graphic components.
+         */
+        void updateAlpha();
+
         // Inherited from KeyListener
 
         void keyPressed(gcn::KeyEvent& keyEvent);

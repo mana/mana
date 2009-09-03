@@ -49,6 +49,11 @@ class DropDown : public gcn::DropDown
 
         ~DropDown();
 
+        /**
+         * Update the alpha value to the graphic components.
+         */
+        void updateAlpha();
+
         void draw(gcn::Graphics *graphics);
 
         void drawFrame(gcn::Graphics *graphics);

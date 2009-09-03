@@ -49,6 +49,11 @@ class Slider : public gcn::Slider {
         ~Slider();
 
         /**
+         * Update the alpha value to the graphic components.
+         */
+        void updateAlpha();
+
+        /**
          * Draws the slider.
          */
         void draw(gcn::Graphics *graphics);

@@ -25,6 +25,7 @@
 #include "gui/sdlinput.h"
 
 #include "configuration.h"
+#include "gui/skin.h"
 
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
@@ -38,13 +39,21 @@ ListBox::ListBox(gcn::ListModel *listModel):
 {
 }
 
+void ListBox::updateAlpha()
+{
+    float alpha = std::max(config.getValue("guialpha", 0.8),
+                   (double)SkinLoader::instance()->getMinimumOpacity());
+
+    if (mAlpha != alpha)
+        mAlpha = alpha;
+}
+
 void ListBox::draw(gcn::Graphics *graphics)
 {
     if (!mListModel)
         return;
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-        mAlpha = config.getValue("guialpha", 0.8);
+    updateAlpha();
 
     graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
             (int)(mAlpha * 255.0f)));

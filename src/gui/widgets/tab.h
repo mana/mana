@@ -38,6 +38,11 @@ class Tab : public gcn::Tab
         ~Tab();
 
         /**
+         * Update the alpha value to the graphic components.
+         */
+        void updateAlpha();
+
+        /**
          * Draw the tabbed area.
          */
         void draw(gcn::Graphics *graphics);

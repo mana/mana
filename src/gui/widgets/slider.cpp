@@ -26,6 +26,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "gui/skin.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;
@@ -117,7 +118,21 @@ void Slider::init()
 
         slider->decRef();
         sliderHi->decRef();
+    }
 
+    mInstances++;
+
+    setMarkerLength(hGrip->getWidth());
+}
+
+void Slider::updateAlpha()
+{
+    float alpha = std::max(config.getValue("guialpha", 0.8),
+                   (double)SkinLoader::instance()->getMinimumOpacity());
+
+    if (alpha != mAlpha)
+    {
+        mAlpha = alpha;
         hStart->setAlpha(mAlpha);
         hMid->setAlpha(mAlpha);
         hEnd->setAlpha(mAlpha);
@@ -137,9 +152,6 @@ void Slider::init()
         vGripHi->setAlpha(mAlpha);
     }
 
-    mInstances++;
-
-    setMarkerLength(hGrip->getWidth());
 }
 
 void Slider::draw(gcn::Graphics *graphics)
@@ -149,27 +161,8 @@ void Slider::draw(gcn::Graphics *graphics)
     int x = 0;
     int y = mHasMouse?(h - hStartHi->getHeight()) / 2:(h - hStart->getHeight()) / 2;
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mAlpha = config.getValue("guialpha", 0.8);
-        hStart->setAlpha(mAlpha);
-        hMid->setAlpha(mAlpha);
-        hEnd->setAlpha(mAlpha);
-        hGrip->setAlpha(mAlpha);
-        hStartHi->setAlpha(mAlpha);
-        hMidHi->setAlpha(mAlpha);
-        hEndHi->setAlpha(mAlpha);
-        hGripHi->setAlpha(mAlpha);
+    updateAlpha();
 
-        vStart->setAlpha(mAlpha);
-        vMid->setAlpha(mAlpha);
-        vEnd->setAlpha(mAlpha);
-        vGrip->setAlpha(mAlpha);
-        vStartHi->setAlpha(mAlpha);
-        vMidHi->setAlpha(mAlpha);
-        vEndHi->setAlpha(mAlpha);
-        vGripHi->setAlpha(mAlpha);
-    }
     if (!mHasMouse)
     {
         static_cast<Graphics*>(graphics)->drawImage(hStart, x, y);

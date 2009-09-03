@@ -48,6 +48,11 @@ class TextField : public gcn::TextField
         virtual void draw(gcn::Graphics *graphics);
 
         /**
+         * Update the alpha value to the graphic components.
+         */
+        void updateAlpha();
+
+        /**
          * Draws the background and border.
          */
         void drawFrame(gcn::Graphics *graphics);

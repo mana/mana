@@ -29,6 +29,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "gui/skin.h"
 
 #include "utils/dtor.h"
 
@@ -82,8 +83,23 @@ TextField::~TextField()
         for_each(skin.grid, skin.grid + 9, dtor<Image*>());
 }
 
+void TextField::updateAlpha()
+{
+    float alpha = std::max(config.getValue("guialpha", 0.8),
+                   (double)SkinLoader::instance()->getMinimumOpacity());
+
+    if (alpha != mAlpha)
+    {
+        mAlpha = alpha;
+        for (int a = 0; a < 9; a++)
+            skin.grid[a]->setAlpha(mAlpha);
+    }
+}
+
 void TextField::draw(gcn::Graphics *graphics)
 {
+    updateAlpha();
+
     if (isFocused())
     {
         drawCaret(graphics,
@@ -94,17 +110,12 @@ void TextField::draw(gcn::Graphics *graphics)
     graphics->setColor(guiPalette->getColor(Palette::TEXT));
     graphics->setFont(getFont());
     graphics->drawText(mText, 1 - mXScroll, 1);
-
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-    {
-        mAlpha = config.getValue("guialpha", 0.8);
-        for (int a = 0; a < 9; a++)
-            skin.grid[a]->setAlpha(mAlpha);
-    }
 }
 
 void TextField::drawFrame(gcn::Graphics *graphics)
 {
+    //updateAlpha(); -> Not useful...
+
     int w, h, bs;
     bs = getFrameSize();
     w = getWidth() + bs * 2;
