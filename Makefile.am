@@ -1,7 +1,7 @@
 # Subdirectories to build
 SUBDIRS = data docs po src
 
-desktopdir = $(datadir)/applications
+desktopdir = $(datarootdir)/applications
 
 desktop_DATA = tmw.desktop
 
