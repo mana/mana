@@ -125,6 +125,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     initTargetCursor();
 
     config.addListener("showownname", this);
+    setShowName(config.getValue("showownname", 1));
 }
 
 LocalPlayer::~LocalPlayer()
