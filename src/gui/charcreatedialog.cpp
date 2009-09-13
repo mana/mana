@@ -344,8 +344,12 @@ void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
 void CharCreateDialog::updateHair()
 {
     mHairStyle %= Being::getNumOfHairstyles();
+    if (mHairStyle < 0)
+       mHairStyle += Being::getNumOfHairstyles();
 
     mHairColor %= ColorDB::size();
+    if (mHairColor < 0)
+       mHairColor += ColorDB::size();
 
     mPlayer->setSprite(Player::HAIR_SPRITE,
                       mHairStyle * -1, ColorDB::get(mHairColor));
