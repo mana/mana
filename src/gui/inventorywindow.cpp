@@ -79,7 +79,7 @@ InventoryWindow::InventoryWindow(int invSize):
     }
 
     mUseButton = new Button(longestUseString, "use", this);
-    mDropButton = new Button(_("Drop"), "drop", this);
+    mDropButton = new Button(_("Drop..."), "drop", this);
     mSplitButton = new Button(_("Split"), "split", this);
     mOutfitButton = new Button(_("Outfits"), "outfit", this);
     mItems = new ItemContainer(player_node->getInventory());
@@ -288,6 +288,11 @@ void InventoryWindow::updateButtons()
     {
         mUseButton->setCaption(_("Use"));
     }
+
+    if (selectedItem->getQuantity() > 1)
+        mDropButton->setCaption(_("Drop..."));
+    else
+        mDropButton->setCaption(_("Drop"));
 
     if (Net::getInventoryHandler()->canSplit(selectedItem))
     {

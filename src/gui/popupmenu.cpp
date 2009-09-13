@@ -82,7 +82,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 // Players can be traded with. Later also follow and
                 // add as buddy will be options in this menu.
                 mBrowserBox->addRow(strprintf("@@trade|%s@@",
-                                                strprintf(_("Trade with %s"),
+                                                strprintf(_("Trade with %s..."),
                                                     name.c_str()).c_str()));
                 // TRANSLATORS: Attacking a player.
                 mBrowserBox->addRow(strprintf("@@attack|%s@@",
@@ -384,11 +384,14 @@ void PopupMenu::showPopup(int x, int y, Item *item, bool isInventory)
         else
             mBrowserBox->addRow(strprintf("@@use|%s@@", _("Use")));
 
-        mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop")));
+        if (item->getQuantity() > 1)
+            mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop...")));
+        else
+            mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop")));
 
         if (Net::getInventoryHandler()->canSplit(item))
         {
-            mBrowserBox->addRow(strprintf("@@split|%s@@",  _("Split")));
+            mBrowserBox->addRow(strprintf("@@split|%s@@", _("Split")));
         }
 
         if (player_node->getInStorage())
