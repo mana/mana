@@ -94,6 +94,16 @@ class Item
         bool isEquipped() const { return mEquipped; }
 
         /**
+         * Sets whether this item is in equipment.
+         */
+        void setInEquipment(bool inEquipment) { mInEquipment = inEquipment; }
+
+        /**
+         * Returns whether this item is in equipment.
+         */
+        bool isInEquipment() const { return mInEquipment; }
+
+        /**
          * Sets the inventory index of this item.
          */
         void setInvIndex(int index) { mInvIndex = index; }
@@ -114,6 +124,7 @@ class Item
         int mQuantity;        /**< Number of items. */
         bool mEquipment;      /**< Item is equipment. */
         bool mEquipped;       /**< Item is equipped. */
+        bool mInEquipment;    /**< Item is in equipment */
         int mInvIndex;        /**< Inventory index. */
 };
 

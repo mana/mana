@@ -28,7 +28,7 @@
 Item::Item(int id, int quantity, bool equipment, bool equipped):
     mImage(0),
     mQuantity(quantity),
-    mEquipment(equipment), mEquipped(equipped)
+    mEquipment(equipment), mEquipped(equipped), mInEquipment(false)
 {
     setId(id);
 }

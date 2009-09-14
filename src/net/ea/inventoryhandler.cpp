@@ -304,7 +304,8 @@ void InventoryHandler::equipItem(const Item *item)
 
 void InventoryHandler::unequipItem(const Item *item)
 {
-    const Item *real_item = item->isEquipped() ? item : getRealEquipedItem(item);
+    const Item *real_item = item->isInEquipment() ? getRealEquipedItem(item)
+                                                  : item;
 
     if (!real_item)
         return;
