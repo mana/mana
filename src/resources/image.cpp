@@ -229,20 +229,31 @@ void Image::setAlpha(float alpha)
             if (SDL_MUSTLOCK(mSDLSurface))
                 SDL_LockSurface(mSDLSurface);
 
-            for (int i = 0; i < mSDLSurface->w * mSDLSurface->h; ++i)
-            {
-                Uint8 r, g, b, a;
-                SDL_GetRGBA(
-                        ((Uint32*) mSDLSurface->pixels)[i],
-                        mSDLSurface->format,
-                        &r, &g, &b, &a);
+            // Precompute as much as possible
+            int maxHeight = std::min((mBounds.y + mBounds.h), mSDLSurface->h);
+            int maxWidth = std::min((mBounds.x + mBounds.w), mSDLSurface->w);
+            int i = 0;
 
-                a = (Uint8) (mAlphaChannel[i] * mAlpha);
+            for (int y = mBounds.y; y < maxHeight; y++)
+              for (int x = mBounds.x; x < maxWidth; x++)
+              {
+                  i = y * mSDLSurface->w + x;
+                  // Only change the pixel if it was visible at load time...
+                  Uint8 sourceAlpha = mAlphaChannel[i];
+                  if (sourceAlpha > 0)
+                  {
+                      Uint8 r, g, b, a;
+                      SDL_GetRGBA(((Uint32*) mSDLSurface->pixels)[i],
+                                  mSDLSurface->format,
+                                  &r, &g, &b, &a);
 
-                // Here is the pixel we want to set
-                ((Uint32 *)(mSDLSurface->pixels))[i] =
-                SDL_MapRGBA(mSDLSurface->format, r, g, b, a);
-            }
+                      a = (Uint8) (sourceAlpha * mAlpha);
+
+                      // Here is the pixel we want to set
+                      ((Uint32 *)(mSDLSurface->pixels))[i] =
+                      SDL_MapRGBA(mSDLSurface->format, r, g, b, a);
+                  }
+              }
 
             if (SDL_MUSTLOCK(mSDLSurface))
                 SDL_UnlockSurface(mSDLSurface);
