@@ -82,6 +82,8 @@ Being::Being(int id, int job, Map *map):
     mEquippedWeapon(NULL),
     mText(0),
     mStunMode(0),
+    mAlpha(1.0f),
+    mNumberOfLayers(0),
     mStatusParticleEffects(&mStunParticleEffects, false),
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
@@ -605,7 +607,11 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 
     for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
         if (*it)
+        {
+            if ((*it)->getAlpha() != mAlpha)
+                (*it)->setAlpha(mAlpha);
             (*it)->draw(graphics, px, py);
+        }
 }
 
 void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
@@ -909,4 +915,16 @@ void Being::load()
         hairstyles++;
 
     mNumberOfHairstyles = hairstyles;
+}
+
+void Being::_updateNumberOfLayers()
+{
+    SpriteConstIterator si = mSprites.begin();
+    mNumberOfLayers = 0;
+    while (si != mSprites.end())
+    {
+        if (*si)
+            mNumberOfLayers++;
+        si++;
+    }
 }

@@ -215,14 +215,29 @@ class Being : public Sprite, public ConfigListener
          */
         virtual void setName(const std::string &name);
 
-        const bool getShowName() const { return mShowName; }
+        const bool getShowName() const
+        { return mShowName; }
 
         virtual void setShowName(bool doShowName);
 
         /**
          * Get the number of hairstyles implemented
          */
-        static int getNumOfHairstyles() { return mNumberOfHairstyles; }
+        static int getNumOfHairstyles()
+        { return mNumberOfHairstyles; }
+
+        /**
+         * Get the number of layers used to draw the being
+         */
+        int getNumberOfLayers() const
+        { return mNumberOfLayers; }
+
+        /**
+         * Set the number of layers used to draw the being
+         */
+        void setNumberOfLayers(int numberOfLayers)
+        { mNumberOfLayers = numberOfLayers; }
+
 
 #ifdef EATHENA_SUPPORT
         /**
@@ -311,16 +326,30 @@ class Being : public Sprite, public ConfigListener
         virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
+         * Set the alpha opacity used to draw the being.
+         */
+        virtual void setAlpha(float alpha)
+        { mAlpha = alpha; }
+
+        /**
+         * Returns the current alpha opacity of the Being.
+         */
+        virtual float getAlpha() const
+        { return mAlpha; }
+
+        /**
          * Returns the X coordinate in pixels.
          */
-        int getPixelX() const { return mPx; }
+        int getPixelX() const
+        { return mPx; }
 
         /**
          * Returns the Y coordinate in pixels.
          *
          * @see Sprite::getPixelY()
          */
-        int getPixelY() const { return mPy; }
+        int getPixelY() const
+        { return mPy; }
 
 #ifdef EATHENA_SUPPORT
         /**
@@ -526,6 +555,14 @@ class Being : public Sprite, public ConfigListener
         typedef Sprites::iterator SpriteIterator;
         typedef Sprites::const_iterator SpriteConstIterator;
         Sprites mSprites;
+        float mAlpha;                   /**< Alpha opacity to draw the sprite */
+
+        /** Stores the number of layers used to draw the being */
+        int mNumberOfLayers;
+
+         /** This method counts reliably the sprite layers currently used */
+        void _updateNumberOfLayers();
+
         ParticleList mStunParticleEffects;
         ParticleVector mStatusParticleEffects;
         ParticleList mChildParticleEffects;

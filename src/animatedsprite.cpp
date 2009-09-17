@@ -40,7 +40,8 @@ AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
     mSprite(sprite),
     mAction(0),
     mAnimation(0),
-    mFrame(0)
+    mFrame(0),
+    mAlpha(1.0f)
 {
     assert(mSprite);
 
@@ -142,8 +143,14 @@ bool AnimatedSprite::updateCurrentAnimation(unsigned int time)
 
 bool AnimatedSprite::draw(Graphics *graphics, int posX, int posY) const
 {
-    if (!mFrame || !mFrame->image)
+    if (!mFrame)
         return false;
+
+    if (!mFrame->image)
+      return false;
+
+    if (mFrame->image->getAlpha() != mAlpha)
+        mFrame->image->setAlpha(mAlpha);
 
     return graphics->drawImage(mFrame->image,
                                posX + mFrame->offsetX,
@@ -172,10 +179,16 @@ void AnimatedSprite::setDirection(SpriteDirection direction)
 
 int AnimatedSprite::getWidth() const
 {
-    return mFrame ? mFrame->image->getWidth() : 0;
+    if (mFrame)
+        return mFrame->image ? mFrame->image->getWidth() : 0;
+    else
+        return 0;
 }
 
 int AnimatedSprite::getHeight() const
 {
-    return mFrame ? mFrame->image->getHeight() : 0;
+    if (mFrame)
+        return mFrame->image ? mFrame->image->getHeight() : 0;
+    else
+        return 0;
 }

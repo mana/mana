@@ -94,12 +94,29 @@ class FloorItem : public Sprite
          */
         void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
+        /**
+         * Sets the alpha value of the floor item
+         */
+        void setAlpha(float alpha)
+        { mAlpha = alpha; }
+
+        /**
+         * Returns the current alpha opacity of the floor item.
+         */
+        virtual float getAlpha() const
+        { return mAlpha; }
+
+        /** We consider flooritems (at least for now) to be one layer-sprites */
+        virtual int getNumberOfLayers() const
+        { return 1; }
+
     private:
         int mId;
         int mX, mY;
         Item *mItem;
         MapSprite mMapSprite;
         Map *mMap;
+        float mAlpha;
 };
 
 #endif

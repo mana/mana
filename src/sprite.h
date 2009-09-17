@@ -64,6 +64,22 @@ class Sprite
          * Returns the pixel Y coordinate of the sprite.
          */
         virtual int getPixelY() const = 0;
+
+        /**
+         * Returns the number of Image layers used to draw the sprite.
+         */
+        virtual int getNumberOfLayers() const
+        { return 0; }
+
+        /**
+         * Returns the current alpha value used to draw the sprite.
+         */
+        virtual float getAlpha() const = 0;
+
+        /**
+         * Sets the alpha value used to draw the sprite.
+         */
+        virtual void setAlpha(float alpha) = 0;
 };
 
 #endif

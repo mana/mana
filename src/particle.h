@@ -171,6 +171,12 @@ class Particle : public Sprite
         { mAlpha = alpha; }
 
         /**
+         * Returns the current alpha opacity of the particle.
+         */
+        virtual float getAlpha() const
+        { return mAlpha; }
+
+        /**
          * Sets the sprite iterator of the particle on the current map to make
          * it easier to remove the particle from the map when it is destroyed.
          */
@@ -257,6 +263,10 @@ class Particle : public Sprite
          */
         void disableAutoDelete()
         { mAutoDelete = false; }
+
+        /** We consider particles (at least for now) to be one layer-sprites */
+        virtual int getNumberOfLayers() const
+        { return 1; }
 
     protected:
         bool mAlive;                /**< Is the particle supposed to be drawn and updated?*/

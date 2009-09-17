@@ -285,6 +285,24 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
                         mSprites);
     }
 
+    // Draws beings with a lower opacity to make them visible
+    // even when covered by a wall or some other elements...
+    MapSprites::const_iterator si = mSprites.begin();
+    while (si != mSprites.end())
+    {
+        if (*si)
+          // For now, just draw sprites with only one layer.
+        {
+            if ((*si)->getNumberOfLayers() == 1)
+            {
+                (*si)->setAlpha(0.3f);
+                (*si)->draw(graphics, -scrollX, -scrollY);
+                (*si)->setAlpha(1.0f);
+            }
+        }
+        si++;
+    }
+
     drawOverlay(graphics, scrollX, scrollY,
             (int) config.getValue("OverlayDetail", 2));
 }

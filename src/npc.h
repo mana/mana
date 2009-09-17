@@ -53,6 +53,10 @@ class NPC : public Player
 
         static bool isTalking;
 
+        /** We consider NPCs (at least for now) to be one layer-sprites */
+        virtual int getNumberOfLayers() const
+        { return 1; }
+
     protected:
         /**
          * Gets the way a monster blocks pathfinding for other objects

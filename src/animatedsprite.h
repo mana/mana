@@ -95,6 +95,18 @@ class AnimatedSprite
          */
         void setDirection(SpriteDirection direction);
 
+        /**
+         * Sets the alpha value of the animated sprite
+         */
+        void setAlpha(float alpha)
+        { mAlpha = alpha; }
+
+        /**
+         * Returns the current alpha opacity of the animated sprite.
+         */
+        virtual float getAlpha() const
+        { return mAlpha; }
+
     private:
         bool updateCurrentAnimation(unsigned int dt);
 
@@ -108,6 +120,7 @@ class AnimatedSprite
         Action *mAction;               /**< The currently active action. */
         Animation *mAnimation;         /**< The currently active animation. */
         Frame *mFrame;                 /**< The currently active frame. */
+        float mAlpha;                  /**< The alpha opacity used to draw */
 };
 
 #endif

@@ -184,7 +184,8 @@ void Player::setSprite(unsigned int slot, int id, const std::string &color)
         if (equipmentSprite)
             equipmentSprite->setDirection(getSpriteDirection());
 
-        delete mSprites[slot];
+        if (mSprites[slot])
+            delete mSprites[slot];
 
         mSprites[slot] = equipmentSprite;
 
@@ -196,6 +197,8 @@ void Player::setSprite(unsigned int slot, int id, const std::string &color)
 
     mSpriteIDs[slot] = id;
     mSpriteColors[slot] = color;
+
+    _updateNumberOfLayers();
 }
 
 void Player::setSpriteID(unsigned int slot, int id)

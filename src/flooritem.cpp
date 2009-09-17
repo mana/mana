@@ -35,7 +35,8 @@ FloorItem::FloorItem(int id,
     mId(id),
     mX(x),
     mY(y),
-    mMap(map)
+    mMap(map),
+    mAlpha(1.0f)
 {
     // Create a corresponding item instance
     mItem = new Item(itemId);
@@ -64,7 +65,13 @@ Item *FloorItem::getItem() const
 
 void FloorItem::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
-    graphics->drawImage(mItem->getImage(),
-                        mX * 32 + offsetX,
-                        mY * 32 + offsetY);
+    if (mItem)
+    {
+        if (mAlpha != mItem->getImage()->getAlpha())
+            mItem->getImage()->setAlpha(mAlpha);
+
+        graphics->drawImage(mItem->getImage(),
+                            mX * 32 + offsetX,
+                            mY * 32 + offsetY);
+    }
 }

@@ -45,12 +45,14 @@ Monster::Monster(int id, int job, Map *map):
     {
         std::string file = "graphics/sprites/" + *i;
         mSprites.push_back(AnimatedSprite::load(file));
+        setNumberOfLayers(getNumberOfLayers() + 1);
     }
 
     // Ensure that something is shown
     if (mSprites.size() == 0)
     {
         mSprites.push_back(AnimatedSprite::load("graphics/sprites/error.xml"));
+        setNumberOfLayers(getNumberOfLayers() + 1);
     }
 
     if (mParticleEffects)
