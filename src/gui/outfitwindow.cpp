@@ -150,13 +150,9 @@ void OutfitWindow::wearOutfit(int outfit)
     {
         for (int i = 0; i < 11; i++)
         {
-            //non vis is 3,4,7
-            if (i != 3 && i != 4 && i != 7)
-            {
-                if (!(item = player_node->mEquipment.get()->getEquipment(i)))
-                    continue;
-                Net::getInventoryHandler()->unequipItem(item);
-            }
+            if (!(item = player_node->mEquipment.get()->getEquipment(i)))
+                continue;
+            Net::getInventoryHandler()->unequipItem(item);
         }
     }
 
