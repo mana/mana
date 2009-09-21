@@ -168,16 +168,16 @@ void Being::setDestination(int dstX, int dstY)
     // Interpolate the offsets.  Also convert from tile based to pixel based
 
     // Find the starting offset
-    int startX = (srcX % 32);
-    int startY = (srcY % 32);
+    float startX = (srcX % 32);
+    float startY = (srcY % 32);
 
     // Find the ending offset
-    int endX = (dstX % 32);
-    int endY = (dstY % 32);
+    float endX = (dstX % 32);
+    float endY = (dstY % 32);
 
     // Find the distance, and divide it by the number of steps
-    int changeX = (endX - startX) / thisPath.size();
-    int changeY = (endY - startY) / thisPath.size();
+    int changeX = (int)((endX - startX) / thisPath.size());
+    int changeY = (int)((endY - startY) / thisPath.size());
 
     // Convert the map path to pixels over tiles
     // And add interpolation between the starting and ending offsets

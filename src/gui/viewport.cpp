@@ -233,21 +233,15 @@ void Viewport::logic()
     if (!mMap || !player_node)
         return;
 
+#ifdef EATHENA_SUPPORT
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
-#ifdef TMWSERV_SUPPORT
-            get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
-    {
-            mLocalWalkTime = tick_time;
-            player_node->setDestination(mMouseX + (int) mPixelViewX,
-                                        mMouseY + (int) mPixelViewY);
-#else
             mWalkTime != player_node->mWalkTime)
     {
         player_node->setDestination(mMouseX / 32 + mTileViewX,
                                     mMouseY / 32 + mTileViewY);
         mWalkTime = player_node->mWalkTime;
-#endif
     }
+#endif
 }
 
 void Viewport::drawDebugPath(Graphics *graphics)
