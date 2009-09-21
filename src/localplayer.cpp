@@ -505,6 +505,21 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
     if (!mMap->getWalk(x / 32, y / 32))
         return;
 
+    // check if we're finding a path to the seeked destination
+    // If the path is empty... and isn't on the same tile,
+    // then, it's an unvalid one.
+    Vector playerPosition = getPosition();
+    if (((int)(playerPosition.x / 32) != x / 32)
+      || (((int)playerPosition.y / 32) != y / 32))
+    {
+        Path evaluatedPath = mMap->findPath(playerPosition.x / 32,
+                                        playerPosition.y / 32,
+                                        x / 32, y / 32,
+                                        getWalkMask());
+        if (evaluatedPath.empty())
+            return;
+    }
+
     // Fix coordinates so that the player does not seem to dig into walls.
     const int tx = x / 32;
     const int ty = y / 32;

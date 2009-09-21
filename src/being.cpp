@@ -203,9 +203,7 @@ void Being::clearPath()
 void Being::setPath(const Path &path)
 {
     mPath = path;
-#ifdef TMWSERV_SUPPORT
-    std::cout << this << " New path: " << path << std::endl;
-#else
+#ifdef EATHENA_SUPPORT
     if (mAction != WALK && mAction != DEAD)
     {
         nextStep();
