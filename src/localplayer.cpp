@@ -500,6 +500,11 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 #endif
 {
 #ifdef TMWSERV_SUPPORT
+    // Check the walkability of the destination
+    // If the destination is a wall, don't go there!
+    if (!mMap->getWalk(x / 32, y / 32))
+        return;
+
     // Fix coordinates so that the player does not seem to dig into walls.
     const int tx = x / 32;
     const int ty = y / 32;
