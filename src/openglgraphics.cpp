@@ -210,6 +210,19 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
                                int desiredWidth, int desiredHeight,
                                bool useColor)
 {
+    return drawRescaledImage(image, srcX, srcY,
+                             dstX, dstY,
+                             width, height,
+                             desiredWidth, desiredHeight,
+                             useColor, true);
+}
+
+bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
+                               int dstX, int dstY,
+                               int width, int height,
+                               int desiredWidth, int desiredHeight,
+                               bool useColor, bool smooth)
+{
     if (!image)
         return false;
 
@@ -227,6 +240,16 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
     glBegin(GL_QUADS);
     drawRescaledQuad(image, srcX, srcY, dstX, dstY, width, height,
                      desiredWidth, desiredHeight);
+
+    if (smooth) // A basic smooth effect...
+    {
+        glColor4f(1.0f, 1.0f, 1.0f, 0.2f);
+        drawRescaledQuad(image, srcX, srcY, dstX - 1, dstY - 1, width, height,
+                        desiredWidth + 1, desiredHeight + 1);
+        drawRescaledQuad(image, srcX, srcY, dstX + 1, dstY + 1, width, height,
+                        desiredWidth - 1, desiredHeight - 1);
+    }
+
     glEnd();
 
     if (!useColor)

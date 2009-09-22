@@ -55,6 +55,15 @@ class OpenGLGraphics : public Graphics
                                int desiredWidth, int desiredHeight,
                                bool useColor);
 
+        /**
+         * Used to get the smooth rescale option over the standard function.
+         */
+        bool drawRescaledImage(Image *image, int srcX, int srcY,
+                               int dstX, int dstY,
+                               int width, int height,
+                               int desiredWidth, int desiredHeight,
+                               bool useColor, bool smooth);
+
         void drawImagePattern(Image *image,
                               int x, int y,
                               int w, int h);
