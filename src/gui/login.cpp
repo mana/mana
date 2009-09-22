@@ -72,7 +72,11 @@ LoginDialog::LoginDialog(LoginData *loginData):
 
     mKeepCheck = new CheckBox(_("Remember username"), mLoginData->remember);
     mOkButton = new Button(_("OK"), "ok", this);
+#ifdef TMWSERV_SUPPORT
     mCancelButton = new Button(_("Cancel"), "cancel", this);
+#else
+    mCancelButton = new Button(_("Quit"), "cancel", this);
+#endif
     mRegisterButton = new Button(_("Register"), "register", this);
 
     mUserField->setActionEventId("ok");
