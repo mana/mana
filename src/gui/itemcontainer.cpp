@@ -126,10 +126,11 @@ void ItemContainer::draw(gcn::Graphics *graphics)
                         itemY = mDragPosY - (BOX_HEIGHT / 2);
                     }
                     else {
-                        // Draw selected image.
+                        // Draw selection border image.
                         g->drawImage(mSelImg, itemX, itemY);
                     }
                 }
+                image->setAlpha(1.0f); // ensure the image if fully drawn...
                 g->drawImage(image, itemX, itemY);
             }
             // Draw item caption

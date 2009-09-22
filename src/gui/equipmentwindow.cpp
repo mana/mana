@@ -136,6 +136,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         {
             // Draw Item.
             Image *image = item->getImage();
+            image->setAlpha(1.0f); // Ensure the image is drawn with maximum opacity
             g->drawImage(image,
                          mEquipBox[i].posX + 2,
                          mEquipBox[i].posY + 2);

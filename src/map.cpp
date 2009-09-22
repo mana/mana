@@ -145,6 +145,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
         {
             while (si != sprites.end() && (*si)->getPixelY() <= y * 32)
             {
+                (*si)->setAlpha(1.0f);
                 (*si)->draw(graphics, -scrollX, -scrollY);
                 si++;
             }
@@ -167,6 +168,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
     {
         while (si != sprites.end())
         {
+            (*si)->setAlpha(1.0f);
             (*si)->draw(graphics, -scrollX, -scrollY);
             si++;
         }
@@ -297,7 +299,6 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
             {
                 (*si)->setAlpha(0.3f);
                 (*si)->draw(graphics, -scrollX, -scrollY);
-                (*si)->setAlpha(1.0f);
             }
         }
         si++;
