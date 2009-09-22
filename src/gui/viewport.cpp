@@ -228,12 +228,12 @@ void Viewport::logic()
 {
     WindowContainer::logic();
 
-    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
-
     if (!mMap || !player_node)
         return;
 
 #ifdef EATHENA_SUPPORT
+    Uint8 button = SDL_GetMouseState(&mMouseX, &mMouseY);
+
     if (mPlayerFollowMouse && button & SDL_BUTTON(1) &&
             mWalkTime != player_node->mWalkTime)
     {
