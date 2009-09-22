@@ -1334,6 +1334,13 @@ int main(int argc, char *argv[])
                 case STATE_WAIT:
                     break;
 
+                case STATE_FORCE_QUIT:
+                    logger->log("State: FORCE_QUIT");
+                    state = STATE_EXIT;
+                    logoutThenExit();
+                    Net::getGeneralHandler()->unload();
+                  break;
+
                 default:
                     state = STATE_FORCE_QUIT;
                     break;
