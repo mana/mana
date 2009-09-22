@@ -57,7 +57,7 @@ static const int STORAGE_OFFSET = 1;
 #define SMSG_CHAR_LOGIN              0x006b
 #define SMSG_CHAR_LOGIN_ERROR        0x006c
 #define SMSG_CHAR_CREATE_SUCCEEDED   0x006d
-#define SMSG_CHAR_CREATE_FAILED      0x007e
+#define SMSG_CHAR_CREATE_FAILED      0x006e
 #define SMSG_CHAR_DELETE_SUCCEEDED   0x006f
 #define SMSG_CHAR_DELETE_FAILED      0x0070
 #define SMSG_CHAR_MAP_INFO           0x0071
