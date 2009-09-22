@@ -25,6 +25,7 @@
 
 #include "configuration.h"
 #include "graphics.h"
+#include "resources/image.h"
 #include "shopitem.h"
 
 #include <guichan/font.hpp>
@@ -105,6 +106,7 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
             Image *icon = mShopItems->at(i)->getImage();
             if (icon)
             {
+                icon->setAlpha(1.0f);
                 graphics->drawImage(icon, 1, y);
             }
         }
