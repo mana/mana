@@ -134,7 +134,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                                                     name.c_str()).c_str()));
 #endif
                 if (player_node->isInParty())
-                    mBrowserBox->addRow(strprintf("@@pickup|%s@@",
+                    mBrowserBox->addRow(strprintf("@@party|%s@@",
                                 strprintf(_("Invite %s to join your party"),
                                                     name.c_str()).c_str()));
 
