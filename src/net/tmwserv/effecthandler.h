@@ -34,7 +34,8 @@ class EffectHandler : public MessageHandler
         void handleMessage(MessageIn &msg);
 
     private:
-        void handleCreateEffects(MessageIn &msg);
+        void handleCreateEffectPos(MessageIn &msg);
+        void handleCreateEffectBeing(MessageIn &msg);
 };
 
 } // namespace TmwServ
