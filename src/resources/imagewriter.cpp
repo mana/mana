@@ -30,12 +30,6 @@
 bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
 {
     // TODO Maybe someone can make this look nice?
-    FILE *fp = fopen(filename.c_str(), "wb");
-    if (!fp)
-    {
-        logger->log("could not open file %s for writing", filename.c_str());
-        return false;
-    }
 
     png_structp png_ptr;
     png_infop info_ptr;
@@ -68,6 +62,13 @@ bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
         return false;
     }
 
+    FILE *fp = fopen(filename.c_str(), "wb");
+    if (!fp)
+    {
+        logger->log("could not open file %s for writing", filename.c_str());
+        return false;
+    }
+
     png_init_io(png_ptr, fp);
 
     colortype = (surface->format->BitsPerPixel == 24) ?
@@ -84,6 +85,7 @@ bool ImageWriter::writePNG(SDL_Surface *surface, const std::string &filename)
     if (!row_pointers)
     {
         logger->log("Had trouble converting surface to row pointers");
+        fclose(fp);
         return false;
     }
 
