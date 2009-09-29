@@ -616,62 +616,82 @@ void Game::handleInput()
                 }
             }
 
-            if (event.key.keysym.mod & KMOD_RCTRL && !chatWindow->isInputFocused())
+            if ((event.key.keysym.mod & KMOD_RCTRL || event.key.keysym.mod & KMOD_LCTRL)
+                && !chatWindow->isInputFocused())
             {
+                int outfitNum = -1;
                 switch (event.key.keysym.sym)
                 {
                     case SDLK_1:
-                        outfitWindow->wearOutfit(0);
-                        used = true;
+                        outfitNum = 0;
                         break;
 
                     case SDLK_2:
-                        outfitWindow->wearOutfit(1);
-                        used = true;
+                        outfitNum = 1;
                         break;
 
                     case SDLK_3:
-                        outfitWindow->wearOutfit(2);
-                        used = true;
+                        outfitNum = 2;
                         break;
 
                     case SDLK_4:
-                        outfitWindow->wearOutfit(3);
-                        used = true;
+                        outfitNum = 3;
                         break;
 
                     case SDLK_5:
-                        outfitWindow->wearOutfit(4);
-                        used = true;
+                        outfitNum = 4;
                         break;
 
                     case SDLK_6:
-                        outfitWindow->wearOutfit(5);
-                        used = true;
+                        outfitNum = 5;
                         break;
 
                     case SDLK_7:
-                        outfitWindow->wearOutfit(6);
-                        used = true;
+                        outfitNum = 6;
                         break;
 
                     case SDLK_8:
-                        outfitWindow->wearOutfit(7);
-                        used = true;
+                        outfitNum = 7;
                         break;
 
                     case SDLK_9:
-                        outfitWindow->wearOutfit(8);
-                        used = true;
+                        outfitNum = 8;
                         break;
 
                     case SDLK_0:
-                        outfitWindow->wearOutfit(9);
-                        used = true;
+                        outfitNum = 9;
+                        break;
+
+                    case SDLK_MINUS:
+                        outfitNum = 10;
+                        break;
+
+                    case SDLK_EQUALS:
+                        outfitNum = 11;
+                        break;
+
+                    case SDLK_BACKSPACE:
+                        outfitNum = 12;
+                        break;
+
+                    case SDLK_INSERT:
+                        outfitNum = 13;
+                        break;
+
+                    case SDLK_HOME:
+                        outfitNum = 14;
                         break;
 
                     default:
                         break;
+                }
+                if (outfitNum >= 0)
+                {
+                    used = true;
+                    if (event.key.keysym.mod & KMOD_RCTRL)
+                        outfitWindow->wearOutfit(outfitNum);
+                    else if (event.key.keysym.mod & KMOD_LCTRL)
+                        outfitWindow->copyOutfit(outfitNum);
                 }
             }
 

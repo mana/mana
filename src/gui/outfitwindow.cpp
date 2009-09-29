@@ -27,13 +27,16 @@
 #include "inventory.h"
 #include "equipment.h"
 #include "item.h"
+#include "log.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
+#include "gui/widgets/chattab.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
 
 #include "net/inventoryhandler.h"
+#include "gui/chat.h"
 #include "net/net.h"
 
 #include "resources/image.h"
@@ -55,15 +58,19 @@ OutfitWindow::OutfitWindow():
     mCurrentOutfit(0)
 {
     setWindowName("Outfits");
+    setResizable(true);
     setCloseButton(true);
-    setDefaultSize(250, 250, 118, 180); //160
+    setDefaultSize(250, 250, 118, 180);
 
     mPreviousButton = new Button(_("<"), "previous", this);
     mNextButton = new Button(_(">"), "next", this);
     mCurrentLabel = new Label(strprintf(_("Outfit: %d"), 1));
     mCurrentLabel->setAlignment(gcn::Graphics::CENTER);
     mUnequipCheck = new CheckBox(_("Unequip first"),
-                                 config.getValue("OutfitUnequip", true));
+                                 config.getValue("OutfitUnequip0", true));
+
+    mUnequipCheck->setActionEventId("unequip");
+    mUnequipCheck->addActionListener(this);
 
     place(0, 3, mPreviousButton, 1);
     place(1, 3, mCurrentLabel, 2);
@@ -87,7 +94,7 @@ OutfitWindow::~OutfitWindow()
 void OutfitWindow::load()
 {
     memset(mItems, -1, sizeof(mItems));
-    for (int o = 0; o < 10; o++)
+    for (int o = 0; o < OUTFITS_COUNT; o++)
     {
         std::string outfit = config.getValue("Outfit" + toString(o), "-1");
         std::string buf;
@@ -103,68 +110,80 @@ void OutfitWindow::load()
         {
             mItems[o][i] = tokens[i];
         }
+        mItemsUnequip[o] = config.getValue("OutfitUnequip" + toString(o), true);
     }
 }
 
 void OutfitWindow::save()
 {
     std::string outfitStr;
-    for (int o = 0; o < 10; o++)
+    for (int o = 0; o < OUTFITS_COUNT; o++)
     {
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
         {
             outfitStr += mItems[o][i] ? toString(mItems[o][i]) : toString(-1);
             if (i <8) outfitStr += " ";
         }
         config.setValue("Outfit" + toString(o), outfitStr);
+        config.setValue("OutfitUnequip" + toString(o), mItemsUnequip[o]);
         outfitStr = "";
     }
-    config.setValue("OutfitUnequip", mUnequipCheck->isSelected());
 }
 
 void OutfitWindow::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "next")
     {
-        if (mCurrentOutfit < 9) {
+        if (mCurrentOutfit < (OUTFITS_COUNT - 1)) {
             mCurrentOutfit++;
         } else {
             mCurrentOutfit = 0;
         }
+        mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
+        mUnequipCheck->setSelected(mItemsUnequip[mCurrentOutfit]);
     }
     else if (event.getId() == "previous")
     {
         if (mCurrentOutfit > 0) {
             mCurrentOutfit--;
         } else {
-            mCurrentOutfit = 9;
+            mCurrentOutfit = OUTFITS_COUNT - 1;
         }
+        mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
+        mUnequipCheck->setSelected(mItemsUnequip[mCurrentOutfit]);
     }
-    mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
+    else if (event.getId() == "unequip")
+    {
+        mItemsUnequip[mCurrentOutfit] = mUnequipCheck->isSelected();
+    }
 }
 
 void OutfitWindow::wearOutfit(int outfit)
 {
     Item *item;
-    if (mUnequipCheck->isSelected())
-    {
-        for (int i = 0; i < 11; i++)
-        {
-            if (!(item = player_node->mEquipment.get()->getEquipment(i)))
-                continue;
-            Net::getInventoryHandler()->unequipItem(item);
-        }
-    }
-
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
         item = player_node->getInventory()->findItem(mItems[outfit][i]);
-        if (item && item->getQuantity())
+        if (item && !item->isEquipped() && item->getQuantity())
         {
             if (item->isEquipment()) {
                 Net::getInventoryHandler()->equipItem(item);
             }
         }
+    }
+
+    if (mItemsUnequip[outfit])
+    {
+        unequipNotInOutfit(outfit);
+    }
+}
+
+void OutfitWindow::copyOutfit(int outfit)
+{
+    Item *item;
+    for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
+    {
+        mItems[mCurrentOutfit][i] = mItems[outfit][i];
     }
 }
 
@@ -173,7 +192,7 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
     Window::draw(graphics);
     Graphics *g = static_cast<Graphics*>(graphics);
 
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
         const int itemX = 10 + (i % mGridWidth) * mBoxWidth;
         const int itemY = 25 + (i / mGridWidth) * mBoxHeight;
@@ -184,14 +203,18 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
         graphics->fillRectangle(gcn::Rectangle(itemX, itemY, 32, 32));
 
         if (mItems[mCurrentOutfit][i] < 0)
+        {
             continue;
+        }
 
         Item *item =
             player_node->getInventory()->findItem(mItems[mCurrentOutfit][i]);
-        if (item) {
+        if (item)
+         {
             // Draw item icon.
             Image* image = item->getImage();
-            if (image) {
+            if (image)
+            {
                 g->drawImage(image, itemX, itemY);
             }
         }
@@ -288,9 +311,36 @@ int OutfitWindow::getIndexFromGrid(int pointX, int pointY) const
     }
     const int index = (((pointY - 25) / mBoxHeight) * mGridWidth) +
         (pointX - 10) / mBoxWidth;
-    if (index >= 9)
+    if (index >= OUTFIT_ITEM_COUNT)
     {
         return -1;
     }
     return index;
+}
+
+void OutfitWindow::unequipNotInOutfit(int outfit)
+{
+    Inventory *inventory = player_node->getInventory();
+    if (!inventory)
+        return;
+
+    for (int i = 0; i < inventory->getSize(); i++)
+    {
+        if (inventory->getItem(i) && inventory->getItem(i)->isEquipped())
+        {
+            bool found = false;
+            for (int f = 0; f < OUTFIT_ITEM_COUNT; f++)
+            {
+                if (inventory->getItem(i)->getId() == mItems[outfit][f])
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                Net::getInventoryHandler()->unequipItem(inventory->getItem(i));
+            }
+        }
+    }
 }

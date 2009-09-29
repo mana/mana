@@ -26,6 +26,9 @@
 
 #include <guichan/actionlistener.hpp>
 
+#define OUTFITS_COUNT 15
+#define OUTFIT_ITEM_COUNT 9
+
 class Button;
 class CheckBox;
 class Item;
@@ -63,6 +66,9 @@ class OutfitWindow : public Window, gcn::ActionListener
         { return mItemSelected > -1; }
 
         void wearOutfit(int outfit);
+        void copyOutfit(int outfit);
+
+        void unequipNotInOutfit(int outfit);
 
     private:
         Button *mPreviousButton;
@@ -81,7 +87,8 @@ class OutfitWindow : public Window, gcn::ActionListener
 
         void save();
 
-        int mItems[10][9];
+        int mItems[OUTFITS_COUNT][OUTFIT_ITEM_COUNT];
+        bool mItemsUnequip[OUTFITS_COUNT];
         int mItemSelected;
 
         int mCurrentOutfit;
