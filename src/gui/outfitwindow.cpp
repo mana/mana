@@ -180,7 +180,6 @@ void OutfitWindow::wearOutfit(int outfit)
 
 void OutfitWindow::copyOutfit(int outfit)
 {
-    Item *item;
     for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
         mItems[mCurrentOutfit][i] = mItems[outfit][i];
