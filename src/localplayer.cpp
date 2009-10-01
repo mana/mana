@@ -87,9 +87,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 #endif
     mEquipment(new Equipment),
     mInStorage(false),
-#ifdef EATHENA_SUPPORT
     mTargetTime(-1),
-#endif
     mLastTarget(-1),
     mCharacterPoints(0),
     mCorrectionPoints(0),
@@ -192,7 +190,6 @@ void LocalPlayer::logic()
     }
     mSpecialRechargeUpdateNeeded++;
 
-#ifdef EATHENA_SUPPORT
     // Targeting allowed 4 times a second
     if (get_elapsed_time(mLastTarget) >= 250)
         mLastTarget = -1;
@@ -204,7 +201,6 @@ void LocalPlayer::logic()
         setTarget(NULL);
         mLastTarget = -1;
     }
-#endif
 
     if (mTarget)
     {
@@ -461,7 +457,6 @@ Being *LocalPlayer::getTarget() const
 
 void LocalPlayer::setTarget(Being *target)
 {
-#ifdef EATHENA_SUPPORT
     if (mLastTarget != -1 || target == this)
         return;
 
@@ -479,7 +474,6 @@ void LocalPlayer::setTarget(Being *target)
         mKeepAttacking = false;
         mTargetTime = -1;
     }
-#endif
 
     if (mTarget)
         mTarget->untarget();

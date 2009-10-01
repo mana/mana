@@ -387,9 +387,8 @@ class LocalPlayer : public Player
         void walk(unsigned char dir);
 
         bool mInStorage;      /**< Whether storage is currently accessible */
-#ifdef EATHENA_SUPPORT
+
         int mTargetTime;      /** How long the being has been targeted **/
-#endif
         int mLastTarget;      /** Time stamp of last targeting action, -1 if none. */
 
         // Character status:
