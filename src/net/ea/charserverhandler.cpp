@@ -21,6 +21,7 @@
 
 #include "net/ea/charserverhandler.h"
 
+#include "net/ea/generalhandler.h"
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
 
@@ -43,6 +44,9 @@
 Net::CharHandler *charHandler;
 
 namespace EAthena {
+extern Token netToken;
+extern ServerInfo charServer;
+extern ServerInfo mapServer;
 
 CharServerHandler::CharServerHandler():
     mCharCreateDialog(0)
@@ -145,8 +149,8 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             slot = mCharInfo->getPos();
             msg.skip(4); // CharID, must be the same as player_node->charID
             map_path = msg.readString(16);
-            mLoginData->hostname = ipToString(msg.readInt32());
-            mLoginData->port = msg.readInt16();
+            mapServer.hostname = ipToString(msg.readInt32());
+            mapServer.port = msg.readInt16();
             mCharInfo->unlock();
             mCharInfo->select(0);
             // Clear unselected players infos
@@ -162,7 +166,8 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             } while (mCharInfo->getPos());
 
             mCharInfo->select(slot);
-            state = STATE_CONNECTING;
+            mNetwork->disconnect();
+            state = STATE_CONNECT_GAME;
             break;
     }
 }
@@ -170,7 +175,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer(msg.readInt32(), 0, NULL);
-    tempPlayer->setGender(mLoginData->sex);
+    tempPlayer->setGender(netToken.sex);
 
     tempPlayer->setExp(msg.readInt32());
     tempPlayer->setMoney(msg.readInt32());
@@ -229,24 +234,12 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
     attributes.push_back(_("Luck:"));
 
     mCharCreateDialog->setAttributes(attributes, 30, 1, 9);
-    mCharCreateDialog->setFixedGender(true, mLoginData->sex);
+    mCharCreateDialog->setFixedGender(true, netToken.sex);
 }
 
-void CharServerHandler::connect(LoginData *loginData)
+void CharServerHandler::getCharacters()
 {
-    mLoginData = loginData;
-    
-    MessageOut outMsg(CMSG_CHAR_SERVER_CONNECT);
-    outMsg.writeInt32(loginData->account_ID);
-    outMsg.writeInt32(loginData->session_ID1);
-    outMsg.writeInt32(loginData->session_ID2);
-    // [Fate] The next word is unused by the old char server, so we squeeze in
-    //        tmw client version information
-    outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
-    outMsg.writeInt8((loginData->sex == GENDER_MALE) ? 1 : 0);
-
-    // We get 4 useless bytes before the real answer comes in (what are these?)
-    mNetwork->skip(4);
+    connect();
 }
 
 void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)
@@ -274,6 +267,23 @@ void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
     MessageOut outMsg(CMSG_CHAR_DELETE);
     outMsg.writeInt32(character->getId());
     outMsg.writeString("a@a.com", 40);
+}
+
+void CharServerHandler::connect()
+{
+    mNetwork->disconnect();
+    mNetwork->connect(charServer);
+    MessageOut outMsg(CMSG_CHAR_SERVER_CONNECT);
+    outMsg.writeInt32(netToken.account_ID);
+    outMsg.writeInt32(netToken.session_ID1);
+    outMsg.writeInt32(netToken.session_ID2);
+    // [Fate] The next word is unused by the old char server, so we squeeze in
+    //        tmw client version information
+    outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
+    outMsg.writeInt8((netToken.sex == GENDER_MALE) ? 1 : 0);
+
+    // We get 4 useless bytes before the real answer comes in (what are these?)
+    mNetwork->skip(4);
 }
 
 } // namespace EAthena

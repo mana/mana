@@ -25,6 +25,8 @@
 #include "net/chathandler.h"
 #include "net/messagehandler.h"
 
+#include "net/serverinfo.h"
+
 namespace TmwServ {
 
 class ChatHandler : public MessageHandler, public Net::ChatHandler
@@ -36,6 +38,12 @@ class ChatHandler : public MessageHandler, public Net::ChatHandler
          * Handle the given message appropriately.
          */
         void handleMessage(MessageIn &msg);
+
+        void connect();
+
+        bool isConnected();
+
+        void disconnect();
 
         void talk(const std::string &text);
 

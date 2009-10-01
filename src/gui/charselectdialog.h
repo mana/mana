@@ -83,11 +83,9 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Button *mDelCharButton;
         gcn::Button *mUnRegisterButton;
         gcn::Button *mChangeEmailButton;
-
 #else
         gcn::Button *mNewDelCharButton;
         gcn::Label *mJobLevelLabel;
-        Gender mGender;
 #endif
 
         /**

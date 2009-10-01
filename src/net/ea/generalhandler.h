@@ -25,6 +25,7 @@
 #include "net/generalhandler.h"
 #include "net/messagehandler.h"
 #include "net/net.h"
+#include "net/serverinfo.h"
 
 namespace EAthena {
 
@@ -51,6 +52,8 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
 
         void guiWindowsUnloaded();
 
+        void clearHandlers();
+
     protected:
         MessageHandlerPtr mAdminHandler;
         MessageHandlerPtr mBeingHandler;
@@ -58,11 +61,10 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
         MessageHandlerPtr mCharHandler;
         MessageHandlerPtr mChatHandler;
         MessageHandlerPtr mEquipmentHandler;
+        MessageHandlerPtr mGameHandler;
         MessageHandlerPtr mInventoryHandler;
         MessageHandlerPtr mItemHandler;
         MessageHandlerPtr mLoginHandler;
-        MessageHandlerPtr mLogoutHandler;
-        MessageHandlerPtr mMapHandler;
         MessageHandlerPtr mNpcHandler;
         MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mPlayerHandler;

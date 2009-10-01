@@ -32,6 +32,7 @@
 Net::Connection::Connection(ENetHost *client):
     mConnection(0), mClient(client)
 {
+    mPort = 0;
     Net::connections++;
 }
 
@@ -66,6 +67,8 @@ bool Net::Connection::connect(const std::string &address, short port)
         return false;
     }
 
+    mPort = port;
+
     return true;
 }
 
@@ -94,8 +97,6 @@ void Net::Connection::send(const MessageOut &msg)
         logger->log("Warning: cannot send message to not connected server!");
         return;
     }
-
-    //logger->log("Sending message of size %d...", msg.getDataSize());
 
     ENetPacket *packet = enet_packet_create(msg.getData(),
                                             msg.getDataSize(),

@@ -22,6 +22,8 @@
 #ifndef EA_NETWORK_H
 #define EA_NETWORK_H
 
+#include "net/serverinfo.h"
+
 #include <SDL_net.h>
 #include <SDL_thread.h>
 
@@ -47,9 +49,12 @@ class Network
 
         ~Network();
 
-        bool connect(const std::string &address, short port);
+        bool connect(ServerInfo server);
 
         void disconnect();
+
+        ServerInfo getServer()
+        { return mServer; }
 
         void registerHandler(MessageHandler *handler);
 
@@ -97,8 +102,7 @@ class Network
 
         TCPsocket mSocket;
 
-        std::string mAddress;
-        short mPort;
+        ServerInfo mServer;
 
         char *mInBuffer, *mOutBuffer;
         unsigned int mInSize, mOutSize;

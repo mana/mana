@@ -19,21 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui/serverselectdialog.h"
+#include "gui/worldselectdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
 #include "net/logindata.h"
-#include "net/serverinfo.h"
+#include "net/loginhandler.h"
+#include "net/net.h"
+#include "net/worldinfo.h"
 
 #include "main.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-extern SERVER_INFO **server_info;
+extern WorldInfo **server_info;
 
 /**
  * The list model for the server list.
@@ -41,26 +43,31 @@ extern SERVER_INFO **server_info;
 class ServerListModel : public gcn::ListModel
 {
     public:
+        ServerListModel(Worlds worlds):
+                mWorlds(worlds)
+        {
+        }
+
         virtual ~ServerListModel() {}
 
         int getNumberOfElements()
         {
-            return n_server;
+            return mWorlds.size();
         }
 
         std::string getElementAt(int i)
         {
-            const SERVER_INFO *si = server_info[i];
+            const WorldInfo *si = mWorlds[i];
             return si->name + " (" + toString(si->online_users) + ")";
         }
+    private:
+        Worlds mWorlds;
 };
 
-ServerSelectDialog::ServerSelectDialog(LoginData *loginData, State nextState):
-    Window(_("Select Server")),
-    mLoginData(loginData),
-    mNextState(nextState)
+WorldSelectDialog::WorldSelectDialog(Worlds worlds):
+    Window(_("Select World"))
 {
-    mServerListModel = new ServerListModel;
+    mServerListModel = new ServerListModel(worlds);
     mServerList = new ListBox(mServerListModel);
     ScrollArea *mScrollArea = new ScrollArea(mServerList);
     mOkButton = new Button(_("OK"), "ok", this);
@@ -88,7 +95,7 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData, State nextState):
     add(mOkButton);
     add(mCancelButton);
 
-    if (n_server == 0)
+    if (worlds.size() == 0)
         // Disable Ok button
         mOkButton->setEnabled(false);
     else
@@ -100,21 +107,18 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData, State nextState):
     mOkButton->requestFocus();
 }
 
-ServerSelectDialog::~ServerSelectDialog()
+WorldSelectDialog::~WorldSelectDialog()
 {
     delete mServerListModel;
 }
 
-void ServerSelectDialog::action(const gcn::ActionEvent &event)
+void WorldSelectDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
         mOkButton->setEnabled(false);
-        const SERVER_INFO *si = server_info[mServerList->getSelected()];
-        mLoginData->hostname = ipToString(si->address);
-        mLoginData->port = si->port;
-        mLoginData->updateHost = si->updateHost;
-        state = mNextState;
+        Net::getLoginHandler()->chooseServer(mServerList->getSelected());
+        state = STATE_UPDATE;
     }
     else if (event.getId() == "cancel")
         state = STATE_LOGIN;

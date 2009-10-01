@@ -124,6 +124,8 @@ SET(SRCS
     gui/buy.h
     gui/buysell.cpp
     gui/buysell.h
+    gui/changeemaildialog.cpp
+    gui/changeemaildialog.h
     gui/changepassworddialog.cpp
     gui/changepassworddialog.h
     gui/charselectdialog.cpp
@@ -134,6 +136,8 @@ SET(SRCS
     gui/chat.h
     gui/confirmdialog.cpp
     gui/confirmdialog.h
+    gui/connectiondialog.cpp
+    gui/connectiondialog.h
     gui/debugwindow.cpp
     gui/debugwindow.h
     gui/emotepopup.cpp
@@ -183,6 +187,8 @@ SET(SRCS
     gui/playerbox.h
     gui/popupmenu.cpp
     gui/popupmenu.h
+    gui/quitdialog.cpp
+    gui/quitdialog.h
     gui/recorder.cpp
     gui/recorder.h
     gui/register.cpp
@@ -191,8 +197,8 @@ SET(SRCS
     gui/sdlinput.h
     gui/sell.cpp
     gui/sell.h
-    gui/serverselectdialog.cpp
-    gui/serverselectdialog.h
+    gui/serverdialog.cpp
+    gui/serverdialog.h
     gui/setup.cpp
     gui/setup.h
     gui/setup_audio.cpp
@@ -240,22 +246,25 @@ SET(SRCS
     gui/trade.h
     gui/truetypefont.cpp
     gui/truetypefont.h
+    gui/unregisterdialog.cpp
+    gui/unregisterdialog.h
     gui/updatewindow.cpp
     gui/updatewindow.h
     gui/viewport.cpp
     gui/viewport.h
     gui/windowmenu.cpp
     gui/windowmenu.h
+    gui/worldselectdialog.cpp
+    gui/worldselectdialog.h
     net/adminhandler.h
     net/charhandler.h
     net/chathandler.h
+    net/gamehandler.h
     net/generalhandler.h
     net/guildhandler.h
     net/inventoryhandler.h
     net/logindata.h
     net/loginhandler.h
-    net/logouthandler.h
-    net/maphandler.h
     net/messagehandler.cpp
     net/messagehandler.h
     net/messagein.cpp
@@ -270,6 +279,7 @@ SET(SRCS
     net/serverinfo.h
     net/specialhandler.h
     net/tradehandler.h
+    net/worldinfo.h
     resources/action.cpp
     resources/action.h
     resources/ambientoverlay.cpp
@@ -442,6 +452,8 @@ SET(SRCS_EA
     net/ea/chathandler.h
     net/ea/equipmenthandler.cpp
     net/ea/equipmenthandler.h
+    net/ea/gamehandler.cpp
+    net/ea/gamehandler.h
     net/ea/generalhandler.cpp
     net/ea/generalhandler.h
     net/ea/inventoryhandler.cpp
@@ -450,10 +462,6 @@ SET(SRCS_EA
     net/ea/itemhandler.h
     net/ea/loginhandler.cpp
     net/ea/loginhandler.h
-    net/ea/logouthandler.cpp
-    net/ea/logouthandler.h
-    net/ea/maphandler.cpp
-    net/ea/maphandler.h
     net/ea/network.cpp
     net/ea/network.h
     net/ea/npchandler.cpp
@@ -472,20 +480,10 @@ SET(SRCS_EA
 SET(SRCS_TMW
     gui/buddywindow.cpp
     gui/buddywindow.h
-    gui/changeemaildialog.cpp
-    gui/changeemaildialog.h
-    gui/connectiondialog.cpp
-    gui/connectiondialog.h
     gui/guildlistbox.cpp
     gui/guildlistbox.h
     gui/guildwindow.cpp
     gui/guildwindow.h
-    gui/quitdialog.cpp
-    gui/quitdialog.h
-    gui/serverdialog.cpp
-    gui/serverdialog.h
-    gui/unregisterdialog.cpp
-    gui/unregisterdialog.h
     net/tmwserv/accountserver/account.cpp
     net/tmwserv/accountserver/account.h
     net/tmwserv/accountserver/accountserver.cpp
@@ -512,14 +510,16 @@ SET(SRCS_TMW
     net/tmwserv/beinghandler.h
     net/tmwserv/buysellhandler.cpp
     net/tmwserv/buysellhandler.h
-    net/tmwserv/charserverhandler.cpp
-    net/tmwserv/charserverhandler.h
+    net/tmwserv/charhandler.cpp
+    net/tmwserv/charhandler.h
     net/tmwserv/chathandler.cpp
     net/tmwserv/chathandler.h
     net/tmwserv/connection.cpp
     net/tmwserv/connection.h
     net/tmwserv/effecthandler.cpp
     net/tmwserv/effecthandler.h
+    net/tmwserv/gamehandler.cpp
+    net/tmwserv/gamehandler.h
     net/tmwserv/generalhandler.cpp
     net/tmwserv/generalhandler.h
     net/tmwserv/guildhandler.cpp
@@ -532,10 +532,6 @@ SET(SRCS_TMW
     net/tmwserv/itemhandler.cpp
     net/tmwserv/loginhandler.cpp
     net/tmwserv/loginhandler.h
-    net/tmwserv/logouthandler.cpp
-    net/tmwserv/logouthandler.h
-    net/tmwserv/maphandler.cpp
-    net/tmwserv/maphandler.h
     net/tmwserv/network.cpp
     net/tmwserv/network.h
     net/tmwserv/npchandler.cpp

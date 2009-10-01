@@ -34,7 +34,7 @@
 #include "gui/okdialog.h"
 #include "gui/viewport.h"
 
-#include "net/maphandler.h"
+#include "net/gamehandler.h"
 #include "net/net.h"
 
 #include "resources/mapreader.h"
@@ -43,6 +43,8 @@
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+
+#include <assert.h>
 
 Engine::Engine():
     mCurrentMap(0)
@@ -108,7 +110,7 @@ bool Engine::changeMap(const std::string &mapPath)
     delete mCurrentMap;
     mCurrentMap = newMap;
 
-    Net::getMapHandler()->mapLoaded(mapPath);
+    Net::getGameHandler()->mapLoaded(mapPath);
     return true;
 }
 

@@ -98,9 +98,6 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     mCharInfo(charInfo),
     mLoginData(loginData),
     mCharSelected(false)
-#ifdef EATHENA_SUPPORT
-    , mGender(loginData->sex)
-#endif
 {
     mSelectButton = new Button(_("OK"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
@@ -214,12 +211,8 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "cancel")
     {
-#ifdef TMWSERV_SUPPORT
         mCharInfo->clear();
-        state = STATE_SWITCH_ACCOUNTSERVER_ATTEMPT;
-#else
-        state = STATE_EXIT;
-#endif
+        state = STATE_SWITCH_SERVER_ATTEMPT;
     }
 #ifdef TMWSERV_SUPPORT
     else if (event.getId() == "new")
@@ -250,7 +243,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         {
             new CharDeleteConfirm(this);
         }
-        else if (n_character <= maxSlot)
+        else if (n_character < MAX_CHARACTER_COUNT)
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =

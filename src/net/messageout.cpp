@@ -38,6 +38,7 @@ MessageOut::MessageOut(short id):
     mDataSize(0),
     mPos(0)
 {
+    mID = id;
 #ifdef EATHENA_SUPPORT
     mNetwork = Network::instance();
     mData = mNetwork->mOutBuffer + mNetwork->mOutSize;

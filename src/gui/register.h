@@ -24,6 +24,8 @@
 
 #include "gui/widgets/window.h"
 
+#include "player.h"
+
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 
@@ -78,6 +80,13 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          */
         void keyPressed(gcn::KeyEvent &keyEvent);
 
+        /**
+         * Tell the dialog to show a gender selection. Value stored in the
+         * passed Gender pointer. Default Gender from pointer. Passing NULL
+         * disables the feature.
+         */
+        static void setGender(Gender *gender);
+
     private:
         /**
          * Returns whether submit can be enabled. This is true in the register
@@ -85,46 +94,23 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          */
         bool canSubmit() const;
 
-#ifdef EATHENA_SUPPORT 
-        /**
-         * Function to decide whether string is an unsigned short or not
-         *
-         * @param str the string to parse
-         *
-         * @return true if str is an unsigned short, false otherwise
-         */
-        static bool isUShort(const std::string &str);
-
-        /**
-         * Converts string to an unsigned short (undefined if invalid)
-         *
-         * @param str the string to parse
-         *
-         * @return the value str represents
-         */
-        static unsigned short getUShort(const std::string &str);
-#endif
-
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;
-#ifdef EATHENA_SUPPORT 
-        gcn::TextField *mServerField;
-        gcn::TextField *mPortField;
-#else
+#ifdef TMWSERV_SUPPORT
         gcn::TextField *mEmailField;
 #endif
 
         gcn::Button *mRegisterButton;
         gcn::Button *mCancelButton;
-#ifdef EATHENA_SUPPORT 
         gcn::RadioButton *mMaleButton;
         gcn::RadioButton *mFemaleButton;
-#endif
 
         WrongDataNoticeListener *mWrongDataNoticeListener;
 
         LoginData *mLoginData;
+
+        static Gender *useGender;
 };
 
 #endif

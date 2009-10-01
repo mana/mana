@@ -38,9 +38,9 @@ class CharHandler
     public:
         virtual void setCharInfo(LockedArray<LocalPlayer*> *charInfo) = 0;
 
-        virtual void connect(LoginData *loginData) = 0;
-
         virtual void setCharCreateDialog(CharCreateDialog *window) = 0;
+
+        virtual void getCharacters() = 0;
 
         virtual void chooseCharacter(int slot, LocalPlayer* character) = 0;
 

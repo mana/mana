@@ -315,8 +315,6 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/gui/serverselectdialog.cpp" />
-		<Unit filename="src/gui/serverselectdialog.h" />
 		<Unit filename="src/gui/setup.cpp" />
 		<Unit filename="src/gui/setup.h" />
 		<Unit filename="src/gui/setup_audio.cpp" />
@@ -448,6 +446,8 @@
 		<Unit filename="src/gui/widgets/windowcontainer.h" />
 		<Unit filename="src/gui/windowmenu.cpp" />
 		<Unit filename="src/gui/windowmenu.h" />
+		<Unit filename="src/gui/worldselectdialog.cpp" />
+		<Unit filename="src/gui/worldselectdialog.h" />
 		<Unit filename="src/guichanfwd.h" />
 		<Unit filename="src/guild.cpp">
 			<Option target="TMWServ" />
@@ -531,6 +531,14 @@
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
+		<Unit filename="src/net/ea/gamehandler.cpp">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
+		<Unit filename="src/net/ea/gamehandler.h">
+			<Option target="eAthena" />
+			<Option target="UNIX eAthena" />
+		</Unit>
 		<Unit filename="src/net/ea/generalhandler.cpp">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
@@ -568,24 +576,6 @@
 			<Option target="UNIX eAthena" />
 		</Unit>
 		<Unit filename="src/net/ea/loginhandler.h">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/net/ea/logouthandler.cpp">
-			<Option target="eAthena" />
-			<Option target="Unix eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/net/ea/logouthandler.h">
-			<Option target="eAthena" />
-			<Option target="Unix eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/net/ea/maphandler.cpp">
-			<Option target="eAthena" />
-			<Option target="UNIX eAthena" />
-		</Unit>
-		<Unit filename="src/net/ea/maphandler.h">
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
@@ -641,12 +631,11 @@
 			<Option target="eAthena" />
 			<Option target="UNIX eAthena" />
 		</Unit>
+		<Unit filename="src/net/gamehandler.h" />
 		<Unit filename="src/net/generalhandler.h" />
 		<Unit filename="src/net/guildhandler.h" />
 		<Unit filename="src/net/inventoryhandler.h" />
 		<Unit filename="src/net/loginhandler.h" />
-		<Unit filename="src/net/logouthandler.h" />
-		<Unit filename="src/net/maphandler.h" />
 		<Unit filename="src/net/messagehandler.cpp" />
 		<Unit filename="src/net/messagehandler.h" />
 		<Unit filename="src/net/messagein.cpp" />
@@ -702,11 +691,11 @@
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/charserverhandler.cpp">
+		<Unit filename="src/net/tmwserv/charhandler.cpp">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
-		<Unit filename="src/net/tmwserv/charserverhandler.h">
+		<Unit filename="src/net/tmwserv/charhandler.h">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
 		</Unit>
@@ -765,6 +754,14 @@
 		<Unit filename="src/net/tmwserv/effecthandler.h">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
+		</Unit>
+		<Unit filename="src/net/tmwserv/gamehandler.cpp">
+			<Option target="Unix TMWSERV" />
+			<Option target="TMWServ" />
+		</Unit>
+		<Unit filename="src/net/tmwserv/gamehandler.h">
+			<Option target="Unix TMWSERV" />
+			<Option target="TMWServ" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/gameserver/gameserver.cpp">
 			<Option target="TMWServ" />
@@ -837,22 +834,6 @@
 		<Unit filename="src/net/tmwserv/loginhandler.h">
 			<Option target="TMWServ" />
 			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/logouthandler.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/logouthandler.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/maphandler.cpp">
-			<Option target="Unix TMWSERV" />
-			<Option target="TMWServ" />
-		</Unit>
-		<Unit filename="src/net/tmwserv/maphandler.h">
-			<Option target="Unix TMWSERV" />
-			<Option target="TMWServ" />
 		</Unit>
 		<Unit filename="src/net/tmwserv/network.cpp">
 			<Option target="TMWServ" />

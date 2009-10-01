@@ -19,7 +19,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "net/tmwserv/charserverhandler.h"
+#include "net/tmwserv/charhandler.h"
 
 #include "net/tmwserv/connection.h"
 #include "net/tmwserv/protocol.h"
@@ -28,7 +28,9 @@
 #include "net/tmwserv/accountserver/account.h"
 
 #include "net/logindata.h"
+#include "net/loginhandler.h"
 #include "net/messagein.h"
+#include "net/net.h"
 
 #include "game.h"
 #include "localplayer.h"
@@ -42,14 +44,34 @@
 
 #include "utils/gettext.h"
 
+extern Net::Connection *accountServerConnection;
 extern Net::Connection *gameServerConnection;
 extern Net::Connection *chatServerConnection;
 
 Net::CharHandler *charHandler;
 
+struct CharInfo {
+    unsigned char slot;
+    std::string name;
+    Gender gender;
+    int hs, hc;
+    unsigned short level;
+    unsigned short charPoints;
+    unsigned short corrPoints;
+    unsigned int money;
+    unsigned char attr[7];
+};
+
+typedef std::vector<CharInfo> CharInfos;
+CharInfos chars;
+
 namespace TmwServ {
 
-CharServerHandler::CharServerHandler():
+extern std::string netToken;
+extern ServerInfo gameServer;
+extern ServerInfo chatServer;
+
+CharHandler::CharHandler():
     mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
@@ -63,11 +85,8 @@ CharServerHandler::CharServerHandler():
     charHandler = this;
 }
 
-void CharServerHandler::handleMessage(MessageIn &msg)
+void CharHandler::handleMessage(MessageIn &msg)
 {
-    int slot;
-    LocalPlayer *tempPlayer;
-
     switch (msg.getId())
     {
         case APMSG_CHAR_CREATE_RESPONSE:
@@ -107,17 +126,26 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             break;
 
         case APMSG_CHAR_INFO:
-            tempPlayer = readPlayerData(msg, slot);
-            mCharInfo->unlock();
-            mCharInfo->select(slot);
-            mCharInfo->setEntry(tempPlayer);
+        {
+            CharInfo info;
+            info.slot = msg.readInt8(); // character slot
+            info.name = msg.readString();
+            info.gender = msg.readInt8() == GENDER_MALE ? GENDER_MALE :
+                                                          GENDER_FEMALE;
+            info.hs = msg.readInt8();
+            info.hc = msg.readInt8();
+            info.level = msg.readInt16();
+            info.charPoints = msg.readInt16();
+            info.corrPoints = msg.readInt16();
+            info.money = msg.readInt32();
 
-            // Close the character create dialog
-            if (mCharCreateDialog)
+            for (int i = 0; i < 7; i++)
             {
-                mCharCreateDialog->scheduleDelete();
-                mCharCreateDialog = 0;
+                info.attr[i] = msg.readInt8();
             }
+
+            chars.push_back(info);
+        }
             break;
 
         case APMSG_CHAR_SELECT_RESPONSE:
@@ -126,7 +154,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void CharServerHandler::handleCharCreateResponse(MessageIn &msg)
+void CharHandler::handleCharCreateResponse(MessageIn &msg)
 {
     int errMsg = msg.readInt8();
 
@@ -177,23 +205,27 @@ void CharServerHandler::handleCharCreateResponse(MessageIn &msg)
         mCharCreateDialog->unlock();
 }
 
-void CharServerHandler::handleCharSelectResponse(MessageIn &msg)
+void CharHandler::handleCharSelectResponse(MessageIn &msg)
 {
     int errMsg = msg.readInt8();
 
     if (errMsg == ERRMSG_OK)
     {
-        token = msg.readString(32);
-        std::string gameServer = msg.readString();
-        unsigned short gameServerPort = msg.readInt16();
-        std::string chatServer = msg.readString();
-        unsigned short chatServerPort = msg.readInt16();
+        netToken = msg.readString(32);
 
-        logger->log("Game server: %s:%d", gameServer.c_str(), gameServerPort);
-        logger->log("Chat server: %s:%d", chatServer.c_str(), chatServerPort);
+        gameServer.hostname.assign(msg.readString());
+        gameServer.port = msg.readInt16();
 
-        gameServerConnection->connect(gameServer, gameServerPort);
-        chatServerConnection->connect(chatServer, chatServerPort);
+        chatServer.hostname.assign(msg.readString());
+        chatServer.port = msg.readInt16();
+
+        logger->log("Game server: %s:%d", gameServer.hostname.c_str(),
+                    gameServer.port);
+        logger->log("Chat server: %s:%d", chatServer.hostname.c_str(),
+                    chatServer.port);
+
+        gameServerConnection->connect(gameServer.hostname, gameServer.port);
+        chatServerConnection->connect(chatServer.hostname, chatServer.port);
 
         // Keep the selected character and delete the others
         player_node = mCharInfo->getEntry();
@@ -224,28 +256,7 @@ void CharServerHandler::handleCharSelectResponse(MessageIn &msg)
     }
 }
 
-LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
-{
-    LocalPlayer *tempPlayer = new LocalPlayer;
-    slot = msg.readInt8(); // character slot
-    tempPlayer->setName(msg.readString());
-    tempPlayer->setGender(msg.readInt8() == GENDER_MALE ? GENDER_MALE : GENDER_FEMALE);
-    int hs = msg.readInt8(), hc = msg.readInt8();
-    tempPlayer->setSprite(Player::HAIR_SPRITE, hs * -1, ColorDB::get(hc));
-    tempPlayer->setLevel(msg.readInt16());
-    tempPlayer->setCharacterPoints(msg.readInt16());
-    tempPlayer->setCorrectionPoints(msg.readInt16());
-    tempPlayer->setMoney(msg.readInt32());
-
-    for (int i = 0; i < 7; i++)
-    {
-        tempPlayer->setAttributeBase(i, msg.readInt8());
-    }
-
-    return tempPlayer;
-}
-
-void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
+void CharHandler::setCharCreateDialog(CharCreateDialog *window)
 {
     mCharCreateDialog = window;
 
@@ -262,12 +273,54 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
     mCharCreateDialog->setAttributes(attributes, 60, 1, 20);
 }
 
-void CharServerHandler::chooseCharacter(int slot, LocalPlayer* character)
+void CharHandler::getCharacters()
+{
+    if (!accountServerConnection->isConnected())
+        Net::getLoginHandler()->connect();
+    else
+    {
+        mCharInfo->unlock();
+        LocalPlayer *tempPlayer;
+        for (CharInfos::const_iterator it = chars.begin(); it != chars.end(); it++)
+        {
+            const CharInfo info = (CharInfo) (*it);
+            mCharInfo->select(info.slot);
+
+            tempPlayer = new LocalPlayer();
+            tempPlayer->setName(info.name);
+            tempPlayer->setGender(info.gender);
+            tempPlayer->setSprite(Player::HAIR_SPRITE, info.hs * -1,
+                                  ColorDB::get(info.hc));
+            tempPlayer->setLevel(info.level);
+            tempPlayer->setCharacterPoints(info.charPoints);
+            tempPlayer->setCorrectionPoints(info.corrPoints);
+            tempPlayer->setMoney(info.money);
+
+            for (int i = 0; i < 7; i++)
+            {
+                tempPlayer->setAttributeBase(i, info.attr[i]);
+            }
+
+            mCharInfo->setEntry(tempPlayer);
+        }
+
+        // Close the character create dialog
+        if (mCharCreateDialog)
+        {
+            mCharCreateDialog->scheduleDelete();
+            mCharCreateDialog = 0;
+        }
+
+        state = STATE_CHAR_SELECT;
+    }
+}
+
+void CharHandler::chooseCharacter(int slot, LocalPlayer* character)
 {
     Net::AccountServer::Account::selectCharacter(slot);
 }
 
-void CharServerHandler::newCharacter(const std::string &name, int slot, bool gender,
+void CharHandler::newCharacter(const std::string &name, int slot, bool gender,
                   int hairstyle, int hairColor, std::vector<int> stats)
 {
     Net::AccountServer::Account::createCharacter(name, hairstyle, hairColor,
@@ -281,7 +334,7 @@ void CharServerHandler::newCharacter(const std::string &name, int slot, bool gen
                 );
 }
 
-void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
+void CharHandler::deleteCharacter(int slot, LocalPlayer* character)
 {
     Net::AccountServer::Account::deleteCharacter(slot);
 }

@@ -21,24 +21,27 @@
 
 #include "net/ea/loginhandler.h"
 
+#include "net/ea/network.h"
 #include "net/ea/protocol.h"
 
 #include "net/logindata.h"
 #include "net/messagein.h"
 #include "net/messageout.h"
-#include "net/serverinfo.h"
 
 #include "log.h"
 #include "main.h"
 
+#include "utils/dtor.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-extern SERVER_INFO **server_info;
+Worlds worlds;
 
 Net::LoginHandler *loginHandler;
 
 namespace EAthena {
+extern Token netToken;
+extern ServerInfo charServer;
 
 LoginHandler::LoginHandler()
 {
@@ -47,6 +50,7 @@ LoginHandler::LoginHandler()
         SMSG_LOGIN_DATA,
         SMSG_LOGIN_ERROR,
         SMSG_CHAR_PASSWORD_RESPONSE,
+        SMSG_SERVER_VERSION_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -55,7 +59,7 @@ LoginHandler::LoginHandler()
 
 void LoginHandler::handleMessage(MessageIn &msg)
 {
-    int code;
+    int code, worldCount;
 
     switch (msg.getId())
     {
@@ -104,33 +108,34 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Skip the length word
             msg.skip(2);
 
-            n_server = (msg.getLength() - 47) / 32;
-            server_info =
-                (SERVER_INFO**) malloc(sizeof(SERVER_INFO*) * n_server);
+            delete_all(worlds);
+            worldCount = (msg.getLength() - 47) / 32;
 
-            mLoginData->session_ID1 = msg.readInt32();
-            mLoginData->account_ID = msg.readInt32();
-            mLoginData->session_ID2 = msg.readInt32();
+            netToken.session_ID1 = msg.readInt32();
+            netToken.account_ID = msg.readInt32();
+            netToken.session_ID2 = msg.readInt32();
             msg.skip(30);                           // unknown
-            mLoginData->sex = msg.readInt8() ? GENDER_MALE : GENDER_FEMALE;
+            netToken.sex = msg.readInt8() ? GENDER_MALE : GENDER_FEMALE;
 
-            for (int i = 0; i < n_server; i++)
+            for (int i = 0; i < worldCount; i++)
             {
-                server_info[i] = new SERVER_INFO;
+                WorldInfo *world = new WorldInfo;
 
-                server_info[i]->address = msg.readInt32();
-                server_info[i]->port = msg.readInt16();
-                server_info[i]->name = msg.readString(20);
-                server_info[i]->online_users = msg.readInt32();
-                server_info[i]->updateHost = mUpdateHost;
+                world->address = msg.readInt32();
+                world->port = msg.readInt16();
+                world->name = msg.readString(20);
+                world->online_users = msg.readInt32();
+                world->updateHost = mUpdateHost;
                 msg.skip(2);                        // unknown
 
                 logger->log("Network: Server: %s (%s:%d)",
-                        server_info[i]->name.c_str(),
-                        ipToString(server_info[i]->address),
-                        server_info[i]->port);
+                        world->name.c_str(),
+                        ipToString(world->address),
+                        world->port);
+
+                worlds.push_back(world);
             }
-            state = STATE_CHAR_SERVER;
+            state = STATE_WORLD_SELECT;
             break;
 
         case SMSG_LOGIN_ERROR:
@@ -171,7 +176,38 @@ void LoginHandler::handleMessage(MessageIn &msg)
             }
             state = STATE_ERROR;
             break;
+        case SMSG_SERVER_VERSION_RESPONSE:
+            {
+                // TODO: verify these!
+                msg.readInt8(); // -1
+                msg.readInt8(); // T
+                msg.readInt8(); // M
+                msg.readInt8(); // W
+                msg.readInt8(); // (space)
+                msg.readInt8(); // e
+                msg.readInt8(); // A
+
+                //state = STATE_LOGIN;
+            }
+            break;
     }
+}
+
+void LoginHandler::connect()
+{
+    mNetwork->connect(mServer);
+    MessageOut outMsg(CMSG_SERVER_VERSION_REQUEST);
+}
+
+bool LoginHandler::isConnected()
+{
+    return mNetwork->isConnected();
+}
+
+void LoginHandler::disconnect()
+{
+    if (mNetwork->getServer() == mServer)
+        mNetwork->disconnect();
 }
 
 void LoginHandler::loginAccount(LoginData *loginData)
@@ -194,9 +230,14 @@ void LoginHandler::changePassword(const std::string &username,
     outMsg.writeString(newPassword, 24);
 }
 
-void LoginHandler::chooseServer(int server)
+void LoginHandler::chooseServer(unsigned int server)
 {
-    // TODO
+    if (server >= worlds.size())
+        return;
+
+    charServer.clear();
+    charServer.hostname = ipToString(worlds[server]->address);
+    charServer.port = worlds[server]->port;
 }
 
 void LoginHandler::registerAccount(LoginData *loginData)
@@ -204,7 +245,7 @@ void LoginHandler::registerAccount(LoginData *loginData)
     mLoginData = loginData;
 
     std::string username = loginData->username;
-    username.append((loginData->sex == GENDER_FEMALE) ? "_F" : "_M");
+    username.append((netToken.sex == GENDER_FEMALE) ? "_F" : "_M");
 
     sendLoginRegister(username, loginData->password);
 }
@@ -230,6 +271,11 @@ void LoginHandler::sendLoginRegister(const std::string &username,
      *  1 - defaults to the first char-server (instead of the last)
      */
     outMsg.writeInt8(0x03);
+}
+
+Worlds LoginHandler::getWorlds()
+{
+    return worlds;
 }
 
 } // namespace EAthena

@@ -22,20 +22,29 @@
 #ifndef NET_EA_MAPHANDLER_H
 #define NET_EA_MAPHANDLER_H
 
-#include "net/maphandler.h"
+#include "net/gamehandler.h"
 #include "net/messagehandler.h"
 #include "net/net.h"
+#include "net/serverinfo.h"
+
+#include "net/ea/token.h"
 
 namespace EAthena {
 
-class MapHandler : public MessageHandler, public Net::MapHandler
+class GameHandler : public MessageHandler, public Net::GameHandler
 {
     public:
-        MapHandler();
+        GameHandler();
 
         void handleMessage(MessageIn &msg);
 
-        void connect(LoginData *loginData);
+        void connect();
+
+        bool isConnected();
+
+        void disconnect();
+
+        void inGame();
 
         void mapLoaded(const std::string &mapName);
 
@@ -44,6 +53,9 @@ class MapHandler : public MessageHandler, public Net::MapHandler
         void quit();
 
         void ping(int tick);
+
+        void clear();
+
 };
 
 } // namespace EAthena

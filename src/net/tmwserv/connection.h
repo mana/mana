@@ -71,6 +71,7 @@ namespace Net
             friend Connection *Net::getConnection();
             Connection(ENetHost *client);
 
+            short mPort;
             ENetPeer *mConnection;
             ENetHost *mClient;
             State mState;

@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,32 +19,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef NET_TMWSERV_MAPHANDLER_H
-#define NET_TMWSERV_MAPHANDLER_H
+#ifndef WORLD_INFO_H
+#define WORLD_INFO_H
 
-#include "net/maphandler.h"
-#include "net/messagehandler.h"
+#include <string>
+#include <vector>
 
-namespace TmwServ {
+typedef struct {
+    int address;
+    std::string name;
+    short port;
+    short online_users;
+    std::string updateHost;
+} WorldInfo;
 
-class MapHandler :  public MessageHandler, public Net::MapHandler
-{
-    public:
-        MapHandler();
+typedef std::vector<WorldInfo*> Worlds;
 
-        void handleMessage(MessageIn &msg);
-
-        void connect(LoginData *loginData);
-
-        void mapLoaded(const std::string &mapName);
-
-        void who();
-
-        void quit();
-
-        void ping(int tick);
-};
-
-} // namespace TmwServ
-
-#endif
+#endif // WORLD_INFO_H

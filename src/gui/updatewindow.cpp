@@ -183,7 +183,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "play")
     {
-        state = STATE_LOADDATA;
+        state = STATE_LOAD_DATA;
     }
 }
 

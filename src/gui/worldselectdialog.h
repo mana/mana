@@ -19,15 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _CHAR_SEL_SERVER_H
-#define _CHAR_SEL_SERVER_H
+#ifndef WORLD_SELECT_DIALOG_H
+#define WORLD_SELECT_DIALOG_H
 
 #include "gui/widgets/window.h"
 
-#include "main.h"
+#include "net/worldinfo.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
+#include <vector>
 
 class LoginData;
 class ServerListModel;
@@ -37,19 +38,19 @@ class ServerListModel;
  *
  * \ingroup Interface
  */
-class ServerSelectDialog : public Window, public gcn::ActionListener {
+class WorldSelectDialog : public Window, public gcn::ActionListener {
     public:
         /**
          * Constructor
          *
          * @see Window::Window
          */
-        ServerSelectDialog(LoginData *loginData, State nextState);
+        WorldSelectDialog(Worlds worlds);
 
         /**
          * Destructor.
          */
-        ~ServerSelectDialog();
+        ~WorldSelectDialog();
 
         /**
          * Called when receiving actions from the widgets.
@@ -57,11 +58,9 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         void action(const gcn::ActionEvent &event);
 
     private:
-        LoginData *mLoginData;
         ServerListModel *mServerListModel;
         gcn::ListBox *mServerList;
         gcn::Button *mOkButton;
-        State mNextState;
 };
 
-#endif
+#endif // WORLD_SELECT_DIALOG_H

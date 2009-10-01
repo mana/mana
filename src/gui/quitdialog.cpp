@@ -55,10 +55,11 @@ QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
 
     //All states, when we're not logged in to someone.
     if (state == STATE_CHOOSE_SERVER ||
-        state == STATE_CONNECT_ACCOUNT ||
+        state == STATE_CONNECT_SERVER ||
         state == STATE_LOGIN ||
         state == STATE_LOGIN_ATTEMPT ||
-        state == STATE_UPDATE)
+        state == STATE_UPDATE ||
+        state == STATE_LOAD_DATA)
     {
         mForceQuit->setSelected(true);
         add(mForceQuit);
@@ -107,6 +108,7 @@ void QuitDialog::action(const gcn::ActionEvent &event)
             {
                 *mQuitGame = true;
             }
+
             state = STATE_EXIT;
         }
         else if (mSwitchAccountServer->isSelected())
@@ -115,7 +117,8 @@ void QuitDialog::action(const gcn::ActionEvent &event)
             {
                 *mQuitGame = true;
             }
-            state = STATE_SWITCH_ACCOUNTSERVER_ATTEMPT;
+
+            state = STATE_SWITCH_SERVER_ATTEMPT;
         }
         else if (mSwitchCharacter->isSelected())
         {
@@ -123,7 +126,6 @@ void QuitDialog::action(const gcn::ActionEvent &event)
 
             state = STATE_SWITCH_CHARACTER;
         }
-
     }
     scheduleDelete();
 }

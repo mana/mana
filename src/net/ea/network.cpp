@@ -21,12 +21,16 @@
 
 #include "net/ea/network.h"
 
+#include "net/ea/protocol.h"
+
 #include "net/messagehandler.h"
 #include "net/messagein.h"
 
-#include "log.h"
 #include "utils/stringutils.h"
 
+#include "log.h"
+
+#include <assert.h>
 #include <sstream>
 
 /** Warning: buffers and other variables are shared,
@@ -95,7 +99,6 @@ Network *Network::mInstance = 0;
 
 Network::Network():
     mSocket(0),
-    mAddress(), mPort(0),
     mInBuffer(new char[BUFFER_SIZE]),
     mOutBuffer(new char[BUFFER_SIZE]),
     mInSize(0), mOutSize(0),
@@ -125,24 +128,26 @@ Network::~Network()
     SDLNet_Quit();
 }
 
-bool Network::connect(const std::string &address, short port)
+bool Network::connect(ServerInfo server)
 {
     if (mState != IDLE && mState != NET_ERROR)
     {
         logger->log("Tried to connect an already connected socket!");
+        assert(false);
         return false;
     }
 
-    if (address.empty())
+    if (server.hostname.empty())
     {
         setError("Empty address given to Network::connect()!");
         return false;
     }
 
-    logger->log("Network::Connecting to %s:%i", address.c_str(), port);
+    logger->log("Network::Connecting to %s:%i", server.hostname.c_str(),
+                                                server.port);
 
-    mAddress = address;
-    mPort = port;
+    mServer.hostname = server.hostname;
+    mServer.port = server.port;
 
     // Reset to sane values
     mOutSize = 0;
@@ -269,12 +274,16 @@ void Network::skip(int len)
 
 bool Network::messageReady()
 {
-    int len = -1;
+    int len = -1, msgId;
 
     SDL_mutexP(mMutex);
     if (mInSize >= 2)
     {
-        len = packet_lengths[readWord(0)];
+        msgId = readWord(0);
+        if (msgId == SMSG_SERVER_VERSION_RESPONSE)
+            len = 10;
+        else
+            len = packet_lengths[msgId];
 
         if (len == -1 && mInSize > 4)
             len = readWord(2);
@@ -297,7 +306,11 @@ MessageIn Network::getNextMessage()
 
     SDL_mutexP(mMutex);
     int msgId = readWord(0);
-    int len = packet_lengths[msgId];
+    int len;
+    if (msgId == SMSG_SERVER_VERSION_RESPONSE)
+        len = 10;
+    else
+        len = packet_lengths[msgId];
 
     if (len == -1)
         len = readWord(2);
@@ -316,9 +329,11 @@ bool Network::realConnect()
 {
     IPaddress ipAddress;
 
-    if (SDLNet_ResolveHost(&ipAddress, mAddress.c_str(), mPort) == -1)
+    if (SDLNet_ResolveHost(&ipAddress, mServer.hostname.c_str(),
+                           mServer.port) == -1)
     {
-        std::string errorMessage = "Unable to resolve host \"" + mAddress + "\"";
+        std::string errorMessage = "Unable to resolve host \"" +
+                                   mServer.hostname + "\"";
         setError(errorMessage);
         logger->log("SDLNet_ResolveHost: %s", errorMessage.c_str());
         return false;

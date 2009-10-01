@@ -32,10 +32,10 @@ namespace TmwServ {
 /**
  * Deals with incoming messages related to character selection.
  */
-class CharServerHandler : public MessageHandler, public Net::CharHandler
+class CharHandler : public MessageHandler, public Net::CharHandler
 {
     public:
-        CharServerHandler();
+        CharHandler();
 
         void handleMessage(MessageIn &msg);
 
@@ -51,7 +51,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
          */
         void setCharCreateDialog(CharCreateDialog *window);
 
-        void connect(LoginData *loginData) {} // Unused
+        void getCharacters();
 
         void chooseCharacter(int slot, LocalPlayer* character);
 
@@ -68,9 +68,6 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
 
         LockedArray<LocalPlayer*> *mCharInfo;
         CharCreateDialog *mCharCreateDialog;
-
-        LocalPlayer*
-        readPlayerData(MessageIn &msg, int &slot);
 };
 
 } // namespace TmwServ

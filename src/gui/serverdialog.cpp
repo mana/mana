@@ -29,11 +29,11 @@
 #include "gui/widgets/layout.h"
 #include "gui/widgets/textfield.h"
 
-#include "net/logindata.h"
-
 #include "configuration.h"
 #include "log.h"
 #include "main.h"
+
+#include "net/net.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -51,48 +51,46 @@ int ServersListModel::getNumberOfElements()
 
 std::string ServersListModel::getElementAt(int elementIndex)
 {
-    std::string myServer = "";
-    myServer = servers.at(elementIndex).serverName;
+    std::string myServer = std::string(servers.at(elementIndex).hostname);
     myServer += ":";
     myServer += toString(servers.at(elementIndex).port);
     return myServer;
 }
 
-void ServersListModel::addFirstElement(Server server)
+void ServersListModel::addFirstElement(ServerInfo server)
 {
     // Equivalent to push_front
-    std::vector<Server>::iterator MyIterator = servers.begin();
+    std::vector<ServerInfo>::iterator MyIterator = servers.begin();
     servers.insert(MyIterator, 1, server);
 }
 
-void ServersListModel::addElement(Server server)
+void ServersListModel::addElement(ServerInfo server)
 {
     servers.push_back(server);
 }
 
-ServerDialog::ServerDialog(LoginData *loginData):
-    Window(_("Choose Your Server")), mLoginData(loginData)
+ServerDialog::ServerDialog(ServerInfo *serverInfo):
+    Window(_("Choose Your Server")), mServerInfo(serverInfo)
 {
     gcn::Label *serverLabel = new Label(_("Server:"));
     gcn::Label *portLabel = new Label(_("Port:"));
-    mServerNameField = new TextField(mLoginData->hostname);
-    mPortField = new TextField(toString(mLoginData->port));
+    mServerNameField = new TextField(mServerInfo->hostname);
+    mPortField = new TextField(toString(mServerInfo->port));
 
     // Add the most used servers from config
     mMostUsedServersListModel = new ServersListModel;
-    Server currentServer;
+    ServerInfo currentServer;
     std::string currentConfig = "";
     for (int i=0; i<=MAX_SERVERLIST; i++)
     {
-        currentServer.serverName = "";
-        currentServer.port = 0;
+        currentServer.clear();
 
         currentConfig = "MostUsedServerName" + toString(i);
-        currentServer.serverName = config.getValue(currentConfig, "");
+        currentServer.hostname = config.getValue(currentConfig, "");
 
         currentConfig = "MostUsedServerPort" + toString(i);
         currentServer.port = (short)atoi(config.getValue(currentConfig, "").c_str());
-        if (!currentServer.serverName.empty() || currentServer.port != 0)
+        if (!currentServer.hostname.empty() || currentServer.port != 0)
         {
             mMostUsedServersListModel->addElement(currentServer);
         }
@@ -110,6 +108,8 @@ ServerDialog::ServerDialog(LoginData *loginData):
     mServerNameField->addActionListener(this);
     mPortField->addActionListener(this);
     mMostUsedServersDropDown->addActionListener(this);
+
+    mMostUsedServersDropDown->setSelected(0);
 
     place(0, 0, serverLabel);
     place(0, 1, portLabel);
@@ -150,9 +150,9 @@ ServerDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "changeSelection")
     {
         // Change the textField Values according to new selection
-        Server myServer = mMostUsedServersListModel->getServer
+        ServerInfo myServer = mMostUsedServersListModel->getServer
             (mMostUsedServersDropDown->getSelected());
-        mServerNameField->setText(myServer.serverName);
+        mServerNameField->setText(myServer.hostname);
         mPortField->setText(toString(myServer.port));
     }
     else if (event.getId() == "connect")
@@ -166,39 +166,39 @@ ServerDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
-            mLoginData->hostname = mServerNameField->getText();
-            mLoginData->port = (short) atoi(mPortField->getText().c_str());
             mOkButton->setEnabled(false);
             mCancelButton->setEnabled(false);
 
             // First, look if the entry is a new one.
-            Server currentServer;
+            ServerInfo currentServer;
+            ServerInfo tempServer;
+            currentServer.hostname = mServerNameField->getText();
+            currentServer.port = (short) atoi(mPortField->getText().c_str());
             bool newEntry = true;
             for (int i = 0; i < mMostUsedServersListModel->getNumberOfElements(); i++)
             {
-                currentServer = mMostUsedServersListModel->getServer(i);
-                if (currentServer.serverName == mLoginData->hostname &&
-                    currentServer.port == mLoginData->port)
+                tempServer = mMostUsedServersListModel->getServer(i);
+                if (tempServer.hostname == mServerInfo->hostname &&
+                    tempServer.port == mServerInfo->port)
                     newEntry = false;
             }
-            // Then, add it to config if it's really new
-            currentServer.serverName = mLoginData->hostname;
-            currentServer.port = mLoginData->port;
             if (newEntry)
                 mMostUsedServersListModel->addFirstElement(currentServer);
             // Write the entry in config
             std::string currentConfig = "";
             for (int i = 0; i < mMostUsedServersListModel->getNumberOfElements(); i++)
             {
-                currentServer = mMostUsedServersListModel->getServer(i);
+                tempServer = mMostUsedServersListModel->getServer(i);
 
                 currentConfig = "MostUsedServerName" + toString(i);
-                config.setValue(currentConfig, currentServer.serverName);
+                config.setValue(currentConfig, tempServer.hostname);
 
                 currentConfig = "MostUsedServerPort" + toString(i);
-                config.setValue(currentConfig, toString(currentServer.port));
+                config.setValue(currentConfig, toString(tempServer.port));
             }
-            state = STATE_CONNECT_ACCOUNT;
+            mServerInfo->hostname = currentServer.hostname;
+            mServerInfo->port = currentServer.port;
+            state = STATE_CONNECT_SERVER;
         }
     }
     else if (event.getId() == "cancel")

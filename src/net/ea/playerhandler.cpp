@@ -548,7 +548,7 @@ void PlayerHandler::changeAction(Being::Action action)
 
 void PlayerHandler::respawn()
 {
-    MessageOut outMsg(CMSG_PLAYER_RESPAWN);
+    MessageOut outMsg(CMSG_PLAYER_RESTART);
     outMsg.writeInt8(0);
 }
 

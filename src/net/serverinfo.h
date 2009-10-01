@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -19,18 +19,25 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef SERVERINFO_
-#define SERVERINFO_
+#ifndef SERVERINFO_H
+#define SERVERINFO_H
 
 #include <string>
 
-struct SERVER_INFO
-{
-    int address;
-    short port;
-    std::string name;
-    short online_users;
-    std::string updateHost;
-};
+typedef struct SERVER_INFO {
+    std::string hostname;
+    unsigned short port;
 
-#endif
+    void clear()
+    {
+        hostname.clear();
+        port = 0;
+    }
+
+    bool operator==(struct SERVER_INFO other)
+    {
+        return (hostname == other.hostname && port == other.port);
+    }
+} ServerInfo;
+
+#endif // SERVERINFO_H

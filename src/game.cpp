@@ -71,14 +71,14 @@
 #ifdef TMWSERV_SUPPORT
 #include "gui/buddywindow.h"
 #include "gui/guildwindow.h"
-#include "gui/quitdialog.h"
 #endif
 #include "gui/npcpostdialog.h"
+#include "gui/quitdialog.h"
 #include "gui/specialswindow.h"
 #include "gui/storagewindow.h"
 
+#include "net/gamehandler.h"
 #include "net/generalhandler.h"
-#include "net/maphandler.h"
 #include "net/net.h"
 
 #include "net/tmwserv/inventoryhandler.h"
@@ -107,11 +107,7 @@ Joystick *joystick = NULL;
 
 extern Window *weightNotice;
 extern Window *deathNotice;
-#ifdef TMWSERV_SUPPORT
 QuitDialog *quitDialog = NULL;
-#else
-ConfirmDialog *exitConfirm = NULL;
-#endif
 OkDialog *disconnectedDialog = NULL;
 
 ChatWindow *chatWindow;
@@ -164,9 +160,6 @@ namespace {
             if (event.getId() == "yes" || event.getId() == "ok")
                 done = true;
 
-#ifdef EATHENA_SUPPORT
-            exitConfirm = NULL;
-#endif
             disconnectedDialog = NULL;
         }
     } exitListener;
@@ -325,13 +318,13 @@ Game::Game():
     if (Joystick::getNumberOfJoysticks() > 0)
         joystick = new Joystick(0);
 
-#ifdef EATHENA_SUPPORT
     // fade out logon-music here too to give the desired effect of "flowing"
     // into the game.
     sound.fadeOutMusic(1000);
     map_path = map_path.substr(0, map_path.rfind("."));
-    engine->changeMap(map_path);
-#endif
+
+    if (!map_path.empty())
+        engine->changeMap(map_path);
 
     setupWindow->setInGame(true);
 
@@ -344,7 +337,7 @@ Game::Game():
      * packet is handled by the older version, but its response
      * is ignored by the client
      */
-    Net::getMapHandler()->ping(tick_time);
+    Net::getGameHandler()->ping(tick_time);
 }
 
 Game::~Game()
@@ -484,7 +477,7 @@ void Game::logic()
 
         // Handle network stuff
         Net::getGeneralHandler()->flushNetwork();
-        if (!Net::getGeneralHandler()->isNetworkConnected())
+        if (!Net::getGameHandler()->isConnected())
         {
             if (state != STATE_ERROR)
             {
@@ -560,15 +553,9 @@ void Game::handleInput()
             {
                 if (keyboard.isKeyActive(keyboard.KEY_OK))
                 {
-#ifdef TMWSERV_SUPPORT
                     // Do not focus chat input when quit dialog is active
                     if (quitDialog != NULL && quitDialog->isVisible())
                         continue;
-#else
-                    if (exitConfirm &&
-                        keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
-                        done = true;
-#endif
                     // Close the Browser if opened
                     else if (helpWindow->isVisible() &&
                                 keyboard.isKeyActive(keyboard.KEY_OK))
@@ -726,7 +713,6 @@ void Game::handleInput()
                     break;
                // Quitting confirmation dialog
                case KeyboardConfig::KEY_QUIT:
-#ifdef TMWSERV_SUPPORT
                     if (!quitDialog)
                     {
                         quitDialog = new QuitDialog(&done, &quitDialog);
@@ -736,20 +722,6 @@ void Game::handleInput()
                     {
                         quitDialog->action(gcn::ActionEvent(NULL, "cancel"));
                     }
-#else
-                    if (!exitConfirm)
-                    {
-                        exitConfirm = new ConfirmDialog(_("Quit"),
-                                                        _("Are you sure you "
-                                                          "want to quit?"));
-                        exitConfirm->addActionListener(&exitListener);
-                        exitConfirm->requestMoveToTop();
-                    }
-                    else
-                    {
-                        exitConfirm->action(gcn::ActionEvent(NULL, _("no")));
-                    }
-#endif
                     break;
                 default:
                     break;

@@ -22,11 +22,13 @@
 #include "net/ea/generalhandler.h"
 
 #include "gui/inventorywindow.h"
+#include "gui/register.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
 
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
+#include "net/ea/token.h"
 
 #include "net/ea/adminhandler.h"
 #include "net/ea/beinghandler.h"
@@ -34,11 +36,10 @@
 #include "net/ea/chathandler.h"
 #include "net/ea/charserverhandler.h"
 #include "net/ea/equipmenthandler.h"
+#include "net/ea/gamehandler.h"
 #include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
 #include "net/ea/loginhandler.h"
-#include "net/ea/logouthandler.h"
-#include "net/ea/maphandler.h"
 #include "net/ea/npchandler.h"
 #include "net/ea/playerhandler.h"
 #include "net/ea/partyhandler.h"
@@ -63,6 +64,9 @@
 Net::GeneralHandler *generalHandler;
 
 namespace EAthena {
+Token netToken;
+ServerInfo charServer;
+ServerInfo mapServer;
 
 GeneralHandler::GeneralHandler():
     mAdminHandler(new AdminHandler),
@@ -71,11 +75,10 @@ GeneralHandler::GeneralHandler():
     mCharHandler(new CharServerHandler),
     mChatHandler(new ChatHandler),
     mEquipmentHandler(new EquipmentHandler),
+    mGameHandler(new GameHandler),
     mInventoryHandler(new InventoryHandler),
     mItemHandler(new ItemHandler),
     mLoginHandler(new LoginHandler),
-    mLogoutHandler(new LogoutHandler),
-    mMapHandler(new MapHandler),
     mNpcHandler(new NpcHandler),
     mPartyHandler(new PartyHandler),
     mPlayerHandler(new PlayerHandler),
@@ -146,17 +149,18 @@ void GeneralHandler::handleMessage(MessageIn &msg)
 
 void GeneralHandler::load()
 {
+    (new Network)->registerHandler(this);
+
     mNetwork->registerHandler(mAdminHandler.get());
     mNetwork->registerHandler(mBeingHandler.get());
     mNetwork->registerHandler(mBuySellHandler.get());
     mNetwork->registerHandler(mChatHandler.get());
     mNetwork->registerHandler(mCharHandler.get());
     mNetwork->registerHandler(mEquipmentHandler.get());
+    mNetwork->registerHandler(mGameHandler.get());
     mNetwork->registerHandler(mInventoryHandler.get());
     mNetwork->registerHandler(mItemHandler.get());
     mNetwork->registerHandler(mLoginHandler.get());
-    mNetwork->registerHandler(mLogoutHandler.get());
-    mNetwork->registerHandler(mMapHandler.get());
     mNetwork->registerHandler(mNpcHandler.get());
     mNetwork->registerHandler(mPlayerHandler.get());
     mNetwork->registerHandler(mSpecialHandler.get());
@@ -203,6 +207,7 @@ void GeneralHandler::guiWindowsLoaded()
 {
     partyTab = new PartyTab;
     inventoryWindow->setSplitAllowed(false);
+    RegisterDialog::setGender(&netToken.sex);
     skillDialog->loadSkills("ea-skills.xml");
 
     statusWindow->addAttribute(STR, _("Strength"), true);
@@ -224,6 +229,11 @@ void GeneralHandler::guiWindowsLoaded()
 void GeneralHandler::guiWindowsUnloaded()
 {
     delete partyTab;
+}
+
+void GeneralHandler::clearHandlers()
+{
+    mNetwork->clearHandlers();
 }
 
 } // namespace EAthena

@@ -80,6 +80,8 @@ class MessageOut
          */
         unsigned int getDataSize() const;
 
+        short mID;
+
     private:
 #ifdef TMWSERV_SUPPORT
         /**

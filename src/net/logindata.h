@@ -25,28 +25,18 @@
 #include <string>
 
 #include "player.h"
+#include "net/serverinfo.h"
 
 struct LoginData
 {
     std::string username;
     std::string password;
     std::string newPassword;
-    std::string hostname;
     std::string updateHost;
-#ifdef TMWSERV_SUPPORT
     std::string email;
     std::string newEmail;
-#endif
-    short port;
 
-#ifdef EATHENA_SUPPORT
-    int account_ID;
-    int session_ID1;
-    int session_ID2;
-    Gender sex;
-#endif
-
-    bool remember;            /**< Whether to store the username and host. */
+    bool remember;            /**< Whether to store the username. */
     bool registerLogin;       /**< Whether an account is being registered. */
 
     void clear()
@@ -54,20 +44,9 @@ struct LoginData
         username.clear();
         password.clear();
         newPassword.clear();
-        hostname.clear();
         updateHost.clear();
-#ifdef TMWSERV_SUPPORT
         email.clear();
         newEmail.clear();
-#endif
-        port = 0;
-
-#ifdef EATHENA_SUPPORT
-        account_ID = 0;
-        session_ID1 = 0;
-        session_ID2 = 0;
-        sex = GENDER_UNSPECIFIED;
-#endif
     }
 };
 

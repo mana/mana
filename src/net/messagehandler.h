@@ -22,6 +22,8 @@
 #ifndef NET_MESSAGEHANDLER_H
 #define NET_MESSAGEHANDLER_H
 
+#include "net/messagein.h"
+
 #include <SDL_types.h>
 
 #include <memory>

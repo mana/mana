@@ -47,18 +47,19 @@ class GeneralHandler : public Net::GeneralHandler
 
         void guiWindowsUnloaded();
 
+        void clearHandlers();
+
     protected:
         MessageHandlerPtr mBeingHandler;
         MessageHandlerPtr mBuySellHandler;
-        MessageHandlerPtr mCharServerHandler;
+        MessageHandlerPtr mCharHandler;
         MessageHandlerPtr mChatHandler;
         MessageHandlerPtr mEffectHandler;
+        MessageHandlerPtr mGameHandler;
         MessageHandlerPtr mGuildHandler;
         MessageHandlerPtr mInventoryHandler;
         MessageHandlerPtr mItemHandler;
         MessageHandlerPtr mLoginHandler;
-        MessageHandlerPtr mLogoutHandler;
-        MessageHandlerPtr mMapHandler;
         MessageHandlerPtr mNpcHandler;
         MessageHandlerPtr mPartyHandler;
         MessageHandlerPtr mPlayerHandler;

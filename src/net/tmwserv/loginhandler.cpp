@@ -48,6 +48,8 @@ LoginHandler::LoginHandler()
         APMSG_RECONNECT_RESPONSE,
         APMSG_PASSWORD_CHANGE_RESPONSE,
         APMSG_EMAIL_CHANGE_RESPONSE,
+        APMSG_LOGOUT_RESPONSE,
+        APMSG_UNREGISTER_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -156,7 +158,54 @@ void LoginHandler::handleMessage(MessageIn &msg)
             }
         }
             break;
+        case APMSG_LOGOUT_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
 
+            // Successful logout
+            if (errMsg == ERRMSG_OK)
+            {
+                // TODO: handle logout
+            }
+            // Logout failed
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_NO_LOGIN:
+                        errorMessage = "Accountserver: Not logged in";
+                        break;
+                    default:
+                        errorMessage = "Accountserver: Unknown error";
+                        break;
+                }
+                state = STATE_ERROR;
+            }
+        }
+            break;
+        case APMSG_UNREGISTER_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
+            // Successful unregistration
+            if (errMsg == ERRMSG_OK)
+            {
+                state = STATE_UNREGISTER;
+            }
+            // Unregistration failed
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_INVALID_ARGUMENT:
+                        errorMessage =
+                                  "Accountserver: Wrong username or password";
+                        break;
+                    default:
+                        errorMessage = "Accountserver: Unknown error";
+                        break;
+                }
+                state = STATE_ACCOUNTCHANGE_ERROR;
+            }
+        }
+            break;
     }
 }
 
@@ -167,7 +216,8 @@ void LoginHandler::handleLoginResponse(MessageIn &msg)
     if (errMsg == ERRMSG_OK)
     {
         readUpdateHost(msg);
-        state = STATE_CHAR_SELECT;
+        // No worlds atm, but future use :-D
+        state = STATE_WORLD_SELECT;
     }
     else
     {
@@ -199,7 +249,7 @@ void LoginHandler::handleRegisterResponse(MessageIn &msg)
     if (errMsg == ERRMSG_OK)
     {
         readUpdateHost(msg);
-        state = STATE_CHAR_SELECT;
+        state = STATE_WORLD_SELECT;
     }
     else
     {
@@ -233,6 +283,23 @@ void LoginHandler::readUpdateHost(MessageIn &msg)
     }
 }
 
+void LoginHandler::connect()
+{
+    accountServerConnection->connect(mServer.hostname, mServer.port);
+    /*if (state == STATE_CONNECT_SERVER)
+        state = STATE_LOGIN;*/
+}
+
+bool LoginHandler::isConnected()
+{
+    return accountServerConnection->isConnected();
+}
+
+void LoginHandler::disconnect()
+{
+    accountServerConnection->disconnect();
+}
+
 void LoginHandler::loginAccount(LoginData *loginData)
 {
     mLoginData = loginData;
@@ -255,7 +322,7 @@ void LoginHandler::changePassword(const std::string &username,
                                                 newPassword);
 }
 
-void LoginHandler::chooseServer(int server)
+void LoginHandler::chooseServer(unsigned int server)
 {
     // TODO
 }
@@ -273,6 +340,11 @@ void LoginHandler::unregisterAccount(const std::string &username,
                         const std::string &password)
 {
     Net::AccountServer::Account::unregister(username, password);
+}
+
+Worlds LoginHandler::getWorlds()
+{
+    return Worlds();
 }
 
 } // namespace TmwServ

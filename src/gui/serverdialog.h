@@ -26,7 +26,7 @@
 
 #include "guichanfwd.h"
 
-#include "net/tmwserv/network.h"
+#include "net/serverinfo.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
@@ -35,20 +35,6 @@
 #include <vector>
 
 class DropDown;
-class LoginData;
-
-/**
- * A server structure to keep pairs of servers and ports.
- */
-struct Server
-{
-    Server():
-        port(0)
-    {}
-
-    std::string serverName;
-    short port;
-};
 
 /**
  * Server and Port List Model
@@ -69,21 +55,21 @@ class ServersListModel : public gcn::ListModel
         /**
          * Used to get the corresponding Server struct
          */
-        Server getServer(int elementIndex) const
+        ServerInfo getServer(int elementIndex) const
         { return servers[elementIndex]; }
 
         /**
          * Add an Element at the end of the server list
          */
-        void addElement(Server server);
+        void addElement(ServerInfo server);
 
         /**
          * Add an Element at the beginning of the server list
          */
-        void addFirstElement(Server server);
+        void addFirstElement(ServerInfo server);
 
     private:
-        std::vector<Server> servers;
+        std::vector<ServerInfo> servers;
 };
 
 /**
@@ -99,7 +85,7 @@ class ServerDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        ServerDialog(LoginData *loginData);
+        ServerDialog(ServerInfo *serverInfo);
 
         /**
          * Destructor
@@ -120,7 +106,7 @@ class ServerDialog : public Window, public gcn::ActionListener
         DropDown *mMostUsedServersDropDown;
         ServersListModel *mMostUsedServersListModel;
 
-        LoginData *mLoginData;
+        ServerInfo *mServerInfo;
 };
 
 #endif

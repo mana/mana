@@ -52,6 +52,8 @@ void WrongDataNoticeListener::action(const gcn::ActionEvent &event)
         mTarget->requestFocus();
 }
 
+Gender *RegisterDialog::useGender = NULL;
+
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window(_("Register")),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
@@ -60,21 +62,15 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     gcn::Label *userLabel = new Label(_("Name:"));
     gcn::Label *passwordLabel = new Label(_("Password:"));
     gcn::Label *confirmLabel = new Label(_("Confirm:"));
-#ifdef EATHENA_SUPPORT
-    gcn::Label *serverLabel = new Label(_("Server:"));
-    gcn::Label *portLabel = new Label(_("Port:"));
-#else
+#ifdef TMWSERV_SUPPORT
     gcn::Label *emailLabel = new Label(_("Email:"));
 #endif
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField;
-#ifdef EATHENA_SUPPORT
-    mServerField = new TextField(loginData->hostname);
-    mPortField = new TextField(toString(loginData->port));
     mMaleButton = new RadioButton(_("Male"), "sex", true);
     mFemaleButton = new RadioButton(_("Female"), "sex", false);
-#else
+#ifdef TMWSERV_SUPPORT
     mEmailField = new TextField;
 #endif
     mRegisterButton = new Button(_("Register"), "register", this);
@@ -85,21 +81,20 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     place(0, 0, userLabel);
     place(0, 1, passwordLabel);
     place(0, 2, confirmLabel);
-#ifdef EATHENA_SUPPORT
-    place(1, 3, mMaleButton);
-    place(2, 3, mFemaleButton);
-    place(0, 4, serverLabel);
-    place(0, 5, portLabel);
-#else
+
+    if (useGender)
+    {
+        place(1, 3, mMaleButton);
+        place(2, 3, mFemaleButton);
+    }
+
+#ifdef TMWSERV_SUPPORT
     place(0, 3, emailLabel);
 #endif
     place(1, 0, mUserField, 3).setPadding(2);
     place(1, 1, mPasswordField, 3).setPadding(2);
     place(1, 2, mConfirmField, 3).setPadding(2);
-#ifdef EATHENA_SUPPORT
-    place(1, 4, mServerField, 3).setPadding(2);
-    place(1, 5, mPortField, 3).setPadding(2);
-#else
+#ifdef TMWSERV_SUPPORT
     place(1, 3, mEmailField, 3).setPadding(2);
 #endif
     place = getPlacer(0, 2);
@@ -110,10 +105,6 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mUserField->addKeyListener(this);
     mPasswordField->addKeyListener(this);
     mConfirmField->addKeyListener(this);
-#ifdef EATHENA_SUPPORT
-    mServerField->addKeyListener(this);
-    mPortField->addKeyListener(this);
-#endif
 
     /* TODO:
      * This is a quick and dirty way to respond to the ENTER key, regardless of
@@ -127,14 +118,6 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mUserField->addActionListener(this);
     mPasswordField->addActionListener(this);
     mConfirmField->addActionListener(this);
-
-#ifdef EATHENA_SUPPORT
-    mServerField->setActionEventId("register");
-    mPortField->setActionEventId("register");
-
-    mServerField->addActionListener(this);
-    mPortField->addActionListener(this);
-#endif
 
     center();
     setVisible(true);
@@ -229,21 +212,15 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
-#ifdef EATHENA_SUPPORT
-            mLoginData->hostname = mServerField->getText();
-            mLoginData->port = getUShort(mPortField->getText());
-            mLoginData->sex =
-                    mFemaleButton->isSelected() ? GENDER_FEMALE : GENDER_MALE;
-#else
+            if (useGender)
+                *useGender = mFemaleButton->isSelected() ? GENDER_FEMALE :
+                                                           GENDER_MALE;
+#ifdef TMWSERV_SUPPORT
             mLoginData->email = mEmailField->getText();
 #endif
             mLoginData->registerLogin = true;
 
-#ifdef TMWSERV_SUPPORT
             state = STATE_REGISTER_ATTEMPT;
-#else
-            state = STATE_ACCOUNT;
-#endif
         }
     }
 }
@@ -253,50 +230,15 @@ void RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
     mRegisterButton->setEnabled(canSubmit());
 }
 
+void RegisterDialog::setGender(Gender *gender)
+{
+    useGender = gender;
+}
+
 bool RegisterDialog::canSubmit() const
 {
     return !mUserField->getText().empty() &&
            !mPasswordField->getText().empty() &&
            !mConfirmField->getText().empty() &&
-#ifdef EATHENA_SUPPORT
-           !mServerField->getText().empty() &&
-           isUShort(mPortField->getText()) &&
-#endif
            state == STATE_REGISTER;
 }
-
-#ifdef EATHENA_SUPPORT
-bool RegisterDialog::isUShort(const std::string &str)
-{
-    if (str.empty())
-    {
-        return false;
-    }
-    unsigned long l = 0;
-    for (std::string::const_iterator strPtr = str.begin(), strEnd = str.end();
-         strPtr != strEnd; ++strPtr)
-    {
-        if (*strPtr < '0' || *strPtr > '9')
-        {
-            return false;
-        }
-        l = l * 10 + (*strPtr - '0'); // *strPtr - '0' will never be negative
-        if (l > 65535)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-unsigned short RegisterDialog::getUShort(const std::string &str)
-{
-    unsigned long l = 0;
-    for (std::string::const_iterator strPtr = str.begin(), strEnd = str.end();
-         strPtr != strEnd; ++strPtr)
-    {
-        l = l * 10 + (*strPtr - '0');
-    }
-    return static_cast<unsigned short>(l);
-}
-#endif

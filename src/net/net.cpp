@@ -21,6 +21,8 @@
 
 #include "net/net.h"
 
+#include "main.h"
+
 #include "net/adminhandler.h"
 #include "net/charhandler.h"
 #include "net/chathandler.h"
@@ -28,13 +30,18 @@
 #include "net/guildhandler.h"
 #include "net/inventoryhandler.h"
 #include "net/loginhandler.h"
-#include "net/logouthandler.h"
-#include "net/maphandler.h"
+#include "net/gamehandler.h"
 #include "net/npchandler.h"
 #include "net/partyhandler.h"
 #include "net/playerhandler.h"
 #include "net/specialhandler.h"
 #include "net/tradehandler.h"
+
+#ifdef TMWSERV_SUPPORT
+#include "net/tmwserv/generalhandler.h"
+#else
+#include "net/ea/generalhandler.h"
+#endif
 
 extern Net::AdminHandler *adminHandler;
 extern Net::CharHandler *charHandler;
@@ -42,8 +49,7 @@ extern Net::ChatHandler *chatHandler;
 extern Net::GeneralHandler *generalHandler;
 extern Net::InventoryHandler *inventoryHandler;
 extern Net::LoginHandler *loginHandler;
-extern Net::LogoutHandler *logoutHandler;
-extern Net::MapHandler *mapHandler;
+extern Net::GameHandler *gameHandler;
 extern Net::NpcHandler *npcHandler;
 extern Net::PartyHandler *partyHandler;
 extern Net::PlayerHandler *playerHandler;
@@ -65,6 +71,11 @@ Net::ChatHandler *Net::getChatHandler()
     return chatHandler;
 }
 
+Net::GameHandler *Net::getGameHandler()
+{
+    return gameHandler;
+}
+
 Net::GeneralHandler *Net::getGeneralHandler()
 {
     return generalHandler;
@@ -84,16 +95,6 @@ Net::InventoryHandler *Net::getInventoryHandler()
 Net::LoginHandler *Net::getLoginHandler()
 {
     return loginHandler;
-}
-
-Net::LogoutHandler *Net::getLogoutHandler()
-{
-    return logoutHandler;
-}
-
-Net::MapHandler *Net::getMapHandler()
-{
-    return mapHandler;
 }
 
 Net::NpcHandler *Net::getNpcHandler()
@@ -119,4 +120,22 @@ Net::SpecialHandler *Net::getSpecialHandler()
 Net::TradeHandler *Net::getTradeHandler()
 {
     return tradeHandler;
+}
+
+void Net::connectToServer(const ServerInfo &server)
+{
+    // TODO: Actually query the server about itself and choose the netcode
+    // based on that
+
+#ifdef TMWSERV_SUPPORT
+    new TmwServ::GeneralHandler;
+#else
+    new EAthena::GeneralHandler;
+#endif
+
+    Net::getGeneralHandler()->load();
+
+    Net::getLoginHandler()->setServer(server);
+
+    Net::getLoginHandler()->connect();
 }

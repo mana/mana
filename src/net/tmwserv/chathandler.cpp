@@ -35,9 +35,10 @@
 
 #include "being.h"
 #include "beingmanager.h"
-#include "game.h"
 #include "channel.h"
 #include "channelmanager.h"
+#include "game.h"
+#include "main.h"
 
 #include "gui/widgets/channeltab.h"
 #include "gui/chat.h"
@@ -53,7 +54,12 @@ extern Being *player_node;
 
 Net::ChatHandler *chatHandler;
 
+extern Net::Connection *chatServerConnection;
+
 namespace TmwServ {
+
+extern std::string netToken;
+extern ServerInfo chatServer;
 
 ChatHandler::ChatHandler()
 {
@@ -68,6 +74,7 @@ ChatHandler::ChatHandler()
         CPMSG_LIST_CHANNELUSERS_RESPONSE,
         CPMSG_CHANNEL_EVENT,
         CPMSG_WHO_RESPONSE,
+        CPMSG_DISCONNECT_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -116,6 +123,28 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
         case CPMSG_WHO_RESPONSE:
             handleWhoResponse(msg);
+            break;
+        case CPMSG_DISCONNECT_RESPONSE:
+        {
+            int errMsg = msg.readInt8();
+            // Successful logout
+            if (errMsg == ERRMSG_OK)
+            {
+                // TODO: Handle logout
+            }
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_NO_LOGIN:
+                        errorMessage = "Chatserver: Not logged in";
+                        break;
+                    default:
+                        errorMessage = "Chatserver: Unknown error";
+                        break;
+                }
+                state = STATE_ERROR;
+            }
+        }
             break;
     }
 }
@@ -321,6 +350,21 @@ void ChatHandler::handleWhoResponse(MessageIn &msg)
         }
         localChatTab->chatLog(userNick, BY_SERVER);
     }
+}
+
+void ChatHandler::connect()
+{
+    Net::ChatServer::connect(chatServerConnection, netToken);
+}
+
+bool ChatHandler::isConnected()
+{
+    return chatServerConnection->isConnected();
+}
+
+void ChatHandler::disconnect()
+{
+    chatServerConnection->disconnect();
 }
 
 void ChatHandler::talk(const std::string &text)

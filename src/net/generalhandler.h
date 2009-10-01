@@ -19,6 +19,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "main.h"
+
 #ifndef GENERALHANDLER_H
 #define GENERALHANDLER_H
 
@@ -40,6 +42,8 @@ class GeneralHandler
         virtual void guiWindowsLoaded() = 0;
 
         virtual void guiWindowsUnloaded() = 0;
+
+        virtual void clearHandlers() = 0;
 };
 
 } // namespace Net

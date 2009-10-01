@@ -24,6 +24,9 @@
 
 #include "net/messagehandler.h"
 #include "net/charhandler.h"
+#include "net/serverinfo.h"
+
+#include "net/ea/token.h"
 
 class LoginData;
 
@@ -49,7 +52,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
          */
         void setCharCreateDialog(CharCreateDialog *window);
 
-        void connect(LoginData *loginData);
+        void getCharacters();
 
         void chooseCharacter(int slot, LocalPlayer* character);
 
@@ -58,8 +61,9 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
 
         void deleteCharacter(int slot, LocalPlayer* character);
 
+        void connect();
+
     protected:
-        LoginData *mLoginData;
         LockedArray<LocalPlayer*> *mCharInfo;
         CharCreateDialog *mCharCreateDialog;
 

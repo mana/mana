@@ -24,13 +24,29 @@
 
 #include "logindata.h"
 
+#include "net/serverinfo.h"
+#include "net/worldinfo.h"
+
 #include <iosfwd>
+#include <vector>
 
 namespace Net {
 
 class LoginHandler
 {
     public:
+        virtual void setServer(const ServerInfo &server)
+        { mServer = server; }
+
+        virtual ServerInfo getServer()
+        { return mServer; }
+
+        virtual void connect() = 0;
+
+        virtual bool isConnected() = 0;
+
+        virtual void disconnect() = 0;
+
         virtual void loginAccount(LoginData *loginData) = 0;
 
         virtual void changeEmail(const std::string &email) = 0;
@@ -39,12 +55,17 @@ class LoginHandler
                                     const std::string &oldPassword,
                                     const std::string &newPassword) = 0;
 
-        virtual void chooseServer(int server) = 0;
+        virtual void chooseServer(unsigned int server) = 0;
 
         virtual void registerAccount(LoginData *loginData) = 0;
 
         virtual void unregisterAccount(const std::string &username,
                                        const std::string &password) = 0;
+
+        virtual Worlds getWorlds() = 0;
+
+    protected:
+        ServerInfo mServer;
 };
 
 } // namespace Net

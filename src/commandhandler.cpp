@@ -33,7 +33,7 @@
 
 #include "net/adminhandler.h"
 #include "net/chathandler.h"
-#include "net/maphandler.h"
+#include "net/gamehandler.h"
 #include "net/net.h"
 #include "net/partyhandler.h"
 
