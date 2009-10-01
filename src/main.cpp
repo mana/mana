@@ -908,8 +908,8 @@ int main(int argc, char *argv[])
 
             state = STATE_GAME;
         }
-        else if (state == STATE_CONNECT_SERVER &&
-                 Net::getLoginHandler()->isConnected())
+        else if (state == STATE_CONNECT_SERVER && (Net::getLoginHandler() &&
+                                Net::getLoginHandler()->isConnected()))
         {
             Net::getCharHandler()->setCharInfo(&charInfo);
             state = STATE_LOGIN;
