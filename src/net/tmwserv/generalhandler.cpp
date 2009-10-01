@@ -157,7 +157,7 @@ void GeneralHandler::tick()
 
 void GeneralHandler::guiWindowsLoaded()
 {
-    ChangeEmailDialog::setEmail(*userEmail);
+    ChangeEmailDialog::setEmail(&userEmail);
     inventoryWindow->setSplitAllowed(true);
     partyWindow->clearPartyName();
     RegisterDialog::setEmail(&userEmail);
