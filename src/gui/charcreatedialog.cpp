@@ -175,7 +175,7 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
         {
             new OkDialog(_("Error"),
                          _("Your name needs to be at least 4 characters."),
-                         this);
+                         true,  this);
         }
     }
     else if (event.getId() == "cancel")

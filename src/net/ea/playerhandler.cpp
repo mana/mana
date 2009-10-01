@@ -310,7 +310,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 if (player_node->getHp() == 0 && !deathNotice)
                 {
                     deathNotice = new OkDialog(_("Message"),
-                                               randomDeathMessage());
+                                               randomDeathMessage(),
+                                               false);
                     deathNotice->addActionListener(&deathListener);
                     player_node->setAction(Being::DEAD);
                 }

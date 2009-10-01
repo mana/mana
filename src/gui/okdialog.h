@@ -42,7 +42,7 @@ class OkDialog : public Window, public gcn::ActionListener
          * @see Window::Window
          */
         OkDialog(const std::string &title, const std::string &msg,
-                 Window *parent = NULL);
+                 bool modal = true, Window *parent = NULL);
 
         /**
          * Called when receiving actions from the widgets.
