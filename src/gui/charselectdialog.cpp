@@ -373,7 +373,7 @@ bool CharSelectDialog::selectByName(const std::string &name)
     return false;
 }
 
-static void CharSelectDialog::setNetworkOptions(bool allowUnregister,
+void CharSelectDialog::setNetworkOptions(bool allowUnregister,
                               bool allowChangeEmail)
 {
     doAllowUnregister = allowUnregister;
