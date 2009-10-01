@@ -28,13 +28,13 @@
 #include "gui/changepassworddialog.h"
 #include "net/logindata.h"
 
-#ifdef TMWSERV_SUPPORT
 #include "gui/widgets/radiobutton.h"
 #include "gui/widgets/slider.h"
 
 #include "gui/unregisterdialog.h"
 #include "gui/changeemaildialog.h"
 
+#ifdef TMWSERV_SUPPORT
 #include "net/tmwserv/accountserver/account.h"
 #else
 #include "net/ea/protocol.h"
@@ -91,6 +91,9 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
     }
     ConfirmDialog::action(event);
 }
+
+bool CharSelectDialog::doAllowUnregister = true;
+bool CharSelectDialog::doAllowChangeEmail = true;
 
 CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    LoginData *loginData):
@@ -368,4 +371,11 @@ bool CharSelectDialog::selectByName(const std::string &name)
     mCharInfo->select(oldPos);
 
     return false;
+}
+
+static void CharSelectDialog::setNetworkOptions(bool allowUnregister,
+                              bool allowChangeEmail)
+{
+    doAllowUnregister = allowUnregister;
+    doAllowChangeEmail = allowChangeEmail;
 }

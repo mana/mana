@@ -21,6 +21,7 @@
 
 #include "net/tmwserv/generalhandler.h"
 
+#include "gui/changeemaildialog.h"
 #include "gui/inventorywindow.h"
 #include "gui/partywindow.h"
 #include "gui/register.h"
@@ -61,6 +62,7 @@ Net::Connection *accountServerConnection = 0;
 
 namespace TmwServ {
 
+std::string userEmail = "";
 std::string netToken = "";
 ServerInfo gameServer;
 ServerInfo chatServer;
@@ -155,8 +157,10 @@ void GeneralHandler::tick()
 
 void GeneralHandler::guiWindowsLoaded()
 {
+    ChangeEmailDialog::setEmail(*userEmail);
     inventoryWindow->setSplitAllowed(true);
     partyWindow->clearPartyName();
+    RegisterDialog::setEmail(&userEmail);
     RegisterDialog::setGender(NULL);
     skillDialog->loadSkills("tmw-skills.xml");
     specialsWindow->loadSpecials("specials.xml");

@@ -1129,19 +1129,14 @@ int main(int argc, char *argv[])
 
                     break;
 
-                case STATE_CHANGEEMAIL_ATTEMPT:
-                    logger->log("State: CHANGE EMAIL ATTEMPT");
-                    Net::getLoginHandler()->changeEmail(loginData.newEmail);
-                    break;
-
                 case STATE_CHANGEEMAIL:
                     logger->log("State: CHANGE EMAIL");
-                    currentDialog = new OkDialog(_("Email Address Change"),
-                            _("Email address changed successfully!"));
-                    currentDialog->addActionListener(&accountListener);
-                    currentDialog = NULL; // OkDialog deletes itself
-                    loginData.email = loginData.newEmail;
-                    loginData.newEmail = "";
+                    // TODO
+                    break;
+
+                case STATE_CHANGEEMAIL_ATTEMPT:
+                    logger->log("State: CHANGE EMAIL ATTEMPT");
+                    // TODO
                     break;
 
                 case STATE_CHANGEPASSWORD_ATTEMPT:

@@ -33,8 +33,6 @@ struct LoginData
     std::string password;
     std::string newPassword;
     std::string updateHost;
-    std::string email;
-    std::string newEmail;
 
     bool remember;            /**< Whether to store the username. */
     bool registerLogin;       /**< Whether an account is being registered. */
@@ -45,8 +43,6 @@ struct LoginData
         password.clear();
         newPassword.clear();
         updateHost.clear();
-        email.clear();
-        newEmail.clear();
     }
 };
 

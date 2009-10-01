@@ -57,6 +57,12 @@ class ChangeEmailDialog : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        /**
+         * This is used to pass the pointer to where the new email should be
+         * put when the dialog finishes.
+         */
+        static void setEmail(std::string *email);
+
     private:
         gcn::TextField *mFirstEmailField;
         gcn::TextField *mSecondEmailField;
@@ -67,6 +73,7 @@ class ChangeEmailDialog : public Window, public gcn::ActionListener
         WrongDataNoticeListener *mWrongDataNoticeListener;
 
         LoginData *mLoginData;
+        static std::string *emailPointer;
 };
 
 #endif // GUI_CHANGEEMAIL_H

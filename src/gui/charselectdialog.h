@@ -57,6 +57,9 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         bool selectByName(const std::string &name);
 
+        static void setNetworkOptions(bool allowUnregister,
+                                      bool allowChangeEmail);
+
     private:
         LockedArray<LocalPlayer*> *mCharInfo;
 
@@ -97,6 +100,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
          * Communicate character selection to the server.
          */
         void attemptCharSelect();
+
+        static bool doAllowUnregister, doAllowChangeEmail;
 };
 
 #endif

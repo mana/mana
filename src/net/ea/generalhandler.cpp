@@ -207,6 +207,7 @@ void GeneralHandler::guiWindowsLoaded()
 {
     partyTab = new PartyTab;
     inventoryWindow->setSplitAllowed(false);
+    RegisterDialog::setEmail(NULL);
     RegisterDialog::setGender(&netToken.sex);
     skillDialog->loadSkills("ea-skills.xml");
 

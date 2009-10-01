@@ -39,10 +39,11 @@
 #include <string>
 #include <sstream>
 
+std::string *ChangeEmailDialog::emailPointer = NULL;
+
 ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
     Window(_("Change Email Address"), true, parent),
-    mWrongDataNoticeListener(new WrongDataNoticeListener),
-    mLoginData(loginData)
+    mWrongDataNoticeListener(new WrongDataNoticeListener)
 {
     gcn::Label *accountLabel = new Label(strprintf(_("Account: %s"),
                                                    mLoginData->username.c_str()));
@@ -159,10 +160,15 @@ ChangeEmailDialog::action(const gcn::ActionEvent &event)
             // No errors detected, change account password.
             mChangeEmailButton->setEnabled(false);
             // Set the new email address
-            mLoginData->newEmail = newFirstEmail;
+            *emailPointer = newFirstEmail;
             state = STATE_CHANGEEMAIL_ATTEMPT;
             scheduleDelete();
         }
 
     }
+}
+
+void ChangeEmailDialog::setEmail(std::string *email)
+{
+    emailPointer = email;
 }

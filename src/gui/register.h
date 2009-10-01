@@ -81,6 +81,13 @@ class RegisterDialog : public Window, public gcn::ActionListener,
         void keyPressed(gcn::KeyEvent &keyEvent);
 
         /**
+         * Tell the dialog to show an email field. Value stored in the passed
+         * string pointer. Default email from pointer. Passing NULL disables
+         * the feature.
+         */
+        static void setEmail(std::string *email);
+
+        /**
          * Tell the dialog to show a gender selection. Value stored in the
          * passed Gender pointer. Default Gender from pointer. Passing NULL
          * disables the feature.
@@ -97,9 +104,7 @@ class RegisterDialog : public Window, public gcn::ActionListener,
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;
-#ifdef TMWSERV_SUPPORT
         gcn::TextField *mEmailField;
-#endif
 
         gcn::Button *mRegisterButton;
         gcn::Button *mCancelButton;
@@ -110,6 +115,7 @@ class RegisterDialog : public Window, public gcn::ActionListener,
 
         LoginData *mLoginData;
 
+        static std::string *useEmail;
         static Gender *useGender;
 };
 

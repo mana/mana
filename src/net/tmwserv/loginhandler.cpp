@@ -39,6 +39,7 @@ Net::LoginHandler *loginHandler;
 extern Net::Connection *accountServerConnection;
 
 namespace TmwServ {
+extern std::string userEmail;
 
 LoginHandler::LoginHandler()
 {
@@ -333,7 +334,7 @@ void LoginHandler::registerAccount(LoginData *loginData)
             0, // client version
             loginData->username,
             loginData->password,
-            loginData->email);
+            userEmail);
 }
 
 void LoginHandler::unregisterAccount(const std::string &username,

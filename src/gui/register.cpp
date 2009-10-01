@@ -52,6 +52,7 @@ void WrongDataNoticeListener::action(const gcn::ActionEvent &event)
         mTarget->requestFocus();
 }
 
+std::string *RegisterDialog::useEmail = NULL;
 Gender *RegisterDialog::useGender = NULL;
 
 RegisterDialog::RegisterDialog(LoginData *loginData):
@@ -62,17 +63,13 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     gcn::Label *userLabel = new Label(_("Name:"));
     gcn::Label *passwordLabel = new Label(_("Password:"));
     gcn::Label *confirmLabel = new Label(_("Confirm:"));
-#ifdef TMWSERV_SUPPORT
     gcn::Label *emailLabel = new Label(_("Email:"));
-#endif
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField;
     mMaleButton = new RadioButton(_("Male"), "sex", true);
     mFemaleButton = new RadioButton(_("Female"), "sex", false);
-#ifdef TMWSERV_SUPPORT
     mEmailField = new TextField;
-#endif
     mRegisterButton = new Button(_("Register"), "register", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
@@ -88,15 +85,14 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
         place(2, 3, mFemaleButton);
     }
 
-#ifdef TMWSERV_SUPPORT
-    place(0, 3, emailLabel);
-#endif
+    if (useEmail)
+    {
+        place(0, 3, emailLabel);
+        place(1, 3, mEmailField, 3).setPadding(2);
+    }
     place(1, 0, mUserField, 3).setPadding(2);
     place(1, 1, mPasswordField, 3).setPadding(2);
     place(1, 2, mConfirmField, 3).setPadding(2);
-#ifdef TMWSERV_SUPPORT
-    place(1, 3, mEmailField, 3).setPadding(2);
-#endif
     place = getPlacer(0, 2);
     place(1, 0, mRegisterButton);
     place(2, 0, mCancelButton);
@@ -215,9 +211,8 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
             if (useGender)
                 *useGender = mFemaleButton->isSelected() ? GENDER_FEMALE :
                                                            GENDER_MALE;
-#ifdef TMWSERV_SUPPORT
-            mLoginData->email = mEmailField->getText();
-#endif
+            if (useEmail)
+                *useEmail = mEmailField->getText();
             mLoginData->registerLogin = true;
 
             state = STATE_REGISTER_ATTEMPT;
@@ -228,6 +223,11 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 void RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
     mRegisterButton->setEnabled(canSubmit());
+}
+
+void RegisterDialog::setEmail(std::string *email)
+{
+    useEmail = email;
 }
 
 void RegisterDialog::setGender(Gender *gender)
