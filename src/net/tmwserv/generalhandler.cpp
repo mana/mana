@@ -22,6 +22,7 @@
 #include "net/tmwserv/generalhandler.h"
 
 #include "gui/changeemaildialog.h"
+#include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
 #include "gui/partywindow.h"
 #include "gui/register.h"
@@ -101,6 +102,11 @@ GeneralHandler::GeneralHandler():
     stats.push_back(ItemDB::Stat("will", N_("Willpower %+d")));
 
     ItemDB::setStatsList(stats);
+    
+    ChangeEmailDialog::setEmail(&userEmail);
+    CharSelectDialog::setNetworkOptions(true, true);
+    RegisterDialog::setEmail(&userEmail);
+    RegisterDialog::setGender(NULL);
 }
 
 void GeneralHandler::load()
@@ -157,11 +163,8 @@ void GeneralHandler::tick()
 
 void GeneralHandler::guiWindowsLoaded()
 {
-    ChangeEmailDialog::setEmail(&userEmail);
     inventoryWindow->setSplitAllowed(true);
     partyWindow->clearPartyName();
-    RegisterDialog::setEmail(&userEmail);
-    RegisterDialog::setGender(NULL);
     skillDialog->loadSkills("tmw-skills.xml");
     specialsWindow->loadSpecials("specials.xml");
 

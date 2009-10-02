@@ -21,6 +21,7 @@
 
 #include "net/ea/generalhandler.h"
 
+#include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
 #include "gui/register.h"
 #include "gui/skilldialog.h"
@@ -101,6 +102,10 @@ GeneralHandler::GeneralHandler():
     stats.push_back(ItemDB::Stat("luck", N_("Luck %+d")));
 
     ItemDB::setStatsList(stats);
+
+    CharSelectDialog::setNetworkOptions(false, false);
+    RegisterDialog::setEmail(NULL);
+    RegisterDialog::setGender(&netToken.sex);
 }
 
 GeneralHandler::~GeneralHandler()
@@ -207,8 +212,6 @@ void GeneralHandler::guiWindowsLoaded()
 {
     partyTab = new PartyTab;
     inventoryWindow->setSplitAllowed(false);
-    RegisterDialog::setEmail(NULL);
-    RegisterDialog::setGender(&netToken.sex);
     skillDialog->loadSkills("ea-skills.xml");
 
     statusWindow->addAttribute(STR, _("Strength"), true);

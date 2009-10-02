@@ -24,12 +24,14 @@
 
 #include "gui/widgets/window.h"
 
-#include "player.h"
 #include "guichanfwd.h"
 #include "lockedarray.h"
+#include "main.h"
+#include "player.h"
 
 #include <guichan/actionlistener.hpp>
 
+class CharEntry;
 class LocalPlayer;
 class LoginData;
 class PlayerBox;
@@ -51,10 +53,6 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         void action(const gcn::ActionEvent &event);
 
-        void updatePlayerInfo();
-
-        void logic();
-
         bool selectByName(const std::string &name);
 
         static void setNetworkOptions(bool allowUnregister,
@@ -63,33 +61,16 @@ class CharSelectDialog : public Window, public gcn::ActionListener
     private:
         LockedArray<LocalPlayer*> *mCharInfo;
 
-        gcn::Button *mSelectButton;
-        gcn::Button *mCancelButton;
-        gcn::Button *mPreviousButton;
-        gcn::Button *mNextButton;
-        gcn::Button *mChangePasswordButton;
-
-        gcn::Label *mNameLabel;
-        gcn::Label *mLevelLabel;
-        gcn::Label *mMoneyLabel;
         gcn::Label *mAccountNameLabel;
-        std::string mMoney;
+
+        gcn::Button *mSwitchLoginButton;
+        gcn::Button *mChangePasswordButton;
+        gcn::Button *mChangeEmailButton;
+        gcn::Button *mUnregisterButton;
+
+        CharEntry *mCharEntries[MAX_CHARACTER_COUNT];
 
         LoginData *mLoginData;
-
-        PlayerBox *mPlayerBox;
-
-        bool mCharSelected;
-
-#ifdef TMWSERV_SUPPORT
-        gcn::Button *mNewCharButton;
-        gcn::Button *mDelCharButton;
-        gcn::Button *mUnRegisterButton;
-        gcn::Button *mChangeEmailButton;
-#else
-        gcn::Button *mNewDelCharButton;
-        gcn::Label *mJobLevelLabel;
-#endif
 
         /**
          * Communicate character deletion to the server.
