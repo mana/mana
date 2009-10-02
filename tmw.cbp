@@ -202,14 +202,8 @@
 		<Unit filename="src/gui/buy.h" />
 		<Unit filename="src/gui/buysell.cpp" />
 		<Unit filename="src/gui/buysell.h" />
-		<Unit filename="src/gui/changeemaildialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/changeemaildialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/changeemaildialog.cpp" />
+		<Unit filename="src/gui/changeemaildialog.h" />
 		<Unit filename="src/gui/changepassworddialog.cpp" />
 		<Unit filename="src/gui/changepassworddialog.h" />
 		<Unit filename="src/gui/charcreatedialog.cpp" />
@@ -291,14 +285,8 @@
 		<Unit filename="src/gui/playerbox.h" />
 		<Unit filename="src/gui/popupmenu.cpp" />
 		<Unit filename="src/gui/popupmenu.h" />
-		<Unit filename="src/gui/quitdialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/quitdialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/quitdialog.cpp" />
+		<Unit filename="src/gui/quitdialog.h" />
 		<Unit filename="src/gui/recorder.cpp" />
 		<Unit filename="src/gui/recorder.h" />
 		<Unit filename="src/gui/register.cpp" />
@@ -307,14 +295,8 @@
 		<Unit filename="src/gui/sdlinput.h" />
 		<Unit filename="src/gui/sell.cpp" />
 		<Unit filename="src/gui/sell.h" />
-		<Unit filename="src/gui/serverdialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/serverdialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/serverdialog.cpp" />
+		<Unit filename="src/gui/serverdialog.h" />
 		<Unit filename="src/gui/setup.cpp" />
 		<Unit filename="src/gui/setup.h" />
 		<Unit filename="src/gui/setup_audio.cpp" />
@@ -368,14 +350,8 @@
 		<Unit filename="src/gui/trade.h" />
 		<Unit filename="src/gui/truetypefont.cpp" />
 		<Unit filename="src/gui/truetypefont.h" />
-		<Unit filename="src/gui/unregisterdialog.cpp">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
-		<Unit filename="src/gui/unregisterdialog.h">
-			<Option target="TMWServ" />
-			<Option target="Unix TMWSERV" />
-		</Unit>
+		<Unit filename="src/gui/unregisterdialog.cpp" />
+		<Unit filename="src/gui/unregisterdialog.h" />
 		<Unit filename="src/gui/updatewindow.cpp" />
 		<Unit filename="src/gui/updatewindow.h" />
 		<Unit filename="src/gui/viewport.cpp" />
