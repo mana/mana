@@ -102,9 +102,8 @@ GeneralHandler::GeneralHandler():
     stats.push_back(ItemDB::Stat("will", N_("Willpower %+d")));
 
     ItemDB::setStatsList(stats);
-    
+
     ChangeEmailDialog::setEmail(&userEmail);
-    CharSelectDialog::setNetworkOptions(true, true);
     RegisterDialog::setEmail(&userEmail);
     RegisterDialog::setGender(NULL);
 }

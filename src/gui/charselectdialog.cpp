@@ -49,6 +49,7 @@
 
 #include "net/charhandler.h"
 #include "net/logindata.h"
+#include "net/loginhandler.h"
 #include "net/messageout.h"
 #include "net/net.h"
 
@@ -112,25 +113,19 @@ class CharEntry : public Container
         Button *mButton;
 };
 
-bool CharSelectDialog::doAllowUnregister = true;
-bool CharSelectDialog::doAllowChangeEmail = true;
-
 CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    LoginData *loginData):
     Window(_("Account and Character Management")),
     mCharInfo(charInfo),
-    mLoginData(loginData)
+    mLoginData(loginData),
+    mCharHandler(Net::getCharHandler())
 {
     setCloseButton(false);
 
     mAccountNameLabel = new Label(loginData->username);
-
     mSwitchLoginButton = new Button(_("Switch Login"), "switch", this);
-    mUnregisterButton = new Button(_("Unregister"), "unregister", this);
-
     mChangePasswordButton = new Button(_("Change Password"), "change_password",
                                        this);
-    mChangeEmailButton = new Button(_("Change Email"), "change_email", this);
 
     for (int i = 0; i < MAX_CHARACTER_COUNT; i++)
     {
@@ -138,33 +133,34 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
         mCharEntries[i] = new CharEntry(this, i, charInfo->getEntry());
     }
 
-    place(0, 0, mAccountNameLabel, 6);
+    int optionalActions = Net::getLoginHandler()->supportedOptionalActions();
 
-    place(0, 1, mSwitchLoginButton, 3);
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
 
-    if (doAllowUnregister)
-        place(3, 1, mUnregisterButton, 3);
+    place(0, 0, mAccountNameLabel, 2);
+    place(0, 1, mSwitchLoginButton);
 
-    place(0, 2, mChangePasswordButton, 3);
+    if (optionalActions & Net::LoginHandler::Unregister) {
+        gcn::Button *unregisterButton = new Button(_("Unregister"),
+                                                   "unregister", this);
+        place(3, 1, unregisterButton);
+    }
 
-    if (doAllowChangeEmail)
-        place(3, 2, mChangeEmailButton, 3);
+    place(0, 2, mChangePasswordButton);
 
-    place(0, 3, mCharEntries[0], 2, 3);
-    place(2, 3, mCharEntries[1], 2, 3);
-    place(4, 3, mCharEntries[2], 2, 3);
+    if (optionalActions & Net::LoginHandler::ChangeEmail) {
+        gcn::Button *changeEmailButton = new Button(_("Change Email"),
+                                                    "change_email", this);
+        place(3, 2, changeEmailButton);
+    }
 
-    int width = mAccountNameLabel->getWidth();
-    width = std::max(width, mSwitchLoginButton->getWidth() +
-                     mUnregisterButton->getWidth());
-    width = std::max(width, mChangePasswordButton->getWidth() +
-                     mChangeEmailButton->getWidth());
-    width = std::max(width, 3 * mCharEntries[0]->getWidth());
+    place = getPlacer(0, 1);
+    place(0, 0, mCharEntries[0]);
+    place(1, 0, mCharEntries[1]);
+    place(2, 0, mCharEntries[2]);
 
-    reflowLayout(width + 10, mAccountNameLabel->getHeight() +
-                 mSwitchLoginButton->getHeight() +
-                 mChangePasswordButton->getHeight() +
-                 mCharEntries[0]->getHeight() + 20);
+    reflowLayout();
 
     center();
     mCharEntries[0]->requestFocus();
@@ -195,7 +191,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
                 new CharCreateDialog(this, mCharInfo->getPos());
-            Net::getCharHandler()->setCharCreateDialog(charCreateDialog);
+            mCharHandler->setCharCreateDialog(charCreateDialog);
         }
     }
     else if (event.getId() == "delete")
@@ -221,13 +217,13 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
 
 void CharSelectDialog::attemptCharDelete()
 {
-    Net::getCharHandler()->deleteCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
+    mCharHandler->deleteCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
     mCharInfo->lock();
 }
 
 void CharSelectDialog::attemptCharSelect()
 {
-    Net::getCharHandler()->chooseCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
+    mCharHandler->chooseCharacter(mCharInfo->getPos(), mCharInfo->getEntry());
     mCharInfo->lock();
 }
 
@@ -264,13 +260,6 @@ void CharSelectDialog::chooseSelected()
 
     setVisible(false);
     attemptCharSelect();
-}
-
-void CharSelectDialog::setNetworkOptions(bool allowUnregister,
-                                         bool allowChangeEmail)
-{
-    doAllowUnregister = allowUnregister;
-    doAllowChangeEmail = allowChangeEmail;
 }
 
 CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):

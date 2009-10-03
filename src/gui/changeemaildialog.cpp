@@ -99,8 +99,7 @@ ChangeEmailDialog::~ChangeEmailDialog()
     delete mWrongDataNoticeListener;
 }
 
-void
-ChangeEmailDialog::action(const gcn::ActionEvent &event)
+void ChangeEmailDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {

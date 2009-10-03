@@ -44,6 +44,9 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
 
         void disconnect();
 
+        int supportedOptionalActions() const
+        { return Unregister | ChangeEmail; }
+
         void loginAccount(LoginData *loginData);
 
         void changeEmail(const std::string &email);

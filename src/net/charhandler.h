@@ -33,6 +33,7 @@ class CharCreateDialog;
 class LocalPlayer;
 
 namespace Net {
+
 class CharHandler
 {
     public:
@@ -50,6 +51,7 @@ class CharHandler
 
         virtual void deleteCharacter(int slot, LocalPlayer* character) = 0;
 };
-}
+
+} // namespace Net
 
 #endif // CHARHANDLER_H

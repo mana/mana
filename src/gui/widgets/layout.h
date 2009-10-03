@@ -34,7 +34,6 @@ class LayoutCell;
 class ContainerPlacer
 {
     public:
-
         ContainerPlacer(gcn::Container *c = NULL, LayoutCell *l = NULL):
             mContainer(c), mCell(l)
         {}
@@ -58,7 +57,6 @@ class ContainerPlacer
             (int x, int y, gcn::Widget *, int w = 1, int h = 1);
 
     private:
-
         gcn::Container *mContainer;
         LayoutCell *mCell;
 };
@@ -164,7 +162,6 @@ class LayoutCell
     friend class LayoutArray;
 
     public:
-
         enum Alignment
         {
             LEFT, RIGHT, CENTER, FILL
@@ -235,7 +232,6 @@ class LayoutCell
         void computeSizes();
 
     private:
-
         // Copy not allowed, as the cell may own an array.
         LayoutCell(LayoutCell const &);
         LayoutCell &operator=(LayoutCell const &);
@@ -283,10 +279,9 @@ class LayoutCell
  * pixels between rows and between columns, and a margin of 6 pixels around the
  * whole layout.
  */
-class Layout: public LayoutCell
+class Layout : public LayoutCell
 {
     public:
-
         Layout();
 
         /**
@@ -313,7 +308,6 @@ class Layout: public LayoutCell
         };
 
     private:
-
         bool mComputed;
 };
 

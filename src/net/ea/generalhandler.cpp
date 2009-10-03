@@ -103,7 +103,6 @@ GeneralHandler::GeneralHandler():
 
     ItemDB::setStatsList(stats);
 
-    CharSelectDialog::setNetworkOptions(false, false);
     RegisterDialog::setEmail(NULL);
     RegisterDialog::setGender(&netToken.sex);
 }

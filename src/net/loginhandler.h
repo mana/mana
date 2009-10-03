@@ -35,6 +35,11 @@ namespace Net {
 class LoginHandler
 {
     public:
+        enum OptionalAction {
+            Unregister  = 0x1,
+            ChangeEmail = 0x2
+        };
+
         virtual void setServer(const ServerInfo &server)
         { mServer = server; }
 
@@ -46,6 +51,8 @@ class LoginHandler
         virtual bool isConnected() = 0;
 
         virtual void disconnect() = 0;
+
+        virtual int supportedOptionalActions() const = 0;
 
         virtual void loginAccount(LoginData *loginData) = 0;
 

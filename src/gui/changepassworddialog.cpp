@@ -156,6 +156,5 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
             state = STATE_CHANGEPASSWORD_ATTEMPT;
             scheduleDelete();
         }
-
     }
 }
