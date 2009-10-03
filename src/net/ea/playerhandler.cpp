@@ -348,11 +348,14 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         case SMSG_PLAYER_STAT_UPDATE_4: // Attribute increase ack
             {
                 int type = msg.readInt16();
-                int fail = msg.readInt8();
+                int ok = msg.readInt8();
                 int value = msg.readInt8();
 
-                if (fail != 1)
-                    break;
+                if (ok != 1)
+                {
+                    localChatTab->chatLog(_("Cannot raise skill!."),
+                                          BY_SERVER);
+                }
 
                 int bonus = ATTR_BONUS(type);
 
