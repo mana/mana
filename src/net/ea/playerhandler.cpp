@@ -353,7 +353,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
                 if (ok != 1)
                 {
-                    localChatTab->chatLog(_("Cannot raise skill!."),
+                    localChatTab->chatLog(_("Cannot raise skill!"),
                                           BY_SERVER);
                 }
 
