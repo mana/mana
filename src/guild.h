@@ -96,7 +96,7 @@ public:
         return mCanInviteUsers;
     }
 
-    bool isMember(const std::string &name);
+    bool isMember(const std::string &name) const;
 
 private:
     std::string mName;
@@ -105,4 +105,4 @@ private:
     bool mCanInviteUsers;
 };
 
-#endif
+#endif // GUILD_H

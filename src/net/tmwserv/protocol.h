@@ -230,6 +230,7 @@ enum {
 // Login specific return values
 enum {
     LOGIN_INVALID_VERSION = 0x40,       // the user is using an incompatible protocol
+    LOGIN_INVALID_TIME    = 0x50,       // the user tried logging in too fast
     LOGIN_SERVER_FULL                   // the server is overloaded
 };
 

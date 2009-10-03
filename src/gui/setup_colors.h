@@ -88,4 +88,4 @@ class Setup_Colors : public SetupTab,
         void updateGradType();
 };
 
-#endif
+#endif // SETUP_COLORS_H

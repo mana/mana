@@ -18,7 +18,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-#include <time.h>
 
 #include "resources/wallpaper.h"
 
@@ -31,6 +30,7 @@
 #include <vector>
 
 #include <physfs.h>
+#include <time.h>
 
 #define WALLPAPER_FOLDER "graphics/images/"
 #define WALLPAPER_BASE   "login_wallpaper.png"
@@ -110,7 +110,6 @@ std::string Wallpaper::getWallpaper(int width, int height)
             wallPaperVector.push_back(wp.filename);
     }
 
-
     if (!wallPaperVector.empty())
     {
         // If we've got more than one occurence of a valid wallpaper...
@@ -118,7 +117,7 @@ std::string Wallpaper::getWallpaper(int width, int height)
         {
           // Return randomly a wallpaper between vector[0] and
           // vector[vector.size() - 1]
-          srand((unsigned)time(0)); 
+          srand((unsigned) time(0));
           return wallPaperVector
           [int(wallPaperVector.size() * rand() / (RAND_MAX + 1.0))];
         }
@@ -132,5 +131,4 @@ std::string Wallpaper::getWallpaper(int width, int height)
 
     // Return an empty string if everything else failed
     return std::string();
-
 }

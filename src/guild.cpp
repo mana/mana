@@ -52,13 +52,13 @@ void Guild::removeMember(const std::string &name)
     }
 }
 
-bool Guild::isMember(const std::string &name)
+bool Guild::isMember(const std::string &name) const
 {
-    std::vector<std::string>::iterator itr = mMembers.begin(),
-                                       itr_end = mMembers.end();
-    while(itr != itr_end)
+    std::vector<std::string>::const_iterator itr = mMembers.begin(),
+                                             itr_end = mMembers.end();
+    while (itr != itr_end)
     {
-        if((*itr) == name)
+        if ((*itr) == name)
         {
             return true;
         }

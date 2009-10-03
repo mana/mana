@@ -847,7 +847,7 @@ int main(int argc, char *argv[])
                                                         defaultScreenHeight));
 
     desktop->setSize(screenWidth, screenHeight);
-    
+
     if (state != STATE_ERROR)
         state = STATE_CHOOSE_SERVER;
     State oldstate = STATE_START; // We start with a status change
@@ -1100,7 +1100,7 @@ int main(int argc, char *argv[])
 
                 case STATE_REGISTER_ATTEMPT:
                     logger->log("Username is %s", loginData.username.c_str());
-                
+
                     Net::getCharHandler()->setCharInfo(&charInfo);
                     Net::getLoginHandler()->registerAccount(&loginData);
                     break;
