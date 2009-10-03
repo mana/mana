@@ -1120,8 +1120,7 @@ int main(int argc, char *argv[])
 
                     if (((CharSelectDialog*) currentDialog)->
                             selectByName(options.character)) {
-                        ((CharSelectDialog*) currentDialog)->action(
-                            gcn::ActionEvent(NULL, "ok"));
+                        ((CharSelectDialog*) currentDialog)->chooseSelected();
                     } else {
                         ((CharSelectDialog*) currentDialog)->selectByName(
                             config.getValue("lastCharacter", ""));

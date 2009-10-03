@@ -45,6 +45,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 {
     public:
         friend class CharDeleteConfirm;
+
         /**
          * Constructor.
          */
@@ -54,6 +55,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         bool selectByName(const std::string &name);
+
+        void chooseSelected();
 
         static void setNetworkOptions(bool allowUnregister,
                                       bool allowChangeEmail);

@@ -91,11 +91,11 @@ class CharEntry : public Container
     public:
         CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr);
 
-        char getSlot()
+        char getSlot() const
         { return mSlot; }
 
-        LocalPlayer *getChar()
-        { return mChr; }
+        LocalPlayer *getChar() const
+        { return mCharacter; }
 
         void requestFocus();
 
@@ -104,7 +104,7 @@ class CharEntry : public Container
     protected:
         friend class CharSelectDialog;
         char mSlot;
-        LocalPlayer *mChr;
+        LocalPlayer *mCharacter;
 
         PlayerBox *mPlayerBox;
         Label *mName;
@@ -173,16 +173,15 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
 void CharSelectDialog::action(const gcn::ActionEvent &event)
 {
-    CharEntry *entry = dynamic_cast<CharEntry*>(event.getSource()->getParent());
+    const gcn::Widget *sourceParent = event.getSource()->getParent();
 
-    // Update the locked array
-    if (entry)
+    // Update which character is selected when applicable
+    if (const CharEntry *entry = dynamic_cast<const CharEntry*>(sourceParent))
         mCharInfo->select(entry->getSlot());
 
     if (event.getId() == "use")
     {
-        setVisible(false);
-        attemptCharSelect();
+        chooseSelected();
     }
     else if (event.getId() == "switch")
     {
@@ -245,9 +244,10 @@ bool CharSelectDialog::selectByName(const std::string &name)
         LocalPlayer *player = mCharInfo->getEntry();
 
         if (player && player->getName() == name)
-	{
+        {
             mCharEntries[mCharInfo->getPos()]->requestFocus();
-	}
+            return true;
+        }
 
         mCharInfo->next();
     } while (mCharInfo->getPos());
@@ -257,8 +257,17 @@ bool CharSelectDialog::selectByName(const std::string &name)
     return false;
 }
 
+void CharSelectDialog::chooseSelected()
+{
+    if (!mCharInfo->getSize())
+        return;
+
+    setVisible(false);
+    attemptCharSelect();
+}
+
 void CharSelectDialog::setNetworkOptions(bool allowUnregister,
-                              bool allowChangeEmail)
+                                         bool allowChangeEmail)
 {
     doAllowUnregister = allowUnregister;
     doAllowChangeEmail = allowChangeEmail;
@@ -266,7 +275,7 @@ void CharSelectDialog::setNetworkOptions(bool allowUnregister,
 
 CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
         mSlot(slot),
-        mChr(chr),
+        mCharacter(chr),
         mPlayerBox(new PlayerBox(chr))
 {
     mButton = new Button("wwwwwwwww", "go", m);
@@ -294,13 +303,13 @@ void CharEntry::requestFocus()
 
 void CharEntry::update()
 {
-    if (mChr)
+    if (mCharacter)
     {
         mButton->setCaption(_("Choose"));
         mButton->setActionEventId("use");
-        mName->setCaption(strprintf("%s (%d)", mChr->getName().c_str(),
-                                    mChr->getLevel()));
-        mMoney->setCaption(Units::formatCurrency(mChr->getMoney()));
+        mName->setCaption(strprintf("%s (%d)", mCharacter->getName().c_str(),
+                                    mCharacter->getLevel()));
+        mMoney->setCaption(Units::formatCurrency(mCharacter->getMoney()));
     }
     else
     {
