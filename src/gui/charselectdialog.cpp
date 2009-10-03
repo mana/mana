@@ -260,7 +260,6 @@ bool CharSelectDialog::selectByName(const std::string &name)
 void CharSelectDialog::setNetworkOptions(bool allowUnregister,
                               bool allowChangeEmail)
 {
-    printf("Network options: %d, %d\n", allowUnregister, allowChangeEmail);
     doAllowUnregister = allowUnregister;
     doAllowChangeEmail = allowChangeEmail;
 }
