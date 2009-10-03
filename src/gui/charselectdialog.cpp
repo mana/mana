@@ -182,7 +182,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "switch")
     {
         mCharInfo->clear();
-        state = STATE_SWITCH_SERVER_ATTEMPT;
+        state = STATE_SWITCH_LOGIN;
     }
     else if (event.getId() == "new")
     {

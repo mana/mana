@@ -924,6 +924,8 @@ int main(int argc, char *argv[])
                 loadUpdates();
             }
 
+            //printf("State change: %d to %d\n", oldstate, state);
+
             oldstate = state;
 
             // Get rid of the dialog of the previous state
@@ -963,11 +965,8 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_CONNECT_SERVER:
-                    Net::connectToServer(currentServer);
-
                     logger->log("State: CONNECT_SERVER");
-                    currentDialog = new ConnectionDialog(
-                            STATE_SWITCH_SERVER_ATTEMPT);
+                    currentDialog = new ConnectionDialog(STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_UPDATE:
@@ -1039,6 +1038,7 @@ int main(int argc, char *argv[])
                     logger->log("State: WORLD SELECT");
                     {
                         Worlds worlds = Net::getLoginHandler()->getWorlds();
+
                         if (worlds.size() == 0)
                         {
                             state = STATE_UPDATE;
@@ -1074,7 +1074,7 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_SWITCH_SERVER:
-                    logger->log("State: SWITCH_SERVER");
+                    logger->log("State: SWITCH SERVER");
 
 #ifdef TMWSERV_SUPPORT
                     gameServerConnection->disconnect();
@@ -1085,12 +1085,12 @@ int main(int argc, char *argv[])
                     state = STATE_CHOOSE_SERVER;
                     break;
 
-                case STATE_SWITCH_SERVER_ATTEMPT:
-                    logger->log("State: SWITCH_SERVER_ATTEMPT");
+                case STATE_SWITCH_LOGIN:
+                    logger->log("State: SWITCH LOGIN");
 
-                    // TODO
+                    Net::getLoginHandler()->logout();
 
-                    state = STATE_SWITCH_SERVER;
+                    state = STATE_LOGIN;
                     break;
 
                 case STATE_REGISTER:
@@ -1194,8 +1194,7 @@ int main(int argc, char *argv[])
                 case STATE_CONNECT_GAME:
                     logger->log("State: CONNECT_GAME");
                     Net::getGameHandler()->connect();
-                    currentDialog = new ConnectionDialog(
-                            STATE_SWITCH_SERVER_ATTEMPT);
+                    currentDialog = new ConnectionDialog(STATE_SWITCH_CHARACTER);
                     break;
 
                 case STATE_GAME:

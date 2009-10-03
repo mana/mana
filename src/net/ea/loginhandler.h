@@ -51,6 +51,8 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
 
         void loginAccount(LoginData *loginData);
 
+        void logout();
+
         void changeEmail(const std::string &email);
 
         void changePassword(const std::string &username,
@@ -70,7 +72,6 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void sendLoginRegister(const std::string &username,
                                const std::string &password);
 
-        LoginData *mLoginData;
         std::string mUpdateHost;
 };
 

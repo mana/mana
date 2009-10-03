@@ -49,6 +49,8 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
 
         void loginAccount(LoginData *loginData);
 
+        void logout();
+
         void changeEmail(const std::string &email);
 
         void changePassword(const std::string &username,

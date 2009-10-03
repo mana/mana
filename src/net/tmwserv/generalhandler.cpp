@@ -55,7 +55,7 @@
 
 #include <list>
 
-Net::GeneralHandler *generalHandler;
+Net::GeneralHandler *generalHandler  = NULL;
 
 Net::Connection *gameServerConnection = 0;
 Net::Connection *chatServerConnection = 0;
@@ -124,6 +124,11 @@ void GeneralHandler::load()
     Net::registerHandler(mPartyHandler.get());
     Net::registerHandler(mPlayerHandler.get());
     Net::registerHandler(mTradeHandler.get());
+}
+
+void GeneralHandler::reload()
+{
+    // Nothing needed yet
 }
 
 void GeneralHandler::unload()

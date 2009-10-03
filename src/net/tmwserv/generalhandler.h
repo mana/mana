@@ -35,6 +35,8 @@ class GeneralHandler : public Net::GeneralHandler
 
         void load();
 
+        void reload();
+
         void unload();
 
         void flushNetwork();

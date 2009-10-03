@@ -313,6 +313,11 @@ void LoginHandler::loginAccount(LoginData *loginData)
             loginData->password);
 }
 
+void LoginHandler::logout()
+{
+    // TODO
+}
+
 void LoginHandler::changeEmail(const std::string &email)
 {
     Net::AccountServer::Account::changeEmail(email);

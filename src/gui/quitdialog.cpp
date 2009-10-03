@@ -118,7 +118,7 @@ void QuitDialog::action(const gcn::ActionEvent &event)
                 *mQuitGame = true;
             }
 
-            state = STATE_SWITCH_SERVER_ATTEMPT;
+            state = STATE_SWITCH_SERVER;
         }
         else if (mSwitchCharacter->isSelected())
         {

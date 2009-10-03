@@ -35,13 +35,12 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-Worlds worlds;
-
 Net::LoginHandler *loginHandler;
 
 namespace EAthena {
 extern Token netToken;
 extern ServerInfo charServer;
+extern Worlds worlds;
 
 LoginHandler::LoginHandler()
 {
@@ -212,8 +211,12 @@ void LoginHandler::disconnect()
 
 void LoginHandler::loginAccount(LoginData *loginData)
 {
-    mLoginData = loginData;
     sendLoginRegister(loginData->username, loginData->password);
+}
+
+void LoginHandler::logout()
+{
+    // TODO
 }
 
 void LoginHandler::changeEmail(const std::string &email)
@@ -242,8 +245,6 @@ void LoginHandler::chooseServer(unsigned int server)
 
 void LoginHandler::registerAccount(LoginData *loginData)
 {
-    mLoginData = loginData;
-
     std::string username = loginData->username;
     username.append((netToken.sex == GENDER_FEMALE) ? "_F" : "_M");
 

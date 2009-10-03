@@ -56,6 +56,8 @@ class LoginHandler
 
         virtual void loginAccount(LoginData *loginData) = 0;
 
+        virtual void logout() = 0;
+
         virtual void changeEmail(const std::string &email) = 0;
 
         virtual void changePassword(const std::string &username,

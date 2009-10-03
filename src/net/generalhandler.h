@@ -31,6 +31,8 @@ class GeneralHandler
     public:
         virtual void load() = 0;
 
+        virtual void reload() = 0;
+
         virtual void unload() = 0;
 
         virtual void flushNetwork() = 0;

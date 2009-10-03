@@ -40,6 +40,8 @@ class GeneralHandler : public MessageHandler, public Net::GeneralHandler
 
         void load();
 
+        void reload();
+
         void unload();
 
         void flushNetwork();

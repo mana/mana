@@ -122,18 +122,33 @@ Net::TradeHandler *Net::getTradeHandler()
     return tradeHandler;
 }
 
+namespace Net
+{
+    bool networkLoaded = false;
+}
+
 void Net::connectToServer(const ServerInfo &server)
 {
     // TODO: Actually query the server about itself and choose the netcode
     // based on that
 
+    if (networkLoaded)
+    {
+        printf("Reload!\n");
+        Net::getGeneralHandler()->reload();
+    }
+    else
+    {
 #ifdef TMWSERV_SUPPORT
-    new TmwServ::GeneralHandler;
+        new TmwServ::GeneralHandler;
 #else
-    new EAthena::GeneralHandler;
+        new EAthena::GeneralHandler;
 #endif
+    }
 
     Net::getGeneralHandler()->load();
+
+    networkLoaded = true;
 
     Net::getLoginHandler()->setServer(server);
 

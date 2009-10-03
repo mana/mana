@@ -60,14 +60,16 @@
 
 #include "utils/gettext.h"
 
+#include <assert.h>
 #include <list>
 
-Net::GeneralHandler *generalHandler;
+Net::GeneralHandler *generalHandler = NULL;
 
 namespace EAthena {
 Token netToken;
 ServerInfo charServer;
 ServerInfo mapServer;
+Worlds worlds;
 
 GeneralHandler::GeneralHandler():
     mAdminHandler(new AdminHandler),
@@ -86,6 +88,7 @@ GeneralHandler::GeneralHandler():
     mSpecialHandler(new SpecialHandler),
     mTradeHandler(new TradeHandler)
 {
+    //assert(false);
     static const Uint16 _messages[] = {
         SMSG_CONNECTION_PROBLEM,
         0
@@ -172,9 +175,17 @@ void GeneralHandler::load()
     mNetwork->registerHandler(mPartyHandler.get());
 }
 
+void GeneralHandler::reload()
+{
+    if (mNetwork)
+        mNetwork->disconnect();
+    worlds.clear();
+}
+
 void GeneralHandler::unload()
 {
-    mNetwork->clearHandlers();
+    if (mNetwork)
+        mNetwork->clearHandlers();
 }
 
 void GeneralHandler::flushNetwork()
