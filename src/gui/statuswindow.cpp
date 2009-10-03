@@ -520,11 +520,25 @@ void ChangeDisplay::action(const gcn::ActionEvent &event)
 #ifdef TMWSERV_SUPPORT
     if (event.getSource() == mDec)
     {
+        int newcorpoints = player_node->getCorrectionPoints() - 1;
+        player_node->setCorrectionPoints(newcorpoints);
+        int newpoints = player_node->getCharacterPoints() + 1;
+        player_node->setCharacterPoints(newpoints);
+        int newbase = player_node->getAttributeBase(mId) - 1;
+        player_node->setAttributeBase(mId, newbase);
+        int newmod = player_node->getAttributeEffective(mId) - 1;
+        player_node->setAttributeEffective(mId, newmod);
         Net::getPlayerHandler()->decreaseAttribute(mId);
     } else
 #endif
     if (event.getSource() == mInc)
     {
+        int newpoints = player_node->getCharacterPoints() - 1;
+        player_node->setCharacterPoints(newpoints);
+        int newbase = player_node->getAttributeBase(mId) + 1;
+        player_node->setAttributeBase(mId, newbase);
+        int newmod = player_node->getAttributeEffective(mId) + 1;
+        player_node->setAttributeEffective(mId, newmod);
         Net::getPlayerHandler()->increaseAttribute(mId);
     }
 }
