@@ -24,7 +24,9 @@
 
 #include <string>
 
-typedef struct SERVER_INFO {
+class ServerInfo
+{
+public:
     std::string hostname;
     unsigned short port;
 
@@ -34,10 +36,10 @@ typedef struct SERVER_INFO {
         port = 0;
     }
 
-    bool operator==(struct SERVER_INFO other)
+    bool operator==(const ServerInfo &other)
     {
         return (hostname == other.hostname && port == other.port);
     }
-} ServerInfo;
+};
 
 #endif // SERVERINFO_H

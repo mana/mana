@@ -82,7 +82,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
     mMostUsedServersListModel = new ServersListModel;
     ServerInfo currentServer;
     std::string currentConfig = "";
-    for (int i=0; i<=MAX_SERVERLIST; i++)
+    for (int i = 0; i <= MAX_SERVERLIST; i++)
     {
         currentServer.clear();
 
@@ -90,15 +90,15 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
         currentServer.hostname = config.getValue(currentConfig, "");
 
         currentConfig = "MostUsedServerPort" + toString(i);
-        currentServer.port = (short)atoi(config.getValue(currentConfig, "").c_str());
-        if (!currentServer.hostname.empty() || currentServer.port != 0)
+        currentServer.port = (short) config.getValue(currentConfig, 0);
+        if (!currentServer.hostname.empty() && currentServer.port != 0)
         {
             mMostUsedServersListModel->addElement(currentServer);
         }
     }
 
-    mMostUsedServersDropDown = new ListBox(mMostUsedServersListModel);
-    ScrollArea *usedScroll = new ScrollArea(mMostUsedServersDropDown);
+    mMostUsedServersList = new ListBox(mMostUsedServersListModel);
+    ScrollArea *usedScroll = new ScrollArea(mMostUsedServersList);
     usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mQuitButton = new Button(_("Quit"), "quit", this);
@@ -106,13 +106,12 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
 
     mServerNameField->setActionEventId("connect");
     mPortField->setActionEventId("connect");
-    mMostUsedServersDropDown->setActionEventId("changeSelection");
 
     mServerNameField->addActionListener(this);
     mPortField->addActionListener(this);
-    mMostUsedServersDropDown->addActionListener(this);
+    mMostUsedServersList->addSelectionListener(this);
 
-    mMostUsedServersDropDown->setSelected(0);
+    mMostUsedServersList->setSelected(0);
 
     place(0, 0, serverLabel);
     place(0, 1, portLabel);
@@ -146,21 +145,12 @@ ServerDialog::~ServerDialog()
     delete mMostUsedServersListModel;
 }
 
-void
-ServerDialog::action(const gcn::ActionEvent &event)
+void ServerDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
         // Give focus back to the server dialog.
         mServerNameField->requestFocus();
-    }
-    else if (event.getId() == "changeSelection")
-    {
-        // Change the textField Values according to new selection
-        ServerInfo myServer = mMostUsedServersListModel->getServer
-            (mMostUsedServersDropDown->getSelected());
-        mServerNameField->setText(myServer.hostname);
-        mPortField->setText(toString(myServer.port));
     }
     else if (event.getId() == "connect")
     {
@@ -212,4 +202,13 @@ ServerDialog::action(const gcn::ActionEvent &event)
     {
         state = STATE_FORCE_QUIT;
     }
+}
+
+void ServerDialog::valueChanged(const gcn::SelectionEvent &event)
+{
+    // Update the server and post fields according to the new selection
+    const ServerInfo myServer = mMostUsedServersListModel->getServer
+        (mMostUsedServersList->getSelected());
+    mServerNameField->setText(myServer.hostname);
+    mPortField->setText(toString(myServer.port));
 }

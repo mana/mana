@@ -30,6 +30,7 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
+#include <guichan/selectionlistener.hpp>
 
 #include <string>
 #include <vector>
@@ -77,7 +78,9 @@ class ServersListModel : public gcn::ListModel
  *
  * \ingroup Interface
  */
-class ServerDialog : public Window, public gcn::ActionListener
+class ServerDialog : public Window,
+                     public gcn::ActionListener,
+                     public gcn::SelectionListener
 {
     public:
         /**
@@ -97,13 +100,18 @@ class ServerDialog : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        /**
+         * Called when the selected value changed in the servers list box.
+         */
+        void valueChanged(const gcn::SelectionEvent &event);
+
     private:
         gcn::TextField *mServerNameField;
         gcn::TextField *mPortField;
         gcn::Button *mQuitButton;
         gcn::Button *mConnectButton;
 
-        ListBox *mMostUsedServersDropDown;
+        ListBox *mMostUsedServersList;
         ServersListModel *mMostUsedServersListModel;
 
         ServerInfo *mServerInfo;

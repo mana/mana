@@ -73,7 +73,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         void success();
 
-        CharSelectDialog *getSelectDialog()
+        CharSelectDialog *getSelectDialog() const
         { return mCharSelectDialog; }
 
     private:

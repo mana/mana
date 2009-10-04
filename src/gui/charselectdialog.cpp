@@ -74,6 +74,7 @@ class CharDeleteConfirm : public ConfirmDialog
             master(m)
         {
         }
+
         void action(const gcn::ActionEvent &event)
         {
             //ConfirmDialog::action(event);
@@ -83,6 +84,7 @@ class CharDeleteConfirm : public ConfirmDialog
             }
             ConfirmDialog::action(event);
         }
+
     private:
         CharSelectDialog *master;
 };
