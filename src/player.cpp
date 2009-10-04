@@ -197,8 +197,6 @@ void Player::setSprite(unsigned int slot, int id, const std::string &color)
 
     mSpriteIDs[slot] = id;
     mSpriteColors[slot] = color;
-
-    _updateNumberOfLayers();
 }
 
 void Player::setSpriteID(unsigned int slot, int id)

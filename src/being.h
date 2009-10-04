@@ -229,15 +229,7 @@ class Being : public Sprite, public ConfigListener
         /**
          * Get the number of layers used to draw the being
          */
-        int getNumberOfLayers() const
-        { return mNumberOfLayers; }
-
-        /**
-         * Set the number of layers used to draw the being
-         */
-        void setNumberOfLayers(int numberOfLayers)
-        { mNumberOfLayers = numberOfLayers; }
-
+        int getNumberOfLayers() const;
 
 #ifdef EATHENA_SUPPORT
         /**
@@ -556,12 +548,6 @@ class Being : public Sprite, public ConfigListener
         typedef Sprites::const_iterator SpriteConstIterator;
         Sprites mSprites;
         float mAlpha;                   /**< Alpha opacity to draw the sprite */
-
-        /** Stores the number of layers used to draw the being */
-        int mNumberOfLayers;
-
-         /** This method counts reliably the sprite layers currently used */
-        void _updateNumberOfLayers();
 
         ParticleList mStunParticleEffects;
         ParticleVector mStatusParticleEffects;

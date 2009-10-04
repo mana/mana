@@ -83,7 +83,6 @@ Being::Being(int id, int job, Map *map):
     mText(0),
     mStunMode(0),
     mAlpha(1.0f),
-    mNumberOfLayers(0),
     mStatusParticleEffects(&mStunParticleEffects, false),
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
@@ -903,6 +902,11 @@ void Being::showName()
                              gcn::Graphics::CENTER, mNameColor);
 }
 
+int Being::getNumberOfLayers() const
+{
+    return mSprites.size();
+}
+
 void Being::load()
 {
     // Hairstyles are encoded as negative numbers. Count how far negative
@@ -913,16 +917,4 @@ void Being::load()
         hairstyles++;
 
     mNumberOfHairstyles = hairstyles;
-}
-
-void Being::_updateNumberOfLayers()
-{
-    SpriteConstIterator si = mSprites.begin();
-    mNumberOfLayers = 0;
-    while (si != mSprites.end())
-    {
-        if (*si)
-            mNumberOfLayers++;
-        si++;
-    }
 }
