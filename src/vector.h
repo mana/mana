@@ -124,7 +124,7 @@ class Vector
         }
 
         /**
-         * Substract vector operator.
+         * Subtract vector operator.
          */
         Vector operator-(const Vector &v) const
         {
@@ -134,7 +134,7 @@ class Vector
         }
 
         /**
-         * In-place substract vector operator.
+         * In-place subtract vector operator.
          */
         Vector &operator-=(const Vector &v)
         {
