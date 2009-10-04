@@ -115,6 +115,7 @@ class CharEntry : public Container
         Label *mName;
         Label *mMoney;
         Button *mButton;
+        Button *mDelete;
 };
 
 CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
@@ -169,6 +170,8 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     center();
     mCharEntries[0]->requestFocus();
     setVisible(true);
+
+    Net::getCharHandler()->setCharSelectDialog(this);
 }
 
 void CharSelectDialog::action(const gcn::ActionEvent &event)
@@ -295,6 +298,8 @@ CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
     mName = new Label("wwwwwwwwwwwwwwwwwwwwwwww (888)");
     mMoney = new Label("wwwwwwwww");
 
+    mDelete = new Button(_("Delete"), "delete", m);
+
     LayoutHelper h(this);
     ContainerPlacer place = h.getPlacer(0, 0);
 
@@ -302,9 +307,10 @@ CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
     place(0, 5, mName, 3);
     place(0, 6, mMoney, 3);
     place(0, 7, mButton, 3);
+    place(0, 8, mDelete, 3);
 
-    h.reflowLayout(65, 120 + mName->getHeight() + mMoney->getHeight() +
-                   mButton->getHeight());
+    h.reflowLayout(74, 123 + mName->getHeight() + mMoney->getHeight() +
+                   mButton->getHeight() + mDelete->getHeight());
 
     update();
 }
@@ -313,8 +319,7 @@ void CharEntry::setChar(LocalPlayer *chr)
 {
     mCharacter = chr;
 
-    if (chr)
-        mPlayerBox->setPlayer(chr);
+    mPlayerBox->setPlayer(chr);
 
     update();
 }
@@ -333,6 +338,8 @@ void CharEntry::update()
         mName->setCaption(strprintf("%s (%d)", mCharacter->getName().c_str(),
                                     mCharacter->getLevel()));
         mMoney->setCaption(Units::formatCurrency(mCharacter->getMoney()));
+
+        mDelete->setVisible(true);
     }
     else
     {
@@ -340,6 +347,8 @@ void CharEntry::update()
         mButton->setActionEventId("new");
         mName->setCaption(_("(empty)"));
         mMoney->setCaption(Units::formatCurrency(0));
+
+        mDelete->setVisible(false);
     }
 
     // Recompute layout

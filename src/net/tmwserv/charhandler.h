@@ -47,6 +47,8 @@ class CharHandler : public MessageHandler, public Net::CharHandler
             mCharInfo = charInfo;
         }
 
+        void setCharSelectDialog(CharSelectDialog *window);
+
         /**
          * Sets the character create dialog. The handler will clean up this
          * dialog when a new character is succesfully created, and will unlock

@@ -141,9 +141,6 @@ namespace
 static const int defaultSfxVolume = 100;
 static const int defaultMusicVolume = 60;
 
-// Account infos
-char n_character;
-
 #ifdef TMWSERV_SUPPORT
 extern Net::Connection *gameServerConnection;
 extern Net::Connection *chatServerConnection;

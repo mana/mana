@@ -100,10 +100,13 @@ void CharHandler::handleMessage(MessageIn &msg)
             // Character deletion successful
             if (errMsg == ERRMSG_OK)
             {
-                delete mCharInfo->getEntry();
+                LocalPlayer *tempPlayer = mCharInfo->getEntry();
                 mCharInfo->setEntry(0);
                 mCharInfo->unlock();
+                if (mCharSelectDialog)
+                    mCharSelectDialog->update(mCharInfo->getPos());
                 new OkDialog(_("Info"), _("Player deleted."));
+                delete tempPlayer;
             }
             // Character deletion failed
             else
@@ -291,9 +294,13 @@ void CharHandler::handleCharSelectResponse(MessageIn &msg)
     }
 }
 
+void CharHandler::setCharSelectDialog(CharSelectDialog *window)
+{
+    mCharSelectDialog = window;
+}
+
 void CharHandler::setCharCreateDialog(CharCreateDialog *window)
 {
-    mCharSelectDialog = window ? window->getSelectDialog() : NULL;
     mCharCreateDialog = window;
 
     if (!mCharCreateDialog) return;

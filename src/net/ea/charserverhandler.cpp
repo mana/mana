@@ -49,6 +49,7 @@ extern ServerInfo charServer;
 extern ServerInfo mapServer;
 
 CharServerHandler::CharServerHandler():
+    mCharSelectDialog(0),
     mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
@@ -67,7 +68,7 @@ CharServerHandler::CharServerHandler():
 
 void CharServerHandler::handleMessage(MessageIn &msg)
 {
-    int slot;
+    int count, slot;
     LocalPlayer *tempPlayer;
 
     logger->log("CharServerHandler: Packet ID: %x, Length: %d",
@@ -79,9 +80,9 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             msg.skip(20); // Unused
 
             // Derive number of characters from message length
-            n_character = (msg.getLength() - 24) / 106;
+            count = (msg.getLength() - 24) / 106;
 
-            for (int i = 0; i < n_character; i++)
+            for (int i = 0; i < count; i++)
             {
                 tempPlayer = readPlayerData(msg, slot);
                 mCharInfo->select(slot);
@@ -113,7 +114,6 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             mCharInfo->unlock();
             mCharInfo->select(slot);
             mCharInfo->setEntry(tempPlayer);
-            n_character++;
 
             // Close the character create dialog
             if (mCharCreateDialog)
@@ -133,11 +133,13 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_CHAR_DELETE_SUCCEEDED:
-            delete mCharInfo->getEntry();
+            tempPlayer = mCharInfo->getEntry();
             mCharInfo->setEntry(0);
             mCharInfo->unlock();
-            n_character--;
+            if (mCharSelectDialog)
+                mCharSelectDialog->update(mCharInfo->getPos());
             new OkDialog(_("Info"), _("Character deleted."));
+            delete tempPlayer;
             break;
 
         case SMSG_CHAR_DELETE_FAILED:
@@ -217,6 +219,11 @@ LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     msg.readInt8();                        // unknown
 
     return tempPlayer;
+}
+
+void CharServerHandler::setCharSelectDialog(CharSelectDialog *window)
+{
+    mCharSelectDialog = window;
 }
 
 void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)

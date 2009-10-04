@@ -126,8 +126,6 @@ enum {
     LEN_MIN_PASSWORD     = 4
 };
 
-extern char n_character;
-
 extern State state;
 extern std::string errorMessage;
 

@@ -30,6 +30,7 @@
 #include <vector>
 
 class CharCreateDialog;
+class CharSelectDialog;
 class LocalPlayer;
 
 namespace Net {
@@ -38,6 +39,8 @@ class CharHandler
 {
     public:
         virtual void setCharInfo(LockedArray<LocalPlayer*> *charInfo) = 0;
+
+        virtual void setCharSelectDialog(CharSelectDialog *window) = 0;
 
         virtual void setCharCreateDialog(CharCreateDialog *window) = 0;
 

@@ -45,6 +45,8 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
         void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
         { mCharInfo = charInfo; }
 
+        void setCharSelectDialog(CharSelectDialog *window);
+
         /**
          * Sets the character create dialog. The handler will clean up this
          * dialog when a new character is succesfully created, and will unlock
@@ -65,6 +67,7 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
 
     protected:
         LockedArray<LocalPlayer*> *mCharInfo;
+        CharSelectDialog *mCharSelectDialog;
         CharCreateDialog *mCharCreateDialog;
 
         LocalPlayer *readPlayerData(MessageIn &msg, int &slot);
