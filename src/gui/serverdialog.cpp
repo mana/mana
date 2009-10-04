@@ -206,9 +206,12 @@ void ServerDialog::action(const gcn::ActionEvent &event)
 
 void ServerDialog::valueChanged(const gcn::SelectionEvent &event)
 {
+    const int index = mMostUsedServersList->getSelected();
+    if (index == -1)
+        return;
+
     // Update the server and post fields according to the new selection
-    const ServerInfo myServer = mMostUsedServersListModel->getServer
-        (mMostUsedServersList->getSelected());
+    const ServerInfo myServer = mMostUsedServersListModel->getServer(index);
     mServerNameField->setText(myServer.hostname);
     mPortField->setText(toString(myServer.port));
 }
