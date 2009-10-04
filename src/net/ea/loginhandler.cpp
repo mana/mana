@@ -116,6 +116,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             msg.skip(30);                           // unknown
             netToken.sex = msg.readInt8() ? GENDER_MALE : GENDER_FEMALE;
 
+            worlds.clear();
             for (int i = 0; i < worldCount; i++)
             {
                 WorldInfo *world = new WorldInfo;
@@ -241,6 +242,8 @@ void LoginHandler::chooseServer(unsigned int server)
     charServer.clear();
     charServer.hostname = ipToString(worlds[server]->address);
     charServer.port = worlds[server]->port;
+
+    state = STATE_UPDATE;
 }
 
 void LoginHandler::registerAccount(LoginData *loginData)

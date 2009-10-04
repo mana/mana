@@ -24,9 +24,10 @@
 #include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
-#include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/listbox.h"
+#include "gui/widgets/scrollarea.h"
 #include "gui/widgets/textfield.h"
 
 #include "configuration.h"
@@ -96,10 +97,12 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
         }
     }
 
-    mMostUsedServersDropDown = new DropDown(mMostUsedServersListModel);
+    mMostUsedServersDropDown = new ListBox(mMostUsedServersListModel);
+    ScrollArea *usedScroll = new ScrollArea(mMostUsedServersDropDown);
+    usedScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mOkButton = new Button(_("OK"), "connect", this);
-    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mQuitButton = new Button(_("Quit"), "quit", this);
+    mConnectButton = new Button(_("Connect"), "connect", this);
 
     mServerNameField->setActionEventId("connect");
     mPortField->setActionEventId("connect");
@@ -115,13 +118,16 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
     place(0, 1, portLabel);
     place(1, 0, mServerNameField, 3).setPadding(2);
     place(1, 1, mPortField, 3).setPadding(2);
-    place(0, 2, mMostUsedServersDropDown, 4).setPadding(2);
-    // TODO: Find a better way to give the dropdown window more room
-    place(2, 12, mOkButton);
-    place(3, 12, mCancelButton);
+    place(0, 2, usedScroll, 4, 5).setPadding(2);
+    place(2, 7, mQuitButton);
+    place(3, 7, mConnectButton);
+
+    // Make sure the list has enough height
+    getLayout().setRowHeight(2, 60);
+
     reflowLayout(250, 0);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
 
     if (mServerNameField->getText().empty()) {
@@ -130,7 +136,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
         if (mPortField->getText().empty()) {
             mPortField->requestFocus();
         } else {
-            mOkButton->requestFocus();
+            mConnectButton->requestFocus();
         }
     }
 }
@@ -167,8 +173,8 @@ ServerDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
-            mOkButton->setEnabled(false);
-            mCancelButton->setEnabled(false);
+            mQuitButton->setEnabled(false);
+            mConnectButton->setEnabled(false);
 
             // First, look if the entry is a new one.
             ServerInfo currentServer;
@@ -202,7 +208,7 @@ ServerDialog::action(const gcn::ActionEvent &event)
             state = STATE_CONNECT_SERVER;
         }
     }
-    else if (event.getId() == "cancel")
+    else if (event.getId() == "quit")
     {
         state = STATE_FORCE_QUIT;
     }

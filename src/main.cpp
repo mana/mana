@@ -1043,6 +1043,7 @@ int main(int argc, char *argv[])
 
                         if (worlds.size() == 0)
                         {
+                            // Trust that the netcode knows what it's doing
                             state = STATE_UPDATE;
                         }
                         else if (worlds.size() == 1)
@@ -1058,14 +1059,13 @@ int main(int argc, char *argv[])
                                 ((WorldSelectDialog*) currentDialog)->action(
                                     gcn::ActionEvent(NULL, "ok"));
                             }
-
-                            state = STATE_WORLD_SELECT_ATTEMPT;
                         }
                     }
                     break;
 
                 case STATE_WORLD_SELECT_ATTEMPT:
-                    // TODO
+                    logger->log("State: Attempting world selection");
+                    currentDialog = new ConnectionDialog(STATE_WORLD_SELECT);
                     break;
 
                 case STATE_LOGIN_ERROR:

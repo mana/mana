@@ -34,7 +34,7 @@
 #include <string>
 #include <vector>
 
-class DropDown;
+class ListBox;
 
 /**
  * Server and Port List Model
@@ -100,10 +100,10 @@ class ServerDialog : public Window, public gcn::ActionListener
     private:
         gcn::TextField *mServerNameField;
         gcn::TextField *mPortField;
-        gcn::Button *mOkButton;
-        gcn::Button *mCancelButton;
+        gcn::Button *mQuitButton;
+        gcn::Button *mConnectButton;
 
-        DropDown *mMostUsedServersDropDown;
+        ListBox *mMostUsedServersDropDown;
         ServersListModel *mMostUsedServersListModel;
 
         ServerInfo *mServerInfo;

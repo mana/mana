@@ -55,12 +55,12 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mPassField = new PasswordField(mLoginData->password);
 
     mKeepCheck = new CheckBox(_("Remember username"), mLoginData->remember);
-    mOkButton = new Button(_("OK"), "ok", this);
-    mCancelButton = new Button(_("Cancel"), "cancel", this);
     mRegisterButton = new Button(_("Register"), "register", this);
+    mServerButton = new Button(_("Select Server"), "server", this);
+    mLoginButton = new Button(_("Login"), "login", this);
 
-    mUserField->setActionEventId("ok");
-    mPassField->setActionEventId("ok");
+    mUserField->setActionEventId("login");
+    mPassField->setActionEventId("login");
 
     mUserField->addKeyListener(this);
     mPassField->addKeyListener(this);
@@ -73,8 +73,8 @@ LoginDialog::LoginDialog(LoginData *loginData):
     place(1, 1, mPassField, 3).setPadding(1);
     place(0, 5, mKeepCheck, 4);
     place(0, 6, mRegisterButton).setHAlign(LayoutCell::LEFT);
-    place(2, 6, mCancelButton);
-    place(3, 6, mOkButton);
+    place(2, 6, mServerButton);
+    place(3, 6, mLoginButton);
     reflowLayout(250, 0);
 
     center();
@@ -85,7 +85,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     else
         mPassField->requestFocus();
 
-    mOkButton->setEnabled(canSubmit());
+    mLoginButton->setEnabled(canSubmit());
 }
 
 LoginDialog::~LoginDialog()
@@ -94,18 +94,19 @@ LoginDialog::~LoginDialog()
 
 void LoginDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok" && canSubmit())
+    if (event.getId() == "login" && canSubmit())
     {
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
         mLoginData->remember = mKeepCheck->isSelected();
         mLoginData->registerLogin = false;
 
-        mOkButton->setEnabled(false);
         mRegisterButton->setEnabled(false);
+        mServerButton->setEnabled(false);
+        mLoginButton->setEnabled(false);
         state = STATE_LOGIN_ATTEMPT;
     }
-    else if (event.getId() == "cancel")
+    else if (event.getId() == "server")
     {
         state = STATE_SWITCH_SERVER;
     }
@@ -120,7 +121,7 @@ void LoginDialog::action(const gcn::ActionEvent &event)
 
 void LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
-    mOkButton->setEnabled(canSubmit());
+    mLoginButton->setEnabled(canSubmit());
 }
 
 bool LoginDialog::canSubmit()

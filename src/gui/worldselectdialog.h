@@ -31,7 +31,7 @@
 #include <vector>
 
 class LoginData;
-class ServerListModel;
+class WorldListModel;
 
 /**
  * The server select dialog.
@@ -58,9 +58,10 @@ class WorldSelectDialog : public Window, public gcn::ActionListener {
         void action(const gcn::ActionEvent &event);
 
     private:
-        ServerListModel *mServerListModel;
-        gcn::ListBox *mServerList;
-        gcn::Button *mOkButton;
+        WorldListModel *mWorldListModel;
+        gcn::ListBox *mWorldList;
+        gcn::Button *mChangeLoginButton;
+        gcn::Button *mChooseWorld;
 };
 
 #endif // WORLD_SELECT_DIALOG_H

@@ -22,6 +22,7 @@
 #include "gui/worldselectdialog.h"
 
 #include "gui/widgets/button.h"
+#include "gui/widgets/layout.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
@@ -40,15 +41,15 @@ extern WorldInfo **server_info;
 /**
  * The list model for the server list.
  */
-class ServerListModel : public gcn::ListModel
+class WorldListModel : public gcn::ListModel
 {
     public:
-        ServerListModel(Worlds worlds):
+        WorldListModel(Worlds worlds):
                 mWorlds(worlds)
         {
         }
 
-        virtual ~ServerListModel() {}
+        virtual ~WorldListModel() {}
 
         int getNumberOfElements()
         {
@@ -67,59 +68,54 @@ class ServerListModel : public gcn::ListModel
 WorldSelectDialog::WorldSelectDialog(Worlds worlds):
     Window(_("Select World"))
 {
-    mServerListModel = new ServerListModel(worlds);
-    mServerList = new ListBox(mServerListModel);
-    ScrollArea *mScrollArea = new ScrollArea(mServerList);
-    mOkButton = new Button(_("OK"), "ok", this);
-    Button *mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mWorldListModel = new WorldListModel(worlds);
+    mWorldList = new ListBox(mWorldListModel);
+    ScrollArea *worldsScroll = new ScrollArea(mWorldList);
+    mChangeLoginButton = new Button(_("Change Login"), "login", this);
+    mChooseWorld = new Button(_("Choose World"), "world", this);
 
-    setContentSize(200, 100);
+    worldsScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mCancelButton->setPosition(
-            200 - mCancelButton->getWidth() - 5,
-            100 - mCancelButton->getHeight() - 5);
-    mOkButton->setPosition(
-            mCancelButton->getX() - mOkButton->getWidth() - 5,
-            100 - mOkButton->getHeight() - 5);
-    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mScrollArea->setDimension(gcn::Rectangle(
-                5, 5, 200 - 2 * 5,
-                100 - 3 * 5 - mCancelButton->getHeight() -
-                mScrollArea->getFrameSize()));
+    place(0, 0, worldsScroll, 3, 5).setPadding(2);
+    place(1, 5, mChangeLoginButton);
+    place(2, 5, mChooseWorld);
 
-    mServerList->setActionEventId("ok");
+    // Make sure the list has enough height
+    getLayout().setRowHeight(0, 60);
 
-    //mServerList->addActionListener(this);
-
-    add(mScrollArea);
-    add(mOkButton);
-    add(mCancelButton);
+    reflowLayout(0, 0);
 
     if (worlds.size() == 0)
         // Disable Ok button
-        mOkButton->setEnabled(false);
+        mChooseWorld->setEnabled(false);
     else
         // Select first server
-        mServerList->setSelected(0);
+        mWorldList->setSelected(0);
 
     center();
     setVisible(true);
-    mOkButton->requestFocus();
+    mChooseWorld->requestFocus();
 }
 
 WorldSelectDialog::~WorldSelectDialog()
 {
-    delete mServerListModel;
+    delete mWorldListModel;
 }
 
 void WorldSelectDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok")
+    if (event.getId() == "world")
     {
-        mOkButton->setEnabled(false);
-        Net::getLoginHandler()->chooseServer(mServerList->getSelected());
-        state = STATE_UPDATE;
+        mChangeLoginButton->setEnabled(false);
+        mChooseWorld->setEnabled(false);
+        Net::getLoginHandler()->chooseServer(mWorldList->getSelected());
+
+        // Check in case netcode moves us forward
+        if (state == STATE_WORLD_SELECT)
+            state = STATE_WORLD_SELECT_ATTEMPT;
     }
-    else if (event.getId() == "cancel")
+    else if (event.getId() == "login")
+    {
         state = STATE_LOGIN;
+    }
 }

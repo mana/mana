@@ -71,8 +71,8 @@ class LoginDialog : public Window, public gcn::ActionListener,
         gcn::TextField *mUserField;
         gcn::TextField *mPassField;
         gcn::CheckBox *mKeepCheck;
-        gcn::Button *mOkButton;
-        gcn::Button *mCancelButton;
+        gcn::Button *mServerButton;
+        gcn::Button *mLoginButton;
         gcn::Button *mRegisterButton;
 
         LoginData *mLoginData;
