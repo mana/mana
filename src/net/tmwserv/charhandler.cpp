@@ -72,6 +72,7 @@ extern ServerInfo gameServer;
 extern ServerInfo chatServer;
 
 CharHandler::CharHandler():
+    mCharSelectDialog(0),
     mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
@@ -145,6 +146,30 @@ void CharHandler::handleMessage(MessageIn &msg)
             }
 
             chars.push_back(info);
+
+            if (mCharSelectDialog)
+            {
+                mCharInfo->select(info.slot);
+
+                LocalPlayer *tempPlayer = new LocalPlayer();
+                tempPlayer->setName(info.name);
+                tempPlayer->setGender(info.gender);
+                tempPlayer->setSprite(Player::HAIR_SPRITE, info.hs * -1,
+                                      ColorDB::get(info.hc));
+                tempPlayer->setLevel(info.level);
+                tempPlayer->setCharacterPoints(info.charPoints);
+                tempPlayer->setCorrectionPoints(info.corrPoints);
+                tempPlayer->setMoney(info.money);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    tempPlayer->setAttributeBase(i, info.attr[i]);
+                }
+
+                mCharInfo->setEntry(tempPlayer);
+
+                mCharSelectDialog->update(info.slot);
+            }
         }
             break;
 
@@ -199,10 +224,20 @@ void CharHandler::handleCharCreateResponse(MessageIn &msg)
                 break;
         }
         new OkDialog(_("Error"), errorMessage);
+
+        if (mCharCreateDialog)
+            mCharCreateDialog->unlock();
+    }
+    else
+    {
+        if (mCharCreateDialog)
+        {
+            mCharCreateDialog->success();
+            mCharCreateDialog->scheduleDelete();
+            mCharCreateDialog = 0;
+        }
     }
 
-    if (mCharCreateDialog)
-        mCharCreateDialog->unlock();
 }
 
 void CharHandler::handleCharSelectResponse(MessageIn &msg)
@@ -258,6 +293,7 @@ void CharHandler::handleCharSelectResponse(MessageIn &msg)
 
 void CharHandler::setCharCreateDialog(CharCreateDialog *window)
 {
+    mCharSelectDialog = window ? window->getSelectDialog() : NULL;
     mCharCreateDialog = window;
 
     if (!mCharCreateDialog) return;

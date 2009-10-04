@@ -28,6 +28,8 @@
 
 #include "gui/widgets/window.h"
 
+#include "gui/charselectdialog.h"
+
 #include <guichan/actionlistener.hpp>
 
 #include <string>
@@ -47,7 +49,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        CharCreateDialog(Window *parent, int slot);
+        CharCreateDialog(CharSelectDialog *parent, int slot);
 
         /**
          * Destructor.
@@ -66,6 +68,14 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 
         void setFixedGender(bool fixed, Gender gender = GENDER_FEMALE);
 
+        /**
+         * Notify the CharSelectDialog the character was created successfully.
+         */
+        void success();
+
+        CharSelectDialog *getSelectDialog()
+        { return mCharSelectDialog; }
+
     private:
         int getDistributedPoints() const;
 
@@ -82,6 +92,8 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         void attemptCharCreate();
 
         void updateHair();
+
+        CharSelectDialog *mCharSelectDialog;
 
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;

@@ -98,6 +98,8 @@ class CharEntry : public Container
         LocalPlayer *getChar() const
         { return mCharacter; }
 
+        void setChar(LocalPlayer *chr);
+
         void requestFocus();
 
         void update();
@@ -262,6 +264,26 @@ void CharSelectDialog::chooseSelected()
     attemptCharSelect();
 }
 
+void CharSelectDialog::update(int slot)
+{
+    if (slot >= 0 && slot < MAX_CHARACTER_COUNT)
+    {
+        mCharInfo->select(slot);
+        mCharEntries[slot]->setChar(mCharInfo->getEntry());
+        mCharEntries[slot]->requestFocus();
+    }
+    else
+    {
+        int slot = mCharInfo->getPos();
+        for (int i = 0; i < MAX_CHARACTER_COUNT; i++)
+        {
+            mCharInfo->select(slot);
+            mCharEntries[slot]->setChar(mCharInfo->getEntry());
+        }
+        mCharInfo->select(slot);
+    }
+}
+
 CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
         mSlot(slot),
         mCharacter(chr),
@@ -281,6 +303,16 @@ CharEntry::CharEntry(CharSelectDialog *m, char slot, LocalPlayer *chr):
 
     h.reflowLayout(65, 120 + mName->getHeight() + mMoney->getHeight() +
                    mButton->getHeight());
+
+    update();
+}
+
+void CharEntry::setChar(LocalPlayer *chr)
+{
+    mCharacter = chr;
+
+    if (chr)
+        mPlayerBox->setPlayer(chr);
 
     update();
 }

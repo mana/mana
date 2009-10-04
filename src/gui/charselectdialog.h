@@ -62,6 +62,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         void chooseSelected();
 
+        void update(int slot = -1);
+
     private:
         /**
          * Communicate character deletion to the server.

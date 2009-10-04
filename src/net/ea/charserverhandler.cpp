@@ -118,6 +118,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             // Close the character create dialog
             if (mCharCreateDialog)
             {
+                mCharCreateDialog->success();
                 mCharCreateDialog->scheduleDelete();
                 mCharCreateDialog = 0;
             }

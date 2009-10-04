@@ -50,8 +50,9 @@
 
 #include <guichan/font.hpp>
 
-CharCreateDialog::CharCreateDialog(Window *parent, int slot):
+CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     Window(_("Create Character"), true, parent),
+    mCharSelectDialog(parent),
     mSlot(slot)
 {
     mPlayer = new Player(0, 0, NULL);
@@ -339,6 +340,11 @@ void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
         mMale->setEnabled(false);
         mFemale->setEnabled(false);
     }
+}
+
+void CharCreateDialog::success()
+{
+    mCharSelectDialog->update(mSlot);
 }
 
 void CharCreateDialog::updateHair()

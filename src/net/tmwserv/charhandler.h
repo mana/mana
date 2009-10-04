@@ -23,6 +23,9 @@
 #define NET_TMWSERV_CHARSERVERHANDLER_H
 
 #include "net/charhandler.h"
+
+#include "gui/charselectdialog.h"
+
 #include "net/messagehandler.h"
 
 class LoginData;
@@ -67,6 +70,7 @@ class CharHandler : public MessageHandler, public Net::CharHandler
         void handleCharSelectResponse(MessageIn &msg);
 
         LockedArray<LocalPlayer*> *mCharInfo;
+        CharSelectDialog *mCharSelectDialog;
         CharCreateDialog *mCharCreateDialog;
 };
 
