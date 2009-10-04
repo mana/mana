@@ -63,7 +63,6 @@ Net::Connection *accountServerConnection = 0;
 
 namespace TmwServ {
 
-std::string userEmail = "";
 std::string netToken = "";
 ServerInfo gameServer;
 ServerInfo chatServer;
@@ -103,8 +102,6 @@ GeneralHandler::GeneralHandler():
 
     ItemDB::setStatsList(stats);
 
-    ChangeEmailDialog::setEmail(&userEmail);
-    RegisterDialog::setEmail(&userEmail);
     RegisterDialog::setGender(NULL);
 }
 

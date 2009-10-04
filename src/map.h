@@ -292,7 +292,7 @@ class Map : public Properties
         /**
          * Gets the tile animation for a specific gid
          */
-        TileAnimation *getAnimationForGid(int gid);
+        TileAnimation *getAnimationForGid(int gid) const;
 
     private:
         /**

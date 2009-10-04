@@ -107,7 +107,6 @@ GeneralHandler::GeneralHandler():
 
     ItemDB::setStatsList(stats);
 
-    RegisterDialog::setEmail(NULL);
     RegisterDialog::setGender(&netToken.sex);
 }
 

@@ -292,13 +292,13 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     MapSprites::const_iterator si = mSprites.begin();
     while (si != mSprites.end())
     {
-        if (*si)
-          // For now, just draw sprites with only one layer.
+        if (Sprite *sprite = *si)
         {
-            if ((*si)->getNumberOfLayers() == 1)
+            // For now, just draw sprites with only one layer.
+            if (sprite->getNumberOfLayers() == 1)
             {
-                (*si)->setAlpha(0.3f);
-                (*si)->draw(graphics, -scrollX, -scrollY);
+                sprite->setAlpha(0.3f);
+                sprite->draw(graphics, -scrollX, -scrollY);
             }
         }
         si++;
@@ -398,7 +398,7 @@ void Map::drawOverlay(Graphics *graphics,
         // Detail 1: only one overlay, higher: all overlays
         if (detail == 1)
             break;
-    };
+    }
 }
 
 class ContainsGidFunctor
@@ -721,13 +721,8 @@ void Map::initializeParticleEffects(Particle *particleEngine)
     }
 }
 
-TileAnimation *Map::getAnimationForGid(int gid)
+TileAnimation *Map::getAnimationForGid(int gid) const
 {
-    std::map<int, TileAnimation*>::iterator i = mTileAnimations.find(gid);
-    if (i == mTileAnimations.end())
-    {
-        return NULL;
-    } else {
-        return i->second;
-    }
+    std::map<int, TileAnimation*>::const_iterator i = mTileAnimations.find(gid);
+    return (i == mTileAnimations.end()) ? NULL : i->second;
 }

@@ -115,7 +115,6 @@ class RegisterDialog : public Window, public gcn::ActionListener,
 
         LoginData *mLoginData;
 
-        static std::string *useEmail;
         static Gender *useGender;
 };
 

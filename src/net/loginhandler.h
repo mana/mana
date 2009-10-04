@@ -36,8 +36,9 @@ class LoginHandler
 {
     public:
         enum OptionalAction {
-            Unregister  = 0x1,
-            ChangeEmail = 0x2
+            Unregister         = 0x1,
+            ChangeEmail        = 0x2,
+            SetEmailOnRegister = 0x4
         };
 
         virtual void setServer(const ServerInfo &server)

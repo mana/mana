@@ -34,6 +34,8 @@ struct LoginData
     std::string newPassword;
     std::string updateHost;
 
+    std::string email;
+
     bool remember;            /**< Whether to store the username. */
     bool registerLogin;       /**< Whether an account is being registered. */
 

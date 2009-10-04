@@ -73,7 +73,6 @@ class ChangeEmailDialog : public Window, public gcn::ActionListener
         WrongDataNoticeListener *mWrongDataNoticeListener;
 
         LoginData *mLoginData;
-        static std::string *emailPointer;
 };
 
 #endif // GUI_CHANGEEMAIL_H

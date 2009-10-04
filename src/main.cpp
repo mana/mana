@@ -1134,7 +1134,7 @@ int main(int argc, char *argv[])
 
                 case STATE_CHANGEEMAIL_ATTEMPT:
                     logger->log("State: CHANGE EMAIL ATTEMPT");
-                    // TODO
+                    Net::getLoginHandler()->changeEmail(loginData.email);
                     break;
 
                 case STATE_CHANGEPASSWORD_ATTEMPT:
