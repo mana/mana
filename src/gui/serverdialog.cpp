@@ -116,8 +116,9 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
     place(1, 0, mServerNameField, 3).setPadding(2);
     place(1, 1, mPortField, 3).setPadding(2);
     place(0, 2, mMostUsedServersDropDown, 4).setPadding(2);
-    place(2, 3, mOkButton);
-    place(3, 3, mCancelButton);
+    // TODO: Find a better way to give the dropdown window more room
+    place(2, 12, mOkButton);
+    place(3, 12, mCancelButton);
     reflowLayout(250, 0);
 
     setLocationRelativeTo(getParent());
