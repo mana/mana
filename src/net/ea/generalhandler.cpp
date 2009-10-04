@@ -66,6 +66,7 @@
 Net::GeneralHandler *generalHandler = NULL;
 
 namespace EAthena {
+
 Token netToken;
 ServerInfo charServer;
 ServerInfo mapServer;

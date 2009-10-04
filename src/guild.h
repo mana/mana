@@ -31,12 +31,12 @@ class Guild : public gcn::ListModel
 {
 public:
     /**
-     * Constructor with guild id passed to it
+     * Constructor with guild id passed to it.
      */
     Guild(short id, short rights);
 
     /**
-     * Set the guild's name
+     * Set the guild's name.
      */
     void setName(const std::string &name)
     {
@@ -44,12 +44,12 @@ public:
     }
 
     /**
-     * Add member to the list
+     * Adds member to the list.
      */
     void addMember(const std::string &name);
 
     /**
-     * Get the name of the guild
+     * Get the name of the guild.
      * @return returns name of the guild
      */
     const std::string &getName() const
@@ -58,7 +58,7 @@ public:
     }
 
     /**
-     * Get the id of the guild
+     * Get the id of the guild.
      * @return Returns the id of the guild
      */
     short getId() const
@@ -67,12 +67,12 @@ public:
     }
 
     /**
-     * Remove member from the guild
+     * Removes a member from the guild.
      */
     void removeMember(const std::string &name);
 
     /**
-     * Get size of members list
+     * Get size of members list.
      * @return Returns the number of members in the guild.
      */
     int getNumberOfElements() {
@@ -80,18 +80,18 @@ public:
     }
 
     /**
-     * Get member at i
+     * Get member at \a index.
      * @return Returns the name of member.
      */
-    std::string getElementAt(int i) {
-        return mMembers[i];
+    std::string getElementAt(int index) {
+        return mMembers[index];
     }
 
     /**
-     * Get whether user can invite users to this guild
+     * Get whether user can invite users to this guild.
      * @return Returns true if user can invite users
      */
-    bool getInviteRights()
+    bool getInviteRights() const
     {
         return mCanInviteUsers;
     }

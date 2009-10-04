@@ -56,7 +56,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
 
     mKeepCheck = new CheckBox(_("Remember username"), mLoginData->remember);
     mRegisterButton = new Button(_("Register"), "register", this);
-    mServerButton = new Button(_("Select Server"), "server", this);
+    mServerButton = new Button(_("Change Server"), "server", this);
     mLoginButton = new Button(_("Login"), "login", this);
 
     mUserField->setActionEventId("login");
