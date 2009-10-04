@@ -908,6 +908,10 @@ int main(int argc, char *argv[])
 
             state = STATE_GAME;
         }
+        else if (state == STATE_CONNECT_SERVER && oldstate == STATE_CHOOSE_SERVER)
+        {
+            Net::connectToServer(currentServer);
+        }
         else if (state == STATE_CONNECT_SERVER &&
                  oldstate != STATE_CHOOSE_SERVER &&
                  Net::getLoginHandler()->isConnected())
@@ -954,8 +958,6 @@ int main(int argc, char *argv[])
                         currentDialog = new ServerDialog(&currentServer);
                     } else {
                         state = STATE_CONNECT_SERVER;
-
-                        Net::connectToServer(currentServer);
 
                         // Reset options so that cancelling or connect
                         // timeout will show the server dialog.
