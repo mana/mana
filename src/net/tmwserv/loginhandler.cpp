@@ -236,7 +236,8 @@ void LoginHandler::handleLoginResponse(MessageIn &msg)
                 errorMessage = _("Server is full.");
                 break;
             case LOGIN_INVALID_TIME:
-                errorMessage = _("Too fast after previous login.");
+                errorMessage = _("Login attempt too soon after previous "
+                                 "attempt.");
                 break;
             default:
                 errorMessage = _("Unknown error.");
