@@ -134,7 +134,6 @@ void Net::connectToServer(const ServerInfo &server)
 
     if (networkLoaded)
     {
-        printf("Reload!\n");
         Net::getGeneralHandler()->reload();
     }
     else
