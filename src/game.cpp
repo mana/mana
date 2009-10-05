@@ -147,7 +147,15 @@ EffectManager *effectManager = NULL;
 
 ChatTab *localChatTab = NULL;
 
-const int MAX_TIME = 10000;
+/**
+ * Tells the max tick value,
+ * setting it back to zero (and start again).
+ */
+const int MAX_TICK_VALUE = 10000;
+/**
+ * Set the milliseconds value of a tick time.
+ */
+const int MILLISECONDS_IN_A_TICK = 10;
 
 /**
  * Listener used for exiting handling.
@@ -167,16 +175,19 @@ namespace {
 
 /**
  * Advances game logic counter.
+ * Called every 10 milliseconds by SDL_AddTimer()
+ * @see MILLISECONDS_IN_A_TICK value
  */
 Uint32 nextTick(Uint32 interval, void *param)
 {
     tick_time++;
-    if (tick_time == MAX_TIME) tick_time = 0;
+    if (tick_time == MAX_TICK_VALUE) tick_time = 0;
     return interval;
 }
 
 /**
  * Updates fps.
+ * Called every seconds by SDL_AddTimer()
  */
 Uint32 nextSecond(Uint32 interval, void *param)
 {
@@ -186,12 +197,17 @@ Uint32 nextSecond(Uint32 interval, void *param)
     return interval;
 }
 
+/**
+ * @return the elapsed time in milliseconds
+ * between two tick values.
+ */
 int get_elapsed_time(int start_time)
 {
     if (start_time <= tick_time)
-        return (tick_time - start_time) * 10;
+        return (tick_time - start_time) * MILLISECONDS_IN_A_TICK;
     else
-        return (tick_time + (MAX_TIME - start_time)) * 10;
+        return (tick_time + (MAX_TICK_VALUE - start_time))
+                * MILLISECONDS_IN_A_TICK;
 }
 
 /**
@@ -302,7 +318,7 @@ Game::Game():
 
     // Initialize logic and seconds counters
     tick_time = 0;
-    mLogicCounterId = SDL_AddTimer(10, nextTick, NULL);
+    mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, NULL);
     mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
 
     // Initialize frame limiting
@@ -421,7 +437,7 @@ void Game::optionChanged(const std::string &name)
     mMinFrameTime = fpsLimit ? 1000 / fpsLimit : 0;
 
     // Reset draw time to current time
-    mDrawTime = tick_time * 10;
+    mDrawTime = tick_time * MILLISECONDS_IN_A_TICK;
 }
 
 void Game::logic()
@@ -429,7 +445,7 @@ void Game::logic()
     // mDrawTime has a higher granularity than gameTime in order to be able to
     // work with minimum frame durations in milliseconds.
     int gameTime = tick_time;
-    mDrawTime = tick_time * 10;
+    mDrawTime = tick_time * MILLISECONDS_IN_A_TICK;
 
     while (!done)
     {
@@ -461,18 +477,18 @@ void Game::logic()
                 mDrawTime += mMinFrameTime;
 
                 // Make sure to wrap mDrawTime, since tick_time will wrap.
-                if (mDrawTime > MAX_TIME * 10)
-                    mDrawTime -= MAX_TIME * 10;
+                if (mDrawTime > MAX_TICK_VALUE * MILLISECONDS_IN_A_TICK)
+                    mDrawTime -= MAX_TICK_VALUE * MILLISECONDS_IN_A_TICK;
             }
             else
             {
-                SDL_Delay(10);
+                SDL_Delay(MILLISECONDS_IN_A_TICK);
             }
         }
         else
         {
-            SDL_Delay(10);
-            mDrawTime = tick_time * 10;
+            SDL_Delay(MILLISECONDS_IN_A_TICK);
+            mDrawTime = tick_time * MILLISECONDS_IN_A_TICK;
         }
 
         // Handle network stuff
@@ -959,29 +975,8 @@ void Game::handleInput()
             direction |= Being::RIGHT;
         }
 
-#ifdef TMWSERV_SUPPORT
-        // First if player is pressing key for the direction he is already
-        // going
-        if (direction == player_node->getWalkingDir())
-        {
-            player_node->setWalkingDir(direction);
-        }
-        // Else if he is pressing a key, and its different from what he has
-        // been pressing, stop (do not send this stop to the server) and
-        // start in the new direction
-        else if (direction && direction != player_node->getWalkingDir())
-        {
-            player_node->stopWalking(false);
-            player_node->setWalkingDir(direction);
-        }
-        // Else, he is not pressing a key, stop (sending to server)
-        else
-        {
-            player_node->stopWalking(true);
-        }
-#else
         player_node->setWalkingDir(direction);
-#endif
+
         // Attacking monsters
         if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
            (joystick && joystick->buttonPressed(0)))
