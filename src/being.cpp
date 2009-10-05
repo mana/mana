@@ -213,7 +213,8 @@ void Being::setPath(const Path &path)
 
 void Being::setSpeech(const std::string &text, int time)
 {
-    mSpeech = text;
+    // Remove colors
+    mSpeech = removeColors(text);
 
     // Trim whitespace
     trim(mSpeech);

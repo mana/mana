@@ -105,3 +105,15 @@ std::string &removeBadChars(std::string &str)
 
     return str;
 }
+
+std::string removeColors(std::string msg)
+{
+    for (unsigned int f = 0; f < msg.length() - 2 && msg.length() > 2; f++)
+    {
+        while (msg.length() > f + 2 && msg.at(f) == '#' && msg.at(f + 1) == '#')
+        {
+            msg = msg.erase(f, 3);
+        }
+    }
+    return msg;
+}
