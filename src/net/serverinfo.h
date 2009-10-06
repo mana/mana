@@ -27,11 +27,13 @@
 class ServerInfo
 {
 public:
+    std::string name;
     std::string hostname;
     unsigned short port;
 
     void clear()
     {
+        name.clear();
         hostname.clear();
         port = 0;
     }
@@ -39,6 +41,11 @@ public:
     bool operator==(const ServerInfo &other)
     {
         return (hostname == other.hostname && port == other.port);
+    }
+
+    bool operator!=(const ServerInfo &other)
+    {
+        return (hostname != other.hostname || port != other.port);
     }
 };
 

@@ -77,6 +77,12 @@
 
 #define MAX_CHARACTER_COUNT 3
 
+#ifdef TWMSERV_SUPPORT
+#define DEFAULT_PORT 9601
+#else
+#define DEFAULT_PORT 6901
+#endif
+
 /*
  * Client different States
  */

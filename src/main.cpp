@@ -121,12 +121,6 @@
 #include <sys/stat.h>
 #endif
 
-#ifdef TWMSERV_SUPPORT
-#define DEFAULT_PORT 9601
-#else
-#define DEFAULT_PORT 6901
-#endif
-
 namespace
 {
     struct SetupListener : public gcn::ActionListener

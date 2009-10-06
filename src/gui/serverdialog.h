@@ -106,8 +106,11 @@ class ServerDialog : public Window,
         void valueChanged(const gcn::SelectionEvent &event);
 
     private:
+        void loadServerlist();
+
         gcn::TextField *mServerNameField;
         gcn::TextField *mPortField;
+        gcn::Label  *mServerDescription;
         gcn::Button *mQuitButton;
         gcn::Button *mConnectButton;
 
