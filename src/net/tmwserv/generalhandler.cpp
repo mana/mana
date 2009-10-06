@@ -101,8 +101,6 @@ GeneralHandler::GeneralHandler():
     stats.push_back(ItemDB::Stat("will", N_("Willpower %+d")));
 
     ItemDB::setStatsList(stats);
-
-    RegisterDialog::setGender(NULL);
 }
 
 void GeneralHandler::load()
