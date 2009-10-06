@@ -21,6 +21,7 @@
 
 #include "net/ea/gamehandler.h"
 
+#include "net/ea/loginhandler.h"
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
 
@@ -41,7 +42,7 @@ Net::GameHandler *gameHandler;
 extern Game *game;
 
 namespace EAthena {
-extern Token netToken;
+
 extern ServerInfo mapServer;
 
 GameHandler::GameHandler()
@@ -91,16 +92,19 @@ void GameHandler::connect()
 {
     mNetwork->connect(mapServer);
 
+    const Token &token =
+            static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
+
     // Send login infos
     MessageOut outMsg(CMSG_MAP_SERVER_CONNECT);
-    outMsg.writeInt32(netToken.account_ID);
+    outMsg.writeInt32(token.account_ID);
     outMsg.writeInt32(player_node->getId());
-    outMsg.writeInt32(netToken.session_ID1);
-    outMsg.writeInt32(netToken.session_ID2);
-    outMsg.writeInt8((netToken.sex == GENDER_MALE) ? 1 : 0);
+    outMsg.writeInt32(token.session_ID1);
+    outMsg.writeInt32(token.session_ID2);
+    outMsg.writeInt8((token.sex == GENDER_MALE) ? 1 : 0);
 
     // Change the player's ID to the account ID to match what eAthena uses
-    player_node->setId(netToken.account_ID);
+    player_node->setId(token.account_ID);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

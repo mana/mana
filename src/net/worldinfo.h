@@ -25,13 +25,13 @@
 #include <string>
 #include <vector>
 
-typedef struct {
+struct WorldInfo {
     int address;
     std::string name;
     short port;
     short online_users;
     std::string updateHost;
-} WorldInfo;
+};
 
 typedef std::vector<WorldInfo*> Worlds;
 

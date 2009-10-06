@@ -80,20 +80,6 @@ class RegisterDialog : public Window, public gcn::ActionListener,
          */
         void keyPressed(gcn::KeyEvent &keyEvent);
 
-        /**
-         * Tell the dialog to show an email field. Value stored in the passed
-         * string pointer. Default email from pointer. Passing NULL disables
-         * the feature.
-         */
-        static void setEmail(std::string *email);
-
-        /**
-         * Tell the dialog to show a gender selection. Value stored in the
-         * passed Gender pointer. Default Gender from pointer. Passing NULL
-         * disables the feature.
-         */
-        static void setGender(Gender *gender);
-
     private:
         /**
          * Returns whether submit can be enabled. This is true in the register
@@ -114,8 +100,6 @@ class RegisterDialog : public Window, public gcn::ActionListener,
         WrongDataNoticeListener *mWrongDataNoticeListener;
 
         LoginData *mLoginData;
-
-        static Gender *useGender;
 };
 
 #endif

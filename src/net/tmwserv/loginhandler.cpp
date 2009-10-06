@@ -351,7 +351,7 @@ void LoginHandler::unregisterAccount(const std::string &username,
     Net::AccountServer::Account::unregister(username, password);
 }
 
-Worlds LoginHandler::getWorlds()
+Worlds LoginHandler::getWorlds() const
 {
     return Worlds();
 }

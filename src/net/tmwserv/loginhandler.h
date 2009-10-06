@@ -64,7 +64,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void unregisterAccount(const std::string &username,
                                const std::string &password);
 
-        Worlds getWorlds();
+        Worlds getWorlds() const;
 
     private:
         void handleLoginResponse(MessageIn &msg);

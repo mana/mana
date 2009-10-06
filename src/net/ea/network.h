@@ -53,7 +53,7 @@ class Network
 
         void disconnect();
 
-        ServerInfo getServer()
+        ServerInfo getServer() const
         { return mServer; }
 
         void registerHandler(MessageHandler *handler);

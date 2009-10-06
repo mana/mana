@@ -21,13 +21,14 @@
 
 #include "net/ea/charserverhandler.h"
 
-#include "net/ea/generalhandler.h"
+#include "net/ea/loginhandler.h"
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
 
 #include "net/logindata.h"
 #include "net/messagein.h"
 #include "net/messageout.h"
+#include "net/net.h"
 
 #include "game.h"
 #include "log.h"
@@ -44,7 +45,7 @@
 Net::CharHandler *charHandler;
 
 namespace EAthena {
-extern Token netToken;
+
 extern ServerInfo charServer;
 extern ServerInfo mapServer;
 
@@ -177,8 +178,11 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
 LocalPlayer *CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
+    const Token &token =
+            static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
+
     LocalPlayer *tempPlayer = new LocalPlayer(msg.readInt32(), 0, NULL);
-    tempPlayer->setGender(netToken.sex);
+    tempPlayer->setGender(token.sex);
 
     tempPlayer->setExp(msg.readInt32());
     tempPlayer->setMoney(msg.readInt32());
@@ -241,8 +245,11 @@ void CharServerHandler::setCharCreateDialog(CharCreateDialog *window)
     attributes.push_back(_("Dexterity:"));
     attributes.push_back(_("Luck:"));
 
+    const Token &token =
+            static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
+
     mCharCreateDialog->setAttributes(attributes, 30, 1, 9);
-    mCharCreateDialog->setFixedGender(true, netToken.sex);
+    mCharCreateDialog->setFixedGender(true, token.sex);
 }
 
 void CharServerHandler::getCharacters()
@@ -279,16 +286,19 @@ void CharServerHandler::deleteCharacter(int slot, LocalPlayer* character)
 
 void CharServerHandler::connect()
 {
+    const Token &token =
+            static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
+
     mNetwork->disconnect();
     mNetwork->connect(charServer);
     MessageOut outMsg(CMSG_CHAR_SERVER_CONNECT);
-    outMsg.writeInt32(netToken.account_ID);
-    outMsg.writeInt32(netToken.session_ID1);
-    outMsg.writeInt32(netToken.session_ID2);
+    outMsg.writeInt32(token.account_ID);
+    outMsg.writeInt32(token.session_ID1);
+    outMsg.writeInt32(token.session_ID2);
     // [Fate] The next word is unused by the old char server, so we squeeze in
     //        tmw client version information
     outMsg.writeInt16(CLIENT_PROTOCOL_VERSION);
-    outMsg.writeInt8((netToken.sex == GENDER_MALE) ? 1 : 0);
+    outMsg.writeInt8((token.sex == GENDER_MALE) ? 1 : 0);
 
     // We get 4 useless bytes before the real answer comes in (what are these?)
     mNetwork->skip(4);

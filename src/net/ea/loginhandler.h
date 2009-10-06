@@ -47,7 +47,7 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void disconnect();
 
         int supportedOptionalActions() const
-        { return 0; }
+        { return SetGenderOnRegister; }
 
         void loginAccount(LoginData *loginData);
 
@@ -66,13 +66,18 @@ class LoginHandler : public MessageHandler, public Net::LoginHandler
         void unregisterAccount(const std::string &username,
                                const std::string &password);
 
-        Worlds getWorlds();
+        Worlds getWorlds() const;
+        void clearWorlds();
+
+        const Token &getToken() const { return mToken; }
 
     private:
         void sendLoginRegister(const std::string &username,
                                const std::string &password);
 
         std::string mUpdateHost;
+        Worlds mWorlds;
+        Token mToken;
 };
 
 } // namespace EAthena

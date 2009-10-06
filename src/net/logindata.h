@@ -36,6 +36,8 @@ struct LoginData
 
     std::string email;
 
+    Gender gender;
+
     bool remember;            /**< Whether to store the username. */
     bool registerLogin;       /**< Whether an account is being registered. */
 
@@ -45,6 +47,8 @@ struct LoginData
         password.clear();
         newPassword.clear();
         updateHost.clear();
+        email.clear();
+        gender = GENDER_UNSPECIFIED;
     }
 };
 

@@ -38,9 +38,8 @@
 Net::LoginHandler *loginHandler;
 
 namespace EAthena {
-extern Token netToken;
+
 extern ServerInfo charServer;
-extern Worlds worlds;
 
 LoginHandler::LoginHandler()
 {
@@ -107,16 +106,16 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Skip the length word
             msg.skip(2);
 
-            delete_all(worlds);
+            clearWorlds();
+
             worldCount = (msg.getLength() - 47) / 32;
 
-            netToken.session_ID1 = msg.readInt32();
-            netToken.account_ID = msg.readInt32();
-            netToken.session_ID2 = msg.readInt32();
+            mToken.session_ID1 = msg.readInt32();
+            mToken.account_ID = msg.readInt32();
+            mToken.session_ID2 = msg.readInt32();
             msg.skip(30);                           // unknown
-            netToken.sex = msg.readInt8() ? GENDER_MALE : GENDER_FEMALE;
+            mToken.sex = msg.readInt8() ? GENDER_MALE : GENDER_FEMALE;
 
-            worlds.clear();
             for (int i = 0; i < worldCount; i++)
             {
                 WorldInfo *world = new WorldInfo;
@@ -133,7 +132,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         ipToString(world->address),
                         world->port);
 
-                worlds.push_back(world);
+                mWorlds.push_back(world);
             }
             state = STATE_WORLD_SELECT;
             break;
@@ -236,12 +235,12 @@ void LoginHandler::changePassword(const std::string &username,
 
 void LoginHandler::chooseServer(unsigned int server)
 {
-    if (server >= worlds.size())
+    if (server >= mWorlds.size())
         return;
 
     charServer.clear();
-    charServer.hostname = ipToString(worlds[server]->address);
-    charServer.port = worlds[server]->port;
+    charServer.hostname = ipToString(mWorlds[server]->address);
+    charServer.port = mWorlds[server]->port;
 
     state = STATE_UPDATE;
 }
@@ -249,7 +248,7 @@ void LoginHandler::chooseServer(unsigned int server)
 void LoginHandler::registerAccount(LoginData *loginData)
 {
     std::string username = loginData->username;
-    username.append((netToken.sex == GENDER_FEMALE) ? "_F" : "_M");
+    username.append((loginData->gender == GENDER_FEMALE) ? "_F" : "_M");
 
     sendLoginRegister(username, loginData->password);
 }
@@ -277,9 +276,15 @@ void LoginHandler::sendLoginRegister(const std::string &username,
     outMsg.writeInt8(0x03);
 }
 
-Worlds LoginHandler::getWorlds()
+Worlds LoginHandler::getWorlds() const
 {
-    return worlds;
+    return mWorlds;
+}
+
+void LoginHandler::clearWorlds()
+{
+    delete_all(mWorlds);
+    mWorlds.clear();
 }
 
 } // namespace EAthena

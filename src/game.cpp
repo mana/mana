@@ -161,8 +161,9 @@ const int MILLISECONDS_IN_A_TICK = 10;
  * Listener used for exiting handling.
  */
 namespace {
-    struct ExitListener : public gcn::ActionListener
+    class ExitListener : public gcn::ActionListener
     {
+    public:
         void action(const gcn::ActionEvent &event)
         {
             if (event.getId() == "yes" || event.getId() == "ok")

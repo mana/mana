@@ -35,16 +35,22 @@ namespace Net {
 class LoginHandler
 {
     public:
+        /**
+         * This enum describes options specific to either eAthena or tmwserv.
+         * By querying for these flags, the GUI can adapt to the current
+         * server type dynamically.
+         */
         enum OptionalAction {
-            Unregister         = 0x1,
-            ChangeEmail        = 0x2,
-            SetEmailOnRegister = 0x4
+            Unregister          = 0x1,
+            ChangeEmail         = 0x2,
+            SetEmailOnRegister  = 0x4,
+            SetGenderOnRegister = 0x8
         };
 
-        virtual void setServer(const ServerInfo &server)
+        void setServer(const ServerInfo &server)
         { mServer = server; }
 
-        virtual ServerInfo getServer()
+        ServerInfo getServer() const
         { return mServer; }
 
         virtual void connect() = 0;
@@ -53,6 +59,9 @@ class LoginHandler
 
         virtual void disconnect() = 0;
 
+        /**
+         * @see OptionalAction
+         */
         virtual int supportedOptionalActions() const = 0;
 
         virtual void loginAccount(LoginData *loginData) = 0;
@@ -72,7 +81,7 @@ class LoginHandler
         virtual void unregisterAccount(const std::string &username,
                                        const std::string &password) = 0;
 
-        virtual Worlds getWorlds() = 0;
+        virtual Worlds getWorlds() const = 0;
 
     protected:
         ServerInfo mServer;

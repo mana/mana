@@ -55,7 +55,6 @@ class GameHandler : public MessageHandler, public Net::GameHandler
         void ping(int tick);
 
         void clear();
-
 };
 
 } // namespace EAthena

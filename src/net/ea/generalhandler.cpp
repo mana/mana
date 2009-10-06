@@ -29,7 +29,6 @@
 
 #include "net/ea/network.h"
 #include "net/ea/protocol.h"
-#include "net/ea/token.h"
 
 #include "net/ea/adminhandler.h"
 #include "net/ea/beinghandler.h"
@@ -67,10 +66,8 @@ Net::GeneralHandler *generalHandler = NULL;
 
 namespace EAthena {
 
-Token netToken;
 ServerInfo charServer;
 ServerInfo mapServer;
-Worlds worlds;
 
 GeneralHandler::GeneralHandler():
     mAdminHandler(new AdminHandler),
@@ -106,8 +103,6 @@ GeneralHandler::GeneralHandler():
     stats.push_back(ItemDB::Stat("luck", N_("Luck %+d")));
 
     ItemDB::setStatsList(stats);
-
-    RegisterDialog::setGender(&netToken.sex);
 }
 
 GeneralHandler::~GeneralHandler()
@@ -179,7 +174,8 @@ void GeneralHandler::reload()
 {
     if (mNetwork)
         mNetwork->disconnect();
-    worlds.clear();
+
+    static_cast<LoginHandler*>(mLoginHandler.get())->clearWorlds();
 }
 
 void GeneralHandler::unload()

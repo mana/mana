@@ -24,7 +24,8 @@
 #ifndef NET_EA_TOKEN_H
 #define NET_EA_TOKEN_H
 
-typedef struct {
+struct Token
+{
     int account_ID;
     int session_ID1;
     int session_ID2;
@@ -37,6 +38,6 @@ typedef struct {
         session_ID2 = 0;
         sex = GENDER_UNSPECIFIED;
     }
-} Token;
+};
 
 #endif // NET_EA_TOKEN_H

@@ -54,11 +54,11 @@ void WrongDataNoticeListener::action(const gcn::ActionEvent &event)
         mTarget->requestFocus();
 }
 
-Gender *RegisterDialog::useGender = NULL;
-
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window(_("Register")),
     mEmailField(0),
+    mMaleButton(0),
+    mFemaleButton(0),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
@@ -70,8 +70,6 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mUserField = new TextField(loginData->username);
     mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField;
-    mMaleButton = new RadioButton(_("Male"), "sex", true);
-    mFemaleButton = new RadioButton(_("Female"), "sex", false);
     mRegisterButton = new Button(_("Register"), "register", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
@@ -81,8 +79,10 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     place(0, 1, passwordLabel);
     place(0, 2, confirmLabel);
 
-    if (useGender)
+    if (optionalActions & Net::LoginHandler::SetGenderOnRegister)
     {
+        mMaleButton = new RadioButton(_("Male"), "sex", true);
+        mFemaleButton = new RadioButton(_("Female"), "sex", false);
         place(1, 3, mMaleButton);
         place(2, 3, mFemaleButton);
     }
@@ -213,9 +213,9 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
-            if (useGender)
-                *useGender = mFemaleButton->isSelected() ? GENDER_FEMALE :
-                                                           GENDER_MALE;
+            if (mFemaleButton)
+                mLoginData->gender = mFemaleButton->isSelected() ?
+                                     GENDER_FEMALE : GENDER_MALE;
             if (mEmailField)
                 mLoginData->email = mEmailField->getText();
             mLoginData->registerLogin = true;
@@ -228,11 +228,6 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 void RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
     mRegisterButton->setEnabled(canSubmit());
-}
-
-void RegisterDialog::setGender(Gender *gender)
-{
-    useGender = gender;
 }
 
 bool RegisterDialog::canSubmit() const

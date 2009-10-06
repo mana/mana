@@ -123,8 +123,9 @@
 
 namespace
 {
-    struct SetupListener : public gcn::ActionListener
+    class SetupListener : public gcn::ActionListener
     {
+    public:
         /**
          * Called when receiving actions from widget.
          */
@@ -661,24 +662,27 @@ static void loadUpdates()
     }
 }
 
-struct ErrorListener : public gcn::ActionListener
+class ErrorListener : public gcn::ActionListener
 {
+public:
     void action(const gcn::ActionEvent &event)
     {
         state = STATE_CHOOSE_SERVER;
     }
 } errorListener;
 
-struct AccountListener : public gcn::ActionListener
+class AccountListener : public gcn::ActionListener
 {
+public:
     void action(const gcn::ActionEvent &event)
     {
         state = STATE_CHAR_SELECT;
     }
 } accountListener;
 
-struct LoginListener : public gcn::ActionListener
+class LoginListener : public gcn::ActionListener
 {
+public:
     void action(const gcn::ActionEvent &event)
     {
         state = STATE_LOGIN;
