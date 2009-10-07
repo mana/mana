@@ -210,15 +210,15 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "change_password")
     {
-        new ChangePasswordDialog(this, mLoginData);
+        state = STATE_CHANGEPASSWORD;
     }
     else if (event.getId() == "change_email")
     {
-        new ChangeEmailDialog(this, mLoginData);
+        state = STATE_CHANGEEMAIL;
     }
     else if (event.getId() == "unregister")
     {
-        new UnRegisterDialog(this, mLoginData);
+        state = STATE_UNREGISTER;
     }
 }
 

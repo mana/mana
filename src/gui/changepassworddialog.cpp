@@ -41,9 +41,8 @@
 #include <string>
 #include <sstream>
 
-ChangePasswordDialog::ChangePasswordDialog(Window *parent,
-                                           LoginData *loginData):
-    Window(_("Change Password"), true, parent),
+ChangePasswordDialog::ChangePasswordDialog(LoginData *loginData):
+    Window(_("Change Password"), true),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
@@ -66,7 +65,7 @@ ChangePasswordDialog::ChangePasswordDialog(Window *parent,
     place(2, 6, mChangePassButton);
     reflowLayout(200);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mOldPassField->requestFocus();
 
@@ -84,7 +83,7 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        scheduleDelete();
+        state = STATE_CHAR_SELECT;
     }
     else if (event.getId() == "change_password")
     {
@@ -154,7 +153,6 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
             mLoginData->password = oldPassword;
             mLoginData->newPassword = newFirstPass;
             state = STATE_CHANGEPASSWORD_ATTEMPT;
-            scheduleDelete();
         }
     }
 }

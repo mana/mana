@@ -43,6 +43,8 @@
 #include "gui/widgets/label.h"
 #include "gui/widgets/progressbar.h"
 
+#include "gui/changeemaildialog.h"
+#include "gui/changepassworddialog.h"
 #include "gui/charselectdialog.h"
 #include "gui/connectiondialog.h"
 #include "gui/gui.h"
@@ -55,6 +57,7 @@
 #include "gui/sdlinput.h"
 #include "gui/serverdialog.h"
 #include "gui/setup.h"
+#include "gui/unregisterdialog.h"
 #include "gui/updatewindow.h"
 #include "gui/worldselectdialog.h"
 
@@ -923,7 +926,7 @@ int main(int argc, char *argv[])
                 loadUpdates();
             }
 
-            //printf("State change: %d to %d\n", oldstate, state);
+            printf("State change: %d to %d\n", oldstate, state);
 
             oldstate = state;
 
@@ -940,7 +943,7 @@ int main(int argc, char *argv[])
 
             switch (state) {
                 case STATE_CHOOSE_SERVER:
-                    logger->log("State: CHOOSE_SERVER");
+                    logger->log("State: CHOOSE SERVER");
 
                     // Don't allow an alpha opacity
                     // lower than the default value
@@ -962,28 +965,8 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_CONNECT_SERVER:
-                    logger->log("State: CONNECT_SERVER");
+                    logger->log("State: CONNECT SERVER");
                     currentDialog = new ConnectionDialog(STATE_SWITCH_SERVER);
-                    break;
-
-                case STATE_UPDATE:
-                    if (options.skipUpdate)
-                    {
-                        state = STATE_LOAD_DATA;
-                    }
-                    else
-                    {
-                        // Determine which source to use for the update host
-                        if (!options.updateHost.empty())
-                            updateHost = options.updateHost;
-                        else
-                            updateHost = loginData.updateHost;
-
-                        setUpdatesDir();
-                        logger->log("State: UPDATE");
-                        currentDialog = new UpdaterWindow(updateHost,
-                                homeDir + "/" + updatesDir);
-                    }
                     break;
 
                 case STATE_LOGIN:
@@ -1004,31 +987,8 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_LOGIN_ATTEMPT:
+                    logger->log("State: LOGIN ATTEMPT");
                     accountLogin(&loginData);
-                    break;
-
-                case STATE_LOAD_DATA:
-                    logger->log("State: LOAD DATA");
-
-                    // Add customdata directory
-                    ResourceManager::getInstance()->searchAndAddArchives(
-                            "customdata/",
-                            "zip",
-                            false);
-
-                    // Load XML databases
-                    ColorDB::load();
-                    ItemDB::load();
-                    Being::load(); // Hairstyles
-                    MonsterDB::load();
-                    NPCDB::load();
-                    EmoteDB::load();
-                    StatusEffect::load();
-                    Units::loadUnits();
-
-                    desktop->reloadWallpaper();
-
-                    state = STATE_GET_CHARACTERS;
                     break;
 
                 case STATE_WORLD_SELECT:
@@ -1059,55 +1019,61 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_WORLD_SELECT_ATTEMPT:
-                    logger->log("State: Attempting world selection");
+                    logger->log("State: WORLD SELECT ATTEMPT");
                     currentDialog = new ConnectionDialog(STATE_WORLD_SELECT);
                     break;
 
-                case STATE_LOGIN_ERROR:
-                    logger->log("State: LOGIN ERROR");
-                    currentDialog = new OkDialog(_("Error"), errorMessage);
-                    currentDialog->addActionListener(&loginListener);
-                    currentDialog = NULL; // OkDialog deletes itself
+                case STATE_UPDATE:
+                    if (options.skipUpdate)
+                    {
+                        state = STATE_LOAD_DATA;
+                    }
+                    else
+                    {
+                        // Determine which source to use for the update host
+                        if (!options.updateHost.empty())
+                            updateHost = options.updateHost;
+                        else
+                            updateHost = loginData.updateHost;
+
+                        setUpdatesDir();
+                        logger->log("State: UPDATE");
+                        currentDialog = new UpdaterWindow(updateHost,
+                                homeDir + "/" + updatesDir);
+                    }
                     break;
 
-                case STATE_SWITCH_SERVER:
-                    logger->log("State: SWITCH SERVER");
+                case STATE_LOAD_DATA:
+                    logger->log("State: LOAD DATA");
 
-#ifdef TMWSERV_SUPPORT
-                    gameServerConnection->disconnect();
-                    chatServerConnection->disconnect();
-                    accountServerConnection->disconnect();
-#endif
+                    // Add customdata directory
+                    ResourceManager::getInstance()->searchAndAddArchives(
+                            "customdata/",
+                            "zip",
+                            false);
 
-                    state = STATE_CHOOSE_SERVER;
-                    break;
+                    // Load XML databases
+                    ColorDB::load();
+                    ItemDB::load();
+                    Being::load(); // Hairstyles
+                    MonsterDB::load();
+                    NPCDB::load();
+                    EmoteDB::load();
+                    StatusEffect::load();
+                    Units::loadUnits();
 
-                case STATE_SWITCH_LOGIN:
-                    logger->log("State: SWITCH LOGIN");
+                    desktop->reloadWallpaper();
 
-                    Net::getLoginHandler()->logout();
-
-                    state = STATE_LOGIN;
-                    break;
-
-                case STATE_REGISTER:
-                    logger->log("State: REGISTER");
-                    currentDialog = new RegisterDialog(&loginData);
-                    break;
-
-                case STATE_REGISTER_ATTEMPT:
-                    logger->log("Username is %s", loginData.username.c_str());
-
-                    Net::getCharHandler()->setCharInfo(&charInfo);
-                    Net::getLoginHandler()->registerAccount(&loginData);
+                    state = STATE_GET_CHARACTERS;
                     break;
 
                 case STATE_GET_CHARACTERS:
+                    logger->log("State: GET CHARACTERS");
                     Net::getCharHandler()->getCharacters();
                     break;
 
                 case STATE_CHAR_SELECT:
-                    logger->log("State: CHAR_SELECT");
+                    logger->log("State: CHAR SELECT");
                     // Don't allow an alpha opacity
                     // lower than the default value
                     SkinLoader::instance()->setMinimumOpacity(0.8f);
@@ -1125,71 +1091,8 @@ int main(int argc, char *argv[])
 
                     break;
 
-                case STATE_CHANGEEMAIL:
-                    logger->log("State: CHANGE EMAIL");
-                    // TODO
-                    break;
-
-                case STATE_CHANGEEMAIL_ATTEMPT:
-                    logger->log("State: CHANGE EMAIL ATTEMPT");
-                    Net::getLoginHandler()->changeEmail(loginData.email);
-                    break;
-
-                case STATE_CHANGEPASSWORD_ATTEMPT:
-                    logger->log("State: CHANGE PASSWORD ATTEMPT");
-                    Net::getLoginHandler()->changePassword(loginData.username,
-                                                loginData.password,
-                                                loginData.newPassword);
-                    break;
-
-                case STATE_CHANGEPASSWORD:
-                    logger->log("State: CHANGE PASSWORD");
-                    currentDialog = new OkDialog(_("Password Change"),
-                            _("Password changed successfully!"));
-                    currentDialog->addActionListener(&accountListener);
-                    currentDialog = NULL; // OkDialog deletes itself
-                    loginData.password = loginData.newPassword;
-                    loginData.newPassword = "";
-                    break;
-
-                case STATE_UNREGISTER_ATTEMPT:
-                    logger->log("State: UNREGISTER ATTEMPT");
-                    Net::getLoginHandler()->unregisterAccount(
-                            loginData.username, loginData.password);
-                    break;
-
-                case STATE_UNREGISTER:
-                    logger->log("State: UNREGISTER");
-#ifdef TMWSERV_SUPPORT
-                    accountServerConnection->disconnect();
-#endif
-                    currentDialog = new OkDialog(_("Unregister Successful"),
-                            _("Farewell, come back any time..."));
-                    loginData.clear();
-                    //The errorlistener sets the state to STATE_CHOOSE_SERVER
-                    currentDialog->addActionListener(&errorListener);
-                    currentDialog = NULL; // OkDialog deletes itself
-                    break;
-
-                case STATE_ACCOUNTCHANGE_ERROR:
-                    logger->log("State: ACCOUNT CHANGE ERROR");
-                    currentDialog = new OkDialog(_("Error"), errorMessage);
-                    currentDialog->addActionListener(&accountListener);
-                    currentDialog = NULL; // OkDialog deletes itself
-                    break;
-
-
-                case STATE_ERROR:
-                    logger->log("State: ERROR");
-                    currentDialog = new OkDialog(_("Error"), errorMessage);
-                    currentDialog->addActionListener(&errorListener);
-                    currentDialog = NULL; // OkDialog deletes itself
-                    Net::getGameHandler()->clear();
-                    Net::getGeneralHandler()->clearHandlers();
-                    break;
-
                 case STATE_CONNECT_GAME:
-                    logger->log("State: CONNECT_GAME");
+                    logger->log("State: CONNECT GAME");
                     Net::getGameHandler()->connect();
                     currentDialog = new ConnectionDialog(STATE_SWITCH_CHARACTER);
                     break;
@@ -1225,8 +1128,118 @@ int main(int argc, char *argv[])
 
                     break;
 
+                case STATE_LOGIN_ERROR:
+                    logger->log("State: LOGIN ERROR");
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
+                    currentDialog->addActionListener(&loginListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    break;
+
+                case STATE_ACCOUNTCHANGE_ERROR:
+                    logger->log("State: ACCOUNT CHANGE ERROR");
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
+                    currentDialog->addActionListener(&accountListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    break;
+
+                case STATE_REGISTER:
+                    logger->log("State: REGISTER");
+                    currentDialog = new RegisterDialog(&loginData);
+                    break;
+
+                case STATE_REGISTER_ATTEMPT:
+                    logger->log("Username is %s", loginData.username.c_str());
+
+                    Net::getCharHandler()->setCharInfo(&charInfo);
+                    Net::getLoginHandler()->registerAccount(&loginData);
+                    break;
+
+                case STATE_CHANGEPASSWORD:
+                    logger->log("State: CHANGE PASSWORD");
+                    currentDialog = new ChangePasswordDialog(&loginData);
+                    break;
+
+                case STATE_CHANGEPASSWORD_ATTEMPT:
+                    logger->log("State: CHANGE PASSWORD ATTEMPT");
+                    Net::getLoginHandler()->changePassword(loginData.username,
+                                                loginData.password,
+                                                loginData.newPassword);
+                    break;
+
+                case STATE_CHANGEPASSWORD_SUCCESS:
+                    logger->log("State: CHANGE PASSWORD SUCCESS");
+                    currentDialog = new OkDialog(_("Password Change"),
+                            _("Password changed successfully!"));
+                    currentDialog->addActionListener(&accountListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    loginData.password = loginData.newPassword;
+                    loginData.newPassword = "";
+                    break;
+
+                case STATE_CHANGEEMAIL:
+                    logger->log("State: CHANGE EMAIL");
+                    currentDialog = new ChangeEmailDialog(&loginData);
+                    break;
+
+                case STATE_CHANGEEMAIL_ATTEMPT:
+                    logger->log("State: CHANGE EMAIL ATTEMPT");
+                    Net::getLoginHandler()->changeEmail(loginData.email);
+                    break;
+
+                case STATE_CHANGEEMAIL_SUCCESS:
+                    logger->log("State: CHANGE EMAIL SUCCESS");
+                    currentDialog = new OkDialog(_("Email Change"),
+                            _("Email changed successfully!"));
+                    currentDialog->addActionListener(&accountListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    break;
+
+                case STATE_UNREGISTER:
+                    logger->log("State: UNREGISTER");
+                    currentDialog = new UnRegisterDialog(&loginData);
+                    break;
+
+                case STATE_UNREGISTER_ATTEMPT:
+                    logger->log("State: UNREGISTER ATTEMPT");
+                    Net::getLoginHandler()->unregisterAccount(
+                            loginData.username, loginData.password);
+                    break;
+
+                case STATE_UNREGISTER_SUCCESS:
+                    logger->log("State: UNREGISTER SUCCESS");
+#ifdef TMWSERV_SUPPORT
+                    accountServerConnection->disconnect();
+#endif
+                    currentDialog = new OkDialog(_("Unregister Successful"),
+                            _("Farewell, come back any time..."));
+                    loginData.clear();
+                    //The errorlistener sets the state to STATE_CHOOSE_SERVER
+                    currentDialog->addActionListener(&errorListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    break;
+
+                case STATE_SWITCH_SERVER:
+                    logger->log("State: SWITCH SERVER");
+
+#ifdef TMWSERV_SUPPORT
+                    gameServerConnection->disconnect();
+                    chatServerConnection->disconnect();
+                    accountServerConnection->disconnect();
+#endif
+
+                    state = STATE_CHOOSE_SERVER;
+                    break;
+
+                case STATE_SWITCH_LOGIN:
+                    logger->log("State: SWITCH LOGIN");
+
+                    Net::getLoginHandler()->logout();
+
+                    state = STATE_LOGIN;
+                    break;
+
                 case STATE_SWITCH_CHARACTER:
-                    logger->log("State: SWITCH_CHARACTER");
+                    logger->log("State: SWITCH CHARACTER");
 
                     // Done with game
                     Net::getGameHandler()->clear();
@@ -1234,12 +1247,34 @@ int main(int argc, char *argv[])
                     Net::getCharHandler()->getCharacters();
                     break;
 
+                case STATE_LOGOUT_ATTEMPT:
+                    logger->log("State: LOGOUT ATTEMPT");
+                    // TODO
+                    break;
+
+                case STATE_WAIT:
+                    logger->log("State: WAIT");
+                    break;
+
+                case STATE_EXIT:
+                    logger->log("State: EXIT");
+                    break;
+
                 case STATE_FORCE_QUIT:
-                    logger->log("State: FORCE_QUIT");
+                    logger->log("State: FORCE QUIT");
                     if (Net::getGeneralHandler())
                         Net::getGeneralHandler()->unload();
                     state = STATE_EXIT;
                   break;
+
+                case STATE_ERROR:
+                    logger->log("State: ERROR");
+                    currentDialog = new OkDialog(_("Error"), errorMessage);
+                    currentDialog->addActionListener(&errorListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    Net::getGameHandler()->clear();
+                    Net::getGeneralHandler()->clearHandlers();
+                    break;
 
                 default:
                     state = STATE_FORCE_QUIT;

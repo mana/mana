@@ -41,12 +41,13 @@
 #include <string>
 #include <sstream>
 
-UnRegisterDialog::UnRegisterDialog(Window *parent, LoginData *loginData):
-    Window(_("Unregister"), true, parent),
+UnRegisterDialog::UnRegisterDialog(LoginData *loginData):
+    Window(_("Unregister"), true),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
-    gcn::Label *userLabel = new Label(strprintf(_("Name: %s"), mLoginData->username.c_str()));
+    gcn::Label *userLabel = new Label(strprintf(_("Name: %s"), mLoginData->
+                                                username.c_str()));
     gcn::Label *passwordLabel = new Label(_("Password:"));
     mPasswordField = new PasswordField(mLoginData->password);
     mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
@@ -77,7 +78,7 @@ UnRegisterDialog::UnRegisterDialog(Window *parent, LoginData *loginData):
     add(mUnRegisterButton);
     add(mCancelButton);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mPasswordField->requestFocus();
     mPasswordField->setActionEventId("cancel");
@@ -93,7 +94,7 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        scheduleDelete();
+        state = STATE_CHAR_SELECT;
     }
     else if (event.getId() == "unregister")
     {
@@ -135,7 +136,6 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
             mUnRegisterButton->setEnabled(false);
             mLoginData->password = password;
             state = STATE_UNREGISTER_ATTEMPT;
-            scheduleDelete();
         }
     }
 }

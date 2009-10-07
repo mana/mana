@@ -45,7 +45,7 @@ class UnRegisterDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        UnRegisterDialog(Window *parent, LoginData *loginData);
+        UnRegisterDialog(LoginData *loginData);
 
         ~UnRegisterDialog();
 
