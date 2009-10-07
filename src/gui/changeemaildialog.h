@@ -45,7 +45,7 @@ class ChangeEmailDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        ChangeEmailDialog(Window *parent, LoginData *loginData);
+        ChangeEmailDialog(LoginData *loginData);
 
         /**
          * Destructor.

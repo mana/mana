@@ -68,7 +68,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Successful pass change
             if (errMsg == 1)
             {
-                state = STATE_CHANGEPASSWORD;
+                state = STATE_CHANGEPASSWORD_SUCCESS;
             }
             // pass change failed
             else

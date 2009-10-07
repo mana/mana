@@ -102,7 +102,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Successful pass change
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_CHANGEPASSWORD;
+                state = STATE_CHANGEPASSWORD_SUCCESS;
             }
             // pass change failed
             else
@@ -132,7 +132,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Successful pass change
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_CHANGEEMAIL;
+                state = STATE_CHANGEEMAIL_SUCCESS;
             }
             // pass change failed
             else

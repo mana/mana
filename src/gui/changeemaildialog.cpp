@@ -39,8 +39,8 @@
 #include <string>
 #include <sstream>
 
-ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
-    Window(_("Change Email Address"), true, parent),
+ChangeEmailDialog::ChangeEmailDialog(LoginData *loginData):
+    Window(_("Change Email Address"), true),
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
@@ -85,7 +85,7 @@ ChangeEmailDialog::ChangeEmailDialog(Window *parent, LoginData *loginData):
     add(mChangeEmailButton);
     add(mCancelButton);
 
-    setLocationRelativeTo(getParent());
+    center();
     setVisible(true);
     mFirstEmailField->requestFocus();
 
@@ -102,7 +102,7 @@ void ChangeEmailDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        scheduleDelete();
+        state = STATE_CHAR_SELECT;
     }
     else if (event.getId() == "change_email")
     {
@@ -160,7 +160,6 @@ void ChangeEmailDialog::action(const gcn::ActionEvent &event)
             // Set the new email address
             mLoginData->email = newFirstEmail;
             state = STATE_CHANGEEMAIL_ATTEMPT;
-            scheduleDelete();
         }
     }
 }
