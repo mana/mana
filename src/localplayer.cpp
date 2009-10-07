@@ -63,6 +63,7 @@
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
+#include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
@@ -331,7 +332,11 @@ void LocalPlayer::clearInventory()
 
 void LocalPlayer::setInvItem(int index, int id, int amount)
 {
-    mInventory->setItem(index, id, amount);
+    bool equipment = false;
+    int itemType = ItemDB::get(id).getType();
+    if (itemType != ITEM_UNUSABLE && itemType != ITEM_USABLE)
+        equipment = true;
+    mInventory->setItem(index, id, amount, equipment);
 }
 
 #endif
