@@ -62,7 +62,7 @@ class ServersListModel : public gcn::ListModel
         /**
          * Add an Element at the end of the server list
          */
-        void addElement(ServerInfo server);
+        void addElement(const ServerInfo &server);
 
         /**
          * Add an Element at the end of the server list if it
@@ -71,19 +71,19 @@ class ServersListModel : public gcn::ListModel
          *
          * @param server ServerInfo to merge into the list.
          */
-        void mergeElement(ServerInfo server);
+        void mergeElement(const ServerInfo &server);
 
         /**
          * Add an Element at the beginning of the server list
          */
-        void addFirstElement(ServerInfo server);
+        void addFirstElement(const ServerInfo &server);
 
         /**
          * Returns wheter the given server is already in the list.
          * @param server Server to search in the list.
          * @return True, if the server is in the list, false otherwise.
          */
-        bool contains(ServerInfo server);
+        bool contains(const ServerInfo &server);
 
     private:
         std::vector<ServerInfo> servers;
@@ -127,11 +127,14 @@ class ServerDialog : public Window,
          */
         void loadServerlist();
 
+        void setFieldsReadOnly(const bool readOnly);
+
         gcn::TextField *mServerNameField;
         gcn::TextField *mPortField;
         gcn::Label  *mServerDescription;
         gcn::Button *mQuitButton;
         gcn::Button *mConnectButton;
+        gcn::Button *mManualEntryButton;
 
         ListBox *mMostUsedServersList;
         ServersListModel *mMostUsedServersListModel;

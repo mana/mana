@@ -62,19 +62,19 @@ std::string ServersListModel::getElementAt(int elementIndex)
     return myServer;
 }
 
-void ServersListModel::addFirstElement(ServerInfo server)
+void ServersListModel::addFirstElement(const ServerInfo &server)
 {
     // Equivalent to push_front
     std::vector<ServerInfo>::iterator MyIterator = servers.begin();
     servers.insert(MyIterator, 1, server);
 }
 
-void ServersListModel::addElement(ServerInfo server)
+void ServersListModel::addElement(const ServerInfo &server)
 {
     servers.push_back(server);
 }
 
-void ServersListModel::mergeElement(ServerInfo server)
+void ServersListModel::mergeElement(const ServerInfo &server)
 {
     // search through the list
     for (int i = 0; i < getNumberOfElements(); i++)
@@ -90,7 +90,7 @@ void ServersListModel::mergeElement(ServerInfo server)
     addElement(server);
 }
 
-bool ServersListModel::contains(ServerInfo server)
+bool ServersListModel::contains(const ServerInfo &server)
 {
     // search through the list
     for (int i = 0; i < getNumberOfElements(); i++)
@@ -125,7 +125,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
         currentServer.hostname = config.getValue(currentConfig, "");
 
         currentConfig = "MostUsedServerPort" + toString(i);
-        currentServer.port = (short) config.getValue(currentConfig, 0);
+        currentServer.port = (short) config.getValue(currentConfig, DEFAULT_PORT);
 
         if (!currentServer.hostname.empty() && currentServer.port != 0)
         {
@@ -143,22 +143,25 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
 
     mQuitButton = new Button(_("Quit"), "quit", this);
     mConnectButton = new Button(_("Connect"), "connect", this);
+    mManualEntryButton = new Button(_("Add Entry"), "addEntry", this);
 
     mServerNameField->setActionEventId("connect");
     mPortField->setActionEventId("connect");
 
     mServerNameField->addActionListener(this);
     mPortField->addActionListener(this);
+    mManualEntryButton->addActionListener(this);
     mMostUsedServersList->addSelectionListener(this);
-
     mMostUsedServersList->setSelected(0);
+    usedScroll->setVerticalScrollAmount(0);
 
     place(0, 0, mServerDescription, 2);
     place(0, 1, serverLabel);
     place(0, 2, portLabel);
-    place(1, 1, mServerNameField, 3).setPadding(2);
-    place(1, 2, mPortField, 3).setPadding(2);
-    place(0, 3, usedScroll, 4, 5).setPadding(2);
+    place(1, 1, mServerNameField, 3).setPadding(3);
+    place(1, 2, mPortField, 3).setPadding(3);
+    place(0, 3, usedScroll, 4, 5).setPadding(3);
+    place(0, 8, mManualEntryButton);
     place(2, 8, mQuitButton);
     place(3, 8, mConnectButton);
 
@@ -169,6 +172,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
     reflowLayout(300, 0);
 
     center();
+    setFieldsReadOnly(true);
     setVisible(true);
 
     if (mServerNameField->getText().empty()) {
@@ -250,6 +254,10 @@ void ServerDialog::action(const gcn::ActionEvent &event)
     {
         state = STATE_FORCE_QUIT;
     }
+    else if (event.getId() == "addEntry")
+    {
+        setFieldsReadOnly(false);
+    }
 }
 
 void ServerDialog::valueChanged(const gcn::SelectionEvent &event)
@@ -263,6 +271,8 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &event)
     mServerDescription->setCaption(myServer.name);
     mServerNameField->setText(myServer.hostname);
     mPortField->setText(toString(myServer.port));
+
+    setFieldsReadOnly(true);
 }
 
 void ServerDialog::loadServerlist()
@@ -327,3 +337,32 @@ void ServerDialog::loadServerlist()
 
     xmlFreeDoc(doc);
 }
+
+void ServerDialog::setFieldsReadOnly(const bool readOnly)
+{
+    if (readOnly)
+    {
+        mServerNameField->setEnabled(false);
+        mPortField->setEnabled(false);
+        mManualEntryButton->setVisible(true);
+        mServerDescription->setVisible(true);
+    }
+    else
+    {
+        mManualEntryButton->setVisible(false);
+
+        mServerDescription->setVisible(false);
+        mServerDescription->setCaption(std::string());
+        mMostUsedServersList->setSelected(-1);
+
+        mServerNameField->setText(std::string());
+        mServerNameField->setEnabled(true);
+
+        mPortField->setText(toString(DEFAULT_PORT));
+        mPortField->setEnabled(true);
+
+        mServerNameField->requestFocus();
+    }
+}
+
+
