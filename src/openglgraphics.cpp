@@ -226,6 +226,12 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
     if (!image)
         return false;
 
+    // Just draw the image normally when no resizing is necessary
+    if (width == desiredWidth && height == desiredHeight)
+    {
+        return drawImage(image, srcX, srcY, dstX, dstY, width, height, useColor);
+    }
+
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
 
