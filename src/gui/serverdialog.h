@@ -65,9 +65,25 @@ class ServersListModel : public gcn::ListModel
         void addElement(ServerInfo server);
 
         /**
+         * Add an Element at the end of the server list if it
+         * doesn't exist yet. Otherwise overwrite its properties
+         * in the list.
+         *
+         * @param server ServerInfo to merge into the list.
+         */
+        void mergeElement(ServerInfo server);
+
+        /**
          * Add an Element at the beginning of the server list
          */
         void addFirstElement(ServerInfo server);
+
+        /**
+         * Returns wheter the given server is already in the list.
+         * @param server Server to search in the list.
+         * @return True, if the server is in the list, false otherwise.
+         */
+        bool contains(ServerInfo server);
 
     private:
         std::vector<ServerInfo> servers;
@@ -106,6 +122,9 @@ class ServerDialog : public Window,
         void valueChanged(const gcn::SelectionEvent &event);
 
     private:
+        /**
+         * Called to load a list of available server from an online xml file.
+         */
         void loadServerlist();
 
         gcn::TextField *mServerNameField;

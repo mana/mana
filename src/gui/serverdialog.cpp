@@ -74,6 +74,34 @@ void ServersListModel::addElement(ServerInfo server)
     servers.push_back(server);
 }
 
+void ServersListModel::mergeElement(ServerInfo server)
+{
+    // search through the list
+    for (int i = 0; i < getNumberOfElements(); i++)
+    {
+        // the server is already in the list, merge its properties
+        if (servers[i] == server)
+        {
+            servers[i].name = server.name;
+            return;
+        }
+    }
+    // the server is not found, add it at the end of the list
+    addElement(server);
+}
+
+bool ServersListModel::contains(ServerInfo server)
+{
+    // search through the list
+    for (int i = 0; i < getNumberOfElements(); i++)
+    {
+        if (servers[i] == server)
+            return true;
+    }
+    return false;
+}
+
+
 ServerDialog::ServerDialog(ServerInfo *serverInfo):
     Window(_("Choose Your Server")), mServerInfo(serverInfo)
 {
@@ -87,19 +115,11 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
     ServerInfo currentServer;
     ServerInfo tempServer;
 
-    // load a list with online servers...
-    loadServerlist();
-
     // Add the most used servers from config if they are not in the online list
     std::string currentConfig = "";
-    bool newEntry;
-
     for (int i = 0; i <= MAX_SERVERLIST; i++)
     {
         currentServer.clear();
-
-        currentConfig = "MostUsedServerDescription" + toString(i);
-        currentServer.name = config.getValue(currentConfig, "");
 
         currentConfig = "MostUsedServerName" + toString(i);
         currentServer.hostname = config.getValue(currentConfig, "");
@@ -109,21 +129,13 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo):
 
         if (!currentServer.hostname.empty() && currentServer.port != 0)
         {
-            newEntry = true;
-            for (int i = 0; i < mMostUsedServersListModel->getNumberOfElements(); i++)
-            {
-                tempServer = mMostUsedServersListModel->getServer(i);
-                if (tempServer != currentServer)
-                {
-                    newEntry = false;
-                    break;
-                }
-                if (!newEntry)
-                    mMostUsedServersListModel->addElement(currentServer);
-            }
-
+            if (!mMostUsedServersListModel->contains(currentServer))
+                mMostUsedServersListModel->addElement(currentServer);
         }
     }
+
+    // load a list with online servers...
+    loadServerlist();
 
     mMostUsedServersList = new ListBox(mMostUsedServersListModel);
     ScrollArea *usedScroll = new ScrollArea(mMostUsedServersList);
@@ -202,30 +214,32 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             ServerInfo tempServer;
             currentServer.hostname = mServerNameField->getText();
             currentServer.port = (short) atoi(mPortField->getText().c_str());
-            bool newEntry = true;
-            for (int i = 0; i < mMostUsedServersListModel->getNumberOfElements(); i++)
-            {
-                tempServer = mMostUsedServersListModel->getServer(i);
-                if (tempServer.hostname == mServerInfo->hostname &&
-                    tempServer.port == mServerInfo->port)
-                    newEntry = false;
-            }
-            if (newEntry)
-                mMostUsedServersListModel->addFirstElement(currentServer);
-            // Write the entry in config
+
+            // now rewrite the configuration...
+            // id = 0 is always the last selected server
+            config.setValue("MostUsedServerName0", currentServer.hostname);
+            config.setValue("MostUsedServerPort0", currentServer.port);
+
+            // now add the rest of the list...
             std::string currentConfig = "";
+            int configCount = 1;
             for (int i = 0; i < mMostUsedServersListModel->getNumberOfElements(); i++)
             {
                 tempServer = mMostUsedServersListModel->getServer(i);
 
-                currentConfig = "MostUsedServerDescription" + toString(i);
-                config.setValue(currentConfig, tempServer.name);
+                // ensure, that our server will not be added twice
+                if (tempServer != currentServer)
+                {
+                    currentConfig = "MostUsedServerName" + toString(configCount);
+                    config.setValue(currentConfig, toString(tempServer.hostname));
+                    currentConfig = "MostUsedServerPort" + toString(configCount);
+                    config.setValue(currentConfig, toString(tempServer.port));
+                    configCount++;
+                }
 
-                currentConfig = "MostUsedServerName" + toString(i);
-                config.setValue(currentConfig, tempServer.hostname);
-
-                currentConfig = "MostUsedServerPort" + toString(i);
-                config.setValue(currentConfig, toString(tempServer.port));
+                // stop if we exceed the number of maximum config entries
+                if (configCount >= MAX_SERVERLIST)
+                    break;
             }
             mServerInfo->hostname = currentServer.hostname;
             mServerInfo->port = currentServer.port;
@@ -275,7 +289,7 @@ void ServerDialog::loadServerlist()
 
     if (version != 1)
     {
-        fprintf(stderr, "Online server list has wrong version");
+        logger->log("Online server list has wrong version");
         return;
     }
 
@@ -306,7 +320,8 @@ void ServerDialog::loadServerlist()
                 }
             }
 
-            mMostUsedServersListModel->addElement(currentServer);
+            // merge the server into the local list
+            mMostUsedServersListModel->mergeElement(currentServer);
         }
     }
 
