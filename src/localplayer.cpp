@@ -477,8 +477,9 @@ void LocalPlayer::setWalkingDir(int dir)
         if (dir && (dir != getWalkingDir()))
             player_node->stopWalking(false);
 
-        // Else, he is not pressing a key, stop (sending to server)
-        else if (!dir)
+        // Else, he is not pressing a key,
+        // And the current path is over. Then, stop (sending to server).
+        else if (!dir && mPath.empty())
         {
             player_node->stopWalking(true);
             return;
