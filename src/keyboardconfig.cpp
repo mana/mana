@@ -165,10 +165,15 @@ bool KeyboardConfig::hasConflicts()
                    (mKey[i].value == mKey[j].value)
                )
             {
+                mBindError = strprintf(_("Conflict \"%s\" and \"%s\" keys. "
+                                         "Resolve them, or gameplay may result"
+                                         " in strange behaviour."),
+                                       mKey[i].caption.c_str(), mKey[j].caption.c_str());
                 return true;
             }
         }
     }
+    mBindError = "";
     return false;
 }
 

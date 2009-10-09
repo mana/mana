@@ -139,6 +139,9 @@ class KeyboardConfig
          */
         void refreshActiveKeys();
 
+        std::string getBindError()
+        { return mBindError; }
+
         /**
          * All the key functions.
          * KEY_NO_VALUE is used in initialization, and should be unchanged.
@@ -225,6 +228,8 @@ class KeyboardConfig
         KeyFunction mKey[KEY_TOTAL];   /**< Pointer to all the key data */
 
         Uint8 *mActiveKeys;            /**< Stores a list of all the keys */
+
+        std::string mBindError;
 };
 
 extern KeyboardConfig keyboard;
