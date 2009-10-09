@@ -528,12 +528,24 @@ void Being::logic()
         Vector dir = dest - mPos;
         const float length = dir.length();
 
-        // When we're over 2 pixels from our destination, move to it
-        // TODO: Should be possible to make it even pixel exact, but this solves
-        //       the jigger caused by moving too far.
-        if (length > 2.0f) {
+        // When we've not reached our destination, move to it.
+        if (length > 0.0f)
+        {
             const float speed = mWalkSpeed / 100.0f;
-            setPosition(mPos + (dir / (length / speed)));
+
+            // Test if we don't miss the destination by a move too far:
+            if ((dir / (length / speed)).length() > dir.length())
+            {
+                setPosition(mPos + dir);
+
+                // Also, if the destination is reached, try to get the next
+                // path point, if existing.
+                if (!mPath.empty())
+                    mPath.pop_front();
+            }
+            // Otherwise, go to it using the nominal speed.
+            else
+                setPosition(mPos + (dir / (length / speed)));
 
             if (mAction != WALK)
                 setAction(WALK);
@@ -548,11 +560,14 @@ void Being::logic()
                  direction |= (dir.y > 0) ? DOWN : UP;
             setDirection(direction);
         }
-        else if (!mPath.empty()) {
-            // TODO: Pop as soon as there is a direct unblocked line to the next
-            //       point on the path.
+        else if (!mPath.empty())
+        {
+            // If the current path node has been reached,
+            // remove it and go to the next one.
             mPath.pop_front();
-        } else if (mAction == WALK) {
+        }
+        else if (mAction == WALK)
+        {
             setAction(STAND);
         }
     }

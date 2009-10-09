@@ -73,10 +73,10 @@
 #include <cassert>
 
 #ifdef TMWSERV_SUPPORT
-// This is shorter then it really needs to be for normal use
-// But if we ever wanted to increase player speed, having this lower
-// Won't hurt
-const short walkingKeyboardDelay = 40;
+// This is the minimal delay between to permitted
+// setDestination() calls using the keyboard.
+// TODO: This can fine tuned later on when running is added...
+const short walkingKeyboardDelay = 1000;
 #endif
 
 LocalPlayer *player_node = NULL;
@@ -263,9 +263,10 @@ void LocalPlayer::setGMLevel(int level)
         setGM(true);
 }
 
-#ifdef EATHENA_SUPPORT
-void LocalPlayer::nextStep()
+
+void LocalPlayer::nextStep(unsigned char dir = 0)
 {
+#ifdef EATHENA_SUPPORT
     // TODO: Fix picking up when reaching target (this method is obsolete)
     // TODO: Fix holding walking button to keep walking smoothly
     if (mPath.empty())
@@ -274,7 +275,7 @@ void LocalPlayer::nextStep()
             pickUp(mPickUpTarget);
 
         if (mWalkingDir)
-            walk(mWalkingDir);
+            startWalking(mWalkingDir);
     }
 
     // TODO: Fix automatically walking within range of target, when wanted
@@ -294,8 +295,66 @@ void LocalPlayer::nextStep()
 
 
     Player::nextStep();
-}
+#else // TMWSERV_SUPPORT
+        if (!mMap || !dir)
+        return;
+
+    const Vector &pos = getPosition();
+
+    // Compute where the next step will set.
+
+    int dx = 0, dy = 0;
+    if (dir & UP)
+        dy--;
+    if (dir & DOWN)
+        dy++;
+    if (dir & LEFT)
+        dx--;
+    if (dir & RIGHT)
+        dx++;
+
+    // Prevent skipping corners over colliding tiles
+    if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
+                             (int) pos.y / 32, getWalkMask()))
+        dx = 16 - (int) pos.x % 32;
+    if (dy && !mMap->getWalk((int) pos.x / 32,
+                             ((int) pos.y + dy) / 32, getWalkMask()))
+        dy = 16 - (int) pos.y % 32;
+
+    // Choose a straight direction when diagonal target is blocked
+    if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
+                                   (pos.y + dy) / 32, getWalkMask()))
+        dx = 16 - (int) pos.x % 32;
+
+    int dScaler; // Distance to walk
+
+    // Checks our path up to 1 tiles, if a blocking tile is found
+    // We go to the last good tile, and break out of the loop
+    for (dScaler = 1; dScaler <= 32; dScaler++)
+    {
+        if ( (dx || dy) &&
+             !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
+                             ((int) pos.y + (dy * dScaler)) / 32, getWalkMask()) )
+        {
+            dScaler--;
+            break;
+        }
+    }
+
+    if (dScaler >= 0)
+    {
+        //effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+        setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
+    }
+    else if (dir)
+    {
+        // If the being can't move, just change direction
+        Net::getPlayerHandler()->setDirection(dir);
+        setDirection(dir);
+    }
 #endif
+}
+
 
 #ifdef TMWSERV_SUPPORT
 bool LocalPlayer::checkInviteRights(const std::string &guildName)
@@ -497,11 +556,17 @@ void LocalPlayer::setWalkingDir(int dir)
     // If we're not already walking, start walking.
     if (mAction != WALK && dir)
     {
-        walk(dir);
+        startWalking(dir);
     }
+#ifdef TMWSERV_SUPPORT
+    else if (mAction == WALK)
+    {
+        nextStep(dir);
+    }
+#endif
 }
 
-void LocalPlayer::walk(unsigned char dir)
+void LocalPlayer::startWalking(unsigned char dir)
 {
     // This function is called by setWalkingDir(),
     // but also by nextStep() for eAthena...
@@ -535,48 +600,14 @@ void LocalPlayer::walk(unsigned char dir)
     if (dir & RIGHT)
         dx++;
 
+#ifdef EATHENA_SUPPORT
     // Prevent skipping corners over colliding tiles
-#ifdef TMWSERV_SUPPORT
-    if (dx && !mMap->getWalk(((int) pos.x + dx) / 32,
-                             (int) pos.y / 32, getWalkMask()))
-        dx = 16 - (int) pos.x % 32;
-    if (dy && !mMap->getWalk((int) pos.x / 32,
-                             ((int) pos.y + dy) / 32, getWalkMask()))
-        dy = 16 - (int) pos.y % 32;
-#else
     if (dx && !mMap->getWalk(getTileX() + dx, getTileY(), getWalkMask()))
         dx = 0;
     if (dy && !mMap->getWalk(getTileX(), getTileY() + dy, getWalkMask()))
         dy = 0;
-#endif
 
     // Choose a straight direction when diagonal target is blocked
-#ifdef TMWSERV_SUPPORT
-    if (dx && dy && !mMap->getWalk((pos.x + dx) / 32,
-                                   (pos.y + dy) / 32, getWalkMask()))
-        dx = 16 - (int) pos.x % 32;
-
-    int dScaler; // Distance to walk
-
-    // Checks our path up to 2 tiles, if a blocking tile is found
-    // We go to the last good tile, and break out of the loop
-    for (dScaler = 1; dScaler <= 32 * 2; dScaler++)
-    {
-        if ( (dx || dy) &&
-             !mMap->getWalk( ((int) pos.x + (dx * dScaler)) / 32,
-                             ((int) pos.y + (dy * dScaler)) / 32, getWalkMask()) )
-        {
-            dScaler--;
-            break;
-        }
-    }
-
-    if (dScaler >= 0)
-    {
-        effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
-        setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
-    }
-#else
     if (dx && dy && !mMap->getWalk(getTileX() + dx, getTileY() + dy, getWalkMask()))
         dx = 0;
 
@@ -585,13 +616,15 @@ void LocalPlayer::walk(unsigned char dir)
     {
         setDestination(getTileX() + dx, getTileY() + dy);
     }
-#endif
     else if (dir)
     {
         // If the being can't move, just change direction
         Net::getPlayerHandler()->setDirection(dir);
         setDirection(dir);
     }
+#else // TMWSERV_SUPPORT
+    nextStep(dir);
+#endif
 }
 
 void LocalPlayer::stopWalking(bool sendToServer)

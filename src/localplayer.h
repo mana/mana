@@ -122,13 +122,14 @@ class LocalPlayer : public Player
 
         virtual void setAction(Action action, int attackType = 0);
 
-#ifdef EATHENA_SUPPORT
         /**
          * Adds a new step when walking before calling super. Also, when
          * specified it picks up an item at the end of a path.
          */
-        virtual void nextStep();
-#endif
+        virtual void nextStep()
+        { nextStep(0); }
+
+        virtual void nextStep(unsigned char dir);
 
         /**
          * Returns the player's inventory.
@@ -386,7 +387,7 @@ class LocalPlayer : public Player
         // Colors don't change for local player
         virtual void updateColors() {}
 
-        void walk(unsigned char dir);
+        void startWalking(unsigned char dir);
 
         bool mInStorage;      /**< Whether storage is currently accessible */
 
