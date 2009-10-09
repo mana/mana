@@ -263,6 +263,7 @@ void LocalPlayer::setGMLevel(int level)
         setGM(true);
 }
 
+#ifdef EATHENA_SUPPORT
 void LocalPlayer::nextStep()
 {
     // TODO: Fix picking up when reaching target (this method is obsolete)
@@ -291,10 +292,10 @@ void LocalPlayer::nextStep()
         mPath.clear();
     }
 
-#ifdef EATHENA_SUPPORT
+
     Player::nextStep();
-#endif
 }
+#endif
 
 #ifdef TMWSERV_SUPPORT
 bool LocalPlayer::checkInviteRights(const std::string &guildName)
