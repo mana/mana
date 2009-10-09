@@ -257,6 +257,11 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
                         desiredWidth + 1, desiredHeight + 1);
         drawRescaledQuad(image, srcX, srcY, dstX + 1, dstY + 1, width, height,
                         desiredWidth - 1, desiredHeight - 1);
+
+        drawRescaledQuad(image, srcX, srcY, dstX + 1, dstY, width, height,
+                        desiredWidth - 1, desiredHeight);
+        drawRescaledQuad(image, srcX, srcY, dstX, dstY + 1, width, height,
+                        desiredWidth, desiredHeight - 1);
     }
 
     glEnd();
