@@ -226,8 +226,9 @@ bool OpenGLGraphics::drawRescaledImage(Image *image, int srcX, int srcY,
     if (!image)
         return false;
 
-    // Just draw the image normally when no resizing is necessary
-    if (width == desiredWidth && height == desiredHeight)
+    // Just draw the image normally when no resizing is necessary,
+    // or when the desired image is smaller than the current one.
+    if (width >= desiredWidth && height >= desiredHeight)
     {
         return drawImage(image, srcX, srcY, dstX, dstY, width, height, useColor);
     }
