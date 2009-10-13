@@ -123,7 +123,7 @@ bool Download::start()
 
     if (!mThread)
     {
-        logger->log(DOWNLOAD_ERROR_MESSAGE_THREAD);
+        logger->log("%s", DOWNLOAD_ERROR_MESSAGE_THREAD);
         strcpy(mError, DOWNLOAD_ERROR_MESSAGE_THREAD);
         mUpdateFunction(mPtr, DOWNLOAD_STATUS_THREAD_ERROR, 0, 0);
 
